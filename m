@@ -2,78 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83048797046
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 08:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB98797047
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 08:26:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe8Rn-0003zF-QB; Thu, 07 Sep 2023 02:25:00 -0400
+	id 1qe8SX-0004Kg-LU; Thu, 07 Sep 2023 02:25:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1qe8Rg-0003yr-2z
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:24:52 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1qe8Rd-0005RT-QD
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:24:51 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-56a3e6bce68so467591a12.1
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 23:24:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694067888; x=1694672688; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=45JMhq6t+j8AdylZLsjCmKllHxj4NWcg/3JdETtHIwE=;
- b=Npjp03DPgUmkvLmWlVjUNv0dBygwCmrBvA5KYdtBwXeuUa6/VKHh7lJJNHrdJooTA1
- mehW+o8lVFRt9VZzY0Kg7/Q24fG1qQAm3x5PfHSPGclmYpMLO6jeBPQGsO1p9lxYJ+0J
- l4gppQ6kzsxCdzYBdTBv4STQkd6JlbUZrc00kdVrCnqMoWqGbfxE8Xh6BiJk2E+B61mE
- oA8p0w8cI/YxOPVth/ZjQFSuIIjjDcNmeAHA0m6us3yWyFEqH0aphgOYuFILFzS9PlBT
- GxHY6Z3fbd1ErezjgdKQPs3EEeUV3ACgx3JPMVj8jCzFK61zpxkeKn4Nn81OV9dfLdC6
- ap3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694067888; x=1694672688;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=45JMhq6t+j8AdylZLsjCmKllHxj4NWcg/3JdETtHIwE=;
- b=M05DdN6fe+4jCC79OP0pBNVKdWc9ClWpTczp2hgtwdT7B4b94xCZ+7pHFwTR7A9UdD
- ls/uxOs69uc73WtEeZb4mRbbRk9Y9XmyYgXYpJT/bxhJvbWRR4U4xabGnGVPTUePxXCa
- l9V5xEwww00TqVdvJ/qnGs7zJ70wrFlaKgeKbzaZdB9ufFWVPkIVqTOsLloneliwp0vp
- nftIutyqfE+/hZIMs5NFPX3mnhATcagPD46WBzVvyGfGfFViYWPZw05ElrUb0aht9gxJ
- /xfyxe5Hd+d598ZDQ+XmEMz9Zrq/MKUq3TKgSU3oWZvJmgr4mNLzAsVMGJAJ9UZsVW4I
- g6tA==
-X-Gm-Message-State: AOJu0Yxrae4ddx13KCD9/3GqkxIfZ4CsyHTtR30vL5YQWFyc0kp3PGqq
- TuVDoHhSvIitcq+qDgVV28crOpZrASBpZK8jie3YFJHBvYE=
-X-Google-Smtp-Source: AGHT+IFsuoJsS/Uy07cXk2ffQF4nkV5Sqd5/cikR519R3VO/JaDlVomwUanKgtZWbl5BVR+Mi7mldw==
-X-Received: by 2002:a17:903:22c7:b0:1b9:c207:1802 with SMTP id
- y7-20020a17090322c700b001b9c2071802mr19409525plg.0.1694067887774; 
- Wed, 06 Sep 2023 23:24:47 -0700 (PDT)
-Received: from mchitale-vm.. ([106.195.11.23])
- by smtp.googlemail.com with ESMTPSA id
- ik21-20020a170902ab1500b001b9f032bb3dsm12299642plb.3.2023.09.06.23.24.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 06 Sep 2023 23:24:47 -0700 (PDT)
-From: Mayuresh Chitale <mchitale@ventanamicro.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Mayuresh Chitale <mchitale@ventanamicro.com>,
-	alistair.francis@wdc.com
-Subject: [PATCH] target/riscv: pmp: Clear pmp/smepmp bits on reset
-Date: Thu,  7 Sep 2023 11:54:40 +0530
-Message-Id: <20230907062440.1174224-1-mchitale@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
+ id 1qe8SO-0004DU-I3
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:25:37 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <zhaotianrui@loongson.cn>) id 1qe8SJ-0005Yo-SB
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:25:36 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxJujPbPlkeR4hAA--.7126S3;
+ Thu, 07 Sep 2023 14:25:19 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8AxDCPPbPlkbiRwAA--.53472S2; 
+ Thu, 07 Sep 2023 14:25:19 +0800 (CST)
+From: Tianrui Zhao <zhaotianrui@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, maobibo@loongson.cn,
+ yangxiaojuan@loongson.cn, zhaotianrui@loongson.cn, gaosong@loongson.cn
+Subject: [PATCH v2] hw/loongarch: Add virtio-mmio bus support
+Date: Thu,  7 Sep 2023 14:25:19 +0800
+Message-Id: <20230907062519.3304854-1-zhaotianrui@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=mchitale@ventanamicro.com; helo=mail-pg1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-CM-TRANSID: AQAAf8AxDCPPbPlkbiRwAA--.53472S2
+X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,74 +61,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per the Priv and Smepmp specifications, certain bits such as the 'L'
-bit of pmp entries and mseccfg.MML can only be cleared upon reset and it
-is necessary to do so to allow 'M' mode firmware to correctly reinitialize
-the pmp/smpemp state across reboots.
+Add virtio-mmio bus support for LoongArch, so that devices
+could be added in the virtio-mmio bus. And add it's address
+info and interrupt number into fdt and dsdt.
 
-Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
 ---
- target/riscv/cpu.c | 11 +++++++++++
- target/riscv/pmp.c | 10 ++++++++++
- target/riscv/pmp.h |  1 +
- 3 files changed, 22 insertions(+)
+ hw/loongarch/Kconfig       |  1 +
+ hw/loongarch/acpi-build.c  | 20 ++++++++++++++++++++
+ hw/loongarch/virt.c        | 22 ++++++++++++++++++++++
+ include/hw/pci-host/ls7a.h |  3 +++
+ 4 files changed, 46 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 0843461660..77ed653b8d 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -896,6 +896,17 @@ static void riscv_cpu_reset_hold(Object *obj)
-     }
-     /* mmte is supposed to have pm.current hardwired to 1 */
-     env->mmte |= (EXT_STATUS_INITIAL | MMTE_M_PM_CURRENT);
-+
-+    /*
-+     * Clear mseccfg and unlock all the PMP entries upon reset.
-+     * This is allowed as per the priv and smepmp specifications.
-+     * and is needed to clear stale entries across reboots.
-+     */
-+    if (riscv_cpu_cfg(env)->ext_smepmp) {
-+        env->mseccfg = 0;
-+    }
-+
-+    pmp_unlock_entries(env);
- #endif
-     env->xl = riscv_cpu_mxl(env);
-     riscv_cpu_update_mask(env);
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 3f6c8cf08d..f3eb6e6585 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -131,6 +131,16 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
-     return false;
+diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
+index 1e7c5b43c5..01ab8ce8e7 100644
+--- a/hw/loongarch/Kconfig
++++ b/hw/loongarch/Kconfig
+@@ -22,3 +22,4 @@ config LOONGARCH_VIRT
+     select DIMM
+     select PFLASH_CFI01
+     select ACPI_HMAT
++    select VIRTIO_MMIO
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index ae292fc543..304bfe3958 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -363,6 +363,25 @@ static void acpi_dsdt_add_tpm(Aml *scope, LoongArchMachineState *vms)
  }
+ #endif
  
-+void pmp_unlock_entries(CPURISCVState *env)
++static void acpi_dsdt_add_virtio(Aml *scope)
 +{
-+    uint32_t pmp_num = pmp_get_num_rules(env);
-+    int i;
++    uint32_t irq = VIRT_VIRTIO_MMIO_IRQ;
++    hwaddr base = VIRT_VIRTIO_MMIO_BASE;
++    hwaddr size = VIRT_VIRTIO_MMIO_SIZE;
++    Aml *dev = aml_device("VR%02u", 0);
 +
-+    for (i = 0; i < pmp_num; i++) {
-+        env->pmp_state.pmp[i].cfg_reg &= ~PMP_LOCK;
-+    }
++    aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0005")));
++    aml_append(dev, aml_name_decl("_UID", aml_int(0)));
++    aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
++
++    Aml *crs = aml_resource_template();
++    aml_append(crs, aml_memory32_fixed(base, size, AML_READ_WRITE));
++    aml_append(crs, aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
++               AML_EXCLUSIVE, &irq, 1));
++    aml_append(dev, aml_name_decl("_CRS", crs));
++    aml_append(scope, dev);
 +}
 +
- static void pmp_decode_napot(target_ulong a, target_ulong *sa,
-                              target_ulong *ea)
- {
-diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-index cf5c99f8e6..2c5ec3cdf1 100644
---- a/target/riscv/pmp.h
-+++ b/target/riscv/pmp.h
-@@ -81,6 +81,7 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
- void pmp_update_rule_nums(CPURISCVState *env);
- uint32_t pmp_get_num_rules(CPURISCVState *env);
- int pmp_priv_to_page_prot(pmp_priv_t pmp_priv);
-+void pmp_unlock_entries(CPURISCVState *env);
+ /* build DSDT */
+ static void
+ build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+@@ -381,6 +400,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+ #ifdef CONFIG_TPM
+     acpi_dsdt_add_tpm(dsdt, lams);
+ #endif
++    acpi_dsdt_add_virtio(dsdt);
+     /* System State Package */
+     scope = aml_scope("\\");
+     pkg = aml_package(4);
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 2629128aed..4732a1bc21 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -116,6 +116,22 @@ static void fdt_add_rtc_node(LoongArchMachineState *lams)
+     g_free(nodename);
+ }
  
- #define MSECCFG_MML_ISSET(env) get_field(env->mseccfg, MSECCFG_MML)
- #define MSECCFG_MMWP_ISSET(env) get_field(env->mseccfg, MSECCFG_MMWP)
++static void fdt_add_virtio_mmio_node(LoongArchMachineState *lams)
++{
++    char *nodename;
++    hwaddr base = VIRT_VIRTIO_MMIO_BASE;
++    hwaddr size = VIRT_VIRTIO_MMIO_SIZE;
++    MachineState *ms = MACHINE(lams);
++
++    nodename = g_strdup_printf("/virtio_mmio@%" PRIx64, base);
++    qemu_fdt_add_subnode(ms->fdt, nodename);
++    qemu_fdt_setprop_string(ms->fdt, nodename,
++                            "compatible", "virtio,mmio");
++    qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg",
++                                 2, base, 2, size);
++    g_free(nodename);
++}
++
+ static void fdt_add_uart_node(LoongArchMachineState *lams)
+ {
+     char *nodename;
+@@ -560,6 +576,12 @@ static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *
+                          VIRT_RTC_IRQ - VIRT_GSI_BASE));
+     fdt_add_rtc_node(lams);
+ 
++    /* virtio-mmio device */
++    sysbus_create_simple("virtio-mmio", VIRT_VIRTIO_MMIO_BASE,
++                         qdev_get_gpio_in(pch_pic,
++                         VIRT_VIRTIO_MMIO_IRQ - VIRT_GSI_BASE));
++    fdt_add_virtio_mmio_node(lams);
++
+     pm_mem = g_new(MemoryRegion, 1);
+     memory_region_init_io(pm_mem, NULL, &loongarch_virt_pm_ops,
+                           NULL, "loongarch_virt_pm", PM_SIZE);
+diff --git a/include/hw/pci-host/ls7a.h b/include/hw/pci-host/ls7a.h
+index e753449593..38bcc41dee 100644
+--- a/include/hw/pci-host/ls7a.h
++++ b/include/hw/pci-host/ls7a.h
+@@ -42,6 +42,9 @@
+ #define VIRT_RTC_REG_BASE        (VIRT_MISC_REG_BASE + 0x00050100)
+ #define VIRT_RTC_LEN             0x100
+ #define VIRT_SCI_IRQ             (VIRT_GSI_BASE + 4)
++#define VIRT_VIRTIO_MMIO_IRQ     (VIRT_GSI_BASE + 7)
++#define VIRT_VIRTIO_MMIO_BASE    0x1e200000
++#define VIRT_VIRTIO_MMIO_SIZE    0x200
+ 
+ #define VIRT_PLATFORM_BUS_BASEADDRESS   0x16000000
+ #define VIRT_PLATFORM_BUS_SIZE          0x2000000
 -- 
-2.34.1
+2.39.1
 
 
