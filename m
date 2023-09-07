@@ -2,88 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CD479707B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 09:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1723797085
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 09:41:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe9GV-0001hh-UB; Thu, 07 Sep 2023 03:17:23 -0400
+	id 1qe9cZ-0007iq-7n; Thu, 07 Sep 2023 03:40:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qe9GT-0001h3-0x
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:17:21 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qe9GQ-0000Dz-0A
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:17:20 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-401b393ddd2so7263545e9.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 00:16:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694071007; x=1694675807; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=oc3lHUeurO7vGjxw+biDlYs90UYXbFJj5ipqCgg2zvo=;
- b=Uoh/cOkXuUSqD2ju+OHRu/w3j+p+ja1GxQ4kNf3xnFsouYg6J6Wn1OtfXOkQJS1Fnp
- LYFigNtpjyiK4GmcM3ggQl2tsTwI3Z+IrB7hlmMfUXlAN9OdN1KvHETiVRWp7xRUyMZL
- h7tT5DK5LWktWCZFuAXCY265EI7HxsdFyZmX9Nqj5Yz+JpikwHxTnHwaioBtft4Zk0Im
- ulDcl+YEbptTwOF4RAtDdz5QNwYZXEoQkmMFjl9aRJzh7mgAl2xLtgs4yq02kSW2MjIB
- 4EFzxUd2rn8pJ8L27Hmiy1Fa/ogfNicuR2Q7bbd4LH+Ye4g6yqRzo5eXEC3KvivrixDF
- MhnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694071007; x=1694675807;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oc3lHUeurO7vGjxw+biDlYs90UYXbFJj5ipqCgg2zvo=;
- b=WKHcY7d99GoCaUEa5EQMYq3911TGi52cMXCNOiNIFpkRpvTAOVoAX4Yg4EWLUs9tWt
- 0PdzfRl1yvSVP/czvDIqU47/IhOK/iucywJwdQdqVFXI2rAS7GTH6mWjT7Bpf59GnrCg
- pQwqglhvHnIATg0IO9HpPRmpuLvOjOCKQGbMXQYVyZzqhegzszTqDKdSFkJ56fvrDu6R
- hbbFRueJfwbhVmsRZeb+Cb6LmAPHEydQJEgsjttHrX5HyClcyn7KrcFSTZFVpSUKeTka
- i0AtZTn9/wH1tqecfeScjynsCEDwjg/jeiWHoHEPG8GrbEvUi1M8o6hdOKLaCqlgOhIk
- XMGA==
-X-Gm-Message-State: AOJu0Yy7hktDwiKdUL/JpdXCLZw2FL03IAuPzozOotR7kN0+Yfgprbg1
- oE4eZLegc7Zw8Pe+T3WlAps/Mg==
-X-Google-Smtp-Source: AGHT+IG4h68aclCHGZHWLvYe8BsVt0cEOYP6Qscq1LUGhKKEQws2mZDhnYrdk49tkNDR/t6+T0MjYQ==
-X-Received: by 2002:a05:6000:881:b0:317:ed01:dc48 with SMTP id
- cs1-20020a056000088100b00317ed01dc48mr4458248wrb.9.1694071007001; 
- Thu, 07 Sep 2023 00:16:47 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-222-226.abo.bbox.fr.
- [176.131.222.226]) by smtp.gmail.com with ESMTPSA id
- c7-20020a5d4147000000b0031de43fe9bfsm22683297wrq.0.2023.09.07.00.16.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 00:16:46 -0700 (PDT)
-Message-ID: <efc85591-fd5e-c6e7-ab3d-220d5ca57aa5@linaro.org>
-Date: Thu, 7 Sep 2023 09:16:43 +0200
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qe9cW-0007if-3n
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:40:08 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qe9cS-0002be-Az
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:40:07 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8AxDOtJfvlkCS8hAA--.60864S3;
+ Thu, 07 Sep 2023 15:39:53 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dx5sxGfvlkwEBwAA--.52174S3; 
+ Thu, 07 Sep 2023 15:39:50 +0800 (CST)
+Subject: Re: [PATCH 1/2] tcg: Add gvec compare with immediate and scalar
+ operand
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230831030904.1194667-1-richard.henderson@linaro.org>
+ <20230831030904.1194667-2-richard.henderson@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <274b7ba4-1089-3941-5b9a-fb06b2eb51cf@loongson.cn>
+Date: Thu, 7 Sep 2023 15:39:50 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] hw/riscv: split RAM into low and high memory
+In-Reply-To: <20230831030904.1194667-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Language: en-US
-To: "Wu, Fei" <fei2.wu@intel.com>, Andrew Jones <ajones@ventanamicro.com>
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Andrei Warkentin <andrei.warkentin@intel.com>, qemu-arm
- <qemu-arm@nongnu.org>, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>
-References: <20230731015317.1026996-1-fei2.wu@intel.com>
- <20230803-3855259bbabb934c247c5607@orel>
- <d654810c-4f4f-7491-7711-c6076f42dcae@intel.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <d654810c-4f4f-7491-7711-c6076f42dcae@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Dx5sxGfvlkwEBwAA--.52174S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3JF1xZFWfGF1UCF1xCFyxXrc_yoWDJryfp3
+ W7KrWay34DJF4IqryfW3W5Jws8urs0yw45urs5Krs0yrW5Wr1vyF1vk3y09rs7GayIv345
+ ZanI9F13C3WUK3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.473, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,67 +81,274 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Widening Cc to ARM/VFIO.
+Hi, Richard
+ÔÚ 2023/8/31 ÉÏÎç11:09, Richard Henderson Ð´µÀ:
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   accel/tcg/tcg-runtime.h          |  25 ++++++
+>   include/tcg/tcg-op-gvec-common.h |   6 ++
+>   accel/tcg/tcg-runtime-gvec.c     |  26 ++++++
+>   tcg/tcg-op-gvec.c                | 150 +++++++++++++++++++++++++++++++
+>   4 files changed, 207 insertions(+)
+> 
 
-On 4/8/23 11:15, Wu, Fei wrote:
-> On 8/3/2023 11:07 PM, Andrew Jones wrote:
->> On Mon, Jul 31, 2023 at 09:53:17AM +0800, Fei Wu wrote:
->>> riscv virt platform's memory started at 0x80000000 and
->>> straddled the 4GiB boundary. Curiously enough, this choice
->>> of a memory layout will prevent from launching a VM with
->>> a bit more than 2000MiB and PCIe pass-thru on an x86 host, due
->>> to identity mapping requirements for the MSI doorbell on x86,
->>> and these (APIC/IOAPIC) live right below 4GiB.
->>>
->>> So just split the RAM range into two portions:
->>> - 1 GiB range from 0x80000000 to 0xc0000000.
->>> - The remainder at 0x100000000
->>>
->>> ...leaving a hole between the ranges.
->>
->> Can you elaborate on the use case? Maybe provide details of the host
->> system and the QEMU command line? I'm wondering why we didn't have
->> any problems with the arm virt machine type. Has nobody tried this
->> use case with that? Is the use case something valid for riscv, but
->> not arm?
->>
-> Firstly we have to enable pcie passthru on host, find the device groups,
-> e.g. the vga card, and add their pci ids to host kernel cmdline:
-> 	vfio-pci.ids=10de:0f02,10de:0e08
-> 
-> then start vm through qemu as follows:
-> $Q -machine virt -m 4G -smp 4 -nographic \
->    -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
->    -kernel ./vmlinuz -initrd initrd.img -append "root=/dev/vda1 rw" \
->    -drive
-> file=ubuntu-22.04.1-preinstalled-server-riscv64+unmatched.img,if=virtio,format=raw
-> \
->    -device vfio-pci,host=01:00.0 -device vfio-pci,host=01:00.1 \
->    -netdev user,id=vnet,hostfwd=:127.0.0.1:2223-:22 -device
-> virtio-net-pci,netdev=vnet
-> 
-> Without this patch, qemu exits immediately instead of boots up.
-> 
-> Just tried pcie passthru on arm, it cannot handle 4G memory either.
-> $Q -m 4G -smp 4 -cpu max -M virt -nographic \
->    -pflash /usr/share/AAVMF/AAVMF_CODE.fd -pflash flash1.img \
->    -drive if=none,file=ubuntu-22.04-server-cloudimg-arm64.img,id=hd0 \
->    -device virtio-blk-device,drive=hd0 \
->    -device vfio-pci,host=01:00.0 -device vfio-pci,host=01:00.1
-> 
-> qemu-system-aarch64: -device vfio-pci,host=01:00.0: VFIO_MAP_DMA failed:
-> Invalid argument
-> qemu-system-aarch64: -device vfio-pci,host=01:00.0: vfio 0000:01:00.0:
-> failed to setup container for group 11: memory listener initialization
-> failed: Region mach-virt.ram: vfio_dma_map(0x55de3c2a97f0, 0x40000000,
-> 0x100000000, 0x7f8fcbe00000) = -22 (Invalid argument)
-> 
-> Thanks,
-> Fei.
-> 
->> Thanks,
->> drew
-> 
+I use tcg_gen_gvec_cmps for LoongArch vector cmp instructions.  but I 
+got an Aborted error from temp_load().  I'll fixes this later.
+
+And I'll send LASX V5 series. this series will not use tcg_gen_gvec_cmps.
+
+Thanks.
+Song Gao
+
+> diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
+> index 186899a2c7..c23b5e66c4 100644
+> --- a/accel/tcg/tcg-runtime.h
+> +++ b/accel/tcg/tcg-runtime.h
+> @@ -297,4 +297,29 @@ DEF_HELPER_FLAGS_4(gvec_leu16, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+>   DEF_HELPER_FLAGS_4(gvec_leu32, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+>   DEF_HELPER_FLAGS_4(gvec_leu64, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+>   
+> +DEF_HELPER_FLAGS_4(gvec_eqs8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_eqs16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_eqs32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_eqs64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +
+> +DEF_HELPER_FLAGS_4(gvec_lts8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_lts16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_lts32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_lts64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +
+> +DEF_HELPER_FLAGS_4(gvec_les8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_les16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_les32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_les64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +
+> +DEF_HELPER_FLAGS_4(gvec_ltus8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_ltus16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_ltus32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_ltus64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +
+> +DEF_HELPER_FLAGS_4(gvec_leus8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_leus16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_leus32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(gvec_leus64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +
+>   DEF_HELPER_FLAGS_5(gvec_bitsel, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
+> diff --git a/include/tcg/tcg-op-gvec-common.h b/include/tcg/tcg-op-gvec-common.h
+> index e2683d487f..4db8a58c14 100644
+> --- a/include/tcg/tcg-op-gvec-common.h
+> +++ b/include/tcg/tcg-op-gvec-common.h
+> @@ -374,6 +374,12 @@ void tcg_gen_gvec_rotrv(unsigned vece, uint32_t dofs, uint32_t aofs,
+>   void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
+>                         uint32_t aofs, uint32_t bofs,
+>                         uint32_t oprsz, uint32_t maxsz);
+> +void tcg_gen_gvec_cmpi(TCGCond cond, unsigned vece, uint32_t dofs,
+> +                       uint32_t aofs, int64_t c,
+> +                       uint32_t oprsz, uint32_t maxsz);
+> +void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
+> +                       uint32_t aofs, TCGv_i64 c,
+> +                       uint32_t oprsz, uint32_t maxsz);
+>   
+>   /*
+>    * Perform vector bit select: d = (b & a) | (c & ~a).
+> diff --git a/accel/tcg/tcg-runtime-gvec.c b/accel/tcg/tcg-runtime-gvec.c
+> index 6c99f952ca..afca89baa1 100644
+> --- a/accel/tcg/tcg-runtime-gvec.c
+> +++ b/accel/tcg/tcg-runtime-gvec.c
+> @@ -1042,6 +1042,32 @@ DO_CMP2(64)
+>   #undef DO_CMP1
+>   #undef DO_CMP2
+>   
+> +#define DO_CMP1(NAME, TYPE, OP)                                            \
+> +void HELPER(NAME)(void *d, void *a, uint64_t b64, uint32_t desc)           \
+> +{                                                                          \
+> +    intptr_t oprsz = simd_oprsz(desc);                                     \
+> +    TYPE inv = simd_data(desc), b = b64;                                   \
+> +    for (intptr_t i = 0; i < oprsz; i += sizeof(TYPE)) {                   \
+> +        *(TYPE *)(d + i) = -((*(TYPE *)(a + i) OP b) ^ inv);               \
+> +    }                                                                      \
+> +    clear_high(d, oprsz, desc);                                            \
+> +}
+> +
+> +#define DO_CMP2(SZ) \
+> +    DO_CMP1(gvec_eqs##SZ, uint##SZ##_t, ==)    \
+> +    DO_CMP1(gvec_lts##SZ, int##SZ##_t, <)      \
+> +    DO_CMP1(gvec_les##SZ, int##SZ##_t, <=)     \
+> +    DO_CMP1(gvec_ltus##SZ, uint##SZ##_t, <)    \
+> +    DO_CMP1(gvec_leus##SZ, uint##SZ##_t, <=)
+> +
+> +DO_CMP2(8)
+> +DO_CMP2(16)
+> +DO_CMP2(32)
+> +DO_CMP2(64)
+> +
+> +#undef DO_CMP1
+> +#undef DO_CMP2
+> +
+>   void HELPER(gvec_ssadd8)(void *d, void *a, void *b, uint32_t desc)
+>   {
+>       intptr_t oprsz = simd_oprsz(desc);
+> diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
+> index f5cfd9bf99..f7ca9e1051 100644
+> --- a/tcg/tcg-op-gvec.c
+> +++ b/tcg/tcg-op-gvec.c
+> @@ -3819,6 +3819,156 @@ void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
+>       }
+>   }
+>   
+> +void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
+> +                       uint32_t aofs, TCGv_i64 c,
+> +                       uint32_t oprsz, uint32_t maxsz)
+> +{
+> +    static const TCGOpcode cmp_list[] = { INDEX_op_cmp_vec, 0 };
+> +    static gen_helper_gvec_2i * const eq_fn[4] = {
+> +        gen_helper_gvec_eqs8, gen_helper_gvec_eqs16,
+> +        gen_helper_gvec_eqs32, gen_helper_gvec_eqs64
+> +    };
+> +    static gen_helper_gvec_2i * const lt_fn[4] = {
+> +        gen_helper_gvec_lts8, gen_helper_gvec_lts16,
+> +        gen_helper_gvec_lts32, gen_helper_gvec_lts64
+> +    };
+> +    static gen_helper_gvec_2i * const le_fn[4] = {
+> +        gen_helper_gvec_les8, gen_helper_gvec_les16,
+> +        gen_helper_gvec_les32, gen_helper_gvec_les64
+> +    };
+> +    static gen_helper_gvec_2i * const ltu_fn[4] = {
+> +        gen_helper_gvec_ltus8, gen_helper_gvec_ltus16,
+> +        gen_helper_gvec_ltus32, gen_helper_gvec_ltus64
+> +    };
+> +    static gen_helper_gvec_2i * const leu_fn[4] = {
+> +        gen_helper_gvec_leus8, gen_helper_gvec_leus16,
+> +        gen_helper_gvec_leus32, gen_helper_gvec_leus64
+> +    };
+> +    static gen_helper_gvec_2i * const * const fns[16] = {
+> +        [TCG_COND_EQ] = eq_fn,
+> +        [TCG_COND_LT] = lt_fn,
+> +        [TCG_COND_LE] = le_fn,
+> +        [TCG_COND_LTU] = ltu_fn,
+> +        [TCG_COND_LEU] = leu_fn,
+> +    };
+> +
+> +    TCGType type;
+> +
+> +    check_size_align(oprsz, maxsz, dofs | aofs);
+> +    check_overlap_2(dofs, aofs, maxsz);
+> +
+> +    if (cond == TCG_COND_NEVER || cond == TCG_COND_ALWAYS) {
+> +        do_dup(MO_8, dofs, oprsz, maxsz,
+> +               NULL, NULL, -(cond == TCG_COND_ALWAYS));
+> +        return;
+> +    }
+> +
+> +    /*
+> +     * Implement inline with a vector type, if possible.
+> +     * Prefer integer when 64-bit host and 64-bit comparison.
+> +     */
+> +    type = choose_vector_type(cmp_list, vece, oprsz,
+> +                              TCG_TARGET_REG_BITS == 64 && vece == MO_64);
+> +    if (type != 0) {
+> +        const TCGOpcode *hold_list = tcg_swap_vecop_list(cmp_list);
+> +        TCGv_vec t_vec = tcg_temp_new_vec(type);
+> +        uint32_t some, i;
+> +
+> +        tcg_gen_dup_i64_vec(vece, t_vec, c);
+> +
+> +        switch (type) {
+> +        case TCG_TYPE_V256:
+> +            some = QEMU_ALIGN_DOWN(oprsz, 32);
+> +            for (i = 0; i < some; i += 32) {
+> +                TCGv_vec t0 = tcg_temp_new_vec(TCG_TYPE_V256);
+> +                TCGv_vec t1 = tcg_temp_new_vec(TCG_TYPE_V256);
+> +                tcg_gen_ld_vec(t0, cpu_env, aofs);
+> +                tcg_gen_cmp_vec(cond, vece, t0, t1, t_vec);
+> +                tcg_gen_st_vec(t0, cpu_env, dofs);
+> +                aofs += 32;
+> +                dofs += 32;
+> +            }
+> +            oprsz -= some;
+> +            maxsz -= some;
+> +            /* fallthru */
+> +
+> +        case TCG_TYPE_V128:
+> +            some = QEMU_ALIGN_DOWN(oprsz, 16);
+> +            for (i = 0; i < some; i += 16) {
+> +                TCGv_vec t0 = tcg_temp_new_vec(TCG_TYPE_V128);
+> +                TCGv_vec t1 = tcg_temp_new_vec(TCG_TYPE_V128);
+> +                tcg_gen_ld_vec(t0, cpu_env, aofs + i);
+> +                tcg_gen_cmp_vec(cond, vece, t0, t1, t_vec);
+> +                tcg_gen_st_vec(t0, cpu_env, dofs + i);
+> +            }
+> +            break;
+> +
+> +        case TCG_TYPE_V64:
+> +            some = QEMU_ALIGN_DOWN(oprsz, 8);
+> +            for (i = 0; i < some; i += 8) {
+> +                TCGv_vec t0 = tcg_temp_new_vec(TCG_TYPE_V64);
+> +                TCGv_vec t1 = tcg_temp_new_vec(TCG_TYPE_V64);
+> +                tcg_gen_ld_vec(t0, cpu_env, aofs + i);
+> +                tcg_gen_cmp_vec(cond, vece, t0, t1, t_vec);
+> +                tcg_gen_st_vec(t0, cpu_env, dofs + i);
+> +            }
+> +            break;
+> +
+> +        default:
+> +            g_assert_not_reached();
+> +        }
+> +        tcg_temp_free_vec(t_vec);
+> +        tcg_swap_vecop_list(hold_list);
+> +    } else if (vece == MO_64 && check_size_impl(oprsz, 8)) {
+> +        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
+> +        uint32_t i;
+> +
+> +        for (i = 0; i < oprsz; i += 8) {
+> +            tcg_gen_ld_i64(t0, cpu_env, aofs + i);
+> +            tcg_gen_negsetcond_i64(cond, t0, t0, c);
+> +            tcg_gen_st_i64(t0, cpu_env, dofs + i);
+> +        }
+> +        tcg_temp_free_i64(t0);
+> +    } else if (vece == MO_32 && check_size_impl(oprsz, 4)) {
+> +        TCGv_i32 t0 = tcg_temp_ebb_new_i32();
+> +        TCGv_i32 t1 = tcg_temp_ebb_new_i32();
+> +        uint32_t i;
+> +
+> +        tcg_gen_extrl_i64_i32(t1, c);
+> +        for (i = 0; i < oprsz; i += 8) {
+> +            tcg_gen_ld_i32(t0, cpu_env, aofs + i);
+> +            tcg_gen_negsetcond_i32(cond, t0, t0, t1);
+> +            tcg_gen_st_i32(t0, cpu_env, dofs + i);
+> +        }
+> +        tcg_temp_free_i32(t0);
+> +        tcg_temp_free_i32(t1);
+> +    } else {
+> +        gen_helper_gvec_2i * const *fn = fns[cond];
+> +        bool inv = false;
+> +
+> +        if (fn == NULL) {
+> +            cond = tcg_invert_cond(cond);
+> +            fn = fns[cond];
+> +            assert(fn != NULL);
+> +            inv = true;
+> +        }
+> +        tcg_gen_gvec_2i_ool(dofs, aofs, c, oprsz, maxsz, inv, fn[vece]);
+> +        return;
+> +    }
+> +
+> +    if (oprsz < maxsz) {
+> +        expand_clr(dofs + oprsz, maxsz - oprsz);
+> +    }
+> +}
+> +
+> +void tcg_gen_gvec_cmpi(TCGCond cond, unsigned vece, uint32_t dofs,
+> +                       uint32_t aofs, int64_t c,
+> +                       uint32_t oprsz, uint32_t maxsz)
+> +{
+> +    TCGv_i64 tmp = tcg_constant_i64(c);
+> +    tcg_gen_gvec_cmps(cond, vece, dofs, aofs, tmp, oprsz, maxsz);
+> +}
+> +
+>   static void tcg_gen_bitsel_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b, TCGv_i64 c)
+>   {
+>       TCGv_i64 t = tcg_temp_ebb_new_i64();
 > 
 
 
