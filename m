@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3297975CE
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 17:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A517797628
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 18:02:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeHNp-0002cz-MK; Thu, 07 Sep 2023 11:57:29 -0400
+	id 1qeHQm-00051s-OP; Thu, 07 Sep 2023 12:00:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
- id 1qeHNn-0002cY-GZ
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:57:27 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anup@brainfault.org>)
- id 1qeHNj-0007VS-GC
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:57:27 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-99bdcade7fbso133351866b.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 08:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1694102241; x=1694707041;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LwqJZOjA2zwYyn/9QZIn7b06gJ8iGI9lKt51LKFWVDA=;
- b=yFeQZqS9JWKzUkuG7SMGKp7wQXJw21Qe9uesJ8IKx95aPP3ZGv0jfPh1fpZbU2rkR2
- rgbqfDC4vqofrs9/RW1K5U2wVjxB09pHpyEDawdMzmGmNHsX57/R40HvTyZO0PgyywwH
- NqfzgzLoannkD5VX9NXZzY3DiWGU4/afbRn3nMqrRQ6rQXB7BMn3esCHBvtr896WEjiX
- A/vsojJmf9kbDCjR+Gocq6HbBAtu9aGsTfAl2/Uu4PspPI6bT6BAnSYcqflrs/CBjTgf
- 0c0on5QEU0e5lfa8hQpgtfWu0fSe+LUPCglQO52FveY4dxFE68Ymix3YwStXk7iJU2hk
- 1vEg==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qeHQh-00050r-9Y
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 12:00:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qeHQc-0001IQ-Iz
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 12:00:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694102416;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=26VjuMjZkybRnfUIoJep5JkEfQM3tfSs7wsInkvu6aw=;
+ b=JzZ0RMmEltH1GWDI3I6nlFBvL67wghfUUra2fjiZXLyvPosc+K7eFVve4RREGF9pD3u5TA
+ Ai/P6TRQ9T+BBuB/vAeBc/J6p17GzSAt2LKyz7QecfHpiwFMMDI8U3lRwxHgI2PcJ8Pm6F
+ B4jrZaoKxgZXImlYA8wrDf5X2ZNbbVs=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-215-1KthMohENhK60hUewvNOlA-1; Thu, 07 Sep 2023 12:00:13 -0400
+X-MC-Unique: 1KthMohENhK60hUewvNOlA-1
+Received: by mail-yb1-f200.google.com with SMTP id
+ 3f1490d57ef6-c8f360a07a2so1174110276.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 09:00:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694102241; x=1694707041;
+ d=1e100.net; s=20221208; t=1694102413; x=1694707213;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LwqJZOjA2zwYyn/9QZIn7b06gJ8iGI9lKt51LKFWVDA=;
- b=eDZcXgkHETayMHHXVmCYB/L9ouRGCRX+2pi+271emhaDkLFuHeeclnoOD2/T9DDAgY
- 7PzRbG3sxlrKiv//tub4YmfGhjyMi3EFV2cKINDv4a7AeRKP932bTYiykluS+CAw0Njo
- 8okqNKjvnw+KBRyb9jAwWvNeRwinXelDZhEnSLy09mlyt83p4pZnKgNaIJ8VIWA8/e+a
- kwreVkOkSWPCmhathGiTieo02GDqQYM3WnOrFlEkuKBJ0DYoBcNqf7T8XscKzS22RMbZ
- yj2lBhHU5Eg3n+FleBj9Y6AulLWo1B/7s0LKyuUniFXuliKIL8hhr7jS6jpBnD7IG/lm
- VSwg==
-X-Gm-Message-State: AOJu0Yx3gqAe82po/BgfNNbOwMG5rZwumPSW7Jf+wGcDxyoflpmoKiyE
- 4aLQFmxEUjm8OaVmT9RJNKcUEhKiVQHWQYPebb6Rfg==
-X-Google-Smtp-Source: AGHT+IEy6EVe0vrTe1YrNG0sq7nRZQ28L915a9/I3Ym8aQXYsvsU5nlz3+8JmQlVdBxtU3qypugs2edxsheUNMqzN8M=
-X-Received: by 2002:a17:906:1db2:b0:9a6:4fe0:4552 with SMTP id
- u18-20020a1709061db200b009a64fe04552mr5214910ejh.46.1694102241143; Thu, 07
- Sep 2023 08:57:21 -0700 (PDT)
+ bh=26VjuMjZkybRnfUIoJep5JkEfQM3tfSs7wsInkvu6aw=;
+ b=Aj4f0FoObrr/c7pj6xZrDU5rJpqt82na00B5ICxMVnj1zf9E/0LuRaA95kk3iY3pS9
+ HsPdkcNE5+VU9WDY78gB9GsWMXqhogl7OaE+FNjo4Djkil9uriMtqGEn9HYQfSlovCR2
+ TvarM0oGOcJzWZ1b5O3+0iQstRxlRMg9c2EPjicStJzEMdAnJW8f2J6lnF2ue/fxIZ90
+ ZTFcZaRk0tlGDiBjAE2jaSuKCpY4CAk6GkZK62DfTipKcEFVpiO9gzYI0OLbENV5arr9
+ a8tCjzIYDY5Yh3o+YthOhBSDAjH3l4+xc6KNV8KRKyU++ibYeOdTksS1aSyaSKqt0oqW
+ DY6w==
+X-Gm-Message-State: AOJu0Yw3OE/u7jHtok3CS/XzyL7gZgnbeOMM99QpWbH4vv/VfmAh9F1v
+ bezcwYkubziFINQsK7gsTfecNQ+KbY6IBtTMHB4ICZM85P9Ym05mfz/xD4mt3a8bMZGZgZXk5zp
+ jWSdd+8iMGbkYwxkSV5G1aHrLUqv2M88=
+X-Received: by 2002:a25:b191:0:b0:d7b:3298:8e12 with SMTP id
+ h17-20020a25b191000000b00d7b32988e12mr18786353ybj.7.1694102412866; 
+ Thu, 07 Sep 2023 09:00:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGYJ7V/oe4WwzQgC3hlZwdNDKLuxzgQJpGn8jIdPGC8XnjycZRjCL4e0EvPYeyHjMkJEIB0wz8Dy4TAqmRyxJU=
+X-Received: by 2002:a25:b191:0:b0:d7b:3298:8e12 with SMTP id
+ h17-20020a25b191000000b00d7b32988e12mr18786326ybj.7.1694102412516; Thu, 07
+ Sep 2023 09:00:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230731015317.1026996-1-fei2.wu@intel.com>
- <ea7d2188-97ad-9563-1b92-cf998f4b1747@ventanamicro.com>
- <49bbec5d-d0da-55e2-875b-3a8874bc3322@intel.com>
- <CAKmqyKMtAzt5saCUMd4vXYfgAQibpzQJAhtTSuSb+yeKhcYpfw@mail.gmail.com>
-In-Reply-To: <CAKmqyKMtAzt5saCUMd4vXYfgAQibpzQJAhtTSuSb+yeKhcYpfw@mail.gmail.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Thu, 7 Sep 2023 21:27:10 +0530
-Message-ID: <CAAhSdy3nvdG04Fuv49fxKgwpDH4r9CZ-Xgg19s8FeVw_HC-y_g@mail.gmail.com>
-Subject: Re: [PATCH] hw/riscv: split RAM into low and high memory
-To: Alistair Francis <alistair23@gmail.com>
-Cc: "Wu, Fei" <fei2.wu@intel.com>, Anup Patel <apatel@ventanamicro.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, palmer@dabbelt.com,
- alistair.francis@wdc.com, 
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Andrei Warkentin <andrei.warkentin@intel.com>
+References: <20230830134055.106812-1-lersek@redhat.com>
+ <20230830134055.106812-8-lersek@redhat.com>
+In-Reply-To: <20230830134055.106812-8-lersek@redhat.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 7 Sep 2023 17:59:35 +0200
+Message-ID: <CAJaqyWe9X_qneUA-ToiSVNEZ23+cjbqVrheOhOQ8mCWF8dfrLA@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ German Maglione <gmaglione@redhat.com>, Liu Jiang <gerry@linux.alibaba.com>, 
+ Sergio Lopez Pascual <slp@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::62d;
- envelope-from=anup@brainfault.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,205 +97,234 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 7, 2023 at 8:48=E2=80=AFAM Alistair Francis <alistair23@gmail.c=
-om> wrote:
+On Wed, Aug 30, 2023 at 3:41=E2=80=AFPM Laszlo Ersek <lersek@redhat.com> wr=
+ote:
 >
-> On Thu, Aug 3, 2023 at 10:47=E2=80=AFAM Wu, Fei <fei2.wu@intel.com> wrote=
-:
+> (1) The virtio-1.2 specification
+> <http://docs.oasis-open.org/virtio/virtio/v1.2/virtio-v1.2.html> writes:
+>
+> > 3     General Initialization And Device Operation
+> > 3.1   Device Initialization
+> > 3.1.1 Driver Requirements: Device Initialization
 > >
-> > On 8/1/2023 6:46 AM, Daniel Henrique Barboza wrote:
-> > >
-> > >
-> > > On 7/30/23 22:53, Fei Wu wrote:
-> > >> riscv virt platform's memory started at 0x80000000 and
-> > >> straddled the 4GiB boundary. Curiously enough, this choice
-> > >> of a memory layout will prevent from launching a VM with
-> > >> a bit more than 2000MiB and PCIe pass-thru on an x86 host, due
-> > >> to identity mapping requirements for the MSI doorbell on x86,
-> > >> and these (APIC/IOAPIC) live right below 4GiB.
-> > >>
-> > >> So just split the RAM range into two portions:
-> > >> - 1 GiB range from 0x80000000 to 0xc0000000.
-> > >> - The remainder at 0x100000000
-> > >>
-> > >> ...leaving a hole between the ranges.
-> > >
-> > > I am afraid this breaks some existing distro setups, like Ubuntu. Aft=
-er
-> > > this patch
-> > > this emulation stopped working:
-> > >
-> > > ~/work/qemu/build/qemu-system-riscv64 \
-> > >     -machine virt -nographic -m 8G -smp 8 \
-> > >     -kernel ./uboot-ubuntu/usr/lib/u-boot/qemu-riscv64_smode/uboot.el=
-f \
-> > >     -drive file=3Dsnapshot.img,format=3Dqcow2,if=3Dvirtio \
-> > >     -netdev bridge,id=3Dbridge1,br=3Dvirbr0 -device
-> > > virtio-net-pci,netdev=3Dbridge1
-> > >
-> > >
-> > > This is basically a guest created via the official Canonical tutorial=
-:
-> > >
-> > > https://wiki.ubuntu.com/RISC-V/QEMU
-> > >
-> > > The error being thrown:
-> > >
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > > Boot HART ID              : 4
-> > > Boot HART Domain          : root
-> > > Boot HART Priv Version    : v1.12
-> > > Boot HART Base ISA        : rv64imafdch
-> > > Boot HART ISA Extensions  : time,sstc
-> > > Boot HART PMP Count       : 16
-> > > Boot HART PMP Granularity : 4
-> > > Boot HART PMP Address Bits: 54
-> > > Boot HART MHPM Count      : 16
-> > > Boot HART MIDELEG         : 0x0000000000001666
-> > > Boot HART MEDELEG         : 0x0000000000f0b509
-> > >
-> > >
-> > > U-Boot 2022.07+dfsg-1ubuntu4.2 (Nov 24 2022 - 18:47:41 +0000)
-> > >
-> > > CPU:
-> > > rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zca_zc=
-d_zba_zbb_zbc_zbs_sstc_svadu
-> > > Model: riscv-virtio,qemu
-> > > DRAM:  Unhandled exception: Store/AMO access fault
-> > > EPC: 00000000802018b8 RA: 00000000802126a0 TVAL: 00000000ff733f90
-> > >
-> > > Code: b823 06b2 bc23 06b2 b023 08b2 b423 08b2 (b823 08b2)
-> > >
-> > >
-> > > resetting ...
-> > > System reset not supported on this platform
-> > > ### ERROR ### Please RESET the board ###
-> > > QEMU 8.0.90 monitor - type 'help' for more infor
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > >
-> > > Based on the change made I can make an educated guess on what is goin=
-g
-> > > wrong.
-> > > We have another board with a similar memory topology you're making he=
-re,
-> > > the
-> > > Microchip Polarfire (microchip_pfsoc.c). We were having some problems
-> > > with this
-> > > board while trying to consolidate the boot process between all boards=
- in
-> > > hw/riscv/boot.c because of its non-continuous RAM bank. The full stor=
-y
-> > > can be
-> > > read in the commit message of 4b402886ac89 ("hw/riscv: change
-> > > riscv_compute_fdt_addr()
-> > > semantics") but the short version can be seen in riscv_compute_fdt_ad=
-dr()
-> > > from boot.c:
-> > >
-> > >  - if ram_start is less than 3072MiB, the FDT will be  put at the low=
-est
-> > > value
-> > > between 3072 MiB and the end of that RAM bank;
-> > >
-> > > - if ram_start is higher than 3072 MiB the FDT will be put at the end=
- of
-> > > the
-> > > RAM bank.
-> > >
-> > > So, after this patch, since riscv_compute_fdt_addr() is being used wi=
-th
-> > > the now
-> > > lower RAM bank, the fdt is being put in LOW_MEM - fdt_size for any se=
-tup
-> > > that has
-> > > more than 1Gb RAM, and this breaks assumptions made by uboot and Ubun=
-tu
-> > > and possibly
-> > > others that are trying to retrieve the FDT from the gap that you crea=
-ted
-> > > between
-> > > low and hi mem in this patch.
-> > >
-> > > In fact, this same Ubuntu guest I mentioned above will boot if I put
-> > > only 1 Gb of RAM
-> > > (-m 1Gb). If I try with -m 1.1Gb I reproduce this error. This can be =
-a
-> > > validation of
-> > > the guess I'm making here: Ubuntu is trying to fetch stuff (probably =
-the
-> > > fdt) from
-> > > the gap between the memory areas.
-> > >
-> > > This change on top of this patch doesn't work either:
-> > >
-> > > $ git diff
-> > > diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> > > index 8fbdc7220c..dfff48d849 100644
-> > > --- a/hw/riscv/virt.c
-> > > +++ b/hw/riscv/virt.c
-> > > @@ -1335,9 +1335,16 @@ static void virt_machine_done(Notifier *notifi=
-er,
-> > > void *data)
-> > >                                           kernel_start_addr, true, NU=
-LL);
-> > >      }
-> > >
-> > > -    fdt_load_addr =3D riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
-> > > +    if (machine->ram_size < memmap[VIRT_DRAM].size) {
-> > > +        fdt_load_addr =3D riscv_compute_fdt_addr(memmap[VIRT_DRAM].b=
-ase,
-> > >                                             memmap[VIRT_DRAM].size,
-> > >                                             machine);
-> > > +    } else {
-> > > +        fdt_load_addr =3D
-> > > riscv_compute_fdt_addr(memmap[VIRT_DRAM_HIGH].base,
-> > > +                                           memmap[VIRT_DRAM_HIGH].si=
-ze,
-> > > +                                           machine);
-> > > +    }
-> > > +
-> > >
-> > > This would put the fdt at the end of the HI RAM for guests with more
-> > > than 1Gb of RAM.
-> > > This change in fact makes the situation even worse, breaking setups t=
-hat
-> > > were working
-> > > before with this patch.
-> > >
-> > > There's a chance that reducing the gap between the RAM banks can make
-> > > Ubuntu work
-> > > reliably again but now I'm a little cold feet with this change.
-> > >
-> > >
-> > > I think we'll need some kernel/Opensbi folks to weight in here to see=
- if
-> > > there's a
-> > > failsafe memory setup that won't break distros out there and allow yo=
-ur
-> > > passthrough
-> > > to work.
-> > >
-> > Hi Daniel,
+> > [...]
 > >
-> > Do you know who we should talk to? I think it's not uncommon to have
-> > seperated multi-range memory, the stack should support this configurati=
-on.
+> > 7. Perform device-specific setup, including discovery of virtqueues for
+> >    the device, optional per-bus setup, reading and possibly writing the
+> >    device=E2=80=99s virtio configuration space, and population of virtq=
+ueues.
+> >
+> > 8. Set the DRIVER_OK status bit. At this point the device is =E2=80=9Cl=
+ive=E2=80=9D.
 >
-> @Palmer Dabbelt @Anup Patel any ideas?
+> and
+>
+> > 4         Virtio Transport Options
+> > 4.1       Virtio Over PCI Bus
+> > 4.1.4     Virtio Structure PCI Capabilities
+> > 4.1.4.3   Common configuration structure layout
+> > 4.1.4.3.2 Driver Requirements: Common configuration structure layout
+> >
+> > [...]
+> >
+> > The driver MUST configure the other virtqueue fields before enabling th=
+e
+> > virtqueue with queue_enable.
+> >
+> > [...]
+>
+> (The same statements are present in virtio-1.0 identically, at
+> <http://docs.oasis-open.org/virtio/virtio/v1.0/virtio-v1.0.html>.)
+>
+> These together mean that the following sub-sequence of steps is valid for
+> a virtio-1.0 guest driver:
+>
+> (1.1) set "queue_enable" for the needed queues as the final part of devic=
+e
+> initialization step (7),
+>
+> (1.2) set DRIVER_OK in step (8),
+>
+> (1.3) immediately start sending virtio requests to the device.
+>
+> (2) When vhost-user is enabled, and the VHOST_USER_F_PROTOCOL_FEATURES
+> special virtio feature is negotiated, then virtio rings start in disabled
+> state, according to
+> <https://qemu-project.gitlab.io/qemu/interop/vhost-user.html#ring-states>=
+.
+> In this case, explicit VHOST_USER_SET_VRING_ENABLE messages are needed fo=
+r
+> enabling vrings.
+>
+> Therefore setting "queue_enable" from the guest (1.1) is a *control plane=
+*
+> operation, which travels from the guest through QEMU to the vhost-user
+> backend, using a unix domain socket.
 >
 
-Sparse memory and multiple memory banks are a reality and seen
-on many platforms.
+The code looks good to me, but this part of the message is not precise
+if I understood it correctly.
 
-Based on my experience:
-* Linux RISC-V already supports SPARSEMEM and multiple
-  RAM banks.
-* OpenSBI also handles multiple RAM banks nicely.
-* U-Boot requires some kconfig option setting otherwise
-   even U-Boot handles it fine.
+Guest PCI "queue_enable" writes remain in the qemu virtio device model
+until the guest writes DRIVER_OK to the status. I'm referring to
+hw/virtio/virtio-pci.c:virtio_pci_common_write, case
+VIRTIO_PCI_COMMON_Q_ENABLE. From there, virtio_queue_enable just saves
+the info in VirtIOPCIProxy.
 
-Regards,
-Anup
+After the needed queues are enabled, the guest writes DRIVER_OK status
+bit. Then, the vhost backend is started and qemu sends the
+VHOST_USER_SET_VRING_ENABLE through the unix socket. And that is the
+source of the message that is racing with the dataplane.
+
+I didn't confirm it with virtiofs through tracing / debugging, so I
+may be missing something.
+
+Even with the small nit, the code fixes the problem.
+
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+
+> Whereas sending a virtio request (1.3) is a *data plane* operation, which
+> evades QEMU -- it travels from guest to the vhost-user backend via
+> eventfd.
+>
+> This means that steps (1.1) and (1.3) travel through different channels,
+> and their relative order can be reversed, as perceived by the vhost-user
+> backend.
+>
+> That's exactly what happens when OVMF's virtiofs driver (VirtioFsDxe) run=
+s
+> against the Rust-language virtiofsd version 1.7.2. (Which uses version
+> 0.10.1 of the vhost-user-backend crate, and version 0.8.1 of the vhost
+> crate.)
+>
+> Namely, when VirtioFsDxe binds a virtiofs device, it goes through the
+> device initialization steps (i.e., control plane operations), and
+> immediately sends a FUSE_INIT request too (i.e., performs a data plane
+> operation). In the Rust-language virtiofsd, this creates a race between
+> two components that run *concurrently*, i.e., in different threads or
+> processes:
+>
+> - Control plane, handling vhost-user protocol messages:
+>
+>   The "VhostUserSlaveReqHandlerMut::set_vring_enable" method
+>   [crates/vhost-user-backend/src/handler.rs] handles
+>   VHOST_USER_SET_VRING_ENABLE messages, and updates each vring's "enabled=
+"
+>   flag according to the message processed.
+>
+> - Data plane, handling virtio / FUSE requests:
+>
+>   The "VringEpollHandler::handle_event" method
+>   [crates/vhost-user-backend/src/event_loop.rs] handles the incoming
+>   virtio / FUSE request, consuming the virtio kick at the same time. If
+>   the vring's "enabled" flag is set, the virtio / FUSE request is
+>   processed genuinely. If the vring's "enabled" flag is clear, then the
+>   virtio / FUSE request is discarded.
+>
+> Note that OVMF enables the queue *first*, and sends FUSE_INIT *second*.
+> However, if the data plane processor in virtiofsd wins the race, then it
+> sees the FUSE_INIT *before* the control plane processor took notice of
+> VHOST_USER_SET_VRING_ENABLE and green-lit the queue for the data plane
+> processor. Therefore the latter drops FUSE_INIT on the floor, and goes
+> back to waiting for further virtio / FUSE requests with epoll_wait.
+> Meanwhile OVMF is stuck waiting for the FUSET_INIT response -- a deadlock=
+.
+>
+> The deadlock is not deterministic. OVMF hangs infrequently during first
+> boot. However, OVMF hangs almost certainly during reboots from the UEFI
+> shell.
+>
+> The race can be "reliably masked" by inserting a very small delay -- a
+> single debug message -- at the top of "VringEpollHandler::handle_event",
+> i.e., just before the data plane processor checks the "enabled" field of
+> the vring. That delay suffices for the control plane processor to act upo=
+n
+> VHOST_USER_SET_VRING_ENABLE.
+>
+> We can deterministically prevent the race in QEMU, by blocking OVMF insid=
+e
+> step (1.1) -- i.e., in the write to the "queue_enable" register -- until
+> VHOST_USER_SET_VRING_ENABLE actually *completes*. That way OVMF's VCPU
+> cannot advance to the FUSE_INIT submission before virtiofsd's control
+> plane processor takes notice of the queue being enabled.
+>
+> Wait for VHOST_USER_SET_VRING_ENABLE completion by:
+>
+> - setting the NEED_REPLY flag on VHOST_USER_SET_VRING_ENABLE, and waiting
+>   for the reply, if the VHOST_USER_PROTOCOL_F_REPLY_ACK vhost-user featur=
+e
+>   has been negotiated, or
+>
+> - performing a separate VHOST_USER_GET_FEATURES *exchange*, which require=
+s
+>   a backend response regardless of VHOST_USER_PROTOCOL_F_REPLY_ACK.
+>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
+> Cc: Eugenio Perez Martin <eperezma@redhat.com>
+> Cc: German Maglione <gmaglione@redhat.com>
+> Cc: Liu Jiang <gerry@linux.alibaba.com>
+> Cc: Sergio Lopez Pascual <slp@redhat.com>
+> Cc: Stefano Garzarella <sgarzare@redhat.com>
+> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>
+> Notes:
+>     v2:
+>
+>     - pick up R-b from Stefano
+>
+>     - update virtio spec reference from 1.0 to 1.2 (also keep the 1.0 ref=
+)
+>       in the commit message; re-check the quotes / section headers [Stefa=
+no]
+>
+>     - summarize commit message in code comment [Stefano]
+>
+>  hw/virtio/vhost-user.c | 16 +++++++++++++++-
+>  1 file changed, 15 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index 18e15a9bb359..41842eb023b5 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -1235,7 +1235,21 @@ static int vhost_user_set_vring_enable(struct vhos=
+t_dev *dev, int enable)
+>              .num   =3D enable,
+>          };
+>
+> -        ret =3D vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state=
+, false);
+> +        /*
+> +         * SET_VRING_ENABLE travels from guest to QEMU to vhost-user bac=
+kend /
+> +         * control plane thread via unix domain socket. Virtio requests =
+travel
+> +         * from guest to vhost-user backend / data plane thread via even=
+tfd.
+> +         * Even if the guest enables the ring first, and pushes its firs=
+t virtio
+> +         * request second (conforming to the virtio spec), the data plan=
+e thread
+> +         * in the backend may see the virtio request before the control =
+plane
+> +         * thread sees the queue enablement. This causes (in fact, requi=
+res) the
+> +         * data plane thread to discard the virtio request (it arrived o=
+n a
+> +         * seemingly disabled queue). To prevent this out-of-order deliv=
+ery,
+> +         * don't let the guest proceed to pushing the virtio request unt=
+il the
+> +         * backend control plane acknowledges enabling the queue -- IOW,=
+ pass
+> +         * wait_for_reply=3Dtrue below.
+> +         */
+> +        ret =3D vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state=
+, true);
+>          if (ret < 0) {
+>              /*
+>               * Restoring the previous state is likely infeasible, as wel=
+l as
+
 
