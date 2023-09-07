@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF61F7970F0
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5267970D4
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:37:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeASb-0008JH-G4; Thu, 07 Sep 2023 04:33:57 -0400
+	id 1qeARJ-0003yH-Qd; Thu, 07 Sep 2023 04:32:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeASZ-000870-CH
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:33:55 -0400
+ id 1qeARG-0003ov-VP
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:32:34 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeAST-0003hK-8Z
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:33:55 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qeARE-0002K2-A3
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:32:34 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Bxd+iTivlkCDkhAA--.30232S3;
- Thu, 07 Sep 2023 16:32:19 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxfeuUivlkCjkhAA--.63989S3;
+ Thu, 07 Sep 2023 16:32:20 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bxxsx+ivlk8FVwAA--.49124S24; 
+ AQAAf8Bxxsx+ivlk8FVwAA--.49124S25; 
  Thu, 07 Sep 2023 16:32:19 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn
-Subject: [PATCH RESEND v5 22/57] target/loongarch: Implement xvabsd
-Date: Thu,  7 Sep 2023 16:31:23 +0800
-Message-Id: <20230907083158.3975132-23-gaosong@loongson.cn>
+Subject: [PATCH RESEND v5 23/57] target/loongarch: Implement xvadda
+Date: Thu,  7 Sep 2023 16:31:24 +0800
+Message-Id: <20230907083158.3975132-24-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230907083158.3975132-1-gaosong@loongson.cn>
 References: <20230907083158.3975132-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bxxsx+ivlk8FVwAA--.49124S24
+X-CM-TRANSID: AQAAf8Bxxsx+ivlk8FVwAA--.49124S25
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,75 +64,107 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVABSD.{B/H/W/D}[U].
+- XVADDA.{B/H/W/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/insns.decode               | 9 +++++++++
- target/loongarch/disas.c                    | 9 +++++++++
- target/loongarch/insn_trans/trans_vec.c.inc | 8 ++++++++
- 3 files changed, 26 insertions(+)
+ target/loongarch/insns.decode               |  5 ++++
+ target/loongarch/disas.c                    |  5 ++++
+ target/loongarch/vec_helper.c               | 30 +++++++++++----------
+ target/loongarch/insn_trans/trans_vec.c.inc |  4 +++
+ 4 files changed, 30 insertions(+), 14 deletions(-)
 
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index a2cb39750d..c086ee9b22 100644
+index c086ee9b22..f3722e3aa7 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1423,6 +1423,15 @@ xvavgr_hu        0111 01000110 10101 ..... ..... .....    @vvv
- xvavgr_wu        0111 01000110 10110 ..... ..... .....    @vvv
- xvavgr_du        0111 01000110 10111 ..... ..... .....    @vvv
+@@ -1432,6 +1432,11 @@ xvabsd_hu        0111 01000110 00101 ..... ..... .....    @vvv
+ xvabsd_wu        0111 01000110 00110 ..... ..... .....    @vvv
+ xvabsd_du        0111 01000110 00111 ..... ..... .....    @vvv
  
-+xvabsd_b         0111 01000110 00000 ..... ..... .....    @vvv
-+xvabsd_h         0111 01000110 00001 ..... ..... .....    @vvv
-+xvabsd_w         0111 01000110 00010 ..... ..... .....    @vvv
-+xvabsd_d         0111 01000110 00011 ..... ..... .....    @vvv
-+xvabsd_bu        0111 01000110 00100 ..... ..... .....    @vvv
-+xvabsd_hu        0111 01000110 00101 ..... ..... .....    @vvv
-+xvabsd_wu        0111 01000110 00110 ..... ..... .....    @vvv
-+xvabsd_du        0111 01000110 00111 ..... ..... .....    @vvv
++xvadda_b         0111 01000101 11000 ..... ..... .....    @vvv
++xvadda_h         0111 01000101 11001 ..... ..... .....    @vvv
++xvadda_w         0111 01000101 11010 ..... ..... .....    @vvv
++xvadda_d         0111 01000101 11011 ..... ..... .....    @vvv
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index f9d9583fcc..bbe7ad8322 100644
+index bbe7ad8322..51fbd78279 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1842,6 +1842,15 @@ INSN_LASX(xvavgr_hu,         vvv)
- INSN_LASX(xvavgr_wu,         vvv)
- INSN_LASX(xvavgr_du,         vvv)
+@@ -1851,6 +1851,11 @@ INSN_LASX(xvabsd_hu,         vvv)
+ INSN_LASX(xvabsd_wu,         vvv)
+ INSN_LASX(xvabsd_du,         vvv)
  
-+INSN_LASX(xvabsd_b,          vvv)
-+INSN_LASX(xvabsd_h,          vvv)
-+INSN_LASX(xvabsd_w,          vvv)
-+INSN_LASX(xvabsd_d,          vvv)
-+INSN_LASX(xvabsd_bu,         vvv)
-+INSN_LASX(xvabsd_hu,         vvv)
-+INSN_LASX(xvabsd_wu,         vvv)
-+INSN_LASX(xvabsd_du,         vvv)
++INSN_LASX(xvadda_b,          vvv)
++INSN_LASX(xvadda_h,          vvv)
++INSN_LASX(xvadda_w,          vvv)
++INSN_LASX(xvadda_d,          vvv)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
+diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
+index 35b207aae1..ec6d86cc83 100644
+--- a/target/loongarch/vec_helper.c
++++ b/target/loongarch/vec_helper.c
+@@ -394,22 +394,24 @@ DO_3OP(vabsd_du, 64, UD, DO_VABSD)
+ 
+ #define DO_VABS(a)  ((a < 0) ? (-a) : (a))
+ 
+-#define DO_VADDA(NAME, BIT, E, DO_OP)                       \
+-void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v) \
+-{                                                           \
+-    int i;                                                  \
+-    VReg *Vd = (VReg *)vd;                                  \
+-    VReg *Vj = (VReg *)vj;                                  \
+-    VReg *Vk = (VReg *)vk;                                  \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                     \
+-        Vd->E(i) = DO_OP(Vj->E(i)) + DO_OP(Vk->E(i));       \
+-    }                                                       \
++#define DO_VADDA(NAME, BIT, E)                                 \
++void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
++{                                                              \
++    int i;                                                     \
++    VReg *Vd = (VReg *)vd;                                     \
++    VReg *Vj = (VReg *)vj;                                     \
++    VReg *Vk = (VReg *)vk;                                     \
++    int oprsz = simd_oprsz(desc);                              \
++                                                               \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                  \
++        Vd->E(i) = DO_VABS(Vj->E(i)) + DO_VABS(Vk->E(i));      \
++    }                                                          \
+ }
+ 
+-DO_VADDA(vadda_b, 8, B, DO_VABS)
+-DO_VADDA(vadda_h, 16, H, DO_VABS)
+-DO_VADDA(vadda_w, 32, W, DO_VABS)
+-DO_VADDA(vadda_d, 64, D, DO_VABS)
++DO_VADDA(vadda_b, 8, B)
++DO_VADDA(vadda_h, 16, H)
++DO_VADDA(vadda_w, 32, W)
++DO_VADDA(vadda_d, 64, D)
+ 
+ #define DO_MIN(a, b) (a < b ? a : b)
+ #define DO_MAX(a, b) (a > b ? a : b)
 diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 270dd2a08f..b86a6f36c1 100644
+index b86a6f36c1..6b4c85ce0b 100644
 --- a/target/loongarch/insn_trans/trans_vec.c.inc
 +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -1634,6 +1634,14 @@ TRANS(vabsd_bu, LSX, gvec_vvv, MO_8, do_vabsd_u)
- TRANS(vabsd_hu, LSX, gvec_vvv, MO_16, do_vabsd_u)
- TRANS(vabsd_wu, LSX, gvec_vvv, MO_32, do_vabsd_u)
- TRANS(vabsd_du, LSX, gvec_vvv, MO_64, do_vabsd_u)
-+TRANS(xvabsd_b, LASX, gvec_xxx, MO_8, do_vabsd_s)
-+TRANS(xvabsd_h, LASX, gvec_xxx, MO_16, do_vabsd_s)
-+TRANS(xvabsd_w, LASX, gvec_xxx, MO_32, do_vabsd_s)
-+TRANS(xvabsd_d, LASX, gvec_xxx, MO_64, do_vabsd_s)
-+TRANS(xvabsd_bu, LASX, gvec_xxx, MO_8, do_vabsd_u)
-+TRANS(xvabsd_hu, LASX, gvec_xxx, MO_16, do_vabsd_u)
-+TRANS(xvabsd_wu, LASX, gvec_xxx, MO_32, do_vabsd_u)
-+TRANS(xvabsd_du, LASX, gvec_xxx, MO_64, do_vabsd_u)
+@@ -1695,6 +1695,10 @@ TRANS(vadda_b, LSX, gvec_vvv, MO_8, do_vadda)
+ TRANS(vadda_h, LSX, gvec_vvv, MO_16, do_vadda)
+ TRANS(vadda_w, LSX, gvec_vvv, MO_32, do_vadda)
+ TRANS(vadda_d, LSX, gvec_vvv, MO_64, do_vadda)
++TRANS(xvadda_b, LASX, gvec_xxx, MO_8, do_vadda)
++TRANS(xvadda_h, LASX, gvec_xxx, MO_16, do_vadda)
++TRANS(xvadda_w, LASX, gvec_xxx, MO_32, do_vadda)
++TRANS(xvadda_d, LASX, gvec_xxx, MO_64, do_vadda)
  
- static void gen_vadda(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
- {
+ TRANS(vmax_b, LSX, gvec_vvv, MO_8, tcg_gen_gvec_smax)
+ TRANS(vmax_h, LSX, gvec_vvv, MO_16, tcg_gen_gvec_smax)
 -- 
 2.39.1
 
