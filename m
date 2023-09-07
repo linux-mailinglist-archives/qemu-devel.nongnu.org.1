@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17D97979CE
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 19:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9D6797A48
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 19:35:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeIff-0000OT-Ba; Thu, 07 Sep 2023 13:19:59 -0400
+	id 1qeItY-0005vT-TT; Thu, 07 Sep 2023 13:34:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qeIfd-0000OK-88
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 13:19:57 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qeItV-0005su-GD
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 13:34:17 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qeIfa-0006bd-2g
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 13:19:57 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1c0d5b16aacso10259515ad.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 10:19:53 -0700 (PDT)
+ id 1qeItT-0004hT-9h
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 13:34:17 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68bed8de5b9so1062289b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 10:34:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694107192; x=1694711992; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694108051; x=1694712851; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=skZKt0z2pUGF4QF2fQ8xiAQmsbfPBtUIfF1tMDMvI2E=;
- b=isxqLjFN80vthx3x3YqQkJKWvU+4CzfDXkoC6Q4nIXRsGpGPW5e67dImXDb027Q/t3
- nJsHb9x9i96Kx78faraANtKUsyV54SkWOEeuevzQbPOxLZSVBM3O0EY9mzXBm/j13Eye
- FPYZBFR19R26qvCgXMQWMiofx+XG+U6ZwaRFZabyH1KXAZFjVBdryrUQAi774yL8w7ca
- ZFdzAbIdSngwlja78XryXhZ5ovCXQ6+e8dii9bepCwJ5IcfEdet8G40j1Xz9lNkAt2RF
- 3gmgEK4dCvomvJgbbLaMpj0sr+bQR/apdIm9x8iYdW3JKTFEtECE5k8BKq2LJj1aMHEP
- fFHw==
+ bh=4FUOHcIebPixLUvx3SI/Jyza3CeRo8hit/Xwc8Rdw1Q=;
+ b=nKcjVGIWmjD7YUDdSc5lok7koly8bazuh09PybC+LpTN0dmtgxCUxX9zGbjHb6OZeP
+ WR65UArRRBLY8Ed8j/9M/yEFwQABQufQsMt/fyPK5zFn9ppMQ4t/zeXJdMgElrickmpW
+ kFxHskBW9Mcfx91xCvVZtZOcRxJw4x+C9EG7kr/noSWKSja6zAeQjjPe98KfwZS3lda+
+ WZFCoKlW4SMuuboN01qp46pj+70bJOMYc4IuRsaJsjzWyjg5fUnF/aV0hlrOoYacG/W2
+ QxYEd3KxmC8p+3L3bGYM1/iXObOrB40JCuaHB+ZLcBidmLwc1PyniNKIaW23EmxZZxFm
+ E2Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694107192; x=1694711992;
+ d=1e100.net; s=20221208; t=1694108051; x=1694712851;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=skZKt0z2pUGF4QF2fQ8xiAQmsbfPBtUIfF1tMDMvI2E=;
- b=hLYArdvCsnxvsyGghJLRHwZEJoHhq8whQO56Z4ASSYUko6StUwXalgI7Q59eiO6fqw
- 5EqwnnkzFYVEO6DYwurhbG/nqI41T2w4nH+/iNuop0di9gW6/VN7sxHnvSRg9Vkwi8uV
- tKVjccI45PpDM8MKvGXHTFOwADuWLiQbFxfhJjN6Jcfb1+tpjb8vWMo2k3uq3YFQ+3P8
- I1YhISdL5OoWu1FaP8DIgq7B0H/B5wPaQJ+mWxp0WPF8lmfFd3RMs1YiWl48PIuERU4W
- o0khtw5fwvzaFuYoqxsvJYhc5lNYKGK0EKKwqHhSC1Lavz9pNspgBCJgsX8OrB42we/Y
- m16A==
-X-Gm-Message-State: AOJu0YxdSpoIZilhY+Xpss7fnKpHpru3Q3esUQYeK3ffUNvOhq4O3f3P
- dNYlSlFaVtfXHckK+ESNEeLGS8RByYjAKEubXrg=
-X-Google-Smtp-Source: AGHT+IH2T5NY2pzusRBjpgTIU/BMut8lxHAafHm4dbCA+wl0SmtHyV3e8I+DfpfzZGJeLhTN5Hek7A==
-X-Received: by 2002:a17:902:82c4:b0:1bd:d718:5833 with SMTP id
- u4-20020a17090282c400b001bdd7185833mr281044plz.18.1694107192302; 
- Thu, 07 Sep 2023 10:19:52 -0700 (PDT)
+ bh=4FUOHcIebPixLUvx3SI/Jyza3CeRo8hit/Xwc8Rdw1Q=;
+ b=d/GtSxUst0GLJxvAlWLX1hLey7Q5N3d9VMuJCD82vMOQOh8plYSaINcofQuIw+BO7v
+ JivPVyu2Utz6VqI0TAeCjgQ7TR3oE+ILySend4pju+8nF/2T2I6G8TGYJmXLEhpmrsx2
+ M+i5SW3ScnQsTJ3+oln49iWNRHIr2VDZmMU0xQO9jdDd1kBM6CE/OU+O58nM9sjxm4/z
+ gFFqZEuKgAyEj5hNbCVl4UT0xZifesnenF4rY22yVVvANWOqZzHLoEqsQjf5FuM9BInT
+ iDfKQc5FXV2gkxh0ZiJNx8GW/PHVC/yLsdAGL1iZ3IBQ35X4pSa18O1FsBYksm6h1/Ps
+ ActA==
+X-Gm-Message-State: AOJu0YzvvzM/g1hjykttHcXJcoVGZQNQymD+QOEnV7xqThNvkvSSmBxx
+ d1gHmhT2y1WgMaSpy3BwKyhJPLFXLFwh+kUMMQ0=
+X-Google-Smtp-Source: AGHT+IHSMCnS7ih51BkcxuVGoBFuG733kPiN0B2XF20HPVtzeBVqinEBVGM0H+7oFVXKwMnqRBeOyQ==
+X-Received: by 2002:a05:6a00:1496:b0:68e:3f55:742 with SMTP id
+ v22-20020a056a00149600b0068e3f550742mr29725pfu.30.1694108051159; 
+ Thu, 07 Sep 2023 10:34:11 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- i14-20020a170902c94e00b001bdc7d88ee3sm26024pla.37.2023.09.07.10.19.51
+ c19-20020a62e813000000b0068a690b44basm6169pfi.31.2023.09.07.10.34.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 10:19:51 -0700 (PDT)
-Message-ID: <6e6a0db3-9f4d-8ea2-c254-9962cf35d380@linaro.org>
-Date: Thu, 7 Sep 2023 10:19:50 -0700
+ Thu, 07 Sep 2023 10:34:10 -0700 (PDT)
+Message-ID: <6a7579a2-d502-bf8b-7975-2ae33304cacb@linaro.org>
+Date: Thu, 7 Sep 2023 10:34:08 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH RESEND v5 02/57] target/loongarch: Implement gvec_*_vl
- functions
+Subject: Re: [PATCH RESEND v5 03/57] target/loongarch: Use
+ gen_helper_gvec_4_ptr for 4OP + env vector instructions
 Content-Language: en-US
 To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
 Cc: maobibo@loongson.cn
 References: <20230907083158.3975132-1-gaosong@loongson.cn>
- <20230907083158.3975132-3-gaosong@loongson.cn>
+ <20230907083158.3975132-4-gaosong@loongson.cn>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230907083158.3975132-3-gaosong@loongson.cn>
+In-Reply-To: <20230907083158.3975132-4-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,22 +97,21 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/7/23 01:31, Song Gao wrote:
-> Using gvec_*_vl functions hides oprsz. We can use gvec_v* for oprsz 16.
-> and gvec_v* for oprsz 32.
-> 
-> Signed-off-by: Song Gao<gaosong@loongson.cn>
-> ---
->   target/loongarch/insn_trans/trans_vec.c.inc | 68 +++++++++++++--------
->   1 file changed, 44 insertions(+), 24 deletions(-)
+> +static bool gen_vvvv_ptr_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
+> +                            gen_helper_gvec_4_ptr *fn)
+> +{
+> +    tcg_gen_gvec_4_ptr(vec_full_offset(a->vd),
+> +                       vec_full_offset(a->vj),
+> +                       vec_full_offset(a->vk),
+> +                       vec_full_offset(a->va),
+> +                       cpu_env,
+> +                       oprsz, ctx->vl / 8, oprsz, fn);
+                                               ^^^^^
 
-The description above is not quite right.  How about:
+This next to last argument is 'data', which is unused for this case.
+Just use 0 here.
 
-   Create gvec_*_vl functions in order to hide oprsz.
-   This is used by gvec_v* functions for oprsz 16,
-   and will be used by gvec_x* functions for oprsz 32.
-
-The code is correct.
-
+Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
