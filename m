@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D62796F5B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 05:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31438796F67
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 05:48:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe5wH-0002kU-0Z; Wed, 06 Sep 2023 23:44:17 -0400
+	id 1qe601-0006A7-TB; Wed, 06 Sep 2023 23:48:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qe5wE-0002PF-9Z
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 23:44:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qe5wB-0002yf-Dd
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 23:44:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694058250;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+Mv7YG307vWPPBwU5GGd2dIhAylyU7Oj/CupyElh5hk=;
- b=YuF8oMMaRxUHNgfv5P77do1dBgXbjI5xecdcTcDLTsgvKTQ6VUoxYf23+tMVN8Gnrr75SY
- BBSDo56O4+iTO6IK8QB2Vi1o0XvCzZO35JSeFIz1jddnUNCzblzPVwO9ic+C+t4lcGJwNw
- JEHTfpF17BwYAl7NK4HFrvLLePOU8OM=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-195-IAqBogYTNyCOU0UIDvMKKw-1; Wed, 06 Sep 2023 23:44:09 -0400
-X-MC-Unique: IAqBogYTNyCOU0UIDvMKKw-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-26f6ed09f59so672325a91.1
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 20:44:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe5zz-00069m-DY; Wed, 06 Sep 2023 23:48:07 -0400
+Received: from mail-ua1-x92a.google.com ([2607:f8b0:4864:20::92a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe5zw-0004Lg-1S; Wed, 06 Sep 2023 23:48:06 -0400
+Received: by mail-ua1-x92a.google.com with SMTP id
+ a1e0cc1a2514c-7a52a1e2a59so175800241.0; 
+ Wed, 06 Sep 2023 20:48:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694058482; x=1694663282; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0p4FyPt60KtDjdEVHoiwCan99Q+dxUjQaUI00G+sLvA=;
+ b=QlflcM9tU+olco1NuItk83tlWmT7XUJyy8X1lsmIs7oA+1jaucfagHS7pU1Kl9yuDY
+ Uatec/AWhParA7zN0pniwqIhaKqNqXR2sjSwS2EgbDBvo25Qoo1Gnz0UkWOwshh0u/1V
+ fy+hxDfHFJKUsv532hYjRueGvshGLWVCaqBS/DViLec1yan2gkeROtYL0iF4fqDi0ePA
+ PwNBDbJK3e1kPkJhSSqwfUz4DT9KEqqvVrlYkUest2nLJMhLCH0w5ocNb21hh8NWNCpL
+ eIWjJfr41csG3eX+q7ReDbYqqQU4yTZNPnZNnGs8V9lZhGASs8XKsw5tYA1Xv5TWbjhb
+ 0c5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694058248; x=1694663048;
+ d=1e100.net; s=20221208; t=1694058482; x=1694663282;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+Mv7YG307vWPPBwU5GGd2dIhAylyU7Oj/CupyElh5hk=;
- b=QAUbIaR7Nio3YRQj5SeSn3ISl07x00lw45UXpGd5YHQWsGBFZUOl0zN59nddPV27jV
- SpeYwEougJmvF2+jxvqg2k+jUp+jS3Pr6vYVHixiAfaYGtnXd0GQd+fpXRSSdRLeX1Ae
- /yD3No7WjNzjntmYRQ6JoYqHndSKsZf/+dMdR4JfR5NnqaHn2wXsVJWbf1VFfnrO6uas
- RxhX60/2GmvUJlaVSXFRkvtBcjTZL+xr0ZqETT61tjEziND0oSb0aVq6dFt8O3c7VKnj
- /KZH0LBYDzLL2DzF3648dnEpLVxQWVAVyir/HXbOU2DRPcs1W+IjPQC3XoI7I8CvS7Vh
- 0uBw==
-X-Gm-Message-State: AOJu0Yyv8eEYqnIdixS83pxI16MHOsDXVEsjd00cTT6EGBqBoQaViNF9
- A4MEa6Y4ph4a1sFsMFmdhGKCtQkXdKGpsvmq3jtHYIMzm+u+KadsyWGcGgP1QLQSzH3vRvPaKdO
- ZxR3g6gj8+m5NiO4DSh3jOu1y2X8+HYEByBzG4sg=
-X-Received: by 2002:a17:90a:bd95:b0:267:f7eb:f12e with SMTP id
- z21-20020a17090abd9500b00267f7ebf12emr14163665pjr.39.1694058247765; 
- Wed, 06 Sep 2023 20:44:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFj6tv1lJtohAMT/ctwDJOEEDtCUMBBQYV8PPm1jOj+/keKenb0l9t0EoUGsaYDUSukqIqHVyjgOOtogNu7Yw=
-X-Received: by 2002:a17:90a:bd95:b0:267:f7eb:f12e with SMTP id
- z21-20020a17090abd9500b00267f7ebf12emr14163654pjr.39.1694058247518; Wed, 06
- Sep 2023 20:44:07 -0700 (PDT)
+ bh=0p4FyPt60KtDjdEVHoiwCan99Q+dxUjQaUI00G+sLvA=;
+ b=Lic4tg3RDt1uf4u8JJi1ueFJ8gOEOj7MIkMeg7NTXXMAQ7J6WcPIg9SM3QOxMIA3H6
+ +Bffat8LCywS9B27tYMxuz1hiHFgvPaqvIsMKxqci9suqB/uYcWrPNq8wtEdLWRgK+qu
+ sC0X3GK6IOb0OQ4h7sfHbX+1Y/8DSeVoiD1u427AZJxqC7i/f9P7gF0I0+ErwRSUzogX
+ npFBy8vtrdhWeQLLAMx+U9Yy/WFBft+JiKJSgEKNHXljW/+KTyGpkdBZETaisVo0trzZ
+ K6CdilYhWv24G5I3uEliPgGN5S9Ssl9B1GOjanAZnL/Uoo/rtWBcCYslh0UtvgDj/P9N
+ n+Qw==
+X-Gm-Message-State: AOJu0Yx9Ukc+IgwZdw5keX8OX5s0AFgSJXZHeoCWIKR55LOntqGlIVIG
+ x8GJQYtWYT0AE2N4askl1ttfF4AHRYCH/qcYIiA=
+X-Google-Smtp-Source: AGHT+IF1n7NfJpBhx7H85lqos0GeiWZZgFMaLWzRxuVRAcLx2KTELJKqO+mus70bvLiBDVAS1xpx2kfk8eN+8sZLFlI=
+X-Received: by 2002:a1f:4ec2:0:b0:48f:9778:2ba2 with SMTP id
+ c185-20020a1f4ec2000000b0048f97782ba2mr4686051vkb.5.1694058482320; Wed, 06
+ Sep 2023 20:48:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230907034228.4054839-1-jsnow@redhat.com>
-In-Reply-To: <20230907034228.4054839-1-jsnow@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Wed, 6 Sep 2023 23:43:56 -0400
-Message-ID: <CAFn=p-ZJYBNX_ZDbHynmK1Hv-PQHgx7n++1bvEn3Oa7sysRNRQ@mail.gmail.com>
-Subject: Re: [PULL for-6.2 0/7] Ide patches
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
+ <20230901194627.1214811-12-dbarboza@ventanamicro.com>
+In-Reply-To: <20230901194627.1214811-12-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 7 Sep 2023 13:47:35 +1000
+Message-ID: <CAKmqyKOU=_4F_vuFkzLM-KcykT6CbEuDztooZHTbvTtYFcpRtA@mail.gmail.com>
+Subject: Re: [PATCH v9 11/20] avocado, risc-v: add tuxboot tests for 'max' CPU
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, ajones@ventanamicro.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92a;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,49 +88,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I guess the last time I sent IDE patches was for 6.2 and that tag got
-stuck in my git-publish invocation, oops. I am not suggesting we break
-the laws of causality to merge these patches.
+On Sat, Sep 2, 2023 at 5:51=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Add smoke tests to ensure that we'll not break the 'max' CPU type when
+> adding new frozen/ratified RISC-V extensions.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-On Wed, Sep 6, 2023 at 11:42=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
+> ---
+>  tests/avocado/tuxrun_baselines.py | 32 +++++++++++++++++++++++++++++++
+>  1 file changed, 32 insertions(+)
 >
-> The following changes since commit c152379422a204109f34ca2b43ecc538c7d738=
-ae:
+> diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_bas=
+elines.py
+> index e12250eabb..c99bea6c0b 100644
+> --- a/tests/avocado/tuxrun_baselines.py
+> +++ b/tests/avocado/tuxrun_baselines.py
+> @@ -501,6 +501,38 @@ def test_riscv64(self):
 >
->   Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu=
- into staging (2023-09-06 11:16:01 -0400)
+>          self.common_tuxrun(csums=3Dsums)
 >
-> are available in the Git repository at:
->
->   https://gitlab.com/jsnow/qemu.git tags/ide-pull-request
->
-> for you to fetch changes up to 9f89423537653de07ca40c18b5ff5b70b104cc93:
->
->   hw/ide/ahci: fix broken SError handling (2023-09-06 22:48:04 -0400)
->
-> ----------------------------------------------------------------
-> IDE Pull request
->
-> ----------------------------------------------------------------
->
-> Niklas Cassel (7):
->   hw/ide/core: set ERR_STAT in unsupported command completion
->   hw/ide/ahci: write D2H FIS when processing NCQ command
->   hw/ide/ahci: simplify and document PxCI handling
->   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
->   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
->   hw/ide/ahci: fix ahci_write_fis_sdb()
->   hw/ide/ahci: fix broken SError handling
->
->  tests/qtest/libqos/ahci.h |   8 ++-
->  hw/ide/ahci.c             | 110 +++++++++++++++++++++++++++-----------
->  hw/ide/core.c             |   2 +-
->  tests/qtest/libqos/ahci.c | 106 +++++++++++++++++++++++++++---------
->  4 files changed, 163 insertions(+), 63 deletions(-)
->
+> +    def test_riscv32_maxcpu(self):
+> +        """
+> +        :avocado: tags=3Darch:riscv32
+> +        :avocado: tags=3Dmachine:virt
+> +        :avocado: tags=3Dcpu:max
+> +        :avocado: tags=3Dtuxboot:riscv32
+> +        """
+> +        sums =3D { "Image" :
+> +                 "89599407d7334de629a40e7ad6503c73670359eb5f5ae9d686353a=
+3d6deccbd5",
+> +                 "fw_jump.elf" :
+> +                 "f2ef28a0b77826f79d085d3e4aa686f1159b315eff9099a37046b1=
+8936676985",
+> +                 "rootfs.ext4.zst" :
+> +                 "7168d296d0283238ea73cd5a775b3dd608e55e04c7b92b76ecce31=
+bb13108cba" }
+> +
+> +        self.common_tuxrun(csums=3Dsums)
+> +
+> +    def test_riscv64_maxcpu(self):
+> +        """
+> +        :avocado: tags=3Darch:riscv64
+> +        :avocado: tags=3Dmachine:virt
+> +        :avocado: tags=3Dcpu:max
+> +        :avocado: tags=3Dtuxboot:riscv64
+> +        """
+> +        sums =3D { "Image" :
+> +                 "cd634badc65e52fb63465ec99e309c0de0369f0841b7d9486f9729=
+e119bac25e",
+> +                 "fw_jump.elf" :
+> +                 "6e3373abcab4305fe151b564a4c71110d833c21f2c0a1753b79354=
+59e36aedcf",
+> +                 "rootfs.ext4.zst" :
+> +                 "b18e3a3bdf27be03da0b285e84cb71bf09eca071c3a087b42884b6=
+982ed679eb" }
+> +
+> +        self.common_tuxrun(csums=3Dsums)
+> +
+>      def test_s390(self):
+>          """
+>          :avocado: tags=3Darch:s390x
 > --
 > 2.41.0
 >
 >
-
 
