@@ -2,137 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15B27971A8
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 294F17971AF
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:23:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeCxn-0004Ve-0E; Thu, 07 Sep 2023 07:14:19 -0400
+	id 1qeD5F-0000hz-1I; Thu, 07 Sep 2023 07:22:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Pankaj.Gupta@amd.com>)
- id 1qeCxf-0004V9-Dj
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:14:11 -0400
-Received: from mail-dm6nam04on2085.outbound.protection.outlook.com
- ([40.107.102.85] helo=NAM04-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qeD59-0000fq-Bw
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:21:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Pankaj.Gupta@amd.com>)
- id 1qeCxc-0007Ld-M7
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:14:11 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NUZAWL73q4fezNlI9JBvgCJ55djRy0S6kuRiR3acS3xLQXEG1ZJ9BV7qA1bmaNskIawqiSosOPDK0lRwutwI27Jf8ugYxHwT0kPsHapNWPLWWe/uG35CbX+NjAAeFRW4OIQqOYlQrBXFiIIp+SvbM9uv0ngeFZawtv6LvTtquq6ZwjcmWC9PlRrHmYpCSPG4FzEVP6Ffv3wv1zRzdDHu6eDoMy2mS1F8qnYSZ4Iz9TEo4DWHKythMDf9GBEutdoVQONb6TT9lmyOd48K5jdbSJZBZQgCMeP2y0jH50eSDOXqtw/Lwaq2RcrorrMQCJzXgh41T1HGXBXBSwvc7Sji4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h0p+ZsQaMFt7DgBybuJOnV7HI90yax3miQ1+EbTRbE4=;
- b=aXkUQDrv1Lh/m09D0XABHnP68vTYFOt5ymiXt35tXa8JATsAq42gxMrEuEWOMEa97lNSX1iIkxhl/H8QEkAVppKwvt0EywzBucXK0rxln7KvojLzvsySysalLfFOqxC+97FHSRdBAR4ZV11SoXfokHQUL1h+H93KITN9UA7Bj9r4HafxM4dg1FlnjvpWM9rjVZLLzgNFnHZsn8V+BLcjGQ4bZxbWlRqSR0HXaWbVV4Ih35RvpUVubbu7XcgMRPhlPIf7HlIwaBYkM78JxD+EemzpQUvKr28Oc509iGY7vgtxUevFcdCqvK0oXRNDZ2eO/WXPd5KVkE3Yr98UKRcPFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h0p+ZsQaMFt7DgBybuJOnV7HI90yax3miQ1+EbTRbE4=;
- b=EX6Xm5CTtm88BD7VgBUuLX5xQScClJsNudVFdFMJ3BALorz4OCFS1FmqlyWha3mAx//2s0o3zCZqoXNCdUVOG2k/NbR+TwsEZmFi7msoolYF6fC/+41EjFNTkzpw1Pb/GtY81pJJI75Jzq3CyfGAWrUyPZNClIO7LlM3UnttXH0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM6PR12MB2810.namprd12.prod.outlook.com (2603:10b6:5:41::21) by
- MN0PR12MB5906.namprd12.prod.outlook.com (2603:10b6:208:37a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Thu, 7 Sep
- 2023 11:12:36 +0000
-Received: from DM6PR12MB2810.namprd12.prod.outlook.com
- ([fe80::9760:1a6e:8715:e4cb]) by DM6PR12MB2810.namprd12.prod.outlook.com
- ([fe80::9760:1a6e:8715:e4cb%6]) with mapi id 15.20.6745.035; Thu, 7 Sep 2023
- 11:12:36 +0000
-Message-ID: <6efe4fc0-3c9a-dc91-4a04-498b38c66374@amd.com>
-Date: Thu, 7 Sep 2023 13:12:28 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 2/3] i386: Explicitly ignore unsupported BUS_MCEERR_AO
- MCE on AMD guest
-Content-Language: en-US
-To: John Allen <john.allen@amd.com>, qemu-devel@nongnu.org
-Cc: yazen.ghannam@amd.com, michael.roth@amd.com, babu.moger@amd.com,
- william.roche@oracle.com, joao.m.martins@oracle.com, pbonzini@redhat.com,
- richard.henderson@linaro.org, eduardo@habkost.net
-References: <20230906205308.50334-1-john.allen@amd.com>
- <20230906205308.50334-3-john.allen@amd.com>
-From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-In-Reply-To: <20230906205308.50334-3-john.allen@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0066.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:49::12) To DM6PR12MB2810.namprd12.prod.outlook.com
- (2603:10b6:5:41::21)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qeD55-0001xa-2S
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:21:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694085708;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5b72p/1fAa021jTeYpCYtgnZXd0XHIxrAMqI4rrNe4E=;
+ b=gghmmh/IguHw6iJjNWEXk6NWYIx8V8SqEXv6Kss14GjB/PC1TTMhfxX0hjYTzVux2Qr4Sc
+ 9DJAYm7dzbcBs1RNRY483SEdHZ7kQzZD0jXLwTd0r5WEhgQlLaLnaBchUQzIySGEvtEfW4
+ HkCkf2OQ6aJKO4eRsvkhFcA+csnm384=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-511-Vbrf9BCANPOM66CYfRA-tg-1; Thu, 07 Sep 2023 07:21:47 -0400
+X-MC-Unique: Vbrf9BCANPOM66CYfRA-tg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-978a991c3f5so52060666b.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 04:21:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694085706; x=1694690506;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5b72p/1fAa021jTeYpCYtgnZXd0XHIxrAMqI4rrNe4E=;
+ b=O2sP4Ul0jXGpNE7qxtK7w1XUL38Uc4ejXvKvOhJUHsKD6vwDzgXIp/bUnf8jj69mV4
+ UplzNM9JKRxHhrxi9nSf1UrrMz6EvHItS9+d3+/7/3P3PHAMV4IgkFxW+0ohvzUSevn+
+ EGzBUkF9Ba7VO3E0UJWpWZwi3E8LSafFiAE3gm5bQxDb2DJAsrcRxcnvNR4XIHnu+j04
+ SL+VcNdUrwSA75XgtPAC+k8TlNUMX3Kp8qE8q7iQ7Bq9WavR+y5GjLLhmlkJLt9xRZkb
+ 2njz56+pN3UyUVkOhKNgf4ZE0OnzUlRMtSYC7TXKelo0Xj1HZoaUEi+1MeXMjGtvWrq+
+ TeBA==
+X-Gm-Message-State: AOJu0YzVEcfqRfXdL0vLsH7LC69F1oBlG+5bGb7nQbS/rh7BO+p22sZO
+ JaQ/JFrVy9GfdFqmoQQxHr129lg0vYbPZSyMTcnb7F80oBeq8DcP3FBI5LX7bL0IXlEIhYXL2d9
+ H60B3Dqx58VUNhdMKHv8yIxk=
+X-Received: by 2002:a17:906:ef8f:b0:9a9:d5dd:dacd with SMTP id
+ ze15-20020a170906ef8f00b009a9d5dddacdmr3243951ejb.26.1694085706184; 
+ Thu, 07 Sep 2023 04:21:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlS6z6kiVjtjTLyZGXg7GQEmO/1GKvNeoCUn69R1AEQOfuu8lHf+9zVOvoBTwJeQPk40WXCA==
+X-Received: by 2002:a17:906:ef8f:b0:9a9:d5dd:dacd with SMTP id
+ ze15-20020a170906ef8f00b009a9d5dddacdmr3243935ejb.26.1694085705879; 
+ Thu, 07 Sep 2023 04:21:45 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
+ (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
+ [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ by smtp.gmail.com with ESMTPSA id
+ j24-20020a170906051800b0099bcdfff7cbsm10227786eja.160.2023.09.07.04.21.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Sep 2023 04:21:45 -0700 (PDT)
+Message-ID: <4dfb202f-5bd5-57f9-0aeb-6121b0697a6c@redhat.com>
+Date: Thu, 7 Sep 2023 13:21:44 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB2810:EE_|MN0PR12MB5906:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2332eb6b-37fb-4e82-8d27-08dbaf9356e8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 0PsnwLW8xkTd7DqKGPkpzgmnluS/C4KONjFlBZhw4IdKiEBxhbpuxHiLLYUWLpPZBjJ8o2OOfYzLpcjjhXohFohRp/zAXazL9/BVnCCjftSq6YWAKZnHlOnNNj5d+ynnUG4plXyWLjO+53VCdcXWPcHqlOBlS0vH3GyNZ7jCFKzqoBrLdGXIgKnyyC/fuYXR4YzxxmM48XoE0NHr01RFbYYLWGWIOv45BuKlf8e9+qyccVzEyHNoyvRav9lKJEV9fU8P5JKkDkmASlJG95hpG4IcGCcx2b1Ld+ruRWRTtV+Cw+bQd9FtbEsp5nBBEav7Rs/0rJodO7O5CFw/lysY+c3WgY12LzXpxC9qSSlv89uB4SyeN8BST8Cz+vqjRXqcB3jmk0SDAbu/nlW10+ugfqdNzQaJbNvj8OLjemSiQuWgOknhCKrZ0N+pbEJGwJ8H8PFaNDS+KjXGLr6xY6Vfur0OyzXUFkpiixgDawkCQTishA14jNa9VuLNUcu//VGNCt9lth9dwmtZeZQZ3IkNDE36EShbcL4qVePr/WPdZSQrHLH42k1pXnwqHCMY9ejbo3b+RsFKSm6mCLt33vYnczfmLn7PthaZ4thNd/rzRPNAVEL0cEf4maYMrrN/qcZ19sxH97B839v1eFFaVwVKCl3/N+f0NDgoSvCjrgadXXY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR12MB2810.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(346002)(376002)(396003)(136003)(366004)(186009)(1800799009)(451199024)(2906002)(66899024)(86362001)(31696002)(53546011)(26005)(2616005)(36756003)(478600001)(6486002)(6666004)(6506007)(38100700002)(83380400001)(6512007)(41300700001)(8936002)(8676002)(4326008)(5660300002)(31686004)(316002)(66946007)(66476007)(66556008)(21314003)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L2U5MTlOWTVzdEo1TzNVQXk5Q0gzWWdJSWVRTUNFRmhjRDVmLzdtZHMwa0RV?=
- =?utf-8?B?VUsrb0J1aDNseW9mZW9Sd1RUQjZ2NXErSUwrZnhyZk4yclZ4RTZUZ2FrQjJk?=
- =?utf-8?B?bFhPSCtvWVh5amVSdnYwOGFEakVhdzR4SXN1V3U2R1h1OWVTVEFtVnh2YTVy?=
- =?utf-8?B?ZlVDM0lqZ0lNcGFGWkZMU1lLZER2eDRQb2thZmdEaG14cm5RbGRIMlFJOFJU?=
- =?utf-8?B?Y1lKZCsvSjJUd0pJKytEc0I3ZUhFK3JTNVNZY3k2bDVXeU5DMnF4KzYvSGpJ?=
- =?utf-8?B?UE0xWnlwVkx4UVNDTUJYWm1LckxiT1NDZWdGUFBmc2w3QnI2ZkFvZVJCWm5J?=
- =?utf-8?B?TTBBb21XRmZOZlB6WTJycDZqZmZKRGcvdTBmbWVRQ05CZDQ1VjBpQ0Y2RURv?=
- =?utf-8?B?Rm5jUVFaWVRHWXFTa0ZRYUZwWktrTEI5aXZCcmw2MEVldTRlMmp0Ym1FZVlR?=
- =?utf-8?B?WkZXaFMraUhxZVZwYVpnRlBoMzNlUkVFN0xBL29RSzZkeDh6Sm5FOUpnOHc5?=
- =?utf-8?B?TGIvNXRZWk1rdG1RY0RFMGxlYTR4WjJhTnhhVy9QMTNRMFZsZUcyTUNxYTJM?=
- =?utf-8?B?d0JMVXBXWGJDa1RvcmhHOXpId3pKYnNaSWpuc05CNE5KRTdWNGwwN2h4d2F1?=
- =?utf-8?B?dGpWcGVIYVFjeE5kK2s3NkFDVi9yY0NGaDlkeE9XM1Q5OC9YVEg0c0k3Q1VV?=
- =?utf-8?B?TFIzMkpPYTdjdm1rVC9kdC9COHRDamFOUmNUUHd5YjZFV2xucXdhV0Z3UWVS?=
- =?utf-8?B?OEE4ZURXRHlZLzMwTHp1UHFsZnZUeENmUTROVUNsUXEwQkNpcG9ES0dTNCtq?=
- =?utf-8?B?bzJhVWxnSGJsYWVIa2YyY3Axc0c5ZUZqbVZyZXpZRTNsdGpPVU9lVFJiOXVa?=
- =?utf-8?B?WnRRUHA3d29PWnJuZ2VpTmtZMVo0aW5wVVZINGNzSVVUd2tUVnhqU1pNcFRn?=
- =?utf-8?B?N3ZUTWNPYlpBdmNhcEd4QUl1UlFUcVcrK0lvSjgvMDBxZzU2bitUNmxRNysx?=
- =?utf-8?B?MGNaZWM2enZPbmhXWjB5ZHloVTlTbEFobk1QbzNNd3QzOUJWVWY4WVIraE1N?=
- =?utf-8?B?MTZyeFNaRnlhTG01THBieE0xTFRmcnRjOExjQ1ZCUHltNlFaeDlFRTJZd2RT?=
- =?utf-8?B?SFkzTnA4TjYxQ1NnRWJxb2F4akhGbXBLNmtpS2xwQkRnUTlRQTFaS3Z6cW53?=
- =?utf-8?B?UDVRR1I3OGlvTERqQzJTZVpLMGt0VHBXV3U2S3V1bS9jdFVVam9ZNG5IY1Nm?=
- =?utf-8?B?TnFjRzZDNURJakNWcFJ4K2dzaTdIWkYxYXFIZlgwUnR2NER1VDByYndIdWdV?=
- =?utf-8?B?bVVLZEtNeDVJcUJjOTFvc05KQ2duMGlPQndMdzNtMGJZejdWK0VlT2FHZGJo?=
- =?utf-8?B?N1lBazVVUEdyL254YkkwL1czdmtNNm0rV3R3Q3N6ZWJQSEE3NlJ2MUVIMFpj?=
- =?utf-8?B?Qk4rbUh5QkVpYWZjUlZJSkI2dmt1eW9lQllUaW9naTV5RklSSkEyMG04eTF1?=
- =?utf-8?B?T0Zmbyt2QXVweFhKN0RLL3laSVh0cTh3N2RRcUNUcDNxdjA3eS9iTGxOYWJH?=
- =?utf-8?B?a2Zxd3N6YjVRVHpIUmw2ZnNGTkVQOUo0VWs5RUVZeEo0cFp0UDlHMndFaFli?=
- =?utf-8?B?S0M1bHllZVZWd2VvVXVZL1ZBdGFjYjcvbTFOdFdlS2RTdzlKRjhYMTNjZlgx?=
- =?utf-8?B?c3BHRzE1c1JRdHJpRERwN3ZrR2wrcEhIdWhMdnh6aXlqdGF5aFp1cThFZWdG?=
- =?utf-8?B?dVc1U1l6UHAvQWM5UHNqZHhISmE2bFpjYzVNd1h2OTZYYUFKRFFSZlIxWG5C?=
- =?utf-8?B?MlZyMEZ4SGNla2ZUVjZHTDhSdDhaQUErUnBFQmN0NVJBTjRGS0I2bjZsd0Zz?=
- =?utf-8?B?elQxMlkxOHc4V09kRi9wZHFlTDNlN1AwSGdIRUMvaUJRRTRmWEpZK2RMQnI3?=
- =?utf-8?B?VFJCNHBxL1kvajN1Q2MyemRxcy9PM05tdEZIVnZVbHZIck1uY3RZSENVMTc3?=
- =?utf-8?B?WE53eDhBVGRGT1N1ZEhxK1ZUaU91SWZQSzVveS9KR2NEMzJSaXU3MGZHNEMx?=
- =?utf-8?B?Z3F6eHBNY2VJVW1aL2tEaDZNbzZLa1kwVlcxMGlIM25TZHdMYm9xZDNSejhB?=
- =?utf-8?Q?TE2jb2IW1YDEHvLh562SawAoI?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2332eb6b-37fb-4e82-8d27-08dbaf9356e8
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB2810.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2023 11:12:35.8627 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3lT3yrl0vDclvcnQKggKvW1WXkA+PMYZx0f6AdpKLosQdgKA0/bfvpEjq1ILwyYFnOp80dR3LR0CrpLcbu2p/w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5906
-Received-SPF: softfail client-ip=40.107.102.85;
- envelope-from=Pankaj.Gupta@amd.com;
- helo=NAM04-DM6-obe.outbound.protection.outlook.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 00/14] Block patches
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
+References: <20230901081804.31377-1-hreitz@redhat.com>
+ <CAJSP0QV4-dR2-2r+4E0N+yWHdzNF0A+FkHGU7Q3uiEg3wxR5Fg@mail.gmail.com>
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <CAJSP0QV4-dR2-2r+4E0N+yWHdzNF0A+FkHGU7Q3uiEg3wxR5Fg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,64 +103,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/6/2023 10:53 PM, John Allen wrote:
-> From: William Roche <william.roche@oracle.com>
-> 
-> AMD guests can't currently deal with BUS_MCEERR_AO MCE injection
-> as it panics the VM kernel. We filter this event and provide a
-> warning message.
-> 
-> Signed-off-by: William Roche <william.roche@oracle.com>
-> ---
-> v3:
->    - New patch
-> ---
->   target/i386/kvm/kvm.c | 13 ++++++++++---
->   1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 5fce74aac5..4d42d3ed4c 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -604,6 +604,10 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr paddr, int code)
->               mcg_status |= MCG_STATUS_RIPV;
->           }
->       } else {
-> +        if (code == BUS_MCEERR_AO) {
-> +            /* XXX we don't support BUS_MCEERR_AO injection on AMD yet */
-> +            return;
-> +        }
->           mcg_status |= MCG_STATUS_EIPV | MCG_STATUS_RIPV;
->       }
->   
-> @@ -655,7 +659,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
->           if (ram_addr != RAM_ADDR_INVALID &&
->               kvm_physical_memory_addr_from_host(c->kvm_state, addr, &paddr)) {
->               kvm_hwpoison_page_add(ram_addr);
-> -            kvm_mce_inject(cpu, paddr, code);
-> +            if (!IS_AMD_CPU(env) || code != BUS_MCEERR_AO) {
+On 06.09.23 15:18, Stefan Hajnoczi wrote:
+> On Fri, 1 Sept 2023 at 04:18, Hanna Czenczek <hreitz@redhat.com> wrote:
+>> The following changes since commit f5fe7c17ac4e309e47e78f0f9761aebc8d2f2c81:
+>>
+>>    Merge tag 'pull-tcg-20230823-2' of https://gitlab.com/rth7680/qemu into staging (2023-08-28 16:07:04 -0400)
+>>
+>> are available in the Git repository at:
+>>
+>>    https://gitlab.com/hreitz/qemu.git tags/pull-block-2023-09-01
+> Hi Hanna,
+> Please push a signed tag (git tag -s). Thanks!
 
-Isn't the 'optional' case we already handle inside kvm_mce_inject()?
-So this check seems repetitive to me.
+Is it not signed?  I don’t think gitlab has support to show that, but 
+github shows it as verified: 
+https://github.com/XanClic/qemu/releases/tag/pull-block-2023-09-01
 
-Thanks,
-Pankaj
-> +                kvm_mce_inject(cpu, paddr, code);
-> +            }
->   
->               /*
->                * Use different logging severity based on error type.
-> @@ -668,8 +674,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
->                       addr, paddr, "BUS_MCEERR_AR");
->               } else {
->                    warn_report("Guest MCE Memory Error at QEMU addr %p and "
-> -                     "GUEST addr 0x%" HWADDR_PRIx " of type %s injected",
-> -                     addr, paddr, "BUS_MCEERR_AO");
-> +                     "GUEST addr 0x%" HWADDR_PRIx " of type %s %s",
-> +                     addr, paddr, "BUS_MCEERR_AO",
-> +                     IS_AMD_CPU(env) ? "ignored on AMD guest" : "injected");
->               }
->   
->               return;
+And when I clone it:
+```
+$ git clone https://gitlab.com/hreitz/qemu -b pull-block-2023-09-01 
+--depth=1
+[...]
+$ cd qemu
+$ git tag -v pull-block-2023-09-01
+LANG=C git tag -v pull-block-2023-09-01
+object 380448464dd89291cf7fd7434be6c225482a334d
+type commit
+tag pull-block-2023-09-01
+tagger Hanna Reitz <hreitz@redhat.com> 1693555853 +0200
+
+Block patches
+
+- Fix for file-posix's zoning code crashing on I/O errors
+- Throttling refactoring
+gpg: Signature made Fri Sep  1 10:11:46 2023 CEST
+gpg:                using RSA key CB62D7A0EE3829E45F004D34A1FA40D098019CDF
+gpg:                issuer "hreitz@redhat.com"
+gpg: Good signature from "Hanna Reitz <hreitz@redhat.com>" [ultimate]
+Primary key fingerprint: CB62 D7A0 EE38 29E4 5F00  4D34 A1FA 40D0 9801 9CDF
+```
+
+Hanna
 
 
