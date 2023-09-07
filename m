@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA2C797259
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED5379725C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeECV-0005rn-0N; Thu, 07 Sep 2023 08:33:35 -0400
+	id 1qeEEl-00085P-TP; Thu, 07 Sep 2023 08:35:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeECQ-0005hr-LO
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:33:30 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeEEi-00085H-Ev
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:35:52 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeECO-000253-Ec
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:33:30 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-52713d2c606so1184238a12.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:33:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeEEg-0002Ul-3l
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:35:52 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-99bf3f59905so107694166b.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:35:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694090006; x=1694694806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694090144; x=1694694944; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=S5Zv2w57Pu5zvBv+RmRMWxTLLDD5033YVrG2FGo/z5Y=;
- b=LcMceTxzu9NQfLe0J6Nb3rL1RA5vIhWqviY6bmTtPkjx7IcZ+2Difc0YJotFr8baqk
- 3iFU9yYTB+La75JVYU70+Mv3COwRSsFL3JImMh9yWO4zv2qyDL/PVp34D73DkBBOy0Lu
- GcFhIi80lQsgLEdOrpKLbdsqyMmtHW6W/6LS8VVXm4lXDanji41khWOijm0i3U/a5oOY
- O5lq20YEu+rPXOvI5Rzum80rEKy17nTeTVE0a3W80zczdPJb0Uzp8zUoNe9AmzeAPG78
- VZGEIU9tjh/Lax6HpHK1b9Vr/8Q+wuCjhgnm6Baw8LxSskxEfqaiQm5q2pqPvs8Y07R2
- Y86A==
+ bh=PoBujJ/iXdoCMge3j3UDXvjqLVzFDD0TrTUoS71ns7E=;
+ b=IvRBa3K+Rtgc1vxeuGYGe2535BUJ2NC8hVygfoL742JegKJMxfVgQKUZ5USxb7Xzdv
+ QpaJwgYl5uH/W7kwzbvk5QLqofP20iIKkSrKbXQVL5AhKJu84rzEXd5fCwZFoKpBIV6C
+ lfxS2j7SiTgKauW+8bljZRe75biYURN/4Pw6KPPM9YoQPF1hEr39ZDXTMkTXhr/1gv0+
+ zvjeQkNqVXCEuun0bZ0dInI6A+2BqdHwkv8ZuZI8o+Rie6Z2hhTULexLx20MUxiKXLas
+ Ctlk0U3cq+SQ17HTgpR3nuQrsLm5KIcvBhbZTKtftFdDr3o5wEx1zxjKJJ/ztwvJ8WbB
+ Mn3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694090006; x=1694694806;
+ d=1e100.net; s=20221208; t=1694090144; x=1694694944;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=S5Zv2w57Pu5zvBv+RmRMWxTLLDD5033YVrG2FGo/z5Y=;
- b=jO4Kx8IhMSh8Jh94ljZBZbHf3Bbd9WigQtgzafgzZUPXLFZsYwxE2oBLFTsHSO6ISr
- kv171jY84rlaHBRI9GiM3g+oR9yEEUL8Hy3pvcGTahlKOrYY4OSo2FOj3NhBHld3Szac
- GsfKzx5E6t3PQ+eoE9ncDq5f32HpG6DXvJjUL9deR0xvdHujqyPBe+fN79+EEyJfC3jG
- zlbBpYFRJbLigiVY8gVlItfj37zSrQ6rXy+BzcSIH6p6yhpiEcZe1IMyl+9SkLZEf3ka
- EuVfbGOr67xGEQvmuKgcaKV3dRHdRCDSAZM1rELjpd/MbqnrjaAqPAsHuuvBQ4Z4dh12
- klkw==
-X-Gm-Message-State: AOJu0YxtB62BIjnh4InT+RDm7kWNljEqdytcbnliOXdrstQ//wo9x4NO
- aoknKaxpgLOYTZtnr9EX2DBbyg==
-X-Google-Smtp-Source: AGHT+IFiyeAxv+PcElS78SKV3hRLxkrNfqZ4f3aObhMItsMGt+ctJOtd8El6PUpyXS64y9sUPU6UFQ==
-X-Received: by 2002:aa7:c485:0:b0:525:7f37:e87a with SMTP id
- m5-20020aa7c485000000b005257f37e87amr4585262edq.16.1694090006446; 
- Thu, 07 Sep 2023 05:33:26 -0700 (PDT)
+ bh=PoBujJ/iXdoCMge3j3UDXvjqLVzFDD0TrTUoS71ns7E=;
+ b=FC78A+DcDL9QbiGemN1/2d+BJxyWB5gvcEtLvaM13Ihl+MX39LsHoYgDf8eZ7O2soL
+ hvNrgibwg2rDKyck65uoJRb2lfCvMaZGhnujVdNcyhq6CgAdclWXkIf5VEyhtq6hupA/
+ /r03Is8oY2e4HgJ5W27DOQqjCWJp8AThl66m5YuWmUhJKKKGdI6r2vL5gWRLFbAwRBNB
+ smhY/J+3UrMQ3NqpvUOEqCtrOyilTDIYQb/+Iw4ASjhiaeKIAO4sRawwk3boVs2WguON
+ +h85h+I1U28cgogULgNPnR9a576ntBYnOSyiOoJ6uZCjIfFkBPV/xMimlAbz9FJ/26wy
+ Mp7w==
+X-Gm-Message-State: AOJu0YyGz1ako+1qQr3Dkp0cClf9JN3DmfyHOhLVegBG0bkQuMpIVuTl
+ FJEBYkpzRdy69z5/S1ThG6tNRQ==
+X-Google-Smtp-Source: AGHT+IEJBc6bLzdKEt+8aczqpH1jETGPkzQbTVPi0fsfGDqj+OEEylRFztpb+wnefd0GKDO7f4ukhA==
+X-Received: by 2002:a17:906:739e:b0:99c:6692:7f76 with SMTP id
+ f30-20020a170906739e00b0099c66927f76mr4999604ejl.16.1694090143746; 
+ Thu, 07 Sep 2023 05:35:43 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-222-226.abo.bbox.fr.
  [176.131.222.226]) by smtp.gmail.com with ESMTPSA id
- w13-20020aa7dccd000000b005256e0797acsm9717904edu.37.2023.09.07.05.33.25
+ f27-20020a170906391b00b0099cd1c0cb21sm10222882eje.129.2023.09.07.05.35.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 05:33:26 -0700 (PDT)
-Message-ID: <760a2e78-9e8e-8c98-4c58-3e2c560bdd44@linaro.org>
-Date: Thu, 7 Sep 2023 14:33:24 +0200
+ Thu, 07 Sep 2023 05:35:43 -0700 (PDT)
+Message-ID: <f1694c9b-75ed-a8a3-6a05-91f796dfcf2b@linaro.org>
+Date: Thu, 7 Sep 2023 14:35:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 1/3] hw/cxl: Push cxl_decoder_count_enc() and
- cxl_decode_ig() into .c
+Subject: Re: [PATCH v2 2/3] hw/cxl: Add utility functions decoder interleave
+ ways and target count.
 Content-Language: en-US
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
  Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
  linux-cxl@vger.kernel.org
 Cc: linuxarm@huawei.com
 References: <20230907113543.19760-1-Jonathan.Cameron@huawei.com>
- <20230907113543.19760-2-Jonathan.Cameron@huawei.com>
+ <20230907113543.19760-3-Jonathan.Cameron@huawei.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230907113543.19760-2-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20230907113543.19760-3-Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,15 +97,28 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 7/9/23 13:35, Jonathan Cameron wrote:
-> There is no strong justification for keeping these in the header
-> so push them down into the associated cxl-component-utils.c file.
+> As an encoded version of these key configuration parameters is available
+> in a register, provide functions to extract it again so as to avoid
+> the need for duplicating the storage.
 > 
-> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Whilst here update the _enc() function to include additional values
+> as defined in the CXL 3.0 specification. Whilst they are not
+> currently used in the emulation, they may be in future and it is
+> easier to compare with the specification if all values are covered.
+> 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->   include/hw/cxl/cxl_component.h | 18 ++----------------
->   hw/cxl/cxl-component-utils.c   | 18 ++++++++++++++++++
->   2 files changed, 20 insertions(+), 16 deletions(-)
+> v2: Thanks to Philippe Mathieu-Daudé
+>   - Expand both enc() and dec() functions to include full set of values
+>     defined in CXL r3.0
+>   - Pushed implementation down into the .c file.
+> ---
+>   include/hw/cxl/cxl_component.h |  2 ++
+>   hw/cxl/cxl-component-utils.c   | 59 ++++++++++++++++++++++++++++++----
+>   2 files changed, 55 insertions(+), 6 deletions(-)
+
+Hoping the values match the "CXL r3.0 Section 8.2.4.19.1 CXL
+HDM Decoder Capability Register":
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
