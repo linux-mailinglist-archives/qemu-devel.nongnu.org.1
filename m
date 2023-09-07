@@ -2,82 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17997973F0
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 17:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CCE7974EF
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 17:45:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeH1a-0007YN-37; Thu, 07 Sep 2023 11:34:30 -0400
+	id 1qeHAQ-0004L1-C9; Thu, 07 Sep 2023 11:43:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qeH1S-0007Xn-9J
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:34:23 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qeH1O-00060c-Kq
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:34:21 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-573249e73f8so646878eaf.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 08:34:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694100857; x=1694705657; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=17wXHI0sTEFeymlLjgViNPVQkk0U2VhLz+vzqFch7mc=;
- b=dMJs7MdXDLWHM0lwSra6quYEMVkVk4zuycZuAyLxBJlCwvUnWTCmMTUL/CdQ5r6LUd
- R5UkSiL6mK8eHcC5WrJzgEVL2R6cncuTh8PfXnuTFDCXSHwZzWsnaD3qA7rdZ422ixSM
- 5Lpz1DuZcGlcnlkEOc+cuwKCkZ40l3YPLwWLy2oGPXA55c4T5CK/OPGUdCgLoN+9+/PN
- bMYXoQnGGNZDrD82fkvUVbNADNqGCiOIcSlk4u99kECJh2ZvzwQVIy3S9b/RohnQ+zZz
- GqVNmyyFoCPdtfLnn3bgd87kPno9Cr8GwASxHZ93xrMWsAZ2NCN0xVRhfOftZFtKY8rl
- BGZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694100857; x=1694705657;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=17wXHI0sTEFeymlLjgViNPVQkk0U2VhLz+vzqFch7mc=;
- b=D+RsFB4r7tjYlZ37OignEk9hCw0KssD7yYohO2HorWytTcck8FMTWrEPWuPQo/zLXG
- SFhVpJeLc0etZCNWt0n4A4UPfdM2wO5smR8ZHkv3Q2PlJugosxHPjao9WguEYRyvhGpf
- R7s2SjLcjY5mjLrJ7PiYqER0gEN38PxJJSZTOGLVsILyY8n33txDXWIps49i5shuCYwX
- unu9Oa4q/7DVBpscY3EJQDWmmwr275aZmXLr86Q/T0lD9HfKwMHZaCP1bGUPvtZ6+Bqw
- 4+EO/t7CcIR1lgMRPI/WMPajQ30pSnEjOZB+s5f7wJe04EA1SQnYXQp5AaP7Vo0vOLLB
- zU1Q==
-X-Gm-Message-State: AOJu0Yyf+DvDFeeUKz0NG5g23IQo8Qf6b8pprQGCWY6UPQ7Ep/uJYKi3
- zFVWCEoVshqinQ/Na5mGbmdDq4an6wjuYqCd0O4=
-X-Google-Smtp-Source: AGHT+IEn6PL7Cbvuv3v6TthfeNRtAs4zbEXxoWccIJd7xhDVJ1PwbRnRyNb88XmakAhHTunv3EvOAg6Qv021DPzNvxg=
-X-Received: by 2002:a4a:2553:0:b0:56e:5a8e:654f with SMTP id
- v19-20020a4a2553000000b0056e5a8e654fmr18790248ooe.8.1694100857299; Thu, 07
- Sep 2023 08:34:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qeHAO-0004KW-U5
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:43:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qeHAK-0003Mq-Oz
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 11:43:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694101411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uiiz/PaONkCp9h7zmv/wp525+hIIms/kqTfTN9kg6Xs=;
+ b=ZVZlBMLCQDXxzjiCfdk0GCJhlwDQIRf4PuqYqieYziBn+QbjbIRT/n9Y/l1il9O/LIGDFW
+ I/Tc4O1aMEBzeUemuy43Rn48FS/erJuKruas5Nqy2HdzZcdIQneBTwgoqQ924RTcFbSYL+
+ AInNgCZfeLUxmLDqfpkh/Gs2HZ0EE9E=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-130-K1IsZIhZOrS9XMfgTDpRdQ-1; Thu, 07 Sep 2023 11:43:28 -0400
+X-MC-Unique: K1IsZIhZOrS9XMfgTDpRdQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E34E929AA3B1;
+ Thu,  7 Sep 2023 15:43:27 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.223])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7A7D01460FE5;
+ Thu,  7 Sep 2023 15:43:27 +0000 (UTC)
+Date: Thu, 7 Sep 2023 11:43:26 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PULL v2 00/35] ppc queue
+Message-ID: <20230907154326.GA1550586@fedora>
+References: <20230906143653.54709-1-clg@kaod.org>
 MIME-Version: 1.0
-References: <20230906190141.1286893-1-stefanha@redhat.com>
- <20230906190141.1286893-2-stefanha@redhat.com>
- <ZPkiH4WvSs1k43RQ@gallifrey> <20230907140428.GB1363873@fedora>
- <ZPnZCbnpzS2QsEYO@gallifrey>
-In-Reply-To: <ZPnZCbnpzS2QsEYO@gallifrey>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Thu, 7 Sep 2023 11:34:05 -0400
-Message-ID: <CAJSP0QWGi4y0aanPKs7S0HuOD=Vp4GZ2YURMZovgO9_zDSucng@mail.gmail.com>
-Subject: Re: [RFC 1/3] hmp: avoid the nested event loop in handle_hmp_command()
-To: "Dr. David Alan Gilbert" <dave@treblig.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- Eduardo Habkost <eduardo@habkost.net>, pbonzini@redhat.com, 
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- kwolf@redhat.com, Maxim Levitsky <mlevitsk@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc29.google.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="1Ps1bXh3mLFUAaMd"
+Content-Disposition: inline
+In-Reply-To: <20230906143653.54709-1-clg@kaod.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,159 +81,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Sept 2023 at 10:07, Dr. David Alan Gilbert <dave@treblig.org> wro=
-te:
->
-> * Stefan Hajnoczi (stefanha@redhat.com) wrote:
-> > On Thu, Sep 07, 2023 at 01:06:39AM +0000, Dr. David Alan Gilbert wrote:
-> > > * Stefan Hajnoczi (stefanha@redhat.com) wrote:
-> > > > Coroutine HMP commands currently run to completion in a nested even=
-t
-> > > > loop with the Big QEMU Lock (BQL) held. The call_rcu thread also us=
-es
-> > > > the BQL and cannot process work while the coroutine monitor command=
- is
-> > > > running. A deadlock occurs when monitor commands attempt to wait fo=
-r
-> > > > call_rcu work to finish.
-> > >
-> > > I hate to think if there's anywhere else that ends up doing that
-> > > other than the monitors.
-> >
-> > Luckily drain_call_rcu() has few callers: just
-> > xen_block_device_destroy() and qmp_device_add(). We only need to worry
-> > about their call stacks.
-> >
-> > I haven't looked at the Xen code.
-> >
-> > >
-> > > But, not knowing the semantics of the rcu code, it looks kind of OK t=
-o
-> > > me from the monitor.
-> > >
-> > > (Do you ever get anything like qemu quitting from one of the other
-> > > monitors while this coroutine hasn't been run?)
-> >
-> > Not sure what you mean?
->
-> Imagine that just after you create your coroutine, a vCPU does a
-> shutdown and qemu is configured to quit, or on another monitor someone
-> does a quit;  does your coroutine get executed or not?
 
-I think the answer is that it depends.
+--1Ps1bXh3mLFUAaMd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-A coroutine can run for a while and then yield while waiting for a
-timer, BH, fd handler, etc. If the coroutine has yielded then I think
-QEMU could terminate.
+Applied, thanks.
 
-The behavior of entering a coroutine for the first time depends on the
-API that is used (e.g. qemu_coroutine_enter()/aio_co_enter()/etc).
-qemu_coroutine_enter() is immediate but aio_co_enter() contains
-indirect code paths like scheduling a BH.
+Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
 
-To summarize: =C2=AF\_(=E3=83=84)_/=C2=AF
+--1Ps1bXh3mLFUAaMd
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Stefan
+-----BEGIN PGP SIGNATURE-----
 
->
-> Dave
->
-> > Stefan
-> >
-> > >
-> > > Dave
-> > >
-> > > > This patch refactors the HMP monitor to use the existing event loop
-> > > > instead of creating a nested event loop. This will allow the next
-> > > > patches to rely on draining call_rcu work.
-> > > >
-> > > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > > ---
-> > > >  monitor/hmp.c | 28 +++++++++++++++-------------
-> > > >  1 file changed, 15 insertions(+), 13 deletions(-)
-> > > >
-> > > > diff --git a/monitor/hmp.c b/monitor/hmp.c
-> > > > index 69c1b7e98a..6cff2810aa 100644
-> > > > --- a/monitor/hmp.c
-> > > > +++ b/monitor/hmp.c
-> > > > @@ -1111,15 +1111,17 @@ typedef struct HandleHmpCommandCo {
-> > > >      Monitor *mon;
-> > > >      const HMPCommand *cmd;
-> > > >      QDict *qdict;
-> > > > -    bool done;
-> > > >  } HandleHmpCommandCo;
-> > > >
-> > > > -static void handle_hmp_command_co(void *opaque)
-> > > > +static void coroutine_fn handle_hmp_command_co(void *opaque)
-> > > >  {
-> > > >      HandleHmpCommandCo *data =3D opaque;
-> > > > +
-> > > >      handle_hmp_command_exec(data->mon, data->cmd, data->qdict);
-> > > >      monitor_set_cur(qemu_coroutine_self(), NULL);
-> > > > -    data->done =3D true;
-> > > > +    qobject_unref(data->qdict);
-> > > > +    monitor_resume(data->mon);
-> > > > +    g_free(data);
-> > > >  }
-> > > >
-> > > >  void handle_hmp_command(MonitorHMP *mon, const char *cmdline)
-> > > > @@ -1157,20 +1159,20 @@ void handle_hmp_command(MonitorHMP *mon, co=
-nst char *cmdline)
-> > > >          Monitor *old_mon =3D monitor_set_cur(qemu_coroutine_self()=
-, &mon->common);
-> > > >          handle_hmp_command_exec(&mon->common, cmd, qdict);
-> > > >          monitor_set_cur(qemu_coroutine_self(), old_mon);
-> > > > +        qobject_unref(qdict);
-> > > >      } else {
-> > > > -        HandleHmpCommandCo data =3D {
-> > > > -            .mon =3D &mon->common,
-> > > > -            .cmd =3D cmd,
-> > > > -            .qdict =3D qdict,
-> > > > -            .done =3D false,
-> > > > -        };
-> > > > -        Coroutine *co =3D qemu_coroutine_create(handle_hmp_command=
-_co, &data);
-> > > > +        HandleHmpCommandCo *data; /* freed by handle_hmp_command_c=
-o() */
-> > > > +
-> > > > +        data =3D g_new(HandleHmpCommandCo, 1);
-> > > > +        data->mon =3D &mon->common;
-> > > > +        data->cmd =3D cmd;
-> > > > +        data->qdict =3D qdict; /* freed by handle_hmp_command_co()=
- */
-> > > > +
-> > > > +        Coroutine *co =3D qemu_coroutine_create(handle_hmp_command=
-_co, data);
-> > > > +        monitor_suspend(&mon->common); /* resumed by handle_hmp_co=
-mmand_co() */
-> > > >          monitor_set_cur(co, &mon->common);
-> > > >          aio_co_enter(qemu_get_aio_context(), co);
-> > > > -        AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
-> > > >      }
-> > > > -
-> > > > -    qobject_unref(qdict);
-> > > >  }
-> > > >
-> > > >  static void cmd_completion(MonitorHMP *mon, const char *name, cons=
-t char *list)
-> > > > --
-> > > > 2.41.0
-> > > >
-> > > >
-> > > --
-> > >  -----Open up your eyes, open up your mind, open up your code -------
-> > > / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  =
-\
-> > > \        dave @ treblig.org |                               | In Hex =
-/
-> > >  \ _________________________|_____ http://www.treblig.org   |_______/
-> > >
->
->
-> --
->  -----Open up your eyes, open up your mind, open up your code -------
-> / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \
-> \        dave @ treblig.org |                               | In Hex /
->  \ _________________________|_____ http://www.treblig.org   |_______/
->
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmT5750ACgkQnKSrs4Gr
+c8j4fwgAqrtE0TjLnli25DrP18wW9nYhcjBUYebOKTjgmxyDQTJPIDXVg/WvjVI5
+EEAK9SU2ddHYP497S9nAXegYjcK1kOr8YQXNhtg9SVL2g0m+mR7kfLJNwNukSidJ
+NwQXkDS02OKRqbq0Z/nmQtPeC/L1QBAMJZaEbWicoGrCss6d+H0HeHqoSFOR245L
+mao8X353aOy4YZAtbW9kvAiut5JSACnQK10iFhCfp2om0i9MDqthR6WwWHM8iF8L
++oJPdZ+mIDncB4WY6yuD5rNiVYGiZWiCGnqI9bjMewR+9qEHX/yn1yyRYY1viYeD
+MtmakRZLVQJ411r1WobVJOlqyyTKpQ==
+=zCGr
+-----END PGP SIGNATURE-----
+
+--1Ps1bXh3mLFUAaMd--
+
 
