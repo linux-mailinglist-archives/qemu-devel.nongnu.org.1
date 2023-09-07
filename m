@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2285796F16
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 04:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A33A796F25
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 05:03:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe55a-00082t-O6; Wed, 06 Sep 2023 22:49:50 -0400
+	id 1qe5HO-0001Tt-2V; Wed, 06 Sep 2023 23:02:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe55X-000827-Kc; Wed, 06 Sep 2023 22:49:47 -0400
-Received: from mail-ot1-x334.google.com ([2607:f8b0:4864:20::334])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe5HC-0001Ql-P4; Wed, 06 Sep 2023 23:01:50 -0400
+Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe55R-0001lK-Li; Wed, 06 Sep 2023 22:49:47 -0400
-Received: by mail-ot1-x334.google.com with SMTP id
- 46e09a7af769-6bcac140aaaso402269a34.2; 
- Wed, 06 Sep 2023 19:49:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe5HA-0006OF-H2; Wed, 06 Sep 2023 23:01:50 -0400
+Received: by mail-vs1-xe2d.google.com with SMTP id
+ ada2fe7eead31-44d4d997dcfso199918137.0; 
+ Wed, 06 Sep 2023 20:01:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694054979; x=1694659779; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1694055706; x=1694660506; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LG8L/krzvJmL9LFvT0q6F8UskyYP/dtlYL5mCceaOnE=;
- b=MFTNjA2Rsxs2U9ZyLhXQALkkvsHnOFmyBnzt1U4BtDsy2+QaM+sfpib1kPicuvBV3K
- 3US1vnBDRanjQ2So1eatpX4y+LIK/CzM1DFvwOpJsh+vNtxXI4U0NEyO4Ma2u7Apkzsk
- 5VLciab1G4szweCoMQaqdOoC4pYaE1gwFSpqK5XBMmkYuZbsP9n9UZE2uWKfWXooFhfL
- xhWF/k7DbI0o7h3+NkOpjNPQ9+r2pD2B9tQJrZOCSSw6Byzknlpix7p1lDxxjSRWOCuk
- NviNKVg2rL2/iQktWSRqzhK5Nt4PTOlPpaJSPaW6c+hfpo1DR4N3m/WwFz2b5tWdZHi0
- qjQA==
+ bh=p0EC/StpIzdm1vTgCkZbLeaZAszcVz8fC0cOYnfdPDY=;
+ b=U2mJ5/AeIYufY/yjMGywfa6cTzK7AHdmG4K5lfKW9UCH66Si/+mkeZARaKn5LPdym0
+ zVJp79uBwd5G9z+oa+UtyaRcwj9TohXofX9GlanQHWFGqqVRuCxFZHqKiH8DgItQOZma
+ QztMIUuogGRLvsO0CneVY4/WHNQokSFZUaray+/ragd7SJSn6BZbCrXNdeZAN5hI8YZe
+ 0xjIqlJf4FGiEe1pQyOTDOMvuM19X9eRKZMChQ7khP4o96cCm4MUfwnu3ORqFxhz2KlQ
+ Guj9Oq1tdbad2wV1qdsfJOUooCc5tA4GOU7vdZPzhgw5JzWfBAA3H44BkGS+f4nzojOS
+ fvdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694054979; x=1694659779;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=LG8L/krzvJmL9LFvT0q6F8UskyYP/dtlYL5mCceaOnE=;
- b=AixgF3fYfaCCeBCooX9E6muFAxopvl2SITBiQe6JHaYa+2GLBmO2c1DgjqTA0/uIZd
- 17MqICRyQvwtdNfwxKkWp6zazjEbB4PlvdHfvuxC7FXdUkEWtG0yBXSAW/CL3CdzAivw
- 6ISEm5BiLlBAfF18KSNO0oGf00RdeJ7u2f+7aHWABO/z5FvxXCU6pBYaKiqfv9wFOoKw
- kGsAofj6bKregLo7sOUhnRdIct2pBmUmQrHqR+WHnFJl4g4I4dgJW7YmEH6+UaKfWCFn
- pYH2KUTY7y3PqTvNlAxTpx0fTG4cIannsYdb0DsKUuW3rITCPSJhQd41LXpugyiV61Jn
- Vw/Q==
-X-Gm-Message-State: AOJu0Yx5/yIpAeUsi0KB0qs6Y6r9EN4r6NIRHAWd889tqD3+hY131aVt
- wpA6ImSy4bwGi9VHujrcE0I=
-X-Google-Smtp-Source: AGHT+IHlBPDDoq8V2TtMJj0Hp8cEKZQZQW20mZWzCoZkYSfZNl2yXWYtv9xGXI+1pxWOyWhReRp1dA==
-X-Received: by 2002:a05:6358:998f:b0:13e:b477:8015 with SMTP id
- j15-20020a056358998f00b0013eb4778015mr5232246rwb.9.1694054979590; 
- Wed, 06 Sep 2023 19:49:39 -0700 (PDT)
-Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
- by smtp.gmail.com with ESMTPSA id
- 26-20020a17090a005a00b0025dc5749b4csm497664pjb.21.2023.09.06.19.49.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 19:49:39 -0700 (PDT)
-Mime-Version: 1.0
+ d=1e100.net; s=20221208; t=1694055706; x=1694660506;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=p0EC/StpIzdm1vTgCkZbLeaZAszcVz8fC0cOYnfdPDY=;
+ b=DeeTe8RoZGIN72VmYlWsZ6HcogKAiIg2UCa0RQqQ5Q6alcrHAKfhMx7VLHUHiHsR7u
+ ILBYIhWWZ9KI4Ee5zlBZPx4a1ShS99zTMqEBXPoaJPDXDHvrxJdqmzcAv78qzG4qnybI
+ WlyO/qJvJhW30KJWLMpAKFefMbrhuXB0BKZwNdENa6bPHwAdLvjTdtA7G1lEe+MRfQu/
+ HP3NPuxbKmbFpk3JL3Ez2afkiWNWdX4bgCCnDPF5GYSBoGg/X9EB079Jq6WQW5qYzAPu
+ ioinOmlxNVhLB2WY79H4aN+dF6y7j282DRdlrw8j3eCD3ZPAzcWZRUCPbxGHv5hQvNwR
+ +FtQ==
+X-Gm-Message-State: AOJu0Yw8Hi/vwbRIJzFFVG3H8DmGiQtEIBk4zYDGU0Y4vzjsK+Ad3yUp
+ oYwAFil4m+DziYr72xRor6+7AyNobPuBZKFwaB8=
+X-Google-Smtp-Source: AGHT+IGA+DLwMCWATDOJPz6RBvLdgB3HYtVdbZVx34H6dZuq3WadI6gwByhsgPHAxHEZHXq00nZGfw+V3fKEwqCrUKI=
+X-Received: by 2002:a67:ec19:0:b0:44d:482a:5443 with SMTP id
+ d25-20020a67ec19000000b0044d482a5443mr5132711vso.11.1694055706121; Wed, 06
+ Sep 2023 20:01:46 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230808090914.17634-1-nikita.shubin@maquefel.me>
+In-Reply-To: <20230808090914.17634-1-nikita.shubin@maquefel.me>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 7 Sep 2023 13:01:19 +1000
+Message-ID: <CAKmqyKPO6hTfsqz-M-YXM+KeD7LQQoA8CjVd-Z7_w7j4NeWUMA@mail.gmail.com>
+Subject: Re: [PATCH v3] target/riscv: don't read CSR in riscv_csrrw_do64
+To: Nikita Shubin <nikita.shubin@maquefel.me>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Nikita Shubin <n.shubin@yadro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Sep 2023 12:49:33 +1000
-Message-Id: <CVCCDB85C7Z2.3EOW6KPE9LCRJ@wheely>
-Cc: <qemu-devel@nongnu.org>, <mikey@neuling.org>, <vaibhav@linux.ibm.com>,
- <jniethe5@gmail.com>, <sbhat@linux.ibm.com>, <kconsul@linux.vnet.ibm.com>
-Subject: Re: [PATCH RESEND 09/15] ppc: spapr: Implement nested PAPR hcall -
- H_GUEST_CREATE_VCPU
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <danielhb413@gmail.com>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230906043333.448244-1-harshpb@linux.ibm.com>
- <20230906043333.448244-10-harshpb@linux.ibm.com>
-In-Reply-To: <20230906043333.448244-10-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::334;
- envelope-from=npiggin@gmail.com; helo=mail-ot1-x334.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,232 +91,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
-> This patch implements support for hcall H_GUEST_CREATE_VCPU which is
-> used to instantiate a new VCPU for a previously created nested guest.
-> The L1 provide the guest-id (returned by L0 during call to
-> H_GUEST_CREATE) and an associated unique vcpu-id to refer to this
-> instance in future calls. It is assumed that vcpu-ids are being
-> allocated in a sequential manner and max vcpu limit is 2048.
+On Tue, Aug 8, 2023 at 7:10=E2=80=AFPM Nikita Shubin <nikita.shubin@maquefe=
+l.me> wrote:
 >
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
-> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> From: Nikita Shubin <n.shubin@yadro.com>
+>
+> As per ISA:
+>
+> "For CSRRWI, if rd=3Dx0, then the instruction shall not read the CSR and
+> shall not cause any of the side effects that might occur on a CSR read."
+>
+> trans_csrrwi() and trans_csrrw() call do_csrw() if rd=3Dx0, do_csrw() cal=
+ls
+> riscv_csrrw_do64(), via helper_csrw() passing NULL as *ret_value.
+>
+> Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
 > ---
->  hw/ppc/spapr_nested.c         | 110 ++++++++++++++++++++++++++++++++++
->  include/hw/ppc/spapr.h        |   1 +
->  include/hw/ppc/spapr_nested.h |   1 +
->  3 files changed, 112 insertions(+)
+> Changelog v2:
+> - fixed uninitialized old_value
 >
-> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-> index 09bbbfb341..e7956685af 100644
-> --- a/hw/ppc/spapr_nested.c
-> +++ b/hw/ppc/spapr_nested.c
-> @@ -376,6 +376,47 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
->      address_space_unmap(CPU(cpu)->as, regs, len, len, true);
->  }
-> =20
-> +static
-> +SpaprMachineStateNestedGuest *spapr_get_nested_guest(SpaprMachineState *=
-spapr,
-> +                                                     target_ulong lpid)
-> +{
-> +    SpaprMachineStateNestedGuest *guest;
-> +
-> +    guest =3D g_hash_table_lookup(spapr->nested.guests, GINT_TO_POINTER(=
-lpid));
-> +    return guest;
-> +}
-
-Are you namespacing the new API stuff with papr or no? Might be good to
-reduce confusion.
-
-> +
-> +static bool vcpu_check(SpaprMachineStateNestedGuest *guest,
-> +                       target_ulong vcpuid,
-> +                       bool inoutbuf)
-
-What's it checking? That the id is valid? Allocated? Enabled?
-
-> +{
-> +    struct SpaprMachineStateNestedGuestVcpu *vcpu;
-> +
-> +    if (vcpuid >=3D NESTED_GUEST_VCPU_MAX) {
-> +        return false;
-> +    }
-> +
-> +    if (!(vcpuid < guest->vcpus)) {
-> +        return false;
-> +    }
-> +
-> +    vcpu =3D &guest->vcpu[vcpuid];
-> +    if (!vcpu->enabled) {
-> +        return false;
-> +    }
-> +
-> +    if (!inoutbuf) {
-> +        return true;
-> +    }
-> +
-> +    /* Check to see if the in/out buffers are registered */
-> +    if (vcpu->runbufin.addr && vcpu->runbufout.addr) {
-> +        return true;
-> +    }
-> +
-> +    return false;
-> +}
-> +
->  static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
->                                               SpaprMachineState *spapr,
->                                               target_ulong opcode,
-> @@ -448,6 +489,11 @@ static void
->  destroy_guest_helper(gpointer value)
+> Changelog v3:
+> - reword comment and commit message as Deniel suggested
+>
+> ---
+>  target/riscv/csr.c | 24 +++++++++++++++---------
+>  1 file changed, 15 insertions(+), 9 deletions(-)
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index ea7585329e..c5564d6d53 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -3908,21 +3908,27 @@ static RISCVException riscv_csrrw_do64(CPURISCVSt=
+ate *env, int csrno,
+>                                         target_ulong write_mask)
 >  {
->      struct SpaprMachineStateNestedGuest *guest =3D value;
-> +    int i =3D 0;
-
-Don't need to set i =3D 0 twice. A newline would be good though.
-
-> +    for (i =3D 0; i < guest->vcpus; i++) {
-> +        cpu_ppc_tb_free(&guest->vcpu[i].env);
-> +    }
-> +    g_free(guest->vcpu);
->      g_free(guest);
->  }
-> =20
-> @@ -518,6 +564,69 @@ static target_ulong h_guest_create(PowerPCCPU *cpu,
->      return H_SUCCESS;
->  }
-> =20
-> +static target_ulong h_guest_create_vcpu(PowerPCCPU *cpu,
-> +                                        SpaprMachineState *spapr,
-> +                                        target_ulong opcode,
-> +                                        target_ulong *args)
-> +{
-> +    CPUPPCState *env =3D &cpu->env, *l2env;
-> +    target_ulong flags =3D args[0];
-> +    target_ulong lpid =3D args[1];
-> +    target_ulong vcpuid =3D args[2];
-> +    SpaprMachineStateNestedGuest *guest;
-> +
-> +    if (flags) { /* don't handle any flags for now */
-> +        return H_UNSUPPORTED_FLAG;
-> +    }
-> +
-> +    guest =3D spapr_get_nested_guest(spapr, lpid);
-> +    if (!guest) {
-> +        return H_P2;
-> +    }
-> +
-> +    if (vcpuid < guest->vcpus) {
-> +        return H_IN_USE;
-> +    }
-> +
-> +    if (guest->vcpus >=3D NESTED_GUEST_VCPU_MAX) {
-> +        return H_P3;
-> +    }
-> +
-> +    if (guest->vcpus) {
-> +        struct SpaprMachineStateNestedGuestVcpu *vcpus;
-
-Ditto for using typedefs. Do a sweep for this.
-
-> +        vcpus =3D g_try_renew(struct SpaprMachineStateNestedGuestVcpu,
-> +                            guest->vcpu,
-> +                            guest->vcpus + 1);
-
-g_try_renew doesn't work with NULL mem? That's unfortunate.
-
-> +        if (!vcpus) {
-> +            return H_NO_MEM;
+>      RISCVException ret;
+> -    target_ulong old_value;
+> +    target_ulong old_value =3D 0;
+>
+>      /* execute combined read/write operation if it exists */
+>      if (csr_ops[csrno].op) {
+>          return csr_ops[csrno].op(env, csrno, ret_value, new_value, write=
+_mask);
+>      }
+>
+> -    /* if no accessor exists then return failure */
+> -    if (!csr_ops[csrno].read) {
+> -        return RISCV_EXCP_ILLEGAL_INST;
+> -    }
+> -    /* read old value */
+> -    ret =3D csr_ops[csrno].read(env, csrno, &old_value);
+> -    if (ret !=3D RISCV_EXCP_NONE) {
+> -        return ret;
+> +    /*
+> +     * ret_value =3D=3D NULL means that rd=3Dx0 and we're coming from he=
+lper_csrw()
+> +     * and we can't throw side effects caused by CSR reads.
+> +     */
+> +    if (ret_value) {
+> +        /* if no accessor exists then return failure */
+> +        if (!csr_ops[csrno].read) {
+> +            return RISCV_EXCP_ILLEGAL_INST;
 > +        }
-> +        memset(&vcpus[guest->vcpus], 0,
-> +               sizeof(struct SpaprMachineStateNestedGuestVcpu));
-> +        guest->vcpu =3D vcpus;
-> +        l2env =3D &vcpus[guest->vcpus].env;
-> +    } else {
-> +        guest->vcpu =3D g_try_new0(struct SpaprMachineStateNestedGuestVc=
-pu, 1);
-> +        if (guest->vcpu =3D=3D NULL) {
-> +            return H_NO_MEM;
+> +        /* read old value */
+> +        ret =3D csr_ops[csrno].read(env, csrno, &old_value);
+> +        if (ret !=3D RISCV_EXCP_NONE) {
+> +            return ret;
 > +        }
-> +        l2env =3D &guest->vcpu->env;
-> +    }
-
-These two legs seem to be doing the same thing in different
-ways wrt l2env. Just assign guest->vcpu in the branches and
-get the l2env from guest->vcpu[guest->vcpus] afterward, no?
-
-> +    /* need to memset to zero otherwise we leak L1 state to L2 */
-> +    memset(l2env, 0, sizeof(CPUPPCState));
-
-AFAIKS you just zeroed it above.
-
-> +    /* Copy L1 PVR to L2 */
-> +    l2env->spr[SPR_PVR] =3D env->spr[SPR_PVR];
-> +    cpu_ppc_tb_init(l2env, SPAPR_TIMEBASE_FREQ);
-
-I would move this down to the end, because it's setting up the
-vcpu...
-
-> +
-> +    guest->vcpus++;
-> +    assert(vcpuid < guest->vcpus); /* linear vcpuid allocation only */
-> +    guest->vcpu[vcpuid].enabled =3D true;
-> +
-
-... This is still allocating the vcpu so move it up.
-
-> +    if (!vcpu_check(guest, vcpuid, false)) {
-> +        return H_PARAMETER;
-> +    }
-> +    return H_SUCCESS;
-> +}
-> +
->  void spapr_register_nested(void)
->  {
->      spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
-> @@ -531,6 +640,7 @@ void spapr_register_nested_phyp(void)
->      spapr_register_hypercall(H_GUEST_GET_CAPABILITIES, h_guest_get_capab=
-ilities);
->      spapr_register_hypercall(H_GUEST_SET_CAPABILITIES, h_guest_set_capab=
-ilities);
->      spapr_register_hypercall(H_GUEST_CREATE          , h_guest_create);
-> +    spapr_register_hypercall(H_GUEST_CREATE_VCPU     , h_guest_create_vc=
-pu);
->  }
-> =20
->  #else
-> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-> index 8a6e9ce929..c9f9682a46 100644
-> --- a/include/hw/ppc/spapr.h
-> +++ b/include/hw/ppc/spapr.h
-> @@ -371,6 +371,7 @@ struct SpaprMachineState {
->  #define H_UNSUPPORTED     -67
->  #define H_OVERLAP         -68
->  #define H_STATE           -75
-> +#define H_IN_USE          -77
-
-Why add it here and not in the first patch?
-
->  #define H_INVALID_ELEMENT_ID               -79
->  #define H_INVALID_ELEMENT_SIZE             -80
->  #define H_INVALID_ELEMENT_VALUE            -81
-> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.=
-h
-> index 7841027df8..2e8c6ba1ca 100644
-> --- a/include/hw/ppc/spapr_nested.h
-> +++ b/include/hw/ppc/spapr_nested.h
-> @@ -199,6 +199,7 @@
-> =20
->  /* Nested PAPR API macros */
->  #define NESTED_GUEST_MAX 4096
-> +#define NESTED_GUEST_VCPU_MAX 2048
-> =20
-
-PAPR_ prefix?
-
->  typedef struct SpaprMachineStateNestedGuest {
->      unsigned long vcpus;
-
+>      }
+>
+>      /* write value if writable and write mask set, otherwise drop writes=
+ */
+> --
+> 2.39.2
+>
+>
 
