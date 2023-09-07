@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BE0796F3B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 05:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3DA796F48
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 05:32:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe5Wb-0008P4-2L; Wed, 06 Sep 2023 23:17:45 -0400
+	id 1qe5jD-0004Qk-2H; Wed, 06 Sep 2023 23:30:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qe5WU-0008LL-OJ; Wed, 06 Sep 2023 23:17:39 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qe5j9-0004Ml-GQ; Wed, 06 Sep 2023 23:30:44 -0400
+Received: from mail-qk1-x72c.google.com ([2607:f8b0:4864:20::72c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qe5WS-0001dU-0I; Wed, 06 Sep 2023 23:17:38 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-52e297c7c39so501547a12.2; 
- Wed, 06 Sep 2023 20:17:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qe5j4-0002cZ-UX; Wed, 06 Sep 2023 23:30:41 -0400
+Received: by mail-qk1-x72c.google.com with SMTP id
+ af79cd13be357-76ef935abaeso32733785a.2; 
+ Wed, 06 Sep 2023 20:30:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694056653; x=1694661453; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1694057437; x=1694662237; darn=nongnu.org;
+ h=in-reply-to:references:from:subject:cc:to:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UHfeFMGTFg/hgxDchx79Q0fAyOOSOOfhkwpVATWZPdo=;
- b=WGp8QcDRevYOoywWkU3oBI3dCVI9u6HsrucfhVH78JTdtGrdcic4ievLIy5jWqO3fm
- hSTsJ8S0weMcAp9Cep2oN+Nv/fBsEUhxAz7UvO02x8WO9EpWlYwwgO7gjVEQrXd5oc4Y
- gjljhkzdEi5Fu2/wc40KUIqIk25Ikl+V+11ghfFI/mkMnQKeqeWEmNofQyJY9Glo615b
- zhKpfwNNIxgYyHxlVXU200eijoKqVi40ejoVZnFER5f6HAOlhlbGey7yGjmy/zmi2X7x
- fw54Ukzuzo5A7+sM+pOayIAWlAdG2VFB2gIFgEBLuXlF/Bh5lPAl2KzvE6X35s/MiOoy
- cnGQ==
+ bh=jEaemtnvwEhnedBlm6NfpCIM3D9kxx7x22kRwzyzRcU=;
+ b=bFkrwTqVDilTJhW2OCYFkpdBxkJVL0SsX0/R5xeUkoNue7N2WaPzTv0lXFxe1rKZZ1
+ cQGholUw33a44ixJHxfPMwdWhxtcRCFaT4aPlSIKJWWXx7XMXbssXD5j7DGbKB0A1vg1
+ kkDihUHw5WnWcaNfYGXocnQqG7POzrxAdUxgRH/PGzjyMfoKT00I0LTLprb8e3iGdP9g
+ JEb8xI/zQUMcY0Jjzko/AU7cmgt80+J53tUyBihiyXeXfDnnwhzjnS4GO4lb1sMWshaz
+ T+zsuPn2Ed1qVZW0acndpXzRaugUBggxgLX/8syzs+Le3mOwHwvPwMJejGkPydhKb0Nh
+ AFlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694056653; x=1694661453;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UHfeFMGTFg/hgxDchx79Q0fAyOOSOOfhkwpVATWZPdo=;
- b=NDm+Dmu1WP1fn9HevrDmMuY9/9gyFQfuZUMPSGOaY5mntje4la7tMwaKtoIKj6CAOv
- ECoQ/PSCrLhBIbcZLE8RbxdETgUxdcZyI8K2irvMOeN6ATLfmMLdiN1FQfCEXIjLqMoY
- FObNmkpgExdki5kEFoEiRtklWeIQdGHS/CV+1YC8nSn5de4vFTZHlDOteKGZgZePQ7rC
- vpcntcVGXPKCkdahlEQXLGQ6/ZdvHXb2jTJ/qcZYFl1vOahRrwTXLdD0RnC9G6ZqU/KB
- HnAg5oSW4Pn/bWo/LJ0od4oqvi7Dlp2JpYcozpB29NISN9BLrQi6UQZSLDnum4S/dxlP
- oKtQ==
-X-Gm-Message-State: AOJu0YwA9r7AQW5tkfm4skqCH/8nJimHmgE84oSDpvIWe3hgM5jT8vra
- EDCpUiv6Z4LN0qMmtMlx8y16kx9eF6qiXyhRAKU=
-X-Google-Smtp-Source: AGHT+IEN7FTcXdMzTcE2pWWCWLsMGh/1hXQV88SK9pf1RlmjjStN/aVf4uY2fshEEbC859n24tBsCOgIFJPsnrKC6GU=
-X-Received: by 2002:aa7:d714:0:b0:522:27f1:3c06 with SMTP id
- t20-20020aa7d714000000b0052227f13c06mr3371477edq.21.1694056653412; Wed, 06
- Sep 2023 20:17:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230731015317.1026996-1-fei2.wu@intel.com>
- <ea7d2188-97ad-9563-1b92-cf998f4b1747@ventanamicro.com>
- <49bbec5d-d0da-55e2-875b-3a8874bc3322@intel.com>
-In-Reply-To: <49bbec5d-d0da-55e2-875b-3a8874bc3322@intel.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 7 Sep 2023 13:17:05 +1000
-Message-ID: <CAKmqyKMtAzt5saCUMd4vXYfgAQibpzQJAhtTSuSb+yeKhcYpfw@mail.gmail.com>
-Subject: Re: [PATCH] hw/riscv: split RAM into low and high memory
-To: "Wu, Fei" <fei2.wu@intel.com>, Anup Patel <apatel@ventanamicro.com>
-Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, palmer@dabbelt.com,
- alistair.francis@wdc.com, 
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
- Andrei Warkentin <andrei.warkentin@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+ d=1e100.net; s=20221208; t=1694057437; x=1694662237;
+ h=in-reply-to:references:from:subject:cc:to:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=jEaemtnvwEhnedBlm6NfpCIM3D9kxx7x22kRwzyzRcU=;
+ b=jrS8ed/uvO9I8GWJFA/BFkzENK+8Z1HnmHaHmmkG+FRpSkKWl+YAP3jWFPWdeqF55c
+ ET9ru9bLBOC6QcTWgDdW/mZivQWGYgFw7EqGY0I5DJbAj+kTJi0EDfbMLS9DK/BQx9jV
+ +f2jbn1U2r47PhZukLGot7zaUeBj8fuaME+1QRME1gxXXXzlqcfPm5HVLCrhGEngvqYE
+ Oab5jfPxcb7pFbVoDcX9yvaEJ6/YzN5VXSJtcWL/3bdQfdvLPW/TBJZh6Nb2y+hTg/80
+ jIoR2YgouVI2+ybPKr/LbMKuNCwfV6w9TK89RX8FOGBPPSD9hf1nzRDafa4BGvIpcHLx
+ /A8w==
+X-Gm-Message-State: AOJu0YwHJ0YdbV4OOYKOuRctrJjdryJVuNIzeL2eVXyFHZy5wsu0pMBp
+ AXjY3OMzSFTD+nvGC+y3Di0=
+X-Google-Smtp-Source: AGHT+IGh11rTQltZRWtNxhHou0TD/8HQI8rZTTe6h3A5RY7N4GCjXOEbpRt5F/OEnxz/B4DI9KEp0A==
+X-Received: by 2002:a05:620a:2953:b0:76d:a03e:73bf with SMTP id
+ n19-20020a05620a295300b0076da03e73bfmr23473826qkp.32.1694057437437; 
+ Wed, 06 Sep 2023 20:30:37 -0700 (PDT)
+Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
+ by smtp.gmail.com with ESMTPSA id
+ j2-20020aa783c2000000b00672ea40b8a9sm11893793pfn.170.2023.09.06.20.30.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 06 Sep 2023 20:30:36 -0700 (PDT)
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=alistair23@gmail.com; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 07 Sep 2023 13:30:31 +1000
+Message-Id: <CVCD8OCRI1FI.19OOXLKWHGZ00@wheely>
+To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <danielhb413@gmail.com>,
+ <qemu-ppc@nongnu.org>
+Cc: <qemu-devel@nongnu.org>, <mikey@neuling.org>, <vaibhav@linux.ibm.com>,
+ <jniethe5@gmail.com>, <sbhat@linux.ibm.com>, <kconsul@linux.vnet.ibm.com>
+Subject: Re: [PATCH RESEND 11/15] ppc: spapr: Implement nested PAPR hcall -
+ H_GUEST_[GET|SET]_STATE
+From: "Nicholas Piggin" <npiggin@gmail.com>
+X-Mailer: aerc 0.15.2
+References: <20230906043333.448244-1-harshpb@linux.ibm.com>
+ <20230906043333.448244-12-harshpb@linux.ibm.com>
+In-Reply-To: <20230906043333.448244-12-harshpb@linux.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::72c;
+ envelope-from=npiggin@gmail.com; helo=mail-qk1-x72c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,181 +94,419 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 3, 2023 at 10:47=E2=80=AFAM Wu, Fei <fei2.wu@intel.com> wrote:
+On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
+> L1 can reuest to get/set state of any of the supported Guest State
+> Buffer (GSB) elements using h_guest_[get|set]_state hcalls.
+> These hcalls needs to do some necessary validation check for each
+> get/set request based on the flags passed and operation supported.
 >
-> On 8/1/2023 6:46 AM, Daniel Henrique Barboza wrote:
-> >
-> >
-> > On 7/30/23 22:53, Fei Wu wrote:
-> >> riscv virt platform's memory started at 0x80000000 and
-> >> straddled the 4GiB boundary. Curiously enough, this choice
-> >> of a memory layout will prevent from launching a VM with
-> >> a bit more than 2000MiB and PCIe pass-thru on an x86 host, due
-> >> to identity mapping requirements for the MSI doorbell on x86,
-> >> and these (APIC/IOAPIC) live right below 4GiB.
-> >>
-> >> So just split the RAM range into two portions:
-> >> - 1 GiB range from 0x80000000 to 0xc0000000.
-> >> - The remainder at 0x100000000
-> >>
-> >> ...leaving a hole between the ranges.
-> >
-> > I am afraid this breaks some existing distro setups, like Ubuntu. After
-> > this patch
-> > this emulation stopped working:
-> >
-> > ~/work/qemu/build/qemu-system-riscv64 \
-> >     -machine virt -nographic -m 8G -smp 8 \
-> >     -kernel ./uboot-ubuntu/usr/lib/u-boot/qemu-riscv64_smode/uboot.elf =
-\
-> >     -drive file=3Dsnapshot.img,format=3Dqcow2,if=3Dvirtio \
-> >     -netdev bridge,id=3Dbridge1,br=3Dvirbr0 -device
-> > virtio-net-pci,netdev=3Dbridge1
-> >
-> >
-> > This is basically a guest created via the official Canonical tutorial:
-> >
-> > https://wiki.ubuntu.com/RISC-V/QEMU
-> >
-> > The error being thrown:
-> >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> > Boot HART ID              : 4
-> > Boot HART Domain          : root
-> > Boot HART Priv Version    : v1.12
-> > Boot HART Base ISA        : rv64imafdch
-> > Boot HART ISA Extensions  : time,sstc
-> > Boot HART PMP Count       : 16
-> > Boot HART PMP Granularity : 4
-> > Boot HART PMP Address Bits: 54
-> > Boot HART MHPM Count      : 16
-> > Boot HART MIDELEG         : 0x0000000000001666
-> > Boot HART MEDELEG         : 0x0000000000f0b509
-> >
-> >
-> > U-Boot 2022.07+dfsg-1ubuntu4.2 (Nov 24 2022 - 18:47:41 +0000)
-> >
-> > CPU:
-> > rv64imafdch_zicbom_zicboz_zicsr_zifencei_zihintpause_zawrs_zfa_zca_zcd_=
-zba_zbb_zbc_zbs_sstc_svadu
-> > Model: riscv-virtio,qemu
-> > DRAM:  Unhandled exception: Store/AMO access fault
-> > EPC: 00000000802018b8 RA: 00000000802126a0 TVAL: 00000000ff733f90
-> >
-> > Code: b823 06b2 bc23 06b2 b023 08b2 b423 08b2 (b823 08b2)
-> >
-> >
-> > resetting ...
-> > System reset not supported on this platform
-> > ### ERROR ### Please RESET the board ###
-> > QEMU 8.0.90 monitor - type 'help' for more infor
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> >
-> > Based on the change made I can make an educated guess on what is going
-> > wrong.
-> > We have another board with a similar memory topology you're making here=
-,
-> > the
-> > Microchip Polarfire (microchip_pfsoc.c). We were having some problems
-> > with this
-> > board while trying to consolidate the boot process between all boards i=
-n
-> > hw/riscv/boot.c because of its non-continuous RAM bank. The full story
-> > can be
-> > read in the commit message of 4b402886ac89 ("hw/riscv: change
-> > riscv_compute_fdt_addr()
-> > semantics") but the short version can be seen in riscv_compute_fdt_addr=
-()
-> > from boot.c:
-> >
-> >  - if ram_start is less than 3072MiB, the FDT will be  put at the lowes=
-t
-> > value
-> > between 3072 MiB and the end of that RAM bank;
-> >
-> > - if ram_start is higher than 3072 MiB the FDT will be put at the end o=
-f
-> > the
-> > RAM bank.
-> >
-> > So, after this patch, since riscv_compute_fdt_addr() is being used with
-> > the now
-> > lower RAM bank, the fdt is being put in LOW_MEM - fdt_size for any setu=
-p
-> > that has
-> > more than 1Gb RAM, and this breaks assumptions made by uboot and Ubuntu
-> > and possibly
-> > others that are trying to retrieve the FDT from the gap that you create=
-d
-> > between
-> > low and hi mem in this patch.
-> >
-> > In fact, this same Ubuntu guest I mentioned above will boot if I put
-> > only 1 Gb of RAM
-> > (-m 1Gb). If I try with -m 1.1Gb I reproduce this error. This can be a
-> > validation of
-> > the guess I'm making here: Ubuntu is trying to fetch stuff (probably th=
-e
-> > fdt) from
-> > the gap between the memory areas.
-> >
-> > This change on top of this patch doesn't work either:
-> >
-> > $ git diff
-> > diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-> > index 8fbdc7220c..dfff48d849 100644
-> > --- a/hw/riscv/virt.c
-> > +++ b/hw/riscv/virt.c
-> > @@ -1335,9 +1335,16 @@ static void virt_machine_done(Notifier *notifier=
-,
-> > void *data)
-> >                                           kernel_start_addr, true, NULL=
+> Signed-off-by: Michael Neuling <mikey@neuling.org>
+> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> ---
+>  hw/ppc/spapr_nested.c         | 267 ++++++++++++++++++++++++++++++++++
+>  include/hw/ppc/spapr_nested.h |  22 +++
+>  2 files changed, 289 insertions(+)
+>
+> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+> index 6fbb1bcb02..498e7286fa 100644
+> --- a/hw/ppc/spapr_nested.c
+> +++ b/hw/ppc/spapr_nested.c
+> @@ -897,6 +897,138 @@ void init_nested(void)
+>      }
+>  }
+> =20
+> +static struct guest_state_element *guest_state_element_next(
+> +    struct guest_state_element *element,
+> +    int64_t *len,
+> +    int64_t *num_elements)
+> +{
+> +    uint16_t size;
+> +
+> +    /* size is of element->value[] only. Not whole guest_state_element *=
+/
+> +    size =3D be16_to_cpu(element->size);
+> +
+> +    if (len) {
+> +        *len -=3D size + offsetof(struct guest_state_element, value);
+> +    }
+> +
+> +    if (num_elements) {
+> +        *num_elements -=3D 1;
+> +    }
+> +
+> +    return (struct guest_state_element *)(element->value + size);
+> +}
+> +
+> +static
+> +struct guest_state_element_type *guest_state_element_type_find(uint16_t =
+id)
+> +{
+> +    int i;
+> +
+> +    for (i =3D 0; i < ARRAY_SIZE(guest_state_element_types); i++)
+> +        if (id =3D=3D guest_state_element_types[i].id) {
+> +            return &guest_state_element_types[i];
+> +        }
+> +
+> +    return NULL;
+> +}
+> +
+> +static void print_element(struct guest_state_element *element,
+> +                          struct guest_state_request *gsr)
+> +{
+> +    printf("id:0x%04x size:0x%04x %s ",
+> +           be16_to_cpu(element->id), be16_to_cpu(element->size),
+> +           gsr->flags & GUEST_STATE_REQUEST_SET ? "set" : "get");
+> +    printf("buf:0x%016lx ...\n", be64_to_cpu(*(uint64_t *)element->value=
+));
+
+No printfs. These could be GUEST_ERROR qemu logs if anything, make
+sure they're relatively well formed messages if you keep them, i.e.,
+something a Linux/KVM developer could understand what went wrong.
+I.e., no __func__ which is internal to QEMU, use "H_GUEST_GET_STATE"
+etc. Ditto for all the rest of the printfs.
+
+> +}
+> +
+> +static bool guest_state_request_check(struct guest_state_request *gsr)
+> +{
+> +    int64_t num_elements, len =3D gsr->len;
+> +    struct guest_state_buffer *gsb =3D gsr->gsb;
+> +    struct guest_state_element *element;
+> +    struct guest_state_element_type *type;
+> +    uint16_t id, size;
+> +
+> +    /* gsb->num_elements =3D 0 =3D=3D 32 bits long */
+> +    assert(len >=3D 4);
+
+I haven't looked closely, but can the guest can't crash the
+host with malformed requests here?
+
+This API is pretty complicated, make sure you sanitize all inputs
+carefully, as early as possible, and without too deep a call and
+control flow chain from the API entry point.
+
+
+> +
+> +    num_elements =3D be32_to_cpu(gsb->num_elements);
+> +    element =3D gsb->elements;
+> +    len -=3D sizeof(gsb->num_elements);
+> +
+> +    /* Walk the buffer to validate the length */
+> +    while (num_elements) {
+> +
+> +        id =3D be16_to_cpu(element->id);
+> +        size =3D be16_to_cpu(element->size);
+> +
+> +        if (false) {
+> +            print_element(element, gsr);
+> +        }
+> +        /* buffer size too small */
+> +        if (len < 0) {
+> +            return false;
+> +        }
+> +
+> +        type =3D guest_state_element_type_find(id);
+> +        if (!type) {
+> +            printf("%s: Element ID %04x unknown\n", __func__, id);
+> +            print_element(element, gsr);
+> +            return false;
+> +        }
+> +
+> +        if (id =3D=3D GSB_HV_VCPU_IGNORED_ID) {
+> +            goto next_element;
+> +        }
+> +
+> +        if (size !=3D type->size) {
+> +            printf("%s: Size mismatch. Element ID:%04x. Size Exp:%i Got:=
+%i\n",
+> +                   __func__, id, type->size, size);
+> +            print_element(element, gsr);
+> +            return false;
+> +        }
+> +
+> +        if ((type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY) &&
+> +            (gsr->flags & GUEST_STATE_REQUEST_SET)) {
+> +            printf("%s: trying to set a read-only Element ID:%04x.\n",
+> +                   __func__, id);
+> +            return false;
+> +        }
+> +
+> +        if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE) {
+> +            /* guest wide element type */
+> +            if (!(gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE)) {
+> +                printf("%s: trying to set a guest wide Element ID:%04x.\=
+n",
+> +                       __func__, id);
+> +                return false;
+> +            }
+> +        } else {
+> +            /* thread wide element type */
+> +            if (gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE) {
+> +                printf("%s: trying to set a thread wide Element ID:%04x.=
+\n",
+> +                       __func__, id);
+> +                return false;
+> +            }
+> +        }
+> +next_element:
+> +        element =3D guest_state_element_next(element, &len, &num_element=
+s);
+> +
+> +    }
+> +    return true;
+> +}
+> +
+> +static bool is_gsr_invalid(struct guest_state_request *gsr,
+> +                                   struct guest_state_element *element,
+> +                                   struct guest_state_element_type *type=
+)
+> +{
+> +    if ((gsr->flags & GUEST_STATE_REQUEST_SET) &&
+> +        (*(uint64_t *)(element->value) & ~(type->mask))) {
+> +        print_element(element, gsr);
+> +        printf("L1 can't set reserved bits (allowed mask: 0x%08lx)\n",
+> +               type->mask);
+> +        return true;
+> +    }
+> +    return false;
+> +}
+> =20
+>  static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
+>                                               SpaprMachineState *spapr,
+> @@ -1108,6 +1240,139 @@ static target_ulong h_guest_create_vcpu(PowerPCCP=
+U *cpu,
+>      return H_SUCCESS;
+>  }
+> =20
+> +static target_ulong getset_state(SpaprMachineStateNestedGuest *guest,
+> +                                 uint64_t vcpuid,
+> +                                 struct guest_state_request *gsr)
+> +{
+> +    void *ptr;
+> +    uint16_t id;
+> +    struct guest_state_element *element;
+> +    struct guest_state_element_type *type;
+> +    int64_t lenleft, num_elements;
+> +
+> +    lenleft =3D gsr->len;
+> +
+> +    if (!guest_state_request_check(gsr)) {
+> +        return H_P3;
+> +    }
+> +
+> +    num_elements =3D be32_to_cpu(gsr->gsb->num_elements);
+> +    element =3D gsr->gsb->elements;
+> +    /* Process the elements */
+> +    while (num_elements) {
+> +        type =3D NULL;
+> +        /* Debug print before doing anything */
+> +        if (false) {
+> +            print_element(element, gsr);
+> +        }
+> +
+> +        id =3D be16_to_cpu(element->id);
+> +        if (id =3D=3D GSB_HV_VCPU_IGNORED_ID) {
+> +            goto next_element;
+> +        }
+> +
+> +        type =3D guest_state_element_type_find(id);
+> +        assert(type);
+> +
+> +        /* Get pointer to guest data to get/set */
+> +        if (type->location && type->copy) {
+> +            ptr =3D type->location(guest, vcpuid);
+> +            assert(ptr);
+> +            if (!~(type->mask) && is_gsr_invalid(gsr, element, type)) {
+> +                return H_INVALID_ELEMENT_VALUE;
+> +            }
+> +            type->copy(ptr + type->offset, element->value,
+> +                       gsr->flags & GUEST_STATE_REQUEST_SET ? true : fal=
+se);
+> +        }
+> +
+> +next_element:
+> +        element =3D guest_state_element_next(element, &lenleft, &num_ele=
+ments);
+> +    }
+> +
+> +    return H_SUCCESS;
+> +}
+> +
+> +static target_ulong map_and_getset_state(PowerPCCPU *cpu,
+> +                                         SpaprMachineStateNestedGuest *g=
+uest,
+> +                                         uint64_t vcpuid,
+> +                                         struct guest_state_request *gsr=
+)
+> +{
+> +    target_ulong rc;
+> +    int64_t lenleft, len;
+> +    bool is_write;
+> +
+> +    assert(gsr->len < (1024 * 1024)); /* sanity check */
+
+Use a #define for this, make sure guest can't crash host.
+> +
+> +    lenleft =3D len =3D gsr->len;
+
+Why lenleft? Can't you just check gsr->len like you do gsr->gsb?
+
+> +    gsr->gsb =3D address_space_map(CPU(cpu)->as, gsr->buf, (uint64_t *)&=
+len,
+> +                                 false, MEMTXATTRS_UNSPECIFIED);
+
+So it's a read-only memory access to gsr->buf? Even for the set?
+
+> +    if (!gsr->gsb) {
+> +        rc =3D H_P3;
+> +        goto out1;
+> +    }
+> +
+> +    if (len !=3D lenleft) {
+> +        rc =3D H_P3;
+> +        goto out1;
+> +    }
+> +
+> +    rc =3D getset_state(guest, vcpuid, gsr);
+> +
+> +out1:
+> +    is_write =3D (rc =3D=3D H_SUCCESS) ? len : 0;
+> +    address_space_unmap(CPU(cpu)->as, gsr->gsb, len, is_write, false);
+
+I don't think this is right, you want to specify the length of memory
+you actually accessed, even if there was some error.
+
+Over-specifying I think would be okay. So I think just use len.
+
+
+> +    return rc;
+> +}
+> +
+> +static target_ulong h_guest_getset_state(PowerPCCPU *cpu,
+> +                                         SpaprMachineState *spapr,
+> +                                         target_ulong *args,
+> +                                         bool set)
+> +{
+> +    target_ulong flags =3D args[0];
+> +    target_ulong lpid =3D args[1];
+> +    target_ulong vcpuid =3D args[2];
+> +    target_ulong buf =3D args[3];
+> +    target_ulong buflen =3D args[4];
+> +    struct guest_state_request gsr;
+> +    SpaprMachineStateNestedGuest *guest;
+> +
+> +    guest =3D spapr_get_nested_guest(spapr, lpid);
+> +    if (!guest) {
+> +        return H_P2;
+> +    }
+> +    gsr.buf =3D buf;
+> +    gsr.len =3D buflen;
+> +    gsr.flags =3D 0;
+
+Not a big fan of packaging up some args into a structure,
+especially if it's pretty static to a file and no need to be
+carried around with some data. Do you even need this gsr
+thing?
+
+> +    if (flags & H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
+> +        gsr.flags |=3D GUEST_STATE_REQUEST_GUEST_WIDE;
+> +    }
+> +    if (flags & !H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
+> +        return H_PARAMETER; /* flag not supported yet */
+> +    }
+> +
+> +    if (set) {
+> +        gsr.flags |=3D GUEST_STATE_REQUEST_SET;
+> +    }
+> +    return map_and_getset_state(cpu, guest, vcpuid, &gsr);
+> +}
+> +
+> +static target_ulong h_guest_set_state(PowerPCCPU *cpu,
+> +                                      SpaprMachineState *spapr,
+> +                                      target_ulong opcode,
+> +                                      target_ulong *args)
+> +{
+> +    return h_guest_getset_state(cpu, spapr, args, true);
+> +}
+> +
+> +static target_ulong h_guest_get_state(PowerPCCPU *cpu,
+> +                                      SpaprMachineState *spapr,
+> +                                      target_ulong opcode,
+> +                                      target_ulong *args)
+> +{
+> +    return h_guest_getset_state(cpu, spapr, args, false);
+> +}
+> +
+>  void spapr_register_nested(void)
+>  {
+>      spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
+> @@ -1122,6 +1387,8 @@ void spapr_register_nested_phyp(void)
+>      spapr_register_hypercall(H_GUEST_SET_CAPABILITIES, h_guest_set_capab=
+ilities);
+>      spapr_register_hypercall(H_GUEST_CREATE          , h_guest_create);
+>      spapr_register_hypercall(H_GUEST_CREATE_VCPU     , h_guest_create_vc=
+pu);
+> +    spapr_register_hypercall(H_GUEST_SET_STATE       , h_guest_set_state=
 );
-> >      }
-> >
-> > -    fdt_load_addr =3D riscv_compute_fdt_addr(memmap[VIRT_DRAM].base,
-> > +    if (machine->ram_size < memmap[VIRT_DRAM].size) {
-> > +        fdt_load_addr =3D riscv_compute_fdt_addr(memmap[VIRT_DRAM].bas=
-e,
-> >                                             memmap[VIRT_DRAM].size,
-> >                                             machine);
-> > +    } else {
-> > +        fdt_load_addr =3D
-> > riscv_compute_fdt_addr(memmap[VIRT_DRAM_HIGH].base,
-> > +                                           memmap[VIRT_DRAM_HIGH].size=
-,
-> > +                                           machine);
-> > +    }
-> > +
-> >
-> > This would put the fdt at the end of the HI RAM for guests with more
-> > than 1Gb of RAM.
-> > This change in fact makes the situation even worse, breaking setups tha=
-t
-> > were working
-> > before with this patch.
-> >
-> > There's a chance that reducing the gap between the RAM banks can make
-> > Ubuntu work
-> > reliably again but now I'm a little cold feet with this change.
-> >
-> >
-> > I think we'll need some kernel/Opensbi folks to weight in here to see i=
-f
-> > there's a
-> > failsafe memory setup that won't break distros out there and allow your
-> > passthrough
-> > to work.
-> >
-> Hi Daniel,
->
-> Do you know who we should talk to? I think it's not uncommon to have
-> seperated multi-range memory, the stack should support this configuration=
-.
+> +    spapr_register_hypercall(H_GUEST_GET_STATE       , h_guest_get_state=
+);
+>  }
+> =20
+>  #else
+> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.=
+h
+> index 3c0d6a486e..eaee624b87 100644
+> --- a/include/hw/ppc/spapr_nested.h
+> +++ b/include/hw/ppc/spapr_nested.h
+> @@ -206,6 +206,9 @@
+>  #define HVMASK_MSR            0xEBFFFFFFFFBFEFFF
+>  #define HVMASK_HDEXCR         0x00000000FFFFFFFF
+>  #define HVMASK_TB_OFFSET      0x000000FFFFFFFFFF
+> +#define H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE 0x8000000000000000 /* BE in=
+ GSB */
+> +#define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
+> +#define GUEST_STATE_REQUEST_SET              0x2
+> =20
+>  #define GUEST_STATE_ELEMENT(i, sz, s, f, ptr, c) { \
+>      .id =3D (i),                                     \
+> @@ -336,6 +339,25 @@ struct guest_state_element_type {
+>      uint64_t mask;
+>  };
+> =20
+> +struct guest_state_element {
+> +    uint16_t id;   /* Big Endian */
+> +    uint16_t size; /* Big Endian */
+> +    uint8_t value[]; /* Big Endian (based on size above) */
+> +} QEMU_PACKED;
+> +
+> +struct guest_state_buffer {
+> +    uint32_t num_elements; /* Big Endian */
+> +    struct guest_state_element elements[];
+> +} QEMU_PACKED;
 
-@Palmer Dabbelt @Anup Patel any ideas?
+I think it's probably enough to add one comment saying the PAPR
+API numbers are all in BE format. This is actually expected of PAPR
+so it goes without saying really, but the nested HV API actually had
+some things in guest endian format so it's worth calling out.
 
-Alistair
+Actually maybe single out the nested HV structures as different. I
+don't know if the upstream code actually handles endian properly...
+
+Thanks,
+Nick
+
+> +
+> +/* Actuall buffer plus some metadata about the request */
+> +struct guest_state_request {
+> +    struct guest_state_buffer *gsb;
+> +    int64_t buf;
+> +    int64_t len;
+> +    uint16_t flags;
+> +};
+> +
+>  /*
+>   * Register state for entering a nested guest with H_ENTER_NESTED.
+>   * New member must be added at the end.
+
 
