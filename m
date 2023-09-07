@@ -2,71 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E91D797086
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 09:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F39EA79708A
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 09:44:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe9eG-00009q-Q2; Thu, 07 Sep 2023 03:41:56 -0400
+	id 1qe9fv-0002SV-Jk; Thu, 07 Sep 2023 03:43:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
- id 1qe9eD-00009N-R8; Thu, 07 Sep 2023 03:41:53 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qe9ft-0002JO-5r
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:43:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
- id 1qe9e8-0003Nl-Bf; Thu, 07 Sep 2023 03:41:51 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RhB586wSpz4x2n;
- Thu,  7 Sep 2023 17:41:32 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qe9fq-0005s2-Bh
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:43:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694072612;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=PLcqAx5JOtW55fc4XJgFQcULjKzKq0ikgdIDBWV3AQw=;
+ b=Bh/2YH0n0BpQFp2fE9VdML3lF6jbyXsVyVlUyFxCt/z+h3OYtExWourKIebu9bz7aJlNH3
+ A4FWtDZQ0CMPdBmsWqB/Q95CeF8bn/LFL80udWlzl11LyVl6cbFM3p0rH4mW+1UQZspPfb
+ 4Xu/etAdaUc8lt0noDlkOIW1PK5uE/U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-358-f7885FnKN3qlOE1CfE8B7g-1; Thu, 07 Sep 2023 03:43:28 -0400
+X-MC-Unique: f7885FnKN3qlOE1CfE8B7g-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RhB4h6684z4x5m;
- Thu,  7 Sep 2023 17:41:08 +1000 (AEST)
-Message-ID: <da39cd13-68cc-4aab-3aba-301180e81560@kaod.org>
-Date: Thu, 7 Sep 2023 09:41:04 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F1AD8001EA;
+ Thu,  7 Sep 2023 07:43:28 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.45.225.127])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A432F40411F;
+ Thu,  7 Sep 2023 07:43:26 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@gmail.com, cohuck@redhat.com, kraxel@redhat.com,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fam Zheng <fam@euphon.net>,
+ philmd@linaro.org, Albert Esteve <aesteve@redhat.com>
+Subject: [PATCH v7 0/4] Virtio shared dma-buf
+Date: Thu,  7 Sep 2023 09:43:14 +0200
+Message-ID: <20230907074318.528064-1-aesteve@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 12/32] target/ppc: Use generic helper to show CPU model
- names
-Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, imp@bsdimp.com, kevans@freebsd.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, peter.maydell@linaro.org, b.galvani@gmail.com,
- strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
- wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
- quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org, laurent@vivier.eu,
- vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
- mrolnik@gmail.com, edgar.iglesias@gmail.com, bcain@quicinc.com,
- gaosong@loongson.cn, yangxiaojuan@loongson.cn, aurelien@aurel32.net,
- jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
- chenhuacai@kernel.org, crwulff@gmail.com, marex@denx.de, shorne@gmail.com,
- david@gibson.dropbear.id.au, groug@kaod.org, npiggin@gmail.com,
- ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
- iii@linux.ibm.com, mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
- kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
- imammedo@redhat.com, shan.gavin@gmail.com
-References: <20230907003553.1636896-1-gshan@redhat.com>
- <20230907003553.1636896-13-gshan@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230907003553.1636896-13-gshan@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=XW8m=EX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,86 +77,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/7/23 02:35, Gavin Shan wrote:
-> For target/ppc, the CPU type name can be: (1) The combination of
-> the CPU model name and suffix; (2) the type name of the class whose
-> PVR matches with the specified one; (3) alias of the CPU model, plus
-> suffix; (4) MachineClass::default_cpu_type when the CPU model name
-> is "max". All the possible information, the CPU model name, aliases
-> of the CPU models and PVRs are all shown in ppc_cpu_list_entry().
-> 
-> Use generic helper cpu_model_from_type() in ppc_cpu_list_entry(),
-> and rename @name to @model since it points to the CPU model name
-> instead of the CPU type name.
-> 
-> Signed-off-by: Gavin Shan <gshan@redhat.com>
+v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
+v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
+v3 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06126.html
+v4 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05174.html
+v5 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00255.html
+v6 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00987.html
+v6 -> v7:
+- Small refactor of a couple of virtio-dmabuf.c functions
+- Add Error propagation for vhost_user_send_resp function
+- Split last commit for vhost-user and libvhost-user
 
-Looks good.
+This patch covers the required steps to add support for virtio cross-device resource sharing[1],
+which support is already available in the kernel.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+The main usecase will be sharing dma buffers from virtio-gpu devices (as the exporter
+-see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under discussion)
+devices (as the buffer-user or importer). Therefore, even though virtio specs talk about
+resources or objects[3], this patch adds the infrastructure with dma-bufs in mind.
+Note that virtio specs let the devices themselves define what a vitio object is.
 
+These are the main parts that are covered in the patch:
 
-With a quick hack adding a valid_cpu_types list to the pseries machine,
-QEMU reported:
+- Add hash function to uuid module
+- Shared resources table, to hold all resources that can be shared in the host and their assigned UUID,
+  or pointers to the backend holding the resource
+- Internal shared table API for virtio devices to add, lookup and remove resources
+- Unit test to verify the API
+- New messages to the vhost-user protocol to allow backend to interact with the shared
+  table API through the control socket
+- New vhost-user feature bit to enable shared objects feature
 
-   qemu-system-ppc64 -M pseries -cpu 460exb
-   qemu-system-ppc64: Invalid CPU type: 460exb
-   The valid types are: 970_v2.2, 970mp_v1.0, 970mp_v1.1, power5+_v2.1, power7_v2.3, power7+_v2.1, power8_v2.0, power8e_v2.1, power8nvl_v1.0, power9_v1.0, power9_v2.0, power9_v2.2, power10_v1.0, power10_v2.0
+Applies cleanly to c152379422a204109f34ca2b43ecc538c7d738ae
 
-This would be a great improvement for the PPC boards since the CPU
-definitions are numerous :
+[1] - https://lwn.net/Articles/828988/
+[2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-3730006
+[3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-10500011
 
-   $ install/bin/qemu-system-ppc64 -cpu ?  | wc -l
-   418
+Albert Esteve (4):
+  uuid: add a hash function
+  virtio-dmabuf: introduce virtio-dmabuf
+  vhost-user: add shared_object msg
+  libvhost-user: handle shared_object msg
 
-and usually, the board only reports that the CPU specified on the
-command line is not supported.
+ MAINTAINERS                               |   7 +
+ docs/interop/vhost-user.rst               |  57 ++++++++
+ hw/display/meson.build                    |   1 +
+ hw/display/virtio-dmabuf.c                | 136 ++++++++++++++++++
+ hw/virtio/vhost-user.c                    | 168 ++++++++++++++++++++--
+ include/hw/virtio/vhost-backend.h         |   3 +
+ include/hw/virtio/virtio-dmabuf.h         | 103 +++++++++++++
+ include/qemu/uuid.h                       |   2 +
+ subprojects/libvhost-user/libvhost-user.c | 120 ++++++++++++++++
+ subprojects/libvhost-user/libvhost-user.h |  55 ++++++-
+ tests/unit/meson.build                    |   1 +
+ tests/unit/test-uuid.c                    |  27 ++++
+ tests/unit/test-virtio-dmabuf.c           | 137 ++++++++++++++++++
+ util/uuid.c                               |  15 ++
+ 14 files changed, 819 insertions(+), 13 deletions(-)
+ create mode 100644 hw/display/virtio-dmabuf.c
+ create mode 100644 include/hw/virtio/virtio-dmabuf.h
+ create mode 100644 tests/unit/test-virtio-dmabuf.c
 
-Thanks,
-
-C.
-
-
-> ---
->   target/ppc/cpu_init.c | 11 +++++------
->   1 file changed, 5 insertions(+), 6 deletions(-)
-> 
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 02b7aad9b0..7281402331 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -7019,16 +7019,15 @@ static void ppc_cpu_list_entry(gpointer data, gpointer user_data)
->       PowerPCCPUClass *pcc = POWERPC_CPU_CLASS(oc);
->       DeviceClass *family = DEVICE_CLASS(ppc_cpu_get_family_class(pcc));
->       const char *typename = object_class_get_name(oc);
-> -    char *name;
-> +    char *model;
->       int i;
->   
->       if (unlikely(strcmp(typename, TYPE_HOST_POWERPC_CPU) == 0)) {
->           return;
->       }
->   
-> -    name = g_strndup(typename,
-> -                     strlen(typename) - strlen(POWERPC_CPU_TYPE_SUFFIX));
-> -    qemu_printf("PowerPC %-16s PVR %08x\n", name, pcc->pvr);
-> +    model = cpu_model_from_type(typename);
-> +    qemu_printf("PowerPC %-16s PVR %08x\n", model, pcc->pvr);
->       for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
->           PowerPCCPUAlias *alias = &ppc_cpu_aliases[i];
->           ObjectClass *alias_oc = ppc_cpu_class_by_name(alias->model);
-> @@ -7045,10 +7044,10 @@ static void ppc_cpu_list_entry(gpointer data, gpointer user_data)
->                           alias->alias, family->desc);
->           } else {
->               qemu_printf("PowerPC %-16s (alias for %s)\n",
-> -                        alias->alias, name);
-> +                        alias->alias, model);
->           }
->       }
-> -    g_free(name);
-> +    g_free(model);
->   }
->   
->   void ppc_cpu_list(void)
+-- 
+2.41.0
 
 
