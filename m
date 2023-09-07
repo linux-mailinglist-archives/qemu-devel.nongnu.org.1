@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BA2797287
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37897972B2
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEeo-0007Zv-4L; Thu, 07 Sep 2023 09:02:50 -0400
+	id 1qeEel-0007Rp-Ry; Thu, 07 Sep 2023 09:02:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEe7-0004fr-2A
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:02:14 -0400
+ id 1qeEeF-000535-NW
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:02:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEe3-0007Xn-CC
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:02:06 -0400
+ id 1qeEeD-0007Ys-EF
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:02:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694091722;
+ s=mimecast20190719; t=1694091732;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dnYWCqXFYjnf7iiegsI+BpRqPdw9Nfqs+eiyxPvUq20=;
- b=XH4MZdkdkB4RYaLdPC+GrrZUYZ6U7ZR+BvSvVBlmtkTx2enJACuHUkr3PNX1ZKXqDgK68x
- ECEgnqUhTjArQ3mIz/zjVBP6LHHGn0nLmkaCyp9YzvPUlMjU1u1iEgXQbIszgL85yh/gys
- c7zepviYi6bSsfNj2Uh+4obxICVER7w=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=KivVqRpe5KN2+Ci3kMr9KmNlhmNtvTwUcH6R6cGFsIU=;
+ b=fGNafF2ZHF4qwwAVknjn/Vvk3u00smHGibgBHHL+PPURITGIkG1U40O0luWIIx8xkvL182
+ uGIdTDXpipfhx6Rq9xRoveQU8n18y5YrD1xLja8SLjmfvw3QrZK+sOG1ikavBLogXYklEL
+ ZyxQ+Liv1u/Dn3IUNxk4J2RWMKM8VeU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-SUrJEXPzM1OdLuOv1i79-g-1; Thu, 07 Sep 2023 09:02:01 -0400
-X-MC-Unique: SUrJEXPzM1OdLuOv1i79-g-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f5df65f9f4so6541135e9.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:02:00 -0700 (PDT)
+ us-mta-685-PZo3rAnmNfqGUkp1Iw6GZg-1; Thu, 07 Sep 2023 09:02:04 -0400
+X-MC-Unique: PZo3rAnmNfqGUkp1Iw6GZg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-401d8873904so7464115e9.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:02:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694091718; x=1694696518;
+ d=1e100.net; s=20221208; t=1694091721; x=1694696521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dnYWCqXFYjnf7iiegsI+BpRqPdw9Nfqs+eiyxPvUq20=;
- b=Sn/kw7dKJVL/Avj69KeuS3w17W9IytF2Yz7dJEl4qN9cUN6QxDdEFfo323xEWI1n/X
- oS8Igf/S8pEMhm+/YfAL485G8Ijx5PaR88vlziEjEWgCCNsnrpUiex6PDvzfHgX+3O6I
- c+P5rtbW8wI1O5OS2ophkJm5eWfGFOlCU7EK1FO4sLcdVp3jEw3s91FRGyY/zZ5JRjJ6
- /yULX4dktGztceNCTD16CaiM/k1iHeBvN8dttfLHkFfGOjsplN0SxcwiVAYQx7L6NU/V
- nZPW7NzCl5qAdw1f23lQbFWC+I36sDU5wMtUDhnHSDriYkiyzc2NfTmg+WjR6T7AyNvn
- hDhQ==
-X-Gm-Message-State: AOJu0YyWto9lMUMu6qd1yU6ioWWKjR5q7SkMHePDTLMX09SK7n1GVyfJ
- mx17JHblpPm7YeTsXRDFhWtkd5DPpfjFIIjtTx6C2SA6LmnNN4OE3CF8KSrO11MpTirpgtBie1Y
- oW8+8sNJdUl1zsXGN1E8jsKMzep70bFuX9Lxt0sk7FNgas0L6BTsA3aRes7DTetBp7adkssNP+j
- A=
-X-Received: by 2002:a7b:c7c7:0:b0:400:57d1:4910 with SMTP id
- z7-20020a7bc7c7000000b0040057d14910mr4480993wmk.17.1694091718427; 
- Thu, 07 Sep 2023 06:01:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbtsyXh/oj9l9KT4XaBwVZs5dOrL/bKVQ6jKZ9oP/mao/eF7BrlF7C1nNRyq1I1Srllkgkeg==
-X-Received: by 2002:a7b:c7c7:0:b0:400:57d1:4910 with SMTP id
- z7-20020a7bc7c7000000b0040057d14910mr4480975wmk.17.1694091718090; 
- Thu, 07 Sep 2023 06:01:58 -0700 (PDT)
+ bh=KivVqRpe5KN2+Ci3kMr9KmNlhmNtvTwUcH6R6cGFsIU=;
+ b=BimAtaICn7LNXeRtjgmSwoHnE23pF6VmRBgVujdyY2biLebR2wi9N9Ap7gHppVDqLH
+ cQFMnzKleJrE8OHJHaIdyXP4yEYxJDzK8aZouS6cZF/Y8KyPeuXXd6KfZO8UC8zGgfyE
+ eICWoDcRShIE+m5QySSv3ebsh35AVR+0MEnpr/VQYcqOdnE+9NCd42jrZXy4IMzfBzsB
+ A1pFmik0h5eKpYQrgBlPfchp24nRjf55y9IiMBfHO1IPLyaHfft6ExIEXPqkUW3PKN1m
+ BAZ2kr9LdtzLtljmLgXD2u4vq+GtAtjE7PdFX8vK3EguzmFotEdL2hxcWZhoCgQ8um4w
+ ROfg==
+X-Gm-Message-State: AOJu0YwUYpVDIM3j47vp47id5oTJYVECWeixLZFNMFZu1ceWSZo/S+Jv
+ 9lUzCLZDFhnML81qXE6bO9VCXMEXSP0PJuP2iF7R7J5CDy5O96NUeip8QEsDdwCCdyRzywK0V5A
+ HMQf+/1D9+2gNhkW7z2+aETydJ412b8d2l0CzVlJafMH4NP2gJx0Dsf3vNdDA9ZX5K5xkVXh7OM
+ o=
+X-Received: by 2002:a05:600c:378c:b0:401:8225:14ee with SMTP id
+ o12-20020a05600c378c00b00401822514eemr4715530wmr.41.1694091721775; 
+ Thu, 07 Sep 2023 06:02:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHoM+3phtLz17MuQIQvLSy4FxMANouEawcZiiwBeWrwe0+3whjCP99GMmqaz7c0AaYFo4laNw==
+X-Received: by 2002:a05:600c:378c:b0:401:8225:14ee with SMTP id
+ o12-20020a05600c378c00b00401822514eemr4715515wmr.41.1694091721477; 
+ Thu, 07 Sep 2023 06:02:01 -0700 (PDT)
 Received: from [192.168.1.174] ([151.48.237.81])
  by smtp.gmail.com with ESMTPSA id
- c7-20020a5d4147000000b0031de43fe9bfsm23505088wrq.0.2023.09.07.06.01.56
+ z14-20020adff1ce000000b0031c855d52efsm23174798wro.87.2023.09.07.06.02.00
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 06:01:57 -0700 (PDT)
+ Thu, 07 Sep 2023 06:02:00 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 49/51] sysemu/kvm: Restrict kvm_pc_setup_irq_routing() to x86
- targets
-Date: Thu,  7 Sep 2023 14:59:58 +0200
-Message-ID: <20230907130004.500601-50-pbonzini@redhat.com>
+Subject: [PULL 50/51] subprojects: add wrap file for libblkio
+Date: Thu,  7 Sep 2023 14:59:59 +0200
+Message-ID: <20230907130004.500601-51-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230907130004.500601-1-pbonzini@redhat.com>
 References: <20230907130004.500601-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
@@ -102,56 +100,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+This allows building libblkio at the same time as QEMU, if QEMU is
+configured with --enable-blkio --enable-download.
 
-kvm_pc_setup_irq_routing() is only defined for x86 targets (in
-hw/i386/kvm/apic.c). Its declaration is pointless on all
-other targets.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230904124325.79040-14-philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/kvm/ioapic.c       | 1 +
- include/sysemu/kvm.h       | 1 -
- target/i386/kvm/kvm_i386.h | 2 ++
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ subprojects/libblkio.wrap | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ create mode 100644 subprojects/libblkio.wrap
 
-diff --git a/hw/i386/kvm/ioapic.c b/hw/i386/kvm/ioapic.c
-index cd5ea5d60b1..409d0c8c766 100644
---- a/hw/i386/kvm/ioapic.c
-+++ b/hw/i386/kvm/ioapic.c
-@@ -16,6 +16,7 @@
- #include "hw/intc/ioapic_internal.h"
- #include "hw/intc/kvm_irqcount.h"
- #include "sysemu/kvm.h"
-+#include "kvm/kvm_i386.h"
- 
- /* PC Utility function */
- void kvm_pc_setup_irq_routing(bool pci_enabled)
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index 147967422f4..ee9025f8e9e 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -514,7 +514,6 @@ int kvm_irqchip_add_irqfd_notifier(KVMState *s, EventNotifier *n,
- int kvm_irqchip_remove_irqfd_notifier(KVMState *s, EventNotifier *n,
-                                       qemu_irq irq);
- void kvm_irqchip_set_qemuirq_gsi(KVMState *s, qemu_irq irq, int gsi);
--void kvm_pc_setup_irq_routing(bool pci_enabled);
- void kvm_init_irq_routing(KVMState *s);
- 
- bool kvm_kernel_irqchip_allowed(void);
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 76e8f952e5f..55d4e68c342 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -78,4 +78,6 @@ bool kvm_filter_msr(KVMState *s, uint32_t msr, QEMURDMSRHandler *rdmsr,
- 
- #endif /* CONFIG_KVM */
- 
-+void kvm_pc_setup_irq_routing(bool pci_enabled);
+diff --git a/subprojects/libblkio.wrap b/subprojects/libblkio.wrap
+new file mode 100644
+index 00000000000..f77af72210c
+--- /dev/null
++++ b/subprojects/libblkio.wrap
+@@ -0,0 +1,6 @@
++[wrap-git]
++url = https://gitlab.com/libblkio/libblkio
++revision = f84cc963a444e4cb34813b2dcfc5bf8526947dc0
 +
- #endif
++[provide]
++blkio = libblkio_dep
 -- 
 2.41.0
 
