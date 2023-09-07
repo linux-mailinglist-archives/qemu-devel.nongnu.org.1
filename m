@@ -2,47 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35C1797DA1
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 22:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55557797DB1
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 23:04:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeM35-0002OJ-9h; Thu, 07 Sep 2023 16:56:23 -0400
+	id 1qeM9C-0004Pk-99; Thu, 07 Sep 2023 17:02:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeM2v-0002Nx-J9; Thu, 07 Sep 2023 16:56:13 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qeM99-0004On-7q; Thu, 07 Sep 2023 17:02:39 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeM2s-0007tT-QX; Thu, 07 Sep 2023 16:56:13 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 361641FE3F;
- Thu,  7 Sep 2023 23:56:55 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 4BDB62670D;
- Thu,  7 Sep 2023 23:56:07 +0300 (MSK)
-Message-ID: <4019ec43-2046-5c5f-a230-9f673ff01e46@tls.msk.ru>
-Date: Thu, 7 Sep 2023 23:56:07 +0300
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qeM94-00032U-Hc; Thu, 07 Sep 2023 17:02:38 -0400
+Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qeM5r-00EPgQ-03;
+ Thu, 07 Sep 2023 23:02:26 +0200
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com, fam@euphon.net,
+ eblake@redhat.com, vsementsov@yandex-team.ru,
+ andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
+Subject: [PATCH v3 0/2] qemu-img: map: implement support for compressed
+ clusters
+Date: Fri,  8 Sep 2023 00:02:24 +0300
+Message-Id: <20230907210226.953821-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] hw/display/xlnx_dp: update comments
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20230907203440.257845-1-mjt@tls.msk.ru>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230907203440.257845-1-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -56,19 +50,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-07.09.2023 23:34, Michael Tokarev wrote:
+v2 --> v3:
+  * Make "compressed" field mandatory, not optional;
+  * Adjust field description in qapi/block-core.json;
+  * Squash patch 3 into patch 2 so that failing tests don't break bisect;
+  * Update even more tests' outputs now that the field is mandatory.
 
-> --- a/hw/display/xlnx_dp.c
-> +++ b/hw/display/xlnx_dp.c
-> @@ -1,4 +1,4 @@
-> -/*
-> +?*
->    * Xilinx Display Port
+v2: https://lists.nongnu.org/archive/html/qemu-block/2023-07/msg00106.html
 
-Without this glitch ofc, - already fixed.
+Andrey Drobyshev (2):
+  block: add BDRV_BLOCK_COMPRESSED flag for bdrv_block_status()
+  qemu-img: map: report compressed data blocks
 
-/mjt
+ block/qcow.c                                  |   5 +-
+ block/qcow2.c                                 |   3 +
+ block/vmdk.c                                  |   2 +
+ include/block/block-common.h                  |   3 +
+ qapi/block-core.json                          |   7 +-
+ qemu-img.c                                    |   8 +-
+ tests/qemu-iotests/122.out                    |  84 +-
+ tests/qemu-iotests/146.out                    | 780 +++++++++---------
+ tests/qemu-iotests/154.out                    | 194 ++---
+ tests/qemu-iotests/179.out                    | 178 ++--
+ tests/qemu-iotests/209.out                    |   4 +-
+ tests/qemu-iotests/221.out                    |  16 +-
+ tests/qemu-iotests/223.out                    |  60 +-
+ tests/qemu-iotests/241.out                    |  10 +-
+ tests/qemu-iotests/244.out                    |  24 +-
+ tests/qemu-iotests/252.out                    |  10 +-
+ tests/qemu-iotests/253.out                    |  20 +-
+ tests/qemu-iotests/274.out                    |  48 +-
+ .../tests/nbd-qemu-allocation.out             |  16 +-
+ tests/qemu-iotests/tests/qemu-img-bitmaps.out |  24 +-
+ 20 files changed, 757 insertions(+), 739 deletions(-)
+
+-- 
+2.39.3
+
 
