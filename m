@@ -2,41 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBC7797CCB
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 21:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7958E797CD5
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 21:36:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeKix-00039P-NT; Thu, 07 Sep 2023 15:31:31 -0400
+	id 1qeKml-0000R3-50; Thu, 07 Sep 2023 15:35:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeKiu-00034o-CQ; Thu, 07 Sep 2023 15:31:28 -0400
+ id 1qeKmg-0000Py-J3; Thu, 07 Sep 2023 15:35:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeKiq-0001mo-7u; Thu, 07 Sep 2023 15:31:28 -0400
+ id 1qeKme-0002WN-23; Thu, 07 Sep 2023 15:35:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CAA891FE03;
- Thu,  7 Sep 2023 22:32:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id E9F041FE0C;
+ Thu,  7 Sep 2023 22:36:03 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D8932266E5;
- Thu,  7 Sep 2023 22:31:20 +0300 (MSK)
-Message-ID: <7d3615d0-d501-a28c-eebc-b3f7a599fc23@tls.msk.ru>
-Date: Thu, 7 Sep 2023 22:31:20 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 176F0266E6;
+ Thu,  7 Sep 2023 22:35:16 +0300 (MSK)
+Message-ID: <231a1986-8af0-1153-ba2f-a77384fec9f5@tls.msk.ru>
+Date: Thu, 7 Sep 2023 22:35:15 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH] arm64: Restore trapless ptimer access
+Subject: Re: [PATCH] hw/net/vmxnet3: Fix guest-triggerable assert()
 Content-Language: en-US
-To: Colton Lewis <coltonlewis@google.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
- kvm@vger.kernel.org, Andrew Jones <andrew.jones@linux.dev>,
- qemu-trivial@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
-References: <20230831190052.129045-1-coltonlewis@google.com>
+To: Thomas Huth <thuth@redhat.com>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang
+ <jasowang@redhat.com>, qemu-devel@nongnu.org
+Cc: pjp@fedoraproject.org, qemu-trivial@nongnu.org, qemu-stable@nongnu.org
+References: <20230817125600.1440195-1-thuth@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230831190052.129045-1-coltonlewis@google.com>
+In-Reply-To: <20230817125600.1440195-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -62,52 +61,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-31.08.2023 22:00, Colton Lewis wrote:
-> Due to recent KVM changes, QEMU is setting a ptimer offset resulting
-> in unintended trap and emulate access and a consequent performance
-> hit. Filter out the PTIMER_CNT register to restore trapless ptimer
-> access.
-> 
-> Quoting Andrew Jones:
-> 
-> Simply reading the CNT register and writing back the same value is
-> enough to set an offset, since the timer will have certainly moved
-> past whatever value was read by the time it's written.  QEMU
-> frequently saves and restores all registers in the get-reg-list array,
-> unless they've been explicitly filtered out (with Linux commit
-> 680232a94c12, KVM_REG_ARM_PTIMER_CNT is now in the array). So, to
-> restore trapless ptimer accesses, we need a QEMU patch to filter out
-> the register.
-> 
-> See
-> https://lore.kernel.org/kvmarm/gsntttsonus5.fsf@coltonlewis-kvm.c.googlers.com/T/#m0770023762a821db2a3f0dd0a7dc6aa54e0d0da9
-> for additional context.
-> 
-> Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
-> ---
->   target/arm/kvm64.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-> index 4d904a1d11..2dd46e0a99 100644
-> --- a/target/arm/kvm64.c
-> +++ b/target/arm/kvm64.c
-> @@ -672,6 +672,7 @@ typedef struct CPRegStateLevel {
->    */
->   static const CPRegStateLevel non_runtime_cpregs[] = {
->       { KVM_REG_ARM_TIMER_CNT, KVM_PUT_FULL_STATE },
-> +    { KVM_REG_ARM_PTIMER_CNT, KVM_PUT_FULL_STATE },
->   };
->   
->   int kvm_arm_cpreg_level(uint64_t regidx)
+17.08.2023 15:56, Thomas Huth wrote:
+> The assert() that checks for valid MTU sizes can be triggered by
+> the guest (e.g. with the reproducer code from the bug ticket
+> https://gitlab.com/qemu-project/qemu/-/issues/517 ). Let's avoid
+> this problem by simply logging the error and refusing to activate
+> the device instead.
 
-While this patch itself is one-liner and trivial and all, I'd rather
-not apply this to the trivial-patches tree, - it requires a little
-bit more than trivial expertise in this area.
-
-So basically, ping for qemu-arm@ ? :)
+I'm applying this to trivial-patches tree with some hesitation :)
 
 Thanks,
 
 /mjt
+
+> Fixes: d05dcd94ae ("net: vmxnet3: validate configuration values during activate")
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   hw/net/vmxnet3.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+> index 5dfacb1098..6674122a7e 100644
+> --- a/hw/net/vmxnet3.c
+> +++ b/hw/net/vmxnet3.c
+> @@ -1439,7 +1439,10 @@ static void vmxnet3_activate_device(VMXNET3State *s)
+>       vmxnet3_setup_rx_filtering(s);
+>       /* Cache fields from shared memory */
+>       s->mtu = VMXNET3_READ_DRV_SHARED32(d, s->drv_shmem, devRead.misc.mtu);
+> -    assert(VMXNET3_MIN_MTU <= s->mtu && s->mtu <= VMXNET3_MAX_MTU);
+> +    if (s->mtu < VMXNET3_MIN_MTU || s->mtu > VMXNET3_MAX_MTU) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "vmxnet3: Bad MTU size: %d\n", s->mtu);
+> +        return;
+> +    }
+>       VMW_CFPRN("MTU is %u", s->mtu);
+>   
+>       s->max_rx_frags =
+
 
