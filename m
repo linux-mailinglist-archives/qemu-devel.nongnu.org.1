@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21BC7972C8
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4FB797285
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:03:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEdQ-0003Mp-RH; Thu, 07 Sep 2023 09:01:24 -0400
+	id 1qeEdI-00038c-2m; Thu, 07 Sep 2023 09:01:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEd6-0002sj-Iw
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:05 -0400
+ id 1qeEd9-0002tV-KO
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEd2-0007Jh-B1
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:04 -0400
+ id 1qeEd6-0007Kz-95
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694091658;
+ s=mimecast20190719; t=1694091663;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MjIkCF5qgOZQn7olwlUoun7cKywGIXhs+Hi0nn+kw18=;
- b=euynrRY8PKuPVpHT1dB8MBYgehNDJOoXVWx3Wd4mZsJUEUw0IExhv9PsOFA7nJ/4OwWU+u
- uIBpYpokdk1AhLdHI1fA+x2QlsWJXF3hDSq+jouzmlTjcLAsROtmTiHJcPMMf0+jmBitLa
- vQx21xrSmYJXSQr/KMzp3yxTIkePzlU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RSIhgwdtPAh7ZASQK5Mkn904aeMaclvME+5f1ujXt2U=;
+ b=ba11yOXB2nEpzsI0HXaRp9yOuv6qt0wqqH207WjG3zHrvDTnDPY1LcoGEhUd51stFA8AwT
+ vatvGI6EOhKbyxjeb9CtlAnNvL+oUsR8uSrV5Egli/IGXW3J1qcXO5ua2ttBYJt1XfQe+I
+ 7LGQrlsYJiv2o2SnsKo+cDDdcgA5Zac=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-yCwsWAd_OveSJMBfVWCHEA-1; Thu, 07 Sep 2023 09:00:56 -0400
-X-MC-Unique: yCwsWAd_OveSJMBfVWCHEA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-401c4f03b00so7062125e9.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:00:55 -0700 (PDT)
+ us-mta-66-IuMvGeiaOWGYlqjW2eTZow-1; Thu, 07 Sep 2023 09:01:01 -0400
+X-MC-Unique: IuMvGeiaOWGYlqjW2eTZow-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-401dba99384so6532135e9.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:00:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694091654; x=1694696454;
+ d=1e100.net; s=20221208; t=1694091656; x=1694696456;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MjIkCF5qgOZQn7olwlUoun7cKywGIXhs+Hi0nn+kw18=;
- b=ePS7yStu38sa2WcmgtD4kHT9Ua8P2HofOfzH/crzIeQc0W4QaJM5ywqT5vhvf43ds2
- Dwud6mpxyx4Yqz0A1P2fu87Na98Zgb1ZfTLEF/0CH6d5hpZfn2/z9zRP4Ovakisv0Ppq
- vdRJ5ec+hCAmiwHQ/YUkPRNZftGi9/Q7H9CPN+h7bWY5334VcpaLppiMS8r2HEuJe1mL
- PqWvJpaE9XGcsBiRtQFkyIZAYIZCTLuv/TQ3Ga5Ye2m2HBWhSlh5/Iego1CCb/oSCmNL
- JycYCx7amI6GkvQoGhqNsHtcActpnrchpZBoowfKdvwjiRDvJj26uajMBHxSsIvIOHAn
- +y2A==
-X-Gm-Message-State: AOJu0YyexvfJkTIVRi2P0Mrvh7IniYbnI+Zs4r4pdks0AASodh5n1+uX
- Lp2hR2mPQwglHFrRxv6Jf16V0HDRfx3hwOV9lQmJQhdkBuC2UQROWHPTCWXIqHjwztKHYJlI+zr
- fV4DVrR8R66JvmzI+0LDlyVeYe2jR9TtwNiEerx8v0P7J6viSWCJ384QGpOKNbYZL/acNm+q/yG
- c=
-X-Received: by 2002:a05:600c:245:b0:400:2dc5:1fed with SMTP id
- 5-20020a05600c024500b004002dc51fedmr4739926wmj.33.1694091653833; 
- Thu, 07 Sep 2023 06:00:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlc5opgKDaGAwC5ssDpVmYSpwoZ//r5v6uf8mt7S6YHZlGMFeJbv7hlywVo1ulisVW04cEuw==
-X-Received: by 2002:a05:600c:245:b0:400:2dc5:1fed with SMTP id
- 5-20020a05600c024500b004002dc51fedmr4739903wmj.33.1694091653533; 
- Thu, 07 Sep 2023 06:00:53 -0700 (PDT)
+ bh=RSIhgwdtPAh7ZASQK5Mkn904aeMaclvME+5f1ujXt2U=;
+ b=EzqQgle/rHjv24WRn6/DNYIvRB4lxTIeL3WE7Hn37QlgDgXOoTlVLqKEVFPBdBXK5i
+ +7MgWOASI1dnRZ0Z1X7iIKlwUm3Q+QrD0oFDAlbSJrHD8BjzR5cMQdMqqP5+onnODjbc
+ RzbRm1HlEV2uQdHDz48G3oLm3MIsiR1YV31+Pb61Sa2ESYCvh0CwSHZe+K3DIwx2PODp
+ ApBPSeY+SdUPg+qztAf+rOtaSv0qhzsvgRoimMb+xiSuJJrdN8X+9lylCRL2Z5wO5gfW
+ y2ehDSBfYmOJcB2hB9qd6cMR+CC8DxgzeB6qC8CJvPXeH2vEJyyZyMxtSeLigGgldV0y
+ OK7g==
+X-Gm-Message-State: AOJu0YzmEJnY/oXUWhu2ONtZcZZ5ZY78qRNj1+tKyX6DU3XgnEr8LOyy
+ U2afKUbCD4Tan5SZpHlublM1O+xsgr55Q+HNUTn4J7GFfCllqz2yjzmCG+Yc51iotv24MveTCjh
+ KSaRJpgHZzeFRUtjQGh8nSkz++HXgq/exqAIUk9aMFPhF44coRf832RVcxwg1DdTc8AMKMKZL3p
+ I=
+X-Received: by 2002:a1c:ed08:0:b0:3ff:516b:5c65 with SMTP id
+ l8-20020a1ced08000000b003ff516b5c65mr4225155wmh.30.1694091655971; 
+ Thu, 07 Sep 2023 06:00:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEV5OQ7bChc7GWb+ZnwKtA81RIgMPq3FdVhqi1KtAxPQ2zE+gym52ODYry3gWTp/SRUeE+PsQ==
+X-Received: by 2002:a1c:ed08:0:b0:3ff:516b:5c65 with SMTP id
+ l8-20020a1ced08000000b003ff516b5c65mr4225143wmh.30.1694091655607; 
+ Thu, 07 Sep 2023 06:00:55 -0700 (PDT)
 Received: from [192.168.1.174] ([151.48.237.81])
  by smtp.gmail.com with ESMTPSA id
- c19-20020a05600c0ad300b003fe2bea77ccsm2212848wmr.5.2023.09.07.06.00.52
+ x16-20020a05600c21d000b003fbca942499sm2481151wmj.14.2023.09.07.06.00.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 06:00:52 -0700 (PDT)
+ Thu, 07 Sep 2023 06:00:54 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 20/51] meson: do not unnecessarily use cmake for dependencies
-Date: Thu,  7 Sep 2023 14:59:29 +0200
-Message-ID: <20230907130004.500601-21-pbonzini@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Subject: [PULL 21/51] meson: update unsupported host/CPU messages
+Date: Thu,  7 Sep 2023 14:59:30 +0200
+Message-ID: <20230907130004.500601-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230907130004.500601-1-pbonzini@redhat.com>
 References: <20230907130004.500601-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -101,39 +100,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both gvnc and sysprof-capture come with pkg-config files, so specify
-the method to find them.
+Unsupported CPU and OSes are not really going away, but the
+project simply does not guarantee that they work.  Rephrase
+the messages accordingly.  While at it, move the warning for
+TCI performance at the end where it is more visible.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/migration/meson.build | 2 +-
- tests/qtest/meson.build     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ meson.build | 45 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-diff --git a/tests/migration/meson.build b/tests/migration/meson.build
-index ac71f132901..a91aa61c659 100644
---- a/tests/migration/meson.build
-+++ b/tests/migration/meson.build
-@@ -1,4 +1,4 @@
--sysprof = dependency('sysprof-capture-4', required: false)
-+sysprof = dependency('sysprof-capture-4', method: 'pkg-config', required: false)
- glib_static = dependency('glib-2.0', version: glib_req_ver, required: false,
-                          method: 'pkg-config', static: true)
+diff --git a/meson.build b/meson.build
+index 98e68ef0b1e..13f21fd24de 100644
+--- a/meson.build
++++ b/meson.build
+@@ -678,9 +678,7 @@ endif
+ tcg_arch = host_arch
+ if get_option('tcg').allowed()
+   if host_arch == 'unknown'
+-    if get_option('tcg_interpreter')
+-      warning('Unsupported CPU @0@, will use TCG with TCI (slow)'.format(cpu))
+-    else
++    if not get_option('tcg_interpreter')
+       error('Unsupported CPU @0@, try --enable-tcg-interpreter'.format(cpu))
+     endif
+   elif get_option('tcg_interpreter')
+@@ -4317,28 +4315,37 @@ summary_info += {'selinux':           selinux}
+ summary_info += {'libdw':             libdw}
+ summary(summary_info, bool_yn: true, section: 'Dependencies')
  
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index b071d400b37..df63909ee51 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -321,7 +321,7 @@ qtests = {
- }
+-if not supported_cpus.contains(cpu)
++if host_arch == 'unknown'
+   message()
+-  warning('SUPPORT FOR THIS HOST CPU WILL GO AWAY IN FUTURE RELEASES!')
++  warning('UNSUPPORTED HOST CPU')
+   message()
+-  message('CPU host architecture ' + cpu + ' support is not currently maintained.')
+-  message('The QEMU project intends to remove support for this host CPU in')
+-  message('a future release if nobody volunteers to maintain it and to')
+-  message('provide a build host for our continuous integration setup.')
+-  message('configure has succeeded and you can continue to build, but')
+-  message('if you care about QEMU on this platform you should contact')
+-  message('us upstream at qemu-devel@nongnu.org.')
++  message('Support for CPU host architecture ' + cpu + ' is not currently')
++  message('maintained. The QEMU project does not guarantee that QEMU will')
++  message('compile or work on this host CPU. You can help by volunteering')
++  message('to maintain it and providing a build host for our continuous')
++  message('integration setup.')
++  if get_option('tcg').allowed() and target_dirs.length() > 0
++    message()
++    message('configure has succeeded and you can continue to build, but')
++    message('QEMU will use a slow interpreter to emulate the target CPU.')
++  endif
+ endif
  
- if vnc.found()
--  gvnc = dependency('gvnc-1.0', required: false)
-+  gvnc = dependency('gvnc-1.0', method: 'pkg-config', required: false)
-   if gvnc.found()
-     qtests += {'vnc-display-test': [gvnc]}
-     qtests_generic += [ 'vnc-display-test' ]
+ if not supported_oses.contains(targetos)
+   message()
+-  warning('WARNING: SUPPORT FOR THIS HOST OS WILL GO AWAY IN FUTURE RELEASES!')
++  warning('UNSUPPORTED HOST OS')
+   message()
+-  message('Host OS ' + targetos + 'support is not currently maintained.')
+-  message('The QEMU project intends to remove support for this host OS in')
+-  message('a future release if nobody volunteers to maintain it and to')
+-  message('provide a build host for our continuous integration setup.')
++  message('Support for host OS ' + targetos + 'is not currently maintained.')
+   message('configure has succeeded and you can continue to build, but')
+-  message('if you care about QEMU on this platform you should contact')
+-  message('us upstream at qemu-devel@nongnu.org.')
++  message('the QEMU project does not guarantee that QEMU will compile or')
++  message('work on this operating system. You can help by volunteering')
++  message('to maintain it and providing a build host for our continuous')
++  message('integration setup. This will ensure that future versions of QEMU')
++  message('will keep working on ' + targetos + '.')
++endif
++
++if host_arch == 'unknown' or not supported_oses.contains(targetos)
++  message()
++  message('If you want to help supporting QEMU on this platform, please')
++  message('contact the developers at qemu-devel@nongnu.org.')
+ endif
 -- 
 2.41.0
 
