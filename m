@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207B47971EB
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9703797202
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:53:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeDQj-0004oq-SM; Thu, 07 Sep 2023 07:44:13 -0400
+	id 1qeDXr-0000Dd-TR; Thu, 07 Sep 2023 07:51:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeDQh-0004oa-Bw
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:44:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qeDXp-0000Cf-Jl
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:51:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeDQf-0005Me-AY
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:44:11 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qeDXm-0006iQ-QP
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:51:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694087048;
+ s=mimecast20190719; t=1694087489;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Pri4hduQIRtgO8yAnyNoVyNSUX6XmYzjO0mzFMCRYmw=;
- b=BXnyHSPGQAy+QteXYXmUGBYLat3ijcOakmQevrumAhZRq556/lEj4JnMNIfQucSUz17M+d
- Rx3tpj5Uu3/r2gVdPGcvk449lpSJB9dXhczu8gvgzu41E2RKE6vjl6FzmB0TtmKUT/tL0b
- B2y6XeMjS7hRYQ4COwJPIcNCeZzZShw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references;
+ bh=f2xxkmSvyCPTQdfAvkkhwJIqh9Twjhm6hdIFi6cNaFI=;
+ b=EtirAOigPaqAPe3RdhXiOrgwdoXi5dJNmC9fN+6CEL2CbTIhpf0Zr0y1mkhqRK7qvb+HOk
+ 7tNnC6xgChRiYCe/FdoA+jQh3TWmoPrNltyWVddaWHTGKc+Mh7gPrmKA0Kp0+geBoR4be/
+ gEHWlgilij9C3hzy+t+0WkpPcZyPKTA=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-rF8UQFWtMFCR-M9DIPzlEA-1; Thu, 07 Sep 2023 07:44:07 -0400
-X-MC-Unique: rF8UQFWtMFCR-M9DIPzlEA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-31c5adb698aso529350f8f.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 04:44:07 -0700 (PDT)
+ us-mta-562-XpdHXdmKM5qONEZb4AFXAQ-1; Thu, 07 Sep 2023 07:51:28 -0400
+X-MC-Unique: XpdHXdmKM5qONEZb4AFXAQ-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-68beedc7d7eso1083320b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 04:51:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694087045; x=1694691845;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20221208; t=1694087487; x=1694692287;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Pri4hduQIRtgO8yAnyNoVyNSUX6XmYzjO0mzFMCRYmw=;
- b=l/59vbS+1DbqvOtOJD1f+3Pf3mlgVdkm/jRzQPVXMTTCwJQAaTCekp5Z1EtpRd4r9Q
- eB9cq1193x25vX0ToRv09QU57cVRVT6ZaBgAnhAGcAZIOuvVBapGpOu/XwJp0Jf2Y9nU
- Ad4nPhP/nTAWthpRbPdAzISY4tz6ngeDg2DXY9gu5Ihec7eEa0IKkMVVCGsmA6BJklU9
- wweI500uot17srnbtfQky8CSQRaAZBwH4SLVh3aQIKhvKS5yGfum4G4bBu5ROPlouPRB
- pJcnGVYiezqj7hgqUWjeZsHpdBUQi8Ia2OIXSh9+wcFua4Z9BoAv29Yk8CGrhlP9O4wM
- 1tgg==
-X-Gm-Message-State: AOJu0Yw0v3Ld1BfAalRZeoo+OeDyERYeb3L73QyoZh2fPtrlxQJmE1/i
- E8dml7CaVQJ41+qk8cOTj8VDbyn6sSxpOp8J1t+YY/xeA9UEoPcl0rBN8Yb0TaP/U7L6syIvOTk
- 4rjuJri85661BQEyK47A7E7xboHt3mJ452eCCzxASzCytqgY/Bi73TwOXgT1nQH5W5VLTr5UNop
- M=
-X-Received: by 2002:a5d:690b:0:b0:317:6fff:c32b with SMTP id
- t11-20020a5d690b000000b003176fffc32bmr4665671wru.53.1694087045436; 
- Thu, 07 Sep 2023 04:44:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrIYmDg57Zjfb+6gB7iXRHU2RghVvehJyajRcygsnqTAlJdYg1gNW1qiGm2+k8+gq64ZN1og==
-X-Received: by 2002:a5d:690b:0:b0:317:6fff:c32b with SMTP id
- t11-20020a5d690b000000b003176fffc32bmr4665658wru.53.1694087045022; 
- Thu, 07 Sep 2023 04:44:05 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312::1fc])
- by smtp.gmail.com with ESMTPSA id
- i14-20020adfdece000000b003142e438e8csm23050791wrn.26.2023.09.07.04.44.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 04:44:04 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org,
-	philmd@linaro.org
-Subject: [PATCH] contrib/plugins: add Darwin support
-Date: Thu,  7 Sep 2023 13:44:03 +0200
-Message-ID: <20230907114403.493361-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ bh=f2xxkmSvyCPTQdfAvkkhwJIqh9Twjhm6hdIFi6cNaFI=;
+ b=RbMAO2dRr0yw3mv7YZn9a/O10ED+yTGom93QN94ICclMJ5pCqgXONJ+VGU0hMmbV9I
+ 7yYVUncwXf8Y6vmtMbAlqF6435mLbP2v4quUwKPbCrwe1gP1gD9W8F28e4BFCe1G1MIj
+ QbJOQ16Ov9DHPrmxqXFN9D1883LYO0ZaW2yaUQbF0vO68MN/uH/E3C8PCnhdGLjmSakY
+ Em/C989XrQlGncpxjVDED8JIz9bEcZdwR1LH1HHV3AdFBcKhwUpIyr8O7v30IcL2ppD2
+ t+U0KwGDd6giDGyjLqRycpet+wi3cGxYoDg5xLlUbZmrQE+XUYBsWVvXuaFLJNZT411C
+ XuhA==
+X-Gm-Message-State: AOJu0YwYQiyJmpHZ+nSrSPvS65LBpVtlRqXDTT3U8+T+Tnupqox/Sth5
+ hKYTA4WZXZL7wrLlJTT4xQzAzYy6CMZzXeAUGT4NdUOKc8JwGXtr/Q9bDT8vgclzqisNnCU/IOE
+ Di4D48IQgdU7Kyy3jPq8FzZnlNB5JQ3o=
+X-Received: by 2002:a05:6a00:1786:b0:68a:3e68:f8ab with SMTP id
+ s6-20020a056a00178600b0068a3e68f8abmr19238094pfg.14.1694087487136; 
+ Thu, 07 Sep 2023 04:51:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFgcyiOAaa5FA78MqluT8WtZaH7AVNtDeySfIAFBKfngpgYfaXxHeLaM5fRlEoSsp6ED6PGVi9lN3Y1i+Q3iaY=
+X-Received: by 2002:a05:6a00:1786:b0:68a:3e68:f8ab with SMTP id
+ s6-20020a056a00178600b0068a3e68f8abmr19238072pfg.14.1694087486711; Thu, 07
+ Sep 2023 04:51:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+References: <20230907074318.528064-1-aesteve@redhat.com>
+ <20230907074318.528064-3-aesteve@redhat.com>
+ <200d8e04-ffec-5aee-0a2b-84b947a57086@linaro.org>
+In-Reply-To: <200d8e04-ffec-5aee-0a2b-84b947a57086@linaro.org>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Thu, 7 Sep 2023 13:51:15 +0200
+Message-ID: <CADSE00JfmfC5XhPBb6o04TLCvuRfi7TE5O9KV4hW+Z29fm1hCg@mail.gmail.com>
+Subject: Re: [PATCH v7 2/4] virtio-dmabuf: introduce virtio-dmabuf
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@gmail.com, cohuck@redhat.com, 
+ kraxel@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ Fam Zheng <fam@euphon.net>
+Content-Type: multipart/alternative; boundary="000000000000dd43c10604c37ad6"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,44 +96,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Under Darwin, using -shared makes it impossible to have undefined symbols
-and -bundle has to be used instead; so detect the OS and use
-different options.
+--000000000000dd43c10604c37ad6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Based-on: <20230907101811.469236-1-pbonzini@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
-        This replaces Philippe's patch to link with GLib, and also fixes
-        errors like
+On Thu, Sep 7, 2023 at 10:19=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <philmd=
+@linaro.org>
+wrote:
 
-          "_qemu_plugin_get_hwaddr", referenced from:
-	      _vcpu_mem in execlog.o
+> On 7/9/23 09:43, Albert Esteve wrote:
+> > This API manages objects (in this iteration,
+> > dmabuf fds) that can be shared along different
+> > virtio devices, associated to a UUID.
+> >
+> > The API allows the different devices to add,
+> > remove and/or retrieve the objects by simply
+> > invoking the public functions that reside in the
+> > virtio-dmabuf file.
+> >
+> > For vhost backends, the API stores the pointer
+> > to the backend holding the object.
+> >
+> > Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
+> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > ---
+> >   MAINTAINERS                       |   7 ++
+> >   hw/display/meson.build            |   1 +
+> >   hw/display/virtio-dmabuf.c        | 136 +++++++++++++++++++++++++++++
+> >   include/hw/virtio/virtio-dmabuf.h | 103 ++++++++++++++++++++++
+> >   tests/unit/meson.build            |   1 +
+> >   tests/unit/test-virtio-dmabuf.c   | 137 +++++++++++++++++++++++++++++=
++
+> >   6 files changed, 385 insertions(+)
+> >   create mode 100644 hw/display/virtio-dmabuf.c
+> >   create mode 100644 include/hw/virtio/virtio-dmabuf.h
+> >   create mode 100644 tests/unit/test-virtio-dmabuf.c
+>
+>
+> > diff --git a/include/hw/virtio/virtio-dmabuf.h
+> b/include/hw/virtio/virtio-dmabuf.h
+> > new file mode 100644
+> > index 0000000000..202eec5868
+> > --- /dev/null
+> > +++ b/include/hw/virtio/virtio-dmabuf.h
+> > @@ -0,0 +1,103 @@
+> > +/*
+> > + * Virtio Shared dma-buf
+> > + *
+> > + * Copyright Red Hat, Inc. 2023
+> > + *
+> > + * Authors:
+> > + *     Albert Esteve <aesteve@redhat.com>
+> > + *
+> > + * This work is licensed under the terms of the GNU GPL, version 2.
+> > + * See the COPYING file in the top-level directory.
+> > + */
+> > +
+> > +#ifndef VIRTIO_DMABUF_H
+> > +#define VIRTIO_DMABUF_H
+> > +
+> > +#include "qemu/osdep.h"
+>
+> See https://www.qemu.org/docs/master/devel/style.html#include-directives
+>
+>    Do not include =E2=80=9Cqemu/osdep.h=E2=80=9D from header files since =
+the .c
+>    file will have already included it.
+>
+> > +#include <glib.h>
+>
+> This one is also included via "qemu/osdep.h" -> "glib-compat.h"
+>
+> > +#include "qemu/uuid.h"
+> > +#include "vhost.h"
+> > +
+> > +typedef enum SharedObjectType {
+> > +    TYPE_INVALID =3D 0,
+> > +    TYPE_DMABUF,
+> > +    TYPE_VHOST_DEV,
+> > +} SharedObjectType;
+> > +
+> > +typedef struct VirtioSharedObject {
+> > +    SharedObjectType type;
+> > +    gpointer value;
+> > +} VirtioSharedObject;
+>
+> Since this need a repost, better use "hw/display: Introduce
+> virtio-dmabuf" as patch subject (and "util/uuid" prefix for the previous
+> patch).
+>
+> Otherwise LGTM, so with these changes:
+>
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+>
+Thanks a lot! I'll do it for the next review.
+Any other comment on the other commits?
 
-        I guess this shows that we're kinda losing in not using Meson
-        for the plugins, but as I said I appreciate the didactic value
-        of using a standalone Makefile (with only a handful of lines
-        in configure).
+--000000000000dd43c10604c37ad6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
- contrib/plugins/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
+ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
+_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Sep 7, 2023 at 10:19=
+=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro=
+.org">philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
+204);padding-left:1ex">On 7/9/23 09:43, Albert Esteve wrote:<br>
+&gt; This API manages objects (in this iteration,<br>
+&gt; dmabuf fds) that can be shared along different<br>
+&gt; virtio devices, associated to a UUID.<br>
+&gt; <br>
+&gt; The API allows the different devices to add,<br>
+&gt; remove and/or retrieve the objects by simply<br>
+&gt; invoking the public functions that reside in the<br>
+&gt; virtio-dmabuf file.<br>
+&gt; <br>
+&gt; For vhost backends, the API stores the pointer<br>
+&gt; to the backend holding the object.<br>
+&gt; <br>
+&gt; Suggested-by: Gerd Hoffmann &lt;<a href=3D"mailto:kraxel@redhat.com" t=
+arget=3D"_blank">kraxel@redhat.com</a>&gt;<br>
+&gt; Signed-off-by: Albert Esteve &lt;<a href=3D"mailto:aesteve@redhat.com"=
+ target=3D"_blank">aesteve@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0MAINTAINERS=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A07 ++<br>
+&gt;=C2=A0 =C2=A0hw/display/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 |=C2=A0 =C2=A01 +<br>
+&gt;=C2=A0 =C2=A0hw/display/virtio-dmabuf.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 13=
+6 +++++++++++++++++++++++++++++<br>
+&gt;=C2=A0 =C2=A0include/hw/virtio/virtio-dmabuf.h | 103 ++++++++++++++++++=
+++++<br>
+&gt;=C2=A0 =C2=A0tests/unit/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 |=C2=A0 =C2=A01 +<br>
+&gt;=C2=A0 =C2=A0tests/unit/test-virtio-dmabuf.c=C2=A0 =C2=A0| 137 ++++++++=
+++++++++++++++++++++++<br>
+&gt;=C2=A0 =C2=A06 files changed, 385 insertions(+)<br>
+&gt;=C2=A0 =C2=A0create mode 100644 hw/display/virtio-dmabuf.c<br>
+&gt;=C2=A0 =C2=A0create mode 100644 include/hw/virtio/virtio-dmabuf.h<br>
+&gt;=C2=A0 =C2=A0create mode 100644 tests/unit/test-virtio-dmabuf.c<br>
+<br>
+<br>
+&gt; diff --git a/include/hw/virtio/virtio-dmabuf.h b/include/hw/virtio/vir=
+tio-dmabuf.h<br>
+&gt; new file mode 100644<br>
+&gt; index 0000000000..202eec5868<br>
+&gt; --- /dev/null<br>
+&gt; +++ b/include/hw/virtio/virtio-dmabuf.h<br>
+&gt; @@ -0,0 +1,103 @@<br>
+&gt; +/*<br>
+&gt; + * Virtio Shared dma-buf<br>
+&gt; + *<br>
+&gt; + * Copyright Red Hat, Inc. 2023<br>
+&gt; + *<br>
+&gt; + * Authors:<br>
+&gt; + *=C2=A0 =C2=A0 =C2=A0Albert Esteve &lt;<a href=3D"mailto:aesteve@red=
+hat.com" target=3D"_blank">aesteve@redhat.com</a>&gt;<br>
+&gt; + *<br>
+&gt; + * This work is licensed under the terms of the GNU GPL, version 2.<b=
+r>
+&gt; + * See the COPYING file in the top-level directory.<br>
+&gt; + */<br>
+&gt; +<br>
+&gt; +#ifndef VIRTIO_DMABUF_H<br>
+&gt; +#define VIRTIO_DMABUF_H<br>
+&gt; +<br>
+&gt; +#include &quot;qemu/osdep.h&quot;<br>
+<br>
+See <a href=3D"https://www.qemu.org/docs/master/devel/style.html#include-di=
+rectives" rel=3D"noreferrer" target=3D"_blank">https://www.qemu.org/docs/ma=
+ster/devel/style.html#include-directives</a><br>
+<br>
+=C2=A0 =C2=A0Do not include =E2=80=9Cqemu/osdep.h=E2=80=9D from header file=
+s since the .c<br>
+=C2=A0 =C2=A0file will have already included it.<br>
+<br>
+&gt; +#include &lt;glib.h&gt;<br>
+<br>
+This one is also included via &quot;qemu/osdep.h&quot; -&gt; &quot;glib-com=
+pat.h&quot;<br>
+<br>
+&gt; +#include &quot;qemu/uuid.h&quot;<br>
+&gt; +#include &quot;vhost.h&quot;<br>
+&gt; +<br>
+&gt; +typedef enum SharedObjectType {<br>
+&gt; +=C2=A0 =C2=A0 TYPE_INVALID =3D 0,<br>
+&gt; +=C2=A0 =C2=A0 TYPE_DMABUF,<br>
+&gt; +=C2=A0 =C2=A0 TYPE_VHOST_DEV,<br>
+&gt; +} SharedObjectType;<br>
+&gt; +<br>
+&gt; +typedef struct VirtioSharedObject {<br>
+&gt; +=C2=A0 =C2=A0 SharedObjectType type;<br>
+&gt; +=C2=A0 =C2=A0 gpointer value;<br>
+&gt; +} VirtioSharedObject;<br>
+<br>
+Since this need a repost, better use &quot;hw/display: Introduce <br>
+virtio-dmabuf&quot; as patch subject (and &quot;util/uuid&quot; prefix for =
+the previous <br>
+patch).<br>
+<br>
+Otherwise LGTM, so with these changes:<br>
+<br>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linar=
+o.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+<br></blockquote><div><br></div><div>Thanks a lot! I&#39;ll do it for the n=
+ext review.</div><div>Any other comment on the other commits?</div></div></=
+div>
 
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index db1bd04dfa6..c26fa08441e 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -37,7 +37,11 @@ all: $(SONAMES)
- 	$(CC) $(CFLAGS) -c -o $@ $<
- 
- lib%.so: %.o
-+ifeq ($(CONFIG_DARWIN),y)
-+	$(CC) -bundle -Wl,-undefined,dynamic_lookup -o $@ $^ $(LDLIBS)
-+else
- 	$(CC) -shared -o $@ $^ $(LDLIBS)
-+endif
- 
- clean:
- 	rm -f *.o *.so *.d
--- 
-2.41.0
+--000000000000dd43c10604c37ad6--
 
 
