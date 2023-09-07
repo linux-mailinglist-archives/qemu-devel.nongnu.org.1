@@ -2,82 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F25796F24
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 05:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8DD796F2C
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 05:08:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe5HS-0001a8-0x; Wed, 06 Sep 2023 23:02:06 -0400
+	id 1qe5M8-0003Hf-OH; Wed, 06 Sep 2023 23:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe5HH-0001Tp-Ez; Wed, 06 Sep 2023 23:01:57 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe5Lu-0003Gl-O6; Wed, 06 Sep 2023 23:06:43 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe5HB-0006OQ-NA; Wed, 06 Sep 2023 23:01:55 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-68bec3a9bdbso405017b3a.3; 
- Wed, 06 Sep 2023 20:01:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe5Lr-00074a-8n; Wed, 06 Sep 2023 23:06:42 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-501bd7711e8so756705e87.1; 
+ Wed, 06 Sep 2023 20:06:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694055708; x=1694660508; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1694055997; x=1694660797; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iGS5PBTnJcJ4FQkQm30+H85OPQIdTQ1zl6oh4vfLmr0=;
- b=JLorEoL8hZInR2rLhOxZYZvG6XrCD9E5HLBMo18PhbXm7SaNKTBVe83G7gHsrsK6Mr
- bw70eQquGktp3R6Tk9A2wcpHycv1Rs0rbb6HyIlDJec47pxlv0LJQZgOPrZQwWgVjNw1
- t5fB3W5L5IXKS75oJFaWSPpvPE0iIl+x3tKSYh/GwRARz9JXUtUesdIQu/gTnjY5CiKs
- BxoPY/95Nss2KbGFNGrpgcyI91dnQjsQfvHrrH/65wdB3ZSZ/mxxkIAaRA+LQePatWcY
- 0VeXRPRCkAwLqV2YB3eo3ueWMIsm06w/NN2dw/3XUgh9yro6ddqHGEYBT8Adppk19JXo
- 6OLA==
+ bh=i2hLNecNqI67WEy27RvsyEVYeOLlfaknTaehm/QrlaA=;
+ b=gUaN4LT4wJddFQjD/T9orzIv3ZiwJkrjsR3xN9ky+V9L/yUD10oV/WffXtn7aWjDEZ
+ cspqkmXxdhRE30Ra9wygF9neVTpga1CzHUSQgHe2DvnhHNBrh50QQgAQ9hL+cr4nuGJm
+ HI6bAo/bCMRHneHtrefRWUj3E6hPYITiCmHc3atqTwOm31ECk5AsPkkyB2/xqtOL/UnR
+ eeHk6bZwFBvyefVZ0mgPzAMYHMe6exs5G1nh5xeqQ2fK67aEZ23tvA3rrB2pljqGaqji
+ cq2TJZaIbqfhlcja9E3/myZ0CH/9txfDBply76Xle/dca3kM45V9XnHURJdsytYdhybu
+ GFoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694055708; x=1694660508;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=iGS5PBTnJcJ4FQkQm30+H85OPQIdTQ1zl6oh4vfLmr0=;
- b=KvV4hXpU+YWsX+dneUbL0oEyGbRQ7apDWlBgsgSeJex/cztQVB7L+Cnh9VIiY9hksg
- uRE5OoP2n7JHhdA1hVTetifC0TMiJ1Cgc/E78gHOKAw+7dCrFLcPg1/VfGgQ6K0xoD3Q
- T90WiWrxM3drR6R2UwDZq7Fs9BlktG54/XJC/0LGFERPTsHHgPosqtnGlHTfhRaLNHMI
- PDS9CUrgRawgOFQ7ieBdb8N2xnLUBvqFdl01VvoeaLOTmfRZSCJFpE9tka+plaT3VdQF
- xw5cSkfrLWmm9EINmgghFnTZj6CnxqqUeFGWVAKZQwQF6Li+SyqqS2ppZL8jxPRDK8m9
- Hyxw==
-X-Gm-Message-State: AOJu0YxgkbZuLt/Pu1I66E18pWz5P4+PTNoj5YzTiQNtBQMRXcl5pYiG
- Az+9LgyO36GyDQr32e+1z8A=
-X-Google-Smtp-Source: AGHT+IEwpLduc6L3kcEBEv83Lp1v4yV635Drn0Mnlr4cLTp9vVg+V97kkDjdgy68EK5fg+wU/qOoGg==
-X-Received: by 2002:a62:f24c:0:b0:68e:30db:ee43 with SMTP id
- y12-20020a62f24c000000b0068e30dbee43mr3204670pfl.21.1694055707676; 
- Wed, 06 Sep 2023 20:01:47 -0700 (PDT)
-Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
- by smtp.gmail.com with ESMTPSA id
- 25-20020aa79119000000b0062cf75a9e6bsm11369825pfh.131.2023.09.06.20.01.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 20:01:47 -0700 (PDT)
-Mime-Version: 1.0
+ d=1e100.net; s=20221208; t=1694055997; x=1694660797;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=i2hLNecNqI67WEy27RvsyEVYeOLlfaknTaehm/QrlaA=;
+ b=FjG9rdyweKAwE5ZtD9A3jT2lvgVK1aj1h7NHjcNaaxMDEKF/m6owVSxZe8215lTbFQ
+ VPkY+79OVUx3vLucGGEulHFlMJvfp95P7dN+2xA1IpgaNgx7G31LkgGfMaeA0etuiANj
+ uKw04UYSM9clTCPi7gifFX2QBC887Se2Z/UFZ2fngd2FxfLoMJcEnEKrRF46wU3bV5i0
+ NIambN9X8gC4P6LBFQQljflQXdML/mzQNUNpKKdHEbmicMduel+GtaCbyOAyYBDYiFF3
+ li604llI1n4pokFqZ1PsFp4/1Ng8B5tWi95a5NfeiOb/+yQLnRDWxX61vLDYOug/2PHC
+ dgbg==
+X-Gm-Message-State: AOJu0YzdemklhtfsTNLvfUvhH0Kl1kdMGAiaCz2EgFFAv4QUP7H/hZkJ
+ ZnPywTauaMPkFyrUjD5UKg1SQtOLLsTLVcxYdtI=
+X-Google-Smtp-Source: AGHT+IGHTh1XOW9xl3qrCetmWZ7kh2PoAdW7xHncVboBGrGEd3BQ5c7Z/85wcW7kBNX8Bvy46dVNOMV8NMeYFc0xYyg=
+X-Received: by 2002:ac2:5f6a:0:b0:501:bbbb:de1e with SMTP id
+ c10-20020ac25f6a000000b00501bbbbde1emr3411145lfc.6.1694055996479; Wed, 06 Sep
+ 2023 20:06:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230808090914.17634-1-nikita.shubin@maquefel.me>
+In-Reply-To: <20230808090914.17634-1-nikita.shubin@maquefel.me>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 7 Sep 2023 13:06:01 +1000
+Message-ID: <CAKmqyKMLW5DJ8PJDiCZcV2PEXfpK2UCrbyOKYT1JHv_d4bOETg@mail.gmail.com>
+Subject: Re: [PATCH v3] target/riscv: don't read CSR in riscv_csrrw_do64
+To: Nikita Shubin <nikita.shubin@maquefel.me>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Nikita Shubin <n.shubin@yadro.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Sep 2023 13:01:41 +1000
-Message-Id: <CVCCMLRLPB9H.3T7JJ2S044E0I@wheely>
-Cc: <qemu-devel@nongnu.org>, <mikey@neuling.org>, <vaibhav@linux.ibm.com>,
- <jniethe5@gmail.com>, <sbhat@linux.ibm.com>, <kconsul@linux.vnet.ibm.com>
-Subject: Re: [PATCH RESEND 10/15] ppc: spapr: Initialize the GSB Elements
- lookup table.
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <danielhb413@gmail.com>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230906043333.448244-1-harshpb@linux.ibm.com>
- <20230906043333.448244-11-harshpb@linux.ibm.com>
-In-Reply-To: <20230906043333.448244-11-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=alistair23@gmail.com; helo=mail-lf1-x130.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,106 +91,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Might be good to add a common nested: prefix to all patches actually.
-
-On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
-> This is a first step towards enabling support for nested PAPR hcalls for
-> providing the get/set of various Guest State Buffer (GSB) elements via
-> h_guest_[g|s]et_state hcalls. This enables for identifying correct
-> callbacks for get/set for each of the elements supported via
-> h_guest_[g|s]et_state hcalls, support for which is added in next patch.
-
-Changelog could use work.
-
+On Tue, Aug 8, 2023 at 7:10=E2=80=AFPM Nikita Shubin <nikita.shubin@maquefe=
+l.me> wrote:
 >
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
-> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> From: Nikita Shubin <n.shubin@yadro.com>
+>
+> As per ISA:
+>
+> "For CSRRWI, if rd=3Dx0, then the instruction shall not read the CSR and
+> shall not cause any of the side effects that might occur on a CSR read."
+>
+> trans_csrrwi() and trans_csrrw() call do_csrw() if rd=3Dx0, do_csrw() cal=
+ls
+> riscv_csrrw_do64(), via helper_csrw() passing NULL as *ret_value.
+>
+> Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+
+Thanks!
+
+Applied to riscv-to-apply.next
+
+Alistair
+
 > ---
->  hw/ppc/spapr_hcall.c          |   1 +
->  hw/ppc/spapr_nested.c         | 487 ++++++++++++++++++++++++++++++++++
->  include/hw/ppc/ppc.h          |   2 +
->  include/hw/ppc/spapr_nested.h | 102 +++++++
->  4 files changed, 592 insertions(+)
+> Changelog v2:
+> - fixed uninitialized old_value
 >
-> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-> index 9b1f225d4a..ca609cb5a4 100644
-> --- a/hw/ppc/spapr_hcall.c
-> +++ b/hw/ppc/spapr_hcall.c
-> @@ -1580,6 +1580,7 @@ static void hypercall_register_types(void)
->      spapr_register_hypercall(KVMPPC_H_UPDATE_DT, h_update_dt);
-> =20
->      spapr_register_nested();
-> +    init_nested();
-
-This is for hcall registration, not general subsystem init I think.
-Arguably not sure if it matters, it just looks odd for everything
-else to be an hcall except this. I would just add a new init
-function.
-
-And actually now I look closer at this, I would not do your papr
-hcall init in the cap apply function, if it is possible to do
-inside spapr_register_nested(), then that function could look at
-which caps are enabled and register the appropriate hcalls. Then
-no change to move this into cap code.
-
->  }
-> =20
->  type_init(hypercall_register_types)
-> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-> index e7956685af..6fbb1bcb02 100644
-> --- a/hw/ppc/spapr_nested.c
-> +++ b/hw/ppc/spapr_nested.c
-
-[snip]
-
-My eyes are going square, I'll review this later.
-
-> diff --git a/include/hw/ppc/ppc.h b/include/hw/ppc/ppc.h
-> index e095c002dc..d7acc28d17 100644
-> --- a/include/hw/ppc/ppc.h
-> +++ b/include/hw/ppc/ppc.h
-> @@ -33,6 +33,8 @@ struct ppc_tb_t {
->      QEMUTimer *decr_timer;
->      /* Hypervisor decrementer management */
->      uint64_t hdecr_next;    /* Tick for next hdecr interrupt  */
-> +    /* TB that HDEC should fire and return ctrl back to the Host partiti=
-on */
-> +    uint64_t hdecr_expiry_tb;
-
-Why is this here?
-
->      QEMUTimer *hdecr_timer;
->      int64_t purr_offset;
->      void *opaque;
-> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.=
-h
-> index 2e8c6ba1ca..3c0d6a486e 100644
-> --- a/include/hw/ppc/spapr_nested.h
-> +++ b/include/hw/ppc/spapr_nested.h
-
-[snip]
-
-> =20
-> +struct guest_state_element_type {
-> +    uint16_t id;
-> +    int size;
-> +#define GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE 0x1
-> +#define GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY  0x2
-> +   uint16_t flags;
-> +    void *(*location)(SpaprMachineStateNestedGuest *, target_ulong);
-> +    size_t offset;
-> +    void (*copy)(void *, void *, bool);
-> +    uint64_t mask;
-> +};
-
-I have to wonder whether this is the best way to go. Having
-these indicrect function calls and array of "ops" like this
-might be limiting the compiler. I wonder if it should just
-be done in a switch table, which is how most interpreters
-I've seen (which admittedly is not many) seem to do it.
-
-Thanks,
-Nick
-
+> Changelog v3:
+> - reword comment and commit message as Deniel suggested
+>
+> ---
+>  target/riscv/csr.c | 24 +++++++++++++++---------
+>  1 file changed, 15 insertions(+), 9 deletions(-)
+>
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index ea7585329e..c5564d6d53 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -3908,21 +3908,27 @@ static RISCVException riscv_csrrw_do64(CPURISCVSt=
+ate *env, int csrno,
+>                                         target_ulong write_mask)
+>  {
+>      RISCVException ret;
+> -    target_ulong old_value;
+> +    target_ulong old_value =3D 0;
+>
+>      /* execute combined read/write operation if it exists */
+>      if (csr_ops[csrno].op) {
+>          return csr_ops[csrno].op(env, csrno, ret_value, new_value, write=
+_mask);
+>      }
+>
+> -    /* if no accessor exists then return failure */
+> -    if (!csr_ops[csrno].read) {
+> -        return RISCV_EXCP_ILLEGAL_INST;
+> -    }
+> -    /* read old value */
+> -    ret =3D csr_ops[csrno].read(env, csrno, &old_value);
+> -    if (ret !=3D RISCV_EXCP_NONE) {
+> -        return ret;
+> +    /*
+> +     * ret_value =3D=3D NULL means that rd=3Dx0 and we're coming from he=
+lper_csrw()
+> +     * and we can't throw side effects caused by CSR reads.
+> +     */
+> +    if (ret_value) {
+> +        /* if no accessor exists then return failure */
+> +        if (!csr_ops[csrno].read) {
+> +            return RISCV_EXCP_ILLEGAL_INST;
+> +        }
+> +        /* read old value */
+> +        ret =3D csr_ops[csrno].read(env, csrno, &old_value);
+> +        if (ret !=3D RISCV_EXCP_NONE) {
+> +            return ret;
+> +        }
+>      }
+>
+>      /* write value if writable and write mask set, otherwise drop writes=
+ */
+> --
+> 2.39.2
+>
+>
 
