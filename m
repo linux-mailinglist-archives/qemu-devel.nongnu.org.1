@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D835E7970FE
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C547797102
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:48:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeAeW-0007Kk-JF; Thu, 07 Sep 2023 04:46:16 -0400
+	id 1qeAgP-0000jv-GD; Thu, 07 Sep 2023 04:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qeAeS-0007Ei-9d
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:46:13 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qeAgJ-0000fL-Q5
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:48:07 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qeAeO-0008VL-2V
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:46:12 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-3fef56f7223so6945585e9.3
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 01:46:07 -0700 (PDT)
+ id 1qeAgG-0000Of-Fr
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:48:06 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31dd10c2b8bso675292f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 01:48:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694076366; x=1694681166; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MGPAIUCP36uWkMPgV53mUgA4HKs3bkirBfQvci1d314=;
- b=I7fJBWfWJVBUIVCtaXNS7UpBMr2VyF2HA7bcmaZ4lFNOafelp19jO5ofNd3LzDIxqb
- w+22hmMeZAbUnRKTC02IDfwxdyA1G9L9PzI5yhlLuvVAuSQVrUDRl/Nz859qYzjtYifa
- PU0D0KpYl6sc8ev6KSbDEErI27t9765hnAPwcmIvQJN/U9Et9zL9IaRNZ4D5lcbhrWrS
- BjZPgmzHIhAqiS2uG6ZhhoDKZsvc+o8W6ovsqst7EEA9T9B97YP91BahZ1230FNGcvTh
- xEQYzaFlzcR3o+t/1RgZcnYjcDt8u1NRwLKaduUWwBbLz7WQhipN+HyC2yFxI4UOCZqf
- j4yg==
+ d=ventanamicro.com; s=google; t=1694076483; x=1694681283; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=mOTLIIOQQVix84XA+QJh2zHn4AR4irebMtlyyEs6J+Y=;
+ b=V//Za8oIC6ArDz6hEX4Jsj8i69v4E9CXv+wJewOa+nuHmbOxlXlCoYsxX594GYvmxb
+ 6Y+odUf1Lg0KrcGbZSKdD52pXK7+0D7/S2Gjx2vh65e+RD93kKT3CzKrMJiey994uebl
+ j9T2fX2wy5Db7pt+p814tPIvLHE3s6HsnE7JMk3sFWKxu2pPdJd/1BGA65S0jP9Eoxjg
+ vZpsFTvAAoBpcDDfS8kKwXuzdLpE8mE1BjQTYGK8vXD07z5P9mX+jxsC5mhw8F2pgBGO
+ hMZmew1iumyIwGj2vxhVmwywk87aNbGjQYsppX1csDGJIxrT/0LvRVe2QlOEt9vJ4aGp
+ sjBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694076366; x=1694681166;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MGPAIUCP36uWkMPgV53mUgA4HKs3bkirBfQvci1d314=;
- b=i/BRRXH3PoCmlBZN6Am8VTycPiJglli2lSZ0uv9fmD9sX2EEoOzD+djJKzDjHoxZew
- VoY25Ms9qM2ixizh5D6zsvqk45pfEMyunpDkofEyBHdicRa2OynvoioHM4RmhOWVQq+S
- 0CKWk8vxZFDc1ZiHucC9xUIfNPB5ADW544K7Uszen8f7Jicvo3b48VA/ZycayH0Anrn0
- Fy4nqySea+Axf2V/+E9Ap4mtgVbm1ccAw8N89cY3dMFnBPayjesPzjmK43/hH5X4opgY
- AWViQXKhldE3zXevUCvNO5XKgAutSanPVSBl64nWYDp+NjRdPVkNkyfNX0ga1CldnCfu
- owFQ==
-X-Gm-Message-State: AOJu0Yx6CmL7ebyDVXAWXtHYXjmLvZ5a4GBE1um7GEabOfbsJlo0M71K
- PhMATyTjJMxcCkMedfofPkklaxoHtMY90KsCPSo=
-X-Google-Smtp-Source: AGHT+IFQk5NsNKhgpULukCg8lRqTLuNt1ViXa/73YQD74rywvpgXAahyooR//IitUPrdhLVmNvnEDw==
-X-Received: by 2002:a05:6000:923:b0:317:f7b0:85f with SMTP id
- cx3-20020a056000092300b00317f7b0085fmr4086271wrb.33.1694076365969; 
- Thu, 07 Sep 2023 01:46:05 -0700 (PDT)
+ d=1e100.net; s=20221208; t=1694076483; x=1694681283;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mOTLIIOQQVix84XA+QJh2zHn4AR4irebMtlyyEs6J+Y=;
+ b=I04Tnj3k53gosdoX2Fqs4DS4M42vuNGlLGmvoZ5pFI85+oGEkZemwlQ4jq/Si0sb/e
+ zSEB0JGltZbl19kN7oErpPLEkAqrBfqTFwltxyMR8Etfm++8cbDxUY3+tLX3tb6ZLgqb
+ gGS/Vw5OgnGN35j96aAzxMqzGyj7eQC/zY1LlEc5yyCeE6Vi0fTYhCQGWLbBu07Sf7+J
+ UbgeOd0UDM6qX8Qnnw+jLwsT4G28f7Il+pOOg9Ixg06M+rxG42ucznHWROB6Yn1haPMt
+ X5WL4HuCzufiLdpw2yBh85hG1PCUbQVX0ddrSLs0mdsQ09pfghPZWc9RxExuRKA9Vn+R
+ H6yw==
+X-Gm-Message-State: AOJu0YzWPL0LrKKN38KKDyA14kzHtaLaSgCRUy5Td38dp88segfqT1eg
+ O5jsH4s+ZP5jr3iqAeDT76m5fZadwZXUeKlUDuU=
+X-Google-Smtp-Source: AGHT+IGhcGScuFvItO26xvtjdBuE7/rgM/3kpGVko8mm9exq4qfXYxeWgHKB9q5slX15J9HY2iHqBg==
+X-Received: by 2002:adf:e8c2:0:b0:317:18a8:5fa1 with SMTP id
+ k2-20020adfe8c2000000b0031718a85fa1mr3388268wrn.69.1694076482869; 
+ Thu, 07 Sep 2023 01:48:02 -0700 (PDT)
 Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
  by smtp.gmail.com with ESMTPSA id
- v16-20020a5d4b10000000b0031981c500aasm22767208wrq.25.2023.09.07.01.46.05
+ i16-20020adfefd0000000b0031c5d74ecd8sm22817568wrp.84.2023.09.07.01.48.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 01:46:05 -0700 (PDT)
+ Thu, 07 Sep 2023 01:48:02 -0700 (PDT)
+Date: Thu, 7 Sep 2023 10:48:01 +0200
 From: Andrew Jones <ajones@ventanamicro.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- peter.maydell@linaro.org,
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ palmer@dabbelt.com, bin.meng@windriver.com, peter.maydell@linaro.org, 
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2] docs/devel: Add cross-compiling doc
-Date: Thu,  7 Sep 2023 10:46:05 +0200
-Message-ID: <20230907084604.253347-2-ajones@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+Subject: Re: [PATCH] docs/devel: Add cross-compiling doc
+Message-ID: <20230907-1f1d1aa99487ea630eb7088f@orel>
+References: <20230726120706.335340-2-ajones@ventanamicro.com>
+ <CAKmqyKMbyDn0rZ8tAXCNZvLcVh2dGpkQ9b+WR_6t358kFpUroQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x334.google.com
+In-Reply-To: <CAKmqyKMbyDn0rZ8tAXCNZvLcVh2dGpkQ9b+WR_6t358kFpUroQ@mail.gmail.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,261 +95,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add instructions for how to cross-compile QEMU for RISC-V. The
-file is named generically because there's no reason not to collect
-other architectures steps into the same file, especially because
-several subsections like those for cross-compiling QEMU dependencies
-using meson and a cross-file could be shared. Additionally, other
-approaches to creating sysroots, such as with debootstrap, may be
-documented in this file in the future.
+On Thu, Sep 07, 2023 at 01:13:33PM +1000, Alistair Francis wrote:
+> On Wed, Jul 26, 2023 at 10:08 PM Andrew Jones <ajones@ventanamicro.com> wrote:
+> >
+> > Add instructions for how to cross-compile QEMU for RISC-V. The
+> > file is named generically because there's no reason not to collect
+> > other architectures steps into the same file, especially because
+> > several subsections like those for cross-compiling QEMU dependencies
+> > using meson and a cross-file could be shared. Additionally, other
+> > approaches to creating sysroots, such as with debootstrap, may be
+> > documented in this file in the future.
+> >
+> > Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> 
+> I get a warning when building this:
+> 
+> qemu/docs/devel/cross-compiling.rst: WARNING: document isn't included
+> in any toctree
+> 
+> Do you mind adding a toc reference to it and sending a v2?
 
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
----
- docs/devel/cross-compiling.rst | 221 +++++++++++++++++++++++++++++++++
- docs/devel/index-build.rst     |   1 +
- 2 files changed, 222 insertions(+)
- create mode 100644 docs/devel/cross-compiling.rst
+Ah, I forgot to try an --enable-docs build. Sorry about that. I've just
+sent v2.
 
-diff --git a/docs/devel/cross-compiling.rst b/docs/devel/cross-compiling.rst
-new file mode 100644
-index 000000000000..1b988ba54e4c
---- /dev/null
-+++ b/docs/devel/cross-compiling.rst
-@@ -0,0 +1,221 @@
-+.. SPDX-License-Identifier: GPL-2.0-or-later
-+
-+====================
-+Cross-compiling QEMU
-+====================
-+
-+Cross-compiling QEMU first requires the preparation of a cross-toolchain
-+and the cross-compiling of QEMU's dependencies. While the steps will be
-+similar across architectures, each architecture will have its own specific
-+recommendations. This document collects architecture-specific procedures
-+and hints that may be used to cross-compile QEMU, where typically the host
-+environment is x86.
-+
-+RISC-V
-+======
-+
-+Toolchain
-+---------
-+
-+Select a root directory for the cross environment
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Export an environment variable pointing to a root directory
-+for the cross environment. For example, ::
-+
-+  $ export PREFIX="$HOME/opt/riscv"
-+
-+Create a work directory
-+^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Tools and several components will need to be downloaded and built. Create
-+a directory for all the work, ::
-+
-+  $ export WORK_DIR="$HOME/work/xqemu"
-+  $ mkdir -p "$WORK_DIR"
-+
-+Select and prepare the toolchain
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Select a toolchain such as [riscv-toolchain]_ and follow its instructions
-+for building and installing it to ``$PREFIX``, e.g. ::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://github.com/riscv/riscv-gnu-toolchain
-+  $ cd riscv-gnu-toolchain
-+  $ ./configure --prefix="$PREFIX"
-+  $ make -j$(nproc) linux
-+
-+Set the ``$CROSS_COMPILE`` environment variable to the prefix of the cross
-+tools and add the tools to ``$PATH``, ::
-+
-+$ export CROSS_COMPILE=riscv64-unknown-linux-gnu-
-+$ export PATH="$PREFIX/bin:$PATH"
-+
-+Also set ``$SYSROOT``, where all QEMU cross-compiled dependencies will be
-+installed. The toolchain installation likely created a 'sysroot' directory
-+at ``$PREFIX/sysroot``, which is the default location for most cross
-+tools, making it a good location, ::
-+
-+  $ mkdir -p "$PREFIX/sysroot"
-+  $ export SYSROOT="$PREFIX/sysroot"
-+
-+Create a pkg-config wrapper
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The build processes of QEMU and some of its dependencies depend on
-+pkg-config. Create a wrapper script for it which works for the cross
-+environment: ::
-+
-+  $ cat <<EOF >"$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-+  #!/bin/sh
-+
-+  [ "\$SYSROOT" ] || exit 1
-+
-+  export PKG_CONFIG_PATH=
-+  export PKG_CONFIG_LIBDIR="\${SYSROOT}/usr/lib/pkgconfig:\${SYSROOT}/usr/lib64/pkgconfig:\${SYSROOT}/usr/share/pkgconfig"
-+
-+  exec pkg-config "\$@"
-+  EOF
-+  $ chmod +x "$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-+
-+Create a cross-file for meson builds
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+meson setup, used by some of QEMU's dependencies, needs a "cross-file" to
-+configure the cross environment. Create one, ::
-+
-+  $ cd "$WORK_DIR"
-+  $ cat <<EOF >cross_file.txt
-+  [host_machine]
-+  system = 'linux'
-+  cpu_family = 'riscv64'
-+  cpu = 'riscv64'
-+  endian = 'little'
-+
-+  [binaries]
-+  c = '${CROSS_COMPILE}gcc'
-+  cpp = '${CROSS_COMPILE}g++'
-+  ar = '${CROSS_COMPILE}ar'
-+  ld = '${CROSS_COMPILE}ld'
-+  objcopy = '${CROSS_COMPILE}objcopy'
-+  strip = '${CROSS_COMPILE}strip'
-+  pkgconfig = '${CROSS_COMPILE}pkg-config'
-+  EOF
-+
-+Cross-compile dependencies
-+--------------------------
-+
-+glibc
-+^^^^^
-+
-+If [riscv-toolchain]_ was selected for the toolchain then this step is
-+already complete and glibc has already been installed into ``$SYSROOT``.
-+Otherwise, cross-compile glibc and install it to ``$SYSROOT``.
-+
-+libffi
-+^^^^^^
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.freedesktop.org/gstreamer/meson-ports/libffi.git
-+  $ cd libffi
-+  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-+  $ ninja -C _build
-+  $ ninja -C _build install
-+
-+*Building libffi seperately avoids a compilation error generated when
-+building it as a subproject of glib.*
-+
-+glib
-+^^^^
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://github.com/GNOME/glib.git
-+  $ cd glib
-+  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-+  $ ninja -C _build
-+  $ ninja -C _build install
-+
-+libslirp [optional]
-+^^^^^^^^^^^^^^^^^^^
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.com/qemu-project/libslirp.git
-+  $ cd libslirp
-+  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-+  $ ninja -C _build
-+  $ ninja -C _build install
-+
-+pixman
-+^^^^^^
-+
-+First ensure the 'libtool' package is installed, e.g.
-+``sudo dnf install libtool`` or ``sudo apt install libtool``
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.freedesktop.org/pixman/pixman
-+  $ cd pixman
-+  $ ./autogen.sh
-+  $ ./configure --prefix="$SYSROOT/usr" --host=riscv64-unknown-linux-gnu
-+  $ make -j$(nproc)
-+  $ make install
-+
-+Cross-compile QEMU
-+------------------
-+
-+::
-+
-+  $ cd "$WORK_DIR"
-+  $ git clone https://gitlab.com/qemu-project/qemu.git
-+  $ cd qemu
-+  $ mkdir -p build/install_dir
-+  $ cd build
-+  $ ../configure --target-list=riscv64-softmmu --cross-prefix=$CROSS_COMPILE --prefix="$PWD/install_dir"
-+  $ make -j$(nproc)
-+  $ make install
-+
-+*Cross-compiling QEMU with different configurations may require more
-+dependencies to be built and installed in the sysroot.*
-+
-+Running QEMU
-+------------
-+
-+``build/install_dir`` may now be copied to the target and its bin
-+directory may be added to the target user's PATH. Prior to running
-+QEMU, ensure all the libraries it depends on are present, ::
-+
-+  $ ldd /path/to/bin/qemu-system-riscv64
-+
-+For example, it may necessary to install zlib libraries, e.g.
-+``sudo dnf install zlib-devel`` or ``sudo apt install zlib1g-dev``
-+
-+Subsequent QEMU Cross-compiling
-+-------------------------------
-+
-+Unless it's necessary to update and recompile the toolchain or
-+dependencies, then most steps do not need to be repeated for subsequent
-+compiles. Simply ensure the toolchain is in ``$PATH``, ``$SYSROOT`` points
-+at the sysroot, and then follow the QEMU cross-compile steps in
-+"Cross-compile QEMU". For example, ::
-+
-+  $ export PATH="$HOME/opt/riscv/bin:$PATH"
-+  $ export SYSROOT="$HOME/opt/riscv/sysroot"
-+  $ cd /path/to/qemu
-+  $ mkdir -p build/install_dir
-+  $ cd build
-+  $ ../configure --target-list=riscv64-softmmu --cross-prefix=riscv64-unknown-linux-gnu- --prefix="$PWD/install_dir"
-+  $ make -j
-+  $ make install
-+
-+References
-+----------
-+
-+.. [riscv-toolchain] https://github.com/riscv/riscv-gnu-toolchain
-diff --git a/docs/devel/index-build.rst b/docs/devel/index-build.rst
-index 57e8d39d9856..d3c85927be24 100644
---- a/docs/devel/index-build.rst
-+++ b/docs/devel/index-build.rst
-@@ -9,6 +9,7 @@ the basics if you are adding new files and targets to the build.
-    :maxdepth: 3
- 
-    build-system
-+   cross-compiling
-    kconfig
-    testing
-    acpi-bits
--- 
-2.41.0
-
+Thanks,
+drew
 
