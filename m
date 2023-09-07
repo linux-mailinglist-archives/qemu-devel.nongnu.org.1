@@ -2,65 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C10F7972F4
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 16:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E006797300
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 16:18:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeFfC-0002X4-F9; Thu, 07 Sep 2023 10:07:18 -0400
+	id 1qeFoU-0006PW-J5; Thu, 07 Sep 2023 10:16:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1qeFf9-0002Wq-0m
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:07:15 -0400
-Received: from mx.treblig.org ([2a00:1098:5b::1])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qeFoS-0006PJ-Qx
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:16:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dg@treblig.org>) id 1qeFf4-00007Y-Kn
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:07:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
- ; s=bytemarkmx;
- h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID
- :Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID
- :Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
- Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
- :List-Post:List-Owner:List-Archive;
- bh=+veBLRB4yjgvttecAMtQrN2LzAFFVEsaNzJMuqPHczY=; b=J0jFFcaVvbZS2Ky/CU1Vcco0BE
- 5uFWP6jmKOhJYDSygeYj5SEGurPlG8E9CAvPyFScnRaIxgN8BgyqENJusnABFMqnxiWXDTtvirNJj
- jrpReeZmiTU1rdRXEDH4hSU6mhintBljh3GKsSu3N+3DM22wgGg8MRsqSkCV7R/HW+GLXSHat0bbI
- RnzwG8iVhsrfTQZacKkHWjk5m2np8uqJmBokbH+4Ki2X0oS2izIGm3Gq7v8VkBB8BV9FI6Lg9heuR
- MCgqsQ9VCo44u4/CvBq5F/TOUFKL8U+Rz7hahQo7R/Gg25ulo2t9xRqTXEBDqB3yAegzN7+/mWmJA
- ONLG5eYg==;
-Received: from dg by mx.treblig.org with local (Exim 4.94.2)
- (envelope-from <dg@treblig.org>)
- id 1qeFez-00ANIR-Lf; Thu, 07 Sep 2023 14:07:05 +0000
-Date: Thu, 7 Sep 2023 14:07:05 +0000
-From: "Dr. David Alan Gilbert" <dave@treblig.org>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- pbonzini@redhat.com, Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, kwolf@redhat.com,
- Maxim Levitsky <mlevitsk@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [RFC 1/3] hmp: avoid the nested event loop in handle_hmp_command()
-Message-ID: <ZPnZCbnpzS2QsEYO@gallifrey>
-References: <20230906190141.1286893-1-stefanha@redhat.com>
- <20230906190141.1286893-2-stefanha@redhat.com>
- <ZPkiH4WvSs1k43RQ@gallifrey> <20230907140428.GB1363873@fedora>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qeFoQ-0005TK-NY
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:16:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694096208;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3rDWKriDUW5BjrrmFyShcR6v79WeS7VczQ5PPdV49IU=;
+ b=aNmSlUPYaZs4I5JBXM8v8zgIcFBWTG9pkLNZ5Li9Y76r1nOPtnHcXdhPAKA/Qgs7VQFFnY
+ SY3hh8aJkifozDB+IFev7IyITp5Fqnl+yt0stTfnj6KhzLLHIlGszceXS9WkpnrE3DpUet
+ OBAMD9UHGTVy4uF2pfeFsEhBvFAQmWk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-20-D23bC-avOkKKnj8Q-BvoyA-1; Thu, 07 Sep 2023 10:16:43 -0400
+X-MC-Unique: D23bC-avOkKKnj8Q-BvoyA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E454594B526;
+ Thu,  7 Sep 2023 14:16:42 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.30])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BC53A1121318;
+ Thu,  7 Sep 2023 14:16:42 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C32EF21E6936; Thu,  7 Sep 2023 16:16:41 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org,
+ William Tsai <williamtsai1111@gmail.com>,  Paolo Bonzini
+ <pbonzini@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>,  Eduardo
+ Habkost <eduardo@habkost.net>
+Subject: Re: [PATCH 0/1] qom: fix setting of qdev array properties
+References: <20230904162544.2388037-1-berrange@redhat.com>
+ <ZPbt0io6He9mE2SB@redhat.com> <87edja9vkr.fsf@pond.sub.org>
+ <ZPnJRVnC13X25orb@redhat.com>
+Date: Thu, 07 Sep 2023 16:16:41 +0200
+In-Reply-To: <ZPnJRVnC13X25orb@redhat.com> (Kevin Wolf's message of "Thu, 7
+ Sep 2023 14:59:49 +0200")
+Message-ID: <87cyyu6pbq.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <20230907140428.GB1363873@fedora>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/5.10.0-23-amd64 (x86_64)
-X-Uptime: 14:05:45 up 62 days, 23:37, 1 user, load average: 0.00, 0.00, 0.00
-User-Agent: Mutt/2.0.5 (2021-01-21)
-Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
- helo=mx.treblig.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,124 +86,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-* Stefan Hajnoczi (stefanha@redhat.com) wrote:
-> On Thu, Sep 07, 2023 at 01:06:39AM +0000, Dr. David Alan Gilbert wrote:
-> > * Stefan Hajnoczi (stefanha@redhat.com) wrote:
-> > > Coroutine HMP commands currently run to completion in a nested event
-> > > loop with the Big QEMU Lock (BQL) held. The call_rcu thread also uses
-> > > the BQL and cannot process work while the coroutine monitor command is
-> > > running. A deadlock occurs when monitor commands attempt to wait for
-> > > call_rcu work to finish.
-> > 
-> > I hate to think if there's anywhere else that ends up doing that
-> > other than the monitors.
-> 
-> Luckily drain_call_rcu() has few callers: just
-> xen_block_device_destroy() and qmp_device_add(). We only need to worry
-> about their call stacks.
-> 
-> I haven't looked at the Xen code.
-> 
-> > 
-> > But, not knowing the semantics of the rcu code, it looks kind of OK to
-> > me from the monitor.
-> > 
-> > (Do you ever get anything like qemu quitting from one of the other
-> > monitors while this coroutine hasn't been run?)
-> 
-> Not sure what you mean?
+Kevin Wolf <kwolf@redhat.com> writes:
 
-Imagine that just after you create your coroutine, a vCPU does a
-shutdown and qemu is configured to quit, or on another monitor someone
-does a quit;  does your coroutine get executed or not?
+> Am 07.09.2023 um 11:33 hat Markus Armbruster geschrieben:
+>> Kevin Wolf <kwolf@redhat.com> writes:
+>> > Am 04.09.2023 um 18:25 hat Daniel P. Berrang=C3=A9 geschrieben:
+>> >> I still think for user creatable devices we'd be better off just
+>> >> mandating the use of JSON syntax for -device and thus leveraging
+>> >> the native JSON array type. This patch was the quick fix for the
+>> >> existing array property syntax though.
+>> >
+>> > I agree, let's not apply this one. It puts another ugly hack in the
+>> > common QOM code path just to bring back the old ugly hack in qdev.
+>>=20
+>> Since -device supports both JSON and dotted keys, we'd still offer a
+>> (differently ugly) solution for users averse to JSON.
+>
+> I'm afraid this is not true until we actually QAPIfy -device and change
+> the non-JSON path to the keyval parser. At the moment, it still uses
+> qemu_opts_parse_noisily(), so no dotted key syntax.
 
-Dave
+You're right; we chickened out of switching the parser, and I suppressed
+the memory.
 
-> Stefan
-> 
-> > 
-> > Dave
-> > 
-> > > This patch refactors the HMP monitor to use the existing event loop
-> > > instead of creating a nested event loop. This will allow the next
-> > > patches to rely on draining call_rcu work.
-> > > 
-> > > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > ---
-> > >  monitor/hmp.c | 28 +++++++++++++++-------------
-> > >  1 file changed, 15 insertions(+), 13 deletions(-)
-> > > 
-> > > diff --git a/monitor/hmp.c b/monitor/hmp.c
-> > > index 69c1b7e98a..6cff2810aa 100644
-> > > --- a/monitor/hmp.c
-> > > +++ b/monitor/hmp.c
-> > > @@ -1111,15 +1111,17 @@ typedef struct HandleHmpCommandCo {
-> > >      Monitor *mon;
-> > >      const HMPCommand *cmd;
-> > >      QDict *qdict;
-> > > -    bool done;
-> > >  } HandleHmpCommandCo;
-> > >  
-> > > -static void handle_hmp_command_co(void *opaque)
-> > > +static void coroutine_fn handle_hmp_command_co(void *opaque)
-> > >  {
-> > >      HandleHmpCommandCo *data = opaque;
-> > > +
-> > >      handle_hmp_command_exec(data->mon, data->cmd, data->qdict);
-> > >      monitor_set_cur(qemu_coroutine_self(), NULL);
-> > > -    data->done = true;
-> > > +    qobject_unref(data->qdict);
-> > > +    monitor_resume(data->mon);
-> > > +    g_free(data);
-> > >  }
-> > >  
-> > >  void handle_hmp_command(MonitorHMP *mon, const char *cmdline)
-> > > @@ -1157,20 +1159,20 @@ void handle_hmp_command(MonitorHMP *mon, const char *cmdline)
-> > >          Monitor *old_mon = monitor_set_cur(qemu_coroutine_self(), &mon->common);
-> > >          handle_hmp_command_exec(&mon->common, cmd, qdict);
-> > >          monitor_set_cur(qemu_coroutine_self(), old_mon);
-> > > +        qobject_unref(qdict);
-> > >      } else {
-> > > -        HandleHmpCommandCo data = {
-> > > -            .mon = &mon->common,
-> > > -            .cmd = cmd,
-> > > -            .qdict = qdict,
-> > > -            .done = false,
-> > > -        };
-> > > -        Coroutine *co = qemu_coroutine_create(handle_hmp_command_co, &data);
-> > > +        HandleHmpCommandCo *data; /* freed by handle_hmp_command_co() */
-> > > +
-> > > +        data = g_new(HandleHmpCommandCo, 1);
-> > > +        data->mon = &mon->common;
-> > > +        data->cmd = cmd;
-> > > +        data->qdict = qdict; /* freed by handle_hmp_command_co() */
-> > > +
-> > > +        Coroutine *co = qemu_coroutine_create(handle_hmp_command_co, data);
-> > > +        monitor_suspend(&mon->common); /* resumed by handle_hmp_command_co() */
-> > >          monitor_set_cur(co, &mon->common);
-> > >          aio_co_enter(qemu_get_aio_context(), co);
-> > > -        AIO_WAIT_WHILE_UNLOCKED(NULL, !data.done);
-> > >      }
-> > > -
-> > > -    qobject_unref(qdict);
-> > >  }
-> > >  
-> > >  static void cmd_completion(MonitorHMP *mon, const char *name, const char *list)
-> > > -- 
-> > > 2.41.0
-> > > 
-> > > 
-> > -- 
-> >  -----Open up your eyes, open up your mind, open up your code -------   
-> > / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-> > \        dave @ treblig.org |                               | In Hex /
-> >  \ _________________________|_____ http://www.treblig.org   |_______/
-> > 
-
-
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
 
