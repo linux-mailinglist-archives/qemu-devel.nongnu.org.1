@@ -2,65 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEED67970AE
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9287970B1
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:20:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeADP-0004S7-OP; Thu, 07 Sep 2023 04:18:15 -0400
+	id 1qeAFH-0005lm-20; Thu, 07 Sep 2023 04:20:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeADN-0004Ru-RK
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:18:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeADL-000527-It
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:18:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694074682;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=IIMhwAEcLiMmiwvotymR25h4RZPuHS1DGdJ3XoEqqLE=;
- b=R2i5/eD4wEh9Bngmw6NAy4IQITpS3sdzgDo6budMJpFDskC/qRI0aL0YD32gcNVSPbQhzh
- 0t9TMn9T6gKaoCoBlGk4iFvLGWSP0y67ITtAo72Ot83IK6QbeQ0LTnNsEGKXyUzW5NplVY
- FVg39FL9EswjOPY2a6/7/bsqswAIn98=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-616-8gNqr5-gMxyT3qLIgtTEbA-1; Thu, 07 Sep 2023 04:17:59 -0400
-X-MC-Unique: 8gNqr5-gMxyT3qLIgtTEbA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E901C181792E;
- Thu,  7 Sep 2023 08:17:58 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.69])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5879740ED773;
- Thu,  7 Sep 2023 08:17:58 +0000 (UTC)
-Date: Thu, 7 Sep 2023 10:17:57 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PULL 00/14] Block layer patches
-Message-ID: <ZPmHNTsXLyvXiahx@redhat.com>
-References: <20230904143643.259916-1-kwolf@redhat.com>
- <CAJSP0QV+aADrdBGJD1LyWxeKtFAprK8=mMeDCt-F5_1qx0KYVg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeAEx-0005kY-BG
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:19:51 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeAEu-000687-H3
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:19:51 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-501cba1ec0aso1030764e87.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 01:19:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694074787; x=1694679587; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nAccg4g5WedsSNaE/qJX8rRRbybDHFAji3Av1eW98og=;
+ b=S9m//vozUWn6T+11J3EhO2htMGzpX4t1jFOb6MXLWMhTN9lrN+tFr12pZ/pOGW7ojL
+ COV+iZ/XWL9k+0QEQiPhcvI+btGMnNCdN7/TYZn3/O8VPBamcjrYlqUl7fjUmTMSaPnV
+ KSbcnHyisz4y6AoU4eNw5JId7vWRbclfFJ6DmPtew0YOfOdEb0K6iNTufNHXPc95g/57
+ OA6enNcqN5b1q+nVA2oeu/uPkzaXGj05L+rkRKfeqGAiwCXzYa1Ij+Yy92pOgt0t3H2Y
+ EUwN/VQNP/4eLV9YxC4yH7ypmurPjvpBUjN1h0i3WceIb6tIpCoXsGICIM1ACG18JG7C
+ Gt8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694074787; x=1694679587;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nAccg4g5WedsSNaE/qJX8rRRbybDHFAji3Av1eW98og=;
+ b=To8DHlWGiMZGrrRhl4PQU7DLp4psLSdnXWfpbUjLoOrYtenNvJh71yXrMECRHBadzh
+ zUh9PPj3lnpOoZzbRkMhfKLUup07o5r+J9dy6rZVF01506GElPsY9wIfydu1JJnnxHwD
+ fwZgj5OH8BHmmqvZaad5psKk4vHzc2brYpUEXJnruEUX0HjrXYNoA5r6Vx1F3tcS+JT8
+ cefHq0ZJpDLcxva6oK5RBX6xuy4zKCGEvConmpGZo+VM0pOBG17SDS7Z7V9RAoAnl0SZ
+ v4VwLojTAPZ7eHZ2hstCvtkwvYGuZR3WRKdLU+4eZCRTyxCztyBbyuEGSlcQSx1JGiIe
+ SNGQ==
+X-Gm-Message-State: AOJu0Yx6DQnETX3mj+yGa4QE3IJSbvM6QrIvAAk4Ou53nt94iEEs2j3x
+ fH80oBjmn9QW4Sm3DM/11n2BNw==
+X-Google-Smtp-Source: AGHT+IEjGRUpphoyK/d5kgUb8EDmUVrlH8tdRoR7hExHduG4VzL3VkqfsApqqPqeUPOoGl3f5Gfxsg==
+X-Received: by 2002:a19:3857:0:b0:500:7d05:552a with SMTP id
+ d23-20020a193857000000b005007d05552amr3919812lfj.53.1694074786785; 
+ Thu, 07 Sep 2023 01:19:46 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-222-226.abo.bbox.fr.
+ [176.131.222.226]) by smtp.gmail.com with ESMTPSA id
+ r9-20020aa7d589000000b0052a1c0c859asm9513055edq.59.2023.09.07.01.19.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Sep 2023 01:19:46 -0700 (PDT)
+Message-ID: <200d8e04-ffec-5aee-0a2b-84b947a57086@linaro.org>
+Date: Thu, 7 Sep 2023 10:19:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJSP0QV+aADrdBGJD1LyWxeKtFAprK8=mMeDCt-F5_1qx0KYVg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v7 2/4] virtio-dmabuf: introduce virtio-dmabuf
+Content-Language: en-US
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: marcandre.lureau@gmail.com, cohuck@redhat.com, kraxel@redhat.com,
+ "Michael S. Tsirkin" <mst@redhat.com>, Fam Zheng <fam@euphon.net>
+References: <20230907074318.528064-1-aesteve@redhat.com>
+ <20230907074318.528064-3-aesteve@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230907074318.528064-3-aesteve@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,21 +94,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 06.09.2023 um 17:13 hat Stefan Hajnoczi geschrieben:
-> test-bdrv-drain is failing. I think my coroutine wrapper patch might
-> be necessary:
-> https://gitlab.com/qemu-project/qemu/-/jobs/5029372308#L4907
+On 7/9/23 09:43, Albert Esteve wrote:
+> This API manages objects (in this iteration,
+> dmabuf fds) that can be shared along different
+> virtio devices, associated to a UUID.
 > 
-> I have dropped this patch series for the time being. Feel free to
-> remove my patches and send a new revision.
+> The API allows the different devices to add,
+> remove and/or retrieve the objects by simply
+> invoking the public functions that reside in the
+> virtio-dmabuf file.
 > 
-> I will debug the test-bdrv-drain issue.
+> For vhost backends, the API stores the pointer
+> to the backend holding the object.
+> 
+> Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
+> Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> ---
+>   MAINTAINERS                       |   7 ++
+>   hw/display/meson.build            |   1 +
+>   hw/display/virtio-dmabuf.c        | 136 +++++++++++++++++++++++++++++
+>   include/hw/virtio/virtio-dmabuf.h | 103 ++++++++++++++++++++++
+>   tests/unit/meson.build            |   1 +
+>   tests/unit/test-virtio-dmabuf.c   | 137 ++++++++++++++++++++++++++++++
+>   6 files changed, 385 insertions(+)
+>   create mode 100644 hw/display/virtio-dmabuf.c
+>   create mode 100644 include/hw/virtio/virtio-dmabuf.h
+>   create mode 100644 tests/unit/test-virtio-dmabuf.c
 
-Hm, I can't reproduce it. And even in CI only seems to have happened in
-this one job (ubuntu-20.04-s390x-all).
 
-If you think that it's caused by your patches, I can drop them for v2.
+> diff --git a/include/hw/virtio/virtio-dmabuf.h b/include/hw/virtio/virtio-dmabuf.h
+> new file mode 100644
+> index 0000000000..202eec5868
+> --- /dev/null
+> +++ b/include/hw/virtio/virtio-dmabuf.h
+> @@ -0,0 +1,103 @@
+> +/*
+> + * Virtio Shared dma-buf
+> + *
+> + * Copyright Red Hat, Inc. 2023
+> + *
+> + * Authors:
+> + *     Albert Esteve <aesteve@redhat.com>
+> + *
+> + * This work is licensed under the terms of the GNU GPL, version 2.
+> + * See the COPYING file in the top-level directory.
+> + */
+> +
+> +#ifndef VIRTIO_DMABUF_H
+> +#define VIRTIO_DMABUF_H
+> +
+> +#include "qemu/osdep.h"
 
-Kevin
+See https://www.qemu.org/docs/master/devel/style.html#include-directives
+
+   Do not include “qemu/osdep.h” from header files since the .c
+   file will have already included it.
+
+> +#include <glib.h>
+
+This one is also included via "qemu/osdep.h" -> "glib-compat.h"
+
+> +#include "qemu/uuid.h"
+> +#include "vhost.h"
+> +
+> +typedef enum SharedObjectType {
+> +    TYPE_INVALID = 0,
+> +    TYPE_DMABUF,
+> +    TYPE_VHOST_DEV,
+> +} SharedObjectType;
+> +
+> +typedef struct VirtioSharedObject {
+> +    SharedObjectType type;
+> +    gpointer value;
+> +} VirtioSharedObject;
+
+Since this need a repost, better use "hw/display: Introduce 
+virtio-dmabuf" as patch subject (and "util/uuid" prefix for the previous 
+patch).
+
+Otherwise LGTM, so with these changes:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
