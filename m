@@ -2,94 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B90797197
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 12:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB48797198
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 12:59:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeChl-00067M-Tz; Thu, 07 Sep 2023 06:57:45 -0400
+	id 1qeCio-0006cJ-S5; Thu, 07 Sep 2023 06:58:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeChj-000679-7W
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 06:57:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qeCij-0006VW-AF; Thu, 07 Sep 2023 06:58:45 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeChd-0006Wz-FZ
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 06:57:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694084254;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sfRZHG2msUpbUHrX6YH9aDFB0zh8D2vPywlIrcQ9XaY=;
- b=XiUaFG+Uel8StB1R1Q3gUq8cCPmwxRWE9gj3UYG7K1ZUJ55L4tGev+WxHHR05c3vxQcnPu
- Rnx5H642Zrfrsx/UusicUqLwiX1UcV6tVRSNtvBTIUV5Lt2yvuRk/o91Tb23xVTcc1xdDO
- 1XZsK1qlAPtZ5FQPX4Wwb7GRawRvecY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-Gr-TbIClN6aZy3NOYd36AQ-1; Thu, 07 Sep 2023 06:57:33 -0400
-X-MC-Unique: Gr-TbIClN6aZy3NOYd36AQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-317a84a3ebeso820942f8f.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 03:57:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694084252; x=1694689052;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sfRZHG2msUpbUHrX6YH9aDFB0zh8D2vPywlIrcQ9XaY=;
- b=gXeoSFPu2p0LqnArvwd4VV/KDhZhTvddpGmOSoOXHJGgNM5mmdEk9riDQZ1AUTwCJM
- OdaaDaMbPxG1bYOC4fMNgrzMzJTF3WWWq5FHNrHUZ6KPDyqS3MHl2r9COxW0+JE/+dmo
- QxAXv+amnsYZuD1PCoAe6oKkpEBkc7DrupCUWpA+WJ1GNesEPR1Qeu50HV321y4Jwkoc
- afcpE1fO1G6cdmY0dlzxfrmTFj/cI1AozkV9QCh/sBUhYEpE7ZKMMOGofVC2Ae3Rd42p
- t8N0kAcw3WqPBBcAqJxXKpTmBWtrnxf9fF95PZT5ee6+7D2G1D1+gvwq9BQFsYzJnX0z
- Hg7Q==
-X-Gm-Message-State: AOJu0Ywk9sT/j034YYEEP+Bj3U4ZuntREGWqv3yD9q0zU/0Wm3MTPN2x
- hmR/IoTl7Gi/Gz0S8VWqgY7S4w9uMRSG0Qm+SSx3xRRmtMZ9gtjGhaaJm4e4luKrf7YwgVndmbQ
- BmO8BFNciWe4kJkc=
-X-Received: by 2002:a5d:4683:0:b0:31d:cb4b:ccd3 with SMTP id
- u3-20020a5d4683000000b0031dcb4bccd3mr1661050wrq.21.1694084252050; 
- Thu, 07 Sep 2023 03:57:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCqVmK7nf43SF3hB/17KvFoHxA4wPwqJ6vJmhzvwzL3zJMahHFORLfutTeO1fDXhTFvc8bFQ==
-X-Received: by 2002:a5d:4683:0:b0:31d:cb4b:ccd3 with SMTP id
- u3-20020a5d4683000000b0031dcb4bccd3mr1661039wrq.21.1694084251754; 
- Thu, 07 Sep 2023 03:57:31 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312::1fc? ([2001:b07:6468:f312::1fc])
- by smtp.googlemail.com with ESMTPSA id
- l4-20020adffe84000000b003176eab8868sm23051001wrr.82.2023.09.07.03.57.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 03:57:31 -0700 (PDT)
-Message-ID: <5d0119f5-5175-fa0d-7a9e-1558478997c5@redhat.com>
-Date: Thu, 7 Sep 2023 12:57:30 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qeCie-0006nB-R1; Thu, 07 Sep 2023 06:58:45 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RhGQk4Mqnz6HJl2;
+ Thu,  7 Sep 2023 18:57:02 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 7 Sep
+ 2023 11:58:28 +0100
+Date: Thu, 7 Sep 2023 11:58:27 +0100
+To: Yuquan Wang <wangyuquan1236@phytium.com.cn>
+CC: qemu-arm <qemu-arm@nongnu.org>, qemu-devel <qemu-devel@nongnu.org>,
+ "gregory.price@memverge.com" <gregory.price@memverge.com>
+Subject: Re: CXL Namespaces of ACPI disappearing in Qemu demo
+Message-ID: <20230907115827.00000a94@Huawei.com>
+In-Reply-To: <2023090619221880715697@phytium.com.cn>
+References: <2023082215220191352877@phytium.com.cn>
+ <2023090619221880715697@phytium.com.cn>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 0/5] contrib/plugins: Build fixes for Darwin
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230907105004.88600-1-philmd@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230907105004.88600-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,21 +61,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/7/23 12:49, Philippe Mathieu-Daudé wrote:
-> - Fix string formats
-> - Link with GLib
+On Wed, 6 Sep 2023 19:22:19 +0800
+Yuquan Wang <wangyuquan1236@phytium.com.cn> wrote:
+
+> Hi, Jonathan
+> On 2023-09-05 22:34,  jonathan.cameron wrote:
+> > 
+> > As I understand it the distinction is more about the format / contents of that memory
+> > than how you access them.   
 > 
-> Alex, Thomas: FWIW, plugins aren't build on CI.
+> Yes, RCH DP RCRB includes registers from PCIe Type 1 Config Header and
+> PCIe capabilities and extended capabilities while CHBCR includes component registers 
+> with the same layout and discovery mechanism in other CXL components.
+> 
+> > As an aside, they are described by a static ACPI table,
+> > so they can't be in the MMIO space used for BARs etc.
+> >   
+> 
+> In CXL 3.0 Spec, the Figure 9-14 (CXL Link/Protocol Register Mapping in a CXL VH)
+> shows that CHBCR is mapped by "Host Proprietary Static Bar". According to your guidance,
+> it is not a standard PCIe BAR using PCIe MMIO Space, so I understand it is a special BAR for 
+> MMIO of a platform device?
 
-They become tested with my patch "configure: unify recursion into 
-sub-Makefiles", which is how I got into this business.  So I'll queue 
-these patches and include them in my next pull request.
+Hmm. Host proprietary so basically you can in theory do anything you like.
 
-Paolo
+In QEMU emulation at least it's not in the PCIe MMIO space.  I'd not rule out other
+implementations putting it somewhere in that space.  For now I'm not seeing
+a) Anything that says our choice is invalid.
+b) Any advantage in making the handling of PCIe MMIO space more complex to shoe
+   horn this in there.
 
-> Based-on:<20230907101811.469236-1-pbonzini@redhat.com>
+Jonathan
+> 
+> 
+> Many thanks
+> Yuquan
 
 
