@@ -2,90 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71A079724F
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A68797250
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:32:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEAJ-0002CU-O4; Thu, 07 Sep 2023 08:31:20 -0400
+	id 1qeEAS-0002PZ-Cm; Thu, 07 Sep 2023 08:31:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeE9J-0001qx-5J
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:30:18 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeE9q-0002BH-O7
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:30:53 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeE93-0006TS-Iq
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:30:16 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-99bcc0adab4so107752166b.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:30:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeE9o-0007Ps-6g
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:30:50 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-52bcb8b199aso1199052a12.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:30:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694089799; x=1694694599; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694089847; x=1694694647; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=2KjSP2EwBUdECeTIgYlH4EXAAjspyPQU/7HbrLq3ph4=;
- b=n1FEWM+5ffwV87CWx4ZxbL31raMVm8kSt+D4zPHHfhQaeGDYKBGqefDURIjsNnD4D2
- GfQDkGUrk58rRR8R3CsenL6Ebe0ktu8YxJ1sd7+QNNW+aGnfWeGOea0yPowwfWUoibUH
- VuWfyengYS6CgwLaH9ho6jlbAgux7EFMqyisQ+uT9h+nVci3tT629fFMrb5IJn0ub9cI
- 4TRJQmjU48HvokqZtaRJ1iOKTuih+l8b+ydLRVjpb3iKqXdpNX9irYXY+VAWcKD0hyFB
- 8iF4/RYpLm6iLCJja0tVZbWWH7NymvG+8ONG+GR7cJHxpgXODLnp1Qt8+eLeDF4ZV6OX
- GmSA==
+ bh=bS68yViKEP+IDsfSNuLfPFjZyNaeY+w/Elhq3vpC6mE=;
+ b=REthjoWhBmgr6esiWxf+P1X4OJhfDnSTvE2UeXOa9rvJv6V+dqmEM2PHM1XKr7h1Nm
+ ohac9oqOHjvq7OxtWLQLXGuetW5mLJDsps0P/iPGXrWIfHttrnfdt2swvolEF2lGc0NL
+ Kk4vItgMjN9HVQ1Jt6P7KoxeIaFfIDd2erbRJ4UEDiakM7pzG+4dx+AUgi3d697RqHa1
+ TMMNZuNZRW1NTSxCJEszoZL3B7n9ElYB1MestcdxxsMoaVt/jTGcekXUEdOrnnD0MfL1
+ mr1hu6PdqJpU8bQ7NMdezLgrf0Dxt00zzxVLn0zrSze45yzEQsqBbbKpsSgyztYZWjsb
+ fijg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694089799; x=1694694599;
+ d=1e100.net; s=20221208; t=1694089847; x=1694694647;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2KjSP2EwBUdECeTIgYlH4EXAAjspyPQU/7HbrLq3ph4=;
- b=FZOnuTOjJBqGjdY8PQug9wO36uhOhp+hajaSCW834KH0kfNa7DfMX03q0h9lrkdtsG
- EnOvXSlEodF+4hog5jw7U0PqLrDdjCMHtQ5lzDxw/uK/o1DGlZRiC430SIfTQKSTlokN
- mPoNlNX/ujo18tt5CGoBRzep+9X0ojT7ZbEz+MByjF521lPaVo/OZmbQTuvE/XwVP5Jy
- eDa4iqQUkqFeNBf/PEY8AeowvlW7Le3BDat6htowkmcFuHDS1D8/rmm4gnbdNPdJMcjA
- o4ckVc32OzZC/QTIAA1S3L2Qtvk8KWFahGlSJgKruvQdoLsSFzX16Vfeo3/PMp7qYiUU
- dNxA==
-X-Gm-Message-State: AOJu0Yxe5BJJg1hGzv2aOuPnf6Tw/EM8nFpZXG9Lo1WkPjfD61YQtuWp
- MMrnbGSb6TL9IdkoPxFy5dSNxg==
-X-Google-Smtp-Source: AGHT+IHkgpAVAHwNw+Wz3/117ucGJT9J4Io2vgHOi1nk6iAUleopczSIb+eXIebiWNy51a/YC3PyUg==
-X-Received: by 2002:a17:906:295:b0:9a9:e5bb:edc5 with SMTP id
- 21-20020a170906029500b009a9e5bbedc5mr1023122ejf.65.1694089798795; 
- Thu, 07 Sep 2023 05:29:58 -0700 (PDT)
+ bh=bS68yViKEP+IDsfSNuLfPFjZyNaeY+w/Elhq3vpC6mE=;
+ b=iszIHpHhDowIR635k+fhhzYYvzZ7DsQd11DRuYeaU9CyQYl3jqWz495uSRsrYZOqHn
+ h8BnV+TCtbDQhs3Q+V6uXr8/Soz2EMBiWzIdu37LE7cOFe8DmerdsAhS/VOyrh6n43WQ
+ ipo/sl3vULqx6MvkmyNMtg2ofbs2FmK6Tn9k0ChgQM3Dm5ljkK89MLduYwqtAjlH+mAf
+ bUsYDUVHbWGL+1T3bfE43taeJ43H8PomoWQzDb2kk6bZ+w8LHsR//EhwlorR42eT6lZg
+ pTv6KSVpmvkfnkKq7rRW7D/U8Wkn1UZZTyAaz1kf6c6gTu6TQ5ieaDo4Oh1wNrB9wY3O
+ Q7yw==
+X-Gm-Message-State: AOJu0Yz82R87rNc7OrZKkCVxJ9uVGbuBt3qgPqvRKcv/aIl2yTi4RBqg
+ FCwjSnnRqnTnIj2diplpyOaE7Q==
+X-Google-Smtp-Source: AGHT+IGSqZuyGSF4dl4f8vL5SDUe8DptUJ+hrvwc2yEue7KF30SYjHpxtGDfQzB83tIn0W9BwRzlRQ==
+X-Received: by 2002:aa7:d759:0:b0:52a:1d9c:83ff with SMTP id
+ a25-20020aa7d759000000b0052a1d9c83ffmr4614315eds.1.1694089846814; 
+ Thu, 07 Sep 2023 05:30:46 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-222-226.abo.bbox.fr.
  [176.131.222.226]) by smtp.gmail.com with ESMTPSA id
- v14-20020a170906338e00b00992b8d56f3asm10384194eja.105.2023.09.07.05.29.56
+ ay9-20020a056402202900b0052a198d8a4dsm9721651edb.52.2023.09.07.05.30.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 05:29:58 -0700 (PDT)
-Message-ID: <1398e971-8115-13e1-6ee4-4c46df0814dc@linaro.org>
-Date: Thu, 7 Sep 2023 14:29:55 +0200
+ Thu, 07 Sep 2023 05:30:46 -0700 (PDT)
+Message-ID: <49e0cd0d-bc6a-db43-8eae-11f6c84b729b@linaro.org>
+Date: Thu, 7 Sep 2023 14:30:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: riscv64 virt board crash upon startup
+Subject: Re: [PATCH] contrib/plugins: add Darwin support
 Content-Language: en-US
-To: Laszlo Ersek <lersek@redhat.com>, qemu devel list
- <qemu-devel@nongnu.org>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>
-Cc: "Richard W.M. Jones" <rjones@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Sunil V L <sunilvl@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- "Warkentin, Andrei" <andrei.warkentin@intel.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-References: <139b9697-5732-dafa-0942-6d93eed674c7@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+References: <20230907114403.493361-1-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <139b9697-5732-dafa-0942-6d93eed674c7@redhat.com>
+In-Reply-To: <20230907114403.493361-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,37 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/9/23 13:25, Laszlo Ersek wrote:
-> This is with QEMU v8.1.0-391-gc152379422a2.
+On 7/9/23 13:44, Paolo Bonzini wrote:
+> Under Darwin, using -shared makes it impossible to have undefined symbols
+> and -bundle has to be used instead; so detect the OS and use
+> different options.
 > 
-> I use the command line from (scroll to the bottom):
+> Based-on: <20230907101811.469236-1-pbonzini@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>          This replaces Philippe's patch to link with GLib, and also fixes
+>          errors like
 > 
->    https://github.com/tianocore/edk2/commit/49f06b664018
+>            "_qemu_plugin_get_hwaddr", referenced from:
+> 	      _vcpu_mem in execlog.o
 > 
-> (with "-full-screen" removed).
+>          I guess this shows that we're kinda losing in not using Meson
+>          for the plugins, but as I said I appreciate the didactic value
+>          of using a standalone Makefile (with only a handful of lines
+>          in configure).
 > 
-> The crash is as follows:
-> 
->    Unexpected error in object_property_find_err() at ../../src/upstream/qemu/qom/object.c:1314:
->    qemu: Property 'qemu-fixed-text-console.device' not found
->    Aborted (core dumped)
+>   contrib/plugins/Makefile | 4 ++++
+>   1 file changed, 4 insertions(+)
 
-Cc'ing Marc-André for commit b208f745a8
-("ui/console: introduce different console objects")
-
-> 
-> (Full backtrace attached.)
-> 
-> If I replace the "-device virtio-gpu-pci" option with "-nographic", then
-> there is no crash; QEMU launches fine and the guest starts booting fine.
-> 
-> I think this is a board-related problem; the riscv virt board code
-> likely does not set up the console properly.
-> 
-> Furthermore, I reckon this could be regression. When Sunil's above patch
-> was committed to edk2 (2023-06-23), the graphical guest window must have
-> worked still.
-> 
-> Laszlo
-
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
