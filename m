@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80607970EA
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3707970E2
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:40:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeARa-0004PV-Fh; Thu, 07 Sep 2023 04:32:54 -0400
+	id 1qeARZ-0004RD-O3; Thu, 07 Sep 2023 04:32:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeARV-0004F9-BL
+ id 1qeARV-0004FC-D3
  for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:32:49 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeARR-0002M6-OK
+ (envelope-from <gaosong@loongson.cn>) id 1qeARS-0002MO-1a
  for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:32:49 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxY_CgivlkNTkhAA--.820S3;
- Thu, 07 Sep 2023 16:32:32 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxueqhivlkNjkhAA--.56407S3;
+ Thu, 07 Sep 2023 16:32:33 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bxxsx+ivlk8FVwAA--.49124S38; 
+ AQAAf8Bxxsx+ivlk8FVwAA--.49124S39; 
  Thu, 07 Sep 2023 16:32:32 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn
-Subject: [PATCH RESEND v5 36/57] target/loongarch: Implement xvsllwil xvextl
-Date: Thu,  7 Sep 2023 16:31:37 +0800
-Message-Id: <20230907083158.3975132-37-gaosong@loongson.cn>
+Subject: [PATCH RESEND v5 37/57] target/loongarch: Implement xvsrlr xvsrar
+Date: Thu,  7 Sep 2023 16:31:38 +0800
+Message-Id: <20230907083158.3975132-38-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230907083158.3975132-1-gaosong@loongson.cn>
 References: <20230907083158.3975132-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bxxsx+ivlk8FVwAA--.49124S38
+X-CM-TRANSID: AQAAf8Bxxsx+ivlk8FVwAA--.49124S39
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,164 +64,157 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVSLLWIL.{H.B/W.H/D.W};
-- XVSLLWIL.{HU.BU/WU.HU/DU.WU};
-- XVEXTL.Q.D, VEXTL.QU.DU.
+- XVSRLR[I].{B/H/W/D};
+- XVSRAR[I].{B/H/W/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/insns.decode               |  9 +++++
- target/loongarch/disas.c                    |  9 +++++
- target/loongarch/vec_helper.c               | 45 +++++++++++++--------
- target/loongarch/insn_trans/trans_vec.c.inc | 17 ++++++++
- 4 files changed, 63 insertions(+), 17 deletions(-)
+ target/loongarch/insns.decode               | 17 +++++++++++++++++
+ target/loongarch/disas.c                    | 18 ++++++++++++++++++
+ target/loongarch/vec_helper.c               | 12 ++++++++----
+ target/loongarch/insn_trans/trans_vec.c.inc | 16 ++++++++++++++++
+ 4 files changed, 59 insertions(+), 4 deletions(-)
 
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index fb7bd9fb34..8a7933eccc 100644
+index 8a7933eccc..ca0951e1cc 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1652,6 +1652,15 @@ xvrotri_h        0111 01101010 00000 1 .... ..... .....   @vv_ui4
- xvrotri_w        0111 01101010 00001 ..... ..... .....    @vv_ui5
- xvrotri_d        0111 01101010 0001 ...... ..... .....    @vv_ui6
+@@ -1661,6 +1661,23 @@ xvsllwil_wu_hu   0111 01110000 11000 1 .... ..... .....   @vv_ui4
+ xvsllwil_du_wu   0111 01110000 11001 ..... ..... .....    @vv_ui5
+ xvextl_qu_du     0111 01110000 11010 00000 ..... .....    @vv
  
-+xvsllwil_h_b     0111 01110000 10000 01 ... ..... .....   @vv_ui3
-+xvsllwil_w_h     0111 01110000 10000 1 .... ..... .....   @vv_ui4
-+xvsllwil_d_w     0111 01110000 10001 ..... ..... .....    @vv_ui5
-+xvextl_q_d       0111 01110000 10010 00000 ..... .....    @vv
-+xvsllwil_hu_bu   0111 01110000 11000 01 ... ..... .....   @vv_ui3
-+xvsllwil_wu_hu   0111 01110000 11000 1 .... ..... .....   @vv_ui4
-+xvsllwil_du_wu   0111 01110000 11001 ..... ..... .....    @vv_ui5
-+xvextl_qu_du     0111 01110000 11010 00000 ..... .....    @vv
++xvsrlr_b         0111 01001111 00000 ..... ..... .....    @vvv
++xvsrlr_h         0111 01001111 00001 ..... ..... .....    @vvv
++xvsrlr_w         0111 01001111 00010 ..... ..... .....    @vvv
++xvsrlr_d         0111 01001111 00011 ..... ..... .....    @vvv
++xvsrlri_b        0111 01101010 01000 01 ... ..... .....   @vv_ui3
++xvsrlri_h        0111 01101010 01000 1 .... ..... .....   @vv_ui4
++xvsrlri_w        0111 01101010 01001 ..... ..... .....    @vv_ui5
++xvsrlri_d        0111 01101010 0101 ...... ..... .....    @vv_ui6
++xvsrar_b         0111 01001111 00100 ..... ..... .....    @vvv
++xvsrar_h         0111 01001111 00101 ..... ..... .....    @vvv
++xvsrar_w         0111 01001111 00110 ..... ..... .....    @vvv
++xvsrar_d         0111 01001111 00111 ..... ..... .....    @vvv
++xvsrari_b        0111 01101010 10000 01 ... ..... .....   @vv_ui3
++xvsrari_h        0111 01101010 10000 1 .... ..... .....   @vv_ui4
++xvsrari_w        0111 01101010 10001 ..... ..... .....    @vv_ui5
++xvsrari_d        0111 01101010 1001 ...... ..... .....    @vv_ui6
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 209ae230f4..d93ecdb60d 100644
+index d93ecdb60d..bc5eb82b49 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -2077,6 +2077,15 @@ INSN_LASX(xvrotri_h,         vv_i)
- INSN_LASX(xvrotri_w,         vv_i)
- INSN_LASX(xvrotri_d,         vv_i)
+@@ -2086,6 +2086,24 @@ INSN_LASX(xvsllwil_wu_hu,    vv_i)
+ INSN_LASX(xvsllwil_du_wu,    vv_i)
+ INSN_LASX(xvextl_qu_du,      vv)
  
-+INSN_LASX(xvsllwil_h_b,      vv_i)
-+INSN_LASX(xvsllwil_w_h,      vv_i)
-+INSN_LASX(xvsllwil_d_w,      vv_i)
-+INSN_LASX(xvextl_q_d,        vv)
-+INSN_LASX(xvsllwil_hu_bu,    vv_i)
-+INSN_LASX(xvsllwil_wu_hu,    vv_i)
-+INSN_LASX(xvsllwil_du_wu,    vv_i)
-+INSN_LASX(xvextl_qu_du,      vv)
++INSN_LASX(xvsrlr_b,          vvv)
++INSN_LASX(xvsrlr_h,          vvv)
++INSN_LASX(xvsrlr_w,          vvv)
++INSN_LASX(xvsrlr_d,          vvv)
++INSN_LASX(xvsrlri_b,         vv_i)
++INSN_LASX(xvsrlri_h,         vv_i)
++INSN_LASX(xvsrlri_w,         vv_i)
++INSN_LASX(xvsrlri_d,         vv_i)
++
++INSN_LASX(xvsrar_b,          vvv)
++INSN_LASX(xvsrar_h,          vvv)
++INSN_LASX(xvsrar_w,          vvv)
++INSN_LASX(xvsrar_d,          vvv)
++INSN_LASX(xvsrari_b,         vv_i)
++INSN_LASX(xvsrari_h,         vv_i)
++INSN_LASX(xvsrari_w,         vv_i)
++INSN_LASX(xvsrari_d,         vv_i)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 1a602ee548..a3376439e3 100644
+index a3376439e3..bb30d24b89 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -952,37 +952,48 @@ void HELPER(vnori_b)(void *vd, void *vj, uint64_t imm, uint32_t desc)
-     }
+@@ -1025,8 +1025,9 @@ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)  \
+     VReg *Vd = (VReg *)vd;                                      \
+     VReg *Vj = (VReg *)vj;                                      \
+     VReg *Vk = (VReg *)vk;                                      \
++    int oprsz = simd_oprsz(desc);                               \
+                                                                 \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                   \
+         Vd->E(i) = do_vsrlr_ ## E(Vj->E(i), ((T)Vk->E(i))%BIT); \
+     }                                                           \
  }
- 
--#define VSLLWIL(NAME, BIT, E1, E2)                                 \
--void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
--{                                                                  \
--    int i;                                                         \
--    VReg temp;                                                     \
--    VReg *Vd = (VReg *)vd;                                         \
--    VReg *Vj = (VReg *)vj;                                         \
--    typedef __typeof(temp.E1(0)) TD;                               \
--                                                                   \
--    temp.D(0) = 0;                                                 \
--    temp.D(1) = 0;                                                 \
+@@ -1042,8 +1043,9 @@ void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+     int i;                                                         \
+     VReg *Vd = (VReg *)vd;                                         \
+     VReg *Vj = (VReg *)vj;                                         \
++    int oprsz = simd_oprsz(desc);                                  \
+                                                                    \
 -    for (i = 0; i < LSX_LEN/BIT; i++) {                            \
--        temp.E1(i) = (TD)Vj->E2(i) << (imm % BIT);                 \
--    }                                                              \
--    *Vd = temp;                                                    \
-+#define VSLLWIL(NAME, BIT, E1, E2)                                             \
-+void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc)             \
-+{                                                                              \
-+    int i, j, ofs;                                                             \
-+    VReg temp = {};                                                            \
-+    VReg *Vd = (VReg *)vd;                                                     \
-+    VReg *Vj = (VReg *)vj;                                                     \
-+    int oprsz = simd_oprsz(desc);                                              \
-+    typedef __typeof(temp.E1(0)) TD;                                           \
-+                                                                               \
-+    ofs = LSX_LEN / BIT;                                                       \
-+    for (i = 0; i < oprsz / 16; i++) {                                         \
-+        for (j = 0; j < ofs; j++) {                                            \
-+            temp.E1(j + ofs * i) = (TD)Vj->E2(j + ofs * 2 * i) << (imm % BIT); \
-+        }                                                                      \
-+    }                                                                          \
-+    *Vd = temp;                                                                \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
+         Vd->E(i) = do_vsrlr_ ## E(Vj->E(i), imm);                  \
+     }                                                              \
  }
- 
-+
- void HELPER(vextl_q_d)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    Vd->Q(0) = int128_makes64(Vj->D(0));
-+    for (i = 0; i < oprsz / 16; i++) {
-+        Vd->Q(i) = int128_makes64(Vj->D(2 * i));
-+    }
+@@ -1075,8 +1077,9 @@ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)  \
+     VReg *Vd = (VReg *)vd;                                      \
+     VReg *Vj = (VReg *)vj;                                      \
+     VReg *Vk = (VReg *)vk;                                      \
++    int oprsz = simd_oprsz(desc);                               \
+                                                                 \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                   \
+         Vd->E(i) = do_vsrar_ ## E(Vj->E(i), ((T)Vk->E(i))%BIT); \
+     }                                                           \
  }
- 
- void HELPER(vextl_qu_du)(void *vd, void *vj, uint32_t desc)
- {
-+    int i;
-     VReg *Vd = (VReg *)vd;
-     VReg *Vj = (VReg *)vj;
-+    int oprsz = simd_oprsz(desc);
- 
--    Vd->Q(0) = int128_make64(Vj->D(0));
-+    for (i = 0; i < oprsz / 16; i++) {
-+        Vd->Q(i) = int128_make64(Vj->UD(2 * i));
-+    }
+@@ -1092,8 +1095,9 @@ void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+     int i;                                                         \
+     VReg *Vd = (VReg *)vd;                                         \
+     VReg *Vj = (VReg *)vj;                                         \
++    int oprsz = simd_oprsz(desc);                                  \
+                                                                    \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                            \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
+         Vd->E(i) = do_vsrar_ ## E(Vj->E(i), imm);                  \
+     }                                                              \
  }
- 
- VSLLWIL(vsllwil_h_b, 16, H, B)
 diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 74cf6e0472..e6abb2bd16 100644
+index e6abb2bd16..9d95c42708 100644
 --- a/target/loongarch/insn_trans/trans_vec.c.inc
 +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -188,6 +188,15 @@ static bool gen_vv_i(DisasContext *ctx, arg_vv_i *a, gen_helper_gvec_2i *fn)
-     return gen_vv_i_vl(ctx, a, 16, fn);
- }
+@@ -3803,6 +3803,14 @@ TRANS(vsrlri_b, LSX, gen_vv_i, gen_helper_vsrlri_b)
+ TRANS(vsrlri_h, LSX, gen_vv_i, gen_helper_vsrlri_h)
+ TRANS(vsrlri_w, LSX, gen_vv_i, gen_helper_vsrlri_w)
+ TRANS(vsrlri_d, LSX, gen_vv_i, gen_helper_vsrlri_d)
++TRANS(xvsrlr_b, LASX, gen_xxx, gen_helper_vsrlr_b)
++TRANS(xvsrlr_h, LASX, gen_xxx, gen_helper_vsrlr_h)
++TRANS(xvsrlr_w, LASX, gen_xxx, gen_helper_vsrlr_w)
++TRANS(xvsrlr_d, LASX, gen_xxx, gen_helper_vsrlr_d)
++TRANS(xvsrlri_b, LASX, gen_xx_i, gen_helper_vsrlri_b)
++TRANS(xvsrlri_h, LASX, gen_xx_i, gen_helper_vsrlri_h)
++TRANS(xvsrlri_w, LASX, gen_xx_i, gen_helper_vsrlri_w)
++TRANS(xvsrlri_d, LASX, gen_xx_i, gen_helper_vsrlri_d)
  
-+static bool gen_xx_i(DisasContext *ctx, arg_vv_i *a, gen_helper_gvec_2i *fn)
-+{
-+    if (!check_vec(ctx, 32)) {
-+        return true;
-+    }
-+
-+    return gen_vv_i_vl(ctx, a, 32, fn);
-+}
-+
- static bool gen_cv(DisasContext *ctx, arg_cv *a,
-                     void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32))
- {
-@@ -3777,6 +3786,14 @@ TRANS(vsllwil_hu_bu, LSX, gen_vv_i, gen_helper_vsllwil_hu_bu)
- TRANS(vsllwil_wu_hu, LSX, gen_vv_i, gen_helper_vsllwil_wu_hu)
- TRANS(vsllwil_du_wu, LSX, gen_vv_i, gen_helper_vsllwil_du_wu)
- TRANS(vextl_qu_du, LSX, gen_vv, gen_helper_vextl_qu_du)
-+TRANS(xvsllwil_h_b, LASX, gen_xx_i, gen_helper_vsllwil_h_b)
-+TRANS(xvsllwil_w_h, LASX, gen_xx_i, gen_helper_vsllwil_w_h)
-+TRANS(xvsllwil_d_w, LASX, gen_xx_i, gen_helper_vsllwil_d_w)
-+TRANS(xvextl_q_d, LASX, gen_xx, gen_helper_vextl_q_d)
-+TRANS(xvsllwil_hu_bu, LASX, gen_xx_i, gen_helper_vsllwil_hu_bu)
-+TRANS(xvsllwil_wu_hu, LASX, gen_xx_i, gen_helper_vsllwil_wu_hu)
-+TRANS(xvsllwil_du_wu, LASX, gen_xx_i, gen_helper_vsllwil_du_wu)
-+TRANS(xvextl_qu_du, LASX, gen_xx, gen_helper_vextl_qu_du)
+ TRANS(vsrar_b, LSX, gen_vvv, gen_helper_vsrar_b)
+ TRANS(vsrar_h, LSX, gen_vvv, gen_helper_vsrar_h)
+@@ -3812,6 +3820,14 @@ TRANS(vsrari_b, LSX, gen_vv_i, gen_helper_vsrari_b)
+ TRANS(vsrari_h, LSX, gen_vv_i, gen_helper_vsrari_h)
+ TRANS(vsrari_w, LSX, gen_vv_i, gen_helper_vsrari_w)
+ TRANS(vsrari_d, LSX, gen_vv_i, gen_helper_vsrari_d)
++TRANS(xvsrar_b, LASX, gen_xxx, gen_helper_vsrar_b)
++TRANS(xvsrar_h, LASX, gen_xxx, gen_helper_vsrar_h)
++TRANS(xvsrar_w, LASX, gen_xxx, gen_helper_vsrar_w)
++TRANS(xvsrar_d, LASX, gen_xxx, gen_helper_vsrar_d)
++TRANS(xvsrari_b, LASX, gen_xx_i, gen_helper_vsrari_b)
++TRANS(xvsrari_h, LASX, gen_xx_i, gen_helper_vsrari_h)
++TRANS(xvsrari_w, LASX, gen_xx_i, gen_helper_vsrari_w)
++TRANS(xvsrari_d, LASX, gen_xx_i, gen_helper_vsrari_d)
  
- TRANS(vsrlr_b, LSX, gen_vvv, gen_helper_vsrlr_b)
- TRANS(vsrlr_h, LSX, gen_vvv, gen_helper_vsrlr_h)
+ TRANS(vsrln_b_h, LSX, gen_vvv, gen_helper_vsrln_b_h)
+ TRANS(vsrln_h_w, LSX, gen_vvv, gen_helper_vsrln_h_w)
 -- 
 2.39.1
 
