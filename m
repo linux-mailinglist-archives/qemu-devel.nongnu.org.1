@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FADC796E0B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D548A796E0D
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe323-0003oI-LS; Wed, 06 Sep 2023 20:38:04 -0400
+	id 1qe32X-0006Zk-4w; Wed, 06 Sep 2023 20:38:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe31y-0003h6-Ua
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:37:58 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe32U-0006Ue-Rn
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:38:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe31w-0000tn-Il
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:37:58 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe32S-000108-AU
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:38:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694047076;
+ s=mimecast20190719; t=1694047107;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L6nC/3z/zlWDTB7qOj7K7y6G+feGM/w4Yoyg60t+qDY=;
- b=DOhAQ27czO1iQLgFE16cIdwx0a2Gx3WvtEJcZ5kVDxF9KSPYWi2JNGyRXvO8GjXHC6Dbew
- DTrX5V5ogrr2gFIqfwfKWUS7c3W5uAeTysjN6fQo7IlG6lw1jyxnPzU/xS46IOXN9MN6LN
- UKCaPbG2uYqggxT2ndpPM8/eEHTDMCE=
+ bh=D3Wh3ioOe0E0vBEI1OeuUJxu1iVVPjpe/PImThkQdTc=;
+ b=CmJq7Z1PEnKpSWqeEqH+TeuA2rBNhznut8x6Si0uG6I/u9lI6za5vLNgj223lb2GT377Xi
+ 7BZAlx2xb+tZmbXaBpo8Qq1W1PpRxsUOu3qWCPjejmgzzS3jSBY12zfTY6VRPK8qpveh9E
+ /i3YHCbOscs8B9iYJyWnmR8UIHzBFDA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-8-fqzMVxcANTe8B2JtGB0eGg-1; Wed, 06 Sep 2023 20:37:51 -0400
-X-MC-Unique: fqzMVxcANTe8B2JtGB0eGg-1
+ us-mta-394-Gozpql7LMueptz_H6OPfgQ-1; Wed, 06 Sep 2023 20:38:23 -0400
+X-MC-Unique: Gozpql7LMueptz_H6OPfgQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D3D6180C908;
- Thu,  7 Sep 2023 00:37:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AFE671008139;
+ Thu,  7 Sep 2023 00:38:20 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A330BC03295;
- Thu,  7 Sep 2023 00:37:32 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5CC4FD47819;
+ Thu,  7 Sep 2023 00:37:49 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,10 +62,10 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
  kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
  imammedo@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v3 05/32] target/cris: Use generic helper to show CPU model
+Subject: [PATCH v3 06/32] target/hexagon: Use generic helper to show CPU model
  names
-Date: Thu,  7 Sep 2023 10:35:26 +1000
-Message-ID: <20230907003553.1636896-6-gshan@redhat.com>
+Date: Thu,  7 Sep 2023 10:35:27 +1000
+Message-ID: <20230907003553.1636896-7-gshan@redhat.com>
 In-Reply-To: <20230907003553.1636896-1-gshan@redhat.com>
 References: <20230907003553.1636896-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -96,39 +96,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For target/cris, the CPU type name can be: (1) the combination of
-the CPU model name and suffix; (2) alias "any" corresponding to
-"crisv32-cris-cpu". The CPU model names have been shown correctly
-by following (1).
+For target/hexagon, the CPU type name is always the combination of
+the CPU model name and suffix. The CPU model names have been shown
+correctly in hexagon_cpu_list_entry().
 
-Use generic helper cpu_model_from_type() to show the CPU model
-names in arm_cpu_list_entry(), and rename @name to @model since
-it's points to the CPU model name instead of the CPU type name.
+Use generic helper cpu_model_from_type() to show the CPU model names
+in hexagon_cpu_list_entry(), and rename @name to @model since it points
+to the CPU model name instead of the CPU type name.
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/cris/cpu.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ target/hexagon/cpu.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-index a6a93c2359..420a2f75fb 100644
---- a/target/cris/cpu.c
-+++ b/target/cris/cpu.c
-@@ -122,11 +122,10 @@ static void cris_cpu_list_entry(gpointer data, gpointer user_data)
- {
-     ObjectClass *oc = data;
-     const char *typename = object_class_get_name(oc);
--    char *name;
-+    char *model = cpu_model_from_type(typename);
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index f155936289..3d0174e6f1 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -34,13 +34,11 @@ static void hexagon_v73_cpu_init(Object *obj) { }
  
--    name = g_strndup(typename, strlen(typename) - strlen(CRIS_CPU_TYPE_SUFFIX));
+ static void hexagon_cpu_list_entry(gpointer data, gpointer user_data)
+ {
+-    ObjectClass *oc = data;
+-    char *name = g_strdup(object_class_get_name(oc));
+-    if (g_str_has_suffix(name, HEXAGON_CPU_TYPE_SUFFIX)) {
+-        name[strlen(name) - strlen(HEXAGON_CPU_TYPE_SUFFIX)] = '\0';
+-    }
 -    qemu_printf("  %s\n", name);
 -    g_free(name);
++    const char *typename = object_class_get_name(OBJECT_CLASS(data));
++    char *model = cpu_model_from_type(typename);
++
 +    qemu_printf("  %s\n", model);
 +    g_free(model);
  }
  
- void cris_cpu_list(void)
+ void hexagon_cpu_list(void)
 -- 
 2.41.0
 
