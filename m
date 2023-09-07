@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5FF279709D
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28F47970AA
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:13:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeA5H-0003zW-2C; Thu, 07 Sep 2023 04:09:51 -0400
+	id 1qeA5I-000408-Bd; Thu, 07 Sep 2023 04:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeA4w-0003vH-Fs
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:31 -0400
+ id 1qeA4z-0003vZ-Bb
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:33 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeA4p-0003LR-KG
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:30 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qeA4r-0003Le-1P
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:09:31 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxjusxhflkUDQhAA--.63744S3;
- Thu, 07 Sep 2023 16:09:21 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8BxnusyhflkVjQhAA--.63842S3;
+ Thu, 07 Sep 2023 16:09:22 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxviMthflkXE1wAA--.31585S9; 
- Thu, 07 Sep 2023 16:09:20 +0800 (CST)
+ AQAAf8DxviMthflkXE1wAA--.31585S10; 
+ Thu, 07 Sep 2023 16:09:21 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn
-Subject: [PATCH v5 07/57] target/loongarch: Use gen_helper_gvec_2_ptr for 2OP
- + env vector instructions
-Date: Thu,  7 Sep 2023 16:08:26 +0800
-Message-Id: <20230907080916.3974502-8-gaosong@loongson.cn>
+Subject: [PATCH v5 08/57] target/loongarch: Use gen_helper_gvec_2 for 2OP
+ vector instructions
+Date: Thu,  7 Sep 2023 16:08:27 +0800
+Message-Id: <20230907080916.3974502-9-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230907080916.3974502-1-gaosong@loongson.cn>
 References: <20230907080916.3974502-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxviMthflkXE1wAA--.31585S9
+X-CM-TRANSID: AQAAf8DxviMthflkXE1wAA--.31585S10
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -66,187 +66,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 ---
- target/loongarch/helper.h                   | 118 +++++++-------
- target/loongarch/vec_helper.c               | 161 +++++++++++---------
- target/loongarch/insn_trans/trans_vec.c.inc | 129 +++++++++-------
- 3 files changed, 219 insertions(+), 189 deletions(-)
+ target/loongarch/helper.h                   |  58 ++++-----
+ target/loongarch/vec_helper.c               | 124 ++++++++++----------
+ target/loongarch/insn_trans/trans_vec.c.inc |  16 ++-
+ 3 files changed, 101 insertions(+), 97 deletions(-)
 
 diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-index 4b681e948f..0752cc7212 100644
+index 0752cc7212..523591035d 100644
 --- a/target/loongarch/helper.h
 +++ b/target/loongarch/helper.h
-@@ -547,73 +547,73 @@ DEF_HELPER_FLAGS_5(vfmaxa_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vfmina_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vfmina_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
+@@ -331,37 +331,37 @@ DEF_HELPER_FLAGS_4(vsat_hu, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ DEF_HELPER_FLAGS_4(vsat_wu, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ DEF_HELPER_FLAGS_4(vsat_du, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
  
--DEF_HELPER_3(vflogb_s, void, env, i32, i32)
--DEF_HELPER_3(vflogb_d, void, env, i32, i32)
--
--DEF_HELPER_3(vfclass_s, void, env, i32, i32)
--DEF_HELPER_3(vfclass_d, void, env, i32, i32)
--
--DEF_HELPER_3(vfsqrt_s, void, env, i32, i32)
--DEF_HELPER_3(vfsqrt_d, void, env, i32, i32)
--DEF_HELPER_3(vfrecip_s, void, env, i32, i32)
--DEF_HELPER_3(vfrecip_d, void, env, i32, i32)
--DEF_HELPER_3(vfrsqrt_s, void, env, i32, i32)
--DEF_HELPER_3(vfrsqrt_d, void, env, i32, i32)
--
--DEF_HELPER_3(vfcvtl_s_h, void, env, i32, i32)
--DEF_HELPER_3(vfcvth_s_h, void, env, i32, i32)
--DEF_HELPER_3(vfcvtl_d_s, void, env, i32, i32)
--DEF_HELPER_3(vfcvth_d_s, void, env, i32, i32)
-+DEF_HELPER_FLAGS_4(vflogb_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vflogb_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+
-+DEF_HELPER_FLAGS_4(vfclass_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfclass_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+
-+DEF_HELPER_FLAGS_4(vfsqrt_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfsqrt_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrecip_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrecip_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrsqrt_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrsqrt_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+
-+DEF_HELPER_FLAGS_4(vfcvtl_s_h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfcvth_s_h, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfcvtl_d_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfcvth_d_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vfcvt_h_s, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vfcvt_s_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
+-DEF_HELPER_3(vexth_h_b, void, env, i32, i32)
+-DEF_HELPER_3(vexth_w_h, void, env, i32, i32)
+-DEF_HELPER_3(vexth_d_w, void, env, i32, i32)
+-DEF_HELPER_3(vexth_q_d, void, env, i32, i32)
+-DEF_HELPER_3(vexth_hu_bu, void, env, i32, i32)
+-DEF_HELPER_3(vexth_wu_hu, void, env, i32, i32)
+-DEF_HELPER_3(vexth_du_wu, void, env, i32, i32)
+-DEF_HELPER_3(vexth_qu_du, void, env, i32, i32)
++DEF_HELPER_FLAGS_3(vexth_h_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vexth_w_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vexth_d_w, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vexth_q_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vexth_hu_bu, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vexth_wu_hu, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vexth_du_wu, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vexth_qu_du, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
  
--DEF_HELPER_3(vfrintrne_s, void, env, i32, i32)
--DEF_HELPER_3(vfrintrne_d, void, env, i32, i32)
--DEF_HELPER_3(vfrintrz_s, void, env, i32, i32)
--DEF_HELPER_3(vfrintrz_d, void, env, i32, i32)
--DEF_HELPER_3(vfrintrp_s, void, env, i32, i32)
--DEF_HELPER_3(vfrintrp_d, void, env, i32, i32)
--DEF_HELPER_3(vfrintrm_s, void, env, i32, i32)
--DEF_HELPER_3(vfrintrm_d, void, env, i32, i32)
--DEF_HELPER_3(vfrint_s, void, env, i32, i32)
--DEF_HELPER_3(vfrint_d, void, env, i32, i32)
--
--DEF_HELPER_3(vftintrne_w_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrne_l_d, void, env, i32, i32)
--DEF_HELPER_3(vftintrz_w_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrz_l_d, void, env, i32, i32)
--DEF_HELPER_3(vftintrp_w_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrp_l_d, void, env, i32, i32)
--DEF_HELPER_3(vftintrm_w_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrm_l_d, void, env, i32, i32)
--DEF_HELPER_3(vftint_w_s, void, env, i32, i32)
--DEF_HELPER_3(vftint_l_d, void, env, i32, i32)
--DEF_HELPER_3(vftintrz_wu_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrz_lu_d, void, env, i32, i32)
--DEF_HELPER_3(vftint_wu_s, void, env, i32, i32)
--DEF_HELPER_3(vftint_lu_d, void, env, i32, i32)
-+DEF_HELPER_FLAGS_4(vfrintrne_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrintrne_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrintrz_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrintrz_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrintrp_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrintrp_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrintrm_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrintrm_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrint_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vfrint_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+
-+DEF_HELPER_FLAGS_4(vftintrne_w_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrne_l_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrz_w_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrz_l_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrp_w_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrp_l_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrm_w_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrm_l_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftint_w_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftint_l_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrz_wu_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrz_lu_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftint_wu_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftint_lu_d, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vftintrne_w_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vftintrz_w_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vftintrp_w_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vftintrm_w_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vftint_w_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
--DEF_HELPER_3(vftintrnel_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrneh_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrzl_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrzh_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrpl_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrph_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrml_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintrmh_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftintl_l_s, void, env, i32, i32)
--DEF_HELPER_3(vftinth_l_s, void, env, i32, i32)
--
--DEF_HELPER_3(vffint_s_w, void, env, i32, i32)
--DEF_HELPER_3(vffint_d_l, void, env, i32, i32)
--DEF_HELPER_3(vffint_s_wu, void, env, i32, i32)
--DEF_HELPER_3(vffint_d_lu, void, env, i32, i32)
--DEF_HELPER_3(vffintl_d_w, void, env, i32, i32)
--DEF_HELPER_3(vffinth_d_w, void, env, i32, i32)
-+DEF_HELPER_FLAGS_4(vftintrnel_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrneh_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrzl_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrzh_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrpl_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrph_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrml_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintrmh_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftintl_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vftinth_l_s, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+
-+DEF_HELPER_FLAGS_4(vffint_s_w, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vffint_d_l, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vffint_s_wu, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vffint_d_lu, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vffintl_d_w, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
-+DEF_HELPER_FLAGS_4(vffinth_d_w, TCG_CALL_NO_RWG, void, ptr, ptr, env, i32)
- DEF_HELPER_FLAGS_5(vffint_s_l, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, env, i32)
+ DEF_HELPER_FLAGS_4(vsigncov_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(vsigncov_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(vsigncov_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(vsigncov_d, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
  
- DEF_HELPER_FLAGS_4(vseqi_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+-DEF_HELPER_3(vmskltz_b, void, env, i32, i32)
+-DEF_HELPER_3(vmskltz_h, void, env, i32, i32)
+-DEF_HELPER_3(vmskltz_w, void, env, i32, i32)
+-DEF_HELPER_3(vmskltz_d, void, env, i32, i32)
+-DEF_HELPER_3(vmskgez_b, void, env, i32, i32)
+-DEF_HELPER_3(vmsknz_b, void, env, i32,i32)
++DEF_HELPER_FLAGS_3(vmskltz_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vmskltz_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vmskltz_w, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vmskltz_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vmskgez_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vmsknz_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+ 
+ DEF_HELPER_FLAGS_4(vnori_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ 
+ DEF_HELPER_4(vsllwil_h_b, void, env, i32, i32, i32)
+ DEF_HELPER_4(vsllwil_w_h, void, env, i32, i32, i32)
+ DEF_HELPER_4(vsllwil_d_w, void, env, i32, i32, i32)
+-DEF_HELPER_3(vextl_q_d, void, env, i32, i32)
++DEF_HELPER_FLAGS_3(vextl_q_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+ DEF_HELPER_4(vsllwil_hu_bu, void, env, i32, i32, i32)
+ DEF_HELPER_4(vsllwil_wu_hu, void, env, i32, i32, i32)
+ DEF_HELPER_4(vsllwil_du_wu, void, env, i32, i32, i32)
+-DEF_HELPER_3(vextl_qu_du, void, env, i32, i32)
++DEF_HELPER_FLAGS_3(vextl_qu_du, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+ 
+ DEF_HELPER_FLAGS_4(vsrlr_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(vsrlr_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+@@ -473,19 +473,19 @@ DEF_HELPER_4(vssrarni_hu_w, void, env, i32, i32, i32)
+ DEF_HELPER_4(vssrarni_wu_d, void, env, i32, i32, i32)
+ DEF_HELPER_4(vssrarni_du_q, void, env, i32, i32, i32)
+ 
+-DEF_HELPER_3(vclo_b, void, env, i32, i32)
+-DEF_HELPER_3(vclo_h, void, env, i32, i32)
+-DEF_HELPER_3(vclo_w, void, env, i32, i32)
+-DEF_HELPER_3(vclo_d, void, env, i32, i32)
+-DEF_HELPER_3(vclz_b, void, env, i32, i32)
+-DEF_HELPER_3(vclz_h, void, env, i32, i32)
+-DEF_HELPER_3(vclz_w, void, env, i32, i32)
+-DEF_HELPER_3(vclz_d, void, env, i32, i32)
+-
+-DEF_HELPER_3(vpcnt_b, void, env, i32, i32)
+-DEF_HELPER_3(vpcnt_h, void, env, i32, i32)
+-DEF_HELPER_3(vpcnt_w, void, env, i32, i32)
+-DEF_HELPER_3(vpcnt_d, void, env, i32, i32)
++DEF_HELPER_FLAGS_3(vclo_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vclo_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vclo_w, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vclo_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vclz_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vclz_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vclz_w, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vclz_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++
++DEF_HELPER_FLAGS_3(vpcnt_b, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vpcnt_h, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vpcnt_w, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
++DEF_HELPER_FLAGS_3(vpcnt_d, TCG_CALL_NO_RWG, void, ptr, ptr, i32)
+ 
+ DEF_HELPER_FLAGS_4(vbitclr_b, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+ DEF_HELPER_FLAGS_4(vbitclr_h, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 15b361c6b3..2898ae06ce 100644
+index 2898ae06ce..fd38b47c28 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -2135,17 +2135,18 @@ DO_4OP_F(vfnmsub_s, 32, UW, float32_muladd,
- DO_4OP_F(vfnmsub_d, 64, UD, float64_muladd,
-          float_muladd_negate_c | float_muladd_negate_result)
+@@ -625,30 +625,30 @@ VSAT_U(vsat_hu, 16, UH)
+ VSAT_U(vsat_wu, 32, UW)
+ VSAT_U(vsat_du, 64, UD)
  
--#define DO_2OP_F(NAME, BIT, E, FN)                                  \
--void HELPER(NAME)(CPULoongArchState *env, uint32_t vd, uint32_t vj) \
--{                                                                   \
--    int i;                                                          \
--    VReg *Vd = &(env->fpr[vd].vreg);                                \
--    VReg *Vj = &(env->fpr[vj].vreg);                                \
--                                                                    \
--    vec_clear_cause(env);                                           \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                             \
--        Vd->E(i) = FN(env, Vj->E(i));                               \
--    }                                                               \
-+#define DO_2OP_F(NAME, BIT, E, FN)                       \
-+void HELPER(NAME)(void *vd, void *vj,                    \
-+                  CPULoongArchState *env, uint32_t desc) \
-+{                                                        \
-+    int i;                                               \
-+    VReg *Vd = (VReg *)vd;                               \
-+    VReg *Vj = (VReg *)vj;                               \
-+                                                         \
-+    vec_clear_cause(env);                                \
-+    for (i = 0; i < LSX_LEN/BIT; i++) {                  \
-+        Vd->E(i) = FN(env, Vj->E(i));                    \
-+    }                                                    \
- }
- 
- #define FLOGB(BIT, T)                                            \
-@@ -2166,16 +2167,17 @@ static T do_flogb_## BIT(CPULoongArchState *env, T fj)           \
- FLOGB(32, uint32_t)
- FLOGB(64, uint64_t)
- 
--#define FCLASS(NAME, BIT, E, FN)                                    \
+-#define VEXTH(NAME, BIT, E1, E2)                                    \
 -void HELPER(NAME)(CPULoongArchState *env, uint32_t vd, uint32_t vj) \
 -{                                                                   \
 -    int i;                                                          \
@@ -254,398 +178,244 @@ index 15b361c6b3..2898ae06ce 100644
 -    VReg *Vj = &(env->fpr[vj].vreg);                                \
 -                                                                    \
 -    for (i = 0; i < LSX_LEN/BIT; i++) {                             \
--        Vd->E(i) = FN(env, Vj->E(i));                               \
+-        Vd->E1(i) = Vj->E2(i + LSX_LEN/BIT);                        \
 -    }                                                               \
-+#define FCLASS(NAME, BIT, E, FN)                         \
-+void HELPER(NAME)(void *vd, void *vj,                    \
-+                  CPULoongArchState *env, uint32_t desc) \
-+{                                                        \
-+    int i;                                               \
-+    VReg *Vd = (VReg *)vd;                               \
-+    VReg *Vj = (VReg *)vj;                               \
-+                                                         \
-+    for (i = 0; i < LSX_LEN/BIT; i++) {                  \
-+        Vd->E(i) = FN(env, Vj->E(i));                    \
-+    }                                                    \
++#define VEXTH(NAME, BIT, E1, E2)                     \
++void HELPER(NAME)(void *vd, void *vj, uint32_t desc) \
++{                                                    \
++    int i;                                           \
++    VReg *Vd = (VReg *)vd;                           \
++    VReg *Vj = (VReg *)vj;                           \
++                                                     \
++    for (i = 0; i < LSX_LEN/BIT; i++) {              \
++        Vd->E1(i) = Vj->E2(i + LSX_LEN/BIT);         \
++    }                                                \
  }
  
- FCLASS(vfclass_s, 32, UW, helper_fclass_s)
-@@ -2245,12 +2247,13 @@ static uint32_t float64_cvt_float32(uint64_t d, float_status *status)
-     return float64_to_float32(d, status);
- }
- 
--void HELPER(vfcvtl_s_h)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vfcvtl_s_h)(void *vd, void *vj,
-+                        CPULoongArchState *env, uint32_t desc)
+-void HELPER(vexth_q_d)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vexth_q_d)(void *vd, void *vj, uint32_t desc)
  {
-     int i;
-     VReg temp;
 -    VReg *Vd = &(env->fpr[vd].vreg);
 -    VReg *Vj = &(env->fpr[vj].vreg);
 +    VReg *Vd = (VReg *)vd;
 +    VReg *Vj = (VReg *)vj;
  
-     vec_clear_cause(env);
-     for (i = 0; i < LSX_LEN/32; i++) {
-@@ -2260,12 +2263,13 @@ void HELPER(vfcvtl_s_h)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-     *Vd = temp;
+     Vd->Q(0) = int128_makes64(Vj->D(1));
  }
  
--void HELPER(vfcvtl_d_s)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vfcvtl_d_s)(void *vd, void *vj,
-+                        CPULoongArchState *env, uint32_t desc)
+-void HELPER(vexth_qu_du)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vexth_qu_du)(void *vd, void *vj, uint32_t desc)
  {
-     int i;
-     VReg temp;
 -    VReg *Vd = &(env->fpr[vd].vreg);
 -    VReg *Vj = &(env->fpr[vj].vreg);
 +    VReg *Vd = (VReg *)vd;
 +    VReg *Vj = (VReg *)vj;
  
-     vec_clear_cause(env);
-     for (i = 0; i < LSX_LEN/64; i++) {
-@@ -2275,12 +2279,13 @@ void HELPER(vfcvtl_d_s)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-     *Vd = temp;
+     Vd->Q(0) = int128_make64((uint64_t)Vj->D(1));
+ }
+@@ -677,11 +677,11 @@ static uint64_t do_vmskltz_b(int64_t val)
+     return c >> 56;
  }
  
--void HELPER(vfcvth_s_h)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vfcvth_s_h)(void *vd, void *vj,
-+                        CPULoongArchState *env, uint32_t desc)
+-void HELPER(vmskltz_b)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vmskltz_b)(void *vd, void *vj, uint32_t desc)
  {
-     int i;
-     VReg temp;
+     uint16_t temp = 0;
 -    VReg *Vd = &(env->fpr[vd].vreg);
 -    VReg *Vj = &(env->fpr[vj].vreg);
 +    VReg *Vd = (VReg *)vd;
 +    VReg *Vj = (VReg *)vj;
  
-     vec_clear_cause(env);
-     for (i = 0; i < LSX_LEN/32; i++) {
-@@ -2290,12 +2295,13 @@ void HELPER(vfcvth_s_h)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-     *Vd = temp;
+     temp = do_vmskltz_b(Vj->D(0));
+     temp |= (do_vmskltz_b(Vj->D(1)) << 8);
+@@ -698,11 +698,11 @@ static uint64_t do_vmskltz_h(int64_t val)
+     return c >> 60;
  }
  
--void HELPER(vfcvth_d_s)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vfcvth_d_s)(void *vd, void *vj,
-+                        CPULoongArchState *env, uint32_t desc)
+-void HELPER(vmskltz_h)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vmskltz_h)(void *vd, void *vj, uint32_t desc)
  {
-     int i;
-     VReg temp;
+     uint16_t temp = 0;
 -    VReg *Vd = &(env->fpr[vd].vreg);
 -    VReg *Vj = &(env->fpr[vj].vreg);
 +    VReg *Vd = (VReg *)vd;
 +    VReg *Vj = (VReg *)vj;
  
-     vec_clear_cause(env);
-     for (i = 0; i < LSX_LEN/64; i++) {
-@@ -2341,11 +2347,12 @@ void HELPER(vfcvt_s_d)(void *vd, void *vj, void *vk,
-     *Vd = temp;
+     temp = do_vmskltz_h(Vj->D(0));
+     temp |= (do_vmskltz_h(Vj->D(1)) << 4);
+@@ -718,11 +718,11 @@ static uint64_t do_vmskltz_w(int64_t val)
+     return c >> 62;
  }
  
--void HELPER(vfrint_s)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vfrint_s)(void *vd, void *vj,
-+                      CPULoongArchState *env, uint32_t desc)
+-void HELPER(vmskltz_w)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vmskltz_w)(void *vd, void *vj, uint32_t desc)
  {
-     int i;
+     uint16_t temp = 0;
 -    VReg *Vd = &(env->fpr[vd].vreg);
 -    VReg *Vj = &(env->fpr[vj].vreg);
 +    VReg *Vd = (VReg *)vd;
 +    VReg *Vj = (VReg *)vj;
  
-     vec_clear_cause(env);
-     for (i = 0; i < 4; i++) {
-@@ -2354,11 +2361,12 @@ void HELPER(vfrint_s)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-     }
- }
- 
--void HELPER(vfrint_d)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vfrint_d)(void *vd, void *vj,
-+                      CPULoongArchState *env, uint32_t desc)
+     temp = do_vmskltz_w(Vj->D(0));
+     temp |= (do_vmskltz_w(Vj->D(1)) << 2);
+@@ -734,11 +734,11 @@ static uint64_t do_vmskltz_d(int64_t val)
  {
-     int i;
+     return (uint64_t)val >> 63;
+ }
+-void HELPER(vmskltz_d)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vmskltz_d)(void *vd, void *vj, uint32_t desc)
+ {
+     uint16_t temp = 0;
 -    VReg *Vd = &(env->fpr[vd].vreg);
 -    VReg *Vj = &(env->fpr[vj].vreg);
 +    VReg *Vd = (VReg *)vd;
 +    VReg *Vj = (VReg *)vj;
  
-     vec_clear_cause(env);
-     for (i = 0; i < 2; i++) {
-@@ -2368,11 +2376,12 @@ void HELPER(vfrint_d)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
+     temp = do_vmskltz_d(Vj->D(0));
+     temp |= (do_vmskltz_d(Vj->D(1)) << 1);
+@@ -746,11 +746,11 @@ void HELPER(vmskltz_d)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
+     Vd->D(1) = 0;
  }
  
- #define FCVT_2OP(NAME, BIT, E, MODE)                                        \
--void HELPER(NAME)(CPULoongArchState *env, uint32_t vd, uint32_t vj)         \
-+void HELPER(NAME)(void *vd, void *vj,                                       \
-+                  CPULoongArchState *env, uint32_t desc)                    \
- {                                                                           \
-     int i;                                                                  \
--    VReg *Vd = &(env->fpr[vd].vreg);                                        \
--    VReg *Vj = &(env->fpr[vj].vreg);                                        \
-+    VReg *Vd = (VReg *)vd;                                                  \
-+    VReg *Vj = (VReg *)vj;                                                  \
-                                                                             \
-     vec_clear_cause(env);                                                   \
-     for (i = 0; i < LSX_LEN/BIT; i++) {                                     \
-@@ -2493,19 +2502,20 @@ FTINT(rph_l_s, float32, int64, uint32_t, uint64_t, float_round_up)
- FTINT(rzh_l_s, float32, int64, uint32_t, uint64_t, float_round_to_zero)
- FTINT(rneh_l_s, float32, int64, uint32_t, uint64_t, float_round_nearest_even)
+-void HELPER(vmskgez_b)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vmskgez_b)(void *vd, void *vj, uint32_t desc)
+ {
+     uint16_t temp = 0;
+-    VReg *Vd = &(env->fpr[vd].vreg);
+-    VReg *Vj = &(env->fpr[vj].vreg);
++    VReg *Vd = (VReg *)vd;
++    VReg *Vj = (VReg *)vj;
  
--#define FTINTL_L_S(NAME, FN)                                        \
+     temp =  do_vmskltz_b(Vj->D(0));
+     temp |= (do_vmskltz_b(Vj->D(1)) << 8);
+@@ -768,11 +768,11 @@ static uint64_t do_vmskez_b(uint64_t a)
+     return c >> 56;
+ }
+ 
+-void HELPER(vmsknz_b)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vmsknz_b)(void *vd, void *vj, uint32_t desc)
+ {
+     uint16_t temp = 0;
+-    VReg *Vd = &(env->fpr[vd].vreg);
+-    VReg *Vj = &(env->fpr[vj].vreg);
++    VReg *Vd = (VReg *)vd;
++    VReg *Vj = (VReg *)vj;
+ 
+     temp = do_vmskez_b(Vj->D(0));
+     temp |= (do_vmskez_b(Vj->D(1)) << 8);
+@@ -809,18 +809,18 @@ void HELPER(NAME)(CPULoongArchState *env,                 \
+     *Vd = temp;                                           \
+ }
+ 
+-void HELPER(vextl_q_d)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vextl_q_d)(void *vd, void *vj, uint32_t desc)
+ {
+-    VReg *Vd = &(env->fpr[vd].vreg);
+-    VReg *Vj = &(env->fpr[vj].vreg);
++    VReg *Vd = (VReg *)vd;
++    VReg *Vj = (VReg *)vj;
+ 
+     Vd->Q(0) = int128_makes64(Vj->D(0));
+ }
+ 
+-void HELPER(vextl_qu_du)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
++void HELPER(vextl_qu_du)(void *vd, void *vj, uint32_t desc)
+ {
+-    VReg *Vd = &(env->fpr[vd].vreg);
+-    VReg *Vj = &(env->fpr[vj].vreg);
++    VReg *Vd = (VReg *)vd;
++    VReg *Vj = (VReg *)vj;
+ 
+     Vd->Q(0) = int128_make64(Vj->D(0));
+ }
+@@ -1899,17 +1899,17 @@ VSSRARNUI(vssrarni_bu_h, 16, B, H)
+ VSSRARNUI(vssrarni_hu_w, 32, H, W)
+ VSSRARNUI(vssrarni_wu_d, 64, W, D)
+ 
+-#define DO_2OP(NAME, BIT, E, DO_OP)                                 \
 -void HELPER(NAME)(CPULoongArchState *env, uint32_t vd, uint32_t vj) \
 -{                                                                   \
 -    int i;                                                          \
--    VReg temp;                                                      \
 -    VReg *Vd = &(env->fpr[vd].vreg);                                \
 -    VReg *Vj = &(env->fpr[vj].vreg);                                \
 -                                                                    \
--    vec_clear_cause(env);                                           \
--    for (i = 0; i < 2; i++) {                                       \
--        temp.D(i) = FN(env, Vj->UW(i));                             \
+-    for (i = 0; i < LSX_LEN/BIT; i++)                               \
+-    {                                                               \
+-        Vd->E(i) = DO_OP(Vj->E(i));                                 \
 -    }                                                               \
--    *Vd = temp;                                                     \
-+#define FTINTL_L_S(NAME, FN)                             \
-+void HELPER(NAME)(void *vd, void *vj,                    \
-+                  CPULoongArchState *env, uint32_t desc) \
-+{                                                        \
-+    int i;                                               \
-+    VReg temp;                                           \
-+    VReg *Vd = (VReg *)vd;                               \
-+    VReg *Vj = (VReg *)vj;                               \
-+                                                         \
-+    vec_clear_cause(env);                                \
-+    for (i = 0; i < 2; i++) {                            \
-+        temp.D(i) = FN(env, Vj->UW(i));                  \
-+    }                                                    \
-+    *Vd = temp;                                          \
++#define DO_2OP(NAME, BIT, E, DO_OP)                  \
++void HELPER(NAME)(void *vd, void *vj, uint32_t desc) \
++{                                                    \
++    int i;                                           \
++    VReg *Vd = (VReg *)vd;                           \
++    VReg *Vj = (VReg *)vj;                           \
++                                                     \
++    for (i = 0; i < LSX_LEN/BIT; i++)                \
++    {                                                \
++        Vd->E(i) = DO_OP(Vj->E(i));                  \
++    }                                                \
  }
  
- FTINTL_L_S(vftintl_l_s, do_float32_to_int64)
-@@ -2514,19 +2524,20 @@ FTINTL_L_S(vftintrpl_l_s, do_ftintrpl_l_s)
- FTINTL_L_S(vftintrzl_l_s, do_ftintrzl_l_s)
- FTINTL_L_S(vftintrnel_l_s, do_ftintrnel_l_s)
+ #define DO_CLO_B(N)  (clz32(~N & 0xff) - 24)
+@@ -1930,17 +1930,17 @@ DO_2OP(vclz_h, 16, UH, DO_CLZ_H)
+ DO_2OP(vclz_w, 32, UW, DO_CLZ_W)
+ DO_2OP(vclz_d, 64, UD, DO_CLZ_D)
  
--#define FTINTH_L_S(NAME, FN)                                        \
+-#define VPCNT(NAME, BIT, E, FN)                                     \
 -void HELPER(NAME)(CPULoongArchState *env, uint32_t vd, uint32_t vj) \
 -{                                                                   \
 -    int i;                                                          \
--    VReg temp;                                                      \
 -    VReg *Vd = &(env->fpr[vd].vreg);                                \
 -    VReg *Vj = &(env->fpr[vj].vreg);                                \
 -                                                                    \
--    vec_clear_cause(env);                                           \
--    for (i = 0; i < 2; i++) {                                       \
--        temp.D(i) = FN(env, Vj->UW(i + 2));                         \
+-    for (i = 0; i < LSX_LEN/BIT; i++)                               \
+-    {                                                               \
+-        Vd->E(i) = FN(Vj->E(i));                                    \
 -    }                                                               \
--    *Vd = temp;                                                     \
-+#define FTINTH_L_S(NAME, FN)                             \
-+void HELPER(NAME)(void *vd, void *vj,                    \
-+                  CPULoongArchState *env, uint32_t desc) \
-+{                                                        \
-+    int i;                                               \
-+    VReg temp;                                           \
-+    VReg *Vd = (VReg *)vd;                               \
-+    VReg *Vj = (VReg *)vj;                               \
-+                                                         \
-+    vec_clear_cause(env);                                \
-+    for (i = 0; i < 2; i++) {                            \
-+        temp.D(i) = FN(env, Vj->UW(i + 2));              \
-+    }                                                    \
-+    *Vd = temp;                                          \
++#define VPCNT(NAME, BIT, E, FN)                      \
++void HELPER(NAME)(void *vd, void *vj, uint32_t desc) \
++{                                                    \
++    int i;                                           \
++    VReg *Vd = (VReg *)vd;                           \
++    VReg *Vj = (VReg *)vj;                           \
++                                                     \
++    for (i = 0; i < LSX_LEN/BIT; i++)                \
++    {                                                \
++        Vd->E(i) = FN(Vj->E(i));                     \
++    }                                                \
  }
  
- FTINTH_L_S(vftinth_l_s, do_float32_to_int64)
-@@ -2555,12 +2566,13 @@ DO_2OP_F(vffint_d_l, 64, D, do_ffint_d_l)
- DO_2OP_F(vffint_s_wu, 32, UW, do_ffint_s_wu)
- DO_2OP_F(vffint_d_lu, 64, UD, do_ffint_d_lu)
- 
--void HELPER(vffintl_d_w)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vffintl_d_w)(void *vd, void *vj,
-+                         CPULoongArchState *env, uint32_t desc)
- {
-     int i;
-     VReg temp;
--    VReg *Vd = &(env->fpr[vd].vreg);
--    VReg *Vj = &(env->fpr[vj].vreg);
-+    VReg *Vd = (VReg *)vd;
-+    VReg *Vj = (VReg *)vj;
- 
-     vec_clear_cause(env);
-     for (i = 0; i < 2; i++) {
-@@ -2570,12 +2582,13 @@ void HELPER(vffintl_d_w)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-     *Vd = temp;
- }
- 
--void HELPER(vffinth_d_w)(CPULoongArchState *env, uint32_t vd, uint32_t vj)
-+void HELPER(vffinth_d_w)(void *vd, void *vj,
-+                         CPULoongArchState *env, uint32_t desc)
- {
-     int i;
-     VReg temp;
--    VReg *Vd = &(env->fpr[vd].vreg);
--    VReg *Vj = &(env->fpr[vj].vreg);
-+    VReg *Vd = (VReg *)vd;
-+    VReg *Vj = (VReg *)vj;
- 
-     vec_clear_cause(env);
-     for (i = 0; i < 2; i++) {
+ VPCNT(vpcnt_b, 8, UB, ctpop8)
 diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 6ead8fb4c5..11d7158809 100644
+index 11d7158809..4c3d206df1 100644
 --- a/target/loongarch/insn_trans/trans_vec.c.inc
 +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -86,6 +86,23 @@ static bool gen_vvv(DisasContext *ctx, arg_vvv *a, gen_helper_gvec_3 *fn)
-     return gen_vvv_vl(ctx, a, 16, fn);
+@@ -103,15 +103,19 @@ static bool gen_vv_ptr(DisasContext *ctx, arg_vv *a,
+     return gen_vv_ptr_vl(ctx, a, 16, fn);
  }
  
-+static bool gen_vv_ptr_vl(DisasContext *ctx, arg_vv *a, uint32_t oprsz,
-+                          gen_helper_gvec_2_ptr *fn)
-+{
-+    tcg_gen_gvec_2_ptr(vec_full_offset(a->vd),
+-static bool gen_vv(DisasContext *ctx, arg_vv *a,
+-                   void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32))
++static bool gen_vv_vl(DisasContext *ctx, arg_vv *a, uint32_t oprsz,
++                      gen_helper_gvec_2 *fn)
+ {
+-    TCGv_i32 vd = tcg_constant_i32(a->vd);
+-    TCGv_i32 vj = tcg_constant_i32(a->vj);
++    tcg_gen_gvec_2_ool(vec_full_offset(a->vd),
 +                       vec_full_offset(a->vj),
-+                       cpu_env,
 +                       oprsz, ctx->vl / 8, oprsz, fn);
 +    return true;
 +}
-+
-+static bool gen_vv_ptr(DisasContext *ctx, arg_vv *a,
-+                       gen_helper_gvec_2_ptr *fn)
+ 
++static bool gen_vv(DisasContext *ctx, arg_vv *a, gen_helper_gvec_2 *fn)
 +{
-+    CHECK_SXE;
-+    return gen_vv_ptr_vl(ctx, a, 16, fn);
-+}
-+
- static bool gen_vv(DisasContext *ctx, arg_vv *a,
-                    void (*func)(TCGv_ptr, TCGv_i32, TCGv_i32))
- {
-@@ -3697,73 +3714,73 @@ TRANS(vfmaxa_d, LSX, gen_vvv_ptr, gen_helper_vfmaxa_d)
- TRANS(vfmina_s, LSX, gen_vvv_ptr, gen_helper_vfmina_s)
- TRANS(vfmina_d, LSX, gen_vvv_ptr, gen_helper_vfmina_d)
+     CHECK_SXE;
+-    func(cpu_env, vd, vj);
+-    return true;
++    return gen_vv_vl(ctx, a, 16, fn);
+ }
  
--TRANS(vflogb_s, LSX, gen_vv, gen_helper_vflogb_s)
--TRANS(vflogb_d, LSX, gen_vv, gen_helper_vflogb_d)
-+TRANS(vflogb_s, LSX, gen_vv_ptr, gen_helper_vflogb_s)
-+TRANS(vflogb_d, LSX, gen_vv_ptr, gen_helper_vflogb_d)
- 
--TRANS(vfclass_s, LSX, gen_vv, gen_helper_vfclass_s)
--TRANS(vfclass_d, LSX, gen_vv, gen_helper_vfclass_d)
-+TRANS(vfclass_s, LSX, gen_vv_ptr, gen_helper_vfclass_s)
-+TRANS(vfclass_d, LSX, gen_vv_ptr, gen_helper_vfclass_d)
- 
--TRANS(vfsqrt_s, LSX, gen_vv, gen_helper_vfsqrt_s)
--TRANS(vfsqrt_d, LSX, gen_vv, gen_helper_vfsqrt_d)
--TRANS(vfrecip_s, LSX, gen_vv, gen_helper_vfrecip_s)
--TRANS(vfrecip_d, LSX, gen_vv, gen_helper_vfrecip_d)
--TRANS(vfrsqrt_s, LSX, gen_vv, gen_helper_vfrsqrt_s)
--TRANS(vfrsqrt_d, LSX, gen_vv, gen_helper_vfrsqrt_d)
-+TRANS(vfsqrt_s, LSX, gen_vv_ptr, gen_helper_vfsqrt_s)
-+TRANS(vfsqrt_d, LSX, gen_vv_ptr, gen_helper_vfsqrt_d)
-+TRANS(vfrecip_s, LSX, gen_vv_ptr, gen_helper_vfrecip_s)
-+TRANS(vfrecip_d, LSX, gen_vv_ptr, gen_helper_vfrecip_d)
-+TRANS(vfrsqrt_s, LSX, gen_vv_ptr, gen_helper_vfrsqrt_s)
-+TRANS(vfrsqrt_d, LSX, gen_vv_ptr, gen_helper_vfrsqrt_d)
- 
--TRANS(vfcvtl_s_h, LSX, gen_vv, gen_helper_vfcvtl_s_h)
--TRANS(vfcvth_s_h, LSX, gen_vv, gen_helper_vfcvth_s_h)
--TRANS(vfcvtl_d_s, LSX, gen_vv, gen_helper_vfcvtl_d_s)
--TRANS(vfcvth_d_s, LSX, gen_vv, gen_helper_vfcvth_d_s)
-+TRANS(vfcvtl_s_h, LSX, gen_vv_ptr, gen_helper_vfcvtl_s_h)
-+TRANS(vfcvth_s_h, LSX, gen_vv_ptr, gen_helper_vfcvth_s_h)
-+TRANS(vfcvtl_d_s, LSX, gen_vv_ptr, gen_helper_vfcvtl_d_s)
-+TRANS(vfcvth_d_s, LSX, gen_vv_ptr, gen_helper_vfcvth_d_s)
- TRANS(vfcvt_h_s, LSX, gen_vvv_ptr, gen_helper_vfcvt_h_s)
- TRANS(vfcvt_s_d, LSX, gen_vvv_ptr, gen_helper_vfcvt_s_d)
- 
--TRANS(vfrintrne_s, LSX, gen_vv, gen_helper_vfrintrne_s)
--TRANS(vfrintrne_d, LSX, gen_vv, gen_helper_vfrintrne_d)
--TRANS(vfrintrz_s, LSX, gen_vv, gen_helper_vfrintrz_s)
--TRANS(vfrintrz_d, LSX, gen_vv, gen_helper_vfrintrz_d)
--TRANS(vfrintrp_s, LSX, gen_vv, gen_helper_vfrintrp_s)
--TRANS(vfrintrp_d, LSX, gen_vv, gen_helper_vfrintrp_d)
--TRANS(vfrintrm_s, LSX, gen_vv, gen_helper_vfrintrm_s)
--TRANS(vfrintrm_d, LSX, gen_vv, gen_helper_vfrintrm_d)
--TRANS(vfrint_s, LSX, gen_vv, gen_helper_vfrint_s)
--TRANS(vfrint_d, LSX, gen_vv, gen_helper_vfrint_d)
--
--TRANS(vftintrne_w_s, LSX, gen_vv, gen_helper_vftintrne_w_s)
--TRANS(vftintrne_l_d, LSX, gen_vv, gen_helper_vftintrne_l_d)
--TRANS(vftintrz_w_s, LSX, gen_vv, gen_helper_vftintrz_w_s)
--TRANS(vftintrz_l_d, LSX, gen_vv, gen_helper_vftintrz_l_d)
--TRANS(vftintrp_w_s, LSX, gen_vv, gen_helper_vftintrp_w_s)
--TRANS(vftintrp_l_d, LSX, gen_vv, gen_helper_vftintrp_l_d)
--TRANS(vftintrm_w_s, LSX, gen_vv, gen_helper_vftintrm_w_s)
--TRANS(vftintrm_l_d, LSX, gen_vv, gen_helper_vftintrm_l_d)
--TRANS(vftint_w_s, LSX, gen_vv, gen_helper_vftint_w_s)
--TRANS(vftint_l_d, LSX, gen_vv, gen_helper_vftint_l_d)
--TRANS(vftintrz_wu_s, LSX, gen_vv, gen_helper_vftintrz_wu_s)
--TRANS(vftintrz_lu_d, LSX, gen_vv, gen_helper_vftintrz_lu_d)
--TRANS(vftint_wu_s, LSX, gen_vv, gen_helper_vftint_wu_s)
--TRANS(vftint_lu_d, LSX, gen_vv, gen_helper_vftint_lu_d)
-+TRANS(vfrintrne_s, LSX, gen_vv_ptr, gen_helper_vfrintrne_s)
-+TRANS(vfrintrne_d, LSX, gen_vv_ptr, gen_helper_vfrintrne_d)
-+TRANS(vfrintrz_s, LSX, gen_vv_ptr, gen_helper_vfrintrz_s)
-+TRANS(vfrintrz_d, LSX, gen_vv_ptr, gen_helper_vfrintrz_d)
-+TRANS(vfrintrp_s, LSX, gen_vv_ptr, gen_helper_vfrintrp_s)
-+TRANS(vfrintrp_d, LSX, gen_vv_ptr, gen_helper_vfrintrp_d)
-+TRANS(vfrintrm_s, LSX, gen_vv_ptr, gen_helper_vfrintrm_s)
-+TRANS(vfrintrm_d, LSX, gen_vv_ptr, gen_helper_vfrintrm_d)
-+TRANS(vfrint_s, LSX, gen_vv_ptr, gen_helper_vfrint_s)
-+TRANS(vfrint_d, LSX, gen_vv_ptr, gen_helper_vfrint_d)
-+
-+TRANS(vftintrne_w_s, LSX, gen_vv_ptr, gen_helper_vftintrne_w_s)
-+TRANS(vftintrne_l_d, LSX, gen_vv_ptr, gen_helper_vftintrne_l_d)
-+TRANS(vftintrz_w_s, LSX, gen_vv_ptr, gen_helper_vftintrz_w_s)
-+TRANS(vftintrz_l_d, LSX, gen_vv_ptr, gen_helper_vftintrz_l_d)
-+TRANS(vftintrp_w_s, LSX, gen_vv_ptr, gen_helper_vftintrp_w_s)
-+TRANS(vftintrp_l_d, LSX, gen_vv_ptr, gen_helper_vftintrp_l_d)
-+TRANS(vftintrm_w_s, LSX, gen_vv_ptr, gen_helper_vftintrm_w_s)
-+TRANS(vftintrm_l_d, LSX, gen_vv_ptr, gen_helper_vftintrm_l_d)
-+TRANS(vftint_w_s, LSX, gen_vv_ptr, gen_helper_vftint_w_s)
-+TRANS(vftint_l_d, LSX, gen_vv_ptr, gen_helper_vftint_l_d)
-+TRANS(vftintrz_wu_s, LSX, gen_vv_ptr, gen_helper_vftintrz_wu_s)
-+TRANS(vftintrz_lu_d, LSX, gen_vv_ptr, gen_helper_vftintrz_lu_d)
-+TRANS(vftint_wu_s, LSX, gen_vv_ptr, gen_helper_vftint_wu_s)
-+TRANS(vftint_lu_d, LSX, gen_vv_ptr, gen_helper_vftint_lu_d)
- TRANS(vftintrne_w_d, LSX, gen_vvv_ptr, gen_helper_vftintrne_w_d)
- TRANS(vftintrz_w_d, LSX, gen_vvv_ptr, gen_helper_vftintrz_w_d)
- TRANS(vftintrp_w_d, LSX, gen_vvv_ptr, gen_helper_vftintrp_w_d)
- TRANS(vftintrm_w_d, LSX, gen_vvv_ptr, gen_helper_vftintrm_w_d)
- TRANS(vftint_w_d, LSX, gen_vvv_ptr, gen_helper_vftint_w_d)
--TRANS(vftintrnel_l_s, LSX, gen_vv, gen_helper_vftintrnel_l_s)
--TRANS(vftintrneh_l_s, LSX, gen_vv, gen_helper_vftintrneh_l_s)
--TRANS(vftintrzl_l_s, LSX, gen_vv, gen_helper_vftintrzl_l_s)
--TRANS(vftintrzh_l_s, LSX, gen_vv, gen_helper_vftintrzh_l_s)
--TRANS(vftintrpl_l_s, LSX, gen_vv, gen_helper_vftintrpl_l_s)
--TRANS(vftintrph_l_s, LSX, gen_vv, gen_helper_vftintrph_l_s)
--TRANS(vftintrml_l_s, LSX, gen_vv, gen_helper_vftintrml_l_s)
--TRANS(vftintrmh_l_s, LSX, gen_vv, gen_helper_vftintrmh_l_s)
--TRANS(vftintl_l_s, LSX, gen_vv, gen_helper_vftintl_l_s)
--TRANS(vftinth_l_s, LSX, gen_vv, gen_helper_vftinth_l_s)
--
--TRANS(vffint_s_w, LSX, gen_vv, gen_helper_vffint_s_w)
--TRANS(vffint_d_l, LSX, gen_vv, gen_helper_vffint_d_l)
--TRANS(vffint_s_wu, LSX, gen_vv, gen_helper_vffint_s_wu)
--TRANS(vffint_d_lu, LSX, gen_vv, gen_helper_vffint_d_lu)
--TRANS(vffintl_d_w, LSX, gen_vv, gen_helper_vffintl_d_w)
--TRANS(vffinth_d_w, LSX, gen_vv, gen_helper_vffinth_d_w)
-+TRANS(vftintrnel_l_s, LSX, gen_vv_ptr, gen_helper_vftintrnel_l_s)
-+TRANS(vftintrneh_l_s, LSX, gen_vv_ptr, gen_helper_vftintrneh_l_s)
-+TRANS(vftintrzl_l_s, LSX, gen_vv_ptr, gen_helper_vftintrzl_l_s)
-+TRANS(vftintrzh_l_s, LSX, gen_vv_ptr, gen_helper_vftintrzh_l_s)
-+TRANS(vftintrpl_l_s, LSX, gen_vv_ptr, gen_helper_vftintrpl_l_s)
-+TRANS(vftintrph_l_s, LSX, gen_vv_ptr, gen_helper_vftintrph_l_s)
-+TRANS(vftintrml_l_s, LSX, gen_vv_ptr, gen_helper_vftintrml_l_s)
-+TRANS(vftintrmh_l_s, LSX, gen_vv_ptr, gen_helper_vftintrmh_l_s)
-+TRANS(vftintl_l_s, LSX, gen_vv_ptr, gen_helper_vftintl_l_s)
-+TRANS(vftinth_l_s, LSX, gen_vv_ptr, gen_helper_vftinth_l_s)
-+
-+TRANS(vffint_s_w, LSX, gen_vv_ptr, gen_helper_vffint_s_w)
-+TRANS(vffint_d_l, LSX, gen_vv_ptr, gen_helper_vffint_d_l)
-+TRANS(vffint_s_wu, LSX, gen_vv_ptr, gen_helper_vffint_s_wu)
-+TRANS(vffint_d_lu, LSX, gen_vv_ptr, gen_helper_vffint_d_lu)
-+TRANS(vffintl_d_w, LSX, gen_vv_ptr, gen_helper_vffintl_d_w)
-+TRANS(vffinth_d_w, LSX, gen_vv_ptr, gen_helper_vffinth_d_w)
- TRANS(vffint_s_l, LSX, gen_vvv_ptr, gen_helper_vffint_s_l)
- 
- static bool do_cmp(DisasContext *ctx, arg_vvv *a, MemOp mop, TCGCond cond)
+ static bool gen_vv_i(DisasContext *ctx, arg_vv_i *a,
 -- 
 2.39.1
 
