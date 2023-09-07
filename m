@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383E27970DC
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D65187970F2
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:41:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeARI-0003rP-AW; Thu, 07 Sep 2023 04:32:36 -0400
+	id 1qeARH-0003qn-Ug; Thu, 07 Sep 2023 04:32:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeARD-0003lT-0Q
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:32:31 -0400
+ id 1qeARC-0003lQ-UH
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:32:30 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeARA-0002JK-41
+ (envelope-from <gaosong@loongson.cn>) id 1qeARA-0002JL-74
  for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:32:30 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxXeuPivlk9jghAA--.61081S3;
+ by gateway (Coremail) with SMTP id _____8Cxc_CPivlk+DghAA--.901S3;
  Thu, 07 Sep 2023 16:32:15 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bxxsx+ivlk8FVwAA--.49124S16; 
- Thu, 07 Sep 2023 16:32:12 +0800 (CST)
+ AQAAf8Bxxsx+ivlk8FVwAA--.49124S17; 
+ Thu, 07 Sep 2023 16:32:15 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn
-Subject: [PATCH RESEND v5 14/57] target/loongarch: Implement xvadd/xvsub
-Date: Thu,  7 Sep 2023 16:31:15 +0800
-Message-Id: <20230907083158.3975132-15-gaosong@loongson.cn>
+Subject: [PATCH RESEND v5 15/57] target/loongarch: Implement xvreplgr2vr
+Date: Thu,  7 Sep 2023 16:31:16 +0800
+Message-Id: <20230907083158.3975132-16-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230907083158.3975132-1-gaosong@loongson.cn>
 References: <20230907083158.3975132-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bxxsx+ivlk8FVwAA--.49124S16
+X-CM-TRANSID: AQAAf8Bxxsx+ivlk8FVwAA--.49124S17
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -64,216 +64,108 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVADD.{B/H/W/D/Q};
-- XVSUB.{B/H/W/D/Q}.
+- XVREPLGR2VR.{B/H/W/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/insns.decode               |  14 +++
- target/loongarch/disas.c                    |  23 +++++
- target/loongarch/translate.c                |   4 +
- target/loongarch/insn_trans/trans_vec.c.inc | 106 +++++++++++++-------
- 4 files changed, 112 insertions(+), 35 deletions(-)
+ target/loongarch/insns.decode               |  5 ++++
+ target/loongarch/disas.c                    | 10 +++++++
+ target/loongarch/insn_trans/trans_vec.c.inc | 29 ++++++++++++++++-----
+ 3 files changed, 37 insertions(+), 7 deletions(-)
 
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index c9c3bc2c73..bcc18fb6c5 100644
+index bcc18fb6c5..04bd238995 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1296,3 +1296,17 @@ vstelm_d         0011 00010001 0 . ........ ..... .....   @vr_i8i1
- vstelm_w         0011 00010010 .. ........ ..... .....    @vr_i8i2
- vstelm_h         0011 0001010 ... ........ ..... .....    @vr_i8i3
- vstelm_b         0011 000110 .... ........ ..... .....    @vr_i8i4
+@@ -1310,3 +1310,8 @@ xvsub_h          0111 01000000 11001 ..... ..... .....    @vvv
+ xvsub_w          0111 01000000 11010 ..... ..... .....    @vvv
+ xvsub_d          0111 01000000 11011 ..... ..... .....    @vvv
+ xvsub_q          0111 01010010 11011 ..... ..... .....    @vvv
 +
-+#
-+# LoongArch LASX instructions
-+#
-+xvadd_b          0111 01000000 10100 ..... ..... .....    @vvv
-+xvadd_h          0111 01000000 10101 ..... ..... .....    @vvv
-+xvadd_w          0111 01000000 10110 ..... ..... .....    @vvv
-+xvadd_d          0111 01000000 10111 ..... ..... .....    @vvv
-+xvadd_q          0111 01010010 11010 ..... ..... .....    @vvv
-+xvsub_b          0111 01000000 11000 ..... ..... .....    @vvv
-+xvsub_h          0111 01000000 11001 ..... ..... .....    @vvv
-+xvsub_w          0111 01000000 11010 ..... ..... .....    @vvv
-+xvsub_d          0111 01000000 11011 ..... ..... .....    @vvv
-+xvsub_q          0111 01010010 11011 ..... ..... .....    @vvv
++xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
++xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
++xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
++xvreplgr2vr_d    0111 01101001 11110 00011 ..... .....    @vr
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 5c402d944d..d8b62ba532 100644
+index d8b62ba532..c47f455ed0 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1695,3 +1695,26 @@ INSN_LSX(vstelm_d,         vr_ii)
- INSN_LSX(vstelm_w,         vr_ii)
- INSN_LSX(vstelm_h,         vr_ii)
- INSN_LSX(vstelm_b,         vr_ii)
-+
-+#define INSN_LASX(insn, type)                               \
-+static bool trans_##insn(DisasContext *ctx, arg_##type * a) \
-+{                                                           \
-+    output_##type ## _x(ctx, a, #insn);                     \
-+    return true;                                            \
-+}
-+
-+static void output_vvv_x(DisasContext *ctx, arg_vvv * a, const char *mnemonic)
-+{
-+    output(ctx, mnemonic, "x%d, x%d, x%d", a->vd, a->vj, a->vk);
-+}
-+
-+INSN_LASX(xvadd_b,           vvv)
-+INSN_LASX(xvadd_h,           vvv)
-+INSN_LASX(xvadd_w,           vvv)
-+INSN_LASX(xvadd_d,           vvv)
-+INSN_LASX(xvadd_q,           vvv)
-+INSN_LASX(xvsub_b,           vvv)
-+INSN_LASX(xvsub_h,           vvv)
-+INSN_LASX(xvsub_w,           vvv)
-+INSN_LASX(xvsub_d,           vvv)
-+INSN_LASX(xvsub_q,           vvv)
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index 7f3958a1f4..10e2fe8ff6 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -124,6 +124,10 @@ static void loongarch_tr_init_disas_context(DisasContextBase *dcbase,
-         ctx->vl = LSX_LEN;
-     }
- 
-+    if (FIELD_EX64(env->cpucfg[2], CPUCFG2, LASX)) {
-+        ctx->vl = LASX_LEN;
-+    }
-+
-     ctx->la64 = is_la64(env);
-     ctx->va32 = (ctx->base.tb->flags & HW_FLAGS_VA32) != 0;
- 
-diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index a90afd3b82..47cf053e0a 100644
---- a/target/loongarch/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -208,6 +208,16 @@ static bool gvec_vvv(DisasContext *ctx, arg_vvv *a, MemOp mop,
-     return gvec_vvv_vl(ctx, a, 16, mop, func);
+@@ -1708,6 +1708,11 @@ static void output_vvv_x(DisasContext *ctx, arg_vvv * a, const char *mnemonic)
+     output(ctx, mnemonic, "x%d, x%d, x%d", a->vd, a->vj, a->vk);
  }
  
-+static bool gvec_xxx(DisasContext *ctx, arg_vvv *a, MemOp mop,
-+                     void (*func)(unsigned, uint32_t, uint32_t,
-+                                  uint32_t, uint32_t, uint32_t))
++static void output_vr_x(DisasContext *ctx, arg_vr *a, const char *mnemonic)
 +{
-+    if (!check_vec(ctx, 32)) {
-+        return true;
-+    }
-+
-+    return gvec_vvv_vl(ctx, a, 32, mop, func);
++    output(ctx, mnemonic, "x%d, r%d", a->vd, a->rj);
 +}
++
+ INSN_LASX(xvadd_b,           vvv)
+ INSN_LASX(xvadd_h,           vvv)
+ INSN_LASX(xvadd_w,           vvv)
+@@ -1718,3 +1723,8 @@ INSN_LASX(xvsub_h,           vvv)
+ INSN_LASX(xvsub_w,           vvv)
+ INSN_LASX(xvsub_d,           vvv)
+ INSN_LASX(xvsub_q,           vvv)
++
++INSN_LASX(xvreplgr2vr_b,     vr)
++INSN_LASX(xvreplgr2vr_h,     vr)
++INSN_LASX(xvreplgr2vr_w,     vr)
++INSN_LASX(xvreplgr2vr_d,     vr)
+diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
+index 47cf053e0a..a7323e0490 100644
+--- a/target/loongarch/insn_trans/trans_vec.c.inc
++++ b/target/loongarch/insn_trans/trans_vec.c.inc
+@@ -4407,27 +4407,42 @@ static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
+     return true;
+ }
  
- static bool gvec_vv_vl(DisasContext *ctx, arg_vv *a,
-                        uint32_t oprsz, MemOp mop,
-@@ -279,47 +289,73 @@ TRANS(vadd_b, LSX, gvec_vvv, MO_8, tcg_gen_gvec_add)
- TRANS(vadd_h, LSX, gvec_vvv, MO_16, tcg_gen_gvec_add)
- TRANS(vadd_w, LSX, gvec_vvv, MO_32, tcg_gen_gvec_add)
- TRANS(vadd_d, LSX, gvec_vvv, MO_64, tcg_gen_gvec_add)
-+TRANS(xvadd_b, LASX, gvec_xxx, MO_8, tcg_gen_gvec_add)
-+TRANS(xvadd_h, LASX, gvec_xxx, MO_16, tcg_gen_gvec_add)
-+TRANS(xvadd_w, LASX, gvec_xxx, MO_32, tcg_gen_gvec_add)
-+TRANS(xvadd_d, LASX, gvec_xxx, MO_64, tcg_gen_gvec_add)
-+
-+static bool gen_vaddsub_q_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
-+                             void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
-+                                          TCGv_i64, TCGv_i64, TCGv_i64))
-+{
-+    int i;
-+    TCGv_i64 rh, rl, ah, al, bh, bl;
-+
-+    rh = tcg_temp_new_i64();
-+    rl = tcg_temp_new_i64();
-+    ah = tcg_temp_new_i64();
-+    al = tcg_temp_new_i64();
-+    bh = tcg_temp_new_i64();
-+    bl = tcg_temp_new_i64();
-+
-+    for (i = 0; i < oprsz / 16; i++) {
-+        get_vreg64(ah, a->vj, 1 + i * 2);
-+        get_vreg64(al, a->vj, i * 2);
-+        get_vreg64(bh, a->vk, 1 + i * 2);
-+        get_vreg64(bl, a->vk, i * 2);
-+
-+        func(rl, rh, al, ah, bl, bh);
+-static bool gvec_dup(DisasContext *ctx, arg_vr *a, MemOp mop)
++static bool gvec_dup_vl(DisasContext *ctx, arg_vr *a,
++                        uint32_t oprsz, MemOp mop)
+ {
+     TCGv src = gpr_src(ctx, a->rj, EXT_NONE);
  
--#define VADDSUB_Q(NAME)                                        \
--static bool trans_v## NAME ##_q(DisasContext *ctx, arg_vvv *a) \
--{                                                              \
--    TCGv_i64 rh, rl, ah, al, bh, bl;                           \
--                                                               \
--    if (!avail_LSX(ctx)) {                                     \
--        return false;                                          \
--    }                                                          \
--                                                               \
--    if (!check_vec(ctx, 16)) {                                 \
--        return true;                                           \
--    }                                                          \
--                                                               \
--    rh = tcg_temp_new_i64();                                   \
--    rl = tcg_temp_new_i64();                                   \
--    ah = tcg_temp_new_i64();                                   \
--    al = tcg_temp_new_i64();                                   \
--    bh = tcg_temp_new_i64();                                   \
--    bl = tcg_temp_new_i64();                                   \
--                                                               \
--    get_vreg64(ah, a->vj, 1);                                  \
--    get_vreg64(al, a->vj, 0);                                  \
--    get_vreg64(bh, a->vk, 1);                                  \
--    get_vreg64(bl, a->vk, 0);                                  \
--                                                               \
--    tcg_gen_## NAME ##2_i64(rl, rh, al, ah, bl, bh);           \
--                                                               \
--    set_vreg64(rh, a->vd, 1);                                  \
--    set_vreg64(rl, a->vd, 0);                                  \
--                                                               \
--    return true;                                               \
--}
--
--VADDSUB_Q(add)
--VADDSUB_Q(sub)
-+        set_vreg64(rh, a->vd, 1 + i * 2);
-+        set_vreg64(rl, a->vd, i * 2);
-+    }
+-    if (!avail_LSX(ctx)) {
+-        return false;
+-    }
++    tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd),
++                         oprsz, ctx->vl/8, src);
 +    return true;
 +}
-+
-+static bool gen_vaddsub_q(DisasContext *ctx, arg_vvv *a,
-+                          void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
-+                                       TCGv_i64, TCGv_i64, TCGv_i64))
+ 
++static bool gvec_dup(DisasContext *ctx, arg_vr *a, MemOp mop)
 +{
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-+    return gen_vaddsub_q_vl(ctx, a, 16, func);
+     if (!check_vec(ctx, 16)) {
+         return true;
+     }
+ 
+-    tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd),
+-                         16, ctx->vl/8, src);
+-    return true;
++    return gvec_dup_vl(ctx, a, 16, mop);
 +}
 +
-+static bool gen_xvaddsub_q(DisasContext *ctx, arg_vvv *a,
-+                           void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
-+                                        TCGv_i64, TCGv_i64, TCGv_i64))
++static bool gvec_dupx(DisasContext *ctx, arg_vr *a, MemOp mop)
 +{
 +    if (!check_vec(ctx, 32)) {
 +        return true;
 +    }
-+    return gen_vaddsub_q_vl(ctx, a, 16, func);
-+}
- 
- TRANS(vsub_b, LSX, gvec_vvv, MO_8, tcg_gen_gvec_sub)
- TRANS(vsub_h, LSX, gvec_vvv, MO_16, tcg_gen_gvec_sub)
- TRANS(vsub_w, LSX, gvec_vvv, MO_32, tcg_gen_gvec_sub)
- TRANS(vsub_d, LSX, gvec_vvv, MO_64, tcg_gen_gvec_sub)
-+TRANS(xvsub_b, LASX, gvec_xxx, MO_8, tcg_gen_gvec_sub)
-+TRANS(xvsub_h, LASX, gvec_xxx, MO_16, tcg_gen_gvec_sub)
-+TRANS(xvsub_w, LASX, gvec_xxx, MO_32, tcg_gen_gvec_sub)
-+TRANS(xvsub_d, LASX, gvec_xxx, MO_64, tcg_gen_gvec_sub)
 +
-+TRANS(vadd_q, LSX, gen_vaddsub_q, tcg_gen_add2_i64)
-+TRANS(vsub_q, LSX, gen_vaddsub_q, tcg_gen_sub2_i64)
-+TRANS(xvadd_q, LASX, gen_xvaddsub_q, tcg_gen_add2_i64)
-+TRANS(xvsub_q, LASX, gen_xvaddsub_q, tcg_gen_sub2_i64)
++    return gvec_dup_vl(ctx, a, 32, mop);
+ }
  
- TRANS(vaddi_bu, LSX, gvec_vv_i, MO_8, tcg_gen_gvec_addi)
- TRANS(vaddi_hu, LSX, gvec_vv_i, MO_16, tcg_gen_gvec_addi)
+ TRANS(vreplgr2vr_b, LSX, gvec_dup, MO_8)
+ TRANS(vreplgr2vr_h, LSX, gvec_dup, MO_16)
+ TRANS(vreplgr2vr_w, LSX, gvec_dup, MO_32)
+ TRANS(vreplgr2vr_d, LSX, gvec_dup, MO_64)
++TRANS(xvreplgr2vr_b, LASX, gvec_dupx, MO_8)
++TRANS(xvreplgr2vr_h, LASX, gvec_dupx, MO_16)
++TRANS(xvreplgr2vr_w, LASX, gvec_dupx, MO_32)
++TRANS(xvreplgr2vr_d, LASX, gvec_dupx, MO_64)
+ 
+ static bool trans_vreplvei_b(DisasContext *ctx, arg_vv_i *a)
+ {
 -- 
 2.39.1
 
