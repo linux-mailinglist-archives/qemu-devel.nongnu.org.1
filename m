@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14BE7972B0
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8B7797293
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:07:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEeZ-0005e1-PF; Thu, 07 Sep 2023 09:02:35 -0400
+	id 1qeEeY-00057o-Cz; Thu, 07 Sep 2023 09:02:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEdk-0003tz-6A
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:44 -0400
+ id 1qeEdj-0003sW-Pp
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEdh-0007SV-Qj
+ id 1qeEdh-0007SR-EK
  for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694091701;
+ s=mimecast20190719; t=1694091700;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f5QQm0oilMjeexogAgNze3HLGFf4cWGHlkML0hXaL90=;
- b=FYi+k/lQIC1kMy/9WLSSaMgkjoS7ki1VD2yUs7gJwHoWnpv7DKs/1VOPG6oz8An0AuTozu
- 4/0KhTIp1LlOxYGUMSVWa/61Ck0hNG2H0IpaKMSOdvDx3m6cGO+SewToTTyNv68Hgfvqst
- f5dlS7o787S5Uc9GbnfWU9xrPcvrYkc=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CnS6kpClTYzSsSYS2ANTQx/6JTtxTxc5WwCUea/91dA=;
+ b=EHaO1mm8JnPB/jNqccufYvV9hU3021Iv43aejodScqYR2hwJd4YBRDvpSjHk8PvH28jwYO
+ Jtk9GIalYe1TpJ6MDJ0Qagup5CL8ONy8tfYLCgFtYe1hrx2NTehQyDhw1AlsOdcvzGy+n/
+ jrTBEqcCyNDT1Pg4o6AS+jOqmfPdvvw=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-29-7tOSXF9xOECLA_xICvG19Q-1; Thu, 07 Sep 2023 09:01:38 -0400
-X-MC-Unique: 7tOSXF9xOECLA_xICvG19Q-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2ba1949656bso11289741fa.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:01:37 -0700 (PDT)
+ us-mta-589-fBhRkRu_ORWjz22ExgsuOg-1; Thu, 07 Sep 2023 09:01:38 -0400
+X-MC-Unique: fBhRkRu_ORWjz22ExgsuOg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-401c19fc097so6611805e9.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:01:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694091695; x=1694696495;
+ d=1e100.net; s=20221208; t=1694091697; x=1694696497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=f5QQm0oilMjeexogAgNze3HLGFf4cWGHlkML0hXaL90=;
- b=CWhMN9EZn8UJrQDXgIXEBo1lAe+TOPTdCxOaGN9tCkzKOuJ2tTmoh0QI4YjvqlgRCm
- KphjHkE3k6TWYgtYGuq3MC1TWtx1RJc2KdAA6Z3+9WvZ0rKB00FCBlgU2VEZr7Klk3Oi
- aZJgJf7dq8AospLfuHclAiSnYmi9Sq5x2pfWBr5Zz91YvJ0ONAtNu2Q4VwCigx5/7zfR
- YMF3WkHyWy4cMRqgNKGxGOoUDDg7q2/3hC7GJtnU83C425uGUxhoFVsRC/AG6n3wkZp3
- POXNpTcOF+jKq5kONwNmlVJumh5WirEP/evsDwl0SZYdlExFmtQCcD/pl9Ain8hRU6br
- 7emw==
-X-Gm-Message-State: AOJu0YzM98Ie56hSLouEpWhvN+XGOizgfDM/5ZtAh1bZwNIPrMM2ywAk
- 5vWQamXVpQyQUoUn/LOvQQqmMTvaNwmlWckyYeshIMT17DJZ0JtySVl3zoa/Nff3oH7B9fRQdv2
- 0GAlUaM3rs41LzG/TnGQGunaDyJMmLsI9b5l0JcsME4MRAew5/vS7KvpPRPKWLtfSsFv7xylSpN
- E=
-X-Received: by 2002:a2e:87cd:0:b0:2bc:d097:2b72 with SMTP id
- v13-20020a2e87cd000000b002bcd0972b72mr4796096ljj.48.1694091695510; 
- Thu, 07 Sep 2023 06:01:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE5Q7BFQOh5+plnqBPbuOFINJU5aPGkpsA0EMlL3US6VloZV1INGkBu8PHpKUOp6gTgB3lhyQ==
-X-Received: by 2002:a2e:87cd:0:b0:2bc:d097:2b72 with SMTP id
- v13-20020a2e87cd000000b002bcd0972b72mr4796079ljj.48.1694091695189; 
- Thu, 07 Sep 2023 06:01:35 -0700 (PDT)
+ bh=CnS6kpClTYzSsSYS2ANTQx/6JTtxTxc5WwCUea/91dA=;
+ b=SIeVFItEn/o8GORbYUvTqfCO5MjVuBO2iYT2tABD6Og0nDd4Xj6gWKNk/tjFurtj5Y
+ 6X9flav/tV6mr88IZiH7ZcGCCpgHc/t5MGypGpTAjMluefif6dUT+0CSTKOiuyecW7RO
+ 2Q6hEPfhKqtqLD9Ge2i2il0mSUqXksD/87SFnSzmlWyYay8Kz6beErkMsJtUXMWQb33f
+ VD9BOCf0tW5aS/kg7cWVFXubxtI+jcKhsuxVC4IUFgXqeJAcZNJnyjJ1Jua4n08sp9V/
+ RA7pcqUhdnCfBgpiSYnI3BwXio5ANb6hJqeISjWtaK1JoY467C6CqI0rLuqXq211z3pQ
+ aoeQ==
+X-Gm-Message-State: AOJu0Yy8JkEpfS0b1MXOjPD3vHHIJ7usaQd8nKaLTVHZXRRUtVVTc9Sk
+ dXR1lDP9HG+tzhCvAdTxQ0jx+BJS92joG4p7aWSM0JbncT9XWIO8dA9Pbcel6zSrlD9vXLuY2CF
+ OElM8paOnPWEdJYRBqVfDBJFmprQJXpmR18Y8tIpmN+YE+w87E/w8yZ4IK4QpBHqZGhM9z6dbf/
+ I=
+X-Received: by 2002:a7b:cd97:0:b0:401:c944:a4d6 with SMTP id
+ y23-20020a7bcd97000000b00401c944a4d6mr4510546wmj.28.1694091697251; 
+ Thu, 07 Sep 2023 06:01:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFN6D55okrC2bHuKtz5+ID0fcdbiMVH11CrMv6zXhpyqFtEth7GADN9gXgEtjKB3RQM7MM2pA==
+X-Received: by 2002:a7b:cd97:0:b0:401:c944:a4d6 with SMTP id
+ y23-20020a7bcd97000000b00401c944a4d6mr4510531wmj.28.1694091696931; 
+ Thu, 07 Sep 2023 06:01:36 -0700 (PDT)
 Received: from [192.168.1.174] ([151.48.237.81])
  by smtp.gmail.com with ESMTPSA id
- y25-20020a7bcd99000000b0040210a27e29sm2454449wmj.32.2023.09.07.06.01.33
+ o8-20020a1c7508000000b003fed7fa6c00sm2516617wmc.7.2023.09.07.06.01.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 06:01:34 -0700 (PDT)
+ Thu, 07 Sep 2023 06:01:36 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 38/51] hw/i386/pc: Include missing 'cpu.h' header
-Date: Thu,  7 Sep 2023 14:59:47 +0200
-Message-ID: <20230907130004.500601-39-pbonzini@redhat.com>
+Subject: [PULL 39/51] hw/i386/fw_cfg: Include missing 'cpu.h' header
+Date: Thu,  7 Sep 2023 14:59:48 +0200
+Message-ID: <20230907130004.500601-40-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230907130004.500601-1-pbonzini@redhat.com>
 References: <20230907130004.500601-1-pbonzini@redhat.com>
@@ -103,41 +103,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Both pc_piix.c and pc_q35.c files use CPU_VERSION_LEGACY
-which is defined in "target/i386/cpu.h".
+fw_cfg_build_feature_control() uses CPUID_EXT_VMX which is
+defined in "target/i386/cpu.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230904124325.79040-3-philmd@linaro.org>
+Message-ID: <20230904124325.79040-4-philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/pc_piix.c | 1 +
- hw/i386/pc_q35.c  | 1 +
- 2 files changed, 2 insertions(+)
+ hw/i386/fw_cfg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index ce1ac952749..f0df12f6fa8 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -69,6 +69,7 @@
- #include "hw/mem/nvdimm.h"
- #include "hw/i386/acpi-build.h"
- #include "kvm/kvm-cpu.h"
+diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+index 72a42f3c66d..7362daa45a6 100644
+--- a/hw/i386/fw_cfg.c
++++ b/hw/i386/fw_cfg.c
+@@ -24,6 +24,7 @@
+ #include "kvm/kvm_i386.h"
+ #include "qapi/error.h"
+ #include CONFIG_DEVICES
 +#include "target/i386/cpu.h"
  
- #define MAX_IDE_BUS 2
- #define XEN_IOAPIC_NUM_PIRQS 128ULL
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 43413dd1ac4..8ecc78c822b 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -58,6 +58,7 @@
- #include "hw/hyperv/vmbus-bridge.h"
- #include "hw/mem/nvdimm.h"
- #include "hw/i386/acpi-build.h"
-+#include "target/i386/cpu.h"
+ struct hpet_fw_config hpet_cfg = {.count = UINT8_MAX};
  
- /* ICH9 AHCI has 6 ports */
- #define MAX_SATA_PORTS     6
 -- 
 2.41.0
 
