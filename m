@@ -2,105 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CE27972E6
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:51:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 049007972F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 16:01:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeFO8-0001nG-5z; Thu, 07 Sep 2023 09:49:41 -0400
+	id 1qeFYZ-0005B1-1y; Thu, 07 Sep 2023 10:00:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qeFNs-0001fo-EI
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:49:25 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qeFYV-00053o-1D
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:00:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qeFNp-0001Li-Uo
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:49:24 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qeFYM-0005uH-Qp
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:00:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694094561;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1694095213;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=YPlcy8RuXa+KzHjTVOg+rsoYduMtAwP/C/LcDtp55Bw=;
- b=Fv/pwut9bK2G3ypwO5s7uvek071bp4Rcilr5nAb/nxb6dC6Lnz0r8lEx0ArOWWl8QbElnE
- 8+Cc3iYUtM5HH3wKSj0VyYUemZup6sBLtP2Fi0T3kgYvL61YtXTRhrRearfFRlbVKsijXR
- EeCN0ncZgg5zFNCHJ6cBP/Jjer07w5g=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-8o2no0-UPC-HVtjfC0gm5g-1; Thu, 07 Sep 2023 09:49:20 -0400
-X-MC-Unique: 8o2no0-UPC-HVtjfC0gm5g-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-401db25510fso6969315e9.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:49:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694094559; x=1694699359;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YPlcy8RuXa+KzHjTVOg+rsoYduMtAwP/C/LcDtp55Bw=;
- b=PSxIoiWgfBoVeZM3xZgN9a3JqaR7ykwVPR6qgufC0jJ/WlnlXe+PGKTTjBgl+rPLvU
- 9cqL2pbKIAqsxWJfRaJoq3kf/My8Kn8FtI/u+SKguhMt1C5197A1wufqe1c7gl4zb9kw
- pp7P54k3HUp6Mbgf+64LgNW7Od/6ZMQJMfWxBsAD8TxA7x4I8NedJDGWizRqsmtNy3Z+
- HlJWiHI9tWoizrZ5k1XdFskMbExOwvn/+qhzLPAh+UoZpb94GweiPdGERn0J7DlVvwZY
- gkuBnY9C8EuYgJOLsiZt5JD1n7NxJur4pG78fsCbErJulwpm0+2MeTtxfmD60b+piewl
- J1xA==
-X-Gm-Message-State: AOJu0YynA5N8BSZqZd06Jkd1EdWtLP3iM+xA65vchqbCOgLrQckiHUZE
- 6H47O7FLSbNDXDgij4QRrJdEJJ/+otkg+f5ZEDBpnNICUTuEeRpWbe5i2wxPlNVlg5VVy37T0B3
- uVTIwawjwfrRwLmY=
-X-Received: by 2002:a05:600c:d5:b0:402:8896:bb7b with SMTP id
- u21-20020a05600c00d500b004028896bb7bmr4470650wmm.6.1694094558871; 
- Thu, 07 Sep 2023 06:49:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGUufHIN578PFhCXbLKo5a/cT5avTYO1POFs7xQQoa4brl59Tly+BoFuet2Kuxdmi97LEfxKA==
-X-Received: by 2002:a05:600c:d5:b0:402:8896:bb7b with SMTP id
- u21-20020a05600c00d500b004028896bb7bmr4470634wmm.6.1694094558553; 
- Thu, 07 Sep 2023 06:49:18 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- h8-20020adff4c8000000b0031c3ee933b5sm23162912wrp.108.2023.09.07.06.49.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 06:49:17 -0700 (PDT)
-Message-ID: <b59dffd3-0cf0-4a0a-f0a1-12d00b0e5bc8@redhat.com>
-Date: Thu, 7 Sep 2023 15:49:16 +0200
+ bh=jdX9m9ClspaMyni0xKcwKM5+1RqINUKJ0EJg84FJylg=;
+ b=gajEIvdIUuQI6ikIG/ptnuVw0KJOgWGJ2H/asD8HDXgrhKwrG7XLxS3yuyMjoGFaJYT5R3
+ bX8mBf66TzeQGInzqngP3TtvMhjV3DyZYRcjO3dwx5m5vUeVCm//m8sNCj6ZMkdOGDHUNE
+ NVFG7fwENVt4nitAoJR6aH+rfAJ6q7k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-518-clxZNNdDMaykreeSxtrB3A-1; Thu, 07 Sep 2023 10:00:10 -0400
+X-MC-Unique: clxZNNdDMaykreeSxtrB3A-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9FA69101CA8D;
+ Thu,  7 Sep 2023 14:00:08 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.223])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 03E9440C84A6;
+ Thu,  7 Sep 2023 14:00:07 +0000 (UTC)
+Date: Thu, 7 Sep 2023 10:00:06 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Markus Armbruster <armbru@redhat.com>,
+ Eric Blake <eblake@redhat.com>, kwolf@redhat.com,
+ Maxim Levitsky <mlevitsk@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [RFC 0/3] qmp: make qmp_device_add() a coroutine
+Message-ID: <20230907140006.GA1363873@fedora>
+References: <20230906190141.1286893-1-stefanha@redhat.com>
+ <1fa3ad95-c335-7e97-42f0-00dca5c5ba48@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] hw/riscv: split RAM into low and high memory
-Content-Language: en-US
-To: "Wu, Fei" <fei2.wu@intel.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Andrew Jones <ajones@ventanamicro.com>
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, qemu-riscv@nongnu.org, qemu-devel@nongnu.org,
- Andrei Warkentin <andrei.warkentin@intel.com>, qemu-arm
- <qemu-arm@nongnu.org>, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-References: <20230731015317.1026996-1-fei2.wu@intel.com>
- <20230803-3855259bbabb934c247c5607@orel>
- <d654810c-4f4f-7491-7711-c6076f42dcae@intel.com>
- <efc85591-fd5e-c6e7-ab3d-220d5ca57aa5@linaro.org>
- <2916216f-39a0-1a27-ad4e-6c664bf4a04e@redhat.com>
- <57b4ae4f-ea55-e17c-bb58-2f878c121038@intel.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <57b4ae4f-ea55-e17c-bb58-2f878c121038@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="IA5HAkDBlFunFGqC"
+Content-Disposition: inline
+In-Reply-To: <1fa3ad95-c335-7e97-42f0-00dca5c5ba48@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,99 +81,136 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
 
-On 9/7/23 12:04, Wu, Fei wrote:
-> On 9/7/2023 5:10 PM, Eric Auger wrote:
->> Hi,
->>
->> On 9/7/23 09:16, Philippe Mathieu-Daudé wrote:
->>> Widening Cc to ARM/VFIO.
->>>
->>> On 4/8/23 11:15, Wu, Fei wrote:
->>>> On 8/3/2023 11:07 PM, Andrew Jones wrote:
->>>>> On Mon, Jul 31, 2023 at 09:53:17AM +0800, Fei Wu wrote:
->>>>>> riscv virt platform's memory started at 0x80000000 and
->>>>>> straddled the 4GiB boundary. Curiously enough, this choice
->>>>>> of a memory layout will prevent from launching a VM with
->>>>>> a bit more than 2000MiB and PCIe pass-thru on an x86 host, due
->>>>>> to identity mapping requirements for the MSI doorbell on x86,
->>>>>> and these (APIC/IOAPIC) live right below 4GiB.
->>>>>>
->>>>>> So just split the RAM range into two portions:
->>>>>> - 1 GiB range from 0x80000000 to 0xc0000000.
->>>>>> - The remainder at 0x100000000
->>>>>>
->>>>>> ...leaving a hole between the ranges.
->>>>> Can you elaborate on the use case? Maybe provide details of the host
->>>>> system and the QEMU command line? I'm wondering why we didn't have
->>>>> any problems with the arm virt machine type. Has nobody tried this
->>>>> use case with that? Is the use case something valid for riscv, but
->>>>> not arm?
->>>>>
->>>> Firstly we have to enable pcie passthru on host, find the device groups,
->>>> e.g. the vga card, and add their pci ids to host kernel cmdline:
->>>>     vfio-pci.ids=10de:0f02,10de:0e08
->>>>
->>>> then start vm through qemu as follows:
->>>> $Q -machine virt -m 4G -smp 4 -nographic \
->>>>    -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
->>>>    -kernel ./vmlinuz -initrd initrd.img -append "root=/dev/vda1 rw" \
->>>>    -drive
->>>> file=ubuntu-22.04.1-preinstalled-server-riscv64+unmatched.img,if=virtio,format=raw
->>>>
->>>> \
->>>>    -device vfio-pci,host=01:00.0 -device vfio-pci,host=01:00.1 \
->>>>    -netdev user,id=vnet,hostfwd=:127.0.0.1:2223-:22 -device
->>>> virtio-net-pci,netdev=vnet
->>>>
->>>> Without this patch, qemu exits immediately instead of boots up.
->>>>
->>>> Just tried pcie passthru on arm, it cannot handle 4G memory either.
->>>> $Q -m 4G -smp 4 -cpu max -M virt -nographic \
->>>>    -pflash /usr/share/AAVMF/AAVMF_CODE.fd -pflash flash1.img \
->>>>    -drive if=none,file=ubuntu-22.04-server-cloudimg-arm64.img,id=hd0 \
->>>>    -device virtio-blk-device,drive=hd0 \
->>>>    -device vfio-pci,host=01:00.0 -device vfio-pci,host=01:00.1
->>>>
->>>> qemu-system-aarch64: -device vfio-pci,host=01:00.0: VFIO_MAP_DMA failed:
->>>> Invalid argument
->>>> qemu-system-aarch64: -device vfio-pci,host=01:00.0: vfio 0000:01:00.0:
->>>> failed to setup container for group 11: memory listener initialization
->>>> failed: Region mach-virt.ram: vfio_dma_map(0x55de3c2a97f0, 0x40000000,
->>>> 0x100000000, 0x7f8fcbe00000) = -22 (Invalid argument)
->> The collision between the x86 host MSI reserved region [0xfee00000,
->> 0xfeefffff] and the ARM guest RAM starting at 1GB has also always
->> existed. But now this collision is properly detected instead of being
->> silenced. People have not really complained about this so far. Since the
->> existing guest RAM layout couldn't be changed, I am afraid we couldn't
->> do much.
->>
-> Just as what this patch does for riscv, arm guest on x86 could do the
-> same thing to adjust the guest RAM layout if necessary? This looks like
-> a nice-to-have feature for arm if there still is a requirement to run
-> arm guest on x86.
+--IA5HAkDBlFunFGqC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Well Peter was opposed to any change in the legacy RAM layout. At some
-point on ARM VIRT we added some extra RAM but never changed the existing
-layout . But actually nobody ever complained about the lack of support
-of this UC (TCG arm guest with host assigned device on x86 host).
+On Thu, Sep 07, 2023 at 01:28:55PM +0200, Paolo Bonzini wrote:
+> On 9/6/23 21:01, Stefan Hajnoczi wrote:
+> > It is not safe to call drain_call_rcu() from qmp_device_add() because
+> > some call stacks are not prepared for drain_call_rcu() to drop the Big
+> > QEMU Lock (BQL).
+> >=20
+> > For example, device emulation code is protected by the BQL but when it
+> > calls aio_poll() -> ... -> qmp_device_add() -> drain_call_rcu() then the
+> > BQL is dropped. See https://bugzilla.redhat.com/show_bug.cgi?id=3D22151=
+92 for a
+> > concrete bug of this type.
+> >=20
+> > Another limitation of drain_call_rcu() is that it cannot be invoked wit=
+hin an
+> > RCU read-side critical section since the reclamation phase cannot compl=
+ete
+> > until the end of the critical section. Unfortunately, call stacks have =
+been
+> > seen where this happens (see
+> > https://bugzilla.redhat.com/show_bug.cgi?id=3D2214985).
+>=20
+> I think the root cause here is that do_qmp_dispatch_bh is called on the
+> wrong context, namely qemu_get_aio_context() instead of
+> iohandler_get_aio_context().  This is what causes it to move to the vCPU
+> thread.
+>=20
+> Auditing all subsystems that use iohandler_get_aio_context(), for example
+> via qemu_set_fd_handler(), together with bottom halves, would be a bit
+> daunting.
+>=20
+> I don't have any objection to this patch series actually, but I would like
+> to see if using the right AioContext also fixes the bug---and then treat
+> these changes as more of a cleanup.  Coroutines are pretty pervasive in Q=
+EMU
+> and are not going away which, as you say in the updated docs, makes
+> drain_call_rcu_co() preferrable to drain_call_rcu().
 
-Eric
->
-> Thanks,
-> Fei.
->
->> Eric
->>>> Thanks,
->>>> Fei.
->>>>
->>>>> Thanks,
->>>>> drew
->>>>
+While I agree that the issue would not happen if monitor commands only
+ran in the iohandler AioContext, I don't think we can change that.
+
+When Kevin implemented coroutine commands in commit 9ce44e2ce267 ("qmp:
+Move dispatcher to a coroutine"), he used qemu_get_aio_context()
+deliberately so that AIO_WAIT_WHILE() can make progress.
+
+I'm not clear on the exact scenario though, because coroutines shouldn't
+call AIO_WAIT_WHILE().
+
+Kevin?
+
+There is only one coroutine monitor command that calls the QEMU block
+layer: qmp_block_resize(). If we're going to change how the AioContext
+works then now is the time to do it before there are more commands that
+need to be audited/refactored.
+
+Stefan
+
+>=20
+> Paolo
+>=20
+>=20
+> > This patch series introduces drain_call_rcu_co(), which does the same t=
+hing as
+> > drain_call_rcu() but asynchronously. By yielding back to the event loop=
+ we can
+> > wait until the caller drops the BQL and leaves its RCU read-side critic=
+al
+> > section.
+> >=20
+> > Patch 1 changes HMP so that coroutine monitor commands yield back to th=
+e event
+> > loop instead of running inside a nested event loop.
+> >=20
+> > Patch 2 introduces the new drain_call_rcu_co() API.
+> >=20
+> > Patch 3 converts qmp_device_add() into a coroutine monitor command and =
+uses
+> > drain_call_rcu_co().
+> >=20
+> > I'm sending this as an RFC because I don't have confirmation yet that t=
+he bugs
+> > mentioned above are fixed by this patch series.
+> >=20
+> > Stefan Hajnoczi (3):
+> >    hmp: avoid the nested event loop in handle_hmp_command()
+> >    rcu: add drain_call_rcu_co() API
+> >    qmp: make qmp_device_add() a coroutine
+> >=20
+> >   MAINTAINERS            |  2 ++
+> >   docs/devel/rcu.txt     | 21 ++++++++++++++++
+> >   qapi/qdev.json         |  1 +
+> >   include/monitor/qdev.h |  3 ++-
+> >   include/qemu/rcu.h     |  1 +
+> >   util/rcu-internal.h    |  8 ++++++
+> >   monitor/hmp.c          | 28 +++++++++++----------
+> >   monitor/qmp-cmds.c     |  2 +-
+> >   softmmu/qdev-monitor.c | 34 +++++++++++++++++++++++---
+> >   util/rcu-co.c          | 55 ++++++++++++++++++++++++++++++++++++++++++
+> >   util/rcu.c             |  3 ++-
+> >   hmp-commands.hx        |  1 +
+> >   util/meson.build       |  2 +-
+> >   13 files changed, 140 insertions(+), 21 deletions(-)
+> >   create mode 100644 util/rcu-internal.h
+> >   create mode 100644 util/rcu-co.c
+> >=20
+>=20
+
+--IA5HAkDBlFunFGqC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmT512YACgkQnKSrs4Gr
+c8i9CQf/RrUb/1BKUku+ilzoX5SxzUA9gpDQ/ZkXu0Zcrspq4iY5NOnJXFIedEC7
+XwS6c/SiXsz0mnhq7GHOmc3adI1meUpQCxsw5wU3NkqPrFKC8kZMzRPP69NBRJWI
+xtAazxeqKexE66gLxfZWwKteFQu2cKJZ/xNQLn7PYh1FAAtSOesLKRNnanDk/8Lu
+q+Heo7rlh102x1QnFxs9umNlSZjQBy3dZrQBn8xe0hFc3eNpOG25hYMA2eGcea+H
+dPSfhmlrkHmYhZZRw9vepoqnxtKfQX8YfZ+1yuxVI3V9SWgpc+QPC+7C4rGwdodP
+vgHsHeZ+Vd/g8TD6sNgbOqa8OUTYzQ==
+=05Rd
+-----END PGP SIGNATURE-----
+
+--IA5HAkDBlFunFGqC--
 
 
