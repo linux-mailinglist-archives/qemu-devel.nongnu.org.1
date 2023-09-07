@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88378796E21
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7AD796E20
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:43:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe36Z-0002vp-J6; Wed, 06 Sep 2023 20:42:43 -0400
+	id 1qe36a-0003Pu-Oj; Wed, 06 Sep 2023 20:42:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe36I-0002j8-Rh
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:32 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe36W-0002xp-2n
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe36A-0002X4-Sk
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:20 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe36Q-0002Yk-Eq
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694047338;
+ s=mimecast20190719; t=1694047352;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mg3kYlTtUJFXrNtJeRlzw2RfhuRF2qfghP+aKgkkZ+E=;
- b=gkoBwU2ADPmfq01gAXB0ttxy6kNpxnN4H/y8nAbcriycBAKME/2C+Ir3M4U+Fc/8vp6Vej
- syJWODg7xLr9OLgG+gWoi7feyUCSePRwzZxv5BTL6FL/Nj7pSmWl4zTiuiVcZkTn96UouM
- MEb7yvYnVmJ1CnoZ24NyvhFKlLxNGM0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-448-drCx-XxMNoSexSX1dRpybg-1; Wed, 06 Sep 2023 20:42:13 -0400
-X-MC-Unique: drCx-XxMNoSexSX1dRpybg-1
+ bh=1JcIMoOuyt+t5aC4urIl46RXyX+s90YzOzH5wi/cRhQ=;
+ b=YAFlDkmhJkTwsg+qRKELiN6hma4a/T29WSKTPaPDby59K6j6n0w5XaPMn0OpZUrOHArTiM
+ KwM9bS59BFRZkRGWubA6UvOSQIZJ6HiNtuNKLvIiuJICI8clElQoEsKSC7UvD3CJ2o86iy
+ M4LB2sfv9HfK6bbvjVtDOmhPjpNdVxs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-612-qZhAew2LNGKGCwtuJ-39Ag-1; Wed, 06 Sep 2023 20:42:29 -0400
+X-MC-Unique: qZhAew2LNGKGCwtuJ-39Ag-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E97938157AF;
- Thu,  7 Sep 2023 00:42:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C09C80C908;
+ Thu,  7 Sep 2023 00:42:27 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A1B96C03295;
- Thu,  7 Sep 2023 00:41:56 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D7E3EC03295;
+ Thu,  7 Sep 2023 00:42:11 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,9 +62,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
  kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
  imammedo@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v3 21/32] target/microblaze: Implement microblaze_cpu_list()
-Date: Thu,  7 Sep 2023 10:35:42 +1000
-Message-ID: <20230907003553.1636896-22-gshan@redhat.com>
+Subject: [PATCH v3 22/32] target/nios2: Implement nios2_cpu_list()
+Date: Thu,  7 Sep 2023 10:35:43 +1000
+Message-ID: <20230907003553.1636896-23-gshan@redhat.com>
 In-Reply-To: <20230907003553.1636896-1-gshan@redhat.com>
 References: <20230907003553.1636896-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -79,7 +79,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,37 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement microblaze_cpu_list() to support cpu_list(). With this applied,
+Implement nios2_cpu_list() to support cpu_list(). With this applied,
 the available CPU model names, same to the CPU type names, are shown
 as below.
 
-  $ ./build/qemu-system-hppa -cpu ?
+  $ ./build/qemu-system-nios2 -cpu ?
   Available CPUs:
-    microblaze-cpu
+    nios2-cpu
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/microblaze/cpu.c | 20 ++++++++++++++++++++
- target/microblaze/cpu.h |  3 +++
+ target/nios2/cpu.c | 20 ++++++++++++++++++++
+ target/nios2/cpu.h |  3 +++
  2 files changed, 23 insertions(+)
 
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 03c2c4db1f..fc7a5dee5b 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -24,6 +24,7 @@
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index bc5cbf81c2..80af24eb69 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -21,6 +21,7 @@
  #include "qemu/osdep.h"
- #include "qemu/log.h"
+ #include "qemu/module.h"
  #include "qapi/error.h"
 +#include "qemu/qemu-print.h"
  #include "cpu.h"
- #include "qemu/module.h"
- #include "hw/qdev-properties.h"
-@@ -291,6 +292,25 @@ static void mb_cpu_realizefn(DeviceState *dev, Error **errp)
-     mcc->parent_realize(dev, errp);
+ #include "exec/log.h"
+ #include "gdbstub/helpers.h"
+@@ -111,6 +112,25 @@ static void iic_set_irq(void *opaque, int irq, int level)
  }
+ #endif
  
-+static void microblaze_cpu_list_entry(gpointer data, gpointer user_data)
++static void nios2_cpu_list_entry(gpointer data, gpointer user_data)
 +{
 +    const char *typename = object_class_get_name(OBJECT_CLASS(data));
 +    char *model = cpu_model_from_type(typename);
@@ -134,33 +134,33 @@ index 03c2c4db1f..fc7a5dee5b 100644
 +    g_free(model);
 +}
 +
-+void microblaze_cpu_list(void)
++void nios2_cpu_list(void)
 +{
 +    GSList *list;
 +
-+    list = object_class_get_list_sorted(TYPE_MICROBLAZE_CPU, false);
++    list = object_class_get_list_sorted(TYPE_NIOS2_CPU, false);
 +    qemu_printf("Available CPUs:\n");
-+    g_slist_foreach(list, microblaze_cpu_list_entry, NULL);
++    g_slist_foreach(list, nios2_cpu_list_entry, NULL);
 +    g_slist_free(list);
 +}
 +
- static void mb_cpu_initfn(Object *obj)
+ static void nios2_cpu_initfn(Object *obj)
  {
-     MicroBlazeCPU *cpu = MICROBLAZE_CPU(obj);
-diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index f6cab6ce19..b5775c2966 100644
---- a/target/microblaze/cpu.h
-+++ b/target/microblaze/cpu.h
-@@ -372,6 +372,9 @@ int mb_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
- int mb_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
- int mb_cpu_gdb_read_stack_protect(CPUArchState *cpu, GByteArray *buf, int reg);
- int mb_cpu_gdb_write_stack_protect(CPUArchState *cpu, uint8_t *buf, int reg);
-+void microblaze_cpu_list(void);
+     Nios2CPU *cpu = NIOS2_CPU(obj);
+diff --git a/target/nios2/cpu.h b/target/nios2/cpu.h
+index 477a3161fd..6d21b7e8f4 100644
+--- a/target/nios2/cpu.h
++++ b/target/nios2/cpu.h
+@@ -292,6 +292,9 @@ bool nios2_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                         MMUAccessType access_type, int mmu_idx,
+                         bool probe, uintptr_t retaddr);
+ #endif
++void nios2_cpu_list(void);
 +
-+#define cpu_list microblaze_cpu_list
++#define cpu_list nios2_cpu_list
  
- static inline uint32_t mb_cpu_read_msr(const CPUMBState *env)
- {
+ typedef CPUNios2State CPUArchState;
+ typedef Nios2CPU ArchCPU;
 -- 
 2.41.0
 
