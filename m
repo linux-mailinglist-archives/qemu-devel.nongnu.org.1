@@ -2,43 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244D5797E20
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 23:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08456797E21
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 23:55:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeMwR-0004xC-VP; Thu, 07 Sep 2023 17:53:35 -0400
+	id 1qeMxN-0005ZY-3L; Thu, 07 Sep 2023 17:54:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qeMwQ-0004wm-IE; Thu, 07 Sep 2023 17:53:34 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeMxI-0005Uw-S8
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 17:54:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qeMwN-0004Dk-SL; Thu, 07 Sep 2023 17:53:34 -0400
-Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qeMtB-00EbSj-35;
- Thu, 07 Sep 2023 23:53:25 +0200
-From: "Denis V. Lunev" <den@openvz.org>
-To: qemu-devel@nongnu.org,
-	qemu-block@nongnu.org
-Cc: den@openvz.org, Nir Soffer <nirsof@gmail.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Alberto Garcia <berto@igalia.com>
-Subject: [PATCH 1/1] block: improve alignment detection and fix 271 test
-Date: Thu,  7 Sep 2023 23:53:26 +0200
-Message-Id: <20230907215326.367847-1-den@openvz.org>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeMxG-0004b9-Qq
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 17:54:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694123666;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=vHPAVVkpPJbDdhxOQn4dQ8kV3qFU/U72aqIiOVRRbzA=;
+ b=XmbRz/wzSEJ23rCjdXU97WLRBUz/j7LsDKza2k9ucgITJp5DWMlAs+gvVJ/N3j6ZPB6Tki
+ HxJFc8xbcZtyAf7RVIdvc+zNzr0hHqr/5lDIs/doEomMJ60DOenv0o/tF6YXu5105r3L0w
+ Ec/gqSSr9O/nuXpjSC+nBbM+fa9ZpAY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-478-yeGMf0jANDGiXwAqNSYB5g-1; Thu, 07 Sep 2023 17:54:22 -0400
+X-MC-Unique: yeGMf0jANDGiXwAqNSYB5g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7AA51101CA80;
+ Thu,  7 Sep 2023 21:54:22 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 16257412F2D0;
+ Thu,  7 Sep 2023 21:54:22 +0000 (UTC)
+Date: Thu, 7 Sep 2023 16:54:20 -0500
+From: Eric Blake <eblake@redhat.com>
+To: "Denis V. Lunev" <den@openvz.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH 5/8] qemu-nbd: invent nbd_client_release_pipe() helper
+Message-ID: <3o47vmyo4udlfnmuk2gqymwwxo3o7th6yuy6fngyvq7djroa3b@tb2izsm3jawq>
+References: <20230906093210.339585-1-den@openvz.org>
+ <20230906093210.339585-6-den@openvz.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111; envelope-from=den@openvz.org;
- helo=relay.virtuozzo.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, HEXHASH_WORD=1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906093210.339585-6-den@openvz.org>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,67 +78,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately 271 IO test is broken if started in non-cached mode.
+On Wed, Sep 06, 2023 at 11:32:07AM +0200, Denis V. Lunev wrote:
+> Move the code from main() and nbd_client_thread() into the specific
+> helper. This code is going to be grown.
+> 
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
+> CC: Eric Blake <eblake@redhat.com>
+> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  qemu-nbd.c | 23 ++++++++++++-----------
+>  1 file changed, 12 insertions(+), 11 deletions(-)
 
-Commits
-    commit a6b257a08e3d72219f03e461a52152672fec0612
-    Author: Nir Soffer <nirsof@gmail.com>
-    Date:   Tue Aug 13 21:21:03 2019 +0300
-    file-posix: Handle undetectable alignment
-and
-    commit 9c60a5d1978e6dcf85c0e01b50e6f7f54ca09104
-    Author: Kevin Wolf <kwolf@redhat.com>
-    Date:   Thu Jul 16 16:26:00 2020 +0200
-    block: Require aligned image size to avoid assertion failure
-have interesting side effect if used togather.
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-If the image size is not multiple of 4k and that image falls under
-original constraints of Nil's patch, the image can not be opened
-due to the check in the bdrv_check_perm().
-
-The patch tries to satisfy the requirements of bdrv_check_perm()
-inside raw_probe_alignment(). This is at my opinion better that just
-disallowing to run that test in non-cached mode. The operation is legal
-by itself.
-
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Nir Soffer <nirsof@gmail.com>
-CC: Kevin Wolf <kwolf@redhat.com>
-CC: Hanna Reitz <hreitz@redhat.com>
-CC: Alberto Garcia <berto@igalia.com>
----
- block/file-posix.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
-
-diff --git a/block/file-posix.c b/block/file-posix.c
-index b16e9c21a1..988cfdc76c 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -447,8 +447,21 @@ static void raw_probe_alignment(BlockDriverState *bs, int fd, Error **errp)
-         for (i = 0; i < ARRAY_SIZE(alignments); i++) {
-             align = alignments[i];
-             if (raw_is_io_aligned(fd, buf, align)) {
--                /* Fallback to safe value. */
--                bs->bl.request_alignment = (align != 1) ? align : max_align;
-+                if (align != 1) {
-+                    bs->bl.request_alignment = align;
-+                    break;
-+                }
-+                /*
-+                 * Fallback to safe value. max_align is perfect, but the size of the device must be multiple of
-+                 * the virtual length of the device. In the other case we will get a error in
-+                 * bdrv_node_refresh_perm().
-+                 */
-+                for (align = max_align; align > 1; align /= 2) {
-+                    if ((bs->total_sectors * BDRV_SECTOR_SIZE) % align == 0) {
-+                        break;
-+                    }
-+                }
-+                bs->bl.request_alignment = align;
-                 break;
-             }
-         }
 -- 
-2.34.1
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
