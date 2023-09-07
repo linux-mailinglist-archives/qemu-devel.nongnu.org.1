@@ -2,51 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8EC7970A5
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B71D7970AD
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:17:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeA6e-000568-65; Thu, 07 Sep 2023 04:11:17 -0400
+	id 1qeABQ-0003UE-2b; Thu, 07 Sep 2023 04:16:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeA69-0004nS-Ue
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:10:46 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeA66-0003lD-LJ
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:10:45 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxpPAzhflkWDQhAA--.753S3;
- Thu, 07 Sep 2023 16:09:23 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxviMthflkXE1wAA--.31585S12; 
- Thu, 07 Sep 2023 16:09:22 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	maobibo@loongson.cn
-Subject: [PATCH v5 10/57] target/loongarch: Replace CHECK_SXE to check_vec(ctx, 16)
-Date: Thu,  7 Sep 2023 16:08:29 +0800
-Message-Id: <20230907080916.3974502-11-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230907080916.3974502-1-gaosong@loongson.cn>
-References: <20230907080916.3974502-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qeABM-0003U3-QV
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:16:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qeABK-0004oW-98
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:16:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694074565;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5H18j0oQqKf3p8ytxhi355ZapSjXxuqDKEKARSKeoCQ=;
+ b=FOtw+rnTjMPRZZ7RhOOmFdbDFGrv60wazWu4/UqAiyULV/oBdnEWvkgZ6bsthu/eB885M7
+ I62rZTcB/U3Twd4B5RG/POzIoYwuYi9vPhhL5mMBqNPDHfEfrvSeHz7Q7rQRV3P/W8sf8L
+ rvIuT/E0sNWfAyrrLowO5zsyxRNtCEA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-utrTyYMrM9-Ng35Uzaf5LA-1; Thu, 07 Sep 2023 04:16:03 -0400
+X-MC-Unique: utrTyYMrM9-Ng35Uzaf5LA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-31400956ce8so440071f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 01:16:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694074562; x=1694679362;
+ h=content-transfer-encoding:in-reply-to:subject:from:content-language
+ :references:cc:to:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5H18j0oQqKf3p8ytxhi355ZapSjXxuqDKEKARSKeoCQ=;
+ b=lODzlUa000ZADZMcCGqq/s0cnQvb/thCgkciNBOyXEnIJXsicRXJb/wbhxM9k5CWT4
+ pkSp2XBWXk8y7npfS+H8GH1h1dhNmQPr1Z+pfg0K4XmUYixF2A5Xthe5GJ+FQGhsc9Y/
+ V973uEKooeSx53e0ZpRBl1iw28vLUoXIBtwV/ILarEzjB3bNglL0emhZsaUXVxyidu1T
+ abXpO939TP+Qk4nIhXDaVLhw2EeABFeGB6nRhpvdODnKsDKwsTKWeVQ7lQ+BPtX/PfSd
+ QSHUZXZL745uY4QCxwnH60THh1MsePAlAlA+6DboGOZXZ/5URaAUpfkvMoq5F+YtHMyq
+ 8niQ==
+X-Gm-Message-State: AOJu0YwPVbcH2IX7bXBM+lFLN6NbXvjgmCrldKkotTELBYACyUO32RiQ
+ 9CjFp+fWNZLMtYa9TmrKKUj1g4xqJv8dnyGavQR20yGcLcyLZDd7XryiaeSKvWQcmqnGQTug7sj
+ ATMWPl0yzw5Dx2og=
+X-Received: by 2002:adf:f7c5:0:b0:316:e249:c285 with SMTP id
+ a5-20020adff7c5000000b00316e249c285mr3984218wrq.71.1694074562761; 
+ Thu, 07 Sep 2023 01:16:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoMAcMhtcGYUerYGMg0/ru9QTAU2pEUAMbegavyggjDIae2WG4ZBwfr44tHPOlyL8of/fMrw==
+X-Received: by 2002:adf:f7c5:0:b0:316:e249:c285 with SMTP id
+ a5-20020adff7c5000000b00316e249c285mr3984185wrq.71.1694074562430; 
+ Thu, 07 Sep 2023 01:16:02 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-5.web.vodafone.de. [109.43.176.5])
+ by smtp.gmail.com with ESMTPSA id
+ t2-20020a05600001c200b003196e992567sm22651003wrx.115.2023.09.07.01.15.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Sep 2023 01:16:01 -0700 (PDT)
+Message-ID: <4c5f16ed-e559-2d9f-1451-164eea8c0ac5@redhat.com>
+Date: Thu, 7 Sep 2023 10:15:58 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxviMthflkXE1wAA--.31585S12
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
+References: <20230901155812.2696560-1-nsg@linux.ibm.com>
+ <20230901155812.2696560-14-nsg@linux.ibm.com>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v22 13/20] docs/s390x/cpu topology: document s390x cpu
+ topology
+In-Reply-To: <20230901155812.2696560-14-nsg@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,617 +115,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Intrudce a new function check_vec to replace CHECK_SXE
+On 01/09/2023 17.58, Nina Schoetterl-Glausch wrote:
+> From: Pierre Morel <pmorel@linux.ibm.com>
+> 
+> Add some basic examples for the definition of cpu topology
+> in s390x.
+> 
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> ---
+...
+> diff --git a/docs/devel/s390-cpu-topology.rst b/docs/devel/s390-cpu-topology.rst
+> new file mode 100644
+> index 0000000000..70633f30cb
+> --- /dev/null
+> +++ b/docs/devel/s390-cpu-topology.rst
+> @@ -0,0 +1,171 @@
+> +QAPI interface for S390 CPU topology
+> +====================================
+> +
+> +The following sections will explain the QAPI interface for S390 CPU topology
+> +with the help of exemplary output.
+> +For this, let's assume that QEMU has been started with the following
+> +command, defining 4 CPUs, where CPU[0] is defined by the -smp argument and will
+> +have default values:
+> +
+> +.. code-block:: bash
+> +
+> + qemu-system-s390x \
+> +    -enable-kvm \
+> +    -cpu z14,ctop=on \
+> +    -smp 1,drawers=3,books=3,sockets=2,cores=2,maxcpus=36 \
+> +    \
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/insn_trans/trans_vec.c.inc | 248 +++++++++++++++-----
- 1 file changed, 192 insertions(+), 56 deletions(-)
+This empty line first confused me, but after reading the other examples 
+later, I now think it is done on purpose, right? I'd maybe rather remove it 
+in this example here anyway, it's not that big that you need a visual 
+separation here.
 
-diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 41c2996e90..0985191c70 100644
---- a/target/loongarch/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -5,14 +5,23 @@
-  */
- 
- #ifndef CONFIG_USER_ONLY
--#define CHECK_SXE do { \
--    if ((ctx->base.tb->flags & HW_FLAGS_EUEN_SXE) == 0) { \
--        generate_exception(ctx, EXCCODE_SXD); \
--        return true; \
--    } \
--} while (0)
-+
-+static bool check_vec(DisasContext *ctx, uint32_t oprsz)
-+{
-+    if ((oprsz == 16) && ((ctx->base.tb->flags & HW_FLAGS_EUEN_SXE) == 0)) {
-+        generate_exception(ctx, EXCCODE_SXD);
-+        return false;
-+    }
-+    return true;
-+}
-+
- #else
--#define CHECK_SXE
-+
-+static bool check_vec(DisasContext *ctx, uint32_t oprsz)
-+{
-+    return true;
-+}
-+
- #endif
- 
- static bool gen_vvvv_ptr_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
-@@ -30,7 +39,10 @@ static bool gen_vvvv_ptr_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
- static bool gen_vvvv_ptr(DisasContext *ctx, arg_vvvv *a,
-                          gen_helper_gvec_4_ptr *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvvv_ptr_vl(ctx, a, 16, fn);
- }
- 
-@@ -48,7 +60,10 @@ static bool gen_vvvv_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
- static bool gen_vvvv(DisasContext *ctx, arg_vvvv *a,
-                      gen_helper_gvec_4 *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvvv_vl(ctx, a, 16, fn);
- }
- 
-@@ -66,7 +81,10 @@ static bool gen_vvv_ptr_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
- static bool gen_vvv_ptr(DisasContext *ctx, arg_vvv *a,
-                         gen_helper_gvec_3_ptr *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvv_ptr_vl(ctx, a, 16, fn);
- }
- 
-@@ -82,7 +100,10 @@ static bool gen_vvv_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
- 
- static bool gen_vvv(DisasContext *ctx, arg_vvv *a, gen_helper_gvec_3 *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvv_vl(ctx, a, 16, fn);
- }
- 
-@@ -99,7 +120,10 @@ static bool gen_vv_ptr_vl(DisasContext *ctx, arg_vv *a, uint32_t oprsz,
- static bool gen_vv_ptr(DisasContext *ctx, arg_vv *a,
-                        gen_helper_gvec_2_ptr *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vv_ptr_vl(ctx, a, 16, fn);
- }
- 
-@@ -114,7 +138,10 @@ static bool gen_vv_vl(DisasContext *ctx, arg_vv *a, uint32_t oprsz,
- 
- static bool gen_vv(DisasContext *ctx, arg_vv *a, gen_helper_gvec_2 *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vv_vl(ctx, a, 16, fn);
- }
- 
-@@ -130,7 +157,10 @@ static bool gen_vv_i_vl(DisasContext *ctx, arg_vv_i *a, uint32_t oprsz,
- 
- static bool gen_vv_i(DisasContext *ctx, arg_vv_i *a, gen_helper_gvec_2i *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vv_i_vl(ctx, a, 16, fn);
- }
- 
-@@ -140,7 +170,10 @@ static bool gen_cv(DisasContext *ctx, arg_cv *a,
-     TCGv_i32 vj = tcg_constant_i32(a->vj);
-     TCGv_i32 cd = tcg_constant_i32(a->cd);
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     func(cpu_env, cd, vj);
-     return true;
- }
-@@ -162,7 +195,10 @@ static bool gvec_vvv(DisasContext *ctx, arg_vvv *a, MemOp mop,
-                      void (*func)(unsigned, uint32_t, uint32_t,
-                                   uint32_t, uint32_t, uint32_t))
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_vvv_vl(ctx, a, 16, mop, func);
- }
- 
-@@ -184,7 +220,10 @@ static bool gvec_vv(DisasContext *ctx, arg_vv *a, MemOp mop,
-                     void (*func)(unsigned, uint32_t, uint32_t,
-                                  uint32_t, uint32_t))
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_vv_vl(ctx, a, 16, mop, func);
- }
- 
-@@ -204,7 +243,10 @@ static bool gvec_vv_i(DisasContext *ctx, arg_vv_i *a, MemOp mop,
-                       void (*func)(unsigned, uint32_t, uint32_t,
-                                    int64_t, uint32_t, uint32_t))
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_vv_i_vl(ctx, a, 16, mop, func);
- }
- 
-@@ -220,7 +262,10 @@ static bool gvec_subi_vl(DisasContext *ctx, arg_vv_i *a,
- 
- static bool gvec_subi(DisasContext *ctx, arg_vv_i *a, MemOp mop)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_subi_vl(ctx, a, 16, mop);
- }
- 
-@@ -238,7 +283,9 @@ static bool trans_v## NAME ##_q(DisasContext *ctx, arg_vvv *a) \
-         return false;                                          \
-     }                                                          \
-                                                                \
--    CHECK_SXE;                                                 \
-+    if (!check_vec(ctx, 16)) {                                 \
-+        return true;                                           \
-+    }                                                          \
-                                                                \
-     rh = tcg_temp_new_i64();                                   \
-     rl = tcg_temp_new_i64();                                   \
-@@ -3138,7 +3185,9 @@ static bool trans_vldi(DisasContext *ctx, arg_vldi *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     sel = (a->imm >> 12) & 0x1;
- 
-@@ -3168,7 +3217,9 @@ static bool trans_vandn_v(DisasContext *ctx, arg_vvv *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     vd_ofs = vec_full_offset(a->vd);
-     vj_ofs = vec_full_offset(a->vj);
-@@ -3795,7 +3846,9 @@ static bool do_cmp(DisasContext *ctx, arg_vvv *a, MemOp mop, TCGCond cond)
- {
-     uint32_t vd_ofs, vj_ofs, vk_ofs;
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     vd_ofs = vec_full_offset(a->vd);
-     vj_ofs = vec_full_offset(a->vj);
-@@ -3841,7 +3894,9 @@ static bool do_## NAME ##_s(DisasContext *ctx, arg_vv_i *a, MemOp mop) \
- {                                                                      \
-     uint32_t vd_ofs, vj_ofs;                                           \
-                                                                        \
--    CHECK_SXE;                                                         \
-+    if (!check_vec(ctx, 16)) {                                         \
-+        return true;                                                   \
-+    }                                                                  \
-                                                                        \
-     static const TCGOpcode vecop_list[] = {                            \
-         INDEX_op_cmp_vec, 0                                            \
-@@ -3890,7 +3945,9 @@ static bool do_## NAME ##_u(DisasContext *ctx, arg_vv_i *a, MemOp mop) \
- {                                                                      \
-     uint32_t vd_ofs, vj_ofs;                                           \
-                                                                        \
--    CHECK_SXE;                                                         \
-+    if (!check_vec(ctx, 16)) {                                         \
-+        return true;                                                   \
-+    }                                                                  \
-                                                                        \
-     static const TCGOpcode vecop_list[] = {                            \
-         INDEX_op_cmp_vec, 0                                            \
-@@ -3988,7 +4045,9 @@ static bool trans_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_s : gen_helper_vfcmp_c_s);
-     flags = get_fcmp_flags(a->fcond >> 1);
-@@ -4009,7 +4068,9 @@ static bool trans_vfcmp_cond_d(DisasContext *ctx, arg_vvv_fcond *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_d : gen_helper_vfcmp_c_d);
-     flags = get_fcmp_flags(a->fcond >> 1);
-@@ -4024,7 +4085,9 @@ static bool trans_vbitsel_v(DisasContext *ctx, arg_vvvv *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_gvec_bitsel(MO_64, vec_full_offset(a->vd), vec_full_offset(a->va),
-                         vec_full_offset(a->vk), vec_full_offset(a->vj),
-@@ -4050,7 +4113,9 @@ static bool trans_vbitseli_b(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_gvec_2i(vec_full_offset(a->vd), vec_full_offset(a->vj),
-                     16, ctx->vl/8, a->imm, &op);
-@@ -4073,7 +4138,10 @@ static bool trans_## NAME (DisasContext *ctx, arg_cv *a)                       \
-         return false;                                                          \
-     }                                                                          \
-                                                                                \
--    CHECK_SXE;                                                                 \
-+    if (!check_vec(ctx, 16)) {                                                 \
-+        return true;                                                           \
-+    }                                                                          \
-+                                                                               \
-     tcg_gen_or_i64(t1, al, ah);                                                \
-     tcg_gen_setcondi_i64(COND, t1, t1, 0);                                     \
-     tcg_gen_st8_tl(t1, cpu_env, offsetof(CPULoongArchState, cf[a->cd & 0x7])); \
-@@ -4101,7 +4169,10 @@ static bool trans_vinsgr2vr_b(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st8_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.B(a->imm)));
-     return true;
-@@ -4115,7 +4186,10 @@ static bool trans_vinsgr2vr_h(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st16_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.H(a->imm)));
-     return true;
-@@ -4129,7 +4203,10 @@ static bool trans_vinsgr2vr_w(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st32_i64(src, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vd].vreg.W(a->imm)));
-     return true;
-@@ -4143,7 +4220,10 @@ static bool trans_vinsgr2vr_d(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st_i64(src, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vd].vreg.D(a->imm)));
-     return true;
-@@ -4157,7 +4237,10 @@ static bool trans_vpickve2gr_b(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld8s_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
-@@ -4171,7 +4254,10 @@ static bool trans_vpickve2gr_h(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld16s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
-@@ -4185,7 +4271,10 @@ static bool trans_vpickve2gr_w(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld32s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
-@@ -4199,7 +4288,10 @@ static bool trans_vpickve2gr_d(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
-@@ -4213,7 +4305,10 @@ static bool trans_vpickve2gr_bu(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld8u_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
-@@ -4227,7 +4322,10 @@ static bool trans_vpickve2gr_hu(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld16u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
-@@ -4241,7 +4339,10 @@ static bool trans_vpickve2gr_wu(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld32u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
-@@ -4255,7 +4356,10 @@ static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
-@@ -4269,7 +4373,9 @@ static bool gvec_dup(DisasContext *ctx, arg_vr *a, MemOp mop)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd),
-                          16, ctx->vl/8, src);
-@@ -4287,7 +4393,10 @@ static bool trans_vreplvei_b(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_8,vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.B((a->imm))),
-@@ -4301,7 +4410,10 @@ static bool trans_vreplvei_h(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_16, vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.H((a->imm))),
-@@ -4314,7 +4426,10 @@ static bool trans_vreplvei_w(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_32, vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.W((a->imm))),
-@@ -4327,7 +4442,10 @@ static bool trans_vreplvei_d(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_64, vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.D((a->imm))),
-@@ -4346,7 +4464,9 @@ static bool gen_vreplve(DisasContext *ctx, arg_vvr *a, int vece, int bit,
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_andi_i64(t0, gpr_src(ctx, a->rk, EXT_NONE), (LSX_LEN/bit) -1);
-     tcg_gen_shli_i64(t0, t0, vece);
-@@ -4376,7 +4496,9 @@ static bool trans_vbsll_v(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     desthigh = tcg_temp_new_i64();
-     destlow = tcg_temp_new_i64();
-@@ -4410,7 +4532,9 @@ static bool trans_vbsrl_v(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     desthigh = tcg_temp_new_i64();
-     destlow = tcg_temp_new_i64();
-@@ -4488,7 +4612,9 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     addr = gpr_src(ctx, a->rj, EXT_NONE);
-     val = tcg_temp_new_i128();
-@@ -4515,7 +4641,9 @@ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     addr = gpr_src(ctx, a->rj, EXT_NONE);
-     val = tcg_temp_new_i128();
-@@ -4542,7 +4670,9 @@ static bool trans_vldx(DisasContext *ctx, arg_vrr *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     src2 = gpr_src(ctx, a->rk, EXT_NONE);
-@@ -4569,7 +4699,9 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     src2 = gpr_src(ctx, a->rk, EXT_NONE);
-@@ -4596,7 +4728,9 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
-         return false;                                                     \
-     }                                                                     \
-                                                                           \
--    CHECK_SXE;                                                            \
-+    if (!check_vec(ctx, 16)) {                                            \
-+        return true;                                                      \
-+    }                                                                     \
-                                                                           \
-     addr = gpr_src(ctx, a->rj, EXT_NONE);                                 \
-     val = tcg_temp_new_i64();                                             \
-@@ -4624,7 +4758,9 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
-         return false;                                                        \
-     }                                                                        \
-                                                                              \
--    CHECK_SXE;                                                               \
-+    if (!check_vec(ctx, 16)) {                                               \
-+        return true;                                                         \
-+    }                                                                        \
-                                                                              \
-     addr = gpr_src(ctx, a->rj, EXT_NONE);                                    \
-     val = tcg_temp_new_i64();                                                \
--- 
-2.39.1
+> +    -device z14-s390x-cpu,core-id=19,entitlement=high \
+> +    -device z14-s390x-cpu,core-id=11,entitlement=low \
+> +    -device z14-s390x-cpu,core-id=112,entitlement=high \
+> +   ...
+...
+> diff --git a/docs/system/s390x/cpu-topology.rst b/docs/system/s390x/cpu-topology.rst
+> new file mode 100644
+> index 0000000000..78b98f978a
+> --- /dev/null
+> +++ b/docs/system/s390x/cpu-topology.rst
+...
+> +Examples
+> +++++++++
+> +
+> +In the following machine we define 8 sockets with 4 cores each.
+> +
+> +.. code-block:: bash
+> +
+> +  $ qemu-system-s390x -m 2G \
+> +    -cpu gen16b,ctop=on \
+> +    -smp cpus=5,sockets=8,cores=4,maxcpus=32 \
+> +    -device host-s390x-cpu,core-id=14 \
+> +
+> +A new CPUs can be plugged using the device_add hmp command as before:
+> +
+> +.. code-block:: bash
+> +
+> +  (qemu) device_add gen16b-s390x-cpu,core-id=9
+> +
+> +The core-id defines the placement of the core in the topology by
+> +starting with core 0 in socket 0 up to maxcpus.
+> +
+> +In the example above:
+> +
+> +* There are 5 CPUs provided to the guest with the ``-smp`` command line
+> +  They will take the core-ids 0,1,2,3,4
+> +  As we have 4 cores in a socket, we have 4 CPUs provided
+> +  to the guest in socket 0, with core-ids 0,1,2,3.
+> +  The last cpu, with core-id 4, will be on socket 1.
+
+I'd suggest to write "cpu" with capital letters for consistency.
+
+Anyway:
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
