@@ -2,78 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147A979764F
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 18:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5CD7976BF
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 18:16:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeHUA-0000zh-1X; Thu, 07 Sep 2023 12:04:02 -0400
+	id 1qeHfA-0007fk-Ch; Thu, 07 Sep 2023 12:15:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeHU8-0000z1-LZ
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 12:04:00 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeHTz-00022H-Mq
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 12:04:00 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31c6d17aec4so1073165f8f.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 09:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694102630; x=1694707430; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=cSrp0+T26ckOWOwCscXY14LUMBYTRcsC4SLHwpwRt8Y=;
- b=YBkWMyExSaf5RyMzrDlqzitTrL0LjIpn9luKJOiYP62O3WnQNsF+RmR4bF13CFITXH
- X7TQWgHbCZ0hh1ek0V9zAmVBsV2VnGZjT2pRtbWf8cZwI+6nWkM2HkaIgGk4BWIyMh6/
- /IfHCXmho40sOGo2z2Flz+V9xWKpVHf4yV9BBrHAOv2Y9TLG+bGT6XJMCeRPoVH7koM/
- mZW8k1QJyh9gG0TnZIGKIlpeUEBsWeXxJ10LA5uYdI/16chHJAnsvnQgkJwJlzf5mo70
- 7hrU/3Ev5KZ/yKswW902kUFcLCy7CAQsODnyaGCyyi4qefiPK3Kj/50JhmZxkJROAJNh
- 8+aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694102630; x=1694707430;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cSrp0+T26ckOWOwCscXY14LUMBYTRcsC4SLHwpwRt8Y=;
- b=KFyVyiCiuudnT3YRrnusgTXgzCoRjeGUIEP1Kpk239/tyl7jcFW3V62DtzKP2uFiiM
- INbVFEp0cshiCy0yG3/R7idxUTYBbtTwaBMwxJecDZPIE1FtsTHZwNvj8ZDKcYU7Q2nC
- L1mX7DNzIp7w4w0EFzaY5IScSnqwBnVwMd1Y1AniIYF81Vo0hEcm2US0+A7l5JVu3xnT
- iMhBLlhoP9wkThPmgWxCHRljwoE9hOMGAzMtvc8DzLTj17ARxkdDJb4zKFtBAoiax6h8
- 8zu+J7rKaenaUuC2RGF+hU9n5omE/k95ztffGjb5JNpigrOEEl2i3nf5UOf1Ng/YqAqe
- zmPw==
-X-Gm-Message-State: AOJu0Yw8UVV50bugtuOKmGiKnGP8qHnPOnBch2F9ost0Y2dDLKMu3Aaj
- DtSlviVgmmdKc4oKiIFmh7BU6Q==
-X-Google-Smtp-Source: AGHT+IEhLhnqc0mxRZxiCPbhWe4i42RyHD8vrCDX60wRHbLP5M/iG1tjiOW/2r/LCLgvKD/4jm8r/g==
-X-Received: by 2002:a5d:6b51:0:b0:319:841c:ae7a with SMTP id
- x17-20020a5d6b51000000b00319841cae7amr5160271wrw.41.1694102630387; 
- Thu, 07 Sep 2023 09:03:50 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- d1-20020adfa401000000b0031980294e9fsm20256241wra.116.2023.09.07.09.03.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 09:03:49 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 14/14] target/arm: Enable FEAT_MOPS for CPU 'max'
-Date: Thu,  7 Sep 2023 17:03:40 +0100
-Message-Id: <20230907160340.260094-15-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230907160340.260094-1-peter.maydell@linaro.org>
-References: <20230907160340.260094-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qeHf8-0007fH-0D; Thu, 07 Sep 2023 12:15:22 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qeHf5-0006lA-9K; Thu, 07 Sep 2023 12:15:21 -0400
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 387EEZJU012188; Thu, 7 Sep 2023 16:12:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=date : from : to :
+ cc : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=qcppdkim1; bh=qRbYx2iqphiH2TpnRUdKhiIY1QPLiz2ghwSFbKB7rtw=;
+ b=NmuJsGzrgcaL4kKZqUmFBl7MhVFSJcacruF2KLkD0x+TR9r8a890BJgyPVJFMlZ/iS85
+ Zks7fb2ZpDUGZpEVfnx3W/nFJUgGEKy0jhnxYlrsgnhLjq/NfF3dWhRVucLN5jMiZpq2
+ HWljWqWQmMMRMQFU7MDslHoC5TPMi2+rOQyiVQaJFTPDwYI616qPV7bCtbD5oYL3zlbz
+ WBuVEQwMbQu1np1mHyGKWuE9ra3wOhEF/FhHao2Tf0p/TxnxCeJuIgSqUZy+MFEsgNCq
+ vzOaovtW+HfshvjuENy6wNSNFOAZ7gCmyKX3FTECGdNLWZvWLylB7UiVUS88pDWqHunV FA== 
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sxxbbjcsy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 07 Sep 2023 16:12:50 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
+ [10.45.79.139])
+ by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 387GCmVA010116
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 7 Sep 2023 16:12:48 GMT
+Received: from qc-i7.hemma.eciton.net (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Thu, 7 Sep 2023 09:12:37 -0700
+Date: Thu, 7 Sep 2023 17:12:33 +0100
+From: Leif Lindholm <quic_llindhol@quicinc.com>
+To: Gavin Shan <gshan@redhat.com>
+CC: <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>,
+ <qemu-ppc@nongnu.org>, <qemu-s390x@nongnu.org>, <imp@bsdimp.com>,
+ <kevans@freebsd.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>,
+ <wangyanan55@huawei.com>, <peter.maydell@linaro.org>,
+ <b.galvani@gmail.com>, <strahinja.p.jankovic@gmail.com>,
+ <sundeep.lkml@gmail.com>, <kfting@nuvoton.com>, <wuhaotsh@google.com>,
+ <nieklinnenbank@gmail.com>, <rad@semihalf.com>,
+ <marcin.juszkiewicz@linaro.org>, <laurent@vivier.eu>,
+ <vijai@behindbytes.com>, <palmer@dabbelt.com>,
+ <alistair.francis@wdc.com>, <bin.meng@windriver.com>,
+ <liweiwei@iscas.ac.cn>, <dbarboza@ventanamicro.com>,
+ <zhiwei_liu@linux.alibaba.com>, <richard.henderson@linaro.org>,
+ <mrolnik@gmail.com>, <edgar.iglesias@gmail.com>, <bcain@quicinc.com>,
+ <gaosong@loongson.cn>, <yangxiaojuan@loongson.cn>,
+ <aurelien@aurel32.net>, <jiaxun.yang@flygoat.com>,
+ <aleksandar.rikalo@syrmia.com>, <chenhuacai@kernel.org>,
+ <crwulff@gmail.com>, <marex@denx.de>, <shorne@gmail.com>,
+ <clg@kaod.org>, <david@gibson.dropbear.id.au>, <groug@kaod.org>,
+ <npiggin@gmail.com>, <ysato@users.sourceforge.jp>, <david@redhat.com>,
+ <thuth@redhat.com>, <iii@linux.ibm.com>,
+ <mark.cave-ayland@ilande.co.uk>, <atar4qemu@gmail.com>,
+ <kbastian@mail.uni-paderborn.de>, <jcmvbkbc@gmail.com>,
+ <pbonzini@redhat.com>, <imammedo@redhat.com>, <shan.gavin@gmail.com>
+Subject: Re: [PATCH v3 30/32] hw/arm/sbsa-ref: Check CPU type in
+ machine_run_board_init()
+Message-ID: <ZPn2cYH7F3nr+fkh@qc-i7.hemma.eciton.net>
+References: <20230907003553.1636896-1-gshan@redhat.com>
+ <20230907003553.1636896-31-gshan@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230907003553.1636896-31-gshan@redhat.com>
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: 0O5hPlhy_KEh1MkJsqNiG1L1hT_7N0t8
+X-Proofpoint-GUID: 0O5hPlhy_KEh1MkJsqNiG1L1hT_7N0t8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-07_08,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ priorityscore=1501 mlxlogscore=999 clxscore=1011 bulkscore=0
+ suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 phishscore=0
+ lowpriorityscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2309070144
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_llindhol@quicinc.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,43 +118,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_MOPS on the AArch64 'max' CPU, and add it to
-the list of features we implement.
+On Thu, Sep 07, 2023 at 10:35:51 +1000, Gavin Shan wrote:
+> Set mc->valid_cpu_types so that the user specified CPU type can
+> be validated in machine_run_board_init(). We needn't to do it
+> by ourselves.
+> 
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu64.c        | 4 ++++
- 2 files changed, 5 insertions(+)
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 2e6a7c8961e..8ce2f714517 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -54,6 +54,7 @@ the following architecture extensions:
- - FEAT_LSE (Large System Extensions)
- - FEAT_LSE2 (Large System Extensions v2)
- - FEAT_LVA (Large Virtual Address space)
-+- FEAT_MOPS (Standardization of memory operations)
- - FEAT_MTE (Memory Tagging Extension)
- - FEAT_MTE2 (Memory Tagging Extension)
- - FEAT_MTE3 (MTE Asymmetric Fault Handling)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 0f8972950d6..0ccd759a2c4 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -814,6 +814,10 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64ISAR1, I8MM, 1);     /* FEAT_I8MM */
-     cpu->isar.id_aa64isar1 = t;
- 
-+    t = cpu->isar.id_aa64isar2;
-+    t = FIELD_DP64(t, ID_AA64ISAR2, MOPS, 1);     /* FEAT_MOPS */
-+    cpu->isar.id_aa64isar2 = t;
-+
-     t = cpu->isar.id_aa64pfr0;
-     t = FIELD_DP64(t, ID_AA64PFR0, FP, 1);        /* FEAT_FP16 */
-     t = FIELD_DP64(t, ID_AA64PFR0, ADVSIMD, 1);   /* FEAT_FP16 */
--- 
-2.34.1
-
+> ---
+>  hw/arm/sbsa-ref.c | 21 +++------------------
+>  1 file changed, 3 insertions(+), 18 deletions(-)
+> 
+> diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
+> index bc89eb4806..f24be53ea2 100644
+> --- a/hw/arm/sbsa-ref.c
+> +++ b/hw/arm/sbsa-ref.c
+> @@ -149,26 +149,15 @@ static const int sbsa_ref_irqmap[] = {
+>      [SBSA_GWDT_WS0] = 16,
+>  };
+>  
+> -static const char * const valid_cpus[] = {
+> +static const char * const valid_cpu_types[] = {
+>      ARM_CPU_TYPE_NAME("cortex-a57"),
+>      ARM_CPU_TYPE_NAME("cortex-a72"),
+>      ARM_CPU_TYPE_NAME("neoverse-n1"),
+>      ARM_CPU_TYPE_NAME("neoverse-v1"),
+>      ARM_CPU_TYPE_NAME("max"),
+> +    NULL,
+>  };
+>  
+> -static bool cpu_type_valid(const char *cpu)
+> -{
+> -    int i;
+> -
+> -    for (i = 0; i < ARRAY_SIZE(valid_cpus); i++) {
+> -        if (strcmp(cpu, valid_cpus[i]) == 0) {
+> -            return true;
+> -        }
+> -    }
+> -    return false;
+> -}
+> -
+>  static uint64_t sbsa_ref_cpu_mp_affinity(SBSAMachineState *sms, int idx)
+>  {
+>      uint8_t clustersz = ARM_DEFAULT_CPUS_PER_CLUSTER;
+> @@ -730,11 +719,6 @@ static void sbsa_ref_init(MachineState *machine)
+>      const CPUArchIdList *possible_cpus;
+>      int n, sbsa_max_cpus;
+>  
+> -    if (!cpu_type_valid(machine->cpu_type)) {
+> -        error_report("sbsa-ref: CPU type %s not supported", machine->cpu_type);
+> -        exit(1);
+> -    }
+> -
+>      if (kvm_enabled()) {
+>          error_report("sbsa-ref: KVM is not supported for this machine");
+>          exit(1);
+> @@ -899,6 +883,7 @@ static void sbsa_ref_class_init(ObjectClass *oc, void *data)
+>      mc->init = sbsa_ref_init;
+>      mc->desc = "QEMU 'SBSA Reference' ARM Virtual Machine";
+>      mc->default_cpu_type = ARM_CPU_TYPE_NAME("neoverse-n1");
+> +    mc->valid_cpu_types = valid_cpu_types;
+>      mc->max_cpus = 512;
+>      mc->pci_allow_0_address = true;
+>      mc->minimum_page_bits = 12;
+> -- 
+> 2.41.0
+> 
 
