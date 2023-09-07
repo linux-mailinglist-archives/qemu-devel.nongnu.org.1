@@ -2,107 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303A979717F
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 12:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A967779718E
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 12:49:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeCMA-0006du-GG; Thu, 07 Sep 2023 06:35:26 -0400
+	id 1qeCYQ-00078m-UN; Thu, 07 Sep 2023 06:48:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qeCM7-0006dh-O7
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 06:35:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qeCM5-0000gq-Ms
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 06:35:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694082909;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=azyorQxjECKYWSy+Mt2CU3t9r6NYRJhmlonGBrUGhx8=;
- b=LDaampkRgZE/ETzqRulWLwBwxys3OMKfimXhWZR6D2vruAAafZXdMYfd4tmcOF6/Vto5o/
- Z3lgcifofVZkhVTQHm8kDz4CDeTsU07527ONmLabDMvcG4bR/YfqFsC0tTLuWTb8sibb48
- Er0dMWl7mLMCiVeLSbsISXyRKOUy2KM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-149-W4vazGcFOpewevNuLKTxKQ-1; Thu, 07 Sep 2023 06:35:08 -0400
-X-MC-Unique: W4vazGcFOpewevNuLKTxKQ-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-401e1c55ddcso6175815e9.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 03:35:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeCYP-00078e-H2
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 06:48:05 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeCYN-0004Mx-9K
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 06:48:05 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-99de884ad25so98687466b.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 03:48:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694083680; x=1694688480; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fTylc0K7/+vt52knuYypbLAgZsxAiqt3kM0KK8AbNGE=;
+ b=JkcPxSHqfefKP0+cfPJK2u9Kx30u3eeYuVW8xKkEOzxNJh69Chaf8mwhrNk9SpsR0H
+ 2xVaQmfeiXtRpdq+JASeek0EOtxxhQ5irtbaL6K/2oja78Xj0DHxjZ2mkz507n5DteGW
+ 7qKwajJmquCRvbqV34T6cnHE5mwE7l3YuIx/kZQJQGZoj7mAmjYV8ZtvXpZzGiAn+xx7
+ 6HfOFDQOfrkEERRAAMcVf8+nAnpzElBEPoawfuXEKvnKVLcjGr5ihCtTtv8zbXYhWyu4
+ yh/uzdjV/Q/qOTH7G09AjS/dRsbCdX2p7ql/fchnhZta3pH+pFWtN14FVxxjs6ssmjxD
+ HIHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694082907; x=1694687707;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=azyorQxjECKYWSy+Mt2CU3t9r6NYRJhmlonGBrUGhx8=;
- b=F0OffK4+ho3ufQ9mDzFW6AArBfV0xnKyaVSPDxCp4rL6CqbQJYjG1YIrPUyDr0ETag
- KRfqNblOk0iuunVQzncjLLIdbKDsCJacPc/ed+T4SnbJwICIFero13DecSZrWmPR/luK
- 09VQnrVqhVjRjoFcF/TTbOF1dZzguLV5haIXIJm/khLYk1WSQIKLtP2M5RKzw4XAUKSz
- /2GnsdyzfyGUalW7TmAggFX3cY0JsTmevpS00o49NmWnfIio0Jn7mScoqRHksm5THt2q
- h6kMY5AtY8hbzsZo5u3o5R+z2k+qO8ABSOeCIBUKLlB5MK+4zFjc0AIb/FwZAEgb+U3e
- Uvtg==
-X-Gm-Message-State: AOJu0YztCN4iQAZM0Boe+JGqNZp5ZWbr04HbNVp7gYGYQUXRbJMOUtG+
- Dc2dg+9VeYk9yC7kND6yrH/36GrJgqNlISYmPdYArbHgYIMeG6Vtrcg7pQtJtuMbs+CVB2cwRCn
- mnumWJ6HY9wrrLn4=
-X-Received: by 2002:a05:600c:2409:b0:3fa:97ad:2ba5 with SMTP id
- 9-20020a05600c240900b003fa97ad2ba5mr4710627wmp.31.1694082906858; 
- Thu, 07 Sep 2023 03:35:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEZ4FYl1Ws79+OxjgwI+o3NQWaa2nmnBSIBVIjoY535d3+fQ39lU68Tm6Q8aq0ITwaebdO2Gw==
-X-Received: by 2002:a05:600c:2409:b0:3fa:97ad:2ba5 with SMTP id
- 9-20020a05600c240900b003fa97ad2ba5mr4710594wmp.31.1694082906430; 
- Thu, 07 Sep 2023 03:35:06 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c711:cb00:d8c3:e672:87cb:e4d9?
- (p200300cbc711cb00d8c3e67287cbe4d9.dip0.t-ipconnect.de.
- [2003:cb:c711:cb00:d8c3:e672:87cb:e4d9])
- by smtp.gmail.com with ESMTPSA id
- b8-20020a5d4d88000000b003179d7ed4f3sm22932127wru.12.2023.09.07.03.35.05
+ d=1e100.net; s=20221208; t=1694083680; x=1694688480;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fTylc0K7/+vt52knuYypbLAgZsxAiqt3kM0KK8AbNGE=;
+ b=TRx5PAzymzZrtLxZIRY7lsHDSmEHFi3yIaz0lPynnW3iMdzxrSQArvr37Uk5fV5TzL
+ +wn/mcuoy77hZfW6kKNbfbDWgvSnAPamZw/q6X1AI3pNcnBy2y3/6c0R1+qrMIXKCmJA
+ RTC00TityMvzXW3cl9hc1/NBP65UQXBXSBb1e90bSjgy+MIOUAyLRTWP+wLoqSu9dPQv
+ liT137rfl8Ewq5rkNzp1eQ4dbJetflT5wEDgyz4snu5ytLxsjAyCU5dfRH59ZmkMjF32
+ /wA+iiOEnrukSSST+2XfzYrjHEjcdjb8d4z+sE/1WNZGMCeTVtYeRS6uRdjWlwZ4oTAB
+ unww==
+X-Gm-Message-State: AOJu0YyZmc8ixiYYrDtpIbUq/A2AOONim4yWqPgafJyWjil1vJo11wII
+ Gr+rxA2n/34hWKZCe6Lmq1eU7w==
+X-Google-Smtp-Source: AGHT+IFVZqf1vaPzh06M1B1nEiWv+ghKpia8cj1TkPIx6CJFigHW9ybZgBSq/mNK8EhCFTgGp/pnpA==
+X-Received: by 2002:a17:907:a061:b0:9a5:846d:d829 with SMTP id
+ ia1-20020a170907a06100b009a5846dd829mr4221583ejc.18.1694083680147; 
+ Thu, 07 Sep 2023 03:48:00 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-222-226.abo.bbox.fr.
+ [176.131.222.226]) by smtp.gmail.com with ESMTPSA id
+ rs10-20020a170907036a00b00992b510089asm10306708ejb.84.2023.09.07.03.47.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 03:35:06 -0700 (PDT)
-Message-ID: <c9e9d345-6749-9c2c-a829-35839872f0a0@redhat.com>
-Date: Thu, 7 Sep 2023 12:35:04 +0200
+ Thu, 07 Sep 2023 03:47:59 -0700 (PDT)
+Message-ID: <7459b394-b136-e892-a19a-38b08dc1a3a0@linaro.org>
+Date: Thu, 7 Sep 2023 12:47:58 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 07/11] softmmu/physmem: Never return directories from
- file_ram_open()
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] contrib/plugins: remove -soname argument
 Content-Language: en-US
-To: Mario Casquero <mcasquer@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Thiner Logoer <logoerthiner1@163.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- Jagannathan Raman <jag.raman@oracle.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, Greg Kurz <groug@kaod.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <20230906120503.359863-1-david@redhat.com>
- <20230906120503.359863-8-david@redhat.com>
- <CAMXpfWu_AC87EkAHT-H5LaYNSEHsbjMfEN2PXrX5fN=QFcB+0A@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <CAMXpfWu_AC87EkAHT-H5LaYNSEHsbjMfEN2PXrX5fN=QFcB+0A@mail.gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+References: <20230907101811.469236-1-pbonzini@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230907101811.469236-1-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,14 +92,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07.09.23 12:31, Mario Casquero wrote:
-> Tested-by: Mario Casquero<mcasquer@redhat.com>
+On 7/9/23 12:18, Paolo Bonzini wrote:
+> -soname is not needed for runtime-loaded modules.  For example, Meson says:
+> 
+>              if not isinstance(target, build.SharedModule) or target.force_soname:
+>                  # Add -Wl,-soname arguments on Linux, -install_name on OS X
+>                  commands += linker.get_soname_args(
+>                      self.environment, target.prefix, target.name, target.suffix,
+>                      target.soversion, target.darwin_versions)
+> 
+> (force_soname is set is shared modules are linked into a build target, which is not
+> the case here.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   contrib/plugins/Makefile | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
+> index b2b9db9f51a..db1bd04dfa6 100644
+> --- a/contrib/plugins/Makefile
+> +++ b/contrib/plugins/Makefile
+> @@ -37,7 +37,7 @@ all: $(SONAMES)
+>   	$(CC) $(CFLAGS) -c -o $@ $<
+>   
+>   lib%.so: %.o
+> -	$(CC) -shared -Wl,-soname,$@ -o $@ $^ $(LDLIBS)
+> +	$(CC) -shared -o $@ $^ $(LDLIBS)
 
-Thanks Mario!
+This fixes on Darwin:
 
--- 
-Cheers,
+ld: unknown option: -soname
+clang: error: linker command failed with exit code 1 (use -v to see 
+invocation)
+make: *** [plugins] Error 2
 
-David / dhildenb
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
