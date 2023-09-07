@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AF1796ED0
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 04:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D43796EDA
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 04:28:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe4Sg-0003VN-RP; Wed, 06 Sep 2023 22:09:38 -0400
+	id 1qe4iw-0006WX-7R; Wed, 06 Sep 2023 22:26:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe4Se-0003Ud-Qn; Wed, 06 Sep 2023 22:09:36 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe4iu-0006WJ-Rf; Wed, 06 Sep 2023 22:26:24 -0400
+Received: from mail-vk1-xa31.google.com ([2607:f8b0:4864:20::a31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qe4Sc-0000ht-7H; Wed, 06 Sep 2023 22:09:36 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-68a3e271491so406358b3a.0; 
- Wed, 06 Sep 2023 19:09:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qe4is-0006Q4-11; Wed, 06 Sep 2023 22:26:24 -0400
+Received: by mail-vk1-xa31.google.com with SMTP id
+ 71dfb90a1353d-48d0c7bfc49so264463e0c.0; 
+ Wed, 06 Sep 2023 19:26:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694052572; x=1694657372; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ d=gmail.com; s=20221208; t=1694053580; x=1694658380; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aid1PRyiwrW4kPLa/3ek3hR4o+lDM2ytCwfCh+lJ/DI=;
- b=BgubbKTnqv1Y1AIuPVdYlbmou8pNAJg8itpjRvfeAStr0rXA3puxRFS4y09LDuk8Xu
- IiVNENJTsqSFhZ2vmTG/tQeZf7IAn+elMQ93DQmeGT4pEeEPMInMh/zZyefJrv0pn2T1
- xiqCuIjcwEOsnSb62KAr3gCcocVYDZQSEB/Qq+b0wooCR+yCSuPM4dy39rsI/krF4jp6
- aEIGizKuFzdWUlPpOH8bVNqMYDDQk0FiLxqXc35znXcX383Sh6jWwaQHnSZJKX7y5Pk3
- FRJGYcWDGqfDjHU+ZTV5IQbVKWitRSNy6jXQvRJfYLyp/9SCM46Y9Rmk0dUWdM8fEICJ
- 9bgA==
+ bh=juxRsCDNkFTEVk1uQaqw1S8oUpN8LdE7T5F+iUXxlx4=;
+ b=B8rA56CN2traCKO0eW+oSzIDDQNasQMHfMJKrg4Bc3KrdEN41/KvP+pL6DqhtKx3KS
+ rfD6yMeNgfs2UNbUh/u24lcR9i5zZz6NfEQMJ5VM6Mr77zDvpuwj1m3Rr1uKJeChqox/
+ +11rfVfoDK51ss2DjlnVfiGCj5D85MHVfitPC5jE/1/ttXrp1ojc8fg8Tf4GjCU4cjam
+ 1ZP7YXZKA+ShomlSmam36R2NThJc2Ms8XWZ2u6M66kWPYca5vAGfiyJZzLsbOpOJVoLi
+ n0RWOkonRztL/sGEZwVcaDa2pV2YWrc8wujg8q3o3r0aNb3DnB842CZAO21eNiEpPyEh
+ 0Jwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694052572; x=1694657372;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=aid1PRyiwrW4kPLa/3ek3hR4o+lDM2ytCwfCh+lJ/DI=;
- b=Pny2BeHUqblH+bQxZvHDExYUXeCVZ/mv/u65JxP4q7V8nmfj8RSCuHzg9odxV05O1f
- u9j7thNeOeXQ2QzhLOIB5LiR81plJTBS2SzqKCamLTgfcj0WtBVW/jGYP6RFC2qsmH3d
- yxgX4lx54NQIY4hLUkp8z/5HSY2sWLpq79wFl6if6+SJgoVcX4fnfAmtsCEc0T72ahpL
- 5AK5FGdSlKiMzzvzjNdVOZutIIuUp3Z79bsywyRv+jVBQGvqsZlcsXPuSbHf+AT2+pun
- yWnxkmPLyl7qI20LgIkW3hZ/NCPJRFoAGrtLjsJnsuZSB5j6E8VXTD+DLomYlWbzZ1Bt
- 80aw==
-X-Gm-Message-State: AOJu0YxB4qaFv5RW/DnYJi10+tKygpU2zLJfgpkiufUZZLPiyPdIVUAB
- ubFORp+9YrXFo8sN1KM8gRk=
-X-Google-Smtp-Source: AGHT+IHN/rVa4BBby5l5aXT+WAC8jiIg/IGZhcs19U49x40Y6sEBo2TbUeRHBoYAWqDH9FyIZXJwZg==
-X-Received: by 2002:a62:f24c:0:b0:68e:30db:ee43 with SMTP id
- y12-20020a62f24c000000b0068e30dbee43mr3125859pfl.21.1694052572120; 
- Wed, 06 Sep 2023 19:09:32 -0700 (PDT)
-Received: from localhost (193-116-105-24.tpgi.com.au. [193.116.105.24])
- by smtp.gmail.com with ESMTPSA id
- j15-20020aa78d0f000000b00688435a9915sm11386626pfe.189.2023.09.06.19.09.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 19:09:31 -0700 (PDT)
-Mime-Version: 1.0
+ d=1e100.net; s=20221208; t=1694053580; x=1694658380;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=juxRsCDNkFTEVk1uQaqw1S8oUpN8LdE7T5F+iUXxlx4=;
+ b=HHZQCcH4LdN5il67XljZJDDl/ud1u0At44rJ7SsTkRlSfkKUytrB87JZ0sf8WH8Tdz
+ Uat78PaGn2KvjCAnhNLBpvt5QcpmGmwUo1OBN23nWENai1Bnwikbk4g+4uljFomJy+9o
+ LWZ12DTRwTucUyobqFhAUxqZYb5ffnKFwKJjB/e/GgZpgG8O9ojkERc41gvvQxqEQpNB
+ 0+aedBAQx/ePuCS0bWVp5189I37lID1ZB+yiwr1sETjon6RNzpoaDqyEM2JvXyhuA7FL
+ IZrRHI2tgzSN2aqNW8nHaRtc7RsFvduJAhpibxaz6r2h7e6EDLnREUC0X8a3huak2m6r
+ yznA==
+X-Gm-Message-State: AOJu0YzlDz54kz+2zH/1hVaEmfdgYbEsqGjjRAVdeWvwZOk2PdPvER6a
+ pTgVRlQkDm82dwUOxv39Cuzups6Ba/qLdWWryfo=
+X-Google-Smtp-Source: AGHT+IHfIpXHrha2VGr3FO1amMbQZxs/mcM2jDW1EPczkpGnWuP759UjeH1XPcKFjFmnjkQDpTm5Btwjty7gsPzPzLg=
+X-Received: by 2002:a05:6122:250d:b0:48d:969:af8b with SMTP id
+ cl13-20020a056122250d00b0048d0969af8bmr1187798vkb.1.1694053579751; Wed, 06
+ Sep 2023 19:26:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230726120706.335340-2-ajones@ventanamicro.com>
+In-Reply-To: <20230726120706.335340-2-ajones@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 7 Sep 2023 12:25:52 +1000
+Message-ID: <CAKmqyKNobj=Lqvrv8epQdqA1YX5DF_zgOhpZruc9FgdJHvoYTw@mail.gmail.com>
+Subject: Re: [PATCH] docs/devel: Add cross-compiling doc
+To: Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ palmer@dabbelt.com, bin.meng@windriver.com, peter.maydell@linaro.org, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Sep 2023 12:09:26 +1000
-Message-Id: <CVCBILCCQQKB.2L31Z17STQ298@wheely>
-Cc: <qemu-devel@nongnu.org>, <mikey@neuling.org>, <vaibhav@linux.ibm.com>,
- <jniethe5@gmail.com>, <sbhat@linux.ibm.com>, <kconsul@linux.vnet.ibm.com>
-Subject: Re: [PATCH RESEND 07/15] ppc: spapr: Implement nested PAPR hcall -
- H_GUEST_SET_CAPABILITIES
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Harsh Prateek Bora" <harshpb@linux.ibm.com>, <danielhb413@gmail.com>,
- <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230906043333.448244-1-harshpb@linux.ibm.com>
- <20230906043333.448244-8-harshpb@linux.ibm.com>
-In-Reply-To: <20230906043333.448244-8-harshpb@linux.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a31;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa31.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,128 +87,275 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
-> This patch implements nested PAPR hcall H_GUEST_SET_CAPABILITIES.
-> This is used by L1 to set capabilities of the nested guest being
-> created. The capabilities being set are subset of the capabilities
-> returned from the previous call to H_GUEST_GET_CAPABILITIES hcall.
-> Currently, it only supports P9/P10 capability check through PVR.
+On Wed, Jul 26, 2023 at 10:08=E2=80=AFPM Andrew Jones <ajones@ventanamicro.=
+com> wrote:
 >
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Add instructions for how to cross-compile QEMU for RISC-V. The
+> file is named generically because there's no reason not to collect
+> other architectures steps into the same file, especially because
+> several subsections like those for cross-compiling QEMU dependencies
+> using meson and a cross-file could be shared. Additionally, other
+> approaches to creating sysroots, such as with debootstrap, may be
+> documented in this file in the future.
+>
+> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
 > ---
->  hw/ppc/spapr.c                |  1 +
->  hw/ppc/spapr_nested.c         | 46 +++++++++++++++++++++++++++++++++++
->  include/hw/ppc/spapr_nested.h |  3 +++
->  3 files changed, 50 insertions(+)
+>  docs/devel/cross-compiling.rst | 221 +++++++++++++++++++++++++++++++++
+>  1 file changed, 221 insertions(+)
+>  create mode 100644 docs/devel/cross-compiling.rst
 >
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index cbab7a825f..7c6f6ee25d 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -3443,6 +3443,7 @@ static void spapr_instance_init(Object *obj)
->          "Host serial number to advertise in guest device tree");
->      /* Nested */
->      spapr->nested.api =3D 0;
-> +    spapr->nested.capabilities_set =3D false;
-
-I would actually think about moving spapr->nested init into
-spapr_nested.c.
-
->  }
-> =20
->  static void spapr_machine_finalizefn(Object *obj)
-> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-> index 37f3a49be2..9af65f257f 100644
-> --- a/hw/ppc/spapr_nested.c
-> +++ b/hw/ppc/spapr_nested.c
-> @@ -399,6 +399,51 @@ static target_ulong h_guest_get_capabilities(PowerPC=
-CPU *cpu,
->      return H_SUCCESS;
->  }
-> =20
-> +static target_ulong h_guest_set_capabilities(PowerPCCPU *cpu,
-> +                                             SpaprMachineState *spapr,
-> +                                             target_ulong opcode,
-> +                                              target_ulong *args)
-> +{
-> +    CPUPPCState *env =3D &cpu->env;
-> +    target_ulong flags =3D args[0];
-> +    target_ulong capabilities =3D args[1];
+> diff --git a/docs/devel/cross-compiling.rst b/docs/devel/cross-compiling.=
+rst
+> new file mode 100644
+> index 000000000000..1b988ba54e4c
+> --- /dev/null
+> +++ b/docs/devel/cross-compiling.rst
+> @@ -0,0 +1,221 @@
+> +.. SPDX-License-Identifier: GPL-2.0-or-later
 > +
-> +    if (flags) { /* don't handle any flags capabilities for now */
-> +        return H_PARAMETER;
-> +    }
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +Cross-compiling QEMU
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 > +
+> +Cross-compiling QEMU first requires the preparation of a cross-toolchain
+> +and the cross-compiling of QEMU's dependencies. While the steps will be
+> +similar across architectures, each architecture will have its own specif=
+ic
+> +recommendations. This document collects architecture-specific procedures
+> +and hints that may be used to cross-compile QEMU, where typically the ho=
+st
+> +environment is x86.
 > +
-
-May need to do a pass over whitespace.
-
-> +    /* isn't supported */
-> +    if (capabilities & H_GUEST_CAPABILITIES_COPY_MEM) {
-> +        env->gpr[4] =3D 0;
-> +        return H_P2;
-> +    }
+> +RISC-V
+> +=3D=3D=3D=3D=3D=3D
 > +
-> +    if ((env->spr[SPR_PVR] & CPU_POWERPC_POWER_SERVER_MASK) =3D=3D
-> +        (CPU_POWERPC_POWER9_BASE)) {
-> +        /* We are a P9 */
-> +        if (!(capabilities & H_GUEST_CAPABILITIES_P9_MODE)) {
-> +            env->gpr[4] =3D 1;
-> +            return H_P2;
-> +        }
-> +    }
+> +Toolchain
+> +---------
 > +
-> +    if ((env->spr[SPR_PVR] & CPU_POWERPC_POWER_SERVER_MASK) =3D=3D
-> +        (CPU_POWERPC_POWER10_BASE)) {
-> +        /* We are a P10 */
-
-The 2 comments above aren't helpful. Just remove them.
-
-> +        if (!(capabilities & H_GUEST_CAPABILITIES_P10_MODE)) {
-> +            env->gpr[4] =3D 2;
-> +            return H_P2;
-> +        }
-> +    }
+> +Select a root directory for the cross environment
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 > +
-> +    spapr->nested.capabilities_set =3D true;
-
-Is it okay to set twice? If not, add a check. If yes, remove
-capabilities_set until it's needed.
-
+> +Export an environment variable pointing to a root directory
+> +for the cross environment. For example, ::
 > +
-> +    spapr->nested.pvr_base =3D env->spr[SPR_PVR];
+> +  $ export PREFIX=3D"$HOME/opt/riscv"
 > +
-> +    return H_SUCCESS;
-> +}
+> +Create a work directory
+> +^^^^^^^^^^^^^^^^^^^^^^^
 > +
->  void spapr_register_nested(void)
->  {
->      spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
-> @@ -410,6 +455,7 @@ void spapr_register_nested(void)
->  void spapr_register_nested_phyp(void)
->  {
->      spapr_register_hypercall(H_GUEST_GET_CAPABILITIES, h_guest_get_capab=
-ilities);
-> +    spapr_register_hypercall(H_GUEST_SET_CAPABILITIES, h_guest_set_capab=
-ilities);
->  }
-> =20
->  #else
-> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.=
-h
-> index ce198e9f70..a7996251cb 100644
-> --- a/include/hw/ppc/spapr_nested.h
-> +++ b/include/hw/ppc/spapr_nested.h
-> @@ -193,6 +193,9 @@
->  #define H_GUEST_CAPABILITIES_COPY_MEM 0x8000000000000000
->  #define H_GUEST_CAPABILITIES_P9_MODE  0x4000000000000000
->  #define H_GUEST_CAPABILITIES_P10_MODE 0x2000000000000000
-> +#define H_GUEST_CAP_COPY_MEM_BMAP   0
-> +#define H_GUEST_CAP_P9_MODE_BMAP    1
-> +#define H_GUEST_CAP_P10_MODE_BMAP   2
-> =20
->  typedef struct SpaprMachineStateNestedGuest {
->      unsigned long vcpus;
-
+> +Tools and several components will need to be downloaded and built. Creat=
+e
+> +a directory for all the work, ::
+> +
+> +  $ export WORK_DIR=3D"$HOME/work/xqemu"
+> +  $ mkdir -p "$WORK_DIR"
+> +
+> +Select and prepare the toolchain
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +Select a toolchain such as [riscv-toolchain]_ and follow its instruction=
+s
+> +for building and installing it to ``$PREFIX``, e.g. ::
+> +
+> +  $ cd "$WORK_DIR"
+> +  $ git clone https://github.com/riscv/riscv-gnu-toolchain
+> +  $ cd riscv-gnu-toolchain
+> +  $ ./configure --prefix=3D"$PREFIX"
+> +  $ make -j$(nproc) linux
+> +
+> +Set the ``$CROSS_COMPILE`` environment variable to the prefix of the cro=
+ss
+> +tools and add the tools to ``$PATH``, ::
+> +
+> +$ export CROSS_COMPILE=3Driscv64-unknown-linux-gnu-
+> +$ export PATH=3D"$PREFIX/bin:$PATH"
+> +
+> +Also set ``$SYSROOT``, where all QEMU cross-compiled dependencies will b=
+e
+> +installed. The toolchain installation likely created a 'sysroot' directo=
+ry
+> +at ``$PREFIX/sysroot``, which is the default location for most cross
+> +tools, making it a good location, ::
+> +
+> +  $ mkdir -p "$PREFIX/sysroot"
+> +  $ export SYSROOT=3D"$PREFIX/sysroot"
+> +
+> +Create a pkg-config wrapper
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +The build processes of QEMU and some of its dependencies depend on
+> +pkg-config. Create a wrapper script for it which works for the cross
+> +environment: ::
+> +
+> +  $ cat <<EOF >"$PREFIX/bin/${CROSS_COMPILE}pkg-config"
+> +  #!/bin/sh
+> +
+> +  [ "\$SYSROOT" ] || exit 1
+> +
+> +  export PKG_CONFIG_PATH=3D
+> +  export PKG_CONFIG_LIBDIR=3D"\${SYSROOT}/usr/lib/pkgconfig:\${SYSROOT}/=
+usr/lib64/pkgconfig:\${SYSROOT}/usr/share/pkgconfig"
+> +
+> +  exec pkg-config "\$@"
+> +  EOF
+> +  $ chmod +x "$PREFIX/bin/${CROSS_COMPILE}pkg-config"
+> +
+> +Create a cross-file for meson builds
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +meson setup, used by some of QEMU's dependencies, needs a "cross-file" t=
+o
+> +configure the cross environment. Create one, ::
+> +
+> +  $ cd "$WORK_DIR"
+> +  $ cat <<EOF >cross_file.txt
+> +  [host_machine]
+> +  system =3D 'linux'
+> +  cpu_family =3D 'riscv64'
+> +  cpu =3D 'riscv64'
+> +  endian =3D 'little'
+> +
+> +  [binaries]
+> +  c =3D '${CROSS_COMPILE}gcc'
+> +  cpp =3D '${CROSS_COMPILE}g++'
+> +  ar =3D '${CROSS_COMPILE}ar'
+> +  ld =3D '${CROSS_COMPILE}ld'
+> +  objcopy =3D '${CROSS_COMPILE}objcopy'
+> +  strip =3D '${CROSS_COMPILE}strip'
+> +  pkgconfig =3D '${CROSS_COMPILE}pkg-config'
+> +  EOF
+> +
+> +Cross-compile dependencies
+> +--------------------------
+> +
+> +glibc
+> +^^^^^
+> +
+> +If [riscv-toolchain]_ was selected for the toolchain then this step is
+> +already complete and glibc has already been installed into ``$SYSROOT``.
+> +Otherwise, cross-compile glibc and install it to ``$SYSROOT``.
+> +
+> +libffi
+> +^^^^^^
+> +
+> +::
+> +
+> +  $ cd "$WORK_DIR"
+> +  $ git clone https://gitlab.freedesktop.org/gstreamer/meson-ports/libff=
+i.git
+> +  $ cd libffi
+> +  $ meson setup --cross-file ../cross_file.txt --prefix=3D"$SYSROOT/usr"=
+ _build
+> +  $ ninja -C _build
+> +  $ ninja -C _build install
+> +
+> +*Building libffi seperately avoids a compilation error generated when
+> +building it as a subproject of glib.*
+> +
+> +glib
+> +^^^^
+> +
+> +::
+> +
+> +  $ cd "$WORK_DIR"
+> +  $ git clone https://github.com/GNOME/glib.git
+> +  $ cd glib
+> +  $ meson setup --cross-file ../cross_file.txt --prefix=3D"$SYSROOT/usr"=
+ _build
+> +  $ ninja -C _build
+> +  $ ninja -C _build install
+> +
+> +libslirp [optional]
+> +^^^^^^^^^^^^^^^^^^^
+> +
+> +::
+> +
+> +  $ cd "$WORK_DIR"
+> +  $ git clone https://gitlab.com/qemu-project/libslirp.git
+> +  $ cd libslirp
+> +  $ meson setup --cross-file ../cross_file.txt --prefix=3D"$SYSROOT/usr"=
+ _build
+> +  $ ninja -C _build
+> +  $ ninja -C _build install
+> +
+> +pixman
+> +^^^^^^
+> +
+> +First ensure the 'libtool' package is installed, e.g.
+> +``sudo dnf install libtool`` or ``sudo apt install libtool``
+> +
+> +::
+> +
+> +  $ cd "$WORK_DIR"
+> +  $ git clone https://gitlab.freedesktop.org/pixman/pixman
+> +  $ cd pixman
+> +  $ ./autogen.sh
+> +  $ ./configure --prefix=3D"$SYSROOT/usr" --host=3Driscv64-unknown-linux=
+-gnu
+> +  $ make -j$(nproc)
+> +  $ make install
+> +
+> +Cross-compile QEMU
+> +------------------
+> +
+> +::
+> +
+> +  $ cd "$WORK_DIR"
+> +  $ git clone https://gitlab.com/qemu-project/qemu.git
+> +  $ cd qemu
+> +  $ mkdir -p build/install_dir
+> +  $ cd build
+> +  $ ../configure --target-list=3Driscv64-softmmu --cross-prefix=3D$CROSS=
+_COMPILE --prefix=3D"$PWD/install_dir"
+> +  $ make -j$(nproc)
+> +  $ make install
+> +
+> +*Cross-compiling QEMU with different configurations may require more
+> +dependencies to be built and installed in the sysroot.*
+> +
+> +Running QEMU
+> +------------
+> +
+> +``build/install_dir`` may now be copied to the target and its bin
+> +directory may be added to the target user's PATH. Prior to running
+> +QEMU, ensure all the libraries it depends on are present, ::
+> +
+> +  $ ldd /path/to/bin/qemu-system-riscv64
+> +
+> +For example, it may necessary to install zlib libraries, e.g.
+> +``sudo dnf install zlib-devel`` or ``sudo apt install zlib1g-dev``
+> +
+> +Subsequent QEMU Cross-compiling
+> +-------------------------------
+> +
+> +Unless it's necessary to update and recompile the toolchain or
+> +dependencies, then most steps do not need to be repeated for subsequent
+> +compiles. Simply ensure the toolchain is in ``$PATH``, ``$SYSROOT`` poin=
+ts
+> +at the sysroot, and then follow the QEMU cross-compile steps in
+> +"Cross-compile QEMU". For example, ::
+> +
+> +  $ export PATH=3D"$HOME/opt/riscv/bin:$PATH"
+> +  $ export SYSROOT=3D"$HOME/opt/riscv/sysroot"
+> +  $ cd /path/to/qemu
+> +  $ mkdir -p build/install_dir
+> +  $ cd build
+> +  $ ../configure --target-list=3Driscv64-softmmu --cross-prefix=3Driscv6=
+4-unknown-linux-gnu- --prefix=3D"$PWD/install_dir"
+> +  $ make -j
+> +  $ make install
+> +
+> +References
+> +----------
+> +
+> +.. [riscv-toolchain] https://github.com/riscv/riscv-gnu-toolchain
+> --
+> 2.41.0
+>
+>
 
