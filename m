@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8356B7972AF
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C61257972A7
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:10:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEeb-0005nx-SX; Thu, 07 Sep 2023 09:02:37 -0400
+	id 1qeEdk-0003iF-6J; Thu, 07 Sep 2023 09:01:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEdT-0003QA-38
+ id 1qeEdT-0003QL-7O
  for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEdP-0007PG-7w
+ id 1qeEdO-0007Oy-Mg
  for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694091682;
+ s=mimecast20190719; t=1694091680;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iaktLIjVJSqvWsFHPYa1zZxD9ZnUqDBRnUr485Ej9/A=;
- b=iOqfUWzEPOu4d4OsZwHGBCLWVPC1TsCMJSPnglomOsbfgTHm7weAdFZ+eUVfbSXxnwk72s
- 2rfo/B65o3cC9NkHwqzIdY0SsFJNGR6NFlI8rQ501Uzv8d+1u4uyA5DsxwrvMrk+vZFv+Y
- SfUCQFiHELEyKaV+s/8dEwBHzSiArT4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7KAKVyFrcBYXAPJJUeQDPVu/lv3v+1SzGW2kz6vGWhI=;
+ b=dgmgYGV/a4BjWOOaT7LqGAuDxlLTeoZk6wjG4qnmhdafFRzin3LQOEaH8Tku7IWg3xd7cd
+ Odd+TSOzMA3ZyvyXPkHqWx+eRHA7C56NZL7jnvcf7qdUdGIpJnwlso76CIL3GiA2a/dYIk
+ +H0AfdzILU6XHaD4de8v/eyM9rO0oEM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-BDh9_6fpNO2uHYpDXW2_bg-1; Thu, 07 Sep 2023 09:01:18 -0400
-X-MC-Unique: BDh9_6fpNO2uHYpDXW2_bg-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-31f3cfe7269so569713f8f.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:01:13 -0700 (PDT)
+ us-mta-279-Jt06muvRNXWsLP2ii58Vvg-1; Thu, 07 Sep 2023 09:01:18 -0400
+X-MC-Unique: Jt06muvRNXWsLP2ii58Vvg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-402ccac9b1eso6562925e9.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:01:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694091671; x=1694696471;
+ d=1e100.net; s=20221208; t=1694091675; x=1694696475;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iaktLIjVJSqvWsFHPYa1zZxD9ZnUqDBRnUr485Ej9/A=;
- b=RSsuNGD+dL19X/IMQjERI9gW5VQtkctTug0NyrhHJ9dXJtRcKrSmHpu+xfUNx46WUc
- OuK6UjKdOefxdIfrxzslRRJCpP8oz/iyIGjiNNNPcxAt1zuabdTBqRya0LBLRlkhgrgC
- DiIWRGXRAh1HzZEbPztLZy2RwKsDd1DvFLuf3O/TfdY9hEMHJ3KpGvBnRhek3eXVCiIL
- 67uycjO6IJfbD1kkbZlsU4SakSdAmNqygNyJsLsc1pI4YT+UICkhBxsOxfIbYNGjVUfu
- LEf7hypaTuKXg7Wl5Wr6bW+v+RH/OUNcDTDD2Fy/ghbtRD45yBkT/c0o0Jw1M8j4X1qf
- U7+g==
-X-Gm-Message-State: AOJu0YylNMHWlXcGRr/2qpn2thWbEAsVNhiOIm4yAjzud/Ju99biinRY
- nXUf1+lWRk/EJKg4rY7v8ld+EmIbtHBH4bVxQ5GRxw9CgGHdCGsWaN2NSDUEQitRUkJG0XNRUE/
- bpfrVgiHDWhyVrA7Dr1Ur2L02uOHwh/ccjRMT51VPILHMTBzHawDGNVNQpDguwFsybU+1jD3/O0
- M=
-X-Received: by 2002:adf:ce8c:0:b0:31c:762b:ceb3 with SMTP id
- r12-20020adfce8c000000b0031c762bceb3mr4836152wrn.48.1694091671676; 
- Thu, 07 Sep 2023 06:01:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHMDVeUzifF2ChTwapyG0zaRFZNMat+bkxtX2EOJV+FvkHZDv7ekmwTyUMeOpAFNoYzD+PI/g==
-X-Received: by 2002:adf:ce8c:0:b0:31c:762b:ceb3 with SMTP id
- r12-20020adfce8c000000b0031c762bceb3mr4836109wrn.48.1694091670973; 
- Thu, 07 Sep 2023 06:01:10 -0700 (PDT)
+ bh=7KAKVyFrcBYXAPJJUeQDPVu/lv3v+1SzGW2kz6vGWhI=;
+ b=ARvm8inyS4WdhYjy4R41XQtGAKq7ZsuuzZJp4Pdw7c9J/e07ee3Iu/sg2ySEq556SR
+ Ag9yE6zz5QPpTlnJgkwCpdUbOc6GuYpuEU73O/w9l0+ESyY/kVAj5XUrxo9zJqIPlK8+
+ j4bty7U9N7cOuFhRvDHmhh7x5pX/WsteNSpMlo/q1ZoUEBgJLzDq5Lt+NgU3rcjyTdbP
+ 1yt5smLku8MOf80NxwTV6kDK5e73WU5iQ+RCsSiP3aR2EhLcWHT3EDU6TuZE45Yu1805
+ HJIhOPRMRSjTyGRZMKKu9DD0y6YCPxRmXmvf1Nkdwmcci4iXABYO++TAPJsaC/WaKMtx
+ TuQQ==
+X-Gm-Message-State: AOJu0Yxnm915ffSt9HbxWgLoZEG/xpPCY3cXFLKX02jyBYzTWl1lJtVd
+ Y8WyOaawvYNw1g+BPn4Ftrnro5EEiZgUT0BrNBrTzePv75IGz5P+F2doprUbL85u/t2QpHI0n2y
+ v9H0j2lPUZVHAYsQNTwlHfm3cWiSb/6c9imBqyDeadyvJLTVnvZGsOVzvvECl+yOKL+AtuTi50s
+ U=
+X-Received: by 2002:a05:600c:210f:b0:3fe:1871:1826 with SMTP id
+ u15-20020a05600c210f00b003fe18711826mr4567255wml.27.1694091675401; 
+ Thu, 07 Sep 2023 06:01:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvr1pqyUGgXDeQ+BM7sU0r8oWbb1ezLg0+0UugF00D3mlJMOp0W3ziRTOvmwpm8KwhaFOVkA==
+X-Received: by 2002:a05:600c:210f:b0:3fe:1871:1826 with SMTP id
+ u15-20020a05600c210f00b003fe18711826mr4567137wml.27.1694091673030; 
+ Thu, 07 Sep 2023 06:01:13 -0700 (PDT)
 Received: from [192.168.1.174] ([151.48.237.81])
  by smtp.gmail.com with ESMTPSA id
- f3-20020a5d6643000000b00318147fd2d3sm23318716wrw.41.2023.09.07.06.01.09
+ e4-20020adfe7c4000000b0031c6581d55esm23371123wrn.91.2023.09.07.06.01.12
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 06:01:10 -0700 (PDT)
+ Thu, 07 Sep 2023 06:01:12 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/51] configure: unify recursion into sub-Makefiles
-Date: Thu,  7 Sep 2023 14:59:37 +0200
-Message-ID: <20230907130004.500601-29-pbonzini@redhat.com>
+Subject: [PULL 29/51] configure, meson: move --enable-plugins to meson
+Date: Thu,  7 Sep 2023 14:59:38 +0200
+Message-ID: <20230907130004.500601-30-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230907130004.500601-1-pbonzini@redhat.com>
 References: <20230907130004.500601-1-pbonzini@redhat.com>
@@ -100,132 +100,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Treat contrib/plugins the same as the firmware.
+While the option still needs to be parsed in the configure script
+(it's needed by tests/tcg, and also to decide about recursing
+into contrib/plugins), passing it to Meson can be done with -D
+instead of using config-host.mak.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Makefile  | 27 ++++++++++++---------------
- configure | 13 ++++++++-----
- 2 files changed, 20 insertions(+), 20 deletions(-)
+ accel/tcg/meson.build         |  4 +++-
+ configure                     |  5 +----
+ meson.build                   |  7 ++++---
+ meson_options.txt             |  2 ++
+ plugins/meson.build           | 12 +++++++-----
+ scripts/meson-buildoptions.sh |  3 +++
+ tests/Makefile.include        |  2 +-
+ tests/meson.build             |  6 ++----
+ 8 files changed, 23 insertions(+), 18 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 5d48dfac18a..118c28e80d9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -164,14 +164,6 @@ ifneq ($(filter $(ninja-targets), $(ninja-cmd-goals)),)
- endif
- endif
- 
--ifeq ($(CONFIG_PLUGIN),y)
--.PHONY: plugins
--plugins:
--	$(call quiet-command,\
--		$(MAKE) $(SUBDIR_MAKEFLAGS) -C contrib/plugins V="$(V)", \
--		"BUILD", "example plugins")
--endif # $(CONFIG_PLUGIN)
--
- else # config-host.mak does not exist
- ifneq ($(filter-out $(UNCHECKED_GOALS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,fail))
- $(error Please call configure before running make)
-@@ -184,15 +176,20 @@ include $(SRC_PATH)/tests/Makefile.include
- 
- all: recurse-all
- 
--ROMS_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(ROMS)))
--.PHONY: $(ROMS_RULES)
--$(ROMS_RULES):
-+SUBDIR_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(SUBDIRS)))
-+.PHONY: $(SUBDIR_RULES)
-+$(SUBDIR_RULES):
- 	$(call quiet-command,$(MAKE) $(SUBDIR_MAKEFLAGS) -C $(dir $@) V="$(V)" TARGET_DIR="$(dir $@)" $(notdir $@),)
- 
-+ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
-+.PHONY: plugins
-+plugins: contrib/plugins/all
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index 166bef173b8..8ace7837079 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -11,7 +11,9 @@ tcg_ss.add(files(
+ ))
+ tcg_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user-exec.c'))
+ tcg_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_false: files('user-exec-stub.c'))
+-tcg_ss.add(when: 'CONFIG_PLUGIN', if_true: [files('plugin-gen.c')])
++if get_option('plugins')
++  tcg_ss.add(files('plugin-gen.c'))
 +endif
-+
- .PHONY: recurse-all recurse-clean
--recurse-all: $(addsuffix /all, $(ROMS))
--recurse-clean: $(addsuffix /clean, $(ROMS))
--recurse-distclean: $(addsuffix /distclean, $(ROMS))
-+recurse-all: $(addsuffix /all, $(SUBDIRS))
-+recurse-clean: $(addsuffix /clean, $(SUBDIRS))
-+recurse-distclean: $(addsuffix /distclean, $(SUBDIRS))
- 
- ######################################################################
- 
-@@ -296,7 +293,7 @@ help:
- 	$(call print-help,cscope,Generate cscope index)
- 	$(call print-help,sparse,Run sparse on the QEMU source)
- 	@echo  ''
--ifeq ($(CONFIG_PLUGIN),y)
-+ifneq ($(filter contrib/plugins, $(SUBDIRS)),)
- 	@echo  'Plugin targets:'
- 	$(call print-help,plugins,Build the example TCG plugins)
- 	@echo  ''
+ tcg_ss.add(when: libdw, if_true: files('debuginfo.c'))
+ tcg_ss.add(when: 'CONFIG_LINUX', if_true: files('perf.c'))
+ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
 diff --git a/configure b/configure
-index 849cd3c0385..a0912e4b268 100755
+index a0912e4b268..6b1019ba59c 100755
 --- a/configure
 +++ b/configure
-@@ -256,6 +256,7 @@ softmmu="yes"
- linux_user=""
- bsd_user=""
- plugins="$default_feature"
-+subdirs=""
- ninja=""
- python=
- download="enabled"
-@@ -1067,6 +1068,9 @@ if test "$static" = "yes" ; then
-   fi
- fi
- test "$plugins" = "" && plugins=yes
-+if test "$plugins" = "yes"; then
-+  subdirs="$subdirs contrib/plugins"
-+fi
+@@ -1712,10 +1712,6 @@ case $targetos in
+     ;;
+ esac
  
- cat > $TMPC << EOF
+-if test "$plugins" = "yes" ; then
+-    echo "CONFIG_PLUGIN=y" >> $config_host_mak
+-fi
+-
+ if test -n "$gdb_bin"; then
+     gdb_version=$($gdb_bin --version | head -n 1)
+     if version_ge ${gdb_version##* } 9.1; then
+@@ -1909,6 +1905,7 @@ if test "$skip_meson" = no; then
+   test "$cfi" != false && meson_option_add "-Dcfi=$cfi"
+   test "$docs" != auto && meson_option_add "-Ddocs=$docs"
+   test -n "${LIB_FUZZING_ENGINE+xxx}" && meson_option_add "-Dfuzzing_engine=$LIB_FUZZING_ENGINE"
++  test "$plugins" = yes && meson_option_add "-Dplugins=true"
+   test "$qemu_suffix" != qemu && meson_option_add "-Dqemu_suffix=$qemu_suffix"
+   test "$smbd" != '' && meson_option_add "-Dsmbd=$smbd"
+   test "$tcg" != enabled && meson_option_add "-Dtcg=$tcg"
+diff --git a/meson.build b/meson.build
+index 4c3918a34ec..a1021fe2a78 100644
+--- a/meson.build
++++ b/meson.build
+@@ -730,7 +730,7 @@ glib_cflags = []
+ if enable_modules
+   gmodule = dependency('gmodule-export-2.0', version: glib_req_ver, required: true,
+                        method: 'pkg-config')
+-elif config_host.has_key('CONFIG_PLUGIN')
++elif get_option('plugins')
+   gmodule = dependency('gmodule-no-export-2.0', version: glib_req_ver, required: true,
+                        method: 'pkg-config')
+ else
+@@ -2115,6 +2115,7 @@ if numa.found()
+                                        dependencies: numa))
+ endif
+ config_host_data.set('CONFIG_OPENGL', opengl.found())
++config_host_data.set('CONFIG_PLUGIN', get_option('plugins'))
+ config_host_data.set('CONFIG_RBD', rbd.found())
+ config_host_data.set('CONFIG_RDMA', rdma.found())
+ config_host_data.set('CONFIG_SAFESTACK', get_option('safe_stack'))
+@@ -3883,7 +3884,7 @@ endforeach
  
-@@ -1627,12 +1631,11 @@ done
- echo "# Automatically generated by configure - do not modify" > Makefile.prereqs
+ # Other build targets
  
- # Mac OS X ships with a broken assembler
--roms=
- if have_target i386-softmmu x86_64-softmmu && \
-         test "$targetos" != "darwin" && test "$targetos" != "sunos" && \
-         test "$targetos" != "haiku" && \
-         probe_target_compiler i386-softmmu; then
--    roms="pc-bios/optionrom"
-+    subdirs="$subdirs pc-bios/optionrom"
-     config_mak=pc-bios/optionrom/config.mak
-     echo "# Automatically generated by configure - do not modify" > $config_mak
-     echo "TOPSRC_DIR=$source_path" >> $config_mak
-@@ -1641,7 +1644,7 @@ fi
+-if 'CONFIG_PLUGIN' in config_host
++if get_option('plugins')
+   install_headers('include/qemu/qemu-plugin.h')
+ endif
  
- if have_target ppc-softmmu ppc64-softmmu && \
-         probe_target_compiler ppc-softmmu; then
--    roms="$roms pc-bios/vof"
-+    subdirs="$subdirs pc-bios/vof"
-     config_mak=pc-bios/vof/config.mak
-     echo "# Automatically generated by configure - do not modify" > $config_mak
-     echo "SRC_DIR=$source_path/pc-bios/vof" >> $config_mak
-@@ -1660,7 +1663,7 @@ if have_target s390x-softmmu && probe_target_compiler s390x-softmmu && \
-       echo "WARNING: Your compiler does not support the z900!"
-       echo "         The s390-ccw bios will only work with guest CPUs >= z10."
-     fi
--    roms="$roms pc-bios/s390-ccw"
-+    subdirs="$subdirs pc-bios/s390-ccw"
-     config_mak=pc-bios/s390-ccw/config-host.mak
-     echo "# Automatically generated by configure - do not modify" > $config_mak
-     echo "SRC_PATH=$source_path/pc-bios/s390-ccw" >> $config_mak
-@@ -1727,7 +1730,7 @@ if test "$container" != no; then
-     echo "ENGINE=$container" >> $config_host_mak
-     echo "RUNC=$runc" >> $config_host_mak
- fi
--echo "ROMS=$roms" >> $config_host_mak
-+echo "SUBDIRS=$subdirs" >> $config_host_mak
- echo "PYTHON=$python" >> $config_host_mak
- echo "GENISOIMAGE=$genisoimage" >> $config_host_mak
- echo "MESON=$meson" >> $config_host_mak
+@@ -4156,7 +4157,7 @@ if config_all.has_key('CONFIG_TCG')
+   else
+     summary_info += {'TCG backend':   'native (@0@)'.format(cpu)}
+   endif
+-  summary_info += {'TCG plugins': config_host.has_key('CONFIG_PLUGIN')}
++  summary_info += {'TCG plugins':       get_option('plugins')}
+   summary_info += {'TCG debug enabled': get_option('debug_tcg')}
+ endif
+ summary_info += {'target list':       ' '.join(target_dirs)}
+diff --git a/meson_options.txt b/meson_options.txt
+index 5d6b889554c..e48086e2562 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -83,6 +83,8 @@ option('xen_pci_passthrough', type: 'feature', value: 'auto',
+        description: 'Xen PCI passthrough support')
+ option('tcg', type: 'feature', value: 'enabled',
+        description: 'TCG support')
++option('plugins', type: 'boolean', value: false,
++       description: 'TCG plugins via shared library loading')
+ option('debug_tcg', type: 'boolean', value: false,
+        description: 'TCG debugging')
+ option('tcg_interpreter', type: 'boolean', value: false,
+diff --git a/plugins/meson.build b/plugins/meson.build
+index 752377c66d3..71ed996ed31 100644
+--- a/plugins/meson.build
++++ b/plugins/meson.build
+@@ -13,8 +13,10 @@ if not enable_modules
+   endif
+ endif
+ 
+-specific_ss.add(when: 'CONFIG_PLUGIN', if_true: [files(
+-  'loader.c',
+-  'core.c',
+-  'api.c',
+-), declare_dependency(link_args: plugin_ldflags)])
++if get_option('plugins')
++  specific_ss.add(files(
++    'loader.c',
++    'core.c',
++    'api.c',
++  ), declare_dependency(link_args: plugin_ldflags))
++endif
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 5567fd29985..6b16ad94f4b 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -40,6 +40,7 @@ meson_options_help() {
+   printf "%s\n" '                           jemalloc/system/tcmalloc)'
+   printf "%s\n" '  --enable-module-upgrades try to load modules from alternate paths for'
+   printf "%s\n" '                           upgrades'
++  printf "%s\n" '  --enable-plugins         TCG plugins via shared library loading'
+   printf "%s\n" '  --enable-rng-none        dummy RNG, avoid using /dev/(u)random and'
+   printf "%s\n" '                           getrandom()'
+   printf "%s\n" '  --enable-safe-stack      SafeStack Stack Smash Protection (requires'
+@@ -401,6 +402,8 @@ _meson_option_parse() {
+     --enable-pipewire) printf "%s" -Dpipewire=enabled ;;
+     --disable-pipewire) printf "%s" -Dpipewire=disabled ;;
+     --with-pkgversion=*) quote_sh "-Dpkgversion=$2" ;;
++    --enable-plugins) printf "%s" -Dplugins=true ;;
++    --disable-plugins) printf "%s" -Dplugins=false ;;
+     --enable-png) printf "%s" -Dpng=enabled ;;
+     --disable-png) printf "%s" -Dpng=disabled ;;
+     --enable-pvrdma) printf "%s" -Dpvrdma=enabled ;;
+diff --git a/tests/Makefile.include b/tests/Makefile.include
+index 985cda7a945..38987426594 100644
+--- a/tests/Makefile.include
++++ b/tests/Makefile.include
+@@ -73,7 +73,7 @@ $(TCG_TESTS_TARGETS:%=distclean-tcg-tests-%): distclean-tcg-tests-%:
+ build-tcg: $(BUILD_TCG_TARGET_RULES)
+ 
+ .PHONY: check-tcg
+-.ninja-goals.check-tcg = all $(if $(CONFIG_PLUGIN),test-plugins)
++.ninja-goals.check-tcg = all
+ check-tcg: $(RUN_TCG_TARGET_RULES)
+ 
+ .PHONY: clean-tcg
+diff --git a/tests/meson.build b/tests/meson.build
+index 083f2990bde..c2528a88f99 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -80,10 +80,8 @@ if 'CONFIG_TCG' in config_all
+   subdir('fp')
+ endif
+ 
+-if get_option('tcg').allowed()
+-  if 'CONFIG_PLUGIN' in config_host
+-    subdir('plugin')
+-  endif
++if get_option('plugins')
++  subdir('plugin')
+ endif
+ 
+ subdir('unit')
 -- 
 2.41.0
 
