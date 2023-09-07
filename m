@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1723797085
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 09:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E91D797086
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 09:42:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe9cZ-0007iq-7n; Thu, 07 Sep 2023 03:40:13 -0400
+	id 1qe9eG-00009q-Q2; Thu, 07 Sep 2023 03:41:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qe9cW-0007if-3n
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:40:08 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qe9cS-0002be-Az
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 03:40:07 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8AxDOtJfvlkCS8hAA--.60864S3;
- Thu, 07 Sep 2023 15:39:53 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx5sxGfvlkwEBwAA--.52174S3; 
- Thu, 07 Sep 2023 15:39:50 +0800 (CST)
-Subject: Re: [PATCH 1/2] tcg: Add gvec compare with immediate and scalar
- operand
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230831030904.1194667-1-richard.henderson@linaro.org>
- <20230831030904.1194667-2-richard.henderson@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <274b7ba4-1089-3941-5b9a-fb06b2eb51cf@loongson.cn>
-Date: Thu, 7 Sep 2023 15:39:50 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
+ id 1qe9eD-00009N-R8; Thu, 07 Sep 2023 03:41:53 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
+ id 1qe9e8-0003Nl-Bf; Thu, 07 Sep 2023 03:41:51 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RhB586wSpz4x2n;
+ Thu,  7 Sep 2023 17:41:32 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RhB4h6684z4x5m;
+ Thu,  7 Sep 2023 17:41:08 +1000 (AEST)
+Message-ID: <da39cd13-68cc-4aab-3aba-301180e81560@kaod.org>
+Date: Thu, 7 Sep 2023 09:41:04 +0200
 MIME-Version: 1.0
-In-Reply-To: <20230831030904.1194667-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=gbk; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 12/32] target/ppc: Use generic helper to show CPU model
+ names
 Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, imp@bsdimp.com, kevans@freebsd.org,
+ eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, peter.maydell@linaro.org, b.galvani@gmail.com,
+ strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
+ wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
+ quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org, laurent@vivier.eu,
+ vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
+ mrolnik@gmail.com, edgar.iglesias@gmail.com, bcain@quicinc.com,
+ gaosong@loongson.cn, yangxiaojuan@loongson.cn, aurelien@aurel32.net,
+ jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
+ chenhuacai@kernel.org, crwulff@gmail.com, marex@denx.de, shorne@gmail.com,
+ david@gibson.dropbear.id.au, groug@kaod.org, npiggin@gmail.com,
+ ysato@users.sourceforge.jp, david@redhat.com, thuth@redhat.com,
+ iii@linux.ibm.com, mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
+ kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
+ imammedo@redhat.com, shan.gavin@gmail.com
+References: <20230907003553.1636896-1-gshan@redhat.com>
+ <20230907003553.1636896-13-gshan@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230907003553.1636896-13-gshan@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dx5sxGfvlkwEBwAA--.52174S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3JF1xZFWfGF1UCF1xCFyxXrc_yoWDJryfp3
- W7KrWay34DJF4IqryfW3W5Jws8urs0yw45urs5Krs0yrW5Wr1vyF1vk3y09rs7GayIv345
- ZanI9F13C3WUK3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
- 05UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.473, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=XW8m=EX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,274 +82,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Richard
-ÔÚ 2023/8/31 ÉÏÎç11:09, Richard Henderson Ð´µÀ:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/tcg-runtime.h          |  25 ++++++
->   include/tcg/tcg-op-gvec-common.h |   6 ++
->   accel/tcg/tcg-runtime-gvec.c     |  26 ++++++
->   tcg/tcg-op-gvec.c                | 150 +++++++++++++++++++++++++++++++
->   4 files changed, 207 insertions(+)
+On 9/7/23 02:35, Gavin Shan wrote:
+> For target/ppc, the CPU type name can be: (1) The combination of
+> the CPU model name and suffix; (2) the type name of the class whose
+> PVR matches with the specified one; (3) alias of the CPU model, plus
+> suffix; (4) MachineClass::default_cpu_type when the CPU model name
+> is "max". All the possible information, the CPU model name, aliases
+> of the CPU models and PVRs are all shown in ppc_cpu_list_entry().
 > 
+> Use generic helper cpu_model_from_type() in ppc_cpu_list_entry(),
+> and rename @name to @model since it points to the CPU model name
+> instead of the CPU type name.
+> 
+> Signed-off-by: Gavin Shan <gshan@redhat.com>
 
-I use tcg_gen_gvec_cmps for LoongArch vector cmp instructions.  but I 
-got an Aborted error from temp_load().  I'll fixes this later.
+Looks good.
 
-And I'll send LASX V5 series. this series will not use tcg_gen_gvec_cmps.
+Reviewed-by: CÃ©dric Le Goater <clg@kaod.org>
 
-Thanks.
-Song Gao
 
-> diff --git a/accel/tcg/tcg-runtime.h b/accel/tcg/tcg-runtime.h
-> index 186899a2c7..c23b5e66c4 100644
-> --- a/accel/tcg/tcg-runtime.h
-> +++ b/accel/tcg/tcg-runtime.h
-> @@ -297,4 +297,29 @@ DEF_HELPER_FLAGS_4(gvec_leu16, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
->   DEF_HELPER_FLAGS_4(gvec_leu32, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
->   DEF_HELPER_FLAGS_4(gvec_leu64, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+With a quick hack adding a valid_cpu_types list to the pseries machine,
+QEMU reported:
+
+   qemu-system-ppc64 -M pseries -cpu 460exb
+   qemu-system-ppc64: Invalid CPU type: 460exb
+   The valid types are: 970_v2.2, 970mp_v1.0, 970mp_v1.1, power5+_v2.1, power7_v2.3, power7+_v2.1, power8_v2.0, power8e_v2.1, power8nvl_v1.0, power9_v1.0, power9_v2.0, power9_v2.2, power10_v1.0, power10_v2.0
+
+This would be a great improvement for the PPC boards since the CPU
+definitions are numerous :
+
+   $ install/bin/qemu-system-ppc64 -cpu ?  | wc -l
+   418
+
+and usually, the board only reports that the CPU specified on the
+command line is not supported.
+
+Thanks,
+
+C.
+
+
+> ---
+>   target/ppc/cpu_init.c | 11 +++++------
+>   1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+> index 02b7aad9b0..7281402331 100644
+> --- a/target/ppc/cpu_init.c
+> +++ b/target/ppc/cpu_init.c
+> @@ -7019,16 +7019,15 @@ static void ppc_cpu_list_entry(gpointer data, gpointer user_data)
+>       PowerPCCPUClass *pcc = POWERPC_CPU_CLASS(oc);
+>       DeviceClass *family = DEVICE_CLASS(ppc_cpu_get_family_class(pcc));
+>       const char *typename = object_class_get_name(oc);
+> -    char *name;
+> +    char *model;
+>       int i;
 >   
-> +DEF_HELPER_FLAGS_4(gvec_eqs8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_eqs16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_eqs32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_eqs64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +
-> +DEF_HELPER_FLAGS_4(gvec_lts8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_lts16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_lts32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_lts64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +
-> +DEF_HELPER_FLAGS_4(gvec_les8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_les16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_les32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_les64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +
-> +DEF_HELPER_FLAGS_4(gvec_ltus8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_ltus16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_ltus32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_ltus64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +
-> +DEF_HELPER_FLAGS_4(gvec_leus8, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_leus16, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_leus32, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(gvec_leus64, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +
->   DEF_HELPER_FLAGS_5(gvec_bitsel, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, ptr, i32)
-> diff --git a/include/tcg/tcg-op-gvec-common.h b/include/tcg/tcg-op-gvec-common.h
-> index e2683d487f..4db8a58c14 100644
-> --- a/include/tcg/tcg-op-gvec-common.h
-> +++ b/include/tcg/tcg-op-gvec-common.h
-> @@ -374,6 +374,12 @@ void tcg_gen_gvec_rotrv(unsigned vece, uint32_t dofs, uint32_t aofs,
->   void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
->                         uint32_t aofs, uint32_t bofs,
->                         uint32_t oprsz, uint32_t maxsz);
-> +void tcg_gen_gvec_cmpi(TCGCond cond, unsigned vece, uint32_t dofs,
-> +                       uint32_t aofs, int64_t c,
-> +                       uint32_t oprsz, uint32_t maxsz);
-> +void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
-> +                       uint32_t aofs, TCGv_i64 c,
-> +                       uint32_t oprsz, uint32_t maxsz);
->   
->   /*
->    * Perform vector bit select: d = (b & a) | (c & ~a).
-> diff --git a/accel/tcg/tcg-runtime-gvec.c b/accel/tcg/tcg-runtime-gvec.c
-> index 6c99f952ca..afca89baa1 100644
-> --- a/accel/tcg/tcg-runtime-gvec.c
-> +++ b/accel/tcg/tcg-runtime-gvec.c
-> @@ -1042,6 +1042,32 @@ DO_CMP2(64)
->   #undef DO_CMP1
->   #undef DO_CMP2
->   
-> +#define DO_CMP1(NAME, TYPE, OP)                                            \
-> +void HELPER(NAME)(void *d, void *a, uint64_t b64, uint32_t desc)           \
-> +{                                                                          \
-> +    intptr_t oprsz = simd_oprsz(desc);                                     \
-> +    TYPE inv = simd_data(desc), b = b64;                                   \
-> +    for (intptr_t i = 0; i < oprsz; i += sizeof(TYPE)) {                   \
-> +        *(TYPE *)(d + i) = -((*(TYPE *)(a + i) OP b) ^ inv);               \
-> +    }                                                                      \
-> +    clear_high(d, oprsz, desc);                                            \
-> +}
-> +
-> +#define DO_CMP2(SZ) \
-> +    DO_CMP1(gvec_eqs##SZ, uint##SZ##_t, ==)    \
-> +    DO_CMP1(gvec_lts##SZ, int##SZ##_t, <)      \
-> +    DO_CMP1(gvec_les##SZ, int##SZ##_t, <=)     \
-> +    DO_CMP1(gvec_ltus##SZ, uint##SZ##_t, <)    \
-> +    DO_CMP1(gvec_leus##SZ, uint##SZ##_t, <=)
-> +
-> +DO_CMP2(8)
-> +DO_CMP2(16)
-> +DO_CMP2(32)
-> +DO_CMP2(64)
-> +
-> +#undef DO_CMP1
-> +#undef DO_CMP2
-> +
->   void HELPER(gvec_ssadd8)(void *d, void *a, void *b, uint32_t desc)
->   {
->       intptr_t oprsz = simd_oprsz(desc);
-> diff --git a/tcg/tcg-op-gvec.c b/tcg/tcg-op-gvec.c
-> index f5cfd9bf99..f7ca9e1051 100644
-> --- a/tcg/tcg-op-gvec.c
-> +++ b/tcg/tcg-op-gvec.c
-> @@ -3819,6 +3819,156 @@ void tcg_gen_gvec_cmp(TCGCond cond, unsigned vece, uint32_t dofs,
+>       if (unlikely(strcmp(typename, TYPE_HOST_POWERPC_CPU) == 0)) {
+>           return;
 >       }
+>   
+> -    name = g_strndup(typename,
+> -                     strlen(typename) - strlen(POWERPC_CPU_TYPE_SUFFIX));
+> -    qemu_printf("PowerPC %-16s PVR %08x\n", name, pcc->pvr);
+> +    model = cpu_model_from_type(typename);
+> +    qemu_printf("PowerPC %-16s PVR %08x\n", model, pcc->pvr);
+>       for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
+>           PowerPCCPUAlias *alias = &ppc_cpu_aliases[i];
+>           ObjectClass *alias_oc = ppc_cpu_class_by_name(alias->model);
+> @@ -7045,10 +7044,10 @@ static void ppc_cpu_list_entry(gpointer data, gpointer user_data)
+>                           alias->alias, family->desc);
+>           } else {
+>               qemu_printf("PowerPC %-16s (alias for %s)\n",
+> -                        alias->alias, name);
+> +                        alias->alias, model);
+>           }
+>       }
+> -    g_free(name);
+> +    g_free(model);
 >   }
 >   
-> +void tcg_gen_gvec_cmps(TCGCond cond, unsigned vece, uint32_t dofs,
-> +                       uint32_t aofs, TCGv_i64 c,
-> +                       uint32_t oprsz, uint32_t maxsz)
-> +{
-> +    static const TCGOpcode cmp_list[] = { INDEX_op_cmp_vec, 0 };
-> +    static gen_helper_gvec_2i * const eq_fn[4] = {
-> +        gen_helper_gvec_eqs8, gen_helper_gvec_eqs16,
-> +        gen_helper_gvec_eqs32, gen_helper_gvec_eqs64
-> +    };
-> +    static gen_helper_gvec_2i * const lt_fn[4] = {
-> +        gen_helper_gvec_lts8, gen_helper_gvec_lts16,
-> +        gen_helper_gvec_lts32, gen_helper_gvec_lts64
-> +    };
-> +    static gen_helper_gvec_2i * const le_fn[4] = {
-> +        gen_helper_gvec_les8, gen_helper_gvec_les16,
-> +        gen_helper_gvec_les32, gen_helper_gvec_les64
-> +    };
-> +    static gen_helper_gvec_2i * const ltu_fn[4] = {
-> +        gen_helper_gvec_ltus8, gen_helper_gvec_ltus16,
-> +        gen_helper_gvec_ltus32, gen_helper_gvec_ltus64
-> +    };
-> +    static gen_helper_gvec_2i * const leu_fn[4] = {
-> +        gen_helper_gvec_leus8, gen_helper_gvec_leus16,
-> +        gen_helper_gvec_leus32, gen_helper_gvec_leus64
-> +    };
-> +    static gen_helper_gvec_2i * const * const fns[16] = {
-> +        [TCG_COND_EQ] = eq_fn,
-> +        [TCG_COND_LT] = lt_fn,
-> +        [TCG_COND_LE] = le_fn,
-> +        [TCG_COND_LTU] = ltu_fn,
-> +        [TCG_COND_LEU] = leu_fn,
-> +    };
-> +
-> +    TCGType type;
-> +
-> +    check_size_align(oprsz, maxsz, dofs | aofs);
-> +    check_overlap_2(dofs, aofs, maxsz);
-> +
-> +    if (cond == TCG_COND_NEVER || cond == TCG_COND_ALWAYS) {
-> +        do_dup(MO_8, dofs, oprsz, maxsz,
-> +               NULL, NULL, -(cond == TCG_COND_ALWAYS));
-> +        return;
-> +    }
-> +
-> +    /*
-> +     * Implement inline with a vector type, if possible.
-> +     * Prefer integer when 64-bit host and 64-bit comparison.
-> +     */
-> +    type = choose_vector_type(cmp_list, vece, oprsz,
-> +                              TCG_TARGET_REG_BITS == 64 && vece == MO_64);
-> +    if (type != 0) {
-> +        const TCGOpcode *hold_list = tcg_swap_vecop_list(cmp_list);
-> +        TCGv_vec t_vec = tcg_temp_new_vec(type);
-> +        uint32_t some, i;
-> +
-> +        tcg_gen_dup_i64_vec(vece, t_vec, c);
-> +
-> +        switch (type) {
-> +        case TCG_TYPE_V256:
-> +            some = QEMU_ALIGN_DOWN(oprsz, 32);
-> +            for (i = 0; i < some; i += 32) {
-> +                TCGv_vec t0 = tcg_temp_new_vec(TCG_TYPE_V256);
-> +                TCGv_vec t1 = tcg_temp_new_vec(TCG_TYPE_V256);
-> +                tcg_gen_ld_vec(t0, cpu_env, aofs);
-> +                tcg_gen_cmp_vec(cond, vece, t0, t1, t_vec);
-> +                tcg_gen_st_vec(t0, cpu_env, dofs);
-> +                aofs += 32;
-> +                dofs += 32;
-> +            }
-> +            oprsz -= some;
-> +            maxsz -= some;
-> +            /* fallthru */
-> +
-> +        case TCG_TYPE_V128:
-> +            some = QEMU_ALIGN_DOWN(oprsz, 16);
-> +            for (i = 0; i < some; i += 16) {
-> +                TCGv_vec t0 = tcg_temp_new_vec(TCG_TYPE_V128);
-> +                TCGv_vec t1 = tcg_temp_new_vec(TCG_TYPE_V128);
-> +                tcg_gen_ld_vec(t0, cpu_env, aofs + i);
-> +                tcg_gen_cmp_vec(cond, vece, t0, t1, t_vec);
-> +                tcg_gen_st_vec(t0, cpu_env, dofs + i);
-> +            }
-> +            break;
-> +
-> +        case TCG_TYPE_V64:
-> +            some = QEMU_ALIGN_DOWN(oprsz, 8);
-> +            for (i = 0; i < some; i += 8) {
-> +                TCGv_vec t0 = tcg_temp_new_vec(TCG_TYPE_V64);
-> +                TCGv_vec t1 = tcg_temp_new_vec(TCG_TYPE_V64);
-> +                tcg_gen_ld_vec(t0, cpu_env, aofs + i);
-> +                tcg_gen_cmp_vec(cond, vece, t0, t1, t_vec);
-> +                tcg_gen_st_vec(t0, cpu_env, dofs + i);
-> +            }
-> +            break;
-> +
-> +        default:
-> +            g_assert_not_reached();
-> +        }
-> +        tcg_temp_free_vec(t_vec);
-> +        tcg_swap_vecop_list(hold_list);
-> +    } else if (vece == MO_64 && check_size_impl(oprsz, 8)) {
-> +        TCGv_i64 t0 = tcg_temp_ebb_new_i64();
-> +        uint32_t i;
-> +
-> +        for (i = 0; i < oprsz; i += 8) {
-> +            tcg_gen_ld_i64(t0, cpu_env, aofs + i);
-> +            tcg_gen_negsetcond_i64(cond, t0, t0, c);
-> +            tcg_gen_st_i64(t0, cpu_env, dofs + i);
-> +        }
-> +        tcg_temp_free_i64(t0);
-> +    } else if (vece == MO_32 && check_size_impl(oprsz, 4)) {
-> +        TCGv_i32 t0 = tcg_temp_ebb_new_i32();
-> +        TCGv_i32 t1 = tcg_temp_ebb_new_i32();
-> +        uint32_t i;
-> +
-> +        tcg_gen_extrl_i64_i32(t1, c);
-> +        for (i = 0; i < oprsz; i += 8) {
-> +            tcg_gen_ld_i32(t0, cpu_env, aofs + i);
-> +            tcg_gen_negsetcond_i32(cond, t0, t0, t1);
-> +            tcg_gen_st_i32(t0, cpu_env, dofs + i);
-> +        }
-> +        tcg_temp_free_i32(t0);
-> +        tcg_temp_free_i32(t1);
-> +    } else {
-> +        gen_helper_gvec_2i * const *fn = fns[cond];
-> +        bool inv = false;
-> +
-> +        if (fn == NULL) {
-> +            cond = tcg_invert_cond(cond);
-> +            fn = fns[cond];
-> +            assert(fn != NULL);
-> +            inv = true;
-> +        }
-> +        tcg_gen_gvec_2i_ool(dofs, aofs, c, oprsz, maxsz, inv, fn[vece]);
-> +        return;
-> +    }
-> +
-> +    if (oprsz < maxsz) {
-> +        expand_clr(dofs + oprsz, maxsz - oprsz);
-> +    }
-> +}
-> +
-> +void tcg_gen_gvec_cmpi(TCGCond cond, unsigned vece, uint32_t dofs,
-> +                       uint32_t aofs, int64_t c,
-> +                       uint32_t oprsz, uint32_t maxsz)
-> +{
-> +    TCGv_i64 tmp = tcg_constant_i64(c);
-> +    tcg_gen_gvec_cmps(cond, vece, dofs, aofs, tmp, oprsz, maxsz);
-> +}
-> +
->   static void tcg_gen_bitsel_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b, TCGv_i64 c)
->   {
->       TCGv_i64 t = tcg_temp_ebb_new_i64();
-> 
+>   void ppc_cpu_list(void)
 
 
