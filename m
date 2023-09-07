@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EEF7978D5
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 18:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17D97979CE
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 19:21:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeIHA-0005dw-3R; Thu, 07 Sep 2023 12:54:40 -0400
+	id 1qeIff-0000OT-Ba; Thu, 07 Sep 2023 13:19:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qeIH5-0005aW-HW
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 12:54:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qeIH3-0007ck-36
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 12:54:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694105671;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4U/QIotFoPN15sH9xC0vF5U3GZM+wDPgGbQCn/V84zo=;
- b=RElzLm+o/Y6crOW68pzF6qZ1QTryOGnIZxWbq/LQ2ae9F/PksD7W7k/b9YlXMP6/8ijQ7T
- jONXZcaGXHfdJRusjXCXjo6hr4rxqOHvajiiIqZlSC/v6E5PmoplJ9Z0wiYv4EyuUjfGgl
- BnUhm1TibLbWR0cVTxqklMNfbJjiu8E=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-8bujmAxgPlKlp9XlXRwFZA-1; Thu, 07 Sep 2023 12:54:29 -0400
-X-MC-Unique: 8bujmAxgPlKlp9XlXRwFZA-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-26f97567cb8so2758266a91.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 09:54:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qeIfd-0000OK-88
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 13:19:57 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qeIfa-0006bd-2g
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 13:19:57 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1c0d5b16aacso10259515ad.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 10:19:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694107192; x=1694711992; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=skZKt0z2pUGF4QF2fQ8xiAQmsbfPBtUIfF1tMDMvI2E=;
+ b=isxqLjFN80vthx3x3YqQkJKWvU+4CzfDXkoC6Q4nIXRsGpGPW5e67dImXDb027Q/t3
+ nJsHb9x9i96Kx78faraANtKUsyV54SkWOEeuevzQbPOxLZSVBM3O0EY9mzXBm/j13Eye
+ FPYZBFR19R26qvCgXMQWMiofx+XG+U6ZwaRFZabyH1KXAZFjVBdryrUQAi774yL8w7ca
+ ZFdzAbIdSngwlja78XryXhZ5ovCXQ6+e8dii9bepCwJ5IcfEdet8G40j1Xz9lNkAt2RF
+ 3gmgEK4dCvomvJgbbLaMpj0sr+bQR/apdIm9x8iYdW3JKTFEtECE5k8BKq2LJj1aMHEP
+ fFHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694105668; x=1694710468;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4U/QIotFoPN15sH9xC0vF5U3GZM+wDPgGbQCn/V84zo=;
- b=ZAKhlygo8t/F052pL3GqWvzVVYdKFIWElpWtd5Ti1VIRFwNvPZgOADdc9bOnxw24Pm
- qJ7Dp81RGu3xy5f4lVs2kzWnchr9PSkUSvATBGHfz2Kc8RxaHV9ID1N5wsH89kjxAyUa
- AlzYiYCWUIzKPjXcfbrWgLnxZ+Yo9B/LXg3bh30y2JXNcQXt5le7GiTiOVvr4zo8iXaj
- lnrVOQAMZzLtXUz26VtjG/i9+N3GuYyM+0rpQlcY2PxUjX+NVqqZRtDqUT8ec8Xtht9w
- dVvh+QTXRDWUWQzWQyDszyJNZpKvix3EUMpRiDA9F0NWwr27PoUpKUtm0QFUUU3DkHFX
- Ym8A==
-X-Gm-Message-State: AOJu0YzxzLBdCCtuYXXlE2OxLM6DAmJHmBez/pMNu0HV5S+iK5rhyN0i
- HuBdCaiyxLsF7/9hVhNFlNLIJYdlq5IHdt0kQBf+BtEx07W4xo9pjSOs6v4Luz8j7mkA4mVepy8
- GZJ9siZUvdrDDSP62LwkdlgPp1qGu8JM=
-X-Received: by 2002:a17:90a:5998:b0:26b:2d0f:56c6 with SMTP id
- l24-20020a17090a599800b0026b2d0f56c6mr4189104pji.18.1694105668057; 
- Thu, 07 Sep 2023 09:54:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGagGANqGS2xjWLmYYzLkQX5P+HSSJZlTCyV4m7di0zEjsy2snoLoyW6DYs+Pc/sgIwgQ43frncnbyi6KBrDw0=
-X-Received: by 2002:a17:90a:5998:b0:26b:2d0f:56c6 with SMTP id
- l24-20020a17090a599800b0026b2d0f56c6mr4189082pji.18.1694105667608; Thu, 07
- Sep 2023 09:54:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694107192; x=1694711992;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=skZKt0z2pUGF4QF2fQ8xiAQmsbfPBtUIfF1tMDMvI2E=;
+ b=hLYArdvCsnxvsyGghJLRHwZEJoHhq8whQO56Z4ASSYUko6StUwXalgI7Q59eiO6fqw
+ 5EqwnnkzFYVEO6DYwurhbG/nqI41T2w4nH+/iNuop0di9gW6/VN7sxHnvSRg9Vkwi8uV
+ tKVjccI45PpDM8MKvGXHTFOwADuWLiQbFxfhJjN6Jcfb1+tpjb8vWMo2k3uq3YFQ+3P8
+ I1YhISdL5OoWu1FaP8DIgq7B0H/B5wPaQJ+mWxp0WPF8lmfFd3RMs1YiWl48PIuERU4W
+ o0khtw5fwvzaFuYoqxsvJYhc5lNYKGK0EKKwqHhSC1Lavz9pNspgBCJgsX8OrB42we/Y
+ m16A==
+X-Gm-Message-State: AOJu0YxdSpoIZilhY+Xpss7fnKpHpru3Q3esUQYeK3ffUNvOhq4O3f3P
+ dNYlSlFaVtfXHckK+ESNEeLGS8RByYjAKEubXrg=
+X-Google-Smtp-Source: AGHT+IH2T5NY2pzusRBjpgTIU/BMut8lxHAafHm4dbCA+wl0SmtHyV3e8I+DfpfzZGJeLhTN5Hek7A==
+X-Received: by 2002:a17:902:82c4:b0:1bd:d718:5833 with SMTP id
+ u4-20020a17090282c400b001bdd7185833mr281044plz.18.1694107192302; 
+ Thu, 07 Sep 2023 10:19:52 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ i14-20020a170902c94e00b001bdc7d88ee3sm26024pla.37.2023.09.07.10.19.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Sep 2023 10:19:51 -0700 (PDT)
+Message-ID: <6e6a0db3-9f4d-8ea2-c254-9962cf35d380@linaro.org>
+Date: Thu, 7 Sep 2023 10:19:50 -0700
 MIME-Version: 1.0
-References: <20230907034228.4054839-1-jsnow@redhat.com>
- <7ef011cd-09e7-c5f9-dc9d-173ff8f431c8@tls.msk.ru>
-In-Reply-To: <7ef011cd-09e7-c5f9-dc9d-173ff8f431c8@tls.msk.ru>
-From: John Snow <jsnow@redhat.com>
-Date: Thu, 7 Sep 2023 12:54:16 -0400
-Message-ID: <CAFn=p-aueHBXMFHgw=Y8XYyeaFZKFRc8vJHQ6PQ8gNSqPcii8Q@mail.gmail.com>
-Subject: Re: [PULL for-6.2 0/7] Ide patches
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Qemu-block <qemu-block@nongnu.org>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: multipart/alternative; boundary="00000000000088f03d0604c7b679"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH RESEND v5 02/57] target/loongarch: Implement gvec_*_vl
+ functions
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: maobibo@loongson.cn
+References: <20230907083158.3975132-1-gaosong@loongson.cn>
+ <20230907083158.3975132-3-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230907083158.3975132-3-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,85 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000088f03d0604c7b679
-Content-Type: text/plain; charset="UTF-8"
+On 9/7/23 01:31, Song Gao wrote:
+> Using gvec_*_vl functions hides oprsz. We can use gvec_v* for oprsz 16.
+> and gvec_v* for oprsz 32.
+> 
+> Signed-off-by: Song Gao<gaosong@loongson.cn>
+> ---
+>   target/loongarch/insn_trans/trans_vec.c.inc | 68 +++++++++++++--------
+>   1 file changed, 44 insertions(+), 24 deletions(-)
 
-On Thu, Sep 7, 2023, 12:49 PM Michael Tokarev <mjt@tls.msk.ru> wrote:
+The description above is not quite right.  How about:
 
-> 07.09.2023 06:42, John Snow wrote:
->
-> > ----------------------------------------------------------------
-> > IDE Pull request
-> >
-> > ----------------------------------------------------------------
-> >
-> > Niklas Cassel (7):
-> >    hw/ide/core: set ERR_STAT in unsupported command completion
-> >    hw/ide/ahci: write D2H FIS when processing NCQ command
-> >    hw/ide/ahci: simplify and document PxCI handling
-> >    hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
-> >    hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
-> >    hw/ide/ahci: fix ahci_write_fis_sdb()
-> >    hw/ide/ahci: fix broken SError handling
->
-> Is anything here stable-worthy?
->
-> /mjt
->
+   Create gvec_*_vl functions in order to hide oprsz.
+   This is used by gvec_v* functions for oprsz 16,
+   and will be used by gvec_x* functions for oprsz 32.
 
-Yes, assuming it doesn't break anything.
+The code is correct.
 
-I can't give IDE the testing it deserves anymore, but I trust Niklas. I
-don't have good test suites for *inside* linux/windows guests so I am
-admittedly relying on qtests and for people to bark if something regressed.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-I'd say to tentatively add them to your list and if we find regressions
-during this window, we can exclude them from a stable release.
 
->
-
---00000000000088f03d0604c7b679
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Thu, Sep 7, 2023, 12:49 PM Michael Tokarev &lt;<a h=
-ref=3D"mailto:mjt@tls.msk.ru">mjt@tls.msk.ru</a>&gt; wrote:<br></div><block=
-quote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc=
- solid;padding-left:1ex">07.09.2023 06:42, John Snow wrote:<br>
-<br>
-&gt; ----------------------------------------------------------------<br>
-&gt; IDE Pull request<br>
-&gt; <br>
-&gt; ----------------------------------------------------------------<br>
-&gt; <br>
-&gt; Niklas Cassel (7):<br>
-&gt;=C2=A0 =C2=A0 hw/ide/core: set ERR_STAT in unsupported command completi=
-on<br>
-&gt;=C2=A0 =C2=A0 hw/ide/ahci: write D2H FIS when processing NCQ command<br=
->
-&gt;=C2=A0 =C2=A0 hw/ide/ahci: simplify and document PxCI handling<br>
-&gt;=C2=A0 =C2=A0 hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is =
-cleared<br>
-&gt;=C2=A0 =C2=A0 hw/ide/ahci: PxCI should not get cleared when ERR_STAT is=
- set<br>
-&gt;=C2=A0 =C2=A0 hw/ide/ahci: fix ahci_write_fis_sdb()<br>
-&gt;=C2=A0 =C2=A0 hw/ide/ahci: fix broken SError handling<br>
-<br>
-Is anything here stable-worthy?<br>
-<br>
-/mjt<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"au=
-to">Yes, assuming it doesn&#39;t break anything.</div><div dir=3D"auto"><br=
-></div><div dir=3D"auto">I can&#39;t give IDE the testing it deserves anymo=
-re, but I trust Niklas. I don&#39;t have good test suites for *inside* linu=
-x/windows guests so I am admittedly relying on qtests and for people to bar=
-k if something regressed.</div><div dir=3D"auto"><br></div><div dir=3D"auto=
-">I&#39;d say to tentatively add them to your list and if we find regressio=
-ns during this window, we can exclude them from a stable release.</div><div=
- dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" =
-style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-</blockquote></div></div></div>
-
---00000000000088f03d0604c7b679--
-
+r~
 
