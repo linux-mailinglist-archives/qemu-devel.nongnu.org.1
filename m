@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E8379703B
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 08:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9D379703F
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 08:19:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe8CE-0006fI-Kq; Thu, 07 Sep 2023 02:08:54 -0400
+	id 1qe8Ki-0001Pt-21; Thu, 07 Sep 2023 02:17:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qe8C7-0006b1-VP
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:08:49 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qe8Ke-0001Oo-1v
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:17:36 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qe8C4-0006Jm-6L
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:08:46 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-523100882f2so647551a12.2
- for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 23:08:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qe8Kb-0001Vx-2s
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 02:17:35 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-99c136ee106so61233366b.1
+ for <qemu-devel@nongnu.org>; Wed, 06 Sep 2023 23:17:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694066922; x=1694671722; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694067451; x=1694672251; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=BYDZWNiLokdJ4Ff1DhUiLUMZwrH1Af5LQlAIdMTWP/o=;
- b=CH18oAH0mTi0K0PVFWfXprHG8BdKIYn+HLmnDBQp2SsbR78TpDESsgcsFEDoxlXyC+
- 2wr//zVCSxBiWOd8YrlWSE30LM+ZK3AdLHkuko/jZtDWKcqQC56oM6NK7iS0I0c2ZJiQ
- poehptHtxoYCitsc9ceIq8pkl8CPV/+GUK7TQFPMHOYOkcwP5DajKA34KqT+nQtISRFF
- 91Go4bFcK8tz9LWIn4kqROs5/wKl4s94UMkWlJs1Oz05g0AcLX91l2LW/LzxksJIfx6v
- wt+hAyGgkc6+6lCM5Cmv9/aR5znNoEbrhSCoiTgnza40JlbWUoba7Y4uUDdFcPhcfjWH
- ebcw==
+ bh=1C70gQfSsVGoX2XgvwL5KX1FaAG8rb1sIp4E1ENd194=;
+ b=fKOs5JHI2u2k+WvNQbaf0qh/vGHOGdkmLNycEUW7e3/Ym9bsnjuAYdUSEORW7qS2tg
+ pCTlK4Y4gvyxHfs00AZEULV+bAmkXg0mQc2gPvwPjr5LpDFfIfJ1RJ3se0B6drIBnSd+
+ u9ZOlLtOciVcPgWVcIaQ+QftjtfWoKzH13fsAKkSVv2MlTM0rKH4NnTvpOA00b/K0kEw
+ J863uxanm/F/X8rS9jlDkkH2CQGJzOn0+cvRfQjPtza18/8ekzxziAV2T7gpyfJ3ExCg
+ Ld9xa2PHlY+HebpU9L7je3qCxtqV9BGUtDHFphXBVEgtazwW60rfDd4v2vJSoxBtpa/H
+ ZFwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694066922; x=1694671722;
+ d=1e100.net; s=20221208; t=1694067451; x=1694672251;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BYDZWNiLokdJ4Ff1DhUiLUMZwrH1Af5LQlAIdMTWP/o=;
- b=I4L1iIP4gahNmpSLQqPGbnev9Ay01k1/oUZKtPjXdbf1r1p1i9wzq2OWXFoNT6Z5au
- mUaMRJLRWXuk/fUsh1wQ8j2NlLAuboGBPZBack0wsxjpLtOq03jqE5Pg7YN2zwNKwj/q
- cpOaH0kW6gCvtQeC9DQE+FUfVi0iderDW86yac2xkwHnrVV8Rsx1ly+e7ENkmH4U380x
- aPdT26SCNEVEsSwefjgqirdC5pcqwCDWYkOqjX2RFnUHPbsi8BznfyKcrfMPhGFJir3r
- 9uV/KnG5Uu5n+UWxDcxqD+FsyhFVMev/L4GlsXkhA38EyENt9pLh36u12K83+9t5IH0D
- 5d6w==
-X-Gm-Message-State: AOJu0YzF4utdf2dV9l6lXTXv5xXgvHmWB9p0XcTuUOSAiCeu1uaAoTvm
- LZ66AYRW53MmyX2cSxqWVTTahA==
-X-Google-Smtp-Source: AGHT+IHVnT8ZviGzIyalU0NVWt4iS1mDcrtp6YKxPzYAnn66qieH1XZa57q/5SMEEu/OoP3Rrbnw1A==
-X-Received: by 2002:aa7:c3c9:0:b0:52b:cbbd:ee90 with SMTP id
- l9-20020aa7c3c9000000b0052bcbbdee90mr3272576edr.26.1694066921785; 
- Wed, 06 Sep 2023 23:08:41 -0700 (PDT)
+ bh=1C70gQfSsVGoX2XgvwL5KX1FaAG8rb1sIp4E1ENd194=;
+ b=fIpqqQdoLEAf3jeHFXjtpdLIMNIh5+THdCx6BYU3w84tLt2JGoZa9d2ABJK4FTptu2
+ 4YFrjpMNw2W4CnzQuFloS3IDqZLS84nShHYmJ1LYbw1MM811Y8yAZfseGsTntq3YUpxG
+ JRC1bwYnBMD73T5C60IgXRbTr/LUqhaz1GbW61cLqSD/GwP+hyhsJNq9oSIrRWN0wITB
+ 3WGjUj3iV75495wyB0ij4BiuinAsol8In4YllTkGhGmCkpNsxdegLasJmtdOP/h9NfUg
+ vf2rkdtq6tu3VZDNjTMtBnZi0NKMkVtJBFQgfXCDtbTnfvR+JdxnAjxz1gwmIEDGtbdt
+ YxzQ==
+X-Gm-Message-State: AOJu0YxG11VkWaIjnjmLubimM4l8pOOk3Sp/aKxf59D7r2GGwQIC7QLA
+ 8qfVL73VAMwyqyEByiHEq/OMRQ==
+X-Google-Smtp-Source: AGHT+IFL6WWCP8aoOlFaEaEpsxDiWXIN4XKGbJn3nqq8CATZO3h1BSi0ANc8iTl43x0C8eYefLuFYg==
+X-Received: by 2002:a17:906:51c9:b0:99c:ae35:8cc with SMTP id
+ v9-20020a17090651c900b0099cae3508ccmr4149342ejk.26.1694067450978; 
+ Wed, 06 Sep 2023 23:17:30 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-222-226.abo.bbox.fr.
  [176.131.222.226]) by smtp.gmail.com with ESMTPSA id
- d9-20020aa7d689000000b005256ae8494asm9279194edr.17.2023.09.06.23.08.40
+ jo26-20020a170906f6da00b00982d0563b11sm9868406ejb.197.2023.09.06.23.17.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 06 Sep 2023 23:08:41 -0700 (PDT)
-Message-ID: <e0de73f2-496e-d723-e037-f968d6e7b4cc@linaro.org>
-Date: Thu, 7 Sep 2023 08:08:38 +0200
+ Wed, 06 Sep 2023 23:17:30 -0700 (PDT)
+Message-ID: <b0cc966c-44a6-6595-d7b3-a63e8c191942@linaro.org>
+Date: Thu, 7 Sep 2023 08:17:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PULL for-6.2 0/7] Ide patches
+Subject: Re: [PATCH v5 20/20] linux-user/s390x: Add vdso
 Content-Language: en-US
-To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-References: <20230907034228.4054839-1-jsnow@redhat.com>
- <CAFn=p-ZJYBNX_ZDbHynmK1Hv-PQHgx7n++1bvEn3Oa7sysRNRQ@mail.gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, laurent@vivier.eu,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+References: <20230829220228.928506-1-richard.henderson@linaro.org>
+ <20230829220228.928506-21-richard.henderson@linaro.org>
+ <87fs3uhtde.fsf@linaro.org> <34dc2a52-63aa-39a8-df56-88a381fa7671@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAFn=p-ZJYBNX_ZDbHynmK1Hv-PQHgx7n++1bvEn3Oa7sysRNRQ@mail.gmail.com>
+In-Reply-To: <34dc2a52-63aa-39a8-df56-88a381fa7671@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -94,41 +97,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/9/23 05:43, John Snow wrote:
-> I guess the last time I sent IDE patches was for 6.2 and that tag got
-> stuck in my git-publish invocation, oops. I am not suggesting we break
-> the laws of causality to merge these patches.
+On 6/9/23 19:56, Richard Henderson wrote:
+> On 9/4/23 08:00, Alex Bennée wrote:
+>> Due to the b4 dropping the vdso.so in the patch this fails:
+>>
+>>    Program build-vdso.sh found: YES 
+>> (/home/alex/lsrc/qemu.git/linux-user/build-vdso.sh)
+>>    ../../linux-user/s390x/meson.build:24:0: ERROR: File vdso.so does 
+>> not exist.
+>>    A full log can be found at 
+>> /home/alex/lsrc/qemu.git/builds/all/meson-logs/meson-log.txt
+>>    FAILED: build.ninja
+>>    /home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/meson --internal 
+>> regenerate /home/alex/lsrc/qemu.git /home/alex/lsrc/qemu.git/builds/all
+>>    ninja: error: rebuilding 'build.ninja': subcommand failed
+>>      BUILD   aarch64-softmmu guest-tests
+>>    tests/tcg/aarch64-softmmu: -march=armv8.3-a detected
+>>
+>> which makes me think the dependencies are broken anyway because I have a
+>> working s390x compiler:
+>>
+>>    ➜  cat tests/tcg/s390x-linux-user/config-target.mak
+>>    # Automatically generated by configure - do not modify
+>>    TARGET_NAME=s390x
+>>    TARGET=s390x-linux-user
+>>    EXTRA_CFLAGS=
+>>    CC=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-gcc -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    CCAS=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-gcc -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    AR=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-ar -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    AS=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-as -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    LD=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-ld -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    NM=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-nm -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    OBJCOPY=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-objcopy -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    RANLIB=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-ranlib -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    STRIP=/home/alex/lsrc/qemu.git/builds/all/pyvenv/bin/python3 -B 
+>> /home/alex/lsrc/qemu.git/tests/docker/docker.py --engine docker cc 
+>> --cc s390x-linux-gnu-strip -i qemu/debian-s390x-cross -s 
+>> /home/alex/lsrc/qemu.git --
+>>    BUILD_STATIC=y
+>>    QEMU=/home/alex/lsrc/qemu.git/builds/all/qemu-s390x
+>>    HOST_GDB_SUPPORTS_ARCH=y
+>>
+>> We really need to express the dependency on
+>> docker-image-debian-s390x-cross (when using containers) to ensure we can
+>> build the vdso.so and not rely on the copy we have.
+> 
+> I think expressing the dependency is a mistake.
+> 
+> The major problem is network unreliability.  I installed a new vm to 
+> build test this, and it took more than a dozen retrys to get all of the 
+> docker images built.
+> 
+> What we do right now is determine if docker or podman is present and 
+> works, and then *assume* we can make all of the cross-compilers work 
+> later, and so register them as cross-compilers early.
+> 
+> I think the only moderately reliable thing is to determine what 
+> containers are already present and working and use only those.  
+> Developers will need to manually rebuild containers periodically and 
+> then re-run configure to make those visible to the cross-build 
+> machinery.  Not completely ideal, of course, but nothing else is either.
 
-lol
+We discussed this 1 or 2 years ago. My suggestion was when we tag
+a release, we also tag the gitlab docker images (with all the distro
+packages installed from that tag). Then those working with the release
+can pull the pre-installed image from the tag; since it won't need
+newer package, no need for network access within the image.
 
-> On Wed, Sep 6, 2023 at 11:42 PM John Snow <jsnow@redhat.com> wrote:
->>
->> The following changes since commit c152379422a204109f34ca2b43ecc538c7d738ae:
->>
->>    Merge tag 'ui-pull-request' of https://gitlab.com/marcandre.lureau/qemu into staging (2023-09-06 11:16:01 -0400)
->>
->> are available in the Git repository at:
->>
->>    https://gitlab.com/jsnow/qemu.git tags/ide-pull-request
->>
->> for you to fetch changes up to 9f89423537653de07ca40c18b5ff5b70b104cc93:
->>
->>    hw/ide/ahci: fix broken SError handling (2023-09-06 22:48:04 -0400)
->>
->> ----------------------------------------------------------------
->> IDE Pull request
-
-\o/
-
->> ----------------------------------------------------------------
->>
->> Niklas Cassel (7):
->>    hw/ide/core: set ERR_STAT in unsupported command completion
->>    hw/ide/ahci: write D2H FIS when processing NCQ command
->>    hw/ide/ahci: simplify and document PxCI handling
->>    hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
->>    hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
->>    hw/ide/ahci: fix ahci_write_fis_sdb()
->>    hw/ide/ahci: fix broken SError handling
-
+During the latest development cycle, we can either use the latest
+tagged image if sufficient, or we have to deal with the same issues
+you mentioned (network stability, broken package deps from time to
+time).
 
