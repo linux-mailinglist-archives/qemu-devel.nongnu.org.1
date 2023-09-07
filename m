@@ -2,67 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E19797EA9
+	by mail.lfdr.de (Postfix) with ESMTPS id A76F0797EAA
 	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 00:17:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeNHg-00027m-LS; Thu, 07 Sep 2023 18:15:32 -0400
+	id 1qeNI1-0002DX-QV; Thu, 07 Sep 2023 18:15:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeNHY-00025K-29
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 18:15:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
+ id 1qeNHz-0002Ch-Ea; Thu, 07 Sep 2023 18:15:51 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeNHQ-0003M4-To
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 18:15:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694124913;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Ewz41QGnf5r17tGA6heTggsSbrW+4Q7rBV60rBy0clM=;
- b=JBAzdnzoeIRvIcrr1p9UX+Ipf7IC6xRxZ5UQsdyTq2AXBavNEja2s4ZfQwkCRRfBbT4OES
- iy2Nms0LFWeblARmgnBouyv5r8y+S6DwIfj/qNQk/Kfw1ycuVN6dPV+AYYYTMrNkItNi7W
- CT4Vydh6ryej0vas+gqmJ2vuTPIT4IE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-616-tm6JRJdfNJ6VqJxSrS8T0A-1; Thu, 07 Sep 2023 18:15:11 -0400
-X-MC-Unique: tm6JRJdfNJ6VqJxSrS8T0A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=XW8m=EX=kaod.org=clg@ozlabs.org>)
+ id 1qeNHw-0003Qd-4G; Thu, 07 Sep 2023 18:15:51 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RhYTp2D3gz4x80;
+ Fri,  8 Sep 2023 08:15:42 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 795631817929;
- Thu,  7 Sep 2023 22:15:11 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 70A4C412F2D4;
- Thu,  7 Sep 2023 22:15:10 +0000 (UTC)
-Date: Thu, 7 Sep 2023 17:15:08 -0500
-From: Eric Blake <eblake@redhat.com>
-To: "Denis V. Lunev" <den@openvz.org>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: Re: [PATCH 8/8] qemu-nbd: fix formatting in main()
-Message-ID: <ta6mmemj4hcg6rre5k6hunymh2hihhtmlbqa56jf4fz5h6pau3@e2ialxuwurae>
-References: <20230906093210.339585-1-den@openvz.org>
- <20230906093210.339585-9-den@openvz.org>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RhYTm59Rbz4x5w;
+ Fri,  8 Sep 2023 08:15:40 +1000 (AEST)
+Message-ID: <ad943b46-0652-8fd1-49a4-c86dd6214827@kaod.org>
+Date: Fri, 8 Sep 2023 00:15:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906093210.339585-9-den@openvz.org>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL v2 00/35] ppc queue
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20230906143653.54709-1-clg@kaod.org>
+ <2b6c3dd1-430a-2e60-ea73-29c507d631d8@tls.msk.ru>
+Content-Language: en-US
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <2b6c3dd1-430a-2e60-ea73-29c507d631d8@tls.msk.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=XW8m=EX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,46 +65,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 06, 2023 at 11:32:10AM +0200, Denis V. Lunev wrote:
-> Just a formatting, no functional changes.
+On 9/7/23 21:10, Michael Tokarev wrote:
+> 06.09.2023 17:36, Cédric Le Goater wrote:
+> ...
+>> ppc queue :
+>>
+>> * debug facility improvements
+>> * timebase and decrementer fixes
+>> * record-replay fixes
+>> * TCG fixes
+>> * XIVE model improvements for multichip
+>>
+>> ----------------------------------------------------------------
+>> Cédric Le Goater (4):
+>>        ppc/xive: Use address_space routines to access the machine RAM
+>>        ppc/xive: Introduce a new XiveRouter end_notify() handler
+>>        ppc/xive: Handle END triggers between chips with MMIOs
+>>        ppc/xive: Add support for the PC MMIOs
+>>
+>> Joel Stanley (1):
+>>        ppc: Add stub implementation of TRIG SPRs
+>>
+>> Maksim Kostin (1):
+>>        hw/ppc/e500: fix broken snapshot replay
+>>
+>> Nicholas Piggin (26):
+>>        target/ppc: Remove single-step suppression inside 0x100-0xf00
+>>        target/ppc: Improve book3s branch trace interrupt for v2.07S
+>>        target/ppc: Suppress single step interrupts on rfi-type instructions
+>>        target/ppc: Implement breakpoint debug facility for v2.07S
+>>        target/ppc: Implement watchpoint debug facility for v2.07S
+>>        spapr: implement H_SET_MODE debug facilities
+>>        ppc/vhyp: reset exception state when handling vhyp hcall
+>>        ppc/vof: Fix missed fields in VOF cleanup
+>>        hw/ppc/ppc.c: Tidy over-long lines
+>>        hw/ppc: Introduce functions for conversion between timebase and nanoseconds
+>>        host-utils: Add muldiv64_round_up
+>>        hw/ppc: Round up the decrementer interval when converting to ns
+>>        hw/ppc: Avoid decrementer rounding errors
+>>        target/ppc: Sign-extend large decrementer to 64-bits
+>>        hw/ppc: Always store the decrementer value
+>>        target/ppc: Migrate DECR SPR
+>>        hw/ppc: Reset timebase facilities on machine reset
+>>        hw/ppc: Read time only once to perform decrementer write
+>>        target/ppc: Fix CPU reservation migration for record-replay
+>>        target/ppc: Fix timebase reset with record-replay
+>>        spapr: Fix machine reset deadlock from replay-record
+>>        spapr: Fix record-replay machine reset consuming too many events
+>>        tests/avocado: boot ppc64 pseries replay-record test to Linux VFS mount
+>>        tests/avocado: reverse-debugging cope with re-executing breakpoints
+>>        tests/avocado: ppc64 reverse debugging tests for pseries and powernv
+>>        target/ppc: Fix LQ, STQ register-pair order for big-endian
+>>
+>> Richard Henderson (1):
+>>        target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
+>>
+>> Shawn Anastasio (1):
+>>        target/ppc: Generate storage interrupts for radix RC changes
+>>
+>> jianchunfu (1):
+>>        target/ppc: Fix the order of kvm_enable judgment about kvmppc_set_interrupt()
 > 
-> Signed-off-by: Denis V. Lunev <den@openvz.org>
-> CC: Eric Blake <eblake@redhat.com>
-> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
-> Do not really sure that this patch is mandatory, just stabs my eye. Feel free
-> to drop if this is too useless.
+> Is there anything in there worth to pick for -stable?
+> Like, for example, some decrementer fixes, 
+
+The decrementer fixes are good candidates but there are quite a few
+patches and you might encounter conflicts.
+
+> or some of these:
 > 
->  qemu-nbd.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>   ppc/vof: Fix missed fields in VOF cleanup
+>   spapr: Fix machine reset deadlock from replay-record
+>   hw/ppc/e500: fix broken snapshot replay
+
+I can not tell if replay-record is important for stable. Nick ?
+  
+> or something else?
+
+These are :
+
+   target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
+   target/ppc: Fix LQ, STQ register-pair order for big-endian
+
+Thanks,
+
+C.
+
+
+> Thanks!
 > 
-> diff --git a/qemu-nbd.c b/qemu-nbd.c
-> index b9c74ce77c..8eb1d1f40b 100644
-> --- a/qemu-nbd.c
-> +++ b/qemu-nbd.c
-> @@ -581,7 +581,8 @@ int main(int argc, char **argv)
->      pthread_t client_thread;
->      const char *fmt = NULL;
->      Error *local_err = NULL;
-> -    BlockdevDetectZeroesOptions detect_zeroes = BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
-> +    BlockdevDetectZeroesOptions detect_zeroes =
-> +                                            BLOCKDEV_DETECT_ZEROES_OPTIONS_OFF;
-
-check-patch allows code up to 90 columngs although it does advise
-staying under 80.  You fixed the long line by keeping the wrapped
-portion right-flushed to 80 columns; I think more typical tree-wide is
-to just indent by four spaces (at least, that's what emacs suggests I
-do).  But me changing what you wrote would a complete rewrite, so I'm
-reluctant to include it in my upcoming pull request, although I'm not
-ruling out a later cleanup (perhaps if it touches more than one
-stylistic thing at once).
-
-I'm queuing 1-7 through my NBD tree, and running another round of
-iotests before sending the pull request this week.
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+> /mjt
 
 
