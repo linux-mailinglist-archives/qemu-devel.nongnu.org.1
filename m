@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63B7797299
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:09:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C59679729D
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:09:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEdH-00034S-6R; Thu, 07 Sep 2023 09:01:15 -0400
+	id 1qeEdQ-0003FM-1R; Thu, 07 Sep 2023 09:01:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEd6-0002si-GO
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:05 -0400
+ id 1qeEd4-0002sR-Gc
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeEd2-0007JJ-Ak
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:04 -0400
+ id 1qeEd1-0007JY-4E
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694091654;
+ s=mimecast20190719; t=1694091656;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SNGxCcskM5CtdJOrttdHLKr3u4GjeZuEossSiUwH/70=;
- b=UD9sJgcQk76pyMobEK3v2fhtacUQR0hkQLW9XJct0ApC5x43BDaxq9dK8BccMKlfjKJiWV
- wU7iM+Ew+iRAUqnWEeR/BSKCIMJXhJjtf0ZuDqdP4+o+/eX9a+tr2cqxW1zEl8oUWd7qBv
- /6Q085ZVnRTDnRbrsC9HRCsnGsB375k=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=deDGl1ZSdh4eDpSF5HH/DX8AUIwg+yuy4UZLXOALgvk=;
+ b=AUdoE8w2OCdxWpE24ZbSDTzBJDcstuqMbyNknNI3KsDB9Q1R1vuOTAfA5/jU2CtZUUuklC
+ HA5JFDJ3ukJoIfEKNWJGvFuw4XvkZA5GfSNPTVjCh17ZmJzHzQpteZF2Id0bknTkxeUIUA
+ TKQMXErrNRule6tNVaEGwlUfEItrEn0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-576-VdnSzAf-NLi9K5siCC7TZg-1; Thu, 07 Sep 2023 09:00:51 -0400
-X-MC-Unique: VdnSzAf-NLi9K5siCC7TZg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-401be705672so6871295e9.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:00:44 -0700 (PDT)
+ us-mta-648-tjAS4tBRP1SWgRwVVfhlLg-1; Thu, 07 Sep 2023 09:00:52 -0400
+X-MC-Unique: tjAS4tBRP1SWgRwVVfhlLg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-401dba99384so6530935e9.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:00:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694091642; x=1694696442;
+ d=1e100.net; s=20221208; t=1694091644; x=1694696444;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SNGxCcskM5CtdJOrttdHLKr3u4GjeZuEossSiUwH/70=;
- b=dsUgj9W6tmwneVLPJnpPCrcz2qYlCzteyTjGgN/1VGjV7QV8prMz/Qu7f9xJG4spFz
- 0EGdDHFT5h+NMXvbehyy/YXHeg22FbhnHcOceiZMpjvXcv4EhEN8CLCxc6WzfPG1Ra+Z
- 7ZatritKnQvyKtPtk2X+vnuYioC2IDvg/faOUQsQ5X+gFNTq2QHUVYmTMeVODMQHYfC7
- O/gZ53NmDKai8rOMTDJlVmsP4sAsOeSGOqVk3DbyUyCDQcQ0nQMuT/liMRVBD+XmoQet
- ZlxSttVsWBqnCzo/3ASNC4Bg+n+MfxyeA4J+fKrj8Xa3zQo5dbqZ2jV+r9SIMMVGNMfu
- Lw6g==
-X-Gm-Message-State: AOJu0Yz2WYlhIh9uXb8EmTfDJ+tW24cIJEzuA1nvVsMMxF22h8Vu7OBY
- rXeUCLPV8OXb81QUbJpzQX/R78fTBmx5z/BGe0H+X60gG7ZLRndVgvkm7X7cAd8vteGAYnWqG7g
- VqdfMkcfxLCkTE7Fmab58DxuTxymMhCyQ8g6MDqDz/VD+BaTWGkuP+hawKVleugcE/pr0CAGxTv
- g=
-X-Received: by 2002:a1c:7718:0:b0:3fe:1679:ba7b with SMTP id
- t24-20020a1c7718000000b003fe1679ba7bmr5177783wmi.24.1694091642511; 
- Thu, 07 Sep 2023 06:00:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgVhlWBz6V9whbR5+0BbKiFNSsbaih55hkIy2p82bSOO9zPpXkqNOkn7EWXDK5tMEDibGyqQ==
-X-Received: by 2002:a1c:7718:0:b0:3fe:1679:ba7b with SMTP id
- t24-20020a1c7718000000b003fe1679ba7bmr5177742wmi.24.1694091641771; 
- Thu, 07 Sep 2023 06:00:41 -0700 (PDT)
+ bh=deDGl1ZSdh4eDpSF5HH/DX8AUIwg+yuy4UZLXOALgvk=;
+ b=SiAxBXh40CFy8toATTuO6kw7p/nnPJV1BtHbfeDQeXUu8d767lOI/bnW7jAwBj/oqW
+ FjAKdw4FHBZvLuC/vQWm/dMOCpMSPGP4W85cWVFyn8e/7IeqY895qnC59AFutSUgf59m
+ Rg8CpqVZgZBKzL1xhx4Y2/y96WBbgf8bKuYdUTc+eEslooQvWV97rqlTTqS6GSbtlT9x
+ WwKw+uBdzt1jS6MQm7kZqiF9EacmvfkiQmjIO2bMZH3dKaQTLY75kxOdHUj8OdqYChK9
+ LLurlbXAMDuVyihyMCC0vDQU/6eLAUhVlCuDY3xbsSXqYakG3BCw6p+s/BqPtZmmigBR
+ G3Lw==
+X-Gm-Message-State: AOJu0YwLCvoWBuWK1MSA1cU4Jpvayart1ogunXEtQvLXGys8S0dbvVYR
+ ACvwMNyya4SAbTGgVfIjn+sMLsPhY9PQ54YDD4R0rA8WozVn2Xm5LTt1JCfXAbNKcXe+pqxcWsK
+ Lm+H9hN1VoAf3kP7OwukO4exGqvrEdKpNiUJPiaCOC69wXX8JhcZaGixl2LxU3ZkF1GvfkaCHq2
+ Q=
+X-Received: by 2002:a05:600c:21d0:b0:3fe:1548:264f with SMTP id
+ x16-20020a05600c21d000b003fe1548264fmr4727852wmj.22.1694091644455; 
+ Thu, 07 Sep 2023 06:00:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHR2gYroLEBo+gJJAkyzuEObtS/aSjAejDpMJaJuZmLHL/VCKHXe/xfaYumt+hKxx8XwfFB6w==
+X-Received: by 2002:a05:600c:21d0:b0:3fe:1548:264f with SMTP id
+ x16-20020a05600c21d000b003fe1548264fmr4727828wmj.22.1694091644066; 
+ Thu, 07 Sep 2023 06:00:44 -0700 (PDT)
 Received: from [192.168.1.174] ([151.48.237.81])
  by smtp.gmail.com with ESMTPSA id
- x16-20020a05600c21d000b003fbca942499sm2480623wmj.14.2023.09.07.06.00.40
+ w7-20020a05600c474700b003fed9b1a1f4sm1662943wmo.1.2023.09.07.06.00.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 06:00:41 -0700 (PDT)
+ Thu, 07 Sep 2023 06:00:43 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/51] contrib/plugins/drcov: Fix string format
-Date: Thu,  7 Sep 2023 14:59:25 +0200
-Message-ID: <20230907130004.500601-17-pbonzini@redhat.com>
+Subject: [PULL 17/51] contrib/plugins/howvec: Fix string format
+Date: Thu,  7 Sep 2023 14:59:26 +0200
+Message-ID: <20230907130004.500601-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230907130004.500601-1-pbonzini@redhat.com>
 References: <20230907130004.500601-1-pbonzini@redhat.com>
@@ -105,36 +105,44 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 This fixes on Darwin:
 
-  plugins/drcov.c:52:13: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
-              start_code, end_code, entry, path);
-              ^~~~~~~~~~
-  plugins/drcov.c:52:25: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
-              start_code, end_code, entry, path);
-                          ^~~~~~~~
-  plugins/drcov.c:52:35: warning: format specifies type 'unsigned long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
-              start_code, end_code, entry, path);
-                                    ^~~~~
+  plugins/howvec.c:186:40: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+                                         class->count);
+                                         ^~~~~~~~~~~~
+  plugins/howvec.c:213:36: warning: format specifies type 'long' but the argument has type 'uint64_t' (aka 'unsigned long long') [-Wformat]
+                                     rec->count,
+                                     ^~~~~~~~~~
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230907105004.88600-3-philmd@linaro.org>
+Message-ID: <20230907105004.88600-4-philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- contrib/plugins/drcov.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ contrib/plugins/howvec.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/plugins/drcov.c b/contrib/plugins/drcov.c
-index 686ae0a537d..5edc94dcaf6 100644
---- a/contrib/plugins/drcov.c
-+++ b/contrib/plugins/drcov.c
-@@ -48,7 +48,7 @@ static void printf_header(unsigned long count)
-     uint64_t start_code = qemu_plugin_start_code();
-     uint64_t end_code = qemu_plugin_end_code();
-     uint64_t entry = qemu_plugin_entry_code();
--    fprintf(fp, "0, 0x%lx, 0x%lx, 0x%lx, %s\n",
-+    fprintf(fp, "0, 0x%" PRIx64 ", 0x%" PRIx64 ", 0x%" PRIx64 ", %s\n",
-             start_code, end_code, entry, path);
-     fprintf(fp, "BB Table: %ld bbs\n", count);
- }
+diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
+index 0ed01ea931e..644a7856bb2 100644
+--- a/contrib/plugins/howvec.c
++++ b/contrib/plugins/howvec.c
+@@ -181,7 +181,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+         switch (class->what) {
+         case COUNT_CLASS:
+             if (class->count || verbose) {
+-                g_string_append_printf(report, "Class: %-24s\t(%ld hits)\n",
++                g_string_append_printf(report,
++                                       "Class: %-24s\t(%" PRId64 " hits)\n",
+                                        class->class,
+                                        class->count);
+             }
+@@ -208,7 +209,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+              i++, counts = g_list_next(counts)) {
+             InsnExecCount *rec = (InsnExecCount *) counts->data;
+             g_string_append_printf(report,
+-                                   "Instr: %-24s\t(%ld hits)\t(op=0x%08x/%s)\n",
++                                   "Instr: %-24s\t(%" PRId64 " hits)"
++                                   "\t(op=0x%08x/%s)\n",
+                                    rec->insn,
+                                    rec->count,
+                                    rec->opcode,
 -- 
 2.41.0
 
