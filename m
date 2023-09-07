@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED5379725C
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C67979725F
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 14:37:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEEl-00085P-TP; Thu, 07 Sep 2023 08:35:56 -0400
+	id 1qeEFa-0000Vz-A3; Thu, 07 Sep 2023 08:36:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeEEi-00085H-Ev
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:35:52 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qeEFQ-0000Vb-Fb
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:36:36 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeEEg-0002Ul-3l
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:35:52 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-99bf3f59905so107694166b.3
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:35:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qeEFO-0002hh-2c
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 08:36:36 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2bb9a063f26so16141501fa.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 05:36:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694090144; x=1694694944; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PoBujJ/iXdoCMge3j3UDXvjqLVzFDD0TrTUoS71ns7E=;
- b=IvRBa3K+Rtgc1vxeuGYGe2535BUJ2NC8hVygfoL742JegKJMxfVgQKUZ5USxb7Xzdv
- QpaJwgYl5uH/W7kwzbvk5QLqofP20iIKkSrKbXQVL5AhKJu84rzEXd5fCwZFoKpBIV6C
- lfxS2j7SiTgKauW+8bljZRe75biYURN/4Pw6KPPM9YoQPF1hEr39ZDXTMkTXhr/1gv0+
- zvjeQkNqVXCEuun0bZ0dInI6A+2BqdHwkv8ZuZI8o+Rie6Z2hhTULexLx20MUxiKXLas
- Ctlk0U3cq+SQ17HTgpR3nuQrsLm5KIcvBhbZTKtftFdDr3o5wEx1zxjKJJ/ztwvJ8WbB
- Mn3A==
+ d=ventanamicro.com; s=google; t=1694090192; x=1694694992; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=URPI3ewrlqRSlnGa6Jr4RVOXCwSPxiiPxFVsL0rbVws=;
+ b=l4FSu3aYlRGnrkSu7iHc4cnmROsj9q7lfuGzoIEE65bNWnGsWCP/W0tw2niB3D47OR
+ Ms20YMj98WQPQ4QvW8S4XvTyfwkfKkZD8dje2Qol+Crz+8Mm5JKh7UZMi35w656wlmot
+ oehuOFDQqdOrJ53e3bYQRud9pEmI5pv+uXa11J7FAmZNt16JJ9Yrp6NqfP+PHkWw3iBK
+ NEAN9YKV04rAhIKWz8IwI4UQS2KUWI5Aj1G/y/YDe2ElPILlTIQ01BhebInOkCzirZVT
+ clOuqEQBQNazluePfIge/xfz64Mxb8pDci8Dw2+2lFJIzoD7BiyHRWIkP1weAGRujV//
+ uTCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20221208; t=1694090144; x=1694694944;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20221208; t=1694090192; x=1694694992;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PoBujJ/iXdoCMge3j3UDXvjqLVzFDD0TrTUoS71ns7E=;
- b=FC78A+DcDL9QbiGemN1/2d+BJxyWB5gvcEtLvaM13Ihl+MX39LsHoYgDf8eZ7O2soL
- hvNrgibwg2rDKyck65uoJRb2lfCvMaZGhnujVdNcyhq6CgAdclWXkIf5VEyhtq6hupA/
- /r03Is8oY2e4HgJ5W27DOQqjCWJp8AThl66m5YuWmUhJKKKGdI6r2vL5gWRLFbAwRBNB
- smhY/J+3UrMQ3NqpvUOEqCtrOyilTDIYQb/+Iw4ASjhiaeKIAO4sRawwk3boVs2WguON
- +h85h+I1U28cgogULgNPnR9a576ntBYnOSyiOoJ6uZCjIfFkBPV/xMimlAbz9FJ/26wy
- Mp7w==
-X-Gm-Message-State: AOJu0YyGz1ako+1qQr3Dkp0cClf9JN3DmfyHOhLVegBG0bkQuMpIVuTl
- FJEBYkpzRdy69z5/S1ThG6tNRQ==
-X-Google-Smtp-Source: AGHT+IEJBc6bLzdKEt+8aczqpH1jETGPkzQbTVPi0fsfGDqj+OEEylRFztpb+wnefd0GKDO7f4ukhA==
-X-Received: by 2002:a17:906:739e:b0:99c:6692:7f76 with SMTP id
- f30-20020a170906739e00b0099c66927f76mr4999604ejl.16.1694090143746; 
- Thu, 07 Sep 2023 05:35:43 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-222-226.abo.bbox.fr.
- [176.131.222.226]) by smtp.gmail.com with ESMTPSA id
- f27-20020a170906391b00b0099cd1c0cb21sm10222882eje.129.2023.09.07.05.35.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 05:35:43 -0700 (PDT)
-Message-ID: <f1694c9b-75ed-a8a3-6a05-91f796dfcf2b@linaro.org>
-Date: Thu, 7 Sep 2023 14:35:41 +0200
+ bh=URPI3ewrlqRSlnGa6Jr4RVOXCwSPxiiPxFVsL0rbVws=;
+ b=ZxhLMsFRpx1nuslYes/aLMIL2AsCDQdmCMxrnjQQNuDddyBVu0A7wTUnYC263t4LQ4
+ znzixdyZW896CP3YluD0xypqasF9z/FXCZhwV0igqdFVY9a5cpjxkiW1yIbeWg4Rlxij
+ 5qvuhA+CZvmhLGl9FcX1fTo+/zcuzBD6uibMrsExq2+c0lXMgUTNQbL/z3makV3E8Bm2
+ jW4Q7MsB/3114J6ZkGyH/h9Mq/Xs/3M/nVNr02Kc8PJEdQs0bE/JJUZZb7SgVJ2oXt3G
+ EcfrtM2yI1716t3Si5ZXGxlj6yjcM2B+2kdTR6dJA/kVi4vqrspdlRd6fzKyh5zcU4Ig
+ Lrvw==
+X-Gm-Message-State: AOJu0YzDZuq9QrarGCgb2WfTvya5z1dT0pJNGmNpfbgOLqOdRFKNO8Wr
+ Xj+5jnsC803u92Ys380lsVkJpQ==
+X-Google-Smtp-Source: AGHT+IGg6qudx3fnNhyo0LxAAdyBTR3oWamzBPLSGP41vkYabBFH45O0YqFTnTonTetC099bYZLrvg==
+X-Received: by 2002:a2e:900e:0:b0:2bc:de11:453b with SMTP id
+ h14-20020a2e900e000000b002bcde11453bmr4901230ljg.1.1694090191188; 
+ Thu, 07 Sep 2023 05:36:31 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ 12-20020a05600c230c00b00401e32b25adsm2425218wmo.4.2023.09.07.05.36.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Sep 2023 05:36:30 -0700 (PDT)
+Date: Thu, 7 Sep 2023 14:36:29 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, palmer@dabbelt.com, 
+ bin.meng@windriver.com, peter.maydell@linaro.org, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] docs/devel: Add cross-compiling doc
+Message-ID: <20230907-d272560607f40c00538e4e3f@orel>
+References: <20230907084604.253347-2-ajones@ventanamicro.com>
+ <87sf7q1djr.fsf@linaro.org>
+ <20230907-6262b40a0a352bdce53999e3@orel>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 2/3] hw/cxl: Add utility functions decoder interleave
- ways and target count.
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
- Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- linux-cxl@vger.kernel.org
-Cc: linuxarm@huawei.com
-References: <20230907113543.19760-1-Jonathan.Cameron@huawei.com>
- <20230907113543.19760-3-Jonathan.Cameron@huawei.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230907113543.19760-3-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+In-Reply-To: <20230907-6262b40a0a352bdce53999e3@orel>
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=ajones@ventanamicro.com; helo=mail-lj1-x22b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,30 +96,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/9/23 13:35, Jonathan Cameron wrote:
-> As an encoded version of these key configuration parameters is available
-> in a register, provide functions to extract it again so as to avoid
-> the need for duplicating the storage.
+On Thu, Sep 07, 2023 at 02:31:20PM +0200, Andrew Jones wrote:
+> On Thu, Sep 07, 2023 at 11:20:55AM +0100, Alex Benn�e wrote:
+> > 
+> > Andrew Jones <ajones@ventanamicro.com> writes:
+> > 
+> > > Add instructions for how to cross-compile QEMU for RISC-V. The
+> > > file is named generically because there's no reason not to collect
+> > > other architectures steps into the same file, especially because
+> > > several subsections like those for cross-compiling QEMU dependencies
+> > > using meson and a cross-file could be shared. Additionally, other
+> > > approaches to creating sysroots, such as with debootstrap, may be
+> > > documented in this file in the future.
+> > >
+> > > Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> > > ---
+> > >  docs/devel/cross-compiling.rst | 221 +++++++++++++++++++++++++++++++++
+> > >  docs/devel/index-build.rst     |   1 +
+> > >  2 files changed, 222 insertions(+)
+> > >  create mode 100644 docs/devel/cross-compiling.rst
+> > >
+> > > diff --git a/docs/devel/cross-compiling.rst b/docs/devel/cross-compiling.rst
+> > > new file mode 100644
+> > > index 000000000000..1b988ba54e4c
+> > > --- /dev/null
+> > > +++ b/docs/devel/cross-compiling.rst
+> > > @@ -0,0 +1,221 @@
+> > > +.. SPDX-License-Identifier: GPL-2.0-or-later
+> > > +
+> > > +====================
+> > > +Cross-compiling QEMU
+> > > +====================
+> > > +
+> > > +Cross-compiling QEMU first requires the preparation of a cross-toolchain
+> > > +and the cross-compiling of QEMU's dependencies. While the steps will be
+> > > +similar across architectures, each architecture will have its own specific
+> > > +recommendations.
+> > 
+> > "some architectures" - most of the cross compile stuff is hidden away by
+> > the build system on systems with appropriate development libraries
+> > installed. I think we would be remiss if we didn't just outline the
+> > common case:
+> > 
+> >    ../configure --cross-prefix=riscv64-linux-gnu-
+> > 
+> > I think we could make it clearer that in most cases you don't need to
+> > prepare and cross-compile a bunch of dependencies lest we send
+> > developers down a rabbit hole.
+> > 
+> > Maybe build-system.rst be updated and this reference it for the common
+> > case?
+> > 
 > 
-> Whilst here update the _enc() function to include additional values
-> as defined in the CXL 3.0 specification. Whilst they are not
-> currently used in the emulation, they may be in future and it is
-> easier to compare with the specification if all values are covered.
+> Hi Alex,
 > 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> v2: Thanks to Philippe Mathieu-Daudé
->   - Expand both enc() and dec() functions to include full set of values
->     defined in CXL r3.0
->   - Pushed implementation down into the .c file.
-> ---
->   include/hw/cxl/cxl_component.h |  2 ++
->   hw/cxl/cxl-component-utils.c   | 59 ++++++++++++++++++++++++++++++----
->   2 files changed, 55 insertions(+), 6 deletions(-)
+> tl;dr, I'd welcome instructions helping people get cross-arch development
+> libraries installed without having to build them. I wouldn't make a good
+> author for those instructions, though, since I don't know how.
+> 
+> I'm guessing the dependencies can be installed with a distro's package
+> management, assuming the package management supports cross-arch
+> installation and installing to a specified root directory. I'm on Fedora,
+> so I just tried
+> 
+>  $ sudo dnf install --forcearch=aarch64 --installroot=$SYSROOT --releasever=36 glib2-devel
+> 
+> but it wanted to install a huge number of packages, which most people
+> probably wouldn't want to do. Maybe that command isn't what you had in
+> mind or other distros can manage this better. I'm all ears.
+>
 
-Hoping the values match the "CXL r3.0 Section 8.2.4.19.1 CXL
-HDM Decoder Capability Register":
+Ah, I just saw your other reply on the original posting. The magic is in
+docker stuff.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I'll look into it, but I'd also make a poor author for anything regarding
+docker :-)
 
+Thanks,
+drew
 
