@@ -2,60 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0067971BE
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 270E17971C3
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 13:29:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeDAl-0004y5-Jw; Thu, 07 Sep 2023 07:27:43 -0400
+	id 1qeDC6-0000h1-HQ; Thu, 07 Sep 2023 07:29:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qeDAi-0004qx-Q7
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:27:40 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qeDC5-0000gs-BM
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:29:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qeDAa-00068P-Sh
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:27:40 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RhH5c2scjz6FBlH;
- Thu,  7 Sep 2023 19:27:16 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 7 Sep
- 2023 12:27:29 +0100
-Date: Thu, 7 Sep 2023 12:27:28 +0100
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-CC: Jonathan Cameron via <qemu-devel@nongnu.org>, Michael Tsirkin
- <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>,
- Dave Jiang <dave.jiang@intel.com>, <linuxarm@huawei.com>
-Subject: Re: [PATCH 1/2] hw/cxl: Add utility functions decoder interleave
- ways and target count.
-Message-ID: <20230907122728.00006968@huawei.com>
-In-Reply-To: <d3e6506a-b553-d292-9428-25e784be0d4f@linaro.org>
-References: <20230904164704.18739-1-Jonathan.Cameron@huawei.com>
- <20230904164704.18739-2-Jonathan.Cameron@huawei.com>
- <89d5477c-ece0-b738-c64f-056242619d92@linaro.org>
- <20230905155639.00000b3a@huawei.com>
- <20230905160607.0000366f@huawei.com>
- <d3e6506a-b553-d292-9428-25e784be0d4f@linaro.org>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qeDC2-0006P3-US
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 07:29:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694086142;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=3plmDgcRM7WLUvLGnjVyUIkI0/DPUxjLd/UqdejgxEM=;
+ b=BPXSebOobemOQWItgXnOxF1Te2IluFMMxCrUN0StZ5+pPd1CSSDvSSywOT6p+pLQqZgMxg
+ NFOmF4zFE79rhHdKwJ1z1LdNEd7vJXj7qJThi7ox2mGbQeUdKuRa5tY6s8VCaJVugh0C9J
+ 0qccxAXZ8XOODFe4aRurNpQHYcUWPgA=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-62-T8M6kffVNIiLE2ouiPtK4Q-1; Thu, 07 Sep 2023 07:28:58 -0400
+X-MC-Unique: T8M6kffVNIiLE2ouiPtK4Q-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-314256aedcbso561204f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 04:28:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694086137; x=1694690937;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3plmDgcRM7WLUvLGnjVyUIkI0/DPUxjLd/UqdejgxEM=;
+ b=XL/xDqxu41+YiE6SPV4qt2IXdz3iUAF01m8s6zL46oFJ1g34ySmqvcHmrQ9rKhBD0T
+ i7ZSTqJDaF+rTDSsivLzpX6eQj5krFIVh4yiFVQ+hyzplyI38Jv+XDXCnWyeamNPy7jU
+ VQHCOtnkPBn4xcfQO/9rj+gicbqBQRA+AKdHPminGRjHmChG5K09Y5Ri7jXVHmRibpz4
+ NS0/+2CZi/SFi9f5/SSmdA944Z/zer5Wpv0Y05FXyQQyDK1fHJdNl+MnwiLi6vKBmNSY
+ ivhK/cxDoUje/ftrf2yGXpkQkWlOCJFKv9xuALn6P61uojais0B8P54qcLFmKZkiVSTN
+ y+oQ==
+X-Gm-Message-State: AOJu0YwPQvo7Nz56L0SndMUA8UAqruwzkCFtpgstT++rEuNM8CJ7PcXG
+ 9kp538khQUBBRCSW7r3x1XphoGzKM4/3gBMjq6u+ztVc6iE01iTCItUDwKH++vYz0phUZvBB4DA
+ /uIkrKYkCqMZtMRE=
+X-Received: by 2002:a1c:7905:0:b0:401:d69e:8b4d with SMTP id
+ l5-20020a1c7905000000b00401d69e8b4dmr4908336wme.9.1694086137298; 
+ Thu, 07 Sep 2023 04:28:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCpf7S2yaNWiodiC/xgdyDB/ZtYPMUFQF3HA/wi6Tbw+WD/v04mZymeAgL+5CUEeADo9btwg==
+X-Received: by 2002:a1c:7905:0:b0:401:d69e:8b4d with SMTP id
+ l5-20020a1c7905000000b00401d69e8b4dmr4908325wme.9.1694086136899; 
+ Thu, 07 Sep 2023 04:28:56 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312::1fc? ([2001:b07:6468:f312::1fc])
+ by smtp.googlemail.com with ESMTPSA id
+ p33-20020a05600c1da100b003fef5e76f2csm2406170wms.0.2023.09.07.04.28.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 07 Sep 2023 04:28:56 -0700 (PDT)
+Message-ID: <1fa3ad95-c335-7e97-42f0-00dca5c5ba48@redhat.com>
+Date: Thu, 7 Sep 2023 13:28:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC 0/3] qmp: make qmp_device_add() a coroutine
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Markus Armbruster
+ <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, kwolf@redhat.com,
+ Maxim Levitsky <mlevitsk@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230906190141.1286893-1-stefanha@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230906190141.1286893-1-stefanha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,101 +103,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 5 Sep 2023 18:55:23 +0200
-Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
+On 9/6/23 21:01, Stefan Hajnoczi wrote:
+> It is not safe to call drain_call_rcu() from qmp_device_add() because
+> some call stacks are not prepared for drain_call_rcu() to drop the Big
+> QEMU Lock (BQL).
+> 
+> For example, device emulation code is protected by the BQL but when it
+> calls aio_poll() -> ... -> qmp_device_add() -> drain_call_rcu() then the
+> BQL is dropped. See https://bugzilla.redhat.com/show_bug.cgi?id=2215192 for a
+> concrete bug of this type.
+> 
+> Another limitation of drain_call_rcu() is that it cannot be invoked within an
+> RCU read-side critical section since the reclamation phase cannot complete
+> until the end of the critical section. Unfortunately, call stacks have been
+> seen where this happens (see
+> https://bugzilla.redhat.com/show_bug.cgi?id=2214985).
 
-> On 5/9/23 17:06, Jonathan Cameron wrote:
-> > On Tue, 5 Sep 2023 15:56:39 +0100
-> > Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
-> >  =20
-> >> On Mon, 4 Sep 2023 20:26:59 +0200
-> >> Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
-> >> =20
-> >>> On 4/9/23 18:47, Jonathan Cameron wrote: =20
-> >>>> As an encoded version of these key configuration parameters is
-> >>>> a register, provide functions to extract it again so as to avoid
-> >>>> the need for duplicating the storage.
-> >>>>
-> >>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >>>> ---
-> >>>>    include/hw/cxl/cxl_component.h | 14 ++++++++++++++
-> >>>>    hw/cxl/cxl-component-utils.c   | 17 +++++++++++++++++
-> >>>>    2 files changed, 31 insertions(+)
-> >>>>
-> >>>> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_com=
-ponent.h
-> >>>> index 42c7e581a7..f0ad9cf7de 100644
-> >>>> --- a/include/hw/cxl/cxl_component.h
-> >>>> +++ b/include/hw/cxl/cxl_component.h
-> >>>> @@ -238,7 +238,21 @@ static inline int cxl_decoder_count_enc(int cou=
-nt)
-> >>>>        return 0;
-> >>>>    }
-> >>>>   =20
-> >>>> +static inline int cxl_decoder_count_dec(int enc_cnt)
-> >>>> +{
-> >>>> +    switch (enc_cnt) {
-> >>>> +    case 0: return 1;
-> >>>> +    case 1: return 2;
-> >>>> +    case 2: return 4;
-> >>>> +    case 3: return 6;
-> >>>> +    case 4: return 8;
-> >>>> +    case 5: return 10;
-> >>>> +    }
-> >>>> +    return 0;
-> >>>> +} =20
-> >>>
-> >>> Why inline?
-> >>>     =20
-> >>
-> >> Bad habit. =20
-> > Nope. I'm being slow.  This is in a header so if I don't
-> > mark it inline I get a bunch of defined but not used warnings.
-> >=20
-> > Obviously I could move the implementation of this and the matching
-> > encoding routines out of the header. I haven't done so for now. =20
->=20
-> Inlined function in hw/ are hardly justifiable. They make the headers
-> and debugging sessions harder to read in my experience. Compilers are
-> becoming clever and clever, and we have LTO, so I rather privilege
-> code maintainability. My 2 cents :)
->=20
-> >>> Alternatively:
-> >>>
-> >>>     unsigned cxl_decoder_count_dec(unsigned enc_cnt)
-> >>>     {
-> >>>         return enc_cnt <=3D 5 ? 2 * enc_cnt : 0; =20
-> >>
-> >> It gets a little more fiddly than the code I'm proposing implies.
-> >> For Switches and Host Bridges larger values are defined
-> >> (we just don't emulate them yet and may never do so) and those
-> >> don't have a sensible mapping.
-> >>
-> >> I guess there is no harm in adding the full decode however
-> >> which will make it more obvious why it was a switch statement. =20
->=20
-> Right, no problem.
->=20
-> Preferably having this tiny function not inlined
+I think the root cause here is that do_qmp_dispatch_bh is called on the 
+wrong context, namely qemu_get_aio_context() instead of 
+iohandler_get_aio_context().  This is what causes it to move to the vCPU 
+thread.
 
-I'll push this and the enc() version down into the cxl-component-utils.c
-as a precursor patch.
+Auditing all subsystems that use iohandler_get_aio_context(), for 
+example via qemu_set_fd_handler(), together with bottom halves, would be 
+a bit daunting.
 
->=20
-> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
->=20
->=20
-Thanks, but the changes to do make these non inline, and include
-the larger decode and encode values are big enough I won't pick up
-the RB - too much changing (that I might mess up ;)
+I don't have any objection to this patch series actually, but I would 
+like to see if using the right AioContext also fixes the bug---and then 
+treat these changes as more of a cleanup.  Coroutines are pretty 
+pervasive in QEMU and are not going away which, as you say in the 
+updated docs, makes drain_call_rcu_co() preferrable to drain_call_rcu().
+
+Paolo
 
 
-Jonathan
-
+> This patch series introduces drain_call_rcu_co(), which does the same thing as
+> drain_call_rcu() but asynchronously. By yielding back to the event loop we can
+> wait until the caller drops the BQL and leaves its RCU read-side critical
+> section.
+> 
+> Patch 1 changes HMP so that coroutine monitor commands yield back to the event
+> loop instead of running inside a nested event loop.
+> 
+> Patch 2 introduces the new drain_call_rcu_co() API.
+> 
+> Patch 3 converts qmp_device_add() into a coroutine monitor command and uses
+> drain_call_rcu_co().
+> 
+> I'm sending this as an RFC because I don't have confirmation yet that the bugs
+> mentioned above are fixed by this patch series.
+> 
+> Stefan Hajnoczi (3):
+>    hmp: avoid the nested event loop in handle_hmp_command()
+>    rcu: add drain_call_rcu_co() API
+>    qmp: make qmp_device_add() a coroutine
+> 
+>   MAINTAINERS            |  2 ++
+>   docs/devel/rcu.txt     | 21 ++++++++++++++++
+>   qapi/qdev.json         |  1 +
+>   include/monitor/qdev.h |  3 ++-
+>   include/qemu/rcu.h     |  1 +
+>   util/rcu-internal.h    |  8 ++++++
+>   monitor/hmp.c          | 28 +++++++++++----------
+>   monitor/qmp-cmds.c     |  2 +-
+>   softmmu/qdev-monitor.c | 34 +++++++++++++++++++++++---
+>   util/rcu-co.c          | 55 ++++++++++++++++++++++++++++++++++++++++++
+>   util/rcu.c             |  3 ++-
+>   hmp-commands.hx        |  1 +
+>   util/meson.build       |  2 +-
+>   13 files changed, 140 insertions(+), 21 deletions(-)
+>   create mode 100644 util/rcu-internal.h
+>   create mode 100644 util/rcu-co.c
+> 
 
 
