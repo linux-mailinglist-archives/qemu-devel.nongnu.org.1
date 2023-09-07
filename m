@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB54797B72
+	by mail.lfdr.de (Postfix) with ESMTPS id DB430797B74
 	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 20:18:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeJYk-0002lm-2y; Thu, 07 Sep 2023 14:16:54 -0400
+	id 1qeJYj-0002lT-Bi; Thu, 07 Sep 2023 14:16:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qeJYi-0002kr-2L
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 14:16:52 -0400
+ id 1qeJYg-0002k9-9m
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 14:16:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qeJYa-0005rG-1l
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 14:16:51 -0400
+ id 1qeJYa-0005rS-10
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 14:16:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694110598;
+ s=mimecast20190719; t=1694110600;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JW5vO41p93X3yby0xACVorNQxKYX2n2U/Tz0nwfaqcY=;
- b=LeveUYBCsJ3ohO0IvZSBKaRqaMSlpWFdjnRwsPr8aMRGmFo5NkBosX6VXD6iP9zmu9FSML
- S+XZPmsdVf4qwnGExyMgRjBZfQuqmkOrM7Py4R+/E4gX5a3QLj5I42J0vJyPsJTaldfjC5
- OBJKfndw3L9T/EfcsqJDYK75R607+uY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-175-VXqF53yoP-ucOmA7MIyAWA-1; Thu, 07 Sep 2023 14:16:35 -0400
-X-MC-Unique: VXqF53yoP-ucOmA7MIyAWA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=NTs5Z3x6mFaNjZuqkr8tBEpT8govuyyCToVdW0jv/j0=;
+ b=dDObo8YXRif0fFlbaPS74ui8nMd6YdsLJpjZudRAQXP2XVFvowQHqauO4QYqE+8RG8K6Xy
+ hMu3qFY93+4RbnRNwGNFt1/5XBcC7jhLLFRZeQtmevIT9s9YEZAdZ6YEgX4iqn4wtiQoeP
+ eZuzCcBfXEIiFk5vkzqWLYjJkWHHNEM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-467-O9EqS-MrN5K0xLGeAyDsTA-1; Thu, 07 Sep 2023 14:16:38 -0400
+X-MC-Unique: O9EqS-MrN5K0xLGeAyDsTA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C5064801C97;
- Thu,  7 Sep 2023 18:16:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 39CC429AB458;
+ Thu,  7 Sep 2023 18:16:37 +0000 (UTC)
 Received: from localhost (unknown [10.39.193.223])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A3D53C03293;
- Thu,  7 Sep 2023 18:16:33 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1C21A403171;
+ Thu,  7 Sep 2023 18:16:35 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Jeuk Kim <jeuk20.kim@samsung.com>, Hanna Reitz <hreitz@redhat.com>,
@@ -54,14 +54,14 @@ Cc: Jeuk Kim <jeuk20.kim@samsung.com>, Hanna Reitz <hreitz@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 2/5] hw/ufs: Initial commit for emulated Universal-Flash-Storage
-Date: Thu,  7 Sep 2023 14:16:25 -0400
-Message-ID: <20230907181628.1594401-3-stefanha@redhat.com>
+Subject: [PULL 3/5] hw/ufs: Support for Query Transfer Requests
+Date: Thu,  7 Sep 2023 14:16:26 -0400
+Message-ID: <20230907181628.1594401-4-stefanha@redhat.com>
 In-Reply-To: <20230907181628.1594401-1-stefanha@redhat.com>
 References: <20230907181628.1594401-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -70,7 +70,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,1622 +88,1158 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jeuk Kim <jeuk20.kim@samsung.com>
 
-Universal Flash Storage (UFS) is a high-performance mass storage device
-with a serial interface. It is primarily used as a high-performance
-data storage device for embedded applications.
+This commit makes the UFS device support query
+and nop out transfer requests.
 
-This commit contains code for UFS device to be recognized
-as a UFS PCI device.
-Patches to handle UFS logical unit and Transfer Request will follow.
+The next patch would be support for UFS logical
+unit and scsi command transfer request.
 
 Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-id: 10232660d462ee5cd10cf673f1a9a1205fc8276c.1693980783.git.jeuk20.kim@gmail.com
+Message-id: ff7a5f0fd26761936a553ffb89d3df0ba62844e9.1693980783.git.jeuk20.kim@gmail.com
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- MAINTAINERS              |    6 +
- docs/specs/pci-ids.rst   |    2 +
- meson.build              |    1 +
- hw/ufs/trace.h           |    1 +
- hw/ufs/ufs.h             |   42 ++
- include/block/ufs.h      | 1090 ++++++++++++++++++++++++++++++++++++++
- include/hw/pci/pci.h     |    1 +
- include/hw/pci/pci_ids.h |    1 +
- hw/ufs/ufs.c             |  278 ++++++++++
- hw/Kconfig               |    1 +
- hw/meson.build           |    1 +
- hw/ufs/Kconfig           |    4 +
- hw/ufs/meson.build       |    1 +
- hw/ufs/trace-events      |   32 ++
- 14 files changed, 1461 insertions(+)
- create mode 100644 hw/ufs/trace.h
- create mode 100644 hw/ufs/ufs.h
- create mode 100644 include/block/ufs.h
- create mode 100644 hw/ufs/ufs.c
- create mode 100644 hw/ufs/Kconfig
- create mode 100644 hw/ufs/meson.build
- create mode 100644 hw/ufs/trace-events
+ hw/ufs/ufs.h        |  46 +++
+ hw/ufs/ufs.c        | 988 +++++++++++++++++++++++++++++++++++++++++++-
+ hw/ufs/trace-events |   1 +
+ 3 files changed, 1033 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b471973e1e..3ac4ac6219 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2248,6 +2248,12 @@ F: tests/qtest/nvme-test.c
- F: docs/system/devices/nvme.rst
- T: git git://git.infradead.org/qemu-nvme.git nvme-next
- 
-+ufs
-+M: Jeuk Kim <jeuk20.kim@samsung.com>
-+S: Supported
-+F: hw/ufs/*
-+F: include/block/ufs.h
-+
- megasas
- M: Hannes Reinecke <hare@suse.com>
- L: qemu-block@nongnu.org
-diff --git a/docs/specs/pci-ids.rst b/docs/specs/pci-ids.rst
-index e302bea484..d6707fa069 100644
---- a/docs/specs/pci-ids.rst
-+++ b/docs/specs/pci-ids.rst
-@@ -92,6 +92,8 @@ PCI devices (other than virtio):
-   PCI PVPanic device (``-device pvpanic-pci``)
- 1b36:0012
-   PCI ACPI ERST device (``-device acpi-erst``)
-+1b36:0013
-+  PCI UFS device (``-device ufs``)
- 
- All these devices are documented in :doc:`index`.
- 
-diff --git a/meson.build b/meson.build
-index bf9831c715..0e31bdfabf 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3287,6 +3287,7 @@ if have_system
-     'hw/ssi',
-     'hw/timer',
-     'hw/tpm',
-+    'hw/ufs',
-     'hw/usb',
-     'hw/vfio',
-     'hw/virtio',
-diff --git a/hw/ufs/trace.h b/hw/ufs/trace.h
-new file mode 100644
-index 0000000000..2dbd6397c3
---- /dev/null
-+++ b/hw/ufs/trace.h
-@@ -0,0 +1 @@
-+#include "trace/trace-hw_ufs.h"
 diff --git a/hw/ufs/ufs.h b/hw/ufs/ufs.h
-new file mode 100644
-index 0000000000..d9d195caec
---- /dev/null
+index d9d195caec..3d1b2cff4e 100644
+--- a/hw/ufs/ufs.h
 +++ b/hw/ufs/ufs.h
-@@ -0,0 +1,42 @@
-+/*
-+ * QEMU UFS
-+ *
-+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All rights reserved.
-+ *
-+ * Written by Jeuk Kim <jeuk20.kim@samsung.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#ifndef HW_UFS_UFS_H
-+#define HW_UFS_UFS_H
-+
-+#include "hw/pci/pci_device.h"
-+#include "hw/scsi/scsi.h"
-+#include "block/ufs.h"
-+
-+#define UFS_MAX_LUS 32
-+#define UFS_BLOCK_SIZE 4096
-+
-+typedef struct UfsParams {
-+    char *serial;
-+    uint8_t nutrs; /* Number of UTP Transfer Request Slots */
-+    uint8_t nutmrs; /* Number of UTP Task Management Request Slots */
-+} UfsParams;
-+
-+typedef struct UfsHc {
-+    PCIDevice parent_obj;
-+    MemoryRegion iomem;
-+    UfsReg reg;
-+    UfsParams params;
-+    uint32_t reg_size;
-+
-+    qemu_irq irq;
-+    QEMUBH *doorbell_bh;
-+    QEMUBH *complete_bh;
-+} UfsHc;
-+
-+#define TYPE_UFS "ufs"
-+#define UFS(obj) OBJECT_CHECK(UfsHc, (obj), TYPE_UFS)
-+
-+#endif /* HW_UFS_UFS_H */
-diff --git a/include/block/ufs.h b/include/block/ufs.h
-new file mode 100644
-index 0000000000..fd884eb8ce
---- /dev/null
-+++ b/include/block/ufs.h
-@@ -0,0 +1,1090 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#ifndef BLOCK_UFS_H
-+#define BLOCK_UFS_H
-+
-+#include "hw/registerfields.h"
-+
-+typedef struct QEMU_PACKED UfsReg {
-+    uint32_t cap;
-+    uint32_t rsvd0;
-+    uint32_t ver;
-+    uint32_t rsvd1;
-+    uint32_t hcpid;
-+    uint32_t hcmid;
-+    uint32_t ahit;
-+    uint32_t rsvd2;
-+    uint32_t is;
-+    uint32_t ie;
-+    uint32_t rsvd3[2];
-+    uint32_t hcs;
-+    uint32_t hce;
-+    uint32_t uecpa;
-+    uint32_t uecdl;
-+    uint32_t uecn;
-+    uint32_t uect;
-+    uint32_t uecdme;
-+    uint32_t utriacr;
-+    uint32_t utrlba;
-+    uint32_t utrlbau;
-+    uint32_t utrldbr;
-+    uint32_t utrlclr;
-+    uint32_t utrlrsr;
-+    uint32_t utrlcnr;
-+    uint32_t rsvd4[2];
-+    uint32_t utmrlba;
-+    uint32_t utmrlbau;
-+    uint32_t utmrldbr;
-+    uint32_t utmrlclr;
-+    uint32_t utmrlrsr;
-+    uint32_t rsvd5[3];
-+    uint32_t uiccmd;
-+    uint32_t ucmdarg1;
-+    uint32_t ucmdarg2;
-+    uint32_t ucmdarg3;
-+    uint32_t rsvd6[4];
-+    uint32_t rsvd7[4];
-+    uint32_t rsvd8[16];
-+    uint32_t ccap;
-+} UfsReg;
-+
-+REG32(CAP, offsetof(UfsReg, cap))
-+    FIELD(CAP, NUTRS, 0, 5)
-+    FIELD(CAP, RTT, 8, 8)
-+    FIELD(CAP, NUTMRS, 16, 3)
-+    FIELD(CAP, AUTOH8, 23, 1)
-+    FIELD(CAP, 64AS, 24, 1)
-+    FIELD(CAP, OODDS, 25, 1)
-+    FIELD(CAP, UICDMETMS, 26, 1)
-+    FIELD(CAP, CS, 28, 1)
-+REG32(VER, offsetof(UfsReg, ver))
-+REG32(HCPID, offsetof(UfsReg, hcpid))
-+REG32(HCMID, offsetof(UfsReg, hcmid))
-+REG32(AHIT, offsetof(UfsReg, ahit))
-+REG32(IS, offsetof(UfsReg, is))
-+    FIELD(IS, UTRCS, 0, 1)
-+    FIELD(IS, UDEPRI, 1, 1)
-+    FIELD(IS, UE, 2, 1)
-+    FIELD(IS, UTMS, 3, 1)
-+    FIELD(IS, UPMS, 4, 1)
-+    FIELD(IS, UHXS, 5, 1)
-+    FIELD(IS, UHES, 6, 1)
-+    FIELD(IS, ULLS, 7, 1)
-+    FIELD(IS, ULSS, 8, 1)
-+    FIELD(IS, UTMRCS, 9, 1)
-+    FIELD(IS, UCCS, 10, 1)
-+    FIELD(IS, DFES, 11, 1)
-+    FIELD(IS, UTPES, 12, 1)
-+    FIELD(IS, HCFES, 16, 1)
-+    FIELD(IS, SBFES, 17, 1)
-+    FIELD(IS, CEFES, 18, 1)
-+REG32(IE, offsetof(UfsReg, ie))
-+    FIELD(IE, UTRCE, 0, 1)
-+    FIELD(IE, UDEPRIE, 1, 1)
-+    FIELD(IE, UEE, 2, 1)
-+    FIELD(IE, UTMSE, 3, 1)
-+    FIELD(IE, UPMSE, 4, 1)
-+    FIELD(IE, UHXSE, 5, 1)
-+    FIELD(IE, UHESE, 6, 1)
-+    FIELD(IE, ULLSE, 7, 1)
-+    FIELD(IE, ULSSE, 8, 1)
-+    FIELD(IE, UTMRCE, 9, 1)
-+    FIELD(IE, UCCE, 10, 1)
-+    FIELD(IE, DFEE, 11, 1)
-+    FIELD(IE, UTPEE, 12, 1)
-+    FIELD(IE, HCFEE, 16, 1)
-+    FIELD(IE, SBFEE, 17, 1)
-+    FIELD(IE, CEFEE, 18, 1)
-+REG32(HCS, offsetof(UfsReg, hcs))
-+    FIELD(HCS, DP, 0, 1)
-+    FIELD(HCS, UTRLRDY, 1, 1)
-+    FIELD(HCS, UTMRLRDY, 2, 1)
-+    FIELD(HCS, UCRDY, 3, 1)
-+    FIELD(HCS, UPMCRS, 8, 3)
-+REG32(HCE, offsetof(UfsReg, hce))
-+    FIELD(HCE, HCE, 0, 1)
-+    FIELD(HCE, CGE, 1, 1)
-+REG32(UECPA, offsetof(UfsReg, uecpa))
-+REG32(UECDL, offsetof(UfsReg, uecdl))
-+REG32(UECN, offsetof(UfsReg, uecn))
-+REG32(UECT, offsetof(UfsReg, uect))
-+REG32(UECDME, offsetof(UfsReg, uecdme))
-+REG32(UTRIACR, offsetof(UfsReg, utriacr))
-+REG32(UTRLBA, offsetof(UfsReg, utrlba))
-+    FIELD(UTRLBA, UTRLBA, 9, 22)
-+REG32(UTRLBAU, offsetof(UfsReg, utrlbau))
-+REG32(UTRLDBR, offsetof(UfsReg, utrldbr))
-+REG32(UTRLCLR, offsetof(UfsReg, utrlclr))
-+REG32(UTRLRSR, offsetof(UfsReg, utrlrsr))
-+REG32(UTRLCNR, offsetof(UfsReg, utrlcnr))
-+REG32(UTMRLBA, offsetof(UfsReg, utmrlba))
-+    FIELD(UTMRLBA, UTMRLBA, 9, 22)
-+REG32(UTMRLBAU, offsetof(UfsReg, utmrlbau))
-+REG32(UTMRLDBR, offsetof(UfsReg, utmrldbr))
-+REG32(UTMRLCLR, offsetof(UfsReg, utmrlclr))
-+REG32(UTMRLRSR, offsetof(UfsReg, utmrlrsr))
-+REG32(UICCMD, offsetof(UfsReg, uiccmd))
-+REG32(UCMDARG1, offsetof(UfsReg, ucmdarg1))
-+REG32(UCMDARG2, offsetof(UfsReg, ucmdarg2))
-+REG32(UCMDARG3, offsetof(UfsReg, ucmdarg3))
-+REG32(CCAP, offsetof(UfsReg, ccap))
-+
-+#define UFS_INTR_MASK                                    \
-+    ((1 << R_IS_CEFES_SHIFT) | (1 << R_IS_SBFES_SHIFT) | \
-+     (1 << R_IS_HCFES_SHIFT) | (1 << R_IS_UTPES_SHIFT) | \
-+     (1 << R_IS_DFES_SHIFT) | (1 << R_IS_UCCS_SHIFT) |   \
-+     (1 << R_IS_UTMRCS_SHIFT) | (1 << R_IS_ULSS_SHIFT) | \
-+     (1 << R_IS_ULLS_SHIFT) | (1 << R_IS_UHES_SHIFT) |   \
-+     (1 << R_IS_UHXS_SHIFT) | (1 << R_IS_UPMS_SHIFT) |   \
-+     (1 << R_IS_UTMS_SHIFT) | (1 << R_IS_UE_SHIFT) |     \
-+     (1 << R_IS_UDEPRI_SHIFT) | (1 << R_IS_UTRCS_SHIFT))
-+
-+#define UFS_UPIU_HEADER_TRANSACTION_TYPE_SHIFT 24
-+#define UFS_UPIU_HEADER_TRANSACTION_TYPE_MASK 0xff
-+#define UFS_UPIU_HEADER_TRANSACTION_TYPE(dword0)                       \
-+    ((be32_to_cpu(dword0) >> UFS_UPIU_HEADER_TRANSACTION_TYPE_SHIFT) & \
-+     UFS_UPIU_HEADER_TRANSACTION_TYPE_MASK)
-+
-+#define UFS_UPIU_HEADER_QUERY_FUNC_SHIFT 16
-+#define UFS_UPIU_HEADER_QUERY_FUNC_MASK 0xff
-+#define UFS_UPIU_HEADER_QUERY_FUNC(dword1)                       \
-+    ((be32_to_cpu(dword1) >> UFS_UPIU_HEADER_QUERY_FUNC_SHIFT) & \
-+     UFS_UPIU_HEADER_QUERY_FUNC_MASK)
-+
-+#define UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_SHIFT 0
-+#define UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_MASK 0xffff
-+#define UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH(dword2)                       \
-+    ((be32_to_cpu(dword2) >> UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_SHIFT) & \
-+     UFS_UPIU_HEADER_DATA_SEGMENT_LENGTH_MASK)
-+
-+typedef struct QEMU_PACKED DeviceDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint8_t device;
-+    uint8_t device_class;
-+    uint8_t device_sub_class;
-+    uint8_t protocol;
-+    uint8_t number_lu;
-+    uint8_t number_wlu;
-+    uint8_t boot_enable;
-+    uint8_t descr_access_en;
-+    uint8_t init_power_mode;
-+    uint8_t high_priority_lun;
-+    uint8_t secure_removal_type;
-+    uint8_t security_lu;
-+    uint8_t background_ops_term_lat;
-+    uint8_t init_active_icc_level;
-+    uint16_t spec_version;
-+    uint16_t manufacture_date;
-+    uint8_t manufacturer_name;
-+    uint8_t product_name;
-+    uint8_t serial_number;
-+    uint8_t oem_id;
-+    uint16_t manufacturer_id;
-+    uint8_t ud_0_base_offset;
-+    uint8_t ud_config_p_length;
-+    uint8_t device_rtt_cap;
-+    uint16_t periodic_rtc_update;
-+    uint8_t ufs_features_support;
-+    uint8_t ffu_timeout;
-+    uint8_t queue_depth;
-+    uint16_t device_version;
-+    uint8_t num_secure_wp_area;
-+    uint32_t psa_max_data_size;
-+    uint8_t psa_state_timeout;
-+    uint8_t product_revision_level;
-+    uint8_t reserved[36];
-+    uint32_t extended_ufs_features_support;
-+    uint8_t write_booster_buffer_preserve_user_space_en;
-+    uint8_t write_booster_buffer_type;
-+    uint32_t num_shared_write_booster_buffer_alloc_units;
-+} DeviceDescriptor;
-+
-+typedef struct QEMU_PACKED GeometryDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint8_t media_technology;
-+    uint8_t reserved;
-+    uint64_t total_raw_device_capacity;
-+    uint8_t max_number_lu;
-+    uint32_t segment_size;
-+    uint8_t allocation_unit_size;
-+    uint8_t min_addr_block_size;
-+    uint8_t optimal_read_block_size;
-+    uint8_t optimal_write_block_size;
-+    uint8_t max_in_buffer_size;
-+    uint8_t max_out_buffer_size;
-+    uint8_t rpmb_read_write_size;
-+    uint8_t dynamic_capacity_resource_policy;
-+    uint8_t data_ordering;
-+    uint8_t max_context_id_number;
-+    uint8_t sys_data_tag_unit_size;
-+    uint8_t sys_data_tag_res_size;
-+    uint8_t supported_sec_r_types;
-+    uint16_t supported_memory_types;
-+    uint32_t system_code_max_n_alloc_u;
-+    uint16_t system_code_cap_adj_fac;
-+    uint32_t non_persist_max_n_alloc_u;
-+    uint16_t non_persist_cap_adj_fac;
-+    uint32_t enhanced_1_max_n_alloc_u;
-+    uint16_t enhanced_1_cap_adj_fac;
-+    uint32_t enhanced_2_max_n_alloc_u;
-+    uint16_t enhanced_2_cap_adj_fac;
-+    uint32_t enhanced_3_max_n_alloc_u;
-+    uint16_t enhanced_3_cap_adj_fac;
-+    uint32_t enhanced_4_max_n_alloc_u;
-+    uint16_t enhanced_4_cap_adj_fac;
-+    uint32_t optimal_logical_block_size;
-+    uint8_t reserved2[7];
-+    uint32_t write_booster_buffer_max_n_alloc_units;
-+    uint8_t device_max_write_booster_l_us;
-+    uint8_t write_booster_buffer_cap_adj_fac;
-+    uint8_t supported_write_booster_buffer_user_space_reduction_types;
-+    uint8_t supported_write_booster_buffer_types;
-+} GeometryDescriptor;
-+
-+#define UFS_GEOMETRY_CAPACITY_SHIFT 9
-+
-+typedef struct QEMU_PACKED UnitDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint8_t unit_index;
-+    uint8_t lu_enable;
-+    uint8_t boot_lun_id;
-+    uint8_t lu_write_protect;
-+    uint8_t lu_queue_depth;
-+    uint8_t psa_sensitive;
-+    uint8_t memory_type;
-+    uint8_t data_reliability;
-+    uint8_t logical_block_size;
-+    uint64_t logical_block_count;
-+    uint32_t erase_block_size;
-+    uint8_t provisioning_type;
-+    uint64_t phy_mem_resource_count;
-+    uint16_t context_capabilities;
-+    uint8_t large_unit_granularity_m1;
-+    uint8_t reserved[6];
-+    uint32_t lu_num_write_booster_buffer_alloc_units;
-+} UnitDescriptor;
-+
-+typedef struct QEMU_PACKED RpmbUnitDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint8_t unit_index;
-+    uint8_t lu_enable;
-+    uint8_t boot_lun_id;
-+    uint8_t lu_write_protect;
-+    uint8_t lu_queue_depth;
-+    uint8_t psa_sensitive;
-+    uint8_t memory_type;
-+    uint8_t reserved;
-+    uint8_t logical_block_size;
-+    uint64_t logical_block_count;
-+    uint32_t erase_block_size;
-+    uint8_t provisioning_type;
-+    uint64_t phy_mem_resource_count;
-+    uint8_t reserved2[3];
-+} RpmbUnitDescriptor;
-+
-+typedef struct QEMU_PACKED PowerParametersDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint16_t active_icc_levels_vcc[16];
-+    uint16_t active_icc_levels_vccq[16];
-+    uint16_t active_icc_levels_vccq_2[16];
-+} PowerParametersDescriptor;
-+
-+typedef struct QEMU_PACKED InterconnectDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint16_t bcd_unipro_version;
-+    uint16_t bcd_mphy_version;
-+} InterconnectDescriptor;
-+
-+typedef struct QEMU_PACKED StringDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint16_t UC[126];
-+} StringDescriptor;
-+
-+typedef struct QEMU_PACKED DeviceHealthDescriptor {
-+    uint8_t length;
-+    uint8_t descriptor_idn;
-+    uint8_t pre_eol_info;
-+    uint8_t device_life_time_est_a;
-+    uint8_t device_life_time_est_b;
-+    uint8_t vendor_prop_info[32];
-+    uint32_t refresh_total_count;
-+    uint32_t refresh_progress;
-+} DeviceHealthDescriptor;
-+
-+typedef struct QEMU_PACKED Flags {
-+    uint8_t reserved;
-+    uint8_t device_init;
-+    uint8_t permanent_wp_en;
-+    uint8_t power_on_wp_en;
-+    uint8_t background_ops_en;
-+    uint8_t device_life_span_mode_en;
-+    uint8_t purge_enable;
-+    uint8_t refresh_enable;
-+    uint8_t phy_resource_removal;
-+    uint8_t busy_rtc;
-+    uint8_t reserved2;
-+    uint8_t permanently_disable_fw_update;
-+    uint8_t reserved3[2];
-+    uint8_t wb_en;
-+    uint8_t wb_buffer_flush_en;
-+    uint8_t wb_buffer_flush_during_hibernate;
-+    uint8_t reserved4[2];
-+} Flags;
-+
-+typedef struct Attributes {
-+    uint8_t boot_lun_en;
-+    uint8_t reserved;
-+    uint8_t current_power_mode;
-+    uint8_t active_icc_level;
-+    uint8_t out_of_order_data_en;
-+    uint8_t background_op_status;
-+    uint8_t purge_status;
-+    uint8_t max_data_in_size;
-+    uint8_t max_data_out_size;
-+    uint32_t dyn_cap_needed;
-+    uint8_t ref_clk_freq;
-+    uint8_t config_descr_lock;
-+    uint8_t max_num_of_rtt;
-+    uint16_t exception_event_control;
-+    uint16_t exception_event_status;
-+    uint32_t seconds_passed;
-+    uint16_t context_conf;
-+    uint8_t device_ffu_status;
-+    uint8_t psa_state;
-+    uint32_t psa_data_size;
-+    uint8_t ref_clk_gating_wait_time;
-+    uint8_t device_case_rough_temperaure;
-+    uint8_t device_too_high_temp_boundary;
-+    uint8_t device_too_low_temp_boundary;
-+    uint8_t throttling_status;
-+    uint8_t wb_buffer_flush_status;
-+    uint8_t available_wb_buffer_size;
-+    uint8_t wb_buffer_life_time_est;
-+    uint32_t current_wb_buffer_size;
-+    uint8_t refresh_status;
-+    uint8_t refresh_freq;
-+    uint8_t refresh_unit;
-+    uint8_t refresh_method;
-+} Attributes;
-+
-+#define UFS_TRANSACTION_SPECIFIC_FIELD_SIZE 20
-+#define UFS_MAX_QUERY_DATA_SIZE 256
-+
-+/* Command response result code */
-+typedef enum CommandRespCode {
-+    UFS_COMMAND_RESULT_SUCESS = 0x00,
-+    UFS_COMMAND_RESULT_FAIL = 0x01,
-+} CommandRespCode;
-+
-+enum {
-+    UFS_UPIU_FLAG_UNDERFLOW = 0x20,
-+    UFS_UPIU_FLAG_OVERFLOW = 0x40,
-+};
-+
-+typedef struct QEMU_PACKED UtpUpiuHeader {
-+    uint8_t trans_type;
-+    uint8_t flags;
-+    uint8_t lun;
-+    uint8_t task_tag;
-+    uint8_t iid_cmd_set_type;
-+    uint8_t query_func;
-+    uint8_t response;
-+    uint8_t scsi_status;
-+    uint8_t ehs_len;
-+    uint8_t device_inf;
-+    uint16_t data_segment_length;
-+} UtpUpiuHeader;
-+
-+/*
-+ * The code below is copied from the linux kernel
-+ * ("include/uapi/scsi/scsi_bsg_ufs.h") and modified to fit the qemu style.
-+ */
-+
-+typedef struct QEMU_PACKED UtpUpiuQuery {
-+    uint8_t opcode;
-+    uint8_t idn;
-+    uint8_t index;
-+    uint8_t selector;
-+    uint16_t reserved_osf;
-+    uint16_t length;
-+    uint32_t value;
-+    uint32_t reserved[2];
-+    /* EHS length should be 0. We don't have to worry about EHS area. */
-+    uint8_t data[UFS_MAX_QUERY_DATA_SIZE];
-+} UtpUpiuQuery;
-+
-+#define UFS_CDB_SIZE 16
-+
-+/*
-+ * struct UtpUpiuCmd - Command UPIU structure
-+ * @data_transfer_len: Data Transfer Length DW-3
-+ * @cdb: Command Descriptor Block CDB DW-4 to DW-7
-+ */
-+typedef struct QEMU_PACKED UtpUpiuCmd {
-+    uint32_t exp_data_transfer_len;
-+    uint8_t cdb[UFS_CDB_SIZE];
-+} UtpUpiuCmd;
-+
-+/*
-+ * struct UtpUpiuReq - general upiu request structure
-+ * @header:UPIU header structure DW-0 to DW-2
-+ * @sc: fields structure for scsi command DW-3 to DW-7
-+ * @qr: fields structure for query request DW-3 to DW-7
-+ * @uc: use utp_upiu_query to host the 4 dwords of uic command
-+ */
-+typedef struct QEMU_PACKED UtpUpiuReq {
-+    UtpUpiuHeader header;
-+    union {
-+        UtpUpiuCmd sc;
-+        UtpUpiuQuery qr;
-+    };
-+} UtpUpiuReq;
-+
-+/*
-+ * The code below is copied from the linux kernel ("include/ufs/ufshci.h") and
-+ * modified to fit the qemu style.
-+ */
-+
-+enum {
-+    UFS_PWR_OK = 0x0,
-+    UFS_PWR_LOCAL = 0x01,
-+    UFS_PWR_REMOTE = 0x02,
-+    UFS_PWR_BUSY = 0x03,
-+    UFS_PWR_ERROR_CAP = 0x04,
-+    UFS_PWR_FATAL_ERROR = 0x05,
-+};
-+
-+/* UIC Commands */
-+enum uic_cmd_dme {
-+    UFS_UIC_CMD_DME_GET = 0x01,
-+    UFS_UIC_CMD_DME_SET = 0x02,
-+    UFS_UIC_CMD_DME_PEER_GET = 0x03,
-+    UFS_UIC_CMD_DME_PEER_SET = 0x04,
-+    UFS_UIC_CMD_DME_POWERON = 0x10,
-+    UFS_UIC_CMD_DME_POWEROFF = 0x11,
-+    UFS_UIC_CMD_DME_ENABLE = 0x12,
-+    UFS_UIC_CMD_DME_RESET = 0x14,
-+    UFS_UIC_CMD_DME_END_PT_RST = 0x15,
-+    UFS_UIC_CMD_DME_LINK_STARTUP = 0x16,
-+    UFS_UIC_CMD_DME_HIBER_ENTER = 0x17,
-+    UFS_UIC_CMD_DME_HIBER_EXIT = 0x18,
-+    UFS_UIC_CMD_DME_TEST_MODE = 0x1A,
-+};
-+
-+/* UIC Config result code / Generic error code */
-+enum {
-+    UFS_UIC_CMD_RESULT_SUCCESS = 0x00,
-+    UFS_UIC_CMD_RESULT_INVALID_ATTR = 0x01,
-+    UFS_UIC_CMD_RESULT_FAILURE = 0x01,
-+    UFS_UIC_CMD_RESULT_INVALID_ATTR_VALUE = 0x02,
-+    UFS_UIC_CMD_RESULT_READ_ONLY_ATTR = 0x03,
-+    UFS_UIC_CMD_RESULT_WRITE_ONLY_ATTR = 0x04,
-+    UFS_UIC_CMD_RESULT_BAD_INDEX = 0x05,
-+    UFS_UIC_CMD_RESULT_LOCKED_ATTR = 0x06,
-+    UFS_UIC_CMD_RESULT_BAD_TEST_FEATURE_INDEX = 0x07,
-+    UFS_UIC_CMD_RESULT_PEER_COMM_FAILURE = 0x08,
-+    UFS_UIC_CMD_RESULT_BUSY = 0x09,
-+    UFS_UIC_CMD_RESULT_DME_FAILURE = 0x0A,
-+};
-+
-+#define UFS_MASK_UIC_COMMAND_RESULT 0xFF
-+
-+/*
-+ * Request Descriptor Definitions
-+ */
-+
-+/* Transfer request command type */
-+enum {
-+    UFS_UTP_CMD_TYPE_SCSI = 0x0,
-+    UFS_UTP_CMD_TYPE_UFS = 0x1,
-+    UFS_UTP_CMD_TYPE_DEV_MANAGE = 0x2,
-+};
-+
-+/* To accommodate UFS2.0 required Command type */
-+enum {
-+    UFS_UTP_CMD_TYPE_UFS_STORAGE = 0x1,
-+};
-+
-+enum {
-+    UFS_UTP_SCSI_COMMAND = 0x00000000,
-+    UFS_UTP_NATIVE_UFS_COMMAND = 0x10000000,
-+    UFS_UTP_DEVICE_MANAGEMENT_FUNCTION = 0x20000000,
-+    UFS_UTP_REQ_DESC_INT_CMD = 0x01000000,
-+    UFS_UTP_REQ_DESC_CRYPTO_ENABLE_CMD = 0x00800000,
-+};
-+
-+/* UTP Transfer Request Data Direction (DD) */
-+enum {
-+    UFS_UTP_NO_DATA_TRANSFER = 0x00000000,
-+    UFS_UTP_HOST_TO_DEVICE = 0x02000000,
-+    UFS_UTP_DEVICE_TO_HOST = 0x04000000,
-+};
-+
-+/* Overall command status values */
-+enum UtpOcsCodes {
-+    UFS_OCS_SUCCESS = 0x0,
-+    UFS_OCS_INVALID_CMD_TABLE_ATTR = 0x1,
-+    UFS_OCS_INVALID_PRDT_ATTR = 0x2,
-+    UFS_OCS_MISMATCH_DATA_BUF_SIZE = 0x3,
-+    UFS_OCS_MISMATCH_RESP_UPIU_SIZE = 0x4,
-+    UFS_OCS_PEER_COMM_FAILURE = 0x5,
-+    UFS_OCS_ABORTED = 0x6,
-+    UFS_OCS_FATAL_ERROR = 0x7,
-+    UFS_OCS_DEVICE_FATAL_ERROR = 0x8,
-+    UFS_OCS_INVALID_CRYPTO_CONFIG = 0x9,
-+    UFS_OCS_GENERAL_CRYPTO_ERROR = 0xa,
-+    UFS_OCS_INVALID_COMMAND_STATUS = 0xf,
-+};
-+
-+enum {
-+    UFS_MASK_OCS = 0x0F,
-+};
-+
-+/*
-+ * struct UfshcdSgEntry - UFSHCI PRD Entry
-+ * @addr: Physical address; DW-0 and DW-1.
-+ * @reserved: Reserved for future use DW-2
-+ * @size: size of physical segment DW-3
-+ */
-+typedef struct QEMU_PACKED UfshcdSgEntry {
-+    uint64_t addr;
-+    uint32_t reserved;
-+    uint32_t size;
-+    /*
-+     * followed by variant-specific fields if
-+     * CONFIG_SCSI_UFS_VARIABLE_SG_ENTRY_SIZE has been defined.
-+     */
-+} UfshcdSgEntry;
-+
-+/*
-+ * struct RequestDescHeader - Descriptor Header common to both UTRD and UTMRD
-+ * @dword0: Descriptor Header DW0
-+ * @dword1: Descriptor Header DW1
-+ * @dword2: Descriptor Header DW2
-+ * @dword3: Descriptor Header DW3
-+ */
-+typedef struct QEMU_PACKED RequestDescHeader {
-+    uint32_t dword_0;
-+    uint32_t dword_1;
-+    uint32_t dword_2;
-+    uint32_t dword_3;
-+} RequestDescHeader;
-+
-+/*
-+ * struct UtpTransferReqDesc - UTP Transfer Request Descriptor (UTRD)
-+ * @header: UTRD header DW-0 to DW-3
-+ * @command_desc_base_addr_lo: UCD base address low DW-4
-+ * @command_desc_base_addr_hi: UCD base address high DW-5
-+ * @response_upiu_length: response UPIU length DW-6
-+ * @response_upiu_offset: response UPIU offset DW-6
-+ * @prd_table_length: Physical region descriptor length DW-7
-+ * @prd_table_offset: Physical region descriptor offset DW-7
-+ */
-+typedef struct QEMU_PACKED UtpTransferReqDesc {
-+    /* DW 0-3 */
-+    RequestDescHeader header;
-+
-+    /* DW 4-5*/
-+    uint32_t command_desc_base_addr_lo;
-+    uint32_t command_desc_base_addr_hi;
-+
-+    /* DW 6 */
-+    uint16_t response_upiu_length;
-+    uint16_t response_upiu_offset;
-+
-+    /* DW 7 */
-+    uint16_t prd_table_length;
-+    uint16_t prd_table_offset;
-+} UtpTransferReqDesc;
-+
-+/*
-+ * UTMRD structure.
-+ */
-+typedef struct QEMU_PACKED UtpTaskReqDesc {
-+    /* DW 0-3 */
-+    RequestDescHeader header;
-+
-+    /* DW 4-11 - Task request UPIU structure */
-+    struct {
-+        UtpUpiuHeader req_header;
-+        uint32_t input_param1;
-+        uint32_t input_param2;
-+        uint32_t input_param3;
-+        uint32_t reserved1[2];
-+    } upiu_req;
-+
-+    /* DW 12-19 - Task Management Response UPIU structure */
-+    struct {
-+        UtpUpiuHeader rsp_header;
-+        uint32_t output_param1;
-+        uint32_t output_param2;
-+        uint32_t reserved2[3];
-+    } upiu_rsp;
-+} UtpTaskReqDesc;
-+
-+/*
-+ * The code below is copied from the linux kernel ("include/ufs/ufs.h") and
-+ * modified to fit the qemu style.
-+ */
-+
-+#define UFS_GENERAL_UPIU_REQUEST_SIZE (sizeof(UtpUpiuReq))
-+#define UFS_QUERY_DESC_MAX_SIZE 255
-+#define UFS_QUERY_DESC_MIN_SIZE 2
-+#define UFS_QUERY_DESC_HDR_SIZE 2
-+#define UFS_QUERY_OSF_SIZE (GENERAL_UPIU_REQUEST_SIZE - (sizeof(UtpUpiuHeader)))
-+#define UFS_SENSE_SIZE 18
-+
-+/*
-+ * UFS device may have standard LUs and LUN id could be from 0x00 to
-+ * 0x7F. Standard LUs use "Peripheral Device Addressing Format".
-+ * UFS device may also have the Well Known LUs (also referred as W-LU)
-+ * which again could be from 0x00 to 0x7F. For W-LUs, device only use
-+ * the "Extended Addressing Format" which means the W-LUNs would be
-+ * from 0xc100 (SCSI_W_LUN_BASE) onwards.
-+ * This means max. LUN number reported from UFS device could be 0xC17F.
-+ */
-+#define UFS_UPIU_MAX_UNIT_NUM_ID 0x7F
-+#define UFS_UPIU_WLUN_ID (1 << 7)
-+
-+/* WriteBooster buffer is available only for the logical unit from 0 to 7 */
-+#define UFS_UPIU_MAX_WB_LUN_ID 8
-+
-+/*
-+ * WriteBooster buffer lifetime has a limit setted by vendor.
-+ * If it is over the limit, WriteBooster feature will be disabled.
-+ */
-+#define UFS_WB_EXCEED_LIFETIME 0x0B
-+
-+/*
-+ * In UFS Spec, the Extra Header Segment (EHS) starts from byte 32 in UPIU
-+ * request/response packet
-+ */
-+#define UFS_EHS_OFFSET_IN_RESPONSE 32
-+
-+/* Well known logical unit id in LUN field of UPIU */
-+enum {
-+    UFS_UPIU_REPORT_LUNS_WLUN = 0x81,
-+    UFS_UPIU_UFS_DEVICE_WLUN = 0xD0,
-+    UFS_UPIU_BOOT_WLUN = 0xB0,
-+    UFS_UPIU_RPMB_WLUN = 0xC4,
-+};
-+
-+/*
-+ * UFS Protocol Information Unit related definitions
-+ */
-+
-+/* Task management functions */
-+enum {
-+    UFS_ABORT_TASK = 0x01,
-+    UFS_ABORT_TASK_SET = 0x02,
-+    UFS_CLEAR_TASK_SET = 0x04,
-+    UFS_LOGICAL_RESET = 0x08,
-+    UFS_QUERY_TASK = 0x80,
-+    UFS_QUERY_TASK_SET = 0x81,
-+};
-+
-+/* UTP UPIU Transaction Codes Initiator to Target */
-+enum {
-+    UFS_UPIU_TRANSACTION_NOP_OUT = 0x00,
-+    UFS_UPIU_TRANSACTION_COMMAND = 0x01,
-+    UFS_UPIU_TRANSACTION_DATA_OUT = 0x02,
-+    UFS_UPIU_TRANSACTION_TASK_REQ = 0x04,
-+    UFS_UPIU_TRANSACTION_QUERY_REQ = 0x16,
-+};
-+
-+/* UTP UPIU Transaction Codes Target to Initiator */
-+enum {
-+    UFS_UPIU_TRANSACTION_NOP_IN = 0x20,
-+    UFS_UPIU_TRANSACTION_RESPONSE = 0x21,
-+    UFS_UPIU_TRANSACTION_DATA_IN = 0x22,
-+    UFS_UPIU_TRANSACTION_TASK_RSP = 0x24,
-+    UFS_UPIU_TRANSACTION_READY_XFER = 0x31,
-+    UFS_UPIU_TRANSACTION_QUERY_RSP = 0x36,
-+    UFS_UPIU_TRANSACTION_REJECT_UPIU = 0x3F,
-+};
-+
-+/* UPIU Read/Write flags */
-+enum {
-+    UFS_UPIU_CMD_FLAGS_NONE = 0x00,
-+    UFS_UPIU_CMD_FLAGS_WRITE = 0x20,
-+    UFS_UPIU_CMD_FLAGS_READ = 0x40,
-+};
-+
-+/* UPIU Task Attributes */
-+enum {
-+    UFS_UPIU_TASK_ATTR_SIMPLE = 0x00,
-+    UFS_UPIU_TASK_ATTR_ORDERED = 0x01,
-+    UFS_UPIU_TASK_ATTR_HEADQ = 0x02,
-+    UFS_UPIU_TASK_ATTR_ACA = 0x03,
-+};
-+
-+/* UPIU Query request function */
-+enum {
-+    UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST = 0x01,
-+    UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST = 0x81,
-+};
-+
-+/* Flag idn for Query Requests*/
-+enum flag_idn {
-+    UFS_QUERY_FLAG_IDN_FDEVICEINIT = 0x01,
-+    UFS_QUERY_FLAG_IDN_PERMANENT_WPE = 0x02,
-+    UFS_QUERY_FLAG_IDN_PWR_ON_WPE = 0x03,
-+    UFS_QUERY_FLAG_IDN_BKOPS_EN = 0x04,
-+    UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE = 0x05,
-+    UFS_QUERY_FLAG_IDN_PURGE_ENABLE = 0x06,
-+    UFS_QUERY_FLAG_IDN_REFRESH_ENABLE = 0x07,
-+    UFS_QUERY_FLAG_IDN_FPHYRESOURCEREMOVAL = 0x08,
-+    UFS_QUERY_FLAG_IDN_BUSY_RTC = 0x09,
-+    UFS_QUERY_FLAG_IDN_RESERVED3 = 0x0A,
-+    UFS_QUERY_FLAG_IDN_PERMANENTLY_DISABLE_FW_UPDATE = 0x0B,
-+    UFS_QUERY_FLAG_IDN_WB_EN = 0x0E,
-+    UFS_QUERY_FLAG_IDN_WB_BUFF_FLUSH_EN = 0x0F,
-+    UFS_QUERY_FLAG_IDN_WB_BUFF_FLUSH_DURING_HIBERN8 = 0x10,
-+    UFS_QUERY_FLAG_IDN_HPB_RESET = 0x11,
-+    UFS_QUERY_FLAG_IDN_HPB_EN = 0x12,
-+    UFS_QUERY_FLAG_IDN_COUNT,
-+};
-+
-+/* Attribute idn for Query requests */
-+enum attr_idn {
-+    UFS_QUERY_ATTR_IDN_BOOT_LU_EN = 0x00,
-+    UFS_QUERY_ATTR_IDN_MAX_HPB_SINGLE_CMD = 0x01,
-+    UFS_QUERY_ATTR_IDN_POWER_MODE = 0x02,
-+    UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL = 0x03,
-+    UFS_QUERY_ATTR_IDN_OOO_DATA_EN = 0x04,
-+    UFS_QUERY_ATTR_IDN_BKOPS_STATUS = 0x05,
-+    UFS_QUERY_ATTR_IDN_PURGE_STATUS = 0x06,
-+    UFS_QUERY_ATTR_IDN_MAX_DATA_IN = 0x07,
-+    UFS_QUERY_ATTR_IDN_MAX_DATA_OUT = 0x08,
-+    UFS_QUERY_ATTR_IDN_DYN_CAP_NEEDED = 0x09,
-+    UFS_QUERY_ATTR_IDN_REF_CLK_FREQ = 0x0A,
-+    UFS_QUERY_ATTR_IDN_CONF_DESC_LOCK = 0x0B,
-+    UFS_QUERY_ATTR_IDN_MAX_NUM_OF_RTT = 0x0C,
-+    UFS_QUERY_ATTR_IDN_EE_CONTROL = 0x0D,
-+    UFS_QUERY_ATTR_IDN_EE_STATUS = 0x0E,
-+    UFS_QUERY_ATTR_IDN_SECONDS_PASSED = 0x0F,
-+    UFS_QUERY_ATTR_IDN_CNTX_CONF = 0x10,
-+    UFS_QUERY_ATTR_IDN_CORR_PRG_BLK_NUM = 0x11,
-+    UFS_QUERY_ATTR_IDN_RESERVED2 = 0x12,
-+    UFS_QUERY_ATTR_IDN_RESERVED3 = 0x13,
-+    UFS_QUERY_ATTR_IDN_FFU_STATUS = 0x14,
-+    UFS_QUERY_ATTR_IDN_PSA_STATE = 0x15,
-+    UFS_QUERY_ATTR_IDN_PSA_DATA_SIZE = 0x16,
-+    UFS_QUERY_ATTR_IDN_REF_CLK_GATING_WAIT_TIME = 0x17,
-+    UFS_QUERY_ATTR_IDN_CASE_ROUGH_TEMP = 0x18,
-+    UFS_QUERY_ATTR_IDN_HIGH_TEMP_BOUND = 0x19,
-+    UFS_QUERY_ATTR_IDN_LOW_TEMP_BOUND = 0x1A,
-+    UFS_QUERY_ATTR_IDN_THROTTLING_STATUS = 0x1B,
-+    UFS_QUERY_ATTR_IDN_WB_FLUSH_STATUS = 0x1C,
-+    UFS_QUERY_ATTR_IDN_AVAIL_WB_BUFF_SIZE = 0x1D,
-+    UFS_QUERY_ATTR_IDN_WB_BUFF_LIFE_TIME_EST = 0x1E,
-+    UFS_QUERY_ATTR_IDN_CURR_WB_BUFF_SIZE = 0x1F,
-+    UFS_QUERY_ATTR_IDN_REFRESH_STATUS = 0x2C,
-+    UFS_QUERY_ATTR_IDN_REFRESH_FREQ = 0x2D,
-+    UFS_QUERY_ATTR_IDN_REFRESH_UNIT = 0x2E,
-+    UFS_QUERY_ATTR_IDN_COUNT,
-+};
-+
-+/* Descriptor idn for Query requests */
-+enum desc_idn {
-+    UFS_QUERY_DESC_IDN_DEVICE = 0x0,
-+    UFS_QUERY_DESC_IDN_CONFIGURATION = 0x1,
-+    UFS_QUERY_DESC_IDN_UNIT = 0x2,
-+    UFS_QUERY_DESC_IDN_RFU_0 = 0x3,
-+    UFS_QUERY_DESC_IDN_INTERCONNECT = 0x4,
-+    UFS_QUERY_DESC_IDN_STRING = 0x5,
-+    UFS_QUERY_DESC_IDN_RFU_1 = 0x6,
-+    UFS_QUERY_DESC_IDN_GEOMETRY = 0x7,
-+    UFS_QUERY_DESC_IDN_POWER = 0x8,
-+    UFS_QUERY_DESC_IDN_HEALTH = 0x9,
-+    UFS_QUERY_DESC_IDN_MAX,
-+};
-+
-+enum desc_header_offset {
-+    UFS_QUERY_DESC_LENGTH_OFFSET = 0x00,
-+    UFS_QUERY_DESC_DESC_TYPE_OFFSET = 0x01,
-+};
-+
-+/* Unit descriptor parameters offsets in bytes*/
-+enum unit_desc_param {
-+    UFS_UNIT_DESC_PARAM_LEN = 0x0,
-+    UFS_UNIT_DESC_PARAM_TYPE = 0x1,
-+    UFS_UNIT_DESC_PARAM_UNIT_INDEX = 0x2,
-+    UFS_UNIT_DESC_PARAM_LU_ENABLE = 0x3,
-+    UFS_UNIT_DESC_PARAM_BOOT_LUN_ID = 0x4,
-+    UFS_UNIT_DESC_PARAM_LU_WR_PROTECT = 0x5,
-+    UFS_UNIT_DESC_PARAM_LU_Q_DEPTH = 0x6,
-+    UFS_UNIT_DESC_PARAM_PSA_SENSITIVE = 0x7,
-+    UFS_UNIT_DESC_PARAM_MEM_TYPE = 0x8,
-+    UFS_UNIT_DESC_PARAM_DATA_RELIABILITY = 0x9,
-+    UFS_UNIT_DESC_PARAM_LOGICAL_BLK_SIZE = 0xA,
-+    UFS_UNIT_DESC_PARAM_LOGICAL_BLK_COUNT = 0xB,
-+    UFS_UNIT_DESC_PARAM_ERASE_BLK_SIZE = 0x13,
-+    UFS_UNIT_DESC_PARAM_PROVISIONING_TYPE = 0x17,
-+    UFS_UNIT_DESC_PARAM_PHY_MEM_RSRC_CNT = 0x18,
-+    UFS_UNIT_DESC_PARAM_CTX_CAPABILITIES = 0x20,
-+    UFS_UNIT_DESC_PARAM_LARGE_UNIT_SIZE_M1 = 0x22,
-+    UFS_UNIT_DESC_PARAM_HPB_LU_MAX_ACTIVE_RGNS = 0x23,
-+    UFS_UNIT_DESC_PARAM_HPB_PIN_RGN_START_OFF = 0x25,
-+    UFS_UNIT_DESC_PARAM_HPB_NUM_PIN_RGNS = 0x27,
-+    UFS_UNIT_DESC_PARAM_WB_BUF_ALLOC_UNITS = 0x29,
-+};
-+
-+/* RPMB Unit descriptor parameters offsets in bytes*/
-+enum rpmb_unit_desc_param {
-+    UFS_RPMB_UNIT_DESC_PARAM_LEN = 0x0,
-+    UFS_RPMB_UNIT_DESC_PARAM_TYPE = 0x1,
-+    UFS_RPMB_UNIT_DESC_PARAM_UNIT_INDEX = 0x2,
-+    UFS_RPMB_UNIT_DESC_PARAM_LU_ENABLE = 0x3,
-+    UFS_RPMB_UNIT_DESC_PARAM_BOOT_LUN_ID = 0x4,
-+    UFS_RPMB_UNIT_DESC_PARAM_LU_WR_PROTECT = 0x5,
-+    UFS_RPMB_UNIT_DESC_PARAM_LU_Q_DEPTH = 0x6,
-+    UFS_RPMB_UNIT_DESC_PARAM_PSA_SENSITIVE = 0x7,
-+    UFS_RPMB_UNIT_DESC_PARAM_MEM_TYPE = 0x8,
-+    UFS_RPMB_UNIT_DESC_PARAM_REGION_EN = 0x9,
-+    UFS_RPMB_UNIT_DESC_PARAM_LOGICAL_BLK_SIZE = 0xA,
-+    UFS_RPMB_UNIT_DESC_PARAM_LOGICAL_BLK_COUNT = 0xB,
-+    UFS_RPMB_UNIT_DESC_PARAM_REGION0_SIZE = 0x13,
-+    UFS_RPMB_UNIT_DESC_PARAM_REGION1_SIZE = 0x14,
-+    UFS_RPMB_UNIT_DESC_PARAM_REGION2_SIZE = 0x15,
-+    UFS_RPMB_UNIT_DESC_PARAM_REGION3_SIZE = 0x16,
-+    UFS_RPMB_UNIT_DESC_PARAM_PROVISIONING_TYPE = 0x17,
-+    UFS_RPMB_UNIT_DESC_PARAM_PHY_MEM_RSRC_CNT = 0x18,
-+};
-+
-+/* Device descriptor parameters offsets in bytes*/
-+enum device_desc_param {
-+    UFS_DEVICE_DESC_PARAM_LEN = 0x0,
-+    UFS_DEVICE_DESC_PARAM_TYPE = 0x1,
-+    UFS_DEVICE_DESC_PARAM_DEVICE_TYPE = 0x2,
-+    UFS_DEVICE_DESC_PARAM_DEVICE_CLASS = 0x3,
-+    UFS_DEVICE_DESC_PARAM_DEVICE_SUB_CLASS = 0x4,
-+    UFS_DEVICE_DESC_PARAM_PRTCL = 0x5,
-+    UFS_DEVICE_DESC_PARAM_NUM_LU = 0x6,
-+    UFS_DEVICE_DESC_PARAM_NUM_WLU = 0x7,
-+    UFS_DEVICE_DESC_PARAM_BOOT_ENBL = 0x8,
-+    UFS_DEVICE_DESC_PARAM_DESC_ACCSS_ENBL = 0x9,
-+    UFS_DEVICE_DESC_PARAM_INIT_PWR_MODE = 0xA,
-+    UFS_DEVICE_DESC_PARAM_HIGH_PR_LUN = 0xB,
-+    UFS_DEVICE_DESC_PARAM_SEC_RMV_TYPE = 0xC,
-+    UFS_DEVICE_DESC_PARAM_SEC_LU = 0xD,
-+    UFS_DEVICE_DESC_PARAM_BKOP_TERM_LT = 0xE,
-+    UFS_DEVICE_DESC_PARAM_ACTVE_ICC_LVL = 0xF,
-+    UFS_DEVICE_DESC_PARAM_SPEC_VER = 0x10,
-+    UFS_DEVICE_DESC_PARAM_MANF_DATE = 0x12,
-+    UFS_DEVICE_DESC_PARAM_MANF_NAME = 0x14,
-+    UFS_DEVICE_DESC_PARAM_PRDCT_NAME = 0x15,
-+    UFS_DEVICE_DESC_PARAM_SN = 0x16,
-+    UFS_DEVICE_DESC_PARAM_OEM_ID = 0x17,
-+    UFS_DEVICE_DESC_PARAM_MANF_ID = 0x18,
-+    UFS_DEVICE_DESC_PARAM_UD_OFFSET = 0x1A,
-+    UFS_DEVICE_DESC_PARAM_UD_LEN = 0x1B,
-+    UFS_DEVICE_DESC_PARAM_RTT_CAP = 0x1C,
-+    UFS_DEVICE_DESC_PARAM_FRQ_RTC = 0x1D,
-+    UFS_DEVICE_DESC_PARAM_UFS_FEAT = 0x1F,
-+    UFS_DEVICE_DESC_PARAM_FFU_TMT = 0x20,
-+    UFS_DEVICE_DESC_PARAM_Q_DPTH = 0x21,
-+    UFS_DEVICE_DESC_PARAM_DEV_VER = 0x22,
-+    UFS_DEVICE_DESC_PARAM_NUM_SEC_WPA = 0x24,
-+    UFS_DEVICE_DESC_PARAM_PSA_MAX_DATA = 0x25,
-+    UFS_DEVICE_DESC_PARAM_PSA_TMT = 0x29,
-+    UFS_DEVICE_DESC_PARAM_PRDCT_REV = 0x2A,
-+    UFS_DEVICE_DESC_PARAM_HPB_VER = 0x40,
-+    UFS_DEVICE_DESC_PARAM_HPB_CONTROL = 0x42,
-+    UFS_DEVICE_DESC_PARAM_EXT_UFS_FEATURE_SUP = 0x4F,
-+    UFS_DEVICE_DESC_PARAM_WB_PRESRV_USRSPC_EN = 0x53,
-+    UFS_DEVICE_DESC_PARAM_WB_TYPE = 0x54,
-+    UFS_DEVICE_DESC_PARAM_WB_SHARED_ALLOC_UNITS = 0x55,
-+};
-+
-+/* Interconnect descriptor parameters offsets in bytes*/
-+enum interconnect_desc_param {
-+    UFS_INTERCONNECT_DESC_PARAM_LEN = 0x0,
-+    UFS_INTERCONNECT_DESC_PARAM_TYPE = 0x1,
-+    UFS_INTERCONNECT_DESC_PARAM_UNIPRO_VER = 0x2,
-+    UFS_INTERCONNECT_DESC_PARAM_MPHY_VER = 0x4,
-+};
-+
-+/* Geometry descriptor parameters offsets in bytes*/
-+enum geometry_desc_param {
-+    UFS_GEOMETRY_DESC_PARAM_LEN = 0x0,
-+    UFS_GEOMETRY_DESC_PARAM_TYPE = 0x1,
-+    UFS_GEOMETRY_DESC_PARAM_DEV_CAP = 0x4,
-+    UFS_GEOMETRY_DESC_PARAM_MAX_NUM_LUN = 0xC,
-+    UFS_GEOMETRY_DESC_PARAM_SEG_SIZE = 0xD,
-+    UFS_GEOMETRY_DESC_PARAM_ALLOC_UNIT_SIZE = 0x11,
-+    UFS_GEOMETRY_DESC_PARAM_MIN_BLK_SIZE = 0x12,
-+    UFS_GEOMETRY_DESC_PARAM_OPT_RD_BLK_SIZE = 0x13,
-+    UFS_GEOMETRY_DESC_PARAM_OPT_WR_BLK_SIZE = 0x14,
-+    UFS_GEOMETRY_DESC_PARAM_MAX_IN_BUF_SIZE = 0x15,
-+    UFS_GEOMETRY_DESC_PARAM_MAX_OUT_BUF_SIZE = 0x16,
-+    UFS_GEOMETRY_DESC_PARAM_RPMB_RW_SIZE = 0x17,
-+    UFS_GEOMETRY_DESC_PARAM_DYN_CAP_RSRC_PLC = 0x18,
-+    UFS_GEOMETRY_DESC_PARAM_DATA_ORDER = 0x19,
-+    UFS_GEOMETRY_DESC_PARAM_MAX_NUM_CTX = 0x1A,
-+    UFS_GEOMETRY_DESC_PARAM_TAG_UNIT_SIZE = 0x1B,
-+    UFS_GEOMETRY_DESC_PARAM_TAG_RSRC_SIZE = 0x1C,
-+    UFS_GEOMETRY_DESC_PARAM_SEC_RM_TYPES = 0x1D,
-+    UFS_GEOMETRY_DESC_PARAM_MEM_TYPES = 0x1E,
-+    UFS_GEOMETRY_DESC_PARAM_SCM_MAX_NUM_UNITS = 0x20,
-+    UFS_GEOMETRY_DESC_PARAM_SCM_CAP_ADJ_FCTR = 0x24,
-+    UFS_GEOMETRY_DESC_PARAM_NPM_MAX_NUM_UNITS = 0x26,
-+    UFS_GEOMETRY_DESC_PARAM_NPM_CAP_ADJ_FCTR = 0x2A,
-+    UFS_GEOMETRY_DESC_PARAM_ENM1_MAX_NUM_UNITS = 0x2C,
-+    UFS_GEOMETRY_DESC_PARAM_ENM1_CAP_ADJ_FCTR = 0x30,
-+    UFS_GEOMETRY_DESC_PARAM_ENM2_MAX_NUM_UNITS = 0x32,
-+    UFS_GEOMETRY_DESC_PARAM_ENM2_CAP_ADJ_FCTR = 0x36,
-+    UFS_GEOMETRY_DESC_PARAM_ENM3_MAX_NUM_UNITS = 0x38,
-+    UFS_GEOMETRY_DESC_PARAM_ENM3_CAP_ADJ_FCTR = 0x3C,
-+    UFS_GEOMETRY_DESC_PARAM_ENM4_MAX_NUM_UNITS = 0x3E,
-+    UFS_GEOMETRY_DESC_PARAM_ENM4_CAP_ADJ_FCTR = 0x42,
-+    UFS_GEOMETRY_DESC_PARAM_OPT_LOG_BLK_SIZE = 0x44,
-+    UFS_GEOMETRY_DESC_PARAM_HPB_REGION_SIZE = 0x48,
-+    UFS_GEOMETRY_DESC_PARAM_HPB_NUMBER_LU = 0x49,
-+    UFS_GEOMETRY_DESC_PARAM_HPB_SUBREGION_SIZE = 0x4A,
-+    UFS_GEOMETRY_DESC_PARAM_HPB_MAX_ACTIVE_REGS = 0x4B,
-+    UFS_GEOMETRY_DESC_PARAM_WB_MAX_ALLOC_UNITS = 0x4F,
-+    UFS_GEOMETRY_DESC_PARAM_WB_MAX_WB_LUNS = 0x53,
-+    UFS_GEOMETRY_DESC_PARAM_WB_BUFF_CAP_ADJ = 0x54,
-+    UFS_GEOMETRY_DESC_PARAM_WB_SUP_RED_TYPE = 0x55,
-+    UFS_GEOMETRY_DESC_PARAM_WB_SUP_WB_TYPE = 0x56,
-+};
-+
-+/* Health descriptor parameters offsets in bytes*/
-+enum health_desc_param {
-+    UFS_HEALTH_DESC_PARAM_LEN = 0x0,
-+    UFS_HEALTH_DESC_PARAM_TYPE = 0x1,
-+    UFS_HEALTH_DESC_PARAM_EOL_INFO = 0x2,
-+    UFS_HEALTH_DESC_PARAM_LIFE_TIME_EST_A = 0x3,
-+    UFS_HEALTH_DESC_PARAM_LIFE_TIME_EST_B = 0x4,
-+};
-+
-+/* WriteBooster buffer mode */
-+enum {
-+    UFS_WB_BUF_MODE_LU_DEDICATED = 0x0,
-+    UFS_WB_BUF_MODE_SHARED = 0x1,
-+};
-+
-+/*
-+ * Logical Unit Write Protect
-+ * 00h: LU not write protected
-+ * 01h: LU write protected when fPowerOnWPEn =1
-+ * 02h: LU permanently write protected when fPermanentWPEn =1
-+ */
-+enum ufs_lu_wp_type {
-+    UFS_LU_NO_WP = 0x00,
-+    UFS_LU_POWER_ON_WP = 0x01,
-+    UFS_LU_PERM_WP = 0x02,
-+};
-+
-+/* UTP QUERY Transaction Specific Fields OpCode */
-+enum query_opcode {
-+    UFS_UPIU_QUERY_OPCODE_NOP = 0x0,
-+    UFS_UPIU_QUERY_OPCODE_READ_DESC = 0x1,
-+    UFS_UPIU_QUERY_OPCODE_WRITE_DESC = 0x2,
-+    UFS_UPIU_QUERY_OPCODE_READ_ATTR = 0x3,
-+    UFS_UPIU_QUERY_OPCODE_WRITE_ATTR = 0x4,
-+    UFS_UPIU_QUERY_OPCODE_READ_FLAG = 0x5,
-+    UFS_UPIU_QUERY_OPCODE_SET_FLAG = 0x6,
-+    UFS_UPIU_QUERY_OPCODE_CLEAR_FLAG = 0x7,
-+    UFS_UPIU_QUERY_OPCODE_TOGGLE_FLAG = 0x8,
-+};
-+
-+/* Query response result code */
-+typedef enum QueryRespCode {
-+    UFS_QUERY_RESULT_SUCCESS = 0x00,
-+    UFS_QUERY_RESULT_NOT_READABLE = 0xF6,
-+    UFS_QUERY_RESULT_NOT_WRITEABLE = 0xF7,
-+    UFS_QUERY_RESULT_ALREADY_WRITTEN = 0xF8,
-+    UFS_QUERY_RESULT_INVALID_LENGTH = 0xF9,
-+    UFS_QUERY_RESULT_INVALID_VALUE = 0xFA,
-+    UFS_QUERY_RESULT_INVALID_SELECTOR = 0xFB,
-+    UFS_QUERY_RESULT_INVALID_INDEX = 0xFC,
-+    UFS_QUERY_RESULT_INVALID_IDN = 0xFD,
-+    UFS_QUERY_RESULT_INVALID_OPCODE = 0xFE,
-+    UFS_QUERY_RESULT_GENERAL_FAILURE = 0xFF,
-+} QueryRespCode;
-+
-+/* UTP Transfer Request Command Type (CT) */
-+enum {
-+    UFS_UPIU_COMMAND_SET_TYPE_SCSI = 0x0,
-+    UFS_UPIU_COMMAND_SET_TYPE_UFS = 0x1,
-+    UFS_UPIU_COMMAND_SET_TYPE_QUERY = 0x2,
-+};
-+
-+/* Task management service response */
-+enum {
-+    UFS_UPIU_TASK_MANAGEMENT_FUNC_COMPL = 0x00,
-+    UFS_UPIU_TASK_MANAGEMENT_FUNC_NOT_SUPPORTED = 0x04,
-+    UFS_UPIU_TASK_MANAGEMENT_FUNC_SUCCEEDED = 0x08,
-+    UFS_UPIU_TASK_MANAGEMENT_FUNC_FAILED = 0x05,
-+    UFS_UPIU_INCORRECT_LOGICAL_UNIT_NO = 0x09,
-+};
-+
-+/* UFS device power modes */
-+enum ufs_dev_pwr_mode {
-+    UFS_ACTIVE_PWR_MODE = 1,
-+    UFS_SLEEP_PWR_MODE = 2,
-+    UFS_POWERDOWN_PWR_MODE = 3,
-+    UFS_DEEPSLEEP_PWR_MODE = 4,
-+};
-+
-+/*
-+ * struct UtpCmdRsp - Response UPIU structure
-+ * @residual_transfer_count: Residual transfer count DW-3
-+ * @reserved: Reserved double words DW-4 to DW-7
-+ * @sense_data_len: Sense data length DW-8 U16
-+ * @sense_data: Sense data field DW-8 to DW-12
-+ */
-+typedef struct QEMU_PACKED UtpCmdRsp {
-+    uint32_t residual_transfer_count;
-+    uint32_t reserved[4];
-+    uint16_t sense_data_len;
-+    uint8_t sense_data[UFS_SENSE_SIZE];
-+} UtpCmdRsp;
-+
-+/*
-+ * struct UtpUpiuRsp - general upiu response structure
-+ * @header: UPIU header structure DW-0 to DW-2
-+ * @sr: fields structure for scsi command DW-3 to DW-12
-+ * @qr: fields structure for query request DW-3 to DW-7
-+ */
-+typedef struct QEMU_PACKED UtpUpiuRsp {
-+    UtpUpiuHeader header;
-+    union {
-+        UtpCmdRsp sr;
-+        UtpUpiuQuery qr;
-+    };
-+} UtpUpiuRsp;
-+
-+static inline void _ufs_check_size(void)
-+{
-+    QEMU_BUILD_BUG_ON(sizeof(UfsReg) != 0x104);
-+    QEMU_BUILD_BUG_ON(sizeof(DeviceDescriptor) != 89);
-+    QEMU_BUILD_BUG_ON(sizeof(GeometryDescriptor) != 87);
-+    QEMU_BUILD_BUG_ON(sizeof(UnitDescriptor) != 45);
-+    QEMU_BUILD_BUG_ON(sizeof(RpmbUnitDescriptor) != 35);
-+    QEMU_BUILD_BUG_ON(sizeof(PowerParametersDescriptor) != 98);
-+    QEMU_BUILD_BUG_ON(sizeof(InterconnectDescriptor) != 6);
-+    QEMU_BUILD_BUG_ON(sizeof(StringDescriptor) != 254);
-+    QEMU_BUILD_BUG_ON(sizeof(DeviceHealthDescriptor) != 45);
-+    QEMU_BUILD_BUG_ON(sizeof(Flags) != 0x13);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuHeader) != 12);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuQuery) != 276);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuCmd) != 20);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuReq) != 288);
-+    QEMU_BUILD_BUG_ON(sizeof(UfshcdSgEntry) != 16);
-+    QEMU_BUILD_BUG_ON(sizeof(RequestDescHeader) != 16);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpTransferReqDesc) != 32);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpTaskReqDesc) != 80);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpCmdRsp) != 40);
-+    QEMU_BUILD_BUG_ON(sizeof(UtpUpiuRsp) != 288);
-+}
-+#endif
-diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-index abdc1ef103..b70a0b95ff 100644
---- a/include/hw/pci/pci.h
-+++ b/include/hw/pci/pci.h
-@@ -114,6 +114,7 @@ extern bool pci_available;
- #define PCI_DEVICE_ID_REDHAT_NVME        0x0010
- #define PCI_DEVICE_ID_REDHAT_PVPANIC     0x0011
- #define PCI_DEVICE_ID_REDHAT_ACPI_ERST   0x0012
-+#define PCI_DEVICE_ID_REDHAT_UFS         0x0013
- #define PCI_DEVICE_ID_REDHAT_QXL         0x0100
+@@ -18,6 +18,32 @@
+ #define UFS_MAX_LUS 32
+ #define UFS_BLOCK_SIZE 4096
  
- #define FMT_PCIBUS                      PRIx64
-diff --git a/include/hw/pci/pci_ids.h b/include/hw/pci/pci_ids.h
-index e4386ebb20..85469b9b53 100644
---- a/include/hw/pci/pci_ids.h
-+++ b/include/hw/pci/pci_ids.h
-@@ -26,6 +26,7 @@
- #define PCI_CLASS_STORAGE_SATA           0x0106
- #define PCI_CLASS_STORAGE_SAS            0x0107
- #define PCI_CLASS_STORAGE_EXPRESS        0x0108
-+#define PCI_CLASS_STORAGE_UFS            0x0109
- #define PCI_CLASS_STORAGE_OTHER          0x0180
++typedef enum UfsRequestState {
++    UFS_REQUEST_IDLE = 0,
++    UFS_REQUEST_READY = 1,
++    UFS_REQUEST_RUNNING = 2,
++    UFS_REQUEST_COMPLETE = 3,
++    UFS_REQUEST_ERROR = 4,
++} UfsRequestState;
++
++typedef enum UfsReqResult {
++    UFS_REQUEST_SUCCESS = 0,
++    UFS_REQUEST_FAIL = 1,
++} UfsReqResult;
++
++typedef struct UfsRequest {
++    struct UfsHc *hc;
++    UfsRequestState state;
++    int slot;
++
++    UtpTransferReqDesc utrd;
++    UtpUpiuReq req_upiu;
++    UtpUpiuRsp rsp_upiu;
++
++    /* for scsi command */
++    QEMUSGList *sg;
++} UfsRequest;
++
+ typedef struct UfsParams {
+     char *serial;
+     uint8_t nutrs; /* Number of UTP Transfer Request Slots */
+@@ -30,6 +56,12 @@ typedef struct UfsHc {
+     UfsReg reg;
+     UfsParams params;
+     uint32_t reg_size;
++    UfsRequest *req_list;
++
++    DeviceDescriptor device_desc;
++    GeometryDescriptor geometry_desc;
++    Attributes attributes;
++    Flags flags;
  
- #define PCI_BASE_CLASS_NETWORK           0x02
+     qemu_irq irq;
+     QEMUBH *doorbell_bh;
+@@ -39,4 +71,18 @@ typedef struct UfsHc {
+ #define TYPE_UFS "ufs"
+ #define UFS(obj) OBJECT_CHECK(UfsHc, (obj), TYPE_UFS)
+ 
++typedef enum UfsQueryFlagPerm {
++    UFS_QUERY_FLAG_NONE = 0x0,
++    UFS_QUERY_FLAG_READ = 0x1,
++    UFS_QUERY_FLAG_SET = 0x2,
++    UFS_QUERY_FLAG_CLEAR = 0x4,
++    UFS_QUERY_FLAG_TOGGLE = 0x8,
++} UfsQueryFlagPerm;
++
++typedef enum UfsQueryAttrPerm {
++    UFS_QUERY_ATTR_NONE = 0x0,
++    UFS_QUERY_ATTR_READ = 0x1,
++    UFS_QUERY_ATTR_WRITE = 0x2,
++} UfsQueryAttrPerm;
++
+ #endif /* HW_UFS_UFS_H */
 diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-new file mode 100644
-index 0000000000..df87f2a6d5
---- /dev/null
+index df87f2a6d5..56a8ec286b 100644
+--- a/hw/ufs/ufs.c
 +++ b/hw/ufs/ufs.c
-@@ -0,0 +1,278 @@
-+/*
-+ * QEMU Universal Flash Storage (UFS) Controller
-+ *
-+ * Copyright (c) 2023 Samsung Electronics Co., Ltd. All rights reserved.
-+ *
-+ * Written by Jeuk Kim <jeuk20.kim@samsung.com>
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "migration/vmstate.h"
-+#include "trace.h"
-+#include "ufs.h"
-+
-+/* The QEMU-UFS device follows spec version 3.1 */
-+#define UFS_SPEC_VER 0x00000310
-+#define UFS_MAX_NUTRS 32
-+#define UFS_MAX_NUTMRS 8
-+
-+static void ufs_irq_check(UfsHc *u)
+@@ -15,10 +15,221 @@
+ #include "ufs.h"
+ 
+ /* The QEMU-UFS device follows spec version 3.1 */
+-#define UFS_SPEC_VER 0x00000310
++#define UFS_SPEC_VER 0x0310
+ #define UFS_MAX_NUTRS 32
+ #define UFS_MAX_NUTMRS 8
+ 
++static MemTxResult ufs_addr_read(UfsHc *u, hwaddr addr, void *buf, int size)
 +{
-+    PCIDevice *pci = PCI_DEVICE(u);
++    hwaddr hi = addr + size - 1;
 +
-+    if ((u->reg.is & UFS_INTR_MASK) & u->reg.ie) {
-+        trace_ufs_irq_raise();
-+        pci_irq_assert(pci);
++    if (hi < addr) {
++        return MEMTX_DECODE_ERROR;
++    }
++
++    if (!FIELD_EX32(u->reg.cap, CAP, 64AS) && (hi >> 32)) {
++        return MEMTX_DECODE_ERROR;
++    }
++
++    return pci_dma_read(PCI_DEVICE(u), addr, buf, size);
++}
++
++static MemTxResult ufs_addr_write(UfsHc *u, hwaddr addr, const void *buf,
++                                  int size)
++{
++    hwaddr hi = addr + size - 1;
++    if (hi < addr) {
++        return MEMTX_DECODE_ERROR;
++    }
++
++    if (!FIELD_EX32(u->reg.cap, CAP, 64AS) && (hi >> 32)) {
++        return MEMTX_DECODE_ERROR;
++    }
++
++    return pci_dma_write(PCI_DEVICE(u), addr, buf, size);
++}
++
++static void ufs_complete_req(UfsRequest *req, UfsReqResult req_result);
++
++static inline hwaddr ufs_get_utrd_addr(UfsHc *u, uint32_t slot)
++{
++    hwaddr utrl_base_addr = (((hwaddr)u->reg.utrlbau) << 32) + u->reg.utrlba;
++    hwaddr utrd_addr = utrl_base_addr + slot * sizeof(UtpTransferReqDesc);
++
++    return utrd_addr;
++}
++
++static inline hwaddr ufs_get_req_upiu_base_addr(const UtpTransferReqDesc *utrd)
++{
++    uint32_t cmd_desc_base_addr_lo =
++        le32_to_cpu(utrd->command_desc_base_addr_lo);
++    uint32_t cmd_desc_base_addr_hi =
++        le32_to_cpu(utrd->command_desc_base_addr_hi);
++
++    return (((hwaddr)cmd_desc_base_addr_hi) << 32) + cmd_desc_base_addr_lo;
++}
++
++static inline hwaddr ufs_get_rsp_upiu_base_addr(const UtpTransferReqDesc *utrd)
++{
++    hwaddr req_upiu_base_addr = ufs_get_req_upiu_base_addr(utrd);
++    uint32_t rsp_upiu_byte_off =
++        le16_to_cpu(utrd->response_upiu_offset) * sizeof(uint32_t);
++    return req_upiu_base_addr + rsp_upiu_byte_off;
++}
++
++static MemTxResult ufs_dma_read_utrd(UfsRequest *req)
++{
++    UfsHc *u = req->hc;
++    hwaddr utrd_addr = ufs_get_utrd_addr(u, req->slot);
++    MemTxResult ret;
++
++    ret = ufs_addr_read(u, utrd_addr, &req->utrd, sizeof(req->utrd));
++    if (ret) {
++        trace_ufs_err_dma_read_utrd(req->slot, utrd_addr);
++    }
++    return ret;
++}
++
++static MemTxResult ufs_dma_read_req_upiu(UfsRequest *req)
++{
++    UfsHc *u = req->hc;
++    hwaddr req_upiu_base_addr = ufs_get_req_upiu_base_addr(&req->utrd);
++    UtpUpiuReq *req_upiu = &req->req_upiu;
++    uint32_t copy_size;
++    uint16_t data_segment_length;
++    MemTxResult ret;
++
++    /*
++     * To know the size of the req_upiu, we need to read the
++     * data_segment_length in the header first.
++     */
++    ret = ufs_addr_read(u, req_upiu_base_addr, &req_upiu->header,
++                        sizeof(UtpUpiuHeader));
++    if (ret) {
++        trace_ufs_err_dma_read_req_upiu(req->slot, req_upiu_base_addr);
++        return ret;
++    }
++    data_segment_length = be16_to_cpu(req_upiu->header.data_segment_length);
++
++    copy_size = sizeof(UtpUpiuHeader) + UFS_TRANSACTION_SPECIFIC_FIELD_SIZE +
++                data_segment_length;
++
++    ret = ufs_addr_read(u, req_upiu_base_addr, &req->req_upiu, copy_size);
++    if (ret) {
++        trace_ufs_err_dma_read_req_upiu(req->slot, req_upiu_base_addr);
++    }
++    return ret;
++}
++
++static MemTxResult ufs_dma_read_prdt(UfsRequest *req)
++{
++    UfsHc *u = req->hc;
++    uint16_t prdt_len = le16_to_cpu(req->utrd.prd_table_length);
++    uint16_t prdt_byte_off =
++        le16_to_cpu(req->utrd.prd_table_offset) * sizeof(uint32_t);
++    uint32_t prdt_size = prdt_len * sizeof(UfshcdSgEntry);
++    g_autofree UfshcdSgEntry *prd_entries = NULL;
++    hwaddr req_upiu_base_addr, prdt_base_addr;
++    int err;
++
++    assert(!req->sg);
++
++    if (prdt_size == 0) {
++        return MEMTX_OK;
++    }
++    prd_entries = g_new(UfshcdSgEntry, prdt_size);
++
++    req_upiu_base_addr = ufs_get_req_upiu_base_addr(&req->utrd);
++    prdt_base_addr = req_upiu_base_addr + prdt_byte_off;
++
++    err = ufs_addr_read(u, prdt_base_addr, prd_entries, prdt_size);
++    if (err) {
++        trace_ufs_err_dma_read_prdt(req->slot, prdt_base_addr);
++        return err;
++    }
++
++    req->sg = g_malloc0(sizeof(QEMUSGList));
++    pci_dma_sglist_init(req->sg, PCI_DEVICE(u), prdt_len);
++
++    for (uint16_t i = 0; i < prdt_len; ++i) {
++        hwaddr data_dma_addr = le64_to_cpu(prd_entries[i].addr);
++        uint32_t data_byte_count = le32_to_cpu(prd_entries[i].size) + 1;
++        qemu_sglist_add(req->sg, data_dma_addr, data_byte_count);
++    }
++    return MEMTX_OK;
++}
++
++static MemTxResult ufs_dma_read_upiu(UfsRequest *req)
++{
++    MemTxResult ret;
++
++    ret = ufs_dma_read_utrd(req);
++    if (ret) {
++        return ret;
++    }
++
++    ret = ufs_dma_read_req_upiu(req);
++    if (ret) {
++        return ret;
++    }
++
++    ret = ufs_dma_read_prdt(req);
++    if (ret) {
++        return ret;
++    }
++
++    return 0;
++}
++
++static MemTxResult ufs_dma_write_utrd(UfsRequest *req)
++{
++    UfsHc *u = req->hc;
++    hwaddr utrd_addr = ufs_get_utrd_addr(u, req->slot);
++    MemTxResult ret;
++
++    ret = ufs_addr_write(u, utrd_addr, &req->utrd, sizeof(req->utrd));
++    if (ret) {
++        trace_ufs_err_dma_write_utrd(req->slot, utrd_addr);
++    }
++    return ret;
++}
++
++static MemTxResult ufs_dma_write_rsp_upiu(UfsRequest *req)
++{
++    UfsHc *u = req->hc;
++    hwaddr rsp_upiu_base_addr = ufs_get_rsp_upiu_base_addr(&req->utrd);
++    uint32_t rsp_upiu_byte_len =
++        le16_to_cpu(req->utrd.response_upiu_length) * sizeof(uint32_t);
++    uint16_t data_segment_length =
++        be16_to_cpu(req->rsp_upiu.header.data_segment_length);
++    uint32_t copy_size = sizeof(UtpUpiuHeader) +
++                         UFS_TRANSACTION_SPECIFIC_FIELD_SIZE +
++                         data_segment_length;
++    MemTxResult ret;
++
++    if (copy_size > rsp_upiu_byte_len) {
++        copy_size = rsp_upiu_byte_len;
++    }
++
++    ret = ufs_addr_write(u, rsp_upiu_base_addr, &req->rsp_upiu, copy_size);
++    if (ret) {
++        trace_ufs_err_dma_write_rsp_upiu(req->slot, rsp_upiu_base_addr);
++    }
++    return ret;
++}
++
++static MemTxResult ufs_dma_write_upiu(UfsRequest *req)
++{
++    MemTxResult ret;
++
++    ret = ufs_dma_write_rsp_upiu(req);
++    if (ret) {
++        return ret;
++    }
++
++    return ufs_dma_write_utrd(req);
++}
++
+ static void ufs_irq_check(UfsHc *u)
+ {
+     PCIDevice *pci = PCI_DEVICE(u);
+@@ -32,6 +243,41 @@ static void ufs_irq_check(UfsHc *u)
+     }
+ }
+ 
++static void ufs_process_db(UfsHc *u, uint32_t val)
++{
++    unsigned long doorbell;
++    uint32_t slot;
++    uint32_t nutrs = u->params.nutrs;
++    UfsRequest *req;
++
++    val &= ~u->reg.utrldbr;
++    if (!val) {
++        return;
++    }
++
++    doorbell = val;
++    slot = find_first_bit(&doorbell, nutrs);
++
++    while (slot < nutrs) {
++        req = &u->req_list[slot];
++        if (req->state == UFS_REQUEST_ERROR) {
++            trace_ufs_err_utrl_slot_error(req->slot);
++            return;
++        }
++
++        if (req->state != UFS_REQUEST_IDLE) {
++            trace_ufs_err_utrl_slot_busy(req->slot);
++            return;
++        }
++
++        trace_ufs_process_db(slot);
++        req->state = UFS_REQUEST_READY;
++        slot = find_next_bit(&doorbell, nutrs, slot + 1);
++    }
++
++    qemu_bh_schedule(u->doorbell_bh);
++}
++
+ static void ufs_process_uiccmd(UfsHc *u, uint32_t val)
+ {
+     trace_ufs_process_uiccmd(val, u->reg.ucmdarg1, u->reg.ucmdarg2,
+@@ -95,7 +341,8 @@ static void ufs_write_reg(UfsHc *u, hwaddr offset, uint32_t data, unsigned size)
+         u->reg.utrlbau = data;
+         break;
+     case A_UTRLDBR:
+-        /* Not yet supported */
++        ufs_process_db(u, data);
++        u->reg.utrldbr |= data;
+         break;
+     case A_UTRLRSR:
+         u->reg.utrlrsr = data;
+@@ -173,6 +420,665 @@ static const MemoryRegionOps ufs_mmio_ops = {
+     },
+ };
+ 
++static void ufs_build_upiu_header(UfsRequest *req, uint8_t trans_type,
++                                  uint8_t flags, uint8_t response,
++                                  uint8_t scsi_status,
++                                  uint16_t data_segment_length)
++{
++    memcpy(&req->rsp_upiu.header, &req->req_upiu.header, sizeof(UtpUpiuHeader));
++    req->rsp_upiu.header.trans_type = trans_type;
++    req->rsp_upiu.header.flags = flags;
++    req->rsp_upiu.header.response = response;
++    req->rsp_upiu.header.scsi_status = scsi_status;
++    req->rsp_upiu.header.data_segment_length = cpu_to_be16(data_segment_length);
++}
++
++static UfsReqResult ufs_exec_nop_cmd(UfsRequest *req)
++{
++    trace_ufs_exec_nop_cmd(req->slot);
++    ufs_build_upiu_header(req, UFS_UPIU_TRANSACTION_NOP_IN, 0, 0, 0, 0);
++    return UFS_REQUEST_SUCCESS;
++}
++
++/*
++ * This defines the permission of flags based on their IDN. There are some
++ * things that are declared read-only, which is inconsistent with the ufs spec,
++ * because we want to return an error for features that are not yet supported.
++ */
++static const int flag_permission[UFS_QUERY_FLAG_IDN_COUNT] = {
++    [UFS_QUERY_FLAG_IDN_FDEVICEINIT] = UFS_QUERY_FLAG_READ | UFS_QUERY_FLAG_SET,
++    /* Write protection is not supported */
++    [UFS_QUERY_FLAG_IDN_PERMANENT_WPE] = UFS_QUERY_FLAG_READ,
++    [UFS_QUERY_FLAG_IDN_PWR_ON_WPE] = UFS_QUERY_FLAG_READ,
++    [UFS_QUERY_FLAG_IDN_BKOPS_EN] = UFS_QUERY_FLAG_READ | UFS_QUERY_FLAG_SET |
++                                    UFS_QUERY_FLAG_CLEAR |
++                                    UFS_QUERY_FLAG_TOGGLE,
++    [UFS_QUERY_FLAG_IDN_LIFE_SPAN_MODE_ENABLE] =
++        UFS_QUERY_FLAG_READ | UFS_QUERY_FLAG_SET | UFS_QUERY_FLAG_CLEAR |
++        UFS_QUERY_FLAG_TOGGLE,
++    /* Purge Operation is not supported */
++    [UFS_QUERY_FLAG_IDN_PURGE_ENABLE] = UFS_QUERY_FLAG_NONE,
++    /* Refresh Operation is not supported */
++    [UFS_QUERY_FLAG_IDN_REFRESH_ENABLE] = UFS_QUERY_FLAG_NONE,
++    /* Physical Resource Removal is not supported */
++    [UFS_QUERY_FLAG_IDN_FPHYRESOURCEREMOVAL] = UFS_QUERY_FLAG_READ,
++    [UFS_QUERY_FLAG_IDN_BUSY_RTC] = UFS_QUERY_FLAG_READ,
++    [UFS_QUERY_FLAG_IDN_PERMANENTLY_DISABLE_FW_UPDATE] = UFS_QUERY_FLAG_READ,
++    /* Write Booster is not supported */
++    [UFS_QUERY_FLAG_IDN_WB_EN] = UFS_QUERY_FLAG_READ,
++    [UFS_QUERY_FLAG_IDN_WB_BUFF_FLUSH_EN] = UFS_QUERY_FLAG_READ,
++    [UFS_QUERY_FLAG_IDN_WB_BUFF_FLUSH_DURING_HIBERN8] = UFS_QUERY_FLAG_READ,
++};
++
++static inline QueryRespCode ufs_flag_check_idn_valid(uint8_t idn, int op)
++{
++    if (idn >= UFS_QUERY_FLAG_IDN_COUNT) {
++        return UFS_QUERY_RESULT_INVALID_IDN;
++    }
++
++    if (!(flag_permission[idn] & op)) {
++        if (op == UFS_QUERY_FLAG_READ) {
++            trace_ufs_err_query_flag_not_readable(idn);
++            return UFS_QUERY_RESULT_NOT_READABLE;
++        }
++        trace_ufs_err_query_flag_not_writable(idn);
++        return UFS_QUERY_RESULT_NOT_WRITEABLE;
++    }
++
++    return UFS_QUERY_RESULT_SUCCESS;
++}
++
++static const int attr_permission[UFS_QUERY_ATTR_IDN_COUNT] = {
++    /* booting is not supported */
++    [UFS_QUERY_ATTR_IDN_BOOT_LU_EN] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_POWER_MODE] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL] =
++        UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_OOO_DATA_EN] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_BKOPS_STATUS] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_PURGE_STATUS] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_MAX_DATA_IN] =
++        UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_MAX_DATA_OUT] =
++        UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_DYN_CAP_NEEDED] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_REF_CLK_FREQ] =
++        UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_CONF_DESC_LOCK] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_MAX_NUM_OF_RTT] =
++        UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_EE_CONTROL] =
++        UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_EE_STATUS] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_SECONDS_PASSED] = UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_CNTX_CONF] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_FFU_STATUS] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_PSA_STATE] = UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_PSA_DATA_SIZE] =
++        UFS_QUERY_ATTR_READ | UFS_QUERY_ATTR_WRITE,
++    [UFS_QUERY_ATTR_IDN_REF_CLK_GATING_WAIT_TIME] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_CASE_ROUGH_TEMP] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_HIGH_TEMP_BOUND] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_LOW_TEMP_BOUND] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_THROTTLING_STATUS] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_WB_FLUSH_STATUS] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_AVAIL_WB_BUFF_SIZE] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_WB_BUFF_LIFE_TIME_EST] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_CURR_WB_BUFF_SIZE] = UFS_QUERY_ATTR_READ,
++    /* refresh operation is not supported */
++    [UFS_QUERY_ATTR_IDN_REFRESH_STATUS] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_REFRESH_FREQ] = UFS_QUERY_ATTR_READ,
++    [UFS_QUERY_ATTR_IDN_REFRESH_UNIT] = UFS_QUERY_ATTR_READ,
++};
++
++static inline QueryRespCode ufs_attr_check_idn_valid(uint8_t idn, int op)
++{
++    if (idn >= UFS_QUERY_ATTR_IDN_COUNT) {
++        return UFS_QUERY_RESULT_INVALID_IDN;
++    }
++
++    if (!(attr_permission[idn] & op)) {
++        if (op == UFS_QUERY_ATTR_READ) {
++            trace_ufs_err_query_attr_not_readable(idn);
++            return UFS_QUERY_RESULT_NOT_READABLE;
++        }
++        trace_ufs_err_query_attr_not_writable(idn);
++        return UFS_QUERY_RESULT_NOT_WRITEABLE;
++    }
++
++    return UFS_QUERY_RESULT_SUCCESS;
++}
++
++static QueryRespCode ufs_exec_query_flag(UfsRequest *req, int op)
++{
++    UfsHc *u = req->hc;
++    uint8_t idn = req->req_upiu.qr.idn;
++    uint32_t value;
++    QueryRespCode ret;
++
++    ret = ufs_flag_check_idn_valid(idn, op);
++    if (ret) {
++        return ret;
++    }
++
++    if (idn == UFS_QUERY_FLAG_IDN_FDEVICEINIT) {
++        value = 0;
++    } else if (op == UFS_QUERY_FLAG_READ) {
++        value = *(((uint8_t *)&u->flags) + idn);
++    } else if (op == UFS_QUERY_FLAG_SET) {
++        value = 1;
++    } else if (op == UFS_QUERY_FLAG_CLEAR) {
++        value = 0;
++    } else if (op == UFS_QUERY_FLAG_TOGGLE) {
++        value = *(((uint8_t *)&u->flags) + idn);
++        value = !value;
 +    } else {
-+        trace_ufs_irq_lower();
-+        pci_irq_deassert(pci);
++        trace_ufs_err_query_invalid_opcode(op);
++        return UFS_QUERY_RESULT_INVALID_OPCODE;
++    }
++
++    *(((uint8_t *)&u->flags) + idn) = value;
++    req->rsp_upiu.qr.value = cpu_to_be32(value);
++    return UFS_QUERY_RESULT_SUCCESS;
++}
++
++static uint32_t ufs_read_attr_value(UfsHc *u, uint8_t idn)
++{
++    switch (idn) {
++    case UFS_QUERY_ATTR_IDN_BOOT_LU_EN:
++        return u->attributes.boot_lun_en;
++    case UFS_QUERY_ATTR_IDN_POWER_MODE:
++        return u->attributes.current_power_mode;
++    case UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL:
++        return u->attributes.active_icc_level;
++    case UFS_QUERY_ATTR_IDN_OOO_DATA_EN:
++        return u->attributes.out_of_order_data_en;
++    case UFS_QUERY_ATTR_IDN_BKOPS_STATUS:
++        return u->attributes.background_op_status;
++    case UFS_QUERY_ATTR_IDN_PURGE_STATUS:
++        return u->attributes.purge_status;
++    case UFS_QUERY_ATTR_IDN_MAX_DATA_IN:
++        return u->attributes.max_data_in_size;
++    case UFS_QUERY_ATTR_IDN_MAX_DATA_OUT:
++        return u->attributes.max_data_out_size;
++    case UFS_QUERY_ATTR_IDN_DYN_CAP_NEEDED:
++        return be32_to_cpu(u->attributes.dyn_cap_needed);
++    case UFS_QUERY_ATTR_IDN_REF_CLK_FREQ:
++        return u->attributes.ref_clk_freq;
++    case UFS_QUERY_ATTR_IDN_CONF_DESC_LOCK:
++        return u->attributes.config_descr_lock;
++    case UFS_QUERY_ATTR_IDN_MAX_NUM_OF_RTT:
++        return u->attributes.max_num_of_rtt;
++    case UFS_QUERY_ATTR_IDN_EE_CONTROL:
++        return be16_to_cpu(u->attributes.exception_event_control);
++    case UFS_QUERY_ATTR_IDN_EE_STATUS:
++        return be16_to_cpu(u->attributes.exception_event_status);
++    case UFS_QUERY_ATTR_IDN_SECONDS_PASSED:
++        return be32_to_cpu(u->attributes.seconds_passed);
++    case UFS_QUERY_ATTR_IDN_CNTX_CONF:
++        return be16_to_cpu(u->attributes.context_conf);
++    case UFS_QUERY_ATTR_IDN_FFU_STATUS:
++        return u->attributes.device_ffu_status;
++    case UFS_QUERY_ATTR_IDN_PSA_STATE:
++        return be32_to_cpu(u->attributes.psa_state);
++    case UFS_QUERY_ATTR_IDN_PSA_DATA_SIZE:
++        return be32_to_cpu(u->attributes.psa_data_size);
++    case UFS_QUERY_ATTR_IDN_REF_CLK_GATING_WAIT_TIME:
++        return u->attributes.ref_clk_gating_wait_time;
++    case UFS_QUERY_ATTR_IDN_CASE_ROUGH_TEMP:
++        return u->attributes.device_case_rough_temperaure;
++    case UFS_QUERY_ATTR_IDN_HIGH_TEMP_BOUND:
++        return u->attributes.device_too_high_temp_boundary;
++    case UFS_QUERY_ATTR_IDN_LOW_TEMP_BOUND:
++        return u->attributes.device_too_low_temp_boundary;
++    case UFS_QUERY_ATTR_IDN_THROTTLING_STATUS:
++        return u->attributes.throttling_status;
++    case UFS_QUERY_ATTR_IDN_WB_FLUSH_STATUS:
++        return u->attributes.wb_buffer_flush_status;
++    case UFS_QUERY_ATTR_IDN_AVAIL_WB_BUFF_SIZE:
++        return u->attributes.available_wb_buffer_size;
++    case UFS_QUERY_ATTR_IDN_WB_BUFF_LIFE_TIME_EST:
++        return u->attributes.wb_buffer_life_time_est;
++    case UFS_QUERY_ATTR_IDN_CURR_WB_BUFF_SIZE:
++        return be32_to_cpu(u->attributes.current_wb_buffer_size);
++    case UFS_QUERY_ATTR_IDN_REFRESH_STATUS:
++        return u->attributes.refresh_status;
++    case UFS_QUERY_ATTR_IDN_REFRESH_FREQ:
++        return u->attributes.refresh_freq;
++    case UFS_QUERY_ATTR_IDN_REFRESH_UNIT:
++        return u->attributes.refresh_unit;
++    }
++    return 0;
++}
++
++static void ufs_write_attr_value(UfsHc *u, uint8_t idn, uint32_t value)
++{
++    switch (idn) {
++    case UFS_QUERY_ATTR_IDN_ACTIVE_ICC_LVL:
++        u->attributes.active_icc_level = value;
++        break;
++    case UFS_QUERY_ATTR_IDN_MAX_DATA_IN:
++        u->attributes.max_data_in_size = value;
++        break;
++    case UFS_QUERY_ATTR_IDN_MAX_DATA_OUT:
++        u->attributes.max_data_out_size = value;
++        break;
++    case UFS_QUERY_ATTR_IDN_REF_CLK_FREQ:
++        u->attributes.ref_clk_freq = value;
++        break;
++    case UFS_QUERY_ATTR_IDN_MAX_NUM_OF_RTT:
++        u->attributes.max_num_of_rtt = value;
++        break;
++    case UFS_QUERY_ATTR_IDN_EE_CONTROL:
++        u->attributes.exception_event_control = cpu_to_be16(value);
++        break;
++    case UFS_QUERY_ATTR_IDN_SECONDS_PASSED:
++        u->attributes.seconds_passed = cpu_to_be32(value);
++        break;
++    case UFS_QUERY_ATTR_IDN_PSA_STATE:
++        u->attributes.psa_state = value;
++        break;
++    case UFS_QUERY_ATTR_IDN_PSA_DATA_SIZE:
++        u->attributes.psa_data_size = cpu_to_be32(value);
++        break;
 +    }
 +}
 +
-+static void ufs_process_uiccmd(UfsHc *u, uint32_t val)
++static QueryRespCode ufs_exec_query_attr(UfsRequest *req, int op)
 +{
-+    trace_ufs_process_uiccmd(val, u->reg.ucmdarg1, u->reg.ucmdarg2,
-+                             u->reg.ucmdarg3);
-+    /*
-+     * Only the essential uic commands for running drivers on Linux and Windows
-+     * are implemented.
-+     */
-+    switch (val) {
-+    case UFS_UIC_CMD_DME_LINK_STARTUP:
-+        u->reg.hcs = FIELD_DP32(u->reg.hcs, HCS, DP, 1);
-+        u->reg.hcs = FIELD_DP32(u->reg.hcs, HCS, UTRLRDY, 1);
-+        u->reg.hcs = FIELD_DP32(u->reg.hcs, HCS, UTMRLRDY, 1);
-+        u->reg.ucmdarg2 = UFS_UIC_CMD_RESULT_SUCCESS;
++    UfsHc *u = req->hc;
++    uint8_t idn = req->req_upiu.qr.idn;
++    uint32_t value;
++    QueryRespCode ret;
++
++    ret = ufs_attr_check_idn_valid(idn, op);
++    if (ret) {
++        return ret;
++    }
++
++    if (op == UFS_QUERY_ATTR_READ) {
++        value = ufs_read_attr_value(u, idn);
++    } else {
++        value = be32_to_cpu(req->req_upiu.qr.value);
++        ufs_write_attr_value(u, idn, value);
++    }
++
++    req->rsp_upiu.qr.value = cpu_to_be32(value);
++    return UFS_QUERY_RESULT_SUCCESS;
++}
++
++static const RpmbUnitDescriptor rpmb_unit_desc = {
++    .length = sizeof(RpmbUnitDescriptor),
++    .descriptor_idn = 2,
++    .unit_index = UFS_UPIU_RPMB_WLUN,
++    .lu_enable = 0,
++};
++
++static QueryRespCode ufs_read_unit_desc(UfsRequest *req)
++{
++    uint8_t lun = req->req_upiu.qr.index;
++
++    if (lun != UFS_UPIU_RPMB_WLUN && lun > UFS_MAX_LUS) {
++        trace_ufs_err_query_invalid_index(req->req_upiu.qr.opcode, lun);
++        return UFS_QUERY_RESULT_INVALID_INDEX;
++    }
++
++    if (lun == UFS_UPIU_RPMB_WLUN) {
++        memcpy(&req->rsp_upiu.qr.data, &rpmb_unit_desc, rpmb_unit_desc.length);
++    } else {
++        /* unit descriptor is not yet supported */
++        return UFS_QUERY_RESULT_INVALID_INDEX;
++    }
++
++    return UFS_QUERY_RESULT_SUCCESS;
++}
++
++static inline StringDescriptor manufacturer_str_desc(void)
++{
++    StringDescriptor desc = {
++        .length = 0x12,
++        .descriptor_idn = UFS_QUERY_DESC_IDN_STRING,
++    };
++    desc.UC[0] = cpu_to_be16('R');
++    desc.UC[1] = cpu_to_be16('E');
++    desc.UC[2] = cpu_to_be16('D');
++    desc.UC[3] = cpu_to_be16('H');
++    desc.UC[4] = cpu_to_be16('A');
++    desc.UC[5] = cpu_to_be16('T');
++    return desc;
++}
++
++static inline StringDescriptor product_name_str_desc(void)
++{
++    StringDescriptor desc = {
++        .length = 0x22,
++        .descriptor_idn = UFS_QUERY_DESC_IDN_STRING,
++    };
++    desc.UC[0] = cpu_to_be16('Q');
++    desc.UC[1] = cpu_to_be16('E');
++    desc.UC[2] = cpu_to_be16('M');
++    desc.UC[3] = cpu_to_be16('U');
++    desc.UC[4] = cpu_to_be16(' ');
++    desc.UC[5] = cpu_to_be16('U');
++    desc.UC[6] = cpu_to_be16('F');
++    desc.UC[7] = cpu_to_be16('S');
++    return desc;
++}
++
++static inline StringDescriptor product_rev_level_str_desc(void)
++{
++    StringDescriptor desc = {
++        .length = 0x0a,
++        .descriptor_idn = UFS_QUERY_DESC_IDN_STRING,
++    };
++    desc.UC[0] = cpu_to_be16('0');
++    desc.UC[1] = cpu_to_be16('0');
++    desc.UC[2] = cpu_to_be16('0');
++    desc.UC[3] = cpu_to_be16('1');
++    return desc;
++}
++
++static const StringDescriptor null_str_desc = {
++    .length = 0x02,
++    .descriptor_idn = UFS_QUERY_DESC_IDN_STRING,
++};
++
++static QueryRespCode ufs_read_string_desc(UfsRequest *req)
++{
++    UfsHc *u = req->hc;
++    uint8_t index = req->req_upiu.qr.index;
++    StringDescriptor desc;
++
++    if (index == u->device_desc.manufacturer_name) {
++        desc = manufacturer_str_desc();
++        memcpy(&req->rsp_upiu.qr.data, &desc, desc.length);
++    } else if (index == u->device_desc.product_name) {
++        desc = product_name_str_desc();
++        memcpy(&req->rsp_upiu.qr.data, &desc, desc.length);
++    } else if (index == u->device_desc.serial_number) {
++        memcpy(&req->rsp_upiu.qr.data, &null_str_desc, null_str_desc.length);
++    } else if (index == u->device_desc.oem_id) {
++        memcpy(&req->rsp_upiu.qr.data, &null_str_desc, null_str_desc.length);
++    } else if (index == u->device_desc.product_revision_level) {
++        desc = product_rev_level_str_desc();
++        memcpy(&req->rsp_upiu.qr.data, &desc, desc.length);
++    } else {
++        trace_ufs_err_query_invalid_index(req->req_upiu.qr.opcode, index);
++        return UFS_QUERY_RESULT_INVALID_INDEX;
++    }
++    return UFS_QUERY_RESULT_SUCCESS;
++}
++
++static inline InterconnectDescriptor interconnect_desc(void)
++{
++    InterconnectDescriptor desc = {
++        .length = sizeof(InterconnectDescriptor),
++        .descriptor_idn = UFS_QUERY_DESC_IDN_INTERCONNECT,
++    };
++    desc.bcd_unipro_version = cpu_to_be16(0x180);
++    desc.bcd_mphy_version = cpu_to_be16(0x410);
++    return desc;
++}
++
++static QueryRespCode ufs_read_desc(UfsRequest *req)
++{
++    UfsHc *u = req->hc;
++    QueryRespCode status;
++    uint8_t idn = req->req_upiu.qr.idn;
++    uint16_t length = be16_to_cpu(req->req_upiu.qr.length);
++    InterconnectDescriptor desc;
++
++    switch (idn) {
++    case UFS_QUERY_DESC_IDN_DEVICE:
++        memcpy(&req->rsp_upiu.qr.data, &u->device_desc, sizeof(u->device_desc));
++        status = UFS_QUERY_RESULT_SUCCESS;
 +        break;
-+    /* TODO: Revisit it when Power Management is implemented */
-+    case UFS_UIC_CMD_DME_HIBER_ENTER:
-+        u->reg.is = FIELD_DP32(u->reg.is, IS, UHES, 1);
-+        u->reg.hcs = FIELD_DP32(u->reg.hcs, HCS, UPMCRS, UFS_PWR_LOCAL);
-+        u->reg.ucmdarg2 = UFS_UIC_CMD_RESULT_SUCCESS;
++    case UFS_QUERY_DESC_IDN_UNIT:
++        status = ufs_read_unit_desc(req);
 +        break;
-+    case UFS_UIC_CMD_DME_HIBER_EXIT:
-+        u->reg.is = FIELD_DP32(u->reg.is, IS, UHXS, 1);
-+        u->reg.hcs = FIELD_DP32(u->reg.hcs, HCS, UPMCRS, UFS_PWR_LOCAL);
-+        u->reg.ucmdarg2 = UFS_UIC_CMD_RESULT_SUCCESS;
++    case UFS_QUERY_DESC_IDN_GEOMETRY:
++        memcpy(&req->rsp_upiu.qr.data, &u->geometry_desc,
++               sizeof(u->geometry_desc));
++        status = UFS_QUERY_RESULT_SUCCESS;
++        break;
++    case UFS_QUERY_DESC_IDN_INTERCONNECT: {
++        desc = interconnect_desc();
++        memcpy(&req->rsp_upiu.qr.data, &desc, sizeof(InterconnectDescriptor));
++        status = UFS_QUERY_RESULT_SUCCESS;
++        break;
++    }
++    case UFS_QUERY_DESC_IDN_STRING:
++        status = ufs_read_string_desc(req);
++        break;
++    case UFS_QUERY_DESC_IDN_POWER:
++        /* mocking of power descriptor is not supported */
++        memset(&req->rsp_upiu.qr.data, 0, sizeof(PowerParametersDescriptor));
++        req->rsp_upiu.qr.data[0] = sizeof(PowerParametersDescriptor);
++        req->rsp_upiu.qr.data[1] = UFS_QUERY_DESC_IDN_POWER;
++        status = UFS_QUERY_RESULT_SUCCESS;
++        break;
++    case UFS_QUERY_DESC_IDN_HEALTH:
++        /* mocking of health descriptor is not supported */
++        memset(&req->rsp_upiu.qr.data, 0, sizeof(DeviceHealthDescriptor));
++        req->rsp_upiu.qr.data[0] = sizeof(DeviceHealthDescriptor);
++        req->rsp_upiu.qr.data[1] = UFS_QUERY_DESC_IDN_HEALTH;
++        status = UFS_QUERY_RESULT_SUCCESS;
 +        break;
 +    default:
-+        u->reg.ucmdarg2 = UFS_UIC_CMD_RESULT_FAILURE;
++        length = 0;
++        trace_ufs_err_query_invalid_idn(req->req_upiu.qr.opcode, idn);
++        status = UFS_QUERY_RESULT_INVALID_IDN;
 +    }
 +
-+    u->reg.is = FIELD_DP32(u->reg.is, IS, UCCS, 1);
++    if (length > req->rsp_upiu.qr.data[0]) {
++        length = req->rsp_upiu.qr.data[0];
++    }
++    req->rsp_upiu.qr.opcode = req->req_upiu.qr.opcode;
++    req->rsp_upiu.qr.idn = req->req_upiu.qr.idn;
++    req->rsp_upiu.qr.index = req->req_upiu.qr.index;
++    req->rsp_upiu.qr.selector = req->req_upiu.qr.selector;
++    req->rsp_upiu.qr.length = cpu_to_be16(length);
++
++    return status;
++}
++
++static QueryRespCode ufs_exec_query_read(UfsRequest *req)
++{
++    QueryRespCode status;
++    switch (req->req_upiu.qr.opcode) {
++    case UFS_UPIU_QUERY_OPCODE_NOP:
++        status = UFS_QUERY_RESULT_SUCCESS;
++        break;
++    case UFS_UPIU_QUERY_OPCODE_READ_DESC:
++        status = ufs_read_desc(req);
++        break;
++    case UFS_UPIU_QUERY_OPCODE_READ_ATTR:
++        status = ufs_exec_query_attr(req, UFS_QUERY_ATTR_READ);
++        break;
++    case UFS_UPIU_QUERY_OPCODE_READ_FLAG:
++        status = ufs_exec_query_flag(req, UFS_QUERY_FLAG_READ);
++        break;
++    default:
++        trace_ufs_err_query_invalid_opcode(req->req_upiu.qr.opcode);
++        status = UFS_QUERY_RESULT_INVALID_OPCODE;
++        break;
++    }
++
++    return status;
++}
++
++static QueryRespCode ufs_exec_query_write(UfsRequest *req)
++{
++    QueryRespCode status;
++    switch (req->req_upiu.qr.opcode) {
++    case UFS_UPIU_QUERY_OPCODE_NOP:
++        status = UFS_QUERY_RESULT_SUCCESS;
++        break;
++    case UFS_UPIU_QUERY_OPCODE_WRITE_DESC:
++        /* write descriptor is not supported */
++        status = UFS_QUERY_RESULT_NOT_WRITEABLE;
++        break;
++    case UFS_UPIU_QUERY_OPCODE_WRITE_ATTR:
++        status = ufs_exec_query_attr(req, UFS_QUERY_ATTR_WRITE);
++        break;
++    case UFS_UPIU_QUERY_OPCODE_SET_FLAG:
++        status = ufs_exec_query_flag(req, UFS_QUERY_FLAG_SET);
++        break;
++    case UFS_UPIU_QUERY_OPCODE_CLEAR_FLAG:
++        status = ufs_exec_query_flag(req, UFS_QUERY_FLAG_CLEAR);
++        break;
++    case UFS_UPIU_QUERY_OPCODE_TOGGLE_FLAG:
++        status = ufs_exec_query_flag(req, UFS_QUERY_FLAG_TOGGLE);
++        break;
++    default:
++        trace_ufs_err_query_invalid_opcode(req->req_upiu.qr.opcode);
++        status = UFS_QUERY_RESULT_INVALID_OPCODE;
++        break;
++    }
++
++    return status;
++}
++
++static UfsReqResult ufs_exec_query_cmd(UfsRequest *req)
++{
++    uint8_t query_func = req->req_upiu.header.query_func;
++    uint16_t data_segment_length;
++    QueryRespCode status;
++
++    trace_ufs_exec_query_cmd(req->slot, req->req_upiu.qr.opcode);
++    if (query_func == UFS_UPIU_QUERY_FUNC_STANDARD_READ_REQUEST) {
++        status = ufs_exec_query_read(req);
++    } else if (query_func == UFS_UPIU_QUERY_FUNC_STANDARD_WRITE_REQUEST) {
++        status = ufs_exec_query_write(req);
++    } else {
++        status = UFS_QUERY_RESULT_GENERAL_FAILURE;
++    }
++
++    data_segment_length = be16_to_cpu(req->rsp_upiu.qr.length);
++    ufs_build_upiu_header(req, UFS_UPIU_TRANSACTION_QUERY_RSP, 0, status, 0,
++                          data_segment_length);
++
++    if (status != UFS_QUERY_RESULT_SUCCESS) {
++        return UFS_REQUEST_FAIL;
++    }
++    return UFS_REQUEST_SUCCESS;
++}
++
++static void ufs_exec_req(UfsRequest *req)
++{
++    UfsReqResult req_result;
++
++    if (ufs_dma_read_upiu(req)) {
++        return;
++    }
++
++    switch (req->req_upiu.header.trans_type) {
++    case UFS_UPIU_TRANSACTION_NOP_OUT:
++        req_result = ufs_exec_nop_cmd(req);
++        break;
++    case UFS_UPIU_TRANSACTION_COMMAND:
++        /* Not yet implemented */
++        req_result = UFS_REQUEST_FAIL;
++        break;
++    case UFS_UPIU_TRANSACTION_QUERY_REQ:
++        req_result = ufs_exec_query_cmd(req);
++        break;
++    default:
++        trace_ufs_err_invalid_trans_code(req->slot,
++                                         req->req_upiu.header.trans_type);
++        req_result = UFS_REQUEST_FAIL;
++    }
++
++    ufs_complete_req(req, req_result);
++}
++
++static void ufs_process_req(void *opaque)
++{
++    UfsHc *u = opaque;
++    UfsRequest *req;
++    int slot;
++
++    for (slot = 0; slot < u->params.nutrs; slot++) {
++        req = &u->req_list[slot];
++
++        if (req->state != UFS_REQUEST_READY) {
++            continue;
++        }
++        trace_ufs_process_req(slot);
++        req->state = UFS_REQUEST_RUNNING;
++
++        ufs_exec_req(req);
++    }
++}
++
++static void ufs_complete_req(UfsRequest *req, UfsReqResult req_result)
++{
++    UfsHc *u = req->hc;
++    assert(req->state == UFS_REQUEST_RUNNING);
++
++    if (req_result == UFS_REQUEST_SUCCESS) {
++        req->utrd.header.dword_2 = cpu_to_le32(UFS_OCS_SUCCESS);
++    } else {
++        req->utrd.header.dword_2 = cpu_to_le32(UFS_OCS_INVALID_CMD_TABLE_ATTR);
++    }
++
++    trace_ufs_complete_req(req->slot);
++    req->state = UFS_REQUEST_COMPLETE;
++    qemu_bh_schedule(u->complete_bh);
++}
++
++static void ufs_clear_req(UfsRequest *req)
++{
++    if (req->sg != NULL) {
++        qemu_sglist_destroy(req->sg);
++        g_free(req->sg);
++        req->sg = NULL;
++    }
++
++    memset(&req->utrd, 0, sizeof(req->utrd));
++    memset(&req->req_upiu, 0, sizeof(req->req_upiu));
++    memset(&req->rsp_upiu, 0, sizeof(req->rsp_upiu));
++}
++
++static void ufs_sendback_req(void *opaque)
++{
++    UfsHc *u = opaque;
++    UfsRequest *req;
++    int slot;
++
++    for (slot = 0; slot < u->params.nutrs; slot++) {
++        req = &u->req_list[slot];
++
++        if (req->state != UFS_REQUEST_COMPLETE) {
++            continue;
++        }
++
++        if (ufs_dma_write_upiu(req)) {
++            req->state = UFS_REQUEST_ERROR;
++            continue;
++        }
++
++        /*
++         * TODO: UTP Transfer Request Interrupt Aggregation Control is not yet
++         * supported
++         */
++        if (le32_to_cpu(req->utrd.header.dword_2) != UFS_OCS_SUCCESS ||
++            le32_to_cpu(req->utrd.header.dword_0) & UFS_UTP_REQ_DESC_INT_CMD) {
++            u->reg.is = FIELD_DP32(u->reg.is, IS, UTRCS, 1);
++        }
++
++        u->reg.utrldbr &= ~(1 << slot);
++        u->reg.utrlcnr |= (1 << slot);
++
++        trace_ufs_sendback_req(req->slot);
++
++        ufs_clear_req(req);
++        req->state = UFS_REQUEST_IDLE;
++    }
 +
 +    ufs_irq_check(u);
 +}
 +
-+static void ufs_write_reg(UfsHc *u, hwaddr offset, uint32_t data, unsigned size)
+ static bool ufs_check_constraints(UfsHc *u, Error **errp)
+ {
+     if (u->params.nutrs > UFS_MAX_NUTRS) {
+@@ -203,6 +1109,23 @@ static void ufs_init_pci(UfsHc *u, PCIDevice *pci_dev)
+     u->irq = pci_allocate_irq(pci_dev);
+ }
+ 
++static void ufs_init_state(UfsHc *u)
 +{
-+    switch (offset) {
-+    case A_IS:
-+        u->reg.is &= ~data;
-+        ufs_irq_check(u);
-+        break;
-+    case A_IE:
-+        u->reg.ie = data;
-+        ufs_irq_check(u);
-+        break;
-+    case A_HCE:
-+        if (!FIELD_EX32(u->reg.hce, HCE, HCE) && FIELD_EX32(data, HCE, HCE)) {
-+            u->reg.hcs = FIELD_DP32(u->reg.hcs, HCS, UCRDY, 1);
-+            u->reg.hce = FIELD_DP32(u->reg.hce, HCE, HCE, 1);
-+        } else if (FIELD_EX32(u->reg.hce, HCE, HCE) &&
-+                   !FIELD_EX32(data, HCE, HCE)) {
-+            u->reg.hcs = 0;
-+            u->reg.hce = FIELD_DP32(u->reg.hce, HCE, HCE, 0);
-+        }
-+        break;
-+    case A_UTRLBA:
-+        u->reg.utrlba = data & R_UTRLBA_UTRLBA_MASK;
-+        break;
-+    case A_UTRLBAU:
-+        u->reg.utrlbau = data;
-+        break;
-+    case A_UTRLDBR:
-+        /* Not yet supported */
-+        break;
-+    case A_UTRLRSR:
-+        u->reg.utrlrsr = data;
-+        break;
-+    case A_UTRLCNR:
-+        u->reg.utrlcnr &= ~data;
-+        break;
-+    case A_UTMRLBA:
-+        u->reg.utmrlba = data & R_UTMRLBA_UTMRLBA_MASK;
-+        break;
-+    case A_UTMRLBAU:
-+        u->reg.utmrlbau = data;
-+        break;
-+    case A_UICCMD:
-+        ufs_process_uiccmd(u, data);
-+        break;
-+    case A_UCMDARG1:
-+        u->reg.ucmdarg1 = data;
-+        break;
-+    case A_UCMDARG2:
-+        u->reg.ucmdarg2 = data;
-+        break;
-+    case A_UCMDARG3:
-+        u->reg.ucmdarg3 = data;
-+        break;
-+    case A_UTRLCLR:
-+    case A_UTMRLDBR:
-+    case A_UTMRLCLR:
-+    case A_UTMRLRSR:
-+        trace_ufs_err_unsupport_register_offset(offset);
-+        break;
-+    default:
-+        trace_ufs_err_invalid_register_offset(offset);
-+        break;
-+    }
-+}
++    u->req_list = g_new0(UfsRequest, u->params.nutrs);
 +
-+static uint64_t ufs_mmio_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    UfsHc *u = (UfsHc *)opaque;
-+    uint8_t *ptr = (uint8_t *)&u->reg;
-+    uint64_t value;
-+
-+    if (addr > sizeof(u->reg) - size) {
-+        trace_ufs_err_invalid_register_offset(addr);
-+        return 0;
++    for (int i = 0; i < u->params.nutrs; i++) {
++        u->req_list[i].hc = u;
++        u->req_list[i].slot = i;
++        u->req_list[i].sg = NULL;
++        u->req_list[i].state = UFS_REQUEST_IDLE;
 +    }
 +
-+    value = *(uint32_t *)(ptr + addr);
-+    trace_ufs_mmio_read(addr, value, size);
-+    return value;
++    u->doorbell_bh = qemu_bh_new_guarded(ufs_process_req, u,
++                                         &DEVICE(u)->mem_reentrancy_guard);
++    u->complete_bh = qemu_bh_new_guarded(ufs_sendback_req, u,
++                                         &DEVICE(u)->mem_reentrancy_guard);
 +}
 +
-+static void ufs_mmio_write(void *opaque, hwaddr addr, uint64_t data,
-+                           unsigned size)
-+{
-+    UfsHc *u = (UfsHc *)opaque;
+ static void ufs_init_hc(UfsHc *u)
+ {
+     uint32_t cap = 0;
+@@ -220,6 +1143,52 @@ static void ufs_init_hc(UfsHc *u)
+     cap = FIELD_DP32(cap, CAP, CS, 0);
+     u->reg.cap = cap;
+     u->reg.ver = UFS_SPEC_VER;
 +
-+    if (addr > sizeof(u->reg) - size) {
-+        trace_ufs_err_invalid_register_offset(addr);
-+        return;
-+    }
++    memset(&u->device_desc, 0, sizeof(DeviceDescriptor));
++    u->device_desc.length = sizeof(DeviceDescriptor);
++    u->device_desc.descriptor_idn = UFS_QUERY_DESC_IDN_DEVICE;
++    u->device_desc.device_sub_class = 0x01;
++    u->device_desc.number_lu = 0x00;
++    u->device_desc.number_wlu = 0x04;
++    /* TODO: Revisit it when Power Management is implemented */
++    u->device_desc.init_power_mode = 0x01; /* Active Mode */
++    u->device_desc.high_priority_lun = 0x7F; /* Same Priority */
++    u->device_desc.spec_version = cpu_to_be16(UFS_SPEC_VER);
++    u->device_desc.manufacturer_name = 0x00;
++    u->device_desc.product_name = 0x01;
++    u->device_desc.serial_number = 0x02;
++    u->device_desc.oem_id = 0x03;
++    u->device_desc.ud_0_base_offset = 0x16;
++    u->device_desc.ud_config_p_length = 0x1A;
++    u->device_desc.device_rtt_cap = 0x02;
++    u->device_desc.queue_depth = u->params.nutrs;
++    u->device_desc.product_revision_level = 0x04;
 +
-+    trace_ufs_mmio_write(addr, data, size);
-+    ufs_write_reg(u, addr, data, size);
-+}
++    memset(&u->geometry_desc, 0, sizeof(GeometryDescriptor));
++    u->geometry_desc.length = sizeof(GeometryDescriptor);
++    u->geometry_desc.descriptor_idn = UFS_QUERY_DESC_IDN_GEOMETRY;
++    u->geometry_desc.max_number_lu = (UFS_MAX_LUS == 32) ? 0x1 : 0x0;
++    u->geometry_desc.segment_size = cpu_to_be32(0x2000); /* 4KB */
++    u->geometry_desc.allocation_unit_size = 0x1; /* 4KB */
++    u->geometry_desc.min_addr_block_size = 0x8; /* 4KB */
++    u->geometry_desc.max_in_buffer_size = 0x8;
++    u->geometry_desc.max_out_buffer_size = 0x8;
++    u->geometry_desc.rpmb_read_write_size = 0x40;
++    u->geometry_desc.data_ordering =
++        0x0; /* out-of-order data transfer is not supported */
++    u->geometry_desc.max_context_id_number = 0x5;
++    u->geometry_desc.supported_memory_types = cpu_to_be16(0x8001);
 +
-+static const MemoryRegionOps ufs_mmio_ops = {
-+    .read = ufs_mmio_read,
-+    .write = ufs_mmio_write,
-+    .endianness = DEVICE_LITTLE_ENDIAN,
-+    .impl = {
-+        .min_access_size = 4,
-+        .max_access_size = 4,
-+    },
-+};
++    memset(&u->attributes, 0, sizeof(u->attributes));
++    u->attributes.max_data_in_size = 0x08;
++    u->attributes.max_data_out_size = 0x08;
++    u->attributes.ref_clk_freq = 0x01; /* 26 MHz */
++    /* configure descriptor is not supported */
++    u->attributes.config_descr_lock = 0x01;
++    u->attributes.max_num_of_rtt = 0x02;
 +
-+static bool ufs_check_constraints(UfsHc *u, Error **errp)
-+{
-+    if (u->params.nutrs > UFS_MAX_NUTRS) {
-+        error_setg(errp, "nutrs must be less than or equal to %d",
-+                   UFS_MAX_NUTRS);
-+        return false;
-+    }
-+
-+    if (u->params.nutmrs > UFS_MAX_NUTMRS) {
-+        error_setg(errp, "nutmrs must be less than or equal to %d",
-+                   UFS_MAX_NUTMRS);
-+        return false;
-+    }
-+
-+    return true;
-+}
-+
-+static void ufs_init_pci(UfsHc *u, PCIDevice *pci_dev)
-+{
-+    uint8_t *pci_conf = pci_dev->config;
-+
-+    pci_conf[PCI_INTERRUPT_PIN] = 1;
-+    pci_config_set_prog_interface(pci_conf, 0x1);
-+
-+    memory_region_init_io(&u->iomem, OBJECT(u), &ufs_mmio_ops, u, "ufs",
-+                          u->reg_size);
-+    pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &u->iomem);
-+    u->irq = pci_allocate_irq(pci_dev);
-+}
-+
-+static void ufs_init_hc(UfsHc *u)
-+{
-+    uint32_t cap = 0;
-+
-+    u->reg_size = pow2ceil(sizeof(UfsReg));
-+
-+    memset(&u->reg, 0, sizeof(u->reg));
-+    cap = FIELD_DP32(cap, CAP, NUTRS, (u->params.nutrs - 1));
-+    cap = FIELD_DP32(cap, CAP, RTT, 2);
-+    cap = FIELD_DP32(cap, CAP, NUTMRS, (u->params.nutmrs - 1));
-+    cap = FIELD_DP32(cap, CAP, AUTOH8, 0);
-+    cap = FIELD_DP32(cap, CAP, 64AS, 1);
-+    cap = FIELD_DP32(cap, CAP, OODDS, 0);
-+    cap = FIELD_DP32(cap, CAP, UICDMETMS, 0);
-+    cap = FIELD_DP32(cap, CAP, CS, 0);
-+    u->reg.cap = cap;
-+    u->reg.ver = UFS_SPEC_VER;
-+}
-+
-+static void ufs_realize(PCIDevice *pci_dev, Error **errp)
++    memset(&u->flags, 0, sizeof(u->flags));
++    u->flags.permanently_disable_fw_update = 1;
+ }
+ 
+ static void ufs_realize(PCIDevice *pci_dev, Error **errp)
+@@ -230,10 +1199,24 @@ static void ufs_realize(PCIDevice *pci_dev, Error **errp)
+         return;
+     }
+ 
++    ufs_init_state(u);
+     ufs_init_hc(u);
+     ufs_init_pci(u, pci_dev);
+ }
+ 
++static void ufs_exit(PCIDevice *pci_dev)
 +{
 +    UfsHc *u = UFS(pci_dev);
 +
-+    if (!ufs_check_constraints(u, errp)) {
-+        return;
++    qemu_bh_delete(u->doorbell_bh);
++    qemu_bh_delete(u->complete_bh);
++
++    for (int i = 0; i < u->params.nutrs; i++) {
++        ufs_clear_req(&u->req_list[i]);
 +    }
-+
-+    ufs_init_hc(u);
-+    ufs_init_pci(u, pci_dev);
++    g_free(u->req_list);
 +}
 +
-+static Property ufs_props[] = {
-+    DEFINE_PROP_STRING("serial", UfsHc, params.serial),
-+    DEFINE_PROP_UINT8("nutrs", UfsHc, params.nutrs, 32),
-+    DEFINE_PROP_UINT8("nutmrs", UfsHc, params.nutmrs, 8),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static const VMStateDescription ufs_vmstate = {
-+    .name = "ufs",
-+    .unmigratable = 1,
-+};
-+
-+static void ufs_class_init(ObjectClass *oc, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+    PCIDeviceClass *pc = PCI_DEVICE_CLASS(oc);
-+
-+    pc->realize = ufs_realize;
-+    pc->vendor_id = PCI_VENDOR_ID_REDHAT;
-+    pc->device_id = PCI_DEVICE_ID_REDHAT_UFS;
-+    pc->class_id = PCI_CLASS_STORAGE_UFS;
-+
-+    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
-+    dc->desc = "Universal Flash Storage";
-+    device_class_set_props(dc, ufs_props);
-+    dc->vmsd = &ufs_vmstate;
-+}
-+
-+static const TypeInfo ufs_info = {
-+    .name = TYPE_UFS,
-+    .parent = TYPE_PCI_DEVICE,
-+    .class_init = ufs_class_init,
-+    .instance_size = sizeof(UfsHc),
-+    .interfaces = (InterfaceInfo[]){ { INTERFACE_PCIE_DEVICE }, {} },
-+};
-+
-+static void ufs_register_types(void)
-+{
-+    type_register_static(&ufs_info);
-+}
-+
-+type_init(ufs_register_types)
-diff --git a/hw/Kconfig b/hw/Kconfig
-index ba62ff6417..9ca7b38c31 100644
---- a/hw/Kconfig
-+++ b/hw/Kconfig
-@@ -38,6 +38,7 @@ source smbios/Kconfig
- source ssi/Kconfig
- source timer/Kconfig
- source tpm/Kconfig
-+source ufs/Kconfig
- source usb/Kconfig
- source virtio/Kconfig
- source vfio/Kconfig
-diff --git a/hw/meson.build b/hw/meson.build
-index c7ac7d3d75..f01fac4617 100644
---- a/hw/meson.build
-+++ b/hw/meson.build
-@@ -37,6 +37,7 @@ subdir('smbios')
- subdir('ssi')
- subdir('timer')
- subdir('tpm')
-+subdir('ufs')
- subdir('usb')
- subdir('vfio')
- subdir('virtio')
-diff --git a/hw/ufs/Kconfig b/hw/ufs/Kconfig
-new file mode 100644
-index 0000000000..b7b3392e85
---- /dev/null
-+++ b/hw/ufs/Kconfig
-@@ -0,0 +1,4 @@
-+config UFS_PCI
-+    bool
-+    default y if PCI_DEVICES
-+    depends on PCI
-diff --git a/hw/ufs/meson.build b/hw/ufs/meson.build
-new file mode 100644
-index 0000000000..eb5164bde9
---- /dev/null
-+++ b/hw/ufs/meson.build
-@@ -0,0 +1 @@
-+system_ss.add(when: 'CONFIG_UFS_PCI', if_true: files('ufs.c'))
+ static Property ufs_props[] = {
+     DEFINE_PROP_STRING("serial", UfsHc, params.serial),
+     DEFINE_PROP_UINT8("nutrs", UfsHc, params.nutrs, 32),
+@@ -252,6 +1235,7 @@ static void ufs_class_init(ObjectClass *oc, void *data)
+     PCIDeviceClass *pc = PCI_DEVICE_CLASS(oc);
+ 
+     pc->realize = ufs_realize;
++    pc->exit = ufs_exit;
+     pc->vendor_id = PCI_VENDOR_ID_REDHAT;
+     pc->device_id = PCI_DEVICE_ID_REDHAT_UFS;
+     pc->class_id = PCI_CLASS_STORAGE_UFS;
 diff --git a/hw/ufs/trace-events b/hw/ufs/trace-events
-new file mode 100644
-index 0000000000..d1badcad10
---- /dev/null
+index d1badcad10..665e1a942b 100644
+--- a/hw/ufs/trace-events
 +++ b/hw/ufs/trace-events
-@@ -0,0 +1,32 @@
-+# ufs.c
-+ufs_irq_raise(void) "INTx"
-+ufs_irq_lower(void) "INTx"
-+ufs_mmio_read(uint64_t addr, uint64_t data, unsigned size) "addr 0x%"PRIx64" data 0x%"PRIx64" size %d"
-+ufs_mmio_write(uint64_t addr, uint64_t data, unsigned size) "addr 0x%"PRIx64" data 0x%"PRIx64" size %d"
-+ufs_process_db(uint32_t slot) "UTRLDBR slot %"PRIu32""
-+ufs_process_req(uint32_t slot) "UTRLDBR slot %"PRIu32""
-+ufs_complete_req(uint32_t slot) "UTRLDBR slot %"PRIu32""
-+ufs_sendback_req(uint32_t slot) "UTRLDBR slot %"PRIu32""
-+ufs_exec_nop_cmd(uint32_t slot) "UTRLDBR slot %"PRIu32""
-+ufs_exec_scsi_cmd(uint32_t slot, uint8_t lun, uint8_t opcode) "slot %"PRIu32", lun 0x%"PRIx8", opcode 0x%"PRIx8""
-+ufs_exec_query_cmd(uint32_t slot, uint8_t opcode) "slot %"PRIu32", opcode 0x%"PRIx8""
-+ufs_process_uiccmd(uint32_t uiccmd, uint32_t ucmdarg1, uint32_t ucmdarg2, uint32_t ucmdarg3) "uiccmd 0x%"PRIx32", ucmdarg1 0x%"PRIx32", ucmdarg2 0x%"PRIx32", ucmdarg3 0x%"PRIx32""
-+
-+# error condition
-+ufs_err_dma_read_utrd(uint32_t slot, uint64_t addr) "failed to read utrd. UTRLDBR slot %"PRIu32", UTRD dma addr %"PRIu64""
-+ufs_err_dma_read_req_upiu(uint32_t slot, uint64_t addr) "failed to read req upiu. UTRLDBR slot %"PRIu32", request upiu addr %"PRIu64""
-+ufs_err_dma_read_prdt(uint32_t slot, uint64_t addr) "failed to read prdt. UTRLDBR slot %"PRIu32", prdt addr %"PRIu64""
-+ufs_err_dma_write_utrd(uint32_t slot, uint64_t addr) "failed to write utrd. UTRLDBR slot %"PRIu32", UTRD dma addr %"PRIu64""
-+ufs_err_dma_write_rsp_upiu(uint32_t slot, uint64_t addr) "failed to write rsp upiu. UTRLDBR slot %"PRIu32", response upiu addr %"PRIu64""
-+ufs_err_utrl_slot_busy(uint32_t slot) "UTRLDBR slot %"PRIu32" is busy"
-+ufs_err_unsupport_register_offset(uint32_t offset) "Register offset 0x%"PRIx32" is not yet supported"
-+ufs_err_invalid_register_offset(uint32_t offset) "Register offset 0x%"PRIx32" is invalid"
-+ufs_err_scsi_cmd_invalid_lun(uint8_t lun) "scsi command has invalid lun: 0x%"PRIx8""
-+ufs_err_query_flag_not_readable(uint8_t idn) "query flag idn 0x%"PRIx8" is denied to read"
-+ufs_err_query_flag_not_writable(uint8_t idn) "query flag idn 0x%"PRIx8" is denied to write"
-+ufs_err_query_attr_not_readable(uint8_t idn) "query attribute idn 0x%"PRIx8" is denied to read"
-+ufs_err_query_attr_not_writable(uint8_t idn) "query attribute idn 0x%"PRIx8" is denied to write"
-+ufs_err_query_invalid_opcode(uint8_t opcode) "query request has invalid opcode. opcode: 0x%"PRIx8""
-+ufs_err_query_invalid_idn(uint8_t opcode, uint8_t idn) "query request has invalid idn. opcode: 0x%"PRIx8", idn 0x%"PRIx8""
-+ufs_err_query_invalid_index(uint8_t opcode, uint8_t index) "query request has invalid index. opcode: 0x%"PRIx8", index 0x%"PRIx8""
-+ufs_err_invalid_trans_code(uint32_t slot, uint8_t trans_code) "request upiu has invalid transaction code. slot: %"PRIu32", trans_code: 0x%"PRIx8""
+@@ -18,6 +18,7 @@ ufs_err_dma_read_req_upiu(uint32_t slot, uint64_t addr) "failed to read req upiu
+ ufs_err_dma_read_prdt(uint32_t slot, uint64_t addr) "failed to read prdt. UTRLDBR slot %"PRIu32", prdt addr %"PRIu64""
+ ufs_err_dma_write_utrd(uint32_t slot, uint64_t addr) "failed to write utrd. UTRLDBR slot %"PRIu32", UTRD dma addr %"PRIu64""
+ ufs_err_dma_write_rsp_upiu(uint32_t slot, uint64_t addr) "failed to write rsp upiu. UTRLDBR slot %"PRIu32", response upiu addr %"PRIu64""
++ufs_err_utrl_slot_error(uint32_t slot) "UTRLDBR slot %"PRIu32" is in error"
+ ufs_err_utrl_slot_busy(uint32_t slot) "UTRLDBR slot %"PRIu32" is busy"
+ ufs_err_unsupport_register_offset(uint32_t offset) "Register offset 0x%"PRIx32" is not yet supported"
+ ufs_err_invalid_register_offset(uint32_t offset) "Register offset 0x%"PRIx32" is invalid"
 -- 
 2.41.0
 
