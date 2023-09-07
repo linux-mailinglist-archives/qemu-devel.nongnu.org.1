@@ -2,63 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93B079727A
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E27487972B7
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 15:13:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeEci-0002gt-QK; Thu, 07 Sep 2023 09:00:40 -0400
+	id 1qeEeZ-0005QQ-1o; Thu, 07 Sep 2023 09:02:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeEce-0002er-7i
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:00:36 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qeEdm-00046p-63
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeEcZ-00072M-Hb
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:00:35 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qeEdj-0007Sr-Pr
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 09:01:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694091628;
+ s=mimecast20190719; t=1694091703;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZkrrJNvVY+USbE6wiyJZt9AcIZY5MSlB4E/rDfxIrFw=;
- b=WmsMPTT9BJPRzg2ZgHskRUhVAsZ9Uk6dcz8ADJQfu9Y7I8efhFIZZ641COfu53S3PJhhhX
- Oz7WIzspzDO4MD4EclIQPym9Oq/WiDGLTaOzqlArVAUf383k6CugIFiaLGWkVXuvXknJyW
- EwDt8Q5SxeCreZt/aDEJ+VAmXjsdtpM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-441-oCyXbsw0NJyYX49NqETkSg-1; Thu, 07 Sep 2023 09:00:21 -0400
-X-MC-Unique: oCyXbsw0NJyYX49NqETkSg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 35FF62815E46;
- Thu,  7 Sep 2023 12:59:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.69])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DC1A46B5AA;
- Thu,  7 Sep 2023 12:59:50 +0000 (UTC)
-Date: Thu, 7 Sep 2023 14:59:49 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, William Tsai <williamtsai1111@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH 0/1] qom: fix setting of qdev array properties
-Message-ID: <ZPnJRVnC13X25orb@redhat.com>
-References: <20230904162544.2388037-1-berrange@redhat.com>
- <ZPbt0io6He9mE2SB@redhat.com> <87edja9vkr.fsf@pond.sub.org>
+ bh=2HNKEIMd5+PbfiqiQhNPm82diOnCV8my5uMrbrI4ek8=;
+ b=Qc3J0NIpFmJgcFvQQ1/A+IBbzBLhHtgGwmCPVomwlAOQKrwtWMRFKs2Cs1oC4fwOJYbMKD
+ UdhpMIxvOJslrQ9qEpy6sJKS7Cy9RBNj3nZ/Ukpkj5qeZuqWUGWmzdx9HAedjzbHypQcUY
+ jQ9EttpKLlMWxSg+8+TIKDlypxv1hoo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-31-BsdP6BHHMkm68t5rjRtxGw-1; Thu, 07 Sep 2023 09:01:41 -0400
+X-MC-Unique: BsdP6BHHMkm68t5rjRtxGw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f42bcef2acso6997215e9.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 06:01:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694091699; x=1694696499;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=2HNKEIMd5+PbfiqiQhNPm82diOnCV8my5uMrbrI4ek8=;
+ b=ceVNAlzeS4xcs+JcbusQ7IGZRWN3ErpdQBJmrcx5q/X14Yju+QiT8uBzRrhhUb37ID
+ 8YLcfu1+bTXoiNxCj3sUBVCRbXd+kPU93kMeHVUedohKHEz2th5ltx4AKywQR9ZgxfiC
+ DZsFo4ucODUNTLFyg+8Gc0Jg+mQJXWQ2U5zA9WEK+e/MNp3ycFT060x6iaelublZcvSG
+ QGe5/nKQg7+czdkQVkmDKJVRPhUvPnTWyM5miT4wE/z91gXpKQKFnoaHsDFJLjyV8Yb4
+ jLprzVqg1JyqJpIqnUlN1dLO/FtgPdRRSEcTqSMf02CRmHiyoyHQ+6vpC6G3rxS8Dntr
+ Z7UQ==
+X-Gm-Message-State: AOJu0YzG/AcXuu5jEZi046a/sko+AC2dqmFz/kSIcyCTu0E919mH1ldI
+ 1TLE0rICK3eP/M00CObO8bFRXbU9o0APa7BBdLM1hoXB3IdeFzopNcquvaliDLnYEnz2+U3XCsd
+ gIRmPyxJCnFU4dgeDdn8OomcxAAScVldMTEtZnmjdy88vAwevD/HN/nbUoTEMvs4f9NZ3sCLZKk
+ s=
+X-Received: by 2002:adf:cd86:0:b0:314:152d:f8db with SMTP id
+ q6-20020adfcd86000000b00314152df8dbmr4636255wrj.58.1694091698921; 
+ Thu, 07 Sep 2023 06:01:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEuPos2+rvK10Y0UOMXDZj1zPBFEMSVN5necgeB+33MGVZ0ripnn3XahIuKQX53ChBqlpGP6w==
+X-Received: by 2002:adf:cd86:0:b0:314:152d:f8db with SMTP id
+ q6-20020adfcd86000000b00314152df8dbmr4636239wrj.58.1694091698621; 
+ Thu, 07 Sep 2023 06:01:38 -0700 (PDT)
+Received: from [192.168.1.174] ([151.48.237.81])
+ by smtp.gmail.com with ESMTPSA id
+ y1-20020adff6c1000000b00317a29af4b2sm23102235wrp.68.2023.09.07.06.01.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Sep 2023 06:01:38 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 40/51] target/i386/helper: Restrict KVM declarations to system
+ emulation
+Date: Thu,  7 Sep 2023 14:59:49 +0200
+Message-ID: <20230907130004.500601-41-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230907130004.500601-1-pbonzini@redhat.com>
+References: <20230907130004.500601-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87edja9vkr.fsf@pond.sub.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,24 +102,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 07.09.2023 um 11:33 hat Markus Armbruster geschrieben:
-> Kevin Wolf <kwolf@redhat.com> writes:
-> > Am 04.09.2023 um 18:25 hat Daniel P. Berrang� geschrieben:
-> >> I still think for user creatable devices we'd be better off just
-> >> mandating the use of JSON syntax for -device and thus leveraging
-> >> the native JSON array type. This patch was the quick fix for the
-> >> existing array property syntax though.
-> >
-> > I agree, let's not apply this one. It puts another ugly hack in the
-> > common QOM code path just to bring back the old ugly hack in qdev.
-> 
-> Since -device supports both JSON and dotted keys, we'd still offer a
-> (differently ugly) solution for users averse to JSON.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-I'm afraid this is not true until we actually QAPIfy -device and change
-the non-JSON path to the keyval parser. At the moment, it still uses
-qemu_opts_parse_noisily(), so no dotted key syntax.
+User emulation doesn't need any KVM declarations.
 
-Kevin
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230904124325.79040-5-philmd@linaro.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 89aa696c6d5..2070dd0dda1 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -22,10 +22,10 @@
+ #include "cpu.h"
+ #include "exec/exec-all.h"
+ #include "sysemu/runstate.h"
+-#include "kvm/kvm_i386.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "sysemu/hw_accel.h"
+ #include "monitor/monitor.h"
++#include "kvm/kvm_i386.h"
+ #endif
+ #include "qemu/log.h"
+ #ifdef CONFIG_TCG
+-- 
+2.41.0
 
 
