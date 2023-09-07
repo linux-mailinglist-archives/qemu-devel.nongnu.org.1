@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98C8796E18
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:41:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5459796E1B
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:41:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe34d-0005Rh-On; Wed, 06 Sep 2023 20:40:44 -0400
+	id 1qe34f-0005YJ-8Q; Wed, 06 Sep 2023 20:40:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34P-00059Q-Vt
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:40:31 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34W-0005F4-9k
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:40:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34C-0001YW-KG
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:40:26 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe34T-0001hb-GE
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:40:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694047214;
+ s=mimecast20190719; t=1694047231;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=j5T6POskXSuvPEg0D1DaKzXS3b4ah1wA83nl5zb8FYQ=;
- b=FhOzFpxS5rp8gnzJfbfu6rznjrDJQMsu88svCs4CYoKSmsAF6ZiEaId7cWDkHj9EZzBaJD
- KgTsVuEZVHC2+9LHaw2Rtr/6fDKGOGWQ0KhTc13U01n99kON0d7+M7oDKFmPIEmE8pr4c5
- 16oHL3I5vXkGuCzh5ruOExS5lPY+ZgU=
+ bh=fWJ/ft3wbc3usfLcOUrVN49+l5c6RR5ZXaRCQQU18A8=;
+ b=ehtBqNggx/ADBuY3S15s3CroSbT0PkZW2pa87tFkX8EmZhCMfYbHuwibzOk9O2kmxd2iFX
+ S3vxRMaTLuNUf1AHyW9b1zrqdUzuVNKYiiPk9ZUmohTT7eayJzt/tW4t5Bu4YCKvAQDdwj
+ OYwRcf1yTpCatqipv3YeiAMheizI0pg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-46-ZYm2f91uMD6EXVBOHc_XJQ-1; Wed, 06 Sep 2023 20:40:09 -0400
-X-MC-Unique: ZYm2f91uMD6EXVBOHc_XJQ-1
+ us-mta-528-9YNVnlXzNw2Q7n2kXAKtng-1; Wed, 06 Sep 2023 20:40:25 -0400
+X-MC-Unique: 9YNVnlXzNw2Q7n2kXAKtng-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8109C89CB03;
- Thu,  7 Sep 2023 00:40:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B943D856DED;
+ Thu,  7 Sep 2023 00:40:22 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C8BDCC03295;
- Thu,  7 Sep 2023 00:39:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 05190C03295;
+ Thu,  7 Sep 2023 00:40:07 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,10 +62,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
  kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
  imammedo@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v3 13/32] target/riscv: Use generic helper to show CPU model
- names
-Date: Thu,  7 Sep 2023 10:35:34 +1000
-Message-ID: <20230907003553.1636896-14-gshan@redhat.com>
+Subject: [PATCH v3 14/32] target/rx: Use generic helper to show CPU model names
+Date: Thu,  7 Sep 2023 10:35:35 +1000
+Message-ID: <20230907003553.1636896-15-gshan@redhat.com>
 In-Reply-To: <20230907003553.1636896-1-gshan@redhat.com>
 References: <20230907003553.1636896-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -96,90 +95,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For target/riscv, the CPU type name is always the combination of the
-CPU model name and suffix. The CPU model names have been correctly
-shown in riscv_cpu_list_entry() and riscv_cpu_add_definition()
+For target/rx, the CPU type name can be: (1) the combination of the
+CPU model name and suffix; (2) same to the CPU model name. The CPU
+type names have been shown in rx_cpu_list_entry().
 
-Use generic helper cpu_mdoel_from_type() to show the CPU model names
-in the above two functions, and adjusted format of the output from
-riscv_cpu_list_entry() to match with other targets. Besides, the
-function riscv_cpu_class_by_name() is improved by renaming @cpuname
-to @model since it's for the CPU model name, and merging the condtion
-of "@oc == NULL" to object_class_dynamic_cast().
+Use generic helper cpu_model_from_type() to show the CPU model names
+in rx_cpu_list_entry(). Besides, rx_cpu_class_by_name() is improved
+by merging the condition of '@oc == NULL' to object_class_dynamic_cast().
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/riscv/cpu.c            | 23 +++++++++++++----------
- target/riscv/riscv-qmp-cmds.c |  3 +--
- 2 files changed, 14 insertions(+), 12 deletions(-)
+ target/rx/cpu.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 6b93b04453..a525e24c5a 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -612,18 +612,19 @@ static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
- {
-     ObjectClass *oc;
-     char *typename;
--    char **cpuname;
-+    char **model;
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 157e57da0f..ff0ced1f3d 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -91,9 +91,11 @@ static void rx_cpu_reset_hold(Object *obj)
  
--    cpuname = g_strsplit(cpu_model, ",", 1);
--    typename = g_strdup_printf(RISCV_CPU_TYPE_NAME("%s"), cpuname[0]);
-+    model = g_strsplit(cpu_model, ",", 1);
-+    typename = g_strdup_printf(RISCV_CPU_TYPE_NAME("%s"), model[0]);
-     oc = object_class_by_name(typename);
--    g_strfreev(cpuname);
-+    g_strfreev(model);
-     g_free(typename);
--    if (!oc || !object_class_dynamic_cast(oc, TYPE_RISCV_CPU) ||
--        object_class_is_abstract(oc)) {
--        return NULL;
-+    if (object_class_dynamic_cast(oc, TYPE_RISCV_CPU) &&
-+        !object_class_is_abstract(oc)) {
-+        return oc;
-     }
--    return oc;
-+
-+    return NULL;
- }
- 
- static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
-@@ -2211,9 +2212,10 @@ static gint riscv_cpu_list_compare(gconstpointer a, gconstpointer b)
- static void riscv_cpu_list_entry(gpointer data, gpointer user_data)
+ static void rx_cpu_list_entry(gpointer data, gpointer user_data)
  {
-     const char *typename = object_class_get_name(OBJECT_CLASS(data));
--    int len = strlen(typename) - strlen(RISCV_CPU_TYPE_SUFFIX);
+-    ObjectClass *oc = data;
++    const char *typename = object_class_get_name(OBJECT_CLASS(data));
 +    char *model = cpu_model_from_type(typename);
  
--    qemu_printf("%.*s\n", len, typename);
+-    qemu_printf("  %s\n", object_class_get_name(oc));
 +    qemu_printf("  %s\n", model);
 +    g_free(model);
  }
  
- void riscv_cpu_list(void)
-@@ -2222,6 +2224,7 @@ void riscv_cpu_list(void)
+ void rx_cpu_list(void)
+@@ -111,18 +113,20 @@ static ObjectClass *rx_cpu_class_by_name(const char *cpu_model)
+     char *typename;
  
-     list = object_class_get_list(TYPE_RISCV_CPU, false);
-     list = g_slist_sort(list, riscv_cpu_list_compare);
-+    qemu_printf("Available CPUs:\n");
-     g_slist_foreach(list, riscv_cpu_list_entry, NULL);
-     g_slist_free(list);
+     oc = object_class_by_name(cpu_model);
+-    if (oc != NULL && object_class_dynamic_cast(oc, TYPE_RX_CPU) != NULL &&
++    if (object_class_dynamic_cast(oc, TYPE_RX_CPU) &&
+         !object_class_is_abstract(oc)) {
+         return oc;
+     }
++
+     typename = g_strdup_printf(RX_CPU_TYPE_NAME("%s"), cpu_model);
+     oc = object_class_by_name(typename);
+     g_free(typename);
+-    if (oc != NULL && object_class_is_abstract(oc)) {
+-        oc = NULL;
++    if (object_class_dynamic_cast(oc, TYPE_RX_CPU) &&
++        !object_class_is_abstract(oc)) {
++        return oc;
+     }
+ 
+-    return oc;
++    return NULL;
  }
-diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
-index 5ecff1afb3..22f728673f 100644
---- a/target/riscv/riscv-qmp-cmds.c
-+++ b/target/riscv/riscv-qmp-cmds.c
-@@ -35,8 +35,7 @@ static void riscv_cpu_add_definition(gpointer data, gpointer user_data)
-     const char *typename = object_class_get_name(oc);
-     ObjectClass *dyn_class;
  
--    info->name = g_strndup(typename,
--                           strlen(typename) - strlen("-" TYPE_RISCV_CPU));
-+    info->name = cpu_model_from_type(typename);
-     info->q_typename = g_strdup(typename);
- 
-     dyn_class = object_class_dynamic_cast(oc, TYPE_RISCV_DYNAMIC_CPU);
+ static void rx_cpu_realize(DeviceState *dev, Error **errp)
 -- 
 2.41.0
 
