@@ -2,51 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D227970E6
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBFF17970FF
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 10:46:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeAS1-0005qo-5t; Thu, 07 Sep 2023 04:33:21 -0400
+	id 1qeAeU-0007EJ-BA; Thu, 07 Sep 2023 04:46:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeARx-0005WX-Cv
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:33:17 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeARg-0002Uh-Tn
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 04:33:17 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxXOqvivlkeDkhAA--.39185S3;
- Thu, 07 Sep 2023 16:32:47 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bxxsx+ivlk8FVwAA--.49124S59; 
- Thu, 07 Sep 2023 16:32:47 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	maobibo@loongson.cn
-Subject: [PATCH RESEND v5 57/57] target/loongarch: CPUCFG support LASX
-Date: Thu,  7 Sep 2023 16:31:58 +0800
-Message-Id: <20230907083158.3975132-58-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230907083158.3975132-1-gaosong@loongson.cn>
-References: <20230907083158.3975132-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <vivahavey@gmail.com>)
+ id 1qeAe0-00079a-DV; Thu, 07 Sep 2023 04:45:47 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <vivahavey@gmail.com>)
+ id 1qeAdZ-0008FX-Ic; Thu, 07 Sep 2023 04:45:19 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-68bed2c786eso614076b3a.0; 
+ Thu, 07 Sep 2023 01:45:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694076315; x=1694681115; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6gZUcfML6Qtk7QndXvhNoRD/lzswcGgAHIhmy3SRM6A=;
+ b=iq8NFoqMMtLfnEhD/HjlYHkjMTZT1vt+2VD470BMVsIeT7iucy5fPLPScrfRG1y/n6
+ u1cm53MtZrKT6A6RWpRzqp+QiShIp0LeFli+wWSJw1XLorT48rWBQ51A7US1GHPeC8Rt
+ imHfZlnISrEgJJPwMARKuDEPktppzHPnIONlBfA5jXYueEaoLYhonxrrd22uV8pbsxDF
+ qKNUatvSl3pKRndqwynXNhV8ayYl8HPJ3FSi+3zIO3ouUIM6qopT21/fPyUWJZNpsxYx
+ 1GBP02qoN62pEXyoBI+ecjEo411A+PANuPL7pMVfYdp0ZhWzKnc+DRdc/rM5kx0L8a2N
+ I7HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20221208; t=1694076315; x=1694681115;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6gZUcfML6Qtk7QndXvhNoRD/lzswcGgAHIhmy3SRM6A=;
+ b=MG8OONPvWfeybMFOAhffzjfwq41w98pjSZyAwdKcdYiRURfOajeh4akmM9Jpuzz5ys
+ +Tk1u4uZqrvaWYj54coHZgtHoVkLqviJQJgTbvZOEnRFAOB4i2WAH2rsJ4DuWYk4hWec
+ S4DDloguTHngOc09/l+QR2d+NhZcfWIDag2LL24y80HwT8mSnImkw/dVBq//qYXPxiqs
+ vYvmTcl9uDuclwh8TC6rjwoph+RwOYV9+kBx2Qs5U2Qlc30N5q4SHFKLHbCR1vmYV6dS
+ OkHaNQHw/zPeVp3ubMi9pz6Ex6vN59oBtYNHmxp6/GpWo97k+tfAEsxKbzcq6K/2yNSw
+ +l+Q==
+X-Gm-Message-State: AOJu0YxR53Ci3ZpYograviZ4vaIz2X70gQFVH8QvQhYY9QHJA3Oz7HF8
+ 1jqiX2y1kOMy8JZfUOnn3CGMoBPueUyTVCBY
+X-Google-Smtp-Source: AGHT+IFJz4c/X0G1HbvFV9KaogSVGhxfA8DDVqNZ83Yns7QnHNSMfZDItRhZhQ/DTIXYzVVofYsYyA==
+X-Received: by 2002:a05:6a00:24c3:b0:68b:e29c:b61 with SMTP id
+ d3-20020a056a0024c300b0068be29c0b61mr19238990pfv.19.1694076314885; 
+ Thu, 07 Sep 2023 01:45:14 -0700 (PDT)
+Received: from localhost.localdomain (36-226-231-9.dynamic-ip.hinet.net.
+ [36.226.231.9]) by smtp.gmail.com with ESMTPSA id
+ g20-20020a62e314000000b00688214cff65sm11923722pfh.44.2023.09.07.01.45.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Sep 2023 01:45:14 -0700 (PDT)
+From: Alvin Chang <vivahavey@gmail.com>
+X-Google-Original-From: Alvin Chang <alvinga@andestech.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: alistair.francis@wdc.com,
+	Alvin Chang <alvinga@andestech.com>
+Subject: [PATCH] disas/riscv: Fix the typo of inverted order of pmpaddr13 and
+ pmpaddr14
+Date: Thu,  7 Sep 2023 16:45:00 +0800
+Message-Id: <20230907084500.328-1-alvinga@andestech.com>
+X-Mailer: git-send-email 2.27.0.windows.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bxxsx+ivlk8FVwAA--.49124S59
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=vivahavey@gmail.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,25 +90,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/loongarch/cpu.c | 1 +
- 1 file changed, 1 insertion(+)
+Fix the inverted order of pmpaddr13 and pmpaddr14 in csr_name().
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index a1d3f680d8..fc7f70fbe5 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -393,6 +393,7 @@ static void loongarch_la464_initfn(Object *obj)
-     data = FIELD_DP32(data, CPUCFG2, FP_DP, 1);
-     data = FIELD_DP32(data, CPUCFG2, FP_VER, 1);
-     data = FIELD_DP32(data, CPUCFG2, LSX, 1),
-+    data = FIELD_DP32(data, CPUCFG2, LASX, 1),
-     data = FIELD_DP32(data, CPUCFG2, LLFTP, 1);
-     data = FIELD_DP32(data, CPUCFG2, LLFTP_VER, 1);
-     data = FIELD_DP32(data, CPUCFG2, LSPW, 1);
+Signed-off-by: Alvin Chang <alvinga@andestech.com>
+---
+ disas/riscv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/disas/riscv.c b/disas/riscv.c
+index 3873a69157..8e89e1d115 100644
+--- a/disas/riscv.c
++++ b/disas/riscv.c
+@@ -2116,8 +2116,8 @@ static const char *csr_name(int csrno)
+     case 0x03ba: return "pmpaddr10";
+     case 0x03bb: return "pmpaddr11";
+     case 0x03bc: return "pmpaddr12";
+-    case 0x03bd: return "pmpaddr14";
+-    case 0x03be: return "pmpaddr13";
++    case 0x03bd: return "pmpaddr13";
++    case 0x03be: return "pmpaddr14";
+     case 0x03bf: return "pmpaddr15";
+     case 0x0780: return "mtohost";
+     case 0x0781: return "mfromhost";
 -- 
-2.39.1
+2.34.1
 
 
