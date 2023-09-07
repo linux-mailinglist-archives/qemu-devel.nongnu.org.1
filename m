@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D225D796E1E
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88378796E21
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 02:43:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qe363-0001rl-1b; Wed, 06 Sep 2023 20:42:11 -0400
+	id 1qe36Z-0002vp-J6; Wed, 06 Sep 2023 20:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe360-0001Yn-JP
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:08 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe36I-0002j8-Rh
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe35y-0002N4-0S
- for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:08 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qe36A-0002X4-Sk
+ for qemu-devel@nongnu.org; Wed, 06 Sep 2023 20:42:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694047325;
+ s=mimecast20190719; t=1694047338;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ob7BNmTrNjZIXBVdDPkalGLAk9nNqap53NQ4s6bDNoI=;
- b=hPODrFfhyVxA4Owctb0mn5ztkrIJJl1hREVRFDxNhgAFA9O2SXZ107DXdaDMBLwahow6Y8
- Zr44nUyrfLyvkKtG5o/CWa6oa1slLqMQ8/uqWGEqqR2t0zL8XJRTwZLwWzo1bzi/3Rkg0Y
- XySUnapst14d8B8Kw8yAJ2oW+56iuaE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-218-HE0fHX6jM4um5lPJK3i6vQ-1; Wed, 06 Sep 2023 20:41:58 -0400
-X-MC-Unique: HE0fHX6jM4um5lPJK3i6vQ-1
+ bh=mg3kYlTtUJFXrNtJeRlzw2RfhuRF2qfghP+aKgkkZ+E=;
+ b=gkoBwU2ADPmfq01gAXB0ttxy6kNpxnN4H/y8nAbcriycBAKME/2C+Ir3M4U+Fc/8vp6Vej
+ syJWODg7xLr9OLgG+gWoi7feyUCSePRwzZxv5BTL6FL/Nj7pSmWl4zTiuiVcZkTn96UouM
+ MEb7yvYnVmJ1CnoZ24NyvhFKlLxNGM0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-448-drCx-XxMNoSexSX1dRpybg-1; Wed, 06 Sep 2023 20:42:13 -0400
+X-MC-Unique: drCx-XxMNoSexSX1dRpybg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 28AB88001EA;
- Thu,  7 Sep 2023 00:41:56 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5E97938157AF;
+ Thu,  7 Sep 2023 00:42:11 +0000 (UTC)
 Received: from gshan.redhat.com (unknown [10.64.136.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 62622C03295;
- Thu,  7 Sep 2023 00:41:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A1B96C03295;
+ Thu,  7 Sep 2023 00:41:56 +0000 (UTC)
 From: Gavin Shan <gshan@redhat.com>
 To: qemu-arm@nongnu.org
 Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
@@ -62,9 +62,9 @@ Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
  mark.cave-ayland@ilande.co.uk, atar4qemu@gmail.com,
  kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com, pbonzini@redhat.com,
  imammedo@redhat.com, shan.gavin@gmail.com
-Subject: [PATCH v3 20/32] target/hppa: Implement hppa_cpu_list()
-Date: Thu,  7 Sep 2023 10:35:41 +1000
-Message-ID: <20230907003553.1636896-21-gshan@redhat.com>
+Subject: [PATCH v3 21/32] target/microblaze: Implement microblaze_cpu_list()
+Date: Thu,  7 Sep 2023 10:35:42 +1000
+Message-ID: <20230907003553.1636896-22-gshan@redhat.com>
 In-Reply-To: <20230907003553.1636896-1-gshan@redhat.com>
 References: <20230907003553.1636896-1-gshan@redhat.com>
 MIME-Version: 1.0
@@ -95,29 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement hppa_cpu_list() to support cpu_list(). With this applied,
+Implement microblaze_cpu_list() to support cpu_list(). With this applied,
 the available CPU model names, same to the CPU type names, are shown
 as below.
 
   $ ./build/qemu-system-hppa -cpu ?
   Available CPUs:
-    hppa-cpu
+    microblaze-cpu
 
 Signed-off-by: Gavin Shan <gshan@redhat.com>
 ---
- target/hppa/cpu.c | 19 +++++++++++++++++++
- target/hppa/cpu.h |  3 +++
- 2 files changed, 22 insertions(+)
+ target/microblaze/cpu.c | 20 ++++++++++++++++++++
+ target/microblaze/cpu.h |  3 +++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 11022f9c99..873402bf9c 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -143,6 +143,25 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
- #endif
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 03c2c4db1f..fc7a5dee5b 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -24,6 +24,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/log.h"
+ #include "qapi/error.h"
++#include "qemu/qemu-print.h"
+ #include "cpu.h"
+ #include "qemu/module.h"
+ #include "hw/qdev-properties.h"
+@@ -291,6 +292,25 @@ static void mb_cpu_realizefn(DeviceState *dev, Error **errp)
+     mcc->parent_realize(dev, errp);
  }
  
-+static void hppa_cpu_list_entry(gpointer data, gpointer user_data)
++static void microblaze_cpu_list_entry(gpointer data, gpointer user_data)
 +{
 +    const char *typename = object_class_get_name(OBJECT_CLASS(data));
 +    char *model = cpu_model_from_type(typename);
@@ -126,32 +134,33 @@ index 11022f9c99..873402bf9c 100644
 +    g_free(model);
 +}
 +
-+void hppa_cpu_list(void)
++void microblaze_cpu_list(void)
 +{
 +    GSList *list;
 +
-+    list = object_class_get_list_sorted(TYPE_HPPA_CPU, false);
++    list = object_class_get_list_sorted(TYPE_MICROBLAZE_CPU, false);
 +    qemu_printf("Available CPUs:\n");
-+    g_slist_foreach(list, hppa_cpu_list_entry, NULL);
++    g_slist_foreach(list, microblaze_cpu_list_entry, NULL);
 +    g_slist_free(list);
 +}
 +
- static void hppa_cpu_initfn(Object *obj)
+ static void mb_cpu_initfn(Object *obj)
  {
-     CPUState *cs = CPU(obj);
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index fa13694dab..19759f5f62 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -351,5 +351,8 @@ void hppa_cpu_alarm_timer(void *);
- int hppa_artype_for_page(CPUHPPAState *env, target_ulong vaddr);
- #endif
- G_NORETURN void hppa_dynamic_excp(CPUHPPAState *env, int excp, uintptr_t ra);
-+void hppa_cpu_list(void);
+     MicroBlazeCPU *cpu = MICROBLAZE_CPU(obj);
+diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+index f6cab6ce19..b5775c2966 100644
+--- a/target/microblaze/cpu.h
++++ b/target/microblaze/cpu.h
+@@ -372,6 +372,9 @@ int mb_cpu_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg);
+ int mb_cpu_gdb_write_register(CPUState *cpu, uint8_t *buf, int reg);
+ int mb_cpu_gdb_read_stack_protect(CPUArchState *cpu, GByteArray *buf, int reg);
+ int mb_cpu_gdb_write_stack_protect(CPUArchState *cpu, uint8_t *buf, int reg);
++void microblaze_cpu_list(void);
 +
-+#define cpu_list hppa_cpu_list
++#define cpu_list microblaze_cpu_list
  
- #endif /* HPPA_CPU_H */
+ static inline uint32_t mb_cpu_read_msr(const CPUMBState *env)
+ {
 -- 
 2.41.0
 
