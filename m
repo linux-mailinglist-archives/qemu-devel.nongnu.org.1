@@ -2,73 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049007972F0
-	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 16:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9B57972F1
+	for <lists+qemu-devel@lfdr.de>; Thu,  7 Sep 2023 16:02:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeFYZ-0005B1-1y; Thu, 07 Sep 2023 10:00:27 -0400
+	id 1qeFZT-0006C8-OR; Thu, 07 Sep 2023 10:01:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qeFYV-00053o-1D
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:00:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1qeFZR-0006Bm-OJ
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:01:21 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qeFYM-0005uH-Qp
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:00:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694095213;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=jdX9m9ClspaMyni0xKcwKM5+1RqINUKJ0EJg84FJylg=;
- b=gajEIvdIUuQI6ikIG/ptnuVw0KJOgWGJ2H/asD8HDXgrhKwrG7XLxS3yuyMjoGFaJYT5R3
- bX8mBf66TzeQGInzqngP3TtvMhjV3DyZYRcjO3dwx5m5vUeVCm//m8sNCj6ZMkdOGDHUNE
- NVFG7fwENVt4nitAoJR6aH+rfAJ6q7k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-518-clxZNNdDMaykreeSxtrB3A-1; Thu, 07 Sep 2023 10:00:10 -0400
-X-MC-Unique: clxZNNdDMaykreeSxtrB3A-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9FA69101CA8D;
- Thu,  7 Sep 2023 14:00:08 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.223])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 03E9440C84A6;
- Thu,  7 Sep 2023 14:00:07 +0000 (UTC)
-Date: Thu, 7 Sep 2023 10:00:06 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, kwolf@redhat.com,
- Maxim Levitsky <mlevitsk@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [RFC 0/3] qmp: make qmp_device_add() a coroutine
-Message-ID: <20230907140006.GA1363873@fedora>
-References: <20230906190141.1286893-1-stefanha@redhat.com>
- <1fa3ad95-c335-7e97-42f0-00dca5c5ba48@redhat.com>
+ (Exim 4.90_1) (envelope-from <william.roche@oracle.com>)
+ id 1qeFZF-00067o-Cs
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 10:01:21 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 387DReX4025800; Thu, 7 Sep 2023 14:00:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=NZZBHq+yzOF9jYPT/aDdDdYSat/OsLy7KE3+Rgcwtt0=;
+ b=lxBAELHIT6O0O3IXh3SKFHPhN3Hjs7FRMsvZcd2f036IE5GgbEnZLeE32bvIoYr5ZkiA
+ VjO79P3lYbczR12MzGbAEDedebQb41HIXMnhEBtCri1s3yamSCq6PXJB4vtsUm6RplAt
+ iWMwp1NO3NgcaG1RFAzZMmmx3aJ8WByUXM8ux993725fw9NBPU9Xz6zjHyxse/5RykxM
+ I61iV0UzfKPx5dx/uqpt1UOb6vHnwAeDcrZ7JbDMFy/igWJBwmd4kkklWN35YOEDh5TB
+ pi+xWbghRlmVCP/4KKOCyPbmI2xgA0RpK+4tvEiAn82CfESv21pgqbaeYjzPgzyYEPw2 vw== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3syeqj890x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 07 Sep 2023 14:00:56 +0000
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 387E0nns017875; Thu, 7 Sep 2023 14:00:55 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10lp2102.outbound.protection.outlook.com [104.47.58.102])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3suug87wfc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 07 Sep 2023 14:00:55 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A7hudU37BvGMqCqBGkj1aIET49+Qoz71/WdhzUDeom4Nl+lhuu25vbH6gW3bXwrU7hu8Ytu8nM2CH0D7Xg9Fd0AARKBU2eG7GwwZlb9tgUvvOeQxfWIxlgqLNOTGMcJ1gKzzFmakcvghNtpcwTBkysHaIj+VMwi4aFujdne2wuDUCUjXPvlg4uF6p1fi+cOx7LCAJBd7Fl5agOcmh6EpAfFnjIM+QKkN56TOpzg5eaQVU0eIf2RvYhZmXlr3llRYrLfW+D72UUZlprk1a9NZtONAQxkxChbD3x2aze88iRHkeWLlx0gWrxPFhcV+xkTccJwBlpuhVtAPFJ/NRPacIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NZZBHq+yzOF9jYPT/aDdDdYSat/OsLy7KE3+Rgcwtt0=;
+ b=Ne0oZx+thFjz0xb2AsIGHlipQ1o8TWSJYlBHfOvi3cHe5knYxc3DhabB7jr2Cfm9IYtlnnehQf1eSKCwy3VZt/9uZUcbREWIVHG+td3ruHg/Wm99VN3Ogk+0a1KA92+kh1sylk+XdFi+14v76qfN2RkG96S/h5nn9bbXm3MDxHM1u5pLIqvyIEAQohSUcSUvuOp32AGZB9DjIc6femgM3x7X8HeJCo+T4tESUwbCmfURqw3z7Utvroeiv78cMqsXlzUdk7jTzry/4siDXUBVXjMfcDxdCYOoHsQ8Gh07NOopKcB+GDKsBAB2EkyK8AHZaK8qqLYPnDe+d46KdDmKwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NZZBHq+yzOF9jYPT/aDdDdYSat/OsLy7KE3+Rgcwtt0=;
+ b=IiuoJr3IhQ4gNx2E+XOlF7GLQJSqrDX+ixMAulF67qHtmdOU5IEDVE1/66RUigbkbcSGnfHBkEvc2eUsoWolxL3/jMsBpYIULVjmHl67sYNSXi/DxfA0bzVm4gN/D6D2CwXiW0/tg+r1lhk9BTmcvDhRFZmW5ej6CikRvEe4UtE=
+Received: from PH0PR10MB5481.namprd10.prod.outlook.com (2603:10b6:510:ea::5)
+ by IA0PR10MB7208.namprd10.prod.outlook.com (2603:10b6:208:404::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Thu, 7 Sep
+ 2023 14:00:34 +0000
+Received: from PH0PR10MB5481.namprd10.prod.outlook.com
+ ([fe80::a3a4:998b:966b:41ac]) by PH0PR10MB5481.namprd10.prod.outlook.com
+ ([fe80::a3a4:998b:966b:41ac%3]) with mapi id 15.20.6745.034; Thu, 7 Sep 2023
+ 14:00:34 +0000
+Message-ID: <81389375-3ed7-48c1-f8d1-4eeb67a3a8e0@oracle.com>
+Date: Thu, 7 Sep 2023 16:00:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 2/3] i386: Explicitly ignore unsupported BUS_MCEERR_AO
+ MCE on AMD guest
+Content-Language: en-US, fr
+To: "Gupta, Pankaj" <pankaj.gupta@amd.com>, John Allen <john.allen@amd.com>,
+ qemu-devel@nongnu.org
+Cc: yazen.ghannam@amd.com, michael.roth@amd.com, babu.moger@amd.com,
+ joao.m.martins@oracle.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net
+References: <20230906205308.50334-1-john.allen@amd.com>
+ <20230906205308.50334-3-john.allen@amd.com>
+ <6efe4fc0-3c9a-dc91-4a04-498b38c66374@amd.com>
+From: William Roche <william.roche@oracle.com>
+In-Reply-To: <6efe4fc0-3c9a-dc91-4a04-498b38c66374@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR03CA0003.eurprd03.prod.outlook.com
+ (2603:10a6:208:14::16) To PH0PR10MB5481.namprd10.prod.outlook.com
+ (2603:10b6:510:ea::5)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="IA5HAkDBlFunFGqC"
-Content-Disposition: inline
-In-Reply-To: <1fa3ad95-c335-7e97-42f0-00dca5c5ba48@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5481:EE_|IA0PR10MB7208:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e411689-713f-467e-eaae-08dbafaace73
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: SfsWwTKe6oFWtPEiSm64MegcP8bmXhulYWypNO2lr5bi3bhuBzVdGGz/Kq5t3i/hfbH/g+CO1/+IYbFgRXoB1CHh5HR+TQdoau2W1xQ9Xb/m/xLj/ZMg43cNZsVhosOPlrGBM/EJA6NbtM4ufS/e2HK/Yj6ceJ9+J5qqPKCvHW/aAmYuY9lZoBwiiSXTO2OVWl7/bmrElo8Vryj6VwcNRiCbnY/yruA0jB1hMj7NT20FH7dHI5VbYJCdBrAqBchpCYWbHIwDBdnXTXOrGLv0gjvXeFbePBUVAb+csVDFbiMW2xToiywLDBAvgUs5Xfh50zA5PquX32riRqHJU/GhiPR9jwltvBffNnSVqwAXUjdmiDfAc7rPzPyZh50l25MLyx0rh8+lPlUnBR9HAqQMmiyoAxko+BHA+ruUlpvQTWlPlsE6vDNpO0gxtWdh+H7oOXTptLI0JJO4DBSkcC9nXenHvd02TT/6VaHRMIbYx5nvQByOfu3UwfbDguR5HTgpgutkX6sfLcjjWmwm0M37csjIIva1rwnynnRcI4NtR2rNI9Kszy9ql/P4gwNXK65wS7Y+cxZLFEq0f/Zl0kSPViZTVz5upC9OSr36lVJim6ShTZGfgmnMGVRhUUxoKwUKqsO20M+FYnSmQADqE3nSELZuStx97AcsSPBMdb27gqs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR10MB5481.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(396003)(136003)(376002)(346002)(39860400002)(1800799009)(451199024)(186009)(66556008)(26005)(2906002)(83380400001)(6512007)(2616005)(66476007)(66946007)(4326008)(110136005)(316002)(8676002)(6506007)(8936002)(44832011)(478600001)(5660300002)(6486002)(53546011)(6666004)(38100700002)(41300700001)(36756003)(86362001)(31696002)(31686004)(21314003)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SzBVTzhYWmUxenVZcUNpWng5L2FKWVNSV1FrMzFCTytoais4bkl5bC9MOEpQ?=
+ =?utf-8?B?c2E5TXN5RmtwWFpMRVNQb2NvYkRCaStrRE84bFJFaUN2L1pRTlM4WFltc2JG?=
+ =?utf-8?B?QVpYa05oQ1pETFRXNTVLWjliK3J2bW9kTUdET1NocTVvNUUwRWJEVDJoMHE2?=
+ =?utf-8?B?WHJad05MOHB1ckIwZG0rTkdiZzRxbEVCOGgvcU9naE41cnpNYnlGMG91SVRx?=
+ =?utf-8?B?SUpuYk40dU56UjVIbTRXZ21rOVNqYzRaa2pySXd6bno2UGZQK3JQS1VyMUJL?=
+ =?utf-8?B?WE5hOUROcFRhcm5pM0F5N1JJQkxlNlB5eTVreWhkdEN2ZXhDZ2JtUGdCK1o1?=
+ =?utf-8?B?Q3dSbWRRclp3Z0hBck9QR2JLZ2x5OGhqS3pTQUFxOWozZTZtY1lCVDZibGo3?=
+ =?utf-8?B?UWtQeVMyV2U2RUt2WUxFSm1XZkNxMC9FcE5wNUZMU0RGR3A3NnRDMVVSRUlE?=
+ =?utf-8?B?NDZVNzBwUnNWL0pYY3E3blNxNjNkVEVvL0xqc1czeUc5YjVmUjFkUmxqWVkx?=
+ =?utf-8?B?T2lsdUVCaVdrNjJuTGJLTGZNU2Z0MU5zeTB2Wnl3OXdSSnhUUGxBYTAxc0JE?=
+ =?utf-8?B?Tnc3V0RPYnZieDIxaVFuS0hmWS9MYzQrQVdseUoyZVQyMWc1QmFzd3dlTTBB?=
+ =?utf-8?B?UXlpYXdGak1wb1FlQWpzUzZtOGhLdUJ0cnV2MG9SaFJ5WWpWTm9CS0MreTY3?=
+ =?utf-8?B?MU9XK2Y1VnVVaUVWTCtuelNvMUwrQkI0aUdGd3o2K3RjWnNUc1VBZlN4RDhQ?=
+ =?utf-8?B?V01nYUpJcUVnUnR4SDhTM0xjRGRvZUcwOVFzMDdlbFZtenpLTDIwbWsyaEYv?=
+ =?utf-8?B?ZkZVY1FCZzl1RTdwMU9OQ0hzRXJUWFhyeXAyVVNKYUN3UkhOK2FzRXZiNEpZ?=
+ =?utf-8?B?L1cxYzh4VGZKUU5WUFVzUTl2WUZpQW11Ri9JY1VsVFZnaGNmNG55Y3dmRGtZ?=
+ =?utf-8?B?dVJCLzNsdVNTTFJIYTlucUZvblFnVWg0ejBwRmhpc1pKZWdwWUNYZ0lIaU1s?=
+ =?utf-8?B?SGhXMjNQOEhPSnRpRjQyS25vNmpsaDJWbTRvNEt5YVE4NFhZNEZHYnZ0eFI4?=
+ =?utf-8?B?ODl4alRUWEZQOE1UbDNHcHVmR1FVbCtvNkxHdmVOcW9ZazZQdVVvQzYzNS9s?=
+ =?utf-8?B?aTZaWVRCOEZCQnpsUm5PaS9KemV2cHkyU2JHL3NKSWZZL09SVTNEQlA5Z0xv?=
+ =?utf-8?B?Rm9NcmpiK0xrdlVWSW1yQjhDVWVqWStTWEFRUGVQWUlFVzRsb1JhTXJXa0NM?=
+ =?utf-8?B?YWhZVkkxcWpYSGs3ZjFsc2pURnZpVTB6aGhweGpIMDduTHVJMUxhMU5URHF4?=
+ =?utf-8?B?VHhNZURRYjVsNzd5cCtBVGpOcEhrNHVyYXBnSkxEbzlBL3RIT3lUaW5oRmZS?=
+ =?utf-8?B?d2ZxUWkxU3EwN1FGVWhUMXJMSGE5VHB0MUN3S2tVYzhoMElmRFB4Z1ZPQTR3?=
+ =?utf-8?B?QTZKR3huY1ZnQzlPK1A3K0tXOTd5QStVZFZUWFhKWFI2YlBTUTdMMzZ1MTNu?=
+ =?utf-8?B?dVB1bjJIZ1liWWppbUNTSkhuRkVRK1M2elQ2NFY4QUpqVmxxVkRzZEx1aVVM?=
+ =?utf-8?B?MzU0RGlnV1dzbTRvandJYndXTDZFdUYzdlRQcFR2Q2M1RHJ0UEJnSXVrWXRz?=
+ =?utf-8?B?UHdZbGpkcnJSZkt4bFl5aWcyOHFnNHZ4RUtxZzVsdlBLQTlXSHVCNDNIUm5k?=
+ =?utf-8?B?SDB5MHZsNWVMOEhqRm9vbi9TdTl0RXA0WVhESVRDK3JFcGczcW1GOXhVbHpt?=
+ =?utf-8?B?citXeHc0RG80QjUra1Fxd0tqTFRNVmMrZ0VTdDFHMEdaNDFIYk93NFRpWkdx?=
+ =?utf-8?B?Q0ZsZmQ0ZDB6ODBXdjZVdldUZ1hhVHBDdzlDUXUxdDBpNVg4Ly9UT1NCL2Fj?=
+ =?utf-8?B?eGFhcitvSXo1SmNtbEp3ekY3VmhlcTlEUnZqS2taZkhWQXRPcHZRbjZ0Wms2?=
+ =?utf-8?B?SWxuYVpMK1VQMjZjVElPalY0NThGRkhLMEVhTW94NTB3bDcwUFBabEpHRlZC?=
+ =?utf-8?B?K1l2VFhjcVo4c3dQR2ZnUkRlYitQVHI5QTAzOWpuUm9aV3hvc1NodWNiTHBu?=
+ =?utf-8?B?QXRxNnUzWkJLekF0UGJRdWxHbjFVcHVaZ2VqejRaNGJBa0w0cE9uaU9ubVVP?=
+ =?utf-8?B?OVREU1pHVjZCZUdXYzJEVVdwY3gzQ3dsYkZSRWNwMnEvVUJpbERGTkJwU2FU?=
+ =?utf-8?B?Mnc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 7fgu5G7r4EYXx/qeTo7O2RvzYOQRnqBc3i4+0iidiwN8tHRic4+kybInbRG2LxApjcDLmeBFGonSvIgQTO1BeHq2Z+9w9fHZCcIwYjuM8w84fq7lLGOo0vjq/THkVb/1yMLSpvyUQgi8myij/T5q19sAzHv4VGKeKpDRzzVoLlsDnDsACkhKa3B5DD5q30A5WmUmtX2NebOkyMxLwZ7+jqO2I7f+1yjrtDaFqkpClaok6b+bSfLOBBeNILQ9tnwg2OrhC8UPwcTd9Z8iRp2N4FjMMmRT+0Mji0NcZdHkqNqTGugqqNn+7y2VYBXQlGVz9tHL63Bg+pBHZioJF8JCu/9r+3vTYFFfnNXHIw89hnrnfyCB2QIb0jPivdvJIi/UqfKXjd1ur7W7FUyQscl8jEiilEZcO+S9qaHs7kQbIWsIt1HET5ACHZUCmglhG7XychuIhxUmMY8SutFg5EA+JCKs4qVFHD7S6IOiVhP99a2/c95bHSVm3Ooy7COV456O+uLFDkstr5JkAG9QdVyAy1HWmas1qbxjr87NIxGGmBKTTLMXe3ruDVEFe82stwtQhQdd/ZRoBnqczu2/aMk/gID3skYxy8P1dx0zV7hjqITIOY9UiEt9VvKzmaPdI2dOxbP6SlFERMT0ywXAaPD/AilsfuGtVOtvHIqC36Tfp2ebfjGZew4IyTmYEkKCeAglE2IE6ROAfAL29gnG9HF6VCfYhqnynn9pxxO39X6rAdpIMufkZ5umf7VzvsfEK9QUf+GmNICk8eSk9bY6LiR9B06UC7Lcktl8JN+aEgNGK5UPJNMBn5jHMOkVwwfFFU7vUxphDdbi9TezZKW91mwe4wjPQYoTDtXDB6JMXpk8teU=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e411689-713f-467e-eaae-08dbafaace73
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5481.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2023 14:00:34.7882 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YMEo3h34Z836glVa7uYtpJ56ksJ9aDkUXGfKa81bEAwOL5VMBSpHBsKn/GmP4VW1ZVoihrQrpvUp4f2T98/ViXA252Z1FABuSZR/2A2SEdY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7208
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-07_07,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ phishscore=0 bulkscore=0
+ adultscore=0 suspectscore=0 malwarescore=0 spamscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309070124
+X-Proofpoint-ORIG-GUID: qWFmuFgylR0cWCl0xzH9EhyWPZwSZdPZ
+X-Proofpoint-GUID: qWFmuFgylR0cWCl0xzH9EhyWPZwSZdPZ
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=william.roche@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,133 +187,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 9/7/23 13:12, Gupta, Pankaj wrote:
+>
+>>
+>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>> index 5fce74aac5..4d42d3ed4c 100644
+>> --- a/target/i386/kvm/kvm.c
+>> +++ b/target/i386/kvm/kvm.c
+>> @@ -604,6 +604,10 @@ static void kvm_mce_inject(X86CPU *cpu, hwaddr 
+>> paddr, int code)
+>>               mcg_status |= MCG_STATUS_RIPV;
+>>           }
+>>       } else {
+>> +        if (code == BUS_MCEERR_AO) {
+>> +            /* XXX we don't support BUS_MCEERR_AO injection on AMD 
+>> yet */
+>> +            return;
+>> +        }
+>>           mcg_status |= MCG_STATUS_EIPV | MCG_STATUS_RIPV;
+>>       }
+>> @@ -655,7 +659,9 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int 
+>> code, void *addr)
+>>           if (ram_addr != RAM_ADDR_INVALID &&
+>>               kvm_physical_memory_addr_from_host(c->kvm_state, addr, 
+>> &paddr)) {
+>>               kvm_hwpoison_page_add(ram_addr);
+>> -            kvm_mce_inject(cpu, paddr, code);
+>> +            if (!IS_AMD_CPU(env) || code != BUS_MCEERR_AO) {
+> 
+> Isn't the 'optional' case we already handle inside kvm_mce_inject()?
+> So this check seems repetitive to me.
 
---IA5HAkDBlFunFGqC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+You are right, it is repetitive, but can be considered as a reminder of 
+the situation and an explanation of the "ignored on AMD guest" message 
+later in this function.
 
-On Thu, Sep 07, 2023 at 01:28:55PM +0200, Paolo Bonzini wrote:
-> On 9/6/23 21:01, Stefan Hajnoczi wrote:
-> > It is not safe to call drain_call_rcu() from qmp_device_add() because
-> > some call stacks are not prepared for drain_call_rcu() to drop the Big
-> > QEMU Lock (BQL).
-> >=20
-> > For example, device emulation code is protected by the BQL but when it
-> > calls aio_poll() -> ... -> qmp_device_add() -> drain_call_rcu() then the
-> > BQL is dropped. See https://bugzilla.redhat.com/show_bug.cgi?id=3D22151=
-92 for a
-> > concrete bug of this type.
-> >=20
-> > Another limitation of drain_call_rcu() is that it cannot be invoked wit=
-hin an
-> > RCU read-side critical section since the reclamation phase cannot compl=
-ete
-> > until the end of the critical section. Unfortunately, call stacks have =
-been
-> > seen where this happens (see
-> > https://bugzilla.redhat.com/show_bug.cgi?id=3D2214985).
->=20
-> I think the root cause here is that do_qmp_dispatch_bh is called on the
-> wrong context, namely qemu_get_aio_context() instead of
-> iohandler_get_aio_context().  This is what causes it to move to the vCPU
-> thread.
->=20
-> Auditing all subsystems that use iohandler_get_aio_context(), for example
-> via qemu_set_fd_handler(), together with bottom halves, would be a bit
-> daunting.
->=20
-> I don't have any objection to this patch series actually, but I would like
-> to see if using the right AioContext also fixes the bug---and then treat
-> these changes as more of a cleanup.  Coroutines are pretty pervasive in Q=
-EMU
-> and are not going away which, as you say in the updated docs, makes
-> drain_call_rcu_co() preferrable to drain_call_rcu().
+Of course it can be removed if you think that the code is easier to read 
+without it. When the AMD BUS_MCEERR_AO support is integrated, both 
+locations would need to be cleared, but this sounds reasonable to me.
 
-While I agree that the issue would not happen if monitor commands only
-ran in the iohandler AioContext, I don't think we can change that.
+John, it's up to you.
 
-When Kevin implemented coroutine commands in commit 9ce44e2ce267 ("qmp:
-Move dispatcher to a coroutine"), he used qemu_get_aio_context()
-deliberately so that AIO_WAIT_WHILE() can make progress.
-
-I'm not clear on the exact scenario though, because coroutines shouldn't
-call AIO_WAIT_WHILE().
-
-Kevin?
-
-There is only one coroutine monitor command that calls the QEMU block
-layer: qmp_block_resize(). If we're going to change how the AioContext
-works then now is the time to do it before there are more commands that
-need to be audited/refactored.
-
-Stefan
-
->=20
-> Paolo
->=20
->=20
-> > This patch series introduces drain_call_rcu_co(), which does the same t=
-hing as
-> > drain_call_rcu() but asynchronously. By yielding back to the event loop=
- we can
-> > wait until the caller drops the BQL and leaves its RCU read-side critic=
-al
-> > section.
-> >=20
-> > Patch 1 changes HMP so that coroutine monitor commands yield back to th=
-e event
-> > loop instead of running inside a nested event loop.
-> >=20
-> > Patch 2 introduces the new drain_call_rcu_co() API.
-> >=20
-> > Patch 3 converts qmp_device_add() into a coroutine monitor command and =
-uses
-> > drain_call_rcu_co().
-> >=20
-> > I'm sending this as an RFC because I don't have confirmation yet that t=
-he bugs
-> > mentioned above are fixed by this patch series.
-> >=20
-> > Stefan Hajnoczi (3):
-> >    hmp: avoid the nested event loop in handle_hmp_command()
-> >    rcu: add drain_call_rcu_co() API
-> >    qmp: make qmp_device_add() a coroutine
-> >=20
-> >   MAINTAINERS            |  2 ++
-> >   docs/devel/rcu.txt     | 21 ++++++++++++++++
-> >   qapi/qdev.json         |  1 +
-> >   include/monitor/qdev.h |  3 ++-
-> >   include/qemu/rcu.h     |  1 +
-> >   util/rcu-internal.h    |  8 ++++++
-> >   monitor/hmp.c          | 28 +++++++++++----------
-> >   monitor/qmp-cmds.c     |  2 +-
-> >   softmmu/qdev-monitor.c | 34 +++++++++++++++++++++++---
-> >   util/rcu-co.c          | 55 ++++++++++++++++++++++++++++++++++++++++++
-> >   util/rcu.c             |  3 ++-
-> >   hmp-commands.hx        |  1 +
-> >   util/meson.build       |  2 +-
-> >   13 files changed, 140 insertions(+), 21 deletions(-)
-> >   create mode 100644 util/rcu-internal.h
-> >   create mode 100644 util/rcu-co.c
-> >=20
->=20
-
---IA5HAkDBlFunFGqC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmT512YACgkQnKSrs4Gr
-c8i9CQf/RrUb/1BKUku+ilzoX5SxzUA9gpDQ/ZkXu0Zcrspq4iY5NOnJXFIedEC7
-XwS6c/SiXsz0mnhq7GHOmc3adI1meUpQCxsw5wU3NkqPrFKC8kZMzRPP69NBRJWI
-xtAazxeqKexE66gLxfZWwKteFQu2cKJZ/xNQLn7PYh1FAAtSOesLKRNnanDk/8Lu
-q+Heo7rlh102x1QnFxs9umNlSZjQBy3dZrQBn8xe0hFc3eNpOG25hYMA2eGcea+H
-dPSfhmlrkHmYhZZRw9vepoqnxtKfQX8YfZ+1yuxVI3V9SWgpc+QPC+7C4rGwdodP
-vgHsHeZ+Vd/g8TD6sNgbOqa8OUTYzQ==
-=05Rd
------END PGP SIGNATURE-----
-
---IA5HAkDBlFunFGqC--
-
+William.
 
