@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283B379853F
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D44D79853E
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:57:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeYEA-0007OD-2f; Fri, 08 Sep 2023 05:56:38 -0400
+	id 1qeYED-0007gZ-A2; Fri, 08 Sep 2023 05:56:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeYE7-0007EZ-H4; Fri, 08 Sep 2023 05:56:35 -0400
+ id 1qeYE9-0007U0-QL; Fri, 08 Sep 2023 05:56:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeYE4-0006t8-KP; Fri, 08 Sep 2023 05:56:35 -0400
+ id 1qeYE6-0006tL-R6; Fri, 08 Sep 2023 05:56:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3C99B200D3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 697FE200D4;
  Fri,  8 Sep 2023 12:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 36AC926919;
+ by tsrv.corpit.ru (Postfix) with SMTP id 674772691A;
  Fri,  8 Sep 2023 12:55:58 +0300 (MSK)
-Received: (nullmailer pid 275973 invoked by uid 1000);
+Received: (nullmailer pid 275976 invoked by uid 1000);
  Fri, 08 Sep 2023 09:55:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  Eric Blake <eblake@redhat.com>
-Subject: [PULL 11/23] misc/other: spelling fixes
-Date: Fri,  8 Sep 2023 12:55:08 +0300
-Message-Id: <20230908095520.275866-12-mjt@tls.msk.ru>
+Subject: [PULL 12/23] block: spelling fixes
+Date: Fri,  8 Sep 2023 12:55:09 +0300
+Message-Id: <20230908095520.275866-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230908095520.275866-1-mjt@tls.msk.ru>
 References: <20230908095520.275866-1-mjt@tls.msk.ru>
@@ -61,263 +61,217 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- backends/tpm/tpm_ioctl.h | 2 +-
- chardev/char-socket.c    | 6 +++---
- chardev/char.c           | 2 +-
- crypto/afalg.c           | 2 +-
- crypto/block-luks.c      | 6 +++---
- crypto/der.c             | 2 +-
- crypto/der.h             | 6 +++---
- nbd/client-connection.c  | 2 +-
- net/checksum.c           | 4 ++--
- net/filter.c             | 6 +++---
- net/vhost-vdpa.c         | 8 ++++----
- 11 files changed, 23 insertions(+), 23 deletions(-)
+ block.c                              | 2 +-
+ block/block-copy.c                   | 4 ++--
+ block/export/vduse-blk.c             | 2 +-
+ block/export/vhost-user-blk-server.c | 2 +-
+ block/export/vhost-user-blk-server.h | 2 +-
+ block/file-posix.c                   | 8 ++++----
+ block/graph-lock.c                   | 2 +-
+ block/io.c                           | 2 +-
+ block/linux-aio.c                    | 2 +-
+ block/mirror.c                       | 2 +-
+ block/qcow2-refcount.c               | 2 +-
+ block/vhdx.c                         | 2 +-
+ block/vhdx.h                         | 4 ++--
+ 13 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/backends/tpm/tpm_ioctl.h b/backends/tpm/tpm_ioctl.h
-index b1d31768a6..1933ab6855 100644
---- a/backends/tpm/tpm_ioctl.h
-+++ b/backends/tpm/tpm_ioctl.h
-@@ -238,7 +238,7 @@ struct ptm_lockstorage {
-         } req; /* request */
-         struct {
-             ptm_res tpm_result;
--        } resp; /* reponse */
-+        } resp; /* response */
-     } u;
- };
- 
-diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-index e8e3a743d5..73947da188 100644
---- a/chardev/char-socket.c
-+++ b/chardev/char-socket.c
-@@ -710,7 +710,7 @@ static void tcp_chr_telnet_init(Chardev *chr)
- 
-     if (!s->is_tn3270) {
-         init->buflen = 12;
--        /* Prep the telnet negotion to put telnet in binary,
-+        /* Prep the telnet negotiation to put telnet in binary,
-          * no echo, single char mode */
-         IACSET(init->buf, 0xff, 0xfb, 0x01);  /* IAC WILL ECHO */
-         IACSET(init->buf, 0xff, 0xfb, 0x03);  /* IAC WILL Suppress go ahead */
-@@ -718,7 +718,7 @@ static void tcp_chr_telnet_init(Chardev *chr)
-         IACSET(init->buf, 0xff, 0xfd, 0x00);  /* IAC DO Binary */
-     } else {
-         init->buflen = 21;
--        /* Prep the TN3270 negotion based on RFC1576 */
-+        /* Prep the TN3270 negotiation based on RFC1576 */
-         IACSET(init->buf, 0xff, 0xfd, 0x19);  /* IAC DO EOR */
-         IACSET(init->buf, 0xff, 0xfb, 0x19);  /* IAC WILL EOR */
-         IACSET(init->buf, 0xff, 0xfd, 0x00);  /* IAC DO BINARY */
-@@ -1298,7 +1298,7 @@ static bool qmp_chardev_validate_socket(ChardevSocket *sock,
-         return false;
-     }
- 
--    /* Validate any options which have a dependancy on client vs server */
-+    /* Validate any options which have a dependency on client vs server */
-     if (!sock->has_server || sock->server) {
-         if (sock->has_reconnect) {
-             error_setg(errp,
-diff --git a/chardev/char.c b/chardev/char.c
-index 661ad8176a..996a024c7a 100644
---- a/chardev/char.c
-+++ b/chardev/char.c
-@@ -1115,7 +1115,7 @@ ChardevReturn *qmp_chardev_change(const char *id, ChardevBackend *backend,
-         return NULL;
-     }
- 
--    /* change successfull, clean up */
-+    /* change successful, clean up */
-     chr_new->handover_yank_instance = false;
+diff --git a/block.c b/block.c
+index 0af890f647..cfb7e08895 100644
+--- a/block.c
++++ b/block.c
+@@ -7589,7 +7589,7 @@ int bdrv_try_change_aio_context(BlockDriverState *bs, AioContext *ctx,
+     /*
+      * Recursion phase: go through all nodes of the graph.
+      * Take care of checking that all nodes support changing AioContext
+-     * and drain them, builing a linear list of callbacks to run if everything
++     * and drain them, building a linear list of callbacks to run if everything
+      * is successful (the transaction itself).
+      */
+     tran = tran_new();
+diff --git a/block/block-copy.c b/block/block-copy.c
+index e13d7bc6b6..1c60368d72 100644
+--- a/block/block-copy.c
++++ b/block/block-copy.c
+@@ -67,7 +67,7 @@ typedef struct BlockCopyCallState {
+     QLIST_ENTRY(BlockCopyCallState) list;
  
      /*
-diff --git a/crypto/afalg.c b/crypto/afalg.c
-index 348301e703..52a491dbb5 100644
---- a/crypto/afalg.c
-+++ b/crypto/afalg.c
-@@ -73,7 +73,7 @@ qcrypto_afalg_comm_alloc(const char *type, const char *name,
-     QCryptoAFAlg *afalg;
- 
-     afalg = g_new0(QCryptoAFAlg, 1);
--    /* initilize crypto API socket */
-+    /* initialize crypto API socket */
-     afalg->opfd = -1;
-     afalg->tfmfd = qcrypto_afalg_socket_bind(type, name, errp);
-     if (afalg->tfmfd == -1) {
-diff --git a/crypto/block-luks.c b/crypto/block-luks.c
-index 2f59c3a625..fb01ec38bb 100644
---- a/crypto/block-luks.c
-+++ b/crypto/block-luks.c
-@@ -244,7 +244,7 @@ qcrypto_block_luks_has_format(const uint8_t *buf,
+-     * Fields that report information about return values and erros.
++     * Fields that report information about return values and errors.
+      * Protected by lock in BlockCopyState.
+      */
+     bool error_is_read;
+@@ -462,7 +462,7 @@ static coroutine_fn int block_copy_task_run(AioTaskPool *pool,
+  * Do copy of cluster-aligned chunk. Requested region is allowed to exceed
+  * s->len only to cover last cluster when s->len is not aligned to clusters.
   *
-  * When calculating ESSIV IVs, the cipher length used by ESSIV
-  * may be different from the cipher length used for the block
-- * encryption, becauses dm-crypt uses the hash digest length
-+ * encryption, because dm-crypt uses the hash digest length
-  * as the key size. ie, if you have AES 128 as the block cipher
-  * and SHA 256 as ESSIV hash, then ESSIV will use AES 256 as
-  * the cipher since that gets a key length matching the digest
-@@ -393,7 +393,7 @@ qcrypto_block_luks_from_disk_endian(QCryptoBlockLUKSHeader *hdr)
+- * No sync here: nor bitmap neighter intersecting requests handling, only copy.
++ * No sync here: neither bitmap nor intersecting requests handling, only copy.
+  *
+  * @method is an in-out argument, so that copy_range can be either extended to
+  * a full-size buffer or disabled if the copy_range attempt fails.  The output
+diff --git a/block/export/vduse-blk.c b/block/export/vduse-blk.c
+index 83b05548e7..172f73cef4 100644
+--- a/block/export/vduse-blk.c
++++ b/block/export/vduse-blk.c
+@@ -138,7 +138,7 @@ static void vduse_blk_enable_queue(VduseDev *dev, VduseVirtq *vq)
+ 
+     aio_set_fd_handler(vblk_exp->export.ctx, vduse_queue_get_fd(vq),
+                        on_vduse_vq_kick, NULL, NULL, NULL, vq);
+-    /* Make sure we don't miss any kick afer reconnecting */
++    /* Make sure we don't miss any kick after reconnecting */
+     eventfd_write(vduse_queue_get_fd(vq), 1);
  }
  
+diff --git a/block/export/vhost-user-blk-server.c b/block/export/vhost-user-blk-server.c
+index f7b5073605..fe2cee3a78 100644
+--- a/block/export/vhost-user-blk-server.c
++++ b/block/export/vhost-user-blk-server.c
+@@ -1,5 +1,5 @@
  /*
-- * Stores the main LUKS header, taking care of endianess
-+ * Stores the main LUKS header, taking care of endianness
+- * Sharing QEMU block devices via vhost-user protocal
++ * Sharing QEMU block devices via vhost-user protocol
+  *
+  * Parts of the code based on nbd/server.c.
+  *
+diff --git a/block/export/vhost-user-blk-server.h b/block/export/vhost-user-blk-server.h
+index fcf46fc8a5..77fb5c0131 100644
+--- a/block/export/vhost-user-blk-server.h
++++ b/block/export/vhost-user-blk-server.h
+@@ -1,5 +1,5 @@
+ /*
+- * Sharing QEMU block devices via vhost-user protocal
++ * Sharing QEMU block devices via vhost-user protocol
+  *
+  * Copyright (c) Coiby Xu <coiby.xu@gmail.com>.
+  * Copyright (c) 2020 Red Hat, Inc.
+diff --git a/block/file-posix.c b/block/file-posix.c
+index b16e9c21a1..4757914ac0 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -1159,9 +1159,9 @@ static int raw_reopen_prepare(BDRVReopenState *state,
+      * As part of reopen prepare we also want to create new fd by
+      * raw_reconfigure_getfd(). But it wants updated "perm", when in
+      * bdrv_reopen_multiple() .bdrv_reopen_prepare() callback called prior to
+-     * permission update. Happily, permission update is always a part (a seprate
+-     * stage) of bdrv_reopen_multiple() so we can rely on this fact and
+-     * reconfigure fd in raw_check_perm().
++     * permission update. Happily, permission update is always a part
++     * (a separate stage) of bdrv_reopen_multiple() so we can rely on this
++     * fact and reconfigure fd in raw_check_perm().
+      */
+ 
+     s->reopen_state = state;
+@@ -3374,7 +3374,7 @@ static void raw_account_discard(BDRVRawState *s, uint64_t nbytes, int ret)
+  * of an array of zone descriptors.
+  * zones is an array of zone descriptors to hold zone information on reply;
+  * offset can be any byte within the entire size of the device;
+- * nr_zones is the maxium number of sectors the command should operate on.
++ * nr_zones is the maximum number of sectors the command should operate on.
   */
- static int
- qcrypto_block_luks_store_header(QCryptoBlock *block,
-@@ -423,7 +423,7 @@ qcrypto_block_luks_store_header(QCryptoBlock *block,
+ #if defined(CONFIG_BLKZONED)
+ static int coroutine_fn raw_co_zone_report(BlockDriverState *bs, int64_t offset,
+diff --git a/block/graph-lock.c b/block/graph-lock.c
+index 5e66f01ae8..f357a2c0b1 100644
+--- a/block/graph-lock.c
++++ b/block/graph-lock.c
+@@ -95,7 +95,7 @@ static uint32_t reader_count(void)
+ 
+     QEMU_LOCK_GUARD(&aio_context_list_lock);
+ 
+-    /* rd can temporarly be negative, but the total will *always* be >= 0 */
++    /* rd can temporarily be negative, but the total will *always* be >= 0 */
+     rd = orphaned_reader_count;
+     QTAILQ_FOREACH(brdv_graph, &aio_context_list, next_aio) {
+         rd += qatomic_read(&brdv_graph->reader_count);
+diff --git a/block/io.c b/block/io.c
+index 76e7df18d8..19edab5d5a 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -342,7 +342,7 @@ static void coroutine_fn bdrv_co_yield_to_drain(BlockDriverState *bs,
+      * timer callback), it is a bug in the caller that should be fixed. */
+     assert(data.done);
+ 
+-    /* Reaquire the AioContext of bs if we dropped it */
++    /* Reacquire the AioContext of bs if we dropped it */
+     if (ctx != co_ctx) {
+         aio_context_acquire(ctx);
+     }
+diff --git a/block/linux-aio.c b/block/linux-aio.c
+index 561c71a9ae..1a51503271 100644
+--- a/block/linux-aio.c
++++ b/block/linux-aio.c
+@@ -227,7 +227,7 @@ static void qemu_laio_process_completions(LinuxAioState *s)
+ 
+     /* If we are nested we have to notify the level above that we are done
+      * by setting event_max to zero, upper level will then jump out of it's
+-     * own `for` loop.  If we are the last all counters droped to zero. */
++     * own `for` loop.  If we are the last all counters dropped to zero. */
+     s->event_max = 0;
+     s->event_idx = 0;
  }
+diff --git a/block/mirror.c b/block/mirror.c
+index e213a892db..aae4bebbb6 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -502,7 +502,7 @@ static void coroutine_fn mirror_iteration(MirrorBlockJob *s)
  
- /*
-- * Loads the main LUKS header,and byteswaps it to native endianess
-+ * Loads the main LUKS header, and byteswaps it to native endianness
-  * And run basic sanity checks on it
-  */
- static int
-diff --git a/crypto/der.c b/crypto/der.c
-index dab3fe4f24..ebbecfc3fe 100644
---- a/crypto/der.c
-+++ b/crypto/der.c
-@@ -76,7 +76,7 @@ enum QCryptoDERTagEnc {
- /**
-  * qcrypto_der_encode_length:
-  * @src_len: the length of source data
-- * @dst: distination to save the encoded 'length', if dst is NULL, only compute
-+ * @dst: destination to save the encoded 'length', if dst is NULL, only compute
-  * the expected buffer size in bytes.
-  * @dst_len: output parameter, indicates how many bytes wrote.
-  *
-diff --git a/crypto/der.h b/crypto/der.h
-index 0e895bbeec..f4ba6da28a 100644
---- a/crypto/der.h
-+++ b/crypto/der.h
-@@ -249,7 +249,7 @@ void qcrypto_der_encode_octet_str(QCryptoEncodeContext *ctx,
-  * Start encoding a octet string, All fields between
-  * qcrypto_der_encode_octet_str_begin and qcrypto_der_encode_octet_str_end
-  * are encoded as an octet string. This is useful when we need to encode a
-- * encoded SEQUNCE as OCTET STRING.
-+ * encoded SEQUENCE as OCTET STRING.
-  */
- void qcrypto_der_encode_octet_str_begin(QCryptoEncodeContext *ctx);
+     job_pause_point(&s->common.job);
  
-@@ -260,7 +260,7 @@ void qcrypto_der_encode_octet_str_begin(QCryptoEncodeContext *ctx);
-  * Finish encoding a octet string, All fields between
-  * qcrypto_der_encode_octet_str_begin and qcrypto_der_encode_octet_str_end
-  * are encoded as an octet string. This is useful when we need to encode a
-- * encoded SEQUNCE as OCTET STRING.
-+ * encoded SEQUENCE as OCTET STRING.
-  */
- void qcrypto_der_encode_octet_str_end(QCryptoEncodeContext *ctx);
- 
-@@ -275,7 +275,7 @@ size_t qcrypto_der_encode_ctx_buffer_len(QCryptoEncodeContext *ctx);
- /**
-  * qcrypto_der_encode_ctx_flush_and_free:
-  * @ctx: the encode context.
-- * @dst: the distination to save the encoded data, the length of dst should
-+ * @dst: the destination to save the encoded data, the length of dst should
-  * not less than qcrypto_der_encode_cxt_buffer_len
-  *
-  * Flush all encoded data into dst, then free ctx.
-diff --git a/nbd/client-connection.c b/nbd/client-connection.c
-index 3d14296c04..258ef81ae9 100644
---- a/nbd/client-connection.c
-+++ b/nbd/client-connection.c
-@@ -197,7 +197,7 @@ static void *connect_thread_func(void *opaque)
-          * conn->updated_info will finally be returned to the user. Clear the
-          * pointers to our internally allocated strings, which are IN parameters
-          * of nbd_receive_negotiate() and therefore nbd_connect(). Caller
--         * shoudn't be interested in these fields.
-+         * shouldn't be interested in these fields.
-          */
-         conn->updated_info.x_dirty_bitmap = NULL;
-         conn->updated_info.name = NULL;
-diff --git a/net/checksum.c b/net/checksum.c
-index 68245fd748..1a957e4c0b 100644
---- a/net/checksum.c
-+++ b/net/checksum.c
-@@ -74,7 +74,7 @@ void net_checksum_calculate(uint8_t *data, int length, int csum_flag)
-         return;
+-    /* Find the number of consective dirty chunks following the first dirty
++    /* Find the number of consecutive dirty chunks following the first dirty
+      * one, and wait for in flight requests in them. */
+     bdrv_dirty_bitmap_lock(s->dirty_bitmap);
+     while (nb_chunks * s->granularity < s->buf_size) {
+diff --git a/block/qcow2-refcount.c b/block/qcow2-refcount.c
+index 5095e99a37..996d1217d0 100644
+--- a/block/qcow2-refcount.c
++++ b/block/qcow2-refcount.c
+@@ -2645,7 +2645,7 @@ rebuild_refcount_structure(BlockDriverState *bs, BdrvCheckResult *res,
+      * repeat all this until the reftable stops growing.
+      *
+      * (This loop will terminate, because with every cluster the
+-     * reftable grows, it can accomodate a multitude of more refcounts,
++     * reftable grows, it can accommodate a multitude of more refcounts,
+      * so that at some point this must be able to cover the reftable
+      * and all refblocks describing it.)
+      *
+diff --git a/block/vhdx.c b/block/vhdx.c
+index f2c3a80190..a67edcc03e 100644
+--- a/block/vhdx.c
++++ b/block/vhdx.c
+@@ -1077,7 +1077,7 @@ static int vhdx_open(BlockDriverState *bs, QDict *options, int flags,
+         goto fail;
      }
  
--    /* Handle the optionnal VLAN headers */
-+    /* Handle the optional VLAN headers */
-     switch (lduw_be_p(&PKT_GET_ETH_HDR(data)->h_proto)) {
-     case ETH_P_VLAN:
-         mac_hdr_len = sizeof(struct eth_header) +
-@@ -96,7 +96,7 @@ void net_checksum_calculate(uint8_t *data, int length, int csum_flag)
- 
-     length -= mac_hdr_len;
- 
--    /* Now check we have an IP header (with an optionnal VLAN header) */
-+    /* Now check we have an IP header (with an optional VLAN header) */
-     if (length < sizeof(struct ip_header)) {
-         return;
+-    /* endian convert populated BAT field entires */
++    /* endian convert populated BAT field entries */
+     for (i = 0; i < s->bat_entries; i++) {
+         s->bat[i] = le64_to_cpu(s->bat[i]);
      }
-diff --git a/net/filter.c b/net/filter.c
-index 3fe88fa43f..3335908771 100644
---- a/net/filter.c
-+++ b/net/filter.c
-@@ -91,8 +91,8 @@ ssize_t qemu_netfilter_pass_to_next(NetClientState *sender,
-     next = netfilter_next(nf, direction);
-     while (next) {
-         /*
--         * if qemu_netfilter_pass_to_next been called, means that
--         * the packet has been hold by filter and has already retured size
-+         * if qemu_netfilter_pass_to_next has been called, it means that
-+         * the packet was held by  a filter and has already returned size
-          * to the sender, so sent_cb shouldn't be called later, just
-          * pass NULL to next.
-          */
-@@ -106,7 +106,7 @@ ssize_t qemu_netfilter_pass_to_next(NetClientState *sender,
+diff --git a/block/vhdx.h b/block/vhdx.h
+index 7db746cd18..455a627a46 100644
+--- a/block/vhdx.h
++++ b/block/vhdx.h
+@@ -212,7 +212,7 @@ typedef struct QEMU_PACKED VHDXLogDataSector {
+     uint32_t    sequence_high;          /* 4 MSB of 8 byte sequence_number */
+     uint8_t     data[4084];             /* raw data, bytes 8-4091 (inclusive).
+                                            see the data descriptor field for the
+-                                           other mising bytes */
++                                           other missing bytes */
+     uint32_t    sequence_low;           /* 4 LSB of 8 byte sequence_number */
+ } VHDXLogDataSector;
  
-     /*
-      * We have gone through all filters, pass it to receiver.
--     * Do the valid check again incase sender or receiver been
-+     * Do the valid check again in case sender or receiver been
-      * deleted while we go through filters.
-      */
-     if (sender && sender->peer) {
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 9795306742..34202ca009 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -821,7 +821,7 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
-      * According to virtio_net_reset(), device turns promiscuous mode
-      * on by default.
-      *
--     * Addtionally, according to VirtIO standard, "Since there are
-+     * Additionally, according to VirtIO standard, "Since there are
-      * no guarantees, it can use a hash filter or silently switch to
-      * allmulti or promiscuous mode if it is given too many addresses.".
-      * QEMU marks `n->mac_table.uni_overflow` if guest sets too many
-@@ -1130,7 +1130,7 @@ static int vhost_vdpa_net_excessive_mac_filter_cvq_add(VhostVDPAState *s,
-      * Pack the non-multicast MAC addresses part for fake CVQ command.
-      *
-      * According to virtio_net_handle_mac(), QEMU doesn't verify the MAC
--     * addresses provieded in CVQ command. Therefore, only the entries
-+     * addresses provided in CVQ command. Therefore, only the entries
-      * field need to be prepared in the CVQ command.
-      */
-     mac_ptr = out->iov_base + cursor;
-@@ -1141,7 +1141,7 @@ static int vhost_vdpa_net_excessive_mac_filter_cvq_add(VhostVDPAState *s,
-      * Pack the multicast MAC addresses part for fake CVQ command.
-      *
-      * According to virtio_net_handle_mac(), QEMU doesn't verify the MAC
--     * addresses provieded in CVQ command. Therefore, only the entries
-+     * addresses provided in CVQ command. Therefore, only the entries
-      * field need to be prepared in the CVQ command.
-      */
-     mac_ptr = out->iov_base + cursor;
-@@ -1202,7 +1202,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostShadowVirtqueue *svq,
-          * rejects the flawed CVQ command.
-          *
-          * Therefore, QEMU must handle this situation instead of sending
--         * the CVQ command direclty.
-+         * the CVQ command directly.
-          */
-         dev_written = vhost_vdpa_net_excessive_mac_filter_cvq_add(s, elem,
-                                                                   &out);
+@@ -257,7 +257,7 @@ typedef struct QEMU_PACKED VHDXMetadataTableHeader {
+ 
+ #define VHDX_META_FLAGS_IS_USER         0x01    /* max 1024 entries */
+ #define VHDX_META_FLAGS_IS_VIRTUAL_DISK 0x02    /* virtual disk metadata if set,
+-                                                   otherwise file metdata */
++                                                   otherwise file metadata */
+ #define VHDX_META_FLAGS_IS_REQUIRED     0x04    /* parse must understand this
+                                                    entry to open the file */
+ typedef struct QEMU_PACKED VHDXMetadataTableEntry {
 -- 
 2.39.2
 
