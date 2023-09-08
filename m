@@ -2,55 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA46E7983AE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400B97983C2
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:11:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeWVt-00089o-Ck; Fri, 08 Sep 2023 04:06:49 -0400
+	id 1qeWZc-00018h-Ss; Fri, 08 Sep 2023 04:10:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeWVq-00089c-6K; Fri, 08 Sep 2023 04:06:46 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qeWZa-00014E-9T
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:10:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeWVn-0000uI-MG; Fri, 08 Sep 2023 04:06:45 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7935F20016;
- Fri,  8 Sep 2023 11:07:28 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 92BF826858;
- Fri,  8 Sep 2023 11:06:39 +0300 (MSK)
-Message-ID: <9eba8794-0535-e072-a15e-b95d1f9a88ff@tls.msk.ru>
-Date: Fri, 8 Sep 2023 11:06:39 +0300
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qeWZS-0001qW-As
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:10:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694160626;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=l1/b+em7ZjiBqNTgmfsHNqfLJbubAjR7goOAT5lPxUE=;
+ b=PCDWKT+iCZ0sA/VQR0L++Xbml1aSzBlPEMNub5CVa5hs//MilJl7/bRrfi2z1xW00lVR/W
+ nR7igBMY9bL8GXi/86DiVihZf/TJgeKA/KHiLdRc+M8JGByPRvAUHZtDn07upSf06r9Syh
+ E43MhXnCLKnbR9xuIDkNuKjyb8V+WYQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-457-1QQwCuOANAWiRAwa6d26xw-1; Fri, 08 Sep 2023 04:10:23 -0400
+X-MC-Unique: 1QQwCuOANAWiRAwa6d26xw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5BB54855711;
+ Fri,  8 Sep 2023 08:10:23 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.42])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 64C5B140E964;
+ Fri,  8 Sep 2023 08:10:22 +0000 (UTC)
+Date: Fri, 8 Sep 2023 09:10:20 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ antischmock@googlemail.com
+Subject: Re: [PATCH] meson.build: Make keyutils independent from keyring
+Message-ID: <ZPrW7Izs6ILk9h7B@redhat.com>
+References: <20230824094208.255279-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PULL for-6.2 0/7] Ide patches
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Qemu-block <qemu-block@nongnu.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Niklas Cassel <niklas.cassel@wdc.com>
-References: <20230907034228.4054839-1-jsnow@redhat.com>
- <7ef011cd-09e7-c5f9-dc9d-173ff8f431c8@tls.msk.ru>
- <CAFn=p-aueHBXMFHgw=Y8XYyeaFZKFRc8vJHQ6PQ8gNSqPcii8Q@mail.gmail.com>
- <d5ff2d54-70bb-00e0-d25a-56d1096bed73@tls.msk.ru>
- <528c14dc-329f-f51a-cb8d-350a7a5cb7ee@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <528c14dc-329f-f51a-cb8d-350a7a5cb7ee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230824094208.255279-1-thuth@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,43 +83,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-08.09.2023 10:53, Philippe Mathieu-Daudé wrote:
-> On 7/9/23 20:16, Michael Tokarev wrote:
->> 07.09.2023 19:54, John Snow wrote:
->> ..
->>>      > ----------------------------------------------------------------
->>>      >
->>>      > Niklas Cassel (7):
->>>      >    hw/ide/core: set ERR_STAT in unsupported command completion
->>>      >    hw/ide/ahci: write D2H FIS when processing NCQ command
->>>      >    hw/ide/ahci: simplify and document PxCI handling
->>>      >    hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
->>>      >    hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
->>>      >    hw/ide/ahci: fix ahci_write_fis_sdb()
->>>      >    hw/ide/ahci: fix broken SError handling
->>>
->>>     Is anything here stable-worthy?
->>>
->>> Yes, assuming it doesn't break anything.
->>
->> Hmm. I was thinking maybe one or two of the above.
->> Are you suggesting the *whole* lot?
+On Thu, Aug 24, 2023 at 11:42:08AM +0200, Thomas Huth wrote:
+> Commit 0db0fbb5cf ("Add conditional dependency for libkeyutils")
+> tried to provide a possibility for the user to disable keyutils
+> if not required by makeing it depend on the keyring feature. This
+> looked reasonable at a first glance (the unit test in tests/unit/
+> needs both), but the condition in meson.build fails if the feature
+> is meant to be detected automatically, and there is also another
+> spot in backends/meson.build where keyutils is used independently
+> from keyring. So let's remove the dependency on keyring again and
+> introduce a proper meson build option instead.
 > 
-> Yes :/
+> Cc: qemu-stable@nongnu.org
+> Fixes: 0db0fbb5cf ("Add conditional dependency for libkeyutils")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1842
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  meson.build                   | 6 ++++--
+>  meson_options.txt             | 2 ++
+>  scripts/meson-buildoptions.sh | 3 +++
+>  3 files changed, 9 insertions(+), 2 deletions(-)
 
-This smells a bit extreme, esp. for the "simplify and document PxCI handling"
-part which is one of the largest patches in whole -stable history.
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-But it applies cleanly to 8.1, 8.0 and 7.2 (with minor obvious context tweak
-needed for <=8.0), and seems to work too - I pushed it for testing yesterday
-to make sure.
 
-Picked whole thing up for -stable.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
-Thank you all!
-
-/mjt
 
