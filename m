@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57048798452
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F7B798455
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:44:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeX4u-00034s-RO; Fri, 08 Sep 2023 04:43:00 -0400
+	id 1qeX4s-00030R-R1; Fri, 08 Sep 2023 04:42:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4m-0002fm-9k
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:52 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4o-0002g9-El
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:54 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4k-0004oZ-05
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:51 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-401da71b7c5so20566445e9.2
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 01:42:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4l-0004qJ-0O
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:54 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-317c3ac7339so1644577f8f.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 01:42:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694162567; x=1694767367; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694162569; x=1694767369; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=40TYdQRGURs2OSPqGazrXlVNFjzIURb9yqVRn70WK7g=;
- b=FZ0enFe6godYx9YWVYQjplJegaJ1+Ojo3StKDahpYhGm20sSjfNQTXM+4rtaVe4KvE
- Rjk8fX+w78OpehqLrAuOmaIlxMfKQvNsLYfWA7VUWOVxzyYG6aSjVYRLI2ItJLPerDQg
- sV3rkc9SDddhyZSx807BOLr5GjCUxhJdGJcBSdYC476Yrzypb8MfMkBbrWLnwYfHbkjI
- BIjRjeftfHsueDzHdxLxB5/hZmwpN85SqycMJsrPSHvkD8eOnFFKjIZg3yFDf7xloGBl
- g+BBRjLWFAgtCiUQbnpR1XLUNrEcKyBWS9gYL89U8c1JCZneVoaw6XgX+1Z1reoQlWsZ
- 6NAg==
+ bh=CVPi+XLqooUcPliHkqB9JAmi5SFQguHf0Z0djyuv1cg=;
+ b=SzyKRLFbONsFdyiAnNYS4zzNjtNaXDTdaxuBi3qxMt0GlaJXw8ZiJhOe6TottbPujJ
+ agO6PE/YXhspeL7EAc5onU14y7KbPdXOTdqZu7IzLvh14Qemb9uFo2Q/EUyf0f4eqPVy
+ PIIqmD4byVDl6UnG6dj/L5/43bKVXCyDioJJ/5FraqAqpqalopE+EGygLCrNOAcjPTWW
+ TRIvfKr3s7RxyEdx46rhUzuskD0ELPiKjIOIRDt1GsVODlyT5KSz36G0WQ56ZYWRQDow
+ zfHPCL2NxIbOECrEMXbdGGt00Db9Fbme8O6/0EhP453SWQNdLYyi6azyGasf2zi0TIMr
+ Ba8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694162568; x=1694767368;
+ d=1e100.net; s=20230601; t=1694162569; x=1694767369;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=40TYdQRGURs2OSPqGazrXlVNFjzIURb9yqVRn70WK7g=;
- b=Vi2D1P6CLDvGWP3NqtEfbw/JKDX3b4jlPLP1KtZw4M6j0GNYMQpTxMIqNT6HW45Jcp
- 82v3ehyKNCsesOaYBANu7iQqjOEyKnFPN3TapXG3CVOxtoanhGKcv9zqnN1x5hLBobaU
- x9oRtu9JvOJS23nfUoI14ON7pWgREnxnSbmYmrSP5ht/uQ25ikodoOFC9zjnOYxZx8Q0
- UhqFJFEJ77GCWMSjAifCiar0DyZkiAFi1GHtCZ0KqqWUdYiZEne6zpjaMDamVnpzwAf+
- 7SbqmZK8SFRc8TvYHC307cbVBvlk4XkcGH4mUlQx4i3fhLHmNbEjFp7Jn/UVYr2o4hIV
- L+EA==
-X-Gm-Message-State: AOJu0Yxjts6SWeavEg4USyhpSJ4vZvnXvWVNq5+L2igl4tOJPZH8wUuD
- kZMyHiYLHzxDKLEm1kPCv9somoRz7LY=
-X-Google-Smtp-Source: AGHT+IGKWDl9UfHdoXNSFmLTHaT5rI8Ckoif9RKyxoU/7i7iyiJrPOzCNhVldO0VFJ9Ld0OiXIdtBQ==
-X-Received: by 2002:a7b:cbd1:0:b0:3fc:a49:4c05 with SMTP id
- n17-20020a7bcbd1000000b003fc0a494c05mr1519404wmi.40.1694162567439; 
- Fri, 08 Sep 2023 01:42:47 -0700 (PDT)
+ bh=CVPi+XLqooUcPliHkqB9JAmi5SFQguHf0Z0djyuv1cg=;
+ b=AuuG3h/DBRF7H8fQ6AA1iFSPHbO7SDU463a5Q86DTxGSpmp4HNX1/cBFhYPGxvQgZx
+ ZCqMKZvAUV9C6CP9lgExKPvsgAZmEPV0PMB5yXuAaIHMIVv/elZwo5HyLAhCpF03ndqx
+ MHpSOK419pIS0zDFLZi+gsk1aLWHfgHd6WvRupIUro4EjVAh6Iw1fVFlE86T4mEEnt+t
+ NBc5NXO6XGr1WhykcqFotppr6oNlYNWz4G4s3oJElSg2UELfB0M09Z/+vGqGwrwWdulT
+ zjjME0G7iZiRlucalu4OWtorJ0zAvTRAJsyKAWk5JI/saEK35o6uWj/XLPqdJSbXgYP8
+ DloA==
+X-Gm-Message-State: AOJu0YxVvdevYD8CEcvsRPVf9UmUo90IOkNM1ooOvR3Imh7U829vtapA
+ 2ICIclELum7T12bzype/5hlDSrT05a0=
+X-Google-Smtp-Source: AGHT+IHM/rmZxr/5Iq4Bh2uczoHfQM/wmyNXyKw3s3C/Wx/8Jj3+FklxVXHJA7U8Fmnd9kXSxXsYjw==
+X-Received: by 2002:adf:f044:0:b0:319:8bb3:ab83 with SMTP id
+ t4-20020adff044000000b003198bb3ab83mr1338622wro.66.1694162568693; 
+ Fri, 08 Sep 2023 01:42:48 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-078-054-093-170.78.54.pool.telefonica.de. [78.54.93.170])
  by smtp.gmail.com with ESMTPSA id
- h17-20020a056000001100b003197c2316ecsm1462139wrx.112.2023.09.08.01.42.46
+ h17-20020a056000001100b003197c2316ecsm1462139wrx.112.2023.09.08.01.42.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 01:42:47 -0700 (PDT)
+ Fri, 08 Sep 2023 01:42:48 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -66,18 +66,17 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 4/8] hw/acpi/acpi_dev_interface: Remove now unused #include
- "hw/boards.h"
-Date: Fri,  8 Sep 2023 10:42:30 +0200
-Message-ID: <20230908084234.17642-5-shentey@gmail.com>
+Subject: [PATCH v2 5/8] hw/i386: Remove now redundant TYPE_ACPI_GED_X86
+Date: Fri,  8 Sep 2023 10:42:31 +0200
+Message-ID: <20230908084234.17642-6-shentey@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230908084234.17642-1-shentey@gmail.com>
 References: <20230908084234.17642-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=shentey@gmail.com; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,82 +99,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The "hw/boards.h" is unused since the previous commit. Since its removal
-requires include fixes in various unrelated files to keep the code compiling it
-has been split in a dedicated commit.
+Now that TYPE_ACPI_GED_X86 doesn't assign AcpiDeviceIfClass::madt_cpu any more
+it is the same as TYPE_ACPI_GED.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/acpi/hmat.h                       | 3 ++-
- include/hw/acpi/acpi_dev_interface.h | 1 -
- hw/acpi/cpu.c                        | 1 +
- hw/acpi/hmat.c                       | 1 +
- hw/acpi/memory_hotplug.c             | 1 +
- 5 files changed, 5 insertions(+), 2 deletions(-)
+ include/hw/acpi/generic_event_device.h |  2 --
+ hw/i386/generic_event_device_x86.c     | 27 --------------------------
+ hw/i386/microvm.c                      |  2 +-
+ hw/i386/meson.build                    |  1 -
+ 4 files changed, 1 insertion(+), 31 deletions(-)
+ delete mode 100644 hw/i386/generic_event_device_x86.c
 
-diff --git a/hw/acpi/hmat.h b/hw/acpi/hmat.h
-index b57f0e7e80..fd989cb661 100644
---- a/hw/acpi/hmat.h
-+++ b/hw/acpi/hmat.h
-@@ -27,7 +27,8 @@
- #ifndef HMAT_H
- #define HMAT_H
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index d831bbd889..ba84ce0214 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -69,8 +69,6 @@
+ #define TYPE_ACPI_GED "acpi-ged"
+ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
  
--#include "hw/acpi/aml-build.h"
-+#include "hw/acpi/bios-linker-loader.h"
-+#include "sysemu/numa.h"
+-#define TYPE_ACPI_GED_X86 "acpi-ged-x86"
+-
+ #define ACPI_GED_EVT_SEL_OFFSET    0x0
+ #define ACPI_GED_EVT_SEL_LEN       0x4
  
- /*
-  * ACPI 6.3: 5.2.27.3 Memory Proximity Domain Attributes Structure,
-diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
-index ca92928124..68d9d15f50 100644
---- a/include/hw/acpi/acpi_dev_interface.h
-+++ b/include/hw/acpi/acpi_dev_interface.h
-@@ -3,7 +3,6 @@
+diff --git a/hw/i386/generic_event_device_x86.c b/hw/i386/generic_event_device_x86.c
+deleted file mode 100644
+index 8fc233e1f1..0000000000
+--- a/hw/i386/generic_event_device_x86.c
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/*
+- * x86 variant of the generic event device for hw reduced acpi
+- *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms and conditions of the GNU General Public License,
+- * version 2 or later, as published by the Free Software Foundation.
+- */
+-
+-#include "qemu/osdep.h"
+-#include "hw/acpi/generic_event_device.h"
+-
+-static const TypeInfo acpi_ged_x86_info = {
+-    .name          = TYPE_ACPI_GED_X86,
+-    .parent        = TYPE_ACPI_GED,
+-    .interfaces = (InterfaceInfo[]) {
+-        { TYPE_HOTPLUG_HANDLER },
+-        { TYPE_ACPI_DEVICE_IF },
+-        { }
+-    }
+-};
+-
+-static void acpi_ged_x86_register_types(void)
+-{
+-    type_register_static(&acpi_ged_x86_info);
+-}
+-
+-type_init(acpi_ged_x86_register_types)
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index 8deeb62774..b9c93039e2 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -204,7 +204,7 @@ static void microvm_devices_init(MicrovmMachineState *mms)
  
- #include "qapi/qapi-types-acpi.h"
- #include "qom/object.h"
--#include "hw/boards.h"
- #include "hw/qdev-core.h"
+     /* Optional and legacy devices */
+     if (x86_machine_is_acpi_enabled(x86ms)) {
+-        DeviceState *dev = qdev_new(TYPE_ACPI_GED_X86);
++        DeviceState *dev = qdev_new(TYPE_ACPI_GED);
+         qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT);
+         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
+         /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMHP); */
+diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+index cfdbfdcbcb..ff879069c9 100644
+--- a/hw/i386/meson.build
++++ b/hw/i386/meson.build
+@@ -20,7 +20,6 @@ i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx-epc.c','sgx.c'),
+                                 if_false: files('sgx-stub.c'))
  
- /* These values are part of guest ABI, and can not be changed */
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 65a3202d3f..011d2c6c2d 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -1,6 +1,7 @@
- #include "qemu/osdep.h"
- #include "migration/vmstate.h"
- #include "hw/acpi/cpu.h"
-+#include "hw/core/cpu.h"
- #include "qapi/error.h"
- #include "qapi/qapi-events-acpi.h"
- #include "trace.h"
-diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c
-index 3a6d51282a..d9de0daf89 100644
---- a/hw/acpi/hmat.c
-+++ b/hw/acpi/hmat.c
-@@ -27,6 +27,7 @@
- #include "qemu/osdep.h"
- #include "qemu/units.h"
- #include "sysemu/numa.h"
-+#include "hw/acpi/aml-build.h"
- #include "hw/acpi/hmat.h"
- 
- /*
-diff --git a/hw/acpi/memory_hotplug.c b/hw/acpi/memory_hotplug.c
-index d926f4f77d..0b883df813 100644
---- a/hw/acpi/memory_hotplug.c
-+++ b/hw/acpi/memory_hotplug.c
-@@ -1,6 +1,7 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/memory_hotplug.h"
- #include "hw/mem/pc-dimm.h"
-+#include "hw/boards.h"
- #include "hw/qdev-core.h"
- #include "migration/vmstate.h"
- #include "trace.h"
+ i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
+-i386_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_event_device_x86.c'))
+ i386_ss.add(when: 'CONFIG_PC', if_true: files(
+   'pc.c',
+   'pc_sysfw.c',
 -- 
 2.42.0
 
