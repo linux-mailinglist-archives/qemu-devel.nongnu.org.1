@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB186798B45
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2298798B3A
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:08:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeew2-0005So-SJ; Fri, 08 Sep 2023 13:06:22 -0400
+	id 1qeew0-0005N9-EI; Fri, 08 Sep 2023 13:06:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevz-0005JP-2o
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:19 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qeevy-0005Fs-AE
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:18 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevn-000173-Vk
+ id 1qeevn-000177-U1
  for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:18 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-403004a96a4so109335e9.3
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-400a087b0bfso24194985e9.2
  for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694192763; x=1694797563; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694192764; x=1694797564; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uSgZZn+Jnut5EDCBHYA8pVwRk6TsaSgwb6RuIhbgXCw=;
- b=m1YfgYIhRupm0aj9an3YTZbW6OKfR7gcfsrR4cyzmwhQx0kAAfCbdmgWalBPzMyUBm
- dSFMYwyAGeLFLPVuDU8RASE9rA7eoF8AL/2AmrNUuuynXq8WWrs1BBrTXR0viiU7sEws
- XPmPT25I07PpgfddemSNnuMnWxZP+/0ioywKBI0ORym+LZDg2p7VVrE+e17Ln+RXdj+x
- ghqwlcZDgPLoGMJH+J/KDan6s4fVkdTYbBBjqvuSD590MDqKRO1yjDyHoHYEPfOG8l8k
- /xE4O6YzWfEH4enyMShxxq+fS+M3NaCQnG65y6nbLeR9QlksFfJnPQ//+SpHBG+r6PSD
- DiOQ==
+ :reply-to; bh=H77fDslYA9MGix1dfpbpNI3pKwapk6bXtLEuISrmSAs=;
+ b=vMHj4sVkGuxge0sKIoLrPZS4IAWEDno81nDZqFRVYgk7Ydgp014kERPzgwdpOjU/Pj
+ KwKLDECaqzIJ8JsNFihRb28RUuXmpQ9214Ox7817gHN0hyJ9agD2qcrbKtsG5eh0JTJa
+ quIj+B+tQDRjLZXM6WMEgQrJ1MzE+DG8jWwz6uR8fWVzSNzIcKZsq3WQvdUvWXFuG2zI
+ molHL7gtxKfNF9UxJWEBFFKNiXyXhPuEcCb54WnCSpTEgLh5KDBcySYxB+BV3/ELOjC8
+ rI7EASC3q5RupuD5V617qSgObaufLDC2XoT4FLSvf05GCJ7yjs4rdTBCkmaGJUpHg2Bs
+ fFCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694192763; x=1694797563;
+ d=1e100.net; s=20230601; t=1694192764; x=1694797564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uSgZZn+Jnut5EDCBHYA8pVwRk6TsaSgwb6RuIhbgXCw=;
- b=KhBb5UhAgonnSJSYMuDuWtAtcdEDkyEPCXGMxu9N1HdGDw2cXraB3NGbjf+l5PWUNt
- S1fRGKjR1Od326ikb9JQv77TCDkNpsruTzczkiQ3tf8IWYtMdbT20w5I2vfa5pge4Sxy
- XjUgBgPKbANOdHuztmGdrVDc8UoTUBddexM802zBS+3lGB+TGybFxzESGGc/m3qidRkg
- Znb+s2OWcZRgh+TKp/qYgxinIlpxvashBtLm2vWDX2rXcAJXbRvUfLOfeCx2PP8bdzGa
- DB596rjAIa0hTJCQfxfnxkl+VB6xCo81BcafQM4SoGUJhP/2f9Vp9eALy5dMuaQ2mEsD
- SkCA==
-X-Gm-Message-State: AOJu0YzoX82L+bmY8NOEmgE+/FKW8quNG+e7oYd2b4roq1MmJpcp2Pl7
- kwK/8oRBJLIUQKjMa5GKfnhSGBVyU+k2KNe10vY=
-X-Google-Smtp-Source: AGHT+IH7Ngqnhi5xDZ7S37aS4O0KmnuUyh0FQKiWXiWCkxb3TKMV14txLYbY34ji0Kiwsdt/PFBh3Q==
-X-Received: by 2002:a05:600c:2611:b0:401:1066:53e4 with SMTP id
- h17-20020a05600c261100b00401106653e4mr2811911wma.38.1694192763358; 
+ bh=H77fDslYA9MGix1dfpbpNI3pKwapk6bXtLEuISrmSAs=;
+ b=H79oGFi9eCHC39xusGYEl/w/+tFK5X4xJZlz/kYqf59PEHeGk2Lgsd/rYYvEh5tBhX
+ /8UgJx1Wbuj4q40L5MyT6KnBqtl8gEev9B2fqLbNeAFtqUb4BBmzoRvwYhlIy72xRUgd
+ RyKr8mKjvLSzFZ+N6nNCqYXFutsH5lcyagu8dpZrgUZjIGhQx576/dy9cpIGjjCEIF8e
+ b2C5b6GA6d5ma9HnBDpGLkKW9pPYviwt+YfdsvWXd+KXBeno1hCLcmG8mDXqjIpNeOy2
+ M8Fcv0tL/iIPUEgufxgBzGTsN1MmI1pPMvRJ80gbv3C78iecsvf9Y6K3i3NYrj2sYBGd
+ V5ow==
+X-Gm-Message-State: AOJu0Yy75971m1OvjtTfaXB0PEJXofF74QQAok4vrzrSyheNJ0LTD/NR
+ rtZ90yqdC8i+s1WajGJX1fbr2YaH491Ev0yAt0Y=
+X-Google-Smtp-Source: AGHT+IG/pQwo8KGQZ8uHTT6yTK6/WQEn1YvWcNAXLEd/J7ICyZ2sw0mzD3X5j1B/A9cXM3upHAPf2w==
+X-Received: by 2002:a05:600c:285:b0:401:d258:ad26 with SMTP id
+ 5-20020a05600c028500b00401d258ad26mr2515239wmk.19.1694192763760; 
  Fri, 08 Sep 2023 10:06:03 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 08 Sep 2023 10:06:03 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 06/26] target/arm: Implement FEAT_EPAC
-Date: Fri,  8 Sep 2023 18:05:37 +0100
-Message-Id: <20230908170557.773048-7-peter.maydell@linaro.org>
+Subject: [PULL 07/26] target/arm: Implement FEAT_Pauth2
+Date: Fri,  8 Sep 2023 18:05:38 +0100
+Message-Id: <20230908170557.773048-8-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230908170557.773048-1-peter.maydell@linaro.org>
 References: <20230908170557.773048-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,77 +96,96 @@ Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230829232335.965414-7-richard.henderson@linaro.org
-Message-Id: <20230609172324.982888-5-aaron@os.amperecomputing.com>
+Message-id: 20230829232335.965414-8-richard.henderson@linaro.org
+Message-Id: <20230609172324.982888-6-aaron@os.amperecomputing.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
  docs/system/arm/emulation.rst |  1 +
  target/arm/tcg/cpu64.c        |  2 +-
- target/arm/tcg/pauth_helper.c | 16 +++++++++++-----
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ target/arm/tcg/pauth_helper.c | 21 +++++++++++++++++----
+ 3 files changed, 19 insertions(+), 5 deletions(-)
 
 diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index c4bc4074866..2e99888a6ae 100644
+index 2e99888a6ae..b5a667527b5 100644
 --- a/docs/system/arm/emulation.rst
 +++ b/docs/system/arm/emulation.rst
-@@ -28,6 +28,7 @@ the following architecture extensions:
- - FEAT_DotProd (Advanced SIMD dot product instructions)
- - FEAT_DoubleFault (Double Fault Extension)
- - FEAT_E0PD (Preventing EL0 access to halves of address maps)
-+- FEAT_EPAC (Enhanced pointer authentication)
- - FEAT_ETS (Enhanced Translation Synchronization)
- - FEAT_EVT (Enhanced Virtualization Traps)
- - FEAT_FCMA (Floating-point complex number instructions)
+@@ -65,6 +65,7 @@ the following architecture extensions:
+ - FEAT_PAN2 (AT S1E1R and AT S1E1W instruction variants affected by PSTATE.PAN)
+ - FEAT_PAN3 (Support for SCTLR_ELx.EPAN)
+ - FEAT_PAuth (Pointer authentication)
++- FEAT_PAuth2 (Enhacements to pointer authentication)
+ - FEAT_PMULL (PMULL, PMULL2 instructions)
+ - FEAT_PMUv3p1 (PMU Extensions v3.1)
+ - FEAT_PMUv3p4 (PMU Extensions v3.4)
 diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 4a1d9816dfb..b6a820aae74 100644
+index b6a820aae74..be103702505 100644
 --- a/target/arm/tcg/cpu64.c
 +++ b/target/arm/tcg/cpu64.c
 @@ -803,7 +803,7 @@ void aarch64_max_tcg_initfn(Object *obj)
  
      t = cpu->isar.id_aa64isar1;
      t = FIELD_DP64(t, ID_AA64ISAR1, DPB, 2);      /* FEAT_DPB2 */
--    t = FIELD_DP64(t, ID_AA64ISAR1, APA, PauthFeat_1);
-+    t = FIELD_DP64(t, ID_AA64ISAR1, APA, PauthFeat_EPAC);
+-    t = FIELD_DP64(t, ID_AA64ISAR1, APA, PauthFeat_EPAC);
++    t = FIELD_DP64(t, ID_AA64ISAR1, APA, PauthFeat_2);
      t = FIELD_DP64(t, ID_AA64ISAR1, API, 1);
      t = FIELD_DP64(t, ID_AA64ISAR1, JSCVT, 1);    /* FEAT_JSCVT */
      t = FIELD_DP64(t, ID_AA64ISAR1, FCMA, 1);     /* FEAT_FCMA */
 diff --git a/target/arm/tcg/pauth_helper.c b/target/arm/tcg/pauth_helper.c
-index bb03409ee55..63e1009ea74 100644
+index 63e1009ea74..b6aeb905480 100644
 --- a/target/arm/tcg/pauth_helper.c
 +++ b/target/arm/tcg/pauth_helper.c
-@@ -326,8 +326,10 @@ static uint64_t pauth_computepac(CPUARMState *env, uint64_t data,
- static uint64_t pauth_addpac(CPUARMState *env, uint64_t ptr, uint64_t modifier,
-                              ARMPACKey *key, bool data)
+@@ -353,7 +353,9 @@ static uint64_t pauth_addpac(CPUARMState *env, uint64_t ptr, uint64_t modifier,
+      */
+     test = sextract64(ptr, bot_bit, top_bit - bot_bit);
+     if (test != 0 && test != -1) {
+-        if (pauth_feature == PauthFeat_EPAC) {
++        if (pauth_feature >= PauthFeat_2) {
++            /* No action required */
++        } else if (pauth_feature == PauthFeat_EPAC) {
+             pac = 0;
+         } else {
+             /*
+@@ -368,6 +370,9 @@ static uint64_t pauth_addpac(CPUARMState *env, uint64_t ptr, uint64_t modifier,
+      * Preserve the determination between upper and lower at bit 55,
+      * and insert pointer authentication code.
+      */
++    if (pauth_feature >= PauthFeat_2) {
++        pac ^= ptr;
++    }
+     if (param.tbi) {
+         ptr &= ~MAKE_64BIT_MASK(bot_bit, 55 - bot_bit + 1);
+         pac &= MAKE_64BIT_MASK(bot_bit, 54 - bot_bit + 1);
+@@ -394,18 +399,26 @@ static uint64_t pauth_original_ptr(uint64_t ptr, ARMVAParameters param)
+ static uint64_t pauth_auth(CPUARMState *env, uint64_t ptr, uint64_t modifier,
+                            ARMPACKey *key, bool data, int keynumber)
  {
 +    ARMCPU *cpu = env_archcpu(env);
      ARMMMUIdx mmu_idx = arm_stage1_mmu_idx(env);
      ARMVAParameters param = aa64_va_parameters(env, ptr, mmu_idx, data, false);
 +    ARMPauthFeature pauth_feature = cpu_isar_feature(pauth_feature, cpu);
-     uint64_t pac, ext_ptr, ext, test;
      int bot_bit, top_bit;
+-    uint64_t pac, orig_ptr, test;
++    uint64_t pac, orig_ptr, cmp_mask;
  
-@@ -351,11 +353,15 @@ static uint64_t pauth_addpac(CPUARMState *env, uint64_t ptr, uint64_t modifier,
-      */
-     test = sextract64(ptr, bot_bit, top_bit - bot_bit);
-     if (test != 0 && test != -1) {
--        /*
--         * Note that our top_bit is one greater than the pseudocode's
--         * version, hence "- 2" here.
--         */
--        pac ^= MAKE_64BIT_MASK(top_bit - 2, 1);
-+        if (pauth_feature == PauthFeat_EPAC) {
-+            pac = 0;
-+        } else {
-+            /*
-+             * Note that our top_bit is one greater than the pseudocode's
-+             * version, hence "- 2" here.
-+             */
-+            pac ^= MAKE_64BIT_MASK(top_bit - 2, 1);
-+        }
-     }
+     orig_ptr = pauth_original_ptr(ptr, param);
+     pac = pauth_computepac(env, orig_ptr, modifier, *key);
+     bot_bit = 64 - param.tsz;
+     top_bit = 64 - 8 * param.tbi;
  
-     /*
+-    test = (pac ^ ptr) & ~MAKE_64BIT_MASK(55, 1);
+-    if (unlikely(extract64(test, bot_bit, top_bit - bot_bit))) {
++    cmp_mask = MAKE_64BIT_MASK(bot_bit, top_bit - bot_bit);
++    cmp_mask &= ~MAKE_64BIT_MASK(55, 1);
++
++    if (pauth_feature >= PauthFeat_2) {
++        return ptr ^ (pac & cmp_mask);
++    }
++
++    if ((pac ^ ptr) & cmp_mask) {
+         int error_code = (keynumber << 1) | (keynumber ^ 1);
+         if (param.tbi) {
+             return deposit64(orig_ptr, 53, 2, error_code);
 -- 
 2.34.1
 
