@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FEB798A72
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 18:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4BF798A8A
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 18:12:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qee0P-0002dx-9E; Fri, 08 Sep 2023 12:06:49 -0400
+	id 1qee50-0004W6-4s; Fri, 08 Sep 2023 12:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qee0J-0002de-La
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:06:43 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qee4y-0004UG-4Q
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:11:32 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qee0A-0002Jg-T9
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:06:39 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9a63b2793ecso278539866b.2
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 09:06:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qee4v-0004BR-GP
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:11:31 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-99bf1f632b8so286181266b.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 09:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694189193; x=1694793993; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694189487; x=1694794287; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NiGKgNwoo1t9QvBDw/C4yJW9zW4DCLZnsDeXbgw6FE8=;
- b=ljcfGcKWgdfIyNN5FKKcfT45+t/u9ETqB5uqNsoRu58eQsQG8AfzKu36NN1ldGd9vX
- DFYI18kT0MGyNn21eCR57VfZXTDuzzTKsBI8m6Gn3vza6KFC2AbhLM8zedm/SqrrIp4n
- /W0kaU6x5+bEhUsqyvFK69a81GBKi8WnoM0A/mcziQZELmo/delEbQFqpQPMqlP/BrQ2
- Kmt92BJffWqoWwMbrKrrGlnU8xO34iefUqoKjgmyIcrb3qYXuoPaGzQ61Bb4vZ7XQ6yt
- MRXN5Q8NkJbBfyz0wd45fvc9yQHawzUu1eb16diRR20UO41sHu3IiM4Yzc5luZGok2I6
- dCig==
+ bh=ZIKGcYneX0QMmy25m80dXHB0Zz9nuIupozxUaWEUBwo=;
+ b=l6YxzbXhBjGeYSboQ48R96ala2mAYjYvy7vcoFLo56dsSNxhNEA/zDRInl2rhTjpEv
+ VItpdnyMra/YLQxNB1hZcIEnELYu9w/O3HiB8Ud61zhUI98UJgEnRonenis9TijCqTcj
+ IqhMNC5074mgv9iBl+1BVsMvf8oqdlyTlv8BMw7jJgUymQba/TYLjH2xVhnexrSP9UOR
+ cy2AFJuURtCNg1pkn8jnTAOqZUDecIe2MgWLZle7JI/dhF8W5uTtvRXyB1OBezXHwpyH
+ XcHlutBo3JVHN62tf2mkv5HUDjNKEAJuKXf/GUXwTQyupIcKnALtvm351Ivqfn94uP6f
+ QKxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694189193; x=1694793993;
+ d=1e100.net; s=20230601; t=1694189487; x=1694794287;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NiGKgNwoo1t9QvBDw/C4yJW9zW4DCLZnsDeXbgw6FE8=;
- b=UDxowYhjqshcWRDpJh/JhHBnviXKTgqGED3NYhVkWK9qsWmIAxfW3O/uxyu3hT7dpR
- 6VHK5ADTGbehvcgbE7iJk4/l34PJUIB4Qy9vjurwgIAcE7SSNjLFXB7TqZz7gEewGNXS
- b7E4eM3HZYXw0J2ych9lduZ/+aO8gEurt9r/JwsOCLC42JoOh26yXkaWHPcKPPAAOjNW
- YY7oGScTP1I5MApKIIOeQ3SufwDrLXeaawV/AaLSl+klymhGcEBUEu9WMKlXCzE2pL4D
- MDb2FqiM+cTrmCRKk/vuror7LDAf6LEhGDgCiJT55HGNVmHIBTCaiT/W0xpzV9LrG4JR
- fzTA==
-X-Gm-Message-State: AOJu0YwgcPb6YVQURu2UIH3nlESrUZANi5h/i5OaeJapPSZyKKWcsNZm
- 7QgijtLzhaKfD25IRy77ftQTyA==
-X-Google-Smtp-Source: AGHT+IH5y6vibNkfMXQVTkoWUgnyHw1MnU704vaLQ9+yhsCp7iRgy5t6vR5FXha3/3NRmp+okoKA6w==
-X-Received: by 2002:a17:906:112:b0:994:4095:3abf with SMTP id
- 18-20020a170906011200b0099440953abfmr2437436eje.14.1694189193085; 
- Fri, 08 Sep 2023 09:06:33 -0700 (PDT)
+ bh=ZIKGcYneX0QMmy25m80dXHB0Zz9nuIupozxUaWEUBwo=;
+ b=Fy/BPwyb3p/IKuK2UWR4PLxgwA0YFnBiPk+qswfE6rfatF9oCGHSEGpKNbxtr2y97Y
+ scpfEzTNToQaED8QUJJa9hg5lNP6whUOItzGD2mJDCRqd1SgsoFBIvOKqnmx/fL9za4C
+ gLkFvQCjvKd3vyLtd1bAIctygVNyHhXyS/rGJl5FRzNI+vDRjgzuQGBd+u772LSeSWKF
+ S85Tl2cjrZz1fCsW3LBSxBPhZzhna/cv9Zi2PvAhUPb86zJQCbwDW0ozMwfjE3WXVemv
+ RiJJcWbDA7lphWLAEHESv2YBmhAKxH1RH9YRQfg4jYF/Vwks9mjivxpwGqDh0b6w84IQ
+ WP4g==
+X-Gm-Message-State: AOJu0Yy/k4sI3oqkdCS+SH0XXmMJiSfA6yvjnoMN3I9D75dqFhMX82PC
+ cyrqg0nycmRcsOJI3B+2Gak5Hy0o0FvtyZ6Uido=
+X-Google-Smtp-Source: AGHT+IEhbvn1WAiknMXXnwcxiyq3JBP8jEeW0Q0Q5s7Psi+4EHfcdiVnLlWeQuwek2YBGowxO0mzrA==
+X-Received: by 2002:a17:906:8a59:b0:9a9:f2fd:2a2b with SMTP id
+ gx25-20020a1709068a5900b009a9f2fd2a2bmr2198053ejc.73.1694189486814; 
+ Fri, 08 Sep 2023 09:11:26 -0700 (PDT)
 Received: from [192.168.69.115]
  (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr. [176.173.167.175])
  by smtp.gmail.com with ESMTPSA id
- va17-20020a17090711d100b009929ab17be0sm1208705ejb.162.2023.09.08.09.06.31
+ ck8-20020a170906c44800b009a5f1d1564dsm1205760ejb.126.2023.09.08.09.11.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Sep 2023 09:06:32 -0700 (PDT)
-Message-ID: <73c4f932-c96e-af23-4f5c-b25077347b96@linaro.org>
-Date: Fri, 8 Sep 2023 18:06:30 +0200
+ Fri, 08 Sep 2023 09:11:26 -0700 (PDT)
+Message-ID: <521ab2c6-f617-1a9e-fef6-29add2e62137@linaro.org>
+Date: Fri, 8 Sep 2023 18:11:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 10/21] q800: add easc bool machine class property to
- switch between ASC and EASC
+Subject: Re: [PULL 00/51] Build system, i386 changes for 2023-09-07
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-11-mark.cave-ayland@ilande.co.uk>
- <e3fe143f-2c07-2d59-3dca-4534a767391d@linaro.org>
- <f639b4b1-965a-fe9d-a988-2dbd2c1c0e68@ilande.co.uk>
- <44e50cdb-37f0-c18d-4d64-0f34777a193d@linaro.org>
- <ed274425-43bd-a4b6-b1d6-1d1d42784cf7@ilande.co.uk>
+To: Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20230907130004.500601-1-pbonzini@redhat.com>
+ <20230907154412.GA1550739@fedora> <ZPs3UB8W4lsOFnxW@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <ed274425-43bd-a4b6-b1d6-1d1d42784cf7@ilande.co.uk>
+In-Reply-To: <ZPs3UB8W4lsOFnxW@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -106,62 +94,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 18:03, Mark Cave-Ayland wrote:
-> On 08/09/2023 10:42, Philippe Mathieu-Daudé wrote:
-> 
->> On 8/9/23 08:54, Mark Cave-Ayland wrote:
->>> On 07/07/2023 09:29, Philippe Mathieu-Daudé wrote:
->>>
->>>> On 2/7/23 17:48, Mark Cave-Ayland wrote:
->>>>> This determines whether the Apple Sound Chip (ASC) is set to 
->>>>> enhanced mode
->>>>> (default) or to original mode. The real Q800 hardware used an EASC 
->>>>> chip however
->>>>> a lot of older software only works with the older ASC chip.
->>>>>
->>>>> Adding this as a machine parameter allows QEMU to be used as an 
->>>>> developer aid
->>>>> for testing and migrating code from ASC to EASC.
->>>>>
->>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>> ---
->>>>>   hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
->>>>>   include/hw/m68k/q800.h |  1 +
->>>>>   2 files changed, 30 insertions(+), 1 deletion(-)
->>>>
->>>>
->>>>> +static bool q800_get_easc(Object *obj, Error **errp)
->>>>> +{
->>>>> +    Q800MachineState *ms = Q800_MACHINE(obj);
->>>>> +
->>>>> +    return ms->easc;
->>>>> +}
->>>>
->>>> Is the getter useful? Otherwise:
->>>
->>> Isn't it a requirement? Otherwise I can see that if we decide to 
->>> enumerate machine properties (similar as to how device properties 
->>> appear in "info qtree") then it would be impossible to display its 
->>> value. Certainly at the moment we consider that adding an object 
->>> property to an underlying struct effectively makes it "public".
->>
->> Just FYI this is not a requirement, per "qom/object.h":
->>
->>    /**
->>     * object_property_add_bool:
->>     * @obj: the object to add a property to
->>     * @name: the name of the property
->>     * @get: the getter or NULL if the property is write-only.
->>     * @set: the setter or NULL if the property is read-only
->>
->> I'm not sure when we want a write-only QOM boolean property, so I
->> genuinely ask, since I agree introspecting QOM object fields from
->> the monitor is helpful.
-> 
-> Agreed, although I'd be interested to hear if anyone can come up with a 
-> compelling use case for write-only properties. In that case I'll assume 
-> your R-B stands when I re-send the latest version of the series ;)
+Hi Kevin,
 
-Sure R-b stands, this discussion is outside of the scope of your series.
+On 8/9/23 17:01, Kevin Wolf wrote:
+> Am 07.09.2023 um 17:44 hat Stefan Hajnoczi geschrieben:
+>> Applied, thanks.
+>>
+>> Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+> 
+> Something in this has broken the build for me, it seems to be the
+> linux-user binary that doesn't link any more:
+> 
+>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `cpu_x86_cpuid':
+>    /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:6180: undefined reference to `kvm_arch_get_supported_cpuid'
+
+My patches. I can not reproduce so far,
+What are your ./configure command options?
+
+>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `x86_cpu_filter_features':
+>    /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7158: undefined reference to `kvm_arch_get_supported_cpuid'
+>    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7159: undefined reference to `kvm_arch_get_supported_cpuid'
+>    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7160: undefined reference to `kvm_arch_get_supported_cpuid'
+>    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7161: undefined reference to `kvm_arch_get_supported_cpuid'
+>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:/home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7162: more undefined references to `kvm_arch_get_supported_cpuid' follow
+>    clang-15: error: linker command failed with exit code 1 (use -v to see invocation)
+> 
+> In case it makes a difference, I'm using clang on F37.
+> 
+> Kevin
 
 
