@@ -2,71 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2190E7980EF
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 05:23:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A4E7980F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 05:24:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeS5G-0002NT-NN; Thu, 07 Sep 2023 23:23:02 -0400
+	id 1qeS6M-0003a2-7L; Thu, 07 Sep 2023 23:24:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qeS5E-0002Mj-KJ
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 23:23:00 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qeS5C-0002h6-7p
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 23:23:00 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxyeqPk_pk9uAhAA--.58057S3;
- Fri, 08 Sep 2023 11:22:55 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxxsyPk_pkEsRxAA--.52161S3; 
- Fri, 08 Sep 2023 11:22:55 +0800 (CST)
-Subject: Re: [PATCH RESEND v5 03/57] target/loongarch: Use
- gen_helper_gvec_4_ptr for 4OP + env vector instructions
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: maobibo@loongson.cn
-References: <20230907083158.3975132-1-gaosong@loongson.cn>
- <20230907083158.3975132-4-gaosong@loongson.cn>
- <6a7579a2-d502-bf8b-7975-2ae33304cacb@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <59310afb-3b8e-126f-0f0c-7639234296d9@loongson.cn>
-Date: Fri, 8 Sep 2023 11:22:55 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qeS6K-0003Zp-Ev; Thu, 07 Sep 2023 23:24:08 -0400
+Received: from out30-97.freemail.mail.aliyun.com ([115.124.30.97])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qeS6G-0002sa-N0; Thu, 07 Sep 2023 23:24:08 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R121e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046060;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=4; SR=0;
+ TI=SMTPD_---0VraxpoG_1694143434; 
+Received: from L-PF1D6DP4-1208.hz.ali.com(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VraxpoG_1694143434) by smtp.aliyun-inc.com;
+ Fri, 08 Sep 2023 11:23:55 +0800
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, LIU Zhiwei <lzw194868@alibaba-inc.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH] qemu/timer: Add host ticks function for RISC-V
+Date: Fri,  8 Sep 2023 11:23:00 +0800
+Message-Id: <20230908032300.646-1-zhiwei_liu@linux.alibaba.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <6a7579a2-d502-bf8b-7975-2ae33304cacb@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxxsyPk_pkEsRxAA--.52161S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWruw1kAw17Kr13uFW5KFy5WrX_yoWDCFc_Jw
- 4UGr1UXr1UJr4UJr1UJr1UXr1UJr1UtryUJr4rAr1UXr1UJrn8Jr1rJwn5Jr1UGr4UJr1U
- Jry7Jr13Jr1UJosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbI8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8C
- rVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAw
- CIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x02
- 67AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr
- 0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUwmhF
- DUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.97;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-97.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,26 +58,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/9/8 上午1:34, Richard Henderson 写道:
-> On 9/7/23 01:31, Song Gao wrote:
->> +static bool gen_vvvv_ptr_vl(DisasContext *ctx, arg_vvvv *a, uint32_t 
->> oprsz,
->> +                            gen_helper_gvec_4_ptr *fn)
->> +{
->> +    tcg_gen_gvec_4_ptr(vec_full_offset(a->vd),
->> +                       vec_full_offset(a->vj),
->> +                       vec_full_offset(a->vk),
->> +                       vec_full_offset(a->va),
->> +                       cpu_env,
->> +                       oprsz, ctx->vl / 8, oprsz, fn);
->                                                ^^^^^
-> 
-> This next to last argument is 'data', which is unused for this case.
-> Just use 0 here.
-> 
-Got it,  I will correct the other 6 similar patches.
+From: LIU Zhiwei <lzw194868@alibaba-inc.com>
 
-Thanks.
-Song Gao
+Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+---
+ include/qemu/timer.h | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index 9a91cb1248..ce0b66d122 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -979,6 +979,25 @@ static inline int64_t cpu_get_host_ticks(void)
+     return cur - ofs;
+ }
+ 
++#elif defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen == 32
++static inline int64_t cpu_get_host_ticks(void)
++{
++    uint32_t lo, hi;
++    asm volatile("RDCYCLE %0\n\t"
++                 "RDCYCLEH %1"
++                 : "=r"(lo), "=r"(hi));
++    return lo | (uint64_t)hi << 32;
++}
++
++#elif defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen > 32
++static inline int64_t cpu_get_host_ticks(void)
++{
++    int64_t val;
++
++    asm volatile("RDCYCLE %0" : "=r"(cc));
++    return val;
++}
++
+ #else
+ /* The host CPU doesn't have an easily accessible cycle counter.
+    Just return a monotonically increasing value.  This will be
+-- 
+2.17.1
 
 
