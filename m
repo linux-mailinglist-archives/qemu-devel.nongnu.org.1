@@ -2,92 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0742798878
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDC679887A
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:22:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qecMT-0000Gn-1P; Fri, 08 Sep 2023 10:21:29 -0400
+	id 1qecMo-0000XK-PQ; Fri, 08 Sep 2023 10:21:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qecMN-0000Fn-UK
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:21:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qecMl-0000TV-T1
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:21:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qecML-0001SH-GT
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:21:23 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qecMi-0001Z7-UZ
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:21:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694182880;
+ s=mimecast20190719; t=1694182904;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=A1dS1EXnlM9RWd0wh+RfSyvVwSxSLC59ZPlPSe8FASc=;
- b=Clkf7wOcOL6JzIR27sK5wxVtQIXnf76S8DxxJCzqnWV0EYrubasRJMk7F/mLbnKrxhnHDL
- QBDqAlFK4uvexKjC4C8wAsufHty7yFez733wXLHJ9Bu2UgHD0FY7ZXtwVC/9m1B2bthRXA
- 2MxPJLoVyAn+r3YJCiiEym0o8i+5w6k=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-28-12iET1RpOhy_kOQRVhuEAA-1; Fri, 08 Sep 2023 10:21:18 -0400
-X-MC-Unique: 12iET1RpOhy_kOQRVhuEAA-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2bd132e84b2so25349501fa.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 07:21:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694182877; x=1694787677;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=A1dS1EXnlM9RWd0wh+RfSyvVwSxSLC59ZPlPSe8FASc=;
- b=nS6jQ6ylE1t92r/rb43lLtUgibUktSvAslkKXcpobl8bxJpsg01Mgrs5POidJ7tPIQ
- Hj4kDgtNNQHfY0P3ORc1hYmXhozQEgetKoM22ccyLZuCO6wX6y7mPfhz37BXbu7y+UE+
- sk4er51ZHDsjedK1oeNLKPyTS/V4lxAN0lbt4C2r1JsIFJeZxRfz3pPUkzj8H/7HY3ka
- DlWZlmj2LZAN8SJNVILq+tNe+MNMKeXIgxFvuXL+sqf7N3/CUNIBXWexGCFqMXqJBse/
- qOEO29t6yU6MEuN3tcdxVr9EAfPFxfHQIxLnkoD6CxBmU5BK7Pph9AEPj96eyqf3lPgP
- tXuw==
-X-Gm-Message-State: AOJu0YzX22GzU4wqz6Fsb2r1/Sq7Qj1T/t71/pvpS42j9yG1Qr2ACt+X
- 4K56KqAl5lEL6c1xV2Vt6FrfcLd6OsHVWMaAGi8ak+iRnVAfYj3LYKATFNjh5GAFCNI9qKl36lY
- f2MegbYuulYGH24s=
-X-Received: by 2002:a05:651c:1045:b0:2bc:b6d9:4347 with SMTP id
- x5-20020a05651c104500b002bcb6d94347mr2191258ljm.20.1694182877348; 
- Fri, 08 Sep 2023 07:21:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG5S1ApEeDZOEA9VyxycvmeUqDkKQGMjefRQBBSAj22aVACHinXBvIXcUT/WuqBgJ/TyuhDpA==
-X-Received: by 2002:a05:651c:1045:b0:2bc:b6d9:4347 with SMTP id
- x5-20020a05651c104500b002bcb6d94347mr2191243ljm.20.1694182877045; 
- Fri, 08 Sep 2023 07:21:17 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- j9-20020a170906050900b00997e99a662bsm1077388eja.20.2023.09.08.07.21.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 07:21:12 -0700 (PDT)
-Date: Fri, 8 Sep 2023 16:21:09 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Tim Wiederhake <twiederh@redhat.com>
-Cc: qemu-devel@nongnu.org, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, "Daniel P . =?UTF-8?B?QmVycmFuZ8Op?="
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S .
- Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 03/10] target/i386: Fix duplicated feature name in
- FEAT_KVM
-Message-ID: <20230908162109.0878826d@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230908124534.25027-4-twiederh@redhat.com>
-References: <20230908124534.25027-1-twiederh@redhat.com>
- <20230908124534.25027-4-twiederh@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=tXdacaoW91H0gn+Ox+dDTudA8L4kFZn/fimCvA7/Z8o=;
+ b=MwxpxNcyvibKxJwp9bKNgVslRx4/NjPZ9vLqWtzpxi6IUyB4ee0+xtrvfebV1dFqQ5vDsa
+ cnFWlnz+0U4p3T+8/vd1KJ2J6B7o70KBpL0GguDRgBgz/iwVC+TICYumXz20ygqokjGYiH
+ DeD71sZjrSb2h5wVSAb5TkgbYfPZDYg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-435-BVyC5W4yOQeGFVJuBZRkOQ-1; Fri, 08 Sep 2023 10:21:41 -0400
+X-MC-Unique: BVyC5W4yOQeGFVJuBZRkOQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ABABE3C10156;
+ Fri,  8 Sep 2023 14:21:40 +0000 (UTC)
+Received: from t14s.redhat.com (unknown [10.39.194.76])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A595DC03295;
+ Fri,  8 Sep 2023 14:21:37 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
+Subject: [PATCH v3 00/16] virtio-mem: Expose device memory through multiple
+ memslots
+Date: Fri,  8 Sep 2023 16:21:20 +0200
+Message-ID: <20230908142136.403541-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,35 +87,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri,  8 Sep 2023 14:45:27 +0200
-Tim Wiederhake <twiederh@redhat.com> wrote:
+Quoting from patch #14:
 
-> The mistake became apparent as there were two features with the same name
-> in this cpuid leaf. The names are now in line with the documentation from
-> https://kernel.org/doc/html/latest/virt/kvm/x86/cpuid.html
+    Having large virtio-mem devices that only expose little memory to a VM
+    is currently a problem: we map the whole sparse memory region into the
+    guest using a single memslot, resulting in one gigantic memslot in KVM.
+    KVM allocates metadata for the whole memslot, which can result in quite
+    some memory waste.
 
-I'd describe what duplication breaks and it's effects.
+    Assuming we have a 1 TiB virtio-mem device and only expose little (e.g.,
+    1 GiB) memory, we would create a single 1 TiB memslot and KVM has to
+    allocate metadata for that 1 TiB memslot: on x86, this implies allocating
+    a significant amount of memory for metadata:
 
-and also why it's considered that it's safe to change names here.
+    (1) RMAP: 8 bytes per 4 KiB, 8 bytes per 2 MiB, 8 bytes per 1 GiB
+        -> For 1 TiB: 2147483648 + 4194304 + 8192 = ~ 2 GiB (0.2 %)
 
-> Fixes: 642258c6c7 ("kvm: add kvmclock to its second bit")
-> Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
-> ---
->  target/i386/cpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index f10d343935..f0fedf4b88 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -852,7 +852,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
->      [FEAT_KVM] = {
->          .type = CPUID_FEATURE_WORD,
->          .feat_names = {
-> -            "kvmclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock",
-> +            "kvmclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock2",
->              "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-pv-unhalt",
->              NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
->              "kvm-poll-control", "kvm-pv-sched-yield", "kvm-asyncpf-int", "kvm-msi-ext-dest-id",
+        With the TDP MMU (cat /sys/module/kvm/parameters/tdp_mmu) this gets
+        allocated lazily when required for nested VMs
+    (2) gfn_track: 2 bytes per 4 KiB
+        -> For 1 TiB: 536870912 = ~512 MiB (0.05 %)
+    (3) lpage_info: 4 bytes per 2 MiB, 4 bytes per 1 GiB
+        -> For 1 TiB: 2097152 + 4096 = ~2 MiB (0.0002 %)
+    (4) 2x dirty bitmaps for tracking: 2x 1 bit per 4 KiB page
+        -> For 1 TiB: 536870912 = 64 MiB (0.006 %)
+
+    So we primarily care about (1) and (2). The bad thing is, that the
+    memory consumption doubles once SMM is enabled, because we create the
+    memslot once for !SMM and once for SMM.
+
+    Having a 1 TiB memslot without the TDP MMU consumes around:
+    * With SMM: 5 GiB
+    * Without SMM: 2.5 GiB
+    Having a 1 TiB memslot with the TDP MMU consumes around:
+    * With SMM: 1 GiB
+    * Without SMM: 512 MiB
+
+    ... and that's really something we want to optimize, to be able to just
+    start a VM with small boot memory (e.g., 4 GiB) and a virtio-mem device
+    that can grow very large (e.g., 1 TiB).
+
+    Consequently, using multiple memslots and only mapping the memslots we
+    really need can significantly reduce memory waste and speed up
+    memslot-related operations. Let's expose the sparse RAM memory region using
+    multiple memslots, mapping only the memslots we currently need into our
+    device memory region container.
+
+The hyper-v balloon driver has similar demands [1].
+
+For virtio-mem, this has to be turned manually on ("multiple-memslots=on"),
+due to the interaction with vhost (below).
+
+If we have less than 509 memslots available, we always default to a single
+memslot. Otherwise, we automatically decide how many memslots to use
+based on a simple heuristic (see patch #12), and try not to use more than
+256 memslots across all memory devices: our historical DIMM limit.
+
+As soon as any memory devices automatically decided on using more than
+one memslot, vhost devices that support less than 509 memslots (e.g.,
+currently most vhost-user devices like with virtiofsd) can no longer be
+plugged as a precaution.
+
+Quoting from patch #12:
+
+    Plugging vhost devices with less than 509 memslots available while we
+    have memory devices plugged that consume multiple memslots due to
+    automatic decisions can be problematic. Most configurations might just fail
+    due to "limit < used + reserved", however, it can also happen that these
+    memory devices would suddenly consume memslots that would actually be
+    required by other memslot consumers (boot, PCI BARs) later. Note that this
+    has always been sketchy with vhost devices that support only a small number
+    of memslots; but we don't want to make it any worse.So let's keep it simple
+    and simply reject plugging such vhost devices in such a configuration.
+
+    Eventually, all vhost devices that want to be fully compatible with such
+    memory devices should support a decent number of memslots (>= 509).
+
+
+The recommendation is to plug such vhost devices before the virtio-mem
+decides, or to not set "multiple-memslots=on". As soon as these devices
+support a reasonable number of memslots (>= 509), this will start working
+automatically.
+
+I run some tests on x86_64, now also including vfio tests. Seems to work
+as expected, even when multiple memslots are used.
+
+
+Patch #1 -- #3 are from [2] that were not picked up yet.
+
+Patch #4 -- #12 add handling of multiple memslots to memory devices
+
+Patch #13 -- #14 add "multiple-memslots=on" support to virtio-mem
+
+Patch #15 -- #16 make sure that virtio-mem memslots can be enabled/disable
+             atomically
+
+v2 -> v3:
+* "kvm: Return number of free memslots"
+ -> Return 0 in stub
+* "kvm: Add stub for kvm_get_max_memslots()"
+ -> Return 0 in stub
+* Adjust other patches to check for kvm_enabled() before calling
+  kvm_get_free_memslots()/kvm_get_max_memslots()
+* Add RBs
+
+v1 -> v2:
+* Include patches from [1]
+* A lot of code simplification and reorganization, too many to spell out
+* don't add a general soft-limit on memslots, to avoid warning in sane
+  setups
+* Simplify handling of vhost devices with a small number of memslots:
+  simply fail plugging them
+* "virtio-mem: Expose device memory via multiple memslots if enabled"
+ -> Fix one "is this the last memslot" check
+* Much more testing
+
+
+[1] https://lkml.kernel.org/r/cover.1689786474.git.maciej.szmigiero@oracle.com
+[2] https://lkml.kernel.org/r/20230523185915.540373-1-david@redhat.com
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Yanan Wang <wangyanan55@huawei.com>
+Cc: Michal Privoznik <mprivozn@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Gavin Shan <gshan@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Cc: kvm@vger.kernel.org
+
+David Hildenbrand (16):
+  vhost: Rework memslot filtering and fix "used_memslot" tracking
+  vhost: Remove vhost_backend_can_merge() callback
+  softmmu/physmem: Fixup qemu_ram_block_from_host() documentation
+  kvm: Return number of free memslots
+  vhost: Return number of free memslots
+  memory-device: Support memory devices with multiple memslots
+  stubs: Rename qmp_memory_device.c to memory_device.c
+  memory-device: Track required and actually used memslots in
+    DeviceMemoryState
+  memory-device,vhost: Support memory devices that dynamically consume
+    memslots
+  kvm: Add stub for kvm_get_max_memslots()
+  vhost: Add vhost_get_max_memslots()
+  memory-device,vhost: Support automatic decision on the number of
+    memslots
+  memory: Clarify mapping requirements for RamDiscardManager
+  virtio-mem: Expose device memory via multiple memslots if enabled
+  memory,vhost: Allow for marking memory device memory regions
+    unmergeable
+  virtio-mem: Mark memslot alias memory regions unmergeable
+
+ MAINTAINERS                                   |   1 +
+ accel/kvm/kvm-all.c                           |  35 ++-
+ accel/stubs/kvm-stub.c                        |   9 +-
+ hw/mem/memory-device.c                        | 196 ++++++++++++-
+ hw/virtio/vhost-stub.c                        |   9 +-
+ hw/virtio/vhost-user.c                        |  21 +-
+ hw/virtio/vhost-vdpa.c                        |   1 -
+ hw/virtio/vhost.c                             | 103 +++++--
+ hw/virtio/virtio-mem-pci.c                    |  21 ++
+ hw/virtio/virtio-mem.c                        | 272 +++++++++++++++++-
+ include/exec/cpu-common.h                     |  15 +
+ include/exec/memory.h                         |  27 +-
+ include/hw/boards.h                           |  14 +-
+ include/hw/mem/memory-device.h                |  57 ++++
+ include/hw/virtio/vhost-backend.h             |   9 +-
+ include/hw/virtio/vhost.h                     |   3 +-
+ include/hw/virtio/virtio-mem.h                |  23 +-
+ include/sysemu/kvm.h                          |   4 +-
+ include/sysemu/kvm_int.h                      |   1 +
+ softmmu/memory.c                              |  35 ++-
+ softmmu/physmem.c                             |  17 --
+ .../{qmp_memory_device.c => memory_device.c}  |  10 +
+ stubs/meson.build                             |   2 +-
+ 23 files changed, 779 insertions(+), 106 deletions(-)
+ rename stubs/{qmp_memory_device.c => memory_device.c} (56%)
+
+-- 
+2.41.0
 
 
