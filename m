@@ -2,70 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212FE797F6C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 01:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB99797F8E
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 02:16:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeOqa-0001Z6-E4; Thu, 07 Sep 2023 19:55:40 -0400
+	id 1qeP9d-0000Ch-Fz; Thu, 07 Sep 2023 20:15:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qeOqY-0001Yh-AH
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 19:55:38 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeP9b-0000CZ-Ba
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 20:15:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qeOqV-00063T-KK
- for qemu-devel@nongnu.org; Thu, 07 Sep 2023 19:55:38 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeP9Y-00040p-0X
+ for qemu-devel@nongnu.org; Thu, 07 Sep 2023 20:15:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694130934;
+ s=mimecast20190719; t=1694132115;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=S0yRFpSQVdiKN9ndc3rjxohihKqoTNq6bxCnYdahPPc=;
- b=HXXEFx5mmttKDjulORXiP0Io5Sqhk4qCbJp6OXYM+ti5+lkE3xagGUbdAERFumkZkE9piy
- DZaOhBh68XcCyA6V9Z0z9yuW7OCvvJrMRlZK4wkgbbkEobGizFRTm8CFlWdw61XdLLo3fA
- 5nYGdK8wmJMITvvt1f1VFSvnCUFQMYM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-410-Bd5HaVfgNk2PW-b6AjHTnQ-1; Thu, 07 Sep 2023 19:55:31 -0400
-X-MC-Unique: Bd5HaVfgNk2PW-b6AjHTnQ-1
+ bh=uXd0ZDt8ZC9QLp1LYV2OkgCPgDEPAzAE/EZaHQgXIyo=;
+ b=Ma7AGFMV/G3DNcK5S0oBo9A/OtGrUwVBuK77gzUQ8Ot4n8LR870BAmm6bCqgpwGNXCzOc1
+ YcST2MtaEfFtFgDt8hXjvQ5TPRTrC68UMyw99qSXvEm14gSrr5TCpyr8/mNRdC5fJafRxy
+ 9zd4NPdULfdTCu7hA6qHsgpavV/pwBw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-206-x0Me8mn-OEWl1lIA0_nAIg-1; Thu, 07 Sep 2023 20:15:13 -0400
+X-MC-Unique: x0Me8mn-OEWl1lIA0_nAIg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0698E1C05122;
- Thu,  7 Sep 2023 23:55:31 +0000 (UTC)
-Received: from [10.39.192.25] (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B21412026D76;
- Thu,  7 Sep 2023 23:55:27 +0000 (UTC)
-Message-ID: <bfddf3fa-0b14-25b4-39d6-e3f65b659525@redhat.com>
-Date: Fri, 8 Sep 2023 01:55:26 +0200
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8EA10101A529;
+ Fri,  8 Sep 2023 00:15:11 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AF26B2026D76;
+ Fri,  8 Sep 2023 00:15:10 +0000 (UTC)
+Date: Thu, 7 Sep 2023 19:15:08 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, stefanha@redhat.com, 
+ kwolf@redhat.com, hreitz@redhat.com, den@virtuozzo.com
+Subject: Re: [PATCH v2 4/3] qemu-iotests/197: use more generic commands for
+ formats other than qcow2
+Message-ID: <5uj3con3dyrkw4bxsci2fhilaf5u76lya2zbqawq74supj2qvz@aqububmuguho>
+References: <20230711172553.234055-1-andrey.drobyshev@virtuozzo.com>
+ <20230907220718.983430-1-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
-Subject: Re: riscv64 virt board crash upon startup
-Content-Language: en-US
-From: Laszlo Ersek <lersek@redhat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu devel list <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Cc: "Richard W.M. Jones" <rjones@redhat.com>,
- Sunil V L <sunilvl@ventanamicro.com>, Andrew Jones
- <ajones@ventanamicro.com>, "Warkentin, Andrei" <andrei.warkentin@intel.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-References: <139b9697-5732-dafa-0942-6d93eed674c7@redhat.com>
- <1398e971-8115-13e1-6ee4-4c46df0814dc@linaro.org>
- <fe0ebb81-30b7-9e60-e9b5-7737c562274b@redhat.com>
-In-Reply-To: <fe0ebb81-30b7-9e60-e9b5-7737c562274b@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230907220718.983430-1-andrey.drobyshev@virtuozzo.com>
+User-Agent: NeoMutt/20230517
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,36 +79,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 01:47, Laszlo Ersek wrote:
+On Fri, Sep 08, 2023 at 01:07:18AM +0300, Andrey Drobyshev via wrote:
+> In the previous commit e2f938265e0 ("tests/qemu-iotests/197: add
+> testcase for CoR with subclusters") we've introduced a new testcase for
+> copy-on-read with subclusters.  Test 197 always forces qcow2 as the top
+> image, but allows backing image to be in any format.  That last test
+> case didn't meet these requirements, so let's fix it by using more
+> generic "qemu-io -c map" command.
+> 
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>  tests/qemu-iotests/197     |  8 ++++----
+>  tests/qemu-iotests/197.out | 18 ++++++++----------
+>  2 files changed, 12 insertions(+), 14 deletions(-)
 
-> I don't know why qemu_console_is_multihead() used a lot of QOM
-> trickery for this in the first place, but here's what I'd propose as
-> fix -- simply try to locate a QemuGraphicConsole in "consoles" that
-> references the same "device" that *this* QemuGraphicConsole
-> references, but by a different "head" number.
+Tested-by: Eric Blake <eblake@redhat.com>
 
-So, the final version of the function would look like:
+> 
+> diff --git a/tests/qemu-iotests/197 b/tests/qemu-iotests/197
+> index f07a9da136..8ad2bdb035 100755
+> --- a/tests/qemu-iotests/197
+> +++ b/tests/qemu-iotests/197
+> @@ -136,18 +136,18 @@ IMGPROTO=file IMGFMT=qcow2 TEST_IMG_FILE="$TEST_WRAP" \
+>  $QEMU_IO -c "write -P 0xaa 0 64k" "$TEST_IMG" | _filter_qemu_io
+>  
+>  # Allocate individual subclusters in the top image, and not the whole cluster
+> -$QEMU_IO -c "write -P 0xbb 28K 2K" -c "write -P 0xcc 34K 2K" "$TEST_WRAP" \
+> +$QEMU_IO -f qcow2 -c "write -P 0xbb 28K 2K" -c "write -P 0xcc 34K 2K" "$TEST_WRAP" \
+>      | _filter_qemu_io
 
-static bool qemu_graphic_console_is_multihead(QemuGraphicConsole *c)
-{
-    QemuConsole *con;
+Adding the -f qcow2 makes sense (this is a test of subcluster
+behavior); and the backing file remains whatever format was passed to
+./check.
 
-    QTAILQ_FOREACH(con, &consoles, next) {
-        if (!QEMU_IS_GRAPHIC_CONSOLE(con)) {
-            continue;
-        }
-        QemuGraphicConsole *candidate = QEMU_GRAPHIC_CONSOLE(con);
-        if (candidate->device != c->device) {
-            continue;
-        }
+> +++ b/tests/qemu-iotests/197.out
+> @@ -42,17 +42,15 @@ wrote 2048/2048 bytes at offset 28672
+>  2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+>  wrote 2048/2048 bytes at offset 34816
+>  2 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> -Offset          Length          File
+> -0               0x7000          TEST_DIR/t.IMGFMT
+> -0x7000          0x800           TEST_DIR/t.wrap.IMGFMT
+> -0x7800          0x1000          TEST_DIR/t.IMGFMT
+> -0x8800          0x800           TEST_DIR/t.wrap.IMGFMT
+> -0x9000          0x7000          TEST_DIR/t.IMGFMT
+> +28 KiB (0x7000) bytes not allocated at offset 0 bytes (0x0)
+> +2 KiB (0x800) bytes     allocated at offset 28 KiB (0x7000)
+> +4 KiB (0x1000) bytes not allocated at offset 30 KiB (0x7800)
+> +2 KiB (0x800) bytes     allocated at offset 34 KiB (0x8800)
+> +28 KiB (0x7000) bytes not allocated at offset 36 KiB (0x9000)
+>  read 4096/4096 bytes at offset 30720
 
-        if (candidate->head != c->head) {
-            return true;
-        }
-    }
-    return false;
-}
+Same information, but without the backing file details (which clears
+up the problem with -nbd).
 
-Laszlo
+Reviewed-by: Eric Blake <eblake@redhat.com>
+
+Adding to my NBD queue, for a pull request soon.
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
