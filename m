@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4B0798752
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C89E798753
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:47:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeasF-0003il-0B; Fri, 08 Sep 2023 08:46:11 -0400
+	id 1qeasJ-0003m3-R0; Fri, 08 Sep 2023 08:46:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qeasA-0003gg-Ln
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:46:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qeasF-0003kQ-Ml
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:46:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qeas5-0006Kv-Ti
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:46:06 -0400
+ id 1qeas6-0006LC-UB
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:46:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694177141;
+ s=mimecast20190719; t=1694177145;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XDuhSCDGkZEhp8x/gX9rTugs+9BIkW1oG0c8Fay26ZA=;
- b=JhdQle0cgcyi/zqmux/fw7OJmIyTh0pfT6YH2jOm4nsLbLPYWNPTcgCBsgBxYPu9AGVqdv
- f/pl66eTjv/MiS1Vtp/WGi/q/YAtUzoJ8hM+GOVTnTOFSjaeGVr2x4wizbveodNrgr+OsL
- VhveFHLI7CWHD1dglPzwaMNOJNjGOF8=
+ bh=r4v2UNO09l3D5rqVvYOTwvX9KjE7HsQvpbrFmW+LzOQ=;
+ b=gXi08v6mOlv7DE71AQx+KX+W12/aJ8Hpr7nKuD0y9QKe8JR0q/YiMV+FrJble6/OovyVbt
+ aDHQFqFYHD4gT0u2CvUXwVCWRnxkQeOEIm7lU+xye/Xor9WsXyvujWvWiJCbu7lXKxNk2U
+ x1EoDTUkA/y9GEmuk2xQW/8Z3i0k/Wg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-438-ewELP0J2MQazR_4FJ6WvJw-1; Fri, 08 Sep 2023 08:45:39 -0400
-X-MC-Unique: ewELP0J2MQazR_4FJ6WvJw-1
+ us-mta-231-k5mXhk68OBeFd57x6r0bhA-1; Fri, 08 Sep 2023 08:45:41 -0400
+X-MC-Unique: k5mXhk68OBeFd57x6r0bhA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AAA8816524;
- Fri,  8 Sep 2023 12:45:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 095341841746;
+ Fri,  8 Sep 2023 12:45:41 +0000 (UTC)
 Received: from work.redhat.com (unknown [10.39.194.211])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B33B820BB074;
- Fri,  8 Sep 2023 12:45:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DE79720BAE38;
+ Fri,  8 Sep 2023 12:45:39 +0000 (UTC)
 From: Tim Wiederhake <twiederh@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -49,22 +49,22 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Tim Wiederhake <twiederh@redhat.com>
-Subject: [PATCH v2 03/10] target/i386: Fix duplicated feature name in FEAT_KVM
-Date: Fri,  8 Sep 2023 14:45:27 +0200
-Message-Id: <20230908124534.25027-4-twiederh@redhat.com>
+Subject: [PATCH v2 04/10] target/i386: Split out feature_word_info
+Date: Fri,  8 Sep 2023 14:45:28 +0200
+Message-Id: <20230908124534.25027-5-twiederh@redhat.com>
 In-Reply-To: <20230908124534.25027-1-twiederh@redhat.com>
 References: <20230908124534.25027-1-twiederh@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=twiederh@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=twiederh@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,29 +81,1385 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The mistake became apparent as there were two features with the same name
-in this cpuid leaf. The names are now in line with the documentation from
-https://kernel.org/doc/html/latest/virt/kvm/x86/cpuid.html
+The isolated part will be generated by a script.
 
-Fixes: 642258c6c7 ("kvm: add kvmclock to its second bit")
 Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
 ---
- target/i386/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/i386/cpu.c                   | 677 +---------------------------
+ target/i386/feature_word_info.c.inc | 676 +++++++++++++++++++++++++++
+ 2 files changed, 677 insertions(+), 676 deletions(-)
+ create mode 100644 target/i386/feature_word_info.c.inc
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index f10d343935..f0fedf4b88 100644
+index f0fedf4b88..23ed2fb09c 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -852,7 +852,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-     [FEAT_KVM] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
--            "kvmclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock",
+@@ -762,682 +762,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+ #define TCG_8000_0008_EBX  (CPUID_8000_0008_EBX_XSAVEERPTR | \
+           CPUID_8000_0008_EBX_WBNOINVD | CPUID_8000_0008_EBX_KERNEL_FEATURES)
+ 
+-FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+-    [FEAT_1_EDX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "fpu", "vme", "de", "pse",
+-            "tsc", "msr", "pae", "mce",
+-            "cx8", "apic", NULL, "sep",
+-            "mtrr", "pge", "mca", "cmov",
+-            "pat", "pse36", "pn" /* Intel psn */, "clflush" /* Intel clfsh */,
+-            NULL, "ds" /* Intel dts */, "acpi", "mmx",
+-            "fxsr", "sse", "sse2", "ss",
+-            "ht" /* Intel htt */, "tm", "ia64", "pbe",
+-        },
+-        .cpuid = {.eax = 1, .reg = R_EDX, },
+-        .tcg_features = TCG_FEATURES,
+-    },
+-    [FEAT_1_ECX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "pni" /* Intel,AMD sse3 */, "pclmulqdq", "dtes64", "monitor",
+-            "ds-cpl", "vmx", "smx", "est",
+-            "tm2", "ssse3", "cid", NULL,
+-            "fma", "cx16", "xtpr", "pdcm",
+-            NULL, "pcid", "dca", "sse4.1",
+-            "sse4.2", "x2apic", "movbe", "popcnt",
+-            "tsc-deadline", "aes", "xsave", NULL /* osxsave */,
+-            "avx", "f16c", "rdrand", "hypervisor",
+-        },
+-        .cpuid = { .eax = 1, .reg = R_ECX, },
+-        .tcg_features = TCG_EXT_FEATURES,
+-    },
+-    /* Feature names that are already defined on feature_name[] but
+-     * are set on CPUID[8000_0001].EDX on AMD CPUs don't have their
+-     * names on feat_names below. They are copied automatically
+-     * to features[FEAT_8000_0001_EDX] if and only if CPU vendor is AMD.
+-     */
+-    [FEAT_8000_0001_EDX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL /* fpu */, NULL /* vme */, NULL /* de */, NULL /* pse */,
+-            NULL /* tsc */, NULL /* msr */, NULL /* pae */, NULL /* mce */,
+-            NULL /* cx8 */, NULL /* apic */, NULL, "syscall",
+-            NULL /* mtrr */, NULL /* pge */, NULL /* mca */, NULL /* cmov */,
+-            NULL /* pat */, NULL /* pse36 */, NULL, NULL /* Linux mp */,
+-            "nx", NULL, "mmxext", NULL /* mmx */,
+-            NULL /* fxsr */, "fxsr-opt", "pdpe1gb", "rdtscp",
+-            NULL, "lm", "3dnowext", "3dnow",
+-        },
+-        .cpuid = { .eax = 0x80000001, .reg = R_EDX, },
+-        .tcg_features = TCG_EXT2_FEATURES,
+-    },
+-    [FEAT_8000_0001_ECX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "lahf-lm", "cmp-legacy", "svm", "extapic",
+-            "cr8legacy", "abm", "sse4a", "misalignsse",
+-            "3dnowprefetch", "osvw", "ibs", "xop",
+-            "skinit", "wdt", NULL, "lwp",
+-            "fma4", "tce", NULL, "nodeid-msr",
+-            NULL, "tbm", "topoext", "perfctr-core",
+-            "perfctr-nb", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = 0x80000001, .reg = R_ECX, },
+-        .tcg_features = TCG_EXT3_FEATURES,
+-        /*
+-         * TOPOEXT is always allowed but can't be enabled blindly by
+-         * "-cpu host", as it requires consistent cache topology info
+-         * to be provided so it doesn't confuse guests.
+-         */
+-        .no_autoenable_flags = CPUID_EXT3_TOPOEXT,
+-    },
+-    [FEAT_C000_0001_EDX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, "xstore", "xstore-en",
+-            NULL, NULL, "xcrypt", "xcrypt-en",
+-            "ace2", "ace2-en", "phe", "phe-en",
+-            "pmm", "pmm-en", NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = 0xC0000001, .reg = R_EDX, },
+-        .tcg_features = TCG_EXT4_FEATURES,
+-    },
+-    [FEAT_KVM] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "kvmclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock2",
+-            "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-pv-unhalt",
+-            NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
+-            "kvm-poll-control", "kvm-pv-sched-yield", "kvm-asyncpf-int", "kvm-msi-ext-dest-id",
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            "kvmclock-stable-bit", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = KVM_CPUID_FEATURES, .reg = R_EAX, },
+-        .tcg_features = TCG_KVM_FEATURES,
+-    },
+-    [FEAT_KVM_HINTS] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "kvm-hint-dedicated", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = KVM_CPUID_FEATURES, .reg = R_EDX, },
+-        .tcg_features = TCG_KVM_FEATURES,
+-        /*
+-         * KVM hints aren't auto-enabled by -cpu host, they need to be
+-         * explicitly enabled in the command-line.
+-         */
+-        .no_autoenable_flags = ~0U,
+-    },
+-    [FEAT_SVM] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "npt", "lbrv", "svm-lock", "nrip-save",
+-            "tsc-scale", "vmcb-clean",  "flushbyasid", "decodeassists",
+-            NULL, NULL, "pause-filter", NULL,
+-            "pfthreshold", "avic", NULL, "v-vmsave-vmload",
+-            "vgif", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, "vnmi", NULL, NULL,
+-            "svme-addr-chk", NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = 0x8000000A, .reg = R_EDX, },
+-        .tcg_features = TCG_SVM_FEATURES,
+-    },
+-    [FEAT_7_0_EBX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "fsgsbase", "tsc-adjust", "sgx", "bmi1",
+-            "hle", "avx2", NULL, "smep",
+-            "bmi2", "erms", "invpcid", "rtm",
+-            NULL, NULL, "mpx", NULL,
+-            "avx512f", "avx512dq", "rdseed", "adx",
+-            "smap", "avx512ifma", "pcommit", "clflushopt",
+-            "clwb", "intel-pt", "avx512pf", "avx512er",
+-            "avx512cd", "sha-ni", "avx512bw", "avx512vl",
+-        },
+-        .cpuid = {
+-            .eax = 7,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_EBX,
+-        },
+-        .tcg_features = TCG_7_0_EBX_FEATURES,
+-    },
+-    [FEAT_7_0_ECX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, "avx512vbmi", "umip", "pku",
+-            NULL /* ospke */, "waitpkg", "avx512vbmi2", NULL,
+-            "gfni", "vaes", "vpclmulqdq", "avx512vnni",
+-            "avx512bitalg", NULL, "avx512-vpopcntdq", NULL,
+-            "la57", NULL, NULL, NULL,
+-            NULL, NULL, "rdpid", NULL,
+-            "bus-lock-detect", "cldemote", NULL, "movdiri",
+-            "movdir64b", NULL, "sgxlc", "pks",
+-        },
+-        .cpuid = {
+-            .eax = 7,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_ECX,
+-        },
+-        .tcg_features = TCG_7_0_ECX_FEATURES,
+-    },
+-    [FEAT_7_0_EDX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, "avx512-4vnniw", "avx512-4fmaps",
+-            "fsrm", NULL, NULL, NULL,
+-            "avx512-vp2intersect", NULL, "md-clear", NULL,
+-            NULL, NULL, "serialize", NULL,
+-            "tsx-ldtrk", NULL, NULL /* pconfig */, "arch-lbr",
+-            NULL, NULL, "amx-bf16", "avx512-fp16",
+-            "amx-tile", "amx-int8", "spec-ctrl", "stibp",
+-            "flush-l1d", "arch-capabilities", "core-capability", "ssbd",
+-        },
+-        .cpuid = {
+-            .eax = 7,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_EDX,
+-        },
+-        .tcg_features = TCG_7_0_EDX_FEATURES,
+-    },
+-    [FEAT_7_1_EAX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            "avx-vnni", "avx512-bf16", NULL, "cmpccxadd",
+-            NULL, NULL, "fzrm", "fsrs",
+-            "fsrc", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, "amx-fp16", NULL, "avx-ifma",
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 7,
+-            .needs_ecx = true, .ecx = 1,
+-            .reg = R_EAX,
+-        },
+-        .tcg_features = TCG_7_1_EAX_FEATURES,
+-    },
+-    [FEAT_7_1_EDX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            "avx-vnni-int8", "avx-ne-convert", NULL, NULL,
+-            "amx-complex", NULL, NULL, NULL,
+-            NULL, NULL, "prefetchiti", NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 7,
+-            .needs_ecx = true, .ecx = 1,
+-            .reg = R_EDX,
+-        },
+-        .tcg_features = TCG_7_1_EDX_FEATURES,
+-    },
+-    [FEAT_7_2_EDX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, "mcdt-no", NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 7,
+-            .needs_ecx = true, .ecx = 2,
+-            .reg = R_EDX,
+-        },
+-        .tcg_features = TCG_7_2_EDX_FEATURES,
+-    },
+-    [FEAT_8000_0007_EDX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            "invtsc", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = 0x80000007, .reg = R_EDX, },
+-        .tcg_features = TCG_APM_FEATURES,
+-        .unmigratable_flags = CPUID_APM_INVTSC,
+-    },
+-    [FEAT_8000_0008_EBX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "clzero", NULL, "xsaveerptr", NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, "wbnoinvd", NULL, NULL,
+-            "ibpb", NULL, "ibrs", "amd-stibp",
+-            NULL, "stibp-always-on", NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            "amd-ssbd", "virt-ssbd", "amd-no-ssb", NULL,
+-            "amd-psfd", NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = 0x80000008, .reg = R_EBX, },
+-        .tcg_features = TCG_8000_0008_EBX,
+-        .unmigratable_flags = 0,
+-    },
+-    [FEAT_8000_0021_EAX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "no-nested-data-bp", NULL, "lfence-always-serializing", NULL,
+-            NULL, NULL, "null-sel-clr-base", NULL,
+-            "auto-ibrs", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = 0x80000021, .reg = R_EAX, },
+-        .tcg_features = 0,
+-        .unmigratable_flags = 0,
+-    },
+-    [FEAT_XSAVE] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "xsaveopt", "xsavec", "xgetbv1", "xsaves",
+-            "xfd", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 0xd,
+-            .needs_ecx = true, .ecx = 1,
+-            .reg = R_EAX,
+-        },
+-        .tcg_features = TCG_XSAVE_FEATURES,
+-    },
+-    [FEAT_XSAVE_XSS_LO] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 0xD,
+-            .needs_ecx = true,
+-            .ecx = 1,
+-            .reg = R_ECX,
+-        },
+-    },
+-    [FEAT_XSAVE_XSS_HI] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .cpuid = {
+-            .eax = 0xD,
+-            .needs_ecx = true,
+-            .ecx = 1,
+-            .reg = R_EDX
+-        },
+-    },
+-    [FEAT_6_EAX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, "arat", NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = { .eax = 6, .reg = R_EAX, },
+-        .tcg_features = TCG_6_EAX_FEATURES,
+-    },
+-    [FEAT_XSAVE_XCR0_LO] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .cpuid = {
+-            .eax = 0xD,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_EAX,
+-        },
+-        .tcg_features = ~0U,
+-        .migratable_flags = XSTATE_FP_MASK | XSTATE_SSE_MASK |
+-            XSTATE_YMM_MASK | XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
+-            XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK | XSTATE_Hi16_ZMM_MASK |
+-            XSTATE_PKRU_MASK,
+-    },
+-    [FEAT_XSAVE_XCR0_HI] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .cpuid = {
+-            .eax = 0xD,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_EDX,
+-        },
+-        .tcg_features = ~0U,
+-    },
+-    /*Below are MSR exposed features*/
+-    [FEAT_ARCH_CAPABILITIES] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            "rdctl-no", "ibrs-all", "rsba", "skip-l1dfl-vmentry",
+-            "ssb-no", "mds-no", "pschange-mc-no", "tsx-ctrl",
+-            "taa-no", NULL, NULL, NULL,
+-            NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
+-            NULL, "fb-clear", NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            "pbrsb-no", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_ARCH_CAPABILITIES,
+-        },
+-        /*
+-         * FEAT_ARCH_CAPABILITIES only affects a read-only MSR, which
+-         * cannot be read from user mode.  Therefore, it has no impact
+-         > on any user-mode operation, and warnings about unsupported
+-         * features do not matter.
+-         */
+-        .tcg_features = ~0U,
+-    },
+-    [FEAT_CORE_CAPABILITY] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, "split-lock-detect", NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_CORE_CAPABILITY,
+-        },
+-    },
+-    [FEAT_PERF_CAPABILITIES] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, "full-width-write", NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_PERF_CAPABILITIES,
+-        },
+-    },
+-
+-    [FEAT_VMX_PROCBASED_CTLS] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, "vmx-vintr-pending", "vmx-tsc-offset",
+-            NULL, NULL, NULL, "vmx-hlt-exit",
+-            NULL, "vmx-invlpg-exit", "vmx-mwait-exit", "vmx-rdpmc-exit",
+-            "vmx-rdtsc-exit", NULL, NULL, "vmx-cr3-load-noexit",
+-            "vmx-cr3-store-noexit", NULL, NULL, "vmx-cr8-load-exit",
+-            "vmx-cr8-store-exit", "vmx-flexpriority", "vmx-vnmi-pending", "vmx-movdr-exit",
+-            "vmx-io-exit", "vmx-io-bitmap", NULL, "vmx-mtf",
+-            "vmx-msr-bitmap", "vmx-monitor-exit", "vmx-pause-exit", "vmx-secondary-ctls",
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_TRUE_PROCBASED_CTLS,
+-        }
+-    },
+-
+-    [FEAT_VMX_SECONDARY_CTLS] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            "vmx-apicv-xapic", "vmx-ept", "vmx-desc-exit", "vmx-rdtscp-exit",
+-            "vmx-apicv-x2apic", "vmx-vpid", "vmx-wbinvd-exit", "vmx-unrestricted-guest",
+-            "vmx-apicv-register", "vmx-apicv-vid", "vmx-ple", "vmx-rdrand-exit",
+-            "vmx-invpcid-exit", "vmx-vmfunc", "vmx-shadow-vmcs", "vmx-encls-exit",
+-            "vmx-rdseed-exit", "vmx-pml", NULL, NULL,
+-            "vmx-xsaves", NULL, NULL, NULL,
+-            NULL, "vmx-tsc-scaling", "vmx-enable-user-wait-pause", NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_PROCBASED_CTLS2,
+-        }
+-    },
+-
+-    [FEAT_VMX_PINBASED_CTLS] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            "vmx-intr-exit", NULL, NULL, "vmx-nmi-exit",
+-            NULL, "vmx-vnmi", "vmx-preemption-timer", "vmx-posted-intr",
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_TRUE_PINBASED_CTLS,
+-        }
+-    },
+-
+-    [FEAT_VMX_EXIT_CTLS] = {
+-        .type = MSR_FEATURE_WORD,
+-        /*
+-         * VMX_VM_EXIT_HOST_ADDR_SPACE_SIZE is copied from
+-         * the LM CPUID bit.
+-         */
+-        .feat_names = {
+-            NULL, NULL, "vmx-exit-nosave-debugctl", NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL /* vmx-exit-host-addr-space-size */, NULL, NULL,
+-            "vmx-exit-load-perf-global-ctrl", NULL, NULL, "vmx-exit-ack-intr",
+-            NULL, NULL, "vmx-exit-save-pat", "vmx-exit-load-pat",
+-            "vmx-exit-save-efer", "vmx-exit-load-efer",
+-                "vmx-exit-save-preemption-timer", "vmx-exit-clear-bndcfgs",
+-            NULL, "vmx-exit-clear-rtit-ctl", NULL, NULL,
+-            NULL, "vmx-exit-load-pkrs", NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_TRUE_EXIT_CTLS,
+-        }
+-    },
+-
+-    [FEAT_VMX_ENTRY_CTLS] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, "vmx-entry-noload-debugctl", NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, "vmx-entry-ia32e-mode", NULL, NULL,
+-            NULL, "vmx-entry-load-perf-global-ctrl", "vmx-entry-load-pat", "vmx-entry-load-efer",
+-            "vmx-entry-load-bndcfgs", NULL, "vmx-entry-load-rtit-ctl", NULL,
+-            NULL, NULL, "vmx-entry-load-pkrs", NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_TRUE_ENTRY_CTLS,
+-        }
+-    },
+-
+-    [FEAT_VMX_MISC] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, "vmx-store-lma", "vmx-activity-hlt", "vmx-activity-shutdown",
+-            "vmx-activity-wait-sipi", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, "vmx-vmwrite-vmexit-fields", "vmx-zero-len-inject", NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_MISC,
+-        }
+-    },
+-
+-    [FEAT_VMX_EPT_VPID_CAPS] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            "vmx-ept-execonly", NULL, NULL, NULL,
+-            NULL, NULL, "vmx-page-walk-4", "vmx-page-walk-5",
+-            "vmx-ept-uc", NULL, NULL, NULL,
+-            NULL, NULL, "vmx-ept-wb", NULL,
+-            "vmx-ept-2mb", "vmx-ept-1gb", NULL, NULL,
+-            "vmx-invept", "vmx-eptad", "vmx-ept-advanced-exitinfo", NULL,
+-            NULL, "vmx-invept-single-context", "vmx-invept-all-context", NULL,
+-            NULL, NULL, NULL, NULL,
+-            "vmx-invvpid", NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            "vmx-invvpid-single-addr", "vmx-invvpid-single-context",
+-                "vmx-invvpid-all-context", "vmx-invvpid-single-context-noglobals",
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_EPT_VPID_CAP,
+-        }
+-    },
+-
+-    [FEAT_VMX_BASIC] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            [54] = "vmx-ins-outs",
+-            [55] = "vmx-true-ctls",
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_BASIC,
+-        },
+-        /* Just to be safe - we don't support setting the MSEG version field.  */
+-        .no_autoenable_flags = MSR_VMX_BASIC_DUAL_MONITOR,
+-    },
+-
+-    [FEAT_VMX_VMFUNC] = {
+-        .type = MSR_FEATURE_WORD,
+-        .feat_names = {
+-            [0] = "vmx-eptp-switching",
+-        },
+-        .msr = {
+-            .index = MSR_IA32_VMX_VMFUNC,
+-        }
+-    },
+-
+-    [FEAT_14_0_ECX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, "intel-pt-lip",
+-        },
+-        .cpuid = {
+-            .eax = 0x14,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_ECX,
+-        },
+-        .tcg_features = TCG_14_0_ECX_FEATURES,
+-     },
+-
+-    [FEAT_SGX_12_0_EAX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "sgx1", "sgx2", NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, "sgx-edeccssa",
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 0x12,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_EAX,
+-        },
+-        .tcg_features = TCG_SGX_12_0_EAX_FEATURES,
+-    },
+-
+-    [FEAT_SGX_12_0_EBX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            "sgx-exinfo" , NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 0x12,
+-            .needs_ecx = true, .ecx = 0,
+-            .reg = R_EBX,
+-        },
+-        .tcg_features = TCG_SGX_12_0_EBX_FEATURES,
+-    },
+-
+-    [FEAT_SGX_12_1_EAX] = {
+-        .type = CPUID_FEATURE_WORD,
+-        .feat_names = {
+-            NULL, "sgx-debug", "sgx-mode64", NULL,
+-            "sgx-provisionkey", "sgx-tokenkey", NULL, "sgx-kss",
+-            NULL, NULL, "sgx-aex-notify", NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-            NULL, NULL, NULL, NULL,
+-        },
+-        .cpuid = {
+-            .eax = 0x12,
+-            .needs_ecx = true, .ecx = 1,
+-            .reg = R_EAX,
+-        },
+-        .tcg_features = TCG_SGX_12_1_EAX_FEATURES,
+-    },
+-};
++#include "feature_word_info.c.inc"
+ 
+ typedef struct FeatureMask {
+     FeatureWord index;
+diff --git a/target/i386/feature_word_info.c.inc b/target/i386/feature_word_info.c.inc
+new file mode 100644
+index 0000000000..d4462d7b1f
+--- /dev/null
++++ b/target/i386/feature_word_info.c.inc
+@@ -0,0 +1,676 @@
++FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
++    [FEAT_1_EDX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "fpu", "vme", "de", "pse",
++            "tsc", "msr", "pae", "mce",
++            "cx8", "apic", NULL, "sep",
++            "mtrr", "pge", "mca", "cmov",
++            "pat", "pse36", "pn" /* Intel psn */, "clflush" /* Intel clfsh */,
++            NULL, "ds" /* Intel dts */, "acpi", "mmx",
++            "fxsr", "sse", "sse2", "ss",
++            "ht" /* Intel htt */, "tm", "ia64", "pbe",
++        },
++        .cpuid = {.eax = 1, .reg = R_EDX, },
++        .tcg_features = TCG_FEATURES,
++    },
++    [FEAT_1_ECX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "pni" /* Intel,AMD sse3 */, "pclmulqdq", "dtes64", "monitor",
++            "ds-cpl", "vmx", "smx", "est",
++            "tm2", "ssse3", "cid", NULL,
++            "fma", "cx16", "xtpr", "pdcm",
++            NULL, "pcid", "dca", "sse4.1",
++            "sse4.2", "x2apic", "movbe", "popcnt",
++            "tsc-deadline", "aes", "xsave", NULL /* osxsave */,
++            "avx", "f16c", "rdrand", "hypervisor",
++        },
++        .cpuid = { .eax = 1, .reg = R_ECX, },
++        .tcg_features = TCG_EXT_FEATURES,
++    },
++    /* Feature names that are already defined on feature_name[] but
++     * are set on CPUID[8000_0001].EDX on AMD CPUs don't have their
++     * names on feat_names below. They are copied automatically
++     * to features[FEAT_8000_0001_EDX] if and only if CPU vendor is AMD.
++     */
++    [FEAT_8000_0001_EDX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL /* fpu */, NULL /* vme */, NULL /* de */, NULL /* pse */,
++            NULL /* tsc */, NULL /* msr */, NULL /* pae */, NULL /* mce */,
++            NULL /* cx8 */, NULL /* apic */, NULL, "syscall",
++            NULL /* mtrr */, NULL /* pge */, NULL /* mca */, NULL /* cmov */,
++            NULL /* pat */, NULL /* pse36 */, NULL, NULL /* Linux mp */,
++            "nx", NULL, "mmxext", NULL /* mmx */,
++            NULL /* fxsr */, "fxsr-opt", "pdpe1gb", "rdtscp",
++            NULL, "lm", "3dnowext", "3dnow",
++        },
++        .cpuid = { .eax = 0x80000001, .reg = R_EDX, },
++        .tcg_features = TCG_EXT2_FEATURES,
++    },
++    [FEAT_8000_0001_ECX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "lahf-lm", "cmp-legacy", "svm", "extapic",
++            "cr8legacy", "abm", "sse4a", "misalignsse",
++            "3dnowprefetch", "osvw", "ibs", "xop",
++            "skinit", "wdt", NULL, "lwp",
++            "fma4", "tce", NULL, "nodeid-msr",
++            NULL, "tbm", "topoext", "perfctr-core",
++            "perfctr-nb", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 0x80000001, .reg = R_ECX, },
++        .tcg_features = TCG_EXT3_FEATURES,
++        /*
++         * TOPOEXT is always allowed but can't be enabled blindly by
++         * "-cpu host", as it requires consistent cache topology info
++         * to be provided so it doesn't confuse guests.
++         */
++        .no_autoenable_flags = CPUID_EXT3_TOPOEXT,
++    },
++    [FEAT_C000_0001_EDX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, "xstore", "xstore-en",
++            NULL, NULL, "xcrypt", "xcrypt-en",
++            "ace2", "ace2-en", "phe", "phe-en",
++            "pmm", "pmm-en", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 0xC0000001, .reg = R_EDX, },
++        .tcg_features = TCG_EXT4_FEATURES,
++    },
++    [FEAT_KVM] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
 +            "kvmclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock2",
-             "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-pv-unhalt",
-             NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
-             "kvm-poll-control", "kvm-pv-sched-yield", "kvm-asyncpf-int", "kvm-msi-ext-dest-id",
++            "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-pv-unhalt",
++            NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
++            "kvm-poll-control", "kvm-pv-sched-yield", "kvm-asyncpf-int", "kvm-msi-ext-dest-id",
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            "kvmclock-stable-bit", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = KVM_CPUID_FEATURES, .reg = R_EAX, },
++        .tcg_features = TCG_KVM_FEATURES,
++    },
++    [FEAT_KVM_HINTS] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "kvm-hint-dedicated", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = KVM_CPUID_FEATURES, .reg = R_EDX, },
++        .tcg_features = TCG_KVM_FEATURES,
++        /*
++         * KVM hints aren't auto-enabled by -cpu host, they need to be
++         * explicitly enabled in the command-line.
++         */
++        .no_autoenable_flags = ~0U,
++    },
++    [FEAT_SVM] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "npt", "lbrv", "svm-lock", "nrip-save",
++            "tsc-scale", "vmcb-clean",  "flushbyasid", "decodeassists",
++            NULL, NULL, "pause-filter", NULL,
++            "pfthreshold", "avic", NULL, "v-vmsave-vmload",
++            "vgif", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, "vnmi", NULL, NULL,
++            "svme-addr-chk", NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 0x8000000A, .reg = R_EDX, },
++        .tcg_features = TCG_SVM_FEATURES,
++    },
++    [FEAT_7_0_EBX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "fsgsbase", "tsc-adjust", "sgx", "bmi1",
++            "hle", "avx2", NULL, "smep",
++            "bmi2", "erms", "invpcid", "rtm",
++            NULL, NULL, "mpx", NULL,
++            "avx512f", "avx512dq", "rdseed", "adx",
++            "smap", "avx512ifma", "pcommit", "clflushopt",
++            "clwb", "intel-pt", "avx512pf", "avx512er",
++            "avx512cd", "sha-ni", "avx512bw", "avx512vl",
++        },
++        .cpuid = {
++            .eax = 7,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EBX,
++        },
++        .tcg_features = TCG_7_0_EBX_FEATURES,
++    },
++    [FEAT_7_0_ECX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, "avx512vbmi", "umip", "pku",
++            NULL /* ospke */, "waitpkg", "avx512vbmi2", NULL,
++            "gfni", "vaes", "vpclmulqdq", "avx512vnni",
++            "avx512bitalg", NULL, "avx512-vpopcntdq", NULL,
++            "la57", NULL, NULL, NULL,
++            NULL, NULL, "rdpid", NULL,
++            "bus-lock-detect", "cldemote", NULL, "movdiri",
++            "movdir64b", NULL, "sgxlc", "pks",
++        },
++        .cpuid = {
++            .eax = 7,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_ECX,
++        },
++        .tcg_features = TCG_7_0_ECX_FEATURES,
++    },
++    [FEAT_7_0_EDX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, "avx512-4vnniw", "avx512-4fmaps",
++            "fsrm", NULL, NULL, NULL,
++            "avx512-vp2intersect", NULL, "md-clear", NULL,
++            NULL, NULL, "serialize", NULL,
++            "tsx-ldtrk", NULL, NULL /* pconfig */, "arch-lbr",
++            NULL, NULL, "amx-bf16", "avx512-fp16",
++            "amx-tile", "amx-int8", "spec-ctrl", "stibp",
++            "flush-l1d", "arch-capabilities", "core-capability", "ssbd",
++        },
++        .cpuid = {
++            .eax = 7,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EDX,
++        },
++        .tcg_features = TCG_7_0_EDX_FEATURES,
++    },
++    [FEAT_7_1_EAX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            "avx-vnni", "avx512-bf16", NULL, "cmpccxadd",
++            NULL, NULL, "fzrm", "fsrs",
++            "fsrc", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, "amx-fp16", NULL, "avx-ifma",
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 7,
++            .needs_ecx = true, .ecx = 1,
++            .reg = R_EAX,
++        },
++        .tcg_features = TCG_7_1_EAX_FEATURES,
++    },
++    [FEAT_7_1_EDX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            "avx-vnni-int8", "avx-ne-convert", NULL, NULL,
++            "amx-complex", NULL, NULL, NULL,
++            NULL, NULL, "prefetchiti", NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 7,
++            .needs_ecx = true, .ecx = 1,
++            .reg = R_EDX,
++        },
++        .tcg_features = TCG_7_1_EDX_FEATURES,
++    },
++    [FEAT_7_2_EDX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            NULL, "mcdt-no", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 7,
++            .needs_ecx = true, .ecx = 2,
++            .reg = R_EDX,
++        },
++        .tcg_features = TCG_7_2_EDX_FEATURES,
++    },
++    [FEAT_8000_0007_EDX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            "invtsc", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 0x80000007, .reg = R_EDX, },
++        .tcg_features = TCG_APM_FEATURES,
++        .unmigratable_flags = CPUID_APM_INVTSC,
++    },
++    [FEAT_8000_0008_EBX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "clzero", NULL, "xsaveerptr", NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, "wbnoinvd", NULL, NULL,
++            "ibpb", NULL, "ibrs", "amd-stibp",
++            NULL, "stibp-always-on", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            "amd-ssbd", "virt-ssbd", "amd-no-ssb", NULL,
++            "amd-psfd", NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 0x80000008, .reg = R_EBX, },
++        .tcg_features = TCG_8000_0008_EBX,
++        .unmigratable_flags = 0,
++    },
++    [FEAT_8000_0021_EAX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "no-nested-data-bp", NULL, "lfence-always-serializing", NULL,
++            NULL, NULL, "null-sel-clr-base", NULL,
++            "auto-ibrs", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 0x80000021, .reg = R_EAX, },
++        .tcg_features = 0,
++        .unmigratable_flags = 0,
++    },
++    [FEAT_XSAVE] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "xsaveopt", "xsavec", "xgetbv1", "xsaves",
++            "xfd", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 0xd,
++            .needs_ecx = true, .ecx = 1,
++            .reg = R_EAX,
++        },
++        .tcg_features = TCG_XSAVE_FEATURES,
++    },
++    [FEAT_XSAVE_XSS_LO] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 0xD,
++            .needs_ecx = true,
++            .ecx = 1,
++            .reg = R_ECX,
++        },
++    },
++    [FEAT_XSAVE_XSS_HI] = {
++        .type = CPUID_FEATURE_WORD,
++        .cpuid = {
++            .eax = 0xD,
++            .needs_ecx = true,
++            .ecx = 1,
++            .reg = R_EDX
++        },
++    },
++    [FEAT_6_EAX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, "arat", NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = { .eax = 6, .reg = R_EAX, },
++        .tcg_features = TCG_6_EAX_FEATURES,
++    },
++    [FEAT_XSAVE_XCR0_LO] = {
++        .type = CPUID_FEATURE_WORD,
++        .cpuid = {
++            .eax = 0xD,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EAX,
++        },
++        .tcg_features = ~0U,
++        .migratable_flags = XSTATE_FP_MASK | XSTATE_SSE_MASK |
++            XSTATE_YMM_MASK | XSTATE_BNDREGS_MASK | XSTATE_BNDCSR_MASK |
++            XSTATE_OPMASK_MASK | XSTATE_ZMM_Hi256_MASK | XSTATE_Hi16_ZMM_MASK |
++            XSTATE_PKRU_MASK,
++    },
++    [FEAT_XSAVE_XCR0_HI] = {
++        .type = CPUID_FEATURE_WORD,
++        .cpuid = {
++            .eax = 0xD,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EDX,
++        },
++        .tcg_features = ~0U,
++    },
++    /*Below are MSR exposed features*/
++    [FEAT_ARCH_CAPABILITIES] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            "rdctl-no", "ibrs-all", "rsba", "skip-l1dfl-vmentry",
++            "ssb-no", "mds-no", "pschange-mc-no", "tsx-ctrl",
++            "taa-no", NULL, NULL, NULL,
++            NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
++            NULL, "fb-clear", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            "pbrsb-no", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_ARCH_CAPABILITIES,
++        },
++        /*
++         * FEAT_ARCH_CAPABILITIES only affects a read-only MSR, which
++         * cannot be read from user mode.  Therefore, it has no impact
++         > on any user-mode operation, and warnings about unsupported
++         * features do not matter.
++         */
++        .tcg_features = ~0U,
++    },
++    [FEAT_CORE_CAPABILITY] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            NULL, "split-lock-detect", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_CORE_CAPABILITY,
++        },
++    },
++    [FEAT_PERF_CAPABILITIES] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, "full-width-write", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_PERF_CAPABILITIES,
++        },
++    },
++
++    [FEAT_VMX_PROCBASED_CTLS] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, "vmx-vintr-pending", "vmx-tsc-offset",
++            NULL, NULL, NULL, "vmx-hlt-exit",
++            NULL, "vmx-invlpg-exit", "vmx-mwait-exit", "vmx-rdpmc-exit",
++            "vmx-rdtsc-exit", NULL, NULL, "vmx-cr3-load-noexit",
++            "vmx-cr3-store-noexit", NULL, NULL, "vmx-cr8-load-exit",
++            "vmx-cr8-store-exit", "vmx-flexpriority", "vmx-vnmi-pending", "vmx-movdr-exit",
++            "vmx-io-exit", "vmx-io-bitmap", NULL, "vmx-mtf",
++            "vmx-msr-bitmap", "vmx-monitor-exit", "vmx-pause-exit", "vmx-secondary-ctls",
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_TRUE_PROCBASED_CTLS,
++        }
++    },
++
++    [FEAT_VMX_SECONDARY_CTLS] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            "vmx-apicv-xapic", "vmx-ept", "vmx-desc-exit", "vmx-rdtscp-exit",
++            "vmx-apicv-x2apic", "vmx-vpid", "vmx-wbinvd-exit", "vmx-unrestricted-guest",
++            "vmx-apicv-register", "vmx-apicv-vid", "vmx-ple", "vmx-rdrand-exit",
++            "vmx-invpcid-exit", "vmx-vmfunc", "vmx-shadow-vmcs", "vmx-encls-exit",
++            "vmx-rdseed-exit", "vmx-pml", NULL, NULL,
++            "vmx-xsaves", NULL, NULL, NULL,
++            NULL, "vmx-tsc-scaling", "vmx-enable-user-wait-pause", NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_PROCBASED_CTLS2,
++        }
++    },
++
++    [FEAT_VMX_PINBASED_CTLS] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            "vmx-intr-exit", NULL, NULL, "vmx-nmi-exit",
++            NULL, "vmx-vnmi", "vmx-preemption-timer", "vmx-posted-intr",
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_TRUE_PINBASED_CTLS,
++        }
++    },
++
++    [FEAT_VMX_EXIT_CTLS] = {
++        .type = MSR_FEATURE_WORD,
++        /*
++         * VMX_VM_EXIT_HOST_ADDR_SPACE_SIZE is copied from
++         * the LM CPUID bit.
++         */
++        .feat_names = {
++            NULL, NULL, "vmx-exit-nosave-debugctl", NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL /* vmx-exit-host-addr-space-size */, NULL, NULL,
++            "vmx-exit-load-perf-global-ctrl", NULL, NULL, "vmx-exit-ack-intr",
++            NULL, NULL, "vmx-exit-save-pat", "vmx-exit-load-pat",
++            "vmx-exit-save-efer", "vmx-exit-load-efer",
++                "vmx-exit-save-preemption-timer", "vmx-exit-clear-bndcfgs",
++            NULL, "vmx-exit-clear-rtit-ctl", NULL, NULL,
++            NULL, "vmx-exit-load-pkrs", NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_TRUE_EXIT_CTLS,
++        }
++    },
++
++    [FEAT_VMX_ENTRY_CTLS] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, "vmx-entry-noload-debugctl", NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, "vmx-entry-ia32e-mode", NULL, NULL,
++            NULL, "vmx-entry-load-perf-global-ctrl", "vmx-entry-load-pat", "vmx-entry-load-efer",
++            "vmx-entry-load-bndcfgs", NULL, "vmx-entry-load-rtit-ctl", NULL,
++            NULL, NULL, "vmx-entry-load-pkrs", NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_TRUE_ENTRY_CTLS,
++        }
++    },
++
++    [FEAT_VMX_MISC] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            NULL, "vmx-store-lma", "vmx-activity-hlt", "vmx-activity-shutdown",
++            "vmx-activity-wait-sipi", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, "vmx-vmwrite-vmexit-fields", "vmx-zero-len-inject", NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_MISC,
++        }
++    },
++
++    [FEAT_VMX_EPT_VPID_CAPS] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            "vmx-ept-execonly", NULL, NULL, NULL,
++            NULL, NULL, "vmx-page-walk-4", "vmx-page-walk-5",
++            "vmx-ept-uc", NULL, NULL, NULL,
++            NULL, NULL, "vmx-ept-wb", NULL,
++            "vmx-ept-2mb", "vmx-ept-1gb", NULL, NULL,
++            "vmx-invept", "vmx-eptad", "vmx-ept-advanced-exitinfo", NULL,
++            NULL, "vmx-invept-single-context", "vmx-invept-all-context", NULL,
++            NULL, NULL, NULL, NULL,
++            "vmx-invvpid", NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            "vmx-invvpid-single-addr", "vmx-invvpid-single-context",
++                "vmx-invvpid-all-context", "vmx-invvpid-single-context-noglobals",
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_EPT_VPID_CAP,
++        }
++    },
++
++    [FEAT_VMX_BASIC] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            [54] = "vmx-ins-outs",
++            [55] = "vmx-true-ctls",
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_BASIC,
++        },
++        /* Just to be safe - we don't support setting the MSEG version field.  */
++        .no_autoenable_flags = MSR_VMX_BASIC_DUAL_MONITOR,
++    },
++
++    [FEAT_VMX_VMFUNC] = {
++        .type = MSR_FEATURE_WORD,
++        .feat_names = {
++            [0] = "vmx-eptp-switching",
++        },
++        .msr = {
++            .index = MSR_IA32_VMX_VMFUNC,
++        }
++    },
++
++    [FEAT_14_0_ECX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, "intel-pt-lip",
++        },
++        .cpuid = {
++            .eax = 0x14,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_ECX,
++        },
++        .tcg_features = TCG_14_0_ECX_FEATURES,
++     },
++
++    [FEAT_SGX_12_0_EAX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "sgx1", "sgx2", NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, "sgx-edeccssa",
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 0x12,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EAX,
++        },
++        .tcg_features = TCG_SGX_12_0_EAX_FEATURES,
++    },
++
++    [FEAT_SGX_12_0_EBX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            "sgx-exinfo" , NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 0x12,
++            .needs_ecx = true, .ecx = 0,
++            .reg = R_EBX,
++        },
++        .tcg_features = TCG_SGX_12_0_EBX_FEATURES,
++    },
++
++    [FEAT_SGX_12_1_EAX] = {
++        .type = CPUID_FEATURE_WORD,
++        .feat_names = {
++            NULL, "sgx-debug", "sgx-mode64", NULL,
++            "sgx-provisionkey", "sgx-tokenkey", NULL, "sgx-kss",
++            NULL, NULL, "sgx-aex-notify", NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++            NULL, NULL, NULL, NULL,
++        },
++        .cpuid = {
++            .eax = 0x12,
++            .needs_ecx = true, .ecx = 1,
++            .reg = R_EAX,
++        },
++        .tcg_features = TCG_SGX_12_1_EAX_FEATURES,
++    },
++};
 -- 
 2.39.2
 
