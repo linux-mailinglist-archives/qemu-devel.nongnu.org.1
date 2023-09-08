@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43B6798554
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3853C79854D
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:59:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeYFX-000364-A8; Fri, 08 Sep 2023 05:58:03 -0400
+	id 1qeYFY-0003K4-OV; Fri, 08 Sep 2023 05:58:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeYF6-0002GI-8H; Fri, 08 Sep 2023 05:57:39 -0400
+ id 1qeYFB-0002Nb-TZ; Fri, 08 Sep 2023 05:57:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeYF2-00076X-Kr; Fri, 08 Sep 2023 05:57:36 -0400
+ id 1qeYF7-000777-S9; Fri, 08 Sep 2023 05:57:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7DE98200DD;
+ by isrv.corpit.ru (Postfix) with ESMTP id B2CB2200DE;
  Fri,  8 Sep 2023 12:56:49 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8126826924;
+ by tsrv.corpit.ru (Postfix) with SMTP id A8FF026925;
  Fri,  8 Sep 2023 12:56:00 +0300 (MSK)
-Received: (nullmailer pid 276003 invoked by uid 1000);
+Received: (nullmailer pid 276006 invoked by uid 1000);
  Fri, 08 Sep 2023 09:55:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 21/23] tests/qtest/usb-hcd: Remove the empty "init" tests
-Date: Fri,  8 Sep 2023 12:55:18 +0300
-Message-Id: <20230908095520.275866-22-mjt@tls.msk.ru>
+Subject: [PULL 22/23] hw/net/vmxnet3: Fix guest-triggerable assert()
+Date: Fri,  8 Sep 2023 12:55:19 +0300
+Message-Id: <20230908095520.275866-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230908095520.275866-1-mjt@tls.msk.ru>
 References: <20230908095520.275866-1-mjt@tls.msk.ru>
@@ -62,65 +63,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-These tests do nothing additional compared to the other test,
-so let's remove the empty functions to avoid wasting some few
-precious test cycles here.
+The assert() that checks for valid MTU sizes can be triggered by
+the guest (e.g. with the reproducer code from the bug ticket
+https://gitlab.com/qemu-project/qemu/-/issues/517 ). Let's avoid
+this problem by simply logging the error and refusing to activate
+the device instead.
 
+Fixes: d05dcd94ae ("net: vmxnet3: validate configuration values during activate")
 Signed-off-by: Thomas Huth <thuth@redhat.com>
+Cc: qemu-stable@nongnu.org
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+[Mjt: change format specifier from %d to %u for uint32_t argument]
 ---
- tests/qtest/usb-hcd-uhci-test.c | 5 -----
- tests/qtest/usb-hcd-xhci-test.c | 6 ------
- 2 files changed, 11 deletions(-)
+ hw/net/vmxnet3.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qtest/usb-hcd-uhci-test.c b/tests/qtest/usb-hcd-uhci-test.c
-index 28751f53da..4446555f08 100644
---- a/tests/qtest/usb-hcd-uhci-test.c
-+++ b/tests/qtest/usb-hcd-uhci-test.c
-@@ -17,10 +17,6 @@
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index 5dfacb1098..3fb108751a 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -1439,7 +1439,10 @@ static void vmxnet3_activate_device(VMXNET3State *s)
+     vmxnet3_setup_rx_filtering(s);
+     /* Cache fields from shared memory */
+     s->mtu = VMXNET3_READ_DRV_SHARED32(d, s->drv_shmem, devRead.misc.mtu);
+-    assert(VMXNET3_MIN_MTU <= s->mtu && s->mtu <= VMXNET3_MAX_MTU);
++    if (s->mtu < VMXNET3_MIN_MTU || s->mtu > VMXNET3_MAX_MTU) {
++        qemu_log_mask(LOG_GUEST_ERROR, "vmxnet3: Bad MTU size: %u\n", s->mtu);
++        return;
++    }
+     VMW_CFPRN("MTU is %u", s->mtu);
  
- static QOSState *qs;
- 
--static void test_uhci_init(void)
--{
--}
--
- static void test_port(int port)
- {
-     struct qhc uhci;
-@@ -71,7 +67,6 @@ int main(int argc, char **argv)
-         return 0;
-     }
- 
--    qtest_add_func("/uhci/pci/init", test_uhci_init);
-     qtest_add_func("/uhci/pci/port1", test_port_1);
-     qtest_add_func("/uhci/pci/hotplug", test_uhci_hotplug);
-     if (qtest_has_device("usb-storage")) {
-diff --git a/tests/qtest/usb-hcd-xhci-test.c b/tests/qtest/usb-hcd-xhci-test.c
-index 80bc039446..0cccfd85a6 100644
---- a/tests/qtest/usb-hcd-xhci-test.c
-+++ b/tests/qtest/usb-hcd-xhci-test.c
-@@ -11,11 +11,6 @@
- #include "libqtest-single.h"
- #include "libqos/usb.h"
- 
--
--static void test_xhci_init(void)
--{
--}
--
- static void test_xhci_hotplug(void)
- {
-     usb_test_hotplug(global_qtest, "xhci", "1", NULL);
-@@ -54,7 +49,6 @@ int main(int argc, char **argv)
- 
-     g_test_init(&argc, &argv, NULL);
- 
--    qtest_add_func("/xhci/pci/init", test_xhci_init);
-     qtest_add_func("/xhci/pci/hotplug", test_xhci_hotplug);
-     if (qtest_has_device("usb-uas")) {
-         qtest_add_func("/xhci/pci/hotplug/usb-uas", test_usb_uas_hotplug);
+     s->max_rx_frags =
 -- 
 2.39.2
 
