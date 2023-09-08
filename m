@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400B97983C2
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DEA7983CC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:13:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeWZc-00018h-Ss; Fri, 08 Sep 2023 04:10:40 -0400
+	id 1qeWbv-000384-8N; Fri, 08 Sep 2023 04:13:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qeWZa-00014E-9T
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:10:38 -0400
+ id 1qeWbs-00037v-08
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:13:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qeWZS-0001qW-As
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:10:37 -0400
+ id 1qeWbo-0002R9-6N
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:12:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694160626;
+ s=mimecast20190719; t=1694160775;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=l1/b+em7ZjiBqNTgmfsHNqfLJbubAjR7goOAT5lPxUE=;
- b=PCDWKT+iCZ0sA/VQR0L++Xbml1aSzBlPEMNub5CVa5hs//MilJl7/bRrfi2z1xW00lVR/W
- nR7igBMY9bL8GXi/86DiVihZf/TJgeKA/KHiLdRc+M8JGByPRvAUHZtDn07upSf06r9Syh
- E43MhXnCLKnbR9xuIDkNuKjyb8V+WYQ=
+ bh=BbsFsggWbDakEUIvr42t2TF5D6ROOaKwZaHAEJi/waI=;
+ b=CsFeauUIZTf7l0lGw3SVZZuPvnoI406ZgdjQiftyj9BEBwWE2OyH1o6aNeBicni0J7HeI5
+ vUdGiApPD9R59qPyCjJ8lcFX5ZaxcFr962gc3gjo+Okdu8TyJu87N0AlLB5SOWt9FWCx5J
+ oGsKoGRhlq3WYWv5WDma4/KEAXI6MEk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-457-1QQwCuOANAWiRAwa6d26xw-1; Fri, 08 Sep 2023 04:10:23 -0400
-X-MC-Unique: 1QQwCuOANAWiRAwa6d26xw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-399-owx643pANbyRCu_G52Vz8w-1; Fri, 08 Sep 2023 04:12:54 -0400
+X-MC-Unique: owx643pANbyRCu_G52Vz8w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5BB54855711;
- Fri,  8 Sep 2023 08:10:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D87D6856DED
+ for <qemu-devel@nongnu.org>; Fri,  8 Sep 2023 08:12:53 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.42])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 64C5B140E964;
- Fri,  8 Sep 2023 08:10:22 +0000 (UTC)
-Date: Fri, 8 Sep 2023 09:10:20 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 21E69493110;
+ Fri,  8 Sep 2023 08:12:53 +0000 (UTC)
+Date: Fri, 8 Sep 2023 09:12:51 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- antischmock@googlemail.com
-Subject: Re: [PATCH] meson.build: Make keyutils independent from keyring
-Message-ID: <ZPrW7Izs6ILk9h7B@redhat.com>
-References: <20230824094208.255279-1-thuth@redhat.com>
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v1 1/7] qapi: scripts: add a generator for qapi's examples
+Message-ID: <ZPrXg36lLYrLQ23Q@redhat.com>
+References: <20230905194846.169530-1-victortoso@redhat.com>
+ <20230905194846.169530-2-victortoso@redhat.com>
+ <ZPhDSD+qn66GmS0i@redhat.com>
+ <smjkujz2ogjqma2gfoznpaziiwvnjhdep4na2cyifwr3ipnhcn@3wckktjnad2w>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230824094208.255279-1-thuth@redhat.com>
+In-Reply-To: <smjkujz2ogjqma2gfoznpaziiwvnjhdep4na2cyifwr3ipnhcn@3wckktjnad2w>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -69,8 +69,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,29 +86,172 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 24, 2023 at 11:42:08AM +0200, Thomas Huth wrote:
-> Commit 0db0fbb5cf ("Add conditional dependency for libkeyutils")
-> tried to provide a possibility for the user to disable keyutils
-> if not required by makeing it depend on the keyring feature. This
-> looked reasonable at a first glance (the unit test in tests/unit/
-> needs both), but the condition in meson.build fails if the feature
-> is meant to be detected automatically, and there is also another
-> spot in backends/meson.build where keyutils is used independently
-> from keyring. So let's remove the dependency on keyring again and
-> introduce a proper meson build option instead.
+On Thu, Sep 07, 2023 at 08:34:07PM +0200, Victor Toso wrote:
+> Hi,
 > 
-> Cc: qemu-stable@nongnu.org
-> Fixes: 0db0fbb5cf ("Add conditional dependency for libkeyutils")
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1842
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  meson.build                   | 6 ++++--
->  meson_options.txt             | 2 ++
->  scripts/meson-buildoptions.sh | 3 +++
->  3 files changed, 9 insertions(+), 2 deletions(-)
+> On Wed, Sep 06, 2023 at 10:15:52AM +0100, Daniel P. Berrangé wrote:
+> > On Tue, Sep 05, 2023 at 09:48:40PM +0200, Victor Toso wrote:
+> > > This generator has two goals:
+> > >  1. Mechanical validation of QAPI examples
+> > >  2. Generate the examples in a JSON format to be consumed for extra
+> > >     validation.
+> > > 
+> > > The generator iterates over every Example section, parsing both server
+> > > and client messages. The generator prints any inconsistency found, for
+> > > example:
+> > > 
+> > >  |  Error: Extra data: line 1 column 39 (char 38)
+> > >  |  Location: cancel-vcpu-dirty-limit at qapi/migration.json:2017
+> > >  |  Data: {"execute": "cancel-vcpu-dirty-limit"},
+> > >  |      "arguments": { "cpu-index": 1 } }
+> > > 
+> > > The generator will output other JSON file with all the examples in the
+> > > QAPI module that they came from. This can be used to validate the
+> > > introspection between QAPI/QMP to language bindings, for example:
+> > > 
+> > >  | { "examples": [
+> > >  |   {
+> > >  |     "id": "ksuxwzfayw",
+> > >  |     "client": [
+> > >  |     {
+> > >  |       "sequence-order": 1
+> > >  |       "message-type": "command",
+> > >  |       "message":
+> > >  |       { "arguments":
+> > >  |         { "device": "scratch", "size": 1073741824 },
+> > >  |         "execute": "block_resize"
+> > >  |       },
+> > >  |    } ],
+> > >  |    "server": [
+> > >  |    {
+> > >  |      "sequence-order": 2
+> > >  |      "message-type": "return",
+> > >  |      "message": { "return": {} },
+> > >  |    } ]
+> > >  |    }
+> > >  |  ] }
+> > > 
+> > > Note that the order matters, as read by the Example section and
+> > > translated into "sequence-order". A language binding project can then
+> > > consume this files to Marshal and Unmarshal, comparing if the results
+> > > are what is to be expected.
+> > > 
+> > > RFC discussion:
+> > >     https://lists.gnu.org/archive/html/qemu-devel/2022-08/msg04641.html
+> > > 
+> > > Signed-off-by: Victor Toso <victortoso@redhat.com>
+> > > ---
+> > >  scripts/qapi/dumpexamples.py | 194 +++++++++++++++++++++++++++++++++++
+> > >  scripts/qapi/main.py         |   2 +
+> > >  2 files changed, 196 insertions(+)
+> > >  create mode 100644 scripts/qapi/dumpexamples.py
+> > > 
+> > > diff --git a/scripts/qapi/dumpexamples.py b/scripts/qapi/dumpexamples.py
+> > > new file mode 100644
+> > > index 0000000000..c14ed11774
+> > > --- /dev/null
+> > > +++ b/scripts/qapi/dumpexamples.py
+> > > @@ -0,0 +1,194 @@
+> > > +"""
+> > > +Dump examples for Developers
+> > > +"""
+> > > +# Copyright (c) 2022 Red Hat Inc.
+> > > +#
+> > > +# Authors:
+> > > +#  Victor Toso <victortoso@redhat.com>
+> > > +#
+> > > +# This work is licensed under the terms of the GNU GPL, version 2.
+> > > +# See the COPYING file in the top-level directory.
+> > > +
+> > > +# Just for type hint on self
+> > > +from __future__ import annotations
+> > > +
+> > > +import os
+> > > +import json
+> > > +import random
+> > > +import string
+> > > +
+> > > +from typing import Dict, List, Optional
+> > > +
+> > > +from .schema import (
+> > > +    QAPISchema,
+> > > +    QAPISchemaType,
+> > > +    QAPISchemaVisitor,
+> > > +    QAPISchemaEnumMember,
+> > > +    QAPISchemaFeature,
+> > > +    QAPISchemaIfCond,
+> > > +    QAPISchemaObjectType,
+> > > +    QAPISchemaObjectTypeMember,
+> > > +    QAPISchemaVariants,
+> > > +)
+> > > +from .source import QAPISourceInfo
+> > > +
+> > > +
+> > > +def gen_examples(schema: QAPISchema,
+> > > +                 output_dir: str,
+> > > +                 prefix: str) -> None:
+> > > +    vis = QAPISchemaGenExamplesVisitor(prefix)
+> > > +    schema.visit(vis)
+> > > +    vis.write(output_dir)
+> > > +
+> > > +
+> > > +def get_id(random, size: int) -> str:
+> > > +    letters = string.ascii_lowercase
+> > > +    return ''.join(random.choice(letters) for i in range(size))
+> > > +
+> > > +
+> > > +def next_object(text, start, end, context) -> Dict:
+> > > +    # Start of json object
+> > > +    start = text.find("{", start)
+> > > +    end = text.rfind("}", start, end+1)
+> > > +
+> > > +    # try catch, pretty print issues
+> > > +    try:
+> > > +        ret = json.loads(text[start:end+1])
+> > > +    except Exception as e:
+> > > +        print("Error: {}\nLocation: {}\nData: {}\n".format(
+> > > +              str(e), context, text[start:end+1]))
+> > 
+> > This prints an error, but the caller ignores this and carries on
+> > as normal.
+> > 
+> > After applying this series, we still have multiple errors being
+> > printed on console
+> 
+> The first one is a easy to fix error. The other two are more
+> related to metadata inserted in valid examples, see:
+> 
+> > Error: Expecting ',' delimiter: line 12 column 19 (char 336)
+> > Location: query-blockstats at ../storage-daemon/qapi/../../qapi/block-core.json:1259
+> 
+> Indeed.
+>  
+> > Error: Expecting property name enclosed in double quotes: line 7 column 19 (char 264)
+> > Location: query-rocker-of-dpa-flows at ../qapi/rocker.json:256
+> 
+>     251 #                   "mask": {"in-pport": 4294901760}
+>     252 #                  },
+>  -> 253 #                  {...more...},
+>     254 #    ]}
+> 
+> > 
+> > Error: Expecting value: line 28 column 15 (char 775)
+> > Location: query-spice at ../qapi/ui.json:372
+> 
+>     365 #                "tls": false
+>     366 #             },
+>  -> 367 #             [ ... more channels follow ... ]
+>     368 #          ]
+> 
+> It would be good to have some sort of annotation for a valid
+> example, to express this is a long list and we are not putting
+> all of it here.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+The second example already has 2 elements in the list, which
+i think is sufficient illustration of "many" records.
 
+The first example could just have a 2nd element added to its
+returned list too I reckon
 
 With regards,
 Daniel
