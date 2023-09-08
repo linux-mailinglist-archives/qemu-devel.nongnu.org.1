@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451B7798227
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95077981EA
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:09:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUec-00087x-5d; Fri, 08 Sep 2023 02:07:42 -0400
+	id 1qeUed-0008Ga-QA; Fri, 08 Sep 2023 02:07:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUeY-0007qr-1W
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:38 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qeUea-00083B-2a
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:41 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUeM-0007WZ-LQ
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:37 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bdbf10333bso14066755ad.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:26 -0700 (PDT)
+ id 1qeUeQ-0007gl-67
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:39 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1bdc19b782aso13625395ad.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153245; x=1694758045; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153248; x=1694758048; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZSYhbUljQLmwwhGQ4cyo7MT1zkKpeBlZTKYRcuPWFf8=;
- b=JQgewvFVTAaBmeJjF5B5mzBOF8UfK7CPvy6P9XhfB0shsWlx3Q6S/E+1B4vN3slcj+
- RHNS2OGQ6LQnU0uG9DLvzovkHuQ+IUZo+LSRzNSdgsG/jkhA4NLcLuBOUVoyVfcJuUyM
- Vh0iQGolUP19yf0tE9OzUwBPAkAnMdydclzfkncqgmnw41PKF3h1OkZTMv6zlsS3tCxx
- /91RA+qyHNuhZGGEc4BEhuxGTUgy9Rmr9EFOpKdoCVxNUm5NApX4aL2YRXvKptzXYKNM
- MigujSTlO2uq8zdFudmZUMqEq5fEpAFA+pRmzgVyYIlJaIYh3yyo/zEXoJS/IvFKFKUp
- 2E7w==
+ bh=BNko/n7sZ+Pauuo1Y0kdsEEem9IIq4A/xXv8veLPZZU=;
+ b=ru7QXXje3TO7Invb/34bDMr8FvB3V42QYcAl8VoKg2XcSPeyVSn9zc2Op6Ow8StnfH
+ T9Eia3O/nEDiYooAAQpsBO2C7l0gm3Jru6nEW1lGu2va6rc/OqOv/rwvXSd1rlaz+KzL
+ I9AufhPaGUEeeu5Bjf68Kt8kLGS1Y+e5eOmuD1cRTkmpEy7+6fj6bhaG/MUfvg3ioIWo
+ CqCU6SF6dBRS/eolB+bbB/RWY1civWznPpoc+//KGqLmrryFliEoeP0UFUX8SjF+xWEY
+ LAw/C3B4APBkW3oxldRJ0M1y0aDun8CxAwQaMHG+UfaptZ6FHkzBeJLGQXhRAg1XP0xq
+ KvPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153245; x=1694758045;
+ d=1e100.net; s=20230601; t=1694153248; x=1694758048;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZSYhbUljQLmwwhGQ4cyo7MT1zkKpeBlZTKYRcuPWFf8=;
- b=kXErJeOxjPUljpkXwJ6iV7sIZlIpp+4KIV8bZ6ffwU6sZ15/W/6ywAi9NOut580DW5
- 2YkTirJpTriXCerkR7j+3yePs44HfZxIrGgb07+zkQ4nTiktnROWHjwcNRxHAy7QURNV
- HlTccdbHzlymHQ3bwY7N4FYMLz6Gu3UsRxzQAnwTDxXtw733LKmcdDwZqeeuVlk+Z9w4
- lPj/LSpXAfRqWW+TL1ZtYmuT9ZZ4OL5IhyUoKIBAtLiat6jLj+27SkwDUN879v0qsPiW
- KFuDvnpfBPQkqI45msQvq4YD+fKuLF5pIr23wgH1an0BlGmZ6iAD3B+pT6OlW/S6WSJ/
- fM+g==
-X-Gm-Message-State: AOJu0Yx9dNoTw8Rxl8Z7FMcKKfz7rAo0YgdT8dZfI//LWXPw7vMj+JcU
- cRT116Qlh7UKZX0rzLCIgWKEFq136J9cxa+q
-X-Google-Smtp-Source: AGHT+IEevPaL7hfRFmVfQ1ZyULUnjOfDZO7RDXIgYD4mqcpW5HEHKvToSWUTm+R0YSmYjjyKQZDvjg==
-X-Received: by 2002:a17:903:48d:b0:1b8:987f:3f34 with SMTP id
- jj13-20020a170903048d00b001b8987f3f34mr1633063plb.25.1694153244879; 
- Thu, 07 Sep 2023 23:07:24 -0700 (PDT)
+ bh=BNko/n7sZ+Pauuo1Y0kdsEEem9IIq4A/xXv8veLPZZU=;
+ b=A8wZUpU/p2xlCKx6QSCcDQseVuNWdmEQwOZ5fQN5L8TfjNdgZJMetFjvNHkOi0YHeo
+ HV+J/NlvB/4Xy60FDLJzdSFRUUdVr3rYqt9HBZieQpHBssh7lobM/2eDg0rs7Ji2E58K
+ l2G+JiMqHFJZ4CCSx9poWHDZ4LzaUeX4683cXrXh1osTMSN+joP7g8tzzVBZmyU8h3jC
+ 7Am2QBvkaHM/Rim3nS9ugL6SZA41R8So2Kblp1uqr5N1HRXneLMErYvqmrEiFDLYl939
+ KqpPq6r32UVDWd2VlV7ZRE/95/Y2BqXiZ9hpB23My2tyDN/h8nx3x9ik9QGtuCaz70JR
+ DY3Q==
+X-Gm-Message-State: AOJu0YwLuoxUbhie9bnqk3r7tYr7L0iy5edCPRF0J7W2mlBWlMcBpQfB
+ KPXiSvcBvTzemfNGTUjt4I6u1BaIJxpjYCGp
+X-Google-Smtp-Source: AGHT+IF+ctQ8LOrwMOuhn33LtjrZEYHZwQzW6W/JQ0wnXRQE/7TDhMnxRmHK+UmbGp7mbxPc2/MYYg==
+X-Received: by 2002:a17:902:da92:b0:1b6:6b90:7c2f with SMTP id
+ j18-20020a170902da9200b001b66b907c2fmr1685214plx.55.1694153248577; 
+ Thu, 07 Sep 2023 23:07:28 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.21
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:07:23 -0700 (PDT)
+ Thu, 07 Sep 2023 23:07:27 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: alistair23@gmail.com, Robbin Ehn <rehn@rivosinc.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 39/65] hw/intc/riscv_aplic.c fix non-KVM --enable-debug build
-Date: Fri,  8 Sep 2023 16:04:05 +1000
-Message-ID: <20230908060431.1903919-40-alistair.francis@wdc.com>
+Subject: [PULL 40/65] linux-user/riscv: Add new extensions to hwprobe
+Date: Fri,  8 Sep 2023 16:04:06 +1000
+Message-ID: <20230908060431.1903919-41-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
 X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,107 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Robbin Ehn <rehn@rivosinc.com>
 
-Commit 6df0b37e2ab breaks a --enable-debug build in a non-KVM
-environment with the following error:
+This patch adds the new extensions in
+linux 6.5 to the hwprobe syscall.
 
-/usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_intc_riscv_aplic.c.o: in function `riscv_kvm_aplic_request':
-./qemu/build/../hw/intc/riscv_aplic.c:486: undefined reference to `kvm_set_irq'
-collect2: error: ld returned 1 exit status
+And fixes RVC check to OR with correct value.
+The previous variable contains 0 therefore it
+did work.
 
-This happens because the debug build will poke into the
-'if (is_kvm_aia(aplic->msimode))' block and fail to find a reference to
-the KVM only function riscv_kvm_aplic_request().
-
-There are multiple solutions to fix this. We'll go with the same
-solution from the previous patch, i.e. add a kvm_enabled() conditional
-to filter out the block. But there's a catch: riscv_kvm_aplic_request()
-is a local function that would end up being used if the compiler crops
-the block, and this won't work. Quoting Richard Henderson's explanation
-in [1]:
-
-"(...) the compiler won't eliminate entire unused functions with -O0"
-
-We'll solve it by moving riscv_kvm_aplic_request() to kvm.c and add its
-declaration in kvm_riscv.h, where all other KVM specific public
-functions are already declared. Other archs handles KVM specific code in
-this manner and we expect to do the same from now on.
-
-[1] https://lore.kernel.org/qemu-riscv/d2f1ad02-eb03-138f-9d08-db676deeed05@linaro.org/
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20230830133503.711138-3-dbarboza@ventanamicro.com>
+Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm_riscv.h | 1 +
- hw/intc/riscv_aplic.c    | 8 ++------
- target/riscv/kvm.c       | 5 +++++
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ linux-user/syscall.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
-index 7d4b7c60e2..de8c209ebc 100644
---- a/target/riscv/kvm_riscv.h
-+++ b/target/riscv/kvm_riscv.h
-@@ -26,5 +26,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-                           uint64_t aia_irq_num, uint64_t aia_msi_num,
-                           uint64_t aplic_base, uint64_t imsic_base,
-                           uint64_t guest_num);
-+void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index dac0641bab..3521a2d70b 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8793,6 +8793,10 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
+ #define RISCV_HWPROBE_KEY_IMA_EXT_0     4
+ #define     RISCV_HWPROBE_IMA_FD       (1 << 0)
+ #define     RISCV_HWPROBE_IMA_C        (1 << 1)
++#define     RISCV_HWPROBE_IMA_V        (1 << 2)
++#define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
++#define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
++#define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
  
- #endif
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 592c3ce768..99aae8ccbe 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -32,6 +32,7 @@
- #include "target/riscv/cpu.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/kvm.h"
-+#include "kvm_riscv.h"
- #include "migration/vmstate.h"
- 
- #define APLIC_MAX_IDC                  (1UL << 14)
-@@ -481,11 +482,6 @@ static uint32_t riscv_aplic_idc_claimi(RISCVAPLICState *aplic, uint32_t idc)
-     return topi;
- }
- 
--static void riscv_kvm_aplic_request(void *opaque, int irq, int level)
--{
--    kvm_set_irq(kvm_state, irq, !!level);
--}
--
- static void riscv_aplic_request(void *opaque, int irq, int level)
- {
-     bool update = false;
-@@ -840,7 +836,7 @@ static void riscv_aplic_realize(DeviceState *dev, Error **errp)
-      * have IRQ lines delegated by their parent APLIC.
-      */
-     if (!aplic->parent) {
--        if (is_kvm_aia(aplic->msimode)) {
-+        if (kvm_enabled() && is_kvm_aia(aplic->msimode)) {
-             qdev_init_gpio_in(dev, riscv_kvm_aplic_request, aplic->num_irqs);
-         } else {
-             qdev_init_gpio_in(dev, riscv_aplic_request, aplic->num_irqs);
-diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-index 6e909d0fdd..c01cfb03f4 100644
---- a/target/riscv/kvm.c
-+++ b/target/riscv/kvm.c
-@@ -46,6 +46,11 @@
- #include "sysemu/runstate.h"
- #include "hw/riscv/numa.h"
- 
-+void riscv_kvm_aplic_request(void *opaque, int irq, int level)
-+{
-+    kvm_set_irq(kvm_state, irq, !!level);
-+}
-+
- static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
-                                  uint64_t idx)
- {
+ #define RISCV_HWPROBE_KEY_CPUPERF_0     5
+ #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
+@@ -8840,7 +8844,15 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
+                     riscv_has_ext(env, RVD) ?
+                     RISCV_HWPROBE_IMA_FD : 0;
+             value |= riscv_has_ext(env, RVC) ?
+-                     RISCV_HWPROBE_IMA_C : pair->value;
++                     RISCV_HWPROBE_IMA_C : 0;
++            value |= riscv_has_ext(env, RVV) ?
++                     RISCV_HWPROBE_IMA_V : 0;
++            value |= cfg->ext_zba ?
++                     RISCV_HWPROBE_EXT_ZBA : 0;
++            value |= cfg->ext_zbb ?
++                     RISCV_HWPROBE_EXT_ZBB : 0;
++            value |= cfg->ext_zbs ?
++                     RISCV_HWPROBE_EXT_ZBS : 0;
+             __put_user(value, &pair->value);
+             break;
+         case RISCV_HWPROBE_KEY_CPUPERF_0:
 -- 
 2.41.0
 
