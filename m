@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D10179813B
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 06:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E0C7981D6
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:07:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeT3N-0000hX-C4; Fri, 08 Sep 2023 00:25:09 -0400
+	id 1qeUc3-0008TF-4a; Fri, 08 Sep 2023 02:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qeT3J-0000hE-Mt; Fri, 08 Sep 2023 00:25:05 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qeUc0-0008Si-Bu
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:05:00 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qeT3H-0007kw-2S; Fri, 08 Sep 2023 00:25:05 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-53fbf2c42bfso1379161a12.3; 
- Thu, 07 Sep 2023 21:25:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qeUbx-0005BN-FK
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:05:00 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-53fa455cd94so1328194a12.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:04:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694147100; x=1694751900; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kMRQBHCavGjbbzDtIvJp7/eJjz1OMTZ9vDu3onZh3S8=;
- b=JKARrrLPFsUDKxHETVQul2VE/mDPsHTqByL934e+hYG/SswFRrIsEaiRESEO1QGZVi
- ab8rmy19jS2+LwvWmllbwVeyQOLmwpy73RdfBrXlhbcIUqw7KYX3Cqp+mie9rgJqHVYC
- ZJo3F/s5j7JzhqWq1Ae1NiYhUHOP2OYe1XbazTeKRSD+pNQXSDyBGELpTf3myeBsbTKO
- zvPrfhsrxEcQgoI5isudbdbo0T1EuH4lvppa+Utge6vYQm9mu26U5aUHQ2Cm5fbVZMA2
- 5GhEpOKVkZAaemDS3fN1XePUhp4KiEvh+1mQeUINTprPxfIiryd0X5CXHhHTY8W0H9ik
- b8pg==
+ d=gmail.com; s=20221208; t=1694153095; x=1694757895; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=R77bkJ3kitgs5VtrDC4p2oxxuoRUPS4yYzxCiua1ltU=;
+ b=lNtwW5xNRSO8kf+FTssc69Zj5rDZXc5h/9cvZMaXrqsMcI38f/bDwLKKz+VlIeq7aS
+ qB+8Ikc0kvpmvmki2pkgkRq3KiFvruS6PO+gm2F5mwG0is9xp5KpycNAC7/Yx991CNmb
+ QiO6UReF2ve7768o+vffX4Y+osMdfcdEYoBXVm9stYVY3kdgEQplZW4D2cKVfFtZzUD9
+ X83Yga2inJksSNbcXxnierMXqEx+Ftv49qq1DKofmej7gYUtSOXX1I/N/kjJ7s09/zFz
+ u7s/N1tdRqq9ugYPMwUwDgQfdtaHsLXYCMSCZOcHd+EWBSJHUVyGJRBc0lkf/UyKG7B4
+ elBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694147100; x=1694751900;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=kMRQBHCavGjbbzDtIvJp7/eJjz1OMTZ9vDu3onZh3S8=;
- b=m7dpTiTIG9i3P/yST00HBULWR4KG49Dkeje3+pLboVIDH7BkV8kS+fFeOievyXOIb6
- weUX+qAZgRFEQ/tHmz44FJCPv5nLcx9r+ehq0slXPIaJuKusm7gH5zXlGyNY+0deua5K
- SRC12Le58KrFIs6eMZ6TTF1SgP7XSGpp48PX088ER14w48dYCOrrvXWlJ0vHYzkd6U+2
- Ptzrdp8OeX80ezmU8aKpXKAjn1cGmN8hIkDj2JTGFlZ47QkaFzyDxudS6ln0tZRVFziA
- 1+lvYf6BHTvM/J5b29AMuVaAqc7OPuLpMa0jT3gg+y5NFELIFhnCj2AqsV+f8pQmSPCl
- TXtQ==
-X-Gm-Message-State: AOJu0YyTrGB0yr/os+jgtVCuhIvGK4tjWaDANBFuvFbfKJIjWWx4Et9p
- BIRlKsZrQ/586YB3syqrYL0=
-X-Google-Smtp-Source: AGHT+IHT+ys0USg/9SyUfLF0n4672NGZTBSI7IZ9hnb/0uA2SWI9Ao3D7pYD7xjrDy6DCQUZKzXIUg==
-X-Received: by 2002:a05:6300:8081:b0:13d:54cd:63e7 with SMTP id
- ap1-20020a056300808100b0013d54cd63e7mr1450928pzc.33.1694147100499; 
- Thu, 07 Sep 2023 21:25:00 -0700 (PDT)
-Received: from localhost ([193.114.103.68]) by smtp.gmail.com with ESMTPSA id
- k17-20020aa78211000000b00682d79199e7sm440537pfi.200.2023.09.07.21.24.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Sep 2023 21:25:00 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ d=1e100.net; s=20230601; t=1694153095; x=1694757895;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=R77bkJ3kitgs5VtrDC4p2oxxuoRUPS4yYzxCiua1ltU=;
+ b=F04JEw611iM+hmDBYAnlBn7k3KdVhyZwCMliUesMJWLErB8Th6Q15DYYjH59Bf00aL
+ QlYUoKOKbEWvHVBi4TqIAbJM+Wny3joNfcwaKNsJA1MP8HwiTZCOyNu8hHOhFxaKGQM3
+ YiFABb1BN0bLUrLK07zrPfEVBPVyvVNCoit/aSzMJ1EoF1AXCMK8lP/SkjAa0tZs1t9j
+ GaBOFT36S1+UTBUdcb/XClXWdUSV0guGrmahKBVck4RIyqv5rTq/7GfqZYb0igx2utfi
+ vFbpbodD4Lz9VvoJdZPiDGl8q7BBArGWTbILnKdFfHWoxq9JNSeBHoyf1FsRVM6WgfFA
+ 0Spg==
+X-Gm-Message-State: AOJu0YzoLbgxQxlIdRehLjJNkGvbCOgo3L8YvFL3lyhjNrnhMqwUVKBa
+ 4RbV1YEwXXgCttXvnWrOWvVfCv5f/ajELCM4
+X-Google-Smtp-Source: AGHT+IGuqgTKbkVgro29/03L33Dh6TRyXRfozFzzOr0DQMjVRdkupCJCeU0/FMJr8sLH76+vIvBUcA==
+X-Received: by 2002:a17:902:6b05:b0:1c3:8031:1dce with SMTP id
+ o5-20020a1709026b0500b001c380311dcemr1288052plk.45.1694153095080; 
+ Thu, 07 Sep 2023 23:04:55 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.04.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 Sep 2023 23:04:53 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/65] riscv-to-apply queue
+Date: Fri,  8 Sep 2023 16:03:26 +1000
+Message-ID: <20230908060431.1903919-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 08 Sep 2023 14:24:55 +1000
-Message-Id: <CVD90VD3O9W1.1UBFXQ7MSVZEO@wheely>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>
-Subject: Re: [PULL v2 00/35] ppc queue
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "Michael Tokarev"
- <mjt@tls.msk.ru>, <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230906143653.54709-1-clg@kaod.org>
- <2b6c3dd1-430a-2e60-ea73-29c507d631d8@tls.msk.ru>
- <ad943b46-0652-8fd1-49a4-c86dd6214827@kaod.org>
-In-Reply-To: <ad943b46-0652-8fd1-49a4-c86dd6214827@kaod.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=alistair23@gmail.com; helo=mail-pg1-x534.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,143 +94,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Sep 8, 2023 at 8:15 AM AEST, C=C3=A9dric Le Goater wrote:
-> On 9/7/23 21:10, Michael Tokarev wrote:
-> > 06.09.2023 17:36, C=C3=A9dric Le Goater wrote:
-> > ...
-> >> ppc queue :
-> >>
-> >> * debug facility improvements
-> >> * timebase and decrementer fixes
-> >> * record-replay fixes
-> >> * TCG fixes
-> >> * XIVE model improvements for multichip
-> >>
-> >> ----------------------------------------------------------------
-> >> C=C3=A9dric Le Goater (4):
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ppc/xive: Use address_space routi=
-nes to access the machine RAM
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ppc/xive: Introduce a new XiveRou=
-ter end_notify() handler
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ppc/xive: Handle END triggers bet=
-ween chips with MMIOs
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ppc/xive: Add support for the PC =
-MMIOs
-> >>
-> >> Joel Stanley (1):
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ppc: Add stub implementation of T=
-RIG SPRs
-> >>
-> >> Maksim Kostin (1):
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc/e500: fix broken snapshot =
-replay
-> >>
-> >> Nicholas Piggin (26):
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Remove single-step su=
-ppression inside 0x100-0xf00
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Improve book3s branch=
- trace interrupt for v2.07S
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Suppress single step =
-interrupts on rfi-type instructions
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Implement breakpoint =
-debug facility for v2.07S
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Implement watchpoint =
-debug facility for v2.07S
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spapr: implement H_SET_MODE debug=
- facilities
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ppc/vhyp: reset exception state w=
-hen handling vhyp hcall
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ppc/vof: Fix missed fields in VOF=
- cleanup
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc/ppc.c: Tidy over-long line=
-s
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc: Introduce functions for c=
-onversion between timebase and nanoseconds
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 host-utils: Add muldiv64_round_up
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc: Round up the decrementer =
-interval when converting to ns
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc: Avoid decrementer roundin=
-g errors
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Sign-extend large dec=
-rementer to 64-bits
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc: Always store the decremen=
-ter value
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Migrate DECR SPR
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc: Reset timebase facilities=
- on machine reset
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hw/ppc: Read time only once to pe=
-rform decrementer write
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Fix CPU reservation m=
-igration for record-replay
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Fix timebase reset wi=
-th record-replay
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spapr: Fix machine reset deadlock=
- from replay-record
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spapr: Fix record-replay machine =
-reset consuming too many events
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tests/avocado: boot ppc64 pseries=
- replay-record test to Linux VFS mount
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tests/avocado: reverse-debugging =
-cope with re-executing breakpoints
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tests/avocado: ppc64 reverse debu=
-gging tests for pseries and powernv
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Fix LQ, STQ register-=
-pair order for big-endian
-> >>
-> >> Richard Henderson (1):
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Flush inputs to zero =
-with NJ in ppc_store_vscr
-> >>
-> >> Shawn Anastasio (1):
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Generate storage inte=
-rrupts for radix RC changes
-> >>
-> >> jianchunfu (1):
-> >> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target/ppc: Fix the order of kvm_=
-enable judgment about kvmppc_set_interrupt()
-> >=20
-> > Is there anything in there worth to pick for -stable?
-> > Like, for example, some decrementer fixes,=20
->
-> The decrementer fixes are good candidates but there are quite a few
-> patches and you might encounter conflicts.
+The following changes since commit 03a3a62fbd0aa5227e978eef3c67d3978aec9e5f:
 
-Decrementer I was nervous about since there were quite a lot of
-interacting issues. Decrementer has worked okay for a while, so
-even though there are some bugs, they're mostly in edge cases
-that most OSes don't hit or care so much about.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-09-07 10:29:06 -0400)
 
-Possibly the decrementer migration patch could be a candidate.
+are available in the Git repository at:
 
-In any case I would like them to get more testing upstream for
-a while first.
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20230908
 
->
-> > or some of these:
-> >=20
-> >  =C2=A0ppc/vof: Fix missed fields in VOF cleanup
+for you to fetch changes up to 69749970db9f1b05c8cd77a7bbb45e4e156f7d33:
 
-vof patch I think is a candidate. Simple and fixes leaks.
+  target/riscv/cpu.c: consider user option with RVG (2023-09-08 15:57:39 +1000)
 
-> >  =C2=A0spapr: Fix machine reset deadlock from replay-record
-> >  =C2=A0hw/ppc/e500: fix broken snapshot replay
->
-> I can not tell if replay-record is important for stable. Nick ?
+----------------------------------------------------------------
+First RISC-V PR for 8.2
 
-It seems to have been broken in many ways for long enough that
-nobody was really using it (at least on pseries). Maybe e500
-because an issue was filed for that and the fix looked small.
+ * Remove 'host' CPU from TCG
+ * riscv_htif Fixup printing on big endian hosts
+ * Add zmmul isa string
+ * Add smepmp isa string
+ * Fix page_check_range use in fault-only-first
+ * Use existing lookup tables for MixColumns
+ * Add RISC-V vector cryptographic instruction set support
+ * Implement WARL behaviour for mcountinhibit/mcounteren
+ * Add Zihintntl extension ISA string to DTS
+ * Fix zfa fleq.d and fltq.d
+ * Fix upper/lower mtime write calculation
+ * Make rtc variable names consistent
+ * Use abi type for linux-user target_ucontext
+ * Add RISC-V KVM AIA Support
+ * Fix riscv,pmu DT node path in the virt machine
+ * Update CSR bits name for svadu extension
+ * Mark zicond non-experimental
+ * Fix satp_mode_finalize() when satp_mode.supported = 0
+ * Fix non-KVM --enable-debug build
+ * Add new extensions to hwprobe
+ * Use accelerated helper for AES64KS1I
+ * Allocate itrigger timers only once
+ * Respect mseccfg.RLB for pmpaddrX changes
+ * Align the AIA model to v1.0 ratified spec
+ * Don't read the CSR in riscv_csrrw_do64
+ * Add the 'max' CPU, detect user choice in TCG
 
->  =20
-> > or something else?
->
-> These are :
->
->    target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
->    target/ppc: Fix LQ, STQ register-pair order for big-endian
+----------------------------------------------------------------
+Akihiko Odaki (1):
+      target/riscv: Allocate itrigger timers only once
 
-Yes definitely these two.
+Ard Biesheuvel (2):
+      target/riscv: Use existing lookup tables for MixColumns
+      target/riscv: Use accelerated helper for AES64KS1I
 
-Thanks,
-Nick
+Conor Dooley (1):
+      hw/riscv: virt: Fix riscv,pmu DT node path
+
+Daniel Henrique Barboza (26):
+      target/riscv/cpu.c: do not run 'host' CPU with TCG
+      target/riscv/cpu.c: add zmmul isa string
+      target/riscv/cpu.c: add smepmp isa string
+      target/riscv: fix satp_mode_finalize() when satp_mode.supported = 0
+      hw/riscv/virt.c: fix non-KVM --enable-debug build
+      hw/intc/riscv_aplic.c fix non-KVM --enable-debug build
+      target/riscv/cpu.c: split CPU options from riscv_cpu_extensions[]
+      target/riscv/cpu.c: skip 'bool' check when filtering KVM props
+      target/riscv/cpu.c: split kvm prop handling to its own helper
+      target/riscv: add DEFINE_PROP_END_OF_LIST() to riscv_cpu_options[]
+      target/riscv/cpu.c: split non-ratified exts from riscv_cpu_extensions[]
+      target/riscv/cpu.c: split vendor exts from riscv_cpu_extensions[]
+      target/riscv/cpu.c: add riscv_cpu_add_qdev_prop_array()
+      target/riscv/cpu.c: add riscv_cpu_add_kvm_unavail_prop_array()
+      target/riscv/cpu.c: limit cfg->vext_spec log message
+      target/riscv: add 'max' CPU type
+      avocado, risc-v: add tuxboot tests for 'max' CPU
+      target/riscv: deprecate the 'any' CPU type
+      target/riscv/cpu.c: use offset in isa_ext_is_enabled/update_enabled
+      target/riscv: make CPUCFG() macro public
+      target/riscv/cpu.c: introduce cpu_cfg_ext_auto_update()
+      target/riscv/cpu.c: use cpu_cfg_ext_auto_update() during realize()
+      target/riscv/cpu.c: introduce RISCVCPUMultiExtConfig
+      target/riscv: use isa_ext_update_enabled() in init_max_cpu_extensions()
+      target/riscv/cpu.c: honor user choice in cpu_cfg_ext_auto_update()
+      target/riscv/cpu.c: consider user option with RVG
+
+Dickon Hood (2):
+      target/riscv: Refactor translation of vector-widening instruction
+      target/riscv: Add Zvbb ISA extension support
+
+Jason Chien (3):
+      target/riscv: Add Zihintntl extension ISA string to DTS
+      hw/intc: Fix upper/lower mtime write calculation
+      hw/intc: Make rtc variable names consistent
+
+Kiran Ostrolenk (4):
+      target/riscv: Refactor some of the generic vector functionality
+      target/riscv: Refactor vector-vector translation macro
+      target/riscv: Refactor some of the generic vector functionality
+      target/riscv: Add Zvknh ISA extension support
+
+LIU Zhiwei (3):
+      target/riscv: Fix page_check_range use in fault-only-first
+      target/riscv: Fix zfa fleq.d and fltq.d
+      linux-user/riscv: Use abi type for target_ucontext
+
+Lawrence Hunter (2):
+      target/riscv: Add Zvbc ISA extension support
+      target/riscv: Add Zvksh ISA extension support
+
+Leon Schuermann (1):
+      target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX changes
+
+Max Chou (3):
+      crypto: Create sm4_subword
+      crypto: Add SM4 constant parameter CK
+      target/riscv: Add Zvksed ISA extension support
+
+Nazar Kazakov (4):
+      target/riscv: Remove redundant "cpu_vl == 0" checks
+      target/riscv: Move vector translation checks
+      target/riscv: Add Zvkned ISA extension support
+      target/riscv: Add Zvkg ISA extension support
+
+Nikita Shubin (1):
+      target/riscv: don't read CSR in riscv_csrrw_do64
+
+Rob Bradford (1):
+      target/riscv: Implement WARL behaviour for mcountinhibit/mcounteren
+
+Robbin Ehn (1):
+      linux-user/riscv: Add new extensions to hwprobe
+
+Thomas Huth (2):
+      hw/char/riscv_htif: Fix printing of console characters on big endian hosts
+      hw/char/riscv_htif: Fix the console syscall on big endian hosts
+
+Tommy Wu (1):
+      target/riscv: Align the AIA model to v1.0 ratified spec
+
+Vineet Gupta (1):
+      riscv: zicond: make non-experimental
+
+Weiwei Li (1):
+      target/riscv: Update CSR bits name for svadu extension
+
+Yong-Xuan Wang (5):
+      target/riscv: support the AIA device emulation with KVM enabled
+      target/riscv: check the in-kernel irqchip support
+      target/riscv: Create an KVM AIA irqchip
+      target/riscv: update APLIC and IMSIC to support KVM AIA
+      target/riscv: select KVM AIA in riscv virt machine
+
+ docs/about/deprecated.rst                 |  12 +
+ include/crypto/aes.h                      |   7 +
+ include/crypto/sm4.h                      |   9 +
+ target/riscv/cpu-qom.h                    |   1 +
+ target/riscv/cpu.h                        |   2 +
+ target/riscv/cpu_bits.h                   |   8 +-
+ target/riscv/cpu_cfg.h                    |   9 +
+ target/riscv/debug.h                      |   3 +-
+ target/riscv/helper.h                     |  98 +++
+ target/riscv/kvm_riscv.h                  |   5 +
+ target/riscv/vector_internals.h           | 228 +++++++
+ target/riscv/insn32.decode                |  58 ++
+ crypto/aes.c                              |   4 +-
+ crypto/sm4.c                              |  10 +
+ hw/char/riscv_htif.c                      |  12 +-
+ hw/intc/riscv_aclint.c                    |  11 +-
+ hw/intc/riscv_aplic.c                     |  52 +-
+ hw/intc/riscv_imsic.c                     |  25 +-
+ hw/riscv/virt.c                           | 374 ++++++------
+ linux-user/riscv/signal.c                 |   4 +-
+ linux-user/syscall.c                      |  14 +-
+ target/arm/tcg/crypto_helper.c            |  10 +-
+ target/riscv/cpu.c                        | 625 ++++++++++++++-----
+ target/riscv/cpu_helper.c                 |   6 +-
+ target/riscv/crypto_helper.c              |  51 +-
+ target/riscv/csr.c                        |  54 +-
+ target/riscv/debug.c                      |  15 +-
+ target/riscv/kvm.c                        | 209 ++++++-
+ target/riscv/pmp.c                        |   4 +
+ target/riscv/translate.c                  |   1 +
+ target/riscv/vcrypto_helper.c             | 970 ++++++++++++++++++++++++++++++
+ target/riscv/vector_helper.c              | 245 +-------
+ target/riscv/vector_internals.c           |  81 +++
+ target/riscv/insn_trans/trans_rvv.c.inc   | 171 +++---
+ target/riscv/insn_trans/trans_rvvk.c.inc  | 606 +++++++++++++++++++
+ target/riscv/insn_trans/trans_rvzfa.c.inc |   4 +-
+ target/riscv/meson.build                  |   4 +-
+ tests/avocado/tuxrun_baselines.py         |  32 +
+ 38 files changed, 3224 insertions(+), 810 deletions(-)
+ create mode 100644 target/riscv/vector_internals.h
+ create mode 100644 target/riscv/vcrypto_helper.c
+ create mode 100644 target/riscv/vector_internals.c
+ create mode 100644 target/riscv/insn_trans/trans_rvvk.c.inc
 
