@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95077981EA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEE67981ED
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:09:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUed-0008Ga-QA; Fri, 08 Sep 2023 02:07:43 -0400
+	id 1qeUee-0008IL-1A; Fri, 08 Sep 2023 02:07:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUea-00083B-2a
+ id 1qeUeb-000891-D3
  for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:41 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUeQ-0007gl-67
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:39 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1bdc19b782aso13625395ad.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:29 -0700 (PDT)
+ id 1qeUeV-0007p5-NO
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:40 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1c0db66af1bso12627095ad.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153248; x=1694758048; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153253; x=1694758053; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BNko/n7sZ+Pauuo1Y0kdsEEem9IIq4A/xXv8veLPZZU=;
- b=ru7QXXje3TO7Invb/34bDMr8FvB3V42QYcAl8VoKg2XcSPeyVSn9zc2Op6Ow8StnfH
- T9Eia3O/nEDiYooAAQpsBO2C7l0gm3Jru6nEW1lGu2va6rc/OqOv/rwvXSd1rlaz+KzL
- I9AufhPaGUEeeu5Bjf68Kt8kLGS1Y+e5eOmuD1cRTkmpEy7+6fj6bhaG/MUfvg3ioIWo
- CqCU6SF6dBRS/eolB+bbB/RWY1civWznPpoc+//KGqLmrryFliEoeP0UFUX8SjF+xWEY
- LAw/C3B4APBkW3oxldRJ0M1y0aDun8CxAwQaMHG+UfaptZ6FHkzBeJLGQXhRAg1XP0xq
- KvPw==
+ bh=sm5kdR4zPqERpHwNfrDrMNoNCsEGBcjXZveAeFuP0TY=;
+ b=sqGmyToYWjbr7YcKfKgBYVl0VBtkPFsKrX1MrtQCPovpVenDJGjfLwJoVmgYq5eFcC
+ W9nrm2NadyL7HG9sQaAbUaLNBvZtBES/dpZ6cKbhXWmHY1TRmqMiN25fgyLy6YGWxsVS
+ 6AcImHUOEcTfNIiotyosOQGxTjI/Yxa3BzNHsapt5BdxJFlPIwu72SLmJQuXj3ApiOGS
+ ujh7q27Vk97ABqFNixmxWU+Yzdv8QStvDuBqVAUrTZgVmtMIIDOFIhlPINgLagwn8xvt
+ kobgcjnGjQDZaZM6QKlFol/rigUvOcz5Ao7dkNqS3invd3bxAxLphoP1ybVsIUO7Fhb3
+ osVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153248; x=1694758048;
+ d=1e100.net; s=20230601; t=1694153253; x=1694758053;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BNko/n7sZ+Pauuo1Y0kdsEEem9IIq4A/xXv8veLPZZU=;
- b=A8wZUpU/p2xlCKx6QSCcDQseVuNWdmEQwOZ5fQN5L8TfjNdgZJMetFjvNHkOi0YHeo
- HV+J/NlvB/4Xy60FDLJzdSFRUUdVr3rYqt9HBZieQpHBssh7lobM/2eDg0rs7Ji2E58K
- l2G+JiMqHFJZ4CCSx9poWHDZ4LzaUeX4683cXrXh1osTMSN+joP7g8tzzVBZmyU8h3jC
- 7Am2QBvkaHM/Rim3nS9ugL6SZA41R8So2Kblp1uqr5N1HRXneLMErYvqmrEiFDLYl939
- KqpPq6r32UVDWd2VlV7ZRE/95/Y2BqXiZ9hpB23My2tyDN/h8nx3x9ik9QGtuCaz70JR
- DY3Q==
-X-Gm-Message-State: AOJu0YwLuoxUbhie9bnqk3r7tYr7L0iy5edCPRF0J7W2mlBWlMcBpQfB
- KPXiSvcBvTzemfNGTUjt4I6u1BaIJxpjYCGp
-X-Google-Smtp-Source: AGHT+IF+ctQ8LOrwMOuhn33LtjrZEYHZwQzW6W/JQ0wnXRQE/7TDhMnxRmHK+UmbGp7mbxPc2/MYYg==
-X-Received: by 2002:a17:902:da92:b0:1b6:6b90:7c2f with SMTP id
- j18-20020a170902da9200b001b66b907c2fmr1685214plx.55.1694153248577; 
- Thu, 07 Sep 2023 23:07:28 -0700 (PDT)
+ bh=sm5kdR4zPqERpHwNfrDrMNoNCsEGBcjXZveAeFuP0TY=;
+ b=enZNsMrFeDngow2/RZWp9kMYoPpEcfgW59V7bKlcR5WqoDILFJO9o7CyDfI1XD3mM4
+ /efbtwxVXF/iWsiPw6V+SoB0gQOSMD3XNM+YwUVkFbWJqJjEhodd4FvuClaKzPbMXDzB
+ cfts4facvHCleOHwa4TygvT12Pjd1eZILHQVD7igIcVHoeUhy3nnbT7z1SFh4wyGAbfo
+ rw+eKPIkscgVi6CHMo1E9UJisStb3BmEsnvgRvR3TI/6wMH0NYq5rY4V5VvbncSomXPi
+ 5SIYn9L8Q7efE0OmaC2m7XDz1N5bnEYhT0PGUbUjucAqY47yNPLP36m0P3PvfC4JWOvV
+ USVQ==
+X-Gm-Message-State: AOJu0YxWxjya+8HNhMwS5c9jtaECB01ZoEInyEAQLb36TSd7GS2Ahw2G
+ v0YNXKJpN6BhqyB6wRF3eduzZWcZhw7kqs40
+X-Google-Smtp-Source: AGHT+IF4iDlPLdiu4Jcis6dnXVE5fmlBYh0DPyl7ZdL15Xkz/OFXXG/E7jxXFh9Q56bRVxZA+88kew==
+X-Received: by 2002:a17:902:f7c7:b0:1b8:7fd7:e022 with SMTP id
+ h7-20020a170902f7c700b001b87fd7e022mr1737965plw.28.1694153252826; 
+ Thu, 07 Sep 2023 23:07:32 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.25
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:07:27 -0700 (PDT)
+ Thu, 07 Sep 2023 23:07:31 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Robbin Ehn <rehn@rivosinc.com>,
+Cc: alistair23@gmail.com, Ard Biesheuvel <ardb@kernel.org>,
  Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 40/65] linux-user/riscv: Add new extensions to hwprobe
-Date: Fri,  8 Sep 2023 16:04:06 +1000
-Message-ID: <20230908060431.1903919-41-alistair.francis@wdc.com>
+Subject: [PULL 41/65] target/riscv: Use accelerated helper for AES64KS1I
+Date: Fri,  8 Sep 2023 16:04:07 +1000
+Message-ID: <20230908060431.1903919-42-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,56 +100,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Robbin Ehn <rehn@rivosinc.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-This patch adds the new extensions in
-linux 6.5 to the hwprobe syscall.
+Use the accelerated SubBytes/ShiftRows/AddRoundKey AES helper to
+implement the first half of the key schedule derivation. This does not
+actually involve shifting rows, so clone the same value into all four
+columns of the AES vector to counter that operation.
 
-And fixes RVC check to OR with correct value.
-The previous variable contains 0 therefore it
-did work.
-
-Signed-off-by: Robbin Ehn <rehn@rivosinc.com>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <bc82203b72d7efb30f1b4a8f9eb3d94699799dc8.camel@rivosinc.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20230831154118.138727-1-ardb@kernel.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- linux-user/syscall.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ target/riscv/crypto_helper.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index dac0641bab..3521a2d70b 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -8793,6 +8793,10 @@ static int do_getdents64(abi_long dirfd, abi_long arg2, abi_long count)
- #define RISCV_HWPROBE_KEY_IMA_EXT_0     4
- #define     RISCV_HWPROBE_IMA_FD       (1 << 0)
- #define     RISCV_HWPROBE_IMA_C        (1 << 1)
-+#define     RISCV_HWPROBE_IMA_V        (1 << 2)
-+#define     RISCV_HWPROBE_EXT_ZBA      (1 << 3)
-+#define     RISCV_HWPROBE_EXT_ZBB      (1 << 4)
-+#define     RISCV_HWPROBE_EXT_ZBS      (1 << 5)
+diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
+index 4d65945429..bb084e00ef 100644
+--- a/target/riscv/crypto_helper.c
++++ b/target/riscv/crypto_helper.c
+@@ -148,24 +148,17 @@ target_ulong HELPER(aes64ks1i)(target_ulong rs1, target_ulong rnum)
  
- #define RISCV_HWPROBE_KEY_CPUPERF_0     5
- #define     RISCV_HWPROBE_MISALIGNED_UNKNOWN     (0 << 0)
-@@ -8840,7 +8844,15 @@ static void risc_hwprobe_fill_pairs(CPURISCVState *env,
-                     riscv_has_ext(env, RVD) ?
-                     RISCV_HWPROBE_IMA_FD : 0;
-             value |= riscv_has_ext(env, RVC) ?
--                     RISCV_HWPROBE_IMA_C : pair->value;
-+                     RISCV_HWPROBE_IMA_C : 0;
-+            value |= riscv_has_ext(env, RVV) ?
-+                     RISCV_HWPROBE_IMA_V : 0;
-+            value |= cfg->ext_zba ?
-+                     RISCV_HWPROBE_EXT_ZBA : 0;
-+            value |= cfg->ext_zbb ?
-+                     RISCV_HWPROBE_EXT_ZBB : 0;
-+            value |= cfg->ext_zbs ?
-+                     RISCV_HWPROBE_EXT_ZBS : 0;
-             __put_user(value, &pair->value);
-             break;
-         case RISCV_HWPROBE_KEY_CPUPERF_0:
+     uint8_t enc_rnum = rnum;
+     uint32_t temp = (RS1 >> 32) & 0xFFFFFFFF;
+-    uint8_t rcon_ = 0;
+-    target_ulong result;
++    AESState t, rc = {};
+ 
+     if (enc_rnum != 0xA) {
+         temp = ror32(temp, 8); /* Rotate right by 8 */
+-        rcon_ = round_consts[enc_rnum];
++        rc.w[0] = rc.w[1] = round_consts[enc_rnum];
+     }
+ 
+-    temp = ((uint32_t)AES_sbox[(temp >> 24) & 0xFF] << 24) |
+-           ((uint32_t)AES_sbox[(temp >> 16) & 0xFF] << 16) |
+-           ((uint32_t)AES_sbox[(temp >> 8) & 0xFF] << 8) |
+-           ((uint32_t)AES_sbox[(temp >> 0) & 0xFF] << 0);
++    t.w[0] = t.w[1] = t.w[2] = t.w[3] = temp;
++    aesenc_SB_SR_AK(&t, &t, &rc, false);
+ 
+-    temp ^= rcon_;
+-
+-    result = ((uint64_t)temp << 32) | temp;
+-
+-    return result;
++    return t.d[0];
+ }
+ 
+ target_ulong HELPER(aes64im)(target_ulong rs1)
 -- 
 2.41.0
 
