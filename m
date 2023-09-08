@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091E3798A37
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 17:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2C4798A34
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 17:49:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qediO-0007Mv-Eo; Fri, 08 Sep 2023 11:48:12 -0400
+	id 1qediM-0007MJ-Cl; Fri, 08 Sep 2023 11:48:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qediF-0007LH-Ac
+ id 1qediF-0007LG-Ad
  for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:48:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qediA-0005mX-Vx
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:48:03 -0400
+ id 1qediC-0005mi-3m
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:48:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694188077;
+ s=mimecast20190719; t=1694188079;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=anUl5vaDfDQ/NMYlXxUwmL0pOckbMOFdxpBTD6bLA9I=;
- b=VZdtvN2+V8widYFqxgtdIf1HnRQkbzYoMncn/qitWAwqhRadOa5rDSiwgW9NwXqLD87luP
- xkbpx2JUn43Qp5qH32vkHr0fabKCFQThEb+giCdWT+61pO25F3DIWp9rLG5LwaDPFN+cXH
- 7YBKPIvYKlsM8pxWikOh34mEqUY2V3E=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-638-wPDM9rrMNUaWBS3Li5hahQ-1; Fri, 08 Sep 2023 11:47:56 -0400
-X-MC-Unique: wPDM9rrMNUaWBS3Li5hahQ-1
+ bh=pSdeVkdg9tMEg2wcLbjEiLvRGnuLTl/03NgTyHBBEJA=;
+ b=RZgDV6qWwjU34fSlZI0wnxF0AUgp67r2lqqe0/AJ6ZdzOCG0UPweizxJ7keFEDU9wRmr9d
+ Sd45Vvn/xyf+bSYqrQnXA7oAS0gXf0SYisBagcNXfU/N7SCn+wlEzrCfe8hrAYJni41VlC
+ cbLvSZk3n1JlWEjYwynil0ULupCwT7E=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-665-Qloa_3E0M_6ecNJoFgoGhQ-1; Fri, 08 Sep 2023 11:47:58 -0400
+X-MC-Unique: Qloa_3E0M_6ecNJoFgoGhQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC10485651F;
- Fri,  8 Sep 2023 15:47:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8BC323C0F668;
+ Fri,  8 Sep 2023 15:47:57 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.45.224.190])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1DB3821EE566;
- Fri,  8 Sep 2023 15:47:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 01F07200BFEA;
+ Fri,  8 Sep 2023 15:47:55 +0000 (UTC)
 From: Albert Esteve <aesteve@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Fam Zheng <fam@euphon.net>, marcandre.lureau@gmail.com,
  Albert Esteve <aesteve@redhat.com>, philmd@linaro.org, cohuck@redhat.com,
  "Michael S. Tsirkin" <mst@redhat.com>, kraxel@redhat.com
-Subject: [PATCH v8 2/4] hw/display: introduce virtio-dmabuf
-Date: Fri,  8 Sep 2023 17:47:41 +0200
-Message-ID: <20230908154743.809569-3-aesteve@redhat.com>
+Subject: [PATCH v8 3/4] vhost-user: add shared_object msg
+Date: Fri,  8 Sep 2023 17:47:42 +0200
+Message-ID: <20230908154743.809569-4-aesteve@redhat.com>
 In-Reply-To: <20230908154743.809569-1-aesteve@redhat.com>
 References: <20230908154743.809569-1-aesteve@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,468 +79,371 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This API manages objects (in this iteration,
-dmabuf fds) that can be shared along different
-virtio devices, associated to a UUID.
+Add three new vhost-user protocol
+`VHOST_USER_BACKEND_SHARED_OBJECT_* messages`.
+These new messages are sent from vhost-user
+back-ends to interact with the virtio-dmabuf
+table in order to add or remove themselves as
+virtio exporters, or lookup for virtio dma-buf
+shared objects.
 
-The API allows the different devices to add,
-remove and/or retrieve the objects by simply
-invoking the public functions that reside in the
-virtio-dmabuf file.
+The action taken in the front-end depends
+on the type stored in the virtio shared
+object hash table.
 
-For vhost backends, the API stores the pointer
-to the backend holding the object.
+When the table holds a pointer to a vhost
+backend for a given UUID, the front-end sends
+a VHOST_USER_GET_SHARED_OBJECT to the
+backend holding the shared object.
 
-Suggested-by: Gerd Hoffmann <kraxel@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The messages can only be sent after successfully
+negotiating a new VHOST_USER_PROTOCOL_F_SHARED_OBJECT
+vhost-user protocol feature bit.
+
+Finally, refactor code to send response message so
+that all common parts both for the common REPLY_ACK
+case, and other data responses, can call it and
+avoid code repetition.
+
 Signed-off-by: Albert Esteve <aesteve@redhat.com>
 ---
- MAINTAINERS                       |   7 ++
- hw/display/meson.build            |   1 +
- hw/display/virtio-dmabuf.c        | 138 ++++++++++++++++++++++++++++++
- include/hw/virtio/virtio-dmabuf.h | 100 ++++++++++++++++++++++
- tests/unit/meson.build            |   1 +
- tests/unit/test-virtio-dmabuf.c   | 137 +++++++++++++++++++++++++++++
- 6 files changed, 384 insertions(+)
- create mode 100644 hw/display/virtio-dmabuf.c
- create mode 100644 include/hw/virtio/virtio-dmabuf.h
- create mode 100644 tests/unit/test-virtio-dmabuf.c
+ docs/interop/vhost-user.rst       |  57 ++++++++++
+ hw/virtio/vhost-user.c            | 168 +++++++++++++++++++++++++++---
+ include/hw/virtio/vhost-backend.h |   3 +
+ 3 files changed, 216 insertions(+), 12 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b471973e1e..42700fb5aa 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2150,6 +2150,13 @@ T: git https://gitlab.com/cohuck/qemu.git s390-next
- T: git https://github.com/borntraeger/qemu.git s390-next
- L: qemu-s390x@nongnu.org
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index 5a070adbc1..415bb47a19 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -1440,6 +1440,18 @@ Front-end message types
+   query the back-end for its device status as defined in the Virtio
+   specification.
  
-+virtio-dmabuf
-+M: Albert Esteve <aesteve@redhat.com>
-+S: Supported
-+F: hw/display/virtio-dmabuf.c
-+F: include/hw/virtio/virtio-dmabuf.h
-+F: tests/unit/test-virtio-dmabuf.c
++``VHOST_USER_GET_SHARED_OBJECT``
++  :id: 41
++  :equivalent ioctl: N/A
++  :request payload: ``struct VhostUserShared``
++  :reply payload: dmabuf fd
 +
- virtiofs
- M: Stefan Hajnoczi <stefanha@redhat.com>
- S: Supported
-diff --git a/hw/display/meson.build b/hw/display/meson.build
-index 413ba4ab24..05619c6968 100644
---- a/hw/display/meson.build
-+++ b/hw/display/meson.build
-@@ -37,6 +37,7 @@ system_ss.add(when: 'CONFIG_MACFB', if_true: files('macfb.c'))
- system_ss.add(when: 'CONFIG_NEXTCUBE', if_true: files('next-fb.c'))
++  When the ``VHOST_USER_PROTOCOL_F_SHARED_OBJECT`` protocol
++  feature has been successfully negotiated, and the UUID is found
++  in the exporters cache, this message is submitted by the front-end
++  to retrieve a given dma-buf fd from a given back-end, determined by
++  the requested UUID. Back-end will reply passing the fd when the operation
++  is successful, or no fd otherwise.
  
- system_ss.add(when: 'CONFIG_VGA', if_true: files('vga.c'))
-+system_ss.add(when: 'CONFIG_VIRTIO', if_true: files('virtio-dmabuf.c'))
+ Back-end message types
+ ----------------------
+@@ -1528,6 +1540,51 @@ is sent by the front-end.
  
- if (config_all_devices.has_key('CONFIG_VGA_CIRRUS') or
-     config_all_devices.has_key('CONFIG_VGA_PCI') or
-diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
-new file mode 100644
-index 0000000000..4a8e430f3d
---- /dev/null
-+++ b/hw/display/virtio-dmabuf.c
-@@ -0,0 +1,138 @@
-+/*
-+ * Virtio Shared dma-buf
-+ *
-+ * Copyright Red Hat, Inc. 2023
-+ *
-+ * Authors:
-+ *     Albert Esteve <aesteve@redhat.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2 or later.
-+ * See the COPYING file in the top-level directory.
-+ */
+   The state.num field is currently reserved and must be set to 0.
+ 
++``VHOST_USER_BACKEND_SHARED_OBJECT_ADD``
++  :id: 6
++  :equivalent ioctl: N/A
++  :request payload: ``struct VhostUserShared``
++  :reply payload: N/A
 +
-+#include "qemu/osdep.h"
++  When the ``VHOST_USER_PROTOCOL_F_SHARED_OBJECT`` protocol
++  feature has been successfully negotiated, this message can be submitted
++  by the backends to add themselves as exporters to the virtio shared lookup
++  table. The back-end device gets associated with a UUID in the shared table.
++  The back-end is responsible of keeping its own table with exported dma-buf fds.
++  When another back-end tries to import the resource associated with the UUID,
++  it will send a message to the front-end, which will act as a proxy to the
++  exporter back-end. If ``VHOST_USER_PROTOCOL_F_REPLY_ACK`` is negotiated, and
++  the back-end sets the ``VHOST_USER_NEED_REPLY`` flag, the front-end must
++  respond with zero when operation is successfully completed, or non-zero
++  otherwise.
 +
++``VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE``
++  :id: 7
++  :equivalent ioctl: N/A
++  :request payload: ``struct VhostUserShared``
++  :reply payload: N/A
++
++  When the ``VHOST_USER_PROTOCOL_F_SHARED_OBJECT`` protocol
++  feature has been successfully negotiated, this message can be submitted
++  by the backend to remove themselves from to the virtio-dmabuf shared
++  table API. The shared table will remove the back-end device associated with
++  the UUID. If ``VHOST_USER_PROTOCOL_F_REPLY_ACK`` is negotiated, and the
++  back-end sets the ``VHOST_USER_NEED_REPLY`` flag, the front-end must respond
++  with zero when operation is successfully completed, or non-zero otherwise.
++
++``VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP``
++  :id: 8
++  :equivalent ioctl: N/A
++  :request payload: ``struct VhostUserShared``
++  :reply payload: dmabuf fd and ``u64``
++
++  When the ``VHOST_USER_PROTOCOL_F_SHARED_OBJECT`` protocol
++  feature has been successfully negotiated, this message can be submitted
++  by the backends to retrieve a given dma-buf fd from the virtio-dmabuf
++  shared table given a UUID. Frontend will reply passing the fd and a zero
++  when the operation is successful, or non-zero otherwise. Note that if the
++  operation fails, no fd is sent to the backend.
++
+ .. _reply_ack:
+ 
+ VHOST_USER_PROTOCOL_F_REPLY_ACK
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 8dcf049d42..08ab256613 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -10,6 +10,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
 +#include "hw/virtio/virtio-dmabuf.h"
-+
-+
-+static GMutex lock;
-+static GHashTable *resource_uuids;
-+
-+/*
-+ * uuid_equal_func: wrapper for UUID is_equal function to
-+ * satisfy g_hash_table_new expected parameters signatures.
-+ */
-+static int uuid_equal_func(const void *lhv, const void *rhv)
-+{
-+    return qemu_uuid_is_equal(lhv, rhv);
-+}
-+
-+static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
-+{
-+    bool result = false;
-+
-+    g_mutex_lock(&lock);
-+    if (resource_uuids == NULL) {
-+        resource_uuids = g_hash_table_new_full(qemu_uuid_hash,
-+                                               uuid_equal_func,
-+                                               NULL,
-+                                               g_free);
-+    }
-+    if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
-+        result = g_hash_table_insert(resource_uuids, uuid, value);
-+    }
-+    g_mutex_unlock(&lock);
-+
-+    return result;
-+}
-+
-+bool virtio_add_dmabuf(QemuUUID *uuid, int udmabuf_fd)
-+{
-+    bool result;
-+    VirtioSharedObject *vso;
-+    if (udmabuf_fd < 0) {
-+        return false;
-+    }
-+    vso = g_new(VirtioSharedObject, 1);
-+    vso->type = TYPE_DMABUF;
-+    vso->value = GINT_TO_POINTER(udmabuf_fd);
-+    result = virtio_add_resource(uuid, vso);
-+
-+    return result;
-+}
-+
-+bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
-+{
-+    bool result;
-+    VirtioSharedObject *vso;
-+    if (dev == NULL) {
-+        return false;
-+    }
-+    vso = g_new(VirtioSharedObject, 1);
-+    vso->type = TYPE_VHOST_DEV;
-+    vso->value = dev;
-+    result = virtio_add_resource(uuid, vso);
-+
-+    return result;
-+}
-+
-+bool virtio_remove_resource(const QemuUUID *uuid)
-+{
-+    bool result;
-+    g_mutex_lock(&lock);
-+    result = g_hash_table_remove(resource_uuids, uuid);
-+    g_mutex_unlock(&lock);
-+
-+    return result;
-+}
-+
-+static VirtioSharedObject *get_shared_object(const QemuUUID *uuid)
-+{
-+    gpointer lookup_res = NULL;
-+
-+    g_mutex_lock(&lock);
-+    if (resource_uuids != NULL) {
-+        lookup_res = g_hash_table_lookup(resource_uuids, uuid);
-+    }
-+    g_mutex_unlock(&lock);
-+
-+    return (VirtioSharedObject *) lookup_res;
-+}
-+
-+int virtio_lookup_dmabuf(const QemuUUID *uuid)
-+{
-+    VirtioSharedObject *vso = get_shared_object(uuid);
-+    if (vso == NULL) {
-+        return -1;
-+    }
-+    assert(vso->type == TYPE_DMABUF);
-+    return GPOINTER_TO_INT(vso->value);
-+}
-+
-+struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid)
-+{
-+    VirtioSharedObject *vso = get_shared_object(uuid);
-+    if (vso == NULL) {
-+        return NULL;
-+    }
-+    assert(vso->type == TYPE_VHOST_DEV);
-+    return (struct vhost_dev *) vso->value;
-+}
-+
-+SharedObjectType virtio_object_type(const QemuUUID *uuid)
-+{
-+    VirtioSharedObject *vso = get_shared_object(uuid);
-+    if (vso == NULL) {
-+        return TYPE_INVALID;
-+    }
-+    return vso->type;
-+}
-+
-+void virtio_free_resources(void)
-+{
-+    g_mutex_lock(&lock);
-+    g_hash_table_destroy(resource_uuids);
-+    /* Reference count shall be 0 after the implicit unref on destroy */
-+    resource_uuids = NULL;
-+    g_mutex_unlock(&lock);
-+}
-diff --git a/include/hw/virtio/virtio-dmabuf.h b/include/hw/virtio/virtio-dmabuf.h
-new file mode 100644
-index 0000000000..627c3b6db7
---- /dev/null
-+++ b/include/hw/virtio/virtio-dmabuf.h
-@@ -0,0 +1,100 @@
-+/*
-+ * Virtio Shared dma-buf
-+ *
-+ * Copyright Red Hat, Inc. 2023
-+ *
-+ * Authors:
-+ *     Albert Esteve <aesteve@redhat.com>
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2.
-+ * See the COPYING file in the top-level directory.
-+ */
-+
-+#ifndef VIRTIO_DMABUF_H
-+#define VIRTIO_DMABUF_H
-+
+ #include "hw/virtio/vhost.h"
+ #include "hw/virtio/virtio-crypto.h"
+ #include "hw/virtio/vhost-user.h"
+@@ -21,6 +22,7 @@
+ #include "sysemu/kvm.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
 +#include "qemu/uuid.h"
-+#include "vhost.h"
+ #include "qemu/sockets.h"
+ #include "sysemu/runstate.h"
+ #include "sysemu/cryptodev.h"
+@@ -74,6 +76,7 @@ enum VhostUserProtocolFeature {
+     /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
+     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+     VHOST_USER_PROTOCOL_F_STATUS = 16,
++    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 17,
+     VHOST_USER_PROTOCOL_F_MAX
+ };
+ 
+@@ -121,6 +124,7 @@ typedef enum VhostUserRequest {
+     VHOST_USER_REM_MEM_REG = 38,
+     VHOST_USER_SET_STATUS = 39,
+     VHOST_USER_GET_STATUS = 40,
++    VHOST_USER_GET_SHARED_OBJECT = 41,
+     VHOST_USER_MAX
+ } VhostUserRequest;
+ 
+@@ -129,6 +133,9 @@ typedef enum VhostUserBackendRequest {
+     VHOST_USER_BACKEND_IOTLB_MSG = 1,
+     VHOST_USER_BACKEND_CONFIG_CHANGE_MSG = 2,
+     VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG = 3,
++    VHOST_USER_BACKEND_SHARED_OBJECT_ADD = 6,
++    VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE = 7,
++    VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP = 8,
+     VHOST_USER_BACKEND_MAX
+ }  VhostUserBackendRequest;
+ 
+@@ -202,6 +209,10 @@ typedef struct VhostUserInflight {
+     uint16_t queue_size;
+ } VhostUserInflight;
+ 
++typedef struct VhostUserShared {
++    unsigned char uuid[16];
++} VhostUserShared;
 +
-+typedef enum SharedObjectType {
-+    TYPE_INVALID = 0,
-+    TYPE_DMABUF,
-+    TYPE_VHOST_DEV,
-+} SharedObjectType;
-+
-+typedef struct VirtioSharedObject {
-+    SharedObjectType type;
-+    gpointer value;
-+} VirtioSharedObject;
-+
-+/**
-+ * virtio_add_dmabuf() - Add a new dma-buf resource to the lookup table
-+ * @uuid: new resource's UUID
-+ * @dmabuf_fd: the dma-buf descriptor that will be stored and shared with
-+ *             other virtio devices. The caller retains ownership over the
-+ *             descriptor and its lifecycle.
-+ *
-+ * Note: @dmabuf_fd must be a valid (non-negative) file descriptor.
-+ *
-+ * Return: true if the UUID did not exist and the resource has been added,
-+ * false if another resource with the same UUID already existed.
-+ * Note that if it finds a repeated UUID, the resource is not inserted in
-+ * the lookup table.
-+ */
-+bool virtio_add_dmabuf(QemuUUID *uuid, int dmabuf_fd);
-+
-+/**
-+ * virtio_add_vhost_device() - Add a new exporter vhost device that holds the
-+ * resource with the associated UUID
-+ * @uuid: new resource's UUID
-+ * @dev: the pointer to the vhost device that holds the resource. The caller
-+ *       retains ownership over the device struct and its lifecycle.
-+ *
-+ * Return: true if the UUID did not exist and the device has been tracked,
-+ * false if another resource with the same UUID already existed.
-+ * Note that if it finds a repeated UUID, the resource is not inserted in
-+ * the lookup table.
-+ */
-+bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev);
-+
-+/**
-+ * virtio_remove_resource() - Removes a resource from the lookup table
-+ * @uuid: resource's UUID
-+ *
-+ * Return: true if the UUID has been found and removed from the lookup table.
-+ */
-+bool virtio_remove_resource(const QemuUUID *uuid);
-+
-+/**
-+ * virtio_lookup_dmabuf() - Looks for a dma-buf resource in the lookup table
-+ * @uuid: resource's UUID
-+ *
-+ * Return: the dma-buf file descriptor integer, or -1 if the key is not found.
-+ */
-+int virtio_lookup_dmabuf(const QemuUUID *uuid);
-+
-+/**
-+ * virtio_lookup_vhost_device() - Looks for an exporter vhost device in the
-+ * lookup table
-+ * @uuid: resource's UUID
-+ *
-+ * Return: pointer to the vhost_dev struct, or NULL if the key is not found.
-+ */
-+struct vhost_dev *virtio_lookup_vhost_device(const QemuUUID *uuid);
-+
-+/**
-+ * virtio_object_type() - Looks for the type of resource in the lookup table
-+ * @uuid: resource's UUID
-+ *
-+ * Return: the type of resource associated with the UUID, or TYPE_INVALID if
-+ * the key is not found.
-+ */
-+SharedObjectType virtio_object_type(const QemuUUID *uuid);
-+
-+/**
-+ * virtio_free_resources() - Destroys all keys and values of the shared
-+ * resources lookup table, and frees them
-+ */
-+void virtio_free_resources(void);
-+
-+#endif /* VIRTIO_DMABUF_H */
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 0299ef6906..1977b302e2 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -50,6 +50,7 @@ tests = {
-   'test-qapi-util': [],
-   'test-interval-tree': [],
-   'test-xs-node': [qom],
-+  'test-virtio-dmabuf': [meson.project_source_root() / 'hw/display/virtio-dmabuf.c'],
+ typedef struct {
+     VhostUserRequest request;
+ 
+@@ -226,6 +237,7 @@ typedef union {
+         VhostUserCryptoSession session;
+         VhostUserVringArea area;
+         VhostUserInflight inflight;
++        VhostUserShared object;
+ } VhostUserPayload;
+ 
+ typedef struct VhostUserMsg {
+@@ -1601,6 +1613,139 @@ static int vhost_user_backend_handle_vring_host_notifier(struct vhost_dev *dev,
+     return 0;
  }
  
- if have_system or have_tools
-diff --git a/tests/unit/test-virtio-dmabuf.c b/tests/unit/test-virtio-dmabuf.c
-new file mode 100644
-index 0000000000..a45ec52f42
---- /dev/null
-+++ b/tests/unit/test-virtio-dmabuf.c
-@@ -0,0 +1,137 @@
-+/*
-+ * QEMU tests for shared dma-buf API
-+ *
-+ * Copyright (c) 2023 Red Hat, Inc.
-+ *
-+ * This library is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU Lesser General Public
-+ * License as published by the Free Software Foundation; either
-+ * version 2.1 of the License, or (at your option) any later version.
-+ *
-+ * This library is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+ * Lesser General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU Lesser General Public
-+ * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "hw/virtio/virtio-dmabuf.h"
-+
-+
-+static void test_add_remove_resources(void)
++static int
++vhost_user_backend_handle_shared_object_add(struct vhost_dev *dev,
++                                            VhostUserShared *object)
 +{
 +    QemuUUID uuid;
-+    int i, dmabuf_fd;
 +
-+    for (i = 0; i < 100; ++i) {
-+        qemu_uuid_generate(&uuid);
-+        dmabuf_fd = g_random_int_range(3, 500);
-+        /* Add a new resource */
-+        g_assert(virtio_add_dmabuf(&uuid, dmabuf_fd));
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, dmabuf_fd);
-+        /* Remove the resource */
-+        g_assert(virtio_remove_resource(&uuid));
-+        /* Resource is not found anymore */
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, -1);
-+    }
++    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
++    return virtio_add_vhost_device(&uuid, dev);
 +}
 +
-+static void test_add_remove_dev(void)
++static int
++vhost_user_backend_handle_shared_object_remove(VhostUserShared *object)
 +{
 +    QemuUUID uuid;
-+    struct vhost_dev *dev = g_new0(struct vhost_dev, 1);
-+    int i;
 +
-+    for (i = 0; i < 100; ++i) {
-+        qemu_uuid_generate(&uuid);
-+        virtio_add_vhost_device(&uuid, dev);
-+        /* vhost device is found */
-+        g_assert(virtio_lookup_vhost_device(&uuid) != NULL);
-+        /* Remove the vhost device */
-+        g_assert(virtio_remove_resource(&uuid));
-+        /* vhost device is not found anymore */
-+        g_assert(virtio_lookup_vhost_device(&uuid) == NULL);
-+    }
-+    g_free(dev);
++    memcpy(uuid.data, object->uuid, sizeof(object->uuid));
++    return virtio_remove_resource(&uuid);
 +}
 +
-+static void test_remove_invalid_resource(void)
++static bool vhost_user_send_resp(QIOChannel *ioc, VhostUserHeader *hdr,
++                                 VhostUserPayload *payload, Error **errp)
++{
++    struct iovec iov[] = {
++        { .iov_base = hdr,      .iov_len = VHOST_USER_HDR_SIZE },
++        { .iov_base = payload,  .iov_len = hdr->size },
++    };
++
++    hdr->flags &= ~VHOST_USER_NEED_REPLY_MASK;
++    hdr->flags |= VHOST_USER_REPLY_MASK;
++
++    return !qio_channel_writev_all(ioc, iov, ARRAY_SIZE(iov), errp);
++}
++
++static bool
++vhost_user_backend_send_dmabuf_fd(QIOChannel *ioc, VhostUserHeader *hdr,
++                                  VhostUserPayload *payload, Error **errp)
++{
++    hdr->size = sizeof(payload->u64);
++    return vhost_user_send_resp(ioc, hdr, payload, errp);
++}
++
++int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
++                                 int *dmabuf_fd)
++{
++    struct vhost_user *u = dev->opaque;
++    CharBackend *chr = u->user->chr;
++    int ret;
++    VhostUserMsg msg = {
++        .hdr.request = VHOST_USER_GET_SHARED_OBJECT,
++        .hdr.flags = VHOST_USER_VERSION,
++    };
++    memcpy(msg.payload.object.uuid, uuid, sizeof(msg.payload.object.uuid));
++
++    ret = vhost_user_write(dev, &msg, NULL, 0);
++    if (ret < 0) {
++        return ret;
++    }
++
++    ret = vhost_user_read(dev, &msg);
++    if (ret < 0) {
++        return ret;
++    }
++
++    if (msg.hdr.request != VHOST_USER_GET_SHARED_OBJECT) {
++        error_report("Received unexpected msg type. "
++                     "Expected %d received %d",
++                     VHOST_USER_GET_SHARED_OBJECT, msg.hdr.request);
++        return -EPROTO;
++    }
++
++    *dmabuf_fd = qemu_chr_fe_get_msgfd(chr);
++    if (*dmabuf_fd < 0) {
++        error_report("Failed to get dmabuf fd");
++        return -EIO;
++    }
++
++    return 0;
++}
++
++static int
++vhost_user_backend_handle_shared_object_lookup(struct vhost_user *u,
++                                               QIOChannel *ioc,
++                                               VhostUserHeader *hdr,
++                                               VhostUserPayload *payload)
 +{
 +    QemuUUID uuid;
-+    int i;
++    CharBackend *chr = u->user->chr;
++    Error *local_err = NULL;
++    int dmabuf_fd = -1;
++    int fd_num = 0;
 +
-+    for (i = 0; i < 20; ++i) {
-+        qemu_uuid_generate(&uuid);
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, -1);
-+        /* Removing a resource that does not exist returns false */
-+        g_assert_false(virtio_remove_resource(&uuid));
++    memcpy(uuid.data, payload->object.uuid, sizeof(payload->object.uuid));
++
++    payload->u64 = 0;
++    switch (virtio_object_type(&uuid)) {
++    case TYPE_DMABUF:
++        dmabuf_fd = virtio_lookup_dmabuf(&uuid);
++        break;
++    case TYPE_VHOST_DEV:
++    {
++        struct vhost_dev *dev = virtio_lookup_vhost_device(&uuid);
++        if (dev == NULL) {
++            payload->u64 = -EINVAL;
++            break;
++        }
++        int ret = vhost_user_get_shared_object(dev, uuid.data, &dmabuf_fd);
++        if (ret < 0) {
++            payload->u64 = ret;
++        }
++        break;
 +    }
++    case TYPE_INVALID:
++        payload->u64 = -EINVAL;
++        break;
++    }
++
++    if (dmabuf_fd != -1) {
++        fd_num++;
++    }
++
++    if (qemu_chr_fe_set_msgfds(chr, &dmabuf_fd, fd_num) < 0) {
++        error_report("Failed to set msg fds.");
++        payload->u64 = -EINVAL;
++    }
++
++    if (!vhost_user_backend_send_dmabuf_fd(ioc, hdr, payload, &local_err)) {
++        error_report_err(local_err);
++        return -EINVAL;
++    }
++
++    return 0;
 +}
 +
-+static void test_add_invalid_resource(void)
-+{
-+    QemuUUID uuid;
-+    struct vhost_dev *dev = NULL;
-+    int i, dmabuf_fd = -2, alt_dmabuf = 2;
+ static void close_backend_channel(struct vhost_user *u)
+ {
+     g_source_destroy(u->backend_src);
+@@ -1658,6 +1803,16 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
+         ret = vhost_user_backend_handle_vring_host_notifier(dev, &payload.area,
+                                                           fd ? fd[0] : -1);
+         break;
++    case VHOST_USER_BACKEND_SHARED_OBJECT_ADD:
++        ret = vhost_user_backend_handle_shared_object_add(dev, &payload.object);
++        break;
++    case VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE:
++        ret = vhost_user_backend_handle_shared_object_remove(&payload.object);
++        break;
++    case VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP:
++        ret = vhost_user_backend_handle_shared_object_lookup(dev->opaque, ioc,
++                                                             &hdr, &payload);
++        break;
+     default:
+         error_report("Received unexpected msg type: %d.", hdr.request);
+         ret = -EINVAL;
+@@ -1668,21 +1823,10 @@ static gboolean backend_read(QIOChannel *ioc, GIOCondition condition,
+      * directly in their request handlers.
+      */
+     if (hdr.flags & VHOST_USER_NEED_REPLY_MASK) {
+-        struct iovec iovec[2];
+-
+-
+-        hdr.flags &= ~VHOST_USER_NEED_REPLY_MASK;
+-        hdr.flags |= VHOST_USER_REPLY_MASK;
+-
+         payload.u64 = !!ret;
+         hdr.size = sizeof(payload.u64);
+ 
+-        iovec[0].iov_base = &hdr;
+-        iovec[0].iov_len = VHOST_USER_HDR_SIZE;
+-        iovec[1].iov_base = &payload;
+-        iovec[1].iov_len = hdr.size;
+-
+-        if (qio_channel_writev_all(ioc, iovec, ARRAY_SIZE(iovec), &local_err)) {
++        if (!vhost_user_send_resp(ioc, &hdr, &payload, &local_err)) {
+             error_report_err(local_err);
+             goto err;
+         }
+diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
+index 31a251a9f5..1860b541d8 100644
+--- a/include/hw/virtio/vhost-backend.h
++++ b/include/hw/virtio/vhost-backend.h
+@@ -196,4 +196,7 @@ int vhost_backend_handle_iotlb_msg(struct vhost_dev *dev,
+ 
+ int vhost_user_gpu_set_socket(struct vhost_dev *dev, int fd);
+ 
++int vhost_user_get_shared_object(struct vhost_dev *dev, unsigned char *uuid,
++                                        int *dmabuf_fd);
 +
-+    for (i = 0; i < 20; ++i) {
-+        qemu_uuid_generate(&uuid);
-+        /* Add a new resource with invalid (negative) resource fd */
-+        g_assert_false(virtio_add_dmabuf(&uuid, dmabuf_fd));
-+        /* Resource is not found */
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, -1);
-+        /* Add a new vhost device with invalid (NULL) pointer */
-+        g_assert_false(virtio_add_vhost_device(&uuid, dev));
-+        /* vhost device is not found */
-+        g_assert(virtio_lookup_vhost_device(&uuid) == NULL);
-+    }
-+
-+    for (i = 0; i < 20; ++i) {
-+        /* Add a valid resource */
-+        qemu_uuid_generate(&uuid);
-+        dmabuf_fd = g_random_int_range(3, 500);
-+        g_assert(virtio_add_dmabuf(&uuid, dmabuf_fd));
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, dmabuf_fd);
-+        /* Add a new resource with repeated uuid returns false */
-+        g_assert_false(virtio_add_dmabuf(&uuid, alt_dmabuf));
-+        /* The value for the uuid key is not replaced */
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuid), ==, dmabuf_fd);
-+    }
-+}
-+
-+static void test_free_resources(void)
-+{
-+    QemuUUID uuids[20];
-+    int i, dmabuf_fd;
-+
-+    for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
-+        qemu_uuid_generate(&uuids[i]);
-+        dmabuf_fd = g_random_int_range(3, 500);
-+        g_assert(virtio_add_dmabuf(&uuids[i], dmabuf_fd));
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuids[i]), ==, dmabuf_fd);
-+    }
-+    virtio_free_resources();
-+    for (i = 0; i < ARRAY_SIZE(uuids); ++i) {
-+        /* None of the resources is found after free'd */
-+        g_assert_cmpint(virtio_lookup_dmabuf(&uuids[i]), ==, -1);
-+    }
-+
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    g_test_add_func("/virtio-dmabuf/add_rm_res", test_add_remove_resources);
-+    g_test_add_func("/virtio-dmabuf/add_rm_dev", test_add_remove_dev);
-+    g_test_add_func("/virtio-dmabuf/rm_invalid_res",
-+                    test_remove_invalid_resource);
-+    g_test_add_func("/virtio-dmabuf/add_invalid_res",
-+                    test_add_invalid_resource);
-+    g_test_add_func("/virtio-dmabuf/free_res", test_free_resources);
-+
-+    return g_test_run();
-+}
+ #endif /* VHOST_BACKEND_H */
 -- 
 2.41.0
 
