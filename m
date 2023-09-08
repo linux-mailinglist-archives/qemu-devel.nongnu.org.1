@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3311B798404
+	by mail.lfdr.de (Postfix) with ESMTPS id 425D9798405
 	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:27:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeWoi-0003sp-DM; Fri, 08 Sep 2023 04:26:16 -0400
+	id 1qeWpM-00044I-43; Fri, 08 Sep 2023 04:26:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=fJ+a=EY=kaod.org=clg@ozlabs.org>)
- id 1qeWof-0003s1-KQ; Fri, 08 Sep 2023 04:26:13 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qeWpI-00041s-If; Fri, 08 Sep 2023 04:26:52 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=fJ+a=EY=kaod.org=clg@ozlabs.org>)
- id 1qeWod-0000f0-2K; Fri, 08 Sep 2023 04:26:13 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rhq221Rwgz4xFR;
- Fri,  8 Sep 2023 18:26:02 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rhq204HVFz4xFQ;
- Fri,  8 Sep 2023 18:26:00 +1000 (AEST)
-Message-ID: <0aaf7b07-faf3-39f7-c310-1eed51a628b2@kaod.org>
-Date: Fri, 8 Sep 2023 10:25:56 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qeWpF-0000l3-54; Fri, 08 Sep 2023 04:26:51 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 570A320030;
+ Fri,  8 Sep 2023 11:27:33 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 77E2726885;
+ Fri,  8 Sep 2023 11:26:44 +0300 (MSK)
+Message-ID: <dfa27597-a036-a3fb-8df3-5483004d0caf@tls.msk.ru>
+Date: Fri, 8 Sep 2023 11:26:44 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 00/26] aspeed queue
+ Thunderbird/102.15.0
+Subject: Re: [PULL for-6.2 0/7] Ide patches
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, qemu-stable <qemu-stable@nongnu.org>
-References: <20230901094214.296918-1-clg@kaod.org>
- <be868ef0-cbc3-a380-3307-512857e2a4a2@kaod.org>
- <70e53523-eb9c-669a-1ee6-cdfd08507f8c@tls.msk.ru>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <70e53523-eb9c-669a-1ee6-cdfd08507f8c@tls.msk.ru>
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Qemu-block <qemu-block@nongnu.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Niklas Cassel <niklas.cassel@wdc.com>
+References: <20230907034228.4054839-1-jsnow@redhat.com>
+ <7ef011cd-09e7-c5f9-dc9d-173ff8f431c8@tls.msk.ru>
+ <CAFn=p-aueHBXMFHgw=Y8XYyeaFZKFRc8vJHQ6PQ8gNSqPcii8Q@mail.gmail.com>
+ <d5ff2d54-70bb-00e0-d25a-56d1096bed73@tls.msk.ru>
+ <528c14dc-329f-f51a-cb8d-350a7a5cb7ee@linaro.org>
+ <9eba8794-0535-e072-a15e-b95d1f9a88ff@tls.msk.ru>
+In-Reply-To: <9eba8794-0535-e072-a15e-b95d1f9a88ff@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=fJ+a=EY=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,27 +67,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 09:52, Michael Tokarev wrote:
-> 08.09.2023 10:09, Cédric Le Goater wrote:
-> ..
->>> Hang Yu (3):
->>>        hw/i2c/aspeed: Fix Tx count and Rx size error in buffer pool mode
->>>        hw/i2c/aspeed: Fix TXBUF transmission start position error
->>
->> Michael,
->>
->> I think the two above are candidates for stable.
-> 
-> Got it.  I've noticed these two in master yesterday, but thought
-> i2c/aspeed priority is a bit lower than other stuff, - maybe
-> wrongly.
+08.09.2023 11:06, Michael Tokarev wrote:
+..
 
-It is not hot material indeed but it does fix support for the
-latest Aspeed SDK and a lot people simply use the disto QEMU.
+> This smells a bit extreme, esp. for the "simplify and document PxCI handling"
+> part which is one of the largest patches in whole -stable history.
 
-> Picked these two up now.
+or maybe it's just the excellent commit comment ;)
 
-Thanks, !
-
-C.
+/mjt
 
