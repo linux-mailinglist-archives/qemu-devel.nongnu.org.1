@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEE67981ED
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 862357981DC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:07:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUee-0008IL-1A; Fri, 08 Sep 2023 02:07:44 -0400
+	id 1qeUee-0008Pg-MC; Fri, 08 Sep 2023 02:07:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUeb-000891-D3
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:41 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1qeUec-0008EB-8Q
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:42 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUeV-0007p5-NO
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:40 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c0db66af1bso12627095ad.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:35 -0700 (PDT)
+ id 1qeUeY-0007wt-Lt
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:41 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1bf078d5f33so15458095ad.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153253; x=1694758053; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153257; x=1694758057; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sm5kdR4zPqERpHwNfrDrMNoNCsEGBcjXZveAeFuP0TY=;
- b=sqGmyToYWjbr7YcKfKgBYVl0VBtkPFsKrX1MrtQCPovpVenDJGjfLwJoVmgYq5eFcC
- W9nrm2NadyL7HG9sQaAbUaLNBvZtBES/dpZ6cKbhXWmHY1TRmqMiN25fgyLy6YGWxsVS
- 6AcImHUOEcTfNIiotyosOQGxTjI/Yxa3BzNHsapt5BdxJFlPIwu72SLmJQuXj3ApiOGS
- ujh7q27Vk97ABqFNixmxWU+Yzdv8QStvDuBqVAUrTZgVmtMIIDOFIhlPINgLagwn8xvt
- kobgcjnGjQDZaZM6QKlFol/rigUvOcz5Ao7dkNqS3invd3bxAxLphoP1ybVsIUO7Fhb3
- osVA==
+ bh=9BtKiY4lAmSAzTij8lSOcl0A+RCHDkyDwuH2ARMSmck=;
+ b=bRSXjN5KHIptPtcEarMuQhMarGF2qwUbjrIBzBrtP6R//iHbIrLDXs9a8ZZ0Ue085O
+ cxv3Q6uCa1i+c3LC+5rzIR1+sFjMgH3BXd7DATocaG+5Vu3aYno5vr/GvlR0VNbpgs8U
+ KUE/FGdpcvEinbIwGFz9iqwXveBWHxvlGvEhJ/olMm+LsLDy439KJNXPnMLha+ir8Goi
+ mvCV+HR2+iukt5lks/cCA92VkD29ikEUMh7Ee2Ej9WlEYg2+SGwysK4vZE9J+0190gfc
+ rn0ZBBKh8Q+o3ZMux/odpaxq4IppDVVVrUS8phhvW/RJ5DCklv97R5xba4IB22iBLeOy
+ nr+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153253; x=1694758053;
+ d=1e100.net; s=20230601; t=1694153257; x=1694758057;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sm5kdR4zPqERpHwNfrDrMNoNCsEGBcjXZveAeFuP0TY=;
- b=enZNsMrFeDngow2/RZWp9kMYoPpEcfgW59V7bKlcR5WqoDILFJO9o7CyDfI1XD3mM4
- /efbtwxVXF/iWsiPw6V+SoB0gQOSMD3XNM+YwUVkFbWJqJjEhodd4FvuClaKzPbMXDzB
- cfts4facvHCleOHwa4TygvT12Pjd1eZILHQVD7igIcVHoeUhy3nnbT7z1SFh4wyGAbfo
- rw+eKPIkscgVi6CHMo1E9UJisStb3BmEsnvgRvR3TI/6wMH0NYq5rY4V5VvbncSomXPi
- 5SIYn9L8Q7efE0OmaC2m7XDz1N5bnEYhT0PGUbUjucAqY47yNPLP36m0P3PvfC4JWOvV
- USVQ==
-X-Gm-Message-State: AOJu0YxWxjya+8HNhMwS5c9jtaECB01ZoEInyEAQLb36TSd7GS2Ahw2G
- v0YNXKJpN6BhqyB6wRF3eduzZWcZhw7kqs40
-X-Google-Smtp-Source: AGHT+IF4iDlPLdiu4Jcis6dnXVE5fmlBYh0DPyl7ZdL15Xkz/OFXXG/E7jxXFh9Q56bRVxZA+88kew==
-X-Received: by 2002:a17:902:f7c7:b0:1b8:7fd7:e022 with SMTP id
- h7-20020a170902f7c700b001b87fd7e022mr1737965plw.28.1694153252826; 
- Thu, 07 Sep 2023 23:07:32 -0700 (PDT)
+ bh=9BtKiY4lAmSAzTij8lSOcl0A+RCHDkyDwuH2ARMSmck=;
+ b=DjTqVgiKiaLoTfcRYm2jmkpaeV3wBk9soAMUjVkbqc3wIzO91DS/Vn9nSqKh5O+M3g
+ G1Nppz8hgf5Zewm8Gm1Er1SwbD6IxHX1i9jbMLMtOaJX9o9X0btCv0CZMkumf4ja48nJ
+ WH7NgTFo7Z/IrJv6I7RtCr4XLHrbCKHv9CPG/lf/7dyQ9SebHXCMWKMk25nNQXnN00Sw
+ xECnCT/hmiiy5IQGzpqyWComohygMtKzMgcYGWvgyUyXKUprCXYd0toNGz+RoP9djEO4
+ WyToi8fHkUD8HCtNgNgIfOZ3PtdZvNH4cvbv+KXgo6x+GJsQXCmjFppvgIgYpWYsF0LA
+ QvHg==
+X-Gm-Message-State: AOJu0Yzozfi3EcVdq5LfGJ1AbCCXYFqr1aIxT38O7wc2o/czQ2iQc0WJ
+ gNdCpGbhY6kHq/6Pw21NXZQVzPEcokMc4qxj
+X-Google-Smtp-Source: AGHT+IEtGzk3ZXoYBuFnVsCODJr5pbDWTseufTMVZosJwV2G0QWeUi0vA1Evs2kqndh+b+29oyiTBg==
+X-Received: by 2002:a17:902:74c8:b0:1c3:2ee6:3811 with SMTP id
+ f8-20020a17090274c800b001c32ee63811mr1873587plt.8.1694153257034; 
+ Thu, 07 Sep 2023 23:07:37 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.28
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:07:31 -0700 (PDT)
+ Thu, 07 Sep 2023 23:07:35 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Ard Biesheuvel <ardb@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: alistair23@gmail.com, Akihiko Odaki <akihiko.odaki@daynix.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 41/65] target/riscv: Use accelerated helper for AES64KS1I
-Date: Fri,  8 Sep 2023 16:04:07 +1000
-Message-ID: <20230908060431.1903919-42-alistair.francis@wdc.com>
+Subject: [PULL 42/65] target/riscv: Allocate itrigger timers only once
+Date: Fri,  8 Sep 2023 16:04:08 +1000
+Message-ID: <20230908060431.1903919-43-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,60 +99,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Use the accelerated SubBytes/ShiftRows/AddRoundKey AES helper to
-implement the first half of the key schedule derivation. This does not
-actually involve shifting rows, so clone the same value into all four
-columns of the AES vector to counter that operation.
+riscv_trigger_init() had been called on reset events that can happen
+several times for a CPU and it allocated timers for itrigger. If old
+timers were present, they were simply overwritten by the new timers,
+resulting in a memory leak.
 
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Divide riscv_trigger_init() into two functions, namely
+riscv_trigger_realize() and riscv_trigger_reset() and call them in
+appropriate timing. The timer allocation will happen only once for a
+CPU in riscv_trigger_realize().
+
+Fixes: 5a4ae64cac ("target/riscv: Add itrigger support when icount is enabled")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20230831154118.138727-1-ardb@kernel.org>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20230818034059.9146-1-akihiko.odaki@daynix.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/crypto_helper.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ target/riscv/debug.h |  3 ++-
+ target/riscv/cpu.c   |  8 +++++++-
+ target/riscv/debug.c | 15 ++++++++++++---
+ 3 files changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
-index 4d65945429..bb084e00ef 100644
---- a/target/riscv/crypto_helper.c
-+++ b/target/riscv/crypto_helper.c
-@@ -148,24 +148,17 @@ target_ulong HELPER(aes64ks1i)(target_ulong rs1, target_ulong rnum)
+diff --git a/target/riscv/debug.h b/target/riscv/debug.h
+index c471748d5a..5794aa6ee5 100644
+--- a/target/riscv/debug.h
++++ b/target/riscv/debug.h
+@@ -143,7 +143,8 @@ void riscv_cpu_debug_excp_handler(CPUState *cs);
+ bool riscv_cpu_debug_check_breakpoint(CPUState *cs);
+ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp);
  
-     uint8_t enc_rnum = rnum;
-     uint32_t temp = (RS1 >> 32) & 0xFFFFFFFF;
--    uint8_t rcon_ = 0;
--    target_ulong result;
-+    AESState t, rc = {};
+-void riscv_trigger_init(CPURISCVState *env);
++void riscv_trigger_realize(CPURISCVState *env);
++void riscv_trigger_reset_hold(CPURISCVState *env);
  
-     if (enc_rnum != 0xA) {
-         temp = ror32(temp, 8); /* Rotate right by 8 */
--        rcon_ = round_consts[enc_rnum];
-+        rc.w[0] = rc.w[1] = round_consts[enc_rnum];
+ bool riscv_itrigger_enabled(CPURISCVState *env);
+ void riscv_itrigger_update_priv(CPURISCVState *env);
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index bf0912014e..f227c7664e 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -926,7 +926,7 @@ static void riscv_cpu_reset_hold(Object *obj)
+ 
+ #ifndef CONFIG_USER_ONLY
+     if (cpu->cfg.debug) {
+-        riscv_trigger_init(env);
++        riscv_trigger_reset_hold(env);
      }
  
--    temp = ((uint32_t)AES_sbox[(temp >> 24) & 0xFF] << 24) |
--           ((uint32_t)AES_sbox[(temp >> 16) & 0xFF] << 16) |
--           ((uint32_t)AES_sbox[(temp >> 8) & 0xFF] << 8) |
--           ((uint32_t)AES_sbox[(temp >> 0) & 0xFF] << 0);
-+    t.w[0] = t.w[1] = t.w[2] = t.w[3] = temp;
-+    aesenc_SB_SR_AK(&t, &t, &rc, false);
+     if (kvm_enabled()) {
+@@ -1525,6 +1525,12 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
  
--    temp ^= rcon_;
--
--    result = ((uint64_t)temp << 32) | temp;
--
--    return result;
-+    return t.d[0];
+     riscv_cpu_register_gdb_regs_for_features(cs);
+ 
++#ifndef CONFIG_USER_ONLY
++    if (cpu->cfg.debug) {
++        riscv_trigger_realize(&cpu->env);
++    }
++#endif
++
+     qemu_init_vcpu(cs);
+     cpu_reset(cs);
+ 
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index 75ee1c4971..ddd46b2d3e 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -903,7 +903,17 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+     return false;
  }
  
- target_ulong HELPER(aes64im)(target_ulong rs1)
+-void riscv_trigger_init(CPURISCVState *env)
++void riscv_trigger_realize(CPURISCVState *env)
++{
++    int i;
++
++    for (i = 0; i < RV_MAX_TRIGGERS; i++) {
++        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
++                                              riscv_itrigger_timer_cb, env);
++    }
++}
++
++void riscv_trigger_reset_hold(CPURISCVState *env)
+ {
+     target_ulong tdata1 = build_tdata1(env, TRIGGER_TYPE_AD_MATCH, 0, 0);
+     int i;
+@@ -928,7 +938,6 @@ void riscv_trigger_init(CPURISCVState *env)
+         env->tdata3[i] = 0;
+         env->cpu_breakpoint[i] = NULL;
+         env->cpu_watchpoint[i] = NULL;
+-        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+-                                              riscv_itrigger_timer_cb, env);
++        timer_del(env->itrigger_timer[i]);
+     }
+ }
 -- 
 2.41.0
 
