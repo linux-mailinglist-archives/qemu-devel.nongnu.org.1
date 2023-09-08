@@ -2,75 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD72798A25
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 17:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4931D798A35
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 17:49:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qedcI-0003wE-98; Fri, 08 Sep 2023 11:41:54 -0400
+	id 1qediF-0007Ku-4T; Fri, 08 Sep 2023 11:48:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qedcF-0003lP-Ph
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:41:51 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qedc9-0003w2-5j
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:41:47 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-500913779f5so3796938e87.2
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 08:41:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694187697; x=1694792497; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pBgTHklQNbdjDjd8eoz0tW/JQGecWV1WEnHbYq378R8=;
- b=LqNg8T6CQ/FxuuXT1l4Kz0BOyidcsM97YG5VFFBu/qEJnYt2XctKxd8uy7QwTSR4FO
- wAfwV5syahcvVG2qNECLSIOdCziODuQNgkfnHMTk/4cV0xfZe9HaqS4o+jmlezZUhoY3
- aXkvuJ8fmnHOqW0IYdht5E86iJFj+fT6AOlmkywk85iOwIe3ibOO1WrTP7kxCn9V7oWq
- MKl/ESIlK2aJfFsGE7ZfT+zrPRs9PGDan07xTJcGnxmNaRRtYVo/GqKw6QKER4lu/rSn
- A/R6+2S5v9Y3flOi+yvfM/olqxub49yJbafy/izBJIwpQekvPmJzA7DzFBLBOmRcigWz
- H16A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694187697; x=1694792497;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pBgTHklQNbdjDjd8eoz0tW/JQGecWV1WEnHbYq378R8=;
- b=kLjHRgtfaNhRD87I73H7TRRO52XVSZdS3ja2mAuLmeNSNlZHKxKZHlGA9TtCxaVFvz
- q+OZEmhlCXE4nR8XQ3wdD6USp85wXfkN48t97fFoajjIvm6gxuUyOQgUVC0JfFmdDuH+
- iXDMum2qMoM0SpV6th5FfLw0tgm+3g9t+wag5CH1QwqxXs6V2h2Ocjwt+wId87znECXM
- U4RYgcZPWlk5zazRpaMVwML3rscck38v85jsQdvvSplt71218moOBVy1NgU3lmvAqRm7
- gThI1UnP/Z5l+4hZYsIfponu8Og22tf5zzNSbvvS1M7sE27mYavpDMrFrjSIBgQVxs1r
- OGdw==
-X-Gm-Message-State: AOJu0YxGZMCDWt5nWQIT4KvRAQpp08cF5o2gOkWSJYZWetKpfWHfGqC6
- J4m9ZrF9sJC2XNzQuMVUUqj8hnAc9Ey+hN6JLUFFB+GlW1YyBHj/
-X-Google-Smtp-Source: AGHT+IECmaQLoL0Fs5RP0mpmWZiAsvuPBsWjbbiyx90HcRMpy4BmRmR/e3dcfdf4+Lp3wCo1CunNSucSE0snttigre4=
-X-Received: by 2002:ac2:5de9:0:b0:4fb:7c40:9f97 with SMTP id
- z9-20020ac25de9000000b004fb7c409f97mr2106235lfq.27.1694187697112; Fri, 08 Sep
- 2023 08:41:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qediC-0007KE-9m
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:48:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qedi9-0005m6-Jy
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:48:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694188075;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3mb/1ETQevXuHtJtG4xSdJ04Rm3Q8GrMTHy676kq98I=;
+ b=DVJBbwFgm7nhbLQCLD588iNQJI+XjzAFi5K8UTzBs7R0trNwLYs0JVHQx7orEqp5TIEnLP
+ KabsFfpZuvgayjJTd3DxWhk+bSPzjX7X3iKfmN8zNDn5h+M+qe26cdu1McfP04UjUPpnd7
+ exHKUJaQRF+Mz6EBzotAu1NeYli0Z28=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-595-tZguA_9fMZu9O8NR0Cu4OQ-1; Fri, 08 Sep 2023 11:47:52 -0400
+X-MC-Unique: tZguA_9fMZu9O8NR0Cu4OQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDD0C94EA42;
+ Fri,  8 Sep 2023 15:47:51 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.45.224.190])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5544321EE566;
+ Fri,  8 Sep 2023 15:47:50 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Fam Zheng <fam@euphon.net>, marcandre.lureau@gmail.com,
+ Albert Esteve <aesteve@redhat.com>, philmd@linaro.org, cohuck@redhat.com,
+ "Michael S. Tsirkin" <mst@redhat.com>, kraxel@redhat.com
+Subject: [PATCH v8 0/4] Virtio shared dma-buf
+Date: Fri,  8 Sep 2023 17:47:39 +0200
+Message-ID: <20230908154743.809569-1-aesteve@redhat.com>
 MIME-Version: 1.0
-References: <20230829232335.965414-1-richard.henderson@linaro.org>
- <CAFEAcA9K6+c24rEORCF1vNav38kS5UBBVtSeC9T=DjV1_i0PDg@mail.gmail.com>
-In-Reply-To: <CAFEAcA9K6+c24rEORCF1vNav38kS5UBBVtSeC9T=DjV1_i0PDg@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Sep 2023 16:41:26 +0100
-Message-ID: <CAFEAcA_PTJ69+LexN_Ca=GwjRfQyT_N-+qg34QEyQLgpCEUSwQ@mail.gmail.com>
-Subject: Re: [PATCH v5 00/12] Implement Most ARMv8.3 Pointer Authentication
- Features
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, aaron@os.amperecomputing.com, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,52 +77,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 8 Sept 2023 at 12:55, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> On Wed, 30 Aug 2023 at 00:24, Richard Henderson
-> <richard.henderson@linaro.org> wrote:
-> >
-> > Changes for v5:
-> >   * Updates for review.
-> >   * Include linux-user ESR changes.
-> >
-> > Patch 10 is the only one without review.
-> >
-> >
-> > r~
->
-> Applied to target-arm.next. Thanks to both you and Aaron
-> for this work.
+v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
+v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
+v3 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06126.html
+v4 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05174.html
+v5 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00255.html
+v6 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00987.html
+v7 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01190.html
+v7 -> v8:
+- Move "qemu/osdep.h" include to the virtio-dmabuf source file.
+- Remove duplicated glib include.
+- Change the title of commits to better reflect the path to the change
 
-It turns out that there's something wrong in the linux-user
-ESR changes and they trip the clang sanitizer:
-https://gitlab.com/pm215/qemu/-/jobs/5047578129
+This patch covers the required steps to add support for virtio cross-device resource sharing[1],
+which support is already available in the kernel.
 
-TEST linux-test on aarch64
-../linux-user/aarch64/signal.c:583:21: runtime error: member access
-within null pointer of type 'target_siginfo_t' (aka 'struct
-target_siginfo')
-SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior
-../linux-user/aarch64/signal.c:583:21 in
-make[1]: *** [Makefile:178: run-linux-test] Error 1
+The main usecase will be sharing dma buffers from virtio-gpu devices (as the exporter
+-see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under discussion)
+devices (as the buffer-user or importer). Therefore, even though virtio specs talk about
+resources or objects[3], this patch adds the infrastructure with dma-bufs in mind.
+Note that virtio specs let the devices themselves define what a vitio object is.
 
-where that line number is in need_save_esr() on the
-first line "int sig = info->si_signo;".
+These are the main parts that are covered in the patch:
 
-On non-sanitizer CI runs you just get a straight SEGV:
-https://gitlab.com/pm215/qemu/-/jobs/5047578115
+- Add hash function to uuid module
+- Shared resources table, to hold all resources that can be shared in the host and their assigned UUID,
+  or pointers to the backend holding the resource
+- Internal shared table API for virtio devices to add, lookup and remove resources
+- Unit test to verify the API
+- New messages to the vhost-user protocol to allow backend to interact with the shared
+  table API through the control socket
+- New vhost-user feature bit to enable shared objects feature
 
-TEST linux-test on alpha
-timeout: the monitored command dumped core
-Segmentation fault
-make[1]: *** [Makefile:178: run-linux-test] Error 139
-make: *** [/builds/pm215/qemu/tests/Makefile.include:56:
-run-tcg-tests-aarch64-linux-user] Error 2
-make: *** Waiting for unfinished jobs....
+Applies cleanly to 03a3a62fbd0aa5227e978eef3c67d3978aec9e5f
 
-I'm going to drop the 3 linux-user patches from
-target-arm.next.
+[1] - https://lwn.net/Articles/828988/
+[2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-3730006
+[3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-10500011
 
-thanks
--- PMM
+Albert Esteve (4):
+  util/uuid: add a hash function
+  hw/display: introduce virtio-dmabuf
+  vhost-user: add shared_object msg
+  libvhost-user: handle shared_object msg
+
+ MAINTAINERS                               |   7 +
+ docs/interop/vhost-user.rst               |  57 ++++++++
+ hw/display/meson.build                    |   1 +
+ hw/display/virtio-dmabuf.c                | 138 ++++++++++++++++++
+ hw/virtio/vhost-user.c                    | 168 ++++++++++++++++++++--
+ include/hw/virtio/vhost-backend.h         |   3 +
+ include/hw/virtio/virtio-dmabuf.h         | 100 +++++++++++++
+ include/qemu/uuid.h                       |   2 +
+ subprojects/libvhost-user/libvhost-user.c | 120 ++++++++++++++++
+ subprojects/libvhost-user/libvhost-user.h |  55 ++++++-
+ tests/unit/meson.build                    |   1 +
+ tests/unit/test-uuid.c                    |  27 ++++
+ tests/unit/test-virtio-dmabuf.c           | 137 ++++++++++++++++++
+ util/uuid.c                               |  15 ++
+ 14 files changed, 818 insertions(+), 13 deletions(-)
+ create mode 100644 hw/display/virtio-dmabuf.c
+ create mode 100644 include/hw/virtio/virtio-dmabuf.h
+ create mode 100644 tests/unit/test-virtio-dmabuf.c
+
+-- 
+2.41.0
+
 
