@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8328C7982B5
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 663477982A6
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:47:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeVFP-00051i-Iu; Fri, 08 Sep 2023 02:45:43 -0400
+	id 1qeVFz-0005FM-Uo; Fri, 08 Sep 2023 02:46:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qeVFB-0004xn-Qe
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qeVFD-0004xw-UM
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qeVF9-0002lV-N3
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:29 -0400
+ id 1qeVFA-0002lu-LB
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694155526;
+ s=mimecast20190719; t=1694155527;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WQ+CCrvrEX5mAf2eXi5nlVsMwHKqdv7x1huinOxKLk4=;
- b=HvclQrfV+9+kPa//1VzyFhqMBMkjYh5Wc3IMCOkKek8NF1cWo8KgJFNauv6bhVCAPBFtlk
- C0AmKGpUpXZnel6OBxrzRu8Y3JMq4vJA4md+aLjvEUkTjgj3gM9I+hjfb9NE+gp9Xdv/Ii
- dX8P0X/iFw+3MKNCne/EYCFadsD5uDA=
+ bh=/nmaWjsPpo8aHQXy4GKGccTzKPwqiWrB88QchQGcoG0=;
+ b=gRNmaU0hNdgwwUWbhYyInAz43dnxE62ivHbajIV0THiFt7wydrbq/lOmdRSeDkTpDbCyxI
+ vAz1iR5Z6+VZaukfdhCHftL7v1nPktXMGihG/pZQHArJ8voUmaNlhApJybeSBNODfdjlAC
+ NfULeY1GH+sZkkuLVDv5Yiq2wvGYsfo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-589-iVnqrkwfNYmudskOAfJUqA-1; Fri, 08 Sep 2023 02:45:21 -0400
-X-MC-Unique: iVnqrkwfNYmudskOAfJUqA-1
+ us-mta-384-Ico4WZbSNSibmiU2ju_9KQ-1; Fri, 08 Sep 2023 02:45:24 -0400
+X-MC-Unique: Ico4WZbSNSibmiU2ju_9KQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D89428030A9;
- Fri,  8 Sep 2023 06:45:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A79C61817929;
+ Fri,  8 Sep 2023 06:45:23 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.113.80])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BBD711121314;
- Fri,  8 Sep 2023 06:45:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A6DD11121314;
+ Fri,  8 Sep 2023 06:45:21 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Andrew Melnychenko <andrew@daynix.com>,
- Yuri Benditovich <yuri.benditovich@daynix.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 03/17] virtio-net: Add USO flags to vhost support.
-Date: Fri,  8 Sep 2023 14:44:53 +0800
-Message-Id: <20230908064507.14596-4-jasowang@redhat.com>
+Cc: Yuri Benditovich <yuri.benditovich@daynix.com>,
+ Andrew Melnychecnko <andrew@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 04/17] virtio-net: Add support for USO features
+Date: Fri,  8 Sep 2023 14:44:54 +0800
+Message-Id: <20230908064507.14596-5-jasowang@redhat.com>
 In-Reply-To: <20230908064507.14596-1-jasowang@redhat.com>
 References: <20230908064507.14596-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,51 +79,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Andrew Melnychenko <andrew@daynix.com>
+From: Yuri Benditovich <yuri.benditovich@daynix.com>
 
-New features are subject to check with vhost-user and vdpa.
+USO features of virtio-net device depend on kernel ability
+to support them, for backward compatibility by default the
+features are disabled on 8.0 and earlier.
 
 Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
-Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+Signed-off-by: Andrew Melnychecnko <andrew@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/vhost_net.c | 3 +++
- net/vhost-vdpa.c   | 3 +++
- 2 files changed, 6 insertions(+)
+ hw/core/machine.c   |  4 ++++
+ hw/net/virtio-net.c | 31 +++++++++++++++++++++++++++++--
+ 2 files changed, 33 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index 6b958d6..57427a3 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -78,6 +78,9 @@ static const int user_feature_bits[] = {
-     VIRTIO_F_RING_RESET,
-     VIRTIO_NET_F_RSS,
-     VIRTIO_NET_F_HASH_REPORT,
-+    VIRTIO_NET_F_GUEST_USO4,
-+    VIRTIO_NET_F_GUEST_USO6,
-+    VIRTIO_NET_F_HOST_USO,
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index da699cf..230aab8 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -38,6 +38,7 @@
+ #include "exec/confidential-guest-support.h"
+ #include "hw/virtio/virtio.h"
+ #include "hw/virtio/virtio-pci.h"
++#include "hw/virtio/virtio-net.h"
  
-     /* This bit implies RARP isn't sent by QEMU out of band */
-     VIRTIO_NET_F_GUEST_ANNOUNCE,
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 9795306..1dca37a 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -75,11 +75,14 @@ const int vdpa_feature_bits[] = {
-     VIRTIO_NET_F_GUEST_TSO4,
-     VIRTIO_NET_F_GUEST_TSO6,
-     VIRTIO_NET_F_GUEST_UFO,
-+    VIRTIO_NET_F_GUEST_USO4,
-+    VIRTIO_NET_F_GUEST_USO6,
-     VIRTIO_NET_F_HASH_REPORT,
-     VIRTIO_NET_F_HOST_ECN,
-     VIRTIO_NET_F_HOST_TSO4,
-     VIRTIO_NET_F_HOST_TSO6,
-     VIRTIO_NET_F_HOST_UFO,
-+    VIRTIO_NET_F_HOST_USO,
-     VIRTIO_NET_F_MQ,
-     VIRTIO_NET_F_MRG_RXBUF,
-     VIRTIO_NET_F_MTU,
+ GlobalProperty hw_compat_8_1[] = {};
+ const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
+@@ -45,6 +46,9 @@ const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
+ GlobalProperty hw_compat_8_0[] = {
+     { "migration", "multifd-flush-after-each-section", "on"},
+     { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
++    { TYPE_VIRTIO_NET, "host_uso", "off"},
++    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
++    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
+ };
+ const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
+ 
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index d2311e7..bd0ead9 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -659,6 +659,15 @@ static int peer_has_ufo(VirtIONet *n)
+     return n->has_ufo;
+ }
+ 
++static int peer_has_uso(VirtIONet *n)
++{
++    if (!peer_has_vnet_hdr(n)) {
++        return 0;
++    }
++
++    return qemu_has_uso(qemu_get_queue(n->nic)->peer);
++}
++
+ static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
+                                        int version_1, int hash_report)
+ {
+@@ -796,6 +805,10 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+         virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO6);
+         virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ECN);
+ 
++        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
++        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
++        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
++
+         virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
+     }
+ 
+@@ -804,6 +817,12 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
+         virtio_clear_feature(&features, VIRTIO_NET_F_HOST_UFO);
+     }
+ 
++    if (!peer_has_uso(n)) {
++        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
++        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
++        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
++    }
++
+     if (!get_vhost_net(nc->peer)) {
+         return features;
+     }
+@@ -864,14 +883,16 @@ static void virtio_net_apply_guest_offloads(VirtIONet *n)
+             !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_USO6)));
+ }
+ 
+-static uint64_t virtio_net_guest_offloads_by_features(uint32_t features)
++static uint64_t virtio_net_guest_offloads_by_features(uint64_t features)
+ {
+     static const uint64_t guest_offloads_mask =
+         (1ULL << VIRTIO_NET_F_GUEST_CSUM) |
+         (1ULL << VIRTIO_NET_F_GUEST_TSO4) |
+         (1ULL << VIRTIO_NET_F_GUEST_TSO6) |
+         (1ULL << VIRTIO_NET_F_GUEST_ECN)  |
+-        (1ULL << VIRTIO_NET_F_GUEST_UFO);
++        (1ULL << VIRTIO_NET_F_GUEST_UFO)  |
++        (1ULL << VIRTIO_NET_F_GUEST_USO4) |
++        (1ULL << VIRTIO_NET_F_GUEST_USO6);
+ 
+     return guest_offloads_mask & features;
+ }
+@@ -3924,6 +3945,12 @@ static Property virtio_net_properties[] = {
+     DEFINE_PROP_INT32("speed", VirtIONet, net_conf.speed, SPEED_UNKNOWN),
+     DEFINE_PROP_STRING("duplex", VirtIONet, net_conf.duplex_str),
+     DEFINE_PROP_BOOL("failover", VirtIONet, failover, false),
++    DEFINE_PROP_BIT64("guest_uso4", VirtIONet, host_features,
++                      VIRTIO_NET_F_GUEST_USO4, true),
++    DEFINE_PROP_BIT64("guest_uso6", VirtIONet, host_features,
++                      VIRTIO_NET_F_GUEST_USO6, true),
++    DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
++                      VIRTIO_NET_F_HOST_USO, true),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
 -- 
 2.7.4
 
