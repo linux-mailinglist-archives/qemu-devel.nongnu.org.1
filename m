@@ -2,85 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF90798288
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2349E798293
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:45:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeVDP-0002k0-1U; Fri, 08 Sep 2023 02:43:39 -0400
+	id 1qeVFM-0004wm-UC; Fri, 08 Sep 2023 02:45:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qeVDB-0002fH-W3
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:43:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qeVF0-0004w4-Hv
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qeVD8-0001Pl-RC
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:43:25 -0400
+ id 1qeVEy-0002eI-2r
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694155396;
+ s=mimecast20190719; t=1694155515;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tZH/48hlfmjLLP7RRyo/5DMTz43tK1rWbS2GqaMKAX8=;
- b=bm2J8GwH38PefYSyoHYwnnIMnjyWzhpfxugT1FeoLFUHC0SNa8LecN+PQl67SJfnxya2aR
- mWqQ+tNkUCBEkI9zFgCQCI6T89udgdcAn1CLE8eAHoEh7WYoZv3aYqsQiqXjFPL2Q2Zb4W
- w/7bUoFOSY5x8R9pd6DIZKoff/lP7DI=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-396-mGnfOeScP5i3IythTDUA7g-1; Fri, 08 Sep 2023 02:43:12 -0400
-X-MC-Unique: mGnfOeScP5i3IythTDUA7g-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2b9d0b3a572so19960811fa.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:43:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694155391; x=1694760191;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tZH/48hlfmjLLP7RRyo/5DMTz43tK1rWbS2GqaMKAX8=;
- b=YNW6sCMTZ5lsV/EZRernWCaaEtaXyS9q2fCSQBESNYYXDH4Ro7WbPjCI2xF77MnaC+
- GJAJfOR0p1wAtD/mNAB+EWeeBT+C/RT4htVyVqGuuQp1FQv7s9HmEjT5PZYJ0z2hR7ya
- CwrVWFHp4tilk7pg/3zZ91wUvOa65XdsHx3GdnCCQPhTHifgzIdAPRJzUWf6q18SXhwd
- Jb/9JKoHuceR8b/68taaErxh+yDaGUo8EY3hXZ4CMJLOtXWXqqvHON3jLnkh8U8qrRSJ
- yvvQpKoWbSvV0gM/05J+C19tMgPYlwXjgmnsLtQVLF3U46exHW+X3cUpA+JLcVubPuQ8
- uiYg==
-X-Gm-Message-State: AOJu0Yw3h60QIvpVSNqnByV/q8nakfuwuX9kuBlAJhtB9fIvMEE5FicB
- b5CDF+HwlwGSgJiuxEusA7oHlXDdFFpc9MbkA56KRNq4wvM9YAAbYxKms3uD6BfoM26csHS6gfK
- OZqzkjfGaqvgAIUWEqNChevg9Pbahz1E=
-X-Received: by 2002:a2e:9919:0:b0:2b9:b9c8:99 with SMTP id
- v25-20020a2e9919000000b002b9b9c80099mr1086039lji.22.1694155391215; 
- Thu, 07 Sep 2023 23:43:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHpNtgX6zS2ljZlUGmK63YrJ/fSSWuaDX4eJowsSK+1Ojo0t7XvZMGqrY77n+dVu/M0GxbCd8QoM0wraYdZByM=
-X-Received: by 2002:a2e:9919:0:b0:2b9:b9c8:99 with SMTP id
- v25-20020a2e9919000000b002b9b9c80099mr1086029lji.22.1694155390906; 
- Thu, 07 Sep 2023 23:43:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230831065140.496485-1-andrew@daynix.com>
- <20230831065140.496485-6-andrew@daynix.com>
- <CABcq3pHyiO4AWSzxwWKfUnULfqPGQs1g12MCn14Ms4FqupZAzg@mail.gmail.com>
-In-Reply-To: <CABcq3pHyiO4AWSzxwWKfUnULfqPGQs1g12MCn14Ms4FqupZAzg@mail.gmail.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=i1/RnQvAb+R7hKnROd9bjLwvoTmmbFDtGQ97pqydmQQ=;
+ b=cNwMmzcRCjK+jgGuXbJUBQvMVrFcyMOpkq40y4M/8yRWWgPGXSqIIZpn+LXxQkLyARKAU2
+ fjHHy0wooIIjFcwgmngXwbj4xucgIKxkUjyHAEbRB2gMfboKDfCAoWHR5vtxPIrU9XoHBn
+ SXNv4joLKJ8jYMTiFg4iyUYzPCrtWlg=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-493-VHPKK7WLN9SGrPJ5gu8CDw-1; Fri, 08 Sep 2023 02:45:13 -0400
+X-MC-Unique: VHPKK7WLN9SGrPJ5gu8CDw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C34BB2932496
+ for <qemu-devel@nongnu.org>; Fri,  8 Sep 2023 06:45:12 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.113.80])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 408B11121314;
+ Fri,  8 Sep 2023 06:45:10 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 8 Sep 2023 14:42:59 +0800
-Message-ID: <CACGkMEvBEdV1+uxE00hbXuFWmT2+nqgT9JxBezLXBwEX0b9Vbw@mail.gmail.com>
-Subject: Re: [PATCH v7 5/5] ebpf: Updated eBPF program and skeleton.
-To: Andrew Melnichenko <andrew@daynix.com>
-Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
- qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com, 
- yan@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+To: qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>
+Subject: [PULL 00/17] Net patches
+Date: Fri,  8 Sep 2023 14:44:50 +0800
+Message-Id: <20230908064507.14596-1-jasowang@redhat.com>
+MIME-Version: 1.0
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,16 +75,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 4, 2023 at 7:23=E2=80=AFPM Andrew Melnichenko <andrew@daynix.co=
-m> wrote:
->
-> Hi Jason,
-> According to our previous conversation, I've added checks to the meson sc=
-ript.
-> Please confirm that everything is correct
+The following changes since commit 03a3a62fbd0aa5227e978eef3c67d3978aec9e5f:
 
-I've queued this series.
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-09-07 10:29:06 -0400)
 
-Thanks
+are available in the git repository at:
+
+  https://github.com/jasowang/qemu.git tags/net-pull-request
+
+for you to fetch changes up to 049cfda145e96b2605cdf9739f1bcf9ebf3a83e1:
+
+  ebpf: Updated eBPF program and skeleton. (2023-09-08 14:33:46 +0800)
+
+----------------------------------------------------------------
+
+----------------------------------------------------------------
+Andrew Melnychenko (7):
+      tap: Add USO support to tap device.
+      virtio-net: Add USO flags to vhost support.
+      ebpf: Added eBPF map update through mmap.
+      ebpf: Added eBPF initialization by fds.
+      virtio-net: Added property to load eBPF RSS with fds.
+      qmp: Added new command to retrieve eBPF blob.
+      ebpf: Updated eBPF program and skeleton.
+
+Ilya Maximets (1):
+      net: add initial support for AF_XDP network backend
+
+Tomasz Dzieciol (7):
+      igb: remove TCP ACK detection
+      igb: rename E1000E_RingInfo_st
+      igb: RX descriptors guest writting refactoring
+      igb: RX payload guest writting refactoring
+      igb: add IPv6 extended headers traffic detection
+      igb: packet-split descriptors support
+      e1000e: rename e1000e_ba_state and e1000e_write_hdr_to_rx_buffers
+
+Yuri Benditovich (2):
+      tap: Add check for USO features
+      virtio-net: Add support for USO features
+
+ MAINTAINERS                                     |    4 +
+ ebpf/ebpf.c                                     |   70 ++
+ ebpf/ebpf.h                                     |   31 +
+ ebpf/ebpf_rss-stub.c                            |    6 +
+ ebpf/ebpf_rss.c                                 |  150 ++-
+ ebpf/ebpf_rss.h                                 |   10 +
+ ebpf/meson.build                                |    2 +-
+ ebpf/rss.bpf.skeleton.h                         | 1460 ++++++++++++-----------
+ hmp-commands.hx                                 |    3 +
+ hw/core/machine.c                               |    4 +
+ hw/net/e1000e_core.c                            |   80 +-
+ hw/net/igb_core.c                               |  732 ++++++++----
+ hw/net/igb_regs.h                               |   20 +-
+ hw/net/trace-events                             |    6 +-
+ hw/net/vhost_net.c                              |    3 +
+ hw/net/virtio-net.c                             |   90 +-
+ hw/net/vmxnet3.c                                |    2 +
+ include/hw/virtio/virtio-net.h                  |    1 +
+ include/net/net.h                               |    7 +-
+ meson.build                                     |   19 +-
+ meson_options.txt                               |    2 +
+ net/af-xdp.c                                    |  526 ++++++++
+ net/clients.h                                   |    5 +
+ net/meson.build                                 |    3 +
+ net/net.c                                       |   19 +-
+ net/tap-bsd.c                                   |    7 +-
+ net/tap-linux.c                                 |   27 +-
+ net/tap-linux.h                                 |    2 +
+ net/tap-solaris.c                               |    7 +-
+ net/tap-stub.c                                  |    7 +-
+ net/tap-win32.c                                 |    2 +-
+ net/tap.c                                       |   18 +-
+ net/tap_int.h                                   |    4 +-
+ net/vhost-vdpa.c                                |    3 +
+ qapi/ebpf.json                                  |   66 +
+ qapi/meson.build                                |    1 +
+ qapi/net.json                                   |   58 +
+ qapi/qapi-schema.json                           |    1 +
+ qemu-options.hx                                 |   70 +-
+ scripts/ci/org.centos/stream/8/x86_64/configure |    1 +
+ scripts/meson-buildoptions.sh                   |    3 +
+ tests/docker/dockerfiles/debian-amd64.docker    |    1 +
+ tests/qtest/libqos/igb.c                        |    5 +
+ tools/ebpf/rss.bpf.c                            |    5 +-
+ 44 files changed, 2518 insertions(+), 1025 deletions(-)
+ create mode 100644 ebpf/ebpf.c
+ create mode 100644 ebpf/ebpf.h
+ create mode 100644 net/af-xdp.c
+ create mode 100644 qapi/ebpf.json
 
 
