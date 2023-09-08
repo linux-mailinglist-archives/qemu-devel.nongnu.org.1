@@ -2,107 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720957992B4
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 01:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DF8799252
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 00:33:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qekdG-0000fK-Qp; Fri, 08 Sep 2023 19:11:22 -0400
+	id 1qek2Q-00029L-Eg; Fri, 08 Sep 2023 18:33:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qekdC-0000eP-D9; Fri, 08 Sep 2023 19:11:18 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qekd8-0004ay-TJ; Fri, 08 Sep 2023 19:11:17 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 388N8oeH019864; Fri, 8 Sep 2023 23:11:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=RlduIYERzoOiZ8ividXrPLZe+NmFKjiq5SkE6uRROU8=;
- b=lTW6i55MQyzsOHNk7EbOia8gdWFebo8/mVgY8ZVducpd8nZKAYr0kdCiRMHf7zZbRP79
- NsnS1+D7/Qy7KUlJZYIKLCWKwPXc25jMq9qVcgkryKffXA5tbzDQ3s138Jya18s5eEjN
- saP5AC7n6ZJ3A9g1w6tkhA/YMhUtNVDfqoMhMwzv8Efrpx9KJDULPBKGy9C3V9h32QDA
- fIh/ctiYqK8EYpLQQMsTpJyUH37Zs1hV4XJ73jOTtwSqa7O8QRs2kPNxYU3jYZ9dyATx
- ySAnYnYRe2bGFQiRd/8gPle4cwQwkRXyaY0CHxhsKQP8B91NAsryA/fVXzxOwTbQtorL AQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t0cdd0pe1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Sep 2023 23:11:00 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 388NAJrx026850;
- Fri, 8 Sep 2023 23:10:59 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t0cdd0p9u-4
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Sep 2023 23:10:59 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 388LgCbX001667; Fri, 8 Sep 2023 22:31:39 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3svfctfk4y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Sep 2023 22:31:39 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 388MVdQj25821932
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Sep 2023 22:31:39 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 59AD75805D;
- Fri,  8 Sep 2023 22:31:39 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0948458059;
- Fri,  8 Sep 2023 22:31:38 +0000 (GMT)
-Received: from [9.61.102.160] (unknown [9.61.102.160])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Fri,  8 Sep 2023 22:31:37 +0000 (GMT)
-Message-ID: <8539cf6a-fbe7-4d94-9ad2-1011f7d70fe8@linux.ibm.com>
-Date: Fri, 8 Sep 2023 17:31:37 -0500
+ (Exim 4.90_1) (envelope-from <atishp@atishpatra.org>)
+ id 1qek2E-00027p-5Z
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 18:33:06 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <atishp@atishpatra.org>)
+ id 1qek2B-0004IN-Ky
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 18:33:05 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-501bef6e0d3so4212814e87.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 15:33:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=atishpatra.org; s=google; t=1694212381; x=1694817181; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5yqXm+za/42HYAElCu96LeV1rf/seSOt91QYGkjq4wA=;
+ b=CjP+QcB66PrZBW4As9lrTFnfmMt+JpcyDQqyhlzPvj+fZsO/4MKRWDHXvzJCvGPev6
+ 2KdilqlW0dpfpfi1HsJX3DluXIePXGO1tz4fFU6RlRudNSNs4yc1gOT0Ik66QoiiJ6Nx
+ SL1PkgjOCGg1Vj3ymBgZoIdoEngGcw075e6zg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694212381; x=1694817181;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5yqXm+za/42HYAElCu96LeV1rf/seSOt91QYGkjq4wA=;
+ b=g7/2+2nS4pHqcmz9GyUKAIzY21OWwi0/DoMs8SkYQ3AIEgBHveeXRp3duBjgLFDG0D
+ TqTbQPSlY8vyU7IiORYjsn9Eda1QWXP6x9nIgXZhdLy15aHqCzsd9nnR63mXdYfqxHer
+ O7mnCedgj589H/c+ufokBET/b51GCPmplW4r6SJMcb2X5WctPw17I0A9k8owOuWLc6PI
+ Zar4V3S+DD9ApcuMafoLvoGIQBPnEfLbWPsy4ZybXAz0IPRDu7B6kS8h4evPB5zoqhjc
+ ZK7pnLSRWWJL5LCTzYg9V560kO89l1a6qIyjM7nBEnWaEEHZItMsZtUHyez2DSZXhLJ8
+ FwqQ==
+X-Gm-Message-State: AOJu0Yy7Ye5Z9Q700wr8z9n0UaE45cTYnvGW1CDwayE6V4rk92tv+zC/
+ dH0PtPmGKiAczSNvqJK9KadmPODdhr+vFrC4FkqO
+X-Google-Smtp-Source: AGHT+IEoFG2B9Bx/oDzmu1l/+2nOO5YCAEAb012JoIKAVgJuMrmdWM0B+OITE8jdBWdMECYxDWlCKYOipVVdF7PADhU=
+X-Received: by 2002:ac2:58e1:0:b0:4ff:7004:545e with SMTP id
+ v1-20020ac258e1000000b004ff7004545emr2601982lfo.4.1694212381116; Fri, 08 Sep
+ 2023 15:33:01 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/8] hw/fsi: Documentation and testing
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20230830022638.4183766-1-ninad@linux.ibm.com>
- <20230830022638.4183766-9-ninad@linux.ibm.com>
- <0cdc9d0c-b146-e55f-cd2d-81e6827e64e4@redhat.com>
- <c722f63e-697b-eeab-82f0-7155b2a4632b@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <c722f63e-697b-eeab-82f0-7155b2a4632b@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7MOwr9sYm3yJUsNwAfA35F5mfPCz3Wo5
-X-Proofpoint-ORIG-GUID: Koa2p7Z30VDeCF90GdE5jpe7Q8Gqhnd0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-08_18,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 clxscore=1015 mlxscore=0 spamscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=622 phishscore=0 bulkscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309080211
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20230908033129.694-1-zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20230908033129.694-1-zhiwei_liu@linux.alibaba.com>
+From: Atish Patra <atishp@atishpatra.org>
+Date: Fri, 8 Sep 2023 15:32:50 -0700
+Message-ID: <CAOnJCUJPA9nzJRUuxd13WJzhGjWPBbmnNFn4Fcw4Wcf7WOO2fw@mail.gmail.com>
+Subject: Re: [RESEND] qemu/timer: Add host ticks function for RISC-V
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ LIU Zhiwei <lzw194868@alibaba-inc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=atishp@atishpatra.org; helo=mail-lf1-x12c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -119,40 +84,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
-
-On 8/30/23 02:13, Cédric Le Goater wrote:
-> On 8/30/23 09:05, Thomas Huth wrote:
->> On 30/08/2023 04.26, Ninad Palsule wrote:
->>> Added FSI document
->>> Added basic qtests for FSI model.
->>> Added MAINITAINER for FSI
->>> Replaced some qemu logs to traces.
->>
->> Sorry, that's not how we rework patch series in the QEMU development 
->> process. Please squash the log traces changes into the patches that 
->> introduced the original code, and please put the MAINTAINERS update, 
->> documentation and qtests into separate patches.
+On Thu, Sep 7, 2023 at 8:33=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.alibaba=
+.com> wrote:
 >
-> yes. This is true for some Kconfig changes also. On that topic, please
-> make sure FSI is compiled only when ASPEED_SOC is selected. It could be
-> useful for the PPC PowerNV machines one day but the models are not
-> available yet.
-
-Fixed the Kconfig rework and make sure that FSI is selected only with 
-ASPEED_SOC.
-
-
-Thanks for the review.
-
-~Ninad
-
+> From: LIU Zhiwei <lzw194868@alibaba-inc.com>
 >
-> I will try to go through the series this week. Wait a bit for the v4.
+> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> ---
+>  include/qemu/timer.h | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
 >
-> Thanks,
+> diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+> index 9a91cb1248..105767c195 100644
+> --- a/include/qemu/timer.h
+> +++ b/include/qemu/timer.h
+> @@ -979,6 +979,25 @@ static inline int64_t cpu_get_host_ticks(void)
+>      return cur - ofs;
+>  }
 >
-> C.
+> +#elif defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen =3D=3D 3=
+2
+> +static inline int64_t cpu_get_host_ticks(void)
+> +{
+> +    uint32_t lo, hi;
+> +    asm volatile("RDCYCLE %0\n\t"
+> +                 "RDCYCLEH %1"
+> +                 : "=3Dr"(lo), "=3Dr"(hi));
+> +    return lo | (uint64_t)hi << 32;
+> +}
+> +
+> +#elif defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen > 32
+> +static inline int64_t cpu_get_host_ticks(void)
+> +{
+> +    int64_t val;
+> +
+> +    asm volatile("RDCYCLE %0" : "=3Dr"(val));
+> +    return val;
+> +}
+> +
+
+rdcycle won't be accessible from the user space directly in the
+future. rdcycle will be accessible via perf similar to other
+architectures from the next kernel release [1].
+
+rdtime must be used to compute the host ticks if the host is a riscv.
+This is the equivalent of rdtsc in x86.
+
+[1] https://lore.kernel.org/lkml/CAP-5=3DfVcMg7TL6W_jH61PW6dYMobuTs13d4JDuT=
+Ax=3DmxJ+PNtQ@mail.gmail.com/T/#md852c28f4070212973b796c232ecd37dc1c6cb2b
+
+>  #else
+>  /* The host CPU doesn't have an easily accessible cycle counter.
+>     Just return a monotonically increasing value.  This will be
+> --
+> 2.17.1
 >
 >
+
+
+--=20
+Regards,
+Atish
 
