@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ACC179885C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B420C798861
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:15:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qecFZ-0004XP-Id; Fri, 08 Sep 2023 10:14:21 -0400
+	id 1qecH4-0005RZ-PE; Fri, 08 Sep 2023 10:15:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qecFV-0004WU-Vi
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:14:18 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qecFS-00080o-Nr
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:14:17 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-52683b68c2fso2896898a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 07:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694182453; x=1694787253; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZFANwgWtdrBhtj8rBIAo7oBEiXIo//Tfg9jdk/1BPog=;
- b=E0FuEJlz2eFjO92fSz5Qotsj7+LqZ2mynLv1DBdgjalV3AefAx8tX5qBBVm8FhZ9KN
- 3TslLHTdY5Zkpw4v2CXem9aZDidcgImW2o/G7kGBbKXzNpjWolGETNwDeUpn8LOE6jXW
- kyO8oGXLm3hsywxGyW5WVgQL2DFBiY0C4ZwIeqzckPVwPOZe6uYQXxZnEzJN3+D+lY0N
- Z7sfN8iwUMEQ0W5YJPL+8/F4HvPBo5C+giHIExX9Hr/VOfmEEogSiYMNvnQE1RyQkfcP
- 26lRIgblgvvvFkzo+iaReaW/U85uMcdm75CX9EYpkeMY4fKBzD1iaBMTAxHbTDUhgG5n
- G95g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694182453; x=1694787253;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZFANwgWtdrBhtj8rBIAo7oBEiXIo//Tfg9jdk/1BPog=;
- b=nPO807fCt1oekjou78TOQJ1toHQE9BnLh0e3FWQvErOxGVMZQx/poQp3nwkPXEESs1
- yEGIrafSHJSxC2A9kmDQZRys5qb93/sL1O2RYvAN9lrWP+AETWXpGvnKFbwxvvhJZ6/g
- t/veIrVbm7CXAor6uTEGmyqPEWiaIIp6qSU5c+BO9CUvDEnLolmuEPADdBxiSrQjFVKW
- AgNtAH69xbKHLXqJdbK3Kx9Mw4XvN2vGE+Uy+RCJgqK+ERRNxjqT/pgLjgepsEJe3GZM
- QscEuf7pHx1RrOnucoHCgeaOiIZymq1TLFd60dVaJKl+Rv2dUlK/0+6wOS56CCICxj1s
- hz5Q==
-X-Gm-Message-State: AOJu0YwvKUsZ7+b8S5EUEUSEAUj8dDxaBUdZZZ0J/33U/Lt3VOoKx1gc
- /S0tqHcdv9QyxnmNfpNMdops7739NRaLG4ELEhs=
-X-Google-Smtp-Source: AGHT+IELPklmZ2cIShxOI81GcMBLKYsHBKZ4OG5eC0qlLlI+KOypPby4Ej6/59MqVlk7cWA6PNL7Tg==
-X-Received: by 2002:aa7:c3d4:0:b0:523:cfa4:5c3d with SMTP id
- l20-20020aa7c3d4000000b00523cfa45c3dmr2299539edr.13.1694182453111; 
- Fri, 08 Sep 2023 07:14:13 -0700 (PDT)
-Received: from [192.168.69.115]
- (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr. [176.173.167.175])
- by smtp.gmail.com with ESMTPSA id
- m21-20020a50ef15000000b005232ea6a330sm1073164eds.2.2023.09.08.07.14.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Sep 2023 07:14:12 -0700 (PDT)
-Message-ID: <7d4883c0-7d9b-fe5e-4415-5521338a025a@linaro.org>
-Date: Fri, 8 Sep 2023 16:14:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 03/14] target/arm: Add ID_AA64ISAR2_EL1
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qecGe-0005Pe-9k
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:15:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qecGY-0008Jy-5N
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:15:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694182521;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mOVh0VpdDOEADfSJ+6fxxexJcNTNzosQ8yiqG6vSLGQ=;
+ b=T9OnmmkRWal7KZKS4qJ8f9xA07DjjKY9/FReer79rzxpX8g0A6uI16fXUsrK7v7dyLy5AT
+ 1KyezOW000XTX5yjxPau6rFt3p84rINCAZToBcPkx3W83BudRn0MVGqU+n/KT2i2tWVsGx
+ DFg1cqxgzMxB3chGUlQg+/ChHrJkO6c=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-224-7VOhEZYvPgSYkRt_3OWrUQ-1; Fri, 08 Sep 2023 10:15:18 -0400
+X-MC-Unique: 7VOhEZYvPgSYkRt_3OWrUQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DB3038157C8;
+ Fri,  8 Sep 2023 14:15:17 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.42])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CBAFD2026D2B;
+ Fri,  8 Sep 2023 14:15:16 +0000 (UTC)
+Date: Fri, 8 Sep 2023 15:15:14 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: Stefan Hajnoczi <stefanha@gmail.com>, Jason Wang <jasowang@redhat.com>,
  qemu-devel@nongnu.org
-References: <20230907160340.260094-1-peter.maydell@linaro.org>
- <20230907160340.260094-4-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230907160340.260094-4-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PULL 00/17] Net patches
+Message-ID: <ZPsscpzj9fNtCEOY@redhat.com>
+References: <20230908064507.14596-1-jasowang@redhat.com>
+ <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
+ <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org>
+ <ZPsKUDp7nVS/Z+j2@redhat.com>
+ <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org>
+ <ZPsQcu0HYBaTScnb@redhat.com>
+ <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+In-Reply-To: <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,23 +85,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/9/23 18:03, Peter Maydell wrote:
-> From: Aaron Lindsay <aaron@os.amperecomputing.com>
+On Fri, Sep 08, 2023 at 04:06:35PM +0200, Ilya Maximets wrote:
+> On 9/8/23 14:15, Daniel P. Berrangé wrote:
+> > On Fri, Sep 08, 2023 at 02:00:47PM +0200, Ilya Maximets wrote:
+> >> On 9/8/23 13:49, Daniel P. Berrangé wrote:
+> >>> On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
+> >>>> On 9/8/23 13:19, Stefan Hajnoczi wrote:
+> >>>>> Hi Ilya and Jason,
+> >>>>> There is a CI failure related to a missing Debian libxdp-dev package:
+> >>>>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
+> >>>>>
+> >>>>> I think the issue is that the debian-amd64 container image that QEMU
+> >>>>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
+> >>>>> and libxdp is not available on that release:
+> >>>>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
+> >>>>
+> >>>> Hmm.  Sorry about that.
+> >>>>
+> >>>>>
+> >>>>> If we need to support Debian 11 CI then either XDP could be disabled
+> >>>>> for that distro or libxdp could be compiled from source.
+> >>>>
+> >>>> I'd suggest we just remove the attempt to install the package for now,
+> >>>> building libxdp from sources may be a little painful to maintain.
+> >>>>
+> >>>> Can be re-added later once distributions with libxdp 1.4+ will be more
+> >>>> widely available, i.e. when fedora dockerfile will be updated to 39,
+> >>>> for example.  That should be soon-ish, right?
+> >>>
+> >>> If you follow the process in docs/devel/testing.rst for adding
+> >>> libxdp in libvirt-ci, then lcitool will "do the right thing"
+> >>> when we move the auto-generated dockerfiles to new distro versions.
+> >>
+> >> Thanks!  I'll prepare changes for libvirt-ci.
+> >>
+> >> In the meantime, none of the currently tested images will have a required
+> >> version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
+> >> modification from the patch.  What do you think?
+> > 
+> > Sure, if none of the distros have it, then lcitool won't emit the
+> > dockerfile changes until we update the inherited distro version.
+> > So it is sufficient to just update libvirt-ci.git with the mappings.yml
+> > info for libxdp, and add 'libxdp' to the tests/lcitool/projects/qemu.yml
+> > file in qemu.git. It will then 'just work' when someone updates the
+> > distro versions later.
 > 
-> Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
-> [PMM: drop the HVF part of the patch and just comment that
->   we need to do something when the register appears in that API]
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   target/arm/cpu.h     | 1 +
->   target/arm/helper.c  | 4 ++--
->   target/arm/hvf/hvf.c | 1 +
->   target/arm/kvm64.c   | 2 ++
->   4 files changed, 6 insertions(+), 2 deletions(-)
+> I posted an MR for libvirt-ci adding libxdp:
+>   https://gitlab.com/libvirt/libvirt-ci/-/merge_requests/429
+> 
+> Please, take a look.
+> 
+> The docs say that CI will try to build containers with the MR changes,
+> but I don't think anything except sanity checks is actually tested on MR.
+> Sorry if I missed something, never used GitLab pipelines before.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+No, that's our fault - we've broken the CI and your change alerted
+me to that fact :-)
+
+> Note that with this update we will be installing older version of libxdp
+> in many containers, even though they will not be used by QEMU, unless
+> they are newer than 1.4.0.
+
+No problem, as it means QEMU CI will demonstrate the the meson.build
+change is ignoring the outdatd libxdp.
+
+> tests/lcitool/projects/qemu.yml in qemu.git cannot be updated without
+> updating a submodule after the MR merge.
+
+Yep.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
