@@ -2,77 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E957986A5
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 13:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1AC17986AB
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:00:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qea8q-0001Rn-5b; Fri, 08 Sep 2023 07:59:16 -0400
+	id 1qea9Z-0002Y3-CK; Fri, 08 Sep 2023 08:00:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qea8k-0001Qe-D9
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:59:10 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qea8i-0006kd-6n
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:59:10 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-31ad779e6b3so1877628f8f.2
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 04:59:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694174346; x=1694779146; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=E+oss6jtXfXveXQVZVT2ztEHGZGYTmftkrj+eKblzuc=;
- b=Z2TbJ5nrm63HdsZ54clzfSOM2C0bWFmJa5z8w48n3lVOWbwzlLZiFtLz/Oi+NKaHwl
- s3Gx3stTntVMDuF6TJLFqtORxCDyP7AvYxmrDQ6FtnHhtPOCZVmWeZUcyu7Q2VgNjmVv
- Nt4l8oR/GUo6v4t2I5rjudu4iyna1SQRNhldqwCCAtKPknD1oANipou01EvOP/98BWrt
- HX5YJGvfz3AxggXRBAQsd31n7VrXB/akad5y1b0ALTZkj+j6dh3/xbw3V4HGicsFJmm/
- 9qxmV0Wqm1hhPVyJhavmisER6YTZj3l+fN7y74X01DA5CHpHkfgiQx4glInY2lNpiCPc
- b8jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694174346; x=1694779146;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=E+oss6jtXfXveXQVZVT2ztEHGZGYTmftkrj+eKblzuc=;
- b=LZfTvPnuvWt2zsyRW9cxWlXxhT+1vMn/qh8l59HUvojNietJsuEDngO/asUyvaBEWS
- ANFiVX1J3Bp/6HbNEKwihZd4McThlUqGR1WMbiA9zp4A1GN/IvuaG7//Y8TGfTaD6pBm
- QwzS0uoQbVPdeqGvabptQgwiuML0FWZks+uGXMFOJOnFUih32v/8pB5+/Umog7rc18t5
- gQUcNkxvo0DbHVZMoVrErcEY7wpovObNY6oeSgDm1QZoiq3Zr6MBbpURbmSsiqIjJfZH
- zJDobw2BfxphQEjoej6TvGXyX0yd1iMkxnvueX8S3o+4ledYnhojJNM7KedjVkbITDcq
- r7nA==
-X-Gm-Message-State: AOJu0YzaJwaGWPJKcwLnMJqNf00aAOGZe0rBYmaJRjs0FL2q8THKvAWd
- wd2eM+qQomadb+IkmuD4Nt9ZRa3cvtp83amEa3SuhA==
-X-Google-Smtp-Source: AGHT+IETLjSa9cI3eq7/WuQz0WTvYbLpQy2uHri9IYQJ4/ghDo7GRZsUssq+0Thla8lScPV+OlgcIFzevhNvRDG4qK4=
-X-Received: by 2002:a5d:6350:0:b0:317:6653:60b8 with SMTP id
- b16-20020a5d6350000000b00317665360b8mr2086955wrw.50.1694174345899; Fri, 08
- Sep 2023 04:59:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qea9W-0002R6-2s
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:59:58 -0400
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qea9T-0006wc-Bj
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:59:57 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7C9981C0006;
+ Fri,  8 Sep 2023 11:59:51 +0000 (UTC)
+Message-ID: <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org>
+Date: Fri, 8 Sep 2023 14:00:47 +0200
 MIME-Version: 1.0
-References: <20230831131348.69032-1-philmd@linaro.org>
-In-Reply-To: <20230831131348.69032-1-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Sep 2023 12:58:55 +0100
-Message-ID: <CAFEAcA9hqKkSRS+ChNk_zOn3gMUGJkd_+971npMKVzBPJ=nPxw@mail.gmail.com>
-Subject: Re: [PATCH] hw/intc/arm_gicv3_its: Avoid maybe-uninitialized error in
- get_vte()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- Shashi Mallela <shashi.mallela@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: i.maximets@ovn.org, Stefan Hajnoczi <stefanha@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230908064507.14596-1-jasowang@redhat.com>
+ <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
+ <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org> <ZPsKUDp7nVS/Z+j2@redhat.com>
+From: Ilya Maximets <i.maximets@ovn.org>
+Subject: Re: [PULL 00/17] Net patches
+In-Reply-To: <ZPsKUDp7nVS/Z+j2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: i.maximets@ovn.org
+Received-SPF: pass client-ip=217.70.183.197; envelope-from=i.maximets@ovn.org;
+ helo=relay5-d.mail.gandi.net
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,37 +61,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 31 Aug 2023 at 14:13, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Fix when using GCC v11.4 (Ubuntu 11.4.0-1ubuntu1~22.04) with CFLAGS=3D-Og=
-:
->
->   [4/6] Compiling C object libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
->   FAILED: libcommon.fa.p/hw_intc_arm_gicv3_its.c.o
->       inlined from =E2=80=98lookup_vte=E2=80=99 at hw/intc/arm_gicv3_its.=
-c:453:9,
->       inlined from =E2=80=98vmovp_callback=E2=80=99 at hw/intc/arm_gicv3_=
-its.c:1039:14:
->   hw/intc/arm_gicv3_its.c:347:9: error: =E2=80=98vte.rdbase=E2=80=99 may =
-be used uninitialized [-Werror=3Dmaybe-uninitialized]
->     347 |         trace_gicv3_its_vte_read(vpeid, vte->valid, vte->vptsiz=
-e,
->         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
-~~
->     348 |                                  vte->vptaddr, vte->rdbase);
->         |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
->   hw/intc/arm_gicv3_its.c: In function =E2=80=98vmovp_callback=E2=80=99:
->   hw/intc/arm_gicv3_its.c:1036:13: note: =E2=80=98vte=E2=80=99 declared h=
-ere
->    1036 |     VTEntry vte;
->         |             ^~~
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On 9/8/23 13:49, Daniel P. Berrangé wrote:
+> On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
+>> On 9/8/23 13:19, Stefan Hajnoczi wrote:
+>>> Hi Ilya and Jason,
+>>> There is a CI failure related to a missing Debian libxdp-dev package:
+>>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
+>>>
+>>> I think the issue is that the debian-amd64 container image that QEMU
+>>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
+>>> and libxdp is not available on that release:
+>>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
+>>
+>> Hmm.  Sorry about that.
+>>
+>>>
+>>> If we need to support Debian 11 CI then either XDP could be disabled
+>>> for that distro or libxdp could be compiled from source.
+>>
+>> I'd suggest we just remove the attempt to install the package for now,
+>> building libxdp from sources may be a little painful to maintain.
+>>
+>> Can be re-added later once distributions with libxdp 1.4+ will be more
+>> widely available, i.e. when fedora dockerfile will be updated to 39,
+>> for example.  That should be soon-ish, right?
+> 
+> If you follow the process in docs/devel/testing.rst for adding
+> libxdp in libvirt-ci, then lcitool will "do the right thing"
+> when we move the auto-generated dockerfiles to new distro versions.
 
+Thanks!  I'll prepare changes for libvirt-ci.
 
+In the meantime, none of the currently tested images will have a required
+version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
+modification from the patch.  What do you think?
 
-Applied to target-arm.next, thanks.
-
--- PMM
+Best regards, Ilya Maximets.
 
