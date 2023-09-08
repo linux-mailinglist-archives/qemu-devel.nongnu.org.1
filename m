@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC137982B9
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C557982D5
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:55:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeVK9-0007TK-UN; Fri, 08 Sep 2023 02:50:39 -0400
+	id 1qeVNs-0001v1-R1; Fri, 08 Sep 2023 02:54:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeVK1-0007BZ-SZ
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:50:30 -0400
+ id 1qeVNd-0001tC-7p
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:54:14 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeVJp-0003tA-0W
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:50:29 -0400
+ id 1qeVNb-0004bd-4m
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:54:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=KSRfl0+p35AEpcSu92c7S1maSBgEmSPdpQ3uXqSuGvA=; b=yyyo6odMiTGYF47EY9KMMPm6hK
- AVxU2h0bgCPb1lcH6d+SlM9Io16slhaYr+HuXs71mscxwNZLL+q3XtS4KSd84RUkdAvZqzM2Q07xi
- EBuZXZAP02m7GfW9/Rhrnf1wabRPWMApVF1sg9LYhJQi+Up+T8QoV1qFhnypXXX5mt69JIbAkXTn3
- R+g8gNKg1rzCHmwgk8+n6jtdA3dtgzFpTn0td1mAn+zujnYfFPErvfiEzCemOrFFiOWnp+rEF9Mhk
- utnboiu4qeQQ37Q39hbuZ9BwaGLKjJ8+6L10uucFEUQiN5Ywcav8/3svkz+a6OOa30Gi/qk0NamAt
- 74vcQQ5kmMsRXQCcvQIQOCj+DzWnKWjq50vqtOMY7ie3A4Jy69SlA5nltWt6+5YdAumr7Q5s+Ozws
- 8TKsrbV3rRBht5N1cO25Q6YTf1JG5foYsrPp48hCxSQNzDHIuPd3zeQtP8Gjcn+dW2EGI+q7diUOW
- dkqHGhbVGEiT9alURIDZsiwVAmEMlWsS8bRFM24YyeJCEY3DihOC1tAufP3atwLGz6IuQlKMsbSVg
- /HGbaBilE0o8RGXiN/OR0UAUMsIW0Eg0DAnTqQmuFCOdf2UYkpt00GVv+s0+eJ8RU3iV3Byfj9Xi8
- tb9HRCHK7a5OXzWE7NEHBtD/56vLqCHHdrve54LZg=;
+ bh=guVLNx0C4aDlj6I675/+SSEM/qwg0Slz2fKTo8we5WA=; b=pFVHQno1tB2PLSdxlhYizdNXmO
+ ni3hojskBSwh2vdU6/FU1dENCPknug18/TZ61zjAR3z5ag4RF66Sk6MLrQ+9u77rJYJDKjVoDX3GC
+ YosBWMCLy0A47A282kaWwVU7qfGsEceZ/loMnN6tKSqe5riRygtNJPS0PrpQFFVyRk+nIythVT4Nn
+ uaWVI5MHJcXRPSbIfYs7VSZLcyhPx9VduTkI9Q7dLwPc9aNS7hC8xybkNXqqIZpwCYhk7f+KKl3Hp
+ nWyMBlHPDeO+947Vcyvek7WJz9T7bX3gFIKHOdRkkNnhNSOaP+muU6KhxMz/k+ldktAaoCtjuqZEq
+ 8s1LkoHCxOV+Y6vBa5KE6Mk5oMabADn3mVj5MTjA2m3IBkdF4jEV2gZ8JTj8sk7E27ymvn0Zcre88
+ QaO6KTUgA/oYv2Teo0bAUelbuJzi0fZVsi47sSuniNG08Z7+cKGHsYfkq2cWiz5cO/W9jQhfEjQup
+ 5B9RW+V0xv7Q/S/va3RhGXhwerdVT1Do6QlY33lqVdFHAosPwzqh8H7kv2EUDtVzMAuHqS6zmeqRI
+ bJACur3jOp7y5UFZtRhvx16QN9XplGOeDOU5U8pYtyR6XHo8epUzTIeisbJKmNIUkFQb5NoyDtoTA
+ TDN4UYRxTGY6HexUnabJYpivADRuNbOivj2BE9I44=;
 Received: from [2a00:23c4:8baf:5f00:cfe1:e4f1:db23:3678]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeVJd-00072j-OI; Fri, 08 Sep 2023 07:50:09 +0100
-Message-ID: <82f59553-4b2f-549b-5b06-48b5a548e11b@ilande.co.uk>
-Date: Fri, 8 Sep 2023 07:50:01 +0100
+ id 1qeVNU-00073p-8t; Fri, 08 Sep 2023 07:54:08 +0100
+Message-ID: <f639b4b1-965a-fe9d-a988-2dbd2c1c0e68@ilande.co.uk>
+Date: Fri, 8 Sep 2023 07:54:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
+Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  laurent@vivier.eu, qemu-devel@nongnu.org
 References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-6-mark.cave-ayland@ilande.co.uk>
- <5eebfd86-e888-5c7b-803c-d4c5f9c7b080@linaro.org>
-Content-Language: en-US
+ <20230702154838.722809-11-mark.cave-ayland@ilande.co.uk>
+ <e3fe143f-2c07-2d59-3dca-4534a767391d@linaro.org>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <5eebfd86-e888-5c7b-803c-d4c5f9c7b080@linaro.org>
+In-Reply-To: <e3fe143f-2c07-2d59-3dca-4534a767391d@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:cfe1:e4f1:db23:3678
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 05/21] q800: add IOSB subsystem
+Subject: Re: [PATCH 10/21] q800: add easc bool machine class property to
+ switch between ASC and EASC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -81,132 +82,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07/07/2023 09:25, Philippe Mathieu-Daudé wrote:
+On 07/07/2023 09:29, Philippe Mathieu-Daudé wrote:
 
 > On 2/7/23 17:48, Mark Cave-Ayland wrote:
->> It is needed because it defines the BIOSConfig area.
+>> This determines whether the Apple Sound Chip (ASC) is set to enhanced mode
+>> (default) or to original mode. The real Q800 hardware used an EASC chip however
+>> a lot of older software only works with the older ASC chip.
 >>
->> Co-developed-by: Laurent Vivier <laurent@vivier.eu>
+>> Adding this as a machine parameter allows QEMU to be used as an developer aid
+>> for testing and migrating code from ASC to EASC.
+>>
 >> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >> ---
->>   MAINTAINERS            |   2 +
->>   hw/m68k/Kconfig        |   1 +
->>   hw/m68k/q800.c         |   9 +++
->>   hw/misc/Kconfig        |   3 +
->>   hw/misc/iosb.c         | 137 +++++++++++++++++++++++++++++++++++++++++
->>   hw/misc/meson.build    |   1 +
->>   hw/misc/trace-events   |   4 ++
->>   include/hw/m68k/q800.h |   2 +
->>   include/hw/misc/iosb.h |  25 ++++++++
->>   9 files changed, 184 insertions(+)
->>   create mode 100644 hw/misc/iosb.c
->>   create mode 100644 include/hw/misc/iosb.h
+>>   hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
+>>   include/hw/m68k/q800.h |  1 +
+>>   2 files changed, 30 insertions(+), 1 deletion(-)
 > 
 > 
->> diff --git a/hw/misc/iosb.c b/hw/misc/iosb.c
->> new file mode 100644
->> index 0000000000..4fc10bcf9f
->> --- /dev/null
->> +++ b/hw/misc/iosb.c
->> @@ -0,0 +1,137 @@
->> +/*
->> + * QEMU IOSB emulation
->> + *
->> + * Copyright (c) 2019 Laurent Vivier
->> + * Copyright (c) 2022 Mark Cave-Ayland
->> + *
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +#include "qemu/log.h"
->> +#include "migration/vmstate.h"
->> +#include "hw/sysbus.h"
->> +#include "hw/misc/iosb.h"
->> +#include "trace.h"
->> +
->> +#define IOSB_SIZE          0x2000
->> +
->> +#define IOSB_CONFIG        0x0
->> +#define IOSB_CONFIG2       0x100
->> +#define IOSB_SONIC_SCSI    0x200
->> +#define IOSB_REVISION      0x300
->> +#define IOSB_SCSI_RESID    0x400
->> +#define IOSB_BRIGHTNESS    0x500
->> +#define IOSB_TIMEOUT       0x600
->> +
->> +
->> +static uint64_t iosb_read(void *opaque, hwaddr addr,
->> +                          unsigned size)
+>> +static bool q800_get_easc(Object *obj, Error **errp)
 >> +{
->> +    IOSBState *s = IOSB(opaque);
->> +    uint64_t val = 0;
+>> +    Q800MachineState *ms = Q800_MACHINE(obj);
 >> +
->> +    switch (addr) {
->> +    case IOSB_CONFIG:
->> +    case IOSB_CONFIG2:
->> +    case IOSB_SONIC_SCSI:
->> +    case IOSB_REVISION:
->> +    case IOSB_SCSI_RESID:
->> +    case IOSB_BRIGHTNESS:
->> +    case IOSB_TIMEOUT:
->> +        val = s->regs[addr >> 8];
->> +        break;
->> +    default:
->> +        qemu_log_mask(LOG_UNIMP, "IOSB: unimplemented read addr=0x%"PRIx64
->> +                                 " val=0x%"PRIx64 " size=%d\n",
->> +                                 addr, val, size);
->> +    }
->> +
->> +    trace_iosb_read(addr, val, size);
->> +    return val;
+>> +    return ms->easc;
 >> +}
->> +
->> +static void iosb_write(void *opaque, hwaddr addr, uint64_t val,
->> +                       unsigned size)
->> +{
->> +    IOSBState *s = IOSB(opaque);
->> +
->> +    switch (addr) {
->> +    case IOSB_CONFIG:
->> +    case IOSB_CONFIG2:
->> +    case IOSB_SONIC_SCSI:
->> +    case IOSB_REVISION:
->> +    case IOSB_SCSI_RESID:
->> +    case IOSB_BRIGHTNESS:
->> +    case IOSB_TIMEOUT:
->> +        s->regs[addr >> 8] = val;
->> +        break;
->> +    default:
->> +        qemu_log_mask(LOG_UNIMP, "IOSB: unimplemented write addr=0x%"PRIx64
->> +                                 " val=0x%"PRIx64 " size=%d\n",
->> +                                 addr, val, size);
->> +    }
->> +
->> +    trace_iosb_write(addr, val, size);
->> +}
->> +
->> +static const MemoryRegionOps iosb_mmio_ops = {
->> +    .read = iosb_read,
->> +    .write = iosb_write,
->> +    .endianness = DEVICE_BIG_ENDIAN,
->> +    .impl = {
->> +        .min_access_size = 1,
 > 
-> IIUC .impl.min_access_size = 4.
-> 
-> Do you mean .valid.min_access_size = 1?
+> Is the getter useful? Otherwise:
 
-Hmmm I can't remember the exact origin of this, but indeed looking at the stride this 
-doesn't make much sense. I've done some tests with .impl removed completely and 
-haven't seen any issues, so I'll drop this from v2.
+Isn't it a requirement? Otherwise I can see that if we decide to enumerate machine 
+properties (similar as to how device properties appear in "info qtree") then it would 
+be impossible to display its value. Certainly at the moment we consider that adding 
+an object property to an underlying struct effectively makes it "public".
 
-> Otherwise,
 > Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
->> +        .max_access_size = 4,
->> +    },
->> +};
 
 
 ATB,
