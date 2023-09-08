@@ -2,93 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B717984F8
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF7E7984FA
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:45:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeY15-00087y-G9; Fri, 08 Sep 2023 05:43:07 -0400
+	id 1qeY2x-0001Os-Bt; Fri, 08 Sep 2023 05:45:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeY13-00087a-GG
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 05:43:05 -0400
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qeY2s-0001ND-7C
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 05:44:58 -0400
 Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeY0w-0002RQ-T8
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 05:43:04 -0400
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qeY2p-0002gR-9J
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 05:44:57 -0400
 Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-52a49a42353so2517684a12.2
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 02:42:57 -0700 (PDT)
+ 4fb4d7f45d1cf-5230a22cfd1so2451482a12.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 02:44:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694166176; x=1694770976; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kjtbdeFHy9NqP3lr9y/kVawUVwgRKm1AXBg/GDQaIjw=;
- b=TTO54Z21yiNjwLrWAlEU27ivucIDvmOXFyc/6yhpQ1m8vhL+47UTHClKjd4Z1VOGaT
- RemvPcSS8zNvrqG7xDyQnYwIIiguE3FUa3RkyI+1ya5Qlfep8LoPwBiJZ8MQuq8Nkj9Q
- PkJqa429DDGXcBzJpKFaGj3PLch5usptHJB0wfZPGfemB2FF+LEPIpBoAgKpJiPmH4+V
- IIsX5OnsfHcHunG5pTDTF5N1+nUmlROF/NnbOp5HqmqZOUTDM+LmVIrl3sOfP2rweBEa
- +MmNvJknlrtbO68i8cIx6LbW5LqpAhGLsthmuWwqLN0YLTLIuJXxu95bVeyFe3/bt9kI
- PGxg==
+ d=linaro.org; s=google; t=1694166292; x=1694771092; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vg9BMQjcSBA9mBWGBwAx75WW9ZFpExtipUaKCo82LAs=;
+ b=ZpBTywv+d2u2xABIdH8bew4Dad12tEViNuYwZlqb9oR05lfy6eEinYvFqhQjE3fLVK
+ cCYoINqSwT1fWfZE34p3/NBD6kQ+pwY/pM/1ssrB3dWV7rj+UAAY3eAaqxXi0H84YT3W
+ q4u3ssgJVVffSPcK9w7eNa/ICmLi9i4bJV1jI9weJGIKaN2bEkJeuvFnp9WNZBIvesP6
+ y720sU7P+k/wBcgcp+K4dM9oyq31zYb4JK3XUWPN6v/9/T4VS52nIGbyFtn1Cu1HYOvP
+ PexkFMoWjHeyxZurix/sT/BqtEwlPVqxx/kKSvGKOcPNogXiTs1ZFoMhmpWlx4v2Mar7
+ o9Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694166176; x=1694770976;
- h=content-transfer-encoding:in-reply-to:from:cc:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kjtbdeFHy9NqP3lr9y/kVawUVwgRKm1AXBg/GDQaIjw=;
- b=ElXDN2beWfs2yv0HZWG4DMI1sRiS0gaJIsOx1A9est6jlzkiKweg+VWX+392Y86H8T
- 0uPPZYiJwMOHRuR1Zwhm9Nfs3mTCbCo6KJuPVbhGmP9Qj7+KWJiO+hAhuF5c1J0uazAq
- 5oLH4WvKL3CUam03oSSrQtPoRHeJb1OrHjiEauZ+QMkqRUuO+SEvY7eYrAXS7kl4+25S
- MuUGuUHDh0UgLD7Yx1fxTP4LXhMifJNEF33HrLkPxCVi0IuWiY+0yQPFBqEkUBScuus4
- Ci+d5dqDk+5qPFGRaz4wQgw5cUh0RkPsoHiw6EsutPuuWq5pdo3D+CHHPL2Lli6ZTL3n
- sVrQ==
-X-Gm-Message-State: AOJu0Yxkezz94irIkHKpp6b9Vc5PiyVgYF4KPv7KssB3puaGsig5hVQA
- Ezxka8HFeIuCcNkP9cYtGOVXRA==
-X-Google-Smtp-Source: AGHT+IECLdPkxz9EKYaw4MyoWbpjMoK2w2c+RvquIOehOXIPFN8YSZUmyLwm/Qyr1UGR5oL3Xe/nvQ==
-X-Received: by 2002:aa7:cb52:0:b0:52a:46a7:4597 with SMTP id
- w18-20020aa7cb52000000b0052a46a74597mr1435852edt.33.1694166176192; 
- Fri, 08 Sep 2023 02:42:56 -0700 (PDT)
-Received: from [192.168.69.115]
- (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr. [176.173.167.175])
- by smtp.gmail.com with ESMTPSA id
- e2-20020a50ec82000000b0052a48f4065esm800922edr.39.2023.09.08.02.42.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Sep 2023 02:42:55 -0700 (PDT)
-Message-ID: <44e50cdb-37f0-c18d-4d64-0f34777a193d@linaro.org>
-Date: Fri, 8 Sep 2023 11:42:53 +0200
+ d=1e100.net; s=20230601; t=1694166292; x=1694771092;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vg9BMQjcSBA9mBWGBwAx75WW9ZFpExtipUaKCo82LAs=;
+ b=IS8A2JLbCwKO5+iZrmuRr4E3/4AZB4AEaKtHqztwlpn+UoMYVcdw5uOxKSK1RZGrPR
+ DbiX9YeAvLoUj55BqRFHejxawV4QCwgYwhAUTiWyQC5Eu/fAaj6hklsThM177s/wBh7d
+ V4SiwX1WV9oKmRR3H0O/cO2K6+y2i/Hh/r8nmbn0f/t5zqYriyybynLH7I1rvqyMMMfI
+ za8et4DiuxecIkXEAm8DioQzxXbaKsldH34/hz0SuYrjSYpJv9YJOKeDhlKqwi/MnTpk
+ 4OqIR6NxCZlcNJ8elpY9Zy8FZkkk1Nvsl+2JrXzLoVeAG/rzL8ml344jUhfcJsaTOG+v
+ H1cA==
+X-Gm-Message-State: AOJu0YxkC7wij+vxIGqhvI8+GPpNmaA3KqkbDknvpviX+UsLdJ/b4zjd
+ Yv50gwzst8C5GJuRs2uGAYoN5heRkVkWTr+GV3xinhNWPXOg1pd7
+X-Google-Smtp-Source: AGHT+IFVHnD53Y8WZ53atFSyEIwP2RRQRjnnzrOZNgz1enejG3U9ylUcEwf8AVdVOzN5nFZ0DDPaK7K4m+1V126HpHA=
+X-Received: by 2002:aa7:c6da:0:b0:51d:d390:143f with SMTP id
+ b26-20020aa7c6da000000b0051dd390143fmr1476472eds.5.1694166292712; Fri, 08 Sep
+ 2023 02:44:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 10/21] q800: add easc bool machine class property to
- switch between ASC and EASC
-Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-11-mark.cave-ayland@ilande.co.uk>
- <e3fe143f-2c07-2d59-3dca-4534a767391d@linaro.org>
- <f639b4b1-965a-fe9d-a988-2dbd2c1c0e68@ilande.co.uk>
-Cc: Markus Armbruster <armbru@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <f639b4b1-965a-fe9d-a988-2dbd2c1c0e68@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20230907203440.257845-1-mjt@tls.msk.ru>
+In-Reply-To: <20230907203440.257845-1-mjt@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 8 Sep 2023 10:44:41 +0100
+Message-ID: <CAFEAcA8kioEXGor4tMzFPQwX8nPVHso9pQHsZ=ffRapjqsOd_Q@mail.gmail.com>
+Subject: Re: [PATCH] hw/display/xlnx_dp: update comments
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,56 +84,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 08:54, Mark Cave-Ayland wrote:
-> On 07/07/2023 09:29, Philippe Mathieu-Daudé wrote:
-> 
->> On 2/7/23 17:48, Mark Cave-Ayland wrote:
->>> This determines whether the Apple Sound Chip (ASC) is set to enhanced 
->>> mode
->>> (default) or to original mode. The real Q800 hardware used an EASC 
->>> chip however
->>> a lot of older software only works with the older ASC chip.
->>>
->>> Adding this as a machine parameter allows QEMU to be used as an 
->>> developer aid
->>> for testing and migrating code from ASC to EASC.
->>>
->>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>> ---
->>>   hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
->>>   include/hw/m68k/q800.h |  1 +
->>>   2 files changed, 30 insertions(+), 1 deletion(-)
->>
->>
->>> +static bool q800_get_easc(Object *obj, Error **errp)
->>> +{
->>> +    Q800MachineState *ms = Q800_MACHINE(obj);
->>> +
->>> +    return ms->easc;
->>> +}
->>
->> Is the getter useful? Otherwise:
-> 
-> Isn't it a requirement? Otherwise I can see that if we decide to 
-> enumerate machine properties (similar as to how device properties appear 
-> in "info qtree") then it would be impossible to display its value. 
-> Certainly at the moment we consider that adding an object property to an 
-> underlying struct effectively makes it "public".
+On Thu, 7 Sept 2023 at 21:35, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>
+> From: Peter Maydell <peter.maydell@linaro.org>
+>
+> Clarify somewhat misleading code comments.
+>
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>  hw/display/xlnx_dp.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+>
+> Peter, this is the result of your suggestions in this area.
+> Since it's entirely your wording, can I specify your
+> authorship too?
 
-Just FYI this is not a requirement, per "qom/object.h":
+Sure.
 
-   /**
-    * object_property_add_bool:
-    * @obj: the object to add a property to
-    * @name: the name of the property
-    * @get: the getter or NULL if the property is write-only.
-    * @set: the setter or NULL if the property is read-only
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-I'm not sure when we want a write-only QOM boolean property, so I
-genuinely ask, since I agree introspecting QOM object fields from
-the monitor is helpful.
-
-Regards,
-
-Phil.
+-- PMM
 
