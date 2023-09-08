@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A0B79880C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 15:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4FE79880D
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 15:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qebko-0000ao-Hk; Fri, 08 Sep 2023 09:42:34 -0400
+	id 1qeblm-00013t-T6; Fri, 08 Sep 2023 09:43:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qebkm-0000ad-LL
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:42:32 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1qeblk-00012C-SO
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:43:33 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qebkk-0005Yk-HZ
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:42:32 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-52a23227567so2838764a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 06:42:30 -0700 (PDT)
+ id 1qebli-0007Rt-FG
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:43:32 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-529fb2c6583so2774188a12.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 06:43:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694180548; x=1694785348; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694180609; x=1694785409; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=MdihRmGVf653hvyytkSn9JMWlM4kTYEnM3FpjmKGCO0=;
- b=sb0UieANwhWQ0ZF8CTWGkuGYyrhhJ0/u3mGlzzOXukI7Ygpn4JuuUbuYYGLlfNu0zB
- NdnGamNbACOSXCmqNbaCJFyxVZ7hfdHbnmNTzp6khaqzq09qiTCIyDro0HhYjJLDLg5g
- bQpl+U9aqKck6GTlZbc3vSORh41WIyelUnr2SGCoW8WiZNiuPTk2uwye5eKrU8TgJf67
- WKFE9c+z68S/YERLuV7eSHHa4ZxIrdYdzocd6+cK1BB0O78wJJ/0ghsy+1elxaBUiF00
- n2CHHgmujsiW5knDHkH9sHBbMfHLFmJkCRDb4v6r3nGV7YvjS13bR8oSsX9z+NI3+NeI
- 95bg==
+ bh=nRX8puxy9wVPB8+ZeOjrrhi7EZjOnzEgpEc6gfutF4k=;
+ b=JYX1myjOX3C3SK7bNdq0MhrKy088qn/Owrm1WP3h9rR5bi3mzn62uwmlNd0CQWbruJ
+ HJE5l89j7bRm11vPalMtY81ZF00KqrpBZ8TbijRm/xUy2egzZ/Y5JUBWP5ubrsfWg5Ck
+ yaz5A2Ag3c3FMh/Is1S5HuWnAI6oa2C3OcRBOkcmfkaaGKVxZlXd9rQqjUizrELdBrFd
+ I/Y5zGE9T7giXM7i8CjSjfDLAC6RyfuM4rD8ihjNcCgLESvPwaI/ZRhZ8pbzJJDthdxu
+ qNGzMcnwjsaoNPHPrrBTCRdOppNGdySMylP296IX1pxG8egaHICrbAblcPFml2ziXN72
+ hJ9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694180548; x=1694785348;
+ d=1e100.net; s=20230601; t=1694180609; x=1694785409;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=MdihRmGVf653hvyytkSn9JMWlM4kTYEnM3FpjmKGCO0=;
- b=BkQiS1aeKnta5rg4mEjNmRgg9BJT6uIn/8h8zARWSG6+FpG/aPs4PYJ5OIN5r50+yP
- fKlFU/Yi9meie8YRk4UXv7Hm5r4G2bjJTSuGLa2VkCg0ViE6RGIBMMLNL/JfenVcXFzc
- htcPq9ImL47HwI+yTWhv5FB2uWICDsEyk3AhUqkYRRMrSzc6Z7cpkrsN2k01h0/2iqei
- kySuHYyJmRwjjRyXAHYHRMfIzTSZrXmFJGbO5CA9CKm7CEjeh8yBsWJ1L/UzCaxjYA5V
- q0EQ8dCMSSbG/UevOfwsTzHX9txI52GWsDwfZOHKAzzzGt9RWGMqy3drqpn7nMEZNpDG
- q9oQ==
-X-Gm-Message-State: AOJu0Ywm/djwh/Sn34J738SrNiM7WsZLhG9kXZ0wk0j93whf6yiF0NpM
- wFXNCn+noWnBcIOycYxrbBAv0OA4d6CLuDsbknzTHQ==
-X-Google-Smtp-Source: AGHT+IHPImvHhLvhuz9CMp+/tOYgBMBYd3C6anQqla4q/WtD1ChUx5WQO9tqrar6aj/ljVp0Q27EmCWvNPNbXIfzUnY=
-X-Received: by 2002:aa7:c502:0:b0:52c:b469:bb01 with SMTP id
- o2-20020aa7c502000000b0052cb469bb01mr1821062edq.38.1694180548550; Fri, 08 Sep
- 2023 06:42:28 -0700 (PDT)
+ bh=nRX8puxy9wVPB8+ZeOjrrhi7EZjOnzEgpEc6gfutF4k=;
+ b=aJTZKVQzBS6eZ1+Mff/4q/i4wTi5qtME4P+7NEdfVJ9mf3gZJvs9esmec39w+vNcki
+ 2pWMJIgMCTyxufy8lb2XwXoNPjBzpIMbYs6V06qZdL/bHNelc7d2vkYqgno1KQZLkxZ4
+ pn5ednxjGBUTjOWXSMouU8ywwmWbMbVZ9ZEzntnXuLz33W+guItmtSahDWgSYAPmKPWB
+ UrK//yLlgmG+941u6zm5uFdP3FeCsJqcYfOxW0w/XwFQW3sntusPrjWNcwiZYs5EnmdM
+ ek3auzwuUzeMsNDJJbFJdozfZwXxzJeGUzUgFDr75TDYxkzHhcUI4JfekdLF7oLCNZpV
+ /r2w==
+X-Gm-Message-State: AOJu0Yz2c4hLYuzu/n/waevD7HD2JKRj2GYILwyBBS/8aEWPqWiq0Wq/
+ wTUVof3hqa2v3/Yg5h4z8bIiU1t8u0Mdc7OXAFni9xP41qc8jChc
+X-Google-Smtp-Source: AGHT+IFHz5aTHgmzhZYBqLuPYygUlmKoazkdpFGFlA81GAfwtjM287Z+6/SF8dvMJF0akBfOAdOy6mfc32eMU5In5LM=
+X-Received: by 2002:aa7:d1c6:0:b0:523:b37e:b83c with SMTP id
+ g6-20020aa7d1c6000000b00523b37eb83cmr1999743edp.37.1694180609036; Fri, 08 Sep
+ 2023 06:43:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230831232441.66020-1-richard.henderson@linaro.org>
- <20230831232441.66020-5-richard.henderson@linaro.org>
-In-Reply-To: <20230831232441.66020-5-richard.henderson@linaro.org>
+ <20230831232441.66020-6-richard.henderson@linaro.org>
+In-Reply-To: <20230831232441.66020-6-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Sep 2023 14:42:17 +0100
-Message-ID: <CAFEAcA-Yb0tn0oemVChWkUmQM4YavWQhSHiMDYY1=NNMyBQyNA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] target/arm: Implement FEAT_TIDCP1
+Date: Fri, 8 Sep 2023 14:43:18 +0100
+Message-ID: <CAFEAcA9q+ie0Fuaeu4RVU=wX8+JEw=u+i-YuSkW-j+rjPkeUOw@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] target/arm: Enable SCTLR_EL1.TIDCP for user-only
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,16 +88,11 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Fri, 1 Sept 2023 at 00:25, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
+> The linux kernel detects and enables this bit.  Once trapped,
+> EC_SYSTEMREGISTERTRAP is treated like EC_UNCATEGORIZED, so
+> no changes required within linux-user/aarch64/cpu_loop.c.
+>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  docs/system/arm/emulation.rst  |  1 +
->  target/arm/cpu.h               |  5 +++++
->  target/arm/helper.h            |  1 +
->  target/arm/tcg/cpu64.c         |  1 +
->  target/arm/tcg/op_helper.c     | 20 ++++++++++++++++++++
->  target/arm/tcg/translate-a64.c |  5 +++++
->  target/arm/tcg/translate.c     |  6 ++++++
->  7 files changed, 39 insertions(+)
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
