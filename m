@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9654798822
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 15:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F95798823
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 15:52:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qebs8-0005XN-Lw; Fri, 08 Sep 2023 09:50:08 -0400
+	id 1qebtA-0006mX-SC; Fri, 08 Sep 2023 09:51:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qebs7-0005W9-58
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:50:07 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1qebt8-0006mH-BR
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:51:10 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qebs3-0000Le-67
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:50:05 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31f7638be6eso1237918f8f.3
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 06:50:02 -0700 (PDT)
+ id 1qebt5-0000li-US
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 09:51:10 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-52e5900cf77so2829323a12.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 06:51:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694181001; x=1694785801; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694181065; x=1694785865; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=YwgVPYivAxOrVX0F/yhRuJSkuNqRznPV2GeIZSOelKU=;
- b=xbPQ/Od0sQ8wfDuCIPwNGpRBOE12ab3/dtculugKwP2PO4wM+l6wJeptvvYlDGYwdR
- Fu6NiSsHcUdDZJ4Un49P8cauuo38DIX5ykAlPxgBnBfppeZSoBxO18pA7w/Sw9bhHyGD
- DG76YdrG/KOdCxP9QWg7s6Djpvd5ODhwX+Wx2+mddmXMfEPOP6Mry7NzxeJqYKDn2XZJ
- Q8qty+ZLOZ/fVJPKaxOL8gtChpEgXXtUlyov2viKWi+etRYz84zfiuRkv3EMXObMXjcp
- habDIRZmngHrQcXZ0aYziqfHQNnxxBCL57D3OAc2C2+x2zSnmz+UiQGH4o5GF8LNhFWr
- GdVw==
+ bh=J8pjd1/df+s3RtkGAmFa4NAq964Oj2OD0bhtrmrAYJc=;
+ b=U9Hyh9HGn82g/p44x1N0C7YGodlSCS249n8aYC+mUym5ZI2OH9wknchVmRVGYeXW+3
+ WC/6zi58E3DtHdao1MtG+cQFNh4fMYNh8cvpYAJKQ8AXHCQevEB9hHiJ3HoW3YxUExP0
+ Lkmbe+6F9w6IClRury4bGNFpnpnf9Pd1Qyih4meqHJmY3ZaEba3JTb+t/GwStusT2yxF
+ gqMf/8IkDa9m57H05SZuDf01fwTdLFJFL0zfKGtHMD3tpAsyA9AHrXrI8mSXEGfFErrk
+ lG/2YtV3nDmsOV6fqg/bZEPLIGmy3TRUdg1Mr9o7UvoC1U7SFCdfeFvUOzbLBt/6t/s9
+ 10/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694181001; x=1694785801;
+ d=1e100.net; s=20230601; t=1694181065; x=1694785865;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=YwgVPYivAxOrVX0F/yhRuJSkuNqRznPV2GeIZSOelKU=;
- b=XD0WUac7h6pfWd330H1osq3VZcwByqPcOsRDKz7+vcQlcnH3acbq5KdRnfMyQiG0ts
- t9C1KtNF5moP2XVrGg9WnIwLL/buXsFYym/aHfb0If6AHJBFC9Vwf0cgP4c8AQNWiaLz
- BQLbPve4IMWemEfzORsbfSKIkTjNt40OoVI8sCnGZ5jWxB36nhu3YGjQn58937ZmrExp
- MZIlygtGpL6QwMrs1aR/ZT16Zf9nVeiGuEuzR3rMdMBoZBFshUZKyp5DaRVeLjZv0qmd
- 0JIRyvYCOnvQZ2eqB5j/dqZZNyhVUajYzgGHi33LZf/5FusvD2p8oOW3k7HnHOkQ/VxM
- 3Wkg==
-X-Gm-Message-State: AOJu0Yw1ry2D6oPwsASuq44+phB62r7kZERAC03rGPqm00XL7W3T43DY
- kSTsf/HLAjOe2SOaFB+4HxJ22qs+isiNa8Bz9x9p+g==
-X-Google-Smtp-Source: AGHT+IFjECsuUk8ycM//tuXLbb3asfTcj9/71AlWFbvagHe6rJGyvgheXCEqCFkfo/us8EPbzMeT+6pd3K3QGJkaRMY=
-X-Received: by 2002:a5d:6510:0:b0:317:ec04:ee0c with SMTP id
- x16-20020a5d6510000000b00317ec04ee0cmr1971981wru.47.1694181000990; Fri, 08
- Sep 2023 06:50:00 -0700 (PDT)
+ bh=J8pjd1/df+s3RtkGAmFa4NAq964Oj2OD0bhtrmrAYJc=;
+ b=gJL+er+OrE5WXSF8SVm1jjLHv7ebvgEhsg4rmisdsWPWTmmjWYW/TsyNDbyo2j6ohb
+ P8H9Fg0k58szEV46v5sV934p4qhpaODTfd9BsYsPk4eubn3FKbmQdcnxD9yc6b7YJaXV
+ UfPPpOJtQr9hInH2zTZPJzrexDeGgL3KDkC6fNc7LApfvN9hIEzuU09ornS21JRBO10/
+ XLbvHmYQZ9XOu3XNThTdtYFlUDxuO4jBS2+YyS1ImuDMfhT73WgXKf1Icu5W9tj8SIy8
+ 3WIluWu2QL7bJK1sD/vOhPm2bqe+ML4k/7vYpNgnQtkPIq12GW/SLECHYwCp1p4d7CKo
+ tEzw==
+X-Gm-Message-State: AOJu0YyMB4hoVbTfB0mrhFLmXc1WP4WyCdWoD0wflBO1vypOrME4Benc
+ L91NzKuNRTOh0dNu8CxHo4B8BzOUjoWpRxM7MZQYYQ==
+X-Google-Smtp-Source: AGHT+IEQjj9TQ4wV38n8jiVxEkPB4pqx7hwLWUAIz58yT1lE3WfiLYWREcppqs7fooBw09ZICMN/hMQP3yvRSngT8F8=
+X-Received: by 2002:aa7:d90b:0:b0:51b:d567:cfed with SMTP id
+ a11-20020aa7d90b000000b0051bd567cfedmr1955373edr.5.1694181065267; Fri, 08 Sep
+ 2023 06:51:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230831171849.3297497-1-tong.ho@amd.com>
- <20230831171849.3297497-2-tong.ho@amd.com>
- <622751d4-8a89-b34e-171f-9e9f7ac99972@linaro.org>
- <BL0PR12MB48829589D59FA02B93549E65E6E4A@BL0PR12MB4882.namprd12.prod.outlook.com>
-In-Reply-To: <BL0PR12MB48829589D59FA02B93549E65E6E4A@BL0PR12MB4882.namprd12.prod.outlook.com>
+References: <20230905091246.1931-1-shameerali.kolothum.thodi@huawei.com>
+In-Reply-To: <20230905091246.1931-1-shameerali.kolothum.thodi@huawei.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Sep 2023 14:49:50 +0100
-Message-ID: <CAFEAcA_KJFnxg-msgwiaFBzPYkj4RPQeYwLzd4RCy3_br11AGQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] hw/misc: Introduce AMD/Xilix Versal TRNG device
-To: "Ho, Tong" <tong.ho@amd.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>, 
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "alistair@alistair23.me" <alistair@alistair23.me>, 
- "edgar.iglesias@gmail.com" <edgar.iglesias@gmail.com>
+Date: Fri, 8 Sep 2023 14:50:54 +0100
+Message-ID: <CAFEAcA-av-LmRw1f=cU4Mb9r-TS5gfmGBeKdcrsxHMtdJ7-bHQ@mail.gmail.com>
+Subject: Re: [PATCH v4] arm/kvm: Enable support for
+ KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+To: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, gshan@redhat.com, 
+ ricarkol@google.com, jonathan.cameron@huawei.com, kvm@vger.kernel.org, 
+ linuxarm@huawei.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,42 +87,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 1 Sept 2023 at 05:16, Ho, Tong <tong.ho@amd.com> wrote:
+On Tue, 5 Sept 2023 at 10:13, Shameer Kolothum
+<shameerali.kolothum.thodi@huawei.com> wrote:
 >
-> Hi Richard,
+> Now that we have Eager Page Split support added for ARM in the kernel,
+> enable it in Qemu. This adds,
+>  -eager-split-size to -accel sub-options to set the eager page split chunk size.
+>  -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
 >
-> Thanks for your input.
+> The chunk size specifies how many pages to break at a time, using a
+> single allocation. Bigger the chunk size, more pages need to be
+> allocated ahead of time.
 >
-> I have questions regarding using qemu/guest-random.h for QEMU device models.
->
-> Using qemu/guest-random.h, how can this TRNG model ensure its independence from
-> other uses of the same qemu_guest_getrandom() and qemu_guest_random_seed_*()?
->
-> By "other uses", I mean components and/or devices using qemu/guest-random.h but unrelated to this Xilinx Versal TRNG device.
->
-> By "independent", I mean the Xilinx Versal TRNG device is:
->
-> 1. Not impacted by other uses that may or may not need to set the '-seed' option, and
->
-> 2. Not impacting other uses just because a Xilinx Versal machine user decides to use deterministic mode *only" for this TRNG device.
->
-> Also, I am at a loss in how unrelated QEMU devices can remain independent when:
->
-> 3. qemu/guest-random.h uses '__thread' variable for GRand context, but
->
-> 4. QEMU devices run mostly as co-routines and not as separate threads.
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+> ---
+> Changes:
+> v3: https://lore.kernel.org/qemu-devel/20230830114818.641-1-shameerali.kolothum.thodi@huawei.com/
+>    -Added R-by by Gavin and replaced kvm_arm_eager_split_size_valid()
+>     with a direct check.
+> v2: https://lore.kernel.org/qemu-devel/20230815092709.1290-1-shameerali.kolothum.thodi@huawei.com/
+>    -Addressed commenst from Gavin.
+> RFC v1: https://lore.kernel.org/qemu-devel/20230725150002.621-1-shameerali.kolothum.thodi@huawei.com/
+>   -Updated qemu-options.hx with description
+>   -Addressed review comments from Peter and Gavin(Thanks).
 
-You shouldn't need to care about any of this. Just assume you can
-get decent quality random numbers from qemu_guest_getrandom() or
-qemu_guest_getrandom_nofail(). The -seed option is for the
-entire simulation, not specific to individual RNG devices.
 
-> I suppose the Versal TRNG implementation could use g_rand_*() directly,
-> having a GRand object in the device state and seeding through g_rand_set_seed_array().
 
-Don't do something non-standard. Write this RNG device the same way
-we do all other RNG devices in QEMU.
+Applied to target-arm.next, thanks.
 
-thanks
 -- PMM
 
