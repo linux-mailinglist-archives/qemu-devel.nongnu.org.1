@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAD1798631
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 12:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 292B2798643
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 13:06:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeZ6e-0004nT-7A; Fri, 08 Sep 2023 06:52:56 -0400
+	id 1qeZHs-0002KF-RA; Fri, 08 Sep 2023 07:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qeZ6b-0004nA-OB
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:52:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qeZ6Z-0005m3-4e
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:52:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694170370;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ph7pItCEzIn+p9PFbsyp3+x/QVhBRcHm5W4bKCJ7udc=;
- b=guVT8qTRbOF2s5i9i0oAjMukXrXh+O54JLG8u1wME33HSS3MT+lxWskB3WBxMRgKpGPti7
- 8LWUH/yS2p6nxsDm0Umqwkfuuxq8YmwjVAvZnQOEpiX8X31VnIDJMhHYw5J3uje0dTAXVD
- FezCN3d+d1Qru/lt9jMiPeZIIT4lVR8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-589-qRI6uXnIN5u3IHVTvZXnbQ-1; Fri, 08 Sep 2023 06:52:46 -0400
-X-MC-Unique: qRI6uXnIN5u3IHVTvZXnbQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4B37C101CA83;
- Fri,  8 Sep 2023 10:52:46 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.42])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7ABBE40C84A7;
- Fri,  8 Sep 2023 10:52:45 +0000 (UTC)
-Date: Fri, 8 Sep 2023 11:52:43 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Steven Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH V4 1/2] migration: file URI
-Message-ID: <ZPr8+zjFneDQ90Vy@redhat.com>
-References: <1688135108-316997-1-git-send-email-steven.sistare@oracle.com>
- <1688135108-316997-2-git-send-email-steven.sistare@oracle.com>
- <ZO9BNnnOnLjH3bcD@redhat.com>
- <2dbbaf06-81cb-0442-05f2-f0f00deb5618@oracle.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qeZHj-0002Jc-5h; Fri, 08 Sep 2023 07:04:23 -0400
+Received: from mail-oo1-xc36.google.com ([2607:f8b0:4864:20::c36])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qeZHS-0001tx-LW; Fri, 08 Sep 2023 07:04:22 -0400
+Received: by mail-oo1-xc36.google.com with SMTP id
+ 006d021491bc7-57325fcd970so1154212eaf.1; 
+ Fri, 08 Sep 2023 04:04:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694171045; x=1694775845; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=M/BGf/hqM1xaZas1e+ExMHl6xUYwDiGdRO4Z8lZ9kNQ=;
+ b=LOyAPa8N/MVly4i9UEfAxj/PWq+K820JSYNeIbrDz5Pd5Wr9ii+0QqI2qPpJbd+bm2
+ Yjk3IAy2SscL5JwJiss3q6nWfNx8z7pTIHyslfSWSCuUxgNv5dCsCBw6dtuqOJ4ezdKl
+ gZ0hxZz2YzQS415kr9U6eUUhOVcuxdp/R7iQen+30HBLdPis2UA8haelPE5+dXvbGZ2o
+ d3lD7CslJ5vifLMT7hDsENnwNG9I/jmdyp5rO8EZBm8Cj/WyR1oM7TLcywwXZQ1zZa+H
+ QlWNL2zBm0vMToHFup6s6Oh68YA1rvqVCbq4Ki3O52Bl8BwMu4zjNAhF9J+nJJemej+Q
+ DMiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694171045; x=1694775845;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=M/BGf/hqM1xaZas1e+ExMHl6xUYwDiGdRO4Z8lZ9kNQ=;
+ b=kyqQ9EzApnNf0tV0NUxdcGPoMbTFSIfpS+9e8auwSahAbKe9QGAH+cXLI7OJGwkClS
+ NHe2f9IXyG+jig/oWr1BgGNGymNQXpD33V2rSBtAQtr4yXyVVAi4lmGTFaeEaOQjv4wE
+ YRyNXlpekyNih1kISNErKtKOiZ1D8Lbo9VyNQVVgOln5jY4WpMkx3imBvXIOTA1VGZll
+ 0P/1iJYIM/4rHnSklTAycTbVCOV+3g8/TK4RQaCrkCFwV0J8FiB7lp6zXE048yTtBVm6
+ yln9yXZQcLQM9/zevS4ytGIdE8OmHlGawEJz7gkpl6Bb8obLbpH0J7znrSZ6wZLXavEG
+ 3iHA==
+X-Gm-Message-State: AOJu0YxZUKCQVxT44MisJCBdjiMUGr9rrawwA85OmtOrG4uF5VhkJgfP
+ q4dThdu1xFtdT4hdONXM2cmIgduTBfu7kb8UoPk=
+X-Google-Smtp-Source: AGHT+IGzV4YGWh4S1ZyrdHrKJMruOCeeOdwCNs/piyeOojQJMFJYILUY8O6egWZNWGCUlwNOVhcZ8JAVBJhlAIclNCg=
+X-Received: by 2002:a4a:8111:0:b0:571:28d5:2c77 with SMTP id
+ b17-20020a4a8111000000b0057128d52c77mr2108762oog.5.1694171044986; Fri, 08 Sep
+ 2023 04:04:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2dbbaf06-81cb-0442-05f2-f0f00deb5618@oracle.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230908013535.990731-15-eblake@redhat.com>
+ <20230908013535.990731-27-eblake@redhat.com>
+In-Reply-To: <20230908013535.990731-27-eblake@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Fri, 8 Sep 2023 07:03:52 -0400
+Message-ID: <CAJSP0QWYDPU-26Jt7-SN4s-hyL1jg4-_eXz+9huCfzO+nL8D=w@mail.gmail.com>
+Subject: Re: [PULL 12/13] qemu-nbd: Restore "qemu-nbd -v --fork" output
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
+ Kevin Wolf <kwolf@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>, 
+ Mike Maslenkin <mike.maslenkin@gmail.com>, 
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c36;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,75 +84,157 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 30, 2023 at 10:15:43AM -0400, Steven Sistare wrote:
-> On 8/30/2023 9:16 AM, Daniel P. Berrangé wrote:
-> > On Fri, Jun 30, 2023 at 07:25:07AM -0700, Steve Sistare wrote:
-> >> Extend the migration URI to support file:<filename>.  This can be used for
-> >> any migration scenario that does not require a reverse path.  It can be
-> >> used as an alternative to 'exec:cat > file' in minimized containers that
-> >> do not contain /bin/sh, and it is easier to use than the fd:<fdname> URI.
-> >> It can be used in HMP commands, and as a qemu command-line parameter.
-> >>
-> >> For best performance, guest ram should be shared and x-ignore-shared
-> >> should be true, so guest pages are not written to the file, in which case
-> >> the guest may remain running.  If ram is not so configured, then the user
-> >> is advised to stop the guest first.  Otherwise, a busy guest may re-dirty
-> >> the same page, causing it to be appended to the file multiple times,
-> >> and the file may grow unboundedly.  That issue is being addressed in the
-> >> "fixed-ram" patch series.
-> >>
-> >> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> >> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> >> Reviewed-by: Peter Xu <peterx@redhat.com>
-> >> ---
-> >>  migration/file.c       | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++
-> >>  migration/file.h       | 14 ++++++++++++
-> >>  migration/meson.build  |  1 +
-> >>  migration/migration.c  |  5 ++++
-> >>  migration/trace-events |  4 ++++
-> >>  qemu-options.hx        |  6 ++++-
-> >>  6 files changed, 91 insertions(+), 1 deletion(-)
-> >>  create mode 100644 migration/file.c
-> >>  create mode 100644 migration/file.h
-> >>
-> >> diff --git a/migration/file.c b/migration/file.c
-> >> new file mode 100644
-> >> index 0000000..8e35827
-> >> --- /dev/null
-> >> +++ b/migration/file.c
-> >> @@ -0,0 +1,62 @@
-> >> +/*
-> >> + * Copyright (c) 2021-2023 Oracle and/or its affiliates.
-> >> + *
-> >> + * This work is licensed under the terms of the GNU GPL, version 2.
-> > 
-> > Was it an intentional decision to assign this under the version 2 *only* ?
-> > 
-> > QEMU's LICENSE file states
-> > 
-> > [quote]
-> > As of July 2013, contributions under version 2 of the GNU General Public
-> > License (and no later version) are only accepted for the following files
-> > or directories: bsd-user/, linux-user/, hw/vfio/, hw/xen/xen_pt*.
-> > [/quote]
-> > 
-> > Thus we'd expect this new file to be version 2, or later.
-> 
-> My mistake, sorry.  It should say "GNU GPL, version 2 or later"
+Please resolve the following CI failure:
 
-Could you re-post, as aside from that, this series looks
-ready for merge.
+https://gitlab.com/qemu-project/qemu/-/jobs/5045998355
 
+ninja: job failed: cc -m64 -mcx16 -Iqemu-nbd.p -I. -I.. -Iqapi -Itrace
+-Iui -Iui/shader -I/usr/include/p11-kit-1 -I/usr/include/glib-2.0
+-I/usr/lib/glib-2.0/include -fdiagnostics-color=auto -Wall
+-Winvalid-pch -Werror -std=gnu11 -O2 -g -fstack-protector-strong
+-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -Wundef -Wwrite-strings
+-Wmissing-prototypes -Wstrict-prototypes -Wredundant-decls
+-Wold-style-declaration -Wold-style-definition -Wtype-limits
+-Wformat-security -Wformat-y2k -Winit-self -Wignored-qualifiers
+-Wempty-body -Wnested-externs -Wendif-labels -Wexpansion-to-defined
+-Wimplicit-fallthrough=2 -Wmissing-format-attribute
+-Wno-missing-include-dirs -Wno-shift-negative-value -Wno-psabi
+-isystem /builds/qemu-project/qemu/linux-headers -isystem
+linux-headers -iquote . -iquote /builds/qemu-project/qemu -iquote
+/builds/qemu-project/qemu/include -iquote
+/builds/qemu-project/qemu/host/include/x86_64 -iquote
+/builds/qemu-project/qemu/host/include/generic -iquote
+/builds/qemu-project/qemu/tcg/i386 -pthread -D_GNU_SOURCE
+-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+-fno-common -fwrapv -fPIE -MD -MQ qemu-nbd.p/qemu-nbd.c.o -MF
+qemu-nbd.p/qemu-nbd.c.o.d -o qemu-nbd.p/qemu-nbd.c.o -c ../qemu-nbd.c
+In file included from /usr/include/fortify/stdio.h:23,
+from ../include/qemu/osdep.h:110,
+from ../qemu-nbd.c:19:
+../qemu-nbd.c: In function 'nbd_client_thread':
+../qemu-nbd.c:340:39: error: expected identifier before '(' token
+340 | nbd_client_release_pipe(opts->stderr);
+| ^~~~~~
+../qemu-nbd.c: In function 'main':
+../qemu-nbd.c:605:10: error: expected identifier before '(' token
+605 | .stderr = STDOUT_FILENO,
+| ^~~~~~
+../qemu-nbd.c:962:22: error: expected identifier before '(' token
+962 | opts.stderr = dup(STDERR_FILENO);
+| ^~~~~~
+../qemu-nbd.c:963:26: error: expected identifier before '(' token
+963 | if (opts.stderr < 0) {
+| ^~~~~~
+../qemu-nbd.c:1200:38: error: expected identifier before '(' token
+1200 | nbd_client_release_pipe(opts.stderr);
+| ^~~~~~
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+On Thu, 7 Sept 2023 at 21:37, Eric Blake <eblake@redhat.com> wrote:
+>
+> From: "Denis V. Lunev" <den@openvz.org>
+>
+> Closing stderr earlier is good for daemonized qemu-nbd under ssh
+> earlier, but breaks the case where -v is being used to track what is
+> happening in the server, as in iotest 233.
+>
+> When we know we are verbose, we should preserve original stderr and
+> restore it once the setup stage is done. This commit restores the
+> original behavior with -v option. In this case original output
+> inside the test is kept intact.
+>
+> Reported-by: Kevin Wolf <kwolf@redhat.com>
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
+> CC: Eric Blake <eblake@redhat.com>
+> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> CC: Hanna Reitz <hreitz@redhat.com>
+> CC: Mike Maslenkin <mike.maslenkin@gmail.com>
+> Fixes: 5c56dd27a2 ("qemu-nbd: fix regression with qemu-nbd --fork run over ssh")
+> Message-ID: <20230906093210.339585-7-den@openvz.org>
+> Reviewed-by: Eric Blake <eblake@redhat.com>
+> Tested-by: Eric Blake <eblake@redhat.com>
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+>  qemu-nbd.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+>
+> diff --git a/qemu-nbd.c b/qemu-nbd.c
+> index 7c4e22def17..1cdc41ed292 100644
+> --- a/qemu-nbd.c
+> +++ b/qemu-nbd.c
+> @@ -255,18 +255,23 @@ struct NbdClientOpts {
+>      char *device;
+>      char *srcpath;
+>      SocketAddress *saddr;
+> +    int stderr;
+>      bool fork_process;
+>      bool verbose;
+>  };
+>
+> -static void nbd_client_release_pipe(void)
+> +static void nbd_client_release_pipe(int old_stderr)
+>  {
+>      /* Close stderr so that the qemu-nbd process exits.  */
+> -    if (dup2(STDOUT_FILENO, STDERR_FILENO) < 0) {
+> +    if (dup2(old_stderr, STDERR_FILENO) < 0) {
+>          error_report("Could not release pipe to parent: %s",
+>                       strerror(errno));
+>          exit(EXIT_FAILURE);
+>      }
+> +    if (old_stderr != STDOUT_FILENO && close(old_stderr) < 0) {
+> +        error_report("Could not release qemu-nbd: %s", strerror(errno));
+> +        exit(EXIT_FAILURE);
+> +    }
+>  }
+>
+>  #if HAVE_NBD_DEVICE
+> @@ -332,7 +337,7 @@ static void *nbd_client_thread(void *arg)
+>          fprintf(stderr, "NBD device %s is now connected to %s\n",
+>                  opts->device, opts->srcpath);
+>      } else {
+> -        nbd_client_release_pipe();
+> +        nbd_client_release_pipe(opts->stderr);
+>      }
+>
+>      if (nbd_client(fd) < 0) {
+> @@ -597,6 +602,7 @@ int main(int argc, char **argv)
+>          .device = NULL,
+>          .srcpath = NULL,
+>          .saddr = NULL,
+> +        .stderr = STDOUT_FILENO,
+>      };
+>
+>  #ifdef CONFIG_POSIX
+> @@ -951,6 +957,16 @@ int main(int argc, char **argv)
+>
+>              close(stderr_fd[0]);
+>
+> +            /* Remember parent's stderr if we will be restoring it. */
+> +            if (opts.verbose /* fork_process is set */) {
+> +                opts.stderr = dup(STDERR_FILENO);
+> +                if (opts.stderr < 0) {
+> +                    error_report("Could not dup original stderr: %s",
+> +                                 strerror(errno));
+> +                    exit(EXIT_FAILURE);
+> +                }
+> +            }
+> +
+>              ret = qemu_daemon(1, 0);
+>              saved_errno = errno;    /* dup2 will overwrite error below */
+>
+> @@ -1181,7 +1197,7 @@ int main(int argc, char **argv)
+>      }
+>
+>      if (opts.fork_process) {
+> -        nbd_client_release_pipe();
+> +        nbd_client_release_pipe(opts.stderr);
+>      }
+>
+>      state = RUNNING;
+> --
+> 2.41.0
+>
+>
 
