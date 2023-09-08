@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954E97981E9
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93094798228
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:14:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUeK-00065r-Bt; Fri, 08 Sep 2023 02:07:24 -0400
+	id 1qeUeR-0006r8-MB; Fri, 08 Sep 2023 02:07:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUeH-00062C-RH
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:21 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qeUeN-0006X7-BT
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:27 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUeE-0007I1-J1
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:21 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c336f3f449so14699345ad.3
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:18 -0700 (PDT)
+ id 1qeUeJ-0007Ox-Nq
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:26 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c1e3a4a06fso13421655ad.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153237; x=1694758037; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153241; x=1694758041; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SNW/cl5XE7PcFPCSWK9aTBzwWg07OvJep7oqCwyWKIs=;
- b=MD5v1ttUQBo6HfEnPmZLc9v2KX4HkTva+5CSvT8Y/tIuLdeFApMkWafaVz6QUpSXJZ
- RXy5DXAj2ybUNDjC1wBWfwLXbDUrw+PJkWOZHJVfPNjaIGzw0dkgQbt0dvMPeUDqAF2K
- Vvb89dKh/ydm7n4zyjlFtdOwmJ2K1nAGEuxYHr9Qf3aIftX1yrhLbF/FX6Nl9VYP+M5q
- KYfMrq1rBb/JcA+LcCvOlgO+jCIScCULl9LElIVDenCXrDH5Kfh5IqLETXmSlD1pT/O2
- ccXOsfqjDSSqtx3Au9mrGT70Y6w+aD7aAmAquq8J9cQ4ihSGiHEyne1diN0m1ctirCNe
- UmXg==
+ bh=NjXuICcOeuQWR8Rareoyy0vJVSEo7Ycr9iahUIb1+bw=;
+ b=OKaUSPZVxOVjChffvAp2R7K5mb3y1Fe1ehAHLjZZGkATVVy2KFHmiX0JtpFkfrqFK3
+ 2dSBdbLrO0Zd+xwz3MV70twvqKYP3kmPFWkWqTGRUW9xE9+vfmzXaACFiw53mueburMT
+ C7aEpatmMX3ysszpwwS3VHHpVYKk3UA9+zLlOhokQPbx1YQCLlv4N8xWmw2czarj3F5N
+ OMHOprzDJkgtqjS04voV8l4j2mKfjxiOtRS93tPyREyjXJ4cZxOrDlZHGPgIEKkob4AI
+ OL8lv35Zs41NjIdqgu2/NtNHzOo3CjQ4SS5HWiPaXV4zEy6C40F4HIR5Ly157SloOPsk
+ Vmbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153237; x=1694758037;
+ d=1e100.net; s=20230601; t=1694153241; x=1694758041;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SNW/cl5XE7PcFPCSWK9aTBzwWg07OvJep7oqCwyWKIs=;
- b=Jvb/6hMOnCq69EA1nCRplgKfL9eT033X3uAVfL+x9yBDqs+aS6DCzwvvz1YVJKRIYO
- cKJrheS+JvV7nzA+HIyL/JX2KA4Qyl0aMSEytSa25Cbe1Ox9OXmuvEjoCi+7vFFW3D4T
- +1sdlfP47qc8bMST7z5oInTiOspSxs+TqgBR6feAznQtydUSu30posLxlh1hDQvKsfHt
- vbyrmgh7hwdyent0uEcE/f9fBrWlNb+aJc0e8E6r1U42wXF8gNZ38u1wl6JcX7hcQYy0
- UcpGdac2R0gLnlcp0sTe5Xay9nWSu16rfpy82tzqDX1cHb9I7glo0jzADwHfTgLWGOvg
- B6Fg==
-X-Gm-Message-State: AOJu0YxZ541kt7KwbKR/soPMabcz+GDcsh0362CTwgD/WIpxhG1Q1QBv
- BG3A53E1AOz4eU/9MjE2toVpjxDeaBm3lq5V
-X-Google-Smtp-Source: AGHT+IFTrO40rcArjfhnK2w23VzZ2CJxt8XlylmyXhm5mz6WUotek8zR6/jdinwPsKvf9FHazhA14w==
-X-Received: by 2002:a17:902:d2d1:b0:1bd:c6ca:e0db with SMTP id
- n17-20020a170902d2d100b001bdc6cae0dbmr1711028plc.37.1694153236927; 
- Thu, 07 Sep 2023 23:07:16 -0700 (PDT)
+ bh=NjXuICcOeuQWR8Rareoyy0vJVSEo7Ycr9iahUIb1+bw=;
+ b=VUqA4cvudk/kJL6Dz4ZLir4nLLyBeBoIi2eAzjMNOWJ1udoTWWc/ytOnoBly4PTUp/
+ 9Yq8WXnM+/uU+HiVM9ZtCPbwFV6EzLVKrXo82Tay7aVhIHs1fGXfrhrAgohXIDJDHZdR
+ TV/sMbaIugHRI91WiwJXx87LysMI8FL57lXQClA9vCppjsWrF0jBFKKNuBLCwtEORvR+
+ 4T1TgxWuhyoF7MjQInrf/MQDYttkSK2nO9QSo907DzZjLjOfPwuRotwCjkIgWNKWRext
+ QhsZtVSk2D+YTs+TqcqDmqVz9oKE9LaagHaU6qZqPxv8Cg3LeORviEUgyCydNJrZv2Kq
+ b9ZQ==
+X-Gm-Message-State: AOJu0YyBD+6VsyqRHnlB9fdkQ9bPH8GNRZsB+hbA3TwH6xTIMJ+Shg7V
+ DDk7m0YJvMSvdDyXXj38omwoiOKTL2tuHukR
+X-Google-Smtp-Source: AGHT+IEWeqLfbC/iFt8+sn3sKJ609TC3/jJYop1v8tnraZ8coLpOqozUbcp9tW66H183m7c3srtCKQ==
+X-Received: by 2002:a17:903:495:b0:1c3:308b:ecb9 with SMTP id
+ jj21-20020a170903049500b001c3308becb9mr1563699plb.11.1694153240833; 
+ Thu, 07 Sep 2023 23:07:20 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.13
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:07:15 -0700 (PDT)
+ Thu, 07 Sep 2023 23:07:19 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Vineet Gupta <vineetg@rivosinc.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 37/65] riscv: zicond: make non-experimental
-Date: Fri,  8 Sep 2023 16:04:03 +1000
-Message-ID: <20230908060431.1903919-38-alistair.francis@wdc.com>
+Subject: [PULL 38/65] hw/riscv/virt.c: fix non-KVM --enable-debug build
+Date: Fri,  8 Sep 2023 16:04:04 +1000
+Message-ID: <20230908060431.1903919-39-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,43 +100,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vineet Gupta <vineetg@rivosinc.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-zicond is now codegen supported in both llvm and gcc.
+A build with --enable-debug and without KVM will fail as follows:
 
-This change allows seamless enabling/testing of zicond in downstream
-projects. e.g. currently riscv-gnu-toolchain parses elf attributes
-to create a cmdline for qemu but fails short of enabling it because of
-the "x-" prefix.
+/usr/bin/ld: libqemu-riscv64-softmmu.fa.p/hw_riscv_virt.c.o: in function `virt_machine_init':
+./qemu/build/../hw/riscv/virt.c:1465: undefined reference to `kvm_riscv_aia_create'
 
-Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
-Message-ID: <20230808181715.436395-1-vineetg@rivosinc.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+This happens because the code block with "if virt_use_kvm_aia(s)" isn't
+being ignored by the debug build, resulting in an undefined reference to
+a KVM only function.
+
+Add a 'kvm_enabled()' conditional together with virt_use_kvm_aia() will
+make the compiler crop the kvm_riscv_aia_create() call entirely from a
+non-KVM build. Note that adding the 'kvm_enabled()' conditional inside
+virt_use_kvm_aia() won't fix the build because this function would need
+to be inlined multiple times to make the compiler zero out the entire
+block.
+
+While we're at it, use kvm_enabled() in all instances where
+virt_use_kvm_aia() is checked to allow the compiler to elide these other
+kvm-only instances as well.
+
+Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: dbdb99948e ("target/riscv: select KVM AIA in riscv virt machine")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20230830133503.711138-2-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/riscv/virt.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 34ac26e3ae..bf0912014e 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1869,6 +1869,7 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("zcf", RISCVCPU, cfg.ext_zcf, false),
-     DEFINE_PROP_BOOL("zcmp", RISCVCPU, cfg.ext_zcmp, false),
-     DEFINE_PROP_BOOL("zcmt", RISCVCPU, cfg.ext_zcmt, false),
-+    DEFINE_PROP_BOOL("zicond", RISCVCPU, cfg.ext_zicond, false),
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 388e52a294..3b259b9305 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -782,7 +782,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+     }
  
-     /* Vendor-specific custom extensions */
-     DEFINE_PROP_BOOL("xtheadba", RISCVCPU, cfg.ext_xtheadba, false),
-@@ -1885,7 +1886,6 @@ static Property riscv_cpu_extensions[] = {
-     DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOps, false),
+     /* KVM AIA only has one APLIC instance */
+-    if (virt_use_kvm_aia(s)) {
++    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+         create_fdt_socket_aplic(s, memmap, 0,
+                                 msi_m_phandle, msi_s_phandle, phandle,
+                                 &intc_phandles[0], xplic_phandles,
+@@ -808,7 +808,7 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
  
-     /* These are experimental so mark with 'x-' */
--    DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
+     g_free(intc_phandles);
  
-     /* ePMP 0.9.3 */
-     DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
+-    if (virt_use_kvm_aia(s)) {
++    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+         *irq_mmio_phandle = xplic_phandles[0];
+         *irq_virtio_phandle = xplic_phandles[0];
+         *irq_pcie_phandle = xplic_phandles[0];
+@@ -1461,7 +1461,7 @@ static void virt_machine_init(MachineState *machine)
+         }
+     }
+ 
+-    if (virt_use_kvm_aia(s)) {
++    if (kvm_enabled() && virt_use_kvm_aia(s)) {
+         kvm_riscv_aia_create(machine, IMSIC_MMIO_GROUP_MIN_SHIFT,
+                              VIRT_IRQCHIP_NUM_SOURCES, VIRT_IRQCHIP_NUM_MSIS,
+                              memmap[VIRT_APLIC_S].base,
 -- 
 2.41.0
 
