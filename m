@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0907981DF
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 347F1798207
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:11:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUej-0000kJ-Qh; Fri, 08 Sep 2023 02:07:49 -0400
+	id 1qeUen-00016c-7G; Fri, 08 Sep 2023 02:07:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUei-0000cF-2M
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:48 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1qeUel-00010s-3r
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:51 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUef-00081u-JZ
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:47 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-565334377d0so1426091a12.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:45 -0700 (PDT)
+ id 1qeUei-00086L-N3
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:07:50 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1c1f8aaab9aso14776545ad.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:07:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153264; x=1694758064; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153267; x=1694758067; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=W5JLWmPdFOmmnVJajydlQuEvlPHJIdopD5Tg6fXJfks=;
- b=GE6Jd1GgGDOe+3d6YpA2aLT5vJ4lYdO7t6rCsO5OsnFyvkdC6T0MhewkimTlhVEQNj
- tNv0dZO7/Udrt3mPTRaK5X7quS4IwZpZSNHqk/uvkXSizYhdc/AHea6Kdvd61GQUWhPs
- Eq1z9bkAKfeXySHpnZ2qZMkN7tyGfoxzXUYRxdFjH4loxuVX6uGBAACk6SV0xVYxSX/M
- iA/Y5wMhN8QPRD7Cxn+9OwUrMorYc/9I7z4gGeb0PSwXbWMKpSjlt7/HKpOeEtj81bnZ
- 8G3ksyLT0WSLnMcs0OcfOyBB34q29j0M/e8rba9s8u5cUGt6DOuaSqg145T3vzaLAGbc
- vBMQ==
+ bh=V2SYdMaTh5B2DYvWJCJ2xIYyu0izkkUvTM4RwQhhWt8=;
+ b=sG0oBPKpeVV1CEdoq1RAQIs8XU+VqRfYzkY2q8Wv+c6oUerMzxGVlXwmb7xYowczl0
+ vP39mZswKcGNPbg6bTVJqwO1/UiGBUEMBvtrXYB4kaOQ0TPIVtsTiLBQwSWzH5yWqIyk
+ +WPv6qASme3frh0KxnRzyxOPIVZK65tk0Wj8kcCZWiu4G/1ajVasItlhKAB9hl76pLmR
+ a9pDHT3lgjzTKAR7GD6yMmfbcB6EJnLYuRqaeCVeoIIaCkKsQJ97AaFtbJNBP9cBg1qJ
+ iIvxezniWvXQaMRSCP/huscgUsHaV/6GhTvBql2gAk2vleMHVe1t7Yo5Xr9r50VVBtVW
+ 8DTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153264; x=1694758064;
+ d=1e100.net; s=20230601; t=1694153267; x=1694758067;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=W5JLWmPdFOmmnVJajydlQuEvlPHJIdopD5Tg6fXJfks=;
- b=bz787jr2ZlOp310jgLFEosN93snjMu+BoX/84jjr4aUQQz0eQ2Ktf7a0+gb7RRh6nh
- ka9Pq8p+xecxUf+sknGI1npBWW+KmgPuJiOp0Ydh5kx0slDPv0izGnusllx2G3cpMjvY
- itAsxaTV5QqiAtayHcf+XA9t+ZtqXnXBDIa3GgqLE/I6cbn9Q4vX+N6T2/5tw7L2YTM9
- U2qFdxza5lYihvPnDxml3it5Z+H/ncjdV0EBjIZuui2QHXPzY4dHApJrrVKpyN/5Wl4W
- sgIVhfJGHja3YsocyedwLhi0YfQ8vAVZRDFk7NQnZvxHIgFHSiz0TqSLIA6660WeC93+
- l2Ng==
-X-Gm-Message-State: AOJu0Yy6SVQGUSwsZJITY2mfWRWrYbBq9YKfahofekJKUHgBiLp3wFkc
- 0qsZwY7M615pIZJopIRiSxjjS+J2H7Sf/vrb
-X-Google-Smtp-Source: AGHT+IGRijk7AxuqhJNptjrx84tSuCq7e4vJcX+YUpXeQNk66EqLJfsaZWa/DPY4ydZhI8N9l4V6Cw==
-X-Received: by 2002:a05:6a20:7d84:b0:132:ff57:7fab with SMTP id
- v4-20020a056a207d8400b00132ff577fabmr2404840pzj.2.1694153263827; 
- Thu, 07 Sep 2023 23:07:43 -0700 (PDT)
+ bh=V2SYdMaTh5B2DYvWJCJ2xIYyu0izkkUvTM4RwQhhWt8=;
+ b=oNljDjuwJqjCQ6cvAeeVYLKspuLLgyMgzPjAjdrKIhlz4f8quOEOI83zX/qegFIKLR
+ 6UQVFhAWXwbewaMihYZ3QIzkVgWYmepKXAWC2tXdHjh4dZciI9OWy/g8RaKJj0oXOHxf
+ m7CTqog9X2uWHR2I+/v+UkKyoXsx3kBl5uLa7Ig16w7iJ9512GXPwGUsY6o7153H6yGS
+ viSd6weQ/o/xqle3ppzSX1getEtgy68D63VoLhrOO7yVresxEwdd1psTiMbKzN96ix3Y
+ zyU7m9QDPt8iLu9kY1kmHKuvoUjfvaNXydAeptnfzGwMlhaI3danVLtgowCHbycIwEyA
+ oTyA==
+X-Gm-Message-State: AOJu0YzQkgh1WpNVo/rutEOmunIeqPVPmrZJGfoUCt2W7V+UR8Be/j/v
+ p37k/pitpY9c8AKMGYO/vm4ojrWtbWOOa4Z8
+X-Google-Smtp-Source: AGHT+IHj7l+i0mTgZINozOhRCYzryZLYvauDY5sDdVdEKCVKxVxZkmcuha/yRo0RJFqd3103AYlQ0Q==
+X-Received: by 2002:a17:902:f546:b0:1bb:7f71:df43 with SMTP id
+ h6-20020a170902f54600b001bb7f71df43mr1796073plf.34.1694153267010; 
+ Thu, 07 Sep 2023 23:07:47 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.40
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.07.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:07:42 -0700 (PDT)
+ Thu, 07 Sep 2023 23:07:46 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Tommy Wu <tommy.wu@sifive.com>,
- Frank Chang <frank.chang@sifive.com>,
+Cc: alistair23@gmail.com, Nikita Shubin <n.shubin@yadro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 44/65] target/riscv: Align the AIA model to v1.0 ratified spec
-Date: Fri,  8 Sep 2023 16:04:10 +1000
-Message-ID: <20230908060431.1903919-45-alistair.francis@wdc.com>
+Subject: [PULL 45/65] target/riscv: don't read CSR in riscv_csrrw_do64
+Date: Fri,  8 Sep 2023 16:04:11 +1000
+Message-ID: <20230908060431.1903919-46-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -97,56 +96,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tommy Wu <tommy.wu@sifive.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-According to the new spec, when vsiselect has a reserved value, attempts
-from M-mode or HS-mode to access vsireg, or from VS-mode to access
-sireg, should preferably raise an illegal instruction exception.
+As per ISA:
 
-Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
-Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Message-ID: <20230816061647.600672-1-tommy.wu@sifive.com>
+"For CSRRWI, if rd=x0, then the instruction shall not read the CSR and
+shall not cause any of the side effects that might occur on a CSR read."
+
+trans_csrrwi() and trans_csrrw() call do_csrw() if rd=x0, do_csrw() calls
+riscv_csrrw_do64(), via helper_csrw() passing NULL as *ret_value.
+
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20230808090914.17634-1-nikita.shubin@maquefel.me>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/csr.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ target/riscv/csr.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
 diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index b8e0d0cb4c..4a0f6a89be 100644
+index 4a0f6a89be..e51815c448 100644
 --- a/target/riscv/csr.c
 +++ b/target/riscv/csr.c
-@@ -1684,7 +1684,7 @@ static int rmw_iprio(target_ulong xlen,
- static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
-                      target_ulong new_val, target_ulong wr_mask)
+@@ -3917,21 +3917,27 @@ static RISCVException riscv_csrrw_do64(CPURISCVState *env, int csrno,
+                                        target_ulong write_mask)
  {
--    bool virt;
-+    bool virt, isel_reserved;
-     uint8_t *iprio;
-     int ret = -EINVAL;
-     target_ulong priv, isel, vgein;
-@@ -1694,6 +1694,7 @@ static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
+     RISCVException ret;
+-    target_ulong old_value;
++    target_ulong old_value = 0;
  
-     /* Decode register details from CSR number */
-     virt = false;
-+    isel_reserved = false;
-     switch (csrno) {
-     case CSR_MIREG:
-         iprio = env->miprio;
-@@ -1738,11 +1739,13 @@ static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
-                                                   riscv_cpu_mxl_bits(env)),
-                                     val, new_val, wr_mask);
-         }
-+    } else {
-+        isel_reserved = true;
+     /* execute combined read/write operation if it exists */
+     if (csr_ops[csrno].op) {
+         return csr_ops[csrno].op(env, csrno, ret_value, new_value, write_mask);
      }
  
- done:
-     if (ret) {
--        return (env->virt_enabled && virt) ?
-+        return (env->virt_enabled && virt && !isel_reserved) ?
-                RISCV_EXCP_VIRT_INSTRUCTION_FAULT : RISCV_EXCP_ILLEGAL_INST;
+-    /* if no accessor exists then return failure */
+-    if (!csr_ops[csrno].read) {
+-        return RISCV_EXCP_ILLEGAL_INST;
+-    }
+-    /* read old value */
+-    ret = csr_ops[csrno].read(env, csrno, &old_value);
+-    if (ret != RISCV_EXCP_NONE) {
+-        return ret;
++    /*
++     * ret_value == NULL means that rd=x0 and we're coming from helper_csrw()
++     * and we can't throw side effects caused by CSR reads.
++     */
++    if (ret_value) {
++        /* if no accessor exists then return failure */
++        if (!csr_ops[csrno].read) {
++            return RISCV_EXCP_ILLEGAL_INST;
++        }
++        /* read old value */
++        ret = csr_ops[csrno].read(env, csrno, &old_value);
++        if (ret != RISCV_EXCP_NONE) {
++            return ret;
++        }
      }
-     return RISCV_EXCP_NONE;
+ 
+     /* write value if writable and write mask set, otherwise drop writes */
 -- 
 2.41.0
 
