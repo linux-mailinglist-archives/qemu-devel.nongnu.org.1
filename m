@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EA1798457
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57048798452
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:44:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeX4r-0002t6-Nr; Fri, 08 Sep 2023 04:42:57 -0400
+	id 1qeX4u-00034s-RO; Fri, 08 Sep 2023 04:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4o-0002g6-19
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:54 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4m-0002fm-9k
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:52 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4h-0004nz-ON
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:53 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-31ad9155414so1592333f8f.3
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 01:42:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4k-0004oZ-05
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:51 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-401da71b7c5so20566445e9.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 01:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694162566; x=1694767366; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694162567; x=1694767367; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4HQ5ULawMjaIF8Xnn9+G22V/3KGkbJGhmbMiWHNVPOw=;
- b=UCkSgTiJpUQrXvxHa6qi/fjvy6FxDPXcoSXn/pTh/i2Z2cp0wHuv60QXXDCZQ1YHbA
- M2f9bY6A7wTtUM/Vd4K+vpE7iF7Dje7tDG+PZfAJw17pCaHylfmZyATXqRr0OmkHg3Ty
- nmT8qFKfON+QLoIYH5g7+M2SbikNzcb3ItHPboCkXwbD85Lh3hJUlpoY4qGKfHUOd0DV
- GQarBxmvRvTc6IR8KAQ4lazxBXBW2JyzlLLTM06+kZgszeBp9xLV7V2QC6x/pfoTzacJ
- 11DlNOQ8vBC0YXVUpugYxixyJ4K79cWr6xmxVequNs6dzC3WoLTQTBHMXnR3rmwu0rCa
- HeBw==
+ bh=40TYdQRGURs2OSPqGazrXlVNFjzIURb9yqVRn70WK7g=;
+ b=FZ0enFe6godYx9YWVYQjplJegaJ1+Ojo3StKDahpYhGm20sSjfNQTXM+4rtaVe4KvE
+ Rjk8fX+w78OpehqLrAuOmaIlxMfKQvNsLYfWA7VUWOVxzyYG6aSjVYRLI2ItJLPerDQg
+ sV3rkc9SDddhyZSx807BOLr5GjCUxhJdGJcBSdYC476Yrzypb8MfMkBbrWLnwYfHbkjI
+ BIjRjeftfHsueDzHdxLxB5/hZmwpN85SqycMJsrPSHvkD8eOnFFKjIZg3yFDf7xloGBl
+ g+BBRjLWFAgtCiUQbnpR1XLUNrEcKyBWS9gYL89U8c1JCZneVoaw6XgX+1Z1reoQlWsZ
+ 6NAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694162566; x=1694767366;
+ d=1e100.net; s=20230601; t=1694162568; x=1694767368;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4HQ5ULawMjaIF8Xnn9+G22V/3KGkbJGhmbMiWHNVPOw=;
- b=JIgCgWa5bECBVUKvHtjnKd8JT/WBX4zvJTWKPExcwRYc9PbYKlPu5tViDpptxu6lrh
- TSYHCHUHMi8eM8C+0f8WEtN/vkS8ToBMl0ooEQ04nOba2x83MCcS4oPfK8HjjifoCSi+
- I9cesgKIYeTvUK9nW/cSRLQxIUYbuUwPnaDTzWFQzImkDaDR6+bVt2UPMldzTUTNZJTJ
- MF3+lUsInQgY4otW8nmMgpzeqzfF+jmCDmTVhYMawKzxLgU4F3srRKa6Hu6D5b+TohBY
- 6UUFMrKma6H3X/KfCGRkdCm19cVEUCk3TWQFwN7w0BhxY8JJQf4KOJGSHICRAznplBcY
- kHaA==
-X-Gm-Message-State: AOJu0YzSxaPv2rDncli6hdUsDv7N05cXr96dXLA4AXDT2QXQlUMxUfrL
- WwYVfBPwI/vEw6R0GggwdENxvZtHKUw=
-X-Google-Smtp-Source: AGHT+IFyLVQ6D+PWiFxp/gK02JahdU3ycTKPUw/MBY7pDwvpgYejOfrLQ5h2HMnr2pEIUx6bYm+cJw==
-X-Received: by 2002:a5d:4b4c:0:b0:317:3deb:a899 with SMTP id
- w12-20020a5d4b4c000000b003173deba899mr1402901wrs.1.1694162566001; 
- Fri, 08 Sep 2023 01:42:46 -0700 (PDT)
+ bh=40TYdQRGURs2OSPqGazrXlVNFjzIURb9yqVRn70WK7g=;
+ b=Vi2D1P6CLDvGWP3NqtEfbw/JKDX3b4jlPLP1KtZw4M6j0GNYMQpTxMIqNT6HW45Jcp
+ 82v3ehyKNCsesOaYBANu7iQqjOEyKnFPN3TapXG3CVOxtoanhGKcv9zqnN1x5hLBobaU
+ x9oRtu9JvOJS23nfUoI14ON7pWgREnxnSbmYmrSP5ht/uQ25ikodoOFC9zjnOYxZx8Q0
+ UhqFJFEJ77GCWMSjAifCiar0DyZkiAFi1GHtCZ0KqqWUdYiZEne6zpjaMDamVnpzwAf+
+ 7SbqmZK8SFRc8TvYHC307cbVBvlk4XkcGH4mUlQx4i3fhLHmNbEjFp7Jn/UVYr2o4hIV
+ L+EA==
+X-Gm-Message-State: AOJu0Yxjts6SWeavEg4USyhpSJ4vZvnXvWVNq5+L2igl4tOJPZH8wUuD
+ kZMyHiYLHzxDKLEm1kPCv9somoRz7LY=
+X-Google-Smtp-Source: AGHT+IGKWDl9UfHdoXNSFmLTHaT5rI8Ckoif9RKyxoU/7i7iyiJrPOzCNhVldO0VFJ9Ld0OiXIdtBQ==
+X-Received: by 2002:a7b:cbd1:0:b0:3fc:a49:4c05 with SMTP id
+ n17-20020a7bcbd1000000b003fc0a494c05mr1519404wmi.40.1694162567439; 
+ Fri, 08 Sep 2023 01:42:47 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-078-054-093-170.78.54.pool.telefonica.de. [78.54.93.170])
  by smtp.gmail.com with ESMTPSA id
- h17-20020a056000001100b003197c2316ecsm1462139wrx.112.2023.09.08.01.42.44
+ h17-20020a056000001100b003197c2316ecsm1462139wrx.112.2023.09.08.01.42.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 01:42:45 -0700 (PDT)
+ Fri, 08 Sep 2023 01:42:47 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -66,18 +66,18 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 3/8] hw/acpi/acpi_dev_interface: Remove now unused madt_cpu
- virtual method
-Date: Fri,  8 Sep 2023 10:42:29 +0200
-Message-ID: <20230908084234.17642-4-shentey@gmail.com>
+Subject: [PATCH v2 4/8] hw/acpi/acpi_dev_interface: Remove now unused #include
+ "hw/boards.h"
+Date: Fri,  8 Sep 2023 10:42:30 +0200
+Message-ID: <20230908084234.17642-5-shentey@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230908084234.17642-1-shentey@gmail.com>
 References: <20230908084234.17642-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,108 +100,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This virtual method was always set to the x86-specific pc_madt_cpu_entry(),
-even in piix4 which is also used in MIPS. The previous changes use
-pc_madt_cpu_entry() otherwise, so madt_cpu can be dropped.
-
-Since pc_madt_cpu_entry() is now only used in x86-specific code, the stub
-in hw/acpi/acpi-x86-stub can be removed as well.
+The "hw/boards.h" is unused since the previous commit. Since its removal
+requires include fixes in various unrelated files to keep the code compiling it
+has been split in a dedicated commit.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/acpi/acpi_dev_interface.h | 2 --
- hw/acpi/acpi-x86-stub.c              | 6 ------
- hw/acpi/piix4.c                      | 2 --
- hw/i386/generic_event_device_x86.c   | 9 ---------
- hw/isa/lpc_ich9.c                    | 1 -
- 5 files changed, 20 deletions(-)
+ hw/acpi/hmat.h                       | 3 ++-
+ include/hw/acpi/acpi_dev_interface.h | 1 -
+ hw/acpi/cpu.c                        | 1 +
+ hw/acpi/hmat.c                       | 1 +
+ hw/acpi/memory_hotplug.c             | 1 +
+ 5 files changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/hw/acpi/hmat.h b/hw/acpi/hmat.h
+index b57f0e7e80..fd989cb661 100644
+--- a/hw/acpi/hmat.h
++++ b/hw/acpi/hmat.h
+@@ -27,7 +27,8 @@
+ #ifndef HMAT_H
+ #define HMAT_H
+ 
+-#include "hw/acpi/aml-build.h"
++#include "hw/acpi/bios-linker-loader.h"
++#include "sysemu/numa.h"
+ 
+ /*
+  * ACPI 6.3: 5.2.27.3 Memory Proximity Domain Attributes Structure,
 diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
-index a1648220ff..ca92928124 100644
+index ca92928124..68d9d15f50 100644
 --- a/include/hw/acpi/acpi_dev_interface.h
 +++ b/include/hw/acpi/acpi_dev_interface.h
-@@ -52,7 +52,5 @@ struct AcpiDeviceIfClass {
-     /* <public> */
-     void (*ospm_status)(AcpiDeviceIf *adev, ACPIOSTInfoList ***list);
-     void (*send_event)(AcpiDeviceIf *adev, AcpiEventStatusBits ev);
--    void (*madt_cpu)(int uid, const CPUArchIdList *apic_ids, GArray *entry,
--                     bool force_enabled);
- };
- #endif
-diff --git a/hw/acpi/acpi-x86-stub.c b/hw/acpi/acpi-x86-stub.c
-index d0d399d26b..9662a594ad 100644
---- a/hw/acpi/acpi-x86-stub.c
-+++ b/hw/acpi/acpi-x86-stub.c
-@@ -1,12 +1,6 @@
+@@ -3,7 +3,6 @@
+ 
+ #include "qapi/qapi-types-acpi.h"
+ #include "qom/object.h"
+-#include "hw/boards.h"
+ #include "hw/qdev-core.h"
+ 
+ /* These values are part of guest ABI, and can not be changed */
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index 65a3202d3f..011d2c6c2d 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -1,6 +1,7 @@
  #include "qemu/osdep.h"
--#include "hw/i386/pc.h"
- #include "hw/i386/acpi-build.h"
- 
--void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
--                       GArray *entry, bool force_enabled)
--{
--}
--
- Object *acpi_get_i386_pci_host(void)
- {
-        return NULL;
-diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
-index 63d2113b86..a7892c444c 100644
---- a/hw/acpi/piix4.c
-+++ b/hw/acpi/piix4.c
-@@ -20,7 +20,6 @@
-  */
- 
+ #include "migration/vmstate.h"
+ #include "hw/acpi/cpu.h"
++#include "hw/core/cpu.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-events-acpi.h"
+ #include "trace.h"
+diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c
+index 3a6d51282a..d9de0daf89 100644
+--- a/hw/acpi/hmat.c
++++ b/hw/acpi/hmat.c
+@@ -27,6 +27,7 @@
  #include "qemu/osdep.h"
--#include "hw/i386/pc.h"
- #include "hw/irq.h"
- #include "hw/isa/apm.h"
- #include "hw/i2c/pm_smbus.h"
-@@ -654,7 +653,6 @@ static void piix4_pm_class_init(ObjectClass *klass, void *data)
-     hc->is_hotpluggable_bus = piix4_is_hotpluggable_bus;
-     adevc->ospm_status = piix4_ospm_status;
-     adevc->send_event = piix4_send_gpe;
--    adevc->madt_cpu = pc_madt_cpu_entry;
- }
+ #include "qemu/units.h"
+ #include "sysemu/numa.h"
++#include "hw/acpi/aml-build.h"
+ #include "hw/acpi/hmat.h"
  
- static const TypeInfo piix4_pm_info = {
-diff --git a/hw/i386/generic_event_device_x86.c b/hw/i386/generic_event_device_x86.c
-index e26fb02a2e..8fc233e1f1 100644
---- a/hw/i386/generic_event_device_x86.c
-+++ b/hw/i386/generic_event_device_x86.c
-@@ -8,19 +8,10 @@
- 
+ /*
+diff --git a/hw/acpi/memory_hotplug.c b/hw/acpi/memory_hotplug.c
+index d926f4f77d..0b883df813 100644
+--- a/hw/acpi/memory_hotplug.c
++++ b/hw/acpi/memory_hotplug.c
+@@ -1,6 +1,7 @@
  #include "qemu/osdep.h"
- #include "hw/acpi/generic_event_device.h"
--#include "hw/i386/pc.h"
--
--static void acpi_ged_x86_class_init(ObjectClass *class, void *data)
--{
--    AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_CLASS(class);
--
--    adevc->madt_cpu = pc_madt_cpu_entry;
--}
- 
- static const TypeInfo acpi_ged_x86_info = {
-     .name          = TYPE_ACPI_GED_X86,
-     .parent        = TYPE_ACPI_GED,
--    .class_init    = acpi_ged_x86_class_init,
-     .interfaces = (InterfaceInfo[]) {
-         { TYPE_HOTPLUG_HANDLER },
-         { TYPE_ACPI_DEVICE_IF },
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index 9c47a2f6c7..92527f3c75 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -876,7 +876,6 @@ static void ich9_lpc_class_init(ObjectClass *klass, void *data)
-     hc->is_hotpluggable_bus = ich9_pm_is_hotpluggable_bus;
-     adevc->ospm_status = ich9_pm_ospm_status;
-     adevc->send_event = ich9_send_gpe;
--    adevc->madt_cpu = pc_madt_cpu_entry;
-     amldevc->build_dev_aml = build_ich9_isa_aml;
- }
- 
+ #include "hw/acpi/memory_hotplug.h"
+ #include "hw/mem/pc-dimm.h"
++#include "hw/boards.h"
+ #include "hw/qdev-core.h"
+ #include "migration/vmstate.h"
+ #include "trace.h"
 -- 
 2.42.0
 
