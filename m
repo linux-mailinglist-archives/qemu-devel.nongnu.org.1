@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB7B798454
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE052798451
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 10:44:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeX4r-0002nF-1X; Fri, 08 Sep 2023 04:42:57 -0400
+	id 1qeX4y-0003LD-Ow; Fri, 08 Sep 2023 04:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4j-0002dU-5s
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:50 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4t-000366-Sc
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:59 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4e-0004ho-EA
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:47 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-317c3ac7339so1644480f8f.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 01:42:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qeX4f-0004iT-7J
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 04:42:59 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-400a087b0bfso19097815e9.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 01:42:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694162562; x=1694767362; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MXMqVduWvHSXm5TTmj5h8lrqE4Ukk43eDBxbpE5yU18=;
- b=Ey8OEtHziSINvyyz/qtKBb5MrGOvLvy7O3tK30tbPfzDPhus6jBy+s/KatZR/omcAK
- e/io/xdZeEZHmKx8M9O2rRUsnBPz2PL/4e1szqYQFICZDiQYDviEX6TcqUy0Gn+/hbUE
- lEw48rlxcaa4ZbDv5wf09tIC4bU4rrkWJsz34z3YozOrJqoiEaWX4ZvheUm75nNOMv4Z
- lFnE4ksDdyza3Xbc7WvstOA7o8azS4oMyIv8hrTXQOae14sA2IUnpcBCFWqLAWUH9fT/
- AtTC3MG9/YrPpjOcusV+mYO2Rew3B46G7AtQw/xGwrlAFZMKm/qRx2kAlAyG+Q5XJloX
- 5Ypw==
+ d=gmail.com; s=20221208; t=1694162563; x=1694767363; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=wI4+BqMSbzHC8yyv0Ubo5u82RwK3QnkP912SIXWOALs=;
+ b=JT4GvbVVPUtyUru+mxvKeaZtL5rg0AKIXHbfEJZwnXOGYsUHF1KqvHTrxoCOfcSPqy
+ IFUJ2+xUy7R+x7MkkuK66jIal9GbY+EC98PbSuDYCKCajXJEJW6GLAzMaBCupjdcauCk
+ zZtMtKxM+eYCMixbKwrRAhc4pvlBVlHgce90lk9X1igromdtz8++x2MBKJ6A+QGxPoca
+ RdmBQjXV9UAXaDPPx6s85eX0cCHgwJ60QrPYy5OzBSsUbjPbFrA18/v1kYFaGNeJ1kj1
+ kZNiCWM6ocj7W3YU5PxpZ3PiFq0q9wcThkB07d9YYRnbDX6EMjxiXZsto3q5OGNh2AHl
+ S5QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694162562; x=1694767362;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MXMqVduWvHSXm5TTmj5h8lrqE4Ukk43eDBxbpE5yU18=;
- b=vZuMr26aoHTa0nOBL94+CJyPRlVrFXc8IiwpVa0zal81D3Qvfo4BI4KojbjcLHDD7X
- 3e3L0bkGnKr4v06KDYrP8Pt9Jy1x+ObL//PwaCwXc8Q9JL0CfUOOuS5c+exs1Visae7d
- LbDtXzZa0w0ovkRz8R/m4H1+3BjjTjTanSBy/qEyyOtj7JtIth23EelwyhwW3cJSN/Bj
- sGDq9Hpif2qJ6FmlosGRLq9MG3X5DUsHPXVsdb6VZXpe9Fta0DIg1cLCYXrMs3jZP2v3
- hfjmvJzG887ir4+JpPCQB7JfwmohvQtLlDG8da/I8UTQVdb8BKoJsOqxqks4OPUh3zTx
- AIyQ==
-X-Gm-Message-State: AOJu0YyfSrqaD/6dTT22AX6nurqUdgZMiL3oyt4NL4CwxTs5cewQ4tIS
- rAL3iB3AimZ1ZsfuzM56Q26LiAvZ9TA=
-X-Google-Smtp-Source: AGHT+IGCTD5Rad9XxnW7EHpWmWJ6v1MLgHb4esBP7eB0ZINM+6WO/LHbD4NTZ/JP4GDVTx4eGPxiGQ==
-X-Received: by 2002:a05:6000:1190:b0:31a:d2b2:f28f with SMTP id
- g16-20020a056000119000b0031ad2b2f28fmr1263262wrx.51.1694162561997; 
- Fri, 08 Sep 2023 01:42:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694162563; x=1694767363;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=wI4+BqMSbzHC8yyv0Ubo5u82RwK3QnkP912SIXWOALs=;
+ b=XPgKyyz2922IDl4qp/Nfd71tFrRHXWbza53xsyFr/hvEfPQjMS0yx4VTnp3oZ5s3jT
+ jICsQCalaJKxwW3i05FOgy5tjy6dIGTVs7Jrl7UfsL9NZzeMTSh+o9akmPkBGWajww51
+ D+3sK8p5FBhSGmOsedEpuL63aqI530N7RTR1Lew65QkfaCY4QA9Das/rbgghD40pwy33
+ d2YFEErlK7qN/G04Q7ZSIN4t02y15GW9L46gPNIwaRYfedbmqPCaFJ7bV7+yyApBsatK
+ pXph+r6lHQ+G6/n3yRQvqeJrbSqM5f5JOkaKDHP55Z/ymK2c6WC298D5itiMpOwzrjrk
+ 2hOQ==
+X-Gm-Message-State: AOJu0YyNHwk7nZpFtlUJ1iBbLWubxfef45tuyQcWCsIirKrOOQCnkxRS
+ M7Gpn9y7JC79xW0nj7Ap03NukYph+a8=
+X-Google-Smtp-Source: AGHT+IEUXBksrd4StwoY1G65OKbw/qBDbfNoVfOTyYn7bfG9KwvuLoANR1MnDziYrcOeOlEHThSEew==
+X-Received: by 2002:a05:600c:204c:b0:401:23fc:1f92 with SMTP id
+ p12-20020a05600c204c00b0040123fc1f92mr1544523wmg.25.1694162563249; 
+ Fri, 08 Sep 2023 01:42:43 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-078-054-093-170.78.54.pool.telefonica.de. [78.54.93.170])
  by smtp.gmail.com with ESMTPSA id
- h17-20020a056000001100b003197c2316ecsm1462139wrx.112.2023.09.08.01.42.41
+ h17-20020a056000001100b003197c2316ecsm1462139wrx.112.2023.09.08.01.42.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 01:42:41 -0700 (PDT)
+ Fri, 08 Sep 2023 01:42:42 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -65,22 +66,23 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v2 0/8] ACPI: X86 AML generation and GPE tracing cleanup
-Date: Fri,  8 Sep 2023 10:42:26 +0200
-Message-ID: <20230908084234.17642-1-shentey@gmail.com>
+Subject: [PATCH v2 1/8] hw/i386/acpi-build: Use pc_madt_cpu_entry() directly
+Date: Fri,  8 Sep 2023 10:42:27 +0200
+Message-ID: <20230908084234.17642-2-shentey@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230908084234.17642-1-shentey@gmail.com>
+References: <20230908084234.17642-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,100 +98,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series contains changes from my effort to bring the VIA south bridges =
-to=0D
-the PC machine [1]. The first part of the series resolves the=0D
-AcpiCpuAmlIfClass::madt_cpu virtual method which frees ACPI controllers fro=
-m=0D
-worrying about CPU AML generation. The second part minimizes an Intel-speci=
-fic=0D
-assumption in AML generation to just one place. The third part contains two=
-=0D
-ACPI tracing patches which have been reviewed a long time ago but weren't m=
-erged=0D
-yet.=0D
-=0D
-The removal of AcpiCpuAmlIfClass::madt_cpu is essentially a respin of [2] w=
-ith=0D
-a different approach. Igor wasn't generally against it but wasn't convinced=
-=0D
-either [3]. The new approach causes much less churn and instead allows to=0D
-remove code. So I think it's worth to be reconsidered.=0D
-=0D
-The motivation for removing this virtual method didn't change: It frees the=
- ACPI=0D
-controllers in general and PIIX4 PM in particular from generating X86 CPU A=
-ML.=0D
-The latter is also used in MPIS context where X86 CPU AML generation is=0D
-stubbed out. This indicates a design issue where a problem was solved at th=
-e=0D
-wrong place. Moreover, it turned out that TYPE_ACPI_GED_X86 could be remove=
-d as=0D
-well, further supporting this claim.=0D
-=0D
-The second part of this series limits SMI command port determination during=
- AML=0D
-generation to just one place. Currently the ACPI_PORT_SMI_CMD constant is u=
-sed=0D
-multiple times which has an Intel-specific value. In order to make the code=
- a=0D
-microscopic bit more compatible with our VIA south bridge models its usage =
-gets=0D
-limited to one place, allowing the constant to be turned into a device mode=
-l=0D
-property in the future.=0D
-=0D
-The third part improves the tracing experience for ACPI general purpose eve=
-nts.=0D
-It originates from an old series: [4].=0D
-=0D
-Testing done:=0D
-* `make check`=0D
-* `make check-avocado`=0D
-=0D
-v2:=0D
-* Trace ACPI GPE values with "0x%02" (Phil)=0D
-=0D
-[1] https://github.com/shentok/qemu/tree/pc-via=0D
-[2] https://lore.kernel.org/qemu-devel/20230121151941.24120-1-shentey@gmail=
-.com/=0D
-[3] https://lore.kernel.org/qemu-devel/20230125174842.395fda5d@imammedo.use=
-rs.ipa.redhat.com/=0D
-[4] https://patchew.org/QEMU/20230122170724.21868-1-shentey@gmail.com/=0D
-=0D
-Bernhard Beschow (8):=0D
-  hw/i386/acpi-build: Use pc_madt_cpu_entry() directly=0D
-  hw/acpi/cpu: Have build_cpus_aml() take a build_madt_cpu_fn callback=0D
-  hw/acpi/acpi_dev_interface: Remove now unused madt_cpu virtual method=0D
-  hw/acpi/acpi_dev_interface: Remove now unused #include "hw/boards.h"=0D
-  hw/i386: Remove now redundant TYPE_ACPI_GED_X86=0D
-  hw/i386/acpi-build: Determine SMI command port just once=0D
-  hw/acpi: Trace GPE access in all device models, not just PIIX4=0D
-  hw/acpi/core: Trace enable and status registers of GPE separately=0D
-=0D
- hw/acpi/hmat.h                         |  3 ++-=0D
- hw/i386/acpi-common.h                  |  3 +--=0D
- include/hw/acpi/acpi_dev_interface.h   |  3 ---=0D
- include/hw/acpi/cpu.h                  |  6 ++++-=0D
- include/hw/acpi/generic_event_device.h |  2 --=0D
- hw/acpi/acpi-x86-stub.c                |  6 -----=0D
- hw/acpi/core.c                         |  9 +++++++=0D
- hw/acpi/cpu.c                          |  9 +++----=0D
- hw/acpi/hmat.c                         |  1 +=0D
- hw/acpi/memory_hotplug.c               |  1 +=0D
- hw/acpi/piix4.c                        |  5 ----=0D
- hw/i386/acpi-build.c                   | 13 +++++-----=0D
- hw/i386/acpi-common.c                  |  5 ++--=0D
- hw/i386/acpi-microvm.c                 |  3 +--=0D
- hw/i386/generic_event_device_x86.c     | 36 --------------------------=0D
- hw/i386/microvm.c                      |  2 +-=0D
- hw/isa/lpc_ich9.c                      |  1 -=0D
- hw/acpi/trace-events                   | 10 ++++---=0D
- hw/i386/meson.build                    |  1 -=0D
- 19 files changed, 38 insertions(+), 81 deletions(-)=0D
- delete mode 100644 hw/i386/generic_event_device_x86.c=0D
-=0D
--- =0D
-2.42.0=0D
-=0D
+This is x86-specific code, so there is no advantage in using
+pc_madt_cpu_entry() behind an architecture-agnostic interface.
+
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/acpi-common.h  | 3 +--
+ hw/i386/acpi-build.c   | 3 +--
+ hw/i386/acpi-common.c  | 5 ++---
+ hw/i386/acpi-microvm.c | 3 +--
+ 4 files changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/hw/i386/acpi-common.h b/hw/i386/acpi-common.h
+index a68825acf5..b3c56ee014 100644
+--- a/hw/i386/acpi-common.h
++++ b/hw/i386/acpi-common.h
+@@ -1,7 +1,6 @@
+ #ifndef HW_I386_ACPI_COMMON_H
+ #define HW_I386_ACPI_COMMON_H
+ 
+-#include "hw/acpi/acpi_dev_interface.h"
+ #include "hw/acpi/bios-linker-loader.h"
+ #include "hw/i386/x86.h"
+ 
+@@ -9,7 +8,7 @@
+ #define ACPI_BUILD_IOAPIC_ID 0x0
+ 
+ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+-                     X86MachineState *x86ms, AcpiDeviceIf *adev,
++                     X86MachineState *x86ms,
+                      const char *oem_id, const char *oem_table_id);
+ 
+ #endif
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index bb12b0ad43..09586b8d9b 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2547,8 +2547,7 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+ 
+     acpi_add_table(table_offsets, tables_blob);
+     acpi_build_madt(tables_blob, tables->linker, x86ms,
+-                    ACPI_DEVICE_IF(x86ms->acpi_dev), x86ms->oem_id,
+-                    x86ms->oem_table_id);
++                    x86ms->oem_id, x86ms->oem_table_id);
+ 
+ #ifdef CONFIG_ACPI_ERST
+     {
+diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
+index 8a0932fe84..43dc23f7e0 100644
+--- a/hw/i386/acpi-common.c
++++ b/hw/i386/acpi-common.c
+@@ -94,14 +94,13 @@ build_xrupt_override(GArray *entry, uint8_t src, uint32_t gsi, uint16_t flags)
+  * 5.2.8 Multiple APIC Description Table
+  */
+ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+-                     X86MachineState *x86ms, AcpiDeviceIf *adev,
++                     X86MachineState *x86ms,
+                      const char *oem_id, const char *oem_table_id)
+ {
+     int i;
+     bool x2apic_mode = false;
+     MachineClass *mc = MACHINE_GET_CLASS(x86ms);
+     const CPUArchIdList *apic_ids = mc->possible_cpu_arch_ids(MACHINE(x86ms));
+-    AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_GET_CLASS(adev);
+     AcpiTable table = { .sig = "APIC", .rev = 3, .oem_id = oem_id,
+                         .oem_table_id = oem_table_id };
+ 
+@@ -111,7 +110,7 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+     build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Flags */
+ 
+     for (i = 0; i < apic_ids->len; i++) {
+-        adevc->madt_cpu(i, apic_ids, table_data, false);
++        pc_madt_cpu_entry(i, apic_ids, table_data, false);
+         if (apic_ids->cpus[i].arch_id > 254) {
+             x2apic_mode = true;
+         }
+diff --git a/hw/i386/acpi-microvm.c b/hw/i386/acpi-microvm.c
+index a075360d85..fec22d85c1 100644
+--- a/hw/i386/acpi-microvm.c
++++ b/hw/i386/acpi-microvm.c
+@@ -214,8 +214,7 @@ static void acpi_build_microvm(AcpiBuildTables *tables,
+ 
+     acpi_add_table(table_offsets, tables_blob);
+     acpi_build_madt(tables_blob, tables->linker, X86_MACHINE(machine),
+-                    ACPI_DEVICE_IF(x86ms->acpi_dev), x86ms->oem_id,
+-                    x86ms->oem_table_id);
++                    x86ms->oem_id, x86ms->oem_table_id);
+ 
+ #ifdef CONFIG_ACPI_ERST
+     {
+-- 
+2.42.0
+
 
