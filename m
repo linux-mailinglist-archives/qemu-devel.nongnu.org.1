@@ -2,73 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5050798A39
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 17:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 192B1798A42
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 17:57:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qediW-0007OE-2x; Fri, 08 Sep 2023 11:48:20 -0400
+	id 1qedpr-0003YR-UF; Fri, 08 Sep 2023 11:55:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qediR-0007NQ-N6
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:48:15 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qedpp-0003YH-A3
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:55:53 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qediP-0005oL-DI
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:48:15 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-1c4b4c40281so1735955fac.1
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 08:48:12 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qedpm-0007sg-PH
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:55:53 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9a5dff9d2d9so276268066b.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 08:55:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694188091; x=1694792891; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vJwp6vL8LF7hbxGJ/Yu7qjkZAKCN+PrmNIzbGFXOacg=;
- b=sjEm7fFTwxCoCWD9v/nMYUsnBstkK9NTJCoP1UwewrrepXCBZ7KOpZ6/pB88jYEtlX
- KHiNc2ln+Z2sy8MVxcg7Rehpl1D6oKiXnuXuo+SavjhygFpp8w9c/M8Se1nC/dEGOU7n
- eldumkDe2Gc6hU1Hzs/5RUSYHY/O8YKd/IJvQ80yxUN1HI33KKyCq+jq4IRdoC06ixBv
- 8Y9dU1j4/4h60EBMCwJghmWDkfyl8jtOJZ4lDgCTOJbRlqzu2xmmJPQLMOfarcx9Jylj
- apAAIqekgUD5+1HY3JM3k3YfAL21SdjR2+uzkwEKm2yGbc9mEfFWu513HlAXDWygD8Bw
- tUEw==
+ d=linaro.org; s=google; t=1694188549; x=1694793349; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Zsm+iymHe3JNaUmWP5axplIN1WMwyS22wkdHWEAfFDk=;
+ b=xJgnr7KivB2sce5hqyfDulPSf+hk9ObghPdt+ZInQFhCDnQi7vRrNEWuOOQvG0m0zR
+ Bvpcx7OfBI4k1FC5FrMZQR7aYH8VnqZxt/GkrZsEcakSsY8YzPM/kp6i+c5BvtorBNAC
+ EuNEW3JewTOpRRxvenDz3V21iNyzvjR+lMViO0YGtJhTQboKjZSTmaSdW9jditKkw46N
+ PDtCEN/Ir26hO4u4Ge54wb6fc8UQfq8j+TYU9+IBQtfrjKjzEQpNNXleU62AjkoFB7bO
+ Tpi+v4omlNb1WzItmP/9QwNlbt+g3yOowM5CcxzqbUS3WmcwkbLzxN8Hyd/SzQEGG+F9
+ jEfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694188091; x=1694792891;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vJwp6vL8LF7hbxGJ/Yu7qjkZAKCN+PrmNIzbGFXOacg=;
- b=ELwjImzm6+jlrSpiRnFGPjnZKYPjeXKrikC52M9C7nJuzhAzZq62fYJr3G12ryekUe
- bOhpYnSiV7yZVUcQWuOJluZjWq21USMt2CCS7rKzNTFSshjkCAgLpuhfrNAsdiQeXq0y
- gHO2eJfAtC414FqbjBwnldoewGUs5+VZ68/DBWh+QphibWvZC4Vr+5+4/rRxwCugquzH
- xpOg3p5wqrbqr8DBJ3mn6O+K3kCIlbmMkRhWFhrhxxBTP6G9obKAzcGJ0S1XcZhuyIhV
- 8KnqLo8/79nn2L4jouIye+qdMfteAjr2xYhet2UDRehyUtEoErmNq0PoXGnPzdLk8ZFe
- kNmA==
-X-Gm-Message-State: AOJu0YxtTPwKHkVM9KoclUnCAfvnDv48SoepTTJMr1XS6UG+pVHCcZCo
- 9DMAhDj0np+34pvXjPcpHyWr8g40ij6Xn2PTAYM=
-X-Google-Smtp-Source: AGHT+IE67D6vwha6Pw/5EaYQKfM+m83RV323R0DOBc5I+oOZnFdRGOZfeyDXC+nHpUYCp9CxXumiOZdCeJOWzUt2Okg=
-X-Received: by 2002:a05:6870:3327:b0:1c3:2a5a:ebea with SMTP id
- x39-20020a056870332700b001c32a5aebeamr3078441oae.8.1694188091542; Fri, 08 Sep
- 2023 08:48:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694188549; x=1694793349;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Zsm+iymHe3JNaUmWP5axplIN1WMwyS22wkdHWEAfFDk=;
+ b=ewzcwiY8CX+9NcP9Aw8Ys3B/B10MovjFThcZgOpM211tgveEr1pzSRVcRHWMnymkS8
+ D6gshZf6DFJLDzWLIo/vmCgWU/Os/48sDEHEHIlyAEoOkIgW96PyBaXOEYcHYjSd9Tx9
+ 2SioDXA6rrwNq4xx1mZ5u2wNi37ivkXRfbNJvjj1AbU6Rgl7h9E0mAmZx98w/gfhaeU6
+ imvgbC/w83lcS6dYF+HXrQIKNoBr76GuGgM2FArMdZq4SSTZQQZiZ25qPlKeuIObeAsb
+ Nb6VMd8SWmiSRHz8uPnE7P7Hi5JWBjUfcsBe2UHxQTFY/7XksO8arwKXtwj0vN8YJdTY
+ JsUA==
+X-Gm-Message-State: AOJu0Ywq1duMRf3pNK+W7JRqXuKzfugapKJl6oj1IannQWL8j38J1aE3
+ e/IkjUvEl6HyGxzsrjUzB00ieA==
+X-Google-Smtp-Source: AGHT+IFWeVP+BXFVUutoj5SIyAwuvN7omHfqeZrcPbbmQ6Vvf9l49f9BvZ9iwvaikQxFwY28sPf6fA==
+X-Received: by 2002:a17:906:3d21:b0:9a1:f96c:4baf with SMTP id
+ l1-20020a1709063d2100b009a1f96c4bafmr2239122ejf.5.1694188549111; 
+ Fri, 08 Sep 2023 08:55:49 -0700 (PDT)
+Received: from [192.168.69.115]
+ (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr. [176.173.167.175])
+ by smtp.gmail.com with ESMTPSA id
+ z10-20020a170906074a00b0099293cdbc98sm1220037ejb.145.2023.09.08.08.55.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Sep 2023 08:55:48 -0700 (PDT)
+Message-ID: <5b82b6ae-cc19-2fc7-abef-8eefe40e4247@linaro.org>
+Date: Fri, 8 Sep 2023 17:55:46 +0200
 MIME-Version: 1.0
-References: <20230907130004.500601-1-pbonzini@redhat.com>
- <20230907154412.GA1550739@fedora> <ZPs3UB8W4lsOFnxW@redhat.com>
-In-Reply-To: <ZPs3UB8W4lsOFnxW@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Fri, 8 Sep 2023 11:47:58 -0400
-Message-ID: <CAJSP0QX4QgxG-3dbv6oa6_81MWJkYKTT7T05D5hCtFiG=mLi7Q@mail.gmail.com>
-Subject: Re: [PULL 00/51] Build system, i386 changes for 2023-09-07
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x2e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v8 0/4] Virtio shared dma-buf
+Content-Language: en-US
+To: Albert Esteve <aesteve@redhat.com>, qemu-devel@nongnu.org
+Cc: Fam Zheng <fam@euphon.net>, marcandre.lureau@gmail.com,
+ cohuck@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, kraxel@redhat.com
+References: <20230908154743.809569-1-aesteve@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230908154743.809569-1-aesteve@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,32 +94,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I wonder how it passed CI?
-https://gitlab.com/qemu-project/qemu/-/pipelines/996175923/
+On 8/9/23 17:47, Albert Esteve wrote:
+> v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
+> v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
+> v3 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06126.html
+> v4 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05174.html
+> v5 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00255.html
+> v6 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00987.html
+> v7 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01190.html
+> v7 -> v8:
+> - Move "qemu/osdep.h" include to the virtio-dmabuf source file.
+> - Remove duplicated glib include.
+> - Change the title of commits to better reflect the path to the change
 
-Stefan
+Thank Albert you for the various respin with review comment addressed.
 
-On Fri, 8 Sept 2023 at 11:02, Kevin Wolf <kwolf@redhat.com> wrote:
->
-> Am 07.09.2023 um 17:44 hat Stefan Hajnoczi geschrieben:
-> > Applied, thanks.
-> >
-> > Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
->
-> Something in this has broken the build for me, it seems to be the
-> linux-user binary that doesn't link any more:
->
->   /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `cpu_x86_cpuid':
->   /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:6180: undefined reference to `kvm_arch_get_supported_cpuid'
->   /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `x86_cpu_filter_features':
->   /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7158: undefined reference to `kvm_arch_get_supported_cpuid'
->   /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7159: undefined reference to `kvm_arch_get_supported_cpuid'
->   /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7160: undefined reference to `kvm_arch_get_supported_cpuid'
->   /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7161: undefined reference to `kvm_arch_get_supported_cpuid'
->   /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:/home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7162: more undefined references to `kvm_arch_get_supported_cpuid' follow
->   clang-15: error: linker command failed with exit code 1 (use -v to see invocation)
->
-> In case it makes a difference, I'm using clang on F37.
->
-> Kevin
+Michael, no other comment on my side.
+
+Regards,
+
+Phil.
+
+> This patch covers the required steps to add support for virtio cross-device resource sharing[1],
+> which support is already available in the kernel.
+
+> Albert Esteve (4):
+>    util/uuid: add a hash function
+>    hw/display: introduce virtio-dmabuf
+>    vhost-user: add shared_object msg
+>    libvhost-user: handle shared_object msg
+
 
