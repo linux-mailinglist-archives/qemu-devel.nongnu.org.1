@@ -2,51 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D63798845
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47404798846
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:07:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qec7R-0000EI-1I; Fri, 08 Sep 2023 10:05:57 -0400
+	id 1qec8g-00018r-HF; Fri, 08 Sep 2023 10:07:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qec7I-0008TN-L7
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:05:50 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qec8e-00017u-NH
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:07:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qec7E-0004sW-31
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:05:47 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 98F8024000D;
- Fri,  8 Sep 2023 14:05:39 +0000 (UTC)
-Message-ID: <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org>
-Date: Fri, 8 Sep 2023 16:06:35 +0200
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qec8b-0005nU-K5
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:07:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694182024;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Il7ExwLuxMKzNqRBFpg2jRaUCBBeZ3jUQnsXJSF2i2s=;
+ b=aZyu3MaiourN92YOFaf8p4s87CbA4RZ1UtdSSpLQqxa1/m6GdiDbyrHlKKTSQZHRHKnOGz
+ 7sP24ADDb4y3idm/faGuvQ8b8TjyB6nVgC+qLf/9e1SqBXNTkT0Bhk4Ytli/A42ZcgW/9s
+ SQMCyv5LO0h6ms+KGKAFtbgicF2FOUM=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-368-00UIMRSKPqeL3M6gIw8PKg-1; Fri, 08 Sep 2023 10:07:03 -0400
+X-MC-Unique: 00UIMRSKPqeL3M6gIw8PKg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-94a355cf318so145074166b.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 07:07:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694182022; x=1694786822;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Il7ExwLuxMKzNqRBFpg2jRaUCBBeZ3jUQnsXJSF2i2s=;
+ b=BSvAWjMrY3DHCLZ3UhDlSAzQFYsT2DJdHBgEf+ygZRxtHlWKBaT+Rf1LKyfbOUcFI3
+ DzQ9f3ZATc84mcYLfjjUBCRpBtsQDb+hRPkVZxWNEa2TCzqQbO0Wf4Y++SboANg0S/7j
+ tlIFjpuOvbn9GjJf06Bm+9/IzonB1xGoTARt0+faYGT2WIZ7eun3LM3Pr+yZdg9F3KFX
+ 0eL1Tfs0yoq8U/MB8qxjalac687sOloGaAkCJO9cxBlzHd3fcbMEX3xLeCUCZhYORXOL
+ Uvrcj4xwIGtbFeaJXJlxNcBvrYnrqzX+IJs8bghvuMuXA425Dq0h/2MBeMHoodqLkFE4
+ oixA==
+X-Gm-Message-State: AOJu0YzTVJ0SH3PSXjgUeKK4VBwMVyxZcdx8aiolVEzQZiHHv9a7At1e
+ vlbInwQ2Stc5vj2lgUYxSpk9lTPBHTSz+3/vhIkWPS8k0JpRriXWxZjc/zBbBDQQFm6s8/tiT4A
+ bRvkpCCE26rO2Ugg=
+X-Received: by 2002:a17:906:197:b0:9a5:7887:ef09 with SMTP id
+ 23-20020a170906019700b009a57887ef09mr2171359ejb.32.1694182022218; 
+ Fri, 08 Sep 2023 07:07:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEe6UFiOp5uCzbnFMCyNSG4IttrXQ6dJxYRxblYQsFiLpy1GOSUu5Po0QeYYoRAi3DEjb6NYw==
+X-Received: by 2002:a17:906:197:b0:9a5:7887:ef09 with SMTP id
+ 23-20020a170906019700b009a57887ef09mr2171344ejb.32.1694182021955; 
+ Fri, 08 Sep 2023 07:07:01 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ k14-20020a1709063e0e00b0098733a40bb7sm1077213eji.155.2023.09.08.07.07.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Sep 2023 07:07:00 -0700 (PDT)
+Date: Fri, 8 Sep 2023 16:06:59 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Tim Wiederhake <twiederh@redhat.com>
+Cc: qemu-devel@nongnu.org, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>, "Daniel P . =?UTF-8?B?QmVycmFuZ8Op?="
+ <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S .
+ Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH v2 01/10] target/i386: Add missing feature names in
+ FEAT_VMX_EPT_VPID_CAPS
+Message-ID: <20230908160659.2b3abe04@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230908124534.25027-2-twiederh@redhat.com>
+References: <20230908124534.25027-1-twiederh@redhat.com>
+ <20230908124534.25027-2-twiederh@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: i.maximets@ovn.org, Stefan Hajnoczi <stefanha@gmail.com>,
- Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <20230908064507.14596-1-jasowang@redhat.com>
- <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
- <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org> <ZPsKUDp7nVS/Z+j2@redhat.com>
- <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org> <ZPsQcu0HYBaTScnb@redhat.com>
-From: Ilya Maximets <i.maximets@ovn.org>
-Subject: Re: [PULL 00/17] Net patches
-In-Reply-To: <ZPsQcu0HYBaTScnb@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: i.maximets@ovn.org
-Received-SPF: pass client-ip=217.70.183.193; envelope-from=i.maximets@ovn.org;
- helo=relay1-d.mail.gandi.net
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,65 +104,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 14:15, Daniel P. Berrangé wrote:
-> On Fri, Sep 08, 2023 at 02:00:47PM +0200, Ilya Maximets wrote:
->> On 9/8/23 13:49, Daniel P. Berrangé wrote:
->>> On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
->>>> On 9/8/23 13:19, Stefan Hajnoczi wrote:
->>>>> Hi Ilya and Jason,
->>>>> There is a CI failure related to a missing Debian libxdp-dev package:
->>>>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
->>>>>
->>>>> I think the issue is that the debian-amd64 container image that QEMU
->>>>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
->>>>> and libxdp is not available on that release:
->>>>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
->>>>
->>>> Hmm.  Sorry about that.
->>>>
->>>>>
->>>>> If we need to support Debian 11 CI then either XDP could be disabled
->>>>> for that distro or libxdp could be compiled from source.
->>>>
->>>> I'd suggest we just remove the attempt to install the package for now,
->>>> building libxdp from sources may be a little painful to maintain.
->>>>
->>>> Can be re-added later once distributions with libxdp 1.4+ will be more
->>>> widely available, i.e. when fedora dockerfile will be updated to 39,
->>>> for example.  That should be soon-ish, right?
->>>
->>> If you follow the process in docs/devel/testing.rst for adding
->>> libxdp in libvirt-ci, then lcitool will "do the right thing"
->>> when we move the auto-generated dockerfiles to new distro versions.
->>
->> Thanks!  I'll prepare changes for libvirt-ci.
->>
->> In the meantime, none of the currently tested images will have a required
->> version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
->> modification from the patch.  What do you think?
+On Fri,  8 Sep 2023 14:45:25 +0200
+Tim Wiederhake <twiederh@redhat.com> wrote:
+
+> Add the missing feature names for two bits in the FEAT_VMX_EPT_VPID_CAPS
+> cpuid leaf. "vmx-ept-uc" is currently unused, but "vmx-ept-wb" is enabled
+> for multiple cpu models.
 > 
-> Sure, if none of the distros have it, then lcitool won't emit the
-> dockerfile changes until we update the inherited distro version.
-> So it is sufficient to just update libvirt-ci.git with the mappings.yml
-> info for libxdp, and add 'libxdp' to the tests/lcitool/projects/qemu.yml
-> file in qemu.git. It will then 'just work' when someone updates the
-> distro versions later.
+> Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
 
-I posted an MR for libvirt-ci adding libxdp:
-  https://gitlab.com/libvirt/libvirt-ci/-/merge_requests/429
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 
-Please, take a look.
+> ---
+>  target/i386/cpu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 24ee67b42d..7c2c48ac06 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -1314,8 +1314,8 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+>          .feat_names = {
+>              "vmx-ept-execonly", NULL, NULL, NULL,
+>              NULL, NULL, "vmx-page-walk-4", "vmx-page-walk-5",
+> -            NULL, NULL, NULL, NULL,
+> -            NULL, NULL, NULL, NULL,
+> +            "vmx-ept-uc", NULL, NULL, NULL,
+> +            NULL, NULL, "vmx-ept-wb", NULL,
+>              "vmx-ept-2mb", "vmx-ept-1gb", NULL, NULL,
+>              "vmx-invept", "vmx-eptad", "vmx-ept-advanced-exitinfo", NULL,
+>              NULL, "vmx-invept-single-context", "vmx-invept-all-context", NULL,
 
-The docs say that CI will try to build containers with the MR changes,
-but I don't think anything except sanity checks is actually tested on MR.
-Sorry if I missed something, never used GitLab pipelines before.
-
-Note that with this update we will be installing older version of libxdp
-in many containers, even though they will not be used by QEMU, unless
-they are newer than 1.4.0.
-
-tests/lcitool/projects/qemu.yml in qemu.git cannot be updated without
-updating a submodule after the MR merge.
-
-Best regards, Ilya Maximets.
 
