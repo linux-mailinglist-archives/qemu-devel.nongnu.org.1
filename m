@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B23798B2A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2182798B30
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:07:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeew9-0005Xy-6O; Fri, 08 Sep 2023 13:06:29 -0400
+	id 1qeew8-0005Wo-W0; Fri, 08 Sep 2023 13:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeew3-0005Ty-Lf
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:23 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ id 1qeew4-0005VC-Hk
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:24 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevq-00019J-ND
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:23 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-401da71b7c5so26096035e9.2
+ id 1qeevq-00019b-Ne
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:24 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-401d24f1f27so25716505e9.1
  for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1694192769; x=1694797569; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=iPP1VGFIkKk/pnu84AWbQJuPsM24zttg/DQyTydt5A8=;
- b=iTDGw6A4r+xELqij11mScaEqJ3p6zUUYbMQs4UmCFF8GE/QfHU9165JVuQ8dwa1MnR
- 96yTlinEu74eu1w5f95ybZE7NAM2YNH/g0+LqaD0KAt5JYu9SmEq9EwMuHnXpyMCt0i8
- 5DG9efdP3t6U2lcefVyqb2x31S3VDJDEu1vtE/j51qOkzi53dM0uUjuXV1Hwn5hfVHMZ
- yOjZSsIJCQ48G38mU4hjYvhXwmTFwdx+lNoIKgCUaIFFPnrjadL4vCvN66C1edVTBrOi
- kopaCvHIbGVLixSyxGkzOFjDXE2T55L8McYh0qkUeRrLm+2tCI0gJ3k/qQz2f/32G+I0
- OUbQ==
+ :reply-to; bh=KzUC2YqCJygpvtjpx3lNOslXt8nXeXpZv7XxD1t0Tpg=;
+ b=gHtyXIJ2xwuC6Kq0pOcr3lqhE3Ai4LVVEva7FrWGYXQ5CsA/+ca63NG2Ta+W6RA7lB
+ ZWOzzT0yoGibP9LZNLiyCMkRa4oOh59Hn3a6T1wXL6CABsVpH4yYV2Bhh5yvimDAnNbv
+ JWOj8rMWywIA4FMpYExf/80Bc0cA8fn42/2TbSNgksFUN5AigBZJQIRbbvatwmMJQNek
+ mf/jdqs9K0ZKz5k++ZdQJmykYylMYPdFeTrtJhKrEI7wJhSzXtypEoMJHCfltCpFcrON
+ rQRWRo/WRsP2UOecuXdgs1YptrA0dNuLbrEh12QdSAJ2d1HQ+C1/lflomn6TJVjqtfma
+ IrCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1694192769; x=1694797569;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iPP1VGFIkKk/pnu84AWbQJuPsM24zttg/DQyTydt5A8=;
- b=I45fN1r0a976mkNIiCnzucW9hPITm2Oar9C4CVor078MHxuih8zxG0YOYqd1JzqAu6
- J+lp0hrKZeHwVUL7YzMf9tGtnuW01P9sH3Plu2awrAgQpPuFT01kwFoWieOuy+q/6HzM
- otXJdvimPMEDUALWrEQaA9YfxetOdDapjvZExmgsFLbfuBV2dCl3+0bQp7x9F1Kjmb8X
- BfAokCqIBb3NLrrvOB6DIJg4PpROU9UHhl/IuAOSMZweKQERq4jPE0c8U5LRgswEyGWe
- Y9Cm1HIL+RroYb0vM7w8bC/FWoSwxL2XR9jikE9fu60+QjTpuC0tpY22Je0lMVCX6kxK
- QzbQ==
-X-Gm-Message-State: AOJu0YzZ/+Zq6gTaQdXau9u+vYW2XD8BTSLoPM5y/ej0kQDTxVA7dEA/
- hF0/oSP474Iu6ycmsRLrnnQ5LLyuTmrePEUL8yY=
-X-Google-Smtp-Source: AGHT+IHOt04n24LUVLQlVg1DPeoxBcwHLb3WP732xLRh/GS0WrH8GEKSCzliv0Exs3jtNH1cTvN4tQ==
-X-Received: by 2002:a7b:c84b:0:b0:401:d2cb:e6f2 with SMTP id
- c11-20020a7bc84b000000b00401d2cbe6f2mr2543492wml.32.1694192769046; 
+ bh=KzUC2YqCJygpvtjpx3lNOslXt8nXeXpZv7XxD1t0Tpg=;
+ b=qHNozDOXKJ7li+LmgViRmMGSgZlPE+T3lF3njBcLY+t030PsstIfQklfcdAv/crjGs
+ EszRkZOZZhfpuNdR3Lbrpx+PNKrtl2u8gorpdB166gPSZFsWlJqcWbwcoX5d2FLTHRCp
+ J2LMiU3vSDjZCpXfds33SQUf9rL8FBnoa38OuLPdk3ks4ExXt9i3jtrsUrZHJgGf5ite
+ sYdEsABEXda6sUSGBCVx9oTYqXo0V5wBNNnKDEUORuxD/w2geCBqCbBRGQGjttZsmOb1
+ kxX3ePF0oS52rO44rOLQzl4WWdv4eQcFgrJqqf49evK5u+zQzK1MQ4lfOrqt0CKmGI3L
+ MXKw==
+X-Gm-Message-State: AOJu0YyMQJ2qDD2obCnyGX4vdBd6+xlPdh1KTCZXdHp1tgN77xte4dMg
+ hXsSfSOS346YqIsEg/3FiRvrFPaNFKGsoihNhfg=
+X-Google-Smtp-Source: AGHT+IH4f3K7bLcUmNZ2ncvqayW0lCTl7eXj0LG0RTFHN/I+T87KYWt71lci7N36iV7IztmNGzLe6g==
+X-Received: by 2002:a05:600c:218e:b0:3fe:4e4e:bedb with SMTP id
+ e14-20020a05600c218e00b003fe4e4ebedbmr2627805wme.4.1694192769444; 
  Fri, 08 Sep 2023 10:06:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d21-20020a1c7315000000b00400268671c6sm2427152wmb.13.2023.09.08.10.06.08
+ d21-20020a1c7315000000b00400268671c6sm2427152wmb.13.2023.09.08.10.06.09
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 10:06:08 -0700 (PDT)
+ Fri, 08 Sep 2023 10:06:09 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/26] target/arm: Do not use gen_mte_checkN in trans_STGP
-Date: Fri,  8 Sep 2023 18:05:50 +0100
-Message-Id: <20230908170557.773048-20-peter.maydell@linaro.org>
+Subject: [PULL 20/26] arm64: Restore trapless ptimer access
+Date: Fri,  8 Sep 2023 18:05:51 +0100
+Message-Id: <20230908170557.773048-21-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230908170557.773048-1-peter.maydell@linaro.org>
 References: <20230908170557.773048-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,84 +90,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Colton Lewis <coltonlewis@google.com>
 
-STGP writes to tag memory, it does not check it.
-This happened to work because we wrote tag memory first
-so that the check always succeeded.
+Due to recent KVM changes, QEMU is setting a ptimer offset resulting
+in unintended trap and emulate access and a consequent performance
+hit. Filter out the PTIMER_CNT register to restore trapless ptimer
+access.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230901203103.136408-1-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Quoting Andrew Jones:
+
+Simply reading the CNT register and writing back the same value is
+enough to set an offset, since the timer will have certainly moved
+past whatever value was read by the time it's written.  QEMU
+frequently saves and restores all registers in the get-reg-list array,
+unless they've been explicitly filtered out (with Linux commit
+680232a94c12, KVM_REG_ARM_PTIMER_CNT is now in the array). So, to
+restore trapless ptimer accesses, we need a QEMU patch to filter out
+the register.
+
+See
+https://lore.kernel.org/kvmarm/gsntttsonus5.fsf@coltonlewis-kvm.c.googlers.com/T/#m0770023762a821db2a3f0dd0a7dc6aa54e0d0da9
+for additional context.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+Signed-off-by: Colton Lewis <coltonlewis@google.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Colton Lewis <coltonlewis@google.com>
+Message-id: 20230831190052.129045-1-coltonlewis@google.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/tcg/translate-a64.c | 41 +++++++++++++---------------------
- 1 file changed, 15 insertions(+), 26 deletions(-)
+ target/arm/kvm64.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index c2bd96f5d43..7d2f8026e65 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3020,37 +3020,17 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-         tcg_gen_addi_i64(dirty_addr, dirty_addr, offset);
-     }
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index ac440c33f9a..5e95c496bb9 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -674,6 +674,7 @@ typedef struct CPRegStateLevel {
+  */
+ static const CPRegStateLevel non_runtime_cpregs[] = {
+     { KVM_REG_ARM_TIMER_CNT, KVM_PUT_FULL_STATE },
++    { KVM_REG_ARM_PTIMER_CNT, KVM_PUT_FULL_STATE },
+ };
  
--    if (!s->ata) {
--        /*
--         * TODO: We could rely on the stores below, at least for
--         * system mode, if we arrange to add MO_ALIGN_16.
--         */
--        gen_helper_stg_stub(cpu_env, dirty_addr);
--    } else if (tb_cflags(s->base.tb) & CF_PARALLEL) {
--        gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
--    } else {
--        gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
--    }
--
--    mop = finalize_memop(s, MO_64);
--    clean_addr = gen_mte_checkN(s, dirty_addr, true, false, 2 << MO_64, mop);
--
-+    clean_addr = clean_data_tbi(s, dirty_addr);
-     tcg_rt = cpu_reg(s, a->rt);
-     tcg_rt2 = cpu_reg(s, a->rt2);
- 
-     /*
--     * STGP is defined as two 8-byte memory operations and one tag operation.
--     * We implement it as one single 16-byte memory operation for convenience.
--     * Rebuild mop as for STP.
--     * TODO: The atomicity with LSE2 is stronger than required.
--     * Need a form of MO_ATOM_WITHIN16_PAIR that never requires
--     * 16-byte atomicity.
-+     * STGP is defined as two 8-byte memory operations, aligned to TAG_GRANULE,
-+     * and one tag operation.  We implement it as one single aligned 16-byte
-+     * memory operation for convenience.  Note that the alignment ensures
-+     * MO_ATOM_IFALIGN_PAIR produces 8-byte atomicity for the memory store.
-      */
--    mop = MO_128;
--    if (s->align_mem) {
--        mop |= MO_ALIGN_8;
--    }
--    mop = finalize_memop_pair(s, mop);
-+    mop = finalize_memop_atom(s, MO_128 | MO_ALIGN, MO_ATOM_IFALIGN_PAIR);
- 
-     tmp = tcg_temp_new_i128();
-     if (s->be_data == MO_LE) {
-@@ -3060,6 +3040,15 @@ static bool trans_STGP(DisasContext *s, arg_ldstpair *a)
-     }
-     tcg_gen_qemu_st_i128(tmp, clean_addr, get_mem_index(s), mop);
- 
-+    /* Perform the tag store, if tag access enabled. */
-+    if (s->ata) {
-+        if (tb_cflags(s->base.tb) & CF_PARALLEL) {
-+            gen_helper_stg_parallel(cpu_env, dirty_addr, dirty_addr);
-+        } else {
-+            gen_helper_stg(cpu_env, dirty_addr, dirty_addr);
-+        }
-+    }
-+
-     op_addr_ldstpair_post(s, a, dirty_addr, offset);
-     return true;
- }
+ int kvm_arm_cpreg_level(uint64_t regidx)
 -- 
 2.34.1
 
