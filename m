@@ -2,51 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6267988F9
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:39:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 187987988F8
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:39:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeccd-0005sr-Te; Fri, 08 Sep 2023 10:38:11 -0400
+	id 1qeccf-0005vS-AR; Fri, 08 Sep 2023 10:38:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeccL-0005ie-TV
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:37:54 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeccP-0005kj-TT
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:37:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeccJ-00078H-Jj
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:37:53 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeccN-00079M-OC
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:37:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694183870;
+ s=mimecast20190719; t=1694183874;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hXqGEMBIzhUEnijGoV5TEpk1X/j23KZWYFtOHXVuOpQ=;
- b=FVt+HGr9eNgop+v7fXfUw6dH6ltOHoViIX89A7tlLaqtP6y8IFqQXs2AWd3HmHvph/cRJm
- 4j7cNhYVeehic6o4NJQ399rTHXLm1R8djpzHGkoNApAZCqYRt5pFNsYNV6e7yKklRiTI8B
- a2hLtZpnutLwUW28gfaZbHFeZ9Jbonk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-646-2ad4dDm5Mxu6Dkmgn3oC_w-1; Fri, 08 Sep 2023 10:37:49 -0400
-X-MC-Unique: 2ad4dDm5Mxu6Dkmgn3oC_w-1
+ bh=6vlbOC4oGOGeEU2j2KiZMeSRmOxWKk8y7VJU+mcI9Dc=;
+ b=Z1JhnrUzsMraRoSVT4NLaYPhonBdhq2/9nMYw1vPAupg/JA/OGXyQtXUWX6dLI1Yp2NLdJ
+ LDnYlPWPiSHsu6prBbYvLM+SvK3tTzbZn8Ap3kWqsdd/mXqLnfDsmzLL5aV3rWNYn5Hr/4
+ OaFEei7AnhtpgDVP9UbKcZhONVwSqck=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-602-X4rgFHUeOCu_t3DuUoZINw-1; Fri, 08 Sep 2023 10:37:50 -0400
+X-MC-Unique: X4rgFHUeOCu_t3DuUoZINw-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0AAF3948FEE;
- Fri,  8 Sep 2023 14:37:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 513AD281CC20;
+ Fri,  8 Sep 2023 14:37:50 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.193.201])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 15664140E962;
- Fri,  8 Sep 2023 14:37:47 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5CD6F140E962;
+ Fri,  8 Sep 2023 14:37:49 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: kwolf@redhat.com, armbru@redhat.com, berrange@redhat.com,
  peter.maydell@linaro.org, pbonzini@redhat.com
-Subject: [PATCH 05/11] hw/arm/sbsa-ref: Use qdev_prop_set_array()
-Date: Fri,  8 Sep 2023 16:36:56 +0200
-Message-ID: <20230908143703.172758-6-kwolf@redhat.com>
+Subject: [PATCH 06/11] hw/arm/vexpress: Use qdev_prop_set_array()
+Date: Fri,  8 Sep 2023 16:36:57 +0200
+Message-ID: <20230908143703.172758-7-kwolf@redhat.com>
 In-Reply-To: <20230908143703.172758-1-kwolf@redhat.com>
 References: <20230908143703.172758-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -82,41 +82,59 @@ array property with a single call.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- hw/arm/sbsa-ref.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ hw/arm/vexpress.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index bc89eb4806..354c1a037d 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -46,6 +46,7 @@
- #include "hw/char/pl011.h"
- #include "hw/watchdog/sbsa_gwdt.h"
- #include "net/net.h"
+diff --git a/hw/arm/vexpress.c b/hw/arm/vexpress.c
+index 56abadd9b8..7c7af0a9cb 100644
+--- a/hw/arm/vexpress.c
++++ b/hw/arm/vexpress.c
+@@ -43,6 +43,7 @@
+ #include "hw/cpu/a15mpcore.h"
+ #include "hw/i2c/arm_sbcon_i2c.h"
+ #include "hw/sd/sd.h"
 +#include "qapi/qmp/qlist.h"
  #include "qom/object.h"
  
- #define RAMLIMIT_GB 8192
-@@ -441,6 +442,7 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
-     SysBusDevice *gicbusdev;
-     const char *gictype;
-     uint32_t redist0_capacity, redist0_count;
-+    QList *redist_region_count;
+ #define VEXPRESS_BOARD_ID 0x8e0
+@@ -551,6 +552,7 @@ static void vexpress_common_init(MachineState *machine)
+     ram_addr_t vram_size, sram_size;
+     MemoryRegion *sysmem = get_system_memory();
+     const hwaddr *map = daughterboard->motherboard_map;
++    QList *db_voltage, *db_clock;
      int i;
  
-     gictype = gicv3_class_name();
-@@ -459,8 +461,9 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
-                 sbsa_ref_memmap[SBSA_GIC_REDIST].size / GICV3_REDIST_SIZE;
-     redist0_count = MIN(smp_cpus, redist0_capacity);
+     daughterboard->init(vms, machine->ram_size, machine->cpu_type, pic);
+@@ -591,20 +593,19 @@ static void vexpress_common_init(MachineState *machine)
+     sysctl = qdev_new("realview_sysctl");
+     qdev_prop_set_uint32(sysctl, "sys_id", sys_id);
+     qdev_prop_set_uint32(sysctl, "proc_id", daughterboard->proc_id);
+-    qdev_prop_set_uint32(sysctl, "len-db-voltage",
+-                         daughterboard->num_voltage_sensors);
++
++    db_voltage = qlist_new();
+     for (i = 0; i < daughterboard->num_voltage_sensors; i++) {
+-        char *propname = g_strdup_printf("db-voltage[%d]", i);
+-        qdev_prop_set_uint32(sysctl, propname, daughterboard->voltages[i]);
+-        g_free(propname);
++        qlist_append_int(db_voltage, daughterboard->voltages[i]);
+     }
+-    qdev_prop_set_uint32(sysctl, "len-db-clock",
+-                         daughterboard->num_clocks);
++    qdev_prop_set_array(sysctl, "db-voltage", db_voltage);
++
++    db_clock = qlist_new();
+     for (i = 0; i < daughterboard->num_clocks; i++) {
+-        char *propname = g_strdup_printf("db-clock[%d]", i);
+-        qdev_prop_set_uint32(sysctl, propname, daughterboard->clocks[i]);
+-        g_free(propname);
++        qlist_append_int(db_clock, daughterboard->clocks[i]);
+     }
++    qdev_prop_set_array(sysctl, "db-clock", db_clock);
++
+     sysbus_realize_and_unref(SYS_BUS_DEVICE(sysctl), &error_fatal);
+     sysbus_mmio_map(SYS_BUS_DEVICE(sysctl), 0, map[VE_SYSREGS]);
  
--    qdev_prop_set_uint32(sms->gic, "len-redist-region-count", 1);
--    qdev_prop_set_uint32(sms->gic, "redist-region-count[0]", redist0_count);
-+    redist_region_count = qlist_new();
-+    qlist_append_int(redist_region_count, redist0_count);
-+    qdev_prop_set_array(sms->gic, "redist-region-count", redist_region_count);
- 
-     object_property_set_link(OBJECT(sms->gic), "sysmem",
-                              OBJECT(mem), &error_fatal);
 -- 
 2.41.0
 
