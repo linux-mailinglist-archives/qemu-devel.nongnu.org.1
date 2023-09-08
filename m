@@ -2,80 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122F5798B35
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E39A798B4D
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:12:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeewC-0005k4-Q0; Fri, 08 Sep 2023 13:06:32 -0400
+	id 1qef1V-0007OM-Na; Fri, 08 Sep 2023 13:12:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeew9-0005ck-AG
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:29 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevt-0001As-Je
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:29 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-401ec23be82so25554445e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694192772; x=1694797572; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=TEEyKnu70d+F7Gj49GE/OEykoK3cKaDxtwZwlKSG3gY=;
- b=czQM1tohwzOzGybjTh5MalbI3Odc28gbIMke6Gwo/rpK4P40kxb8nGDEasfqLnEd10
- FJKvlgO+ItnqThHR6+VnrxZAscP+xrO9NWhndYqLGw4ePvdVIyjCYYfYAvspUcxGGTdG
- IDaQQ0B4K2JOQHA9FQEuAc2nB4480Rw02+T4yPMfMH6ffta8DjY8zcUq/LEETkwAqZG4
- VW3+Ms41urjOkoQnigkIxkjfrbgceWv3SORyt4Nfj23LCLkXtXSjMrrrMojUrnBwdLLW
- tG7glQ07vqdAKdIRc/qAFj/9baddMUasO1R8eprWF33ySV8U71GaMThk9IiVyYw0J1iV
- 0BXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694192772; x=1694797572;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TEEyKnu70d+F7Gj49GE/OEykoK3cKaDxtwZwlKSG3gY=;
- b=ZxJCiOAd6uCCTs3p5Xf9oVsrc6tNVnf9nj/Pl9ynopjcA52Q1tLKRTYTFxIrxbse7A
- wwULz9WEbJ8QWrtBF+eho5R3Gad86VqJ7lR/ePASAfEL3ryVLlDCdZU1THL+ajvjM9fQ
- h+8VeeBlI2kmZySKviUTQorwxkk35hsUgwNmIYd2ZDpsKwIDFJfRBgTof7tMF/H8RfM+
- svLNmauIQBGdBrVb3U9tqViZ6Lx14xaWt1gbisWHBwmveEgvIzKeoZ0EILm1YKF7dt+r
- gepmDY2txtVWOhO6MAYbbvoERTQ/n/woRpWrrUCA6mV25YsRiQckiZafHb5nop5Zs39w
- FuWA==
-X-Gm-Message-State: AOJu0YwqnHbrx4RmHTswZkqi6UaWQsSQYG+8B5bHJ0CFvM5x2iGjvuwA
- wa8q2yH0+mJYwoz9M4vBLSgPHOEdVLeaei/yL0c=
-X-Google-Smtp-Source: AGHT+IHCGN1pS+KnX/NqB6FhvaWtpp2brNZGLxWpZTXV1ekTAo4I5lRr/SXQyUiv798ViQXLI/tf7Q==
-X-Received: by 2002:a7b:c7c6:0:b0:3fe:f726:4a94 with SMTP id
- z6-20020a7bc7c6000000b003fef7264a94mr2840209wmk.14.1694192772109; 
- Fri, 08 Sep 2023 10:06:12 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- d21-20020a1c7315000000b00400268671c6sm2427152wmb.13.2023.09.08.10.06.11
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 10:06:11 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PULL 26/26] arm/kvm: Enable support for
- KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
-Date: Fri,  8 Sep 2023 18:05:57 +0100
-Message-Id: <20230908170557.773048-27-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230908170557.773048-1-peter.maydell@linaro.org>
-References: <20230908170557.773048-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qef1T-0007NR-AH
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:11:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qef1L-0003Lr-Kl
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:11:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694193110;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=MgOf0ut0iUr38tL5yOt/OADakbZXeN2cWNXp9kGK3gs=;
+ b=HSzszDrXK0kVz84iNjm7XordxR4pAk2e2QXRhDLTcjnwKR2FSBL1btdHHd2wXPcWCphDHh
+ Zy5VvQAGAPKpFeKFuJYG24ao6t1LrlBacqMHQ3yT1oV5LMlThoDo+ZZAFJmGCm/+/gJ+Om
+ WU/k8y1JIrMXRfy82C3j0P6Yb6jdDzI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-553-9OpU3j7FPyaz7ToKzHYp3w-1; Fri, 08 Sep 2023 13:11:45 -0400
+X-MC-Unique: 9OpU3j7FPyaz7ToKzHYp3w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 122F329AA3BD;
+ Fri,  8 Sep 2023 17:11:45 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.193.201])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 71C84493112;
+ Fri,  8 Sep 2023 17:11:44 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	qemu-devel@nongnu.org
+Subject: [PULL v2 00/15] Block layer patches
+Date: Fri,  8 Sep 2023 19:11:39 +0200
+Message-ID: <20230908171139.397473-1-kwolf@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,172 +74,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+The following changes since commit 13d9f6dca08a38e9258b6328f3ad61bdb8e19619:
 
-Now that we have Eager Page Split support added for ARM in the kernel,
-enable it in Qemu. This adds,
- -eager-split-size to -accel sub-options to set the eager page split chunk size.
- -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
+  Merge tag 'ide-pull-request' of https://gitlab.com/jsnow/qemu into staging (2023-09-07 10:28:33 -0400)
 
-The chunk size specifies how many pages to break at a time, using a
-single allocation. Bigger the chunk size, more pages need to be
-allocated ahead of time.
+are available in the Git repository at:
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
-Message-id: 20230905091246.1931-1-shameerali.kolothum.thodi@huawei.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- include/sysemu/kvm_int.h |  1 +
- accel/kvm/kvm-all.c      |  1 +
- target/arm/kvm.c         | 61 ++++++++++++++++++++++++++++++++++++++++
- qemu-options.hx          | 15 ++++++++++
- 4 files changed, 78 insertions(+)
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
 
-diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-index 511b42bde5c..a5b9122cb82 100644
---- a/include/sysemu/kvm_int.h
-+++ b/include/sysemu/kvm_int.h
-@@ -116,6 +116,7 @@ struct KVMState
-     uint64_t kvm_dirty_ring_bytes;  /* Size of the per-vcpu dirty ring */
-     uint32_t kvm_dirty_ring_size;   /* Number of dirty GFNs per ring */
-     bool kvm_dirty_ring_with_bitmap;
-+    uint64_t kvm_eager_split_size;  /* Eager Page Splitting chunk size */
-     struct KVMDirtyRingReaper reaper;
-     NotifyVmexitOption notify_vmexit;
-     uint32_t notify_window;
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 2ba7521695e..ff1578bb32b 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -3763,6 +3763,7 @@ static void kvm_accel_instance_init(Object *obj)
-     /* KVM dirty ring is by default off */
-     s->kvm_dirty_ring_size = 0;
-     s->kvm_dirty_ring_with_bitmap = false;
-+    s->kvm_eager_split_size = 0;
-     s->notify_vmexit = NOTIFY_VMEXIT_OPTION_RUN;
-     s->notify_window = 0;
-     s->xen_version = 0;
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 23aeb099490..b66b936a958 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -30,6 +30,7 @@
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
- #include "hw/irq.h"
-+#include "qapi/visitor.h"
- #include "qemu/log.h"
- 
- const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
-@@ -287,6 +288,26 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-         }
-     }
- 
-+    if (s->kvm_eager_split_size) {
-+        uint32_t sizes;
-+
-+        sizes = kvm_vm_check_extension(s, KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES);
-+        if (!sizes) {
-+            s->kvm_eager_split_size = 0;
-+            warn_report("Eager Page Split support not available");
-+        } else if (!(s->kvm_eager_split_size & sizes)) {
-+            error_report("Eager Page Split requested chunk size not valid");
-+            ret = -EINVAL;
-+        } else {
-+            ret = kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
-+                                    s->kvm_eager_split_size);
-+            if (ret < 0) {
-+                error_report("Enabling of Eager Page Split failed: %s",
-+                             strerror(-ret));
-+            }
-+        }
-+    }
-+
-     kvm_arm_init_debug(s);
- 
-     return ret;
-@@ -1069,6 +1090,46 @@ bool kvm_arch_cpu_check_are_resettable(void)
-     return true;
- }
- 
-+static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
-+                                          const char *name, void *opaque,
-+                                          Error **errp)
-+{
-+    KVMState *s = KVM_STATE(obj);
-+    uint64_t value = s->kvm_eager_split_size;
-+
-+    visit_type_size(v, name, &value, errp);
-+}
-+
-+static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
-+                                          const char *name, void *opaque,
-+                                          Error **errp)
-+{
-+    KVMState *s = KVM_STATE(obj);
-+    uint64_t value;
-+
-+    if (s->fd != -1) {
-+        error_setg(errp, "Unable to set early-split-size after KVM has been initialized");
-+        return;
-+    }
-+
-+    if (!visit_type_size(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    if (value && !is_power_of_2(value)) {
-+        error_setg(errp, "early-split-size must be a power of two");
-+        return;
-+    }
-+
-+    s->kvm_eager_split_size = value;
-+}
-+
- void kvm_arch_accel_class_init(ObjectClass *oc)
- {
-+    object_class_property_add(oc, "eager-split-size", "size",
-+                              kvm_arch_get_eager_split_size,
-+                              kvm_arch_set_eager_split_size, NULL, NULL);
-+
-+    object_class_property_set_description(oc, "eager-split-size",
-+        "Eager Page Split chunk size for hugepages. (default: 0, disabled)");
- }
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 463f520c57c..93d106aa9cb 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -186,6 +186,7 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
-     "                split-wx=on|off (enable TCG split w^x mapping)\n"
-     "                tb-size=n (TCG translation block cache size)\n"
-     "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
-+    "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
-     "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
-     "                thread=single|multi (enable multi-threaded TCG)\n", QEMU_ARCH_ALL)
- SRST
-@@ -244,6 +245,20 @@ SRST
-         is disabled (dirty-ring-size=0).  When enabled, KVM will instead
-         record dirty pages in a bitmap.
- 
-+    ``eager-split-size=n``
-+        KVM implements dirty page logging at the PAGE_SIZE granularity and
-+        enabling dirty-logging on a huge-page requires breaking it into
-+        PAGE_SIZE pages in the first place. KVM on ARM does this splitting
-+        lazily by default. There are performance benefits in doing huge-page
-+        split eagerly, especially in situations where TLBI costs associated
-+        with break-before-make sequences are considerable and also if guest
-+        workloads are read intensive. The size here specifies how many pages
-+        to break at a time and needs to be a valid block size which is
-+        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
-+        respectively. Be wary of specifying a higher size as it will have an
-+        impact on the memory. By default, this feature is disabled
-+        (eager-split-size=0).
-+
-     ``notify-vmexit=run|internal-error|disable,notify-window=n``
-         Enables or disables notify VM exit support on x86 host and specify
-         the corresponding notify window to trigger the VM exit if enabled.
--- 
-2.34.1
+for you to fetch changes up to 92e2e6a867334a990f8d29f07ca34e3162fdd6ec:
+
+  virtio: Drop out of coroutine context in virtio_load() (2023-09-08 17:03:09 +0200)
+
+----------------------------------------------------------------
+Block layer patches
+
+- Optimise reqs_lock to make multiqueue actually scale
+- virtio: Drop out of coroutine context in virtio_load()
+- iotests: Fix reference output for some tests after recent changes
+- vpc: Avoid dynamic stack allocation
+- Code cleanup, improved documentation
+
+----------------------------------------------------------------
+Dmitry Frolov (1):
+      vmdk: Clean up bdrv_open_child() return value check
+
+Fabiano Rosas (2):
+      block: Remove bdrv_query_block_node_info
+      block: Remove unnecessary variable in bdrv_block_device_info
+
+Fiona Ebner (1):
+      iotests: adapt test output for new qemu_cleanup() behavior
+
+Hanna Czenczek (1):
+      block: Be more verbose in create fallback
+
+Kevin Wolf (5):
+      qemu-img: Update documentation for compressed images
+      block/meson.build: Restore alphabetical order of files
+      block: Make more BlockDriver definitions static
+      vmstate: Mark VMStateInfo.get/put() coroutine_mixed_fn
+      virtio: Drop out of coroutine context in virtio_load()
+
+Michael Tokarev (1):
+      qemu-img: omit errno value in error message
+
+Peter Maydell (1):
+      block/iscsi: Document why we use raw malloc()
+
+Philippe Mathieu-Daudé (1):
+      block/vpc: Avoid dynamic stack allocation
+
+Stefan Hajnoczi (2):
+      block: minimize bs->reqs_lock section in tracked_request_end()
+      block: change reqs_lock to QemuMutex
+
+ docs/tools/qemu-img.rst          | 19 +++++++++++++++--
+ include/block/block_int-common.h |  2 +-
+ include/block/qapi.h             |  3 ---
+ include/migration/vmstate.h      |  8 ++++---
+ block.c                          | 10 ++++++---
+ block/copy-before-write.c        |  2 +-
+ block/io.c                       | 30 ++++++++++++++++-----------
+ block/iscsi.c                    |  1 +
+ block/preallocate.c              |  2 +-
+ block/qapi.c                     | 32 ++--------------------------
+ block/snapshot-access.c          |  2 +-
+ block/vmdk.c                     |  2 +-
+ block/vpc.c                      |  4 ++--
+ hw/virtio/virtio.c               | 45 +++++++++++++++++++++++++++++++++++-----
+ qemu-img.c                       |  4 ++--
+ block/meson.build                | 12 +++++------
+ tests/qemu-iotests/080.out       |  6 +++---
+ tests/qemu-iotests/109.out       | 24 +++++++++++++++++++++
+ tests/qemu-iotests/112.out       |  6 +++---
+ tests/qemu-iotests/185           |  2 ++
+ tests/qemu-iotests/185.out       |  4 ++++
+ tests/qemu-iotests/244.out       |  2 +-
+ 22 files changed, 142 insertions(+), 80 deletions(-)
 
 
