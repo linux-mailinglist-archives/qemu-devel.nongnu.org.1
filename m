@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7C1798200
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14257981CC
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:07:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUds-0003Ka-Lk; Fri, 08 Sep 2023 02:06:56 -0400
+	id 1qeUdn-0002U5-Hj; Fri, 08 Sep 2023 02:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUdR-0001Bu-OI
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:31 -0400
+ id 1qeUdT-0001DC-Sg
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:32 -0400
 Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUdN-0005z9-TB
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:27 -0400
+ id 1qeUdR-0005ze-FW
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:31 -0400
 Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c336f5b1ffso13917475ad.2
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:06:25 -0700 (PDT)
+ d9443c01a7336-1bdbf10333bso14061975ad.1
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:06:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153184; x=1694757984; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153187; x=1694757987; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kAP/ARZH03sbdLRgzXuPgyQA9kfPXuXGRtSjy51o5fY=;
- b=lMTNYtAR/BOJzulDZpHgOT2XlP5ODSekxUfLlu5MlYxGcQAkfXpO4LdO4jfWK+JQEt
- 8wOY6mfZDyHZqJBjXWduRsWtXD5RWRjB02EXnoWYCWc3/Bo5lYIuK26JRs26zq4jGRuL
- MFW2Ef5VvpkRY90fuenkP8rZ1G/Dn7Put/T5EsaNPODJ/7E0/gQJB5K7c1wgo0ou+l1A
- 0GdRp1rFCG1QHjDTXYcdVZKr5JPqTrfxcISLnAt7uSXsg5iOFTAkh0x77EGr0AE/PD33
- AwbVilbEPqkAZMZfBDz0psWw/t1RXG5450kc/qOj+bxuuS2sWQvgfeSXRGmO8vvO6xpY
- 8YKg==
+ bh=g72WiAV5qZ1oQb/83wFsWAvyLD7y1PtWQ+7+Ow3xVqA=;
+ b=HsmRsY0OOFkgdgcIGdMuPHLvwgRA3vRNHBW6jBiNZibsNv0vLDD7sL4zzdj+NbPyLJ
+ p2cVHon/RG3PvuUYWCP6wiTHUAzUiF4AHuaJUtv0Gntf+AB9Uae24RiQggaKd8RxPKjk
+ qhV8T6AOTuHWw6YPXiB4d8NfymqRFm+WywJjuFu/HYArHD7dvJ237DBouuRQLe7Hb6OJ
+ P10QUFZAuKS8nFQV5o5t0Cq8RR9Te3tzBR+W64VCIsDjn6v59OSlW7nLg3deMmsWX7Vc
+ LGBBzw3Fg0fu9DHXlFJAjPFilSJp6dClJFMCbKrLnpoi+O+Ex/T6yUSAWur/YAiuHZwj
+ ePLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153184; x=1694757984;
+ d=1e100.net; s=20230601; t=1694153187; x=1694757987;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kAP/ARZH03sbdLRgzXuPgyQA9kfPXuXGRtSjy51o5fY=;
- b=NoL7rhEXn1P6akfLM+IoQx8MChbxxDcQKdfKwRhOo690mFT99ATAhVf4fvDTltc5np
- Fs7THwQP03xRFZJeDkB2iUMn76oTQRMh+6OZXDaoUyX0F9S6z1SLL4f5/wj4HBqlFR9I
- CaTCvwGAX1s3/QMSDH9wxM6/Rkp26He2/DU37DIoEPt1vTMn5ISp8RMhvxqewDqhOfHQ
- Q4gDwDWN8jnZ/QweKj7mqEGQgqHvFgAQHkCXdGwVWgiv50aLbrwH6VAh+scXuNBj6Zm5
- AW90r6QZDLRWKRqCwwuyEhGStQNi7Zsbu512FdWOvKlftChYJfZ8rTxcyzJnTKFgTj2h
- fUpw==
-X-Gm-Message-State: AOJu0YwDHADZUdA2iJUJUKHFRMUukndaVnAB59X9fI5ASyssuqL3idNI
- IdSOoFAJ3uXW7Pm826DaEyQDyZl2FLrxzU8E
-X-Google-Smtp-Source: AGHT+IFy4ZYa2hVVGCl/VZSia6M/DTQsTL19DMaz401s41fyixpY7Cb9t83vlebMnvzOmgv4nwjNIw==
-X-Received: by 2002:a17:902:6906:b0:1bb:9c45:130f with SMTP id
- j6-20020a170902690600b001bb9c45130fmr1624479plk.69.1694153184083; 
- Thu, 07 Sep 2023 23:06:24 -0700 (PDT)
+ bh=g72WiAV5qZ1oQb/83wFsWAvyLD7y1PtWQ+7+Ow3xVqA=;
+ b=EP/a8NJj+1P9zRA31K3n12cBRm1g+urKPusLXPJmctsdYDqjUXpmTx/+jjMWWdN9Qu
+ 5evIT3gh/FZ1Oujdn7RhI/ayn4Ou650HHxBtND4JYxoUY4TS/a7TqXOIXZOXGU9RwHrV
+ MHS7NaF4QVT0HWFmMVA73PEFaw17XaUULFE+U+GulEY7KLpUUx/8+e5NuoXPj6Xn8MDX
+ nYzFypCzocXYkcmRtNOQs6b1rW6u+KsPwQVLbHPB8lxgNh/j73ePQiZsCUziui204fbZ
+ WZCSJe54wvnbNsomFmQXc8+1x/egIOLIvH8dZJl1daWDiByOJQ4jR58vqaFv9dRQFPxm
+ ICVA==
+X-Gm-Message-State: AOJu0YzY7YA5Wq2na9ips3/E0ujWPmB7WbrDdJaFUuIqaK/7LxVMQwYe
+ j0FCeU7M91pWR0cRsyT/hILzeh7Fsfg3BdPv
+X-Google-Smtp-Source: AGHT+IF/souweECsQxcOaPS0vtGcewK+KKc69hUQLmQluF+Z0oRMFC99228JTfOLWjo6QTw/8PFQOw==
+X-Received: by 2002:a17:902:6b88:b0:1bf:8779:e045 with SMTP id
+ p8-20020a1709026b8800b001bf8779e045mr1328558plk.50.1694153187559; 
+ Thu, 07 Sep 2023 23:06:27 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.06.21
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.06.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:06:23 -0700 (PDT)
+ Thu, 07 Sep 2023 23:06:26 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Rob Bradford <rbradford@rivosinc.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Atish Patra <atishp@rivosinc.com>
-Subject: [PULL 23/65] target/riscv: Implement WARL behaviour for
- mcountinhibit/mcounteren
-Date: Fri,  8 Sep 2023 16:03:49 +1000
-Message-ID: <20230908060431.1903919-24-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 24/65] target/riscv: Add Zihintntl extension ISA string to DTS
+Date: Fri,  8 Sep 2023 16:03:50 +1000
+Message-ID: <20230908060431.1903919-25-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
@@ -98,56 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Rob Bradford <rbradford@rivosinc.com>
+From: Jason Chien <jason.chien@sifive.com>
 
-These are WARL fields - zero out the bits for unavailable counters and
-special case the TM bit in mcountinhibit which is hardwired to zero.
-This patch achieves this by modifying the value written so that any use
-of the field will see the correctly masked bits.
+RVA23 Profiles states:
+The RVA23 profiles are intended to be used for 64-bit application
+processors that will run rich OS stacks from standard binary OS
+distributions and with a substantial number of third-party binary user
+applications that will be supported over a considerable length of time
+in the field.
 
-Tested by modifying OpenSBI to write max value to these CSRs and upon
-subsequent read the appropriate number of bits for number of PMUs is
-enabled and the TM bit is zero in mcountinhibit.
+The chapter 4 of the unprivileged spec introduces the Zihintntl extension
+and Zihintntl is a mandatory extension presented in RVA23 Profiles, whose
+purpose is to enable application and operating system portability across
+different implementations. Thus the DTS should contain the Zihintntl ISA
+string in order to pass to software.
 
-Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Message-ID: <20230802124906.24197-1-rbradford@rivosinc.com>
+The unprivileged spec states:
+Like any HINTs, these instructions may be freely ignored. Hence, although
+they are described in terms of cache-based memory hierarchies, they do not
+mandate the provision of caches.
+
+These instructions are encoded with non-used opcode, e.g. ADD x0, x0, x2,
+which QEMU already supports, and QEMU does not emulate cache. Therefore
+these instructions can be considered as a no-op, and we only need to add
+a new property for the Zihintntl extension.
+
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Signed-off-by: Jason Chien <jason.chien@sifive.com>
+Message-ID: <20230726074049.19505-2-jason.chien@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/csr.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ target/riscv/cpu_cfg.h | 1 +
+ target/riscv/cpu.c     | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index de31818daa..e4490d5bed 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1833,8 +1833,11 @@ static RISCVException write_mcountinhibit(CPURISCVState *env, int csrno,
- {
-     int cidx;
-     PMUCTRState *counter;
-+    RISCVCPU *cpu = env_archcpu(env);
- 
--    env->mcountinhibit = val;
-+    /* WARL register - disable unavailable counters; TM bit is always 0 */
-+    env->mcountinhibit =
-+        val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_IR);
- 
-     /* Check if any other counter is also monitoring cycles/instructions */
-     for (cidx = 0; cidx < RV_MAX_MHPMCOUNTERS; cidx++) {
-@@ -1857,7 +1860,11 @@ static RISCVException read_mcounteren(CPURISCVState *env, int csrno,
- static RISCVException write_mcounteren(CPURISCVState *env, int csrno,
-                                        target_ulong val)
- {
--    env->mcounteren = val;
-+    RISCVCPU *cpu = env_archcpu(env);
-+
-+    /* WARL register - disable unavailable counters */
-+    env->mcounteren = val & (cpu->pmu_avail_ctrs | COUNTEREN_CY | COUNTEREN_TM |
-+                             COUNTEREN_IR);
-     return RISCV_EXCP_NONE;
- }
- 
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 61f6238756..0e6a0f245c 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -66,6 +66,7 @@ struct RISCVCPUConfig {
+     bool ext_icbom;
+     bool ext_icboz;
+     bool ext_zicond;
++    bool ext_zihintntl;
+     bool ext_zihintpause;
+     bool ext_smstateen;
+     bool ext_sstc;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index dc4b88e625..fae1c92c5c 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -87,6 +87,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(zicond, PRIV_VERSION_1_12_0, ext_zicond),
+     ISA_EXT_DATA_ENTRY(zicsr, PRIV_VERSION_1_10_0, ext_icsr),
+     ISA_EXT_DATA_ENTRY(zifencei, PRIV_VERSION_1_10_0, ext_ifencei),
++    ISA_EXT_DATA_ENTRY(zihintntl, PRIV_VERSION_1_10_0, ext_zihintntl),
+     ISA_EXT_DATA_ENTRY(zihintpause, PRIV_VERSION_1_10_0, ext_zihintpause),
+     ISA_EXT_DATA_ENTRY(zmmul, PRIV_VERSION_1_12_0, ext_zmmul),
+     ISA_EXT_DATA_ENTRY(zawrs, PRIV_VERSION_1_12_0, ext_zawrs),
+@@ -1790,6 +1791,7 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
++    DEFINE_PROP_BOOL("Zihintntl", RISCVCPU, cfg.ext_zihintntl, true),
+     DEFINE_PROP_BOOL("Zihintpause", RISCVCPU, cfg.ext_zihintpause, true),
+     DEFINE_PROP_BOOL("Zawrs", RISCVCPU, cfg.ext_zawrs, true),
+     DEFINE_PROP_BOOL("Zfa", RISCVCPU, cfg.ext_zfa, true),
 -- 
 2.41.0
 
