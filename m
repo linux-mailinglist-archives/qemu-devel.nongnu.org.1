@@ -2,86 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A69798EFB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 21:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04684799056
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 21:41:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeh2q-0005p3-6b; Fri, 08 Sep 2023 15:21:32 -0400
+	id 1qehLN-00058P-FK; Fri, 08 Sep 2023 15:40:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeh2n-0005oB-JA
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 15:21:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qehL8-000586-CD; Fri, 08 Sep 2023 15:40:26 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qeh2j-0004tq-BN
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 15:21:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694200882;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=rKy4vUa4gN4eZ0JfAuchexs+L75u0Ddus9nGICjZFEo=;
- b=Zkx2sLDhB0BG0xN6Yyz4MNkDiXOIEn3dbg8TrXKoLdAoymlUEmZu+e9pMq1BhgViNVoAVh
- DONDNR3k4idYZ+OYsW99tbcZIEYflKocANoWvYi6OAMTRPRizcslYJ3rHsrItHr9Kq6brB
- LijcWKyCWeFEmWA6anoLCdyNnj4635w=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-663-CPNsgSKsOhKaqjKpkYO7iA-1; Fri, 08 Sep 2023 15:21:21 -0400
-X-MC-Unique: CPNsgSKsOhKaqjKpkYO7iA-1
-Received: by mail-vs1-f69.google.com with SMTP id
- ada2fe7eead31-44d3a5ccfc2so971649137.1
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 12:21:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694200881; x=1694805681;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rKy4vUa4gN4eZ0JfAuchexs+L75u0Ddus9nGICjZFEo=;
- b=w/VctunqKKJsTo03xbuKhHrFWyf6rzwjUQCAjh61ipngHmiKgpQ6kBFBMzr3SSJ7ZY
- NUZ7gSINlLWWiyqssDYADjDI9Y+nrfhoGFegOtPydQgbEQIDgpcVH5HxeN6B6JGfcdb9
- YWjqdeaA8T+vTsaSE2FCB0OoFjzbDzskpQpK6Bt5nLsY9+sbNUQtTbNXoYRV9hl0V3Vu
- pdcl+GhuXKKLS1XnGea2hPAT9aJQFnKyMDPqaLDMsk+QjInkydpZBH/ahEroK9VLJxeS
- Gh2b68Quwd7UPj0UII6lgPsDi5nudHHJ68YuVLeOyDIWHIkhsjjzReMxOFcaELD0/8AM
- bVhw==
-X-Gm-Message-State: AOJu0YwangYA2QtcWqfpvVRxr+/nQuHXRn01nwPdX61zT6YlRmDZNixV
- F6Z5zfrtY8Iox05c+M6l/VlqTh9ppBXGdRo7QAFhiZ68yGFrzNzALc0fAJ5tT0e9EreLAVti64b
- C/oLHN8BK3s4EeLeTQDbVbp6fBhQLUa4=
-X-Received: by 2002:a67:fc01:0:b0:44e:d937:d28b with SMTP id
- o1-20020a67fc01000000b0044ed937d28bmr3568792vsq.10.1694200880863; 
- Fri, 08 Sep 2023 12:21:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtwt3qGx1NiSXW4EfHmkQ6hx65AnxdEezGDpUVLm387ai6JoPWigOnHqxmEalAryGDA8kQ3hIY4LFUBk7cE9Y=
-X-Received: by 2002:a67:fc01:0:b0:44e:d937:d28b with SMTP id
- o1-20020a67fc01000000b0044ed937d28bmr3568775vsq.10.1694200880608; Fri, 08 Sep
- 2023 12:21:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qehL5-0003mZ-60; Fri, 08 Sep 2023 15:40:25 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 67A1620384;
+ Fri,  8 Sep 2023 22:41:07 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6DFAC26C11;
+ Fri,  8 Sep 2023 22:40:17 +0300 (MSK)
+Message-ID: <9e9421ef-ecdb-5490-5c4f-3151e6ea23b3@tls.msk.ru>
+Date: Fri, 8 Sep 2023 22:40:17 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PULL 24/51] meson: compile bundled device trees
+Content-Language: en-US
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Guenter Roeck <linux@roeck-us.net>, qemu-ppc <qemu-ppc@nongnu.org>
 References: <20230907130004.500601-1-pbonzini@redhat.com>
- <20230907154412.GA1550739@fedora> <ZPs3UB8W4lsOFnxW@redhat.com>
- <521ab2c6-f617-1a9e-fef6-29add2e62137@linaro.org>
- <ZPtW4PXsVTo83IpN@redhat.com> <ZPtZvXcQhIWA3Iu0@redhat.com>
-In-Reply-To: <ZPtZvXcQhIWA3Iu0@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 8 Sep 2023 21:21:07 +0200
-Message-ID: <CABgObfaNCLDWXYN82Qxus3wothUdOu9C_dh_7aw16x8NfWSOsQ@mail.gmail.com>
-Subject: Re: [PULL 00/51] Build system, i386 changes for 2023-09-07
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ <20230907130004.500601-25-pbonzini@redhat.com>
+ <fee31724-3b75-95d6-f4d6-2e7b8f17bf96@linaro.org>
+ <8cab2217-b989-2be2-421c-c495e19dab87@tls.msk.ru>
+ <a95e38d6-d968-9799-9c86-fa592b0feda7@eik.bme.hu>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <a95e38d6-d968-9799-9c86-fa592b0feda7@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,45 +66,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 8, 2023 at 7:28=E2=80=AFPM Kevin Wolf <kwolf@redhat.com> wrote:
-> Maybe the calls aren't eliminated because --enable-debug implies -O0?
+08.09.2023 22:21, BALATON Zoltan:
+..
+> I was about to ask, since when but probably nobody knows then. AFAIR I had no such errors for the canyonlands one when I've added it but that was 
+> quite some years ago and things in dtc for example could have changed so it now gives these warnings.
 
-My experience is that it will still fold simple dead code like "0 &&
-foo()" or even "if (0) { ... }", but maybe it's a GCC vs. clang
-difference. Philippe, I take it that you are looking at it?
+I think it can be said based on debian build logs. Lemme see..
 
-Paolo
+https://buildd.debian.org/status/logs.php?pkg=qemu&arch=all
 
-> Kevin
->
-> > > What are your ./configure command options?
-> >
-> > '/home/kwolf/source/qemu/configure' '--cc=3Dclang' '--target-list=3Dx86=
-_64-linux-user,x86_64-softmmu,arm-softmmu,aarch64-softmmu' '--enable-debug'=
- '--cxx=3Dclang++' '--disable-blkio'
-> >
-> > Kevin
-> >
-> > > >    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:=
- in function `x86_cpu_filter_features':
-> > > >    /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7158: u=
-ndefined reference to `kvm_arch_get_supported_cpuid'
-> > > >    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/=
-cpu.c:7159: undefined reference to `kvm_arch_get_supported_cpuid'
-> > > >    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/=
-cpu.c:7160: undefined reference to `kvm_arch_get_supported_cpuid'
-> > > >    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/=
-cpu.c:7161: undefined reference to `kvm_arch_get_supported_cpuid'
-> > > >    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:=
-/home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7162: more undefin=
-ed references to `kvm_arch_get_supported_cpuid' follow
-> > > >    clang-15: error: linker command failed with exit code 1 (use -v =
-to see invocation)
-> > > >
-> > > > In case it makes a difference, I'm using clang on F37.
-> > > >
-> > > > Kevin
-> > >
->
+The first log entry there is from 2018-12-12, for qemu 3.1, dtc 1.4.7.
+It has:
 
+dtc -o b/qemu/pc-bios/bamboo.dtb pc-bios/bamboo.dts
+b/qemu/pc-bios/bamboo.dtb: Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+b/qemu/pc-bios/bamboo.dtb: Warning (unit_address_vs_reg): /plb/opb: node has a reg or ranges property, but no unit name
+b/qemu/pc-bios/bamboo.dtb: Warning (chosen_node_stdout_path): /chosen:linux,stdout-path: Use 'stdout-path' instead
+b/qemu/pc-bios/bamboo.dtb: Warning (interrupts_property): /plb/opb: Missing interrupt-parent
+b/qemu/pc-bios/bamboo.dtb: Warning (interrupts_property): /plb/opb/ebc: Missing interrupt-parent
+
+next it was moved to one of the subpackages, and moved back to
+arch-independent package in 6.2 (2022-01-09, dtc 1.6.0), which has:
+
+dtc -o b/misc/bamboo.dtb pc-bios/bamboo.dts
+pc-bios/bamboo.dts:45.9-48.4: Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+pc-bios/bamboo.dts:87.13-154.5: Warning (unit_address_vs_reg): /plb/opb: node has a reg or ranges property, but no unit name
+pc-bios/bamboo.dts:198.3-50: Warning (chosen_node_stdout_path): /chosen:linux,stdout-path: Use 'stdout-path' instead
+pc-bios/bamboo.dts:87.13-154.5: Warning (interrupts_property): /plb/opb: Missing interrupt-parent
+pc-bios/bamboo.dts:100.14-108.6: Warning (interrupts_property): /plb/opb/ebc: Missing interrupt-parent
+dtc -o b/misc/canyonlands.dtb pc-bios/canyonlands.dts
+pc-bios/canyonlands.dts:47.9-50.4: Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+pc-bios/canyonlands.dts:210.13-429.5: Warning (unit_address_vs_reg): /plb/opb: node has a reg or ranges property, but no unit name
+pc-bios/canyonlands.dts:464.26-504.5: Warning (pci_bridge): /plb/pciex@d00000000: node name is not "pci" or "pcie"
+pc-bios/canyonlands.dts:506.26-546.5: Warning (pci_bridge): /plb/pciex@d20000000: node name is not "pci" or "pcie"
+b/misc/canyonlands.dtb: Warning (unit_address_format): Failed prerequisite 'pci_bridge'
+b/misc/canyonlands.dtb: Warning (pci_device_reg): Failed prerequisite 'pci_bridge'
+b/misc/canyonlands.dtb: Warning (pci_device_bus_num): Failed prerequisite 'pci_bridge'
+pc-bios/canyonlands.dts:268.14-289.7: Warning (avoid_unnecessary_addr_size): /plb/opb/ebc/ndfc@3,0: unnecessary #address-cells/#size-cells without 
+"ranges" or child "reg" property
+
+FWIW.
+
+/mjt
 
