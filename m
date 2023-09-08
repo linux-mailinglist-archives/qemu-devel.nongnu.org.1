@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663477982A6
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E997982A0
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:46:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeVFz-0005FM-Uo; Fri, 08 Sep 2023 02:46:20 -0400
+	id 1qeVFc-00053e-B2; Fri, 08 Sep 2023 02:45:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qeVFD-0004xw-UM
+ id 1qeVFF-0004xy-Pf
  for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qeVFA-0002lu-LB
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:31 -0400
+ id 1qeVFD-0002mA-MB
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:45:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694155527;
+ s=mimecast20190719; t=1694155530;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/nmaWjsPpo8aHQXy4GKGccTzKPwqiWrB88QchQGcoG0=;
- b=gRNmaU0hNdgwwUWbhYyInAz43dnxE62ivHbajIV0THiFt7wydrbq/lOmdRSeDkTpDbCyxI
- vAz1iR5Z6+VZaukfdhCHftL7v1nPktXMGihG/pZQHArJ8voUmaNlhApJybeSBNODfdjlAC
- NfULeY1GH+sZkkuLVDv5Yiq2wvGYsfo=
+ bh=enC5Q4v0k36LYeP3Tu7eSsQ9wt1SVJeEDIzLnxlkAn0=;
+ b=aLrqo8rgEZYkuccCgINqIISO7a0B1LWcn3HFW5rIQOoKmpLQ/YMyZW1UNF4vj0+/cuLj3w
+ mT/6MCx4F9EC/IhMQ41dnW9nBiDLbKRw2tkaEqL+AVUwZ6WhEp6YjwmlbuvRjeJRa8uNWE
+ yI6sXqEI3HgmIMkTXBjz3g9HMt3CHhM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-384-Ico4WZbSNSibmiU2ju_9KQ-1; Fri, 08 Sep 2023 02:45:24 -0400
-X-MC-Unique: Ico4WZbSNSibmiU2ju_9KQ-1
+ us-mta-224-xGfAH353N6O5wXBqtBz41Q-1; Fri, 08 Sep 2023 02:45:27 -0400
+X-MC-Unique: xGfAH353N6O5wXBqtBz41Q-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A79C61817929;
- Fri,  8 Sep 2023 06:45:23 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B0C5B181792A;
+ Fri,  8 Sep 2023 06:45:26 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.113.80])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A6DD11121314;
- Fri,  8 Sep 2023 06:45:21 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4955C1121314;
+ Fri,  8 Sep 2023 06:45:23 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Yuri Benditovich <yuri.benditovich@daynix.com>,
- Andrew Melnychecnko <andrew@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 04/17] virtio-net: Add support for USO features
-Date: Fri,  8 Sep 2023 14:44:54 +0800
-Message-Id: <20230908064507.14596-5-jasowang@redhat.com>
+Cc: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 05/17] igb: remove TCP ACK detection
+Date: Fri,  8 Sep 2023 14:44:55 +0800
+Message-Id: <20230908064507.14596-6-jasowang@redhat.com>
 In-Reply-To: <20230908064507.14596-1-jasowang@redhat.com>
 References: <20230908064507.14596-1-jasowang@redhat.com>
 MIME-Version: 1.0
@@ -79,117 +79,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuri Benditovich <yuri.benditovich@daynix.com>
+From: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
 
-USO features of virtio-net device depend on kernel ability
-to support them, for backward compatibility by default the
-features are disabled on 8.0 and earlier.
+TCP ACK detection is no longer present in igb.
 
-Signed-off-by: Yuri Benditovich <yuri.benditovich@daynix.com>
-Signed-off-by: Andrew Melnychecnko <andrew@daynix.com>
+Signed-off-by: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/core/machine.c   |  4 ++++
- hw/net/virtio-net.c | 31 +++++++++++++++++++++++++++++--
- 2 files changed, 33 insertions(+), 2 deletions(-)
+ hw/net/igb_core.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index da699cf..230aab8 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -38,6 +38,7 @@
- #include "exec/confidential-guest-support.h"
- #include "hw/virtio/virtio.h"
- #include "hw/virtio/virtio-pci.h"
-+#include "hw/virtio/virtio-net.h"
- 
- GlobalProperty hw_compat_8_1[] = {};
- const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
-@@ -45,6 +46,9 @@ const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
- GlobalProperty hw_compat_8_0[] = {
-     { "migration", "multifd-flush-after-each-section", "on"},
-     { TYPE_PCI_DEVICE, "x-pcie-ari-nextfn-1", "on" },
-+    { TYPE_VIRTIO_NET, "host_uso", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso4", "off"},
-+    { TYPE_VIRTIO_NET, "guest_uso6", "off"},
- };
- const size_t hw_compat_8_0_len = G_N_ELEMENTS(hw_compat_8_0);
- 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index d2311e7..bd0ead9 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -659,6 +659,15 @@ static int peer_has_ufo(VirtIONet *n)
-     return n->has_ufo;
- }
- 
-+static int peer_has_uso(VirtIONet *n)
-+{
-+    if (!peer_has_vnet_hdr(n)) {
-+        return 0;
-+    }
-+
-+    return qemu_has_uso(qemu_get_queue(n->nic)->peer);
-+}
-+
- static void virtio_net_set_mrg_rx_bufs(VirtIONet *n, int mergeable_rx_bufs,
-                                        int version_1, int hash_report)
- {
-@@ -796,6 +805,10 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-         virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_TSO6);
-         virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_ECN);
- 
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
-+
-         virtio_clear_feature(&features, VIRTIO_NET_F_HASH_REPORT);
+diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
+index 389eef1..a83e4aa 100644
+--- a/hw/net/igb_core.c
++++ b/hw/net/igb_core.c
+@@ -1327,11 +1327,6 @@ igb_build_rx_metadata(IGBCore *core,
+             trace_e1000e_rx_metadata_ip_id(*ip_id);
      }
  
-@@ -804,6 +817,12 @@ static uint64_t virtio_net_get_features(VirtIODevice *vdev, uint64_t features,
-         virtio_clear_feature(&features, VIRTIO_NET_F_HOST_UFO);
-     }
- 
-+    if (!peer_has_uso(n)) {
-+        virtio_clear_feature(&features, VIRTIO_NET_F_HOST_USO);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO4);
-+        virtio_clear_feature(&features, VIRTIO_NET_F_GUEST_USO6);
-+    }
-+
-     if (!get_vhost_net(nc->peer)) {
-         return features;
-     }
-@@ -864,14 +883,16 @@ static void virtio_net_apply_guest_offloads(VirtIONet *n)
-             !!(n->curr_guest_offloads & (1ULL << VIRTIO_NET_F_GUEST_USO6)));
- }
- 
--static uint64_t virtio_net_guest_offloads_by_features(uint32_t features)
-+static uint64_t virtio_net_guest_offloads_by_features(uint64_t features)
- {
-     static const uint64_t guest_offloads_mask =
-         (1ULL << VIRTIO_NET_F_GUEST_CSUM) |
-         (1ULL << VIRTIO_NET_F_GUEST_TSO4) |
-         (1ULL << VIRTIO_NET_F_GUEST_TSO6) |
-         (1ULL << VIRTIO_NET_F_GUEST_ECN)  |
--        (1ULL << VIRTIO_NET_F_GUEST_UFO);
-+        (1ULL << VIRTIO_NET_F_GUEST_UFO)  |
-+        (1ULL << VIRTIO_NET_F_GUEST_USO4) |
-+        (1ULL << VIRTIO_NET_F_GUEST_USO6);
- 
-     return guest_offloads_mask & features;
- }
-@@ -3924,6 +3945,12 @@ static Property virtio_net_properties[] = {
-     DEFINE_PROP_INT32("speed", VirtIONet, net_conf.speed, SPEED_UNKNOWN),
-     DEFINE_PROP_STRING("duplex", VirtIONet, net_conf.duplex_str),
-     DEFINE_PROP_BOOL("failover", VirtIONet, failover, false),
-+    DEFINE_PROP_BIT64("guest_uso4", VirtIONet, host_features,
-+                      VIRTIO_NET_F_GUEST_USO4, true),
-+    DEFINE_PROP_BIT64("guest_uso6", VirtIONet, host_features,
-+                      VIRTIO_NET_F_GUEST_USO6, true),
-+    DEFINE_PROP_BIT64("host_uso", VirtIONet, host_features,
-+                      VIRTIO_NET_F_HOST_USO, true),
-     DEFINE_PROP_END_OF_LIST(),
- };
+-    if (l4hdr_proto == ETH_L4_HDR_PROTO_TCP && net_rx_pkt_is_tcp_ack(pkt)) {
+-        *status_flags |= E1000_RXD_STAT_ACK;
+-        trace_e1000e_rx_metadata_ack();
+-    }
+-
+     if (pkt_info) {
+         *pkt_info = rss_info->enabled ? rss_info->type : 0;
  
 -- 
 2.7.4
