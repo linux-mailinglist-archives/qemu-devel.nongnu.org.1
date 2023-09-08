@@ -2,78 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66687986FC
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D88A798700
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:28:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeaZU-0004gQ-UG; Fri, 08 Sep 2023 08:26:49 -0400
+	id 1qeaah-0006aL-3f; Fri, 08 Sep 2023 08:28:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeaZL-0004O1-AW
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:26:39 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeaZF-0007si-GJ
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:26:37 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-52bd9ddb741so2673669a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 05:26:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694175991; x=1694780791; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=qt7D41T+GidVoWAvkM46nCy/YKce8RGy4siKWz5OqK4=;
- b=GuY7Lu1T6PM6e88iGi4P/eJVi4LT+BzLOXGbccTkChkHuUSjMK58CRDy1mxJpTcho6
- pEwqJhLrNGIrx1i/quJufInwGCsuGf9lZol4vJ96xUNpC4HKIfd6mEfVj9F8T7HNQ4CM
- QZd6oYgtoC1vuutaFf36MhZnLTB3nBnUGOFEdgMuI2abQx7pB+vuGkwVdq2Q5ypHYDGW
- hLF60XXp+z79w6uwm5bhuYwoNllGjaepY4WrmlPbkW+YCkeaNtAy7jhjboM1fSuzXRy7
- bCT7Ok9RFj6tGamqLyAKv/6AFmQAPW2W+7Y3hrJsYX/o6j5HBGVEozQinGzgD8NUlBE7
- H7fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694175991; x=1694780791;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qt7D41T+GidVoWAvkM46nCy/YKce8RGy4siKWz5OqK4=;
- b=jSy32DUJ4vd6dYEAnDnGUTThtt5q0I2dYoxQ+zJQyoospdJ9+dz4k9Ue8/TOqSNDBr
- v2xE6zuCVtvzm2eZBinLSsgRk7fBtzTbyBIeKJucljU3bJlyo9zXClyIlmwqiEfQZDiT
- 7wb0jClMSMnEEua/8l8Ervhl0uUJoky6NHTsp6liOvCID3YeMt+h2nfWhPZw5W/gkYyH
- fAIsfNce1OCEHkyCgXFTU42TwTjmaHzGpDhgBd3F30s+6icVJzDAsPTK6jxrhcmptVYV
- 6C4mcbJfJAL/d1Z0F2WdE6jndqZxiYtNpqdRYScWMAN5Y8MmUSo8mhS7yl3EyJTyqYzL
- BTeg==
-X-Gm-Message-State: AOJu0YwY5UEPPPMbhAIiLvc69Y+qFWVpP93CuLcgBwZ2za3dKmcJ4F7T
- iZjlxsOK4m0JzJGv1mGU0M5ZW8BhuMeOQKu1QJWBEA==
-X-Google-Smtp-Source: AGHT+IEmrq5sR2U2ixUqSshuQ177pGEAvITzqUZzQBt6sb1T8cdgliFUblLauVYchVn65dLl56YLgMsElr75Jzb1NeM=
-X-Received: by 2002:a05:6402:759:b0:52e:24fd:50f4 with SMTP id
- p25-20020a056402075900b0052e24fd50f4mr1645115edy.18.1694175991071; Fri, 08
- Sep 2023 05:26:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeaaX-0006Z4-Eb
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:27:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeaaU-00085b-F6
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:27:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694176069;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=KgzHmQIyX3UMiOvMFf6m51kXfQ9Ir2tyAYsrIgFqwaY=;
+ b=ixO7z2til4DclP01X5WqAMMvEci8o71VQ6mZ9JSMT6/Qhp5DnKFSM5tcDJCM/SREnccvpO
+ utWgJrMCs5MHNhIJoc5CPF5+fEcdjxyHamyaNKzGaiNYgeP4DfF/ZqPD92l1Au1NrnGzd7
+ GY3N3sTJ7c/E5ybrxKzYfqnlcSKIm5U=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-625-7IBIOmXkOGacdE657hdxUA-1; Fri, 08 Sep 2023 08:27:47 -0400
+X-MC-Unique: 7IBIOmXkOGacdE657hdxUA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DC80280FED3
+ for <qemu-devel@nongnu.org>; Fri,  8 Sep 2023 12:27:47 +0000 (UTC)
+Received: from green.redhat.com (unknown [10.2.16.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4B31B1460FE5
+ for <qemu-devel@nongnu.org>; Fri,  8 Sep 2023 12:27:47 +0000 (UTC)
+From: Eric Blake <eblake@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL v2 00/13] NBD patches for 2023-09-07
+Date: Fri,  8 Sep 2023 07:26:26 -0500
+Message-ID: <20230908122625.1031340-15-eblake@redhat.com>
 MIME-Version: 1.0
-References: <20230904161235.84651-1-philmd@linaro.org>
- <20230904161235.84651-4-philmd@linaro.org>
-In-Reply-To: <20230904161235.84651-4-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Sep 2023 13:26:19 +0100
-Message-ID: <CAFEAcA_=g-kb29_8x41qLf7T=YueCuLLuKT=jgOJm1jfQpuRXw@mail.gmail.com>
-Subject: Re: [PATCH v2 03/22] target/arm/hvf: Clean up local variable shadowing
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, 
- qemu-arm@nongnu.org, Alexander Graf <agraf@csgraf.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,44 +72,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Sept 2023 at 17:12, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Per Peter Maydell analysis [*]:
->
->   The hvf_vcpu_exec() function is not documented, but in practice
->   its caller expects it to return either EXCP_DEBUG (for "this was
->   a guest debug exception you need to deal with") or something else
->   (presumably the intention being 0 for OK).
->
->   The hvf_sysreg_read() and hvf_sysreg_write() functions are also not
->   documented, but they return 0 on success, or 1 for a completely
->   unrecognized sysreg where we've raised the UNDEF exception (but
->   not if we raised an UNDEF exception for an unrecognized GIC sysreg --
->   I think this is a bug). We use this return value to decide whether
->   we need to advance the PC past the insn or not. It's not the same
->   as the return value we want to return from hvf_vcpu_exec().
->
->   Retain the variable as locally scoped but give it a name that
->   doesn't clash with the other function-scoped variable.
->
-> This fixes:
->
->   target/arm/hvf/hvf.c:1936:13: error: declaration shadows a local variab=
-le [-Werror,-Wshadow]
->         int ret =3D 0;
->             ^
->   target/arm/hvf/hvf.c:1807:9: note: previous declaration is here
->     int ret;
->         ^
-> [*] https://lore.kernel.org/qemu-devel/CAFEAcA_e+fU6JKtS+W63wr9cCJ6btu_hT=
-_ydZWOwC0kBkDYYYQ@mail.gmail.com/
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
+The following changes since commit 03a3a62fbd0aa5227e978eef3c67d3978aec9e5f:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-09-07 10:29:06 -0400)
 
-thanks
--- PMM
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2023-09-07-v2
+
+for you to fetch changes up to 35e087de085cd6cf7e4c64c9b59b62c37ddcd1bd:
+
+  qemu-nbd: document -v behavior in respect to --fork in man (2023-09-08 07:21:43 -0500)
+
+v2: fix build failure when stderr is macro (only posting changed patch to list)
+
+----------------------------------------------------------------
+NBD patches for 2023-09-07
+
+- Andrey Drobyshev - fix regression in iotest 197 under -nbd
+- Stefan Hajnoczi - allow coroutine read and write context to split
+across threads
+- Philippe Mathieu-Daudé - remove a VLA allocation
+- Denis V. Lunev - fix regression in iotest 233 with qemu-nbd -v --fork
+
+----------------------------------------------------------------
+Andrey Drobyshev (1):
+      qemu-iotests/197: use more generic commands for formats other than qcow2
+
+Denis V. Lunev (7):
+      qemu-nbd: improve error message for dup2 error
+      qemu-nbd: define struct NbdClientOpts when HAVE_NBD_DEVICE is not defined
+      qemu-nbd: move srcpath into struct NbdClientOpts
+      qemu-nbd: put saddr into into struct NbdClientOpts
+      qemu-nbd: invent nbd_client_release_pipe() helper
+      qemu-nbd: Restore "qemu-nbd -v --fork" output
+      qemu-nbd: document -v behavior in respect to --fork in man
+
+Philippe Mathieu-Daudé (1):
+      util/iov: Avoid dynamic stack allocation
+
+Stefan Hajnoczi (4):
+      nbd: drop unused nbd_receive_negotiate() aio_context argument
+      nbd: drop unused nbd_start_negotiate() aio_context argument
+      io: check there are no qio_channel_yield() coroutines during ->finalize()
+      io: follow coroutine AioContext in qio_channel_yield()
+
+ docs/tools/qemu-nbd.rst          |   4 +-
+ include/block/nbd.h              |   3 +-
+ include/io/channel-util.h        |  23 +++++++
+ include/io/channel.h             |  69 +++++++++-----------
+ include/qemu/vhost-user-server.h |   1 +
+ block/nbd.c                      |  11 +---
+ io/channel-command.c             |  10 ++-
+ io/channel-file.c                |   9 ++-
+ io/channel-null.c                |   3 +-
+ io/channel-socket.c              |   9 ++-
+ io/channel-tls.c                 |   6 +-
+ io/channel-util.c                |  24 +++++++
+ io/channel.c                     | 124 ++++++++++++++++++++++++++----------
+ migration/channel-block.c        |   3 +-
+ migration/rdma.c                 |  25 ++++----
+ nbd/client-connection.c          |   3 +-
+ nbd/client.c                     |  14 ++---
+ nbd/server.c                     |  14 +----
+ qemu-nbd.c                       | 133 +++++++++++++++++++++------------------
+ scsi/qemu-pr-helper.c            |   4 +-
+ util/iov.c                       |   2 +-
+ util/vhost-user-server.c         |  27 +++++---
+ tests/qemu-iotests/197           |   8 +--
+ tests/qemu-iotests/197.out       |  18 +++---
+ 24 files changed, 328 insertions(+), 219 deletions(-)
+
+-- 
+2.41.0
+
 
