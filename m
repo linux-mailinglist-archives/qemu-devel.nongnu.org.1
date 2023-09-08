@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2182798B30
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F3D798B2E
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:07:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeew8-0005Wo-W0; Fri, 08 Sep 2023 13:06:29 -0400
+	id 1qeew9-0005bl-Hw; Fri, 08 Sep 2023 13:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeew4-0005VC-Hk
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:24 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qeew6-0005WI-K2
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:26 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevq-00019b-Ne
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:24 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-401d24f1f27so25716505e9.1
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:10 -0700 (PDT)
+ id 1qeevr-00019h-Fe
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:25 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-401b393ddd2so25933605e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694192769; x=1694797569; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694192770; x=1694797570; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=KzUC2YqCJygpvtjpx3lNOslXt8nXeXpZv7XxD1t0Tpg=;
- b=gHtyXIJ2xwuC6Kq0pOcr3lqhE3Ai4LVVEva7FrWGYXQ5CsA/+ca63NG2Ta+W6RA7lB
- ZWOzzT0yoGibP9LZNLiyCMkRa4oOh59Hn3a6T1wXL6CABsVpH4yYV2Bhh5yvimDAnNbv
- JWOj8rMWywIA4FMpYExf/80Bc0cA8fn42/2TbSNgksFUN5AigBZJQIRbbvatwmMJQNek
- mf/jdqs9K0ZKz5k++ZdQJmykYylMYPdFeTrtJhKrEI7wJhSzXtypEoMJHCfltCpFcrON
- rQRWRo/WRsP2UOecuXdgs1YptrA0dNuLbrEh12QdSAJ2d1HQ+C1/lflomn6TJVjqtfma
- IrCA==
+ :reply-to; bh=6+hzQq6Hkaq0v8KlTeM75nHE4HX8jc3S1BI8MtXCF2U=;
+ b=rYa+6iyeM9pzFbzf2hqTJGBpSbx62sOT8jYpqGiSqh35MdCPIG64rNZ7R7ouW3I2TW
+ 1m43jnSTgPj3k+q/y6MbeHpDzeDcIIgnXalZ7+BxEJTaNTPtTyN39BAVIsQYCMTESA5Q
+ kcKpwxyH+5qRz/hmDs54A39LfeZsBoAmswQOC9hGOSyRgBwU90teVChpaRMM2ngintLG
+ LWRtTSBXNgBT1NCyBuq3+U8Wacf7KRFtQ/0nrydUAidL3GjbCYZw1AKHMZrLUF/7UAzd
+ afh2XVDJqMGGxNczS0ql4Xc6fac3uo4GW7vUNFu55kdtBjjzDyJ33KHz1cSsaNeJ24YZ
+ K9SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694192769; x=1694797569;
+ d=1e100.net; s=20230601; t=1694192770; x=1694797570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KzUC2YqCJygpvtjpx3lNOslXt8nXeXpZv7XxD1t0Tpg=;
- b=qHNozDOXKJ7li+LmgViRmMGSgZlPE+T3lF3njBcLY+t030PsstIfQklfcdAv/crjGs
- EszRkZOZZhfpuNdR3Lbrpx+PNKrtl2u8gorpdB166gPSZFsWlJqcWbwcoX5d2FLTHRCp
- J2LMiU3vSDjZCpXfds33SQUf9rL8FBnoa38OuLPdk3ks4ExXt9i3jtrsUrZHJgGf5ite
- sYdEsABEXda6sUSGBCVx9oTYqXo0V5wBNNnKDEUORuxD/w2geCBqCbBRGQGjttZsmOb1
- kxX3ePF0oS52rO44rOLQzl4WWdv4eQcFgrJqqf49evK5u+zQzK1MQ4lfOrqt0CKmGI3L
- MXKw==
-X-Gm-Message-State: AOJu0YyMQJ2qDD2obCnyGX4vdBd6+xlPdh1KTCZXdHp1tgN77xte4dMg
- hXsSfSOS346YqIsEg/3FiRvrFPaNFKGsoihNhfg=
-X-Google-Smtp-Source: AGHT+IH4f3K7bLcUmNZ2ncvqayW0lCTl7eXj0LG0RTFHN/I+T87KYWt71lci7N36iV7IztmNGzLe6g==
-X-Received: by 2002:a05:600c:218e:b0:3fe:4e4e:bedb with SMTP id
- e14-20020a05600c218e00b003fe4e4ebedbmr2627805wme.4.1694192769444; 
+ bh=6+hzQq6Hkaq0v8KlTeM75nHE4HX8jc3S1BI8MtXCF2U=;
+ b=s1QXPoKkgTvJY9YlJWiUdKzGBxc61uLWIrmqrnxcrcNZDvFbDD70sn5+DMPQtexp0e
+ NTbDyWu8TChYwrYfyF7SxdO3JoHOIt874sPps2sQxv0tu9c3oFaKsd51mg0bK27ip18k
+ bQ3vcFlJBMAFilI++zyd4mtoigmA4UNtm4o7UN33MfHfislKYOIHpOxfO+3go04zqL/v
+ wyRV0cN6+dfxDQq1mte7yjr2otGOgP97ByQNIi/AyVikU7+sGTXt/LDWNziq1PQLzZuf
+ Do9a6YjZA52h2lMPvgbWcw3OR1kPpPgXAKRW7m9Z9+Gc1SBdLN2kg57QEql4CSbGdf5m
+ Qc7g==
+X-Gm-Message-State: AOJu0YyMoMe5zx+ve2ayPt/nsgd6rzwFdtHpRGeQIKjl5q0uHG+zEDlY
+ WfwPjekpsA9nGK+kkfJgHM2eZ/6W2SZA3DLEUvU=
+X-Google-Smtp-Source: AGHT+IHf6qgPfFQqUpLHoktA8MuE9TLXzMk2Jhj7PtnCJY+Ly5x0XI66qL6LgRK5bfTFrv7bcgK8vg==
+X-Received: by 2002:a7b:c4ca:0:b0:401:aa8f:7565 with SMTP id
+ g10-20020a7bc4ca000000b00401aa8f7565mr2516760wmk.34.1694192769893; 
  Fri, 08 Sep 2023 10:06:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 08 Sep 2023 10:06:09 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/26] arm64: Restore trapless ptimer access
-Date: Fri,  8 Sep 2023 18:05:51 +0100
-Message-Id: <20230908170557.773048-21-peter.maydell@linaro.org>
+Subject: [PULL 21/26] target/arm: Implement RMR_ELx
+Date: Fri,  8 Sep 2023 18:05:52 +0100
+Message-Id: <20230908170557.773048-22-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230908170557.773048-1-peter.maydell@linaro.org>
 References: <20230908170557.773048-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,51 +90,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Colton Lewis <coltonlewis@google.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Due to recent KVM changes, QEMU is setting a ptimer offset resulting
-in unintended trap and emulate access and a consequent performance
-hit. Filter out the PTIMER_CNT register to restore trapless ptimer
-access.
+Provide a stub implementation, as a write is a "request".
 
-Quoting Andrew Jones:
-
-Simply reading the CNT register and writing back the same value is
-enough to set an offset, since the timer will have certainly moved
-past whatever value was read by the time it's written.  QEMU
-frequently saves and restores all registers in the get-reg-list array,
-unless they've been explicitly filtered out (with Linux commit
-680232a94c12, KVM_REG_ARM_PTIMER_CNT is now in the array). So, to
-restore trapless ptimer accesses, we need a QEMU patch to filter out
-the register.
-
-See
-https://lore.kernel.org/kvmarm/gsntttsonus5.fsf@coltonlewis-kvm.c.googlers.com/T/#m0770023762a821db2a3f0dd0a7dc6aa54e0d0da9
-for additional context.
-
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
-Signed-off-by: Colton Lewis <coltonlewis@google.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Colton Lewis <coltonlewis@google.com>
-Message-id: 20230831190052.129045-1-coltonlewis@google.com
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230831232441.66020-2-richard.henderson@linaro.org
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/kvm64.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/helper.c | 64 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 41 insertions(+), 23 deletions(-)
 
-diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
-index ac440c33f9a..5e95c496bb9 100644
---- a/target/arm/kvm64.c
-+++ b/target/arm/kvm64.c
-@@ -674,6 +674,7 @@ typedef struct CPRegStateLevel {
-  */
- static const CPRegStateLevel non_runtime_cpregs[] = {
-     { KVM_REG_ARM_TIMER_CNT, KVM_PUT_FULL_STATE },
-+    { KVM_REG_ARM_PTIMER_CNT, KVM_PUT_FULL_STATE },
- };
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index f9f7c3c39e9..3b22596eabf 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -8682,16 +8682,25 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+         };
+         modify_arm_cp_regs(v8_idregs, v8_user_idregs);
+ #endif
+-        /* RVBAR_EL1 is only implemented if EL1 is the highest EL */
++        /*
++         * RVBAR_EL1 and RMR_EL1 only implemented if EL1 is the highest EL.
++         * TODO: For RMR, a write with bit 1 set should do something with
++         * cpu_reset(). In the meantime, "the bit is strictly a request",
++         * so we are in spec just ignoring writes.
++         */
+         if (!arm_feature(env, ARM_FEATURE_EL3) &&
+             !arm_feature(env, ARM_FEATURE_EL2)) {
+-            ARMCPRegInfo rvbar = {
+-                .name = "RVBAR_EL1", .state = ARM_CP_STATE_BOTH,
+-                .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 0, .opc2 = 1,
+-                .access = PL1_R,
+-                .fieldoffset = offsetof(CPUARMState, cp15.rvbar),
++            ARMCPRegInfo el1_reset_regs[] = {
++                { .name = "RVBAR_EL1", .state = ARM_CP_STATE_BOTH,
++                  .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 0, .opc2 = 1,
++                  .access = PL1_R,
++                  .fieldoffset = offsetof(CPUARMState, cp15.rvbar) },
++                { .name = "RMR_EL1", .state = ARM_CP_STATE_BOTH,
++                  .opc0 = 3, .opc1 = 0, .crn = 12, .crm = 0, .opc2 = 2,
++                  .access = PL1_RW, .type = ARM_CP_CONST,
++                  .resetvalue = arm_feature(env, ARM_FEATURE_AARCH64) }
+             };
+-            define_one_arm_cp_reg(cpu, &rvbar);
++            define_arm_cp_regs(cpu, el1_reset_regs);
+         }
+         define_arm_cp_regs(cpu, v8_idregs);
+         define_arm_cp_regs(cpu, v8_cp_reginfo);
+@@ -8775,22 +8784,25 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+         if (cpu_isar_feature(aa64_sel2, cpu)) {
+             define_arm_cp_regs(cpu, el2_sec_cp_reginfo);
+         }
+-        /* RVBAR_EL2 is only implemented if EL2 is the highest EL */
++        /*
++         * RVBAR_EL2 and RMR_EL2 only implemented if EL2 is the highest EL.
++         * See commentary near RMR_EL1.
++         */
+         if (!arm_feature(env, ARM_FEATURE_EL3)) {
+-            ARMCPRegInfo rvbar[] = {
+-                {
+-                    .name = "RVBAR_EL2", .state = ARM_CP_STATE_AA64,
+-                    .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 0, .opc2 = 1,
+-                    .access = PL2_R,
+-                    .fieldoffset = offsetof(CPUARMState, cp15.rvbar),
+-                },
+-                {   .name = "RVBAR", .type = ARM_CP_ALIAS,
+-                    .cp = 15, .opc1 = 0, .crn = 12, .crm = 0, .opc2 = 1,
+-                    .access = PL2_R,
+-                    .fieldoffset = offsetof(CPUARMState, cp15.rvbar),
+-                },
++            static const ARMCPRegInfo el2_reset_regs[] = {
++                { .name = "RVBAR_EL2", .state = ARM_CP_STATE_AA64,
++                  .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 0, .opc2 = 1,
++                  .access = PL2_R,
++                  .fieldoffset = offsetof(CPUARMState, cp15.rvbar) },
++                { .name = "RVBAR", .type = ARM_CP_ALIAS,
++                  .cp = 15, .opc1 = 0, .crn = 12, .crm = 0, .opc2 = 1,
++                  .access = PL2_R,
++                  .fieldoffset = offsetof(CPUARMState, cp15.rvbar) },
++                { .name = "RMR_EL2", .state = ARM_CP_STATE_AA64,
++                  .opc0 = 3, .opc1 = 4, .crn = 12, .crm = 0, .opc2 = 2,
++                  .access = PL2_RW, .type = ARM_CP_CONST, .resetvalue = 1 },
+             };
+-            define_arm_cp_regs(cpu, rvbar);
++            define_arm_cp_regs(cpu, el2_reset_regs);
+         }
+     }
  
- int kvm_arm_cpreg_level(uint64_t regidx)
+@@ -8801,8 +8813,14 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+             { .name = "RVBAR_EL3", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 6, .crn = 12, .crm = 0, .opc2 = 1,
+               .access = PL3_R,
+-              .fieldoffset = offsetof(CPUARMState, cp15.rvbar),
+-            },
++              .fieldoffset = offsetof(CPUARMState, cp15.rvbar), },
++            { .name = "RMR_EL3", .state = ARM_CP_STATE_AA64,
++              .opc0 = 3, .opc1 = 6, .crn = 12, .crm = 0, .opc2 = 2,
++              .access = PL3_RW, .type = ARM_CP_CONST, .resetvalue = 1 },
++            { .name = "RMR", .state = ARM_CP_STATE_AA32,
++              .cp = 15, .opc1 = 0, .crn = 12, .crm = 0, .opc2 = 2,
++              .access = PL3_RW, .type = ARM_CP_CONST,
++              .resetvalue = arm_feature(env, ARM_FEATURE_AARCH64) },
+             { .name = "SCTLR_EL3", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 6, .crn = 1, .crm = 0, .opc2 = 0,
+               .access = PL3_RW,
 -- 
 2.34.1
 
