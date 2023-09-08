@@ -2,92 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEFD79919E
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 23:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 909DE799249
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 00:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qejK5-0005o2-Ec; Fri, 08 Sep 2023 17:47:29 -0400
+	id 1qejyo-0001gP-FF; Fri, 08 Sep 2023 18:29:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qejK3-0005no-GY
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 17:47:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qejyk-0001cC-0Z; Fri, 08 Sep 2023 18:29:30 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qejK0-0002IT-0R
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 17:47:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694209641;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MVnGqfuMl+3+JinftU/Ghg1NxDT8DsHcRpgrELFxrNo=;
- b=ds9d9ntIMUkguVcwTXXFIpKsFQBSIo1WtcD0Ucn91CeNrvyyw7ts6xmGAInRmahEqKerKT
- t3nK8He8k0HVEVZxtopNLqoF6CEGqt1/+VBQwGtWqlpIhTekpZ7CNsmMVHjp0Oldtp5rR8
- CDS8BJQ2OT4ZSjeg19F9XP/Ljnjyxnc=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-4qFGhgiwO82q4SBRLWU1nQ-1; Fri, 08 Sep 2023 17:47:19 -0400
-X-MC-Unique: 4qFGhgiwO82q4SBRLWU1nQ-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-65174aca002so4010486d6.1
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 14:47:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694209639; x=1694814439;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MVnGqfuMl+3+JinftU/Ghg1NxDT8DsHcRpgrELFxrNo=;
- b=F+yHt82G7bYV40x8EQgeEZGCApL6HsPYrQuBVoLM9oj3xDmOWQVOpg3B99wZQoBzYm
- FN5MJbakWv4ZeRVERIv2N898KxSnwSm3OP6cp0gZ0nGFCXcP66KLsqmZh3HlYMPWoYnm
- hdZ+NBGdIFG+bf+jwGhOG2UZJ3ucfBhPPLAszl+OnaP7/iW/zsqZeGRDmemzQYJ9h9UT
- /mI5Eg6L7qO3QZTMrFaqD+bdzeySNh6hLkC7sPKs/vIjNgGJBqfTPT59HPYrzs+2itM7
- amm5RqJpGRc6Rli9MN6xfglRNYRD9pEf2jBoF8W58AUTqpYE4NS7dJJoUk9LAZGUF/tW
- 6frw==
-X-Gm-Message-State: AOJu0Yz2mCaGV5TpGx0fN4XRYivful2xPAtxlrJ15UEuhCOzuVVDy91e
- OMK0zFSOZ0Ka6pM8YNwcV9ORq/AMPII8KtZXUzcbV6JQDtSx+2FoSsRCYV7/7UEXw04/VJtwaEL
- qvv/a1z/rvQA1z2E=
-X-Received: by 2002:ad4:5b87:0:b0:653:5880:ed9e with SMTP id
- 7-20020ad45b87000000b006535880ed9emr3676596qvp.6.1694209639486; 
- Fri, 08 Sep 2023 14:47:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFEn/a2qVw8FE94N7kZwXWUL58RwJAdp7sb3JnVJSElI7iDCTKlKVMGOklTUo8eb/t6aQ3r5A==
-X-Received: by 2002:ad4:5b87:0:b0:653:5880:ed9e with SMTP id
- 7-20020ad45b87000000b006535880ed9emr3676579qvp.6.1694209639190; 
- Fri, 08 Sep 2023 14:47:19 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- u19-20020a0cdd13000000b006485e76574csm1018434qvk.78.2023.09.08.14.47.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 14:47:18 -0700 (PDT)
-Date: Fri, 8 Sep 2023 17:47:16 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Avihai Horon <avihaih@nvidia.com>, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Yanghang Liu <yanghliu@redhat.com>
-Subject: Re: [PATCH v3 0/6] vfio/migration: Block VFIO migration with
- postcopy and background snapshot
-Message-ID: <ZPuWZAzqh6y+koSn@x1n>
-References: <20230906150853.22176-1-avihaih@nvidia.com>
- <9a962af2-1748-017b-9ab3-fdf7d9f84b4b@redhat.com>
- <a79d5831-4ec7-89d4-2b5c-270b80229dc4@redhat.com>
+ (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
+ id 1qejye-0003Ff-I6; Fri, 08 Sep 2023 18:29:29 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 388M9G88012600; Fri, 8 Sep 2023 22:29:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=zTzs7FgZrnVLx7r2r4fWh2uHnH3HPpgZd+dC5FCXoO8=;
+ b=efsjAVjkHTWBXnINtGiI/VE0isivKNiDrCH/5rBRy9AknlXZ0JY7auJXMgenHzK+uZgg
+ tHFIae1IIgt1GlzOW53xnq7Difrp9yaIJOAxNpC5eMI4EnevqbdHkwNt+hkuuSMytC/h
+ VkG5sAeZHtecKKSDT/UeSx7V+ZrvHKBqCmoGyzJR71p4il1gPKDIsXA31wFZuBoMF6Cm
+ b30Wyc7MM4jRpkFP4Cg+CG2LHETajJ2YvIfOesXEE+PuVQ8Hi8znRFwMsLT9B02V2QmZ
+ kya4ED/6Z/Qt07YyKBkVSW/ERFu5SIJljytAXbbgM+gTixx0/c9yB2JZn0jNQtW6E20m Wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t0brr8y5g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 Sep 2023 22:29:10 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 388MTAJM017793;
+ Fri, 8 Sep 2023 22:29:10 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t0brr8y4s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 Sep 2023 22:29:10 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 388L6N8T006651; Fri, 8 Sep 2023 22:29:08 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3svgvm70v2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 Sep 2023 22:29:08 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 388MT8cv7996056
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 8 Sep 2023 22:29:08 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 31EF058060;
+ Fri,  8 Sep 2023 22:29:08 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BEB8C58063;
+ Fri,  8 Sep 2023 22:29:07 +0000 (GMT)
+Received: from gfwa153.aus.stglabs.ibm.com (unknown [9.3.84.127])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Fri,  8 Sep 2023 22:29:07 +0000 (GMT)
+From: Ninad Palsule <ninad@linux.ibm.com>
+To: qemu-devel@nongnu.org, clg@kaod.org, peter.maydell@linaro.org,
+ andrew@aj.id.au, joel@jms.id.au, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, lvivier@redhat.com
+Cc: Ninad Palsule <ninad@linux.ibm.com>, qemu-arm@nongnu.org
+Subject: [PATCH v4 00/10] Introduce model for IBM's FSI
+Date: Fri,  8 Sep 2023 17:28:49 -0500
+Message-Id: <20230908222859.3381003-1-ninad@linux.ibm.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a79d5831-4ec7-89d4-2b5c-270b80229dc4@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: O63siYtpFJ6j-NJd-FLNzCC3yY4qyJjS
+X-Proofpoint-GUID: 9_4MmRl0j0rGaN7ld-F33QT5ggU1TYPL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-08_18,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1
+ bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 adultscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 mlxscore=1 mlxlogscore=214
+ clxscore=1015 spamscore=1 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309080201
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,21 +112,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 07, 2023 at 11:07:10AM +0200, Cédric Le Goater wrote:
-> [ ... ]
-> 
-> > Applied to vfio-next.
-> 
-> On that topic I am preparing a PR.
-> 
-> Juan, Peter, Leonardo, is it ok for you if these migration changes
-> go through the VFIO tree ?
+Hello,
 
-All good here.
+Please review the patch-set version 4.
+I have incorporated review comments from Cedric and Thomas.
 
-Thanks,
+Ninad Palsule (10):
+  hw/fsi: Introduce IBM's Local bus
+  hw/fsi: Introduce IBM's scratchpad
+  hw/fsi: Introduce IBM's cfam,fsi-slave
+  hw/fsi: Introduce IBM's FSI
+  hw/fsi: IBM's On-chip Peripheral Bus
+  hw/fsi: Aspeed APB2OPB interface
+  hw/arm: Hook up FSI module in AST2600
+  hw/fsi: Added qtest
+  hw/fsi: Added FSI documentation
+  hw/fsi: Update MAINTAINER list
+
+ MAINTAINERS                        |  22 ++
+ docs/specs/fsi.rst                 | 141 ++++++++++++
+ hw/Kconfig                         |   1 +
+ hw/arm/Kconfig                     |   1 +
+ hw/arm/aspeed_ast2600.c            |  19 ++
+ hw/fsi/Kconfig                     |  23 ++
+ hw/fsi/aspeed-apb2opb.c            | 352 +++++++++++++++++++++++++++++
+ hw/fsi/cfam.c                      | 239 ++++++++++++++++++++
+ hw/fsi/engine-scratchpad.c         | 100 ++++++++
+ hw/fsi/fsi-master.c                | 201 ++++++++++++++++
+ hw/fsi/fsi-slave.c                 | 109 +++++++++
+ hw/fsi/fsi.c                       |  54 +++++
+ hw/fsi/lbus.c                      |  94 ++++++++
+ hw/fsi/meson.build                 |   6 +
+ hw/fsi/opb.c                       | 194 ++++++++++++++++
+ hw/fsi/trace-events                |   6 +
+ hw/fsi/trace.h                     |   1 +
+ hw/meson.build                     |   1 +
+ include/hw/arm/aspeed_soc.h        |   4 +
+ include/hw/fsi/aspeed-apb2opb.h    |  33 +++
+ include/hw/fsi/cfam.h              |  61 +++++
+ include/hw/fsi/engine-scratchpad.h |  33 +++
+ include/hw/fsi/fsi-master.h        |  30 +++
+ include/hw/fsi/fsi-slave.h         |  29 +++
+ include/hw/fsi/fsi.h               |  31 +++
+ include/hw/fsi/lbus.h              |  48 ++++
+ include/hw/fsi/opb.h               |  43 ++++
+ include/qemu/bitops.h              |   6 +
+ meson.build                        |   1 +
+ tests/qtest/fsi-test.c             | 210 +++++++++++++++++
+ tests/qtest/meson.build            |   2 +
+ 31 files changed, 2095 insertions(+)
+ create mode 100644 docs/specs/fsi.rst
+ create mode 100644 hw/fsi/Kconfig
+ create mode 100644 hw/fsi/aspeed-apb2opb.c
+ create mode 100644 hw/fsi/cfam.c
+ create mode 100644 hw/fsi/engine-scratchpad.c
+ create mode 100644 hw/fsi/fsi-master.c
+ create mode 100644 hw/fsi/fsi-slave.c
+ create mode 100644 hw/fsi/fsi.c
+ create mode 100644 hw/fsi/lbus.c
+ create mode 100644 hw/fsi/meson.build
+ create mode 100644 hw/fsi/opb.c
+ create mode 100644 hw/fsi/trace-events
+ create mode 100644 hw/fsi/trace.h
+ create mode 100644 include/hw/fsi/aspeed-apb2opb.h
+ create mode 100644 include/hw/fsi/cfam.h
+ create mode 100644 include/hw/fsi/engine-scratchpad.h
+ create mode 100644 include/hw/fsi/fsi-master.h
+ create mode 100644 include/hw/fsi/fsi-slave.h
+ create mode 100644 include/hw/fsi/fsi.h
+ create mode 100644 include/hw/fsi/lbus.h
+ create mode 100644 include/hw/fsi/opb.h
+ create mode 100644 tests/qtest/fsi-test.c
 
 -- 
-Peter Xu
+2.39.2
 
 
