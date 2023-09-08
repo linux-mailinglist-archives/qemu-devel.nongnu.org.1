@@ -2,65 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931D07988AB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 349A97988F6
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:39:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qecTI-00070l-Vn; Fri, 08 Sep 2023 10:28:32 -0400
+	id 1qeccM-0005ZM-K9; Fri, 08 Sep 2023 10:37:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qecTA-0006s8-HW
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:28:25 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeccH-0005Sb-Ev
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:37:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qecT3-0003m8-3X
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:28:20 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeccF-00074x-5v
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:37:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694183296;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LTYzSqr0mxQict/WIQcKZfztEsXGvr/1XKwA9lEYcRE=;
- b=O0Z8H7czpNA8rcjMoJGEuZedJqU9i11i6VDr1+wm3zkd8+t/r+qQV4zwHOnOGGpywvmUEL
- WSuQ4kk8JX1fO9c3+vmrbbAybaO5itlBGHfOhXO0tAAS7xn9pilH/GJYroPAODt+CTYmyd
- YMKFSgmHYpmuGvsSz+GzPvPuXMa6pUU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-562-3akXuvXtOtunz4KeWmY_WA-1; Fri, 08 Sep 2023 10:28:12 -0400
-X-MC-Unique: 3akXuvXtOtunz4KeWmY_WA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ s=mimecast20190719; t=1694183866;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=vGCaEd2USgjt4FPb3zJfFoQQvORRQreviVwnMUX9oII=;
+ b=K+bytJ7ui1gFhJEngcgTXpj9XsskQ6aAbJVnHrBpo1KZfp77jKhVxIu6RprZAlA0IUfH2n
+ tpsgCmR1PdZj6Jywo8RsPpiqeDb24h/jbrWl5AEtuXzuPzng6Q+f6SeuFIfE8VCV2j8JPs
+ vlBvsdSieGx+dWhXdPtXA4ms0wGOydo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-562-3Mtvl6ojP2GIfoWreZmQfg-1; Fri, 08 Sep 2023 10:37:43 -0400
+X-MC-Unique: 3Mtvl6ojP2GIfoWreZmQfg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 57576280D584;
- Fri,  8 Sep 2023 14:28:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.42])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 790B721EE566;
- Fri,  8 Sep 2023 14:28:11 +0000 (UTC)
-Date: Fri, 8 Sep 2023 15:28:09 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Juan Quintela <quintela@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Claudio Fontana <cfontana@suse.de>
-Subject: Re: [PATCH V5 1/2] migration: file URI
-Message-ID: <ZPsveSauup24WXtK@redhat.com>
-References: <1694182931-61390-1-git-send-email-steven.sistare@oracle.com>
- <1694182931-61390-2-git-send-email-steven.sistare@oracle.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8E88948FE0;
+ Fri,  8 Sep 2023 14:37:42 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.193.201])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BEBDE140E962;
+ Fri,  8 Sep 2023 14:37:41 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, armbru@redhat.com, berrange@redhat.com,
+ peter.maydell@linaro.org, pbonzini@redhat.com
+Subject: [PATCH 00/11] qdev: Make array properties user accessible again
+Date: Fri,  8 Sep 2023 16:36:51 +0200
+Message-ID: <20230908143703.172758-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1694182931-61390-2-git-send-email-steven.sistare@oracle.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,49 +70,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 08, 2023 at 07:22:10AM -0700, Steve Sistare wrote:
-> Extend the migration URI to support file:<filename>.  This can be used for
-> any migration scenario that does not require a reverse path.  It can be
-> used as an alternative to 'exec:cat > file' in minimized containers that
-> do not contain /bin/sh, and it is easier to use than the fd:<fdname> URI.
-> It can be used in HMP commands, and as a qemu command-line parameter.
-> 
-> For best performance, guest ram should be shared and x-ignore-shared
-> should be true, so guest pages are not written to the file, in which case
-> the guest may remain running.  If ram is not so configured, then the user
-> is advised to stop the guest first.  Otherwise, a busy guest may re-dirty
-> the same page, causing it to be appended to the file multiple times,
-> and the file may grow unboundedly.  That issue is being addressed in the
-> "fixed-ram" patch series.
-> 
-> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
-> Tested-by: Michael Galaxy <mgalaxy@akamai.com>
-> Reviewed-by: Michael Galaxy <mgalaxy@akamai.com>
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> ---
->  migration/file.c       | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  migration/file.h       | 14 ++++++++++++
->  migration/meson.build  |  1 +
->  migration/migration.c  |  5 ++++
->  migration/trace-events |  4 ++++
->  qemu-options.hx        |  6 ++++-
->  6 files changed, 91 insertions(+), 1 deletion(-)
->  create mode 100644 migration/file.c
->  create mode 100644 migration/file.h
+Array properties have been inaccessible since commit f3558b1b both on
+the command line and in QMP. This series reworks them so that they are
+made accessible again in these external interfaces, this time as JSON
+lists. See patch 11 for details.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Kevin Wolf (11):
+  qdev: Add qdev_prop_set_array()
+  hw/i386/pc: Use qdev_prop_set_array()
+  hw/arm/mps2-tz: Use qdev_prop_set_array()
+  hw/arm/mps2: Use qdev_prop_set_array()
+  hw/arm/sbsa-ref: Use qdev_prop_set_array()
+  hw/arm/vexpress: Use qdev_prop_set_array()
+  hw/arm/virt: Use qdev_prop_set_array()
+  hw/arm/xlnx-versal: Use qdev_prop_set_array()
+  hw/rx/rx62n: Use qdev_prop_set_array()
+  qom: Add object_property_set_default_list()
+  qdev: Rework array properties based on list visitor
 
+ include/hw/qdev-properties.h     |  26 ++--
+ include/qom/object.h             |   8 ++
+ hw/arm/mps2-tz.c                 |  10 +-
+ hw/arm/mps2.c                    |  12 +-
+ hw/arm/sbsa-ref.c                |   7 +-
+ hw/arm/vexpress.c                |  21 ++--
+ hw/arm/virt.c                    |  31 ++---
+ hw/arm/xlnx-versal.c             |   9 +-
+ hw/core/qdev-properties-system.c |   2 +-
+ hw/core/qdev-properties.c        | 197 ++++++++++++++++++++-----------
+ hw/i386/pc.c                     |   8 +-
+ hw/rx/rx62n.c                    |  19 +--
+ qom/object.c                     |   6 +
+ 13 files changed, 227 insertions(+), 129 deletions(-)
 
-With regards,
-Daniel
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.41.0
 
 
