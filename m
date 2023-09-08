@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AD5798540
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 752A4798553
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 11:59:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeYEX-00009s-VR; Fri, 08 Sep 2023 05:57:02 -0400
+	id 1qeYEa-0000Cv-BV; Fri, 08 Sep 2023 05:57:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeYEV-0008Vw-8r; Fri, 08 Sep 2023 05:56:59 -0400
+ id 1qeYEX-0000C2-Of; Fri, 08 Sep 2023 05:57:01 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qeYET-0006ta-0B; Fri, 08 Sep 2023 05:56:59 -0400
+ id 1qeYEV-0006u1-CJ; Fri, 08 Sep 2023 05:57:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A071F200D5;
+ by isrv.corpit.ru (Postfix) with ESMTP id E88AA200D6;
  Fri,  8 Sep 2023 12:56:47 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 94B1A2691B;
+ by tsrv.corpit.ru (Postfix) with SMTP id CB1672691C;
  Fri,  8 Sep 2023 12:55:58 +0300 (MSK)
-Received: (nullmailer pid 275979 invoked by uid 1000);
+Received: (nullmailer pid 275982 invoked by uid 1000);
  Fri, 08 Sep 2023 09:55:56 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 13/23] hw/display/xlnx_dp: update comments
-Date: Fri,  8 Sep 2023 12:55:10 +0300
-Message-Id: <20230908095520.275866-14-mjt@tls.msk.ru>
+Cc: qemu-trivial@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 14/23] qemu-options.hx: Rephrase the descriptions of the -hd*
+ and -cdrom options
+Date: Fri,  8 Sep 2023 12:55:11 +0300
+Message-Id: <20230908095520.275866-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230908095520.275866-1-mjt@tls.msk.ru>
 References: <20230908095520.275866-1-mjt@tls.msk.ru>
@@ -60,42 +61,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-Clarify somewhat misleading code comments.
+The current description says that these options will create a device
+on the IDE bus, which is only true on x86. So rephrase these sentences
+a little bit to speak of "default bus" instead.
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- hw/display/xlnx_dp.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ qemu-options.hx | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/hw/display/xlnx_dp.c b/hw/display/xlnx_dp.c
-index 822355ecc6..43c7dd8e9c 100644
---- a/hw/display/xlnx_dp.c
-+++ b/hw/display/xlnx_dp.c
-@@ -380,13 +380,16 @@ static inline void xlnx_dp_audio_mix_buffer(XlnxDPState *s)
- static void xlnx_dp_audio_callback(void *opaque, int avail)
- {
-     /*
--     * Get some data from the DPDMA and compute these data.
--     * Then wait for QEMU's audio subsystem to call this callback.
-+     * Get the individual left and right audio streams from the DPDMA,
-+     * and fill the output buffer with the combined stereo audio data
-+     * adjusted by the volume controls.
-+     * QEMU's audio subsystem will call this callback repeatedly;
-+     * we return the data from the output buffer until it is emptied,
-+     * and then we will read data from the DPDMA again.
-      */
-     XlnxDPState *s = XLNX_DP(opaque);
-     size_t written = 0;
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 463f520c57..56efe3d153 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -1209,10 +1209,10 @@ SRST
+ ERST
  
--    /* If there are already some data don't get more data. */
-     if (s->byte_left == 0) {
-         s->audio_data_available[0] = xlnx_dpdma_start_operation(s->dpdma, 4,
-                                                                   true);
+ DEF("hda", HAS_ARG, QEMU_OPTION_hda,
+-    "-hda/-hdb file  use 'file' as IDE hard disk 0/1 image\n", QEMU_ARCH_ALL)
++    "-hda/-hdb file  use 'file' as hard disk 0/1 image\n", QEMU_ARCH_ALL)
+ DEF("hdb", HAS_ARG, QEMU_OPTION_hdb, "", QEMU_ARCH_ALL)
+ DEF("hdc", HAS_ARG, QEMU_OPTION_hdc,
+-    "-hdc/-hdd file  use 'file' as IDE hard disk 2/3 image\n", QEMU_ARCH_ALL)
++    "-hdc/-hdd file  use 'file' as hard disk 2/3 image\n", QEMU_ARCH_ALL)
+ DEF("hdd", HAS_ARG, QEMU_OPTION_hdd, "", QEMU_ARCH_ALL)
+ SRST
+ ``-hda file``
+@@ -1222,18 +1222,22 @@ SRST
+ ``-hdc file``
+   \ 
+ ``-hdd file``
+-    Use file as hard disk 0, 1, 2 or 3 image (see the :ref:`disk images`
+-    chapter in the System Emulation Users Guide).
++    Use file as hard disk 0, 1, 2 or 3 image on the default bus of the
++    emulated machine (this is for example the IDE bus on most x86 machines,
++    but it can also be SCSI, virtio or something else on other target
++    architectures). See also the :ref:`disk images` chapter in the System
++    Emulation Users Guide.
+ ERST
+ 
+ DEF("cdrom", HAS_ARG, QEMU_OPTION_cdrom,
+-    "-cdrom file     use 'file' as IDE cdrom image (cdrom is ide1 master)\n",
++    "-cdrom file     use 'file' as CD-ROM image\n",
+     QEMU_ARCH_ALL)
+ SRST
+ ``-cdrom file``
+-    Use file as CD-ROM image (you cannot use ``-hdc`` and ``-cdrom`` at
+-    the same time). You can use the host CD-ROM by using ``/dev/cdrom``
+-    as filename.
++    Use file as CD-ROM image on the default bus of the emulated machine
++    (which is IDE1 master on x86, so you cannot use ``-hdc`` and ``-cdrom``
++    at the same time there). On systems that support it, you can use the
++    host CD-ROM by using ``/dev/cdrom`` as filename.
+ ERST
+ 
+ DEF("blockdev", HAS_ARG, QEMU_OPTION_blockdev,
 -- 
 2.39.2
 
