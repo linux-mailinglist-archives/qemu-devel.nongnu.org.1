@@ -2,92 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3AB798629
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 12:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B6D79862B
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 12:50:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeZ3Y-00037G-An; Fri, 08 Sep 2023 06:49:44 -0400
+	id 1qeZ4C-0003J2-0t; Fri, 08 Sep 2023 06:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeZ3V-00036r-GK
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:49:41 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeZ3T-00054E-7O
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:49:41 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-401c90ed2ecso20591445e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 03:49:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694170177; x=1694774977; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sDGeb7DcFaPd5Ya4qKVpbJwf5cF5Ch2M+/T7tQySBzk=;
- b=e/nL3wL4P/1dbF7hVuVcws+CmeGiMBxGzGQGxrFdCqqsXwIZJnTgCC97fPI/sQPh7t
- tU9pf8QGAqU/VBMREASC3nOixLk2hSDKC8S/Fb/BFQwiersfcgAV5nJ+QySTXAMzPTCJ
- nq5xH9E0JZlurbe7PsvAkjvJqBS6FxIswJzF3LYodZYD6xFPqLQWmZrWhucjX2HScvyw
- kka+g0+h0WdtNWWuvKrNEe4niYd1rKLzPuHpOPG4aSTe/KOVOA+CgHuI/p+bLggYpaf8
- UU2xPXHTJniUTCdNIrvoPAUNSp+VUW0r4bQl2oWGgKFuzrCDksuro+QSvft5AiinrGke
- 1smg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694170177; x=1694774977;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sDGeb7DcFaPd5Ya4qKVpbJwf5cF5Ch2M+/T7tQySBzk=;
- b=nIS2S7DMfdFTgy1fwQ4ZTirqRFOSqOWLufohuMaJcyrQUC05Iff8rHg5CiX1y2ccez
- 0qATDQR3DGgFPYqVLm3c/49EFJilcKL6cQYzQna0ygGOvhhFyQIwdAIMSZyBj4cP+KUq
- L2KUcjDLBiyy91bcnbVS3NtiqoAhorqSWSKwncXd4T3CYbWRjQtsPCIKX4MKm86BJg4g
- 79wGkKN5kfVxW50p70BB0D+st7le6+0qfnZHseE25kv9pqVUj4GBuGrr3yPR0eKVGCtl
- io5w9Ru+Px8pJsVajos7ul+CMgzUvchVtri/R4HRd02FO8cNKWDeokpfirI13i11LTMX
- uP3w==
-X-Gm-Message-State: AOJu0Ywb/kJ+ZtEZ1X81aif/LlI5fW0VYhHyEpyVbpMPUrIsS4G84/6V
- 3gFIS84ZbU/b6PsS+vCZwZAQVA==
-X-Google-Smtp-Source: AGHT+IH5inqBan+Rxpwax3/nF2F7CfZUlqz1eciKr1ab3baflVBr4aeT1uJPwHbtnOPSwKs56x8m/w==
-X-Received: by 2002:a05:600c:b58:b0:401:b2c7:349d with SMTP id
- k24-20020a05600c0b5800b00401b2c7349dmr1862114wmr.29.1694170177065; 
- Fri, 08 Sep 2023 03:49:37 -0700 (PDT)
-Received: from [192.168.69.115]
- (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr. [176.173.167.175])
- by smtp.gmail.com with ESMTPSA id
- f11-20020a7bcd0b000000b003fee53feab5sm1668477wmj.10.2023.09.08.03.49.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Sep 2023 03:49:36 -0700 (PDT)
-Message-ID: <6b242540-3ae5-7d61-0112-8327d40a39d3@linaro.org>
-Date: Fri, 8 Sep 2023 12:49:33 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qeZ3u-0003Ak-C8
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:50:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qeZ3q-00058Y-T3
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:50:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694170202;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XUIbk7nIaDZ14OnQY3rw93ZHrAQdz2l/s0erxUKGl9w=;
+ b=TquAiyWOpydx4QK0q/caghUY1iyqTkLt6F5r6SRCAcj5YvEbZfHLJJtmjXzVxlkFC5BV77
+ 1KzgnyQ4jZSizkIQ5oXAmkqQA0iWtxQBbY9FPPvnr8fSTEV713OoA6yG5g0fZt7Oy+EUX1
+ 7M+IW0OORBGM9+9fFMl33E+YHk24w9g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-592-J5ovSLA7Nvmw25TOGuFI5Q-1; Fri, 08 Sep 2023 06:49:56 -0400
+X-MC-Unique: J5ovSLA7Nvmw25TOGuFI5Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4211F856DED;
+ Fri,  8 Sep 2023 10:49:56 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.245])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4BB611121314;
+ Fri,  8 Sep 2023 10:49:55 +0000 (UTC)
+Date: Fri, 8 Sep 2023 06:49:53 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, Daniel Berrange <berrange@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Leonardo Bras <leobras@redhat.com>, farosas@suse.de,
+ Hanna Reitz <hreitz@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ kwolf@redhat.com, Coiby Xu <Coiby.Xu@gmail.com>, Fam Zheng <fam@euphon.net>
+Subject: Re: [PATCH v3 4/4] io: follow coroutine AioContext in
+ qio_channel_yield()
+Message-ID: <20230908104953.GE3552950@fedora>
+References: <20230830224802.493686-1-stefanha@redhat.com>
+ <20230830224802.493686-5-stefanha@redhat.com>
+ <k34b7gfkxtjrhflgtqrbg23gthoa7x3o3hs2kwhqi3jdhphcio@aukpe23gjewv>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [RFC PATCH] softmmu: Fix async_run_on_cpu() use in
- tcg_commit_cpu()
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: WANG Xuerui <git@xen0n.name>, David Hildenbrand <david@redhat.com>,
- Sergey Fedorov <serge.fdrv@gmail.com>, Peter Xu <peterx@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, "Emilio G . Cota" <cota@braap.org>,
- Richard Purdie <richard.purdie@linuxfoundation.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
- qemu-stable@nongnu.org
-References: <20230907161415.6102-1-philmd@linaro.org>
- <1d405e13-c98c-d288-2644-ee79bc8c4234@linaro.org>
- <22f2d4bd-2037-5fc5-8c7c-2a9247b1064e@linaro.org>
-In-Reply-To: <22f2d4bd-2037-5fc5-8c7c-2a9247b1064e@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="/xapooRizICU+eNL"
+Content-Disposition: inline
+In-Reply-To: <k34b7gfkxtjrhflgtqrbg23gthoa7x3o3hs2kwhqi3jdhphcio@aukpe23gjewv>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,75 +86,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/9/23 21:36, Philippe Mathieu-Daudé wrote:
-> On 7/9/23 18:28, Richard Henderson wrote:
->> On 9/7/23 09:14, Philippe Mathieu-Daudé wrote:
->>> CPUState::halt_cond is an accelerator specific pointer, used
->>> in particular by TCG (which tcg_commit() is about).
->>> The pointer is set by the AccelOpsClass::create_vcpu_thread()
->>> handler.
->>> AccelOpsClass::create_vcpu_thread() is called by the generic
->>> qemu_init_vcpu(), which expect the accelerator handler to
->>> eventually call cpu_thread_signal_created() which is protected
->>> with a QemuCond. It is safer to check the vCPU is created with
->>> this field rather than the 'halt_cond' pointer set in
->>> create_vcpu_thread() before the vCPU thread is initialized.
->>>
->>> This avoids calling tcg_commit() until all CPUs are realized.
->>>
->>> Here we can see for a machine with N CPUs, tcg_commit()
->>> is called N times before the 'machine_creation_done' event:
->>>
->>>    (lldb) settings set -- target.run-args  "-M" "virt" "-smp" "512" 
->>> "-display" "none"
->>>    (lldb) breakpoint set --name qemu_machine_creation_done --one-shot 
->>> true
->>>    (lldb) breakpoint set --name tcg_commit_cpu --auto-continue true
->>>    (lldb) run
->>>    Process 84089 launched: 'qemu-system-aarch64' (arm64)
->>>    Process 84089 stopped
->>>    * thread #1, queue = 'com.apple.main-thread', stop reason = 
->>> one-shot breakpoint 2
->>>    (lldb) breakpoint list --brief
->>>    Current breakpoints:
->>>    2: name = 'tcg_commit_cpu', locations = 2, resolved = 2, hit count 
->>> = 512 Options: enabled auto-continue
->>>               ^^^^^^^^^^^^^^ ^^^^^^^^^^^^^^^
->>>
->>
->> Of course the function is called 512 times: you asked for 512 cpus, 
->> and each has its own address space which needs initializing.
 
-My commit description is too confusing. I'll split in tiny simple
-changes and try to better describe each.
+--/xapooRizICU+eNL
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> The AS are still initialized at the same time, but we defer the listener
-> callback until the vCPU is ready (what was expected first IIUC).
-> 
->> If you skip the call before cpu->created, when exactly are you going 
->> to do it?
-> 
-> With this patch tcg_commit_cpu() is only called by vCPU threads, in
-> their processing loop. i.e: comparing backtraces, now the first hit
-> is:
-> (lldb) bt
-> * thread #514, stop reason = breakpoint 4.2
->    * frame #0: 0x1005d9d48 
-> qemu-system-aarch64`tcg_commit_cpu(cpu=0x173358000, data=...) at 
-> physmem.c:2493:63
->      frame #1: 0x10000d684 
-> qemu-system-aarch64`process_queued_cpu_work(cpu=0x173358000) at 
-> cpus-common.c:360:13
->      frame #2: 0x100297390 qemu-system-aarch64`qemu_wait_io_event 
-> [inlined] qemu_wait_io_event_common(cpu=<unavailable>) at cpus.c:412:5 
-> [artificial]
->      frame #3: 0x100623b98 
-> qemu-system-aarch64`mttcg_cpu_thread_fn(arg=0x173358000) at 
-> tcg-accel-ops-mttcg.c:123:9
->      frame #4: 0x10079f15c 
-> qemu-system-aarch64`qemu_thread_start(args=<unavailable>) at 
-> qemu-thread-posix.c:541:9
->      frame #5: 0x18880ffa8 libsystem_pthread.dylib`_pthread_start + 148
-> 
+On Thu, Sep 07, 2023 at 03:41:08PM -0500, Eric Blake wrote:
+> On Wed, Aug 30, 2023 at 06:48:02PM -0400, Stefan Hajnoczi wrote:
+> > The ongoing QEMU multi-queue block layer effort makes it possible for m=
+ultiple
+> > threads to process I/O in parallel. The nbd block driver is not compati=
+ble with
+> > the multi-queue block layer yet because QIOChannel cannot be used easil=
+y from
+> > coroutines running in multiple threads. This series changes the QIOChan=
+nel API
+> > to make that possible.
+> >=20
+> ...
+> >=20
+> > This API change allows the nbd block driver to use QIOChannel from any =
+thread.
+> > It's important to keep in mind that the block driver already synchroniz=
+es
+> > QIOChannel access and ensures that two coroutines never read simultaneo=
+usly or
+> > write simultaneously.
+> >=20
+> > This patch updates all users of qio_channel_attach_aio_context() to the
+> > new API. Most conversions are simple, but vhost-user-server requires a
+> > new qemu_coroutine_yield() call to quiesce the vu_client_trip()
+> > coroutine when not attached to any AioContext.
+> >=20
+> > While the API is has become simpler, there is one wart: QIOChannel has a
+> > special case for the iohandler AioContext (used for handlers that must =
+not run
+> > in nested event loops). I didn't find an elegant way preserve that beha=
+vior, so
+> > I added a new API called qio_channel_set_follow_coroutine_ctx(ioc, true=
+|false)
+> > for opting in to the new AioContext model. By default QIOChannel uses t=
+he
+> > iohandler AioHandler. Code that formerly called
+> > qio_channel_attach_aio_context() now calls
+> > qio_channel_set_follow_coroutine_ctx(ioc, true) once after the QIOChann=
+el is
+> > created.
+> >=20
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Reviewed-by: Eric Blake <eblake@redhat.com>
+> > Acked-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> > ---
+> >  include/io/channel-util.h        |  23 ++++++
+> >  include/io/channel.h             |  69 ++++++++----------
+> >  include/qemu/vhost-user-server.h |   1 +
+> >  block/nbd.c                      |  11 +--
+> >  io/channel-command.c             |  10 ++-
+> >  io/channel-file.c                |   9 ++-
+> >  io/channel-null.c                |   3 +-
+> >  io/channel-socket.c              |   9 ++-
+> >  io/channel-tls.c                 |   6 +-
+> >  io/channel-util.c                |  24 +++++++
+> >  io/channel.c                     | 120 ++++++++++++++++++++++---------
+> >  migration/channel-block.c        |   3 +-
+> >  nbd/server.c                     |  14 +---
+> >  scsi/qemu-pr-helper.c            |   4 +-
+> >  util/vhost-user-server.c         |  27 +++++--
+> >  15 files changed, 216 insertions(+), 117 deletions(-)
+>=20
+> Looks like migration/rdma.c is also impacted:
+>=20
+> ../migration/rdma.c: In function =E2=80=98qio_channel_rdma_class_init=E2=
+=80=99:
+> ../migration/rdma.c:4037:38: error: assignment to =E2=80=98void (*)(QIOCh=
+annel *, AioContext *, void (*)(void *), AioContext *, void (*)(void *), vo=
+id *)=E2=80=99 from incompatible pointer type =E2=80=98void (*)(QIOChannel =
+*, AioContext *, void (*)(void *), void (*)(void *), void *)=E2=80=99 [-Wer=
+ror=3Dincompatible-pointer-types]
+>  4037 |     ioc_klass->io_set_aio_fd_handler =3D qio_channel_rdma_set_aio=
+_fd_handler;
+>       |                                      ^
+>=20
+> I'm squashing this in:
+>=20
+> diff --git i/migration/rdma.c w/migration/rdma.c
+> index ca430d319d9..a2a3db35b1d 100644
+> --- i/migration/rdma.c
+> +++ w/migration/rdma.c
+> @@ -3103,22 +3103,23 @@ static GSource *qio_channel_rdma_create_watch(QIO=
+Channel *ioc,
+>  }
+>=20
+>  static void qio_channel_rdma_set_aio_fd_handler(QIOChannel *ioc,
+> -                                                  AioContext *ctx,
+> -                                                  IOHandler *io_read,
+> -                                                  IOHandler *io_write,
+> -                                                  void *opaque)
+> +                                                AioContext *read_ctx,
+> +                                                IOHandler *io_read,
+> +                                                AioContext *write_ctx,
+> +                                                IOHandler *io_write,
+> +                                                void *opaque)
+>  {
+>      QIOChannelRDMA *rioc =3D QIO_CHANNEL_RDMA(ioc);
+>      if (io_read) {
+> -        aio_set_fd_handler(ctx, rioc->rdmain->recv_comp_channel->fd, io_=
+read,
+> -                           io_write, NULL, NULL, opaque);
+> -        aio_set_fd_handler(ctx, rioc->rdmain->send_comp_channel->fd, io_=
+read,
+> -                           io_write, NULL, NULL, opaque);
+> +        aio_set_fd_handler(read_ctx, rioc->rdmain->recv_comp_channel->fd,
+> +                           io_read, io_write, NULL, NULL, opaque);
+> +        aio_set_fd_handler(read_ctx, rioc->rdmain->send_comp_channel->fd,
+> +                           io_read, io_write, NULL, NULL, opaque);
+>      } else {
+> -        aio_set_fd_handler(ctx, rioc->rdmaout->recv_comp_channel->fd, io=
+_read,
+> -                           io_write, NULL, NULL, opaque);
+> -        aio_set_fd_handler(ctx, rioc->rdmaout->send_comp_channel->fd, io=
+_read,
+> -                           io_write, NULL, NULL, opaque);
+> +        aio_set_fd_handler(write_ctx, rioc->rdmaout->recv_comp_channel->=
+fd,
+> +                           io_read, io_write, NULL, NULL, opaque);
+> +        aio_set_fd_handler(write_ctx, rioc->rdmaout->send_comp_channel->=
+fd,
+> +                           io_read, io_write, NULL, NULL, opaque);
+>      }
+>  }
+
+Thank you!
+
+Stefan
+
+--/xapooRizICU+eNL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmT6/FEACgkQnKSrs4Gr
+c8ivHQgAiPS73nlVYOYA+IXzf+H3m2fX8xxmtkaT/1v+Js6k9eXykc3D5d4cDli8
+w+nwOTcLsZ7/odTqPn/+N5+aexBfFrzItiD4Qxq78IMUC0Vx7pi2iQJVTKN3V9lZ
+IJXDN3jNtAjOa1FS3M3L/LJkEX7QcK067o0naX6ik3cRd1fHp51NHTtsbBLkLw/a
+HtiA7mNzPJ8d2/GNlFATKVyc2+p7uoMZ+vpUMa9RuzIK/doJD1XNklq5wFLxwH4N
+P7jJx7wwGLNlZPhsz3niBraevueoD3LjMUaXmGmuU+eioQ6ZVV9TewZNbmsTELrf
+7uuBSGMyI1XSO2favP6+9Glc1TJYcQ==
+=PiMU
+-----END PGP SIGNATURE-----
+
+--/xapooRizICU+eNL--
 
 
