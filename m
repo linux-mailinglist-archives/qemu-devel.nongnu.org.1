@@ -2,77 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25DA7986FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3FB7986FB
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:26:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeaYj-0003qM-FC; Fri, 08 Sep 2023 08:26:01 -0400
+	id 1qeaZ4-00040B-S8; Fri, 08 Sep 2023 08:26:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeaYg-0003pK-7v
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:25:58 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeaYb-0007hY-St
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:25:57 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-501bd6f7d11so3274188e87.1
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 05:25:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694175951; x=1694780751; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=C5qABC+6qAZskwSAsfe9urrYr/WGts/zQ3PIA7K4Nzw=;
- b=SsqJDudIH8yvToCGW2LS8XPB7oBmyai3u/2KeYziihQxYk++bjA7lNybgeKrepN8fY
- xK696ub2Ab/opXdGfbW46wLFWClE0AQ1s0W+eB9D8FGDzwubJ+nxkG3jfrLkD8zsaDVq
- DkKDhERUmMRd31tfMpgOXmfRy9L3KdADb3pbaGwEU5oKSVnEFIJ4+nhb05i2ILaj4fgq
- 2wsBolVpLATDcRR7YXboNn8q+DqZ7uRZsl1uyghk9ClUA81+n00f+Kkm/w2qNUahSDzs
- 3Z2mc1yWEqlzsOQh5ymh8h9HO9tqcoaxXhZDz7P1jQhvx2ERNO1F9NkQohwZ1mHzGySb
- Q45w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694175951; x=1694780751;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=C5qABC+6qAZskwSAsfe9urrYr/WGts/zQ3PIA7K4Nzw=;
- b=h9igRi0LTfgMd+TG+z5AUHe4VV9Oz8OQfB6D1T9hAa1aOeyaWX2pTtptGSecl6BOuL
- li9Vypq9lirnGT5LZrOYyzj0ilXO/jMjpkrYF2mkABF+OKiQ0WCibHu07CCDwVGocA8z
- IJwu4FHtsuqOGsq6d4yp92AzwxQOrjKdhwOEK28CmolsSJtbfdZCDKf+l8sx7lVpVLbP
- WP+DFVBQxczP5yXJ45IziLFPOVH5G6yqQktOHWkHIbNGZMCYCumZ+LQLgF/paeLS3Z1s
- 9bTfJSyVRlHw1Ge0Iwf53rhGwSziX5HvntYsCknxhsJd9oZfUlHQHzMzMHL92Frx1Z++
- e4fw==
-X-Gm-Message-State: AOJu0YyrjhUdTJ2oYLtvNKDFY5n+T6AHAjZ8hmzf4uIiKwSiB4IxBHpF
- CdbBaSiuDjwFIJ8lmXIK7q2pcRaVCndxqWAFnurZ2g==
-X-Google-Smtp-Source: AGHT+IH8eRJzeV6Mo5fpToJQmVbnQ/joTiV3kBH/AfT6mj+dDF5xIPcrXX/QY+JBYBcDsQ8XeG6OzfDgpnQJJujcQv4=
-X-Received: by 2002:a19:645c:0:b0:500:a00e:1415 with SMTP id
- b28-20020a19645c000000b00500a00e1415mr1299838lfj.35.1694175950514; Fri, 08
- Sep 2023 05:25:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeaZ2-0003vI-Ag
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:26:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeaYy-0007lN-Sl
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:26:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694175976;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=U5nuETMLzCmtMCNwvivllkCcNWiiVU6hf4rdBB3xRCo=;
+ b=fByr+a1eZCLbTCMzXTJGVS46nyJR+xX0MfMbYZ7jaeAAIB5uNIozSBeRAiXJJ7WBKwi/sP
+ IlfWfyUNQGk2b+mVGom8OgEufvJtOmP5OMX9HTWYZTQEq9B763rNpzBl42siZHSyFMXzR+
+ cb2zz/aKS31sKpiGgI7gK2Aa/X87Pvo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-542-4aMLSIQUMjWVNxvcoK9TuQ-1; Fri, 08 Sep 2023 08:26:14 -0400
+X-MC-Unique: 4aMLSIQUMjWVNxvcoK9TuQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5372A3815EF2;
+ Fri,  8 Sep 2023 12:26:14 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.201])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5AE6D2026D2B;
+ Fri,  8 Sep 2023 12:26:13 +0000 (UTC)
+Date: Fri, 8 Sep 2023 14:26:12 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] hw: forbid DEFINE_PROP_ARRAY for user creatable devices
+Message-ID: <ZPsS5BHFNhZDDHJC@redhat.com>
+References: <20230908092951.2683721-1-berrange@redhat.com>
 MIME-Version: 1.0
-References: <20230904161235.84651-1-philmd@linaro.org>
- <20230904161235.84651-3-philmd@linaro.org>
-In-Reply-To: <20230904161235.84651-3-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 8 Sep 2023 13:25:39 +0100
-Message-ID: <CAFEAcA_E7M2-jtaaDsCZbb7MC+N62pNkLCbXqbfMkh3nJrkU2g@mail.gmail.com>
-Subject: Re: [PATCH v2 02/22] target/arm/tcg: Clean up local variable shadowing
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12b.google.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230908092951.2683721-1-berrange@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,74 +79,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 4 Sept 2023 at 17:12, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> Fix:
->
->   target/arm/tcg/translate-m-nocp.c: In function =E2=80=98gen_M_fp_sysreg=
-_read=E2=80=99:
->   target/arm/tcg/translate-m-nocp.c:509:18: warning: declaration of =E2=
-=80=98tmp=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
->     509 |         TCGv_i32 tmp =3D load_cpu_field(v7m.fpdscr[M_REG_NS]);
->         |                  ^~~
->   target/arm/tcg/translate-m-nocp.c:433:14: note: shadowed declaration is=
- here
->     433 |     TCGv_i32 tmp;
->         |              ^~~
->        ---
->
->   target/arm/tcg/mve_helper.c: In function =E2=80=98helper_mve_vqshlsb=E2=
-=80=99:
->   target/arm/tcg/mve_helper.c:1259:19: warning: declaration of =E2=80=98r=
-=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
->    1259 |         typeof(N) r =3D FN(N, (int8_t)(M), sizeof(N) * 8, ROUND=
-, &su32);  \
->         |                   ^
->   target/arm/tcg/mve_helper.c:1267:5: note: in expansion of macro =E2=80=
-=98WRAP_QRSHL_HELPER=E2=80=99
->    1267 |     WRAP_QRSHL_HELPER(do_sqrshl_bhs, N, M, false, satp)
->         |     ^~~~~~~~~~~~~~~~~
->   target/arm/tcg/mve_helper.c:927:22: note: in expansion of macro =E2=80=
-=98DO_SQSHL_OP=E2=80=99
->     927 |             TYPE r =3D FN(n[H##ESIZE(e)], m[H##ESIZE(e)], &sat)=
-;          \
->         |                      ^~
->   target/arm/tcg/mve_helper.c:945:5: note: in expansion of macro =E2=80=
-=98DO_2OP_SAT=E2=80=99
->     945 |     DO_2OP_SAT(OP##b, 1, int8_t, FN)            \
->         |     ^~~~~~~~~~
->   target/arm/tcg/mve_helper.c:1277:1: note: in expansion of macro =E2=80=
-=98DO_2OP_SAT_S=E2=80=99
->    1277 | DO_2OP_SAT_S(vqshls, DO_SQSHL_OP)
->         | ^~~~~~~~~~~~
->        ---
->
->   target/arm/tcg/mve_helper.c: In function =E2=80=98do_sqrshl48_d=E2=80=
-=99:
->   target/arm/tcg/mve_helper.c:2463:17: warning: declaration of =E2=80=98e=
-xtval=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
->    2463 |         int64_t extval =3D sextract64(src << shift, 0, 48);
->         |                 ^~~~~~
->   target/arm/tcg/mve_helper.c:2443:18: note: shadowed declaration is here
->    2443 |     int64_t val, extval;
->         |                  ^~~~~~
->        ---
->
->   target/arm/tcg/mve_helper.c: In function =E2=80=98do_uqrshl48_d=E2=80=
-=99:
->   target/arm/tcg/mve_helper.c:2495:18: warning: declaration of =E2=80=98e=
-xtval=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
->    2495 |         uint64_t extval =3D extract64(src << shift, 0, 48);
->         |                  ^~~~~~
->   target/arm/tcg/mve_helper.c:2479:19: note: shadowed declaration is here
->    2479 |     uint64_t val, extval;
->         |                   ^~~~~~
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Am 08.09.2023 um 11:29 hat Daniel P. Berrangé geschrieben:
+> The DEFINE_PROP_ARRAY macro is a clever trick for defining array
+> properties. It initially creates a property "len-$FOO". When that
+> property is set, then it creates a sequence "$FOO[NN]" for NN
+> in the range 0 to "len-$FOO".
+> 
+> The intended usage for this was to simplify code for internal
+> devices, however, it crept into use for user creatable devices
+> when the 'rocker' network device used it.
+> 
+> This relied on the user specifying the len property first on
+> the -device comand line, and the args being processed in-order.
+> The latter was broken[1] when -device was converted from QemuOpts
+> to QDict[2], as ordering of loading properties was no longer
+> guaranteed to match user specified ordering.
+> 
+> This change poisons the setter for "len-$FOO" such that it raises
+> an error when used with a user creatable device.
+> 
+> This allows DEFINE_PROP_ARRAY to remain exclusively for internal
+> devices, since code can ensure properties are set in the correct
+> ordering.
+> 
+> [1] https://gitlab.com/qemu-project/qemu/-/issues/1090
+> [2] f3558b1b763683bb877f7dd5b282469cdadc65c3
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+NACK.
 
-thanks
--- PMM
+This doesn't fix the problem, but breaks rocker for good. As I said, I'm
+working on proper array support and will send patches soon.
+
+Kevin
+
 
