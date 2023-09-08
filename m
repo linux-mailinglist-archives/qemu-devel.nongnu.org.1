@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9092B7986EE
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 900A67986F0
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:17:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeaP5-00062j-OQ; Fri, 08 Sep 2023 08:16:03 -0400
+	id 1qeaPn-0006OM-Si; Fri, 08 Sep 2023 08:16:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qeaP3-00062O-JX
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:16:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qeaOw-00051a-V4
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:16:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694175353;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mMKjpHynsQPEPVHIhBBuanhozIO+huocx+7HwZsKv08=;
- b=fMg87N344jU4ucK2TYRqgAPRWanNgLGmB2Y4O1vVRX3oBFFWcHlkczxsv9elIC0pGiRkmR
- hoVq4nFmCn7850LnVek9LJc6YkCidhkfAM8nPSGMbB8o5r9r35Xde9nLzBVA4vFt8EB6nF
- Ret3OARD+etSzCByXslMpoMSRuF3g6E=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-569-fQ2lLw-vMuyWr5oPHBy_MA-1; Fri, 08 Sep 2023 08:15:50 -0400
-X-MC-Unique: fQ2lLw-vMuyWr5oPHBy_MA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A29B2381AE44;
- Fri,  8 Sep 2023 12:15:49 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.42])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E30AF493110;
- Fri,  8 Sep 2023 12:15:48 +0000 (UTC)
-Date: Fri, 8 Sep 2023 13:15:46 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>, Jason Wang <jasowang@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PULL 00/17] Net patches
-Message-ID: <ZPsQcu0HYBaTScnb@redhat.com>
-References: <20230908064507.14596-1-jasowang@redhat.com>
- <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
- <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org>
- <ZPsKUDp7nVS/Z+j2@redhat.com>
- <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qeaPi-0006Kk-PV
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:16:45 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qeaPg-00057a-5r
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:16:42 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-522bd411679so2671392a12.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 05:16:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694175398; x=1694780198; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eJFV3k9sG9fZcxBlzsNxMg5ieLD1/LoHcz9Lyc+RwLM=;
+ b=Ct/9U32uhGH/W8NMykCd6Poso++vZtdESKooEJPLnpVn58RSO0s/0E6hI03KoJeuK+
+ pD8B8SyOSoOWghJ8j/wruCfkQ8HC+iS/R5ip/JHCFI0tX7FDKXj0bHOiSI+BbF4xkJkZ
+ ZC9afpLBdmwoP8I5kb9idVNBTZhLmokxReuQ2skZhrSK/0gLvYnrRPRP/ejjMJVNOcNL
+ py5mae3yWh6mf6rH2sTbbm3N0cvV5b0Z/f+nawLx0IZ3tj9pxafHg3OiCRvfFJTIEbKk
+ z2sGGOTwCNG7frqWNwGCXAylF+T2D+52xcC/QZ324A+h1PQUkKb+sXGMDawFxWoojjiT
+ J3Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694175398; x=1694780198;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=eJFV3k9sG9fZcxBlzsNxMg5ieLD1/LoHcz9Lyc+RwLM=;
+ b=RGRyJFiLQPEhUl9+PbB4HSsmm+bwDz3mOGTNOYWPkjRnf5/jKO3CtkfCD8QOEaqF3O
+ 1D1q6Wyk1ayM3MBWm5+P1ZpMbTg19poGJO4ilWy2RrYaVdkIqvkm4qtEfbIsiBkXYhgF
+ MicBrnHmYwWXAL+85L4pcEzWxgLsM8eislQGSyO5vDQpalzPARJ3AUcJDVygSYBVIgJW
+ kmDtoCso4liEBgWE6L387hfAbBcPxxCbxt1yZMSmEXgcUtkpq+ZYWaAvmVjWyBQFoFtf
+ r+RNeFIc8kix++P9giGUyBMhef/7V6G4H0/CbRWdDxfVZHeeMQfkTAtjg1YD1eZ8Ipr3
+ tIsA==
+X-Gm-Message-State: AOJu0YzSj2yBkxoX04ch7asxiu98HIiTibK36zoIW5PLk5RHwc3dWeQb
+ eJYcxQNV+XWJw13N+fENw98XRk5epNyLTWBtDlYyOw==
+X-Google-Smtp-Source: AGHT+IFSlpBulbgAytJz0cTvf2QYsCHyE1mAoXwoCMAVMpu9ix/3I6WnMzsmcqgPDD6XaElZFlq+9iESfJX/eyT8QH4=
+X-Received: by 2002:aa7:c696:0:b0:522:cef7:83c3 with SMTP id
+ n22-20020aa7c696000000b00522cef783c3mr1879740edq.8.1694175398379; Fri, 08 Sep
+ 2023 05:16:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230905145651.8199-1-philmd@linaro.org>
+In-Reply-To: <20230905145651.8199-1-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 8 Sep 2023 13:16:27 +0100
+Message-ID: <CAFEAcA_6c90YC-Dg7SBhgx=0UMLEe1zjcHHQDgufC5CPQHwhhw@mail.gmail.com>
+Subject: Re: [PATCH] hw/intc/arm_gicv3: Simplify gicv3_class_name() logic
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,58 +83,50 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 08, 2023 at 02:00:47PM +0200, Ilya Maximets wrote:
-> On 9/8/23 13:49, Daniel P. Berrangé wrote:
-> > On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
-> >> On 9/8/23 13:19, Stefan Hajnoczi wrote:
-> >>> Hi Ilya and Jason,
-> >>> There is a CI failure related to a missing Debian libxdp-dev package:
-> >>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
-> >>>
-> >>> I think the issue is that the debian-amd64 container image that QEMU
-> >>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
-> >>> and libxdp is not available on that release:
-> >>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
-> >>
-> >> Hmm.  Sorry about that.
-> >>
-> >>>
-> >>> If we need to support Debian 11 CI then either XDP could be disabled
-> >>> for that distro or libxdp could be compiled from source.
-> >>
-> >> I'd suggest we just remove the attempt to install the package for now,
-> >> building libxdp from sources may be a little painful to maintain.
-> >>
-> >> Can be re-added later once distributions with libxdp 1.4+ will be more
-> >> widely available, i.e. when fedora dockerfile will be updated to 39,
-> >> for example.  That should be soon-ish, right?
-> > 
-> > If you follow the process in docs/devel/testing.rst for adding
-> > libxdp in libvirt-ci, then lcitool will "do the right thing"
-> > when we move the auto-generated dockerfiles to new distro versions.
-> 
-> Thanks!  I'll prepare changes for libvirt-ci.
-> 
-> In the meantime, none of the currently tested images will have a required
-> version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
-> modification from the patch.  What do you think?
+On Tue, 5 Sept 2023 at 15:56, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> Simplify gicv3_class_name() logic. No functional change intended.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/intc/arm_gicv3_common.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+>
+> diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
+> index 2ebf880ead..8863f06b67 100644
+> --- a/hw/intc/arm_gicv3_common.c
+> +++ b/hw/intc/arm_gicv3_common.c
+> @@ -612,13 +612,12 @@ type_init(register_types)
+>
+>  const char *gicv3_class_name(void)
+>  {
+> -    if (kvm_irqchip_in_kernel()) {
+> -        return "kvm-arm-gicv3";
+> -    } else {
+> -        if (kvm_enabled()) {
+> +    if (kvm_enabled()) {
+> +        if (!kvm_irqchip_in_kernel()) {
+>              error_report("Userspace GICv3 is not supported with KVM");
+>              exit(1);
+>          }
+> -        return "arm-gicv3";
+> +        return "kvm-arm-gicv3";
+>      }
+> +    return "arm-gicv3";
+>  }
 
-Sure, if none of the distros have it, then lcitool won't emit the
-dockerfile changes until we update the inherited distro version.
-So it is sufficient to just update libvirt-ci.git with the mappings.yml
-info for libxdp, and add 'libxdp' to the tests/lcitool/projects/qemu.yml
-file in qemu.git. It will then 'just work' when someone updates the
-distro versions later.
+This doesn't seem to me to be obviously clearer or
+simpler than the current code, which is the same basic
+logic as the GICv2 gic_class_name(), but with the extra
+condition of "report the error for the case we don't
+support yet". In particular the major condition for
+"should we be using kvm-arm-gicv3" is not "are we
+using KVM?" but "are we using the KVM in-kernel irqchip?".
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+thanks
+-- PMM
 
