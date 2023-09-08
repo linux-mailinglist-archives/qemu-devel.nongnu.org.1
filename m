@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2298798B3A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8B8798B43
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:10:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeew0-0005N9-EI; Fri, 08 Sep 2023 13:06:20 -0400
+	id 1qeevx-00059V-Qy; Fri, 08 Sep 2023 13:06:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevy-0005Fs-AE
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:18 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qeevv-00052V-1N
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:15 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevn-000177-U1
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:18 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-400a087b0bfso24194985e9.2
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:04 -0700 (PDT)
+ id 1qeevn-00017F-KS
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:14 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-31c8321c48fso2311416f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1694192764; x=1694797564; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=H77fDslYA9MGix1dfpbpNI3pKwapk6bXtLEuISrmSAs=;
- b=vMHj4sVkGuxge0sKIoLrPZS4IAWEDno81nDZqFRVYgk7Ydgp014kERPzgwdpOjU/Pj
- KwKLDECaqzIJ8JsNFihRb28RUuXmpQ9214Ox7817gHN0hyJ9agD2qcrbKtsG5eh0JTJa
- quIj+B+tQDRjLZXM6WMEgQrJ1MzE+DG8jWwz6uR8fWVzSNzIcKZsq3WQvdUvWXFuG2zI
- molHL7gtxKfNF9UxJWEBFFKNiXyXhPuEcCb54WnCSpTEgLh5KDBcySYxB+BV3/ELOjC8
- rI7EASC3q5RupuD5V617qSgObaufLDC2XoT4FLSvf05GCJ7yjs4rdTBCkmaGJUpHg2Bs
- fFCA==
+ :reply-to; bh=glvqsSOjl+nu/BDhl1tYZTEgErEVdOvVgP9RTNbirYY=;
+ b=CDIzaQhWzguH1DClpYWMBMY0EXjZbNArGbdMMrY5YW1YhEubIQy4x8nLcBJp+oP8Yu
+ Hn5pwICh5CvL6n1jTsoQZZivDP2a/bYgYQaEffy7ys5TJ5AHFGmOuWaNSWViHCqDNFOs
+ APYCgA8V0U6X/viO72fkRds4fTx8NBVCf3pdkIhR/fEgnr+6FlJRHtbMrFRFfHhbISpX
+ BveSQjJpmsGdkA9IK1i8ZqCZFNoUAo4be+zcuoeDeRuV9ybUEHSg+rDSyEpvrma+xFyn
+ MPNza74fxMzAja1Y+tZSEIIXN6wMAfDMSH/DyJ0XMPi3v2W0RVkj1rwilmrYqMKUA/cg
+ RvLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1694192764; x=1694797564;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H77fDslYA9MGix1dfpbpNI3pKwapk6bXtLEuISrmSAs=;
- b=H79oGFi9eCHC39xusGYEl/w/+tFK5X4xJZlz/kYqf59PEHeGk2Lgsd/rYYvEh5tBhX
- /8UgJx1Wbuj4q40L5MyT6KnBqtl8gEev9B2fqLbNeAFtqUb4BBmzoRvwYhlIy72xRUgd
- RyKr8mKjvLSzFZ+N6nNCqYXFutsH5lcyagu8dpZrgUZjIGhQx576/dy9cpIGjjCEIF8e
- b2C5b6GA6d5ma9HnBDpGLkKW9pPYviwt+YfdsvWXd+KXBeno1hCLcmG8mDXqjIpNeOy2
- M8Fcv0tL/iIPUEgufxgBzGTsN1MmI1pPMvRJ80gbv3C78iecsvf9Y6K3i3NYrj2sYBGd
- V5ow==
-X-Gm-Message-State: AOJu0Yy75971m1OvjtTfaXB0PEJXofF74QQAok4vrzrSyheNJ0LTD/NR
- rtZ90yqdC8i+s1WajGJX1fbr2YaH491Ev0yAt0Y=
-X-Google-Smtp-Source: AGHT+IG/pQwo8KGQZ8uHTT6yTK6/WQEn1YvWcNAXLEd/J7ICyZ2sw0mzD3X5j1B/A9cXM3upHAPf2w==
-X-Received: by 2002:a05:600c:285:b0:401:d258:ad26 with SMTP id
- 5-20020a05600c028500b00401d258ad26mr2515239wmk.19.1694192763760; 
- Fri, 08 Sep 2023 10:06:03 -0700 (PDT)
+ bh=glvqsSOjl+nu/BDhl1tYZTEgErEVdOvVgP9RTNbirYY=;
+ b=dI6XuJ4dPTGxjxePJSfBrd9Y/Tv6zxd83VbDA6OH2CXtxWs3hs9T47A25U2KdSbuk/
+ cEyOF8kJmFp6v8pEV8PKrBsnyGQx3Wf2kItjyhm2dsdHO6X8AQl+xglNkcEddHWVkhW3
+ 3CAD+MwAWX+IXOlY4VPk2mCe/0w5Y0wDQuEmwayFY0q6pr4jS8pRU4TxCbOX2ELUcynP
+ egD/ZUJf8KPnYYorUUCBdPcv6M1YKiwU+i7kOy6jyBGKioqB7vUaXUGCdcV7kPlH5LnA
+ y15TfMDJ2PeuTSKy4q8Ebl7FT2dwA1czI71rneWJKNq2f32dNKBtqyn6Qakt8F0qn2nM
+ X6Ng==
+X-Gm-Message-State: AOJu0YypiCOp08zT6+sfZCfPKrBF2NpYvxS8BLYA3eZ3UWBMtdMi7xvX
+ 3BrQPcQPHO3EqD9wEt1u0go0kBAx+gjroKxX2pE=
+X-Google-Smtp-Source: AGHT+IFq0EOQ8EQlPyQfi78jspdcmd1tylfc+L50ZgpFWoT4K1i7dOEVUvZFrHg/91LKvB0Pe4JalQ==
+X-Received: by 2002:a05:6000:141:b0:319:7abb:4112 with SMTP id
+ r1-20020a056000014100b003197abb4112mr4358603wrx.21.1694192764224; 
+ Fri, 08 Sep 2023 10:06:04 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  d21-20020a1c7315000000b00400268671c6sm2427152wmb.13.2023.09.08.10.06.03
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 10:06:03 -0700 (PDT)
+ Fri, 08 Sep 2023 10:06:04 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/26] target/arm: Implement FEAT_Pauth2
-Date: Fri,  8 Sep 2023 18:05:38 +0100
-Message-Id: <20230908170557.773048-8-peter.maydell@linaro.org>
+Subject: [PULL 08/26] target/arm: Inform helpers whether a PAC instruction is
+ 'combined'
+Date: Fri,  8 Sep 2023 18:05:39 +0100
+Message-Id: <20230908170557.773048-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230908170557.773048-1-peter.maydell@linaro.org>
 References: <20230908170557.773048-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,100 +94,192 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Aaron Lindsay <aaron@os.amperecomputing.com>
 
+An instruction is a 'combined' Pointer Authentication instruction
+if it does something in addition to PAC -- for instance, branching
+to or loading an address from the authenticated pointer.
+
+Knowing whether a PAC operation is 'combined' is needed to
+implement FEAT_FPACCOMBINE.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230829232335.965414-8-richard.henderson@linaro.org
-Message-Id: <20230609172324.982888-6-aaron@os.amperecomputing.com>
+Message-id: 20230829232335.965414-9-richard.henderson@linaro.org
+Message-Id: <20230609172324.982888-7-aaron@os.amperecomputing.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/system/arm/emulation.rst |  1 +
- target/arm/tcg/cpu64.c        |  2 +-
- target/arm/tcg/pauth_helper.c | 21 +++++++++++++++++----
- 3 files changed, 19 insertions(+), 5 deletions(-)
+ target/arm/tcg/helper-a64.h    |  4 ++
+ target/arm/tcg/pauth_helper.c  | 71 +++++++++++++++++++++++++++-------
+ target/arm/tcg/translate-a64.c | 12 +++---
+ 3 files changed, 68 insertions(+), 19 deletions(-)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 2e99888a6ae..b5a667527b5 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -65,6 +65,7 @@ the following architecture extensions:
- - FEAT_PAN2 (AT S1E1R and AT S1E1W instruction variants affected by PSTATE.PAN)
- - FEAT_PAN3 (Support for SCTLR_ELx.EPAN)
- - FEAT_PAuth (Pointer authentication)
-+- FEAT_PAuth2 (Enhacements to pointer authentication)
- - FEAT_PMULL (PMULL, PMULL2 instructions)
- - FEAT_PMUv3p1 (PMU Extensions v3.1)
- - FEAT_PMUv3p4 (PMU Extensions v3.4)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index b6a820aae74..be103702505 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -803,7 +803,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
+index 3d5957c11f4..57cfd68569e 100644
+--- a/target/arm/tcg/helper-a64.h
++++ b/target/arm/tcg/helper-a64.h
+@@ -90,9 +90,13 @@ DEF_HELPER_FLAGS_3(pacda, TCG_CALL_NO_WG, i64, env, i64, i64)
+ DEF_HELPER_FLAGS_3(pacdb, TCG_CALL_NO_WG, i64, env, i64, i64)
+ DEF_HELPER_FLAGS_3(pacga, TCG_CALL_NO_WG, i64, env, i64, i64)
+ DEF_HELPER_FLAGS_3(autia, TCG_CALL_NO_WG, i64, env, i64, i64)
++DEF_HELPER_FLAGS_3(autia_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
+ DEF_HELPER_FLAGS_3(autib, TCG_CALL_NO_WG, i64, env, i64, i64)
++DEF_HELPER_FLAGS_3(autib_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
+ DEF_HELPER_FLAGS_3(autda, TCG_CALL_NO_WG, i64, env, i64, i64)
++DEF_HELPER_FLAGS_3(autda_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
+ DEF_HELPER_FLAGS_3(autdb, TCG_CALL_NO_WG, i64, env, i64, i64)
++DEF_HELPER_FLAGS_3(autdb_combined, TCG_CALL_NO_WG, i64, env, i64, i64)
+ DEF_HELPER_FLAGS_2(xpaci, TCG_CALL_NO_RWG_SE, i64, env, i64)
+ DEF_HELPER_FLAGS_2(xpacd, TCG_CALL_NO_RWG_SE, i64, env, i64)
  
-     t = cpu->isar.id_aa64isar1;
-     t = FIELD_DP64(t, ID_AA64ISAR1, DPB, 2);      /* FEAT_DPB2 */
--    t = FIELD_DP64(t, ID_AA64ISAR1, APA, PauthFeat_EPAC);
-+    t = FIELD_DP64(t, ID_AA64ISAR1, APA, PauthFeat_2);
-     t = FIELD_DP64(t, ID_AA64ISAR1, API, 1);
-     t = FIELD_DP64(t, ID_AA64ISAR1, JSCVT, 1);    /* FEAT_JSCVT */
-     t = FIELD_DP64(t, ID_AA64ISAR1, FCMA, 1);     /* FEAT_FCMA */
 diff --git a/target/arm/tcg/pauth_helper.c b/target/arm/tcg/pauth_helper.c
-index 63e1009ea74..b6aeb905480 100644
+index b6aeb905480..c05c5b30ff9 100644
 --- a/target/arm/tcg/pauth_helper.c
 +++ b/target/arm/tcg/pauth_helper.c
-@@ -353,7 +353,9 @@ static uint64_t pauth_addpac(CPUARMState *env, uint64_t ptr, uint64_t modifier,
-      */
-     test = sextract64(ptr, bot_bit, top_bit - bot_bit);
-     if (test != 0 && test != -1) {
--        if (pauth_feature == PauthFeat_EPAC) {
-+        if (pauth_feature >= PauthFeat_2) {
-+            /* No action required */
-+        } else if (pauth_feature == PauthFeat_EPAC) {
-             pac = 0;
-         } else {
-             /*
-@@ -368,6 +370,9 @@ static uint64_t pauth_addpac(CPUARMState *env, uint64_t ptr, uint64_t modifier,
-      * Preserve the determination between upper and lower at bit 55,
-      * and insert pointer authentication code.
-      */
-+    if (pauth_feature >= PauthFeat_2) {
-+        pac ^= ptr;
-+    }
-     if (param.tbi) {
-         ptr &= ~MAKE_64BIT_MASK(bot_bit, 55 - bot_bit + 1);
-         pac &= MAKE_64BIT_MASK(bot_bit, 54 - bot_bit + 1);
-@@ -394,18 +399,26 @@ static uint64_t pauth_original_ptr(uint64_t ptr, ARMVAParameters param)
+@@ -397,7 +397,8 @@ static uint64_t pauth_original_ptr(uint64_t ptr, ARMVAParameters param)
+ }
+ 
  static uint64_t pauth_auth(CPUARMState *env, uint64_t ptr, uint64_t modifier,
-                            ARMPACKey *key, bool data, int keynumber)
+-                           ARMPACKey *key, bool data, int keynumber)
++                           ARMPACKey *key, bool data, int keynumber,
++                           uintptr_t ra, bool is_combined)
  {
-+    ARMCPU *cpu = env_archcpu(env);
+     ARMCPU *cpu = env_archcpu(env);
      ARMMMUIdx mmu_idx = arm_stage1_mmu_idx(env);
-     ARMVAParameters param = aa64_va_parameters(env, ptr, mmu_idx, data, false);
-+    ARMPauthFeature pauth_feature = cpu_isar_feature(pauth_feature, cpu);
-     int bot_bit, top_bit;
--    uint64_t pac, orig_ptr, test;
-+    uint64_t pac, orig_ptr, cmp_mask;
+@@ -519,44 +520,88 @@ uint64_t HELPER(pacga)(CPUARMState *env, uint64_t x, uint64_t y)
+     return pac & 0xffffffff00000000ull;
+ }
  
-     orig_ptr = pauth_original_ptr(ptr, param);
-     pac = pauth_computepac(env, orig_ptr, modifier, *key);
-     bot_bit = 64 - param.tsz;
-     top_bit = 64 - 8 * param.tbi;
+-uint64_t HELPER(autia)(CPUARMState *env, uint64_t x, uint64_t y)
++static uint64_t pauth_autia(CPUARMState *env, uint64_t x, uint64_t y,
++                            uintptr_t ra, bool is_combined)
+ {
+     int el = arm_current_el(env);
+     if (!pauth_key_enabled(env, el, SCTLR_EnIA)) {
+         return x;
+     }
+-    pauth_check_trap(env, el, GETPC());
+-    return pauth_auth(env, x, y, &env->keys.apia, false, 0);
++    pauth_check_trap(env, el, ra);
++    return pauth_auth(env, x, y, &env->keys.apia, false, 0, ra, is_combined);
+ }
  
--    test = (pac ^ ptr) & ~MAKE_64BIT_MASK(55, 1);
--    if (unlikely(extract64(test, bot_bit, top_bit - bot_bit))) {
-+    cmp_mask = MAKE_64BIT_MASK(bot_bit, top_bit - bot_bit);
-+    cmp_mask &= ~MAKE_64BIT_MASK(55, 1);
+-uint64_t HELPER(autib)(CPUARMState *env, uint64_t x, uint64_t y)
++uint64_t HELPER(autia)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autia(env, x, y, GETPC(), false);
++}
 +
-+    if (pauth_feature >= PauthFeat_2) {
-+        return ptr ^ (pac & cmp_mask);
-+    }
++uint64_t HELPER(autia_combined)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autia(env, x, y, GETPC(), true);
++}
 +
-+    if ((pac ^ ptr) & cmp_mask) {
-         int error_code = (keynumber << 1) | (keynumber ^ 1);
-         if (param.tbi) {
-             return deposit64(orig_ptr, 53, 2, error_code);
++static uint64_t pauth_autib(CPUARMState *env, uint64_t x, uint64_t y,
++                            uintptr_t ra, bool is_combined)
+ {
+     int el = arm_current_el(env);
+     if (!pauth_key_enabled(env, el, SCTLR_EnIB)) {
+         return x;
+     }
+-    pauth_check_trap(env, el, GETPC());
+-    return pauth_auth(env, x, y, &env->keys.apib, false, 1);
++    pauth_check_trap(env, el, ra);
++    return pauth_auth(env, x, y, &env->keys.apib, false, 1, ra, is_combined);
+ }
+ 
+-uint64_t HELPER(autda)(CPUARMState *env, uint64_t x, uint64_t y)
++uint64_t HELPER(autib)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autib(env, x, y, GETPC(), false);
++}
++
++uint64_t HELPER(autib_combined)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autib(env, x, y, GETPC(), true);
++}
++
++static uint64_t pauth_autda(CPUARMState *env, uint64_t x, uint64_t y,
++                            uintptr_t ra, bool is_combined)
+ {
+     int el = arm_current_el(env);
+     if (!pauth_key_enabled(env, el, SCTLR_EnDA)) {
+         return x;
+     }
+-    pauth_check_trap(env, el, GETPC());
+-    return pauth_auth(env, x, y, &env->keys.apda, true, 0);
++    pauth_check_trap(env, el, ra);
++    return pauth_auth(env, x, y, &env->keys.apda, true, 0, ra, is_combined);
+ }
+ 
+-uint64_t HELPER(autdb)(CPUARMState *env, uint64_t x, uint64_t y)
++uint64_t HELPER(autda)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autda(env, x, y, GETPC(), false);
++}
++
++uint64_t HELPER(autda_combined)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autda(env, x, y, GETPC(), true);
++}
++
++static uint64_t pauth_autdb(CPUARMState *env, uint64_t x, uint64_t y,
++                            uintptr_t ra, bool is_combined)
+ {
+     int el = arm_current_el(env);
+     if (!pauth_key_enabled(env, el, SCTLR_EnDB)) {
+         return x;
+     }
+-    pauth_check_trap(env, el, GETPC());
+-    return pauth_auth(env, x, y, &env->keys.apdb, true, 1);
++    pauth_check_trap(env, el, ra);
++    return pauth_auth(env, x, y, &env->keys.apdb, true, 1, ra, is_combined);
++}
++
++uint64_t HELPER(autdb)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autdb(env, x, y, GETPC(), false);
++}
++
++uint64_t HELPER(autdb_combined)(CPUARMState *env, uint64_t x, uint64_t y)
++{
++    return pauth_autdb(env, x, y, GETPC(), true);
+ }
+ 
+ uint64_t HELPER(xpaci)(CPUARMState *env, uint64_t a)
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 0b77c92437f..c2bd96f5d43 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -1530,9 +1530,9 @@ static TCGv_i64 auth_branch_target(DisasContext *s, TCGv_i64 dst,
+ 
+     truedst = tcg_temp_new_i64();
+     if (use_key_a) {
+-        gen_helper_autia(truedst, cpu_env, dst, modifier);
++        gen_helper_autia_combined(truedst, cpu_env, dst, modifier);
+     } else {
+-        gen_helper_autib(truedst, cpu_env, dst, modifier);
++        gen_helper_autib_combined(truedst, cpu_env, dst, modifier);
+     }
+     return truedst;
+ }
+@@ -3352,11 +3352,11 @@ static bool trans_LDRA(DisasContext *s, arg_LDRA *a)
+ 
+     if (s->pauth_active) {
+         if (!a->m) {
+-            gen_helper_autda(dirty_addr, cpu_env, dirty_addr,
+-                             tcg_constant_i64(0));
++            gen_helper_autda_combined(dirty_addr, cpu_env, dirty_addr,
++                                      tcg_constant_i64(0));
+         } else {
+-            gen_helper_autdb(dirty_addr, cpu_env, dirty_addr,
+-                             tcg_constant_i64(0));
++            gen_helper_autdb_combined(dirty_addr, cpu_env, dirty_addr,
++                                      tcg_constant_i64(0));
+         }
+     }
+ 
 -- 
 2.34.1
 
