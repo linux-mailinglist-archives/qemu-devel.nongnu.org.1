@@ -2,75 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B589B79834B
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 09:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B8079834C
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 09:37:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeW2D-00016K-9M; Fri, 08 Sep 2023 03:36:09 -0400
+	id 1qeW3I-0001QV-Vh; Fri, 08 Sep 2023 03:37:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeW29-000158-NJ
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 03:36:05 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeW33-0001La-WB
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 03:37:02 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeW25-00012q-Ap
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 03:36:05 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-52a23227567so2406351a12.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 00:36:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeW2y-0001E7-Tk
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 03:37:00 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-52bcd4db4c0so3712296a12.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 00:36:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694158559; x=1694763359; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694158615; x=1694763415; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=R1B5WzyLjhzRLrp2qu5a0XUbuPsS3q5x4g0m+DQga1I=;
- b=dLTM4bUDq8zm/7abm6frg6XF8D7tNNUEezzfHgM3qiBC96lO6dS0R/fi2VYT6H+0J8
- 2tYJy2DeSdoiKI3lGojczKXvf/8ekmdt/3SQW0mK7cKxb7kv1MnEpKcbLpJDCmAyh9GU
- qIe1pbtMhGl5/kaXU6PX/zfDEeVHt8SprQZ8ZfiEm6gSRuKbKUqJuTPziID3wluscZHD
- jDEWznZRQJ1Igknou7l+uUghMzcyDTiqjH8FbuX6F+ZF6xLb/zH5/iAQbzbOONqeeITM
- c9dPC/r0VIRkZ7t7A6mqhb/p8kCzPOR3v7DXX1qx+VY59C4KRHuQQHFYe9YGTS3rgNCE
- aIVQ==
+ bh=vBdC+EgHmEoI3wVBfVrOC8KHH125ZVdNmVmrDZYnzg4=;
+ b=ba6LFBteXgOMx/3ataiUzfyOjT9qxFvhCRZliKHqWbdJQ7Z5wd9n6TnNPGNEV9Wyu1
+ lH2XlMImyt19gev2pvW1USqu/QeOYbFtM/QwSdvvGxfjr6PpNkrcxvBiUaYBtZsJrq23
+ FWdIObJHqA2HJYuyA4UPBUTE2JPKFXpNyZtvj4DBpDc8EF7XPEvyy0gqde0o1DBNXiBj
+ mdTYUV8amO9NnU8zh3UqY2IJVv+6386FDhm61brn6k/I7fl11LAWonGMePtiPzW1FWPf
+ qxWNVMPNSiVa2+g5Fks8gNnlMpw4r4yt9sd3kY/pdZgN9ccDg9s4SJI98Hf3yRjKuHy+
+ jBRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694158559; x=1694763359;
+ d=1e100.net; s=20230601; t=1694158615; x=1694763415;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R1B5WzyLjhzRLrp2qu5a0XUbuPsS3q5x4g0m+DQga1I=;
- b=Fk7VJG3lquZpM7+cjjGuyy7qL50N9dKynseCqohEzVn00QnTu0Tg0TMF1Xj/Jx46W9
- of0qdWpByVdHmgzy7lhJIW3mS8TvkRM3sbEie6Fytp8OdzujsMe3XLHAQkZexlmojRjd
- 6caFCicbPnBVDThVhknjvJX/7vUZ5w1yXF3eqSkAvn6QpDfaJyajXdfs7jlvL28byhdG
- 3QSdX8NsoERy52Xwz2svmn8Mj3gdEEZzDT65DPyeHS8YStiqspMvVwCTCmR+HDumVGUf
- 8gq5D+fhZX3W2/sBx347cMaYV+CIHSfZPXU14yEHQmnf52oyBSgYiqpe3JxpH0U3fpou
- i6BQ==
-X-Gm-Message-State: AOJu0YyF2cMRynilrwqkIFfEhR04RRFY5NQatKE4mx3qEdxGVPV78bEl
- kbbyGZ0V+a4Tb3atGqik7hP0HA==
-X-Google-Smtp-Source: AGHT+IHSUUIn+HcJmizUpSv8pCOH1qEoTyKtA+e2GAWjLYdi1CFgZ9zrq/uK5HIl8mboQTQve38ZLg==
-X-Received: by 2002:aa7:d158:0:b0:523:ba10:d795 with SMTP id
- r24-20020aa7d158000000b00523ba10d795mr1292491edo.11.1694158559541; 
- Fri, 08 Sep 2023 00:35:59 -0700 (PDT)
+ bh=vBdC+EgHmEoI3wVBfVrOC8KHH125ZVdNmVmrDZYnzg4=;
+ b=eHtfLjqCq6qFwVo8L31CpXGFteyyvegBNamrvMy/WHPAiaLmXMlEhCA/EYK0ZAZQTg
+ XLKGJ16nRelq7QlO/I0ak11c4lvLS3/b1hCAqoTH6Y5NKTP2Dh7Aw/nCkdrrBznT98Tl
+ mP6jFRzGw+DM+yyxQURN3fI2ZJermXw7Xv91YCAZHEZXCi/6CsRLM+TB6vHPdSCkE5GD
+ hRDmZI8+PfmFgT/cNEgg74byEVx7vAyUps0eoOJuUnNOue70wUNvnUqcjqD4iOqzOsOD
+ Lahz/O6GDGtoKqb0gM+AiWS7vYKXQoQKVkAxz7yejjkTubUp4mRvaxBDFzuICpZxLUm6
+ uLPg==
+X-Gm-Message-State: AOJu0YznrodAtKTZi8Sxcu8OChpPRqfKBO+T77tENVky/SNEC2xnb8Xu
+ WtdDK6a38ayxmn9KN7r+WUwCEg==
+X-Google-Smtp-Source: AGHT+IFYM4wqTn6AMOUb3kZtHLiKhioxCPm7BN8Y6tSDhyJGXaZp2Qc3r8AYlWRUS0TkiN/jiwqWlQ==
+X-Received: by 2002:a05:6402:3551:b0:52a:586a:b19a with SMTP id
+ f17-20020a056402355100b0052a586ab19amr5128096edd.21.1694158615171; 
+ Fri, 08 Sep 2023 00:36:55 -0700 (PDT)
 Received: from [192.168.69.115]
  (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr. [176.173.167.175])
  by smtp.gmail.com with ESMTPSA id
- dy24-20020a05640231f800b00523a43f9b1dsm649039edb.22.2023.09.08.00.35.58
+ u12-20020aa7d98c000000b0052a1d98618bsm653671eds.54.2023.09.08.00.36.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Sep 2023 00:35:59 -0700 (PDT)
-Message-ID: <5b9caa3a-865c-d1dd-8b1a-5d0e49bf3abb@linaro.org>
-Date: Fri, 8 Sep 2023 09:35:57 +0200
+ Fri, 08 Sep 2023 00:36:54 -0700 (PDT)
+Message-ID: <f98ebf8f-04dd-8429-b40e-e333becd36c6@linaro.org>
+Date: Fri, 8 Sep 2023 09:36:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] hw/display/xlnx_dp: update comments
+Subject: Re: [PATCH v4 03/16] tcg: pass vece to tcg_target_const_match()
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-References: <20230907203440.257845-1-mjt@tls.msk.ru>
+To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
+ Aurelien Jarno <aurelien@aurel32.net>, Huacai Chen <chenhuacai@kernel.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <Alistair.Francis@wdc.com>, Stefan Weil <sw@weilnetz.de>,
+ "open list:AArch64 TCG target" <qemu-arm@nongnu.org>,
+ "open list:RISC-V TCG target" <qemu-riscv@nongnu.org>
+References: <20230908022302.180442-1-c@jia.je>
+ <20230908022302.180442-4-c@jia.je>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230907203440.257845-1-mjt@tls.msk.ru>
+In-Reply-To: <20230908022302.180442-4-c@jia.je>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -93,15 +101,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 7/9/23 22:34, Michael Tokarev wrote:
-> From: Peter Maydell <peter.maydell@linaro.org>
+On 8/9/23 04:21, Jiajie Chen wrote:
+> Pass vece to tcg_target_const_match() to allow correct interpretation of
+> const args of vector ops.
 > 
-> Clarify somewhat misleading code comments.
-> 
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> Signed-off-by: Jiajie Chen <c@jia.je>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   hw/display/xlnx_dp.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
+>   tcg/aarch64/tcg-target.c.inc     | 2 +-
+>   tcg/arm/tcg-target.c.inc         | 2 +-
+>   tcg/i386/tcg-target.c.inc        | 2 +-
+>   tcg/loongarch64/tcg-target.c.inc | 2 +-
+>   tcg/mips/tcg-target.c.inc        | 2 +-
+>   tcg/ppc/tcg-target.c.inc         | 2 +-
+>   tcg/riscv/tcg-target.c.inc       | 2 +-
+>   tcg/s390x/tcg-target.c.inc       | 2 +-
+>   tcg/sparc64/tcg-target.c.inc     | 2 +-
+>   tcg/tcg.c                        | 4 ++--
+>   tcg/tci/tcg-target.c.inc         | 2 +-
+>   11 files changed, 12 insertions(+), 12 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
