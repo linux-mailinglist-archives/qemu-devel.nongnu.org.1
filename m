@@ -2,183 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198EB7986D8
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516A77986B4
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:05:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeaIg-0000Rn-PF; Fri, 08 Sep 2023 08:09:27 -0400
+	id 1qeaCf-0004tU-J2; Fri, 08 Sep 2023 08:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qeaIN-0000RA-L6
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:09:09 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qeaIK-00029C-PA
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:09:07 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 388BxvIV007642; Fri, 8 Sep 2023 12:08:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=ymQMZl/oCxPol+p/IaqfkBg74UfJMT3xPYeIhUTuSBA=;
- b=Ptb4d4VN9dmZGojQ2qwtQbp+LFuuisFMA61qK6lpoUYbB8+vGiqlSPKD61U7UfTiJTug
- F5AeA/3bOJg7Fc2eKznVx5bWQrik1oPgVKKtHvakJDAm02mrtZsROjC7x2LLAIDB2J88
- unAKA6ZclLC79IsIPmupaC4l0YTEDX9Bilp66Xa0L5jzxH7hDVDJaSJmndU8dv6qYyGK
- 45YZBHLraaLpvuLjD93xm1+DM50zRI6fI51y6GoIkFuBC25a6As6tA3j+XWrEHP3KKc8
- 2Jog0nyo4Ow0hfpFff+kjO60wv+NL72xDFD5ynxFzuO7z0l3P5jAAG9b7EMTjc8TGXVI gw== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t037f80yr-2
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Sep 2023 12:08:52 +0000
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 388ALcN0030461; Fri, 8 Sep 2023 11:54:13 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam12lp2173.outbound.protection.outlook.com [104.47.55.173])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3syfy19uex-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Sep 2023 11:54:13 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ahfrEyTMSGohFph4H0jIGfED3ezGYYFpVR8FSfLbyIEC+EzYGyeEc6b9hqR1wIWMwM2MF9esNsOs+KsG2MwnA6T7lcOSDNXBPjZyoI+Ty7suIdarEbmiPSHUUi5lJzsD3Q+uDCPxmCqEPNw6/sAbGYQ5CnUz5LuoN3ngS9eP2i2t+BcoJTx0mGE9wuVykJXywwIQJFBCta9Ib4zpa6LMNDolhcVtkW7HMqi6XYHRdi0MkYXgzSd8MynybnhKiwPLxqqpPiV7ej0CP9z5Yq0sQjV00OmBu7f95K4kbenUxXSuOvBT6nQAANaSBNoMITpoASGstD9jk8A9FsZWzuZc7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ymQMZl/oCxPol+p/IaqfkBg74UfJMT3xPYeIhUTuSBA=;
- b=Aod9NqdosNPlmpQ1rnnh4YvQ4t4bWwr3QH+NlspDc1KZS6GI7/778LaIlHYQetFaHG9n0VTMR/3wKmEo+8u8/vp4kRDqbU47XqL8BVLAyPTCE+RQAPPEyjtGHIhJ9PXxIWQxji1CRDMXoxJSxpof8FXb6frdjPb+CCu7JtQfCJ9D/8n6AKqpQy1qUAEZNF5jQ3OdgrLkyz/QDASh6EQ6F2uNHsak1KhCSzeaRAOjjdSRrg0MVHuXBgJN8kGGPmk4l8Mr+J1jNanHedIiy7RZQGNokAXZ3w3OoXkXes/IIxQJPtMF784IjmE9kAMqpTe0FJAmbDf8yO3AMgoLxMFBLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qeaCc-0004sw-11
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:03:10 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qeaCW-0008No-N6
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:03:09 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-31c5cac3ae2so1782629f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 05:03:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ymQMZl/oCxPol+p/IaqfkBg74UfJMT3xPYeIhUTuSBA=;
- b=ztB9kqlptF1eWu1Srk9jweNuog9gDhVM0C8ENSxQEkbkJOZQmQxrdiKBZmSMUgmubX7PTR9rArqNDEqaAaia6zqPhjiIcPCM1ldW7M6JIJSseltuUaSf5REUZjWS2iNw5ZKknRet5cJ0/Nkb1psI+F1pvS4B9zeTtlp4si8A1vE=
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
- by LV3PR10MB7865.namprd10.prod.outlook.com (2603:10b6:408:1b8::7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Fri, 8 Sep
- 2023 11:54:11 +0000
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::2867:4d71:252b:7a67]) by BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::2867:4d71:252b:7a67%7]) with mapi id 15.20.6768.029; Fri, 8 Sep 2023
- 11:54:11 +0000
-Message-ID: <4c066354-7cc4-1932-2ef5-e83ec37599f2@oracle.com>
-Date: Fri, 8 Sep 2023 12:54:05 +0100
-Subject: Re: [PATCH v4 12/15] vfio/common: Support device dirty page tracking
- with vIOMMU
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
-References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-13-joao.m.martins@oracle.com>
- <de2b72d2-f56b-9350-ce0f-70edfb58eff5@intel.com>
- <5a849c31-ae80-854c-03af-8fe87ba343c9@oracle.com>
- <eda120ee-cfb7-3e25-acb3-44d4a6bdbcc1@intel.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <eda120ee-cfb7-3e25-acb3-44d4a6bdbcc1@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P123CA0359.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18d::22) To BLAPR10MB4835.namprd10.prod.outlook.com
- (2603:10b6:208:331::11)
+ d=linaro.org; s=google; t=1694174582; x=1694779382; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=usGbO52px+d14iZwGFx0u9Kcrr0MplJaiZE9VDoQlxE=;
+ b=VlxuGYy1+E6yF/OsAR87iiWWVv78Pv2KQietINKqY9pWM389TCrXYMZAlCLz+sTdLr
+ QZPPRnO5gyuOo4fAHquRB8YyeHrK9cxO4s9exvY79EJ685OWyDs2/HpZyQ5TvpbK2PSO
+ cRWQSxmBr30ZDN572xtwOKqN8IO78zLMyXdTBZL2RiHHIsNAAH44hc/y4bKvq1h0Wu72
+ jaOtMl2mtU+TEUmhl5wY5xgbqkL4mdB+atm4OwcHubZ1JV3PCDQUGi5Q2QKs0quBAufQ
+ DaBJNcfQ3IvNgnj4OibqCD7YLVgcUkNR3VYohUTd28UUVu+mOlJ0Dl39E5yq2F8hQ2be
+ Uhzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694174582; x=1694779382;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=usGbO52px+d14iZwGFx0u9Kcrr0MplJaiZE9VDoQlxE=;
+ b=H+Bq1GJi+UzvHrj6nzO4UUbKoLzxqG0uy/76KmdbgB1msRTMydxh0YRtaEk3P3NJXP
+ tnjgoMjyxk1FyzN0T7j2bZg0JkzwUrNGL7KCb/5OE1IFvcLKAjfbJCohsqM8PirDJetq
+ +4FdSKte7e8g+Fje/dy9Hu4cG+IChzJJWmmo6UE+WPF9QfTckvXKY+jt/PyCq/AbPv6m
+ Om8uONW7OeaZLBu8qcccaYmbiAhskSQBlO0awEf3rtl/DKqOEeVsWaCgO4PdKHsnLTDZ
+ eCoiM7EtZjKNDtcaWRy1wMEtpDbTC6rjJdUhcCeFDW3J5NwbFwz+MrPA0oAuxo7onRlj
+ OkpQ==
+X-Gm-Message-State: AOJu0YxvtKmJvJ2b2zAawte7Pdl8hqLGi/butg8itDhnGuOScs8C84QH
+ CLVs8TtX7VoweXdAtOfMeOsw8w==
+X-Google-Smtp-Source: AGHT+IH8Fv8U/Yc7OdSqJBfJbSzcLVE2OE5vi3qQ+KnSLMI4qLmMpBGYPIxFXkvojWjnliwMGGtLgA==
+X-Received: by 2002:a05:6000:180b:b0:319:6caa:ada2 with SMTP id
+ m11-20020a056000180b00b003196caaada2mr1672993wrh.47.1694174582462; 
+ Fri, 08 Sep 2023 05:03:02 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ y1-20020adff6c1000000b0031ad2663ed0sm1925232wrp.66.2023.09.08.05.03.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 08 Sep 2023 05:03:01 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 2BAB71FFBB;
+ Fri,  8 Sep 2023 13:03:01 +0100 (BST)
+References: <20230901110018.3704459-1-alex.bennee@linaro.org>
+ <CADSE00LiE6c8UhZ-KXTRuTc-yJQ==c=3teTcs8Wyx2k1CmUGQg@mail.gmail.com>
+ <87y1hlgdl4.fsf@linaro.org> <20230907192913.GD1560640@fedora>
+ <87h6o517yh.fsf@linaro.org>
+ <CAJSP0QW_ZFweKH5KTEyr61Scn7VL91+-PiTUfxkMwx8+ZmiU2w@mail.gmail.com>
+User-agent: mu4e 1.11.17; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Albert Esteve
+ <aesteve@redhat.com>, slp@redhat.com, mst@redhat.com,
+ marcandre.lureau@redhat.com, viresh.kumar@linaro.org, sgarzare@redhat.com,
+ takahiro.akashi@linaro.org, erik.schilling@linaro.org,
+ manos.pitsidianakis@linaro.org, mathieu.poirier@linaro.org,
+ qemu-devel@nongnu.org, virtio-dev@lists.oasis-open.org,
+ virtio-comment@lists.oasis-open.org
+Subject: Re: [virtio-dev] [RFC PATCH v2] docs/interop: define PROBE feature
+ for vhost-user VirtIO devices
+Date: Fri, 08 Sep 2023 12:59:49 +0100
+In-reply-to: <CAJSP0QW_ZFweKH5KTEyr61Scn7VL91+-PiTUfxkMwx8+ZmiU2w@mail.gmail.com>
+Message-ID: <87zg1wzxca.fsf@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|LV3PR10MB7865:EE_
-X-MS-Office365-Filtering-Correlation-Id: d13a61a3-43dc-4dfd-3ac1-08dbb06250e1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: VCelmaeOv37dPbwVeH8k3Wbq0h9JyW3ty4P+Cr1JA/MvFh3tXgTouIciTjnsBhZ0JgoYODzJjMtI4aNJKTlqd73WyLf30zAC5Rj+JS3qrsVCF2wOhi6PJVxO4UyggAPQ8/NmEk9efzd8KFw7ZKxG68SOktro5b6ANXXMQkLkmdAH8GIOUkM9JNUL45MhFWswxLybjDwvjNgfLk35O8VW/cVAzXrVCKy1OBhNw9a2TsZwFAEm1YqYE+rr1ApB2EDdLKqJKP+ZqQGEekeKDVXUaMI2lfCqewgFCmr90ZUxKMIOZKpvTejpCvaZr2sfsmrWowZymqBSV+a8oYXQnxl0NqQkPVtjUF3SDT4V/7nKo2/yyk7CtjsP/TwwhmX3/hwAu7UX9bQ4hXQ9QdoEh0vrqogKtMwDNh950/Ccq36lWPIVqfIl179kyF1LagZzM/0YzW4GJFS/UBL6Sl4mTN3iIyPjEsVub/VaWA857y2fS+Cf3by+l8XK6xxu27fbHovqU477Ccnp0zlKLoD4/Ya9dNFycOawtoDJb9m8y9zDyhYUPZ7Kr+4X9Dt3BoPOzzvnYED0ww3QcS6aPx3avh5SHkR2Y6KPOWNm9qVQsOkqAQmaB2o1MJq2GeD0ljPoCmNHopzQVLiG8MCnB+kOz6JGsw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(396003)(39860400002)(136003)(366004)(376002)(1800799009)(451199024)(186009)(66946007)(66556008)(66476007)(26005)(31686004)(5660300002)(316002)(53546011)(54906003)(6512007)(41300700001)(2616005)(8936002)(4326008)(8676002)(478600001)(83380400001)(6666004)(6486002)(6506007)(7416002)(2906002)(86362001)(31696002)(36756003)(38100700002)(14143004)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MXFDWUtFaHNQOW9iM3F0bmdraE5hVElVTjlpNmpiQ0llRFQ2bk81NzVnRHJX?=
- =?utf-8?B?NzBCNFN1Tll4eWFQTVh1QUlHKzdUWHZ4WkgyUzZRVHhROUVTZU5kdE9vRWY4?=
- =?utf-8?B?N0xkbnFDeUNSbE1QZ0NZRHJqYi96YkxjeGk0dGVhUmQwVkx0V09GU1o5aTZu?=
- =?utf-8?B?NXZFSXR4TTJRelpFc1FUU05aY3pHMEtiZmd4ZnBPLytkNE1XaTJFcWU0Wklh?=
- =?utf-8?B?RmVrRXlqR0N2SlVBMW5kc3hhSE91bStFWktCUGRJYzc2dUxGSFk2MWErYVow?=
- =?utf-8?B?RldSNjV4dGhvSVhHSEdHWGtxYm5sN1ZyTjY4RExOQW9wK3BVbmxIcWVkSDkw?=
- =?utf-8?B?dWZhRVJEOSs1SVhCdUZJTHJEWU1KQWNPL1Yydk9CL3FOUVcyQ3VTYVRuUkhJ?=
- =?utf-8?B?UE1lazVDM1R1U3J3SnlucWhmN3VSNGhNU1ZaR2drMkRxVGlOV05qMERTVHU0?=
- =?utf-8?B?K3JXeENWb09pWWpYRGR1MjBzOFA4dlQ1V1ltK2RxbVRtWVpPZWRKZDdTSHBh?=
- =?utf-8?B?YWdiNnFQYkdFK3lJak16NGhvMXhmUEJHZWljQWxQOUlZUXdGdGxkRWhmR0tI?=
- =?utf-8?B?ZTgydDd3WkdQaHYxRzIvVVgrdUlnekhLaXJxVERkR0tVMFBxV1JtN210dlBF?=
- =?utf-8?B?NWZ4QnVkZmNMaHE3OWlwcDBoYVZQUERmZFpISHY2bGhKcmFIZ01vTlJSbkZz?=
- =?utf-8?B?OTh5bVJIWVJRVTBJVm50R29lZjR1Z1ZDeGxpdnFaUEc5K2FWaUpMbWZXckJ2?=
- =?utf-8?B?QytML0Z1U21wZE5TcXVRcFNndEJWSW8vSGQwcHVTYm1OeVE2TUF5TmpRWktk?=
- =?utf-8?B?N1d5TXFLNXl0WmVMVkJ3REhVMHY3ejlSRHJXYktsSVU3UFdvYStkV0FQM3Fp?=
- =?utf-8?B?K2Z1WDluWTFIdkVqU0R3WU82VmhvaUZIaDU2VkhSWWVhdUdhUVlvdkY0NTJj?=
- =?utf-8?B?dGFDakRmQmNrZk5YaE9zZjhCOFlBZzB6cjZ0bS85RnV5b1EzZ2lERUM0QUVD?=
- =?utf-8?B?a2dxeWh6dHY5Z1VSUm1oc0VhdmZnYm9yNG4xaTFDWnh2ZUx3Z0xURGpRWlcw?=
- =?utf-8?B?VTk3eENNTWhoVFgvQ0RsWHYvbUg2SmVCd0ZmY1MyOUMyV1lBdXl4UEJITWl0?=
- =?utf-8?B?cVhEUVR6TXpkbkxDSXVHMkJValZIUEYzUndiSVI0V1pBRTVwWDFnejNnK2Fz?=
- =?utf-8?B?emo3TnpZUWJ2cVpuN3gwdHF5Y253UWhWWm5sbXZXc3hFQTlKY1JMK0FtMHY1?=
- =?utf-8?B?UnNPUW5pRzRjT283dUJLaW1hTWpTeVliaHo5Sm00Qjh2bHBhSjN0UWhXeEtX?=
- =?utf-8?B?cjFsM1JIN2I0R2svUkYweUNVVmVzMjdjUms5bEoyUjZjbEJid2N1clRBQ0to?=
- =?utf-8?B?bzFyc2lFUnFGMWZwWXRDV3lZbnAzM2NiSEJFNUZxVjJOdGVGSU9jQjhkdUp0?=
- =?utf-8?B?d1A1R29mQkhyQTBhamU2dElQMGZweWt1ZmJFOEw3YVIyZURCczRzeGVwSnpj?=
- =?utf-8?B?UnpleGRFRE5hVkV2eTdDSUNnTGwvR3kveDA4YXA2bDBjcytZQU9Ma1AzRHlp?=
- =?utf-8?B?MzJNU0M3cjhkWm5FM1M4ZWd6NkFIZGtsQ0FNK0ZhZVp3SHl1M1ROZHY2SHdI?=
- =?utf-8?B?ZUJFbVc3L0dyUlZRT0ZodTA3cWFTb1hjZnYwb0tJL3Y4UEFUUVVQY0ZtaXZr?=
- =?utf-8?B?R3RCTlVxc2swOHhMVjVld2RJLzlxVjBVUUhYOVRhejNNRHNueHJGTzU5cHQ3?=
- =?utf-8?B?UzRRb0hxOGJ1dXEzWlRBQ3ZYdDE1WisvSThLbWc5L1hEdGlnTXg4YmdiQlpw?=
- =?utf-8?B?TnFXTHFDR0dIdllRTFFpYUI5ak9sQXNMMWxrVXZyVkNCZWkzRTlXMVMydW5Q?=
- =?utf-8?B?OXRKMlRSZk1qRW9DQU9rOHYyc2xOcEZXZjREZEh3OWFXMzU4SVpQdldaOGtO?=
- =?utf-8?B?QkhCa3hHQkRvbCtnaEtPTDlHMEZMMEN3aDZUWUE2YmNQU2toYmlEMStCdEhE?=
- =?utf-8?B?YTdQU0V1Zi9iRHVwU3FlWW1XMHNEWVg2RExHb0tGZGo2YVJvL1RTWFRoaGVo?=
- =?utf-8?B?YjBQQkdNNVp0dFdpd3VLRTdHazZacGNiT3pZcHEyRXR1KzUyczJLakhhNmEx?=
- =?utf-8?B?VUlXVjZ4WGFEZlo1dU5rV0pkNm1laWxFUmpsZjZqYWdVZFRWU2JQSE9ocExG?=
- =?utf-8?B?MHc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: neMg2jf67YzsV0edXhETm/xIrzwekFILDZoTz2lsJ6XEn1/4qMm1j91QlCLisLXqsaVjiF+xhNSCFthIF3Eetv1rSkZN0CaOB2G5K8ePx5qZlBQYC4OzDWYHbmIRFt2bcpfTJlsD/yW+GalkYW2f+EVgReVzJJ/qI3LMjgnQOjGixR93OLhkB9zk1VdzMGKloC0wIdSgPT88DyHfsIxOwMdFWiC1vP+sS0wtr0lv3qP7DXh7fLJlhmHceX5cMJTbqz6InGVvIF5HZOzKd3CjSuLbYxrlLgUuoxhYbrWHbUpggihgOn13OqN/wNVuBNH/+IkPDl3zTT+LYjDQBQEOjqut9o/Dlg+OViaHkTyEOhfoO77JaNPfn8ngVYuwKls74VnKtQL6A/IuntW+8uI02V4fieRW+1TYLiy133xfchUMlLwk6iuFUugb2xuvA0/tRyiM2fLM5s5E43l8zSzuKyF1GgVunMiLyEX9a8zpn/ZGzD1bqboGsW5pLl6ZHETOU5sn6jPGPajl2vLfrLKVPuFaA2sBTsZYosDTjlAh+cnfJyn8FUI4wV+BNKBhfHDHyXAzg9PpxRwXR6HU+rKK+TewTpTO9TLp9aBDw4+4xkTeFOnBIKerTokAA3EP+kUTKUfakH6JWsmHncHnohsYfIfBM5jJqYKFO/UrHG/jGocRRBGXeDEJmb/LAcxdfLgNQHJVekYKxK/Qi6VJ4fnAv8TeXIp5FJAf3SPhr3WEHH+HIisP5danG344tanbDp009H5xxWHlCDZWqBqRh/gs1U+2pfIcQO+TqKh2+XTHaiD8S5Fw2VsroLt5pEVet334xvd2ivXSqFce8U2nPcCLJ5SbJoftCX4qiNGDXKbaocCp0S+ggi5wT0KrKLfNl87DgaXfGS76NGurV85e8+0PsXAxIsAYXkrQ6gpqqTgBoUs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d13a61a3-43dc-4dfd-3ac1-08dbb06250e1
-X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2023 11:54:11.5012 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0ZMDRXsYZ4N5jgmfuBYvKynRFwY42tg+7I8fqFD3mp6i58MA5w96vUalLAkGKdXP4sw3r4KF6BR8NJ699FJe4yS+SCyUKRgxajEI8w+11pc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR10MB7865
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-08_09,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- bulkscore=0 mlxlogscore=999
- suspectscore=0 phishscore=0 spamscore=0 malwarescore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309080110
-X-Proofpoint-GUID: NzCg43BDvYuH4B5UsotjVxt0kvxRyKJ4
-X-Proofpoint-ORIG-GUID: NzCg43BDvYuH4B5UsotjVxt0kvxRyKJ4
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -194,74 +106,285 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/09/2023 12:52, Duan, Zhenzhong wrote:
-> On 9/8/2023 6:11 PM, Joao Martins wrote:
->> On 08/09/2023 07:11, Duan, Zhenzhong wrote:
->>> Hi Joao,
->>>
->>> On 6/23/2023 5:48 AM, Joao Martins wrote:
->>>> Currently, device dirty page tracking with vIOMMU is not supported,
->>>> and a blocker is added and the migration is prevented.
->>>>
->>>> When vIOMMU is used, IOVA ranges are DMA mapped/unmapped on the fly as
->>>> requesting by the vIOMMU. These IOVA ranges can potentially be mapped
->>>> anywhere in the vIOMMU IOVA space as advertised by the VMM.
->>>>
->>>> To support device dirty tracking when vIOMMU enabled instead create the
->>>> dirty ranges based on the vIOMMU provided limits, which leads to the
->>>> tracking of the whole IOVA space regardless of what devices use.
->>>>
->>>> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
->>>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->>>> ---
->>>>    include/hw/vfio/vfio-common.h |  1 +
->>>>    hw/vfio/common.c              | 58 +++++++++++++++++++++++++++++------
->>>>    hw/vfio/pci.c                 |  7 +++++
->>>>    3 files changed, 56 insertions(+), 10 deletions(-)
->>>>
->>>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->>>> index f41860988d6b..c4bafad084b4 100644
->>>> --- a/include/hw/vfio/vfio-common.h
->>>> +++ b/include/hw/vfio/vfio-common.h
->>>> @@ -71,6 +71,7 @@ typedef struct VFIOMigration {
->>>>    typedef struct VFIOAddressSpace {
->>>>        AddressSpace *as;
->>>>        bool no_dma_translation;
->>>> +    hwaddr max_iova;
->>>>        QLIST_HEAD(, VFIOContainer) containers;
->>>>        QLIST_ENTRY(VFIOAddressSpace) list;
->>>>    } VFIOAddressSpace;
->>>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->>>> index ecfb9afb3fb6..85fddef24026 100644
->>>> --- a/hw/vfio/common.c
->>>> +++ b/hw/vfio/common.c
->>>> @@ -428,6 +428,25 @@ static bool vfio_viommu_preset(void)
->>>>        return false;
->>>>    }
->>>>    +static int vfio_viommu_get_max_iova(hwaddr *max_iova)
->>>> +{
->>>> +    VFIOAddressSpace *space;
->>>> +
->>>> +    *max_iova = 0;
->>>> +
->>>> +    QLIST_FOREACH(space, &vfio_address_spaces, list) {
->>>> +        if (space->as == &address_space_memory) {
->>>> +            continue;
->>>> +        }
->>> Just curious why address_space_memory is bypassed?
->>>
->> But address_space_memory part is done by memory listeners
-> 
-> Only this part. Still think about the case with two vfio devices, one bypass
-> iommu, the other not.
-> 
-> The device bypassing iommu will get address_space_memory, the other get iommu
-> 
-> address space. vfio_viommu_preset() return true for any device, so we never run
-> into
-> 
-> memory listener even for device bypassing iommu?
 
-Yeap, that's correct. When I said earlier 'reworking this' I meant this part
-exactly to do both.
+Stefan Hajnoczi <stefanha@gmail.com> writes:
+
+> On Fri, 8 Sept 2023 at 02:43, Alex Benn=C3=A9e <alex.bennee@linaro.org> w=
+rote:
+>>
+>>
+>> Stefan Hajnoczi <stefanha@redhat.com> writes:
+>>
+>> > On Tue, Sep 05, 2023 at 10:34:11AM +0100, Alex Benn=C3=A9e wrote:
+>> >>
+>> >> Albert Esteve <aesteve@redhat.com> writes:
+>> >>
+>> >> > This looks great! Thanks for this proposal.
+>> >> >
+>> >> > On Fri, Sep 1, 2023 at 1:00=E2=80=AFPM Alex Benn=C3=A9e <alex.benne=
+e@linaro.org> wrote:
+>> >> >
+>> >> >  Currently QEMU has to know some details about the VirtIO device
+>> >> >  supported by a vhost-user daemon to be able to setup the guest. Th=
+is
+>> >> >  makes it hard for QEMU to add support for additional vhost-user
+>> >> >  daemons without adding specific stubs for each additional VirtIO
+>> >> >  device.
+>> >> >
+>> >> >  This patch suggests a new feature flag (VHOST_USER_PROTOCOL_F_PROB=
+E)
+>> >> >  which the back-end can advertise which allows a probe message to be
+>> >> >  sent to get all the details QEMU needs to know in one message.
+>> >> >
+>> >> >  Together with the existing features VHOST_USER_PROTOCOL_F_STATUS a=
+nd
+>> >> >  VHOST_USER_PROTOCOL_F_CONFIG we can create "standalone" vhost-user
+>> >> >  daemons which are capable of handling all aspects of the VirtIO
+>> >> >  transactions with only a generic stub on the QEMU side. These daem=
+ons
+>> >> >  can also be used without QEMU in situations where there isn't a fu=
+ll
+>> >> >  VMM managing their setup.
+>> >> >
+>> >> >  Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> >> >
+>> >> >  ---
+>> >> >  v2
+>> >> >    - dropped F_STANDALONE in favour of F_PROBE
+>> >> >    - split probe details across several messages
+>> >> >    - probe messages don't automatically imply a standalone daemon
+>> >> >    - add wording where probe details interact (F_MQ/F_CONFIG)
+>> >> >    - define VMM and make clear QEMU is only one of many potential V=
+MMs
+>> >> >    - reword commit message
+>> >> >  ---
+>> >> >   docs/interop/vhost-user.rst | 90 ++++++++++++++++++++++++++++++++=
+-----
+>> >> >   hw/virtio/vhost-user.c      |  8 ++++
+>> >> >   2 files changed, 88 insertions(+), 10 deletions(-)
+>> >> >
+>> >> >  diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user=
+.rst
+>> >> >  index 5a070adbc1..ba3b5e07b7 100644
+>> >> >  --- a/docs/interop/vhost-user.rst
+>> >> >  +++ b/docs/interop/vhost-user.rst
+>> >> >  @@ -7,6 +7,7 @@ Vhost-user Protocol
+>> >> >   ..
+>> >> >     Copyright 2014 Virtual Open Systems Sarl.
+>> >> >     Copyright 2019 Intel Corporation
+>> >> >  +  Copyright 2023 Linaro Ltd
+>> >> >     Licence: This work is licensed under the terms of the GNU GPL,
+>> >> >              version 2 or later. See the COPYING file in the top-le=
+vel
+>> >> >              directory.
+>> >> >  @@ -27,17 +28,31 @@ The protocol defines 2 sides of the communicat=
+ion, *front-end* and
+>> >> >   *back-end*. The *front-end* is the application that shares its vi=
+rtqueues, in
+>> >> >   our case QEMU. The *back-end* is the consumer of the virtqueues.
+>> >> >
+>> >> >  -In the current implementation QEMU is the *front-end*, and the *b=
+ack-end*
+>> >> >  -is the external process consuming the virtio queues, for example a
+>> >> >  -software Ethernet switch running in user space, such as Snabbswit=
+ch,
+>> >> >  -or a block device back-end processing read & write to a virtual
+>> >> >  -disk. In order to facilitate interoperability between various bac=
+k-end
+>> >> >  -implementations, it is recommended to follow the :ref:`Backend pr=
+ogram
+>> >> >  -conventions <backend_conventions>`.
+>> >> >  +In the current implementation a Virtual Machine Manager (VMM) suc=
+h as
+>> >> >  +QEMU is the *front-end*, and the *back-end* is the external proce=
+ss
+>> >> >  +consuming the virtio queues, for example a software Ethernet swit=
+ch
+>> >> >  +running in user space, such as Snabbswitch, or a block device bac=
+k-end
+>> >> >  +processing read & write to a virtual disk. In order to facilitate
+>> >> >  +interoperability between various back-end implementations, it is
+>> >> >  +recommended to follow the :ref:`Backend program conventions
+>> >> >  +<backend_conventions>`.
+>> >> >
+>> >> >   The *front-end* and *back-end* can be either a client (i.e. conne=
+cting) or
+>> >> >   server (listening) in the socket communication.
+>> >> >
+>> >> >  +Probing device details
+>> >> >  +----------------------
+>> >> >  +
+>> >> >  +Traditionally the vhost-user daemon *back-end* shares configurati=
+on
+>> >> >  +responsibilities with the VMM *front-end* which needs to know cer=
+tain
+>> >> >  +key bits of information about the device. This means the VMM need=
+s to
+>> >> >  +define at least a minimal stub for each VirtIO device it wants to
+>> >> >  +support. If the daemon supports the right set of protocol feature=
+s the
+>> >> >  +VMM can probe the daemon for the information it needs to setup the
+>> >> >  +device. See :ref:`Probing features for standalone daemons
+>> >> >  +<probing_features>` for more details.
+>> >> >  +
+>> >> >  +
+>> >> >   Support for platforms other than Linux
+>> >> >   --------------------------------------
+>> >> >
+>> >> >  @@ -316,6 +331,7 @@ replies. Here is a list of the ones that do:
+>> >> >   * ``VHOST_USER_GET_VRING_BASE``
+>> >> >   * ``VHOST_USER_SET_LOG_BASE`` (if ``VHOST_USER_PROTOCOL_F_LOG_SHM=
+FD``)
+>> >> >   * ``VHOST_USER_GET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFL=
+IGHT_SHMFD``)
+>> >> >  +* ``VHOST_USER_GET_BACKEND_SPECS`` (if ``VHOST_USER_PROTOCOL_F_ST=
+ANDALONE``)
+>> >> >
+>> >> >   .. seealso::
+>> >> >
+>> >> >  @@ -396,9 +412,10 @@ must support changing some configuration aspe=
+cts on the fly.
+>> >> >   Multiple queue support
+>> >> >   ----------------------
+>> >> >
+>> >> >  -Many devices have a fixed number of virtqueues.  In this case the=
+ front-end
+>> >> >  -already knows the number of available virtqueues without communic=
+ating with the
+>> >> >  -back-end.
+>> >> >  +Many devices have a fixed number of virtqueues. In this case the
+>> >> >  +*front-end* usually already knows the number of available virtque=
+ues
+>> >> >  +without communicating with the back-end. For standalone daemons t=
+his
+>> >> >  +number can be can be probed with the ``VHOST_USER_GET_MIN_VQ`` me=
+ssage.
+>> >> >
+>> >> >   Some devices do not have a fixed number of virtqueues.  Instead t=
+he maximum
+>> >> >   number of virtqueues is chosen by the back-end.  The number can d=
+epend on host
+>> >> >  @@ -885,6 +902,23 @@ Protocol features
+>> >> >     #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
+>> >> >     #define VHOST_USER_PROTOCOL_F_STATUS               16
+>> >> >     #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
+>> >> >  +  #define VHOST_USER_PROTOCOL_F_PROBE                18
+>> >> >  +
+>> >> >  +.. _probing_features:
+>> >> >  +
+>> >> >  +Probing features for standalone daemons
+>> >> >  +---------------------------------------
+>> >> >  +
+>> >> >  +The protocol feature ``VHOST_USER_PROTOCOL_F_PROBE`` enables a nu=
+mber
+>> >> >  +of additional messages which allow the *front-end* to probe detai=
+ls
+>> >> >  +about the VirtIO device from the *back-end*. However for a *back-=
+end*
+>> >> >  +to be described as standalone it must also support:
+>> >> >  +
+>> >> >  +  * ``VHOST_USER_PROTOCOL_F_STATUS``
+>> >> >  +  * ``VHOST_USER_PROTOCOL_F_CONFIG`` (if there is a config space)
+>> >> >  +
+>> >> >  +which are required to ensure the *back-end* daemon can operate
+>> >> >  +without the *front-end* managing some aspects of its configuratio=
+n.
+>> >> >
+>> >> >   Front-end message types
+>> >> >   -----------------------
+>> >> >  @@ -1440,6 +1474,42 @@ Front-end message types
+>> >> >     query the back-end for its device status as defined in the Virt=
+io
+>> >> >     specification.
+>> >> >
+>> >> >  +``VHOST_USER_GET_DEVICE_ID``
+>> >> >  +  :id: 41
+>> >> >  +  :request payload: N/A
+>> >> >  +  :reply payload: ``u32``
+>> >> >  +
+>> >> >  +  When the ``VHOST_USER_PROTOCOL_F_PROBE`` protocol feature has b=
+een
+>> >> >  +  successfully negotiated, this message is submitted by the front=
+-end
+>> >> >  +  to query what VirtIO device the back-end support. This is inten=
+ded
+>> >> >  +  to remove the need for the front-end to know ahead of time what=
+ the
+>> >> >  +  VirtIO device the backend emulates is.
+>> >> >  +
+>> >> >  +``VHOST_USER_GET_CONFIG_SIZE``
+>> >> >  +  :id: 42
+>> >> >  +  :request payload: N/A
+>> >> >  +  :reply payload: ``u32``
+>> >> >  +
+>> >> >  +  When the ``VHOST_USER_PROTOCOL_F_PROBE`` protocol feature has b=
+een
+>> >> >  +  successfully negotiated, this message is submitted by the front=
+-end
+>> >> >  +  to query the size of the VirtIO device's config space. This is
+>> >> >  +  intended to remove the need for the front-end to know ahead of =
+time
+>> >> >  +  what the size is. Replying with 0 when
+>> >> >  +  ``VHOST_USER_PROTOCOL_F_CONFIG`` has been negotiated would indi=
+cate
+>> >> >  +  an bug.
+>> >> >  +
+>> >> >  +``VHOST_USER_GET_MIN_VQ``
+>> >> >  +  :id: 43
+>> >> >  +  :request payload: N/A
+>> >> >  +  :reply payload: ``u32``
+>> >> >  +
+>> >> >  +  When the ``VHOST_USER_PROTOCOL_F_PROBE`` protocol feature has b=
+een
+>> >> >  +  successfully negotiated, this message is submitted by the front=
+-end to
+>> >> >  +  query minimum number of VQ's required to support the device. A
+>> >> >  +  device may support more than this number of VQ's if it advertis=
+es
+>> >> >  +  the ``VHOST_USER_PROTOCOL_F_MQ`` protocol feature. Reporting a
+>> >> >  +  number greater than the result of ``VHOST_USER_GET_QUEUE_NUM`` =
+would
+>> >> >  +  indicate a bug.
+>> >> >
+>> >> > Maybe I lack some background, but not sure what min_vq is here?
+>> >>
+>> >> There will be a minimum number of queues you need to support the devi=
+ce.
+>> >> For example the virtio-sound spec specifies you need four queues:
+>> >> control, event, tx, rx
+>> >
+>> > I don't understand why the front-end needs to know that? The backend
+>> > already reports the number of queues and not all of them need to be
+>> > initialized by the driver.
+>>
+>> But how many don't need to be initialised? We can't just skip:
+>>
+>>     /* Allocate queues */
+>>     vub->vqs =3D g_ptr_array_sized_new(vub->num_vqs);
+>>     for (int i =3D 0; i < vub->num_vqs; i++) {
+>>         g_ptr_array_add(vub->vqs,
+>>                         virtio_add_queue(vdev, vub->vq_size, vub_handle_=
+output));
+>>     }
+>>
+>> Or are you saying just require probe-able backends to support
+>> VHOST_USER_PROTOCOL_F_MQ and have it always report the minimmum number
+>> of queues if it is not a MQ capable device?
+>
+> The front-end should prepare to allow the maximum number of virtqueues
+> returned by VHOST_USER_GET_QUEUE_NUM (VHOST_USER_PROTOCOL_F_MQ).
+>
+> VIRTIO Transports have a way to query the maximum number of queues but
+> not a way to query the minimum number of queues. Why is the minimum
+> necessary?
+
+It seems excessive to automatically create the maximum number of VQs. I
+guess for backends that don't support the MQ feature (i.e. a variable
+number of VQs) we could just say VHOST_USER_GET_QUEUE_NUM =3D=3D min. But
+now we are overloading a different message originally added for
+something else.
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
