@@ -2,77 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189187981D2
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 234D37981F7
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:10:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUds-0003KV-Nt; Fri, 08 Sep 2023 02:06:56 -0400
+	id 1qeUdr-00038O-Ig; Fri, 08 Sep 2023 02:06:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUdf-0002Qk-Au
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:45 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qeUdk-0002ZJ-EM
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:48 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUdc-0006Hj-32
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:42 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1c0d0bf18d7so13796715ad.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:06:39 -0700 (PDT)
+ id 1qeUdh-0006NV-9S
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:06:48 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1bdc19b782aso13621325ad.0
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:06:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153198; x=1694757998; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153202; x=1694758002; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ccGf/43x5nzKqeckplvIj3QC6H4I6RRe2CJqwTH4Zqo=;
- b=KP2DQkLvAdtRvox0N6SOB9NvQU6VZ06L6txxxgCN0GiWFnuwGGdgMsz5ONCOnxqtgm
- 9EXt4iboWYpfYnFCu7/Ns/qvP7HLM1IhEMXDmy1lS9/GVxxbingflvyO8TBgQ+es+9gi
- JEXyep6DF8zi23syx4HZuNIODTML9/Dw2AwWmBBPZYUkRV1EdbFldcXXo6VLXTNKw8ru
- HAm9xjLJWA8+ywKuPMVMMNwqtmaX9ak3kg90Q8VukVXR8mvJz2J/BNbDaw4RYS3bZd4q
- W4yAKTnUQhs/eXrwAjTYNuWdYbaNxH6qhpakm3WHXpJYKkygi5WOTnGCntSk3ci0XXvs
- bNQA==
+ bh=s9QHVi3wOzOBTnchANYcU4Sl/KIRcnvifC0QwRT4WCQ=;
+ b=n8iikH3MUxDnka35KkksUOHen2onJ+jMlPXLvgQy3Vghv98VpEnOHIrxazW9pljhvR
+ OE8CL6P/5bwl0rkuk7lE7DUXANOjtz9TESKOlF6qmRFxEi5LrHGiK+XIIA1vw2el8U3M
+ XZy6nqoyMrxcLCDbXDpNi5EPWmGI9sGmCKW7kY/8q/CJg1G8+Mzwa8Psm/PTC/mF/3zO
+ cib8XKwt8xYy5/vnQRpu5N8zMjqF0+eFyE6ELp4wvF/QO7YglhMKcVNN8sQFBmTIuOP5
+ 6OJ6VhHrpARCe+m0R1jBzM4ZKDvupcUz9TIogchjkawcCfb+B2oNXf/58mdwaBR7ZlhA
+ SGdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153198; x=1694757998;
+ d=1e100.net; s=20230601; t=1694153202; x=1694758002;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ccGf/43x5nzKqeckplvIj3QC6H4I6RRe2CJqwTH4Zqo=;
- b=eaOiqMqy1smX2/SXYMUogSn2MxODljjFcAmxfTcS3d8Y22pX19KNR49dw7QzAGXMNY
- dYZrDPh21v/8cdHohbIxpG5GlfN8YVybnjUPX2xiHUH2PNCu51SBn+Qf0VUOeiMJ8PJt
- WXeS0OfTXPqkNCUZiSHaXU714mbJPwkqYhvrRUVddx5TQT3GPEWUuxTQ2K+cssbY3ffV
- +zhvi85RIMJC3xtTDOAPfutIASdO5DtJAKcNaQH98nY72MmBv7ljXKMqE/W49pZ0+Ji8
- ve8kjDu4/8ydjq0KjrB8mrwPZLinkCNhSIxznySNdOmDy7sj+uxep2ACSY7PCLjEvTiN
- giYw==
-X-Gm-Message-State: AOJu0YxDd5HCoPaL+nkZv5DMJJLP8wtcaaYy3QJxHNYeJAX+nfXBdexP
- 6FWvknC0FnmQyChCvuZjLBYFwMILKITLRZZe
-X-Google-Smtp-Source: AGHT+IFUytjo9ReK8iqU2qz3U3ENlv9Ru4HkL+It8a5Vl11QCIaR2bKlk6mvVquRGjZAgu8vQnr1iw==
-X-Received: by 2002:a17:902:ec88:b0:1bd:f314:7896 with SMTP id
- x8-20020a170902ec8800b001bdf3147896mr1711721plg.25.1694153198266; 
- Thu, 07 Sep 2023 23:06:38 -0700 (PDT)
+ bh=s9QHVi3wOzOBTnchANYcU4Sl/KIRcnvifC0QwRT4WCQ=;
+ b=TLwzbmNw4N1LqXuy6yPPDgu0myCRop6YABqNqS2eqlek01MsKB2eLXDuAdB+ErqOZL
+ gm25b/Y0IfmpI28pWyotthJab5pzmiT5xjRTNvI33T8RafCLbCWpU5E9BrAUJcDmbqT4
+ vIBCN6wUihnq//AamF5UNTLCn1bH8SUmvJu6zpsIDtQgY6o9BPzwG2a2hCPzfKM3ouDd
+ Xa0+I5Th2m8D6dmS9ZdVhUY+nBFDeSbleQYqwSUzCwX2C1BmG5HXtZ1msiSRJubreYS/
+ k14YC1g8KiPmolezCZRiwvKdeTyQLOjsRA3fURCub9w15Me1ErudWcaknhUHtCoYxrQB
+ J3ig==
+X-Gm-Message-State: AOJu0YwpfNRer4gEBmmxlirzQHfTZBevJGx8rghs+xv3A6CRxCliuesD
+ VWvxcDAMCAT72WwuJN2yg8KP2R7+90w6o1w6
+X-Google-Smtp-Source: AGHT+IHkJ9p1LIaZ/5Wee7giomJGnmbK1xtFrIJ2neqEWrvqg9guOsGAb2hDBNmRD2MDTD50tHUS+w==
+X-Received: by 2002:a17:902:c1c4:b0:1bc:2c79:c6b5 with SMTP id
+ c4-20020a170902c1c400b001bc2c79c6b5mr1396100plc.4.1694153202129; 
+ Thu, 07 Sep 2023 23:06:42 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.06.35
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.06.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:06:37 -0700 (PDT)
+ Thu, 07 Sep 2023 23:06:41 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
+Cc: alistair23@gmail.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 27/65] hw/intc: Make rtc variable names consistent
-Date: Fri,  8 Sep 2023 16:03:53 +1000
-Message-ID: <20230908060431.1903919-28-alistair.francis@wdc.com>
+Subject: [PULL 28/65] linux-user/riscv: Use abi type for target_ucontext
+Date: Fri,  8 Sep 2023 16:03:54 +1000
+Message-ID: <20230908060431.1903919-29-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,49 +100,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jason Chien <jason.chien@sifive.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-The variables whose values are given by cpu_riscv_read_rtc() should be named
-"rtc". The variables whose value are given by cpu_riscv_read_rtc_raw()
-should be named "rtc_r".
+We should not use types dependend on host arch for target_ucontext.
+This bug is found when run rv32 applications.
 
-Signed-off-by: Jason Chien <jason.chien@sifive.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20230728082502.26439-2-jason.chien@sifive.com>
+Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230811055438.1945-1-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/intc/riscv_aclint.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ linux-user/riscv/signal.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-index bf77e29a70..25cf7a5d9d 100644
---- a/hw/intc/riscv_aclint.c
-+++ b/hw/intc/riscv_aclint.c
-@@ -64,13 +64,13 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
-     uint64_t next;
-     uint64_t diff;
+diff --git a/linux-user/riscv/signal.c b/linux-user/riscv/signal.c
+index eaa168199a..f989f7f51f 100644
+--- a/linux-user/riscv/signal.c
++++ b/linux-user/riscv/signal.c
+@@ -38,8 +38,8 @@ struct target_sigcontext {
+ }; /* cf. riscv-linux:arch/riscv/include/uapi/asm/ptrace.h */
  
--    uint64_t rtc_r = cpu_riscv_read_rtc(mtimer);
-+    uint64_t rtc = cpu_riscv_read_rtc(mtimer);
- 
-     /* Compute the relative hartid w.r.t the socket */
-     hartid = hartid - mtimer->hartid_base;
- 
-     mtimer->timecmp[hartid] = value;
--    if (mtimer->timecmp[hartid] <= rtc_r) {
-+    if (mtimer->timecmp[hartid] <= rtc) {
-         /*
-          * If we're setting an MTIMECMP value in the "past",
-          * immediately raise the timer interrupt
-@@ -81,7 +81,7 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
- 
-     /* otherwise, set up the future timer interrupt */
-     qemu_irq_lower(mtimer->timer_irqs[hartid]);
--    diff = mtimer->timecmp[hartid] - rtc_r;
-+    diff = mtimer->timecmp[hartid] - rtc;
-     /* back to ns (note args switched in muldiv64) */
-     uint64_t ns_diff = muldiv64(diff, NANOSECONDS_PER_SECOND, timebase_freq);
- 
+ struct target_ucontext {
+-    unsigned long uc_flags;
+-    struct target_ucontext *uc_link;
++    abi_ulong uc_flags;
++    abi_ptr uc_link;
+     target_stack_t uc_stack;
+     target_sigset_t uc_sigmask;
+     uint8_t   __unused[1024 / 8 - sizeof(target_sigset_t)];
 -- 
 2.41.0
 
