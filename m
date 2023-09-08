@@ -2,90 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52E779893A
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 16:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7FB798975
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 17:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qecn4-0003Kw-Kz; Fri, 08 Sep 2023 10:48:58 -0400
+	id 1qeczd-0007NF-Mk; Fri, 08 Sep 2023 11:01:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qecn2-0003KX-4m
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:48:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeczS-0007Mf-Pj
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:01:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qecmy-0001HQ-5x
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 10:48:55 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qeczP-0005o2-EK
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 11:01:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694184531;
+ s=mimecast20190719; t=1694185300;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lreAMQ/8akInu5+82VtVmdGk1TMmM4mtQCq5+4qI+oM=;
- b=Ux5T2yox3zk6rPeLXxe5OdcovLds7QZB490n2A+1i8Wt5jRjGOpizRZ7XO0nOUoamXgezW
- wc8BdokGqV+r6tu6YZV8XCKpHtMAYK7IsOfBzPD1RPgFcLDD8pm++sBb8G2QNXT0DzV2pu
- 2YW2i+OhkP0AckxYPSAD9wzGIvQhNfI=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-A2MVnt8zOD-bIW587t7dpw-1; Fri, 08 Sep 2023 10:48:49 -0400
-X-MC-Unique: A2MVnt8zOD-bIW587t7dpw-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-98e40d91fdfso149447766b.3
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 07:48:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694184528; x=1694789328;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lreAMQ/8akInu5+82VtVmdGk1TMmM4mtQCq5+4qI+oM=;
- b=pfbCQE9rInG9C3and4+piYc2pcTwPqlhgFrSI2uIVDHcU2SUN0ajGx1G9/jLkobl6O
- IjPyIj7+Y9qLSFRkoJLrZe5c4w4Mn/coo0EDpXpLgUaM5LM9ne2fJd4lNvLHTxKsq8WV
- 1qOWtMvcgX73s8IjgJUrTXLnL7t3y7RBr6Gz5KOLC9cUiBDFQ9dqwU5LgeuB0OvnaHor
- VZ4oPy5nAmmq/Cg72dcVtzOZVl8oFOumDKwVFUrUK193b8WGSwM6HLOKj8byYS/5r/I1
- c/wwPqO7ScOMIAY/1qIgYMWZLUw1yE03nueH/IkUnMWEzenfLLbAmuArx2/M1xC0RMoS
- QbpA==
-X-Gm-Message-State: AOJu0Yxek608f45MJZ+YXTGgeOsdbUg2viSP2ZcLLiS9mNlJm3Vioz+U
- mAgM6astihntHswhkDIaxMG1nK3oI7ELt7GKRoRcT3RwmHtuoic84FN7nSew5f/WngO9WNY1qPI
- hF3XZcyF7+jCRppg=
-X-Received: by 2002:a17:906:74d9:b0:9a1:d29c:6aaa with SMTP id
- z25-20020a17090674d900b009a1d29c6aaamr2079964ejl.39.1694184528618; 
- Fri, 08 Sep 2023 07:48:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFDQRqBc8ERTCt5wlx/pju/6QSnj5MjKB7hGrO5njCMrgygw+MwK6G+sfV5MhFcciaZvfwWJA==
-X-Received: by 2002:a17:906:74d9:b0:9a1:d29c:6aaa with SMTP id
- z25-20020a17090674d900b009a1d29c6aaamr2079951ejl.39.1694184528227; 
- Fri, 08 Sep 2023 07:48:48 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- fx12-20020a170906b74c00b0099ccee57ac2sm1123702ejb.194.2023.09.08.07.48.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 07:48:47 -0700 (PDT)
-Date: Fri, 8 Sep 2023 16:48:46 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Tim Wiederhake <twiederh@redhat.com>
-Cc: qemu-devel@nongnu.org, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, "Daniel P . =?UTF-8?B?QmVycmFuZ8Op?="
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S .
- Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v2 00/10] Generate x86 cpu features
-Message-ID: <20230908164846.184aba1c@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230908124534.25027-1-twiederh@redhat.com>
-References: <20230908124534.25027-1-twiederh@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ bh=53Vqw/CAQiGyPLiFcor4M98KM7yxx+g4a+Oj3BLfSRI=;
+ b=VjQdApVKg5V6NljhpytVCFJFyI109gARdzKBQ4u4PPGoYqkIrrmIScqSDdTYdiWaxNxoyv
+ kZ4PZTMdJCQoAszH4C+4GOaOU7AL9FspahjPXNMZeHQFWm3nqLreQR2ZLwt1Zos9sUeC4C
+ aBZCLlsB9qXqlkTPYD4w8mVDYPcGR48=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-134-H_UawQ3nNX2czdB_YQ2wNA-1; Fri, 08 Sep 2023 11:01:38 -0400
+X-MC-Unique: H_UawQ3nNX2czdB_YQ2wNA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 681631C09CF2
+ for <qemu-devel@nongnu.org>; Fri,  8 Sep 2023 15:01:38 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.193.201])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C68FD6B595;
+ Fri,  8 Sep 2023 15:01:37 +0000 (UTC)
+Date: Fri, 8 Sep 2023 17:01:36 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: [PULL 00/51] Build system, i386 changes for 2023-09-07
+Message-ID: <ZPs3UB8W4lsOFnxW@redhat.com>
+References: <20230907130004.500601-1-pbonzini@redhat.com>
+ <20230907154412.GA1550739@fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="PU9knbuswbMhcETn"
+Content-Disposition: inline
+In-Reply-To: <20230907154412.GA1550739@fedora>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,80 +77,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri,  8 Sep 2023 14:45:24 +0200
-Tim Wiederhake <twiederh@redhat.com> wrote:
 
-> Synchronizing the list of cpu features and models with qemu is a recurring
-> task in libvirt. For x86, this is done by reading qom-list-properties for
-> max-x86_64-cpu and manually filtering out everthing that does not look like
-> a feature name, as well as parsing target/i386/cpu.c for cpu models.
+--PU9knbuswbMhcETn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-modulo fixing typos/name conflicts in 1st 3 patches,
+Am 07.09.2023 um 17:44 hat Stefan Hajnoczi geschrieben:
+> Applied, thanks.
+>=20
+> Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for an=
+y user-visible changes.
 
-I don't think it's a great idea for libvirt (or any other user) to parse
-QEMU source (whether it's C code or yaml) or other way around for users
-to influence QEMU internals.
+Something in this has broken the build for me, it seems to be the
+linux-user binary that doesn't link any more:
 
-QEMU does provides QMP interface for introspection of CPU models and it
-should be used as a mean to discover new CPU models as well as new
-feature names. If something is missing there we should fix it up
-to make it usable for libvirt.
+  /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in funct=
+ion `cpu_x86_cpuid':
+  /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:6180: undefined =
+reference to `kvm_arch_get_supported_cpuid'
+  /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in funct=
+ion `x86_cpu_filter_features':
+  /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7158: undefined =
+reference to `kvm_arch_get_supported_cpuid'
+  /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:715=
+9: undefined reference to `kvm_arch_get_supported_cpuid'
+  /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:716=
+0: undefined reference to `kvm_arch_get_supported_cpuid'
+  /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:716=
+1: undefined reference to `kvm_arch_get_supported_cpuid'
+  /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:/home/kwo=
+lf/source/qemu/build-clang/../target/i386/cpu.c:7162: more undefined refere=
+nces to `kvm_arch_get_supported_cpuid' follow
+  clang-15: error: linker command failed with exit code 1 (use -v to see in=
+vocation)
 
-> This is a flawed, tedious and error-prone procedure. Ideally, qemu
-> and libvirt would query a common source for cpu feature and model
-> related information. Meanwhile, converting this information into an easier
-> to parse format would help libvirt a lot.
-> 
-> This patch series converts the cpu feature information present in
-> target/i386/cpu.c (`feature_word_info`) into a yaml file and adds a
-> script to generate the c code from this data.
+In case it makes a difference, I'm using clang on F37.
 
- 
-> A patch set to convert the cpu model data (`builtin_x86_defs`) in the
-> same way will follow.
+Kevin
 
-while theoretically you can parse feature_word_info with some sort of reliability,
-you can't do that reliably with CPU model definitions in builtin_x86_defs
-as the later is just a skeleton. Actual CPU models definitions are
-a function of used machine type, accelerator and host kernel. 
+--PU9knbuswbMhcETn
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
-> v1: https://lists.nongnu.org/archive/html/qemu-devel/2023-08/msg02005.html
-> 
-> Changes since v1:
-> * Incorporated changes from
->   https://lists.nongnu.org/archive/html/qemu-devel/2023-08/msg04241.html.
-> * Changed data format from xml to yaml, as proposed in
->   https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg01033.html.
->   Using json has some drawbacks, see
->   https://lists.nongnu.org/archive/html/qemu-devel/2023-08/msg03384.html.
-> * Rebased on top of current master. Features added in the meantime:
->   amx-complex and vmx-enable-user-wait-pause
-> * Split up the reformatting of feature_word_info.c.inc to make it easier
->   to review. These patches could be squashed together before merging.
-> 
-> Tim Wiederhake (10):
->   target/i386: Add missing feature names in FEAT_VMX_EPT_VPID_CAPS
->   target/i386: Fix feature names in FEAT_VMX_EPT_VPID_CAPS
->   target/i386: Fix duplicated feature name in FEAT_KVM
->   target/i386: Split out feature_word_info
->   target/i386: Translate feature_word_info to yaml
->   target/i386: Format feature_word_info.c.inc: Remove comments
->   target/i386: Format feature_word_info.c.inc: feat_names
->   target/i386: Format feature_word_info.c.inc: Unfold cpuid member
->   target/i386: Format feature_word_info.c.inc: Whitespaces and trailing
->     commas
->   target/i386: Autogenerate feature_word_info.c.inc
-> 
->  target/i386/cpu.c                   |  677 +-----------------
->  target/i386/feature_word_info.c.inc | 1030 +++++++++++++++++++++++++++
->  target/i386/feature_word_info.py    |   62 ++
->  target/i386/feature_word_info.yaml  |  697 ++++++++++++++++++
->  4 files changed, 1790 insertions(+), 676 deletions(-)
->  create mode 100644 target/i386/feature_word_info.c.inc
->  create mode 100755 target/i386/feature_word_info.py
->  create mode 100644 target/i386/feature_word_info.yaml
-> 
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAEBCAAdFiEE3D3rFZqa+V09dFb+fwmycsiPL9YFAmT7N1AACgkQfwmycsiP
+L9YAoxAAgS8/v1mU0WIwfj9TP2sMOSAqpjZjCM3nXcelDWom/g8NbSEDkZ/CzrP3
+qjqy5BEEEdt8VvSZ8cClIPP10lsk0NtsUHs9hVWClobgaRtcJoVytLa9SGVEj/T7
+3cLQ/M+n+HD8kKAQJhXv0ls6erlsu7fwfyNUnlKsZp/63vG/FiHyCIGCqYcr2YUF
+xugJvYQ5pA2lA0Do1WW83uVO5dKJhEEuaSr9dXWSzpEu4QH0YAf/EAvES5hBDC22
+RjPUKVqbhfmX/1eFeOuvfSNC1GMIcNJcgeorYpEpCWZl/MX3De1K2IIPynk4VQfh
+uMjBjUL26ZltPYIk/auHK0FxMx8yVbno1xr4dyXZaVOfCgX1oTo8ZlHisK44adzA
+ESYurjYvErU1H7aTWtVqnqUYTCtirN7GvNXLkjXuSPFkYku0ctf8gc1gSHIQs+iZ
+j7M+ETYGNSGuabyVG9uVWrDiOfm/d2BYm0qondBBq6Unpu28OrbOH3NV42lKUw5y
+FmylBJhe/yW9QeYHm3hQAeZ4pB0aTnYRJ2veEhmj0aE+6sBcYHziibut4xFtqb0A
+c1vLz8tRigP5vd89PoItFbSx19c8s1VM3TLgT18owA3QKOBLuai10DbBRiIIt9jB
+rct9swW+poVzmZsDb5BW3ukLT2MyG220kx20JKGGHYVPHL6NGsc=
+=DgbI
+-----END PGP SIGNATURE-----
+
+--PU9knbuswbMhcETn--
 
 
