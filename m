@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF81798A66
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 18:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FEB798A72
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 18:07:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qedyi-0000g7-VN; Fri, 08 Sep 2023 12:05:05 -0400
+	id 1qee0P-0002dx-9E; Fri, 08 Sep 2023 12:06:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qedyN-0000av-RW
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:04:45 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qee0J-0002de-La
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:06:43 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qedyL-0001QQ-4A
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:04:43 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-500b66f8b27so3825316e87.3
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 09:04:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qee0A-0002Jg-T9
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 12:06:39 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9a63b2793ecso278539866b.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 09:06:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694189079; x=1694793879; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694189193; x=1694793993; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=lPtRKORGWwv1JHBP/r4D3Up/HvNSSXSQOJJFM9vkBhE=;
- b=UEArE9nhSlmBJW2uZ205L22L9DgdTABENbWNW43JMGbS195QsccastKiUV6G2mchKk
- +nmxx6iTY/J6R0BpCcEB6N74yyYmbEXelJ8YqBDS5A82RuMq0Onqy4AmtZG1qEAzgI9x
- qPu9ETUTLOaAYoOoR7VSLDX/vw0FSyODK4Weu6aburoLSmMc0KeN9+o1EiC2fvAFnV43
- yM7X/SLPkPAl/GlhrJ3dHENKJf/M95N2wrfUe8k3VtbqHhEUp7Gmk8iYAF8t4hLdbxcW
- xvYhd1YHJa2oRmdfvgESt7oH5hMM6OE+Bosj4dNQH0r6u8LlTAv2b5lyP3j/ew7g1pqN
- hv5w==
+ bh=NiGKgNwoo1t9QvBDw/C4yJW9zW4DCLZnsDeXbgw6FE8=;
+ b=ljcfGcKWgdfIyNN5FKKcfT45+t/u9ETqB5uqNsoRu58eQsQG8AfzKu36NN1ldGd9vX
+ DFYI18kT0MGyNn21eCR57VfZXTDuzzTKsBI8m6Gn3vza6KFC2AbhLM8zedm/SqrrIp4n
+ /W0kaU6x5+bEhUsqyvFK69a81GBKi8WnoM0A/mcziQZELmo/delEbQFqpQPMqlP/BrQ2
+ Kmt92BJffWqoWwMbrKrrGlnU8xO34iefUqoKjgmyIcrb3qYXuoPaGzQ61Bb4vZ7XQ6yt
+ MRXN5Q8NkJbBfyz0wd45fvc9yQHawzUu1eb16diRR20UO41sHu3IiM4Yzc5luZGok2I6
+ dCig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694189079; x=1694793879;
+ d=1e100.net; s=20230601; t=1694189193; x=1694793993;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lPtRKORGWwv1JHBP/r4D3Up/HvNSSXSQOJJFM9vkBhE=;
- b=vZY6QWD5IrgIkVoi2YlGdE5ghtfXHA/XaT4Kj559VQQoT1yiL/D2MKzMmN1TNCFiik
- Gm6h8dQhdhw3YImYy/eziE2LStZbfmkZ807m18NHdP6XQyi4cPy5C471UJSrVbMJxp13
- /tLUC3Z4oIWr+plUPswqlsueCKGbNLnEqSaFjWXZfyjioUldv1pE7aelTGBe5PTolo1v
- 96YLjkSlnQsJppG5DHDaXVMb1UWIzgstXibd6hi1g0LbIfK0UxQ6HZ8ssAwFsS1VpN/m
- gvwi9bDC1TmzUux95mpFpWw5iKRevj8PYwsFOgA0sItCfmlSolBnNM83GJmAe5mF3AlO
- TqEA==
-X-Gm-Message-State: AOJu0YwOTHzttaNiEiZnls9EbsHiqArvO9657QZIY32DP2usk/TpxvRx
- DOQhEfSAN7hraaoXTx3E6Xutwg==
-X-Google-Smtp-Source: AGHT+IE07MzEstJqUCAZHOIqaUrUzfOhLDtnHcOd7OsdIaZ65gW40aBTfcbYAdcLjPvu97A9gfZASg==
-X-Received: by 2002:ac2:5e8a:0:b0:500:9f03:9157 with SMTP id
- b10-20020ac25e8a000000b005009f039157mr2230586lfq.65.1694189078897; 
- Fri, 08 Sep 2023 09:04:38 -0700 (PDT)
+ bh=NiGKgNwoo1t9QvBDw/C4yJW9zW4DCLZnsDeXbgw6FE8=;
+ b=UDxowYhjqshcWRDpJh/JhHBnviXKTgqGED3NYhVkWK9qsWmIAxfW3O/uxyu3hT7dpR
+ 6VHK5ADTGbehvcgbE7iJk4/l34PJUIB4Qy9vjurwgIAcE7SSNjLFXB7TqZz7gEewGNXS
+ b7E4eM3HZYXw0J2ych9lduZ/+aO8gEurt9r/JwsOCLC42JoOh26yXkaWHPcKPPAAOjNW
+ YY7oGScTP1I5MApKIIOeQ3SufwDrLXeaawV/AaLSl+klymhGcEBUEu9WMKlXCzE2pL4D
+ MDb2FqiM+cTrmCRKk/vuror7LDAf6LEhGDgCiJT55HGNVmHIBTCaiT/W0xpzV9LrG4JR
+ fzTA==
+X-Gm-Message-State: AOJu0YwgcPb6YVQURu2UIH3nlESrUZANi5h/i5OaeJapPSZyKKWcsNZm
+ 7QgijtLzhaKfD25IRy77ftQTyA==
+X-Google-Smtp-Source: AGHT+IH5y6vibNkfMXQVTkoWUgnyHw1MnU704vaLQ9+yhsCp7iRgy5t6vR5FXha3/3NRmp+okoKA6w==
+X-Received: by 2002:a17:906:112:b0:994:4095:3abf with SMTP id
+ 18-20020a170906011200b0099440953abfmr2437436eje.14.1694189193085; 
+ Fri, 08 Sep 2023 09:06:33 -0700 (PDT)
 Received: from [192.168.69.115]
  (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr. [176.173.167.175])
  by smtp.gmail.com with ESMTPSA id
- m16-20020aa7c490000000b005236410a16bsm1212442edq.35.2023.09.08.09.04.37
+ va17-20020a17090711d100b009929ab17be0sm1208705ejb.162.2023.09.08.09.06.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 08 Sep 2023 09:04:38 -0700 (PDT)
-Message-ID: <cef1a2f6-47d0-7fc5-5ca6-303930684f67@linaro.org>
-Date: Fri, 8 Sep 2023 18:04:36 +0200
+ Fri, 08 Sep 2023 09:06:32 -0700 (PDT)
+Message-ID: <73c4f932-c96e-af23-4f5c-b25077347b96@linaro.org>
+Date: Fri, 8 Sep 2023 18:06:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] mem/x86: add processor address space check for VM memory
+Subject: Re: [PATCH 10/21] q800: add easc bool machine class property to
+ switch between ASC and EASC
 Content-Language: en-US
-To: Ani Sinha <anisinha@redhat.com>, David Hildenbrand <david@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, qemu-devel <qemu-devel@nongnu.org>
-References: <20230908095024.270946-1-anisinha@redhat.com>
- <77284898-c540-31ac-d438-ebff52f6d75d@redhat.com>
- <1911B17C-24F2-406B-9ED4-DCF98E794A09@redhat.com>
- <730648ed-55ac-aa2c-58d2-d79224aeb586@redhat.com>
- <1574DF3A-7E1F-4C4F-9087-6E8DEE456906@redhat.com>
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
+ <20230702154838.722809-11-mark.cave-ayland@ilande.co.uk>
+ <e3fe143f-2c07-2d59-3dca-4534a767391d@linaro.org>
+ <f639b4b1-965a-fe9d-a988-2dbd2c1c0e68@ilande.co.uk>
+ <44e50cdb-37f0-c18d-4d64-0f34777a193d@linaro.org>
+ <ed274425-43bd-a4b6-b1d6-1d1d42784cf7@ilande.co.uk>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <1574DF3A-7E1F-4C4F-9087-6E8DEE456906@redhat.com>
+In-Reply-To: <ed274425-43bd-a4b6-b1d6-1d1d42784cf7@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -103,69 +106,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 17:13, Ani Sinha wrote:
+On 8/9/23 18:03, Mark Cave-Ayland wrote:
+> On 08/09/2023 10:42, Philippe Mathieu-Daudé wrote:
 > 
-> 
->> On 08-Sep-2023, at 7:46 PM, David Hildenbrand <david@redhat.com> wrote:
->>
->> On 08.09.23 16:12, Ani Sinha wrote:
->>>> On 08-Sep-2023, at 3:58 PM, David Hildenbrand <david@redhat.com> wrote:
->>>>
->>>> On 08.09.23 11:50, Ani Sinha wrote:
->>>>> Depending on the number of available address bits of the current processor, a
->>>>> VM can only use a certain maximum amount of memory and no more. This change
->>>>> makes sure that a VM is not configured to have more memory than what it can use
->>>>> with the current processor settings when started. Additionally, the change adds
->>>>> checks during memory hotplug to ensure that the VM does not end up getting more
->>>>> memory than what it can actually use after hotplug.
->>>>> Currently, both the above checks are only for pc (x86) platform.
->>>>> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=1235403
->>>>> CC: imammedo@redhat.com
->>>>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> On 8/9/23 08:54, Mark Cave-Ayland wrote:
+>>> On 07/07/2023 09:29, Philippe Mathieu-Daudé wrote:
+>>>
+>>>> On 2/7/23 17:48, Mark Cave-Ayland wrote:
+>>>>> This determines whether the Apple Sound Chip (ASC) is set to 
+>>>>> enhanced mode
+>>>>> (default) or to original mode. The real Q800 hardware used an EASC 
+>>>>> chip however
+>>>>> a lot of older software only works with the older ASC chip.
+>>>>>
+>>>>> Adding this as a machine parameter allows QEMU to be used as an 
+>>>>> developer aid
+>>>>> for testing and migrating code from ASC to EASC.
+>>>>>
+>>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >>>>> ---
->>>>>   hw/i386/pc.c           | 45 ++++++++++++++++++++++++++++++++++++++++++
->>>>>   hw/mem/memory-device.c |  6 ++++++
->>>>>   include/hw/boards.h    |  9 +++++++++
->>>>>   3 files changed, 60 insertions(+)
->>>>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
->>>>> index 54838c0c41..f84e4c4916 100644
->>>>> --- a/hw/i386/pc.c
->>>>> +++ b/hw/i386/pc.c
->>>>> @@ -31,6 +31,7 @@
->>>>>   #include "hw/i386/topology.h"
->>>>>   #include "hw/i386/fw_cfg.h"
->>>>>   #include "hw/i386/vmport.h"
->>>>> +#include "hw/mem/memory-device.h"
->>>>>   #include "sysemu/cpus.h"
->>>>>   #include "hw/block/fdc.h"
->>>>>   #include "hw/ide/internal.h"
->>>>> @@ -1006,6 +1007,17 @@ void pc_memory_init(PCMachineState *pcms,
->>>>>           exit(EXIT_FAILURE);
->>>>>       }
->>>>>   +    /*
->>>>> +     * check if the VM started with more ram configured than max physical
->>>>> +     * address available with the current processor.
->>>>> +     */
->>>>> +    if (machine->ram_size > maxphysaddr + 1) {
->>>>> +        error_report("Address space limit 0x%"PRIx64" < 0x%"PRIx64
->>>>> +                     " (max configured memory), phys-bits too low (%u)",
->>>>> +                     maxphysaddr, machine->ram_size, cpu->phys_bits);
->>>>> +        exit(EXIT_FAILURE);
->>>>> +    }
+>>>>>   hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
+>>>>>   include/hw/m68k/q800.h |  1 +
+>>>>>   2 files changed, 30 insertions(+), 1 deletion(-)
 >>>>
->>>> ... I know that this used to be a problem in the past, but nowadays we already do have similar checks in place?
 >>>>
->>>> $ ./build/qemu-system-x86_64 -m 4T -machine q35,memory-backend=mem0 -object memory-backend-ram,id=mem0,size=4T,reserve=off
->>>> qemu-system-x86_64: Address space limit 0xffffffffff < 0x5077fffffff phys-bits too low (40)
->>> So you are saying that this is OK and should be allowed? On a 32 bit processor that can access only 4G memory, I am spinning up a 10G VM.
+>>>>> +static bool q800_get_easc(Object *obj, Error **errp)
+>>>>> +{
+>>>>> +    Q800MachineState *ms = Q800_MACHINE(obj);
+>>>>> +
+>>>>> +    return ms->easc;
+>>>>> +}
+>>>>
+>>>> Is the getter useful? Otherwise:
+>>>
+>>> Isn't it a requirement? Otherwise I can see that if we decide to 
+>>> enumerate machine properties (similar as to how device properties 
+>>> appear in "info qtree") then it would be impossible to display its 
+>>> value. Certainly at the moment we consider that adding an object 
+>>> property to an underlying struct effectively makes it "public".
 >>
->> Would that 32bit process have PAE (Physical Address Extension) and still be able to access that memory?
+>> Just FYI this is not a requirement, per "qom/object.h":
+>>
+>>    /**
+>>     * object_property_add_bool:
+>>     * @obj: the object to add a property to
+>>     * @name: the name of the property
+>>     * @get: the getter or NULL if the property is write-only.
+>>     * @set: the setter or NULL if the property is read-only
+>>
+>> I'm not sure when we want a write-only QOM boolean property, so I
+>> genuinely ask, since I agree introspecting QOM object fields from
+>> the monitor is helpful.
 > 
-> 
-> You are sidestepping my point. Sure, we can improve the condition check by checking for PAE CPUID etc but that is not the issue I am trying too point out. What if the processor did not have PAE? Would we allow a VM to have memory size which the processor can’t access? There is no such check today it would seem.
+> Agreed, although I'd be interested to hear if anyone can come up with a 
+> compelling use case for write-only properties. In that case I'll assume 
+> your R-B stands when I re-send the latest version of the series ;)
 
-Which processor, the host or the guest?
+Sure R-b stands, this discussion is outside of the scope of your series.
 
-Even if the guest CPU can't access all the VM memory, this memory can be
-used by devices without interaction with the CPU (see i.e. PCI).
 
