@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9707D798669
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 13:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B997798668
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 13:23:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeZa1-0003t5-0Z; Fri, 08 Sep 2023 07:23:17 -0400
+	id 1qeZa9-00041J-Py; Fri, 08 Sep 2023 07:23:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeZZx-0003sN-Ls
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:23:13 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeZa6-0003zc-Bg
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:23:22 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeZZs-0003gk-Br
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:23:13 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-401ec23be82so21839215e9.0
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 04:23:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qeZa1-0003ip-8P
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 07:23:21 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-401d24f1f27so21802995e9.1
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 04:23:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694172186; x=1694776986; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694172194; x=1694776994; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=82urobPczF4xiQF4fXZ3dDYPIeiqKie7Xzo0ZiKG+mM=;
- b=ye3M8/NdP2OgRfeipGw+HxGlrgozS3I9qfb94EKaYrz2avT+pn7YiXKZlPD3pZYqQh
- G1MXsKD8vECDe0qF5hC2eEWMzEZZjmL+w8/l9/poGTa19EeZRvXSVvoTLGbWt3lrim4n
- xEYqo/sVwPh3rwFLFYqUn7LggNqOAxf6pgMhE+VPpdWzHZGSvN9GqSHbZjkUDRVpimPI
- i3QQuW+BgKEcI1WXkwxXoEMGTIBn0NelM2usElEnYTPApUAo0vuueM6PEmszg6gKohUS
- pyOq3lfh0inJkL6ACsMPJsa4IU3uvM6C8nQc6dPHtLYlMygvzvD4Sck6vEHstISW4W4w
- VGfw==
+ bh=K/YkGJmASUJnEMaMG4VGJ0aAEtMk9/BNtlzjAdGgNrE=;
+ b=vG+EtTkhxGOiBMFDUfD4sFJpkgiXInUbX/4kf3IoiE0R1KwcgOrqaiRN9J5sbFVCAS
+ FyIHGUgbz4l8VxmsKPA03os3Kybdw3pmabmgdQtLhkRyArOss1HyQBoeVkwTbuM69UF1
+ LpI+JuM4fTl+jaCVQsZ1lcRhEFyhYPBOQW3VuedSQ4mna2SEvjGLXKhkN+5VFbugEreS
+ dFyKCk5jQu47kciXi5NLupO+W0BUabOmxez7tgS6nurpVjy6k6HpncyxtwNDLUoUpSXm
+ 1CIr4kEvC2ZGp0FJEkgayJSuLtHPPI37nNgpxcb6CdTnXaFJZEFWoJTQNnkoLQZY7bU5
+ OGgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694172186; x=1694776986;
+ d=1e100.net; s=20230601; t=1694172194; x=1694776994;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=82urobPczF4xiQF4fXZ3dDYPIeiqKie7Xzo0ZiKG+mM=;
- b=GEAl5QCXxsC94yn20VKzMfXJS9gTwwR4eByZJyF3on6c5u3ahi5GnEfBlQSTxSTERi
- qChT8DIU8tKyQUd1isb7P1eTM1bxVwVIrSMbFKfvz1yfqTVmLkqxR2vawZce6IXlrVmX
- wl8Y70KOJuxko6oCEsIY4OyD/7IUKJMGO6Kw36vmIx9RcVUcS8Cfl2EEnteZORGZSM9N
- nmChyo05bFpqBZyiehOvSNcbnP3n95zwceFNfkI1BK2bxhQjFDszpZAI3mMC4pT3+sng
- UlhkDC46z+QSwbr1giqzOXbpaoIqmPFeMcDu8wp2sBn3HW/XBum1yqN+HLkaaLwq6zbj
- YDZw==
-X-Gm-Message-State: AOJu0YyFgLROPnWmdCSX/RaBxdcob7k9hRq0L0Z45P7010XTlyO1e3FX
- +g5KtrWJPmT8BBm1TFuSvmLDncn6+yOkAf0fl0E=
-X-Google-Smtp-Source: AGHT+IHJ//Oq0WnWCVGY+oVTajQAkvPMVqgpa2y93ysEZ+gpCV7FuutdoYO6T6lkjQg1Lqktk1Qf0g==
-X-Received: by 2002:a1c:4c0d:0:b0:402:ee9e:ed98 with SMTP id
- z13-20020a1c4c0d000000b00402ee9eed98mr1824246wmf.34.1694172186483; 
- Fri, 08 Sep 2023 04:23:06 -0700 (PDT)
+ bh=K/YkGJmASUJnEMaMG4VGJ0aAEtMk9/BNtlzjAdGgNrE=;
+ b=aWFwuQvkDXFWFsrsXDbPkDYhR+6+hZzcgy+W+Cpr/UjB6qpRxdURJPXTPRtWlhh503
+ rxR3iBnE6+VwuI+JMDJsrgxaZyfq05/mX2aW+jcXCQh+VPdvHCwMuwsSe7AKpvDxyo66
+ ma9YUclqZIw5TXFeGD/I2y4oMHDN8hxzEX26LwxZfEZlIeEeYHysbbHpkcvUNTFjJibq
+ FGFz+wMtcz+gpb/ScssRd+4yaq9cHrCRmKOAPhBAeFtJWF5uxlppW3iNn7fXqxfbFRfW
+ iB1g02CcSZBWK9g+2tMynvKPzPJGsGQSqeZRvxE4cgCDaBn5mBqjW/VZymqdcScxnXOA
+ wIzA==
+X-Gm-Message-State: AOJu0YwK5f/9UGfi8M+Pm4btg6MNoOWV34Xto2EMR55o6GyWrkhmHqRZ
+ eDyWkfEy0fnyrGO1IgmEctCq7iYno1yeM8e0/mw=
+X-Google-Smtp-Source: AGHT+IGdL66xDENylcGzHEUhRcDkcuX/hU+RdOpI9HZ4OoTt9ScYfzANcOpr4XsQd4fh5sE1PjEU1g==
+X-Received: by 2002:a1c:4b0b:0:b0:402:ee59:ff49 with SMTP id
+ y11-20020a1c4b0b000000b00402ee59ff49mr2030454wma.9.1694172194657; 
+ Fri, 08 Sep 2023 04:23:14 -0700 (PDT)
 Received: from m1x-phil.lan (lfb24-h01-176-173-167-175.dsl.sta.abo.bbox.fr.
  [176.173.167.175]) by smtp.gmail.com with ESMTPSA id
- q8-20020adfea08000000b0031f2dea4810sm1862430wrm.61.2023.09.08.04.23.02
+ y23-20020a7bcd97000000b003fee6f027c7sm4966259wmj.19.2023.09.08.04.23.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 08 Sep 2023 04:23:06 -0700 (PDT)
+ Fri, 08 Sep 2023 04:23:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
  Gavin Shan <gshan@redhat.com>
@@ -86,17 +86,18 @@ Cc: Chris Wulff <crwulff@gmail.com>,
  Brian Cain <bcain@quicinc.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Thomas Huth <thuth@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 3/4] hw/cpu: Introduce CPUClass::cpu_resolving_type field
-Date: Fri,  8 Sep 2023 13:22:33 +0200
-Message-ID: <20230908112235.75914-4-philmd@linaro.org>
+Subject: [PATCH 4/4] hw/cpu: Call object_class_dynamic_cast() once in
+ cpu_class_by_name()
+Date: Fri,  8 Sep 2023 13:22:34 +0200
+Message-ID: <20230908112235.75914-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908112235.75914-1-philmd@linaro.org>
 References: <20230908112235.75914-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -119,320 +120,218 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a field to return the QOM type name of a CPU class.
+Leverage the public CPUClass::cpu_resolving_type field and
+call object_class_dynamic_cast() once in cpu_class_by_name().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/core/cpu.h   | 2 ++
- hw/core/cpu-common.c    | 2 +-
- target/alpha/cpu.c      | 1 +
- target/arm/cpu.c        | 1 +
- target/avr/cpu.c        | 1 +
- target/cris/cpu.c       | 1 +
- target/hexagon/cpu.c    | 1 +
- target/hppa/cpu.c       | 1 +
- target/i386/cpu.c       | 1 +
- target/loongarch/cpu.c  | 1 +
- target/m68k/cpu.c       | 1 +
- target/microblaze/cpu.c | 1 +
- target/mips/cpu.c       | 1 +
- target/nios2/cpu.c      | 1 +
- target/openrisc/cpu.c   | 1 +
- target/ppc/cpu_init.c   | 1 +
- target/riscv/cpu.c      | 1 +
- target/rx/cpu.c         | 1 +
- target/s390x/cpu.c      | 1 +
- target/sh4/cpu.c        | 1 +
- target/sparc/cpu.c      | 1 +
- target/tricore/cpu.c    | 1 +
- target/xtensa/cpu.c     | 1 +
- 23 files changed, 24 insertions(+), 1 deletion(-)
+ hw/core/cpu-common.c   | 3 ++-
+ target/alpha/cpu.c     | 3 +--
+ target/arm/cpu.c       | 4 +---
+ target/avr/cpu.c       | 4 +---
+ target/cris/cpu.c      | 4 +---
+ target/hexagon/cpu.c   | 4 +---
+ target/loongarch/cpu.c | 5 +----
+ target/m68k/cpu.c      | 4 +---
+ target/openrisc/cpu.c  | 4 +---
+ target/riscv/cpu.c     | 4 +---
+ target/rx/cpu.c        | 2 +-
+ target/tricore/cpu.c   | 4 +---
+ target/xtensa/cpu.c    | 4 +---
+ 13 files changed, 14 insertions(+), 35 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 129d179937..e469efd409 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -100,6 +100,7 @@ struct SysemuCPUOps;
- 
- /**
-  * CPUClass:
-+ * @cpu_resolving_type: CPU QOM type name
-  * @class_by_name: Callback to map -cpu command line model name to an
-  *                 instantiatable CPU type.
-  * @parse_features: Callback to parse command line arguments.
-@@ -148,6 +149,7 @@ struct CPUClass {
-     DeviceClass parent_class;
-     /*< public >*/
- 
-+    const char *cpu_resolving_type;
-     ObjectClass *(*class_by_name)(const char *cpu_model);
-     void (*parse_features)(const char *typename, char *str, Error **errp);
- 
 diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index c6a0c9390c..2d24261a6a 100644
+index 2d24261a6a..f4a2ccebea 100644
 --- a/hw/core/cpu-common.c
 +++ b/hw/core/cpu-common.c
-@@ -155,7 +155,7 @@ ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
-     assert(cpu_model);
-     oc = object_class_by_name(typename);
+@@ -157,7 +157,8 @@ ObjectClass *cpu_class_by_name(const char *typename, const char *cpu_model)
      cc = CPU_CLASS(oc);
--    assert(cc->class_by_name);
-+    assert(cc->cpu_resolving_type && cc->class_by_name);
+     assert(cc->cpu_resolving_type && cc->class_by_name);
      oc = cc->class_by_name(cpu_model);
-     if (oc == NULL || object_class_is_abstract(oc)) {
+-    if (oc == NULL || object_class_is_abstract(oc)) {
++    if (oc == NULL || object_class_is_abstract(oc)
++                   || !object_class_dynamic_cast(oc, cc->cpu_resolving_type)) {
          return NULL;
+     }
+     return oc;
 diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
-index 351ee2e9f2..0ddea8004c 100644
+index 0ddea8004c..b184fcc123 100644
 --- a/target/alpha/cpu.c
 +++ b/target/alpha/cpu.c
-@@ -254,6 +254,7 @@ static void alpha_cpu_class_init(ObjectClass *oc, void *data)
-     device_class_set_parent_realize(dc, alpha_cpu_realizefn,
-                                     &acc->parent_realize);
+@@ -126,8 +126,7 @@ static ObjectClass *alpha_cpu_class_by_name(const char *cpu_model)
+     int i;
  
-+    cc->cpu_resolving_type = TYPE_ALPHA_CPU;
-     cc->class_by_name = alpha_cpu_class_by_name;
-     cc->has_work = alpha_cpu_has_work;
-     cc->dump_state = alpha_cpu_dump_state;
+     oc = object_class_by_name(cpu_model);
+-    if (oc != NULL && object_class_dynamic_cast(oc, TYPE_ALPHA_CPU) != NULL &&
+-        !object_class_is_abstract(oc)) {
++    if (oc != NULL && !object_class_is_abstract(oc)) {
+         return oc;
+     }
+ 
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 42e29816cc..9e51bde170 100644
+index 9e51bde170..d29040cd8c 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -2377,6 +2377,7 @@ static void arm_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, arm_cpu_reset_hold, NULL,
-                                        &acc->parent_phases);
+@@ -2300,9 +2300,7 @@ static ObjectClass *arm_cpu_class_by_name(const char *cpu_model)
+     oc = object_class_by_name(typename);
+     g_strfreev(cpuname);
+     g_free(typename);
+-    if (!oc || !object_class_dynamic_cast(oc, TYPE_ARM_CPU)) {
+-        return NULL;
+-    }
++
+     return oc;
+ }
  
-+    cc->cpu_resolving_type = TYPE_ARM_CPU;
-     cc->class_by_name = arm_cpu_class_by_name;
-     cc->has_work = arm_cpu_has_work;
-     cc->dump_state = arm_cpu_dump_state;
 diff --git a/target/avr/cpu.c b/target/avr/cpu.c
-index 4b255eade1..f6004169ac 100644
+index f6004169ac..53735ff1dd 100644
 --- a/target/avr/cpu.c
 +++ b/target/avr/cpu.c
-@@ -233,6 +233,7 @@ static void avr_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, avr_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
+@@ -159,9 +159,7 @@ static ObjectClass *avr_cpu_class_by_name(const char *cpu_model)
+     ObjectClass *oc;
  
-+    cc->cpu_resolving_type = TYPE_AVR_CPU;
-     cc->class_by_name = avr_cpu_class_by_name;
+     oc = object_class_by_name(cpu_model);
+-    if (object_class_dynamic_cast(oc, TYPE_AVR_CPU) == NULL) {
+-        oc = NULL;
+-    }
++
+     return oc;
+ }
  
-     cc->has_work = avr_cpu_has_work;
 diff --git a/target/cris/cpu.c b/target/cris/cpu.c
-index 115f6e2ea2..adde4f599d 100644
+index adde4f599d..b307d0b9db 100644
 --- a/target/cris/cpu.c
 +++ b/target/cris/cpu.c
-@@ -314,6 +314,7 @@ static void cris_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, cris_cpu_reset_hold, NULL,
-                                        &ccc->parent_phases);
+@@ -95,9 +95,7 @@ static ObjectClass *cris_cpu_class_by_name(const char *cpu_model)
+     typename = g_strdup_printf(CRIS_CPU_TYPE_NAME("%s"), cpu_model);
+     oc = object_class_by_name(typename);
+     g_free(typename);
+-    if (oc != NULL && !object_class_dynamic_cast(oc, TYPE_CRIS_CPU)) {
+-        oc = NULL;
+-    }
++
+     return oc;
+ }
  
-+    cc->cpu_resolving_type = TYPE_CRIS_CPU;
-     cc->class_by_name = cris_cpu_class_by_name;
-     cc->has_work = cris_cpu_has_work;
-     cc->dump_state = cris_cpu_dump_state;
 diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
-index 5e301327d3..2d4fed838d 100644
+index 2d4fed838d..4b8d63c4a7 100644
 --- a/target/hexagon/cpu.c
 +++ b/target/hexagon/cpu.c
-@@ -381,6 +381,7 @@ static void hexagon_cpu_class_init(ObjectClass *c, void *data)
-     resettable_class_set_parent_phases(rc, NULL, hexagon_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
+@@ -63,9 +63,7 @@ static ObjectClass *hexagon_cpu_class_by_name(const char *cpu_model)
+     oc = object_class_by_name(typename);
+     g_strfreev(cpuname);
+     g_free(typename);
+-    if (!oc || !object_class_dynamic_cast(oc, TYPE_HEXAGON_CPU)) {
+-        return NULL;
+-    }
++
+     return oc;
+ }
  
-+    cc->cpu_resolving_type = TYPE_HEXAGON_CPU;
-     cc->class_by_name = hexagon_cpu_class_by_name;
-     cc->has_work = hexagon_cpu_has_work;
-     cc->dump_state = hexagon_dump_state;
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 11022f9c99..47950a15ae 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -192,6 +192,7 @@ static void hppa_cpu_class_init(ObjectClass *oc, void *data)
-     device_class_set_parent_realize(dc, hppa_cpu_realizefn,
-                                     &acc->parent_realize);
- 
-+    cc->cpu_resolving_type = TYPE_HPPA_CPU;
-     cc->class_by_name = hppa_cpu_class_by_name;
-     cc->has_work = hppa_cpu_has_work;
-     cc->dump_state = hppa_cpu_dump_state;
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 00f913b638..9979464420 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7951,6 +7951,7 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
-                                        &xcc->parent_phases);
-     cc->reset_dump_flags = CPU_DUMP_FPU | CPU_DUMP_CCOP;
- 
-+    cc->cpu_resolving_type = TYPE_X86_CPU;
-     cc->class_by_name = x86_cpu_class_by_name;
-     cc->parse_features = x86_cpu_parse_featurestr;
-     cc->has_work = x86_cpu_has_work;
 diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index fe2e5ecc46..189dfd32d1 100644
+index 189dfd32d1..1eb2c579eb 100644
 --- a/target/loongarch/cpu.c
 +++ b/target/loongarch/cpu.c
-@@ -743,6 +743,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
-     resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hold, NULL,
-                                        &lacc->parent_phases);
+@@ -646,10 +646,7 @@ static ObjectClass *loongarch_cpu_class_by_name(const char *cpu_model)
+         }
+     }
  
-+    cc->cpu_resolving_type = TYPE_LOONGARCH_CPU;
-     cc->class_by_name = loongarch_cpu_class_by_name;
-     cc->has_work = loongarch_cpu_has_work;
-     cc->dump_state = loongarch_cpu_dump_state;
+-    if (object_class_dynamic_cast(oc, TYPE_LOONGARCH_CPU)) {
+-        return oc;
+-    }
+-    return NULL;
++    return oc;
+ }
+ 
+ void loongarch_cpu_dump_state(CPUState *cs, FILE *f, int flags)
 diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
-index 004f3d6265..bd7bb103d7 100644
+index bd7bb103d7..e8b86c80f1 100644
 --- a/target/m68k/cpu.c
 +++ b/target/m68k/cpu.c
-@@ -558,6 +558,7 @@ static void m68k_cpu_class_init(ObjectClass *c, void *data)
-     resettable_class_set_parent_phases(rc, NULL, m68k_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
+@@ -111,9 +111,7 @@ static ObjectClass *m68k_cpu_class_by_name(const char *cpu_model)
+     typename = g_strdup_printf(M68K_CPU_TYPE_NAME("%s"), cpu_model);
+     oc = object_class_by_name(typename);
+     g_free(typename);
+-    if (oc != NULL && object_class_dynamic_cast(oc, TYPE_M68K_CPU) == NULL) {
+-        return NULL;
+-    }
++
+     return oc;
+ }
  
-+    cc->cpu_resolving_type = TYPE_M68K_CPU;
-     cc->class_by_name = m68k_cpu_class_by_name;
-     cc->has_work = m68k_cpu_has_work;
-     cc->dump_state = m68k_cpu_dump_state;
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 03c2c4db1f..bb5f2c1f00 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -414,6 +414,7 @@ static void mb_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, mb_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
- 
-+    cc->cpu_resolving_type = TYPE_MICROBLAZE_CPU;
-     cc->class_by_name = mb_cpu_class_by_name;
-     cc->has_work = mb_cpu_has_work;
- 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 63da1948fd..649147df2e 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -578,6 +578,7 @@ static void mips_cpu_class_init(ObjectClass *c, void *data)
-     resettable_class_set_parent_phases(rc, NULL, mips_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
- 
-+    cc->cpu_resolving_type = TYPE_MIPS_CPU;
-     cc->class_by_name = mips_cpu_class_by_name;
-     cc->has_work = mips_cpu_has_work;
-     cc->dump_state = mips_cpu_dump_state;
-diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
-index bc5cbf81c2..fc7c6a83ee 100644
---- a/target/nios2/cpu.c
-+++ b/target/nios2/cpu.c
-@@ -381,6 +381,7 @@ static void nios2_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, nios2_cpu_reset_hold, NULL,
-                                        &ncc->parent_phases);
- 
-+    cc->cpu_resolving_type = TYPE_NIOS2_CPU;
-     cc->class_by_name = nios2_cpu_class_by_name;
-     cc->has_work = nios2_cpu_has_work;
-     cc->dump_state = nios2_cpu_dump_state;
 diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
-index 3bbbcc4e63..5e1e0576e0 100644
+index 5e1e0576e0..7aac9105bd 100644
 --- a/target/openrisc/cpu.c
 +++ b/target/openrisc/cpu.c
-@@ -243,6 +243,7 @@ static void openrisc_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, openrisc_cpu_reset_hold, NULL,
-                                        &occ->parent_phases);
+@@ -168,9 +168,7 @@ static ObjectClass *openrisc_cpu_class_by_name(const char *cpu_model)
+     typename = g_strdup_printf(OPENRISC_CPU_TYPE_NAME("%s"), cpu_model);
+     oc = object_class_by_name(typename);
+     g_free(typename);
+-    if (oc != NULL && !object_class_dynamic_cast(oc, TYPE_OPENRISC_CPU)) {
+-        return NULL;
+-    }
++
+     return oc;
+ }
  
-+    cc->cpu_resolving_type = TYPE_OPENRISC_CPU;
-     cc->class_by_name = openrisc_cpu_class_by_name;
-     cc->has_work = openrisc_cpu_has_work;
-     cc->dump_state = openrisc_cpu_dump_state;
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 02b7aad9b0..bc106d01a2 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -7357,6 +7357,7 @@ static void ppc_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, ppc_cpu_reset_hold, NULL,
-                                        &pcc->parent_phases);
- 
-+    cc->cpu_resolving_type = TYPE_POWERPC_CPU;
-     cc->class_by_name = ppc_cpu_class_by_name;
-     cc->has_work = ppc_cpu_has_work;
-     cc->dump_state = ppc_cpu_dump_state;
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 17b00eb7c0..e8f04ef82b 100644
+index e8f04ef82b..0170e288e7 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -2130,6 +2130,7 @@ static void riscv_cpu_class_init(ObjectClass *c, void *data)
-     resettable_class_set_parent_phases(rc, NULL, riscv_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
+@@ -619,9 +619,7 @@ static ObjectClass *riscv_cpu_class_by_name(const char *cpu_model)
+     oc = object_class_by_name(typename);
+     g_strfreev(cpuname);
+     g_free(typename);
+-    if (!oc || !object_class_dynamic_cast(oc, TYPE_RISCV_CPU)) {
+-        return NULL;
+-    }
++
+     return oc;
+ }
  
-+    cc->cpu_resolving_type = TYPE_RISCV_CPU;
-     cc->class_by_name = riscv_cpu_class_by_name;
-     cc->has_work = riscv_cpu_has_work;
-     cc->dump_state = riscv_cpu_dump_state;
 diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index c98034540d..2a6df418a8 100644
+index 2a6df418a8..879d4fcdef 100644
 --- a/target/rx/cpu.c
 +++ b/target/rx/cpu.c
-@@ -222,6 +222,7 @@ static void rx_cpu_class_init(ObjectClass *klass, void *data)
-     resettable_class_set_parent_phases(rc, NULL, rx_cpu_reset_hold, NULL,
-                                        &rcc->parent_phases);
+@@ -111,7 +111,7 @@ static ObjectClass *rx_cpu_class_by_name(const char *cpu_model)
+     char *typename;
  
-+    cc->cpu_resolving_type = TYPE_RX_CPU;
-     cc->class_by_name = rx_cpu_class_by_name;
-     cc->has_work = rx_cpu_has_work;
-     cc->dump_state = rx_cpu_dump_state;
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index df167493c3..bcba466bb4 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -336,6 +336,7 @@ static void s390_cpu_class_init(ObjectClass *oc, void *data)
-     device_class_set_parent_reset(dc, s390_cpu_reset_full, &scc->parent_reset);
- 
-     scc->reset = s390_cpu_reset;
-+    cc->cpu_resolving_type = TYPE_S390_CPU;
-     cc->class_by_name = s390_cpu_class_by_name,
-     cc->has_work = s390_cpu_has_work;
-     cc->dump_state = s390_cpu_dump_state;
-diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
-index bc112776fc..17c87f15f2 100644
---- a/target/sh4/cpu.c
-+++ b/target/sh4/cpu.c
-@@ -283,6 +283,7 @@ static void superh_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, superh_cpu_reset_hold, NULL,
-                                        &scc->parent_phases);
- 
-+    cc->cpu_resolving_type = TYPE_SUPERH_CPU;
-     cc->class_by_name = superh_cpu_class_by_name;
-     cc->has_work = superh_cpu_has_work;
-     cc->dump_state = superh_cpu_dump_state;
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 130ab8f578..e41a9f4ee2 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -902,6 +902,7 @@ static void sparc_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, sparc_cpu_reset_hold, NULL,
-                                        &scc->parent_phases);
- 
-+    cc->cpu_resolving_type = TYPE_SPARC_CPU;
-     cc->class_by_name = sparc_cpu_class_by_name;
-     cc->parse_features = sparc_cpu_parse_features;
-     cc->has_work = sparc_cpu_has_work;
+     oc = object_class_by_name(cpu_model);
+-    if (oc != NULL && object_class_dynamic_cast(oc, TYPE_RX_CPU) != NULL) {
++    if (oc != NULL) {
+         return oc;
+     }
+     typename = g_strdup_printf(RX_CPU_TYPE_NAME("%s"), cpu_model);
 diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
-index a2381b0dc1..ffe5158786 100644
+index ffe5158786..f65b8761b0 100644
 --- a/target/tricore/cpu.c
 +++ b/target/tricore/cpu.c
-@@ -202,6 +202,7 @@ static void tricore_cpu_class_init(ObjectClass *c, void *data)
- 
-     resettable_class_set_parent_phases(rc, NULL, tricore_cpu_reset_hold, NULL,
-                                        &mcc->parent_phases);
-+    cc->cpu_resolving_type = TYPE_TRICORE_CPU;
-     cc->class_by_name = tricore_cpu_class_by_name;
-     cc->has_work = tricore_cpu_has_work;
+@@ -140,9 +140,7 @@ static ObjectClass *tricore_cpu_class_by_name(const char *cpu_model)
+     typename = g_strdup_printf(TRICORE_CPU_TYPE_NAME("%s"), cpu_model);
+     oc = object_class_by_name(typename);
+     g_free(typename);
+-    if (!oc || !object_class_dynamic_cast(oc, TYPE_TRICORE_CPU)) {
+-        return NULL;
+-    }
++
+     return oc;
+ }
  
 diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
-index a31825a2b5..13bed05d0c 100644
+index 13bed05d0c..6d96e5ab27 100644
 --- a/target/xtensa/cpu.c
 +++ b/target/xtensa/cpu.c
-@@ -252,6 +252,7 @@ static void xtensa_cpu_class_init(ObjectClass *oc, void *data)
-     resettable_class_set_parent_phases(rc, NULL, xtensa_cpu_reset_hold, NULL,
-                                        &xcc->parent_phases);
+@@ -141,9 +141,7 @@ static ObjectClass *xtensa_cpu_class_by_name(const char *cpu_model)
+     typename = g_strdup_printf(XTENSA_CPU_TYPE_NAME("%s"), cpu_model);
+     oc = object_class_by_name(typename);
+     g_free(typename);
+-    if (oc == NULL || !object_class_dynamic_cast(oc, TYPE_XTENSA_CPU)) {
+-        return NULL;
+-    }
++
+     return oc;
+ }
  
-+    cc->cpu_resolving_type = TYPE_XTENSA_CPU;
-     cc->class_by_name = xtensa_cpu_class_by_name;
-     cc->has_work = xtensa_cpu_has_work;
-     cc->dump_state = xtensa_cpu_dump_state;
 -- 
 2.41.0
 
