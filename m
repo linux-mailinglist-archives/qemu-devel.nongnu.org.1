@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAA3798B31
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122F5798B35
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:07:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeewE-0005oQ-6o; Fri, 08 Sep 2023 13:06:34 -0400
+	id 1qeewC-0005k4-Q0; Fri, 08 Sep 2023 13:06:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeewC-0005mm-J2
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:32 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qeew9-0005ck-AG
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:29 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevs-0001Af-Ud
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:30 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-401d10e3e54so24377615e9.2
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:12 -0700 (PDT)
+ id 1qeevt-0001As-Je
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:29 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-401ec23be82so25554445e9.0
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694192771; x=1694797571; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694192772; x=1694797572; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=HjaDTL1xep2B76YBvbaF3VxnEtkhTxo/PkI5Mu9DV1o=;
- b=ORGHrnf4DDAd81s65wpXqIcAdb3OUkW3oe0D8/bvP5vvkFq8vB8/k6NFHQybts1INe
- 9Fuk8yFovxdP/UNDLPWj5DTwPh76XWsllS6hHf6V6wqcrJ63Vpswex8giNaY0+G6jW4l
- STzfPliU3EeOUuCXuaan3hoCs8IftPR4jOudc3biAmq7jWDlTUk6ln11iQKlKikra7ml
- 9wyhCRI0VVBXrxy5D0eQO42gvclFz4p57HLfqc18ExSBcbbiAJlP7wNjJBwLj/mMdMLi
- LMIM6oSt05Y8mUFSIp9RF/EZBpN8G/1lvg1X9Ux07mLtMqEz651uoP3HscVfOjADezwK
- fELQ==
+ :reply-to; bh=TEEyKnu70d+F7Gj49GE/OEykoK3cKaDxtwZwlKSG3gY=;
+ b=czQM1tohwzOzGybjTh5MalbI3Odc28gbIMke6Gwo/rpK4P40kxb8nGDEasfqLnEd10
+ FJKvlgO+ItnqThHR6+VnrxZAscP+xrO9NWhndYqLGw4ePvdVIyjCYYfYAvspUcxGGTdG
+ IDaQQ0B4K2JOQHA9FQEuAc2nB4480Rw02+T4yPMfMH6ffta8DjY8zcUq/LEETkwAqZG4
+ VW3+Ms41urjOkoQnigkIxkjfrbgceWv3SORyt4Nfj23LCLkXtXSjMrrrMojUrnBwdLLW
+ tG7glQ07vqdAKdIRc/qAFj/9baddMUasO1R8eprWF33ySV8U71GaMThk9IiVyYw0J1iV
+ 0BXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694192771; x=1694797571;
+ d=1e100.net; s=20230601; t=1694192772; x=1694797572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HjaDTL1xep2B76YBvbaF3VxnEtkhTxo/PkI5Mu9DV1o=;
- b=pfe3aVbxYG8peaCcwQDfaWVRvPEMX83GhDinjRw9JohOVL3r4dkSqkrhEwVjNqoRdN
- R4aQRKu421h4hwnQJUJBh7PmHqSanOQc0XfJDl+9gv4NHuaw8Jp6QnI919O1GI07Z8cx
- DOMMdO+PDJWdFtTVnV4dGjs4RhAoM730aSkTRaNFB21vA7twet2nOBcQflb4/LnPTF2Y
- PqaCCkk6AqKqBwbXsAMu0M0CpZA3/i147qPrchwbDe6njiMmZGkG932X3bee8wpx1DU0
- 6S1/Bha1Y+I7btBUJGYyXMdICgW0JTFyZFSFfIiXsFoDxwozRU2FZvaIgAYHNJNF7UZ9
- xXoA==
-X-Gm-Message-State: AOJu0Yxlb7AZWvkfVgbM0SBeOmSawoK64uGwv3SIvND3IlYbB1QeuRvo
- mMN4VLxFpSJ6JkDmKi3r1wwMrX6rGJLFjWr+xk8=
-X-Google-Smtp-Source: AGHT+IGVvoW8lrLu9h0AcUmr3fdqKjr5Y1lBJCV+s/SgykQk4TCixKYsu/hD6VOSpnYO4FJi+ngMjw==
-X-Received: by 2002:a7b:cd8c:0:b0:401:b2c7:34aa with SMTP id
- y12-20020a7bcd8c000000b00401b2c734aamr2632182wmj.33.1694192771689; 
- Fri, 08 Sep 2023 10:06:11 -0700 (PDT)
+ bh=TEEyKnu70d+F7Gj49GE/OEykoK3cKaDxtwZwlKSG3gY=;
+ b=ZxJCiOAd6uCCTs3p5Xf9oVsrc6tNVnf9nj/Pl9ynopjcA52Q1tLKRTYTFxIrxbse7A
+ wwULz9WEbJ8QWrtBF+eho5R3Gad86VqJ7lR/ePASAfEL3ryVLlDCdZU1THL+ajvjM9fQ
+ h+8VeeBlI2kmZySKviUTQorwxkk35hsUgwNmIYd2ZDpsKwIDFJfRBgTof7tMF/H8RfM+
+ svLNmauIQBGdBrVb3U9tqViZ6Lx14xaWt1gbisWHBwmveEgvIzKeoZ0EILm1YKF7dt+r
+ gepmDY2txtVWOhO6MAYbbvoERTQ/n/woRpWrrUCA6mV25YsRiQckiZafHb5nop5Zs39w
+ FuWA==
+X-Gm-Message-State: AOJu0YwqnHbrx4RmHTswZkqi6UaWQsSQYG+8B5bHJ0CFvM5x2iGjvuwA
+ wa8q2yH0+mJYwoz9M4vBLSgPHOEdVLeaei/yL0c=
+X-Google-Smtp-Source: AGHT+IHCGN1pS+KnX/NqB6FhvaWtpp2brNZGLxWpZTXV1ekTAo4I5lRr/SXQyUiv798ViQXLI/tf7Q==
+X-Received: by 2002:a7b:c7c6:0:b0:3fe:f726:4a94 with SMTP id
+ z6-20020a7bc7c6000000b003fef7264a94mr2840209wmk.14.1694192772109; 
+ Fri, 08 Sep 2023 10:06:12 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  d21-20020a1c7315000000b00400268671c6sm2427152wmb.13.2023.09.08.10.06.11
@@ -58,23 +58,24 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Fri, 08 Sep 2023 10:06:11 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 25/26] target/arm: Enable SCTLR_EL1.TIDCP for user-only
-Date: Fri,  8 Sep 2023 18:05:56 +0100
-Message-Id: <20230908170557.773048-26-peter.maydell@linaro.org>
+Subject: [PULL 26/26] arm/kvm: Enable support for
+ KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE
+Date: Fri,  8 Sep 2023 18:05:57 +0100
+Message-Id: <20230908170557.773048-27-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230908170557.773048-1-peter.maydell@linaro.org>
 References: <20230908170557.773048-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,35 +91,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
-The linux kernel detects and enables this bit.  Once trapped,
-EC_SYSTEMREGISTERTRAP is treated like EC_UNCATEGORIZED, so
-no changes required within linux-user/aarch64/cpu_loop.c.
+Now that we have Eager Page Split support added for ARM in the kernel,
+enable it in Qemu. This adds,
+ -eager-split-size to -accel sub-options to set the eager page split chunk size.
+ -enable KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230831232441.66020-6-richard.henderson@linaro.org
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+The chunk size specifies how many pages to break at a time, using a
+single allocation. Bigger the chunk size, more pages need to be
+allocated ahead of time.
+
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Message-id: 20230905091246.1931-1-shameerali.kolothum.thodi@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/sysemu/kvm_int.h |  1 +
+ accel/kvm/kvm-all.c      |  1 +
+ target/arm/kvm.c         | 61 ++++++++++++++++++++++++++++++++++++++++
+ qemu-options.hx          | 15 ++++++++++
+ 4 files changed, 78 insertions(+)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 0bb05854419..b9e09a702d6 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -243,6 +243,10 @@ static void arm_cpu_reset_hold(Object *obj)
-                                   SCTLR_EnDA | SCTLR_EnDB);
-         /* Trap on btype=3 for PACIxSP. */
-         env->cp15.sctlr_el[1] |= SCTLR_BT0;
-+        /* Trap on implementation defined registers. */
-+        if (cpu_isar_feature(aa64_tidcp1, cpu)) {
-+            env->cp15.sctlr_el[1] |= SCTLR_TIDCP;
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index 511b42bde5c..a5b9122cb82 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -116,6 +116,7 @@ struct KVMState
+     uint64_t kvm_dirty_ring_bytes;  /* Size of the per-vcpu dirty ring */
+     uint32_t kvm_dirty_ring_size;   /* Number of dirty GFNs per ring */
+     bool kvm_dirty_ring_with_bitmap;
++    uint64_t kvm_eager_split_size;  /* Eager Page Splitting chunk size */
+     struct KVMDirtyRingReaper reaper;
+     NotifyVmexitOption notify_vmexit;
+     uint32_t notify_window;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 2ba7521695e..ff1578bb32b 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3763,6 +3763,7 @@ static void kvm_accel_instance_init(Object *obj)
+     /* KVM dirty ring is by default off */
+     s->kvm_dirty_ring_size = 0;
+     s->kvm_dirty_ring_with_bitmap = false;
++    s->kvm_eager_split_size = 0;
+     s->notify_vmexit = NOTIFY_VMEXIT_OPTION_RUN;
+     s->notify_window = 0;
+     s->xen_version = 0;
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index 23aeb099490..b66b936a958 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -30,6 +30,7 @@
+ #include "exec/address-spaces.h"
+ #include "hw/boards.h"
+ #include "hw/irq.h"
++#include "qapi/visitor.h"
+ #include "qemu/log.h"
+ 
+ const KVMCapabilityInfo kvm_arch_required_capabilities[] = {
+@@ -287,6 +288,26 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+         }
+     }
+ 
++    if (s->kvm_eager_split_size) {
++        uint32_t sizes;
++
++        sizes = kvm_vm_check_extension(s, KVM_CAP_ARM_SUPPORTED_BLOCK_SIZES);
++        if (!sizes) {
++            s->kvm_eager_split_size = 0;
++            warn_report("Eager Page Split support not available");
++        } else if (!(s->kvm_eager_split_size & sizes)) {
++            error_report("Eager Page Split requested chunk size not valid");
++            ret = -EINVAL;
++        } else {
++            ret = kvm_vm_enable_cap(s, KVM_CAP_ARM_EAGER_SPLIT_CHUNK_SIZE, 0,
++                                    s->kvm_eager_split_size);
++            if (ret < 0) {
++                error_report("Enabling of Eager Page Split failed: %s",
++                             strerror(-ret));
++            }
 +        }
-         /* and to the FP/Neon instructions */
-         env->cp15.cpacr_el1 = FIELD_DP64(env->cp15.cpacr_el1,
-                                          CPACR_EL1, FPEN, 3);
++    }
++
+     kvm_arm_init_debug(s);
+ 
+     return ret;
+@@ -1069,6 +1090,46 @@ bool kvm_arch_cpu_check_are_resettable(void)
+     return true;
+ }
+ 
++static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
++                                          const char *name, void *opaque,
++                                          Error **errp)
++{
++    KVMState *s = KVM_STATE(obj);
++    uint64_t value = s->kvm_eager_split_size;
++
++    visit_type_size(v, name, &value, errp);
++}
++
++static void kvm_arch_set_eager_split_size(Object *obj, Visitor *v,
++                                          const char *name, void *opaque,
++                                          Error **errp)
++{
++    KVMState *s = KVM_STATE(obj);
++    uint64_t value;
++
++    if (s->fd != -1) {
++        error_setg(errp, "Unable to set early-split-size after KVM has been initialized");
++        return;
++    }
++
++    if (!visit_type_size(v, name, &value, errp)) {
++        return;
++    }
++
++    if (value && !is_power_of_2(value)) {
++        error_setg(errp, "early-split-size must be a power of two");
++        return;
++    }
++
++    s->kvm_eager_split_size = value;
++}
++
+ void kvm_arch_accel_class_init(ObjectClass *oc)
+ {
++    object_class_property_add(oc, "eager-split-size", "size",
++                              kvm_arch_get_eager_split_size,
++                              kvm_arch_set_eager_split_size, NULL, NULL);
++
++    object_class_property_set_description(oc, "eager-split-size",
++        "Eager Page Split chunk size for hugepages. (default: 0, disabled)");
+ }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 463f520c57c..93d106aa9cb 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -186,6 +186,7 @@ DEF("accel", HAS_ARG, QEMU_OPTION_accel,
+     "                split-wx=on|off (enable TCG split w^x mapping)\n"
+     "                tb-size=n (TCG translation block cache size)\n"
+     "                dirty-ring-size=n (KVM dirty ring GFN count, default 0)\n"
++    "                eager-split-size=n (KVM Eager Page Split chunk size, default 0, disabled. ARM only)\n"
+     "                notify-vmexit=run|internal-error|disable,notify-window=n (enable notify VM exit and set notify window, x86 only)\n"
+     "                thread=single|multi (enable multi-threaded TCG)\n", QEMU_ARCH_ALL)
+ SRST
+@@ -244,6 +245,20 @@ SRST
+         is disabled (dirty-ring-size=0).  When enabled, KVM will instead
+         record dirty pages in a bitmap.
+ 
++    ``eager-split-size=n``
++        KVM implements dirty page logging at the PAGE_SIZE granularity and
++        enabling dirty-logging on a huge-page requires breaking it into
++        PAGE_SIZE pages in the first place. KVM on ARM does this splitting
++        lazily by default. There are performance benefits in doing huge-page
++        split eagerly, especially in situations where TLBI costs associated
++        with break-before-make sequences are considerable and also if guest
++        workloads are read intensive. The size here specifies how many pages
++        to break at a time and needs to be a valid block size which is
++        1GB/2MB/4KB, 32MB/16KB and 512MB/64KB for 4KB/16KB/64KB PAGE_SIZE
++        respectively. Be wary of specifying a higher size as it will have an
++        impact on the memory. By default, this feature is disabled
++        (eager-split-size=0).
++
+     ``notify-vmexit=run|internal-error|disable,notify-window=n``
+         Enables or disables notify VM exit support on x86 host and specify
+         the corresponding notify window to trigger the VM exit if enabled.
 -- 
 2.34.1
 
