@@ -2,179 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CC479857E
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 12:12:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E186379857D
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 12:11:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeYSb-0006fa-Rh; Fri, 08 Sep 2023 06:11:33 -0400
+	id 1qeYSS-0006cx-Fe; Fri, 08 Sep 2023 06:11:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qeYSZ-0006fS-Je
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:11:31 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qeYSQ-0006cj-1k; Fri, 08 Sep 2023 06:11:22 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qeYSW-0001O6-GS
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 06:11:31 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3889j0A3012404; Fri, 8 Sep 2023 10:11:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=i9bj6qVNwFhKLlwgtfDXk/ftt86V7bp9L6iLLYZ3d1o=;
- b=Tk4UrZ7RF/31Gwfky0Go3KrJsjVTBNnEUf8DcxnNa864QL+Rh+2E0HiTZOudjj9s+Bv/
- QZRMFrW1Al/XghsILlJvGEn4bcdeYDzzA3x9e1BvUrHRmiMGikTWjGn+AUaoxXimzVf8
- dI+2iJeeQIO59gMkYBTJaWIxSMGs8wHyQlupKwNMVOFVZlcovEEUnO8QYOmNCKIy+mMf
- AoqvDtqs3NI/+Auh4sAkuB/LCXAcolvV43+5yzI3yBbrb8lGk4wamVMYghgGlhrCF5xr
- 3FWCzWhKh6Y0Jv9VHlPCgMPGZICC6Dk/T6WTl4C+JWrBb7kYknjg6RDSv6RtRJ1uvz39 8A== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t018jg1ma-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Sep 2023 10:11:15 +0000
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 3888DWtF039892; Fri, 8 Sep 2023 10:11:15 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com
- (mail-bn7nam10lp2103.outbound.protection.outlook.com [104.47.70.103])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3suug8y52c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 08 Sep 2023 10:11:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QWlQ0WnXW9b7Rvf1akA8mye5/04/U+ial8T4Raullt3/cCSLdh4zl+YgAtNF766l5ueJo2fznqvlFw1B/e79UW2BQe9sROlgglv31LOdEyvYeJuNo/V+ZZjG1GV9FBF4yC/ID7jRsg9kvTKuGH0i5QSULPsWNb9p8mCXKJUEDXnumGEyp83fnMG0+J8+5ESi46Uc4GXVXjmc2suAR8gCVO7cQ3EBHUWxnaoIKWUDW8FTJSEPHMJWYQqAHz0AvwayeV40Q3EDPy964Pcx8DlYfQwAQx7LtkfL1uE/dXiytbs75+RZ0oja6IlfaXmXtTifztH/hCZwlW1xIwrhCGMRjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i9bj6qVNwFhKLlwgtfDXk/ftt86V7bp9L6iLLYZ3d1o=;
- b=i/Oor3rF8wUovhmhwBDaaazNOEOb6ZJvA8NLV+mjRcw4w1FwSjNtWt+edu8blIAqPbvElbdoOKAwwULnmvzNeDI6ORgWpNHAeejKn05ZH+9jRAYN0UQCukiD6jH2IGAAs+sldLvOmX/FfuZOQvxkdoPzsXLih2ocLZOZLriKxQ3cP2JXc8LmiYhLmfSQp3XYL7sZm/cQxX4iOyz/ZKPXcNt5OIt2cXLdTUVNoNmb8ALwR0eFcbzY/SK5XMzP0aKUWrm1APG/GzBsSTLtl/YrNdVIoc68/3m5zYA7XZu+vCBz7ZDW7n4W4/in8ycMeFw0XOKXIVz2JWemzdT2yVYj5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i9bj6qVNwFhKLlwgtfDXk/ftt86V7bp9L6iLLYZ3d1o=;
- b=aWLJBHahL0GR977phO+tJblWAjk3DyXYe1cMd+j5jcZo9lz8MaSFTTPceOvuWTeKSMQ1Kj0fCEE+1J3C2uP+Bd5alKtZGIvmDO+Tuyc9mXUYA/W/L/9G6CD/nTkZV065pqJyQ+PQVeStQCV9z7GenTbgn5fEWKDDP+YLh8GyodA=
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com (2603:10b6:208:331::11)
- by BLAPR10MB4900.namprd10.prod.outlook.com (2603:10b6:208:30c::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Fri, 8 Sep
- 2023 10:11:12 +0000
-Received: from BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::2867:4d71:252b:7a67]) by BLAPR10MB4835.namprd10.prod.outlook.com
- ([fe80::2867:4d71:252b:7a67%7]) with mapi id 15.20.6768.029; Fri, 8 Sep 2023
- 10:11:12 +0000
-Message-ID: <7b60c81f-8f6b-8835-b668-dc58bbfbe140@oracle.com>
-Date: Fri, 8 Sep 2023 11:11:04 +0100
-Subject: Re: [PATCH v4 06/15] intel-iommu: Implement get_attr() method
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Avihai Horon <avihaih@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>
-References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-7-joao.m.martins@oracle.com>
- <e6e27cb1-88c4-5b1a-dce4-b4f31ecb68c1@intel.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-In-Reply-To: <e6e27cb1-88c4-5b1a-dce4-b4f31ecb68c1@intel.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qeYSM-0001NC-Qy; Fri, 08 Sep 2023 06:11:21 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 0BBA620129;
+ Fri,  8 Sep 2023 13:12:05 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 0D81326939;
+ Fri,  8 Sep 2023 13:11:16 +0300 (MSK)
+Received: (nullmailer pid 276785 invoked by uid 1000);
+ Fri, 08 Sep 2023 10:11:15 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
+Subject: [PULL v2 00/22] Trivial patches for 2023-09-08
+Date: Fri,  8 Sep 2023 13:11:09 +0300
+Message-Id: <20230908101109.276768-1-mjt@tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM0PR01CA0103.eurprd01.prod.exchangelabs.com
- (2603:10a6:208:10e::44) To BLAPR10MB4835.namprd10.prod.outlook.com
- (2603:10b6:208:331::11)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR10MB4835:EE_|BLAPR10MB4900:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf965b0c-160a-4582-8680-08dbb053ed95
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Kt8lFWfavAld+Llqbid4gVChZKaD3zNI+/NYJ2InFk2bPQT320m8XimRbWes+Ks/FgToP3B+b9TPrBZt/2+2kn+6fz0pi/OK5kVcmW0JMO6U74R2ey4Ar7N+zJGjg7koVpnHJx8K+dnmqY7xtGEOdOWXixDu3BJ+u35dL2Nvy/QCsHCzdH7uBmM6Xw0MHNTiQf1Orab6TIPOkhaZXte9jjKjIStjNA3wmCvN0NhYRVkL0tkWP6f60pKoNc7A+LHk2dn4ElE/Apqf76R54gu2m5Ys5s3lOj6+MZw4VtzswZFxTBzV6T7u4kfRNJNkpLpyA9arSS9Kmiu8pxbQilmcDcgmr37y3UogPNEjOirKmpKwXyOF1+ETx3kDTal8xNYcyZV3vMX4WDYirYAVrkRMS2UC70M7iNfZWxRuErSQ9PJlH9GrqznXtclgEEgKbeRDdsVG6p0jdgoQ7ez1DxfzTEykDNVxyv6QLHOlOo31QWuhkfocHcZ/J8He7YYVnQuaDQrSe+HlVi2tqMIH+l1dAeI0bSegjcy4fBcvwdbeKxajlEhyb0/P8TgvmKO14kvm0YtBaSqn5TfDFqQuUK6I+rKGfIHvwLztb6DdPkRcRunc28mBPSg/WiWmTr1ChKMP
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BLAPR10MB4835.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(39860400002)(136003)(346002)(376002)(396003)(451199024)(1800799009)(186009)(6486002)(6666004)(6506007)(53546011)(6512007)(478600001)(41300700001)(2616005)(26005)(7416002)(2906002)(66946007)(66476007)(316002)(54906003)(66556008)(4326008)(5660300002)(8936002)(8676002)(86362001)(31696002)(36756003)(38100700002)(31686004)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bitzSVd2VHVpeTR3TmE4Z3YzRHdwMStpTWxRYmpDTUM0MDlmVU9jYTJTVUwx?=
- =?utf-8?B?NyszY1A3MUg3eEhSRytVLzVOOGdOL0dDeW92YUd6SzBWQmFpYnBLV3A1Mldz?=
- =?utf-8?B?cTE4VXRjNmY2TkttVmQ4R2pId3VFbWIxUVJ1eEZWc0o3TTVMTGtJQnJOeXBh?=
- =?utf-8?B?RlU2bDVZYmxwOURlUWQwOE8xSEFiWURDTGF3aW5oMUorRG9TL0k0YjBxdnQy?=
- =?utf-8?B?eWszTE43dXdla0tXalVFVHF2YTE3cHVkQnZOR2pydzIwQ3R3TlkweFlOaHZi?=
- =?utf-8?B?NTEwQzkwdXB2dFU1VzN6Y2JBbSszVHZQYmZIQzRqVC9GeGNLTHBzUm9PZnQ0?=
- =?utf-8?B?ZWd5ZDQzeGxVVVJ0Ulg1ZHg4L1NlZHByNURSSHdUWFVIRlhnVWxLWDJZbzVn?=
- =?utf-8?B?b3RiWnVYVGRmdkpIMkNDbEhRRkY0ejBZbGJUNGVFbzg3SGVobDBValdiKzZu?=
- =?utf-8?B?MjAxbG1qV09INFgyQVhvMGxUakVFdjlYYXRvSjlYUjFUT1pGREdqdVBMNWJY?=
- =?utf-8?B?ZzUwbjdkZkF0dStqZlUrZVdrZkcyWUhpTnZCOXJQSE9LRFlMQzcxUm9sVVpn?=
- =?utf-8?B?RFl6cE4ybitkbWs1VXl2N0pMWDRrRHQ3NnFZVW1NUi8wTzViVm1nVDJBbnkv?=
- =?utf-8?B?Z1VUZ05yMy9xNUtqQnUvU0hMQkFkL1ZFQStZUzJReEhqUUtPY2VkZ2dsWGI5?=
- =?utf-8?B?VU9GdWlzdGZzR3o3ZlczMDVMT2NwM2pWT0tocFAxckJZdVQwV1ViRE9GYjQv?=
- =?utf-8?B?bWxVNWwzYk9mR1U0NUlBcDY2eUFWUWxUV3VQaXY5djVqNStVNkJqVE1GaVRx?=
- =?utf-8?B?eEthSDQrb1NjRkdXckt2ditwZG56Z1BPVHcwTzhmQjRCQVVKQnROKzRpUllK?=
- =?utf-8?B?Vjk4OFpzRm16bmNkclFHbkFYcVVPQ09YRTJpcDJRQnIvM0JFUXVMVVFVOTRR?=
- =?utf-8?B?N3RNMGt0Q0RuWElDaEp6UWpDd3VtdGpyVmNUc0VHVWhpSXFDaE15QVVFRDJk?=
- =?utf-8?B?Q2gzQjVwdmNobmJOUS9sTUpmcUhjcm1jWU9LYUNjcFEvS21SbTVZMHlzVURU?=
- =?utf-8?B?TlFLNDFDRW93MDBsdGZTYTBiY2l0Ump0dG9yajhsU1RRSVRsSlhwN0tHS2tz?=
- =?utf-8?B?WVBxb2h2RU80YWRzOE5TMDY3SGRLb3hzZHlwNnUxd21WeUFJSzQxaGRSTjJH?=
- =?utf-8?B?T0d3M0oyUGpnVTFkaHR1NXJVNENSbWFNcXozYUZXNzhKZW90aTdDZHkvWTFX?=
- =?utf-8?B?UExvWjErWWJLNDYxSGY1bTkxK3ZLVTBrMGVnQlBrSG1rV3ZUT1J4by9EYTVL?=
- =?utf-8?B?eW1IbXN0SWxqTjEvTXBmR0xJWlA3QVVkdjlLQ0krYk1lWVZtRG5CbHBJdk1U?=
- =?utf-8?B?SHpXNEdoek1XVE5CYTByM1BJSTE5bkszZE4yVXVoL0Q4NnE5R3ZpcFpva0pB?=
- =?utf-8?B?TDc5Y3pnQjZwNVR3K2Q1NnQzcXYxSitlQ1RLZXU1dU5EMjZUQmdkby9CcTVV?=
- =?utf-8?B?V1FCYWNiTjBrVGtFOHAyVEZnSm9zYVFhQTU2YjNTbHcxSXRPTjJCMEpReC9t?=
- =?utf-8?B?d2dhNGloazZxKzMzQjhtaDNaVmhyeDgwODd4NWdMMzdFQkNHYW4wR3lJeFdl?=
- =?utf-8?B?TVZMbTBQMzVpODl3RDJsYXRIQUhDeUNyeFF6K1pDUUdocVlEWGVBWmFZZ2dQ?=
- =?utf-8?B?eE4renVwUnE2YTJQUUJiVndhN2lKU3I0UjJjdVNMeFJNclozZGtvUmhBeTZt?=
- =?utf-8?B?YkZBamw0WTJvZjZUVm5zcWxFWnM2QTIxNCtyVnFFamZFS3MwVEoxRGFLR0Nh?=
- =?utf-8?B?NU1GcWkyc1pUU2JtenhPazBmS2tER05kMDEwZDduVUhtd1VmbnJKTWRHbGRM?=
- =?utf-8?B?eUFxRVQwUUMwRFBaUDJhUWhoT3JvVGhuRHg0VTBRdjJyWTkrdEpDR2poQTg4?=
- =?utf-8?B?amdLRFA1NWRzVzhLdkRESHpYTllIQ0RTRVNyTUFabGh3TnI1dGVyNWJQOFZj?=
- =?utf-8?B?R09UYzZ0VGJxRGE2TDg2ejJIbWZwZ05Bd1lzMjNocXhHYUlnQ1BwZTJvcXNU?=
- =?utf-8?B?MEtBT0orbzJUOGg1bEQ3R2J5REVRSWxWcWtjOElYdlhjYUM0VUNlb0ttaXNa?=
- =?utf-8?B?ZDJtWVFGcDBQbEVYMUR3QzNVNHRVNVR0SDA5NXF6ajlNd2pCVFdwUVFzUTVM?=
- =?utf-8?B?anc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: AnnI9XivPg7vXioApU2zL2P4lBjboupIiEqWx5uWzIymHmFOL+PLGzCS7EvKgAMTdbIHmMiv/6l+d8wcywza+L3xpsMx8oeCiQTU2JkHvjGEQ3RW3ivhpr2cPzGnpD5/E9jNqSufVedfRUt+8lW1DLLJxD4V8Ai55i1XI0UvdgVIXfgn2SFzsNKbEw4S/IA6SWHHMBulsWVGrOWdRMgmAb2Y19AT+UCHTAUeqp0JKCMbuRGpsH9SIKJeRnRqpE6jQ9vva76jW59ZHfzvhSybQ3t6bjISxV4GFqKJsdfwp+8+0BgqRguyISJUX4y+h8WB61cXg4ImhajKsPmvlfQCNaqkPCsIUSSnHW1l3mMHbMqIhzEOh3ZcJXz7CWefW+sL+DOvOrYp8Jx+3ohM2+tk96Vd8mDSqeQp0o+lx2Ty3dCg5QqooCTqfa9s6Ta1QJTy0vY4RTCqcaC3927DKCeoGqcu0mXfFMyJD7cowaOwefIjWGb0aEmlqjYZhSrtd9T8NjN701XiMijIufnIA7KA6216WxaIzVQsdziySHTtbMSjZ2r9wc2svWvtpF9IWlotiVExhGP7efC0JVTLgxdNJSN01XiCvTqly7DGuB6k3uuTKAIm1Yj8W6Yn59sFGqllESLb0gxKp88N2zLP5Y+DUM7eOjf2x+vzXHVVYqJChHUfsq2wdAhh8bTHSyN7LRq1qQ+K8jnrdl0xIaqdlAHal20vCvlbkkg/yt2gtbMsflXSr5tKBy5kj9ubKf9TK7SgabxYXkK/VlruyRO+l0GSakAKp4N3xflJORt09H6IhDjm63mkQACS+UXSSdWWWTdm8YctSCEsTwk0jESAfCcEM7f8XHyPPx/t45S+Kg7WPg6rt8pe+TsflFvl3RHwTYWG/8IxtkOS0BwrzXOCin89zlFITXu3/ghvLv68hMsytm4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf965b0c-160a-4582-8680-08dbb053ed95
-X-MS-Exchange-CrossTenant-AuthSource: BLAPR10MB4835.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2023 10:11:12.0518 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bW3B1gb5zx97Q2enPnWCSiF66SjDnjLITpsHW345C05NbY2un3SUBPJGYoVo91+Ct0T2cTiYppEm6hAZAiaBDGhJScVxRQoF0AeVljT5x1w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4900
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-08_07,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxscore=0 suspectscore=0
- bulkscore=0 mlxlogscore=999 malwarescore=0 phishscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309080093
-X-Proofpoint-ORIG-GUID: PBQFwYYYIWoqjQAHq2Rvzqr0At5kepOf
-X-Proofpoint-GUID: PBQFwYYYIWoqjQAHq2Rvzqr0At5kepOf
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -191,96 +56,228 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit 03a3a62fbd0aa5227e978eef3c67d3978aec9e5f:
 
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-09-07 10:29:06 -0400)
 
-On 08/09/2023 07:23, Duan, Zhenzhong wrote:
-> 
-> On 6/23/2023 5:48 AM, Joao Martins wrote:
->> Implement IOMMU MR get_attr() method and use the dma_translation
->> property to report the IOMMU_ATTR_DMA_TRANSLATION attribute.
->> Additionally add the necessary get_iommu_attr into the PCIIOMMUOps to
->> support pci_device_iommu_get_attr().
->>
->> The callback in there acts as a IOMMU-specific address space walker
->> which will call get_attr in the IOMMUMemoryRegion backing the device to
->> fetch the desired attribute.
->>
->> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
->> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->> ---
->>   hw/i386/intel_iommu.c | 40 ++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 40 insertions(+)
->>
->> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->> index 1606d1b952d0..ed2a46e008df 100644
->> --- a/hw/i386/intel_iommu.c
->> +++ b/hw/i386/intel_iommu.c
->> @@ -3861,6 +3861,29 @@ static void vtd_iommu_replay(IOMMUMemoryRegion
->> *iommu_mr, IOMMUNotifier *n)
->>       return;
->>   }
->>   +static int vtd_iommu_get_attr(IOMMUMemoryRegion *iommu_mr,
->> +                              enum IOMMUMemoryRegionAttr attr, void *data)
->> +{
->> +    VTDAddressSpace *vtd_as = container_of(iommu_mr, VTDAddressSpace, iommu);
->> +    IntelIOMMUState *s = vtd_as->iommu_state;
->> +    int ret = 0;
->> +
->> +    switch (attr) {
->> +    case IOMMU_ATTR_DMA_TRANSLATION:
->> +    {
->> +        bool *enabled = (bool *)(uintptr_t) data;
->> +
->> +        *enabled = s->dma_translation;
->> +        break;
->> +    }
->> +    default:
->> +        ret = -EINVAL;
->> +        break;
->> +    }
->> +
->> +    return ret;
->> +}
->> +
->>   /* Do the initialization. It will also be called when reset, so pay
->>    * attention when adding new initialization stuff.
->>    */
->> @@ -4032,8 +4055,24 @@ static AddressSpace *vtd_host_dma_iommu(PCIBus *bus,
->> void *opaque, int devfn)
->>       return &vtd_as->as;
->>   }
->>   +static int vtd_get_iommu_attr(PCIBus *bus, void *opaque, int32_t devfn,
->> +                              enum IOMMUMemoryRegionAttr attr, void *data)
->> +{
->> +    IntelIOMMUState *s = opaque;
->> +    VTDAddressSpace *vtd_as;
->> +
->> +    assert(0 <= devfn && devfn < PCI_DEVFN_MAX);
->> +
->> +    vtd_as = vtd_find_add_as(s, bus, devfn, PCI_NO_PASID);
->> +    if (!vtd_as)
->> +    return -EINVAL;
->> +
->> +    return memory_region_iommu_get_attr(&vtd_as->iommu, attr, data);
->> +}
->> +
->>   static PCIIOMMUOps vtd_iommu_ops = {
->>       .get_address_space = vtd_host_dma_iommu,
->> +    .get_iommu_attr = vtd_get_iommu_attr,
->>   };
->>     static bool vtd_decide_config(IntelIOMMUState *s, Error **errp)
->> @@ -4197,6 +4236,7 @@ static void
->> vtd_iommu_memory_region_class_init(ObjectClass *klass,
->>       imrc->translate = vtd_iommu_translate;
->>       imrc->notify_flag_changed = vtd_iommu_notify_flag_changed;
->>       imrc->replay = vtd_iommu_replay;
->> +    imrc->get_attr = vtd_iommu_get_attr;
-> 
-> Do we have other user of imrc->get_attr? If not, what about squashing
-> 
-> vtd_iommu_get_attr into vtd_get_iommu_attr and have imrc->get_attr removed?
-> 
+are available in the Git repository at:
 
-There's an user, and that's VFIO, but it's later in the series. It felt more
-natural for bisection to do things this way.
+  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+
+for you to fetch changes up to 95bef686e490bc3afc3f51f5fc6e20bf260b938c:
+
+  qxl: don't assert() if device isn't yet initialized (2023-09-08 13:08:52 +0300)
+
+----------------------------------------------------------------
+trivial patches for 2023-09-08
+
+There are some more or less minor things here and there,
+and a bunch of spelling fixes (the ones which were reviewed,
+there are some which are pending still).
+
+v2: omit 01/23 "qemu-img: omit errno value in error message"
+which should go via the block tree.
+
+----------------------------------------------------------------
+Daniel Henrique Barboza (2):
+      hw/ppc: use g_free() in spapr_tce_table_post_load()
+      target/ppc: use g_free() in test_opcode_table()
+
+Marc-André Lureau (1):
+      qxl: don't assert() if device isn't yet initialized
+
+Markus Armbruster (2):
+      docs tests: Fix use of migrate_set_parameter
+      tests/qtest/test-hmp: Fix migrate_set_parameter xbzrle-cache-size test
+
+Michael Tokarev (10):
+      hexagon: spelling fixes
+      riscv: spelling fixes
+      xen: spelling fix
+      audio: spelling fixes
+      include/: spelling fixes
+      scripts/: spelling fixes
+      tests/: spelling fixes
+      qga/: spelling fixes
+      misc/other: spelling fixes
+      block: spelling fixes
+
+Peter Maydell (1):
+      hw/display/xlnx_dp: update comments
+
+Philippe Mathieu-Daudé (1):
+      accel/tcg: Fix typo in translator_io_start() description
+
+Thomas Huth (5):
+      trace-events: Fix the name of the tracing.rst file
+      qemu-options.hx: Rephrase the descriptions of the -hd* and -cdrom options
+      trivial: Simplify the spots that use TARGET_BIG_ENDIAN as a numeric value
+      tests/qtest/usb-hcd: Remove the empty "init" tests
+      hw/net/vmxnet3: Fix guest-triggerable assert()
+
+ audio/mixeng.h                                    |  2 +-
+ backends/tpm/tpm_ioctl.h                          |  2 +-
+ block.c                                           |  2 +-
+ block/block-copy.c                                |  4 ++--
+ block/export/vduse-blk.c                          |  2 +-
+ block/export/vhost-user-blk-server.c              |  2 +-
+ block/export/vhost-user-blk-server.h              |  2 +-
+ block/file-posix.c                                |  8 ++++----
+ block/graph-lock.c                                |  2 +-
+ block/io.c                                        |  2 +-
+ block/linux-aio.c                                 |  2 +-
+ block/mirror.c                                    |  2 +-
+ block/qcow2-refcount.c                            |  2 +-
+ block/vhdx.c                                      |  2 +-
+ block/vhdx.h                                      |  4 ++--
+ bsd-user/trace-events                             |  2 +-
+ chardev/char-socket.c                             |  6 +++---
+ chardev/char.c                                    |  2 +-
+ cpu.c                                             |  6 +-----
+ crypto/afalg.c                                    |  2 +-
+ crypto/block-luks.c                               |  6 +++---
+ crypto/der.c                                      |  2 +-
+ crypto/der.h                                      |  6 +++---
+ docs/multi-thread-compression.txt                 | 12 ++++++------
+ docs/rdma.txt                                     |  2 +-
+ ebpf/trace-events                                 |  2 +-
+ hw/audio/fmopl.c                                  |  8 ++++----
+ hw/audio/fmopl.h                                  |  2 +-
+ hw/audio/gusemu_hal.c                             |  4 ++--
+ hw/audio/intel-hda-defs.h                         |  4 ++--
+ hw/display/qxl.c                                  |  5 ++++-
+ hw/display/xlnx_dp.c                              |  9 ++++++---
+ hw/microblaze/boot.c                              |  9 ++-------
+ hw/mips/jazz.c                                    | 10 ++--------
+ hw/mips/malta.c                                   | 21 ++++-----------------
+ hw/mips/mipssim.c                                 |  9 +--------
+ hw/net/vmxnet3.c                                  |  5 ++++-
+ hw/nios2/boot.c                                   |  9 ++-------
+ hw/nubus/trace-events                             |  2 +-
+ hw/ppc/spapr_iommu.c                              |  2 +-
+ hw/riscv/microchip_pfsoc.c                        |  2 +-
+ hw/riscv/virt.c                                   |  4 ++--
+ hw/xen/xen_pvdev.c                                |  2 +-
+ hw/xtensa/sim.c                                   |  7 +------
+ hw/xtensa/xtfpga.c                                | 10 +++-------
+ include/block/block_int-common.h                  |  2 +-
+ include/chardev/char-fe.h                         |  4 ++--
+ include/crypto/akcipher.h                         |  2 +-
+ include/crypto/ivgen.h                            |  4 ++--
+ include/exec/translator.h                         |  2 +-
+ include/hw/acpi/aml-build.h                       |  2 +-
+ include/hw/acpi/pc-hotplug.h                      |  2 +-
+ include/hw/acpi/vmgenid.h                         |  2 +-
+ include/hw/boards.h                               |  6 +++---
+ include/hw/char/avr_usart.h                       |  2 +-
+ include/hw/clock.h                                |  2 +-
+ include/hw/cxl/cxl_device.h                       |  2 +-
+ include/hw/hyperv/vmbus.h                         |  2 +-
+ include/hw/misc/macio/pmu.h                       |  2 +-
+ include/hw/net/mii.h                              |  2 +-
+ include/hw/pci-host/dino.h                        |  2 +-
+ include/hw/pci/pcie_aer.h                         |  2 +-
+ include/hw/riscv/riscv_hart.h                     |  2 +-
+ include/hw/ssi/xilinx_spips.h                     |  2 +-
+ include/hw/virtio/virtio-net.h                    |  2 +-
+ include/sysemu/cryptodev-vhost.h                  |  2 +-
+ include/sysemu/cryptodev.h                        |  6 +++---
+ include/sysemu/iothread.h                         |  2 +-
+ include/sysemu/stats.h                            |  2 +-
+ include/sysemu/tpm_backend.h                      |  2 +-
+ nbd/client-connection.c                           |  2 +-
+ net/checksum.c                                    |  4 ++--
+ net/filter.c                                      |  6 +++---
+ net/vhost-vdpa.c                                  |  8 ++++----
+ qemu-options.hx                                   | 20 ++++++++++++--------
+ qga/channel-posix.c                               |  2 +-
+ qga/commands-posix-ssh.c                          |  2 +-
+ qga/commands-posix.c                              |  2 +-
+ qga/commands-win32.c                              |  4 ++--
+ qga/main.c                                        |  2 +-
+ qga/vss-win32/install.cpp                         |  4 ++--
+ scripts/checkpatch.pl                             |  2 +-
+ scripts/ci/gitlab-pipeline-status                 |  2 +-
+ scripts/codeconverter/codeconverter/qom_macros.py |  2 +-
+ scripts/oss-fuzz/minimize_qtest_trace.py          |  8 ++++----
+ scripts/performance/topN_callgrind.py             |  2 +-
+ scripts/performance/topN_perf.py                  |  2 +-
+ scripts/qapi/gen.py                               |  2 +-
+ scripts/replay-dump.py                            |  2 +-
+ scripts/simplebench/bench_block_job.py            |  2 +-
+ target/arm/cpu.h                                  | 12 ++----------
+ target/hexagon/README                             |  2 +-
+ target/hexagon/fma_emu.c                          |  2 +-
+ target/hexagon/idef-parser/README.rst             |  2 +-
+ target/hexagon/idef-parser/idef-parser.h          |  2 +-
+ target/hexagon/idef-parser/parser-helpers.c       |  6 +++---
+ target/hexagon/imported/alu.idef                  |  8 ++++----
+ target/hexagon/imported/macros.def                |  2 +-
+ target/hexagon/imported/mmvec/ext.idef            | 10 +++++-----
+ target/ppc/translate.c                            |  2 +-
+ target/riscv/cpu.h                                |  2 +-
+ target/riscv/cpu_bits.h                           |  4 ++--
+ target/riscv/csr.c                                |  4 ++--
+ target/riscv/debug.c                              | 10 +++++-----
+ target/riscv/insn_trans/trans_rvf.c.inc           |  4 ++--
+ target/riscv/insn_trans/trans_rvv.c.inc           |  4 ++--
+ target/riscv/insn_trans/trans_rvzfh.c.inc         |  4 ++--
+ target/riscv/monitor.c                            |  2 +-
+ target/s390x/kvm/trace-events                     |  2 +-
+ tests/avocado/acpi-bits.py                        |  4 ++--
+ tests/avocado/acpi-bits/bits-tests/testacpi.py2   |  4 ++--
+ tests/decode/err_pattern_group_ident2.decode      |  2 +-
+ tests/docker/common.rc                            |  2 +-
+ tests/migration/guestperf-batch.py                |  2 +-
+ tests/migration/guestperf.py                      |  2 +-
+ tests/plugin/mem.c                                |  2 +-
+ tests/qapi-schema/bad-if-not.json                 |  2 +-
+ tests/qemu-iotests/029                            |  2 +-
+ tests/qemu-iotests/040                            |  8 ++++----
+ tests/qemu-iotests/046                            |  2 +-
+ tests/qemu-iotests/059                            |  2 +-
+ tests/qemu-iotests/061                            |  2 +-
+ tests/qemu-iotests/071                            |  2 +-
+ tests/qemu-iotests/181                            |  2 +-
+ tests/qemu-iotests/197                            |  2 +-
+ tests/qemu-iotests/215                            |  2 +-
+ tests/qemu-iotests/298                            |  4 ++--
+ tests/qemu-iotests/pylintrc                       |  2 +-
+ tests/qtest/ahci-test.c                           |  2 +-
+ tests/qtest/bcm2835-dma-test.c                    |  2 +-
+ tests/qtest/bios-tables-test.c                    |  2 +-
+ tests/qtest/ds1338-test.c                         |  2 +-
+ tests/qtest/fuzz/generic_fuzz.c                   |  6 +++---
+ tests/qtest/libqos/qgraph.c                       |  4 ++--
+ tests/qtest/libqos/qgraph_internal.h              |  2 +-
+ tests/qtest/libqos/virtio-gpio.c                  |  2 +-
+ tests/qtest/libqtest.c                            |  4 ++--
+ tests/qtest/migration-test.c                      |  6 +++---
+ tests/qtest/npcm7xx_timer-test.c                  |  2 +-
+ tests/qtest/test-hmp.c                            |  6 +++---
+ tests/qtest/tpm-emu.c                             |  2 +-
+ tests/qtest/tpm-tests.c                           |  2 +-
+ tests/qtest/tpm-tests.h                           |  2 +-
+ tests/qtest/tpm-tis-i2c-test.c                    |  2 +-
+ tests/qtest/tpm-tis-util.c                        |  2 +-
+ tests/qtest/usb-hcd-uhci-test.c                   |  5 -----
+ tests/qtest/usb-hcd-xhci-test.c                   |  6 ------
+ tests/qtest/vhost-user-blk-test.c                 |  2 +-
+ tests/qtest/virtio-net-test.c                     |  2 +-
+ tests/qtest/vmgenid-test.c                        |  2 +-
+ tests/tcg/hexagon/fpstuff.c                       |  2 +-
+ tests/tcg/hexagon/test_clobber.S                  |  2 +-
+ tests/tsan/suppressions.tsan                      |  2 +-
+ tests/uefi-test-tools/Makefile                    |  2 +-
+ tests/unit/check-qjson.c                          |  2 +-
+ tests/unit/test-aio.c                             |  2 +-
+ tests/unit/test-bdrv-graph-mod.c                  | 12 ++++++------
+ tests/unit/test-crypto-secret.c                   |  2 +-
+ tests/unit/test-qobject-input-visitor.c           |  2 +-
+ tests/unit/test-throttle.c                        |  8 ++++----
+ tests/unit/test-util-filemonitor.c                |  2 +-
+ tests/unit/test-xs-node.c                         |  2 +-
+ tests/vm/Makefile.include                         |  2 +-
+ tests/vm/ubuntuvm.py                              |  2 +-
+ 164 files changed, 272 insertions(+), 327 deletions(-)
 
