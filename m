@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E905C79820C
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E1D7981FE
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:10:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUfZ-0005tf-Fn; Fri, 08 Sep 2023 02:08:41 -0400
+	id 1qeUfd-0006AQ-La; Fri, 08 Sep 2023 02:08:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUfW-0005hp-Vb
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:08:39 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qeUfa-00063L-Uc
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:08:43 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUfU-0008ES-GQ
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:08:38 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1c1f8aaab9aso14781685ad.1
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:08:36 -0700 (PDT)
+ id 1qeUfY-0008Eu-Eg
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:08:42 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68c576d35feso1615807b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153315; x=1694758115; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153318; x=1694758118; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Jr7URA9g3570blsLy4covRVzNAG6jd179YZF66T+Xds=;
- b=JfSOwac5nxwKXIRfbK4DjsNMIMR58w2tV6H+Qwinh0rCLmIhcDr5WZa8p+tvkGzROh
- vzThxDL9vag+20z6EiASSAOglmrwgysFuEQKF9/7u7XfSo26aQ18KXPGiA2Vj5e4CdoQ
- G0VhuyZt56iSSobJd3n9A2cqm8I3oPo7tHodOEGqErlkMSXir+hZ5RQjqUhLVmJbg8jc
- EAYtTAXU3rBmciYtlWajnxh38a84GckZ2C1ATOF1RZKry4uoHhyOkkOwV1RT8x0rcmoC
- GbYPd4yQ6OP/TNBQEZ0UrqLcJ3lmOpekjm/FHW19vAq409mD11EHxppolikrJWTuTox6
- T0Xw==
+ bh=/Qu073TjSctnDYoeikMwne9G4Nlj9hLM/T7NvyQrYNY=;
+ b=rJIY9kd9LKqmycWQrpRhvDizeuGzb8L9lxZV2O5DUnJCkszpNBJ8Pr9Frm/YRsgbeD
+ Nnx6b0akK1nBeQKeP6nPNuqikO7bOrCzvPNIZkZ1FMNfJVxbt6i5I302BKGfEnhrK9rb
+ 6QSw09xdlg57arwOVy7eaHYhckv9kCWFwVUsnndx8sgF1nO/YRAoYQuE0gaNeplXYqZn
+ 2YvRw4z8/tuwquvQhCYCfa8DwsSdo3iR7v6g5ETEFAys4ijiFAQbThXPE/SjWP/Rdv2R
+ zydoA8ruAWt6tsq3MtK4QNmtzqTi/3gwiizeYoM5d3iBEjxe4kuDFuq16+7arg0ib4W+
+ hMqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153315; x=1694758115;
+ d=1e100.net; s=20230601; t=1694153318; x=1694758118;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Jr7URA9g3570blsLy4covRVzNAG6jd179YZF66T+Xds=;
- b=Isafh2ckJG8e445d81aMn3Ul8pRwTClEOGHXARFciZheB5jdh7TQj0IgFfdi/YfhrT
- OJGq9QCqgItT8ufPBRLramdHbZqD/SRyEtGihWUX12+h41oj+zApwtP0D8wK5I1yt5cR
- IYlNCPTbkLT35ZJn9xg/exhqJZ8+B8pXH/+Fn6I/CtqgkHh0DUmp2nmUTokExu0b8iGu
- 286VgN6xysxpL5Z2v67P8OajymbsmwwxgJAbKiK3LToaYovYXXrPdxIZ+0sNKjnaK5ek
- vmEj5LDeC2W5r5ZWc0ayXUrD42BmDbguMPImNFBOA5fGJAAlH7GUOkxfQuOl1Yznfv2M
- gC+Q==
-X-Gm-Message-State: AOJu0YwHmU5KCtOl2NqQlIQ+RKLqJ0RtNGzI4xVWCEWYOlS2q8oejywu
- A5QaPQ8FW17zsT6G0zvJZCXJzlDXGq/Y4ZNa
-X-Google-Smtp-Source: AGHT+IH/WMZP0wZJF2Pp1hscz6JVUjBJRmubFD6Gdv7BL8ngBVjEOlGKzD99q+eEQ1G/9oZBUX7yVw==
-X-Received: by 2002:a17:902:a5c7:b0:1c0:6dcd:453d with SMTP id
- t7-20020a170902a5c700b001c06dcd453dmr1545678plq.20.1694153314836; 
- Thu, 07 Sep 2023 23:08:34 -0700 (PDT)
+ bh=/Qu073TjSctnDYoeikMwne9G4Nlj9hLM/T7NvyQrYNY=;
+ b=uDsDgHvctNYFFaS+OzwczGIHmLl9LkQBQ33Wc75ib2jRq8fhG7vQWCl4TvuY9xH67N
+ bVti+ysdv02lGAwksUPHYWfnxNBbx9w83o99VTnEYZRHnDvMOHOSRYhFVrokFw3+74Sq
+ oB53SIlnWd1QIHhZA8wMcXuoLv0aKfQU5PjhgEZ2SJUQclCN5FsbWjOMfymd5ZIQ/ofd
+ zuBestqc/CJt5jDATaI1ehY0cchJuXYLFWfQb/3U4ejdWCqat9RnbWYRGiZ7uS+Pxj73
+ XfiwHcnlMRLLfxTTJMVzC99OQAO0Mt74nJ/dHw1uzqUNczWafWjtYOlujrc7DdHINhHt
+ Lweg==
+X-Gm-Message-State: AOJu0YzHk9D5AC1lUwQ/GGKsYt4y/bm7de2ZN0ivVexnLBO2Vnzk3vx2
+ lwmobJKUJkuTJdxwUvK9JGrHNFkqrygnRXCn
+X-Google-Smtp-Source: AGHT+IFla0r6tNZsf1vf4xY4oTjwbMDAZRyuRbkCSt34yoya7MnfDIxWTcqOZjohuCmE+5tNY+cqRQ==
+X-Received: by 2002:a05:6a20:1604:b0:149:122b:6330 with SMTP id
+ l4-20020a056a20160400b00149122b6330mr2398559pzj.10.1694153318627; 
+ Thu, 07 Sep 2023 23:08:38 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.08.31
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.08.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:08:33 -0700 (PDT)
+ Thu, 07 Sep 2023 23:08:37 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: [PULL 58/65] target/riscv/cpu.c: use offset in
- isa_ext_is_enabled/update_enabled
-Date: Fri,  8 Sep 2023 16:04:24 +1000
-Message-ID: <20230908060431.1903919-59-alistair.francis@wdc.com>
+ Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 59/65] target/riscv: make CPUCFG() macro public
+Date: Fri,  8 Sep 2023 16:04:25 +1000
+Message-ID: <20230908060431.1903919-60-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x630.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,71 +101,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-We'll have future usage for a function where, given an offset of the
-struct RISCVCPUConfig, the flag is updated to a certain val.
+The RISC-V KVM driver uses a CPUCFG() macro that calculates the offset
+of a certain field in the struct RISCVCPUConfig. We're going to use this
+macro in target/riscv/cpu.c as well in the next patches. Make it public.
 
-Change all existing callers to use edata->ext_enable_offset instead of
-'edata'.
+Rename it to CPU_CFG_OFFSET() for more clarity while we're at it.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20230901194627.1214811-14-dbarboza@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230901194627.1214811-15-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ target/riscv/cpu.h | 2 ++
+ target/riscv/cpu.c | 2 +-
+ target/riscv/kvm.c | 8 +++-----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 6ea22e0eea..577abcd724 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -62,6 +62,8 @@
+ const char *riscv_get_misa_ext_name(uint32_t bit);
+ const char *riscv_get_misa_ext_description(uint32_t bit);
+ 
++#define CPU_CFG_OFFSET(_prop) offsetof(struct RISCVCPUConfig, _prop)
++
+ /* Privileged specification version */
+ enum {
+     PRIV_VERSION_1_10_0 = 0,
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 0dae259e02..03e936348a 100644
+index 03e936348a..43c68e1792 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -162,18 +162,17 @@ static const struct isa_ext_data isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(xventanacondops, PRIV_VERSION_1_12_0, ext_XVentanaCondOps),
+@@ -48,7 +48,7 @@ struct isa_ext_data {
  };
  
--static bool isa_ext_is_enabled(RISCVCPU *cpu,
--                               const struct isa_ext_data *edata)
-+static bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset)
- {
--    bool *ext_enabled = (void *)&cpu->cfg + edata->ext_enable_offset;
-+    bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
+ #define ISA_EXT_DATA_ENTRY(_name, _min_ver, _prop) \
+-    {#_name, _min_ver, offsetof(struct RISCVCPUConfig, _prop)}
++    {#_name, _min_ver, CPU_CFG_OFFSET(_prop)}
  
-     return *ext_enabled;
+ /*
+  * From vector_helper.c
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index c01cfb03f4..14763ec0cd 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -205,10 +205,8 @@ static void kvm_riscv_update_cpu_misa_ext(RISCVCPU *cpu, CPUState *cs)
+     }
  }
  
--static void isa_ext_update_enabled(RISCVCPU *cpu,
--                                   const struct isa_ext_data *edata, bool en)
-+static void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset,
-+                                   bool en)
- {
--    bool *ext_enabled = (void *)&cpu->cfg + edata->ext_enable_offset;
-+    bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
+-#define CPUCFG(_prop) offsetof(struct RISCVCPUConfig, _prop)
+-
+ #define KVM_EXT_CFG(_name, _prop, _reg_id) \
+-    {.name = _name, .offset = CPUCFG(_prop), \
++    {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
+      .kvm_reg_id = _reg_id}
  
-     *ext_enabled = en;
- }
-@@ -1045,9 +1044,10 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
+ static KVMCPUConfig kvm_multi_ext_cfgs[] = {
+@@ -285,13 +283,13 @@ static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
  
-     /* Force disable extensions if priv spec version does not match */
-     for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
--        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i]) &&
-+        if (isa_ext_is_enabled(cpu, isa_edata_arr[i].ext_enable_offset) &&
-             (env->priv_ver < isa_edata_arr[i].min_version)) {
--            isa_ext_update_enabled(cpu, &isa_edata_arr[i], false);
-+            isa_ext_update_enabled(cpu, isa_edata_arr[i].ext_enable_offset,
-+                                   false);
- #ifndef CONFIG_USER_ONLY
-             warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
-                         " because privilege spec version does not match",
-@@ -2346,7 +2346,7 @@ static void riscv_isa_string_ext(RISCVCPU *cpu, char **isa_str,
-     int i;
+ static KVMCPUConfig kvm_cbom_blocksize = {
+     .name = "cbom_blocksize",
+-    .offset = CPUCFG(cbom_blocksize),
++    .offset = CPU_CFG_OFFSET(cbom_blocksize),
+     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicbom_block_size)
+ };
  
-     for (i = 0; i < ARRAY_SIZE(isa_edata_arr); i++) {
--        if (isa_ext_is_enabled(cpu, &isa_edata_arr[i])) {
-+        if (isa_ext_is_enabled(cpu, isa_edata_arr[i].ext_enable_offset)) {
-             new = g_strconcat(old, "_", isa_edata_arr[i].name, NULL);
-             g_free(old);
-             old = new;
+ static KVMCPUConfig kvm_cboz_blocksize = {
+     .name = "cboz_blocksize",
+-    .offset = CPUCFG(cboz_blocksize),
++    .offset = CPU_CFG_OFFSET(cboz_blocksize),
+     .kvm_reg_id = KVM_REG_RISCV_CONFIG_REG(zicboz_block_size)
+ };
+ 
 -- 
 2.41.0
 
