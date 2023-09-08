@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B1D7986DB
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CD27986DF
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 14:11:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeaJN-0000rV-1k; Fri, 08 Sep 2023 08:10:09 -0400
+	id 1qeaK1-0001aM-Vn; Fri, 08 Sep 2023 08:10:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeaJ8-0000nP-36
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:09:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qeaJ2-0002XA-8y
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:09:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694174986;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=RammnBa47Se9pK2YVoeEL/y0aA+bVFAk6M5JvfkJ65w=;
- b=KflqNzlQJydteL/CWVFdPuDj7ZcMC0ze2zFTOudTquTJQimWK8NuMR3+dARcsMaDyTT3pi
- vMddtoACrydnA/A8aSQkSMDkLkey/5tbpoG+1CMQkCfVVK4ZUtmFUuQB55rVdNy1d52TXL
- xBj5zyMsjMSCqeqNl67XO5e+2bXIU0Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-258-v3Zd-3G4MDCyKe4XLfOJ5w-1; Fri, 08 Sep 2023 08:09:42 -0400
-X-MC-Unique: v3Zd-3G4MDCyKe4XLfOJ5w-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C70F2101A529;
- Fri,  8 Sep 2023 12:09:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E3E4D403171;
- Fri,  8 Sep 2023 12:09:40 +0000 (UTC)
-Date: Fri, 8 Sep 2023 07:09:39 -0500
-From: Eric Blake <eblake@redhat.com>
-To: "Denis V. Lunev" <den@virtuozzo.com>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org, 
- "Denis V. Lunev" <den@openvz.org>, Kevin Wolf <kwolf@redhat.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>, 
- Mike Maslenkin <mike.maslenkin@gmail.com>,
- "open list:Network Block Dev..." <qemu-block@nongnu.org>
-Subject: Re: [PULL 12/13] qemu-nbd: Restore "qemu-nbd -v --fork" output
-Message-ID: <lvv73ne7fn7blrymkq4dcw6vxa7i3dcuh6cyfrdvrsail2q5zy@me7cx6ig7fjq>
-References: <20230908013535.990731-15-eblake@redhat.com>
- <20230908013535.990731-27-eblake@redhat.com>
- <CAJSP0QWYDPU-26Jt7-SN4s-hyL1jg4-_eXz+9huCfzO+nL8D=w@mail.gmail.com>
- <15abbb9a-eeff-1468-c512-97497c682a67@virtuozzo.com>
- <d87989e9-a14f-0236-b673-f7927293546f@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qeaJi-0001PY-H3
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:10:33 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qeaJf-00034C-92
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 08:10:29 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-5008d16cc36so3369854e87.2
+ for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 05:10:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694175023; x=1694779823; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=39oDq1SHkVWT6dfZk/dMADTgX3KEW+aeBSn7Fn7ylqs=;
+ b=AfgaTSwTDb+7oegrJ4uRlR/dRWWz6jutaG38ozIyGvcx0WrmxpxomAhRqq7IiJQ2Z6
+ ScXJg0oiyc1vQHE1sjeiAqmC9IpgzC5u0/CMHDwsmrAKtiFMYQy5r8dVBItQ15/tZMiU
+ OqIbIyH9FcOcxocDlLYwvLXWSMXOJ5+AbGVDey6BqpADD6PyjJ3Obdg50TmYhgsEoG42
+ eWOTmS26sSSRShgurIr6W7WiBLRhYSRJvvkEdpGF8mscWVEdsoKHtDwX/eXbyzaax020
+ sXCTXGefHjgVY/RTdA3ukMyE/3aSLX5xrUIYmM+C2TFP32nWLL3T8yTKJenSlV7yXhfI
+ J82Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694175023; x=1694779823;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=39oDq1SHkVWT6dfZk/dMADTgX3KEW+aeBSn7Fn7ylqs=;
+ b=fVvEFZ++EaPfmAWcvzVuLgmB2ZzJYvTWIcrJUW9UCsERiPzUD1rvXqnWflskCDxo0H
+ uCgXJAQEnu8EBrQI6AOlRnekYm27KqsukOD0sFlH+J/M/zDbpGsZQ3pUoLq21IbE6ueO
+ GmEfEsD54HjUZHBqPARqgxxBcpZYSs8pbvmqgQsHX3d1p4dLACVhTcd0crBiYIN66uwO
+ n4FZi76mxx1YBX6dUrKPV6GzCRLAhAyvjiP45UIGoHWp12TvXrfdheVxpmi03uu8KeQ9
+ NzDXedB/ASZe5nswlT0mJgL5sIc2a5kT2JzByySoOEd3MmmL3eoxeHXerCky3Orcvqwx
+ 6svw==
+X-Gm-Message-State: AOJu0YzRvkLV6WUD7edInUH+KxKuEaLWxCA3X96Sdc1bXHqwaq6LPSTX
+ YQVKdHZPmjp3A321Kjdnp8TNMLeqkT1zOYz0Ga21eg==
+X-Google-Smtp-Source: AGHT+IEYM9XFTqXFbQ2EslmGag2YWGK8tWWjGJzcaUFuWVvrDOpxtpVR7pjbTkBJ8/diouVpGe07RZWwX7hNU5VDz7Y=
+X-Received: by 2002:a19:e057:0:b0:4f8:6d53:a68f with SMTP id
+ g23-20020a19e057000000b004f86d53a68fmr1589444lfj.64.1694175023429; Fri, 08
+ Sep 2023 05:10:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d87989e9-a14f-0236-b673-f7927293546f@virtuozzo.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230901203103.136408-1-richard.henderson@linaro.org>
+In-Reply-To: <20230901203103.136408-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 8 Sep 2023 13:10:12 +0100
+Message-ID: <CAFEAcA8bjNKqd00cUs6mc+WDfizABRE75YGCFri7wTfQrPdCXQ@mail.gmail.com>
+Subject: Re: [PATCH v2] target/arm: Do not use gen_mte_checkN in trans_STGP
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,27 +84,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 08, 2023 at 01:42:00PM +0200, Denis V. Lunev wrote:
-> On 9/8/23 13:24, Denis V. Lunev wrote:
-> > On 9/8/23 13:03, Stefan Hajnoczi wrote:
-> > > Please resolve the following CI failure:
-> > > 
-> > > https://gitlab.com/qemu-project/qemu/-/jobs/5045998355
-> > > 
-> > > ../qemu-nbd.c: In function 'nbd_client_thread':
-> > > ../qemu-nbd.c:340:39: error: expected identifier before '(' token
-> > > 340 | nbd_client_release_pipe(opts->stderr);
-> > > | ^~~~~~
+On Fri, 1 Sept 2023 at 21:31, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> STGP writes to tag memory, it does not check it.
+> This happened to work because we wrote tag memory first
+> so that the check always succeeded.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-> The only possible reason I could imagine is that 'stderr'
-> word is defined under by pre-processor.
 
-Indeed, that is a common implementation; the obvious fix is to use a
-different name.  v2 coming up with that change made.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Applied to target-arm.next, thanks.
 
+-- PMM
 
