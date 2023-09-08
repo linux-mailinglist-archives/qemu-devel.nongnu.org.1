@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2332F7981FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:10:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5319C7981C8
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 08:07:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeUco-0000Gt-8n; Fri, 08 Sep 2023 02:05:50 -0400
+	id 1qeUcq-0000LV-FE; Fri, 08 Sep 2023 02:05:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUcj-0000DR-Bb
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:05:45 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qeUco-0000Ka-5P
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:05:50 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qeUcg-0005Zn-Vp
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:05:45 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1bc8a2f71eeso14841555ad.0
- for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:05:42 -0700 (PDT)
+ id 1qeUcl-0005bK-Nz
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 02:05:49 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1c1e3a4a06fso13413035ad.3
+ for <qemu-devel@nongnu.org>; Thu, 07 Sep 2023 23:05:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694153141; x=1694757941; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694153145; x=1694757945; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fmxtFBhMNKgAclVFCJgIRWOiSmo6h51x/2XzyTwE3NU=;
- b=E7BPykYoX5iT4QEB1DXAiLP7IcklVrLvVgkZdXog5uOkzlerG6jwRgJk8CMQeEYrue
- q5bLWAU/x7oOGIefpkSMySrK9bjkdLwD2tzT3zeGjk/vCt7UNEq6OadQteBu2LSJBo/Z
- JiQRb03HVidKiJ9ZuGcfuLpPulz1IAHr3aE4TPaT5fZKMkpgtHscBAyckKxtBO3M/4wj
- /Tdy6tTW4KTduaYRrNTIJ290GGn7Z7UleV1hzt4ib+kClu6H6vEgo+5w4fQ2P28QAOWv
- X0M61IaG8DjA4K7eQ9RYmc03Q7JC+2UP2f62aTvQYLisSDWvKVNDJzm6oVlXrtNm4YZe
- HGaQ==
+ bh=qepJics0tn9vo/6916LL1wFiawsxHmg1P1pjmA4MfdI=;
+ b=pwEP/HGMqOCi0T51zz6yPVNaIqIHZQu1HNGqa0NJnVi37WVbiDpGf+eKl0Ggb9EdrI
+ Rx+pK+JMtgPhULqaX2FTiyRwvKbjaQtJzPQrOPvfTJP28drG4R1auaNSHMCZHTJ9zs+v
+ iRsTwRZ1M8RNpbxP9F/Kk/1qb0OZau2UtdCtISX1EkqAcxGvPN8tluvfUH+9BGca8aFe
+ 9lbYPLJXzWIuc0a2poKUAp1sPKmWKdgww/T0jSs75pUrXjOqp2+r/UeHMXCIQ+VmQ/tT
+ LaKDJkQLRKP/8jVK+ztqwgC8GnjvyWgwvreN5RvMOm8jqBAhElpUHIS+GJFHvjF78hla
+ dJSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694153141; x=1694757941;
+ d=1e100.net; s=20230601; t=1694153145; x=1694757945;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fmxtFBhMNKgAclVFCJgIRWOiSmo6h51x/2XzyTwE3NU=;
- b=FLUX/e0J0miLiYJ2EvHhXMoZIXl2fvtz0w+6K5ALUTYuTRHzZmWw++MwtP7TO7iC8W
- lOCwgs41tSMeNrA9flFlCnqBHqhNG7wnA+4e7jGY9qCc19150FFQiHmlqSa/wXMyGfKp
- W+3mCIrVtbS1BNGVTeDuglBTN2GB8pUb5aMTWeqR/y6PEAZc2JN11y80LqM7TrCf3//z
- 86QG1hQiXe/kulldeGEq5DnHe1Jv8QOoqlP6VWelnk2G1mgxIaT3fOGYqLGfd0d2wF6h
- 60WI69+yGtGgsDAnztEernEs1PbUeEbS2XikOIm/At63gBw7yBdYu5F6Qu0I/mzwPIvh
- FqzQ==
-X-Gm-Message-State: AOJu0YwYwbJnqykLDhqCPGYz+unUvp5T9wmcXJMCiJkM8c5KgQkxJHlI
- RRjru6zFKusClQ6uiaWR84945k5xIGPudhS/
-X-Google-Smtp-Source: AGHT+IFLp2ZnplWZ5yJuV1DbIJWm5KM0iGJcioXLnMJ3GwFLD4r/EpbWW3OXXqB3CnLr3Q2p6Ea92w==
-X-Received: by 2002:a17:902:b497:b0:1c3:61d9:2b32 with SMTP id
- y23-20020a170902b49700b001c361d92b32mr1400350plr.45.1694153141395; 
- Thu, 07 Sep 2023 23:05:41 -0700 (PDT)
+ bh=qepJics0tn9vo/6916LL1wFiawsxHmg1P1pjmA4MfdI=;
+ b=X8l7A+tBLz5atYovzJITgto5PoFrw7SZCdy5PJH0HxWv4vvnb1Tajwidb0wLI/0keA
+ dEqv89CfSxvCGcX3dQhT6+n9JkcDNkcHfNhuDRlsrnH0CM0pP1ZOayohAdXETxG+ybl2
+ M+jHnnt9j37LrZOMuF0cSDpLTQiXZO06TXINhoucCV8bG/aYNimcEiDX25ODinJ32kLa
+ a93FnozKK0sOC2sDZRUY552bYsXyM5b0BTvnJY9xjekn/JnOmx4tCOLXEa1nkH6OyByX
+ afZwoKhnniBfquV3xKKmdObslQx0Zu9s8vTsnTeC66FXqJNAFw6AXln8o012bPQWnLpD
+ e2Rg==
+X-Gm-Message-State: AOJu0YyzzXN3fae8ZDlXvELRELaaTETpwmdYf8irpcBz7v+vr+rktsy+
+ bFN584MDvroLPW3XyvOq6VnZJOTekfzj4Gnz
+X-Google-Smtp-Source: AGHT+IHAp0kRiFQy7dc9doY79PFw1DvRwh+zwCAS7g2/kKos4dtRUMGTwGvLS/1K7sYrPvzMymg70Q==
+X-Received: by 2002:a17:902:bcc6:b0:1bf:25a0:f875 with SMTP id
+ o6-20020a170902bcc600b001bf25a0f875mr1371125pls.39.1694153145401; 
+ Thu, 07 Sep 2023 23:05:45 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.05.37
+ q1-20020a170902dac100b001c3267ae31bsm715231plx.301.2023.09.07.23.05.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Sep 2023 23:05:40 -0700 (PDT)
+ Thu, 07 Sep 2023 23:05:44 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>,
+Cc: alistair23@gmail.com, Dickon Hood <dickon.hood@codethink.co.uk>,
  Richard Henderson <richard.henderson@linaro.org>,
  Weiwei Li <liweiwei@iscas.ac.cn>, Max Chou <max.chou@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 12/65] target/riscv: Move vector translation checks
-Date: Fri,  8 Sep 2023 16:03:38 +1000
-Message-ID: <20230908060431.1903919-13-alistair.francis@wdc.com>
+Subject: [PULL 13/65] target/riscv: Refactor translation of vector-widening
+ instruction
+Date: Fri,  8 Sep 2023 16:03:39 +1000
+Message-ID: <20230908060431.1903919-14-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230908060431.1903919-1-alistair.francis@wdc.com>
 References: <20230908060431.1903919-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,110 +99,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
+From: Dickon Hood <dickon.hood@codethink.co.uk>
 
-Move the checks out of `do_opiv{v,x,i}_gvec{,_shift}` functions
-and into the corresponding macros. This enables the functions to be
-reused in proceeding commits without check duplication.
+Zvbb (implemented in later commit) has a widening instruction, which
+requires an extra check on the enabled extensions.  Refactor
+GEN_OPIVX_WIDEN_TRANS() to take a check function to avoid reimplementing
+it.
 
-Signed-off-by: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
+Signed-off-by: Dickon Hood <dickon.hood@codethink.co.uk>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20230711165917.2629866-6-max.chou@sifive.com>
+Message-ID: <20230711165917.2629866-7-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/insn_trans/trans_rvv.c.inc | 28 +++++++++++--------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ target/riscv/insn_trans/trans_rvv.c.inc | 52 +++++++++++--------------
+ 1 file changed, 23 insertions(+), 29 deletions(-)
 
 diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 7e194aae34..5dfd524c7d 100644
+index 5dfd524c7d..a556250553 100644
 --- a/target/riscv/insn_trans/trans_rvv.c.inc
 +++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -1183,9 +1183,6 @@ do_opivv_gvec(DisasContext *s, arg_rmrr *a, GVecGen3Fn *gvec_fn,
-               gen_helper_gvec_4_ptr *fn)
- {
-     TCGLabel *over = gen_new_label();
--    if (!opivv_check(s, a)) {
--        return false;
--    }
- 
-     tcg_gen_brcond_tl(TCG_COND_GEU, cpu_vstart, cpu_vl, over);
- 
-@@ -1218,6 +1215,9 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)             \
-         gen_helper_##NAME##_b, gen_helper_##NAME##_h,              \
-         gen_helper_##NAME##_w, gen_helper_##NAME##_d,              \
-     };                                                             \
-+    if (!opivv_check(s, a)) {                                      \
-+        return false;                                              \
-+    }                                                              \
-     return do_opivv_gvec(s, a, tcg_gen_gvec_##SUF, fns[s->sew]);   \
+@@ -1526,30 +1526,24 @@ static bool opivx_widen_check(DisasContext *s, arg_rmrr *a)
+            vext_check_ds(s, a->rd, a->rs2, a->vm);
  }
  
-@@ -1276,10 +1276,6 @@ static inline bool
- do_opivx_gvec(DisasContext *s, arg_rmrr *a, GVecGen2sFn *gvec_fn,
-               gen_helper_opivx *fn)
- {
--    if (!opivx_check(s, a)) {
--        return false;
+-static bool do_opivx_widen(DisasContext *s, arg_rmrr *a,
+-                           gen_helper_opivx *fn)
+-{
+-    if (opivx_widen_check(s, a)) {
+-        return opivx_trans(a->rd, a->rs1, a->rs2, a->vm, fn, s);
 -    }
+-    return false;
+-}
 -
-     if (a->vm && s->vl_eq_vlmax && !(s->vta && s->lmul < 0)) {
-         TCGv_i64 src1 = tcg_temp_new_i64();
- 
-@@ -1301,6 +1297,9 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)             \
-         gen_helper_##NAME##_b, gen_helper_##NAME##_h,              \
-         gen_helper_##NAME##_w, gen_helper_##NAME##_d,              \
-     };                                                             \
-+    if (!opivx_check(s, a)) {                                      \
-+        return false;                                              \
-+    }                                                              \
-     return do_opivx_gvec(s, a, tcg_gen_gvec_##SUF, fns[s->sew]);   \
- }
- 
-@@ -1432,10 +1431,6 @@ static inline bool
- do_opivi_gvec(DisasContext *s, arg_rmrr *a, GVecGen2iFn *gvec_fn,
-               gen_helper_opivx *fn, imm_mode_t imm_mode)
- {
--    if (!opivx_check(s, a)) {
--        return false;
--    }
--
-     if (a->vm && s->vl_eq_vlmax && !(s->vta && s->lmul < 0)) {
-         gvec_fn(s->sew, vreg_ofs(s, a->rd), vreg_ofs(s, a->rs2),
-                 extract_imm(s, a->rs1, imm_mode), MAXSZ(s), MAXSZ(s));
-@@ -1453,6 +1448,9 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)             \
-         gen_helper_##OPIVX##_b, gen_helper_##OPIVX##_h,            \
-         gen_helper_##OPIVX##_w, gen_helper_##OPIVX##_d,            \
-     };                                                             \
-+    if (!opivx_check(s, a)) {                                      \
-+        return false;                                              \
-+    }                                                              \
-     return do_opivi_gvec(s, a, tcg_gen_gvec_##SUF,                 \
-                          fns[s->sew], IMM_MODE);                   \
- }
-@@ -1775,10 +1773,6 @@ static inline bool
- do_opivx_gvec_shift(DisasContext *s, arg_rmrr *a, GVecGen2sFn32 *gvec_fn,
-                     gen_helper_opivx *fn)
- {
--    if (!opivx_check(s, a)) {
--        return false;
--    }
--
-     if (a->vm && s->vl_eq_vlmax && !(s->vta && s->lmul < 0)) {
-         TCGv_i32 src1 = tcg_temp_new_i32();
- 
-@@ -1800,7 +1794,9 @@ static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                    \
-         gen_helper_##NAME##_b, gen_helper_##NAME##_h,                     \
-         gen_helper_##NAME##_w, gen_helper_##NAME##_d,                     \
-     };                                                                    \
--                                                                          \
-+    if (!opivx_check(s, a)) {                                             \
-+        return false;                                                     \
+-#define GEN_OPIVX_WIDEN_TRANS(NAME) \
+-static bool trans_##NAME(DisasContext *s, arg_rmrr *a)       \
+-{                                                            \
+-    static gen_helper_opivx * const fns[3] = {               \
+-        gen_helper_##NAME##_b,                               \
+-        gen_helper_##NAME##_h,                               \
+-        gen_helper_##NAME##_w                                \
+-    };                                                       \
+-    return do_opivx_widen(s, a, fns[s->sew]);                \
++#define GEN_OPIVX_WIDEN_TRANS(NAME, CHECK) \
++static bool trans_##NAME(DisasContext *s, arg_rmrr *a)                    \
++{                                                                         \
++    if (CHECK(s, a)) {                                                    \
++        static gen_helper_opivx * const fns[3] = {                        \
++            gen_helper_##NAME##_b,                                        \
++            gen_helper_##NAME##_h,                                        \
++            gen_helper_##NAME##_w                                         \
++        };                                                                \
++        return opivx_trans(a->rd, a->rs1, a->rs2, a->vm, fns[s->sew], s); \
 +    }                                                                     \
-     return do_opivx_gvec_shift(s, a, tcg_gen_gvec_##SUF, fns[s->sew]);    \
++    return false;                                                         \
  }
  
+-GEN_OPIVX_WIDEN_TRANS(vwaddu_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwadd_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwsubu_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwsub_vx)
++GEN_OPIVX_WIDEN_TRANS(vwaddu_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwadd_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwsubu_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwsub_vx, opivx_widen_check)
+ 
+ /* WIDEN OPIVV with WIDEN */
+ static bool opiwv_widen_check(DisasContext *s, arg_rmrr *a)
+@@ -1997,9 +1991,9 @@ GEN_OPIVX_TRANS(vrem_vx, opivx_check)
+ GEN_OPIVV_WIDEN_TRANS(vwmul_vv, opivv_widen_check)
+ GEN_OPIVV_WIDEN_TRANS(vwmulu_vv, opivv_widen_check)
+ GEN_OPIVV_WIDEN_TRANS(vwmulsu_vv, opivv_widen_check)
+-GEN_OPIVX_WIDEN_TRANS(vwmul_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwmulu_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwmulsu_vx)
++GEN_OPIVX_WIDEN_TRANS(vwmul_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmulu_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmulsu_vx, opivx_widen_check)
+ 
+ /* Vector Single-Width Integer Multiply-Add Instructions */
+ GEN_OPIVV_TRANS(vmacc_vv, opivv_check)
+@@ -2015,10 +2009,10 @@ GEN_OPIVX_TRANS(vnmsub_vx, opivx_check)
+ GEN_OPIVV_WIDEN_TRANS(vwmaccu_vv, opivv_widen_check)
+ GEN_OPIVV_WIDEN_TRANS(vwmacc_vv, opivv_widen_check)
+ GEN_OPIVV_WIDEN_TRANS(vwmaccsu_vv, opivv_widen_check)
+-GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwmacc_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx)
+-GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx)
++GEN_OPIVX_WIDEN_TRANS(vwmaccu_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmacc_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmaccsu_vx, opivx_widen_check)
++GEN_OPIVX_WIDEN_TRANS(vwmaccus_vx, opivx_widen_check)
+ 
+ /* Vector Integer Merge and Move Instructions */
+ static bool trans_vmv_v_v(DisasContext *s, arg_vmv_v_v *a)
 -- 
 2.41.0
 
