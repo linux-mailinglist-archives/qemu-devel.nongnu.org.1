@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9790798B41
-	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EBE7798B3F
+	for <lists+qemu-devel@lfdr.de>; Fri,  8 Sep 2023 19:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeevy-0005DW-Kw; Fri, 08 Sep 2023 13:06:18 -0400
+	id 1qeevv-000529-G0; Fri, 08 Sep 2023 13:06:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevw-00055i-83
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:16 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qeevs-0004ya-91
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:12 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qeevn-00016A-KU
- for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:15 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-401da71b7c5so26094925e9.2
+ id 1qeevn-00016C-Jj
+ for qemu-devel@nongnu.org; Fri, 08 Sep 2023 13:06:12 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-31c93d2a24fso2038573f8f.2
  for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 10:06:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1694192761; x=1694797561; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bNrQGxFMTVZVRRXvMgnejCvUWTcq/58zPnQMO3cKLkk=;
- b=pOzW26OjghNvNTP7LyDVaAeZbLyyePx47ozvXrJq8QXSwh36bht9KOaixP913WqAJW
- vNl3dt0PseIw3yAcP300diddxlceLGf42VynBJymLFK1uKrv5qSq/7drAY7xMT+TzFgq
- YFcBP9JcCk6M83ROw/jQb8rufDUXfzDVhvlqUwSF0nohbLOJel0x64YOMZ0tP6EVPu3e
- J3gjl/+gwJSZW4kf8kS1GZMYp871A7MvGl4QwXWy1TIqEZ6Jhh55mlKEPTYIHHHQbkFn
- MKLx4sSBJiie7dbhiPGEXi9OuNJmOL6Ppxa649TyGciZ4HiZeFNpgNgLcJDhRW613tFH
- ycdA==
+ :reply-to; bh=JHuAaKN4auyLOA3KiaF+WjKQrD1dXsJtQQWLi/jKPHs=;
+ b=mmb2Bs06NLVhimsY/ay82DF1UG0FfONb4DuU/HO5pEczd9PwiOxsNCJYvC6AQRHdWZ
+ wDaZyvkHOs4ZhGykWcMYxyyDUm02r+FHYoeNTO8QGW1LuwB8IG9HZJ5EeEFkJpmFt+jW
+ YWOYlYO4KI7AFPWwcPcm4sZfHZFnOK5NhtEElQ4NIFqsnNRP4G8HY1bxyB7NbDYpCUcy
+ 3wmtCOowodcBn4u7l8eTH9hRLes1tDlA8EJMIiOg/9diBR7qvL4zc/tOZ+IMj/B0+YWx
+ WRTzv09BhaArGAN25MN9Y3tFOlDWjgDtAYlvzpBAMGGcEqeCzDlQRfQ3LLNBO5VoKJE9
+ vs4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1694192761; x=1694797561;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bNrQGxFMTVZVRRXvMgnejCvUWTcq/58zPnQMO3cKLkk=;
- b=DZNtjQFSWx+06AuFwcnS93D+1GdiDEsEJqw24wy9eTP7mREO7wlV3k3p78yJGjOxoh
- nSTS1IqS6IOopk/V2j1aCsH+gD/KvaWuaXGJbCCIUJchqSOZVXb9V7DhvxdubKkIwO8h
- Ux/HpO60eSGjZCDWEeSNTlk4U/ZgOoeVSQZGSDJBUhh3uW+or6uLmsPXwllX0bR19cgP
- aqBUejxPhcgwAn+Hk4dFKNtds9RIDpY5mjcaBXs2Qt5LnoPs6JHLLyl7BcoMoQQh2zX0
- rnF9uOT/8Fkq7tNcGVeQo+t6TK59927CK7NYr+i7m+bBfZDQdaOIrIOFOAY2j4FC2XOG
- +WXg==
-X-Gm-Message-State: AOJu0Yw+CfZCna+pbO8rSVf99JfU3nR7A6KmRPevk9zfsXwHiXJbsrBf
- DaMi/JwigAhEk/sgSjlEjiDawnwmj8vfCdC47bI=
-X-Google-Smtp-Source: AGHT+IFmsX39Nbks4S9iMCMZxYXYz1xl18DBvi1bOCB8f8v1cDoI2ttq/m7vSukW1eC64nxeHIHy0g==
-X-Received: by 2002:a1c:7917:0:b0:402:e68f:8898 with SMTP id
- l23-20020a1c7917000000b00402e68f8898mr2629245wme.0.1694192761202; 
+ bh=JHuAaKN4auyLOA3KiaF+WjKQrD1dXsJtQQWLi/jKPHs=;
+ b=nDTnlefXKlvFspPkSdL/hSvgnM7/kMjnBMHyxYwhB0v+U1yDr/iuy8VLvG/KcM4ZrI
+ Fv0AChP2KH0mRpoU6TkfYyZJwsPsIsgdb4Q0/J0bNm6jYZruH0d8MeyGSyVEXeBEckVi
+ hxroEan2iC61uJ9tRvnQemmhregKCp9Akw9yhuKBMdkyA6L/3dfzp+HOr2bgb9thDTnu
+ Vh47fkDeH+Y5xMAdGYLV7SCGLT1STl+HkvfQQFqeH/qiwUsm2Ca8AyyaP6gfid5jtvJk
+ o1HXfj+FmO2yw8+ovDPO3yQM4hjbK2ZnY6GTJsDPaf6bi/EF9hmRBYLknC1XrDqcHelU
+ /Iqg==
+X-Gm-Message-State: AOJu0YypM+AkoDpW/QRy934yxus9lEmLXXn762mxHv2wSHoezpsbF5q7
+ FJv+DTK7oq/l6hRAzjtZPq88mblcF3dQMO89w9g=
+X-Google-Smtp-Source: AGHT+IHoIBUOkVyT8fwo/OVPbCseQeFSmzB5p2dxTwvfErzpUCJxDR7MWbVIGdR3tGOvT3xz6GXiQw==
+X-Received: by 2002:adf:ef88:0:b0:317:df3a:d030 with SMTP id
+ d8-20020adfef88000000b00317df3ad030mr2655061wro.14.1694192761644; 
  Fri, 08 Sep 2023 10:06:01 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d21-20020a1c7315000000b00400268671c6sm2427152wmb.13.2023.09.08.10.06.00
+ d21-20020a1c7315000000b00400268671c6sm2427152wmb.13.2023.09.08.10.06.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 10:06:00 -0700 (PDT)
+ Fri, 08 Sep 2023 10:06:01 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/26] tests/tcg/aarch64: Adjust pauth tests for FEAT_FPAC
-Date: Fri,  8 Sep 2023 18:05:32 +0100
-Message-Id: <20230908170557.773048-2-peter.maydell@linaro.org>
+Subject: [PULL 02/26] target/arm: Add ID_AA64ISAR2_EL1
+Date: Fri,  8 Sep 2023 18:05:33 +0100
+Message-Id: <20230908170557.773048-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230908170557.773048-1-peter.maydell@linaro.org>
 References: <20230908170557.773048-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,243 +91,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Aaron Lindsay <aaron@os.amperecomputing.com>
 
-With FEAT_FPAC, AUT* instructions that fail authentication
-do not produce an error value but instead fault.
-
-For pauth-2, install a signal handler and verify it gets called.
-
-For pauth-4 and pauth-5, we are explicitly testing the error value,
-so there's nothing to test with FEAT_FPAC, so exit early.
-Adjust the makefile to use -cpu neoverse-v1, which has FEAT_EPAC
-but not FEAT_FPAC.
-
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Aaron Lindsay <aaron@os.amperecomputing.com>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230829232335.965414-2-richard.henderson@linaro.org
+Message-id: 20230829232335.965414-3-richard.henderson@linaro.org
+[PMM: drop the HVF part of the patch and just comment that
+ we need to do something when the register appears in that API]
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- tests/tcg/aarch64/pauth.h         | 23 +++++++++++++
- tests/tcg/aarch64/pauth-2.c       | 54 ++++++++++++++++++++++++++-----
- tests/tcg/aarch64/pauth-4.c       | 18 ++++++++---
- tests/tcg/aarch64/pauth-5.c       | 10 ++++++
- tests/tcg/aarch64/Makefile.target |  6 +++-
- 5 files changed, 98 insertions(+), 13 deletions(-)
- create mode 100644 tests/tcg/aarch64/pauth.h
+ target/arm/cpu.h     | 1 +
+ target/arm/helper.c  | 4 ++--
+ target/arm/hvf/hvf.c | 1 +
+ target/arm/kvm64.c   | 2 ++
+ 4 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/tcg/aarch64/pauth.h b/tests/tcg/aarch64/pauth.h
-new file mode 100644
-index 00000000000..543b234437f
---- /dev/null
-+++ b/tests/tcg/aarch64/pauth.h
-@@ -0,0 +1,23 @@
-+/*
-+ * Helper for pauth test case
-+ *
-+ * Copyright (c) 2023 Linaro Ltd
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include <assert.h>
-+#include <sys/auxv.h>
-+
-+static int get_pac_feature(void)
-+{
-+    unsigned long isar1, isar2;
-+
-+    assert(getauxval(AT_HWCAP) & HWCAP_CPUID);
-+
-+    asm("mrs %0, id_aa64isar1_el1" : "=r"(isar1));
-+    asm("mrs %0, S3_0_C0_C6_2" : "=r"(isar2));     /* id_aa64isar2_el1 */
-+
-+    return ((isar1 >> 4) & 0xf)   /* APA */
-+         | ((isar1 >> 8) & 0xf)   /* API */
-+         | ((isar2 >> 12) & 0xf); /* APA3 */
-+}
-diff --git a/tests/tcg/aarch64/pauth-2.c b/tests/tcg/aarch64/pauth-2.c
-index 978652ede3a..89ffdbf1df7 100644
---- a/tests/tcg/aarch64/pauth-2.c
-+++ b/tests/tcg/aarch64/pauth-2.c
-@@ -1,5 +1,22 @@
- #include <stdint.h>
-+#include <signal.h>
-+#include <stdlib.h>
- #include <assert.h>
-+#include "pauth.h"
-+
-+
-+static void sigill(int sig, siginfo_t *info, void *vuc)
-+{
-+    ucontext_t *uc = vuc;
-+    uint64_t test;
-+
-+    /* There is only one insn below that is allowed to fault. */
-+    asm volatile("adr %0, auth2_insn" : "=r"(test));
-+    assert(test == uc->uc_mcontext.pc);
-+    exit(0);
-+}
-+
-+static int pac_feature;
- 
- void do_test(uint64_t value)
- {
-@@ -27,31 +44,52 @@ void do_test(uint64_t value)
-      * An invalid salt usually fails authorization, but again there
-      * is a chance of choosing another salt that works.
-      * Iterate until we find another salt which does fail.
-+     *
-+     * With FEAT_FPAC, this will SIGILL instead of producing a result.
-      */
-     for (salt2 = salt1 + 1; ; salt2++) {
--        asm volatile("autda %0, %2" : "=r"(decode) : "0"(encode), "r"(salt2));
-+        asm volatile("auth2_insn: autda %0, %2"
-+                     : "=r"(decode) : "0"(encode), "r"(salt2));
-         if (decode != value) {
-             break;
-         }
-     }
- 
-+    assert(pac_feature < 4);  /* No FEAT_FPAC */
-+
-     /* The VA bits, bit 55, and the TBI bits, should be unchanged.  */
-     assert(((decode ^ value) & 0xff80ffffffffffffull) == 0);
- 
-     /*
--     * Bits [54:53] are an error indicator based on the key used;
--     * the DA key above is keynumber 0, so error == 0b01.  Otherwise
--     * bit 55 of the original is sign-extended into the rest of the auth.
-+     * Without FEAT_Pauth2, bits [54:53] are an error indicator based on
-+     * the key used; the DA key above is keynumber 0, so error == 0b01.
-+     * Otherwise, bit 55 of the original is sign-extended into the rest
-+     * of the auth.
-      */
--    if ((value >> 55) & 1) {
--        assert(((decode >> 48) & 0xff) == 0b10111111);
--    } else {
--        assert(((decode >> 48) & 0xff) == 0b00100000);
-+    if (pac_feature < 3) {
-+        if ((value >> 55) & 1) {
-+            assert(((decode >> 48) & 0xff) == 0b10111111);
-+        } else {
-+            assert(((decode >> 48) & 0xff) == 0b00100000);
-+        }
-     }
- }
- 
- int main()
- {
-+    static const struct sigaction sa = {
-+        .sa_sigaction = sigill,
-+        .sa_flags = SA_SIGINFO
-+    };
-+
-+    pac_feature = get_pac_feature();
-+    assert(pac_feature != 0);
-+
-+    if (pac_feature >= 4) {
-+        /* FEAT_FPAC */
-+        sigaction(SIGILL, &sa, NULL);
-+    }
-+
-     do_test(0);
-     do_test(0xda004acedeadbeefull);
-     return 0;
-diff --git a/tests/tcg/aarch64/pauth-4.c b/tests/tcg/aarch64/pauth-4.c
-index 24a639e36ca..b254f413afd 100644
---- a/tests/tcg/aarch64/pauth-4.c
-+++ b/tests/tcg/aarch64/pauth-4.c
-@@ -2,14 +2,24 @@
- #include <assert.h>
- #include <stdio.h>
- #include <stdlib.h>
-+#include "pauth.h"
- 
- #define TESTS 1000
- 
- int main()
- {
-+    char base[TESTS];
-     int i, count = 0;
-     float perc;
--    void *base = malloc(TESTS);
-+    int pac_feature = get_pac_feature();
-+
-+    /*
-+     * Exit if no PAuth or FEAT_FPAC, which will SIGILL on AUTIA failure
-+     * rather than return an error for us to check below.
-+     */
-+    if (pac_feature == 0 || pac_feature >= 4) {
-+        return 0;
-+    }
- 
-     for (i = 0; i < TESTS; i++) {
-         uintptr_t in, x, y;
-@@ -17,7 +27,7 @@ int main()
-         in = i + (uintptr_t) base;
- 
-         asm("mov %0, %[in]\n\t"
--            "pacia %0, sp\n\t"        /* sigill if pauth not supported */
-+            "pacia %0, sp\n\t"
-             "eor %0, %0, #4\n\t"      /* corrupt single bit */
-             "mov %1, %0\n\t"
-             "autia %1, sp\n\t"        /* validate corrupted pointer */
-@@ -36,10 +46,10 @@ int main()
-         if (x != y) {
-             count++;
-         }
--
-     }
-+
-     perc = (float) count / (float) TESTS;
--    printf("Checks Passed: %0.2f%%", perc * 100.0);
-+    printf("Checks Passed: %0.2f%%\n", perc * 100.0);
-     assert(perc > 0.95);
-     return 0;
- }
-diff --git a/tests/tcg/aarch64/pauth-5.c b/tests/tcg/aarch64/pauth-5.c
-index 67c257918b9..ed8d5a926b8 100644
---- a/tests/tcg/aarch64/pauth-5.c
-+++ b/tests/tcg/aarch64/pauth-5.c
-@@ -1,4 +1,5 @@
- #include <assert.h>
-+#include "pauth.h"
- 
- static int x;
- 
-@@ -6,6 +7,15 @@ int main()
- {
-     int *p0 = &x, *p1, *p2, *p3;
-     unsigned long salt = 0;
-+    int pac_feature = get_pac_feature();
-+
-+    /*
-+     * Exit if no PAuth or FEAT_FPAC, which will SIGILL on AUTDA failure
-+     * rather than return an error for us to check below.
-+     */
-+    if (pac_feature == 0 || pac_feature >= 4) {
-+        return 0;
-+    }
- 
-     /*
-      * With TBI enabled and a 48-bit VA, there are 7 bits of auth, and so
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index b77bbd9b3cf..2efacf9a5a3 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -42,7 +42,11 @@ endif
- ifneq ($(CROSS_CC_HAS_ARMV8_3),)
- AARCH64_TESTS += pauth-1 pauth-2 pauth-4 pauth-5
- pauth-%: CFLAGS += -march=armv8.3-a
--run-pauth-%: QEMU_OPTS += -cpu max
-+run-pauth-1: QEMU_OPTS += -cpu max
-+run-pauth-2: QEMU_OPTS += -cpu max
-+# Choose a cpu with FEAT_Pauth but without FEAT_FPAC for pauth-[45].
-+run-pauth-4: QEMU_OPTS += -cpu neoverse-v1
-+run-pauth-5: QEMU_OPTS += -cpu neoverse-v1
- endif
- 
- # BTI Tests
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 278cc135c23..9b76cc68c6d 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1033,6 +1033,7 @@ struct ArchCPU {
+         uint32_t dbgdevid1;
+         uint64_t id_aa64isar0;
+         uint64_t id_aa64isar1;
++        uint64_t id_aa64isar2;
+         uint64_t id_aa64pfr0;
+         uint64_t id_aa64pfr1;
+         uint64_t id_aa64mmfr0;
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index e3f5a7d2bdc..f9f7c3c39e9 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -8435,11 +8435,11 @@ void register_cp_regs_for_features(ARMCPU *cpu)
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+               .resetvalue = cpu->isar.id_aa64isar1 },
+-            { .name = "ID_AA64ISAR2_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
++            { .name = "ID_AA64ISAR2_EL1", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 6, .opc2 = 2,
+               .access = PL1_R, .type = ARM_CP_CONST,
+               .accessfn = access_aa64_tid3,
+-              .resetvalue = 0 },
++              .resetvalue = cpu->isar.id_aa64isar2 },
+             { .name = "ID_AA64ISAR3_EL1_RESERVED", .state = ARM_CP_STATE_AA64,
+               .opc0 = 3, .opc1 = 0, .crn = 0, .crm = 6, .opc2 = 3,
+               .access = PL1_R, .type = ARM_CP_CONST,
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 486f90be1d2..546c0e817f4 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -847,6 +847,7 @@ static bool hvf_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+         { HV_SYS_REG_ID_AA64DFR1_EL1, &host_isar.id_aa64dfr1 },
+         { HV_SYS_REG_ID_AA64ISAR0_EL1, &host_isar.id_aa64isar0 },
+         { HV_SYS_REG_ID_AA64ISAR1_EL1, &host_isar.id_aa64isar1 },
++        /* Add ID_AA64ISAR2_EL1 here when HVF supports it */
+         { HV_SYS_REG_ID_AA64MMFR0_EL1, &host_isar.id_aa64mmfr0 },
+         { HV_SYS_REG_ID_AA64MMFR1_EL1, &host_isar.id_aa64mmfr1 },
+         { HV_SYS_REG_ID_AA64MMFR2_EL1, &host_isar.id_aa64mmfr2 },
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 4d904a1d11b..ac440c33f9a 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -304,6 +304,8 @@ bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
+                               ARM64_SYS_REG(3, 0, 0, 6, 0));
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64isar1,
+                               ARM64_SYS_REG(3, 0, 0, 6, 1));
++        err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64isar2,
++                              ARM64_SYS_REG(3, 0, 0, 6, 2));
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64mmfr0,
+                               ARM64_SYS_REG(3, 0, 0, 7, 0));
+         err |= read_sys_reg64(fdarray[2], &ahcf->isar.id_aa64mmfr1,
 -- 
 2.34.1
 
