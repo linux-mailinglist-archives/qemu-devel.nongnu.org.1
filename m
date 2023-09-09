@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC06879964C
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 06:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADA97996B7
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 09:20:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qepg1-0001AQ-2c; Sat, 09 Sep 2023 00:34:33 -0400
+	id 1qesEq-0000eG-Aq; Sat, 09 Sep 2023 03:18:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qepfu-0001AD-KB
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 00:34:26 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qepfZ-00030Y-IL
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 00:34:25 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-31c65820134so2491205f8f.1
- for <qemu-devel@nongnu.org>; Fri, 08 Sep 2023 21:34:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694234042; x=1694838842; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=iX9h1C28ifZiwlprRugD1/5aAvqn6UBysQeovDlj5zU=;
- b=IgPL2rDVmgQB3U5nQmHhdQTyJ+jgO7Gii8h56+NQ4z36lKZh6H1cG5XHt3h1l+sdQV
- W/YWLEuNZfDrBU1fJQ5tFE5nkGfHNclrIiKs1wUOeBB7Q91w5U4Y+5NhvPTzBrhKXP0I
- oRMUqdh10YTi5PdeGhlSXhnEXExVXai74Ug4x/aBayfkNLjrsX1WhAeK9JbL52E6py/D
- 2fnGTOZ+ulhhVpMMnm5zALfES9LJx4HHtLzzhFAWdfg9qtMoWUQZQjeNicNK/6udqGOk
- OT6MlUyAcWXRw5p8cMCgzEfJL15yU8wLIvE8yvbvynKP1kpsZbgoVjsNOz7fLnLZZoM2
- HLEA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qesEe-0000dz-Hj
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 03:18:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qesEV-0003As-Fq
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 03:18:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694243898;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HAvgtyv/sTqakl8Ns2rRNwy+i9Zch4V4puqiXJ+E2E0=;
+ b=EN3mF5qdgdEv8KK9BjztY33otiUbfrc3kF+ydIScQqNmUHsxy8OpTNPmA0P0pmfKBmo3Ak
+ eeKrHlcgs6sJ5ey9oeG/M+C+CK2oO/lxk71aIejB+78YH99UkkTjTfIAtLmHuGh9qWdFVb
+ ToQSdZuRtFml/AOy0haNTNSQ+RbvZRI=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-125-idBCioiKPv6HThKv0Y1yPw-1; Sat, 09 Sep 2023 03:18:16 -0400
+X-MC-Unique: idBCioiKPv6HThKv0Y1yPw-1
+Received: by mail-ua1-f70.google.com with SMTP id
+ a1e0cc1a2514c-7a7bd80e2dfso998365241.1
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 00:18:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694234042; x=1694838842;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iX9h1C28ifZiwlprRugD1/5aAvqn6UBysQeovDlj5zU=;
- b=CUtrUCb5JT808YI+48HvY975tTYF/ZjhlU08CZDlLMwcMgXXD2c/WM8wSsOB0bFtqh
- TpjuARsppWDyYwwIUMjP/m02f9MmTXmO8JDIotQeBwrkSQ4FPAg6Y1WhQbdbrIZYZyrG
- Q7yyUKyrPPczHeWnHdDcxld04vKho+T1wFEaDIjaqSEcHCL2mF+hx1s/QfKOBxt00xZs
- cxkxzQix6FlriX43y8ZuKL727x/Unt8xFbuAxJo0O+PLC7+rXeIycHKq3p6QDoXWb9qK
- WsRGaT6WgesLksMeZmAK0eYdWLhIul0EKuHMzcCPCrhMeiY+tRMro/D88hpHl50tNk9X
- mWRQ==
-X-Gm-Message-State: AOJu0YyHuEjS4YwiqTUJSDP38IyeitwAMqwBY4rAFoJV1s4bss10L+Ng
- I2DFL/bU4HGAae0mrXUqto9NVTNu9Aw=
-X-Google-Smtp-Source: AGHT+IGinAsuh7hO3fKHK6sD4qZjmI8T42Zwya1+UD4Dfg/GjvRk01+P/79SqNkvqaujiBx0i92Qtw==
-X-Received: by 2002:a5d:684a:0:b0:314:124f:12be with SMTP id
- o10-20020a5d684a000000b00314124f12bemr3200954wrw.3.1694234042084; 
- Fri, 08 Sep 2023 21:34:02 -0700 (PDT)
-Received: from karim.my.domain ([197.39.120.250])
- by smtp.gmail.com with ESMTPSA id
- d16-20020adff2d0000000b0031981c500aasm3615102wrp.25.2023.09.08.21.34.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Sep 2023 21:34:01 -0700 (PDT)
-From: Karim Taha <kariem.taha2.7@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com,
-	Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v2 23/23] bsd-user: Add stubs for vadvise(), sbrk() and sstk()
-Date: Thu,  7 Sep 2023 09:43:02 +0200
-Message-ID: <20230907074302.79234-24-kariem.taha2.7@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230907074302.79234-1-kariem.taha2.7@gmail.com>
-References: <20230907074302.79234-1-kariem.taha2.7@gmail.com>
+ d=1e100.net; s=20230601; t=1694243896; x=1694848696;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=HAvgtyv/sTqakl8Ns2rRNwy+i9Zch4V4puqiXJ+E2E0=;
+ b=l2vzunFITvveIZnLhrUCSmkJmz8LliKXfJR5+yTywx3OyRjLETZMBzNAGyCncdcHfb
+ JiYwoqYIGIniPil3hdyigNJi7DFmo0MPRsErRPzK/AhuGO8FCf55NBx5jeQAZfydO4W3
+ w+v51bwCXS2fbeBWBGJcf+W+3KEeX2uWnv/d8Fcyqcmwz3iXXGA5oTOvwkJtj2ddCMuo
+ vH70VIjwWnyGi92+fj9HxIr3K5LCDHQUKK04ftKcb7Z4DIYgqKsmWvjqYX7kFritqkc3
+ 7NPCZDiiDzOqSb7U5tVY0pJ24nF+Ghqi2WY1rsVLLgViloWgrpcwCoVLNQZ7NjRYpCf7
+ /aUA==
+X-Gm-Message-State: AOJu0Yxa7jDjoPhGzs5GTp9laybCxOG+kN/FhWRAvDUGCzS4MXSBjVJy
+ eGMxqMPYI5cbTI7QpJn6csJ8BqxUb3xYVeWFh54NWC1wn3w81ZQuHedE6w4FLtoKmXX8FXTAYTW
+ fPPPkiUddJDpEWyZDkIO7B1HJ5qCiXpo=
+X-Received: by 2002:a67:f94d:0:b0:44e:a348:9e55 with SMTP id
+ u13-20020a67f94d000000b0044ea3489e55mr4134726vsq.17.1694243895825; 
+ Sat, 09 Sep 2023 00:18:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGIaW7XhvpskRgoAKC+627qvwZpFi/Kyj6MHfXstBaoEet0xz/L1I9VVHvVOa0nJhK4uWR53Wt3wB3MK7GYdM0=
+X-Received: by 2002:a67:f94d:0:b0:44e:a348:9e55 with SMTP id
+ u13-20020a67f94d000000b0044ea3489e55mr4134724vsq.17.1694243895566; Sat, 09
+ Sep 2023 00:18:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -4
-X-Spam_score: -0.5
-X-Spam_bar: /
-X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
+References: <20230908033129.694-1-zhiwei._5Fliu@linux.alibaba.com>
+ <20230908102912.535248-1-pbonzini@redhat.com>
+ <CAOnJCUJexy3PhmGnGNgOk3a5LWLw6ZvFkwYRXTCErGnhn_A9uA@mail.gmail.com>
+In-Reply-To: <CAOnJCUJexy3PhmGnGNgOk3a5LWLw6ZvFkwYRXTCErGnhn_A9uA@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sat, 9 Sep 2023 09:18:02 +0200
+Message-ID: <CABgObfa9EehjW=p3mA-qiC8_tmkoYCT4SwF5Vtf+710OvSEw3g@mail.gmail.com>
+Subject: Re: [RESEND] qemu/timer: Add host ticks function for RISC-V
+To: Atish Patra <atishp@atishpatra.org>
+Cc: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-devel <qemu-devel@nongnu.org>, 
+ "open list:RISC-V" <qemu-riscv@nongnu.org>,
+ LIU Zhiwei <lzw194868@alibaba-inc.com>
+Content-Type: multipart/alternative; boundary="0000000000008efb250604e7e5d5"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,68 +97,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+--0000000000008efb250604e7e5d5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The above system calls are not supported by qemu.
+Il sab 9 set 2023, 03:35 Atish Patra <atishp@atishpatra.org> ha scritto:
 
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
----
- bsd-user/bsd-mem.h            | 18 ++++++++++++++++++
- bsd-user/freebsd/os-syscall.c | 12 ++++++++++++
- 2 files changed, 30 insertions(+)
+> On Fri, Sep 8, 2023 at 3:29=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com=
+> wrote:
+> >
+> > Queued, thanks.
+> >
+>
+> I didn't realize it was already queued. Gmail threads failed me this time=
+.
+> @Paolo Bonzini : Can you please drop this one as this will break as
+> soon as the host riscv system
+> has the latest kernel ? I have provided more details in the original
+> thread.
+>
+> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01941.html
 
-diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index c01b009326..aea8d65f15 100644
---- a/bsd-user/bsd-mem.h
-+++ b/bsd-user/bsd-mem.h
-@@ -413,4 +413,22 @@ static inline abi_long do_bsd_shmdt(abi_ulong shmaddr)
-     return get_errno(shmdt(g2h_untagged(shmaddr)));
- }
- 
-+static inline abi_long do_bsd_vadvise(void)
-+{
-+    /* See sys_ovadvise() in vm_unix.c */
-+    return -TARGET_EINVAL;
-+}
-+
-+static inline abi_long do_bsd_sbrk(void)
-+{
-+    /* see sys_sbrk() in vm_mmap.c */
-+    return -TARGET_EOPNOTSUPP;
-+}
-+
-+static inline abi_long do_bsd_sstk(void)
-+{
-+    /* see sys_sstk() in vm_mmap.c */
-+    return -TARGET_EOPNOTSUPP;
-+}
-+
- #endif /* BSD_USER_BSD_MEM_H */
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index fe0968773e..9647249e90 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -567,6 +567,18 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_shmdt(arg1);
-         break;
- 
-+    case TARGET_FREEBSD_NR_freebsd11_vadvise:
-+        ret = do_bsd_vadvise();
-+        break;
-+
-+    case TARGET_FREEBSD_NR_sbrk:
-+        ret = do_bsd_sbrk();
-+        break;
-+
-+    case TARGET_FREEBSD_NR_sstk:
-+        ret = do_bsd_sstk();
-+        break;
-+
-         /*
-          * Misc
-          */
--- 
-2.42.0
+
+If you have dynamic clock adjustment, does rdcycle increase with a fixed
+frequency or does it provide the raw number of clock cycles? If the latter,
+I agree that it should be provided by perf; but if the frequency is fixed
+then it would be the same as rdtsc on Intel.
+
+Paolo
+
+
+>
+> > Paolo
+> >
+> >
+>
+>
+> --
+> Regards,
+> Atish
+>
+>
+
+--0000000000008efb250604e7e5d5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il sab 9 set 2023, 03:35 Atish Patra &lt;<a href=3D"ma=
+ilto:atishp@atishpatra.org">atishp@atishpatra.org</a>&gt; ha scritto:<br></=
+div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-lef=
+t:1px #ccc solid;padding-left:1ex">On Fri, Sep 8, 2023 at 3:29=E2=80=AFAM P=
+aolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com" target=3D"_blank" r=
+el=3D"noreferrer">pbonzini@redhat.com</a>&gt; wrote:<br>
+&gt;<br>
+&gt; Queued, thanks.<br>
+&gt;<br>
+<br>
+I didn&#39;t realize it was already queued. Gmail threads failed me this ti=
+me.<br>
+@Paolo Bonzini : Can you please drop this one as this will break as<br>
+soon as the host riscv system<br>
+has the latest kernel ? I have provided more details in the original thread=
+.<br>
+<br>
+<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01941.h=
+tml" rel=3D"noreferrer noreferrer" target=3D"_blank">https://lists.gnu.org/=
+archive/html/qemu-devel/2023-09/msg01941.html</a></blockquote></div></div><=
+div dir=3D"auto"><br></div><div dir=3D"auto">If you have dynamic clock adju=
+stment, does rdcycle increase with a fixed frequency or does it provide the=
+ raw number of clock cycles? If the latter, I agree that it should be provi=
+ded by perf; but if the frequency is fixed then it would be the same as rdt=
+sc on Intel.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div>=
+<div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px =
+#ccc solid;padding-left:1ex"><br>
+<br>
+&gt; Paolo<br>
+&gt;<br>
+&gt;<br>
+<br>
+<br>
+-- <br>
+Regards,<br>
+Atish<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000008efb250604e7e5d5--
 
 
