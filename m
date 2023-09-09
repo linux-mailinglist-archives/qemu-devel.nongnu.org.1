@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3619C799761
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAE5799766
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:33:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qevEv-0006vL-6I; Sat, 09 Sep 2023 06:30:57 -0400
+	id 1qevEv-0006w0-Jl; Sat, 09 Sep 2023 06:30:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevEn-0006t6-0O; Sat, 09 Sep 2023 06:30:52 -0400
+ id 1qevEo-0006t9-Ln; Sat, 09 Sep 2023 06:30:52 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevEk-00050o-FY; Sat, 09 Sep 2023 06:30:48 -0400
+ id 1qevEl-0005FZ-Ec; Sat, 09 Sep 2023 06:30:49 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E956204B4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 86F9C204B5;
  Sat,  9 Sep 2023 13:29:12 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 490D926D12;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8C4BC26D13;
  Sat,  9 Sep 2023 13:28:21 +0300 (MSK)
-Received: (nullmailer pid 346738 invoked by uid 1000);
+Received: (nullmailer pid 346741 invoked by uid 1000);
  Sat, 09 Sep 2023 10:28:18 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.1 33/34] hw/net/vmxnet3: Fix guest-triggerable assert()
-Date: Sat,  9 Sep 2023 13:27:26 +0300
-Message-Id: <20230909102747.346522-33-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.1 34/34] qxl: don't assert() if device isn't yet
+ initialized
+Date: Sat,  9 Sep 2023 13:27:27 +0300
+Message-Id: <20230909102747.346522-34-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
 References: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
@@ -60,39 +61,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The assert() that checks for valid MTU sizes can be triggered by
-the guest (e.g. with the reproducer code from the bug ticket
-https://gitlab.com/qemu-project/qemu/-/issues/517 ). Let's avoid
-this problem by simply logging the error and refusing to activate
-the device instead.
+If the PCI BAR isn't yet mapped or was unmapped, QXL_IO_SET_MODE will
+assert(). Instead, report a guest bug and keep going.
 
-Fixes: d05dcd94ae ("net: vmxnet3: validate configuration values during activate")
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+This can be reproduced with:
+
+cat << EOF | ./qemu-system-x86_64 -vga qxl -m 2048 -nodefaults -qtest stdio
+outl 0xcf8 0x8000101c
+outl 0xcfc 0xc000
+outl 0xcf8 0x80001001
+outl 0xcfc 0x01000000
+outl 0xc006 0x00
+EOF
+
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1829
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Cc: qemu-stable@nongnu.org
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-[Mjt: change format specifier from %d to %u for uint32_t argument]
-(cherry picked from commit 90a0778421acdf4ca903be64c8ed19378183c944)
+(cherry picked from commit 95bef686e490bc3afc3f51f5fc6e20bf260b938c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
-index 5dfacb1098..3fb108751a 100644
---- a/hw/net/vmxnet3.c
-+++ b/hw/net/vmxnet3.c
-@@ -1439,7 +1439,10 @@ static void vmxnet3_activate_device(VMXNET3State *s)
-     vmxnet3_setup_rx_filtering(s);
-     /* Cache fields from shared memory */
-     s->mtu = VMXNET3_READ_DRV_SHARED32(d, s->drv_shmem, devRead.misc.mtu);
--    assert(VMXNET3_MIN_MTU <= s->mtu && s->mtu <= VMXNET3_MAX_MTU);
-+    if (s->mtu < VMXNET3_MIN_MTU || s->mtu > VMXNET3_MAX_MTU) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "vmxnet3: Bad MTU size: %u\n", s->mtu);
+diff --git a/hw/display/qxl.c b/hw/display/qxl.c
+index f1c0eb7dfc..70b73820b2 100644
+--- a/hw/display/qxl.c
++++ b/hw/display/qxl.c
+@@ -1591,7 +1591,10 @@ static void qxl_set_mode(PCIQXLDevice *d, unsigned int modenr, int loadvm)
+     }
+ 
+     d->guest_slots[0].slot = slot;
+-    assert(qxl_add_memslot(d, 0, devmem, QXL_SYNC) == 0);
++    if (qxl_add_memslot(d, 0, devmem, QXL_SYNC) != 0) {
++        qxl_set_guest_bug(d, "device isn't initialized yet");
 +        return;
 +    }
-     VMW_CFPRN("MTU is %u", s->mtu);
  
-     s->max_rx_frags =
+     d->guest_primary.surface = surface;
+     qxl_create_guest_primary(d, 0, QXL_SYNC);
 -- 
 2.39.2
 
