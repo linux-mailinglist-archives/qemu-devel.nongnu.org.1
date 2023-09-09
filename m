@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C98799859
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C344799855
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:08:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexcs-00065L-HL; Sat, 09 Sep 2023 09:03:50 -0400
+	id 1qexcp-0005t7-Lz; Sat, 09 Sep 2023 09:03:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexcg-0005lI-Vl; Sat, 09 Sep 2023 09:03:40 -0400
+ id 1qexcj-0005p3-5N; Sat, 09 Sep 2023 09:03:43 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexcd-00030a-Nw; Sat, 09 Sep 2023 09:03:38 -0400
+ id 1qexcf-00030v-4N; Sat, 09 Sep 2023 09:03:40 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2F4C6205B2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6039E205B3;
  Sat,  9 Sep 2023 16:01:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 014C126E18;
- Sat,  9 Sep 2023 16:00:28 +0300 (MSK)
-Received: (nullmailer pid 353163 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 2AB1526E19;
+ Sat,  9 Sep 2023 16:00:29 +0300 (MSK)
+Received: (nullmailer pid 353166 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Niklas Cassel <niklas.cassel@wdc.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 36/43] hw/ide/ahci: fix ahci_write_fis_sdb()
-Date: Sat,  9 Sep 2023 16:00:02 +0300
-Message-Id: <20230909130020.352951-36-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 37/43] hw/ide/ahci: fix broken SError handling
+Date: Sat,  9 Sep 2023 16:00:03 +0300
+Message-Id: <20230909130020.352951-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -62,50 +62,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-When there is an error, we need to raise a TFES error irq, see AHCI 1.3.1,
-5.3.13.1 SDB:Entry.
+When encountering an NCQ error, you should not write the NCQ tag to the
+SError register. This is completely wrong.
 
-If ERR_STAT is set, we jump to state ERR:FatalTaskfile, which will raise
-a TFES IRQ unconditionally, regardless if the I bit is set in the FIS or
-not.
+The SError register has a clear definition, where each bit represents a
+different error, see PxSERR definition in AHCI 1.3.1.
 
-Thus, we should never raise a normal IRQ after having sent an error IRQ.
+If we write a random value (like the NCQ tag) in SError, e.g. Linux will
+read SError, and will trigger arbitrary error handling depending on the
+NCQ tag that happened to be executing.
 
-It is valid to signal successfully completed commands as finished in the
-same SDB FIS that generates the error IRQ. The important thing is that
-commands that did not complete successfully (e.g. commands that were
-aborted, do not get the finished bit set).
-
-Before this commit, there was never a TFES IRQ raised on NCQ error.
+In case of success, ncq_cb() will call ncq_finish().
+In case of error, ncq_cb() will call ncq_err() (which will clear
+ncq_tfs->used), and then call ncq_finish(), thus using ncq_tfs->used is
+sufficient to tell if finished should get set or not.
 
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230609140844.202795-8-nks@flawful.org
+Message-id: 20230609140844.202795-9-nks@flawful.org
 Signed-off-by: John Snow <jsnow@redhat.com>
-(cherry picked from commit 7e85cb0db4c693b4e084a00e66fe73a22ed1688a)
+(cherry picked from commit 9f89423537653de07ca40c18b5ff5b70b104cc93)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 8af91d97a2..28a6f59c95 100644
+index 28a6f59c95..123816c348 100644
 --- a/hw/ide/ahci.c
 +++ b/hw/ide/ahci.c
-@@ -806,8 +806,14 @@ static void ahci_write_fis_sdb(AHCIState *s, NCQTransferState *ncq_tfs)
-     pr->scr_act &= ~ad->finished;
-     ad->finished = 0;
+@@ -1012,7 +1012,6 @@ static void ncq_err(NCQTransferState *ncq_tfs)
  
--    /* Trigger IRQ if interrupt bit is set (which currently, it always is) */
--    if (sdb_fis->flags & 0x40) {
-+    /*
-+     * TFES IRQ is always raised if ERR_STAT is set, regardless of I bit.
-+     * If ERR_STAT is not set, trigger SDBS IRQ if interrupt bit is set
-+     * (which currently, it always is).
-+     */
-+    if (sdb_fis->status & ERR_STAT) {
-+        ahci_trigger_irq(s, ad, AHCI_PORT_IRQ_BIT_TFES);
-+    } else if (sdb_fis->flags & 0x40) {
-         ahci_trigger_irq(s, ad, AHCI_PORT_IRQ_BIT_SDBS);
-     }
+     ide_state->error = ABRT_ERR;
+     ide_state->status = READY_STAT | ERR_STAT;
+-    ncq_tfs->drive->port_regs.scr_err |= (1 << ncq_tfs->tag);
+     qemu_sglist_destroy(&ncq_tfs->sglist);
+     ncq_tfs->used = 0;
  }
+@@ -1022,7 +1021,7 @@ static void ncq_finish(NCQTransferState *ncq_tfs)
+     /* If we didn't error out, set our finished bit. Errored commands
+      * do not get a bit set for the SDB FIS ACT register, nor do they
+      * clear the outstanding bit in scr_act (PxSACT). */
+-    if (!(ncq_tfs->drive->port_regs.scr_err & (1 << ncq_tfs->tag))) {
++    if (ncq_tfs->used) {
+         ncq_tfs->drive->finished |= (1 << ncq_tfs->tag);
+     }
+ 
 -- 
 2.39.2
 
