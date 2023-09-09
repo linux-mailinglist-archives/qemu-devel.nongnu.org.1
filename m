@@ -2,39 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4677E79976E
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:33:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DB02799765
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:33:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qevDl-0002oH-8f; Sat, 09 Sep 2023 06:29:45 -0400
+	id 1qevDj-0002Tx-Tf; Sat, 09 Sep 2023 06:29:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevDg-0002F5-AO; Sat, 09 Sep 2023 06:29:40 -0400
+ id 1qevDg-0002F2-A9; Sat, 09 Sep 2023 06:29:40 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevDb-0004aN-Vt; Sat, 09 Sep 2023 06:29:38 -0400
+ id 1qevDd-0004ab-6Y; Sat, 09 Sep 2023 06:29:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EAD63204A8;
- Sat,  9 Sep 2023 13:29:09 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 25AA5204A9;
+ Sat,  9 Sep 2023 13:29:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 009AA26D06;
- Sat,  9 Sep 2023 13:28:18 +0300 (MSK)
-Received: (nullmailer pid 346702 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 24F3A26D07;
+ Sat,  9 Sep 2023 13:28:19 +0300 (MSK)
+Received: (nullmailer pid 346705 invoked by uid 1000);
  Sat, 09 Sep 2023 10:28:17 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Ivan Warren <ivan@vmfacility.fr>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.1 21/34] target/ppc: Fix LQ,
- STQ register-pair order for big-endian
-Date: Sat,  9 Sep 2023 13:27:14 +0300
-Message-Id: <20230909102747.346522-21-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Niklas Cassel <niklas.cassel@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.1 22/34] hw/ide/core: set ERR_STAT in unsupported command
+ completion
+Date: Sat,  9 Sep 2023 13:27:15 +0300
+Message-Id: <20230909102747.346522-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
 References: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
@@ -63,73 +61,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-LQ, STQ have the same register-pair ordering as LQARX/STQARX., which is
-the even (lower) register contains the most significant bits. This is
-not implemented correctly for big-endian.
+Currently, the first time sending an unsupported command
+(e.g. READ LOG DMA EXT) will not have ERR_STAT set in the completion.
+Sending the unsupported command again, will correctly have ERR_STAT set.
 
-do_ldst_quad() has variables low_addr_gpr and high_addr_gpr which is
-confusing because they are low and high addresses, whereas LQARX/STQARX.
-and most such things use the low and high values for lo/hi variables.
-The conversion to native 128-bit memory access functions missed this
-strangeness.
+When ide_cmd_permitted() returns false, it calls ide_abort_command().
+ide_abort_command() first calls ide_transfer_stop(), which will call
+ide_transfer_halt() and ide_cmd_done(), after that ide_abort_command()
+sets ERR_STAT in status.
 
-Fix this by changing the if condition, and change the variable names to
-hi/lo to match convention.
+ide_cmd_done() for AHCI will call ahci_write_fis_d2h() which writes the
+current status in the FIS, and raises an IRQ. (The status here will not
+have ERR_STAT set!).
 
-Cc: qemu-stable@nongnu.org
-Reported-by: Ivan Warren <ivan@vmfacility.fr>
-Fixes: 57b38ffd0c6f ("target/ppc: Use tcg_gen_qemu_{ld,st}_i128 for LQARX, LQ, STQ")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1836
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-(cherry picked from commit 718209358f2e4f231cbacf974c3299c4fe7beb83)
+Thus, we cannot call ide_transfer_stop() before setting ERR_STAT, as
+ide_transfer_stop() will result in the FIS being written and an IRQ
+being raised.
+
+The reason why it works the second time, is that ERR_STAT will still
+be set from the previous command, so when writing the FIS, the
+completion will correctly have ERR_STAT set.
+
+Set ERR_STAT before writing the FIS (calling cmd_done), so that we will
+raise an error IRQ correctly when receiving an unsupported command.
+
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230609140844.202795-3-nks@flawful.org
+Signed-off-by: John Snow <jsnow@redhat.com>
+(cherry picked from commit c3461c6264a7c8ca15b117e91fe5da786924a784)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/translate/fixedpoint-impl.c.inc
-index f47f1a50e8..b423c09c26 100644
---- a/target/ppc/translate/fixedpoint-impl.c.inc
-+++ b/target/ppc/translate/fixedpoint-impl.c.inc
-@@ -71,7 +71,7 @@ static bool do_ldst_quad(DisasContext *ctx, arg_D *a, bool store, bool prefixed)
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index de48ff9f86..07971c0218 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -533,9 +533,9 @@ BlockAIOCB *ide_issue_trim(
+ 
+ void ide_abort_command(IDEState *s)
  {
- #if defined(TARGET_PPC64)
-     TCGv ea;
--    TCGv_i64 low_addr_gpr, high_addr_gpr;
-+    TCGv_i64 lo, hi;
-     TCGv_i128 t16;
+-    ide_transfer_stop(s);
+     s->status = READY_STAT | ERR_STAT;
+     s->error = ABRT_ERR;
++    ide_transfer_stop(s);
+ }
  
-     REQUIRE_INSNS_FLAGS(ctx, 64BX);
-@@ -94,21 +94,21 @@ static bool do_ldst_quad(DisasContext *ctx, arg_D *a, bool store, bool prefixed)
-     gen_set_access_type(ctx, ACCESS_INT);
-     ea = do_ea_calc(ctx, a->ra, tcg_constant_tl(a->si));
- 
--    if (prefixed || !ctx->le_mode) {
--        low_addr_gpr = cpu_gpr[a->rt];
--        high_addr_gpr = cpu_gpr[a->rt + 1];
-+    if (ctx->le_mode && prefixed) {
-+        lo = cpu_gpr[a->rt];
-+        hi = cpu_gpr[a->rt + 1];
-     } else {
--        low_addr_gpr = cpu_gpr[a->rt + 1];
--        high_addr_gpr = cpu_gpr[a->rt];
-+        lo = cpu_gpr[a->rt + 1];
-+        hi = cpu_gpr[a->rt];
-     }
-     t16 = tcg_temp_new_i128();
- 
-     if (store) {
--        tcg_gen_concat_i64_i128(t16, low_addr_gpr, high_addr_gpr);
-+        tcg_gen_concat_i64_i128(t16, lo, hi);
-         tcg_gen_qemu_st_i128(t16, ea, ctx->mem_idx, DEF_MEMOP(MO_128));
-     } else {
-         tcg_gen_qemu_ld_i128(t16, ea, ctx->mem_idx, DEF_MEMOP(MO_128));
--        tcg_gen_extr_i128_i64(low_addr_gpr, high_addr_gpr, t16);
-+        tcg_gen_extr_i128_i64(lo, hi, t16);
-     }
- #else
-     qemu_build_not_reached();
+ static void ide_set_retry(IDEState *s)
 -- 
 2.39.2
 
