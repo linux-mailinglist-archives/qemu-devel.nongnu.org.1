@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D8C79986C
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0788799882
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:17:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexh5-0005AI-ET; Sat, 09 Sep 2023 09:08:11 -0400
+	id 1qexh7-0005Py-2p; Sat, 09 Sep 2023 09:08:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexh1-0004qm-PM; Sat, 09 Sep 2023 09:08:07 -0400
+ id 1qexh4-0005Do-Ku; Sat, 09 Sep 2023 09:08:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexgz-0003wL-9j; Sat, 09 Sep 2023 09:08:07 -0400
+ id 1qexh1-0003wf-Q1; Sat, 09 Sep 2023 09:08:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 17540205EC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 68F1C205ED;
  Sat,  9 Sep 2023 16:06:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D781126E3F;
- Sat,  9 Sep 2023 16:05:18 +0300 (MSK)
-Received: (nullmailer pid 354354 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 114DB26E40;
+ Sat,  9 Sep 2023 16:05:19 +0300 (MSK)
+Received: (nullmailer pid 354357 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:12 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Niklas Cassel <niklas.cassel@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 31/37] hw/ide/ahci: fix broken SError handling
-Date: Sat,  9 Sep 2023 16:05:01 +0300
-Message-Id: <20230909130511.354171-31-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Hang Yu <francis_yuu@stu.pku.edu.cn>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 32/37] hw/i2c/aspeed: Fix Tx count and Rx size error in
+ buffer pool mode
+Date: Sat,  9 Sep 2023 16:05:02 +0300
+Message-Id: <20230909130511.354171-32-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
@@ -60,51 +61,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Hang Yu <francis_yuu@stu.pku.edu.cn>
 
-When encountering an NCQ error, you should not write the NCQ tag to the
-SError register. This is completely wrong.
+Fixed inconsistency between the regisiter bit field definition header file
+and the ast2600 datasheet. The reg name is I2CD1C:Pool Buffer Control
+Register in old register mode and  I2CC0C: Master/Slave Pool Buffer Control
+Register in new register mode. They share bit field
+[12:8]:Transmit Data Byte Count and bit field
+[29:24]:Actual Received Pool Buffer Size according to the datasheet.
+According to the ast2600 datasheet,the actual Tx count is
+Transmit Data Byte Count plus 1, and the max Rx size is
+Receive Pool Buffer Size plus 1, both in Pool Buffer Control Register.
+The version before forgot to plus 1, and mistake Rx count for Rx size.
 
-The SError register has a clear definition, where each bit represents a
-different error, see PxSERR definition in AHCI 1.3.1.
-
-If we write a random value (like the NCQ tag) in SError, e.g. Linux will
-read SError, and will trigger arbitrary error handling depending on the
-NCQ tag that happened to be executing.
-
-In case of success, ncq_cb() will call ncq_finish().
-In case of error, ncq_cb() will call ncq_err() (which will clear
-ncq_tfs->used), and then call ncq_finish(), thus using ncq_tfs->used is
-sufficient to tell if finished should get set or not.
-
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230609140844.202795-9-nks@flawful.org
-Signed-off-by: John Snow <jsnow@redhat.com>
-(cherry picked from commit 9f89423537653de07ca40c18b5ff5b70b104cc93)
+Signed-off-by: Hang Yu <francis_yuu@stu.pku.edu.cn>
+Fixes: 3be3d6ccf2ad ("aspeed: i2c: Migrate to registerfields API")
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+(cherry picked from commit 97b8aa5ae9ff197394395eda5062ea3681e09c28)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 8d02282838..38725d1c55 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -1011,7 +1011,6 @@ static void ncq_err(NCQTransferState *ncq_tfs)
+diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
+index c166fd20fa..7a394fa2bf 100644
+--- a/hw/i2c/aspeed_i2c.c
++++ b/hw/i2c/aspeed_i2c.c
+@@ -236,7 +236,7 @@ static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
+     uint32_t reg_byte_buf = aspeed_i2c_bus_byte_buf_offset(bus);
+     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
+     int pool_tx_count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
+-                                                TX_COUNT);
++                                                TX_COUNT) + 1;
  
-     ide_state->error = ABRT_ERR;
-     ide_state->status = READY_STAT | ERR_STAT;
--    ncq_tfs->drive->port_regs.scr_err |= (1 << ncq_tfs->tag);
-     qemu_sglist_destroy(&ncq_tfs->sglist);
-     ncq_tfs->used = 0;
- }
-@@ -1021,7 +1020,7 @@ static void ncq_finish(NCQTransferState *ncq_tfs)
-     /* If we didn't error out, set our finished bit. Errored commands
-      * do not get a bit set for the SDB FIS ACT register, nor do they
-      * clear the outstanding bit in scr_act (PxSACT). */
--    if (!(ncq_tfs->drive->port_regs.scr_err & (1 << ncq_tfs->tag))) {
-+    if (ncq_tfs->used) {
-         ncq_tfs->drive->finished |= (1 << ncq_tfs->tag);
-     }
+     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
+         for (i = pool_start; i < pool_tx_count; i++) {
+@@ -293,7 +293,7 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
+     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
+     uint32_t reg_dma_addr = aspeed_i2c_bus_dma_addr_offset(bus);
+     int pool_rx_count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
+-                                                RX_COUNT);
++                                                RX_SIZE) + 1;
  
+     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
+         uint8_t *pool_base = aic->bus_pool_base(bus);
+@@ -418,7 +418,7 @@ static void aspeed_i2c_bus_cmd_dump(AspeedI2CBus *bus)
+     uint32_t reg_intr_sts = aspeed_i2c_bus_intr_sts_offset(bus);
+     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
+     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
+-        count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT);
++        count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT) + 1;
+     } else if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_DMA_EN)) {
+         count = bus->regs[reg_dma_len];
+     } else { /* BYTE mode */
+@@ -490,7 +490,7 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
+          */
+         if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
+             if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT)
+-                == 1) {
++                == 0) {
+                 SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
+             } else {
+                 /*
+diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
+index adc904d6c1..91d0e7157c 100644
+--- a/include/hw/i2c/aspeed_i2c.h
++++ b/include/hw/i2c/aspeed_i2c.h
+@@ -132,9 +132,9 @@ REG32(I2CD_CMD, 0x14) /* I2CD Command/Status */
+ REG32(I2CD_DEV_ADDR, 0x18) /* Slave Device Address */
+     SHARED_FIELD(SLAVE_DEV_ADDR1, 0, 7)
+ REG32(I2CD_POOL_CTRL, 0x1C) /* Pool Buffer Control */
+-    SHARED_FIELD(RX_COUNT, 24, 5)
++    SHARED_FIELD(RX_COUNT, 24, 6)
+     SHARED_FIELD(RX_SIZE, 16, 5)
+-    SHARED_FIELD(TX_COUNT, 9, 5)
++    SHARED_FIELD(TX_COUNT, 8, 5)
+     FIELD(I2CD_POOL_CTRL, OFFSET, 2, 6) /* AST2400 */
+ REG32(I2CD_BYTE_BUF, 0x20) /* Transmit/Receive Byte Buffer */
+     SHARED_FIELD(RX_BUF, 8, 8)
 -- 
 2.39.2
 
