@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C03799871
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A260C799868
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:12:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexdQ-0006Lw-4W; Sat, 09 Sep 2023 09:04:24 -0400
+	id 1qexdR-0006N2-FD; Sat, 09 Sep 2023 09:04:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexd9-0006In-Db; Sat, 09 Sep 2023 09:04:08 -0400
+ id 1qexdH-0006Kw-Mm; Sat, 09 Sep 2023 09:04:17 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexd5-00031Z-89; Sat, 09 Sep 2023 09:04:06 -0400
+ id 1qexdB-00033V-CU; Sat, 09 Sep 2023 09:04:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C61FD205B5;
+ by isrv.corpit.ru (Postfix) with ESMTP id F2CEB205B6;
  Sat,  9 Sep 2023 16:01:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8AED926E1B;
+ by tsrv.corpit.ru (Postfix) with SMTP id C1F7B26E1C;
  Sat,  9 Sep 2023 16:00:29 +0300 (MSK)
-Received: (nullmailer pid 353172 invoked by uid 1000);
+Received: (nullmailer pid 353175 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Hang Yu <francis_yuu@stu.pku.edu.cn>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 39/43] hw/i2c/aspeed: Fix TXBUF transmission start
- position error
-Date: Sat,  9 Sep 2023 16:00:05 +0300
-Message-Id: <20230909130020.352951-39-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 40/43] qemu-options.hx: Rephrase the descriptions of
+ the -hd* and -cdrom options
+Date: Sat,  9 Sep 2023 16:00:06 +0300
+Message-Id: <20230909130020.352951-40-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -61,104 +61,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hang Yu <francis_yuu@stu.pku.edu.cn>
+From: Thomas Huth <thuth@redhat.com>
 
-According to the ast2600 datasheet and the linux aspeed i2c driver,
-the TXBUF transmission start position should be TXBUF[0] instead
-of TXBUF[1],so the arg pool_start is useless,and the address is not
-included in TXBUF.So even if Tx Count equals zero,there is at least
-1 byte data needs to be transmitted,and M_TX_CMD should not be cleared
-at this condition.The driver url is:
-https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v5.15/drivers/i2c/busses/i2c-ast2600.c
+The current description says that these options will create a device
+on the IDE bus, which is only true on x86. So rephrase these sentences
+a little bit to speak of "default bus" instead.
 
-Signed-off-by: Hang Yu <francis_yuu@stu.pku.edu.cn>
-Fixes: 6054fc73e8f4 ("aspeed/i2c: Add support for pool buffer transfers")
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-(cherry picked from commit 961faf3ddbd8ffcdf776bbcf88af0bc97218114a)
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit bcd8e243083c878884e52d609deddbe6be17c730)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index e485d8bfb8..44905d7899 100644
---- a/hw/i2c/aspeed_i2c.c
-+++ b/hw/i2c/aspeed_i2c.c
-@@ -226,7 +226,7 @@ static int aspeed_i2c_dma_read(AspeedI2CBus *bus, uint8_t *data)
-     return 0;
- }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index fdddfab6ff..af8156d2f8 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -1174,10 +1174,10 @@ SRST
+ ERST
  
--static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
-+static int aspeed_i2c_bus_send(AspeedI2CBus *bus)
- {
-     AspeedI2CClass *aic = ASPEED_I2C_GET_CLASS(bus->controller);
-     int ret = -1;
-@@ -239,7 +239,7 @@ static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
-                                                 TX_COUNT) + 1;
+ DEF("hda", HAS_ARG, QEMU_OPTION_hda,
+-    "-hda/-hdb file  use 'file' as IDE hard disk 0/1 image\n", QEMU_ARCH_ALL)
++    "-hda/-hdb file  use 'file' as hard disk 0/1 image\n", QEMU_ARCH_ALL)
+ DEF("hdb", HAS_ARG, QEMU_OPTION_hdb, "", QEMU_ARCH_ALL)
+ DEF("hdc", HAS_ARG, QEMU_OPTION_hdc,
+-    "-hdc/-hdd file  use 'file' as IDE hard disk 2/3 image\n", QEMU_ARCH_ALL)
++    "-hdc/-hdd file  use 'file' as hard disk 2/3 image\n", QEMU_ARCH_ALL)
+ DEF("hdd", HAS_ARG, QEMU_OPTION_hdd, "", QEMU_ARCH_ALL)
+ SRST
+ ``-hda file``
+@@ -1187,18 +1187,22 @@ SRST
+ ``-hdc file``
+   \ 
+ ``-hdd file``
+-    Use file as hard disk 0, 1, 2 or 3 image (see the :ref:`disk images`
+-    chapter in the System Emulation Users Guide).
++    Use file as hard disk 0, 1, 2 or 3 image on the default bus of the
++    emulated machine (this is for example the IDE bus on most x86 machines,
++    but it can also be SCSI, virtio or something else on other target
++    architectures). See also the :ref:`disk images` chapter in the System
++    Emulation Users Guide.
+ ERST
  
-     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
--        for (i = pool_start; i < pool_tx_count; i++) {
-+        for (i = 0; i < pool_tx_count; i++) {
-             uint8_t *pool_base = aic->bus_pool_base(bus);
+ DEF("cdrom", HAS_ARG, QEMU_OPTION_cdrom,
+-    "-cdrom file     use 'file' as IDE cdrom image (cdrom is ide1 master)\n",
++    "-cdrom file     use 'file' as CD-ROM image\n",
+     QEMU_ARCH_ALL)
+ SRST
+ ``-cdrom file``
+-    Use file as CD-ROM image (you cannot use ``-hdc`` and ``-cdrom`` at
+-    the same time). You can use the host CD-ROM by using ``/dev/cdrom``
+-    as filename.
++    Use file as CD-ROM image on the default bus of the emulated machine
++    (which is IDE1 master on x86, so you cannot use ``-hdc`` and ``-cdrom``
++    at the same time there). On systems that support it, you can use the
++    host CD-ROM by using ``/dev/cdrom`` as filename.
+ ERST
  
-             trace_aspeed_i2c_bus_send("BUF", i + 1, pool_tx_count,
-@@ -273,7 +273,7 @@ static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
-         }
-         SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, TX_DMA_EN, 0);
-     } else {
--        trace_aspeed_i2c_bus_send("BYTE", pool_start, 1,
-+        trace_aspeed_i2c_bus_send("BYTE", 0, 1,
-                                   bus->regs[reg_byte_buf]);
-         ret = i2c_send(bus->bus, bus->regs[reg_byte_buf]);
-     }
-@@ -446,10 +446,8 @@ static void aspeed_i2c_bus_cmd_dump(AspeedI2CBus *bus)
-  */
- static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
- {
--    uint8_t pool_start = 0;
-     uint32_t reg_intr_sts = aspeed_i2c_bus_intr_sts_offset(bus);
-     uint32_t reg_cmd = aspeed_i2c_bus_cmd_offset(bus);
--    uint32_t reg_pool_ctrl = aspeed_i2c_bus_pool_ctrl_offset(bus);
-     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
- 
-     if (!aspeed_i2c_check_sram(bus)) {
-@@ -483,27 +481,11 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
- 
-         SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_START_CMD, 0);
- 
--        /*
--         * The START command is also a TX command, as the slave
--         * address is sent on the bus. Drop the TX flag if nothing
--         * else needs to be sent in this sequence.
--         */
--        if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
--            if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT)
--                == 0) {
--                SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
--            } else {
--                /*
--                 * Increase the start index in the TX pool buffer to
--                 * skip the address byte.
--                 */
--                pool_start++;
--            }
--        } else if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_DMA_EN)) {
-+        if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_DMA_EN)) {
-             if (bus->regs[reg_dma_len] == 0) {
-                 SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
-             }
--        } else {
-+        } else if (!SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
-             SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
-         }
- 
-@@ -520,7 +502,7 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
- 
-     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, M_TX_CMD)) {
-         aspeed_i2c_set_state(bus, I2CD_MTXD);
--        if (aspeed_i2c_bus_send(bus, pool_start)) {
-+        if (aspeed_i2c_bus_send(bus)) {
-             SHARED_ARRAY_FIELD_DP32(bus->regs, reg_intr_sts, TX_NAK, 1);
-             i2c_end_transfer(bus->bus);
-         } else {
+ DEF("blockdev", HAS_ARG, QEMU_OPTION_blockdev,
 -- 
 2.39.2
 
