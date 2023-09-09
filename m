@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866A3799AA5
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 21:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D4B799AA6
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 21:41:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf3n3-0005xw-Kl; Sat, 09 Sep 2023 15:38:45 -0400
+	id 1qf3n3-0005xn-AW; Sat, 09 Sep 2023 15:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qf3n0-0005x6-Rz
+ id 1qf3n0-0005x7-S0
  for qemu-devel@nongnu.org; Sat, 09 Sep 2023 15:38:43 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qf3mx-0003Dm-0Y
+ id 1qf3mx-0003Dr-0b
  for qemu-devel@nongnu.org; Sat, 09 Sep 2023 15:38:41 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40078c4855fso33587765e9.3
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-403012f276dso8463245e9.0
  for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 12:38:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694288316; x=1694893116; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694288317; x=1694893117; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iussohd3oOsJrjsaObP8RqGbhTo1pjSye6BxeJlFWe4=;
- b=q5CoJV/SDQhvMOV45mOQex9IC8PiVkxgebBSS5Oe1hgFitGBMibzbLDY7yWoaY5Q9l
- tVXIDEtM8qxhHxBiySyx66FGL4DvN7p6HCo/o41ijGOrFq2PKrKb8utTuidZqObXA5HE
- CqjpkfhP6bxn+he5X0e6sM6s02Rzj4AISleaF9Fj2Vffkaf42gfgjKr8LjWWR4w61hvs
- ZxbAP626VBX3Ka9ExTIkzIk/92hoOuG9mSlnn9L7f6AHJjHggvY2Pls1iAZpX27E5Ij9
- 12pPWjlq8bIcKI+Zz/TYgJXBAw/s4fNP0M9b3AhgEqQnzdJ1VsDbIUqAQaA2D3KA/EBJ
- bDvw==
+ bh=SzQYgtfeBusD4Se7U5wLMSY61hrlabGlXjvWtWADjxo=;
+ b=H2QRQkN3A+taOvckRM5zfZjXhVi9Ee6eZiSCrlljQU8w1nWGienE26Uzw+y0bJb/KG
+ DYO6+XyceuDUE+7xgHPryRBQf5Gl5Wm1rx0j9fRk7XC4n4pqPKqp2PH0uiceMinUdVdw
+ +IkFIXFtw/lcRCe3F7gum/6H+JgPi1WWGU4p2IHleeI3LRcqGk1OtR+ujnblDqzPWhXL
+ dsd2/kGpJMr3NqJ1TLXCoViBTta21XHrZRdd+qq/KnQBzUxaF2ZTneL/R3OniZWOyT6j
+ YuE7P+379ylAmEnxry0HaNqZSa5S7MCuEbJs4BGBXgfedBo3xNnRZumccfa6HIxuCs1o
+ DtbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694288316; x=1694893116;
+ d=1e100.net; s=20230601; t=1694288317; x=1694893117;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iussohd3oOsJrjsaObP8RqGbhTo1pjSye6BxeJlFWe4=;
- b=Mi8Qc+qGQtoKcxR1+lYUUNScFGKhBo4tixWZNZqZyB3KH48itQHVWak4R6K4+2wFBo
- PzO1n0YpqhSnsh+jR0wNddX7g+SToPn+ciBDPjfM7eNwmasAQnDs3NsdSgcejXtdEtR9
- FVcBsnbGo2AAiROAEkZJcjKS0+JAROZ7b8nJc/4TKIV76a0qCGsz9MCgDJWRKI3pvapR
- YU9MDapqSzkOPnWkVbySg94oDNLWtfQW6jj2Epnvnp6wVnaoQdA2ZKJUfIlKlg1lCRBI
- ZJ8BYc6ahId8Rvkjq84Tul2FZJOYsc6C4ux0FbNeTgm/qADIOefHqFaHixX9TOsBpUzY
- XmRQ==
-X-Gm-Message-State: AOJu0Yz8KsVDQlNU/1w/9OcBKKtAwZazTlxkrHSZq2IkNS1BOZxo8LPm
- tb9nNC/6vgo6jtFkHMxIMX1gGZAp/vY=
-X-Google-Smtp-Source: AGHT+IFXTwyghCCw0SKozruP043bD099ZAC6iXS5szSmu4XlKfAdcVnxo4dU1KAjOfKTILjWhfQc5A==
-X-Received: by 2002:a7b:cbd0:0:b0:3fb:efe2:34a2 with SMTP id
- n16-20020a7bcbd0000000b003fbefe234a2mr4843930wmi.5.1694288315768; 
- Sat, 09 Sep 2023 12:38:35 -0700 (PDT)
+ bh=SzQYgtfeBusD4Se7U5wLMSY61hrlabGlXjvWtWADjxo=;
+ b=nGNQZvvVmDzZTwjigPAmFH8hYIc+8eYT6GIF7qN+T0OufzdgT/UppoDtcldg+f8PJo
+ f6u30afKrVbYiy8PFVIIYRx2aC9YsVXWLhUoBGOKuQOVxt5WMA2K8ZID2YsTcrhhUoAQ
+ f+YSSlaYQvzyhDRdV+7jIZtw+TSFBb11mcYkUpqWBuG3NF3RzbyoDo516zNKNzJDi4pt
+ ewXoLsSa5GAW9uQR7Fw56ZQoMeoj0fwl4+g9gsiIQdt2k2G/DjRFgNMM08L2l4qEvWdt
+ gBiZUCy0GXm5qgYr3bh3iesM9q0Bc8+ZHLdFwOWSTz3HZfuIrvqiz+Y3FqwcWdLLlhAc
+ o1GA==
+X-Gm-Message-State: AOJu0Yykrt/4SgSLdGT6FkRD/jCiu10YGctBZRV9RTiR4VZjw2BAcIHY
+ M07FEXz3GCNaBXXliV/XYi/ZrjU8CIM=
+X-Google-Smtp-Source: AGHT+IFJBu0JduF3Vm15j8ORPbOOBZxACpqfn7sHpMpAU52HRqb1tOPJ99VHJvQzuzy42pJkQMY0oQ==
+X-Received: by 2002:a05:600c:218f:b0:401:b2c7:34a8 with SMTP id
+ e15-20020a05600c218f00b00401b2c734a8mr5089642wme.7.1694288316916; 
+ Sat, 09 Sep 2023 12:38:36 -0700 (PDT)
 Received: from karim.my.domain ([197.39.250.27])
  by smtp.gmail.com with ESMTPSA id
- h13-20020a05600c260d00b003fe4ca8decdsm8612812wma.31.2023.09.09.12.38.34
+ h13-20020a05600c260d00b003fe4ca8decdsm8612812wma.31.2023.09.09.12.38.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 Sep 2023 12:38:35 -0700 (PDT)
+ Sat, 09 Sep 2023 12:38:36 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
- Karim Taha <kariem.taha2.7@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v3 09/23] bsd-user: Implement ipc_perm conversion between host
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v3 10/23] bsd-user: Implement shmid_ds conversion between host
  and target.
-Date: Sat,  9 Sep 2023 22:36:50 +0300
-Message-ID: <20230909193704.1827-10-kariem.taha2.7@gmail.com>
+Date: Sat,  9 Sep 2023 22:36:51 +0300
+Message-ID: <20230909193704.1827-11-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
 References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,45 +98,68 @@ From: Stacey Son <sson@FreeBSD.org>
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/bsd-mem.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ bsd-user/bsd-mem.c | 43 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c
-index 8834ab2e58..46cda8eb5c 100644
+index 46cda8eb5c..eea499a727 100644
 --- a/bsd-user/bsd-mem.c
 +++ b/bsd-user/bsd-mem.c
-@@ -30,3 +30,28 @@ void target_set_brk(abi_ulong new_brk)
-     target_brk = TARGET_PAGE_ALIGN(new_brk);
-     initial_target_brk = target_brk;
+@@ -43,6 +43,28 @@ void target_to_host_ipc_perm__locked(struct ipc_perm *host_ip,
+     __get_user(host_ip->key,  &target_ip->key);
  }
-+
-+void target_to_host_ipc_perm__locked(struct ipc_perm *host_ip,
-+                                     struct target_ipc_perm *target_ip)
+ 
++abi_long target_to_host_shmid_ds(struct shmid_ds *host_sd,
++                                 abi_ulong target_addr)
 +{
-+    __get_user(host_ip->cuid, &target_ip->cuid);
-+    __get_user(host_ip->cgid, &target_ip->cgid);
-+    __get_user(host_ip->uid,  &target_ip->uid);
-+    __get_user(host_ip->gid,  &target_ip->gid);
-+    __get_user(host_ip->mode, &target_ip->mode);
-+    __get_user(host_ip->seq,  &target_ip->seq);
-+    __get_user(host_ip->key,  &target_ip->key);
++    struct target_shmid_ds *target_sd;
++
++    if (!lock_user_struct(VERIFY_READ, target_sd, target_addr, 1)) {
++        return -TARGET_EFAULT;
++    }
++
++    target_to_host_ipc_perm__locked(&(host_sd->shm_perm), &(target_sd->shm_perm));
++    __get_user(host_sd->shm_segsz,  &target_sd->shm_segsz);
++    __get_user(host_sd->shm_lpid,   &target_sd->shm_lpid);
++    __get_user(host_sd->shm_cpid,   &target_sd->shm_cpid);
++    __get_user(host_sd->shm_nattch, &target_sd->shm_nattch);
++    __get_user(host_sd->shm_atime,  &target_sd->shm_atime);
++    __get_user(host_sd->shm_dtime,  &target_sd->shm_dtime);
++    __get_user(host_sd->shm_ctime,  &target_sd->shm_ctime);
++    unlock_user_struct(target_sd, target_addr, 0);
++
++    return 0;
 +}
 +
-+void host_to_target_ipc_perm__locked(struct target_ipc_perm *target_ip,
-+                                     struct ipc_perm *host_ip)
+ void host_to_target_ipc_perm__locked(struct target_ipc_perm *target_ip,
+                                      struct ipc_perm *host_ip)
+ {
+@@ -55,3 +77,24 @@ void host_to_target_ipc_perm__locked(struct target_ipc_perm *target_ip,
+     __put_user(host_ip->key,  &target_ip->key);
+ }
+ 
++abi_long host_to_target_shmid_ds(abi_ulong target_addr,
++                                 struct shmid_ds *host_sd)
 +{
-+    __put_user(host_ip->cuid, &target_ip->cuid);
-+    __put_user(host_ip->cgid, &target_ip->cgid);
-+    __put_user(host_ip->uid,  &target_ip->uid);
-+    __put_user(host_ip->gid,  &target_ip->gid);
-+    __put_user(host_ip->mode, &target_ip->mode);
-+    __put_user(host_ip->seq,  &target_ip->seq);
-+    __put_user(host_ip->key,  &target_ip->key);
-+}
++    struct target_shmid_ds *target_sd;
 +
++    if (!lock_user_struct(VERIFY_WRITE, target_sd, target_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++
++    host_to_target_ipc_perm__locked(&(target_sd->shm_perm), &(host_sd->shm_perm));
++    __put_user(host_sd->shm_segsz,  &target_sd->shm_segsz);
++    __put_user(host_sd->shm_lpid,   &target_sd->shm_lpid);
++    __put_user(host_sd->shm_cpid,   &target_sd->shm_cpid);
++    __put_user(host_sd->shm_nattch, &target_sd->shm_nattch);
++    __put_user(host_sd->shm_atime,  &target_sd->shm_atime);
++    __put_user(host_sd->shm_dtime,  &target_sd->shm_dtime);
++    __put_user(host_sd->shm_ctime,  &target_sd->shm_ctime);
++    unlock_user_struct(target_sd, target_addr, 1);
++
++    return 0;
++}
 -- 
 2.42.0
 
