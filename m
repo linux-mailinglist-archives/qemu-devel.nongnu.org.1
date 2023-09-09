@@ -2,39 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AC6799874
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80640799870
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:14:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexfY-0006xq-Tx; Sat, 09 Sep 2023 09:06:37 -0400
+	id 1qexfa-0006z5-Lr; Sat, 09 Sep 2023 09:06:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexfW-0006sf-RV; Sat, 09 Sep 2023 09:06:34 -0400
+ id 1qexfY-0006y5-A0; Sat, 09 Sep 2023 09:06:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexfU-0003fg-8M; Sat, 09 Sep 2023 09:06:34 -0400
+ id 1qexfV-0003fv-Oa; Sat, 09 Sep 2023 09:06:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E6BCB205DE;
- Sat,  9 Sep 2023 16:06:06 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 22821205DF;
+ Sat,  9 Sep 2023 16:06:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A203126E31;
+ by tsrv.corpit.ru (Postfix) with SMTP id E0E7026E32;
  Sat,  9 Sep 2023 16:05:15 +0300 (MSK)
-Received: (nullmailer pid 354311 invoked by uid 1000);
+Received: (nullmailer pid 354314 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:12 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 17/37] accel/kvm: Specify default IPA size for arm64
-Date: Sat,  9 Sep 2023 16:04:47 +0300
-Message-Id: <20230909130511.354171-17-mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 18/37] target/arm: Fix SME ST1Q
+Date: Sat,  9 Sep 2023 16:04:48 +0300
+Message-Id: <20230909130511.354171-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,71 +60,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Before this change, the default KVM type, which is used for non-virt
-machine models, was 0.
-
-The kernel documentation says:
-> On arm64, the physical address size for a VM (IPA Size limit) is
-> limited to 40bits by default. The limit can be configured if the host
-> supports the extension KVM_CAP_ARM_VM_IPA_SIZE. When supported, use
-> KVM_VM_TYPE_ARM_IPA_SIZE(IPA_Bits) to set the size in the machine type
-> identifier, where IPA_Bits is the maximum width of any physical
-> address used by the VM. The IPA_Bits is encoded in bits[7-0] of the
-> machine type identifier.
->
-> e.g, to configure a guest to use 48bit physical address size::
->
->     vm_fd = ioctl(dev_fd, KVM_CREATE_VM, KVM_VM_TYPE_ARM_IPA_SIZE(48));
->
-> The requested size (IPA_Bits) must be:
->
->  ==   =========================================================
->   0   Implies default size, 40bits (for backward compatibility)
->   N   Implies N bits, where N is a positive integer such that,
->       32 <= N <= Host_IPA_Limit
->  ==   =========================================================
-
-> Host_IPA_Limit is the maximum possible value for IPA_Bits on the host
-> and is dependent on the CPU capability and the kernel configuration.
-> The limit can be retrieved using KVM_CAP_ARM_VM_IPA_SIZE of the
-> KVM_CHECK_EXTENSION ioctl() at run-time.
->
-> Creation of the VM will fail if the requested IPA size (whether it is
-> implicit or explicit) is unsupported on the host.
-https://docs.kernel.org/virt/kvm/api.html#kvm-create-vm
-
-So if Host_IPA_Limit < 40, specifying 0 as the type will fail. This
-actually confused libvirt, which uses "none" machine model to probe the
-KVM availability, on M2 MacBook Air.
-
-Fix this by using Host_IPA_Limit as the default type when
-KVM_CAP_ARM_VM_IPA_SIZE is available.
+A typo, noted in the bug report, resulting in an
+incorrect write offset.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20230727073134.134102-3-akihiko.odaki@daynix.com
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes: 7390e0e9ab8 ("target/arm: Implement SME LD1, ST1")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1833
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230818214255.146905-1-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 1ab445af8cd99343f29032b5944023ad7d8edebf)
+(cherry picked from commit 4b3520fd93cd49cc56dfcab45d90735cc2e35af7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 34bc329b5b..e219f78535 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -249,7 +249,9 @@ int kvm_arm_get_max_vm_ipa_size(MachineState *ms, bool *fixed_ipa)
- 
- int kvm_arch_get_default_type(MachineState *ms)
- {
--    return 0;
-+    bool fixed_ipa;
-+    int size = kvm_arm_get_max_vm_ipa_size(ms, &fixed_ipa);
-+    return fixed_ipa ? 0 : size;
- }
- 
- int kvm_arch_init(MachineState *ms, KVMState *s)
+diff --git a/target/arm/sme_helper.c b/target/arm/sme_helper.c
+index f891306bb9..73dd838330 100644
+--- a/target/arm/sme_helper.c
++++ b/target/arm/sme_helper.c
+@@ -412,7 +412,7 @@ static inline void HNAME##_host(void *za, intptr_t off, void *host)         \
+ {                                                                           \
+     uint64_t *ptr = za + off;                                               \
+     HOST(host, ptr[BE]);                                                    \
+-    HOST(host + 1, ptr[!BE]);                                               \
++    HOST(host + 8, ptr[!BE]);                                               \
+ }                                                                           \
+ static inline void VNAME##_v_host(void *za, intptr_t off, void *host)       \
+ {                                                                           \
 -- 
 2.39.2
 
