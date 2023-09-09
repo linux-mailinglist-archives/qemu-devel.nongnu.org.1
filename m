@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78DD679988E
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD62E799865
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:11:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexeO-0006Ww-J3; Sat, 09 Sep 2023 09:05:24 -0400
+	id 1qexeR-0006Y1-E6; Sat, 09 Sep 2023 09:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexeM-0006WR-8k; Sat, 09 Sep 2023 09:05:22 -0400
+ id 1qexeO-0006XS-G0; Sat, 09 Sep 2023 09:05:24 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexeJ-0003QR-TP; Sat, 09 Sep 2023 09:05:22 -0400
+ id 1qexeK-0003QY-5j; Sat, 09 Sep 2023 09:05:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 821C7205CF;
+ by isrv.corpit.ru (Postfix) with ESMTP id A9C5B205D0;
  Sat,  9 Sep 2023 16:06:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4FFDF26E22;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7998A26E23;
  Sat,  9 Sep 2023 16:05:12 +0300 (MSK)
-Received: (nullmailer pid 354266 invoked by uid 1000);
+Received: (nullmailer pid 354269 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 02/37] hw/smbios: Fix smbios_smp_sockets caculation
-Date: Sat,  9 Sep 2023 16:04:32 +0300
-Message-Id: <20230909130511.354171-2-mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 03/37] hw/smbios: Fix thread count in type4
+Date: Sat,  9 Sep 2023 16:04:33 +0300
+Message-Id: <20230909130511.354171-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
@@ -60,47 +60,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-smp.sockets is the number of sockets which is configured by "-smp" (
-otherwise, the default is 1). Trying to recalculate it here with another
-rules leads to errors, such as:
+>From SMBIOS 3.0 specification, thread count field means:
 
-1. 003f230e37d7 ("machine: Tweak the order of topology members in struct
-   CpuTopology") changes the meaning of smp.cores but doesn't fix
-   original smp.cores uses.
+Thread Count is the total number of threads detected by the BIOS for
+this processor socket. It is a processor-wide count, not a
+thread-per-core count. [1]
 
-   With the introduction of cluster, now smp.cores means the number of
-   cores in one cluster. So smp.cores * smp.threads just means the
-   threads in a cluster not in a socket.
+So here we should use threads per socket other than threads per core.
 
-2. On the other hand, we shouldn't use smp.cpus here because it
-   indicates the initial number of online CPUs at the boot time, and is
-   not mathematically related to smp.sockets.
+[1] SMBIOS 3.0.0, section 7.5.8, Processor Information - Thread Count
 
-So stop reinventing the another wheel and use the topo values that
-has been calculated.
-
-Fixes: 003f230e37d7 ("machine: Tweak the order of topology members in struct CpuTopology")
+Fixes: c97294ec1b9e ("SMBIOS: Build aggregate smbios tables and entry point")
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20230628135437.1145805-3-zhao1.liu@linux.intel.com>
+Message-Id: <20230628135437.1145805-4-zhao1.liu@linux.intel.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit d79a284a44bb7d88b233fb6bb12ea3723f43469d)
+(cherry picked from commit 7298fd7de5551c4501f54381228458e3c21cab4b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 66a020999b..74e4aee5a9 100644
+index 74e4aee5a9..4657d4417c 100644
 --- a/hw/smbios/smbios.c
 +++ b/hw/smbios/smbios.c
-@@ -1087,8 +1087,7 @@ void smbios_get_tables(MachineState *ms,
-         smbios_build_type_2_table();
-         smbios_build_type_3_table();
+@@ -712,6 +712,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+ {
+     char sock_str[128];
+     size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
++    unsigned threads_per_socket;
  
--        smbios_smp_sockets = DIV_ROUND_UP(ms->smp.cpus,
--                                          ms->smp.cores * ms->smp.threads);
-+        smbios_smp_sockets = ms->smp.sockets;
-         assert(smbios_smp_sockets >= 1);
+     if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+         tbl_len = SMBIOS_TYPE_4_LEN_V30;
+@@ -746,17 +747,19 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
+     SMBIOS_TABLE_SET_STR(4, asset_tag_number_str, type4.asset);
+     SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
  
-         for (i = 0; i < smbios_smp_sockets; i++) {
++    threads_per_socket = machine_topo_get_threads_per_socket(ms);
++
+     t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
+     t->core_enabled = t->core_count;
+ 
+-    t->thread_count = (ms->smp.threads > 255) ? 0xFF : ms->smp.threads;
++    t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
+ 
+     t->processor_characteristics = cpu_to_le16(0x02); /* Unknown */
+     t->processor_family2 = cpu_to_le16(0x01); /* Other */
+ 
+     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+         t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
+-        t->thread_count2 = cpu_to_le16(ms->smp.threads);
++        t->thread_count2 = cpu_to_le16(threads_per_socket);
+     }
+ 
+     SMBIOS_BUILD_TABLE_POST;
 -- 
 2.39.2
 
