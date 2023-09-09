@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789A879986E
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21A7799875
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:15:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexf9-0006mj-Rd; Sat, 09 Sep 2023 09:06:12 -0400
+	id 1qexf9-0006mi-KI; Sat, 09 Sep 2023 09:06:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexez-0006jl-WB; Sat, 09 Sep 2023 09:06:02 -0400
+ id 1qexf2-0006lC-I8; Sat, 09 Sep 2023 09:06:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexev-0003Zn-VV; Sat, 09 Sep 2023 09:06:01 -0400
+ id 1qexez-0003a7-1s; Sat, 09 Sep 2023 09:06:03 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 93CF6205D8;
+ by isrv.corpit.ru (Postfix) with ESMTP id EA88B205D9;
  Sat,  9 Sep 2023 16:06:05 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4237A26E2B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8DFF326E2C;
  Sat,  9 Sep 2023 16:05:14 +0300 (MSK)
-Received: (nullmailer pid 354293 invoked by uid 1000);
+Received: (nullmailer pid 354296 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:12 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Claudio Fontana <cfontana@suse.de>, David Hildenbrand <david@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 11/37] target/s390x: Fix the "ignored match" case in
- VSTRS
-Date: Sat,  9 Sep 2023 16:04:41 +0300
-Message-Id: <20230909130511.354171-11-mjt@tls.msk.ru>
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 12/37] target/s390x: Use a 16-bit immediate in VREP
+Date: Sat,  9 Sep 2023 16:04:42 +0300
+Message-Id: <20230909130511.354171-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
@@ -62,117 +61,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Currently the emulation of VSTRS recognizes partial matches in presence
-of \0 in the haystack, which, according to PoP, is not correct:
+Unlike most other instructions that contain an immediate element index,
+VREP's one is 16-bit, and not 4-bit. The code uses only 8 bits, so
+using, e.g., 0x101 does not lead to a specification exception.
 
-    If the ZS flag is one and a zero byte was detected
-    in the second operand, then there can not be a
-    partial match ...
-
-Add a check for this. While at it, fold a number of explicitly handled
-special cases into the generic logic.
+Fix by checking all 16 bits.
 
 Cc: qemu-stable@nongnu.org
-Reported-by: Claudio Fontana <cfontana@suse.de>
-Closes: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00633.html
-Fixes: 1d706f314191 ("target/s390x: vxeh2: vector string search")
+Fixes: 28d08731b1d8 ("s390x/tcg: Implement VECTOR REPLICATE")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20230804233748.218935-3-iii@linux.ibm.com>
-Tested-by: Claudio Fontana <cfontana@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
+Message-Id: <20230807163459.849766-1-iii@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 791b2b6a930273db694b9ba48bbb406e78715927)
+(cherry picked from commit 23e87d419f347b6b5f4da3bf70d222acc24cdb64)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/s390x/tcg/vec_string_helper.c b/target/s390x/tcg/vec_string_helper.c
-index 9b85becdfb..a19f429768 100644
---- a/target/s390x/tcg/vec_string_helper.c
-+++ b/target/s390x/tcg/vec_string_helper.c
-@@ -474,9 +474,9 @@ DEF_VSTRC_CC_RT_HELPER(32)
- static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
-                  const S390Vector *v4, uint8_t es, bool zs)
+diff --git a/target/s390x/tcg/translate_vx.c.inc b/target/s390x/tcg/translate_vx.c.inc
+index 79e2bbe0a7..db9b35d105 100644
+--- a/target/s390x/tcg/translate_vx.c.inc
++++ b/target/s390x/tcg/translate_vx.c.inc
+@@ -57,7 +57,7 @@
+ #define FPF_LONG        3
+ #define FPF_EXT         4
+ 
+-static inline bool valid_vec_element(uint8_t enr, MemOp es)
++static inline bool valid_vec_element(uint16_t enr, MemOp es)
  {
--    int substr_elen, substr_0, str_elen, i, j, k, cc;
-+    int substr_elen, i, j, k, cc;
-     int nelem = 16 >> es;
--    bool eos = false;
-+    int str_leftmost_0;
+     return !(enr & ~(NUM_VEC_ELEMENTS(es) - 1));
+ }
+@@ -1014,7 +1014,7 @@ static DisasJumpType op_vpdi(DisasContext *s, DisasOps *o)
  
-     substr_elen = s390_vec_read_element8(v4, 7) >> es;
+ static DisasJumpType op_vrep(DisasContext *s, DisasOps *o)
+ {
+-    const uint8_t enr = get_field(s, i2);
++    const uint16_t enr = get_field(s, i2);
+     const uint8_t es = get_field(s, m4);
  
-@@ -498,47 +498,20 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
-     }
- 
-     /* If ZS, look for eos in the searched string. */
-+    str_leftmost_0 = nelem;
-     if (zs) {
-         for (k = 0; k < nelem; k++) {
-             if (s390_vec_read_element(v2, k, es) == 0) {
--                eos = true;
-+                str_leftmost_0 = k;
-                 break;
-             }
-         }
--        str_elen = k;
--    } else {
--        str_elen = nelem;
-     }
- 
--    substr_0 = s390_vec_read_element(v3, 0, es);
--
--    for (k = 0; ; k++) {
--        for (; k < str_elen; k++) {
--            if (s390_vec_read_element(v2, k, es) == substr_0) {
--                break;
--            }
--        }
--
--        /* If we reached the end of the string, no match. */
--        if (k == str_elen) {
--            cc = eos; /* no match (with or without zero char) */
--            goto done;
--        }
--
--        /* If the substring is only one char, match. */
--        if (substr_elen == 1) {
--            cc = 2; /* full match */
--            goto done;
--        }
--
--        /* If the match begins at the last char, we have a partial match. */
--        if (k == str_elen - 1) {
--            cc = 3; /* partial match */
--            goto done;
--        }
--
-+    cc = str_leftmost_0 == nelem ? 0 : 1;  /* No match. */
-+    for (k = 0; k < nelem; k++) {
-         i = MIN(nelem, k + substr_elen);
--        for (j = k + 1; j < i; j++) {
-+        for (j = k; j < i; j++) {
-             uint32_t e2 = s390_vec_read_element(v2, j, es);
-             uint32_t e3 = s390_vec_read_element(v3, j - k, es);
-             if (e2 != e3) {
-@@ -546,9 +519,16 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
-             }
-         }
-         if (j == i) {
--            /* Matched up until "end". */
--            cc = i - k == substr_elen ? 2 : 3; /* full or partial match */
--            goto done;
-+            /* All elements matched. */
-+            if (k > str_leftmost_0) {
-+                cc = 1;  /* Ignored match. */
-+                k = nelem;
-+            } else if (i - k == substr_elen) {
-+                cc = 2;  /* Full match. */
-+            } else {
-+                cc = 3;  /* Partial match. */
-+            }
-+            break;
-         }
-     }
- 
+     if (es > ES_64 || !valid_vec_element(enr, es)) {
 -- 
 2.39.2
 
