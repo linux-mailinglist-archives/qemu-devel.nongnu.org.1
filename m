@@ -2,40 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546AD79989B
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:21:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B062799869
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexdV-0006PU-CI; Sat, 09 Sep 2023 09:04:29 -0400
+	id 1qexeL-0006VG-6Q; Sat, 09 Sep 2023 09:05:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexdR-0006Nj-HM; Sat, 09 Sep 2023 09:04:25 -0400
+ id 1qexeI-0006Uw-NA; Sat, 09 Sep 2023 09:05:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexdN-00036d-EW; Sat, 09 Sep 2023 09:04:25 -0400
+ id 1qexeD-0003Of-S2; Sat, 09 Sep 2023 09:05:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7A88A205B9;
- Sat,  9 Sep 2023 16:01:21 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2AF11205CD;
+ Sat,  9 Sep 2023 16:06:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4BE3226E1F;
- Sat,  9 Sep 2023 16:00:30 +0300 (MSK)
-Received: (nullmailer pid 353184 invoked by uid 1000);
- Sat, 09 Sep 2023 13:00:23 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 028AD26E20;
+ Sat,  9 Sep 2023 16:05:11 +0300 (MSK)
+Received: (nullmailer pid 354258 invoked by uid 1000);
+ Sat, 09 Sep 2023 13:05:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 43/43] qxl: don't assert() if device isn't yet
- initialized
-Date: Sat,  9 Sep 2023 16:00:09 +0300
-Message-Id: <20230909130020.352951-43-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 00/37] Patch Round-up for stable 7.2.6,
+ freeze on 2023-09-19
+Date: Sat,  9 Sep 2023 16:04:30 +0300
+Message-Id: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
-References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -61,47 +57,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+The following patches are queued for QEMU stable v7.2.6:
 
-If the PCI BAR isn't yet mapped or was unmapped, QXL_IO_SET_MODE will
-assert(). Instead, report a guest bug and keep going.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-This can be reproduced with:
+Patch freeze is 2023-09-19, and the release is planned for 2023-09-21:
 
-cat << EOF | ./qemu-system-x86_64 -vga qxl -m 2048 -nodefaults -qtest stdio
-outl 0xcf8 0x8000101c
-outl 0xcfc 0xc000
-outl 0xcf8 0x80001001
-outl 0xcfc 0x01000000
-outl 0xc006 0x00
-EOF
+  https://wiki.qemu.org/Planning/7.2
 
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1829
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Cc: qemu-stable@nongnu.org
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 95bef686e490bc3afc3f51f5fc6e20bf260b938c)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-diff --git a/hw/display/qxl.c b/hw/display/qxl.c
-index 80ce1e9a93..4b26aab235 100644
---- a/hw/display/qxl.c
-+++ b/hw/display/qxl.c
-@@ -1591,7 +1591,10 @@ static void qxl_set_mode(PCIQXLDevice *d, unsigned int modenr, int loadvm)
-     }
- 
-     d->guest_slots[0].slot = slot;
--    assert(qxl_add_memslot(d, 0, devmem, QXL_SYNC) == 0);
-+    if (qxl_add_memslot(d, 0, devmem, QXL_SYNC) != 0) {
-+        qxl_set_guest_bug(d, "device isn't initialized yet");
-+        return;
-+    }
- 
-     d->guest_primary.surface = surface;
-     qxl_create_guest_primary(d, 0, QXL_SYNC);
--- 
-2.39.2
+Thanks!
 
+/mjt
+
+--------------------------------------
+01 a1d027be95bc Zhao Liu:
+   machine: Add helpers to get cores/threads per socket
+02 d79a284a44bb Zhao Liu:
+   hw/smbios: Fix smbios_smp_sockets caculation
+03 7298fd7de555 Zhao Liu:
+   hw/smbios: Fix thread count in type4
+04 196ea60a734c Zhao Liu:
+   hw/smbios: Fix core count in type4
+05 8a64609eea8c Dongli Zhang:
+   dump: kdump-zlib data pages not dumped with pvtime/aarch64
+06 dbdb13f931d7 Ankit Kumar:
+   hw/nvme: fix CRC64 for guard tag
+07 4333f0924c2f Nathan Egge:
+   linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+08 e73f27003e77 Richard Henderson:
+   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for microblaze
+09 ea9812d93f9c Richard Henderson:
+   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
+10 6ee960823da8 Luca Bonissi:
+   Fixed incorrect LLONG alignment for openrisc and cris
+11 791b2b6a9302 Ilya Leoshkevich:
+   target/s390x: Fix the "ignored match" case in VSTRS
+12 23e87d419f34 Ilya Leoshkevich:
+   target/s390x: Use a 16-bit immediate in VREP
+13 6db3518ba4fc Ilya Leoshkevich:
+   target/s390x: Fix VSTL with a large length
+14 6a2ea6151835 Ilya Leoshkevich:
+   target/s390x: Check reserved bits of VFMIN/VFMAX's M5
+15 d19436291013 Thomas Huth:
+   include/hw/virtio/virtio-gpu: Fix virtio-gpu with blob on big endian hosts
+16 5e0d65909c6f Akihiko Odaki:
+   kvm: Introduce kvm_arch_get_default_type hook
+17 1ab445af8cd9 Akihiko Odaki:
+   accel/kvm: Specify default IPA size for arm64
+18 4b3520fd93cd Richard Henderson:
+   target/arm: Fix SME ST1Q
+19 cd1e4db73646 Richard Henderson:
+   target/arm: Fix 64-bit SSRA
+20 09a3fffae00b Philippe Mathieu-Daudé:
+   docs/about/license: Update LICENSE URL
+21 f187609f27b2 Fabiano Rosas:
+   block-migration: Ensure we don't crash during migration cleanup
+22 6ec65b69ba17 Maksim Kostin:
+   hw/ppc/e500: fix broken snapshot replay
+23 7b8589d7ce7e Nicholas Piggin:
+   ppc/vof: Fix missed fields in VOF cleanup
+24 af03aeb631ee Richard Henderson:
+   target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
+25 c3461c6264a7 Niklas Cassel:
+   hw/ide/core: set ERR_STAT in unsupported command completion
+26 2967dc8209dd Niklas Cassel:
+   hw/ide/ahci: write D2H FIS when processing NCQ command
+27 e2a5d9b3d9c3 Niklas Cassel:
+   hw/ide/ahci: simplify and document PxCI handling
+28 d73b84d0b664 Niklas Cassel:
+   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
+29 1a16ce64fda1 Niklas Cassel:
+   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
+30 7e85cb0db4c6 Niklas Cassel:
+   hw/ide/ahci: fix ahci_write_fis_sdb()
+31 9f8942353765 Niklas Cassel:
+   hw/ide/ahci: fix broken SError handling
+32 97b8aa5ae9ff Hang Yu:
+   hw/i2c/aspeed: Fix Tx count and Rx size error in buffer pool mode
+33 961faf3ddbd8 Hang Yu:
+   hw/i2c/aspeed: Fix TXBUF transmission start position error
+34 bcd8e243083c Thomas Huth:
+   qemu-options.hx: Rephrase the descriptions of the -hd* and -cdrom options
+35 b21a6e31a182 Markus Armbruster:
+   docs tests: Fix use of migrate_set_parameter
+36 90a0778421ac Thomas Huth:
+   hw/net/vmxnet3: Fix guest-triggerable assert()
+37 95bef686e490 Marc-André Lureau:
+   qxl: don't assert() if device isn't yet initialized
 
