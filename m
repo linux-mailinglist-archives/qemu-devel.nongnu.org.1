@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81614799A80
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 20:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA379799A88
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 21:13:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf3A6-00058e-9b; Sat, 09 Sep 2023 14:58:30 -0400
+	id 1qf3NW-00081S-9z; Sat, 09 Sep 2023 15:12:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf3A0-00054j-1O
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:58:24 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qf3NU-00081F-KT
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 15:12:20 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf39w-0004ci-LC
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:58:23 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68c0cb00fb3so2934277b3a.2
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 11:58:20 -0700 (PDT)
+ id 1qf3NS-0007JT-GJ
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 15:12:20 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-56b2e689968so2289433a12.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 12:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694285899; x=1694890699; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694286737; x=1694891537; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EDP5tTjJ64cm2BQtFEqqVAp/P6uvjutVuIBNR4lVyv8=;
- b=FE2yRMyrNZnzVstSbuv1WxEZ1q2ZLUvom6o/+W+y7iLvn/f69kmTvHrGEXNDuncdgI
- G/HyhxeGsWEnrHKwbsr7HP0YdVNf9NiEcH1XjkKuAG5+hPhKeIXUDnU1JnRglRzrzDHs
- T8REcmOhAsR4JI5OuHPHz4Ut9YYEm6hLkG5V6giqR79L6GEwuAloox8ij1HZyhXWW/X9
- v2VQ2+K8f86uFQK4+N2DuPZ7j7ZY+nDjtdq4l8/96+q8ce3xNru5I53ccUyTJlQ97s1A
- 7lNA8Ue1jxkbfdvIGpYnQrbshCS+c0MbfgOCNz7OxqksnhJJSNZxLYuNQXAZkNtYr6ma
- aYMA==
+ bh=OHWqqSzKGBhYB6VsjzWxz8Y25baFW55Y284+ryIr8QI=;
+ b=ZQ3CAXVIPSZKDfIR6Ls07kNmf7Nwf/dSC/A75HX5JNOk7LvApt4wkbCJJTY20mxTf0
+ +PUlskYsaD2HWbOj7RNxFi1agi3Z1eYEI3PgyGsUVK/FiVlaWYRdSdVEMEnFRRFsfy02
+ CUkID9LRQLOogaf+f6mvueZsoX/4VOKLcjny7PFjOQbqJNXVpn45RjIfW30yGmg/3Duo
+ 4fJgdzzhpC9wwD04XM+wHhDH5w/uz45UuEpCrCBMjwJN6MFFDJT78xmyhzWBOc54jQ7u
+ yleQ7Gr8kKTi/zPa5CANQgzn8Mi5UjEFBJBjtKQvTXZ2eDgoyLcoKWG1kJNdj7AWGBpG
+ k1Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694285899; x=1694890699;
+ d=1e100.net; s=20230601; t=1694286737; x=1694891537;
  h=content-transfer-encoding:in-reply-to:references:cc:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EDP5tTjJ64cm2BQtFEqqVAp/P6uvjutVuIBNR4lVyv8=;
- b=rPdTZz+c5lP+6ski7P8SZEJAANr9OXCHpvKDgAoqPv+c+DBDkmInogWRzLuOqAME/R
- sh82A5+ooiNBcvSvtWulOP8QDLJaRvdEYJ/gIH+YxMlfMeVUsKdcnesHoEZcSUn7hQFB
- zqrLtRmrbeuQg4tvnubFDhIIt06SlKoI4QtVJ2ZXN8Jt01ZOSWNwxdDcGAKlF/FpCO72
- 02PUgzqtFtwa7J+t7gxHfiX0gI7iM/9On09pKiahJqFBoqwn0H5/g7Q6HW1ExAG1TnB5
- EJr4Qvlvka7n7ZzRakGkilHE1s4KOPrboCSrUXr9MSH05ROSp5RkmyaPJ1dGcXJ95YPS
- FuEg==
-X-Gm-Message-State: AOJu0YxZGndTAAzfO7SkuGrx32UXUYvJptHTTQOJh1xe1T5JN5T3QbLt
- RQLI6H/Q73iI7dSpQeuJ8Ca8mSSstEgBYXGBvgs=
-X-Google-Smtp-Source: AGHT+IG6M3pZXFG2vjb8NbGr7dDwT2OgqghOfAL/AfLBW+d5U/HhsQmyou8nkyQnxr4UpTnu2AW+Vg==
-X-Received: by 2002:a05:6a00:a17:b0:68a:31b2:5219 with SMTP id
- p23-20020a056a000a1700b0068a31b25219mr7058365pfh.22.1694285898849; 
- Sat, 09 Sep 2023 11:58:18 -0700 (PDT)
+ bh=OHWqqSzKGBhYB6VsjzWxz8Y25baFW55Y284+ryIr8QI=;
+ b=XrR1O0Z/TRN0vQQCRE2x9mA/JkkCBWQz5u9LxEovDrcd4OkJQmiU7zfqyfbgZHztpR
+ qsHRSeJP6LbtKr3aWqODMh1qjy3o2oRhFKBde/w1vVpRbpah727M2mx3FTv5dirWHDtX
+ aJuiehsf3qZlaeUDW6JBBenWd3upXfExE8YCzOu2dyFyMKtKem4ONgqZqolNZZELXh6c
+ nUltkZdvmb8V0DJ2YQIQwm2MgIo6DFG3fiuUU5dWKCGaZlYAb6h/PR+WuMWUsQgjSgWh
+ 5ioMbG0tZNOrzstSHiV0GpO6scL+1sORIbY7MO6B1QUjOLWvxaGzQTg7vfiseDzcWgPC
+ 6U9g==
+X-Gm-Message-State: AOJu0Yx9Z8e8DGI5eMEf3dXhuWCt3CQYvsCxwUqbcqaVR/nRHQknEMW/
+ hEXfXZtLw3R16YyZdkVBFEpqojNz2B+YA18acoU=
+X-Google-Smtp-Source: AGHT+IEG//owvbSUmzwt8LvyshLrSm4/SBSMg81Dp6zsTEYJt5ZjlJjHcXw2/uCTXGMSMOzg29BiMA==
+X-Received: by 2002:a05:6300:8005:b0:140:8537:85c1 with SMTP id
+ an5-20020a056300800500b00140853785c1mr4614222pzc.28.1694286736950; 
+ Sat, 09 Sep 2023 12:12:16 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- k17-20020aa78211000000b00682d79199e7sm2985217pfi.200.2023.09.09.11.58.18
+ q25-20020a62e119000000b00686236718d8sm3058024pfh.41.2023.09.09.12.12.15
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 11:58:18 -0700 (PDT)
-Message-ID: <f5487017-4c14-4019-aade-8877eeb627cc@linaro.org>
-Date: Sat, 9 Sep 2023 11:58:16 -0700
+ Sat, 09 Sep 2023 12:12:16 -0700 (PDT)
+Message-ID: <d2e3266e-dbb8-07a6-07d7-008e788c3862@linaro.org>
+Date: Sat, 9 Sep 2023 12:12:14 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH v3 00/19] crypto: Provide clmul.h and host accel
+Subject: Re: [PATCH v4 00/10] linux-user: Detect and report host crashes
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, ardb@kernel.org
-References: <20230821161854.419893-1-richard.henderson@linaro.org>
-In-Reply-To: <20230821161854.419893-1-richard.henderson@linaro.org>
+Cc: deller@gmx.de
+References: <20230823051615.1297706-1-richard.henderson@linaro.org>
+In-Reply-To: <20230823051615.1297706-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -96,76 +96,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Ping.
 
-Still missing r-b on patches 1, 4, 5, 8, 9, 12, 13, 18.
-
-r~
-
-On 8/21/23 09:18, Richard Henderson wrote:
-> Inspired by Ard Biesheuvel's RFC patches [1] for accelerating
-> carry-less multiply under emulation.
-> 
-> Changes for v3:
->    * Update target/i386 ops_sse.h.
->    * Apply r-b.
-> 
-> Changes for v2:
->    * Only accelerate clmul_64; keep generic helpers for other sizes.
->    * Drop most of the Int128 interfaces, except for clmul_64.
->    * Use the same acceleration format as aes-round.h.
+On 8/22/23 22:16, Richard Henderson wrote:
+> More signal cleanups.  Mostly tested by temporarily adding an
+> abort, divide by zero, undefined instruction, null dereference,
+> within the implementation of a guest syscall to induce an error.
 > 
 > 
 > r~
 > 
 > 
-> [1] https://patchew.org/QEMU/20230601123332.3297404-1-ardb@kernel.org/
+> Helge Deller (1):
+>    linux-user: Detect and report host crashes
 > 
+> Richard Henderson (9):
+>    linux-user: Split out die_with_signal
+>    linux-user: Exit not abort in die_with_backtrace
+>    linux-user: Use die_with_signal with abort
+>    linux-user: Only register handlers for core_dump_signal by default
+>    linux-user: Map unsupported signals to an out-of-bounds value
+>    linux-user: Remap SIGPROF when CONFIG_GPROF
+>    linux-user: Simplify signal_init
+>    linux-user: Split out host_sig{segv,bus}_handler
+>    linux-user: Detect and report host SIGILL, SIGFPE, SIGTRAP
 > 
-> Richard Henderson (19):
->    crypto: Add generic 8-bit carry-less multiply routines
->    target/arm: Use clmul_8* routines
->    target/s390x: Use clmul_8* routines
->    target/ppc: Use clmul_8* routines
->    crypto: Add generic 16-bit carry-less multiply routines
->    target/arm: Use clmul_16* routines
->    target/s390x: Use clmul_16* routines
->    target/ppc: Use clmul_16* routines
->    crypto: Add generic 32-bit carry-less multiply routines
->    target/arm: Use clmul_32* routines
->    target/s390x: Use clmul_32* routines
->    target/ppc: Use clmul_32* routines
->    crypto: Add generic 64-bit carry-less multiply routine
->    target/arm: Use clmul_64
->    target/i386: Use clmul_64
->    target/s390x: Use clmul_64
->    target/ppc: Use clmul_64
->    host/include/i386: Implement clmul.h
->    host/include/aarch64: Implement clmul.h
-> 
->   host/include/aarch64/host/cpuinfo.h      |   1 +
->   host/include/aarch64/host/crypto/clmul.h |  41 +++++
->   host/include/generic/host/crypto/clmul.h |  15 ++
->   host/include/i386/host/cpuinfo.h         |   1 +
->   host/include/i386/host/crypto/clmul.h    |  29 ++++
->   host/include/x86_64/host/crypto/clmul.h  |   1 +
->   include/crypto/clmul.h                   |  83 ++++++++++
->   include/qemu/cpuid.h                     |   3 +
->   target/arm/tcg/vec_internal.h            |  11 --
->   target/i386/ops_sse.h                    |  40 ++---
->   crypto/clmul.c                           | 112 ++++++++++++++
->   target/arm/tcg/mve_helper.c              |  16 +-
->   target/arm/tcg/vec_helper.c              | 102 ++-----------
->   target/ppc/int_helper.c                  |  64 ++++----
->   target/s390x/tcg/vec_int_helper.c        | 186 ++++++++++-------------
->   util/cpuinfo-aarch64.c                   |   4 +-
->   util/cpuinfo-i386.c                      |   1 +
->   crypto/meson.build                       |   9 +-
->   18 files changed, 434 insertions(+), 285 deletions(-)
->   create mode 100644 host/include/aarch64/host/crypto/clmul.h
->   create mode 100644 host/include/generic/host/crypto/clmul.h
->   create mode 100644 host/include/i386/host/crypto/clmul.h
->   create mode 100644 host/include/x86_64/host/crypto/clmul.h
->   create mode 100644 include/crypto/clmul.h
->   create mode 100644 crypto/clmul.c
+>   linux-user/signal.c | 400 ++++++++++++++++++++++++++------------------
+>   1 file changed, 240 insertions(+), 160 deletions(-)
 > 
 
 
