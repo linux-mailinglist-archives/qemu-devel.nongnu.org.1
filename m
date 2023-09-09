@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FAC799840
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E779984D
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:07:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexaS-0006q6-Hl; Sat, 09 Sep 2023 09:01:20 -0400
+	id 1qexaY-0006wQ-O7; Sat, 09 Sep 2023 09:01:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexa1-0006Wj-QK; Sat, 09 Sep 2023 09:00:54 -0400
+ id 1qexaQ-0006p6-Rv; Sat, 09 Sep 2023 09:01:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexZz-0002Co-Gq; Sat, 09 Sep 2023 09:00:53 -0400
+ id 1qexaN-0002DI-0F; Sat, 09 Sep 2023 09:01:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8315E20598;
+ by isrv.corpit.ru (Postfix) with ESMTP id C595020599;
  Sat,  9 Sep 2023 16:01:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5B8FE26DFF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7E7AD26E00;
  Sat,  9 Sep 2023 16:00:24 +0300 (MSK)
-Received: (nullmailer pid 353087 invoked by uid 1000);
+Received: (nullmailer pid 353090 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
- Jesper Wendel Devantier <j.devantier@samsung.com>,
+Cc: qemu-stable@nongnu.org, Nathan Egge <negge@xiph.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 11/43] hw/nvme: fix null pointer access in ruh update
-Date: Sat,  9 Sep 2023 15:59:37 +0300
-Message-Id: <20230909130020.352951-11-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 12/43] linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+Date: Sat,  9 Sep 2023 15:59:38 +0300
+Message-Id: <20230909130020.352951-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -59,40 +60,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+From: Nathan Egge <negge@xiph.org>
 
-The Reclaim Unit Update operation in I/O Management Receive does not
-verify the presence of a configured endurance group prior to accessing
-it.
+Set V bit for hwcap if misa is set.
 
-Fix this.
-
-Cc: qemu-stable@nongnu.org
-Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
-Reviewed-by: Jesper Wendel Devantier <j.devantier@samsung.com>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-(cherry picked from commit 3439ba9c5da943d96f7a3c86e0a7eb2ff48de41c)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1793
+Signed-off-by: Nathan Egge <negge@xiph.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-Id: <20230803131424.40744-1-negge@xiph.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 4333f0924c2f2ca8efaebaed8c24f55f77d8b013)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 861635609b..fce3ee0d95 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -4333,7 +4333,13 @@ static uint16_t nvme_io_mgmt_send_ruh_update(NvmeCtrl *n, NvmeRequest *req)
-     uint32_t npid = (cdw10 >> 1) + 1;
-     unsigned int i = 0;
-     g_autofree uint16_t *pids = NULL;
--    uint32_t maxnpid = n->subsys->endgrp.fdp.nrg * n->subsys->endgrp.fdp.nruh;
-+    uint32_t maxnpid;
-+
-+    if (!ns->endgrp || !ns->endgrp->fdp.enabled) {
-+        return NVME_FDP_DISABLED | NVME_DNR;
-+    }
-+
-+    maxnpid = n->subsys->endgrp.fdp.nrg * n->subsys->endgrp.fdp.nruh;
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 88ef26dc03..a3e78a7e18 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1679,7 +1679,8 @@ static uint32_t get_elf_hwcap(void)
+ #define MISA_BIT(EXT) (1 << (EXT - 'A'))
+     RISCVCPU *cpu = RISCV_CPU(thread_cpu);
+     uint32_t mask = MISA_BIT('I') | MISA_BIT('M') | MISA_BIT('A')
+-                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C');
++                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C')
++                    | MISA_BIT('V');
  
-     if (unlikely(npid >= MIN(NVME_FDP_MAXPIDS, maxnpid))) {
-         return NVME_INVALID_FIELD | NVME_DNR;
+     return cpu->env.misa_ext & mask;
+ #undef MISA_BIT
 -- 
 2.39.2
 
