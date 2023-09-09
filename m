@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8D0799A4D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 19:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 965DE799A4E
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 19:53:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf1zW-0006YQ-Fw; Sat, 09 Sep 2023 13:43:30 -0400
+	id 1qf27o-0001vd-5I; Sat, 09 Sep 2023 13:52:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf1zU-0006Xp-Bv
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 13:43:28 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qf27l-0001vE-Mt
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 13:52:01 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf1zS-0004SM-4X
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 13:43:28 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c1ff5b741cso28249995ad.2
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 10:43:25 -0700 (PDT)
+ id 1qf27j-0007eb-8C
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 13:52:01 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-26f57f02442so2372989a91.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 10:51:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694281404; x=1694886204; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694281917; x=1694886717; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=9ZZn2/2agRlL7TVUXyFt0PCX86vH0sbbC5R6Ram/MFE=;
- b=EOPlgQHUy0yegM8mou0lGk7Od+Ta0rrmpfozzp/rv2yyj4bhF2Zelt2ZzKALlLJQ3B
- e5FSEY30n6N6vrcbeABEUWrJOHJXNUMIVgijbvGc3Dlh1avJPJXKGNtmwybfDMquOLR0
- v9bIz2JfHz74eTpVKloC228xQ5XxUdnehf9GDT1KEUJ93navSepIY5rgyxD9ZRrPqunf
- dZA/uI1oXxVs83N0PlWlKZzCP1h/8bg9L7MWI9+HWlrZOW8ObOhRMG8kmWutbYW0Tv1H
- 0Gnr/nqVV/c88t/FxNpbLZURdRn99S5X3KuYhbt67RxdgeesKysfRQWMyIhWIuZIHjXC
- tlnA==
+ bh=zxhBiDTj+L5BMIDxMpSufWM7Qh88Kgn1O5ezIoDl5n4=;
+ b=bHxXZWz2UlpMmlQkaxKgRfd2ktCiuxmyDZxHoO9XJ8AhBtnMGuJLiB2K729Yn1WBiK
+ kaEfqnqdwyQTg4klVqQs30dd4+k8MqEZkm27gFEHXHwN2eKk/r92UNdjdBdNu0sWp7yw
+ 7dM6caGWsQrRMpZcH3zhd1V39bkJSHxlcQmRo6PQDcsDiGfFtNVh0Zzd54By04G1MEdA
+ G00gvADo++UdsDRW52amZd90+v+ndte/qzeF7WiBnf5JnhsPLqbxU6f4XrrEu+as8Noa
+ dntmJuatk8vBUrhq6RDrTIGYxlQ6s5H+FeogRa+OqMcDzfFF7sntO5p+KCZnldXF/JbE
+ lEsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694281404; x=1694886204;
+ d=1e100.net; s=20230601; t=1694281917; x=1694886717;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9ZZn2/2agRlL7TVUXyFt0PCX86vH0sbbC5R6Ram/MFE=;
- b=aKBTLfIzIS2AGo6weT1MOpInDhhUD4WoaHdNZmANBW8TrUcMaB1Sd4va23SGenkTwE
- o6q29X2M4HBJtdNsrDGNnP0Y7RevesKpLtVSJ0AJV1zBWwbtyJIDtnP76jorSPpfjOov
- cZwxpozy9LwvfWUwRHdRYc4ENdRs7h9D1UPBYNQ9CUIqdVHrdAtez+2+bfLz2VM1Bu1A
- QxZNMxqOp8aFtL3xmsBegpwq2CrTq9+931K6hlAjGBC0c9fcehIb9lbQ1mXPHaqOwCsX
- ZhlI+6//22t7yWN2H6jGr7AHZkJKOJqQBoGuV+/hHhTufCH/ffPZLZ/4qI+LzwKdIDxf
- dNiA==
-X-Gm-Message-State: AOJu0Yz5sB0kBKC4ToDaKlZW6I/Hzmro41u/QDXPpqDrPh7UQyJrVc7O
- Rz5nZEYE/6wPqUtETWN+KdJ5iQ==
-X-Google-Smtp-Source: AGHT+IEzgFefjU7UB8UIbwL7edtzeMNJGxiYvklxp1uulYw+KlqPnkAgHW/dGdIo0nyavaH0UWuQPA==
-X-Received: by 2002:a17:902:a504:b0:1b8:76fc:5bf6 with SMTP id
- s4-20020a170902a50400b001b876fc5bf6mr5198151plq.43.1694281404542; 
- Sat, 09 Sep 2023 10:43:24 -0700 (PDT)
+ bh=zxhBiDTj+L5BMIDxMpSufWM7Qh88Kgn1O5ezIoDl5n4=;
+ b=qSQEKC8//+MQTcSF/p+jILvlUPfdWumTBvhBj34HybaA3UWp3J21+v0yDbaXhaXpQl
+ whOOdZMUgix12HYQ7kRatG0jgp1+CaAMntJ92UP4kBKpnXQ2vTnSqZwD3ormXfxwhGLJ
+ QkA8yEyE4Yw6AfJsavdVippsV+09O7ojBOhOLzDsBxVfAML5smQ+KyTnDArJwHpjOufY
+ 9nNN+RyxiH9SYoGcxA/8Wey69CrhIj/H6vMSLAAq0aPTMiRwt7h+Bw/pSEJ3MrCogKSf
+ JQ3+L5zXy2tphWnzXNS8AxAzdOEoecW4SvwlTFc9MMCMHYh8X+MqUZaO71N8Z/UKBM5l
+ 4Nfw==
+X-Gm-Message-State: AOJu0YwZgwte7eZn71oI5sJPmUnBs7dE2+oK/X5wMfQOxS5pm2o8K1sO
+ cVDuuk21CZ68lacuLTewAbQHeA==
+X-Google-Smtp-Source: AGHT+IHF2Kkyp6sRdw9hRNSfjM3CPTWXm1a2L65WIzJJnb0hIK8n4Ct4t2xyXaQFwZhQO0b4HH4UDw==
+X-Received: by 2002:a17:902:e80f:b0:1c0:bcbc:d64 with SMTP id
+ u15-20020a170902e80f00b001c0bcbc0d64mr5978817plg.51.1694281917524; 
+ Sat, 09 Sep 2023 10:51:57 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- u2-20020a17090341c200b001bb7a736b4csm3477212ple.77.2023.09.09.10.43.23
+ u1-20020a170902e5c100b001b88da737c6sm3554483plf.54.2023.09.09.10.51.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 10:43:23 -0700 (PDT)
-Message-ID: <7dcb92db-b3c6-7236-cccd-fb6dc9d388a9@linaro.org>
-Date: Sat, 9 Sep 2023 10:43:21 -0700
+ Sat, 09 Sep 2023 10:51:56 -0700 (PDT)
+Message-ID: <79876863-58bf-b21e-3aa3-8ab25724be35@linaro.org>
+Date: Sat, 9 Sep 2023 10:51:55 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH] qemu/timer: Add host ticks function for RISC-V
+Subject: Re: [PATCH 20/22] Implement shmctl(2)
 Content-Language: en-US
-To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, LIU Zhiwei <lzw194868@alibaba-inc.com>
-References: <20230908032300.646-1-zhiwei_liu@linux.alibaba.com>
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>
+References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
+ <20230819094806.14965-21-kariem.taha2.7@gmail.com>
+ <ec99a998-7793-1c01-e9e5-d84c3ada68ee@linaro.org> <875y4knm2k.fsf@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230908032300.646-1-zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <875y4knm2k.fsf@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -94,51 +96,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/7/23 20:23, LIU Zhiwei wrote:
-> From: LIU Zhiwei <lzw194868@alibaba-inc.com>
+On 9/8/23 18:59, Karim Taha wrote:
+> Richard Henderson <richard.henderson@linaro.org> wrote:
 > 
-> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-> ---
->   include/qemu/timer.h | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
+>> On 8/19/23 02:48, Karim Taha wrote:
+>>> +    switch (cmd) {
+>>> +    case IPC_STAT:
+>>> +    case IPC_SET:
+>>> +        if (target_to_host_shmid_ds(&dsarg, buff)) {
+>>> +            return -TARGET_EFAULT;
+>>> +        }
+>>> +        ret = get_errno(shmctl(shmid, cmd, &dsarg));
+>>> +        if (host_to_target_shmid_ds(buff, &dsarg)) {
+>>> +            return -TARGET_EFAULT;
+>>> +        }
+>>> +        break;
+>>
+>> IPC_STAT treats buff as output, IPC_SET treats buff as input,
+>> so these cases can't be combined.
+>>
+>>
+>> r~
 > 
-> diff --git a/include/qemu/timer.h b/include/qemu/timer.h
-> index 9a91cb1248..ce0b66d122 100644
-> --- a/include/qemu/timer.h
-> +++ b/include/qemu/timer.h
-> @@ -979,6 +979,25 @@ static inline int64_t cpu_get_host_ticks(void)
->       return cur - ofs;
->   }
->   
-> +#elif defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen == 32
-> +static inline int64_t cpu_get_host_ticks(void)
-> +{
-> +    uint32_t lo, hi;
-> +    asm volatile("RDCYCLE %0\n\t"
-> +                 "RDCYCLEH %1"
-> +                 : "=r"(lo), "=r"(hi));
-> +    return lo | (uint64_t)hi << 32;
-> +}
-> +
-> +#elif defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen > 32
-> +static inline int64_t cpu_get_host_ticks(void)
-> +{
-> +    int64_t val;
-> +
-> +    asm volatile("RDCYCLE %0" : "=r"(cc));
-> +    return val;
-> +}
+> I think they can be combined:
+> 1- we marshal the struct `buff` from target to host
+> 2- call `shmctl`
+> 3- marshal the results back.
 
-__riscv_xlen should never be undefined.
-
-Don't you need a loop for RDCYCLEH to avoid time going backward?
-
-     do {
-         asm("rdcycleh %0\n\t"
-             "rdcycle %1\n\t"
-             "rdcycleh %2\n\t"
-             : "=r"(hi), "=r"(lo), "=r"(tmph));
-     } while (unlikely(tmph != hi));
+No.  For IPC_SET, the target page need not be writable, as you assume here.
 
 
 r~
