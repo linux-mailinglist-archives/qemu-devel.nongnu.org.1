@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A95799878
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F28079988C
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:18:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexmJ-0000CF-SJ; Sat, 09 Sep 2023 09:13:37 -0400
+	id 1qexml-0000iF-EL; Sat, 09 Sep 2023 09:14:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexly-0008JL-M3; Sat, 09 Sep 2023 09:13:18 -0400
+ id 1qexm7-0000DI-HO; Sat, 09 Sep 2023 09:13:24 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexlv-0005I9-DM; Sat, 09 Sep 2023 09:13:14 -0400
+ id 1qexlz-0005Jr-0V; Sat, 09 Sep 2023 09:13:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B739C2062C;
+ by isrv.corpit.ru (Postfix) with ESMTP id E1FA12062D;
  Sat,  9 Sep 2023 16:13:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 815E326E4C;
+ by tsrv.corpit.ru (Postfix) with SMTP id AEB4E26E4D;
  Sat,  9 Sep 2023 16:13:00 +0300 (MSK)
-Received: (nullmailer pid 354714 invoked by uid 1000);
+Received: (nullmailer pid 354717 invoked by uid 1000);
  Sat, 09 Sep 2023 13:13:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 3/7] ppc: spelling fixes
-Date: Sat,  9 Sep 2023 16:12:54 +0300
-Message-Id: <20230909131258.354675-4-mjt@tls.msk.ru>
+Subject: [PATCH 4/7] hw/net: spelling fixes
+Date: Sat,  9 Sep 2023 16:12:55 +0300
+Message-Id: <20230909131258.354675-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230909131258.354675-1-mjt@tls.msk.ru>
 References: <20230909131258.354675-1-mjt@tls.msk.ru>
@@ -59,352 +59,267 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- host/include/ppc/host/cpuinfo.h     |  2 +-
- hw/ppc/ppc.c                        |  2 +-
- hw/ppc/prep_systemio.c              |  2 +-
- hw/ppc/spapr.c                      |  8 ++++----
- hw/ppc/spapr_hcall.c                |  2 +-
- hw/ppc/spapr_nvdimm.c               |  4 ++--
- hw/ppc/spapr_pci_vfio.c             |  2 +-
- include/hw/ppc/openpic.h            |  2 +-
- include/hw/ppc/spapr.h              |  2 +-
- target/ppc/cpu-models.h             |  4 ++--
- target/ppc/cpu.h                    |  2 +-
- target/ppc/cpu_init.c               |  4 ++--
- target/ppc/excp_helper.c            | 14 +++++++-------
- target/ppc/power8-pmu-regs.c.inc    |  4 ++--
- target/ppc/translate/vmx-impl.c.inc |  6 +++---
- 15 files changed, 30 insertions(+), 30 deletions(-)
+ hw/net/cadence_gem.c      | 10 +++++-----
+ hw/net/dp8393x.c          |  2 +-
+ hw/net/e1000_regs.h       |  2 +-
+ hw/net/e1000x_regs.h      |  2 +-
+ hw/net/fsl_etsec/rings.c  |  2 +-
+ hw/net/igb_regs.h         |  4 ++--
+ hw/net/mcf_fec.c          |  2 +-
+ hw/net/rocker/rocker_fp.c |  2 +-
+ hw/net/rtl8139.c          |  2 +-
+ hw/net/smc91c111.c        |  2 +-
+ hw/net/sungem.c           |  2 +-
+ hw/net/sunhme.c           |  2 +-
+ hw/net/virtio-net.c       |  6 +++---
+ hw/net/vmxnet3.c          |  2 +-
+ hw/net/vmxnet3.h          |  2 +-
+ 15 files changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
-index 29ee7f9ef8..38b8eabe2a 100644
---- a/host/include/ppc/host/cpuinfo.h
-+++ b/host/include/ppc/host/cpuinfo.h
-@@ -1,6 +1,6 @@
- /*
-  * SPDX-License-Identifier: GPL-2.0-or-later
-- * Host specific cpu indentification for ppc.
-+ * Host specific cpu identification for ppc.
-  */
- 
- #ifndef HOST_CPUINFO_H
-diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index aeb116d919..be167710a3 100644
---- a/hw/ppc/ppc.c
-+++ b/hw/ppc/ppc.c
-@@ -738,7 +738,7 @@ static target_ulong _cpu_ppc_load_decr(CPUPPCState *env, int64_t now)
-     decr = __cpu_ppc_load_decr(env, now, tb_env->decr_next);
- 
-     /*
--     * If large decrementer is enabled then the decrementer is signed extened
-+     * If large decrementer is enabled then the decrementer is signed extended
-      * to 64 bits, otherwise it is a 32 bit value.
-      */
-     if (env->spr[SPR_LPCR] & LPCR_LD) {
-diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
-index 5a56f155f5..c96cefb13d 100644
---- a/hw/ppc/prep_systemio.c
-+++ b/hw/ppc/prep_systemio.c
-@@ -39,7 +39,7 @@
- #define TYPE_PREP_SYSTEMIO "prep-systemio"
- OBJECT_DECLARE_SIMPLE_TYPE(PrepSystemIoState, PREP_SYSTEMIO)
- 
--/* Bit as defined in PowerPC Reference Plaform v1.1, sect. 6.1.5, p. 132 */
-+/* Bit as defined in PowerPC Reference Platform v1.1, sect. 6.1.5, p. 132 */
- #define PREP_BIT(n) (1 << (7 - (n)))
- 
- struct PrepSystemIoState {
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index f7cc6a890f..b25b568cee 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -2573,7 +2573,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
-         return;
+diff --git a/hw/net/cadence_gem.c b/hw/net/cadence_gem.c
+index 42ea2411a2..f445d8bb5e 100644
+--- a/hw/net/cadence_gem.c
++++ b/hw/net/cadence_gem.c
+@@ -81,8 +81,8 @@
+ #define GEM_IPGSTRETCH    (0x000000BC / 4) /* IPG Stretch reg */
+ #define GEM_SVLAN         (0x000000C0 / 4) /* Stacked VLAN reg */
+ #define GEM_MODID         (0x000000FC / 4) /* Module ID reg */
+-#define GEM_OCTTXLO       (0x00000100 / 4) /* Octects transmitted Low reg */
+-#define GEM_OCTTXHI       (0x00000104 / 4) /* Octects transmitted High reg */
++#define GEM_OCTTXLO       (0x00000100 / 4) /* Octets transmitted Low reg */
++#define GEM_OCTTXHI       (0x00000104 / 4) /* Octets transmitted High reg */
+ #define GEM_TXCNT         (0x00000108 / 4) /* Error-free Frames transmitted */
+ #define GEM_TXBCNT        (0x0000010C / 4) /* Error-free Broadcast Frames */
+ #define GEM_TXMCNT        (0x00000110 / 4) /* Error-free Multicast Frame */
+@@ -101,8 +101,8 @@
+ #define GEM_LATECOLLCNT   (0x00000144 / 4) /* Late Collision Frames */
+ #define GEM_DEFERTXCNT    (0x00000148 / 4) /* Deferred Transmission Frames */
+ #define GEM_CSENSECNT     (0x0000014C / 4) /* Carrier Sense Error Counter */
+-#define GEM_OCTRXLO       (0x00000150 / 4) /* Octects Received register Low */
+-#define GEM_OCTRXHI       (0x00000154 / 4) /* Octects Received register High */
++#define GEM_OCTRXLO       (0x00000150 / 4) /* Octets Received register Low */
++#define GEM_OCTRXHI       (0x00000154 / 4) /* Octets Received register High */
+ #define GEM_RXCNT         (0x00000158 / 4) /* Error-free Frames Received */
+ #define GEM_RXBROADCNT    (0x0000015C / 4) /* Error-free Broadcast Frames RX */
+ #define GEM_RXMULTICNT    (0x00000160 / 4) /* Error-free Multicast Frames RX */
+@@ -954,7 +954,7 @@ static ssize_t gem_receive(NetClientState *nc, const uint8_t *buf, size_t size)
+     /* Is this destination MAC address "for us" ? */
+     maf = gem_mac_address_filter(s, buf);
+     if (maf == GEM_RX_REJECT) {
+-        return size;  /* no, drop siliently b/c it's not an error */
++        return size;  /* no, drop silently b/c it's not an error */
      }
  
--    /* Detemine the VSMT mode to use: */
-+    /* Determine the VSMT mode to use: */
-     if (vsmt_user) {
-         if (spapr->vsmt < smp_threads) {
-             error_setg(errp, "Cannot support VSMT mode %d"
-@@ -3109,7 +3109,7 @@ static int spapr_kvm_type(MachineState *machine, const char *vm_type)
+     /* Discard packets with receive length error enabled ? */
+diff --git a/hw/net/dp8393x.c b/hw/net/dp8393x.c
+index a596f7fbc6..c6f5fb7dce 100644
+--- a/hw/net/dp8393x.c
++++ b/hw/net/dp8393x.c
+@@ -551,7 +551,7 @@ static uint64_t dp8393x_read(void *opaque, hwaddr addr, unsigned int size)
+             val = s->cam[s->regs[SONIC_CEP] & 0xf][SONIC_CAP0 - reg];
+         }
+         break;
+-    /* All other registers have no special contraints */
++    /* All other registers have no special constraints */
+     default:
+         val = s->regs[reg];
+     }
+diff --git a/hw/net/e1000_regs.h b/hw/net/e1000_regs.h
+index 8a4ce82034..39f4882510 100644
+--- a/hw/net/e1000_regs.h
++++ b/hw/net/e1000_regs.h
+@@ -130,7 +130,7 @@
+ 
+ #define E1000_GCR2      0x05B64 /* 3GIO Control Register 2 */
+ #define E1000_FFLT_DBG  0x05F04 /* Debug Register */
+-#define E1000_HICR      0x08F00 /* Host Inteface Control */
++#define E1000_HICR      0x08F00 /* Host Interface Control */
+ 
+ #define E1000_RXMTRL     0x0B634 /* Time sync Rx EtherType and Msg Type - RW */
+ #define E1000_RXUDP      0x0B638 /* Time Sync Rx UDP Port - RW */
+diff --git a/hw/net/e1000x_regs.h b/hw/net/e1000x_regs.h
+index 13760c66d3..cd896fc0ca 100644
+--- a/hw/net/e1000x_regs.h
++++ b/hw/net/e1000x_regs.h
+@@ -839,7 +839,7 @@ union e1000_rx_desc_packet_split {
+ #define E1000_RXD_STAT_EOP      0x02    /* End of Packet */
+ #define E1000_RXD_STAT_IXSM     0x04    /* Ignore checksum */
+ #define E1000_RXD_STAT_VP       0x08    /* IEEE VLAN Packet */
+-#define E1000_RXD_STAT_UDPCS    0x10    /* UDP xsum caculated */
++#define E1000_RXD_STAT_UDPCS    0x10    /* UDP xsum calculated */
+ #define E1000_RXD_STAT_TCPCS    0x20    /* TCP xsum calculated */
+ #define E1000_RXD_STAT_IPCS     0x40    /* IP xsum calculated */
+ #define E1000_RXD_STAT_PIF      0x80    /* passed in-exact filter */
+diff --git a/hw/net/fsl_etsec/rings.c b/hw/net/fsl_etsec/rings.c
+index 788463f1b6..e6c3bf5361 100644
+--- a/hw/net/fsl_etsec/rings.c
++++ b/hw/net/fsl_etsec/rings.c
+@@ -365,7 +365,7 @@ void etsec_walk_tx_ring(eTSEC *etsec, int ring_nbr)
+     } while (TRUE);
+ 
+     /* Save the Buffer Descriptor Pointers to last bd that was not
+-     * succesfully closed */
++     * successfully closed */
+     etsec->regs[TBPTR0 + ring_nbr].value = bd_addr;
+ 
+     /* Set transmit halt THLTx */
+diff --git a/hw/net/igb_regs.h b/hw/net/igb_regs.h
+index 82ff195dfc..d6e0405d0a 100644
+--- a/hw/net/igb_regs.h
++++ b/hw/net/igb_regs.h
+@@ -364,7 +364,7 @@ union e1000_adv_rx_desc {
+ /* Indicates that VF is still clear to send requests */
+ #define E1000_VT_MSGTYPE_CTS 0x20000000
+ #define E1000_VT_MSGINFO_SHIFT 16
+-/* bits 23:16 are used for exra info for certain messages */
++/* bits 23:16 are used for extra info for certain messages */
+ #define E1000_VT_MSGINFO_MASK (0xFF << E1000_VT_MSGINFO_SHIFT)
+ 
+ #define E1000_VF_RESET                 0x01 /* VF requests reset */
+@@ -490,7 +490,7 @@ union e1000_adv_rx_desc {
+ #define E1000_VF_MBX_INIT_DELAY   500  /* usec delay between retries */
+ 
+ #define E1000_VT_MSGINFO_SHIFT    16
+-/* bits 23:16 are used for exra info for certain messages */
++/* bits 23:16 are used for extra info for certain messages */
+ #define E1000_VT_MSGINFO_MASK     (0xFF << E1000_VT_MSGINFO_SHIFT)
+ 
+ #define E1000_VF_RESET            0x01 /* VF requests reset */
+diff --git a/hw/net/mcf_fec.c b/hw/net/mcf_fec.c
+index 8aa27bd322..ec3ddf520a 100644
+--- a/hw/net/mcf_fec.c
++++ b/hw/net/mcf_fec.c
+@@ -571,7 +571,7 @@ static ssize_t mcf_fec_receive(NetClientState *nc, const uint8_t *buf, size_t si
+     size += 4;
+     crc = cpu_to_be32(crc32(~0, buf, size));
+     crc_ptr = (uint8_t *)&crc;
+-    /* Huge frames are truncted.  */
++    /* Huge frames are truncated.  */
+     if (size > FEC_MAX_FRAME_SIZE) {
+         size = FEC_MAX_FRAME_SIZE;
+         flags |= FEC_BD_TR | FEC_BD_LG;
+diff --git a/hw/net/rocker/rocker_fp.c b/hw/net/rocker/rocker_fp.c
+index cbeed65bd5..9afd0c5e3f 100644
+--- a/hw/net/rocker/rocker_fp.c
++++ b/hw/net/rocker/rocker_fp.c
+@@ -134,7 +134,7 @@ static ssize_t fp_port_receive_iov(NetClientState *nc, const struct iovec *iov,
+     FpPort *port = qemu_get_nic_opaque(nc);
+ 
+     /* If the port is disabled, we want to drop this pkt
+-     * now rather than queing it for later.  We don't want
++     * now rather than queueing it for later.  We don't want
+      * any stale pkts getting into the device when the port
+      * transitions to enabled.
+      */
+diff --git a/hw/net/rtl8139.c b/hw/net/rtl8139.c
+index b4df75b2c9..4525fda383 100644
+--- a/hw/net/rtl8139.c
++++ b/hw/net/rtl8139.c
+@@ -100,7 +100,7 @@ enum RTL8139_registers {
+     MAC0 = 0,        /* Ethernet hardware address. */
+     MAR0 = 8,        /* Multicast filter. */
+     TxStatus0 = 0x10,/* Transmit status (Four 32bit registers). C mode only */
+-                     /* Dump Tally Conter control register(64bit). C+ mode only */
++                     /* Dump Tally Counter control register(64bit). C+ mode only */
+     TxAddr0 = 0x20,  /* Tx descriptors (also four 32bit). */
+     RxBuf = 0x30,
+     ChipCmd = 0x37,
+diff --git a/hw/net/smc91c111.c b/hw/net/smc91c111.c
+index ad778cd8fc..ddbceda967 100644
+--- a/hw/net/smc91c111.c
++++ b/hw/net/smc91c111.c
+@@ -361,7 +361,7 @@ static void smc91c111_writeb(void *opaque, hwaddr offset,
+         case 4: case 5: case 6: case 7: case 8: case 9: /* IA */
+             /* Not implemented.  */
+             return;
+-        case 10: /* Genral Purpose */
++        case 10: /* General Purpose */
+             SET_LOW(gpr, value);
+             return;
+         case 11:
+diff --git a/hw/net/sungem.c b/hw/net/sungem.c
+index 510b370e5f..c2e2c90668 100644
+--- a/hw/net/sungem.c
++++ b/hw/net/sungem.c
+@@ -1228,7 +1228,7 @@ static void sungem_mmio_mif_write(void *opaque, hwaddr addr, uint64_t val,
+     case MIF_SMACHINE:
+         return; /* No actual write */
+     case MIF_CFG:
+-        /* Maintain the RO MDI bits to advertize an MDIO PHY on MDI0 */
++        /* Maintain the RO MDI bits to advertise an MDIO PHY on MDI0 */
+         val &= ~MIF_CFG_MDI1;
+         val |= MIF_CFG_MDI0;
+         break;
+diff --git a/hw/net/sunhme.c b/hw/net/sunhme.c
+index 391d26fb82..64d4ea5850 100644
+--- a/hw/net/sunhme.c
++++ b/hw/net/sunhme.c
+@@ -901,7 +901,7 @@ static void sunhme_reset(DeviceState *ds)
+     /* Configure internal transceiver */
+     s->mifregs[HME_MIFI_CFG >> 2] |= HME_MIF_CFG_MDI0;
+ 
+-    /* Advetise auto, 100Mbps FD */
++    /* Advertise auto, 100Mbps FD */
+     s->miiregs[MII_ANAR] = MII_ANAR_TXFD;
+     s->miiregs[MII_BMSR] = MII_BMSR_AUTONEG | MII_BMSR_100TX_FD |
+                            MII_BMSR_AN_COMP;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 7102ec4817..57a359b7a5 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1307,7 +1307,7 @@ static void virtio_net_detach_epbf_rss(VirtIONet *n)
+ static bool virtio_net_load_ebpf(VirtIONet *n)
  {
-     /*
-      * The use of g_ascii_strcasecmp() for 'hv' and 'pr' is to
--     * accomodate the 'HV' and 'PV' formats that exists in the
-+     * accommodate the 'HV' and 'PV' formats that exists in the
-      * wild. The 'auto' mode is being introduced already as
-      * lower-case, thus we don't need to bother checking for
-      * "AUTO".
-@@ -4343,7 +4343,7 @@ spapr_cpu_index_to_props(MachineState *machine, unsigned cpu_index)
-     CPUArchId *core_slot;
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
- 
--    /* make sure possible_cpu are intialized */
-+    /* make sure possible_cpu are initialized */
-     mc->possible_cpu_arch_ids(machine);
-     /* get CPU core slot containing thread that matches cpu_index */
-     core_slot = spapr_find_cpu_slot(machine, cpu_index, NULL);
-@@ -5045,7 +5045,7 @@ static void spapr_machine_2_12_class_options(MachineClass *mc)
- 
-     /* We depend on kvm_enabled() to choose a default value for the
-      * hpt-max-page-size capability. Of course we can't do it here
--     * because this is too early and the HW accelerator isn't initialzed
-+     * because this is too early and the HW accelerator isn't initialized
-      * yet. Postpone this to machine init (see default_caps_with_cpu()).
-      */
-     smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 0;
-diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-index b7dc388f2f..522a2396c7 100644
---- a/hw/ppc/spapr_hcall.c
-+++ b/hw/ppc/spapr_hcall.c
-@@ -1615,7 +1615,7 @@ static void hypercall_register_types(void)
-     spapr_register_hypercall(H_GET_CPU_CHARACTERISTICS,
-                              h_get_cpu_characteristics);
- 
--    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differenciate
-+    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differentiate
-      * here between the "CI" and the "CACHE" variants, they will use whatever
-      * mapping attributes qemu is using. When using KVM, the kernel will
-      * enforce the attributes more strongly
-diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
-index a8688243a6..4e34545dcf 100644
---- a/hw/ppc/spapr_nvdimm.c
-+++ b/hw/ppc/spapr_nvdimm.c
-@@ -377,7 +377,7 @@ static target_ulong h_scm_bind_mem(PowerPCCPU *cpu, SpaprMachineState *spapr,
- 
-     /*
-      * Currently continue token should be zero qemu has already bound
--     * everything and this hcall doesnt return H_BUSY.
-+     * everything and this hcall doesn't return H_BUSY.
-      */
-     if (continue_token > 0) {
-         return H_P5;
-@@ -588,7 +588,7 @@ void spapr_nvdimm_finish_flushes(void)
-      * Called on reset path, the main loop thread which calls
-      * the pending BHs has gotten out running in the reset path,
-      * finally reaching here. Other code path being guest
--     * h_client_architecture_support, thats early boot up.
-+     * h_client_architecture_support, that's early boot up.
-      */
-     nvdimms = nvdimm_get_device_list();
-     for (list = nvdimms; list; list = list->next) {
-diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
-index d8aeee0b7e..9016720547 100644
---- a/hw/ppc/spapr_pci_vfio.c
-+++ b/hw/ppc/spapr_pci_vfio.c
-@@ -78,7 +78,7 @@ int spapr_phb_vfio_eeh_set_option(SpaprPhbState *sphb,
-          * call. Now we just need to check the validity of the PCI
-          * pass-through devices (vfio-pci) under this sphb bus.
-          * We have already validated that all the devices under this sphb
--         * are from same iommu group (within same PE) before comming here.
-+         * are from same iommu group (within same PE) before coming here.
-          *
-          * Prior to linux commit 98ba956f6a389 ("powerpc/pseries/eeh:
-          * Rework device EEH PE determination") kernel would call
-diff --git a/include/hw/ppc/openpic.h b/include/hw/ppc/openpic.h
-index bae8dafe16..9c6af8e207 100644
---- a/include/hw/ppc/openpic.h
-+++ b/include/hw/ppc/openpic.h
-@@ -14,7 +14,7 @@ enum {
-     OPENPIC_OUTPUT_INT = 0, /* IRQ                       */
-     OPENPIC_OUTPUT_CINT,    /* critical IRQ              */
-     OPENPIC_OUTPUT_MCK,     /* Machine check event       */
--    OPENPIC_OUTPUT_DEBUG,   /* Inconditional debug event */
-+    OPENPIC_OUTPUT_DEBUG,   /* Unconditional debug event */
-     OPENPIC_OUTPUT_RESET,   /* Core reset event          */
-     OPENPIC_OUTPUT_NB,
- };
-diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-index f4bd204d86..b1c7c28fa8 100644
---- a/include/hw/ppc/spapr.h
-+++ b/include/hw/ppc/spapr.h
-@@ -197,7 +197,7 @@ struct SpaprMachineState {
-     SpaprResizeHpt resize_hpt;
-     void *htab;
-     uint32_t htab_shift;
--    uint64_t patb_entry; /* Process tbl registed in H_REGISTER_PROC_TBL */
-+    uint64_t patb_entry; /* Process tbl registered in H_REGISTER_PROC_TBL */
-     SpaprPendingHpt *pending_hpt; /* in-progress resize */
- 
-     hwaddr rma_size;
-diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
-index 572b5e553a..0229ef3a9a 100644
---- a/target/ppc/cpu-models.h
-+++ b/target/ppc/cpu-models.h
-@@ -44,7 +44,7 @@ enum {
-     /* PowerPC 405 cores */
-     CPU_POWERPC_405D2              = 0x20010000,
-     CPU_POWERPC_405D4              = 0x41810000,
--    /* PowerPC 405 microcontrolers */
-+    /* PowerPC 405 microcontrollers */
-     /* XXX: missing 0x200108a0 */
-     CPU_POWERPC_405CRa             = 0x40110041,
-     CPU_POWERPC_405CRb             = 0x401100C5,
-@@ -74,7 +74,7 @@ enum {
- #define CPU_POWERPC_440              CPU_POWERPC_440GXf
-     /* PowerPC 440 cores */
-     CPU_POWERPC_440_XILINX         = 0x7ff21910,
--    /* PowerPC 440 microcontrolers */
-+    /* PowerPC 440 microcontrollers */
-     CPU_POWERPC_440EPa             = 0x42221850,
-     CPU_POWERPC_440EPb             = 0x422218D3,
-     CPU_POWERPC_440GPb             = 0x40120440,
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 173e4c351a..d703a5f3c6 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -428,7 +428,7 @@ FIELD(MSR, LE, MSR_LE, 1)
- 
- /* PMU bits */
- #define MMCR0_FC     PPC_BIT(32)         /* Freeze Counters  */
--#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Ocurred */
-+#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Occurred */
- #define MMCR0_PMAE   PPC_BIT(37)         /* Perf Monitor Alert Enable */
- #define MMCR0_EBE    PPC_BIT(43)         /* Perf Monitor EBB Enable */
- #define MMCR0_FCECE  PPC_BIT(38)         /* FC on Enabled Cond or Event */
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 7ab5ee92d9..c62bf0e437 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -5347,7 +5347,7 @@ static void register_970_lpar_sprs(CPUPPCState *env)
- static void register_power5p_lpar_sprs(CPUPPCState *env)
- {
- #if !defined(CONFIG_USER_ONLY)
--    /* Logical partitionning */
-+    /* Logical partitioning */
-     spr_register_kvm_hv(env, SPR_LPCR, "LPCR",
-                         SPR_NOACCESS, SPR_NOACCESS,
-                         SPR_NOACCESS, SPR_NOACCESS,
-@@ -5760,7 +5760,7 @@ static void register_power9_mmu_sprs(CPUPPCState *env)
- static void register_power10_hash_sprs(CPUPPCState *env)
- {
-     /*
--     * it's the OS responsability to generate a random value for the registers
-+     * it's the OS responsibility to generate a random value for the registers
-      * in each process' context. So, initialize it with 0 here.
-      */
-     uint64_t hashkeyr_initial_value = 0, hashpkeyr_initial_value = 0;
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 72ec2be92e..99099cb1f6 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -455,7 +455,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
- 
-     /*
-      * new interrupt handler msr preserves existing ME unless
--     * explicitly overriden.
-+     * explicitly overridden.
-      */
-     new_msr = env->msr & (((target_ulong)1 << MSR_ME));
- 
-@@ -578,7 +578,7 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
- 
-     /*
-      * new interrupt handler msr preserves existing ME unless
--     * explicitly overriden
-+     * explicitly overridden
-      */
-     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
- 
-@@ -739,7 +739,7 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
- 
-     /*
-      * new interrupt handler msr preserves existing ME unless
--     * explicitly overriden
-+     * explicitly overridden
-      */
-     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
- 
-@@ -911,7 +911,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
- 
-     /*
-      * new interrupt handler msr preserves existing ME unless
--     * explicitly overriden
-+     * explicitly overridden
-      */
-     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
- 
-@@ -1075,7 +1075,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
- 
-     /*
-      * new interrupt handler msr preserves existing ME unless
--     * explicitly overriden
-+     * explicitly overridden
-      */
-     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
- 
-@@ -1288,7 +1288,7 @@ static bool books_vhyp_handles_hcall(PowerPCCPU *cpu)
- /*
-  * When running a nested KVM HV guest under vhyp, HV exceptions are not
-  * delivered to the guest (because there is no concept of HV support), but
-- * rather they are sent tothe vhyp to exit from the L2 back to the L1 and
-+ * rather they are sent to the vhyp to exit from the L2 back to the L1 and
-  * return from the H_ENTER_NESTED hypercall.
-  */
- static bool books_vhyp_handles_hv_excp(PowerPCCPU *cpu)
-@@ -1377,7 +1377,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
- 
-     /*
-      * new interrupt handler msr preserves existing HV and ME unless
--     * explicitly overriden
-+     * explicitly overridden
-      */
-     new_msr = env->msr & (((target_ulong)1 << MSR_ME) | MSR_HVB);
- 
-diff --git a/target/ppc/power8-pmu-regs.c.inc b/target/ppc/power8-pmu-regs.c.inc
-index c82feedaff..75513db894 100644
---- a/target/ppc/power8-pmu-regs.c.inc
-+++ b/target/ppc/power8-pmu-regs.c.inc
-@@ -16,7 +16,7 @@
-  * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
-  * PMCs) has problem state read access.
-  *
-- * Read acccess is granted for all PMCC values but 0b01, where a
-+ * Read access is granted for all PMCC values but 0b01, where a
-  * Facility Unavailable Interrupt will occur.
-  */
- static bool spr_groupA_read_allowed(DisasContext *ctx)
-@@ -33,7 +33,7 @@ static bool spr_groupA_read_allowed(DisasContext *ctx)
-  * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
-  * PMCs) has problem state write access.
-  *
-- * Write acccess is granted for PMCC values 0b10 and 0b11. Userspace
-+ * Write access is granted for PMCC values 0b10 and 0b11. Userspace
-  * writing with PMCC 0b00 will generate a Hypervisor Emulation
-  * Assistance Interrupt. Userspace writing with PMCC 0b01 will
-  * generate a Facility Unavailable Interrupt.
-diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
-index 6d7669aabd..5cdf53a9df 100644
---- a/target/ppc/translate/vmx-impl.c.inc
-+++ b/target/ppc/translate/vmx-impl.c.inc
-@@ -119,7 +119,7 @@ static void gen_stve##name(DisasContext *ctx)                           \
+     if (!virtio_net_attach_ebpf_to_backend(n->nic, -1)) {
+-        /* backend does't support steering ebpf */
++        /* backend doesn't support steering ebpf */
+         return false;
      }
  
- GEN_VR_LDX(lvx, 0x07, 0x03);
--/* As we don't emulate the cache, lvxl is stricly equivalent to lvx */
-+/* As we don't emulate the cache, lvxl is strictly equivalent to lvx */
- GEN_VR_LDX(lvxl, 0x07, 0x0B);
+@@ -2046,7 +2046,7 @@ static void virtio_net_rsc_extract_unit6(VirtioNetRscChain *chain,
+                                         + sizeof(struct ip6_header));
+     unit->tcp_hdrlen = (htons(unit->tcp->th_offset_flags) & 0xF000) >> 10;
  
- GEN_VR_LVE(bx, 0x07, 0x00, 1);
-@@ -127,7 +127,7 @@ GEN_VR_LVE(hx, 0x07, 0x01, 2);
- GEN_VR_LVE(wx, 0x07, 0x02, 4);
+-    /* There is a difference between payload lenght in ipv4 and v6,
++    /* There is a difference between payload length in ipv4 and v6,
+        ip header is excluded in ipv6 */
+     unit->payload = htons(*unit->ip_plen) - unit->tcp_hdrlen;
+ }
+@@ -3795,7 +3795,7 @@ static void virtio_net_instance_init(Object *obj)
  
- GEN_VR_STX(svx, 0x07, 0x07);
--/* As we don't emulate the cache, stvxl is stricly equivalent to stvx */
-+/* As we don't emulate the cache, stvxl is strictly equivalent to stvx */
- GEN_VR_STX(svxl, 0x07, 0x0F);
+     /*
+      * The default config_size is sizeof(struct virtio_net_config).
+-     * Can be overriden with virtio_net_set_config_size.
++     * Can be overridden with virtio_net_set_config_size.
+      */
+     n->config_size = sizeof(struct virtio_net_config);
+     device_add_bootindex_property(obj, &n->nic_conf.bootindex,
+diff --git a/hw/net/vmxnet3.c b/hw/net/vmxnet3.c
+index 3fb108751a..7af5f6c821 100644
+--- a/hw/net/vmxnet3.c
++++ b/hw/net/vmxnet3.c
+@@ -1887,7 +1887,7 @@ vmxnet3_io_bar1_read(void *opaque, hwaddr addr, unsigned size)
+             break;
  
- GEN_VR_STVE(bx, 0x07, 0x04, 1);
-@@ -1526,7 +1526,7 @@ static void gen_vprtyb_vec(unsigned vece, TCGv_vec t, TCGv_vec b)
- {
-     int i;
-     TCGv_vec tmp = tcg_temp_new_vec_matching(b);
--    /* MO_32 is 2, so 2 iteractions for MO_32 and 3 for MO_64 */
-+    /* MO_32 is 2, so 2 iterations for MO_32 and 3 for MO_64 */
-     for (i = 0; i < vece; i++) {
-         tcg_gen_shri_vec(vece, tmp, b, (4 << (vece - i)));
-         tcg_gen_xor_vec(vece, b, tmp, b);
+         default:
+-            VMW_CBPRN("Unknow read BAR1[%" PRIx64 "], %d bytes", addr, size);
++            VMW_CBPRN("Unknown read BAR1[%" PRIx64 "], %d bytes", addr, size);
+             break;
+         }
+ 
+diff --git a/hw/net/vmxnet3.h b/hw/net/vmxnet3.h
+index bf4f6de74a..f9283f9e7b 100644
+--- a/hw/net/vmxnet3.h
++++ b/hw/net/vmxnet3.h
+@@ -733,7 +733,7 @@ struct Vmxnet3_TxQueueDesc {
+ struct Vmxnet3_RxQueueDesc {
+     struct Vmxnet3_RxQueueCtrl        ctrl;
+     struct Vmxnet3_RxQueueConf        conf;
+-    /* Driver read after a GET commad */
++    /* Driver read after a GET command */
+     struct Vmxnet3_QueueStatus        status;
+     struct UPT1_RxStats            stats;
+     u8                      __pad[88]; /* 128 aligned */
 -- 
 2.39.2
 
