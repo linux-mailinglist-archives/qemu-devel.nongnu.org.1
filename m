@@ -2,43 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11015799887
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6603279984A
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexZv-0006Lj-78; Sat, 09 Sep 2023 09:00:47 -0400
+	id 1qexZw-0006OX-No; Sat, 09 Sep 2023 09:00:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexZt-0006Dp-2K; Sat, 09 Sep 2023 09:00:45 -0400
+ id 1qexZu-0006NO-Em; Sat, 09 Sep 2023 09:00:46 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexZq-0002B0-EO; Sat, 09 Sep 2023 09:00:44 -0400
+ id 1qexZs-0002BR-2q; Sat, 09 Sep 2023 09:00:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B945E20593;
+ by isrv.corpit.ru (Postfix) with ESMTP id DD9D320594;
  Sat,  9 Sep 2023 16:01:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 8B3BE26DFA;
+ by tsrv.corpit.ru (Postfix) with SMTP id B5C6C26DFB;
  Sat,  9 Sep 2023 16:00:23 +0300 (MSK)
-Received: (nullmailer pid 353072 invoked by uid 1000);
+Received: (nullmailer pid 353075 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Dongli Zhang <dongli.zhang@oracle.com>,
- Joe Jin <joe.jin@oracle.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 06/43] dump: kdump-zlib data pages not dumped with
- pvtime/aarch64
-Date: Sat,  9 Sep 2023 15:59:32 +0300
-Message-Id: <20230909130020.352951-6-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 07/43] hw/nvme: fix oob memory read in fdp events log
+Date: Sat,  9 Sep 2023 15:59:33 +0300
+Message-Id: <20230909130020.352951-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,73 +58,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-The kdump-zlib data pages are not dumped from aarch64 host when the
-'pvtime' is involved, that is, when the block->target_end is not aligned to
-page_size. In the below example, it is expected to dump two blocks.
+As reported by Trend Micro's Zero Day Initiative, an oob memory read
+vulnerability exists in nvme_fdp_events(). The host-provided offset is
+not verified.
 
-(qemu) info mtree -f
-... ...
-  00000000090a0000-00000000090a0fff (prio 0, ram): pvtime KVM
-... ...
-  0000000040000000-00000001bfffffff (prio 0, ram): mach-virt.ram KVM
-... ...
+Fix this.
 
-However, there is an issue with get_next_page() so that the pages for
-"mach-virt.ram" will not be dumped.
+This is only exploitable when Flexible Data Placement mode (fdp=on) is
+enabled.
 
-At line 1296, although we have reached at the end of the 'pvtime' block,
-since it is not aligned to the page_size (e.g., 0x10000), it will not break
-at line 1298.
-
-1255 static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
-1256                           uint8_t **bufptr, DumpState *s)
-... ...
-1294             memcpy(buf + addr % page_size, hbuf, n);
-1295             addr += n;
-1296             if (addr % page_size == 0) {
-1297                 /* we filled up the page */
-1298                 break;
-1299             }
-
-As a result, get_next_page() will continue to the next
-block ("mach-virt.ram"). Finally, when get_next_page() returns to the
-caller:
-
-- 'pfnptr' is referring to the 'pvtime'
-- but 'blockptr' is referring to the "mach-virt.ram"
-
-When get_next_page() is called the next time, "*pfnptr += 1" still refers
-to the prior 'pvtime'. It will exit immediately because it is out of the
-range of the current "mach-virt.ram".
-
-The fix is to break when it is time to come to the next block, so that both
-'pfnptr' and 'blockptr' refer to the same block.
-
-Fixes: 94d788408d2d ("dump: fix kdump to work over non-aligned blocks")
-Cc: Joe Jin <joe.jin@oracle.com>
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230713055819.30497-1-dongli.zhang@oracle.com>
-(cherry picked from commit 8a64609eea8cb2bac015968c4b62da5bce266e22)
+Fixes: CVE-2023-4135
+Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
+Reported-by: Trend Micro's Zero Day Initiative
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+(cherry picked from commit ecb1b7b082d3b7dceff0e486a114502fc52c0fdf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/dump/dump.c b/dump/dump.c
-index 1f1a6edcab..d4ef713cd0 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -1293,8 +1293,8 @@ static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 2097fb1310..5830048804 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -5091,6 +5091,11 @@ static uint16_t nvme_fdp_events(NvmeCtrl *n, uint32_t endgrpid,
+     }
  
-             memcpy(buf + addr % page_size, hbuf, n);
-             addr += n;
--            if (addr % page_size == 0) {
--                /* we filled up the page */
-+            if (addr % page_size == 0 || addr >= block->target_end) {
-+                /* we filled up the page or the current block is finished */
-                 break;
-             }
-         } else {
+     log_size = sizeof(NvmeFdpEventsLog) + ebuf->nelems * sizeof(NvmeFdpEvent);
++
++    if (off >= log_size) {
++        return NVME_INVALID_FIELD | NVME_DNR;
++    }
++
+     trans_len = MIN(log_size - off, buf_len);
+     elog = g_malloc0(log_size);
+     elog->num_events = cpu_to_le32(ebuf->nelems);
 -- 
 2.39.2
 
