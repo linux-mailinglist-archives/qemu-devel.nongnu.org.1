@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5491179988F
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11015799887
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:18:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexZv-0006IV-1s; Sat, 09 Sep 2023 09:00:47 -0400
+	id 1qexZv-0006Lj-78; Sat, 09 Sep 2023 09:00:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexZq-00063l-2k; Sat, 09 Sep 2023 09:00:42 -0400
+ id 1qexZt-0006Dp-2K; Sat, 09 Sep 2023 09:00:45 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexZm-0002AF-0e; Sat, 09 Sep 2023 09:00:41 -0400
+ id 1qexZq-0002B0-EO; Sat, 09 Sep 2023 09:00:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8F2B520592;
+ by isrv.corpit.ru (Postfix) with ESMTP id B945E20593;
  Sat,  9 Sep 2023 16:01:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6456926DF9;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8B3BE26DFA;
  Sat,  9 Sep 2023 16:00:23 +0300 (MSK)
-Received: (nullmailer pid 353069 invoked by uid 1000);
+Received: (nullmailer pid 353072 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
+Cc: qemu-stable@nongnu.org, Dongli Zhang <dongli.zhang@oracle.com>,
+ Joe Jin <joe.jin@oracle.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 05/43] hw/i2c: Fix bitbang_i2c_data trace event
-Date: Sat,  9 Sep 2023 15:59:31 +0300
-Message-Id: <20230909130020.352951-5-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 06/43] dump: kdump-zlib data pages not dumped with
+ pvtime/aarch64
+Date: Sat,  9 Sep 2023 15:59:32 +0300
+Message-Id: <20230909130020.352951-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,42 +62,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-The clock and data values were logged swapped. Correct the trace event
-text to match what is logged. Also fix a typo in a comment nearby.
+The kdump-zlib data pages are not dumped from aarch64 host when the
+'pvtime' is involved, that is, when the block->target_end is not aligned to
+page_size. In the below example, it is expected to dump two blocks.
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+(qemu) info mtree -f
+... ...
+  00000000090a0000-00000000090a0fff (prio 0, ram): pvtime KVM
+... ...
+  0000000040000000-00000001bfffffff (prio 0, ram): mach-virt.ram KVM
+... ...
+
+However, there is an issue with get_next_page() so that the pages for
+"mach-virt.ram" will not be dumped.
+
+At line 1296, although we have reached at the end of the 'pvtime' block,
+since it is not aligned to the page_size (e.g., 0x10000), it will not break
+at line 1298.
+
+1255 static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
+1256                           uint8_t **bufptr, DumpState *s)
+... ...
+1294             memcpy(buf + addr % page_size, hbuf, n);
+1295             addr += n;
+1296             if (addr % page_size == 0) {
+1297                 /* we filled up the page */
+1298                 break;
+1299             }
+
+As a result, get_next_page() will continue to the next
+block ("mach-virt.ram"). Finally, when get_next_page() returns to the
+caller:
+
+- 'pfnptr' is referring to the 'pvtime'
+- but 'blockptr' is referring to the "mach-virt.ram"
+
+When get_next_page() is called the next time, "*pfnptr += 1" still refers
+to the prior 'pvtime'. It will exit immediately because it is out of the
+range of the current "mach-virt.ram".
+
+The fix is to break when it is time to come to the next block, so that both
+'pfnptr' and 'blockptr' refer to the same block.
+
+Fixes: 94d788408d2d ("dump: fix kdump to work over non-aligned blocks")
+Cc: Joe Jin <joe.jin@oracle.com>
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230713055819.30497-1-dongli.zhang@oracle.com>
+(cherry picked from commit 8a64609eea8cb2bac015968c4b62da5bce266e22)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 8ada214a902225c90583b644cabd85bc89bf188c)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/i2c/bitbang_i2c.c b/hw/i2c/bitbang_i2c.c
-index bb18954765..de5f5aacf5 100644
---- a/hw/i2c/bitbang_i2c.c
-+++ b/hw/i2c/bitbang_i2c.c
-@@ -70,7 +70,7 @@ static int bitbang_i2c_ret(bitbang_i2c_interface *i2c, int level)
-     return level & i2c->last_data;
- }
+diff --git a/dump/dump.c b/dump/dump.c
+index 1f1a6edcab..d4ef713cd0 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -1293,8 +1293,8 @@ static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
  
--/* Leave device data pin unodified.  */
-+/* Leave device data pin unmodified.  */
- static int bitbang_i2c_nop(bitbang_i2c_interface *i2c)
- {
-     return bitbang_i2c_ret(i2c, i2c->device_out);
-diff --git a/hw/i2c/trace-events b/hw/i2c/trace-events
-index 8e88aa24c1..d7b1e25858 100644
---- a/hw/i2c/trace-events
-+++ b/hw/i2c/trace-events
-@@ -5,7 +5,7 @@ bitbang_i2c_state(const char *old_state, const char *new_state) "state %s -> %s"
- bitbang_i2c_addr(uint8_t addr) "Address 0x%02x"
- bitbang_i2c_send(uint8_t byte) "TX byte 0x%02x"
- bitbang_i2c_recv(uint8_t byte) "RX byte 0x%02x"
--bitbang_i2c_data(unsigned dat, unsigned clk, unsigned old_out, unsigned new_out) "dat %u clk %u out %u -> %u"
-+bitbang_i2c_data(unsigned clk, unsigned dat, unsigned old_out, unsigned new_out) "clk %u dat %u out %u -> %u"
- 
- # core.c
- 
+             memcpy(buf + addr % page_size, hbuf, n);
+             addr += n;
+-            if (addr % page_size == 0) {
+-                /* we filled up the page */
++            if (addr % page_size == 0 || addr >= block->target_end) {
++                /* we filled up the page or the current block is finished */
+                 break;
+             }
+         } else {
 -- 
 2.39.2
 
