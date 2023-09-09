@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CD579985D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61FBC79986D
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:12:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexg2-00089g-EB; Sat, 09 Sep 2023 09:07:06 -0400
+	id 1qexg3-0008Do-FX; Sat, 09 Sep 2023 09:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexfz-0007wQ-B2; Sat, 09 Sep 2023 09:07:03 -0400
+ id 1qexg1-00087B-0l; Sat, 09 Sep 2023 09:07:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexfw-0003iL-Uk; Sat, 09 Sep 2023 09:07:03 -0400
+ id 1qexfy-0003ip-EJ; Sat, 09 Sep 2023 09:07:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C427B205E2;
- Sat,  9 Sep 2023 16:06:07 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0D518205E3;
+ Sat,  9 Sep 2023 16:06:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 892D526E35;
+ by tsrv.corpit.ru (Postfix) with SMTP id BE13626E36;
  Sat,  9 Sep 2023 16:05:16 +0300 (MSK)
-Received: (nullmailer pid 354323 invoked by uid 1000);
+Received: (nullmailer pid 354326 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:12 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 21/37] block-migration: Ensure we don't crash during
- migration cleanup
-Date: Sat,  9 Sep 2023 16:04:51 +0300
-Message-Id: <20230909130511.354171-21-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Maksim Kostin <maksim.kostin@ispras.ru>,
+ Vitaly Cheptsov <cheptsov@ispras.ru>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 22/37] hw/ppc/e500: fix broken snapshot replay
+Date: Sat,  9 Sep 2023 16:04:52 +0300
+Message-Id: <20230909130511.354171-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,69 +61,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Maksim Kostin <maksim.kostin@ispras.ru>
 
-We can fail the blk_insert_bs() at init_blk_migration(), leaving the
-BlkMigDevState without a dirty_bitmap and BlockDriverState. Account
-for the possibly missing elements when doing cleanup.
+ppce500_reset_device_tree is registered for system reset, but after
+c4b075318eb1 this function rerandomizes rng-seed via
+qemu_guest_getrandom_nofail. And when loading a snapshot, it tries to read
+EVENT_RANDOM that doesn't exist, so we have an error:
 
-Fix the following crashes:
+  qemu-system-ppc: Missing random event in the replay log
 
-Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
-359         BlockDriverState *bs = bitmap->bs;
- #0  0x0000555555ec83ef in bdrv_release_dirty_bitmap (bitmap=0x0) at ../block/dirty-bitmap.c:359
- #1  0x0000555555bba331 in unset_dirty_tracking () at ../migration/block.c:371
- #2  0x0000555555bbad98 in block_migration_cleanup_bmds () at ../migration/block.c:681
+To fix this, use qemu_register_reset_nosnapshotload instead of
+qemu_register_reset.
 
-Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
-0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
-7073        QLIST_FOREACH_SAFE(blocker, &bs->op_blockers[op], list, next) {
- #0  0x0000555555e971ff in bdrv_op_unblock (bs=0x0, op=BLOCK_OP_TYPE_BACKUP_SOURCE, reason=0x0) at ../block.c:7073
- #1  0x0000555555e9734a in bdrv_op_unblock_all (bs=0x0, reason=0x0) at ../block.c:7095
- #2  0x0000555555bbae13 in block_migration_cleanup_bmds () at ../migration/block.c:690
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Message-id: 20230731203338.27581-1-farosas@suse.de
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-(cherry picked from commit f187609f27b261702a17f79d20bf252ee0d4f9cd)
+Reported-by: Vitaly Cheptsov <cheptsov@ispras.ru>
+Fixes: c4b075318eb1 ("hw/ppc: pass random seed to fdt ")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1634
+Signed-off-by: Maksim Kostin <maksim.kostin@ispras.ru>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+(cherry picked from commit 6ec65b69ba17c954414fa23a397fb8a3fcfb4a43)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/block.c b/migration/block.c
-index 4347da1526..4026b73f75 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -376,7 +376,9 @@ static void unset_dirty_tracking(void)
-     BlkMigDevState *bmds;
+diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
+index 2fe496677c..8d5eb08381 100644
+--- a/hw/ppc/e500.c
++++ b/hw/ppc/e500.c
+@@ -683,7 +683,7 @@ static int ppce500_prep_device_tree(PPCE500MachineState *machine,
+     p->kernel_base = kernel_base;
+     p->kernel_size = kernel_size;
  
-     QSIMPLEQ_FOREACH(bmds, &block_mig_state.bmds_list, entry) {
--        bdrv_release_dirty_bitmap(bmds->dirty_bitmap);
-+        if (bmds->dirty_bitmap) {
-+            bdrv_release_dirty_bitmap(bmds->dirty_bitmap);
-+        }
-     }
- }
+-    qemu_register_reset(ppce500_reset_device_tree, p);
++    qemu_register_reset_nosnapshotload(ppce500_reset_device_tree, p);
+     p->notifier.notify = ppce500_init_notify;
+     qemu_add_machine_init_done_notifier(&p->notifier);
  
-@@ -684,13 +686,18 @@ static int64_t get_remaining_dirty(void)
- static void block_migration_cleanup_bmds(void)
- {
-     BlkMigDevState *bmds;
-+    BlockDriverState *bs;
-     AioContext *ctx;
- 
-     unset_dirty_tracking();
- 
-     while ((bmds = QSIMPLEQ_FIRST(&block_mig_state.bmds_list)) != NULL) {
-         QSIMPLEQ_REMOVE_HEAD(&block_mig_state.bmds_list, entry);
--        bdrv_op_unblock_all(blk_bs(bmds->blk), bmds->blocker);
-+
-+        bs = blk_bs(bmds->blk);
-+        if (bs) {
-+            bdrv_op_unblock_all(bs, bmds->blocker);
-+        }
-         error_free(bmds->blocker);
- 
-         /* Save ctx, because bmds->blk can disappear during blk_unref.  */
 -- 
 2.39.2
 
