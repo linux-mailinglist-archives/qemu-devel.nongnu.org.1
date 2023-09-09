@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446AA79985A
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12223799861
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:10:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexbo-0003TC-5L; Sat, 09 Sep 2023 09:02:44 -0400
+	id 1qexbj-0002wW-NS; Sat, 09 Sep 2023 09:02:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexbZ-00024d-Uw; Sat, 09 Sep 2023 09:02:30 -0400
+ id 1qexbc-0002Tw-Gv; Sat, 09 Sep 2023 09:02:32 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexbV-0002mc-Og; Sat, 09 Sep 2023 09:02:28 -0400
+ id 1qexbZ-0002nI-QM; Sat, 09 Sep 2023 09:02:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 04CBE205A6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 37ACF205A7;
  Sat,  9 Sep 2023 16:01:18 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C9D0426E0C;
+ by tsrv.corpit.ru (Postfix) with SMTP id F3CD526E0D;
  Sat,  9 Sep 2023 16:00:26 +0300 (MSK)
-Received: (nullmailer pid 353127 invoked by uid 1000);
+Received: (nullmailer pid 353130 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 24/43] target/arm: Fix SME ST1Q
-Date: Sat,  9 Sep 2023 15:59:50 +0300
-Message-Id: <20230909130020.352951-24-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 25/43] target/arm: Fix 64-bit SSRA
+Date: Sat,  9 Sep 2023 15:59:51 +0300
+Message-Id: <20230909130020.352951-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -62,32 +62,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-A typo, noted in the bug report, resulting in an
-incorrect write offset.
+Typo applied byte-wise shift instead of double-word shift.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 7390e0e9ab8 ("target/arm: Implement SME LD1, ST1")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1833
+Fixes: 631e565450c ("target/arm: Create gen_gvec_[us]sra")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1737
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230818214255.146905-1-richard.henderson@linaro.org
+Message-id: 20230821022025.397682-1-richard.henderson@linaro.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 4b3520fd93cd49cc56dfcab45d90735cc2e35af7)
+(cherry picked from commit cd1e4db73646006039f25879af3bff55b2295ff3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/sme_helper.c b/target/arm/tcg/sme_helper.c
-index 1e67fcac30..296826ffe6 100644
---- a/target/arm/tcg/sme_helper.c
-+++ b/target/arm/tcg/sme_helper.c
-@@ -379,7 +379,7 @@ static inline void HNAME##_host(void *za, intptr_t off, void *host)         \
- {                                                                           \
-     uint64_t *ptr = za + off;                                               \
-     HOST(host, ptr[BE]);                                                    \
--    HOST(host + 1, ptr[!BE]);                                               \
-+    HOST(host + 8, ptr[!BE]);                                               \
- }                                                                           \
- static inline void VNAME##_v_host(void *za, intptr_t off, void *host)       \
- {                                                                           \
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 1e4d94e58a..e1fe68f73a 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -3063,7 +3063,7 @@ void gen_gvec_ssra(unsigned vece, uint32_t rd_ofs, uint32_t rm_ofs,
+           .vece = MO_32 },
+         { .fni8 = gen_ssra64_i64,
+           .fniv = gen_ssra_vec,
+-          .fno = gen_helper_gvec_ssra_b,
++          .fno = gen_helper_gvec_ssra_d,
+           .prefer_i64 = TCG_TARGET_REG_BITS == 64,
+           .opt_opc = vecop_list,
+           .load_dest = true,
 -- 
 2.39.2
 
