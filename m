@@ -2,78 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4E2799A71
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 20:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81614799A80
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 20:59:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf2yA-00022Y-1L; Sat, 09 Sep 2023 14:46:10 -0400
+	id 1qf3A6-00058e-9b; Sat, 09 Sep 2023 14:58:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf2y8-00022O-Px
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:46:08 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ id 1qf3A0-00054j-1O
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:58:24 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf2y2-0002xO-QE
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:46:08 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-68fb7fb537dso55904b3a.2
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 11:46:02 -0700 (PDT)
+ id 1qf39w-0004ci-LC
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:58:23 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-68c0cb00fb3so2934277b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 11:58:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694285161; x=1694889961; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=tBXZgZ1YDZu8m+OxXcx4KGg4Z0Uw5UN+dX1vhmo3Wtg=;
- b=YUUVAFIO3CoYaCuXWo3CIlZY22+UU++f7U9Os1WC62dh92CxRwI+2Nvc59lebyj62X
- udPG7BAoQlU/iaQ/d3f+4iGiV/WCITB52T1FUlJh9vgvkfq2hanxxRRiEnYixTaUMWgO
- TZNTNIR0qdytGzaj2n7XzsI69MVPOGJXd0WtQ0SCZXbYyejwyx5o/VqB7LtHjpcW5lek
- MT7bAdJ4CwthsKanYYAoCcdhO6b6S+EzNrCWVB0G+weI930AYls8dDdQnf2s0mtPUfaB
- gQxcsIbAL+5BF+8z35n2O86sAjZiYrfiBEbZ4PmWuTmaA+DqBUoI04ONOZEQcZghaREn
- 98Kg==
+ d=linaro.org; s=google; t=1694285899; x=1694890699; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EDP5tTjJ64cm2BQtFEqqVAp/P6uvjutVuIBNR4lVyv8=;
+ b=FE2yRMyrNZnzVstSbuv1WxEZ1q2ZLUvom6o/+W+y7iLvn/f69kmTvHrGEXNDuncdgI
+ G/HyhxeGsWEnrHKwbsr7HP0YdVNf9NiEcH1XjkKuAG5+hPhKeIXUDnU1JnRglRzrzDHs
+ T8REcmOhAsR4JI5OuHPHz4Ut9YYEm6hLkG5V6giqR79L6GEwuAloox8ij1HZyhXWW/X9
+ v2VQ2+K8f86uFQK4+N2DuPZ7j7ZY+nDjtdq4l8/96+q8ce3xNru5I53ccUyTJlQ97s1A
+ 7lNA8Ue1jxkbfdvIGpYnQrbshCS+c0MbfgOCNz7OxqksnhJJSNZxLYuNQXAZkNtYr6ma
+ aYMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694285161; x=1694889961;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tBXZgZ1YDZu8m+OxXcx4KGg4Z0Uw5UN+dX1vhmo3Wtg=;
- b=FjUbzdd/6yvgRI6yLejm54jcEXfOmsm3oiOUqDjn+ELR5VnEz5Xt1rwF+qLiK8zXBf
- qMJEFuXy18CEpfcy+A2j/urMUTcJtKZVTRA2yYl2PQxfnwKdG9IsYT56OlK85wgP6taZ
- v2Zsj0ig27Bzaw6P/voQmKAOjDzHKNc250BXGKYVRsuT+bCEtOIxhNgwj9PeQolt+eeK
- /LDz0Ldl2ljCqXF1AH1HXYkbj50xx7nRbd/DYEVgTQV0S2FJPFEUR0zTzHH8ArOqE31Q
- oBgUzL8kuOShRBiEEK3ZOR7v9+1UdYlHVCBAPEaQAQnnwAdNjwpfXPdoR5hFyiMyFGlQ
- C2hg==
-X-Gm-Message-State: AOJu0YzfHBOw/9K9B5OMfnQcb25pwRjelh1k0lef3Eq6PDhnA0X1CmUv
- +Qxkb1gFl/wOHHSTZbbQtnZf9cwnMA888sxslWE=
-X-Google-Smtp-Source: AGHT+IGlJZS0hQph6gQ85duuBTLICQmVxs2iFOLzfhkql19t3NKg3RtD3/hG4Ml00bs1OjKBzU5UFw==
-X-Received: by 2002:a05:6a20:324a:b0:133:b3a9:90d with SMTP id
- hm10-20020a056a20324a00b00133b3a9090dmr5072240pzc.36.1694285160985; 
- Sat, 09 Sep 2023 11:46:00 -0700 (PDT)
-Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- z12-20020a170902ee0c00b001bbaf09ce15sm3550855plb.152.2023.09.09.11.45.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 Sep 2023 11:46:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694285899; x=1694890699;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EDP5tTjJ64cm2BQtFEqqVAp/P6uvjutVuIBNR4lVyv8=;
+ b=rPdTZz+c5lP+6ski7P8SZEJAANr9OXCHpvKDgAoqPv+c+DBDkmInogWRzLuOqAME/R
+ sh82A5+ooiNBcvSvtWulOP8QDLJaRvdEYJ/gIH+YxMlfMeVUsKdcnesHoEZcSUn7hQFB
+ zqrLtRmrbeuQg4tvnubFDhIIt06SlKoI4QtVJ2ZXN8Jt01ZOSWNwxdDcGAKlF/FpCO72
+ 02PUgzqtFtwa7J+t7gxHfiX0gI7iM/9On09pKiahJqFBoqwn0H5/g7Q6HW1ExAG1TnB5
+ EJr4Qvlvka7n7ZzRakGkilHE1s4KOPrboCSrUXr9MSH05ROSp5RkmyaPJ1dGcXJ95YPS
+ FuEg==
+X-Gm-Message-State: AOJu0YxZGndTAAzfO7SkuGrx32UXUYvJptHTTQOJh1xe1T5JN5T3QbLt
+ RQLI6H/Q73iI7dSpQeuJ8Ca8mSSstEgBYXGBvgs=
+X-Google-Smtp-Source: AGHT+IG6M3pZXFG2vjb8NbGr7dDwT2OgqghOfAL/AfLBW+d5U/HhsQmyou8nkyQnxr4UpTnu2AW+Vg==
+X-Received: by 2002:a05:6a00:a17:b0:68a:31b2:5219 with SMTP id
+ p23-20020a056a000a1700b0068a31b25219mr7058365pfh.22.1694285898849; 
+ Sat, 09 Sep 2023 11:58:18 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ k17-20020aa78211000000b00682d79199e7sm2985217pfi.200.2023.09.09.11.58.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 09 Sep 2023 11:58:18 -0700 (PDT)
+Message-ID: <f5487017-4c14-4019-aade-8877eeb627cc@linaro.org>
+Date: Sat, 9 Sep 2023 11:58:16 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v3 00/19] crypto: Provide clmul.h and host accel
+Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: thuth@redhat.com,
-	philmd@linaro.org,
-	qemu-stable@nongnu.org
-Subject: [PATCH v2] linux-user: Fixes for zero_bss
-Date: Sat,  9 Sep 2023 11:45:59 -0700
-Message-Id: <20230909184559.36504-1-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Cc: berrange@redhat.com, ardb@kernel.org
+References: <20230821161854.419893-1-richard.henderson@linaro.org>
+In-Reply-To: <20230821161854.419893-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,111 +94,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous change, 2d385be6152, assumed !PAGE_VALID meant that
-the page would be unmapped by the elf image.  However, since we
-reserved the entire image space via mmap, PAGE_VALID will always
-be set.  Instead, assume PROT_NONE for the same condition.
+Ping.
 
-Furthermore, assume bss is only ever present for writable segments,
-and that there is no page overlap between PT_LOAD segments.
-Instead of an assert, return false to indicate failure.
+Still missing r-b on patches 1, 4, 5, 8, 9, 12, 13, 18.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
-Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
-v2: Pass errp to zero_bss, so we can give a reasonable error message.
----
- linux-user/elfload.c | 53 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 13 deletions(-)
+r~
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a5b28fa3e7..5271b749b0 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -2304,31 +2304,58 @@ static abi_ulong setup_arg_pages(struct linux_binprm *bprm,
-  * Map and zero the bss.  We need to explicitly zero any fractional pages
-  * after the data section (i.e. bss).  Return false on mapping failure.
-  */
--static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
-+static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss,
-+                     int prot, Error **errp)
- {
-     abi_ulong align_bss;
- 
-+    /* We only expect writable bss; the code segment shouldn't need this. */
-+    if (!(prot & PROT_WRITE)) {
-+        error_setg(errp, "PT_LOAD with non-writable bss");
-+        return false;
-+    }
-+
-     align_bss = TARGET_PAGE_ALIGN(start_bss);
-     end_bss = TARGET_PAGE_ALIGN(end_bss);
- 
-     if (start_bss < align_bss) {
-         int flags = page_get_flags(start_bss);
- 
--        if (!(flags & PAGE_VALID)) {
--            /* Map the start of the bss. */
-+        if (!(flags & PAGE_BITS)) {
-+            /*
-+             * The whole address space of the executable was reserved
-+             * at the start, therefore all pages will be VALID.
-+             * But assuming there are no PROT_NONE PT_LOAD segments,
-+             * a PROT_NONE page means no data all bss, and we can
-+             * simply extend the new anon mapping back to the start
-+             * of the page of bss.
-+             */
-             align_bss -= TARGET_PAGE_SIZE;
--        } else if (flags & PAGE_WRITE) {
--            /* The page is already mapped writable. */
--            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
-         } else {
--            /* Read-only zeros? */
--            g_assert_not_reached();
-+            /*
-+             * The start of the bss shares a page with something.
-+             * The only thing that we expect is the data section,
-+             * which would already be marked writable.
-+             * Overlapping the RX code segment seems malformed.
-+             */
-+            if (!(flags & PAGE_WRITE)) {
-+                error_setg(errp, "PT_LOAD with bss overlapping "
-+                           "non-writable page");
-+                return false;
-+            }
-+
-+            /* The page is already mapped and writable. */
-+            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
-         }
-     }
- 
--    return align_bss >= end_bss ||
--           target_mmap(align_bss, end_bss - align_bss, prot,
--                       MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) != -1;
-+    if (align_bss < end_bss &&
-+        target_mmap(align_bss, end_bss - align_bss, prot,
-+                    MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) == -1) {
-+        error_setg_errno(errp, errno, "Error mapping bss");
-+        return false;
-+    }
-+    return true;
- }
- 
- #if defined(TARGET_ARM)
-@@ -3352,8 +3379,8 @@ static void load_elf_image(const char *image_name, int image_fd,
- 
-             /* If the load segment requests extra zeros (e.g. bss), map it. */
-             if (vaddr_ef < vaddr_em &&
--                !zero_bss(vaddr_ef, vaddr_em, elf_prot)) {
--                goto exit_mmap;
-+                !zero_bss(vaddr_ef, vaddr_em, elf_prot, &err)) {
-+                goto exit_errmsg;
-             }
- 
-             /* Find the full program boundaries.  */
--- 
-2.34.1
+On 8/21/23 09:18, Richard Henderson wrote:
+> Inspired by Ard Biesheuvel's RFC patches [1] for accelerating
+> carry-less multiply under emulation.
+> 
+> Changes for v3:
+>    * Update target/i386 ops_sse.h.
+>    * Apply r-b.
+> 
+> Changes for v2:
+>    * Only accelerate clmul_64; keep generic helpers for other sizes.
+>    * Drop most of the Int128 interfaces, except for clmul_64.
+>    * Use the same acceleration format as aes-round.h.
+> 
+> 
+> r~
+> 
+> 
+> [1] https://patchew.org/QEMU/20230601123332.3297404-1-ardb@kernel.org/
+> 
+> 
+> Richard Henderson (19):
+>    crypto: Add generic 8-bit carry-less multiply routines
+>    target/arm: Use clmul_8* routines
+>    target/s390x: Use clmul_8* routines
+>    target/ppc: Use clmul_8* routines
+>    crypto: Add generic 16-bit carry-less multiply routines
+>    target/arm: Use clmul_16* routines
+>    target/s390x: Use clmul_16* routines
+>    target/ppc: Use clmul_16* routines
+>    crypto: Add generic 32-bit carry-less multiply routines
+>    target/arm: Use clmul_32* routines
+>    target/s390x: Use clmul_32* routines
+>    target/ppc: Use clmul_32* routines
+>    crypto: Add generic 64-bit carry-less multiply routine
+>    target/arm: Use clmul_64
+>    target/i386: Use clmul_64
+>    target/s390x: Use clmul_64
+>    target/ppc: Use clmul_64
+>    host/include/i386: Implement clmul.h
+>    host/include/aarch64: Implement clmul.h
+> 
+>   host/include/aarch64/host/cpuinfo.h      |   1 +
+>   host/include/aarch64/host/crypto/clmul.h |  41 +++++
+>   host/include/generic/host/crypto/clmul.h |  15 ++
+>   host/include/i386/host/cpuinfo.h         |   1 +
+>   host/include/i386/host/crypto/clmul.h    |  29 ++++
+>   host/include/x86_64/host/crypto/clmul.h  |   1 +
+>   include/crypto/clmul.h                   |  83 ++++++++++
+>   include/qemu/cpuid.h                     |   3 +
+>   target/arm/tcg/vec_internal.h            |  11 --
+>   target/i386/ops_sse.h                    |  40 ++---
+>   crypto/clmul.c                           | 112 ++++++++++++++
+>   target/arm/tcg/mve_helper.c              |  16 +-
+>   target/arm/tcg/vec_helper.c              | 102 ++-----------
+>   target/ppc/int_helper.c                  |  64 ++++----
+>   target/s390x/tcg/vec_int_helper.c        | 186 ++++++++++-------------
+>   util/cpuinfo-aarch64.c                   |   4 +-
+>   util/cpuinfo-i386.c                      |   1 +
+>   crypto/meson.build                       |   9 +-
+>   18 files changed, 434 insertions(+), 285 deletions(-)
+>   create mode 100644 host/include/aarch64/host/crypto/clmul.h
+>   create mode 100644 host/include/generic/host/crypto/clmul.h
+>   create mode 100644 host/include/i386/host/crypto/clmul.h
+>   create mode 100644 host/include/x86_64/host/crypto/clmul.h
+>   create mode 100644 include/crypto/clmul.h
+>   create mode 100644 crypto/clmul.c
+> 
 
 
