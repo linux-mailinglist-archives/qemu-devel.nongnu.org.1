@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E779984D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:07:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C663F799843
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:02:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexaY-0006wQ-O7; Sat, 09 Sep 2023 09:01:27 -0400
+	id 1qexaZ-0006wc-5v; Sat, 09 Sep 2023 09:01:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexaQ-0006p6-Rv; Sat, 09 Sep 2023 09:01:18 -0400
+ id 1qexaT-0006rk-Ep; Sat, 09 Sep 2023 09:01:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexaN-0002DI-0F; Sat, 09 Sep 2023 09:01:18 -0400
+ id 1qexaN-0002DQ-8y; Sat, 09 Sep 2023 09:01:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C595020599;
- Sat,  9 Sep 2023 16:01:15 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 00B372059A;
+ Sat,  9 Sep 2023 16:01:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7E7AD26E00;
+ by tsrv.corpit.ru (Postfix) with SMTP id C0BBB26E01;
  Sat,  9 Sep 2023 16:00:24 +0300 (MSK)
-Received: (nullmailer pid 353090 invoked by uid 1000);
+Received: (nullmailer pid 353093 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nathan Egge <negge@xiph.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 12/43] linux-user/elfload: Set V in ELF_HWCAP for RISC-V
-Date: Sat,  9 Sep 2023 15:59:38 +0300
-Message-Id: <20230909130020.352951-12-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 13/43] include/exec/user: Set ABI_LLONG_ALIGNMENT to 4
+ for microblaze
+Date: Sat,  9 Sep 2023 15:59:39 +0300
+Message-Id: <20230909130020.352951-13-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -44,7 +43,7 @@ X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,33 +59,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nathan Egge <negge@xiph.org>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Set V bit for hwcap if misa is set.
+Based on gcc's microblaze.h setting BIGGEST_ALIGNMENT to 32 bits.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1793
-Signed-off-by: Nathan Egge <negge@xiph.org>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-Id: <20230803131424.40744-1-negge@xiph.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 4333f0924c2f2ca8efaebaed8c24f55f77d8b013)
+(cherry picked from commit e73f27003e777fd9b77d13e71c5268015b8ed2b6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 88ef26dc03..a3e78a7e18 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -1679,7 +1679,8 @@ static uint32_t get_elf_hwcap(void)
- #define MISA_BIT(EXT) (1 << (EXT - 'A'))
-     RISCVCPU *cpu = RISCV_CPU(thread_cpu);
-     uint32_t mask = MISA_BIT('I') | MISA_BIT('M') | MISA_BIT('A')
--                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C');
-+                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C')
-+                    | MISA_BIT('V');
+diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
+index 743b8bb9ea..beba0a48c7 100644
+--- a/include/exec/user/abitypes.h
++++ b/include/exec/user/abitypes.h
+@@ -15,7 +15,9 @@
+ #define ABI_LLONG_ALIGNMENT 2
+ #endif
  
-     return cpu->env.misa_ext & mask;
- #undef MISA_BIT
+-#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) || defined(TARGET_SH4)
++#if (defined(TARGET_I386) && !defined(TARGET_X86_64)) \
++    || defined(TARGET_SH4) \
++    || defined(TARGET_MICROBLAZE)
+ #define ABI_LLONG_ALIGNMENT 4
+ #endif
+ 
 -- 
 2.39.2
 
