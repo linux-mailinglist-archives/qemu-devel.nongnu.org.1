@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D68799863
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A79B5799860
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:10:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexeY-0006cb-Rh; Sat, 09 Sep 2023 09:05:35 -0400
+	id 1qexeY-0006cc-SN; Sat, 09 Sep 2023 09:05:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexeV-0006bb-R6; Sat, 09 Sep 2023 09:05:31 -0400
+ id 1qexeW-0006cB-Bx; Sat, 09 Sep 2023 09:05:32 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexeT-0003Wc-Ha; Sat, 09 Sep 2023 09:05:31 -0400
+ id 1qexeT-0003XE-QU; Sat, 09 Sep 2023 09:05:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 64BC4205D3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9382F205D4;
  Sat,  9 Sep 2023 16:06:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 183D126E26;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5F0CE26E27;
  Sat,  9 Sep 2023 16:05:13 +0300 (MSK)
-Received: (nullmailer pid 354278 invoked by uid 1000);
+Received: (nullmailer pid 354281 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Ankit Kumar <ankit.kumar@samsung.com>,
- Klaus Jensen <k.jensen@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 06/37] hw/nvme: fix CRC64 for guard tag
-Date: Sat,  9 Sep 2023 16:04:36 +0300
-Message-Id: <20230909130511.354171-6-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Nathan Egge <negge@xiph.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 07/37] linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+Date: Sat,  9 Sep 2023 16:04:37 +0300
+Message-Id: <20230909130511.354171-7-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
@@ -58,40 +60,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ankit Kumar <ankit.kumar@samsung.com>
+From: Nathan Egge <negge@xiph.org>
 
-The nvme CRC64 generator expects the caller to pass inverted seed value.
-Pass inverted crc value for metadata buffer.
+Set V bit for hwcap if misa is set.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 44219b6029fc ("hw/nvme: 64-bit pi support")
-Signed-off-by: Ankit Kumar <ankit.kumar@samsung.com>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-(cherry picked from commit dbdb13f931d7cf2d3c3ca662e751bb1551e9eab6)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1793
+Signed-off-by: Nathan Egge <negge@xiph.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Tested-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-Id: <20230803131424.40744-1-negge@xiph.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 4333f0924c2f2ca8efaebaed8c24f55f77d8b013)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/nvme/dif.c b/hw/nvme/dif.c
-index 63c44c86ab..01b19c3373 100644
---- a/hw/nvme/dif.c
-+++ b/hw/nvme/dif.c
-@@ -115,7 +115,7 @@ static void nvme_dif_pract_generate_dif_crc64(NvmeNamespace *ns, uint8_t *buf,
-         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 20894b633f..c2c095d383 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -1664,7 +1664,8 @@ static uint32_t get_elf_hwcap(void)
+ #define MISA_BIT(EXT) (1 << (EXT - 'A'))
+     RISCVCPU *cpu = RISCV_CPU(thread_cpu);
+     uint32_t mask = MISA_BIT('I') | MISA_BIT('M') | MISA_BIT('A')
+-                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C');
++                    | MISA_BIT('F') | MISA_BIT('D') | MISA_BIT('C')
++                    | MISA_BIT('V');
  
-         if (pil) {
--            crc = crc64_nvme(crc, mbuf, pil);
-+            crc = crc64_nvme(~crc, mbuf, pil);
-         }
- 
-         dif->g64.guard = cpu_to_be64(crc);
-@@ -246,7 +246,7 @@ static uint16_t nvme_dif_prchk_crc64(NvmeNamespace *ns, NvmeDifTuple *dif,
-         uint64_t crc = crc64_nvme(~0ULL, buf, ns->lbasz);
- 
-         if (pil) {
--            crc = crc64_nvme(crc, mbuf, pil);
-+            crc = crc64_nvme(~crc, mbuf, pil);
-         }
- 
-         trace_pci_nvme_dif_prchk_guard_crc64(be64_to_cpu(dif->g64.guard), crc);
+     return cpu->env.misa_ext & mask;
+ #undef MISA_BIT
 -- 
 2.39.2
 
