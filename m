@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C5179987A
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253FE799857
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexgZ-0002QS-DL; Sat, 09 Sep 2023 09:07:39 -0400
+	id 1qexgc-0002ZP-B0; Sat, 09 Sep 2023 09:07:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexgT-00029z-D8; Sat, 09 Sep 2023 09:07:33 -0400
+ id 1qexgU-0002EF-59; Sat, 09 Sep 2023 09:07:34 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexgO-0003jk-Jq; Sat, 09 Sep 2023 09:07:33 -0400
+ id 1qexgR-0003rl-HJ; Sat, 09 Sep 2023 09:07:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AA2BB205E6;
+ by isrv.corpit.ru (Postfix) with ESMTP id DED59205E7;
  Sat,  9 Sep 2023 16:06:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7316326E39;
+ by tsrv.corpit.ru (Postfix) with SMTP id A58A626E3A;
  Sat,  9 Sep 2023 16:05:17 +0300 (MSK)
-Received: (nullmailer pid 354336 invoked by uid 1000);
+Received: (nullmailer pid 354339 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:12 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Niklas Cassel <niklas.cassel@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 25/37] hw/ide/core: set ERR_STAT in unsupported command
- completion
-Date: Sat,  9 Sep 2023 16:04:55 +0300
-Message-Id: <20230909130511.354171-25-mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 26/37] hw/ide/ahci: write D2H FIS when processing NCQ
+ command
+Date: Sat,  9 Sep 2023 16:04:56 +0300
+Message-Id: <20230909130511.354171-26-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,52 +61,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-Currently, the first time sending an unsupported command
-(e.g. READ LOG DMA EXT) will not have ERR_STAT set in the completion.
-Sending the unsupported command again, will correctly have ERR_STAT set.
+The way that BUSY + PxCI is cleared for NCQ (FPDMA QUEUED) commands is
+described in SATA 3.5a Gold:
 
-When ide_cmd_permitted() returns false, it calls ide_abort_command().
-ide_abort_command() first calls ide_transfer_stop(), which will call
-ide_transfer_halt() and ide_cmd_done(), after that ide_abort_command()
-sets ERR_STAT in status.
+11.15 FPDMA QUEUED command protocol
+DFPDMAQ2: ClearInterfaceBsy
+"Transmit Register Device to Host FIS with the BSY bit cleared to zero
+and the DRQ bit cleared to zero and Interrupt bit cleared to zero to
+mark interface ready for the next command."
 
-ide_cmd_done() for AHCI will call ahci_write_fis_d2h() which writes the
-current status in the FIS, and raises an IRQ. (The status here will not
-have ERR_STAT set!).
+PxCI is currently cleared by handle_cmd(), but we don't write the D2H
+FIS to the FIS Receive Area that actually caused PxCI to be cleared.
 
-Thus, we cannot call ide_transfer_stop() before setting ERR_STAT, as
-ide_transfer_stop() will result in the FIS being written and an IRQ
-being raised.
+Similar to how ahci_pio_transfer() calls ahci_write_fis_pio() with an
+additional parameter to write a PIO Setup FIS without raising an IRQ,
+add a parameter to ahci_write_fis_d2h() so that ahci_write_fis_d2h()
+also can write the FIS to the FIS Receive Area without raising an IRQ.
 
-The reason why it works the second time, is that ERR_STAT will still
-be set from the previous command, so when writing the FIS, the
-completion will correctly have ERR_STAT set.
+Change process_ncq_command() to call ahci_write_fis_d2h() without
+raising an IRQ (similar to ahci_pio_transfer()), such that the FIS
+Receive Area is in sync with the PxTFD shadow register.
 
-Set ERR_STAT before writing the FIS (calling cmd_done), so that we will
-raise an error IRQ correctly when receiving an unsupported command.
+E.g. Linux reads status and error fields from the FIS Receive Area
+directly, so it is wise to keep the FIS Receive Area and the PxTFD
+shadow register in sync.
 
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20230609140844.202795-3-nks@flawful.org
+Message-id: 20230609140844.202795-4-nks@flawful.org
 Signed-off-by: John Snow <jsnow@redhat.com>
-(cherry picked from commit c3461c6264a7c8ca15b117e91fe5da786924a784)
+(cherry picked from commit 2967dc8209dd27b61a6ab7bad78cf7c6ec58ddb4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ide/core.c b/hw/ide/core.c
-index 39afdc0006..79c5529975 100644
---- a/hw/ide/core.c
-+++ b/hw/ide/core.c
-@@ -530,9 +530,9 @@ BlockAIOCB *ide_issue_trim(
+diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+index 7ce001cacd..54b741c7b3 100644
+--- a/hw/ide/ahci.c
++++ b/hw/ide/ahci.c
+@@ -42,7 +42,7 @@
+ static void check_cmd(AHCIState *s, int port);
+ static int handle_cmd(AHCIState *s, int port, uint8_t slot);
+ static void ahci_reset_port(AHCIState *s, int port);
+-static bool ahci_write_fis_d2h(AHCIDevice *ad);
++static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i);
+ static void ahci_init_d2h(AHCIDevice *ad);
+ static int ahci_dma_prepare_buf(const IDEDMA *dma, int32_t limit);
+ static bool ahci_map_clb_address(AHCIDevice *ad);
+@@ -617,7 +617,7 @@ static void ahci_init_d2h(AHCIDevice *ad)
+         return;
+     }
  
- void ide_abort_command(IDEState *s)
- {
--    ide_transfer_stop(s);
-     s->status = READY_STAT | ERR_STAT;
-     s->error = ABRT_ERR;
-+    ide_transfer_stop(s);
+-    if (ahci_write_fis_d2h(ad)) {
++    if (ahci_write_fis_d2h(ad, true)) {
+         ad->init_d2h_sent = true;
+         /* We're emulating receiving the first Reg H2D Fis from the device;
+          * Update the SIG register, but otherwise proceed as normal. */
+@@ -849,7 +849,7 @@ static void ahci_write_fis_pio(AHCIDevice *ad, uint16_t len, bool pio_fis_i)
+     }
  }
  
- static void ide_set_retry(IDEState *s)
+-static bool ahci_write_fis_d2h(AHCIDevice *ad)
++static bool ahci_write_fis_d2h(AHCIDevice *ad, bool d2h_fis_i)
+ {
+     AHCIPortRegs *pr = &ad->port_regs;
+     uint8_t *d2h_fis;
+@@ -863,7 +863,7 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
+     d2h_fis = &ad->res_fis[RES_FIS_RFIS];
+ 
+     d2h_fis[0] = SATA_FIS_TYPE_REGISTER_D2H;
+-    d2h_fis[1] = (1 << 6); /* interrupt bit */
++    d2h_fis[1] = d2h_fis_i ? (1 << 6) : 0; /* interrupt bit */
+     d2h_fis[2] = s->status;
+     d2h_fis[3] = s->error;
+ 
+@@ -889,7 +889,10 @@ static bool ahci_write_fis_d2h(AHCIDevice *ad)
+         ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_TFES);
+     }
+ 
+-    ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
++    if (d2h_fis_i) {
++        ahci_trigger_irq(ad->hba, ad, AHCI_PORT_IRQ_BIT_DHRS);
++    }
++
+     return true;
+ }
+ 
+@@ -1119,6 +1122,8 @@ static void process_ncq_command(AHCIState *s, int port, const uint8_t *cmd_fis,
+         return;
+     }
+ 
++    ahci_write_fis_d2h(ad, false);
++
+     ncq_tfs->used = 1;
+     ncq_tfs->drive = ad;
+     ncq_tfs->slot = slot;
+@@ -1505,7 +1510,7 @@ static void ahci_cmd_done(const IDEDMA *dma)
+     }
+ 
+     /* update d2h status */
+-    ahci_write_fis_d2h(ad);
++    ahci_write_fis_d2h(ad, true);
+ 
+     if (ad->port_regs.cmd_issue && !ad->check_bh) {
+         ad->check_bh = qemu_bh_new(ahci_check_cmd_bh, ad);
 -- 
 2.39.2
 
