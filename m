@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8710079972C
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 11:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4828B799735
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 11:51:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeub8-00074y-S7; Sat, 09 Sep 2023 05:49:50 -0400
+	id 1qeubC-0007Fo-7w; Sat, 09 Sep 2023 05:49:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeub6-00072Y-3I
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:48 -0400
+ id 1qeubA-00078f-C3
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:52 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeub3-0005LH-Tl
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:47 -0400
+ id 1qeub8-0005Ld-AO
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rVLhVC81FABNRKzcCDZD9c3OyRpcVv+q9I8Ijo5qkSk=; b=n5AFZE15d6EvNDg538jEGKPArf
- r/jj/q5mzrTvmch3nFLMIOvhBPhMU7jDH+IHc0CX47lqqEHdL9G7thekORSthW8EQuGi2aLhQE4TJ
- fmO9Fnij+SNf/YQP9VFjLBRjHontDOZRlKRkjDAw9ccG9T/qOZ1+iwaTrzyWaUmDajkJrtVk8AC2t
- 9xIJKfLjj6IQBAl4N8op+JxRraH3BlYsWXGeMOIl3MSU6DnaD+CRfzvH5bVDHkbLhTt6yPP2dYzHT
- MEa+d1yCulo+PVQkb0Gfj+O6cC6GMVPr+/mB5I/8pH2IQGA1BaJFcMMBFHedur30eeHcgeD4YXqYv
- VYxDrnRPRLREQpFk2F9B9TbsSgEKCggwmZgakz6D85CHFcZaRseG7XWAcLAZrmuj9sS70Mv2IUn9O
- ITaIlHrfOFXv0gNUr9X61o+8XJ/QC2NMqDkwxoTgyMm58S7zTGdXpqRrn3AJZZKccqizs4NdkDr/e
- D/GbYpG+AGTMEZwd7cwzo1cF1QQkaxyrjcn6cyguPwBb80gAeA4oSjwpRyzIKrKWrftGnkxVCNOF1
- s8BurnzGqeLKdEUOXC+1JQ0nlNQcb175HJRJxtKTxgAD3T6QXVuWfIVSgD+HglytG3BYMVvGp7xeL
- 1RMzX7hyubba9RrNQWEI/pL/2fFpD9b/4mm1ZcWms=;
+ bh=AN63dqXfIcRycCDcVO/ON0E0poVYFvs3xSQZ7LeuN7c=; b=grsafhA0TB0gDlTq8qh2sdK06q
+ E9BfMKSYcfmuSdLaENRmE3d3llmaV42vqY/5X4jhJycDYai8aCuKNdO3f7+NpeJ5FxbMUaEGHyZM6
+ GrJdy/mSKcFYT9SBUDI5fIsLPuteWeCdj/VDaatCckrcl02B84/42dHtjy3Eepcu5jMAd4UNCzJS0
+ dIrI4qdEUnb6a9Ff1mguvEcAq+ZBW4ZiO1LBvyrVsXRNpEU6dH+MdphkDurFNZvQ98z3CqfTZAPQA
+ 4gopm3K21quHiFEGpiEjj8/3q2KWf+d0sEnrX1VxCnOvXRrzwJWDC3fxN7d/D7AxW7uXGk2EpgON9
+ qW0/1MICBr2GUnBfGxsm4MpwbkeTloTLLiThaU1Q7AUO6SEmIDjRWmiLN3ZUyk2x7t+SIGU6CCxNT
+ N9+xAgMzZ1JELguMPrvmqkQI3KtxlaqrWundBs6UHDkdWNsuin71GBCIq61uDEHNSJqB4gACESCFg
+ yQDL/eB1x65BOJWCF1FgjlnrRkySAPiCJOMKpZo1Y38hBE9MPFydpLugPnYCLrLqKcjJQyAQi6sAk
+ 47WikPdE5ErXACzlk75JYWHGSrEYT69XCQ/K5IHBL7oCY9UMyBkzAAw2WQs7tZbzVxTAv3Od8/P51
+ vUFYgF9RzAv1vVfBuTygLYane/BVjX6/QTjuBpIHI=;
 Received: from [2a00:23c4:8baf:5f00:e007:7058:31bc:5be9]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeuan-0000uO-SC; Sat, 09 Sep 2023 10:49:33 +0100
+ id 1qeuas-0000uO-2J; Sat, 09 Sep 2023 10:49:38 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sat,  9 Sep 2023 10:48:25 +0100
-Message-Id: <20230909094827.33871-19-mark.cave-ayland@ilande.co.uk>
+Date: Sat,  9 Sep 2023 10:48:26 +0100
+Message-Id: <20230909094827.33871-20-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
 References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:e007:7058:31bc:5be9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 18/20] q800: add ESCC alias at 0xc000
+Subject: [PATCH v2 19/20] q800: add alias for MacOS toolbox ROM at 0x40000000
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,49 +77,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tests on real Q800 hardware show that the ESCC is addressable at multiple locations
-within the ESCC memory region - at least 0xc000, 0xc020 (as expected by the MacOS
-toolbox ROM) and 0xc040.
-
-All released NetBSD kernels before 10 use the 0xc000 address which causes a fatal
-error when running the MacOS booter. Add a single memory region alias at 0xc000
-to enable NetBSD kernels to start booting under QEMU.
+According to the Apple Quadra 800 Developer Note document, the Quadra 800 ROM
+consists of 2 ROM code sections based at offsets 0x0 and 0x800000. A/UX attempts
+to access the toolbox ROM at the lower offset during startup, so provide a
+memory alias to allow the access to succeed.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/m68k/q800.c         | 6 ++++++
+ hw/m68k/q800.c         | 5 +++++
  include/hw/m68k/q800.h | 1 +
- 2 files changed, 7 insertions(+)
+ 2 files changed, 6 insertions(+)
 
 diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 5ae7c37760..b5b2cabc33 100644
+index b5b2cabc33..87665c6407 100644
 --- a/hw/m68k/q800.c
 +++ b/hw/m68k/q800.c
-@@ -451,6 +451,12 @@ static void q800_machine_init(MachineState *machine)
-     memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE,
-                                 sysbus_mmio_get_region(sysbus, 0));
+@@ -657,6 +657,11 @@ static void q800_machine_init(MachineState *machine)
+         filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, bios_name);
+         memory_region_add_subregion(get_system_memory(), MACROM_ADDR, &m->rom);
  
-+    /* Create alias for NetBSD */
-+    memory_region_init_alias(&m->escc_alias, OBJECT(machine), "escc-alias",
-+                             sysbus_mmio_get_region(sysbus, 0), 0, 0x8);
-+    memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE - 0x20,
-+                                &m->escc_alias);
++        memory_region_init_alias(&m->rom_alias, NULL, "m68k_mac.rom-alias",
++                                 &m->rom, 0, MACROM_SIZE);
++        memory_region_add_subregion(get_system_memory(), 0x40000000,
++                                    &m->rom_alias);
 +
-     /* SCSI */
- 
-     object_initialize_child(OBJECT(machine), "esp", &m->esp,
+         /* Load MacROM binary */
+         if (filename) {
+             bios_size = load_image_targphys(filename, MACROM_ADDR, MACROM_SIZE);
 diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index fbaacd88bd..348eaf4703 100644
+index 348eaf4703..a9661f65f6 100644
 --- a/include/hw/m68k/q800.h
 +++ b/include/hw/m68k/q800.h
-@@ -67,6 +67,7 @@ struct Q800MachineState {
-     MemoryRegion macio;
-     MemoryRegion macio_alias;
-     MemoryRegion machine_id;
-+    MemoryRegion escc_alias;
- };
- 
- #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
+@@ -50,6 +50,7 @@ struct Q800MachineState {
+     bool easc;
+     M68kCPU cpu;
+     MemoryRegion rom;
++    MemoryRegion rom_alias;
+     GLUEState glue;
+     MOS6522Q800VIA1State via1;
+     MOS6522Q800VIA2State via2;
 -- 
 2.39.2
 
