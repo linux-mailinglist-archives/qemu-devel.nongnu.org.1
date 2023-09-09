@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8972A79989E
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7B39799850
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:07:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexcA-0004jN-U1; Sat, 09 Sep 2023 09:03:07 -0400
+	id 1qexcF-00050p-3c; Sat, 09 Sep 2023 09:03:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexc8-0004YE-7a; Sat, 09 Sep 2023 09:03:04 -0400
+ id 1qexc9-0004jk-SD; Sat, 09 Sep 2023 09:03:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexc5-0002wa-L2; Sat, 09 Sep 2023 09:03:03 -0400
+ id 1qexc6-0002wn-Bj; Sat, 09 Sep 2023 09:03:05 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 12CA8205AC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 39F16205AD;
  Sat,  9 Sep 2023 16:01:19 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D632F26E12;
- Sat,  9 Sep 2023 16:00:27 +0300 (MSK)
-Received: (nullmailer pid 353145 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0E68626E13;
+ Sat,  9 Sep 2023 16:00:28 +0300 (MSK)
+Received: (nullmailer pid 353148 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 30/43] target/ppc: Flush inputs to zero with NJ in
- ppc_store_vscr
-Date: Sat,  9 Sep 2023 15:59:56 +0300
-Message-Id: <20230909130020.352951-30-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Niklas Cassel <niklas.cassel@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 31/43] hw/ide/core: set ERR_STAT in unsupported command
+ completion
+Date: Sat,  9 Sep 2023 15:59:57 +0300
+Message-Id: <20230909130020.352951-31-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -62,27 +61,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1779
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
-(cherry picked from commit af03aeb631eeb81a44d2c0ff5b429cd4b5dc2799)
+Currently, the first time sending an unsupported command
+(e.g. READ LOG DMA EXT) will not have ERR_STAT set in the completion.
+Sending the unsupported command again, will correctly have ERR_STAT set.
+
+When ide_cmd_permitted() returns false, it calls ide_abort_command().
+ide_abort_command() first calls ide_transfer_stop(), which will call
+ide_transfer_halt() and ide_cmd_done(), after that ide_abort_command()
+sets ERR_STAT in status.
+
+ide_cmd_done() for AHCI will call ahci_write_fis_d2h() which writes the
+current status in the FIS, and raises an IRQ. (The status here will not
+have ERR_STAT set!).
+
+Thus, we cannot call ide_transfer_stop() before setting ERR_STAT, as
+ide_transfer_stop() will result in the FIS being written and an IRQ
+being raised.
+
+The reason why it works the second time, is that ERR_STAT will still
+be set from the previous command, so when writing the FIS, the
+completion will correctly have ERR_STAT set.
+
+Set ERR_STAT before writing the FIS (calling cmd_done), so that we will
+raise an error IRQ correctly when receiving an unsupported command.
+
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230609140844.202795-3-nks@flawful.org
+Signed-off-by: John Snow <jsnow@redhat.com>
+(cherry picked from commit c3461c6264a7c8ca15b117e91fe5da786924a784)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/ppc/cpu.c b/target/ppc/cpu.c
-index 1a97b41c6b..6e597680fb 100644
---- a/target/ppc/cpu.c
-+++ b/target/ppc/cpu.c
-@@ -59,6 +59,7 @@ void ppc_store_vscr(CPUPPCState *env, uint32_t vscr)
-     env->vscr_sat.u64[0] = vscr & (1u << VSCR_SAT);
-     env->vscr_sat.u64[1] = 0;
-     set_flush_to_zero((vscr >> VSCR_NJ) & 1, &env->vec_status);
-+    set_flush_inputs_to_zero((vscr >> VSCR_NJ) & 1, &env->vec_status);
+diff --git a/hw/ide/core.c b/hw/ide/core.c
+index 45d14a25e9..c144d1155d 100644
+--- a/hw/ide/core.c
++++ b/hw/ide/core.c
+@@ -531,9 +531,9 @@ BlockAIOCB *ide_issue_trim(
+ 
+ void ide_abort_command(IDEState *s)
+ {
+-    ide_transfer_stop(s);
+     s->status = READY_STAT | ERR_STAT;
+     s->error = ABRT_ERR;
++    ide_transfer_stop(s);
  }
  
- uint32_t ppc_get_vscr(CPUPPCState *env)
+ static void ide_set_retry(IDEState *s)
 -- 
 2.39.2
 
