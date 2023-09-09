@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6382C79976C
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF2879975A
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:31:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qevEf-00064U-Oa; Sat, 09 Sep 2023 06:30:41 -0400
+	id 1qevEe-0005jy-66; Sat, 09 Sep 2023 06:30:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevEL-00055C-6c; Sat, 09 Sep 2023 06:30:27 -0400
+ id 1qevEL-00055D-Ep; Sat, 09 Sep 2023 06:30:27 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevEG-0004wb-Tr; Sat, 09 Sep 2023 06:30:19 -0400
+ id 1qevEH-0004wf-Rf; Sat, 09 Sep 2023 06:30:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5C8DC204B0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9587F204B1;
  Sat,  9 Sep 2023 13:29:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 65C0326D0E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8A95A26D0F;
  Sat,  9 Sep 2023 13:28:20 +0300 (MSK)
-Received: (nullmailer pid 346726 invoked by uid 1000);
- Sat, 09 Sep 2023 10:28:17 -0000
+Received: (nullmailer pid 346729 invoked by uid 1000);
+ Sat, 09 Sep 2023 10:28:18 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Hang Yu <francis_yuu@stu.pku.edu.cn>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.1 29/34] hw/i2c/aspeed: Fix Tx count and Rx size error in
- buffer pool mode
-Date: Sat,  9 Sep 2023 13:27:22 +0300
-Message-Id: <20230909102747.346522-29-mjt@tls.msk.ru>
+Subject: [Stable-8.1.1 30/34] hw/i2c/aspeed: Fix TXBUF transmission start
+ position error
+Date: Sat,  9 Sep 2023 13:27:23 +0300
+Message-Id: <20230909102747.346522-30-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
 References: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
@@ -63,80 +63,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hang Yu <francis_yuu@stu.pku.edu.cn>
 
-Fixed inconsistency between the regisiter bit field definition header file
-and the ast2600 datasheet. The reg name is I2CD1C:Pool Buffer Control
-Register in old register mode and  I2CC0C: Master/Slave Pool Buffer Control
-Register in new register mode. They share bit field
-[12:8]:Transmit Data Byte Count and bit field
-[29:24]:Actual Received Pool Buffer Size according to the datasheet.
-According to the ast2600 datasheet,the actual Tx count is
-Transmit Data Byte Count plus 1, and the max Rx size is
-Receive Pool Buffer Size plus 1, both in Pool Buffer Control Register.
-The version before forgot to plus 1, and mistake Rx count for Rx size.
+According to the ast2600 datasheet and the linux aspeed i2c driver,
+the TXBUF transmission start position should be TXBUF[0] instead
+of TXBUF[1],so the arg pool_start is useless,and the address is not
+included in TXBUF.So even if Tx Count equals zero,there is at least
+1 byte data needs to be transmitted,and M_TX_CMD should not be cleared
+at this condition.The driver url is:
+https://github.com/AspeedTech-BMC/linux/blob/aspeed-master-v5.15/drivers/i2c/busses/i2c-ast2600.c
 
 Signed-off-by: Hang Yu <francis_yuu@stu.pku.edu.cn>
-Fixes: 3be3d6ccf2ad ("aspeed: i2c: Migrate to registerfields API")
+Fixes: 6054fc73e8f4 ("aspeed/i2c: Add support for pool buffer transfers")
 Reviewed-by: Cédric Le Goater <clg@kaod.org>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
-(cherry picked from commit 97b8aa5ae9ff197394395eda5062ea3681e09c28)
+(cherry picked from commit 961faf3ddbd8ffcdf776bbcf88af0bc97218114a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
-index 1f071a3811..e485d8bfb8 100644
+index e485d8bfb8..44905d7899 100644
 --- a/hw/i2c/aspeed_i2c.c
 +++ b/hw/i2c/aspeed_i2c.c
-@@ -236,7 +236,7 @@ static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
-     uint32_t reg_byte_buf = aspeed_i2c_bus_byte_buf_offset(bus);
-     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
-     int pool_tx_count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
--                                                TX_COUNT);
-+                                                TX_COUNT) + 1;
+@@ -226,7 +226,7 @@ static int aspeed_i2c_dma_read(AspeedI2CBus *bus, uint8_t *data)
+     return 0;
+ }
+ 
+-static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
++static int aspeed_i2c_bus_send(AspeedI2CBus *bus)
+ {
+     AspeedI2CClass *aic = ASPEED_I2C_GET_CLASS(bus->controller);
+     int ret = -1;
+@@ -239,7 +239,7 @@ static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
+                                                 TX_COUNT) + 1;
  
      if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
-         for (i = pool_start; i < pool_tx_count; i++) {
-@@ -293,7 +293,7 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
-     uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
-     uint32_t reg_dma_addr = aspeed_i2c_bus_dma_addr_offset(bus);
-     int pool_rx_count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl,
--                                                RX_COUNT);
-+                                                RX_SIZE) + 1;
+-        for (i = pool_start; i < pool_tx_count; i++) {
++        for (i = 0; i < pool_tx_count; i++) {
+             uint8_t *pool_base = aic->bus_pool_base(bus);
  
-     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
-         uint8_t *pool_base = aic->bus_pool_base(bus);
-@@ -418,7 +418,7 @@ static void aspeed_i2c_bus_cmd_dump(AspeedI2CBus *bus)
+             trace_aspeed_i2c_bus_send("BUF", i + 1, pool_tx_count,
+@@ -273,7 +273,7 @@ static int aspeed_i2c_bus_send(AspeedI2CBus *bus, uint8_t pool_start)
+         }
+         SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, TX_DMA_EN, 0);
+     } else {
+-        trace_aspeed_i2c_bus_send("BYTE", pool_start, 1,
++        trace_aspeed_i2c_bus_send("BYTE", 0, 1,
+                                   bus->regs[reg_byte_buf]);
+         ret = i2c_send(bus->bus, bus->regs[reg_byte_buf]);
+     }
+@@ -446,10 +446,8 @@ static void aspeed_i2c_bus_cmd_dump(AspeedI2CBus *bus)
+  */
+ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
+ {
+-    uint8_t pool_start = 0;
      uint32_t reg_intr_sts = aspeed_i2c_bus_intr_sts_offset(bus);
+     uint32_t reg_cmd = aspeed_i2c_bus_cmd_offset(bus);
+-    uint32_t reg_pool_ctrl = aspeed_i2c_bus_pool_ctrl_offset(bus);
      uint32_t reg_dma_len = aspeed_i2c_bus_dma_len_offset(bus);
-     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_BUFF_EN)) {
--        count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT);
-+        count = SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT) + 1;
-     } else if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_DMA_EN)) {
-         count = bus->regs[reg_dma_len];
-     } else { /* BYTE mode */
-@@ -490,7 +490,7 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
-          */
-         if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
-             if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT)
--                == 1) {
-+                == 0) {
+ 
+     if (!aspeed_i2c_check_sram(bus)) {
+@@ -483,27 +481,11 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
+ 
+         SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_START_CMD, 0);
+ 
+-        /*
+-         * The START command is also a TX command, as the slave
+-         * address is sent on the bus. Drop the TX flag if nothing
+-         * else needs to be sent in this sequence.
+-         */
+-        if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
+-            if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_pool_ctrl, TX_COUNT)
+-                == 0) {
+-                SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
+-            } else {
+-                /*
+-                 * Increase the start index in the TX pool buffer to
+-                 * skip the address byte.
+-                 */
+-                pool_start++;
+-            }
+-        } else if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_DMA_EN)) {
++        if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_DMA_EN)) {
+             if (bus->regs[reg_dma_len] == 0) {
                  SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
-             } else {
-                 /*
-diff --git a/include/hw/i2c/aspeed_i2c.h b/include/hw/i2c/aspeed_i2c.h
-index 51c944efea..2e1e15aaf0 100644
---- a/include/hw/i2c/aspeed_i2c.h
-+++ b/include/hw/i2c/aspeed_i2c.h
-@@ -139,9 +139,9 @@ REG32(I2CD_CMD, 0x14) /* I2CD Command/Status */
- REG32(I2CD_DEV_ADDR, 0x18) /* Slave Device Address */
-     SHARED_FIELD(SLAVE_DEV_ADDR1, 0, 7)
- REG32(I2CD_POOL_CTRL, 0x1C) /* Pool Buffer Control */
--    SHARED_FIELD(RX_COUNT, 24, 5)
-+    SHARED_FIELD(RX_COUNT, 24, 6)
-     SHARED_FIELD(RX_SIZE, 16, 5)
--    SHARED_FIELD(TX_COUNT, 9, 5)
-+    SHARED_FIELD(TX_COUNT, 8, 5)
-     FIELD(I2CD_POOL_CTRL, OFFSET, 2, 6) /* AST2400 */
- REG32(I2CD_BYTE_BUF, 0x20) /* Transmit/Receive Byte Buffer */
-     SHARED_FIELD(RX_BUF, 8, 8)
+             }
+-        } else {
++        } else if (!SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, TX_BUFF_EN)) {
+             SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, M_TX_CMD, 0);
+         }
+ 
+@@ -520,7 +502,7 @@ static void aspeed_i2c_bus_handle_cmd(AspeedI2CBus *bus, uint64_t value)
+ 
+     if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, M_TX_CMD)) {
+         aspeed_i2c_set_state(bus, I2CD_MTXD);
+-        if (aspeed_i2c_bus_send(bus, pool_start)) {
++        if (aspeed_i2c_bus_send(bus)) {
+             SHARED_ARRAY_FIELD_DP32(bus->regs, reg_intr_sts, TX_NAK, 1);
+             i2c_end_transfer(bus->bus);
+         } else {
 -- 
 2.39.2
 
