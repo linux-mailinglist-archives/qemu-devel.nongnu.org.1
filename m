@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34194799734
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 11:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DF8799732
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 11:51:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeual-0005n3-Jr; Sat, 09 Sep 2023 05:49:27 -0400
+	id 1qeuaz-00068m-Gm; Sat, 09 Sep 2023 05:49:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeuaj-0005mq-IZ
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:25 -0400
+ id 1qeuax-0005y7-GQ
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:39 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeuag-0005K6-P6
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:25 -0400
+ id 1qeuau-0005Kb-Vi
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=sXgONcpkbJf+3nwTqZ6RrBzKyumNh6iECMeRCKHdZ2k=; b=oL95qk7naU3QVWHQMefSteQfKv
- iKWMFuTWadcyveyj2ipVVaLRi0k9moS20B0jyd8nDJ/uTtbW/nE6aiCuRdxxvQDmXUbTOCvcbSOf/
- DddYLX0sXgmqwToxv8CwAiH9t4xbQu9ywPvcJcdD25w/95hCrH5YnUQLvlcVcRlTRXYaww3CTbpmb
- p+JAKIWrQX6l0VKeVfLmccygfetUV+ekyC2e7FGfJWY8X5rZ6gkHBiwniOaM4FFBJh7qDKOW1SyUH
- FGVAwPCtX7eD8qXQkxFzYy9wzWF3CXRpGwuIlE0l2CRG2/rVb91tGwbZse4G/Rvv5X/hr8CCg+2G3
- OATIYmV749JQuxomo09ryl9diCJZKbDGAMQJS5OAXa++DtGXuAoOCw+YOXAlqJrn+1Zxfz3Jb7aOz
- h1rGshsDbowGP3LHMUo+Ws9LtMa2ljPgfQc3TDGthhiSt2KJp1QDSfFe/Xe2pfFFkgm+xJizFzVcc
- 4Y0PU4x2FhSnWVf3Dbxps7yftog6bdBUvgpr4vIMmsWy11hBzLEGqvUTBPBxb0VFWNzhL0oUuJR/x
- axzgUHbPA5LqgRy58ujFXmqBE/yILMViPaeJYLtHfYRi76WwPs/SIR+EZAUSmZhm2n+2K+VaHaJwc
- 4kv9OIOIX8cwL09OCVu/VwdlBbPFXS7qBFGvI3Oyw=;
+ bh=PbbJNixc7/YpuK3MOJAtcZwfyFwpenlFXocTtp67rTc=; b=pAZ+zwitOE1Qf3KMz/XTLKPgvo
+ OkdqPFj4M1hDJ8LxlwFQcMXeEVEUgn+DG486Z7PxY412vSFf13923qENUhdPw2N1r9Q0TS0tGBkrM
+ tZdCrn7nG+5t34WdpRXVf0bBSy72HRx6u6RbS+fTIZPeJkyyxyeptM9MO51WOqBnRUS9O6SnZh3/k
+ DweIGvuq+xGoubsFHSMSY+5xm4IH/duLYGmuuKJQsQRVFLRi4biljaNX3QkNlu1hwNHsBnFmjmx6T
+ y/w9XMHinRH3CLILS99iMaUXgAWKGtP5Y3cM7qiC2Fn4CQLZRdgmumuFwqMTGgKcuhSVyK3QCj69N
+ jz9ePmDl5NDU74BRnrchnzjdHQoMx+9xHgjgiBGHIcrBfDO5pXShk3+YMn1WA7jgLg84PnXdXS0XI
+ jone0ih/zsQonk0reIfv0uLSqg/g9OsAvvDLcauTk+GLwXhbuIi7l3A7RseVqfvpUxaOZL8xY3o62
+ gdrEJNLZqRgH9khp8hVKdBTO+6/R6w14T8TI2WBFy1SnsXo4PBBvFxVcu4ZzRU+XML2MFOJpOHp0X
+ raqm9XWapAdZFUBMtSu+DshU4S7CdYsXV2vc3s6ySxlJgb11+xOGKZENhON0JrlbE6mDL7mI1kMar
+ 5HnX5y1Aalz78BHgoiCtp5sZGePrldbl5dZRP4fi8=;
 Received: from [2a00:23c4:8baf:5f00:e007:7058:31bc:5be9]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeuaa-0000uO-LU; Sat, 09 Sep 2023 10:49:20 +0100
+ id 1qeuae-0000uO-Ro; Sat, 09 Sep 2023 10:49:24 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sat,  9 Sep 2023 10:48:20 +0100
-Message-Id: <20230909094827.33871-14-mark.cave-ayland@ilande.co.uk>
+Date: Sat,  9 Sep 2023 10:48:21 +0100
+Message-Id: <20230909094827.33871-15-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
 References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
@@ -51,7 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:e007:7058:31bc:5be9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 13/20] swim: update IWM/ISM register block decoding
+Subject: [PATCH v2 14/20] mac_via: work around underflow in TimeDBRA timing
+ loop in SETUPTIMEK
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -77,373 +78,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the IWM/ISM register block decoding to match the description given in the
-"SWIM Chip Users Reference". This allows us to validate the device response to
-the guest OS which currently only does just enough to indicate that the floppy
-drive is unavailable.
+The MacOS toolbox ROM calculates the number of branches that can be executed
+per millisecond as part of its timer calibration. Since modern hosts are
+considerably quicker than original hardware, the negative counter reaches zero
+before the calibration completes leading to division by zero later in
+CALCULATESLOD.
+
+Instead of trying to fudge the timing loop (which won't work for TimeDBRA/TimeSCCDB
+anyhow), use the pattern of access to the VIA1 registers to detect when SETUPTIMEK
+has finished executing and write some well-known good timer values to TimeDBRA
+and TimeSCCDB taken from real hardware with a suitable scaling factor.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/block/swim.c         | 212 +++++++++++++++++++++++++---------------
- hw/block/trace-events   |   7 +-
- include/hw/block/swim.h |   8 +-
- 3 files changed, 143 insertions(+), 84 deletions(-)
+ hw/misc/mac_via.c         | 115 ++++++++++++++++++++++++++++++++++++++
+ hw/misc/trace-events      |   1 +
+ include/hw/misc/mac_via.h |   3 +
+ 3 files changed, 119 insertions(+)
 
-diff --git a/hw/block/swim.c b/hw/block/swim.c
-index 735b335883..fd65c59f8a 100644
---- a/hw/block/swim.c
-+++ b/hw/block/swim.c
-@@ -21,24 +21,28 @@
- #include "hw/qdev-properties.h"
- #include "trace.h"
+diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
+index baeb73eeb3..766a32a95d 100644
+--- a/hw/misc/mac_via.c
++++ b/hw/misc/mac_via.c
+@@ -16,6 +16,7 @@
+  */
  
-+
-+/* IWM latch bits */
-+
-+#define IWMLB_PHASE0            0
-+#define IWMLB_PHASE1            1
-+#define IWMLB_PHASE2            2
-+#define IWMLB_PHASE3            3
-+#define IWMLB_MOTORON           4
-+#define IWMLB_DRIVESEL          5
-+#define IWMLB_L6                6
-+#define IWMLB_L7                7
-+
- /* IWM registers */
- 
--#define IWM_PH0L                0
--#define IWM_PH0H                1
--#define IWM_PH1L                2
--#define IWM_PH1H                3
--#define IWM_PH2L                4
--#define IWM_PH2H                5
--#define IWM_PH3L                6
--#define IWM_PH3H                7
--#define IWM_MTROFF              8
--#define IWM_MTRON               9
--#define IWM_INTDRIVE            10
--#define IWM_EXTDRIVE            11
--#define IWM_Q6L                 12
--#define IWM_Q6H                 13
--#define IWM_Q7L                 14
--#define IWM_Q7H                 15
-+#define IWM_READALLONES         0
-+#define IWM_READDATA            1
-+#define IWM_READSTATUS0         2
-+#define IWM_READSTATUS1         3
-+#define IWM_READWHANDSHAKE0     4
-+#define IWM_READWHANDSHAKE1     5
-+#define IWM_WRITESETMODE        6
-+#define IWM_WRITEDATA           7
- 
- /* SWIM registers */
- 
-@@ -62,8 +66,9 @@
- 
- #define REG_SHIFT               9
- 
--#define SWIM_MODE_IWM  0
--#define SWIM_MODE_SWIM 1
-+#define SWIM_MODE_STATUS_BIT    6
-+#define SWIM_MODE_IWM           0
-+#define SWIM_MODE_ISM           1
- 
- /* bits in phase register */
- 
-@@ -127,10 +132,8 @@
- #define SWIM_MOTON           0x80
- 
- static const char *iwm_reg_names[] = {
--    "PH0L", "PH0H", "PH1L", "PH1H",
--    "PH2L", "PH2H", "PH3L", "PH3H",
--    "MTROFF", "MTRON", "INTDRIVE", "EXTDRIVE",
--    "Q6L", "Q6H", "Q7L", "Q7H"
-+    "READALLONES", "READDATA", "READSTATUS0", "READSTATUS1",
-+    "READWHANDSHAKE0", "READWHANDSHAKE1", "WRITESETMODE", "WRITEDATA"
- };
- 
- static const char *ism_reg_names[] = {
-@@ -274,68 +277,99 @@ static const TypeInfo swim_bus_info = {
-     .instance_size = sizeof(SWIMBus),
- };
- 
--static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
-+static void iwmctrl_write(void *opaque, hwaddr addr, uint64_t value,
-                           unsigned size)
- {
-     SWIMCtrl *swimctrl = opaque;
-+    uint8_t latch, reg, ism_bit;
- 
--    reg >>= REG_SHIFT;
-+    addr >>= REG_SHIFT;
-+
-+    /* A3-A1 select a latch, A0 specifies the value */
-+    latch = (addr >> 1) & 7;
-+    if (addr & 1) {
-+        swimctrl->iwm_latches |= (1 << latch);
-+    } else {
-+        swimctrl->iwm_latches &= ~(1 << latch);
-+    }
-+
-+    reg = (swimctrl->iwm_latches & 0xc0) >> 5 |
-+          (swimctrl->iwm_latches & 0x10) >> 4;
- 
-     swimctrl->iwmregs[reg] = value;
-     trace_swim_iwmctrl_write(reg, iwm_reg_names[reg], size, value);
- 
--    if (swimctrl->iwmregs[IWM_Q7H]) {
--        if (swimctrl->iwmregs[IWM_MTRON]) {
--            /* data register */
--            swimctrl->iwm_data = value;
--        } else {
--            /* mode register */
--            swimctrl->iwm_mode = value;
--            /* detect sequence to switch from IWM mode to SWIM mode */
--            switch (swimctrl->iwm_switch) {
--            case 0:
--                if (value == 0x57) {
--                    swimctrl->iwm_switch++;
--                }
--                break;
--            case 1:
--                if (value == 0x17) {
--                    swimctrl->iwm_switch++;
--                }
--                break;
--            case 2:
--                if (value == 0x57) {
--                    swimctrl->iwm_switch++;
--                }
--                break;
--            case 3:
--                if (value == 0x57) {
--                    swimctrl->mode = SWIM_MODE_SWIM;
--                    swimctrl->iwm_switch = 0;
--                    trace_swim_iwm_switch();
--
--                    /* Switch to ISM registers */
--                    memory_region_del_subregion(&swimctrl->swim,
--                                                &swimctrl->iwm);
--                    memory_region_add_subregion(&swimctrl->swim, 0x0,
--                                                &swimctrl->ism);
--                }
--                break;
-+    switch (reg) {
-+    case IWM_WRITESETMODE:
-+        /* detect sequence to switch from IWM mode to SWIM mode */
-+        ism_bit = (value & (1 << SWIM_MODE_STATUS_BIT));
-+
-+        switch (swimctrl->iwm_switch) {
-+        case 0:
-+            if (ism_bit) {    /* 1 */
-+                swimctrl->iwm_switch++;
-+            }
-+            break;
-+        case 1:
-+            if (!ism_bit) {   /* 0 */
-+                swimctrl->iwm_switch++;
-+            }
-+            break;
-+        case 2:
-+            if (ism_bit) {    /* 1 */
-+                swimctrl->iwm_switch++;
-             }
-+            break;
-+        case 3:
-+            if (ism_bit) {    /* 1 */
-+                swimctrl->iwm_switch++;
-+
-+                swimctrl->mode = SWIM_MODE_ISM;
-+                swimctrl->swim_mode |= (1 << SWIM_MODE_STATUS_BIT);
-+                swimctrl->iwm_switch = 0;
-+                trace_swim_switch_to_ism();
-+
-+                /* Switch to ISM registers */
-+                memory_region_del_subregion(&swimctrl->swim, &swimctrl->iwm);
-+                memory_region_add_subregion(&swimctrl->swim, 0x0,
-+                                            &swimctrl->ism);
-+            }
-+            break;
-         }
-+        break;
-+    default:
-+        break;
+ #include "qemu/osdep.h"
++#include "exec/address-spaces.h"
+ #include "migration/vmstate.h"
+ #include "hw/sysbus.h"
+ #include "hw/irq.h"
+@@ -871,6 +872,112 @@ static void via1_auxmode_update(MOS6522Q800VIA1State *v1s)
      }
  }
  
--static uint64_t iwmctrl_read(void *opaque, hwaddr reg, unsigned size)
-+static uint64_t iwmctrl_read(void *opaque, hwaddr addr, unsigned size)
- {
-     SWIMCtrl *swimctrl = opaque;
--    uint16_t value;
-+    uint8_t latch, reg, value;
- 
--    reg >>= REG_SHIFT;
-+    addr >>= REG_SHIFT;
- 
--    value = swimctrl->iwmregs[reg];
--    trace_swim_iwmctrl_read(reg, iwm_reg_names[reg], size, value);
-+    /* A3-A1 select a latch, A0 specifies the value */
-+    latch = (addr >> 1) & 7;
-+    if (addr & 1) {
-+        swimctrl->iwm_latches |= (1 << latch);
-+    } else {
-+        swimctrl->iwm_latches &= ~(1 << latch);
-+    }
++/*
++ * Addresses and real values for TimeDBRA/TimeSCCB to allow timer calibration
++ * to succeed (NOTE: both values have been multiplied by 3 to cope with the
++ * speed of QEMU execution on a modern host
++ */
++#define MACOS_TIMEDBRA        0xd00
++#define MACOS_TIMESCCB        0xd02
 +
-+    reg = (swimctrl->iwm_latches & 0xc0) >> 5 |
-+          (swimctrl->iwm_latches & 0x10) >> 4;
++#define MACOS_TIMEDBRA_VALUE  (0x2a00 * 3)
++#define MACOS_TIMESCCB_VALUE  (0x079d * 3)
 +
-+    switch (reg) {
-+    case IWM_READALLONES:
-+        value = 0xff;
-+        break;
-+    default:
-+        value = 0;
-+        break;
-+    }
- 
-+    trace_swim_iwmctrl_read(reg, iwm_reg_names[reg], size, value);
-     return value;
- }
- 
-@@ -352,7 +386,7 @@ static void ismctrl_write(void *opaque, hwaddr reg, uint64_t value,
- 
-     reg >>= REG_SHIFT;
- 
--    trace_swim_swimctrl_write(reg, ism_reg_names[reg], size, value);
-+    trace_swim_ismctrl_write(reg, ism_reg_names[reg], size, value);
- 
-     switch (reg) {
-     case SWIM_WRITE_PHASE:
-@@ -360,14 +394,31 @@ static void ismctrl_write(void *opaque, hwaddr reg, uint64_t value,
-         break;
-     case SWIM_WRITE_MODE0:
-         swimctrl->swim_mode &= ~value;
-+        /* Any access to MODE0 register resets PRAM index */
-+        swimctrl->pram_idx = 0;
++static bool via1_is_toolbox_timer_calibrated(void)
++{
++    /*
++     * Indicate whether the MacOS toolbox has been calibrated by checking
++     * for the value of our magic constants
++     */
++    uint16_t timedbra = lduw_be_phys(&address_space_memory, MACOS_TIMEDBRA);
++    uint16_t timesccdb = lduw_be_phys(&address_space_memory, MACOS_TIMESCCB);
 +
-+        if (!(swimctrl->swim_mode & (1 << SWIM_MODE_STATUS_BIT))) {
-+            /* Clearing the mode bit switches to IWM mode */
-+            swimctrl->mode = SWIM_MODE_IWM;
-+            swimctrl->iwm_latches = 0;
-+            trace_swim_switch_to_iwm();
++    return (timedbra == MACOS_TIMEDBRA_VALUE &&
++            timesccdb == MACOS_TIMESCCB_VALUE);
++}
 +
-+            /* Switch to IWM registers */
-+            memory_region_del_subregion(&swimctrl->swim, &swimctrl->ism);
-+            memory_region_add_subregion(&swimctrl->swim, 0x0,
-+                                        &swimctrl->iwm);
-+        }
-         break;
-     case SWIM_WRITE_MODE1:
-         swimctrl->swim_mode |= value;
-         break;
-+    case SWIM_WRITE_PARAMETER:
-+        swimctrl->pram[swimctrl->pram_idx++] = value;
-+        swimctrl->pram_idx &= 0xf;
-+        break;
-     case SWIM_WRITE_DATA:
-     case SWIM_WRITE_MARK:
-     case SWIM_WRITE_CRC:
--    case SWIM_WRITE_PARAMETER:
-     case SWIM_WRITE_SETUP:
-         break;
-     }
-@@ -390,16 +441,24 @@ static uint64_t ismctrl_read(void *opaque, hwaddr reg, unsigned size)
-             value = SWIM_SENSE;
-         }
-         break;
-+    case SWIM_READ_PARAMETER:
-+        value = swimctrl->pram[swimctrl->pram_idx++];
-+        swimctrl->pram_idx &= 0xf;
-+        break;
-+    case SWIM_READ_STATUS:
-+        value = swimctrl->swim_status & ~(1 << SWIM_MODE_STATUS_BIT);
-+        if (swimctrl->swim_mode == SWIM_MODE_ISM) {
-+            value |= (1 << SWIM_MODE_STATUS_BIT);
++static void via1_timer_calibration_hack(MOS6522Q800VIA1State *v1s, int addr,
++                                        uint64_t val, int size)
++{
++    /*
++     * Work around timer calibration to ensure we that we have non-zero and
++     * known good values for TIMEDRBA and TIMESCCDB.
++     *
++     * This works by attempting to detect the reset and calibration sequence
++     * of writes to VIA1
++     */
++    int old_timer_hack_state = v1s->timer_hack_state;
++
++    switch (v1s->timer_hack_state) {
++    case 0:
++        if (addr == VIA_REG_PCR && val == 0x22) {
++            /* VIA_REG_PCR: configure VIA1 edge triggering */
++            v1s->timer_hack_state = 1;
 +        }
 +        break;
-     case SWIM_READ_DATA:
-     case SWIM_READ_MARK:
-     case SWIM_READ_ERROR:
--    case SWIM_READ_PARAMETER:
-     case SWIM_READ_SETUP:
--    case SWIM_READ_STATUS:
-         break;
-     }
++    case 1:
++        if (addr == VIA_REG_T2CL && val == 0xc) {
++            /* VIA_REG_T2CL: low byte of 1ms counter */
++            if (!via1_is_toolbox_timer_calibrated()) {
++                v1s->timer_hack_state = 2;
++            } else {
++                v1s->timer_hack_state = 0;
++            }
++        }
++        break;
++    case 2:
++        if (addr == VIA_REG_T2CH && val == 0x3) {
++            /*
++             * VIA_REG_T2CH: high byte of 1ms counter (very likely at the
++             * start of SETUPTIMEK)
++             */
++            if (!via1_is_toolbox_timer_calibrated()) {
++                v1s->timer_hack_state = 3;
++            } else {
++                v1s->timer_hack_state = 0;
++            }
++        }
++        break;
++    case 3:
++        if (addr == VIA_REG_IER && val == 0x20) {
++            /*
++             * VIA_REG_IER: update at end of SETUPTIMEK
++             *
++             * Timer calibration has finished: unfortunately the values in
++             * TIMEDBRA (0xd00) and TIMESCCDB (0xd02) are so far out they
++             * cause divide by zero errors.
++             *
++             * Update them with values obtained from a real Q800 but with
++             * a x3 scaling factor which seems to work well
++             */
++            stw_be_phys(&address_space_memory, MACOS_TIMEDBRA,
++                        MACOS_TIMEDBRA_VALUE);
++            stw_be_phys(&address_space_memory, MACOS_TIMESCCB,
++                        MACOS_TIMESCCB_VALUE);
++
++            v1s->timer_hack_state = 4;
++        }
++        break;
++    case 4:
++        /*
++         * This is the normal post-calibration timer state: we should
++         * generally remain here unless we detect the A/UX calibration
++         * loop, or a write to VIA_REG_PCR suggesting a reset
++         */
++        if (addr == VIA_REG_PCR && val == 0x22) {
++            /* Looks like there has been a reset? */
++            v1s->timer_hack_state = 1;
++        }
++        break;
++    default:
++        g_assert_not_reached();
++    }
++
++    if (old_timer_hack_state != v1s->timer_hack_state) {
++        trace_via1_timer_hack_state(v1s->timer_hack_state);
++    }
++}
++
+ static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
+ {
+     MOS6522Q800VIA1State *s = MOS6522_Q800_VIA1(opaque);
+@@ -896,6 +1003,9 @@ static void mos6522_q800_via1_write(void *opaque, hwaddr addr, uint64_t val,
+     MOS6522State *ms = MOS6522(v1s);
  
--    trace_swim_swimctrl_read(reg, ism_reg_names[reg], size, value);
-+    trace_swim_ismctrl_read(reg, ism_reg_names[reg], size, value);
-     return value;
+     addr = (addr >> 9) & 0xf;
++
++    via1_timer_calibration_hack(v1s, addr, val, size);
++
+     mos6522_write(ms, addr, val, size);
+ 
+     switch (addr) {
+@@ -1008,6 +1118,9 @@ static void mos6522_q800_via1_reset_hold(Object *obj)
+     adb_set_autopoll_enabled(adb_bus, true);
+     v1s->cmd = REG_EMPTY;
+     v1s->alt = REG_EMPTY;
++
++    /* Timer calibration hack */
++    v1s->timer_hack_state = 0;
  }
  
-@@ -417,13 +476,11 @@ static void sysbus_swim_reset(DeviceState *d)
- 
-     ctrl->mode = 0;
-     ctrl->iwm_switch = 0;
--    ctrl->iwm_data = 0;
--    ctrl->iwm_mode = 0;
--    memset(ctrl->iwmregs, 0, 16);
-+    memset(ctrl->iwmregs, 0, sizeof(ctrl->iwmregs));
- 
-     ctrl->swim_phase = 0;
-     ctrl->swim_mode = 0;
--    memset(ctrl->ismregs, 0, 16);
-+    memset(ctrl->ismregs, 0, sizeof(ctrl->ismregs));
-     for (i = 0; i < SWIM_MAX_FD; i++) {
-         fd_recalibrate(&ctrl->drives[i]);
+ static void mos6522_q800_via1_realize(DeviceState *dev, Error **errp)
+@@ -1100,6 +1213,8 @@ static const VMStateDescription vmstate_q800_via1 = {
+         VMSTATE_INT64(next_second, MOS6522Q800VIA1State),
+         VMSTATE_TIMER_PTR(sixty_hz_timer, MOS6522Q800VIA1State),
+         VMSTATE_INT64(next_sixty_hz, MOS6522Q800VIA1State),
++        /* Timer hack */
++        VMSTATE_INT32(timer_hack_state, MOS6522Q800VIA1State),
+         VMSTATE_END_OF_LIST()
      }
-@@ -472,9 +529,8 @@ static const VMStateDescription vmstate_swim = {
-         VMSTATE_INT32(mode, SWIMCtrl),
-         /* IWM mode */
-         VMSTATE_INT32(iwm_switch, SWIMCtrl),
--        VMSTATE_UINT8_ARRAY(iwmregs, SWIMCtrl, 16),
--        VMSTATE_UINT8(iwm_data, SWIMCtrl),
--        VMSTATE_UINT8(iwm_mode, SWIMCtrl),
-+        VMSTATE_UINT8(iwm_latches, SWIMCtrl),
-+        VMSTATE_UINT8_ARRAY(iwmregs, SWIMCtrl, 8),
-         /* SWIM mode */
-         VMSTATE_UINT8_ARRAY(ismregs, SWIMCtrl, 16),
-         VMSTATE_UINT8(swim_phase, SWIMCtrl),
-diff --git a/hw/block/trace-events b/hw/block/trace-events
-index ea84ad6c77..bab21d3a1c 100644
---- a/hw/block/trace-events
-+++ b/hw/block/trace-events
-@@ -92,8 +92,9 @@ m25p80_binding(void *s) "[%p] Binding to IF_MTD drive"
- m25p80_binding_no_bdrv(void *s) "[%p] No BDRV - binding to RAM"
- 
- # swim.c
--swim_swimctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
--swim_swimctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-+swim_ismctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
-+swim_ismctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
- swim_iwmctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
- swim_iwmctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
--swim_iwm_switch(void) "switch from IWM to SWIM mode"
-+swim_switch_to_ism(void) "switch from IWM to ISM mode"
-+swim_switch_to_iwm(void) "switch from ISM to IWM mode"
-diff --git a/include/hw/block/swim.h b/include/hw/block/swim.h
-index 1bc7635d02..5f567e8d59 100644
---- a/include/hw/block/swim.h
-+++ b/include/hw/block/swim.h
-@@ -50,13 +50,15 @@ struct SWIMCtrl {
-     int mode;
-     /* IWM mode */
-     int iwm_switch;
--    uint8_t iwmregs[16];
--    uint8_t iwm_data;
--    uint8_t iwm_mode;
-+    uint8_t iwm_latches;
-+    uint8_t iwmregs[8];
-     /* SWIM mode */
-     uint8_t ismregs[16];
-     uint8_t swim_phase;
-     uint8_t swim_mode;
-+    uint8_t swim_status;
-+    uint8_t pram[16];
-+    uint8_t pram_idx;
-     SWIMBus bus;
  };
+diff --git a/hw/misc/trace-events b/hw/misc/trace-events
+index c9bdb0d30e..0c9762fdf6 100644
+--- a/hw/misc/trace-events
++++ b/hw/misc/trace-events
+@@ -272,6 +272,7 @@ via1_adb_send(const char *state, uint8_t data, const char *vadbint) "state %s da
+ via1_adb_receive(const char *state, uint8_t data, const char *vadbint, int status, int index, int size) "state %s data=0x%02x vADBInt=%s status=0x%x index=%d size=%d"
+ via1_adb_poll(uint8_t data, const char *vadbint, int status, int index, int size) "data=0x%02x vADBInt=%s status=0x%x index=%d size=%d"
+ via1_auxmode(int mode) "setting auxmode to %d"
++via1_timer_hack_state(int state) "setting timer_hack_state to %d"
+ 
+ # grlib_ahb_apb_pnp.c
+ grlib_ahb_pnp_read(uint64_t addr, unsigned size, uint32_t value) "AHB PnP read addr:0x%03"PRIx64" size:%u data:0x%08x"
+diff --git a/include/hw/misc/mac_via.h b/include/hw/misc/mac_via.h
+index 422da43bf9..63cdcf7c69 100644
+--- a/include/hw/misc/mac_via.h
++++ b/include/hw/misc/mac_via.h
+@@ -74,6 +74,9 @@ struct MOS6522Q800VIA1State {
+     int64_t next_second;
+     QEMUTimer *sixty_hz_timer;
+     int64_t next_sixty_hz;
++
++    /* SETUPTIMEK hack */
++    int timer_hack_state;
+ };
+ 
  
 -- 
 2.39.2
