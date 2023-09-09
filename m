@@ -2,40 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACFA79989D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C98799859
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:08:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexcr-0005zH-5N; Sat, 09 Sep 2023 09:03:49 -0400
+	id 1qexcs-00065L-HL; Sat, 09 Sep 2023 09:03:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexcd-0005l1-MN; Sat, 09 Sep 2023 09:03:38 -0400
+ id 1qexcg-0005lI-Vl; Sat, 09 Sep 2023 09:03:40 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexca-000308-ME; Sat, 09 Sep 2023 09:03:35 -0400
+ id 1qexcd-00030a-Nw; Sat, 09 Sep 2023 09:03:38 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 04A69205B1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2F4C6205B2;
  Sat,  9 Sep 2023 16:01:20 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CA98B26E17;
+ by tsrv.corpit.ru (Postfix) with SMTP id 014C126E18;
  Sat,  9 Sep 2023 16:00:28 +0300 (MSK)
-Received: (nullmailer pid 353160 invoked by uid 1000);
- Sat, 09 Sep 2023 13:00:22 -0000
+Received: (nullmailer pid 353163 invoked by uid 1000);
+ Sat, 09 Sep 2023 13:00:23 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Niklas Cassel <niklas.cassel@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 35/43] hw/ide/ahci: PxCI should not get cleared when
- ERR_STAT is set
-Date: Sat,  9 Sep 2023 16:00:01 +0300
-Message-Id: <20230909130020.352951-35-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 36/43] hw/ide/ahci: fix ahci_write_fis_sdb()
+Date: Sat,  9 Sep 2023 16:00:02 +0300
+Message-Id: <20230909130020.352951-36-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,237 +62,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-For NCQ, PxCI is cleared on command queued successfully.
-For non-NCQ, PxCI is cleared on command completed successfully.
-Successfully means ERR_STAT, BUSY and DRQ are all cleared.
+When there is an error, we need to raise a TFES error irq, see AHCI 1.3.1,
+5.3.13.1 SDB:Entry.
 
-A command that has ERR_STAT set, does not get to clear PxCI.
-See AHCI 1.3.1, section 5.3.8, states RegFIS:Entry and RegFIS:ClearCI,
-and 5.3.16.5 ERR:FatalTaskfile.
+If ERR_STAT is set, we jump to state ERR:FatalTaskfile, which will raise
+a TFES IRQ unconditionally, regardless if the I bit is set in the FIS or
+not.
 
-In the case of non-NCQ commands, not clearing PxCI is needed in order
-for host software to be able to see which command slot that failed.
+Thus, we should never raise a normal IRQ after having sent an error IRQ.
+
+It is valid to signal successfully completed commands as finished in the
+same SDB FIS that generates the error IRQ. The important thing is that
+commands that did not complete successfully (e.g. commands that were
+aborted, do not get the finished bit set).
+
+Before this commit, there was never a TFES IRQ raised on NCQ error.
 
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Message-id: 20230609140844.202795-7-nks@flawful.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230609140844.202795-8-nks@flawful.org
 Signed-off-by: John Snow <jsnow@redhat.com>
-(cherry picked from commit 1a16ce64fda11bdf50f0c4ab5d9fdde72c1383a2)
+(cherry picked from commit 7e85cb0db4c693b4e084a00e66fe73a22ed1688a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Mjt: fix context in hw/ide/ahci.c for f63192b0544af5 (qemu_bh_new_guarded)
 
 diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index 739cd943e8..8af91d97a2 100644
+index 8af91d97a2..28a6f59c95 100644
 --- a/hw/ide/ahci.c
 +++ b/hw/ide/ahci.c
-@@ -1523,7 +1523,8 @@ static void ahci_clear_cmd_issue(AHCIDevice *ad, uint8_t slot)
- {
-     IDEState *ide_state = &ad->port.ifs[0];
+@@ -806,8 +806,14 @@ static void ahci_write_fis_sdb(AHCIState *s, NCQTransferState *ncq_tfs)
+     pr->scr_act &= ~ad->finished;
+     ad->finished = 0;
  
--    if (!(ide_state->status & (BUSY_STAT | DRQ_STAT))) {
-+    if (!(ide_state->status & ERR_STAT) &&
-+        !(ide_state->status & (BUSY_STAT | DRQ_STAT))) {
-         ad->port_regs.cmd_issue &= ~(1 << slot);
+-    /* Trigger IRQ if interrupt bit is set (which currently, it always is) */
+-    if (sdb_fis->flags & 0x40) {
++    /*
++     * TFES IRQ is always raised if ERR_STAT is set, regardless of I bit.
++     * If ERR_STAT is not set, trigger SDBS IRQ if interrupt bit is set
++     * (which currently, it always is).
++     */
++    if (sdb_fis->status & ERR_STAT) {
++        ahci_trigger_irq(s, ad, AHCI_PORT_IRQ_BIT_TFES);
++    } else if (sdb_fis->flags & 0x40) {
+         ahci_trigger_irq(s, ad, AHCI_PORT_IRQ_BIT_SDBS);
      }
  }
-@@ -1532,6 +1533,7 @@ static void ahci_clear_cmd_issue(AHCIDevice *ad, uint8_t slot)
- static void ahci_cmd_done(const IDEDMA *dma)
- {
-     AHCIDevice *ad = DO_UPCAST(AHCIDevice, dma, dma);
-+    IDEState *ide_state = &ad->port.ifs[0];
- 
-     trace_ahci_cmd_done(ad->hba, ad->port_no);
- 
-@@ -1548,7 +1550,8 @@ static void ahci_cmd_done(const IDEDMA *dma)
-      */
-     ahci_write_fis_d2h(ad, true);
- 
--    if (ad->port_regs.cmd_issue && !ad->check_bh) {
-+    if (!(ide_state->status & ERR_STAT) &&
-+        ad->port_regs.cmd_issue && !ad->check_bh) {
-         ad->check_bh = qemu_bh_new(ahci_check_cmd_bh, ad);
-         qemu_bh_schedule(ad->check_bh);
-     }
-diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
-index f53f12aa99..a2c94c6e06 100644
---- a/tests/qtest/libqos/ahci.c
-+++ b/tests/qtest/libqos/ahci.c
-@@ -404,57 +404,110 @@ void ahci_port_clear(AHCIQState *ahci, uint8_t port)
- /**
-  * Check a port for errors.
-  */
--void ahci_port_check_error(AHCIQState *ahci, uint8_t port,
--                           uint32_t imask, uint8_t emask)
-+void ahci_port_check_error(AHCIQState *ahci, AHCICommand *cmd)
- {
-+    uint8_t port = cmd->port;
-     uint32_t reg;
- 
--    /* The upper 9 bits of the IS register all indicate errors. */
--    reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
--    reg &= ~imask;
--    reg >>= 23;
--    g_assert_cmphex(reg, ==, 0);
-+    /* If expecting TF error, ensure that TFES is set. */
-+    if (cmd->errors) {
-+        reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
-+        ASSERT_BIT_SET(reg, AHCI_PX_IS_TFES);
-+    } else {
-+        /* The upper 9 bits of the IS register all indicate errors. */
-+        reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
-+        reg &= ~cmd->interrupts;
-+        reg >>= 23;
-+        g_assert_cmphex(reg, ==, 0);
-+    }
- 
--    /* The Sata Error Register should be empty. */
-+    /* The Sata Error Register should be empty, even when expecting TF error. */
-     reg = ahci_px_rreg(ahci, port, AHCI_PX_SERR);
-     g_assert_cmphex(reg, ==, 0);
- 
-+    /* If expecting TF error, and TFES was set, perform error recovery
-+     * (see AHCI 1.3 section 6.2.2.1) such that we can send new commands. */
-+    if (cmd->errors) {
-+        /* This will clear PxCI. */
-+        ahci_px_clr(ahci, port, AHCI_PX_CMD, AHCI_PX_CMD_ST);
-+
-+        /* The port has 500ms to disengage. */
-+        usleep(500000);
-+        reg = ahci_px_rreg(ahci, port, AHCI_PX_CMD);
-+        ASSERT_BIT_CLEAR(reg, AHCI_PX_CMD_CR);
-+
-+        /* Clear PxIS. */
-+        reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
-+        ahci_px_wreg(ahci, port, AHCI_PX_IS, reg);
-+
-+        /* Check if we need to perform a COMRESET.
-+         * Not implemented right now, as there is no reason why our QEMU model
-+         * should need a COMRESET when expecting TF error. */
-+        reg = ahci_px_rreg(ahci, port, AHCI_PX_TFD);
-+        ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_STS_BSY | AHCI_PX_TFD_STS_DRQ);
-+
-+        /* Enable issuing new commands. */
-+        ahci_px_set(ahci, port, AHCI_PX_CMD, AHCI_PX_CMD_ST);
-+    }
-+
-     /* The TFD also has two error sections. */
-     reg = ahci_px_rreg(ahci, port, AHCI_PX_TFD);
--    if (!emask) {
-+    if (!cmd->errors) {
-         ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_STS_ERR);
-     } else {
-         ASSERT_BIT_SET(reg, AHCI_PX_TFD_STS_ERR);
-     }
--    ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_ERR & (~emask << 8));
--    ASSERT_BIT_SET(reg, AHCI_PX_TFD_ERR & (emask << 8));
-+    ASSERT_BIT_CLEAR(reg, AHCI_PX_TFD_ERR & (~cmd->errors << 8));
-+    ASSERT_BIT_SET(reg, AHCI_PX_TFD_ERR & (cmd->errors << 8));
- }
- 
--void ahci_port_check_interrupts(AHCIQState *ahci, uint8_t port,
--                                uint32_t intr_mask)
-+void ahci_port_check_interrupts(AHCIQState *ahci, AHCICommand *cmd)
- {
-+    uint8_t port = cmd->port;
-     uint32_t reg;
- 
-+    /* If we expect errors, error handling in ahci_port_check_error() will
-+     * already have cleared PxIS, so in that case this function cannot verify
-+     * and clear expected interrupts. */
-+    if (cmd->errors) {
-+        return;
-+    }
-+
-     /* Check for expected interrupts */
-     reg = ahci_px_rreg(ahci, port, AHCI_PX_IS);
--    ASSERT_BIT_SET(reg, intr_mask);
-+    ASSERT_BIT_SET(reg, cmd->interrupts);
- 
-     /* Clear expected interrupts and assert all interrupts now cleared. */
--    ahci_px_wreg(ahci, port, AHCI_PX_IS, intr_mask);
-+    ahci_px_wreg(ahci, port, AHCI_PX_IS, cmd->interrupts);
-     g_assert_cmphex(ahci_px_rreg(ahci, port, AHCI_PX_IS), ==, 0);
- }
- 
--void ahci_port_check_nonbusy(AHCIQState *ahci, uint8_t port, uint8_t slot)
-+void ahci_port_check_nonbusy(AHCIQState *ahci, AHCICommand *cmd)
- {
-+    uint8_t slot = cmd->slot;
-+    uint8_t port = cmd->port;
-     uint32_t reg;
- 
--    /* Assert that the command slot is no longer busy (NCQ) */
-+    /* For NCQ command with error PxSACT bit should still be set.
-+     * For NCQ command without error, PxSACT bit should be cleared.
-+     * For non-NCQ command, PxSACT bit should always be cleared. */
-     reg = ahci_px_rreg(ahci, port, AHCI_PX_SACT);
--    ASSERT_BIT_CLEAR(reg, (1 << slot));
-+    if (cmd->props->ncq && cmd->errors) {
-+        ASSERT_BIT_SET(reg, (1 << slot));
-+    } else {
-+        ASSERT_BIT_CLEAR(reg, (1 << slot));
-+    }
- 
--    /* Non-NCQ */
-+    /* For non-NCQ command with error, PxCI bit should still be set.
-+     * For non-NCQ command without error, PxCI bit should be cleared.
-+     * For NCQ command without error, PxCI bit should be cleared.
-+     * For NCQ command with error, PxCI bit may or may not be cleared. */
-     reg = ahci_px_rreg(ahci, port, AHCI_PX_CI);
--    ASSERT_BIT_CLEAR(reg, (1 << slot));
-+    if (!cmd->props->ncq && cmd->errors) {
-+        ASSERT_BIT_SET(reg, (1 << slot));
-+    } else if (!cmd->errors) {
-+        ASSERT_BIT_CLEAR(reg, (1 << slot));
-+    }
- 
-     /* And assert that we are generally not busy. */
-     reg = ahci_px_rreg(ahci, port, AHCI_PX_TFD);
-@@ -1207,9 +1260,10 @@ void ahci_command_wait(AHCIQState *ahci, AHCICommand *cmd)
- 
- #define RSET(REG, MASK) (BITSET(ahci_px_rreg(ahci, cmd->port, (REG)), (MASK)))
- 
--    while (RSET(AHCI_PX_TFD, AHCI_PX_TFD_STS_BSY) ||
--           RSET(AHCI_PX_CI, 1 << cmd->slot) ||
--           (cmd->props->ncq && RSET(AHCI_PX_SACT, 1 << cmd->slot))) {
-+    while (!RSET(AHCI_PX_TFD, AHCI_PX_TFD_STS_ERR) &&
-+           (RSET(AHCI_PX_TFD, AHCI_PX_TFD_STS_BSY) ||
-+            RSET(AHCI_PX_CI, 1 << cmd->slot) ||
-+            (cmd->props->ncq && RSET(AHCI_PX_SACT, 1 << cmd->slot)))) {
-         usleep(50);
-     }
- 
-@@ -1226,9 +1280,9 @@ void ahci_command_verify(AHCIQState *ahci, AHCICommand *cmd)
-     uint8_t slot = cmd->slot;
-     uint8_t port = cmd->port;
- 
--    ahci_port_check_error(ahci, port, cmd->interrupts, cmd->errors);
--    ahci_port_check_interrupts(ahci, port, cmd->interrupts);
--    ahci_port_check_nonbusy(ahci, port, slot);
-+    ahci_port_check_nonbusy(ahci, cmd);
-+    ahci_port_check_error(ahci, cmd);
-+    ahci_port_check_interrupts(ahci, cmd);
-     ahci_port_check_cmd_sanity(ahci, cmd);
-     if (cmd->interrupts & AHCI_PX_IS_DHRS) {
-         ahci_port_check_d2h_sanity(ahci, port, slot);
-diff --git a/tests/qtest/libqos/ahci.h b/tests/qtest/libqos/ahci.h
-index 88835b6228..48017864bf 100644
---- a/tests/qtest/libqos/ahci.h
-+++ b/tests/qtest/libqos/ahci.h
-@@ -590,11 +590,9 @@ void ahci_set_command_header(AHCIQState *ahci, uint8_t port,
- void ahci_destroy_command(AHCIQState *ahci, uint8_t port, uint8_t slot);
- 
- /* AHCI sanity check routines */
--void ahci_port_check_error(AHCIQState *ahci, uint8_t port,
--                           uint32_t imask, uint8_t emask);
--void ahci_port_check_interrupts(AHCIQState *ahci, uint8_t port,
--                                uint32_t intr_mask);
--void ahci_port_check_nonbusy(AHCIQState *ahci, uint8_t port, uint8_t slot);
-+void ahci_port_check_error(AHCIQState *ahci, AHCICommand *cmd);
-+void ahci_port_check_interrupts(AHCIQState *ahci, AHCICommand *cmd);
-+void ahci_port_check_nonbusy(AHCIQState *ahci, AHCICommand *cmd);
- void ahci_port_check_d2h_sanity(AHCIQState *ahci, uint8_t port, uint8_t slot);
- void ahci_port_check_pio_sanity(AHCIQState *ahci, AHCICommand *cmd);
- void ahci_port_check_cmd_sanity(AHCIQState *ahci, AHCICommand *cmd);
 -- 
 2.39.2
 
