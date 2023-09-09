@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD54C799B48
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 23:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90A8799B6C
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 23:30:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf56O-0007RU-T0; Sat, 09 Sep 2023 17:02:48 -0400
+	id 1qf5Ve-00076d-DL; Sat, 09 Sep 2023 17:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf56N-0007RE-8b
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:02:47 -0400
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+ id 1qf5Vc-000769-3V
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:28:52 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf56K-0000kg-Us
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:02:46 -0400
-Received: by mail-pj1-x102c.google.com with SMTP id
- 98e67ed59e1d1-27178b6417fso2498258a91.0
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 14:02:44 -0700 (PDT)
+ id 1qf5VZ-0004j0-Q1
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:28:51 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1c397ed8681so4528215ad.2
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 14:28:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694293363; x=1694898163; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1694294928; x=1694899728; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5R5pWrFT1wxzaD5JeLQKHChR5m08xtEB1LYQGuFgpQQ=;
- b=chIeadMOoskk6YtVRjVMhK26CfaSC+HORkpfEgWa2H+XNbAd1SZGR/KMVHjxK24hPO
- zMBahCvitYEhcYg/4frXJK5lQFsz2/2M7CXHrGC6nhANVYVlq3z4II+8aoJz3Bytf6mC
- skFK/mC519zaj6q0uDqJC/cpgOQjgBSMsdCZskTUgEZgAR2gcN+BOVNRnpMKYqhh1esP
- YenOT1SO7qknMbvUPhpYohRsJyaaMxuVHUPVOYuwb6k/UmWxj6/KjZVn6qyj6Tn7u4td
- +cFP9ucgJI0MWJMTbS4FX1+Jm+CLdBSssrf4ehAnfObigT6LuIDYetK0ZUpkBHmHLoj4
- VDLw==
+ bh=BdIbh+YYWzBxeexxtVKKu9HRwXkba/c2g9uXv4VrUtE=;
+ b=G8vfCqWGgJEfI0rPAX5CtoRkwN4HJUpZhxg1tk+c1oKVIf10lfP7sOoiPL4ftCgyJP
+ MTvEgLc8OyzhzOmq/mbGCmBEdJnyaaBD9/V61T+KKpbUj+PBTSQW4vkhhtWHnQSzILqM
+ /abhGiB37+yXgdTkpDFNU01R3N/CG6HtiVocdNIeVnw4Nmu1cqSLRVrxDcEq3SGzym2h
+ YJcwTvTZm73vRCB7TfTt9VETv20lt6ueU3GgvqpICLVko0SZ4TiX9LGBSKat9L3geYQA
+ I5xoamuCMI3JKw9l02HycA3JrHqxfbGWFYzHJCrqc7n4dZScJeodeQspJCnzqth7q2G1
+ TGgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694293363; x=1694898163;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1694294928; x=1694899728;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5R5pWrFT1wxzaD5JeLQKHChR5m08xtEB1LYQGuFgpQQ=;
- b=b0PUWM2OL1O1zU8HKD1XBVC9H+SNqKZHx7DRQJWqb0ObWymNioBlexQKU3vqSY8ehH
- LfgWUrMhOt4OV/PMJwHIe64DWz9rEQCppqB6eRV5abx23HHBIld/e9KQKa1WT38naTsK
- 6ukx06oSXO7d4jlJU1bvu5P5D+s8N8sZSgU+DOUwtHhbM2g0ybiHkyLa/ELc0kuAU5mb
- i9nufbRP0ziBYG/4oQ+B6UD1qgl4n+aqhwvwd/PYOEGajCPw7R3HkjErNkJ9v4ERtJ3p
- kobDBArZ/RGXbmbK18sEFbFIp8AP5KghKExCYDbvM3bhEuD18f+ema3uDDS2WKi8jpCE
- kHgA==
-X-Gm-Message-State: AOJu0YwN7Sb6q5mnHqgy/eB8HJyJ8Iz49oWGcwJnSU8QGezWxB5VmnCw
- yg018lwL3yiZy6ewaGIbP5im0UfODPxD2ZnLksA=
-X-Google-Smtp-Source: AGHT+IFvP/f1jgHFOk9g3XWrvFqHATn1O4TqtPTysA96+LT+CTqdnNP72z6eGd4K9j3slS0sq5npmw==
-X-Received: by 2002:a17:90a:49c4:b0:262:f99b:a530 with SMTP id
- l4-20020a17090a49c400b00262f99ba530mr5770270pjm.34.1694293363263; 
- Sat, 09 Sep 2023 14:02:43 -0700 (PDT)
+ bh=BdIbh+YYWzBxeexxtVKKu9HRwXkba/c2g9uXv4VrUtE=;
+ b=MfYS9zTZc+mIS5slYMFTMQMaNntHXCVLzV9e7hzQpzC5Pd+o6h48nm07U9rBHY0Q/O
+ V/j1QWkLXi4zML6U9/pBoRFds6muQ2hYis6CLEpVp4+qnlPamzv7WfuwA5U1dNyWStlm
+ zw1P+zBarlJeaIyvV7MAKIXn4mDAEJ0gnXRmgn8W9y9cJzc6xo30I3Slpa2pqQv10zBK
+ DTqIkoSG2WFZ7+b32k9y+YLC+AY8mvvfu5hgWchhi/+hIuoDQZgyCyDsAFXQtfY+eO+h
+ jGWhx/tjrYJiyhF/btaAOkHHgTl9uWpmDs+GkuzD31iHLUPAY8FGg/oHdjolX5vuBZJX
+ AvVg==
+X-Gm-Message-State: AOJu0YwdrkwPNZmwwiuaTqlEGfLEFUiALpK+Z6WWF+INT5NNs70Io1rB
+ tQone/fdhe2dgFfyXzPxMxzDrQ==
+X-Google-Smtp-Source: AGHT+IFXt2gNCUwVAmXy3nOOr+mX+AbHmg7r/wzRmA4UQ0QxQAtDjlMteNZf2rjnqHuvHhUzJXpYmw==
+X-Received: by 2002:a17:902:dac3:b0:1bc:2c79:c6b6 with SMTP id
+ q3-20020a170902dac300b001bc2c79c6b6mr5586086plx.28.1694294928034; 
+ Sat, 09 Sep 2023 14:28:48 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- y15-20020a17090ad70f00b00268dac826d4sm3166927pju.0.2023.09.09.14.02.42
+ 1-20020a170902c10100b001bc2831e1a9sm3664171pli.90.2023.09.09.14.28.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 14:02:42 -0700 (PDT)
-Message-ID: <6f63bbd7-da85-fc4f-75f3-018826d28460@linaro.org>
-Date: Sat, 9 Sep 2023 14:02:40 -0700
+ Sat, 09 Sep 2023 14:28:47 -0700 (PDT)
+Message-ID: <30d59aff-54c1-9250-67c7-2e6f2d2ff320@linaro.org>
+Date: Sat, 9 Sep 2023 14:28:45 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH 00/10] plugin and tcg cleanups to cputlb.c.
+Subject: Re: [PATCH] accel/tcg: mttcg remove false-negative halted assertion
 Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Ivan Warren <ivan@vmfacility.fr>
+References: <20230829010658.8252-1-npiggin@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org
-References: <20230828185550.573653-1-richard.henderson@linaro.org>
-In-Reply-To: <20230828185550.573653-1-richard.henderson@linaro.org>
+In-Reply-To: <20230829010658.8252-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -94,41 +96,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping.  Patches 1, 6-10 still need review.
+On 8/28/23 18:06, Nicholas Piggin wrote:
+> mttcg asserts that an execution ending with EXCP_HALTED must have
+> cpu->halted. However between the event or instruction that sets
+> cpu->halted and requests exit and the assertion here, an
+> asynchronous event could clear cpu->halted.
+> 
+> This leads to crashes running AIX on ppc/pseries because it uses
+> H_CEDE/H_PROD hcalls, where H_CEDE sets self->halted = 1 and
+> H_PROD sets other cpu->halted = 0 and kicks it.
+> 
+> H_PROD could be turned into an interrupt to wake, but several other
+> places in ppc, sparc, and semihosting follow what looks like a similar
+> pattern setting halted = 0 directly. So remove this assertion.
+> 
+> Reported-by: Ivan Warren <ivan@vmfacility.fr>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   accel/tcg/tcg-accel-ops-mttcg.c | 11 -----------
+>   1 file changed, 11 deletions(-)
+
+The adjustments of 'halted' and 'prod' are done under the io lock in both cases, so 
+there's no race there.
+
+It is perfectly reasonable that after thread A sets halted and drops the lock, thread B 
+may acquire the lock and clear halted before thread A has a chance to complete longjmp and 
+cycle through its main loop.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+
+> 
+> diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
+> index b276262007..d0b6f288d9 100644
+> --- a/accel/tcg/tcg-accel-ops-mttcg.c
+> +++ b/accel/tcg/tcg-accel-ops-mttcg.c
+> @@ -98,17 +98,6 @@ static void *mttcg_cpu_thread_fn(void *arg)
+>               case EXCP_DEBUG:
+>                   cpu_handle_guest_debug(cpu);
+>                   break;
+> -            case EXCP_HALTED:
+> -                /*
+> -                 * during start-up the vCPU is reset and the thread is
+> -                 * kicked several times. If we don't ensure we go back
+> -                 * to sleep in the halted state we won't cleanly
+> -                 * start-up when the vCPU is enabled.
+> -                 *
+> -                 * cpu->halted should ensure we sleep in wait_io_event
+> -                 */
+> -                g_assert(cpu->halted);
+> -                break;
+
+I adjusted the patch to keep the case label and update the comment, still dropping the assert.
+
+Queued to tcg-next.
+
 
 r~
-
-On 8/28/23 11:55, Richard Henderson wrote:
-> Based-on: 20230826232415.80233-1-richard.henderson@linaro.org
-> ("[PATCH 0/3] softmmu: Use async_run_on_cpu in tcg_commit")
-> 
-> Remove the SaveIOTLB hackery, now that the flush won't happen
-> until the TB.  Clean up the locking, so that we don't try to
-> take the lock twice.  Clean up the iotlb lookup so that we only
-> perform it once per page, rather than for each aligned piece.
-> 
-> 
-> r~
-> 
-> 
-> Richard Henderson (10):
->    accel/tcg: Simplify tlb_plugin_lookup
->    accel/tcg: Split out io_prepare and io_failed
->    accel/tcg: Use CPUTLBEntryFull.phys_addr in io_failed
->    plugin: Simplify struct qemu_plugin_hwaddr
->    accel/tcg: Merge cpu_transaction_failed into io_failed
->    accel/tcg: Replace direct use of io_readx/io_writex in do_{ld,st}_1
->    accel/tcg: Merge io_readx into do_ld_mmio_beN
->    accel/tcg: Merge io_writex into do_st_mmio_leN
->    accel/tcg: Introduce do_ld16_mmio_beN
->    accel/tcg: Introduce do_st16_mmio_leN
-> 
->   include/hw/core/cpu.h        |  13 --
->   include/qemu/plugin-memory.h |  11 +-
->   include/qemu/typedefs.h      |   1 -
->   accel/tcg/cputlb.c           | 426 +++++++++++++++++------------------
->   plugins/api.c                |  27 +--
->   5 files changed, 212 insertions(+), 266 deletions(-)
-> 
-
 
