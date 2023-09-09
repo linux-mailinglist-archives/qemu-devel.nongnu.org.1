@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD139799A0F
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 18:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 048B4799A16
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 18:55:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf12J-0000AY-UP; Sat, 09 Sep 2023 12:42:19 -0400
+	id 1qf1DP-00059V-7N; Sat, 09 Sep 2023 12:53:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf12H-0000A2-Gg
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 12:42:17 -0400
-Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
+ id 1qf1DN-00059E-HY
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 12:53:45 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf12F-00033F-85
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 12:42:17 -0400
-Received: by mail-pg1-x52b.google.com with SMTP id
- 41be03b00d2f7-5657add1073so2040241a12.0
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 09:42:14 -0700 (PDT)
+ id 1qf1DL-0004sZ-AO
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 12:53:45 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-68a440a8a20so2894145b3a.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 09:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694277733; x=1694882533; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694278421; x=1694883221; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=EcMiP7Tbx2CZY/5ppP5XQURC+CcP/9A8mvjU/2ZIuTQ=;
- b=CQJenVig/h39ooQHWcmbOzLLjVbf9qf/1dMfdTOP7iDOk7wy0fQnT8DYaFg0OTn2k1
- DUTXkzFzEUtDM+FtTslGacQ5rDLcAGRLs0+yjHN5obDcfu6pvugNPKfNNSnE/AW0YHBq
- SKE54GuznEygUdM8uTaR5WZrWs0KCMU7DSXpCq5n/WgBqbcGf8tGolYq3RbhB9NzObSf
- KWfSqbMW+tDRk7x+d6N133bVi+L2Xc5x+TIjZOhSmErQXF7tbXLJ859rU2SkhEbDsHLW
- fFlBqHM4KLcOJA6wa0esL9KT0UU/vZ5lNAQfNjVurPoxOZqOKXwAMfQLtIGZfcDIvMhu
- d6hA==
+ bh=2pRqy5toNnN9vCDtrYvDbygxTzH5HJnKC176qwibKrg=;
+ b=R+KpYnChlBTH8TsqHelOP9xd1NiFBfXRz3hnzRcQc/grg/gWY+VPfN/utqzCVPcVWo
+ /xxvTAE0LJhAIBNUBFdSRn3g54QU+s/6aMfkcE+ivpqCaAnuuixG7sxfmhfLAxWBb2AE
+ 6ltP/Njoqd/U/GM05qTlBa3+tiMkHgIxoOqtzHmhhU0OkDl2pl1pt31iLJDrNbh7/8TW
+ 55jelKOE1i3+Lu4GElhIy9GIJSW5jHOfrG2oNGrvwpTgniHBI6jcI6eF6rQrJsA4sFKe
+ n7+Qj4fuPJEp4HMhq9Gf54XLxXrcq4UweF211OP6tSZPDlbMqgBy3fbp5m792Yt7RElT
+ JF/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694277733; x=1694882533;
+ d=1e100.net; s=20230601; t=1694278421; x=1694883221;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=EcMiP7Tbx2CZY/5ppP5XQURC+CcP/9A8mvjU/2ZIuTQ=;
- b=ozdtlSgbdUAAu+dDzdGtSV59vgFFYKBkSN0AovsPeyde+KrTkjMBn/EGXSNYp8tWw5
- JGi3iQEerh9qlGIt9q3sDIfaQT3Humxq24eCS6wzW0EqIkjHrpxGj90fTVkrS0Jdzari
- sCEnDQw1GTsryMW1KDQlAPdrW3zVIoTPeWwd7Nm+0EzNOjSzlKCL7NKtu5HN95ih+FPY
- R/MCmP5l2G4DKl072nsVmGz1FQw/5TFyy8jA3m+Eux/R9dz3G/pRwfyMZv4Hkb2JqlHC
- AEw7Wn0uDrJFUbe9j+FLWfwmgC2jqwn7OlqnmFAN0l6xpnkuGgihpgAa3GXl6VysTNh4
- FoaA==
-X-Gm-Message-State: AOJu0YxzUMxWXUaSPr0BrIfsVIm2qX+7ZxQyC1WTrbgLxlPIVA5Jy8zo
- hWq/IGbVVazvpfhkLCu/Y2JYGA==
-X-Google-Smtp-Source: AGHT+IEkYCZwlHg8XYJTXe4O1otJDhHM3GkffaUFOJwKsqZSwrFvvb3GYLlbOxquTphMK9BFtmMd9Q==
-X-Received: by 2002:a17:90a:9ae:b0:261:2824:6b8c with SMTP id
- 43-20020a17090a09ae00b0026128246b8cmr11731055pjo.13.1694277733106; 
- Sat, 09 Sep 2023 09:42:13 -0700 (PDT)
+ bh=2pRqy5toNnN9vCDtrYvDbygxTzH5HJnKC176qwibKrg=;
+ b=OnTYPPUxbZE+m7lnFYhGYCpUoyjPX+bBb1eeceBl9H5X2LIxNFFK71DjWs2WljqcTW
+ dM7UVAcTK+GPRl2tIu2iM5qpuCvtpBLHLtP8Q4p0hDVsdhIuYMvdOGTkiYqVAEquT5vC
+ jxUOZBa4YVa5xe1fJZqcIjRCCECVJNai5MWtvS6OKiyMqlnWd7uEWXWwdxvsaMsPcRFi
+ Ne1IAHk0c+wZnL1JGKMXf8fRx7wVgKn0ZRwBQ1U52E9h7v7mmfY1bdoRYWZgpVgbbqOo
+ WP2hVjtL7clLy7geFABPR9zyuj7MZgKZVancwE7pMX8+PznziEAoTTrBfe6AgBFvpXXP
+ 3yCw==
+X-Gm-Message-State: AOJu0YyTc2IpQhMyQm1ikRC/zxtY4d8CfXGEOuXCODBLQ8K5ac3iSrFI
+ zPmZ0Hi5hkl7BqwWfHixKRBYHg==
+X-Google-Smtp-Source: AGHT+IEQsAHz15J8HdpVWDm5OkuVUjm9dAiXz7RhRRjT2jB16akMn1gfFCRiLfH0nK6HQ1A4wZQl1Q==
+X-Received: by 2002:a05:6a20:3d13:b0:105:6d0e:c046 with SMTP id
+ y19-20020a056a203d1300b001056d0ec046mr7528080pzi.26.1694278420972; 
+ Sat, 09 Sep 2023 09:53:40 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- y2-20020a1709027c8200b001bb8be10a84sm3443901pll.304.2023.09.09.09.42.12
+ t5-20020a17090aae0500b0026b3ed37ddcsm2986201pjq.32.2023.09.09.09.53.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 09:42:12 -0700 (PDT)
-Message-ID: <183c67af-4a96-176d-cb5f-9541a5d90de1@linaro.org>
-Date: Sat, 9 Sep 2023 09:42:10 -0700
+ Sat, 09 Sep 2023 09:53:40 -0700 (PDT)
+Message-ID: <e4338a80-c36a-2546-8471-d481c2b9ebb2@linaro.org>
+Date: Sat, 9 Sep 2023 09:53:38 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH 12/14] target/arm: Implement MTE tag-checking functions
- for FEAT_MOPS copies
+Subject: Re: [PATCH 14/14] target/arm: Enable FEAT_MOPS for CPU 'max'
 Content-Language: en-US
 To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
  qemu-devel@nongnu.org
 References: <20230907160340.260094-1-peter.maydell@linaro.org>
- <20230907160340.260094-13-peter.maydell@linaro.org>
+ <20230907160340.260094-15-peter.maydell@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230907160340.260094-13-peter.maydell@linaro.org>
+In-Reply-To: <20230907160340.260094-15-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,18 +96,14 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/7/23 09:03, Peter Maydell wrote:
-> The FEAT_MOPS memory copy operations need an extra helper routine
-> for checking for MTE tag checking failures beyond the ones we
-> already added for memory set operations:
->   * mte_mops_probe_rev() does the same job as mte_mops_probe(), but
->     it checks tags starting at the provided address and working
->     backwards, rather than forwards
+> Enable FEAT_MOPS on the AArch64 'max' CPU, and add it to
+> the list of features we implement.
 > 
 > Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
 > ---
->   target/arm/internals.h      | 17 +++++++
->   target/arm/tcg/mte_helper.c | 99 +++++++++++++++++++++++++++++++++++++
->   2 files changed, 116 insertions(+)
+>   docs/system/arm/emulation.rst | 1 +
+>   target/arm/tcg/cpu64.c        | 4 ++++
+>   2 files changed, 5 insertions(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
