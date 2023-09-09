@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5E7799A9A
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 21:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76115799A99
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 21:39:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf3n9-00060G-2D; Sat, 09 Sep 2023 15:38:51 -0400
+	id 1qf3n9-00060U-UX; Sat, 09 Sep 2023 15:38:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qf3n6-0005zs-Di
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 15:38:48 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qf3n6-000601-Ta
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 15:38:49 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qf3n4-0003F4-4F
+ id 1qf3n4-0003FL-PM
  for qemu-devel@nongnu.org; Sat, 09 Sep 2023 15:38:48 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-403004a96a4so9302015e9.3
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 12:38:45 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-401ec23be82so34937785e9.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 12:38:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694288324; x=1694893124; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694288325; x=1694893125; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wVHZ2gTKJUTTUFCrTx1jb9XTLg6fK+kTZHzI2+VVFKw=;
- b=Bg//YAXowLUbGREkRw73qTrvl3gPhkferhDKB+cELbPPCIkDzsFkUyUb8bCw2ablb0
- wLH5YiW9CS3xWOapLYcCkrkq6d/AwbbcLwkpaeMBgeMzkngNQiOmU54+3ownYsZ/74Ka
- K9cesOEJZv2cdI+HQvGJjEVkZKef8Y2vym121Hhv0VjYRd29jYAmy7RN+aS1/2t87a0N
- bt/aWTRFjL4b0xvcXGWrXeHAl03TQYRrpvPi5CRtdOLoj8mn8sMaTIvyGBXoiiLm+OF3
- C6owj1MBLvhgwsStnPYszp75t6i2Uh35bag6DCorGqaFQAEml9jZUgL8TyUB7AJPE5+e
- 2l4A==
+ bh=PVDg2xAqYdL1qO9Pj5OML28yXvjot1xjk5EVQ6V643o=;
+ b=ih44dzP04J01qv6p6XaD666TEz6fKJK0I7tylB50Uwq/1spoiS0Jngu+Xf77EoPK5T
+ vOfSZ5YopxlSZCWxZYS5Rplx6GwStXNu6EzwtY/06oA7Y14VguZp3R780W6GCD2RLY7b
+ 6c/GX5qfDUKbY4Tf1HlCK+YushulIPEVZO6BxaXzHYfgHPighQt+aTlAQ16tdQxTlTnE
+ l5sKzmhRWzhK1Ntx6FjRxTt9ljP8/GhjY1bR2uknE8wp4BY2gFy1Q9XKrFUrsGuBNyDL
+ B/XL7uPg/PIJHuDI4zerd8Vrz+gVmz2AKURABby0iS366w83eSZFCEq0IKSyrHii3ZCw
+ o32Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694288324; x=1694893124;
+ d=1e100.net; s=20230601; t=1694288325; x=1694893125;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wVHZ2gTKJUTTUFCrTx1jb9XTLg6fK+kTZHzI2+VVFKw=;
- b=FgUuMtBUkIu0dCK0utPyzzD2rz4YKsAHZeX6vSoA/U/miUS8xFp/fEADy2zynEGIZ/
- 5uC0S+8FPfgLXUU9ieIemZuzmZR1QDFLxtlyf/B10ABSb/AnIXS2VLxk5WaKMJwZdX3Z
- 2dWvppflEuqKUvOGVr3Fs+IRiLRwslCsvImXeBbg8MCLzDZLZSBKkobocUTmrCOW3xCL
- C/bYPhV+gC3NsRDGUAtJP21FNR5zXAmo5TlS0PzRLJAR7rjQmJAbeQmDbdybbkGwuxwZ
- pH1tUw/P7qrIsgRAU1yxdb0vApoKvvfReKoaj3PwPI6tBWdj4i3Jpc1YJXovdgbfsZ9P
- be4A==
-X-Gm-Message-State: AOJu0Yynve6M9LwnnsCg41kGn17Np1JOWIo70z1v2vDEHvtyQxPBPDrM
- kV14mBoNd5vzX6e/S1zRBXj6o67CSew=
-X-Google-Smtp-Source: AGHT+IFlWu+Q2QR13kbqrXs7wYLmy+p/vJY3kzbaPMArG8cL4ykMAioxQYY7hutVMyxHRkgOPiCLsQ==
-X-Received: by 2002:a1c:4b19:0:b0:3fc:3e1:7105 with SMTP id
- y25-20020a1c4b19000000b003fc03e17105mr5251956wma.24.1694288324117; 
- Sat, 09 Sep 2023 12:38:44 -0700 (PDT)
+ bh=PVDg2xAqYdL1qO9Pj5OML28yXvjot1xjk5EVQ6V643o=;
+ b=I5Omr2Fe61q+RWIVhfzpJgxaQsBkcqb4Z1d2IaGLG49elLSiKj7Sx1/jSt2JQJwggE
+ OGAJhaXRwqVLOmtJiCumeGcRT30ns6gzIymEaARZb4RXRWdC8GAfB8VjhSa1nP5tzxV3
+ qP3wc59IFxi78kudmKzP5v+EW3p2TjlKNaMIs72xyvag+DcFpHl4YlSNh9XHxBULHytJ
+ mrVAYXX09hR+IBsrlzmUGfXI877+kDH35D319RLHs1eWnSeo05GHjvmQptdDYQnCXTNo
+ zHXCpAI+3RywJrN34/a+t5CWCMj/VOH3m6iXbgbtEmL6EuCvaq/Jxtbwjk+K9q6Y2oHi
+ bkig==
+X-Gm-Message-State: AOJu0YynZPvSjrMgAQdG+PVrXKaSyZieJ0WAu/rKlUmeM42Y08Lz2da9
+ GOUBcXvHrAtJlSlPEpKhopvYfWh/p2Y=
+X-Google-Smtp-Source: AGHT+IHDwBlQ+qXFeBtrKYapxcyrBHDiywBSs4K44Opfm9cOrwJIeIGusu6HndHGYyz2O9EOf0vUZA==
+X-Received: by 2002:a05:600c:2301:b0:400:ce4f:f184 with SMTP id
+ 1-20020a05600c230100b00400ce4ff184mr5189636wmo.41.1694288325239; 
+ Sat, 09 Sep 2023 12:38:45 -0700 (PDT)
 Received: from karim.my.domain ([197.39.250.27])
  by smtp.gmail.com with ESMTPSA id
- h13-20020a05600c260d00b003fe4ca8decdsm8612812wma.31.2023.09.09.12.38.43
+ h13-20020a05600c260d00b003fe4ca8decdsm8612812wma.31.2023.09.09.12.38.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 Sep 2023 12:38:43 -0700 (PDT)
+ Sat, 09 Sep 2023 12:38:44 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com,
-	Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v3 16/23] bsd-user: Implment madvise(2) to match the
- linux-user implementation.
-Date: Sat,  9 Sep 2023 22:36:57 +0300
-Message-ID: <20230909193704.1827-17-kariem.taha2.7@gmail.com>
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v3 17/23] bsd-user: Implement mincore(2)
+Date: Sat,  9 Sep 2023 22:36:58 +0300
+Message-ID: <20230909193704.1827-18-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
 References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,105 +93,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+From: Stacey Son <sson@FreeBSD.org>
+
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-mem.h            | 53 +++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  4 +++
- bsd-user/syscall_defs.h       |  2 ++
- 3 files changed, 59 insertions(+)
+ bsd-user/bsd-mem.h            | 22 ++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  4 ++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index 16c22593bf..0e16051418 100644
+index 0e16051418..1dabbe36e6 100644
 --- a/bsd-user/bsd-mem.h
 +++ b/bsd-user/bsd-mem.h
-@@ -129,6 +129,59 @@ static inline abi_long do_bsd_munlockall(void)
-     return get_errno(munlockall());
+@@ -189,4 +189,26 @@ static inline abi_long do_bsd_minherit(abi_long addr, abi_long len,
+     return get_errno(minherit(g2h_untagged(addr), len, inherit));
  }
  
-+/* madvise(2) */
-+static inline abi_long do_bsd_madvise(abi_long arg1, abi_long arg2,
-+        abi_long arg3)
++/* mincore(2) */
++static inline abi_long do_bsd_mincore(abi_ulong target_addr, abi_ulong len,
++        abi_ulong target_vec)
 +{
-+    abi_ulong len;
-+    int ret = 0;
-+    abi_long start = arg1;
-+    abi_long len_in = arg2;
-+    abi_long advice = arg3;
++    abi_long ret;
++    void *p;
++    abi_ulong vec_len = DIV_ROUND_UP(len,TARGET_PAGE_SIZE);
 +
-+    if (start & ~TARGET_PAGE_MASK) {
-+        return -TARGET_EINVAL;
-+    }
-+    if (len_in == 0) {
-+        return 0;
-+    }
-+    len = TARGET_PAGE_ALIGN(len_in);
-+    if (len == 0 || !guest_range_valid_untagged(start, len)) {
-+        return -TARGET_EINVAL;
++    if (!guest_range_valid_untagged(target_addr,len) || !page_check_range(target_addr, len, PAGE_VALID)) {
++        return -TARGET_EFAULT;
 +    }
 +
-+    /*
-+     * Most advice values are hints, so ignoring and returning success is ok.
-+     *
-+     * However, some advice values such as MADV_DONTNEED, are not hints and
-+     * need to be emulated.
-+     *
-+     * A straight passthrough for those may not be safe because qemu sometimes
-+     * turns private file-backed mappings into anonymous mappings.
-+     * If all guest pages have PAGE_PASSTHROUGH set, mappings have the
-+     * same semantics for the host as for the guest.
-+     *
-+     * MADV_DONTNEED is passed through, if possible.
-+     * If passthrough isn't possible, we nevertheless (wrongly!) return
-+     * success, which is broken but some userspace programs fail to work
-+     * otherwise. Completely implementing such emulation is quite complicated
-+     * though.
-+     */
-+    mmap_lock();
-+    switch (advice) {
-+    case MADV_DONTNEED:
-+        if (page_check_range(start, len, PAGE_PASSTHROUGH)) {
-+            ret = get_errno(madvise(g2h_untagged(start), len, advice));
-+            if ((advice == MADV_DONTNEED) && (ret == 0)) {
-+                page_reset_target_data(start, start + len - 1);
-+            }
-+        }
++    p = lock_user(VERIFY_WRITE, target_vec, vec_len, 0);
++    if (p == NULL) {
++        return -TARGET_EFAULT;
 +    }
-+    mmap_unlock();
++    ret = get_errno(mincore(g2h_untagged(target_addr), len, p));
++    unlock_user(p, target_vec, 0);
 +
 +    return ret;
 +}
 +
- /* minherit(2) */
- static inline abi_long do_bsd_minherit(abi_long addr, abi_long len,
-         abi_long inherit)
+ #endif /* BSD_USER_BSD_MEM_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 6eaa705cd3..f5d60cf902 100644
+index f5d60cf902..8d1cf3b35c 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -519,6 +519,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_munlockall();
-         break;
- 
-+    case TARGET_FREEBSD_NR_madvise: /* madvise(2) */
-+        ret = do_bsd_madvise(arg1, arg2, arg3);
-+        break;
-+
-     case TARGET_FREEBSD_NR_minherit: /* minherit(2) */
+@@ -527,6 +527,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
          ret = do_bsd_minherit(arg1, arg2, arg3);
          break;
-diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index 074df7bdd6..76f4856009 100644
---- a/bsd-user/syscall_defs.h
-+++ b/bsd-user/syscall_defs.h
-@@ -95,6 +95,8 @@ struct bsd_shm_regions {
- /*
-  *  sys/mman.h
-  */
-+#define TARGET_MADV_DONTNEED            4       /* dont need these pages */
+ 
++    case TARGET_FREEBSD_NR_mincore: /* mincore(2) */
++        ret = do_bsd_mincore(arg1, arg2, arg3);
++        break;
 +
- #define TARGET_FREEBSD_MAP_RESERVED0080 0x0080  /* previously misimplemented */
-                                                 /* MAP_INHERIT */
- #define TARGET_FREEBSD_MAP_RESERVED0100 0x0100  /* previously unimplemented */
+ #if defined(__FreeBSD_version) && __FreeBSD_version >= 1300048
+     case TARGET_FREEBSD_NR_shm_open2: /* shm_open2(2) */
+         ret = do_freebsd_shm_open2(arg1, arg2, arg3, arg4, arg5);
 -- 
 2.42.0
 
