@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A0079987D
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A95799878
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:15:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexmc-0000b2-5o; Sat, 09 Sep 2023 09:13:54 -0400
+	id 1qexmJ-0000CF-SJ; Sat, 09 Sep 2023 09:13:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexlx-0008JG-HI; Sat, 09 Sep 2023 09:13:18 -0400
+ id 1qexly-0008JL-M3; Sat, 09 Sep 2023 09:13:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexlt-0005Ho-Dg; Sat, 09 Sep 2023 09:13:12 -0400
+ id 1qexlv-0005I9-DM; Sat, 09 Sep 2023 09:13:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8A6102062B;
+ by isrv.corpit.ru (Postfix) with ESMTP id B739C2062C;
  Sat,  9 Sep 2023 16:13:51 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 53AAC26E4B;
+ by tsrv.corpit.ru (Postfix) with SMTP id 815E326E4C;
  Sat,  9 Sep 2023 16:13:00 +0300 (MSK)
-Received: (nullmailer pid 354711 invoked by uid 1000);
- Sat, 09 Sep 2023 13:12:59 -0000
+Received: (nullmailer pid 354714 invoked by uid 1000);
+ Sat, 09 Sep 2023 13:13:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-trivial@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH 2/7] i386: spelling fixes
-Date: Sat,  9 Sep 2023 16:12:53 +0300
-Message-Id: <20230909131258.354675-3-mjt@tls.msk.ru>
+Subject: [PATCH 3/7] ppc: spelling fixes
+Date: Sat,  9 Sep 2023 16:12:54 +0300
+Message-Id: <20230909131258.354675-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230909131258.354675-1-mjt@tls.msk.ru>
 References: <20230909131258.354675-1-mjt@tls.msk.ru>
@@ -59,327 +59,352 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- host/include/i386/host/cpuinfo.h | 2 +-
- hw/i386/acpi-build.c             | 4 ++--
- hw/i386/amd_iommu.c              | 4 ++--
- hw/i386/intel_iommu.c            | 4 ++--
- hw/i386/kvm/xen_xenstore.c       | 2 +-
- hw/i386/kvm/xenstore_impl.c      | 2 +-
- hw/i386/pc.c                     | 4 ++--
- include/hw/i386/topology.h       | 2 +-
- target/i386/cpu.c                | 4 ++--
- target/i386/cpu.h                | 4 ++--
- target/i386/kvm/kvm.c            | 4 ++--
- target/i386/kvm/xen-emu.c        | 2 +-
- target/i386/machine.c            | 4 ++--
- target/i386/tcg/translate.c      | 8 ++++----
- tests/tcg/i386/system/boot.S     | 2 +-
- tests/tcg/i386/x86.csv           | 2 +-
- 16 files changed, 27 insertions(+), 27 deletions(-)
+ host/include/ppc/host/cpuinfo.h     |  2 +-
+ hw/ppc/ppc.c                        |  2 +-
+ hw/ppc/prep_systemio.c              |  2 +-
+ hw/ppc/spapr.c                      |  8 ++++----
+ hw/ppc/spapr_hcall.c                |  2 +-
+ hw/ppc/spapr_nvdimm.c               |  4 ++--
+ hw/ppc/spapr_pci_vfio.c             |  2 +-
+ include/hw/ppc/openpic.h            |  2 +-
+ include/hw/ppc/spapr.h              |  2 +-
+ target/ppc/cpu-models.h             |  4 ++--
+ target/ppc/cpu.h                    |  2 +-
+ target/ppc/cpu_init.c               |  4 ++--
+ target/ppc/excp_helper.c            | 14 +++++++-------
+ target/ppc/power8-pmu-regs.c.inc    |  4 ++--
+ target/ppc/translate/vmx-impl.c.inc |  6 +++---
+ 15 files changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-index 073d0a426f..6e46939132 100644
---- a/host/include/i386/host/cpuinfo.h
-+++ b/host/include/i386/host/cpuinfo.h
+diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
+index 29ee7f9ef8..38b8eabe2a 100644
+--- a/host/include/ppc/host/cpuinfo.h
++++ b/host/include/ppc/host/cpuinfo.h
 @@ -1,6 +1,6 @@
  /*
   * SPDX-License-Identifier: GPL-2.0-or-later
-- * Host specific cpu indentification for x86.
-+ * Host specific cpu identification for x86.
+- * Host specific cpu indentification for ppc.
++ * Host specific cpu identification for ppc.
   */
  
  #ifndef HOST_CPUINFO_H
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index bb12b0ad43..1afcef5937 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -779,7 +779,7 @@ static Aml *initialize_route(Aml *route, const char *link_name,
-  *
-  * Returns an array of 128 routes, one for each device,
-  * based on device location.
-- * The main goal is to equaly distribute the interrupts
-+ * The main goal is to equally distribute the interrupts
-  * over the 4 existing ACPI links (works only for i440fx).
-  * The hash function is  (slot + pin) & 3 -> "LNK[D|A|B|C]".
-  *
-@@ -2079,7 +2079,7 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
- }
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index aeb116d919..be167710a3 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -738,7 +738,7 @@ static target_ulong _cpu_ppc_load_decr(CPUPPCState *env, int64_t now)
+     decr = __cpu_ppc_load_decr(env, now, tb_env->decr_next);
  
+     /*
+-     * If large decrementer is enabled then the decrementer is signed extened
++     * If large decrementer is enabled then the decrementer is signed extended
+      * to 64 bits, otherwise it is a 32 bit value.
+      */
+     if (env->spr[SPR_LPCR] & LPCR_LD) {
+diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
+index 5a56f155f5..c96cefb13d 100644
+--- a/hw/ppc/prep_systemio.c
++++ b/hw/ppc/prep_systemio.c
+@@ -39,7 +39,7 @@
+ #define TYPE_PREP_SYSTEMIO "prep-systemio"
+ OBJECT_DECLARE_SIMPLE_TYPE(PrepSystemIoState, PREP_SYSTEMIO)
+ 
+-/* Bit as defined in PowerPC Reference Plaform v1.1, sect. 6.1.5, p. 132 */
++/* Bit as defined in PowerPC Reference Platform v1.1, sect. 6.1.5, p. 132 */
+ #define PREP_BIT(n) (1 << (7 - (n)))
+ 
+ struct PrepSystemIoState {
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index f7cc6a890f..b25b568cee 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2573,7 +2573,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
+         return;
+     }
+ 
+-    /* Detemine the VSMT mode to use: */
++    /* Determine the VSMT mode to use: */
+     if (vsmt_user) {
+         if (spapr->vsmt < smp_threads) {
+             error_setg(errp, "Cannot support VSMT mode %d"
+@@ -3109,7 +3109,7 @@ static int spapr_kvm_type(MachineState *machine, const char *vm_type)
+ {
+     /*
+      * The use of g_ascii_strcasecmp() for 'hv' and 'pr' is to
+-     * accomodate the 'HV' and 'PV' formats that exists in the
++     * accommodate the 'HV' and 'PV' formats that exists in the
+      * wild. The 'auto' mode is being introduced already as
+      * lower-case, thus we don't need to bother checking for
+      * "AUTO".
+@@ -4343,7 +4343,7 @@ spapr_cpu_index_to_props(MachineState *machine, unsigned cpu_index)
+     CPUArchId *core_slot;
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+ 
+-    /* make sure possible_cpu are intialized */
++    /* make sure possible_cpu are initialized */
+     mc->possible_cpu_arch_ids(machine);
+     /* get CPU core slot containing thread that matches cpu_index */
+     core_slot = spapr_find_cpu_slot(machine, cpu_index, NULL);
+@@ -5045,7 +5045,7 @@ static void spapr_machine_2_12_class_options(MachineClass *mc)
+ 
+     /* We depend on kvm_enabled() to choose a default value for the
+      * hpt-max-page-size capability. Of course we can't do it here
+-     * because this is too early and the HW accelerator isn't initialzed
++     * because this is too early and the HW accelerator isn't initialized
+      * yet. Postpone this to machine init (see default_caps_with_cpu()).
+      */
+     smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 0;
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index b7dc388f2f..522a2396c7 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -1615,7 +1615,7 @@ static void hypercall_register_types(void)
+     spapr_register_hypercall(H_GET_CPU_CHARACTERISTICS,
+                              h_get_cpu_characteristics);
+ 
+-    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differenciate
++    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differentiate
+      * here between the "CI" and the "CACHE" variants, they will use whatever
+      * mapping attributes qemu is using. When using KVM, the kernel will
+      * enforce the attributes more strongly
+diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
+index a8688243a6..4e34545dcf 100644
+--- a/hw/ppc/spapr_nvdimm.c
++++ b/hw/ppc/spapr_nvdimm.c
+@@ -377,7 +377,7 @@ static target_ulong h_scm_bind_mem(PowerPCCPU *cpu, SpaprMachineState *spapr,
+ 
+     /*
+      * Currently continue token should be zero qemu has already bound
+-     * everything and this hcall doesnt return H_BUSY.
++     * everything and this hcall doesn't return H_BUSY.
+      */
+     if (continue_token > 0) {
+         return H_P5;
+@@ -588,7 +588,7 @@ void spapr_nvdimm_finish_flushes(void)
+      * Called on reset path, the main loop thread which calls
+      * the pending BHs has gotten out running in the reset path,
+      * finally reaching here. Other code path being guest
+-     * h_client_architecture_support, thats early boot up.
++     * h_client_architecture_support, that's early boot up.
+      */
+     nvdimms = nvdimm_get_device_list();
+     for (list = nvdimms; list; list = list->next) {
+diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
+index d8aeee0b7e..9016720547 100644
+--- a/hw/ppc/spapr_pci_vfio.c
++++ b/hw/ppc/spapr_pci_vfio.c
+@@ -78,7 +78,7 @@ int spapr_phb_vfio_eeh_set_option(SpaprPhbState *sphb,
+          * call. Now we just need to check the validity of the PCI
+          * pass-through devices (vfio-pci) under this sphb bus.
+          * We have already validated that all the devices under this sphb
+-         * are from same iommu group (within same PE) before comming here.
++         * are from same iommu group (within same PE) before coming here.
+          *
+          * Prior to linux commit 98ba956f6a389 ("powerpc/pseries/eeh:
+          * Rework device EEH PE determination") kernel would call
+diff --git a/include/hw/ppc/openpic.h b/include/hw/ppc/openpic.h
+index bae8dafe16..9c6af8e207 100644
+--- a/include/hw/ppc/openpic.h
++++ b/include/hw/ppc/openpic.h
+@@ -14,7 +14,7 @@ enum {
+     OPENPIC_OUTPUT_INT = 0, /* IRQ                       */
+     OPENPIC_OUTPUT_CINT,    /* critical IRQ              */
+     OPENPIC_OUTPUT_MCK,     /* Machine check event       */
+-    OPENPIC_OUTPUT_DEBUG,   /* Inconditional debug event */
++    OPENPIC_OUTPUT_DEBUG,   /* Unconditional debug event */
+     OPENPIC_OUTPUT_RESET,   /* Core reset event          */
+     OPENPIC_OUTPUT_NB,
+ };
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index f4bd204d86..b1c7c28fa8 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -197,7 +197,7 @@ struct SpaprMachineState {
+     SpaprResizeHpt resize_hpt;
+     void *htab;
+     uint32_t htab_shift;
+-    uint64_t patb_entry; /* Process tbl registed in H_REGISTER_PROC_TBL */
++    uint64_t patb_entry; /* Process tbl registered in H_REGISTER_PROC_TBL */
+     SpaprPendingHpt *pending_hpt; /* in-progress resize */
+ 
+     hwaddr rma_size;
+diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+index 572b5e553a..0229ef3a9a 100644
+--- a/target/ppc/cpu-models.h
++++ b/target/ppc/cpu-models.h
+@@ -44,7 +44,7 @@ enum {
+     /* PowerPC 405 cores */
+     CPU_POWERPC_405D2              = 0x20010000,
+     CPU_POWERPC_405D4              = 0x41810000,
+-    /* PowerPC 405 microcontrolers */
++    /* PowerPC 405 microcontrollers */
+     /* XXX: missing 0x200108a0 */
+     CPU_POWERPC_405CRa             = 0x40110041,
+     CPU_POWERPC_405CRb             = 0x401100C5,
+@@ -74,7 +74,7 @@ enum {
+ #define CPU_POWERPC_440              CPU_POWERPC_440GXf
+     /* PowerPC 440 cores */
+     CPU_POWERPC_440_XILINX         = 0x7ff21910,
+-    /* PowerPC 440 microcontrolers */
++    /* PowerPC 440 microcontrollers */
+     CPU_POWERPC_440EPa             = 0x42221850,
+     CPU_POWERPC_440EPb             = 0x422218D3,
+     CPU_POWERPC_440GPb             = 0x40120440,
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 173e4c351a..d703a5f3c6 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -428,7 +428,7 @@ FIELD(MSR, LE, MSR_LE, 1)
+ 
+ /* PMU bits */
+ #define MMCR0_FC     PPC_BIT(32)         /* Freeze Counters  */
+-#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Ocurred */
++#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Occurred */
+ #define MMCR0_PMAE   PPC_BIT(37)         /* Perf Monitor Alert Enable */
+ #define MMCR0_EBE    PPC_BIT(43)         /* Perf Monitor EBB Enable */
+ #define MMCR0_FCECE  PPC_BIT(38)         /* FC on Enabled Cond or Event */
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 7ab5ee92d9..c62bf0e437 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5347,7 +5347,7 @@ static void register_970_lpar_sprs(CPUPPCState *env)
+ static void register_power5p_lpar_sprs(CPUPPCState *env)
+ {
+ #if !defined(CONFIG_USER_ONLY)
+-    /* Logical partitionning */
++    /* Logical partitioning */
+     spr_register_kvm_hv(env, SPR_LPCR, "LPCR",
+                         SPR_NOACCESS, SPR_NOACCESS,
+                         SPR_NOACCESS, SPR_NOACCESS,
+@@ -5760,7 +5760,7 @@ static void register_power9_mmu_sprs(CPUPPCState *env)
+ static void register_power10_hash_sprs(CPUPPCState *env)
+ {
+     /*
+-     * it's the OS responsability to generate a random value for the registers
++     * it's the OS responsibility to generate a random value for the registers
+      * in each process' context. So, initialize it with 0 here.
+      */
+     uint64_t hashkeyr_initial_value = 0, hashpkeyr_initial_value = 0;
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 72ec2be92e..99099cb1f6 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -455,7 +455,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden.
++     * explicitly overridden.
+      */
+     new_msr = env->msr & (((target_ulong)1 << MSR_ME));
+ 
+@@ -578,7 +578,7 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -739,7 +739,7 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -911,7 +911,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -1075,7 +1075,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -1288,7 +1288,7 @@ static bool books_vhyp_handles_hcall(PowerPCCPU *cpu)
  /*
-- * Insert DMAR scope for PCI bridges and endpoint devcie
-+ * Insert DMAR scope for PCI bridges and endpoint device
+  * When running a nested KVM HV guest under vhyp, HV exceptions are not
+  * delivered to the guest (because there is no concept of HV support), but
+- * rather they are sent tothe vhyp to exit from the L2 back to the L1 and
++ * rather they are sent to the vhyp to exit from the L2 back to the L1 and
+  * return from the H_ENTER_NESTED hypercall.
   */
- static void
- insert_scope(PCIBus *bus, PCIDevice *dev, void *opaque)
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 9c77304438..c98a3c6e11 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -259,7 +259,7 @@ static void amdvi_log_command_error(AMDVIState *s, hwaddr addr)
-     pci_word_test_and_set_mask(s->pci.dev.config + PCI_STATUS,
-             PCI_STATUS_SIG_TARGET_ABORT);
- }
--/* log an illegal comand event
-+/* log an illegal command event
-  *   @addr : address of illegal command
-  */
- static void amdvi_log_illegalcom_error(AMDVIState *s, uint16_t info,
-@@ -767,7 +767,7 @@ static void amdvi_mmio_write(void *opaque, hwaddr addr, uint64_t val,
-         break;
-     case AMDVI_MMIO_COMMAND_BASE:
-         amdvi_mmio_reg_write(s, size, val, addr);
--        /* FIXME - make sure System Software has finished writing incase
-+        /* FIXME - make sure System Software has finished writing in case
-          * it writes in chucks less than 8 bytes in a robust way.As for
-          * now, this hacks works for the linux driver
-          */
-diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-index c9961ef752..c0ce896668 100644
---- a/hw/i386/intel_iommu.c
-+++ b/hw/i386/intel_iommu.c
-@@ -52,7 +52,7 @@
- 
- /*
-  * PCI bus number (or SID) is not reliable since the device is usaully
-- * initalized before guest can configure the PCI bridge
-+ * initialized before guest can configure the PCI bridge
-  * (SECONDARY_BUS_NUMBER).
-  */
- struct vtd_as_key {
-@@ -1694,7 +1694,7 @@ static bool vtd_switch_address_space(VTDAddressSpace *as)
-      * """
-      *
-      * We enable per as memory region (iommu_ir_fault) for catching
--     * the tranlsation for interrupt range through PASID + PT.
-+     * the translation for interrupt range through PASID + PT.
-      */
-     if (pt && as->pasid != PCI_NO_PASID) {
-         memory_region_set_enabled(&as->iommu_ir_fault, true);
-diff --git a/hw/i386/kvm/xen_xenstore.c b/hw/i386/kvm/xen_xenstore.c
-index 133d89e953..660d0b72f9 100644
---- a/hw/i386/kvm/xen_xenstore.c
-+++ b/hw/i386/kvm/xen_xenstore.c
-@@ -1156,7 +1156,7 @@ static unsigned int copy_to_ring(XenXenstoreState *s, uint8_t *ptr,
+ static bool books_vhyp_handles_hv_excp(PowerPCCPU *cpu)
+@@ -1377,7 +1377,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
  
      /*
-      * This matches the barrier in copy_to_ring() (or the guest's
--     * equivalent) betweem writing the data to the ring and updating
-+     * equivalent) between writing the data to the ring and updating
-      * rsp_prod. It protects against the pathological case (which
-      * again I think never happened except on Alpha) where our
-      * subsequent writes to the ring could *cross* the read of
-diff --git a/hw/i386/kvm/xenstore_impl.c b/hw/i386/kvm/xenstore_impl.c
-index d9732b567e..1d134a6866 100644
---- a/hw/i386/kvm/xenstore_impl.c
-+++ b/hw/i386/kvm/xenstore_impl.c
-@@ -1436,7 +1436,7 @@ static void save_node(gpointer key, gpointer value, gpointer opaque)
-     /*
-      * If we already wrote this node, refer to the previous copy.
-      * There's no rename/move in XenStore, so all we need to find
--     * it is the tx_id of the transation in which it exists. Which
-+     * it is the tx_id of the transaction in which it exists. Which
-      * may be the root tx.
+      * new interrupt handler msr preserves existing HV and ME unless
+-     * explicitly overriden
++     * explicitly overridden
       */
-     if (n->serialized_tx != XBT_NULL) {
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 54838c0c41..2872f60cdf 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -436,7 +436,7 @@ static uint64_t ioport80_read(void *opaque, hwaddr addr, unsigned size)
-     return 0xffffffffffffffffULL;
- }
+     new_msr = env->msr & (((target_ulong)1 << MSR_ME) | MSR_HVB);
  
--/* MSDOS compatibility mode FPU exception support */
-+/* MS-DOS compatibility mode FPU exception support */
- static void ioportF0_write(void *opaque, hwaddr addr, uint64_t data,
-                            unsigned size)
- {
-@@ -1755,7 +1755,7 @@ static void pc_machine_set_max_fw_size(Object *obj, Visitor *v,
-     if (value > 16 * MiB) {
-         error_setg(errp,
-                    "User specified max allowed firmware size %" PRIu64 " is "
--                   "greater than 16MiB. If combined firwmare size exceeds "
-+                   "greater than 16MiB. If combined firmware size exceeds "
-                    "16MiB the system may not boot, or experience intermittent"
-                    "stability issues.",
-                    value);
-diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
-index 81573f6cfd..380cb27ded 100644
---- a/include/hw/i386/topology.h
-+++ b/include/hw/i386/topology.h
-@@ -31,7 +31,7 @@
+diff --git a/target/ppc/power8-pmu-regs.c.inc b/target/ppc/power8-pmu-regs.c.inc
+index c82feedaff..75513db894 100644
+--- a/target/ppc/power8-pmu-regs.c.inc
++++ b/target/ppc/power8-pmu-regs.c.inc
+@@ -16,7 +16,7 @@
+  * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
+  * PMCs) has problem state read access.
   *
-  * This code should be compatible with AMD's "Extended Method" described at:
-  *   AMD CPUID Specification (Publication #25481)
-- *   Section 3: Multiple Core Calcuation
-+ *   Section 3: Multiple Core Calculation
-  * as long as:
-  *  nr_threads is set to 1;
-  *  OFFSET_IDX is assumed to be 0;
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 24ee67b42d..7033fa3496 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -5340,7 +5340,7 @@ static const char *x86_cpu_feature_name(FeatureWord w, int bitnr)
-     return name;
- }
+- * Read acccess is granted for all PMCC values but 0b01, where a
++ * Read access is granted for all PMCC values but 0b01, where a
+  * Facility Unavailable Interrupt will occur.
+  */
+ static bool spr_groupA_read_allowed(DisasContext *ctx)
+@@ -33,7 +33,7 @@ static bool spr_groupA_read_allowed(DisasContext *ctx)
+  * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
+  * PMCs) has problem state write access.
+  *
+- * Write acccess is granted for PMCC values 0b10 and 0b11. Userspace
++ * Write access is granted for PMCC values 0b10 and 0b11. Userspace
+  * writing with PMCC 0b00 will generate a Hypervisor Emulation
+  * Assistance Interrupt. Userspace writing with PMCC 0b01 will
+  * generate a Facility Unavailable Interrupt.
+diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
+index 6d7669aabd..5cdf53a9df 100644
+--- a/target/ppc/translate/vmx-impl.c.inc
++++ b/target/ppc/translate/vmx-impl.c.inc
+@@ -119,7 +119,7 @@ static void gen_stve##name(DisasContext *ctx)                           \
+     }
  
--/* Compatibily hack to maintain legacy +-feat semantic,
-+/* Compatibility hack to maintain legacy +-feat semantic,
-  * where +-feat overwrites any feature set by
-  * feat=on|feat even if the later is parsed after +-feat
-  * (i.e. "-x2apic,x2apic=on" will result in x2apic disabled)
-@@ -6304,7 +6304,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-              * The initial value of xcr0 and ebx == 0, On host without kvm
-              * commit 412a3c41(e.g., CentOS 6), the ebx's value always == 0
-              * even through guest update xcr0, this will crash some legacy guest
--             * (e.g., CentOS 6), So set ebx == ecx to workaroud it.
-+             * (e.g., CentOS 6), So set ebx == ecx to workaround it.
-              */
-             *ebx = kvm_enabled() ? *ecx : xsave_area_size(env->xcr0, false);
-         } else if (count == 1) {
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index fbb05eace5..fe06a1b286 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -728,7 +728,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define CPUID_EXT2_3DNOWEXT (1U << 30)
- #define CPUID_EXT2_3DNOW   (1U << 31)
+ GEN_VR_LDX(lvx, 0x07, 0x03);
+-/* As we don't emulate the cache, lvxl is stricly equivalent to lvx */
++/* As we don't emulate the cache, lvxl is strictly equivalent to lvx */
+ GEN_VR_LDX(lvxl, 0x07, 0x0B);
  
--/* CPUID[8000_0001].EDX bits that are aliase of CPUID[1].EDX bits on AMD CPUs */
-+/* CPUID[8000_0001].EDX bits that are aliases of CPUID[1].EDX bits on AMD CPUs */
- #define CPUID_EXT2_AMD_ALIASES (CPUID_EXT2_FPU | CPUID_EXT2_VME | \
-                                 CPUID_EXT2_DE | CPUID_EXT2_PSE | \
-                                 CPUID_EXT2_TSC | CPUID_EXT2_MSR | \
-@@ -2071,7 +2071,7 @@ hwaddr x86_cpu_get_phys_page_attrs_debug(CPUState *cpu, vaddr addr,
-                                          MemTxAttrs *attrs);
- int cpu_get_pic_interrupt(CPUX86State *s);
+ GEN_VR_LVE(bx, 0x07, 0x00, 1);
+@@ -127,7 +127,7 @@ GEN_VR_LVE(hx, 0x07, 0x01, 2);
+ GEN_VR_LVE(wx, 0x07, 0x02, 4);
  
--/* MSDOS compatibility mode FPU exception support */
-+/* MS-DOS compatibility mode FPU exception support */
- void x86_register_ferr_irq(qemu_irq irq);
- void fpu_check_raise_ferr_irq(CPUX86State *s);
- void cpu_set_ignne(void);
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e5cd7cc806..05dd08b318 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -4729,7 +4729,7 @@ int kvm_arch_put_registers(CPUState *cpu, int level)
-     /*
-      * Put MSR_IA32_FEATURE_CONTROL first, this ensures the VM gets out of VMX
-      * root operation upon vCPU reset. kvm_put_msr_feature_control() should also
--     * preceed kvm_put_nested_state() when 'real' nested state is set.
-+     * proceed kvm_put_nested_state() when 'real' nested state is set.
-      */
-     if (level >= KVM_PUT_RESET_STATE) {
-         ret = kvm_put_msr_feature_control(x86_cpu);
-@@ -5653,7 +5653,7 @@ int kvm_arch_fixup_msi_route(struct kvm_irq_routing_entry *route,
-             }
+ GEN_VR_STX(svx, 0x07, 0x07);
+-/* As we don't emulate the cache, stvxl is stricly equivalent to stvx */
++/* As we don't emulate the cache, stvxl is strictly equivalent to stvx */
+ GEN_VR_STX(svxl, 0x07, 0x0F);
  
-             /*
--             * Handled untranslated compatibilty format interrupt with
-+             * Handled untranslated compatibility format interrupt with
-              * extended destination ID in the low bits 11-5. */
-             dst.address = kvm_swizzle_msi_ext_dest_id(dst.address);
- 
-diff --git a/target/i386/kvm/xen-emu.c b/target/i386/kvm/xen-emu.c
-index a8146115f0..76348f9d5d 100644
---- a/target/i386/kvm/xen-emu.c
-+++ b/target/i386/kvm/xen-emu.c
-@@ -1033,7 +1033,7 @@ static int do_set_periodic_timer(CPUState *target, uint64_t period_ns)
- #define MILLISECS(_ms)  ((int64_t)((_ms) * 1000000ULL))
- #define MICROSECS(_us)  ((int64_t)((_us) * 1000ULL))
- #define STIME_MAX ((time_t)((int64_t)~0ull >> 1))
--/* Chosen so (NOW() + delta) wont overflow without an uptime of 200 years */
-+/* Chosen so (NOW() + delta) won't overflow without an uptime of 200 years */
- #define STIME_DELTA_MAX ((int64_t)((uint64_t)~0ull >> 2))
- 
- static int vcpuop_set_periodic_timer(CPUState *cs, CPUState *target,
-diff --git a/target/i386/machine.c b/target/i386/machine.c
-index c7ac8084b2..a1041ef828 100644
---- a/target/i386/machine.c
-+++ b/target/i386/machine.c
-@@ -282,12 +282,12 @@ static int cpu_pre_save(void *opaque)
-      * hypervisor, its exception payload (CR2/DR6 on #PF/#DB)
-      * should not be set yet in the respective vCPU register.
-      * Thus, in case an exception is pending, it is
--     * important to save the exception payload seperately.
-+     * important to save the exception payload separately.
-      *
-      * Therefore, if an exception is not in a pending state
-      * or vCPU is not in guest-mode, it is not important to
-      * distinguish between a pending and injected exception
--     * and we don't need to store seperately the exception payload.
-+     * and we don't need to store separately the exception payload.
-      *
-      * In order to preserve better backwards-compatible migration,
-      * convert a pending exception to an injected exception in
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index e0a622941c..c98e42f17a 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -1069,7 +1069,7 @@ static CCPrepare gen_prepare_eflags_z(DisasContext *s, TCGv reg)
- }
- 
- /* perform a conditional store into register 'reg' according to jump opcode
--   value 'b'. In the fast case, T0 is guaranted not to be used. */
-+   value 'b'. In the fast case, T0 is guaranteed not to be used. */
- static CCPrepare gen_prepare_cc(DisasContext *s, int b, TCGv reg)
+ GEN_VR_STVE(bx, 0x07, 0x04, 1);
+@@ -1526,7 +1526,7 @@ static void gen_vprtyb_vec(unsigned vece, TCGv_vec t, TCGv_vec b)
  {
-     int inv, jcc_op, cond;
-@@ -1202,7 +1202,7 @@ static inline void gen_compute_eflags_c(DisasContext *s, TCGv reg)
- }
- 
- /* generate a conditional jump to label 'l1' according to jump opcode
--   value 'b'. In the fast case, T0 is guaranted not to be used. */
-+   value 'b'. In the fast case, T0 is guaranteed not to be used. */
- static inline void gen_jcc1_noeob(DisasContext *s, int b, TCGLabel *l1)
- {
-     CCPrepare cc = gen_prepare_cc(s, b, s->T0);
-@@ -1219,7 +1219,7 @@ static inline void gen_jcc1_noeob(DisasContext *s, int b, TCGLabel *l1)
- }
- 
- /* Generate a conditional jump to label 'l1' according to jump opcode
--   value 'b'. In the fast case, T0 is guaranted not to be used.
-+   value 'b'. In the fast case, T0 is guaranteed not to be used.
-    A translation block must end soon.  */
- static inline void gen_jcc1(DisasContext *s, int b, TCGLabel *l1)
- {
-@@ -5355,7 +5355,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-         if (s->prefix & PREFIX_LOCK) {
-             switch (op) {
-             case 0: /* bt */
--                /* Needs no atomic ops; we surpressed the normal
-+                /* Needs no atomic ops; we suppressed the normal
-                    memory load for LOCK above so do it now.  */
-                 gen_op_ld_v(s, ot, s->T0, s->A0);
-                 break;
-diff --git a/tests/tcg/i386/system/boot.S b/tests/tcg/i386/system/boot.S
-index 794c2cb0ad..9e8920cbfe 100644
---- a/tests/tcg/i386/system/boot.S
-+++ b/tests/tcg/i386/system/boot.S
-@@ -71,7 +71,7 @@ _start:
-         add $8,%esp
- 
-         /*
--         * Don't worry about stack frame, assume everthing
-+         * Don't worry about stack frame, assume everything
-          * is garbage when we return, we won't need it.
-          */
-         call main
-diff --git a/tests/tcg/i386/x86.csv b/tests/tcg/i386/x86.csv
-index c43bf42dd3..5c0f628e35 100644
---- a/tests/tcg/i386/x86.csv
-+++ b/tests/tcg/i386/x86.csv
-@@ -19,7 +19,7 @@
- #
- # 4. The instruction encoding. For example, "C1 /4 ib".
- #
--# 5. The validity of the instruction in 32-bit (aka compatiblity, legacy) mode.
-+# 5. The validity of the instruction in 32-bit (aka compatibility, legacy) mode.
- #
- # 6. The validity of the instruction in 64-bit mode.
- #
+     int i;
+     TCGv_vec tmp = tcg_temp_new_vec_matching(b);
+-    /* MO_32 is 2, so 2 iteractions for MO_32 and 3 for MO_64 */
++    /* MO_32 is 2, so 2 iterations for MO_32 and 3 for MO_64 */
+     for (i = 0; i < vece; i++) {
+         tcg_gen_shri_vec(vece, tmp, b, (4 << (vece - i)));
+         tcg_gen_xor_vec(vece, b, tmp, b);
 -- 
 2.39.2
 
