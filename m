@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26F4799757
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E48A1799755
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:31:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qevDC-0000po-QI; Sat, 09 Sep 2023 06:29:10 -0400
+	id 1qevDF-0000ww-5N; Sat, 09 Sep 2023 06:29:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevD9-0000fB-Lh; Sat, 09 Sep 2023 06:29:07 -0400
+ id 1qevDC-0000tg-HE; Sat, 09 Sep 2023 06:29:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qevD7-0004W1-1f; Sat, 09 Sep 2023 06:29:07 -0400
+ id 1qevDA-0004Wa-8j; Sat, 09 Sep 2023 06:29:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E279D204A3;
- Sat,  9 Sep 2023 13:29:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 319E5204A4;
+ Sat,  9 Sep 2023 13:29:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E750F26D01;
- Sat,  9 Sep 2023 13:28:17 +0300 (MSK)
-Received: (nullmailer pid 346686 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1BB2B26D02;
+ Sat,  9 Sep 2023 13:28:18 +0300 (MSK)
+Received: (nullmailer pid 346690 invoked by uid 1000);
  Sat, 09 Sep 2023 10:28:17 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Bilal Elmoussaoui <belmouss@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.1 16/34] target/i386: raise FERR interrupt with iothread
- locked
-Date: Sat,  9 Sep 2023 13:27:09 +0300
-Message-Id: <20230909102747.346522-16-mjt@tls.msk.ru>
+Subject: [Stable-8.1.1 17/34] ui/dbus: Properly dispose touch/mouse dbus
+ objects
+Date: Sat,  9 Sep 2023 13:27:10 +0300
+Message-Id: <20230909102747.346522-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
 References: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
@@ -62,84 +61,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Bilal Elmoussaoui <belmouss@redhat.com>
 
-Otherwise tcg_handle_interrupt() triggers an assertion failure:
+Fixes: 142ca628a7 ("ui: add a D-Bus display backend")
+Fixes: de9f844ce2 ("ui/dbus: Expose a touch device interface")
 
-  #5  0x0000555555c97369 in tcg_handle_interrupt (cpu=0x555557434cb0, mask=2) at ../accel/tcg/tcg-accel-ops.c:83
-  #6  tcg_handle_interrupt (cpu=0x555557434cb0, mask=2) at ../accel/tcg/tcg-accel-ops.c:81
-  #7  0x0000555555b4d58b in pic_irq_request (opaque=<optimized out>, irq=<optimized out>, level=1) at ../hw/i386/x86.c:555
-  #8  0x0000555555b4f218 in gsi_handler (opaque=0x5555579423d0, n=13, level=1) at ../hw/i386/x86.c:611
-  #9  0x00007fffa42bde14 in code_gen_buffer ()
-  #10 0x0000555555c724bb in cpu_tb_exec (cpu=cpu@entry=0x555557434cb0, itb=<optimized out>, tb_exit=tb_exit@entry=0x7fffe9bfd658) at ../accel/tcg/cpu-exec.c:457
-
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1808
-Reported-by: NyanCatTW1 <https://gitlab.com/a0939712328>
-Co-developed-by: Richard Henderson <richard.henderson@linaro.org>'
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit c1f27a0c6ae4059a1d809e9c2bc4d47b823c32a3)
+Signed-off-by: Bilal Elmoussaoui <belmouss@redhat.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-Id: <20230901124507.94087-1-belmouss@redhat.com>
+(cherry picked from commit cb6ccdc9ca705cd8c3ef50e51c16a3732c2fa734)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/i386/tcg/sysemu/fpu_helper.c b/target/i386/tcg/sysemu/fpu_helper.c
-index 1c3610da3b..93506cdd94 100644
---- a/target/i386/tcg/sysemu/fpu_helper.c
-+++ b/target/i386/tcg/sysemu/fpu_helper.c
-@@ -18,6 +18,7 @@
-  */
+diff --git a/ui/dbus-console.c b/ui/dbus-console.c
+index e19774f985..36f7349585 100644
+--- a/ui/dbus-console.c
++++ b/ui/dbus-console.c
+@@ -150,6 +150,8 @@ dbus_display_console_dispose(GObject *object)
+     DBusDisplayConsole *ddc = DBUS_DISPLAY_CONSOLE(object);
  
- #include "qemu/osdep.h"
-+#include "qemu/main-loop.h"
- #include "cpu.h"
- #include "hw/irq.h"
- 
-@@ -31,7 +32,9 @@ void x86_register_ferr_irq(qemu_irq irq)
- void fpu_check_raise_ferr_irq(CPUX86State *env)
- {
-     if (ferr_irq && !(env->hflags2 & HF2_IGNNE_MASK)) {
-+        qemu_mutex_lock_iothread();
-         qemu_irq_raise(ferr_irq);
-+        qemu_mutex_unlock_iothread();
-         return;
-     }
- }
-@@ -45,6 +48,9 @@ void cpu_clear_ignne(void)
- void cpu_set_ignne(void)
- {
-     CPUX86State *env = &X86_CPU(first_cpu)->env;
-+
-+    assert(qemu_mutex_iothread_locked());
-+
-     env->hflags2 |= HF2_IGNNE_MASK;
-     /*
-      * We get here in response to a write to port F0h.  The chipset should
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index 90c7b32f36..e0a622941c 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -4619,7 +4619,11 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-                 case 0x0a: /* grp d9/2 */
-                     switch (rm) {
-                     case 0: /* fnop */
--                        /* check exceptions (FreeBSD FPU probe) */
-+                        /*
-+                         * check exceptions (FreeBSD FPU probe)
-+                         * needs to be treated as I/O because of ferr_irq
-+                         */
-+                        translator_io_start(&s->base);
-                         gen_helper_fwait(cpu_env);
-                         update_fip = false;
-                         break;
-@@ -5548,6 +5552,8 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-             (HF_MP_MASK | HF_TS_MASK)) {
-             gen_exception(s, EXCP07_PREX);
-         } else {
-+            /* needs to be treated as I/O because of ferr_irq */
-+            translator_io_start(&s->base);
-             gen_helper_fwait(cpu_env);
-         }
-         break;
+     unregister_displaychangelistener(&ddc->dcl);
++    g_clear_object(&ddc->iface_touch);
++    g_clear_object(&ddc->iface_mouse);
+     g_clear_object(&ddc->iface_kbd);
+     g_clear_object(&ddc->iface);
+     g_clear_pointer(&ddc->listeners, g_hash_table_unref);
 -- 
 2.39.2
 
