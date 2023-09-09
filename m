@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A27799846
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E5D79985F
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:09:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexaa-0006zX-Sb; Sat, 09 Sep 2023 09:01:29 -0400
+	id 1qexab-000706-C8; Sat, 09 Sep 2023 09:01:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexaV-0006xD-Kn; Sat, 09 Sep 2023 09:01:24 -0400
+ id 1qexaX-0006xQ-Ip; Sat, 09 Sep 2023 09:01:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexaS-0002PB-Ap; Sat, 09 Sep 2023 09:01:23 -0400
+ id 1qexaU-0002Pc-Tn; Sat, 09 Sep 2023 09:01:25 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 20EE32059C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4C7C12059D;
  Sat,  9 Sep 2023 16:01:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F00A226E02;
- Sat,  9 Sep 2023 16:00:24 +0300 (MSK)
-Received: (nullmailer pid 353096 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1C66126E03;
+ Sat,  9 Sep 2023 16:00:25 +0300 (MSK)
+Received: (nullmailer pid 353099 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 14/43] include/exec/user: Set ABI_LLONG_ALIGNMENT to 4
- for nios2
-Date: Sat,  9 Sep 2023 15:59:40 +0300
-Message-Id: <20230909130020.352951-14-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Luca Bonissi <qemu@bonslack.org>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 15/43] Fixed incorrect LLONG alignment for openrisc and
+ cris
+Date: Sat,  9 Sep 2023 15:59:41 +0300
+Message-Id: <20230909130020.352951-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -59,28 +59,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Luca Bonissi <qemu@bonslack.org>
 
-Based on gcc's nios2.h setting BIGGEST_ALIGNMENT to 32 bits.
+OpenRISC (or1k) has long long alignment to 4 bytes, but currently not
+defined in abitypes.h. This lead to incorrect packing of /epoll_event/
+structure and eventually infinite loop while waiting for file
+descriptor[s] event[s].
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit ea9812d93f9c3e1a308ac33097021c50d581d10e)
+Fixed also CRIS alignments (1 byte for all types).
+
+Signed-off-by: Luca Bonissi <qemu@bonslack.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1770
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(cherry picked from commit 6ee960823da8fd780ae9912c4327b7e85e80d846)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
-index beba0a48c7..6191ce9f74 100644
+index 6191ce9f74..6178453d94 100644
 --- a/include/exec/user/abitypes.h
 +++ b/include/exec/user/abitypes.h
-@@ -17,7 +17,8 @@
- 
- #if (defined(TARGET_I386) && !defined(TARGET_X86_64)) \
-     || defined(TARGET_SH4) \
--    || defined(TARGET_MICROBLAZE)
-+    || defined(TARGET_MICROBLAZE) \
-+    || defined(TARGET_NIOS2)
- #define ABI_LLONG_ALIGNMENT 4
+@@ -15,8 +15,16 @@
+ #define ABI_LLONG_ALIGNMENT 2
  #endif
  
++#ifdef TARGET_CRIS
++#define ABI_SHORT_ALIGNMENT 1
++#define ABI_INT_ALIGNMENT 1
++#define ABI_LONG_ALIGNMENT 1
++#define ABI_LLONG_ALIGNMENT 1
++#endif
++
+ #if (defined(TARGET_I386) && !defined(TARGET_X86_64)) \
+     || defined(TARGET_SH4) \
++    || defined(TARGET_OPENRISC) \
+     || defined(TARGET_MICROBLAZE) \
+     || defined(TARGET_NIOS2)
+ #define ABI_LLONG_ALIGNMENT 4
 -- 
 2.39.2
 
