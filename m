@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5986379972B
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 11:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF8F799722
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 11:50:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qeuaW-0005ko-Pe; Sat, 09 Sep 2023 05:49:12 -0400
+	id 1qeuae-0005lJ-6m; Sat, 09 Sep 2023 05:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeuaV-0005kK-Fg
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:11 -0400
+ id 1qeuaZ-0005l3-OL
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:15 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeuaT-0005Iv-C7
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:11 -0400
+ id 1qeuaX-0005JJ-Ie
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 05:49:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=AA8s1jLClq+X8IUUxLYTPVljty8wsZNJ4UerQIUqDwI=; b=OZ2OXTEiG47k348JDgLeVU9m7I
- KBQkqiQCrWhALHCzkz1x2IZ48rJgE/3OsDJU43hwwuUSnZj3vHJI5a+xEvQqEkR/4G/TFdFdp6iHg
- tjCQC5PaRtggu1mLQboFxoVT2GY7L5BKGKIG2Okua9QaAhoDuQwCKjQzUhxTXn0Tf0LStwd3ZZC9g
- nGrnGns+FcYSYwOXSrmWeFmXjtvdzpAdhqGwNOlK+MRykKTYBL0BNdxo5MtXytE1cgr8zKjgbL1NU
- j+5Nzr1/xIoIHvbRzlVz8JUxLnRPnFLr0EevUtcOvYuE4PSs9uYa2Ht6cVFlQj3VqkEq5I7h/nGDe
- ZspIIgkIUai/YSYe6c2cWOUPo7azOCUMpuCfc90VzpR2KgzAdMnJsWuEZ5rbOnBIVYWpSI4vbAkrd
- bFwtomYnQnfMZN4tmWhaQCCPE7PqZPyaJ5y8/M8Xmvg7cdJvuc25WgwwLfZpxPjb1484mkvo/iRuy
- gyoE89Aqv+k4za4m4lH3Jhbg2Q5UN9ixA3RJXbEbLDhRGSZp3p127MZaFUH2YoYTSxSKa06xsfmEQ
- 8cPogrQQ/0lAIXrgfLKrgyCoQbtaB7Z0nDHuVB+yjbCMe+onPVBidyOHkg/j3Ljl0Qgoem0ropSxF
- bZELfa643NgUmlezXpAsZUsi0TIUEt+7spumNJjWc=;
+ bh=sSDcjZJKB72ixN3NRhS41GZ/0RIE31cccyNGlbtjdek=; b=u+bfOloh5q0SCxBZAvwiVKFXl5
+ l3eh7EWAZcSoBgSGUDNUwCqrUi9LBD3uzppMqcoIezSt6hI4r5PXY/8K1FRltubAFntB2nrvzmPcn
+ 96WqG0v5cmUFmBDblIrmUIUGCvHy17sBOduYmolDH3czoqWDOYhM3wN2xA3NH9oyEGfwtFommgF6r
+ LDwQjpDeTbunU2yNPSK8ZcSg0svSPVdM5jo8x9hJZadmvO2sRhykZvMU2QFbazHKxD7xBzQ3Kw47Q
+ L2XtxMLqY3MgGxtvRxU3KkgRpScQUF05XlLo/oO9bsjIdRlk4E+rxZSMZouaylRPYU8DR6WhBRwkd
+ LhkT+N3GY+bQ730oBKj4bbogarpeChlLr3qCd2QHsJ+f7u+CqPDcjs39PlTfQJ4I29OkOBONoPjN0
+ PXuIzuIZLN31aH0vezwrvzOZqs68Y5EnbOftrKGd09yq+VHUAZdQns3oGDUBOnwAF9fx9tB5uMtI8
+ NS07ScLz33iJhMLZ4vdO5a3yTYpCqmf5jXWOOm5/rvR6oWmP+h/OYPTo3IjjEvWQFGjAnTGHzsapU
+ JSJtpkRg3uosCXyt7iVvPYI4S7wAgBiY9Ng9WYloBTMdcAe2oc0GafbpByeqCC8VgZiaulb9ZrebS
+ /wh49rAKKgKWLhDe2eCaYv8w5Cgwm7yVtYfx3JohQ=;
 Received: from [2a00:23c4:8baf:5f00:e007:7058:31bc:5be9]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qeuaN-0000uO-88; Sat, 09 Sep 2023 10:49:07 +0100
+ id 1qeuaR-0000uO-ET; Sat, 09 Sep 2023 10:49:11 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Sat,  9 Sep 2023 10:48:15 +0100
-Message-Id: <20230909094827.33871-9-mark.cave-ayland@ilande.co.uk>
+Date: Sat,  9 Sep 2023 10:48:16 +0100
+Message-Id: <20230909094827.33871-10-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
 References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:e007:7058:31bc:5be9
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 08/20] asc: generate silence if FIFO empty but engine still
- running
+Subject: [PATCH v2 09/20] q800: add Apple Sound Chip (ASC) audio to machine
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,82 +77,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MacOS (un)helpfully leaves the FIFO engine running even when all the samples have
-been written to the hardware, and expects the FIFO status flags and IRQ to be
-updated continuously.
+The Quadra 800 has the enhanced ASC (EASC) audio chip which supports both the
+legacy IRQ routing through VIA2 and also "A/UX" mode routing direct to the
+CPU.
 
-There is an additional problem in that not all audio backends guarantee an
-all-zero output when there is no FIFO data available, in particular the Windows
-dsound backend which re-uses its internal circular buffer causing the last played
-sound to loop indefinitely.
-
-Whilst this is effectively a bug in the Windows dsound backend, work around it
-for now using a simple heuristic: if the FIFO remains empty for half a cycle
-(~23ms) then continuously fill the generated buffer with empty silence.
-
+Co-developed-by: Laurent Vivier <laurent@vivier.eu>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/audio/asc.c         | 19 +++++++++++++++++++
- include/hw/audio/asc.h |  2 ++
- 2 files changed, 21 insertions(+)
+ hw/m68k/q800-glue.c         | 11 ++++++++++-
+ hw/m68k/q800.c              | 17 +++++++++++++++++
+ include/hw/m68k/q800-glue.h |  4 +++-
+ include/hw/m68k/q800.h      |  2 ++
+ 4 files changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/hw/audio/asc.c b/hw/audio/asc.c
-index 336ace0cd6..b01b285512 100644
---- a/hw/audio/asc.c
-+++ b/hw/audio/asc.c
-@@ -334,6 +334,21 @@ static void asc_out_cb(void *opaque, int free_b)
-     }
+diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
+index 710a5c331e..f413b1599a 100644
+--- a/hw/m68k/q800-glue.c
++++ b/hw/m68k/q800-glue.c
+@@ -97,6 +97,11 @@ static void GLUE_set_irq(void *opaque, int irq, int level)
+             irq = 6;
+             break;
  
-     if (!generated) {
-+        /* Workaround for audio underflow bug on Windows dsound backend */
-+        int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+        int silent_samples = muldiv64(now - s->fifo_empty_ns,
-+                                      NANOSECONDS_PER_SECOND, ASC_FREQ);
++        case GLUE_IRQ_IN_ASC:
++            /* Route to VIA2 instead, negative edge-triggered */
++            qemu_set_irq(s->irqs[GLUE_IRQ_ASC], !level);
++            return;
 +
-+        if (silent_samples > ASC_FIFO_CYCLE_TIME / 2) {
-+            /*
-+             * No new FIFO data within half a cycle time (~23ms) so fill the
-+             * entire available buffer with silence. This prevents an issue
-+             * with the Windows dsound backend whereby the sound appears to
-+             * loop because the FIFO has run out of data, and the driver
-+             * reuses the stale content in its circular audio buffer.
-+             */
-+            AUD_write(s->voice, s->silentbuf, samples << s->shift);
-+        }
-         return;
-     }
+         default:
+             g_assert_not_reached();
+         }
+@@ -123,6 +128,10 @@ static void GLUE_set_irq(void *opaque, int irq, int level)
+             irq = 6;
+             break;
  
-@@ -611,6 +626,7 @@ static void asc_unrealize(DeviceState *dev)
-     ASCState *s = ASC(dev);
- 
-     g_free(s->mixbuf);
-+    g_free(s->silentbuf);
- 
-     AUD_remove_card(&s->card);
- }
-@@ -633,6 +649,9 @@ static void asc_realize(DeviceState *dev, Error **errp)
-     s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
-     s->mixbuf = g_malloc0(s->samples << s->shift);
- 
-+    s->silentbuf = g_malloc0(s->samples << s->shift);
-+    memset(s->silentbuf, 0x80, s->samples << s->shift);
++        case GLUE_IRQ_IN_ASC:
++            irq = 4;
++            break;
 +
-     /* Add easc registers if required */
-     if (s->type == ASC_TYPE_EASC) {
-         memory_region_add_subregion(&s->asc, ASC_EXTREG_OFFSET,
-diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
-index d9412815c3..4741f92c46 100644
---- a/include/hw/audio/asc.h
-+++ b/include/hw/audio/asc.h
-@@ -68,6 +68,8 @@ struct ASCState {
-     int samples;
-     int shift;
+         default:
+             g_assert_not_reached();
+         }
+@@ -214,7 +223,7 @@ static void glue_init(Object *obj)
+     qdev_init_gpio_in(dev, GLUE_set_irq, 8);
+     qdev_init_gpio_in_named(dev, glue_auxmode_set_irq, "auxmode", 1);
  
-+    uint8_t *silentbuf;
+-    qdev_init_gpio_out(dev, s->irqs, 1);
++    qdev_init_gpio_out(dev, s->irqs, 2);
+ 
+     /* NMI release timer */
+     s->nmi_release = timer_new_ms(QEMU_CLOCK_VIRTUAL, glue_nmi_release, s);
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index 3209309173..ae07aa20ff 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -43,6 +43,7 @@
+ #include "hw/misc/djmemc.h"
+ #include "hw/misc/iosb.h"
+ #include "hw/input/adb.h"
++#include "hw/audio/asc.h"
+ #include "hw/nubus/mac-nubus-bridge.h"
+ #include "hw/display/macfb.h"
+ #include "hw/block/swim.h"
+@@ -480,6 +481,22 @@ static void q800_machine_init(MachineState *machine)
+ 
+     scsi_bus_legacy_handle_cmdline(&esp->bus);
+ 
++    /* Apple Sound Chip */
 +
-     /* Time when we were last able to generate samples */
-     int64_t fifo_empty_ns;
++    object_initialize_child(OBJECT(machine), "asc", &m->asc, TYPE_ASC);
++    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", ASC_TYPE_EASC);
++    sysbus = SYS_BUS_DEVICE(&m->asc);
++    sysbus_realize_and_unref(sysbus, &error_fatal);
++    memory_region_add_subregion(&m->macio, ASC_BASE - IO_BASE,
++                                sysbus_mmio_get_region(sysbus, 0));
++    sysbus_connect_irq(sysbus, 0, qdev_get_gpio_in(DEVICE(&m->glue),
++                                                   GLUE_IRQ_IN_ASC));
++
++    /* Wire ASC IRQ via GLUE for use in classic mode */
++    qdev_connect_gpio_out(DEVICE(&m->glue), GLUE_IRQ_ASC,
++                          qdev_get_gpio_in(DEVICE(&m->via2),
++                                           VIA2_IRQ_ASC_BIT));
++
+     /* SWIM floppy controller */
  
+     object_initialize_child(OBJECT(machine), "swim", &m->swim,
+diff --git a/include/hw/m68k/q800-glue.h b/include/hw/m68k/q800-glue.h
+index a35efc1c53..ceb916d16c 100644
+--- a/include/hw/m68k/q800-glue.h
++++ b/include/hw/m68k/q800-glue.h
+@@ -35,7 +35,7 @@ struct GLUEState {
+     M68kCPU *cpu;
+     uint8_t ipr;
+     uint8_t auxmode;
+-    qemu_irq irqs[1];
++    qemu_irq irqs[2];
+     QEMUTimer *nmi_release;
+ };
+ 
+@@ -44,7 +44,9 @@ struct GLUEState {
+ #define GLUE_IRQ_IN_SONIC      2
+ #define GLUE_IRQ_IN_ESCC       3
+ #define GLUE_IRQ_IN_NMI        4
++#define GLUE_IRQ_IN_ASC        5
+ 
+ #define GLUE_IRQ_NUBUS_9       0
++#define GLUE_IRQ_ASC           1
+ 
+ #endif
+diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+index 04e4e0bce3..790cf433f3 100644
+--- a/include/hw/m68k/q800.h
++++ b/include/hw/m68k/q800.h
+@@ -38,6 +38,7 @@
+ #include "hw/display/macfb.h"
+ #include "hw/misc/djmemc.h"
+ #include "hw/misc/iosb.h"
++#include "hw/audio/asc.h"
+ 
+ /*
+  * The main Q800 machine
+@@ -60,6 +61,7 @@ struct Q800MachineState {
+     MacfbNubusState macfb;
+     DJMEMCState djmemc;
+     IOSBState iosb;
++    ASCState asc;
+     MemoryRegion ramio;
+     MemoryRegion macio;
+     MemoryRegion macio_alias;
 -- 
 2.39.2
 
