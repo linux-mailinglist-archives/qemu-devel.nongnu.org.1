@@ -2,142 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988FC799779
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 12:54:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1643799844
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:02:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qevbZ-0002h7-FC; Sat, 09 Sep 2023 06:54:21 -0400
+	id 1qexZn-0005pU-9S; Sat, 09 Sep 2023 09:00:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qevbW-0002ex-Ga
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 06:54:18 -0400
-Received: from mail-bn8nam11on20601.outbound.protection.outlook.com
- ([2a01:111:f400:7eae::601]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qexZf-0005Zh-FL; Sat, 09 Sep 2023 09:00:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qevbT-0001Op-KD
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 06:54:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U/hXx/IohU4NSftnn0tosV+baR5fOQQA349NW+iE8Np3XO/DR5NL4A0qKZs83H+FST/tWl/93Hz+CZtC4Cneo02vEzoUjVFgB1OA6OeQindQLlMHQ1GUVkKTAlu0h9bYt7Ier16rkO+3c2LDqUjMh4hqX867B/luiQTyy4NsY8TtaFUwgVZ1JDRhCzRPWWLa2fdUFtVRAwqO/b3hSml4Ol98bnXl6gNtfl37lMUcLQk+BkIcHV0vfGHekBlJRDNEwWOt6Yp/b2joAvWK1O3RMGUpr5U6x7CElx7DHeQzWttSyfP0FcrlzCWmmJziLg/5wYZM6jGieNIdamDnkbDt3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vP5VtGMwqKXDYMHajnAU1m4VDmRFinybtUjuat8b4fM=;
- b=Hz7u2EeRpVyzsR8Uwv1C3sqzA0yxHaaSEmWznyVP/pO7n1qv6TwF8EyRO0vA1Vo8+AHrJN/kDasaFrvCZLPbmkJEZiy55pPu5x8rSWRIwDYwzMG7PAoA/HEW7yCdRR4FOzJ2d7oqPU7ogTeiMVWJ9iVJf7sOexySoUHwgyFOYM6lek90hjK3hWJkN16tNXTH5Jby2lDnCB4Lu25rri0aBxCKjikNk60hXzOTdUxvBHmfmPqTNP0qJ4aWbVisL8aGqAquyvpiP1ysUqBJuoosGTilqWf8h9Y8qvNTeXhNHGm28f6cnKPOdJkOdwm7Zkj+APmcJrpcUrRbhAEWjOwDUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vP5VtGMwqKXDYMHajnAU1m4VDmRFinybtUjuat8b4fM=;
- b=jTPHUL4SVQ6ojQzks79t90uLKhG2Voekp0VbSHucjl49Y2vIRSc07dFLLc1+2FgqdZD5lBrfbQtiBxXZHz1XlKaLqd1haSCB1T0Mmzi0bEkBHkhKjcNFzY/JsMHfxtWMXynNADC5S9ApG5Vn6UZ3bqrgf5HnYncnguEby3/PxHg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by IA0PR12MB7776.namprd12.prod.outlook.com (2603:10b6:208:430::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Sat, 9 Sep
- 2023 10:54:12 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::da13:5f6:45:fa40]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::da13:5f6:45:fa40%4]) with mapi id 15.20.6768.029; Sat, 9 Sep 2023
- 10:54:12 +0000
-Date: Sat, 9 Sep 2023 18:53:44 +0800
-To: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Antonio Caggiano <quic_acaggian@quicinc.com>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Subject: Re: [QEMU PATCH v4 12/13] virtio-gpu: Initialize Venus
-Message-ID: <ZPxOuIryznYcGmLS@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-13-ray.huang@amd.com>
- <ca8bcf9a-2886-aed0-5229-4787808bd39c@quicinc.com>
- <5462a77f-c66d-af2d-fc07-df9f787558c2@collabora.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5462a77f-c66d-af2d-fc07-df9f787558c2@collabora.com>
-X-ClientProxiedBy: SI2PR02CA0018.apcprd02.prod.outlook.com
- (2603:1096:4:194::18) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qexZb-000280-Hy; Sat, 09 Sep 2023 09:00:30 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 331872058D;
+ Sat,  9 Sep 2023 16:01:12 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 0E1A426DF4;
+ Sat,  9 Sep 2023 16:00:21 +0300 (MSK)
+Received: (nullmailer pid 353051 invoked by uid 1000);
+ Sat, 09 Sep 2023 13:00:20 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 00/43] Patch Round-up for stable 8.0.5,
+ freeze on 2023-09-19
+Date: Sat,  9 Sep 2023 15:59:26 +0300
+Message-Id: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|IA0PR12MB7776:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3cfe5010-05ff-4ccf-0497-08dbb1231a0c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: l+umJcJZKAhucvHeiBlsbDqcJJWngS3GmwMY/NbUbPGvq5eigKekyLz80B1AIgLDRsnyiuXsJd0x8hwQSAnaG2CAEOmXMGlOWmG4UqwbLP85SLi/OT0VpO7f7ivs3t+TxFV9fMiN8K0WPg3cxKx+OIPp/5ut1ETAau1/x3WQ8iygVY+yjcrdcuNplVrlnHXHbdUV2TPWRbjm3Ro6dEWtsICFvcVsc6YP9tpb1YExE3U/lFLa3mnsJHPGiKLD2A5uZPQh+7ak/UHneDiOMWXagDg/uqVVzkAkesEyCNkcejUKd1Q4nNu15GPP3jJHf12el+0puich6kP1AWwAlpY8rPpYGpacv55FwpcLblvlgwROAA67GPohmQDpOoas1Wpikp0uTvdPNf1fbBpb7W/ecirVUbSp8MoceVqrD0LBBtPKcT5TQBxufqbiULVOydBldJ73UxY0zhh6ha3LwkLFHeUoLMN8rRo2T9fvFNXijQNAjd7i7MtT2dWL0Gn+w2rkIbovpBEOKaFHEpG9RkQXZMh/CtbQQ104W0iHUssPqAMOwUu+XRgtiXBIX8xNrgf3
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(396003)(376002)(366004)(346002)(39860400002)(1800799009)(186009)(451199024)(53546011)(6666004)(6486002)(6506007)(36756003)(86362001)(38100700002)(2616005)(2906002)(478600001)(6512007)(83380400001)(41300700001)(8936002)(8676002)(5660300002)(316002)(4326008)(26005)(66476007)(7416002)(6916009)(54906003)(66946007)(66556008);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?SOXqKdiyU56Eo3UHFGddWxk/moK8z/nHbMDskcBZSCe9PV318iTnKZqt0Q?=
- =?iso-8859-1?Q?3RYewE5InWBWLbuRRBm72DS1Wr7H3ex4Co/8qkIujdYMy0K+4s++aVz502?=
- =?iso-8859-1?Q?/3PF9iPg2HJ8qjZ81aEwqrBObDJp3qIfud2v8ORr1VqT0Jr4diIUkW4q2b?=
- =?iso-8859-1?Q?Njifv8pWaWN7boftMWZzED7gTDE15dAjtDqFZvFIfATrRrA0DaGKXDjwBD?=
- =?iso-8859-1?Q?RFTcMUQ4EI65r63OCpmg06qRBkho1DtaDGS/kdB1hrxttI+DV7LRmFtcCV?=
- =?iso-8859-1?Q?PbJZ1g/EjqPCnlB45x9jwj63aEznGhSUd3p+qB7n3MIUOuqammsxWcG0ZZ?=
- =?iso-8859-1?Q?8/Clpn0Giv24dSIOUVh80OReBGNMDQJiKaxSJ6D8ThzVwB7ekoosRtC9Tm?=
- =?iso-8859-1?Q?RB0095CnJKG+rQa9k4YFgifrpdehZmEBW6qB/gGLFJF6y4ZEfvsUBSa9Hl?=
- =?iso-8859-1?Q?XrMNsMZNSd9qc2VsVoUX6S11N3eNaHS+WSL+cejQd31qDp5JTI8U5BzLQz?=
- =?iso-8859-1?Q?Zo6r1668maE02ZkQbycB6IL6AWt3hgTMP8RkjxVRH5Am2ElnNSGythSGuq?=
- =?iso-8859-1?Q?QIltmJgv2p/pwNpZRQpl7dAtI1rIfrLuAFmJPMCNQzbfxpTLmmh+hRCC6U?=
- =?iso-8859-1?Q?nQTcS2WQUoXcbaJgeFS+gw/Z1RwmovZaRw4q8Vbsk3OvXD+G9p1q0Xw3Oi?=
- =?iso-8859-1?Q?zgIJJbAizWbpQrVYZomxtoyjl7sD2XNF9USofyGvsKxLt4SE1Ae9Bji0vu?=
- =?iso-8859-1?Q?MDytRDeh1kumzWuDRPs0vqkpc7TkrsTuAn0DyeAgQS1ye4c6DTDwcPxGds?=
- =?iso-8859-1?Q?bsmIm+Ov0A/3ooX4bb8dr7+n5adP4V0DcC9bhy3+q+Yc09+1Raw+IMj/gj?=
- =?iso-8859-1?Q?Lhbk0AOj7/QLC08jbjMlQ2hyy3wCEqLOWupEqhV/RyUbE+32fy3XgaRVaZ?=
- =?iso-8859-1?Q?PemyKaQz4dGl/pYVuS8Rb5o/fRtkWWT9zZcGPrXLvgGcJiYkWE6EXAywV5?=
- =?iso-8859-1?Q?rZ4vApEbqPSyjQAEMPjl1tkr0Umma8J6l52gOD6AjO1uTdTtGWZqCmCuuZ?=
- =?iso-8859-1?Q?65ZElLNKurKr5Q8iQy7YFaWe1L2OD3kC9WzRfRaY9PFmKFchNPkIPUR6bq?=
- =?iso-8859-1?Q?Kn0M+IhhK3MZgn9OHWuGntdCp6TYhAxvtrzoI8bSf6aYvalvUhRgHkKdGH?=
- =?iso-8859-1?Q?vmiTDAUnOz+rUqRlT3cjFHV87cgLaEIZaEmxUO8XrZL6BZbTldJr/WSkPA?=
- =?iso-8859-1?Q?WD+wY4GN4AtJ6WaP+Dv9da0VO2Zv+BsEwnHKkfjeKzp32OwD8yVbQ1tlna?=
- =?iso-8859-1?Q?uJNhK+/os9eFpv2+Bnpy6TdSisww53xr1Yr2sDsQ2WgJWEQUdWJ8q9qcrb?=
- =?iso-8859-1?Q?URCa/kkYbJlZNh1RQAfkFOL+qsqnukUljmDgvD9iir14gck2aT+HUM4UXE?=
- =?iso-8859-1?Q?1gkvyDK6aaAtnbkiJFi/p4TmemrlDfuAys1gHHrgLeCDsgAOzYL3pojM2k?=
- =?iso-8859-1?Q?pM5JYDiFXunBouMxSp+qzl+Th9alqknqUPV9uS8YqJRiUYn2Owtfz+Yvcm?=
- =?iso-8859-1?Q?p4stumLebWOr5JDgt/1iirq5J5DG+cYskJXwOmb3P1/jIho89V/XbwuLs5?=
- =?iso-8859-1?Q?9Xf+8xXfaGISYrCqYXvsLf+cTz/f97sXMz?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3cfe5010-05ff-4ccf-0497-08dbb1231a0c
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2023 10:54:12.3484 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7u9BzgK+Ni12sOxVpHQmkBAybcHRE5Qd9ni4WZMzhrGm1tlpPiIRv9JNCweGg9Fr2k4lclmmqBTGPPVNfB9Sbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7776
-Received-SPF: softfail client-ip=2a01:111:f400:7eae::601;
- envelope-from=Ray.Huang@amd.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,81 +54,112 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Huang Rui <ray.huang@amd.com>
-From:  Huang Rui via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Aug 31, 2023 at 11:51:50PM +0800, Dmitry Osipenko wrote:
-> On 8/31/23 13:40, Antonio Caggiano wrote:
-> > Hi Huang,
-> > 
-> > Thank you for pushing this forward!
-> > 
-> > On 31/08/2023 11:32, Huang Rui wrote:
-> >> From: Antonio Caggiano <antonio.caggiano@collabora.com>
-> >>
-> >> Request Venus when initializing VirGL.
-> >>
-> >> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> >> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> >> ---
-> >>
-> >> v1->v2:
-> >> †††† - Rebase to latest version
-> >>
-> >> † hw/display/virtio-gpu-virgl.c | 2 ++
-> >> † 1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/hw/display/virtio-gpu-virgl.c
-> >> b/hw/display/virtio-gpu-virgl.c
-> >> index 83cd8c8fd0..c5a62665bd 100644
-> >> --- a/hw/display/virtio-gpu-virgl.c
-> >> +++ b/hw/display/virtio-gpu-virgl.c
-> >> @@ -887,6 +887,8 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-> >> ††††† }
-> >> † #endif
-> >> † +††† flags |= VIRGL_RENDERER_VENUS;
-> >> +
-> > 
-> > VIRGL_RENDERER_VENUS is a symbol only available from virglrenderer 0.9.1
-> > [0] and only if VIRGL_RENDERER_UNSTABLE_APIS is defined.
-> > 
-> > Luckily for us, VIRGL_RENDERER_UNSTABLE_APIS is defined unconditionally
-> > from virglrenderer 0.9.0 [1], so we could check for that in
-> > qemu/meson.build
-> > 
-> > e.g.
-> > 
-> > 
-> > † if virgl.version().version_compare('>= 0.9.0')
-> > ††† message('Enabling virglrenderer unstable APIs')
-> > ††† virgl = declare_dependency(compile_args:
-> > '-DVIRGL_RENDERER_UNSTABLE_APIS',
-> > †††††††††††††††††††††††††††††† dependencies: virgl)
-> > † endif
-> > 
-> > 
-> > Also, while testing this with various versions of virglrenderer, I
-> > realized there are no guarantees for Venus backend to be available in
-> > the linked library. Virglrenderer should be built with
-> > -Dvenus_experimental=true, and if that is not the case, the following
-> > virgl_renderer_init would fail for previous versions of virglrenderer or
-> > in case it has not been built with venus support.
-> > 
-> > I would suggest another approach for that which tries initializing Venus
-> > only if VIRGL_RENDERER_VENUS is actually defined. Then, if it fails
-> > cause virglrenderer has not been built with venus support, try again
-> > falling back to virgl only.
-> 
-> All the APIs will be stabilized with the upcoming virglrender 1.0
-> release that will happen soon. There is also a venus protocol bump, qemu
-> will have to bump virglrenderer's version dependency to 1.0 for venus
-> and other new features.
-> 
+The following patches are queued for QEMU stable v8.0.5:
 
-Dmitry, do you know the timeline of virglrender 1.0?
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.0
 
-Thanks,
-Ray
+Patch freeze is 2023-09-19, and the release is planned for 2023-09-21:
+
+  https://wiki.qemu.org/Planning/8.0
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 a1d027be95bc Zhao Liu:
+   machine: Add helpers to get cores/threads per socket
+02 d79a284a44bb Zhao Liu:
+   hw/smbios: Fix smbios_smp_sockets caculation
+03 7298fd7de555 Zhao Liu:
+   hw/smbios: Fix thread count in type4
+04 196ea60a734c Zhao Liu:
+   hw/smbios: Fix core count in type4
+05 8ada214a9022 BALATON Zoltan:
+   hw/i2c: Fix bitbang_i2c_data trace event
+06 8a64609eea8c Dongli Zhang:
+   dump: kdump-zlib data pages not dumped with pvtime/aarch64
+07 ecb1b7b082d3 Klaus Jensen:
+   hw/nvme: fix oob memory read in fdp events log
+08 6a33f2e920ec Klaus Jensen:
+   hw/nvme: fix compliance issue wrt. iosqes/iocqes
+09 dbdb13f931d7 Ankit Kumar:
+   hw/nvme: fix CRC64 for guard tag
+10 6c8f8456cb0b Klaus Jensen:
+   hw/nvme: fix null pointer access in directive receive
+11 3439ba9c5da9 Klaus Jensen:
+   hw/nvme: fix null pointer access in ruh update
+12 4333f0924c2f Nathan Egge:
+   linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+13 e73f27003e77 Richard Henderson:
+   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for microblaze
+14 ea9812d93f9c Richard Henderson:
+   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
+15 6ee960823da8 Luca Bonissi:
+   Fixed incorrect LLONG alignment for openrisc and cris
+16 3b830790151f Bernhard Beschow:
+   hw/sd/sdhci: Do not force sdhci_mmio_*_ops onto all SD controllers
+17 791b2b6a9302 Ilya Leoshkevich:
+   target/s390x: Fix the "ignored match" case in VSTRS
+18 23e87d419f34 Ilya Leoshkevich:
+   target/s390x: Use a 16-bit immediate in VREP
+19 6db3518ba4fc Ilya Leoshkevich:
+   target/s390x: Fix VSTL with a large length
+20 6a2ea6151835 Ilya Leoshkevich:
+   target/s390x: Check reserved bits of VFMIN/VFMAX's M5
+21 d19436291013 Thomas Huth:
+   include/hw/virtio/virtio-gpu: Fix virtio-gpu with blob on big endian hosts
+22 5e0d65909c6f Akihiko Odaki:
+   kvm: Introduce kvm_arch_get_default_type hook
+23 1ab445af8cd9 Akihiko Odaki:
+   accel/kvm: Specify default IPA size for arm64
+24 4b3520fd93cd Richard Henderson:
+   target/arm: Fix SME ST1Q
+25 cd1e4db73646 Richard Henderson:
+   target/arm: Fix 64-bit SSRA
+26 09a3fffae00b Philippe Mathieu-Daud√©:
+   docs/about/license: Update LICENSE URL
+27 f187609f27b2 Fabiano Rosas:
+   block-migration: Ensure we don't crash during migration cleanup
+28 6ec65b69ba17 Maksim Kostin:
+   hw/ppc/e500: fix broken snapshot replay
+29 7b8589d7ce7e Nicholas Piggin:
+   ppc/vof: Fix missed fields in VOF cleanup
+30 af03aeb631ee Richard Henderson:
+   target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
+31 c3461c6264a7 Niklas Cassel:
+   hw/ide/core: set ERR_STAT in unsupported command completion
+32 2967dc8209dd Niklas Cassel:
+   hw/ide/ahci: write D2H FIS when processing NCQ command
+33 e2a5d9b3d9c3 Niklas Cassel:
+   hw/ide/ahci: simplify and document PxCI handling
+34 d73b84d0b664 Niklas Cassel:
+   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
+35 1a16ce64fda1 Niklas Cassel:
+   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
+36 7e85cb0db4c6 Niklas Cassel:
+   hw/ide/ahci: fix ahci_write_fis_sdb()
+37 9f8942353765 Niklas Cassel:
+   hw/ide/ahci: fix broken SError handling
+38 97b8aa5ae9ff Hang Yu:
+   hw/i2c/aspeed: Fix Tx count and Rx size error in buffer pool mode
+39 961faf3ddbd8 Hang Yu:
+   hw/i2c/aspeed: Fix TXBUF transmission start position error
+40 bcd8e243083c Thomas Huth:
+   qemu-options.hx: Rephrase the descriptions of the -hd* and -cdrom options
+41 b21a6e31a182 Markus Armbruster:
+   docs tests: Fix use of migrate_set_parameter
+42 90a0778421ac Thomas Huth:
+   hw/net/vmxnet3: Fix guest-triggerable assert()
+43 95bef686e490 Marc-Andr√© Lureau:
+   qxl: don't assert() if device isn't yet initialized
 
