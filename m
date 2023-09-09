@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605CE799879
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86FAC799840
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:01:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexaR-0006ik-4A; Sat, 09 Sep 2023 09:01:19 -0400
+	id 1qexaS-0006q6-Hl; Sat, 09 Sep 2023 09:01:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexa1-0006Tj-GW; Sat, 09 Sep 2023 09:00:53 -0400
+ id 1qexa1-0006Wj-QK; Sat, 09 Sep 2023 09:00:54 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexZy-0002Cd-SW; Sat, 09 Sep 2023 09:00:53 -0400
+ id 1qexZz-0002Co-Gq; Sat, 09 Sep 2023 09:00:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6052720597;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8315E20598;
  Sat,  9 Sep 2023 16:01:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3281226DFE;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5B8FE26DFF;
  Sat,  9 Sep 2023 16:00:24 +0300 (MSK)
-Received: (nullmailer pid 353084 invoked by uid 1000);
+Received: (nullmailer pid 353087 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
  Jesper Wendel Devantier <j.devantier@samsung.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 10/43] hw/nvme: fix null pointer access in directive
- receive
-Date: Sat,  9 Sep 2023 15:59:36 +0300
-Message-Id: <20230909130020.352951-10-mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 11/43] hw/nvme: fix null pointer access in ruh update
+Date: Sat,  9 Sep 2023 15:59:37 +0300
+Message-Id: <20230909130020.352951-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -62,33 +61,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-nvme_directive_receive() does not check if an endurance group has been
-configured (set) prior to testing if flexible data placement is enabled
-or not.
+The Reclaim Unit Update operation in I/O Management Receive does not
+verify the presence of a configured endurance group prior to accessing
+it.
 
 Fix this.
 
 Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1815
 Fixes: 73064edfb864 ("hw/nvme: flexible data placement emulation")
 Reviewed-by: Jesper Wendel Devantier <j.devantier@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-(cherry picked from commit 6c8f8456cb0b239812dee5211881426496da7b98)
+(cherry picked from commit 3439ba9c5da943d96f7a3c86e0a7eb2ff48de41c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 353e9e71db..861635609b 100644
+index 861635609b..fce3ee0d95 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -6875,7 +6875,7 @@ static uint16_t nvme_directive_receive(NvmeCtrl *n, NvmeRequest *req)
-     case NVME_DIRECTIVE_IDENTIFY:
-         switch (doper) {
-         case NVME_DIRECTIVE_RETURN_PARAMS:
--            if (ns->endgrp->fdp.enabled) {
-+            if (ns->endgrp && ns->endgrp->fdp.enabled) {
-                 id.supported |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
-                 id.enabled |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
-                 id.persistent |= 1 << NVME_DIRECTIVE_DATA_PLACEMENT;
+@@ -4333,7 +4333,13 @@ static uint16_t nvme_io_mgmt_send_ruh_update(NvmeCtrl *n, NvmeRequest *req)
+     uint32_t npid = (cdw10 >> 1) + 1;
+     unsigned int i = 0;
+     g_autofree uint16_t *pids = NULL;
+-    uint32_t maxnpid = n->subsys->endgrp.fdp.nrg * n->subsys->endgrp.fdp.nruh;
++    uint32_t maxnpid;
++
++    if (!ns->endgrp || !ns->endgrp->fdp.enabled) {
++        return NVME_FDP_DISABLED | NVME_DNR;
++    }
++
++    maxnpid = n->subsys->endgrp.fdp.nrg * n->subsys->endgrp.fdp.nruh;
+ 
+     if (unlikely(npid >= MIN(NVME_FDP_MAXPIDS, maxnpid))) {
+         return NVME_INVALID_FIELD | NVME_DNR;
 -- 
 2.39.2
 
