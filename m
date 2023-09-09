@@ -2,85 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965DE799A4E
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 19:53:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4E2799A71
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 20:47:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf27o-0001vd-5I; Sat, 09 Sep 2023 13:52:04 -0400
+	id 1qf2yA-00022Y-1L; Sat, 09 Sep 2023 14:46:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf27l-0001vE-Mt
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 13:52:01 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1qf2y8-00022O-Px
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:46:08 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf27j-0007eb-8C
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 13:52:01 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-26f57f02442so2372989a91.0
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 10:51:58 -0700 (PDT)
+ id 1qf2y2-0002xO-QE
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 14:46:08 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-68fb7fb537dso55904b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 11:46:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694281917; x=1694886717; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zxhBiDTj+L5BMIDxMpSufWM7Qh88Kgn1O5ezIoDl5n4=;
- b=bHxXZWz2UlpMmlQkaxKgRfd2ktCiuxmyDZxHoO9XJ8AhBtnMGuJLiB2K729Yn1WBiK
- kaEfqnqdwyQTg4klVqQs30dd4+k8MqEZkm27gFEHXHwN2eKk/r92UNdjdBdNu0sWp7yw
- 7dM6caGWsQrRMpZcH3zhd1V39bkJSHxlcQmRo6PQDcsDiGfFtNVh0Zzd54By04G1MEdA
- G00gvADo++UdsDRW52amZd90+v+ndte/qzeF7WiBnf5JnhsPLqbxU6f4XrrEu+as8Noa
- dntmJuatk8vBUrhq6RDrTIGYxlQ6s5H+FeogRa+OqMcDzfFF7sntO5p+KCZnldXF/JbE
- lEsg==
+ d=linaro.org; s=google; t=1694285161; x=1694889961; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=tBXZgZ1YDZu8m+OxXcx4KGg4Z0Uw5UN+dX1vhmo3Wtg=;
+ b=YUUVAFIO3CoYaCuXWo3CIlZY22+UU++f7U9Os1WC62dh92CxRwI+2Nvc59lebyj62X
+ udPG7BAoQlU/iaQ/d3f+4iGiV/WCITB52T1FUlJh9vgvkfq2hanxxRRiEnYixTaUMWgO
+ TZNTNIR0qdytGzaj2n7XzsI69MVPOGJXd0WtQ0SCZXbYyejwyx5o/VqB7LtHjpcW5lek
+ MT7bAdJ4CwthsKanYYAoCcdhO6b6S+EzNrCWVB0G+weI930AYls8dDdQnf2s0mtPUfaB
+ gQxcsIbAL+5BF+8z35n2O86sAjZiYrfiBEbZ4PmWuTmaA+DqBUoI04ONOZEQcZghaREn
+ 98Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694281917; x=1694886717;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zxhBiDTj+L5BMIDxMpSufWM7Qh88Kgn1O5ezIoDl5n4=;
- b=qSQEKC8//+MQTcSF/p+jILvlUPfdWumTBvhBj34HybaA3UWp3J21+v0yDbaXhaXpQl
- whOOdZMUgix12HYQ7kRatG0jgp1+CaAMntJ92UP4kBKpnXQ2vTnSqZwD3ormXfxwhGLJ
- QkA8yEyE4Yw6AfJsavdVippsV+09O7ojBOhOLzDsBxVfAML5smQ+KyTnDArJwHpjOufY
- 9nNN+RyxiH9SYoGcxA/8Wey69CrhIj/H6vMSLAAq0aPTMiRwt7h+Bw/pSEJ3MrCogKSf
- JQ3+L5zXy2tphWnzXNS8AxAzdOEoecW4SvwlTFc9MMCMHYh8X+MqUZaO71N8Z/UKBM5l
- 4Nfw==
-X-Gm-Message-State: AOJu0YwZgwte7eZn71oI5sJPmUnBs7dE2+oK/X5wMfQOxS5pm2o8K1sO
- cVDuuk21CZ68lacuLTewAbQHeA==
-X-Google-Smtp-Source: AGHT+IHF2Kkyp6sRdw9hRNSfjM3CPTWXm1a2L65WIzJJnb0hIK8n4Ct4t2xyXaQFwZhQO0b4HH4UDw==
-X-Received: by 2002:a17:902:e80f:b0:1c0:bcbc:d64 with SMTP id
- u15-20020a170902e80f00b001c0bcbc0d64mr5978817plg.51.1694281917524; 
- Sat, 09 Sep 2023 10:51:57 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- u1-20020a170902e5c100b001b88da737c6sm3554483plf.54.2023.09.09.10.51.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 10:51:56 -0700 (PDT)
-Message-ID: <79876863-58bf-b21e-3aa3-8ab25724be35@linaro.org>
-Date: Sat, 9 Sep 2023 10:51:55 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 20/22] Implement shmctl(2)
-Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>
-References: <20230819094806.14965-1-kariem.taha2.7@gmail.com>
- <20230819094806.14965-21-kariem.taha2.7@gmail.com>
- <ec99a998-7793-1c01-e9e5-d84c3ada68ee@linaro.org> <875y4knm2k.fsf@gmail.com>
+ d=1e100.net; s=20230601; t=1694285161; x=1694889961;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=tBXZgZ1YDZu8m+OxXcx4KGg4Z0Uw5UN+dX1vhmo3Wtg=;
+ b=FjUbzdd/6yvgRI6yLejm54jcEXfOmsm3oiOUqDjn+ELR5VnEz5Xt1rwF+qLiK8zXBf
+ qMJEFuXy18CEpfcy+A2j/urMUTcJtKZVTRA2yYl2PQxfnwKdG9IsYT56OlK85wgP6taZ
+ v2Zsj0ig27Bzaw6P/voQmKAOjDzHKNc250BXGKYVRsuT+bCEtOIxhNgwj9PeQolt+eeK
+ /LDz0Ldl2ljCqXF1AH1HXYkbj50xx7nRbd/DYEVgTQV0S2FJPFEUR0zTzHH8ArOqE31Q
+ oBgUzL8kuOShRBiEEK3ZOR7v9+1UdYlHVCBAPEaQAQnnwAdNjwpfXPdoR5hFyiMyFGlQ
+ C2hg==
+X-Gm-Message-State: AOJu0YzfHBOw/9K9B5OMfnQcb25pwRjelh1k0lef3Eq6PDhnA0X1CmUv
+ +Qxkb1gFl/wOHHSTZbbQtnZf9cwnMA888sxslWE=
+X-Google-Smtp-Source: AGHT+IGlJZS0hQph6gQ85duuBTLICQmVxs2iFOLzfhkql19t3NKg3RtD3/hG4Ml00bs1OjKBzU5UFw==
+X-Received: by 2002:a05:6a20:324a:b0:133:b3a9:90d with SMTP id
+ hm10-20020a056a20324a00b00133b3a9090dmr5072240pzc.36.1694285160985; 
+ Sat, 09 Sep 2023 11:46:00 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ z12-20020a170902ee0c00b001bbaf09ce15sm3550855plb.152.2023.09.09.11.45.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 09 Sep 2023 11:46:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <875y4knm2k.fsf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+To: qemu-devel@nongnu.org
+Cc: thuth@redhat.com,
+	philmd@linaro.org,
+	qemu-stable@nongnu.org
+Subject: [PATCH v2] linux-user: Fixes for zero_bss
+Date: Sat,  9 Sep 2023 11:45:59 -0700
+Message-Id: <20230909184559.36504-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,35 +89,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 18:59, Karim Taha wrote:
-> Richard Henderson <richard.henderson@linaro.org> wrote:
-> 
->> On 8/19/23 02:48, Karim Taha wrote:
->>> +    switch (cmd) {
->>> +    case IPC_STAT:
->>> +    case IPC_SET:
->>> +        if (target_to_host_shmid_ds(&dsarg, buff)) {
->>> +            return -TARGET_EFAULT;
->>> +        }
->>> +        ret = get_errno(shmctl(shmid, cmd, &dsarg));
->>> +        if (host_to_target_shmid_ds(buff, &dsarg)) {
->>> +            return -TARGET_EFAULT;
->>> +        }
->>> +        break;
->>
->> IPC_STAT treats buff as output, IPC_SET treats buff as input,
->> so these cases can't be combined.
->>
->>
->> r~
-> 
-> I think they can be combined:
-> 1- we marshal the struct `buff` from target to host
-> 2- call `shmctl`
-> 3- marshal the results back.
+The previous change, 2d385be6152, assumed !PAGE_VALID meant that
+the page would be unmapped by the elf image.  However, since we
+reserved the entire image space via mmap, PAGE_VALID will always
+be set.  Instead, assume PROT_NONE for the same condition.
 
-No.  For IPC_SET, the target page need not be writable, as you assume here.
+Furthermore, assume bss is only ever present for writable segments,
+and that there is no page overlap between PT_LOAD segments.
+Instead of an assert, return false to indicate failure.
 
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
+Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+v2: Pass errp to zero_bss, so we can give a reasonable error message.
+---
+ linux-user/elfload.c | 53 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-r~
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index a5b28fa3e7..5271b749b0 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -2304,31 +2304,58 @@ static abi_ulong setup_arg_pages(struct linux_binprm *bprm,
+  * Map and zero the bss.  We need to explicitly zero any fractional pages
+  * after the data section (i.e. bss).  Return false on mapping failure.
+  */
+-static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss, int prot)
++static bool zero_bss(abi_ulong start_bss, abi_ulong end_bss,
++                     int prot, Error **errp)
+ {
+     abi_ulong align_bss;
+ 
++    /* We only expect writable bss; the code segment shouldn't need this. */
++    if (!(prot & PROT_WRITE)) {
++        error_setg(errp, "PT_LOAD with non-writable bss");
++        return false;
++    }
++
+     align_bss = TARGET_PAGE_ALIGN(start_bss);
+     end_bss = TARGET_PAGE_ALIGN(end_bss);
+ 
+     if (start_bss < align_bss) {
+         int flags = page_get_flags(start_bss);
+ 
+-        if (!(flags & PAGE_VALID)) {
+-            /* Map the start of the bss. */
++        if (!(flags & PAGE_BITS)) {
++            /*
++             * The whole address space of the executable was reserved
++             * at the start, therefore all pages will be VALID.
++             * But assuming there are no PROT_NONE PT_LOAD segments,
++             * a PROT_NONE page means no data all bss, and we can
++             * simply extend the new anon mapping back to the start
++             * of the page of bss.
++             */
+             align_bss -= TARGET_PAGE_SIZE;
+-        } else if (flags & PAGE_WRITE) {
+-            /* The page is already mapped writable. */
+-            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
+         } else {
+-            /* Read-only zeros? */
+-            g_assert_not_reached();
++            /*
++             * The start of the bss shares a page with something.
++             * The only thing that we expect is the data section,
++             * which would already be marked writable.
++             * Overlapping the RX code segment seems malformed.
++             */
++            if (!(flags & PAGE_WRITE)) {
++                error_setg(errp, "PT_LOAD with bss overlapping "
++                           "non-writable page");
++                return false;
++            }
++
++            /* The page is already mapped and writable. */
++            memset(g2h_untagged(start_bss), 0, align_bss - start_bss);
+         }
+     }
+ 
+-    return align_bss >= end_bss ||
+-           target_mmap(align_bss, end_bss - align_bss, prot,
+-                       MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) != -1;
++    if (align_bss < end_bss &&
++        target_mmap(align_bss, end_bss - align_bss, prot,
++                    MAP_FIXED | MAP_PRIVATE | MAP_ANON, -1, 0) == -1) {
++        error_setg_errno(errp, errno, "Error mapping bss");
++        return false;
++    }
++    return true;
+ }
+ 
+ #if defined(TARGET_ARM)
+@@ -3352,8 +3379,8 @@ static void load_elf_image(const char *image_name, int image_fd,
+ 
+             /* If the load segment requests extra zeros (e.g. bss), map it. */
+             if (vaddr_ef < vaddr_em &&
+-                !zero_bss(vaddr_ef, vaddr_em, elf_prot)) {
+-                goto exit_mmap;
++                !zero_bss(vaddr_ef, vaddr_em, elf_prot, &err)) {
++                goto exit_errmsg;
+             }
+ 
+             /* Find the full program boundaries.  */
+-- 
+2.34.1
+
 
