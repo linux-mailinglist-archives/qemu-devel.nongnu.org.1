@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E72799B78
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 23:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4E4799B7B
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 23:50:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf5le-0007ka-BP; Sat, 09 Sep 2023 17:45:26 -0400
+	id 1qf5pL-0003qC-0C; Sat, 09 Sep 2023 17:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf5lb-0007Xm-Kh
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:45:23 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1qf5pJ-0003pp-KO
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:49:13 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf5lZ-0007aU-5S
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:45:23 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-68c0cb00fb3so3012723b3a.2
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 14:45:19 -0700 (PDT)
+ id 1qf5pH-00082B-Gp
+ for qemu-devel@nongnu.org; Sat, 09 Sep 2023 17:49:13 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1c337aeefbdso29619855ad.0
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 14:49:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694295918; x=1694900718; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694296150; x=1694900950; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=7lmnRSaWvwUO2cahoC8pkeFLJzMHhijxFy2yPPWztt8=;
- b=gbyKLe+3XD9ssK1+Gn5oknprs404oZBp/2vHtJXb6uEuU5bCUrKN82Hx4jha1yBzXR
- gYDjGoradj5YY8nAQve5JFx3unYJFwvqd5959zjAwHV09foptitxKbsveJfi8R3VUeu2
- YljEqmcpb3esgaurrOxssieu2g6ia9a3kQnbq+rgsUOsDd/jZ7Z7bgwKmBO0LeTitVQ+
- RvbLvbjLGXxqZ+f3n31KHXOeZzRRaIzstXZmX60k4cuzY2pNZFeVL5np+lqzHPQt6DDP
- vSImai4LXabOd87iy+8Vh8MUFGTLh2olWRTsHnqElnSBa+0zfRzIs/U3UDt3zNHSicdP
- Gxig==
+ bh=kzr19gGSE64Ls24LVXaGQkFEX20+HD1ZGI8NjKuYov4=;
+ b=r0VlUw5grEqg8FPL6tnw60qHO6hqLu04ii1eRSigievel7vqct9MLDq/BwCJwqjIh3
+ LQLgekHNGRIo9kL9kyb36L3STEszP4lHmQGif95mfjsQ61hpzLP9M7/i2pQ4DFpgkcsA
+ eSIYgloZP1T9BJ/sKRLwGLwRdi8GwewsW9I9oV/DMyFN83lok67ZI1uoq+YUM3++qNmW
+ 81qs/YSoqw+hxnrTGLVydkHoIDxxcYSnGfSPULihB/wG7jj8fivLjNH9gmibqxW40k4g
+ h9nwBYPOMR8YxcVFE+6AIFTnV3jhEEzzLijmRqOK/6rw7KxIQ+Jy4ZxFFrGYqd7awJx8
+ 6abg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694295918; x=1694900718;
+ d=1e100.net; s=20230601; t=1694296150; x=1694900950;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7lmnRSaWvwUO2cahoC8pkeFLJzMHhijxFy2yPPWztt8=;
- b=qqD5qKRhMRraMz2j5VqooY0wvSvrT/z+zSFpCYXlj2DyYZdiWV/jJ7xUyhuBD6EPSZ
- pWvgO5WMoC+igWNo0ybJPo1+cfE/dc38ywDLrgtcmbtOLx5cyIhzb4qXYtqZPILF1ZSK
- 8JeO5I+CpEAJZj0ftfz3sQcSFCWz8HY9KFV61jDrF5e6pHiDvihCmZlEdQGnCIZixa5a
- ctnS3NZW/AJZND07lz56LulnJPbUBj4vdeU1xJ3dhhCjJ2SD8eI2UzUeODCiFQmStvBn
- dFZiVsT5/xwgqCEjwF6X/sXCSnWb6+23zKJkKFv34FAYAK5WiOKbkO2fKBcUBaTcXQb/
- /BCA==
-X-Gm-Message-State: AOJu0YyVY33JUG1HgWUCPE2BJ+vOWJqyxajnVAUGpjUOlpgrBpI8miH0
- 77JdqTQ+TRpfxKc3UxwZerjBsg==
-X-Google-Smtp-Source: AGHT+IEqw9lmMTn9qUokX3q28PRM1Pph0svsKb4vpq2qcMvYCobV0tlYhySGKpL+kTx3/BfzG6FycA==
-X-Received: by 2002:a05:6a00:4218:b0:68f:a5ff:3f3a with SMTP id
- cd24-20020a056a00421800b0068fa5ff3f3amr2779165pfb.11.1694295918427; 
- Sat, 09 Sep 2023 14:45:18 -0700 (PDT)
+ bh=kzr19gGSE64Ls24LVXaGQkFEX20+HD1ZGI8NjKuYov4=;
+ b=oZhwxayNtR+PzcWM7c9rzQLcLWcW13WBcGDVE2KwhKJcPoR45QtTfDExHNiboJzxSx
+ 48+3MSeWa/RrDG3x3k6pweawPtvWxTLd8aTiPHRwGOLiR3n39iEQmSWwb/xbGj/uMQ/6
+ R/EmLrsCX/sEGs9evcIg2r+SXeWJXFWZPipRcE3Vv0DCp82DlQjV3ZIPlrUKO/09UJqm
+ atU4uZXVlDnBIlBed1s4Y1oh9Qir2AYA6SjXEp/AKYZlGURcFo3rCzgTz/iwEup3fwnV
+ TCJ4D8lYhF+WWO0cfMa+CHT2oW/ch4iKthp66CewwchTw5VsyS+7AcfDfdJYJWPyc7ld
+ zSZg==
+X-Gm-Message-State: AOJu0YyuCFTSRlhBbpBH8duk/aSUtavaM5u8DtWcmEwV1sfqrZhPhlsB
+ wyZ+VHOStT0bPWcAcIo29NZK6Q==
+X-Google-Smtp-Source: AGHT+IEBW55V1rRyg+1VuIgb/ITsLo6wrZW4ocUd/JHVFAQLHu0ynPiyxN54JGH+NIPOTE4KAoJLgA==
+X-Received: by 2002:a17:902:db11:b0:1bc:61d6:5fcc with SMTP id
+ m17-20020a170902db1100b001bc61d65fccmr7552158plx.51.1694296149598; 
+ Sat, 09 Sep 2023 14:49:09 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- y26-20020aa7855a000000b00689f1ce7dacsm3120828pfn.23.2023.09.09.14.45.17
+ 13-20020a170902c20d00b001b87d3e845bsm3658441pll.149.2023.09.09.14.49.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 14:45:18 -0700 (PDT)
-Message-ID: <dc4ad688-c5c6-8464-737e-92f087ca48a3@linaro.org>
-Date: Sat, 9 Sep 2023 14:45:16 -0700
+ Sat, 09 Sep 2023 14:49:09 -0700 (PDT)
+Message-ID: <dab40b71-8e2e-951b-8c2c-de0e18f0e5f4@linaro.org>
+Date: Sat, 9 Sep 2023 14:49:07 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH v2] util: Delete checks for old host definitions
+Subject: Re: [PATCH v4 05/16] tcg/loongarch64: Lower add/sub_vec to vadd/vsub
 Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- pbonzini@redhat.com, laurent@vivier.eu, qemu-devel@nongnu.org,
- Warner Losh <imp@bsdimp.com>, Kyle Evans <kevans@freebsd.org>,
- Helge Deller <deller@gmx.de>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, Peter Maydell <peter.maydell@linaro.org>
-References: <20230810225922.21600-1-akihiko.odaki@daynix.com>
- <ff0c7ba4-2c4f-4638-acc5-8819179da7e1@daynix.com>
+To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn, git@xen0n.name
+References: <20230908022302.180442-1-c@jia.je>
+ <20230908022302.180442-6-c@jia.je>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ff0c7ba4-2c4f-4638-acc5-8819179da7e1@daynix.com>
+In-Reply-To: <20230908022302.180442-6-c@jia.je>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -100,16 +95,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/2/23 22:53, Akihiko Odaki wrote:
-> Hi,
+On 9/7/23 19:21, Jiajie Chen wrote:
+> Lower the following ops:
 > 
-> Can anyone have look at this?
+> - add_vec
+> - sub_vec
 > 
-> I also have another patch similar but for thunk. It was reviewed but no one has made a 
-> pull request yet:
-> https://patchew.org/QEMU/20230808152314.102036-1-akihiko.odaki@daynix.com/
+> Signed-off-by: Jiajie Chen<c@jia.je>
+> ---
+>   tcg/loongarch64/tcg-target-con-set.h |  1 +
+>   tcg/loongarch64/tcg-target-con-str.h |  1 +
+>   tcg/loongarch64/tcg-target.c.inc     | 61 ++++++++++++++++++++++++++++
+>   3 files changed, 63 insertions(+)
 
-Queued this one to tcg-next also.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 
 r~
