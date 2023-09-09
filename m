@@ -2,39 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B8C79989A
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B26FC799890
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:18:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexeT-0006ZJ-Lb; Sat, 09 Sep 2023 09:05:29 -0400
+	id 1qexeV-0006a7-Dg; Sat, 09 Sep 2023 09:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexeR-0006YD-0W; Sat, 09 Sep 2023 09:05:27 -0400
+ id 1qexeT-0006Zn-Ao; Sat, 09 Sep 2023 09:05:29 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexeO-0003SC-Ls; Sat, 09 Sep 2023 09:05:26 -0400
+ id 1qexeP-0003UQ-TK; Sat, 09 Sep 2023 09:05:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DCF59205D1;
- Sat,  9 Sep 2023 16:06:03 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 1DB0E205D2;
+ Sat,  9 Sep 2023 16:06:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A3BE026E24;
+ by tsrv.corpit.ru (Postfix) with SMTP id D762926E25;
  Sat,  9 Sep 2023 16:05:12 +0300 (MSK)
-Received: (nullmailer pid 354272 invoked by uid 1000);
+Received: (nullmailer pid 354275 invoked by uid 1000);
  Sat, 09 Sep 2023 13:05:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 04/37] hw/smbios: Fix core count in type4
-Date: Sat,  9 Sep 2023 16:04:34 +0300
-Message-Id: <20230909130511.354171-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Dongli Zhang <dongli.zhang@oracle.com>,
+ Joe Jin <joe.jin@oracle.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 05/37] dump: kdump-zlib data pages not dumped with
+ pvtime/aarch64
+Date: Sat,  9 Sep 2023 16:04:35 +0300
+Message-Id: <20230909130511.354171-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230909160328@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,65 +62,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
->From SMBIOS 3.0 specification, core count field means:
+The kdump-zlib data pages are not dumped from aarch64 host when the
+'pvtime' is involved, that is, when the block->target_end is not aligned to
+page_size. In the below example, it is expected to dump two blocks.
 
-Core Count is the number of cores detected by the BIOS for this
-processor socket. [1]
+(qemu) info mtree -f
+... ...
+  00000000090a0000-00000000090a0fff (prio 0, ram): pvtime KVM
+... ...
+  0000000040000000-00000001bfffffff (prio 0, ram): mach-virt.ram KVM
+... ...
 
-Before 003f230e37d7 ("machine: Tweak the order of topology members in
-struct CpuTopology"), MachineState.smp.cores means "the number of cores
-in one package", and it's correct to use smp.cores for core count.
+However, there is an issue with get_next_page() so that the pages for
+"mach-virt.ram" will not be dumped.
 
-But 003f230e37d7 changes the smp.cores' meaning to "the number of cores
-in one die" and doesn't change the original smp.cores' use in smbios as
-well, which makes core count in type4 go wrong.
+At line 1296, although we have reached at the end of the 'pvtime' block,
+since it is not aligned to the page_size (e.g., 0x10000), it will not break
+at line 1298.
 
-Fix this issue with the correct "cores per socket" caculation.
+1255 static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
+1256                           uint8_t **bufptr, DumpState *s)
+... ...
+1294             memcpy(buf + addr % page_size, hbuf, n);
+1295             addr += n;
+1296             if (addr % page_size == 0) {
+1297                 /* we filled up the page */
+1298                 break;
+1299             }
 
-[1] SMBIOS 3.0.0, section 7.5.6, Processor Information - Core Count
+As a result, get_next_page() will continue to the next
+block ("mach-virt.ram"). Finally, when get_next_page() returns to the
+caller:
 
-Fixes: 003f230e37d7 ("machine: Tweak the order of topology members in struct CpuTopology")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20230628135437.1145805-5-zhao1.liu@linux.intel.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 196ea60a734c346d7d75f1d89aa37703d4d854e7)
+- 'pfnptr' is referring to the 'pvtime'
+- but 'blockptr' is referring to the "mach-virt.ram"
+
+When get_next_page() is called the next time, "*pfnptr += 1" still refers
+to the prior 'pvtime'. It will exit immediately because it is out of the
+range of the current "mach-virt.ram".
+
+The fix is to break when it is time to come to the next block, so that both
+'pfnptr' and 'blockptr' refer to the same block.
+
+Fixes: 94d788408d2d ("dump: fix kdump to work over non-aligned blocks")
+Cc: Joe Jin <joe.jin@oracle.com>
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20230713055819.30497-1-dongli.zhang@oracle.com>
+(cherry picked from commit 8a64609eea8cb2bac015968c4b62da5bce266e22)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 4657d4417c..cd43185417 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -713,6 +713,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     char sock_str[128];
-     size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
-     unsigned threads_per_socket;
-+    unsigned cores_per_socket;
+diff --git a/dump/dump.c b/dump/dump.c
+index df117c847f..0f3b6a58d5 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -1298,8 +1298,8 @@ static bool get_next_page(GuestPhysBlock **blockptr, uint64_t *pfnptr,
  
-     if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
-         tbl_len = SMBIOS_TYPE_4_LEN_V30;
-@@ -748,8 +749,9 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     SMBIOS_TABLE_SET_STR(4, part_number_str, type4.part);
- 
-     threads_per_socket = machine_topo_get_threads_per_socket(ms);
-+    cores_per_socket = machine_topo_get_cores_per_socket(ms);
- 
--    t->core_count = (ms->smp.cores > 255) ? 0xFF : ms->smp.cores;
-+    t->core_count = (cores_per_socket > 255) ? 0xFF : cores_per_socket;
-     t->core_enabled = t->core_count;
- 
-     t->thread_count = (threads_per_socket > 255) ? 0xFF : threads_per_socket;
-@@ -758,7 +760,7 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance)
-     t->processor_family2 = cpu_to_le16(0x01); /* Other */
- 
-     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
--        t->core_count2 = t->core_enabled2 = cpu_to_le16(ms->smp.cores);
-+        t->core_count2 = t->core_enabled2 = cpu_to_le16(cores_per_socket);
-         t->thread_count2 = cpu_to_le16(threads_per_socket);
-     }
- 
+             memcpy(buf + addr % page_size, hbuf, n);
+             addr += n;
+-            if (addr % page_size == 0) {
+-                /* we filled up the page */
++            if (addr % page_size == 0 || addr >= block->target_end) {
++                /* we filled up the page or the current block is finished */
+                 break;
+             }
+         } else {
 -- 
 2.39.2
 
