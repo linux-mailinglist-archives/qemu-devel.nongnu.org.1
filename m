@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2413E79984F
-	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FA0799898
+	for <lists+qemu-devel@lfdr.de>; Sat,  9 Sep 2023 15:20:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qexac-00072r-Lu; Sat, 09 Sep 2023 09:01:30 -0400
+	id 1qexbX-0001Ia-0Q; Sat, 09 Sep 2023 09:02:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexaa-000707-E8; Sat, 09 Sep 2023 09:01:28 -0400
+ id 1qexaw-00083y-2h; Sat, 09 Sep 2023 09:01:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qexaX-0002Q4-Ri; Sat, 09 Sep 2023 09:01:28 -0400
+ id 1qexat-0002QS-0c; Sat, 09 Sep 2023 09:01:49 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6A3232059E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 972882059F;
  Sat,  9 Sep 2023 16:01:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 40E9826E04;
+ by tsrv.corpit.ru (Postfix) with SMTP id 65C3826E05;
  Sat,  9 Sep 2023 16:00:25 +0300 (MSK)
-Received: (nullmailer pid 353102 invoked by uid 1000);
+Received: (nullmailer pid 353105 invoked by uid 1000);
  Sat, 09 Sep 2023 13:00:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
- Guenter Roeck <linux@roeck-us.net>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 16/43] hw/sd/sdhci: Do not force sdhci_mmio_*_ops onto
- all SD controllers
-Date: Sat,  9 Sep 2023 15:59:42 +0300
-Message-Id: <20230909130020.352951-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Claudio Fontana <cfontana@suse.de>, David Hildenbrand <david@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 17/43] target/s390x: Fix the "ignored match" case in
+ VSTRS
+Date: Sat,  9 Sep 2023 15:59:43 +0300
+Message-Id: <20230909130020.352951-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230909155813@cover.tls.msk.ru>
@@ -59,56 +60,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-Since commit c0a55a0c9da2 "hw/sd/sdhci: Support big endian SD host controller
-interfaces" sdhci_common_realize() forces all SD card controllers to use either
-sdhci_mmio_le_ops or sdhci_mmio_be_ops, depending on the "endianness" property.
-However, there are device models which use different MMIO ops: TYPE_IMX_USDHC
-uses usdhc_mmio_ops and TYPE_S3C_SDHCI uses sdhci_s3c_mmio_ops.
+Currently the emulation of VSTRS recognizes partial matches in presence
+of \0 in the haystack, which, according to PoP, is not correct:
 
-Forcing sdhci_mmio_le_ops breaks SD card handling on the "sabrelite" board, for
-example. Fix this by defaulting the io_ops to little endian and switch to big
-endian in sdhci_common_realize() only if there is a matchig big endian variant
-available.
+    If the ZS flag is one and a zero byte was detected
+    in the second operand, then there can not be a
+    partial match ...
 
-Fixes: c0a55a0c9da2 ("hw/sd/sdhci: Support big endian SD host controller
-interfaces")
+Add a check for this. While at it, fold a number of explicitly handled
+special cases into the generic logic.
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Message-Id: <20230709080950.92489-1-shentey@gmail.com>
-(cherry picked from commit 3b830790151ff231531ef2595793e387dd154efb)
+Cc: qemu-stable@nongnu.org
+Reported-by: Claudio Fontana <cfontana@suse.de>
+Closes: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00633.html
+Fixes: 1d706f314191 ("target/s390x: vxeh2: vector string search")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20230804233748.218935-3-iii@linux.ibm.com>
+Tested-by: Claudio Fontana <cfontana@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 791b2b6a930273db694b9ba48bbb406e78715927)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index 6811f0f1a8..362c2c86aa 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -1382,6 +1382,8 @@ void sdhci_initfn(SDHCIState *s)
+diff --git a/target/s390x/tcg/vec_string_helper.c b/target/s390x/tcg/vec_string_helper.c
+index 9b85becdfb..a19f429768 100644
+--- a/target/s390x/tcg/vec_string_helper.c
++++ b/target/s390x/tcg/vec_string_helper.c
+@@ -474,9 +474,9 @@ DEF_VSTRC_CC_RT_HELPER(32)
+ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+                  const S390Vector *v4, uint8_t es, bool zs)
+ {
+-    int substr_elen, substr_0, str_elen, i, j, k, cc;
++    int substr_elen, i, j, k, cc;
+     int nelem = 16 >> es;
+-    bool eos = false;
++    int str_leftmost_0;
  
-     s->insert_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_raise_insertion_irq, s);
-     s->transfer_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, sdhci_data_transfer, s);
-+
-+    s->io_ops = &sdhci_mmio_le_ops;
- }
+     substr_elen = s390_vec_read_element8(v4, 7) >> es;
  
- void sdhci_uninitfn(SDHCIState *s)
-@@ -1399,9 +1401,13 @@ void sdhci_common_realize(SDHCIState *s, Error **errp)
+@@ -498,47 +498,20 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+     }
  
-     switch (s->endianness) {
-     case DEVICE_LITTLE_ENDIAN:
--        s->io_ops = &sdhci_mmio_le_ops;
-+        /* s->io_ops is little endian by default */
-         break;
-     case DEVICE_BIG_ENDIAN:
-+        if (s->io_ops != &sdhci_mmio_le_ops) {
-+            error_setg(errp, "SD controller doesn't support big endianness");
-+            return;
-+        }
-         s->io_ops = &sdhci_mmio_be_ops;
-         break;
-     default:
+     /* If ZS, look for eos in the searched string. */
++    str_leftmost_0 = nelem;
+     if (zs) {
+         for (k = 0; k < nelem; k++) {
+             if (s390_vec_read_element(v2, k, es) == 0) {
+-                eos = true;
++                str_leftmost_0 = k;
+                 break;
+             }
+         }
+-        str_elen = k;
+-    } else {
+-        str_elen = nelem;
+     }
+ 
+-    substr_0 = s390_vec_read_element(v3, 0, es);
+-
+-    for (k = 0; ; k++) {
+-        for (; k < str_elen; k++) {
+-            if (s390_vec_read_element(v2, k, es) == substr_0) {
+-                break;
+-            }
+-        }
+-
+-        /* If we reached the end of the string, no match. */
+-        if (k == str_elen) {
+-            cc = eos; /* no match (with or without zero char) */
+-            goto done;
+-        }
+-
+-        /* If the substring is only one char, match. */
+-        if (substr_elen == 1) {
+-            cc = 2; /* full match */
+-            goto done;
+-        }
+-
+-        /* If the match begins at the last char, we have a partial match. */
+-        if (k == str_elen - 1) {
+-            cc = 3; /* partial match */
+-            goto done;
+-        }
+-
++    cc = str_leftmost_0 == nelem ? 0 : 1;  /* No match. */
++    for (k = 0; k < nelem; k++) {
+         i = MIN(nelem, k + substr_elen);
+-        for (j = k + 1; j < i; j++) {
++        for (j = k; j < i; j++) {
+             uint32_t e2 = s390_vec_read_element(v2, j, es);
+             uint32_t e3 = s390_vec_read_element(v3, j - k, es);
+             if (e2 != e3) {
+@@ -546,9 +519,16 @@ static int vstrs(S390Vector *v1, const S390Vector *v2, const S390Vector *v3,
+             }
+         }
+         if (j == i) {
+-            /* Matched up until "end". */
+-            cc = i - k == substr_elen ? 2 : 3; /* full or partial match */
+-            goto done;
++            /* All elements matched. */
++            if (k > str_leftmost_0) {
++                cc = 1;  /* Ignored match. */
++                k = nelem;
++            } else if (i - k == substr_elen) {
++                cc = 2;  /* Full match. */
++            } else {
++                cc = 3;  /* Partial match. */
++            }
++            break;
+         }
+     }
+ 
 -- 
 2.39.2
 
