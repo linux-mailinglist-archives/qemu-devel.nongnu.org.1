@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2741799C45
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 03:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4A3799C92
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 06:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qf9c9-0001pn-Np; Sat, 09 Sep 2023 21:51:53 -0400
+	id 1qfBwO-0002zl-JT; Sun, 10 Sep 2023 00:20:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf9c7-0001kP-6h
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 21:51:51 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qfBwJ-0002vv-SE
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 00:20:51 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qf9c4-0000QT-Vx
- for qemu-devel@nongnu.org; Sat, 09 Sep 2023 21:51:50 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1bf1935f6c2so22313455ad.1
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 18:51:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qfBwH-0008AW-72
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 00:20:51 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3a9f88b663cso2462197b6e.3
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 21:20:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694310707; x=1694915507; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694319647; x=1694924447;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=f5bKUdBh65WQvPHIihmjR5IAPl7Af7GWsFIxUZTJqm8=;
- b=Pmk7QAk7VJuFNHBt66QYx2cHkyZkMy3kR07m5DkLTlfkKjlT9KG2g650x1hLCMuDxF
- tBcS5dAFZHW8KuEeAvZOZHmHMa34bZPF4W54iS2WMZhgTdfDi5BFQVg1ncZMc75giw/y
- oSb7M/0HKK1RAghU9R/hQT3hAAG7f4z4+CU49qiCbEnFROQ6hfQ5c33oE/l4mrTmdn90
- VZG5Oi6Jw/5nEAgVa5Zxp68SHactg+DrQsj/Jy+4c0p/kkZYOjGyw8JDooq7PH7ENEB8
- /6e3bqVSbI3rP0LFniFyARvhMnpX+WdfsX9cp+ihlBP0iI67fPMWoEckyRNNJew5Z4/E
- 6IUQ==
+ bh=Idn4SpoXhTBIcUWssorGxVnrnkjVjGBeBPgU3vnJMx4=;
+ b=Cko+fK6OTVdOcRuRrYfZw4O/gQpAtwG7xzrUfrNFne9HI/Xw3h8BPkUqeeg21uDscr
+ ljO2ruesKvm8upjFrPQw9mpbZKUCq9JR6SQAPJmGH4lXPnUpzEYc8AIcOSAJHQNpdDuf
+ 9BkhxAgcJdFoXubOFYMF56pOBZAG/VvbbnkHnWEsqV+SwzXWNUz81svzAF460UyokYGT
+ s+FS+WXBruTIIZ9dtIB/aZc9n6blJG3aELtIzyiIpG5Bdwle/SPxwRqWQNFkTom8OG+M
+ MVa9hYPgGaEF/9DwHK0NSNxpQkdtnrAVNDcQNM4kZRh2M2Bs2WIf0pocz1WIBjiS3OQh
+ 3l9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694310707; x=1694915507;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1694319647; x=1694924447;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=f5bKUdBh65WQvPHIihmjR5IAPl7Af7GWsFIxUZTJqm8=;
- b=W0NC0bVxwNnhYKMRp0lSyUYYqW//M/cLxsa33clwy8L0SiX71BWCfbVyI8E0tUIcXa
- z+o/wamEjrbVnWteDp/4R16EirWBWv06rpqDT7Q4M8VY6OyJ73Zx/9CshWX06hZ0bEhd
- d+/vaNk9BB43KQkcYA0UScOsawDtMhEyaVu3bQezfsK4qpQuX/lwIfm1lq5IWh81XbWp
- 4f+KJYEZg488Jih9Ex1C0pR6j6qo4xRPz5IoJFENNddsZojUP9ImQ9wZ4m+ygl/F7wef
- xGvoMX/TlrCpOST33gC09zkfJIpYL5yJwCEvoaxA9JyQh7BuioZR0Mg+GHX8MP2KNU0/
- SipQ==
-X-Gm-Message-State: AOJu0YzVPqS4JmB3pLTEH5WAfZoI0de0ZWMTRnWN3FRgX7C3W0g9PvMp
- EPKI54ZLYcq9TtgqzeM90ZgQiQ==
-X-Google-Smtp-Source: AGHT+IFPd0xk6i2fZbs6yVuEl9to1//Fu/yM7AN+4c7MHnJsu6rqchdC44jPN1Ck/3gKePXSnKOARw==
-X-Received: by 2002:a17:902:e80f:b0:1c1:e818:1e76 with SMTP id
- u15-20020a170902e80f00b001c1e8181e76mr8437010plg.6.1694310707510; 
- Sat, 09 Sep 2023 18:51:47 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ bh=Idn4SpoXhTBIcUWssorGxVnrnkjVjGBeBPgU3vnJMx4=;
+ b=Uppi/Iq/acmyU+YdeFBLD1aPvFP8yu/x3YX+Qd12s84SHcrhMQPXxk/W+8ZKMCGpk1
+ E3eiMZC7dD298Ri2z4rQ1ojvYz8I5aSyP4wTE5xUUqh56f7vfi6PZh1BAERsOSpoZ8lr
+ tT+xS/pHn4XVgZ3lYOuflwNtIZGSqiTdngNbGOD6qFmYmn5dR+P5Vgwzh4JNBFuTXVCk
+ w6Hk7y/pPnk3ihlf3xhvpVSSj/xh4jOHuxxuDoCYLvif/Q6nwoOFtKio/MJHflBVIgIw
+ E3Hs9jqsJ31G7bmMg+9h3QaY9JGggr2Ah/yQb35vvBtlwwCLePO1uwMpGkBUcvGuEYVE
+ gUEA==
+X-Gm-Message-State: AOJu0YwUiXqUAadtDOT2yDG7g8oxaGcsKDeOg/u6MsYOug7DLUtoZWg+
+ 3gTOO7kjhcPCKJskz07HwPgy2g==
+X-Google-Smtp-Source: AGHT+IHWv9s+gQ8piEw+C7whJoevz4bSBF9Lx0BWIWe6u1p1wqyeXbM0ufzWv+7T9voRxdjHCE6+AQ==
+X-Received: by 2002:a05:6808:198:b0:3a7:215c:e34 with SMTP id
+ w24-20020a056808019800b003a7215c0e34mr8060616oic.15.1694319647632; 
+ Sat, 09 Sep 2023 21:20:47 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- y13-20020a1709027c8d00b001a98f844e60sm3795793pll.263.2023.09.09.18.51.46
+ t5-20020a63b705000000b0056afdbd0a24sm142840pgf.9.2023.09.09.21.20.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 18:51:47 -0700 (PDT)
-Message-ID: <8afb57db-bc8a-1e71-4e08-1190c3be57bb@linaro.org>
-Date: Sat, 9 Sep 2023 18:51:45 -0700
+ Sat, 09 Sep 2023 21:20:47 -0700 (PDT)
+Message-ID: <fd472f38-e45d-4174-a179-926a6f501bb5@daynix.com>
+Date: Sun, 10 Sep 2023 13:20:44 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH RESEND v5 17/57] target/loongarch: Implement xvneg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 15/22] net/eth: Clean up local variable shadowing
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang <jasowang@redhat.com>
+References: <20230904161235.84651-1-philmd@linaro.org>
+ <20230904161235.84651-16-philmd@linaro.org>
 Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: maobibo@loongson.cn
-References: <20230907083158.3975132-1-gaosong@loongson.cn>
- <20230907083158.3975132-18-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230907083158.3975132-18-gaosong@loongson.cn>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230904161235.84651-16-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::235;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x235.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,19 +97,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/7/23 01:31, Song Gao wrote:
-> +static bool gvec_xx(DisasContext *ctx, arg_vv *a, MemOp mop,
-> +                    void (*func)(unsigned, uint32_t, uint32_t,
-> +                                 uint32_t, uint32_t))
-> +{
-> +    if (!check_vec(ctx, 32)) {
-> +        return true;
-> +    }
-> +
-> +    return gvec_vv_vl(ctx, a, 32, mop, func);
+On 2023/09/05 1:12, Philippe Mathieu-Daudé wrote:
+> Fix:
+> 
+>    net/eth.c:435:20: error: declaration shadows a local variable [-Werror,-Wshadow]
+>              size_t input_size = iov_size(pkt, pkt_frags);
+>                     ^
+>    net/eth.c:413:16: note: previous declaration is here
+>          size_t input_size = iov_size(pkt, pkt_frags);
+>                 ^
+> 
+> Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   net/eth.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/net/eth.c b/net/eth.c
+> index 649e66bb1f..3f680cc033 100644
+> --- a/net/eth.c
+> +++ b/net/eth.c
+> @@ -432,8 +432,6 @@ _eth_get_rss_ex_src_addr(const struct iovec *pkt, int pkt_frags,
+>           }
+>   
+>           if (opthdr.type == IP6_OPT_HOME) {
+> -            size_t input_size = iov_size(pkt, pkt_frags);
+> -
+>               if (input_size < opt_offset + sizeof(opthdr)) {
+>                   return false;
+>               }
 
-Move check_vec.
-
-
-r~
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
