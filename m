@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7132799E0D
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9844A799E11
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:23:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfJSM-0002t5-OR; Sun, 10 Sep 2023 08:22:26 -0400
+	id 1qfJTI-0003Yz-65; Sun, 10 Sep 2023 08:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJSI-0002rR-RD
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:22:23 -0400
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJTG-0003Yd-Cg
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:23:22 -0400
 Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJSE-0003YM-Uc
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:22:20 -0400
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJTE-0003i5-8b
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:23:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id A6E8060BA8
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:22:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16698C433CA
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:22:17 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id AA62C60C80
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:23:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FD0C433CB
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1694348537;
- bh=wYhyFZ8UC+yUvL1vJmLSqaPxok83zTZMcBz6Jhu7rNc=;
+ s=k20201202; t=1694348598;
+ bh=BDwQEMjtuq9zklB8JjE9cNQmK2qo6CavMHvj/5xfN+k=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=SVtXMRARDtegCkalTcZkJqTkvvfA/mYLNhld5vJ+YU5RD7iavlBWLAnDHflpZGXsY
- qAO0ZrA7Wm9b9UHZkurZ1yQGQ/wDR/AuLJNrR0czh6D2JwK7OlNq9FzV55ygMGc9Dh
- 4omDiKJzkPqJTZyK4VVSRIc3f6OOBmng6UvTNRL63ygPlWewsF15M8AS20meDH0ArX
- KwhTT476OH7e5gX3NclDI5FTTcg7LuaCXKqlaP32inJiPJWmfLas29h1iqvLlvY5M0
- d33IjZAeZtN5Iu9v98PrSHJ70rrXddF8TVAA4BmcfJgfG8W91IIPyQDFMWvK7JPr4i
- 4/jTnJwGlSsAQ==
-Received: by mail-lj1-f182.google.com with SMTP id
- 38308e7fff4ca-2bcc4347d2dso57810061fa.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:22:16 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yzf8Ii0zos9NlOludaK4BvqGh2U5jx+ZPanC0mgSL1yQoVCzxjt
- UFn6KSqg69f96EFkP9WGdDRaBwE9ZP2dopeaIfA=
-X-Google-Smtp-Source: AGHT+IFRDeZ+dcS5T8gtAZPjrtG4PYxJYTl72wYjwYp/BebFLqN5qO3Y9yXRz1knwXPTLfrhWJrYsZWdHXOCcAlpRZI=
-X-Received: by 2002:a2e:3517:0:b0:2b6:e2aa:8fbc with SMTP id
- z23-20020a2e3517000000b002b6e2aa8fbcmr5509637ljz.8.1694348535281; Sun, 10 Sep
- 2023 05:22:15 -0700 (PDT)
+ b=ma4BTbERg+3HzGr+fOR1+8T0k+3Y/pMN84Wa+ow1WWVh0ZGxokwHG4EHAMviV3y+P
+ /y+3K4EImK8ktl+YNfRbA7twBxklbMi7wHSTSt0e9CHlfD8vpBUA/wcsfUw1V4oRMF
+ EU6vfgb1hYY2tt+Soe+D1i9+86VpLK8NQBL/yvZ3qDZ+kmpBDrrlwb773z4FXUOaFE
+ InoJeXMWtAUilAdkDpErZTF3Bk7Ko+wzjoL3z6GePNdb/m8z682x6jdCii89dmjCR6
+ lI/rg5z7blpQYJzByh7leto75h3ZHKaKTdJA8N7nTqIIRmB2Z9QzU8imMexkSi66eh
+ jUA5/agihtnZg==
+Received: by mail-lj1-f172.google.com with SMTP id
+ 38308e7fff4ca-2bcc331f942so42839241fa.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:23:18 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzNbiYeCgUJUJJIQQmmuspraHHsyLK+kJkiVpodEmwOnZrfUPiA
+ sauRYB0kTyL2IdW39pByPw/ODJLekB0N0lxzF/0=
+X-Google-Smtp-Source: AGHT+IFhNbOQDynAH89cbHln+kb0IJtkHfZSYybWUkdGZySAmS7mAnGfuluevQgHIctR2rG67M6NYtG2+WgGDNOxwak=
+X-Received: by 2002:a2e:3001:0:b0:2b6:cbdb:790c with SMTP id
+ w1-20020a2e3001000000b002b6cbdb790cmr2303444ljw.1.1694348596291; Sun, 10 Sep
+ 2023 05:23:16 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230819010218.192706-1-richard.henderson@linaro.org>
- <20230819010218.192706-6-richard.henderson@linaro.org>
-In-Reply-To: <20230819010218.192706-6-richard.henderson@linaro.org>
+ <20230819010218.192706-10-richard.henderson@linaro.org>
+In-Reply-To: <20230819010218.192706-10-richard.henderson@linaro.org>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 10 Sep 2023 14:22:04 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH4BuS5Og-ABMxNDUHLeJvDYt8YdunofH-FdU0DmZYg+w@mail.gmail.com>
-Message-ID: <CAMj1kXH4BuS5Og-ABMxNDUHLeJvDYt8YdunofH-FdU0DmZYg+w@mail.gmail.com>
-Subject: Re: [PATCH v2 05/18] crypto: Add generic 16-bit carry-less multiply
+Date: Sun, 10 Sep 2023 14:23:05 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH79Hchi0_ou-UNAq9jyTQK8DyN_gxNMS8WpV4JHNZNjQ@mail.gmail.com>
+Message-ID: <CAMj1kXH79Hchi0_ou-UNAq9jyTQK8DyN_gxNMS8WpV4JHNZNjQ@mail.gmail.com>
+Subject: Re: [PATCH v2 09/18] crypto: Add generic 32-bit carry-less multiply
  routines
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, berrange@redhat.com
@@ -88,63 +88,46 @@ On Sat, 19 Aug 2023 at 03:02, Richard Henderson
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
 > ---
->  include/crypto/clmul.h | 16 ++++++++++++++++
->  crypto/clmul.c         | 21 +++++++++++++++++++++
->  2 files changed, 37 insertions(+)
+>  include/crypto/clmul.h |  7 +++++++
+>  crypto/clmul.c         | 13 +++++++++++++
+>  2 files changed, 20 insertions(+)
 >
 > diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
-> index 153b5e3057..c7ad28aa85 100644
+> index c7ad28aa85..0ea25a252c 100644
 > --- a/include/crypto/clmul.h
 > +++ b/include/crypto/clmul.h
-> @@ -38,4 +38,20 @@ uint64_t clmul_8x4_odd(uint64_t, uint64_t);
+> @@ -54,4 +54,11 @@ uint64_t clmul_16x2_even(uint64_t, uint64_t);
 >   */
->  uint64_t clmul_8x4_packed(uint32_t, uint32_t);
+>  uint64_t clmul_16x2_odd(uint64_t, uint64_t);
 >
 > +/**
-> + * clmul_16x2_even:
+> + * clmul_32:
 > + *
-> + * Perform two 16x16->32 carry-less multiplies.
-> + * The odd words of the inputs are ignored.
+> + * Perform a 32x32->64 carry-less multiply.
 > + */
-> +uint64_t clmul_16x2_even(uint64_t, uint64_t);
-> +
-> +/**
-> + * clmul_16x2_odd:
-> + *
-> + * Perform two 16x16->32 carry-less multiplies.
-> + * The even bytes of the inputs are ignored.
-> + */
-> +uint64_t clmul_16x2_odd(uint64_t, uint64_t);
+> +uint64_t clmul_32(uint32_t, uint32_t);
 > +
 >  #endif /* CRYPTO_CLMUL_H */
 > diff --git a/crypto/clmul.c b/crypto/clmul.c
-> index 82d873fee5..2c87cfbf8a 100644
+> index 2c87cfbf8a..36ada1be9d 100644
 > --- a/crypto/clmul.c
 > +++ b/crypto/clmul.c
-> @@ -58,3 +58,24 @@ uint64_t clmul_8x4_packed(uint32_t n, uint32_t m)
+> @@ -79,3 +79,16 @@ uint64_t clmul_16x2_odd(uint64_t n, uint64_t m)
 >  {
->      return clmul_8x4_even_int(unpack_8_to_16(n), unpack_8_to_16(m));
+>      return clmul_16x2_even(n >> 16, m >> 16);
 >  }
 > +
-> +uint64_t clmul_16x2_even(uint64_t n, uint64_t m)
+> +uint64_t clmul_32(uint32_t n, uint32_t m32)
 > +{
 > +    uint64_t r = 0;
+> +    uint64_t m = m32;
 > +
-> +    n &= 0x0000ffff0000ffffull;
-> +    m &= 0x0000ffff0000ffffull;
-> +
-> +    for (int i = 0; i < 16; ++i) {
-> +        uint64_t mask = (n & 0x0000000100000001ull) * 0xffffffffull;
-> +        r ^= m & mask;
+> +    for (int i = 0; i < 32; ++i) {
+> +        r ^= n & 1 ? m : 0;
 > +        n >>= 1;
 > +        m <<= 1;
 > +    }
 > +    return r;
-> +}
-> +
-> +uint64_t clmul_16x2_odd(uint64_t n, uint64_t m)
-> +{
-> +    return clmul_16x2_even(n >> 16, m >> 16);
 > +}
 > --
 > 2.34.1
