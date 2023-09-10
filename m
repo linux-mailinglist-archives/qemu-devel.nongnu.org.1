@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9844A799E11
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6232799E14
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:24:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfJTI-0003Yz-65; Sun, 10 Sep 2023 08:23:24 -0400
+	id 1qfJUE-0004Bw-DI; Sun, 10 Sep 2023 08:24:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJTG-0003Yd-Cg
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:23:22 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJUB-0004Be-2B
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:24:19 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJTE-0003i5-8b
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:23:22 -0400
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJU8-0003ox-Tw
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:24:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id AA62C60C80
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:23:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FD0C433CB
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:23:18 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id C7CA460DBA
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:24:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341F4C433C9
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1694348598;
- bh=BDwQEMjtuq9zklB8JjE9cNQmK2qo6CavMHvj/5xfN+k=;
+ s=k20201202; t=1694348655;
+ bh=BrMVIFKgisVgQbchSZ8D+Gmg0V90oYr4BQY/jBPWxkU=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=ma4BTbERg+3HzGr+fOR1+8T0k+3Y/pMN84Wa+ow1WWVh0ZGxokwHG4EHAMviV3y+P
- /y+3K4EImK8ktl+YNfRbA7twBxklbMi7wHSTSt0e9CHlfD8vpBUA/wcsfUw1V4oRMF
- EU6vfgb1hYY2tt+Soe+D1i9+86VpLK8NQBL/yvZ3qDZ+kmpBDrrlwb773z4FXUOaFE
- InoJeXMWtAUilAdkDpErZTF3Bk7Ko+wzjoL3z6GePNdb/m8z682x6jdCii89dmjCR6
- lI/rg5z7blpQYJzByh7leto75h3ZHKaKTdJA8N7nTqIIRmB2Z9QzU8imMexkSi66eh
- jUA5/agihtnZg==
-Received: by mail-lj1-f172.google.com with SMTP id
- 38308e7fff4ca-2bcc331f942so42839241fa.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:23:18 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzNbiYeCgUJUJJIQQmmuspraHHsyLK+kJkiVpodEmwOnZrfUPiA
- sauRYB0kTyL2IdW39pByPw/ODJLekB0N0lxzF/0=
-X-Google-Smtp-Source: AGHT+IFhNbOQDynAH89cbHln+kb0IJtkHfZSYybWUkdGZySAmS7mAnGfuluevQgHIctR2rG67M6NYtG2+WgGDNOxwak=
-X-Received: by 2002:a2e:3001:0:b0:2b6:cbdb:790c with SMTP id
- w1-20020a2e3001000000b002b6cbdb790cmr2303444ljw.1.1694348596291; Sun, 10 Sep
- 2023 05:23:16 -0700 (PDT)
+ b=D27IHS50rHkxdcmSamqjQlqIcA49yeKADfxaVQdwfDONiVmAVU5zYxljSoIVJMqoA
+ mKZil2vb0s6BDrdk2NQ7bGWaDafJQ1jLsfQ84lu3KqJ1a5HaFrbNAt152fnUcOqRxI
+ q+RKv9KUGQcPfNHmhGvjtBaqivapFmRCvmHfd3YilSCsOa0QDo+gdA4/YV0ONIuDIi
+ 8h3Q9rC6tNwYXLoJcNzDDP8lbRetgJEsXLlxf/l0sx3lF08wg/cwMBuxgNP/81i8zX
+ GqJpbnSbQwGwqNbskFFk5o4/Xd/4/FxEmFZnHRZVG/6QCvl/fe5Ujkegyt7BamTpZN
+ 25HJxYx7w65Dw==
+Received: by mail-lj1-f181.google.com with SMTP id
+ 38308e7fff4ca-2bcb89b476bso59583741fa.1
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:24:15 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxTrd3KWGzH5hvNeMWG3B2OSIEx4YTu8mYw3iWP9uwjKR4FGoIl
+ 7IKd0qI81XgsoeNgihUOwhOqfEQ4vx/kRpgKjHo=
+X-Google-Smtp-Source: AGHT+IF2TaEqYUaPGvkOtpsbRHsDtwc0iJ/Yex4pylwYnwEnttXSN5uFnI/R4ZZCWTZaqLcZ7/deT3GA7x1SSk0UrQQ=
+X-Received: by 2002:a2e:8907:0:b0:2b9:f1ad:9503 with SMTP id
+ d7-20020a2e8907000000b002b9f1ad9503mr6487645lji.35.1694348653422; Sun, 10 Sep
+ 2023 05:24:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230819010218.192706-1-richard.henderson@linaro.org>
- <20230819010218.192706-10-richard.henderson@linaro.org>
-In-Reply-To: <20230819010218.192706-10-richard.henderson@linaro.org>
+References: <20230821161854.419893-1-richard.henderson@linaro.org>
+ <20230821161854.419893-10-richard.henderson@linaro.org>
+In-Reply-To: <20230821161854.419893-10-richard.henderson@linaro.org>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 10 Sep 2023 14:23:05 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH79Hchi0_ou-UNAq9jyTQK8DyN_gxNMS8WpV4JHNZNjQ@mail.gmail.com>
-Message-ID: <CAMj1kXH79Hchi0_ou-UNAq9jyTQK8DyN_gxNMS8WpV4JHNZNjQ@mail.gmail.com>
-Subject: Re: [PATCH v2 09/18] crypto: Add generic 32-bit carry-less multiply
+Date: Sun, 10 Sep 2023 14:24:02 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXEnGfGLq1-b84mpubVj3fFhi99A-Y3CEwOxy46Ojew3+w@mail.gmail.com>
+Message-ID: <CAMj1kXEnGfGLq1-b84mpubVj3fFhi99A-Y3CEwOxy46Ojew3+w@mail.gmail.com>
+Subject: Re: [PATCH v3 09/19] crypto: Add generic 32-bit carry-less multiply
  routines
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, berrange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,12 +80,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 19 Aug 2023 at 03:02, Richard Henderson
+On Mon, 21 Aug 2023 at 18:19, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
+Replied to v2 by accident:
+
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+
 
 > ---
 >  include/crypto/clmul.h |  7 +++++++
