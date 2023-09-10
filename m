@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E59799DAA
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 12:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01032799DE8
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 13:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfHkl-0005EC-7t; Sun, 10 Sep 2023 06:33:19 -0400
+	id 1qfIvU-0003Lp-WC; Sun, 10 Sep 2023 07:48:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qfHkj-0005Di-GU
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 06:33:17 -0400
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qfHkg-00006y-He
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 06:33:17 -0400
-Received: by mail-ot1-x336.google.com with SMTP id
- 46e09a7af769-6bd3317144fso2592308a34.1
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 03:33:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694341993; x=1694946793; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tQrBnNjSyMhdotoFIdZvvPcH92x2DqL588nG4P9Sce4=;
- b=EVf8UJlvwHxWTsspfihK8uIUucj5iAowxx2dn4LSQ9+G+HI7Ilm8BCY31kNwCuFpHM
- 9abzyoF+6UUqbRC1wTXBbaRLRbEWx574K4QCNC/XSWyuZYQuH/lga28Pu/Rh+F1EtFbw
- a+a9YhjI6h1JjqRYe9JzPHkm/gyN9KkwrwDVGfCiQlY7jsi5SxKwmNwfYu+LGJ2OHcqY
- GkBwi14pABbv8VABX9lMKEgWWj2SK8iWZGkxdDzQ27W5qzYZcg7LqEPzHdUb/KYCh7zi
- /uQ8OxbOi8dTq83R0eol9f3eeF8j7h/oPmKCZQmqaEdvvY1ZNe+H7iXe4IXH6/g7mM8y
- nf5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694341993; x=1694946793;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tQrBnNjSyMhdotoFIdZvvPcH92x2DqL588nG4P9Sce4=;
- b=dxyciS5maQ33s0W2rSe/X2gerFbPXHEJLihQSdQiFL3iUGvPPTaskDfo8L2idZtVj0
- hVqd0cLZnftJr3Sjhxp53DLphuzTSocws5JkbRscZ3QHuLTtkGhoxzvTnuIXXaaqRYHx
- 0262936GmIp12e4wdB2TWx8/ilLg+ry9uYBF1K2Nz8oVYj/2J+nvdrdEw3DY/MNNXDEe
- Q7Fpjw9vvik1aMo/yOnH0ICc3OcYECWb8VujqgrVmhCd6TyA+GqxyQozjULtWOICbu1p
- j8hBYZElSRa9rC/HFHBVsdEnwFlHGBVzL/a+7XDFeo4ZfQTcARaQu3ZnCHudqGn9g9Kk
- XxWw==
-X-Gm-Message-State: AOJu0YxX06L8w87hys7hiinNA31s2PrYO82Ir91F8rNYYR6fInzXP+R5
- gMQczq7UZFV7FVbIF7Vwo3yNsw==
-X-Google-Smtp-Source: AGHT+IFMSTDznz54OHkJQ7DUXMobDgzWvLRVPoZY52V8HjtnVQKVXLtvNdb6FNG94w2v3O6QffjEGQ==
-X-Received: by 2002:a05:6830:1b6d:b0:6b1:d368:557c with SMTP id
- d13-20020a0568301b6d00b006b1d368557cmr8079896ote.30.1694341993169; 
- Sun, 10 Sep 2023 03:33:13 -0700 (PDT)
-Received: from [192.168.68.107] ([177.9.182.82])
- by smtp.gmail.com with ESMTPSA id
- r62-20020a4a4e41000000b005707f68f78bsm2350585ooa.18.2023.09.10.03.33.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Sep 2023 03:33:12 -0700 (PDT)
-Message-ID: <7d13a04d-bdcb-7dac-aa6b-d0e2b7fca489@ventanamicro.com>
-Date: Sun, 10 Sep 2023 07:33:08 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] docs/devel: Add cross-compiling doc
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org
-Cc: alistair.francis@wdc.com, palmer@dabbelt.com, bin.meng@windriver.com,
- peter.maydell@linaro.org
-References: <20230907084604.253347-2-ajones@ventanamicro.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20230907084604.253347-2-ajones@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ (Exim 4.90_1) (envelope-from <hc94@poolhem.se>) id 1qfIvS-0003Lc-FR
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 07:48:26 -0400
+Received: from mailout12.inleed.net ([2a0b:dc80:cafe:112::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hc94@poolhem.se>)
+ id 1qfIvP-0004aX-0M; Sun, 10 Sep 2023 07:48:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=poolhem.se; 
+ s=x;
+ h=Content-Transfer-Encoding:Content-Type:Mime-Version:References:
+ In-Reply-To:Message-Id:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=hEtaAhAJLRR293FdelJCWicWokmqY5iHYYiRf9aK/7M=; b=JknH2PDEabWx959twYAvTxjut7
+ 1XSQo5F80pE1lzrrViHH3rNbbkinAbG+3Vl5/F8WyfKLWWkVRMxqC5tnGIFPmGTeaiI9rJEsEGeCc
+ wUkYDAssHdqGfNsqPpURGblml5I/wXp4ApXzqMHm2+00eJwLRj7NHN6kgsFTdyT3bjpBdS5UyoDi8
+ TCmN1JYrALax0SbTVGWQ0XICEgCfg/K52p9nnvkqpTXZcD/THDRL0+tZH06dh2LO2Bo0ZmpHvtOKX
+ +bCyC9Pg/2HNzOKJ3XJb62sPu4dpVLB63Z61uH7Sp0aQ7s2g9y7tMa5w3DBmpMsL+W7C2D65f/tT5
+ 4rV24fXg==;
+Received: from [213.115.245.47] (helo=balrog.lkp.se)
+ by ns12.inleed.net with esmtpa (Exim 4.96-58-g4e9ed49f8)
+ (envelope-from <hc94@poolhem.se>) id 1qfIvN-00Azg4-10;
+ Sun, 10 Sep 2023 13:48:21 +0200
+Date: Sun, 10 Sep 2023 13:48:12 +0200
+From: Henrik Carlqvist <hc94@poolhem.se>
+To: Henrik Carlqvist <hc981@poolhem.se>
+Cc: samuel.thibault@gnu.org, qemu-devel@nongnu.org, Henrik Carlqvist
+ <hc981@poolhem.se>
+Subject: Ping: [PATCH v2] Allowing setting and overriding parameters in
+ smb.conf
+Message-Id: <20230910134812.7fa3a603.hc94@poolhem.se>
+In-Reply-To: <20230803171256.1d39d71f.hc981@poolhem.se>
+References: <ZJFv4Hq8RMVOUum/@redhat.com>
+ <20230620215043.6124c450.hc94@poolhem.se>
+ <ZJKiGBJNQa5Kx+Dg@redhat.com>
+ <20230621201447.712ec73a.hc94@poolhem.se>
+ <20230623203007.56d3d182.hc981@poolhem.se>
+ <20230801232725.4cc838fb.hc981@poolhem.se>
+ <20230802195356.rwibjix3bub7s7qw@begin>
+ <20230803010909.723e2c1f.hc981@poolhem.se>
+ <20230802231324.b5zk2kf44oqzocel@begin>
+ <20230803012602.7c75df75.hc981@poolhem.se>
+ <20230802233404.lnpa5owybhvbbkyl@begin>
+ <20230803171256.1d39d71f.hc981@poolhem.se>
+X-Mailer: Sylpheed version 0.9.7 (GTK+ 1.2.10; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x336.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Authenticated-Id: henrik@poolhem.se
+Received-SPF: none client-ip=2a0b:dc80:cafe:112::1;
+ envelope-from=hc94@poolhem.se; helo=mailout12.inleed.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,264 +82,253 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+I'm just wondering if there are any plans to apply my patch in this version or
+if you would like me to change anything more in the patch? I am aware that
+during this time of the year many have been away on vacation and it has also
+been a new release 8.1 which has blocked any submitted patches but bug fixes.
+However, now might be a good time to push this patch towards master?
 
+Best regards Henrik
 
-On 9/7/23 05:46, Andrew Jones wrote:
-> Add instructions for how to cross-compile QEMU for RISC-V. The
-> file is named generically because there's no reason not to collect
-> other architectures steps into the same file, especially because
-> several subsections like those for cross-compiling QEMU dependencies
-> using meson and a cross-file could be shared. Additionally, other
-> approaches to creating sysroots, such as with debootstrap, may be
-> documented in this file in the future.
+On Thu, 3 Aug 2023 17:12:56 +0200
+Henrik Carlqvist <hc981@poolhem.se> wrote:
+
+> From a6dfb322a88965281e3bba00a92f8d5e437bfa95 Mon Sep 17 00:00:00 2001
+> From: Henrik Carlqvist <hc1245@poolhem.se>
+> Date: Thu, 3 Aug 2023 16:52:25 +0200
+> Subject: [PATCH] Allowing setting and overriding parameters in smb.conf,
+>  moving some parameters from the [qemu] section to the [global] section to
+>  allow them to get overridden by custom user settings.
 > 
-> Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+> Signed-off-by: Henrik Carlqvist <hc1245@poolhem.se>
 > ---
-
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
->   docs/devel/cross-compiling.rst | 221 +++++++++++++++++++++++++++++++++
->   docs/devel/index-build.rst     |   1 +
->   2 files changed, 222 insertions(+)
->   create mode 100644 docs/devel/cross-compiling.rst
 > 
-> diff --git a/docs/devel/cross-compiling.rst b/docs/devel/cross-compiling.rst
-> new file mode 100644
-> index 000000000000..1b988ba54e4c
-> --- /dev/null
-> +++ b/docs/devel/cross-compiling.rst
-> @@ -0,0 +1,221 @@
-> +.. SPDX-License-Identifier: GPL-2.0-or-later
+> In this second version of the patch I have moved also the "force user" 
+> parameter to the global section of smb.conf. Even though I do not self see
+> the usefullness of altering that parameter we might just as well give the
+> users the freedom to alter anything in smb.conf. Maybe someone else will see
+> the need to alter that parameter.
+> 
+> Best regards Henrik
+> 
+>  net/slirp.c     | 50 ++++++++++++++++++++++++++++++++++++++++---------
+>  qapi/net.json   |  3 +++
+>  qemu-options.hx | 15 ++++++++++++---
+>  3 files changed, 56 insertions(+), 12 deletions(-)
+> 
+> diff --git a/net/slirp.c b/net/slirp.c
+> index c33b3e02e7..e27d115bc4 100644
+> --- a/net/slirp.c
+> +++ b/net/slirp.c
+> @@ -106,7 +106,8 @@ static int slirp_guestfwd(SlirpState *s, const char
+> *config_str, Error **errp);
+>  
+>  #if defined(CONFIG_SMBD_COMMAND)
+>  static int slirp_smb(SlirpState *s, const char *exported_dir,
+> -                     struct in_addr vserver_addr, Error **errp);
+> +                     struct in_addr vserver_addr, const char *smbparams,
+> +                     Error **errp);
+>  static void slirp_smb_cleanup(SlirpState *s);
+>  #else
+>  static inline void slirp_smb_cleanup(SlirpState *s) { }
+> @@ -424,6 +425,7 @@ static int net_slirp_init(NetClientState *peer, const
+> char *model,
+>                            const char *bootfile, const char *vdhcp_start,
+>                            const char *vnameserver, const char
+>                            *vnameserver6, const char *smb_export, const char
+>                            *vsmbserver,
+> +                          const char *smbparams,
+>                            const char **dnssearch, const char *vdomainname,
+>                            const char *tftp_server_name,
+>                            Error **errp)
+> @@ -678,7 +680,7 @@ static int net_slirp_init(NetClientState *peer, const
+> char *model,
+>      }
+>  #if defined(CONFIG_SMBD_COMMAND)
+>      if (smb_export) {
+> -        if (slirp_smb(s, smb_export, smbsrv, errp) < 0) {
+> +        if (slirp_smb(s, smb_export, smbsrv, smbparams, errp) < 0) {
+>              goto error;
+>          }
+>      }
+> @@ -891,7 +893,8 @@ static void slirp_smb_cleanup(SlirpState *s)
+>  }
+>  
+>  static int slirp_smb(SlirpState* s, const char *exported_dir,
+> -                     struct in_addr vserver_addr, Error **errp)
+> +                     struct in_addr vserver_addr, const char *smbparams,
+> +                     Error **errp)
+>  {
+>      char *smb_conf;
+>      char *smb_cmdline;
+> @@ -950,11 +953,12 @@ static int slirp_smb(SlirpState* s, const char
+> *exported_dir,
+>              "printing = bsd\n"
+>              "disable spoolss = yes\n"
+>              "usershare max shares = 0\n"
+> -            "[qemu]\n"
+> -            "path=%s\n"
+>              "read only=no\n"
+>              "guest ok=yes\n"
+> -            "force user=%s\n",
+> +            "force user=%s\n"
+> +	    "%s"
+> +            "[qemu]\n"
+> +            "path=%s\n",
+>              s->smb_dir,
+>              s->smb_dir,
+>              s->smb_dir,
+> @@ -963,8 +967,9 @@ static int slirp_smb(SlirpState* s, const char
+> *exported_dir,
+>              s->smb_dir,
+>              s->smb_dir,
+>              s->smb_dir,
+> -            exported_dir,
+> -            passwd->pw_name
+> +            passwd->pw_name,
+> +            smbparams,
+> +            exported_dir
+>              );
+>      fclose(f);
+>  
+> @@ -1143,6 +1148,29 @@ static const char **slirp_dnssearch(const StringList
+> *dnsname)
+>      return ret;
+>  }
+>  
+> +static char *slirp_smbparams(const StringList *smbparam)
+> +{
+> +    const StringList *c = smbparam;
+> +    size_t i = 1; /* for string terminating 0 */
+> +    char *ret;
 > +
-> +====================
-> +Cross-compiling QEMU
-> +====================
+> +    while (c) {
+> +        i += strlen(c->value->str);
+> +        i++; /* for \n */
+> +        c = c->next;
+> +    }
+> +    ret = g_malloc(i * sizeof(*ret));
+> +    ret[0]=0; /* Start with empty string */
 > +
-> +Cross-compiling QEMU first requires the preparation of a cross-toolchain
-> +and the cross-compiling of QEMU's dependencies. While the steps will be
-> +similar across architectures, each architecture will have its own specific
-> +recommendations. This document collects architecture-specific procedures
-> +and hints that may be used to cross-compile QEMU, where typically the host
-> +environment is x86.
+> +    c = smbparam;
+> +    while (c) {
+> +        pstrcat(ret, i * sizeof(*ret), c->value->str);
+> +        pstrcat(ret, i * sizeof(*ret), "\n");
+> +        c = c->next;
+> +    }
+> +    return ret;
+> +}
 > +
-> +RISC-V
-> +======
+>  int net_init_slirp(const Netdev *netdev, const char *name,
+>                     NetClientState *peer, Error **errp)
+>  {
+> @@ -1151,6 +1179,7 @@ int net_init_slirp(const Netdev *netdev, const char
+> *name,
+>      int ret;
+>      const NetdevUserOptions *user;
+>      const char **dnssearch;
+> +    char *smbparams;
+>      bool ipv4 = true, ipv6 = true;
+>  
+>      assert(netdev->type == NET_CLIENT_DRIVER_USER);
+> @@ -1170,6 +1199,7 @@ int net_init_slirp(const Netdev *netdev, const char
+> *name,
+>             NULL;
+>  
+>      dnssearch = slirp_dnssearch(user->dnssearch);
+> +    smbparams = slirp_smbparams(user->smbparam);
+>  
+>      /* all optional fields are initialized to "all bits zero" */
+>  
+> @@ -1182,7 +1212,8 @@ int net_init_slirp(const Netdev *netdev, const char
+> *name,
+>                           user->ipv6_host, user->hostname, user->tftp,
+>                           user->bootfile, user->dhcpstart,
+>                           user->dns, user->ipv6_dns, user->smb,
+> -                         user->smbserver, dnssearch, user->domainname,
+> +                         user->smbserver, smbparams,
+> +                         dnssearch, user->domainname,
+>                           user->tftp_server_name, errp);
+>  
+>      while (slirp_configs) {
+> @@ -1193,6 +1224,7 @@ int net_init_slirp(const Netdev *netdev, const char
+> *name,
+>  
+>      g_free(vnet);
+>      g_free(dnssearch);
+> +    g_free(smbparams);
+>  
+>      return ret;
+>  }
+> diff --git a/qapi/net.json b/qapi/net.json
+> index 313c8a606e..163091719c 100644
+> --- a/qapi/net.json
+> +++ b/qapi/net.json
+> @@ -156,6 +156,8 @@
+>  #
+>  # @smbserver: IP address of the built-in SMB server
+>  #
+> +# @smbparam: list of parameters with values for smb.conf
+> +#
+>  # @hostfwd: redirect incoming TCP or UDP host connections to guest
+>  #     endpoints
+>  #
+> @@ -186,6 +188,7 @@
+>      '*ipv6-dns':         'str',
+>      '*smb':       'str',
+>      '*smbserver': 'str',
+> +    '*smbparam': ['String'],
+>      '*hostfwd':   ['String'],
+>      '*guestfwd':  ['String'],
+>      '*tftp-server-name': 'str' } }
+> diff --git a/qemu-options.hx b/qemu-options.hx
+> index 29b98c3d4c..7b92d08c3e 100644
+> --- a/qemu-options.hx
+> +++ b/qemu-options.hx
+> @@ -2758,9 +2758,9 @@ DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
+>      "         [,ipv6=on|off][,ipv6-net=addr[/int]][,ipv6-host=addr]\n"
+>      "         [,restrict=on|off][,hostname=host][,dhcpstart=addr]\n"
+>      "        
+>      [,dns=addr][,ipv6-dns=addr][,dnssearch=domain][,domainname=domain]\n"
+> -    "        
+> [,tftp=dir][,tftp-server-name=name][,bootfile=f][,hostfwd=rule][,guestfwd=r
+> ule]"+    "        
+> [,tftp=dir][,tftp-server-name=name][,bootfile=f][,hostfwd=rule][,guestfwd=r
+> ule]\n"
+>  #ifndef _WIN32
+> -                                            
+> "[,smb=dir[,smbserver=addr]]\n"+    "        
+> [,smb=dir[,smbserver=addr][,smbparam=parameter=value]]\n"
+>  #endif
+>      "                configure a user mode network backend with ID
+>      'str',\n""                its DHCP server and optional services\n"
+> @@ -3062,7 +3062,7 @@ SRST
+>              |qemu_system| -hda linux.img -boot n -device e1000,netdev=n1 \\
+>                  -netdev
+>                  user,id=n1,tftp=/path/to/tftp/files,bootfile=/pxelinux.0
+>  
+> -    ``smb=dir[,smbserver=addr]``
+> +    ``smb=dir[,smbserver=addr][,smbparam=parameter=value]``
+>          When using the user mode network stack, activate a built-in SMB
+>          server so that Windows OSes can access to the host files in
+>          ``dir`` transparently. The IP address of the SMB server can be
+> @@ -3081,6 +3081,15 @@ SRST
+>  
+>          Then ``dir`` can be accessed in ``\\smbserver\qemu``.
+>  
+> +        It is possible to set samba parameters in the generated smb.conf
+> +        with one or more ``smbparam=parameter=value``. Example:
 > +
-> +Toolchain
-> +---------
+> +        .. parsed-literal::
 > +
-> +Select a root directory for the cross environment
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +            |qemu_system| -nic user,smb=/tmp,smbparam="read
+> only"=yes,smbparam="server min protocol"=NT1+
+> +        See the man page of smb.conf for a complete listing of parameters.
 > +
-> +Export an environment variable pointing to a root directory
-> +for the cross environment. For example, ::
-> +
-> +  $ export PREFIX="$HOME/opt/riscv"
-> +
-> +Create a work directory
-> +^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +Tools and several components will need to be downloaded and built. Create
-> +a directory for all the work, ::
-> +
-> +  $ export WORK_DIR="$HOME/work/xqemu"
-> +  $ mkdir -p "$WORK_DIR"
-> +
-> +Select and prepare the toolchain
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +Select a toolchain such as [riscv-toolchain]_ and follow its instructions
-> +for building and installing it to ``$PREFIX``, e.g. ::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://github.com/riscv/riscv-gnu-toolchain
-> +  $ cd riscv-gnu-toolchain
-> +  $ ./configure --prefix="$PREFIX"
-> +  $ make -j$(nproc) linux
-> +
-> +Set the ``$CROSS_COMPILE`` environment variable to the prefix of the cross
-> +tools and add the tools to ``$PATH``, ::
-> +
-> +$ export CROSS_COMPILE=riscv64-unknown-linux-gnu-
-> +$ export PATH="$PREFIX/bin:$PATH"
-> +
-> +Also set ``$SYSROOT``, where all QEMU cross-compiled dependencies will be
-> +installed. The toolchain installation likely created a 'sysroot' directory
-> +at ``$PREFIX/sysroot``, which is the default location for most cross
-> +tools, making it a good location, ::
-> +
-> +  $ mkdir -p "$PREFIX/sysroot"
-> +  $ export SYSROOT="$PREFIX/sysroot"
-> +
-> +Create a pkg-config wrapper
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +The build processes of QEMU and some of its dependencies depend on
-> +pkg-config. Create a wrapper script for it which works for the cross
-> +environment: ::
-> +
-> +  $ cat <<EOF >"$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-> +  #!/bin/sh
-> +
-> +  [ "\$SYSROOT" ] || exit 1
-> +
-> +  export PKG_CONFIG_PATH=
-> +  export PKG_CONFIG_LIBDIR="\${SYSROOT}/usr/lib/pkgconfig:\${SYSROOT}/usr/lib64/pkgconfig:\${SYSROOT}/usr/share/pkgconfig"
-> +
-> +  exec pkg-config "\$@"
-> +  EOF
-> +  $ chmod +x "$PREFIX/bin/${CROSS_COMPILE}pkg-config"
-> +
-> +Create a cross-file for meson builds
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +meson setup, used by some of QEMU's dependencies, needs a "cross-file" to
-> +configure the cross environment. Create one, ::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ cat <<EOF >cross_file.txt
-> +  [host_machine]
-> +  system = 'linux'
-> +  cpu_family = 'riscv64'
-> +  cpu = 'riscv64'
-> +  endian = 'little'
-> +
-> +  [binaries]
-> +  c = '${CROSS_COMPILE}gcc'
-> +  cpp = '${CROSS_COMPILE}g++'
-> +  ar = '${CROSS_COMPILE}ar'
-> +  ld = '${CROSS_COMPILE}ld'
-> +  objcopy = '${CROSS_COMPILE}objcopy'
-> +  strip = '${CROSS_COMPILE}strip'
-> +  pkgconfig = '${CROSS_COMPILE}pkg-config'
-> +  EOF
-> +
-> +Cross-compile dependencies
-> +--------------------------
-> +
-> +glibc
-> +^^^^^
-> +
-> +If [riscv-toolchain]_ was selected for the toolchain then this step is
-> +already complete and glibc has already been installed into ``$SYSROOT``.
-> +Otherwise, cross-compile glibc and install it to ``$SYSROOT``.
-> +
-> +libffi
-> +^^^^^^
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.freedesktop.org/gstreamer/meson-ports/libffi.git
-> +  $ cd libffi
-> +  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-> +  $ ninja -C _build
-> +  $ ninja -C _build install
-> +
-> +*Building libffi seperately avoids a compilation error generated when
-> +building it as a subproject of glib.*
-> +
-> +glib
-> +^^^^
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://github.com/GNOME/glib.git
-> +  $ cd glib
-> +  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-> +  $ ninja -C _build
-> +  $ ninja -C _build install
-> +
-> +libslirp [optional]
-> +^^^^^^^^^^^^^^^^^^^
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.com/qemu-project/libslirp.git
-> +  $ cd libslirp
-> +  $ meson setup --cross-file ../cross_file.txt --prefix="$SYSROOT/usr" _build
-> +  $ ninja -C _build
-> +  $ ninja -C _build install
-> +
-> +pixman
-> +^^^^^^
-> +
-> +First ensure the 'libtool' package is installed, e.g.
-> +``sudo dnf install libtool`` or ``sudo apt install libtool``
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.freedesktop.org/pixman/pixman
-> +  $ cd pixman
-> +  $ ./autogen.sh
-> +  $ ./configure --prefix="$SYSROOT/usr" --host=riscv64-unknown-linux-gnu
-> +  $ make -j$(nproc)
-> +  $ make install
-> +
-> +Cross-compile QEMU
-> +------------------
-> +
-> +::
-> +
-> +  $ cd "$WORK_DIR"
-> +  $ git clone https://gitlab.com/qemu-project/qemu.git
-> +  $ cd qemu
-> +  $ mkdir -p build/install_dir
-> +  $ cd build
-> +  $ ../configure --target-list=riscv64-softmmu --cross-prefix=$CROSS_COMPILE --prefix="$PWD/install_dir"
-> +  $ make -j$(nproc)
-> +  $ make install
-> +
-> +*Cross-compiling QEMU with different configurations may require more
-> +dependencies to be built and installed in the sysroot.*
-> +
-> +Running QEMU
-> +------------
-> +
-> +``build/install_dir`` may now be copied to the target and its bin
-> +directory may be added to the target user's PATH. Prior to running
-> +QEMU, ensure all the libraries it depends on are present, ::
-> +
-> +  $ ldd /path/to/bin/qemu-system-riscv64
-> +
-> +For example, it may necessary to install zlib libraries, e.g.
-> +``sudo dnf install zlib-devel`` or ``sudo apt install zlib1g-dev``
-> +
-> +Subsequent QEMU Cross-compiling
-> +-------------------------------
-> +
-> +Unless it's necessary to update and recompile the toolchain or
-> +dependencies, then most steps do not need to be repeated for subsequent
-> +compiles. Simply ensure the toolchain is in ``$PATH``, ``$SYSROOT`` points
-> +at the sysroot, and then follow the QEMU cross-compile steps in
-> +"Cross-compile QEMU". For example, ::
-> +
-> +  $ export PATH="$HOME/opt/riscv/bin:$PATH"
-> +  $ export SYSROOT="$HOME/opt/riscv/sysroot"
-> +  $ cd /path/to/qemu
-> +  $ mkdir -p build/install_dir
-> +  $ cd build
-> +  $ ../configure --target-list=riscv64-softmmu --cross-prefix=riscv64-unknown-linux-gnu- --prefix="$PWD/install_dir"
-> +  $ make -j
-> +  $ make install
-> +
-> +References
-> +----------
-> +
-> +.. [riscv-toolchain] https://github.com/riscv/riscv-gnu-toolchain
-> diff --git a/docs/devel/index-build.rst b/docs/devel/index-build.rst
-> index 57e8d39d9856..d3c85927be24 100644
-> --- a/docs/devel/index-build.rst
-> +++ b/docs/devel/index-build.rst
-> @@ -9,6 +9,7 @@ the basics if you are adding new files and targets to the build.
->      :maxdepth: 3
->   
->      build-system
-> +   cross-compiling
->      kconfig
->      testing
->      acpi-bits
+>          Note that a SAMBA server must be installed on the host OS.
+>  
+>      ``hostfwd=[tcp|udp]:[hostaddr]:hostport-[guestaddr]:guestport``
+> -- 
+> 2.35.1
+> 
 
