@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17E8799E16
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 230B3799E18
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:26:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfJVR-0004pj-4h; Sun, 10 Sep 2023 08:25:37 -0400
+	id 1qfJW9-0005Yv-9C; Sun, 10 Sep 2023 08:26:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJVL-0004pM-0m
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:25:31 -0400
-Received: from ams.source.kernel.org ([145.40.68.75])
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJW6-0005YA-T8
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:26:18 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJVI-0004DF-In
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:25:30 -0400
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJW4-0004OO-Ft
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:26:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 35454B80B7F
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:25:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D91C433C9
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:25:24 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id AF0D660C35
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231E1C433C7
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1694348724;
- bh=QmiZF40GbkBh/DJBbUoo/xpmGKk1AgKRtXcbRLCN3/E=;
+ s=k20201202; t=1694348775;
+ bh=gMPYe2PWFzZFE39kUSu/9xTFMSl48ojvuCxYN1J9Zbg=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=Ec9EhIwH5MWGLrYWEZHo+lWKB096Qlb2djuzcM//g72bHPOo+FdfDYmgL79sXTW2D
- qooequLccsBP0HDxzEs2Ok3W/d+7xuXU4AbaRLVkCXiG+SB5md5Mi738NBzhbu1SNY
- 0AkmfjbGfghzpZrbJkTmCiadiRBGJdVOvKDuHaiaWzxf6YKOTqp6ty7dt6NxE40/BM
- y3LNumyrzh50AJMhQSZakZW+qJN7hsauNX+rNM7gj61obAMad18UTcIeO08wCMtK0G
- Qj06rAg01SF22hagtXNRAT+DdDeuPtf9dIzQkgMdm3F5/cpSVH3siAFRPJ3c/Z9Fu5
- Pnzn/frYbPbLA==
-Received: by mail-lf1-f50.google.com with SMTP id
- 2adb3069b0e04-502153ae36cso5558866e87.3
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:25:24 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yw4VNuh+ZQTLccBow+uPc4MDwH/yaV4C0ltY/ncJcy+0I0yZkoX
- 0kJ76MYEnZ7ZZtLo5AtNDixD0I1eZENERwNujoY=
-X-Google-Smtp-Source: AGHT+IHV8QBSwd0P1QbpuVk31CnQwArnlBmhEdbUjMu2tUz3/PeuXiMiG3hMSnucs9FAaOY2pYwYEgbR04k4HhqdcqM=
-X-Received: by 2002:ac2:53ad:0:b0:500:7de4:300e with SMTP id
- j13-20020ac253ad000000b005007de4300emr4934416lfh.58.1694348723075; Sun, 10
- Sep 2023 05:25:23 -0700 (PDT)
+ b=PEmhPzwVJPaCBAOGOhNxYYre7wk/sppOB6PIhu0cAUjiYx8EC6pwsQRJD41V0ejwN
+ kRcy9AXUBlSyy2mD5bjqXFIIhwYsFru91QrI/AunDCczJMGGFn+CUO4SH+DeFvaJwl
+ U/PphLmKpEVwySFtpSt6TktigGUBZzayvCgecBgRI2GOzrVxdSHgWa95VVeRGPY0rn
+ EHb5mrzsAxHILtNGqmjZQ3zShtyJwNxnqy1w7wIZvG8rdsKFuzztqD31c1u9L3FZ6c
+ fYzj2ePKH+75nf1pwb1HeENGTxJ+coCmgUZNTdJFWIQYCkKcKKTSckKst3X6qYKipf
+ jIP2tcIKcuZzA==
+Received: by mail-lj1-f179.google.com with SMTP id
+ 38308e7fff4ca-2bcbfb3705dso57314311fa.1
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:26:15 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzGClZMcnLkcmjtdmydAk4epqA4x/wZx3KD2GOzH6Snt1ORv72f
+ qN+8YboIcHjbtLkxO1kEXd1Xv1mayvuvDYqyxRM=
+X-Google-Smtp-Source: AGHT+IGrVPejALYuieztw6W5skmPzBlRSX9tblsPQkEkwWnwrc6quMmC5BEN+08pnGos3nXLg1zwM3R6qwQh4iyax5U=
+X-Received: by 2002:a2e:321a:0:b0:2bb:a28b:58e1 with SMTP id
+ y26-20020a2e321a000000b002bba28b58e1mr5521567ljy.41.1694348773353; Sun, 10
+ Sep 2023 05:26:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230821161854.419893-1-richard.henderson@linaro.org>
- <20230821161854.419893-14-richard.henderson@linaro.org>
-In-Reply-To: <20230821161854.419893-14-richard.henderson@linaro.org>
+ <20230821161854.419893-19-richard.henderson@linaro.org>
+In-Reply-To: <20230821161854.419893-19-richard.henderson@linaro.org>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 10 Sep 2023 14:25:11 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEHcKzWHR=qdBZBw0RK-+zkfBF_tTQzMeENDO5d0P++PQ@mail.gmail.com>
-Message-ID: <CAMj1kXEHcKzWHR=qdBZBw0RK-+zkfBF_tTQzMeENDO5d0P++PQ@mail.gmail.com>
-Subject: Re: [PATCH v3 13/19] crypto: Add generic 64-bit carry-less multiply
- routine
+Date: Sun, 10 Sep 2023 14:26:02 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXG3nBMhiZuGK-BcHNJC50ik2MkSuB04w4yuzGLEaorPbQ@mail.gmail.com>
+Message-ID: <CAMj1kXG3nBMhiZuGK-BcHNJC50ik2MkSuB04w4yuzGLEaorPbQ@mail.gmail.com>
+Subject: Re: [PATCH v3 18/19] host/include/i386: Implement clmul.h
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, berrange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=145.40.68.75; envelope-from=ardb@kernel.org;
- helo=ams.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -83,99 +82,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On Mon, 21 Aug 2023 at 18:19, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
+> Detect PCLMUL in cpuinfo; implement the accel hook.
+>
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
 > ---
->  host/include/generic/host/crypto/clmul.h | 15 +++++++++++++++
->  include/crypto/clmul.h                   | 19 +++++++++++++++++++
->  crypto/clmul.c                           | 18 ++++++++++++++++++
->  3 files changed, 52 insertions(+)
->  create mode 100644 host/include/generic/host/crypto/clmul.h
+>  host/include/i386/host/cpuinfo.h        |  1 +
+>  host/include/i386/host/crypto/clmul.h   | 29 +++++++++++++++++++++++++
+>  host/include/x86_64/host/crypto/clmul.h |  1 +
+>  include/qemu/cpuid.h                    |  3 +++
+>  util/cpuinfo-i386.c                     |  1 +
+>  5 files changed, 35 insertions(+)
+>  create mode 100644 host/include/i386/host/crypto/clmul.h
+>  create mode 100644 host/include/x86_64/host/crypto/clmul.h
 >
-> diff --git a/host/include/generic/host/crypto/clmul.h b/host/include/generic/host/crypto/clmul.h
+> diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
+> index 073d0a426f..7ae21568f7 100644
+> --- a/host/include/i386/host/cpuinfo.h
+> +++ b/host/include/i386/host/cpuinfo.h
+> @@ -27,6 +27,7 @@
+>  #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
+>  #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
+>  #define CPUINFO_AES             (1u << 18)
+> +#define CPUINFO_PCLMUL          (1u << 19)
+>
+>  /* Initialized with a constructor. */
+>  extern unsigned cpuinfo;
+> diff --git a/host/include/i386/host/crypto/clmul.h b/host/include/i386/host/crypto/clmul.h
 > new file mode 100644
-> index 0000000000..915bfb88d3
+> index 0000000000..dc3c814797
 > --- /dev/null
-> +++ b/host/include/generic/host/crypto/clmul.h
-> @@ -0,0 +1,15 @@
+> +++ b/host/include/i386/host/crypto/clmul.h
+> @@ -0,0 +1,29 @@
 > +/*
-> + * No host specific carry-less multiply acceleration.
+> + * x86 specific clmul acceleration.
 > + * SPDX-License-Identifier: GPL-2.0-or-later
 > + */
 > +
-> +#ifndef GENERIC_HOST_CRYPTO_CLMUL_H
-> +#define GENERIC_HOST_CRYPTO_CLMUL_H
+> +#ifndef X86_HOST_CRYPTO_CLMUL_H
+> +#define X86_HOST_CRYPTO_CLMUL_H
 > +
-> +#define HAVE_CLMUL_ACCEL  false
-> +#define ATTR_CLMUL_ACCEL
+> +#include "host/cpuinfo.h"
+> +#include <immintrin.h>
 > +
-> +Int128 clmul_64_accel(uint64_t, uint64_t)
-> +    QEMU_ERROR("unsupported accel");
+> +#if defined(__PCLMUL__)
+> +# define HAVE_CLMUL_ACCEL  true
+> +# define ATTR_CLMUL_ACCEL
+> +#else
+> +# define HAVE_CLMUL_ACCEL  likely(cpuinfo & CPUINFO_PCLMUL)
+> +# define ATTR_CLMUL_ACCEL  __attribute__((target("pclmul")))
+> +#endif
 > +
-> +#endif /* GENERIC_HOST_CRYPTO_CLMUL_H */
-> diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
-> index 0ea25a252c..c82d2d7559 100644
-> --- a/include/crypto/clmul.h
-> +++ b/include/crypto/clmul.h
-> @@ -8,6 +8,9 @@
->  #ifndef CRYPTO_CLMUL_H
->  #define CRYPTO_CLMUL_H
->
-> +#include "qemu/int128.h"
-> +#include "host/crypto/clmul.h"
-> +
->  /**
->   * clmul_8x8_low:
->   *
-> @@ -61,4 +64,20 @@ uint64_t clmul_16x2_odd(uint64_t, uint64_t);
->   */
->  uint64_t clmul_32(uint32_t, uint32_t);
->
-> +/**
-> + * clmul_64:
-> + *
-> + * Perform a 64x64->128 carry-less multiply.
-> + */
-> +Int128 clmul_64_gen(uint64_t, uint64_t);
-> +
-> +static inline Int128 clmul_64(uint64_t a, uint64_t b)
+> +static inline Int128 ATTR_CLMUL_ACCEL
+> +clmul_64_accel(uint64_t n, uint64_t m)
 > +{
-> +    if (HAVE_CLMUL_ACCEL) {
-> +        return clmul_64_accel(a, b);
-> +    } else {
-> +        return clmul_64_gen(a, b);
-> +    }
+> +    union { __m128i v; Int128 s; } u;
+> +
+> +    u.v = _mm_clmulepi64_si128(_mm_set_epi64x(0, n), _mm_set_epi64x(0, m), 0);
+> +    return u.s;
 > +}
 > +
->  #endif /* CRYPTO_CLMUL_H */
-> diff --git a/crypto/clmul.c b/crypto/clmul.c
-> index 36ada1be9d..abf79cc49a 100644
-> --- a/crypto/clmul.c
-> +++ b/crypto/clmul.c
-> @@ -92,3 +92,21 @@ uint64_t clmul_32(uint32_t n, uint32_t m32)
->      }
->      return r;
->  }
-> +
-> +Int128 clmul_64_gen(uint64_t n, uint64_t m)
-> +{
-> +    uint64_t rl = 0, rh = 0;
-> +
-> +    /* Bit 0 can only influence the low 64-bit result.  */
-> +    if (n & 1) {
-> +        rl = m;
-> +    }
-> +
-> +    for (int i = 1; i < 64; ++i) {
-> +        uint64_t mask = -(n & 1);
-> +        rl ^= (m << i) & mask;
-> +        rh ^= (m >> (64 - i)) & mask;
-> +        n >>= 1;
-> +    }
-> +    return int128_make128(rl, rh);
-> +}
+> +#endif /* X86_HOST_CRYPTO_CLMUL_H */
+> diff --git a/host/include/x86_64/host/crypto/clmul.h b/host/include/x86_64/host/crypto/clmul.h
+> new file mode 100644
+> index 0000000000..f25eced416
+> --- /dev/null
+> +++ b/host/include/x86_64/host/crypto/clmul.h
+> @@ -0,0 +1 @@
+> +#include "host/include/i386/host/crypto/clmul.h"
+> diff --git a/include/qemu/cpuid.h b/include/qemu/cpuid.h
+> index 35325f1995..b11161555b 100644
+> --- a/include/qemu/cpuid.h
+> +++ b/include/qemu/cpuid.h
+> @@ -25,6 +25,9 @@
+>  #endif
+>
+>  /* Leaf 1, %ecx */
+> +#ifndef bit_PCLMUL
+> +#define bit_PCLMUL      (1 << 1)
+> +#endif
+>  #ifndef bit_SSE4_1
+>  #define bit_SSE4_1      (1 << 19)
+>  #endif
+> diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
+> index 3a7b7e0ad1..36783fd199 100644
+> --- a/util/cpuinfo-i386.c
+> +++ b/util/cpuinfo-i386.c
+> @@ -39,6 +39,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
+>          info |= (c & bit_SSE4_1 ? CPUINFO_SSE4 : 0);
+>          info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
+>          info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
+> +        info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
+>
+>          /* Our AES support requires PSHUFB as well. */
+>          info |= ((c & bit_AES) && (c & bit_SSSE3) ? CPUINFO_AES : 0);
 > --
 > 2.34.1
 >
