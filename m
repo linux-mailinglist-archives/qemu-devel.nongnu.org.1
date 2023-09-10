@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230B3799E18
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFECA799E19
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:27:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfJW9-0005Yv-9C; Sun, 10 Sep 2023 08:26:21 -0400
+	id 1qfJXJ-0006Ey-4H; Sun, 10 Sep 2023 08:27:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJW6-0005YA-T8
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:26:18 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJXG-0006Eh-RC
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:27:30 -0400
+Received: from ams.source.kernel.org ([145.40.68.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJW4-0004OO-Ft
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:26:18 -0400
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJXE-0004WR-Cm
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:27:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id AF0D660C35
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231E1C433C7
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:26:15 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id DEE3CB80A08
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:27:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67CEC433C7
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1694348775;
- bh=gMPYe2PWFzZFE39kUSu/9xTFMSl48ojvuCxYN1J9Zbg=;
+ s=k20201202; t=1694348845;
+ bh=0/vMUz9aI/htueuYXnLkaLsf+pwhctfk9EfjYf2sagQ=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=PEmhPzwVJPaCBAOGOhNxYYre7wk/sppOB6PIhu0cAUjiYx8EC6pwsQRJD41V0ejwN
- kRcy9AXUBlSyy2mD5bjqXFIIhwYsFru91QrI/AunDCczJMGGFn+CUO4SH+DeFvaJwl
- U/PphLmKpEVwySFtpSt6TktigGUBZzayvCgecBgRI2GOzrVxdSHgWa95VVeRGPY0rn
- EHb5mrzsAxHILtNGqmjZQ3zShtyJwNxnqy1w7wIZvG8rdsKFuzztqD31c1u9L3FZ6c
- fYzj2ePKH+75nf1pwb1HeENGTxJ+coCmgUZNTdJFWIQYCkKcKKTSckKst3X6qYKipf
- jIP2tcIKcuZzA==
-Received: by mail-lj1-f179.google.com with SMTP id
- 38308e7fff4ca-2bcbfb3705dso57314311fa.1
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:26:15 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzGClZMcnLkcmjtdmydAk4epqA4x/wZx3KD2GOzH6Snt1ORv72f
- qN+8YboIcHjbtLkxO1kEXd1Xv1mayvuvDYqyxRM=
-X-Google-Smtp-Source: AGHT+IGrVPejALYuieztw6W5skmPzBlRSX9tblsPQkEkwWnwrc6quMmC5BEN+08pnGos3nXLg1zwM3R6qwQh4iyax5U=
-X-Received: by 2002:a2e:321a:0:b0:2bb:a28b:58e1 with SMTP id
- y26-20020a2e321a000000b002bba28b58e1mr5521567ljy.41.1694348773353; Sun, 10
- Sep 2023 05:26:13 -0700 (PDT)
+ b=SXX4LrXiCoW+aWqWC3l8vYNEd/hR4Rgvib4bc3sQD0ElB/BTKB4WhK1f1pNwTM6Dt
+ 27ytiYT0KZG2AAzrGjyPMf65phXygAzXFOAO9eNqgNfGKjWWEE9qlNsXD6ThOLgxkb
+ 42CMkGQ7suPNPKE4fh29gv5JbHbZah7PFl7nHZOWeiBbpOKTfrayJr9c3KuSL24NM7
+ 9gkt9QakndxlZKrtNrHjmRgX53ecL931hU7QBvxMZhjshJFGhxWJkeafV/t/pe/DUh
+ QzBL3b1UZ8qPVglOOChnPDm9gmkmP/Hp1+MygoWActxcP1g/oSGZI67EzBCZOThEzp
+ Pb0QYHf9Nsdrg==
+Received: by mail-lf1-f41.google.com with SMTP id
+ 2adb3069b0e04-501eec0a373so5625503e87.3
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:27:25 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxZ0RVb2c1961eBMZh+8WEmftSeIlL61bvlHG0STb6Pxz89JIQQ
+ 5F8MozUyqrGA2ceyjlQD1ZmHGpmyxU6RZdVIYBM=
+X-Google-Smtp-Source: AGHT+IEl4YPJuQ/YAfTzqurpBgnAOGcVq0jJ0Dni3CdlMf8aUC4t6wOafwAe6nGD2kR3Y8Kpb6dJlYwRRsCEr4LjjKM=
+X-Received: by 2002:a05:6512:6c3:b0:502:adbb:f9db with SMTP id
+ u3-20020a05651206c300b00502adbbf9dbmr3314479lff.65.1694348843906; Sun, 10 Sep
+ 2023 05:27:23 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230821161854.419893-1-richard.henderson@linaro.org>
- <20230821161854.419893-19-richard.henderson@linaro.org>
-In-Reply-To: <20230821161854.419893-19-richard.henderson@linaro.org>
+ <20230821161854.419893-2-richard.henderson@linaro.org>
+In-Reply-To: <20230821161854.419893-2-richard.henderson@linaro.org>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 10 Sep 2023 14:26:02 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXG3nBMhiZuGK-BcHNJC50ik2MkSuB04w4yuzGLEaorPbQ@mail.gmail.com>
-Message-ID: <CAMj1kXG3nBMhiZuGK-BcHNJC50ik2MkSuB04w4yuzGLEaorPbQ@mail.gmail.com>
-Subject: Re: [PATCH v3 18/19] host/include/i386: Implement clmul.h
+Date: Sun, 10 Sep 2023 14:27:12 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHpObFh0ZE3PHcJ9QbmNOq=tOrJ+GV041ioqi6bLBCtmw@mail.gmail.com>
+Message-ID: <CAMj1kXHpObFh0ZE3PHcJ9QbmNOq=tOrJ+GV041ioqi6bLBCtmw@mail.gmail.com>
+Subject: Re: [PATCH v3 01/19] crypto: Add generic 8-bit carry-less multiply
+ routines
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, berrange@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
+Received-SPF: pass client-ip=145.40.68.75; envelope-from=ardb@kernel.org;
+ helo=ams.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -79,105 +80,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 21 Aug 2023 at 18:19, Richard Henderson
+On Mon, 21 Aug 2023 at 18:18, Richard Henderson
 <richard.henderson@linaro.org> wrote:
->
-> Detect PCLMUL in cpuinfo; implement the accel hook.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
+
 > ---
->  host/include/i386/host/cpuinfo.h        |  1 +
->  host/include/i386/host/crypto/clmul.h   | 29 +++++++++++++++++++++++++
->  host/include/x86_64/host/crypto/clmul.h |  1 +
->  include/qemu/cpuid.h                    |  3 +++
->  util/cpuinfo-i386.c                     |  1 +
->  5 files changed, 35 insertions(+)
->  create mode 100644 host/include/i386/host/crypto/clmul.h
->  create mode 100644 host/include/x86_64/host/crypto/clmul.h
+>  include/crypto/clmul.h | 41 +++++++++++++++++++++++++++++
+>  crypto/clmul.c         | 60 ++++++++++++++++++++++++++++++++++++++++++
+>  crypto/meson.build     |  9 ++++---
+>  3 files changed, 107 insertions(+), 3 deletions(-)
+>  create mode 100644 include/crypto/clmul.h
+>  create mode 100644 crypto/clmul.c
 >
-> diff --git a/host/include/i386/host/cpuinfo.h b/host/include/i386/host/cpuinfo.h
-> index 073d0a426f..7ae21568f7 100644
-> --- a/host/include/i386/host/cpuinfo.h
-> +++ b/host/include/i386/host/cpuinfo.h
-> @@ -27,6 +27,7 @@
->  #define CPUINFO_ATOMIC_VMOVDQA  (1u << 16)
->  #define CPUINFO_ATOMIC_VMOVDQU  (1u << 17)
->  #define CPUINFO_AES             (1u << 18)
-> +#define CPUINFO_PCLMUL          (1u << 19)
->
->  /* Initialized with a constructor. */
->  extern unsigned cpuinfo;
-> diff --git a/host/include/i386/host/crypto/clmul.h b/host/include/i386/host/crypto/clmul.h
+> diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
 > new file mode 100644
-> index 0000000000..dc3c814797
+> index 0000000000..153b5e3057
 > --- /dev/null
-> +++ b/host/include/i386/host/crypto/clmul.h
-> @@ -0,0 +1,29 @@
+> +++ b/include/crypto/clmul.h
+> @@ -0,0 +1,41 @@
 > +/*
-> + * x86 specific clmul acceleration.
+> + * Carry-less multiply operations.
 > + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * Copyright (C) 2023 Linaro, Ltd.
 > + */
 > +
-> +#ifndef X86_HOST_CRYPTO_CLMUL_H
-> +#define X86_HOST_CRYPTO_CLMUL_H
+> +#ifndef CRYPTO_CLMUL_H
+> +#define CRYPTO_CLMUL_H
 > +
-> +#include "host/cpuinfo.h"
-> +#include <immintrin.h>
+> +/**
+> + * clmul_8x8_low:
+> + *
+> + * Perform eight 8x8->8 carry-less multiplies.
+> + */
+> +uint64_t clmul_8x8_low(uint64_t, uint64_t);
 > +
-> +#if defined(__PCLMUL__)
-> +# define HAVE_CLMUL_ACCEL  true
-> +# define ATTR_CLMUL_ACCEL
-> +#else
-> +# define HAVE_CLMUL_ACCEL  likely(cpuinfo & CPUINFO_PCLMUL)
-> +# define ATTR_CLMUL_ACCEL  __attribute__((target("pclmul")))
-> +#endif
+> +/**
+> + * clmul_8x4_even:
+> + *
+> + * Perform four 8x8->16 carry-less multiplies.
+> + * The odd bytes of the inputs are ignored.
+> + */
+> +uint64_t clmul_8x4_even(uint64_t, uint64_t);
 > +
-> +static inline Int128 ATTR_CLMUL_ACCEL
-> +clmul_64_accel(uint64_t n, uint64_t m)
+> +/**
+> + * clmul_8x4_odd:
+> + *
+> + * Perform four 8x8->16 carry-less multiplies.
+> + * The even bytes of the inputs are ignored.
+> + */
+> +uint64_t clmul_8x4_odd(uint64_t, uint64_t);
+> +
+> +/**
+> + * clmul_8x4_packed:
+> + *
+> + * Perform four 8x8->16 carry-less multiplies.
+> + */
+> +uint64_t clmul_8x4_packed(uint32_t, uint32_t);
+> +
+> +#endif /* CRYPTO_CLMUL_H */
+> diff --git a/crypto/clmul.c b/crypto/clmul.c
+> new file mode 100644
+> index 0000000000..82d873fee5
+> --- /dev/null
+> +++ b/crypto/clmul.c
+> @@ -0,0 +1,60 @@
+> +/*
+> + * Carry-less multiply operations.
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * Copyright (C) 2023 Linaro, Ltd.
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +#include "crypto/clmul.h"
+> +
+> +uint64_t clmul_8x8_low(uint64_t n, uint64_t m)
 > +{
-> +    union { __m128i v; Int128 s; } u;
+> +    uint64_t r = 0;
 > +
-> +    u.v = _mm_clmulepi64_si128(_mm_set_epi64x(0, n), _mm_set_epi64x(0, m), 0);
-> +    return u.s;
+> +    for (int i = 0; i < 8; ++i) {
+> +        uint64_t mask = (n & 0x0101010101010101ull) * 0xff;
+> +        r ^= m & mask;
+> +        m = (m << 1) & 0xfefefefefefefefeull;
+> +        n >>= 1;
+> +    }
+> +    return r;
 > +}
 > +
-> +#endif /* X86_HOST_CRYPTO_CLMUL_H */
-> diff --git a/host/include/x86_64/host/crypto/clmul.h b/host/include/x86_64/host/crypto/clmul.h
-> new file mode 100644
-> index 0000000000..f25eced416
-> --- /dev/null
-> +++ b/host/include/x86_64/host/crypto/clmul.h
-> @@ -0,0 +1 @@
-> +#include "host/include/i386/host/crypto/clmul.h"
-> diff --git a/include/qemu/cpuid.h b/include/qemu/cpuid.h
-> index 35325f1995..b11161555b 100644
-> --- a/include/qemu/cpuid.h
-> +++ b/include/qemu/cpuid.h
-> @@ -25,6 +25,9 @@
->  #endif
+> +static uint64_t clmul_8x4_even_int(uint64_t n, uint64_t m)
+> +{
+> +    uint64_t r = 0;
+> +
+> +    for (int i = 0; i < 8; ++i) {
+> +        uint64_t mask = (n & 0x0001000100010001ull) * 0xffff;
+> +        r ^= m & mask;
+> +        n >>= 1;
+> +        m <<= 1;
+> +    }
+> +    return r;
+> +}
+> +
+> +uint64_t clmul_8x4_even(uint64_t n, uint64_t m)
+> +{
+> +    n &= 0x00ff00ff00ff00ffull;
+> +    m &= 0x00ff00ff00ff00ffull;
+> +    return clmul_8x4_even_int(n, m);
+> +}
+> +
+> +uint64_t clmul_8x4_odd(uint64_t n, uint64_t m)
+> +{
+> +    return clmul_8x4_even(n >> 8, m >> 8);
+> +}
+> +
+> +static uint64_t unpack_8_to_16(uint64_t x)
+> +{
+> +    return  (x & 0x000000ff)
+> +         | ((x & 0x0000ff00) << 8)
+> +         | ((x & 0x00ff0000) << 16)
+> +         | ((x & 0xff000000) << 24);
+> +}
+> +
+> +uint64_t clmul_8x4_packed(uint32_t n, uint32_t m)
+> +{
+> +    return clmul_8x4_even_int(unpack_8_to_16(n), unpack_8_to_16(m));
+> +}
+> diff --git a/crypto/meson.build b/crypto/meson.build
+> index 5f03a30d34..9ac1a89802 100644
+> --- a/crypto/meson.build
+> +++ b/crypto/meson.build
+> @@ -48,9 +48,12 @@ if have_afalg
+>  endif
+>  crypto_ss.add(when: gnutls, if_true: files('tls-cipher-suites.c'))
 >
->  /* Leaf 1, %ecx */
-> +#ifndef bit_PCLMUL
-> +#define bit_PCLMUL      (1 << 1)
-> +#endif
->  #ifndef bit_SSE4_1
->  #define bit_SSE4_1      (1 << 19)
->  #endif
-> diff --git a/util/cpuinfo-i386.c b/util/cpuinfo-i386.c
-> index 3a7b7e0ad1..36783fd199 100644
-> --- a/util/cpuinfo-i386.c
-> +++ b/util/cpuinfo-i386.c
-> @@ -39,6 +39,7 @@ unsigned __attribute__((constructor)) cpuinfo_init(void)
->          info |= (c & bit_SSE4_1 ? CPUINFO_SSE4 : 0);
->          info |= (c & bit_MOVBE ? CPUINFO_MOVBE : 0);
->          info |= (c & bit_POPCNT ? CPUINFO_POPCNT : 0);
-> +        info |= (c & bit_PCLMUL ? CPUINFO_PCLMUL : 0);
->
->          /* Our AES support requires PSHUFB as well. */
->          info |= ((c & bit_AES) && (c & bit_SSSE3) ? CPUINFO_AES : 0);
+> -util_ss.add(files('sm4.c'))
+> -util_ss.add(files('aes.c'))
+> -util_ss.add(files('init.c'))
+> +util_ss.add(files(
+> +  'aes.c',
+> +  'clmul.c',
+> +  'init.c',
+> +  'sm4.c',
+> +))
+>  if gnutls.found()
+>    util_ss.add(gnutls)
+>  endif
 > --
 > 2.34.1
 >
