@@ -2,81 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A69579A002
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 23:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9800F79A003
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 23:01:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfRX6-00018X-W8; Sun, 10 Sep 2023 16:59:53 -0400
+	id 1qfRYB-0001ql-ET; Sun, 10 Sep 2023 17:00:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roman@roolebo.dev>) id 1qfRX4-00018I-S9
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 16:59:50 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <roman@roolebo.dev>) id 1qfRX2-000774-Qo
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 16:59:50 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2bcd7a207f7so59806071fa.3
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 13:59:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=roolebo.dev; s=mail; t=1694379586; x=1694984386; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=km2nfUBS1QC1wQmwYAoMOvcjcYP4HrO1QMXT7Yqhn8Y=;
- b=TSDN/DUmXLZMw6aIquY7QP4osYg9Gt3FLPcRRMRrbn7BeSpLP/0uZEB/TzXcfm2MLh
- wkukmHuQXiV1/gTaM1OWj7AZ54+pJkNE6kaIgenZadL8bOu871n93hHiS3xMkbk0lmKu
- nYZF+tLdd0bir7SJ6K6ukinecdbtIaCTqWyoDkZfh1Mpd7w5mkMktV5ZD6sdHaek2BIZ
- zmWvVMKdQrpj8LpSlbyi9wR4Emf9keQ86CDc9H/9dZmKigqwyalVbIQr6LEUfS4vbieG
- WrsElEEwNB7ajCR5BuM264ydnl6+E0urPMaqtWDPsMBOA/Y7OVqIJEHqpSkXT2s6tHpX
- MDpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694379586; x=1694984386;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=km2nfUBS1QC1wQmwYAoMOvcjcYP4HrO1QMXT7Yqhn8Y=;
- b=a3QKE5eCMCvvnTGa6PBMb0gRO0189vW56m47RXVJiEiTTh5l2iXvP4gFVQFLxZOKkw
- 4mnSiGuLIjhDElm75uy2wbEUL66XwVYos1NaJkFKqd2GyZx4inB9u2zrVjGCdf3Ii35i
- HwD5c/7v8LjFWKd/YLheFsCQAON6kSitojeM7edg8cwMG0z7Vo8NgbbZA0t+O0PJvwtz
- iiF8lKwXcMwlukH/aolM0iv8MW/0Fic6Nd32NRMJlJofvl3pQpZoyHDO7t/QW+70dVss
- oZ2OHT9RF5FLui4ntnGGRO52gklHUBeEC//cmq/OuU9JmWWJ/bk2h01L6mq+IRwKLTdq
- iFAQ==
-X-Gm-Message-State: AOJu0Ywe+xhSi5gF1pMDkqv2TAgsjHE7Kb1Z57LZ0v8yqv969h676UmZ
- SbWlnwF6vUBQ5cJhUAr+WfbsnQ==
-X-Google-Smtp-Source: AGHT+IHawdTdpu36lCuFL2SjxTayH3GFZ8p8YpLkoFCBk51DIhovVtpJ5rwut8V6KUd3LBDTeq9giA==
-X-Received: by 2002:a2e:880d:0:b0:2bc:b557:cee9 with SMTP id
- x13-20020a2e880d000000b002bcb557cee9mr6246408ljh.43.1694379586289; 
- Sun, 10 Sep 2023 13:59:46 -0700 (PDT)
-Received: from localhost ([149.255.29.239]) by smtp.gmail.com with ESMTPSA id
- v16-20020a2e7a10000000b002bcda31af28sm1236468ljc.42.2023.09.10.13.59.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 13:59:45 -0700 (PDT)
-Date: Sun, 10 Sep 2023 23:59:42 +0300
-From: Roman Bolshakov <roman@roolebo.dev>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Roman Bolshakov <rbolshakov@ddn.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Cameron Esfahani <dirty@apple.com>
-Subject: Re: [PATCH 2/2] sysemu/kvm: Restrict hvf_get_supported_cpuid() to
- x86 targets
-Message-ID: <ZP4uPozEl3pjY2qg@MacBook-Air-Roman.local>
-References: <20230905123906.6880-1-philmd@linaro.org>
- <20230905123906.6880-3-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qfRXx-0001on-DG; Sun, 10 Sep 2023 17:00:45 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qfRXt-0007R2-UH; Sun, 10 Sep 2023 17:00:44 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 45FCB2093B;
+ Mon, 11 Sep 2023 00:00:39 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 825C1270CB;
+ Mon, 11 Sep 2023 00:00:38 +0300 (MSK)
+Message-ID: <8b3ee6b8-3f4f-3128-610d-8fa3595c16e5@tls.msk.ru>
+Date: Mon, 11 Sep 2023 00:00:38 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230905123906.6880-3-philmd@linaro.org>
-Received-SPF: none client-ip=2a00:1450:4864:20::22e;
- envelope-from=roman@roolebo.dev; helo=mail-lj1-x22e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Content-Language: en-US
+To: QEMU Developers <qemu-devel@nongnu.org>,
+ qemu-stable <qemu-stable@nongnu.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: QEMU Stable series
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,19 +56,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 05, 2023 at 02:39:06PM +0200, Philippe Mathieu-Daudé wrote:
-> hvf_get_supported_cpuid() is only defined for x86 targets
-> (in target/i386/hvf/x86_cpuid.c).
-> Its declaration is pointless on all other targets.
-> 
-> All the calls to it in target/i386/cpu.c are guarded by
-> a call on hvf_enabled(), so are elided when HVF is not
-> built in. Therefore we can remove the unnecessary function
-> stub.
-> 
+Hi!
 
-Looks good but you also need to include "hvf/hvf-i386.h" to
-target/i386/hvf/hvf-cpu.c, otherwise the build fails.
+For quite some time I'm collecting stuff for stable, pocking various
+people with questions about stable, etc, so has become somewhat more
+visible and somewhat annoying too :)  Especially when I publish the
+next stable patch round-up, which has not only become larger when
+counting individual patches, but also multiplied by now 3 stable
+series.  So I guess you wondered what's going on, what's the buzz
+is all about, and when this ever stop... :)
 
---Roman
+Seriously though, I stepped up to maintain -stable series just out of
+nowhere, just because I had issues with qemu in debian and thought to
+do something with that, but instead of collecting stuff privately
+inside debian, I decided to give it a more visible try, to see how
+it will work out, without understanding how it will be.
+
+Meanwhile, next debian stable has been released, codenamed Bookworm,
+which has qemu version 7.2.  And it should be supported for the next
+2 years until next debian release.
+
+We never had any long-maintained releases in QEMU before, usually the
+previous series maintenance stopped once next major release is out.
+Right now there's stable-7.2 and stable-8.0 still in existance even
+after 8.1 has been released.  I should draw the line somewhere, even
+while so far, the whole stuff has been quite easy (but time-consuming).
+
+For now I decided I'll stop publishing stable-8.0 releases.  This one
+had a number of linux-user issues, a big share of which Richard fixed
+at the very end of 8.1 development cycle.  There will be one more 8.0
+stable release at least (see below for the details), together with the
+first 8.1 stable.
+
+I think this is more appropriate to drop support for previous stable
+not with next major, but with first major stable release instead, -
+this way users have much more choices for smooth upgrade to the next
+major version.  So stable-8.0 will end with 8.1.1.  Unless there's
+a good reason to continue.
+
+Speaking of 7.2 (which has its share of linux-user bugs too), - so
+far I plan to continue maintaining it for a while.  So please bear
+with me, don't be surprised I'll ask about 7.2 backports of something
+from time to time.  I don't yet want to make an official statement
+about this one, like "it will be LTS supported for 10 years from now", -
+just like with me stepping in last winter for stable maintenance,
+it's more like an experiment right now, to see how things will go.
+Let's say 7.2 is an ELTS series, - not Extended long-term support
+but Experimental, - both looks big and nice, but there's a tiny
+detail ;)
+
+Qemu is still a fast-moving target, with numerous changes in core
+areas, so things aren't easily backportable to older releases.
+
+Also, it's interesting whenever this whole stable rustling is useful
+for someone else, who uses which releases, etc.  Maybe we can share
+efforts in this area.
+
+Thanks,
+
+/mjt
+
+Let's see how it goes.
 
