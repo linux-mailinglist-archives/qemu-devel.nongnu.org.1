@@ -2,67 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B880799E1B
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 14:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DC9799EAA
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 16:37:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfJYA-0006sW-UN; Sun, 10 Sep 2023 08:28:26 -0400
+	id 1qfLXF-0000W8-J1; Sun, 10 Sep 2023 10:35:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJY9-0006s3-3E
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:28:25 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qfLXB-0000VZ-T2; Sun, 10 Sep 2023 10:35:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qfJY6-0004cJ-Ty
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 08:28:24 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id DA45560DB7
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:28:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D64C433C9
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 12:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1694348901;
- bh=869VERnE3N0VctqrZkv5ZdrMJoRvYhM3ko95dCHmAyY=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=AlpX+rAHRve1+vQQg/tlKtLOosZlBrmLemQZW42NK901ZhkHPQyDqo5pzG0aYJmwH
- BbWD5IdRXyckPDTwwYZsFeFddtoEw2i6CmFCScyUJ2sKeR/Qf6Q5yLeM5wv2gVGDT6
- WSq1XvEsPeGzLwZf6j551LAKR30o7BCfAeA8pAzK0Fe0AtZ2MUhLrPS9xsHVr9qs+J
- Fi68Rr5PuOxBoVkwSpfGEzz539mDXFJ0/vX8krARSFfB4/Po0F448QB2edgdnjZ+1g
- xW5DQ3jMJdK7hKq8OAbQRIzgomvWCvHgJI3jM83YgV5YBG1kqMJjNt+iPkxNLbW5s+
- 2eJPmA1WAfZoQ==
-Received: by mail-lj1-f169.google.com with SMTP id
- 38308e7fff4ca-2bce552508fso57963731fa.1
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 05:28:21 -0700 (PDT)
-X-Gm-Message-State: AOJu0Ywr9H3hKsQfQz87DMie1hXM0GoGv5js1gbr3JNoU3YsvVNwMb6a
- 3AOumzRzPDYk42Oq2OXirx9I47nJ6wwaupQkOL0=
-X-Google-Smtp-Source: AGHT+IGpRiACc5KUfFhsPpJ+EDoLUXhBLWB3IiJo4ejXER0oouSDFwKA32S93wd14vLz1MitO6ucsKxGq8YpBO71W1M=
-X-Received: by 2002:a2e:828b:0:b0:2b1:ed29:7c47 with SMTP id
- y11-20020a2e828b000000b002b1ed297c47mr4807527ljg.8.1694348899474; Sun, 10 Sep
- 2023 05:28:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qfLX8-00047s-5Y; Sun, 10 Sep 2023 10:35:33 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 352F6208E1;
+ Sun, 10 Sep 2023 17:35:23 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id CC36A27086;
+ Sun, 10 Sep 2023 17:35:22 +0300 (MSK)
+Message-ID: <aeaf35f2-c2da-345d-82f8-2b04b0d51a70@tls.msk.ru>
+Date: Sun, 10 Sep 2023 17:35:22 +0300
 MIME-Version: 1.0
-References: <20230821161854.419893-1-richard.henderson@linaro.org>
- <20230821161854.419893-6-richard.henderson@linaro.org>
-In-Reply-To: <20230821161854.419893-6-richard.henderson@linaro.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sun, 10 Sep 2023 14:28:08 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEb_At-NwL8H0E+5Lcqg0P7sZvUV0FjDVcyOpht3N8ZmQ@mail.gmail.com>
-Message-ID: <CAMj1kXEb_At-NwL8H0E+5Lcqg0P7sZvUV0FjDVcyOpht3N8ZmQ@mail.gmail.com>
-Subject: Re: [PATCH v3 05/19] crypto: Add generic 16-bit carry-less multiply
- routines
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=ardb@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PULL v2 00/35] ppc queue
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>, qemu-ppc@nongnu.org, qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
+References: <20230906143653.54709-1-clg@kaod.org>
+ <2b6c3dd1-430a-2e60-ea73-29c507d631d8@tls.msk.ru>
+ <ad943b46-0652-8fd1-49a4-c86dd6214827@kaod.org>
+ <CVD90VD3O9W1.1UBFXQ7MSVZEO@wheely>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <CVD90VD3O9W1.1UBFXQ7MSVZEO@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -80,76 +63,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 21 Aug 2023 at 18:19, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  include/crypto/clmul.h | 16 ++++++++++++++++
->  crypto/clmul.c         | 21 +++++++++++++++++++++
->  2 files changed, 37 insertions(+)
->
-> diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
-> index 153b5e3057..c7ad28aa85 100644
-> --- a/include/crypto/clmul.h
-> +++ b/include/crypto/clmul.h
-> @@ -38,4 +38,20 @@ uint64_t clmul_8x4_odd(uint64_t, uint64_t);
->   */
->  uint64_t clmul_8x4_packed(uint32_t, uint32_t);
->
-> +/**
-> + * clmul_16x2_even:
-> + *
-> + * Perform two 16x16->32 carry-less multiplies.
-> + * The odd words of the inputs are ignored.
-> + */
-> +uint64_t clmul_16x2_even(uint64_t, uint64_t);
-> +
-> +/**
-> + * clmul_16x2_odd:
-> + *
-> + * Perform two 16x16->32 carry-less multiplies.
-> + * The even bytes of the inputs are ignored.
+08.09.2023 07:24, Nicholas Piggin wrote:
 
-even words
+>>>> Nicholas Piggin (26):
+>>>>         target/ppc: Remove single-step suppression inside 0x100-0xf00
+>>>>         target/ppc: Improve book3s branch trace interrupt for v2.07S
+>>>>         target/ppc: Suppress single step interrupts on rfi-type instructions
+>>>>         target/ppc: Implement breakpoint debug facility for v2.07S
+>>>>         target/ppc: Implement watchpoint debug facility for v2.07S
+>>>>         spapr: implement H_SET_MODE debug facilities
+>>>>         ppc/vhyp: reset exception state when handling vhyp hcall
+>>>>         ppc/vof: Fix missed fields in VOF cleanup
+>>>>         hw/ppc/ppc.c: Tidy over-long lines
+>>>>         hw/ppc: Introduce functions for conversion between timebase and nanoseconds
+>>>>         host-utils: Add muldiv64_round_up
+>>>>         hw/ppc: Round up the decrementer interval when converting to ns
+>>>>         hw/ppc: Avoid decrementer rounding errors
+>>>>         target/ppc: Sign-extend large decrementer to 64-bits
+>>>>         hw/ppc: Always store the decrementer value
+>>>>         target/ppc: Migrate DECR SPR
+>>>>         hw/ppc: Reset timebase facilities on machine reset
+>>>>         hw/ppc: Read time only once to perform decrementer write
+>>>>         target/ppc: Fix CPU reservation migration for record-replay
+>>>>         target/ppc: Fix timebase reset with record-replay
+>>>>         spapr: Fix machine reset deadlock from replay-record
+>>>>         spapr: Fix record-replay machine reset consuming too many events
+>>>>         tests/avocado: boot ppc64 pseries replay-record test to Linux VFS mount
+>>>>         tests/avocado: reverse-debugging cope with re-executing breakpoints
+>>>>         tests/avocado: ppc64 reverse debugging tests for pseries and powernv
+>>>>         target/ppc: Fix LQ, STQ register-pair order for big-endian
+...
+>> The decrementer fixes are good candidates but there are quite a few
+>> patches and you might encounter conflicts.
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+So, there are 6 patches in there:
+
+  7798f5c576 hw/ppc: Introduce functions for conversion between timebase and nanoseconds
+  47de6c4c28 host-utils: Add muldiv64_round_up
+  eab0888418 hw/ppc: Round up the decrementer interval when converting to ns
+  8e0a5ac878 hw/ppc: Avoid decrementer rounding errors
+  c8fbc6b9f2 target/ppc: Sign-extend large decrementer to 64-bits
+  febb71d543 hw/ppc: Always store the decrementer value
+
+It all applies cleanly to 8.1 (running ci now), which is fine.
+For 8.0 and 7.2 things are a bit fun though.  6th patch (febb71d543)
+has minor context conflict with this commit:
+
+commit 17dd1354c1d1aba9caf4af01e11aa7dbe128474f
+Author: Nicholas Piggin <npiggin@gmail.com>
+Date:   Tue May 30 23:12:13 2023 +1000
+
+     target/ppc: Decrementer fix BookE semantics
+
+Technically, while the two touches nearby areas in
+hw/ppc/ppc.c:__cpu_ppc_store_decr(), they don't actually
+conflict, it is just the comment context.  But git is unable
+to figure this out by its own.  With commit 17dd1354c1d applied,
+everything goes flawlessly.  It looks like 17dd1354c1d can be
+picked up too for stable just fine, without resorting to context
+fixing.
+
+Also, 2 more patches applies cleanly (to 8.1 anyway):
+
+  30d0647bcf hw/ppc: Reset timebase facilities on machine reset
+  ea62f8a517 hw/ppc: Read time only once to perform decrementer write
+
+but it does not look like you mean these, esp. ea62f8a517.
 
 
-> + */
-> +uint64_t clmul_16x2_odd(uint64_t, uint64_t);
-> +
->  #endif /* CRYPTO_CLMUL_H */
-> diff --git a/crypto/clmul.c b/crypto/clmul.c
-> index 82d873fee5..2c87cfbf8a 100644
-> --- a/crypto/clmul.c
-> +++ b/crypto/clmul.c
-> @@ -58,3 +58,24 @@ uint64_t clmul_8x4_packed(uint32_t n, uint32_t m)
->  {
->      return clmul_8x4_even_int(unpack_8_to_16(n), unpack_8_to_16(m));
->  }
-> +
-> +uint64_t clmul_16x2_even(uint64_t n, uint64_t m)
-> +{
-> +    uint64_t r = 0;
-> +
-> +    n &= 0x0000ffff0000ffffull;
-> +    m &= 0x0000ffff0000ffffull;
-> +
-> +    for (int i = 0; i < 16; ++i) {
-> +        uint64_t mask = (n & 0x0000000100000001ull) * 0xffffffffull;
-> +        r ^= m & mask;
-> +        n >>= 1;
-> +        m <<= 1;
-> +    }
-> +    return r;
-> +}
-> +
-> +uint64_t clmul_16x2_odd(uint64_t n, uint64_t m)
-> +{
-> +    return clmul_16x2_even(n >> 16, m >> 16);
-> +}
-> --
-> 2.34.1
->
+> Decrementer I was nervous about since there were quite a lot of
+> interacting issues. Decrementer has worked okay for a while, so
+> even though there are some bugs, they're mostly in edge cases
+> that most OSes don't hit or care so much about.
+
+Ok.
+
+> Possibly the decrementer migration patch could be a candidate.
+
+I'm guessing this is this change:
+
+  578912ad73 target/ppc: Migrate DECR SPR
+
+This one is a bit more difficult.   First it requires the following:
+
+  d5ee641cfc target/ppc: Implement watchpoint debug facility for v2.07S
+  14192307ef target/ppc: Implement breakpoint debug facility for v2.07S
+
+which aren't present in 8.1.  And second, I'm not sure for the
+migration compatibility here, - will whole thing become unmigratable
+between 8.1.0 and some 8.1.x this way?  (and how about 8.1 and 8.2?).
+
+> In any case I would like them to get more testing upstream for
+> a while first.
+
+Ok, let's give it a try.
+
+Thanks,
+
+/mjt
 
