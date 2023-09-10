@@ -2,86 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4A3799C92
-	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 06:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 000B7799C93
+	for <lists+qemu-devel@lfdr.de>; Sun, 10 Sep 2023 06:22:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfBwO-0002zl-JT; Sun, 10 Sep 2023 00:20:56 -0400
+	id 1qfBxl-0003iN-48; Sun, 10 Sep 2023 00:22:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qfBwJ-0002vv-SE
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 00:20:51 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1qfBxX-0003gN-Ej
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 00:22:07 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qfBwH-0008AW-72
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 00:20:51 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3a9f88b663cso2462197b6e.3
- for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 21:20:48 -0700 (PDT)
+ id 1qfBxT-0008Nc-26
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 00:22:06 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-565334377d0so2841318a12.2
+ for <qemu-devel@nongnu.org>; Sat, 09 Sep 2023 21:22:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694319647; x=1694924447;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694319721; x=1694924521;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Idn4SpoXhTBIcUWssorGxVnrnkjVjGBeBPgU3vnJMx4=;
- b=Cko+fK6OTVdOcRuRrYfZw4O/gQpAtwG7xzrUfrNFne9HI/Xw3h8BPkUqeeg21uDscr
- ljO2ruesKvm8upjFrPQw9mpbZKUCq9JR6SQAPJmGH4lXPnUpzEYc8AIcOSAJHQNpdDuf
- 9BkhxAgcJdFoXubOFYMF56pOBZAG/VvbbnkHnWEsqV+SwzXWNUz81svzAF460UyokYGT
- s+FS+WXBruTIIZ9dtIB/aZc9n6blJG3aELtIzyiIpG5Bdwle/SPxwRqWQNFkTom8OG+M
- MVa9hYPgGaEF/9DwHK0NSNxpQkdtnrAVNDcQNM4kZRh2M2Bs2WIf0pocz1WIBjiS3OQh
- 3l9Q==
+ bh=y41O7m8lzKH6Z6I1rP686Lg5qOtZy5LXRHQ0fLJI1OY=;
+ b=cxmRZwnwuQX5EZ62LUKIhXu4MK3H8MU2sX0rMUyA+AbZxf1k1ci5uUxoUzHhwQoEuS
+ /VKkhix40aSuVIeSykXw0bDFbDg355zo4gNCvgbgEEjjj4PihN9Af5wZNDwY7an7lYWj
+ Q6r1P+HRSht+rrp4jJgfp9rrAfLK3VUAoTcmSlnDcpJgx3nsdjNiUpHFfdUZIWqleJCE
+ hcGu3Lvy2u8wgPJ6SXfIiX47E9v3RHMruzgMPtRrMIGYY/wseMgjz7wyLC/cjpwtodJw
+ eqEfPJKaXnRc772OYEsd4cH88slmELo4tCwFQnFmLYWGuz4SYuHUhL0IiGPKTVirgt28
+ 7WkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694319647; x=1694924447;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1694319721; x=1694924521;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Idn4SpoXhTBIcUWssorGxVnrnkjVjGBeBPgU3vnJMx4=;
- b=Uppi/Iq/acmyU+YdeFBLD1aPvFP8yu/x3YX+Qd12s84SHcrhMQPXxk/W+8ZKMCGpk1
- E3eiMZC7dD298Ri2z4rQ1ojvYz8I5aSyP4wTE5xUUqh56f7vfi6PZh1BAERsOSpoZ8lr
- tT+xS/pHn4XVgZ3lYOuflwNtIZGSqiTdngNbGOD6qFmYmn5dR+P5Vgwzh4JNBFuTXVCk
- w6Hk7y/pPnk3ihlf3xhvpVSSj/xh4jOHuxxuDoCYLvif/Q6nwoOFtKio/MJHflBVIgIw
- E3Hs9jqsJ31G7bmMg+9h3QaY9JGggr2Ah/yQb35vvBtlwwCLePO1uwMpGkBUcvGuEYVE
- gUEA==
-X-Gm-Message-State: AOJu0YwUiXqUAadtDOT2yDG7g8oxaGcsKDeOg/u6MsYOug7DLUtoZWg+
- 3gTOO7kjhcPCKJskz07HwPgy2g==
-X-Google-Smtp-Source: AGHT+IHWv9s+gQ8piEw+C7whJoevz4bSBF9Lx0BWIWe6u1p1wqyeXbM0ufzWv+7T9voRxdjHCE6+AQ==
-X-Received: by 2002:a05:6808:198:b0:3a7:215c:e34 with SMTP id
- w24-20020a056808019800b003a7215c0e34mr8060616oic.15.1694319647632; 
- Sat, 09 Sep 2023 21:20:47 -0700 (PDT)
+ bh=y41O7m8lzKH6Z6I1rP686Lg5qOtZy5LXRHQ0fLJI1OY=;
+ b=uT+AVnCMn3hJVOy8QjCunYWnH9CoDy4FKsIL1GGjcXbJxmagqskzAIWHF7sgx2dt2X
+ mglgon+Tk5St2L/rQte/jFxcLbk2Zci/nFB9ojqoWPgSMne2f6kv2CzHeJIFN8u74ioV
+ f6RpGfe+7aa7dazBJQsDlEOLzsXtxO3U0X/UQMbAFiMcKc2wyxe9+443acBSWKqRoCEl
+ VyucT7ag2Q42V5L6ibFTRn9luacblmMhiPsAzKkhzsm0MyCzv5v5xtOqh12UV6mkkHhQ
+ lz8gL87SyLjlUmbIVMzMmRpFef07mPIn8bKFWRKTU29ehak/hAksxnc8QFslSXq5Q/xc
+ nW8A==
+X-Gm-Message-State: AOJu0Yzq4HuXNE0KiI8dS5nA3UQdfHvXL4/F/4ZFm7zE1bqJ+95Yncow
+ gPSK8M2WHqIzknstN02qxybZyw==
+X-Google-Smtp-Source: AGHT+IG3w2NwKdjms/SuiPqAhtRTC9XzAYUKIfiyZjUtztV1ZlgLuJusPzzoM2Ll4o14KuOFM1cx2w==
+X-Received: by 2002:a05:6a20:105a:b0:14d:16c:2d20 with SMTP id
+ gt26-20020a056a20105a00b0014d016c2d20mr6996494pzc.44.1694319721488; 
+ Sat, 09 Sep 2023 21:22:01 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- t5-20020a63b705000000b0056afdbd0a24sm142840pgf.9.2023.09.09.21.20.45
+ t5-20020a63b705000000b0056afdbd0a24sm142840pgf.9.2023.09.09.21.21.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 Sep 2023 21:20:47 -0700 (PDT)
-Message-ID: <fd472f38-e45d-4174-a179-926a6f501bb5@daynix.com>
-Date: Sun, 10 Sep 2023 13:20:44 +0900
+ Sat, 09 Sep 2023 21:22:01 -0700 (PDT)
+Message-ID: <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
+Date: Sun, 10 Sep 2023 13:21:56 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/22] net/eth: Clean up local variable shadowing
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, Jason Wang <jasowang@redhat.com>
-References: <20230904161235.84651-1-philmd@linaro.org>
- <20230904161235.84651-16-philmd@linaro.org>
+Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
 Content-Language: en-US
+To: Huang Rui <ray.huang@amd.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+References: <20230831093252.2461282-1-ray.huang@amd.com>
+ <20230831093252.2461282-11-ray.huang@amd.com>
+ <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230904161235.84651-16-philmd@linaro.org>
+In-Reply-To: <ZPw2UjxogIULU722@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::235;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x235.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,35 +115,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/05 1:12, Philippe Mathieu-Daudé wrote:
-> Fix:
+On 2023/09/09 18:09, Huang Rui wrote:
+> On Thu, Aug 31, 2023 at 06:36:57PM +0800, Akihiko Odaki wrote:
+>> On 2023/08/31 18:32, Huang Rui wrote:
+>>> From: Antonio Caggiano <antonio.caggiano@collabora.com>
+>>>
+>>> Enable resource UUID feature and implement command resource assign UUID.
+>>> This is done by introducing a hash table to map resource IDs to their
+>>> UUIDs.
+>>
+>> The hash table does not seem to be stored during migration.
 > 
->    net/eth.c:435:20: error: declaration shadows a local variable [-Werror,-Wshadow]
->              size_t input_size = iov_size(pkt, pkt_frags);
->                     ^
->    net/eth.c:413:16: note: previous declaration is here
->          size_t input_size = iov_size(pkt, pkt_frags);
->                 ^
-> 
-> Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   net/eth.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/net/eth.c b/net/eth.c
-> index 649e66bb1f..3f680cc033 100644
-> --- a/net/eth.c
-> +++ b/net/eth.c
-> @@ -432,8 +432,6 @@ _eth_get_rss_ex_src_addr(const struct iovec *pkt, int pkt_frags,
->           }
->   
->           if (opthdr.type == IP6_OPT_HOME) {
-> -            size_t input_size = iov_size(pkt, pkt_frags);
-> -
->               if (input_size < opt_offset + sizeof(opthdr)) {
->                   return false;
->               }
+> May I know whether you point g->resource_uuids table data in VirtIOGPU
+> device should be stored in virtio_gpu_save() and resumed in
+> virtio_gpu_load() for virtio migration?
 
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Yes, that's what I meant.
+
+Regards,
+Akihiko Odaki
 
