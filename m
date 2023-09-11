@@ -2,42 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA7B79A50B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF18C79A507
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:52:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbgr-0003vu-Qg; Mon, 11 Sep 2023 03:50:37 -0400
+	id 1qfbgp-0003qc-CY; Mon, 11 Sep 2023 03:50:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgh-0003pd-L5
+ id 1qfbgh-0003pc-JX
  for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:27 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgd-000814-OE
+ id 1qfbgd-000819-OA
  for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:26 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5J52Rfz4x5w;
- Mon, 11 Sep 2023 17:50:12 +1000 (AEST)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5L72tdz4xF0;
+ Mon, 11 Sep 2023 17:50:14 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5H382Jz4x5q;
- Mon, 11 Sep 2023 17:50:11 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5K1VJqz4x5q;
+ Mon, 11 Sep 2023 17:50:12 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, YangHang Liu <yanghliu@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 00/13] vfio queue
-Date: Mon, 11 Sep 2023 09:49:55 +0200
-Message-ID: <20230911075008.462712-1-clg@redhat.com>
+Subject: [PULL 01/13] vfio/migration: Move from STOP_COPY to STOP in
+ vfio_save_cleanup()
+Date: Mon, 11 Sep 2023 09:49:56 +0200
+Message-ID: <20230911075008.462712-2-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230911075008.462712-1-clg@redhat.com>
+References: <20230911075008.462712-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -64,57 +67,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit c5ea91da443b458352c1b629b490ee6631775cb4:
+From: Avihai Horon <avihaih@nvidia.com>
 
-  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2023-09-08 10:06:25 -0400)
+Changing the device state from STOP_COPY to STOP can take time as the
+device may need to free resources and do other operations as part of the
+transition. Currently, this is done in vfio_save_complete_precopy() and
+therefore it is counted in the migration downtime.
 
-are available in the Git repository at:
+To avoid this, change the device state from STOP_COPY to STOP in
+vfio_save_cleanup(), which is called after migration has completed and
+thus is not part of migration downtime.
 
-  https://github.com/legoater/qemu/ tags/pull-vfio-20230911
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Tested-by: YangHang Liu <yanghliu@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+---
+ hw/vfio/migration.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-for you to fetch changes up to a31fe5daeaa230556145bfc04af1bd4e68f377fa:
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 2674f4bc472d16989910300958f697f26fefa442..8acd182a8bf3fcd0eb0368816ff3093242b103f5 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -383,6 +383,19 @@ static void vfio_save_cleanup(void *opaque)
+     VFIODevice *vbasedev = opaque;
+     VFIOMigration *migration = vbasedev->migration;
+ 
++    /*
++     * Changing device state from STOP_COPY to STOP can take time. Do it here,
++     * after migration has completed, so it won't increase downtime.
++     */
++    if (migration->device_state == VFIO_DEVICE_STATE_STOP_COPY) {
++        /*
++         * If setting the device in STOP state fails, the device should be
++         * reset. To do so, use ERROR state as a recover state.
++         */
++        vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP,
++                                 VFIO_DEVICE_STATE_ERROR);
++    }
++
+     g_free(migration->data_buffer);
+     migration->data_buffer = NULL;
+     migration->precopy_init_size = 0;
+@@ -508,12 +521,6 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+         return ret;
+     }
+ 
+-    /*
+-     * If setting the device in STOP state fails, the device should be reset.
+-     * To do so, use ERROR state as a recover state.
+-     */
+-    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP,
+-                                   VFIO_DEVICE_STATE_ERROR);
+     trace_vfio_save_complete_precopy(vbasedev->name, ret);
+ 
+     return ret;
+-- 
+2.41.0
 
-  vfio/common: Separate vfio-pci ranges (2023-09-11 08:34:06 +0200)
-
-----------------------------------------------------------------
-vfio queue:
-
-* Small downtime optimisation for VFIO migration
-* P2P support for VFIO migration
-* Introduction of a save_prepare() handler to fail VFIO migration
-* Fix on DMA logging ranges calculation for OVMF enabling dynamic window
-
-----------------------------------------------------------------
-Avihai Horon (11):
-      vfio/migration: Move from STOP_COPY to STOP in vfio_save_cleanup()
-      sysemu: Add prepare callback to struct VMChangeStateEntry
-      qdev: Add qdev_add_vm_change_state_handler_full()
-      vfio/migration: Add P2P support for VFIO migration
-      vfio/migration: Allow migration of multiple P2P supporting devices
-      migration: Add migration prefix to functions in target.c
-      vfio/migration: Fail adding device with enable-migration=on and existing blocker
-      migration: Move more initializations to migrate_init()
-      migration: Add .save_prepare() handler to struct SaveVMHandlers
-      vfio/migration: Block VFIO migration with postcopy migration
-      vfio/migration: Block VFIO migration with background snapshot
-
-Joao Martins (2):
-      vfio/migration: Refactor PRE_COPY and RUNNING state checks
-      vfio/common: Separate vfio-pci ranges
-
- docs/devel/vfio-migration.rst     |  93 +++++++++++++++++-----------
- include/hw/vfio/vfio-common.h     |   2 +
- include/migration/register.h      |   5 ++
- include/sysemu/runstate.h         |   7 +++
- migration/migration.h             |   6 +-
- migration/savevm.h                |   1 +
- hw/core/vm-change-state-handler.c |  14 ++++-
- hw/vfio/common.c                  | 126 ++++++++++++++++++++++++++++++--------
- hw/vfio/migration.c               | 106 +++++++++++++++++++++++++++-----
- migration/migration.c             |  33 ++++++----
- migration/savevm.c                |  32 ++++++++--
- migration/target.c                |   8 +--
- softmmu/runstate.c                |  40 ++++++++++++
- hw/vfio/trace-events              |   3 +-
- 14 files changed, 377 insertions(+), 99 deletions(-)
 
