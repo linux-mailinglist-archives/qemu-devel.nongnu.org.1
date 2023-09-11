@@ -2,68 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0349079A98B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 17:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0295A79A9A6
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 17:29:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfihi-0001vP-E1; Mon, 11 Sep 2023 11:19:58 -0400
+	id 1qfipM-0005iO-DZ; Mon, 11 Sep 2023 11:27:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qfihg-0001sL-Ko
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:19:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qfihe-0007Hv-B4
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:19:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694445593;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=7hcuxHlYcLPJIeat6lrS7c26bNrvAwYUHWzqv2c2eJI=;
- b=XVwUJrf7TSS0TcdF2yj7S85VRR2aNKIzzf0BnvgeIetEjTFSA3D+ferc89kA6PG3V6H6zf
- 0Q4aNJbO/qiAQ7IMvtBIp5U2jnFvyMDSBs+FI10TETgSkrtaoxhpIG7oAnVu2C4yA86Oa1
- KbS4DxzY473oZVtjX0911TFtzEgAWTM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-648-t5gwskP5P4i2-eltWRRQwQ-1; Mon, 11 Sep 2023 11:19:51 -0400
-X-MC-Unique: t5gwskP5P4i2-eltWRRQwQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C2053815F72
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 15:19:51 +0000 (UTC)
-Received: from localhost (unknown [10.39.195.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 25551215670B;
- Mon, 11 Sep 2023 15:19:50 +0000 (UTC)
-Date: Mon, 11 Sep 2023 11:19:49 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
-Subject: Re: [PULL 00/13] vfio queue
-Message-ID: <20230911151949.GA4101538@fedora>
-References: <20230911075008.462712-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qfipK-0005iG-Kr
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:27:50 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qfipI-0000Tc-1A
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:27:50 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-501ce655fcbso7314015e87.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 08:27:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694446065; x=1695050865; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=9+2YE007+wC2u0xxh7DJ73XyeWm14R9tv5OegqhxoYs=;
+ b=a9DDsDfrGJo8fkhX2qZ6j52U5Meaqf0e5hld6+a77mcK2ecBFFXYpOjHfyEGfofqn6
+ RHOacVqvmxfbf+bwi0BBrXjtV51Nj1S/H2ZD7QXs1EhAVmd+nOrEreWeotH915/7TbXF
+ ol909qHn0O7RKtibozmps9cywJgBPpWpTMgw5lQzGkyrrYi8bi54ko95IQWHqtWt43Ya
+ zan8x7gmwwj1pV6IWXrIyTcKBaAg/rrF4BhtMoFONSpVrNNNfwG6YjEXVO4cUNyIyCnh
+ P7lcYlzk1C9wxJX1+9LKwD2pqgUfkJZS2emuMXtguwzxhNzCi/d25isAByOqLkyUndCw
+ nM/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694446065; x=1695050865;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9+2YE007+wC2u0xxh7DJ73XyeWm14R9tv5OegqhxoYs=;
+ b=S+5ZKo1UKrWzToJ7K94BfIboHLA5CKz2Wojg29XLRCI1iD/3Xr4xNL62QaXf95fQOs
+ +2c+dF/PEBuqYKcSf2kz1je7koMAK68gWfkSStZFQz5BVZ480p9RmFTwJa6kca/XMN/J
+ xr/QJliYsuOgZAijwSbZ+jEQEuZYjsb8hpIRjwPYysuuEyb6/NlJ1kYPeJ7UqXOb490W
+ cM5aDbCkAYTrQnm0LhZUK+OWXkx/qzPIfiuvHBgIV3sxIBsMlMo9Ohf1g1WMvoospbIs
+ ZBdzg8mrZdV9BgK4HLfzDLtUWN3/a09rkNC/LlZd8Iwuhyz92lgxYSmVXrRjXcfpUg1f
+ rCIA==
+X-Gm-Message-State: AOJu0Yw9puV2ry0bOBT6N5zt1T1gVFnIgScvPjxY/OSbWhNf3SSKi6Mj
+ zNPCeqHVQQe6zBRIQI5QN2SSh9V5bQjD/GFfC+Oj3g==
+X-Google-Smtp-Source: AGHT+IFSjc3rF756Md1buY33VNwgL+BIutt2Jo/N0PPJrNIQSwCfzhA88IZJAsMzbhKuP5i6HapSIItCwtdbnJvsCR4=
+X-Received: by 2002:a19:381c:0:b0:500:b3f2:73e2 with SMTP id
+ f28-20020a19381c000000b00500b3f273e2mr7207546lfa.50.1694446065226; Mon, 11
+ Sep 2023 08:27:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="i/zxVtV6FlBmMtW8"
-Content-Disposition: inline
-In-Reply-To: <20230911075008.462712-1-clg@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230909131258.354675-1-mjt@tls.msk.ru>
+ <20230909131258.354675-3-mjt@tls.msk.ru>
+In-Reply-To: <20230909131258.354675-3-mjt@tls.msk.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 11 Sep 2023 16:27:34 +0100
+Message-ID: <CAFEAcA9P-=rh1yj=i_s86Efj+3r1K3OJJ5BR24zio8KHRMarPQ@mail.gmail.com>
+Subject: Re: [PATCH 2/7] i386: spelling fixes
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,30 +85,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Sat, 9 Sept 2023 at 14:17, Michael Tokarev <mjt@tls.msk.ru> wrote:
+>
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>  host/include/i386/host/cpuinfo.h | 2 +-
+>  hw/i386/acpi-build.c             | 4 ++--
+>  hw/i386/amd_iommu.c              | 4 ++--
+>  hw/i386/intel_iommu.c            | 4 ++--
+>  hw/i386/kvm/xen_xenstore.c       | 2 +-
+>  hw/i386/kvm/xenstore_impl.c      | 2 +-
+>  hw/i386/pc.c                     | 4 ++--
+>  include/hw/i386/topology.h       | 2 +-
+>  target/i386/cpu.c                | 4 ++--
+>  target/i386/cpu.h                | 4 ++--
+>  target/i386/kvm/kvm.c            | 4 ++--
+>  target/i386/kvm/xen-emu.c        | 2 +-
+>  target/i386/machine.c            | 4 ++--
+>  target/i386/tcg/translate.c      | 8 ++++----
+>  tests/tcg/i386/system/boot.S     | 2 +-
+>  tests/tcg/i386/x86.csv           | 2 +-
+>  16 files changed, 27 insertions(+), 27 deletions(-)
 
---i/zxVtV6FlBmMtW8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index bb12b0ad43..1afcef5937 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -779,7 +779,7 @@ static Aml *initialize_route(Aml *route, const char *link_name,
+>   *
+>   * Returns an array of 128 routes, one for each device,
+>   * based on device location.
+> - * The main goal is to equaly distribute the interrupts
+> + * The main goal is to equally distribute the interrupts
+>   * over the 4 existing ACPI links (works only for i440fx).
+>   * The hash function is  (slot + pin) & 3 -> "LNK[D|A|B|C]".
+>   *
+> @@ -2079,7 +2079,7 @@ build_srat(GArray *table_data, BIOSLinker *linker, MachineState *machine)
+>  }
+>
+>  /*
+> - * Insert DMAR scope for PCI bridges and endpoint devcie
+> + * Insert DMAR scope for PCI bridges and endpoint device
 
-Applied, thanks.
+I suspect this should be "devices" plural.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+>   */
+>  static void
+>  insert_scope(PCIBus *bus, PCIDevice *dev, void *opaque)
 
---i/zxVtV6FlBmMtW8
-Content-Type: application/pgp-signature; name="signature.asc"
+>  static void ioportF0_write(void *opaque, hwaddr addr, uint64_t data,
+>                             unsigned size)
+>  {
 
------BEGIN PGP SIGNATURE-----
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -4729,7 +4729,7 @@ int kvm_arch_put_registers(CPUState *cpu, int level)
+>      /*
+>       * Put MSR_IA32_FEATURE_CONTROL first, this ensures the VM gets out of VMX
+>       * root operation upon vCPU reset. kvm_put_msr_feature_control() should also
+> -     * preceed kvm_put_nested_state() when 'real' nested state is set.
+> +     * proceed kvm_put_nested_state() when 'real' nested state is set.
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmT/MBUACgkQnKSrs4Gr
-c8ipPgf9Hfm3PTW0QNZJVMFuO01IJTZ21WAT+aAj7npU3iGil9Hl20IO7v+268t5
-UygfAxrWl9NNY5YcHssmy+qwaps1dV2BUptq8VlyYXOyQR60h0UsKA6C0T8CGjaf
-qbanMTPtcwppg3sO3uS/pbJSIWvsVbAPwb+3CtmA1uVD/v5oFODOaAu08Mibdpvu
-Cr27OuzIBCptbM3bi/ELR/94bPD/5lB7hn2nHSn5jIAVYIUdZQ7eEsNe8IyDVTF4
-oe9+TVrB/0f/DnDWSqxaTnYuMZmtUKvygQksAhkxMwTf2feyW2h7pchU9GN6c26Z
-noigGHwQZKakc4Q2toBtAIx1WKinpQ==
-=U5hv
------END PGP SIGNATURE-----
+Should be "precede".
 
---i/zxVtV6FlBmMtW8--
+>       */
+>      if (level >= KVM_PUT_RESET_STATE) {
+>          ret = kvm_put_msr_feature_control(x86_cpu);
 
+Otherwise
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+
+thanks
+-- PMM
 
