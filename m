@@ -2,54 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DA879A694
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEC979A696
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:11:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfcuz-0004Gm-4C; Mon, 11 Sep 2023 05:09:17 -0400
+	id 1qfcwL-0005mn-Hc; Mon, 11 Sep 2023 05:10:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
- id 1qfcul-0004GN-8r; Mon, 11 Sep 2023 05:09:04 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
- id 1qfcug-0006TC-Or; Mon, 11 Sep 2023 05:09:02 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkgr01JvBz4xF0;
- Mon, 11 Sep 2023 19:08:48 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkgqy5ppVz4xF7;
- Mon, 11 Sep 2023 19:08:46 +1000 (AEST)
-Message-ID: <93dc0cc3-8041-e2cb-87dd-2deefde4fa85@kaod.org>
-Date: Mon, 11 Sep 2023 11:08:42 +0200
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qfcwC-0005je-6b
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:10:33 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qfcw7-0006pf-3X
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:10:30 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-1bba7717d3bso3303385fac.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 02:10:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1694423424; x=1695028224; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=v6KL3AQc1fIYMHFWWMJmbaO2tRaCrTHkjxVknVhqafk=;
+ b=AOX2CtAIzJz0ymww1MkxNeQtEad7WYozUJddOJZmgWbFu7ChpqifZSUczIlhjuOhkf
+ Dx1I4YY9yIvRQed9vjKXcdCPC3vW0pPHiq7mfKlZVLfhATcypu5Bq0saOb+cJjA1xtuE
+ jR0cEOTGkm2kDKkPmfa6DmlrTZJ58bs85pWftqNQP2Sq4+mLJiKN8GTRXIMY20KFi5n4
+ 1bmKUfew8aXIcdcxBRIxgiBgq9zZarS5sCHgLA4ci6im6JQIht1xORr9tfID/h/LdG7f
+ 1qLbKSvh+GqKZF7jiMXck3PXTLY62dlDr7VATTnOAHeqVOIz5Minfev4pwzWaFcaZsyS
+ poyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694423424; x=1695028224;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=v6KL3AQc1fIYMHFWWMJmbaO2tRaCrTHkjxVknVhqafk=;
+ b=MfAXIVclzFvVXld5QKMTiYRJuHAaxqMxPYfeN+2CCHwGCPra4LBUJbOEHkIsJ9Xt1E
+ FcgW4ks37NNj1lNb6/q5h9Jr7BHSmzRdLuanQ547wb+Z6cdsgD6gC+dZ53asjd81012w
+ 7m8KuFfLVJZlaSQ8LHwXev09zFILEFZWxIQ4CrIZqh1iJcDAoiVDrYRsasYJUnoAcA28
+ puBOQZnjuzXCST4Gx2KASIHSCr+nmY41ReeKpGNI8J+XvTFn/80/M75O9ycnPG0cDrDP
+ gNs0jsbMOeu5+kDBe4Grz2UnhJtrN+4l4yiun2bRKyPxvWadpwrE6lNzgqRLAsA6/YdL
+ tFtA==
+X-Gm-Message-State: AOJu0YzMqywVtgex5zTjMXc+HmWgeqKWedIeoVuCJ1GWQMG0tK7XtqUZ
+ BVV4YnObuqugFV3A93Q/QqWPsQ==
+X-Google-Smtp-Source: AGHT+IFLwRVq2v68XeNxLaBKQmhhJMNYapU9fQ599+xIvMM/6eBgHoI9kdnJVjHRJ8cmjzLRdmWK8Q==
+X-Received: by 2002:a05:6870:8188:b0:1bb:cb02:7b97 with SMTP id
+ k8-20020a056870818800b001bbcb027b97mr10604407oae.37.1694423424204; 
+ Mon, 11 Sep 2023 02:10:24 -0700 (PDT)
+Received: from [192.168.68.107] ([177.9.182.82])
+ by smtp.gmail.com with ESMTPSA id
+ v2-20020a056870e28200b001cd07e1c66dsm3785329oad.6.2023.09.11.02.10.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Sep 2023 02:10:23 -0700 (PDT)
+Message-ID: <e7b5c115-d1b7-313a-3da5-8466a2f6cba3@ventanamicro.com>
+Date: Mon, 11 Sep 2023 06:10:20 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 3/7] ppc: spelling fixes
+Subject: Re: [PATCH v9 00/20] riscv: 'max' CPU, detect user choice in TCG
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org
-References: <20230909131258.354675-1-mjt@tls.msk.ru>
- <20230909131258.354675-4-mjt@tls.msk.ru>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230909131258.354675-4-mjt@tls.msk.ru>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, ajones@ventanamicro.com
+References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
+ <CAKmqyKO3FX7tooTMeOh7ENVh+ca3eAYwqC-QV9h+r7615scXSQ@mail.gmail.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <CAKmqyKO3FX7tooTMeOh7ENVh+ca3eAYwqC-QV9h+r7615scXSQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=62xJ=E3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+Received-SPF: pass client-ip=2001:4860:4864:20::33;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x33.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,364 +97,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/9/23 15:12, Michael Tokarev wrote:
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-LGTM,
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+On 9/10/23 23:34, Alistair Francis wrote:
+> On Sat, Sep 2, 2023 at 5:48 AM Daniel Henrique Barboza
+> <dbarboza@ventanamicro.com> wrote:
+>>
+>> Hi,
+>>
+>> This new version contains suggestions made by Andrew Jones in v8.
+>>
+>> Most notable change is the removal of the opensbi.py test in patch 11,
+>> which was replaced by a TuxBoot test. It's more suitable to test the
+>> integrity of all the extensions enabled by the 'max' CPU.
+>>
+>> The series is available in this branch:
+>>
+>> https://gitlab.com/danielhb/qemu/-/tree/max_cpu_user_choice_v9
+>>
+>> Patches missing acks: 11, 15
+>>
+>> Changes from v8:
+>> - patch 7:
+>>    - add g_assert(array) at the start of riscv_cpu_add_qdev_prop_array()
+>> - patch 8:
+>>    - add g_assert(array) at the start of riscv_cpu_add_kvm_unavail_prop_array()
+>> - patch 11:
+>>    - removed both opensbi.py tests
+>>    - added 2 'max' cpu tuxboot tests in tuxrun_baselines.py
+>> - patch 12:
+>>    - fixed typos in deprecated.rst
+>> - patch 15:
+>>    - use g_assert_not_reached() at the end of cpu_cfg_ext_get_min_version()
+>> - patch 19:
+>>    - added comment on top of riscv_cpu_add_misa_properties() explaining why
+>>      we're not implementing user choice support for MISA properties
+>> - patch 20:
+>>    - warn_report() is now called after the G error conditions
+>> - v8 link: https://lore.kernel.org/qemu-riscv/20230824221440.484675-1-dbarboza@ventanamicro.com/
+>>
+>>
+>>
+>> Daniel Henrique Barboza (20):
+>>    target/riscv/cpu.c: split CPU options from riscv_cpu_extensions[]
+>>    target/riscv/cpu.c: skip 'bool' check when filtering KVM props
+>>    target/riscv/cpu.c: split kvm prop handling to its own helper
+>>    target/riscv: add DEFINE_PROP_END_OF_LIST() to riscv_cpu_options[]
+>>    target/riscv/cpu.c: split non-ratified exts from
+>>      riscv_cpu_extensions[]
+>>    target/riscv/cpu.c: split vendor exts from riscv_cpu_extensions[]
+>>    target/riscv/cpu.c: add riscv_cpu_add_qdev_prop_array()
+>>    target/riscv/cpu.c: add riscv_cpu_add_kvm_unavail_prop_array()
+>>    target/riscv/cpu.c: limit cfg->vext_spec log message
+>>    target/riscv: add 'max' CPU type
+>>    avocado, risc-v: add tuxboot tests for 'max' CPU
+>>    target/riscv: deprecate the 'any' CPU type
+>>    target/riscv/cpu.c: use offset in isa_ext_is_enabled/update_enabled
+>>    target/riscv: make CPUCFG() macro public
+>>    target/riscv/cpu.c: introduce cpu_cfg_ext_auto_update()
+>>    target/riscv/cpu.c: use cpu_cfg_ext_auto_update() during realize()
+>>    target/riscv/cpu.c: introduce RISCVCPUMultiExtConfig
+>>    target/riscv: use isa_ext_update_enabled() in
+>>      init_max_cpu_extensions()
+>>    target/riscv/cpu.c: honor user choice in cpu_cfg_ext_auto_update()
+>>    target/riscv/cpu.c: consider user option with RVG
+> 
+> This series has some build issues. I was hoping a few simple #ifdef
+> changes would fix it, but it's a little more complex than that
+> unfortunately.
+> 
+> I'm going to drop this series, do you mind sending a new version which
+> fixes this and any other build failures:
+> https://gitlab.com/qemu-project/qemu/-/jobs/5045998521
+
+Sure. I'll wait for the pending PR to be merged first. I'll also take the
+opportunity  to make the CONFIG_KVM change that Phil requested.
+
 
 Thanks,
 
-C.
+Daniel
 
-
-> ---
->   host/include/ppc/host/cpuinfo.h     |  2 +-
->   hw/ppc/ppc.c                        |  2 +-
->   hw/ppc/prep_systemio.c              |  2 +-
->   hw/ppc/spapr.c                      |  8 ++++----
->   hw/ppc/spapr_hcall.c                |  2 +-
->   hw/ppc/spapr_nvdimm.c               |  4 ++--
->   hw/ppc/spapr_pci_vfio.c             |  2 +-
->   include/hw/ppc/openpic.h            |  2 +-
->   include/hw/ppc/spapr.h              |  2 +-
->   target/ppc/cpu-models.h             |  4 ++--
->   target/ppc/cpu.h                    |  2 +-
->   target/ppc/cpu_init.c               |  4 ++--
->   target/ppc/excp_helper.c            | 14 +++++++-------
->   target/ppc/power8-pmu-regs.c.inc    |  4 ++--
->   target/ppc/translate/vmx-impl.c.inc |  6 +++---
->   15 files changed, 30 insertions(+), 30 deletions(-)
 > 
-> diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
-> index 29ee7f9ef8..38b8eabe2a 100644
-> --- a/host/include/ppc/host/cpuinfo.h
-> +++ b/host/include/ppc/host/cpuinfo.h
-> @@ -1,6 +1,6 @@
->   /*
->    * SPDX-License-Identifier: GPL-2.0-or-later
-> - * Host specific cpu indentification for ppc.
-> + * Host specific cpu identification for ppc.
->    */
->   
->   #ifndef HOST_CPUINFO_H
-> diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-> index aeb116d919..be167710a3 100644
-> --- a/hw/ppc/ppc.c
-> +++ b/hw/ppc/ppc.c
-> @@ -738,7 +738,7 @@ static target_ulong _cpu_ppc_load_decr(CPUPPCState *env, int64_t now)
->       decr = __cpu_ppc_load_decr(env, now, tb_env->decr_next);
->   
->       /*
-> -     * If large decrementer is enabled then the decrementer is signed extened
-> +     * If large decrementer is enabled then the decrementer is signed extended
->        * to 64 bits, otherwise it is a 32 bit value.
->        */
->       if (env->spr[SPR_LPCR] & LPCR_LD) {
-> diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
-> index 5a56f155f5..c96cefb13d 100644
-> --- a/hw/ppc/prep_systemio.c
-> +++ b/hw/ppc/prep_systemio.c
-> @@ -39,7 +39,7 @@
->   #define TYPE_PREP_SYSTEMIO "prep-systemio"
->   OBJECT_DECLARE_SIMPLE_TYPE(PrepSystemIoState, PREP_SYSTEMIO)
->   
-> -/* Bit as defined in PowerPC Reference Plaform v1.1, sect. 6.1.5, p. 132 */
-> +/* Bit as defined in PowerPC Reference Platform v1.1, sect. 6.1.5, p. 132 */
->   #define PREP_BIT(n) (1 << (7 - (n)))
->   
->   struct PrepSystemIoState {
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index f7cc6a890f..b25b568cee 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -2573,7 +2573,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
->           return;
->       }
->   
-> -    /* Detemine the VSMT mode to use: */
-> +    /* Determine the VSMT mode to use: */
->       if (vsmt_user) {
->           if (spapr->vsmt < smp_threads) {
->               error_setg(errp, "Cannot support VSMT mode %d"
-> @@ -3109,7 +3109,7 @@ static int spapr_kvm_type(MachineState *machine, const char *vm_type)
->   {
->       /*
->        * The use of g_ascii_strcasecmp() for 'hv' and 'pr' is to
-> -     * accomodate the 'HV' and 'PV' formats that exists in the
-> +     * accommodate the 'HV' and 'PV' formats that exists in the
->        * wild. The 'auto' mode is being introduced already as
->        * lower-case, thus we don't need to bother checking for
->        * "AUTO".
-> @@ -4343,7 +4343,7 @@ spapr_cpu_index_to_props(MachineState *machine, unsigned cpu_index)
->       CPUArchId *core_slot;
->       MachineClass *mc = MACHINE_GET_CLASS(machine);
->   
-> -    /* make sure possible_cpu are intialized */
-> +    /* make sure possible_cpu are initialized */
->       mc->possible_cpu_arch_ids(machine);
->       /* get CPU core slot containing thread that matches cpu_index */
->       core_slot = spapr_find_cpu_slot(machine, cpu_index, NULL);
-> @@ -5045,7 +5045,7 @@ static void spapr_machine_2_12_class_options(MachineClass *mc)
->   
->       /* We depend on kvm_enabled() to choose a default value for the
->        * hpt-max-page-size capability. Of course we can't do it here
-> -     * because this is too early and the HW accelerator isn't initialzed
-> +     * because this is too early and the HW accelerator isn't initialized
->        * yet. Postpone this to machine init (see default_caps_with_cpu()).
->        */
->       smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 0;
-> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-> index b7dc388f2f..522a2396c7 100644
-> --- a/hw/ppc/spapr_hcall.c
-> +++ b/hw/ppc/spapr_hcall.c
-> @@ -1615,7 +1615,7 @@ static void hypercall_register_types(void)
->       spapr_register_hypercall(H_GET_CPU_CHARACTERISTICS,
->                                h_get_cpu_characteristics);
->   
-> -    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differenciate
-> +    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differentiate
->        * here between the "CI" and the "CACHE" variants, they will use whatever
->        * mapping attributes qemu is using. When using KVM, the kernel will
->        * enforce the attributes more strongly
-> diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
-> index a8688243a6..4e34545dcf 100644
-> --- a/hw/ppc/spapr_nvdimm.c
-> +++ b/hw/ppc/spapr_nvdimm.c
-> @@ -377,7 +377,7 @@ static target_ulong h_scm_bind_mem(PowerPCCPU *cpu, SpaprMachineState *spapr,
->   
->       /*
->        * Currently continue token should be zero qemu has already bound
-> -     * everything and this hcall doesnt return H_BUSY.
-> +     * everything and this hcall doesn't return H_BUSY.
->        */
->       if (continue_token > 0) {
->           return H_P5;
-> @@ -588,7 +588,7 @@ void spapr_nvdimm_finish_flushes(void)
->        * Called on reset path, the main loop thread which calls
->        * the pending BHs has gotten out running in the reset path,
->        * finally reaching here. Other code path being guest
-> -     * h_client_architecture_support, thats early boot up.
-> +     * h_client_architecture_support, that's early boot up.
->        */
->       nvdimms = nvdimm_get_device_list();
->       for (list = nvdimms; list; list = list->next) {
-> diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
-> index d8aeee0b7e..9016720547 100644
-> --- a/hw/ppc/spapr_pci_vfio.c
-> +++ b/hw/ppc/spapr_pci_vfio.c
-> @@ -78,7 +78,7 @@ int spapr_phb_vfio_eeh_set_option(SpaprPhbState *sphb,
->            * call. Now we just need to check the validity of the PCI
->            * pass-through devices (vfio-pci) under this sphb bus.
->            * We have already validated that all the devices under this sphb
-> -         * are from same iommu group (within same PE) before comming here.
-> +         * are from same iommu group (within same PE) before coming here.
->            *
->            * Prior to linux commit 98ba956f6a389 ("powerpc/pseries/eeh:
->            * Rework device EEH PE determination") kernel would call
-> diff --git a/include/hw/ppc/openpic.h b/include/hw/ppc/openpic.h
-> index bae8dafe16..9c6af8e207 100644
-> --- a/include/hw/ppc/openpic.h
-> +++ b/include/hw/ppc/openpic.h
-> @@ -14,7 +14,7 @@ enum {
->       OPENPIC_OUTPUT_INT = 0, /* IRQ                       */
->       OPENPIC_OUTPUT_CINT,    /* critical IRQ              */
->       OPENPIC_OUTPUT_MCK,     /* Machine check event       */
-> -    OPENPIC_OUTPUT_DEBUG,   /* Inconditional debug event */
-> +    OPENPIC_OUTPUT_DEBUG,   /* Unconditional debug event */
->       OPENPIC_OUTPUT_RESET,   /* Core reset event          */
->       OPENPIC_OUTPUT_NB,
->   };
-> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
-> index f4bd204d86..b1c7c28fa8 100644
-> --- a/include/hw/ppc/spapr.h
-> +++ b/include/hw/ppc/spapr.h
-> @@ -197,7 +197,7 @@ struct SpaprMachineState {
->       SpaprResizeHpt resize_hpt;
->       void *htab;
->       uint32_t htab_shift;
-> -    uint64_t patb_entry; /* Process tbl registed in H_REGISTER_PROC_TBL */
-> +    uint64_t patb_entry; /* Process tbl registered in H_REGISTER_PROC_TBL */
->       SpaprPendingHpt *pending_hpt; /* in-progress resize */
->   
->       hwaddr rma_size;
-> diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
-> index 572b5e553a..0229ef3a9a 100644
-> --- a/target/ppc/cpu-models.h
-> +++ b/target/ppc/cpu-models.h
-> @@ -44,7 +44,7 @@ enum {
->       /* PowerPC 405 cores */
->       CPU_POWERPC_405D2              = 0x20010000,
->       CPU_POWERPC_405D4              = 0x41810000,
-> -    /* PowerPC 405 microcontrolers */
-> +    /* PowerPC 405 microcontrollers */
->       /* XXX: missing 0x200108a0 */
->       CPU_POWERPC_405CRa             = 0x40110041,
->       CPU_POWERPC_405CRb             = 0x401100C5,
-> @@ -74,7 +74,7 @@ enum {
->   #define CPU_POWERPC_440              CPU_POWERPC_440GXf
->       /* PowerPC 440 cores */
->       CPU_POWERPC_440_XILINX         = 0x7ff21910,
-> -    /* PowerPC 440 microcontrolers */
-> +    /* PowerPC 440 microcontrollers */
->       CPU_POWERPC_440EPa             = 0x42221850,
->       CPU_POWERPC_440EPb             = 0x422218D3,
->       CPU_POWERPC_440GPb             = 0x40120440,
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index 173e4c351a..d703a5f3c6 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -428,7 +428,7 @@ FIELD(MSR, LE, MSR_LE, 1)
->   
->   /* PMU bits */
->   #define MMCR0_FC     PPC_BIT(32)         /* Freeze Counters  */
-> -#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Ocurred */
-> +#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Occurred */
->   #define MMCR0_PMAE   PPC_BIT(37)         /* Perf Monitor Alert Enable */
->   #define MMCR0_EBE    PPC_BIT(43)         /* Perf Monitor EBB Enable */
->   #define MMCR0_FCECE  PPC_BIT(38)         /* FC on Enabled Cond or Event */
-> diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-> index 7ab5ee92d9..c62bf0e437 100644
-> --- a/target/ppc/cpu_init.c
-> +++ b/target/ppc/cpu_init.c
-> @@ -5347,7 +5347,7 @@ static void register_970_lpar_sprs(CPUPPCState *env)
->   static void register_power5p_lpar_sprs(CPUPPCState *env)
->   {
->   #if !defined(CONFIG_USER_ONLY)
-> -    /* Logical partitionning */
-> +    /* Logical partitioning */
->       spr_register_kvm_hv(env, SPR_LPCR, "LPCR",
->                           SPR_NOACCESS, SPR_NOACCESS,
->                           SPR_NOACCESS, SPR_NOACCESS,
-> @@ -5760,7 +5760,7 @@ static void register_power9_mmu_sprs(CPUPPCState *env)
->   static void register_power10_hash_sprs(CPUPPCState *env)
->   {
->       /*
-> -     * it's the OS responsability to generate a random value for the registers
-> +     * it's the OS responsibility to generate a random value for the registers
->        * in each process' context. So, initialize it with 0 here.
->        */
->       uint64_t hashkeyr_initial_value = 0, hashpkeyr_initial_value = 0;
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 72ec2be92e..99099cb1f6 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -455,7 +455,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
->   
->       /*
->        * new interrupt handler msr preserves existing ME unless
-> -     * explicitly overriden.
-> +     * explicitly overridden.
->        */
->       new_msr = env->msr & (((target_ulong)1 << MSR_ME));
->   
-> @@ -578,7 +578,7 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
->   
->       /*
->        * new interrupt handler msr preserves existing ME unless
-> -     * explicitly overriden
-> +     * explicitly overridden
->        */
->       new_msr = env->msr & ((target_ulong)1 << MSR_ME);
->   
-> @@ -739,7 +739,7 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
->   
->       /*
->        * new interrupt handler msr preserves existing ME unless
-> -     * explicitly overriden
-> +     * explicitly overridden
->        */
->       new_msr = env->msr & ((target_ulong)1 << MSR_ME);
->   
-> @@ -911,7 +911,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
->   
->       /*
->        * new interrupt handler msr preserves existing ME unless
-> -     * explicitly overriden
-> +     * explicitly overridden
->        */
->       new_msr = env->msr & ((target_ulong)1 << MSR_ME);
->   
-> @@ -1075,7 +1075,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
->   
->       /*
->        * new interrupt handler msr preserves existing ME unless
-> -     * explicitly overriden
-> +     * explicitly overridden
->        */
->       new_msr = env->msr & ((target_ulong)1 << MSR_ME);
->   
-> @@ -1288,7 +1288,7 @@ static bool books_vhyp_handles_hcall(PowerPCCPU *cpu)
->   /*
->    * When running a nested KVM HV guest under vhyp, HV exceptions are not
->    * delivered to the guest (because there is no concept of HV support), but
-> - * rather they are sent tothe vhyp to exit from the L2 back to the L1 and
-> + * rather they are sent to the vhyp to exit from the L2 back to the L1 and
->    * return from the H_ENTER_NESTED hypercall.
->    */
->   static bool books_vhyp_handles_hv_excp(PowerPCCPU *cpu)
-> @@ -1377,7 +1377,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
->   
->       /*
->        * new interrupt handler msr preserves existing HV and ME unless
-> -     * explicitly overriden
-> +     * explicitly overridden
->        */
->       new_msr = env->msr & (((target_ulong)1 << MSR_ME) | MSR_HVB);
->   
-> diff --git a/target/ppc/power8-pmu-regs.c.inc b/target/ppc/power8-pmu-regs.c.inc
-> index c82feedaff..75513db894 100644
-> --- a/target/ppc/power8-pmu-regs.c.inc
-> +++ b/target/ppc/power8-pmu-regs.c.inc
-> @@ -16,7 +16,7 @@
->    * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
->    * PMCs) has problem state read access.
->    *
-> - * Read acccess is granted for all PMCC values but 0b01, where a
-> + * Read access is granted for all PMCC values but 0b01, where a
->    * Facility Unavailable Interrupt will occur.
->    */
->   static bool spr_groupA_read_allowed(DisasContext *ctx)
-> @@ -33,7 +33,7 @@ static bool spr_groupA_read_allowed(DisasContext *ctx)
->    * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
->    * PMCs) has problem state write access.
->    *
-> - * Write acccess is granted for PMCC values 0b10 and 0b11. Userspace
-> + * Write access is granted for PMCC values 0b10 and 0b11. Userspace
->    * writing with PMCC 0b00 will generate a Hypervisor Emulation
->    * Assistance Interrupt. Userspace writing with PMCC 0b01 will
->    * generate a Facility Unavailable Interrupt.
-> diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
-> index 6d7669aabd..5cdf53a9df 100644
-> --- a/target/ppc/translate/vmx-impl.c.inc
-> +++ b/target/ppc/translate/vmx-impl.c.inc
-> @@ -119,7 +119,7 @@ static void gen_stve##name(DisasContext *ctx)                           \
->       }
->   
->   GEN_VR_LDX(lvx, 0x07, 0x03);
-> -/* As we don't emulate the cache, lvxl is stricly equivalent to lvx */
-> +/* As we don't emulate the cache, lvxl is strictly equivalent to lvx */
->   GEN_VR_LDX(lvxl, 0x07, 0x0B);
->   
->   GEN_VR_LVE(bx, 0x07, 0x00, 1);
-> @@ -127,7 +127,7 @@ GEN_VR_LVE(hx, 0x07, 0x01, 2);
->   GEN_VR_LVE(wx, 0x07, 0x02, 4);
->   
->   GEN_VR_STX(svx, 0x07, 0x07);
-> -/* As we don't emulate the cache, stvxl is stricly equivalent to stvx */
-> +/* As we don't emulate the cache, stvxl is strictly equivalent to stvx */
->   GEN_VR_STX(svxl, 0x07, 0x0F);
->   
->   GEN_VR_STVE(bx, 0x07, 0x04, 1);
-> @@ -1526,7 +1526,7 @@ static void gen_vprtyb_vec(unsigned vece, TCGv_vec t, TCGv_vec b)
->   {
->       int i;
->       TCGv_vec tmp = tcg_temp_new_vec_matching(b);
-> -    /* MO_32 is 2, so 2 iteractions for MO_32 and 3 for MO_64 */
-> +    /* MO_32 is 2, so 2 iterations for MO_32 and 3 for MO_64 */
->       for (i = 0; i < vece; i++) {
->           tcg_gen_shri_vec(vece, tmp, b, (4 << (vece - i)));
->           tcg_gen_xor_vec(vece, b, tmp, b);
-
+> Alistair
+> 
+>>
+>>   docs/about/deprecated.rst         |  12 +
+>>   target/riscv/cpu-qom.h            |   1 +
+>>   target/riscv/cpu.c                | 564 +++++++++++++++++++++---------
+>>   target/riscv/cpu.h                |   2 +
+>>   target/riscv/kvm.c                |   8 +-
+>>   tests/avocado/tuxrun_baselines.py |  32 ++
+>>   6 files changed, 450 insertions(+), 169 deletions(-)
+>>
+>> --
+>> 2.41.0
+>>
+>>
 
