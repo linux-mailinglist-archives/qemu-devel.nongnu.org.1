@@ -2,114 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2D779A0AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 01:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBA179A135
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 04:18:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfUF0-00079Y-RO; Sun, 10 Sep 2023 19:53:22 -0400
+	id 1qfWTU-0000rT-7b; Sun, 10 Sep 2023 22:16:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qfUEy-00078O-KW
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 19:53:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qfUEu-0001Rt-K7
- for qemu-devel@nongnu.org; Sun, 10 Sep 2023 19:53:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694389996;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ap8jyUrXwHgxdqod+JAjPn4oLiZqDgWz3jFfOIi6xsM=;
- b=i6wi8zAi7MKpD4kETDyKpsBQVP3vbE5Zee7V9eZktdA+yL09UEVUO29ZpHc2Oq+nFeaETu
- rw/5hZZhIcZrJ+ZEmBfHVj4v+aR+msJS3sdXtXyhItcA5X8xVAqfUXxAf6ppOHX/ueyck/
- sDXxDHcHyYUB8Xfll1+I38jFoVU0M6s=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-SfzQMQXpO72UURzcI7BV7g-1; Sun, 10 Sep 2023 19:53:14 -0400
-X-MC-Unique: SfzQMQXpO72UURzcI7BV7g-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-68fbd377d60so900559b3a.1
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 16:53:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qfWTR-0000r6-58
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 22:16:25 -0400
+Received: from mail-ua1-x92b.google.com ([2607:f8b0:4864:20::92b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qfWTO-0000n3-Qq
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 22:16:24 -0400
+Received: by mail-ua1-x92b.google.com with SMTP id
+ a1e0cc1a2514c-7a02252eb5dso1048695241.1
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 19:16:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694398581; x=1695003381; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6hXXLchbEzlcod8zva8H1iGN1H1ERkk1UvCWoNg/eTA=;
+ b=VlnmwLmYN2oMo8x/xZ48pa3rYsh8OIOPG1jA4q8MbnD0FdIzWMPKo4SbydYvIsN2+L
+ AmBOAKzrNovsUSYgkUIgqhHLSmsLdh5JAw9OWwKDEya/8t1cbH9zjo3eqUgKgzet0f/W
+ 7c9WY8QsWsYlhaP+U2wAcor5HmOye5zCfipBDVYDSx4/649Lnh/4nyhshYpSiPmILHjA
+ d63rRVsdElPXbZsmFY9Gx7IWZNmX5RVnciu2uG/QW/Gl+Gfmh8YrL2IfpMo8a2uKdTmd
+ c7fW0q01cj0tRwR5jFdpl/zu7OP8spEaHuT5vpIO8k/aTzs0i1yU4xHNZ8g0Cbx3YLvI
+ X67Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694389993; x=1694994793;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ap8jyUrXwHgxdqod+JAjPn4oLiZqDgWz3jFfOIi6xsM=;
- b=jvb5efzFAPnB12sAbWlo4kezPI4pr4ZKizzcpykBxnbUm+7LJlKh5mW6UrqT08xFmQ
- 5RTuTDSYWvWNNVskbqt9s7HgSOlEBK9M+iW4MCk4zGuTCYdkhgPRN29QEo9+oI1YIucD
- 8rG9ywSA94y0STaCHkUlDpHZAiAC4rKhl4IqNG5Rx7SGUjBYALvPko7v6B6eSGw3/ty2
- LTBYxkjT1/9TGA7+Tb6NIhADerHJ8IyUQ9STEGqeYgvwkqHV1nVcR9nNqgVBMNGanZ8j
- yR+AuLtTvqPgiXCkVJZ9GRKjcpnYzxq0fJXOOcgsMEonBb78743s/WnF1AySKBC/993i
- MjAA==
-X-Gm-Message-State: AOJu0YxgzGopuuYQBjARpWtQHTnw0LiEKEWW9EOGG/IjLUboFbzcmCFw
- eo3oySJI2EmNwyLSp7j+KNB8y4l5CaxGjWZ/6DHNzKNLqFuv5Xt5E5SIx8W+iSnmS9T+Qx6mpsl
- 4GCRy0ZYujPeuOho=
-X-Received: by 2002:a05:6a00:2301:b0:68a:5877:bfb1 with SMTP id
- h1-20020a056a00230100b0068a5877bfb1mr10314006pfh.20.1694389993504; 
- Sun, 10 Sep 2023 16:53:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLDBUuwMY4+d9ys82hxbkhGiirWTD/Zaq3MUkjBpifVkaU03GyjGaYtt0tO90IjO+1+aeEeA==
-X-Received: by 2002:a05:6a00:2301:b0:68a:5877:bfb1 with SMTP id
- h1-20020a056a00230100b0068a5877bfb1mr10313976pfh.20.1694389993225; 
- Sun, 10 Sep 2023 16:53:13 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- y20-20020a056a001c9400b0068fcc7f6b00sm80251pfw.74.2023.09.10.16.52.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Sep 2023 16:53:12 -0700 (PDT)
-Message-ID: <a99d2893-de4c-c188-2f27-5130d34a867d@redhat.com>
-Date: Mon, 11 Sep 2023 09:52:53 +1000
+ d=1e100.net; s=20230601; t=1694398581; x=1695003381;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=6hXXLchbEzlcod8zva8H1iGN1H1ERkk1UvCWoNg/eTA=;
+ b=OiOc5Nc5kc1FokZHU4HMIeGIY+hS/cd0TYkIrRstLAfnZDFIFyH51q/NT+HegL2OVh
+ mzFa0cQYUeV53e4uaCNyNIp7NwE7ywVcluyY/HgaH5C29koSMJRfAVTAyFjv8pphi2yu
+ mL7ZP1tgUhrzCmti2LfOuRTWbfzPYrpu2OR6og6C7ZvJZ5pWNMN+7w32R5S1eyCI+WZ2
+ y+vBs5gSNBnp9c0NALdGVbGjyLk7WvPaGySxr5r7YWH1uMk+4/z+9LaitgdKQLwnFrhE
+ XUyT1zfhdvjvthSRwzNswICrKSFnFUbNBQE/BpzanIc3KatrmQrQ1in2sPq3Qfh8k7wQ
+ Y8Pw==
+X-Gm-Message-State: AOJu0YxTjvFoDbp+ARETVDWo0D1A+FpeHFPn67415Tc/InFRd79Ijpmh
+ yPrj8kOQmsLlrXU8ZmPIiSdD3hMdqgTj9UUbG1U=
+X-Google-Smtp-Source: AGHT+IFNNdMnvHuu/IpVRJFHI10z2Y1rxoZPTRQmMYIeEUSBYi/Md7vsFekxFUja/PFYmHxefMBeul0QakheUHb+ycw=
+X-Received: by 2002:a05:6102:452:b0:44d:590d:28a9 with SMTP id
+ e18-20020a056102045200b0044d590d28a9mr5247105vsq.3.1694398581350; Sun, 10 Sep
+ 2023 19:16:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 27/32] machine: Print CPU model name instead of CPU
- type name
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-arm@nongnu.org
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, imp@bsdimp.com, kevans@freebsd.org,
- eduardo@habkost.net, marcel.apfelbaum@gmail.com, wangyanan55@huawei.com,
- peter.maydell@linaro.org, b.galvani@gmail.com,
- strahinja.p.jankovic@gmail.com, sundeep.lkml@gmail.com, kfting@nuvoton.com,
- wuhaotsh@google.com, nieklinnenbank@gmail.com, rad@semihalf.com,
- quic_llindhol@quicinc.com, marcin.juszkiewicz@linaro.org, laurent@vivier.eu,
- vijai@behindbytes.com, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, richard.henderson@linaro.org,
- mrolnik@gmail.com, edgar.iglesias@gmail.com, bcain@quicinc.com,
- gaosong@loongson.cn, yangxiaojuan@loongson.cn, aurelien@aurel32.net,
- jiaxun.yang@flygoat.com, aleksandar.rikalo@syrmia.com,
- chenhuacai@kernel.org, crwulff@gmail.com, marex@denx.de, shorne@gmail.com,
- clg@kaod.org, david@gibson.dropbear.id.au, groug@kaod.org,
- npiggin@gmail.com, ysato@users.sourceforge.jp, david@redhat.com,
- thuth@redhat.com, iii@linux.ibm.com, mark.cave-ayland@ilande.co.uk,
- atar4qemu@gmail.com, kbastian@mail.uni-paderborn.de, jcmvbkbc@gmail.com,
- pbonzini@redhat.com, imammedo@redhat.com, shan.gavin@gmail.com
-References: <20230907003553.1636896-1-gshan@redhat.com>
- <20230907003553.1636896-28-gshan@redhat.com>
- <5a87e81c-b28e-d117-7384-38945a2c5b8d@linaro.org>
- <d4aebe17-c077-90ad-2b99-a856b3a4cdcc@redhat.com>
- <a25899be-652a-f104-4efb-f24efcdf2358@linaro.org>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <a25899be-652a-f104-4efb-f24efcdf2358@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20230908060431.1903919-1-alistair.francis@wdc.com>
+ <20230908060431.1903919-49-alistair.francis@wdc.com>
+ <0bdad3e3-bfd6-ffea-a725-46b9e4629756@linaro.org>
+ <271e0ae3-86c2-870a-f596-55755e67c6f0@ventanamicro.com>
+In-Reply-To: <271e0ae3-86c2-870a-f596-55755e67c6f0@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 11 Sep 2023 12:15:54 +1000
+Message-ID: <CAKmqyKOFV=KP0ScJbstD6XVMiJ-NXRDA8FKbv6Pg0nYqvo6y=g@mail.gmail.com>
+Subject: Re: [PULL 48/65] target/riscv/cpu.c: split kvm prop handling to its
+ own helper
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, Weiwei Li <liweiwei@iscas.ac.cn>, 
+ Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92b;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,68 +94,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 17:56, Philippe Mathieu-Daudé wrote:
-> On 8/9/23 01:49, Gavin Shan wrote:
->> On 9/7/23 19:05, Philippe Mathieu-Daudé wrote:
->>> On 7/9/23 02:35, Gavin Shan wrote:
->>>> The names of supported CPU models instead of CPU types should be
->>>> printed when the user specified CPU type isn't supported, to be
->>>> consistent with the output from '-cpu ?'.
->>>>
->>>> Correct the error messages to print CPU model names instead of CPU
->>>> type names.
->>>>
->>>> Signed-off-by: Gavin Shan <gshan@redhat.com>
->>>> ---
->>>>   hw/core/machine.c | 16 ++++++++++++----
->>>>   1 file changed, 12 insertions(+), 4 deletions(-)
->>>
->>>
->>>> @@ -1373,11 +1374,18 @@ static void is_cpu_type_supported(MachineState *machine, Error **errp)
->>>>           /* The user specified CPU type isn't valid */
->>>>           if (!mc->valid_cpu_types[i]) {
->>>> -            error_setg(errp, "Invalid CPU type: %s", machine->cpu_type);
->>>> -            error_append_hint(errp, "The valid types are: %s",
->>>> -                              mc->valid_cpu_types[0]);
->>>> +            model = cpu_model_from_type(machine->cpu_type);
->>>> +            error_setg(errp, "Invalid CPU type: %s", model);
->>>> +            g_free(model);
->>>> +
->>>> +            model = cpu_model_from_type(mc->valid_cpu_types[0]);
->>>> +            error_append_hint(errp, "The valid types are: %s", model);
->>>> +            g_free(model);
->>>> +
->>>>               for (i = 1; mc->valid_cpu_types[i]; i++) {
->>>> -                error_append_hint(errp, ", %s", mc->valid_cpu_types[i]);
->>>> +                model = cpu_model_from_type(mc->valid_cpu_types[i]);
->>>
->>> cpu_model_from_type() can return NULL:
->>>
->>>   char *cpu_model_from_type(const char *typename)
->>>   {
->>>       const char *suffix = "-" CPU_RESOLVING_TYPE;
->>>
->>>       if (!object_class_by_name(typename)) {
->>>           return NULL;
->>>       }
->>>
->>> Don't we want to skip that case?
->>>
->>>                     if (!model) {
->>>                         continue;
->>>                     }
->>>
->>
->> No, it's intentional. "(null)" will be printed in this specific case so that
->> it can be identified quickly and mc->valid_cpu_types[] need to be fixed by
->> developers.
-> 
-> If you want to help developers, use g_assert().
-> 
+On Sun, Sep 10, 2023 at 6:58=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+>
+>
+> On 9/8/23 10:21, Philippe Mathieu-Daud=C3=A9 wrote:
+> > On 8/9/23 08:04, Alistair Francis wrote:
+> >> From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> >>
+> >> Future patches will split the existing Property arrays even further, a=
+nd
+> >> the existing code in riscv_cpu_add_user_properties() will start to sca=
+le
+> >> bad with it because it's dealing with KVM constraints mixed in with TC=
+G
+> >> constraints. We're going to pay a high price to share a couple of comm=
+on
+> >> lines of code between the two.
+> >>
+> >> Create a new riscv_cpu_add_kvm_properties() that will be forked from
+> >> riscv_cpu_add_user_properties() if we're running KVM. The helper
+> >> includes all properties that a KVM CPU will add. The rest of
+> >> riscv_cpu_add_user_properties() body will then be relieved from having
+> >> to deal with KVM constraints.
+> >>
+> >> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> >> Reviewed-by: Weiwei Li <liweiwei@iscas.ac.cn>
+> >> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> >> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> >> Message-ID: <20230901194627.1214811-4-dbarboza@ventanamicro.com>
+> >> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> >> ---
+> >>   target/riscv/cpu.c | 65 ++++++++++++++++++++++++++++++--------------=
+--
+> >>   1 file changed, 42 insertions(+), 23 deletions(-)
+> >>
+> >> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> >> index db640e7460..8e6d316500 100644
+> >> --- a/target/riscv/cpu.c
+> >> +++ b/target/riscv/cpu.c
+> >> @@ -1943,6 +1943,46 @@ static void cpu_set_cfg_unavailable(Object *obj=
+, Visitor *v,
+> >>   }
+> >>   #endif
+> >> +#ifndef CONFIG_USER_ONLY
+> >
+> > #ifdef CONFIG_KVM ?
+>
+> Yeah, CONFIG_KVM would be more fitting here. We're moving all this code t=
+o kvm.c
+> in "[PATCH v2 00/19] riscv: split TCG/KVM accelerators from cpu.c", and w=
+e won't
+> need neither in the end, so for now it's simpler to temporarily leave it =
+like
+> this.
 
-g_assert() wins. It will be included into v4 :)
+There are CI failures, so I have converted this to #ifdef CONFIG_KVM
+which should fix them.
 
-Thanks,
-Gavin
+Alistair
 
+>
+>
+> Thanks,
+>
+> Daniel
+>
+> >
+> >> +static void riscv_cpu_add_kvm_unavail_prop(Object *obj, const char *p=
+rop_name)
+> >> +{
+> >> +    /* Check if KVM created the property already */
+> >> +    if (object_property_find(obj, prop_name)) {
+> >> +        return;
+> >> +    }
+> >> +
+> >> +    /*
+> >> +     * Set the default to disabled for every extension
+> >> +     * unknown to KVM and error out if the user attempts
+> >> +     * to enable any of them.
+> >> +     */
+> >> +    object_property_add(obj, prop_name, "bool",
+> >> +                        NULL, cpu_set_cfg_unavailable,
+> >> +                        NULL, (void *)prop_name);
+> >> +}
+> >> +
+> >> +static void riscv_cpu_add_kvm_properties(Object *obj)
+> >> +{
+> >> +    Property *prop;
+> >> +    DeviceState *dev =3D DEVICE(obj);
+> >> +
+> >> +    kvm_riscv_init_user_properties(obj);
+> >> +    riscv_cpu_add_misa_properties(obj);
+> >> +
+> >> +    for (prop =3D riscv_cpu_extensions; prop && prop->name; prop++) {
+> >> +        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
+> >> +    }
+> >> +
+> >> +    for (int i =3D 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
+> >> +        /* Check if KVM created the property already */
+> >> +        if (object_property_find(obj, riscv_cpu_options[i].name)) {
+> >> +            continue;
+> >> +        }
+> >> +        qdev_property_add_static(dev, &riscv_cpu_options[i]);
+> >> +    }
+> >> +}
+> >> +#endif
+> >> +
+> >>   /*
+> >>    * Add CPU properties with user-facing flags.
+> >>    *
+> >> @@ -1958,39 +1998,18 @@ static void riscv_cpu_add_user_properties(Obje=
+ct *obj)
+> >>       riscv_add_satp_mode_properties(obj);
+> >>       if (kvm_enabled()) {
+> >> -        kvm_riscv_init_user_properties(obj);
+> >> +        riscv_cpu_add_kvm_properties(obj);
+> >> +        return;
+> >>       }
+> >>   #endif
+> >>       riscv_cpu_add_misa_properties(obj);
+> >>       for (prop =3D riscv_cpu_extensions; prop && prop->name; prop++) =
+{
+> >> -#ifndef CONFIG_USER_ONLY
+> >> -        if (kvm_enabled()) {
+> >> -            /* Check if KVM created the property already */
+> >> -            if (object_property_find(obj, prop->name)) {
+> >> -                continue;
+> >> -            }
+> >> -
+> >> -            /*
+> >> -             * Set the default to disabled for every extension
+> >> -             * unknown to KVM and error out if the user attempts
+> >> -             * to enable any of them.
+> >> -             */
+> >> -            object_property_add(obj, prop->name, "bool",
+> >> -                                NULL, cpu_set_cfg_unavailable,
+> >> -                                NULL, (void *)prop->name);
+> >> -            continue;
+> >> -        }
+> >> -#endif
+> >>           qdev_property_add_static(dev, prop);
+> >>       }
+> >>       for (int i =3D 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
+> >> -        /* Check if KVM created the property already */
+> >> -        if (object_property_find(obj, riscv_cpu_options[i].name)) {
+> >> -            continue;
+> >> -        }
+> >>           qdev_property_add_static(dev, &riscv_cpu_options[i]);
+> >>       }
+> >>   }
+> >
 
