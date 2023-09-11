@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE48079A504
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC8579A506
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:52:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbhA-0004Ox-0z; Mon, 11 Sep 2023 03:50:56 -0400
+	id 1qfbhA-0004OX-1I; Mon, 11 Sep 2023 03:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgy-00047y-5F
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:45 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qfbh1-0004EE-I8
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:49 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgv-0008Ej-Sh
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:43 -0400
+ id 1qfbgy-0008Ft-Km
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:47 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5r4dzjz4xNG;
- Mon, 11 Sep 2023 17:50:40 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5t4l2Sz4xNg;
+ Mon, 11 Sep 2023 17:50:42 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5p6JKtz4xM5;
- Mon, 11 Sep 2023 17:50:38 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5s1557z4xM5;
+ Mon, 11 Sep 2023 17:50:40 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Joao Martins <joao.m.martins@oracle.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 12/13] vfio/migration: Block VFIO migration with background
- snapshot
-Date: Mon, 11 Sep 2023 09:50:07 +0200
-Message-ID: <20230911075008.462712-13-clg@redhat.com>
+Subject: [PULL 13/13] vfio/common: Separate vfio-pci ranges
+Date: Mon, 11 Sep 2023 09:50:08 +0200
+Message-ID: <20230911075008.462712-14-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911075008.462712-1-clg@redhat.com>
 References: <20230911075008.462712-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,62 +67,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-Background snapshot allows creating a snapshot of the VM while it's
-running and keeping it small by not including dirty RAM pages.
+QEMU computes the DMA logging ranges for two predefined ranges: 32-bit
+and 64-bit. In the OVMF case, when the dynamic MMIO window is enabled,
+QEMU includes in the 64-bit range the RAM regions at the lower part
+and vfio-pci device RAM regions which are at the top of the address
+space. This range contains a large gap and the size can be bigger than
+the dirty tracking HW limits of some devices (MLX5 has a 2^42 limit).
 
-The way it works is by first stopping the VM, saving the non-iterable
-devices' state and then starting the VM and saving the RAM while write
-protecting it with UFFD. The resulting snapshot represents the VM state
-at snapshot start.
+To avoid such large ranges, introduce a new PCI range covering the
+vfio-pci device RAM regions, this only if the addresses are above 4GB
+to avoid breaking potential SeaBIOS guests.
 
-VFIO migration is not compatible with background snapshot.
-First of all, VFIO device state is not even saved in background snapshot
-because only non-iterable device state is saved. But even if it was
-saved, after starting the VM, a VFIO device could dirty pages without it
-being detected by UFFD write protection. This would corrupt the
-snapshot, as the RAM in it would not represent the RAM at snapshot
-start.
+[ clg: - wrote commit log
+       - fixed overlapping 32-bit and PCI ranges when using SeaBIOS ]
 
-To prevent this, block VFIO migration with background snapshot.
-
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Fixes: 5255bbf4ec16 ("vfio/common: Add device dirty page tracking start/stop")
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/migration.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ hw/vfio/common.c     | 71 +++++++++++++++++++++++++++++++++++++-------
+ hw/vfio/trace-events |  2 +-
+ 2 files changed, 61 insertions(+), 12 deletions(-)
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 20994dc1d60b1606728415fec17c19cfd00c4dee..da43dcd2fe0734091960e3eb2ffa26750073be72 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -340,7 +340,8 @@ static int vfio_save_prepare(void *opaque, Error **errp)
-     VFIODevice *vbasedev = opaque;
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 237101d03844273f653d98b6d053a1ae9c05a247..134649226d4333f648ca751291003316a5f3b4a9 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -27,6 +27,7 @@
  
-     /*
--     * Snapshot doesn't use postcopy, so allow snapshot even if postcopy is on.
-+     * Snapshot doesn't use postcopy nor background snapshot, so allow snapshot
-+     * even if they are on.
-      */
-     if (runstate_check(RUN_STATE_SAVE_VM)) {
-         return 0;
-@@ -353,6 +354,14 @@ static int vfio_save_prepare(void *opaque, Error **errp)
-         return -EOPNOTSUPP;
-     }
+ #include "hw/vfio/vfio-common.h"
+ #include "hw/vfio/vfio.h"
++#include "hw/vfio/pci.h"
+ #include "exec/address-spaces.h"
+ #include "exec/memory.h"
+ #include "exec/ram_addr.h"
+@@ -1400,6 +1401,8 @@ typedef struct VFIODirtyRanges {
+     hwaddr max32;
+     hwaddr min64;
+     hwaddr max64;
++    hwaddr minpci64;
++    hwaddr maxpci64;
+ } VFIODirtyRanges;
  
-+    if (migrate_background_snapshot()) {
-+        error_setg(
-+            errp,
-+            "%s: VFIO migration is not supported with background snapshot",
-+            vbasedev->name);
-+        return -EOPNOTSUPP;
+ typedef struct VFIODirtyRangesListener {
+@@ -1408,6 +1411,31 @@ typedef struct VFIODirtyRangesListener {
+     MemoryListener listener;
+ } VFIODirtyRangesListener;
+ 
++static bool vfio_section_is_vfio_pci(MemoryRegionSection *section,
++                                     VFIOContainer *container)
++{
++    VFIOPCIDevice *pcidev;
++    VFIODevice *vbasedev;
++    VFIOGroup *group;
++    Object *owner;
++
++    owner = memory_region_owner(section->mr);
++
++    QLIST_FOREACH(group, &container->group_list, container_next) {
++        QLIST_FOREACH(vbasedev, &group->device_list, next) {
++            if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
++                continue;
++            }
++            pcidev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
++            if (OBJECT(pcidev) == owner) {
++                return true;
++            }
++        }
 +    }
 +
-     return 0;
- }
++    return false;
++}
++
+ static void vfio_dirty_tracking_update(MemoryListener *listener,
+                                        MemoryRegionSection *section)
+ {
+@@ -1424,19 +1452,32 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
+     }
  
+     /*
+-     * The address space passed to the dirty tracker is reduced to two ranges:
+-     * one for 32-bit DMA ranges, and another one for 64-bit DMA ranges.
++     * The address space passed to the dirty tracker is reduced to three ranges:
++     * one for 32-bit DMA ranges, one for 64-bit DMA ranges and one for the
++     * PCI 64-bit hole.
++     *
+      * The underlying reports of dirty will query a sub-interval of each of
+      * these ranges.
+      *
+-     * The purpose of the dual range handling is to handle known cases of big
+-     * holes in the address space, like the x86 AMD 1T hole. The alternative
+-     * would be an IOVATree but that has a much bigger runtime overhead and
+-     * unnecessary complexity.
++     * The purpose of the three range handling is to handle known cases of big
++     * holes in the address space, like the x86 AMD 1T hole, and firmware (like
++     * OVMF) which may relocate the pci-hole64 to the end of the address space.
++     * The latter would otherwise generate large ranges for tracking, stressing
++     * the limits of supported hardware. The pci-hole32 will always be below 4G
++     * (overlapping or not) so it doesn't need special handling and is part of
++     * the 32-bit range.
++     *
++     * The alternative would be an IOVATree but that has a much bigger runtime
++     * overhead and unnecessary complexity.
+      */
+-    min = (end <= UINT32_MAX) ? &range->min32 : &range->min64;
+-    max = (end <= UINT32_MAX) ? &range->max32 : &range->max64;
+-
++    if (vfio_section_is_vfio_pci(section, dirty->container) &&
++        iova >= UINT32_MAX) {
++        min = &range->minpci64;
++        max = &range->maxpci64;
++    } else {
++        min = (end <= UINT32_MAX) ? &range->min32 : &range->min64;
++        max = (end <= UINT32_MAX) ? &range->max32 : &range->max64;
++    }
+     if (*min > iova) {
+         *min = iova;
+     }
+@@ -1461,6 +1502,7 @@ static void vfio_dirty_tracking_init(VFIOContainer *container,
+     memset(&dirty, 0, sizeof(dirty));
+     dirty.ranges.min32 = UINT32_MAX;
+     dirty.ranges.min64 = UINT64_MAX;
++    dirty.ranges.minpci64 = UINT64_MAX;
+     dirty.listener = vfio_dirty_tracking_listener;
+     dirty.container = container;
+ 
+@@ -1531,7 +1573,8 @@ vfio_device_feature_dma_logging_start_create(VFIOContainer *container,
+      * DMA logging uAPI guarantees to support at least a number of ranges that
+      * fits into a single host kernel base page.
+      */
+-    control->num_ranges = !!tracking->max32 + !!tracking->max64;
++    control->num_ranges = !!tracking->max32 + !!tracking->max64 +
++        !!tracking->maxpci64;
+     ranges = g_try_new0(struct vfio_device_feature_dma_logging_range,
+                         control->num_ranges);
+     if (!ranges) {
+@@ -1550,11 +1593,17 @@ vfio_device_feature_dma_logging_start_create(VFIOContainer *container,
+     if (tracking->max64) {
+         ranges->iova = tracking->min64;
+         ranges->length = (tracking->max64 - tracking->min64) + 1;
++        ranges++;
++    }
++    if (tracking->maxpci64) {
++        ranges->iova = tracking->minpci64;
++        ranges->length = (tracking->maxpci64 - tracking->minpci64) + 1;
+     }
+ 
+     trace_vfio_device_dirty_tracking_start(control->num_ranges,
+                                            tracking->min32, tracking->max32,
+-                                           tracking->min64, tracking->max64);
++                                           tracking->min64, tracking->max64,
++                                           tracking->minpci64, tracking->maxpci64);
+ 
+     return feature;
+ }
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index 329736a738d32ab006c3621cecfb704c84a513b7..81ec7c7a958b890686865900e37157a373892048 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -104,7 +104,7 @@ vfio_known_safe_misalignment(const char *name, uint64_t iova, uint64_t offset_wi
+ vfio_listener_region_add_no_dma_map(const char *name, uint64_t iova, uint64_t size, uint64_t page_size) "Region \"%s\" 0x%"PRIx64" size=0x%"PRIx64" is not aligned to 0x%"PRIx64" and cannot be mapped for DMA"
+ vfio_listener_region_del(uint64_t start, uint64_t end) "region_del 0x%"PRIx64" - 0x%"PRIx64
+ vfio_device_dirty_tracking_update(uint64_t start, uint64_t end, uint64_t min, uint64_t max) "section 0x%"PRIx64" - 0x%"PRIx64" -> update [0x%"PRIx64" - 0x%"PRIx64"]"
+-vfio_device_dirty_tracking_start(int nr_ranges, uint64_t min32, uint64_t max32, uint64_t min64, uint64_t max64) "nr_ranges %d 32:[0x%"PRIx64" - 0x%"PRIx64"], 64:[0x%"PRIx64" - 0x%"PRIx64"]"
++vfio_device_dirty_tracking_start(int nr_ranges, uint64_t min32, uint64_t max32, uint64_t min64, uint64_t max64, uint64_t minpci, uint64_t maxpci) "nr_ranges %d 32:[0x%"PRIx64" - 0x%"PRIx64"], 64:[0x%"PRIx64" - 0x%"PRIx64"], pci64:[0x%"PRIx64" - 0x%"PRIx64"]"
+ vfio_disconnect_container(int fd) "close container->fd=%d"
+ vfio_put_group(int fd) "close group->fd=%d"
+ vfio_get_device(const char * name, unsigned int flags, unsigned int num_regions, unsigned int num_irqs) "Device %s flags: %u, regions: %u, irqs: %u"
 -- 
 2.41.0
 
