@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C95579A590
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 10:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB7379A589
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 10:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbso-0001WL-MJ; Mon, 11 Sep 2023 04:02:58 -0400
+	id 1qfbsr-0001YW-37; Mon, 11 Sep 2023 04:03:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qfbsk-0001OQ-5T; Mon, 11 Sep 2023 04:02:54 -0400
+ id 1qfbso-0001XG-Bu; Mon, 11 Sep 2023 04:02:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qfbsh-0002Aj-CJ; Mon, 11 Sep 2023 04:02:53 -0400
+ id 1qfbsl-0002BJ-L4; Mon, 11 Sep 2023 04:02:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 462AE20AF6;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6FC2A20AF7;
  Mon, 11 Sep 2023 11:02:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 96F772724B;
+ by tsrv.corpit.ru (Postfix) with SMTP id C1A0B2724C;
  Mon, 11 Sep 2023 11:02:28 +0300 (MSK)
-Received: (nullmailer pid 3680146 invoked by uid 1000);
+Received: (nullmailer pid 3680149 invoked by uid 1000);
  Mon, 11 Sep 2023 08:02:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 09/51] lsi53c895a: disable reentrancy detection for
- MMIO region, too
-Date: Mon, 11 Sep 2023 11:02:00 +0300
-Message-Id: <20230911080225.3680068-9-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 10/51] bcm2835_property: disable reentrancy detection
+ for iomem
+Date: Mon, 11 Sep 2023 11:02:01 +0300
+Message-Id: <20230911080225.3680068-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230911105418@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230911105418@cover.tls.msk.ru>
@@ -59,50 +59,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Alexander Bulekov <alxndr@bu.edu>
 
-While trying to use a SCSI disk on the LSI controller with an
-older version of Fedora (25), I'm getting:
+As the code is designed for re-entrant calls from bcm2835_property to
+bcm2835_mbox and back into bcm2835_property, mark iomem as
+reentrancy-safe.
 
- qemu: warning: Blocked re-entrant IO on MemoryRegion: lsi-mmio at addr: 0x34
-
-and the SCSI controller is not usable. Seems like we have to
-disable the reentrancy checker for the MMIO region, too, to
-get this working again.
-
-The problem could be reproduced it like this:
-
-./qemu-system-x86_64 -accel kvm -m 2G -machine q35 \
- -device lsi53c810,id=lsi1 -device scsi-hd,drive=d0 \
- -drive if=none,id=d0,file=.../somedisk.qcow2 \
- -cdrom Fedora-Everything-netinst-i386-25-1.3.iso
-
-Where somedisk.qcow2 is an image that contains already some partitions
-and file systems.
-
-In the boot menu of Fedora, go to
-"Troubleshooting" -> "Rescue a Fedora system" -> "3) Skip to shell"
-
-Then check "dmesg | grep -i 53c" for failure messages, and try to mount
-a partition from somedisk.qcow2.
-
-Message-Id: <20230516090556.553813-1-thuth@redhat.com>
+Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20230427211013.2994127-7-alxndr@bu.edu>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit d139fe9ad8a27bcc50b4ead77d2f97d191a0e95e)
+(cherry picked from commit 985c4a4e547afb9573b6bd6843d20eb2c3d1d1cd)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index 4ece478a37..ca619ed564 100644
---- a/hw/scsi/lsi53c895a.c
-+++ b/hw/scsi/lsi53c895a.c
-@@ -2318,6 +2318,7 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
-      * re-entrancy guard.
-      */
-     s->ram_io.disable_reentrancy_guard = true;
-+    s->mmio_io.disable_reentrancy_guard = true;
+diff --git a/hw/misc/bcm2835_property.c b/hw/misc/bcm2835_property.c
+index 890ae7bae5..de056ea2df 100644
+--- a/hw/misc/bcm2835_property.c
++++ b/hw/misc/bcm2835_property.c
+@@ -382,6 +382,13 @@ static void bcm2835_property_init(Object *obj)
  
-     address_space_init(&s->pci_io_as, pci_address_space_io(dev), "lsi-pci-io");
-     qdev_init_gpio_out(d, &s->ext_irq, 1);
+     memory_region_init_io(&s->iomem, OBJECT(s), &bcm2835_property_ops, s,
+                           TYPE_BCM2835_PROPERTY, 0x10);
++
++    /*
++     * bcm2835_property_ops call into bcm2835_mbox, which in-turn reads from
++     * iomem. As such, mark iomem as re-entracy safe.
++     */
++    s->iomem.disable_reentrancy_guard = true;
++
+     sysbus_init_mmio(SYS_BUS_DEVICE(s), &s->iomem);
+     sysbus_init_irq(SYS_BUS_DEVICE(s), &s->mbox_irq);
+ }
 -- 
 2.39.2
 
