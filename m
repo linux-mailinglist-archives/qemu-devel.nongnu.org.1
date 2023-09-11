@@ -2,83 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECB479A3E1
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAD679A3D1
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfahW-0000lC-Ox; Mon, 11 Sep 2023 02:47:14 -0400
+	id 1qfaiC-0006EE-6p; Mon, 11 Sep 2023 02:47:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qfah0-000807-K4
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qfai9-00068k-GN; Mon, 11 Sep 2023 02:47:53 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qfagy-0005Ke-3k
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694414799;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2GFEsMHhmxwDeXAhRY5jRzLsshWG+kXShsF5dZtdzMA=;
- b=Ne/YmOpR+DgkuQBDgoT+sF1GH4pRP9bKEyAWAgAsQmtynjSOfI1WgKUSiFMLbDTQBF2YLL
- iWg5zX1t/Xs6FEYS/oVkQbwwIEkgBdxLDmxG2RfoVMRpEa5ioe+ZwIntr2xA85ANuAHDeJ
- awq8RFuibRWq/2R0Pg05XZIXIHY16dI=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-9MITMFqSNGi7z8dm9clwgw-1; Mon, 11 Sep 2023 02:46:36 -0400
-X-MC-Unique: 9MITMFqSNGi7z8dm9clwgw-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-26f3fce5b0bso4924503a91.2
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:46:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414795; x=1695019595;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2GFEsMHhmxwDeXAhRY5jRzLsshWG+kXShsF5dZtdzMA=;
- b=V0KVHVUwaLomisIyfMesLH7hpL0eM1IpJ50tZglj1atGgcNib/4X0yjTzlikrJ0dKQ
- 7BgW6nll2ihyQPCtvvA1LsUBMb9ymtGCE1GFG0Yy20zGpIFGTmLVmyojsHJHTpyj2BGF
- Gklxxhp8mzMpvl+Idu3WsMKHjSTqn5UEwogy5wi4Uwmq1PsKe5Kw/mYLClUDjbayIH5H
- lGAD1SY+bKh7sQvfhR4/hIMy9EvXYbl0NUvmUuIXuJlltosS5QbvI9DxjMP3Qe6uuF6z
- HCHJ6oQCnVN5pz/xPtvNC+A/KYpFQHwvJvsrY3BZ4LHD4c2ZqlwguYTX0ke+ZT6xncuR
- /s/Q==
-X-Gm-Message-State: AOJu0YxzwufeTsbkyxE294Qfygjy8Yu7suX5hEysj/oZGkY8nPbqSo8P
- y84vT+ZdSKG+rn58Tar0U5QIx229KM1JAGCFVPxM7AfBYjdSPagJoryMp1OW0LKDKK7263ItDdm
- woJmdoKsKCP9uBaKlcDM7kqD24I1VsG0=
-X-Received: by 2002:a17:90b:4c45:b0:273:dfd8:c01c with SMTP id
- np5-20020a17090b4c4500b00273dfd8c01cmr5052471pjb.40.1694414794601; 
- Sun, 10 Sep 2023 23:46:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNE557DCto0iycgCe5tX3cW1MoPHbT3P9m8efy/TcE8NYrKAqu6w8vOlgbtWWJMznid7+Q7tTfzNP1ZTTvxA8=
-X-Received: by 2002:a17:90b:4c45:b0:273:dfd8:c01c with SMTP id
- np5-20020a17090b4c4500b00273dfd8c01cmr5052441pjb.40.1694414793410; Sun, 10
- Sep 2023 23:46:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qfai6-0005Ro-O0; Mon, 11 Sep 2023 02:47:53 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38B6dMMJ024725; Mon, 11 Sep 2023 06:47:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=B32OWzzhNsV2aQRRgXmbWXRrTK9cdJBEXnJvq3Nk54A=;
+ b=D446Kfsw2CvZJMTUSfbPURZCBbMyj91UVqhaZTWoTFECLoKTNEEHN8Riu47CgGaKSuTW
+ jAmGngiUbmrbW90a7hkG7uDV8hv5wOs8aPOiu4yNiMw7CrgaHRr4wE4Ze7pWu4R2so5z
+ dXWfkPoJP4KcyxEib0+xHue2mXEukdo8l0l1HWxQIUBgSvU3nlteon2ef1+bqKDeNZWT
+ 4iSxuRaVmg4tDUkEtpWCHbWzTzhPSAVXwpmIh+C2EJ6qfYTiYayIDNvigPzCqO+t05m3
+ lMcB09lQjeyeG6DMbaoH8pNaltg1bXbCSO91nlfm+8u2Mjs5SpPXeg2P5VFuADBZDipG aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t1m3p9tyc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Sep 2023 06:47:45 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38B6jT77013102;
+ Mon, 11 Sep 2023 06:47:44 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t1m3p9ty0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Sep 2023 06:47:44 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38B6Z6Pc024034; Mon, 11 Sep 2023 06:47:44 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t131srv5n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Sep 2023 06:47:43 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
+ [10.39.53.231])
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38B6lgQm7996060
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 Sep 2023 06:47:42 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BA73F58045;
+ Mon, 11 Sep 2023 06:47:42 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3FC1358050;
+ Mon, 11 Sep 2023 06:47:38 +0000 (GMT)
+Received: from [9.195.37.147] (unknown [9.195.37.147])
+ by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 11 Sep 2023 06:47:37 +0000 (GMT)
+Message-ID: <913a8994-57df-fdb1-8e0a-2900e16d47fb@linux.ibm.com>
+Date: Mon, 11 Sep 2023 12:17:35 +0530
 MIME-Version: 1.0
-References: <20230908154743.809569-1-aesteve@redhat.com>
- <5b82b6ae-cc19-2fc7-abef-8eefe40e4247@linaro.org>
-In-Reply-To: <5b82b6ae-cc19-2fc7-abef-8eefe40e4247@linaro.org>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Mon, 11 Sep 2023 08:46:22 +0200
-Message-ID: <CADSE00LndhSPGDOqCkO-ewOg2R3sF1ULPtYXZ4Q_SQP+youshQ@mail.gmail.com>
-Subject: Re: [PATCH v8 0/4] Virtio shared dma-buf
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
- marcandre.lureau@gmail.com, 
- cohuck@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, kraxel@redhat.com
-Content-Type: multipart/alternative; boundary="000000000000dd1e8906050faf4d"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH RESEND 02/15] ppc: spapr: Add new/extend structs to
+ support Nested PAPR API
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, danielhb413@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, mikey@neuling.org, vaibhav@linux.ibm.com,
+ jniethe5@gmail.com, sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com
+References: <20230906043333.448244-1-harshpb@linux.ibm.com>
+ <20230906043333.448244-3-harshpb@linux.ibm.com>
+ <CVCA6OLHLKVI.2IH1W8J3WBXFY@wheely>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CVCA6OLHLKVI.2IH1W8J3WBXFY@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: XjVpXGT_I_2b80wMAniPdDQ90H_muDDR
+X-Proofpoint-GUID: Xcl1KPLA01RpoAHOvTJeZ9X6rHEa0C_m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_03,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 spamscore=0
+ clxscore=1015 impostorscore=0 priorityscore=1501 malwarescore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309110059
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,122 +118,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000dd1e8906050faf4d
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Sep 8, 2023 at 5:55=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
-linaro.org>
-wrote:
-
-> On 8/9/23 17:47, Albert Esteve wrote:
-> > v1 link ->
-> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
-> > v2 link ->
-> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
-> > v3 link ->
-> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06126.html
-> > v4 link ->
-> https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05174.html
-> > v5 link ->
-> https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00255.html
-> > v6 link ->
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00987.html
-> > v7 link ->
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01190.html
-> > v7 -> v8:
-> > - Move "qemu/osdep.h" include to the virtio-dmabuf source file.
-> > - Remove duplicated glib include.
-> > - Change the title of commits to better reflect the path to the change
->
-> Thank Albert you for the various respin with review comment addressed.
->
->
-Hi Philippe,
-
-Thank you for taking the time to review!
 
 
-> Michael, no other comment on my side.
->
-> Regards,
->
-> Phil.
->
-> > This patch covers the required steps to add support for virtio
-> cross-device resource sharing[1],
-> > which support is already available in the kernel.
->
-> > Albert Esteve (4):
-> >    util/uuid: add a hash function
-> >    hw/display: introduce virtio-dmabuf
-> >    vhost-user: add shared_object msg
-> >    libvhost-user: handle shared_object msg
->
->
+On 9/7/23 06:36, Nicholas Piggin wrote:
+> On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
+>> This patch introduces new data structures to be used with Nested PAPR
+>> API. Also extends kvmppc_hv_guest_state with additional set of registers
+>> supported with nested PAPR API.
+>>
+>> Signed-off-by: Michael Neuling <mikey@neuling.org>
+>> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> ---
+>>   include/hw/ppc/spapr_nested.h | 48 +++++++++++++++++++++++++++++++++++
+>>   1 file changed, 48 insertions(+)
+>>
+>> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+>> index 5cb668dd53..f8db31075b 100644
+>> --- a/include/hw/ppc/spapr_nested.h
+>> +++ b/include/hw/ppc/spapr_nested.h
+>> @@ -189,6 +189,39 @@
+>>   /* End of list of Guest State Buffer Element IDs */
+>>   #define GSB_LAST                GSB_VCPU_SPR_ASDR
+>>   
+>> +typedef struct SpaprMachineStateNestedGuest {
+>> +    unsigned long vcpus;
+>> +    struct SpaprMachineStateNestedGuestVcpu *vcpu;
+>> +    uint64_t parttbl[2];
+>> +    uint32_t pvr_logical;
+>> +    uint64_t tb_offset;
+>> +} SpaprMachineStateNestedGuest;
+>> +
+>> +struct SpaprMachineStateNested {
+>> +
+>> +    uint8_t api;
+>> +#define NESTED_API_KVM_HV  1
+>> +#define NESTED_API_PAPR    2
+>> +    uint64_t ptcr;
+>> +    uint32_t lpid_max;
+>> +    uint32_t pvr_base;
+>> +    bool capabilities_set;
+>> +    GHashTable *guests;
+>> +};
+>> +
+>> +struct SpaprMachineStateNestedGuestVcpuRunBuf {
+>> +    uint64_t addr;
+>> +    uint64_t size;
+>> +};
+>> +
+>> +typedef struct SpaprMachineStateNestedGuestVcpu {
+>> +    bool enabled;
+>> +    struct SpaprMachineStateNestedGuestVcpuRunBuf runbufin;
+>> +    struct SpaprMachineStateNestedGuestVcpuRunBuf runbufout;
+>> +    CPUPPCState env;
+>> +    int64_t tb_offset;
+>> +    int64_t dec_expiry_tb;
+>> +} SpaprMachineStateNestedGuestVcpu;
+>>   
+>>   /*
+>>    * Register state for entering a nested guest with H_ENTER_NESTED.
+>> @@ -228,6 +261,21 @@ struct kvmppc_hv_guest_state {
+>>       uint64_t dawr1;
+>>       uint64_t dawrx1;
+>>       /* Version 2 ends here */
+>> +    uint64_t dec;
+>> +    uint64_t fscr;
+>> +    uint64_t fpscr;
+>> +    uint64_t bescr;
+>> +    uint64_t ebbhr;
+>> +    uint64_t ebbrr;
+>> +    uint64_t tar;
+>> +    uint64_t dexcr;
+>> +    uint64_t hdexcr;
+>> +    uint64_t hashkeyr;
+>> +    uint64_t hashpkeyr;
+>> +    uint64_t ctrl;
+>> +    uint64_t vscr;
+>> +    uint64_t vrsave;
+>> +    ppc_vsr_t vsr[64];
+>>   };
+> 
+> Why? I can't see where it's used... This is API for the original HV
+> hcalls which is possibly now broken because the code uses sizeof()
+> when mapping it.
 
---000000000000dd1e8906050faf4d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yeh, I had realised after posting the patches to cleanup these 
+leftovers. Please ignore these additions, shall be removed.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
-ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 8, 2023 at 5:55=
-=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro=
-.org">philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">On 8/9/23 17:47, Albert Esteve wrote:<br>
-&gt; v1 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
-/2023-05/msg00598.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
-gnu.org/archive/html/qemu-devel/2023-05/msg00598.html</a><br>
-&gt; v2 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
-/2023-05/msg04530.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
-gnu.org/archive/html/qemu-devel/2023-05/msg04530.html</a><br>
-&gt; v3 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
-/2023-05/msg06126.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
-gnu.org/archive/html/qemu-devel/2023-05/msg06126.html</a><br>
-&gt; v4 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
-/2023-06/msg05174.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
-gnu.org/archive/html/qemu-devel/2023-06/msg05174.html</a><br>
-&gt; v5 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
-/2023-08/msg00255.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
-gnu.org/archive/html/qemu-devel/2023-08/msg00255.html</a><br>
-&gt; v6 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
-/2023-09/msg00987.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
-gnu.org/archive/html/qemu-devel/2023-09/msg00987.html</a><br>
-&gt; v7 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
-/2023-09/msg01190.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
-gnu.org/archive/html/qemu-devel/2023-09/msg01190.html</a><br>
-&gt; v7 -&gt; v8:<br>
-&gt; - Move &quot;qemu/osdep.h&quot; include to the virtio-dmabuf source fi=
-le.<br>
-&gt; - Remove duplicated glib include.<br>
-&gt; - Change the title of commits to better reflect the path to the change=
-<br>
-<br>
-Thank Albert you for the various respin with review comment addressed.<br>
-<br></blockquote><div><br></div><div>Hi Philippe,</div><div><br></div><div>=
-Thank you for taking the time to review!</div><div>=C2=A0</div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
-id rgb(204,204,204);padding-left:1ex">
-Michael, no other comment on my side.<br>
-<br>
-Regards,<br>
-<br>
-Phil.<br>
-<br>
-&gt; This patch covers the required steps to add support for virtio cross-d=
-evice resource sharing[1],<br>
-&gt; which support is already available in the kernel.<br>
-<br>
-&gt; Albert Esteve (4):<br>
-&gt;=C2=A0 =C2=A0 util/uuid: add a hash function<br>
-&gt;=C2=A0 =C2=A0 hw/display: introduce virtio-dmabuf<br>
-&gt;=C2=A0 =C2=A0 vhost-user: add shared_object msg<br>
-&gt;=C2=A0 =C2=A0 libvhost-user: handle shared_object msg<br>
-<br>
-</blockquote></div></div>
+> 
+> In general I'm not a fan of splitting patches by the type of code they
+> add. Definitions for external APIs okay. But for things like internal
+> structures I prefer added where they are introduced.
+> 
+Make sense, I shall revisit and move declarations wherever used first.
 
---000000000000dd1e8906050faf4d--
+> It's actually harder to review a patch if related / dependent changes
+> aren't in it, IMO. What should be split is unrelated or independent
+> changes and logical steps. Same goes for hcalls too actually. Take a
+> look at the series that introduced nested HV. 120f738a467 adds all the
+> hcalls, all the structures, etc.
+> 
+> So I would also hink about squashing at least get/set capabilities
+> hcalls together, and guest create/delete, and probably vcpu create/run.
 
+Hmm, I think we can keep get/set capab, guest create/delete together as
+you suggested. We may want to keep vcpu_run separate as it has
+significant changes, to keep it easier for review?
+Let me know if you think otherwise.
+
+regards,
+Harsh
+
+> 
+> Thanks,
+> Nick
 
