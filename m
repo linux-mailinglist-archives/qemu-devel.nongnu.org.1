@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6388E79AAE3
+	by mail.lfdr.de (Postfix) with ESMTPS id 833ED79AAE4
 	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 20:41:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qflq2-0003aG-1r; Mon, 11 Sep 2023 14:40:46 -0400
+	id 1qflqe-0003ij-FG; Mon, 11 Sep 2023 14:41:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qflpm-0003Xj-GS
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 14:40:31 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qflqb-0003iG-RV
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 14:41:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qflpi-0000nY-Qj
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 14:40:30 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qflqZ-0000y1-PC
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 14:41:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694457625;
+ s=mimecast20190719; t=1694457679;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=nasu9EpN3g3kNe1u8UqhUn3yW+PmZuz6LASO3KzJc54=;
- b=ECpghiln7se9QXM6fscxaHfB7OHpczoZyq5n52czvSq18GRQxcsNmThnjdkijMsTSWGTQt
- nMcpkIc0+yXknTY6i7l+WfsdWuHptzGIJ36GWvYuyMJ/vq2LHg4n5kjulZD9NX94igY9Xd
- ZNfBw7r6IfDOaxoCUQTjnyhr9re4t1U=
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
- [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XMLo+88NX2zws04KrGVZGS34STIONVHKxOhJuvb4Qx4=;
+ b=eAf6hODMzd/f9j831LYE5+mms0Z0hsoXnhtI+c53fkcn+aYQ6d6vOyn4iHi1ImswucRe5+
+ L/XL+5dZjeyZlIbqszd+qc7aWcuPloY+hek6ubMxQHVcuewX/8wX7dL6P1XtZ1scpjsGxd
+ 5JI5wLH9mDdsURXtmNbdlF6+yLagmpg=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-nYoCCXQDMNeieqsEouonQA-1; Mon, 11 Sep 2023 14:40:23 -0400
-X-MC-Unique: nYoCCXQDMNeieqsEouonQA-1
-Received: by mail-oa1-f72.google.com with SMTP id
- 586e51a60fabf-1a9e3f67989so1279332fac.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 11:40:23 -0700 (PDT)
+ us-mta-122-hA-U2zLDO56m2U4BUAUXAw-1; Mon, 11 Sep 2023 14:41:17 -0400
+X-MC-Unique: hA-U2zLDO56m2U4BUAUXAw-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-413650a9d6dso12961381cf.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 11:41:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694457623; x=1695062423;
+ d=1e100.net; s=20230601; t=1694457677; x=1695062477;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nasu9EpN3g3kNe1u8UqhUn3yW+PmZuz6LASO3KzJc54=;
- b=X3I+6ZniDEZatcBTiBnsz6/msD1tmEVOLfx4G347Po8a7vEd346EDKWRJRUdJSZ/Dv
- 0ovi+fUH5kBbBjvzbz7f78g6fiQhVIHSNMZqsQXH3EmpFnT3YHPpz61RHKis1NxAkB37
- aFgHxg5W4mCIehhviJdKqG1X8j+OGeHOKpbHtgRcaKI22QOMjz3n5VUCpcRvbS59rEKk
- zebVI0bcX2ArMhr1cxwDdF4Rzat8pgwGg5v7JnPnDRH2aZ9pPWK0gNB8fQyhnaz1r15B
- 5nH1KtFVcqxK/st22UNB7yZ9e1vaH1a3GiUMjgORZHY0T3K0lNJu4hYfRBk1dTHpzc+4
- ZIEg==
-X-Gm-Message-State: AOJu0YwEuwc2wGMAqQ7lrBrDBNTZ6B2/NyiXvT9eFvQJ7EAY4rmcj0LV
- Bss86aenxFXa/qdrhwSEbQ+d/dbPVZKRWZUOrwP/YMSe1XcQSSJ30/RPK7FrO05kie8omrVOIqA
- yuxa8kXIFxvRGuSc=
-X-Received: by 2002:a05:6358:45d:b0:13f:1503:92f8 with SMTP id
- 29-20020a056358045d00b0013f150392f8mr6860338rwe.2.1694457622858; 
- Mon, 11 Sep 2023 11:40:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGub7GJUpiETCcCXg/Fiy9i6IvZnTLsa5Rn3thwVLLM4JQavCX/elKatQEzdQ2+/PusK1H7Lg==
-X-Received: by 2002:a05:6358:45d:b0:13f:1503:92f8 with SMTP id
- 29-20020a056358045d00b0013f150392f8mr6860318rwe.2.1694457622506; 
- Mon, 11 Sep 2023 11:40:22 -0700 (PDT)
+ bh=XMLo+88NX2zws04KrGVZGS34STIONVHKxOhJuvb4Qx4=;
+ b=siebIdwK1ZZd1IaUIQ4UxlmerEh3R15Se73YAy3r3oSCRkWP1mLpnRRpRAiXytQQTf
+ DE9ClboxbaLPcpkIPdMcZYmQO/rDcxWWmMCQQVHrd7+T5ShJUgcTdTgCBD+pENcEi889
+ j2iirM/qSlBR/i0V5OgX98kT/PvkI1BLdumd9KdG4HWjXDGzO1l2WgbE0jN0ckSSoowu
+ nDveSrv1FwMPMTb9UNPbYHWPVRjHpzUPlvP4IuRS3W01PoAxcZwuCTWPTGkFp/h3ZPOM
+ dDW4YhxEelOw+IXIcGEmt1iwRKpC+eiXj6UleVn9+/AnvmseaHizDIvjWd7q05fPvcU5
+ g3zw==
+X-Gm-Message-State: AOJu0YwPB0oy0kdbRHNedxkb5XfePAfbctDPttA1GKLK9mE1NybItzgb
+ 0AVlcbOQKZxF+kJvAQdFb/nGLyffmeZOZs3U3Kn0uJMXYmkiYj/9x40FwnQEyCLb/0ZzzV4SSWR
+ CeSoT7LSFaG/hZPs=
+X-Received: by 2002:a05:622a:1922:b0:412:2dac:acb7 with SMTP id
+ w34-20020a05622a192200b004122dacacb7mr14740174qtc.1.1694457677251; 
+ Mon, 11 Sep 2023 11:41:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGKAFEzayMvaA+RK4pL/OdN+HLpqVz4jzvNi9bj/RH1Mt3FdQQzjRiZdvOlk92kO97u+xHNw==
+X-Received: by 2002:a05:622a:1922:b0:412:2dac:acb7 with SMTP id
+ w34-20020a05622a192200b004122dacacb7mr14740153qtc.1.1694457676935; 
+ Mon, 11 Sep 2023 11:41:16 -0700 (PDT)
 Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
  [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- d10-20020a05620a136a00b0076827ce13f6sm2693648qkl.10.2023.09.11.11.40.21
+ t24-20020ac865d8000000b004009f6e7e7csm2799583qto.31.2023.09.11.11.41.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Sep 2023 11:40:22 -0700 (PDT)
-Date: Mon, 11 Sep 2023 14:40:19 -0400
+ Mon, 11 Sep 2023 11:41:16 -0700 (PDT)
+Date: Mon, 11 Sep 2023 14:41:14 -0400
 From: Peter Xu <peterx@redhat.com>
 To: Eric Auger <eric.auger@redhat.com>
 Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  alex.williamson@redhat.com, clg@redhat.com,
  jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com,
  peter.maydell@linaro.org, david@redhat.com, philmd@linaro.org
-Subject: Re: [PATCH 01/13] memory: Let ReservedRegion use Range
-Message-ID: <ZP9fE32QCaU0SnLL@x1n>
+Subject: Re: [PATCH 02/13] memory: Introduce
+ memory_region_iommu_set_iova_ranges
+Message-ID: <ZP9fSsSHP52M0fsI@x1n>
 References: <20230904080451.424731-1-eric.auger@redhat.com>
- <20230904080451.424731-2-eric.auger@redhat.com>
+ <20230904080451.424731-3-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230904080451.424731-2-eric.auger@redhat.com>
+In-Reply-To: <20230904080451.424731-3-eric.auger@redhat.com>
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -99,10 +100,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 04, 2023 at 10:03:44AM +0200, Eric Auger wrote:
-> A reserved region is a range tagged with a type. Let's directly use
-> the Range type in the prospect to reuse some of the library helpers
-> shipped with the Range type.
+On Mon, Sep 04, 2023 at 10:03:45AM +0200, Eric Auger wrote:
+> This helper will allow to convey information about valid
+> IOVA ranges to virtual IOMMUS.
 > 
 > Signed-off-by: Eric Auger <eric.auger@redhat.com>
 
