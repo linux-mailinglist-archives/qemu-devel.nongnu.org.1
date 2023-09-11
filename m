@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF03C79AA80
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 19:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDF579AA82
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 19:14:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfkTi-0002lf-Kz; Mon, 11 Sep 2023 13:13:38 -0400
+	id 1qfkTi-0002lb-1T; Mon, 11 Sep 2023 13:13:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTg-0002kt-Av
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTg-0002ku-BO
  for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:36 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTa-00008e-DP
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTa-000091-D2
  for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:35 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 249BA2183F;
- Mon, 11 Sep 2023 17:13:27 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4F9E72185A;
+ Mon, 11 Sep 2023 17:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1694452407; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1694452409; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gQVDJc/VWRXwS0mHPY1vDLVZJ1suUUTu444PbUJHcVk=;
- b=A/vuFtjF9XzJgrFMawwx6lgzutPb+V2K3h8WxrLoskFZlEPIG93NK7rib6tuu4eViFSC5r
- khHpQfsvAjA0Dsd7CIQI58ARjwZDyVn/Sn3qMMICutMtqSR4m/z1VludkgPRM0/06FWbv4
- EFCSZfIy3+Bbvpc/AKiAUNhSbCPoYYU=
+ bh=QCN0lzhzxfoxI0dPzlD2+/IaDtzUb62BaW0g8BRMoDE=;
+ b=EeiPuUPw5AyYQzsViD2QzWhc0/wbSutAoUh9BzE0WbUW6wTpA6LGwbf7cfGF13Z5mQEU7j
+ /sFslMNno0WTUci2c/qCQ1tFh9khjPUtNyEi0+VS5802zCfxZ8DvYo4CrNuQz4a/bUeeNV
+ L9mfiHcqT9zdXraeho0/+0zBXDs2hYk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1694452407;
+ s=susede2_ed25519; t=1694452409;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gQVDJc/VWRXwS0mHPY1vDLVZJ1suUUTu444PbUJHcVk=;
- b=lWFAXV6df54Iud3eOxl7Qh9mQglpVD8cSvfvydsTXvxdR1zDPLTgeQNdQ1Vrd3YvIFF6nk
- bzkQTEhSk/+ZGpDw==
+ bh=QCN0lzhzxfoxI0dPzlD2+/IaDtzUb62BaW0g8BRMoDE=;
+ b=l03uQr9D77QU9zvy/df7DIWIPoE/H8KL8HllCcBUzYLHTQQri1yo0c0iWqr+FdzyfJNRZ4
+ RMaUTpv7H9Ro4kBw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 86CBC139CC;
- Mon, 11 Sep 2023 17:13:25 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A7C0F139CC;
+ Mon, 11 Sep 2023 17:13:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id EN1MEbVK/2QyIAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 11 Sep 2023 17:13:25 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id OBBEGbdK/2QyIAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 11 Sep 2023 17:13:27 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v6 01/10] migration: Fix possible race when setting
- rp_state.error
-Date: Mon, 11 Sep 2023 14:13:11 -0300
-Message-Id: <20230911171320.24372-2-farosas@suse.de>
+Subject: [PATCH v6 02/10] migration: Fix possible races when shutting down the
+ return path
+Date: Mon, 11 Sep 2023 14:13:12 -0300
+Message-Id: <20230911171320.24372-3-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230911171320.24372-1-farosas@suse.de>
 References: <20230911171320.24372-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
  helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -86,31 +86,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We don't need to set the rp_state.error right after a shutdown because
-qemu_file_shutdown() always sets the QEMUFile error, so the return
-path thread would have seen it and set the rp error itself.
+We cannot call qemu_file_shutdown() on the return path file without
+taking the file lock. The return path thread could be running it's
+cleanup code and have just cleared the from_dst_file pointer.
 
-Setting the error outside of the thread is also racy because the
-thread could clear it after we set it.
+Checking ms->to_dst_file for errors could also race with
+migrate_fd_cleanup() which clears the to_dst_file pointer.
+
+Protect both accesses by taking the file lock.
+
+This was caught by inspection, it should be rare, but the next patches
+will start calling this code from other places, so let's do the
+correct thing.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 1 -
- 1 file changed, 1 deletion(-)
+ migration/migration.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 5528acb65e..f88c86079c 100644
+index f88c86079c..85c171f32c 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2062,7 +2062,6 @@ static int await_return_path_close_on_source(MigrationState *ms)
-          * waiting for the destination.
-          */
-         qemu_file_shutdown(ms->rp_state.from_dst_file);
--        mark_source_rp_bad(ms);
+@@ -2052,17 +2052,18 @@ static int open_return_path_on_source(MigrationState *ms,
+ static int await_return_path_close_on_source(MigrationState *ms)
+ {
+     /*
+-     * If this is a normal exit then the destination will send a SHUT and the
+-     * rp_thread will exit, however if there's an error we need to cause
+-     * it to exit.
++     * If this is a normal exit then the destination will send a SHUT
++     * and the rp_thread will exit, however if there's an error we
++     * need to cause it to exit. shutdown(2), if we have it, will
++     * cause it to unblock if it's stuck waiting for the destination.
+      */
+-    if (qemu_file_get_error(ms->to_dst_file) && ms->rp_state.from_dst_file) {
+-        /*
+-         * shutdown(2), if we have it, will cause it to unblock if it's stuck
+-         * waiting for the destination.
+-         */
+-        qemu_file_shutdown(ms->rp_state.from_dst_file);
++    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
++        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
++            qemu_file_get_error(ms->to_dst_file)) {
++            qemu_file_shutdown(ms->rp_state.from_dst_file);
++        }
      }
++
      trace_await_return_path_close_on_source_joining();
      qemu_thread_join(&ms->rp_state.rp_thread);
+     ms->rp_state.rp_thread_created = false;
 -- 
 2.35.3
 
