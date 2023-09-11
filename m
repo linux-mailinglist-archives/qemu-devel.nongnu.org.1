@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AD979A3BF
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D14879A3D2
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:48:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfago-0005tV-51; Mon, 11 Sep 2023 02:46:30 -0400
+	id 1qfagt-0006nE-PO; Mon, 11 Sep 2023 02:46:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagl-0005ab-8D
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:27 -0400
-Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
+ id 1qfagq-0006QK-Hr
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:32 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagi-0005HT-Us
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:26 -0400
-Received: by mail-oi1-x22a.google.com with SMTP id
- 5614622812f47-3ab244ef065so3152543b6e.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:46:24 -0700 (PDT)
+ id 1qfagn-0005I7-Tg
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:32 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-68cbbff84f6so3530089b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:46:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414783; x=1695019583; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414787; x=1695019587; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0AugPxvR0Xk9MuYdUUIr4+5lfDeBI452w5K1Z6wU4Oo=;
- b=gfQ8VCfAWU70sVX49r5Rslx72mer9AoRf/QGxcsoHDlxNRANHNOFCJIIpEfYIPooK9
- vbZLWcC/OMQvWP+ItKTR6l4sQCfEmPOUXxFcU8u5/QJQN0m7ksSWapxkp0eQ1Q2FNShW
- 2CwtJP0DVNj9doIIVHHMQccWIHtvf9sDSF6vW0DZC++D7PYMDFI1mJx6009SkIBWSint
- vCEM0tkoOH8jvdYyvlv1hh12oW6YlA6MOZ0zIM/WxhkSiPDmi1tZTlk4ochrx6ohMQao
- zkz4pDtyxDkqw9/gGoert1vf9NW2zf4+ND6BzPii44v2u3gclhvFuHOJ1K8onuhEnzWj
- nSgA==
+ bh=nlgYYuBXPFCdLBsWmioJLqNQ2mwRjae6i2nTBUm3gh8=;
+ b=BNZSIa5sbTAHNZLQyMNxF7cMnWjsw5cuH0Qmg9hZXMqyeCPKLJYyxo0qEn+6+a4wG+
+ buocdF9R9QX1Qhx1yZmAtcFVNT8tepX1Vei1gWm6pOyn7DCiAA2FGobFbkwIWyCu3PHW
+ ijfDH7G0I74pjOGKQFPqUYSqGpsNVKEB+EMNsKNJ/DYlkwk8YQytJx7yTFD06NaPfhuD
+ TqGm0tjed1BuR6YMzn2nNI+O30rUOfvkDNzyZBwGQvjXqH/54SGtP0tCXCRIyMxeGj33
+ H8nmdAbRPYPpwQJl2etHQy1+78UTAqjQzNTL/670aRTM1RKBAlxhilyN/iZlOwIcF6z3
+ kWMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414783; x=1695019583;
+ d=1e100.net; s=20230601; t=1694414787; x=1695019587;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0AugPxvR0Xk9MuYdUUIr4+5lfDeBI452w5K1Z6wU4Oo=;
- b=rB2F12GQIYsa3YAPHvpo7vlz893z/CA1WSQ9JuVsCJIeprpCW2wdS0RU3f0Wjder8t
- NmcDz/4ndr5k5MyC75iURxH8kYNrpHHRVUHk9pBshoJB/DQ9p9EjOoesNrrkInGQ7nWI
- s+y4EkxrIU3L54SyauyNLmR47kwo0Gs7yyfoDFBWcTgfxkA9IDdV9VKH1pgNab8+yqPR
- Yk+Uktk7gXIk+2JyQcN0Bfi6x04NYnHPSjzXw4LUo85A375M7AYdkI40N/C151QOTcmT
- 8nKBVQgnSG3p237it9W+IHxdyy3I7Kbh7FBLh6V9bdvXY7Pke6tW2uBeMG4hwCxmNY/a
- 98LA==
-X-Gm-Message-State: AOJu0YykyhGmt98DEF80W7heo0mLg3Rco4S/Ero4mJn4d2l9upbhzMxj
- deL9Yo0ELCQsdExSUywFulwapAj1mxBZJA==
-X-Google-Smtp-Source: AGHT+IEVLVEcX79DeXQ3kBd8e1QJoa73XblKltDC7W915UcLk/DVGmWAx1033QvwyS3QFjyiSQxieg==
-X-Received: by 2002:a05:6808:2390:b0:3a7:48eb:2de2 with SMTP id
- bp16-20020a056808239000b003a748eb2de2mr12430226oib.26.1694414783561; 
- Sun, 10 Sep 2023 23:46:23 -0700 (PDT)
+ bh=nlgYYuBXPFCdLBsWmioJLqNQ2mwRjae6i2nTBUm3gh8=;
+ b=X4e7R9vuxMPVM3wkbwLY97Tp2hgNwFmVpAu7ibFDMd8605uCKc97j0QJed0nJiyOaA
+ y1EmgNv7Nw2FhF45RMNWw6+jYKRhtczo2Yqv4wT9nGEczHAcd3alwYWX2G6Q5typcAPB
+ atQwe3V1R5AtaVZw+rjUV5hc8bqV+jPvH/L6PUxTtkCEidbVdBE68/f5X6f/V+yfYSwZ
+ bPzaQEaXeZ1ftFU7MjPrTtY1f4iQZxV5bMj5FrgkBeJ3MMBGuo7lhN4BZ1egV+H9HldI
+ oDIuJRlWMXLlW+0RiNqIChwHTA3zAedE9LYpu0PUQNFnXmWYMJeF7KrDBIN1rGru9kmo
+ pv5Q==
+X-Gm-Message-State: AOJu0YwfJs8k0IEhNkfuyC+M+HLPGEL7tys9DG36xOiGNjdYxXCxVDE1
+ epI9b5v9EGE+4ggE1/9BElX3MouSvWLAxQ==
+X-Google-Smtp-Source: AGHT+IGxiw5U9K5wkqC0od1JVaTG5c6BbhNBMEbIor/k6p3Lq6UuIzt1kIkIziV2LtfJx98XafuoZQ==
+X-Received: by 2002:a05:6a21:a58c:b0:153:4ea6:d12e with SMTP id
+ gd12-20020a056a21a58c00b001534ea6d12emr12374831pzc.17.1694414786970; 
+ Sun, 10 Sep 2023 23:46:26 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.46.20
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.46.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:46:22 -0700 (PDT)
+ Sun, 10 Sep 2023 23:46:26 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Leon Schuermann <leons@opentitan.org>,
- Mayuresh Chitale <mchitale@ventanamicro.com>,
+Cc: alistair23@gmail.com, Tommy Wu <tommy.wu@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 43/45] target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX
- changes
-Date: Mon, 11 Sep 2023 16:43:18 +1000
-Message-ID: <20230911064320.939791-44-alistair.francis@wdc.com>
+Subject: [PULL v2 44/45] target/riscv: Align the AIA model to v1.0 ratified
+ spec
+Date: Mon, 11 Sep 2023 16:43:19 +1000
+Message-ID: <20230911064320.939791-45-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x22a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,39 +98,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Leon Schuermann <leons@opentitan.org>
+From: Tommy Wu <tommy.wu@sifive.com>
 
-When the rule-lock bypass (RLB) bit is set in the mseccfg CSR, the PMP
-configuration lock bits must not apply. While this behavior is
-implemented for the pmpcfgX CSRs, this bit is not respected for
-changes to the pmpaddrX CSRs. This patch ensures that pmpaddrX CSR
-writes work even on locked regions when the global rule-lock bypass is
-enabled.
+According to the new spec, when vsiselect has a reserved value, attempts
+from M-mode or HS-mode to access vsireg, or from VS-mode to access
+sireg, should preferably raise an illegal instruction exception.
 
-Signed-off-by: Leon Schuermann <leons@opentitan.org>
-Reviewed-by: Mayuresh Chitale <mchitale@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20230829215046.1430463-1-leon@is.currently.online>
+Signed-off-by: Tommy Wu <tommy.wu@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Message-ID: <20230816061647.600672-1-tommy.wu@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/pmp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/riscv/csr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index 9d8db493e6..5e60c26031 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -44,6 +44,10 @@ static inline uint8_t pmp_get_a_field(uint8_t cfg)
-  */
- static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 63c3b0d9fc..68eecc3c96 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -1684,7 +1684,7 @@ static int rmw_iprio(target_ulong xlen,
+ static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
+                      target_ulong new_val, target_ulong wr_mask)
  {
-+    /* mseccfg.RLB is set */
-+    if (MSECCFG_RLB_ISSET(env)) {
-+        return 0;
-+    }
+-    bool virt;
++    bool virt, isel_reserved;
+     uint8_t *iprio;
+     int ret = -EINVAL;
+     target_ulong priv, isel, vgein;
+@@ -1694,6 +1694,7 @@ static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
  
-     if (env->pmp_state.pmp[pmp_index].cfg_reg & PMP_LOCK) {
-         return 1;
+     /* Decode register details from CSR number */
+     virt = false;
++    isel_reserved = false;
+     switch (csrno) {
+     case CSR_MIREG:
+         iprio = env->miprio;
+@@ -1738,11 +1739,13 @@ static int rmw_xireg(CPURISCVState *env, int csrno, target_ulong *val,
+                                                   riscv_cpu_mxl_bits(env)),
+                                     val, new_val, wr_mask);
+         }
++    } else {
++        isel_reserved = true;
+     }
+ 
+ done:
+     if (ret) {
+-        return (env->virt_enabled && virt) ?
++        return (env->virt_enabled && virt && !isel_reserved) ?
+                RISCV_EXCP_VIRT_INSTRUCTION_FAULT : RISCV_EXCP_ILLEGAL_INST;
+     }
+     return RISCV_EXCP_NONE;
 -- 
 2.41.0
 
