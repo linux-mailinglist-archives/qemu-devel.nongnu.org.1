@@ -2,80 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E829479A6BB
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DEB779A6D4
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:44:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfdDW-0004FB-TE; Mon, 11 Sep 2023 05:28:26 -0400
+	id 1qfdRz-0003aC-4t; Mon, 11 Sep 2023 05:43:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdDU-0004F3-RC
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:28:24 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdRp-0003Z8-7z
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:43:13 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdDS-0001Lg-4Q
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:28:24 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9a9f139cd94so436457966b.2
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 02:28:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdRk-0003vU-2f
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:43:11 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2bd6611873aso66636601fa.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 02:43:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694424499; x=1695029299; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=AYjaTGDVOvYCTadL5dsWx09HwjynT5qt+XzoeASInJk=;
- b=mrevSF6DG6AJfwmYKU8QBLWfa9Ejb0XOUpf1CxSDAyR21S/dc39VWnAcDOJZVj3qAT
- f5xydwLeorlE4Z5ppaB/fXAawl7TQE/4t+YKk6KL8HyQ4W6e16Zr3YpmOl9oDUf1sECJ
- azkPNNJVrPBF6SiufgUcqUNPRKSe+QKVLGHPX2AqbG/JM1p3Kgd4u8pAqsylbTgCJWtf
- z2kNhPlDFCOt5x9wVGdCw/V0WOemzWI+MA8UuQDLJBfD+YK3whSyuAtuFU9keSL0fyxH
- bYZosZ7Nu0tSrW/lhhAizb/iYj6Kyuu0TolnIR0AdZko/uiQI3KywlA18KcJ/jfBuhav
- yhmg==
+ d=linaro.org; s=google; t=1694425386; x=1695030186; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jmjKOQuW73CkxyzBkHVYL2o2wQ74q95ptQBD70bJNtg=;
+ b=f2PMyopQmLdegxN/11jahK6fgxWi458StEtOphpE7uf1d5MKvhmZDw8VNQYAyzLcHk
+ ZcSk8W5FQmAPgiXtGygsxyVced55hUK9ByW+Ml7ylsdidM63Yajv1UMyldCeZLBw4xGU
+ THD2KQwXDYBSjDov+BqxirBP1f+fvHHPofDE2zisL431Ldn29y1liAMTLEmPsaNs5KvK
+ Xg0vCr71+ukV3xA33VI1FIGLpxFIy7qPU15zVMgu4HVumA8OesGlItgHONd0TiGYOi+g
+ RrZX7ojocWENrMnBcL95lx+Ryp1rVn5c0JL54WwkYFTwuImCFZigLdgjGlljWZja/1LE
+ hIBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694424499; x=1695029299;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1694425386; x=1695030186;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AYjaTGDVOvYCTadL5dsWx09HwjynT5qt+XzoeASInJk=;
- b=xB7N/IT+7aPzuh6cCAJ8diXYB1VMJRkHvVc23x1ZhM0lH81e9hCbp4Zwz8aDN+x4SD
- Ok6uR4uvrcy4dYIXPCXfFZI2/lm9h4UALyJrPbZxsyu/m3XoL0sw75ulR6VU2UGBkEXE
- 9Paim+5easYeeHgYNmeM3Q10XVLxSk8+/e4DIBAFSKVzbwskqigw99UZ+daWzoQ9IZZS
- lRDRDc/0P6pNgsBHRx1rRz6s8wEOSa0sXMnWVeq8NABlfSh+G3mOr4CrANDdcfsQ1EUR
- Xp6E0hg9Yp2J6TYBHikj6FTYzP53exY0OJOJ5osw77W2vMKJ1hgz376rYYjcmZF6LATY
- TU7w==
-X-Gm-Message-State: AOJu0YzQsEjdxZ1r12UZwOzr8yzEDEvmop2cuYWLQW9D8HvrHejfPNIr
- /7zuvAA5+JZ/TMy9v+6OMq2BXxH9m47QJcqNfLQ=
-X-Google-Smtp-Source: AGHT+IGHxqo4NVlzPbb0GcxYC2OJ5jI6dyWq2pTpDhA3T5CXDnjIg42qcl2oK7GPv89LxpRDDxcEUw==
-X-Received: by 2002:a17:906:2189:b0:9a5:b875:eba with SMTP id
- 9-20020a170906218900b009a5b8750ebamr7397015eju.24.1694424498930; 
- Mon, 11 Sep 2023 02:28:18 -0700 (PDT)
+ bh=jmjKOQuW73CkxyzBkHVYL2o2wQ74q95ptQBD70bJNtg=;
+ b=DrEBZqNINYuZ3gpDfaPJAaaJkfNwj4G2y9rCP4rVBP1i49/ej2d9k2UzPAmcJ+Jh+c
+ EKZ+YtygTjIzI17CJtL5UCUX4JCelHPfesmzSBF2IU1EnS7lU1uJAjS/HET4soRw9KEX
+ UOjjqpoovVlMocqg6BXvy4LiHVSpzP9DbT+3nnp5pw8m3r8t5UlYRvbz6Tl+x+ymuAbl
+ NeduL0CmyNnK0cl4pEPWJsxGEPX5XkZsm4lcWf0xI0VeyvHVv8g5yJWLCzBEnpUgemc1
+ vf6YHPW8b+pmfLbVt4aO2ze07aVLZDna/BXNdDkTtPos6RwCeGVCjrMSkOWd/TQZ+lOe
+ z/sA==
+X-Gm-Message-State: AOJu0YztScHEN0ArTCpsqnbRuAfm+2zZ4obzrrZ+CcirotE4NXcXwHPf
+ oyj9dyrUqEyk2us6Kw1/1G1sqg==
+X-Google-Smtp-Source: AGHT+IFLoqhyHG+pHj53Yx1we7ufAk8ESiVUOXjmWvXEuK07T4Vo/rpqF1CLPHFjiSBLlYIKbiFa5g==
+X-Received: by 2002:a2e:9303:0:b0:2bd:b99:ab7e with SMTP id
+ e3-20020a2e9303000000b002bd0b99ab7emr7401965ljh.42.1694425386023; 
+ Mon, 11 Sep 2023 02:43:06 -0700 (PDT)
 Received: from [192.168.69.115] (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
  [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- oy25-20020a170907105900b0099d0c0bb92bsm5032426ejb.80.2023.09.11.02.28.17
+ si28-20020a170906cedc00b009786c8249d6sm5134068ejb.175.2023.09.11.02.43.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 02:28:18 -0700 (PDT)
-Message-ID: <c4fd505e-de5b-ea33-4959-38a735cf173d@linaro.org>
-Date: Mon, 11 Sep 2023 11:28:16 +0200
+ Mon, 11 Sep 2023 02:43:05 -0700 (PDT)
+Message-ID: <af78b6c9-14e5-3256-9670-c106f4942140@linaro.org>
+Date: Mon, 11 Sep 2023 11:43:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] meson: Fix targetos match for illumos and Solaris.
-To: Jonathan Perkin <jonathan@perkin.org.uk>, qemu-devel@nongnu.org
-References: <ZPtdxtum9UVPy58J@perkin.org.uk>
+Subject: Re: [PATCH 3/4] hw/cpu: Introduce CPUClass::cpu_resolving_type field
 Content-Language: en-US
+To: Gavin Shan <gshan@redhat.com>, qemu-devel@nongnu.org,
+ David Hildenbrand <david@redhat.com>
+Cc: Chris Wulff <crwulff@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, qemu-s390x@nongnu.org,
+ Weiwei Li <liweiwei@iscas.ac.cn>, qemu-arm@nongnu.org,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Greg Kurz <groug@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ qemu-ppc@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marek Vasut <marex@denx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Michael Rolnik <mrolnik@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
+ Aurelien Jarno <aurelien@aurel32.net>, Bin Meng <bin.meng@windriver.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Song Gao <gaosong@loongson.cn>,
+ Stafford Horne <shorne@gmail.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Brian Cain <bcain@quicinc.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Thomas Huth <thuth@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20230908112235.75914-1-philmd@linaro.org>
+ <20230908112235.75914-4-philmd@linaro.org>
+ <87cb0174-c652-aa44-be7c-49e78e0a5003@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <ZPtdxtum9UVPy58J@perkin.org.uk>
+In-Reply-To: <87cb0174-c652-aa44-be7c-49e78e0a5003@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,88 +119,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 19:45, Jonathan Perkin wrote:
-> qemu 8.1.0 breaks on illumos platforms due to _XOPEN_SOURCE and others 
-> no longer being set correctly, leading to breakage such as:
+On 11/9/23 01:28, Gavin Shan wrote:
+> Hi Philippe,
 > 
->    
-> https://us-central.manta.mnx.io/pkgsrc/public/reports/trunk/tools/20230908.1404/qemu-8.1.0/build.log
-
-Paolo if you don't mind please replace this link
-(which is likely going to disappear) by:
-
-In file included from include/qemu/osdep.h:151,
-                  from ../qom/container.c:13:
-include/sysemu/os-posix.h: In function 'qemu_flockfile':
-include/sysemu/os-posix.h:88:5: warning: implicit declaration of 
-function 'flockfile' [-Wimplicit-function-declaration]
-    88 |     flockfile(f);
-       |     ^~~~~~~~~
-include/sysemu/os-posix.h:88:5: warning: nested extern declaration of 
-'flockfile' [-Wnested-externs]
-
-../util/compatfd.c: In function 'sigwait_compat':
-../util/compatfd.c:36:15: error: too many arguments to function 'sigwait'
-    36 |         err = sigwait(&info->mask, &sig);
-       |               ^~~~~~~
-In file included from include/qemu/osdep.h:117,
-                  from ../util/compatfd.c:16:
-/usr/include/signal.h:165:12: note: declared here
-   165 | extern int sigwait(sigset_t *);
-       |            ^~~~~~~
-
+> On 9/8/23 21:22, Philippe Mathieu-Daudé wrote:
+>> Add a field to return the QOM type name of a CPU class.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   include/hw/core/cpu.h   | 2 ++
+>>   hw/core/cpu-common.c    | 2 +-
+>>   target/alpha/cpu.c      | 1 +
+>>   target/arm/cpu.c        | 1 +
+>>   target/avr/cpu.c        | 1 +
+>>   target/cris/cpu.c       | 1 +
+>>   target/hexagon/cpu.c    | 1 +
+>>   target/hppa/cpu.c       | 1 +
+>>   target/i386/cpu.c       | 1 +
+>>   target/loongarch/cpu.c  | 1 +
+>>   target/m68k/cpu.c       | 1 +
+>>   target/microblaze/cpu.c | 1 +
+>>   target/mips/cpu.c       | 1 +
+>>   target/nios2/cpu.c      | 1 +
+>>   target/openrisc/cpu.c   | 1 +
+>>   target/ppc/cpu_init.c   | 1 +
+>>   target/riscv/cpu.c      | 1 +
+>>   target/rx/cpu.c         | 1 +
+>>   target/s390x/cpu.c      | 1 +
+>>   target/sh4/cpu.c        | 1 +
+>>   target/sparc/cpu.c      | 1 +
+>>   target/tricore/cpu.c    | 1 +
+>>   target/xtensa/cpu.c     | 1 +
+>>   23 files changed, 24 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+>> index 129d179937..e469efd409 100644
+>> --- a/include/hw/core/cpu.h
+>> +++ b/include/hw/core/cpu.h
+>> @@ -100,6 +100,7 @@ struct SysemuCPUOps;
+>>   /**
+>>    * CPUClass:
+>> + * @cpu_resolving_type: CPU QOM type name
+>>    * @class_by_name: Callback to map -cpu command line model name to an
+>>    *                 instantiatable CPU type.
+>>    * @parse_features: Callback to parse command line arguments.
+>> @@ -148,6 +149,7 @@ struct CPUClass {
+>>       DeviceClass parent_class;
+>>       /*< public >*/
+>> +    const char *cpu_resolving_type;
+>>       ObjectClass *(*class_by_name)(const char *cpu_model);
+>>       void (*parse_features)(const char *typename, char *str, Error 
+>> **errp);
 > 
-> This is a result of meson conversion which incorrectly matches against 
-> 'solaris' instead of 'sunos' for uname.
-> 
-> First time submitting a patch here, hope I did it correctly.  Thanks.
-> 
-> Signed-off-by: Jonathan Perkin <jonathan@perkin.org.uk>
-> ---
->   meson.build     | 4 ++--
->   net/meson.build | 2 +-
->   2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index 0e31bdfabf..5150a74831 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -226,7 +226,7 @@ if targetos == 'darwin'
->     if compiler.get_id() == 'gcc'
->       qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
->     endif
-> -elif targetos == 'solaris'
-> +elif targetos == 'sunos'
+> The question is why not use CPU_RESOLVING_TYPE directly? It seems 
+> CPU_RESOLVING_TYPE
+> is exactly what you want here.
 
-Commit a988b4c561 from Oct 2022... I'm surprised nobody tried
-to build QEMU on illumos for almost 1 year...
+Unfortunately CPU_RESOLVING_TYPE is target-specific, we want
+hw/core/cpu-common.c to be target-agnostic (build once for all
+targets). This is particularly important in the context of
+heterogeneous QEMU, where a single binary will be able to create
+CPUs from different targets.
 
->     # needed for CMSG_ macros in sys/socket.h
->     qemu_common_flags += '-D_XOPEN_SOURCE=600'
->     # needed for TIOCWIN* defines in termios.h
-> @@ -2048,7 +2048,7 @@ have_slirp_smbd = get_option('slirp_smbd') \
->   if have_slirp_smbd
->     smbd_path = get_option('smbd')
->     if smbd_path == ''
-> -    smbd_path = (targetos == 'solaris' ? '/usr/sfw/sbin/smbd' : 
-> '/usr/sbin/smbd')
-> +    smbd_path = (targetos == 'sunos' ? '/usr/sfw/sbin/smbd' : 
-> '/usr/sbin/smbd')
->     endif
->     config_host_data.set_quoted('CONFIG_SMBD_COMMAND', smbd_path)
->   endif
-> diff --git a/net/meson.build b/net/meson.build
-> index d2d70634e5..51caa42c9d 100644
-> --- a/net/meson.build
-> +++ b/net/meson.build
-> @@ -47,7 +47,7 @@ elif targetos == 'linux'
->     system_ss.add(files('tap.c', 'tap-linux.c'))
->   elif targetos in bsd_oses
->     system_ss.add(files('tap.c', 'tap-bsd.c'))
-> -elif targetos == 'solaris'
-> +elif targetos == 'sunos'
->     system_ss.add(files('tap.c', 'tap-solaris.c'))
->   else
->     system_ss.add(files('tap.c', 'tap-stub.c'))
+> Besides, I guess the changes can be 
+> squeezed into two
+> patches (commits) as below:
+> 
+> PATCH[1] target/alpha: Tidy up alpha_cpu_class_by_name()
+> PATCH[2] Move the checks (oc == NULL || object_class_is_abstract() || 
+> !object_class_dynamic_cast())
+>           from individual targets to 
+> hw/core/cpu-common.c::cpu_class_by_name()
+> 
+> I rebase my series of '[PATCH v3 00/32] Unified CPU type check' on top 
+> of yours. Please
+> let me know if I need to include your patch into my v4 series for 
+> review. In that case,
+> I can include your patches with above changes applied.
+> 
+> Thanks,
+> Gavin
+> 
+>> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+>> index c6a0c9390c..2d24261a6a 100644
+>> --- a/hw/core/cpu-common.c
+>> +++ b/hw/core/cpu-common.c
+>> @@ -155,7 +155,7 @@ ObjectClass *cpu_class_by_name(const char 
+>> *typename, const char *cpu_model)
+>>       assert(cpu_model);
+>>       oc = object_class_by_name(typename);
+>>       cc = CPU_CLASS(oc);
+>> -    assert(cc->class_by_name);
+>> +    assert(cc->cpu_resolving_type && cc->class_by_name);
+>>       oc = cc->class_by_name(cpu_model);
+>>       if (oc == NULL || object_class_is_abstract(oc)) {
+>>           return NULL;
 
 
