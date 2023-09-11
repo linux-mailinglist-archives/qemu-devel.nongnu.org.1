@@ -2,52 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B4E79A313
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 07:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E59979A34F
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfZvH-0007IZ-3r; Mon, 11 Sep 2023 01:57:23 -0400
+	id 1qfa4h-00055V-UC; Mon, 11 Sep 2023 02:07:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qfZvA-0007IH-Sg; Mon, 11 Sep 2023 01:57:16 -0400
-Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qfa4W-000551-Be
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:06:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qfZv7-0004yA-OR; Mon, 11 Sep 2023 01:57:16 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=6; SR=0;
- TI=SMTPD_---0VrlO8m1_1694411823; 
-Received: from 30.221.110.218(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VrlO8m1_1694411823) by smtp.aliyun-inc.com;
- Mon, 11 Sep 2023 13:57:04 +0800
-Message-ID: <7e2977aa-2de4-6ba9-af74-03b5619f3eb2@linux.alibaba.com>
-Date: Mon, 11 Sep 2023 13:56:15 +0800
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qfa4S-0006k7-9r
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:06:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694412410;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Aypap0OXnHDH/WJeJ9gS/LtqdHDqBfOJ7RB5Czc83R0=;
+ b=XA8WFGu0SSv5JXwT6m6fhvqN/9KcxDK1D8jeI3cFN2v3b9RNnsADiDw+7PXBKzktHsKNop
+ NZsumOEvz4QieJQrsVoZl7XGsv7oLvhnpGnBhe3Da51/Trlr1AuMdYXCzHGx7x+7OrojgU
+ L7rAuyatPvY/3gkfTtWMpik1tNjkPSc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-510-Cgz7iEY3PvCAIwph8wee9g-1; Mon, 11 Sep 2023 02:06:48 -0400
+X-MC-Unique: Cgz7iEY3PvCAIwph8wee9g-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-401be705672so31372705e9.2
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:06:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694412407; x=1695017207;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Aypap0OXnHDH/WJeJ9gS/LtqdHDqBfOJ7RB5Czc83R0=;
+ b=FJaXxa7SczQmMBUtJ/95r8MBf6u+q2ux77cf35+koaKr3hc8V6C25G2rRDpHBS/Zqy
+ oiORJ9r+y1S+mbh9LKja6IIiKKysq7cEIwOIkHt7RH8JNOfIC4ztuT7OQUB25TETDw9r
+ Ifmedn5rlWNcRBe86acVvtJBeCQPP8fUtU1qq0PRq8Twn9My2J509t9pQ8JgKndjHJwq
+ uXWuEMbjY+9OkYkwO1+Jh9TP1VkPbtCi2WSPiNchFLkoOHFy7akOEv9768ccG25L76eD
+ hX3OoJ+aQKD/iHeD+bgd660p2+vT7VgPKNt0yWRgXkK7d5KmalqU8mKbYjk0arnDyBiT
+ BJWA==
+X-Gm-Message-State: AOJu0YySTz9VsYfbWBTr9Rn40pfTMCuGBUn4wi3wAsOI34Whlybofb0I
+ aMfR03t9KwSMvsydoVbSnOqj7JQ6eLZT2FM1sHnryzHVCtOEdXKQ2Phg11ZlgHSGC7vY/Ex/nvX
+ 5RaSnCkHK7l2dlYM=
+X-Received: by 2002:a7b:c7c9:0:b0:401:bf56:8ba6 with SMTP id
+ z9-20020a7bc7c9000000b00401bf568ba6mr7026939wmk.28.1694412407530; 
+ Sun, 10 Sep 2023 23:06:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFf1Jkum20QdGgIxjr/VbKtGOrhaydm3nepaiNpaMSi7LB4FjSFFPZ1fyHTq9+yU8/Hln9K6A==
+X-Received: by 2002:a7b:c7c9:0:b0:401:bf56:8ba6 with SMTP id
+ z9-20020a7bc7c9000000b00401bf568ba6mr7026931wmk.28.1694412407216; 
+ Sun, 10 Sep 2023 23:06:47 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-178-150.web.vodafone.de.
+ [109.43.178.150]) by smtp.gmail.com with ESMTPSA id
+ f7-20020a7bcd07000000b00401c595fcc7sm12156709wmj.11.2023.09.10.23.06.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 10 Sep 2023 23:06:44 -0700 (PDT)
+Message-ID: <cd09ca4b-b0a6-c8f4-a752-b3494cffa2b8@redhat.com>
+Date: Mon, 11 Sep 2023 08:06:42 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [RESEND] qemu/timer: Add host ticks function for RISC-V
+Subject: Re: [PATCH for stable-7.2 only] gitlab-ci: check-dco.py: switch from
+ master to stable-7.2 branch
+To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>
+References: <20230910073009.2714174-1-mjt@tls.msk.ru>
 Content-Language: en-US
-To: Palmer Dabbelt <palmer@dabbelt.com>, pbonzini@redhat.com
-Cc: atishp@atishpatra.org, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- lzw194868@alibaba-inc.com
-References: <mhng-87182386-83b7-4ce7-af3d-f0cc10b292f8@palmer-ri-x1c9>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <mhng-87182386-83b7-4ce7-af3d-f0cc10b292f8@palmer-ri-x1c9>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230910073009.2714174-1-mjt@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.100;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-100.freemail.mail.aliyun.com
-X-Spam_score_int: -113
-X-Spam_score: -11.4
-X-Spam_bar: -----------
-X-Spam_report: (-11.4 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,64 +103,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 10/09/2023 09.30, Michael Tokarev wrote:
+> There's one commit, tagged v7.2.2, without Signed-off-by line.
+> Due to this, check-dco test always fail on 7.2.  Since this is
+> a stable branch with almost all commits coming from master
+> already with S-o-b (except of the version bumps and very rare
+> stable-specific commits), and v7.2.2 is already cast in stone,
+> let's base the check on stable-7.2 branch (with its last version)
+> instead of master branch.  This way, staging-7.2 will be checked
+> against stable-7.2, but stable-7.2 itself will not be checked
+> anymore, - so we can catch errors during stable preparations.
+> 
+> Note: this is a change specific to stable-7.2 branch/series, it
+> is not supposed to be in master.
+> 
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>   .gitlab-ci.d/check-dco.py | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
+> index 632c8bcce8..b929571eed 100755
+> --- a/.gitlab-ci.d/check-dco.py
+> +++ b/.gitlab-ci.d/check-dco.py
+> @@ -20,12 +20,12 @@
+>   repourl = "https://gitlab.com/%s/%s.git" % (namespace, reponame)
+>   
+>   subprocess.check_call(["git", "remote", "add", "check-dco", repourl])
+> -subprocess.check_call(["git", "fetch", "check-dco", "master"],
+> +subprocess.check_call(["git", "fetch", "check-dco", "stable-7.2"],
+>                         stdout=subprocess.DEVNULL,
+>                         stderr=subprocess.DEVNULL)
+>   
+>   ancestor = subprocess.check_output(["git", "merge-base",
+> -                                    "check-dco/master", "HEAD"],
+> +                                    "check-dco/stable-7.2", "HEAD"],
+>                                      universal_newlines=True)
+>   
+>   ancestor = ancestor.strip()
+> @@ -85,7 +85,7 @@
+>   
+>   To bulk update all commits on current branch "git rebase" can be used:
+>   
+> -  git rebase -i master -x 'git commit --amend --no-edit -s'
+> +  git rebase -i stable-7.2 -x 'git commit --amend --no-edit -s'
+>   
+>   """)
+>   
 
-On 2023/9/9 22:45, Palmer Dabbelt wrote:
-> On Sat, 09 Sep 2023 00:18:02 PDT (-0700), pbonzini@redhat.com wrote:
->> Il sab 9 set 2023, 03:35 Atish Patra <atishp@atishpatra.org> ha scritto:
->>
->>> On Fri, Sep 8, 2023 at 3:29 AM Paolo Bonzini <pbonzini@redhat.com> 
->>> wrote:
->>> >
->>> > Queued, thanks.
->>> >
->>>
->>> I didn't realize it was already queued. Gmail threads failed me this 
->>> time.
->>> @Paolo Bonzini : Can you please drop this one as this will break as
->>> soon as the host riscv system
->>> has the latest kernel ? I have provided more details in the original
->>> thread.
->>>
->>> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01941.html
->>
->>
->> If you have dynamic clock adjustment, does rdcycle increase with a fixed
->> frequency or does it provide the raw number of clock cycles? If the 
->> latter,
->> I agree that it should be provided by perf; but if the frequency is 
->> fixed
->> then it would be the same as rdtsc on Intel.
->
-> That really depends on exactly how the system is set up, but there are 
-> systems for which the rdcycle frequency changes when clock speeds 
-> change and thus will produce surprising answers for users trying to 
-> use rdcycle as a RTC.  We have rdtime for that, but it has other 
-> problems (it's trapped and emulated in M-mode on some systems, so it's 
-> slow and noisy).
->
-> So we're steering folks towards perf where we can, as at least that 
-> way we've got a higher-level interface we can use to describe these 
-> quirks.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-OK. I will send a v2 patch using rdtime.
-
-Thanks,
-Zhiwei
-
->
->>
->> Paolo
->>
->>
->>>
->>> > Paolo
->>> >
->>> >
->>>
->>>
->>> -- 
->>> Regards,
->>> Atish
->>>
->>>
 
