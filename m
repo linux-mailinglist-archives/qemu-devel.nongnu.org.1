@@ -2,57 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4124579A4FE
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56DA679A502
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:51:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbgt-00042l-Q3; Mon, 11 Sep 2023 03:50:39 -0400
+	id 1qfbh3-00048R-5L; Mon, 11 Sep 2023 03:50:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgr-0003wZ-Hz
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:37 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ id 1qfbgt-000438-JA
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:39 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgo-0008DH-Tw
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:37 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5g3lfCz4xM3;
- Mon, 11 Sep 2023 17:50:31 +1000 (AEST)
+ id 1qfbgq-0008Ej-T3
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:39 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5j44F7z4xFd;
+ Mon, 11 Sep 2023 17:50:33 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5f04pZz4xM1;
- Mon, 11 Sep 2023 17:50:29 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5h09zrz4xM4;
+ Mon, 11 Sep 2023 17:50:31 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 08/13] vfio/migration: Fail adding device with
- enable-migration=on and existing blocker
-Date: Mon, 11 Sep 2023 09:50:03 +0200
-Message-ID: <20230911075008.462712-9-clg@redhat.com>
+Subject: [PULL 09/13] migration: Move more initializations to migrate_init()
+Date: Mon, 11 Sep 2023 09:50:04 +0200
+Message-ID: <20230911075008.462712-10-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911075008.462712-1-clg@redhat.com>
 References: <20230911075008.462712-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+Received-SPF: pass client-ip=150.107.74.76;
  envelope-from=SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,49 +69,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Avihai Horon <avihaih@nvidia.com>
 
-If a device with enable-migration=on is added and it causes a migration
-blocker, adding the device should fail with a proper error.
+Initialization of mig_stats, compression_counters and VFIO bytes
+transferred is hard-coded in migration code path and snapshot code path.
 
-This is not the case with multiple device migration blocker when the
-blocker already exists. If the blocker already exists and a device with
-enable-migration=on is added which causes a migration blocker, adding
-the device will succeed.
+Make the code cleaner by initializing them in migrate_init().
 
-Fix it by failing adding the device in such case.
-
-Fixes: 8bbcb64a71d8 ("vfio/migration: Make VFIO migration non-experimental")
+Suggested-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/common.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ migration/migration.c | 14 +++++++-------
+ migration/savevm.c    |  3 ---
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 8a8d074e1863ec40b00a424bbe50494ce8391301..237101d03844273f653d98b6d053a1ae9c05a247 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -394,8 +394,7 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
- {
-     int ret;
+diff --git a/migration/migration.c b/migration/migration.c
+index 92866a8f49d3a7d24028198defb15c5d4d86726e..ce01a3ba6af72aa35063f88355349ec739708d4a 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1425,6 +1425,13 @@ void migrate_init(MigrationState *s)
+     s->iteration_initial_bytes = 0;
+     s->threshold_size = 0;
+     s->switchover_acked = false;
++    /*
++     * set mig_stats compression_counters memory to zero for a
++     * new migration
++     */
++    memset(&mig_stats, 0, sizeof(mig_stats));
++    memset(&compression_counters, 0, sizeof(compression_counters));
++    migration_reset_vfio_bytes_transferred();
+ }
  
--    if (multiple_devices_migration_blocker ||
--        vfio_multiple_devices_migration_is_supported()) {
-+    if (vfio_multiple_devices_migration_is_supported()) {
-         return 0;
+ int migrate_add_blocker_internal(Error *reason, Error **errp)
+@@ -1635,13 +1642,6 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
      }
  
-@@ -405,6 +404,10 @@ int vfio_block_multiple_devices_migration(VFIODevice *vbasedev, Error **errp)
-         return -EINVAL;
+     migrate_init(s);
+-    /*
+-     * set mig_stats compression_counters memory to zero for a
+-     * new migration
+-     */
+-    memset(&mig_stats, 0, sizeof(mig_stats));
+-    memset(&compression_counters, 0, sizeof(compression_counters));
+-    migration_reset_vfio_bytes_transferred();
+ 
+     return true;
+ }
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 5bf8b59a7dfc243eb353674bdef8083d441797e3..e14efeced0fb8e4b2dc2b7799f5612799f185170 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1620,9 +1620,6 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
      }
  
-+    if (multiple_devices_migration_blocker) {
-+        return 0;
-+    }
-+
-     error_setg(&multiple_devices_migration_blocker,
-                "Multiple VFIO devices migration is supported only if all of "
-                "them support P2P migration");
+     migrate_init(ms);
+-    memset(&mig_stats, 0, sizeof(mig_stats));
+-    memset(&compression_counters, 0, sizeof(compression_counters));
+-    migration_reset_vfio_bytes_transferred();
+     ms->to_dst_file = f;
+ 
+     qemu_mutex_unlock_iothread();
 -- 
 2.41.0
 
