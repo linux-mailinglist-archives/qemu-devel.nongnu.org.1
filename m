@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7304179A3D5
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3773179A3D7
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfafN-0001au-JN; Mon, 11 Sep 2023 02:45:01 -0400
+	id 1qfafR-0001kN-OQ; Mon, 11 Sep 2023 02:45:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfafK-0001Un-5F
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:58 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ id 1qfafO-0001ew-Il
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:02 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfafH-0004dQ-EI
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:57 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-57361de8878so2593763eaf.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:44:54 -0700 (PDT)
+ id 1qfafL-0004et-1G
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:02 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-68fc292de9dso451216b3a.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414693; x=1695019493; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414697; x=1695019497; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CG534oqdKvZg93XhHJTveosyzNAkM7GvLcEv8iTROyU=;
- b=Bd/EtiIQ/mYcOuKELkCG1OuDPOtzjMteUMY+JJ3WyTt0EozLvSN3fXTyBUCx+70bM4
- GOzAGOapV5iIZ2fKjPKyh8tzw38euJ/maZWzsINhQGAfQ8bSCz8pztxVPE483EfvY/y3
- skco42Mg6KRrC/sJMrHQrLsIWakbAbz42IEmG6QvSwzFb5ZnJnLzt5Txvp+m2VCItXOA
- ToZXjEAI8FKH3EhtZ0YTpN8PQjz3lue5XLFc6xI6r/aQauJcbUYAj4Iynqfa9kd9C6hx
- wCtkzGZMJ0BTbJpHyUYbuF/gV5iP3xjsJ+VAt8HR8fMyynG1hd80rtZftIJZ/x5pRFeU
- myxQ==
+ bh=KTZoQQBHRX8Eh4+DjB2iRGNyN+rFo0jz7PJ5kMgxxIY=;
+ b=RDIXf3ZyNFSG+7ZvVG8VMlEYsM4QaTwD4V2eS2yq1WEuVLYc4avHXH3MYXLxn1KZRc
+ ravhh8K/95cFRZFg1nG1eQCqIwRFntRD5lj5aNDA2OEb1n13KxPcRl3cNQtqx6SO9nd3
+ OWsI9ygTVa+s3PKN7rVLosFN/Jo2+T8aNRWUr/IXG1bNT8lKsgdCAM1KPfgd3QXC+z3w
+ LSt1sn49sfPihZp3jAtdBmvvfykwguxgtv3tC+U36hwgUOfenUdw/YO5YSABIjqumae8
+ COauQJP+BPPXy12Ep0bht3Q2m2ZXszTqLzK08BSN/FRiUK8NhSQoYko2sCqf2EloZRye
+ xvZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414693; x=1695019493;
+ d=1e100.net; s=20230601; t=1694414697; x=1695019497;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CG534oqdKvZg93XhHJTveosyzNAkM7GvLcEv8iTROyU=;
- b=Idn9CmCEob2zpvpIiL2MWiJzF+2S3apcGlZUWat5b+yeAQejWt1o4/GVOFAbXUwYWb
- kNc22WsfRUl5whYI+3onQtKbQjqo6sRruVrYFSBWIg4p2fhQ+oGUvR+slFY+KBOb89Y+
- nlXX2zAyWab+TsAaqdci+2jufaVc7db04wB4oaRvL/pRvQNey5IKM1J7Or7VIcX7p3fN
- Pdk0pWsSNQpCIqRDWTAs7WbwzhQceoxhKS4hw+UexXgXtTjtIj9CAnqN/0E81DJYfme3
- ot5KFPq3JkWlYwGPEpbsxwrWYHYcOGy43VzML+g7NozWxwjcQXTjAOEJlDrl0WbmDlF5
- 6bMQ==
-X-Gm-Message-State: AOJu0Yzr17cAjaC4y1BRNlnhY3KupxEbWS4e+F7+v5MvbhI+OFewkusu
- flEMeulaoxIAXEAzNdsc8tPsGlycJLRXTA==
-X-Google-Smtp-Source: AGHT+IG4EWLu+7pUqFxDaTSsfFZojh3vsswM7X9oULkGiCKgbyqVjWlhPsgzgV8JyG/gZdBhWfd6vQ==
-X-Received: by 2002:a05:6358:7241:b0:13a:319f:a56b with SMTP id
- i1-20020a056358724100b0013a319fa56bmr11325226rwa.20.1694414693611; 
- Sun, 10 Sep 2023 23:44:53 -0700 (PDT)
+ bh=KTZoQQBHRX8Eh4+DjB2iRGNyN+rFo0jz7PJ5kMgxxIY=;
+ b=HOALf3U0U0YDXlWmnArhDprHppEKe+Z6rnhUCGFnnaVMNA7R7edS5bKEmBZN9+Wump
+ 7QzfELn0q09uYQRjHr3GLSOV1icfs23atvGQJ+RCH4p6F9vA9UFPthKbYuz3gq/0lvig
+ x4+UGUC5MxMSOU0/uAKTT9KJ4r292SfOSS+gYm1VVPmhRbD6pfsJcFEUBR6QnM6VnRDg
+ xDOzTcCy+1Oomy7eExWVvq0B49cEkJDyOxt01Wg4D6D4JNugCrGC7svjdAM4bcz2NTUB
+ zP99g0sGdJdzQLq0pUju8g7jWMJFqbG3vLcqmUFQ7RI28dnHByXZpOFgr1W1quYEGBhx
+ fyzQ==
+X-Gm-Message-State: AOJu0YzmPFGSMUWCgQRWRxxBpH6eIuP8bilLHol+LkKSjploMoX+VLva
+ iM7DaG5FWik58e09HLMsHEtKdQ/L7ZEbmQ==
+X-Google-Smtp-Source: AGHT+IESdESBxaCF3gC+BQPPgfRGDSJiUzzwr3FTA7LoJsSKJGSKZJIUqh6U8CLparNheG9lbwqUgw==
+X-Received: by 2002:a05:6a00:2d06:b0:68e:2c2a:5172 with SMTP id
+ fa6-20020a056a002d0600b0068e2c2a5172mr12107251pfb.6.1694414697329; 
+ Sun, 10 Sep 2023 23:44:57 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.44.49
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.44.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:44:52 -0700 (PDT)
+ Sun, 10 Sep 2023 23:44:56 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Nazar Kazakov <nazar.kazakov@codethink.co.uk>,
- Lawrence Hunter <lawrence.hunter@codethink.co.uk>,
- Max Chou <max.chou@sifive.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
+ Frank Chang <frank.chang@sifive.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 19/45] target/riscv: Add Zvkg ISA extension support
-Date: Mon, 11 Sep 2023 16:42:54 +1000
-Message-ID: <20230911064320.939791-20-alistair.francis@wdc.com>
+Subject: [PULL v2 20/45] crypto: Create sm4_subword
+Date: Mon, 11 Sep 2023 16:42:55 +1000
+Message-ID: <20230911064320.939791-21-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=alistair23@gmail.com; helo=mail-oo1-xc2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,221 +98,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
+From: Max Chou <max.chou@sifive.com>
 
-This commit adds support for the Zvkg vector-crypto extension, which
-consists of the following instructions:
+Allows sharing of sm4_subword between different targets.
 
-* vgmul.vv
-* vghsh.vv
-
-Translation functions are defined in
-`target/riscv/insn_trans/trans_rvvk.c.inc` and helpers are defined in
-`target/riscv/vcrypto_helper.c`.
-
-Co-authored-by: Lawrence Hunter <lawrence.hunter@codethink.co.uk>
-[max.chou@sifive.com: Replaced vstart checking by TCG op]
-Signed-off-by: Lawrence Hunter <lawrence.hunter@codethink.co.uk>
-Signed-off-by: Nazar Kazakov <nazar.kazakov@codethink.co.uk>
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-[max.chou@sifive.com: Exposed x-zvkg property]
-[max.chou@sifive.com: Replaced uint by int for cross win32 build]
-Message-ID: <20230711165917.2629866-13-max.chou@sifive.com>
+Reviewed-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Max Chou <max.chou@sifive.com>
+Message-ID: <20230711165917.2629866-14-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_cfg.h                   |  1 +
- target/riscv/helper.h                    |  3 +
- target/riscv/insn32.decode               |  4 ++
- target/riscv/cpu.c                       |  6 +-
- target/riscv/vcrypto_helper.c            | 72 ++++++++++++++++++++++++
- target/riscv/insn_trans/trans_rvvk.c.inc | 30 ++++++++++
- 6 files changed, 114 insertions(+), 2 deletions(-)
+ include/crypto/sm4.h           |  8 ++++++++
+ target/arm/tcg/crypto_helper.c | 10 ++--------
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-index ab2d9294db..b754ec2344 100644
---- a/target/riscv/cpu_cfg.h
-+++ b/target/riscv/cpu_cfg.h
-@@ -87,6 +87,7 @@ struct RISCVCPUConfig {
-     bool ext_zve64d;
-     bool ext_zvbb;
-     bool ext_zvbc;
-+    bool ext_zvkg;
-     bool ext_zvkned;
-     bool ext_zvknha;
-     bool ext_zvknhb;
-diff --git a/target/riscv/helper.h b/target/riscv/helper.h
-index 6d21347c39..ceec97e165 100644
---- a/target/riscv/helper.h
-+++ b/target/riscv/helper.h
-@@ -1273,3 +1273,6 @@ DEF_HELPER_5(vsha2cl64_vv, void, ptr, ptr, ptr, env, i32)
+diff --git a/include/crypto/sm4.h b/include/crypto/sm4.h
+index 9bd3ebc62e..de8245d8a7 100644
+--- a/include/crypto/sm4.h
++++ b/include/crypto/sm4.h
+@@ -3,4 +3,12 @@
  
- DEF_HELPER_5(vsm3me_vv, void, ptr, ptr, ptr, env, i32)
- DEF_HELPER_5(vsm3c_vi, void, ptr, ptr, i32, env, i32)
-+
-+DEF_HELPER_5(vghsh_vv, void, ptr, ptr, ptr, env, i32)
-+DEF_HELPER_4(vgmul_vv, void, ptr, ptr, env, i32)
-diff --git a/target/riscv/insn32.decode b/target/riscv/insn32.decode
-index 4050e843f7..0fae01c6bb 100644
---- a/target/riscv/insn32.decode
-+++ b/target/riscv/insn32.decode
-@@ -995,3 +995,7 @@ vsha2cl_vv  101111 1 ..... ..... 010 ..... 1110111 @r_vm_1
- # *** Zvksh vector crypto extension ***
- vsm3me_vv   100000 1 ..... ..... 010 ..... 1110111 @r_vm_1
- vsm3c_vi    101011 1 ..... ..... 010 ..... 1110111 @r_vm_1
-+
-+# *** Zvkg vector crypto extension ***
-+vghsh_vv    101100 1 ..... ..... 010 ..... 1110111 @r_vm_1
-+vgmul_vv    101000 1 ..... 10001 010 ..... 1110111 @r2_vm_1
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index ce0d32eef3..981907c033 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -129,6 +129,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zvfbfwma, PRIV_VERSION_1_12_0, ext_zvfbfwma),
-     ISA_EXT_DATA_ENTRY(zvfh, PRIV_VERSION_1_12_0, ext_zvfh),
-     ISA_EXT_DATA_ENTRY(zvfhmin, PRIV_VERSION_1_12_0, ext_zvfhmin),
-+    ISA_EXT_DATA_ENTRY(zvkg, PRIV_VERSION_1_12_0, ext_zvkg),
-     ISA_EXT_DATA_ENTRY(zvkned, PRIV_VERSION_1_12_0, ext_zvkned),
-     ISA_EXT_DATA_ENTRY(zvknha, PRIV_VERSION_1_12_0, ext_zvknha),
-     ISA_EXT_DATA_ENTRY(zvknhb, PRIV_VERSION_1_12_0, ext_zvknhb),
-@@ -1281,8 +1282,8 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-      * In principle Zve*x would also suffice here, were they supported
-      * in qemu
-      */
--    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkned || cpu->cfg.ext_zvknha ||
--         cpu->cfg.ext_zvksh) && !cpu->cfg.ext_zve32f) {
-+    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkg || cpu->cfg.ext_zvkned ||
-+         cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksh) && !cpu->cfg.ext_zve32f) {
-         error_setg(errp,
-                    "Vector crypto extensions require V or Zve* extensions");
-         return;
-@@ -1880,6 +1881,7 @@ static Property riscv_cpu_extensions[] = {
-     /* Vector cryptography extensions */
-     DEFINE_PROP_BOOL("x-zvbb", RISCVCPU, cfg.ext_zvbb, false),
-     DEFINE_PROP_BOOL("x-zvbc", RISCVCPU, cfg.ext_zvbc, false),
-+    DEFINE_PROP_BOOL("x-zvkg", RISCVCPU, cfg.ext_zvkg, false),
-     DEFINE_PROP_BOOL("x-zvkned", RISCVCPU, cfg.ext_zvkned, false),
-     DEFINE_PROP_BOOL("x-zvknha", RISCVCPU, cfg.ext_zvknha, false),
-     DEFINE_PROP_BOOL("x-zvknhb", RISCVCPU, cfg.ext_zvknhb, false),
-diff --git a/target/riscv/vcrypto_helper.c b/target/riscv/vcrypto_helper.c
-index e8bbb698c1..a5e2f7fbb0 100644
---- a/target/riscv/vcrypto_helper.c
-+++ b/target/riscv/vcrypto_helper.c
-@@ -769,3 +769,75 @@ void HELPER(vsm3c_vi)(void *vd_vptr, void *vs2_vptr, uint32_t uimm,
-     vext_set_elems_1s(vd_vptr, vta, env->vl * esz, total_elems * esz);
-     env->vstart = 0;
- }
-+
-+void HELPER(vghsh_vv)(void *vd_vptr, void *vs1_vptr, void *vs2_vptr,
-+                      CPURISCVState *env, uint32_t desc)
-+{
-+    uint64_t *vd = vd_vptr;
-+    uint64_t *vs1 = vs1_vptr;
-+    uint64_t *vs2 = vs2_vptr;
-+    uint32_t vta = vext_vta(desc);
-+    uint32_t total_elems = vext_get_total_elems(env, desc, 4);
-+
-+    for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {
-+        uint64_t Y[2] = {vd[i * 2 + 0], vd[i * 2 + 1]};
-+        uint64_t H[2] = {brev8(vs2[i * 2 + 0]), brev8(vs2[i * 2 + 1])};
-+        uint64_t X[2] = {vs1[i * 2 + 0], vs1[i * 2 + 1]};
-+        uint64_t Z[2] = {0, 0};
-+
-+        uint64_t S[2] = {brev8(Y[0] ^ X[0]), brev8(Y[1] ^ X[1])};
-+
-+        for (int j = 0; j < 128; j++) {
-+            if ((S[j / 64] >> (j % 64)) & 1) {
-+                Z[0] ^= H[0];
-+                Z[1] ^= H[1];
-+            }
-+            bool reduce = ((H[1] >> 63) & 1);
-+            H[1] = H[1] << 1 | H[0] >> 63;
-+            H[0] = H[0] << 1;
-+            if (reduce) {
-+                H[0] ^= 0x87;
-+            }
-+        }
-+
-+        vd[i * 2 + 0] = brev8(Z[0]);
-+        vd[i * 2 + 1] = brev8(Z[1]);
-+    }
-+    /* set tail elements to 1s */
-+    vext_set_elems_1s(vd, vta, env->vl * 4, total_elems * 4);
-+    env->vstart = 0;
-+}
-+
-+void HELPER(vgmul_vv)(void *vd_vptr, void *vs2_vptr, CPURISCVState *env,
-+                      uint32_t desc)
-+{
-+    uint64_t *vd = vd_vptr;
-+    uint64_t *vs2 = vs2_vptr;
-+    uint32_t vta = vext_vta(desc);
-+    uint32_t total_elems = vext_get_total_elems(env, desc, 4);
-+
-+    for (uint32_t i = env->vstart / 4; i < env->vl / 4; i++) {
-+        uint64_t Y[2] = {brev8(vd[i * 2 + 0]), brev8(vd[i * 2 + 1])};
-+        uint64_t H[2] = {brev8(vs2[i * 2 + 0]), brev8(vs2[i * 2 + 1])};
-+        uint64_t Z[2] = {0, 0};
-+
-+        for (int j = 0; j < 128; j++) {
-+            if ((Y[j / 64] >> (j % 64)) & 1) {
-+                Z[0] ^= H[0];
-+                Z[1] ^= H[1];
-+            }
-+            bool reduce = ((H[1] >> 63) & 1);
-+            H[1] = H[1] << 1 | H[0] >> 63;
-+            H[0] = H[0] << 1;
-+            if (reduce) {
-+                H[0] ^= 0x87;
-+            }
-+        }
-+
-+        vd[i * 2 + 0] = brev8(Z[0]);
-+        vd[i * 2 + 1] = brev8(Z[1]);
-+    }
-+    /* set tail elements to 1s */
-+    vext_set_elems_1s(vd, vta, env->vl * 4, total_elems * 4);
-+    env->vstart = 0;
-+}
-diff --git a/target/riscv/insn_trans/trans_rvvk.c.inc b/target/riscv/insn_trans/trans_rvvk.c.inc
-index 6469dd2f02..af7cd62e7d 100644
---- a/target/riscv/insn_trans/trans_rvvk.c.inc
-+++ b/target/riscv/insn_trans/trans_rvvk.c.inc
-@@ -531,3 +531,33 @@ static inline bool vsm3c_check(DisasContext *s, arg_rmrr *a)
+ extern const uint8_t sm4_sbox[256];
  
- GEN_VV_UNMASKED_TRANS(vsm3me_vv, vsm3me_check, ZVKSH_EGS)
- GEN_VI_UNMASKED_TRANS(vsm3c_vi, vsm3c_check, ZVKSH_EGS)
-+
-+/*
-+ * Zvkg
-+ */
-+
-+#define ZVKG_EGS 4
-+
-+static bool vgmul_check(DisasContext *s, arg_rmr *a)
++static inline uint32_t sm4_subword(uint32_t word)
 +{
-+    int egw_bytes = ZVKG_EGS << s->sew;
-+    return s->cfg_ptr->ext_zvkg == true &&
-+           vext_check_isa_ill(s) &&
-+           require_rvv(s) &&
-+           MAXSZ(s) >= egw_bytes &&
-+           vext_check_ss(s, a->rd, a->rs2, a->vm) &&
-+           s->sew == MO_32;
++    return sm4_sbox[word & 0xff] |
++           sm4_sbox[(word >> 8) & 0xff] << 8 |
++           sm4_sbox[(word >> 16) & 0xff] << 16 |
++           sm4_sbox[(word >> 24) & 0xff] << 24;
 +}
 +
-+GEN_V_UNMASKED_TRANS(vgmul_vv, vgmul_check, ZVKG_EGS)
-+
-+static bool vghsh_check(DisasContext *s, arg_rmrr *a)
-+{
-+    int egw_bytes = ZVKG_EGS << s->sew;
-+    return s->cfg_ptr->ext_zvkg == true &&
-+           opivv_check(s, a) &&
-+           MAXSZ(s) >= egw_bytes &&
-+           s->sew == MO_32;
-+}
-+
-+GEN_VV_UNMASKED_TRANS(vghsh_vv, vghsh_check, ZVKG_EGS)
+ #endif
+diff --git a/target/arm/tcg/crypto_helper.c b/target/arm/tcg/crypto_helper.c
+index fdd70abbfd..7cadd61e12 100644
+--- a/target/arm/tcg/crypto_helper.c
++++ b/target/arm/tcg/crypto_helper.c
+@@ -614,10 +614,7 @@ static void do_crypto_sm4e(uint64_t *rd, uint64_t *rn, uint64_t *rm)
+             CR_ST_WORD(d, (i + 3) % 4) ^
+             CR_ST_WORD(n, i);
+ 
+-        t = sm4_sbox[t & 0xff] |
+-            sm4_sbox[(t >> 8) & 0xff] << 8 |
+-            sm4_sbox[(t >> 16) & 0xff] << 16 |
+-            sm4_sbox[(t >> 24) & 0xff] << 24;
++        t = sm4_subword(t);
+ 
+         CR_ST_WORD(d, i) ^= t ^ rol32(t, 2) ^ rol32(t, 10) ^ rol32(t, 18) ^
+                             rol32(t, 24);
+@@ -651,10 +648,7 @@ static void do_crypto_sm4ekey(uint64_t *rd, uint64_t *rn, uint64_t *rm)
+             CR_ST_WORD(d, (i + 3) % 4) ^
+             CR_ST_WORD(m, i);
+ 
+-        t = sm4_sbox[t & 0xff] |
+-            sm4_sbox[(t >> 8) & 0xff] << 8 |
+-            sm4_sbox[(t >> 16) & 0xff] << 16 |
+-            sm4_sbox[(t >> 24) & 0xff] << 24;
++        t = sm4_subword(t);
+ 
+         CR_ST_WORD(d, i) ^= t ^ rol32(t, 13) ^ rol32(t, 23);
+     }
 -- 
 2.41.0
 
