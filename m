@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709A479A6EA
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4908779A707
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:51:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfdVR-0005tQ-2Y; Mon, 11 Sep 2023 05:46:57 -0400
+	id 1qfdVO-0005se-MT; Mon, 11 Sep 2023 05:46:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qfdVO-0005sv-CA
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:46:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qfdVM-0005sG-Lk
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:46:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qfdVL-0004hU-B7
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:46:54 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qfdVK-0004h8-37
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:46:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694425610;
+ s=mimecast20190719; t=1694425609;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nMmOF+2KrBCM0S2W3HN4k7c0AIh1dUK+4JCs0+HVhIk=;
- b=bUUy54FZDXobmDYVkLfpXjPBWSxG0CQ+Ev/B7Nb26j9HxMjSttDNnlrpj1NjllJCoA6tlL
- V1xGG0ZhC4YjukXvJ19sl6fWWeXfdVswyZja1sqj2+KavF1xEHIr0e+0JppcMULsmvajF8
- f0biqR5sjRyT5CI/zRrT4NYA5RRYcSE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-624-1FGGAu5hOQiBexn4wvIDVA-1; Mon, 11 Sep 2023 05:46:46 -0400
-X-MC-Unique: 1FGGAu5hOQiBexn4wvIDVA-1
+ bh=X6A9ymaDHc3spP9b2wypCRT3foPj3lhFiD55OsG7kMA=;
+ b=LH0v3pQLFGsIW4gXmKAn4/wbwidNw1XLy4uYfGBOvFui229PgqOi+STM1Y3Ta+8ptUOStP
+ pdwExrxl8LXSKM84GnOfcVPcTE9jzbURJ8wVVGsAAR65Yto4zSQpcM07pqd4GZ7DVkuU6g
+ 63haowAKmeclivXHVwPeSbHULVKaxNM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-131-aVxni_mZOAKGPpFmdmoh8Q-1; Mon, 11 Sep 2023 05:46:48 -0400
+X-MC-Unique: aVxni_mZOAKGPpFmdmoh8Q-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 37F2E1C11812;
- Mon, 11 Sep 2023 09:46:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9FE14855711;
+ Mon, 11 Sep 2023 09:46:47 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.192.243])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0979340C6EBF;
- Mon, 11 Sep 2023 09:46:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6F95140C6EBF;
+ Mon, 11 Sep 2023 09:46:46 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, eblake@redhat.com,
  eesposit@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
  qemu-devel@nongnu.org
-Subject: [PATCH v2 10/21] block: Mark bdrv_attach_child_common() GRAPH_WRLOCK
-Date: Mon, 11 Sep 2023 11:46:09 +0200
-Message-ID: <20230911094620.45040-11-kwolf@redhat.com>
+Subject: [PATCH v2 11/21] block: Call transaction callbacks with lock held
+Date: Mon, 11 Sep 2023 11:46:10 +0200
+Message-ID: <20230911094620.45040-12-kwolf@redhat.com>
 In-Reply-To: <20230911094620.45040-1-kwolf@redhat.com>
 References: <20230911094620.45040-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,393 +77,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of taking the writer lock internally, require callers to already
-hold it when calling bdrv_attach_child_common(). These callers will
-typically already hold the graph lock once the locking work is
-completed, which means that they can't call functions that take it
-internally.
+In previous patches, we changed some transactionable functions to be
+marked as GRAPH_WRLOCK, but required that tran_finalize() is still
+called without the lock. This was because all callbacks that can be in
+the same transaction need to follow the same convention.
 
-Note that the transaction callbacks still take the lock internally, so
-tran_finalize() must be called without the lock held. This is because
-bdrv_append() also calls bdrv_replace_node_noperm(), which currently
-requires the transaction callbacks to be called unlocked. In the next
-step, both of them can be switched to locked tran_finalize() calls
-together.
+Now that we don't have conflicting requirements any more, we can switch
+all of the transaction callbacks to be declared GRAPH_WRLOCK, too, and
+call tran_finalize() with the lock held.
+
+Document for each of these transactionable functions that the lock needs
+to be held when completing the transaction, and make sure that all
+callers down to the place where the transaction is finalised actually
+have the writer lock.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block.c        | 133 +++++++++++++++++++++++++++++++------------------
- block/stream.c |  20 ++++++--
- 2 files changed, 100 insertions(+), 53 deletions(-)
+ block.c | 61 +++++++++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 17 deletions(-)
 
 diff --git a/block.c b/block.c
-index 0973b91d98..f6e7cf4fb9 100644
+index f6e7cf4fb9..f06de58a3b 100644
 --- a/block.c
 +++ b/block.c
-@@ -3004,13 +3004,14 @@ static TransactionActionDrv bdrv_attach_child_common_drv = {
-  * @child_bs can move to a different AioContext in this function. Callers must
-  * make sure that their AioContext locking is still correct after this.
-  */
--static BdrvChild *bdrv_attach_child_common(BlockDriverState *child_bs,
--                                           const char *child_name,
--                                           const BdrvChildClass *child_class,
--                                           BdrvChildRole child_role,
--                                           uint64_t perm, uint64_t shared_perm,
--                                           void *opaque,
--                                           Transaction *tran, Error **errp)
-+static BdrvChild * GRAPH_WRLOCK
-+bdrv_attach_child_common(BlockDriverState *child_bs,
-+                         const char *child_name,
-+                         const BdrvChildClass *child_class,
-+                         BdrvChildRole child_role,
-+                         uint64_t perm, uint64_t shared_perm,
-+                         void *opaque,
-+                         Transaction *tran, Error **errp)
+@@ -2375,21 +2375,21 @@ typedef struct BdrvReplaceChildState {
+     BlockDriverState *old_bs;
+ } BdrvReplaceChildState;
+ 
+-static void bdrv_replace_child_commit(void *opaque)
++static void GRAPH_WRLOCK bdrv_replace_child_commit(void *opaque)
  {
-     BdrvChild *new_child;
-     AioContext *parent_ctx, *new_child_ctx;
-@@ -3088,10 +3089,8 @@ static BdrvChild *bdrv_attach_child_common(BlockDriverState *child_bs,
-      * a problem, we already did this), but it will still poll until the parent
-      * is fully quiesced, so it will not be negatively affected either.
-      */
--    bdrv_graph_wrlock(child_bs);
-     bdrv_parent_drained_begin_single(new_child);
-     bdrv_replace_child_noperm(new_child, child_bs);
+     BdrvReplaceChildState *s = opaque;
+     GLOBAL_STATE_CODE();
+ 
+-    bdrv_unref(s->old_bs);
++    bdrv_schedule_unref(s->old_bs);
+ }
+ 
+-static void bdrv_replace_child_abort(void *opaque)
++static void GRAPH_WRLOCK bdrv_replace_child_abort(void *opaque)
+ {
+     BdrvReplaceChildState *s = opaque;
+     BlockDriverState *new_bs = s->child->bs;
+ 
+     GLOBAL_STATE_CODE();
+-    bdrv_graph_wrlock(s->old_bs);
++    assert_bdrv_graph_writable();
+ 
+     /* old_bs reference is transparently moved from @s to @s->child */
+     if (!s->child->bs) {
+@@ -2408,7 +2408,6 @@ static void bdrv_replace_child_abort(void *opaque)
+     assert(s->child->quiesced_parent);
+     bdrv_replace_child_noperm(s->child, s->old_bs);
+ 
+-    bdrv_graph_wrunlock();
+     bdrv_unref(new_bs);
+ }
+ 
+@@ -2426,6 +2425,9 @@ static TransactionActionDrv bdrv_replace_child_drv = {
+  * Both @child->bs and @new_bs (if non-NULL) must be drained. @new_bs must be
+  * kept drained until the transaction is completed.
+  *
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
++ *
+  * The function doesn't update permissions, caller is responsible for this.
+  */
+ static void GRAPH_WRLOCK
+@@ -2951,16 +2953,15 @@ typedef struct BdrvAttachChildCommonState {
+     AioContext *old_child_ctx;
+ } BdrvAttachChildCommonState;
+ 
+-static void bdrv_attach_child_common_abort(void *opaque)
++static void GRAPH_WRLOCK bdrv_attach_child_common_abort(void *opaque)
+ {
+     BdrvAttachChildCommonState *s = opaque;
+     BlockDriverState *bs = s->child->bs;
+ 
+     GLOBAL_STATE_CODE();
++    assert_bdrv_graph_writable();
+ 
+-    bdrv_graph_wrlock(NULL);
+     bdrv_replace_child_noperm(s->child, NULL);
 -    bdrv_graph_wrunlock();
  
-     BdrvAttachChildCommonState *s = g_new(BdrvAttachChildCommonState, 1);
-     *s = (BdrvAttachChildCommonState) {
-@@ -3116,13 +3115,14 @@ static BdrvChild *bdrv_attach_child_common(BlockDriverState *child_bs,
-  * @child_bs can move to a different AioContext in this function. Callers must
-  * make sure that their AioContext locking is still correct after this.
-  */
--static BdrvChild *bdrv_attach_child_noperm(BlockDriverState *parent_bs,
--                                           BlockDriverState *child_bs,
--                                           const char *child_name,
--                                           const BdrvChildClass *child_class,
--                                           BdrvChildRole child_role,
--                                           Transaction *tran,
--                                           Error **errp)
-+static BdrvChild * GRAPH_WRLOCK
-+bdrv_attach_child_noperm(BlockDriverState *parent_bs,
-+                         BlockDriverState *child_bs,
-+                         const char *child_name,
-+                         const BdrvChildClass *child_class,
-+                         BdrvChildRole child_role,
-+                         Transaction *tran,
-+                         Error **errp)
- {
-     uint64_t perm, shared_perm;
- 
-@@ -3167,6 +3167,8 @@ BdrvChild *bdrv_root_attach_child(BlockDriverState *child_bs,
- 
-     GLOBAL_STATE_CODE();
- 
-+    bdrv_graph_wrlock(child_bs);
-+
-     child = bdrv_attach_child_common(child_bs, child_name, child_class,
-                                    child_role, perm, shared_perm, opaque,
-                                    tran, errp);
-@@ -3178,6 +3180,7 @@ BdrvChild *bdrv_root_attach_child(BlockDriverState *child_bs,
-     ret = bdrv_refresh_perms(child_bs, tran, errp);
- 
- out:
-+    bdrv_graph_wrunlock();
-     tran_finalize(tran, ret);
- 
-     bdrv_unref(child_bs);
-@@ -3209,6 +3212,8 @@ BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
- 
-     GLOBAL_STATE_CODE();
- 
-+    bdrv_graph_wrlock(child_bs);
-+
-     child = bdrv_attach_child_noperm(parent_bs, child_bs, child_name,
-                                      child_class, child_role, tran, errp);
-     if (!child) {
-@@ -3222,6 +3227,7 @@ BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
+     if (bdrv_get_aio_context(bs) != s->old_child_ctx) {
+         bdrv_try_change_aio_context(bs, s->old_child_ctx, NULL, &error_abort);
+@@ -2984,7 +2985,7 @@ static void bdrv_attach_child_common_abort(void *opaque)
+         tran_commit(tran);
      }
  
- out:
-+    bdrv_graph_wrunlock();
-     tran_finalize(tran, ret);
+-    bdrv_unref(bs);
++    bdrv_schedule_unref(bs);
+     bdrv_child_free(s->child);
+ }
  
-     bdrv_unref(child_bs);
-@@ -3379,16 +3385,20 @@ static BdrvChildRole bdrv_backing_role(BlockDriverState *bs)
-  * Sets the bs->backing or bs->file link of a BDS. A new reference is created;
-  * callers which don't need their own reference any more must call bdrv_unref().
+@@ -2998,6 +2999,9 @@ static TransactionActionDrv bdrv_attach_child_common_drv = {
   *
-+ * If the respective child is already present (i.e. we're detaching a node),
-+ * that child node must be drained.
-+ *
   * Function doesn't update permissions, caller is responsible for this.
   *
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
++ *
+  * Returns new created child.
+  *
+  * The caller must hold the AioContext lock for @child_bs. Both @parent_bs and
+@@ -3114,6 +3118,9 @@ bdrv_attach_child_common(BlockDriverState *child_bs,
   * The caller must hold the AioContext lock for @child_bs. Both @parent_bs and
   * @child_bs can move to a different AioContext in this function. Callers must
   * make sure that their AioContext locking is still correct after this.
++ *
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
   */
--static int bdrv_set_file_or_backing_noperm(BlockDriverState *parent_bs,
--                                           BlockDriverState *child_bs,
--                                           bool is_backing,
--                                           Transaction *tran, Error **errp)
-+static int GRAPH_WRLOCK
-+bdrv_set_file_or_backing_noperm(BlockDriverState *parent_bs,
-+                                BlockDriverState *child_bs,
-+                                bool is_backing,
-+                                Transaction *tran, Error **errp)
- {
-     bool update_inherits_from =
-         bdrv_inherits_from_recursive(child_bs, parent_bs);
-@@ -3439,14 +3449,9 @@ static int bdrv_set_file_or_backing_noperm(BlockDriverState *parent_bs,
-     }
+ static BdrvChild * GRAPH_WRLOCK
+ bdrv_attach_child_noperm(BlockDriverState *parent_bs,
+@@ -3180,8 +3187,8 @@ BdrvChild *bdrv_root_attach_child(BlockDriverState *child_bs,
+     ret = bdrv_refresh_perms(child_bs, tran, errp);
  
-     if (child) {
--        bdrv_drained_begin(child->bs);
--        bdrv_graph_wrlock(NULL);
--
-+        assert(child->bs->quiesce_counter);
-         bdrv_unset_inherits_from(parent_bs, child, tran);
-         bdrv_remove_child(child, tran);
--
--        bdrv_graph_wrunlock();
--        bdrv_drained_end(child->bs);
-     }
+ out:
+-    bdrv_graph_wrunlock();
+     tran_finalize(tran, ret);
++    bdrv_graph_wrunlock();
  
-     if (!child_bs) {
-@@ -3471,9 +3476,7 @@ static int bdrv_set_file_or_backing_noperm(BlockDriverState *parent_bs,
+     bdrv_unref(child_bs);
+ 
+@@ -3227,8 +3234,8 @@ BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
      }
  
  out:
--    bdrv_graph_rdlock_main_loop();
-     bdrv_refresh_limits(parent_bs, tran, NULL);
--    bdrv_graph_rdunlock_main_loop();
+-    bdrv_graph_wrunlock();
+     tran_finalize(tran, ret);
++    bdrv_graph_wrunlock();
  
-     return 0;
- }
-@@ -3482,10 +3485,14 @@ out:
-  * The caller must hold the AioContext lock for @backing_hd. Both @bs and
-  * @backing_hd can move to a different AioContext in this function. Callers must
+     bdrv_unref(child_bs);
+ 
+@@ -3393,6 +3400,9 @@ static BdrvChildRole bdrv_backing_role(BlockDriverState *bs)
+  * The caller must hold the AioContext lock for @child_bs. Both @parent_bs and
+  * @child_bs can move to a different AioContext in this function. Callers must
   * make sure that their AioContext locking is still correct after this.
 + *
-+ * If a backing child is already present (i.e. we're detaching a node), that
-+ * child node must be drained.
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
   */
--static int bdrv_set_backing_noperm(BlockDriverState *bs,
--                                   BlockDriverState *backing_hd,
--                                   Transaction *tran, Error **errp)
-+static int GRAPH_WRLOCK
-+bdrv_set_backing_noperm(BlockDriverState *bs,
-+                        BlockDriverState *backing_hd,
-+                        Transaction *tran, Error **errp)
- {
-     GLOBAL_STATE_CODE();
-     return bdrv_set_file_or_backing_noperm(bs, backing_hd, true, tran, errp);
-@@ -3500,6 +3507,10 @@ int bdrv_set_backing_hd_drained(BlockDriverState *bs,
- 
-     GLOBAL_STATE_CODE();
-     assert(bs->quiesce_counter > 0);
-+    if (bs->backing) {
-+        assert(bs->backing->bs->quiesce_counter > 0);
-+    }
-+    bdrv_graph_wrlock(backing_hd);
- 
-     ret = bdrv_set_backing_noperm(bs, backing_hd, tran, errp);
-     if (ret < 0) {
-@@ -3508,6 +3519,7 @@ int bdrv_set_backing_hd_drained(BlockDriverState *bs,
+ static int GRAPH_WRLOCK
+ bdrv_set_file_or_backing_noperm(BlockDriverState *parent_bs,
+@@ -3488,6 +3498,9 @@ out:
+  *
+  * If a backing child is already present (i.e. we're detaching a node), that
+  * child node must be drained.
++ *
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
+  */
+ static int GRAPH_WRLOCK
+ bdrv_set_backing_noperm(BlockDriverState *bs,
+@@ -3519,8 +3532,8 @@ int bdrv_set_backing_hd_drained(BlockDriverState *bs,
  
      ret = bdrv_refresh_perms(bs, tran, errp);
  out:
-+    bdrv_graph_wrunlock();
+-    bdrv_graph_wrunlock();
      tran_finalize(tran, ret);
++    bdrv_graph_wrunlock();
      return ret;
  }
-@@ -3515,12 +3527,15 @@ out:
- int bdrv_set_backing_hd(BlockDriverState *bs, BlockDriverState *backing_hd,
-                         Error **errp)
- {
-+    BlockDriverState *drain_bs = bs->backing ? bs->backing->bs : bs;
-     int ret;
-     GLOBAL_STATE_CODE();
  
--    bdrv_drained_begin(bs);
-+    bdrv_ref(drain_bs);
-+    bdrv_drained_begin(drain_bs);
-     ret = bdrv_set_backing_hd_drained(bs, backing_hd, errp);
--    bdrv_drained_end(bs);
-+    bdrv_drained_end(drain_bs);
-+    bdrv_unref(drain_bs);
+@@ -4594,7 +4607,9 @@ int bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp)
+         aio_context_release(ctx);
+     }
  
-     return ret;
- }
-@@ -4597,6 +4612,7 @@ int bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp)
++    bdrv_graph_wrlock(NULL);
+     tran_commit(tran);
++    bdrv_graph_wrunlock();
+ 
+     QTAILQ_FOREACH_REVERSE(bs_entry, bs_queue, entry) {
+         BlockDriverState *bs = bs_entry->state.bs;
+@@ -4611,7 +4626,9 @@ int bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp)
+     goto cleanup;
  
  abort:
++    bdrv_graph_wrlock(NULL);
      tran_abort(tran);
-+
++    bdrv_graph_wrunlock();
+ 
      QTAILQ_FOREACH_SAFE(bs_entry, bs_queue, entry, next) {
          if (bs_entry->prepared) {
-             ctx = bdrv_get_aio_context(bs_entry->state.bs);
-@@ -4746,6 +4762,11 @@ static int bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
-         reopen_state->old_file_bs = old_child_bs;
-     }
+@@ -4678,6 +4695,9 @@ int bdrv_reopen_set_read_only(BlockDriverState *bs, bool read_only,
+  * true and reopen_state->new_backing_bs contains a pointer to the new
+  * backing BlockDriverState (or NULL).
+  *
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
++ *
+  * Return 0 on success, otherwise return < 0 and set @errp.
+  *
+  * The caller must hold the AioContext lock of @reopen_state->bs.
+@@ -4811,6 +4831,9 @@ static int bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
+  * commit() for any other BDS that have been left in a prepare() state
+  *
+  * The caller must hold the AioContext lock of @reopen_state->bs.
++ *
++ * After calling this function, the transaction @change_child_tran may only be
++ * completed while holding a writer lock for the graph.
+  */
+ static int bdrv_reopen_prepare(BDRVReopenState *reopen_state,
+                                BlockReopenQueue *queue,
+@@ -5262,6 +5285,9 @@ static TransactionActionDrv bdrv_remove_child_drv = {
+  * Function doesn't update permissions, caller is responsible for this.
+  *
+  * @child->bs (if non-NULL) must be drained.
++ *
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
+  */
+ static void GRAPH_WRLOCK bdrv_remove_child(BdrvChild *child, Transaction *tran)
+ {
+@@ -5280,6 +5306,9 @@ static void GRAPH_WRLOCK bdrv_remove_child(BdrvChild *child, Transaction *tran)
+ /*
+  * Both @from and @to (if non-NULL) must be drained. @to must be kept drained
+  * until the transaction is completed.
++ *
++ * After calling this function, the transaction @tran may only be completed
++ * while holding a writer lock for the graph.
+  */
+ static int GRAPH_WRLOCK
+ bdrv_replace_node_noperm(BlockDriverState *from,
+@@ -5386,8 +5415,8 @@ static int bdrv_replace_node_common(BlockDriverState *from,
+     ret = 0;
  
-+    if (old_child_bs) {
-+        bdrv_ref(old_child_bs);
-+        bdrv_drained_begin(old_child_bs);
-+    }
-+
-     old_ctx = bdrv_get_aio_context(bs);
-     ctx = bdrv_get_aio_context(new_child_bs);
-     if (old_ctx != ctx) {
-@@ -4753,14 +4774,23 @@ static int bdrv_reopen_parse_file_or_backing(BDRVReopenState *reopen_state,
-         aio_context_acquire(ctx);
-     }
- 
-+    bdrv_graph_wrlock(new_child_bs);
-+
-     ret = bdrv_set_file_or_backing_noperm(bs, new_child_bs, is_backing,
-                                           tran, errp);
- 
-+    bdrv_graph_wrunlock();
-+
-     if (old_ctx != ctx) {
-         aio_context_release(ctx);
-         aio_context_acquire(old_ctx);
-     }
- 
-+    if (old_child_bs) {
-+        bdrv_drained_end(old_child_bs);
-+        bdrv_unref(old_child_bs);
-+    }
-+
-     return ret;
- }
- 
-@@ -5403,13 +5433,28 @@ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
-     BdrvChild *child;
-     Transaction *tran = tran_new();
-     AioContext *old_context, *new_context = NULL;
--    bool drained = false;
- 
-     GLOBAL_STATE_CODE();
- 
-     assert(!bs_new->backing);
- 
-     old_context = bdrv_get_aio_context(bs_top);
-+    bdrv_drained_begin(bs_top);
-+
-+    /*
-+     * bdrv_drained_begin() requires that only the AioContext of the drained
-+     * node is locked, and at this point it can still differ from the AioContext
-+     * of bs_top.
-+     */
-+    new_context = bdrv_get_aio_context(bs_new);
-+    aio_context_release(old_context);
-+    aio_context_acquire(new_context);
-+    bdrv_drained_begin(bs_new);
-+    aio_context_release(new_context);
-+    aio_context_acquire(old_context);
-+    new_context = NULL;
-+
-+    bdrv_graph_wrlock(bs_top);
- 
-     child = bdrv_attach_child_noperm(bs_new, bs_top, "backing",
-                                      &child_of_bds, bdrv_backing_role(bs_new),
-@@ -5420,10 +5465,9 @@ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
-     }
- 
-     /*
--     * bdrv_attach_child_noperm could change the AioContext of bs_top.
--     * bdrv_replace_node_noperm calls bdrv_drained_begin, so let's temporarily
--     * hold the new AioContext, since bdrv_drained_begin calls BDRV_POLL_WHILE
--     * that assumes the new lock is taken.
-+     * bdrv_attach_child_noperm could change the AioContext of bs_top and
-+     * bs_new, but at least they are in the same AioContext now. This is the
-+     * AioContext that we need to lock for the rest of the function.
-      */
-     new_context = bdrv_get_aio_context(bs_top);
- 
-@@ -5432,29 +5476,22 @@ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
-         aio_context_acquire(new_context);
-     }
- 
--    bdrv_drained_begin(bs_new);
--    bdrv_drained_begin(bs_top);
--    drained = true;
--
--    bdrv_graph_wrlock(bs_new);
-     ret = bdrv_replace_node_noperm(bs_top, bs_new, true, tran, errp);
+ out:
 -    bdrv_graph_wrunlock();
-     if (ret < 0) {
-         goto out;
-     }
+     tran_finalize(tran, ret);
++    bdrv_graph_wrunlock();
+ 
+     bdrv_drained_end(to);
+     bdrv_drained_end(from);
+@@ -5483,12 +5512,10 @@ int bdrv_append(BlockDriverState *bs_new, BlockDriverState *bs_top,
  
      ret = bdrv_refresh_perms(bs_new, tran, errp);
  out:
-+    bdrv_graph_wrunlock();
+-    bdrv_graph_wrunlock();
      tran_finalize(tran, ret);
  
-     bdrv_graph_rdlock_main_loop();
+-    bdrv_graph_rdlock_main_loop();
      bdrv_refresh_limits(bs_top, NULL, NULL);
-     bdrv_graph_rdunlock_main_loop();
+-    bdrv_graph_rdunlock_main_loop();
++    bdrv_graph_wrunlock();
  
--    if (drained) {
--        bdrv_drained_end(bs_top);
--        bdrv_drained_end(bs_new);
--    }
-+    bdrv_drained_end(bs_top);
-+    bdrv_drained_end(bs_new);
+     bdrv_drained_end(bs_top);
+     bdrv_drained_end(bs_new);
+@@ -5523,10 +5550,10 @@ int bdrv_replace_child_bs(BdrvChild *child, BlockDriverState *new_bs,
+     refresh_list = g_slist_prepend(refresh_list, new_bs);
  
-     if (new_context && old_context != new_context) {
-         aio_context_release(new_context);
-diff --git a/block/stream.c b/block/stream.c
-index e522bbdec5..e4da214f1f 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -54,6 +54,7 @@ static int stream_prepare(Job *job)
- {
-     StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
-     BlockDriverState *unfiltered_bs = bdrv_skip_filters(s->target_bs);
-+    BlockDriverState *unfiltered_bs_cow = bdrv_cow_bs(unfiltered_bs);
-     BlockDriverState *base;
-     BlockDriverState *unfiltered_base;
-     Error *local_err = NULL;
-@@ -64,13 +65,18 @@ static int stream_prepare(Job *job)
-     s->cor_filter_bs = NULL;
+     ret = bdrv_list_refresh_perms(refresh_list, NULL, tran, errp);
+-    bdrv_graph_wrunlock();
  
-     /*
--     * bdrv_set_backing_hd() requires that unfiltered_bs is drained. Drain
--     * already here and use bdrv_set_backing_hd_drained() instead because
--     * the polling during drained_begin() might change the graph, and if we do
--     * this only later, we may end up working with the wrong base node (or it
--     * might even have gone away by the time we want to use it).
-+     * bdrv_set_backing_hd() requires that the unfiltered_bs and the COW child
-+     * of unfiltered_bs is drained. Drain already here and use
-+     * bdrv_set_backing_hd_drained() instead because the polling during
-+     * drained_begin() might change the graph, and if we do this only later, we
-+     * may end up working with the wrong base node (or it might even have gone
-+     * away by the time we want to use it).
-      */
-     bdrv_drained_begin(unfiltered_bs);
-+    if (unfiltered_bs_cow) {
-+        bdrv_ref(unfiltered_bs_cow);
-+        bdrv_drained_begin(unfiltered_bs_cow);
-+    }
+     tran_finalize(tran, ret);
  
-     base = bdrv_filter_or_cow_bs(s->above_base);
-     unfiltered_base = bdrv_skip_filters(base);
-@@ -100,6 +106,10 @@ static int stream_prepare(Job *job)
-     }
- 
- out:
-+    if (unfiltered_bs_cow) {
-+        bdrv_drained_end(unfiltered_bs_cow);
-+        bdrv_unref(unfiltered_bs_cow);
-+    }
-     bdrv_drained_end(unfiltered_bs);
-     return ret;
- }
++    bdrv_graph_wrunlock();
+     bdrv_drained_end(old_bs);
+     bdrv_drained_end(new_bs);
+     bdrv_unref(old_bs);
 -- 
 2.41.0
 
