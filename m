@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9699E79A3E4
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD6279A3B9
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:47:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfagW-0003at-0b; Mon, 11 Sep 2023 02:46:12 -0400
+	id 1qfagU-0003Uk-Ia; Mon, 11 Sep 2023 02:46:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagL-00036o-M8
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:03 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qfagO-0003BD-CV
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:04 -0400
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagJ-0005Ev-3L
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:01 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-68fb2e9ebbfso775086b3a.2
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:45:58 -0700 (PDT)
+ id 1qfagM-0005F5-6I
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:04 -0400
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3ab2436b57dso2929661b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:46:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414757; x=1695019557; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414760; x=1695019560; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YOggPHEkVLsqxPB2c0/QeriqcmfD3a3w+0iFBDdTsWI=;
- b=V4rAojmvoHgzbI6M8xYWQnYfG/TT6vBBR5FM2NBqJu86DahJYE8f02DQ9Mnih5nOcb
- ju64B0xXH8SAkUSIEYAukxq9dBOZUWUNpqCb1a3KQVuZNo3JKgoINkqmLgP2mqYA19Ij
- lkANUwCUuENVrFdaaHzhD5IyUgycfczh7VxwVoXnssz3+tLSpiev73VZNec9KjXN/seV
- KGJKYSn4a0m0M7CNhcUGWfIB6MONtacHzwkvjQ34a+VMGYi96e9U+afltR3mGti04arW
- 8xnG2cINlvl9efQf/awI0qORUqm7g05NWqjxTKMk4O6AQroSfsVdoTex4tYm3e883K0+
- pFkQ==
+ bh=SNW/cl5XE7PcFPCSWK9aTBzwWg07OvJep7oqCwyWKIs=;
+ b=pQpQ09o1B6xR0TipSIQ/q0i1Es5BQFlbQhFHJ4k80Fceqds1AX/yunaJx6hCYD7ENP
+ XnAkqnzEYvg8tUy0UG0pjGCw3Z52zGKvSj85wfnAqWXufzd6KUviYqdf2pGJ6oOUY49m
+ JDnOpzf5dzdnOCIHuZ3plFb56KzNSivyBOOj9X70L4rizSluSTPFR+AdxaYMQflhp7Yz
+ cwSoqBQXSCYbNMsttZeXVfgGRU8OA3VGBenwCgMwZQfjyHOW9nzdfeNFuECBkUGwbafz
+ 6lt6+TI4eiidwnpLqPp/nt/jOUW+IlWYrlY4pualc2hcRosZPbm+KyKXI5ZAovdyi22n
+ NDdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414757; x=1695019557;
+ d=1e100.net; s=20230601; t=1694414760; x=1695019560;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YOggPHEkVLsqxPB2c0/QeriqcmfD3a3w+0iFBDdTsWI=;
- b=Puii3GBSL5uWEIY8AJUiBKdCUBA3jlcuDADxBdErpZAYzFZN3iXskTLmrXsgGKyY6F
- hLnLY9qvSOI+d1SKrUhmpA/K0bUlwzbNmNmRC0bsaLzlm42qr03KK4/FEycsqCm6LTYW
- UCjmq3H1kx4YLQ6E6vXSmdLJLAg2FMP8SMDmiCLpRNQgguviY2pPhXspIhDnrEhKK/hO
- Il3MV1YQ1Xzf2BvgO97xTK2cq1PjRx3NUmI4m9ah3t5or7fNQAuCZoMIeBvPKVWnKxYx
- 4qgNOtTNU0HciOPZwmCIvv/RAKVcT3YSGpFv99woAHGmUtL/sCxED98Re3+51KZ9+h/x
- Yh3Q==
-X-Gm-Message-State: AOJu0YwmdabrjlZNYmMaBT4ygd/78Rcr1FbCM07fh8+ffB4rsJyQqyqy
- uYyJ9mk0oXSp+rgHcz74lUzmjvW6v+ZbxA==
-X-Google-Smtp-Source: AGHT+IE0+2bhCosMVjGFRzxlMlsl+I9IY2KlF7Cuahweq3vner/LBti94nk95xv6BPOjdZCtyPr6ng==
-X-Received: by 2002:a05:6a00:330a:b0:68f:caaa:e6d5 with SMTP id
- cq10-20020a056a00330a00b0068fcaaae6d5mr1114528pfb.14.1694414757270; 
- Sun, 10 Sep 2023 23:45:57 -0700 (PDT)
+ bh=SNW/cl5XE7PcFPCSWK9aTBzwWg07OvJep7oqCwyWKIs=;
+ b=Hkp/nLro65HbA0QZKdaXYxrdCtOq7fEsCibakTLG2R76sALzbOUQrKJ2OvZ0EcBP0g
+ HLDiOQkdSfIruUSjTWffrchdTpqIemAtznY/nCdXdl2WPZdfwDwKbOpKJfjNKAfUAXBx
+ 5xPQPcxN3xEYePLYf5x9l2btQ0s7sHvQni+nbe5izW/2rzq/QpL+bgggje2/DnUhaCQS
+ o8bh6Tk1tCw3MGpwN+5aqMxodVsiMlvT8EnQ/N7JSd5otRkszDLcx9kJv4g3wotlwkdj
+ PPqbpSUoh7Ybw29cVBrrBmWVHItCuMFnv3/0aZncfxlGJJ8qlhh4oRC5nv/R01jvBJR1
+ WHHA==
+X-Gm-Message-State: AOJu0YwfD94OJi8tuM/ZXwHgR+Ni9O6agcuPSTZRRCiVuEL6RT5LMZAe
+ V1DLPFkbcqCoArVVslw+QaUsIXDNUnZREA==
+X-Google-Smtp-Source: AGHT+IGLB22OHuyr4LgXH4DyuKEsaMn6EBFBVH9aCh7i6TiOu+spJusgMPp3amwIzAuMI6OWH7w5CQ==
+X-Received: by 2002:a54:439a:0:b0:3a8:1727:5af4 with SMTP id
+ u26-20020a54439a000000b003a817275af4mr9927515oiv.24.1694414760487; 
+ Sun, 10 Sep 2023 23:46:00 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.45.53
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.45.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:45:56 -0700 (PDT)
+ Sun, 10 Sep 2023 23:45:59 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alexandre Ghiti <alexghiti@rivosinc.com>,
- Andrew Jones <ajones@ventanamicro.com>,
+Cc: alistair23@gmail.com, Vineet Gupta <vineetg@rivosinc.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 36/45] target/riscv: fix satp_mode_finalize() when
- satp_mode.supported = 0
-Date: Mon, 11 Sep 2023 16:43:11 +1000
-Message-ID: <20230911064320.939791-37-alistair.francis@wdc.com>
+Subject: [PULL v2 37/45] riscv: zicond: make non-experimental
+Date: Mon, 11 Sep 2023 16:43:12 +1000
+Message-ID: <20230911064320.939791-38-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=alistair23@gmail.com; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,95 +96,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Vineet Gupta <vineetg@rivosinc.com>
 
-In the same emulated RISC-V host, the 'host' KVM CPU takes 4 times
-longer to boot than the 'rv64' KVM CPU.
+zicond is now codegen supported in both llvm and gcc.
 
-The reason is an unintended behavior of riscv_cpu_satp_mode_finalize()
-when satp_mode.supported = 0, i.e. when cpu_init() does not set
-satp_mode_max_supported(). satp_mode_max_from_map(map) does:
+This change allows seamless enabling/testing of zicond in downstream
+projects. e.g. currently riscv-gnu-toolchain parses elf attributes
+to create a cmdline for qemu but fails short of enabling it because of
+the "x-" prefix.
 
-31 - __builtin_clz(map)
-
-This means that, if satp_mode.supported = 0, satp_mode_supported_max
-wil be '31 - 32'. But this is C, so satp_mode_supported_max will gladly
-set it to UINT_MAX (4294967295). After that, if the user didn't set a
-satp_mode, set_satp_mode_default_map(cpu) will make
-
-cfg.satp_mode.map = cfg.satp_mode.supported
-
-So satp_mode.map = 0. And then satp_mode_map_max will be set to
-satp_mode_max_from_map(cpu->cfg.satp_mode.map), i.e. also UINT_MAX. The
-guard "satp_mode_map_max > satp_mode_supported_max" doesn't protect us
-here since both are UINT_MAX.
-
-And finally we have 2 loops:
-
-        for (int i = satp_mode_map_max - 1; i >= 0; --i) {
-
-Which are, in fact, 2 loops from UINT_MAX -1 to -1. This is where the
-extra delay when booting the 'host' CPU is coming from.
-
-Commit 43d1de32f8 already set a precedence for satp_mode.supported = 0
-in a different manner. We're doing the same here. If supported == 0,
-interpret as 'the CPU wants the OS to handle satp mode alone' and skip
-satp_mode_finalize().
-
-We'll also put a guard in satp_mode_max_from_map() to assert out if map
-is 0 since the function is not ready to deal with it.
-
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
-Fixes: 6f23aaeb9b ("riscv: Allow user to set the satp mode")
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Message-ID: <20230817152903.694926-1-dbarboza@ventanamicro.com>
+Signed-off-by: Vineet Gupta <vineetg@rivosinc.com>
+Message-ID: <20230808181715.436395-1-vineetg@rivosinc.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ target/riscv/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 8071f05f15..34ac26e3ae 100644
+index 34ac26e3ae..bf0912014e 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -309,6 +309,17 @@ static uint8_t satp_mode_from_str(const char *satp_mode_str)
+@@ -1869,6 +1869,7 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("zcf", RISCVCPU, cfg.ext_zcf, false),
+     DEFINE_PROP_BOOL("zcmp", RISCVCPU, cfg.ext_zcmp, false),
+     DEFINE_PROP_BOOL("zcmt", RISCVCPU, cfg.ext_zcmt, false),
++    DEFINE_PROP_BOOL("zicond", RISCVCPU, cfg.ext_zicond, false),
  
- uint8_t satp_mode_max_from_map(uint32_t map)
- {
-+    /*
-+     * 'map = 0' will make us return (31 - 32), which C will
-+     * happily overflow to UINT_MAX. There's no good result to
-+     * return if 'map = 0' (e.g. returning 0 will be ambiguous
-+     * with the result for 'map = 1').
-+     *
-+     * Assert out if map = 0. Callers will have to deal with
-+     * it outside of this function.
-+     */
-+    g_assert(map > 0);
-+
-     /* map here has at least one bit set, so no problem with clz */
-     return 31 - __builtin_clz(map);
- }
-@@ -1333,9 +1344,15 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
- static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
- {
-     bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
--    uint8_t satp_mode_map_max;
--    uint8_t satp_mode_supported_max =
--                        satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
-+    uint8_t satp_mode_map_max, satp_mode_supported_max;
-+
-+    /* The CPU wants the OS to decide which satp mode to use */
-+    if (cpu->cfg.satp_mode.supported == 0) {
-+        return;
-+    }
-+
-+    satp_mode_supported_max =
-+                    satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
+     /* Vendor-specific custom extensions */
+     DEFINE_PROP_BOOL("xtheadba", RISCVCPU, cfg.ext_xtheadba, false),
+@@ -1885,7 +1886,6 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOps, false),
  
-     if (cpu->cfg.satp_mode.map == 0) {
-         if (cpu->cfg.satp_mode.init == 0) {
+     /* These are experimental so mark with 'x-' */
+-    DEFINE_PROP_BOOL("x-zicond", RISCVCPU, cfg.ext_zicond, false),
+ 
+     /* ePMP 0.9.3 */
+     DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
 -- 
 2.41.0
 
