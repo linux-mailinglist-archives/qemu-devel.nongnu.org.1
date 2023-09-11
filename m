@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3773179A3D7
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2B179A3B4
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:46:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfafR-0001kN-OQ; Mon, 11 Sep 2023 02:45:05 -0400
+	id 1qfafT-0001nR-KE; Mon, 11 Sep 2023 02:45:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfafO-0001ew-Il
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:02 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qfafR-0001kq-3J
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:05 -0400
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfafL-0004et-1G
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:02 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-68fc292de9dso451216b3a.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:44:58 -0700 (PDT)
+ id 1qfafO-0004fT-OC
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:04 -0400
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-57124ee486dso2677788eaf.3
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414697; x=1695019497; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414701; x=1695019501; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KTZoQQBHRX8Eh4+DjB2iRGNyN+rFo0jz7PJ5kMgxxIY=;
- b=RDIXf3ZyNFSG+7ZvVG8VMlEYsM4QaTwD4V2eS2yq1WEuVLYc4avHXH3MYXLxn1KZRc
- ravhh8K/95cFRZFg1nG1eQCqIwRFntRD5lj5aNDA2OEb1n13KxPcRl3cNQtqx6SO9nd3
- OWsI9ygTVa+s3PKN7rVLosFN/Jo2+T8aNRWUr/IXG1bNT8lKsgdCAM1KPfgd3QXC+z3w
- LSt1sn49sfPihZp3jAtdBmvvfykwguxgtv3tC+U36hwgUOfenUdw/YO5YSABIjqumae8
- COauQJP+BPPXy12Ep0bht3Q2m2ZXszTqLzK08BSN/FRiUK8NhSQoYko2sCqf2EloZRye
- xvZw==
+ bh=sW3nOVBepNUyjAGvpAdig0q954l70YYp+9BKZ+7kzlc=;
+ b=UFFhWbY0W5S7EZP5pCtSqkUhapkwuX+rmVFu7IE7z70ujNX8Dtg3VnsUH90Fwgh2vp
+ pBKKsiftY2Jebm3ROa0y5kU8isRNQOTW4lzJr5/pu6P0kCsY0fsu7Y4q8x7KKqztw7Bb
+ +4LTvcZUEnc9JjXKZsslYZhbqDn6OkGBoZn5WgvCkpFHXPhfqQJSfNGJWDEv9a0TWOrr
+ U5LuFNLjMfce0oBMdYpg7L4ow6CO5tKCmQQkHyn3ltgbQWUx8nIvQH9O2yLFIUbfQY4N
+ p1BgA+Ay+bKJBD66mAXd8JanOL2gvPRg3nPoSvXcI4ZbLbm/67ijxypmFvX3sg57wtY5
+ snXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414697; x=1695019497;
+ d=1e100.net; s=20230601; t=1694414701; x=1695019501;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KTZoQQBHRX8Eh4+DjB2iRGNyN+rFo0jz7PJ5kMgxxIY=;
- b=HOALf3U0U0YDXlWmnArhDprHppEKe+Z6rnhUCGFnnaVMNA7R7edS5bKEmBZN9+Wump
- 7QzfELn0q09uYQRjHr3GLSOV1icfs23atvGQJ+RCH4p6F9vA9UFPthKbYuz3gq/0lvig
- x4+UGUC5MxMSOU0/uAKTT9KJ4r292SfOSS+gYm1VVPmhRbD6pfsJcFEUBR6QnM6VnRDg
- xDOzTcCy+1Oomy7eExWVvq0B49cEkJDyOxt01Wg4D6D4JNugCrGC7svjdAM4bcz2NTUB
- zP99g0sGdJdzQLq0pUju8g7jWMJFqbG3vLcqmUFQ7RI28dnHByXZpOFgr1W1quYEGBhx
- fyzQ==
-X-Gm-Message-State: AOJu0YzmPFGSMUWCgQRWRxxBpH6eIuP8bilLHol+LkKSjploMoX+VLva
- iM7DaG5FWik58e09HLMsHEtKdQ/L7ZEbmQ==
-X-Google-Smtp-Source: AGHT+IESdESBxaCF3gC+BQPPgfRGDSJiUzzwr3FTA7LoJsSKJGSKZJIUqh6U8CLparNheG9lbwqUgw==
-X-Received: by 2002:a05:6a00:2d06:b0:68e:2c2a:5172 with SMTP id
- fa6-20020a056a002d0600b0068e2c2a5172mr12107251pfb.6.1694414697329; 
- Sun, 10 Sep 2023 23:44:57 -0700 (PDT)
+ bh=sW3nOVBepNUyjAGvpAdig0q954l70YYp+9BKZ+7kzlc=;
+ b=h8e5z0usaaXcwFLnV9b3feAKiFrXzxv8GMBh/Tf5m27VJ9/58zc9noLq8R2Wthext+
+ Ctjq59u3aDlb/52yObWoWVvK6mfrcsp0T9iYH43BGIMLLB1HJF1MEosECZFuRwPkgr3a
+ G7Br1KrEn3rAsXqguoErCCU9gYOrqyZjOxRqWggwkTsfTvstyswAaDybq3M0FmBi+URK
+ e6PWtuj9pN88st+y3T9oeoc5on/znfKI08l46UtVjR9pPmIE1kgDTwWOAWvbWNqHPI1e
+ 1OaU9KF3nZsKGvSQdLmrbVwXGYg704cISDzhsmybubjhFFD2RGpib6Dj5G/Rqtooqn/N
+ 6l5g==
+X-Gm-Message-State: AOJu0YxGpu5c1E0yN2IEsgCPfbGHG2/MFqN8V1sR+GAWUNtamSgR9ydi
+ 7vF16XdwbBrYBYUElBOXoxDQseG7KT1r/w==
+X-Google-Smtp-Source: AGHT+IF0ADbk6IoopBYRh9ysCJo2Y8GUubm1xOWKLc/ehcswANyrWYSTBKUfFzPkW7igDw3CxIOwUw==
+X-Received: by 2002:a05:6359:7387:b0:140:f08c:2b55 with SMTP id
+ uz7-20020a056359738700b00140f08c2b55mr4713793rwb.9.1694414701134; 
+ Sun, 10 Sep 2023 23:45:01 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.44.54
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.44.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:44:56 -0700 (PDT)
+ Sun, 10 Sep 2023 23:44:59 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
  Frank Chang <frank.chang@sifive.com>,
- Richard Henderson <richard.henderson@linaro.org>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 20/45] crypto: Create sm4_subword
-Date: Mon, 11 Sep 2023 16:42:55 +1000
-Message-ID: <20230911064320.939791-21-alistair.francis@wdc.com>
+Subject: [PULL v2 21/45] crypto: Add SM4 constant parameter CK
+Date: Mon, 11 Sep 2023 16:42:56 +1000
+Message-ID: <20230911064320.939791-22-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=alistair23@gmail.com; helo=mail-oo1-xc33.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -100,64 +99,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Max Chou <max.chou@sifive.com>
 
-Allows sharing of sm4_subword between different targets.
+Adds sm4_ck constant for use in sm4 cryptography across different targets.
 
 Signed-off-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Max Chou <max.chou@sifive.com>
-Message-ID: <20230711165917.2629866-14-max.chou@sifive.com>
+Message-ID: <20230711165917.2629866-15-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/crypto/sm4.h           |  8 ++++++++
- target/arm/tcg/crypto_helper.c | 10 ++--------
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ include/crypto/sm4.h |  1 +
+ crypto/sm4.c         | 10 ++++++++++
+ 2 files changed, 11 insertions(+)
 
 diff --git a/include/crypto/sm4.h b/include/crypto/sm4.h
-index 9bd3ebc62e..de8245d8a7 100644
+index de8245d8a7..382b26d922 100644
 --- a/include/crypto/sm4.h
 +++ b/include/crypto/sm4.h
-@@ -3,4 +3,12 @@
+@@ -2,6 +2,7 @@
+ #define QEMU_SM4_H
  
  extern const uint8_t sm4_sbox[256];
++extern const uint32_t sm4_ck[32];
  
-+static inline uint32_t sm4_subword(uint32_t word)
-+{
-+    return sm4_sbox[word & 0xff] |
-+           sm4_sbox[(word >> 8) & 0xff] << 8 |
-+           sm4_sbox[(word >> 16) & 0xff] << 16 |
-+           sm4_sbox[(word >> 24) & 0xff] << 24;
-+}
-+
- #endif
-diff --git a/target/arm/tcg/crypto_helper.c b/target/arm/tcg/crypto_helper.c
-index fdd70abbfd..7cadd61e12 100644
---- a/target/arm/tcg/crypto_helper.c
-+++ b/target/arm/tcg/crypto_helper.c
-@@ -614,10 +614,7 @@ static void do_crypto_sm4e(uint64_t *rd, uint64_t *rn, uint64_t *rm)
-             CR_ST_WORD(d, (i + 3) % 4) ^
-             CR_ST_WORD(n, i);
+ static inline uint32_t sm4_subword(uint32_t word)
+ {
+diff --git a/crypto/sm4.c b/crypto/sm4.c
+index 9f0cd452c7..2987306cf7 100644
+--- a/crypto/sm4.c
++++ b/crypto/sm4.c
+@@ -47,3 +47,13 @@ uint8_t const sm4_sbox[] = {
+     0x79, 0xee, 0x5f, 0x3e, 0xd7, 0xcb, 0x39, 0x48,
+ };
  
--        t = sm4_sbox[t & 0xff] |
--            sm4_sbox[(t >> 8) & 0xff] << 8 |
--            sm4_sbox[(t >> 16) & 0xff] << 16 |
--            sm4_sbox[(t >> 24) & 0xff] << 24;
-+        t = sm4_subword(t);
- 
-         CR_ST_WORD(d, i) ^= t ^ rol32(t, 2) ^ rol32(t, 10) ^ rol32(t, 18) ^
-                             rol32(t, 24);
-@@ -651,10 +648,7 @@ static void do_crypto_sm4ekey(uint64_t *rd, uint64_t *rn, uint64_t *rm)
-             CR_ST_WORD(d, (i + 3) % 4) ^
-             CR_ST_WORD(m, i);
- 
--        t = sm4_sbox[t & 0xff] |
--            sm4_sbox[(t >> 8) & 0xff] << 8 |
--            sm4_sbox[(t >> 16) & 0xff] << 16 |
--            sm4_sbox[(t >> 24) & 0xff] << 24;
-+        t = sm4_subword(t);
- 
-         CR_ST_WORD(d, i) ^= t ^ rol32(t, 13) ^ rol32(t, 23);
-     }
++uint32_t const sm4_ck[] = {
++    0x00070e15, 0x1c232a31, 0x383f464d, 0x545b6269,
++    0x70777e85, 0x8c939aa1, 0xa8afb6bd, 0xc4cbd2d9,
++    0xe0e7eef5, 0xfc030a11, 0x181f262d, 0x343b4249,
++    0x50575e65, 0x6c737a81, 0x888f969d, 0xa4abb2b9,
++    0xc0c7ced5, 0xdce3eaf1, 0xf8ff060d, 0x141b2229,
++    0x30373e45, 0x4c535a61, 0x686f767d, 0x848b9299,
++    0xa0a7aeb5, 0xbcc3cad1, 0xd8dfe6ed, 0xf4fb0209,
++    0x10171e25, 0x2c333a41, 0x484f565d, 0x646b7279
++};
 -- 
 2.41.0
 
