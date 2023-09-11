@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D7279A59A
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 10:09:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A91C79A59D
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 10:09:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbsY-0001Fh-Jq; Mon, 11 Sep 2023 04:02:42 -0400
+	id 1qfbsV-0001D3-V3; Mon, 11 Sep 2023 04:02:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qfbsP-0001Cj-EJ; Mon, 11 Sep 2023 04:02:33 -0400
+ id 1qfbsP-0001Cc-54; Mon, 11 Sep 2023 04:02:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qfbsM-00026w-BD; Mon, 11 Sep 2023 04:02:33 -0400
+ id 1qfbsM-000270-AB; Mon, 11 Sep 2023 04:02:32 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E04E120AED;
- Mon, 11 Sep 2023 11:02:26 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B1D8120AEE;
+ Mon, 11 Sep 2023 11:02:28 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 43CA227242;
- Mon, 11 Sep 2023 11:02:25 +0300 (MSK)
-Received: (nullmailer pid 3680116 invoked by uid 1000);
- Mon, 11 Sep 2023 08:02:25 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 14AE227243;
+ Mon, 11 Sep 2023 11:02:27 +0300 (MSK)
+Received: (nullmailer pid 3680121 invoked by uid 1000);
+ Mon, 11 Sep 2023 08:02:27 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 00/51] v2 Patch Round-up for stable 7.2.6,
- freeze on 2023-09-19
-Date: Mon, 11 Sep 2023 11:01:51 +0300
-Message-Id: <qemu-stable-7.2.6-20230911105418@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [Stable-7.2.6 01/51] gitlab-ci: check-dco.py: switch from master to
+ stable-7.2 branch
+Date: Mon, 11 Sep 2023 11:01:52 +0300
+Message-Id: <20230911080225.3680068-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-7.2.6-20230911105418@cover.tls.msk.ru>
+References: <qemu-stable-7.2.6-20230911105418@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,155 +59,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.6:
+There's one commit, tagged v7.2.2, without Signed-off-by line.
+Due to this, check-dco test always fail on 7.2.  Since this is
+a stable branch with almost all commits coming from master
+already with S-o-b (except of the version bumps and very rare
+stable-specific commits), and v7.2.2 is already cast in stone,
+let's base the check on stable-7.2 branch (with its last version)
+instead of master branch.  This way, staging-7.2 will be checked
+against stable-7.2, but stable-7.2 itself will not be checked
+anymore, - so we can catch errors during stable preparations.
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+Note: this is a change specific to stable-7.2 branch/series, it
+is not supposed to be in master.
 
-Patch freeze is 2023-09-19, and the release is planned for 2023-09-21:
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-  https://wiki.qemu.org/Planning/7.2
+diff --git a/.gitlab-ci.d/check-dco.py b/.gitlab-ci.d/check-dco.py
+index 632c8bcce8..b929571eed 100755
+--- a/.gitlab-ci.d/check-dco.py
++++ b/.gitlab-ci.d/check-dco.py
+@@ -20,12 +20,12 @@
+ repourl = "https://gitlab.com/%s/%s.git" % (namespace, reponame)
+ 
+ subprocess.check_call(["git", "remote", "add", "check-dco", repourl])
+-subprocess.check_call(["git", "fetch", "check-dco", "master"],
++subprocess.check_call(["git", "fetch", "check-dco", "stable-7.2"],
+                       stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL)
+ 
+ ancestor = subprocess.check_output(["git", "merge-base",
+-                                    "check-dco/master", "HEAD"],
++                                    "check-dco/stable-7.2", "HEAD"],
+                                    universal_newlines=True)
+ 
+ ancestor = ancestor.strip()
+@@ -85,7 +85,7 @@
+ 
+ To bulk update all commits on current branch "git rebase" can be used:
+ 
+-  git rebase -i master -x 'git commit --amend --no-edit -s'
++  git rebase -i stable-7.2 -x 'git commit --amend --no-edit -s'
+ 
+ """)
+ 
+-- 
+2.39.2
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
-
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
-
-v2:
-
-- I decided to pick up dma/mmio reentrancy fixes from 8.1 now once
-  (hopefully) all issues has been addressed.  This is
-
-  commit a2e1753b8054344f32cf94f31c6399a58794a380
-  Author: Alexander Bulekov <alxndr@bu.edu>
-  Date:   Thu Apr 27 17:10:06 2023 -0400
-
-    memory: prevent dma-reentracy issues
-
-  with all subsequent changes, up to
-  76f9ebffcd41 pnv_lpc: disable reentrancy detection for lpc-hc
-
-  I haven't picked this series sooner (while had it backported
-  and tested for quite some time) because with time, some more
-  places were found where reentrancy detection has to be disabled
-  too (like this pnv_lpc change).
-
-  What prompted me to look at this series again: one of the ide/ahci
-  change had to be context-edited to apply to 7.2, and the context
-  was the one from this reentrancy patch series.  So instead of
-  editing context, I decided to pick the reentrancy series and
-  apply subsequent changed cleanly.
-
-- I've added 2 patches (one cherry-pick and one specific to stable-7.2)
-  just to fix gitlab-CI failed jobs, so CI status will not be "failed"
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01 b8d1fc55b5 Michael Tokarev:
-   gitlab-ci: check-dco.py: switch from master to stable-7.2 branch
-02 6832189fd791 John Snow:
-   python: drop pipenv
-03 a2e1753b8054 Alexander Bulekov:
-   memory: prevent dma-reentracy issues
-04 9c86c97f12c0 Alexander Bulekov:
-   async: Add an optional reentrancy guard to the BH API
-05 7915bd06f25e Alexander Bulekov:
-   async: avoid use-after-free on re-entrancy guard
-06 ef56ffbdd6b0 Alexander Bulekov:
-   checkpatch: add qemu_bh_new/aio_bh_new checks
-07 f63192b0544a Alexander Bulekov:
-   hw: replace most qemu_bh_new calls with qemu_bh_new_guarded
-08 bfd6e7ae6a72 Alexander Bulekov:
-   lsi53c895a: disable reentrancy detection for script RAM
-09 d139fe9ad8a2 Thomas Huth:
-   lsi53c895a: disable reentrancy detection for MMIO region, too
-10 985c4a4e547a Alexander Bulekov:
-   bcm2835_property: disable reentrancy detection for iomem
-11 6dad5a6810d9 Alexander Bulekov:
-   raven: disable reentrancy detection for iomem
-12 50795ee051a3 Alexander Bulekov:
-   apic: disable reentrancy detection for apic-msi
-13 6d0589e0e6c6 Alexander Bulekov:
-   loongarch: mark loongarch_ipi_iocsr re-entrnacy safe
-14 76f9ebffcd41 Alexander Bulekov:
-   pnv_lpc: disable reentrancy detection for lpc-hc
-15* a1d027be95bc Zhao Liu:
-   machine: Add helpers to get cores/threads per socket
-16* d79a284a44bb Zhao Liu:
-   hw/smbios: Fix smbios_smp_sockets caculation
-17* 7298fd7de555 Zhao Liu:
-   hw/smbios: Fix thread count in type4
-18* 196ea60a734c Zhao Liu:
-   hw/smbios: Fix core count in type4
-19* 8a64609eea8c Dongli Zhang:
-   dump: kdump-zlib data pages not dumped with pvtime/aarch64
-20* dbdb13f931d7 Ankit Kumar:
-   hw/nvme: fix CRC64 for guard tag
-21* 4333f0924c2f Nathan Egge:
-   linux-user/elfload: Set V in ELF_HWCAP for RISC-V
-22* e73f27003e77 Richard Henderson:
-   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for microblaze
-23* ea9812d93f9c Richard Henderson:
-   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
-24* 6ee960823da8 Luca Bonissi:
-   Fixed incorrect LLONG alignment for openrisc and cris
-25* 791b2b6a9302 Ilya Leoshkevich:
-   target/s390x: Fix the "ignored match" case in VSTRS
-26* 23e87d419f34 Ilya Leoshkevich:
-   target/s390x: Use a 16-bit immediate in VREP
-27* 6db3518ba4fc Ilya Leoshkevich:
-   target/s390x: Fix VSTL with a large length
-28* 6a2ea6151835 Ilya Leoshkevich:
-   target/s390x: Check reserved bits of VFMIN/VFMAX's M5
-29* d19436291013 Thomas Huth:
-   include/hw/virtio/virtio-gpu: Fix virtio-gpu with blob on big endian hosts
-30* 5e0d65909c6f Akihiko Odaki:
-   kvm: Introduce kvm_arch_get_default_type hook
-31* 1ab445af8cd9 Akihiko Odaki:
-   accel/kvm: Specify default IPA size for arm64
-32* 4b3520fd93cd Richard Henderson:
-   target/arm: Fix SME ST1Q
-33* cd1e4db73646 Richard Henderson:
-   target/arm: Fix 64-bit SSRA
-34* 09a3fffae00b Philippe Mathieu-Daudé:
-   docs/about/license: Update LICENSE URL
-35* f187609f27b2 Fabiano Rosas:
-   block-migration: Ensure we don't crash during migration cleanup
-36* 6ec65b69ba17 Maksim Kostin:
-   hw/ppc/e500: fix broken snapshot replay
-37* 7b8589d7ce7e Nicholas Piggin:
-   ppc/vof: Fix missed fields in VOF cleanup
-38* af03aeb631ee Richard Henderson:
-   target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
-39* c3461c6264a7 Niklas Cassel:
-   hw/ide/core: set ERR_STAT in unsupported command completion
-40* 2967dc8209dd Niklas Cassel:
-   hw/ide/ahci: write D2H FIS when processing NCQ command
-41* e2a5d9b3d9c3 Niklas Cassel:
-   hw/ide/ahci: simplify and document PxCI handling
-42* d73b84d0b664 Niklas Cassel:
-   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
-43 1a16ce64fda1 Niklas Cassel:
-   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
-44* 7e85cb0db4c6 Niklas Cassel:
-   hw/ide/ahci: fix ahci_write_fis_sdb()
-45* 9f8942353765 Niklas Cassel:
-   hw/ide/ahci: fix broken SError handling
-46* 97b8aa5ae9ff Hang Yu:
-   hw/i2c/aspeed: Fix Tx count and Rx size error in buffer pool mode
-47* 961faf3ddbd8 Hang Yu:
-   hw/i2c/aspeed: Fix TXBUF transmission start position error
-48* bcd8e243083c Thomas Huth:
-   qemu-options.hx: Rephrase the descriptions of the -hd* and -cdrom options
-49* b21a6e31a182 Markus Armbruster:
-   docs tests: Fix use of migrate_set_parameter
-50* 90a0778421ac Thomas Huth:
-   hw/net/vmxnet3: Fix guest-triggerable assert()
-51* 95bef686e490 Marc-André Lureau:
-   qxl: don't assert() if device isn't yet initialized
-
-(commit(s) marked with * were in previous series and are not resent)
 
