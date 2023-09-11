@@ -2,56 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB9779A7E8
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 506B179A7E9
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:28:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfg07-0006bf-2o; Mon, 11 Sep 2023 08:26:47 -0400
+	id 1qfg1D-0007X5-Sq; Mon, 11 Sep 2023 08:27:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
- id 1qfg05-0006bL-6H; Mon, 11 Sep 2023 08:26:45 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
- id 1qfg00-0001oC-O8; Mon, 11 Sep 2023 08:26:44 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RkmDD0b4bz4xM6;
- Mon, 11 Sep 2023 22:26:36 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RkmD812x7z4x5r;
- Mon, 11 Sep 2023 22:26:31 +1000 (AEST)
-Message-ID: <78c13a35-cbb7-9799-93bc-b0df73780e3d@kaod.org>
-Date: Mon, 11 Sep 2023 14:26:30 +0200
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qfg19-0007Vh-Lh
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:27:51 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qfg13-0001zg-Oh
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:27:51 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8BxJvG4B_9klKYkAA--.6383S3;
+ Mon, 11 Sep 2023 20:27:36 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxLCO2B_9kG1d3AA--.2317S3; 
+ Mon, 11 Sep 2023 20:27:34 +0800 (CST)
+Subject: Re: [PATCH RESEND v5 14/57] target/loongarch: Implement xvadd/xvsub
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: maobibo@loongson.cn
+References: <20230907083158.3975132-1-gaosong@loongson.cn>
+ <20230907083158.3975132-15-gaosong@loongson.cn>
+ <24a9ba29-e6a0-2f97-0b5a-de0adf5680cf@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <6bb654bb-1f7c-8e75-a530-3c10644474f4@loongson.cn>
+Date: Mon, 11 Sep 2023 20:27:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 04/10] hw/fsi: Introduce IBM's FSI
+In-Reply-To: <24a9ba29-e6a0-2f97-0b5a-de0adf5680cf@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20230908222859.3381003-1-ninad@linux.ibm.com>
- <20230908222859.3381003-5-ninad@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20230908222859.3381003-5-ninad@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=62xJ=E3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -30
-X-Spam_score: -3.1
+X-CM-TRANSID: AQAAf8CxLCO2B_9kG1d3AA--.2317S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7AFyUWw15GFyrJw1UXr1xtFc_yoW8KF1rpr
+ 18JrWUAFWUJr1fJr1Utr1UAry5Ar18Jw1UJr1rXF18Ar4UJr1jgF15Xw1qgr1UJr4kCr1U
+ Ar17Zr17Zr17JrgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+ 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+ 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
+ wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+ CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+ 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
+ IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+ 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+ W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UWHqcU
+ UUUU=
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -33
+X-Spam_score: -3.4
 X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,485 +81,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/9/23 00:28, Ninad Palsule wrote:
-> This is a part of patchset where IBM's Flexible Service Interface is
-> introduced.
+在 2023/9/10 上午9:44, Richard Henderson 写道:
+> On 9/7/23 01:31, Song Gao wrote:
+>> --- a/target/loongarch/insn_trans/trans_vec.c.inc
+>> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
+>> @@ -208,6 +208,16 @@ static bool gvec_vvv(DisasContext *ctx, arg_vvv 
+>> *a, MemOp mop,
+>>       return gvec_vvv_vl(ctx, a, 16, mop, func);
+>>   }
+>> +static bool gvec_xxx(DisasContext *ctx, arg_vvv *a, MemOp mop,
+>> +                     void (*func)(unsigned, uint32_t, uint32_t,
+>> +                                  uint32_t, uint32_t, uint32_t))
+>> +{
+>> +    if (!check_vec(ctx, 32)) {
+>> +        return true;
+>> +    }
+>> +
+>> +    return gvec_vvv_vl(ctx, a, 32, mop, func);
+>> +}
 > 
-> This commit models the FSI bus. CFAM is hanging out of FSI bus. The bus
-> is model such a way that it is embeded inside the FSI master which is a
-> bus controller.
+> You can move check_vec into gvec_vvv_vl, removing it from gvec_vvv.
 > 
-> The FSI master: A controller in the platform service processor (e.g.
-> BMC) driving CFAM engine accesses into the POWER chip. At the
-> hardware level FSI is a bit-based protocol supporting synchronous and
-> DMA-driven accesses of engines in a CFAM.
+>> +static bool gen_vaddsub_q_vl(DisasContext *ctx, arg_vvv *a, uint32_t 
+>> oprsz,
+>> +                             void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
+>> +                                          TCGv_i64, TCGv_i64, TCGv_i64))
+>> +{
+>> +    int i;
+>> +    TCGv_i64 rh, rl, ah, al, bh, bl;
 > 
-> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
-> Reviewed-by: Joel Stanley <joel@jms.id.au>
-> ---
-> v2:
-> - Incorporated review comments by Joel
-> ---
->   hw/fsi/cfam.c               |   3 +-
->   hw/fsi/fsi-master.c         | 203 ++++++++++++++++++++++++++++++++++++
->   hw/fsi/fsi.c                |  54 ++++++++++
->   hw/fsi/meson.build          |   2 +-
->   include/hw/fsi/cfam.h       |   8 +-
->   include/hw/fsi/fsi-master.h |  30 ++++++
->   include/hw/fsi/fsi-slave.h  |   4 +-
->   include/hw/fsi/fsi.h        |  31 ++++++
->   8 files changed, 327 insertions(+), 8 deletions(-)
->   create mode 100644 hw/fsi/fsi-master.c
->   create mode 100644 hw/fsi/fsi.c
->   create mode 100644 include/hw/fsi/fsi-master.h
->   create mode 100644 include/hw/fsi/fsi.h
+> Have check_vec here ...
 > 
-> diff --git a/hw/fsi/cfam.c b/hw/fsi/cfam.c
-> index 9a9e65d33f..414dcebe63 100644
-> --- a/hw/fsi/cfam.c
-> +++ b/hw/fsi/cfam.c
-> @@ -7,12 +7,13 @@
->   
->   #include "qemu/osdep.h"
->   
-> +#include "qemu/bitops.h"
->   #include "qapi/error.h"
->   #include "qemu/log.h"
->   #include "trace.h"
->   
-> -#include "hw/fsi/bits.h"
->   #include "hw/fsi/cfam.h"
-> +#include "hw/fsi/fsi.h"
->   #include "hw/fsi/engine-scratchpad.h"
->   
->   #include "hw/qdev-properties.h"
+>> +static bool gen_vaddsub_q(DisasContext *ctx, arg_vvv *a,
+>> +                          void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
+>> +                                       TCGv_i64, TCGv_i64, TCGv_i64))
+>> +{
+>> +    if (!check_vec(ctx, 16)) {
+>> +        return true;
+>> +    }
+>> +
+>> +    return gen_vaddsub_q_vl(ctx, a, 16, func);
+>> +}
+>> +
+>> +static bool gen_xvaddsub_q(DisasContext *ctx, arg_vvv *a,
+>> +                           void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
+>> +                                        TCGv_i64, TCGv_i64, TCGv_i64))
+>> +{
+>> +    if (!check_vec(ctx, 32)) {
+>> +        return true;
+>> +    }
+>> +    return gen_vaddsub_q_vl(ctx, a, 16, func);
+>> +}
+> 
+> ... instead of these two places.
+> 
+> 
+Ok, I will correct all similar patches.
 
-These change do not belong to this patch.
-
-> diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
-> new file mode 100644
-> index 0000000000..fe1693539a
-> --- /dev/null
-> +++ b/hw/fsi/fsi-master.c
-> @@ -0,0 +1,203 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2023 IBM Corp.
-> + *
-> + * IBM Flexible Service Interface master
-> + */
-> +
-> +#include "qemu/osdep.h"
-> +
-> +#include "qapi/error.h"
-> +
-> +#include "qemu/log.h"
-> +
-> +#include "hw/fsi/bits.h"
-> +#include "hw/fsi/fsi-master.h"
-> +
-> +#define TYPE_OP_BUS "opb"
-> +
-> +#define TO_REG(x)                               ((x) >> 2)
-> +
-> +#define FSI_MMODE                               TO_REG(0x000)
-> +#define   FSI_MMODE_IPOLL_DMA_EN                BE_BIT(0)
-> +#define   FSI_MMODE_HW_ERROR_RECOVERY_EN        BE_BIT(1)
-> +#define   FSI_MMODE_RELATIVE_ADDRESS_EN         BE_BIT(2)
-> +#define   FSI_MMODE_PARITY_CHECK_EN             BE_BIT(3)
-> +#define   FSI_MMODE_CLOCK_DIVIDER_0             BE_GENMASK(4, 13)
-> +#define   FSI_MMODE_CLOCK_DIVIDER_1             BE_GENMASK(14, 23)
-> +#define   FSI_MMODE_DEBUG_EN                    BE_BIT(24)
-> +
-> +#define FSI_MDELAY                              TO_REG(0x004)
-> +#define   FSI_MDELAY_ECHO_0                     BE_GENMASK(0, 3)
-> +#define   FSI_MDELAY_SEND_0                     BE_GENMASK(4, 7)
-> +#define   FSI_MDELAY_ECHO_1                     BE_GENMASK(8, 11)
-> +#define   FSI_MDELAY_SEND_1                     BE_GENMASK(12, 15)
-> +
-> +#define FSI_MENP0                               TO_REG(0x010)
-> +#define FSI_MENP32                              TO_REG(0x014)
-> +#define FSI_MSENP0                              TO_REG(0x018)
-> +#define FSI_MLEVP0                              TO_REG(0x018)
-> +#define FSI_MSENP32                             TO_REG(0x01c)
-> +#define FSI_MLEVP32                             TO_REG(0x01c)
-> +#define FSI_MCENP0                              TO_REG(0x020)
-> +#define FSI_MREFP0                              TO_REG(0x020)
-> +#define FSI_MCENP32                             TO_REG(0x024)
-> +#define FSI_MREFP32                             TO_REG(0x024)
-> +
-> +#define FSI_MAEB                                TO_REG(0x070)
-> +#define   FSI_MAEB_ANY_CPU_ERROR                BE_BIT(0)
-> +#define   FSI_MAEB_ANY_DMA_ERROR                BE_GENMASK(1, 16)
-> +#define   FSI_MAEB_ANY_PARITY_ERROR             BE_BIT(17)
-> +
-> +#define FSI_MVER                                TO_REG(0x074)
-> +#define   FSI_MVER_VERSION                      BE_GENMASK(0, 7)
-> +#define   FSI_MVER_BRIDGES                      BE_GENMASK(8, 15)
-> +#define   FSI_MVER_PORTS                        BE_GENMASK(16, 23)
-> +
-> +#define FSI_MRESP0                              TO_REG(0x0d0)
-> +#define   FSI_MRESP0_RESET_PORT_GENERAL         BE_BIT(0)
-> +#define   FSI_MRESP0_RESET_PORT_ERROR           BE_BIT(1)
-> +#define   FSI_MRESP0_RESET_ALL_BRIDGES_GENERAL  BE_BIT(2)
-> +#define   FSI_MRESP0_RESET_ALL_PORTS_GENERAL    BE_BIT(3)
-> +#define   FSI_MRESP0_RESET_MASTER               BE_BIT(4)
-> +#define   FSI_MRESP0_RESET_PARITY_ERROR_LATCH   BE_BIT(5)
-> +
-> +#define FSI_MRESB0                              TO_REG(0x1d0)
-> +#define   FSI_MRESB0_RESET_GENERAL              BE_BIT(0)
-> +#define   FSI_MRESB0_RESET_ERROR                BE_BIT(1)
-> +#define   FSI_MRESB0_SET_DMA_SUSPEND            BE_BIT(5)
-> +#define   FSI_MRESB0_CLEAR_DMA_SUSPEND          BE_BIT(6)
-> +#define   FSI_MRESB0_SET_DELAY_MEASURE          BE_BIT(7)
-> +
-> +#define FSI_MECTRL                              TO_REG(0x2e0)
-> +#define   FSI_MECTRL_TEST_PULSE                 BE_GENMASK(0, 7)
-> +#define   FSI_MECTRL_INHIBIT_PARITY_ERROR       BE_GENMASK(8, 15)
-> +#define   FSI_MECTRL_ENABLE_OPB_ERR_ACK         BE_BIT(16)
-> +#define   FSI_MECTRL_AUTO_TERMINATE             BE_BIT(17)
-> +#define   FSI_MECTRL_PORT_ERROR_FREEZE          BE_BIT(18)
-> +
-> +static uint64_t fsi_master_read(void *opaque, hwaddr addr, unsigned size)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(opaque);
-> +
-> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
-> +                  __func__, addr, size);
-
-
-This should be a trace event.
-
-> +
-> +    if (addr + size > sizeof(s->regs)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
-> +                      __func__, addr, size);
-> +        return 0;
-> +    }
-> +
-> +    return s->regs[TO_REG(addr)];
-> +}
-> +
-> +static void fsi_master_write(void *opaque, hwaddr addr, uint64_t data,
-> +                             unsigned size)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(opaque);
-> +
-> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=%d "
-> +                  "value=%"PRIx64"\n", __func__, addr, size, data);
-
-
-This should be a trace event.
-
-
-> +    if (addr + size > sizeof(s->regs)) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "%s: Out of bounds write: %"HWADDR_PRIx" for %u\n",
-> +                      __func__, addr, size);
-> +        return;
-> +    }
-> +
-> +    switch (TO_REG(addr)) {
-> +    case FSI_MENP0:
-> +        s->regs[FSI_MENP0] = data;
-> +        break;
-> +    case FSI_MENP32:
-> +        s->regs[FSI_MENP32] = data;
-> +        break;
-> +    case FSI_MSENP0:
-> +        s->regs[FSI_MENP0] |= data;
-> +        break;
-> +    case FSI_MSENP32:
-> +        s->regs[FSI_MENP32] |= data;
-> +        break;
-> +    case FSI_MCENP0:
-> +        s->regs[FSI_MENP0] &= ~data;
-> +        break;
-> +    case FSI_MCENP32:
-> +        s->regs[FSI_MENP32] &= ~data;
-> +        break;
-> +    case FSI_MRESP0:
-> +        /* Perform necessary resets leave register 0 to indicate no errors */
-> +        break;
-> +    case FSI_MRESB0:
-> +        if (data & FSI_MRESB0_RESET_GENERAL) {
-> +            device_cold_reset(DEVICE(opaque));
-> +        }
-> +        if (data & FSI_MRESB0_RESET_ERROR) {
-> +            /* FIXME: this seems dubious */
-> +            device_cold_reset(DEVICE(opaque));
-> +        }
-> +        break;
-> +    default:
-> +        s->regs[TO_REG(addr)] = data;
-> +    }
-> +}
-> +
-> +static const struct MemoryRegionOps fsi_master_ops = {
-> +    .read = fsi_master_read,
-> +    .write = fsi_master_write,
-> +    .endianness = DEVICE_BIG_ENDIAN,
-> +};
-> +
-> +static void fsi_master_realize(DeviceState *dev, Error **errp)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(dev);
-> +    Error *err = NULL;
-> +
-> +    qbus_init(&s->bus, sizeof(s->bus), TYPE_FSI_BUS, DEVICE(s), NULL);
-> +
-> +    memory_region_init_io(&s->iomem, OBJECT(s), &fsi_master_ops, s,
-> +                          TYPE_FSI_MASTER, 0x10000000);
-> +    memory_region_init(&s->opb2fsi, OBJECT(s), "fsi.opb2fsi", 0x10000000);
-> +
-> +    object_property_set_bool(OBJECT(&s->bus), "realized", true, &err);
-> +    if (err) {
-> +        error_propagate(errp, err);
-> +        return;
-> +    }
-> +
-> +    memory_region_add_subregion(&s->opb2fsi, 0, &s->bus.slave.mr);
-> +}
-> +
-> +static void fsi_master_reset(DeviceState *dev)
-> +{
-> +    FSIMasterState *s = FSI_MASTER(dev);
-> +
-> +    /* ASPEED default */
-> +    s->regs[FSI_MVER] = 0xe0050101;
-> +}
-> +
-> +static void fsi_master_class_init(ObjectClass *klass, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(klass);
-> +
-> +    dc->bus_type = TYPE_OP_BUS;
-> +    dc->desc = "FSI Master";
-> +    dc->realize = fsi_master_realize;
-> +    dc->reset = fsi_master_reset;
-> +}
-> +
-> +static const TypeInfo fsi_master_info = {
-> +    .name = TYPE_FSI_MASTER,
-> +    .parent = TYPE_DEVICE,
-> +    .instance_size = sizeof(FSIMasterState),
-> +    .class_init = fsi_master_class_init,
-> +};
-> +
-> +static void fsi_register_types(void)
-> +{
-> +    type_register_static(&fsi_master_info);
-> +}
-> +
-> +type_init(fsi_register_types);
-> diff --git a/hw/fsi/fsi.c b/hw/fsi/fsi.c
-> new file mode 100644
-> index 0000000000..43f889fee9
-> --- /dev/null
-> +++ b/hw/fsi/fsi.c
-> @@ -0,0 +1,54 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2023 IBM Corp.
-> + *
-> + * IBM Flexible Service Interface
-> + */
-> +#include "qemu/osdep.h"
-> +
-> +#include "qapi/error.h"
-> +
-> +#include "hw/fsi/fsi.h"
-> +#include "hw/fsi/cfam.h"
-> +
-> +static void fsi_bus_realize(BusState *bus, Error **errp)
-> +{
-> +    FSIBus *s = FSI_BUS(bus);
-> +    Error *err = NULL;
-> +
-> +    /* FIXME: Should be realised elsewhere and added to the bus */
-
-indeed.
-
-> +    object_property_set_bool(OBJECT(&s->slave), "realized", true, &err);
-> +    if (err) {
-> +        error_propagate(errp, err);
-> +    }
-> +}
-> +
-> +static void fsi_bus_init(Object *o)
-> +{
-> +    FSIBus *s = FSI_BUS(o);
-> +
-> +    /* FIXME: Move this elsewhere */
-
-at the board level may be ?
-
-> +    object_initialize_child(o, TYPE_CFAM, &s->slave, TYPE_CFAM);
-> +    qdev_set_parent_bus(DEVICE(&s->slave), BUS(o), &error_abort);
-> +}
-> +
-> +static void fsi_bus_class_init(ObjectClass *klass, void *data)
-> +{
-> +    BusClass *bc = BUS_CLASS(klass);
-> +    bc->realize = fsi_bus_realize;
-> +}
-> +
-> +static const TypeInfo fsi_bus_info = {
-> +    .name = TYPE_FSI_BUS,
-> +    .parent = TYPE_BUS,
-> +    .instance_init = fsi_bus_init,
-> +    .instance_size = sizeof(FSIBus),
-> +    .class_init = fsi_bus_class_init,
-> +};
-> +
-> +static void fsi_bus_register_types(void)
-> +{
-> +    type_register_static(&fsi_bus_info);
-> +}
-> +
-> +type_init(fsi_bus_register_types);
-> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
-> index 5600502b33..ca80d11cb9 100644
-> --- a/hw/fsi/meson.build
-> +++ b/hw/fsi/meson.build
-> @@ -1,4 +1,4 @@
->   system_ss.add(when: 'CONFIG_LBUS', if_true: files('lbus.c'))
->   system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: files('engine-scratchpad.c'))
->   system_ss.add(when: 'CONFIG_CFAM', if_true: files('cfam.c'))
-> -system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi-slave.c'))
-> +system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c','fsi-slave.c'))
-> diff --git a/include/hw/fsi/cfam.h b/include/hw/fsi/cfam.h
-> index af9f88cb22..49877a7220 100644
-> --- a/include/hw/fsi/cfam.h
-> +++ b/include/hw/fsi/cfam.h
-> @@ -12,14 +12,14 @@
->   #include "hw/fsi/fsi-slave.h"
->   #include "hw/fsi/lbus.h"
->   
-> -#define TYPE_FSI_BUS "fsi.bus"
-> -
-
-unwanted change I guess ?
-
->   #define TYPE_CFAM "cfam"
->   #define CFAM(obj) OBJECT_CHECK(CFAMState, (obj), TYPE_CFAM)
->   
->   #define CFAM_NR_REGS ((0x2e0 >> 2) + 1)
->   
->   #define TYPE_CFAM_CONFIG "cfam.config"
-> +OBJECT_DECLARE_SIMPLE_TYPE(CFAMConfig, CFAM_CONFIG)
-> +
-
-same.
-
->   #define CFAM_CONFIG(obj) \
->       OBJECT_CHECK(CFAMConfig, (obj), TYPE_CFAM_CONFIG)
->   /* P9-ism */
-> @@ -35,8 +35,8 @@ typedef struct CFAMConfig {
->   } CFAMConfig;
->   
->   #define TYPE_CFAM_PEEK "cfam.peek"
-> -#define CFAM_PEEK(obj) \
-> -    OBJECT_CHECK(CFAMPeek, (obj), TYPE_CFAM_PEEK)
-> +OBJECT_DECLARE_SIMPLE_TYPE(CFAMPeek, CFAM_PEEK)
-> +
->   #define CFAM_PEEK_NR_REGS ((0x130 >> 2) + 1)
->   
->   typedef struct CFAMPeek {
-> diff --git a/include/hw/fsi/fsi-master.h b/include/hw/fsi/fsi-master.h
-> new file mode 100644
-> index 0000000000..847078919c
-> --- /dev/null
-> +++ b/include/hw/fsi/fsi-master.h
-> @@ -0,0 +1,30 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2019 IBM Corp.
-> + *
-> + * IBM Flexible Service Interface Master
-> + */
-> +#ifndef FSI_FSI_MASTER_H
-> +#define FSI_FSI_MASTER_H
-> +
-> +#include "exec/memory.h"
-> +#include "hw/qdev-core.h"
-> +#include "hw/fsi/fsi.h"
-> +
-> +#define TYPE_FSI_MASTER "fsi.master"
-> +OBJECT_DECLARE_SIMPLE_TYPE(FSIMasterState, FSI_MASTER)
-> +
-> +#define FSI_MASTER_NR_REGS ((0x2e0 >> 2) + 1)
-> +
-> +typedef struct FSIMasterState {
-> +    DeviceState parent;
-> +    MemoryRegion iomem;
-> +    MemoryRegion opb2fsi;
-> +
-> +    FSIBus bus;
-> +
-> +    uint32_t regs[FSI_MASTER_NR_REGS];
-> +} FSIMasterState;
-> +
-> +
-> +#endif /* FSI_FSI_H */
-> diff --git a/include/hw/fsi/fsi-slave.h b/include/hw/fsi/fsi-slave.h
-> index bff807ff20..f5f23f4457 100644
-> --- a/include/hw/fsi/fsi-slave.h
-> +++ b/include/hw/fsi/fsi-slave.h
-> @@ -15,8 +15,8 @@
->   #include <stdint.h>
->   
->   #define TYPE_FSI_SLAVE "fsi.slave"
-> -#define FSI_SLAVE(obj) \
-> -    OBJECT_CHECK(FSISlaveState, (obj), TYPE_FSI_SLAVE)
-> +OBJECT_DECLARE_SIMPLE_TYPE(FSISlaveState, FSI_SLAVE)
-> +
->   #define FSI_SLAVE_CONTROL_NR_REGS ((0x40 >> 2) + 1)
-
-
-These change do not belong to this patch.
-
-
->   typedef struct FSISlaveState {
-> diff --git a/include/hw/fsi/fsi.h b/include/hw/fsi/fsi.h
-> new file mode 100644
-> index 0000000000..9c8dbe884f
-> --- /dev/null
-> +++ b/include/hw/fsi/fsi.h
-> @@ -0,0 +1,31 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Copyright (C) 2023 IBM Corp.
-> + *
-> + * IBM Flexible Service Interface
-> + */
-> +#ifndef FSI_FSI_H
-> +#define FSI_FSI_H
-> +
-> +#include "hw/qdev-core.h"
-> +
-> +/*
-> + * TODO: Maybe unwind this dependency with const links? Store a
-> + * pointer in FSIBus?
-> + */
-> +#include "hw/fsi/cfam.h"
-> +
-> +#define TYPE_FSI_BUS "fsi.bus"
-> +OBJECT_DECLARE_SIMPLE_TYPE(FSIBus, FSI_BUS)
-> +
-> +/* TODO: Figure out what's best with a point-to-point bus */
-> +typedef struct FSISlaveState FSISlaveState;
-> +
-> +typedef struct FSIBus {
-> +    BusState bus;
-> +
-> +    /* XXX: It's point-to-point, just instantiate the slave directly for now */
-> +    CFAMState slave;
-> +} FSIBus;
-> +
-> +#endif
+Thanks.
+Song Gao
 
 
