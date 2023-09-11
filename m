@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D93479A425
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4006479A42A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:09:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfazf-0007NW-JI; Mon, 11 Sep 2023 03:06:00 -0400
+	id 1qfb25-0000XS-I2; Mon, 11 Sep 2023 03:08:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qfazQ-0007Je-C2
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:05:44 -0400
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qfb22-0000Pe-Cd
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:08:26 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qfazG-0008Jm-53
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:05:43 -0400
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-414b3da2494so25743711cf.3
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 00:05:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qfb1z-0000M3-Vy
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:08:26 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-313e742a787so2469229f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 00:08:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694415923; x=1695020723; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RZ0vvN5xpXnv3V3orGZ//WJmXqSomN12daT8mKFIBAk=;
- b=L6GLLNsM+A+ezYfXzApMh7iFE9J/mdtZoJeWZK6sj2sDIj61/hIyueyeLfP/kdliBF
- sokropSoyRYlZcbsqjC/zIjOsk2Oo/IcyX5r8+o4YnKTW5+p1w3dbafs6jq00x4ZGEG0
- hauDzvJBP23KEJlDtAnLwpJKlNsrvXpD/lGe8RpkGR15PVKiquQUhxxB2m8nVDlyYWI5
- u1iD81vCF0Hayc86ucPcSYPs100ln1eQvGQVI+Ei1Py8j1Wb+EZQe0WbvpY7MBlm/2Kr
- oXtY1KCELfoDx1DoyLAVduIf2XI6hdbSW+zm4VvPO+Q0vSlTrfg3Mn6mjD6cHnFNWd79
- PK+A==
+ d=ventanamicro.com; s=google; t=1694416102; x=1695020902; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=sOXOBaJi10Q+yYRAq3y/0OmKs1lKOb7/2wk2wmWVBII=;
+ b=juiMydWuKUyJHl0CeMkUA3tNAMVyx2kkZAuW7j/9wAk8wnMUwQY5eZL/CXD5VZOVN0
+ xXe/yv4Zf744Y0b/rOxHJCPM+t6vGZB8Tnme4bA6CXd7E7e74PoTTHSMzc4+LYeEoszr
+ ibaEvzmT3f2w9RpDDai6TTsII2jYLl6SSvP95jfssp1HNPKpTTekCts4bWoyjsxpgaTf
+ Rw/v8VcqJvJcJHOvW3sFNCco9HyCrhLH56HDoOyZQdM3oqFlyD7gDuAQDA96SNubF2sx
+ 5GEbcdehPXhRaL3VA4ddk38I7yHJkcAMkL7Tm99BPAqgyFkz9TStGks3/vbUOZ6p3zrZ
+ 2LYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694415923; x=1695020723;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RZ0vvN5xpXnv3V3orGZ//WJmXqSomN12daT8mKFIBAk=;
- b=KTsKqQsCJ7hquLUu0VHpPNqEWWUDo2vjoAagnnRnSB6Iu7YK0qs6CIVQj1zG9XwY7Z
- Sn8MGHxlQxqQ7UIrkl9xyZoQ5LnUmIm/oKCzu9p/H3bs6VCn9+J7AGDKzEjoUKSsGZ/N
- R40PlXSQVAfo+QHsSLYA3FMmGShbyA8sDnYuQ8icJqXyvssbH3QJrGr9gfw0CDYJ92vD
- N90SrruC/mNI4hNc+++FaTmDLuiZhcGomhaCsN7ysHKoliewlJnDr/ZzPkK29GK5/ObY
- Zj6Xk9KVvPdxDokN5OZMq7Qxq2CsiFmOxTAISePXHNNrwF6pS9WvB1DJmVT3fSjW31qV
- QxnQ==
-X-Gm-Message-State: AOJu0YwDGHv9i0QX9Y155UYmSAFLa9H/fnrP2f4Q8H8VpCPgwjh1M4xl
- Wfbu3ESiMKeRLg9f3zPiEENQQrGEL+9Yb1hqki02Xz7cahI=
-X-Google-Smtp-Source: AGHT+IFfgyE/vdWrOfM74SFgYgvdGA8Q5TCVuqjmRZNBhqt0hY8mMd0u1Y/ut5KxkXaOFoFuM1PTMbWdsMGGNB0Zlhg=
-X-Received: by 2002:a05:622a:1393:b0:412:1c5f:4787 with SMTP id
- o19-20020a05622a139300b004121c5f4787mr10036459qtk.67.1694415923365; Mon, 11
- Sep 2023 00:05:23 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694416102; x=1695020902;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sOXOBaJi10Q+yYRAq3y/0OmKs1lKOb7/2wk2wmWVBII=;
+ b=in5JPIOF9AFaelTh/kYH6xF9jvZtdRc2Okv4xSLy6iTAYTiUEUFwpmRe8lNNp2y9OW
+ YRJZ3qf8hHBnimNLtYLRz3tvI8AUG4T7sT5QZ63e4ZnJLj2+VwyutXBdCFuYet1fnEwS
+ jdzN1bUJp5SB/dTTWMTd+G0KyCHwatYmo02/rWwRTvFO+j4rm7QCiFvY9kqO1LE/hDFP
+ ulsHgvLOHJD23UyYTPWETeueudu8YJBmyxtEMLPMuWLDzJa1Kn93uMqCR5wXJoTRwOKZ
+ /hkLqNUW2TTEMfhGOw/xc1cpZVEbJvlUaXqGJlRCx6tSC7ltq8LL27al0D5Ss0QxZ+gl
+ CZAw==
+X-Gm-Message-State: AOJu0YyLV3VgEsLFsits8IW5APY1wivyaE/2N/8d2Is/PAMqEbfwLuGk
+ Ywxar4azeLJtf34DiZzKP16HYw==
+X-Google-Smtp-Source: AGHT+IHvjvUkFrSzMgVpzjHPp9WpWSwpxulh0hEgO2b+Dbut9hiCqLu5PRBlgonaKErc3oGYiAqFVg==
+X-Received: by 2002:adf:cf02:0:b0:30e:56b3:60fe with SMTP id
+ o2-20020adfcf02000000b0030e56b360femr5792951wrj.4.1694416101784; 
+ Mon, 11 Sep 2023 00:08:21 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ o21-20020adfa115000000b0031f9bdb79dasm3683435wro.61.2023.09.11.00.08.21
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Sep 2023 00:08:21 -0700 (PDT)
+Date: Mon, 11 Sep 2023 09:08:15 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, philmd@linaro.org
+Subject: Re: [PATCH v2 05/19] target/riscv/cpu.c: add .instance_post_init()
+Message-ID: <20230911-8dd0ed634180a4146b982df1@orel>
+References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+ <20230906091647.1667171-6-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-References: <20230801093928.309361-1-marcandre.lureau@redhat.com>
- <20230801093928.309361-2-marcandre.lureau@redhat.com>
-In-Reply-To: <20230801093928.309361-2-marcandre.lureau@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 11 Sep 2023 11:05:11 +0400
-Message-ID: <CAJ+F1CKX3RSO=zHus4s5gpN1OvvT2Zn75LchB8PdTMaHLYwwVg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] vmmouse: use explicit code
-To: qemu-devel@nongnu.org
-Cc: zhouzongmin@kylinos.cn, Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82b.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906091647.1667171-6-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,63 +93,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On Wed, Sep 06, 2023 at 06:16:32AM -0300, Daniel Henrique Barboza wrote:
+> All generic CPUs call riscv_cpu_add_user_properties(). The 'max' CPU
+> calls riscv_init_max_cpu_extensions(). Both can be moved to a common
+> instance_post_init() callback, implemented in riscv_cpu_post_init(),
+> called by all CPUs. The call order then becomes:
+> 
+> riscv_cpu_init() -> cpu_init() of each CPU -> .instance_post_init()
+> 
+> In the near future riscv_cpu_post_init() will call the init() function
+> of the current accelerator, providing a hook for KVM and TCG accel
+> classes to change the init() process of the CPU.
 
-On Tue, Aug 1, 2023 at 1:40=E2=80=AFPM <marcandre.lureau@redhat.com> wrote:
->
-> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->
-> It's weird to shift x & y without obvious reason. Let's make this more
-> explicit and future-proof.
->
-> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Yes, this seems to be what x86 does, so presumably it'll work for riscv
+too.
 
-ping
-
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
->  hw/i386/vmmouse.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
-> index fce13a5cde..cd9ac11afc 100644
-> --- a/hw/i386/vmmouse.c
-> +++ b/hw/i386/vmmouse.c
-> @@ -46,6 +46,11 @@
->
->  #define VMMOUSE_VERSION                0x3442554a
->
-> +#define VMMOUSE_MIN_X 0
-> +#define VMMOUSE_MIN_Y 0
-> +#define VMMOUSE_MAX_X 0xFFFF
-> +#define VMMOUSE_MAX_Y 0xFFFF
+>  target/riscv/cpu.c | 42 ++++++++++++++++++++++++++++++++----------
+>  1 file changed, 32 insertions(+), 10 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 7569955c7e..4c6d595067 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -427,8 +427,6 @@ static void riscv_max_cpu_init(Object *obj)
+>      mlx = MXL_RV32;
+>  #endif
+>      set_misa(env, mlx, 0);
+> -    riscv_cpu_add_user_properties(obj);
+> -    riscv_init_max_cpu_extensions(obj);
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
+> @@ -442,7 +440,6 @@ static void rv64_base_cpu_init(Object *obj)
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV64, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -566,7 +563,6 @@ static void rv128_base_cpu_init(Object *obj)
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV128, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -579,7 +575,6 @@ static void rv32_base_cpu_init(Object *obj)
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV32, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver = PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -1215,6 +1210,37 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+>  }
+>  #endif /* CONFIG_USER_ONLY */
+>  
+> +static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+> +{
+> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+> +}
 > +
->  #define TYPE_VMMOUSE "vmmouse"
->  OBJECT_DECLARE_SIMPLE_TYPE(VMMouseState, VMMOUSE)
->
-> @@ -106,8 +111,12 @@ static void vmmouse_mouse_event(void *opaque, int x,=
- int y, int dz, int buttons_
->          buttons |=3D 0x08;
->
->      if (s->absolute) {
-> -        x <<=3D 1;
-> -        y <<=3D 1;
-> +        x =3D qemu_input_scale_axis(x,
-> +                                  INPUT_EVENT_ABS_MIN, INPUT_EVENT_ABS_M=
-AX,
-> +                                  VMMOUSE_MIN_X, VMMOUSE_MAX_X);
-> +        y =3D qemu_input_scale_axis(y,
-> +                                  INPUT_EVENT_ABS_MIN, INPUT_EVENT_ABS_M=
-AX,
-> +                                  VMMOUSE_MIN_Y, VMMOUSE_MAX_Y);
->      }
->
->      s->queue[s->nb_queue++] =3D buttons;
-> --
+> +static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
+> +{
+> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
+> +}
+> +
+> +static bool riscv_cpu_has_user_properties(Object *cpu_obj)
+> +{
+> +    if (kvm_enabled() &&
+> +        object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_HOST) != NULL) {
+> +        return true;
+> +    }
+> +
+> +    return riscv_cpu_is_dynamic(cpu_obj);
+> +}
+> +
+> +static void riscv_cpu_post_init(Object *obj)
+> +{
+> +    if (riscv_cpu_has_user_properties(obj)) {
+> +        riscv_cpu_add_user_properties(obj);
+> +    }
+> +
+> +    if (riscv_cpu_has_max_extensions(obj)) {
+> +        riscv_init_max_cpu_extensions(obj);
+> +    }
+> +}
+> +
+>  static void riscv_cpu_init(Object *obj)
+>  {
+>      RISCVCPU *cpu = RISCV_CPU(obj);
+> @@ -1770,11 +1796,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
+>  };
+>  #endif
+>  
+> -static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+> -{
+> -    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+> -}
+> -
+>  static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
+>                                void *opaque, Error **errp)
+>  {
+> @@ -2011,6 +2032,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+>          .instance_size = sizeof(RISCVCPU),
+>          .instance_align = __alignof__(RISCVCPU),
+>          .instance_init = riscv_cpu_init,
+> +        .instance_post_init = riscv_cpu_post_init,
+>          .abstract = true,
+>          .class_size = sizeof(RISCVCPUClass),
+>          .class_init = riscv_cpu_class_init,
+> -- 
 > 2.41.0
 >
->
 
-
---=20
-Marc-Andr=C3=A9 Lureau
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
