@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D8A79A9E0
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 17:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3720B79A9E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 17:43:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfj2k-0006K9-Oz; Mon, 11 Sep 2023 11:41:42 -0400
+	id 1qfj4D-0007Jq-SN; Mon, 11 Sep 2023 11:43:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qfj2i-0006K0-AI
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:41:40 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ id 1qfj4C-0007Jh-BQ
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:43:12 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qfj2d-0003dC-66
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:41:38 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-50078e52537so7743209e87.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 08:41:34 -0700 (PDT)
+ id 1qfj4A-0004As-0p
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:43:12 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-5230a22cfd1so5911561a12.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 08:43:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694446893; x=1695051693; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694446988; x=1695051788; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=DCXdNPr4SZQMiT3FETCg4mvs25aR7sByigRW8xpNWtc=;
- b=H9VW8C7WTD+anfG7CrvTC06rC+iIBe778zMrzJSlRjp8j94Y41ngnckxZrsb/+jhWG
- UqSnj+dibfKvdlIVhwqqxiv0/hqMyI5sQ2LExfM75u6JaxbNzA4667v4239atFvq3Upq
- PBIqef5Q7LT33dUb7x//SWkdTcG3oWE1V/XKa+qlWfFEExT4SV4KIslAkTttklhjJppt
- vTg5Bxjzo7uJufOlNqakIPL6qtIUSZ2QucxIq50FxztlV8GkfSehZIELxjrLRmQYkZeE
- F8HugGu80tCzcFykIBox6Z8Ym0EHJEoWvTH7dLjGNFH1TnTGEuy6o3HGrb6+AVvCMt5A
- 1H8g==
+ bh=R9FuuB5AJNAsLZKX6j6SZ7cS+C8udo5w9tt1mnLjovs=;
+ b=Utd/TRm6IGaCwBBQ7j6G3AFbRcMpUoJ6CZp+sarFMND79/imCy4e0HlvzmE0/EEary
+ vjkn7uUsa4ThWKlxZEmpAnl8SnqJq5LWEY/sjGI1d1ojlRR+pQVrDHN4qewqR57Wq0VN
+ iOCYJMbjqnAPLFcanSAIj0Mi/8P/PTCK9/3V9feuQRM79g1oz8Z/jxv9sbRFo+RJfIhV
+ 3BWpHZNvFoW7EpwhdocdKR+jiNkkeDJ/bJfG5ou31cdAVZ8Axvvt9K7sIIp3z7fVy4OS
+ kUJdQF3rNwBgajZiJ1U367ANNAUedwd4xXix5tkvWqboYdPYENn/nexEU6MwCW+0X87j
+ RCOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694446893; x=1695051693;
+ d=1e100.net; s=20230601; t=1694446988; x=1695051788;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=DCXdNPr4SZQMiT3FETCg4mvs25aR7sByigRW8xpNWtc=;
- b=N7q+E/w/axOva7J15w3rHiUp76bmrIMkRZaxGWvvOo0kFLVntfbeeWy9sMmQt0Dr6A
- DH11rcrLg/L1LWhfo3V7RiEtT8NROXm8PA1hM0UX8w5Uo1FVan6DABJC8U17aghJPUer
- rXMJNOnoxwksMzEz17AOHAKNKXvGCQDxt6kqE7UjudzNLVQ5C/0Dd+ABA6YOe4Qm9Slb
- A91ClcMqSTnurN9M4j/3TO9Os69UDDjt2/Q9Oy4Moy1Ql3hidoOo8Ve6hirjss7uGA3K
- +IkgQwPWztMfupC0zDtOEUA1FuWeTNpKnBif7XBassIwKen6l13ejpWpg8qk4Q7MoHPg
- l8Nw==
-X-Gm-Message-State: AOJu0YzHKls4tF5MyW8xao7Iy0LsC8mSo8YCP3hXx/tV7q6NilbyA7zW
- JV3HepGsevwFhSSGLMDmRkQJoLjOrBkpmVVghzovAA==
-X-Google-Smtp-Source: AGHT+IGxqthiS7TYTASaOiUwoEaiaSO+9qYLYLQRHp45rSjhouH82cy3BLshY4R8Bl1xqAQTnLm4I/RPZn+esxnvsj0=
-X-Received: by 2002:a05:6512:2829:b0:501:bf15:b87c with SMTP id
- cf41-20020a056512282900b00501bf15b87cmr9492673lfb.47.1694446892645; Mon, 11
- Sep 2023 08:41:32 -0700 (PDT)
+ bh=R9FuuB5AJNAsLZKX6j6SZ7cS+C8udo5w9tt1mnLjovs=;
+ b=SbAElaobCp/KY9xR6w/X6UQVDEXdVvooDkMIN8GgRl4jUkqRhPtoBEjrpPenx9QnRJ
+ gHNgxHEAN6H33DMpYLLKt3y6tKV8cZh6WuGe/VKnsh7wXCOKuBp0CU2QETkv2xaUIyHB
+ hOygkYYMxnlfWny4KVDHr6NLjGxCcZtPN2CFWEI1D+mk3WE6m8hUQ07137pqWLWYBFKy
+ E3P4oNZilejioAKXj9mzxM7QwJ3wKB+EhLzv/GuO4N5zuGnBH5/e7SCjXhoGuqvX54Gt
+ YYeaaa0MsYuQBUMsN9w1kbqX5FR+q/TXQ3vmhbl5NMNgUbxFXlRXvZK7KHjwxtWVJ51A
+ KdjA==
+X-Gm-Message-State: AOJu0YxrjrFZYHyMsiT+EerXN1Rb8iPqQp64jL0nDtx9FjWekMDB+nBu
+ M+HAaX0w0b1QDDHXTzfFnBsndrmdKJY8Ar7+5axgPA==
+X-Google-Smtp-Source: AGHT+IGxjOhdflvCxgcDw71xK/WqVPhKVhuQ1qoOLeRS0eQ9l8BaYGIwdxRGCr0f3V9FqV2+ItaPYqbVV9VfqGrU3Bs=
+X-Received: by 2002:a05:6402:28b1:b0:52f:3051:f7dd with SMTP id
+ eg49-20020a05640228b100b0052f3051f7ddmr4683960edb.35.1694446988407; Mon, 11
+ Sep 2023 08:43:08 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230908143703.172758-1-kwolf@redhat.com>
- <20230908143703.172758-2-kwolf@redhat.com>
-In-Reply-To: <20230908143703.172758-2-kwolf@redhat.com>
+ <20230908143703.172758-3-kwolf@redhat.com>
+In-Reply-To: <20230908143703.172758-3-kwolf@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 11 Sep 2023 16:41:21 +0100
-Message-ID: <CAFEAcA9CmRNjb0WLa_+ORpkMLu=8n1_bn_VU9zVoGD50QWtXQw@mail.gmail.com>
-Subject: Re: [PATCH 01/11] qdev: Add qdev_prop_set_array()
+Date: Mon, 11 Sep 2023 16:42:57 +0100
+Message-ID: <CAFEAcA9a15bhpG1Yj-b+3TC=UxDFdGJA4f1VrxnZsgVUR9O1dQ@mail.gmail.com>
+Subject: Re: [PATCH 02/11] hw/i386/pc: Use qdev_prop_set_array()
 To: Kevin Wolf <kwolf@redhat.com>
 Cc: qemu-devel@nongnu.org, armbru@redhat.com, berrange@redhat.com, 
  pbonzini@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,17 +88,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Fri, 8 Sept 2023 at 15:37, Kevin Wolf <kwolf@redhat.com> wrote:
 >
-> Instead of exposing the ugly hack of how we represent arrays in qdev (a
-> static "foo-len" property and after it is set, dynamically created
-> "foo[i]" properties) to boards, add an interface that allows setting the
-> whole array at once.
->
-> Once all internal users of devices with array properties have been
-> converted to use this function, we can change the implementation to move
-> away from this hack.
+> Instead of manually setting "foo-len" and "foo[i]" properties, build a
+> QList and use the new qdev_prop_set_array() helper to set the whole
+> array property with a single call.
 >
 > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> ---
+>  hw/i386/pc.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 54838c0c41..0e84e454cb 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -81,6 +81,7 @@
+>  #include "qapi/error.h"
+>  #include "qapi/qapi-visit-common.h"
+>  #include "qapi/qapi-visit-machine.h"
+> +#include "qapi/qmp/qlist.h"
+>  #include "qapi/visitor.h"
+>  #include "hw/core/cpu.h"
+>  #include "hw/usb.h"
+> @@ -1508,9 +1509,10 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+>          char *resv_prop_str = g_strdup_printf("0xfee00000:0xfeefffff:%d",
+>                                                VIRTIO_IOMMU_RESV_MEM_T_MSI);
+>
+> -        object_property_set_uint(OBJECT(dev), "len-reserved-regions", 1, errp);
+> -        object_property_set_str(OBJECT(dev), "reserved-regions[0]",
+> -                                resv_prop_str, errp);
+> +        QList *reserved_regions = qlist_new();
+> +        qlist_append_str(reserved_regions, resv_prop_str);
+> +        qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
+> +
 
+The variable declaration should be at the top of the block;
+otherwise
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
