@@ -2,88 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9741979A83C
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 15:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE29279A847
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 15:27:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfgmK-0004jI-28; Mon, 11 Sep 2023 09:16:36 -0400
+	id 1qfgvU-00013M-KC; Mon, 11 Sep 2023 09:26:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfgmG-0004j0-Ch
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 09:16:32 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfgmD-0003TH-N3
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 09:16:32 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-99c136ee106so553132066b.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 06:16:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694438187; x=1695042987; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=m/qr8ZqIxkTb/NWVgB9FttOgrkE2LFvm9nGFJM1n4Sc=;
- b=t4dI7oXasZuQz6EQIwV39xMjvARI0wJ2kqE0EkfjGAdCPxH2iu+WgvM1dh+td46kmt
- mJwpblYv9Csd9C/kY+LNacl5PJ76PIOFz1lhVPHv4NfLLhAyb1m61uzMVg2XSYIFgWmx
- LVagjXLKkICgfxgnkDRp6EJF7JpzvtzWr+KaqlST1W6XtWqrvNbYUXPxdLo6HNTuaLTM
- iHbtm9hYSeSS+RZ9fGg/LOnVhNvX+RIbg/n89xGrLe7Ew5CWNCtrfXjczVXpTHz+qXzo
- X/U4W60Qg4QJPen7ddWjg6HsCXfOBNxfbE1S5K7DANjbULzg4+JITxYyAAawZhJf+ypw
- RJCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694438187; x=1695042987;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=m/qr8ZqIxkTb/NWVgB9FttOgrkE2LFvm9nGFJM1n4Sc=;
- b=sRpRx4K2GEH6MAjCtsSYNKg/XRkKr+AQ+3OlkUFBSWyV3mG7bgHS714LghGkpgdO+v
- eOJF7QdqJFifqPOMiD5LU7kQr/r4rbJjPtqLwXhAePJ89Y5q29STXTQg0uRBMBAsxMjR
- D2eE5bkn6xlJUQ2R7BXvTW1IFMp3t1woykliBsgzrg7m0yGHs8m5ankhk2bKMJTUQ3WK
- KLmg/KyZkHc6GxU63eRfIJkwj+cUxT+CfWANhs1p15kGCiEvyL/f/0sDsI1oVPD9M3P+
- QvJaPhCG9fxagUqNee2833RH+0NbeFU5dDCj8v1we0m9tFpsPk3rIKmCazSQqeaVlHAh
- QWRA==
-X-Gm-Message-State: AOJu0YzQeelsBl4QZdjP8D423ioyZC5r9LuZXT7w2r9RSXILRzhfzMJ+
- nwoVv/gfIk2ERlRcLrcc0iaO4w==
-X-Google-Smtp-Source: AGHT+IHhiEq+XYZSJeznSDREC20CgvswraPa7tPoayDxAcErlDuk9ftDwaxt5kA9sWAFSqmLdihcog==
-X-Received: by 2002:a17:907:2cca:b0:9a1:f5b1:c85d with SMTP id
- hg10-20020a1709072cca00b009a1f5b1c85dmr7833573ejc.12.1694438187002; 
- Mon, 11 Sep 2023 06:16:27 -0700 (PDT)
-Received: from [192.168.69.115] (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
- [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- y9-20020a17090668c900b0099bcdfff7cbsm5324243ejr.160.2023.09.11.06.16.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 06:16:26 -0700 (PDT)
-Message-ID: <a27ca97f-a8fd-01f0-78d8-8ad7fb31b7d2@linaro.org>
-Date: Mon, 11 Sep 2023 15:16:24 +0200
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qfgvR-000139-Sz
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 09:26:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qfgvP-0005YI-Ey
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 09:26:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694438758;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=XukD7WQAWxcB/4IriCwKEFniwBQUmNqGAd/3RMX+aWs=;
+ b=X+IKKZWvVDvq6fZIzQLXf3XLj4j98MU/4G3VHHCC7gXOI1akCokXyUd4PInbPV+C41PrpB
+ r86Yp810crFfi5TDqfE8VnP+slIm17mR5pZcIBPc6ukdfFBcQeU1BnAI0BjP1Gy3pJ9a6Z
+ 2oGr45L16IqiGbqDJo1Y7qHHTwp9v8Q=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-689-j-rxe8ioMp6BmlHHjxCGUQ-1; Mon, 11 Sep 2023 09:25:55 -0400
+X-MC-Unique: j-rxe8ioMp6BmlHHjxCGUQ-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5E363810D3F;
+ Mon, 11 Sep 2023 13:25:54 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.8])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1A5DB10F1BE8;
+ Mon, 11 Sep 2023 13:25:53 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Subject: [PATCH v2] tpm: fix crash when FD >= 1024
+Date: Mon, 11 Sep 2023 17:25:51 +0400
+Message-ID: <20230911132551.1421276-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] target/i386: Re-introduce few KVM stubs for Clang debug
- builds
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza
- <dbarboza@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org
-References: <20230911103832.23596-1-philmd@linaro.org>
- <CAJSP0QWDcNhso5nNBMNziLSXZczcrGp=6FgGNOXvYEQ6=Giiug@mail.gmail.com>
- <ZP8I9B3O4CTwTTie@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <ZP8I9B3O4CTwTTie@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,76 +77,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 14:32, Kevin Wolf wrote:
-> Am 11.09.2023 um 13:15 hat Stefan Hajnoczi geschrieben:
->> On Mon, 11 Sept 2023 at 06:39, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>>
->>> Since commits 3adce820cf..ef1cf6890f, When building on
->>> a x86 host configured as:
->>>
->>>    $ ./configure --cc=clang \
->>>      --target-list=x86_64-linux-user,x86_64-softmmu \
->>>      --enable-debug
->>>
->>> we get:
->>>
->>>    [71/71] Linking target qemu-x86_64
->>>    FAILED: qemu-x86_64
->>>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `cpu_x86_cpuid':
->>>    cpu.c:(.text+0x1374): undefined reference to `kvm_arch_get_supported_cpuid'
->>>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `x86_cpu_filter_features':
->>>    cpu.c:(.text+0x81c2): undefined reference to `kvm_arch_get_supported_cpuid'
->>>    /usr/bin/ld: cpu.c:(.text+0x81da): undefined reference to `kvm_arch_get_supported_cpuid'
->>>    /usr/bin/ld: cpu.c:(.text+0x81f2): undefined reference to `kvm_arch_get_supported_cpuid'
->>>    /usr/bin/ld: cpu.c:(.text+0x820a): undefined reference to `kvm_arch_get_supported_cpuid'
->>>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:cpu.c:(.text+0x8225): more undefined references to `kvm_arch_get_supported_cpuid' follow
->>>    clang: error: linker command failed with exit code 1 (use -v to see invocation)
->>>    ninja: build stopped: subcommand failed.
->>>
->>> '--enable-debug' disables optimizations (CFLAGS=-O0).
->>>
->>> While at this (un)optimization level GCC eliminate the
->>> following dead code:
->>>
->>>    if (0 && foo()) {
->>>        ...
->>>    }
->>>
->>> Clang does not. Therefore restore a pair of stubs for
->>> unoptimized Clang builds.
->>>
->>> Reported-by: Kevin Wolf <kwolf@redhat.com>
->>> Fixes: 3adce820cf ("target/i386: Remove unused KVM stubs")
->>> Fixes: ef1cf6890f ("target/i386: Allow elision of kvm_hv_vpindex_settable()")
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   target/i386/kvm/kvm_i386.h | 21 ++++++++++++++++++---
->>>   1 file changed, 18 insertions(+), 3 deletions(-)
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
+Replace select() with poll() to fix a crash when QEMU has a large number
+of FDs.
 
->>> +#elif defined(__clang__) && !defined(__OPTIMIZE__)
->>
->> Another approach is a static library with a .o file containing the
->> stubs so the linker only includes it in the executable if the compiler
->> emitted the symbols. That way there is no need for defined(__clang__)
->> && !defined(__OPTIMIZE__) and it will work with other
->> compilers/optimization levels. It's more work to set up though.
-> 
-> Isn't that exactly how it was before the stubs were removed? It would be
-> a simple revert of that commit.
-> 
-> The approach with static inline functions defined only for a very
-> specific configuration looks a lot more fragile to me. In fact, I'm
-> surprised that it works because I think it requires that the header
-> isn't used in any files that are shared between user space and system
-> emulation - and naively cpu.c sounded like something that could be
-> shared. Looks like this patch only works because the linux-user target
-> uses a separate build of the same CPU emulation source file.
-> 
-> So I think reverting the commit that removed the stubs would be much
-> more obvious.
+Fixes:
+https://bugzilla.redhat.com/show_bug.cgi?id=2020133
 
-Yes, v2 reverts:
-https://lore.kernel.org/qemu-devel/20230911131507.24943-1-philmd@linaro.org/
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+---
+ backends/tpm/tpm_util.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
+index a6e6d3e72f..1856589c3b 100644
+--- a/backends/tpm/tpm_util.c
++++ b/backends/tpm/tpm_util.c
+@@ -112,12 +112,8 @@ static int tpm_util_request(int fd,
+                             void *response,
+                             size_t responselen)
+ {
+-    fd_set readfds;
++    GPollFD fds[1] = { {.fd = fd, .events = G_IO_IN } };
+     int n;
+-    struct timeval tv = {
+-        .tv_sec = 1,
+-        .tv_usec = 0,
+-    };
+ 
+     n = write(fd, request, requestlen);
+     if (n < 0) {
+@@ -127,11 +123,8 @@ static int tpm_util_request(int fd,
+         return -EFAULT;
+     }
+ 
+-    FD_ZERO(&readfds);
+-    FD_SET(fd, &readfds);
+-
+     /* wait for a second */
+-    n = select(fd + 1, &readfds, NULL, NULL, &tv);
++    n = RETRY_ON_EINTR(g_poll(fds, 1, 1000));
+     if (n != 1) {
+         return -errno;
+     }
+-- 
+2.41.0
 
 
