@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F3B79AB77
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 475F579AB81
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:17:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfoE5-0003fl-Ji; Mon, 11 Sep 2023 17:13:45 -0400
+	id 1qfoHQ-0006VG-CZ; Mon, 11 Sep 2023 17:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoE4-0003eq-3t
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:44 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qfoHO-0006Up-45
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:17:10 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoE1-0005Cy-TA
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:43 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51e28cac164so12881617a12.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:13:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qfoHK-0005qh-MD
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:17:09 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-68fbb10dec7so1407813b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:17:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694466819; x=1695071619; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+fItrFBqz4pCpmjDHSDhxOZeNtPLgdWkJxbwSRsqucM=;
- b=UKsqnR/nr+ZD4w7SdKYkNZDKI2dcOqQCU4FZ6i9sqw03G9LKmeIvVsWVHalud1fNw6
- gfdMCEbPBdOb7+Aor06tLUEMyFe7SX09VdVNyNZ0I1q/KodCQZWSyXuYTdR0yGOgN7XL
- UhQYDKu4pjX3HBDgb+s0eKa6xGWBSgnmk5VFE/yZhBFLVAZ6dp1m4P/ZPMqsnbG73yeF
- 1BIqBm0aX+s7C9o+Qdxetl2Fw+QvlrN622qAFFXOXlqy8EAioGlrw4bnynqs2IfelqM6
- 7BYrYfQRTh6Z+G0uEbkPfyu8JzPmR67X85tCrUUmqCJF1J/EpZ8e0FxL4imgGLXnoSB5
- xxpA==
+ d=linaro.org; s=google; t=1694467024; x=1695071824; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=t/6jRAUfYPCl01MpsZyW/MJchcnupdESzndqBpVBt04=;
+ b=I4Lgpq07p7LlsbPepoKBkFm1bQynTwilYw6WQohNvfYwHv07BazeAmA9ZI6G4LLgqd
+ sYUn+l37SnBfc3Ly3LGuU1IjBTPlIzlcmDxdFUrF9MJIER4qbyb5qFxq0LeJ4Ohk9AQZ
+ IhZCuXDjFFT8bUD0VTktaqCB0G53dvABBGV6/CPmcV9zhXwfjBTh6isHWE3Y2edNj4Bt
+ 5+4Vf8tIlRDzqPFOz0PV67YchPAppWikH+VZFIz2sDOHpTYV7OeCXpirgcDF4CtBISCM
+ 7WgTt2sDTc714z4bPVtM84U21PnStaC+0pKasYMlkfSztNm98AVz6OhnAMueS5zwk4nG
+ jARQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694466819; x=1695071619;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+fItrFBqz4pCpmjDHSDhxOZeNtPLgdWkJxbwSRsqucM=;
- b=PuSQwl7azhZAK8tpVLPQ5TgAdURjH/WMUSACikLAzipYw53upTdJhmYZ7drLpK6GR9
- XOd2rK9p1aI2eYf4Dj6zaUsYyMy0veDEFbezt3OkOX0sfCbv44YuDCWqYjdYFiQtzMJu
- s9aocqU8W0oMPeG1MjLA9o6W2zcd4xpDHMLDpS8XW8lBK9/gRU/7U88zAmDykUxf4y7Q
- iFB0IkFuj1mtdyyNddS2deJRmvj/xL+i0H6rRivO5pcBa4oxwmZ65y13If38pCC/X+yh
- tznuC1vu+CC1GUtW/d75LQgvSM4t/VVuzPW7QxR/UOiACIntsu2NFzdQozjDXudR+8RK
- +WPQ==
-X-Gm-Message-State: AOJu0Yy+LFr9xJT17y9j3l004AHZaQxusuDeaNfszyrDKbLta9uDICaC
- aF/9y7hj+qrJojFhxHs0j2Qo7BYL1SYXCVRA8Vo=
-X-Google-Smtp-Source: AGHT+IGfByT/i1uRgqjMTCe03exo5MUd5hVuuL5bXU9pWThAdvv0M71SxBPmrWR8igy+0e5BQCrT7w==
-X-Received: by 2002:a50:ee89:0:b0:523:37f0:2d12 with SMTP id
- f9-20020a50ee89000000b0052337f02d12mr1117871edr.17.1694466819175; 
- Mon, 11 Sep 2023 14:13:39 -0700 (PDT)
-Received: from m1x-phil.lan (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
- [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- c18-20020aa7d612000000b005254b41f507sm5126392edr.32.2023.09.11.14.13.37
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Sep 2023 14:13:38 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>
-Subject: [PATCH v4 3/3] target/i386: Prohibit target specific KVM prototypes
- on user emulation
-Date: Mon, 11 Sep 2023 23:13:17 +0200
-Message-ID: <20230911211317.28773-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230911211317.28773-1-philmd@linaro.org>
-References: <20230911211317.28773-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1694467024; x=1695071824;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=t/6jRAUfYPCl01MpsZyW/MJchcnupdESzndqBpVBt04=;
+ b=GgnpU20OgHYTHop8ISdZ8t/thOwgG/Y4gSt7/sY46mp/ztSPh0ZN+H295MkrqI3snU
+ QsSzxDJqRF+N3fAIaeMKgZUlK+OCMs4hc3QH3rEDXsbtq/gN/t3XL/7Naoeak6ozozmh
+ J2kQ89jpA6Hn2s9yfZStNot1xo+s1WC6sBuyIgcwVBNmD8izPW3t/+wTLUpMvKcbvB5m
+ fiIEj7YIUYtU8Qc6e89f087ECo/xhsOFGWC7O+9f2PgCd5iETsGFhbrJ73pstWECU2da
+ Ukwk55EoRmk2kQOln+Euk1BcVrjMYQBcXWeNAk0ZxfMX4ti2LvaLyWP+Rm5egjkToNys
+ 5bqA==
+X-Gm-Message-State: AOJu0YwZeAA3dlcUmaKnkv/L9qK54p/6H3T3eQL1aoa07Y1XzcYKAv4q
+ F39x4UskikKJD1xuwFxcz0w7yw==
+X-Google-Smtp-Source: AGHT+IHiqBLbkCsDwND2wrw33CG+0xJGg3XLxpvEcHEWF7Ctq2QvDKbOLHvX21Y0VZML33rtGABfcQ==
+X-Received: by 2002:a05:6a00:13a6:b0:68e:2822:fb36 with SMTP id
+ t38-20020a056a0013a600b0068e2822fb36mr11262585pfg.8.1694467024042; 
+ Mon, 11 Sep 2023 14:17:04 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ fm22-20020a056a002f9600b00679a4b56e41sm1967662pfb.43.2023.09.11.14.17.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Sep 2023 14:17:03 -0700 (PDT)
+Message-ID: <e925d8cd-d82a-2478-236c-89deaa95c423@linaro.org>
+Date: Mon, 11 Sep 2023 14:17:01 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH 11/14] target/arm: Implement the SETG* instructions
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+References: <20230907160340.260094-1-peter.maydell@linaro.org>
+ <20230907160340.260094-12-peter.maydell@linaro.org>
+ <fbc33e98-2f8e-d503-c219-20c2b6eb02d2@linaro.org>
+ <CAFEAcA8V_8wFpLJd7mNygEeU2iCdmMEZz4cXANXfwzD=FBGqkw@mail.gmail.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <CAFEAcA8V_8wFpLJd7mNygEeU2iCdmMEZz4cXANXfwzD=FBGqkw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,56 +97,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-None of these target-specific prototypes should be used
-by user emulation. Remove their declaration there, so we
-get a compile failure if ever used (instead of having to
-deal with linker and its possible optimizations, such
-dead code removal).
+On 9/11/23 07:17, Peter Maydell wrote:
+>> I think it would be a little better if set_tags was visible to the compiler, via inlining,
+>> so that all of the conditions can be folded away.
+> 
+> Do you mean having a separate triplet of helper functions
+> for setg, which then call an inline function shared with
+> the normal setp/setm/sete to do the actual work, rather than
+> passing "is this setg" via the syndrome ?
 
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/i386/kvm/kvm_i386.h | 4 ++++
- target/i386/cpu.c          | 3 ++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+Yes.
 
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 55d4e68c34..5ef73f0a1c 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -13,6 +13,10 @@
- 
- #include "sysemu/kvm.h"
- 
-+#ifdef CONFIG_USER_ONLY
-+#error Cannot include kvm_i386.h from user emulation
-+#endif
-+
- #ifdef CONFIG_KVM
- 
- #define kvm_pit_in_kernel() \
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 8b57708604..6be59c7b2b 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -26,7 +26,7 @@
- #include "tcg/helper-tcg.h"
- #include "sysemu/reset.h"
- #include "sysemu/hvf.h"
--#include "kvm/kvm_i386.h"
-+#include "sysemu/kvm.h"
- #include "sev.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-@@ -40,6 +40,7 @@
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
- #include "hw/i386/sgx-epc.h"
-+#include "kvm/kvm_i386.h"
- #endif
- 
- #include "disas/capstone.h"
--- 
-2.41.0
+
+r~
 
 
