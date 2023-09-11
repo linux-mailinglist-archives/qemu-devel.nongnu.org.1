@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C3679A7DF
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB4879A7E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:17:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qffmd-0005lp-Si; Mon, 11 Sep 2023 08:12:52 -0400
+	id 1qffq9-00086h-4Y; Mon, 11 Sep 2023 08:16:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qffmZ-0005lb-Hl
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:12:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qffmT-00086g-It
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:12:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694434360;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lZcjiHOjq3IF51JM+DN1lafs/aMRbVHIoDNukPD09Ac=;
- b=eVoJliFpNfsHiOzBiaaBrxZWdEq2IthWSIbiib0BgrdAqo7AneiOBAR6j85PHV+DippU9B
- 6SJjs+ipiCDPBz0/Nu9fMvhoY+BkAUhNdHuSbcnpjwHEQsADB0GrCHLhebLKp6LFb8P2xr
- OIBjUTvIoL68xSYVcYi2Agis8XVLSMc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-619-zFfqyEdbORyUbyqOYnBggg-1; Mon, 11 Sep 2023 08:12:37 -0400
-X-MC-Unique: zFfqyEdbORyUbyqOYnBggg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E914B101CA82;
- Mon, 11 Sep 2023 12:12:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.192.243])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D2F932156701;
- Mon, 11 Sep 2023 12:12:35 +0000 (UTC)
-Date: Mon, 11 Sep 2023 14:12:34 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Subject: Re: [PULL 00/51] Build system, i386 changes for 2023-09-07
-Message-ID: <ZP8EMs9zqz72CEfl@redhat.com>
-References: <20230907130004.500601-1-pbonzini@redhat.com>
- <20230907154412.GA1550739@fedora> <ZPs3UB8W4lsOFnxW@redhat.com>
- <CAJSP0QX4QgxG-3dbv6oa6_81MWJkYKTT7T05D5hCtFiG=mLi7Q@mail.gmail.com>
- <93be81d9-3f96-51e2-4b20-74ce99e56ae1@linaro.org>
- <2b5ec5d4-956e-c4c5-08c6-b5ef5fa62548@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qffq6-00085i-QD
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:16:27 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qffq2-0000Bv-RF
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:16:25 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-31c65820134so4021372f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 05:16:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694434581; x=1695039381; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=4cVixcCMBazVt4GDV3EydwLTjw2D4rAs8jyybEOv3MQ=;
+ b=fZDjIr3SctrAFM2rHepy34QfdZEAVCXOjYXkUXtcuDnW7DqYJc2tSJIezokiYteMvP
+ wYWJfFPrx4Exykp0CnD8IMjxcD5NC6csJ7plYLcvCu1+Kg0hUEOki/mmwGS5srZyCfwl
+ NEDSTRggJKAy/v2xcAPGqBu4B9s3OVGLzKqSFcZ+CK5HMbK0Rfv2NtI/Zss1pQP9vWsk
+ wYjCiNRXA/0+mfb/Xsb0i7e61NF1c6a9lys1wcHIvadjfN+RrI4/5FrvF4KdYdz64s6a
+ oDmuQCN84Ycpy941Xz3bGgnf/BNOIbgUC1Wi5nWkvWPEQT6Cc4hHLHkzWwYeEXyxjShI
+ Wv4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694434581; x=1695039381;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4cVixcCMBazVt4GDV3EydwLTjw2D4rAs8jyybEOv3MQ=;
+ b=kA2sfKRWJcv7I2+zkP4jffXQi36FveCdaXXWL3MYQ0f2/p6ECVV4kEBgiIukWzJYyh
+ 8ulOmd/pdisJgSB7w2P/7fiBtB0+gK9gDAArpyZ29rB1EfNNKVBOd/Bxmu+93mZHIuHC
+ gVoGugdW47DEY3Owi0uOYbw5A6nh58j8x3aFbyw4YygGn4ZLvJWDM2hdE7Bg1r5HpbHJ
+ /JbEwywJIj/NvfT6UOuEDTYZd++8pF9wtswo4p44kLIJVY7GnjLOJ7oEEzJlMjAKFlUF
+ cKDGYLVIXS1ym1pNtWlR+icQlsqSpgvqnHYc3C2xHHes/9g/z5YZ5+tEWkbjCpgioXjN
+ Phiw==
+X-Gm-Message-State: AOJu0Yy0R/xGY1mutUUAH9bX1PcEiQ2Yldgo7bqRextRSFSPNJ1PRcFD
+ NtWn+n+VqWcmTuIjiYpKo5NcYW95dvg/l9wndCmNug==
+X-Google-Smtp-Source: AGHT+IFhNUwDT0LeYQ8+oz27/30UxTVC/ZJTlhTrdJTISTn7FHqe8Cpr1w0hZv+vNfk36EkuvNn6CiF4nCW6MhMQOcg=
+X-Received: by 2002:adf:a2d2:0:b0:31f:b0ba:f2ce with SMTP id
+ t18-20020adfa2d2000000b0031fb0baf2cemr865640wra.9.1694434580651; Mon, 11 Sep
+ 2023 05:16:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2b5ec5d4-956e-c4c5-08c6-b5ef5fa62548@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <afa1c81a-3077-45f9-83e7-d6b87b0fcf80@reext.ru>
+ <8734zlosqd.fsf@linaro.org>
+In-Reply-To: <8734zlosqd.fsf@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 11 Sep 2023 13:16:09 +0100
+Message-ID: <CAFEAcA9hz=0_wp=i3d=7NVF=H31zk0qJCbMmQ7PdbGRVbG26xA@mail.gmail.com>
+Subject: Re: Disassembler disagrees with translator over instruction decoding
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?B?0KHRgtCw0L3QuNGB0LvQsNCyINCu0LTQuNC9?= <CityAceE@reext.ru>, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,55 +88,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 11.09.2023 um 12:22 hat Philippe Mathieu-Daudé geschrieben:
-> On 11/9/23 12:10, Philippe Mathieu-Daudé wrote:
-> > On 8/9/23 17:47, Stefan Hajnoczi wrote:
-> > > I wonder how it passed CI?
-> > > https://gitlab.com/qemu-project/qemu/-/pipelines/996175923/
-> > 
-> > The conditions are:
-> > - x86 host
+On Mon, 11 Sept 2023 at 12:28, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
+ote:
+>
+>
+> =D0=A1=D1=82=D0=B0=D0=BD=D0=B8=D1=81=D0=BB=D0=B0=D0=B2 =D0=AE=D0=B4=D0=B8=
+=D0=BD <CityAceE@reext.ru> writes:
+>
+> > Hello,
+> >
+> > I've just got this message, when I dubugging my code:
+> >
+> > Disassembler disagrees with translator over instruction decoding
+> > Please report this to qemu-devel@nongnu.org
+> >
+> > *
+> >
+> > Binary code is in the attachment.
+>
+> The binary seems to reconfigure itself as it executes as I can't find
+> the instructions in the objdump. However via gdbstub we get to:
+>
+>   (gdb) x/4i $pc
+>   =3D> 0x60011ab8:  pop     {r0, r1, r2, r3, r4, r5, r6, pc}
+>      0x60011aba:  push    {lr}
+>      0x60011abc:  mov.w   r11, #4
+>      0x60011ac0:  ldrb.w  r7, [r0, r10]
+>   (gdb) x/10i 0x60010168
+>      0x60010168:  ldrb    r6, [r0, r1]
+>      0x6001016a:  addw    r7, pc, #6
+>      0x6001016e:  ldr.w   pc, [r7]
+>      0x60010172:  lsls    r2, r6, #21
+>      0x60010174:  str     r1, [r0, #0]
+>      0x60010176:  lsls    r2, r7, #21
+>      0x60010178:  str     r1, [r0, #0]
+>      0x6001017a:  lsls    r6, r3, #22
+>      0x6001017c:  str     r1, [r0, #0]
+>      0x6001017e:  lsls    r6, r5, #22
+>   (gdb) hbreak *0x6001016e
+>   Hardware assisted breakpoint 2 at 0x6001016e
+>   (gdb) c
+>   Continuing.
+>
+>   Breakpoint 2, 0x6001016e in ?? ()
+>   (gdb) i
+>   0x60010572 in ?? ()
+>   =3D> 0x60010572:  streq   pc, [r4, #-421] @ 0xfffffe5b
+>      0x60010576:  ldmiblt r7, {r0, r12, sp, lr, pc}^
+>      0x6001057a:  tsteq   r1, r1, lsl #2  @ <UNPREDICTABLE>
+>   (gdb) x/5i $pc
+>   =3D> 0x60010572:  streq   pc, [r4, #-421] @ 0xfffffe5b
+>      0x60010576:  ldmiblt r7, {r0, r12, sp, lr, pc}^
+>      0x6001057a:  tsteq   r1, r1, lsl #2  @ <UNPREDICTABLE>
+>      0x6001057e:  smlabteq        r0, r0, r2, pc  @ <UNPREDICTABLE>
+>      0x60010582:  blt     0x61da66a2
+>   (gdb) x/10w $pc
+>   0x60010572:     0x0504f1a5      0xb9d7f001      0x0101f101      0x0100f=
+2c0
+>   0x60010582:     0xba765846      0x0300f2c0      0x0436bfe1      0x31024=
+333
+>   0x60010592:     0x0100f2c0      0x050af1a5
+>   (gdb)
 
-I didn't actually try other hosts, but why do you think it depends on
-the host? Is it not x86 target?
+Notice that the PC here is not 4-aligned, but the
+disassembly is being done in Arm mode. (Presumably the
+guest code has messed up trying to jump to Thumb code.)
 
-> > - both system / user emulation enabled
+In the trace in the screenshot, you can also see that the
+warning happens after an attempted ldr.w   pc, [r7],
+and the next thing translated is at address 0xc, which
+is an exception entry point. So likely the complaint is
+about the bogus instruction at wherever the incorrect
+return address takes us, which provoked an exception.
 
-I did try this one while bisection because I didn't want to build the
-system emulator in each step. User emulation only is enough, you don't
-need to build the system emulator to get the build failure.
+(Note to the original reporter: you'll find it easier to
+debug from -d logging if you add 'exec,cpu,int' to your -d list:
+this will then log (a) actual execution with guest register
+contents, not just translation-time instruction traces
+(b) information about when an exception is taken.)
 
-> > - KVM disabled
+> Which seems to agree with the disassembler from the console:
+>
+>   (qemu) x/5i 0x60010572
+>   0x60010572:  0504f1a5  streq    pc, [r4, #-0x1a5]
+>   0x60010576:  b9d7f001  ldmiblt  r7, {r0, ip, sp, lr, pc} ^
+>   0x6001057a:  0101f101  mrseq    pc, apsr
+>   0x6001057e:  0100f2c0  smlabteq r0, r0, r2, pc
+>   0x60010582:  ba765846  blt      #0x61da66a2
 
-I didn't explicitly disable KVM, but I suppose it's automatically
-disabled for linux-user.
+I think we should delete that warning message, personally.
+There are a few "expected" corner cases where it can fire,
+I think, though I can't remember the details.[*] It wouldn't
+surprise me too much if "try to dissassemble in Arm mode
+starting at an unaligned address" was one of those cases.
+But more generally it assumes that the disassemblers are
+reliable sources of information on the length of instructions,
+and I don't think that's true any more -- they tend to lag
+behind on newer instruction set features and we don't try
+to keep them up to date.
 
-> > - debug enabled
-> 
-> Oh, I forgot:
-> 
-> - clang compiler
-> 
-> (because this isn't an issue with GCC).
-> 
-> > We have jobs with 3 of the 4, but none with
-> > all the 4.
-> > 
-> > Is it worth test it?
+[*] One example from 2017, caused by the translator stopping
+reading insn bytes in an x86 variable length insn as soon as
+it identifies it as not being valid:
+https://lore.kernel.org/qemu-devel/CAFEAcA9HLbnZnfBisNLPnKuf364kPtq8=3D0soF=
+movYRzRWrOtkA@mail.gmail.com/
 
-So it's x86, user emulation is built, debug enabled, on clang. This
-doesn't feel very exotic, though of course --enable-debug will be more
-common for developers while it's not the primary test case for CI.
-
-I don't see any existing test to which it could be added without losing
-another important configuration. Not sure if it's worth an additional
-test when we're already hitting the CI limits too often.
-
-On the other hand, now that I'm looking at the CI configuration, is it
-correct that we have no build for clang + --enable-debug at all? Even if
-you ignore the other conditions? Maybe that's basic enough that we
-should have it.
-
-Kevin
-
+thanks
+-- PMM
 
