@@ -2,76 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB4879A7E2
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:17:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D852179A7E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:19:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qffq9-00086h-4Y; Mon, 11 Sep 2023 08:16:29 -0400
+	id 1qffst-000347-8M; Mon, 11 Sep 2023 08:19:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qffq6-00085i-QD
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:16:27 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qffq2-0000Bv-RF
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:16:25 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-31c65820134so4021372f8f.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 05:16:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694434581; x=1695039381; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=4cVixcCMBazVt4GDV3EydwLTjw2D4rAs8jyybEOv3MQ=;
- b=fZDjIr3SctrAFM2rHepy34QfdZEAVCXOjYXkUXtcuDnW7DqYJc2tSJIezokiYteMvP
- wYWJfFPrx4Exykp0CnD8IMjxcD5NC6csJ7plYLcvCu1+Kg0hUEOki/mmwGS5srZyCfwl
- NEDSTRggJKAy/v2xcAPGqBu4B9s3OVGLzKqSFcZ+CK5HMbK0Rfv2NtI/Zss1pQP9vWsk
- wYjCiNRXA/0+mfb/Xsb0i7e61NF1c6a9lys1wcHIvadjfN+RrI4/5FrvF4KdYdz64s6a
- oDmuQCN84Ycpy941Xz3bGgnf/BNOIbgUC1Wi5nWkvWPEQT6Cc4hHLHkzWwYeEXyxjShI
- Wv4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694434581; x=1695039381;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=4cVixcCMBazVt4GDV3EydwLTjw2D4rAs8jyybEOv3MQ=;
- b=kA2sfKRWJcv7I2+zkP4jffXQi36FveCdaXXWL3MYQ0f2/p6ECVV4kEBgiIukWzJYyh
- 8ulOmd/pdisJgSB7w2P/7fiBtB0+gK9gDAArpyZ29rB1EfNNKVBOd/Bxmu+93mZHIuHC
- gVoGugdW47DEY3Owi0uOYbw5A6nh58j8x3aFbyw4YygGn4ZLvJWDM2hdE7Bg1r5HpbHJ
- /JbEwywJIj/NvfT6UOuEDTYZd++8pF9wtswo4p44kLIJVY7GnjLOJ7oEEzJlMjAKFlUF
- cKDGYLVIXS1ym1pNtWlR+icQlsqSpgvqnHYc3C2xHHes/9g/z5YZ5+tEWkbjCpgioXjN
- Phiw==
-X-Gm-Message-State: AOJu0Yy0R/xGY1mutUUAH9bX1PcEiQ2Yldgo7bqRextRSFSPNJ1PRcFD
- NtWn+n+VqWcmTuIjiYpKo5NcYW95dvg/l9wndCmNug==
-X-Google-Smtp-Source: AGHT+IFhNUwDT0LeYQ8+oz27/30UxTVC/ZJTlhTrdJTISTn7FHqe8Cpr1w0hZv+vNfk36EkuvNn6CiF4nCW6MhMQOcg=
-X-Received: by 2002:adf:a2d2:0:b0:31f:b0ba:f2ce with SMTP id
- t18-20020adfa2d2000000b0031fb0baf2cemr865640wra.9.1694434580651; Mon, 11 Sep
- 2023 05:16:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
+ id 1qffsr-0002yj-0k; Mon, 11 Sep 2023 08:19:17 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
+ id 1qffsn-0000Ud-76; Mon, 11 Sep 2023 08:19:16 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkm3c2FbPz4xKR;
+ Mon, 11 Sep 2023 22:19:08 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkm3X1pPSz4x09;
+ Mon, 11 Sep 2023 22:19:03 +1000 (AEST)
+Message-ID: <b40b9fd5-7fbb-92c6-747f-839a1ca2a0c1@kaod.org>
+Date: Mon, 11 Sep 2023 14:19:01 +0200
 MIME-Version: 1.0
-References: <afa1c81a-3077-45f9-83e7-d6b87b0fcf80@reext.ru>
- <8734zlosqd.fsf@linaro.org>
-In-Reply-To: <8734zlosqd.fsf@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 11 Sep 2023 13:16:09 +0100
-Message-ID: <CAFEAcA9hz=0_wp=i3d=7NVF=H31zk0qJCbMmQ7PdbGRVbG26xA@mail.gmail.com>
-Subject: Re: Disassembler disagrees with translator over instruction decoding
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: =?UTF-8?B?0KHRgtCw0L3QuNGB0LvQsNCyINCu0LTQuNC9?= <CityAceE@reext.ru>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 02/10] hw/fsi: Introduce IBM's scratchpad
+Content-Language: en-US
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20230908222859.3381003-1-ninad@linux.ibm.com>
+ <20230908222859.3381003-3-ninad@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230908222859.3381003-3-ninad@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=62xJ=E3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,111 +68,199 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 11 Sept 2023 at 12:28, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
-ote:
->
->
-> =D0=A1=D1=82=D0=B0=D0=BD=D0=B8=D1=81=D0=BB=D0=B0=D0=B2 =D0=AE=D0=B4=D0=B8=
-=D0=BD <CityAceE@reext.ru> writes:
->
-> > Hello,
-> >
-> > I've just got this message, when I dubugging my code:
-> >
-> > Disassembler disagrees with translator over instruction decoding
-> > Please report this to qemu-devel@nongnu.org
-> >
-> > *
-> >
-> > Binary code is in the attachment.
->
-> The binary seems to reconfigure itself as it executes as I can't find
-> the instructions in the objdump. However via gdbstub we get to:
->
->   (gdb) x/4i $pc
->   =3D> 0x60011ab8:  pop     {r0, r1, r2, r3, r4, r5, r6, pc}
->      0x60011aba:  push    {lr}
->      0x60011abc:  mov.w   r11, #4
->      0x60011ac0:  ldrb.w  r7, [r0, r10]
->   (gdb) x/10i 0x60010168
->      0x60010168:  ldrb    r6, [r0, r1]
->      0x6001016a:  addw    r7, pc, #6
->      0x6001016e:  ldr.w   pc, [r7]
->      0x60010172:  lsls    r2, r6, #21
->      0x60010174:  str     r1, [r0, #0]
->      0x60010176:  lsls    r2, r7, #21
->      0x60010178:  str     r1, [r0, #0]
->      0x6001017a:  lsls    r6, r3, #22
->      0x6001017c:  str     r1, [r0, #0]
->      0x6001017e:  lsls    r6, r5, #22
->   (gdb) hbreak *0x6001016e
->   Hardware assisted breakpoint 2 at 0x6001016e
->   (gdb) c
->   Continuing.
->
->   Breakpoint 2, 0x6001016e in ?? ()
->   (gdb) i
->   0x60010572 in ?? ()
->   =3D> 0x60010572:  streq   pc, [r4, #-421] @ 0xfffffe5b
->      0x60010576:  ldmiblt r7, {r0, r12, sp, lr, pc}^
->      0x6001057a:  tsteq   r1, r1, lsl #2  @ <UNPREDICTABLE>
->   (gdb) x/5i $pc
->   =3D> 0x60010572:  streq   pc, [r4, #-421] @ 0xfffffe5b
->      0x60010576:  ldmiblt r7, {r0, r12, sp, lr, pc}^
->      0x6001057a:  tsteq   r1, r1, lsl #2  @ <UNPREDICTABLE>
->      0x6001057e:  smlabteq        r0, r0, r2, pc  @ <UNPREDICTABLE>
->      0x60010582:  blt     0x61da66a2
->   (gdb) x/10w $pc
->   0x60010572:     0x0504f1a5      0xb9d7f001      0x0101f101      0x0100f=
-2c0
->   0x60010582:     0xba765846      0x0300f2c0      0x0436bfe1      0x31024=
-333
->   0x60010592:     0x0100f2c0      0x050af1a5
->   (gdb)
+On 9/9/23 00:28, Ninad Palsule wrote:
+> This is a part of patchset where IBM's Flexible Service Interface is
+> introduced.
+> 
+> The LBUS device is embeded inside the scratchpad. The scratchpad
+> provides a non-functional registers. There is a 1-1 relation between
+> scratchpad and LBUS devices. Each LBUS device has 1K memory mapped in
+> the LBUS.
 
-Notice that the PC here is not 4-aligned, but the
-disassembly is being done in Arm mode. (Presumably the
-guest code has messed up trying to jump to Thumb code.)
 
-In the trace in the screenshot, you can also see that the
-warning happens after an attempted ldr.w   pc, [r7],
-and the next thing translated is at address 0xc, which
-is an exception entry point. So likely the complaint is
-about the bogus instruction at wherever the incorrect
-return address takes us, which provoked an exception.
+The commit log is a bit confusing.
 
-(Note to the original reporter: you'll find it easier to
-debug from -d logging if you add 'exec,cpu,int' to your -d list:
-this will then log (a) actual execution with guest register
-contents, not just translation-time instruction traces
-(b) information about when an exception is taken.)
+C.
 
-> Which seems to agree with the disassembler from the console:
->
->   (qemu) x/5i 0x60010572
->   0x60010572:  0504f1a5  streq    pc, [r4, #-0x1a5]
->   0x60010576:  b9d7f001  ldmiblt  r7, {r0, ip, sp, lr, pc} ^
->   0x6001057a:  0101f101  mrseq    pc, apsr
->   0x6001057e:  0100f2c0  smlabteq r0, r0, r2, pc
->   0x60010582:  ba765846  blt      #0x61da66a2
 
-I think we should delete that warning message, personally.
-There are a few "expected" corner cases where it can fire,
-I think, though I can't remember the details.[*] It wouldn't
-surprise me too much if "try to dissassemble in Arm mode
-starting at an unaligned address" was one of those cases.
-But more generally it assumes that the disassemblers are
-reliable sources of information on the length of instructions,
-and I don't think that's true any more -- they tend to lag
-behind on newer instruction set features and we don't try
-to keep them up to date.
+> 
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+> ---
+> v2:
+> - Incorporated Joel's review comments.
+> ---
+>   hw/fsi/Kconfig                     |   4 ++
+>   hw/fsi/engine-scratchpad.c         | 100 +++++++++++++++++++++++++++++
+>   hw/fsi/meson.build                 |   1 +
+>   include/hw/fsi/engine-scratchpad.h |  33 ++++++++++
+>   4 files changed, 138 insertions(+)
+>   create mode 100644 hw/fsi/engine-scratchpad.c
+>   create mode 100644 include/hw/fsi/engine-scratchpad.h
+> 
+> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+> index 687449e14e..2a9c49f2c9 100644
+> --- a/hw/fsi/Kconfig
+> +++ b/hw/fsi/Kconfig
+> @@ -1,2 +1,6 @@
+> +config SCRATCHPAD
+> +    bool
+> +    select LBUS
+> +
+>   config LBUS
+>       bool
+> diff --git a/hw/fsi/engine-scratchpad.c b/hw/fsi/engine-scratchpad.c
+> new file mode 100644
+> index 0000000000..15a8f8cc66
+> --- /dev/null
+> +++ b/hw/fsi/engine-scratchpad.c
+> @@ -0,0 +1,100 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM scratchpad engine
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +
+> +#include "qapi/error.h"
+> +#include "qemu/log.h"
+> +
+> +#include "hw/fsi/engine-scratchpad.h"
+> +
+> +static uint64_t scratchpad_read(void *opaque, hwaddr addr, unsigned size)
+> +{
+> +    ScratchPad *s = SCRATCHPAD(opaque);
+> +
+> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
+> +                  __func__, addr, size);
+> +
+> +    if (addr) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for %u\n",
+> +                      __func__, addr, size);
+> +        return 0;
+> +    }
+> +
+> +    return s->reg;
+> +}
+> +
+> +static void scratchpad_write(void *opaque, hwaddr addr, uint64_t data,
+> +                                 unsigned size)
+> +{
+> +    ScratchPad *s = SCRATCHPAD(opaque);
+> +
+> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=%d "
+> +                  "value=%"PRIx64"\n", __func__, addr, size, data);
+> +
+> +    if (addr) {
+> +        qemu_log_mask(LOG_GUEST_ERROR,
+> +                      "%s: Out of bounds write: 0x%"HWADDR_PRIx" for %u\n",
+> +                      __func__, addr, size);
+> +        return;
+> +    }
+> +
+> +    s->reg = data;
+> +}
+> +
+> +static const struct MemoryRegionOps scratchpad_ops = {
+> +    .read = scratchpad_read,
+> +    .write = scratchpad_write,
+> +    .endianness = DEVICE_BIG_ENDIAN,
+> +};
+> +
+> +static void scratchpad_realize(DeviceState *dev, Error **errp)
+> +{
+> +    LBusDevice *ldev = LBUS_DEVICE(dev);
+> +
+> +    memory_region_init_io(&ldev->iomem, OBJECT(ldev), &scratchpad_ops,
+> +                          ldev, TYPE_SCRATCHPAD, 0x400);
+> +}
+> +
+> +static void scratchpad_reset(DeviceState *dev)
+> +{
+> +    ScratchPad *s = SCRATCHPAD(dev);
+> +
+> +    s->reg = 0;
+> +}
+> +
+> +static void scratchpad_class_init(ObjectClass *klass, void *data)
+> +{
+> +    DeviceClass *dc = DEVICE_CLASS(klass);
+> +    LBusDeviceClass *ldc = LBUS_DEVICE_CLASS(klass);
+> +
+> +    dc->realize = scratchpad_realize;
+> +    dc->reset = scratchpad_reset;
+> +
+> +    ldc->config =
+> +          ENGINE_CONFIG_NEXT            /* valid */
+> +        | 0x00010000                    /* slots */
+> +        | 0x00001000                    /* version */
+> +        | ENGINE_CONFIG_TYPE_SCRATCHPAD /* type */
+> +        | 0x00000007;                   /* crc */
+> +}
+> +
+> +static const TypeInfo scratchpad_info = {
+> +    .name = TYPE_SCRATCHPAD,
+> +    .parent = TYPE_LBUS_DEVICE,
+> +    .instance_size = sizeof(ScratchPad),
+> +    .class_init = scratchpad_class_init,
+> +    .class_size = sizeof(LBusDeviceClass),
+> +};
+> +
+> +static void scratchpad_register_types(void)
+> +{
+> +    type_register_static(&scratchpad_info);
+> +}
+> +
+> +type_init(scratchpad_register_types);
+> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+> index e1007d5fea..f90e09ddab 100644
+> --- a/hw/fsi/meson.build
+> +++ b/hw/fsi/meson.build
+> @@ -1 +1,2 @@
+>   system_ss.add(when: 'CONFIG_LBUS', if_true: files('lbus.c'))
+> +system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: files('engine-scratchpad.c'))
+> diff --git a/include/hw/fsi/engine-scratchpad.h b/include/hw/fsi/engine-scratchpad.h
+> new file mode 100644
+> index 0000000000..63bf89ac5a
+> --- /dev/null
+> +++ b/include/hw/fsi/engine-scratchpad.h
+> @@ -0,0 +1,33 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM scratchpad engne
+> + */
+> +#ifndef FSI_ENGINE_SCRATCHPAD_H
+> +#define FSI_ENGINE_SCRATCHPAD_H
+> +
+> +#include "qemu/bitops.h"
+> +
+> +#include "hw/fsi/lbus.h"
+> +
+> +#define ENGINE_CONFIG_NEXT              BE_BIT(0)
+> +#define ENGINE_CONFIG_VPD               BE_BIT(1)
+> +#define ENGINE_CONFIG_SLOTS             BE_GENMASK(8, 15)
+> +#define ENGINE_CONFIG_VERSION           BE_GENMASK(16, 19)
+> +#define ENGINE_CONFIG_TYPE              BE_GENMASK(20, 27)
+> +#define   ENGINE_CONFIG_TYPE_PEEK       (0x02 << 4)
+> +#define   ENGINE_CONFIG_TYPE_FSI        (0x03 << 4)
+> +#define   ENGINE_CONFIG_TYPE_SCRATCHPAD (0x06 << 4)
+> +#define ENGINE_CONFIG_CRC              BE_GENMASK(28, 31)
+> +
+> +#define TYPE_SCRATCHPAD "scratchpad"
+> +#define SCRATCHPAD(obj) OBJECT_CHECK(ScratchPad, (obj), TYPE_SCRATCHPAD)
+> +
+> +typedef struct ScratchPad {
+> +        LBusDevice parent;
+> +
+> +        uint32_t reg;
+> +} ScratchPad;
+> +
+> +#endif /* FSI_ENGINE_SCRATCHPAD_H */
 
-[*] One example from 2017, caused by the translator stopping
-reading insn bytes in an x86 variable length insn as soon as
-it identifies it as not being valid:
-https://lore.kernel.org/qemu-devel/CAFEAcA9HLbnZnfBisNLPnKuf364kPtq8=3D0soF=
-movYRzRWrOtkA@mail.gmail.com/
-
-thanks
--- PMM
 
