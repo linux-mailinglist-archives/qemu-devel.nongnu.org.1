@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A24679AB75
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A38B879AB78
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:14:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfoDn-0003cp-RY; Mon, 11 Sep 2023 17:13:27 -0400
+	id 1qfoDs-0003dL-Ch; Mon, 11 Sep 2023 17:13:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDl-0003cg-Io
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:25 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDr-0003dB-77
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:31 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDj-0005BT-C3
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:25 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9a9d82d73f9so607114366b.3
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:13:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDp-0005Bv-01
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:30 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-991c786369cso653480066b.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:13:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694466801; x=1695071601; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=+i6b3bA3Rg0SUcnPH4Ss1gYaJoTqAir2E8b0QJQ/x7A=;
- b=SHOuZudYYGECnPb8iG/xQaliLcbHfEBDSVOVkfMEvt7GuoPyDi2Jra9KwNJZpDEYLt
- ZvGkuiSmBfDx+1ubFYHJ9svpMH362CXrJTvYF6KC2f82JC1sC/BYHGbuEWsOXRx5lk+d
- 3CKYop/IappV5eg9dT/EwIrv/VDcDtSSgYhs5jngymFOxdMCwMJ1vUWfMntpNxiQnTOF
- Www935TRpgOM88O+amMciPY9o+GAFqBCfHC5534RuqcfUspk7ZN8rEbevyUN+cdY6VOx
- 2jPCpT4/27IVGYlIuBnhYyjKBZz3YqpJMHJwI5ycAoHxuKLmF8UkKcKSzZJY01vq6O18
- Bvzw==
+ d=linaro.org; s=google; t=1694466807; x=1695071607; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=krYgPPa35VQ/Pn0yOr01dbPDQetUwcBiBN86SxBA8xI=;
+ b=DMmtUxDc4vdYzacIveds67u34/IpRIDo/8oqLJ4rntX5q3yUoDQdtUVmWmVbdQF4gJ
+ 11AbQPvobLU1+RwugK5iU3rTx9cR0oBcLposNprkuGqnBPwkRsbKJyC8DJSu7HNqYXLL
+ 4mInct+0A3iswXezTIkTAO1MQmjabcIgdhIH2w0iZAZggqQ4toSFO7J5E8H+yD8maMtO
+ RBYE7iAybRjIcDXOZkAP1NEn58vuEJ4FYZRhweklYu3SIN7e5x+1mBXBjURE89lKF2eD
+ r7A0b3QM/Sl/d2RwKTPr4KBlMBmx7350ZQSaq2t/Cf6BRBJJOCQLeVa5O0z0ZTcBoBIq
+ syOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694466801; x=1695071601;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+i6b3bA3Rg0SUcnPH4Ss1gYaJoTqAir2E8b0QJQ/x7A=;
- b=WnyCjjzYmg7PW005JLpbZH+FBTNrCOk3XIk7XCDaWRnn9oGqieiE+5PZ8wzQ6X9B70
- U0OwnA+YABdx/OWGN16OTOK/tfPIiCcXA5KaYykQBcnbZFqaMnGh7zC7Fc+ILxZnEsxe
- ufq6kduPp0ElsQ1FWX8BcjB5uFTZvgvOxeOBJa12+lhDRcr6wVk+noZlKcJcFXVFi6av
- /tbwJr6d1CLV36YjZBEyM/MAmbSoolblshJHlvgHJdaIGnTWr5ipBOilWubvidh1S0ps
- FxmRSLiCZ3rIUk10BAnjZ+qB0fpZJGC+iM4agenZ7IM4GvelH8KWSBHHoQcWyoTFnhGq
- 0Pjw==
-X-Gm-Message-State: AOJu0YwjEZgg1YX0ay4pJK8iRWD2KXipQ0FYuqT43AerYP3DVrII5KtY
- wbJnI5k6WlLH9ANrSy07t874iKJ6Z7moTqEk0Z4=
-X-Google-Smtp-Source: AGHT+IElUDIPmZ/cuW0+paD+bclrhVYiKji+qUy1+WUV9TZqVwtCVc8ugnSPJ1h1PnaIoN52qjgbcg==
-X-Received: by 2002:a17:907:7804:b0:9a1:aa7b:482e with SMTP id
- la4-20020a170907780400b009a1aa7b482emr8911335ejc.26.1694466801049; 
- Mon, 11 Sep 2023 14:13:21 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694466807; x=1695071607;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=krYgPPa35VQ/Pn0yOr01dbPDQetUwcBiBN86SxBA8xI=;
+ b=ZGpQn0Q60p/araBM9xR181vtpbUSOgc2UKItS6Sq5J4elI10q+T5Gopdy4v+zksQTY
+ 6j8t27MRzwyeSW0MVSb15aB7OgH2HDikvDR3dcvu9eHl/DNFoK706I9CyXf7rFMNZPM+
+ +HlHbz+6xallfpFNC/Pg7dZ2h5AW2G762NN5X/4O1k+52xQQ5IkeTrPL6N7dz9DUEIlT
+ y3eJqeIkHMJpNGy5WNYSkP9Ud58CJEC3IxqQdEoXM3nhpUudbM6bxdb0UWaU/zIlf8gb
+ 6yQSToeRcjXz8svD3nuEpNOVSu8MAIsU5hs5f5Z0QmEgnwDG69t3Hmvg0OzTZKOZsoHK
+ XjUQ==
+X-Gm-Message-State: AOJu0YyzNXSfv2ia0Gh/H5RSFfRmyM5TBDZwUXbz6LebfGZgsCX6pTJv
+ 22VsG2sv+yU6i6gufHDJ+0csUpIrKFHRq/NUA04=
+X-Google-Smtp-Source: AGHT+IFb5xqfZhu6crzjkbBsTvKTmhmHOZhghmVtnzEZLh0+fZEAmQHgX4ItZFeAc78+suXTk4fGFg==
+X-Received: by 2002:a17:906:749b:b0:9a5:852f:10bd with SMTP id
+ e27-20020a170906749b00b009a5852f10bdmr8629126ejl.62.1694466807044; 
+ Mon, 11 Sep 2023 14:13:27 -0700 (PDT)
 Received: from m1x-phil.lan (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
  [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- n16-20020a170906379000b009930308425csm5884542ejc.31.2023.09.11.14.13.19
+ gt34-20020a1709072da200b009ad8796a6aesm33004ejc.56.2023.09.11.14.13.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Sep 2023 14:13:20 -0700 (PDT)
+ Mon, 11 Sep 2023 14:13:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -62,16 +63,18 @@ Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Marcelo Tosatti <mtosatti@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v4 0/3] target/i386: Restrict system-specific features from
- user emulation
-Date: Mon, 11 Sep 2023 23:13:14 +0200
-Message-ID: <20230911211317.28773-1-philmd@linaro.org>
+Subject: [PATCH v4 1/3] target/i386: Check kvm_hyperv_expand_features() return
+ value
+Date: Mon, 11 Sep 2023 23:13:15 +0200
+Message-ID: <20230911211317.28773-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230911211317.28773-1-philmd@linaro.org>
+References: <20230911211317.28773-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,24 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Too many system-specific code (and in particular KVM related)
-is pulled in user-only build. This led to adding unjustified
-stubs as kludge to unagressive linker non-optimizations.
+Move kvm_hyperv_expand_features() call earlier (this will simplify
+reviewing the next commit) and check its return value, since it can
+fail.
 
-This series restrict x86 system-specific features to sysemu,
-so we don't require any stub, and remove all x86 KVM declarations
-from user emulation code (to trigger compile failure instead of
-link one).
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/i386/cpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Philippe Mathieu-Daudé (3):
-  target/i386: Check kvm_hyperv_expand_features() return value
-  RFC target/i386: Restrict system-specific features from user emulation
-  target/i386: Prohibit target specific KVM prototypes on user emulation
-
- target/i386/kvm/kvm_i386.h |  4 +++
- target/i386/cpu.c          | 58 +++++++++++++++++++++++++++++++++-----
- 2 files changed, 55 insertions(+), 7 deletions(-)
-
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 24ee67b42d..760428d4dc 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7107,6 +7107,10 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+         }
+     }
+ 
++    if (kvm_enabled() && !kvm_hyperv_expand_features(cpu, errp)) {
++        return;
++    }
++
+     /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set */
+     if (env->cpuid_level_func7 == UINT32_MAX) {
+         env->cpuid_level_func7 = env->cpuid_min_level_func7;
+@@ -7120,10 +7124,6 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
+     if (env->cpuid_xlevel2 == UINT32_MAX) {
+         env->cpuid_xlevel2 = env->cpuid_min_xlevel2;
+     }
+-
+-    if (kvm_enabled()) {
+-        kvm_hyperv_expand_features(cpu, errp);
+-    }
+ }
+ 
+ /*
 -- 
 2.41.0
 
