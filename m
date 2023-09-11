@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C29279A9E5
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 17:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C812679A9E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 17:44:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfj4k-0007vO-3S; Mon, 11 Sep 2023 11:43:46 -0400
+	id 1qfj5I-00007n-G8; Mon, 11 Sep 2023 11:44:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qfj4i-0007uc-1G
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:43:44 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ id 1qfj5E-00006r-Vi
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:44:18 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qfj4f-0004Fx-PF
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:43:43 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-51a52a7d859so12243512a12.0
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 08:43:41 -0700 (PDT)
+ id 1qfj5B-0004Qm-05
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 11:44:16 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-500c37d479aso7426917e87.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 08:44:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694447020; x=1695051820; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694447051; x=1695051851; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Jznnk+tVY05ug114C2B8KIDSOcgDo78R1CMCwVNTR2Y=;
- b=Es60qTLZzY0KAGr6R3n11o0b8GATPAct0kI7TeqquC/zKPy7nzvlN1gYxmxM1Z5MsS
- bUsMPoDH645yHpNzqQJtlDHrzNEMvGAOet1Ej4ixV60FUPunbHrXWIRFPZC1yo3incwJ
- 9WRmllauAD0be9K9mF7PFppUfaMZPXFO6QJFJfT+IQy6f/H9FuKQa+/8ZBGLt5NoPK50
- BSiMXj/48Me6eyeN+WDZg2qjXbkwzmAGee4PTs6SQLaptvCCgzW1aiNuUEbGwCGwWCj+
- 7OhD2/jrpT62FiV+i8WoxcdnuohLKysTYy1KP74ZcqsZpGgagK8UbnEY2mU3wV2oHgNc
- nkgQ==
+ bh=1QwnxYmVxGUekBnBUUfb7qhIMP95O7xl0w1iu7UEpwY=;
+ b=Rx0zR5XsAuIGDh9mCKZmvKbxHNVxbZ9OsF7fDx1UczbO9ySGqCHKhfgt9V5wr0O0y6
+ yb12ddlGmrqI3YLo1PIHRUjAMNA3L+DCCp2jqKwrVHO0jheZPCETQ33QqegPeCsHuPev
+ 5gsD4Y8IxwHMxrmFHnVMuRYtuNF/+gs86KZ90Ill8El/f0Fk4kTGHi+yJqSLSjeTL/d4
+ KPQPUfIcEE5b35luAf5Tl+ZusPUQNVwrkc58WqJxHHv879TC1Y+OVu9H5YjfhLKAcU9e
+ ZXWXgV9wiFG4nQzxPvWEBe2FDPPZiFNOreKKxQAnn/wXp4cB1RPrRxjxYRxzluharvWZ
+ QH7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694447020; x=1695051820;
+ d=1e100.net; s=20230601; t=1694447051; x=1695051851;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Jznnk+tVY05ug114C2B8KIDSOcgDo78R1CMCwVNTR2Y=;
- b=ayTbBKJPTIHDZLllJynciM9rXnUrwrFQb42Eep8jnQBDwJYYPgxLsH/UqyQV7VodaT
- sqsZtokIEGclZxFnqBCckYly1me07gQXuBpQCgZ74A1JUXQH0CXxm8T8dTjqCIY1TmeQ
- s0LEZZftdkMufPjQTDKdCAdU82UnU+0bZaqa+FR5nP/OTli/Jm9sBhiEJj0l8lTup64s
- JhDM6hh20nE1qL2G0GPyxZpdCnAF93QQKBGqWn4kb0NVj6gpELoSlw34sfQr/tbvjc8H
- 7pIzvfJoGsYxW3ANENN8W5vFMSr/qj1LUtxP/suDZ+5QTmeN/mOvdJalg9qZbecybiU1
- TgOQ==
-X-Gm-Message-State: AOJu0YwUeAU5GufC5N61NOt/qGjvlSxiZotDBcSHRxpFqnCU/6XJYYlL
- m8xofXntdxvz8mA5UObZ5GPeYBhYXvEzplkNOjNdXedGHgQrIi5J
-X-Google-Smtp-Source: AGHT+IF52XDnj/tfbCin0q09EiYFLOeOOPZRyy7RVzbRPy23xHKAPtZRA705G7ozFPouEptLmOmVCmmboBGeAhO6QtM=
-X-Received: by 2002:a05:6402:270c:b0:52e:3ce8:e333 with SMTP id
- y12-20020a056402270c00b0052e3ce8e333mr9408edd.18.1694447020413; Mon, 11 Sep
- 2023 08:43:40 -0700 (PDT)
+ bh=1QwnxYmVxGUekBnBUUfb7qhIMP95O7xl0w1iu7UEpwY=;
+ b=IQI8pVZ/oNTZQ4Q8FLBVSpHfquwCWYN+/yer8JEd01JViMNNLF9lteGCJGi+VvgYH8
+ CCmwMSnJz6ZeMFp17Rgvvz82CZckShxmi8RXFU48jWvXFXcfsK24+pJYh4CkFVQ6uipz
+ 3hf1sfJVtWRQbn5dbwKN8qEm5MOwTglDQ0Sz2ff8SkRNeFLU2jeoYAX/I6ELwPzks5RR
+ OyuN+jCzZdM04uWHdDrpDfAqo4sdKdAlLhwywVVgEzJjXqG766R1sbPY1dQigeeGr3e0
+ m1KZi3Xhn1G5mrlGy6d7adzSacf1KoHkiL/2OtcvqjgRaNuRC6sB89W2b4z5OyT0Oe6n
+ dfRg==
+X-Gm-Message-State: AOJu0YwJlESm5wjBvnKn27mmTxupK92ArCkVD2B4LNm/Vpq4B9xGc/O5
+ Lj2LKcz8hs/c8nxqDtCobh6f8WBsOSjYHeIocr+QuA==
+X-Google-Smtp-Source: AGHT+IGPH31CdWfhUON/Fc9/jochCigkKQDRB3/k8qkKIMFmye4mXc4hUwb8Ua+4mPRERkGFMsbp+717XwPnxQXWrU0=
+X-Received: by 2002:a05:6512:2251:b0:500:83dd:27e6 with SMTP id
+ i17-20020a056512225100b0050083dd27e6mr8875563lfu.27.1694447051006; Mon, 11
+ Sep 2023 08:44:11 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230908143703.172758-1-kwolf@redhat.com>
- <20230908143703.172758-4-kwolf@redhat.com>
-In-Reply-To: <20230908143703.172758-4-kwolf@redhat.com>
+ <20230908143703.172758-5-kwolf@redhat.com>
+In-Reply-To: <20230908143703.172758-5-kwolf@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 11 Sep 2023 16:43:29 +0100
-Message-ID: <CAFEAcA_xTCVw5rabo0CgMmvA2NUPbmqd0qjRQB1XBo84NiCyVw@mail.gmail.com>
-Subject: Re: [PATCH 03/11] hw/arm/mps2-tz: Use qdev_prop_set_array()
+Date: Mon, 11 Sep 2023 16:44:00 +0100
+Message-ID: <CAFEAcA--Hz30PQbA2MR53tx+o91ZX+E+Xq-RCfKFZzrAkur7wA@mail.gmail.com>
+Subject: Re: [PATCH 04/11] hw/arm/mps2: Use qdev_prop_set_array()
 To: Kevin Wolf <kwolf@redhat.com>
 Cc: qemu-devel@nongnu.org, armbru@redhat.com, berrange@redhat.com, 
  pbonzini@redhat.com
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,6 +94,8 @@ On Fri, 8 Sept 2023 at 15:37, Kevin Wolf <kwolf@redhat.com> wrote:
 >
 > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 > ---
+>  hw/arm/mps2.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
