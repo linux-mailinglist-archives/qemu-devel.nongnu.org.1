@@ -2,70 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506B179A7E9
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3982A79A7EB
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 14:30:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfg1D-0007X5-Sq; Mon, 11 Sep 2023 08:27:55 -0400
+	id 1qfg3J-0001xI-88; Mon, 11 Sep 2023 08:30:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qfg19-0007Vh-Lh
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:27:51 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qfg13-0001zg-Oh
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 08:27:51 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8BxJvG4B_9klKYkAA--.6383S3;
- Mon, 11 Sep 2023 20:27:36 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxLCO2B_9kG1d3AA--.2317S3; 
- Mon, 11 Sep 2023 20:27:34 +0800 (CST)
-Subject: Re: [PATCH RESEND v5 14/57] target/loongarch: Implement xvadd/xvsub
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: maobibo@loongson.cn
-References: <20230907083158.3975132-1-gaosong@loongson.cn>
- <20230907083158.3975132-15-gaosong@loongson.cn>
- <24a9ba29-e6a0-2f97-0b5a-de0adf5680cf@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <6bb654bb-1f7c-8e75-a530-3c10644474f4@loongson.cn>
-Date: Mon, 11 Sep 2023 20:27:34 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
+ id 1qfg3G-0001lT-Qy; Mon, 11 Sep 2023 08:30:02 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=62xJ=E3=kaod.org=clg@ozlabs.org>)
+ id 1qfg3A-0002Pr-5h; Mon, 11 Sep 2023 08:30:02 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RkmHx6KMKz4xGR;
+ Mon, 11 Sep 2023 22:29:49 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RkmHt2HMhz4x7V;
+ Mon, 11 Sep 2023 22:29:46 +1000 (AEST)
+Message-ID: <d82f227d-834c-1302-cf0b-11e06d09ec29@kaod.org>
+Date: Mon, 11 Sep 2023 14:29:44 +0200
 MIME-Version: 1.0
-In-Reply-To: <24a9ba29-e6a0-2f97-0b5a-de0adf5680cf@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 05/10] hw/fsi: IBM's On-chip Peripheral Bus
 Content-Language: en-US
+To: Ninad Palsule <ninad@linux.ibm.com>, qemu-devel@nongnu.org,
+ peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
+ pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
+ thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
+Cc: qemu-arm@nongnu.org
+References: <20230908222859.3381003-1-ninad@linux.ibm.com>
+ <20230908222859.3381003-6-ninad@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20230908222859.3381003-6-ninad@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxLCO2B_9kG1d3AA--.2317S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7AFyUWw15GFyrJw1UXr1xtFc_yoW8KF1rpr
- 18JrWUAFWUJr1fJr1Utr1UAry5Ar18Jw1UJr1rXF18Ar4UJr1jgF15Xw1qgr1UJr4kCr1U
- Ar17Zr17Zr17JrgCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
- 02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAF
- wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
- CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
- 67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1Y6r17MI
- IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
- 14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
- W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UWHqcU
- UUUU=
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=62xJ=E3=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -30
+X-Spam_score: -3.1
 X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,64 +67,336 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/9/10 上午9:44, Richard Henderson 写道:
-> On 9/7/23 01:31, Song Gao wrote:
->> --- a/target/loongarch/insn_trans/trans_vec.c.inc
->> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
->> @@ -208,6 +208,16 @@ static bool gvec_vvv(DisasContext *ctx, arg_vvv 
->> *a, MemOp mop,
->>       return gvec_vvv_vl(ctx, a, 16, mop, func);
->>   }
->> +static bool gvec_xxx(DisasContext *ctx, arg_vvv *a, MemOp mop,
->> +                     void (*func)(unsigned, uint32_t, uint32_t,
->> +                                  uint32_t, uint32_t, uint32_t))
->> +{
->> +    if (!check_vec(ctx, 32)) {
->> +        return true;
->> +    }
->> +
->> +    return gvec_vvv_vl(ctx, a, 32, mop, func);
->> +}
+On 9/9/23 00:28, Ninad Palsule wrote:
+> This is a part of patchset where IBM's Flexible Service Interface is
+> introduced.
 > 
-> You can move check_vec into gvec_vvv_vl, removing it from gvec_vvv.
+> The On-Chip Peripheral Bus (OPB): A low-speed bus typically found in
+> POWER processors. This now makes an appearance in the ASPEED SoC due
+> to tight integration of the FSI master IP with the OPB, mainly the
+> existence of an MMIO-mapping of the CFAM address straight onto a
+> sub-region of the OPB address space.
 > 
->> +static bool gen_vaddsub_q_vl(DisasContext *ctx, arg_vvv *a, uint32_t 
->> oprsz,
->> +                             void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
->> +                                          TCGv_i64, TCGv_i64, TCGv_i64))
->> +{
->> +    int i;
->> +    TCGv_i64 rh, rl, ah, al, bh, bl;
+> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
+> Reviewed-by: Joel Stanley <joel@jms.id.au>
+> ---
+> v2:
+> - Incorporated review comment by Joel.
+> ---
+>   hw/fsi/Kconfig       |   4 +
+>   hw/fsi/fsi-master.c  |   6 +-
+>   hw/fsi/meson.build   |   1 +
+>   hw/fsi/opb.c         | 194 +++++++++++++++++++++++++++++++++++++++++++
+>   include/hw/fsi/opb.h |  43 ++++++++++
+>   5 files changed, 244 insertions(+), 4 deletions(-)
+>   create mode 100644 hw/fsi/opb.c
+>   create mode 100644 include/hw/fsi/opb.h
 > 
-> Have check_vec here ...
-> 
->> +static bool gen_vaddsub_q(DisasContext *ctx, arg_vvv *a,
->> +                          void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
->> +                                       TCGv_i64, TCGv_i64, TCGv_i64))
->> +{
->> +    if (!check_vec(ctx, 16)) {
->> +        return true;
->> +    }
->> +
->> +    return gen_vaddsub_q_vl(ctx, a, 16, func);
->> +}
->> +
->> +static bool gen_xvaddsub_q(DisasContext *ctx, arg_vvv *a,
->> +                           void (*func)(TCGv_i64, TCGv_i64, TCGv_i64,
->> +                                        TCGv_i64, TCGv_i64, TCGv_i64))
->> +{
->> +    if (!check_vec(ctx, 32)) {
->> +        return true;
->> +    }
->> +    return gen_vaddsub_q_vl(ctx, a, 16, func);
->> +}
-> 
-> ... instead of these two places.
-> 
-> 
-Ok, I will correct all similar patches.
+> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
+> index 087980be22..560ce536db 100644
+> --- a/hw/fsi/Kconfig
+> +++ b/hw/fsi/Kconfig
+> @@ -1,3 +1,7 @@
+> +config OPB
+> +    bool
+> +    select CFAM
+> +
+>   config CFAM
+>       bool
+>       select FSI
+> diff --git a/hw/fsi/fsi-master.c b/hw/fsi/fsi-master.c
+> index fe1693539a..46103f84e9 100644
+> --- a/hw/fsi/fsi-master.c
+> +++ b/hw/fsi/fsi-master.c
+> @@ -7,14 +7,12 @@
+>   
+>   #include "qemu/osdep.h"
+>   
+> +#include "qemu/bitops.h"
+>   #include "qapi/error.h"
+> -
+>   #include "qemu/log.h"
+>   
+> -#include "hw/fsi/bits.h"
+>   #include "hw/fsi/fsi-master.h"
+> -
+> -#define TYPE_OP_BUS "opb"
+> +#include "hw/fsi/opb.h"
+>   
+>   #define TO_REG(x)                               ((x) >> 2)
 
-Thanks.
-Song Gao
+
+These change do not belong to this patch.
+
+> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
+> index ca80d11cb9..cab645f4ea 100644
+> --- a/hw/fsi/meson.build
+> +++ b/hw/fsi/meson.build
+> @@ -2,3 +2,4 @@ system_ss.add(when: 'CONFIG_LBUS', if_true: files('lbus.c'))
+>   system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: files('engine-scratchpad.c'))
+>   system_ss.add(when: 'CONFIG_CFAM', if_true: files('cfam.c'))
+>   system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi.c','fsi-master.c','fsi-slave.c'))
+> +system_ss.add(when: 'CONFIG_OPB', if_true: files('opb.c'))
+> diff --git a/hw/fsi/opb.c b/hw/fsi/opb.c
+> new file mode 100644
+> index 0000000000..ac7693c001
+> --- /dev/null
+> +++ b/hw/fsi/opb.c
+> @@ -0,0 +1,194 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM On-chip Peripheral Bus
+> + */
+> +
+> +#include "qemu/osdep.h"
+> +
+> +#include "qapi/error.h"
+> +#include "qemu/log.h"
+> +
+> +#include "hw/fsi/opb.h"
+> +
+> +static MemTxResult opb_read(OPBus *opb, hwaddr addr, void *data, size_t len)
+> +{
+> +    return address_space_read(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, data,
+> +                              len);
+> +}
+
+This routine doesn't look very useful. Same for the write.
+
+> +
+> +uint8_t opb_read8(OPBus *opb, hwaddr addr)
+> +{
+> +    MemTxResult tx;
+> +    uint8_t data;
+> +
+> +    tx = opb_read(opb, addr, &data, sizeof(data));
+> +    /* FIXME: improve error handling */
+> +    assert(!tx);
+
+should output a qemu_log_mask(LOG_GUEST_ERROR) may be ? But I don't think
+we should assert.
+
+> +
+> +    return data;
+> +}
+> +
+> +uint16_t opb_read16(OPBus *opb, hwaddr addr)
+> +{
+> +    MemTxResult tx;
+> +    uint16_t data;
+> +
+> +    tx = opb_read(opb, addr, &data, sizeof(data));
+> +    /* FIXME: improve error handling */
+> +    assert(!tx);
+
+same
+
+> +
+> +    return data;
+> +}
+> +
+> +uint32_t opb_read32(OPBus *opb, hwaddr addr)
+> +{
+> +    MemTxResult tx;
+> +    uint32_t data;
+> +
+> +    tx = opb_read(opb, addr, &data, sizeof(data));
+> +    /* FIXME: improve error handling */
+> +    assert(!tx);
+> +
+> +    return data;
+> +}
+> +
+> +static MemTxResult opb_write(OPBus *opb, hwaddr addr, void *data, size_t len)
+> +{
+> +    return address_space_write(&opb->as, addr, MEMTXATTRS_UNSPECIFIED, data,
+> +                               len);
+> +}
+> +
+> +void opb_write8(OPBus *opb, hwaddr addr, uint8_t data)
+> +{
+> +    MemTxResult tx;
+> +
+> +    tx = opb_write(opb, addr, &data, sizeof(data));
+> +    /* FIXME: improve error handling */
+> +    assert(!tx);
+> +}
+> +
+> +void opb_write16(OPBus *opb, hwaddr addr, uint16_t data)
+> +{
+> +    MemTxResult tx;
+> +
+> +    tx = opb_write(opb, addr, &data, sizeof(data));
+> +    /* FIXME: improve error handling */
+> +    assert(!tx);
+> +}
+> +
+> +void opb_write32(OPBus *opb, hwaddr addr, uint32_t data)
+> +{
+> +    MemTxResult tx;
+> +
+> +    tx = opb_write(opb, addr, &data, sizeof(data));
+> +    /* FIXME: improve error handling */
+> +    assert(!tx);
+> +}
+> +
+> +void opb_fsi_master_address(OPBus *opb, hwaddr addr)
+> +{
+> +    memory_region_transaction_begin();
+> +    memory_region_set_address(&opb->fsi.iomem, addr);
+> +    memory_region_transaction_commit();
+> +}
+> +
+> +void opb_opb2fsi_address(OPBus *opb, hwaddr addr)
+> +{
+> +    memory_region_transaction_begin();
+> +    memory_region_set_address(&opb->fsi.opb2fsi, addr);
+> +    memory_region_transaction_commit();
+> +}
+> +
+> +static uint64_t opb_unimplemented_read(void *opaque, hwaddr addr, unsigned size)
+> +{
+> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
+> +                  __func__, addr, size);
+> +
+> +    return 0;
+> +}
+> +
+> +static void opb_unimplemented_write(void *opaque, hwaddr addr, uint64_t data,
+> +                                 unsigned size)
+> +{
+> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=%d "
+> +                  "value=%"PRIx64"\n", __func__, addr, size, data);
+> +}
+> +
+> +static const struct MemoryRegionOps opb_unimplemented_ops = {
+> +    .read = opb_unimplemented_read,
+> +    .write = opb_unimplemented_write,
+> +    .endianness = DEVICE_BIG_ENDIAN,
+> +};
+> +
+> +static void opb_realize(BusState *bus, Error **errp)
+> +{
+> +    OPBus *opb = OP_BUS(bus);
+> +    Error *err = NULL;
+> +
+> +    memory_region_init_io(&opb->mr, OBJECT(opb), &opb_unimplemented_ops, opb,
+> +                          NULL, UINT32_MAX);
+> +    address_space_init(&opb->as, &opb->mr, "opb");
+> +
+> +    object_property_set_bool(OBJECT(&opb->fsi), "realized", true, &err);
+> +    if (err) {
+> +        error_propagate(errp, err);
+> +        return;
+> +    }
+> +    memory_region_add_subregion(&opb->mr, 0x80000000, &opb->fsi.iomem);
+> +
+> +    /* OPB2FSI region */
+> +    /*
+> +     * Avoid endianness issues by mapping each slave's memory region directly.
+> +     * Manually bridging multiple address-spaces causes endian swapping
+> +     * headaches as memory_region_dispatch_read() and
+> +     * memory_region_dispatch_write() correct the endianness based on the
+> +     * target machine endianness and not relative to the device endianness on
+> +     * either side of the bridge.
+> +     */
+> +    /*
+> +     * XXX: This is a bit hairy and will need to be fixed when I sort out the
+> +     * bus/slave relationship and any changes to the CFAM modelling (multiple
+> +     * slaves, LBUS)
+> +     */
+> +    memory_region_add_subregion(&opb->mr, 0xa0000000, &opb->fsi.opb2fsi);
+> +}
+> +
+> +static void opb_init(Object *o)
+> +{
+> +    OPBus *opb = OP_BUS(o);
+> +
+> +    object_initialize_child(o, "fsi-master", &opb->fsi, TYPE_FSI_MASTER);
+> +    qdev_set_parent_bus(DEVICE(&opb->fsi), BUS(o), &error_abort);
+> +}
+> +
+> +static void opb_finalize(Object *o)
+> +{
+> +    OPBus *opb = OP_BUS(o);
+> +
+> +    address_space_destroy(&opb->as);
+> +}
+> +
+> +static void opb_class_init(ObjectClass *klass, void *data)
+> +{
+> +    BusClass *bc = BUS_CLASS(klass);
+> +    bc->realize = opb_realize;
+> +}
+> +
+> +static const TypeInfo opb_info = {
+> +    .name = TYPE_OP_BUS,
+> +    .parent = TYPE_BUS,
+> +    .instance_init = opb_init,
+> +    .instance_finalize = opb_finalize,
+> +    .instance_size = sizeof(OPBus),
+> +    .class_init = opb_class_init,
+> +    .class_size = sizeof(OPBusClass),
+> +};
+> +
+> +static void opb_register_types(void)
+> +{
+> +    type_register_static(&opb_info);
+> +}
+> +
+> +type_init(opb_register_types);
+> diff --git a/include/hw/fsi/opb.h b/include/hw/fsi/opb.h
+> new file mode 100644
+> index 0000000000..f8ce00383e
+> --- /dev/null
+> +++ b/include/hw/fsi/opb.h
+> @@ -0,0 +1,43 @@
+> +/*
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + * Copyright (C) 2023 IBM Corp.
+> + *
+> + * IBM On-Chip Peripheral Bus
+> + */
+> +#ifndef FSI_OPB_H
+> +#define FSI_OPB_H
+> +
+> +#include "exec/memory.h"
+> +#include "hw/fsi/fsi-master.h"
+> +
+> +#define TYPE_OP_BUS "opb"
+> +OBJECT_DECLARE_SIMPLE_TYPE(OPBus, OP_BUS)
+> +
+> +typedef struct OPBus {
+> +        /*< private >*/
+> +        BusState bus;
+> +
+> +        /*< public >*/
+> +        MemoryRegion mr;
+> +        AddressSpace as;
+> +
+> +        /* Model OPB as dumb enough just to provide an address-space */
+> +        /* TODO: Maybe don't store device state in the bus? */
+> +        FSIMasterState fsi;
+> +} OPBus;
+> +
+> +typedef struct OPBusClass {
+> +        BusClass parent_class;
+> +} OPBusClass;
+> +
+> +uint8_t opb_read8(OPBus *opb, hwaddr addr);
+> +uint16_t opb_read16(OPBus *opb, hwaddr addr);
+> +uint32_t opb_read32(OPBus *opb, hwaddr addr);
+> +void opb_write8(OPBus *opb, hwaddr addr, uint8_t data);
+> +void opb_write16(OPBus *opb, hwaddr addr, uint16_t data);
+> +void opb_write32(OPBus *opb, hwaddr addr, uint32_t data);
+> +
+> +void opb_fsi_master_address(OPBus *opb, hwaddr addr);
+> +void opb_opb2fsi_address(OPBus *opb, hwaddr addr);
+> +
+> +#endif /* FSI_OPB_H */
 
 
