@@ -2,82 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8125679A52E
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D7279A59A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 10:09:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbmZ-0006LH-3k; Mon, 11 Sep 2023 03:56:31 -0400
+	id 1qfbsY-0001Fh-Jq; Mon, 11 Sep 2023 04:02:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qfbmW-0006L4-2J
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:56:28 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qfbmT-0000vO-QX
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:56:27 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-401da71b7c5so46810495e9.2
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 00:56:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694418984; x=1695023784; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=lneNkDzAYx6Q5HS8mTmeVNCQRhhaKvgMQEdq2Q7Cm9Q=;
- b=Gk4zyXzOn/XPTaPS1DjhZr3AJjF8KScEMBMuJWpNb55oyGxed9YVdoOo7uF1/O1eOB
- uWxPpvhMGqOjDHPe/n6py+Q7Ao92YSJkbDYUtIynt9EdCrBehl2QoAbQyvWus44ROgmt
- f1/3v6jGwExxbxvkx2cy/uvUttaSssKDqH0wxlkzHJWtav3mXmBgeRCEziYcAcMe+9dG
- kM0UxAYiAzioDSv1cYeTUNJ9XKZBOzvTzqd7zRYBRvkWeFc9MCZMyUiiajYbkv04OtUp
- VOZHXSHJaE8xjx8+BVeagiwE3d8QpA9FpzgpiTjmj8dMLb7ihuZ3k+rp+oryEVml57Jv
- UKrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694418984; x=1695023784;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=lneNkDzAYx6Q5HS8mTmeVNCQRhhaKvgMQEdq2Q7Cm9Q=;
- b=vWY0daP+LQ1ItlZEIYSlPRCtV/EioI7goVgUvWOU/dNECvZdJUjL1tMrxUP0nNj0fp
- LpJPQTQAlXfw7uaxxuFNH7uiW9umB5lath1lIvjIZ0vDNzRNIAFx0mOTkUzU6x+2a2a1
- EtWzyN9YuwLbHzCIpVqbpHDG5dCTbXyofDkXw5Uhk+nrV1lMH8C0EsoqAEp95B1a0MKR
- M1x0odC7ZrPugg0hukDMCHHt9nJxEWqV4meyIG8U/qcIAIsE/10gVluPzxPFWaIxYI8L
- xIjQOt3J5L67F0RzO/E/N873GAF373KN0Oxrhic+zd7my/nvNenDZkM2VhEaR01QFWk7
- BhHA==
-X-Gm-Message-State: AOJu0Yyq2SuPxfoRsdy19C+gfgDoSOM9rf68hW1A38qnGYy8l1S706ua
- hFkuK4XQ6duiIGdYxHhE7IxMvQ==
-X-Google-Smtp-Source: AGHT+IFMAyURJ7eMZ40AHz/QqX+y9/ylX0U3Y505r+CCGR3TG/p17k6i67MNgGY69UpdrxhTryRw3Q==
-X-Received: by 2002:adf:e743:0:b0:31a:e6c2:770d with SMTP id
- c3-20020adfe743000000b0031ae6c2770dmr6981455wrn.36.1694418984387; 
- Mon, 11 Sep 2023 00:56:24 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- n6-20020adfe786000000b003197efd1e7bsm9217160wrm.114.2023.09.11.00.56.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Sep 2023 00:56:24 -0700 (PDT)
-Date: Mon, 11 Sep 2023 09:56:23 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, philmd@linaro.org
-Subject: Re: [PATCH v2 16/19] target/riscv/cpu.c: make misa_ext_cfgs[] 'const'
-Message-ID: <20230911-b3b72181e2aa0ef1585884a2@orel>
-References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
- <20230906091647.1667171-17-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qfbsP-0001Cj-EJ; Mon, 11 Sep 2023 04:02:33 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qfbsM-00026w-BD; Mon, 11 Sep 2023 04:02:33 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id E04E120AED;
+ Mon, 11 Sep 2023 11:02:26 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 43CA227242;
+ Mon, 11 Sep 2023 11:02:25 +0300 (MSK)
+Received: (nullmailer pid 3680116 invoked by uid 1000);
+ Mon, 11 Sep 2023 08:02:25 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 00/51] v2 Patch Round-up for stable 7.2.6,
+ freeze on 2023-09-19
+Date: Mon, 11 Sep 2023 11:01:51 +0300
+Message-Id: <qemu-stable-7.2.6-20230911105418@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906091647.1667171-17-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,82 +57,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 06, 2023 at 06:16:43AM -0300, Daniel Henrique Barboza wrote:
-> The array isn't marked as 'const' because we're initializing their
-> elements in riscv_cpu_add_misa_properties(), 'name' and 'description'
-> fields.
-> 
-> In a closer look we can see that we're not using these 2 fields after
-> creating the MISA properties. And we can create the properties by using
-> riscv_get_misa_ext_name() and riscv_get_misa_ext_description()
-> directly.
-> 
-> Remove the 'name' and 'description' fields from RISCVCPUMisaExtConfig
-> and make misa_ext_cfgs[] a const array.
-> 
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/cpu.c | 21 ++++++++-------------
->  1 file changed, 8 insertions(+), 13 deletions(-)
-> 
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 8616c9e2f5..4875feded7 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1212,8 +1212,6 @@ static void riscv_cpu_init(Object *obj)
->  }
->  
->  typedef struct RISCVCPUMisaExtConfig {
-> -    const char *name;
-> -    const char *description;
->      target_ulong misa_bit;
->      bool enabled;
->  } RISCVCPUMisaExtConfig;
-> @@ -1317,7 +1315,7 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
->  #define MISA_CFG(_bit, _enabled) \
->      {.misa_bit = _bit, .enabled = _enabled}
->  
-> -static RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-> +static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
->      MISA_CFG(RVA, true),
->      MISA_CFG(RVC, true),
->      MISA_CFG(RVD, true),
-> @@ -1344,25 +1342,22 @@ void riscv_cpu_add_misa_properties(Object *cpu_obj)
->      int i;
->  
->      for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
-> -        RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
-> +        const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
->          int bit = misa_cfg->misa_bit;
-> -
-> -        misa_cfg->name = riscv_get_misa_ext_name(bit);
-> -        misa_cfg->description = riscv_get_misa_ext_description(bit);
-> +        const char *name = riscv_get_misa_ext_name(bit);
-> +        const char *desc = riscv_get_misa_ext_description(bit);
->  
->          /* Check if KVM already created the property */
-> -        if (object_property_find(cpu_obj, misa_cfg->name)) {
-> +        if (object_property_find(cpu_obj, name)) {
->              continue;
->          }
->  
-> -        object_property_add(cpu_obj, misa_cfg->name, "bool",
-> +        object_property_add(cpu_obj, name, "bool",
->                              cpu_get_misa_ext_cfg,
->                              cpu_set_misa_ext_cfg,
->                              NULL, (void *)misa_cfg);
-> -        object_property_set_description(cpu_obj, misa_cfg->name,
-> -                                        misa_cfg->description);
-> -        object_property_set_bool(cpu_obj, misa_cfg->name,
-> -                                 misa_cfg->enabled, NULL);
-> +        object_property_set_description(cpu_obj, name, desc);
-> +        object_property_set_bool(cpu_obj, name, misa_cfg->enabled, NULL);
->      }
->  }
->  
-> -- 
-> 2.41.0
->
+The following patches are queued for QEMU stable v7.2.6:
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+
+Patch freeze is 2023-09-19, and the release is planned for 2023-09-21:
+
+  https://wiki.qemu.org/Planning/7.2
+
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
+
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+v2:
+
+- I decided to pick up dma/mmio reentrancy fixes from 8.1 now once
+  (hopefully) all issues has been addressed.  This is
+
+  commit a2e1753b8054344f32cf94f31c6399a58794a380
+  Author: Alexander Bulekov <alxndr@bu.edu>
+  Date:   Thu Apr 27 17:10:06 2023 -0400
+
+    memory: prevent dma-reentracy issues
+
+  with all subsequent changes, up to
+  76f9ebffcd41 pnv_lpc: disable reentrancy detection for lpc-hc
+
+  I haven't picked this series sooner (while had it backported
+  and tested for quite some time) because with time, some more
+  places were found where reentrancy detection has to be disabled
+  too (like this pnv_lpc change).
+
+  What prompted me to look at this series again: one of the ide/ahci
+  change had to be context-edited to apply to 7.2, and the context
+  was the one from this reentrancy patch series.  So instead of
+  editing context, I decided to pick the reentrancy series and
+  apply subsequent changed cleanly.
+
+- I've added 2 patches (one cherry-pick and one specific to stable-7.2)
+  just to fix gitlab-CI failed jobs, so CI status will not be "failed"
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 b8d1fc55b5 Michael Tokarev:
+   gitlab-ci: check-dco.py: switch from master to stable-7.2 branch
+02 6832189fd791 John Snow:
+   python: drop pipenv
+03 a2e1753b8054 Alexander Bulekov:
+   memory: prevent dma-reentracy issues
+04 9c86c97f12c0 Alexander Bulekov:
+   async: Add an optional reentrancy guard to the BH API
+05 7915bd06f25e Alexander Bulekov:
+   async: avoid use-after-free on re-entrancy guard
+06 ef56ffbdd6b0 Alexander Bulekov:
+   checkpatch: add qemu_bh_new/aio_bh_new checks
+07 f63192b0544a Alexander Bulekov:
+   hw: replace most qemu_bh_new calls with qemu_bh_new_guarded
+08 bfd6e7ae6a72 Alexander Bulekov:
+   lsi53c895a: disable reentrancy detection for script RAM
+09 d139fe9ad8a2 Thomas Huth:
+   lsi53c895a: disable reentrancy detection for MMIO region, too
+10 985c4a4e547a Alexander Bulekov:
+   bcm2835_property: disable reentrancy detection for iomem
+11 6dad5a6810d9 Alexander Bulekov:
+   raven: disable reentrancy detection for iomem
+12 50795ee051a3 Alexander Bulekov:
+   apic: disable reentrancy detection for apic-msi
+13 6d0589e0e6c6 Alexander Bulekov:
+   loongarch: mark loongarch_ipi_iocsr re-entrnacy safe
+14 76f9ebffcd41 Alexander Bulekov:
+   pnv_lpc: disable reentrancy detection for lpc-hc
+15* a1d027be95bc Zhao Liu:
+   machine: Add helpers to get cores/threads per socket
+16* d79a284a44bb Zhao Liu:
+   hw/smbios: Fix smbios_smp_sockets caculation
+17* 7298fd7de555 Zhao Liu:
+   hw/smbios: Fix thread count in type4
+18* 196ea60a734c Zhao Liu:
+   hw/smbios: Fix core count in type4
+19* 8a64609eea8c Dongli Zhang:
+   dump: kdump-zlib data pages not dumped with pvtime/aarch64
+20* dbdb13f931d7 Ankit Kumar:
+   hw/nvme: fix CRC64 for guard tag
+21* 4333f0924c2f Nathan Egge:
+   linux-user/elfload: Set V in ELF_HWCAP for RISC-V
+22* e73f27003e77 Richard Henderson:
+   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for microblaze
+23* ea9812d93f9c Richard Henderson:
+   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
+24* 6ee960823da8 Luca Bonissi:
+   Fixed incorrect LLONG alignment for openrisc and cris
+25* 791b2b6a9302 Ilya Leoshkevich:
+   target/s390x: Fix the "ignored match" case in VSTRS
+26* 23e87d419f34 Ilya Leoshkevich:
+   target/s390x: Use a 16-bit immediate in VREP
+27* 6db3518ba4fc Ilya Leoshkevich:
+   target/s390x: Fix VSTL with a large length
+28* 6a2ea6151835 Ilya Leoshkevich:
+   target/s390x: Check reserved bits of VFMIN/VFMAX's M5
+29* d19436291013 Thomas Huth:
+   include/hw/virtio/virtio-gpu: Fix virtio-gpu with blob on big endian hosts
+30* 5e0d65909c6f Akihiko Odaki:
+   kvm: Introduce kvm_arch_get_default_type hook
+31* 1ab445af8cd9 Akihiko Odaki:
+   accel/kvm: Specify default IPA size for arm64
+32* 4b3520fd93cd Richard Henderson:
+   target/arm: Fix SME ST1Q
+33* cd1e4db73646 Richard Henderson:
+   target/arm: Fix 64-bit SSRA
+34* 09a3fffae00b Philippe Mathieu-Daudé:
+   docs/about/license: Update LICENSE URL
+35* f187609f27b2 Fabiano Rosas:
+   block-migration: Ensure we don't crash during migration cleanup
+36* 6ec65b69ba17 Maksim Kostin:
+   hw/ppc/e500: fix broken snapshot replay
+37* 7b8589d7ce7e Nicholas Piggin:
+   ppc/vof: Fix missed fields in VOF cleanup
+38* af03aeb631ee Richard Henderson:
+   target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
+39* c3461c6264a7 Niklas Cassel:
+   hw/ide/core: set ERR_STAT in unsupported command completion
+40* 2967dc8209dd Niklas Cassel:
+   hw/ide/ahci: write D2H FIS when processing NCQ command
+41* e2a5d9b3d9c3 Niklas Cassel:
+   hw/ide/ahci: simplify and document PxCI handling
+42* d73b84d0b664 Niklas Cassel:
+   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
+43 1a16ce64fda1 Niklas Cassel:
+   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
+44* 7e85cb0db4c6 Niklas Cassel:
+   hw/ide/ahci: fix ahci_write_fis_sdb()
+45* 9f8942353765 Niklas Cassel:
+   hw/ide/ahci: fix broken SError handling
+46* 97b8aa5ae9ff Hang Yu:
+   hw/i2c/aspeed: Fix Tx count and Rx size error in buffer pool mode
+47* 961faf3ddbd8 Hang Yu:
+   hw/i2c/aspeed: Fix TXBUF transmission start position error
+48* bcd8e243083c Thomas Huth:
+   qemu-options.hx: Rephrase the descriptions of the -hd* and -cdrom options
+49* b21a6e31a182 Markus Armbruster:
+   docs tests: Fix use of migrate_set_parameter
+50* 90a0778421ac Thomas Huth:
+   hw/net/vmxnet3: Fix guest-triggerable assert()
+51* 95bef686e490 Marc-André Lureau:
+   qxl: don't assert() if device isn't yet initialized
+
+(commit(s) marked with * were in previous series and are not resent)
 
