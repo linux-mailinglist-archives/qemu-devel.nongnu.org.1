@@ -2,45 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2248079A4FD
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3268379A50A
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:52:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbgz-00047b-ER; Mon, 11 Sep 2023 03:50:45 -0400
+	id 1qfbgt-00042Q-6B; Mon, 11 Sep 2023 03:50:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgt-00042W-1Y
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:39 -0400
+ id 1qfbgr-0003vy-4C
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:37 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgf-00081n-Dx
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:38 -0400
+ id 1qfbgl-0008Cl-4k
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:35 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5V51qWz4xFQ;
- Mon, 11 Sep 2023 17:50:22 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5X6wYqz4xGM;
+ Mon, 11 Sep 2023 17:50:24 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5S4sf6z4x5q;
- Mon, 11 Sep 2023 17:50:20 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5W1STjz4x5q;
+ Mon, 11 Sep 2023 17:50:22 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- YangHang Liu <yanghliu@redhat.com>
-Subject: [PULL 04/13] vfio/migration: Refactor PRE_COPY and RUNNING state
- checks
-Date: Mon, 11 Sep 2023 09:49:59 +0200
-Message-ID: <20230911075008.462712-5-clg@redhat.com>
+ Avihai Horon <avihaih@nvidia.com>, YangHang Liu <yanghliu@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 05/13] vfio/migration: Add P2P support for VFIO migration
+Date: Mon, 11 Sep 2023 09:50:00 +0200
+Message-ID: <20230911075008.462712-6-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911075008.462712-1-clg@redhat.com>
 References: <20230911075008.462712-1-clg@redhat.com>
@@ -70,134 +67,273 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-Move the PRE_COPY and RUNNING state checks to helper functions.
+VFIO migration uAPI defines an optional intermediate P2P quiescent
+state. While in the P2P quiescent state, P2P DMA transactions cannot be
+initiated by the device, but the device can respond to incoming ones.
+Additionally, all outstanding P2P transactions are guaranteed to have
+been completed by the time the device enters this state.
 
-This is in preparation for adding P2P VFIO migration support, where
-these helpers will also test for PRE_COPY_P2P and RUNNING_P2P states.
+The purpose of this state is to support migration of multiple devices
+that might do P2P transactions between themselves.
 
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Add support for P2P migration by transitioning all the devices to the
+P2P quiescent state before stopping or starting the devices. Use the new
+VMChangeStateHandler prepare_cb to achieve that behavior.
+
+This will allow migration of multiple VFIO devices if all of them
+support P2P migration.
+
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Tested-by: YangHang Liu <yanghliu@redhat.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h |  2 ++
- hw/vfio/common.c              | 22 ++++++++++++++++++----
- hw/vfio/migration.c           | 10 ++++------
- 3 files changed, 24 insertions(+), 10 deletions(-)
+ docs/devel/vfio-migration.rst | 93 +++++++++++++++++++++--------------
+ hw/vfio/common.c              |  6 ++-
+ hw/vfio/migration.c           | 46 +++++++++++++++--
+ hw/vfio/trace-events          |  1 +
+ 4 files changed, 105 insertions(+), 41 deletions(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index da43d273524ec441c13194b363008ab27a72839d..e9b895459534d7873445f865ef0e5f8f5c53882a 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -230,6 +230,8 @@ void vfio_unblock_multiple_devices_migration(void);
- bool vfio_viommu_preset(VFIODevice *vbasedev);
- int64_t vfio_mig_bytes_transferred(void);
- void vfio_reset_bytes_transferred(void);
-+bool vfio_device_state_is_running(VFIODevice *vbasedev);
-+bool vfio_device_state_is_precopy(VFIODevice *vbasedev);
+diff --git a/docs/devel/vfio-migration.rst b/docs/devel/vfio-migration.rst
+index b433cb5bb2c8caa703c6063efeb382bebfe7aed6..605fe60e9695a50813b1294bb970ce2c39d2ba07 100644
+--- a/docs/devel/vfio-migration.rst
++++ b/docs/devel/vfio-migration.rst
+@@ -23,9 +23,21 @@ and recommends that the initial bytes are sent and loaded in the destination
+ before stopping the source VM. Enabling this migration capability will
+ guarantee that and thus, can potentially reduce downtime even further.
  
- #ifdef CONFIG_LINUX
- int vfio_get_region_info(VFIODevice *vbasedev, int index,
+-Note that currently VFIO migration is supported only for a single device. This
+-is due to VFIO migration's lack of P2P support. However, P2P support is planned
+-to be added later on.
++To support migration of multiple devices that might do P2P transactions between
++themselves, VFIO migration uAPI defines an intermediate P2P quiescent state.
++While in the P2P quiescent state, P2P DMA transactions cannot be initiated by
++the device, but the device can respond to incoming ones. Additionally, all
++outstanding P2P transactions are guaranteed to have been completed by the time
++the device enters this state.
++
++All the devices that support P2P migration are first transitioned to the P2P
++quiescent state and only then are they stopped or started. This makes migration
++safe P2P-wise, since starting and stopping the devices is not done atomically
++for all the devices together.
++
++Thus, multiple VFIO devices migration is allowed only if all the devices
++support P2P migration. Single VFIO device migration is allowed regardless of
++P2P migration support.
+ 
+ A detailed description of the UAPI for VFIO device migration can be found in
+ the comment for the ``vfio_device_mig_state`` structure in the header file
+@@ -132,54 +144,63 @@ will be blocked.
+ Flow of state changes during Live migration
+ ===========================================
+ 
+-Below is the flow of state change during live migration.
++Below is the state change flow during live migration for a VFIO device that
++supports both precopy and P2P migration. The flow for devices that don't
++support it is similar, except that the relevant states for precopy and P2P are
++skipped.
+ The values in the parentheses represent the VM state, the migration state, and
+ the VFIO device state, respectively.
+-The text in the square brackets represents the flow if the VFIO device supports
+-pre-copy.
+ 
+ Live migration save path
+ ------------------------
+ 
+ ::
+ 
+-                        QEMU normal running state
+-                        (RUNNING, _NONE, _RUNNING)
+-                                  |
++                           QEMU normal running state
++                           (RUNNING, _NONE, _RUNNING)
++                                      |
+                      migrate_init spawns migration_thread
+-                Migration thread then calls each device's .save_setup()
+-                  (RUNNING, _SETUP, _RUNNING [_PRE_COPY])
+-                                  |
+-                  (RUNNING, _ACTIVE, _RUNNING [_PRE_COPY])
+-      If device is active, get pending_bytes by .state_pending_{estimate,exact}()
+-          If total pending_bytes >= threshold_size, call .save_live_iterate()
+-                  [Data of VFIO device for pre-copy phase is copied]
+-        Iterate till total pending bytes converge and are less than threshold
+-                                  |
+-  On migration completion, vCPU stops and calls .save_live_complete_precopy for
+-  each active device. The VFIO device is then transitioned into _STOP_COPY state
+-                  (FINISH_MIGRATE, _DEVICE, _STOP_COPY)
+-                                  |
+-     For the VFIO device, iterate in .save_live_complete_precopy until
+-                         pending data is 0
+-                   (FINISH_MIGRATE, _DEVICE, _STOP)
+-                                  |
+-                 (FINISH_MIGRATE, _COMPLETED, _STOP)
+-             Migraton thread schedules cleanup bottom half and exits
++            Migration thread then calls each device's .save_setup()
++                          (RUNNING, _SETUP, _PRE_COPY)
++                                      |
++                         (RUNNING, _ACTIVE, _PRE_COPY)
++  If device is active, get pending_bytes by .state_pending_{estimate,exact}()
++       If total pending_bytes >= threshold_size, call .save_live_iterate()
++                Data of VFIO device for pre-copy phase is copied
++      Iterate till total pending bytes converge and are less than threshold
++                                      |
++       On migration completion, the vCPUs and the VFIO device are stopped
++              The VFIO device is first put in P2P quiescent state
++                    (FINISH_MIGRATE, _ACTIVE, _PRE_COPY_P2P)
++                                      |
++                Then the VFIO device is put in _STOP_COPY state
++                     (FINISH_MIGRATE, _ACTIVE, _STOP_COPY)
++         .save_live_complete_precopy() is called for each active device
++      For the VFIO device, iterate in .save_live_complete_precopy() until
++                               pending data is 0
++                                      |
++                     (POSTMIGRATE, _COMPLETED, _STOP_COPY)
++            Migraton thread schedules cleanup bottom half and exits
++                                      |
++                           .save_cleanup() is called
++                        (POSTMIGRATE, _COMPLETED, _STOP)
+ 
+ Live migration resume path
+ --------------------------
+ 
+ ::
+ 
+-              Incoming migration calls .load_setup for each device
+-                       (RESTORE_VM, _ACTIVE, _STOP)
+-                                 |
+-       For each device, .load_state is called for that device section data
+-                       (RESTORE_VM, _ACTIVE, _RESUMING)
+-                                 |
+-    At the end, .load_cleanup is called for each device and vCPUs are started
+-                       (RUNNING, _NONE, _RUNNING)
++             Incoming migration calls .load_setup() for each device
++                          (RESTORE_VM, _ACTIVE, _STOP)
++                                      |
++     For each device, .load_state() is called for that device section data
++                        (RESTORE_VM, _ACTIVE, _RESUMING)
++                                      |
++  At the end, .load_cleanup() is called for each device and vCPUs are started
++              The VFIO device is first put in P2P quiescent state
++                        (RUNNING, _ACTIVE, _RUNNING_P2P)
++                                      |
++                           (RUNNING, _NONE, _RUNNING)
+ 
+ Postcopy
+ ========
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 9aac21abb76ef7d1abb54428e9a173a33ce16073..16cf79a76c845d8eb19498e8c6bf1f3b2b8d2fd8 100644
+index 16cf79a76c845d8eb19498e8c6bf1f3b2b8d2fd8..7c3d636025695641299f306c2afe12fa3e990736 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -437,6 +437,20 @@ static void vfio_set_migration_error(int err)
-     }
- }
- 
-+bool vfio_device_state_is_running(VFIODevice *vbasedev)
-+{
-+    VFIOMigration *migration = vbasedev->migration;
-+
-+    return migration->device_state == VFIO_DEVICE_STATE_RUNNING;
-+}
-+
-+bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
-+{
-+    VFIOMigration *migration = vbasedev->migration;
-+
-+    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY;
-+}
-+
- static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+@@ -441,14 +441,16 @@ bool vfio_device_state_is_running(VFIODevice *vbasedev)
  {
-     VFIOGroup *group;
-@@ -457,8 +471,8 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
-             }
- 
-             if (vbasedev->pre_copy_dirty_page_tracking == ON_OFF_AUTO_OFF &&
--                (migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
--                 migration->device_state == VFIO_DEVICE_STATE_PRE_COPY)) {
-+                (vfio_device_state_is_running(vbasedev) ||
-+                 vfio_device_state_is_precopy(vbasedev))) {
-                 return false;
-             }
-         }
-@@ -503,8 +517,8 @@ static bool vfio_devices_all_running_and_mig_active(VFIOContainer *container)
-                 return false;
-             }
- 
--            if (migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
--                migration->device_state == VFIO_DEVICE_STATE_PRE_COPY) {
-+            if (vfio_device_state_is_running(vbasedev) ||
-+                vfio_device_state_is_precopy(vbasedev)) {
-                 continue;
-             } else {
-                 return false;
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 8acd182a8bf3fcd0eb0368816ff3093242b103f5..48f9c23cbe3ac720ef252d699636e4a572bec762 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -411,7 +411,7 @@ static void vfio_state_pending_estimate(void *opaque, uint64_t *must_precopy,
-     VFIODevice *vbasedev = opaque;
      VFIOMigration *migration = vbasedev->migration;
  
--    if (migration->device_state != VFIO_DEVICE_STATE_PRE_COPY) {
-+    if (!vfio_device_state_is_precopy(vbasedev)) {
-         return;
-     }
- 
-@@ -444,7 +444,7 @@ static void vfio_state_pending_exact(void *opaque, uint64_t *must_precopy,
-     vfio_query_stop_copy_size(vbasedev, &stop_copy_size);
-     *must_precopy += stop_copy_size;
- 
--    if (migration->device_state == VFIO_DEVICE_STATE_PRE_COPY) {
-+    if (vfio_device_state_is_precopy(vbasedev)) {
-         vfio_query_precopy_size(migration);
- 
-         *must_precopy +=
-@@ -459,9 +459,8 @@ static void vfio_state_pending_exact(void *opaque, uint64_t *must_precopy,
- static bool vfio_is_active_iterate(void *opaque)
- {
-     VFIODevice *vbasedev = opaque;
--    VFIOMigration *migration = vbasedev->migration;
- 
--    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY;
-+    return vfio_device_state_is_precopy(vbasedev);
+-    return migration->device_state == VFIO_DEVICE_STATE_RUNNING;
++    return migration->device_state == VFIO_DEVICE_STATE_RUNNING ||
++           migration->device_state == VFIO_DEVICE_STATE_RUNNING_P2P;
  }
  
- static int vfio_save_iterate(QEMUFile *f, void *opaque)
-@@ -656,7 +655,6 @@ static const SaveVMHandlers savevm_vfio_handlers = {
+ bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
+ {
+     VFIOMigration *migration = vbasedev->migration;
+ 
+-    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY;
++    return migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ||
++           migration->device_state == VFIO_DEVICE_STATE_PRE_COPY_P2P;
+ }
+ 
+ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 48f9c23cbe3ac720ef252d699636e4a572bec762..71855468fe985291e2d009b81c6efd29abcbe755 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -71,8 +71,12 @@ static const char *mig_state_to_str(enum vfio_device_mig_state state)
+         return "STOP_COPY";
+     case VFIO_DEVICE_STATE_RESUMING:
+         return "RESUMING";
++    case VFIO_DEVICE_STATE_RUNNING_P2P:
++        return "RUNNING_P2P";
+     case VFIO_DEVICE_STATE_PRE_COPY:
+         return "PRE_COPY";
++    case VFIO_DEVICE_STATE_PRE_COPY_P2P:
++        return "PRE_COPY_P2P";
+     default:
+         return "UNKNOWN STATE";
+     }
+@@ -652,6 +656,39 @@ static const SaveVMHandlers savevm_vfio_handlers = {
+ 
+ /* ---------------------------------------------------------------------- */
+ 
++static void vfio_vmstate_change_prepare(void *opaque, bool running,
++                                        RunState state)
++{
++    VFIODevice *vbasedev = opaque;
++    VFIOMigration *migration = vbasedev->migration;
++    enum vfio_device_mig_state new_state;
++    int ret;
++
++    new_state = migration->device_state == VFIO_DEVICE_STATE_PRE_COPY ?
++                    VFIO_DEVICE_STATE_PRE_COPY_P2P :
++                    VFIO_DEVICE_STATE_RUNNING_P2P;
++
++    /*
++     * If setting the device in new_state fails, the device should be reset.
++     * To do so, use ERROR state as a recover state.
++     */
++    ret = vfio_migration_set_state(vbasedev, new_state,
++                                   VFIO_DEVICE_STATE_ERROR);
++    if (ret) {
++        /*
++         * Migration should be aborted in this case, but vm_state_notify()
++         * currently does not support reporting failures.
++         */
++        if (migrate_get_current()->to_dst_file) {
++            qemu_file_set_error(migrate_get_current()->to_dst_file, ret);
++        }
++    }
++
++    trace_vfio_vmstate_change_prepare(vbasedev->name, running,
++                                      RunState_str(state),
++                                      mig_state_to_str(new_state));
++}
++
  static void vfio_vmstate_change(void *opaque, bool running, RunState state)
  {
      VFIODevice *vbasedev = opaque;
--    VFIOMigration *migration = vbasedev->migration;
-     enum vfio_device_mig_state new_state;
-     int ret;
+@@ -758,6 +795,7 @@ static int vfio_migration_init(VFIODevice *vbasedev)
+     char id[256] = "";
+     g_autofree char *path = NULL, *oid = NULL;
+     uint64_t mig_flags = 0;
++    VMChangeStateHandler *prepare_cb;
  
-@@ -664,7 +662,7 @@ static void vfio_vmstate_change(void *opaque, bool running, RunState state)
-         new_state = VFIO_DEVICE_STATE_RUNNING;
-     } else {
-         new_state =
--            (migration->device_state == VFIO_DEVICE_STATE_PRE_COPY &&
-+            (vfio_device_state_is_precopy(vbasedev) &&
-              (state == RUN_STATE_FINISH_MIGRATE || state == RUN_STATE_PAUSED)) ?
-                 VFIO_DEVICE_STATE_STOP_COPY :
-                 VFIO_DEVICE_STATE_STOP;
+     if (!vbasedev->ops->vfio_get_object) {
+         return -EINVAL;
+@@ -798,9 +836,11 @@ static int vfio_migration_init(VFIODevice *vbasedev)
+     register_savevm_live(id, VMSTATE_INSTANCE_ID_ANY, 1, &savevm_vfio_handlers,
+                          vbasedev);
+ 
+-    migration->vm_state = qdev_add_vm_change_state_handler(vbasedev->dev,
+-                                                           vfio_vmstate_change,
+-                                                           vbasedev);
++    prepare_cb = migration->mig_flags & VFIO_MIGRATION_P2P ?
++                     vfio_vmstate_change_prepare :
++                     NULL;
++    migration->vm_state = qdev_add_vm_change_state_handler_full(
++        vbasedev->dev, vfio_vmstate_change, prepare_cb, vbasedev);
+     migration->migration_state.notify = vfio_migration_state_notifier;
+     add_migration_state_change_notifier(&migration->migration_state);
+ 
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index ee7509e68e4fc1953934bafa6a5c1e1981e4c6ca..329736a738d32ab006c3621cecfb704c84a513b7 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -167,3 +167,4 @@ vfio_save_setup(const char *name, uint64_t data_buffer_size) " (%s) data buffer
+ vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+ vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+ vfio_vmstate_change(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
++vfio_vmstate_change_prepare(const char *name, int running, const char *reason, const char *dev_state) " (%s) running %d reason %s device state %s"
 -- 
 2.41.0
 
