@@ -2,82 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D1F79AB65
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 22:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 380DA79AB67
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 22:55:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfntl-0007hj-Bg; Mon, 11 Sep 2023 16:52:45 -0400
+	id 1qfnub-0008BN-P4; Mon, 11 Sep 2023 16:53:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfnti-0007gs-KQ
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 16:52:42 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfntf-000166-6O
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 16:52:42 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-99bf3f59905so611700866b.3
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 13:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694465549; x=1695070349; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jZK6J0Iw+GRRfVdiIGlnNRot0/j+/zYmp3yZ33I+GHo=;
- b=qVHP1GyBAaVoAc+yM4ga4E9jMYVaOajxjP2s5d/g/BgOogbw0lW8mif9/VPmuEDQu0
- 1NfnSNBtwxrGfozjyC/uttzZfH3lZFDLKo26YslNX8FoUxIDZfZms1dvpVoX/Izr54kd
- fIc8CNczJSmf4/3XdqFybuCaZqjCBnurMahr//wQSA8SDLs1z3Z6xIZkPEFvGJGm7W/y
- P9G7SIgjr+qZ2lHkfnpdK8/PFuqipsfTmkzGi6dOl/FyXgTm8nFQc+VUhFiIBcNE1ceT
- q325+c9+f/Ajhydo8DeUR3S1OGNV9W1i1JNjUFyIYNTAQYf9/VRpxk/gT882UfsU39Z5
- 9PBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694465549; x=1695070349;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jZK6J0Iw+GRRfVdiIGlnNRot0/j+/zYmp3yZ33I+GHo=;
- b=FbgwQhmwi06/AS++kCVua5i9HTw/8qacrymMYxQ6uLMKxJV3RpqpIvs0/X3WH+kaUb
- kcNweLxcgmGELMKtj93Vx5GWN2x8rDMys1sKhR3K6VPY/NgOD+jGGG9IEqtzMjrdq1fI
- tomimlcw9siSYg5iazqJj7YOjAdljMEzJTInacITcdfe59TElTaExg/e3ir4MP8urvpk
- DleSnQvpxJjeUBn6SFLzJjIv6+GD4VWzTyZEAhM8l13vhUZyewYNNoyRNMgk1xtOAcEE
- xHqwm+ZHY3syUsS2WxHSGqyqc8GHo7u4FCpQYAF7IYjuEqDMvP/qoAD8vkUVRXagql+s
- f8XQ==
-X-Gm-Message-State: AOJu0Yw4jzjJ+x1zhVre9Chg3tWU+OKF2imKMSFqJXP8UKM9gHqljA6j
- YbZnfDThoXBI7FxYC6ozlMbeHg==
-X-Google-Smtp-Source: AGHT+IHBvsD9nNxkH8mjsEDoIAyeQT1cOH/8PIZDOB/5/vy7riwF7ocs7Yz9prVRqK1nq4rSN5E6hg==
-X-Received: by 2002:a17:907:7750:b0:9a1:dd2a:c2c6 with SMTP id
- kx16-20020a170907775000b009a1dd2ac2c6mr7842535ejc.8.1694465549458; 
- Mon, 11 Sep 2023 13:52:29 -0700 (PDT)
-Received: from [192.168.69.115] (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
- [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- lc15-20020a170906dfef00b0099bcf9c2ec6sm5845889ejc.75.2023.09.11.13.52.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 13:52:29 -0700 (PDT)
-Message-ID: <131c1f7e-c67d-e223-d461-adea4d655d80@linaro.org>
-Date: Mon, 11 Sep 2023 22:52:27 +0200
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1qfnuS-00087B-J8; Mon, 11 Sep 2023 16:53:28 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1qfnuI-00018A-DL; Mon, 11 Sep 2023 16:53:26 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38BKphjL008658; Mon, 11 Sep 2023 20:52:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=S91ot1z7V3Ra872ELd0JhMeLsv7MWzB6cFaAw9G5eHk=;
+ b=iQCRJlVUvTNWJrDzh2CcfJNnXQFUDX239unCaszNfxt0MaO7pO16+8IBqDikgwlVkV0j
+ Dy5osYbqr8xU88eXcuhDfrAawVE68HWqpAATShuEzTUqgXrsL0eFvWLFSDt8WvDuMvHF
+ KxwRPPT8RdxqLCXLViiY6TXQfD0jZcakclw7APix8fbz+TsgStZV1fxGspM0oqtVKLu9
+ VWy1TaxnxZDpq0em6lcHhJ7N0zs2NFBavselNkBdzENNATFhMNe7ixwFdjJFgVlgkIUc
+ VkDUmtBYC4435eLrFqdDkxCCsiMeohVBuqrD2BJBfGQ+ZyWJXZuJmu5wlOKgtPCctGVI lw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2aa6014g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Sep 2023 20:52:54 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38BKpfjj008573;
+ Mon, 11 Sep 2023 20:52:54 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2aa60143-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Sep 2023 20:52:54 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38BIu6GG012169; Mon, 11 Sep 2023 20:52:53 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t13dydukt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Sep 2023 20:52:53 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38BKqqfU12911204
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 Sep 2023 20:52:52 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3568358059;
+ Mon, 11 Sep 2023 20:52:52 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 054E258058;
+ Mon, 11 Sep 2023 20:52:51 +0000 (GMT)
+Received: from li-d664314c-3171-11b2-a85c-fa8047ef35bd.ibm.com.com (unknown
+ [9.67.49.93]) by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 11 Sep 2023 20:52:50 +0000 (GMT)
+From: Collin Walling <walling@linux.ibm.com>
+To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org
+Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
+ wangyanan55@huawei.com, eblake@redhat.com, armbru@redhat.com,
+ david@redhat.com, richard.henderson@linaro.org, iii@linux.ibm.com,
+ thuth@redhat.com
+Subject: [PATCH v1 1/2] target/s390x: introduce "host-recommended" option for
+ model expansion
+Date: Mon, 11 Sep 2023 16:52:31 -0400
+Message-ID: <20230911205232.71735-1-walling@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 09/11] hw/rx/rx62n: Use qdev_prop_set_array()
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org
-Cc: armbru@redhat.com, berrange@redhat.com, peter.maydell@linaro.org,
- pbonzini@redhat.com
-References: <20230908143703.172758-1-kwolf@redhat.com>
- <20230908143703.172758-10-kwolf@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230908143703.172758-10-kwolf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0ntsUAKg1jPiDgleZ-p0AcBAsQfaDCKd
+X-Proofpoint-ORIG-GUID: VMls6kYBoHYWRLjVvLQcQvR8dMETJuZl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_16,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 adultscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=980 bulkscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309110189
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=walling@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,16 +111,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 16:37, Kevin Wolf wrote:
-> Instead of manually setting "foo-len" and "foo[i]" properties, build a
-> QList and use the new qdev_prop_set_array() helper to set the whole
-> array property with a single call.
-> 
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->   hw/rx/rx62n.c | 19 ++++++++++---------
->   1 file changed, 10 insertions(+), 9 deletions(-)
+Newer S390 machines may drop support for features completely, rendering
+guests operating with older CPU models incapable of running on said
+machines. A manual effort to disable certain CPU features would be
+required.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+To alleviate this issue, a list of "deprecated" features are now
+retained within QEMU, and a new "static-recommended" CPU model expansion
+type has been created to allow a query of the host-model with deprecated
+features explicitly disabled.
+
+Signed-off-by: Collin Walling <walling@linux.ibm.com>
+---
+ qapi/machine-target.json         |  8 +++++++-
+ target/s390x/cpu_features.c      | 14 ++++++++++++++
+ target/s390x/cpu_features.h      |  1 +
+ target/s390x/cpu_models_sysemu.c | 26 +++++++++++++++++++++-----
+ 4 files changed, 43 insertions(+), 6 deletions(-)
+
+diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+index f0a6b72414..4dc891809d 100644
+--- a/qapi/machine-target.json
++++ b/qapi/machine-target.json
+@@ -42,6 +42,12 @@
+ #     to be migration-safe, but allows tooling to get an insight and
+ #     work with model details.
+ #
++# @static-recommended: Expand to a static CPU model with property
++#     changes suggested by the architecture. This is useful for
++#     expanding a CPU model expected to operate in mixed
++#     CPU-generation environments. The @static-recommended CPU
++#     models are migration-safe.
++#
+ # Note: When a non-migration-safe CPU model is expanded in static
+ #     mode, some features enabled by the CPU model may be omitted,
+ #     because they can't be implemented by a static CPU model
+@@ -55,7 +61,7 @@
+ # Since: 2.8
+ ##
+ { 'enum': 'CpuModelExpansionType',
+-  'data': [ 'static', 'full' ] }
++  'data': [ 'static', 'full', 'static-recommended' ] }
+ 
+ ##
+ # @CpuModelCompareResult:
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index d28eb65845..efafc9711c 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -212,6 +212,20 @@ void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
+     };
+ }
+ 
++void s390_get_deprecated_features(S390FeatBitmap features)
++{
++    static const int feats[] = {
++         /* CSSKE is deprecated on newer generations */
++         S390_FEAT_CONDITIONAL_SSKE,
++         S390_FEAT_BPB,
++    };
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(feats); i++) {
++        set_bit(feats[i], features);
++    }
++}
++
+ #define FEAT_GROUP_INIT(_name, _group, _desc)        \
+     {                                                \
+         .name = _name,                               \
+diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
+index 87463f064d..5421762db5 100644
+--- a/target/s390x/cpu_features.h
++++ b/target/s390x/cpu_features.h
+@@ -68,6 +68,7 @@ void s390_add_from_feat_block(S390FeatBitmap features, S390FeatType type,
+                           uint8_t *data);
+ void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
+                                void (*fn)(const char *name, void *opaque));
++void s390_get_deprecated_features(S390FeatBitmap features);
+ 
+ /* Definition of a CPU feature group */
+ typedef struct {
+diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
+index 63981bf36b..1aa3d076b4 100644
+--- a/target/s390x/cpu_models_sysemu.c
++++ b/target/s390x/cpu_models_sysemu.c
+@@ -176,7 +176,7 @@ static void qdict_add_enabled_feat(const char *name, void *opaque)
+ 
+ /* convert S390CPUDef into a static CpuModelInfo */
+ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+-                                bool delta_changes)
++                                bool delta_changes, bool disable_dep_feats)
+ {
+     QDict *qdict = qdict_new();
+     S390FeatBitmap bitmap;
+@@ -198,6 +198,13 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+         if (!bitmap_empty(bitmap, S390_FEAT_MAX)) {
+             s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_enabled_feat);
+         }
++
++        /* features flagged as deprecated */
++        if (disable_dep_feats) {
++            bitmap_zero(bitmap, S390_FEAT_MAX);
++            s390_get_deprecated_features(bitmap);
++            s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_disabled_feat);
++        }
+     } else {
+         /* expand all features */
+         s390_feat_bitmap_to_ascii(model->features, qdict,
+@@ -221,6 +228,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+     CpuModelExpansionInfo *expansion_info = NULL;
+     S390CPUModel s390_model;
+     bool delta_changes = false;
++    bool disable_dep_feats = false;
+ 
+     /* convert it to our internal representation */
+     cpu_model_from_info(&s390_model, model, &err);
+@@ -229,9 +237,16 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+         return NULL;
+     }
+ 
+-    if (type == CPU_MODEL_EXPANSION_TYPE_STATIC) {
++    switch (type) {
++    case CPU_MODEL_EXPANSION_TYPE_STATIC_RECOMMENDED:
++        disable_dep_feats = true;
++        /* fall through */
++    case CPU_MODEL_EXPANSION_TYPE_STATIC:
+         delta_changes = true;
+-    } else if (type != CPU_MODEL_EXPANSION_TYPE_FULL) {
++        break;
++    case CPU_MODEL_EXPANSION_TYPE_FULL:
++        break;
++    default:
+         error_setg(errp, "The requested expansion type is not supported.");
+         return NULL;
+     }
+@@ -239,7 +254,8 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+     /* convert it back to a static representation */
+     expansion_info = g_new0(CpuModelExpansionInfo, 1);
+     expansion_info->model = g_malloc0(sizeof(*expansion_info->model));
+-    cpu_info_from_model(expansion_info->model, &s390_model, delta_changes);
++    cpu_info_from_model(expansion_info->model, &s390_model,
++                        delta_changes, disable_dep_feats);
+     return expansion_info;
+ }
+ 
+@@ -388,7 +404,7 @@ CpuModelBaselineInfo *qmp_query_cpu_model_baseline(CpuModelInfo *infoa,
+ 
+     baseline_info = g_new0(CpuModelBaselineInfo, 1);
+     baseline_info->model = g_malloc0(sizeof(*baseline_info->model));
+-    cpu_info_from_model(baseline_info->model, &model, true);
++    cpu_info_from_model(baseline_info->model, &model, true, false);
+     return baseline_info;
+ }
+ 
+-- 
+2.41.0
 
 
