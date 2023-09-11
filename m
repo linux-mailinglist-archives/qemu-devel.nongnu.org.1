@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B6179AB76
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F3B79AB77
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:14:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfoDz-0003dw-Uy; Mon, 11 Sep 2023 17:13:40 -0400
+	id 1qfoE5-0003fl-Ji; Mon, 11 Sep 2023 17:13:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDy-0003dl-Hi
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:38 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoE4-0003eq-3t
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:44 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDv-0005CP-TB
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:38 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-52bcd4db4cbso6191495a12.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:13:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoE1-0005Cy-TA
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:43 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-51e28cac164so12881617a12.1
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:13:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694466813; x=1695071613; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694466819; x=1695071619; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sHvSEfFrQcxmWmTmnxddV4RlJUGQqaNdgjpuMQl5NIM=;
- b=jyM7MOUx1+bPlAGDC7O4WSn/9ntVn+1t3/LqNyRZaI+iLdMEJCvwgHDwXVJkVvR8Ee
- n5BxQxxiO86DGnczOYFVp+gfgD1LKlQN2IFppbyreuMym6NJoH8QuoNVGojzYa9/jh5t
- a2PZoqbkZFttU88uJrvTxE0GRSdhJHPxzngtpDMkaGsY/zK6gz9BD3MnYGC0hXV0dQIX
- U8sxuJoHOWTypoS1XwUGISoExBzEyrvIY3eepAFiLHV5yQE8VslS3P4eR8oClZDfZ5FS
- kFu6ZP/doGXyQAk7hsVoZTocg4xZgRtd99I/zHRYHsRld1RR67ai/HsEYgg6btxKm+Y9
- Vk1A==
+ bh=+fItrFBqz4pCpmjDHSDhxOZeNtPLgdWkJxbwSRsqucM=;
+ b=UKsqnR/nr+ZD4w7SdKYkNZDKI2dcOqQCU4FZ6i9sqw03G9LKmeIvVsWVHalud1fNw6
+ gfdMCEbPBdOb7+Aor06tLUEMyFe7SX09VdVNyNZ0I1q/KodCQZWSyXuYTdR0yGOgN7XL
+ UhQYDKu4pjX3HBDgb+s0eKa6xGWBSgnmk5VFE/yZhBFLVAZ6dp1m4P/ZPMqsnbG73yeF
+ 1BIqBm0aX+s7C9o+Qdxetl2Fw+QvlrN622qAFFXOXlqy8EAioGlrw4bnynqs2IfelqM6
+ 7BYrYfQRTh6Z+G0uEbkPfyu8JzPmR67X85tCrUUmqCJF1J/EpZ8e0FxL4imgGLXnoSB5
+ xxpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694466813; x=1695071613;
+ d=1e100.net; s=20230601; t=1694466819; x=1695071619;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sHvSEfFrQcxmWmTmnxddV4RlJUGQqaNdgjpuMQl5NIM=;
- b=lifOjaAEAsFw3a4ibschAIIcK2j5yOF2fslo+opOliJihDxPffVl5GqWcCaWknd12d
- KCIbJvnUCSNDaCYEt+rprJHBx6Sbn5C5ZChZmQyGPJAOjqlSTbCawiTNqpqrxugIDMmi
- HaB9vPU6gw5nJYWjYXawNT3iBNkRoi9ycGSC66X2euWR1vDPHNXaQcuWFJb8Mq50ffsJ
- ZQCA0rOjTDSLKjAdKOPQwX9K8jxdx8WPx3pZ442eqvTfAHe8tosmi1oEjczvLcjREpjh
- FyoTS+Q8gTkNjKyXTEzaGLkOhmX8RCMDza9CHsiIB8eNG0XeLpuB1+E3ilu9WuRo03nw
- PoSQ==
-X-Gm-Message-State: AOJu0YyN9o0YtKYK5PiUiPmwS0QAhy5bP025DjvD3YF7ims1eL78I5Xx
- bxLdQ2qkmx+oaHiLTFjJB3GCHDStO2SdedDK4fc=
-X-Google-Smtp-Source: AGHT+IHlbEUdBzYSoedkHroPwt4AlkXyt7WAKtmPFviYLtFN5z7i4ltmDFHgoedOXFLkMQBoGsRLxA==
-X-Received: by 2002:a17:906:74c7:b0:9a1:e758:fc6e with SMTP id
- z7-20020a17090674c700b009a1e758fc6emr9487589ejl.10.1694466813214; 
- Mon, 11 Sep 2023 14:13:33 -0700 (PDT)
+ bh=+fItrFBqz4pCpmjDHSDhxOZeNtPLgdWkJxbwSRsqucM=;
+ b=PuSQwl7azhZAK8tpVLPQ5TgAdURjH/WMUSACikLAzipYw53upTdJhmYZ7drLpK6GR9
+ XOd2rK9p1aI2eYf4Dj6zaUsYyMy0veDEFbezt3OkOX0sfCbv44YuDCWqYjdYFiQtzMJu
+ s9aocqU8W0oMPeG1MjLA9o6W2zcd4xpDHMLDpS8XW8lBK9/gRU/7U88zAmDykUxf4y7Q
+ iFB0IkFuj1mtdyyNddS2deJRmvj/xL+i0H6rRivO5pcBa4oxwmZ65y13If38pCC/X+yh
+ tznuC1vu+CC1GUtW/d75LQgvSM4t/VVuzPW7QxR/UOiACIntsu2NFzdQozjDXudR+8RK
+ +WPQ==
+X-Gm-Message-State: AOJu0Yy+LFr9xJT17y9j3l004AHZaQxusuDeaNfszyrDKbLta9uDICaC
+ aF/9y7hj+qrJojFhxHs0j2Qo7BYL1SYXCVRA8Vo=
+X-Google-Smtp-Source: AGHT+IGfByT/i1uRgqjMTCe03exo5MUd5hVuuL5bXU9pWThAdvv0M71SxBPmrWR8igy+0e5BQCrT7w==
+X-Received: by 2002:a50:ee89:0:b0:523:37f0:2d12 with SMTP id
+ f9-20020a50ee89000000b0052337f02d12mr1117871edr.17.1694466819175; 
+ Mon, 11 Sep 2023 14:13:39 -0700 (PDT)
 Received: from m1x-phil.lan (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
  [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- hb19-20020a170906b89300b009a1fd22257fsm5820515ejb.207.2023.09.11.14.13.31
+ c18-20020aa7d612000000b005254b41f507sm5126392edr.32.2023.09.11.14.13.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 11 Sep 2023 14:13:32 -0700 (PDT)
+ Mon, 11 Sep 2023 14:13:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -64,18 +64,18 @@ Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>
-Subject: [RFC PATCH v4 2/3] target/i386: Restrict system-specific features
- from user emulation
-Date: Mon, 11 Sep 2023 23:13:16 +0200
-Message-ID: <20230911211317.28773-3-philmd@linaro.org>
+Subject: [PATCH v4 3/3] target/i386: Prohibit target specific KVM prototypes
+ on user emulation
+Date: Mon, 11 Sep 2023 23:13:17 +0200
+Message-ID: <20230911211317.28773-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911211317.28773-1-philmd@linaro.org>
 References: <20230911211317.28773-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,211 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commits 3adce820cf ("target/i386: Remove unused KVM
-stubs") and ef1cf6890f ("target/i386: Allow elision of
-kvm_hv_vpindex_settable()"), when building on a x86 host
-configured as:
+None of these target-specific prototypes should be used
+by user emulation. Remove their declaration there, so we
+get a compile failure if ever used (instead of having to
+deal with linker and its possible optimizations, such
+dead code removal).
 
-  $ ./configure --cc=clang \
-    --target-list=x86_64-linux-user,x86_64-softmmu \
-    --enable-debug
-
-we get:
-
-  [71/71] Linking target qemu-x86_64
-  FAILED: qemu-x86_64
-  /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `cpu_x86_cpuid':
-  cpu.c:(.text+0x1374): undefined reference to `kvm_arch_get_supported_cpuid'
-  /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `x86_cpu_filter_features':
-  cpu.c:(.text+0x81c2): undefined reference to `kvm_arch_get_supported_cpuid'
-  /usr/bin/ld: cpu.c:(.text+0x81da): undefined reference to `kvm_arch_get_supported_cpuid'
-  /usr/bin/ld: cpu.c:(.text+0x81f2): undefined reference to `kvm_arch_get_supported_cpuid'
-  /usr/bin/ld: cpu.c:(.text+0x820a): undefined reference to `kvm_arch_get_supported_cpuid'
-  /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:cpu.c:(.text+0x8225): more undefined references to `kvm_arch_get_supported_cpuid' follow
-  clang: error: linker command failed with exit code 1 (use -v to see invocation)
-  ninja: build stopped: subcommand failed.
-
-libqemu-x86_64-linux-user.fa is user emulation specific, so
-having system emulation code called there is dubious.
-
-'--enable-debug' disables optimizations (CFLAGS=-O0).
-
-While at this (un)optimization level GCC eliminate the
-following dead code (CPP output of mentioned build):
-
- static void x86_cpu_get_supported_cpuid(uint32_t func, uint32_t index,
-                                         uint32_t *eax, uint32_t *ebx,
-                                         uint32_t *ecx, uint32_t *edx)
- {
-     if ((0)) {
-         *eax = kvm_arch_get_supported_cpuid(kvm_state, func, index, R_EAX);
-         *ebx = kvm_arch_get_supported_cpuid(kvm_state, func, index, R_EBX);
-         *ecx = kvm_arch_get_supported_cpuid(kvm_state, func, index, R_ECX);
-         *edx = kvm_arch_get_supported_cpuid(kvm_state, func, index, R_EDX);
-     } else if (0) {
-         *eax = 0;
-         *ebx = 0;
-         *ecx = 0;
-         *edx = 0;
-     } else {
-         *eax = 0;
-         *ebx = 0;
-         *ecx = 0;
-         *edx = 0;
-     }
- }
-
-Clang does not.
-
-Instead of trying to deal with compiler specific checks around
-__OPTIMIZE__ (see commit 2140cfa51d "i386: Fix build by providing
-stub kvm_arch_get_supported_cpuid()"), simply restrict code
-belonging to system emulation, easing user emulation linking.
-
-Reported-by: Kevin Wolf <kwolf@redhat.com>
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-RFC: I might have been overzealous in x86_cpu_expand_features(),
-please double check.
----
- target/i386/cpu.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
+ target/i386/kvm/kvm_i386.h | 4 ++++
+ target/i386/cpu.c          | 3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index 55d4e68c34..5ef73f0a1c 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -13,6 +13,10 @@
+ 
+ #include "sysemu/kvm.h"
+ 
++#ifdef CONFIG_USER_ONLY
++#error Cannot include kvm_i386.h from user emulation
++#endif
++
+ #ifdef CONFIG_KVM
+ 
+ #define kvm_pit_in_kernel() \
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 760428d4dc..8b57708604 100644
+index 8b57708604..6be59c7b2b 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -1664,6 +1664,7 @@ static inline uint64_t x86_cpu_xsave_xss_components(X86CPU *cpu)
-            cpu->env.features[FEAT_XSAVE_XSS_LO];
- }
+@@ -26,7 +26,7 @@
+ #include "tcg/helper-tcg.h"
+ #include "sysemu/reset.h"
+ #include "sysemu/hvf.h"
+-#include "kvm/kvm_i386.h"
++#include "sysemu/kvm.h"
+ #include "sev.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+@@ -40,6 +40,7 @@
+ #include "exec/address-spaces.h"
+ #include "hw/boards.h"
+ #include "hw/i386/sgx-epc.h"
++#include "kvm/kvm_i386.h"
+ #endif
  
-+#ifndef CONFIG_USER_ONLY
- /*
-  * Returns the set of feature flags that are supported and migratable by
-  * QEMU, for a given FeatureWord.
-@@ -1686,6 +1687,7 @@ static uint64_t x86_cpu_get_migratable_flags(FeatureWord w)
-     }
-     return r;
- }
-+#endif /* !CONFIG_USER_ONLY */
- 
- void host_cpuid(uint32_t function, uint32_t count,
-                 uint32_t *eax, uint32_t *ebx, uint32_t *ecx, uint32_t *edx)
-@@ -5677,8 +5679,6 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
-     return cpu_list;
- }
- 
--#endif /* !CONFIG_USER_ONLY */
--
- uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
-                                             bool migratable_only)
- {
-@@ -5781,6 +5781,38 @@ static void x86_cpu_get_cache_cpuid(uint32_t func, uint32_t index,
-     }
- }
- 
-+#else /* CONFIG_USER_ONLY */
-+
-+uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
-+                                            bool migratable_only)
-+{
-+    FeatureWordInfo *wi = &feature_word_info[w];
-+
-+    return wi->tcg_features;
-+}
-+
-+static void x86_cpu_get_supported_cpuid(uint32_t func, uint32_t index,
-+                                        uint32_t *eax, uint32_t *ebx,
-+                                        uint32_t *ecx, uint32_t *edx)
-+{
-+    *eax = 0;
-+    *ebx = 0;
-+    *ecx = 0;
-+    *edx = 0;
-+}
-+
-+static void x86_cpu_get_cache_cpuid(uint32_t func, uint32_t index,
-+                                    uint32_t *eax, uint32_t *ebx,
-+                                    uint32_t *ecx, uint32_t *edx)
-+{
-+    *eax = 0;
-+    *ebx = 0;
-+    *ecx = 0;
-+    *edx = 0;
-+}
-+
-+#endif /* !CONFIG_USER_ONLY */
-+
- /*
-  * Only for builtin_x86_defs models initialized with x86_register_cpudef_types.
-  */
-@@ -6163,6 +6195,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-             }
-             *edx = env->features[FEAT_7_0_EDX]; /* Feature flags */
- 
-+#ifndef CONFIG_USER_ONLY
-             /*
-              * SGX cannot be emulated in software.  If hardware does not
-              * support enabling SGX and/or SGX flexible launch control,
-@@ -6181,6 +6214,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-                     CPUID_7_0_ECX_SGX_LC))) {
-                 *ecx &= ~CPUID_7_0_ECX_SGX_LC;
-             }
-+#endif
-         } else if (count == 1) {
-             *eax = env->features[FEAT_7_1_EAX];
-             *edx = env->features[FEAT_7_1_EDX];
-@@ -6876,6 +6910,8 @@ static void mce_init(X86CPU *cpu)
-     }
- }
- 
-+#ifndef CONFIG_USER_ONLY
-+
- static void x86_cpu_adjust_level(X86CPU *cpu, uint32_t *min, uint32_t value)
- {
-     if (*min < value) {
-@@ -6948,6 +6984,8 @@ static void x86_cpu_enable_xsave_components(X86CPU *cpu)
-     env->features[FEAT_XSAVE_XSS_HI] = mask >> 32;
- }
- 
-+#endif /* !CONFIG_USER_ONLY */
-+
- /***** Steps involved on loading and filtering CPUID data
-  *
-  * When initializing and realizing a CPU object, the steps
-@@ -7040,6 +7078,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         }
-     }
- 
-+#ifndef CONFIG_USER_ONLY
-     if (!kvm_enabled() || !cpu->expose_kvm) {
-         env->features[FEAT_KVM] = 0;
-     }
-@@ -7111,6 +7150,8 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         return;
-     }
- 
-+#endif /* !CONFIG_USER_ONLY */
-+
-     /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set */
-     if (env->cpuid_level_func7 == UINT32_MAX) {
-         env->cpuid_level_func7 = env->cpuid_min_level_func7;
-@@ -7152,6 +7193,7 @@ static void x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-         mark_unavailable_features(cpu, w, unavailable_features, prefix);
-     }
- 
-+#ifndef CONFIG_USER_ONLY
-     if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT) &&
-         kvm_enabled()) {
-         KVMState *s = CPU(cpu)->kvm_state;
-@@ -7179,6 +7221,7 @@ static void x86_cpu_filter_features(X86CPU *cpu, bool verbose)
-             mark_unavailable_features(cpu, FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT, prefix);
-         }
-     }
-+#endif
- }
- 
- static void x86_cpu_hyperv_realize(X86CPU *cpu)
+ #include "disas/capstone.h"
 -- 
 2.41.0
 
