@@ -2,118 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9202279A71C
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 12:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 685DE79A720
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 12:11:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfdnZ-00013u-2Y; Mon, 11 Sep 2023 06:05:41 -0400
+	id 1qfdsY-0004PO-RQ; Mon, 11 Sep 2023 06:10:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qfdnM-0000yo-SN
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 06:05:32 -0400
-Received: from mail-bn8nam11on20600.outbound.protection.outlook.com
- ([2a01:111:f400:7eae::600]
- helo=NAM11-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qfdnF-0008Ck-Rk
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 06:05:28 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TXW0lS/4L7NDmIAuOQeIiK49c2spV9NPWO7A9puxvWKldp8O/XS5eBJAqdabL2dTVgNsopXFQJkgosKiTMkvjAM+wo23k5JK7S6fR36darckSpIFvXAwTQTgtTZCWGYlxhEckZuSlIiGi7OgBc2mv2/IVaMjAtqwrIvUbdlM61fVkes6p5qcwaZ+GGjciy7jVjCcrHH4E2YkN1po2Qc4e6rbpDFmRXG0759ENKohQ6wwO1YF0N8ZAf3CSyS4QyxJKfuODFJ4+QcWHrdOpJh+phgG20Wu0oV7jBnrvpIaIYWtYXpB9sRTJwTTYgoSHak4l1EqT+LqwB3WvCTdxPqR2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mRtNism9eieq55WiXAgXLdUcKsXmXh8icFK+EOB15YY=;
- b=TG4arZIclyHDMFCNYu3orSkn/wlnrC+vZ66k9y7emnnLvayKDD92fiA81r1ZFYbUWm+TMIi4UdjSfG4rKNum+O4aFmJ/KqJKEVYT0eTa52FxPZmsXb08VRENjzDpxMkLJwN57ltifGNnjFYPR8N3rhMAjT94AyofGv0h8Y3VeC8xW1Hzax4eXI5w9av5JczANI+kFgPvZJreYkFGbXILYUZ4VcWh+yPdPbg+PhFm6CodPf491UeZ05AKttvYuui79nIXWAv7oZ8C0K7nFQYc3wuQ9ygwi2XaxkHUoFDCFeFhjG5oWmsBPAuYu8ctZYO+FLt159VSR5E0eGELj5OpZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mRtNism9eieq55WiXAgXLdUcKsXmXh8icFK+EOB15YY=;
- b=UDLQ3H9zdYktwPzPpKhtfrKmT8sN2HuIDTEV/A/VbmMBiWtXD57OCwyo6IBrFW9k+RX8CT7feXnAJcmG2lYugMHCDJ0Dg3bZKHJ3rb2cHxYgcQpx5ACFzecVzSwh74Ew582cnwbnvkLqlPXy0l3azAL0kMvlQKXHRLVhspf6e3w=
-Received: from CY5PR15CA0049.namprd15.prod.outlook.com (2603:10b6:930:1b::17)
- by DM4PR12MB6447.namprd12.prod.outlook.com (2603:10b6:8:bf::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Mon, 11 Sep
- 2023 10:05:17 +0000
-Received: from CY4PEPF0000E9D9.namprd05.prod.outlook.com
- (2603:10b6:930:1b:cafe::96) by CY5PR15CA0049.outlook.office365.com
- (2603:10b6:930:1b::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.41 via Frontend
- Transport; Mon, 11 Sep 2023 10:05:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9D9.mail.protection.outlook.com (10.167.241.77) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.17 via Frontend Transport; Mon, 11 Sep 2023 10:05:17 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Sep
- 2023 05:05:12 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?=
- <marcandre.lureau@gmail.com>, Robert Beckett <bob.beckett@collabora.com>,
- <virtio-comment@lists.oasis-open.org>, <virtio-dev@lists.oasis-open.org>
-CC: <qemu-devel@nongnu.org>, <linux-kernel@vger.kernel.org>, "Stefano
- Stabellini" <sstabellini@kernel.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <Alexander.Deucher@amd.com>, "Christian
- Koenig" <Christian.Koenig@amd.com>, Stewart Hildebrand
- <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
- Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
-Subject: [RESEND VIRTIO GPU PATCH v3 1/1] virtio-gpu: Add new feature flag
- VIRTIO_GPU_F_FREEZE_S3
-Date: Mon, 11 Sep 2023 18:04:30 +0800
-Message-ID: <20230911100430.1408168-2-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230911100430.1408168-1-Jiqian.Chen@amd.com>
-References: <20230911100430.1408168-1-Jiqian.Chen@amd.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdsW-0004Le-Hv
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 06:10:48 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdsT-00013K-Sj
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 06:10:48 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-500a8b2b73eso6741317e87.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 03:10:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694427043; x=1695031843; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Et+/8zFfFP+z+X3g+hcAV6BKJQEKLZjnGmoAXNc1tHY=;
+ b=YE4KRF1mJ4ZXgMOOPeEtGEWyUBP0G6OdISMhF9ljF8utm6f9ePhJM1573dZZa7Fs+z
+ 8J1rz0hx9TCLDlNuP6S2H/dy08H2CmhJEoX+j1TsVjcHvLbI7WhhiFiD4cLM7+0NXB+V
+ cqGcdylFWksIyspzK0ZAKmCq0N7X3TtFs5rlkgbxYY18KUnj64tlM/wTkxwNfr44w6JY
+ j6zq59YkBF9qlPZcQqO8Gcg5omR07wyeVtkP76oxZ12bo6rA5cfeAJ8fWMW/0QUhYL9c
+ qKxd7CZhZUm6OZq4i3zNLUfITapab1QH46jfrJpa7QA77td7LO8JVZr1khF8MlzX8Yso
+ 4uJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694427043; x=1695031843;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Et+/8zFfFP+z+X3g+hcAV6BKJQEKLZjnGmoAXNc1tHY=;
+ b=M/Wdw7axHifajZCy4B9fduMf7/lkbgHJrM8lAud2LBfEeeAN5hKcZMOmqUeIDpFfmq
+ ovJNWmNFl2Sbm5yEAJZJLEsdabm8NWGTC79+0wGIoj+U/2z3RrYQd5nAYy8UFhmUtA9V
+ Ou5DCWSsVFTBtO1GumpMCCqvZBwr7HkfAddbxXjwPDDeIsSwdvDLRl4CwcflBZ7pYsqk
+ 4qQjloFeXGK9kxJRtJzmgBpgJeDucU9muikSvHLu/NnR/R1jG5NtAulzF4ThpuWWlip0
+ 8WJiuv2EkYO0r3XQyjLyo9xV29s5iwJI/Q+7Qpni2JbWLTTln4mVs6/1bJtMrf+CI24o
+ yt7w==
+X-Gm-Message-State: AOJu0YwasfzjjGHOsm1SrA8Uc6UcP+c2OOOChGHLBgG4e3b2pHtxtwp5
+ r3Rp2s5wzo0+erKD7KVKzPjZRVFai2lZiOIWbmU=
+X-Google-Smtp-Source: AGHT+IEJ64vykBi/sf0VU9BbbJxZdns21CxopztCNK3nJGUvQY3w3FJZ2tIfZl2dt5X/+m2cxZynaA==
+X-Received: by 2002:a05:6512:15a3:b0:500:b3fe:916e with SMTP id
+ bp35-20020a05651215a300b00500b3fe916emr8331070lfb.2.1694427043112; 
+ Mon, 11 Sep 2023 03:10:43 -0700 (PDT)
+Received: from [192.168.69.115] (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
+ [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
+ g1-20020a170906394100b0099bc038eb2bsm5039790eje.58.2023.09.11.03.10.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Sep 2023 03:10:42 -0700 (PDT)
+Message-ID: <93be81d9-3f96-51e2-4b20-74ce99e56ae1@linaro.org>
+Date: Mon, 11 Sep 2023 12:10:40 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D9:EE_|DM4PR12MB6447:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d3d4206-778a-432c-50a8-08dbb2ae9986
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: a5dsaDV8AYpfBAvoP/plHZZTCQqGHUb1NlXcMvkOGuxw+kzLuaM2qzO5B5Qw6fjB17q44sTh8vPWjEPds89g6WS8I1IpCwTd8LjZ8OP6BmpA0Azc8EhVjBg1sJBcfTL54PPzfJTuk2/pDVsV/LZhmgELj14V9MdID+L/Q26NtvjA6rvPzvJcE0nfJ1JtvtlLONZ7UnmMDf8abwqijSRwjM4NsjnvbcPFqYBNJEpWkwtIO5dgGKsCg4xM/XCwQsb6U3cJ5ah4ZZSyIOoZaK4t+wi1Ivpo3hEEDRxxV9JKOeXKUxzRjQG8b4VaC6PnxAFnSP1gOcDzxUxpPXH2OLg2415K0vqqz2t1fIwqNTl/7fafpWeufEmbYvNcMAwjt9FTupquYGVeSFZkR6TdqXUbWEzzzIhi/z9kPNcyxnfAW1A8fDfJ4OI+JXV1PDPqS7hOWkcN0JdK84Z3i+A17zTk3phk6Fx6Uvt5eiY8P+ZwKQe2+KxJYegJPcGWkovXH2uhA8pRphI3xcX5xEJst2j13PhQ8ENXGtsVqhSXHfAIOWShaAPD78IoyDXPNzKA47BrJfre3P+ScE5h9dRuNX+mo463IgmRbedtJBZEng3wlgDk613KwBnp3XCsDTvdKe/lHQOv8gU6SX5zvkCJs3qYyZPKkRZgZz5HeGpWHj2tec0SkmBEeY0Tzck40zyX55IEAzD1/hEOVBfawqGH98tdNEzyFnYwZ0x10jYi5SJzWfdmUvBsfQ6axlBdb3hLOECqqz41sqYCZvbTktLP+WLdWg==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(396003)(376002)(136003)(346002)(39860400002)(186009)(82310400011)(1800799009)(451199024)(46966006)(40470700004)(36840700001)(41300700001)(40480700001)(36756003)(4326008)(8676002)(8936002)(40460700003)(5660300002)(26005)(16526019)(1076003)(70586007)(70206006)(110136005)(54906003)(316002)(86362001)(356005)(82740400003)(81166007)(36860700001)(47076005)(2906002)(426003)(336012)(478600001)(2616005)(83380400001)(7696005)(6666004)(7416002)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2023 10:05:17.1733 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d3d4206-778a-432c-50a8-08dbb2ae9986
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6447
-Received-SPF: softfail client-ip=2a01:111:f400:7eae::600;
- envelope-from=Jiqian.Chen@amd.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PULL 00/51] Build system, i386 changes for 2023-09-07
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@gmail.com>, Kevin Wolf <kwolf@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, qemu-devel@nongnu.org, Thomas Huth
+ <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>
+References: <20230907130004.500601-1-pbonzini@redhat.com>
+ <20230907154412.GA1550739@fedora> <ZPs3UB8W4lsOFnxW@redhat.com>
+ <CAJSP0QX4QgxG-3dbv6oa6_81MWJkYKTT7T05D5hCtFiG=mLi7Q@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAJSP0QX4QgxG-3dbv6oa6_81MWJkYKTT7T05D5hCtFiG=mLi7Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -129,93 +97,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we suspend/resume guest on Xen, the display can't come back.
-This is because when guest suspended, it called into Qemu. Then
-Qemu destroyed all resources which is used for display. So that
-guest's display can't come back to the time when it was suspended.
+On 8/9/23 17:47, Stefan Hajnoczi wrote:
+> I wonder how it passed CI?
+> https://gitlab.com/qemu-project/qemu/-/pipelines/996175923/
 
-To solve above problem, I added a new mechanism that when guest is
-suspending, it will notify Qemu, and then Qemu will not destroy
-resourcesi which are created by using commands
-VIRTIO_GPU_CMD_RESOURCE_CREATE_*.
+The conditions are:
+- x86 host
+- both system / user emulation enabled
+- KVM disabled
+- debug enabled
 
-Due to that mechanism needs cooperation between guest and host,
-I need to add a new feature flag, so that guest and host can
-negotiate whenever freeze_S3 is supported or not.
+We have jobs with 3 of the 4, but none with
+all the 4.
 
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
- device-types/gpu/description.tex | 42 ++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+Is it worth test it?
 
-diff --git a/device-types/gpu/description.tex b/device-types/gpu/description.tex
-index 4435248..1a137e7 100644
---- a/device-types/gpu/description.tex
-+++ b/device-types/gpu/description.tex
-@@ -37,6 +37,8 @@ \subsection{Feature bits}\label{sec:Device Types / GPU Device / Feature bits}
-   resources is supported.
- \item[VIRTIO_GPU_F_CONTEXT_INIT (4)] multiple context types and
-   synchronization timelines supported.  Requires VIRTIO_GPU_F_VIRGL.
-+\item[VIRTIO_GPU_F_FREEZE_S3 (5)] freezing virtio-gpu and keeping resources
-+  alive is supported.
- \end{description}
- 
- \subsection{Device configuration layout}\label{sec:Device Types / GPU Device / Device configuration layout}
-@@ -228,6 +230,9 @@ \subsubsection{Device Operation: Request header}\label{sec:Device Types / GPU De
-         VIRTIO_GPU_CMD_UPDATE_CURSOR = 0x0300,
-         VIRTIO_GPU_CMD_MOVE_CURSOR,
- 
-+        /* freeze mode */
-+        VIRTIO_GPU_CMD_SET_FREEZE_MODE = 0x0400,
-+
-         /* success responses */
-         VIRTIO_GPU_RESP_OK_NODATA = 0x1100,
-         VIRTIO_GPU_RESP_OK_DISPLAY_INFO,
-@@ -838,6 +843,43 @@ \subsubsection{Device Operation: cursorq}\label{sec:Device Types / GPU Device /
- 
- \end{description}
- 
-+\subsubsection{Device Operation: freeze_mode}\label{sec:Device Types / GPU Device / Device Operation / Device Operation: freeze_mode}
-+
-+\begin{lstlisting}
-+typedef enum {
-+  VIRTIO_GPU_FREEZE_MODE_UNFREEZE = 0,
-+  VIRTIO_GPU_FREEZE_MODE_FREEZE_S3 = 3,
-+} virtio_gpu_freeze_mode_t;
-+
-+struct virtio_gpu_set_freeze_mode {
-+  struct virtio_gpu_ctrl_hdr hdr;
-+  virtio_gpu_freeze_mode_t freeze_mode;
-+};
-+\end{lstlisting}
-+
-+\begin{description}
-+
-+\item[VIRTIO_GPU_CMD_SET_FREEZE_MODE]
-+Notify freeze mode through controlq.
-+Request data is \field{struct virtio_gpu_set_freeze_mode}.
-+Response type is VIRTIO_GPU_RESP_OK_NODATA.
-+
-+This is added for S3 function in guest with virtio-gpu. When guest does
-+S3, let it notify QEMU that virtio-gpu is in what freeze mode in
-+\field{freeze_mode}. VIRTIO_GPU_FREEZE_MODE_FREEZE_S3 means guest is
-+doing S3 and virtio-gpu will be freezed, VIRTIO_GPU_FREEZE_MODE_UNFREEZE
-+means virtio-gpu can be used as usual. When virtio-gpu is freezed, QEMU
-+will not destroy resources which are created by using commands
-+VIRTIO_GPU_CMD_RESOURCE_CREATE_*, so that guest can use those resources
-+to resume display.
-+
-+Note: this change is not enough to solve the problems of S4 function.
-+QEMU may lose resources after hibernation. It needs more research and
-+development. If S4 is supported in the future, it may need another
-+feature flag here.
-+
-+\end{description}
-+
- \subsection{VGA Compatibility}\label{sec:Device Types / GPU Device / VGA Compatibility}
- 
- Applies to Virtio Over PCI only.  The GPU device can come with and
--- 
-2.34.1
+> 
+> Stefan
+> 
+> On Fri, 8 Sept 2023 at 11:02, Kevin Wolf <kwolf@redhat.com> wrote:
+>>
+>> Am 07.09.2023 um 17:44 hat Stefan Hajnoczi geschrieben:
+>>> Applied, thanks.
+>>>
+>>> Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+>>
+>> Something in this has broken the build for me, it seems to be the
+>> linux-user binary that doesn't link any more:
+>>
+>>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `cpu_x86_cpuid':
+>>    /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:6180: undefined reference to `kvm_arch_get_supported_cpuid'
+>>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o: in function `x86_cpu_filter_features':
+>>    /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7158: undefined reference to `kvm_arch_get_supported_cpuid'
+>>    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7159: undefined reference to `kvm_arch_get_supported_cpuid'
+>>    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7160: undefined reference to `kvm_arch_get_supported_cpuid'
+>>    /usr/bin/ld: /home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7161: undefined reference to `kvm_arch_get_supported_cpuid'
+>>    /usr/bin/ld: libqemu-x86_64-linux-user.fa.p/target_i386_cpu.c.o:/home/kwolf/source/qemu/build-clang/../target/i386/cpu.c:7162: more undefined references to `kvm_arch_get_supported_cpuid' follow
+>>    clang-15: error: linker command failed with exit code 1 (use -v to see invocation)
+>>
+>> In case it makes a difference, I'm using clang on F37.
+>>
+>> Kevin
+> 
 
 
