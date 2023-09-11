@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9B779A3AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 999BD79A3A7
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfaeF-0000BG-Pz; Mon, 11 Sep 2023 02:43:51 -0400
+	id 1qfaeI-0000Bc-BP; Mon, 11 Sep 2023 02:43:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfaeD-0000Ao-V7
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:49 -0400
-Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
+ id 1qfaeG-0000BU-Rq
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:52 -0400
+Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfaeB-0004R5-62
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:49 -0400
-Received: by mail-oa1-x29.google.com with SMTP id
- 586e51a60fabf-1d5c54160a8so230524fac.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:43:46 -0700 (PDT)
+ id 1qfaeE-0004RK-Ou
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:52 -0400
+Received: by mail-oi1-x22d.google.com with SMTP id
+ 5614622812f47-3a85c5854deso3171395b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414625; x=1695019425; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414629; x=1695019429; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vym8XbbEH4MOTDPO5rs9mKsM5VAOMq/9GygQwXQnKYA=;
- b=KC9/kyy9swxVPXMz4b5W4kcSDU4LVxIbnMnr+/kcyl0meUO4R5xk+RmDgBZZX6AzaP
- 1YxqtYiaFEP0TmND74H9TwqNczvWw4nlokjrFkEEtIqRL2aafLBv9I47EeKLMrBAHjfe
- d+2CeAZP6ORWp2vYcDzZ5UiWpYPW+dLlGoaCvpW1hd1uf09HZMCvztZCHyrtA+z/Ks9T
- RT4bwMbtd0zCZxfqD8TvwZur+Ahh3Vy7XsBk/deMr9UWO2ruX5UiWneTSShSYexXifhX
- prnYLg7JQHsUTphcEegaa3q9/r/gb39bEDFsMxknAmB+WBRVhBkg5Fjd9z15KopJPOom
- nhMg==
+ bh=TjdxtVU3gNPjJmXFfAVRml366UxrtlzbUcZBrAyMCEU=;
+ b=rrkF9KoRGYqQE6nn68Dz6IgQNwkf1VojbPKoiTlAFRFpSrsL8pTFcKLlHdkz8ISRHv
+ JozrvQGEpAkdCyfZptj8vog1FnHDhLsewGIS1jxq9Mh5AesEZpARu0Dq8xTV93i8Lrwv
+ nQEmRvCxIrcAxnJZsSLaY/LIvJ0PkCPDLak2uCCMs25MMwglVL0HMEO3QiF02alfoG0m
+ WCc8H4tGT+1f4BPGIUxLmLg0f42NhukQF7NWGnBVlkXaupixNrv4xP9DLvSoexzOEDNi
+ ysOLLtoKdW6GiRAUvJsgJFbb1zU3stSkG1kia+BwfT4EGBHZ4wCm1rKEsv9DKyJamCDG
+ ZEyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414625; x=1695019425;
+ d=1e100.net; s=20230601; t=1694414629; x=1695019429;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vym8XbbEH4MOTDPO5rs9mKsM5VAOMq/9GygQwXQnKYA=;
- b=WyTWukWzMOUN92dXwBvKZvmxiOnlRwN9/5N60lZAeLCbQLATBwCFJsMMhseUh36hSq
- yAdh0LiOrdSxhVbV5M+XpNt58vHqwYfrjQ+z21Fo8Vb5qHSt8X+hJe2rXzhizJAH8I8r
- Eb7G3lpWc/dCXyItCisxSFewcwTpjpYhDBcK8HivOo+mMIEIQVASoWIIUd6T8eYIgX7/
- /6ulTg+syP8X0s1BR0jtbXKeTU1PUDhnOXivv9jaOuRKh6lwY6FBGLONKCoNaeBoIi7x
- fifnLFKcpjOnssnA6L7/ypR5BhGXSjfoL16OQTqza0lkjrvSiJhEtwF0LhpV9iVe1lWy
- Vbkg==
-X-Gm-Message-State: AOJu0Yy1P7W/l3oYo9xSu7Rb5wy8K1NGwO7AwrAr/yQ9UMZ1e0i17t7r
- dSZncnLUVgZBrDVifvbRWnvDPI/bhVhTzg==
-X-Google-Smtp-Source: AGHT+IGLTw3M64I1rtN6GBwEA4GPPH5DxBv7UdRjuDpleizu6L2jaVTRRjJERvzkGkUTZwteoynj+A==
-X-Received: by 2002:a05:6870:b014:b0:196:45b7:9385 with SMTP id
- y20-20020a056870b01400b0019645b79385mr10440514oae.27.1694414625541; 
- Sun, 10 Sep 2023 23:43:45 -0700 (PDT)
+ bh=TjdxtVU3gNPjJmXFfAVRml366UxrtlzbUcZBrAyMCEU=;
+ b=qUrlPKOVvC7i/u5KVtRkucZKnPOBxWn9niEU31Y1UrcOuoO8txRQ+PCnsE+QF1MVPd
+ YELsidbfjbzYnkAJBhCE/lHv+7LD03Kd/NW8npBPudJYdlmLSltXK9Pgttdb0+wUe7ie
+ uRBTvqgef7EU1YgfapMCIHpvMl4ghY5NRDEK49kNI0R2n/tfdt8JAut3qBj+wI2MBsSl
+ sPgnCe6mnejx2LSa/EYUJ+aj0KMPQg9oBTrgZI4vE2X50J3KCO8AAamUFGei5ZOOD8u0
+ mAHevfMqYKZkt4dQNo/xRlWSCULU1u8bmDkqwb5l9UijJ+PcHmyfb/UkXrJeOKlkF/0R
+ 7I4A==
+X-Gm-Message-State: AOJu0YzbMLcWOV0S9aGUQ1+lUbhdDPegU7t5xDnZk9uJEfjD0xoa2KV+
+ YnRQL6Fln9aU42/v77VBlxxObw6PLyM7uw==
+X-Google-Smtp-Source: AGHT+IFbxi1u0b2fGmog/ZAbQjSXcL7y3oPbFjAD0rFVukgXds0qPjrqHkD6nJNdW4adqbza89FdIg==
+X-Received: by 2002:aca:1216:0:b0:3a7:3ea1:b5a0 with SMTP id
+ 22-20020aca1216000000b003a73ea1b5a0mr11063314ois.47.1694414629302; 
+ Sun, 10 Sep 2023 23:43:49 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.43.41
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.43.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:43:44 -0700 (PDT)
+ Sun, 10 Sep 2023 23:43:48 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Thomas Huth <thuth@redhat.com>,
  Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng@tinylab.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 02/45] hw/char/riscv_htif: Fix printing of console
- characters on big endian hosts
-Date: Mon, 11 Sep 2023 16:42:37 +1000
-Message-ID: <20230911064320.939791-3-alistair.francis@wdc.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL v2 03/45] hw/char/riscv_htif: Fix the console syscall on big
+ endian hosts
+Date: Mon, 11 Sep 2023 16:42:38 +1000
+Message-ID: <20230911064320.939791-4-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::29;
- envelope-from=alistair23@gmail.com; helo=mail-oa1-x29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
+ envelope-from=alistair23@gmail.com; helo=mail-oi1-x22d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -102,39 +100,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The character that should be printed is stored in the 64 bit "payload"
-variable. The code currently tries to print it by taking the address
-of the variable and passing this pointer to qemu_chr_fe_write(). However,
-this only works on little endian hosts where the least significant bits
-are stored on the lowest address. To do this in a portable way, we have
-to store the value in an uint8_t variable instead.
+Values that have been read via cpu_physical_memory_read() from the
+guest's memory have to be swapped in case the host endianess differs
+from the guest.
 
-Fixes: 5033606780 ("RISC-V HTIF Console")
+Fixes: a6e13e31d5 ("riscv_htif: Support console output via proxy syscall")
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Bin Meng <bmeng@tinylab.org>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230721094720.902454-2-thuth@redhat.com>
+Message-Id: <20230721094720.902454-3-thuth@redhat.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/char/riscv_htif.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/char/riscv_htif.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
-index 37d3ccc76b..f96df40124 100644
+index f96df40124..40de6b8b77 100644
 --- a/hw/char/riscv_htif.c
 +++ b/hw/char/riscv_htif.c
-@@ -232,7 +232,8 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
-             s->tohost = 0; /* clear to indicate we read */
-             return;
-         } else if (cmd == HTIF_CONSOLE_CMD_PUTC) {
--            qemu_chr_fe_write(&s->chr, (uint8_t *)&payload, 1);
-+            uint8_t ch = (uint8_t)payload;
-+            qemu_chr_fe_write(&s->chr, &ch, 1);
-             resp = 0x100 | (uint8_t)payload;
-         } else {
-             qemu_log("HTIF device %d: unknown command\n", device);
+@@ -30,6 +30,7 @@
+ #include "qemu/timer.h"
+ #include "qemu/error-report.h"
+ #include "exec/address-spaces.h"
++#include "exec/tswap.h"
+ #include "sysemu/dma.h"
+ 
+ #define RISCV_DEBUG_HTIF 0
+@@ -209,11 +210,11 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
+             } else {
+                 uint64_t syscall[8];
+                 cpu_physical_memory_read(payload, syscall, sizeof(syscall));
+-                if (syscall[0] == PK_SYS_WRITE &&
+-                    syscall[1] == HTIF_DEV_CONSOLE &&
+-                    syscall[3] == HTIF_CONSOLE_CMD_PUTC) {
++                if (tswap64(syscall[0]) == PK_SYS_WRITE &&
++                    tswap64(syscall[1]) == HTIF_DEV_CONSOLE &&
++                    tswap64(syscall[3]) == HTIF_CONSOLE_CMD_PUTC) {
+                     uint8_t ch;
+-                    cpu_physical_memory_read(syscall[2], &ch, 1);
++                    cpu_physical_memory_read(tswap64(syscall[2]), &ch, 1);
+                     qemu_chr_fe_write(&s->chr, &ch, 1);
+                     resp = 0x100 | (uint8_t)payload;
+                 } else {
 -- 
 2.41.0
 
