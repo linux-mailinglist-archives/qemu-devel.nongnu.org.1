@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850F279A3DA
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE6E79A3DE
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfagQ-00038t-UD; Mon, 11 Sep 2023 02:46:07 -0400
+	id 1qfagQ-000392-VN; Mon, 11 Sep 2023 02:46:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfafl-0002Vw-2a
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:27 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1qfafp-0002a7-1W
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:32 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfafg-0004wp-BJ
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:22 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6bf298ef1f5so2990132a34.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:45:19 -0700 (PDT)
+ id 1qfafk-0004yp-OH
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:28 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1d544a4a315so3186959fac.3
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:45:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414718; x=1695019518; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414721; x=1695019521; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RbNY4sxLzfh+2ICvNwghFUDrAY++mutb7jKSlH2h1II=;
- b=VYHzoOsyMqNRZrPBmBCo31CYKGbRygXILGlvkJxMzpGJI+sH6NYitTPX+qa5BqLS+i
- GwiqTAuaITPmtRLVBy6ZxskoKULGMU+chl33+LSjBTwQSPtaRK9DAG9oMyDhsc00hCXz
- OBs53ZzPAeVv1ublMreU/5DxQOBMrWo9ZMJrxArup2KZpw6GQ4gyIhAM0kJJ314My/ZR
- yunGOWoHywaEUpZ/k7cZryp48rAwU2ah6nfbAPaUBWin1YiYV3XsScJP7l2wWgQQo/aL
- 121PSAxQHfdtLbJLr7QuDO2GZMOigiBd+9pJtKtns9txTgrXdDVCBFrTh/KON65j2w9d
- VLVg==
+ bh=ccGf/43x5nzKqeckplvIj3QC6H4I6RRe2CJqwTH4Zqo=;
+ b=l78ZIk/Ya75/XN2VH273NULrt9fIy2iCWH24h8Jxd0elOZ/Gy0Y9uVsdHh4YrmXnaX
+ NZ+pKw6zr7pqdGjEtJvmTQWgfFsWLrApAU8lCfGgs/f2AP5c4feiqjkdduzacHnD8n7x
+ adw3t/fYBvzHHx+kgBAjfVndfcs0ybhKc9okWZt63/5tiqSHv8xkoiALJH+zje3KU553
+ 7CcW/0k/NKLUMlSVTG7r/D8nqpR3GczsYN2iQyyMScFJVWf2EB5Js5iH4ApcgYuIige0
+ F4MJRjeQY2d1RtyfhLxngKhAkpij68zbsoJNhjk79XSrIVWutW8MY66C/qjmKe2eJ9bS
+ NW9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414718; x=1695019518;
+ d=1e100.net; s=20230601; t=1694414721; x=1695019521;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RbNY4sxLzfh+2ICvNwghFUDrAY++mutb7jKSlH2h1II=;
- b=kJ2HSIAPL97KhtI5PpeH22tmECRya69PjU60L3gofg5MdWVRGZJ1tBPwKvWqIOzXWT
- b/dLAtqaSephKPs8012E1aAwvkLaKuTxWlaMRHMBJbZcAWdi9Y6r5gEOPem/KWYTctEr
- 3ieOnGpvZJ/UowF8HAAXr0GKyKNhq5I8XFTL0bEHeEVjG8pPxzLAQOAGwDFnzFXy3qN6
- UyjFgsfML/6tT17SQFuvM7TjpSKyHQDvPKhfNsP7bYJmuhdRPIqzKfQ6mQPsobNjA0h6
- V5LpevHNx1q7vHpMSC3lyXLL1WNCs67GLSxRiOpNCRff4eYkuu58i2UCAHX2pCiv0PHl
- Z17Q==
-X-Gm-Message-State: AOJu0YyGPcOhln6VgKGSlTZiRoxsqz8ift8wPQkwEy/YlLNBIPfBVA9M
- zmQcJkRfNmE5c1m93DOUSYxToQLf6rqhTQ==
-X-Google-Smtp-Source: AGHT+IEX9KKxz6AMnkhmuzQGFuq0k9a0YyKVKuDRtR8vxlDV25xosQnn2gUJ69h0ioreTNukkVTaqw==
-X-Received: by 2002:a05:6358:3422:b0:134:de8b:17f0 with SMTP id
- h34-20020a056358342200b00134de8b17f0mr9698587rwd.19.1694414718546; 
- Sun, 10 Sep 2023 23:45:18 -0700 (PDT)
+ bh=ccGf/43x5nzKqeckplvIj3QC6H4I6RRe2CJqwTH4Zqo=;
+ b=SVUkof1zJx2UPX76wi8mjfKXz65bBOahvX3UaOBFkwFnQ70/Y2jVmm0LerNqn+6k20
+ uqy6aUol6jtAw5cowQ/qUsUyXThGoXcZTPfWloIUI+lyiaHXmKRdCgcPoALIPOPthiyv
+ leLEG1d44zx8ZJppBZ1ktbTlWKSJsJp6Zb8VDBAZ2AZoQkTEIedccisDDT9phfacnYgj
+ mfxjuAYcYemvxCNkipqJ9mnMHk4U0utatgelLDGI+q12ed9lWk2FwLNSEqb6ya9ZdxsU
+ MZAOfnzlP8Pc7dWpRAicQ/RWHQyS3jHsaRFNnhqtiTrWAs99SvVgy5xHb3A04uUKd7hJ
+ RS6A==
+X-Gm-Message-State: AOJu0YxVAdw6arKjjx6d0Ar9CP8R6VNOm4Euzq789D8GtEqr8tTvur+9
+ AgjRnBJ+FqCLJEWiKM/8Rj2YNGQrmRH2Hw==
+X-Google-Smtp-Source: AGHT+IGgqAZeAe9tRs/gCJ7VvBy5tHnMXA7bHnlZx9w6XVQqL3e7hv3JfVnr8/+Qc7zBzdVsgmgJ9Q==
+X-Received: by 2002:a05:6870:f225:b0:1ba:2a58:b15e with SMTP id
+ t37-20020a056870f22500b001ba2a58b15emr11411592oao.2.1694414721703; 
+ Sun, 10 Sep 2023 23:45:21 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.45.15
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.45.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:45:17 -0700 (PDT)
+ Sun, 10 Sep 2023 23:45:20 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
 Cc: alistair23@gmail.com, Jason Chien <jason.chien@sifive.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 26/45] hw/intc: Fix upper/lower mtime write calculation
-Date: Mon, 11 Sep 2023 16:43:01 +1000
-Message-ID: <20230911064320.939791-27-alistair.francis@wdc.com>
+Subject: [PULL v2 27/45] hw/intc: Make rtc variable names consistent
+Date: Mon, 11 Sep 2023 16:43:02 +1000
+Message-ID: <20230911064320.939791-28-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=alistair23@gmail.com; helo=mail-ot1-x32b.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=alistair23@gmail.com; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,45 +98,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jason Chien <jason.chien@sifive.com>
 
-When writing the upper mtime, we should keep the original lower mtime
-whose value is given by cpu_riscv_read_rtc() instead of
-cpu_riscv_read_rtc_raw(). The same logic applies to writes to lower mtime.
+The variables whose values are given by cpu_riscv_read_rtc() should be named
+"rtc". The variables whose value are given by cpu_riscv_read_rtc_raw()
+should be named "rtc_r".
 
 Signed-off-by: Jason Chien <jason.chien@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20230728082502.26439-1-jason.chien@sifive.com>
+Message-ID: <20230728082502.26439-2-jason.chien@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/intc/riscv_aclint.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ hw/intc/riscv_aclint.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-index b466a6abaf..bf77e29a70 100644
+index bf77e29a70..25cf7a5d9d 100644
 --- a/hw/intc/riscv_aclint.c
 +++ b/hw/intc/riscv_aclint.c
-@@ -208,11 +208,12 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
-         return;
-     } else if (addr == mtimer->time_base || addr == mtimer->time_base + 4) {
-         uint64_t rtc_r = cpu_riscv_read_rtc_raw(mtimer->timebase_freq);
-+        uint64_t rtc = cpu_riscv_read_rtc(mtimer);
+@@ -64,13 +64,13 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
+     uint64_t next;
+     uint64_t diff;
  
-         if (addr == mtimer->time_base) {
-             if (size == 4) {
-                 /* time_lo for RV32/RV64 */
--                mtimer->time_delta = ((rtc_r & ~0xFFFFFFFFULL) | value) - rtc_r;
-+                mtimer->time_delta = ((rtc & ~0xFFFFFFFFULL) | value) - rtc_r;
-             } else {
-                 /* time for RV64 */
-                 mtimer->time_delta = value - rtc_r;
-@@ -220,7 +221,7 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
-         } else {
-             if (size == 4) {
-                 /* time_hi for RV32/RV64 */
--                mtimer->time_delta = (value << 32 | (rtc_r & 0xFFFFFFFF)) - rtc_r;
-+                mtimer->time_delta = (value << 32 | (rtc & 0xFFFFFFFF)) - rtc_r;
-             } else {
-                 qemu_log_mask(LOG_GUEST_ERROR,
-                               "aclint-mtimer: invalid time_hi write: %08x",
+-    uint64_t rtc_r = cpu_riscv_read_rtc(mtimer);
++    uint64_t rtc = cpu_riscv_read_rtc(mtimer);
+ 
+     /* Compute the relative hartid w.r.t the socket */
+     hartid = hartid - mtimer->hartid_base;
+ 
+     mtimer->timecmp[hartid] = value;
+-    if (mtimer->timecmp[hartid] <= rtc_r) {
++    if (mtimer->timecmp[hartid] <= rtc) {
+         /*
+          * If we're setting an MTIMECMP value in the "past",
+          * immediately raise the timer interrupt
+@@ -81,7 +81,7 @@ static void riscv_aclint_mtimer_write_timecmp(RISCVAclintMTimerState *mtimer,
+ 
+     /* otherwise, set up the future timer interrupt */
+     qemu_irq_lower(mtimer->timer_irqs[hartid]);
+-    diff = mtimer->timecmp[hartid] - rtc_r;
++    diff = mtimer->timecmp[hartid] - rtc;
+     /* back to ns (note args switched in muldiv64) */
+     uint64_t ns_diff = muldiv64(diff, NANOSECONDS_PER_SECOND, timebase_freq);
+ 
 -- 
 2.41.0
 
