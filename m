@@ -2,122 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5A379A6A7
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:19:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E829479A6BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:29:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfd4j-0001mt-Jk; Mon, 11 Sep 2023 05:19:21 -0400
+	id 1qfdDW-0004FB-TE; Mon, 11 Sep 2023 05:28:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qfd4g-0001lL-Kr
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:19:18 -0400
-Received: from mail-bn8nam12on2061b.outbound.protection.outlook.com
- ([2a01:111:f400:fe5b::61b]
- helo=NAM12-BN8-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qfd4c-0008CQ-PF
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:19:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UX9MsHBDD5MVz6PG9XmvR8KmDHIVEh3mZHlcCCjTXqmegKuiF4H2CpopY3Frtqn4zXmHZQCgF2IMOjY8ydX/XzccKPY9ZDYMkLv5ExB0WGWK1XLN5D3yANSMi/FRJKKKir9yApXuUWRV/NNxdy/DfHeF4A88NtyF3xKDtpNr7rcys9OBkVc0xYtvrFd0yICP/93VUXASX/AXV93drjpuQkNSKYtzPWbYgukta8MTR73a3juE24L01NudP/oaFpLf4jCyi8sXwp7HjaSiKgRXBOKpZBwds3ORc/pWUDb1pLJE9pg6vsoQ9B716oeAg8d//I+a+aJhmsKyrWyPJ844ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yxcnH8SllfYKc+MLvCRe5WbBBQgMM9QOk0njBJ9O4yI=;
- b=Znp36jGKH72GBoCDn4CKysnI6CV6Z++8PQrtx8TpPLyKh0A4muFdMOIqCCIKuNHYYcLlcVPEJbNtpqLtfKpHwziTTCRtmFWRzkpmJ3j9NQq0Rz+poA9ymx1MFahSJz4FL1mTsz1Mt/8U5ffCMsaShmXvAkaAH0AWlRkQ4PnBkfgB+g8tH2ogjRqcK4K1wY8I2l3LwXPsF1eplEG1Y1jHFjiVxzhxtlBAtZHQM2dMaTAVLQHAGZWoj+a/OWCXCdglVByms0CzleberAoi++MDlbJfNjYVpAwmLE9T//0uJXLe64e/PWaBjAyzzZtOQZ7gWddgnT7u5do0DRCfmn2LPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yxcnH8SllfYKc+MLvCRe5WbBBQgMM9QOk0njBJ9O4yI=;
- b=RiUILT4pRTiz+S+fNMmTb/5xC+xKpmrz4Ye6hmVfHa6cgjA9aBQddDLp/yomHxMSgjUJt/wWUw0lRXujPRn07Al5NCLI91lY6nnzbwkiRETmDp2N/8MVHWW6hDSLdV+QP5VNEz4Iwn94KBnQpXj93xNX1mqlSnn+WdzYd42ugjM=
-Received: from CY5PR15CA0087.namprd15.prod.outlook.com (2603:10b6:930:18::13)
- by IA0PR12MB8088.namprd12.prod.outlook.com (2603:10b6:208:409::5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Mon, 11 Sep
- 2023 09:19:08 +0000
-Received: from CY4PEPF0000EDD0.namprd03.prod.outlook.com
- (2603:10b6:930:18:cafe::86) by CY5PR15CA0087.outlook.office365.com
- (2603:10b6:930:18::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.41 via Frontend
- Transport; Mon, 11 Sep 2023 09:19:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EDD0.mail.protection.outlook.com (10.167.241.204) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.11 via Frontend Transport; Mon, 11 Sep 2023 09:19:07 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Sep
- 2023 04:19:02 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: David Airlie <airlied@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>, "Gurchetan
- Singh" <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, "Juergen
- Gross" <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Robert Beckett <bob.beckett@collabora.com>,
- <virtualization@lists.linux-foundation.org>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>
-CC: <qemu-devel@nongnu.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <Alexander.Deucher@amd.com>, "Christian
- Koenig" <Christian.Koenig@amd.com>, Stewart Hildebrand
- <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
- Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
-Subject: [RESEND LINUX KERNEL PATCH 1/1] virtgpu: init vq during resume and
- notify qemu guest status
-Date: Mon, 11 Sep 2023 17:18:31 +0800
-Message-ID: <20230911091831.1383180-2-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230911091831.1383180-1-Jiqian.Chen@amd.com>
-References: <20230911091831.1383180-1-Jiqian.Chen@amd.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdDU-0004F3-RC
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:28:24 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdDS-0001Lg-4Q
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:28:24 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-9a9f139cd94so436457966b.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 02:28:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694424499; x=1695029299; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=AYjaTGDVOvYCTadL5dsWx09HwjynT5qt+XzoeASInJk=;
+ b=mrevSF6DG6AJfwmYKU8QBLWfa9Ejb0XOUpf1CxSDAyR21S/dc39VWnAcDOJZVj3qAT
+ f5xydwLeorlE4Z5ppaB/fXAawl7TQE/4t+YKk6KL8HyQ4W6e16Zr3YpmOl9oDUf1sECJ
+ azkPNNJVrPBF6SiufgUcqUNPRKSe+QKVLGHPX2AqbG/JM1p3Kgd4u8pAqsylbTgCJWtf
+ z2kNhPlDFCOt5x9wVGdCw/V0WOemzWI+MA8UuQDLJBfD+YK3whSyuAtuFU9keSL0fyxH
+ bYZosZ7Nu0tSrW/lhhAizb/iYj6Kyuu0TolnIR0AdZko/uiQI3KywlA18KcJ/jfBuhav
+ yhmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694424499; x=1695029299;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AYjaTGDVOvYCTadL5dsWx09HwjynT5qt+XzoeASInJk=;
+ b=xB7N/IT+7aPzuh6cCAJ8diXYB1VMJRkHvVc23x1ZhM0lH81e9hCbp4Zwz8aDN+x4SD
+ Ok6uR4uvrcy4dYIXPCXfFZI2/lm9h4UALyJrPbZxsyu/m3XoL0sw75ulR6VU2UGBkEXE
+ 9Paim+5easYeeHgYNmeM3Q10XVLxSk8+/e4DIBAFSKVzbwskqigw99UZ+daWzoQ9IZZS
+ lRDRDc/0P6pNgsBHRx1rRz6s8wEOSa0sXMnWVeq8NABlfSh+G3mOr4CrANDdcfsQ1EUR
+ Xp6E0hg9Yp2J6TYBHikj6FTYzP53exY0OJOJ5osw77W2vMKJ1hgz376rYYjcmZF6LATY
+ TU7w==
+X-Gm-Message-State: AOJu0YzQsEjdxZ1r12UZwOzr8yzEDEvmop2cuYWLQW9D8HvrHejfPNIr
+ /7zuvAA5+JZ/TMy9v+6OMq2BXxH9m47QJcqNfLQ=
+X-Google-Smtp-Source: AGHT+IGHxqo4NVlzPbb0GcxYC2OJ5jI6dyWq2pTpDhA3T5CXDnjIg42qcl2oK7GPv89LxpRDDxcEUw==
+X-Received: by 2002:a17:906:2189:b0:9a5:b875:eba with SMTP id
+ 9-20020a170906218900b009a5b8750ebamr7397015eju.24.1694424498930; 
+ Mon, 11 Sep 2023 02:28:18 -0700 (PDT)
+Received: from [192.168.69.115] (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
+ [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
+ oy25-20020a170907105900b0099d0c0bb92bsm5032426ejb.80.2023.09.11.02.28.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Sep 2023 02:28:18 -0700 (PDT)
+Message-ID: <c4fd505e-de5b-ea33-4959-38a735cf173d@linaro.org>
+Date: Mon, 11 Sep 2023 11:28:16 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] meson: Fix targetos match for illumos and Solaris.
+To: Jonathan Perkin <jonathan@perkin.org.uk>, qemu-devel@nongnu.org
+References: <ZPtdxtum9UVPy58J@perkin.org.uk>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ZPtdxtum9UVPy58J@perkin.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD0:EE_|IA0PR12MB8088:EE_
-X-MS-Office365-Filtering-Correlation-Id: acfc779f-b393-489c-6dff-08dbb2a826e8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 766QVj829MwM8GjKv4B3OYXzV57eJsTm160/cKS/TyAmtgSxaxdDqwup+oZTAIqFITgWI10JEpnXNO4jAbV+sjb6Xx4Fzn5PhRPiehFIob57RQtSF32Nc9PbvPGKATJug4nY8KjG/Ls63EP8VND8jvhxOtN9OdaR8sXE0ElKxABMuzanDdaUUq0T184VUdDUElVEE61ElOMFiTbq++N4H/sNRUymMScrqqiW4IfkxYNtRg0PMAAWUG1/eD/vJgeeiOBEWrvbk+Upr+JwO6cY7m+GJhL4kggDbcqrrPbYS8k/U7i1BDoBvi4ptT58vOFuEo+o4y+mZ5Ga+xu0qmMUnBOInKZb/hmKhgh9u8Rt09NumIw0Gn60wdBEB2xtRJil5dBfD4/TC53wKftv3tn1HNf84LGpwXsRQAY/5y1kw9t4DoELA9msiDE93N9/ky6wMmC++l4STSJ1paDsrAsbKIAaWkbK+jHMApPNdpzHUkW3MDW/zABAhJzMhlU6MGGSaqbVQeqIG8rInNRYjswl1MyFNCgjKBMo9txLRPgLt8mUiYo4xnAlxUrRfRoM8DyluU4DTmBZsgyrGcRiU466nQxcgktUBYRpBa080CC1wankEL4K8LbZnBDFYavnFthNZnNtn2VcPIl+xdGfhgWjTRKIBTadYSLjJawEshxz1wzdJUJwwrbYPtDnSq8hJm65FXHzPAfUW+O6MIjJfcl36BAezwINNPkLEUtdmQUxb36x03ZQtQBhcX2aVnC3O2QAwH5B8mEX2obQGm5H4sG8wBm9YrsGHbiFbVp7oGhF2Zo=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(376002)(39860400002)(396003)(346002)(136003)(451199024)(82310400011)(186009)(1800799009)(46966006)(40470700004)(36840700001)(5660300002)(70206006)(7696005)(8676002)(8936002)(41300700001)(30864003)(70586007)(54906003)(2906002)(478600001)(6666004)(316002)(4326008)(336012)(26005)(16526019)(426003)(1076003)(2616005)(47076005)(7416002)(83380400001)(36860700001)(81166007)(110136005)(82740400003)(921005)(356005)(40460700003)(40480700001)(86362001)(36756003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2023 09:19:07.8979 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: acfc779f-b393-489c-6dff-08dbb2a826e8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD0.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8088
-Received-SPF: softfail client-ip=2a01:111:f400:fe5b::61b;
- envelope-from=Jiqian.Chen@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -133,301 +91,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch solves two problem:
+On 8/9/23 19:45, Jonathan Perkin wrote:
+> qemu 8.1.0 breaks on illumos platforms due to _XOPEN_SOURCE and others 
+> no longer being set correctly, leading to breakage such as:
+> 
+>    
+> https://us-central.manta.mnx.io/pkgsrc/public/reports/trunk/tools/20230908.1404/qemu-8.1.0/build.log
 
-First, when we suspended guest VM, it called into Qemu to call
-virtio_reset->__virtio_queue_reset, this cleared all virtuqueue
-information of virtgpu on Qemu end. As a result, after guest
-resumed, guest sended ctrl/cursor requests to Qemu through
-virtqueue, but Qemu can't get requests from the virtqueue now.
-In function virtio_queue_notify, vq->vring.desc is NULL.
+Paolo if you don't mind please replace this link
+(which is likely going to disappear) by:
 
-So, this patch add freeze and restore function for virtgpu driver.
-In freeze function, it flushes all virtqueue works and deletes
-virtqueues. In restore function, it initializes virtqueues. And
-then, Qemu and guest can communicate normally.
+In file included from include/qemu/osdep.h:151,
+                  from ../qom/container.c:13:
+include/sysemu/os-posix.h: In function 'qemu_flockfile':
+include/sysemu/os-posix.h:88:5: warning: implicit declaration of 
+function 'flockfile' [-Wimplicit-function-declaration]
+    88 |     flockfile(f);
+       |     ^~~~~~~~~
+include/sysemu/os-posix.h:88:5: warning: nested extern declaration of 
+'flockfile' [-Wnested-externs]
 
-Second, when we suspended guest VM, it called into Qemu to call
-virtio_reset->virtio_gpu_gl_reset, this destroyed resources and
-reset renderer which were used for display. As a result, after
-guest resumed, the display can't come back and we only saw a black
-screen.
+../util/compatfd.c: In function 'sigwait_compat':
+../util/compatfd.c:36:15: error: too many arguments to function 'sigwait'
+    36 |         err = sigwait(&info->mask, &sig);
+       |               ^~~~~~~
+In file included from include/qemu/osdep.h:117,
+                  from ../util/compatfd.c:16:
+/usr/include/signal.h:165:12: note: declared here
+   165 | extern int sigwait(sigset_t *);
+       |            ^~~~~~~
 
-So, this patch add a new ctrl message VIRTIO_GPU_CMD_SET_FREEZE_MODE.
-When guest is during suspending, we set freeze mode to freeze_S3 to
-notify Qemu that guest entered suspending, and then Qemu will not
-destroy resources. When guest is during resuming, we set freeze mode
-to unfreeze to notify Qemu that guest exited suspending, and then
-Qemu will keep its origin actions. As a result, the display can come
-back and everything of guest can come back to the time when guest
-was suspended.
+> 
+> This is a result of meson conversion which incorrectly matches against 
+> 'solaris' instead of 'sunos' for uname.
+> 
+> First time submitting a patch here, hope I did it correctly.  Thanks.
+> 
+> Signed-off-by: Jonathan Perkin <jonathan@perkin.org.uk>
+> ---
+>   meson.build     | 4 ++--
+>   net/meson.build | 2 +-
+>   2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/meson.build b/meson.build
+> index 0e31bdfabf..5150a74831 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -226,7 +226,7 @@ if targetos == 'darwin'
+>     if compiler.get_id() == 'gcc'
+>       qemu_common_flags += '-DOS_OBJECT_USE_OBJC=0'
+>     endif
+> -elif targetos == 'solaris'
+> +elif targetos == 'sunos'
 
-Due to this implemention needs cooperation with host Qemu, so it
-added a new feature flag VIRTIO_GPU_F_FREEZE_S3, so that guest and
-host can negotiate whenever freeze_S3 is supported or not.
+Commit a988b4c561 from Oct 2022... I'm surprised nobody tried
+to build QEMU on illumos for almost 1 year...
 
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
- drivers/gpu/drm/virtio/virtgpu_debugfs.c |  1 +
- drivers/gpu/drm/virtio/virtgpu_drv.c     | 39 ++++++++++++++++++++++++
- drivers/gpu/drm/virtio/virtgpu_drv.h     |  5 +++
- drivers/gpu/drm/virtio/virtgpu_kms.c     | 36 ++++++++++++++++------
- drivers/gpu/drm/virtio/virtgpu_vq.c      | 16 ++++++++++
- include/uapi/linux/virtio_gpu.h          | 19 ++++++++++++
- 6 files changed, 107 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/gpu/drm/virtio/virtgpu_debugfs.c b/drivers/gpu/drm/virtio/virtgpu_debugfs.c
-index 853dd9aa397e..c84fd6d7f5f3 100644
---- a/drivers/gpu/drm/virtio/virtgpu_debugfs.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_debugfs.c
-@@ -55,6 +55,7 @@ static int virtio_gpu_features(struct seq_file *m, void *data)
- 
- 	virtio_gpu_add_bool(m, "blob resources", vgdev->has_resource_blob);
- 	virtio_gpu_add_bool(m, "context init", vgdev->has_context_init);
-+	virtio_gpu_add_bool(m, "freeze_S3", vgdev->has_freeze_S3);
- 	virtio_gpu_add_int(m, "cap sets", vgdev->num_capsets);
- 	virtio_gpu_add_int(m, "scanouts", vgdev->num_scanouts);
- 	if (vgdev->host_visible_region.len) {
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
-index 644b8ee51009..000e3e776608 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -130,6 +130,40 @@ static void virtio_gpu_config_changed(struct virtio_device *vdev)
- 	schedule_work(&vgdev->config_changed_work);
- }
- 
-+#ifdef CONFIG_PM
-+static int virtio_gpu_freeze(struct virtio_device *dev)
-+{
-+	struct drm_device *ddev = dev->priv;
-+	struct virtio_gpu_device *vgdev = ddev->dev_private;
-+	int ret = 0;
-+
-+	if (vgdev->has_freeze_S3) {
-+		ret = virtio_gpu_cmd_set_freeze_mode(vgdev,
-+					VIRTIO_GPU_FREEZE_MODE_FREEZE_S3);
-+	}
-+	if (!ret) {
-+		flush_work(&vgdev->ctrlq.dequeue_work);
-+		flush_work(&vgdev->cursorq.dequeue_work);
-+		vgdev->vdev->config->del_vqs(vgdev->vdev);
-+	}
-+	return ret;
-+}
-+
-+static int virtio_gpu_restore(struct virtio_device *dev)
-+{
-+	struct drm_device *ddev = dev->priv;
-+	struct virtio_gpu_device *vgdev = ddev->dev_private;
-+	int ret;
-+
-+	ret = virtio_gpu_init_vqs(dev);
-+	if (!ret && vgdev->has_freeze_S3) {
-+		ret = virtio_gpu_cmd_set_freeze_mode(vgdev,
-+					VIRTIO_GPU_FREEZE_MODE_UNFREEZE);
-+	}
-+	return ret;
-+}
-+#endif
-+
- static struct virtio_device_id id_table[] = {
- 	{ VIRTIO_ID_GPU, VIRTIO_DEV_ANY_ID },
- 	{ 0 },
-@@ -148,6 +182,7 @@ static unsigned int features[] = {
- 	VIRTIO_GPU_F_RESOURCE_UUID,
- 	VIRTIO_GPU_F_RESOURCE_BLOB,
- 	VIRTIO_GPU_F_CONTEXT_INIT,
-+	VIRTIO_GPU_F_FREEZE_S3,
- };
- static struct virtio_driver virtio_gpu_driver = {
- 	.feature_table = features,
-@@ -156,6 +191,10 @@ static struct virtio_driver virtio_gpu_driver = {
- 	.driver.owner = THIS_MODULE,
- 	.id_table = id_table,
- 	.probe = virtio_gpu_probe,
-+#ifdef CONFIG_PM
-+	.freeze = virtio_gpu_freeze,
-+	.restore = virtio_gpu_restore,
-+#endif
- 	.remove = virtio_gpu_remove,
- 	.config_changed = virtio_gpu_config_changed
- };
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
-index 4126c384286b..231b5a6138b2 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.h
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
-@@ -246,6 +246,7 @@ struct virtio_gpu_device {
- 	bool has_resource_blob;
- 	bool has_host_visible;
- 	bool has_context_init;
-+	bool has_freeze_S3;
- 	struct virtio_shm_region host_visible_region;
- 	struct drm_mm host_visible_mm;
- 
-@@ -282,6 +283,7 @@ extern struct drm_ioctl_desc virtio_gpu_ioctls[DRM_VIRTIO_NUM_IOCTLS];
- void virtio_gpu_create_context(struct drm_device *dev, struct drm_file *file);
- 
- /* virtgpu_kms.c */
-+int virtio_gpu_init_vqs(struct virtio_device *vdev);
- int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev);
- void virtio_gpu_deinit(struct drm_device *dev);
- void virtio_gpu_release(struct drm_device *dev);
-@@ -425,6 +427,9 @@ virtio_gpu_cmd_set_scanout_blob(struct virtio_gpu_device *vgdev,
- 				uint32_t width, uint32_t height,
- 				uint32_t x, uint32_t y);
- 
-+int virtio_gpu_cmd_set_freeze_mode(struct virtio_gpu_device *vgdev,
-+				virtio_gpu_freeze_mode_t freeze_mode);
-+
- /* virtgpu_display.c */
- int virtio_gpu_modeset_init(struct virtio_gpu_device *vgdev);
- void virtio_gpu_modeset_fini(struct virtio_gpu_device *vgdev);
-diff --git a/drivers/gpu/drm/virtio/virtgpu_kms.c b/drivers/gpu/drm/virtio/virtgpu_kms.c
-index 5a3b5aaed1f3..a762a762f907 100644
---- a/drivers/gpu/drm/virtio/virtgpu_kms.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_kms.c
-@@ -114,16 +114,33 @@ static void virtio_gpu_get_capsets(struct virtio_gpu_device *vgdev,
- 	vgdev->num_capsets = num_capsets;
- }
- 
--int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
-+int virtio_gpu_init_vqs(struct virtio_device *vdev)
- {
- 	static vq_callback_t *callbacks[] = {
- 		virtio_gpu_ctrl_ack, virtio_gpu_cursor_ack
- 	};
- 	static const char * const names[] = { "control", "cursor" };
-+	struct drm_device *dev = vdev->priv;
-+	struct virtio_gpu_device *vgdev = dev->dev_private;
-+	struct virtqueue *vqs[2];
-+	int ret;
-+
-+	virtio_gpu_init_vq(&vgdev->ctrlq, virtio_gpu_dequeue_ctrl_func);
-+	virtio_gpu_init_vq(&vgdev->cursorq, virtio_gpu_dequeue_cursor_func);
-+
-+	ret = virtio_find_vqs(vgdev->vdev, 2, vqs, callbacks, names, NULL);
-+	if (ret) {
-+		DRM_ERROR("failed to find virt queues\n");
-+		return ret;
-+	}
-+	vgdev->ctrlq.vq = vqs[0];
-+	vgdev->cursorq.vq = vqs[1];
-+	return 0;
-+}
- 
-+int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
-+{
- 	struct virtio_gpu_device *vgdev;
--	/* this will expand later */
--	struct virtqueue *vqs[2];
- 	u32 num_scanouts, num_capsets;
- 	int ret = 0;
- 
-@@ -144,8 +161,6 @@ int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
- 	ida_init(&vgdev->ctx_id_ida);
- 	ida_init(&vgdev->resource_ida);
- 	init_waitqueue_head(&vgdev->resp_wq);
--	virtio_gpu_init_vq(&vgdev->ctrlq, virtio_gpu_dequeue_ctrl_func);
--	virtio_gpu_init_vq(&vgdev->cursorq, virtio_gpu_dequeue_cursor_func);
- 
- 	vgdev->fence_drv.context = dma_fence_context_alloc(1);
- 	spin_lock_init(&vgdev->fence_drv.lock);
-@@ -197,6 +212,9 @@ int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
- 	if (virtio_has_feature(vgdev->vdev, VIRTIO_GPU_F_CONTEXT_INIT)) {
- 		vgdev->has_context_init = true;
- 	}
-+	if (virtio_has_feature(vgdev->vdev, VIRTIO_GPU_F_FREEZE_S3)) {
-+		vgdev->has_freeze_S3 = true;
-+	}
- 
- 	DRM_INFO("features: %cvirgl %cedid %cresource_blob %chost_visible",
- 		 vgdev->has_virgl_3d    ? '+' : '-',
-@@ -207,13 +225,13 @@ int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
- 	DRM_INFO("features: %ccontext_init\n",
- 		 vgdev->has_context_init ? '+' : '-');
- 
--	ret = virtio_find_vqs(vgdev->vdev, 2, vqs, callbacks, names, NULL);
-+	DRM_INFO("features: %cfreeze_S3\n",
-+		 vgdev->has_freeze_S3 ? '+' : '-');
-+
-+	ret = virtio_gpu_init_vqs(vdev);
- 	if (ret) {
--		DRM_ERROR("failed to find virt queues\n");
- 		goto err_vqs;
- 	}
--	vgdev->ctrlq.vq = vqs[0];
--	vgdev->cursorq.vq = vqs[1];
- 	ret = virtio_gpu_alloc_vbufs(vgdev);
- 	if (ret) {
- 		DRM_ERROR("failed to alloc vbufs\n");
-diff --git a/drivers/gpu/drm/virtio/virtgpu_vq.c b/drivers/gpu/drm/virtio/virtgpu_vq.c
-index b1a00c0c25a7..74b34951e4fa 100644
---- a/drivers/gpu/drm/virtio/virtgpu_vq.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_vq.c
-@@ -1302,3 +1302,19 @@ void virtio_gpu_cmd_set_scanout_blob(struct virtio_gpu_device *vgdev,
- 
- 	virtio_gpu_queue_ctrl_buffer(vgdev, vbuf);
- }
-+
-+int virtio_gpu_cmd_set_freeze_mode(struct virtio_gpu_device *vgdev,
-+				virtio_gpu_freeze_mode_t freeze_mode)
-+{
-+	struct virtio_gpu_set_freeze_mode *cmd_p;
-+	struct virtio_gpu_vbuffer *vbuf;
-+
-+	cmd_p = virtio_gpu_alloc_cmd(vgdev, &vbuf, sizeof(*cmd_p));
-+	memset(cmd_p, 0, sizeof(*cmd_p));
-+
-+	cmd_p->hdr.type = cpu_to_le32(VIRTIO_GPU_CMD_SET_FREEZE_MODE);
-+	cmd_p->freeze_mode = freeze_mode;
-+	virtio_gpu_queue_ctrl_buffer(vgdev, vbuf);
-+	virtio_gpu_notify(vgdev);
-+	return 0;
-+}
-\ No newline at end of file
-diff --git a/include/uapi/linux/virtio_gpu.h b/include/uapi/linux/virtio_gpu.h
-index f556fde07b76..21ca87bf7417 100644
---- a/include/uapi/linux/virtio_gpu.h
-+++ b/include/uapi/linux/virtio_gpu.h
-@@ -65,6 +65,11 @@
-  */
- #define VIRTIO_GPU_F_CONTEXT_INIT        4
- 
-+/*
-+ * VIRTIO_GPU_CMD_SET_FREEZE_MODE
-+ */
-+#define VIRTIO_GPU_F_FREEZE_S3            5
-+
- enum virtio_gpu_ctrl_type {
- 	VIRTIO_GPU_UNDEFINED = 0,
- 
-@@ -100,6 +105,9 @@ enum virtio_gpu_ctrl_type {
- 	VIRTIO_GPU_CMD_UPDATE_CURSOR = 0x0300,
- 	VIRTIO_GPU_CMD_MOVE_CURSOR,
- 
-+	/* freeze mode */
-+	VIRTIO_GPU_CMD_SET_FREEZE_MODE = 0x0400,
-+
- 	/* success responses */
- 	VIRTIO_GPU_RESP_OK_NODATA = 0x1100,
- 	VIRTIO_GPU_RESP_OK_DISPLAY_INFO,
-@@ -453,4 +461,15 @@ struct virtio_gpu_resource_unmap_blob {
- 	__le32 padding;
- };
- 
-+/* VIRTIO_GPU_CMD_SET_FREEZE_MODE */
-+typedef enum {
-+	VIRTIO_GPU_FREEZE_MODE_UNFREEZE = 0,
-+	VIRTIO_GPU_FREEZE_MODE_FREEZE_S3 = 3,
-+} virtio_gpu_freeze_mode_t;
-+
-+struct virtio_gpu_set_freeze_mode {
-+	struct virtio_gpu_ctrl_hdr hdr;
-+	virtio_gpu_freeze_mode_t freeze_mode;
-+};
-+
- #endif
--- 
-2.34.1
+>     # needed for CMSG_ macros in sys/socket.h
+>     qemu_common_flags += '-D_XOPEN_SOURCE=600'
+>     # needed for TIOCWIN* defines in termios.h
+> @@ -2048,7 +2048,7 @@ have_slirp_smbd = get_option('slirp_smbd') \
+>   if have_slirp_smbd
+>     smbd_path = get_option('smbd')
+>     if smbd_path == ''
+> -    smbd_path = (targetos == 'solaris' ? '/usr/sfw/sbin/smbd' : 
+> '/usr/sbin/smbd')
+> +    smbd_path = (targetos == 'sunos' ? '/usr/sfw/sbin/smbd' : 
+> '/usr/sbin/smbd')
+>     endif
+>     config_host_data.set_quoted('CONFIG_SMBD_COMMAND', smbd_path)
+>   endif
+> diff --git a/net/meson.build b/net/meson.build
+> index d2d70634e5..51caa42c9d 100644
+> --- a/net/meson.build
+> +++ b/net/meson.build
+> @@ -47,7 +47,7 @@ elif targetos == 'linux'
+>     system_ss.add(files('tap.c', 'tap-linux.c'))
+>   elif targetos in bsd_oses
+>     system_ss.add(files('tap.c', 'tap-bsd.c'))
+> -elif targetos == 'solaris'
+> +elif targetos == 'sunos'
+>     system_ss.add(files('tap.c', 'tap-solaris.c'))
+>   else
+>     system_ss.add(files('tap.c', 'tap-stub.c'))
 
 
