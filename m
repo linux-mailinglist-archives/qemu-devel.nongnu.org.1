@@ -2,79 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F1579A86A
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 15:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C3B079A87F
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 16:08:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfhMV-0005qJ-Up; Mon, 11 Sep 2023 09:53:59 -0400
+	id 1qfhYu-0003c9-Js; Mon, 11 Sep 2023 10:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qfhMU-0005pU-GO
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 09:53:58 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qfhMJ-0003Am-Ts
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 09:53:58 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-31fa666000dso1047326f8f.2
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 06:53:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694440426; x=1695045226; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=1SPaLFJICW9q9gqa6qvPwlUkb8XaROQF8dYUvvHc24Q=;
- b=XvgKZ50R8Dbc3FCeJtRahF+ujCToUeWldnj/USmBXiW4NOsH6Nwor2OO95xjHll+hi
- YrUaijJSzaIbIagjDVXj3MrJdfvGxxQeCuCjZb1VTYvxqgEBjxyn/9XKXi724OuI3mY2
- pufSNFviwK01r+UWVT7DBq6Oq726gHb/hncvlFv25mTGJkFNVilXpLwYkPEgVScLjHju
- lrkxQVNYJCmk1Q4K8LDwqe1tWkuq3LP6+jG/Nf8wahLACRWvH0J9Kcby7jsW5Z+j84zj
- 1xe/95lGeEW3UftyI5Wkze5tqF9kEuaO+NUOzoOjlgSEXDFOWwW2bzdxq7NVHSpQSZd1
- ndqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694440426; x=1695045226;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1SPaLFJICW9q9gqa6qvPwlUkb8XaROQF8dYUvvHc24Q=;
- b=PXGLPJmEfNKmROmbsMfkVOOB88uhjvNr/sepA1G5ExVYNww30OqdMyoI+/N+2V/BvG
- 0kUtIMUV4xUeBNCizCR0bc2FmDMIephgERY5cjbaIzl52x0AIY4iqWoFAL+Zv70+Sxh/
- W5f5P6028JvkcQ0EPEqdiy7mXDZkMPK9drSy1aBrOH544VUHz6h7JGFDLYU+6eKprUjG
- c5nhCuGXWznzidHn4X+1yVGYOQSyDioG3SeIAndWfhQyc8zLhx8ahLLIDkGFIBpWDhm6
- lc6Ffx+Lj5ErTcHMJkW/hxXZypXWJs0WHuwRwCz8CbSso/smgV0yhktfqGZo9l3r1D5o
- NvWQ==
-X-Gm-Message-State: AOJu0Yw1TfQWIU8eXPdskDP14RL5xSQuJoLDZL9WTmUxeRONSUoBlfNw
- 4ER9AYzzhhaF+FifoifbXsoO/MFfgC5fZyv+QAc=
-X-Google-Smtp-Source: AGHT+IH4iUR6QG0LLQ5pPYm11Xtvmh2D7E8OvHkKSnSCUlsFauob0y93CkVzXiP3kcWVLnYm9cQsAA==
-X-Received: by 2002:a5d:5744:0:b0:31a:e972:3601 with SMTP id
- q4-20020a5d5744000000b0031ae9723601mr8458561wrw.54.1694440426494; 
- Mon, 11 Sep 2023 06:53:46 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- r3-20020a5d4983000000b00317ab75748bsm10079758wrq.49.2023.09.11.06.53.46
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Sep 2023 06:53:46 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH 7/7] target/arm: Implement FEAT_HBC
-Date: Mon, 11 Sep 2023 14:53:40 +0100
-Message-Id: <20230911135340.1139553-8-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230911135340.1139553-1-peter.maydell@linaro.org>
-References: <20230911135340.1139553-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qfhYs-0003bn-Gw
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 10:06:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qfhYq-0006gL-1X
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 10:06:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694441203;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+SgllIFI5L9IOdrQ+YDs8a8nEVYnJMUhWYTS6rLCG9E=;
+ b=iqR6UF+r/3gv029BnrX1hMjfI9MGVGWnxXYGID5pd1pFH6VeVP1vscySP3RMwqM3AJ2eth
+ JAuz4KWP7Ik7C88lI34c86WKQ631LK46Vg6sLXt4dqfaxkBgmODkPog9kbHXiJ2/f42qOF
+ P3HbaEIm+bvZByTtKIjC5Or5mEnaZGw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-156-GsmqYr_9PeybMHmzwES1HA-1; Mon, 11 Sep 2023 10:06:41 -0400
+X-MC-Unique: GsmqYr_9PeybMHmzwES1HA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D18929ABA36
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:06:41 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.8])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A8B1240C2009;
+ Mon, 11 Sep 2023 14:06:40 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH] ui: fix crash when there are no active_console
+Date: Mon, 11 Sep 2023 18:06:38 +0400
+Message-ID: <20230911140638.1458156-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x429.google.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,109 +77,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_HBC (Hinted conditional branches) provides a new instruction
-BC.cond, which behaves exactly like the existing B.cond except
-that it provides a hint to the branch predictor about the
-likely behaviour of the branch.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Since QEMU does not implement branch prediction, we can treat
-this identically to B.cond.
+Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+0x0000555555888630 in dpy_ui_info_supported (con=0x0) at ../ui/console.c:812
+812	    return con->hw_ops->ui_info != NULL;
+(gdb) bt
+#0  0x0000555555888630 in dpy_ui_info_supported (con=0x0) at ../ui/console.c:812
+#1  0x00005555558a44b1 in protocol_client_msg (vs=0x5555578c76c0, data=0x5555581e93f0 <incomplete sequence \373>, len=24) at ../ui/vnc.c:2585
+#2  0x00005555558a19ac in vnc_client_read (vs=0x5555578c76c0) at ../ui/vnc.c:1607
+#3  0x00005555558a1ac2 in vnc_client_io (ioc=0x5555581eb0e0, condition=G_IO_IN, opaque=0x5555578c76c0) at ../ui/vnc.c:1635
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Fixes:
+https://issues.redhat.com/browse/RHEL-2600
+
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- docs/system/arm/emulation.rst  | 1 +
- target/arm/cpu.h               | 5 +++++
- target/arm/tcg/a64.decode      | 3 ++-
- linux-user/elfload.c           | 1 +
- target/arm/tcg/cpu64.c         | 4 ++++
- target/arm/tcg/translate-a64.c | 4 ++++
- 6 files changed, 17 insertions(+), 1 deletion(-)
+ ui/console.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 2e6a7c8961e..34429054a3f 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -39,6 +39,7 @@ the following architecture extensions:
- - FEAT_FlagM2 (Enhancements to flag manipulation instructions)
- - FEAT_GTG (Guest translation granule size)
- - FEAT_HAFDBS (Hardware management of the access flag and dirty bit state)
-+- FEAT_HBC (Hinted conditional branches)
- - FEAT_HCX (Support for the HCRX_EL2 register)
- - FEAT_HPDS (Hierarchical permission disables)
- - FEAT_HPDS2 (Translation table page-based hardware attributes)
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index eddf2d3b72c..fc45f1fb9e2 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -4050,6 +4050,11 @@ static inline bool isar_feature_aa64_i8mm(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64isar1, ID_AA64ISAR1, I8MM) != 0;
- }
- 
-+static inline bool isar_feature_aa64_hbc(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, BC) != 0;
-+}
-+
- static inline bool isar_feature_aa64_tgran4_lpa2(const ARMISARegisters *id)
- {
-     return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4) >= 1;
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index ef64a3f9cba..71113173020 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -126,7 +126,8 @@ CBZ             sf:1 011010 nz:1 ................... rt:5 &cbz imm=%imm19
- 
- TBZ             . 011011 nz:1 ..... .............. rt:5 &tbz  imm=%imm14 bitpos=%imm31_19
- 
--B_cond          0101010 0 ................... 0 cond:4 imm=%imm19
-+# B.cond and BC.cond
-+B_cond          0101010 0 ................... c:1 cond:4 imm=%imm19
- 
- BR              1101011 0000 11111 000000 rn:5 00000 &r
- BLR             1101011 0001 11111 000000 rn:5 00000 &r
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index bbb4f08109c..203a2b790d5 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -815,6 +815,7 @@ uint32_t get_elf_hwcap2(void)
-     GET_FEATURE_ID(aa64_sme_f64f64, ARM_HWCAP2_A64_SME_F64F64);
-     GET_FEATURE_ID(aa64_sme_i16i64, ARM_HWCAP2_A64_SME_I16I64);
-     GET_FEATURE_ID(aa64_sme_fa64, ARM_HWCAP2_A64_SME_FA64);
-+    GET_FEATURE_ID(aa64_hbc, ARM_HWCAP2_A64_HBC);
- 
-     return hwcaps;
- }
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 0f8972950d6..90e033bbc3a 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -814,6 +814,10 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64ISAR1, I8MM, 1);     /* FEAT_I8MM */
-     cpu->isar.id_aa64isar1 = t;
- 
-+    t = cpu->isar.id_aa64isar2;
-+    t = FIELD_DP64(t, ID_AA64ISAR2, BC, 1);      /* FEAT_HBC */
-+    cpu->isar.id_aa64isar2 = t;
-+
-     t = cpu->isar.id_aa64pfr0;
-     t = FIELD_DP64(t, ID_AA64PFR0, FP, 1);        /* FEAT_FP16 */
-     t = FIELD_DP64(t, ID_AA64PFR0, ADVSIMD, 1);   /* FEAT_FP16 */
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 0b77c92437f..15eca55fc75 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -1453,6 +1453,10 @@ static bool trans_TBZ(DisasContext *s, arg_tbz *a)
- 
- static bool trans_B_cond(DisasContext *s, arg_B_cond *a)
- {
-+    /* BC.cond is only present with FEAT_HBC */
-+    if (a->c && !dc_isar_feature(aa64_hbc, s)) {
+diff --git a/ui/console.c b/ui/console.c
+index 90ae4be602..0f31ecece6 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -808,6 +808,9 @@ bool dpy_ui_info_supported(QemuConsole *con)
+     if (con == NULL) {
+         con = active_console;
+     }
++    if (con == NULL) {
 +        return false;
 +    }
-     reset_btype(s);
-     if (a->cond < 0x0e) {
-         /* genuinely conditional branches */
+ 
+     return con->hw_ops->ui_info != NULL;
+ }
+@@ -817,6 +820,9 @@ const QemuUIInfo *dpy_get_ui_info(const QemuConsole *con)
+     if (con == NULL) {
+         con = active_console;
+     }
++    if (con == NULL) {
++        return NULL;
++    }
+ 
+     return &con->ui_info;
+ }
+@@ -826,6 +832,9 @@ int dpy_set_ui_info(QemuConsole *con, QemuUIInfo *info, bool delay)
+     if (con == NULL) {
+         con = active_console;
+     }
++    if (con == NULL) {
++        return -1;
++    }
+ 
+     if (!dpy_ui_info_supported(con)) {
+         return -1;
+@@ -1401,6 +1410,10 @@ QEMUCursor *qemu_console_get_cursor(QemuConsole *con)
+     if (con == NULL) {
+         con = active_console;
+     }
++    if (con == NULL) {
++        return NULL;
++    }
++
+     return QEMU_IS_GRAPHIC_CONSOLE(con) ? QEMU_GRAPHIC_CONSOLE(con)->cursor : NULL;
+ }
+ 
+@@ -1414,6 +1427,10 @@ bool qemu_console_is_graphic(QemuConsole *con)
+     if (con == NULL) {
+         con = active_console;
+     }
++    if (con == NULL) {
++        return false;
++    }
++
+     return con && QEMU_IS_GRAPHIC_CONSOLE(con);
+ }
+ 
+@@ -1422,6 +1439,10 @@ bool qemu_console_is_fixedsize(QemuConsole *con)
+     if (con == NULL) {
+         con = active_console;
+     }
++    if (con == NULL) {
++        return false;
++    }
++
+     return con && (QEMU_IS_GRAPHIC_CONSOLE(con) || QEMU_IS_FIXED_TEXT_CONSOLE(con));
+ }
+ 
+@@ -1493,6 +1514,10 @@ int qemu_console_get_index(QemuConsole *con)
+     if (con == NULL) {
+         con = active_console;
+     }
++    if (con == NULL) {
++        return -1;
++    }
++
+     return con ? con->index : -1;
+ }
+ 
 -- 
-2.34.1
+2.41.0
 
 
