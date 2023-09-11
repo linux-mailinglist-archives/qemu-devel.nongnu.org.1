@@ -2,108 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEB779A6D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C3B79A6E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:48:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfdRz-0003aC-4t; Mon, 11 Sep 2023 05:43:23 -0400
+	id 1qfdVC-0005lB-ND; Mon, 11 Sep 2023 05:46:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdRp-0003Z8-7z
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:43:13 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfdRk-0003vU-2f
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:43:11 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2bd6611873aso66636601fa.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 02:43:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694425386; x=1695030186; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jmjKOQuW73CkxyzBkHVYL2o2wQ74q95ptQBD70bJNtg=;
- b=f2PMyopQmLdegxN/11jahK6fgxWi458StEtOphpE7uf1d5MKvhmZDw8VNQYAyzLcHk
- ZcSk8W5FQmAPgiXtGygsxyVced55hUK9ByW+Ml7ylsdidM63Yajv1UMyldCeZLBw4xGU
- THD2KQwXDYBSjDov+BqxirBP1f+fvHHPofDE2zisL431Ldn29y1liAMTLEmPsaNs5KvK
- Xg0vCr71+ukV3xA33VI1FIGLpxFIy7qPU15zVMgu4HVumA8OesGlItgHONd0TiGYOi+g
- RrZX7ojocWENrMnBcL95lx+Ryp1rVn5c0JL54WwkYFTwuImCFZigLdgjGlljWZja/1LE
- hIBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694425386; x=1695030186;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jmjKOQuW73CkxyzBkHVYL2o2wQ74q95ptQBD70bJNtg=;
- b=DrEBZqNINYuZ3gpDfaPJAaaJkfNwj4G2y9rCP4rVBP1i49/ej2d9k2UzPAmcJ+Jh+c
- EKZ+YtygTjIzI17CJtL5UCUX4JCelHPfesmzSBF2IU1EnS7lU1uJAjS/HET4soRw9KEX
- UOjjqpoovVlMocqg6BXvy4LiHVSpzP9DbT+3nnp5pw8m3r8t5UlYRvbz6Tl+x+ymuAbl
- NeduL0CmyNnK0cl4pEPWJsxGEPX5XkZsm4lcWf0xI0VeyvHVv8g5yJWLCzBEnpUgemc1
- vf6YHPW8b+pmfLbVt4aO2ze07aVLZDna/BXNdDkTtPos6RwCeGVCjrMSkOWd/TQZ+lOe
- z/sA==
-X-Gm-Message-State: AOJu0YztScHEN0ArTCpsqnbRuAfm+2zZ4obzrrZ+CcirotE4NXcXwHPf
- oyj9dyrUqEyk2us6Kw1/1G1sqg==
-X-Google-Smtp-Source: AGHT+IFLoqhyHG+pHj53Yx1we7ufAk8ESiVUOXjmWvXEuK07T4Vo/rpqF1CLPHFjiSBLlYIKbiFa5g==
-X-Received: by 2002:a2e:9303:0:b0:2bd:b99:ab7e with SMTP id
- e3-20020a2e9303000000b002bd0b99ab7emr7401965ljh.42.1694425386023; 
- Mon, 11 Sep 2023 02:43:06 -0700 (PDT)
-Received: from [192.168.69.115] (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
- [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- si28-20020a170906cedc00b009786c8249d6sm5134068ejb.175.2023.09.11.02.43.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 02:43:05 -0700 (PDT)
-Message-ID: <af78b6c9-14e5-3256-9670-c106f4942140@linaro.org>
-Date: Mon, 11 Sep 2023 11:43:00 +0200
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qfdV9-0005kQ-Og
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:46:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qfdV5-0004dP-QM
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:46:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694425595;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=8ezpTq2Ef1vXGLPsjvf7QRHB7/sC3AF6R3eQ0YRwsdE=;
+ b=CIrwhVGB6hdRMeh9xaVjrvHvcoYm6FIPW9Lao3PwbTSw5+NCpIRiD43BCUZnlYRfJ715R9
+ xuA35hXLDoQEL1tAjsC5Hb8yddu5Rl+oxjPmoV7y5iBchILd4lIbDgOKgm5ga+hW3co1Wa
+ CAx02PXO88xP/3l5kLA3u2X1ofjtYgY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-126-afQeouQMN2CIIhDT-ACCdw-1; Mon, 11 Sep 2023 05:46:31 -0400
+X-MC-Unique: afQeouQMN2CIIhDT-ACCdw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DF053C19363;
+ Mon, 11 Sep 2023 09:46:31 +0000 (UTC)
+Received: from merkur.redhat.com (unknown [10.39.192.243])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0C51240C6EA8;
+ Mon, 11 Sep 2023 09:46:29 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com, stefanha@redhat.com, eblake@redhat.com,
+ eesposit@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
+ qemu-devel@nongnu.org
+Subject: [PATCH v2 00/21] Graph locking part 4 (node management)
+Date: Mon, 11 Sep 2023 11:45:59 +0200
+Message-ID: <20230911094620.45040-1-kwolf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 3/4] hw/cpu: Introduce CPUClass::cpu_resolving_type field
-Content-Language: en-US
-To: Gavin Shan <gshan@redhat.com>, qemu-devel@nongnu.org,
- David Hildenbrand <david@redhat.com>
-Cc: Chris Wulff <crwulff@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, qemu-s390x@nongnu.org,
- Weiwei Li <liweiwei@iscas.ac.cn>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Greg Kurz <groug@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- qemu-ppc@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marek Vasut <marex@denx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Michael Rolnik <mrolnik@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
- Aurelien Jarno <aurelien@aurel32.net>, Bin Meng <bin.meng@windriver.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Song Gao <gaosong@loongson.cn>,
- Stafford Horne <shorne@gmail.com>, Yanan Wang <wangyanan55@huawei.com>,
- Alistair Francis <alistair.francis@wdc.com>, Brian Cain <bcain@quicinc.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Huth <thuth@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230908112235.75914-1-philmd@linaro.org>
- <20230908112235.75914-4-philmd@linaro.org>
- <87cb0174-c652-aa44-be7c-49e78e0a5003@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <87cb0174-c652-aa44-be7c-49e78e0a5003@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22a.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,100 +74,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 01:28, Gavin Shan wrote:
-> Hi Philippe,
-> 
-> On 9/8/23 21:22, Philippe Mathieu-Daudé wrote:
->> Add a field to return the QOM type name of a CPU class.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   include/hw/core/cpu.h   | 2 ++
->>   hw/core/cpu-common.c    | 2 +-
->>   target/alpha/cpu.c      | 1 +
->>   target/arm/cpu.c        | 1 +
->>   target/avr/cpu.c        | 1 +
->>   target/cris/cpu.c       | 1 +
->>   target/hexagon/cpu.c    | 1 +
->>   target/hppa/cpu.c       | 1 +
->>   target/i386/cpu.c       | 1 +
->>   target/loongarch/cpu.c  | 1 +
->>   target/m68k/cpu.c       | 1 +
->>   target/microblaze/cpu.c | 1 +
->>   target/mips/cpu.c       | 1 +
->>   target/nios2/cpu.c      | 1 +
->>   target/openrisc/cpu.c   | 1 +
->>   target/ppc/cpu_init.c   | 1 +
->>   target/riscv/cpu.c      | 1 +
->>   target/rx/cpu.c         | 1 +
->>   target/s390x/cpu.c      | 1 +
->>   target/sh4/cpu.c        | 1 +
->>   target/sparc/cpu.c      | 1 +
->>   target/tricore/cpu.c    | 1 +
->>   target/xtensa/cpu.c     | 1 +
->>   23 files changed, 24 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
->> index 129d179937..e469efd409 100644
->> --- a/include/hw/core/cpu.h
->> +++ b/include/hw/core/cpu.h
->> @@ -100,6 +100,7 @@ struct SysemuCPUOps;
->>   /**
->>    * CPUClass:
->> + * @cpu_resolving_type: CPU QOM type name
->>    * @class_by_name: Callback to map -cpu command line model name to an
->>    *                 instantiatable CPU type.
->>    * @parse_features: Callback to parse command line arguments.
->> @@ -148,6 +149,7 @@ struct CPUClass {
->>       DeviceClass parent_class;
->>       /*< public >*/
->> +    const char *cpu_resolving_type;
->>       ObjectClass *(*class_by_name)(const char *cpu_model);
->>       void (*parse_features)(const char *typename, char *str, Error 
->> **errp);
-> 
-> The question is why not use CPU_RESOLVING_TYPE directly? It seems 
-> CPU_RESOLVING_TYPE
-> is exactly what you want here.
+The previous parts of the graph locking changes focussed mostly on the
+BlockDriver side and taking reader locks while performing I/O. This
+series focusses more on the functions managing the graph structure, i.e
+adding, removing and replacing nodes and updating their permissions.
 
-Unfortunately CPU_RESOLVING_TYPE is target-specific, we want
-hw/core/cpu-common.c to be target-agnostic (build once for all
-targets). This is particularly important in the context of
-heterogeneous QEMU, where a single binary will be able to create
-CPUs from different targets.
+Many of these places actually need to take the writer lock to avoid
+readers seeing an inconsistent half-updated graph state. Therefore
+taking the writer lock is now moved from the very low-level function
+bdrv_replace_child_noperm() into its more high level callers.
 
-> Besides, I guess the changes can be 
-> squeezed into two
-> patches (commits) as below:
-> 
-> PATCH[1] target/alpha: Tidy up alpha_cpu_class_by_name()
-> PATCH[2] Move the checks (oc == NULL || object_class_is_abstract() || 
-> !object_class_dynamic_cast())
->           from individual targets to 
-> hw/core/cpu-common.c::cpu_class_by_name()
-> 
-> I rebase my series of '[PATCH v3 00/32] Unified CPU type check' on top 
-> of yours. Please
-> let me know if I need to include your patch into my v4 series for 
-> review. In that case,
-> I can include your patches with above changes applied.
-> 
-> Thanks,
-> Gavin
-> 
->> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
->> index c6a0c9390c..2d24261a6a 100644
->> --- a/hw/core/cpu-common.c
->> +++ b/hw/core/cpu-common.c
->> @@ -155,7 +155,7 @@ ObjectClass *cpu_class_by_name(const char 
->> *typename, const char *cpu_model)
->>       assert(cpu_model);
->>       oc = object_class_by_name(typename);
->>       cc = CPU_CLASS(oc);
->> -    assert(cc->class_by_name);
->> +    assert(cc->cpu_resolving_type && cc->class_by_name);
->>       oc = cc->class_by_name(cpu_model);
->>       if (oc == NULL || object_class_is_abstract(oc)) {
->>           return NULL;
+v2:
+- Patch 5: Improved comments, added one for bdrv_schedule_unref()
+
+Kevin Wolf (21):
+  block: Remove unused BlockReopenQueueEntry.perms_checked
+  preallocate: Factor out preallocate_truncate_to_real_size()
+  preallocate: Don't poll during permission updates
+  block: Take AioContext lock for bdrv_append() more consistently
+  block: Introduce bdrv_schedule_unref()
+  block-coroutine-wrapper: Add no_co_wrapper_bdrv_wrlock functions
+  block-coroutine-wrapper: Allow arbitrary parameter names
+  block: Mark bdrv_replace_child_noperm() GRAPH_WRLOCK
+  block: Mark bdrv_replace_child_tran() GRAPH_WRLOCK
+  block: Mark bdrv_attach_child_common() GRAPH_WRLOCK
+  block: Call transaction callbacks with lock held
+  block: Mark bdrv_attach_child() GRAPH_WRLOCK
+  block: Mark bdrv_parent_perms_conflict() and callers GRAPH_RDLOCK
+  block: Mark bdrv_get_cumulative_perm() and callers GRAPH_RDLOCK
+  block: Mark bdrv_child_perm() GRAPH_RDLOCK
+  block: Mark bdrv_parent_cb_change_media() GRAPH_RDLOCK
+  block: Take graph rdlock in bdrv_drop_intermediate()
+  block: Take graph rdlock in bdrv_change_aio_context()
+  block: Mark bdrv_root_unref_child() GRAPH_WRLOCK
+  block: Mark bdrv_unref_child() GRAPH_WRLOCK
+  block: Mark bdrv_add/del_child() and caller GRAPH_WRLOCK
+
+ include/block/block-common.h                |   4 +
+ include/block/block-global-state.h          |  30 +-
+ include/block/block_int-common.h            |  34 +-
+ include/block/block_int-global-state.h      |  14 +-
+ include/sysemu/block-backend-global-state.h |   4 +-
+ block.c                                     | 348 ++++++++++++++------
+ block/blklogwrites.c                        |   4 +
+ block/blkverify.c                           |   2 +
+ block/block-backend.c                       |  29 +-
+ block/copy-before-write.c                   |  10 +-
+ block/crypto.c                              |   6 +-
+ block/graph-lock.c                          |  26 +-
+ block/mirror.c                              |   8 +
+ block/preallocate.c                         | 133 +++++---
+ block/qcow2.c                               |   4 +-
+ block/quorum.c                              |  23 +-
+ block/replication.c                         |   9 +
+ block/snapshot.c                            |   2 +
+ block/stream.c                              |  20 +-
+ block/vmdk.c                                |  13 +
+ blockdev.c                                  |  23 +-
+ blockjob.c                                  |   2 +
+ tests/unit/test-bdrv-drain.c                |  23 +-
+ tests/unit/test-bdrv-graph-mod.c            |  20 ++
+ tests/unit/test-block-iothread.c            |   3 +
+ scripts/block-coroutine-wrapper.py          |  18 +-
+ tests/qemu-iotests/051.pc.out               |   6 +-
+ 27 files changed, 591 insertions(+), 227 deletions(-)
+
+-- 
+2.41.0
 
 
