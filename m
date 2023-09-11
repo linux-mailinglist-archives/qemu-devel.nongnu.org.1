@@ -2,49 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01AC79A673
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 10:59:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D6879A68E
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:05:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfclP-0005pJ-ND; Mon, 11 Sep 2023 04:59:23 -0400
+	id 1qfcqK-0002R9-Fd; Mon, 11 Sep 2023 05:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhaotianrui@loongson.cn>)
- id 1qfclM-0005oq-61
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 04:59:20 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <zhaotianrui@loongson.cn>) id 1qfclG-0004WW-Bj
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 04:59:18 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Dx_+vY1v5k930kAA--.4836S3;
- Mon, 11 Sep 2023 16:59:04 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxF8zX1v5kMw53AA--.46531S2; 
- Mon, 11 Sep 2023 16:59:03 +0800 (CST)
-From: Tianrui Zhao <zhaotianrui@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, maobibo@loongson.cn,
- yangxiaojuan@loongson.cn, zhaotianrui@loongson.cn, gaosong@loongson.cn
-Subject: [PATCH v3] hw/loongarch: Add virtio-mmio bus support
-Date: Mon, 11 Sep 2023 16:59:03 +0800
-Message-Id: <20230911085903.664996-1-zhaotianrui@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qfcqG-0002Qo-Mm
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:04:24 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qfcqE-0005Rq-Ak
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 05:04:24 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-3ff1c397405so48687205e9.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 02:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1694423059; x=1695027859; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=AdHBJPi6PKEA5yC99M0E0h+RXGmc4sklzolg6FGJ4Gs=;
+ b=YWeYR089u/krji2rPMUeMFh4GzF7es7sLkD7QBOiTJaHhkCMxUQ28hZAryhIYVPlpe
+ d0CkJXrTt/W1fKwY4aiExuQDHfUjwDb5jL2/B+qbMaWvotwnO4GXA+Ywyeqqp9+PV1gZ
+ szUjcLHq64OzRdg+y0X6+y7d6PoLwDYXxbTqXgN7HE8lDTVRCmhhc3sOZy/dvXl1SJLT
+ Yc73kGxB0k2QxPD9IpaeUoli7TmqqIn/QaxXao9oTkXnz/n8mq1dyVF0hvT40Vmq0qjw
+ bB+0bUMMXM94RfFwOIyI4/hhXddHXa4odNe2VU+HNXnpH1hu3WkJ/WWmkp3kiBA6mu7L
+ EjAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694423059; x=1695027859;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AdHBJPi6PKEA5yC99M0E0h+RXGmc4sklzolg6FGJ4Gs=;
+ b=vPY/0QonEWMIxb4MKYEn5gZUBzX4j3JhQ8ENzrI0DgVs04Ysra4Zz3ERS/VXwmkPmX
+ 2ZUbyDjaqsECEKmcddHS4OZFNfsztkddNG9t+8drbb2hHExlELYwuoQKm2t3xPxHeRW9
+ oP112pl/3VHcquwQY/4vkbqTKuLT18kBbbpCLdByEaeeTRJ/455PS4XRPaeGzGp5CuO4
+ VN/+87r37TVmgBxh1fklYsPDZyKnqwKj51L6uDZCveWuH+W1qAJAo8jN1gHcEK3YK5j6
+ r8oGW83rq6Gr5WBn3L2tyUYiwzOmi9KdGkKuIat8QjOP5j3DVw73o/OEsfmRLthXFZs0
+ PKqQ==
+X-Gm-Message-State: AOJu0YwK53npKTa4ebThjKwsqcp8Z4Ml6ommt4KGLTlJ1zsHy7/aflLZ
+ 4xhUjoY9GBoOUDD6aT2ETFRMXw==
+X-Google-Smtp-Source: AGHT+IGuZsz3ARmLfU4R2t9qpKsKfI53wHXuXVSVoQ5qdeSISnUfrDPgvJ746+PkWK9BEcYuz9nOLA==
+X-Received: by 2002:a05:600c:214d:b0:401:cbf6:e5cc with SMTP id
+ v13-20020a05600c214d00b00401cbf6e5ccmr7929720wml.22.1694423059503; 
+ Mon, 11 Sep 2023 02:04:19 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ z6-20020a7bc7c6000000b003fa96fe2bd9sm12603492wmk.22.2023.09.11.02.04.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Sep 2023 02:04:19 -0700 (PDT)
+Date: Mon, 11 Sep 2023 11:04:18 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com
+Subject: Re: [PATCH v2 10/19] target/riscv: remove kvm-stub.c
+Message-ID: <20230911-df4609b7aca0b1fe00fb2e17@orel>
+References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+ <20230906091647.1667171-11-dbarboza@ventanamicro.com>
+ <f30d8589-8b59-2fd7-c38c-3f79508a4ac6@linaro.org>
+ <20230911-0ff170da2e7063d0eb82ded9@orel>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxF8zX1v5kMw53AA--.46531S2
-X-CM-SenderInfo: p2kd03xldq233l6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=zhaotianrui@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+In-Reply-To: <20230911-0ff170da2e7063d0eb82ded9@orel>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,132 +98,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add virtio-mmio bus support for LoongArch, so that devices
-could be added in the virtio-mmio bus.
+On Mon, Sep 11, 2023 at 09:49:06AM +0200, Andrew Jones wrote:
+> On Wed, Sep 06, 2023 at 12:23:19PM +0200, Philippe Mathieu-Daudé wrote:
+> > On 6/9/23 11:16, Daniel Henrique Barboza wrote:
+> > > This file is not needed for some time now. All the stubs implemented in
+> > > it (kvm_riscv_reset_vcpu() and kvm_riscv_set_irq()) are wrapped in 'if
+> > > kvm_enabled()' blocks that the compiler will rip it out in non-KVM
+> > > builds.
+> > > 
+> > > We'll also add non-KVM stubs for all functions declared in kvm_riscv.h.
+> > > All stubs are implemented as g_asserted_not_reached(), meaning that we
+> > > won't support them in non-KVM builds. This is done by other kvm headers
+> > > like kvm_arm.h and kvm_ppc.h.
+> > 
+> > Aren't them also protected by kvm_enabled()? Otherwise shouldn't they?
+> 
+> Yes, I think your earlier suggestion that we always invoke kvm functions
+> from non-kvm files with a kvm_enabled() guard makes sense.
+> 
+> > 
+> > > Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> > > ---
+> > >   target/riscv/kvm-stub.c  | 30 ------------------------------
+> > >   target/riscv/kvm_riscv.h | 31 +++++++++++++++++++++++++++++++
+> > >   target/riscv/meson.build |  2 +-
+> > >   3 files changed, 32 insertions(+), 31 deletions(-)
+> > >   delete mode 100644 target/riscv/kvm-stub.c
+> > 
+> > 
+> > > diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+> > > index f6501e68e2..c9ecd9a967 100644
+> > > --- a/target/riscv/kvm_riscv.h
+> > > +++ b/target/riscv/kvm_riscv.h
+> > > @@ -19,6 +19,7 @@
+> > >   #ifndef QEMU_KVM_RISCV_H
+> > >   #define QEMU_KVM_RISCV_H
+> > > +#ifdef CONFIG_KVM
+> > >   void kvm_riscv_cpu_add_kvm_properties(Object *obj);
+> > 
+> > At a glance kvm_riscv_cpu_add_kvm_properties() is.
+> > Keep the prototype declared (before #ifdef CONFIG_KVM) is enough for the
+> > compiler to elide it.
+> 
+> Yes, when building without CONFIG_KVM enabled it's actually better to not
+> have the stubs, since the compiler will catch an unguarded kvm function
+> call (assuming the kvm function is defined in a file which is only built
+> with CONFIG_KVM).
+> 
+> Unfortunately we don't have anything to protect developers from forgetting
+> the kvm_enabled() guard when building a QEMU which supports both TCG and
+> KVM. We could try to remember to put 'assert(kvm_enabled())' at the start
+> of each of these types of functions. It looks like mips does that for a
+> couple functions.
 
-Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
-Change-Id: Ib882005106562e0dfe74122a7fa2430fa081bfb2
----
- hw/loongarch/Kconfig       |  1 +
- hw/loongarch/acpi-build.c  | 25 +++++++++++++++++++++++++
- hw/loongarch/virt.c        | 28 ++++++++++++++++++++++++++++
- include/hw/pci-host/ls7a.h |  4 ++++
- 4 files changed, 58 insertions(+)
+Eh, ignore this suggestion. We don't need asserts, because we have CI. As
+long as our CI does a CONFIG_KVM=n build and all KVM functions are in kvm-
+only files, then we'll always catch calls of KVM functions which are
+missing their kvm_enabled() guards.
 
-diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
-index 1e7c5b43c5..01ab8ce8e7 100644
---- a/hw/loongarch/Kconfig
-+++ b/hw/loongarch/Kconfig
-@@ -22,3 +22,4 @@ config LOONGARCH_VIRT
-     select DIMM
-     select PFLASH_CFI01
-     select ACPI_HMAT
-+    select VIRTIO_MMIO
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-index ae292fc543..d033fc2271 100644
---- a/hw/loongarch/acpi-build.c
-+++ b/hw/loongarch/acpi-build.c
-@@ -363,6 +363,30 @@ static void acpi_dsdt_add_tpm(Aml *scope, LoongArchMachineState *vms)
- }
- #endif
- 
-+static void acpi_dsdt_add_virtio(Aml *scope)
-+{
-+    int i;
-+    hwaddr base = VIRT_VIRTIO_MMIO_BASE;
-+    hwaddr size = VIRT_VIRTIO_MMIO_SIZE;
-+
-+    for (i = 0; i < VIRT_VIRTIO_MMIO_NUM; i++) {
-+        uint32_t irq = VIRT_VIRTIO_MMIO_IRQ + i;
-+        Aml *dev = aml_device("VR%02u", i);
-+
-+        aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0005")));
-+        aml_append(dev, aml_name_decl("_UID", aml_int(i)));
-+        aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
-+
-+        Aml *crs = aml_resource_template();
-+        aml_append(crs, aml_memory32_fixed(base, size, AML_READ_WRITE));
-+        aml_append(crs, aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_ACTIVE_HIGH,
-+                   AML_EXCLUSIVE, &irq, 1));
-+        aml_append(dev, aml_name_decl("_CRS", crs));
-+        aml_append(scope, dev);
-+        base += size;
-+    }
-+}
-+
- /* build DSDT */
- static void
- build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
-@@ -381,6 +405,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, MachineState *machine)
- #ifdef CONFIG_TPM
-     acpi_dsdt_add_tpm(dsdt, lams);
- #endif
-+    acpi_dsdt_add_virtio(dsdt);
-     /* System State Package */
-     scope = aml_scope("\\");
-     pkg = aml_package(4);
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 2629128aed..ffef3222da 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -116,6 +116,25 @@ static void fdt_add_rtc_node(LoongArchMachineState *lams)
-     g_free(nodename);
- }
- 
-+static void fdt_add_virtio_mmio_node(LoongArchMachineState *lams)
-+{
-+    int i;
-+    MachineState *ms = MACHINE(lams);
-+
-+    for (i = VIRT_VIRTIO_MMIO_NUM - 1; i >= 0; i--) {
-+        char *nodename;
-+        hwaddr base = VIRT_VIRTIO_MMIO_BASE + i * VIRT_VIRTIO_MMIO_SIZE;
-+
-+        nodename = g_strdup_printf("/virtio_mmio@%" PRIx64, base);
-+        qemu_fdt_add_subnode(ms->fdt, nodename);
-+        qemu_fdt_setprop_string(ms->fdt, nodename,
-+                                "compatible", "virtio,mmio");
-+        qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg",
-+                                     2, base, 2, VIRT_VIRTIO_MMIO_SIZE);
-+        g_free(nodename);
-+    }
-+}
-+
- static void fdt_add_uart_node(LoongArchMachineState *lams)
- {
-     char *nodename;
-@@ -560,6 +579,15 @@ static void loongarch_devices_init(DeviceState *pch_pic, LoongArchMachineState *
-                          VIRT_RTC_IRQ - VIRT_GSI_BASE));
-     fdt_add_rtc_node(lams);
- 
-+    /* virtio-mmio device */
-+    for (i = 0; i < VIRT_VIRTIO_MMIO_NUM; i++) {
-+        hwaddr virtio_base = VIRT_VIRTIO_MMIO_BASE + i * VIRT_VIRTIO_MMIO_SIZE;
-+        int virtio_irq = VIRT_VIRTIO_MMIO_IRQ - VIRT_GSI_BASE + i;
-+        sysbus_create_simple("virtio-mmio", virtio_base,
-+                              qdev_get_gpio_in(pch_pic, virtio_irq));
-+    }
-+    fdt_add_virtio_mmio_node(lams);
-+
-     pm_mem = g_new(MemoryRegion, 1);
-     memory_region_init_io(pm_mem, NULL, &loongarch_virt_pm_ops,
-                           NULL, "loongarch_virt_pm", PM_SIZE);
-diff --git a/include/hw/pci-host/ls7a.h b/include/hw/pci-host/ls7a.h
-index e753449593..96506b9a4c 100644
---- a/include/hw/pci-host/ls7a.h
-+++ b/include/hw/pci-host/ls7a.h
-@@ -42,6 +42,10 @@
- #define VIRT_RTC_REG_BASE        (VIRT_MISC_REG_BASE + 0x00050100)
- #define VIRT_RTC_LEN             0x100
- #define VIRT_SCI_IRQ             (VIRT_GSI_BASE + 4)
-+#define VIRT_VIRTIO_MMIO_IRQ     (VIRT_GSI_BASE + 7)
-+#define VIRT_VIRTIO_MMIO_BASE    0x1e200000
-+#define VIRT_VIRTIO_MMIO_SIZE    0x200
-+#define VIRT_VIRTIO_MMIO_NUM     4
- 
- #define VIRT_PLATFORM_BUS_BASEADDRESS   0x16000000
- #define VIRT_PLATFORM_BUS_SIZE          0x2000000
--- 
-2.39.1
-
+Thanks,
+drew
 
