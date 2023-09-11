@@ -2,56 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC8579A506
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2303479A513
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 09:53:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfbhA-0004OX-1I; Mon, 11 Sep 2023 03:50:56 -0400
+	id 1qfbjG-0004P3-OB; Mon, 11 Sep 2023 03:53:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbh1-0004EE-I8
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:49 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1)
- (envelope-from <SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org>)
- id 1qfbgy-0008Ft-Km
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:50:47 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rkf5t4l2Sz4xNg;
- Mon, 11 Sep 2023 17:50:42 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rkf5s1557z4xM5;
- Mon, 11 Sep 2023 17:50:40 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Joao Martins <joao.m.martins@oracle.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 13/13] vfio/common: Separate vfio-pci ranges
-Date: Mon, 11 Sep 2023 09:50:08 +0200
-Message-ID: <20230911075008.462712-14-clg@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230911075008.462712-1-clg@redhat.com>
-References: <20230911075008.462712-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qfbjE-0004OF-5O
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:53:04 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qfbjB-00009Y-ON
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 03:53:03 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-401b393ddd2so47224075e9.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 00:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1694418780; x=1695023580; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=phlYOETUxpS8A4VuWQQDPlEGK5X3O5JBnH7916aaiLQ=;
+ b=Dn70/uKHYMkzG8LZjYOhfywYLyMDmXgCxEPA9izgjIR7YqMW28gCBrSbrvNakZFQrL
+ 1JGu631Evn4Hc43cNkz8f6Dkab+Rx+0IIRtojnIZoyw/fq4gkUtnMeRLJEYOXgeBnJpC
+ tNHuI1Qy6V9VrN3R64o40UwEVkjqD4kPMpdWfYmkbq0JxjGelLemvKXd8dhAkUmg9Wlv
+ HEOXY7uTJ7NTEjZpc70R2kKAw8bxLZEYS5oHGsa5FiDhoQVmfth54lCHy9lvSKYbRDnv
+ wLNEZ4sMky50dSfahEDTXDm/6F5cy9vUiyLwmZFlv9WLc0AJGOEgIMRtn7Fqz55+6oh1
+ 8HQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694418780; x=1695023580;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=phlYOETUxpS8A4VuWQQDPlEGK5X3O5JBnH7916aaiLQ=;
+ b=Qd/dDhGOwIp8hA1Gsm4cz17s9aRJqgazlmtP/czHQSrBcyGD+8x3nlKh/Fyj+MvpL2
+ ueE2ThifXpggu8WpvHedHN33++qS82L5IpKXShxwzShPrnHOdRVQrbQRfgcnXagM6RwU
+ OWvv2Dvac3ieUu2XLVLGRrBnS3OpHwfi5ayOhhCWApPtJxn4VB5ukWDH9rfZFE76ggLD
+ 4ljSF1RjJSvFVkPuDLZOs/BvpAJanfZP/VqFbu4Lg5N5WVLxTAZjG5Au4Z6Qs/KmL5tw
+ ZXrspGIa4uPXSxMtiGRXnuGaRD5afi1qAeO8sKr88fYHAaKOkRipQmxxFK09E5GL2m8Y
+ kvdw==
+X-Gm-Message-State: AOJu0YxdajXdeS0GKVb0sFE84krPGCxWFs0vtSNNwa9HHsLAd0MHIcq9
+ ptXL4kAo6lSZlmVrC36Dg6G5eA==
+X-Google-Smtp-Source: AGHT+IEegxIcqz6JS2eyskhdGlLJv4fmt4Dc7A5A2ZlFdktHI7IQik5NVNGwNduQ3QRXAOBRyURf4w==
+X-Received: by 2002:a1c:7716:0:b0:3fb:b248:67c with SMTP id
+ t22-20020a1c7716000000b003fbb248067cmr7806077wmi.22.1694418779605; 
+ Mon, 11 Sep 2023 00:52:59 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ v18-20020a05600c471200b004030e8ff964sm3001794wmo.34.2023.09.11.00.52.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Sep 2023 00:52:59 -0700 (PDT)
+Date: Mon, 11 Sep 2023 09:52:58 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, philmd@linaro.org
+Subject: Re: [PATCH v2 11/19] target/riscv: introduce KVM AccelCPUClass
+Message-ID: <20230911-5e64cfe746f0dbd010bd60e9@orel>
+References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+ <20230906091647.1667171-12-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=GLJ6=E3=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -39
-X-Spam_score: -4.0
-X-Spam_bar: ----
-X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906091647.1667171-12-dbarboza@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,177 +93,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+On Wed, Sep 06, 2023 at 06:16:38AM -0300, Daniel Henrique Barboza wrote:
+> Add a KVM accelerator class like we did with TCG. The difference is
+> that, at least for now, we won't be using a realize() implementation for
+> this accelerator.
+> 
+> We'll start by assiging kvm_riscv_cpu_add_kvm_properties(), renamed to
+> kvm_cpu_instance_init(), as a 'cpu_instance_init' implementation. Change
+> riscv_cpu_post_init() to invoke accel_cpu_instance_init(), which will go
+> through the 'cpu_instance_init' impl of the current acceleration (if
+> available) and execute it. The end result is that the KVM initial setup,
+> i.e. starting registers and adding its specific properties, will be done
+> via this hook.
+> 
+> Add a 'tcg_enabled()' condition in riscv_cpu_post_init() to avoid
+> calling riscv_cpu_add_user_properties() when running KVM. We'll remove
+> this condition when the TCG accel class get its own 'cpu_instance_init'
+> implementation.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c       |  8 +++-----
+>  target/riscv/kvm.c       | 26 ++++++++++++++++++++++++--
+>  target/riscv/kvm_riscv.h |  6 ------
+>  3 files changed, 27 insertions(+), 13 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 50be127f36..c8a19be1af 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1219,7 +1219,9 @@ static bool riscv_cpu_has_user_properties(Object *cpu_obj)
+>  
+>  static void riscv_cpu_post_init(Object *obj)
+>  {
+> -    if (riscv_cpu_has_user_properties(obj)) {
+> +    accel_cpu_instance_init(CPU(obj));
+> +
+> +    if (tcg_enabled() && riscv_cpu_has_user_properties(obj)) {
+>          riscv_cpu_add_user_properties(obj);
+>      }
+>  
+> @@ -1589,10 +1591,6 @@ static void riscv_cpu_add_multiext_prop_array(Object *obj,
+>  static void riscv_cpu_add_user_properties(Object *obj)
+>  {
+>  #ifndef CONFIG_USER_ONLY
+> -    if (kvm_enabled()) {
+> -        kvm_riscv_cpu_add_kvm_properties(obj);
+> -        return;
+> -    }
+>      riscv_add_satp_mode_properties(obj);
+>  #endif
+>  
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index ef6b2cfffe..492b97d19b 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -31,6 +31,7 @@
+>  #include "sysemu/kvm_int.h"
+>  #include "cpu.h"
+>  #include "trace.h"
+> +#include "hw/core/accel-cpu.h"
+>  #include "hw/pci/pci.h"
+>  #include "exec/memattrs.h"
+>  #include "exec/address-spaces.h"
+> @@ -1274,8 +1275,9 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+>      kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
+>  }
+>  
+> -void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+> +static void kvm_cpu_instance_init(CPUState *cs)
+>  {
+> +    Object *obj = OBJECT(RISCV_CPU(cs));
+>      DeviceState *dev = DEVICE(obj);
+>  
+>      riscv_init_user_properties(obj);
+> @@ -1287,7 +1289,7 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+>      riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_exts);
+>  
+>      for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
+> -        /* Check if KVM created the property already */
+> +        /* Check if we have a specific KVM handler for the option */
+>          if (object_property_find(obj, prop->name)) {
+>              continue;
+>          }
+> @@ -1295,6 +1297,26 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+>      }
+>  }
+>  
+> +static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
+> +{
+> +    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
+> +
+> +    acc->cpu_instance_init = kvm_cpu_instance_init;
+> +}
+> +
+> +static const TypeInfo kvm_cpu_accel_type_info = {
+> +    .name = ACCEL_CPU_NAME("kvm"),
+> +
+> +    .parent = TYPE_ACCEL_CPU,
+> +    .class_init = kvm_cpu_accel_class_init,
+> +    .abstract = true,
+> +};
+> +static void kvm_cpu_accel_register_types(void)
+> +{
+> +    type_register_static(&kvm_cpu_accel_type_info);
+> +}
+> +type_init(kvm_cpu_accel_register_types);
+> +
+>  static void riscv_host_cpu_init(Object *obj)
+>  {
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+> index c9ecd9a967..8fe6e3e6fb 100644
+> --- a/target/riscv/kvm_riscv.h
+> +++ b/target/riscv/kvm_riscv.h
+> @@ -20,7 +20,6 @@
+>  #define QEMU_KVM_RISCV_H
+>  
+>  #ifdef CONFIG_KVM
+> -void kvm_riscv_cpu_add_kvm_properties(Object *obj);
+>  void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+>  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+>  void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+> @@ -29,11 +28,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+>                            uint64_t guest_num);
+>  void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+>  #else
+> -static inline void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+> -{
+> -    g_assert_not_reached();
+> -}
+> -
+>  static inline void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+>  {
+>      g_assert_not_reached();
+> -- 
+> 2.41.0
+>
 
-QEMU computes the DMA logging ranges for two predefined ranges: 32-bit
-and 64-bit. In the OVMF case, when the dynamic MMIO window is enabled,
-QEMU includes in the 64-bit range the RAM regions at the lower part
-and vfio-pci device RAM regions which are at the top of the address
-space. This range contains a large gap and the size can be bigger than
-the dirty tracking HW limits of some devices (MLX5 has a 2^42 limit).
-
-To avoid such large ranges, introduce a new PCI range covering the
-vfio-pci device RAM regions, this only if the addresses are above 4GB
-to avoid breaking potential SeaBIOS guests.
-
-[ clg: - wrote commit log
-       - fixed overlapping 32-bit and PCI ranges when using SeaBIOS ]
-
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Fixes: 5255bbf4ec16 ("vfio/common: Add device dirty page tracking start/stop")
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/vfio/common.c     | 71 +++++++++++++++++++++++++++++++++++++-------
- hw/vfio/trace-events |  2 +-
- 2 files changed, 61 insertions(+), 12 deletions(-)
-
-diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index 237101d03844273f653d98b6d053a1ae9c05a247..134649226d4333f648ca751291003316a5f3b4a9 100644
---- a/hw/vfio/common.c
-+++ b/hw/vfio/common.c
-@@ -27,6 +27,7 @@
- 
- #include "hw/vfio/vfio-common.h"
- #include "hw/vfio/vfio.h"
-+#include "hw/vfio/pci.h"
- #include "exec/address-spaces.h"
- #include "exec/memory.h"
- #include "exec/ram_addr.h"
-@@ -1400,6 +1401,8 @@ typedef struct VFIODirtyRanges {
-     hwaddr max32;
-     hwaddr min64;
-     hwaddr max64;
-+    hwaddr minpci64;
-+    hwaddr maxpci64;
- } VFIODirtyRanges;
- 
- typedef struct VFIODirtyRangesListener {
-@@ -1408,6 +1411,31 @@ typedef struct VFIODirtyRangesListener {
-     MemoryListener listener;
- } VFIODirtyRangesListener;
- 
-+static bool vfio_section_is_vfio_pci(MemoryRegionSection *section,
-+                                     VFIOContainer *container)
-+{
-+    VFIOPCIDevice *pcidev;
-+    VFIODevice *vbasedev;
-+    VFIOGroup *group;
-+    Object *owner;
-+
-+    owner = memory_region_owner(section->mr);
-+
-+    QLIST_FOREACH(group, &container->group_list, container_next) {
-+        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-+            if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
-+                continue;
-+            }
-+            pcidev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-+            if (OBJECT(pcidev) == owner) {
-+                return true;
-+            }
-+        }
-+    }
-+
-+    return false;
-+}
-+
- static void vfio_dirty_tracking_update(MemoryListener *listener,
-                                        MemoryRegionSection *section)
- {
-@@ -1424,19 +1452,32 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
-     }
- 
-     /*
--     * The address space passed to the dirty tracker is reduced to two ranges:
--     * one for 32-bit DMA ranges, and another one for 64-bit DMA ranges.
-+     * The address space passed to the dirty tracker is reduced to three ranges:
-+     * one for 32-bit DMA ranges, one for 64-bit DMA ranges and one for the
-+     * PCI 64-bit hole.
-+     *
-      * The underlying reports of dirty will query a sub-interval of each of
-      * these ranges.
-      *
--     * The purpose of the dual range handling is to handle known cases of big
--     * holes in the address space, like the x86 AMD 1T hole. The alternative
--     * would be an IOVATree but that has a much bigger runtime overhead and
--     * unnecessary complexity.
-+     * The purpose of the three range handling is to handle known cases of big
-+     * holes in the address space, like the x86 AMD 1T hole, and firmware (like
-+     * OVMF) which may relocate the pci-hole64 to the end of the address space.
-+     * The latter would otherwise generate large ranges for tracking, stressing
-+     * the limits of supported hardware. The pci-hole32 will always be below 4G
-+     * (overlapping or not) so it doesn't need special handling and is part of
-+     * the 32-bit range.
-+     *
-+     * The alternative would be an IOVATree but that has a much bigger runtime
-+     * overhead and unnecessary complexity.
-      */
--    min = (end <= UINT32_MAX) ? &range->min32 : &range->min64;
--    max = (end <= UINT32_MAX) ? &range->max32 : &range->max64;
--
-+    if (vfio_section_is_vfio_pci(section, dirty->container) &&
-+        iova >= UINT32_MAX) {
-+        min = &range->minpci64;
-+        max = &range->maxpci64;
-+    } else {
-+        min = (end <= UINT32_MAX) ? &range->min32 : &range->min64;
-+        max = (end <= UINT32_MAX) ? &range->max32 : &range->max64;
-+    }
-     if (*min > iova) {
-         *min = iova;
-     }
-@@ -1461,6 +1502,7 @@ static void vfio_dirty_tracking_init(VFIOContainer *container,
-     memset(&dirty, 0, sizeof(dirty));
-     dirty.ranges.min32 = UINT32_MAX;
-     dirty.ranges.min64 = UINT64_MAX;
-+    dirty.ranges.minpci64 = UINT64_MAX;
-     dirty.listener = vfio_dirty_tracking_listener;
-     dirty.container = container;
- 
-@@ -1531,7 +1573,8 @@ vfio_device_feature_dma_logging_start_create(VFIOContainer *container,
-      * DMA logging uAPI guarantees to support at least a number of ranges that
-      * fits into a single host kernel base page.
-      */
--    control->num_ranges = !!tracking->max32 + !!tracking->max64;
-+    control->num_ranges = !!tracking->max32 + !!tracking->max64 +
-+        !!tracking->maxpci64;
-     ranges = g_try_new0(struct vfio_device_feature_dma_logging_range,
-                         control->num_ranges);
-     if (!ranges) {
-@@ -1550,11 +1593,17 @@ vfio_device_feature_dma_logging_start_create(VFIOContainer *container,
-     if (tracking->max64) {
-         ranges->iova = tracking->min64;
-         ranges->length = (tracking->max64 - tracking->min64) + 1;
-+        ranges++;
-+    }
-+    if (tracking->maxpci64) {
-+        ranges->iova = tracking->minpci64;
-+        ranges->length = (tracking->maxpci64 - tracking->minpci64) + 1;
-     }
- 
-     trace_vfio_device_dirty_tracking_start(control->num_ranges,
-                                            tracking->min32, tracking->max32,
--                                           tracking->min64, tracking->max64);
-+                                           tracking->min64, tracking->max64,
-+                                           tracking->minpci64, tracking->maxpci64);
- 
-     return feature;
- }
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 329736a738d32ab006c3621cecfb704c84a513b7..81ec7c7a958b890686865900e37157a373892048 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -104,7 +104,7 @@ vfio_known_safe_misalignment(const char *name, uint64_t iova, uint64_t offset_wi
- vfio_listener_region_add_no_dma_map(const char *name, uint64_t iova, uint64_t size, uint64_t page_size) "Region \"%s\" 0x%"PRIx64" size=0x%"PRIx64" is not aligned to 0x%"PRIx64" and cannot be mapped for DMA"
- vfio_listener_region_del(uint64_t start, uint64_t end) "region_del 0x%"PRIx64" - 0x%"PRIx64
- vfio_device_dirty_tracking_update(uint64_t start, uint64_t end, uint64_t min, uint64_t max) "section 0x%"PRIx64" - 0x%"PRIx64" -> update [0x%"PRIx64" - 0x%"PRIx64"]"
--vfio_device_dirty_tracking_start(int nr_ranges, uint64_t min32, uint64_t max32, uint64_t min64, uint64_t max64) "nr_ranges %d 32:[0x%"PRIx64" - 0x%"PRIx64"], 64:[0x%"PRIx64" - 0x%"PRIx64"]"
-+vfio_device_dirty_tracking_start(int nr_ranges, uint64_t min32, uint64_t max32, uint64_t min64, uint64_t max64, uint64_t minpci, uint64_t maxpci) "nr_ranges %d 32:[0x%"PRIx64" - 0x%"PRIx64"], 64:[0x%"PRIx64" - 0x%"PRIx64"], pci64:[0x%"PRIx64" - 0x%"PRIx64"]"
- vfio_disconnect_container(int fd) "close container->fd=%d"
- vfio_put_group(int fd) "close group->fd=%d"
- vfio_get_device(const char * name, unsigned int flags, unsigned int num_regions, unsigned int num_irqs) "Device %s flags: %u, regions: %u, irqs: %u"
--- 
-2.41.0
-
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
