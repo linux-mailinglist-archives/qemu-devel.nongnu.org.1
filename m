@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7DC79AA89
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 19:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1C779AA86
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 19:15:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfkTq-0002oP-V9; Mon, 11 Sep 2023 13:13:46 -0400
+	id 1qfkTt-0002pC-NP; Mon, 11 Sep 2023 13:13:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTp-0002nu-HG
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:45 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTs-0002p3-Fj
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:48 -0400
 Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTn-0000Bw-D2
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:45 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTp-0000CY-Oc
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:48 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4F96A1F8BB;
- Mon, 11 Sep 2023 17:13:42 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id AD41D1F8B3;
+ Mon, 11 Sep 2023 17:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1694452422; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1694452424; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UGGxjAB3Urj0ONFUV5hITxPJOdr38wwUKzL/jNXoWEg=;
- b=tsmb8PPjP45TPN2siHZud1J2W8QTAnW35az3StrPHvHsZNNvojVmedfwF4VksPUgZ6rxKL
- jeA9j4Tna2jczMQ7kfsvey84eZZfsOPwJDFsutevT4hwZ/Q5FGu8qHHN9zshS/Sje7NN7a
- mPYxKh9sZqIpkW3ibuRwgi+Jv+jkX3Y=
+ bh=t+yRV2zV71YcJVy41VS6eqUMCMiCNBCaZK6ydOiBfpk=;
+ b=vW447TdZJdezib8NsP+DDCGMSnL57heOcKo0NgcJl7XlnNhVcfSF2/r0/NdZ+bsTb+VLsa
+ C65V4dJYqrGAYullL5xlxerbe721ILbyA83kOuu5fFupqT8Cmw20MSX0lFNMBpf6PeIUjL
+ 9Peej9JLbRQKsz/kqVSXwr3Rh7JGR6s=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1694452422;
+ s=susede2_ed25519; t=1694452424;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UGGxjAB3Urj0ONFUV5hITxPJOdr38wwUKzL/jNXoWEg=;
- b=Lp+y+BPmHYFuPRB52wNDlKGyaKH8tjv5HUhyYdgQEbErASLhgYpeF1PU+YbGJDc7q9LlDp
- SZS1U32U97t+KaAw==
+ bh=t+yRV2zV71YcJVy41VS6eqUMCMiCNBCaZK6ydOiBfpk=;
+ b=FrjhfSCoq17DAHWhQ+BXdUD2BK3VYBvetg66RZlQYpOAR0jWuXfbSVMs6T2VB/5RJ02mbN
+ RqMdc81HqrDnXXBg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7300A139CC;
- Mon, 11 Sep 2023 17:13:40 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D2A4E139CC;
+ Mon, 11 Sep 2023 17:13:42 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 2KVSDMRK/2QyIAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 11 Sep 2023 17:13:40 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id aODeI8ZK/2QyIAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 11 Sep 2023 17:13:42 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Lukas Straub <lukasstraub2@web.de>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v6 08/10] migration/yank: Use channel features
-Date: Mon, 11 Sep 2023 14:13:18 -0300
-Message-Id: <20230911171320.24372-9-farosas@suse.de>
+Subject: [PATCH v6 09/10] migration/yank: Keep track of registered yank
+ instances
+Date: Mon, 11 Sep 2023 14:13:19 -0300
+Message-Id: <20230911171320.24372-10-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230911171320.24372-1-farosas@suse.de>
 References: <20230911171320.24372-1-farosas@suse.de>
@@ -85,47 +86,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Stop using outside knowledge about the io channels when registering
-yank functions. Query for features instead.
+The core yank code is strict about balanced registering and
+unregistering of yank functions.
 
-The yank method for all channels used with migration code currently is
-to call the qio_channel_shutdown() function, so query for
-QIO_CHANNEL_FEATURE_SHUTDOWN. We could add a separate feature in the
-future for indicating whether a channel supports yanking, but that
-seems overkill at the moment.
+This creates a difficulty because the migration code registers one
+yank function per QIOChannel, but each QIOChannel can be referenced by
+more than one QEMUFile. The yank function should not be removed until
+all QEMUFiles have been closed.
+
+Keep a reference count of how many QEMUFiles are using a QIOChannel
+that has a yank function. Only unregister the yank function when all
+QEMUFiles have been closed.
+
+This improves the current code by removing the need for the programmer
+to know which QEMUFile is the last one to be cleaned up and fixes the
+theoretical issue of removing the yank function while another QEMUFile
+could still be using the ioc and require a yank.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/yank_functions.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ migration/yank_functions.c | 81 ++++++++++++++++++++++++++++++++++----
+ migration/yank_functions.h |  8 ++++
+ 2 files changed, 81 insertions(+), 8 deletions(-)
 
 diff --git a/migration/yank_functions.c b/migration/yank_functions.c
-index d5a710a3f2..979e60c762 100644
+index 979e60c762..afdeef30ff 100644
 --- a/migration/yank_functions.c
 +++ b/migration/yank_functions.c
-@@ -8,12 +8,9 @@
-  */
- 
+@@ -10,9 +10,32 @@
  #include "qemu/osdep.h"
--#include "qapi/error.h"
  #include "io/channel.h"
  #include "yank_functions.h"
++#include "qemu/lockable.h"
  #include "qemu/yank.h"
--#include "io/channel-socket.h"
--#include "io/channel-tls.h"
  #include "qemu-file.h"
  
++static QemuMutex ioc_list_lock;
++static QLIST_HEAD(, Yankable) yankable_ioc_list
++    = QLIST_HEAD_INITIALIZER(yankable_ioc_list);
++
++static void __attribute__((constructor)) ioc_list_lock_init(void)
++{
++    qemu_mutex_init(&ioc_list_lock);
++}
++
++static void yankable_ref(Yankable *yankable)
++{
++    assert(yankable->refcnt > 0);
++    yankable->refcnt++;
++    assert(yankable->refcnt < INT_MAX);
++}
++
++static void yankable_unref(Yankable *yankable)
++{
++    assert(yankable->refcnt > 0);
++    yankable->refcnt--;
++}
++
  void migration_yank_iochannel(void *opaque)
-@@ -26,8 +23,7 @@ void migration_yank_iochannel(void *opaque)
- /* Return whether yank is supported on this ioc */
- static bool migration_ioc_yank_supported(QIOChannel *ioc)
  {
--    return object_dynamic_cast(OBJECT(ioc), TYPE_QIO_CHANNEL_SOCKET) ||
--        object_dynamic_cast(OBJECT(ioc), TYPE_QIO_CHANNEL_TLS);
-+    return qio_channel_has_feature(ioc, QIO_CHANNEL_FEATURE_SHUTDOWN);
- }
+     QIOChannel *ioc = QIO_CHANNEL(opaque);
+@@ -28,20 +51,62 @@ static bool migration_ioc_yank_supported(QIOChannel *ioc)
  
  void migration_ioc_register_yank(QIOChannel *ioc)
+ {
+-    if (migration_ioc_yank_supported(ioc)) {
+-        yank_register_function(MIGRATION_YANK_INSTANCE,
+-                               migration_yank_iochannel,
+-                               ioc);
++    Yankable *new, *entry;
++
++    if (!ioc || !migration_ioc_yank_supported(ioc)) {
++        return;
+     }
++
++    WITH_QEMU_LOCK_GUARD(&ioc_list_lock) {
++        QLIST_FOREACH(entry, &yankable_ioc_list, next) {
++            if (entry->opaque == ioc) {
++                yankable_ref(entry);
++                return;
++            }
++        }
++
++        new = g_new0(Yankable, 1);
++        new->refcnt = 1;
++        new->opaque = ioc;
++        object_ref(ioc);
++
++        QLIST_INSERT_HEAD(&yankable_ioc_list, new, next);
++    }
++
++    yank_register_function(MIGRATION_YANK_INSTANCE,
++                           migration_yank_iochannel,
++                           ioc);
+ }
+ 
+ void migration_ioc_unregister_yank(QIOChannel *ioc)
+ {
+-    if (migration_ioc_yank_supported(ioc)) {
+-        yank_unregister_function(MIGRATION_YANK_INSTANCE,
+-                                 migration_yank_iochannel,
+-                                 ioc);
++    Yankable *entry, *tmp;
++
++    if (!ioc || !migration_ioc_yank_supported(ioc)) {
++        return;
+     }
++
++    WITH_QEMU_LOCK_GUARD(&ioc_list_lock) {
++        QLIST_FOREACH_SAFE(entry, &yankable_ioc_list, next, tmp) {
++            if (entry->opaque == ioc) {
++                yankable_unref(entry);
++
++                if (!entry->refcnt) {
++                    QLIST_REMOVE(entry, next);
++                    g_free(entry);
++                    goto unreg;
++                }
++            }
++        }
++    }
++
++    return;
++
++unreg:
++    yank_unregister_function(MIGRATION_YANK_INSTANCE,
++                             migration_yank_iochannel,
++                             ioc);
++    object_unref(ioc);
+ }
+ 
+ void migration_ioc_unregister_yank_from_file(QEMUFile *file)
+diff --git a/migration/yank_functions.h b/migration/yank_functions.h
+index a7577955ed..c928a46f68 100644
+--- a/migration/yank_functions.h
++++ b/migration/yank_functions.h
+@@ -7,6 +7,14 @@
+  * See the COPYING file in the top-level directory.
+  */
+ 
++struct Yankable {
++    void *opaque;
++    int refcnt;
++    QLIST_ENTRY(Yankable) next;
++};
++
++typedef struct Yankable Yankable;
++
+ /**
+  * migration_yank_iochannel: yank function for iochannel
+  *
 -- 
 2.35.3
 
