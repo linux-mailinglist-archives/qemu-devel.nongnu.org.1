@@ -2,49 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C17579A712
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 11:55:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B001C79A71D
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 12:06:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfdd3-0004Kk-M2; Mon, 11 Sep 2023 05:54:49 -0400
+	id 1qfdna-0001A6-3z; Mon, 11 Sep 2023 06:05:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qfdd1-0004KO-5k; Mon, 11 Sep 2023 05:54:47 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1qfdnJ-0000ye-PF
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 06:05:32 -0400
+Received: from mail-bn8nam04on2061f.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8d::61f]
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qfdcy-0006Gn-0Q; Mon, 11 Sep 2023 05:54:46 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id EA0BA20BD1;
- Mon, 11 Sep 2023 12:54:42 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 24404272F8;
- Mon, 11 Sep 2023 12:54:41 +0300 (MSK)
-Message-ID: <cc3e0b0f-e4e1-71d0-bddd-f68aa56aa658@tls.msk.ru>
-Date: Mon, 11 Sep 2023 12:54:41 +0300
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1qfdnC-0008CU-UC
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 06:05:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PpABdvO8agxJrIaRtc43eXhzLg6kWWy92yJJP65m4x4NEhaAglBXlZR6a0kpwesvNaws3V/lzTmsRpJelSBcZhCXqdp4DG3YJDCMXBlrrF2MvBh+b4jvG2fvAM87Np0VBbVLTGxGVYLuZLyiZ8UxtzH8FB1/5OZLfKRmCdtW1W2xWNhc7nelyf07vDMsvBZ6Gg/nUc7h/Cce5Jz56p4jooDAhUFL2zyRkAcF2ZetQ7a+YtxY49wa7SRhncPDPOnK1fuPqZHWJC2SBCyxK9lHZchd3YHrxxwdPMwgO8LWd2A7dah6oFMY1EzQceR19pQv9ApJmimBSJU4F4dZIqE72A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TdHpyzHH33H4Mlc6VS95k1EcgfV/b4jb7137aHaRxDE=;
+ b=ZG7PsWC6FjyefHT2wserml0BJqyYmTWMnF/oCIoQqZ8R7Ibnj31F++s0sJbgRSIZ6/EKmcY6iUt+Li5uybR10hMpkrHx6jPuWrIRtFMQ4csYgaET8HvqDxNZ/M1SFBiTFt+1lsznyiRqmPHx4S4LyzvDCEhymr/7YRL2znQIPXV2vaaPtui++7kTIACDtRAlca4xDLCO/dc0Osy9AI/VRiLjzsjEAzOr8nEMLYbDv57oNJ9q+FkTawDROdjShedZRSiScRIM5ZVWmGIV5zlGpP20ySBrRWqSl1cCiciZdt85oYNsc+vFX1yDWE+LSnpMnkbAQ1TZvnu9GA8YyN0ajw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TdHpyzHH33H4Mlc6VS95k1EcgfV/b4jb7137aHaRxDE=;
+ b=GY10W0Op4oRIxIo0PN6NDCCbwjt2znAZAo1EytGpgDly/v6jbYemJvY4kX8b0+Wim8FB13ywFhnuOJ0Tr4UyrJmXbpUlzAKqPY5MgqIQYGcHzFSgHLw7ji0wjCvOpU4SHLxFA0eXuBWO7+04klXjtKd4kiQuh+qgz2UISJTOvWY=
+Received: from DM6PR21CA0012.namprd21.prod.outlook.com (2603:10b6:5:174::22)
+ by PH7PR12MB6857.namprd12.prod.outlook.com (2603:10b6:510:1af::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.34; Mon, 11 Sep
+ 2023 10:05:13 +0000
+Received: from CY4PEPF0000E9DC.namprd05.prod.outlook.com
+ (2603:10b6:5:174:cafe::c9) by DM6PR21CA0012.outlook.office365.com
+ (2603:10b6:5:174::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.3 via Frontend
+ Transport; Mon, 11 Sep 2023 10:05:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000E9DC.mail.protection.outlook.com (10.167.241.82) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6792.17 via Frontend Transport; Mon, 11 Sep 2023 10:05:13 +0000
+Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 11 Sep
+ 2023 05:05:08 -0500
+From: Jiqian Chen <Jiqian.Chen@amd.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?=
+ <marcandre.lureau@gmail.com>, Robert Beckett <bob.beckett@collabora.com>,
+ <virtio-comment@lists.oasis-open.org>, <virtio-dev@lists.oasis-open.org>
+CC: <qemu-devel@nongnu.org>, <linux-kernel@vger.kernel.org>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
+ <roger.pau@citrix.com>, Alex Deucher <Alexander.Deucher@amd.com>, "Christian
+ Koenig" <Christian.Koenig@amd.com>, Stewart Hildebrand
+ <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
+ Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
+Subject: [RESEND VIRTIO GPU PATCH v3 0/1] Add new feature flag
+ VIRTIO_GPU_F_FREEZE_S3
+Date: Mon, 11 Sep 2023 18:04:29 +0800
+Message-ID: <20230911100430.1408168-1-Jiqian.Chen@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 6/7] hw/tpm: spelling fixes
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, Stefan Berger <stefanb@linux.vnet.ibm.com>
-References: <20230909131258.354675-1-mjt@tls.msk.ru>
- <20230909131258.354675-7-mjt@tls.msk.ru>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230909131258.354675-7-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DC:EE_|PH7PR12MB6857:EE_
+X-MS-Office365-Filtering-Correlation-Id: 505cd8ad-5fd8-4917-e41e-08dbb2ae9711
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: zmcXSaFgUdMCvTQh57wrabvN18jb1lZrEAT6L5UFdftnhCP9wcEacYyROSGaC/ZhalgRTggT+ibip2Vh+AExziqT3LG5yxy07HmX0kQgcIayFbtNzg1UmO1cPJqOqIcw07PQT+TXz9oW7eeudJYD539umf98Z68yb66sKQCli6NdbAxMMM7lXFzsf8bavD63Y0KpvVbEojjacXKw6Q40neAhqg6jXNACaRYWH48S/ysOWdkmClCTP4qQyfD/rq9zHMiG8xH/It6Ku4gt4vIK6ILSMCxTkwgURn1YX6rapxJKoC+/hch+qKRz6GzrRnQbvR5h6vVnwSIpeqvg91xq3+VS/JTrp/YIM++dzYMadbFhszEYy1ruG7+poDcGD6DbhHZEt3XMSvf//s39rtwcwMlSicMlj0HTo5BiTWFicpkf6uFVlwwIexWUnjfH/VJw4V2b+YdvWJpkifo9AnHFSZwiQoSNv50+Ta/xn+lQSdqaH4Ho/lTEF0gwHcZyXesDt7QyY9hAIU/66MA/RSuCcg3q8oRr6svYUcjdtjUSMAYpAxUqa0pA7xl1ody6qq6pnaMLduXhkEZ3Lc5QDXzyO17uo2wBXdktArHzAeadYNYXjXmzYwo2/Ad9wC2ycyPaFe9eC2Ck5qQCbRwZ1PwT/ih0okKSqPqpVSug3jjVrsps35h4Y95cQlGzJG4jEaEi4OlVKBiVoL2tRO6CPcxe2ivcNzAdKF8vl7D8IBrmHhvvgKvHOsznRKSXWM6hxUkO2k/nqy/rE/EV3j1JMn994xH+d8PXhMY40ZDhG4IPpII=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(376002)(346002)(396003)(136003)(39860400002)(186009)(451199024)(1800799009)(82310400011)(46966006)(36840700001)(40470700004)(8676002)(2906002)(40460700003)(7416002)(36756003)(86362001)(82740400003)(5660300002)(356005)(81166007)(40480700001)(36860700001)(47076005)(8936002)(4326008)(83380400001)(426003)(336012)(26005)(16526019)(41300700001)(1076003)(2616005)(7696005)(110136005)(6666004)(478600001)(316002)(966005)(54906003)(70586007)(70206006)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2023 10:05:13.0549 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 505cd8ad-5fd8-4917-e41e-08dbb2ae9711
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9DC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6857
+Received-SPF: softfail client-ip=2a01:111:f400:7e8d::61f;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM04-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -60,26 +127,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all,
+I hope you’ll forgive me if this disturb you. Since it has been almost two
+months since the latest patch was sent out, I didn't receive any reply, so I
+rebase the latest master branch and sent it again. I am looking forward to
+getting your response.
 
-Stefan, can you take a quick look please?
+Best regards,
+Jiqian Chen
 
-https://patchew.org/QEMU/20230909131258.354675-1-mjt@tls.msk.ru/20230909131258.354675-7-mjt@tls.msk.ru/
+v3:
+Hi all,
+Thanks for Gerd Hoffmann's advice. V3 makes below changes:
+* Use enum for freeze mode, so this can be extended with more
+  modes in the future.
+* Rename functions and paratemers with "_S3" postfix.
+* Explain in more detail
 
-Most of this is s/Familiy/Family/ in a few places, I guess it's
-some copy-paste error.
+And latest version on QEMU and Linux kernel side:
+	QEMU: https://lore.kernel.org/qemu-devel/20230720120816.8751-1-Jiqian.Chen@amd.com
+	Kernel: https://lore.kernel.org/lkml/20230720115805.8206-1-Jiqian.Chen@amd.com/T/#t
 
-09.09.2023 16:12, Michael Tokarev:
-> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-> ---
->   hw/tpm/tpm_tis.h        | 2 +-
->   hw/tpm/tpm_tis_common.c | 2 +-
->   hw/tpm/tpm_tis_i2c.c    | 4 ++--
->   hw/tpm/tpm_tis_isa.c    | 2 +-
->   hw/tpm/tpm_tis_sysbus.c | 2 +-
->   5 files changed, 6 insertions(+), 6 deletions(-)
 
-Thanks,
+v2:
+Hi all,
+Thanks to Gerd Hoffmann for his suggestions. V2 makes below changes:
+* Elaborate on the types of resources.
+* Add some descriptions for S3 and S4.
 
-/mjt
+Link:
+https://lists.oasis-open.org/archives/virtio-comment/202307/msg00160.html
+V2 of Qemu patch:
+https://lore.kernel.org/qemu-devel/20230630070016.841459-1-Jiqian.Chen@amd.com/T/#t
+V2 of Kernel patch:
+https://lore.kernel.org/lkml/20230630073448.842767-1-Jiqian.Chen@amd.com/T/#t
+
+
+v1:
+Hi all,
+I am working to implement virtgpu S3 function on Xen.
+
+Currently on Xen, if we start a guest through Qemu with enabling virtgpu, and then suspend
+and s3resume guest. We can find that the guest kernel comes back, but the display doesn't.
+It just shown a black screen.
+
+That is because when guest was during suspending, it called into Qemu and Qemu destroyed
+all resources and reset renderer. This made the display gone after guest resumed.
+
+So, I add a mechanism that when guest is suspending, it will notify Qemu, and then Qemu will
+not destroy resources. That can help guest's display come back.
+
+As discussed and suggested by Robert Beckett and Gerd Hoffmann on v1 qemu's mailing list.
+Due to that mechanism needs cooperation between guest and host. What's more, as virtio drivers
+by design paravirt drivers, it is reasonable for guest to accept some cooperation with host to
+manage suspend/resume. So I request to add a new feature flag, so that guest and host can
+negotiate whenever freezing is supported or not.
+
+Link:
+https://lists.oasis-open.org/archives/virtio-comment/202306/msg00595.html
+V1 of Qemu patch:
+https://lore.kernel.org/qemu-devel/20230608025655.1674357-2-Jiqian.Chen@amd.com/
+V1 of Kernel patch:
+https://lore.kernel.org/lkml/20230608063857.1677973-1-Jiqian.Chen@amd.com/
+
+Jiqian Chen (1):
+  virtio-gpu: Add new feature flag VIRTIO_GPU_F_FREEZE_S3
+
+ device-types/gpu/description.tex | 42 ++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+-- 
+2.34.1
 
 
