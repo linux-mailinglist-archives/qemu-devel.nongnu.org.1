@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED74779A3DC
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AD979A3BF
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:47:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfagn-0005hw-Qz; Mon, 11 Sep 2023 02:46:29 -0400
+	id 1qfago-0005tV-51; Mon, 11 Sep 2023 02:46:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagj-0005QF-Vh
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:26 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ id 1qfagl-0005ab-8D
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:27 -0400
+Received: from mail-oi1-x22a.google.com ([2607:f8b0:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagg-0005H7-IK
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:25 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-570e005c480so2523726eaf.0
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:46:21 -0700 (PDT)
+ id 1qfagi-0005HT-Us
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:26 -0400
+Received: by mail-oi1-x22a.google.com with SMTP id
+ 5614622812f47-3ab244ef065so3152543b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:46:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414780; x=1695019580; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414783; x=1695019583; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Uoek3ZrjREzdWi9x/k5swYAWV5D/iUYdPsvID2abYl4=;
- b=N3psNYEGotsSwXjViUFWKgZ86vj5U3Qdz/H2OojY7dhfT0ql+B8IB8FfhyXewuitpE
- zpE5+q0shvPGlvGB2a5ayLJMhnz+7aoCrX6cQCPktE4C9PLWjEanKNWs4Fn4piwhRQ+O
- vwYZWB1tck3SICJ6j41vhwPe0UD/Pjt7TSfhx6I4ZEpwUJhoVPlFxTSow2joQH9tzRf0
- yH10hUwsqXGABcZDUTyZYXEw/+U5cx7Tc8KZ3ZiRnnokPsTuLytH4jKealJhBCW47+GL
- EizKupXe680rhbtoYu7hpRt+chVfB93/8iSJowuRg8EeVnloANNv51xdijff9ekvmqYe
- +9Ag==
+ bh=0AugPxvR0Xk9MuYdUUIr4+5lfDeBI452w5K1Z6wU4Oo=;
+ b=gfQ8VCfAWU70sVX49r5Rslx72mer9AoRf/QGxcsoHDlxNRANHNOFCJIIpEfYIPooK9
+ vbZLWcC/OMQvWP+ItKTR6l4sQCfEmPOUXxFcU8u5/QJQN0m7ksSWapxkp0eQ1Q2FNShW
+ 2CwtJP0DVNj9doIIVHHMQccWIHtvf9sDSF6vW0DZC++D7PYMDFI1mJx6009SkIBWSint
+ vCEM0tkoOH8jvdYyvlv1hh12oW6YlA6MOZ0zIM/WxhkSiPDmi1tZTlk4ochrx6ohMQao
+ zkz4pDtyxDkqw9/gGoert1vf9NW2zf4+ND6BzPii44v2u3gclhvFuHOJ1K8onuhEnzWj
+ nSgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414780; x=1695019580;
+ d=1e100.net; s=20230601; t=1694414783; x=1695019583;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Uoek3ZrjREzdWi9x/k5swYAWV5D/iUYdPsvID2abYl4=;
- b=Q/rleVbwRj6nk6iJC1W/31fczOU5hogdeYchjhe2mLvKHFvV8gTFkLn48W0zl4QUp8
- 81Gv8QqfNKFq+qznRePQbZwMK0742uwx0v87x0oTvO6tODXLVBJfBGG0DGwfUePH3vrS
- ZaY+zoL5/mLG3IdaXWYTjZ0IiyAPBCUIYfkcHy/U1Mxqe9vGPgDmwBLyVUqjyQ2JXMf/
- 3SXOCY1vT+xH08I43tot8kFmCiJRnzw22EmvNBfEtmgA/Bi2nBso3CBGiKpeuu1UQOya
- HFXqvtHEriBDSyjESZ0HDxFgSDgSWG1ww0zgbKgrLW32QjKD7ubWM4b4Ez35T6RbHxwq
- xlyQ==
-X-Gm-Message-State: AOJu0YyCPpMd1WrD1KeAjcuO+kwJDD+57t1H7nCv7fMl2ZeIrR4pRXk2
- mfYU2aODkbv9lbFB3sQT+UXmVhzz89lBVg==
-X-Google-Smtp-Source: AGHT+IEFcKk7qwi1jOO6T2/h3QLYBEDKagXEeo/QCszNUZ+c8RMlSPzztJO5yD1EGbPZ6P/lMDz36w==
-X-Received: by 2002:a05:6358:1101:b0:134:fdfc:4319 with SMTP id
- f1-20020a056358110100b00134fdfc4319mr9059668rwi.20.1694414779974; 
- Sun, 10 Sep 2023 23:46:19 -0700 (PDT)
+ bh=0AugPxvR0Xk9MuYdUUIr4+5lfDeBI452w5K1Z6wU4Oo=;
+ b=rB2F12GQIYsa3YAPHvpo7vlz893z/CA1WSQ9JuVsCJIeprpCW2wdS0RU3f0Wjder8t
+ NmcDz/4ndr5k5MyC75iURxH8kYNrpHHRVUHk9pBshoJB/DQ9p9EjOoesNrrkInGQ7nWI
+ s+y4EkxrIU3L54SyauyNLmR47kwo0Gs7yyfoDFBWcTgfxkA9IDdV9VKH1pgNab8+yqPR
+ Yk+Uktk7gXIk+2JyQcN0Bfi6x04NYnHPSjzXw4LUo85A375M7AYdkI40N/C151QOTcmT
+ 8nKBVQgnSG3p237it9W+IHxdyy3I7Kbh7FBLh6V9bdvXY7Pke6tW2uBeMG4hwCxmNY/a
+ 98LA==
+X-Gm-Message-State: AOJu0YykyhGmt98DEF80W7heo0mLg3Rco4S/Ero4mJn4d2l9upbhzMxj
+ deL9Yo0ELCQsdExSUywFulwapAj1mxBZJA==
+X-Google-Smtp-Source: AGHT+IEVLVEcX79DeXQ3kBd8e1QJoa73XblKltDC7W915UcLk/DVGmWAx1033QvwyS3QFjyiSQxieg==
+X-Received: by 2002:a05:6808:2390:b0:3a7:48eb:2de2 with SMTP id
+ bp16-20020a056808239000b003a748eb2de2mr12430226oib.26.1694414783561; 
+ Sun, 10 Sep 2023 23:46:23 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.46.16
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.46.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:46:19 -0700 (PDT)
+ Sun, 10 Sep 2023 23:46:22 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+Cc: alistair23@gmail.com, Leon Schuermann <leons@opentitan.org>,
+ Mayuresh Chitale <mchitale@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 42/45] target/riscv: Allocate itrigger timers only once
-Date: Mon, 11 Sep 2023 16:43:17 +1000
-Message-ID: <20230911064320.939791-43-alistair.francis@wdc.com>
+Subject: [PULL v2 43/45] target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX
+ changes
+Date: Mon, 11 Sep 2023 16:43:18 +1000
+Message-ID: <20230911064320.939791-44-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=alistair23@gmail.com; helo=mail-oo1-xc30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22a;
+ envelope-from=alistair23@gmail.com; helo=mail-oi1-x22a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,103 +98,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Leon Schuermann <leons@opentitan.org>
 
-riscv_trigger_init() had been called on reset events that can happen
-several times for a CPU and it allocated timers for itrigger. If old
-timers were present, they were simply overwritten by the new timers,
-resulting in a memory leak.
+When the rule-lock bypass (RLB) bit is set in the mseccfg CSR, the PMP
+configuration lock bits must not apply. While this behavior is
+implemented for the pmpcfgX CSRs, this bit is not respected for
+changes to the pmpaddrX CSRs. This patch ensures that pmpaddrX CSR
+writes work even on locked regions when the global rule-lock bypass is
+enabled.
 
-Divide riscv_trigger_init() into two functions, namely
-riscv_trigger_realize() and riscv_trigger_reset() and call them in
-appropriate timing. The timer allocation will happen only once for a
-CPU in riscv_trigger_realize().
-
-Fixes: 5a4ae64cac ("target/riscv: Add itrigger support when icount is enabled")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Signed-off-by: Leon Schuermann <leons@opentitan.org>
+Reviewed-by: Mayuresh Chitale <mchitale@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20230818034059.9146-1-akihiko.odaki@daynix.com>
+Message-ID: <20230829215046.1430463-1-leon@is.currently.online>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/debug.h |  3 ++-
- target/riscv/cpu.c   |  8 +++++++-
- target/riscv/debug.c | 15 ++++++++++++---
- 3 files changed, 21 insertions(+), 5 deletions(-)
+ target/riscv/pmp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/riscv/debug.h b/target/riscv/debug.h
-index c471748d5a..5794aa6ee5 100644
---- a/target/riscv/debug.h
-+++ b/target/riscv/debug.h
-@@ -143,7 +143,8 @@ void riscv_cpu_debug_excp_handler(CPUState *cs);
- bool riscv_cpu_debug_check_breakpoint(CPUState *cs);
- bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp);
- 
--void riscv_trigger_init(CPURISCVState *env);
-+void riscv_trigger_realize(CPURISCVState *env);
-+void riscv_trigger_reset_hold(CPURISCVState *env);
- 
- bool riscv_itrigger_enabled(CPURISCVState *env);
- void riscv_itrigger_update_priv(CPURISCVState *env);
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index bf0912014e..f227c7664e 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -926,7 +926,7 @@ static void riscv_cpu_reset_hold(Object *obj)
- 
- #ifndef CONFIG_USER_ONLY
-     if (cpu->cfg.debug) {
--        riscv_trigger_init(env);
-+        riscv_trigger_reset_hold(env);
-     }
- 
-     if (kvm_enabled()) {
-@@ -1525,6 +1525,12 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
- 
-     riscv_cpu_register_gdb_regs_for_features(cs);
- 
-+#ifndef CONFIG_USER_ONLY
-+    if (cpu->cfg.debug) {
-+        riscv_trigger_realize(&cpu->env);
-+    }
-+#endif
-+
-     qemu_init_vcpu(cs);
-     cpu_reset(cs);
- 
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index 211f5921b6..4945d1a1f2 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -903,7 +903,17 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
-     return false;
- }
- 
--void riscv_trigger_init(CPURISCVState *env)
-+void riscv_trigger_realize(CPURISCVState *env)
-+{
-+    int i;
-+
-+    for (i = 0; i < RV_MAX_TRIGGERS; i++) {
-+        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-+                                              riscv_itrigger_timer_cb, env);
-+    }
-+}
-+
-+void riscv_trigger_reset_hold(CPURISCVState *env)
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 9d8db493e6..5e60c26031 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -44,6 +44,10 @@ static inline uint8_t pmp_get_a_field(uint8_t cfg)
+  */
+ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
  {
-     target_ulong tdata1 = build_tdata1(env, TRIGGER_TYPE_AD_MATCH, 0, 0);
-     int i;
-@@ -928,7 +938,6 @@ void riscv_trigger_init(CPURISCVState *env)
-         env->tdata3[i] = 0;
-         env->cpu_breakpoint[i] = NULL;
-         env->cpu_watchpoint[i] = NULL;
--        env->itrigger_timer[i] = timer_new_ns(QEMU_CLOCK_VIRTUAL,
--                                              riscv_itrigger_timer_cb, env);
-+        timer_del(env->itrigger_timer[i]);
-     }
- }
++    /* mseccfg.RLB is set */
++    if (MSECCFG_RLB_ISSET(env)) {
++        return 0;
++    }
+ 
+     if (env->pmp_state.pmp[pmp_index].cfg_reg & PMP_LOCK) {
+         return 1;
 -- 
 2.41.0
 
