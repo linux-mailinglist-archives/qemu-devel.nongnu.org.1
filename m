@@ -2,89 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24E979A3B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECB479A3E1
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfaeg-0000FI-Un; Mon, 11 Sep 2023 02:44:18 -0400
+	id 1qfahW-0000lC-Ox; Mon, 11 Sep 2023 02:47:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qfaef-0000Ev-5N
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:17 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qfah0-000807-K4
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qfaea-0004Sm-Sv
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:16 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qfagy-0005Ke-3k
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694414651;
+ s=mimecast20190719; t=1694414799;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=E2xqD0YIxOK+GZhQ9wNIZZRwEnvyTP21tpDSn0gAwLE=;
- b=M4duKq27lNDuuZ16EVRINrcPmRQ9oiXzulIRBCdtobU9rZnGn5ZVI4vvfP02qNrK8OTSxI
- pJoX9v6hwEVzuNP9LYe6DJgl44sJPQ9RkgecEvGnFHl/IW4PSLcjh0SXLsgIlb/43zzTE5
- Mq1o7J+M1sQfWxkIDREf21ObiYp5Ark=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2GFEsMHhmxwDeXAhRY5jRzLsshWG+kXShsF5dZtdzMA=;
+ b=Ne/YmOpR+DgkuQBDgoT+sF1GH4pRP9bKEyAWAgAsQmtynjSOfI1WgKUSiFMLbDTQBF2YLL
+ iWg5zX1t/Xs6FEYS/oVkQbwwIEkgBdxLDmxG2RfoVMRpEa5ioe+ZwIntr2xA85ANuAHDeJ
+ awq8RFuibRWq/2R0Pg05XZIXIHY16dI=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-368-g5FC_Wj9M--uvvXBmy2qUg-1; Mon, 11 Sep 2023 02:44:10 -0400
-X-MC-Unique: g5FC_Wj9M--uvvXBmy2qUg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-770ef0da402so282366885a.1
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:44:10 -0700 (PDT)
+ us-mta-606-9MITMFqSNGi7z8dm9clwgw-1; Mon, 11 Sep 2023 02:46:36 -0400
+X-MC-Unique: 9MITMFqSNGi7z8dm9clwgw-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-26f3fce5b0bso4924503a91.2
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:46:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414649; x=1695019449;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E2xqD0YIxOK+GZhQ9wNIZZRwEnvyTP21tpDSn0gAwLE=;
- b=Wa++0RNC9rspMG6U8BsSrSjn9u8tmVkJPm6C71e2EFLgzQI9HTUz6hhhLGcQsu6nfO
- HtiHIrpZdorl3+laW8dPlhoT8RjRXhjD1Es9j7DXWrJH6lXpZOBksK05AIQXci3LrcX8
- PaRInHSkB5e2XG10KBgzg8vgOHstNkfeSdCHd7c2DbfqOWJKFWsngxwH67JsEw6IwFPH
- ZloNEvj4fn2PycA+PkbDRpHUBOt636vQqu6K53Oe9jLFPWkSkXy0AmNvkZf/QXxO3ljg
- fz5LjSW0EFaWfaKrpk4E71tx650XPMXpwjRdpEHahYPQHQLk4RRus22jPo6WHJOOo51f
- AxYw==
-X-Gm-Message-State: AOJu0YznAyk/4pb2OiMceFFbAXajR0yM0hOD6IFu684EfM5zoMcyYbSx
- jneUzRHjJq2oK3Ev/xsneJ2hKHxkVwXhrDdEVf610sRhT7XLpO6U/wSaUIevlMkvKFelRigf7/Q
- 2ypaXykFFSQHEyhc=
-X-Received: by 2002:a05:620a:c08:b0:76f:382:b551 with SMTP id
- l8-20020a05620a0c0800b0076f0382b551mr8031308qki.35.1694414649618; 
- Sun, 10 Sep 2023 23:44:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvVBUqNbYJhZtzePqRDZOzdvKlgXYJsVtjLBzRMMBa3uSUiVuULPuOKTv54LqFzIlkH4++kw==
-X-Received: by 2002:a05:620a:c08:b0:76f:382:b551 with SMTP id
- l8-20020a05620a0c0800b0076f0382b551mr8031298qki.35.1694414649370; 
- Sun, 10 Sep 2023 23:44:09 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- p18-20020a05620a133200b0076e672f535asm2315952qkj.57.2023.09.10.23.44.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 10 Sep 2023 23:44:09 -0700 (PDT)
-Message-ID: <82ab4a43-2bc8-aa4c-6743-0951fbb91357@redhat.com>
-Date: Mon, 11 Sep 2023 08:44:06 +0200
+ d=1e100.net; s=20230601; t=1694414795; x=1695019595;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2GFEsMHhmxwDeXAhRY5jRzLsshWG+kXShsF5dZtdzMA=;
+ b=V0KVHVUwaLomisIyfMesLH7hpL0eM1IpJ50tZglj1atGgcNib/4X0yjTzlikrJ0dKQ
+ 7BgW6nll2ihyQPCtvvA1LsUBMb9ymtGCE1GFG0Yy20zGpIFGTmLVmyojsHJHTpyj2BGF
+ Gklxxhp8mzMpvl+Idu3WsMKHjSTqn5UEwogy5wi4Uwmq1PsKe5Kw/mYLClUDjbayIH5H
+ lGAD1SY+bKh7sQvfhR4/hIMy9EvXYbl0NUvmUuIXuJlltosS5QbvI9DxjMP3Qe6uuF6z
+ HCHJ6oQCnVN5pz/xPtvNC+A/KYpFQHwvJvsrY3BZ4LHD4c2ZqlwguYTX0ke+ZT6xncuR
+ /s/Q==
+X-Gm-Message-State: AOJu0YxzwufeTsbkyxE294Qfygjy8Yu7suX5hEysj/oZGkY8nPbqSo8P
+ y84vT+ZdSKG+rn58Tar0U5QIx229KM1JAGCFVPxM7AfBYjdSPagJoryMp1OW0LKDKK7263ItDdm
+ woJmdoKsKCP9uBaKlcDM7kqD24I1VsG0=
+X-Received: by 2002:a17:90b:4c45:b0:273:dfd8:c01c with SMTP id
+ np5-20020a17090b4c4500b00273dfd8c01cmr5052471pjb.40.1694414794601; 
+ Sun, 10 Sep 2023 23:46:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNE557DCto0iycgCe5tX3cW1MoPHbT3P9m8efy/TcE8NYrKAqu6w8vOlgbtWWJMznid7+Q7tTfzNP1ZTTvxA8=
+X-Received: by 2002:a17:90b:4c45:b0:273:dfd8:c01c with SMTP id
+ np5-20020a17090b4c4500b00273dfd8c01cmr5052441pjb.40.1694414793410; Sun, 10
+ Sep 2023 23:46:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1] vfio/common: Separate vfio-pci ranges
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>
-References: <20230908092944.47589-1-joao.m.martins@oracle.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230908092944.47589-1-joao.m.martins@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+References: <20230908154743.809569-1-aesteve@redhat.com>
+ <5b82b6ae-cc19-2fc7-abef-8eefe40e4247@linaro.org>
+In-Reply-To: <5b82b6ae-cc19-2fc7-abef-8eefe40e4247@linaro.org>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Mon, 11 Sep 2023 08:46:22 +0200
+Message-ID: <CADSE00LndhSPGDOqCkO-ewOg2R3sF1ULPtYXZ4Q_SQP+youshQ@mail.gmail.com>
+Subject: Re: [PATCH v8 0/4] Virtio shared dma-buf
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
+ marcandre.lureau@gmail.com, 
+ cohuck@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, kraxel@redhat.com
+Content-Type: multipart/alternative; boundary="000000000000dd1e8906050faf4d"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -102,186 +95,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 11:29, Joao Martins wrote:
-> QEMU computes the DMA logging ranges for two predefined ranges: 32-bit
-> and 64-bit. In the OVMF case, when the dynamic MMIO window is enabled,
-> QEMU includes in the 64-bit range the RAM regions at the lower part
-> and vfio-pci device RAM regions which are at the top of the address
-> space. This range contains a large gap and the size can be bigger than
-> the dirty tracking HW limits of some devices (MLX5 has a 2^42 limit).
-> 
-> To avoid such large ranges, introduce a new PCI range covering the
-> vfio-pci device RAM regions, this only if the addresses are above 4GB
-> to avoid breaking potential SeaBIOS guests.
-> 
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> [ clg: - wrote commit log
->         - fixed overlapping 32-bit and PCI ranges when using SeaBIOS ]
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
-> v2:
-> * s/minpci/minpci64/
-> * s/maxpci/maxpci64/
-> * Expand comment to cover the pci-hole64 and why we don't do special
->    handling of pci-hole32.
+--000000000000dd1e8906050faf4d
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a valuable fix for the latest OVMF enabling dynamic MMIO
-window. Applied to vfio-next.
+On Fri, Sep 8, 2023 at 5:55=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 <philmd@=
+linaro.org>
+wrote:
 
-Thanks,
+> On 8/9/23 17:47, Albert Esteve wrote:
+> > v1 link ->
+> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
+> > v2 link ->
+> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
+> > v3 link ->
+> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06126.html
+> > v4 link ->
+> https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05174.html
+> > v5 link ->
+> https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00255.html
+> > v6 link ->
+> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00987.html
+> > v7 link ->
+> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01190.html
+> > v7 -> v8:
+> > - Move "qemu/osdep.h" include to the virtio-dmabuf source file.
+> > - Remove duplicated glib include.
+> > - Change the title of commits to better reflect the path to the change
+>
+> Thank Albert you for the various respin with review comment addressed.
+>
+>
+Hi Philippe,
 
-C.
+Thank you for taking the time to review!
 
 
-> ---
->   hw/vfio/common.c     | 71 +++++++++++++++++++++++++++++++++++++-------
->   hw/vfio/trace-events |  2 +-
->   2 files changed, 61 insertions(+), 12 deletions(-)
-> 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 237101d03844..134649226d43 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -27,6 +27,7 @@
->   
->   #include "hw/vfio/vfio-common.h"
->   #include "hw/vfio/vfio.h"
-> +#include "hw/vfio/pci.h"
->   #include "exec/address-spaces.h"
->   #include "exec/memory.h"
->   #include "exec/ram_addr.h"
-> @@ -1400,6 +1401,8 @@ typedef struct VFIODirtyRanges {
->       hwaddr max32;
->       hwaddr min64;
->       hwaddr max64;
-> +    hwaddr minpci64;
-> +    hwaddr maxpci64;
->   } VFIODirtyRanges;
->   
->   typedef struct VFIODirtyRangesListener {
-> @@ -1408,6 +1411,31 @@ typedef struct VFIODirtyRangesListener {
->       MemoryListener listener;
->   } VFIODirtyRangesListener;
->   
-> +static bool vfio_section_is_vfio_pci(MemoryRegionSection *section,
-> +                                     VFIOContainer *container)
-> +{
-> +    VFIOPCIDevice *pcidev;
-> +    VFIODevice *vbasedev;
-> +    VFIOGroup *group;
-> +    Object *owner;
-> +
-> +    owner = memory_region_owner(section->mr);
-> +
-> +    QLIST_FOREACH(group, &container->group_list, container_next) {
-> +        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> +            if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
-> +                continue;
-> +            }
-> +            pcidev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-> +            if (OBJECT(pcidev) == owner) {
-> +                return true;
-> +            }
-> +        }
-> +    }
-> +
-> +    return false;
-> +}
-> +
->   static void vfio_dirty_tracking_update(MemoryListener *listener,
->                                          MemoryRegionSection *section)
->   {
-> @@ -1424,19 +1452,32 @@ static void vfio_dirty_tracking_update(MemoryListener *listener,
->       }
->   
->       /*
-> -     * The address space passed to the dirty tracker is reduced to two ranges:
-> -     * one for 32-bit DMA ranges, and another one for 64-bit DMA ranges.
-> +     * The address space passed to the dirty tracker is reduced to three ranges:
-> +     * one for 32-bit DMA ranges, one for 64-bit DMA ranges and one for the
-> +     * PCI 64-bit hole.
-> +     *
->        * The underlying reports of dirty will query a sub-interval of each of
->        * these ranges.
->        *
-> -     * The purpose of the dual range handling is to handle known cases of big
-> -     * holes in the address space, like the x86 AMD 1T hole. The alternative
-> -     * would be an IOVATree but that has a much bigger runtime overhead and
-> -     * unnecessary complexity.
-> +     * The purpose of the three range handling is to handle known cases of big
-> +     * holes in the address space, like the x86 AMD 1T hole, and firmware (like
-> +     * OVMF) which may relocate the pci-hole64 to the end of the address space.
-> +     * The latter would otherwise generate large ranges for tracking, stressing
-> +     * the limits of supported hardware. The pci-hole32 will always be below 4G
-> +     * (overlapping or not) so it doesn't need special handling and is part of
-> +     * the 32-bit range.
-> +     *
-> +     * The alternative would be an IOVATree but that has a much bigger runtime
-> +     * overhead and unnecessary complexity.
->        */
-> -    min = (end <= UINT32_MAX) ? &range->min32 : &range->min64;
-> -    max = (end <= UINT32_MAX) ? &range->max32 : &range->max64;
-> -
-> +    if (vfio_section_is_vfio_pci(section, dirty->container) &&
-> +        iova >= UINT32_MAX) {
-> +        min = &range->minpci64;
-> +        max = &range->maxpci64;
-> +    } else {
-> +        min = (end <= UINT32_MAX) ? &range->min32 : &range->min64;
-> +        max = (end <= UINT32_MAX) ? &range->max32 : &range->max64;
-> +    }
->       if (*min > iova) {
->           *min = iova;
->       }
-> @@ -1461,6 +1502,7 @@ static void vfio_dirty_tracking_init(VFIOContainer *container,
->       memset(&dirty, 0, sizeof(dirty));
->       dirty.ranges.min32 = UINT32_MAX;
->       dirty.ranges.min64 = UINT64_MAX;
-> +    dirty.ranges.minpci64 = UINT64_MAX;
->       dirty.listener = vfio_dirty_tracking_listener;
->       dirty.container = container;
->   
-> @@ -1531,7 +1573,8 @@ vfio_device_feature_dma_logging_start_create(VFIOContainer *container,
->        * DMA logging uAPI guarantees to support at least a number of ranges that
->        * fits into a single host kernel base page.
->        */
-> -    control->num_ranges = !!tracking->max32 + !!tracking->max64;
-> +    control->num_ranges = !!tracking->max32 + !!tracking->max64 +
-> +        !!tracking->maxpci64;
->       ranges = g_try_new0(struct vfio_device_feature_dma_logging_range,
->                           control->num_ranges);
->       if (!ranges) {
-> @@ -1550,11 +1593,17 @@ vfio_device_feature_dma_logging_start_create(VFIOContainer *container,
->       if (tracking->max64) {
->           ranges->iova = tracking->min64;
->           ranges->length = (tracking->max64 - tracking->min64) + 1;
-> +        ranges++;
-> +    }
-> +    if (tracking->maxpci64) {
-> +        ranges->iova = tracking->minpci64;
-> +        ranges->length = (tracking->maxpci64 - tracking->minpci64) + 1;
->       }
->   
->       trace_vfio_device_dirty_tracking_start(control->num_ranges,
->                                              tracking->min32, tracking->max32,
-> -                                           tracking->min64, tracking->max64);
-> +                                           tracking->min64, tracking->max64,
-> +                                           tracking->minpci64, tracking->maxpci64);
->   
->       return feature;
->   }
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index ce61b10827b6..cc7c21365c92 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -104,7 +104,7 @@ vfio_known_safe_misalignment(const char *name, uint64_t iova, uint64_t offset_wi
->   vfio_listener_region_add_no_dma_map(const char *name, uint64_t iova, uint64_t size, uint64_t page_size) "Region \"%s\" 0x%"PRIx64" size=0x%"PRIx64" is not aligned to 0x%"PRIx64" and cannot be mapped for DMA"
->   vfio_listener_region_del(uint64_t start, uint64_t end) "region_del 0x%"PRIx64" - 0x%"PRIx64
->   vfio_device_dirty_tracking_update(uint64_t start, uint64_t end, uint64_t min, uint64_t max) "section 0x%"PRIx64" - 0x%"PRIx64" -> update [0x%"PRIx64" - 0x%"PRIx64"]"
-> -vfio_device_dirty_tracking_start(int nr_ranges, uint64_t min32, uint64_t max32, uint64_t min64, uint64_t max64) "nr_ranges %d 32:[0x%"PRIx64" - 0x%"PRIx64"], 64:[0x%"PRIx64" - 0x%"PRIx64"]"
-> +vfio_device_dirty_tracking_start(int nr_ranges, uint64_t min32, uint64_t max32, uint64_t min64, uint64_t max64, uint64_t minpci, uint64_t maxpci) "nr_ranges %d 32:[0x%"PRIx64" - 0x%"PRIx64"], 64:[0x%"PRIx64" - 0x%"PRIx64"], pci64:[0x%"PRIx64" - 0x%"PRIx64"]"
->   vfio_disconnect_container(int fd) "close container->fd=%d"
->   vfio_put_group(int fd) "close group->fd=%d"
->   vfio_get_device(const char * name, unsigned int flags, unsigned int num_regions, unsigned int num_irqs) "Device %s flags: %u, regions: %u, irqs: %u"
+> Michael, no other comment on my side.
+>
+> Regards,
+>
+> Phil.
+>
+> > This patch covers the required steps to add support for virtio
+> cross-device resource sharing[1],
+> > which support is already available in the kernel.
+>
+> > Albert Esteve (4):
+> >    util/uuid: add a hash function
+> >    hw/display: introduce virtio-dmabuf
+> >    vhost-user: add shared_object msg
+> >    libvhost-user: handle shared_object msg
+>
+>
+
+--000000000000dd1e8906050faf4d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
+ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
+_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 8, 2023 at 5:55=
+=E2=80=AFPM Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@linaro=
+.org">philmd@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
+204);padding-left:1ex">On 8/9/23 17:47, Albert Esteve wrote:<br>
+&gt; v1 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
+/2023-05/msg00598.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
+gnu.org/archive/html/qemu-devel/2023-05/msg00598.html</a><br>
+&gt; v2 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
+/2023-05/msg04530.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
+gnu.org/archive/html/qemu-devel/2023-05/msg04530.html</a><br>
+&gt; v3 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
+/2023-05/msg06126.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
+gnu.org/archive/html/qemu-devel/2023-05/msg06126.html</a><br>
+&gt; v4 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
+/2023-06/msg05174.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
+gnu.org/archive/html/qemu-devel/2023-06/msg05174.html</a><br>
+&gt; v5 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
+/2023-08/msg00255.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
+gnu.org/archive/html/qemu-devel/2023-08/msg00255.html</a><br>
+&gt; v6 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
+/2023-09/msg00987.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
+gnu.org/archive/html/qemu-devel/2023-09/msg00987.html</a><br>
+&gt; v7 link -&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel=
+/2023-09/msg01190.html" rel=3D"noreferrer" target=3D"_blank">https://lists.=
+gnu.org/archive/html/qemu-devel/2023-09/msg01190.html</a><br>
+&gt; v7 -&gt; v8:<br>
+&gt; - Move &quot;qemu/osdep.h&quot; include to the virtio-dmabuf source fi=
+le.<br>
+&gt; - Remove duplicated glib include.<br>
+&gt; - Change the title of commits to better reflect the path to the change=
+<br>
+<br>
+Thank Albert you for the various respin with review comment addressed.<br>
+<br></blockquote><div><br></div><div>Hi Philippe,</div><div><br></div><div>=
+Thank you for taking the time to review!</div><div>=C2=A0</div><blockquote =
+class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px sol=
+id rgb(204,204,204);padding-left:1ex">
+Michael, no other comment on my side.<br>
+<br>
+Regards,<br>
+<br>
+Phil.<br>
+<br>
+&gt; This patch covers the required steps to add support for virtio cross-d=
+evice resource sharing[1],<br>
+&gt; which support is already available in the kernel.<br>
+<br>
+&gt; Albert Esteve (4):<br>
+&gt;=C2=A0 =C2=A0 util/uuid: add a hash function<br>
+&gt;=C2=A0 =C2=A0 hw/display: introduce virtio-dmabuf<br>
+&gt;=C2=A0 =C2=A0 vhost-user: add shared_object msg<br>
+&gt;=C2=A0 =C2=A0 libvhost-user: handle shared_object msg<br>
+<br>
+</blockquote></div></div>
+
+--000000000000dd1e8906050faf4d--
 
 
