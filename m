@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB37F79A3A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF3E79A3E2
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:49:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfaeS-0000D2-C3; Mon, 11 Sep 2023 02:44:04 -0400
+	id 1qfaeX-0000Dt-Uy; Mon, 11 Sep 2023 02:44:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfaeR-0000Cs-9D
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:03 -0400
-Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
+ id 1qfaeW-0000Dc-FX
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:08 -0400
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfaeP-0004Rw-82
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:03 -0400
-Received: by mail-ot1-x32f.google.com with SMTP id
- 46e09a7af769-6bf58009a8dso2890271a34.1
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:44:00 -0700 (PDT)
+ id 1qfaeU-0004SU-4y
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:44:08 -0400
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3aa1c04668bso2513581b6e.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:44:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414640; x=1695019440; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414644; x=1695019444; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wJk34toFNyidTQI3XnnaKroUPxNRe6WC7SlLZ/NA1WQ=;
- b=LCDbqOaaEe/b5xs2y0XNNBiDLlO+oMv9THFjngFeJMyHbMBT6usgluCZISKH2G6Wbb
- 9w4J72IJ6CisPS9ugpy4bbp56MkeQ7JlD9Si7GfPlBn/dikmkOvosxGDTWrvYKziyS/a
- Cejk/DFVN9epTlhbfkXSmVC52QuXNpMbbJ35lD0vpnUwdRDQJvGveMe1zAgE58MVKulK
- bLE9thJrLLri8RgR7UyxBKNNrXNjSTitdCduD8R+RT+qyamirfNJ4YgO0ZyDrO5Ha5D2
- A8n0tuSjp0LNJOzBdeeJd3LhLD5Mxbyds9SEY9APQSOkqTsPB7/AUqE3ltiJQhl64Yo9
- 3SjQ==
+ bh=Uzpy+y6xrg4iHp+mbMOAUvxFawE2a4d7du1HjRHTWNg=;
+ b=Jyz9STwUF1MaoqpsvOVCH9xwAAPgk2WuQisO9keCfpd1oOARYdRHKiNEyZ+//Dl4ct
+ N5ihNw4iPfD2pRlNY3S3j890Be8T2VjTByxsKLeOOYNGUooZbI59GkwyAa94lHSnkEvI
+ InwBPDl5Uk6Ag39gnEfA6f0I8ZEvl1r2DkRVYzqXJUM8IipT7TwQR3IwWCOiy2XYO6Fv
+ N3BeCQw/TTl364HG1JVnDD1iGFLduJAn4HSNfEIwFidAeabsac2XAdOkjVfNlaE9iolx
+ jtaLvyqpS6TTEagchn0kWKlSX0c2RR+rJVK1/fhtJl+bmAM9EGFNDhUizI+uuDe74Bqs
+ x2Hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414640; x=1695019440;
+ d=1e100.net; s=20230601; t=1694414644; x=1695019444;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wJk34toFNyidTQI3XnnaKroUPxNRe6WC7SlLZ/NA1WQ=;
- b=FZoB2TFS6j8bU/mxNH+os8J3NItbNZIgFN0Gtww810DccuT1R4pKRvMOmaTj3jpLkq
- J/z/xg4g/xvK9owcWBPmt1Kt25jiEArxAlW3UIRozUQxv4KTVJwurT59PAo4SGMEfEE+
- iQQpNbtNkWiUjiC8yULJUlgtvL4wKMmDwnWMydKqpRBot3Gu1SQ1mRGc1GWurUmnrVpS
- FlcfZJlkR02B1CeiKn9laR/tyNsWjNPQGjqxfJvp2dpLhAxbeG65hSstpcuoI+flIpM+
- z31wKPTkC65wojxeFA1ZHD62GAzGEEh7gEDR5B4WywOi9q/dc1bj5hfKZHuHGqcCRvj4
- 9KHQ==
-X-Gm-Message-State: AOJu0YxiW7O/3rIwZ/mTgkaBaVDrePGtNI8U7OJ7vRDNzjJXYZz01N3p
- ChAOmacNVcfm4AY9pwKCw8fyeP2X4UkO4A==
-X-Google-Smtp-Source: AGHT+IH9RB2zLKdLYHjpIs5CYv+SYjtllCKTR2ZYE91scVk1Yo0AUA06WIGPMABn2QX+jDxdDQfBaw==
-X-Received: by 2002:a05:6830:18e7:b0:6b9:b1b1:135 with SMTP id
- d7-20020a05683018e700b006b9b1b10135mr9084411otf.13.1694414639824; 
- Sun, 10 Sep 2023 23:43:59 -0700 (PDT)
+ bh=Uzpy+y6xrg4iHp+mbMOAUvxFawE2a4d7du1HjRHTWNg=;
+ b=TsWZXLbYbwUHLS98WUeVID5GchB+FFZlmpEtcrlaxfTHoIBbwwfhRHro7zJ8sHPCpy
+ tVIGnTm2WIb5K0fp6FqBqShTYBKwOGbm02hpTWvzXcrtPQxy6GgaKjpTSvV0sqZkyrh2
+ I3M9U/2ipygh+KFUlSDBe2KcShWMKd7guOk1FZ+IcKpTwDEbW1FqjIPuUd9X5kvMUIMk
+ C3F1XqON3dUKAervLhH1mG/qFHphrLfvHWBVvoVbkh0sYgY+R2PGWAf8ZDRN6ZrZcmrI
+ fD0Ad6g6JWq8qo9wRfxLHt6QS0vbpmK9jkQgAh6+rhVTxOEmGlFpcmJVIyhNtUO+uACj
+ 2tQQ==
+X-Gm-Message-State: AOJu0YyU28kp30g+PVhpOr5c0pFcobd7t+cJ90BGYaIB9V84xigjNf+v
+ +1O5pAHJd8OBOLoyTw/sQVDXE7qTZIZmsA==
+X-Google-Smtp-Source: AGHT+IFgyWRmq/qpuzRV+XRvmhnYclZDrJ7ZMX3pLX5nYqDwTtvLOyAIKAhT2xkhPWdPYeQbDxhQYQ==
+X-Received: by 2002:a05:6870:b401:b0:1d0:e3b7:395b with SMTP id
+ x1-20020a056870b40100b001d0e3b7395bmr8545804oap.52.1694414644391; 
+ Sun, 10 Sep 2023 23:44:04 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.43.56
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.44.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:43:58 -0700 (PDT)
+ Sun, 10 Sep 2023 23:44:03 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
+Cc: alistair23@gmail.com, Ard Biesheuvel <ardb@kernel.org>,
  Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zewen Ye <lustrew@foxmail.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Junqiang Wang <wangjunqiang@iscas.ac.cn>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 06/45] target/riscv: Fix page_check_range use in
- fault-only-first
-Date: Mon, 11 Sep 2023 16:42:41 +1000
-Message-ID: <20230911064320.939791-7-alistair.francis@wdc.com>
+Subject: [PULL v2 07/45] target/riscv: Use existing lookup tables for
+ MixColumns
+Date: Mon, 11 Sep 2023 16:42:42 +1000
+Message-ID: <20230911064320.939791-8-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
- envelope-from=alistair23@gmail.com; helo=mail-ot1-x32f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=alistair23@gmail.com; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,34 +102,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-Commit bef6f008b98(accel/tcg: Return bool from page_check_range) converts
-integer return value to bool type. However, it wrongly converted the use
-of the API in riscv fault-only-first, where page_check_range < = 0, should
-be converted to !page_check_range.
+The AES MixColumns and InvMixColumns operations are relatively
+expensive 4x4 matrix multiplications in GF(2^8), which is why C
+implementations usually rely on precomputed lookup tables rather than
+performing the calculations on demand.
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Given that we already carry those tables in QEMU, we can just grab the
+right value in the implementation of the RISC-V AES32 instructions. Note
+that the tables in question are permuted according to the respective
+Sbox, so we can omit the Sbox lookup as well in this case.
+
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Zewen Ye <lustrew@foxmail.com>
+Cc: Weiwei Li <liweiwei@iscas.ac.cn>
+Cc: Junqiang Wang <wangjunqiang@iscas.ac.cn>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20230729031618.821-1-zhiwei_liu@linux.alibaba.com>
+Message-ID: <20230731084043.1791984-1-ardb@kernel.org>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/crypto/aes.h         |  7 +++++++
+ crypto/aes.c                 |  4 ++--
+ target/riscv/crypto_helper.c | 34 ++++------------------------------
+ 3 files changed, 13 insertions(+), 32 deletions(-)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index bc9e151aa9..379f03df06 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -584,7 +584,7 @@ vext_ldff(void *vd, void *v0, target_ulong base,
-                                          cpu_mmu_index(env, false));
-                 if (host) {
- #ifdef CONFIG_USER_ONLY
--                    if (page_check_range(addr, offset, PAGE_READ)) {
-+                    if (!page_check_range(addr, offset, PAGE_READ)) {
-                         vl = i;
-                         goto ProbeSuccess;
-                     }
+diff --git a/include/crypto/aes.h b/include/crypto/aes.h
+index 709d4d226b..381f24c902 100644
+--- a/include/crypto/aes.h
++++ b/include/crypto/aes.h
+@@ -30,4 +30,11 @@ void AES_decrypt(const unsigned char *in, unsigned char *out,
+ extern const uint8_t AES_sbox[256];
+ extern const uint8_t AES_isbox[256];
+ 
++/*
++AES_Te0[x] = S [x].[02, 01, 01, 03];
++AES_Td0[x] = Si[x].[0e, 09, 0d, 0b];
++*/
++
++extern const uint32_t AES_Te0[256], AES_Td0[256];
++
+ #endif
+diff --git a/crypto/aes.c b/crypto/aes.c
+index 836d7d5c0b..df4362ac60 100644
+--- a/crypto/aes.c
++++ b/crypto/aes.c
+@@ -272,7 +272,7 @@ AES_Td3[x] = Si[x].[09, 0d, 0b, 0e];
+ AES_Td4[x] = Si[x].[01, 01, 01, 01];
+ */
+ 
+-static const uint32_t AES_Te0[256] = {
++const uint32_t AES_Te0[256] = {
+     0xc66363a5U, 0xf87c7c84U, 0xee777799U, 0xf67b7b8dU,
+     0xfff2f20dU, 0xd66b6bbdU, 0xde6f6fb1U, 0x91c5c554U,
+     0x60303050U, 0x02010103U, 0xce6767a9U, 0x562b2b7dU,
+@@ -607,7 +607,7 @@ static const uint32_t AES_Te4[256] = {
+     0xb0b0b0b0U, 0x54545454U, 0xbbbbbbbbU, 0x16161616U,
+ };
+ 
+-static const uint32_t AES_Td0[256] = {
++const uint32_t AES_Td0[256] = {
+     0x51f4a750U, 0x7e416553U, 0x1a17a4c3U, 0x3a275e96U,
+     0x3bab6bcbU, 0x1f9d45f1U, 0xacfa58abU, 0x4be30393U,
+     0x2030fa55U, 0xad766df6U, 0x88cc7691U, 0xf5024c25U,
+diff --git a/target/riscv/crypto_helper.c b/target/riscv/crypto_helper.c
+index 99d85a6188..4d65945429 100644
+--- a/target/riscv/crypto_helper.c
++++ b/target/riscv/crypto_helper.c
+@@ -25,29 +25,6 @@
+ #include "crypto/aes-round.h"
+ #include "crypto/sm4.h"
+ 
+-#define AES_XTIME(a) \
+-    ((a << 1) ^ ((a & 0x80) ? 0x1b : 0))
+-
+-#define AES_GFMUL(a, b) (( \
+-    (((b) & 0x1) ? (a) : 0) ^ \
+-    (((b) & 0x2) ? AES_XTIME(a) : 0) ^ \
+-    (((b) & 0x4) ? AES_XTIME(AES_XTIME(a)) : 0) ^ \
+-    (((b) & 0x8) ? AES_XTIME(AES_XTIME(AES_XTIME(a))) : 0)) & 0xFF)
+-
+-static inline uint32_t aes_mixcolumn_byte(uint8_t x, bool fwd)
+-{
+-    uint32_t u;
+-
+-    if (fwd) {
+-        u = (AES_GFMUL(x, 3) << 24) | (x << 16) | (x << 8) |
+-            (AES_GFMUL(x, 2) << 0);
+-    } else {
+-        u = (AES_GFMUL(x, 0xb) << 24) | (AES_GFMUL(x, 0xd) << 16) |
+-            (AES_GFMUL(x, 0x9) << 8) | (AES_GFMUL(x, 0xe) << 0);
+-    }
+-    return u;
+-}
+-
+ #define sext32_xlen(x) (target_ulong)(int32_t)(x)
+ 
+ static inline target_ulong aes32_operation(target_ulong shamt,
+@@ -55,23 +32,20 @@ static inline target_ulong aes32_operation(target_ulong shamt,
+                                            bool enc, bool mix)
+ {
+     uint8_t si = rs2 >> shamt;
+-    uint8_t so;
+     uint32_t mixed;
+     target_ulong res;
+ 
+     if (enc) {
+-        so = AES_sbox[si];
+         if (mix) {
+-            mixed = aes_mixcolumn_byte(so, true);
++            mixed = be32_to_cpu(AES_Te0[si]);
+         } else {
+-            mixed = so;
++            mixed = AES_sbox[si];
+         }
+     } else {
+-        so = AES_isbox[si];
+         if (mix) {
+-            mixed = aes_mixcolumn_byte(so, false);
++            mixed = be32_to_cpu(AES_Td0[si]);
+         } else {
+-            mixed = so;
++            mixed = AES_isbox[si];
+         }
+     }
+     mixed = rol32(mixed, shamt);
 -- 
 2.41.0
 
