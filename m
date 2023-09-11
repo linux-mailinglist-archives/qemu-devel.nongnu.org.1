@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD46D79AA87
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 19:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0174E79AA81
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 19:14:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfkTs-0002oq-Io; Mon, 11 Sep 2023 13:13:48 -0400
+	id 1qfkTl-0002mp-G9; Mon, 11 Sep 2023 13:13:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTq-0002oO-Gi
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:46 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTk-0002mT-65
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:40 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTg-00009x-3C
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:46 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfkTi-0000AE-0G
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 13:13:39 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 7FD1C1F88C;
- Mon, 11 Sep 2023 17:13:33 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9D5A421875;
+ Mon, 11 Sep 2023 17:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1694452413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1694452415; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xmbFysED0AHDJV1mZ+g/WSZUPpQFtPzNFvXjvePLOVI=;
- b=Her8+oyml3bkwUFpfobg8hhakLQ4QYT+94X6qCER/GD3IzaamgoeSWX9/poBkLy1YvCASB
- bL9Y34M3R7SJWLiML86/V7ghHeCOeIpAx9GLnATr9Lk8AfB+3NFQ6bY8UjjP+teKN4LNMV
- zMX7drAF+T2B3jbTFFMaTRqhhtufAlU=
+ bh=M4F3Z9FAUn93sfwbK8FJ9e5DMMvpXA/8ArfN50R/0eg=;
+ b=xMfAarmjooA7RcdpfBeXAAEqZjbRIuUM2tuC+Wnekwx3KQRJVZzbH0S8wfWTgYZzd96HNy
+ OH5sOdFgNJwQuZxdttCRm7vhwmOW3RqfcUq+v5X+CuvPzj5ABvK95rP4sCApWMkafgS9KN
+ ne/7GeaFsTHdB7Um/bcxSvtX+yyjeQQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1694452413;
+ s=susede2_ed25519; t=1694452415;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xmbFysED0AHDJV1mZ+g/WSZUPpQFtPzNFvXjvePLOVI=;
- b=h+bPZ8WYWrSNC6/J7E3EcdqkG3g58Xlems7ATwPs/TevwBpSIUxlrs3YdbDfjGNeehZ6Pf
- YmsTeSGdKeZlhODQ==
+ bh=M4F3Z9FAUn93sfwbK8FJ9e5DMMvpXA/8ArfN50R/0eg=;
+ b=GME/daoo0Dz5+FuOi1SbdhjDM2OfLhzGML9G2vgMbEgDicYPFOYgT6pV8z5C8uK47GCfXd
+ K81c1zi/8ePb+CAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DF2F8139CC;
- Mon, 11 Sep 2023 17:13:31 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0E42D139CC;
+ Mon, 11 Sep 2023 17:13:33 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 6CweJ7tK/2QyIAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 11 Sep 2023 17:13:31 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id iPmKL71K/2QyIAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 11 Sep 2023 17:13:33 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH v6 04/10] migration: Remove redundant cleanup of
- postcopy_qemufile_src
-Date: Mon, 11 Sep 2023 14:13:14 -0300
-Message-Id: <20230911171320.24372-5-farosas@suse.de>
+Subject: [PATCH v6 05/10] migration: Consolidate return path closing code
+Date: Mon, 11 Sep 2023 14:13:15 -0300
+Message-Id: <20230911171320.24372-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20230911171320.24372-1-farosas@suse.de>
 References: <20230911171320.24372-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -86,32 +85,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This file is owned by the return path thread which is already doing
-cleanup.
+We'll start calling the await_return_path_close_on_source() function
+from other parts of the code, so move all of the related checks and
+tracepoints into it.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- migration/migration.c | 6 ------
- 1 file changed, 6 deletions(-)
+ migration/migration.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 5e6a766235..195726eb4a 100644
+index 195726eb4a..4edbee3a5d 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -1177,12 +1177,6 @@ static void migrate_fd_cleanup(MigrationState *s)
-         qemu_fclose(tmp);
+@@ -2049,6 +2049,14 @@ static int open_return_path_on_source(MigrationState *ms,
+ /* Returns 0 if the RP was ok, otherwise there was an error on the RP */
+ static int await_return_path_close_on_source(MigrationState *ms)
+ {
++    int ret;
++
++    if (!ms->rp_state.rp_thread_created) {
++        return 0;
++    }
++
++    trace_migration_return_path_end_before();
++
+     /*
+      * If this is a normal exit then the destination will send a SHUT
+      * and the rp_thread will exit, however if there's an error we
+@@ -2066,7 +2074,10 @@ static int await_return_path_close_on_source(MigrationState *ms)
+     qemu_thread_join(&ms->rp_state.rp_thread);
+     ms->rp_state.rp_thread_created = false;
+     trace_await_return_path_close_on_source_close();
+-    return ms->rp_state.error;
++
++    ret = ms->rp_state.error;
++    trace_migration_return_path_end_after(ret);
++    return ret;
+ }
+ 
+ static inline void
+@@ -2362,20 +2373,8 @@ static void migration_completion(MigrationState *s)
+         goto fail;
      }
  
--    if (s->postcopy_qemufile_src) {
--        migration_ioc_unregister_yank_from_file(s->postcopy_qemufile_src);
--        qemu_fclose(s->postcopy_qemufile_src);
--        s->postcopy_qemufile_src = NULL;
--    }
--
-     assert(!migration_is_active(s));
+-    /*
+-     * If rp was opened we must clean up the thread before
+-     * cleaning everything else up (since if there are no failures
+-     * it will wait for the destination to send it's status in
+-     * a SHUT command).
+-     */
+-    if (s->rp_state.rp_thread_created) {
+-        int rp_error;
+-        trace_migration_return_path_end_before();
+-        rp_error = await_return_path_close_on_source(s);
+-        trace_migration_return_path_end_after(rp_error);
+-        if (rp_error) {
+-            goto fail;
+-        }
++    if (await_return_path_close_on_source(s)) {
++        goto fail;
+     }
  
-     if (s->state == MIGRATION_STATUS_CANCELLING) {
+     if (qemu_file_get_error(s->to_dst_file)) {
 -- 
 2.35.3
 
