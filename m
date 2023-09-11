@@ -2,55 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48C479A7B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 13:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B01779A7B1
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 13:45:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qffMg-0008A9-W4; Mon, 11 Sep 2023 07:46:03 -0400
+	id 1qffME-0007sR-9P; Mon, 11 Sep 2023 07:45:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qffM3-0007pA-2O
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qffM0-0007p0-20
  for qemu-devel@nongnu.org; Mon, 11 Sep 2023 07:45:25 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qffLy-0002S6-Kj
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 07:45:21 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RklGh00Cxz6HJqj;
- Mon, 11 Sep 2023 19:43:39 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 11 Sep 2023 12:45:16 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, <linux-cxl@vger.kernel.org>
-CC: <linuxarm@huawei.com>
-Subject: [PATCH v3 4/4] hw/cxl: Support 4 HDM decoders at all levels of
- topology
-Date: Mon, 11 Sep 2023 12:43:13 +0100
-Message-ID: <20230911114313.6144-5-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230911114313.6144-1-Jonathan.Cameron@huawei.com>
-References: <20230911114313.6144-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qffLj-0002Ap-UB
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 07:45:19 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 3629420C78;
+ Mon, 11 Sep 2023 14:45:03 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 496BB273C9;
+ Mon, 11 Sep 2023 14:45:01 +0300 (MSK)
+Message-ID: <46e9440e-8c63-621d-dc93-6374984fd5e5@tls.msk.ru>
+Date: Mon, 11 Sep 2023 14:45:01 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] tpm: fix crash when FD >= 1024
+Content-Language: en-US
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20230911113614.1412887-1-marcandre.lureau@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230911113614.1412887-1-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,311 +55,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support these decoders in CXL host bridges (pxb-cxl), CXL Switch USP
-and CXL Type 3 end points.
+11.09.2023 14:36, marcandre.lureau@redhat.com:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Replace select() with poll() to fix a crash when QEMU has a large number
+> of FDs.
+> 
+> Fixes:
+> https://bugzilla.redhat.com/show_bug.cgi?id=2020133
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   backends/tpm/tpm_util.c | 12 +++---------
+>   1 file changed, 3 insertions(+), 9 deletions(-)
+> 
+> diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
+> index a6e6d3e72f..5f4c9f5b6f 100644
+> --- a/backends/tpm/tpm_util.c
+> +++ b/backends/tpm/tpm_util.c
+> @@ -112,12 +112,9 @@ static int tpm_util_request(int fd,
+>                               void *response,
+>                               size_t responselen)
+>   {
+> -    fd_set readfds;
+> +    GPollFD fds[1] = { {.fd = fd, .events = G_IO_IN } };
+>       int n;
+> -    struct timeval tv = {
+> -        .tv_sec = 1,
+> -        .tv_usec = 0,
+> -    };
+> +    int timeout = 1000;
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+You don't need a variable for this in poll().
+Besides, this is clear in the context of this patch, which
+says tv_sec=1. Without this context, it becomes suspicious
+and catches an eye: too long timeout?
 
----
-v3: Factor out the hdm_inc changes to previous patch.
-    Fix use of encoded hdm count as if it were decoded in cxl-host.
-    Minor refactoring to make that path and one in cxl_type3.c
-    look more similar.
----
- include/hw/cxl/cxl_component.h | 10 +++-
- hw/cxl/cxl-component-utils.c   |  7 ++-
- hw/cxl/cxl-host.c              | 67 ++++++++++++++++--------
- hw/mem/cxl_type3.c             | 96 +++++++++++++++++++++++-----------
- 4 files changed, 124 insertions(+), 56 deletions(-)
+>       n = write(fd, request, requestlen);
+>       if (n < 0) {
+> @@ -127,11 +124,8 @@ static int tpm_util_request(int fd,
+>           return -EFAULT;
+>       }
+>   
+> -    FD_ZERO(&readfds);
+> -    FD_SET(fd, &readfds);
+> -
+>       /* wait for a second */
+> -    n = select(fd + 1, &readfds, NULL, NULL, &tv);
+> +    n = RETRY_ON_EINTR(g_poll(fds, 1, timeout));
 
-diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
-index 7c864d2044..3c795a6278 100644
---- a/include/hw/cxl/cxl_component.h
-+++ b/include/hw/cxl/cxl_component.h
-@@ -135,6 +135,10 @@ REG32(CXL_RAS_ERR_HEADER0, CXL_RAS_REGISTERS_OFFSET + 0x18)
-   REG32(CXL_HDM_DECODER##n##_TARGET_LIST_LO,                                   \
-         CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x24)                          \
-   REG32(CXL_HDM_DECODER##n##_TARGET_LIST_HI,                                   \
-+        CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x28)                          \
-+  REG32(CXL_HDM_DECODER##n##_DPA_SKIP_LO,                                      \
-+        CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x24)                          \
-+  REG32(CXL_HDM_DECODER##n##_DPA_SKIP_HI,                                      \
-         CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x28)
- 
- REG32(CXL_HDM_DECODER_CAPABILITY, CXL_HDM_REGISTERS_OFFSET)
-@@ -147,9 +151,13 @@ REG32(CXL_HDM_DECODER_GLOBAL_CONTROL, CXL_HDM_REGISTERS_OFFSET + 4)
-     FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, POISON_ON_ERR_EN, 0, 1)
-     FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, HDM_DECODER_ENABLE, 1, 1)
- 
-+/* Support 4 decoders at all levels of topology */
-+#define CXL_HDM_DECODER_COUNT 4
-+
- HDM_DECODER_INIT(0);
--/* Only used for HDM decoder registers block address increment */
- HDM_DECODER_INIT(1);
-+HDM_DECODER_INIT(2);
-+HDM_DECODER_INIT(3);
- 
- /* 8.2.5.13 - CXL Extended Security Capability Structure (Root complex only) */
- #define EXTSEC_ENTRY_MAX        256
-diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index aa011a8f34..3ecdad4a5e 100644
---- a/hw/cxl/cxl-component-utils.c
-+++ b/hw/cxl/cxl-component-utils.c
-@@ -90,6 +90,9 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cstate, hwaddr offset,
- 
-     switch (offset) {
-     case A_CXL_HDM_DECODER0_CTRL:
-+    case A_CXL_HDM_DECODER1_CTRL:
-+    case A_CXL_HDM_DECODER2_CTRL:
-+    case A_CXL_HDM_DECODER3_CTRL:
-         should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-         should_uncommit = !should_commit;
-         break;
-@@ -129,7 +132,7 @@ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
-     }
- 
-     if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
--        offset <= A_CXL_HDM_DECODER0_TARGET_LIST_HI) {
-+        offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
-         dumb_hdm_handler(cxl_cstate, offset, value);
-     } else {
-         cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)] = value;
-@@ -209,7 +212,7 @@ static void ras_init_common(uint32_t *reg_state, uint32_t *write_msk)
- static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
-                             enum reg_type type)
- {
--    int decoder_count = 1;
-+    int decoder_count = CXL_HDM_DECODER_COUNT;
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-     int i;
- 
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index 73c5426476..2aa776c79c 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -97,35 +97,58 @@ void cxl_fmws_link_targets(CXLState *cxl_state, Error **errp)
-     }
- }
- 
--/* TODO: support, multiple hdm decoders */
- static bool cxl_hdm_find_target(uint32_t *cache_mem, hwaddr addr,
-                                 uint8_t *target)
- {
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
--    uint32_t ctrl;
--    uint32_t ig_enc;
--    uint32_t iw_enc;
--    uint32_t target_idx;
--    int i = 0;
--
--    ctrl = cache_mem[R_CXL_HDM_DECODER0_CTRL + i * hdm_inc];
--    if (!FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
--        return false;
--    }
--
--    ig_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IG);
--    iw_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IW);
--    target_idx = (addr / cxl_decode_ig(ig_enc)) % (1 << iw_enc);
-+    unsigned int hdm_count;
-+    bool found = false;
-+    int i;
-+    uint32_t cap;
-+
-+    cap = ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
-+    hdm_count = cxl_decoder_count_dec(FIELD_EX32(cap,
-+                                                 CXL_HDM_DECODER_CAPABILITY,
-+                                                 DECODER_COUNT));
-+    for (i = 0; i < hdm_count; i++) {
-+        uint32_t ctrl, ig_enc, iw_enc, target_idx;
-+        uint32_t low, high;
-+        uint64_t base, size;
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc);
-+        base = (low & 0xf0000000) | ((uint64_t)high << 32);
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc);
-+        size = (low & 0xf0000000) | ((uint64_t)high << 32);
-+        if (addr < base || addr >= base + size) {
-+            continue;
-+        }
- 
--    if (target_idx < 4) {
--        *target = extract32(cache_mem[R_CXL_HDM_DECODER0_TARGET_LIST_LO],
--                            target_idx * 8, 8);
--    } else {
--        *target = extract32(cache_mem[R_CXL_HDM_DECODER0_TARGET_LIST_HI],
--                            (target_idx - 4) * 8, 8);
-+        ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * hdm_inc);
-+        if (!FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
-+            return false;
-+        }
-+        found = true;
-+        ig_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IG);
-+        iw_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IW);
-+        target_idx = (addr / cxl_decode_ig(ig_enc)) % (1 << iw_enc);
-+
-+        if (target_idx < 4) {
-+            uint32_t val = ldl_le_p(cache_mem +
-+                                    R_CXL_HDM_DECODER0_TARGET_LIST_LO +
-+                                    i * hdm_inc);
-+            *target = extract32(val, target_idx * 8, 8);
-+        } else {
-+            uint32_t val = ldl_le_p(cache_mem +
-+                                    R_CXL_HDM_DECODER0_TARGET_LIST_HI +
-+                                    i * hdm_inc);
-+            *target = extract32(val, (target_idx - 4) * 8, 8);
-+        }
-+        break;
-     }
- 
--    return true;
-+    return found;
- }
- 
- static PCIDevice *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr)
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index cd92813436..1658e0cc59 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -382,8 +382,6 @@ static void hdm_decoder_commit(CXLType3Dev *ct3d, int which)
-     uint32_t *cache_mem = cregs->cache_mem_registers;
-     uint32_t ctrl;
- 
--    assert(which == 0);
--
-     ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_inc);
-     /* TODO: Sanity checks that the decoder is possible */
-     ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, ERR, 0);
-@@ -399,8 +397,6 @@ static void hdm_decoder_uncommit(CXLType3Dev *ct3d, int which)
-     uint32_t *cache_mem = cregs->cache_mem_registers;
-     uint32_t ctrl;
- 
--    assert(which == 0);
--
-     ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_inc);
- 
-     ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, ERR, 0);
-@@ -489,6 +485,21 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
-         should_uncommit = !should_commit;
-         which_hdm = 0;
-         break;
-+    case A_CXL_HDM_DECODER1_CTRL:
-+        should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-+        should_uncommit = !should_commit;
-+        which_hdm = 1;
-+        break;
-+    case A_CXL_HDM_DECODER2_CTRL:
-+        should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-+        should_uncommit = !should_commit;
-+        which_hdm = 2;
-+        break;
-+    case A_CXL_HDM_DECODER3_CTRL:
-+        should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-+        should_uncommit = !should_commit;
-+        which_hdm = 3;
-+        break;
-     case A_CXL_RAS_UNC_ERR_STATUS:
-     {
-         uint32_t capctrl = ldl_le_p(cache_mem + R_CXL_RAS_ERR_CAP_CTRL);
-@@ -760,40 +771,63 @@ static void ct3_exit(PCIDevice *pci_dev)
-     }
- }
- 
--/* TODO: Support multiple HDM decoders and DPA skip */
- static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
- {
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-     uint32_t *cache_mem = ct3d->cxl_cstate.crb.cache_mem_registers;
--    uint64_t decoder_base, decoder_size, hpa_offset;
--    uint32_t hdm0_ctrl;
--    int ig, iw;
--    int i = 0;
--
--    decoder_base =
--        (((uint64_t)cache_mem[R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc] << 32) |
--                    cache_mem[R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc]);
--    if ((uint64_t)host_addr < decoder_base) {
--        return false;
--    }
--
--    hpa_offset = (uint64_t)host_addr - decoder_base;
--
--    decoder_size =
--        ((uint64_t)cache_mem[R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc] << 32) |
--        cache_mem[R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc];
--    if (hpa_offset >= decoder_size) {
--        return false;
--    }
-+    unsigned int hdm_count;
-+    uint32_t cap;
-+    uint64_t dpa_base = 0;
-+    int i;
- 
--    hdm0_ctrl = cache_mem[R_CXL_HDM_DECODER0_CTRL + i * hdm_inc];
--    iw = FIELD_EX32(hdm0_ctrl, CXL_HDM_DECODER0_CTRL, IW);
--    ig = FIELD_EX32(hdm0_ctrl, CXL_HDM_DECODER0_CTRL, IG);
-+    cap = ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
-+    hdm_count = cxl_decoder_count_dec(FIELD_EX32(cap,
-+                                                 CXL_HDM_DECODER_CAPABILITY,
-+                                                 DECODER_COUNT));
-+
-+    for (i = 0; i < hdm_count; i++) {
-+        uint64_t decoder_base, decoder_size, hpa_offset, skip;
-+        uint32_t hdm_ctrl, low, high;
-+        int ig, iw;
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc);
-+        decoder_base = ((uint64_t)high << 32) | (low & 0xf0000000);
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc);
-+        decoder_size = ((uint64_t)high << 32) | (low & 0xf0000000);
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_LO +
-+                       i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_HI +
-+                        i * hdm_inc);
-+        skip = ((uint64_t)high << 32) | (low & 0xf0000000);
-+        dpa_base += skip;
-+
-+        hpa_offset = (uint64_t)host_addr - decoder_base;
-+
-+        hdm_ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * hdm_inc);
-+        iw = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IW);
-+        ig = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IG);
-+        if (!FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
-+            return false;
-+        }
-+        if (((uint64_t)host_addr < decoder_base) ||
-+            (hpa_offset >= decoder_size)) {
-+            dpa_base += decoder_size /
-+                cxl_interleave_ways_dec(iw, &error_fatal);
-+            continue;
-+        }
- 
--    *dpa = (MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
--        ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offset) >> iw);
-+        *dpa = dpa_base +
-+            ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
-+             ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offset)
-+              >> iw));
- 
--    return true;
-+        return true;
-+    }
-+    return false;
- }
- 
- static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
--- 
-2.39.2
+It's much better IMHO to use "1000" directly here, esp. since the
+comment says about a second.
 
+>       if (n != 1) {
+>           return -errno;
+>       }
+
+
+Other than that,
+
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+
+/mjt
 
