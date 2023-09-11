@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584EC79AB6B
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A24679AB75
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:14:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfo1I-0003kq-Mb; Mon, 11 Sep 2023 17:00:32 -0400
+	id 1qfoDn-0003cp-RY; Mon, 11 Sep 2023 17:13:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qfo1G-0003kh-Un
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:00:30 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDl-0003cg-Io
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:25 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qfo1E-0002oN-4u
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:00:30 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31fa15f4cc6so1660270f8f.2
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:00:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfoDj-0005BT-C3
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:13:25 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-9a9d82d73f9so607114366b.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:13:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694466026; x=1695070826; darn=nongnu.org;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=6GwgJ2e0Vf2vIxa01zg4Vv2LTG8Mnh6xiKMxYzoVSYI=;
- b=hstWOr7jlEElZ7X4ivnN5GdJNDV6MJ6SvgC2tz/1jaF8ALGa6MYhEgRg/Sp8Kl3qxu
- Zz7/E66wMPa/qQuaEGG/m6Nd6lMGS0N2GqG2ugbri39jS8iVgaAr1T3I8Y8A3Hk4KnQa
- m1JwESx0GA8CkP5TCMtfE2q8AGO21voov1tDH+puTUFDab+/7Chyl+QfhDaNp/iIeiWq
- I7HhMmcNsvU7oihsjOtlk8dltC16IS6qrcSa09rTmW8Qni1/UtTvDDMamFwlt25w9hQ+
- Bg+leppP30EG0STwSzUTcFi26SrmZVMygQO1xjYWeYbK/jHjR0v1SvtKrFGv1hQ255r2
- wL+A==
+ d=linaro.org; s=google; t=1694466801; x=1695071601; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=+i6b3bA3Rg0SUcnPH4Ss1gYaJoTqAir2E8b0QJQ/x7A=;
+ b=SHOuZudYYGECnPb8iG/xQaliLcbHfEBDSVOVkfMEvt7GuoPyDi2Jra9KwNJZpDEYLt
+ ZvGkuiSmBfDx+1ubFYHJ9svpMH362CXrJTvYF6KC2f82JC1sC/BYHGbuEWsOXRx5lk+d
+ 3CKYop/IappV5eg9dT/EwIrv/VDcDtSSgYhs5jngymFOxdMCwMJ1vUWfMntpNxiQnTOF
+ Www935TRpgOM88O+amMciPY9o+GAFqBCfHC5534RuqcfUspk7ZN8rEbevyUN+cdY6VOx
+ 2jPCpT4/27IVGYlIuBnhYyjKBZz3YqpJMHJwI5ycAoHxuKLmF8UkKcKSzZJY01vq6O18
+ Bvzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694466026; x=1695070826;
- h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6GwgJ2e0Vf2vIxa01zg4Vv2LTG8Mnh6xiKMxYzoVSYI=;
- b=Zi4i7Oo+dJrrO+aUz0Eyk5D7TeEysD3GtIMhR26q/xFF21PdZ10TD4EQc5+/pomzoo
- 4xl2MoQQBaGhYU4pxK4SfnBesHkEaKv9zrVfVxsLe3dk1aBil6xTGpB6ijxlgoqrnPD6
- b8F9Kh3tKa4Lv5MU/WfVTTu2GK8bxo9HpEZpa03yHd2xZO8Q7/A63d5NXH8AxDmfpJ45
- URQQCq7hnAC05ecPILmG91ziTFYyJpBTQQOdUL4+ZNd/8Ql8fJ4BjlBVHT2VV5kYqAbs
- b2t/bXdYXdYBp6dwNGc9k3/70na9EtvUiOYK9bZkQuGbucl455r7Q/bkGbAem2eONuP7
- 1UbQ==
-X-Gm-Message-State: AOJu0YypC8BfwHJzkUHpN8FBVdB68kFuAxi65Ukwy035rL3htPqKt5GT
- NDbIIijj6nDWw0Q9iKeUzcM=
-X-Google-Smtp-Source: AGHT+IHASY91lRjeo0ere/sOvbnQXQvAlS4Yoycdn0fOpbNgBHC28PmVaPmgYPZzFwa6YvpfXHetWw==
-X-Received: by 2002:adf:e68a:0:b0:317:5ed6:887 with SMTP id
- r10-20020adfe68a000000b003175ed60887mr8416890wrm.66.1694466025728; 
- Mon, 11 Sep 2023 14:00:25 -0700 (PDT)
-Received: from karim ([197.39.181.42]) by smtp.gmail.com with ESMTPSA id
- j6-20020adfb306000000b003142c85fbcdsm6446191wrd.11.2023.09.11.14.00.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Sep 2023 14:00:25 -0700 (PDT)
-From: Karim Taha <kariem.taha2.7@gmail.com>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>
-Subject: Re: [PATCH 04/32] bsd-user: Add freebsd_exec_common and
- do_freebsd_procctl to qemu.h.
-In-Reply-To: <035844e7-ab74-f425-925f-1482edf001bf@linaro.org>
-References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
- <20230827155746.84781-5-kariem.taha2.7@gmail.com>
- <035844e7-ab74-f425-925f-1482edf001bf@linaro.org>
-Date: Mon, 11 Sep 2023 23:58:50 +0300
-Message-ID: <87bke8zat1.fsf@gmail.com>
+ d=1e100.net; s=20230601; t=1694466801; x=1695071601;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+i6b3bA3Rg0SUcnPH4Ss1gYaJoTqAir2E8b0QJQ/x7A=;
+ b=WnyCjjzYmg7PW005JLpbZH+FBTNrCOk3XIk7XCDaWRnn9oGqieiE+5PZ8wzQ6X9B70
+ U0OwnA+YABdx/OWGN16OTOK/tfPIiCcXA5KaYykQBcnbZFqaMnGh7zC7Fc+ILxZnEsxe
+ ufq6kduPp0ElsQ1FWX8BcjB5uFTZvgvOxeOBJa12+lhDRcr6wVk+noZlKcJcFXVFi6av
+ /tbwJr6d1CLV36YjZBEyM/MAmbSoolblshJHlvgHJdaIGnTWr5ipBOilWubvidh1S0ps
+ FxmRSLiCZ3rIUk10BAnjZ+qB0fpZJGC+iM4agenZ7IM4GvelH8KWSBHHoQcWyoTFnhGq
+ 0Pjw==
+X-Gm-Message-State: AOJu0YwjEZgg1YX0ay4pJK8iRWD2KXipQ0FYuqT43AerYP3DVrII5KtY
+ wbJnI5k6WlLH9ANrSy07t874iKJ6Z7moTqEk0Z4=
+X-Google-Smtp-Source: AGHT+IElUDIPmZ/cuW0+paD+bclrhVYiKji+qUy1+WUV9TZqVwtCVc8ugnSPJ1h1PnaIoN52qjgbcg==
+X-Received: by 2002:a17:907:7804:b0:9a1:aa7b:482e with SMTP id
+ la4-20020a170907780400b009a1aa7b482emr8911335ejc.26.1694466801049; 
+ Mon, 11 Sep 2023 14:13:21 -0700 (PDT)
+Received: from m1x-phil.lan (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
+ [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
+ n16-20020a170906379000b009930308425csm5884542ejc.31.2023.09.11.14.13.19
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 11 Sep 2023 14:13:20 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v4 0/3] target/i386: Restrict system-specific features from
+ user emulation
+Date: Mon, 11 Sep 2023 23:13:14 +0200
+Message-ID: <20230911211317.28773-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,70 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> wrote:
+Too many system-specific code (and in particular KVM related)
+is pulled in user-only build. This led to adding unjustified
+stubs as kludge to unagressive linker non-optimizations.
 
-> On 8/27/23 08:57, Karim Taha wrote:
->> From: Stacey Son <sson@FreeBSD.org>
->> 
->> Signed-off-by: Stacey Son <sson@FreeBSD.org>
->> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
->> ---
->>   bsd-user/main.c | 2 +-
->>   bsd-user/qemu.h | 7 +++++++
->>   2 files changed, 8 insertions(+), 1 deletion(-)
->> 
->> diff --git a/bsd-user/main.c b/bsd-user/main.c
->> index 381bb18df8..b94b2d34b6 100644
->> --- a/bsd-user/main.c
->> +++ b/bsd-user/main.c
->> @@ -88,7 +88,7 @@ unsigned long reserved_va = MAX_RESERVED_VA;
->>   unsigned long reserved_va;
->>   #endif
->>   
->> -static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
->> +const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
->>   const char *qemu_uname_release;
->>   char qemu_proc_pathname[PATH_MAX];  /* full path to exeutable */
->>   
->
-> Adding interp_prefix is unrelated.
->
-> Without that,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
->
->
-> r~
->
-I grepped for `interp_prefix`, it's later used in the
-`freebsd_exec_common` function definition, so do you mean I should add
-it with the relevant commit that defines the function?
+This series restrict x86 system-specific features to sysemu,
+so we don't require any stub, and remove all x86 KVM declarations
+from user emulation code (to trigger compile failure instead of
+link one).
 
---
-Karim Taha
+Philippe Mathieu-Daudé (3):
+  target/i386: Check kvm_hyperv_expand_features() return value
+  RFC target/i386: Restrict system-specific features from user emulation
+  target/i386: Prohibit target specific KVM prototypes on user emulation
 
->> diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
->> index 6724bb9f0a..23bbdd3e0c 100644
->> --- a/bsd-user/qemu.h
->> +++ b/bsd-user/qemu.h
->> @@ -113,6 +113,7 @@ typedef struct TaskState {
->>   } __attribute__((aligned(16))) TaskState;
->>   
->>   void stop_all_tasks(void);
->> +extern const char *interp_prefix;
->>   extern const char *qemu_uname_release;
->>   
->>   /*
->> @@ -251,6 +252,12 @@ abi_long get_errno(abi_long ret);
->>   bool is_error(abi_long ret);
->>   int host_to_target_errno(int err);
->>   
->> +/* os-proc.c */
->> +abi_long freebsd_exec_common(abi_ulong path_or_fd, abi_ulong guest_argp,
->> +        abi_ulong guest_envp, int do_fexec);
->> +abi_long do_freebsd_procctl(void *cpu_env, int idtype, abi_ulong arg2,
->> +        abi_ulong arg3, abi_ulong arg4, abi_ulong arg5, abi_ulong arg6);
->> +
->>   /* os-sys.c */
->>   abi_long do_freebsd_sysctl(CPUArchState *env, abi_ulong namep, int32_t namelen,
->>           abi_ulong oldp, abi_ulong oldlenp, abi_ulong newp, abi_ulong newlen);
+ target/i386/kvm/kvm_i386.h |  4 +++
+ target/i386/cpu.c          | 58 +++++++++++++++++++++++++++++++++-----
+ 2 files changed, 55 insertions(+), 7 deletions(-)
+
+-- 
+2.41.0
+
 
