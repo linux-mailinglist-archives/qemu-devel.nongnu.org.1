@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5C379A16E
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 04:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C99579A174
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 04:39:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfWlp-0006BT-MR; Sun, 10 Sep 2023 22:35:25 -0400
+	id 1qfWok-0000nr-IT; Sun, 10 Sep 2023 22:38:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfWln-00068x-R1; Sun, 10 Sep 2023 22:35:23 -0400
-Received: from mail-vk1-xa2c.google.com ([2607:f8b0:4864:20::a2c])
+ id 1qfWoh-0000ne-35
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 22:38:23 -0400
+Received: from mail-vs1-xe2d.google.com ([2607:f8b0:4864:20::e2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfWll-0004C7-Ey; Sun, 10 Sep 2023 22:35:23 -0400
-Received: by mail-vk1-xa2c.google.com with SMTP id
- 71dfb90a1353d-49059b1ca83so1291787e0c.2; 
- Sun, 10 Sep 2023 19:35:20 -0700 (PDT)
+ id 1qfWoe-0004ZF-KZ
+ for qemu-devel@nongnu.org; Sun, 10 Sep 2023 22:38:22 -0400
+Received: by mail-vs1-xe2d.google.com with SMTP id
+ ada2fe7eead31-44ee7688829so1022044137.2
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 19:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694399720; x=1695004520; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694399899; x=1695004699; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zrtHV1AlGtL/pSceG5ncefEMU1KPGtIzX0EgrEmjWw8=;
- b=D1mK8CJ7h7vlF8lR3zbHsf+eE/jupD8AVYhE55WZ9U2wop9qIF56Ts2AUyqdFgY4VK
- mF0Mzsh/99f95k2f0osPH8xvSsF8jgIHwxJQnLDWKDmENGBCzQBWRsVn9kheUxbKxcRH
- MjrGBxIKSy7nwNGe7zVLAX97Cz/KMUJWiMV6Ii8HzRuKY2TzNUt2SM3bK5AYNSmLKeZk
- 34M2eP/+1/WEmsJGhw7/f9N1sd45p8ZS7LyTEc9W1z44yY11+g23QgzJ8/KP5D1D104q
- yVfxM5/UnTYtvoz9X8R4A1HAyZ4iAFZTraBLGzB9mGB3mgpx1pagXCeboAB12EZI4clr
- +3IA==
+ bh=pLHtj5vxq1csxzgxaV8qxqWoBPIAtIPg2FAwyhuQnmw=;
+ b=QSfSNpNMN9URcnguDhFgW7VxqrhEAaxS0zTnM/iQR9Rz11Fmyak8yfnA+rYoSg4tRf
+ TJOZWS5df7NcKqjjCVXv8ZMCP2rNL7gSStNCLir0nDkQ2vSFQTbDG7RWVz+cKBDoDAU8
+ Ohqr76VSXkRSe7A8PZWNz6l61oXGIdov0NM/L357xaNORDv735Z1bzhJBO7cSrggZ31n
+ oeiFYk4+tg6VisXIuNfnNA+cKiIEKo82pMzCJsOqs74b1YItFHkDa5pTdq3bGU1RNCP0
+ 4W9b98m/8KsUSgFV+HIz+wJuxDZ3vKXztZxUu7yudQ8CzSXTDrS8lzOKLKyZzP32LZF0
+ Kekg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694399720; x=1695004520;
+ d=1e100.net; s=20230601; t=1694399899; x=1695004699;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zrtHV1AlGtL/pSceG5ncefEMU1KPGtIzX0EgrEmjWw8=;
- b=q8CoTmpfJL8pVss8bxHvs/cFC4Eh/Q/yS63cojiHAh7evMWwUQZIN8XDxT38I5ArKt
- u4ZWM/gPSjGc5mH71XzYpStuXjEG9AYHO/nYjd+WC2CozalJfK6lJrMoc/o9z/S46Y9t
- 25/N/9kWFDnJ3SqRB//gGT+q/LAe4hly5dR1xNSMhl+emMdmYf7QWE/xwg0DGwuS1s1k
- ZnhItc9jbPqdVhZX2U8KTqFmhTzc6SXKzMFeTo6U0KCw4Zi85/n+1Qpx9Ghivh/pDLEO
- X8ErHfSllB2PipXeiPIXMZCX3kBt5cIvdQlkkRJMsZVzs+zWnB0Ha3sicW1voTSxA6xS
- klqg==
-X-Gm-Message-State: AOJu0Yz7+yaOkpaMQaVkCIS2JF2IdhdikE0bN8ONrXsed4ZrFVT1zeDa
- hzbVY2rhoq9F71FRje9DhHmCVFOa8FHq1cvcS58=
-X-Google-Smtp-Source: AGHT+IGqaMKblIau5v/BxA659Sdv13F7gvQUzr1Pq8iZBwxPQrj/0Ot5FadVP1jkwH8v6nPoPhz+FZYdHnP8/GWUeYo=
-X-Received: by 2002:a1f:4a41:0:b0:48f:8f80:8bf4 with SMTP id
- x62-20020a1f4a41000000b0048f8f808bf4mr5262141vka.16.1694399720086; Sun, 10
- Sep 2023 19:35:20 -0700 (PDT)
+ bh=pLHtj5vxq1csxzgxaV8qxqWoBPIAtIPg2FAwyhuQnmw=;
+ b=gR6EdXecp63F1ttfx/mf4Ov3cCCK9ZzRH9txTzSQwY6jWLx4PdwNHRPhChwyUFzlgC
+ chPLfCcxAtm2APojNpTTYjgw5724rgWSYhufPj2htyh5/RCodICpp4hl+3I93yTl9fs+
+ mh+e+8lBXL64JEFKCt+MKcY3waNb9uvV8zS0JqXXW7eQHETwxiF4Pmkjnd9uWVsqRq5J
+ a4ygXaia5f8QU5CKNVQe4QS+XnYYKO6Edau6fAZJau+AOTyMHyJplihKITHf9rVgIzoS
+ IOpobNSIV6PD0R3N2OPClmWE2cAaz1ACZh5XQoSKPyPOgaWZa7CZPeqq5PFOeou85XmL
+ eUqA==
+X-Gm-Message-State: AOJu0YzLKXABK5GZPJzZAzec7VMomFDJ8JiT6aFoN5Rkqo4TljFCnYNK
+ teG+bFTo8KNQSF5BxGxHQqylI9Vyt7uf/E+DccFNP/npoKPVrg==
+X-Google-Smtp-Source: AGHT+IElce4V1tzBrM5kp29WcWfpSfvHMsg3/IqTZx1IzoTxP6VvgIumnU/I3k1hCUKAZXKAY5vhx9Ia8OeTF0RkTpI=
+X-Received: by 2002:a67:ff87:0:b0:44e:9a71:27a1 with SMTP id
+ v7-20020a67ff87000000b0044e9a7127a1mr4410727vsq.17.1694399899384; Sun, 10 Sep
+ 2023 19:38:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
-In-Reply-To: <20230901194627.1214811-1-dbarboza@ventanamicro.com>
+References: <20230908060431.1903919-1-alistair.francis@wdc.com>
+ <f47bf3d0-8856-1c15-9534-8f4be297d7c2@tls.msk.ru>
+In-Reply-To: <f47bf3d0-8856-1c15-9534-8f4be297d7c2@tls.msk.ru>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 11 Sep 2023 12:34:53 +1000
-Message-ID: <CAKmqyKO3FX7tooTMeOh7ENVh+ca3eAYwqC-QV9h+r7615scXSQ@mail.gmail.com>
-Subject: Re: [PATCH v9 00/20] riscv: 'max' CPU, detect user choice in TCG
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, ajones@ventanamicro.com
+Date: Mon, 11 Sep 2023 12:37:52 +1000
+Message-ID: <CAKmqyKM2shwk=rK4dWr4j=yeNxwuQ8mwDtqzRAgrCVB6iiohVA@mail.gmail.com>
+Subject: Re: [PULL 00/65] riscv-to-apply queue
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a2c;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa2c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2d;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -87,93 +89,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Sep 2, 2023 at 5:48=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
+On Fri, Sep 8, 2023 at 4:38=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wro=
+te:
 >
-> Hi,
+> 08.09.2023 09:03, Alistair Francis wrote:
 >
-> This new version contains suggestions made by Andrew Jones in v8.
+> > Akihiko Odaki (1):
+> >        target/riscv: Allocate itrigger timers only once
+> >
+> > Ard Biesheuvel (2):
+> >        target/riscv: Use existing lookup tables for MixColumns
+> >        target/riscv: Use accelerated helper for AES64KS1I
+> >
+> > Conor Dooley (1):
+> >        hw/riscv: virt: Fix riscv,pmu DT node path
+> >
+> > Daniel Henrique Barboza (26):
+> >        target/riscv/cpu.c: do not run 'host' CPU with TCG
+> >        target/riscv/cpu.c: add zmmul isa string
+> >        target/riscv/cpu.c: add smepmp isa string
+> >        target/riscv: fix satp_mode_finalize() when satp_mode.supported =
+=3D 0
+> >        hw/riscv/virt.c: fix non-KVM --enable-debug build
+> >        hw/intc/riscv_aplic.c fix non-KVM --enable-debug build
+> >        target/riscv/cpu.c: split CPU options from riscv_cpu_extensions[=
+]
+> >        target/riscv/cpu.c: skip 'bool' check when filtering KVM props
+> >        target/riscv/cpu.c: split kvm prop handling to its own helper
+> >        target/riscv: add DEFINE_PROP_END_OF_LIST() to riscv_cpu_options=
+[]
+> >        target/riscv/cpu.c: split non-ratified exts from riscv_cpu_exten=
+sions[]
+> >        target/riscv/cpu.c: split vendor exts from riscv_cpu_extensions[=
+]
+> >        target/riscv/cpu.c: add riscv_cpu_add_qdev_prop_array()
+> >        target/riscv/cpu.c: add riscv_cpu_add_kvm_unavail_prop_array()
+> >        target/riscv/cpu.c: limit cfg->vext_spec log message
+> >        target/riscv: add 'max' CPU type
+> >        avocado, risc-v: add tuxboot tests for 'max' CPU
+> >        target/riscv: deprecate the 'any' CPU type
+> >        target/riscv/cpu.c: use offset in isa_ext_is_enabled/update_enab=
+led
+> >        target/riscv: make CPUCFG() macro public
+> >        target/riscv/cpu.c: introduce cpu_cfg_ext_auto_update()
+> >        target/riscv/cpu.c: use cpu_cfg_ext_auto_update() during realize=
+()
+> >        target/riscv/cpu.c: introduce RISCVCPUMultiExtConfig
+> >        target/riscv: use isa_ext_update_enabled() in init_max_cpu_exten=
+sions()
+> >        target/riscv/cpu.c: honor user choice in cpu_cfg_ext_auto_update=
+()
+> >        target/riscv/cpu.c: consider user option with RVG
+> >
+> > Dickon Hood (2):
+> >        target/riscv: Refactor translation of vector-widening instructio=
+n
+> >        target/riscv: Add Zvbb ISA extension support
+> >
+> > Jason Chien (3):
+> >        target/riscv: Add Zihintntl extension ISA string to DTS
+> >        hw/intc: Fix upper/lower mtime write calculation
+> >        hw/intc: Make rtc variable names consistent
+> >
+> > Kiran Ostrolenk (4):
+> >        target/riscv: Refactor some of the generic vector functionality
+> >        target/riscv: Refactor vector-vector translation macro
+> >        target/riscv: Refactor some of the generic vector functionality
+> >        target/riscv: Add Zvknh ISA extension support
+> >
+> > LIU Zhiwei (3):
+> >        target/riscv: Fix page_check_range use in fault-only-first
+> >        target/riscv: Fix zfa fleq.d and fltq.d
+> >        linux-user/riscv: Use abi type for target_ucontext
+> >
+> > Lawrence Hunter (2):
+> >        target/riscv: Add Zvbc ISA extension support
+> >        target/riscv: Add Zvksh ISA extension support
+> >
+> > Leon Schuermann (1):
+> >        target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX changes
+> >
+> > Max Chou (3):
+> >        crypto: Create sm4_subword
+> >        crypto: Add SM4 constant parameter CK
+> >        target/riscv: Add Zvksed ISA extension support
+> >
+> > Nazar Kazakov (4):
+> >        target/riscv: Remove redundant "cpu_vl =3D=3D 0" checks
+> >        target/riscv: Move vector translation checks
+> >        target/riscv: Add Zvkned ISA extension support
+> >        target/riscv: Add Zvkg ISA extension support
+> >
+> > Nikita Shubin (1):
+> >        target/riscv: don't read CSR in riscv_csrrw_do64
+> >
+> > Rob Bradford (1):
+> >        target/riscv: Implement WARL behaviour for mcountinhibit/mcounte=
+ren
+> >
+> > Robbin Ehn (1):
+> >        linux-user/riscv: Add new extensions to hwprobe
+> >
+> > Thomas Huth (2):
+> >        hw/char/riscv_htif: Fix printing of console characters on big en=
+dian hosts
+> >        hw/char/riscv_htif: Fix the console syscall on big endian hosts
+> >
+> > Tommy Wu (1):
+> >        target/riscv: Align the AIA model to v1.0 ratified spec
+> >
+> > Vineet Gupta (1):
+> >        riscv: zicond: make non-experimental
+> >
+> > Weiwei Li (1):
+> >        target/riscv: Update CSR bits name for svadu extension
+> >
+> > Yong-Xuan Wang (5):
+> >        target/riscv: support the AIA device emulation with KVM enabled
+> >        target/riscv: check the in-kernel irqchip support
+> >        target/riscv: Create an KVM AIA irqchip
+> >        target/riscv: update APLIC and IMSIC to support KVM AIA
+> >        target/riscv: select KVM AIA in riscv virt machine
 >
-> Most notable change is the removal of the opensbi.py test in patch 11,
-> which was replaced by a TuxBoot test. It's more suitable to test the
-> integrity of all the extensions enabled by the 'max' CPU.
+>  From the above, it looks like the following are candidates for -stable:
 >
-> The series is available in this branch:
+>   02/65 hw/char/riscv_htif: Fix printing of console characters on big end=
+ian hosts
+>   06/65 target/riscv: Fix page_check_range use in fault-only-first
+>   25/65 target/riscv: Fix zfa fleq.d and fltq.d
+>   26/65 hw/intc: Fix upper/lower mtime write calculation
+>   27/65 hw/intc: Make rtc variable names consistent
+>     (not really necessary but completes the previous change)
+>   28/65 linux-user/riscv: Use abi type for target_ucontext
+>   34/65 hw/riscv: virt: Fix riscv,pmu DT node path
+>   36/65 target/riscv: fix satp_mode_finalize() when satp_mode.supported =
+=3D 0
 >
-> https://gitlab.com/danielhb/qemu/-/tree/max_cpu_user_choice_v9
+> Also maybe:
 >
-> Patches missing acks: 11, 15
+>   38/65 hw/riscv/virt.c: fix non-KVM --enable-debug build
+>   39/65 hw/intc/riscv_aplic.c fix non-KVM --enable-debug build
 >
-> Changes from v8:
-> - patch 7:
->   - add g_assert(array) at the start of riscv_cpu_add_qdev_prop_array()
-> - patch 8:
->   - add g_assert(array) at the start of riscv_cpu_add_kvm_unavail_prop_ar=
-ray()
-> - patch 11:
->   - removed both opensbi.py tests
->   - added 2 'max' cpu tuxboot tests in tuxrun_baselines.py
-> - patch 12:
->   - fixed typos in deprecated.rst
-> - patch 15:
->   - use g_assert_not_reached() at the end of cpu_cfg_ext_get_min_version(=
-)
-> - patch 19:
->   - added comment on top of riscv_cpu_add_misa_properties() explaining wh=
-y
->     we're not implementing user choice support for MISA properties
-> - patch 20:
->   - warn_report() is now called after the G error conditions
-> - v8 link: https://lore.kernel.org/qemu-riscv/20230824221440.484675-1-dba=
-rboza@ventanamicro.com/
->
->
->
-> Daniel Henrique Barboza (20):
->   target/riscv/cpu.c: split CPU options from riscv_cpu_extensions[]
->   target/riscv/cpu.c: skip 'bool' check when filtering KVM props
->   target/riscv/cpu.c: split kvm prop handling to its own helper
->   target/riscv: add DEFINE_PROP_END_OF_LIST() to riscv_cpu_options[]
->   target/riscv/cpu.c: split non-ratified exts from
->     riscv_cpu_extensions[]
->   target/riscv/cpu.c: split vendor exts from riscv_cpu_extensions[]
->   target/riscv/cpu.c: add riscv_cpu_add_qdev_prop_array()
->   target/riscv/cpu.c: add riscv_cpu_add_kvm_unavail_prop_array()
->   target/riscv/cpu.c: limit cfg->vext_spec log message
->   target/riscv: add 'max' CPU type
->   avocado, risc-v: add tuxboot tests for 'max' CPU
->   target/riscv: deprecate the 'any' CPU type
->   target/riscv/cpu.c: use offset in isa_ext_is_enabled/update_enabled
->   target/riscv: make CPUCFG() macro public
->   target/riscv/cpu.c: introduce cpu_cfg_ext_auto_update()
->   target/riscv/cpu.c: use cpu_cfg_ext_auto_update() during realize()
->   target/riscv/cpu.c: introduce RISCVCPUMultiExtConfig
->   target/riscv: use isa_ext_update_enabled() in
->     init_max_cpu_extensions()
->   target/riscv/cpu.c: honor user choice in cpu_cfg_ext_auto_update()
->   target/riscv/cpu.c: consider user option with RVG
+> Please let me know if either something from the above list should not
+> be pickled up for stable, or something else should be added there.
 
-This series has some build issues. I was hoping a few simple #ifdef
-changes would fix it, but it's a little more complex than that
-unfortunately.
+I think those are all good candidates for including. I would also add:
 
-I'm going to drop this series, do you mind sending a new version which
-fixes this and any other build failures:
-https://gitlab.com/qemu-project/qemu/-/jobs/5045998521
+  target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX changes
 
 Alistair
 
 >
->  docs/about/deprecated.rst         |  12 +
->  target/riscv/cpu-qom.h            |   1 +
->  target/riscv/cpu.c                | 564 +++++++++++++++++++++---------
->  target/riscv/cpu.h                |   2 +
->  target/riscv/kvm.c                |   8 +-
->  tests/avocado/tuxrun_baselines.py |  32 ++
->  6 files changed, 450 insertions(+), 169 deletions(-)
+> Thank you!
 >
-> --
-> 2.41.0
->
->
+> /mjt
 
