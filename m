@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D59279A3D4
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9B779A3AD
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:45:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfaeE-0000An-7O; Mon, 11 Sep 2023 02:43:50 -0400
+	id 1qfaeF-0000BG-Pz; Mon, 11 Sep 2023 02:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfaeC-0000AY-4A
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:48 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1qfaeD-0000Ao-V7
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:49 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfae9-0004Qs-Hn
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:47 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3a76d882080so3181681b6e.2
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:43:43 -0700 (PDT)
+ id 1qfaeB-0004R5-62
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:43:49 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-1d5c54160a8so230524fac.0
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:43:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414621; x=1695019421; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414625; x=1695019425; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2hidEe0WK9qfQspdXyERizbv/cOtqOtrvyLGVTGCseA=;
- b=sY7tD6veAv+U4XCKMIoc1O9ZHWNkm0yScI1mAGlGuOS8O3jI+qH+sZlfNtzQ+Nysaz
- NfHBOy7YSnsuC1vwDjAvl1FfDs2RQcuOXP80R96N7mYl8Sp1mIHNUBTo9RWSQPXbrEHe
- ESYsWt6MtAQ4YGc+NuW2595X48PLxYZDui2ewXBw6cceKfTCYEjbqUBFmrx9hvQIPyTq
- kNuK3INhEcb3l5i43hdyDza00VYTD2tskdDpiZhmlw15pCfEiYSEKIIlxqxu9Wpn2Cy4
- dee27EQmKPRanEHMMW3fQnaV1Jg1p1dEevKWV+ykk5PkZ0kCqWPD1R/I62J28Fl0ElKb
- Xjvg==
+ bh=vym8XbbEH4MOTDPO5rs9mKsM5VAOMq/9GygQwXQnKYA=;
+ b=KC9/kyy9swxVPXMz4b5W4kcSDU4LVxIbnMnr+/kcyl0meUO4R5xk+RmDgBZZX6AzaP
+ 1YxqtYiaFEP0TmND74H9TwqNczvWw4nlokjrFkEEtIqRL2aafLBv9I47EeKLMrBAHjfe
+ d+2CeAZP6ORWp2vYcDzZ5UiWpYPW+dLlGoaCvpW1hd1uf09HZMCvztZCHyrtA+z/Ks9T
+ RT4bwMbtd0zCZxfqD8TvwZur+Ahh3Vy7XsBk/deMr9UWO2ruX5UiWneTSShSYexXifhX
+ prnYLg7JQHsUTphcEegaa3q9/r/gb39bEDFsMxknAmB+WBRVhBkg5Fjd9z15KopJPOom
+ nhMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414621; x=1695019421;
+ d=1e100.net; s=20230601; t=1694414625; x=1695019425;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2hidEe0WK9qfQspdXyERizbv/cOtqOtrvyLGVTGCseA=;
- b=rk5fNS3zGfh5/2GhnmamVg1/F390ExT+FhcX7RVqIJ7XYgOnAlgZfq3ucQif6o0s26
- yuJw9HoIO4yUG5WmdpyYnuTfEj45+TQv8GbZtBvRzTbR6kEyfimfh/pdlmCZVoc8BAz7
- 81tzjiSz7RfqGzIzkBKgFM+njZzVJwaAksq6pm1P8/6j/XwlUhnNRORuQVqKd0An7EoU
- ACY9ooXsKhRuRyDzWysDg+/UblX/PVmCn5Cf5kVSEQLH18rz9j3HC5XEoL6Fdi2JOSuZ
- snTApFNEDsQ4fUF8UvUowacawNNBLLtLDwkit2+O7736MlQY/ldJItFG/ott34KlLcLi
- AULg==
-X-Gm-Message-State: AOJu0YzSmZjm6+mSE2AzN8WMIzkNOwUYCpi8AnATWRO/mERQzMbeeO/t
- 759lWXElNRmfWuqxaT7yw7ECUQDw3qXNnw==
-X-Google-Smtp-Source: AGHT+IEqXBODj7T2Ze0wKrDTKCVIaT0E1RvEYMvQcwTHdGz1CyhAmd3AZHQOUjG3v6TAHFvUvubWnA==
-X-Received: by 2002:a05:6870:818f:b0:1b0:db2:189e with SMTP id
- k15-20020a056870818f00b001b00db2189emr11051662oae.17.1694414621508; 
- Sun, 10 Sep 2023 23:43:41 -0700 (PDT)
+ bh=vym8XbbEH4MOTDPO5rs9mKsM5VAOMq/9GygQwXQnKYA=;
+ b=WyTWukWzMOUN92dXwBvKZvmxiOnlRwN9/5N60lZAeLCbQLATBwCFJsMMhseUh36hSq
+ yAdh0LiOrdSxhVbV5M+XpNt58vHqwYfrjQ+z21Fo8Vb5qHSt8X+hJe2rXzhizJAH8I8r
+ Eb7G3lpWc/dCXyItCisxSFewcwTpjpYhDBcK8HivOo+mMIEIQVASoWIIUd6T8eYIgX7/
+ /6ulTg+syP8X0s1BR0jtbXKeTU1PUDhnOXivv9jaOuRKh6lwY6FBGLONKCoNaeBoIi7x
+ fifnLFKcpjOnssnA6L7/ypR5BhGXSjfoL16OQTqza0lkjrvSiJhEtwF0LhpV9iVe1lWy
+ Vbkg==
+X-Gm-Message-State: AOJu0Yy1P7W/l3oYo9xSu7Rb5wy8K1NGwO7AwrAr/yQ9UMZ1e0i17t7r
+ dSZncnLUVgZBrDVifvbRWnvDPI/bhVhTzg==
+X-Google-Smtp-Source: AGHT+IGLTw3M64I1rtN6GBwEA4GPPH5DxBv7UdRjuDpleizu6L2jaVTRRjJERvzkGkUTZwteoynj+A==
+X-Received: by 2002:a05:6870:b014:b0:196:45b7:9385 with SMTP id
+ y20-20020a056870b01400b0019645b79385mr10440514oae.27.1694414625541; 
+ Sun, 10 Sep 2023 23:43:45 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.43.38
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.43.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:43:40 -0700 (PDT)
+ Sun, 10 Sep 2023 23:43:44 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair.francis@wdc.com>,
+Cc: alistair23@gmail.com, Thomas Huth <thuth@redhat.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bmeng@tinylab.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 01/45] target/riscv/cpu.c: do not run 'host' CPU with TCG
-Date: Mon, 11 Sep 2023 16:42:36 +1000
-Message-ID: <20230911064320.939791-2-alistair.francis@wdc.com>
+Subject: [PULL v2 02/45] hw/char/riscv_htif: Fix printing of console
+ characters on big endian hosts
+Date: Mon, 11 Sep 2023 16:42:37 +1000
+Message-ID: <20230911064320.939791-3-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x22e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::29;
+ envelope-from=alistair23@gmail.com; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,52 +100,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Thomas Huth <thuth@redhat.com>
 
-The 'host' CPU is available in a CONFIG_KVM build and it's currently
-available for all accels, but is a KVM only CPU. This means that in a
-RISC-V KVM capable host we can do things like this:
+The character that should be printed is stored in the 64 bit "payload"
+variable. The code currently tries to print it by taking the address
+of the variable and passing this pointer to qemu_chr_fe_write(). However,
+this only works on little endian hosts where the least significant bits
+are stored on the lowest address. To do this in a portable way, we have
+to store the value in an uint8_t variable instead.
 
-$ ./build/qemu-system-riscv64 -M virt,accel=tcg -cpu host --nographic
-qemu-system-riscv64: H extension requires priv spec 1.12.0
-
-This CPU does not have a priv spec because we don't filter its extensions
-via priv spec. We shouldn't be reaching riscv_cpu_realize_tcg() at all
-with the 'host' CPU.
-
-We don't have a way to filter the 'host' CPU out of the available CPU
-options (-cpu help) if the build includes both KVM and TCG. What we can
-do is to error out during riscv_cpu_realize_tcg() if the user chooses
-the 'host' CPU with accel=tcg:
-
-$ ./build/qemu-system-riscv64 -M virt,accel=tcg -cpu host --nographic
-qemu-system-riscv64: 'host' CPU is not compatible with TCG acceleration
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Fixes: 5033606780 ("RISC-V HTIF Console")
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Bin Meng <bmeng@tinylab.org>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230721133411.474105-1-dbarboza@ventanamicro.com>
+Message-Id: <20230721094720.902454-2-thuth@redhat.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/char/riscv_htif.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 6b93b04453..08db3d613f 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1395,6 +1395,11 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
-     CPURISCVState *env = &cpu->env;
-     Error *local_err = NULL;
- 
-+    if (object_dynamic_cast(OBJECT(dev), TYPE_RISCV_CPU_HOST)) {
-+        error_setg(errp, "'host' CPU is not compatible with TCG acceleration");
-+        return;
-+    }
-+
-     riscv_cpu_validate_misa_mxl(cpu, &local_err);
-     if (local_err != NULL) {
-         error_propagate(errp, local_err);
+diff --git a/hw/char/riscv_htif.c b/hw/char/riscv_htif.c
+index 37d3ccc76b..f96df40124 100644
+--- a/hw/char/riscv_htif.c
++++ b/hw/char/riscv_htif.c
+@@ -232,7 +232,8 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
+             s->tohost = 0; /* clear to indicate we read */
+             return;
+         } else if (cmd == HTIF_CONSOLE_CMD_PUTC) {
+-            qemu_chr_fe_write(&s->chr, (uint8_t *)&payload, 1);
++            uint8_t ch = (uint8_t)payload;
++            qemu_chr_fe_write(&s->chr, &ch, 1);
+             resp = 0x100 | (uint8_t)payload;
+         } else {
+             qemu_log("HTIF device %d: unknown command\n", device);
 -- 
 2.41.0
 
