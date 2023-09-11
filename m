@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA2979A3B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9699E79A3E4
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 08:50:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfagd-0004FW-G0; Mon, 11 Sep 2023 02:46:19 -0400
+	id 1qfagW-0003at-0b; Mon, 11 Sep 2023 02:46:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagI-00030W-6Q
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:59 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+ id 1qfagL-00036o-M8
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:03 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qfagE-0005EZ-V7
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:45:57 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3aa1443858eso3190901b6e.3
- for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:45:54 -0700 (PDT)
+ id 1qfagJ-0005Ev-3L
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 02:46:01 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-68fb2e9ebbfso775086b3a.2
+ for <qemu-devel@nongnu.org>; Sun, 10 Sep 2023 23:45:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694414753; x=1695019553; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694414757; x=1695019557; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VAOZAeFSdxVr60MLt73fKHVsOxnw3vFeX18pOb0w86I=;
- b=mATEwFpcp1VpSenP1xRb9Iy7TZf1KZLtv8NY2TwadFldFeZQQWy82F9k6LL1kmH0Gh
- pix6jc9PePLYqI1j9RAWuU4yRRhGAvnV3AFdFPqReUX9WAxqUnOxZi6QjWLzQcVcoDzH
- tbRch1mQyas9JT0E4XMHcB2Xi7Rhkd4V1iP7dafaEZxx6EzWgpGWwG9y87Q2zK1CUe0M
- GOtobu8BACA7a8DV8C6lDix4lBi8zUnU0oP9WHxcJwGJOGpWZx0j45EdJiojA0fupkxu
- 5DchroDJibINOy6B9CNk8uGNUAyWmDjRi+0ydhEkeIHF5fDjriv3+lQz4sX2ok3g/XM3
- 82Vw==
+ bh=YOggPHEkVLsqxPB2c0/QeriqcmfD3a3w+0iFBDdTsWI=;
+ b=V4rAojmvoHgzbI6M8xYWQnYfG/TT6vBBR5FM2NBqJu86DahJYE8f02DQ9Mnih5nOcb
+ ju64B0xXH8SAkUSIEYAukxq9dBOZUWUNpqCb1a3KQVuZNo3JKgoINkqmLgP2mqYA19Ij
+ lkANUwCUuENVrFdaaHzhD5IyUgycfczh7VxwVoXnssz3+tLSpiev73VZNec9KjXN/seV
+ KGJKYSn4a0m0M7CNhcUGWfIB6MONtacHzwkvjQ34a+VMGYi96e9U+afltR3mGti04arW
+ 8xnG2cINlvl9efQf/awI0qORUqm7g05NWqjxTKMk4O6AQroSfsVdoTex4tYm3e883K0+
+ pFkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694414753; x=1695019553;
+ d=1e100.net; s=20230601; t=1694414757; x=1695019557;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VAOZAeFSdxVr60MLt73fKHVsOxnw3vFeX18pOb0w86I=;
- b=KEE6icHmNWbIcHM5thyurTcLle1L+Yp9v7nGuALXNqi3gcb6dYaIYy6Wc9M6W6mWVh
- ADTWlPpjin3ZmYal6G7MOvzsVWJDDtXn+HEuQkVtcbmy8CDceAEloX0bsPZZ7pYL9NDt
- Oq2CMYPgTZacOjq/rj7c6fr5O23UHRdfJjE5FvvnrXp8B0+r6/99fjucyf36H1vvVqVU
- 3lELVDfqoxcG7ADkiXEL8zOI+00gvGf0kXhUAya4ie+0onFhZEzqHERo6PEY0z9Ic7ld
- AqnAbQv0oN01iAoBJ4n9tfszmY8CFE3aMKEza2MvRYU7wmW7dHpetKjBYVa9xef/HNXd
- bo3Q==
-X-Gm-Message-State: AOJu0YzSongtZALZhDrfse87FolLuad5PVDEzpm5TcnsVbnUjAOboiDa
- 1MLMe5hSrxuwdTWtBj9ZyCo1ylqphMEzLw==
-X-Google-Smtp-Source: AGHT+IGMOLzk6K/zLSLFAcTFgpyZWD2Oe2hv+v9dcqELrqMGclttOnOj5EwHzTXSiF0/RUqFyeJ3gQ==
-X-Received: by 2002:a05:6808:f07:b0:3a9:7634:23f9 with SMTP id
- m7-20020a0568080f0700b003a9763423f9mr11853008oiw.12.1694414753638; 
- Sun, 10 Sep 2023 23:45:53 -0700 (PDT)
+ bh=YOggPHEkVLsqxPB2c0/QeriqcmfD3a3w+0iFBDdTsWI=;
+ b=Puii3GBSL5uWEIY8AJUiBKdCUBA3jlcuDADxBdErpZAYzFZN3iXskTLmrXsgGKyY6F
+ hLnLY9qvSOI+d1SKrUhmpA/K0bUlwzbNmNmRC0bsaLzlm42qr03KK4/FEycsqCm6LTYW
+ UCjmq3H1kx4YLQ6E6vXSmdLJLAg2FMP8SMDmiCLpRNQgguviY2pPhXspIhDnrEhKK/hO
+ Il3MV1YQ1Xzf2BvgO97xTK2cq1PjRx3NUmI4m9ah3t5or7fNQAuCZoMIeBvPKVWnKxYx
+ 4qgNOtTNU0HciOPZwmCIvv/RAKVcT3YSGpFv99woAHGmUtL/sCxED98Re3+51KZ9+h/x
+ Yh3Q==
+X-Gm-Message-State: AOJu0YwmdabrjlZNYmMaBT4ygd/78Rcr1FbCM07fh8+ffB4rsJyQqyqy
+ uYyJ9mk0oXSp+rgHcz74lUzmjvW6v+ZbxA==
+X-Google-Smtp-Source: AGHT+IE0+2bhCosMVjGFRzxlMlsl+I9IY2KlF7Cuahweq3vner/LBti94nk95xv6BPOjdZCtyPr6ng==
+X-Received: by 2002:a05:6a00:330a:b0:68f:caaa:e6d5 with SMTP id
+ cq10-20020a056a00330a00b0068fcaaae6d5mr1114528pfb.14.1694414757270; 
+ Sun, 10 Sep 2023 23:45:57 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.45.50
+ q12-20020a656a8c000000b00553dcfc2179sm4264606pgu.52.2023.09.10.23.45.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Sep 2023 23:45:52 -0700 (PDT)
+ Sun, 10 Sep 2023 23:45:56 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Weiwei Li <liweiwei@iscas.ac.cn>,
- Junqiang Wang <wangjunqiang@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL v2 35/45] target/riscv: Update CSR bits name for svadu extension
-Date: Mon, 11 Sep 2023 16:43:10 +1000
-Message-ID: <20230911064320.939791-36-alistair.francis@wdc.com>
+Subject: [PULL v2 36/45] target/riscv: fix satp_mode_finalize() when
+ satp_mode.supported = 0
+Date: Mon, 11 Sep 2023 16:43:11 +1000
+Message-ID: <20230911064320.939791-37-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
 References: <20230911064320.939791-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=alistair23@gmail.com; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -98,158 +99,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Weiwei Li <liweiwei@iscas.ac.cn>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-The Svadu specification updated the name of the *envcfg bit from
-HADE to ADUE.
+In the same emulated RISC-V host, the 'host' KVM CPU takes 4 times
+longer to boot than the 'rv64' KVM CPU.
 
-Signed-off-by: Weiwei Li <liweiwei@iscas.ac.cn>
-Signed-off-by: Junqiang Wang <wangjunqiang@iscas.ac.cn>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20230816141916.66898-1-liweiwei@iscas.ac.cn>
+The reason is an unintended behavior of riscv_cpu_satp_mode_finalize()
+when satp_mode.supported = 0, i.e. when cpu_init() does not set
+satp_mode_max_supported(). satp_mode_max_from_map(map) does:
+
+31 - __builtin_clz(map)
+
+This means that, if satp_mode.supported = 0, satp_mode_supported_max
+wil be '31 - 32'. But this is C, so satp_mode_supported_max will gladly
+set it to UINT_MAX (4294967295). After that, if the user didn't set a
+satp_mode, set_satp_mode_default_map(cpu) will make
+
+cfg.satp_mode.map = cfg.satp_mode.supported
+
+So satp_mode.map = 0. And then satp_mode_map_max will be set to
+satp_mode_max_from_map(cpu->cfg.satp_mode.map), i.e. also UINT_MAX. The
+guard "satp_mode_map_max > satp_mode_supported_max" doesn't protect us
+here since both are UINT_MAX.
+
+And finally we have 2 loops:
+
+        for (int i = satp_mode_map_max - 1; i >= 0; --i) {
+
+Which are, in fact, 2 loops from UINT_MAX -1 to -1. This is where the
+extra delay when booting the 'host' CPU is coming from.
+
+Commit 43d1de32f8 already set a precedence for satp_mode.supported = 0
+in a different manner. We're doing the same here. If supported == 0,
+interpret as 'the CPU wants the OS to handle satp mode alone' and skip
+satp_mode_finalize().
+
+We'll also put a guard in satp_mode_max_from_map() to assert out if map
+is 0 since the function is not ready to deal with it.
+
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: 6f23aaeb9b ("riscv: Allow user to set the satp mode")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Message-ID: <20230817152903.694926-1-dbarboza@ventanamicro.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_bits.h   |  8 ++++----
- target/riscv/cpu.c        |  4 ++--
- target/riscv/cpu_helper.c |  6 +++---
- target/riscv/csr.c        | 12 ++++++------
- 4 files changed, 15 insertions(+), 15 deletions(-)
+ target/riscv/cpu.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index 31a8d80990..3d6ffaabc7 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -745,12 +745,12 @@ typedef enum RISCVException {
- #define MENVCFG_CBIE                       (3UL << 4)
- #define MENVCFG_CBCFE                      BIT(6)
- #define MENVCFG_CBZE                       BIT(7)
--#define MENVCFG_HADE                       (1ULL << 61)
-+#define MENVCFG_ADUE                       (1ULL << 61)
- #define MENVCFG_PBMTE                      (1ULL << 62)
- #define MENVCFG_STCE                       (1ULL << 63)
- 
- /* For RV32 */
--#define MENVCFGH_HADE                      BIT(29)
-+#define MENVCFGH_ADUE                      BIT(29)
- #define MENVCFGH_PBMTE                     BIT(30)
- #define MENVCFGH_STCE                      BIT(31)
- 
-@@ -763,12 +763,12 @@ typedef enum RISCVException {
- #define HENVCFG_CBIE                       MENVCFG_CBIE
- #define HENVCFG_CBCFE                      MENVCFG_CBCFE
- #define HENVCFG_CBZE                       MENVCFG_CBZE
--#define HENVCFG_HADE                       MENVCFG_HADE
-+#define HENVCFG_ADUE                       MENVCFG_ADUE
- #define HENVCFG_PBMTE                      MENVCFG_PBMTE
- #define HENVCFG_STCE                       MENVCFG_STCE
- 
- /* For RV32 */
--#define HENVCFGH_HADE                       MENVCFGH_HADE
-+#define HENVCFGH_ADUE                       MENVCFGH_ADUE
- #define HENVCFGH_PBMTE                      MENVCFGH_PBMTE
- #define HENVCFGH_STCE                       MENVCFGH_STCE
- 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index fae1c92c5c..8071f05f15 100644
+index 8071f05f15..34ac26e3ae 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -886,9 +886,9 @@ static void riscv_cpu_reset_hold(Object *obj)
-     env->two_stage_lookup = false;
+@@ -309,6 +309,17 @@ static uint8_t satp_mode_from_str(const char *satp_mode_str)
  
-     env->menvcfg = (cpu->cfg.ext_svpbmt ? MENVCFG_PBMTE : 0) |
--                   (cpu->cfg.ext_svadu ? MENVCFG_HADE : 0);
-+                   (cpu->cfg.ext_svadu ? MENVCFG_ADUE : 0);
-     env->henvcfg = (cpu->cfg.ext_svpbmt ? HENVCFG_PBMTE : 0) |
--                   (cpu->cfg.ext_svadu ? HENVCFG_HADE : 0);
-+                   (cpu->cfg.ext_svadu ? HENVCFG_ADUE : 0);
- 
-     /* Initialized default priorities of local interrupts. */
-     for (i = 0; i < ARRAY_SIZE(env->miprio); i++) {
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index 9f611d89bb..3a02079290 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -861,11 +861,11 @@ static int get_physical_address(CPURISCVState *env, hwaddr *physical,
-     }
- 
-     bool pbmte = env->menvcfg & MENVCFG_PBMTE;
--    bool hade = env->menvcfg & MENVCFG_HADE;
-+    bool adue = env->menvcfg & MENVCFG_ADUE;
- 
-     if (first_stage && two_stage && env->virt_enabled) {
-         pbmte = pbmte && (env->henvcfg & HENVCFG_PBMTE);
--        hade = hade && (env->henvcfg & HENVCFG_HADE);
-+        adue = adue && (env->henvcfg & HENVCFG_ADUE);
-     }
- 
-     int ptshift = (levels - 1) * ptidxbits;
-@@ -1026,7 +1026,7 @@ restart:
- 
-     /* Page table updates need to be atomic with MTTCG enabled */
-     if (updated_pte != pte && !is_debug) {
--        if (!hade) {
-+        if (!adue) {
-             return TRANSLATE_FAIL;
-         }
- 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 661744e6d4..63c3b0d9fc 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -1957,7 +1957,7 @@ static RISCVException write_menvcfg(CPURISCVState *env, int csrno,
-     if (riscv_cpu_mxl(env) == MXL_RV64) {
-         mask |= (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
-                 (cfg->ext_sstc ? MENVCFG_STCE : 0) |
--                (cfg->ext_svadu ? MENVCFG_HADE : 0);
-+                (cfg->ext_svadu ? MENVCFG_ADUE : 0);
-     }
-     env->menvcfg = (env->menvcfg & ~mask) | (val & mask);
- 
-@@ -1977,7 +1977,7 @@ static RISCVException write_menvcfgh(CPURISCVState *env, int csrno,
-     const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
-     uint64_t mask = (cfg->ext_svpbmt ? MENVCFG_PBMTE : 0) |
-                     (cfg->ext_sstc ? MENVCFG_STCE : 0) |
--                    (cfg->ext_svadu ? MENVCFG_HADE : 0);
-+                    (cfg->ext_svadu ? MENVCFG_ADUE : 0);
-     uint64_t valh = (uint64_t)val << 32;
- 
-     env->menvcfg = (env->menvcfg & ~mask) | (valh & mask);
-@@ -2029,7 +2029,7 @@ static RISCVException read_henvcfg(CPURISCVState *env, int csrno,
-      * henvcfg.stce is read_only 0 when menvcfg.stce = 0
-      * henvcfg.hade is read_only 0 when menvcfg.hade = 0
-      */
--    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE) |
-+    *val = env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
-                            env->menvcfg);
-     return RISCV_EXCP_NONE;
- }
-@@ -2046,7 +2046,7 @@ static RISCVException write_henvcfg(CPURISCVState *env, int csrno,
-     }
- 
-     if (riscv_cpu_mxl(env) == MXL_RV64) {
--        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE);
-+        mask |= env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE);
-     }
- 
-     env->henvcfg = (env->henvcfg & ~mask) | (val & mask);
-@@ -2064,7 +2064,7 @@ static RISCVException read_henvcfgh(CPURISCVState *env, int csrno,
-         return ret;
-     }
- 
--    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_HADE) |
-+    *val = (env->henvcfg & (~(HENVCFG_PBMTE | HENVCFG_STCE | HENVCFG_ADUE) |
-                             env->menvcfg)) >> 32;
-     return RISCV_EXCP_NONE;
- }
-@@ -2073,7 +2073,7 @@ static RISCVException write_henvcfgh(CPURISCVState *env, int csrno,
-                                      target_ulong val)
+ uint8_t satp_mode_max_from_map(uint32_t map)
  {
-     uint64_t mask = env->menvcfg & (HENVCFG_PBMTE | HENVCFG_STCE |
--                                    HENVCFG_HADE);
-+                                    HENVCFG_ADUE);
-     uint64_t valh = (uint64_t)val << 32;
-     RISCVException ret;
++    /*
++     * 'map = 0' will make us return (31 - 32), which C will
++     * happily overflow to UINT_MAX. There's no good result to
++     * return if 'map = 0' (e.g. returning 0 will be ambiguous
++     * with the result for 'map = 1').
++     *
++     * Assert out if map = 0. Callers will have to deal with
++     * it outside of this function.
++     */
++    g_assert(map > 0);
++
+     /* map here has at least one bit set, so no problem with clz */
+     return 31 - __builtin_clz(map);
+ }
+@@ -1333,9 +1344,15 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+ static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
+ {
+     bool rv32 = riscv_cpu_mxl(&cpu->env) == MXL_RV32;
+-    uint8_t satp_mode_map_max;
+-    uint8_t satp_mode_supported_max =
+-                        satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
++    uint8_t satp_mode_map_max, satp_mode_supported_max;
++
++    /* The CPU wants the OS to decide which satp mode to use */
++    if (cpu->cfg.satp_mode.supported == 0) {
++        return;
++    }
++
++    satp_mode_supported_max =
++                    satp_mode_max_from_map(cpu->cfg.satp_mode.supported);
  
+     if (cpu->cfg.satp_mode.map == 0) {
+         if (cpu->cfg.satp_mode.init == 0) {
 -- 
 2.41.0
 
