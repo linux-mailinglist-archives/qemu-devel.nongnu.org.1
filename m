@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF1579AB68
-	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 22:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 584EC79AB6B
+	for <lists+qemu-devel@lfdr.de>; Mon, 11 Sep 2023 23:01:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfnvo-0000wc-G5; Mon, 11 Sep 2023 16:54:52 -0400
+	id 1qfo1I-0003kq-Mb; Mon, 11 Sep 2023 17:00:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfnvl-0000oQ-EP
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 16:54:49 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qfo1G-0003kh-Un
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:00:30 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfnve-0001aU-1i
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 16:54:49 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2bcb89b476bso83320811fa.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 13:54:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qfo1E-0002oN-4u
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 17:00:30 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-31fa15f4cc6so1660270f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 14:00:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694465677; x=1695070477; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=cu2e3oAVT8yhBsM1m08CVCBwYMVMVJHdz+e7ZXopLWc=;
- b=gZ1rm8qkpCy+xA2XzHmsV8yUiMUyLysvEyKZu8OAkAegZZ/w4vEZbs9LiDQaWUO8Yq
- RMGp/d6aE+1hjRIO2Kl+reBAylTOgDYfMj/lUJcsulXq5B2NWO9orsGPmm/b0Kglw7gi
- 6cXGuCpkTb0+iagcofguQKC1PjK7qFwUOW3KxL53zhgcEi0gQXVYUILGQMDDmOpUlkbL
- pmxwaTPDkMxuyscA954LSmoIjAWe5NuFpleUk21ROVyOKR06B/ClhjutDgQAwZ5OQRJN
- aVJJqfdyumLkB2MQecxzH70JB6UKrNkVPPVhutrG/E41Vq7Zwn2WG8TMoB8nXT8A9DKE
- tj9w==
+ d=gmail.com; s=20221208; t=1694466026; x=1695070826; darn=nongnu.org;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6GwgJ2e0Vf2vIxa01zg4Vv2LTG8Mnh6xiKMxYzoVSYI=;
+ b=hstWOr7jlEElZ7X4ivnN5GdJNDV6MJ6SvgC2tz/1jaF8ALGa6MYhEgRg/Sp8Kl3qxu
+ Zz7/E66wMPa/qQuaEGG/m6Nd6lMGS0N2GqG2ugbri39jS8iVgaAr1T3I8Y8A3Hk4KnQa
+ m1JwESx0GA8CkP5TCMtfE2q8AGO21voov1tDH+puTUFDab+/7Chyl+QfhDaNp/iIeiWq
+ I7HhMmcNsvU7oihsjOtlk8dltC16IS6qrcSa09rTmW8Qni1/UtTvDDMamFwlt25w9hQ+
+ Bg+leppP30EG0STwSzUTcFi26SrmZVMygQO1xjYWeYbK/jHjR0v1SvtKrFGv1hQ255r2
+ wL+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694465677; x=1695070477;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cu2e3oAVT8yhBsM1m08CVCBwYMVMVJHdz+e7ZXopLWc=;
- b=mUPSyoQEuXlkpbH2fPMIM9o2vrxK9rL3p5zBan4gV2CWKDcmmP52LyYU7/4p27/fdH
- plWUb4W4lVjUfpeWhNpjo+efam6dF2sUwgrsZ5Q7JT808FUZ1fNymH/6D2kwTQNP25gk
- WxMkvE0X15AjImXNGkFAdvZdBZtk+ROu5fJfCaCPiYJ8dPEY9/TTKQ7LS73A2omiySpQ
- zJ/auTB3ZY/hUaMaFIRx1EeXNPthKglfETOdc7pEbRd7c8pXsyTAILjhS6H67mw7yb6F
- SXf0cXGXTk3op0SKVLTRnEIiT71GYWaOGKosARLx2nrp+AfFkDW7wO5dSYwChnl8OPLx
- I7Dw==
-X-Gm-Message-State: AOJu0YwDYOKkuU9OR8tSzrq7BGP1blB43x4m0kBBZiGt6PCayYu+7o6X
- X3yDbqZ0xO5aBU5maaHJX4XNKg==
-X-Google-Smtp-Source: AGHT+IG2+l8OmLm1WVkQFK18YLUh/99hOmBMhNLoJXASxDBAhjh31N+KCAo01iPfT28GhIpFFnTrwg==
-X-Received: by 2002:a2e:9e87:0:b0:2bc:ffe5:54a1 with SMTP id
- f7-20020a2e9e87000000b002bcffe554a1mr7994156ljk.32.1694465677181; 
- Mon, 11 Sep 2023 13:54:37 -0700 (PDT)
-Received: from [192.168.69.115] (tfy62-h01-176-171-221-76.dsl.sta.abo.bbox.fr.
- [176.171.221.76]) by smtp.gmail.com with ESMTPSA id
- l15-20020a1709066b8f00b0099bca8b9a31sm5767297ejr.100.2023.09.11.13.54.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 13:54:36 -0700 (PDT)
-Message-ID: <53c2cf8d-28ba-c866-876b-126714045ea6@linaro.org>
-Date: Mon, 11 Sep 2023 22:54:35 +0200
+ d=1e100.net; s=20230601; t=1694466026; x=1695070826;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6GwgJ2e0Vf2vIxa01zg4Vv2LTG8Mnh6xiKMxYzoVSYI=;
+ b=Zi4i7Oo+dJrrO+aUz0Eyk5D7TeEysD3GtIMhR26q/xFF21PdZ10TD4EQc5+/pomzoo
+ 4xl2MoQQBaGhYU4pxK4SfnBesHkEaKv9zrVfVxsLe3dk1aBil6xTGpB6ijxlgoqrnPD6
+ b8F9Kh3tKa4Lv5MU/WfVTTu2GK8bxo9HpEZpa03yHd2xZO8Q7/A63d5NXH8AxDmfpJ45
+ URQQCq7hnAC05ecPILmG91ziTFYyJpBTQQOdUL4+ZNd/8Ql8fJ4BjlBVHT2VV5kYqAbs
+ b2t/bXdYXdYBp6dwNGc9k3/70na9EtvUiOYK9bZkQuGbucl455r7Q/bkGbAem2eONuP7
+ 1UbQ==
+X-Gm-Message-State: AOJu0YypC8BfwHJzkUHpN8FBVdB68kFuAxi65Ukwy035rL3htPqKt5GT
+ NDbIIijj6nDWw0Q9iKeUzcM=
+X-Google-Smtp-Source: AGHT+IHASY91lRjeo0ere/sOvbnQXQvAlS4Yoycdn0fOpbNgBHC28PmVaPmgYPZzFwa6YvpfXHetWw==
+X-Received: by 2002:adf:e68a:0:b0:317:5ed6:887 with SMTP id
+ r10-20020adfe68a000000b003175ed60887mr8416890wrm.66.1694466025728; 
+ Mon, 11 Sep 2023 14:00:25 -0700 (PDT)
+Received: from karim ([197.39.181.42]) by smtp.gmail.com with ESMTPSA id
+ j6-20020adfb306000000b003142c85fbcdsm6446191wrd.11.2023.09.11.14.00.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Sep 2023 14:00:25 -0700 (PDT)
+From: Karim Taha <kariem.taha2.7@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Warner Losh <imp@bsdimp.com>
+Subject: Re: [PATCH 04/32] bsd-user: Add freebsd_exec_common and
+ do_freebsd_procctl to qemu.h.
+In-Reply-To: <035844e7-ab74-f425-925f-1482edf001bf@linaro.org>
+References: <20230827155746.84781-1-kariem.taha2.7@gmail.com>
+ <20230827155746.84781-5-kariem.taha2.7@gmail.com>
+ <035844e7-ab74-f425-925f-1482edf001bf@linaro.org>
+Date: Mon, 11 Sep 2023 23:58:50 +0300
+Message-ID: <87bke8zat1.fsf@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH 01/11] qdev: Add qdev_prop_set_array()
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>, qemu-devel@nongnu.org
-Cc: armbru@redhat.com, berrange@redhat.com, peter.maydell@linaro.org,
- pbonzini@redhat.com
-References: <20230908143703.172758-1-kwolf@redhat.com>
- <20230908143703.172758-2-kwolf@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230908143703.172758-2-kwolf@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,45 +91,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/9/23 16:36, Kevin Wolf wrote:
-> Instead of exposing the ugly hack of how we represent arrays in qdev (a
-> static "foo-len" property and after it is set, dynamically created
-> "foo[i]" properties) to boards, add an interface that allows setting the
-> whole array at once.
-> 
-> Once all internal users of devices with array properties have been
-> converted to use this function, we can change the implementation to move
-> away from this hack.
-> 
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> ---
->   include/hw/qdev-properties.h |  3 +++
->   hw/core/qdev-properties.c    | 21 +++++++++++++++++++++
->   2 files changed, 24 insertions(+)
+Richard Henderson <richard.henderson@linaro.org> wrote:
 
+> On 8/27/23 08:57, Karim Taha wrote:
+>> From: Stacey Son <sson@FreeBSD.org>
+>> 
+>> Signed-off-by: Stacey Son <sson@FreeBSD.org>
+>> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+>> ---
+>>   bsd-user/main.c | 2 +-
+>>   bsd-user/qemu.h | 7 +++++++
+>>   2 files changed, 8 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/bsd-user/main.c b/bsd-user/main.c
+>> index 381bb18df8..b94b2d34b6 100644
+>> --- a/bsd-user/main.c
+>> +++ b/bsd-user/main.c
+>> @@ -88,7 +88,7 @@ unsigned long reserved_va = MAX_RESERVED_VA;
+>>   unsigned long reserved_va;
+>>   #endif
+>>   
+>> -static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
+>> +const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
+>>   const char *qemu_uname_release;
+>>   char qemu_proc_pathname[PATH_MAX];  /* full path to exeutable */
+>>   
+>
+> Adding interp_prefix is unrelated.
+>
+> Without that,
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+>
+>
+> r~
+>
+I grepped for `interp_prefix`, it's later used in the
+`freebsd_exec_common` function definition, so do you mean I should add
+it with the relevant commit that defines the function?
 
-> +void qdev_prop_set_array(DeviceState *dev, const char *name, QList *values)
-> +{
-> +    const QListEntry *entry;
-> +    g_autofree char *prop_len = g_strdup_printf("len-%s", name);
-> +    uint32_t i = 0;
+--
+Karim Taha
 
-"unsigned"? Anyway,
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +
-> +    object_property_set_int(OBJECT(dev), prop_len, qlist_size(values),
-> +                            &error_abort);
-> +
-> +    QLIST_FOREACH_ENTRY(values, entry) {
-> +        g_autofree char *prop_idx = g_strdup_printf("%s[%u]", name, i);
-> +        object_property_set_qobject(OBJECT(dev), prop_idx, entry->value,
-> +                                    &error_abort);
-> +        i++;
-> +    }
-> +
-> +    qobject_unref(values);
-> +}
-
+>> diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+>> index 6724bb9f0a..23bbdd3e0c 100644
+>> --- a/bsd-user/qemu.h
+>> +++ b/bsd-user/qemu.h
+>> @@ -113,6 +113,7 @@ typedef struct TaskState {
+>>   } __attribute__((aligned(16))) TaskState;
+>>   
+>>   void stop_all_tasks(void);
+>> +extern const char *interp_prefix;
+>>   extern const char *qemu_uname_release;
+>>   
+>>   /*
+>> @@ -251,6 +252,12 @@ abi_long get_errno(abi_long ret);
+>>   bool is_error(abi_long ret);
+>>   int host_to_target_errno(int err);
+>>   
+>> +/* os-proc.c */
+>> +abi_long freebsd_exec_common(abi_ulong path_or_fd, abi_ulong guest_argp,
+>> +        abi_ulong guest_envp, int do_fexec);
+>> +abi_long do_freebsd_procctl(void *cpu_env, int idtype, abi_ulong arg2,
+>> +        abi_ulong arg3, abi_ulong arg4, abi_ulong arg5, abi_ulong arg6);
+>> +
+>>   /* os-sys.c */
+>>   abi_long do_freebsd_sysctl(CPUArchState *env, abi_ulong namep, int32_t namelen,
+>>           abi_ulong oldp, abi_ulong oldlenp, abi_ulong newp, abi_ulong newlen);
 
