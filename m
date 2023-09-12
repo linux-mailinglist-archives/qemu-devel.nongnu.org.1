@@ -2,91 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD0179D337
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 789CF79D335
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:07:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg42B-0002YY-V0; Tue, 12 Sep 2023 10:06:32 -0400
+	id 1qg42o-0005EI-BS; Tue, 12 Sep 2023 10:07:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qg429-0002FY-Bv
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:06:29 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qg42m-0005Cf-BB
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:07:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qg426-0004yu-Me
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:06:29 -0400
+ (Exim 4.90_1) (envelope-from <lvivier@redhat.com>)
+ id 1qg42i-0006RZ-Pr
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:07:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694527583;
+ s=mimecast20190719; t=1694527621;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Se7hqQXQMKrYV5KqZThGeZ3NRXLMJ2EyFNldKIrj/Kc=;
- b=etc0LjeWyAcSdGoa/wUmm0YDfaCC3tIMSnHp5PxyA/FaZ5p2LtaW+6eQ00Kol8dXIbFyNb
- 2y+KHOH3DaQ1WRX0rPG75bKpqcJOVi1vwhzWiS4CX3k5r2tyJWmVH00m75x+aqxTCXndqh
- uCzNFVtHMMlwnSoQT3v2vhEulqKocs8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=WOgiTIOF28SLWPKO6C1Q4IH7CcK5sMErRNGmjD6VAEs=;
+ b=h2BCuI4AsvUU9PX7tPSmKKS38DYhG1gizmQDN60eBgE0TFNApSHv8BEdCnJOsWHSwDgU9W
+ zv+AXBfIpgJOWcDpsxHnlCqtBp5OilPkoRz6ImF0PTqCOtXN84++IQQF41TqA026AP4L+o
+ zfhwE7GHLJMYlejIl4jsPdC1QW6JWwE=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-O0sQyZ9jMqug_0SmUbvYIQ-1; Tue, 12 Sep 2023 10:05:32 -0400
-X-MC-Unique: O0sQyZ9jMqug_0SmUbvYIQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-31facb07f53so859641f8f.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:05:26 -0700 (PDT)
+ us-mta-21-faf36xYRMGGeAs7gp4sNjA-1; Tue, 12 Sep 2023 10:07:00 -0400
+X-MC-Unique: faf36xYRMGGeAs7gp4sNjA-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41362ffd32aso66417061cf.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:06:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527522; x=1695132322;
+ d=1e100.net; s=20230601; t=1694527619; x=1695132419;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Se7hqQXQMKrYV5KqZThGeZ3NRXLMJ2EyFNldKIrj/Kc=;
- b=pQ5nRBJyNEWQ5o8x5+8cXx/xFiwj6ICijh+o8ceCrx1n1KnZaAFXlDXQhswWrggEb4
- APfYJ0xwioXEdo/G7qszhh1hMGyXHNTVJul5fOVZFjs+bI6M+wJlbH5gjreMuzY7QT+N
- Ay/EAldBOAQg4t1/E+CkG72zKqBo7q1b1pvByoGPK3T9NrPJqh0Co4nez7AlUYHxaRiT
- 6LY51ZTUgc2tbih8WjHIWI2tZzRAEvm39Hlw/T1GGggV4dYSts98x/jZviRv0tLQydr3
- 3hk1S5HY69gNviT4HxyzFF74r8pXOVxhpP2N7Fd8D3EUWGbDUDelEqM2TjgXleuSYUlH
- Sv6w==
-X-Gm-Message-State: AOJu0YzkOiw6dL1Lc4U0M34vL8L84+TYGPmkniUJ2hZA6mjiVbEeauxg
- S/8HC7DV1uVJb2XiKDfppzZj4DceQ3rFMzMLCS4d0Qe0Y3shySvXC+KPnp5l70luDr84Q+mD4tM
- JFwJR1/MI9K6mz3bYVx/xvbU=
-X-Received: by 2002:a5d:60cf:0:b0:319:6ed2:a5c4 with SMTP id
- x15-20020a5d60cf000000b003196ed2a5c4mr1981263wrt.26.1694527521947; 
- Tue, 12 Sep 2023 07:05:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwvhGWr+8e/BfJGS8trosITGG6jjfK+GccPrMCMaQFMHkG9Oz3yizJcHxtDxGBOSe4tBw8yg==
-X-Received: by 2002:a5d:60cf:0:b0:319:6ed2:a5c4 with SMTP id
- x15-20020a5d60cf000000b003196ed2a5c4mr1981205wrt.26.1694527520907; 
- Tue, 12 Sep 2023 07:05:20 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- v17-20020a5d6791000000b00318147fd2d3sm12934675wru.41.2023.09.12.07.05.19
+ bh=WOgiTIOF28SLWPKO6C1Q4IH7CcK5sMErRNGmjD6VAEs=;
+ b=R2Oxp6nILBGbG7l3HEWmv6fkAKyza+nEZiG7zCzpE7lbvbuhc+Ebh42RxpPJRxa40i
+ T7laQUbDffoqo7X0M6dx0PxDziCcwMgHgviC6CBGBEee7hhZrygk8SQ3HxAi5+slPaYD
+ VxToK+oMxNarIKvJsJz8dg4aujUcqgATGjDqPqYqQIkMSgLAGCErKwfUBPr1F+jUE47/
+ XyYrJAgmJnPzdG1pDwZRffuRWgwrI0cPugyHbPKM/48bfVA9vAZccXmoyjZhnxeQnA5p
+ 3E1yjQmN/FHHDNG4wMOSpabQUdW16KKJRexl2YOPOIel3QxDBpN/Sj2LoJWO6+fTSo8E
+ CgXw==
+X-Gm-Message-State: AOJu0YyBem1w1dsKTkTixjrBAP3vWHvYbc3zSMbf+cgyO2XPjHwCEGLq
+ iBCUwkzsKFzzCjElYVOQQPfgY4s22LjB+7vTELVdjHxbsaYAjWqA1ucD70BP9ac1ZHJMKwIHcml
+ ES38HzpadqtvoDvw=
+X-Received: by 2002:a05:622a:349:b0:412:21cb:e9b with SMTP id
+ r9-20020a05622a034900b0041221cb0e9bmr17034681qtw.34.1694527618642; 
+ Tue, 12 Sep 2023 07:06:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiZC8IodPQg7OpJf14idF9v0gH6aTDg2tHxT0cmmX3VyS2AcSAcTee7ev1LJmh6IdlUQU5Sw==
+X-Received: by 2002:a05:622a:349:b0:412:21cb:e9b with SMTP id
+ r9-20020a05622a034900b0041221cb0e9bmr17034646qtw.34.1694527618189; 
+ Tue, 12 Sep 2023 07:06:58 -0700 (PDT)
+Received: from [192.168.100.28] ([82.142.8.70])
+ by smtp.gmail.com with ESMTPSA id
+ z17-20020ac84551000000b004108f6788a6sm3335209qtn.41.2023.09.12.07.06.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 07:05:20 -0700 (PDT)
-Message-ID: <c33130ec-661a-a1ed-c285-eeaa52365358@redhat.com>
-Date: Tue, 12 Sep 2023 16:05:19 +0200
+ Tue, 12 Sep 2023 07:06:57 -0700 (PDT)
+Message-ID: <479c6698-2f32-6771-b758-28d85f100963@redhat.com>
+Date: Tue, 12 Sep 2023 16:06:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v4 2/3] target/i386: Restrict system-specific features
- from user emulation
+Subject: Re: [PATCH] tests/qtest/netdev-socket: Raise connection timeout to
+ 120 seconds
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-References: <20230911211317.28773-1-philmd@linaro.org>
- <20230911211317.28773-3-philmd@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230911211317.28773-3-philmd@linaro.org>
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230912133310.60583-1-stefanha@redhat.com>
+ <ZQBqqu9NNygDhBAM@redhat.com>
+From: Laurent Vivier <lvivier@redhat.com>
+In-Reply-To: <ZQBqqu9NNygDhBAM@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lvivier@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -111,93 +106,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/11/23 23:13, Philippe Mathieu-Daudé wrote:
->   /*
->    * Only for builtin_x86_defs models initialized with x86_register_cpudef_types.
->    */
-> @@ -6163,6 +6195,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->               }
->               *edx = env->features[FEAT_7_0_EDX]; /* Feature flags */
->   
-> +#ifndef CONFIG_USER_ONLY
->               /*
->                * SGX cannot be emulated in software.  If hardware does not
->                * support enabling SGX and/or SGX flexible launch control,
-> @@ -6181,6 +6214,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
->                       CPUID_7_0_ECX_SGX_LC))) {
->                   *ecx &= ~CPUID_7_0_ECX_SGX_LC;
->               }
-> +#endif
+On 9/12/23 15:42, Daniel P. Berrangé wrote:
+> On Tue, Sep 12, 2023 at 09:33:10AM -0400, Stefan Hajnoczi wrote:
+>> The test still fails intermittently with a 60 second timeout in the
+>> GitLab CI environment. Raise the timeout to 120 seconds.
+>>
+>>    576/839 ERROR:../tests/qtest/netdev-socket.c:293:test_stream_unix: assertion failed (resp == expect): ("st0: index=0,type=stream,connection error\r\n" == "st0: index=0,type=stream,unix:/tmp/netdev-socket.UW5IA2/stream_unix\r\n") ERROR
+>>    576/839 qemu:qtest+qtest-sh4 / qtest-sh4/netdev-socket                            ERROR          62.85s   killed by signal 6 SIGABRT
+>>    >>> MALLOC_PERTURB_=249 QTEST_QEMU_BINARY=./qemu-system-sh4 QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon G_TEST_DBUS_DAEMON=/home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_IMG=./qemu-img /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/build/tests/qtest/netdev-socket --tap -k
+>>    ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+>>    stderr:
+>>    **
+>>    ERROR:../tests/qtest/netdev-socket.c:293:test_stream_unix: assertion failed (resp == expect): ("st0: index=0,type=stream,connection error\r\n" == "st0: index=0,type=stream,unix:/tmp/netdev-socket.UW5IA2/stream_unix\r\n")
+>>    (test program exited with status code -6)
+>>
+>> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1881
+>> Fixes: 417296c8d858 ("tests/qtest/netdev-socket: Raise connection timeout to 60 seconds")
+>> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> 
+> That bumped the timeout from 5 seconds to 60 seconds to
+> cope with intermittent failures, which was a x12
+> increases. I'm concerned that it would still be failing
+> in largely the same way after that, and possibly we are
+> instead hitting a race condition causing setup to fail,
+> which masquerades as a timeout.
+> 
+>> ---
+>>   tests/qtest/netdev-socket.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
+>> index 8eed54801f..b2501d72a1 100644
+>> --- a/tests/qtest/netdev-socket.c
+>> +++ b/tests/qtest/netdev-socket.c
+>> @@ -16,7 +16,7 @@
+>>   #include "qapi/qobject-input-visitor.h"
+>>   #include "qapi/qapi-visit-sockets.h"
+>>   
+>> -#define CONNECTION_TIMEOUT    60
+>> +#define CONNECTION_TIMEOUT    120
+>>   
+>>   #define EXPECT_STATE(q, e, t)                             \
+>>   do {                                                      \
+> 
+> I'll add
+> 
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> 
+> but with the caveat that i'm only 50/50 on whether this is actually
+> the right fix. Doesn't hurt to try it, but if 120 seconds still shows
+> failures I'd say we're hitting a functional race not a timeout.
 
-This can use a variant of x86_cpu_get_supported_cpuid that returns a 
-single register; or it can be rewritten to use x86_cpu_get_supported_cpuid.
+It can also happen if the first QEMU (server) crashes. Do we have some traces from this side?
 
-In general, a lot of checks for accel_uses_host_cpuid() are unnecessary, 
-and the code can be modified to not depend on either KVM or HVF.
+Reviewed-by: Laurent Vivier <lvivier@redhat.com>
 
->           } else if (count == 1) {
->               *eax = env->features[FEAT_7_1_EAX];
->               *edx = env->features[FEAT_7_1_EDX];
-> @@ -6876,6 +6910,8 @@ static void mce_init(X86CPU *cpu)
->       }
->   }
->   
-> +#ifndef CONFIG_USER_ONLY
-> +
->   static void x86_cpu_adjust_level(X86CPU *cpu, uint32_t *min, uint32_t value)
->   {
->       if (*min < value) {
-> @@ -6948,6 +6984,8 @@ static void x86_cpu_enable_xsave_components(X86CPU *cpu)
->       env->features[FEAT_XSAVE_XSS_HI] = mask >> 32;
->   }
->   
-> +#endif /* !CONFIG_USER_ONLY */
-
-These functions should all be used in user-mode emulation as well.
-
->   /***** Steps involved on loading and filtering CPUID data
->    *
->    * When initializing and realizing a CPU object, the steps
-> @@ -7040,6 +7078,7 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
->           }
->       }
->   
-> +#ifndef CONFIG_USER_ONLY
->       if (!kvm_enabled() || !cpu->expose_kvm) {
->           env->features[FEAT_KVM] = 0;
->       }
-
-This is "!kvm_enabled()" so it should be kept for user-mode emulation.
-
-> @@ -7111,6 +7150,8 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
->           return;
->       }
->   
-> +#endif /* !CONFIG_USER_ONLY */
->       /* Set cpuid_*level* based on cpuid_min_*level, if not explicitly set */
->       if (env->cpuid_level_func7 == UINT32_MAX) {
->           env->cpuid_level_func7 = env->cpuid_min_level_func7;
-> @@ -7152,6 +7193,7 @@ static void x86_cpu_filter_features(X86CPU *cpu, bool verbose)
->           mark_unavailable_features(cpu, w, unavailable_features, prefix);
->       }
->   
-> +#ifndef CONFIG_USER_ONLY
->       if ((env->features[FEAT_7_0_EBX] & CPUID_7_0_EBX_INTEL_PT) &&
->           kvm_enabled()) {
->           KVMState *s = CPU(cpu)->kvm_state;
-> @@ -7179,6 +7221,7 @@ static void x86_cpu_filter_features(X86CPU *cpu, bool verbose)
->               mark_unavailable_features(cpu, FEAT_7_0_EBX, CPUID_7_0_EBX_INTEL_PT, prefix);
->           }
->       }
-> +#endif
-
-This need not be limited to KVM, it can likewise use 
-x86_cpu_get_supported_cpuid.
-
-Paolo
-
->   }
->   
->   static void x86_cpu_hyperv_realize(X86CPU *cpu)
+Thanks,
+Laurent
 
 
