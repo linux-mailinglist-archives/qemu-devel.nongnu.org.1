@@ -2,69 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA2179D348
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9589A79D35E
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:16:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg44d-0003Fs-IQ; Tue, 12 Sep 2023 10:09:03 -0400
+	id 1qg4AE-0007Tz-EG; Tue, 12 Sep 2023 10:14:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg44b-0003FJ-J4
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:09:01 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1qg4A0-0007Qp-Sq
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:14:37 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg44Z-0007b1-Ag
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:09:01 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-52e64bc7c10so7408447a12.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:08:58 -0700 (PDT)
+ id 1qg49y-0000av-Id
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:14:36 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9ad8d0be93aso124737266b.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:14:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694527737; x=1695132537; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694528072; x=1695132872; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=EIEiXpdzEGspw3DS9sVHqabsXzlICPfXZ+rTGaE/EA0=;
- b=ikkR34syp8ftPIxVSNF6mgYQn2si+Saw2dGZmTVQLRoM1Urs7kM2Q5foJs6UilXkzI
- +i5oVR4co6J9GooDRz7lA8RxI7zNSn4z59iXe+IKBmjNGzJTXqiuwOEyddLmbNz5ogoi
- YChpZShVXgVxgUkQq463iaGdTuSUF/OffoO0mZN1yjDwidW9JtQpFbN87YIWsep542UM
- TaLAiJc5NzzXopueoVvBNVXC6azThpBTckvhh8afTxH8EFcO+P1GZ8+7ECv9CYHt1XNT
- Pn3e9EYIcWvSg5HOJ6nggYSbI4eLOfcJRG+aKeYdjMsXxQIlADZmbLJPEMfXu59pOZ6l
- N6iw==
+ bh=PbTg3+2gfAtUMJssZQ4fs8JcnXIDf2UKyBh5zojAQd4=;
+ b=mn62tvYMZHsv/HAJmrlUtFtMKEA16E/wXwRg+QcYhOnoAyhpzvxEJK9SYgu0FyQ/vp
+ duao0QHLV5pVV7c3BRw1LjgqWLreooWTGhKkiX6RjEIxV/KL8FMQGT+RwAsti6m1UCeZ
+ vaY+Jq12ucMjypeIS21pjqnLnh0sbemtxXUuKPYdnsDSpAqoNN8TYdV3knUj9MCQoy1r
+ +7YOwJ6Wb9tbFAenS79M1XgGTpgFPz08bRkGZq3GKVD+3LC2bl/TeStK4DGS6Crw9Qfb
+ avMTfaACtKS0/OpdOmqAyFv5h8/OqtnQPaQoYrZE5webFuqBHRS2yx4SI4qbvvNrftkl
+ 1d+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527737; x=1695132537;
+ d=1e100.net; s=20230601; t=1694528072; x=1695132872;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=EIEiXpdzEGspw3DS9sVHqabsXzlICPfXZ+rTGaE/EA0=;
- b=sJbkfy527k8liLdBF+4omvNjK3ICRLMQ5DxqW32mpAPnP7dsXti718DD1znStztqRd
- I0ZdgukxrxIU6gSctjt39PursLdQv0ArP7uzl2WNQlyqNauA8aP4rKkw1FQmXZgTIAAW
- tBHBJLO9OiJosZqBoZIlS0hl9N7QlAP+FGta5NoCpEtF2GyA0Eac79CrwZ7bFwal7Ur+
- 0qw5QasDR7hvge/RMAaeFmIncprmjTe6hrHAe2O77CFM6HAi4LSEjF5w59U7bEv7n1kB
- nG6cLQDX9ty4C2psB5Pi6EwSw+rWveJofml2ufjakBXpqZ2D72dKVHscy6N0YekSbpur
- fBag==
-X-Gm-Message-State: AOJu0YxFWHuUKP3O6AA1QgQazf+lTIfmziLh7uKLZzsWGwjr4wfhWq+e
- mZbGub7OP7cd5QFhPhGXJwl/1aZ4lQn4dWBrvk6+noCaQluW1krv
-X-Google-Smtp-Source: AGHT+IE4HI68aWKToRNjqRS8X7emj1c9x88fJWOwUmjrnvDVl9YXuRltXz566zXzoyh2uON4t48czDY4Wugl5I2HaTU=
-X-Received: by 2002:a05:6402:2023:b0:523:aef9:3b7b with SMTP id
- ay3-20020a056402202300b00523aef93b7bmr10014140edb.4.1694527737410; Tue, 12
- Sep 2023 07:08:57 -0700 (PDT)
+ bh=PbTg3+2gfAtUMJssZQ4fs8JcnXIDf2UKyBh5zojAQd4=;
+ b=KaqXGmAVZstJ6XwZo1ROAOcxCz7bcgwnB3QF3ZjCdKrK8a9JQJMS3LpTF49Fd+KJLa
+ d+8cpzlbV6raahpNkGI28HxMxPNIRm8uuhK5+E5eDk/tDvkgzscgdZgBYZvipR4bhRsn
+ knUKRv3jJAVS4iwi6c68XLEWrRkrMCzcqSAJkTWDS2boxBcfuxv29IWy8SIUYgrfmVcl
+ LxcmA5X7iBwghMpYDzYiHVEQIMi47xHlSKRKivegcIlUvAxHeuzgEMkzlEjn8vQTZlBQ
+ 6kWu46deLKSqfwhjNo5EnoD3KDliaKX8wJyFbJUPHBdXHAwX8G7ih0Z97ePG6iystmHB
+ KOaw==
+X-Gm-Message-State: AOJu0YzQJB4k2rZ4RZME1uE3QgcV2AaECH4xhH+Yq27nmZzyoEGVqgOJ
+ Y74KssktZcIvw05noHH+nb8qfQW9CXyfSJS78OKdmso6S1ED5lFk
+X-Google-Smtp-Source: AGHT+IE2nYW+NHBVqgqUISTu2Q23HJcdyBSILUaiOUrF/iO/+whaqViNAUVnRqP1u4sLph5OQxlU5W+vefhxl9cH0AI=
+X-Received: by 2002:a17:907:72d1:b0:98e:4f1:f987 with SMTP id
+ du17-20020a17090772d100b0098e04f1f987mr3680915ejc.3.1694528072002; Tue, 12
+ Sep 2023 07:14:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230725113632.2386874-1-peter.maydell@linaro.org>
- <CAFEAcA-DXnmtfKYrOjrSRp=rjdV-Owqm+b0=oB6y-=H=VP9fLg@mail.gmail.com>
-In-Reply-To: <CAFEAcA-DXnmtfKYrOjrSRp=rjdV-Owqm+b0=oB6y-=H=VP9fLg@mail.gmail.com>
+References: <20230801154451.3505492-1-peter.maydell@linaro.org>
+ <CAFEAcA-=HX59+S89oOu1QN_VQwzC2-V5RC=Qmx6wazHDfY9z-A@mail.gmail.com>
+In-Reply-To: <CAFEAcA-=HX59+S89oOu1QN_VQwzC2-V5RC=Qmx6wazHDfY9z-A@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Sep 2023 15:08:44 +0100
-Message-ID: <CAFEAcA8YxuRGp5sfXauWfiTsOE7H6hkbRKp1Pp0ampxsct5hQg@mail.gmail.com>
-Subject: Re: [PATCH for-8.1] hw/rdma/vmw/pvrdma_cmd: Use correct struct in
- query_port()
+Date: Tue, 12 Sep 2023 15:14:21 +0100
+Message-ID: <CAFEAcA9W=XHPz2J=5OGY6msi15NeAgVR9mdc6m1+6K6jeOa8Pg@mail.gmail.com>
+Subject: Re: [PATCH] target/m68k: Add URL to semihosting spec
 To: qemu-devel@nongnu.org
-Cc: Yuval Shaia <yuval.shaia.ml@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Laurent Vivier <laurent@vivier.eu>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,62 +85,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ping^2 for review/pickup by the rdma folks, please?
-
-thanks
--- PMM
-
-On Tue, 29 Aug 2023 at 16:49, Peter Maydell <peter.maydell@linaro.org> wrote:
+On Tue, 29 Aug 2023 at 16:48, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
-> On Tue, 25 Jul 2023 at 12:36, Peter Maydell <peter.maydell@linaro.org> wrote:
+> On Tue, 1 Aug 2023 at 16:44, Peter Maydell <peter.maydell@linaro.org> wrote:
 > >
-> > In query_port() we pass the address of a local pvrdma_port_attr
-> > struct to the rdma_query_backend_port() function.  Unfortunately,
-> > rdma_backend_query_port() wants a pointer to a struct ibv_port_attr,
-> > and the two are not the same length.
+> > The spec for m68k semihosting is documented in the libgloss
+> > sources. Add a comment with the URL for it, as we already
+> > have for nios2 semihosting.
 > >
-> > Coverity spotted this (CID 1507146): pvrdma_port_attr is 48 bytes
-> > long, and ibv_port_attr is 52 bytes, because it has a few extra
-> > fields at the end.
-> >
-> > Fortunately, all we do with the attrs struct after the call is to
-> > read a few specific fields out of it which are all at the same
-> > offsets in both structs, so we can simply make the local variable the
-> > correct type.  This also lets us drop the cast (which should have
-> > been a bit of a warning flag that we were doing something wrong
-> > here).
-> >
-> > Cc: qemu-stable@nongnu.org
 > > Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > > ---
-> > I don't know anything about the rdma code so this fix is based
-> > purely on looking at the code, and is untested beyond just
-> > make check/make check-avocado.
-> > ---
-> >  hw/rdma/vmw/pvrdma_cmd.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> >  target/m68k/m68k-semi.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
 > >
-> > diff --git a/hw/rdma/vmw/pvrdma_cmd.c b/hw/rdma/vmw/pvrdma_cmd.c
-> > index c6ed0259821..d31c1875938 100644
-> > --- a/hw/rdma/vmw/pvrdma_cmd.c
-> > +++ b/hw/rdma/vmw/pvrdma_cmd.c
-> > @@ -129,14 +129,13 @@ static int query_port(PVRDMADev *dev, union pvrdma_cmd_req *req,
-> >  {
-> >      struct pvrdma_cmd_query_port *cmd = &req->query_port;
-> >      struct pvrdma_cmd_query_port_resp *resp = &rsp->query_port_resp;
-> > -    struct pvrdma_port_attr attrs = {};
-> > +    struct ibv_port_attr attrs = {};
+> > diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
+> > index 239f6e44e90..80cd8d70dbb 100644
+> > --- a/target/m68k/m68k-semi.c
+> > +++ b/target/m68k/m68k-semi.c
+> > @@ -15,6 +15,10 @@
+> >   *
+> >   *  You should have received a copy of the GNU General Public License
+> >   *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+> > + *
+> > + *  The semihosting protocol implemented here is described in the
+> > + *  libgloss sources:
+> > + *  https://sourceware.org/git/?p=newlib-cygwin.git;a=blob;f=libgloss/m68k/m68k-semi.txt;hb=HEAD
+> >   */
 > >
-> >      if (cmd->port_num > MAX_PORTS) {
-> >          return -EINVAL;
-> >      }
-> >
-> > -    if (rdma_backend_query_port(&dev->backend_dev,
-> > -                                (struct ibv_port_attr *)&attrs)) {
-> > +    if (rdma_backend_query_port(&dev->backend_dev, &attrs)) {
-> >          return -ENOMEM;
-> >      }
+> >  #include "qemu/osdep.h"
+> > --
 >
-> Ping for review/testing by the rdma folks, please ?
-> Whose tree should this patch go through?
+> Ping for review? I can take this through the arm tree if
+> you don't have an m68k pullreq planned.
+
+Picked up for target-arm.next.
+
+-- PMM
 
