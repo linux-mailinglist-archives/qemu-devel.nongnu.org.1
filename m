@@ -2,71 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AA079D289
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8675379D297
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:45:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg3eg-0004R2-3h; Tue, 12 Sep 2023 09:42:14 -0400
+	id 1qg3h7-0005vV-5D; Tue, 12 Sep 2023 09:44:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg3ed-0004Pw-S6
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:42:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qg3gt-0005uT-JU; Tue, 12 Sep 2023 09:44:32 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg3eb-0001d2-Bg
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:42:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694526128;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yasV1g+NSOv+Pgxjeczwx+kt0tfS31yh4H7/AaBEGMY=;
- b=hkYpYvtJbNaYRH/QkdysjAOhq1X6/J2czYCpCOsBciX1YRBZIg81uUdVs3glj1HTkw11mc
- zjuJPwezds3iCcNWsufejQa1+7k/SWmGX8q1Fk/eLRiBkrLhWBJZvckX1odnPzrvyVDVTE
- k+K2nOkF4KYZfoyleD95EN9BdD4JYeA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-455-H5_YOFeWNACPAWvxzRD84Q-1; Tue, 12 Sep 2023 09:42:06 -0400
-X-MC-Unique: H5_YOFeWNACPAWvxzRD84Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F9BE91D142
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 13:42:06 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3CE2E200CD5A;
- Tue, 12 Sep 2023 13:42:05 +0000 (UTC)
-Date: Tue, 12 Sep 2023 14:42:02 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] tests/qtest/netdev-socket: Raise connection timeout to
- 120 seconds
-Message-ID: <ZQBqqu9NNygDhBAM@redhat.com>
-References: <20230912133310.60583-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qg3gp-0003bj-GU; Tue, 12 Sep 2023 09:44:31 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id EA4EA2127F;
+ Tue, 12 Sep 2023 16:44:26 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id CC6A1278B7;
+ Tue, 12 Sep 2023 16:44:22 +0300 (MSK)
+Message-ID: <e6385fc7-0889-ea16-4fc0-337796814636@tls.msk.ru>
+Date: Tue, 12 Sep 2023 16:44:22 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230912133310.60583-1-stefanha@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Content-Language: en-US
+To: QEMU Developers <qemu-devel@nongnu.org>,
+ qemu-stable <qemu-stable@nongnu.org>
+Cc: Thomas Huth <thuth@redhat.com>, Bin Meng <bmeng@tinylab.org>,
+ Paul Menzel <pmenzel@molgen.mpg.de>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Subject: cherry-picking something to -stable which might require other changes
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,65 +57,157 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 12, 2023 at 09:33:10AM -0400, Stefan Hajnoczi wrote:
-> The test still fails intermittently with a 60 second timeout in the
-> GitLab CI environment. Raise the timeout to 120 seconds.
-> 
->   576/839 ERROR:../tests/qtest/netdev-socket.c:293:test_stream_unix: assertion failed (resp == expect): ("st0: index=0,type=stream,connection error\r\n" == "st0: index=0,type=stream,unix:/tmp/netdev-socket.UW5IA2/stream_unix\r\n") ERROR
->   576/839 qemu:qtest+qtest-sh4 / qtest-sh4/netdev-socket                            ERROR          62.85s   killed by signal 6 SIGABRT
->   >>> MALLOC_PERTURB_=249 QTEST_QEMU_BINARY=./qemu-system-sh4 QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon G_TEST_DBUS_DAEMON=/home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_IMG=./qemu-img /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/build/tests/qtest/netdev-socket --tap -k
->   ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
->   stderr:
->   **
->   ERROR:../tests/qtest/netdev-socket.c:293:test_stream_unix: assertion failed (resp == expect): ("st0: index=0,type=stream,connection error\r\n" == "st0: index=0,type=stream,unix:/tmp/netdev-socket.UW5IA2/stream_unix\r\n")
->   (test program exited with status code -6)
-> 
-> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1881
-> Fixes: 417296c8d858 ("tests/qtest/netdev-socket: Raise connection timeout to 60 seconds")
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Hi!
 
-That bumped the timeout from 5 seconds to 60 seconds to
-cope with intermittent failures, which was a x12
-increases. I'm concerned that it would still be failing
-in largely the same way after that, and possibly we are
-instead hitting a race condition causing setup to fail,
-which masquerades as a timeout.
+I've an interesting situation here which I'd love to discuss.
+Cc'ing authors of commits in question, but this is actually a much more
+general topic than this very specific issue, - so also adding some more
+addresses to Cc.
 
-> ---
->  tests/qtest/netdev-socket.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
-> index 8eed54801f..b2501d72a1 100644
-> --- a/tests/qtest/netdev-socket.c
-> +++ b/tests/qtest/netdev-socket.c
-> @@ -16,7 +16,7 @@
->  #include "qapi/qobject-input-visitor.h"
->  #include "qapi/qapi-visit-sockets.h"
->  
-> -#define CONNECTION_TIMEOUT    60
-> +#define CONNECTION_TIMEOUT    120
->  
->  #define EXPECT_STATE(q, e, t)                             \
->  do {                                                      \
+I tried to cherry-pick a trivial commit from master to stable-7.2, this one:
 
-I'll add
+commit c255946e3df4d9660e4f468a456633c24393d468
+Author: Thomas Huth <thuth@redhat.com>
+Date:   Fri Jul 21 11:47:19 2023 +0200
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+     hw/char/riscv_htif: Fix printing of console characters on big endian hosts
 
-but with the caveat that i'm only 50/50 on whether this is actually
-the right fix. Doesn't hurt to try it, but if 120 seconds still shows
-failures I'd say we're hitting a functional race not a timeout.
+--- a/hw/char/riscv_htif.c
++++ b/hw/char/riscv_htif.c
+@@ -232,7 +232,8 @@ static void htif_handle_tohost_write(HTIFState *s, uint64_t val_written)
+              s->tohost = 0; /* clear to indicate we read */
+              return;
+          } else if (cmd == HTIF_CONSOLE_CMD_PUTC) {
+-            qemu_chr_fe_write(&s->chr, (uint8_t *)&payload, 1);
++            uint8_t ch = (uint8_t)payload;
++            qemu_chr_fe_write(&s->chr, &ch, 1);
+              resp = 0x100 | (uint8_t)payload;
+          } else {
+              qemu_log("HTIF device %d: unknown command\n", device);
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+(it's a whole commit).
+The change is small, obvious and well-understood, but the patch does not
+apply to 7.2.  For it to apply, either hand-editing the patch is necessary,
+or other 2 changes are needed, which are (showing just the relevant parts
+from much larger commits):
 
+commit 753ae97abc7459e69d48712355118fb54268f8cb
+Author: Bin Meng <bmeng@tinylab.org>
+Date:   Thu Dec 29 17:18:17 2022 +0800
+
+     hw/char: riscv_htif: Avoid using magic numbers
+
+--- a/hw/char/riscv_htif.c
++++ b/hw/char/riscv_htif.c
+
++#define HTIF_DEV_CONSOLE        1
+
+              htifstate->env->mtohost = 0; /* clear to indicate we read */
+              return;
+-        } else if (cmd == 0x1) {
++        } else if (cmd == HTIF_CONSOLE_CMD_PUTC) {
+              qemu_chr_fe_write(&htifstate->chr, (uint8_t *)&payload, 1);
+              resp = 0x100 | (uint8_t)payload;
+          } else {
+
+
+and:
+
+commit dadee9e3ce6ee6aad36fe3027eaa0f947358f812
+Author: Bin Meng <bmeng@tinylab.org>
+Date:   Thu Dec 29 17:18:20 2022 +0800
+
+     hw/char: riscv_htif: Use conventional 's' for HTIFState
+
+--- a/hw/char/riscv_htif.c
++++ b/hw/char/riscv_htif.c
+
+              return;
+          } else if (cmd == HTIF_CONSOLE_CMD_PUTC) {
+-            qemu_chr_fe_write(&htifstate->chr, (uint8_t *)&payload, 1);
++            qemu_chr_fe_write(&s->chr, (uint8_t *)&payload, 1);
+              resp = 0x100 | (uint8_t)payload;
+          } else {
+
+
+Both are actually no-ops, - first one defines a bunch of constants, replaces
+"magic values" with these constants, and adds comments; second renames variables.
+Neither of them has any impact on the resulting code, there's no actual code
+changes, just the renames and comments.  But after these 2 patches, the patch
+in question applies cleanly, and it is much more likely that subsequent patches
+in the same file will apply cleanly too.
+
+In this very specific case, I tend to pick the other two patches too, - esp.
+having in mind 7.2 is to be maintained for quite a while (if not only for
+debian), - so long-term it should be easier.  But at the same time it's tempting
+to just back-port the tiny change in question to the older release.
+
+It's the same doubt as I had with reentrancy fixes which landed in 8.1.  When
+backporting other changes (in this case ide/ahci fixes), I either had to fix
+context, or include the reentrancy fixes before applying that ide/ahci fix.
+This one was nice, because I was not sure if I want to include reentrancy fixes
+since the change is quite large, but the ability to apply other patches
+unedited was really appealing.
+
+Another example is https://gitlab.com/qemu-project/qemu/-/issues/1808 - the
+fix needs translator_io_start() which is this:
+
+commit dfd1b81274140c5f511d549f7b3ec7675a6597f4
+Author: Richard Henderson <richard.henderson@linaro.org>
+Date:   Mon May 22 23:08:01 2023 -0700
+
+     accel/tcg: Introduce translator_io_start
+
+but this commit is definitely problematic. The problem is that it isn't only
+introduces this function, but at the same time it changes a lot of code to
+use it, and when trying to apply it to older release, many places conflicts.
+If it were just translator_io_start introduction as the subject says, with
+conversion to this new function follows, things would be much better. But
+the way how it is, I either have to introduce this routine in a stable-7.2-
+specific patch (taken as a part of this dfd1b81274140 change), or replace
+translator_io_start() usage in subsequent changes like the fix for #1808 ,
+neither of which are good.
+
+Quite similar situation was with markings of coroutine_fn etc, - it would
+be nice if, in case when something will be used in many places, the definition
+would come in a separate patch, with usage/conversion coming in the next patch.
+
+
+It's all examples of various interesting things I'm seeing, - there are more.
+Sure it all is a case-by-case basis.
+
+At any rate, I'd love to have some comments about the situation with this trivial
+console printing fix (personally I tend to include 2 previous "no-op" changes even
+if both are somewhat large, instead of back-porting just the fix itself), and about
+general "other" patch back-porting like this.
+
+BTW, dadee9e3 "hw/char: riscv_htif: Use conventional 's' for HTIFState" has an
+issue (which were there before but it hasn't been fixed):
+
+-#define TOHOST_OFFSET1 (htifstate->tohost_offset)
+-#define TOHOST_OFFSET2 (htifstate->tohost_offset + 4)
++#define TOHOST_OFFSET1      (s->tohost_offset)
++#define TOHOST_OFFSET2      (s->tohost_offset + 4)
+
+  /* CPU wants to read an HTIF register */
+  static uint64_t htif_mm_read(void *opaque, hwaddr addr, unsigned size)
+  {
+-    HTIFState *htifstate = opaque;
++    HTIFState *s = opaque;
+      if (addr == TOHOST_OFFSET1) {
+-        return htifstate->env->mtohost & 0xFFFFFFFF;
++        return s->env->mtohost & 0xFFFFFFFF;
+      } else if (addr == TOHOST_OFFSET2) {
+-        return (htifstate->env->mtohost >> 32) & 0xFFFFFFFF;
++        return (s->env->mtohost >> 32) & 0xFFFFFFFF;
+
+these FROMHOST/TOHOST #defines should take an argument (s in this case).
+But this is a different issue.
+
+Thanks!
+
+/mjt
 
