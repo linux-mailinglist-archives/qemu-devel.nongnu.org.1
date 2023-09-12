@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140B679D2EF
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E73E579D2FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:57:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg3rT-0001ZD-3z; Tue, 12 Sep 2023 09:55:28 -0400
+	id 1qg3so-0002Vq-D9; Tue, 12 Sep 2023 09:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qg3rH-0001Yu-Bb
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:55:15 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qg3sF-0002Qv-Np
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:56:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qg3rF-0007HC-52
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:55:15 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qg3sB-0007gc-UV
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:56:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694526908;
+ s=mimecast20190719; t=1694526970;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HWSywQOyXhs+lRTIP8jscfp8x9Qky+DgnTbreZ66TAw=;
- b=ETqq468hH/mbucS76nTmLQg6b9GzzRizLW0YS/MDWE+xx09vJ/WQUy+XhkdRxULPjimu/f
- 75CDliM5zGswjP+7WmZN6QqHJ95E1kJxk2noh0YaN7viBVoLHy0DdNewDqZz2/aodSk6Gf
- 43sK7bHLR7e2OkmwxX3LSrUZP3evMeQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=h1Tqh9lg9MDHgSThzupRVMeYp+41rV7toTnjZQAQVvA=;
+ b=dJrJf33DQPeK76oMlAPqWIlbHGUNmkzQtLE2m26XS4gsJYLjbB0yeVKxXe8luZHEcskNBE
+ 3XAT/T5AH07V3e2j8Q08rMv2yGLL2Anidc6ehJUyRGcr9MVaV50vY8d13PGLUS3kX19Sj5
+ ode/Uu4A1MzBM3wdSHkVOkVvRDPwYfA=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-RxumfD5wPI-rXXzgLa_eKg-1; Tue, 12 Sep 2023 09:55:06 -0400
-X-MC-Unique: RxumfD5wPI-rXXzgLa_eKg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-401b8089339so42048285e9.3
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 06:55:05 -0700 (PDT)
+ us-mta-671-SRxNtEByOWS2gajMCWwGuQ-1; Tue, 12 Sep 2023 09:56:07 -0400
+X-MC-Unique: SRxNtEByOWS2gajMCWwGuQ-1
+Received: by mail-il1-f198.google.com with SMTP id
+ e9e14a558f8ab-34decd3eee3so33569095ab.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 06:56:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694526905; x=1695131705;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HWSywQOyXhs+lRTIP8jscfp8x9Qky+DgnTbreZ66TAw=;
- b=xI7SC3RylXj1Jz8zw4NxrBTxOH92A29eo+sN2hMubQO3w85P6P7kbm3MDxwXSEo4UU
- 5NPltv//D7zjHnCHHAPfDkcGYq/iixp70+WKqygq4zhe2e4g86zWSh1kOKLhElMhHw0C
- YjaHI7wpcGJm/DuH1QD/YIvSVlylZ1m60OeA6YIj4ITz9ndsO2siUbFkUfve1bRZzIDa
- +KC3AoI0venU7MDvun0Bes2xwdsJdDNuPQppdCmeddbvPmKre5e3vr6I4jdQ4OQaxgqJ
- NpeLfcO6hFY+L31M96/NzEj/BYl2b9YXHfWZ3bkHwlOYT/f8Jao7aaQOfN1q93L1LP5B
- hJAw==
-X-Gm-Message-State: AOJu0YyMsxyZFWAWi20mOz2YhhflZbWQhlw3jBo8uQW0PEk3SV2fCpy8
- wNPJccD7kJEauAW/bpSoQw5kHgM749Aode1pfQJ+T09PpYGh+bCTGaFZqACOOnlwF0cfWHEBokF
- vSxqH0X3bza+mI60=
-X-Received: by 2002:a1c:4c0d:0:b0:402:ee9e:ed98 with SMTP id
- z13-20020a1c4c0d000000b00402ee9eed98mr10637163wmf.34.1694526904924; 
- Tue, 12 Sep 2023 06:55:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZBORV/yxg6auhE2uvAkwdsxqjiY9D+NBX8pgKHSwdE+T8DcfIwMBJ89MXEs1TSzTUfsyRng==
-X-Received: by 2002:a1c:4c0d:0:b0:402:ee9e:ed98 with SMTP id
- z13-20020a1c4c0d000000b00402ee9eed98mr10637147wmf.34.1694526904565; 
- Tue, 12 Sep 2023 06:55:04 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- 2-20020a05600c22c200b003fefca26c72sm13133043wmg.23.2023.09.12.06.55.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 06:55:03 -0700 (PDT)
-Message-ID: <5c35d3f5-91ab-4340-0363-04494bb6881b@redhat.com>
-Date: Tue, 12 Sep 2023 15:55:03 +0200
+ d=1e100.net; s=20230601; t=1694526967; x=1695131767;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=h1Tqh9lg9MDHgSThzupRVMeYp+41rV7toTnjZQAQVvA=;
+ b=o/Dg8KmH6p0WYxvXXmbD7JkvhylF0+fGnQcLoO4ve47chhMT8eAJ/KYlmgvnsY6iUI
+ 1aS/AuesUhKSlYhYXd1LY0PCbGuXxHK940lyPn8iMuDLoIWBSzXPvo20eGq/Totz0dF0
+ 0HUPk+z69qlsrgBDwsfps2NNg1/1Xv8fA6mlqNRpel+qiTdRy+YDLq4ESn91ZaOS2GdW
+ Kxm/0j8Axp1NXHBoshpJmZvDDT5JNkVSnhyxhBVSnoeo1aaP2KMem/cdtY2CAGdFX0hA
+ 6moniGfOsmFSL37kr4GCEnIYVjHrv/ui8fPAFgVx17k0wsByOozAnHQmCS1AveMElsoX
+ x0NA==
+X-Gm-Message-State: AOJu0Ywv8FPThqlUc6rZaBBzanyjXrpYrcLI2UyqWK/4qwllRiONyUgG
+ TbJjVneSUZCXEAu8XUpZjKsehiZpbK9ZdjZMUgTzRglfhY3omD+UrOhtH9fXnBK534wo/+2vTs/
+ lmMIiOW2o6/4XnAo=
+X-Received: by 2002:a05:6e02:180b:b0:34f:75cb:7f0 with SMTP id
+ a11-20020a056e02180b00b0034f75cb07f0mr7587949ilv.12.1694526966099; 
+ Tue, 12 Sep 2023 06:56:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/n13ghZ9TG9kXrmrp02I24XrcmAii+Xzw5ew/vN66kTGYfT7zfIv1UvcWR1fn/XGEv2rwhw==
+X-Received: by 2002:a05:6e02:180b:b0:34f:75cb:7f0 with SMTP id
+ a11-20020a056e02180b00b0034f75cb07f0mr7587937ilv.12.1694526965855; 
+ Tue, 12 Sep 2023 06:56:05 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ z5-20020a92da05000000b003492dfb8a02sm3040757ilm.8.2023.09.12.06.56.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Sep 2023 06:56:05 -0700 (PDT)
+Date: Tue, 12 Sep 2023 07:56:03 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Shlomo Pongratz <shlomopongratz@gmail.com>
+Cc: Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>,
+ =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>, qemu-discuss
+ <qemu-discuss@nongnu.org>, QEMU Developers <qemu-devel@nongnu.org>, Eric
+ Auger <eric.auger@redhat.com>
+Subject: Re: Usage of vfio-pci without KVM.
+Message-ID: <20230912075603.116e5d7e.alex.williamson@redhat.com>
+In-Reply-To: <CAHzK-V2JxX7Gur_dDN2JtUbV=vWVaNefcinwLbKfu+AML2pE8A@mail.gmail.com>
+References: <CAHzK-V2a-tW8BQBJNurf0QogTNYH3_oEg7HAfi-dSU_3D626Tw@mail.gmail.com>
+ <be58faf9-8218-e085-7dc3-b9c2858adac8@linaro.org>
+ <20230912065753.37de2393.alex.williamson@redhat.com>
+ <CAHzK-V2JxX7Gur_dDN2JtUbV=vWVaNefcinwLbKfu+AML2pE8A@mail.gmail.com>
+Organization: Red Hat
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PULL 2/3] seabios: turn off CONFIG_APMBIOS for 128k build
-Content-Language: en-US
-To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
-References: <20230912105359.563101-1-kraxel@redhat.com>
- <20230912105359.563101-3-kraxel@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230912105359.563101-3-kraxel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,29 +105,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/12/23 12:53, Gerd Hoffmann wrote:
-> Needed to make the build fit into 128k.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> ---
->   roms/config.seabios-128k | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/roms/config.seabios-128k b/roms/config.seabios-128k
-> index d18c802c46e9..bc3ba7f65bcd 100644
-> --- a/roms/config.seabios-128k
-> +++ b/roms/config.seabios-128k
-> @@ -19,3 +19,4 @@ CONFIG_USE_SMM=n
->   CONFIG_VGAHOOKS=n
->   CONFIG_HOST_BIOS_GEOMETRY=n
->   CONFIG_ACPI_PARSE=n
-> +CONFIG_APMBIOS=n
+On Tue, 12 Sep 2023 16:22:27 +0300
+Shlomo Pongratz <shlomopongratz@gmail.com> wrote:
 
-Why don't we instead drop ``pc-i440fx-1.4`` up to ``pc-i440fx-1.7``, 
-which have been deprecated since 7.0?  We cannot get rid of the 128k ROM 
-because isapc uses it, but we can remove PCI and ACPI from it, and solve 
-the size problem once and for all.
+> Hi,
+> What can I as a user do to honor this requirement.
+> Are you suggesting that I should patch the QEMU code as it is not
+> supported out of the box?
 
-Paolo
+You can reduce the VM memory, for example the mapping is starting at
+1GB so using 2GB for the VM memory size would avoid the issue.
+Understood that this isn't a very practical solution, but neither is
+the original problem of needing to assign a high performance I/O device
+to an emulated VM.  Support for such configurations is not a high
+priority.  Thanks,
+
+Alex
+
+> On Tue, Sep 12, 2023 at 3:58=E2=80=AFPM Alex Williamson
+> <alex.williamson@redhat.com> wrote:
+> >
+> > On Tue, 12 Sep 2023 14:47:41 +0200
+> > Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+> > =20
+> > > Cc'ing VFIO maintainers.
+> > >
+> > > On 12/9/23 14:39, Shlomo Pongratz wrote: =20
+> > > > Hi,
+> > > > I'm running qemu-system-aarch64 (QEMU emulator version 7.0.93) on
+> > > > Ubuntu 20.04.4 LTS i with Intel's i7.
+> > > > I'm trying to pass a Samsung NVME device using vfio-pci. I detached
+> > > > the device from the nvme driver and attached it to the vfio-pci.
+> > > > Using lspci I can see "Kernel driver in use: vfio-pci"
+> > > > In QEMU script I've written "-device vfio-pci,host=3D0000:03:00.0" =
+where
+> > > > 0000:03:00.0 is the device PCI address.
+> > > > I get the error
+> > > > qemu-system-aarch64: -device vfio-pci,host=3D0000:03:00.0: VFIO_MAP=
+_DMA
+> > > > failed: Invalid argument
+> > > > qemu-system-aarch64: -device vfio-pci,host=3D0000:03:00.0: vfio
+> > > > 0000:03:00.0: failed to setup container for group 15: memory listen=
+er
+> > > > initialization failed: Region mach-virt.ram:
+> > > > vfio_dma_map(0x55855c75bf00, 0x40000000, 0x100000000, 0x7f5197e0000=
+0)
+> > > > =3D -22 (Invalid argument
+> > > >
+> > > > My question is vfio-pci is supported with cross architecture? =20
+> >
+> > It does, but reserved address ranges need to be honored.  x86 has a
+> > reserved range at 0xfee00000 for MSI mapping, so the VM address space
+> > needs to be such that it avoids trying to place mappings there.  Thanks,
+> >
+> > Alex
+> > =20
+>=20
 
 
