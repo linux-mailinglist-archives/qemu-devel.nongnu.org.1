@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8B279D6C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 18:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6072F79D6DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 18:53:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg6bV-0004K8-IL; Tue, 12 Sep 2023 12:51:09 -0400
+	id 1qg6cx-0004zO-Co; Tue, 12 Sep 2023 12:52:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg6bT-0004Jv-Ng
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:51:07 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qg6cr-0004zA-Ut
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:52:34 -0400
+Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg6bR-0000Mw-EB
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:51:07 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31dd10c2b8bso5783145f8f.3
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 09:51:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qg6cp-0000cy-Rq
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:52:33 -0400
+Received: by mail-oa1-x30.google.com with SMTP id
+ 586e51a60fabf-1d4c9494b42so3997108fac.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 09:52:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694537464; x=1695142264; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694537549; x=1695142349; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=KWP+oQLBWQrgtWy4H1v3FWKOpWPXfvGrZEeJ0+m2YCQ=;
- b=KmnFm1L3nipAOXgNly4BMBcOEh6GsH6zmZi+QMigP4IDrlKeAU9DgPS2I/NPEl5NUn
- Nv4MF8kmpS0GePnqfTXFpMiMV7KuCV+XWwUcD08M2ndtDwUviv/4RAHJye06VZJgE/ju
- v8hr9BqCo7vwRZHD2Hw7nIDsJ7aNPEJG3wm+5cW4adijIffEvWkq2jN38ZbT1wwEgFmf
- wZev51QVF3den3rX0kKj74bK8xpUmlgKcA98YZS3+MkCcKF2NuQvBT+wCcFa0GXn0qZI
- 9u9S5q/2C5/vwz+TRg1QquMRq0UROwSmk4VDLCp+qkwmZXgUL86Y+1mRhp8jNbIVU9n0
- 8MxA==
+ bh=pDXPtVvcCLWpk8TnXreh7+5uZdxUfruJIOWc8Dr1EHs=;
+ b=TpK9vZG5nPDUs/V2V8fRKEmS30GETSByp0xGXJ+N+HJkbgB5AOEaVeKylpJZkFgzFR
+ OKrRj0Dqhx0Q6mG7u8ONI+sqnnCe2nHhrcrJxuhofKzCHPkCbNC/M79hM8ETM+9xkPqu
+ ZMtLwwa9+eTp1JXPAVS1qWuMVmi/Ac6syMFDJBccl2J+qSUpjYW2xrbwXeXTAZJ8bXan
+ Iw6RbvxgrVY3nbO5kaY+BAERC/7LVjkzMI1+2MnQ3Ygjpxls+mcJPJ8GY5wzvHU7l5X4
+ Z9leCKJgMyvJ5LtW4kUeC5/kOzUVfF/mECLaLHWe7XUXyLOyjPU8kgTRolA006RDtOFz
+ WYOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694537464; x=1695142264;
+ d=1e100.net; s=20230601; t=1694537549; x=1695142349;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=KWP+oQLBWQrgtWy4H1v3FWKOpWPXfvGrZEeJ0+m2YCQ=;
- b=rFQZJ35VKqoB3h+dAc05LhZMWwBAw4+qACmUehUE8x0djJyR+Q+ibjBgFFwW6jHr/n
- Jh76Io6V3lbb8CUckmky6bn2F3y4YsLNkPfH6Zk6I3XC/L9d3F+QMHACuyKCcYe+RPqT
- 1t6TsAPg2wXVoWBGm0avUooJDahaecJAqzIitGGlsnxQeyrL+S+5d2h3ADnZ1QZ+Sc+H
- iPljdlIAblrYFyt50nLoP64msVbvgFx6gruPe7EgC4vu1fSa8hYZ16GotWp6P3U7snLR
- zufguUtpizVbfwR5eh8lSzk5BV7KZyletpdIItyGBzvZWHE0jIPSBHL3LCF6NbbBe4Ng
- pUyw==
-X-Gm-Message-State: AOJu0Yxg1vVek1hSG0OWUBm9tHHcP88mglf1aHCbdEYA14a06BOslbRP
- 83g92cdl6zOCNbJ5Yb5P/hrj9h8ykbCJuSRZIhFxaA==
-X-Google-Smtp-Source: AGHT+IFMgz6Rkf604cPJxnndn4nnjp469wOdux3NB9beIj5UIYZ2AnjNcUkp1fbkiV1rDLPpcbM4iFCsMmGbPPb/sMk=
-X-Received: by 2002:a5d:6704:0:b0:317:e1a2:dccf with SMTP id
- o4-20020a5d6704000000b00317e1a2dccfmr50695wru.62.1694537463641; Tue, 12 Sep
- 2023 09:51:03 -0700 (PDT)
+ bh=pDXPtVvcCLWpk8TnXreh7+5uZdxUfruJIOWc8Dr1EHs=;
+ b=M32LeRiz4jq+rzeP8e1BqAuvv0gb9FswSgC/C28UA4hbTbYaeke9LSLaggzpFIK8Fe
+ f/jMrdPA+puWGSvBEmnNlYAk/qb0yC8Moh562LEGHKPCGW21M4yP/iIQqZWUCfw+Ny+9
+ vpDH4nPiY7u4Mdk4L07/5rrDuONIOeMhP5FiKKTxc4Y2eD/+3Tb/Lt+Qa57NVfqFBG1c
+ 6A29FGM40dWNj2JW+alwPxph52V8+JsupMi+XTCyPdMTjjA3H7FbrY5845OOh35TNMxo
+ qFvEXTjBBlgNJMZ/fOaYNb1lYJD3Tu6EQv81e5dTUsFLkCxMasBXh69cOy0Iicb0g2mQ
+ i8Kg==
+X-Gm-Message-State: AOJu0YzR9oVUoHRE2VR6HgIK0FpxrG9ziipmjFqoMYmCneger0qXcyNY
+ 2Com1EMCTxIznZC5Upg3Nfwl/NzzSHyku4RknU4=
+X-Google-Smtp-Source: AGHT+IHwgH15ypqmCmGeSD6bjFD2KDt6B//qdPtJs3sDb1uVcbtCoQ+D+BUaUNTubYzA4tMBfF3s4L8zq3vfGst1rNA=
+X-Received: by 2002:a05:6870:459e:b0:1d5:e792:e7be with SMTP id
+ y30-20020a056870459e00b001d5e792e7bemr73843oao.47.1694537549571; Tue, 12 Sep
+ 2023 09:52:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230905115000.53587-1-thuth@redhat.com>
- <20230905115000.53587-2-thuth@redhat.com>
-In-Reply-To: <20230905115000.53587-2-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Sep 2023 17:50:52 +0100
-Message-ID: <CAFEAcA8pKuFso_boUxzAsAktegT4DJ9U2q26RmiqYK5TWKTinw@mail.gmail.com>
-Subject: Re: [risu PATCH v2 1/4] s390x: Add basic s390x support to the C code
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, 
- Richard Henderson <richard.henderson@linaro.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
+References: <20230906190141.1286893-1-stefanha@redhat.com>
+ <20230906190141.1286893-3-stefanha@redhat.com>
+ <ZQCTiTULn6rSDJSf@redhat.com>
+In-Reply-To: <ZQCTiTULn6rSDJSf@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 12 Sep 2023 12:52:17 -0400
+Message-ID: <CAJSP0QUJWEBQOAbKRKGe9RRmMwGVmdvLs415nUX+_vs0__3Hrg@mail.gmail.com>
+Subject: Re: [RFC 2/3] rcu: add drain_call_rcu_co() API
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Eduardo Habkost <eduardo@habkost.net>, pbonzini@redhat.com, 
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
+ Maxim Levitsky <mlevitsk@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x432.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::30;
+ envelope-from=stefanha@gmail.com; helo=mail-oa1-x30.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -87,54 +91,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 5 Sept 2023 at 12:50, Thomas Huth <thuth@redhat.com> wrote:
+On Tue, 12 Sept 2023 at 12:37, Kevin Wolf <kwolf@redhat.com> wrote:
 >
-> With these changes, it is now possible to compile the "risu" binary
-> for s390x hosts.
+> Am 06.09.2023 um 21:01 hat Stefan Hajnoczi geschrieben:
+> > call_drain_rcu() has limitations that make it unsuitable for use in
+> > qmp_device_add().
 >
-> Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> This sounds a bit vague with only alluding to some unnamed limitations.
+> I assume that you mean the two points you add to rcu.txt. If so, maybe
+> it would be better to add a reference to that in the commit message.
 
+Yes, exactly. I will add a reference to the commit message.
 
+>
+> > Introduce a new coroutine version of drain_call_rcu()
+> > with the same functionality but that does not drop the BQL. The next
+> > patch will use it to fix qmp_device_add().
+> >
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>
+> I don't understand the reasoning here. How does yielding from the
+> coroutine not effectively release the BQL, too? It's just that you won't
+> have explicit code here, but the mainloop will do it for you while
+> waiting for new events.
+>
+> Is this about not dropping the BQL specifically in nested event loops,
+> but letting the coroutine wait until we return to the real main loop
+> where dropping the BQL is hopefully not a problem?
 
-> +/* reginfo_init: initialize with a ucontext */
-> +void reginfo_init(struct reginfo *ri, ucontext_t *uc)
-> +{
-> +    int i;
-> +
-> +    memset(ri, 0, sizeof(*ri));
-> +
-> +    ri->faulting_insn = *((uint32_t *) uc->uc_mcontext.psw.addr);
+Yes.
 
-Here we extract the faulting instruction, assuming it to
-be a 32-bit insn starting at uc_mcontext.psw.addr...
-
-> +    ri->psw_mask = uc->uc_mcontext.psw.mask;
-> +    ri->psw_addr = uc->uc_mcontext.psw.addr - image_start_address;
-> +
-> +    for (i = 0; i < 16; i++) {
-> +        ri->gregs[i] = uc->uc_mcontext.gregs[i];
-> +    }
-> +
-> +    memcpy(&ri->fpregs, &uc->uc_mcontext.fpregs, sizeof(fpregset_t));
-> +}
-
-> +void advance_pc(void *vuc)
-> +{
-> +    /*
-> +     * Note: The PSW address already points to the next instruction
-> +     * after we get a SIGILL, so we must not advance it here!
-> +     */
-> +    // ucontext_t *uc = (ucontext_t *) vuc;
-> +    // uc->uc_mcontext.psw.addr += 4;
-
-...but here we say that psw.addr points to the instruction
-*after* the faulting one.
-
-These don't seem like they can both be correct?
-
-> +}
-
-thanks
--- PMM
+Stefan
 
