@@ -2,90 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF5E79DC48
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 00:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BBF79DC78
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 01:08:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgCGG-0003jg-Ie; Tue, 12 Sep 2023 18:53:36 -0400
+	id 1qgCTe-0007x9-8G; Tue, 12 Sep 2023 19:07:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qgCGE-0003jY-Kq
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:53:34 -0400
-Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qgCTc-0007x1-6x
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:07:24 -0400
+Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qgCGC-0005ho-As
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:53:34 -0400
-Received: by mail-pg1-x52c.google.com with SMTP id
- 41be03b00d2f7-573ccec985dso4809996a12.2
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 15:53:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qgCTZ-0002DQ-Pl
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:07:23 -0400
+Received: by mail-oa1-x31.google.com with SMTP id
+ 586e51a60fabf-1c504386370so4179679fac.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 16:07:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694559211; x=1695164011;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=A57yz7xcMBeQsshuuqtk0BsI8T/zjYKVefsAXKS5vf0=;
- b=GC+KqL/L+QcvUmNvLunztkKp2SGBmbsRiJV1QlNdQ1Cx6RvAyhDQJBDem4IuLtsWr0
- 0AXxLK/1GFCjUXIxSuhMUDEOEUmKyslpwTHAk9TtdhqK5YaA1xs3Em0MnYGrNNs0K5EF
- um3WT9Os/W1q3dR2aMApiyHdxM8wYdlBRtAKMzw0EW3UKlJp1S1d66EQ5QQNOqD8xl8S
- XhmEs+VliavWgKABF2PsCdyr7SkpiLEPtZapB51ternq81JPIxE12V4AJ1dG7t1eOfaA
- TaqBNbdUFdhQdz7a3OBOzThM0eluOZOpIqOsdcbM5BHkAyIKW1Xr9YGPzdPzWHxJZt3a
- LTbQ==
+ d=gmail.com; s=20221208; t=1694560040; x=1695164840; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=hNxavf4uSggFasx9glYjIOk2EPVVAKLZsZqqPfBn0M8=;
+ b=PCBKe/A0Dht88Ob7yamOzXB6r/yefubz3tja+DCKeS7JIGLfuruQLjHHQcgI5tL+91
+ c0oKSZ1W4Hr1u437N11h2kdmBrujbs3C/nodvOvH8bdy1Ylp2+YnpZLGaM6NPCVa3mW5
+ 8H9D809XDp4OhNDKWgHTS4OKQu6WC7XFr4SqKaUld9FpsUGrQ8/Sy9pGKHmfgFkWUXaD
+ cOtAE7cbJfa3TWASD+KVeuQe7y4PF4oWUxENbwIU4CxvSVpKDjgkGbgVhrz4WGSKI+Vq
+ mlFy1ELKW2o0wJ38qFe4F8CtJ43NOhaj9WcFGIOQnDGhGvReQ6I5jrv3ttIQe3e245pt
+ F/Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694559211; x=1695164011;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=A57yz7xcMBeQsshuuqtk0BsI8T/zjYKVefsAXKS5vf0=;
- b=iap19ifsrMZcVg+iu19mp0xAIAzchk+AelGPATzIDsrctF+8OFI50rcDaANW3X+KJq
- 8qBS5w/Le9djtcEpufSwxbQFtYzhIw6cLEeRZS4IaxtxfAYq9lVS5BU4FcTRrnQ2ds9M
- 5bF5LolXWqn6Gaj3SXVvU414yFIVzd1xlETeN0pKcmbzLWXNhTm4jE3OtmQQ8d1Aw3Nq
- VxRua/uXZpHK9TGiTOzo66IIKHE6WGk6MZH1nqCJ6zYx3R8gqr4ZAy2b1NrYK3Fvpvdz
- gix7UMmlJcwPitFWlmH+l9ZW76xWlX+zdH1Q715580cXjRbf1hygd0TgclRZLv76bv5h
- v5Bw==
-X-Gm-Message-State: AOJu0Yy+xpUaOqfjBakc2LIbhAtO3vRU6obknAVjqwW+QaZGc4UnTWSS
- WgNxWc6G6WUNcuzXuH91lCPPEA==
-X-Google-Smtp-Source: AGHT+IFEjvkXkKmPGRFt2QtkoRLpX7Q+P/PosRlRivIGS4lYuBbsBAPvhPHlWqK2HoZqHk/S1bs6TA==
-X-Received: by 2002:a17:90b:4a08:b0:273:e24e:36b9 with SMTP id
- kk8-20020a17090b4a0800b00273e24e36b9mr687577pjb.8.1694559210797; 
- Tue, 12 Sep 2023 15:53:30 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- 19-20020a17090a031300b00262d9b4b527sm121084pje.52.2023.09.12.15.53.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 15:53:30 -0700 (PDT)
-Message-ID: <0f21607d-8b01-4378-8934-92be1066fdf7@daynix.com>
-Date: Wed, 13 Sep 2023 07:53:27 +0900
+ d=1e100.net; s=20230601; t=1694560040; x=1695164840;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=hNxavf4uSggFasx9glYjIOk2EPVVAKLZsZqqPfBn0M8=;
+ b=DW+ar84BaBU7+WGdH7GKeH8uPi36y1uCGhPyPQUlPylHla5L0O9nvbwKiNkWnEREHj
+ jXoKHcXZo+C1IWP3/qGoboBCFwg9Mhs6C876azboF3iAjqzLGRkQL1cD2ZMyOoTEvm8Z
+ CCR0GyToVWW1KjVJRFb5pYsUYksLftzSlUW8mPZbKLPNQsusVTOWLhmQ8nQdXjzuc+By
+ Xx+qtu53JiwqSjTtvTljJiaQXT1ETMcDObQpJyzyKjX/agnQBx2mGorkQZs/M7TZNnY3
+ U3Q+mwobHNmCiZB31Di4D6IOCuEg6jekoNdJ163Wc5JBJIe5+QTv7s28yZSeGYoXrJxT
+ GcHQ==
+X-Gm-Message-State: AOJu0YxyVdJPp5xfpnR7P2BokZOyj3q2s+fBM2CFrA5Qwb2NtKVI0Lbz
+ Qz0G3/GdldXuSuk3WNS07y5E4Zlf76bOtKsukF/MNAoj8Lo=
+X-Google-Smtp-Source: AGHT+IGOOecwPIQFQzW+71TKUjPePGbSP8I840j0wh0hUXcbclu3W2sO2xD/vyU06ldNRa3ibnMUzgvcTaCZEzFpiDo=
+X-Received: by 2002:a05:6870:d58e:b0:1d4:cebb:63ba with SMTP id
+ u14-20020a056870d58e00b001d4cebb63bamr950695oao.1.1694560038338; Tue, 12 Sep
+ 2023 16:07:18 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 14/18] cpu: Call plugin hooks only when ready
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-References: <20230912071206.30751-1-akihiko.odaki@daynix.com>
- <20230912071206.30751-15-akihiko.odaki@daynix.com>
- <1f64f982-95fc-786d-1217-856a62335eed@linaro.org>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <1f64f982-95fc-786d-1217-856a62335eed@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::52c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x52c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 12 Sep 2023 19:07:06 -0400
+Message-ID: <CAJSP0QXukZuLRF0x1Yt06n2rbeOMAAG0SRsx4Z_QTTro9vMFTw@mail.gmail.com>
+Subject: CI container image interference between staging and staging-7.2
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ "Daniel P. Berrange" <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2001:4860:4864:20::31;
+ envelope-from=stefanha@gmail.com; helo=mail-oa1-x31.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,41 +82,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/12 17:46, Philippe Mathieu-Daudé wrote:
-> Hi Akihiko,
-> 
-> On 12/9/23 09:12, Akihiko Odaki wrote:
->> The initialization and exit hooks will not affect the state of vCPU,
-> 
-> What about:
-> 
->   qemu_plugin_vcpu_init_hook()
->     -> plugin_cpu_update__locked()
->        -> plugin_cpu_update__async()
->           -> bitmap_copy(cpu->plugin_mask, ...)
->              tcg_flush_jmp_cache(cpu)
->              -> qatomic_set(&cpu->tb_jmp_cache->array[i].tb, ...)
-> 
-> ?
-
 Hi,
+TL;DR Michael: Please check that the staging-7.2 branch has Dan's
+commit e28112d00703abd136e2411d23931f4f891c9244 ("gitlab: stable
+staging branches publish containers in a separate tag").
 
-bitmap_copy(cpu->plugin_mask, ...) is contained in the plugin 
-infrastructure and shouldn't matter.
+I couldn't explain a check-cfi-x86_64 failure
+(https://gitlab.com/qemu-project/qemu/-/jobs/5072006964), so I reran
+build-cfi-x86_64 to see if it has an effect on its dependencies.
 
-The TCG is not started filling caches so tcg_flush_jmp_cache() is 
-effectively nop though that is not clearly stated.
+To my surprise the rerun of build-cfi-x86_64 failed:
+https://gitlab.com/qemu-project/qemu/-/jobs/5072087783
 
-By the way, I found plugin_cpu_update__locked() will not synchronously 
-call plugin_cpu_update__async() after this change because cpu->created 
-will be always true for the system emulation. For user space emulation, 
-it has already been broken and it *always* synchronously calls the 
-function since cpu->created is not set.
+The first run was successful:
+https://gitlab.com/qemu-project/qemu/-/jobs/5071532799
 
-I wrote a change to replace cpu->created with DEVICE(cpu)->realized and 
-added to the base patch series ("[PATCH v3 03/12] plugins: Check if vCPU 
-is realized" in "[PATCH v3 00/12] gdbstub and TCG plugin improvements").
+Diffing the output shows that the software versions are different. The
+successful run has Python 3.11.5 and meson 1.0.1 while the failed run
+has Python 3.10.8 and meson 0.63.3.
 
-Regards,
-Akihiko Odaki
+I think staging and staging-7.2 pipelines are interfering with each
+other. My understanding is that build-cfi-x86_64 uses
+registry.gitlab.com/qemu-project/qemu/qemu/fedora:latest and that
+should be built from fedora:38. Python 3.10.8 is what Fedora 35 uses.
+The staging-7.2 branch's fedora.docker file uses fedora:35.
+
+Stefan
 
