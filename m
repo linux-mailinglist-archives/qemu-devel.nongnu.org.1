@@ -2,79 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE6779D30A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A129879D314
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:02:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg3vF-0004KZ-QV; Tue, 12 Sep 2023 09:59:21 -0400
+	id 1qg3x8-0005sw-UC; Tue, 12 Sep 2023 10:01:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qg3vE-0004K0-6B
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:59:20 -0400
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qg3wt-0005qw-Vc; Tue, 12 Sep 2023 10:01:04 -0400
+Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qg3vB-00010c-PW
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:59:19 -0400
-Received: by mail-qt1-x831.google.com with SMTP id
- d75a77b69052e-412091b9035so38713401cf.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 06:59:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qg3wr-00033g-R6; Tue, 12 Sep 2023 10:01:03 -0400
+Received: by mail-oi1-x22d.google.com with SMTP id
+ 5614622812f47-3aa1446066aso3881226b6e.1; 
+ Tue, 12 Sep 2023 07:00:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694527156; x=1695131956; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VAkym61TqbJicVlsUALVULd7bT11BCn03Z83m05NlXc=;
- b=FjB2YU8Po/RP4hR2hOBwUQodNWCDKRdKryDnQEr9OOo0Q+I3kA7F2OYAc9DXhSJpxG
- L/MfSijK1bj/z45HdEUhv0d3wEfgQEwSjQR4Zs50YsUN18ii/txlCEbOnVMs2crKp6Ii
- oIEbFrihIwdXR1GDjX2go+5iALaIvi8+AJQVRByhuS3iMMsRWEdJwXv77tMLG3falkvc
- NxNxgzWTsnjTxI9AwSiVz0Z2sXgHL8+x47+UZydQJL0tqZl7m02Q4tQkUO9Sbg4UpDjo
- nzj7wTP5sZVWl83OCAUsbGxuNKUHd1Y9CTjDCU+2/Pv0U2UOxOqGnGFS3iwAZNJsj4p0
- qbkQ==
+ d=gmail.com; s=20221208; t=1694527258; x=1695132058; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=6VNrOlTbRQ8r/IqS0kHMTPARGr9ZW04VY49rjvJqiqo=;
+ b=EiV6RQyszaa+vEz/cTkPVMapmqJ8MkwmqjSF/8Cu5Wk4QXrMoCdTrhjT1l0q6ZcSoX
+ oqIYWipOWQCKqEOoW8og1psSLiO2O5w62vawUNwtkNpJ2yPoZB8gpCx1kMnK6omSML0Z
+ 5Wv/g02ZKSo/g7DVmHKnwhNMSxe1tQni71TcwlTbfgcarAPQXlucDFY7tDfZQQkPMUAp
+ TLtxfMiUYBjhv11Aa7YVm8UY2bZcKBDV3ahXnHkFMNLl7EmSHpcdiQPsrph0oSq7LLcq
+ 5FTjWmSN4FwDO440d98SrctDaTa+hnGpjIRdyo0l1hLKatMbdk06c9cbjsSolFMN/uS4
+ fH1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527156; x=1695131956;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VAkym61TqbJicVlsUALVULd7bT11BCn03Z83m05NlXc=;
- b=uyH5eHx18N76/+C+TmZQXaTtakgYpwlSb1DJXhxH9FyVsT6h+bS/UcXwzGnR76kxFQ
- fvzIyXXTpUKI/d2E/K107cbc0UBqb6VSe3k4WSCJsBJEMFvKb1/unBs0KcBMlMhFTsVd
- hDF4yHhpfHPLz1jYKVbArMmOYYlUb3vdyo/iEaWHz9T99o9yOL7MZMm789dJfLPm8web
- E7mwgDzsqsyih08vUev3/4uEIPNzJhqT9b2t1hq7ToBfLcUmj/IR5fyLApCHJTGdt6Ze
- 8LzGGNiOAkPS4Zlh7xwSDNn/M1n/IUKsEGCA0peZb4dQZBKsYiUfuKpElTjHWOXO4KIV
- pnWw==
-X-Gm-Message-State: AOJu0YyjSkkvvUGYEZSHSpJlWtlhCTQs8BhhsMFiwYEWTtqA1RgWKzqk
- Dml+gZDJusUByFAdoJxuuAhIgFu+c2c5WqPjVUA=
-X-Google-Smtp-Source: AGHT+IFIpcSaFhnJ6fB+m7b8RWCUrFIIzdxNgmbAL6WoXxOoBzoQtZTK8NU7uzSbF5bpxjG4UOIRjOhnReBCdpprhwo=
-X-Received: by 2002:a05:622a:68c5:b0:415:2011:9890 with SMTP id
- ic5-20020a05622a68c500b0041520119890mr6699133qtb.40.1694527156625; Tue, 12
- Sep 2023 06:59:16 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694527258; x=1695132058;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6VNrOlTbRQ8r/IqS0kHMTPARGr9ZW04VY49rjvJqiqo=;
+ b=fUm9w0DgqbKt7QAvDRs8ZN5KMpPR2l8Tfq00qQ4Z/+nrSaVGciheiEevi1q4x1vDWJ
+ kV6/mhLRuuF+B/SPrkIrR77GtmxbwNZBsstP62Sskcj/bLaUBi9hRQS7hMJCjQYQ5kaJ
+ l9SLg1+27282JC3HXuKwiTXxuAg9syOmSGzisbhhQV0v9NWZegm/ds83K9GjSHxai+tN
+ j2Ze6PdgVRaEgElTHhuYJafc6frgL8Tnf90xYg/3Sp3O8mYqsJaizFXdM7msZkjbrT1b
+ 0mC8jEU3WtMpXM6Z7YvRe4YRW6UykD0KCA1s7HP+Cmw4qO8wNiyIXKzUmAro/mrsTiar
+ WJkw==
+X-Gm-Message-State: AOJu0YwpK2SpIt/TcJNnG5lB81irp0gpVu4S6dA579uBc+yKnW4FceDn
+ LMW6bpzrq2bIXKaPxSphw9YRe/Qt7yCl94lVNHk=
+X-Google-Smtp-Source: AGHT+IEog0SDpNXWp5JvoromWCYMwxKym5LWkyNIwbVQypC+cUpeDHSCT9kQkwOcAK3LlL+1jY+48ED11sDZ9H+ZZQM=
+X-Received: by 2002:a05:6870:e0c6:b0:1bf:d8a:b5bf with SMTP id
+ a6-20020a056870e0c600b001bf0d8ab5bfmr16229954oab.36.1694527258512; Tue, 12
+ Sep 2023 07:00:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230829003629.410-1-gurchetansingh@chromium.org>
- <ZO/6JXmYm/lW9dSZ@amd.com>
- <CAAfnVBmxaAbEX-0wVVwE94cKrGtoCRWKv58X73P+_hKM8-_hkQ@mail.gmail.com>
-In-Reply-To: <CAAfnVBmxaAbEX-0wVVwE94cKrGtoCRWKv58X73P+_hKM8-_hkQ@mail.gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 12 Sep 2023 17:59:04 +0400
-Message-ID: <CAJ+F1CJwATzG8by1tZucq15KbDHfE9OJEGq1jZ71UHivoTRsXQ@mail.gmail.com>
-Subject: Re: [PATCH v13 0/9] rutabaga_gfx + gfxstream
-To: Gurchetan Singh <gurchetansingh@chromium.org>
-Cc: Huang Rui <ray.huang@amd.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "akihiko.odaki@gmail.com" <akihiko.odaki@gmail.com>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, 
- "shentey@gmail.com" <shentey@gmail.com>, "hi@alyssa.is" <hi@alyssa.is>, 
- "ernunes@redhat.com" <ernunes@redhat.com>, 
- "manos.pitsidianakis@linaro.org" <manos.pitsidianakis@linaro.org>,
- "philmd@linaro.org" <philmd@linaro.org>, 
- "mark.cave-ayland@ilande.co.uk" <mark.cave-ayland@ilande.co.uk>,
- Gerd Hoffmann <kraxel@redhat.com>
+References: <e6385fc7-0889-ea16-4fc0-337796814636@tls.msk.ru>
+In-Reply-To: <e6385fc7-0889-ea16-4fc0-337796814636@tls.msk.ru>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 12 Sep 2023 10:00:46 -0400
+Message-ID: <CAJSP0QUfF64wWQbbAqKpeUWGEOz6jB2ZHkmJhaRXfRDFLpD_kw@mail.gmail.com>
+Subject: Re: cherry-picking something to -stable which might require other
+ changes
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ qemu-stable <qemu-stable@nongnu.org>, 
+ Thomas Huth <thuth@redhat.com>, Bin Meng <bmeng@tinylab.org>, 
+ Paul Menzel <pmenzel@molgen.mpg.de>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
+ envelope-from=stefanha@gmail.com; helo=mail-oi1-x22d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,84 +88,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Gurchetan
+When I backport patches into RHEL, the general process I follow is:
+1. For context conflicts, just adjust the patch to resolve them.
+2. For real dependencies, backport the dependencies, if possible.
+3. If backporting the dependencies is not possible, think of a
+downstream-only solution. This should be rare.
 
-On Wed, Sep 6, 2023 at 5:22=E2=80=AFAM Gurchetan Singh
-<gurchetansingh@chromium.org> wrote:
->
->
->
-> On Wed, Aug 30, 2023 at 7:26=E2=80=AFPM Huang Rui <ray.huang@amd.com> wro=
-te:
->>
->> On Tue, Aug 29, 2023 at 08:36:20AM +0800, Gurchetan Singh wrote:
->> > From: Gurchetan Singh <gurchetansingh@google.com>
->> >
->> > Changes since v12:
->> > - Added r-b tags from Antonio Caggiano and Akihiko Odaki
->> > - Removed review version from commit messages
->> > - I think we're good to merge since we've had multiple people test and=
- review this series??
->> >
->> > How to build both rutabaga and gfxstream guest/host libs:
->> >
->> > https://crosvm.dev/book/appendix/rutabaga_gfx.html
->> >
->> > Branch containing this patch series:
->> >
->> > https://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v13
->> >
->> > Antonio Caggiano (2):
->> >   virtio-gpu: CONTEXT_INIT feature
->> >   virtio-gpu: blob prep
->> >
->> > Dr. David Alan Gilbert (1):
->> >   virtio: Add shared memory capability
->> >
->> > Gerd Hoffmann (1):
->> >   virtio-gpu: hostmem
->>
->> Patch 1 -> 4 are
->>
->> Acked-and-Tested-by: Huang Rui <ray.huang@amd.com>
->
->
-> Thanks Ray, I've rebased https://gitlab.com/gurchetansingh/qemu/-/commits=
-/qemu-gfxstream-v13 and added the additional acks in the commit message.
->
-> UI/gfx maintainers, since everything is reviewed and there hasn't been an=
-y additional review comments, may we merge the gfxstream + rutabaga_gfx ser=
-ies?  Thank you!
->
->
+People make different backporting decisions (just like structuring
+patch series). It can be a matter of taste.
 
-Packaging aemu and gfxstream is a bit problematic. I have some WIP
-Fedora packages.
-
-AEMU:
-- installs files under /usr/include/host-common and
-/usr/include/snapshot. Can this be moved under /usr/include/aemu
-instead?
-- builds only static versions of libaemu-host-common.a and
-liblogging-base.a (distros don't like static libs much)
-- could liblogging-base(.a,.so,..) also have "aemu" name in it?
-- libaemu-base.so is not versioned
-- I can't find a release tarball, nor the (v0.1.2) release tag
-- could have a README file
-
-I am not very familiar with cmake, so it's not obvious how to make the
-required changes. Would you like me to open an issue (where?) or try
-to make some patches?
-
-gfxstream:
-- libgfxtream_backend.so is not versioned
-- I can't find a release tarball, nor the (v0.1.2) release tag
-
-
-(packaging is important so we can build the new code in CI too!)
-
-thanks
-
---=20
-Marc-Andr=C3=A9 Lureau
+Stefan
 
