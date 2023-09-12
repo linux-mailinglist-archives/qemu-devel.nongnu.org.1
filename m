@@ -2,94 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765B579D177
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6962779D0AB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg2vY-0004G3-2N; Tue, 12 Sep 2023 08:55:36 -0400
+	id 1qg27O-00070x-5E; Tue, 12 Sep 2023 08:03:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <osandov@osandov.com>)
- id 1qfxhp-0007CX-DF
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 03:21:05 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qg27J-0006zv-5h
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:03:41 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <osandov@osandov.com>)
- id 1qfxhj-0000zu-WF
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 03:21:04 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1bf1935f6c2so36495635ad.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 00:20:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qg27G-0007lh-CJ
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:03:40 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3a88ff732aeso3486947b6e.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 05:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1694503257; x=1695108057;
- darn=nongnu.org; 
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=t8gkAD2Tox161Vy4sOVhwXN6LH6F1WwZDOdwPXWAuHM=;
- b=W34U3ZKHMweS+I1sqy7tjZRafLmxAmYDFvOiJstYGlRmFh+a/A9rvOR1RmYeiMcLXa
- 7H6RCg7cEcYK/URKqX0v2FTW/GhiQfzhJCsVRRuUthb8KUZjqiYcEOCiRO5TxhfReVSW
- X1k53nlk/wWrYpTDhRgPpPf2Jgqjix12b7cRxpl0XimuUFyrUI55qBkCADhtbSZY6aow
- cdGV+uJFJkshfZHVzUwqi2MIgPjc1k5iekhpmgEpvNHZuJ1z2TAbiVQ7lgr1LCDiqQxO
- W+oNj8SSxWDh7r0h0CbJ+bq8E7OaZeE9aicrJAqbTzxOhTMkR0ORdbC4w4t+TlZ63vEG
- Zfmg==
+ d=ventanamicro.com; s=google; t=1694520217; x=1695125017; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fVbNVTbGXA7gLCxs/ebjUGIrWrRNl9I4tZuk03OnHZ8=;
+ b=VVF9Alq6PjbXe2XBcL/VwNcpgct+yjmJjCfIDNqAA2L5seopw6VgvZMmURL/GlAgEB
+ q+mwIUsLgSAeYxSbxf2hoA4YbzStYQOFWyqWFbOgFd+MginG5Agzzc3pkiWo4cPjD4DO
+ 67VuVdtHxH2FbLUs+5/OBgr0VC1IP9W+E4/rsxJudXFWK+PUQG8bQJ4AeAE6qoxXRqBp
+ q74gkfnjjwizIS4qPLxR1j70cgrBsE4RIdh3G8S03xUy+VUKClI3HvzOyJEmZaGy061r
+ QTJbALeCOEfTBrq0il7I3iqehC+Rmn6l+RWL29OKmdVr6hV+wc039p2HC2nj/nYY+CFG
+ HNgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694503257; x=1695108057;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1694520217; x=1695125017;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t8gkAD2Tox161Vy4sOVhwXN6LH6F1WwZDOdwPXWAuHM=;
- b=rWV1PvBPUdBy6jDIOMr4EPwc55ntst7kGEJoYLZ+E7SHYCmJyNuYOTai8/d7RaUscL
- cg9HSvnxQDLMQhxMG41WKmw8HJx+KcPz7VQKczrXKEWPm+WEuwNnxn5Gb6dZ5N7P2s2o
- DqC1XqNrbvRV7mUCw3BVSvXDO6e400uXEfIXXODuV1Pg+J5MNyTwATNMkEGXicdc/lPe
- K2N+4uJkt40EAz5Vg6k9zsbaQF6mVqEBJBqNvwXLReVM8A6EwMIhItZPzcVcYllD4/AD
- SXoAUF7gY6dFqOl4fCg1Z86srEiWWnZvsRa5oNbCAmrHPSu2WuJi7VbG9cZLJf8+H+iF
- NI3A==
-X-Gm-Message-State: AOJu0YwVntG66tB6NTzOwdD7pXoyl/jnhZt9UNhIAvUqyxrmW78Gu/fs
- m5QrN+ts39j9nMtmiu4u4P6+7Q==
-X-Google-Smtp-Source: AGHT+IEEPxTunVCEfBdJY4FTl5TagWG77q1m8GyOEI9y62BgvvtEN5tmjPf+I2VX82jCaw5oLI9G/w==
-X-Received: by 2002:a17:902:d501:b0:1c3:22a9:8643 with SMTP id
- b1-20020a170902d50100b001c322a98643mr2499690plg.31.1694503256818; 
- Tue, 12 Sep 2023 00:20:56 -0700 (PDT)
-Received: from telecaster ([2601:602:a300:3bc0::2928])
+ bh=fVbNVTbGXA7gLCxs/ebjUGIrWrRNl9I4tZuk03OnHZ8=;
+ b=nav7uW66DMHyM/8UDSU8idwLCUp15GmIKYY5paWvTUQEPKrftHfsYDU4+tRkSs3Ldq
+ dU4rvv9sHD1YexcEd5IQFT4UGHhUSzuxXFrhqM+ED8VFSKI9RlXiF8JDfe8lO7G6PPJP
+ eTv07rJwYrFVbkzr+8C+ILhFF1qfzoX73d8lLOXq7dsMOBB3LvpUW/7EzAEoYCZWpbBW
+ qzkrW8/XvFiWCgIQ9ZJKG2gX5ehKdUW/bA1+kQimH0zP68QeORXYyjFLaHvXV7NwMGYa
+ Sb65pc60VjKaEtw/8FIWpLJ6cdE/n5LroBkiTxjoxKjmnQiSaVJfOptr1CwX6AxaTbs6
+ xRBw==
+X-Gm-Message-State: AOJu0YyfswX4V6abIuXuBBBomKs4VPJP+1JdVMHJaqQzrErC2k7+i0QY
+ JkZiiGqQy2wIDKLrBc62sH7Khg==
+X-Google-Smtp-Source: AGHT+IEhbpbsqLsa01adLUkKwLSqe7tOnauYikMCLo4jAoNYcDLJn8y+Qcum70PvH7h2T9QApke/qQ==
+X-Received: by 2002:a05:6808:144c:b0:3ab:3a20:e8a3 with SMTP id
+ x12-20020a056808144c00b003ab3a20e8a3mr1296811oiv.28.1694520216399; 
+ Tue, 12 Sep 2023 05:03:36 -0700 (PDT)
+Received: from [192.168.68.107] ([177.9.182.82])
  by smtp.gmail.com with ESMTPSA id
- d13-20020a170902c18d00b001a5260a6e6csm7649534pld.206.2023.09.12.00.20.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 00:20:56 -0700 (PDT)
-Date: Tue, 12 Sep 2023 00:20:55 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
-Cc: Stephen Brennan <stephen.s.brennan@oracle.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "Daniel P. Berrange" <berrange@redhat.com>, qemu-devel@nongnu.org,
- linux-debuggers@vger.kernel.org, joao.m.martins@oracle.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened
- format when necessary
-Message-ID: <ZQARV6fJ0N0QyTk1@telecaster>
-References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
- <20230717163855.7383-3-stephen.s.brennan@oracle.com>
- <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
- <87edl4d9wi.fsf@oracle.com> <87fs4aha4t.fsf@oracle.com>
- <CAJ+F1CKCdy3J8AD9EGvVO+CU6-yFPrLZ2Lum1SDgdj_kghFdQw@mail.gmail.com>
- <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
+ v20-20020a4ae6d4000000b00565d41ba4d0sm3234917oot.35.2023.09.12.05.03.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Sep 2023 05:03:36 -0700 (PDT)
+Message-ID: <32308056-2b74-cc9f-3f97-564929f0483a@ventanamicro.com>
+Date: Tue, 12 Sep 2023 09:03:32 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 10/19] target/riscv: remove kvm-stub.c
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Andrew Jones <ajones@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, Michael Tokarev <mjt@tls.msk.ru>
+References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+ <20230906091647.1667171-11-dbarboza@ventanamicro.com>
+ <f30d8589-8b59-2fd7-c38c-3f79508a4ac6@linaro.org>
+ <20230911-0ff170da2e7063d0eb82ded9@orel>
+ <20230911-df4609b7aca0b1fe00fb2e17@orel>
+ <8c4158b7-6c44-aec1-e25a-4804df70af49@ventanamicro.com>
+ <0aa9885e-f56f-d72d-1d41-773661974746@ventanamicro.com>
+ <e095221f-9d15-df10-3aa3-31310dad57f9@linaro.org>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <e095221f-9d15-df10-3aa3-31310dad57f9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=osandov@osandov.com; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Tue, 12 Sep 2023 08:55:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,59 +104,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 12, 2023 at 10:34:04AM +0400, Marc-André Lureau wrote:
-> Hi
-> 
-> On Wed, Aug 23, 2023 at 2:03 PM Marc-André Lureau
-> <marcandre.lureau@gmail.com> wrote:
-> >
-> > Hi
-> >
-> > On Wed, Aug 23, 2023 at 4:31 AM Stephen Brennan
-> > <stephen.s.brennan@oracle.com> wrote:
-> > >
-> > > Stephen Brennan <stephen.s.brennan@oracle.com> writes:
-> > > > Marc-André Lureau <marcandre.lureau@gmail.com> writes:
-> > > >> I am a bit reluctant to change the dump format by default. But since the
-> > > >> flatten format is more "complicated" than the "normal" format, perhaps we
-> > > >> can assume all users will handle it.
-> > > >>
-> > > >> The change is probably late for 8.1 though..
-> > > >
-> > > > Thank you for your review and testing!
-> > > >
-> > > > I totally understand the concern about making the change by default. I
-> > > > do believe that nobody should notice too much because the normal format
-> > > > should be easier to work with, and more broadly compatible. I don't know
-> > > > of any tool which deals with the flattened format that can't handle the
-> > > > normal format, except for "makedumpfile -R" itself.
-> > > >
-> > > > If it's a blocker, I can go ahead and add a new flag to the command to
-> > > > enable the behavior. However there are a few good justifications not to
-> > > > add a new flag. I think it's going to be difficult to explain the
-> > > > difference between the two formats in documentation, as the
-> > > > implementation of the formats is a bit "into the weeds". The libvirt API
-> > > > also specifies each format separately (kdump-zlib, kdump-lzo,
-> > > > kdump-snappy) and so adding several new options there would be
-> > > > unfortunate for end-users as well.
-> > > >
-> > > > At the end of the day, it's your judgment call, and I'll implement it
-> > > > how you prefer.
-> > >
-> > > I just wanted to check back on this to clarify the next step. Are you
-> > > satisfied with this and waiting to apply it until the right time? Or
-> > > would you prefer me to send a new version making this opt-in?
-> > >
-> >
-> > Nobody seems to raise concerns. If it would be just me, I would change
-> > it. But we should rather be safe, so let's make it this opt-in please.
-> >
-> >
-> 
-> Alex, Daniel, Thomas .. Do you have an opinion on changing the dump format?
 
-Chiming in as a user here, but I'd much prefer for the normal format to
-be the default. The last time that I tried dump-guest-memory with the
-kdump format, it took me awhile to figure out what format it was
-actually using since libkdumpfile didn't understand it.
+
+On 9/12/23 08:15, Philippe Mathieu-Daudé wrote:
+> On 12/9/23 12:48, Daniel Henrique Barboza wrote:
+>> On 9/11/23 09:23, Daniel Henrique Barboza wrote:
+>>> On 9/11/23 06:04, Andrew Jones wrote:
+>>>> On Mon, Sep 11, 2023 at 09:49:06AM +0200, Andrew Jones wrote:
+>>>>> On Wed, Sep 06, 2023 at 12:23:19PM +0200, Philippe Mathieu-Daudé wrote:
+>>>>>> On 6/9/23 11:16, Daniel Henrique Barboza wrote:
+>>>>>>> This file is not needed for some time now. All the stubs implemented in
+>>>>>>> it (kvm_riscv_reset_vcpu() and kvm_riscv_set_irq()) are wrapped in 'if
+>>>>>>> kvm_enabled()' blocks that the compiler will rip it out in non-KVM
+>>>>>>> builds.
+>>>>>>>
+>>>>>>> We'll also add non-KVM stubs for all functions declared in kvm_riscv.h.
+>>>>>>> All stubs are implemented as g_asserted_not_reached(), meaning that we
+>>>>>>> won't support them in non-KVM builds. This is done by other kvm headers
+>>>>>>> like kvm_arm.h and kvm_ppc.h.
+>>>>>>
+>>>>>> Aren't them also protected by kvm_enabled()? Otherwise shouldn't they?
+>>>>>
+>>>>> Yes, I think your earlier suggestion that we always invoke kvm functions
+>>>>> from non-kvm files with a kvm_enabled() guard makes sense.
+>>>>>
+>>>>>>
+>>>>>>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>>>>>> ---
+>>>>>>>    target/riscv/kvm-stub.c  | 30 ------------------------------
+>>>>>>>    target/riscv/kvm_riscv.h | 31 +++++++++++++++++++++++++++++++
+>>>>>>>    target/riscv/meson.build |  2 +-
+>>>>>>>    3 files changed, 32 insertions(+), 31 deletions(-)
+>>>>>>>    delete mode 100644 target/riscv/kvm-stub.c
+>>>>>>
+>>>>>>
+>>>>>>> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+>>>>>>> index f6501e68e2..c9ecd9a967 100644
+>>>>>>> --- a/target/riscv/kvm_riscv.h
+>>>>>>> +++ b/target/riscv/kvm_riscv.h
+>>>>>>> @@ -19,6 +19,7 @@
+>>>>>>>    #ifndef QEMU_KVM_RISCV_H
+>>>>>>>    #define QEMU_KVM_RISCV_H
+>>>>>>> +#ifdef CONFIG_KVM
+>>>>>>>    void kvm_riscv_cpu_add_kvm_properties(Object *obj);
+>>>>>>
+>>>>>> At a glance kvm_riscv_cpu_add_kvm_properties() is.
+>>>>>> Keep the prototype declared (before #ifdef CONFIG_KVM) is enough for the
+>>>>>> compiler to elide it.
+>>>>>
+>>>>> Yes, when building without CONFIG_KVM enabled it's actually better to not
+>>>>> have the stubs, since the compiler will catch an unguarded kvm function
+>>>>> call (assuming the kvm function is defined in a file which is only built
+>>>>> with CONFIG_KVM).
+>>>>>
+>>>>> Unfortunately we don't have anything to protect developers from forgetting
+>>>>> the kvm_enabled() guard when building a QEMU which supports both TCG and
+>>>>> KVM. We could try to remember to put 'assert(kvm_enabled())' at the start
+>>>>> of each of these types of functions. It looks like mips does that for a
+>>>>> couple functions.
+>>>>
+>>>> Eh, ignore this suggestion. We don't need asserts, because we have CI. As
+>>>> long as our CI does a CONFIG_KVM=n build and all KVM functions are in kvm-
+>>>> only files, then we'll always catch calls of KVM functions which are
+>>>> missing their kvm_enabled() guards.
+>>>
+>>> So, to sum up, get rid of the 'g_assert_not_reached()' stubs since they should
+>>> be cropped by well placed kvm_enabled() calls in the code and, if that's not
+>>> the case, a non-KVM build failure will let us know that there's something wrong.
+>>>
+>>> I can live with that. It's less code to deal with in the header as well. Thanks,
+>>
+>>
+>> I changed my mind after talking with Michael in this thread:
+>>
+>> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg02567.html
+>>
+>>
+>> There are differences in how gcc and clang (and probably other toolchains) behave
+>> when choosing to crop code gated with 'if (kvm_enabled && something)'. It is
+>> better to have stubs for all KVM functions to avoid relying on compiler behavior.
+>>
+>> We should keep the stubs in this patch as is. Thanks,
+> 
+> Don't get stuck at this; get your series merged, we'll have a look
+> at that later, this is not important.
+
+
+Ok, so we'll simplify here and avoid the unneeded stubs for now as we initially discussed,
+while making sure we're not breaking builds with --enable-debug and clang. After this
+is merged we can reevaluate the best approach to take.
+
+
+Thanks,
+
+
+Daniel
+
+> 
+> Regards,
+> 
+> Phil.
 
