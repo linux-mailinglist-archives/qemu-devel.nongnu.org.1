@@ -2,79 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E6F79CECF
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E6779CED1
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:49:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg0wx-0001Ov-H9; Tue, 12 Sep 2023 06:48:55 -0400
+	id 1qg0x4-0002Je-BI; Tue, 12 Sep 2023 06:49:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg0wv-0001Dt-8u
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:48:53 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qg0x2-00029t-PY
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:49:00 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg0wr-0003Ve-Lq
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:48:52 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-57354433a7dso3005299eaf.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 03:48:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qg0wy-0003X7-05
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:49:00 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-5735282d713so3350506eaf.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 03:48:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694515728; x=1695120528; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ut4GhdLuVGLYwwhJYgj2JulBz7ypsLoyPJNAe5KGtHo=;
- b=T7tFOJuPM6pPUB02mc5+BzqceeXhSUM98eTKUI82qtPmRXVm4pDzoI/UcyExY2DlV1
- mrdRZQyenjcOvN0ICT75AIem7NTCirikPaG8gKUxUZWNUAtX7tuJFsgSosH0LuHyBYsc
- jq3458hbjD/ojcV6bFYJcAaMwo5k8cTTUIeDBaYUJBAsJJXiAi2fOyVeTX7ZApzS8QXO
- 1dTPQQWAHGozE2Nx/l2cqRPMmMHE+t61U+eHWhJ+8n6FEE8/TdmV1pKlBNak9JfSsOT/
- rB0RVGAK9cN+wBQi7dqfYm+/qCHaRJQ8X/fP3mGoWrcwYqgjfXgxVqhdSSFB0P4PlrJ/
- apWA==
+ d=ventanamicro.com; s=google; t=1694515735; x=1695120535; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mwj6qqRsZ/Ci5WyhvdCBsKYRj6VSFOQ9XuZ9cbwYrUE=;
+ b=WLQumVgH5faxeWQaDIYhFaeCpqlGagWxX6Rlt/PUifqvnb0z1X9j7mDlVOdiLeKisy
+ zbhx6bFzz+oQ9sxxJfJszsBfLyqDUN4DTRKF4nlBlte+7qGueLrlzs4Mq01p1Nr0gBEu
+ pOsWhxCTWzksDwCW9Km4Ro20WkgPrbqe58O8RF3AnewZq2AblkpymNdIjP6J5uJxtKv2
+ l7LhSTXsrvJIBACKbI8d5/T9htySzc4NVr4+VoeE5ireHVmMfNWxH3IhlfRBPls4/ehN
+ Uk7pC5pXn2SJ0+aBRla8Zzlcd6XQxKi+xYUJlWK8z7hGz5tc9Mo7N0tmgwabV6Mx6p7P
+ MCng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694515728; x=1695120528;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ut4GhdLuVGLYwwhJYgj2JulBz7ypsLoyPJNAe5KGtHo=;
- b=wAHVZ5UY7U1F8SAkGYtR9DhboEheEx7/CpGsOauVy8NQh4MeuUeOqB0qdrum1dwiaP
- nyAbKriQKnDfkwjw+nSRYHhgditw/nqWYxiUzUTmR1s8ucS9E62NboYmRTVVdzaVfl7c
- q0ntpw3sOiUvJ0d3MXdGy5O8VZ4KDEr6oO2U6Vk9Yq8Y7eXsUQrbVeZPrHcbg873CzC8
- ZVARxJMX2qbjfFSs1qJMYfXWQ1o8Ot89rxi7qIzn7pE6oJGAnbguK1htibByKQLjcl9w
- AjxnIzXX7otOn30fkNPCyD0v4MK/VJYTh74Y6QA6DtWTKn5FI4I9iGUo7Gza139O/s3g
- 5pfw==
-X-Gm-Message-State: AOJu0YxtujYM46rLDxsSYzZdTI+ZFaIjBY7wyZht0yLtJzpAqR92FIei
- jIdnIgV3Ox5IuCPX9isuiaPPzo0EyvHVCuqI7MM=
-X-Google-Smtp-Source: AGHT+IEtadzc8eOaarlnAJsQXclY69cWq5KdflxBAca2Wb9z4tjXLnBO+YvwCuB+FupoQyt+WZ/4Ayz+P/sbMmG1bfY=
-X-Received: by 2002:a05:6870:42d1:b0:1c8:d72a:d6b4 with SMTP id
- z17-20020a05687042d100b001c8d72ad6b4mr12790990oah.2.1694515728295; Tue, 12
- Sep 2023 03:48:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694515735; x=1695120535;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mwj6qqRsZ/Ci5WyhvdCBsKYRj6VSFOQ9XuZ9cbwYrUE=;
+ b=ft0AoIxx/ZC0iSN8coXPh/VfKeYqskj3z61itlCX2v6fqiFRGRd33fQVPN1F9+p0Ol
+ HdXwVxHikHa9TBUOy5AL8c/DmeGelyiIoc5IktuazxEB/n0CLjlqwOdxG4usdWqq24Ce
+ bZAoqLhHS422qhP1Cdx41YG3NHb03InjnnG6ESNhPe6OrHidNqaP5os9qvqYtNqTKbz3
+ s60H0CKYQi7MIxdlAxy0tJr/KG/du2qlvSJfPUzak7y+zcJ1oa13sNIk+XA06ZyuCRBS
+ XSEEcDDehxwPF2gjzHQjG4vjF2l/U6n28sNURqpJeUwr4wnEzG8QwfxKVFM0xmMqIVDY
+ HzQQ==
+X-Gm-Message-State: AOJu0YyW16wtnePUdBzz37U15fDuhdsLjCrcYqnHz02BIZZAmlO0m1xF
+ 2zAnTXuPTRhCI4cA6rpxT+eWfdqZDsRMoTzQjeQ=
+X-Google-Smtp-Source: AGHT+IETCjvxGUWv/qY9/lek5A+DtCVjQyT5yAr0CmNpv9/CtnrxfetCJEJFZtzxubRsQd/tUKKupQ==
+X-Received: by 2002:a05:6870:911f:b0:1bf:dc25:a5aa with SMTP id
+ o31-20020a056870911f00b001bfdc25a5aamr14699355oae.39.1694515734821; 
+ Tue, 12 Sep 2023 03:48:54 -0700 (PDT)
+Received: from [192.168.68.107] ([177.9.182.82])
+ by smtp.gmail.com with ESMTPSA id
+ o23-20020a056871079700b001d58f6e31e4sm3536098oap.41.2023.09.12.03.48.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Sep 2023 03:48:54 -0700 (PDT)
+Message-ID: <0aa9885e-f56f-d72d-1d41-773661974746@ventanamicro.com>
+Date: Tue, 12 Sep 2023 07:48:50 -0300
 MIME-Version: 1.0
-References: <20230911215435.4156314-1-stefanha@redhat.com>
- <430ea775-678f-e5ac-d548-6556dcf54e06@linaro.org>
-In-Reply-To: <430ea775-678f-e5ac-d548-6556dcf54e06@linaro.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 12 Sep 2023 06:48:36 -0400
-Message-ID: <CAJSP0QUiTQVuq3OhVcZmHjmChDJtVFhH8YmEZQmHBfTAWhESwQ@mail.gmail.com>
-Subject: Re: [PATCH] vdpa: fix gcc cvq_isolated uninitialized variable warning
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc30.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 10/19] target/riscv: remove kvm-stub.c
+Content-Language: en-US
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@rivosinc.com, Michael Tokarev <mjt@tls.msk.ru>
+References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+ <20230906091647.1667171-11-dbarboza@ventanamicro.com>
+ <f30d8589-8b59-2fd7-c38c-3f79508a4ac6@linaro.org>
+ <20230911-0ff170da2e7063d0eb82ded9@orel>
+ <20230911-df4609b7aca0b1fe00fb2e17@orel>
+ <8c4158b7-6c44-aec1-e25a-4804df70af49@ventanamicro.com>
+In-Reply-To: <8c4158b7-6c44-aec1-e25a-4804df70af49@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc31.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,93 +102,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Sept 2023 at 02:19, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.o=
-rg> wrote:
->
-> On 11/9/23 23:54, Stefan Hajnoczi wrote:
-> > gcc 13.2.1 emits the following warning:
-> >
-> >    net/vhost-vdpa.c: In function =E2=80=98net_vhost_vdpa_init.constprop=
-=E2=80=99:
-> >    net/vhost-vdpa.c:1394:25: error: =E2=80=98cvq_isolated=E2=80=99 may =
-be used uninitialized [-Werror=3Dmaybe-uninitialized]
-> >     1394 |         s->cvq_isolated =3D cvq_isolated;
-> >          |         ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
-> >    net/vhost-vdpa.c:1355:9: note: =E2=80=98cvq_isolated=E2=80=99 was de=
-clared here
-> >     1355 |     int cvq_isolated;
-> >          |         ^~~~~~~~~~~~
-> >    cc1: all warnings being treated as errors
-> >
-> > Cc: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > Cc: Michael S. Tsirkin <mst@redhat.com>
-> > Cc: Jason Wang <jasowang@redhat.com>
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> >   net/vhost-vdpa.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> > index 34202ca009..7eaee841aa 100644
-> > --- a/net/vhost-vdpa.c
-> > +++ b/net/vhost-vdpa.c
-> > @@ -1352,7 +1352,7 @@ static NetClientState *net_vhost_vdpa_init(NetCli=
-entState *peer,
-> >       VhostVDPAState *s;
-> >       int ret =3D 0;
-> >       assert(name);
-> > -    int cvq_isolated;
-> > +    int cvq_isolated =3D 0;
-> >
-> >       if (is_datapath) {
-> >           nc =3D qemu_new_net_client(&net_vhost_vdpa_info, peer, device=
-,
->
-> Alternatively:
->
-> -- >8 --
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 34202ca009..218fe0c305 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -1352,13 +1352,12 @@ static NetClientState
-> *net_vhost_vdpa_init(NetClientState *peer,
->       VhostVDPAState *s;
->       int ret =3D 0;
->       assert(name);
-> -    int cvq_isolated;
->
->       if (is_datapath) {
->           nc =3D qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
->                                    name);
->       } else {
-> -        cvq_isolated =3D vhost_vdpa_probe_cvq_isolation(vdpa_device_fd,
-> features,
-> +        int cvq_isolated =3D
-> vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, features,
->                                                         queue_pair_index
-> * 2,
->                                                         errp);
->           if (unlikely(cvq_isolated < 0)) {
-> @@ -1391,7 +1390,7 @@ static NetClientState
-> *net_vhost_vdpa_init(NetClientState *peer,
->
->           s->vhost_vdpa.shadow_vq_ops =3D &vhost_vdpa_net_svq_ops;
->           s->vhost_vdpa.shadow_vq_ops_opaque =3D s;
-> -        s->cvq_isolated =3D cvq_isolated;
-> +        s->cvq_isolated =3D true;
 
-This is incorrect because the return value of
-vhost_vdpa_probe_cvq_isolation() is -errno for errors, 0 for no cvq
-isolation, and 1 for cvq isolation. A variable is still needed to
-distinguish between no cvq isolation and cvq isolation.
 
->
-> ---
->
-> Whichever you prefer:
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
->
+On 9/11/23 09:23, Daniel Henrique Barboza wrote:
+> 
+> 
+> On 9/11/23 06:04, Andrew Jones wrote:
+>> On Mon, Sep 11, 2023 at 09:49:06AM +0200, Andrew Jones wrote:
+>>> On Wed, Sep 06, 2023 at 12:23:19PM +0200, Philippe Mathieu-Daudé wrote:
+>>>> On 6/9/23 11:16, Daniel Henrique Barboza wrote:
+>>>>> This file is not needed for some time now. All the stubs implemented in
+>>>>> it (kvm_riscv_reset_vcpu() and kvm_riscv_set_irq()) are wrapped in 'if
+>>>>> kvm_enabled()' blocks that the compiler will rip it out in non-KVM
+>>>>> builds.
+>>>>>
+>>>>> We'll also add non-KVM stubs for all functions declared in kvm_riscv.h.
+>>>>> All stubs are implemented as g_asserted_not_reached(), meaning that we
+>>>>> won't support them in non-KVM builds. This is done by other kvm headers
+>>>>> like kvm_arm.h and kvm_ppc.h.
+>>>>
+>>>> Aren't them also protected by kvm_enabled()? Otherwise shouldn't they?
+>>>
+>>> Yes, I think your earlier suggestion that we always invoke kvm functions
+>>> from non-kvm files with a kvm_enabled() guard makes sense.
+>>>
+>>>>
+>>>>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>>>>> ---
+>>>>>    target/riscv/kvm-stub.c  | 30 ------------------------------
+>>>>>    target/riscv/kvm_riscv.h | 31 +++++++++++++++++++++++++++++++
+>>>>>    target/riscv/meson.build |  2 +-
+>>>>>    3 files changed, 32 insertions(+), 31 deletions(-)
+>>>>>    delete mode 100644 target/riscv/kvm-stub.c
+>>>>
+>>>>
+>>>>> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+>>>>> index f6501e68e2..c9ecd9a967 100644
+>>>>> --- a/target/riscv/kvm_riscv.h
+>>>>> +++ b/target/riscv/kvm_riscv.h
+>>>>> @@ -19,6 +19,7 @@
+>>>>>    #ifndef QEMU_KVM_RISCV_H
+>>>>>    #define QEMU_KVM_RISCV_H
+>>>>> +#ifdef CONFIG_KVM
+>>>>>    void kvm_riscv_cpu_add_kvm_properties(Object *obj);
+>>>>
+>>>> At a glance kvm_riscv_cpu_add_kvm_properties() is.
+>>>> Keep the prototype declared (before #ifdef CONFIG_KVM) is enough for the
+>>>> compiler to elide it.
+>>>
+>>> Yes, when building without CONFIG_KVM enabled it's actually better to not
+>>> have the stubs, since the compiler will catch an unguarded kvm function
+>>> call (assuming the kvm function is defined in a file which is only built
+>>> with CONFIG_KVM).
+>>>
+>>> Unfortunately we don't have anything to protect developers from forgetting
+>>> the kvm_enabled() guard when building a QEMU which supports both TCG and
+>>> KVM. We could try to remember to put 'assert(kvm_enabled())' at the start
+>>> of each of these types of functions. It looks like mips does that for a
+>>> couple functions.
+>>
+>> Eh, ignore this suggestion. We don't need asserts, because we have CI. As
+>> long as our CI does a CONFIG_KVM=n build and all KVM functions are in kvm-
+>> only files, then we'll always catch calls of KVM functions which are
+>> missing their kvm_enabled() guards.
+> 
+> So, to sum up, get rid of the 'g_assert_not_reached()' stubs since they should
+> be cropped by well placed kvm_enabled() calls in the code and, if that's not
+> the case, a non-KVM build failure will let us know that there's something wrong.
+> 
+> I can live with that. It's less code to deal with in the header as well. Thanks,
+
+
+I changed my mind after talking with Michael in this thread:
+
+https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg02567.html
+
+
+There are differences in how gcc and clang (and probably other toolchains) behave
+when choosing to crop code gated with 'if (kvm_enabled && something)'. It is
+better to have stubs for all KVM functions to avoid relying on compiler behavior.
+
+We should keep the stubs in this patch as is. Thanks,
+
+
+Daniel
+
+
+> 
+> 
+> Daniel
+> 
+> 
+>>
+>> Thanks,
+>> drew
 
