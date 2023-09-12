@@ -2,83 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6EF79C14B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 02:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A89479C278
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 04:14:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfrW8-0007Hu-1R; Mon, 11 Sep 2023 20:44:36 -0400
+	id 1qfstH-0001GO-3i; Mon, 11 Sep 2023 22:12:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qfrW6-0007Hc-IX
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:44:34 -0400
-Received: from mail-ot1-x333.google.com ([2607:f8b0:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qfrW4-0000H3-AW
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:44:34 -0400
-Received: by mail-ot1-x333.google.com with SMTP id
- 46e09a7af769-6c0f3f24c27so674605a34.2
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 17:44:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694479469; x=1695084269; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JDj6F2QGCGRwgb3/P2Jxn6cxLh+sKtMvE8mZjIgL+DM=;
- b=fdQZPcwzEUoiyFUkFfEM3crt0M6mKNISP/F5nzYorKAhWi9Ca5cDUnhvytg7oHjCvC
- RsS00hlGG0U8BVyF60M0Bc475NV5GVu1Q0GEeS+wk41UPDtDkrw3Wys3ji4X//wzh4xv
- IZ/BPnxu9qibz0COP3VC/pfUeV0NgEV4ax95GShQoghKLC6Aa1mh90qHOG//klt9p2Tm
- bktFSKfmj3iZG0K5ST9H/ZYPFgyIKdzgnRGfPs/wP05mh/LEipWg7tZCeYrT7DyXTvW+
- H57MfNclsHVoIDjhAJ28kn38rES8t/L0e65Pndj2sX8sQqvI7GylDkzv3FWiy/IZg4RP
- QhFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694479469; x=1695084269;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JDj6F2QGCGRwgb3/P2Jxn6cxLh+sKtMvE8mZjIgL+DM=;
- b=E6gCI/zwZStQ+OSJXBGPz4xuksqmi6wlzivc9/lR9kgDd5vRtpRFh3Ac87oOD/vOVK
- bqbRtz6X8vUznVKt+sW7Lijn6gMIWYlWx96j8RxA4r5/HYoBm8B4ypUhStb/OWKKkbsz
- V6rrqeZdKflutbjeq+nZHccMcut+iVR0+UZdf0UaUVyy4YZjAkDdkXcWF748jzZvInuJ
- szvUEk4SviFccyYIOTTfXh4vHk1QzP31ITaq6irFewqgqEP8LqSmrXh5D8d/N5IFOht7
- 7VtssRtRGy9kJI2G4T0en1tFYebK2UKMn7I0bZWY78kGu8H7bGahoefccCL2V+saFKHp
- Qa4w==
-X-Gm-Message-State: AOJu0Yz0U9d4uy/deSaUEN7UWx3pj2CD7Yyf/N8cqQd4j0WdwB0D/GJh
- 8pZSYWpWGOQCuPG7Ti0hbV5KjQ==
-X-Google-Smtp-Source: AGHT+IG4TdgLHJF+WTlyw2BDcwlTqizN6yr1vczG43UiKyspVR/SH3KVMiAl34CLExNztgGEEDaVCA==
-X-Received: by 2002:a05:6359:8086:b0:134:c279:c82a with SMTP id
- re6-20020a056359808600b00134c279c82amr8839239rwb.29.1694479469404; 
- Mon, 11 Sep 2023 17:44:29 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- l20-20020a639854000000b005579f12a238sm2256800pgo.86.2023.09.11.17.44.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 17:44:28 -0700 (PDT)
-Message-ID: <818ac358-dc21-34eb-7c79-e8c254bb2f12@linaro.org>
-Date: Mon, 11 Sep 2023 17:44:27 -0700
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qfst5-0001Ev-GM
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:24 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qfssy-0005QR-UH
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:21 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxnuvuyP9k3jElAA--.4740S3;
+ Tue, 12 Sep 2023 10:11:58 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8DxfSPqyP9kCnh4AA--.42014S2; 
+ Tue, 12 Sep 2023 10:11:55 +0800 (CST)
+From: xianglai li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: "Salil Mehta" <salil.mehta@opnsrc.net>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Bibo Mao <maobibo@loongson.cn>, Xianglai li <lixianglai@loongson.cn>
+Subject: [PATCH v2 00/10] Adds CPU hot-plug support to Loongarch
+Date: Tue, 12 Sep 2023 10:11:37 +0800
+Message-Id: <cover.1694433326.git.lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 0/7] target/arm: hwcaps updates, FEAT_HBC
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230911135340.1139553-1-peter.maydell@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230911135340.1139553-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::333;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x333.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8DxfSPqyP9kCnh4AA--.42014S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,16 +72,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/11/23 06:53, Peter Maydell wrote:
-> Peter Maydell (6):
->    linux-user/elfload.c: Correct SME feature names reported in cpuinfo
->    linux-user/elfload.c: Add missing arm and arm64 hwcap values
->    linux-user/elfload.c: Report previously missing arm32 hwcaps
->    target/arm: Update AArch64 ID register field definitions
->    target/arm: Update user-mode ID reg mask values
->    target/arm: Implement FEAT_HBC
+Hello everyone, We refer to the implementation of ARM CPU
+Hot-Plug to add GED-based CPU Hot-Plug support to Loongarch.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+The first 4 patches are changes to the QEMU common code,
+including adding GED support for CPU Hot-Plug, updating
+the ACPI table creation process, and adding qdev_disconnect_gpio_out_named
+and cpu_address_space_destroy interfaces to release resources
+when CPU un-plug.
 
-r~
+For the modification of the public part of the code, we refer to the
+arm-related patch, and the link address of the corresponding patch is
+as follows:
+https://lore.kernel.org/all/20200613213629.21984-1-salil.mehta@huawei.com/
+
+In order to respect the work of "Salil Mehta", we will rebase the first
+4 patches in the final patch, which are referenced here to ensure that
+the loongarch cpu hotplug can work properly.
+
+The last 6 patches are Loongarch architecture-related,
+and the modifications include the definition of the hook
+function related to the CPU Hot-(UN)Plug, the allocation
+and release of CPU resources when CPU Hot-(UN)Plug,
+the creation process of updating the ACPI table,
+and finally the custom switch for the CPU Hot-Plug.
+
+V2:
+- Fix formatting and spelling errors
+- Split large patches into smaller patches
+  - Split the original patch
+    <<Add basic CPU hot-(un)plug support for Loongarch>> into
+    <<Added CPU topology support for Loongarch>>
+    <<Optimize loongarch_irq_init function implementation >>
+    <<Add basic CPU hot-(un)plug support for Loongarch>>.
+  - Split the original patch
+    <<Update the ACPI table for the Loongarch CPU>> into
+    <<Add generic event device for Loongarch>>
+    <<Update the ACPI table for the Loongarch CPU>>
+- Added loongarch cpu topology calculation method.
+- Change the position of the cpu topology patch.
+- Change unreasonable variable and function names.
+
+
+
+xianglai li (10):
+  Update ACPI GED framework to support vcpu hot-(un)plug
+  Update CPUs AML with cpu-(ctrl)dev change
+  make qdev_disconnect_gpio_out_named() public
+  Introduce the CPU address space destruction function
+  Added CPU topology support for Loongarch
+  Optimize loongarch_irq_init function implementation
+  Add basic CPU hot-(un)plug support for Loongarch
+  Add support of *unrealize* for Loongarch cpu
+  Add generic event device for Loongarch
+  Update the ACPI table for the Loongarch CPU
+
+ .../devices/loongarch64-softmmu/default.mak   |   1 +
+ docs/system/loongarch/virt.rst                |  31 ++
+ hw/acpi/acpi-cpu-hotplug-stub.c               |  15 +
+ hw/acpi/cpu.c                                 |  27 +-
+ hw/acpi/generic_event_device.c                |  33 ++
+ hw/core/gpio.c                                |   4 +-
+ hw/i386/acpi-build.c                          |   2 +-
+ hw/loongarch/acpi-build.c                     |  33 +-
+ hw/loongarch/generic_event_device_loongarch.c |  36 ++
+ hw/loongarch/meson.build                      |   2 +-
+ hw/loongarch/virt.c                           | 424 +++++++++++++++---
+ include/exec/cpu-common.h                     |   8 +
+ include/hw/acpi/cpu.h                         |   5 +-
+ include/hw/acpi/cpu_hotplug.h                 |  10 +
+ include/hw/acpi/generic_event_device.h        |   6 +
+ include/hw/core/cpu.h                         |   1 +
+ include/hw/loongarch/virt.h                   |  10 +-
+ include/hw/qdev-core.h                        |   2 +
+ softmmu/physmem.c                             |  24 +
+ target/loongarch/cpu.c                        |  35 +-
+ target/loongarch/cpu.h                        |  13 +-
+ 21 files changed, 635 insertions(+), 87 deletions(-)
+ create mode 100644 hw/loongarch/generic_event_device_loongarch.c
+
+Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
+Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Ani Sinha <anisinha@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+Cc: Yanan Wang <wangyanan55@huawei.com>
+Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Xianglai li <lixianglai@loongson.cn>
+--
+2.39.1
+
 
