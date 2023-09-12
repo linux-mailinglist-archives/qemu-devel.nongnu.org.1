@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D8B79DAE1
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4BB879DAD3
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:29:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAwz-0000hI-8o; Tue, 12 Sep 2023 17:29:37 -0400
+	id 1qgAx0-0000q6-Gx; Tue, 12 Sep 2023 17:29:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qgAwt-0000Yh-Im; Tue, 12 Sep 2023 17:29:31 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1qgAwv-0000eJ-IR
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:34 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qgAwr-0007Xk-2o; Tue, 12 Sep 2023 17:29:31 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-68faf930054so2866059b3a.0; 
- Tue, 12 Sep 2023 14:29:27 -0700 (PDT)
+ id 1qgAwt-0007YA-1N
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:33 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-68fac346f6aso2976392b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 14:29:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694554166; x=1695158966; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694554169; x=1695158969; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=0c/U127kRZlzHBmfgSsC57fttRjeM+Iuaw+v/+H9H8A=;
- b=cVCmIdORPyHDZEJAYKvYRORYkDjqAPZ1uNlu3wbsNPtLb7EkFgpMdezPP0/YZRaC4+
- SaST9B3RAy94kIiuWeX+ipNN9NUO0XnEpA+zd5D+Fi1vhOUUYBqAST0bBLoNjV+Fs8VR
- kheYtjn3adt0BXcMJMK5W8XJ9avvsBqI53b4a27riVCMIunC3zslkmhNxWBQiSIvHLFq
- OPh5X/MovX0hvTsqwfNEQFdn1qkELRXacartSQB0ADhk0zwPCmHYI5h1kuyTOQ4IvXTm
- yJcKBMVG4QaaFFQqNDUjKmWbU/LbwwT6K8sxALo54PBNb2lX1xikbJ4BP3BM6NGAUKeQ
- jwCA==
+ bh=7HtD+OYfMKelkMTMTh4WfcoKEIkozBhy7qg4sRQ8vPQ=;
+ b=EgX70aQjPh1J4XAuJgKL2LNlX7/42+viQflGVkznpQZpj1cyDzy2AG5jNhfH8poabU
+ P+RHf6hlY413GX2b5OlBZSTjrxYzpFaUWYohuN9BFXQfKWTqeT5DDQ3fjk4fAflQRPL8
+ YTvqr7LEvLRm+GG1ElaFNnxy6dexkqNopWavCvHx4IS5rhbaD6FXKQbh/SZErsD1ln+1
+ 9/m9BXtg7fpwAWaEBoN+PPjVmIwPxcWPKNjd0Zev+/rnUN+s8f8SGNVDF8iUY2TLTKNI
+ dJaT833p06YtfHuwsLANNZZTpM+0PxykrRp9jxJg4szC/J2YagDoEqCxHTxBW13B1ARb
+ OBXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694554166; x=1695158966;
+ d=1e100.net; s=20230601; t=1694554169; x=1695158969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0c/U127kRZlzHBmfgSsC57fttRjeM+Iuaw+v/+H9H8A=;
- b=DkGig0Lirrpc1jq5q730FraUJsNnG5tyZIaF6lKZlVJgKyhZCxC9dV5iPDg3Slk3uU
- lgE4vq40vPoALp0J//KHthW8HKrUrN408KuA96/zC+MaJVO7cfgtfE7P5BbiYIs4r/5G
- yRzQ5HH1XyYvdDr4Vy+MqyTZyL3/riLfs8VDlk2S3Td3eCUn7dkLM/+UztvOSn96KcjY
- vKVPaui3JifrXI1i1L08981qPERGjRQtlhwW6RXKleoh8Todh0UDsOtcr5t2NG1vqBDi
- kyHeb1aVCf2xwpXYIcI5VZ6tvZKCPsaU5gATXFFfnLkyZOfpzORT2sY70/dDUE0Jz1U1
- 4dhA==
-X-Gm-Message-State: AOJu0YyQuyfZkW1RiqxdQ0Nk6a/5SWq88d1x20fWzNHcG1yJsCoGQvEa
- LwWjo/F1Y3nu+n+OFJXTukUkxAt6UmJm1Qio
-X-Google-Smtp-Source: AGHT+IFDaZyoDJURSCapMwfTHRGZRvB1maqalNeG4nnq9hxM6QRvAvG/KIwVeBJ7sthGfs+XteHogg==
-X-Received: by 2002:a05:6a21:3d85:b0:131:a21:9f96 with SMTP id
- bj5-20020a056a213d8500b001310a219f96mr587036pzc.6.1694554166229; 
- Tue, 12 Sep 2023 14:29:26 -0700 (PDT)
+ bh=7HtD+OYfMKelkMTMTh4WfcoKEIkozBhy7qg4sRQ8vPQ=;
+ b=NRP9aC3vTqeV5NIRLBnZc+bv0EBpTR1+7Nwoyc/cVtruRSiyE3/BFaHb7RzRVDI9Nb
+ rQJmjSLrQcw/TwFKI4jCs/3RJ4pa64bXHYIsfguApXqw0+a+ru2k75eX4hOsrNoiI0ZG
+ p79WP2WbU0h+d4NDpebhOfQVSiyZb8AEd19xfGADjlaD+qoD2xEdHBaIAFuj1GOup14c
+ EmKC9wurh0IH2y6DBSvtbgfKavx2jD3F7Qo877DOd4Rn6vRY3SpisoUnRi8M17SIiICW
+ L5rkn8+QSuMZa4/mwy9CXmM9nboObliwbtLL28NZFhKC4fjrejUd2wJTcCQhoXNnOcy5
+ sCPg==
+X-Gm-Message-State: AOJu0YwgU/RUDGVXJmSSGI/D6zDZ73VbpeI0q2Vz090szmnbIZeHcteq
+ FOgc5WoOoYssb3QpaGmDe/c=
+X-Google-Smtp-Source: AGHT+IFYKr01X4Yk7VsGlHcdI1Gtj0S1sJlmfQkvJU1ODOLCSUIe9pBbWvvJMbC0AgiRlxij/x/uMQ==
+X-Received: by 2002:a05:6a00:1891:b0:68f:cd71:45d5 with SMTP id
+ x17-20020a056a00189100b0068fcd7145d5mr1268758pfh.3.1694554169506; 
+ Tue, 12 Sep 2023 14:29:29 -0700 (PDT)
 Received: from q1iq-virtual-machine.. ([114.249.236.97])
  by smtp.gmail.com with ESMTPSA id
- u20-20020aa78394000000b0068be4ce33easm7930436pfm.96.2023.09.12.14.29.22
+ u20-20020aa78394000000b0068be4ce33easm7930436pfm.96.2023.09.12.14.29.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 14:29:25 -0700 (PDT)
+ Tue, 12 Sep 2023 14:29:29 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
- Yeqi Fu <fufuyqqqqqq@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>,
- qemu-arm@nongnu.org (open list:ARM TCG CPUs)
-Subject: [RFC v6 7/9] target/arm: Add support for native library calls
-Date: Wed, 13 Sep 2023 05:28:40 +0800
-Message-Id: <20230912212842.658374-8-fufuyqqqqqq@gmail.com>
+ Yeqi Fu <fufuyqqqqqq@gmail.com>
+Subject: [RFC v6 8/9] tests/tcg/multiarch: Add nativecall.c test
+Date: Wed, 13 Sep 2023 05:28:41 +0800
+Message-Id: <20230912212842.658374-9-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230912212842.658374-1-fufuyqqqqqq@gmail.com>
 References: <20230912212842.658374-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,179 +92,206 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit introduces support for native library calls on the
-arm target. When encountering special instructions reserved
-for native calls, this commit extracts the function name and
-generates the corresponding native call.
+Introduce a new test for native calls to ensure their functionality.
+The process involves cross-compiling the test cases, building them
+as dynamically linked binaries, and running these binaries which
+necessitates the addition of the appropriate interpreter prefix.
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- configs/targets/aarch64-linux-user.mak |  1 +
- configs/targets/arm-linux-user.mak     |  1 +
- target/arm/tcg/translate-a64.c         | 32 ++++++++++++++++++++++++++
- target/arm/tcg/translate.c             | 29 +++++++++++++++++++++++
- target/arm/tcg/translate.h             |  5 ++++
- 5 files changed, 68 insertions(+)
+ tests/tcg/multiarch/Makefile.target     |  32 ++++++
+ tests/tcg/multiarch/native/nativecall.c | 132 ++++++++++++++++++++++++
+ 2 files changed, 164 insertions(+)
+ create mode 100644 tests/tcg/multiarch/native/nativecall.c
 
-diff --git a/configs/targets/aarch64-linux-user.mak b/configs/targets/aarch64-linux-user.mak
-index ba8bc5fe3f..5a8fd98cd9 100644
---- a/configs/targets/aarch64-linux-user.mak
-+++ b/configs/targets/aarch64-linux-user.mak
-@@ -4,3 +4,4 @@ TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/aarch
- TARGET_HAS_BFLT=y
- CONFIG_SEMIHOSTING=y
- CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
-+CONFIG_NATIVE_CALL=y
-diff --git a/configs/targets/arm-linux-user.mak b/configs/targets/arm-linux-user.mak
-index 7f5d65794c..f934fb82da 100644
---- a/configs/targets/arm-linux-user.mak
-+++ b/configs/targets/arm-linux-user.mak
-@@ -5,3 +5,4 @@ TARGET_XML_FILES= gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml
- TARGET_HAS_BFLT=y
- CONFIG_SEMIHOSTING=y
- CONFIG_ARM_COMPATIBLE_SEMIHOSTING=y
-+CONFIG_NATIVE_CALL=y
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 3baab6aa60..00b69e9c24 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -25,6 +25,7 @@
- #include "arm_ldst.h"
- #include "semihosting/semihost.h"
- #include "cpregs.h"
-+#include "native/native.h"
+diff --git a/tests/tcg/multiarch/Makefile.target b/tests/tcg/multiarch/Makefile.target
+index 43bddeaf21..8bad8ac0d5 100644
+--- a/tests/tcg/multiarch/Makefile.target
++++ b/tests/tcg/multiarch/Makefile.target
+@@ -12,7 +12,9 @@ VPATH 	       += $(MULTIARCH_SRC)
+ MULTIARCH_SRCS =  $(notdir $(wildcard $(MULTIARCH_SRC)/*.c))
+ ifeq ($(filter %-linux-user, $(TARGET)),$(TARGET))
+ VPATH 	       += $(MULTIARCH_SRC)/linux
++VPATH          += $(MULTIARCH_SRC)/native
+ MULTIARCH_SRCS += $(notdir $(wildcard $(MULTIARCH_SRC)/linux/*.c))
++MULTIARCH_SRCS += $(notdir $(wildcard $(MULTIARCH_SRC)/native/*.c))
+ endif
+ MULTIARCH_TESTS = $(MULTIARCH_SRCS:.c=)
  
- static TCGv_i64 cpu_X[32];
- static TCGv_i64 cpu_pc;
-@@ -2400,6 +2401,10 @@ static bool trans_HLT(DisasContext *s, arg_i *a)
-      * it is required for halting debug disabled: it will UNDEF.
-      * Secondly, "HLT 0xf000" is the A64 semihosting syscall instruction.
-      */
-+    if (native_bypass_enabled() && (a->imm == 0xffff)) {
-+        s->native_call_status = true;
-+        return true;
-+    }
-     if (semihosting_enabled(s->current_el == 0) && a->imm == 0xf000) {
-         gen_exception_internal_insn(s, EXCP_SEMIHOST);
-     } else {
-@@ -13392,6 +13397,26 @@ void gen_gvec_rax1(unsigned vece, uint32_t rd_ofs, uint32_t rn_ofs,
-     tcg_gen_gvec_3(rd_ofs, rn_ofs, rm_ofs, opr_sz, max_sz, &op);
- }
+@@ -138,5 +140,35 @@ run-plugin-semiconsole-with-%:
+ TESTS += semihosting semiconsole
+ endif
  
-+static void gen_native_call(CPUState *cpu, DisasContext *s, CPUARMState *env)
++nativecall: LDFLAGS+=-ldl
++nativecall: CFLAGS+=-D_GNU_SOURCE -fPIE
++nativecall: nativecall.c
++	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $< -o $@ $(filter-out -static,$(LDFLAGS))
++
++ifneq ($(LD_PREFIX),)
++ifneq ($(LIBNATIVE),)
++run-nativecall: nativecall
++	$(call run-test, $<, $(QEMU) -L $(LD_PREFIX) \
++		--native-bypass $(LIBNATIVE) $<, "nativecall")
++
++run-plugin-nativecall-with-%:
++	$(call run-test, $@, $(QEMU) $(QEMU_OPTS) \
++		-L $(LD_PREFIX) --native-bypass $(LIBNATIVE) \
++		-plugin $(PLUGIN_LIB)/$(call extract-plugin,$@)$(PLUGIN_ARGS) \
++		 $(call strip-plugin,$<) 2> $<.err, \
++		 $< with $*)
++else
++run-nativecall: nativecall
++	$(call skip-test, $<, "no native library found")
++run-plugin-nativecall-with-%:
++	$(call skip-test, $<, "no native library found")
++endif
++else
++run-nativecall: nativecall
++	$(call skip-test, $<, "no elf interpreter prefix found")
++run-plugin-nativecall-with-%:
++	$(call skip-test, $<, "no elf interpreter prefix found")
++endif
++
+ # Update TESTS
+ TESTS += $(MULTIARCH_TESTS)
+diff --git a/tests/tcg/multiarch/native/nativecall.c b/tests/tcg/multiarch/native/nativecall.c
+new file mode 100644
+index 0000000000..de18718c61
+--- /dev/null
++++ b/tests/tcg/multiarch/native/nativecall.c
+@@ -0,0 +1,132 @@
++#include <assert.h>
++#include <dlfcn.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/mman.h>
++#include <unistd.h>
++
++void compare_memory(const void *a, const void *b, size_t n)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    TCGv_i64 arg1 = tcg_temp_new_i64();
-+    TCGv_i64 arg2 = tcg_temp_new_i64();
-+    TCGv_i64 arg3 = tcg_temp_new_i64();
-+    TCGv_i64 ret = tcg_temp_new_i64();
-+    uint32_t func_tmp = translator_ldl_swap(env, &s->base, s->base.pc_next,
-+                                            bswap_code(s->sctlr_b));
-+    char *func_name = g2h(cpu, s->base.pc_next + func_tmp);
-+    tcg_gen_mov_i64(arg1, cpu_reg(s, 0));
-+    tcg_gen_mov_i64(arg2, cpu_reg(s, 1));
-+    tcg_gen_mov_i64(arg3, cpu_reg(s, 2));
-+    if (!gen_native_call_i64(func_name, ret, arg1, arg2, arg3)) {
-+        unallocated_encoding(s);
++    const unsigned char *p1 = a;
++    const unsigned char *p2 = b;
++    for (size_t i = 0; i < n; i++) {
++        assert(p1[i] == p2[i]);
 +    }
-+    tcg_gen_mov_i64(cpu_reg(s, 0), ret);
-+#endif
 +}
 +
- /* Crypto three-reg SHA512
-  *  31                   21 20  16 15  14  13 12  11  10  9    5 4    0
-  * +-----------------------+------+---+---+-----+--------+------+------+
-@@ -13950,6 +13975,13 @@ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     uint64_t pc = s->base.pc_next;
-     uint32_t insn;
- 
-+    if (native_bypass_enabled() && s->native_call_status) {
-+        gen_native_call(cpu, s, env);
-+        s->base.pc_next = pc + 4;
-+        s->native_call_status = false;
-+        return;
-+    }
-+
-     /* Singlestep exceptions have the highest priority. */
-     if (s->ss_active && !s->pstate_ss) {
-         /* Singlestep state is Active-pending.
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 13c88ba1b9..7a5a0f9444 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -28,6 +28,7 @@
- #include "semihosting/semihost.h"
- #include "cpregs.h"
- #include "exec/helper-proto.h"
-+#include "native/native.h"
- 
- #define HELPER_H "helper.h"
- #include "exec/helper-info.c.inc"
-@@ -1125,6 +1126,23 @@ void gen_lookup_tb(DisasContext *s)
-     s->base.is_jmp = DISAS_EXIT;
- }
- 
-+static void gen_native_call(CPUState *cpu, DisasContext *dc, CPUARMState *env)
++void test_memcpy(char *src)
 +{
-+#ifdef CONFIG_USER_ONLY
-+    TCGv_i32 arg1 = load_reg(dc, 0);
-+    TCGv_i32 arg2 = load_reg(dc, 1);
-+    TCGv_i32 arg3 = load_reg(dc, 2);
-+    TCGv_i32 ret = tcg_temp_new_i32();
-+    uint32_t func_tmp =
-+        arm_ldl_code(env, &dc->base, dc->base.pc_next, dc->sctlr_b);
-+    char *func_name = g2h(cpu, dc->base.pc_next + func_tmp);
-+    if (!gen_native_call_i32(func_name, ret, arg1, arg2, arg3)) {
-+        unallocated_encoding(dc);
-+    }
-+    store_reg(dc, 0, ret);
-+#endif
++    char dest[2000];
++    memcpy(dest, src, 2000);
++    compare_memory(dest, src, 2000);
 +}
 +
- static inline void gen_hlt(DisasContext *s, int imm)
- {
-     /* HLT. This has two purposes.
-@@ -1139,6 +1157,10 @@ static inline void gen_hlt(DisasContext *s, int imm)
-      * semihosting, to provide some semblance of security
-      * (and for consistency with our 32-bit semihosting).
-      */
-+    if (native_bypass_enabled() && (imm == 0xffff)) {
-+        s->native_call_status = true;
-+        return;
-+    }
-     if (semihosting_enabled(s->current_el == 0) &&
-         (imm == (s->thumb ? 0x3c : 0xf000))) {
-         gen_exception_internal_insn(s, EXCP_SEMIHOST);
-@@ -9329,6 +9351,13 @@ static void arm_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     uint32_t pc = dc->base.pc_next;
-     unsigned int insn;
- 
-+    if (native_bypass_enabled() && dc->native_call_status) {
-+        gen_native_call(cpu, dc, env);
-+        dc->base.pc_next = pc + 4;
-+        dc->native_call_status = false;
-+        return;
-+    }
++void test_strncpy(char *src)
++{
++    char dest[2000];
++    strncpy(dest, src, 2000);
++    compare_memory(dest, src, 2000);
++}
 +
-     /* Singlestep exceptions have the highest priority. */
-     if (arm_check_ss_active(dc)) {
-         dc->base.pc_next = pc + 4;
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index d1cacff0b2..3854a801e6 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -157,6 +157,11 @@ typedef struct DisasContext {
-     int c15_cpar;
-     /* TCG op of the current insn_start.  */
-     TCGOp *insn_start;
-+    /*
-+     * Indicate whether the next instruction is a native function call (true)
-+     * or not (false).
-+     */
-+    bool native_call_status;
- } DisasContext;
- 
- typedef struct DisasCompare {
++void test_strcpy(char *src)
++{
++    char dest[2000];
++    strcpy(dest, src);
++    compare_memory(dest, src, 2000);
++}
++
++void test_strcat()
++{
++    char src[30] = "Hello, ";
++    char dest[] = "world!";
++    char str[] = "Hello, world!";
++    strcat(src, dest);
++    compare_memory(src, str, 13);
++}
++
++void test_memcmp(char *str1, char *str2, char *str3)
++{
++    int result1 = memcmp(str1, str2, 3);
++    int result2 = memcmp(str1, str3, 3);
++    int result3 = memcmp(str3, str1, 3);
++    assert(result1 == 0);
++    assert(result2 < 0);
++    assert(result3 > 0);
++}
++
++void test_strncmp(char *str1, char *str2, char *str3)
++{
++    int result1 = strncmp(str1, str2, 3);
++    int result2 = strncmp(str1, str3, 3);
++    int result3 = strncmp(str3, str1, 3);
++    assert(result1 == 0);
++    assert(result2 < 0);
++    assert(result3 > 0);
++}
++
++void test_strcmp(char *str1, char *str2, char *str3)
++{
++    int result1 = strcmp(str1, str2);
++    int result2 = strcmp(str1, str3);
++    int result3 = strcmp(str3, str1);
++    assert(result1 == 0);
++    assert(result2 < 0);
++    assert(result3 > 0);
++}
++
++void test_memset(char *buffer)
++{
++    memset(buffer, 'A', 2000 - 1);
++    for (int i = 0; i < 2000 - 1; i++) {
++        assert(buffer[i] == 'A');
++    }
++}
++
++void test_libnative()
++{
++    Dl_info info;
++    void *memcpy_addr = (void *)memcpy;
++    if (dladdr(memcpy_addr, &info) != 0) {
++        assert(strstr(info.dli_fname, "libnative.so") != NULL);
++    }
++}
++
++/*
++ * When executing execv, an error may occur stating that the shared library
++ * cannot be preloaded.
++ */
++void test_execv(const char *cmd)
++{
++    char *argv[4];
++    argv[0] = (char *)"/bin/sh";
++    argv[1] = (char *)"-c";
++    argv[2] = (char *)cmd;
++    argv[3] = NULL;
++    execv("/bin/sh", argv);
++}
++
++int main()
++{
++    char buf[2000];
++    for (int i = 0; i < 2000 - 1; i++) {
++        buf[i] = 'A' + (i % 26);
++    }
++    buf[2000 - 1] = '\0';
++    char str1[4] = "abc\0";
++    char str2[4] = "abc\0";
++    char str3[4] = "def\0";
++
++    test_memcpy(buf);
++    test_strncpy(buf);
++    test_strcpy(buf);
++    test_memcmp(str1, str2, str3);
++    test_strncmp(str1, str2, str3);
++    test_strcmp(str1, str2, str3);
++    test_strcat();
++    test_memset(buf);
++    test_libnative();
++    test_execv("echo 111");
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.34.1
 
