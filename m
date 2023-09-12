@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6787C79DC7F
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 01:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC48B79DC7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 01:11:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgCX1-0001Zr-1X; Tue, 12 Sep 2023 19:10:55 -0400
+	id 1qgCX4-0001cl-0r; Tue, 12 Sep 2023 19:10:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgCWz-0001ZQ-MA
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:10:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qgCX1-0001am-Pq
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:10:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgCWx-0003Ja-0N
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:10:53 -0400
+ id 1qgCWz-0003K3-6t
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:10:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694560250;
+ s=mimecast20190719; t=1694560252;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YpwmONNOzcVBwmRqXJdqeBbfcpjkCWz3pGWXhk9HVu4=;
- b=g+1QUe3cR9NYHyfX9TKigeAjBb8czhrYL0unH2PmMEM0ZImd49Nh+NlbDRTzE5Cb8FpAcF
- DMW2RzJshL/BbUARoDylpUM0x1Oczsw6K7Z+3d3gZHd3VR+NWqG0xlVd3t9fo2gbHJ8LRp
- lNUpbJtxzC9KMbGyq6h5GTJErF4ODnA=
+ bh=C/Am5r627g6QuRUSXRfOq1ki/mlH81bZqKEnrMTBrpo=;
+ b=Wf1xuAojVfc7CYg3ZYo75e4uGno6S6mG55c48zd3oVxHnmpYrgKbNZWuHqRkYs4qO8TPID
+ JlMOHMCH/iekgxrJ00DenRt0hoNo1/Gqb99i+YntWHb/ZPzdHGyakzNWlkO4LG5oT0hqEK
+ XEKqnyK3TQSmHSWWPUFKU0tCM5HbcMY=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-66-_6Tm2H5vM1yw-yQwKZfFAQ-1; Tue, 12 Sep 2023 19:10:47 -0400
-X-MC-Unique: _6Tm2H5vM1yw-yQwKZfFAQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-647-CuV-VkKwMhSuyvc9-Lsa7A-1; Tue, 12 Sep 2023 19:10:49 -0400
+X-MC-Unique: CuV-VkKwMhSuyvc9-Lsa7A-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC4F33C0C880;
- Tue, 12 Sep 2023 23:10:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EEA823C0C880;
+ Tue, 12 Sep 2023 23:10:48 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.28])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2B20640C2009;
- Tue, 12 Sep 2023 23:10:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3393C2026D4B;
+ Tue, 12 Sep 2023 23:10:48 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Klaus Jensen <its@irrelevant.dk>, kwolf@redhat.com,
@@ -53,23 +53,23 @@ Cc: Klaus Jensen <its@irrelevant.dk>, kwolf@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  David Hildenbrand <david@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PATCH v3 4/5] block-backend: process zoned requests in the current
- AioContext
-Date: Tue, 12 Sep 2023 19:10:36 -0400
-Message-ID: <20230912231037.826804-5-stefanha@redhat.com>
+Subject: [PATCH v3 5/5] block-coroutine-wrapper: use
+ qemu_get_current_aio_context()
+Date: Tue, 12 Sep 2023 19:10:37 -0400
+Message-ID: <20230912231037.826804-6-stefanha@redhat.com>
 In-Reply-To: <20230912231037.826804-1-stefanha@redhat.com>
 References: <20230912231037.826804-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,62 +86,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Process zoned requests in the current thread's AioContext instead of in
-the BlockBackend's AioContext.
+Use qemu_get_current_aio_context() in mixed wrappers and coroutine
+wrappers so that code runs in the caller's AioContext instead of moving
+to the BlockDriverState's AioContext. This change is necessary for the
+multi-queue block layer where any thread can call into the block layer.
 
-There is no need to use the BlockBackend's AioContext thanks to CoMutex
-bs->wps->colock, which protects zone metadata.
+Most wrappers are IO_CODE where it's safe to use the current AioContext
+nowadays. BlockDrivers and the core block layer use their own locks and
+no longer depend on the AioContext lock for thread-safety.
+
+The bdrv_create() wrapper invokes GLOBAL_STATE code. Using the current
+AioContext is safe because this code is only called with the BQL held
+from the main loop thread.
+
+The output of qemu-iotests 051 is sensitive to event loop activity.
+Update the output because the monitor BH runs at a different time,
+causing prompts to be printed differently in the output.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block/block-backend.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ scripts/block-coroutine-wrapper.py | 6 ++----
+ tests/qemu-iotests/051.pc.out      | 4 ++--
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/block/block-backend.c b/block/block-backend.c
-index 4863be5691..427ebcc0e4 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -1890,11 +1890,11 @@ BlockAIOCB *blk_aio_zone_report(BlockBackend *blk, int64_t offset,
-     acb->has_returned = false;
+diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
+index d4a183db61..f93fe154c3 100644
+--- a/scripts/block-coroutine-wrapper.py
++++ b/scripts/block-coroutine-wrapper.py
+@@ -88,8 +88,6 @@ def __init__(self, wrapper_type: str, return_type: str, name: str,
+                 raise ValueError(f"no_co function can't be rdlock: {self.name}")
+             self.target_name = f'{subsystem}_{subname}'
  
-     co = qemu_coroutine_create(blk_aio_zone_report_entry, acb);
--    aio_co_enter(blk_get_aio_context(blk), co);
-+    aio_co_enter(qemu_get_current_aio_context(), co);
+-        self.ctx = self.gen_ctx()
+-
+         self.get_result = 's->ret = '
+         self.ret = 'return s.ret;'
+         self.co_ret = 'return '
+@@ -162,7 +160,7 @@ def create_mixed_wrapper(func: FuncDecl) -> str:
+         {func.co_ret}{name}({ func.gen_list('{name}') });
+     }} else {{
+         {struct_name} s = {{
+-            .poll_state.ctx = {func.ctx},
++            .poll_state.ctx = qemu_get_current_aio_context(),
+             .poll_state.in_progress = true,
  
-     acb->has_returned = true;
-     if (acb->rwco.ret != NOT_DONE) {
--        replay_bh_schedule_oneshot_event(blk_get_aio_context(blk),
-+        replay_bh_schedule_oneshot_event(qemu_get_current_aio_context(),
-                                          blk_aio_complete_bh, acb);
-     }
+ { func.gen_block('            .{name} = {name},') }
+@@ -186,7 +184,7 @@ def create_co_wrapper(func: FuncDecl) -> str:
+ {func.return_type} {func.name}({ func.gen_list('{decl}') })
+ {{
+     {struct_name} s = {{
+-        .poll_state.ctx = {func.ctx},
++        .poll_state.ctx = qemu_get_current_aio_context(),
+         .poll_state.in_progress = true,
  
-@@ -1931,11 +1931,11 @@ BlockAIOCB *blk_aio_zone_mgmt(BlockBackend *blk, BlockZoneOp op,
-     acb->has_returned = false;
+ { func.gen_block('        .{name} = {name},') }
+diff --git a/tests/qemu-iotests/051.pc.out b/tests/qemu-iotests/051.pc.out
+index 4d4af5a486..650cfed8e2 100644
+--- a/tests/qemu-iotests/051.pc.out
++++ b/tests/qemu-iotests/051.pc.out
+@@ -177,11 +177,11 @@ QEMU_PROG: -device virtio-blk-pci,drive=disk,share-rw=on: Cannot change iothread
  
-     co = qemu_coroutine_create(blk_aio_zone_mgmt_entry, acb);
--    aio_co_enter(blk_get_aio_context(blk), co);
-+    aio_co_enter(qemu_get_current_aio_context(), co);
+ Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device lsi53c895a,id=lsi0 -device scsi-hd,bus=lsi0.0,drive=disk,share-rw=on
+ QEMU X.Y.Z monitor - type 'help' for more information
+-(qemu) QEMU_PROG: -device scsi-hd,bus=lsi0.0,drive=disk,share-rw=on: HBA does not support iothreads
++QEMU_PROG: -device scsi-hd,bus=lsi0.0,drive=disk,share-rw=on: HBA does not support iothreads
  
-     acb->has_returned = true;
-     if (acb->rwco.ret != NOT_DONE) {
--        replay_bh_schedule_oneshot_event(blk_get_aio_context(blk),
-+        replay_bh_schedule_oneshot_event(qemu_get_current_aio_context(),
-                                          blk_aio_complete_bh, acb);
-     }
+ Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device virtio-scsi,id=virtio-scsi1 -device scsi-hd,bus=virtio-scsi1.0,drive=disk,share-rw=on
+ QEMU X.Y.Z monitor - type 'help' for more information
+-(qemu) QEMU_PROG: -device scsi-hd,bus=virtio-scsi1.0,drive=disk,share-rw=on: Cannot change iothread of active block backend
++QEMU_PROG: -device scsi-hd,bus=virtio-scsi1.0,drive=disk,share-rw=on: Cannot change iothread of active block backend
  
-@@ -1971,10 +1971,10 @@ BlockAIOCB *blk_aio_zone_append(BlockBackend *blk, int64_t *offset,
-     acb->has_returned = false;
- 
-     co = qemu_coroutine_create(blk_aio_zone_append_entry, acb);
--    aio_co_enter(blk_get_aio_context(blk), co);
-+    aio_co_enter(qemu_get_current_aio_context(), co);
-     acb->has_returned = true;
-     if (acb->rwco.ret != NOT_DONE) {
--        replay_bh_schedule_oneshot_event(blk_get_aio_context(blk),
-+        replay_bh_schedule_oneshot_event(qemu_get_current_aio_context(),
-                                          blk_aio_complete_bh, acb);
-     }
- 
+ Testing: -drive file=TEST_DIR/t.qcow2,if=none,node-name=disk -object iothread,id=thread0 -device virtio-scsi,iothread=thread0,id=virtio-scsi0 -device scsi-hd,bus=virtio-scsi0.0,drive=disk,share-rw=on -device virtio-blk-pci,drive=disk,iothread=thread0,share-rw=on
+ QEMU X.Y.Z monitor - type 'help' for more information
 -- 
 2.41.0
 
