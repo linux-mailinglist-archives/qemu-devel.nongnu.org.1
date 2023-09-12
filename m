@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B65D79CA59
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF0179CA87
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:48:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfyxJ-0007Hy-T0; Tue, 12 Sep 2023 04:41:09 -0400
+	id 1qfz2R-0003Ew-Ux; Tue, 12 Sep 2023 04:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qfyxI-0007Hd-48
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:41:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qfyxF-0005ER-0v
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:41:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694508063;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pfEOcZknbojrrgPAVBeZLT3dw7kOHlGw1NkSu2dhAfs=;
- b=gurOpTnSfO3vkCMj9APcBsRRgzWzPPJ+HGaZ1P1HUqUQYt7/+tdeIwbMrqTpslydVqALp9
- PM5MO4kCam8hBlj+J24Ue1y6/O82IxFGCXO//Fiv5VxAZ+n8NCTGGYqvllSr+c2ZKORIEg
- MS+58TUiupTVRbds6R3Rp7ziE6wTMjU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-655-ieVmBDC_MuuUNQroOHu-1A-1; Tue, 12 Sep 2023 04:41:00 -0400
-X-MC-Unique: ieVmBDC_MuuUNQroOHu-1A-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33C03181A6E0;
- Tue, 12 Sep 2023 08:41:00 +0000 (UTC)
-Received: from [10.39.193.227] (unknown [10.39.193.227])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7638864687;
- Tue, 12 Sep 2023 08:40:57 +0000 (UTC)
-Message-ID: <a780ae61-a086-8f1e-e9d7-7be1cf2c0590@redhat.com>
-Date: Tue, 12 Sep 2023 10:40:56 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfz2K-0003AY-0Q
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:46:21 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfz2F-000856-1t
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:46:18 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2bcc14ea414so86869021fa.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 01:46:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694508368; x=1695113168; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0IaIpdfFdIg0V0NEXUo323NCr6qnLfOd1WKVqiLJu3Q=;
+ b=BfTRK91ejRCMIyRAh8Nr6bFeGmUzyvO5ohKCdfvCB8+wIo+lxtEYhEEp+qAerV2KNo
+ +RJanciI+ISAgkhfHC0k4ZtOZg/uBh8exxvltLHZT2CAvbWq+6P6WP07pitm7ish6zS6
+ a34eZ8sbDSORoyLsq0yIKJVyFe4UdiRUUaaIHdQ8eZZ216dkg+yzAnVCJbPoiy9zwcyB
+ 3+km+3SplcZoS7SsNwFyG8Alx86r/l/tD42TIwLhaoNIGLWG86DFbv9qtS75jvx1HhEY
+ pDYmn4+M69rtghF7taXReDejghFcUM8g4yN9WLtH1iFKHaOj1SgScVv1hsa01Xi3PYuD
+ P4MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694508368; x=1695113168;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0IaIpdfFdIg0V0NEXUo323NCr6qnLfOd1WKVqiLJu3Q=;
+ b=IFOBjpihNbbz14Oz9RcWRgHXY/osjf1wHk7s09ACz6iPkqKozKG9BDyWtylt192YjO
+ E1hMY90IA2jw1a3uNs7UvQdGEA3XuAQ8YozCvMYoGWqZ5QWMAfz4AFqpsVcP6Dx0ZpJF
+ zyzjdkOpD7XFTQp9S0C0CRM3TBUeBY9iFhXCMR+02WHyY/ELkcqHX59zDJrnPppt8wgy
+ /9dcCpphfrKCiFQqPPoHcMpJnyMjGyy1ltnLm65P7yGfEwZiBSqYCu0Dbg00X0q69naU
+ 2Y0itCDRPmres+fMqzidqLPNJ4b36qj4BX6Q4kcgVlMtSfZaDkUv2+eiKFHP92OPDIc0
+ IhNw==
+X-Gm-Message-State: AOJu0YzxPVJSTybvsfc3HGt7RA0vS80UaFRsxDI4LFRTsd7ucOI6JIaa
+ 6MKHlYp+0uN1g+/f6ilOCW04Ew==
+X-Google-Smtp-Source: AGHT+IEGEZRDGuYeVsyidPmqbSiMAzd1YDObrZlbZv1zXhYXrSAGkczS7UHHwgE791ekSv8yHl07hw==
+X-Received: by 2002:a19:e057:0:b0:4f8:6d53:a68f with SMTP id
+ g23-20020a19e057000000b004f86d53a68fmr8617912lfj.64.1694508368177; 
+ Tue, 12 Sep 2023 01:46:08 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-50-150.dsl.sta.abo.bbox.fr.
+ [176.172.50.150]) by smtp.gmail.com with ESMTPSA id
+ eg27-20020a056402289b00b0052f3e8c84fesm3536127edb.29.2023.09.12.01.46.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Sep 2023 01:46:07 -0700 (PDT)
+Message-ID: <1f64f982-95fc-786d-1217-856a62335eed@linaro.org>
+Date: Tue, 12 Sep 2023 10:46:05 +0200
 MIME-Version: 1.0
-Subject: Re: riscv64 virt board crash upon startup
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v7 14/18] cpu: Call plugin hooks only when ready
 Content-Language: en-US
-From: Laszlo Ersek <lersek@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu devel list <qemu-devel@nongnu.org>,
- "Richard W.M. Jones" <rjones@redhat.com>,
- Sunil V L <sunilvl@ventanamicro.com>, Andrew Jones
- <ajones@ventanamicro.com>, "Warkentin, Andrei" <andrei.warkentin@intel.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-riscv@nongnu.org
-References: <139b9697-5732-dafa-0942-6d93eed674c7@redhat.com>
- <1398e971-8115-13e1-6ee4-4c46df0814dc@linaro.org>
- <fe0ebb81-30b7-9e60-e9b5-7737c562274b@redhat.com>
- <CAMxuvawd9Zzq8tpqBNv4ft8R1QvYOvQaVmSB_ZeBgr+O5=M=9Q@mail.gmail.com>
- <qubprrerylzpvdl56o7j2zetkjihpofetfwequhanvc54l4t6q@juqqrcko4zjk>
- <1d5713bd-5be3-d1c2-8d71-f0f59e8f1bca@redhat.com>
-In-Reply-To: <1d5713bd-5be3-d1c2-8d71-f0f59e8f1bca@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
+ <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+References: <20230912071206.30751-1-akihiko.odaki@daynix.com>
+ <20230912071206.30751-15-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230912071206.30751-15-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,54 +98,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/11/23 15:12, Laszlo Ersek wrote:
-> On 9/11/23 10:53, Gerd Hoffmann wrote:
->> On Mon, Sep 11, 2023 at 12:12:43PM +0400, Marc-André Lureau wrote:
->>>> Gerd, here's the question for you: why are "device" and "head" QOM properties in the first place? What are they needed for?
->>>>
->>>
->>> You get QOM tree introspection (ex: (qemu) qom-get
->>> /backend/console[0]/device type). Other than that, I don't think it
->>> brings anything else.
->>
->> You can configure vnc server(s) to show a specific device + head, which
->> allows to run multihead configurations by using multiple vnc servers (one
->> for each head).
->>
->> You can link input devices to device + head, so input events can go to
->> different devices depending on where they are coming from.  Which is
->> most useful for tablet devices in a vnc multihead setup, each head has
->> its own tablet device then.  Requires manual guest-side configuration
->> to establish the same tablet <-> head relationship (tested that years
->> ago with X11, not sure if and how this can be done with wayland).
+Hi Akihiko,
+
+On 12/9/23 09:12, Akihiko Odaki wrote:
+> The initialization and exit hooks will not affect the state of vCPU,
+
+What about:
+
+  qemu_plugin_vcpu_init_hook()
+    -> plugin_cpu_update__locked()
+       -> plugin_cpu_update__async()
+          -> bitmap_copy(cpu->plugin_mask, ...)
+             tcg_flush_jmp_cache(cpu)
+             -> qatomic_set(&cpu->tb_jmp_cache->array[i].tb, ...)
+
+?
+
+> but they may depend on the state of vCPU. Therefore, it's better to
+> call plugin hooks after the vCPU state is fully initialized and before
+> it gets uninitialized.
 > 
-> OK, so I'm going to drop patch#3.
-
-Hmmm, wait, I originally asked about the "QOM trickery" for a different
-reason.
-
-There are two things:
-
-- using (exposing) QOM properties for introspection,
-
-- using those propreties for internal access.
-
-Patch#3 would eliminate property use *internally*, it would not
-interfere with the use case explained by Gerd.
-
-I originally asked about QOM because I wanted to know where to *stop
-removing* QOM stuff. Like, once I replaced the QOM accessors with normal
-C struct / field accesses in qemu_console_is_multihead(), why would I
-stop there, and not just remove the "head" and and "device" properties
-altogether?
-
-With Gerd's explanation, I understand we need to keep those properties
--- but that doesn't seem to imply we *must* use the properties even in
-internal functions such as qemu_console_is_multihead(). There, we can
-just go for direct field access; is that right? (IOW I'd still keep
-patch#3, if I can!)
-
-Thanks!
-Laszlo
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   cpu.c                | 11 -----------
+>   hw/core/cpu-common.c | 10 ++++++++++
+>   2 files changed, 10 insertions(+), 11 deletions(-)
 
 
