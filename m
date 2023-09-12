@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6072F79D6DA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 18:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D20779D721
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 19:04:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg6cx-0004zO-Co; Tue, 12 Sep 2023 12:52:39 -0400
+	id 1qg6ms-0007xF-Cj; Tue, 12 Sep 2023 13:02:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg6cr-0004zA-Ut
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:52:34 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qg6me-0007w8-H8
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:02:43 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg6cp-0000cy-Rq
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:52:33 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-1d4c9494b42so3997108fac.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 09:52:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qg6mX-0003tK-7W
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:02:39 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-52a1ce52ef4so7521577a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:02:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694537549; x=1695142349; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=pDXPtVvcCLWpk8TnXreh7+5uZdxUfruJIOWc8Dr1EHs=;
- b=TpK9vZG5nPDUs/V2V8fRKEmS30GETSByp0xGXJ+N+HJkbgB5AOEaVeKylpJZkFgzFR
- OKrRj0Dqhx0Q6mG7u8ONI+sqnnCe2nHhrcrJxuhofKzCHPkCbNC/M79hM8ETM+9xkPqu
- ZMtLwwa9+eTp1JXPAVS1qWuMVmi/Ac6syMFDJBccl2J+qSUpjYW2xrbwXeXTAZJ8bXan
- Iw6RbvxgrVY3nbO5kaY+BAERC/7LVjkzMI1+2MnQ3Ygjpxls+mcJPJ8GY5wzvHU7l5X4
- Z9leCKJgMyvJ5LtW4kUeC5/kOzUVfF/mECLaLHWe7XUXyLOyjPU8kgTRolA006RDtOFz
- WYOg==
+ d=linaro.org; s=google; t=1694538149; x=1695142949; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zb86YH1NQUnflFtGXj0uCFy9lZOn7NaN8cIN/CXOJRc=;
+ b=wqVHa96N2KkOJHZFTirukT4kDyyie6DtVaYFi32GDLg2LKpRfPS/uVPKWWGtFMvMM/
+ LJBdGslDmkVbJ1DLJHVDkOUQtZ7ZDyhnuzHVtow9HdQbirL3yuyDoQ6UYQ3jvbFiTp9v
+ i4ezjjUmG2+mC6A4akHRud9ob0Eknzi3+Dl22A/UanLjuVSMpY7FxHVgail/M7I3k2Ca
+ rb0I9EAtKVZafdnWr1vR4LXwuiuCs4+Jfv8okMMB6lsDf/I82J3Hhxg9obqhQkUjTjeP
+ +XC9kwEgwciOSR0GjdZYob6goFAD2hstH7RfOi4hNJb7Zpw1PG5o5sHDuuEA+j319CIb
+ 2bmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694537549; x=1695142349;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pDXPtVvcCLWpk8TnXreh7+5uZdxUfruJIOWc8Dr1EHs=;
- b=M32LeRiz4jq+rzeP8e1BqAuvv0gb9FswSgC/C28UA4hbTbYaeke9LSLaggzpFIK8Fe
- f/jMrdPA+puWGSvBEmnNlYAk/qb0yC8Moh562LEGHKPCGW21M4yP/iIQqZWUCfw+Ny+9
- vpDH4nPiY7u4Mdk4L07/5rrDuONIOeMhP5FiKKTxc4Y2eD/+3Tb/Lt+Qa57NVfqFBG1c
- 6A29FGM40dWNj2JW+alwPxph52V8+JsupMi+XTCyPdMTjjA3H7FbrY5845OOh35TNMxo
- qFvEXTjBBlgNJMZ/fOaYNb1lYJD3Tu6EQv81e5dTUsFLkCxMasBXh69cOy0Iicb0g2mQ
- i8Kg==
-X-Gm-Message-State: AOJu0YzR9oVUoHRE2VR6HgIK0FpxrG9ziipmjFqoMYmCneger0qXcyNY
- 2Com1EMCTxIznZC5Upg3Nfwl/NzzSHyku4RknU4=
-X-Google-Smtp-Source: AGHT+IHwgH15ypqmCmGeSD6bjFD2KDt6B//qdPtJs3sDb1uVcbtCoQ+D+BUaUNTubYzA4tMBfF3s4L8zq3vfGst1rNA=
-X-Received: by 2002:a05:6870:459e:b0:1d5:e792:e7be with SMTP id
- y30-20020a056870459e00b001d5e792e7bemr73843oao.47.1694537549571; Tue, 12 Sep
- 2023 09:52:29 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694538149; x=1695142949;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zb86YH1NQUnflFtGXj0uCFy9lZOn7NaN8cIN/CXOJRc=;
+ b=pOf1vBD/5V27OzIWKViq2iju5pbVfhilfs6bMk/+7PDpaceczpAOqbyj24Oudy/SDR
+ CKXaIW8+fgv/Aqb/yKen/y8+AVGNneuBQxzJjo5kni+kSQBfy+3Mm01FmU6JiuFBlPRP
+ 78KCbiczPTJ0PMoDRgu3Pk8YZmTIwj/a/GhCb9iBgtG3AIxBBqqIlFqRaBZqGKtr9IUD
+ VIZUMlNOEnBmfp5/jFKWsN0H6GudDvTXzTCcAQjHJ2btGiQ1dIpWaxIUSJUR8q2IxMh/
+ 0zfLtLmo0l/XigaZ5jMoXb7GVH20T5iHu3EK0zu6+2lCy9ybZI9WnE16E6sAKn99QN+n
+ 6EuQ==
+X-Gm-Message-State: AOJu0Yx5N/K9Tzkw9sSiLQwWyjY/8y947wg4DCQeWHyTRJmVDy5NBh0p
+ usE3+vypvACJfry+TnH0OHXSlI9l5xYKFOJOi7zc7A==
+X-Google-Smtp-Source: AGHT+IFwbIag5cOI98pPqWEWp6j4XJRVqllF3Zrdq19gRdjJEIP327F3bcSpmg8w03UTj+bCpSge892iEaotgi+L6Lg=
+X-Received: by 2002:a05:6402:1617:b0:52f:3051:f7dd with SMTP id
+ f23-20020a056402161700b0052f3051f7ddmr155120edv.35.1694538149584; Tue, 12 Sep
+ 2023 10:02:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230906190141.1286893-1-stefanha@redhat.com>
- <20230906190141.1286893-3-stefanha@redhat.com>
- <ZQCTiTULn6rSDJSf@redhat.com>
-In-Reply-To: <ZQCTiTULn6rSDJSf@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 12 Sep 2023 12:52:17 -0400
-Message-ID: <CAJSP0QUJWEBQOAbKRKGe9RRmMwGVmdvLs415nUX+_vs0__3Hrg@mail.gmail.com>
-Subject: Re: [RFC 2/3] rcu: add drain_call_rcu_co() API
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Eduardo Habkost <eduardo@habkost.net>, pbonzini@redhat.com, 
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>, 
- Maxim Levitsky <mlevitsk@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+References: <20230905115000.53587-1-thuth@redhat.com>
+ <20230905115000.53587-5-thuth@redhat.com>
+In-Reply-To: <20230905115000.53587-5-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Sep 2023 18:02:18 +0100
+Message-ID: <CAFEAcA9iGMXUXpB=H-mWWdmq0pduTf_vJ5peAB8+DcAOagKPCg@mail.gmail.com>
+Subject: Re: [risu PATCH v2 4/4] s390x: Update the configure script for s390x
+ support
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand <david@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x30.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -91,35 +90,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Sept 2023 at 12:37, Kevin Wolf <kwolf@redhat.com> wrote:
+On Tue, 5 Sept 2023 at 12:50, Thomas Huth <thuth@redhat.com> wrote:
 >
-> Am 06.09.2023 um 21:01 hat Stefan Hajnoczi geschrieben:
-> > call_drain_rcu() has limitations that make it unsuitable for use in
-> > qmp_device_add().
+> Auto-detect s390x hosts and add s390x information to the help text.
 >
-> This sounds a bit vague with only alluding to some unnamed limitations.
-> I assume that you mean the two points you add to rcu.txt. If so, maybe
-> it would be better to add a reference to that in the commit message.
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>  configure | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/configure b/configure
+> index ca2d7db..2f7c580 100755
+> --- a/configure
+> +++ b/configure
+> @@ -58,6 +58,8 @@ guess_arch() {
+>          ARCH=3D"m68k"
+>      elif check_define __powerpc64__ ; then
+>          ARCH=3D"ppc64"
+> +    elif check_define __s390x__ ; then
+> +        ARCH=3D"s390x"
+>      else
+>          echo "This cpu is not supported by risu. Try -h. " >&2
+>          exit 1
+> @@ -139,7 +141,7 @@ Some influential environment variables:
+>                 prefixed with the given string.
+>
+>    ARCH         force target architecture instead of trying to detect it.
+> -               Valid values=3D[arm|aarch64|ppc64|ppc64le|m68k]
+> +               Valid values=3D[arm|aarch64|m68k|ppc64|ppc64le|s390x]
+>
+>    CC           C compiler command
+>    CFLAGS       C compiler flags
+> --
+> 2.39.3
 
-Yes, exactly. I will add a reference to the commit message.
+You could also add s390 to the list of archs that
+build-all-archs handles:
 
->
-> > Introduce a new coroutine version of drain_call_rcu()
-> > with the same functionality but that does not drop the BQL. The next
-> > patch will use it to fix qmp_device_add().
-> >
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->
-> I don't understand the reasoning here. How does yielding from the
-> coroutine not effectively release the BQL, too? It's just that you won't
-> have explicit code here, but the mainloop will do it for you while
-> waiting for new events.
->
-> Is this about not dropping the BQL specifically in nested event loops,
-> but letting the coroutine wait until we return to the real main loop
-> where dropping the BQL is hopefully not a problem?
+diff --git a/build-all-archs b/build-all-archs
+index e5dcfc8..e89851b 100755
+--- a/build-all-archs
++++ b/build-all-archs
+@@ -91,7 +91,8 @@ program_exists() {
+ for triplet in i386-linux-gnu i686-linux-gnu x86_64-linux-gnu \
+                    aarch64-linux-gnu arm-linux-gnueabihf \
+                    m68k-linux-gnu \
+-                   powerpc64le-linux-gnu powerpc64-linux-gnu ; do
++                   powerpc64le-linux-gnu powerpc64-linux-gnu \
++                   s390x-linux-gnu ; do
 
-Yes.
+     if ! program_exists "${triplet}-gcc"; then
+         echo "Skipping ${triplet}: no compiler found"
 
-Stefan
+
+(That script checks that all the architectures can at least
+build, and that risugen on the foo.risu file works.)
+
+thanks
+-- PMM
 
