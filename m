@@ -2,105 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51FB79D38E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E94C79D3F3
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:43:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg4MH-0001a4-7H; Tue, 12 Sep 2023 10:27:17 -0400
+	id 1qg4ad-0003C7-Ip; Tue, 12 Sep 2023 10:42:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qg4M8-0001XB-MI; Tue, 12 Sep 2023 10:27:08 -0400
-Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qg4M6-0006Fv-Fc; Tue, 12 Sep 2023 10:27:08 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.west.internal (Postfix) with ESMTP id 22814320098B;
- Tue, 12 Sep 2023 10:27:03 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Tue, 12 Sep 2023 10:27:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm3; t=1694528822; x=
- 1694615222; bh=T5/wSFH5UysJriXBNU9TNxkLsFcDhOioChngTaRpK3Q=; b=r
- +UKaOfFmRHyyKX4TeQay5uu+FLIM6px5K0cDkbN02JZTpT34mR9sqhnc6afpthV6
- cT/rZMXepDEP9LGkVpbwQf8hJzBg41z0Rd7vcyfhXmkN5KX7deJZdlEorygi5yxA
- Atqi/KEfecdtz47L69uojEIdoyrYSWwM3X+NgF5U7vLOVOcdoNjXDcYCsXiDnCGz
- 3qPrKPwfRG0hlCI1I92iJZ+4dfvKn61GO7KBcBv1pRABOMaxwBUFjFvSXnsdnuLp
- VCioXKeDqC64uhRon9QUiJMBXw557Ok/h4TNni0S3aaKyizqFaKa7kBge0gIDH1q
- lFesa4iPIz83WYXr6+IwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1694528822; x=
- 1694615222; bh=T5/wSFH5UysJriXBNU9TNxkLsFcDhOioChngTaRpK3Q=; b=R
- ynVoW7S6tMus41nELXFqG362gTwDaHvk2T8dc6vKtMzas1NvdgseYAaEdgHTzIYS
- 1oWSBVYl5btZDiYNu2730sITKv8rfQkf8+Z/JtUEkZfWQO1vLLEsREFuoICBKVcr
- 9ZmxOeOCgZMVN89VqXvORILzD7y72qcPP7ze+pKcfvlWSA4o+67fX9W78E2K0Qbp
- jG3Ut3dO1e2oZcbulRL3dvS2+m1yJCrnFErbevfeN1SkCvwNM7COWCHj129OP2Ma
- OCHJ9aklJp1rHZkDNaBVgTCD4F7Nx2DeLG8Gk3PeUJiVzhxXl3nWZD9vearCQtH4
- O2El84+LplqiOd9oHH+9w==
-X-ME-Sender: <xms:NnUAZT83lqKrhSstFwxTUXoVi2sEJmp5t6Bqkfj_CEHUw1ynM_VNvg>
- <xme:NnUAZfs7ogdntKXbJb0p5zbrkBitTo81kTPjdrbS4drog6GBPvuTuM_whXS8iJW9N
- E2oPvU4y_N-lykWwFs>
-X-ME-Received: <xmr:NnUAZRBku-5fdVUmOOdXS7NuuUs0kqh6iHlyHSCqd939_j-Jrccf_ezX6EK_e74tx0aqf-WeO4Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgjeeiucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhlrghu
- shculfgvnhhsvghnuceoihhtshesihhrrhgvlhgvvhgrnhhtrdgukheqnecuggftrfgrth
- htvghrnhepjefgieelgfeiveehkeeuveehheekfeevgeeigfehfefgjeejhefffeegudej
- udegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
- htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:NnUAZfdmU2Vqe0ge-udadO6wwgNfjHCyi5BZLSFdCz6NoB-KRMk8ZQ>
- <xmx:NnUAZYOF_Gxglx8PSpgrnZ_W5NWBkSIg4Ns2g2KHpeg_UUzbCIv83w>
- <xmx:NnUAZRknI3fE7g1oSvennfg-2pfTh6tJvS23gU34Bok-sme8ZQjyxg>
- <xmx:NnUAZXoz_MX-AlZKQ15_t1rUc6y1BIxD68nqfKTH1jmGHTaBSFqkrg>
-Feedback-ID: idc91472f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 12 Sep 2023 10:27:00 -0400 (EDT)
-From: Klaus Jensen <its@irrelevant.dk>
-To: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
- qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Hanna Reitz <hreitz@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
- Kevin Wolf <kwolf@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: [PULL 2/2] hw/nvme: Avoid dynamic stack allocation
-Date: Tue, 12 Sep 2023 16:26:52 +0200
-Message-ID: <20230912142649.11002-6-its@irrelevant.dk>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230912142649.11002-4-its@irrelevant.dk>
-References: <20230912142649.11002-4-its@irrelevant.dk>
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qg4aY-0003BY-MW
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:42:03 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qg4aW-0003Pw-7b
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:42:02 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-99c1d03e124so708617566b.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1694529718; x=1695134518;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vUKHpgqm2iAf2/dABtDx/F3pyl52yT4elio4vAfKCc8=;
+ b=aFkY+d9/nXXBRuOH5kMCvxZh+qqkqP8eRJuN9HVAuF7KNelHCLdXbApCkzf9d3iOSt
+ SK0nQonci+b2abuHb5/u+pc+/8P8XvcqxtHsw+N0bq1s/kMSJwEhLkyU6kEqgEUaU4M1
+ A/h2NLR6drm8XjP0/wDNzkFO4mqouzKGenR0SLf+TLt6JjZ8UMJbSzv7HhGuvUYRhBLA
+ 73z6cxtDUZgE5ViG1VZK6Ei2Ycpb9qe8EgT7p4JLLMsPSPNZgSupCkWpTj0tBb/Ahtr1
+ JyFcwuKRWOxJBJ0o4Qr6NCF9yAx0kv7ia3dGLG15xq/miRqy8foCPCH1pNQzu1f0YdpD
+ 5pKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694529718; x=1695134518;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vUKHpgqm2iAf2/dABtDx/F3pyl52yT4elio4vAfKCc8=;
+ b=bHOlkqhzEe9U4IUh+IAPqVS0By6VYPYYkDj556qeVwAfazisSKviHMQz0dxzYrM3RC
+ 24oqt42jhNdxrWq6E8bYKdj3SWXdvlDyzTf4RHkhLewM7j2SDhfG0/fxZAhobtqHVW6J
+ kKVvirLzNrnQuEGBTU+Bxx0YhuWINwquL7SVRzMOk+mlikqp7Mknlyegjqocfl13SSK0
+ 5Hs3ZV2C0zQRzVcLeXFOOq6tUUh70aygIawZbfNtohxc0AqDorQDSL2Ubfjje2uBb7AU
+ UuRfC5q6W6s9/SxRecL/WV0p+Stte/pmcJRGg/5lGCN3tswix3+j/WFY5CftT2CyqFPm
+ XOAQ==
+X-Gm-Message-State: AOJu0YyOyQcZsWe8qhTxf48dILWOipaeW0pv4mcJaq9oxfpP/tZTKltl
+ 96iWib9v7rQn6Ui4dOM2XBAvk1sbSM4HbyTAJT8jgw==
+X-Google-Smtp-Source: AGHT+IEthlxM/u4JRpesHRXncrj89CpcRBs21oHMZfSUlKSn7L4l1sxHSo5Lyj8aOqZgrA36z4bJyb0+lNAFBD7nTF0=
+X-Received: by 2002:a17:907:2ceb:b0:9ad:8ef8:a7e8 with SMTP id
+ hz11-20020a1709072ceb00b009ad8ef8a7e8mr1133664ejc.25.1694529718089; Tue, 12
+ Sep 2023 07:41:58 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1072; i=k.jensen@samsung.com;
- h=from:subject; bh=k8Y7iQz7gOK9fuxUsAHHCrYcflluV+Qz2N+9aldrpJE=;
- b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGUAdSrjujEk+l6HiX1de5lsZ3HThXQrBQkwU
- Xa9JxrwkYN8EIkBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJlAHUqAAoJEE3hrzFt
- Tw3pGFIH/ijZb901m/wUU0yApw6ONIxcyLqh4GM3mnHwFukiBb7iAEyhUVWbwl1hfq6uxB61Vkc
- giEcT+l5FSxZp8bfMlNeNKwmx0fs+qyx1HNmMuUYC0nyAawyC/QZnwDIQCap5geVCmZYCdNPoU/
- SrphZxi4qQ6Oj1/YOmeoGy31vJSRB2DJvXOOiX3roqk+P0M9F7N4A2jyx8Qa8qDxRy/ymGnaoHv
- yKHtVsW3POY/0X+akDXLVTTJlle/oitBqEqYqPpIpLVj4NGzq23/tJYQHElAZQ9X/FF7SNp+lz0
- QKaRrXX1P3BabH7NXJEeorjbC1sf9rmDvCvd3WAw2/UwZPIlql3QV6hD
-X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
- fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=64.147.123.24; envelope-from=its@irrelevant.dk;
- helo=wout1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <e6385fc7-0889-ea16-4fc0-337796814636@tls.msk.ru>
+ <CAJSP0QUfF64wWQbbAqKpeUWGEOz6jB2ZHkmJhaRXfRDFLpD_kw@mail.gmail.com>
+In-Reply-To: <CAJSP0QUfF64wWQbbAqKpeUWGEOz6jB2ZHkmJhaRXfRDFLpD_kw@mail.gmail.com>
+From: Warner Losh <imp@bsdimp.com>
+Date: Tue, 12 Sep 2023 08:41:46 -0600
+Message-ID: <CANCZdfptn3UMMpgxSJYb7YFmt8YOxg2tB+y68Jb878vQyQWOGQ@mail.gmail.com>
+Subject: Re: cherry-picking something to -stable which might require other
+ changes
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>, 
+ qemu-stable <qemu-stable@nongnu.org>, Thomas Huth <thuth@redhat.com>,
+ Bin Meng <bmeng@tinylab.org>, 
+ Paul Menzel <pmenzel@molgen.mpg.de>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000e8950d06052a71d2"
+Received-SPF: none client-ip=2a00:1450:4864:20::633;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,36 +89,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+--000000000000e8950d06052a71d2
+Content-Type: text/plain; charset="UTF-8"
 
-Instead of using a variable-length array in nvme_map_prp(),
-allocate on the stack with a g_autofree pointer.
+On Tue, Sep 12, 2023, 8:01 AM Stefan Hajnoczi <stefanha@gmail.com> wrote:
 
-The codebase has very few VLAs, and if we can get rid of them all we
-can make the compiler error on new additions.  This is a defensive
-measure against security bugs where an on-stack dynamic allocation
-isn't correctly size-checked (e.g.  CVE-2021-3527).
+> When I backport patches into RHEL, the general process I follow is:
+> 1. For context conflicts, just adjust the patch to resolve them.
+> 2. For real dependencies, backport the dependencies, if possible.
+> 3. If backporting the dependencies is not possible, think of a
+> downstream-only solution. This should be rare.
+>
+> People make different backporting decisions (just like structuring
+> patch series). It can be a matter of taste.
+>
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
----
- hw/nvme/ctrl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+We've done almost exactly the same thing in FreeBSD for the past almost 30
+years (with varying degrees of success and nuance, to be true, often
+limited by early tools). It's an excellent ideal to shoot for, and we've
+had troubles more often than not the further one gets aways from it.
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index d99a6f5c9a2e..90687b168ae1 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -894,7 +894,7 @@ static uint16_t nvme_map_prp(NvmeCtrl *n, NvmeSg *sg, uint64_t prp1,
-     len -= trans_len;
-     if (len) {
-         if (len > n->page_size) {
--            uint64_t prp_list[n->max_prp_ents];
-+            g_autofree uint64_t *prp_list = g_new(uint64_t, n->max_prp_ents);
-             uint32_t nents, prp_trans;
-             int i = 0;
- 
--- 
-2.42.0
+Warner
 
+
+Stefan
+>
+>
+
+--000000000000e8950d06052a71d2
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Tue, Sep 12, 2023, 8:01 AM Stefan Hajnoczi &lt;<a h=
+ref=3D"mailto:stefanha@gmail.com">stefanha@gmail.com</a>&gt; wrote:<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
+1px #ccc solid;padding-left:1ex">When I backport patches into RHEL, the gen=
+eral process I follow is:<br>
+1. For context conflicts, just adjust the patch to resolve them.<br>
+2. For real dependencies, backport the dependencies, if possible.<br>
+3. If backporting the dependencies is not possible, think of a<br>
+downstream-only solution. This should be rare.<br>
+<br>
+People make different backporting decisions (just like structuring<br>
+patch series). It can be a matter of taste.<br></blockquote></div></div><di=
+v dir=3D"auto"><br></div><div dir=3D"auto">We&#39;ve done almost exactly=C2=
+=A0the same thing in FreeBSD for the past almost 30 years (with varying deg=
+rees of success and nuance, to be true, often limited by early tools). It&#=
+39;s an excellent ideal to shoot for, and we&#39;ve had troubles more often=
+ than not the further one gets aways from it.</div><div dir=3D"auto"><br></=
+div><div dir=3D"auto">Warner</div><div dir=3D"auto"><br></div><div dir=3D"a=
+uto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;pa=
+dding-left:1ex">
+Stefan<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000e8950d06052a71d2--
 
