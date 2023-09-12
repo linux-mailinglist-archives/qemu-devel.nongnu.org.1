@@ -2,57 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6E179D9F2
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 22:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C20579D9F4
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 22:19:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg9pP-0004og-JX; Tue, 12 Sep 2023 16:17:43 -0400
+	id 1qg9r6-0005ho-V9; Tue, 12 Sep 2023 16:19:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=HIws=E4=kaod.org=clg@ozlabs.org>)
- id 1qg9pN-0004oG-1n; Tue, 12 Sep 2023 16:17:41 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qg9qm-0005hX-9q
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 16:19:08 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=HIws=E4=kaod.org=clg@ozlabs.org>)
- id 1qg9pI-0004I7-0L; Tue, 12 Sep 2023 16:17:39 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RlZd125dyz4x5j;
- Wed, 13 Sep 2023 06:17:25 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RlZcz0cQmz4x4D;
- Wed, 13 Sep 2023 06:17:22 +1000 (AEST)
-Message-ID: <1e9c42ff-8f3e-b652-0d75-75080587a249@kaod.org>
-Date: Tue, 12 Sep 2023 22:17:19 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qg9qj-0005Mf-Ea
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 16:19:07 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 01B3A21397;
+ Tue, 12 Sep 2023 23:19:08 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 6AEAB2797F;
+ Tue, 12 Sep 2023 23:19:03 +0300 (MSK)
+Message-ID: <b3188e1e-f5ec-ae3d-97de-b5b30f778c5b@tls.msk.ru>
+Date: Tue, 12 Sep 2023 23:19:03 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/4] target/ppc: Add new hflags to support BHRB
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v2] tpm: fix crash when FD >= 1024
 Content-Language: en-US
-To: Glenn Miles <milesg@linux.vnet.ibm.com>
-Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-References: <20230911212340.2260383-1-milesg@linux.vnet.ibm.com>
- <20230911212340.2260383-2-milesg@linux.vnet.ibm.com>
- <9d8164edf63540f2935a02cc31f40c8b@imap.linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <9d8164edf63540f2935a02cc31f40c8b@imap.linux.ibm.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, marcandre.lureau@redhat.com,
+ qemu-devel@nongnu.org
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20230911132551.1421276-1-marcandre.lureau@redhat.com>
+ <dcf26f94-4b0b-e992-1207-a1ee73f21508@linux.ibm.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <dcf26f94-4b0b-e992-1207-a1ee73f21508@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=HIws=E4=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -69,12 +61,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/12/23 22:00, Glenn Miles wrote:
-> Sorry, this is my first attempt at sending out a patch and it looks like only part of the patch made it.  Until I can figure out what I did wrong, please ignore this patch.
+12.09.2023 03:08, Stefan Berger пишет:
+> 
+> On 9/11/23 09:25, marcandre.lureau@redhat.com wrote:
+>> From: Marc-Andr޸ Lureau <marcandre.lureau@redhat.com>
+>>
+>> Replace select() with poll() to fix a crash when QEMU has a large number
+>> of FDs.
+>>
+>> Fixes:
+>> https://bugzilla.redhat.com/show_bug.cgi?id=2020133
+> 
+> Fixes:  ca64b08638 ("tpm: Move backend code under the 'backends/' directory")
 
-I didn't get patches 2-4. Patch 1 looked good though. Please resend.
+Heh. I noticed this only now.  No, this is not the commit which introduced
+the breakage.  It is either
 
-Thanks,
+commit 56a3c24ffc11955ddc7bb21362ca8069a3fc8c55
+Author: Stefan Berger <stefanb@linux.vnet.ibm.com>
+Date:   Tue May 26 16:51:06 2015 -0400
 
-C.
+     tpm: Probe for connected TPM 1.2 or TPM 2
+
+which introduced select() in the first place (provided similar select()
+hasn't been used in there before.  Or some other commit somewhere else
+which allowed to have large number of filedescriptors - provided it wasn't
+possible before.  But definitely not a commit which just moved file into
+another subdir :)
+
+/mjt
 
