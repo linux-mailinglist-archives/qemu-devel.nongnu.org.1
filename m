@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914E779D128
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E45B579D13B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:38:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg2ZT-0005Uk-6R; Tue, 12 Sep 2023 08:32:47 -0400
+	id 1qg2eb-0007yY-El; Tue, 12 Sep 2023 08:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qg2ZJ-0005SZ-53; Tue, 12 Sep 2023 08:32:37 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qg2eY-0007y6-Sn
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:38:02 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qg2ZG-00060k-DT; Tue, 12 Sep 2023 08:32:36 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 759B6211E4;
- Tue, 12 Sep 2023 15:32:34 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 603DF2783E;
- Tue, 12 Sep 2023 15:32:30 +0300 (MSK)
-Message-ID: <b49e350d-089d-62f7-3e5b-dcc885547912@tls.msk.ru>
-Date: Tue, 12 Sep 2023 15:32:30 +0300
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qg2eV-0006zK-Qe
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:38:02 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlNQB09FWz6K6Mc;
+ Tue, 12 Sep 2023 20:37:22 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 12 Sep
+ 2023 13:37:51 +0100
+Date: Tue, 12 Sep 2023 13:37:50 +0100
+To: Gregory Price <gregory.price@memverge.com>
+CC: Gregory Price <gourry.memverge@gmail.com>, <qemu-devel@nongnu.org>,
+ <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, <kwangjin.ko@sk.com>
+Subject: Re: [PATCH 5/5] cxl/vendor: SK hynix Niagara Multi-Headed SLD Device
+Message-ID: <20230912133750.000036bb@Huawei.com>
+In-Reply-To: <ZPdRjVjbbe9DkHW5@memverge.com>
+References: <20230901012914.226527-1-gregory.price@memverge.com>
+ <20230901012914.226527-6-gregory.price@memverge.com>
+ <20230906140445.00002acd@Huawei.com>
+ <ZPdRjVjbbe9DkHW5@memverge.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 1/4] sysemu/kvm: Restrict kvmppc_get_radix_page_info() to
- ppc targets
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Greg Kurz <groug@kaod.org>
-References: <20230912113027.63941-1-philmd@linaro.org>
- <20230912113027.63941-2-philmd@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230912113027.63941-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,72 +65,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.09.2023 14:30, Philippe Mathieu-Daudé:
-> kvm_get_radix_page_info() is only defined for ppc targets (in
-> target/ppc/kvm.c). The declaration is not useful in other targets.
-> Rename using the 'kvmppc_' prefix following other declarations
-> from target/ppc/kvm_ppc.h.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   include/sysemu/kvm.h | 1 -
->   target/ppc/kvm_ppc.h | 2 ++
->   target/ppc/kvm.c     | 4 ++--
->   3 files changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-> index ee9025f8e9..3bcd8f45be 100644
-> --- a/include/sysemu/kvm.h
-> +++ b/include/sysemu/kvm.h
-> @@ -551,7 +551,6 @@ int kvm_set_one_reg(CPUState *cs, uint64_t id, void *source);
->    * Returns: 0 on success, or a negative errno on failure.
->    */
->   int kvm_get_one_reg(CPUState *cs, uint64_t id, void *target);
-> -struct ppc_radix_page_info *kvm_get_radix_page_info(void);
->   int kvm_get_max_memslots(void);
->   
->   /* Notify resamplefd for EOI of specific interrupts. */
-> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-> index 6a4dd9c560..440e93f923 100644
-> --- a/target/ppc/kvm_ppc.h
-> +++ b/target/ppc/kvm_ppc.h
-> @@ -89,6 +89,8 @@ void kvmppc_set_reg_tb_offset(PowerPCCPU *cpu, int64_t tb_offset);
->   
->   int kvm_handle_nmi(PowerPCCPU *cpu, struct kvm_run *run);
->   
-> +struct ppc_radix_page_info *kvmppc_get_radix_page_info(void);
-> +
->   #define kvmppc_eieio() \
->       do {                                          \
->           if (kvm_enabled()) {                          \
-> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-> index 51112bd367..a58708cdfc 100644
-> --- a/target/ppc/kvm.c
-> +++ b/target/ppc/kvm.c
-> @@ -268,7 +268,7 @@ static void kvm_get_smmu_info(struct kvm_ppc_smmu_info *info, Error **errp)
->                        "KVM failed to provide the MMU features it supports");
->   }
->   
-> -struct ppc_radix_page_info *kvm_get_radix_page_info(void)
-> +struct ppc_radix_page_info *kvmppc_get_radix_page_info(void)
->   {
->       KVMState *s = KVM_STATE(current_accel());
->       struct ppc_radix_page_info *radix_page_info;
-> @@ -2372,7 +2372,7 @@ static void kvmppc_host_cpu_class_init(ObjectClass *oc, void *data)
->       }
->   
->   #if defined(TARGET_PPC64)
-> -    pcc->radix_page_info = kvm_get_radix_page_info();
-> +    pcc->radix_page_info = kvmppc_get_radix_page_info();
->   
->       if ((pcc->pvr & 0xffffff00) == CPU_POWERPC_POWER9_DD1) {
->           /*
+On Tue, 5 Sep 2023 12:04:29 -0400
+Gregory Price <gregory.price@memverge.com> wrote:
 
-I wonder, if it's defined and used in target/ppc/kvm.c only,
-why it needs to be in an .h file to begin with, instead of being static?
+> On Wed, Sep 06, 2023 at 02:04:45PM +0100, Jonathan Cameron wrote:
+> > On Thu, 31 Aug 2023 21:29:14 -0400
+> > Gregory Price <gourry.memverge@gmail.com> wrote:
+> > 
+> > Hi Gregory,
+> > 
+> > Some comments inline, but I'm happy to add this to my staging tree in the meantime
+> > as it stands (might be a few days until I push a new branch though).
+> >   
+> 
+> I'm going to do one a quick v3 today with the feedback and some cleanup
+> in spots i noticed.
+> 
+> > > Signed-off-by: Gregory Price <gregory.price@memverge.com>
+> > > Signed-off-by: Junhee Ryu <junhee.ryu@sk.com>
+> > > Signed-off-by: Kwangjin Ko <kwangjin.ko@sk.com>  
+> > 
+> > The SoB chain needs cleaning up.  Is this a co-developed situation?
+> > If it is use the rules in the kernel documentation as I don't think those
+> > are yet clearly stated in QEMU docs (and they are confusing so I won't try
+> > to restate them here).
+> >   
+> 
+> TL;DR: They gave me the command list, I wrote the model.  We got
+> approval to release the model, but I wasn't sure how to capture the
+> copyright/SoB list.  I suppose the copyright covers SKh, but since I
+> authored the model, it only requires my SoB?
 
-/mjt
+Yes - I think only your SoB is fine.  Maybe some text to explain the other
+parts.
+
+> 
+> After reading, I'm still not sure how to capture this lol.
+> 
+> Should I just switch the skh folks to Co-developed-by?
+> 
+> >   
+> > > diff --git a/hw/cxl/vendor/skhynix/meson.build b/hw/cxl/vendor/skhynix/meson.build
+> > > new file mode 100644
+> > > index 0000000000..4e57db65f1
+> > > --- /dev/null
+> > > +++ b/hw/cxl/vendor/skhynix/meson.build
+> > > @@ -0,0 +1 @@
+> > > +system_ss.add(when: 'CONFIG_CXL_VENDOR', if_true: files('skhynix_niagara.c',))
+> > > diff --git a/hw/cxl/vendor/skhynix/skhynix_niagara.c b/hw/cxl/vendor/skhynix/skhynix_niagara.c
+> > > new file mode 100644
+> > > index 0000000000..88e53cc6cc
+> > > --- /dev/null
+> > > +++ b/hw/cxl/vendor/skhynix/skhynix_niagara.c
+> > > @@ -0,0 +1,516 @@
+> > > +/*
+> > > + * SPDX-License-Identifier: GPL-2.0-or-later
+> > > + *
+> > > + * Copyright (c) 2023 MemVerge Inc.
+> > > + * Copyright (c) 2023 SK hynix Inc.
+> > > + */
+> > > +
+> > > +#include <sys/shm.h>  
+> > 
+> > This will need some osdep.h magic.  There is some there
+> > already but it will need relaxing (unless you want to run only on sparc ;)
+> > and we may need to make this device linux host only.
+> > 
+> >   
+> 
+> Good point, I had not considered osdep issues.  Do you know of any
+> examples of linux-only devices I can use to do a quick patch-up? I 
+> can come back around on this issue later.
+
+No idea.
+
+> 
+> >   
+> > > +
+> > > +enum {
+> > > +    NIAGARA_MHD = 0x55,
+> > > +        #define GET_MHD_INFO 0x0  
+> > 
+> > Is this standard as it's in the normal space?
+> > If it is then I'd like the implementation pushed down to the
+> > type3 implementation (with some callbacks or similar.)
+> >   
+> 
+> :thinking_face:
+> 
+> maybe a similar pattern to the callback from before? I suppose I could
+> push this down into type3 and add an mhd callback in the class and have
+> niagara fill that in with the callback.
+> 
+> That *feels* right, so i'll go ahead with it.
+> 
+> 
+> 
+> If I misunderstood anything, let me know
+> 
+> ~Gregory
+
 
