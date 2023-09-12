@@ -2,97 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F1379C74E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C9579C75D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:59:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfxL7-0008TO-MY; Tue, 12 Sep 2023 02:57:37 -0400
+	id 1qfxLu-0000K3-KS; Tue, 12 Sep 2023 02:58:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qfxL5-0008RS-Cj
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:57:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qfxL3-0006G5-6k
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:57:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694501852;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Dvd39UEv5uBZH5hJ/PfaltMe+ZigtDjDMJ7afUFMjFc=;
- b=MMM0BYI55KR+VL7bfsqTBIYix2fYiSXj7oxvkhJ4AW63XpBajWqGLr6K70N9RZOG115U25
- MoO2lWRv8f7GxO9BzC1jAh9XP9aoO3wiCB4JxcIRiXCsaFn7itYUVGXpPbI90wyPSnM1df
- J5xetfeQaVyPzlYLMAZyenYxFtkIDd4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-91-T1bl8Tf_NLKIPRRs1CaXUw-1; Tue, 12 Sep 2023 02:57:30 -0400
-X-MC-Unique: T1bl8Tf_NLKIPRRs1CaXUw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fef5403093so23134575e9.0
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:57:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qfxLr-0000JR-7L
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:23 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qfxLo-0007RE-NX
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:22 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-26f7f71b9a7so4267458a91.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:58:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694501898; x=1695106698;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XRBrU0goRgb7M0G3yImQVD/2ahAcqhXPC+6jCjLC0YU=;
+ b=rkpAYsIilIgN5oOigVVGCM8CXlYHezbsOuph351cmVVWXSl78VchC9cl7hP1DJTJNS
+ PkfmxF3BROfM71cQZHJHtHg7zVSnutzGRIQMBEbkj4PzuK5rYFHyfc0JCMrzD5OVliWH
+ rhipYPzym2ECegh+2Nlf+23Wda7NZNP09JunceEKAfo8gxLUlWnD9PpU0x5CqM1Y9+vT
+ 9kpYqlBeyca2jQzUTnHjXNhIvzWACha0KThUOG0F4grMaS489cDzEkVuqV2SlQFaPuui
+ lSo8ZUK8uIjAODUaU9Uv7qZ4/mzbFBE3SapRcWfQw9QG+Jo88tgwiOGxdt8/w2DIpJfl
+ Qscg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694501849; x=1695106649;
- h=content-transfer-encoding:in-reply-to:subject:organization:from
- :content-language:references:cc:to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1694501898; x=1695106698;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Dvd39UEv5uBZH5hJ/PfaltMe+ZigtDjDMJ7afUFMjFc=;
- b=px2NtksWnAlOY5LxYNSXH6cs1sbFJx5mbRQFRkcZctn8tfE1uPfutx0Uxru37t/S1q
- JidDoT2dafkp2SQbF+6ou3W3OiGDJ94bRFxCg0/snzVh3jiUpb4IdMyz1mtRH/XgHhb9
- k2krsFrNcxZjLcHlXCcXxyUnIWPjaFH30c70ShJ+G4lsWmJi93x/Ukr93elJAfHB4TRl
- VUQg+yWmN8k+9ZGr8sfMBeupo1U05TzZO+qWmypkNgMWJ0JBFyQNgEZIpOOeG/4noHyB
- bk5bd48igXrPKuQAiqL3Y6oiwHyaeC3k7AYh9I31GDScX8r7lErSeyHDfshLdfXmPYbI
- /drQ==
-X-Gm-Message-State: AOJu0Yy/YuxlP8/9UxXxEKwc0pc+LRbxQo/Ux1AZ+QL5syXhjH/ixacm
- w7QiAuLal8+QlSCMX42hovlfcx0mQVN424y8u+qtdgyRf1vBM8o54ovo4poyO3gzyvRgOjOKkAe
- r+af4+ySgSI5QcyE=
-X-Received: by 2002:a05:600c:4f8e:b0:403:aced:f7f4 with SMTP id
- n14-20020a05600c4f8e00b00403acedf7f4mr1130654wmq.12.1694501849482; 
- Mon, 11 Sep 2023 23:57:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGxxmeqw5i+PJKvJLLw5Tz47gpgVLAzIhApwTAWDHfnODTU6SdwuVRxjg/wJ1PfAgDsA0cA2w==
-X-Received: by 2002:a05:600c:4f8e:b0:403:aced:f7f4 with SMTP id
- n14-20020a05600c4f8e00b00403acedf7f4mr1130634wmq.12.1694501849021; 
- Mon, 11 Sep 2023 23:57:29 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74f:d600:c705:bc25:17b2:71c9?
- (p200300cbc74fd600c705bc2517b271c9.dip0.t-ipconnect.de.
- [2003:cb:c74f:d600:c705:bc25:17b2:71c9])
+ bh=XRBrU0goRgb7M0G3yImQVD/2ahAcqhXPC+6jCjLC0YU=;
+ b=iD/z1FiX8ptpLPlWAdueHR69K94rKdPIIxITV6nNLcabYbxVc9JQazWz2eEZzTIPUL
+ KxgWY+8YB7koeF91UDEvTuMGzBM9WTwYYlgV2DnopMcCNIsDVUOeF8GQoafVu4mGygk1
+ Xv0UNVYMx8h10sc6wWI12y0wD1tF1bDOIDP+Scf69c3hV5eC13s5ou7Zz2z5Ex/rHCcX
+ nugBkp3pYdOdvCx0lcPBJ7dFXlJeHS1TXcKSFzIgwFOVr8TmXFI3iidSK1gQ4bZ7pv42
+ WWa/aspqwye7xfrG3z8oxg/Cvv7C1bDbF6qqwb/lBWb9cnWvUnsnCAPBqBkv6ltTTvHH
+ HzIQ==
+X-Gm-Message-State: AOJu0Yx8WWge0m25+LhkZSs6zQxw8J1Md+4etSR1p2fX72ScFA2kC+uq
+ h0W5MAsThMK3UHdUliECa5tnIA==
+X-Google-Smtp-Source: AGHT+IGZlI5N+PZr77ouZatudBeLx1WKSfZgPMeLFbGEQOSGuRa38otGoSIUnjQqPtUrwxQbXCtX0w==
+X-Received: by 2002:a17:90b:4c4b:b0:268:13c4:b800 with SMTP id
+ np11-20020a17090b4c4b00b0026813c4b800mr11331340pjb.21.1694501897640; 
+ Mon, 11 Sep 2023 23:58:17 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- fa14-20020a05600c518e00b00402fa98abe3sm11432900wmb.46.2023.09.11.23.57.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 23:57:28 -0700 (PDT)
-Message-ID: <bbf67ab2-2868-7c3a-0e8e-8f53fd62c1fb@redhat.com>
-Date: Tue, 12 Sep 2023 08:57:27 +0200
+ i8-20020a17090a2ac800b002696aeb72e5sm9315058pjg.2.2023.09.11.23.58.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 11 Sep 2023 23:58:17 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>,
+ Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2 00/11] gdbstub and TCG plugin improvements
+Date: Tue, 12 Sep 2023 15:57:55 +0900
+Message-ID: <20230912065811.27796-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-To: Collin Walling <walling@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org
-Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org,
- wangyanan55@huawei.com, eblake@redhat.com, armbru@redhat.com,
- richard.henderson@linaro.org, iii@linux.ibm.com, thuth@redhat.com
-References: <20230911205232.71735-1-walling@linux.ibm.com>
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v1 1/2] target/s390x: introduce "host-recommended" option
- for model expansion
-In-Reply-To: <20230911205232.71735-1-walling@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,62 +92,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.09.23 22:52, Collin Walling wrote:
+This series extracts fixes and refactorings that can be applied
+independently from "[PATCH RESEND v5 00/26] plugins: Allow to read
+registers" as suggested by Nicholas Piggin.
 
-Patch subject is wrong (should contain "static-recommended")
+Patch "target/ppc: Remove references to gdb_has_xml" is also updated to
+remove some dead code I missed earlier and thus the Reviewed-by tag is
+dropped.
 
-> Newer S390 machines may drop support for features completely, rendering
-> guests operating with older CPU models incapable of running on said
-> machines. A manual effort to disable certain CPU features would be
-> required.
-> 
-> To alleviate this issue, a list of "deprecated" features are now
-> retained within QEMU, and a new "static-recommended" CPU model expansion
-> type has been created to allow a query of the host-model with deprecated
-> features explicitly disabled.
-> 
-> Signed-off-by: Collin Walling <walling@linux.ibm.com>
-> ---
->   qapi/machine-target.json         |  8 +++++++-
->   target/s390x/cpu_features.c      | 14 ++++++++++++++
->   target/s390x/cpu_features.h      |  1 +
->   target/s390x/cpu_models_sysemu.c | 26 +++++++++++++++++++++-----
->   4 files changed, 43 insertions(+), 6 deletions(-)
-> 
-> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-> index f0a6b72414..4dc891809d 100644
-> --- a/qapi/machine-target.json
-> +++ b/qapi/machine-target.json
-> @@ -42,6 +42,12 @@
->   #     to be migration-safe, but allows tooling to get an insight and
->   #     work with model details.
->   #
-> +# @static-recommended: Expand to a static CPU model with property
-> +#     changes suggested by the architecture. This is useful for
-> +#     expanding a CPU model expected to operate in mixed
-> +#     CPU-generation environments. The @static-recommended CPU
-> +#     models are migration-safe.
-> +#
+V1 -> V2:
+  Rebased.
+  Added patch "gdbstub: Fix target_xml initialization".
+  Added patch "gdbstub: Fix target.xml response".
+  Added patch "gdbstub: Replace gdb_regs with an array".
 
-Can we instead make this a new parameter for query-cpu-model-expansion 
-("no-deprecated-features" ? ), that properly gets rejected from other 
-archs when not supported?
+Akihiko Odaki (11):
+  gdbstub: Fix target_xml initialization
+  gdbstub: Fix target.xml response
+  contrib/plugins: Use GRWLock in execlog
+  gdbstub: Introduce GDBFeature structure
+  target/arm: Move the reference to arm-core.xml
+  hw/core/cpu: Return static value with gdb_arch_name()
+  gdbstub: Use g_markup_printf_escaped()
+  target/arm: Remove references to gdb_has_xml
+  target/ppc: Remove references to gdb_has_xml
+  gdbstub: Remove gdb_has_xml variable
+  gdbstub: Replace gdb_regs with an array
 
-[...]
-
->   /* convert S390CPUDef into a static CpuModelInfo */
->   static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
-> -                                bool delta_changes)
-> +                                bool delta_changes, bool disable_dep_feats)
-
-"dep" can be misleading ("depended")
-
-"no_deprecated_feat" ?
-
+ MAINTAINERS               |  2 +-
+ meson.build               |  2 +-
+ gdbstub/internals.h       |  2 -
+ include/exec/gdbstub.h    | 17 +++----
+ include/hw/core/cpu.h     |  4 +-
+ target/ppc/internal.h     |  2 +-
+ contrib/plugins/execlog.c | 16 ++++---
+ gdbstub/gdbstub.c         | 94 +++++++++++++++++++--------------------
+ gdbstub/softmmu.c         |  2 +-
+ stubs/gdbstub.c           |  6 +--
+ target/arm/cpu.c          |  9 ++--
+ target/arm/cpu64.c        |  4 +-
+ target/arm/gdbstub.c      | 32 +------------
+ target/i386/cpu.c         |  6 +--
+ target/loongarch/cpu.c    |  8 ++--
+ target/ppc/gdbstub.c      | 24 ++--------
+ target/riscv/cpu.c        |  6 +--
+ target/s390x/cpu.c        |  4 +-
+ target/tricore/cpu.c      |  4 +-
+ scripts/feature_to_c.py   | 48 ++++++++++++++++++++
+ scripts/feature_to_c.sh   | 69 ----------------------------
+ 21 files changed, 145 insertions(+), 216 deletions(-)
+ create mode 100755 scripts/feature_to_c.py
+ delete mode 100644 scripts/feature_to_c.sh
 
 -- 
-Cheers,
-
-David / dhildenb
+2.42.0
 
 
