@@ -2,66 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC06679D273
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDF279D27A
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:36:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg3WA-0000cC-EO; Tue, 12 Sep 2023 09:33:26 -0400
+	id 1qg3YM-0001dY-Cb; Tue, 12 Sep 2023 09:35:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qg3W7-0000b4-1B
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:33:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qg3YF-0001cm-Lu
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:35:37 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qg3W4-0007V0-GG
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:33:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694525599;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=FTCXNX2oCane74Y9owN4yq996rwUZBqe3ityRP2fov0=;
- b=cpS9lDCbRXvzufpyToC40RuLsTvhLYsQd3S4dzamASToQMD+9J+KTdhs8YUQFaEwccHCd/
- /WjZGmSaQxLpFfhHarrrOuKxlxgbtyVIGWHOCgIbT4h142HlpOyfpyDhahkwf7eHoxjJr5
- 9c4ayL93jYZIe/CejZvTCDgA4PNgF3w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-516-zxC0lG0KMgi6FeQf7-lzFw-1; Tue, 12 Sep 2023 09:33:12 -0400
-X-MC-Unique: zxC0lG0KMgi6FeQf7-lzFw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 57BDF8E7320
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 13:33:12 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.246])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D788C40C200A;
- Tue, 12 Sep 2023 13:33:11 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH] tests/qtest/netdev-socket: Raise connection timeout to 120
- seconds
-Date: Tue, 12 Sep 2023 09:33:10 -0400
-Message-ID: <20230912133310.60583-1-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qg3Y8-0000Rk-92
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:35:31 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlPhZ3tc6z6F9CD;
+ Tue, 12 Sep 2023 21:34:54 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 12 Sep
+ 2023 14:35:24 +0100
+Date: Tue, 12 Sep 2023 14:35:23 +0100
+To: Gregory Price <gourry.memverge@gmail.com>
+CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
+ <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
+Subject: Re: [PATCH v3 2/6] cxl/type3: Cleanup multiple CXL_TYPE3() calls in
+ read/write functions
+Message-ID: <20230912143523.00004068@Huawei.com>
+In-Reply-To: <20230912131351.00007e5e@Huawei.com>
+References: <20230906001517.324380-1-gregory.price@memverge.com>
+ <20230906001517.324380-3-gregory.price@memverge.com>
+ <20230912131351.00007e5e@Huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,42 +65,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The test still fails intermittently with a 60 second timeout in the
-GitLab CI environment. Raise the timeout to 120 seconds.
+On Tue, 12 Sep 2023 13:13:51 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-  576/839 ERROR:../tests/qtest/netdev-socket.c:293:test_stream_unix: assertion failed (resp == expect): ("st0: index=0,type=stream,connection error\r\n" == "st0: index=0,type=stream,unix:/tmp/netdev-socket.UW5IA2/stream_unix\r\n") ERROR
-  576/839 qemu:qtest+qtest-sh4 / qtest-sh4/netdev-socket                            ERROR          62.85s   killed by signal 6 SIGABRT
-  >>> MALLOC_PERTURB_=249 QTEST_QEMU_BINARY=./qemu-system-sh4 QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon G_TEST_DBUS_DAEMON=/home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_IMG=./qemu-img /home/gitlab-runner/builds/-LCfcJ2T/0/qemu-project/qemu/build/tests/qtest/netdev-socket --tap -k
-  ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
-  stderr:
-  **
-  ERROR:../tests/qtest/netdev-socket.c:293:test_stream_unix: assertion failed (resp == expect): ("st0: index=0,type=stream,connection error\r\n" == "st0: index=0,type=stream,unix:/tmp/netdev-socket.UW5IA2/stream_unix\r\n")
-  (test program exited with status code -6)
+> On Tue,  5 Sep 2023 20:15:13 -0400
+> Gregory Price <gourry.memverge@gmail.com> wrote:
+> 
+> > Call CXL_TYPE3 once at top of function to avoid multiple invocations.
+> > 
+> > Signed-off-by: Gregory Price <gregory.price@memverge.com>  
+> 
+> This one is queued up in a set I posted for Michael to hopefully pick up.
+> So no need to keep it in this series (I'll post tree short etc)
 
-Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1881
-Fixes: 417296c8d858 ("tests/qtest/netdev-socket: Raise connection timeout to 60 seconds")
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- tests/qtest/netdev-socket.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ah. Not yet queued up, but moved up my tree to next to the sanitize patch
+that introduces this code.
 
-diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
-index 8eed54801f..b2501d72a1 100644
---- a/tests/qtest/netdev-socket.c
-+++ b/tests/qtest/netdev-socket.c
-@@ -16,7 +16,7 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/qapi-visit-sockets.h"
- 
--#define CONNECTION_TIMEOUT    60
-+#define CONNECTION_TIMEOUT    120
- 
- #define EXPECT_STATE(q, e, t)                             \
- do {                                                      \
--- 
-2.41.0
+Jonathan
+
+> 
+> Jonathan
+> 
+> > ---
+> >  hw/mem/cxl_type3.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> > index fd9d134d46..80d596ee10 100644
+> > --- a/hw/mem/cxl_type3.c
+> > +++ b/hw/mem/cxl_type3.c
+> > @@ -1248,17 +1248,18 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+> >  MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+> >                             unsigned size, MemTxAttrs attrs)
+> >  {
+> > +    CXLType3Dev *ct3d = CXL_TYPE3(d);
+> >      uint64_t dpa_offset = 0;
+> >      AddressSpace *as = NULL;
+> >      int res;
+> >  
+> > -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
+> > +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
+> >                                        &as, &dpa_offset);
+> >      if (res) {
+> >          return MEMTX_ERROR;
+> >      }
+> >  
+> > -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
+> > +    if (sanitize_running(&ct3d->cci)) {
+> >          qemu_guest_getrandom_nofail(data, size);
+> >          return MEMTX_OK;
+> >      }
+> > @@ -1268,16 +1269,17 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
+> >  MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
+> >                              unsigned size, MemTxAttrs attrs)
+> >  {
+> > +    CXLType3Dev *ct3d = CXL_TYPE3(d);
+> >      uint64_t dpa_offset = 0;
+> >      AddressSpace *as = NULL;
+> >      int res;
+> >  
+> > -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
+> > +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
+> >                                        &as, &dpa_offset);
+> >      if (res) {
+> >          return MEMTX_ERROR;
+> >      }
+> > -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
+> > +    if (sanitize_running(&ct3d->cci)) {
+> >          return MEMTX_OK;
+> >      }
+> >      return address_space_write(as, dpa_offset, attrs, &data, size);  
+> 
+> 
 
 
