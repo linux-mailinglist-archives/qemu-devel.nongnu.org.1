@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA2379D31B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C13179D35F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:16:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg3yk-00072x-5D; Tue, 12 Sep 2023 10:02:58 -0400
+	id 1qg4BG-0000ak-MT; Tue, 12 Sep 2023 10:15:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg3yP-0006y2-Du
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:02:40 -0400
-Received: from mail-oo1-xc2b.google.com ([2607:f8b0:4864:20::c2b])
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1qg3Lo-0001p5-CC; Tue, 12 Sep 2023 09:22:44 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg3yJ-0003Ne-2o
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:02:37 -0400
-Received: by mail-oo1-xc2b.google.com with SMTP id
- 006d021491bc7-5739965a482so2937031eaf.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:02:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shlomopongratz@gmail.com>)
+ id 1qg3Lk-00038F-VH; Tue, 12 Sep 2023 09:22:42 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-26ef24b8e5aso4611580a91.0; 
+ Tue, 12 Sep 2023 06:22:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694527349; x=1695132149; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694524959; x=1695129759; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MsFss5CmRMLBn7t3Flsp8ilInFHsll14Lbqq5qecXEQ=;
- b=g7WDAxRCmooeAjtKLx0kkpHeWYJsW64CJXj1grlgquWWZz3qGZoThoTxaTlL8VHxMq
- 5JfJGFWA01MP9iLzbLpzikucgtJGM29Tkp7+EMnZjOkj2lJzTEigeIHlu4hqJ3yCz5aK
- X67lt5fLQA21GNpoqiKfKCgVeOimEWZ1XJWJ9HgqM+SVRo+AVE8judhkacLA0LXax3Rj
- x62ZflB/S520EfKw6ubDWE0UG2ZXoKMWIcLke3DNkLhKMXQOjJ8in5ksnpKxzpg3IyVI
- RVtGQkXm763EudE0+I8+3ZvP2g5T6uXVmxYD7JXz4BoG2qu8dHEuDXHn5906WYvIeOq7
- XLDA==
+ bh=JiskIvqTFXfoT0VHOQLJINwqPNhB6s8n0umzjd3eE9o=;
+ b=Q/2W9hQglvIpPIEP/dPKLnk89S7uOm+uXXyLqTwR/Alx8UjnE4Pu3xhw1eJN1RtITR
+ myLCVijhZqcCESvlU26na0laYmzXqUfor9a1PZErBbrl1jpx9YDt6xFwLidPS2GuPTwL
+ mnVMTYNWM+izdeCZwyI0cYi/lEuiQ/B+tl8C7IsQrjVj+qYQfkcWaY6gDo5LoXXj4XAE
+ Vktk+8eTIv4VnCI1JisTu7YbLVjWu18okrAqAJSsEe1asRg/slwPY8xTBbrqv9reVvAX
+ Grn6XGbGITvvmqlY5xHbE9ZgUbASVFqkFKEv2uDJzykB66dMBk6v6nGiyhoHZoyP+RZ0
+ 6EmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527349; x=1695132149;
+ d=1e100.net; s=20230601; t=1694524959; x=1695129759;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MsFss5CmRMLBn7t3Flsp8ilInFHsll14Lbqq5qecXEQ=;
- b=mHCoWNJWa3V+5Y2dudsDGs8kd1YYHEOlBAVEJEyXk+DsDg2qXhZN0DSC1w6GP+B3ie
- qA11h328d8R+F4cdTpggE9PmTRBfV80AIsWmXiqK0Kois4+aZp9UlDWPDTS4ah8sWXpo
- oOI92jU1R98PSP3nDvMMejm0CytPk4upD/RXZTvQNiquvHFJqEb4HCZO29/L1Zy37MkP
- 83vs8qx4+ywgeEcKdb3Gw2qwN3LrsFu1WKS1A0UDWPBRhxaHHgYDN4kBQJJ6OKlF9o70
- bDgGNbjlBX2pojRMQvttOf/aMyHYHar3CH9bcgpJfFqUXMMZc7oH7PbyWk2hY4lLGjbg
- 52mg==
-X-Gm-Message-State: AOJu0YzMCuMC8Uj2oZPyfEWYsZUYVzttLa7Lj6wleXww3KrNL84FiDSC
- pL1CZC4lsFqd9URaBF4eKfI9dV+jtTdnqW7admg=
-X-Google-Smtp-Source: AGHT+IEK1MQCSfd3g/PjuyDseVFcZPyjfJeoE5A7vvq8SmbKVaVnffKvRxxg7Ajdt8GrLDH8qI77sfNOIKgPwlvwVxo=
-X-Received: by 2002:a05:6870:9a1f:b0:1b7:273d:780a with SMTP id
- fo31-20020a0568709a1f00b001b7273d780amr1400725oab.22.1694527349271; Tue, 12
- Sep 2023 07:02:29 -0700 (PDT)
+ bh=JiskIvqTFXfoT0VHOQLJINwqPNhB6s8n0umzjd3eE9o=;
+ b=sHexp/LmeVzjO97pvdeG9adUvbO8HGM6xNxp8p+UG5FPj8Pr/MqbzOrI/yYIeoP7g5
+ wXA5KQ/hhKWiiTwtphvNV/SPyhYWWdJe8A+nA+8y3jLaEqmY0/isldCFdOBZ2MqQ49Y3
+ N3yhRvVIrjp62fEXRNkqhVcbmEkxRMEx3s0u6KFmzLfAYRLl9re2bFcg+YlqWNOxeHVK
+ jmD7/X2/7H9g/89HlatjhTTUEDk7bzCsGRCRKvpGM0eBZgHGwACtrh97QqcsFtUX7vzH
+ 62qn4hD3T7X2Hy0b+5/en8Q0gWJ+wezlmkuZybMj0WDi+lPBQCIht6sbFwhP8UWDz3gp
+ DNcg==
+X-Gm-Message-State: AOJu0YzJ9aM6TgeKl47FPt/x9XaEbNvz7zz2woW9j17heAGSLg8ctt5D
+ AzRq4mB7+/W2hugmk2gEv1TMbtAMoPN8s9L2eh0=
+X-Google-Smtp-Source: AGHT+IGXbM4hKq74vJKB04al6iuUWF0suMGYk/7EM4eacO2/yuErX1YxNzQ3RH3wKgw9rS4hDaQ1hidzb10mmlHUO7I=
+X-Received: by 2002:a17:90a:3cc6:b0:273:f229:a479 with SMTP id
+ k6-20020a17090a3cc600b00273f229a479mr7842200pjd.34.1694524958923; Tue, 12 Sep
+ 2023 06:22:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230912133829.61352-1-stefanha@redhat.com>
- <ZQBtH7rBWm2Sze68@redhat.com>
-In-Reply-To: <ZQBtH7rBWm2Sze68@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 12 Sep 2023 10:02:17 -0400
-Message-ID: <CAJSP0QWUqry-CtrnL8hodgD6gsJGVCaY5vG5Tn5UHecZT0kQ3g@mail.gmail.com>
-Subject: Re: [PATCH] gitlab-ci/cirrus: Increase timeout to 100 minutes
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
- Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>
+References: <CAHzK-V2a-tW8BQBJNurf0QogTNYH3_oEg7HAfi-dSU_3D626Tw@mail.gmail.com>
+ <be58faf9-8218-e085-7dc3-b9c2858adac8@linaro.org>
+ <20230912065753.37de2393.alex.williamson@redhat.com>
+In-Reply-To: <20230912065753.37de2393.alex.williamson@redhat.com>
+From: Shlomo Pongratz <shlomopongratz@gmail.com>
+Date: Tue, 12 Sep 2023 16:22:27 +0300
+Message-ID: <CAHzK-V2JxX7Gur_dDN2JtUbV=vWVaNefcinwLbKfu+AML2pE8A@mail.gmail.com>
+Subject: Re: Usage of vfio-pci without KVM.
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>, 
+ qemu-discuss <qemu-discuss@nongnu.org>, QEMU Developers <qemu-devel@nongnu.org>,
+ Eric Auger <eric.auger@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2b;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=shlomopongratz@gmail.com; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -77,6 +75,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 12 Sep 2023 10:15:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,76 +90,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Sept 2023 at 09:53, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
-> wrote:
->
-> On Tue, Sep 12, 2023 at 09:38:29AM -0400, Stefan Hajnoczi wrote:
-> > The 80m timeout is not enough:
-> >
-> >   672/832 qemu:block / io-qcow2-041          OK             39.77s   1 =
-subtests passed
-> >   Timed out!
->
-> IIUC, that 'timed out' message is coming from Cirrus CI logs, which
-> we can see over on the cirrus task:
->
->   https://cirrus-ci.com/task/6462328380588032
->
-> > https://gitlab.com/qemu-project/qemu/-/jobs/5058610599
->
-> This reports duration "64 minutes", vs a GitLab timeout of 1hr20.
->
-> IOW, we're not hitting the gitlab timeout, we're hitting hte
-> Cirrus CI timeout, which defaults to 60 minutes.  The other
-> 4 minuts gitlab reports is likely because Cirrus queued the
-> job for 4 minutes before starting execution.
+Hi,
+What can I as a user do to honor this requirement.
+Are you suggesting that I should patch the QEMU code as it is not
+supported out of the box?
 
-I'm glad you spotted that. I'm not familiar with Cirrus. Could you
-send a patch that sets 'timeout_in'?
+Thank you.
 
-Thanks,
-Stefan
+S.P.
 
+On Tue, Sep 12, 2023 at 3:58=E2=80=AFPM Alex Williamson
+<alex.williamson@redhat.com> wrote:
 >
+> On Tue, 12 Sep 2023 14:47:41 +0200
+> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
+>
+> > Cc'ing VFIO maintainers.
 > >
-> > Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1882
-> > Fixes: d06f3bf92267 ("gitlab-ci/cirrus: Increase timeout to 80 minutes"=
-)
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> >  .gitlab-ci.d/cirrus.yml | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-> > index 41d64d6680..d19633f758 100644
-> > --- a/.gitlab-ci.d/cirrus.yml
-> > +++ b/.gitlab-ci.d/cirrus.yml
-> > @@ -15,7 +15,7 @@
-> >    stage: build
-> >    image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
-> >    needs: []
-> > -  timeout: 80m
-> > +  timeout: 100m
-> >    allow_failure: true
-> >    script:
-> >      - source .gitlab-ci.d/cirrus/$NAME.vars
+> > On 12/9/23 14:39, Shlomo Pongratz wrote:
+> > > Hi,
+> > > I'm running qemu-system-aarch64 (QEMU emulator version 7.0.93) on
+> > > Ubuntu 20.04.4 LTS i with Intel's i7.
+> > > I'm trying to pass a Samsung NVME device using vfio-pci. I detached
+> > > the device from the nvme driver and attached it to the vfio-pci.
+> > > Using lspci I can see "Kernel driver in use: vfio-pci"
+> > > In QEMU script I've written "-device vfio-pci,host=3D0000:03:00.0" wh=
+ere
+> > > 0000:03:00.0 is the device PCI address.
+> > > I get the error
+> > > qemu-system-aarch64: -device vfio-pci,host=3D0000:03:00.0: VFIO_MAP_D=
+MA
+> > > failed: Invalid argument
+> > > qemu-system-aarch64: -device vfio-pci,host=3D0000:03:00.0: vfio
+> > > 0000:03:00.0: failed to setup container for group 15: memory listener
+> > > initialization failed: Region mach-virt.ram:
+> > > vfio_dma_map(0x55855c75bf00, 0x40000000, 0x100000000, 0x7f5197e00000)
+> > > =3D -22 (Invalid argument
+> > >
+> > > My question is vfio-pci is supported with cross architecture?
 >
-> IIUC, we need to put a 'timeout_in' setting someone in
-> .gitlab-ci.d/cirrus/build.yml instead, to override
-> Cirrus 60 minute limit:
+> It does, but reserved address ranges need to be honored.  x86 has a
+> reserved range at 0xfee00000 for MSI mapping, so the VM address space
+> needs to be such that it avoids trying to place mappings there.  Thanks,
 >
-> https://cirrus-ci.org/faq/#instance-timed-out
->
->
-> With regards,
-> Daniel
-> --
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberran=
-ge :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.c=
-om :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberran=
-ge :|
->
+> Alex
 >
 
