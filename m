@@ -2,87 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF0179CA87
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F74A79CABF
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:57:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfz2R-0003Ew-Ux; Tue, 12 Sep 2023 04:46:27 -0400
+	id 1qfzBf-000826-JD; Tue, 12 Sep 2023 04:55:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfz2K-0003AY-0Q
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:46:21 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qfzBa-0007qH-3q
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:55:54 -0400
+Received: from mail-oi1-x242.google.com ([2607:f8b0:4864:20::242])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfz2F-000856-1t
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:46:18 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2bcc14ea414so86869021fa.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 01:46:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qfzBW-0002A3-21
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:55:53 -0400
+Received: by mail-oi1-x242.google.com with SMTP id
+ 5614622812f47-3aa14d8641cso4041257b6e.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 01:53:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694508368; x=1695113168; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0IaIpdfFdIg0V0NEXUo323NCr6qnLfOd1WKVqiLJu3Q=;
- b=BfTRK91ejRCMIyRAh8Nr6bFeGmUzyvO5ohKCdfvCB8+wIo+lxtEYhEEp+qAerV2KNo
- +RJanciI+ISAgkhfHC0k4ZtOZg/uBh8exxvltLHZT2CAvbWq+6P6WP07pitm7ish6zS6
- a34eZ8sbDSORoyLsq0yIKJVyFe4UdiRUUaaIHdQ8eZZ216dkg+yzAnVCJbPoiy9zwcyB
- 3+km+3SplcZoS7SsNwFyG8Alx86r/l/tD42TIwLhaoNIGLWG86DFbv9qtS75jvx1HhEY
- pDYmn4+M69rtghF7taXReDejghFcUM8g4yN9WLtH1iFKHaOj1SgScVv1hsa01Xi3PYuD
- P4MA==
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1694508824; x=1695113624;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=C2k9gMiLzZVeo4D8Gjkxz76JJAzi1GSAMKAtsI6QDH4=;
+ b=duj704Wv0HvWX70o3bBcb0/ZqTQ2hOsD0+1TYnSUK9/BViR/APj4MOV1RQ0len8wZ3
+ ld584kSvUPr3SiD8DmqqjaUolz7lBH5OHfIck+m34o0aAhexP9O1ccM3x7PfIzBZoxX6
+ VEYloksvXv1qRSQ/5wKpHUxeoy7G/95E4xuavZImI96YifMnaVZerb0pMObDQlrqcDpF
+ CA3u8lUQZh2FrexjnAz8fXJd/1uuKR7cG3V30znDBsk/0Ji7WMeFN+YWhWMMKZEr24w/
+ xlKmK4DGoiVE/Dhj1H4I6rNPQqMe51VeCOWq+fQBF5qAE0QaFI7FjAw39I0siCG6fUi6
+ 0eig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694508368; x=1695113168;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0IaIpdfFdIg0V0NEXUo323NCr6qnLfOd1WKVqiLJu3Q=;
- b=IFOBjpihNbbz14Oz9RcWRgHXY/osjf1wHk7s09ACz6iPkqKozKG9BDyWtylt192YjO
- E1hMY90IA2jw1a3uNs7UvQdGEA3XuAQ8YozCvMYoGWqZ5QWMAfz4AFqpsVcP6Dx0ZpJF
- zyzjdkOpD7XFTQp9S0C0CRM3TBUeBY9iFhXCMR+02WHyY/ELkcqHX59zDJrnPppt8wgy
- /9dcCpphfrKCiFQqPPoHcMpJnyMjGyy1ltnLm65P7yGfEwZiBSqYCu0Dbg00X0q69naU
- 2Y0itCDRPmres+fMqzidqLPNJ4b36qj4BX6Q4kcgVlMtSfZaDkUv2+eiKFHP92OPDIc0
- IhNw==
-X-Gm-Message-State: AOJu0YzxPVJSTybvsfc3HGt7RA0vS80UaFRsxDI4LFRTsd7ucOI6JIaa
- 6MKHlYp+0uN1g+/f6ilOCW04Ew==
-X-Google-Smtp-Source: AGHT+IEGEZRDGuYeVsyidPmqbSiMAzd1YDObrZlbZv1zXhYXrSAGkczS7UHHwgE791ekSv8yHl07hw==
-X-Received: by 2002:a19:e057:0:b0:4f8:6d53:a68f with SMTP id
- g23-20020a19e057000000b004f86d53a68fmr8617912lfj.64.1694508368177; 
- Tue, 12 Sep 2023 01:46:08 -0700 (PDT)
-Received: from [192.168.69.115] (cou50-h01-176-172-50-150.dsl.sta.abo.bbox.fr.
- [176.172.50.150]) by smtp.gmail.com with ESMTPSA id
- eg27-20020a056402289b00b0052f3e8c84fesm3536127edb.29.2023.09.12.01.46.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 01:46:07 -0700 (PDT)
-Message-ID: <1f64f982-95fc-786d-1217-856a62335eed@linaro.org>
-Date: Tue, 12 Sep 2023 10:46:05 +0200
+ d=1e100.net; s=20230601; t=1694508824; x=1695113624;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=C2k9gMiLzZVeo4D8Gjkxz76JJAzi1GSAMKAtsI6QDH4=;
+ b=Y24GPt7FGZq99LD8623+Tj1fwKuF6ldFYrDOPHHQqazKb3Zps/+dzHeRsEx3itUUMe
+ 6KECWpes5XMHVnUc7bM+JDISLEB9bDCINWR8hQyy2k2v+OGMLWXTbT4MyTcOVQwZcA7g
+ eb2LhkOmTl8TXs6DNkTSB6PJ/sPzKUPq8M23NokjeVL2rIA7Hl9jZI5U0GbOYqdgP8xu
+ fvOrzILq+PrzCaMot+M39viDWLBE3lOP7y0SIw2fR/DYmjdcUXux25ltLJGtkcvsA93D
+ 2nu+3CcyM8ubdF/yovmZ6dRSL/DLXbuof1Y0qq3IOlu44Rw21GMjrmRzSB8Yk/p6fZia
+ pRqQ==
+X-Gm-Message-State: AOJu0YxaVPBeXGTz/cR+x2stsFceJbNH86wFwvuPxoC45H3vZ8LAJRBk
+ W3GMCCswGfkhP8hB7aXKcHCqKw==
+X-Google-Smtp-Source: AGHT+IGmbxqzhP90/87wIzFdfCOfymkyLkSEPuYq9st8biCtIl7qjkXe6YOu1+4oqjfHuVQF3cCP4g==
+X-Received: by 2002:a05:6808:3093:b0:3a7:8f94:743a with SMTP id
+ bl19-20020a056808309300b003a78f94743amr16599850oib.10.1694508824417; 
+ Tue, 12 Sep 2023 01:53:44 -0700 (PDT)
+Received: from 64217.gitgo.cc ([8.210.91.195])
+ by smtp.gmail.com with ESMTPSA id
+ m6-20020a637d46000000b00570668ccd5bsm6523754pgn.14.2023.09.12.01.53.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Sep 2023 01:53:43 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+To: Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ qemu-block@nongnu.org (open list:Block layer core),
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Cc: Li Feng <fengli@smartx.com>
+Subject: [PATCH v4 0/5] Implement reconnect for vhost-user-scsi
+Date: Tue, 12 Sep 2023 16:52:42 +0800
+Message-ID: <20230912085315.2524857-1-fengli@smartx.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230721105205.1714449-1-fengli@smartx.com>
+References: <20230721105205.1714449-1-fengli@smartx.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v7 14/18] cpu: Call plugin hooks only when ready
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-References: <20230912071206.30751-1-akihiko.odaki@daynix.com>
- <20230912071206.30751-15-akihiko.odaki@daynix.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230912071206.30751-15-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::242;
+ envelope-from=fengli@smartx.com; helo=mail-oi1-x242.google.com
+X-Spam_score_int: 14
+X-Spam_score: 1.4
+X-Spam_bar: +
+X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,30 +97,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Akihiko,
+This patchset adds reconnect support for vhost-user-scsi. 
+At the same time, improve the error messages and silent errors are now reported.
+And fix a lost reconnect issue for all vhost-user backend.
 
-On 12/9/23 09:12, Akihiko Odaki wrote:
-> The initialization and exit hooks will not affect the state of vCPU,
+Changes for v4:
+- Merge
+  https://lore.kernel.org/all/20230830045722.611224-1-fengli@smartx.com/ to
+  this series.
+- Add ERRP_GUARD in vhost_user_scsi_realize;
+- Reword the commit messages.
 
-What about:
+Changes for v3:
+- Split the vhost_user_scsi_handle_output to a separate patch;
+- Move the started_vu from vhost scsi common header to vhost-user-scsi header;
+- Fix a log print error;
 
-  qemu_plugin_vcpu_init_hook()
-    -> plugin_cpu_update__locked()
-       -> plugin_cpu_update__async()
-          -> bitmap_copy(cpu->plugin_mask, ...)
-             tcg_flush_jmp_cache(cpu)
-             -> qatomic_set(&cpu->tb_jmp_cache->array[i].tb, ...)
+Changes for v2:
+- Split the v1 patch to small separate patchset;
+- New patch for fixing fd leak, which has sent to reviewers in another
+  mail;
+- Implement the `vhost_user_scsi_handle_output`;
+- Add the started_vu safe check;
+- Fix error handler;
+- Check the inflight before set/get inflight fd.
 
-?
+Li Feng (5):
+  vhost-user-common: send get_inflight_fd once
+  vhost: move and rename the conn retry times
+  vhost-user-scsi: support reconnect to backend
+  vhost-user-scsi: start vhost when guest kicks
+  vhost-user: fix lost reconnect
 
-> but they may depend on the state of vCPU. Therefore, it's better to
-> call plugin hooks after the vCPU state is fully initialized and before
-> it gets uninitialized.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->   cpu.c                | 11 -----------
->   hw/core/cpu-common.c | 10 ++++++++++
->   2 files changed, 10 insertions(+), 11 deletions(-)
+ hw/block/vhost-user-blk.c             |   6 +-
+ hw/scsi/vhost-scsi-common.c           |  47 ++---
+ hw/scsi/vhost-scsi.c                  |   5 +-
+ hw/scsi/vhost-user-scsi.c             | 253 +++++++++++++++++++++++---
+ hw/virtio/vhost-user-gpio.c           |   5 +-
+ hw/virtio/vhost-user.c                |   9 +-
+ include/hw/virtio/vhost-scsi-common.h |   2 +-
+ include/hw/virtio/vhost-user-scsi.h   |   4 +
+ include/hw/virtio/vhost-user.h        |   3 +-
+ include/hw/virtio/vhost.h             |   2 +
+ 10 files changed, 276 insertions(+), 60 deletions(-)
+
+-- 
+2.41.0
 
 
