@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3703779DAC8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05AA479DAF5
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:31:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAwY-0000FV-BS; Tue, 12 Sep 2023 17:29:10 -0400
+	id 1qgAwd-0000IH-Az; Tue, 12 Sep 2023 17:29:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qgAwT-0000FC-96
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:05 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qgAwX-0000Fl-Gn
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:09 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
- id 1qgAwQ-0007TF-FO
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:04 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68fdd5c1bbbso212436b3a.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 14:29:02 -0700 (PDT)
+ id 1qgAwU-0007Tt-Me
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:09 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-68fb98745c1so2159467b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 14:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694554141; x=1695158941; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694554145; x=1695158945; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6wwFlKewAD3EbUW7aELNycuHcgFIWkZV/jDzQISrvf8=;
- b=JHkeIfCRIqH6kwCXysJmwbiW/54KHXpfwyc59bRrC/pUz4T1c6VIlMb5vIVPBSKOK9
- U3NpqdnUsU7udrJdnx7h6XlvXxs4L26DXXLH7FcKbWLY7Bmy0f63BXIcODSdO+VJtzzO
- np81ZHnyFtI0wBHzYEFE31ufcwYwq7tPKqO7kVUTlE+UF/goX1mRMxsn/KNSbtMaUwbW
- qM2jDWGjbvTCV25h8znVTb8zG8jXtIu1RIWcRp6lhsTfkIpGzWh6OjRFYfyInBfTVDtY
- Mw7gx5Cqb8kWO5rCsEVGjRQPytrGwzN20gSErASmRSOq6ytPo5azISyLxg6f7bUrfvOo
- DoEA==
+ bh=XuQ/6SpgQeQrGx0ORa1QWKQvqB4TSbMF35PDAL+KcfM=;
+ b=Y/GGJgalYnevYIvCU5XcG4yHaCAWgpqpUMymsG6xCg4aNSWl8mQ28KrF3o4MVyH7+K
+ j5+Vh2fAzRuMvYkabze7JFxpyCAfJ4HcS+0QpqU0SVz37OFh6KJG67UZsRCdQhdatza8
+ ZiIA/tedHGiaA4Jc808NhudAYwM92FmfU3uSwyNAbkUW8CUl6LpwGz83hw2jjmevmInj
+ LqTXLFOyoZA7AxslvTCewpF0KRj96IZzlK44yeIp/FcFgvZJ5PZTfZUpGVZ+X5aff4YD
+ 4mloA9ZzGiWcxYqHHz2F+76Al3dDSdiaUxpkP9WrI6UE2qIJL69+zB8r2cWuDBVXorYp
+ 0JuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694554141; x=1695158941;
+ d=1e100.net; s=20230601; t=1694554145; x=1695158945;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6wwFlKewAD3EbUW7aELNycuHcgFIWkZV/jDzQISrvf8=;
- b=raVJeFk7JuFACI0zBuBmwmXJ0u078PNk6+9kgQjq9EScmPNSos08epCC0zIkcBIHgc
- ZFfzqV+lG/tgCPPWEg5t0qvdiiycZeeIFJa0g2ixmuS4vmPQn3254RQHmfztQwpLpnab
- 8WCl2nJnz17c+wkfZEShpxRsoLe56Efmj49oDG4MOC/vnJv/vIihrDY1cW4BmUQjJ2Ka
- r7iD2JmwR3wDkGNob7+oowX6NDXa+3J3pmMcqvJNsSfU2bNvEXqmmLXpLE+0zaPvhm8J
- Ycvbp+ZScwNnfgaW86h0X7DjZAq+mCkHYpJSFw9UHXNEizVgK+x0Z9IAZDUMovM24BMD
- /H9w==
-X-Gm-Message-State: AOJu0YxF7q63Lg+rLaLLWHgfvMbZS6igbWbeUewv3pHO3w72E+meHyun
- 1cm8hunim0YNpad0tVO4Sns=
-X-Google-Smtp-Source: AGHT+IHh00tfUbp3/Y/JotIxJ/UkGZ6qtccft87mC03YaSQCeqoRLxB33iis16MWhg2ZlUDYnY8C3g==
-X-Received: by 2002:a05:6a20:4326:b0:149:97e4:8ae4 with SMTP id
- h38-20020a056a20432600b0014997e48ae4mr1048368pzk.0.1694554141051; 
- Tue, 12 Sep 2023 14:29:01 -0700 (PDT)
+ bh=XuQ/6SpgQeQrGx0ORa1QWKQvqB4TSbMF35PDAL+KcfM=;
+ b=psWZNC2ZoFJDa1DLChSCJC3IsxVLA3ihgScB5YwzSYOoEH3YPix4ZpS/UK2XVEK2WC
+ jatr5YFbWPCk/AOmUu3YeVDUAY/ZI5ISt/2WfolpNdaY5TuBrBmmSvuR/qims5hFstNp
+ wKRZHm6kWA6R20h605oibwsQL8ZUVZ8U/uw93HZloLAuxL7uiZMi1Yg2Nozg9hfSY0lt
+ pGIXRLQ2GlMDCfVoLJOWxLVtGRXQ8i7/jlEoGAthdHeeKYIs9D5jXqsxTX9xzvuBbM3K
+ G0UATkjp2aoFR3jeW5/VAROucuFAyoyz2FEMzcehGPnkgjrAH/zTJ995lVWqc9l84dsc
+ +uuA==
+X-Gm-Message-State: AOJu0Yx7bJ2/TYk9z97ripvskyGuAmmNzL2l53WQjnB+QfTHckBBKsdV
+ DGbBQVHpFnCF/Y/VmgNjbzs=
+X-Google-Smtp-Source: AGHT+IEX1hu977lh0KV6dgiNJQfo9M5sYCkVeJv8HnJWO/FFl9jBqwpy0n+n9milPOwwQqO6ZMspbg==
+X-Received: by 2002:a05:6a00:39a5:b0:68f:cd32:c52d with SMTP id
+ fi37-20020a056a0039a500b0068fcd32c52dmr1097436pfb.14.1694554145329; 
+ Tue, 12 Sep 2023 14:29:05 -0700 (PDT)
 Received: from q1iq-virtual-machine.. ([114.249.236.97])
  by smtp.gmail.com with ESMTPSA id
- u20-20020aa78394000000b0068be4ce33easm7930436pfm.96.2023.09.12.14.28.57
+ u20-20020aa78394000000b0068be4ce33easm7930436pfm.96.2023.09.12.14.29.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 14:29:00 -0700 (PDT)
+ Tue, 12 Sep 2023 14:29:05 -0700 (PDT)
 From: Yeqi Fu <fufuyqqqqqq@gmail.com>
 To: alex.bennee@linaro.org
 Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
  Yeqi Fu <fufuyqqqqqq@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [RFC v6 1/9] build: Implement logic for sharing cross-building config
- files
-Date: Wed, 13 Sep 2023 05:28:34 +0800
-Message-Id: <20230912212842.658374-2-fufuyqqqqqq@gmail.com>
+ Thomas Huth <thuth@redhat.com>, Riku Voipio <riku.voipio@iki.fi>
+Subject: [RFC v6 2/9] build: Implement libnative library and the build
+ machinery for libnative
+Date: Wed, 13 Sep 2023 05:28:35 +0800
+Message-Id: <20230912212842.658374-3-fufuyqqqqqq@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230912212842.658374-1-fufuyqqqqqq@gmail.com>
 References: <20230912212842.658374-1-fufuyqqqqqq@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,119 +94,185 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since both TCG tests and libnative libraries require cross-building,
-the config files for cross-building, config_target_mak, are now saved
-in the cross-build directory for sharing. This allows TCG tests and
-libnative libraries to use these config files through symbolic links
-when cross-building configuration is needed.
-
-Since config_host_mak essentially contains all the information from
-the original tests/tcg/config-host.mak, the original config-host.mak
-has been deleted and replaced with a symbolic link to config_host_mak.
+This commit implements a shared library, where native functions are
+rewritten as special instructions. At runtime, user programs load
+the shared library, and special instructions are executed when
+native functions are called.
 
 Signed-off-by: Yeqi Fu <fufuyqqqqqq@gmail.com>
 ---
- configure | 61 ++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 38 insertions(+), 23 deletions(-)
+ Makefile                            |  2 ++
+ common-user/native/Makefile.include |  8 +++++
+ common-user/native/Makefile.target  | 22 +++++++++++++
+ common-user/native/libnative.S      | 51 +++++++++++++++++++++++++++++
+ configure                           | 39 ++++++++++++++++++++++
+ 5 files changed, 122 insertions(+)
+ create mode 100644 common-user/native/Makefile.include
+ create mode 100644 common-user/native/Makefile.target
+ create mode 100644 common-user/native/libnative.S
 
+diff --git a/Makefile b/Makefile
+index 5d48dfac18..6f6147b40f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -182,6 +182,8 @@ SUBDIR_MAKEFLAGS=$(if $(V),,--no-print-directory --quiet)
+ 
+ include $(SRC_PATH)/tests/Makefile.include
+ 
++include $(SRC_PATH)/common-user/native/Makefile.include
++
+ all: recurse-all
+ 
+ ROMS_RULES=$(foreach t, all clean distclean, $(addsuffix /$(t), $(ROMS)))
+diff --git a/common-user/native/Makefile.include b/common-user/native/Makefile.include
+new file mode 100644
+index 0000000000..65b10fddac
+--- /dev/null
++++ b/common-user/native/Makefile.include
+@@ -0,0 +1,8 @@
++.PHONY: build-native
++build-native: $(NATIVE_TARGETS:%=build-native-library-%)
++$(NATIVE_TARGETS:%=build-native-library-%): build-native-library-%:
++	$(call quiet-command, \
++	    $(MAKE) -C common-user/native/$* $(SUBDIR_MAKEFLAGS), \
++	"BUILD","$* native library")
++
++all: build-native
+diff --git a/common-user/native/Makefile.target b/common-user/native/Makefile.target
+new file mode 100644
+index 0000000000..65d90102e2
+--- /dev/null
++++ b/common-user/native/Makefile.target
+@@ -0,0 +1,22 @@
++# -*- Mode: makefile -*-
++#
++# Library for native calls
++#
++
++all:
++-include ../../../config-host.mak
++-include config-target.mak
++
++CFLAGS+=-shared -D $(TARGET_NAME)
++LDFLAGS+=
++
++SRC = $(SRC_PATH)/common-user/native/libnative.S
++LIBNATIVE = libnative.so
++
++all: $(LIBNATIVE)
++
++$(LIBNATIVE): $(SRC)
++	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(EXTRA_NATIVE_CALL_FLAGS) $< -o $@ $(LDFLAGS)
++
++clean:
++	rm -f $(LIBNATIVE)
+diff --git a/common-user/native/libnative.S b/common-user/native/libnative.S
+new file mode 100644
+index 0000000000..bc51dabedf
+--- /dev/null
++++ b/common-user/native/libnative.S
+@@ -0,0 +1,51 @@
++.macro special_instr sym
++#if defined(__i386__)
++         ud0     \sym-1f, %eax; 1:
++#elif defined(__x86_64__)
++         ud0     \sym(%rip), %eax
++#elif defined(__arm__) || defined(__aarch64__)
++         hlt     0xffff
++1:      .word   \sym - 1b
++#elif defined(__mips__)
++         syscall 0xffff
++1:      .word   \sym - 1b
++#else
++# error
++#endif
++.endm
++
++.macro ret_instr
++#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
++         ret
++#elif defined(__arm__)
++         bx     lr
++#elif defined(__mips__)
++         jr     $ra
++#else
++# error
++#endif
++.endm
++
++/* Symbols of native functions */
++
++.macro define_function name
++         .text
++\name:
++         special_instr 9f
++         ret_instr
++         .globl \name
++         .type \name, %function
++         .size \name, . - \name
++
++         .section .rodata
++9:      .asciz  "\name"
++.endm
++
++define_function memcmp
++define_function memcpy
++define_function memset
++define_function strcat
++define_function strcmp
++define_function strcpy
++define_function strncmp
++define_function strncpy
 diff --git a/configure b/configure
-index 2b41c49c0d..7a1e463d9c 100755
+index 7a1e463d9c..de533b27a2 100755
 --- a/configure
 +++ b/configure
-@@ -1751,32 +1751,23 @@ if test "$ccache_cpp2" = "yes"; then
-   echo "export CCACHE_CPP2=y" >> $config_host_mak
+@@ -1826,6 +1826,45 @@ if test "$tcg" = "enabled"; then
  fi
+ )
  
--# tests/tcg configuration
--(config_host_mak=tests/tcg/config-host.mak
--mkdir -p tests/tcg
--echo "# Automatically generated by configure - do not modify" > $config_host_mak
--echo "SRC_PATH=$source_path" >> $config_host_mak
--echo "HOST_CC=$host_cc" >> $config_host_mak
-+# Prepare the config files for cross building.
-+# This process generates 'cross-build/<target>/config-target.mak' files.
-+# These files are then symlinked to the directories that need them which
-+# including the TCG tests (tests/tcg/<target>) and the libnative library
-+# for linux-user (common/native/<target>/).
-+mkdir -p cross-build
- 
--# versioned checked in the main config_host.mak above
--if test -n "$gdb_bin"; then
--    echo "HAVE_GDB_BIN=$gdb_bin" >> $config_host_mak
--fi
--if test "$plugins" = "yes" ; then
--    echo "CONFIG_PLUGIN=y" >> $config_host_mak
--fi
--
--tcg_tests_targets=
- for target in $target_list; do
-   arch=${target%%-*}
--
-   case $target in
-     xtensa*-linux-user)
--      # the toolchain is not complete with headers, only build softmmu tests
-+      # the toolchain for tests/tcg is not complete with headers
-       continue
-       ;;
-     *-softmmu)
--      test -f "$source_path/tests/tcg/$arch/Makefile.softmmu-target" || continue
-+      # skip installing config-target.mak when we have no tests to build
-+      test -f "${source_path}/tests/tcg/${arch}/Makefile.softmmu-target" || continue
-       qemu="qemu-system-$arch"
-       ;;
-     *-linux-user|*-bsd-user)
-@@ -1786,22 +1777,46 @@ for target in $target_list; do
- 
-   if probe_target_compiler $target || test -n "$container_image"; then
-       test -n "$container_image" && build_static=y
--      mkdir -p "tests/tcg/$target"
--      config_target_mak=tests/tcg/$target/config-target.mak
--      ln -sf "$source_path/tests/tcg/Makefile.target" "tests/tcg/$target/Makefile"
-+      mkdir -p "cross-build/${target}"
-+      config_target_mak=cross-build/${target}/config-target.mak
-       echo "# Automatically generated by configure - do not modify" > "$config_target_mak"
-       echo "TARGET_NAME=$arch" >> "$config_target_mak"
-       echo "TARGET=$target" >> "$config_target_mak"
--      write_target_makefile "build-tcg-tests-$target" >> "$config_target_mak"
-+      write_target_makefile "$target" >> "$config_target_mak"
-       echo "BUILD_STATIC=$build_static" >> "$config_target_mak"
-       echo "QEMU=$PWD/$qemu" >> "$config_target_mak"
- 
-+      # get the interpreter prefix and the path of libnative required for native call tests
-+      if test -n "$target_cc" && [ -d "/usr/$(echo "$target_cc" | sed 's/-gcc//')" ]; then
-+          echo "LD_PREFIX=/usr/$(echo "$target_cc" | sed 's/-gcc//')" >> "$config_target_mak"
-+      fi
++# common-user/native configuration
++(mkdir -p common-user/native
 +
-       # will GDB work with these binaries?
-       if test "${gdb_arches#*$arch}" != "$gdb_arches"; then
-           echo "HOST_GDB_SUPPORTS_ARCH=y" >> "$config_target_mak"
-       fi
-+  fi
-+done
-+
-+# tests/tcg configuration
-+(mkdir -p tests/tcg
-+# create a symlink to the config-host.mak file in the tests/tcg
-+ln -srf $config_host_mak tests/tcg/config-host.mak
-+echo "HOST_CC=$host_cc" >> $config_host_mak
-+
-+tcg_tests_targets=
++native_targets=
 +for target in $target_list; do
 +  case $target in
 +    *-softmmu)
-+      test -f "${source_path}/tests/tcg/${arch}/Makefile.softmmu-target" || continue
-+      ;;
++    continue
++    ;;
 +  esac
- 
--      echo "run-tcg-tests-$target: $qemu\$(EXESUF)" >> Makefile.prereqs
-+  if test -f cross-build/${target}/config-target.mak; then
-+      mkdir -p "tests/tcg/${target}"
-+      ln -srf cross-build/${target}/config-target.mak tests/tcg/${target}/config-target.mak
-+      ln -sf ${source_path}/tests/tcg/Makefile.target tests/tcg/${target}/Makefile
-+      echo "run-tcg-tests-${target}: $qemu\$(EXESUF)" >> Makefile.prereqs
-       tcg_tests_targets="$tcg_tests_targets $target"
-   fi
- done
++
++  # native call is only supported on these architectures
++  arch=${target%%-*}
++  config_target_mak=common-user/native/${target}/config-target.mak
++  case $arch in
++    i386|x86_64|arm|aarch64|mips|mips64)
++      if test -f cross-build/${target}/config-target.mak; then
++        mkdir -p "common-user/native/${target}"
++        ln -srf cross-build/${target}/config-target.mak "$config_target_mak"
++        if test $arch = arm; then
++          echo "EXTRA_NATIVE_CALL_FLAGS=-marm" >> "$config_target_mak"
++        fi
++        if test $arch = $cpu || \
++          { test $arch = i386 && test $cpu = x86_64; } || \
++          { test $arch = arm && test $cpu = aarch64; } || \
++          { test $arch = mips && test $cpu = mips64; }; then
++          echo "LD_PREFIX=/" >> "$config_target_mak"
++        fi
++        echo "LIBNATIVE=$PWD/common-user/native/${target}/libnative.so" >> "$config_target_mak"
++        ln -sf ${source_path}/common-user/native/Makefile.target common-user/native/${target}/Makefile
++        native_targets="$native_targets ${target}"
++      fi
++    ;;
++  esac
++done
++
++echo "NATIVE_TARGETS=$native_targets" >> config-host.mak
++)
++
+ if test "$skip_meson" = no; then
+   cross="config-meson.cross.new"
+   meson_quote() {
 -- 
 2.34.1
 
