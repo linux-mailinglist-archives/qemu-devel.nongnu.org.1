@@ -2,80 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BD979D347
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4EFD79D32D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:05:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg410-0008OM-RB; Tue, 12 Sep 2023 10:05:18 -0400
+	id 1qg418-00008n-8B; Tue, 12 Sep 2023 10:05:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40e-00088s-1D
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:01 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1qg40l-0008Cs-UX
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:06 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40P-0003q5-7b
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:04:51 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-31f7400cb74so4820171f8f.2
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:40 -0700 (PDT)
+ id 1qg40d-0003qD-8k
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:02 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-313e742a787so3586496f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694527479; x=1695132279; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694527480; x=1695132280; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=q4Dgx+OSBmpEBFmVsndMXcNNk4c9tAUi91q/Iq2oNR4=;
- b=Gbo34vf/Wvsq5Ttl1uvcIEZ0nlxBsUoznL+ZrWoYBj2mcqV9Kf6iKugNsu3VJTKazx
- P2YuHPPShGEsBonJedmL6irDnxCDzaYhavnw4dPv4t+1iknCwUYKitVVnJ9iZW4lNamg
- rNL/Eq37/q3SabYLk68qLo5OSgLPCmnrjq025EDDWZNv/HzUh+/MvRGRuMOPJFDwuQTm
- IvemU4UhrCc37eSmKeOyIu/gBy4vhCQSI8y+Pql/hhdMyPfNaozNyPS/3VmbY+Qbdc0T
- VhS4AqfDMRlM1xXZlg98QZPKce5+HYvB3UbHxO4UdF51WSZj644VStk4WESy14bWboXl
- 1HzQ==
+ :reply-to; bh=D1EL7OiWD9A0VKuolOshZyjZ0Z6pN9Kqa/FPwzECxhk=;
+ b=eSYmUH1qm07IE+JQVdD1GLSqHmcBVWc9ikwtZXrKqF1WfAZcgNYp7vXb6QwlCZV/uI
+ 3/zWahF/QirsdCuXt+F9BUfvyRlxHdHxI5kbB2YACkmYM6F4lCesBI+nZOfYcumJ5nUj
+ b35WNUXIlBlhJ+mvuy+uqCIb6i4TGCD2ZtICn/GE6l4ruVHYXL8aUJ/qPUGa/x2ZHURp
+ XglHwwa2/nnXt1Mu02FmPsD0orqpFqSULUxlETCIYtqF93tv7J9DgaXHkieUfXpsGec7
+ SS2pKIyjuhtnjRpotwKirhsLhPRqX0IWmJ4JtyuCrlTVWbPOe3EYPTrrMx9ddJwLJHBB
+ Eb+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527479; x=1695132279;
+ d=1e100.net; s=20230601; t=1694527480; x=1695132280;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=q4Dgx+OSBmpEBFmVsndMXcNNk4c9tAUi91q/Iq2oNR4=;
- b=Xv/WyevJjYHYIcJgI3labo5g/RNHzBV0LsbmL7RA1NrnDqw/R+rFWYayAz8oNzHSbn
- 3yDjO8Za7KHKPi6SU5e9CtxtqWVhjprzQ2IJAWVAlkJA6to0heq556sClStoj6skNxIw
- pxjeQvh+30ggZEPR/XJmtONnSBUyqH3htGxGQ9I5H6PAWT3wYocSZSXLd6bstUkn9T/I
- Ej6yxHrZSYeuM/KIRCKvNcm4lpnUljTrHu5EIDkh+zBHx++cg7nybsgaBAt+HKrOrHg0
- MEAhjLlHHycDkAMimNQGQLiT5xErg40weKAsPwPPN1d0CuTq+85EqeQPeBSh1fo8VFs8
- 7qBA==
-X-Gm-Message-State: AOJu0YzRhbQfG+qcDVdCr5MSjuMW7KM7h4JiDjS941TDxrBxIKy5Lecd
- opbQWF3fj7Bwvlip939tIKkzBgfrgEx/udHa7SE=
-X-Google-Smtp-Source: AGHT+IENlpFxsyVVzEUcV+/UEA20DGtCMqeEuW6o+ys+DQ8jsooenWqKAfHdxj/gC6742HVKnGoyzw==
-X-Received: by 2002:a05:6000:1d91:b0:31f:85dc:1114 with SMTP id
- bk17-20020a0560001d9100b0031f85dc1114mr9593544wrb.33.1694527478634; 
- Tue, 12 Sep 2023 07:04:38 -0700 (PDT)
+ bh=D1EL7OiWD9A0VKuolOshZyjZ0Z6pN9Kqa/FPwzECxhk=;
+ b=UKaUIWnuA4qvHg1BgURcxtMdl5mLyfPF8Y4bjVB/fcs9lcR9MXNjP5Ad6uWVWS1VnS
+ UvLRUWyzBZh2XblYsYZmFgA9bbUFYng+Bw1nqbA1fzEytJ6PwyywsldNM4kCV6AMuXMt
+ 3DpTo/jnOvBJEZDV1GJINuecLcFJki/ToCKeD02jSTVQf8dryMwfCLjs2wrNC+O7Wb0c
+ V+UMMGC8PQVZEC1HEJCeBEZQSm0PR9Bx7oZpcV36QfWA+meUeMe359xiKQsUZIvvY4/w
+ IwPAFHvIdt4d58yp43BUIWkbUC5/SRm4YEXBS9SsisOvj4SK8zH+8rdxzozXaAi90uN0
+ QHOA==
+X-Gm-Message-State: AOJu0YxRS2zOKSJPXDlJtFYOWxKEoPR6K9gCXcsWJhDr2KJdq+qyaeIL
+ lWs8tnNprijtnS1gB6CDV/hPQw==
+X-Google-Smtp-Source: AGHT+IHebKWNiycVJy/JvW++Srh6TmF0Ykuz+YbWlTbN/nhoRycYvsc4n3FUXIFRyWj8iAhE6dpNWg==
+X-Received: by 2002:a5d:440f:0:b0:314:c6b:b9a2 with SMTP id
+ z15-20020a5d440f000000b003140c6bb9a2mr2019596wrq.13.1694527480383; 
+ Tue, 12 Sep 2023 07:04:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.37
+ r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 07:04:38 -0700 (PDT)
+ Tue, 12 Sep 2023 07:04:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 04/12] target/arm: Define syndrome function for MOPS
- exceptions
-Date: Tue, 12 Sep 2023 15:04:26 +0100
-Message-Id: <20230912140434.1333369-5-peter.maydell@linaro.org>
+Subject: [PATCH v2 05/12] target/arm: New function allocation_tag_mem_probe()
+Date: Tue, 12 Sep 2023 15:04:27 +0100
+Message-Id: <20230912140434.1333369-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230912140434.1333369-1-peter.maydell@linaro.org>
 References: <20230912140434.1333369-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,46 +90,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The FEAT_MOPS memory operations can raise a Memory Copy or Memory Set
-exception if a copy or set instruction is executed when the CPU
-register state is not correct for that instruction. Define the
-usual syn_* function that constructs the syndrome register value
-for these exceptions.
+For the FEAT_MOPS operations, the existing allocation_tag_mem()
+function almost does what we want, but it will take a watchpoint
+exception even for an ra == 0 probe request, and it requires that the
+caller guarantee that the memory is accessible.  For FEAT_MOPS we
+want a function that will not take any kind of exception, and will
+return NULL for the not-accessible case.
+
+Rename allocation_tag_mem() to allocation_tag_mem_probe() and add an
+extra 'probe' argument that lets us distinguish these cases;
+allocation_tag_mem() is now a wrapper that always passes 'false'.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/syndrome.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ target/arm/tcg/mte_helper.c | 48 ++++++++++++++++++++++++++++---------
+ 1 file changed, 37 insertions(+), 11 deletions(-)
 
-diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
-index 8a6b8f8162a..5d34755508d 100644
---- a/target/arm/syndrome.h
-+++ b/target/arm/syndrome.h
-@@ -58,6 +58,7 @@ enum arm_exception_class {
-     EC_DATAABORT              = 0x24,
-     EC_DATAABORT_SAME_EL      = 0x25,
-     EC_SPALIGNMENT            = 0x26,
-+    EC_MOP                    = 0x27,
-     EC_AA32_FPTRAP            = 0x28,
-     EC_AA64_FPTRAP            = 0x2c,
-     EC_SERROR                 = 0x2f,
-@@ -334,4 +335,15 @@ static inline uint32_t syn_serror(uint32_t extra)
-     return (EC_SERROR << ARM_EL_EC_SHIFT) | ARM_EL_IL | extra;
+diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
+index e2494f73cf3..303bcc7fd84 100644
+--- a/target/arm/tcg/mte_helper.c
++++ b/target/arm/tcg/mte_helper.c
+@@ -50,13 +50,14 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
  }
  
-+static inline uint32_t syn_mop(bool is_set, bool is_setg, int options,
-+                               bool epilogue, bool wrong_option, bool option_a,
-+                               int destreg, int srcreg, int sizereg)
+ /**
+- * allocation_tag_mem:
++ * allocation_tag_mem_probe:
+  * @env: the cpu environment
+  * @ptr_mmu_idx: the addressing regime to use for the virtual address
+  * @ptr: the virtual address for which to look up tag memory
+  * @ptr_access: the access to use for the virtual address
+  * @ptr_size: the number of bytes in the normal memory access
+  * @tag_access: the access to use for the tag memory
++ * @probe: true to merely probe, never taking an exception
+  * @ra: the return address for exception handling
+  *
+  * Our tag memory is formatted as a sequence of little-endian nibbles.
+@@ -65,15 +66,25 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
+  * for the higher addr.
+  *
+  * Here, resolve the physical address from the virtual address, and return
+- * a pointer to the corresponding tag byte.  Exit with exception if the
+- * virtual address is not accessible for @ptr_access.
++ * a pointer to the corresponding tag byte.
+  *
+  * If there is no tag storage corresponding to @ptr, return NULL.
++ *
++ * If the page is inaccessible for @ptr_access, or has a watchpoint, there are
++ * three options:
++ * (1) probe = true, ra = 0 : pure probe -- we return NULL if the page is not
++ *     accessible, and do not take watchpoint traps. The calling code must
++ *     handle those cases in the right priority compared to MTE traps.
++ * (2) probe = false, ra = 0 : probe, no fault expected -- the caller guarantees
++ *     that the page is going to be accessible. We will take watchpoint traps.
++ * (3) probe = false, ra != 0 : non-probe -- we will take both memory access
++ *     traps and watchpoint traps.
++ * (probe = true, ra != 0 is invalid and will assert.)
+  */
+-static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
+-                                   uint64_t ptr, MMUAccessType ptr_access,
+-                                   int ptr_size, MMUAccessType tag_access,
+-                                   uintptr_t ra)
++static uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
++                                         uint64_t ptr, MMUAccessType ptr_access,
++                                         int ptr_size, MMUAccessType tag_access,
++                                         bool probe, uintptr_t ra)
+ {
+ #ifdef CONFIG_USER_ONLY
+     uint64_t clean_ptr = useronly_clean_ptr(ptr);
+@@ -81,6 +92,8 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
+     uint8_t *tags;
+     uintptr_t index;
+ 
++    assert(!(probe && ra));
++
+     if (!(flags & (ptr_access == MMU_DATA_STORE ? PAGE_WRITE_ORG : PAGE_READ))) {
+         cpu_loop_exit_sigsegv(env_cpu(env), ptr, ptr_access,
+                               !(flags & PAGE_VALID), ra);
+@@ -111,12 +124,16 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
+      * exception for inaccessible pages, and resolves the virtual address
+      * into the softmmu tlb.
+      *
+-     * When RA == 0, this is for mte_probe.  The page is expected to be
+-     * valid.  Indicate to probe_access_flags no-fault, then assert that
+-     * we received a valid page.
++     * When RA == 0, this is either a pure probe or a no-fault-expected probe.
++     * Indicate to probe_access_flags no-fault, then either return NULL
++     * for the pure probe, or assert that we received a valid page for the
++     * no-fault-expected probe.
+      */
+     flags = probe_access_full(env, ptr, 0, ptr_access, ptr_mmu_idx,
+                               ra == 0, &host, &full, ra);
++    if (probe && (flags & TLB_INVALID_MASK)) {
++        return NULL;
++    }
+     assert(!(flags & TLB_INVALID_MASK));
+ 
+     /* If the virtual page MemAttr != Tagged, access unchecked. */
+@@ -157,7 +174,7 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
+     }
+ 
+     /* Any debug exception has priority over a tag check exception. */
+-    if (unlikely(flags & TLB_WATCHPOINT)) {
++    if (!probe && unlikely(flags & TLB_WATCHPOINT)) {
+         int wp = ptr_access == MMU_DATA_LOAD ? BP_MEM_READ : BP_MEM_WRITE;
+         assert(ra != 0);
+         cpu_check_watchpoint(env_cpu(env), ptr, ptr_size, attrs, wp, ra);
+@@ -199,6 +216,15 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
+ #endif
+ }
+ 
++static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
++                                   uint64_t ptr, MMUAccessType ptr_access,
++                                   int ptr_size, MMUAccessType tag_access,
++                                   uintptr_t ra)
 +{
-+    return (EC_MOP << ARM_EL_EC_SHIFT) | ARM_EL_IL |
-+        (is_set << 24) | (is_setg << 23) | (options << 19) |
-+        (epilogue << 18) | (wrong_option << 17) | (option_a << 16) |
-+        (destreg << 10) | (srcreg << 5) | sizereg;
++    return allocation_tag_mem_probe(env, ptr_mmu_idx, ptr, ptr_access,
++                                    ptr_size, tag_access, false, ra);
 +}
 +
-+
- #endif /* TARGET_ARM_SYNDROME_H */
+ uint64_t HELPER(irg)(CPUARMState *env, uint64_t rn, uint64_t rm)
+ {
+     uint16_t exclude = extract32(rm | env->cp15.gcr_el1, 0, 16);
 -- 
 2.34.1
 
