@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32A479CED0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C07179CECA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:48:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg0va-0003Oo-R2; Tue, 12 Sep 2023 06:47:30 -0400
+	id 1qg0vd-0003RG-LU; Tue, 12 Sep 2023 06:47:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qg0vZ-0003HN-8O
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qg0vb-0003QI-EP
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qg0vU-0003Go-Io
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:28 -0400
+ id 1qg0vY-0003HU-Nm
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694515643;
+ s=mimecast20190719; t=1694515648;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4RHFQhWj/qbws01dq1YGH+JPZkqgaBC2OarH6ZVWsAQ=;
- b=fe/HJyWmxfDT6nqR8cLHhXqhBhopyKAmECb1JJ//bLSQv2QVYOcGm3Fz4BR556EDjhGYMW
- KJPLvOV51Oq3CQTiDDoee7pxMFUiJPDdMyjZNUmNnWbil7/PoYdsTvU6m7Q12wqOi8JuWH
- 5LDwGvLcjiZpzR1pNNApVZDfxDucz/0=
+ bh=Qa2jcaQfDlJDtXnaPen2+btiZcAuSAXw+JtO012REnw=;
+ b=RlQX2ix+Il52sn/bsaJvxMStr1p87EqiOHhZFprhut4DRP/uTJND+BAA/2kk05hNgimsOy
+ 0lft1AIMKNfRTRaUXa5tyTdLYO8TF6aYvm45T+4XkL4uPeMHl2I9KjhKIHdPMomwG0QjVx
+ pufMwheu+C7XOZ6MyWOLBNwWStEIxwM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-383-K-dv5w-dOuC558DoHWZOYQ-1; Tue, 12 Sep 2023 06:47:22 -0400
-X-MC-Unique: K-dv5w-dOuC558DoHWZOYQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ us-mta-568-XTvo2so2PXCwWE7i8Ddbhw-1; Tue, 12 Sep 2023 06:47:26 -0400
+X-MC-Unique: XTvo2so2PXCwWE7i8Ddbhw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E16B8019DC
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:47:22 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50C69101A529
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:47:26 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 215D721B2413;
- Tue, 12 Sep 2023 10:47:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3C28340C2064;
+ Tue, 12 Sep 2023 10:47:24 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 08/14] ui/console: remove redundant format field
-Date: Tue, 12 Sep 2023 14:46:42 +0400
-Message-ID: <20230912104649.1638640-9-marcandre.lureau@redhat.com>
+Subject: [PULL 09/14] ui/vc: preliminary QemuTextConsole changes before split
+Date: Tue, 12 Sep 2023 14:46:43 +0400
+Message-ID: <20230912104649.1638640-10-marcandre.lureau@redhat.com>
 In-Reply-To: <20230912104649.1638640-1-marcandre.lureau@redhat.com>
 References: <20230912104649.1638640-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -64,7 +64,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,136 +83,145 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-It's already part of PIXMAN image.
+Those changes will help to split console.c unit in the following commit.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- include/ui/console.h | 15 +++++++--------
- ui/console-gl.c      |  2 +-
- ui/console.c         |  4 +---
- ui/gtk.c             |  2 +-
- ui/spice-display.c   |  2 +-
- ui/vnc.c             |  2 +-
- 6 files changed, 12 insertions(+), 15 deletions(-)
+ ui/console.c | 52 +++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 35 insertions(+), 17 deletions(-)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 26d63d17a2..93bb03a9e2 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -152,7 +152,6 @@ typedef struct ScanoutTexture {
- } ScanoutTexture;
- 
- typedef struct DisplaySurface {
--    pixman_format_code_t format;
-     pixman_image_t *image;
-     uint8_t flags;
- #ifdef CONFIG_OPENGL
-@@ -436,23 +435,23 @@ static inline int surface_height(DisplaySurface *s)
-     return pixman_image_get_height(s->image);
- }
- 
-+static inline pixman_format_code_t surface_format(DisplaySurface *s)
-+{
-+    return pixman_image_get_format(s->image);
-+}
-+
- static inline int surface_bits_per_pixel(DisplaySurface *s)
- {
--    int bits = PIXMAN_FORMAT_BPP(s->format);
-+    int bits = PIXMAN_FORMAT_BPP(surface_format(s));
-     return bits;
- }
- 
- static inline int surface_bytes_per_pixel(DisplaySurface *s)
- {
--    int bits = PIXMAN_FORMAT_BPP(s->format);
-+    int bits = PIXMAN_FORMAT_BPP(surface_format(s));
-     return DIV_ROUND_UP(bits, 8);
- }
- 
--static inline pixman_format_code_t surface_format(DisplaySurface *s)
--{
--    return s->format;
--}
--
- typedef uint32_t console_ch_t;
- 
- static inline void console_write_ch(console_ch_t *dest, uint32_t ch)
-diff --git a/ui/console-gl.c b/ui/console-gl.c
-index 8e3c9a3c8c..103b954017 100644
---- a/ui/console-gl.c
-+++ b/ui/console-gl.c
-@@ -53,7 +53,7 @@ void surface_gl_create_texture(QemuGLShader *gls,
-         return;
-     }
- 
--    switch (surface->format) {
-+    switch (surface_format(surface)) {
-     case PIXMAN_BE_b8g8r8x8:
-     case PIXMAN_BE_b8g8r8a8:
-         surface->glformat = GL_BGRA_EXT;
 diff --git a/ui/console.c b/ui/console.c
-index 7c60fc7d18..4ff9f8b6e7 100644
+index 4ff9f8b6e7..d9ac3717ff 100644
 --- a/ui/console.c
 +++ b/ui/console.c
-@@ -1493,8 +1493,7 @@ DisplaySurface *qemu_create_displaysurface_from(int width, int height,
-     DisplaySurface *surface = g_new0(DisplaySurface, 1);
+@@ -174,7 +174,7 @@ static QEMUTimer *cursor_timer;
  
-     trace_displaysurface_create_from(surface, width, height, format);
--    surface->format = format;
--    surface->image = pixman_image_create_bits(surface->format,
-+    surface->image = pixman_image_create_bits(format,
-                                               width, height,
-                                               (void *)data, linesize);
-     assert(surface->image != NULL);
-@@ -1511,7 +1510,6 @@ DisplaySurface *qemu_create_displaysurface_pixman(pixman_image_t *image)
-     DisplaySurface *surface = g_new0(DisplaySurface, 1);
- 
-     trace_displaysurface_create_pixman(surface);
--    surface->format = pixman_image_get_format(image);
-     surface->image = pixman_image_ref(image);
- 
-     return surface;
-diff --git a/ui/gtk.c b/ui/gtk.c
-index c05f9a3f83..e09f97a86b 100644
---- a/ui/gtk.c
-+++ b/ui/gtk.c
-@@ -514,7 +514,7 @@ static void gd_switch(DisplayChangeListener *dcl,
+ static void dpy_refresh(DisplayState *s);
+ static DisplayState *get_alloc_displaystate(void);
+-static void text_console_update_cursor(void *opaque);
++static void qemu_text_console_update_cursor(void *opaque);
+ static bool displaychangelistener_has_dmabuf(DisplayChangeListener *dcl);
+ static bool console_compatible_with(QemuConsole *con,
+                                     DisplayChangeListener *dcl, Error **errp);
+@@ -1065,6 +1065,13 @@ static void displaychangelistener_display_console(DisplayChangeListener *dcl,
      }
-     vc->gfx.ds = surface;
+ }
  
--    if (surface->format == PIXMAN_x8r8g8b8) {
-+    if (surface_format(surface) == PIXMAN_x8r8g8b8) {
-         /*
-          * PIXMAN_x8r8g8b8 == CAIRO_FORMAT_RGB24
-          *
-diff --git a/ui/spice-display.c b/ui/spice-display.c
-index 0e2fbfb17c..5cc47bd668 100644
---- a/ui/spice-display.c
-+++ b/ui/spice-display.c
-@@ -437,7 +437,7 @@ void qemu_spice_display_switch(SimpleSpiceDisplay *ssd,
++static void
++qemu_text_console_select(QemuTextConsole *c)
++{
++    dpy_text_resize(QEMU_CONSOLE(c), c->width, c->height);
++    qemu_text_console_update_cursor(NULL);
++}
++
+ void console_select(unsigned int index)
+ {
+     DisplayChangeListener *dcl;
+@@ -1084,8 +1091,7 @@ void console_select(unsigned int index)
+         }
+ 
+         if (QEMU_IS_TEXT_CONSOLE(s)) {
+-            dpy_text_resize(s, QEMU_TEXT_CONSOLE(s)->width, QEMU_TEXT_CONSOLE(s)->height);
+-            text_console_update_cursor(NULL);
++            qemu_text_console_select(QEMU_TEXT_CONSOLE(s));
+         }
      }
-     if (ssd->ds) {
-         ssd->surface = pixman_image_ref(ssd->ds->image);
--        ssd->mirror  = qemu_pixman_mirror_create(ssd->ds->format,
-+        ssd->mirror  = qemu_pixman_mirror_create(surface_format(ssd->ds),
-                                                  ssd->ds->image);
-         qemu_spice_create_host_primary(ssd);
+ }
+@@ -1135,19 +1141,12 @@ static void kbd_send_chars(QemuTextConsole *s)
+ }
+ 
+ /* called when an ascii key is pressed */
+-void qemu_text_console_put_keysym(QemuTextConsole *s, int keysym)
++static void qemu_text_console_handle_keysym(QemuTextConsole *s, int keysym)
+ {
+     uint8_t buf[16], *q;
+     int c;
+     uint32_t num_free;
+ 
+-    if (!s) {
+-        if (!QEMU_IS_TEXT_CONSOLE(active_console)) {
+-            return;
+-        }
+-        s = QEMU_TEXT_CONSOLE(active_console);
+-    }
+-
+     switch(keysym) {
+     case QEMU_KEY_CTRL_UP:
+         console_scroll(s, -1);
+@@ -1192,6 +1191,18 @@ void qemu_text_console_put_keysym(QemuTextConsole *s, int keysym)
      }
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 22894b7b1f..6fd86996a5 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -833,7 +833,7 @@ static void vnc_dpy_switch(DisplayChangeListener *dcl,
-     /* guest surface */
-     qemu_pixman_image_unref(vd->guest.fb);
-     vd->guest.fb = pixman_image_ref(surface->image);
--    vd->guest.format = surface->format;
-+    vd->guest.format = surface_format(surface);
+ }
  
++void qemu_text_console_put_keysym(QemuTextConsole *s, int keysym)
++{
++    if (!s) {
++        if (!QEMU_IS_TEXT_CONSOLE(active_console)) {
++            return;
++        }
++        s = QEMU_TEXT_CONSOLE(active_console);
++    }
++
++    qemu_text_console_handle_keysym(s, keysym);
++}
++
+ static const int qcode_to_keysym[Q_KEY_CODE__MAX] = {
+     [Q_KEY_CODE_UP]     = QEMU_KEY_UP,
+     [Q_KEY_CODE_DOWN]   = QEMU_KEY_DOWN,
+@@ -1395,7 +1406,7 @@ qemu_text_console_class_init(ObjectClass *oc, void *data)
+ {
+     if (!cursor_timer) {
+         cursor_timer = timer_new_ms(QEMU_CLOCK_REALTIME,
+-                                    text_console_update_cursor, NULL);
++                                    qemu_text_console_update_cursor, NULL);
+     }
+ }
  
-     if (pageflip) {
+@@ -1701,7 +1712,7 @@ void register_displaychangelistener(DisplayChangeListener *dcl)
+     if (QEMU_IS_GRAPHIC_CONSOLE(con)) {
+         dcl_set_graphic_cursor(dcl, QEMU_GRAPHIC_CONSOLE(con));
+     }
+-    text_console_update_cursor(NULL);
++    qemu_text_console_update_cursor(NULL);
+ }
+ 
+ void update_displaychangelistener(DisplayChangeListener *dcl,
+@@ -2388,6 +2399,13 @@ bool qemu_console_is_multihead(DeviceState *dev)
+     return false;
+ }
+ 
++
++static const char *
++qemu_text_console_get_label(QemuTextConsole *c)
++{
++    return c->chr ? c->chr->label : NULL;
++}
++
+ char *qemu_console_get_label(QemuConsole *con)
+ {
+     if (QEMU_IS_GRAPHIC_CONSOLE(con)) {
+@@ -2411,9 +2429,9 @@ char *qemu_console_get_label(QemuConsole *con)
+         }
+         return g_strdup("VGA");
+     } else if (QEMU_IS_TEXT_CONSOLE(con)) {
+-        QemuTextConsole *c = QEMU_TEXT_CONSOLE(con);
+-        if (c->chr && c->chr->label) {
+-            return g_strdup(c->chr->label);
++        const char *label = qemu_text_console_get_label(QEMU_TEXT_CONSOLE(con));
++        if (label) {
++            return g_strdup(label);
+         }
+     }
+ 
+@@ -2513,7 +2531,7 @@ int qemu_invalidate_text_consoles(void)
+     return count;
+ }
+ 
+-static void text_console_update_cursor(void *opaque)
++static void qemu_text_console_update_cursor(void *opaque)
+ {
+     cursor_visible_phase = !cursor_visible_phase;
+ 
 -- 
 2.41.0
 
