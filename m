@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B1D79D8D6
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:42:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3983879D8DA
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:43:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg8KZ-0004TE-FG; Tue, 12 Sep 2023 14:41:47 -0400
+	id 1qg8Kd-0004Ug-AC; Tue, 12 Sep 2023 14:41:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8KT-0004Sp-5Q
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:41 -0400
+ id 1qg8KV-0004T6-9x
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8KQ-0001QM-Qy
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:40 -0400
+ id 1qg8KS-0001QU-9O
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694544097;
+ s=mimecast20190719; t=1694544099;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=bo9Uiv1EmC7M8BwF7hgw+6ty93Fh7YrMdKE9xud24qo=;
- b=PwgCdjlEARrTtcrfCBsgu8GBQhpEXWhwstsaem05RrIBR/2vBs6K6S2VtIJEsGMGmNKi3Z
- yHspsjqSIEG059e2aGaxMJG0aAuyR2/srpRr7/SHwH/x6Ow83AFsQvh8T+P+etPgRQY4m1
- CFDSM3iyB5WmiWBTuZq0qSyI7KT6o8U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-113-Y2vsYIVyNMaCZomFngDC0g-1; Tue, 12 Sep 2023 14:41:34 -0400
-X-MC-Unique: Y2vsYIVyNMaCZomFngDC0g-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1AIiAYRZUIN3tB/gUJdVsd76BMtXSUjRQoKp5b2WIkc=;
+ b=GVa9fJKlLmFQ5rEaVH+9vnH/ebzH93Aa91hQeEMOmkjNWsoUOD4TeUKuEctUqL43kWVyGm
+ sb7Da/3Mv4EWQD6TGdEbWX72+GipvwTo6ts/y6elXYoOe7VRBKAyNJlVqcsts1TzAbJ+cG
+ To/ek7YocERIwG2lV5hfiPdzNIv6YKI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-275-HbIXb2yRPzy_eoWRstNw4Q-1; Tue, 12 Sep 2023 14:41:35 -0400
+X-MC-Unique: HbIXb2yRPzy_eoWRstNw4Q-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 73DE0805F6B;
- Tue, 12 Sep 2023 18:41:33 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 69BF53810D39;
+ Tue, 12 Sep 2023 18:41:35 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C00D563F9D;
- Tue, 12 Sep 2023 18:41:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A22ED63F9D;
+ Tue, 12 Sep 2023 18:41:33 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>,
@@ -52,11 +53,13 @@ Cc: Laurent Vivier <lvivier@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 0/4] ci: fix hang of FreeBSD CI jobs
-Date: Tue, 12 Sep 2023 19:41:26 +0100
-Message-ID: <20230912184130.3056054-1-berrange@redhat.com>
+Subject: [PATCH 1/4] microbit: add missing qtest_quit() call
+Date: Tue, 12 Sep 2023 19:41:27 +0100
+Message-ID: <20230912184130.3056054-2-berrange@redhat.com>
+In-Reply-To: <20230912184130.3056054-1-berrange@redhat.com>
+References: <20230912184130.3056054-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -83,26 +86,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This addresses
+Without this call, the QEMU process is being left running which on
+FreeBSD 13.2 at least, makes meson think the test is still running,
+and thus execution of "make check" continues forever.
 
-  https://gitlab.com/qemu-project/qemu/-/issues/1882
+This fixes the regression introduced in:
 
-Which turned out to be a genuine flaw which we missed during merge
-as the patch hitting master co-incided with the FreeBSD CI job
-having an temporary outage due to changed release image version.
+  commit a9c9bbee855877293683012942d3485d50f286af
+  Author: Chris Laplante <chris@laplante.io>
+  Date:   Tue Aug 22 17:31:02 2023 +0100
 
-Daniel P. Berrangé (4):
-  microbit: add missing qtest_quit() call
-  qtest: kill orphaned qtest QEMU processes on FreeBSD
-  gitlab: make Cirrus CI timeout explicit
-  gitlab: make Cirrus CI jobs gating
+    qtest: microbit-test: add tests for nRF51 DETECT
 
- .gitlab-ci.d/cirrus.yml       | 4 +++-
- .gitlab-ci.d/cirrus/build.yml | 2 ++
- tests/qtest/libqtest.c        | 7 +++++++
- tests/qtest/microbit-test.c   | 2 ++
- 4 files changed, 14 insertions(+), 1 deletion(-)
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1882
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
+ tests/qtest/microbit-test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/tests/qtest/microbit-test.c b/tests/qtest/microbit-test.c
+index 2abcad8e31..72190d38f7 100644
+--- a/tests/qtest/microbit-test.c
++++ b/tests/qtest/microbit-test.c
+@@ -434,6 +434,8 @@ static void test_nrf51_gpio_detect(void)
+     g_assert_true(qtest_get_irq(qts, 0));
+     qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", 3, 0);
+     g_assert_true(qtest_get_irq(qts, 0));
++
++    qtest_quit(qts);
+ }
+ 
+ static void timer_task(QTestState *qts, hwaddr task)
 -- 
 2.41.0
 
