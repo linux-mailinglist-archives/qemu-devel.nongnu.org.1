@@ -2,111 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D41079DA7B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:02:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC83A79DA86
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:04:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAUr-0001fc-0q; Tue, 12 Sep 2023 17:00:33 -0400
+	id 1qgAXh-0003KC-ND; Tue, 12 Sep 2023 17:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgAUU-0001WM-Vs; Tue, 12 Sep 2023 17:00:15 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qgAXd-0003I0-E5
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:03:25 -0400
+Received: from mailout1.w2.samsung.com ([211.189.100.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgAUR-0005X4-Jq; Tue, 12 Sep 2023 17:00:10 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CKgFdS005127; Tue, 12 Sep 2023 20:57:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=dE6SZcUTvxnbu/Alt5R7481oeWmTREolDdAvvYc8wwc=;
- b=mtfcIyM+juiiXXxdDs/3Ts96Y8Ny2BMTdWpb4eMCYvlX9iXw4+P4CaWwbmB1YQEHLxOj
- mpwvvSpcehAwwI9mWyfHmgLT3Zq5uJC6gHJ/Y2R6CoFT08J4ziV39Cr67VdIF/fwWqeu
- 6bGH1DzIZFTLblsiG/lraFyVhCAS2KpNnkTMNtjWsOnVYbFLj2lIJFiZDH+6LQuRO9bl
- hmbirP35Al0I+vgyIEvRZTJbfN+BmK51M1fBfhotZu9rhjoNzReiU0TBSnP0UREPdbQR
- w5h/sSpq+0kJmHnf3xHqfLlAfQdW6PDsrSdMFz8aR4ZopLC99ZmclE9t4KQdeaXsYjhG 3A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2y8p0dtt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 20:57:50 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38CKhC8w006502;
- Tue, 12 Sep 2023 20:57:50 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2y8p0dth-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 20:57:50 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CJcc63012069; Tue, 12 Sep 2023 20:57:49 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t13dypagw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 20:57:49 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38CKvmCi59113826
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Sep 2023 20:57:49 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A41C958056;
- Tue, 12 Sep 2023 20:57:48 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9365258052;
- Tue, 12 Sep 2023 20:57:48 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 12 Sep 2023 20:57:48 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
- by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id ED66B16A073D;
- Tue, 12 Sep 2023 15:57:47 -0500 (CDT)
-Received: (from mglenn@localhost)
- by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38CKvlWh3408088;
- Tue, 12 Sep 2023 15:57:47 -0500
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
-Subject: [PATCH 3/4] target/ppc: Add clrbhrb and mfbhrbe instructions
-Date: Tue, 12 Sep 2023 15:57:41 -0500
-Message-Id: <20230912205741.3408040-1-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
-References: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qgAXZ-0006dE-8k
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:03:25 -0400
+Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
+ by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912210316usoutp016e8a0d294b7fad66d9d1e0b9b93cd50b~EQpvV9rwA1837218372usoutp01Q;
+ Tue, 12 Sep 2023 21:03:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
+ 20230912210316usoutp016e8a0d294b7fad66d9d1e0b9b93cd50b~EQpvV9rwA1837218372usoutp01Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1694552596;
+ bh=ZvLMB+y30ccT76VU0PrNOmSqEgDaEOXdFIgruoQyPro=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=DAP8/ysNHOml7DncuT71UdvhBA7E4MbYoavsjJdZjsuEA9mM7oi44n5vMgXNG4FsW
+ gYIAqkTGSey649QcwBQJj1xh45/eJuLI+boHZJrwxq1Vi0ABTb+mOyqBnDB6T3WSuQ
+ nFt+mJUvwr9FTKNlVYtT96PNyVnpJMH4QYlVdjqY=
+Received: from ussmges2new.samsung.com (u111.gpu85.samsung.co.kr
+ [203.254.195.111]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230912210316uscas1p14b80871d9d5a33f776f410aeea931b06~EQpvPPmHs0916709167uscas1p1z;
+ Tue, 12 Sep 2023 21:03:16 +0000 (GMT)
+Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
+ ussmges2new.samsung.com (USCPEMTA) with SMTP id D4.F9.40279.412D0056; Tue,
+ 12 Sep 2023 17:03:16 -0400 (EDT)
+Received: from ussmgxs3new.samsung.com (u92.gpu85.samsung.co.kr
+ [203.254.195.92]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912210316uscas1p24582c8c7b99778897fc1feb8276e6abb~EQpvB_gYn1163111631uscas1p2i;
+ Tue, 12 Sep 2023 21:03:16 +0000 (GMT)
+X-AuditID: cbfec36f-4cbfe70000009d57-4b-6500d214b3fb
+Received: from SSI-EX2.ssi.samsung.com ( [105.128.2.145]) by
+ ussmgxs3new.samsung.com (USCPEXMTA) with SMTP id 15.60.31410.412D0056; Tue,
+ 12 Sep 2023 17:03:16 -0400 (EDT)
+Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
+ SSI-EX2.ssi.samsung.com (105.128.2.227) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.1.2375.24; Tue, 12 Sep 2023 14:03:15 -0700
+Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
+ SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
+ 12 Sep 2023 14:03:15 -0700
+From: Fan Ni <fan.ni@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
+ <philmd@linaro.org>, "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 1/3] tests/acpi: Allow update of DSDT.cxl
+Thread-Topic: [PATCH v2 1/3] tests/acpi: Allow update of DSDT.cxl
+Thread-Index: AQHZ30uS7TzarmmB10ePZbZrHpBrCrAYL9MA
+Date: Tue, 12 Sep 2023 21:03:15 +0000
+Message-ID: <20230912210305.GA2828853@sjcvldevvm72>
+In-Reply-To: <20230904161847.18468-2-Jonathan.Cameron@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <9805C316ECEC7144A755D2F4801557B1@ssi.samsung.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UTVByi_coaY7hKZ4di8NJ3sozRdJ09On
-X-Proofpoint-GUID: ggBUIZx78dXbRd5y102f9Xxyey0q-2Qz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_19,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=247
- suspectscore=0 priorityscore=1501 spamscore=0 malwarescore=0 adultscore=0
- impostorscore=0 clxscore=1015 phishscore=0 lowpriorityscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309120174
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPKsWRmVeSWpSXmKPExsWy7djXc7oilxhSDeZN0rY4cbORzWLVwmts
+ FudnnWKxOLzxDJPF/1+vWC3WrBC2ON67g8WB3aPlyFtWj8V7XjJ53Lm2h83jybXNTB7v911l
+ 8/i8SS6ALYrLJiU1J7MstUjfLoEr4+uDY8wFf1krPl79w9zA2MzaxcjBISFgItH7QryLkYtD
+ SGAlo8T/OXdZIJxWJokrX+4ydTFyghUt2DiRDSKxllHi5Z4t7BDOJ0aJXYc+skI4y4Cc3stg
+ LWwCihL7urazgdgiAkYS725MYgSxmQUWM0m0/60CsYUFHCQOHZ7ACFHjKPF11UEWmPqGe8fB
+ bBYBVYlLTfvZQWxeAWOJjd+eM4PYnED1125+AYszCohJfD+1hglivrjErSfzoc4WlFg0ew8z
+ hC0m8W/XQzYIW1Hi/veX7BD1ehI3pk5hg7DtJF7vm8YCYWtLLFv4mhlir6DEyZlPWCB6JSUO
+ rrgBDiMJgTscEn8m/2CESLhI3Lm6CGqBtMT0NZdZIAGcLLHqIxdEOEdi/pItUHOsJRb+Wc80
+ gVFlFpKzZyE5aRaSk2YhOWkWkpMWMLKuYhQvLS7OTU8tNspLLdcrTswtLs1L10vOz93ECExT
+ p/8dzt/BeP3WR71DjEwcjIcYJTiYlUR4Sw79TRHiTUmsrEotyo8vKs1JLT7EKM3BoiTOa2h7
+ MllIID2xJDU7NbUgtQgmy8TBKdXAFCHeNF9cJ9nw/T2vFez7wzL9GB1mx7yQ9vkUrP8otP2d
+ 9U6lCTkfn+m4LGhb2iVsfOj2pEX7VpfeP2H61u/pHBH3F7enTVrbaGI9ceY6ddXEWy/+yF27
+ 9il/wUyr6qg+zaAVBue+1B4SNIjd8bv9xulLSfZdMj2LTjOtTJOz1NM963/n9bOcX9cKHn5+
+ feex5uUm3cVPpl/KEvf8LTFrO9/qH0y37vx4qGJQ7nz0lWyGRlRdp8HEtSrLXCbNlLFWzHgV
+ 9EFFc+pt53CmjX9LA3csX2hxgnvekmXaa9ZaJjgvu6ClcT1w3gqe77Kd3stj/3a80UhPWVqq
+ LaPSIvAtflOmQu+WEzH8pySDF3GbT1ZiKc5INNRiLipOBAD6pxJMwgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHIsWRmVeSWpSXmKPExsWS2cA0UVfkEkOqwdr90hYnbjayWaxaeI3N
+ 4vysUywWhzeeYbL4/+sVq8WaFcIWx3t3sDiwe7QcecvqsXjPSyaPO9f2sHk8ubaZyeP9vqts
+ Hp83yQWwRXHZpKTmZJalFunbJXBlfH1wjLngL2vFx6t/mBsYm1m7GDk5JARMJBZsnMjWxcjF
+ ISSwmlHiz5H9TBDOJ0aJF/O+MUM4yxglPs/YBdbCJqAosa9rOxuILSJgJPHuxiRGEJtZYDGT
+ RPvfKhBbWMBB4tDhCYwQNY4SX1cdZIGpb7h3HMxmEVCVuNS0nx3E5hUwltj47TkziC0kUC7x
+ ccthJhCbE6j32s0vYDWMAmIS30+tYYLYJS5x68l8JogXBCSW7DnPDGGLSrx8/A/qNUWJ+99f
+ skPU60ncmDqFDcK2k3i9bxoLhK0tsWzha2aIGwQlTs58wgLRKylxcMUNlgmMErOQrJuFZNQs
+ JKNmIRk1C8moBYysqxjFS4uLc9Mrio3zUsv1ihNzi0vz0vWS83M3MQKj/PS/wzE7GO/d+qh3
+ iJGJg/EQowQHs5IIb8mhvylCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeXdMuZgiJJCeWJKanZpa
+ kFoEk2Xi4JRqYDKv/iNU9WiaWC1XZffxSOOrrZy39+2u6cmfMvWq/TTpu4+zFKKZO5b/lwmZ
+ phmSHPPtFjtfeO7LpY6ZJol9Z9nueNicjyosm73A8J/oHLv3CavPVkzyOPzOzDYqUObVhvUi
+ iy488rtj9jHR+7fUlRMHbFeWbrur5Hr3CPO955zBm4L3aS/t/ZuUHb5s3dcf8xY3pWpM3DX7
+ 16INNvd23U5LanT9EXWU4Zj/44Np279uq3VfU+2jUP7MMYFrfYoFn9ABT+/4uf/1ozZVbnga
+ vF980/91D95/DWjT3pM36/yJu78/5DN5ioalbVSqUVv/enl9hMOJiB7rmVE/0/3DljF7O5af
+ lkzicZz04jMP20olluKMREMt5qLiRAApg04NYQMAAA==
+X-CMS-MailID: 20230912210316uscas1p24582c8c7b99778897fc1feb8276e6abb
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20230912210316uscas1p24582c8c7b99778897fc1feb8276e6abb
+References: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
+ <20230904161847.18468-2-Jonathan.Cameron@huawei.com>
+ <CGME20230912210316uscas1p24582c8c7b99778897fc1feb8276e6abb@uscas1p2.samsung.com>
+Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
+ helo=mailout1.w2.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,139 +136,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for the clrbhrb and mfbhrbe instructions.
+On Mon, Sep 04, 2023 at 05:18:45PM +0100, Jonathan Cameron wrote:
 
-Since neither instruction is believed to be critical to
-performance, both instructions were implemented using helper
-functions.
+> Addition of QTG in following patch requires an update to the test
+> data.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
 
-Access to both instructions is controlled by bits in the
-HFSCR (for privileged state) and MMCR0 (for problem state).
-A new function, helper_mmcr0_facility_check, was added for
-checking MMCR0[BHRBA] and raising a facility_unavailable exception
-if required.
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
- target/ppc/cpu.h         |  1 +
- target/ppc/helper.h      |  4 ++++
- target/ppc/misc_helper.c | 43 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/translate.c   | 13 ++++++++++++
- 4 files changed, 61 insertions(+)
-
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index bda1afb700..ee81ede4ee 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -541,6 +541,7 @@ FIELD(MSR, LE, MSR_LE, 1)
- 
- /* HFSCR bits */
- #define HFSCR_MSGP     PPC_BIT(53) /* Privileged Message Send Facilities */
-+#define HFSCR_BHRB     PPC_BIT(59) /* BHRB Instructions */
- #define HFSCR_IC_MSGP  0xA
- 
- #define DBCR0_ICMP (1 << 27)
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 1a3d9a7e57..bbc32ff114 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -816,3 +816,7 @@ DEF_HELPER_4(DSCLIQ, void, env, fprp, fprp, i32)
- 
- DEF_HELPER_1(tbegin, void, env)
- DEF_HELPER_FLAGS_1(fixup_thrm, TCG_CALL_NO_RWG, void, env)
-+
-+DEF_HELPER_1(clrbhrb, void, env)
-+DEF_HELPER_FLAGS_2(mfbhrbe, TCG_CALL_NO_WG, i64, env, i32)
-+
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 692d058665..45abe04f66 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -139,6 +139,17 @@ void helper_fscr_facility_check(CPUPPCState *env, uint32_t bit,
- #endif
- }
- 
-+static void helper_mmcr0_facility_check(CPUPPCState *env, uint32_t bit,
-+                                 uint32_t sprn, uint32_t cause)
-+{
-+#ifdef TARGET_PPC64
-+    if (FIELD_EX64(env->msr, MSR, PR) &&
-+        !(env->spr[SPR_POWER_MMCR0] & (1ULL << bit))) {
-+        raise_fu_exception(env, bit, sprn, cause, GETPC());
-+    }
-+#endif
-+}
-+
- void helper_msr_facility_check(CPUPPCState *env, uint32_t bit,
-                                uint32_t sprn, uint32_t cause)
- {
-@@ -351,3 +362,35 @@ void helper_fixup_thrm(CPUPPCState *env)
-         env->spr[i] = v;
-     }
- }
-+
-+void helper_clrbhrb(CPUPPCState *env)
-+{
-+    helper_hfscr_facility_check(env, HFSCR_BHRB, "clrbhrb", FSCR_IC_BHRB);
-+
-+    helper_mmcr0_facility_check(env, MMCR0_BHRBA, 0, FSCR_IC_BHRB);
-+
-+    memset(env->bhrb, 0, sizeof(env->bhrb));
-+}
-+
-+uint64_t helper_mfbhrbe(CPUPPCState *env, uint32_t bhrbe)
-+{
-+    unsigned int index;
-+
-+    helper_hfscr_facility_check(env, HFSCR_BHRB, "mfbhrbe", FSCR_IC_BHRB);
-+
-+    helper_mmcr0_facility_check(env, MMCR0_BHRBA, 0, FSCR_IC_BHRB);
-+
-+    if ((bhrbe >= env->bhrb_num_entries) ||
-+       (env->spr[SPR_POWER_MMCR0] & MMCR0_PMAE)) {
-+        return 0;
-+    }
-+
-+    /*
-+     * Note: bhrb_offset is the byte offset for writing the
-+     * next entry (over the oldest entry), which is why we
-+     * must offset bhrbe by 1 to get to the 0th entry.
-+     */
-+    index = ((env->bhrb_offset / sizeof(uint64_t)) - (bhrbe + 1)) %
-+            env->bhrb_num_entries;
-+    return env->bhrb[index];
-+}
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 7824475f54..b330871793 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -6549,12 +6549,25 @@ static void gen_brh(DisasContext *ctx)
- }
- #endif
- 
-+static void gen_clrbhrb(DisasContext *ctx)
-+{
-+    gen_helper_clrbhrb(cpu_env);
-+}
-+
-+static void gen_mfbhrbe(DisasContext *ctx)
-+{
-+    TCGv_i32 bhrbe = tcg_constant_i32(_SPR(ctx->opcode));
-+    gen_helper_mfbhrbe(cpu_gpr[rD(ctx->opcode)], cpu_env, bhrbe);
-+}
-+
- static opcode_t opcodes[] = {
- #if defined(TARGET_PPC64)
- GEN_HANDLER_E(brd, 0x1F, 0x1B, 0x05, 0x0000F801, PPC_NONE, PPC2_ISA310),
- GEN_HANDLER_E(brw, 0x1F, 0x1B, 0x04, 0x0000F801, PPC_NONE, PPC2_ISA310),
- GEN_HANDLER_E(brh, 0x1F, 0x1B, 0x06, 0x0000F801, PPC_NONE, PPC2_ISA310),
- #endif
-+GEN_HANDLER_E(clrbhrb, 0x1F, 0x0E, 0x0D, 0x3FFF801, PPC_NONE, PPC2_ISA207S),
-+GEN_HANDLER_E(mfbhrbe, 0x1F, 0x0E, 0x09, 0x0000001, PPC_NONE, PPC2_ISA207S),
- GEN_HANDLER(invalid, 0x00, 0x00, 0x00, 0xFFFFFFFF, PPC_NONE),
- #if defined(TARGET_PPC64)
- GEN_HANDLER_E(cmpeqb, 0x1F, 0x00, 0x07, 0x00600000, PPC_NONE, PPC2_ISA300),
--- 
-2.31.1
-
+>  tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bi=
+os-tables-test-allowed-diff.h
+> index dfb8523c8b..9ce0f596cc 100644
+> --- a/tests/qtest/bios-tables-test-allowed-diff.h
+> +++ b/tests/qtest/bios-tables-test-allowed-diff.h
+> @@ -1 +1,2 @@
+>  /* List of comma-separated changed AML files to ignore */
+> +"tests/data/acpi/q35/DSDT.cxl",
+> --=20
+> 2.39.2
+>=20
+> =
 
