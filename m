@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D0B79D344
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4628F79D342
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:08:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg412-0008PZ-KL; Tue, 12 Sep 2023 10:05:20 -0400
+	id 1qg410-0008MT-6w; Tue, 12 Sep 2023 10:05:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40a-000870-8C
+ id 1qg40c-00087F-5G
  for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:04:54 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40N-0003pk-On
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:04:45 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-402d0eda361so66395555e9.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:38 -0700 (PDT)
+ id 1qg40O-0003po-W3
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:04:47 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-401d67434daso61013845e9.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694527477; x=1695132277; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694527478; x=1695132278; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=RHcf7tHzqDKzr5rxsbuc/JHbMcICd4o46jDSREKWJM4=;
- b=OkoAMpduUyO5ez4VZyIW+3/ckECAaaOFWRGkXsPrd56QXettAf33tedNo0Rn9gbETa
- XDaCSq3DvIVaHEOM4WFnIWeixNEZLEC/F+EP/nxOF+q+A+uhfN2jMSfl9zE0/giqMh5Y
- XU2OYzPXL2N4+9NJnA4YnOTlSCH4uAtobEN36wob1RFVxuR7KxbLomQkTX7BLVyx4bZ6
- CM7CKqIjysv3cyKUZuMujW57GEgCZ7xxsGEmNs2dDRIX6WzDTs5zGM8vk57+SO2ZeV59
- WLskhjCmYYd9zjUDX5DnV6LO6CznRM5ft/aAzgEACI6U9CZF6hngCY0ou0vKQMGyoV+D
- YieA==
+ :reply-to; bh=atIAvZgXx4HeuCEPVGi0hJRO3lnJSiWXdbUnoe0XyYk=;
+ b=tcussc/xOdjJ4qd1eQJN3EvwQ1SWyF42EIcdO+/0Nv0satndZN/5D8r2d8B1JoYXLN
+ UW3joNgAJza6hVNPytvKYrz5WwvZmYy2Tsm2GVxdzUnRcQE3HWv310u5kjReYb/xrfBn
+ KtKyheq3TWXuVVfYpOq/NYoc/1OaTpzUEgMzxHKJRb+fjuOc7ZcppMyXISOTKktjanbd
+ 6Q+F2hbF1sHEABuQp+7Yn8LrPyRx/wph1SpRzv4AfLNBpvJo/8zdB1LVPFl0BM8COVt6
+ upNh8dzK+6V6ueR1JmtYIsjyuE8KGetJDygsNaZJIGCFLHVbb/cLEyAtE+GqOrvrABYP
+ rZpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527477; x=1695132277;
+ d=1e100.net; s=20230601; t=1694527478; x=1695132278;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RHcf7tHzqDKzr5rxsbuc/JHbMcICd4o46jDSREKWJM4=;
- b=e9MZtRCC1rks3bHMhjKKx0g/itZ+QkyavfOsa32EH/v2+xPymxdEbZAAFAfyOmUdu0
- VcZJBtaC6cQEBC1FOK84kYLUNjESipO52j4VtdySIQRlhnwqxMR9oYb5pCTv4kALzOGW
- W0SR3pvChZN1VnBFfQxAG9ZdZDrG6076mS/rgFUxOIFWKdcc1gfZFPgXkVqAQoaa5w9w
- 44Xjv1eAF7ZAMDhXu3h1X6/H2+usdPZPqdO7X1UgljUKC1rX/rqtlJxi5eV6bAMpRBI3
- 5MJcTUX95H0Wbv68KuPLyDr/OZIxg7nCltAy9mgJVCEMYJyDGi6ttgHp3CNo1+GFkMqV
- M1sg==
-X-Gm-Message-State: AOJu0YxbGqOzizvsuqmPe9EDL/MXM9qyGo6uyubx/hZOT/9OqP7MwvOE
- UZaxenjYxS7k4dU0dIcA3IXa8UkUGGuQKPxJey4=
-X-Google-Smtp-Source: AGHT+IHuktr3DXPrSPhOjbbBlCwgK1dkFDg/duQWSPDQdXAPJbXXMbqWXBsm8mJVp1ZLXg69yD8zZA==
-X-Received: by 2002:adf:ea4b:0:b0:31d:da10:e47e with SMTP id
- j11-20020adfea4b000000b0031dda10e47emr11333879wrn.57.1694527476927; 
- Tue, 12 Sep 2023 07:04:36 -0700 (PDT)
+ bh=atIAvZgXx4HeuCEPVGi0hJRO3lnJSiWXdbUnoe0XyYk=;
+ b=pw5BoLNQSwGZp+S/fXQWd1D80VcA1H+jajtgRkV/0GPoNKFe/4sWhvA8/XietYtkkc
+ KwkFG0Z+Sp5ZLJ7uKuNsSDzI+UwSnzwGSIz+/Dkl1BaW41oosgR4Xzxs+OBXPLSeW3Cn
+ zt8LvS9f6v0SzxnZGUa7916TEbBMxTuxFmZes94pS8zFBSEyWi4OLNVlh3qdSVZS28Pf
+ XSLPGc94GDv3OuKXdVKvwzkODQ9cvlyjBGxiIKdUVyk9eXTvVfdOTP98asj321PVVZ/a
+ gYBaOkmgG5GGE8a/gnLJW90lpzYzTLsmuE0dBks6bOsOzVKZmOgXE7A/VPIaAGmNQ27J
+ +CnQ==
+X-Gm-Message-State: AOJu0Ywo6U6cB4uaQWsfCSa8N30MxDNmahTad6lesvr/j5dRNEu99OMk
+ Y5KTZmaPcd6BxMDexiXEGzFQmA==
+X-Google-Smtp-Source: AGHT+IHBvsvrzKnwl15w6o3b3mfoZInvzyBQi4oKRKigOrhNAOANhg/EAVTwZ9Wlkx9lTzkftt6/+w==
+X-Received: by 2002:a5d:4c85:0:b0:31a:d551:c2c0 with SMTP id
+ z5-20020a5d4c85000000b0031ad551c2c0mr10117743wrs.57.1694527477876; 
+ Tue, 12 Sep 2023 07:04:37 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.36
+ r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 07:04:36 -0700 (PDT)
+ Tue, 12 Sep 2023 07:04:37 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 02/12] target/arm: Implement FEAT_MOPS enable bits
-Date: Tue, 12 Sep 2023 15:04:24 +0100
-Message-Id: <20230912140434.1333369-3-peter.maydell@linaro.org>
+Subject: [PATCH v2 03/12] target/arm: Pass unpriv bool to
+ get_a64_user_mem_index()
+Date: Tue, 12 Sep 2023 15:04:25 +0100
+Message-Id: <20230912140434.1333369-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230912140434.1333369-1-peter.maydell@linaro.org>
 References: <20230912140434.1333369-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,100 +92,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-FEAT_MOPS defines a handful of new enable bits:
- * HCRX_EL2.MSCEn, SCTLR_EL1.MSCEn, SCTLR_EL2.MSCen:
-   define whether the new insns should UNDEF or not
- * HCRX_EL2.MCE2: defines whether memops exceptions from
-   EL1 should be taken to EL1 or EL2
-
-Since we don't sanitise what bits can be written for the SCTLR
-registers, we only need to handle the new bits in HCRX_EL2, and
-define SCTLR_MSCEN for the new SCTLR bit value.
-
-The precedence of "HCRX bits acts as 0 if SCR_EL3.HXEn is 0" versus
-"bit acts as 1 if EL2 disabled" is not clear from the register
-definition text, but it is clear in the CheckMOPSEnabled()
-pseudocode(), so we follow that.  We'll have to check whether other
-bits we need to implement in future follow the same logic or not.
+In every place that we call the get_a64_user_mem_index() function
+we do it like this:
+ memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
+Refactor so the caller passes in the bool that says whether they
+want the 'unpriv' or 'normal' mem_index rather than having to
+do the ?: themselves.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.h    |  6 ++++++
- target/arm/helper.c | 28 +++++++++++++++++++++-------
- 2 files changed, 27 insertions(+), 7 deletions(-)
+I'm about to add another use of this function which would
+otherwise also end up doing this same ?: expression...
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/arm/tcg/translate-a64.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index bc7a69a8753..266c1a9ea1b 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1315,6 +1315,7 @@ void pmu_init(ARMCPU *cpu);
- #define SCTLR_EnIB    (1U << 30) /* v8.3, AArch64 only */
- #define SCTLR_EnIA    (1U << 31) /* v8.3, AArch64 only */
- #define SCTLR_DSSBS_32 (1U << 31) /* v8.5, AArch32 only */
-+#define SCTLR_MSCEN   (1ULL << 33) /* FEAT_MOPS */
- #define SCTLR_BT0     (1ULL << 35) /* v8.5-BTI */
- #define SCTLR_BT1     (1ULL << 36) /* v8.5-BTI */
- #define SCTLR_ITFSB   (1ULL << 37) /* v8.5-MemTag */
-@@ -4281,6 +4282,11 @@ static inline bool isar_feature_aa64_doublelock(const ARMISARegisters *id)
-     return FIELD_SEX64(id->id_aa64dfr0, ID_AA64DFR0, DOUBLELOCK) >= 0;
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 1dd86edae13..24afd929144 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -105,9 +105,17 @@ void a64_translate_init(void)
  }
  
-+static inline bool isar_feature_aa64_mops(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64isar2, ID_AA64ISAR2, MOPS);
-+}
-+
  /*
-  * Feature tests for "does this exist in either 32-bit or 64-bit?"
+- * Return the core mmu_idx to use for A64 "unprivileged load/store" insns
++ * Return the core mmu_idx to use for A64 load/store insns which
++ * have a "unprivileged load/store" variant. Those insns access
++ * EL0 if executed from an EL which has control over EL0 (usually
++ * EL1) but behave like normal loads and stores if executed from
++ * elsewhere (eg EL3).
++ *
++ * @unpriv : true for the unprivileged encoding; false for the
++ *           normal encoding (in which case we will return the same
++ *           thing as get_mem_index().
   */
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 594985d7c8c..83620787b45 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -5980,7 +5980,10 @@ static void hcrx_write(CPUARMState *env, const ARMCPRegInfo *ri,
- {
-     uint64_t valid_mask = 0;
- 
--    /* No features adding bits to HCRX are implemented. */
-+    /* FEAT_MOPS adds MSCEn and MCE2 */
-+    if (cpu_isar_feature(aa64_mops, env_archcpu(env))) {
-+        valid_mask |= HCRX_MSCEN | HCRX_MCE2;
-+    }
- 
-     /* Clear RES0 bits.  */
-     env->cp15.hcrx_el2 = value & valid_mask;
-@@ -6009,13 +6012,24 @@ uint64_t arm_hcrx_el2_eff(CPUARMState *env)
+-static int get_a64_user_mem_index(DisasContext *s)
++static int get_a64_user_mem_index(DisasContext *s, bool unpriv)
  {
      /*
-      * The bits in this register behave as 0 for all purposes other than
--     * direct reads of the register if:
--     *   - EL2 is not enabled in the current security state,
--     *   - SCR_EL3.HXEn is 0.
-+     * direct reads of the register if SCR_EL3.HXEn is 0.
-+     * If EL2 is not enabled in the current security state, then the
-+     * bit may behave as if 0, or as if 1, depending on the bit.
-+     * For the moment, we treat the EL2-disabled case as taking
-+     * priority over the HXEn-disabled case. This is true for the only
-+     * bit for a feature which we implement where the answer is different
-+     * for the two cases (MSCEn for FEAT_MOPS).
-+     * This may need to be revisited for future bits.
+      * If AccType_UNPRIV is not used, the insn uses AccType_NORMAL,
+@@ -115,7 +123,7 @@ static int get_a64_user_mem_index(DisasContext *s)
       */
--    if (!arm_is_el2_enabled(env)
--        || (arm_feature(env, ARM_FEATURE_EL3)
--            && !(env->cp15.scr_el3 & SCR_HXEN))) {
-+    if (!arm_is_el2_enabled(env)) {
-+        uint64_t hcrx = 0;
-+        if (cpu_isar_feature(aa64_mops, env_archcpu(env))) {
-+            /* MSCEn behaves as 1 if EL2 is not enabled */
-+            hcrx |= HCRX_MSCEN;
-+        }
-+        return hcrx;
-+    }
-+    if (arm_feature(env, ARM_FEATURE_EL3) && !(env->cp15.scr_el3 & SCR_HXEN)) {
-         return 0;
+     ARMMMUIdx useridx = s->mmu_idx;
+ 
+-    if (s->unpriv) {
++    if (unpriv && s->unpriv) {
+         /*
+          * We have pre-computed the condition for AccType_UNPRIV.
+          * Therefore we should never get here with a mmu_idx for
+@@ -3088,7 +3096,7 @@ static void op_addr_ldst_imm_pre(DisasContext *s, arg_ldst_imm *a,
+     if (!a->p) {
+         tcg_gen_addi_i64(*dirty_addr, *dirty_addr, offset);
      }
-     return env->cp15.hcrx_el2;
+-    memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
++    memidx = get_a64_user_mem_index(s, a->unpriv);
+     *clean_addr = gen_mte_check1_mmuidx(s, *dirty_addr, is_store,
+                                         a->w || a->rn != 31,
+                                         mop, a->unpriv, memidx);
+@@ -3109,7 +3117,7 @@ static bool trans_STR_i(DisasContext *s, arg_ldst_imm *a)
+ {
+     bool iss_sf, iss_valid = !a->w;
+     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
+-    int memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
++    int memidx = get_a64_user_mem_index(s, a->unpriv);
+     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
+ 
+     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, true, mop);
+@@ -3127,7 +3135,7 @@ static bool trans_LDR_i(DisasContext *s, arg_ldst_imm *a)
+ {
+     bool iss_sf, iss_valid = !a->w;
+     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
+-    int memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
++    int memidx = get_a64_user_mem_index(s, a->unpriv);
+     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
+ 
+     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, false, mop);
 -- 
 2.34.1
 
