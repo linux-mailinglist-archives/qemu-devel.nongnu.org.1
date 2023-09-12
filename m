@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B9679D20E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C51579D219
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:29:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg3OD-0002pB-6h; Tue, 12 Sep 2023 09:25:13 -0400
+	id 1qg3OB-0002oK-Gb; Tue, 12 Sep 2023 09:25:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qg3Nr-0002dH-5A
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:24:57 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1qg3Nx-0002fS-GM
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:25:00 -0400
+Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qg3Nl-0003Wq-PS
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:24:50 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3a76d882052so3979048b6e.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 06:24:45 -0700 (PDT)
+ id 1qg3Nq-0003XR-QO
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:24:54 -0400
+Received: by mail-ot1-x32e.google.com with SMTP id
+ 46e09a7af769-6c07e122a78so3898305a34.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 06:24:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694525084; x=1695129884; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1694525088; x=1695129888; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WvsMcO8KkAzI7CkHtZ53zjQmejmQZZMo5A4ybg1pjI0=;
- b=onpdLreClKU1L0Dz8ZyMDYW/QA+zT8aDdhB5Y4FB8CR/zLjxuuYnhroZsr2mXTMR+/
- SiJOQYY3uIcqM3dTpa6c5QEIrdj3UFRZ8+Q06RNO0QY5c6mOgmfFI2P7HipOS3i0JX97
- tbpNFNv+Wc5r2sNCyt6KqXPjTyUzs24NIM7L3J3nL3Hn0yddeE7qRAHkMSOomstJAfds
- DgRtlipbc7/ZReZ1u8PtE9wkJvPPhCSHE0ah9eQk4G4Q1s9x6f/jzPJPg7CkJUPQTnFt
- pmZfctrLWRNyB6wyPnJg8DMilq39uWjPfKY5YDn13Cj0efig7PD4OjnrAjxUgGC36sNe
- Pemg==
+ bh=QaCaFXk3n/oGC56SB04wOyUmvqISdJZ1At/AtPnxTwI=;
+ b=LzA/jlT3oxBa2wDvgLL4iAj86+2OYT5waQvD0MTuLTeDS4DfJbBeRAN+hKKporg+56
+ SYtpzRH3qxqUVLx6AgxMETGWGiUjBOKzxAwdyrPD5NpZm3eGM8qGAMW3fqaBz0gxlv6m
+ hRpW8C0syQmJzrLvOAU5obGFILECSDF4lndU5EZqh0MFmYwnOzu/d/y/XArauEaCPBxP
+ uHZTrLG5aNw6+FzOE35BQPuR3wpcmZ5HFPUKCDGBEfRN9+d2rQ6m1gAKU92a6PQ3WGwN
+ LHQSOdClZWa/v+6hMKmM2DSdPtEYyEoxT8CwjquSCz5Cp5ZKP7MoiEio8b40H1Cx9WX+
+ 0RBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694525084; x=1695129884;
+ d=1e100.net; s=20230601; t=1694525088; x=1695129888;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WvsMcO8KkAzI7CkHtZ53zjQmejmQZZMo5A4ybg1pjI0=;
- b=vJftyIabCZ6wtRKtDFPHaNdVzZHuJwyLkiTdx/5T0z0gmuIRP+iP7MQa0HhVL0Ij4o
- mfOy6jjNc/482vUGIljA+HNeHXJDD3hOAbRXA17aoLNvS/hb5acf23NlFcAn//g1AlQg
- ul16Q9yVCwTeIHgjJ+XxOqLxb9L12SThw3clvKPjQMwG7Iv//xBrkDgc/ZoZQSyug3AD
- fDeBNbWBfz5Zcxg5QsWuiUltFJ28Q2JUvruv8N24zvtMPSv87OdVQ7s+lubnrO0tgQEz
- neu5SILrhwM29N2rRAidMSjtuCuyz1tq9+UyZevgPPLgaNvP2rBcVRNkSbp5VsFEJlC0
- TWLA==
-X-Gm-Message-State: AOJu0YzjnQzxiJSuJRl5yDCsM2pfPCr6RjiJ9lwFmcPoDzdtSKurAWVx
- kxrXQDqM9HbC8pntGu61musCeDJqxj2ZuAbIbac=
-X-Google-Smtp-Source: AGHT+IE4OLN59CX5OVpwU8jOfnjJU2GCp9nne/ipDTQ2G8MOWrPRmSYPiz5Szi6Ih86TmjgTrzXvfQ==
-X-Received: by 2002:a54:4006:0:b0:3a7:3ea1:b597 with SMTP id
- x6-20020a544006000000b003a73ea1b597mr12683867oie.27.1694525084299; 
- Tue, 12 Sep 2023 06:24:44 -0700 (PDT)
+ bh=QaCaFXk3n/oGC56SB04wOyUmvqISdJZ1At/AtPnxTwI=;
+ b=n/HEJITUDHPBNjjQO406TQjK84/Mg+PfIObqY2PzKRIZHWM8obUJiY92tpVBZW8FLB
+ lEkRh7KqETIpz7LSKBinFS6MVj0IfQBQaOGZMCllLG3qmhIxFoZCUwDQwTJbmXpFoZc2
+ Q7CW70wadAC5mrTILpCNuJoexryoztl4UNGqGuXMc1zC819m4qfD+2znnFkNSVRd2y/8
+ tPWLk6gRdnJueerjXzmSfk2k82rKgBVVbZR1F3SL+mY5P2m5+JkseBxU6JugUSHIVIp1
+ zRNg/7Bp2MduZhCgcVUJw/u/IFNowAO1z1oPJ2uYInjg14mCtA9GKI+vpbvFeH2hjhjI
+ Rulg==
+X-Gm-Message-State: AOJu0Yx/ycRukv3l8JY+nvTrEnhThtV6EQQmZqa+ZvFSIi0OO8bc6s9e
+ i3IxuJkO1XgvZWiIjdnNxiAjq2EYyvkTBEtPl3g=
+X-Google-Smtp-Source: AGHT+IHBGoGxIOSkUcF80+mHKflRSMIeRjUVju+eevyApYFSJHIspX5TLnAreckBL5UWEbeOYC8LWA==
+X-Received: by 2002:a9d:6653:0:b0:6b9:b1a7:1f92 with SMTP id
+ q19-20020a9d6653000000b006b9b1a71f92mr14010786otm.8.1694525087740; 
+ Tue, 12 Sep 2023 06:24:47 -0700 (PDT)
 Received: from grind.. ([177.9.182.82]) by smtp.gmail.com with ESMTPSA id
- p15-20020a0568301d4f00b006af9d8af435sm3991255oth.50.2023.09.12.06.24.41
+ p15-20020a0568301d4f00b006af9d8af435sm3991255oth.50.2023.09.12.06.24.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 06:24:44 -0700 (PDT)
+ Tue, 12 Sep 2023 06:24:47 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  ajones@ventanamicro.com, philmd@linaro.org,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v10 04/20] target/riscv: add DEFINE_PROP_END_OF_LIST() to
- riscv_cpu_options[]
-Date: Tue, 12 Sep 2023 10:24:07 -0300
-Message-ID: <20230912132423.268494-5-dbarboza@ventanamicro.com>
+Subject: [PATCH v10 05/20] target/riscv/cpu.c: split non-ratified exts from
+ riscv_cpu_extensions[]
+Date: Tue, 12 Sep 2023 10:24:08 -0300
+Message-ID: <20230912132423.268494-6-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230912132423.268494-1-dbarboza@ventanamicro.com>
 References: <20230912132423.268494-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,84 +94,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add DEFINE_PROP_END_OF_LIST() and eliminate the ARRAY_SIZE() usage when
-iterating in the riscv_cpu_options[] array, making it similar to what
-we already do when working with riscv_cpu_extensions[].
+Create a new riscv_cpu_experimental_exts[] to store the non-ratified
+extensions properties. Once they are ratified we'll move them back to
+riscv_cpu_extensions[].
 
-We also have a more sophisticated motivation behind this change. In the
-future we might need to export riscv_cpu_options[] to other files, and
-ARRAY_LIST() doesn't work properly in that case because the array size
-isn't exposed to the header file. Here's a future sight of what we would
-deal with:
-
-./target/riscv/kvm.c:1057:5: error: nested extern declaration of 'riscv_cpu_add_misa_properties' [-Werror=nested-externs]
-n file included from ../target/riscv/kvm.c:19:
-home/danielhb/work/qemu/include/qemu/osdep.h:473:31: error: invalid application of 'sizeof' to incomplete type 'const RISCVCPUMultiExtConfig[]'
- 473 | #define ARRAY_SIZE(x) ((sizeof(x) / sizeof((x)[0])) + \
-     |                               ^
-./target/riscv/kvm.c:1047:29: note: in expansion of macro 'ARRAY_SIZE'
-1047 |         for (int i = 0; i < ARRAY_SIZE(_array); i++) { \
-     |                             ^~~~~~~~~~
-./target/riscv/kvm.c:1059:5: note: in expansion of macro 'ADD_UNAVAIL_KVM_PROP_ARRAY'
-1059 |     ADD_UNAVAIL_KVM_PROP_ARRAY(obj, riscv_cpu_extensions);
-     |     ^~~~~~~~~~~~~~~~~~~~~~~~~~
-home/danielhb/work/qemu/include/qemu/osdep.h:473:31: error: invalid application of 'sizeof' to incomplete type 'const RISCVCPUMultiExtConfig[]'
- 473 | #define ARRAY_SIZE(x) ((sizeof(x) / sizeof((x)[0])) + \
-     |                               ^
-./target/riscv/kvm.c:1047:29: note: in expansion of macro 'ARRAY_SIZE'
-1047 |         for (int i = 0; i < ARRAY_SIZE(_array); i++) { \
-
-Homogenize the present and change the future by using
-DEFINE_PROP_END_OF_LIST() in riscv_cpu_options[].
+riscv_cpu_add_user_properties() and riscv_cpu_add_kvm_properties() are
+changed to keep adding non-ratified properties to users.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 ---
- target/riscv/cpu.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ target/riscv/cpu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 7b7c5649e7..ad6ce2c2dc 100644
+index ad6ce2c2dc..83b44900a5 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1922,6 +1922,8 @@ static Property riscv_cpu_options[] = {
+@@ -1881,8 +1881,11 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("xtheadsync", RISCVCPU, cfg.ext_xtheadsync, false),
+     DEFINE_PROP_BOOL("xventanacondops", RISCVCPU, cfg.ext_XVentanaCondOps, false),
  
-     DEFINE_PROP_UINT16("cbom_blocksize", RISCVCPU, cfg.cbom_blocksize, 64),
-     DEFINE_PROP_UINT16("cboz_blocksize", RISCVCPU, cfg.cboz_blocksize, 64),
-+
+-    /* These are experimental so mark with 'x-' */
 +    DEFINE_PROP_END_OF_LIST(),
- };
++};
  
- #ifdef CONFIG_KVM
-@@ -1971,12 +1973,12 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
++/* These are experimental so mark with 'x-' */
++static Property riscv_cpu_experimental_exts[] = {
+     /* ePMP 0.9.3 */
+     DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
+     DEFINE_PROP_BOOL("x-smaia", RISCVCPU, cfg.ext_smaia, false),
+@@ -1973,6 +1976,10 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
          riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
      }
  
--    for (int i = 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
-+    for (prop = riscv_cpu_options; prop && prop->name; prop++) {
++    for (prop = riscv_cpu_experimental_exts; prop && prop->name; prop++) {
++        riscv_cpu_add_kvm_unavail_prop(obj, prop->name);
++    }
++
+     for (prop = riscv_cpu_options; prop && prop->name; prop++) {
          /* Check if KVM created the property already */
--        if (object_property_find(obj, riscv_cpu_options[i].name)) {
-+        if (object_property_find(obj, prop->name)) {
-             continue;
-         }
--        qdev_property_add_static(dev, &riscv_cpu_options[i]);
-+        qdev_property_add_static(dev, prop);
-     }
- }
- #endif
-@@ -2007,8 +2009,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
+         if (object_property_find(obj, prop->name)) {
+@@ -2012,6 +2019,10 @@ static void riscv_cpu_add_user_properties(Object *obj)
+     for (prop = riscv_cpu_options; prop && prop->name; prop++) {
          qdev_property_add_static(dev, prop);
      }
- 
--    for (int i = 0; i < ARRAY_SIZE(riscv_cpu_options); i++) {
--        qdev_property_add_static(dev, &riscv_cpu_options[i]);
-+    for (prop = riscv_cpu_options; prop && prop->name; prop++) {
++
++    for (prop = riscv_cpu_experimental_exts; prop && prop->name; prop++) {
 +        qdev_property_add_static(dev, prop);
-     }
++    }
  }
  
+ static Property riscv_cpu_properties[] = {
 -- 
 2.41.0
 
