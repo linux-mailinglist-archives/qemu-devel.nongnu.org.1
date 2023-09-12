@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EC679D33F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F54D79D32B
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:05:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg413-0008Ss-UN; Tue, 12 Sep 2023 10:05:22 -0400
+	id 1qg414-0008UR-PR; Tue, 12 Sep 2023 10:05:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40r-0008Gc-2x
+ id 1qg40q-0008GT-SA
  for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:10 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40l-0003rM-9z
+ id 1qg40k-0003rR-Tv
  for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:08 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-31c5a2e8501so5609459f8f.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:47 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-31fa666000dso2247695f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694527486; x=1695132286; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694527487; x=1695132287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=oMzPBnHkJEk4I1sTfs7iYXVAv7BO9UDWeNUPlFOQw40=;
- b=pwc9mIsTTE0JFcK+mY2D5Fs6sLyQtvYnZ2WYyflZfkHogfTdSwysGwl4UiFsyeIQfe
- RLNhGhxPkP/ttFld7srhEOwYL1sKNkbLQD6ZYw4Vgmip5Taw6FgFGx/WxjfD7ZPBrY+X
- QcjGjpNX5Ycx525Nsy1pxCKwd6h5PbX9xGZuZowaGgF8uTCbeNoiv0xgGNizEwe8N3HB
- 2uO11W1RnZJlxRO8fRdmaZwUZmOkoS7AcnTFwkMPwPzfQ27Pa7rEen86+mFHvsDyQsJ/
- Ub2iCP7/o03rA13jic+cHILFu6kRXev7M+rQ8S9HzkMAEFf1CN1T96ahgodZ69Cbnt0t
- gMrQ==
+ :reply-to; bh=S+8+Et63yYSKmNFzWkggTY5fobUvz34RO94xWiLCiyk=;
+ b=NM/3t5nL2XKJtBmQauRoHQS61eewxLBSP4wq3ctcEIkfjvQe07JLVXLcikcnWyCZ9Q
+ kcP1psmMF7RInuC+uLDRKbJDb9LfyQJFzUq8Yogrgs1LubXv/AMze1CTef8WjoPnt4bN
+ 6o8j+ymuxt6rqSrS1JPW8ydyzyzpHL3Nn1kmw6pC7Qc+3lz/DKrElfDt4sjcMIQQlg38
+ QCep4df76kTbx17JmKrVDmZp+P28KQDU0IUx2qwspYsXd66VwMOEQQdiCyWcCk949hPu
+ wjyFpZ0WV5J+3mWZjWGEyz555S8XYrDo99iZ0cA/ZKWRXbbXrN5LDZ1Z5eCVPjEgJnAT
+ yBog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527486; x=1695132286;
+ d=1e100.net; s=20230601; t=1694527487; x=1695132287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oMzPBnHkJEk4I1sTfs7iYXVAv7BO9UDWeNUPlFOQw40=;
- b=lc31Omm9n6muCCaKU4HFkwnR6Xx1kPiywRSi54C07HiN1azzMQOu2BaIf55WTrxMd5
- kWVcINh9qoM8Eks4zye6lx7zpxrcWeycVoNB8+I3+PDu6dhg3LAUcKSrvmAe4n3GF67H
- 8eOelUleXk3nczh//Td4GV+YjtZoUylCjBrr8DuLlqsiVJvX9DkKyG2W608kqNaYp5cW
- 4McxMKCb5FaFeEyDL+ojl/ZN3w09+F47tAxPak2whE7/sg9xuFb7vq3E2xPjTr5bhqbq
- ewg603WXg4Kg+ouIpEtEyanjG1cDyLCZ7Ca0VZZiaOCR/qcChFHGwrT6Ol9tY3w8KVbH
- W8Ew==
-X-Gm-Message-State: AOJu0YxCjyT/0V/KWlMXZSgeCMvY0KKu1fsndP1hMQmy7B/ntVJCn8L9
- ka9eF0J7cYkvgovyfMZI4uTlRQ==
-X-Google-Smtp-Source: AGHT+IGEfzBrKRp10FMl9Ih2ufgRFFZhhNCLcZYOG0njOZN9+XeFzz0864CR2Nekq7nRkAEU++QxJg==
-X-Received: by 2002:adf:ecc8:0:b0:314:1ca4:dbd9 with SMTP id
- s8-20020adfecc8000000b003141ca4dbd9mr10171512wro.27.1694527484873; 
- Tue, 12 Sep 2023 07:04:44 -0700 (PDT)
+ bh=S+8+Et63yYSKmNFzWkggTY5fobUvz34RO94xWiLCiyk=;
+ b=YqsrOtnHWCA2pcW4yHDCD7adBxaenU4un9fEfBqrQu7NsWxtnS0gwS0accBoGwfCC9
+ JZzeWn5Mjet0UDBeoLRdghLVM/1LmOsDmU3BF2S81F1m4vRHL1YyW40/D0zoKpCOs3Qe
+ oQbdb/YRQaL9hI7O3DTaYXyLb3vUKS6aPHpxWCbZuuSwfsDg0mdrcd3Icr5cDc2lnLdH
+ 2ItM/Ja5pyoRBz1+TMB0xqmNd8lc2sfIYQyOuYZsplVCcU7QiqF6hHDOCTr1FRc3mzUM
+ spAK+T8RYgQYx6DAuRolfbNaAcE3AG/rFEevtxZyDXGlRRbh6rwHOMe2TSsyZ2fntUQw
+ EpHA==
+X-Gm-Message-State: AOJu0YxiK1KmnUxImBmndze+hec2xsjcVIVFaPfAvlWxyXEmljOzwe+O
+ LeP6yFfkG/ORnhM0L991k//D7g==
+X-Google-Smtp-Source: AGHT+IHMNjXd8bS6Ey2BfybsCpbITKckJYnwvuq+9YcZiz6vyzB3oAM4ezrQXAqtylokaF3fwhXdkQ==
+X-Received: by 2002:adf:e50b:0:b0:317:5b32:b2c3 with SMTP id
+ j11-20020adfe50b000000b003175b32b2c3mr9613927wrm.6.1694527486196; 
+ Tue, 12 Sep 2023 07:04:46 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.44
+ r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 07:04:44 -0700 (PDT)
+ Tue, 12 Sep 2023 07:04:45 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 09/12] target/arm: Implement the SETG* instructions
-Date: Tue, 12 Sep 2023 15:04:31 +0100
-Message-Id: <20230912140434.1333369-10-peter.maydell@linaro.org>
+Subject: [PATCH v2 10/12] target/arm: Implement MTE tag-checking functions for
+ FEAT_MOPS copies
+Date: Tue, 12 Sep 2023 15:04:32 +0100
+Message-Id: <20230912140434.1333369-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230912140434.1333369-1-peter.maydell@linaro.org>
 References: <20230912140434.1333369-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,314 +91,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The FEAT_MOPS SETG* instructions are very similar to the SET*
-instructions, but as well as setting memory contents they also
-set the MTE tags. They are architecturally required to operate
-on tag-granule aligned regions only.
+The FEAT_MOPS memory copy operations need an extra helper routine
+for checking for MTE tag checking failures beyond the ones we
+already added for memory set operations:
+ * mte_mops_probe_rev() does the same job as mte_mops_probe(), but
+   it checks tags starting at the provided address and working
+   backwards, rather than forwards
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v2: - separate helper functions calling do_setp/setm/sete
-    - use cpu_st16_mmu()
----
- target/arm/internals.h         | 10 ++++
- target/arm/tcg/helper-a64.h    |  3 ++
- target/arm/tcg/a64.decode      |  5 ++
- target/arm/tcg/helper-a64.c    | 86 ++++++++++++++++++++++++++++++++--
- target/arm/tcg/mte_helper.c    | 40 ++++++++++++++++
- target/arm/tcg/translate-a64.c | 20 +++++---
- 6 files changed, 155 insertions(+), 9 deletions(-)
+ target/arm/internals.h      | 17 +++++++
+ target/arm/tcg/mte_helper.c | 99 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 116 insertions(+)
 
 diff --git a/target/arm/internals.h b/target/arm/internals.h
-index a70a7fd50f6..642f77df29b 100644
+index 642f77df29b..1dd9182a54a 100644
 --- a/target/arm/internals.h
 +++ b/target/arm/internals.h
-@@ -1300,6 +1300,16 @@ uint64_t mte_mops_probe(CPUARMState *env, uint64_t ptr, uint64_t size,
- void mte_check_fail(CPUARMState *env, uint32_t desc,
-                     uint64_t dirty_ptr, uintptr_t ra);
+@@ -1288,6 +1288,23 @@ uint64_t mte_check(CPUARMState *env, uint32_t desc, uint64_t ptr, uintptr_t ra);
+ uint64_t mte_mops_probe(CPUARMState *env, uint64_t ptr, uint64_t size,
+                         uint32_t desc);
  
 +/**
-+ * mte_mops_set_tags: Set MTE tags for a portion of a FEAT_MOPS operation
++ * mte_mops_probe_rev: Check where the next MTE failure is for a FEAT_MOPS
++ *                     operation going in the reverse direction
 + * @env: CPU env
-+ * @dirty_ptr: Start address of memory region (dirty pointer)
-+ * @size: length of region (guaranteed not to cross page boundary)
-+ * @desc: MTEDESC descriptor word
++ * @ptr: *end* address of memory region (dirty pointer)
++ * @size: length of region (guaranteed not to cross a page boundary)
++ * @desc: MTEDESC descriptor word (0 means no MTE checks)
++ * Returns: the size of the region that can be copied without hitting
++ *          an MTE tag failure
++ *
++ * Note that we assume that the caller has already checked the TBI
++ * and TCMA bits with mte_checks_needed() and an MTE check is definitely
++ * required.
 + */
-+void mte_mops_set_tags(CPUARMState *env, uint64_t dirty_ptr, uint64_t size,
-+                       uint32_t desc);
++uint64_t mte_mops_probe_rev(CPUARMState *env, uint64_t ptr, uint64_t size,
++                            uint32_t desc);
 +
- static inline int allocation_tag_from_addr(uint64_t ptr)
- {
-     return extract64(ptr, 56, 4);
-diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
-index 7ce5d2105ad..10a99107124 100644
---- a/target/arm/tcg/helper-a64.h
-+++ b/target/arm/tcg/helper-a64.h
-@@ -121,3 +121,6 @@ DEF_HELPER_FLAGS_4(unaligned_access, TCG_CALL_NO_WG,
- DEF_HELPER_3(setp, void, env, i32, i32)
- DEF_HELPER_3(setm, void, env, i32, i32)
- DEF_HELPER_3(sete, void, env, i32, i32)
-+DEF_HELPER_3(setgp, void, env, i32, i32)
-+DEF_HELPER_3(setgm, void, env, i32, i32)
-+DEF_HELPER_3(setge, void, env, i32, i32)
-diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
-index c2a97328eeb..a202faa17bc 100644
---- a/target/arm/tcg/a64.decode
-+++ b/target/arm/tcg/a64.decode
-@@ -570,3 +570,8 @@ STZ2G           11011001 11 1 ......... 11 ..... ..... @ldst_tag p=0 w=1
- SETP            00 011001110 ..... 00 . . 01 ..... ..... @set
- SETM            00 011001110 ..... 01 . . 01 ..... ..... @set
- SETE            00 011001110 ..... 10 . . 01 ..... ..... @set
-+
-+# Like SET, but also setting MTE tags
-+SETGP           00 011101110 ..... 00 . . 01 ..... ..... @set
-+SETGM           00 011101110 ..... 01 . . 01 ..... ..... @set
-+SETGE           00 011101110 ..... 10 . . 01 ..... ..... @set
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index 24ae5ecf32e..2cf89184d77 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -1103,6 +1103,50 @@ static uint64_t set_step(CPUARMState *env, uint64_t toaddr,
-     return setsize;
- }
- 
-+/*
-+ * Similar, but setting tags. The architecture requires us to do this
-+ * in 16-byte chunks. SETP accesses are not tag checked; they set
-+ * the tags.
-+ */
-+static uint64_t set_step_tags(CPUARMState *env, uint64_t toaddr,
-+                              uint64_t setsize, uint32_t data, int memidx,
-+                              uint32_t *mtedesc, uintptr_t ra)
-+{
-+    void *mem;
-+    uint64_t cleanaddr;
-+
-+    setsize = MIN(setsize, page_limit(toaddr));
-+
-+    cleanaddr = useronly_clean_ptr(toaddr);
-+    /*
-+     * Trapless lookup: returns NULL for invalid page, I/O,
-+     * watchpoints, clean pages, etc.
-+     */
-+    mem = tlb_vaddr_to_host(env, cleanaddr, MMU_DATA_STORE, memidx);
-+
-+#ifndef CONFIG_USER_ONLY
-+    if (unlikely(!mem)) {
-+        /*
-+         * Slow-path: just do one write. This will handle the
-+         * watchpoint, invalid page, etc handling correctly.
-+         * The architecture requires that we do 16 bytes at a time,
-+         * and we know both ptr and size are 16 byte aligned.
-+         * For clean code pages, the next iteration will see
-+         * the page dirty and will use the fast path.
-+         */
-+        uint64_t repldata = data * 0x0101010101010101ULL;
-+        MemOpIdx oi16 = make_memop_idx(MO_TE | MO_128, memidx);
-+        cpu_st16_mmu(env, toaddr, int128_make128(repldata, repldata), oi16, ra);
-+        mte_mops_set_tags(env, toaddr, 16, *mtedesc);
-+        return 16;
-+    }
-+#endif
-+    /* Easy case: just memset the host memory */
-+    memset(mem, data, setsize);
-+    mte_mops_set_tags(env, toaddr, setsize, *mtedesc);
-+    return setsize;
-+}
-+
- typedef uint64_t StepFn(CPUARMState *env, uint64_t toaddr,
-                         uint64_t setsize, uint32_t data,
-                         int memidx, uint32_t *mtedesc, uintptr_t ra);
-@@ -1141,6 +1185,18 @@ static bool mte_checks_needed(uint64_t ptr, uint32_t desc)
-     return !tcma_check(desc, bit55, allocation_tag_from_addr(ptr));
- }
- 
-+/* Take an exception if the SETG addr/size are not granule aligned */
-+static void check_setg_alignment(CPUARMState *env, uint64_t ptr, uint64_t size,
-+                                 uint32_t memidx, uintptr_t ra)
-+{
-+    if ((size != 0 && !QEMU_IS_ALIGNED(ptr, TAG_GRANULE)) ||
-+        !QEMU_IS_ALIGNED(size, TAG_GRANULE)) {
-+        arm_cpu_do_unaligned_access(env_cpu(env), ptr, MMU_DATA_STORE,
-+                                    memidx, ra);
-+
-+    }
-+}
-+
- /*
-  * For the Memory Set operation, our implementation chooses
-  * always to use "option A", where we update Xd to the final
-@@ -1171,9 +1227,14 @@ static void do_setp(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
- 
-     if (setsize > INT64_MAX) {
-         setsize = INT64_MAX;
-+        if (is_setg) {
-+            setsize &= ~0xf;
-+        }
-     }
- 
--    if (!mte_checks_needed(toaddr, mtedesc)) {
-+    if (unlikely(is_setg)) {
-+        check_setg_alignment(env, toaddr, setsize, memidx, ra);
-+    } else if (!mte_checks_needed(toaddr, mtedesc)) {
-         mtedesc = 0;
-     }
- 
-@@ -1203,6 +1264,11 @@ void HELPER(setp)(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc)
-     do_setp(env, syndrome, mtedesc, set_step, false, GETPC());
- }
- 
-+void HELPER(setgp)(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc)
-+{
-+    do_setp(env, syndrome, mtedesc, set_step_tags, true, GETPC());
-+}
-+
- static void do_setm(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-                     StepFn *stepfn, bool is_setg, uintptr_t ra)
- {
-@@ -1237,7 +1303,9 @@ static void do_setm(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-      * have an IMPDEF check for alignment here.
-      */
- 
--    if (!mte_checks_needed(toaddr, mtedesc)) {
-+    if (unlikely(is_setg)) {
-+        check_setg_alignment(env, toaddr, setsize, memidx, ra);
-+    } else if (!mte_checks_needed(toaddr, mtedesc)) {
-         mtedesc = 0;
-     }
- 
-@@ -1260,6 +1328,11 @@ void HELPER(setm)(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc)
-     do_setm(env, syndrome, mtedesc, set_step, false, GETPC());
- }
- 
-+void HELPER(setgm)(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc)
-+{
-+    do_setm(env, syndrome, mtedesc, set_step_tags, true, GETPC());
-+}
-+
- static void do_sete(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-                     StepFn *stepfn, bool is_setg, uintptr_t ra)
- {
-@@ -1295,7 +1368,9 @@ static void do_sete(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc,
-                            mops_mismatch_exception_target_el(env), ra);
-     }
- 
--    if (!mte_checks_needed(toaddr, mtedesc)) {
-+    if (unlikely(is_setg)) {
-+        check_setg_alignment(env, toaddr, setsize, memidx, ra);
-+    } else if (!mte_checks_needed(toaddr, mtedesc)) {
-         mtedesc = 0;
-     }
- 
-@@ -1312,3 +1387,8 @@ void HELPER(sete)(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc)
- {
-     do_sete(env, syndrome, mtedesc, set_step, false, GETPC());
- }
-+
-+void HELPER(setge)(CPUARMState *env, uint32_t syndrome, uint32_t mtedesc)
-+{
-+    do_sete(env, syndrome, mtedesc, set_step_tags, true, GETPC());
-+}
+ /**
+  * mte_check_fail: Record an MTE tag check failure
+  * @env: CPU env
 diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index 1cb61cea7af..66a80eeb950 100644
+index 66a80eeb950..2dd7eb3edbf 100644
 --- a/target/arm/tcg/mte_helper.c
 +++ b/target/arm/tcg/mte_helper.c
-@@ -1041,3 +1041,43 @@ uint64_t mte_mops_probe(CPUARMState *env, uint64_t ptr, uint64_t size,
-         return n * TAG_GRANULE - (ptr - tag_first);
-     }
+@@ -734,6 +734,55 @@ static int checkN(uint8_t *mem, int odd, int cmp, int count)
+     return n;
  }
-+
-+void mte_mops_set_tags(CPUARMState *env, uint64_t ptr, uint64_t size,
-+                       uint32_t desc)
+ 
++/**
++ * checkNrev:
++ * @tag: tag memory to test
++ * @odd: true to begin testing at tags at odd nibble
++ * @cmp: the tag to compare against
++ * @count: number of tags to test
++ *
++ * Return the number of successful tests.
++ * Thus a return value < @count indicates a failure.
++ *
++ * This is like checkN, but it runs backwards, checking the
++ * tags starting with @tag and then the tags preceding it.
++ * This is needed by the backwards-memory-copying operations.
++ */
++static int checkNrev(uint8_t *mem, int odd, int cmp, int count)
 +{
-+    int mmu_idx, tag_count;
-+    uint64_t ptr_tag;
-+    void *mem;
++    int n = 0, diff;
 +
-+    if (!desc) {
-+        /* Tags not actually enabled */
-+        return;
++    /* Replicate the test tag and compare.  */
++    cmp *= 0x11;
++    diff = *mem-- ^ cmp;
++
++    if (!odd) {
++        goto start_even;
 +    }
 +
++    while (1) {
++        /* Test odd tag. */
++        if (unlikely((diff) & 0xf0)) {
++            break;
++        }
++        if (++n == count) {
++            break;
++        }
++
++    start_even:
++        /* Test even tag. */
++        if (unlikely((diff) & 0x0f)) {
++            break;
++        }
++        if (++n == count) {
++            break;
++        }
++
++        diff = *mem-- ^ cmp;
++    }
++    return n;
++}
++
+ /**
+  * mte_probe_int() - helper for mte_probe and mte_check
+  * @env: CPU environment
+@@ -1042,6 +1091,56 @@ uint64_t mte_mops_probe(CPUARMState *env, uint64_t ptr, uint64_t size,
+     }
+ }
+ 
++uint64_t mte_mops_probe_rev(CPUARMState *env, uint64_t ptr, uint64_t size,
++                            uint32_t desc)
++{
++    int mmu_idx, tag_count;
++    uint64_t ptr_tag, tag_first, tag_last;
++    void *mem;
++    bool w = FIELD_EX32(desc, MTEDESC, WRITE);
++    uint32_t n;
++
 +    mmu_idx = FIELD_EX32(desc, MTEDESC, MIDX);
-+    /* True probe: this will never fault */
-+    mem = allocation_tag_mem_probe(env, mmu_idx, ptr, MMU_DATA_STORE, size,
-+                                   MMU_DATA_STORE, true, 0);
++    /* True probe; this will never fault */
++    mem = allocation_tag_mem_probe(env, mmu_idx, ptr,
++                                   w ? MMU_DATA_STORE : MMU_DATA_LOAD,
++                                   size, MMU_DATA_LOAD, true, 0);
 +    if (!mem) {
-+        return;
++        return size;
 +    }
 +
 +    /*
-+     * We know that ptr and size are both TAG_GRANULE aligned; store
-+     * the tag from the pointer value into the tag memory.
++     * TODO: checkNrev() is not designed for checks of the size we expect
++     * for FEAT_MOPS operations, so we should implement this differently.
++     * Maybe we should do something like
++     *   if (region start and size are aligned nicely) {
++     *      do direct loads of 64 tag bits at a time;
++     *   } else {
++     *      call checkN()
++     *   }
 +     */
++    /* Round the bounds to the tag granule, and compute the number of tags. */
 +    ptr_tag = allocation_tag_from_addr(ptr);
-+    tag_count = size / TAG_GRANULE;
-+    if (ptr & TAG_GRANULE) {
-+        /* Not 2*TAG_GRANULE-aligned: store tag to first nibble */
-+        store_tag1_parallel(TAG_GRANULE, mem, ptr_tag);
-+        mem++;
-+        tag_count--;
-+    }
-+    memset(mem, ptr_tag | (ptr_tag << 4), tag_count / 2);
-+    if (tag_count & 1) {
-+        /* Final trailing unaligned nibble */
-+        mem += tag_count / 2;
-+        store_tag1_parallel(0, mem, ptr_tag);
-+    }
-+}
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index da4aabbaf4e..27bb3039b4d 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -3964,11 +3964,16 @@ TRANS_FEAT(STZ2G, aa64_mte_insn_reg, do_STG, a, true, true)
- 
- typedef void SetFn(TCGv_env, TCGv_i32, TCGv_i32);
- 
--static bool do_SET(DisasContext *s, arg_set *a, bool is_epilogue, SetFn fn)
-+static bool do_SET(DisasContext *s, arg_set *a, bool is_epilogue,
-+                   bool is_setg, SetFn fn)
- {
-     int memidx;
-     uint32_t syndrome, desc = 0;
- 
-+    if (is_setg && !dc_isar_feature(aa64_mte, s)) {
-+        return false;
++    tag_first = QEMU_ALIGN_DOWN(ptr - (size - 1), TAG_GRANULE);
++    tag_last = QEMU_ALIGN_DOWN(ptr, TAG_GRANULE);
++    tag_count = ((tag_last - tag_first) / TAG_GRANULE) + 1;
++    n = checkNrev(mem, ptr & TAG_GRANULE, ptr_tag, tag_count);
++    if (likely(n == tag_count)) {
++        return size;
 +    }
 +
-     /*
-      * UNPREDICTABLE cases: we choose to UNDEF, which allows
-      * us to pull this check before the CheckMOPSEnabled() test
-@@ -3985,10 +3990,10 @@ static bool do_SET(DisasContext *s, arg_set *a, bool is_epilogue, SetFn fn)
-      * We pass option_a == true, matching our implementation;
-      * we pass wrong_option == false: helper function may set that bit.
-      */
--    syndrome = syn_mop(true, false, (a->nontemp << 1) | a->unpriv,
-+    syndrome = syn_mop(true, is_setg, (a->nontemp << 1) | a->unpriv,
-                        is_epilogue, false, true, a->rd, a->rs, a->rn);
- 
--    if (s->mte_active[a->unpriv]) {
-+    if (is_setg ? s->ata[a->unpriv] : s->mte_active[a->unpriv]) {
-         /* We may need to do MTE tag checking, so assemble the descriptor */
-         desc = FIELD_DP32(desc, MTEDESC, TBI, s->tbid);
-         desc = FIELD_DP32(desc, MTEDESC, TCMA, s->tcma);
-@@ -4007,9 +4012,12 @@ static bool do_SET(DisasContext *s, arg_set *a, bool is_epilogue, SetFn fn)
-     return true;
- }
- 
--TRANS_FEAT(SETP, aa64_mops, do_SET, a, false, gen_helper_setp)
--TRANS_FEAT(SETM, aa64_mops, do_SET, a, false, gen_helper_setm)
--TRANS_FEAT(SETE, aa64_mops, do_SET, a, true, gen_helper_sete)
-+TRANS_FEAT(SETP, aa64_mops, do_SET, a, false, false, gen_helper_setp)
-+TRANS_FEAT(SETM, aa64_mops, do_SET, a, false, false, gen_helper_setm)
-+TRANS_FEAT(SETE, aa64_mops, do_SET, a, true, false, gen_helper_sete)
-+TRANS_FEAT(SETGP, aa64_mops, do_SET, a, false, true, gen_helper_setgp)
-+TRANS_FEAT(SETGM, aa64_mops, do_SET, a, false, true, gen_helper_setgm)
-+TRANS_FEAT(SETGE, aa64_mops, do_SET, a, true, true, gen_helper_setge)
- 
- typedef void ArithTwoOp(TCGv_i64, TCGv_i64, TCGv_i64);
- 
++    /*
++     * Failure; for the first granule, it's at @ptr. Otherwise
++     * it's at the last byte of the nth granule. Calculate how
++     * many bytes we can access without hitting that failure.
++     */
++    if (n == 0) {
++        return 0;
++    } else {
++        return (n - 1) * TAG_GRANULE + ((ptr + 1) - tag_last);
++    }
++}
++
+ void mte_mops_set_tags(CPUARMState *env, uint64_t ptr, uint64_t size,
+                        uint32_t desc)
+ {
 -- 
 2.34.1
 
