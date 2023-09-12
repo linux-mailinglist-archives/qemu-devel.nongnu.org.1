@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B90F79CEF2
+	by mail.lfdr.de (Postfix) with ESMTPS id C983979CEF5
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:55:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg125-0007R8-FS; Tue, 12 Sep 2023 06:54:13 -0400
+	id 1qg127-0007Rs-5G; Tue, 12 Sep 2023 06:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qg123-0007Qo-E1
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:54:11 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qg125-0007RM-7V
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:54:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qg120-00057d-UR
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:54:11 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qg121-00057l-0V
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:54:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694516043;
+ s=mimecast20190719; t=1694516044;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sYyO7R6f+1P6cWmXipRFq71+IvlSYKMJwwRRjZWkQBU=;
- b=IHNkGAclbbbrtiWjqnF+qAGXga+NkEzWiIBwffXatdSAvcm7KT4VFpRvRkOi6LwNmBFMp8
- oAS2GO5soGM0OBmUGGT9Uiomq0cUgQ4qbrgx0tFnilc6YYNfBbrpE28DCvQ3PsjDTmLq65
- miL7WMurMWy63XEE38sApV/Rzsa8u5k=
+ bh=r6jpmEHj8tjS7H4bcBsNXbnPDbTHr3kF2Gh/qMG/K+Y=;
+ b=X5w/4xINNSh2W9FWCWTvDr+Ln8UaFLQAJio7OkCeNePkV7PCMHcyki0WuBoU9tsGOOH79S
+ cMLt9lQT6/7IK9j4TsCGtoizWhCGhWG+1EuAJJZrUOH+kSufgcAgmXM/Hat3bZhwAxIMbg
+ 1FQtD3LpnzQi8YuC77FmFyMge/PpDRs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-392-54Qm21mWMvqRiKZKzS4l8w-1; Tue, 12 Sep 2023 06:54:01 -0400
-X-MC-Unique: 54Qm21mWMvqRiKZKzS4l8w-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-454-f7TsHKf4NLa4dJw-_Z1KuA-1; Tue, 12 Sep 2023 06:54:03 -0400
+X-MC-Unique: f7TsHKf4NLa4dJw-_Z1KuA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6745E85570D
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:54:01 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE43F8164E1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:54:02 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.193.95])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 363AB2026D68;
- Tue, 12 Sep 2023 10:54:01 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8840E40C2064;
+ Tue, 12 Sep 2023 10:54:02 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id ED72718007B7; Tue, 12 Sep 2023 12:53:59 +0200 (CEST)
+ id 05657180093C; Tue, 12 Sep 2023 12:54:00 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 1/3] seabios: update submodule to git snapshot
-Date: Tue, 12 Sep 2023 12:53:57 +0200
-Message-ID: <20230912105359.563101-2-kraxel@redhat.com>
+Subject: [PULL 2/3] seabios: turn off CONFIG_APMBIOS for 128k build
+Date: Tue, 12 Sep 2023 12:53:58 +0200
+Message-ID: <20230912105359.563101-3-kraxel@redhat.com>
 In-Reply-To: <20230912105359.563101-1-kraxel@redhat.com>
 References: <20230912105359.563101-1-kraxel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -78,47 +77,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-git shortlog
-------------
-
-Gerd Hoffmann (7):
-      disable array bounds warning
-      better kvm detection
-      detect physical address space size
-      move 64bit pci window to end of address space
-      be less conservative with the 64bit pci io window
-      qemu: log reservations in fw_cfg e820 table
-      check for e820 conflict
-
-José Martínez (1):
-      Fix high memory zone initialization in CSM mode
-
-Lukas Stockner via SeaBIOS (1):
-      virtio-blk: Fix integer overflow for large max IO sizes
-
-Mark Cave-Ayland (3):
-      esp-scsi: flush FIFO before sending SCSI command
-      esp-scsi: check for INTR_BS/INTR_FC instead of STAT_TC for command completion
-      esp-scsi: handle non-DMA SCSI commands with no data phase
-
-Niklas Cassel via SeaBIOS (1):
-      ahci: handle TFES irq correctly
-
-Tony Titus via SeaBIOS (1):
-      Increase BUILD_MAX_E820 to 128
+Needed to make the build fit into 128k.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- roms/seabios | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ roms/config.seabios-128k | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/roms/seabios b/roms/seabios
-index ea1b7a073390..1e1da7a96300 160000
---- a/roms/seabios
-+++ b/roms/seabios
-@@ -1 +1 @@
--Subproject commit ea1b7a0733906b8425d948ae94fba63c32b1d425
-+Subproject commit 1e1da7a963007d03a4e0e9a9e0ff17990bb1608d
+diff --git a/roms/config.seabios-128k b/roms/config.seabios-128k
+index d18c802c46e9..bc3ba7f65bcd 100644
+--- a/roms/config.seabios-128k
++++ b/roms/config.seabios-128k
+@@ -19,3 +19,4 @@ CONFIG_USE_SMM=n
+ CONFIG_VGAHOOKS=n
+ CONFIG_HOST_BIOS_GEOMETRY=n
+ CONFIG_ACPI_PARSE=n
++CONFIG_APMBIOS=n
 -- 
 2.41.0
 
