@@ -2,111 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A52E79DAB6
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8B079D9DE
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 22:04:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAuR-0006Fb-3s; Tue, 12 Sep 2023 17:26:59 -0400
+	id 1qg9bi-0003sJ-Ht; Tue, 12 Sep 2023 16:03:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgAuP-0006Eq-28; Tue, 12 Sep 2023 17:26:57 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qg9bT-0003rk-MI
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 16:03:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgAuM-0007Ai-Js; Tue, 12 Sep 2023 17:26:56 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38BLGxBl013703; Mon, 11 Sep 2023 21:23:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=dE6SZcUTvxnbu/Alt5R7481oeWmTREolDdAvvYc8wwc=;
- b=m9UARPdE+fMxll3vi0yyXlR9ua/3xeVQkHLgDX1xEj9ZtBNBa/63wVTUx9EWDFurXgGI
- QkyBe4X3ZH6foJBVHqe9HiGLfiNhZpOpXfN/QqrpMyPZ8JP9co6Vnr/SVAoZRZcf1FaJ
- 2DABncS4BBmBVydH33e3P80a+W08nRmFj+IqtphmADKi4eDf8dOPzqwD8v+O3aYQLGa4
- lWf8w4+Awph9RxAD+CJcwCRDj7MpC6h50mwcgP9/W4nIxbomZSmTY3epkhdo/l8wsS3J
- ZMiXOnsJ+7YIrT/7b6SmK9ExH22rVzwyu6cxKNw+9kzkwBTYJVmMEo47t8e57LXEuB03 Kw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t29dya6jq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 Sep 2023 21:23:45 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38BL9JJj020951;
- Mon, 11 Sep 2023 21:23:44 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t29dya6ja-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 Sep 2023 21:23:44 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38BLG1LA012064; Mon, 11 Sep 2023 21:23:43 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t13dye2jm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 Sep 2023 21:23:43 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38BLNhLL57475456
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 Sep 2023 21:23:43 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E12095805D;
- Mon, 11 Sep 2023 21:23:42 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CE98558057;
- Mon, 11 Sep 2023 21:23:42 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Mon, 11 Sep 2023 21:23:42 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
- by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id 3E7A416A083B;
- Mon, 11 Sep 2023 16:23:42 -0500 (CDT)
-Received: (from mglenn@localhost)
- by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38BLNgZO2260447;
- Mon, 11 Sep 2023 16:23:42 -0500
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
-Subject: [PATCH 3/4] target/ppc: Add clrbhrb and mfbhrbe instructions
-Date: Mon, 11 Sep 2023 16:23:39 -0500
-Message-Id: <20230911212340.2260383-4-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230911212340.2260383-1-milesg@linux.vnet.ibm.com>
-References: <20230911212340.2260383-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qg9bR-0000fp-Cv
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 16:03:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694548996;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qr39NIMHGuHWXhJuFHiwVLAXS8gppAz9QKxHYpXDcD8=;
+ b=TUQWsEMDzHq96rzVPthRAQMe78I7NBCxbBiqGSaKR7W3GtL1CZcigmp6dUNF7gkydAe8hf
+ Ijkq3oOVHmoC3dWgOufDn2sptG2s7jGO+dVFto5eOuqT2iwATSLQ5g4x7ipkHeQwa0yTP1
+ TO7q7uQYd9cfTkau4dUtqgmyzukI5YA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-466-7ajHwk7xO0ywlxQ1clQqFg-1; Tue, 12 Sep 2023 16:03:13 -0400
+X-MC-Unique: 7ajHwk7xO0ywlxQ1clQqFg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-401db0c9d3eso46903995e9.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 13:03:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694548992; x=1695153792;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qr39NIMHGuHWXhJuFHiwVLAXS8gppAz9QKxHYpXDcD8=;
+ b=Mm/L9FAmhrb7wmp5Gy/zHKick15sDhkP5NcHEgyr9UTuNnovl0mMiPSSkk3k4iMLCz
+ x+PwtC6p4snV1XFG24nIhS/NrevBs6akIo5W45lFW3Ulho8gmOM3FpQv2znuy9DmEXvY
+ K2P27zhigYj3IZZBjYtbFH5jeijayksysPVwabiO3Pwwetvn3O6jbajBvHk8rH7cQXs5
+ rXhmLF+cdsH1cmjFttCwYsFH/kTQ3OABkRoc9i38YoPEB7fPDPZdu/0UI75pU+e8AtSB
+ 917QrnjOLAhMUw/NGpJaTkMDtrWi2zDxGDjmy7BbbcS5XE0+fct6JKMA+Rhq07C4vwWh
+ fNrw==
+X-Gm-Message-State: AOJu0YwFGs/bJZoLnfaY1AQ2ZSe93ZNOlscCMy540KPhZgA2vBIvYP2h
+ 3XIz9SORziwmiCyBRLkeXu/Zs4Tegusm7x0UEA2x3/+vEXkK+z8sZ0Iw7krdV86o//mt+uOv0Vv
+ iTRKjWBWOqSwYc88=
+X-Received: by 2002:a7b:c3d0:0:b0:401:73b2:f043 with SMTP id
+ t16-20020a7bc3d0000000b0040173b2f043mr449007wmj.1.1694548992633; 
+ Tue, 12 Sep 2023 13:03:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFQpkjCRHrGlGmc627+gx/aEoy2co7XZdIWUf5j87U5spGbttGAXc0QYhQyYx74qj7pQGAl+g==
+X-Received: by 2002:a7b:c3d0:0:b0:401:73b2:f043 with SMTP id
+ t16-20020a7bc3d0000000b0040173b2f043mr448987wmj.1.1694548992319; 
+ Tue, 12 Sep 2023 13:03:12 -0700 (PDT)
+Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de.
+ [109.43.179.28]) by smtp.gmail.com with ESMTPSA id
+ h13-20020a05600c260d00b003fef19bb55csm13814609wma.34.2023.09.12.13.03.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Sep 2023 13:03:11 -0700 (PDT)
+Message-ID: <5cbb92ab-f8b5-4d03-5698-06d0a0b7cfda@redhat.com>
+Date: Tue, 12 Sep 2023 22:03:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 0/4] ci: fix hang of FreeBSD CI jobs
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org,
+ Stefan Hajnoczi <stefanha@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Joel Stanley <joel@jms.id.au>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20230912184130.3056054-1-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230912184130.3056054-1-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GFTSqe8FSUJTxJf2IUmS7qVO0BI6T4wm
-X-Proofpoint-ORIG-GUID: zU9ZSxXYVHZdIBX1F-EYbKEk4md_mZc8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-11_16,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015
- malwarescore=0 priorityscore=1501 spamscore=0 phishscore=0 mlxlogscore=247
- mlxscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309110194
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,139 +108,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add support for the clrbhrb and mfbhrbe instructions.
+On 12/09/2023 20.41, Daniel P. Berrangé wrote:
+> This addresses
+> 
+>    https://gitlab.com/qemu-project/qemu/-/issues/1882
+> 
+> Which turned out to be a genuine flaw which we missed during merge
+> as the patch hitting master co-incided with the FreeBSD CI job
+> having an temporary outage due to changed release image version.
+> 
+> Daniel P. Berrangé (4):
+>    microbit: add missing qtest_quit() call
+>    qtest: kill orphaned qtest QEMU processes on FreeBSD
+>    gitlab: make Cirrus CI timeout explicit
+>    gitlab: make Cirrus CI jobs gating
+> 
+>   .gitlab-ci.d/cirrus.yml       | 4 +++-
+>   .gitlab-ci.d/cirrus/build.yml | 2 ++
+>   tests/qtest/libqtest.c        | 7 +++++++
+>   tests/qtest/microbit-test.c   | 2 ++
+>   4 files changed, 14 insertions(+), 1 deletion(-)
+> 
 
-Since neither instruction is believed to be critical to
-performance, both instructions were implemented using helper
-functions.
+Series
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-Access to both instructions is controlled by bits in the
-HFSCR (for privileged state) and MMCR0 (for problem state).
-A new function, helper_mmcr0_facility_check, was added for
-checking MMCR0[BHRBA] and raising a facility_unavailable exception
-if required.
+Alex, will you pick these up or shall I take them for my next PR?
+Or Stefan, do you want to apply these directly as a CI fix?
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
- target/ppc/cpu.h         |  1 +
- target/ppc/helper.h      |  4 ++++
- target/ppc/misc_helper.c | 43 ++++++++++++++++++++++++++++++++++++++++
- target/ppc/translate.c   | 13 ++++++++++++
- 4 files changed, 61 insertions(+)
-
-diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index bda1afb700..ee81ede4ee 100644
---- a/target/ppc/cpu.h
-+++ b/target/ppc/cpu.h
-@@ -541,6 +541,7 @@ FIELD(MSR, LE, MSR_LE, 1)
- 
- /* HFSCR bits */
- #define HFSCR_MSGP     PPC_BIT(53) /* Privileged Message Send Facilities */
-+#define HFSCR_BHRB     PPC_BIT(59) /* BHRB Instructions */
- #define HFSCR_IC_MSGP  0xA
- 
- #define DBCR0_ICMP (1 << 27)
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 1a3d9a7e57..bbc32ff114 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -816,3 +816,7 @@ DEF_HELPER_4(DSCLIQ, void, env, fprp, fprp, i32)
- 
- DEF_HELPER_1(tbegin, void, env)
- DEF_HELPER_FLAGS_1(fixup_thrm, TCG_CALL_NO_RWG, void, env)
-+
-+DEF_HELPER_1(clrbhrb, void, env)
-+DEF_HELPER_FLAGS_2(mfbhrbe, TCG_CALL_NO_WG, i64, env, i32)
-+
-diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-index 692d058665..45abe04f66 100644
---- a/target/ppc/misc_helper.c
-+++ b/target/ppc/misc_helper.c
-@@ -139,6 +139,17 @@ void helper_fscr_facility_check(CPUPPCState *env, uint32_t bit,
- #endif
- }
- 
-+static void helper_mmcr0_facility_check(CPUPPCState *env, uint32_t bit,
-+                                 uint32_t sprn, uint32_t cause)
-+{
-+#ifdef TARGET_PPC64
-+    if (FIELD_EX64(env->msr, MSR, PR) &&
-+        !(env->spr[SPR_POWER_MMCR0] & (1ULL << bit))) {
-+        raise_fu_exception(env, bit, sprn, cause, GETPC());
-+    }
-+#endif
-+}
-+
- void helper_msr_facility_check(CPUPPCState *env, uint32_t bit,
-                                uint32_t sprn, uint32_t cause)
- {
-@@ -351,3 +362,35 @@ void helper_fixup_thrm(CPUPPCState *env)
-         env->spr[i] = v;
-     }
- }
-+
-+void helper_clrbhrb(CPUPPCState *env)
-+{
-+    helper_hfscr_facility_check(env, HFSCR_BHRB, "clrbhrb", FSCR_IC_BHRB);
-+
-+    helper_mmcr0_facility_check(env, MMCR0_BHRBA, 0, FSCR_IC_BHRB);
-+
-+    memset(env->bhrb, 0, sizeof(env->bhrb));
-+}
-+
-+uint64_t helper_mfbhrbe(CPUPPCState *env, uint32_t bhrbe)
-+{
-+    unsigned int index;
-+
-+    helper_hfscr_facility_check(env, HFSCR_BHRB, "mfbhrbe", FSCR_IC_BHRB);
-+
-+    helper_mmcr0_facility_check(env, MMCR0_BHRBA, 0, FSCR_IC_BHRB);
-+
-+    if ((bhrbe >= env->bhrb_num_entries) ||
-+       (env->spr[SPR_POWER_MMCR0] & MMCR0_PMAE)) {
-+        return 0;
-+    }
-+
-+    /*
-+     * Note: bhrb_offset is the byte offset for writing the
-+     * next entry (over the oldest entry), which is why we
-+     * must offset bhrbe by 1 to get to the 0th entry.
-+     */
-+    index = ((env->bhrb_offset / sizeof(uint64_t)) - (bhrbe + 1)) %
-+            env->bhrb_num_entries;
-+    return env->bhrb[index];
-+}
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 7824475f54..b330871793 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -6549,12 +6549,25 @@ static void gen_brh(DisasContext *ctx)
- }
- #endif
- 
-+static void gen_clrbhrb(DisasContext *ctx)
-+{
-+    gen_helper_clrbhrb(cpu_env);
-+}
-+
-+static void gen_mfbhrbe(DisasContext *ctx)
-+{
-+    TCGv_i32 bhrbe = tcg_constant_i32(_SPR(ctx->opcode));
-+    gen_helper_mfbhrbe(cpu_gpr[rD(ctx->opcode)], cpu_env, bhrbe);
-+}
-+
- static opcode_t opcodes[] = {
- #if defined(TARGET_PPC64)
- GEN_HANDLER_E(brd, 0x1F, 0x1B, 0x05, 0x0000F801, PPC_NONE, PPC2_ISA310),
- GEN_HANDLER_E(brw, 0x1F, 0x1B, 0x04, 0x0000F801, PPC_NONE, PPC2_ISA310),
- GEN_HANDLER_E(brh, 0x1F, 0x1B, 0x06, 0x0000F801, PPC_NONE, PPC2_ISA310),
- #endif
-+GEN_HANDLER_E(clrbhrb, 0x1F, 0x0E, 0x0D, 0x3FFF801, PPC_NONE, PPC2_ISA207S),
-+GEN_HANDLER_E(mfbhrbe, 0x1F, 0x0E, 0x09, 0x0000001, PPC_NONE, PPC2_ISA207S),
- GEN_HANDLER(invalid, 0x00, 0x00, 0x00, 0xFFFFFFFF, PPC_NONE),
- #if defined(TARGET_PPC64)
- GEN_HANDLER_E(cmpeqb, 0x1F, 0x00, 0x07, 0x00600000, PPC_NONE, PPC2_ISA300),
--- 
-2.31.1
+  Thomas
 
 
