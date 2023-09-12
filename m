@@ -2,87 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6262679D6AD
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 18:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D94079D6B2
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 18:47:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg6Vj-0006YQ-4d; Tue, 12 Sep 2023 12:45:11 -0400
+	id 1qg6Xi-0007vY-UI; Tue, 12 Sep 2023 12:47:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qg6VT-0006WY-Jj
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:44:57 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qg6VR-0005hS-1z
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:44:55 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-403004a96a4so38360145e9.3
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 09:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694537090; x=1695141890; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xYzn/3kOKpXxvHMz10ApcHvQSJG8FaIxGybsqApJRpA=;
- b=gwcj6hDmce41k/GKLonijcSudIbbWRbWWYssIYOKMkcVbBfM9M/PDO3BbEX94WDPtW
- w7qLxCeUafAIF/rEpqR8cH7T1USxRuizcWdmTvRQ321T9CtHyAmdFJDCW015r6CXERIx
- 1N4VcD8xn39MVSRzqBzKmD5iHXeDN1rsszgkCc99hqPqY93OnZXdh+nmN2HpENbK5KWU
- Mv3q+ZLne5oa9dCp/Th9Sag9VV6HfjOpwid7twFru37jLcDOhcwMoBy95ckc3Z4l2cJk
- bYui5v3fhTnj0su4WPZQjUL2AcYUw8QfXFpo7eBWvGL5qq8RizsJbGv13oDGlMS3rXXN
- xr3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694537090; x=1695141890;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xYzn/3kOKpXxvHMz10ApcHvQSJG8FaIxGybsqApJRpA=;
- b=I+ZrU5nTEzjjU5Ms1ZZ6x+Occ1L860mVbmgY5IVLLQiHxBMD/uxiv+CqrHj7geXChv
- 4aoHHHrtkdhPaqZxb4JVIC3uz3Ukl+alvaptaE5PMbjlo6ppWfBBmjDN2K6fURq9IeFF
- LKqizHmE63hzZeKc1KPzSmenV4SmlYTtOLl6ai/OHvwOz0tp5sPVNBxlTXhRugK5N/ud
- aP42HANIsKO14OVWHB2Q2tdlB1cpC5SBnq8uFrrFCOSOfa0u1AlFWGYtWCPvK/2elpxt
- +UOC8BcjGdajSYWQ6nMy1imVLCU7q/BXxswYtDG6sPEmCEdbi8S+GfXb9wFDLXXQ3gXP
- IHoQ==
-X-Gm-Message-State: AOJu0Yyn50cWc668+VuypRJ8+0yc9jk7K07po2vImDZZMdluhvcmgsCS
- Rk3MhrUC6c8BN5S5zPiNv+oldw==
-X-Google-Smtp-Source: AGHT+IH5vub4rBT/vbvswzxQwp1f1tgh1SGV+s0iqZ7V+FINUgCe/yHe8M0v8fp7xIKASp2eOFPd5g==
-X-Received: by 2002:a7b:c4cb:0:b0:3fd:30cb:18bd with SMTP id
- g11-20020a7bc4cb000000b003fd30cb18bdmr12420154wmk.15.1694537090421; 
- Tue, 12 Sep 2023 09:44:50 -0700 (PDT)
-Received: from [192.168.69.115] (cou50-h01-176-172-50-150.dsl.sta.abo.bbox.fr.
- [176.172.50.150]) by smtp.gmail.com with ESMTPSA id
- l12-20020a1ced0c000000b003fe24441e23sm13498474wmh.24.2023.09.12.09.44.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 09:44:50 -0700 (PDT)
-Message-ID: <111b9277-59b6-7252-6ddd-13edff9b2505@linaro.org>
-Date: Tue, 12 Sep 2023 18:44:48 +0200
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qg6Xh-0007vG-1f
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:47:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qg6Xd-0007sf-L9
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:47:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694537228;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dcaJk/hLPZKr76cuKVBFzbxziNBoIRvo2XEcNqjxpXk=;
+ b=MdVXH+oxWhdcwxF/xR2fpGtbYO6p1qJ6mvQLD6rKlRqBRNb/EpYsR3/rEgaC5P5aDuS/2t
+ exP5OTTptZBQmQlEM+AjYyQXBOzR+ikGZZyLbJxrUSqpQzFz/3xys7VGglO2QgRCCQ1x44
+ cbisiN0vsXliwd8PpMdH4kOQqJ8Pedo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-18-CEZD7YMkOqCr5PusShUvzg-1; Tue, 12 Sep 2023 12:47:07 -0400
+X-MC-Unique: CEZD7YMkOqCr5PusShUvzg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CBB7B29AA3B1;
+ Tue, 12 Sep 2023 16:47:06 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.83])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7949140C6EA8;
+ Tue, 12 Sep 2023 16:47:05 +0000 (UTC)
+Date: Tue, 12 Sep 2023 18:47:04 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Eduardo Habkost <eduardo@habkost.net>, pbonzini@redhat.com,
+ Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Maxim Levitsky <mlevitsk@redhat.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [RFC 3/3] qmp: make qmp_device_add() a coroutine
+Message-ID: <ZQCWCEzSj8P1sdyW@redhat.com>
+References: <20230906190141.1286893-1-stefanha@redhat.com>
+ <20230906190141.1286893-4-stefanha@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v4 0/3] target/i386: Restrict system-specific features
- from user emulation
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <20230911211317.28773-1-philmd@linaro.org>
- <fabf2451-e8ad-8171-b583-16b238c578e7@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <fabf2451-e8ad-8171-b583-16b238c578e7@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906190141.1286893-4-stefanha@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,35 +80,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/9/23 16:07, Paolo Bonzini wrote:
-> On 9/11/23 23:13, Philippe Mathieu-Daudé wrote:
->> Too many system-specific code (and in particular KVM related)
->> is pulled in user-only build. This led to adding unjustified
->> stubs as kludge to unagressive linker non-optimizations.
->>
->> This series restrict x86 system-specific features to sysemu,
->> so we don't require any stub, and remove all x86 KVM declarations
->> from user emulation code (to trigger compile failure instead of
->> link one).
->>
->> Philippe Mathieu-Daudé (3):
->>    target/i386: Check kvm_hyperv_expand_features() return value
->>    RFC target/i386: Restrict system-specific features from user emulation
->>    target/i386: Prohibit target specific KVM prototypes on user emulation
+Am 06.09.2023 um 21:01 hat Stefan Hajnoczi geschrieben:
+> It is not safe to call drain_call_rcu() from qmp_device_add() because
+> some call stacks are not prepared for drain_call_rcu() to drop the Big
+> QEMU Lock (BQL).
 > 
-> At least, patch 2 should be changed so that the #ifdef'ery is done at a 
-> higher level.
+> For example, device emulation code is protected by the BQL but when it
+> calls aio_poll() -> ... -> qmp_device_add() -> drain_call_rcu() then the
+> BQL is dropped. See bz#2215192 below for a concrete bug of this type.
+> 
+> Another limitation of drain_call_rcu() is that it cannot be invoked
+> within an RCU read-side critical section since the reclamation phase
+> cannot complete until the end of the critical section. Unfortunately,
+> call stacks have been seen where this happens (see bz#2214985 below).
+> 
+> Switch to call_drain_rcu_co() to avoid these problems. This requires
+> making qmp_device_add() a coroutine. qdev_device_add() is not designed
+> to be called from coroutines, so it must be invoked from a BH and then
+> switch back to the coroutine.
+> 
+> Fixes: 7bed89958bfbf40df9ca681cefbdca63abdde39d ("device_core: use drain_call_rcu in in qmp_device_add")
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2215192
+> Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2214985
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-I can try to improve it with your comments, but I have no idea of
-x86 CPU features.
+Can you please include the relevant information directly in the commit
+message instead of only referencing Bugzilla? Both bugs only contain
+half of the story - I'm not even sure if the link with the stack trace
+is publically accessible - and then I think you got some information
+only from reproducing it yourself, and this information is missing from
+the bug reports. (The other question is how long the information will
+still be available in Bugzilla.)
 
-> However, the dependency of user-mode emulation on KVM is really an 
-> implementation detail of QEMU.  It's very much baked into linux-user and 
-> hard to remove, but I'm not sure it's a good idea to add more #ifdef 
-> CONFIG_USER_ONLY around KVM code.
+>  qapi/qdev.json         |  1 +
+>  include/monitor/qdev.h |  3 ++-
+>  monitor/qmp-cmds.c     |  2 +-
+>  softmmu/qdev-monitor.c | 34 ++++++++++++++++++++++++++++++----
+>  hmp-commands.hx        |  1 +
+>  5 files changed, 35 insertions(+), 6 deletions(-)
+> 
+> diff --git a/qapi/qdev.json b/qapi/qdev.json
+> index 6bc5a733b8..78e9d7f7b8 100644
+> --- a/qapi/qdev.json
+> +++ b/qapi/qdev.json
+> @@ -79,6 +79,7 @@
+>  ##
+>  { 'command': 'device_add',
+>    'data': {'driver': 'str', '*bus': 'str', '*id': 'str'},
+> +  'coroutine': true,
+>    'gen': false, # so we can get the additional arguments
+>    'features': ['json-cli', 'json-cli-hotplug'] }
+>  
+> diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
+> index 1d57bf6577..1fed9eb9ea 100644
+> --- a/include/monitor/qdev.h
+> +++ b/include/monitor/qdev.h
+> @@ -5,7 +5,8 @@
+>  
+>  void hmp_info_qtree(Monitor *mon, const QDict *qdict);
+>  void hmp_info_qdm(Monitor *mon, const QDict *qdict);
+> -void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp);
+> +void coroutine_fn
+> +qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp);
+>  
+>  int qdev_device_help(QemuOpts *opts);
+>  DeviceState *qdev_device_add(QemuOpts *opts, Error **errp);
+> diff --git a/monitor/qmp-cmds.c b/monitor/qmp-cmds.c
+> index b0f948d337..a7419226fe 100644
+> --- a/monitor/qmp-cmds.c
+> +++ b/monitor/qmp-cmds.c
+> @@ -202,7 +202,7 @@ static void __attribute__((__constructor__)) monitor_init_qmp_commands(void)
+>      qmp_init_marshal(&qmp_commands);
+>  
+>      qmp_register_command(&qmp_commands, "device_add",
+> -                         qmp_device_add, 0, 0);
+> +                         qmp_device_add, QCO_COROUTINE, 0);
+>  
+>      QTAILQ_INIT(&qmp_cap_negotiation_commands);
+>      qmp_register_command(&qmp_cap_negotiation_commands, "qmp_capabilities",
+> diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+> index 74f4e41338..85ae62f7cf 100644
+> --- a/softmmu/qdev-monitor.c
+> +++ b/softmmu/qdev-monitor.c
+> @@ -839,8 +839,28 @@ void hmp_info_qdm(Monitor *mon, const QDict *qdict)
+>      qdev_print_devinfos(true);
+>  }
+>  
+> -void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+> +typedef struct {
+> +    Coroutine *co;
+> +    QemuOpts *opts;
+> +    Error **errp;
+> +    DeviceState *dev;
+> +} QmpDeviceAdd;
+> +
+> +static void qmp_device_add_bh(void *opaque)
+>  {
+> +    QmpDeviceAdd *data = opaque;
+> +
+> +    data->dev = qdev_device_add(data->opts, data->errp);
+> +    aio_co_wake(data->co);
+> +}
+> +
+> +void coroutine_fn
+> +qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+> +{
+> +    QmpDeviceAdd data = {
+> +        .co = qemu_coroutine_self(),
+> +        .errp = errp,
+> +    };
+>      QemuOpts *opts;
+>      DeviceState *dev;
+>  
+> @@ -852,7 +872,13 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+>          qemu_opts_del(opts);
+>          return;
+>      }
+> -    dev = qdev_device_add(opts, errp);
+> +
+> +    /* Perform qdev_device_add() call outside coroutine context */
+> +    data.opts = opts;
+> +    aio_bh_schedule_oneshot(qemu_coroutine_get_aio_context(data.co),
+> +                            qmp_device_add_bh, &data);
+> +    qemu_coroutine_yield();
+> +    dev = data.dev;
 
-Do you rather v3 then?
+I wonder if we should make no_co_wrapper etc. available outside of the
+block layer, so we could just declare a qdev_co_device_add() and call it
+here and the code would automatically be generated.
 
-https://lore.kernel.org/qemu-devel/20230911142729.25548-1-philmd@linaro.org/
+This doesn't work today because the script generates only a single
+source file for all wrappers, which is linked with all of the tools. So
+putting qdev functions there would make the build fail.
+
+I had a similar case in the virtio_load() fix where I decided to write
+the wrapper manually instead. But having two cases in such a short time
+frame might be a sign that we actually have enough potential users that
+making the generator work for it would be worth it.
+
+Kevin
 
 
