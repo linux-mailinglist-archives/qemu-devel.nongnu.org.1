@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C9579C75D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E76779C74D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:59:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfxLu-0000K3-KS; Tue, 12 Sep 2023 02:58:26 -0400
+	id 1qfxLx-0000NM-4k; Tue, 12 Sep 2023 02:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qfxLr-0000JR-7L
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:23 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1qfxLu-0000KJ-5g
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:26 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qfxLo-0007RE-NX
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:22 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-26f7f71b9a7so4267458a91.0
+ id 1qfxLo-0007RX-Ts
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:24 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-26f3e26e55aso4148987a91.3
  for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:58:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694501898; x=1695106698;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694501899; x=1695106699;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=XRBrU0goRgb7M0G3yImQVD/2ahAcqhXPC+6jCjLC0YU=;
- b=rkpAYsIilIgN5oOigVVGCM8CXlYHezbsOuph351cmVVWXSl78VchC9cl7hP1DJTJNS
- PkfmxF3BROfM71cQZHJHtHg7zVSnutzGRIQMBEbkj4PzuK5rYFHyfc0JCMrzD5OVliWH
- rhipYPzym2ECegh+2Nlf+23Wda7NZNP09JunceEKAfo8gxLUlWnD9PpU0x5CqM1Y9+vT
- 9kpYqlBeyca2jQzUTnHjXNhIvzWACha0KThUOG0F4grMaS489cDzEkVuqV2SlQFaPuui
- lSo8ZUK8uIjAODUaU9Uv7qZ4/mzbFBE3SapRcWfQw9QG+Jo88tgwiOGxdt8/w2DIpJfl
- Qscg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=95QVNg5HPZWQUU3gv/yGVv9Jo3t2dmNs4n1dgqSbSvE=;
+ b=BExj3Mwr+t6oVjUxfHXNY59BdT6gAVocQrKbf5bmMwlTmxLoRIQOF2xqPk84TRto/i
+ ElvoYzPCFVcc1nK+ueMYmXRngLhg5fVr6W7F14htwY/ZXXXgqeIxs68CbxVdOOdCzSRH
+ HIJ2F+rD/SHpZfO439W4/JvNgL05M85JMidzNfcpoi2mOx/xePI5RnS0jkMWy3+1oSOl
+ rxYK4YsBfyUT9JZ0wbvT2V7/Ci/OKbkVGLF3Ad2JUG1LWsivXi9oZwKksaUUztHXm4iN
+ yc0vO2t5nIUyjH/r5IRe7Mt4e2Ov1F3OzU4bNmne17Ml0wlyjlj43rVoi8w0kC0U/Lkr
+ XxtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694501898; x=1695106698;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XRBrU0goRgb7M0G3yImQVD/2ahAcqhXPC+6jCjLC0YU=;
- b=iD/z1FiX8ptpLPlWAdueHR69K94rKdPIIxITV6nNLcabYbxVc9JQazWz2eEZzTIPUL
- KxgWY+8YB7koeF91UDEvTuMGzBM9WTwYYlgV2DnopMcCNIsDVUOeF8GQoafVu4mGygk1
- Xv0UNVYMx8h10sc6wWI12y0wD1tF1bDOIDP+Scf69c3hV5eC13s5ou7Zz2z5Ex/rHCcX
- nugBkp3pYdOdvCx0lcPBJ7dFXlJeHS1TXcKSFzIgwFOVr8TmXFI3iidSK1gQ4bZ7pv42
- WWa/aspqwye7xfrG3z8oxg/Cvv7C1bDbF6qqwb/lBWb9cnWvUnsnCAPBqBkv6ltTTvHH
- HzIQ==
-X-Gm-Message-State: AOJu0Yx8WWge0m25+LhkZSs6zQxw8J1Md+4etSR1p2fX72ScFA2kC+uq
- h0W5MAsThMK3UHdUliECa5tnIA==
-X-Google-Smtp-Source: AGHT+IGZlI5N+PZr77ouZatudBeLx1WKSfZgPMeLFbGEQOSGuRa38otGoSIUnjQqPtUrwxQbXCtX0w==
-X-Received: by 2002:a17:90b:4c4b:b0:268:13c4:b800 with SMTP id
- np11-20020a17090b4c4b00b0026813c4b800mr11331340pjb.21.1694501897640; 
- Mon, 11 Sep 2023 23:58:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694501899; x=1695106699;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=95QVNg5HPZWQUU3gv/yGVv9Jo3t2dmNs4n1dgqSbSvE=;
+ b=D2lNa70e2yRxIDLfZ+sLHjYzgAGceyIVlQVICIrvU5O39Q9hX4HiXOGr0tw/uU5ea/
+ NecunSElsNeEGmT00zVDs99/tBRoD8bC9lbtcjAtV0Z7u85pTFJeGEz6IIXOIF1w+gfy
+ 9STIDizLtGiqzYz4ePZNjzZDjW3CxCCFO7BcnoT95A3bAkL2o/uFAJKIUlYGUciJ4+GE
+ i1acjOAc619LUV/L6H6ExjEQr0pnK/+C4qwplymmof2O23x1PqMt2hsY/f17kgAgdD4q
+ TDey+3emomlVoiXGSIWRsTo4dFxGuHbS46MNHxBrKVNOjsyq2CuBYM4eCj/e8Gty18yr
+ MvYA==
+X-Gm-Message-State: AOJu0Yw5dwFefriW2AIva69a8/v8rv3Rap0/DEd2toJ3FQScln+zbfhk
+ VdYjvbXMmmoTC8FGeuxw9Q9lHi1+IsrfsosY0Zg=
+X-Google-Smtp-Source: AGHT+IEYdAUwOFXmuQlEYsLpfeBlNpCUKVA7JrtlQPqTCHSrEHBb92xLEVqp/PC16xG+5EaVx7ty5g==
+X-Received: by 2002:a17:90b:3910:b0:26b:5ba4:4948 with SMTP id
+ ob16-20020a17090b391000b0026b5ba44948mr9838725pjb.12.1694501899736; 
+ Mon, 11 Sep 2023 23:58:19 -0700 (PDT)
 Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- i8-20020a17090a2ac800b002696aeb72e5sm9315058pjg.2.2023.09.11.23.58.16
+ i8-20020a17090a2ac800b002696aeb72e5sm9315058pjg.2.2023.09.11.23.58.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Sep 2023 23:58:17 -0700 (PDT)
+ Mon, 11 Sep 2023 23:58:19 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mikhail Tyutin <m.tyutin@yadro.com>,
  Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 00/11] gdbstub and TCG plugin improvements
-Date: Tue, 12 Sep 2023 15:57:55 +0900
-Message-ID: <20230912065811.27796-1-akihiko.odaki@daynix.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 01/11] gdbstub: Fix target_xml initialization
+Date: Tue, 12 Sep 2023 15:57:56 +0900
+Message-ID: <20230912065811.27796-2-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230912065811.27796-1-akihiko.odaki@daynix.com>
+References: <20230912065811.27796-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,58 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series extracts fixes and refactorings that can be applied
-independently from "[PATCH RESEND v5 00/26] plugins: Allow to read
-registers" as suggested by Nicholas Piggin.
+target_xml is no longer a fixed-length array but a pointer to a
+variable-length memory.
 
-Patch "target/ppc: Remove references to gdb_has_xml" is also updated to
-remove some dead code I missed earlier and thus the Reviewed-by tag is
-dropped.
+Fixes: 56e534bd11 ("gdbstub: refactor get_feature_xml")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ gdbstub/softmmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V1 -> V2:
-  Rebased.
-  Added patch "gdbstub: Fix target_xml initialization".
-  Added patch "gdbstub: Fix target.xml response".
-  Added patch "gdbstub: Replace gdb_regs with an array".
-
-Akihiko Odaki (11):
-  gdbstub: Fix target_xml initialization
-  gdbstub: Fix target.xml response
-  contrib/plugins: Use GRWLock in execlog
-  gdbstub: Introduce GDBFeature structure
-  target/arm: Move the reference to arm-core.xml
-  hw/core/cpu: Return static value with gdb_arch_name()
-  gdbstub: Use g_markup_printf_escaped()
-  target/arm: Remove references to gdb_has_xml
-  target/ppc: Remove references to gdb_has_xml
-  gdbstub: Remove gdb_has_xml variable
-  gdbstub: Replace gdb_regs with an array
-
- MAINTAINERS               |  2 +-
- meson.build               |  2 +-
- gdbstub/internals.h       |  2 -
- include/exec/gdbstub.h    | 17 +++----
- include/hw/core/cpu.h     |  4 +-
- target/ppc/internal.h     |  2 +-
- contrib/plugins/execlog.c | 16 ++++---
- gdbstub/gdbstub.c         | 94 +++++++++++++++++++--------------------
- gdbstub/softmmu.c         |  2 +-
- stubs/gdbstub.c           |  6 +--
- target/arm/cpu.c          |  9 ++--
- target/arm/cpu64.c        |  4 +-
- target/arm/gdbstub.c      | 32 +------------
- target/i386/cpu.c         |  6 +--
- target/loongarch/cpu.c    |  8 ++--
- target/ppc/gdbstub.c      | 24 ++--------
- target/riscv/cpu.c        |  6 +--
- target/s390x/cpu.c        |  4 +-
- target/tricore/cpu.c      |  4 +-
- scripts/feature_to_c.py   | 48 ++++++++++++++++++++
- scripts/feature_to_c.sh   | 69 ----------------------------
- 21 files changed, 145 insertions(+), 216 deletions(-)
- create mode 100755 scripts/feature_to_c.py
- delete mode 100644 scripts/feature_to_c.sh
-
+diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+index 9f0b8b5497..42645d2220 100644
+--- a/gdbstub/softmmu.c
++++ b/gdbstub/softmmu.c
+@@ -292,7 +292,7 @@ static int find_cpu_clusters(Object *child, void *opaque)
+         assert(cluster->cluster_id != UINT32_MAX);
+         process->pid = cluster->cluster_id + 1;
+         process->attached = false;
+-        process->target_xml[0] = '\0';
++        process->target_xml = NULL;
+ 
+         return 0;
+     }
 -- 
 2.42.0
 
