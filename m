@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6DF79D8D8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3C279D8D7
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:42:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg8Ke-0004Vx-0K; Tue, 12 Sep 2023 14:41:52 -0400
+	id 1qg8Kf-0004X1-1l; Tue, 12 Sep 2023 14:41:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8KV-0004TM-Rw
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:43 -0400
+ id 1qg8Kb-0004V4-7h
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8KT-0001Qd-F7
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:43 -0400
+ id 1qg8KZ-0001Sl-7w
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694544100;
+ s=mimecast20190719; t=1694544106;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iSs2QBVfpISQpVZYsjcitJoFfqKja+Hxwecaxyub818=;
- b=b45+z+95Mszfj473T7Oz3+QzbDT1tgtrZWd/iGyCR/lbDSDOMaNw6nlRvdLbisclQGj6r5
- CweiPk96tR983LzgMtpbzhSn5Zrpi/ySgKMMR/i5UomsWriczgMU16BNskjo7RzcsTcxAR
- 51FRBy9392G58R7XnrTmZ6RWO22N86A=
+ bh=vrKTV5q71INoyKwvAjiPZ+w9+kylVYW0lrRSYUV0Cfw=;
+ b=gMvLIMLN0x1DVmx/OqVjqg5wOxN3A282KQA6cbit0Lg66w6rPFE9soxCTFG3Zk7DW6/QY+
+ Xc9Jo9Wv2Z5sA83/2TFIsWeeKAmJKDps4OP9Qq821wPRzPj0mZbZujY4ySRAn7X5T+DkbV
+ P3u4sS/uwldbwySuFetnqFFTDaw3QXk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-297-kTih-M9sNDKBb90aD0gAFg-1; Tue, 12 Sep 2023 14:41:39 -0400
-X-MC-Unique: kTih-M9sNDKBb90aD0gAFg-1
+ us-mta-147-nHacdlGFPt6vjqe_z6T_xg-1; Tue, 12 Sep 2023 14:41:41 -0400
+X-MC-Unique: nHacdlGFPt6vjqe_z6T_xg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E40018945E5;
- Tue, 12 Sep 2023 18:41:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB74D8564EF;
+ Tue, 12 Sep 2023 18:41:40 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 57C237B62;
- Tue, 12 Sep 2023 18:41:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1E05A7B62;
+ Tue, 12 Sep 2023 18:41:39 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Laurent Vivier <lvivier@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 3/4] gitlab: make Cirrus CI timeout explicit
-Date: Tue, 12 Sep 2023 19:41:29 +0100
-Message-ID: <20230912184130.3056054-4-berrange@redhat.com>
+Subject: [PATCH 4/4] gitlab: make Cirrus CI jobs gating
+Date: Tue, 12 Sep 2023 19:41:30 +0100
+Message-ID: <20230912184130.3056054-5-berrange@redhat.com>
 In-Reply-To: <20230912184130.3056054-1-berrange@redhat.com>
 References: <20230912184130.3056054-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -70,7 +70,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,52 +86,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On the GitLab side we're invoking the Cirrus CI job using the
-cirrus-run tool which speaks to the Cirrus REST API. Cirrus
-sometimes tasks 5-10 minutes to actually schedule the task,
-and thus the execution time of 'cirrus-run' inside GitLab will
-be slightly longer than the execution time of the Cirrus CI
-task.
-
-Setting the timeout in the GitLab CI job should thus be done
-in relation to the timeout set for the Cirrus CI job. While
-Cirrus CI defaults to 60 minutes, it is better to set this
-explicitly, and make the relationship between the jobs
-explicit
+The Cirrus CI jobs have been non-gating for a while to let us build
+confidence in their reliability. Aside from periodic dependancy
+problems when FreeBSD Ports switches to be based on a new FreeBSD
+image version, the jobs have been reliable. It is thus worth making
+them gating to prevent build failures being missed during merges.
 
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- .gitlab-ci.d/cirrus.yml       | 3 +++
- .gitlab-ci.d/cirrus/build.yml | 2 ++
- 2 files changed, 5 insertions(+)
+ .gitlab-ci.d/cirrus.yml | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 41d64d6680..816d89cc2a 100644
+index 816d89cc2a..e7f1f83c2c 100644
 --- a/.gitlab-ci.d/cirrus.yml
 +++ b/.gitlab-ci.d/cirrus.yml
-@@ -15,6 +15,9 @@
-   stage: build
-   image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
-   needs: []
-+  # 20 mins larger than "timeout_in" in cirrus/build.yml
-+  # as there's often a 5-10 minute delay before Cirrus CI
-+  # actually starts the task
+@@ -19,7 +19,6 @@
+   # as there's often a 5-10 minute delay before Cirrus CI
+   # actually starts the task
    timeout: 80m
-   allow_failure: true
+-  allow_failure: true
    script:
-diff --git a/.gitlab-ci.d/cirrus/build.yml b/.gitlab-ci.d/cirrus/build.yml
-index a9444902ec..29d55c4aa3 100644
---- a/.gitlab-ci.d/cirrus/build.yml
-+++ b/.gitlab-ci.d/cirrus/build.yml
-@@ -16,6 +16,8 @@ env:
-   TEST_TARGETS: "@TEST_TARGETS@"
- 
- build_task:
-+  # A little shorter than GitLab timeout in ../cirrus.yml
-+  timeout_in: 60m
-   install_script:
-     - @UPDATE_COMMAND@
-     - @INSTALL_COMMAND@ @PKGS@
+     - source .gitlab-ci.d/cirrus/$NAME.vars
+     - sed -e "s|[@]CI_REPOSITORY_URL@|$CI_REPOSITORY_URL|g"
 -- 
 2.41.0
 
