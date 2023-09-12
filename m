@@ -2,111 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7504979DAE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4A179DAD1
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:29:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAxH-0002Q6-6j; Tue, 12 Sep 2023 17:29:55 -0400
+	id 1qgAwT-0000Ew-1X; Tue, 12 Sep 2023 17:29:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgAxF-0002GQ-3L; Tue, 12 Sep 2023 17:29:53 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgAxC-0007XC-M4; Tue, 12 Sep 2023 17:29:52 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CLQp5A005502; Tue, 12 Sep 2023 21:27:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Ty2i6N8zZdRbCSNJodS5nxJuLTl4coCL+W4QZr42REg=;
- b=FJFvLqxR6ZZgC7bOsWcsZryzUz7KFMW/nSgWnnKAGguxc6DFBvBvmxS4dr+eis0myz1J
- Cpd/4rF4tFWC/ZhoASoQEreRtRAZ8ltvezsiwtjzCtxNa9SOE9LOIH9xlUZIDOhctvHC
- BrMHSOLGh27qmQJxd99iyQWZXETBid2zduYCqJjxtBeecfYKLoAGzVztbmby35FoFR0I
- oYswbrZw8UKKrCFzK387TIpGVixUkfkILxbVuDoaIwRIf6L6LgqKaQxCuzGjVJUdtOLN
- sPQ7JNMxPoscZekQA0kSA3pzsEBmq9EVXQIMKvyPaXrUj3XTaq2MQgNNc2yX0jM3stN+ GA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2ywkr0nq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:27:31 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38CLRUsL006927;
- Tue, 12 Sep 2023 21:27:30 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2ywkr0n8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:27:30 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CIsX0Q002304; Tue, 12 Sep 2023 21:27:30 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t158k5w68-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:27:30 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38CLRTRi1376928
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Sep 2023 21:27:29 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8509F58051;
- Tue, 12 Sep 2023 21:27:29 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 743445805C;
- Tue, 12 Sep 2023 21:27:29 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 12 Sep 2023 21:27:29 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
- by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id DD3BA16A07B2;
- Tue, 12 Sep 2023 16:27:28 -0500 (CDT)
-Received: (from mglenn@localhost)
- by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38CLRSYj3433790;
- Tue, 12 Sep 2023 16:27:28 -0500
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
-Subject: [PATCH 4/4] target/ppc: Add migration support for BHRB
-Date: Tue, 12 Sep 2023 16:27:18 -0500
-Message-Id: <20230912212718.3433736-1-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
-References: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
+ id 1qgAwQ-0000En-IR
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:02 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fufuyqqqqqq@gmail.com>)
+ id 1qgAwN-0007T1-Ih
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:29:02 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-68fb2e9ebbfso2466534b3a.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 14:28:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694554137; x=1695158937; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ReoiDQaxC2qH22+a0QiwGp2r8VR4BZ4EV2b4LRNB448=;
+ b=PlhVB8jl3U3eb/T3/k1oXJiAidlGoqW4s1Hj4TT5OVyKTudqRm/EcYrLihiIi4Apn7
+ u7ILwBS64RpVryLqDx/aAq6abbtzmhOVm0H3FgEcFxwaL7NI8Pd7E61rS6YuDP/0q44C
+ HMfpjHADfDa2oMg9R9HSDHxCl6+Dqqnxa5iBSaA5+8/w8fqwh+D7ygQqNYNShWNSrd3T
+ pOzz53Hj2wCd1W0MQBzIVcYTQibFimbOSeAR069vKDrXuw8REz/+ziJj2uULvsGqzMAm
+ nROCoa/BwmOFwhXaX4xgzLTMgGlvl+BpAbPuCiJyffDbFenUnHFwQFMEX8rj/uJMxndc
+ qikQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694554137; x=1695158937;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ReoiDQaxC2qH22+a0QiwGp2r8VR4BZ4EV2b4LRNB448=;
+ b=QeOAPmpb4LiXD4eFF/T/yOrxiI4Hj4Nr13YHj2tI8lq7FFZEeia4Nal8/B4tkKZ2Y/
+ p6SFMR92z/QiTG5cKGA4SGO8YgPk5Or5+dw9tq3/rkH1WwhISGnt0roqWrc6kRMiB2Vj
+ lp/p3SPpXpYdcW8qWMW8aYxtnwu+GfX2ORjalyH7O/jXYqcCioMgJ2+ETHpzoZ7qOZpW
+ TIVFOyYKvuNmdgCCHgRqbc/CvsaWud3vvKo12m8DWEGIx9vD7uqf1Xsh5l4Z/SQzSB5f
+ wG0nzRbefdFPOyRkz6rPr12R/CsHQyM6G7AA9v8DmJw2FSQ/efudcFZag8fbo5f4zDnN
+ FQ4A==
+X-Gm-Message-State: AOJu0YwedKlf91K8xzXr+vX5xlcbuQrVCdNC1VCjcVQohLfmkIj5s1eW
+ QtAlR5RiO71JWTZuJ9H/1Ak=
+X-Google-Smtp-Source: AGHT+IEALSaG3MFqNeG02QsMG+3Wr6DC06VxN724jvkyhg4csl4gP/5dUpDZRiz+srrt1qtsfIKvNg==
+X-Received: by 2002:a05:6a20:3d04:b0:132:c07d:9dd2 with SMTP id
+ y4-20020a056a203d0400b00132c07d9dd2mr843986pzi.39.1694554136990; 
+ Tue, 12 Sep 2023 14:28:56 -0700 (PDT)
+Received: from q1iq-virtual-machine.. ([114.249.236.97])
+ by smtp.gmail.com with ESMTPSA id
+ u20-20020aa78394000000b0068be4ce33easm7930436pfm.96.2023.09.12.14.28.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Sep 2023 14:28:56 -0700 (PDT)
+From: Yeqi Fu <fufuyqqqqqq@gmail.com>
+To: alex.bennee@linaro.org
+Cc: richard.henderson@linaro.org, qemu-devel@nongnu.org,
+ Yeqi Fu <fufuyqqqqqq@gmail.com>
+Subject: [RFC v6 0/9] Native Library Calls
+Date: Wed, 13 Sep 2023 05:28:33 +0800
+Message-Id: <20230912212842.658374-1-fufuyqqqqqq@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nPNeRmgdXXB4QRpofYqPjAVYoneLYsZy
-X-Proofpoint-ORIG-GUID: 01g0LlpwEAuD3SpEpsrdTVCSN1XICHSD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_20,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 bulkscore=0 malwarescore=0 spamscore=0 mlxscore=0
- lowpriorityscore=0 adultscore=0 suspectscore=0 phishscore=0
- impostorscore=0 mlxlogscore=808 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309120178
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=fufuyqqqqqq@gmail.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,63 +89,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds migration support for Branch History Rolling
-Buffer (BHRB) internal state.
+Executing a program under QEMU's user mode subjects the entire
+program, including all library calls, to translation. It's important
+to understand that many of these library functions are optimized
+specifically for the guest architecture. Therefore, their
+translation might not yield the most efficient execution.
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
- target/ppc/machine.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+When the semantics of a library function are well defined, we can
+capitalize on this by substituting the translated version with a call
+to the native equivalent function.
 
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index b195fb4dc8..89146969c8 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -314,6 +314,7 @@ static int cpu_post_load(void *opaque, int version_id)
- 
-     if (tcg_enabled()) {
-         pmu_mmcr01a_updated(env);
-+        hreg_bhrb_filter_update(env);
-     }
- 
-     return 0;
-@@ -670,6 +671,27 @@ static const VMStateDescription vmstate_compat = {
-     }
- };
- 
-+#ifdef TARGET_PPC64
-+static bool bhrb_needed(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
-+    return (cpu->env.flags & POWERPC_FLAG_BHRB) != 0;
-+}
-+
-+static const VMStateDescription vmstate_bhrb = {
-+    .name = "cpu/bhrb",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = bhrb_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINTTL(env.bhrb_num_entries, PowerPCCPU),
-+        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-+        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+#endif
-+
- const VMStateDescription vmstate_ppc_cpu = {
-     .name = "cpu",
-     .version_id = 5,
-@@ -716,6 +738,7 @@ const VMStateDescription vmstate_ppc_cpu = {
- #ifdef TARGET_PPC64
-         &vmstate_tm,
-         &vmstate_slb,
-+        &vmstate_bhrb,
- #endif /* TARGET_PPC64 */
-         &vmstate_tlb6xx,
-         &vmstate_tlbemb,
+To achieve tangible results, focus should be given to functions such
+as memory-related ('mem*') and string-related ('str*') functions.
+These subsets of functions often have the most significant effect
+on overall performance, making them optimal candidates for
+optimization.
+
+Yeqi Fu (9):
+  build: Implement logic for sharing cross-building config files
+  build: Implement libnative library and the build machinery for
+    libnative
+  linux-user: Implement native-bypass option support
+  tcg: Add tcg opcodes and helpers for native library calls
+  target/i386: Add support for native library calls
+  target/mips: Add support for native library calls
+  target/arm: Add support for native library calls
+  tests/tcg/multiarch: Add nativecall.c test
+  docs/user: Add doc for native library calls
+
+ Makefile                                |   2 +
+ accel/tcg/tcg-runtime.c                 |  66 ++++++++++
+ accel/tcg/tcg-runtime.h                 |  12 ++
+ common-user/native/Makefile.include     |   8 ++
+ common-user/native/Makefile.target      |  22 ++++
+ common-user/native/libnative.S          |  51 ++++++++
+ configs/targets/aarch64-linux-user.mak  |   1 +
+ configs/targets/arm-linux-user.mak      |   1 +
+ configs/targets/i386-linux-user.mak     |   1 +
+ configs/targets/mips-linux-user.mak     |   1 +
+ configs/targets/mips64-linux-user.mak   |   1 +
+ configs/targets/x86_64-linux-user.mak   |   1 +
+ configure                               | 100 +++++++++++----
+ docs/user/index.rst                     |   1 +
+ docs/user/native_calls.rst              |  91 ++++++++++++++
+ include/exec/helper-head.h              |   1 +
+ include/native/native-defs.h            |  41 +++++++
+ include/native/native.h                 |   7 ++
+ include/tcg/tcg-op-common.h             |  13 ++
+ include/tcg/tcg-op.h                    |   2 +
+ include/tcg/tcg.h                       |   8 ++
+ linux-user/main.c                       |  20 +++
+ linux-user/syscall.c                    |  55 +++++++++
+ target/arm/tcg/translate-a64.c          |  32 +++++
+ target/arm/tcg/translate.c              |  29 +++++
+ target/arm/tcg/translate.h              |   5 +
+ target/i386/tcg/translate.c             |  38 ++++++
+ target/mips/tcg/translate.c             |  30 ++++-
+ tcg/tcg-op.c                            |  36 ++++++
+ tcg/tcg.c                               | 154 ++++++++++++++++++++++++
+ tests/tcg/multiarch/Makefile.target     |  32 +++++
+ tests/tcg/multiarch/native/nativecall.c | 132 ++++++++++++++++++++
+ 32 files changed, 970 insertions(+), 24 deletions(-)
+ create mode 100644 common-user/native/Makefile.include
+ create mode 100644 common-user/native/Makefile.target
+ create mode 100644 common-user/native/libnative.S
+ create mode 100644 docs/user/native_calls.rst
+ create mode 100644 include/native/native-defs.h
+ create mode 100644 include/native/native.h
+ create mode 100644 tests/tcg/multiarch/native/nativecall.c
+
 -- 
-2.31.1
+2.34.1
 
 
