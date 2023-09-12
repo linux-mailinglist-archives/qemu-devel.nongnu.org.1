@@ -2,65 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E9179D835
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 19:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F91079D847
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:03:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg7eS-0002hP-Rg; Tue, 12 Sep 2023 13:58:16 -0400
+	id 1qg7i0-0005ld-8l; Tue, 12 Sep 2023 14:01:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qg7eP-0002gx-1O
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:58:13 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qg7hu-0005k1-4a; Tue, 12 Sep 2023 14:01:50 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qg7eJ-0001qh-IT
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:58:12 -0400
-Received: from mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c08:ba1:0:640:375a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id C2EDC62CEB;
- Tue, 12 Sep 2023 20:58:00 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8006::1:28])
- by mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id vvi9A80OpeA0-Z2hppCyT; Tue, 12 Sep 2023 20:57:59 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1694541479;
- bh=KljjPLxlVGgrFdeO4dVKzxApr7gz0OW9eSz12oh4Lqk=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=RelJW9CbRRcngWnkcbrbXEVKyqVEJv40/MNJ1eJ2pfme7DQkijDPA7Y5LQj0Nyym1
- y5XNcHJ4e4pA9MUG3AHyXhwudUgSPZ/7yRWJlzFf9SuBu10hQAuNWPiDzMH7Z3deXu
- lYTeNl1PrRUTeEGD88Qe5mr4qBZfwb+sPlmPaK48=
-Authentication-Results: mail-nwsmtp-smtp-corp-canary-81.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: yc-core@yandex-team.ru, eduardo@habkost.net, berrange@redhat.com,
- pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com,
- dave@treblig.org, mst@redhat.com,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v2] virtio: add VIRTQUEUE_ERROR QAPI event
-Date: Tue, 12 Sep 2023 20:57:56 +0300
-Message-Id: <20230912175756.151047-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qg7hr-00034D-Gk; Tue, 12 Sep 2023 14:01:49 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 31AE12135C;
+ Tue, 12 Sep 2023 21:01:48 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 997722795F;
+ Tue, 12 Sep 2023 21:01:43 +0300 (MSK)
+Message-ID: <4bc435cf-d6c7-885b-f806-48c961279b10@tls.msk.ru>
+Date: Tue, 12 Sep 2023 21:01:43 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: cherry-picking something to -stable which might require other
+ changes
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Stefan Hajnoczi <stefanha@gmail.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ qemu-stable <qemu-stable@nongnu.org>, Thomas Huth <thuth@redhat.com>,
+ Bin Meng <bmeng@tinylab.org>, Paul Menzel <pmenzel@molgen.mpg.de>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <e6385fc7-0889-ea16-4fc0-337796814636@tls.msk.ru>
+ <CAJSP0QUfF64wWQbbAqKpeUWGEOz6jB2ZHkmJhaRXfRDFLpD_kw@mail.gmail.com>
+ <ZQCCcM1gUy3ODnyj@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <ZQCCcM1gUy3ODnyj@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,141 +67,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now we only log the vhost device error, when virtqueue is actually
-stopped. Let's add a QAPI event, which makes possible:
+12.09.2023 18:23, Daniel P. Berrangé wrote:
+..
+> I tend to try to cherry-pick the dependancies in case (1) too
+> unless they are functionally invasive. Any time you manually
+> adjust a patch, you increase the likelihood that later cherry
+> picks will also require manual work. So I always favour a clean
+> cherry-pick until the point the functional risk becomes
+> unacceptable in the context of testing the change I'm pulling
+> back.
 
- - collect statistics of such errors
- - make immediate actions: take core dumps or do some other debugging
- - inform the user through a management API or UI, so that (s)he can
-  react somehow, e.g. reset the device driver in the guest or even
-  build up some automation to do so
+Yeah, that's exactly my thought: if something in the subsystem
+has changed, esp. when the new thing is now widely used, it is
+best to try to pick it up (unless it is a big change by itself
+or is a part of big change).
 
-Note that basically every inconsistency discovered during virtqueue
-processing results in a silent virtqueue stop.  The guest then just
-sees the requests getting stuck somewhere in the device for no visible
-reason.  This event provides a means to inform the management layer of
-this situation in a timely fashion.
+I already mentioned a trivial fix c255946e3df4 in this thread,
+which can be applied cleanly if two other no-change patches are
+in, 753ae97abc7 and dadee9e3ce6.  It is much more likely to hit
+conflicts in this area in future updates if such updates will
+happen if such renames like these two aren't picked up.
 
-The event could be reused for some other virtqueue problems (not only
-for vhost devices) in future. For this it gets a generic name and
-structure.
+So, right in this same patch series, there's one more very similar
+change:
 
-We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
-here, it's not the only call to VHOST_OPS_DEBUG in the file.
+commit 9ff31406312500053ecb5f92df01dd9ce52e635d
+Author: Conor Dooley <conor.dooley@microchip.com>
+Date:   Thu Jul 27 15:24:17 2023 +0100
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
+     hw/riscv: virt: Fix riscv,pmu DT node path
 
-v2: - improve commit message (just stole wording by Roman, hope he don't
-                              mind:)
-    - add event throttling
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -719,7 +719,7 @@ static void create_fdt_pmu(RISCVVirtState *s)
+      MachineState *ms = MACHINE(s);
+      RISCVCPU hart = s->soc[0].harts[0];
 
- hw/virtio/vhost.c | 12 +++++++++---
- monitor/monitor.c | 10 ++++++++++
- qapi/qdev.json    | 25 +++++++++++++++++++++++++
- 3 files changed, 44 insertions(+), 3 deletions(-)
+-    pmu_name = g_strdup_printf("/soc/pmu");
++    pmu_name = g_strdup_printf("/pmu");
+      qemu_fdt_add_subnode(ms->fdt, pmu_name);
+      qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu");
+      riscv_pmu_generate_fdt_node(ms->fdt, hart.cfg.pmu_num, pmu_name);
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index e2f6ffb446..162899feee 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -15,6 +15,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-events-qdev.h"
- #include "hw/virtio/vhost.h"
- #include "qemu/atomic.h"
- #include "qemu/range.h"
-@@ -1332,11 +1333,16 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
-     struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
-                                               error_notifier);
-     struct vhost_dev *dev = vq->dev;
--    int index = vq - dev->vqs;
- 
-     if (event_notifier_test_and_clear(n) && dev->vdev) {
--        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
--                        dev->vq_index + index);
-+        int ind = vq - dev->vqs + dev->vq_index;
-+        DeviceState *ds = &dev->vdev->parent_obj;
-+
-+        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d", ind);
-+        qapi_event_send_virtqueue_error(ds->id, ds->canonical_path, ind,
-+                                        VIRTQUEUE_ERROR_VHOST_VRING_ERR,
-+                                        "vhost reported failure through vring "
-+                                        "error fd");
-     }
- }
- 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 941f87815a..cb1ee31156 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -313,6 +313,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_VIRTQUEUE_ERROR]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
- };
-@@ -497,6 +498,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
-         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
-     }
- 
-+    if (evstate->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-+    }
-+
-     return hash;
- }
- 
-@@ -524,6 +529,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
-                        qdict_get_str(evb->data, "qom-path"));
-     }
- 
-+    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        return !strcmp(qdict_get_str(eva->data, "device"),
-+                       qdict_get_str(evb->data, "device"));
-+    }
-+
-     return TRUE;
- }
- 
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 6bc5a733b8..199e21cae7 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -161,3 +161,28 @@
- ##
- { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
-   'data': { '*device': 'str', 'path': 'str' } }
-+
-+##
-+# @VirtqueueError:
-+#
-+# Since: 8.2
-+##
-+{ 'enum': 'VirtqueueError',
-+  'data': [ 'vhost-vring-err' ] }
-+
-+##
-+# @VIRTQUEUE_ERROR:
-+#
-+# Emitted when a device virtqueue fails in runtime.
-+#
-+# @device: the device's ID if it has one
-+# @path: the device's QOM path
-+# @virtqueue: virtqueue index
-+# @error: error identifier
-+# @description: human readable description
-+#
-+# Since: 8.2
-+##
-+{ 'event': 'VIRTQUEUE_ERROR',
-+ 'data': { '*device': 'str', 'path': 'str', 'virtqueue': 'int',
-+            'error': 'VirtqueueError', 'description': 'str'} }
--- 
-2.34.1
+But all the nearby lines are touched by previous patch:
 
+commit 568e0614d0979e0431a8d9dc0503a63b8b0f2d81
+Author: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Date:   Tue Jan 24 18:22:33 2023 -0300
+
+     hw/riscv/virt.c: rename MachineState 'mc' pointers to 'ms'
+...
+     Rename all 'mc' MachineState pointers to 'ms'. This is a very tedious
+     and mechanical patch that was produced by doing the following:
+
+     - find/replace all 'MachineState *mc' to 'MachineState *ms';
+     - find/replace all 'mc->fdt' to 'ms->fdt';
+     - find/replace all 'mc->smp.cpus' to 'ms->smp.cpus';
+     - replace any remaining occurrences of 'mc' that the compiler complained
+     about.
+
+This patch by Daniel is a no-code-change, it really is just a rename of
+variables.  I can rename variable back from ms to mc in the fix patch,
+or I can apply this rename first and apply the fix patch cleanly, and
+all subsequent changes will have much more chance to apply cleanly too.
+
+What a wonderful world.. ;)
+
+Thankfully, such cases are rare.  But we do have a few famous cases like this
+still, some of which I also mentioned in the first message in this thread.
+
+/mjt
 
