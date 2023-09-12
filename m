@@ -2,62 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F79179C274
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 04:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA13679C30D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 04:36:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfstO-0001K1-8R; Mon, 11 Sep 2023 22:12:42 -0400
+	id 1qftFO-0005ZO-52; Mon, 11 Sep 2023 22:35:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qfstE-0001GY-UY
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:34 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qfstC-0005VD-7W
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:32 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxXev0yP9kIDIlAA--.1744S3;
- Tue, 12 Sep 2023 10:12:04 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxfSPqyP9kCnh4AA--.42014S12; 
- Tue, 12 Sep 2023 10:12:04 +0800 (CST)
-From: xianglai li <lixianglai@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: "Salil Mehta" <salil.mehta@opnsrc.net>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>
-Subject: [PATCH v2 10/10] Update the ACPI table for the Loongarch CPU
-Date: Tue, 12 Sep 2023 10:11:47 +0800
-Message-Id: <6d2e11b559f544c98f4ef1fed99dfb8c1aad4b83.1694433326.git.lixianglai@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <cover.1694433326.git.lixianglai@loongson.cn>
-References: <cover.1694433326.git.lixianglai@loongson.cn>
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qftFI-0005YF-PR
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:35:21 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hongmianquan@bytedance.com>)
+ id 1qftFE-0004Cz-Te
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:35:19 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c1e780aa95so34230325ad.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 19:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1694486107; x=1695090907; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=cvSrAEGX5qMYFzHXHPrcZZTDY7jZ/z5VTU5dE+s2ajc=;
+ b=XliLnRw3HjKCWKzrMdi0i/XislZJ+9GFjb5TDl4M4t4szA/EcJEL+8PzItKlVIxZDR
+ wRFYlXQfKrw9PlmSDsovVCysQLt0be2BLSo5eb4/oJ3ERaGG7BiUlDNjVWHcRWbSsVwy
+ 3b8Q3Axe0jvdv1wuXO3BB2KwhTcoBfZkEqLhMNot5JB0a4O2+oKpqu80D5fGKKsqptxx
+ jf09I2eeJeLhY40+MTaFHXjxhvQ1m66LWpPIPxhYk9h2X9mia/vze7IhawTsZv5yB0tQ
+ nKYb4+Vddb/7CW0W5htj1wsECryg3FGt0Lzuv+CQ5wXtY2lnnKHyKDqiKj7+My44+VTu
+ oUzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694486107; x=1695090907;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=cvSrAEGX5qMYFzHXHPrcZZTDY7jZ/z5VTU5dE+s2ajc=;
+ b=BXKrJHZxu74tjuKCsnrWLKwH7gdlfWnmRF1z90IkFeygLxLJbVqpS0f9N9JM4O/UEW
+ U89f83cql5Qh2KxQlrHCiao2fhNwZ2xYhrDFviJ3MFQvmA+bXNff82+P/2NQhS2sy8Cx
+ j+P2NqbYGKPn+cKW1IiRTV66g30CUdr5n14gZGGaWejJGJXMRWXS3VgQBoTZJpUARKOC
+ RU4+eE6hqj9UzSKfMrDrPr//HWLZoGg32iWRzdW88+veBjKbjmyx+Sw1A5T5vTbW0Ds0
+ ZN5GwTizLnk45W6ZnlITF75Z8gaeeIh6HIey7CQ+T/z+vcHmx6TUY7iXqZKZTFClImJP
+ syjg==
+X-Gm-Message-State: AOJu0YzmNiaRsmuGxgxF1zrpUJ+K6xIVAj7oFG0PAg5+5CnAft/99DyD
+ NaSibUfbL56fW/L/9xI/i6SAMg==
+X-Google-Smtp-Source: AGHT+IFgOiP7Ri8LE2af5lp1JLJsOp5vo5sBI/M85pmwXr8Q/pKvjBXpTzna1BJqaKjJpWTHagzc4Q==
+X-Received: by 2002:a17:902:efc1:b0:1c3:749f:6a4f with SMTP id
+ ja1-20020a170902efc100b001c3749f6a4fmr8371258plb.54.1694486106396; 
+ Mon, 11 Sep 2023 19:35:06 -0700 (PDT)
+Received: from [10.84.153.58] ([203.208.167.146])
+ by smtp.gmail.com with ESMTPSA id
+ w6-20020a170902e88600b001bbdf32f011sm7114987plg.269.2023.09.11.19.35.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Sep 2023 19:35:05 -0700 (PDT)
+Message-ID: <978c964e-37a5-4efb-a25f-542a3d518520@bytedance.com>
+Date: Tue, 12 Sep 2023 10:35:00 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [External] Re: [PATCH v2,1/1] memory: avoid updating ioeventfds
+ for some address_space
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, philmd@linaro.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230830032906.12488-1-hongmianquan@bytedance.com>
+ <499fe9b1-54f5-4d0f-ae2b-165cb0f3e6b3@bytedance.com> <ZP9AIScw8GrKZNlR@x1n>
+ <6841f996-497a-3420-9447-524295179535@redhat.com>
+From: hongmainquan <hongmianquan@bytedance.com>
+In-Reply-To: <6841f996-497a-3420-9447-524295179535@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxfSPqyP9kCnh4AA--.42014S12
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=hongmianquan@bytedance.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,136 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add new types of GED devices for Loongarch machines,
-add CPU hot-(un)plug event response and address spaces,
-and update the ACPI table.
 
-Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Cc: Song Gao <gaosong@loongson.cn>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>
-Cc: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-Cc: Yanan Wang <wangyanan55@huawei.com>
-Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: xianglai li <lixianglai@loongson.cn>
----
- hw/acpi/acpi-cpu-hotplug-stub.c |  9 +++++++++
- hw/loongarch/acpi-build.c       | 16 +++++++++++++++-
- hw/loongarch/virt.c             |  5 +++--
- include/hw/loongarch/virt.h     |  1 +
- 4 files changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
-index 2aec90d968..af9fda2cf4 100644
---- a/hw/acpi/acpi-cpu-hotplug-stub.c
-+++ b/hw/acpi/acpi-cpu-hotplug-stub.c
-@@ -19,6 +19,15 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
-     return;
- }
- 
-+void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-+                    hwaddr mmap_io_base,
-+                    const char *res_root,
-+                    const char *event_handler_method,
-+                    AmlRegionSpace rs)
-+{
-+    return;
-+}
-+
- void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
- {
-     return;
-diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
-index 66fad295cc..312908fb2f 100644
---- a/hw/loongarch/acpi-build.c
-+++ b/hw/loongarch/acpi-build.c
-@@ -138,15 +138,18 @@ build_madt(GArray *table_data, BIOSLinker *linker, LoongArchMachineState *lams)
-     build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Flags */
- 
-     for (i = 0; i < arch_ids->len; i++) {
-+        uint32_t flags;
-+
-         /* Processor Core Interrupt Controller Structure */
-         arch_id = arch_ids->cpus[i].arch_id;
-+        flags = arch_ids->cpus[i].cpu ? 1 : 0;
- 
-         build_append_int_noprefix(table_data, 17, 1);    /* Type */
-         build_append_int_noprefix(table_data, 15, 1);    /* Length */
-         build_append_int_noprefix(table_data, 1, 1);     /* Version */
-         build_append_int_noprefix(table_data, i, 4);     /* ACPI Processor ID */
-         build_append_int_noprefix(table_data, arch_id, 4); /* Core ID */
--        build_append_int_noprefix(table_data, 1, 4);     /* Flags */
-+        build_append_int_noprefix(table_data, flags, 4);   /* Flags */
-     }
- 
-     /* Extend I/O Interrupt Controller Structure */
-@@ -309,6 +312,17 @@ build_la_ged_aml(Aml *dsdt, MachineState *machine)
-                                  AML_SYSTEM_MEMORY,
-                                  VIRT_GED_MEM_ADDR);
-     }
-+
-+    if (event & ACPI_GED_CPU_HOTPLUG_EVT) {
-+        CPUHotplugFeatures opts = {
-+            .acpi_1_compatible = false,
-+            .has_legacy_cphp = false
-+        };
-+
-+        build_cpus_aml(dsdt, machine, opts, VIRT_GED_CPUHP_ADDR,
-+                       "\\_SB", "\\_GPE._E01", AML_SYSTEM_MEMORY);
-+
-+    }
-     acpi_dsdt_add_power_button(dsdt);
- }
- 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index aabe8aa814..c4ec9dd6a7 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -449,12 +449,12 @@ static DeviceState *create_acpi_ged(DeviceState *pch_pic, LoongArchMachineState
- {
-     DeviceState *dev;
-     MachineState *ms = MACHINE(lams);
--    uint32_t event = ACPI_GED_PWR_DOWN_EVT;
-+    uint32_t event = ACPI_GED_PWR_DOWN_EVT | ACPI_GED_CPU_HOTPLUG_EVT;
- 
-     if (ms->ram_slots) {
-         event |= ACPI_GED_MEM_HOTPLUG_EVT;
-     }
--    dev = qdev_new(TYPE_ACPI_GED);
-+    dev = qdev_new(TYPE_ACPI_GED_LOONGARCH);
-     qdev_prop_set_uint32(dev, "ged-event", event);
- 
-     /* ged event */
-@@ -463,6 +463,7 @@ static DeviceState *create_acpi_ged(DeviceState *pch_pic, LoongArchMachineState
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, VIRT_GED_MEM_ADDR);
-     /* ged regs used for reset and power down */
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 2, VIRT_GED_REG_ADDR);
-+    sysbus_mmio_map(SYS_BUS_DEVICE(dev), 3, VIRT_GED_CPUHP_ADDR);
- 
-     sysbus_connect_irq(SYS_BUS_DEVICE(dev), 0,
-                        qdev_get_gpio_in(pch_pic, VIRT_SCI_IRQ - VIRT_GSI_BASE));
-diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
-index f6c9495af2..82ac238f4f 100644
---- a/include/hw/loongarch/virt.h
-+++ b/include/hw/loongarch/virt.h
-@@ -31,6 +31,7 @@
- #define VIRT_GED_EVT_ADDR       0x100e0000
- #define VIRT_GED_MEM_ADDR       (VIRT_GED_EVT_ADDR + ACPI_GED_EVT_SEL_LEN)
- #define VIRT_GED_REG_ADDR       (VIRT_GED_MEM_ADDR + MEMORY_HOTPLUG_IO_LEN)
-+#define VIRT_GED_CPUHP_ADDR     (VIRT_GED_REG_ADDR + ACPI_CPU_HOTPLUG_REG_LEN)
- 
- struct LoongArchMachineState {
-     /*< private >*/
--- 
-2.39.1
-
+在 2023/9/12 1:55 上午, David Hildenbrand 写道:
+> On 11.09.23 18:28, Peter Xu wrote:
+>> On Mon, Sep 04, 2023 at 08:51:43PM +0800, hongmainquan wrote:
+>>>
+>>> Friendly ping...
+>>> Hello, this patch has already received a R-b from PeterXu. Could you 
+>>> please
+>>> help me review it as well and see if there are any issues? If 
+>>> everything is
+>>> fine, could you please consider merging it? Thank you!
+>>
+>> Paolo, wanna pick this one up?
+>>
+>> David, I know you're preparing a pull with a lot of memory changes, if 
+>> you
+>> like to pick this up it'll be good too.
+> 
+> I queued it to
+> 
+> https://github.com/davidhildenbrand/qemu.git mem-next
+> 
+> If nobody beats me to it (or requests me to drop it), I'll send it 
+> upstream next week.
+> 
+Thanks for that! I hope it can be successfully merged.
 
