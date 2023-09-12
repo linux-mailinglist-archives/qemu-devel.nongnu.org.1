@@ -2,104 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE6179DB0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6371A79DBBE
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 00:18:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgB8O-00060I-EZ; Tue, 12 Sep 2023 17:41:24 -0400
+	id 1qgBgn-0006I8-0Z; Tue, 12 Sep 2023 18:16:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qgB8M-0005zP-5J; Tue, 12 Sep 2023 17:41:22 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgBgk-0006HO-H9
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:16:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qgB8J-000261-RB; Tue, 12 Sep 2023 17:41:21 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CLco1N011388; Tue, 12 Sep 2023 21:41:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=NKuROFmQUwxIKylreIZ9FJea2Rtdfd8dro2rLCIBsyo=;
- b=r9rvV2t5WoIHxigb2cix72h329s63gZYDKDU5khhtnMwxjPwCMp6MPzlIREJiMFhQ3uD
- yI8Bbars/Xc04amuo/P6AIPbwH+NG8OT3B+hCZrZ8I594puHmKXyY7gXaxYUrnWTYRiN
- RIZ1Z53Q3LL/Mk94JlAQcQz0FR1RfGRnX4Lhlzt2N3tCc2FBzdu+vh30mO6d+y/tQnYd
- mCYcbdGAw6bFzfsxRe6cqTaUCDyyCb3KNE2MpmTrMVSe0txOoNvWEsJioSeC15tohlZ/
- lpESt1vi9QtdUNksG87r2svPvW+Qjuu48nqGoCL/1vc/uxFtxKqds1exMnWMiz/+/nF2 ag== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2yw40866-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:41:16 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38CLfFtJ022258;
- Tue, 12 Sep 2023 21:41:15 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2yw4085n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:41:15 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CK6okL012070; Tue, 12 Sep 2023 21:41:15 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t13dyphv1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:41:15 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38CLfE5N64684420
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Sep 2023 21:41:15 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4C4F5805D;
- Tue, 12 Sep 2023 21:41:14 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 436B758053;
- Tue, 12 Sep 2023 21:41:14 +0000 (GMT)
-Received: from sbct-3.bos2.lab (unknown [9.47.158.153])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 12 Sep 2023 21:41:14 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
- =?UTF-8?q?Marc-Andr=DE=B8=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PULL v1 1/1] tpm: fix crash when FD >= 1024
-Date: Tue, 12 Sep 2023 17:41:10 -0400
-Message-ID: <20230912214110.482744-2-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230912214110.482744-1-stefanb@linux.ibm.com>
-References: <20230912214110.482744-1-stefanb@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: E8X4zVC5VBnmOCIjxb-kLBIHdUpKF3dB
-X-Proofpoint-ORIG-GUID: -TQpo7IcPbIIiGQSyQylU0gtUTJUBl8e
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgBgi-0008Tx-9y
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:16:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694557010;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Q7pM0dH+qD/W7oxo4fiBaJLMQ4GgYbYPoG7KZcwI2Ec=;
+ b=eRFWc4fMOVpDbo5wvTUU2xiN4rJpB1B3Vmn/BrR61WS3uWm2ed9mTewBKmqaKf0oUoaiEt
+ g80xRtoLJnhOmZoAV+JBPwnLPrRlb/yTZKf/yh8ZehfQncYmmAobUlFEFkic6A3bntbH/5
+ Xrdt0U+RpR/Mo9GBt9zDjNLEyj5go2k=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-R1crF9f0NfOqW28R8nBfGg-1; Tue, 12 Sep 2023 18:16:49 -0400
+X-MC-Unique: R1crF9f0NfOqW28R8nBfGg-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-63d2b88325bso14324176d6.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 15:16:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694557008; x=1695161808;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Q7pM0dH+qD/W7oxo4fiBaJLMQ4GgYbYPoG7KZcwI2Ec=;
+ b=iYbtRXdZtpjs4x1MajGToRC+ESzDkLhIgyqD+ArnAq0gAH22/vYjtbAlSHlCrlhxV3
+ 0pYiwPUiPOmBm+t149rKyvavs60W88RlMNkbO8Fk9OmF1y0GgaQUhAgU3zKq2jH5sYva
+ +JnPnAiBqS28mrrNLMAzWBfMBF8+yCGA5Lb8sWKhTtQtDxBpzHRaBJl/gN/4ykli1KDp
+ ExcF/YgovtsqJzorUrXQfiRQ7XFJKhWs49+yLka71d0T5IkW530xy3dY/pE0vLW0ThGm
+ SqxMAMkisfGlsYWrN7DssEDyyFAh5XcfuaqPk1kQMswwMA8TwHEtV4u4VkD+eWWXcWjS
+ hTgw==
+X-Gm-Message-State: AOJu0YyO9N4zHvfF4OU56glJW9ycBj9UmxSA9H/FizjKLQR7o4wL/8Mu
+ +jYEGH0vyR8Yg14sIgF0esMQNDMy90DJEKELs4HALbdVvG9vyBXA5Q5PQUOFGS5CFdLh2OZx0X6
+ akUZQns0/alSIIqE=
+X-Received: by 2002:a05:6214:528a:b0:63f:89d3:bf21 with SMTP id
+ kj10-20020a056214528a00b0063f89d3bf21mr731644qvb.5.1694557008714; 
+ Tue, 12 Sep 2023 15:16:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVq2zL/kE5vOGTHcrVv2rzyQIL+tvHhWdGPpoDst8HyMCxYRuCIViJhrxV1WYyfIx68VPjcw==
+X-Received: by 2002:a05:6214:528a:b0:63f:89d3:bf21 with SMTP id
+ kj10-20020a056214528a00b0063f89d3bf21mr731640qvb.5.1694557008453; 
+ Tue, 12 Sep 2023 15:16:48 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ b15-20020a0cf04f000000b00647290bd591sm3974037qvl.121.2023.09.12.15.16.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Sep 2023 15:16:48 -0700 (PDT)
+Date: Tue, 12 Sep 2023 18:16:45 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Xiaohui Li <xiaohli@redhat.com>
+Subject: Re: [PATCH 9/9] migration/postcopy: Allow network to fail even
+ during recovery
+Message-ID: <ZQDjTRtNVbtruUtD@x1n>
+References: <20230829214235.69309-1-peterx@redhat.com>
+ <20230829214235.69309-10-peterx@redhat.com>
+ <877cowmdu0.fsf@suse.de> <ZQDEh85X2IcC+o8M@x1n>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_20,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 mlxlogscore=999 mlxscore=0 suspectscore=0 impostorscore=0
- phishscore=0 malwarescore=0 clxscore=1011 priorityscore=1501 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309120183
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZQDEh85X2IcC+o8M@x1n>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,56 +99,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-Andr޸ Lureau <marcandre.lureau@redhat.com>
+On Tue, Sep 12, 2023 at 04:05:27PM -0400, Peter Xu wrote:
+> Thanks for contributing the test case!
+> 
+> Do you want me to pick this patch up (with modifications) and repost
+> together with this series?  It'll also work if you want to send a separate
+> test patch.  Let me know!
 
-Replace select() with poll() to fix a crash when QEMU has a large number
-of FDs.
+It turns out I found more bug when I was reworking that test case based on
+yours.  E.g., currently we'll crash dest qemu if we really fail during
+recovery, because we miss:
 
-Fixes:
-https://bugzilla.redhat.com/show_bug.cgi?id=2020133
-
-Cc: qemu-stable@nongnu.org
-Fixes: 56a3c24ffc ("tpm: Probe for connected TPM 1.2 or TPM 2")
-Signed-off-by: Marc-Andr޸ Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
----
- backends/tpm/tpm_util.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
-
-diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
-index a6e6d3e72f..1856589c3b 100644
---- a/backends/tpm/tpm_util.c
-+++ b/backends/tpm/tpm_util.c
-@@ -112,12 +112,8 @@ static int tpm_util_request(int fd,
-                             void *response,
-                             size_t responselen)
- {
--    fd_set readfds;
-+    GPollFD fds[1] = { {.fd = fd, .events = G_IO_IN } };
-     int n;
--    struct timeval tv = {
--        .tv_sec = 1,
--        .tv_usec = 0,
--    };
- 
-     n = write(fd, request, requestlen);
-     if (n < 0) {
-@@ -127,11 +123,8 @@ static int tpm_util_request(int fd,
-         return -EFAULT;
+diff --git a/migration/savevm.c b/migration/savevm.c
+index bb3e99194c..422406e0ee 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2723,7 +2723,8 @@ static bool postcopy_pause_incoming(MigrationIncomingState *mis)
+         qemu_mutex_unlock(&mis->postcopy_prio_thread_mutex);
      }
  
--    FD_ZERO(&readfds);
--    FD_SET(fd, &readfds);
--
-     /* wait for a second */
--    n = select(fd + 1, &readfds, NULL, NULL, &tv);
-+    n = RETRY_ON_EINTR(g_poll(fds, 1, 1000));
-     if (n != 1) {
-         return -errno;
-     }
+-    migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
++    /* Current state can be either ACTIVE or RECOVER */
++    migrate_set_state(&mis->state, mis->state,
+                       MIGRATION_STATUS_POSTCOPY_PAUSED);
+ 
+     /* Notify the fault thread for the invalidated file handle */
+
+So in double failure case we'll not set RECOVER to PAUSED, and we'll crash
+right afterwards, as we'll skip the semaphore:
+
+    while (mis->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {  <--- not true, continue
+        qemu_sem_wait(&mis->postcopy_pause_sem_dst);
+    }
+
+Now within the new test case I am 100% sure I can kick both sides into
+RECOVER state (one trick still needed along the way; the test patch will
+tell soon), then kick them back, then proceed with a successful migration.
+
+Let me just repost everything with the new test case.
+
+Thanks,
+
 -- 
-2.41.0
+Peter Xu
 
 
