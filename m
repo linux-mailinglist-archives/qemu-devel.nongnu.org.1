@@ -2,125 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405AD79DA9A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F38479DAA6
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:24:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAgr-0000iw-HW; Tue, 12 Sep 2023 17:12:57 -0400
+	id 1qgArf-0005EQ-QN; Tue, 12 Sep 2023 17:24:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qgAgo-0000ht-Nz
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:12:55 -0400
-Received: from mailout2.w2.samsung.com ([211.189.100.12])
+ (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
+ id 1qgArY-00059f-6Q
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:24:03 -0400
+Received: from mail-mw2nam12on2074.outbound.protection.outlook.com
+ ([40.107.244.74] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qgAgk-0000pU-LF
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:12:54 -0400
-Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
- by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
- 20230912211247usoutp0264d047a72e0f8c56d2d8c010abd4b02f~EQyCw7nWT2864628646usoutp02U;
- Tue, 12 Sep 2023 21:12:47 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
- 20230912211247usoutp0264d047a72e0f8c56d2d8c010abd4b02f~EQyCw7nWT2864628646usoutp02U
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1694553167;
- bh=vrJ9Xv0nSeHw73RZ0ZY6/6CHdHdk1ntnj1JgD0HIubQ=;
- h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=WKfahQ2fjuf+EvrX5OzvqFk+ZbXDfYOqasKT2edRb5R/Ya6frFe2EmDTLYO/qYtIr
- RVXefGlJlNHeGoWDEs/vP06z7LBvEXfEQEYPjTXFWo9MTNXqonhJkAY2z77xC4gVmb
- 3XCL5J1gxemyOCBkKcbrLEBYVi4lpkIy2ENTBLv0=
-Received: from ussmges3new.samsung.com (u112.gpu85.samsung.co.kr
- [203.254.195.112]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230912211247uscas1p2dbe4c2433b7eac59b638b1d36ec72a45~EQyClPOHI0466504665uscas1p2X;
- Tue, 12 Sep 2023 21:12:47 +0000 (GMT)
-Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
- ussmges3new.samsung.com (USCPEMTA) with SMTP id 62.22.62237.F44D0056; Tue,
- 12 Sep 2023 17:12:47 -0400 (EDT)
-Received: from ussmgxs2new.samsung.com (u91.gpu85.samsung.co.kr
- [203.254.195.91]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230912211246uscas1p168389b2f62884b970e348f8b94e550d2~EQyCRsahY1803918039uscas1p1E;
- Tue, 12 Sep 2023 21:12:46 +0000 (GMT)
-X-AuditID: cbfec370-823ff7000001f31d-11-6500d44f192a
-Received: from SSI-EX2.ssi.samsung.com ( [105.128.2.146]) by
- ussmgxs2new.samsung.com (USCPEXMTA) with SMTP id 59.22.31200.E44D0056; Tue,
- 12 Sep 2023 17:12:46 -0400 (EDT)
-Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
- SSI-EX2.ssi.samsung.com (105.128.2.227) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2375.24; Tue, 12 Sep 2023 14:12:46 -0700
-Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
- SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
- 12 Sep 2023 14:12:46 -0700
-From: Fan Ni <fan.ni@samsung.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
- <mst@redhat.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- Dave Jiang <dave.jiang@intel.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
- <philmd@linaro.org>, "linuxarm@huawei.com" <linuxarm@huawei.com>
-Subject: Re: [PATCH v2 2/3] hw/cxl: Add QTG _DSM support for ACPI0017 device
-Thread-Topic: [PATCH v2 2/3] hw/cxl: Add QTG _DSM support for ACPI0017 device
-Thread-Index: AQHZ30ukYJg3kNCKi0GmQIpXWUW3L7AYMoGA
-Date: Tue, 12 Sep 2023 21:12:45 +0000
-Message-ID: <20230912211245.GC2828853@sjcvldevvm72>
-In-Reply-To: <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [105.128.2.176]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <0470824E4FEA984DA883B903FA2F7BC7@ssi.samsung.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
+ id 1qgArU-0006Zq-VW
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:23:59 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DhG9f8BqjlbXAoI/l+Uu+7+bGj/y33qytYspB/w4Pzg/eYtBBanBwZGVpZhGuIunut/15cH3E0xJldgMqD0K67RTC6DaylFtTGJ8ZgpO6AjWyu/on0XYnFGMdw3/bhiSZQYSIlj303GAjgBuZk1OkLMktPXV3M16/SOQ6Z5ErPVXHfpyRwLt/i7BNcLUivphN2ZVw5bBcKD59qmLhf84/KEFRbz3iKEMjY3S0Ylk34LfQHYTrisbTq4z6WF+4Humm7AqsuiUI0Q93vLJR/QXdVzmCb4xeea7d7edLBa7nxeHr6FzrocEsaWKqHRlrZfeoEVsQdwqh06R0+aFx+NBxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0XuW4rGOTZzpR1i6AhLmURRXq1pYu+pOrRyb81ZxuYI=;
+ b=ckzEJaZHoh3GRTLeehvJRw2YDPxmAEdHhC8T2B61TjNPqRJz3WS0OvpS3U0IsJNPYzCor1/WPn3fyvkuIeFRCA257u8mu6A71Y+B8pOFiJIrB1XXtIGwc8ysdCxxXlDc5Tg/B9yfu8rN4hyE6rpB/VITV/f+zMXrPqPz50It1aBvoq49Ziz08LRFvx/fq8g73l2AzviURqBxAXWTpi/iiauKJZEjdNuLf7Mamatukiy8CriyQPgYq4C4JYzWwIO3BrZ+dLFFHjl66B6346hSgIOodqrSyd6qrHX3A2BMi/dZyZdWamiWjQ6ft7CRz06SWKjenZ/Co8eAIMO2IbvN+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0XuW4rGOTZzpR1i6AhLmURRXq1pYu+pOrRyb81ZxuYI=;
+ b=xCMwM8qzs1pUKe9+Ptbqco9O/77HmirUO9xvBgosOPzXoqFuMm11aEjQIGXquTdh/9gb5oGkFcdvafRQZwG83bjC3pztFgKRs0XYMGIm7mQfG32/QQhGjcWPccENqgb4ZBsdRthJc8o/aNA7XDLwJxUnnqaBwu5oT6ijBabR670=
+Received: from MN2PR15CA0064.namprd15.prod.outlook.com (2603:10b6:208:237::33)
+ by SA1PR12MB7247.namprd12.prod.outlook.com (2603:10b6:806:2bb::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30; Tue, 12 Sep
+ 2023 21:18:48 +0000
+Received: from BL6PEPF0001AB51.namprd04.prod.outlook.com
+ (2603:10b6:208:237:cafe::74) by MN2PR15CA0064.outlook.office365.com
+ (2603:10b6:208:237::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.41 via Frontend
+ Transport; Tue, 12 Sep 2023 21:18:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF0001AB51.mail.protection.outlook.com (10.167.242.75) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6792.11 via Frontend Transport; Tue, 12 Sep 2023 21:18:47 +0000
+Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 12 Sep
+ 2023 16:18:46 -0500
+From: John Allen <john.allen@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <yazen.ghannam@amd.com>, <michael.roth@amd.com>, <babu.moger@amd.com>,
+ <william.roche@oracle.com>, <joao.m.martins@oracle.com>,
+ <pbonzini@redhat.com>, <richard.henderson@linaro.org>, <eduardo@habkost.net>, 
+ John Allen <john.allen@amd.com>
+Subject: [PATCH v4 0/3] Fix MCE handling on AMD hosts
+Date: Tue, 12 Sep 2023 21:18:21 +0000
+Message-ID: <20230912211824.90952-1-john.allen@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrAKsWRmVeSWpSXmKPExsWy7djXc7r+VxhSDZoP8lmcuNnIZrFq4TU2
- i/OzTrFYHN54hsni/69XrBZrVghbHO/dweLA7tFy5C2rx+I9L5k87lzbw+bx5NpmJo/3+66y
- eXzeJBfAFsVlk5Kak1mWWqRvl8CVsfzRH7aCDo2Kr4/uMDUw9kp3MXJySAiYSFyY9oC5i5GL
- Q0hgJaPEp18PWCCcViaJTXcOssBUzWm8AFW1llHi2IY1rBDOJ0aJZ/8eQmWWMUpMebyUCaSF
- TUBRYl/XdjYQW0TASOLdjUmMIDazwGImifa/VSC2sICPxPHfjYwQNf4S+5t+s8DUL371EMxm
- EVCVaF66DKyGV8BY4uLDZ2A2p4CjxIZpb8HmMwqISXw/tYYJYr64xK0n85kgzhaUWDR7DzOE
- LSbxb9dDNghbUeL+95fsEPV6EjemTmGDsO0kFrVfh7K1JZYtfM0MsVdQ4uTMJ9CgkJQ4uOIG
- OIwkBO5wSHzvfgS1wEVi/Yxv7BC2tMTfu8uAjuAAspMlVn3kggjnSMxfsgVqjrXEwj/rmSYw
- qsxCcvYsJCfNQnLSLCQnzUJy0gJG1lWM4qXFxbnpqcXGeanlesWJucWleel6yfm5mxiBier0
- v8MFOxhv3fqod4iRiYPxEKMEB7OSCG/Job8pQrwpiZVVqUX58UWlOanFhxilOViUxHkNbU8m
- CwmkJ5akZqemFqQWwWSZODilGpjydt2PsThlWywU4RM+e8FcTtc3O+89YAhwMj+otf/wFCa5
- aVHWeldX3TjRcZf56Zn7Da/5WtyY2njKVM5xf84/1axy4fwq29t3W83FVup7OU83P+D9b5u9
- xCGWz1umGEf4ajc1dwdZH562/rPxcafeKSumvvNanbRFSVVCTNTyaf6GvB3BPbcKH0a7d618
- er2675bTivaQnXcXzGapzyzh2mOtpRV6X+f9l4hJ91XEFhp083QfbrMP2cv3hs9Ny6+qxlJd
- PyygdE2zdPeSNIP0r7/s1rK+COlKnpu22uvbrzvNeULx5jGuezx+6uZMWz11Vrxx5pTQfb/2
- Vy9tvdq71HpdZkfvbTFb4QNJd5VYijMSDbWYi4oTAXY4WfPDAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHIsWRmVeSWpSXmKPExsWS2cA0SdfvCkOqwdkfRhYnbjayWaxaeI3N
- 4vysUywWhzeeYbL4/+sVq8WaFcIWx3t3sDiwe7QcecvqsXjPSyaPO9f2sHk8ubaZyeP9vqts
- Hp83yQWwRXHZpKTmZJalFunbJXBlLH/0h62gQ6Pi66M7TA2MvdJdjJwcEgImEnMaLzB3MXJx
- CAmsZpRofrCTHcL5xCjxbclPFghnGaPE+i/rmUFa2AQUJfZ1bWcDsUUEjCTe3ZjECGIzCyxm
- kmj/WwViCwv4SBz/3cgIUeMr8XHuVHaY+sWvHrKA2CwCqhLNS5eB1fAKGEtcfPgMzBYSKJfo
- mNXPCmJzCjhKbJj2FmwXo4CYxPdTa5ggdolL3HoynwniBQGJJXvOM0PYohIvH/9jhbAVJe5/
- f8kOUa8ncWPqFDYI205iUft1KFtbYtnC18wQNwhKnJz5hAWiV1Li4IobLBMYJWYhWTcLyahZ
- SEbNQjJqFpJRCxhZVzGKlxYX56ZXFBvlpZbrFSfmFpfmpesl5+duYgRG+el/h6N3MN6+9VHv
- ECMTB+MhRgkOZiUR3pJDf1OEeFMSK6tSi/Lji0pzUosPMUpzsCiJ8+6YcjFFSCA9sSQ1OzW1
- ILUIJsvEwSnVwGS24OIes7e6YUv/7v2yaenhIx1MZ7pTE85VyE8vqrHl2fru6GsJ14sXHgYq
- LZmwW+5Ej43Cl2zHTZf1Cyd0+WgINm1vfNX878LLM/2v014vV2ucExi08Sxj7ZdKpbkJ/Fpn
- t3/XurX8gdrsPd8yJqXmcSlsZTw3uUvGPbLIRqG2Yv3x6JcXqnwvPjZgU2xfeabwOlv6CcNj
- dh+eBc3Sl3+1fnJMpUC393tlmZRSt6BF/ifVHJY3vergXeXOaOkeavfwl/nKb7xcEx0e+W05
- +F38Taxw+zy1V5NZnNnddJJNjWMnJdyNyDjWz/b+/J78vYuO6Uc4TezPW+20dNH91FW/TjX5
- uSyM7BAQlrXiaFFiKc5INNRiLipOBABCQuh7YQMAAA==
-X-CMS-MailID: 20230912211246uscas1p168389b2f62884b970e348f8b94e550d2
-CMS-TYPE: 301P
-X-CMS-RootMailID: 20230912211246uscas1p168389b2f62884b970e348f8b94e550d2
-References: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
- <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
- <CGME20230912211246uscas1p168389b2f62884b970e348f8b94e550d2@uscas1p1.samsung.com>
-Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
- helo=mailout2.w2.samsung.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB51:EE_|SA1PR12MB7247:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a086255-3a7c-42ba-63e8-08dbb3d5da71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4+yUtoCbAjC81oHdpoIHgpSshyPcH0MPRInmFVNGEP16kJ8egk43gISN6zzB81UKneld8ysl6Sj0XcFYpHjPxk+sd05kKmb5VpzeVaQO5ZO2HvZLkZy5ZDnhsnSV+cqUYR7iWfLsQOTzg/6QOEySLc57jF5D/f30/d4vJSP0oNvgOboFJ1ZOEoLDVKlvLaFXnvQ8Kt6/ZV68Uf/2A2JGKAulnzlPfW3epU0tfrEQn+cPG2Mj5nuBVOS/5bvz/lpYhtQKfuiizlimw8O5AR51vzFZSydldjk+jw0T+tUZfRzZR+t9sqIJk5mS0LL3xL5+nuHt+RD3qFrwVAPRS4ae9LaQcQEjSfiIMcxw4N//BL5/bdzpU2UFTokH/kkk1ONAU9BMT+UebRDFr9dR4V42FtORKFOpK9fy6zSbyyzk8NiC7c0e3ENDihyPnFLbGl0Zl/rEpwh9GA8PCgYOvFlz0vTSxlsSykM1m1NZB6Q7KppSIFCVo4t2/Ca7X5WRcO8gh299wl3nUkZmT7EnR33U0LzW4wpGSd/ONYOcyiceXoowUZ7D2ddoFoitdXIIeKN6s6VOxDickHK0UyFZcT+w4E4ShPwD1vkjW+3a2Ob5jAArA6wZohtq/YTR75OsPl9hWbX4jvKTT7G+eCakhoTT5Ks9S6uqacln1yeWsl91s12jFd7ZKmM5sWO2XuiIMayRxZD2p+AZNDXom6HOJ9O4A8U+XnVf54Eyu7uAZIzGFowwOQ6rLwbDmguLVxvXZi1dhq3PVvSvr1smUaAyAlI5iQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(39860400002)(376002)(136003)(396003)(346002)(451199024)(186009)(1800799009)(82310400011)(40470700004)(46966006)(36840700001)(81166007)(66899024)(356005)(6666004)(7696005)(70586007)(40460700003)(36756003)(86362001)(82740400003)(36860700001)(40480700001)(426003)(2906002)(2616005)(16526019)(83380400001)(54906003)(70206006)(26005)(8676002)(47076005)(478600001)(44832011)(8936002)(4326008)(1076003)(316002)(336012)(41300700001)(6916009)(5660300002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2023 21:18:47.6858 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a086255-3a7c-42ba-63e8-08dbb3d5da71
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB51.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7247
+Received-SPF: softfail client-ip=40.107.244.74;
+ envelope-from=John.Allen@amd.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,161 +121,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 04, 2023 at 05:18:46PM +0100, Jonathan Cameron wrote:
+In the event that a guest process attempts to access memory that has
+been poisoned in response to a deferred uncorrected MCE, an AMD system
+will currently generate a SIGBUS error which will result in the entire
+guest being shutdown. Ideally, we only want to kill the guest process
+that accessed poisoned memory in this case.
 
-> From: Dave Jiang <dave.jiang@intel.com>
->=20
-> Add a simple _DSM call support for the ACPI0017 device to return a fake Q=
-TG
-> ID value of 0 in all cases. The enabling is for _DSM plumbing testing
-> from the OS.
->=20
-> Following edited for readbility only
->=20
-> Device (CXLM)
-> {
->     Name (_HID, "ACPI0017")  // _HID: Hardware ID
-> ...
->     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
->     {
->         If ((Arg0 =3D=3D ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52"))=
-)
->         {
->             If ((Arg2 =3D=3D Zero))
->             {
->                 Return (Buffer (One) { 0x01 })
->             }
->=20
->             If ((Arg2 =3D=3D One))
->             {
->                 Return (Package (0x02)
->                 {
->                     Buffer (0x02)
->                     { 0x01, 0x00 },
->                     Package (0x01)
->                     {
->                         Buffer (0x02)
->                         { 0x00, 0x00 }
->                     }
->                 })
->             }
->         }
->     }
->=20
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This support has been included in qemu for Intel hosts for a long time,
+but there are a couple of changes needed for AMD hosts. First, we will
+need to expose the SUCCOR cpuid bit to guests. Second, we need to modify
+the MCE injection code to avoid Intel specific behavior when we are
+running on an AMD host.
 
-Looks good to me. One minor comment inline.
->=20
-> --
-> v2: Minor edit to drop reference to switches in patch description.
-> ---
->  include/hw/acpi/cxl.h |  1 +
->  hw/acpi/cxl.c         | 57 +++++++++++++++++++++++++++++++++++++++++++
->  hw/i386/acpi-build.c  |  1 +
->  3 files changed, 59 insertions(+)
->=20
-> diff --git a/include/hw/acpi/cxl.h b/include/hw/acpi/cxl.h
-> index acf4418886..8f22c71530 100644
-> --- a/include/hw/acpi/cxl.h
-> +++ b/include/hw/acpi/cxl.h
-> @@ -25,5 +25,6 @@ void cxl_build_cedt(GArray *table_offsets, GArray *tabl=
-e_data,
->                      BIOSLinker *linker, const char *oem_id,
->                      const char *oem_table_id, CXLState *cxl_state);
->  void build_cxl_osc_method(Aml *dev);
-> +void build_cxl_dsm_method(Aml *dev);
-> =20
->  #endif
-> diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
-> index 92b46bc932..5e9039785a 100644
-> --- a/hw/acpi/cxl.c
-> +++ b/hw/acpi/cxl.c
-> @@ -30,6 +30,63 @@
->  #include "qapi/error.h"
->  #include "qemu/uuid.h"
-> =20
-> +void build_cxl_dsm_method(Aml *dev)
+v2:
+  - Add "succor" feature word.
+  - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
 
-Not a concern for now, I think, do we need to check the revision
-field?
+v3:
+  - Reorder series. Only enable SUCCOR after bugs have been fixed.
+  - Introduce new patch ignoring AO errors.
 
-Fan
-> +{
-> +    Aml *method, *ifctx, *ifctx2;
-> +
-> +    method =3D aml_method("_DSM", 4, AML_SERIALIZED);
-> +    {
-> +        Aml *function, *uuid;
-> +
-> +        uuid =3D aml_arg(0);
-> +        function =3D aml_arg(2);
-> +        /* CXL spec v3.0 9.17.3.1 *, QTG ID _DSM */
-> +        ifctx =3D aml_if(aml_equal(
-> +            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
-> +
-> +        /* Function 0, standard DSM query function */
-> +        ifctx2 =3D aml_if(aml_equal(function, aml_int(0)));
-> +        {
-> +            uint8_t byte_list[1] =3D { 0x01 }; /* functions 1 only */
-> +
-> +            aml_append(ifctx2,
-> +                       aml_return(aml_buffer(sizeof(byte_list), byte_lis=
-t)));
-> +        }
-> +        aml_append(ifctx, ifctx2);
-> +
-> +        /*
-> +         * Function 1
-> +         * A return value of {1, {0}} inciate that
-> +         * max supported QTG ID of 1 and recommended QTG is 0.
-> +         * The values here are faked to simplify emulation.
-> +         */
-> +        ifctx2 =3D aml_if(aml_equal(function, aml_int(1)));
-> +        {
-> +            uint16_t word_list[1] =3D { 0x01 };
-> +            uint16_t word_list2[1] =3D { 0 };
-> +            uint8_t *byte_list =3D (uint8_t *)word_list;
-> +            uint8_t *byte_list2 =3D (uint8_t *)word_list2;
-> +            Aml *pak, *pak1;
-> +
-> +            /*
-> +             * The return package is a package of a WORD and another pac=
-kage.
-> +             * The embedded package contains 0 or more WORDs for the
-> +             * recommended QTG IDs.
-> +             */
-> +            pak1 =3D aml_package(1);
-> +            aml_append(pak1, aml_buffer(sizeof(uint16_t), byte_list2));
-> +            pak =3D aml_package(2);
-> +            aml_append(pak, aml_buffer(sizeof(uint16_t), byte_list));
-> +            aml_append(pak, pak1);
-> +
-> +            aml_append(ifctx2, aml_return(pak));
-> +        }
-> +        aml_append(ifctx, ifctx2);
-> +    }
-> +    aml_append(method, ifctx);
-> +    aml_append(dev, method);
-> +}
-> +
->  static void cedt_build_chbs(GArray *table_data, PXBCXLDev *cxl)
->  {
->      PXBDev *pxb =3D PXB_DEV(cxl);
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index bb12b0ad43..d3bc5875eb 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -1422,6 +1422,7 @@ static void build_acpi0017(Aml *table)
->      method =3D aml_method("_STA", 0, AML_NOTSERIALIZED);
->      aml_append(method, aml_return(aml_int(0x01)));
->      aml_append(dev, method);
-> +    build_cxl_dsm_method(dev);
-> =20
->      aml_append(scope, dev);
->      aml_append(table, scope);
-> --=20
-> 2.39.2
->=20
-> =
+v4:
+  - Remove redundant check for AO errors.
+
+John Allen (2):
+  i386: Fix MCE support for AMD hosts
+  i386: Add support for SUCCOR feature
+
+William Roche (1):
+  i386: Explicitly ignore unsupported BUS_MCEERR_AO MCE on AMD guest
+
+ target/i386/cpu.c     | 18 +++++++++++++++++-
+ target/i386/cpu.h     |  4 ++++
+ target/i386/helper.c  |  4 ++++
+ target/i386/kvm/kvm.c | 28 ++++++++++++++++++++--------
+ 4 files changed, 45 insertions(+), 9 deletions(-)
+
+-- 
+2.39.3
+
 
