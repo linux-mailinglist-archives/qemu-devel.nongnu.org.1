@@ -2,66 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A3F79D56D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 17:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D9C79D5B8
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 18:04:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg5kG-00067z-9I; Tue, 12 Sep 2023 11:56:08 -0400
+	id 1qg5r7-0002bS-WE; Tue, 12 Sep 2023 12:03:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qg5kB-00067e-9x
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 11:56:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qg5k8-0007xI-Uq
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 11:56:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694534160;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=vLiTQI2ctp7aBuz8sVg5RitrZJwufaJgbCFj8rPDCNA=;
- b=QVAFs+U4rpC40XVHOcbb51MyANqP9kuUHHlZVQ1ZCqhA9vnOFv7jZkkzm9mprTk/GZieUP
- S7k1eFMaWZowaH72zXjrVgSz04VPUbIw/zrY/sIV69U/AicKSmx6eK3hSM+8xJQzO25wXa
- 13jpHZg6KnCf0o7XWeEh5YGrBVUJoKM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-588-LSEM45LkMWuh4VggqH1s5w-1; Tue, 12 Sep 2023 11:55:56 -0400
-X-MC-Unique: LSEM45LkMWuh4VggqH1s5w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E2168019DC;
- Tue, 12 Sep 2023 15:55:56 +0000 (UTC)
-Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.193.227])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B5C2C10F1BE7;
- Tue, 12 Sep 2023 15:55:54 +0000 (UTC)
-From: Laszlo Ersek <lersek@redhat.com>
-To: qemu-devel@nongnu.org,
-	lersek@redhat.com
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org
-Subject: [PATCH v2] hw/i386/pc: fix code comment on cumulative flash size
-Date: Tue, 12 Sep 2023 17:55:53 +0200
-Message-Id: <20230912155553.82514-1-lersek@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qg5qv-0002IH-EG
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:03:01 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qg5qq-000549-GC
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 12:03:01 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-401b5516104so61699615e9.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 09:02:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694534572; x=1695139372; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=glsG8iNwdUFvxeFxV5WExE+BPMPw7raWjC23V2NV8fE=;
+ b=VS12aHST/jYzjbvziGaFxtpwpAuuwcJU6yVvBSP29vcXuJHuBbJ5GYOFUZXnpOufiw
+ aRQaTd3GFkC3CgRbVv5skbGhO44gzB9Iopd/FNmUmwbWMo/w5U9RdD48NDw7Hs0QaTe6
+ 1gy/oLixbvRZ1rj8h17EQVSpd9To2PVdrxRgwDMk3ORVEfYdIF67f70GTb2vumJ4wW6S
+ yVUHdEFEhQIgJGxFi3wvBrMwA3OGlur8skzJlGH/XXIAYg9HWHtOMuFPIO7PEBpfy2xe
+ fMybrOIV8BTFNXThPbcMXUwzw1Nq3fRZMAAvhmwrIllSdp4G3cVibsn+8LHYEaOfj2l+
+ 6IZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694534572; x=1695139372;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=glsG8iNwdUFvxeFxV5WExE+BPMPw7raWjC23V2NV8fE=;
+ b=VwguDXPBBKJmAk6gq3cPrRoFtSODMy+q1Afb5/g3hhcyfP1rfOP6xKbSOCJMmptHS/
+ PUbcjxMx+DPxc+5MwEWrpGZ9LsG26u8nBN2yZmh679LfkKM0YN8iu9orDRMeSjL7/rjr
+ K/VLIUVU1RyCbCqqkzCtUhE0JgNk2L/AcvnxO1+3jdR8Lr1lAKbacaxGhR+09Y/VvWgH
+ 975MkwAJnqMU+YfFuA/iDAd1RgyTDmj8DQFADs+nbHF4B7P+pSW7QYTQIvWLMbXGUz6t
+ NuanTe6tt8X4BMHGzUV7Mqap4X5cNKmkAFDZgRif+cYfWRIK6kHT9TlF9CQ+RVqwhe1D
+ Ykow==
+X-Gm-Message-State: AOJu0YxOUbTJgRDuwj0Me5Z3617+pmAz9Mvtbwxm1VLdmzt/aPan50SX
+ HcPANUX1zZq3oaGnnNRNQETNXg==
+X-Google-Smtp-Source: AGHT+IFxMJ3cMGrYIl0dHs4MM7Ewe7/LHBgbqDIqVHgBeVcWBGIGxBT4ojV72nrZ6Ct05p9wRTnkvA==
+X-Received: by 2002:a7b:cb94:0:b0:401:b0f2:88cc with SMTP id
+ m20-20020a7bcb94000000b00401b0f288ccmr11877482wmi.41.1694534571985; 
+ Tue, 12 Sep 2023 09:02:51 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ b13-20020a05600c11cd00b003fefcbe7fa8sm13283371wmi.28.2023.09.12.09.02.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Sep 2023 09:02:51 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 5A17B1FFBB;
+ Tue, 12 Sep 2023 17:02:50 +0100 (BST)
+References: <20230912150611.70676-1-stefanha@redhat.com>
+ <ZQCBoCI6lvJqhsbd@redhat.com>
+User-agent: mu4e 1.11.17; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, Wainer dos
+ Santos Moschetta <wainersm@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Beraldo Leal
+ <bleal@redhat.com>
+Subject: Re: [PATCH] gitlab: remove unreliable avocado CI jobs
+Date: Tue, 12 Sep 2023 17:01:26 +0100
+In-reply-to: <ZQCBoCI6lvJqhsbd@redhat.com>
+Message-ID: <8734zjv0ph.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- MIME_BASE64_TEXT=1.741, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,41 +99,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-LSBUaGUgY29tbWVudCBpcyBpbmNvcnJlY3RseSBpbmRlbnRlZCAvIGZvcm1hdHRlZC4KCi0gVGhl
-IGNvbW1lbnQgc3RhdGVzIGEgOE1CIGxpbWl0LCBldmVuIHRob3VnaCB0aGUgY29kZSBlbmZvcmNl
-cyBhIDE2TUIKICBsaW1pdC4KCkJvdGggb2YgdGhlc2Ugd2FydHMgY29tZSBmcm9tIGNvbW1pdCAw
-NjU3YzY1N2ViMzcgKCJody9pMzg2L3BjOiBhZGQgbWF4CmNvbWJpbmVkIGZ3IHNpemUgYXMgbWFj
-aGluZSBjb25maWd1cmF0aW9uIG9wdGlvbiIsIDIwMjAtMTItMDkpOyBjbGVhbiB0aGVtCnVwLgoK
-QXJndWFibHksIGl0J3MgYWxzbyBiZXR0ZXIgdG8gYmUgY29uc2lzdGVudCB3aXRoIHRoZSBiaW5h
-cnkgdW5pdHMgKHN1Y2ggYXMKIk1pQiIpIHRoYXQgUUVNVSB1c2VzIG5vd2FkYXlzLgoKQ2M6ICJN
-aWNoYWVsIFMuIFRzaXJraW4iIDxtc3RAcmVkaGF0LmNvbT4gKHN1cHBvcnRlcjpQQykKQ2M6IE1h
-cmNlbCBBcGZlbGJhdW0gPG1hcmNlbC5hcGZlbGJhdW1AZ21haWwuY29tPiAoc3VwcG9ydGVyOlBD
-KQpDYzogUGFvbG8gQm9uemluaSA8cGJvbnppbmlAcmVkaGF0LmNvbT4gKG1haW50YWluZXI6WDg2
-IFRDRyBDUFVzKQpDYzogUmljaGFyZCBIZW5kZXJzb24gPHJpY2hhcmQuaGVuZGVyc29uQGxpbmFy
-by5vcmc+IChtYWludGFpbmVyOlg4NiBUQ0cgQ1BVcykKQ2M6IEVkdWFyZG8gSGFia29zdCA8ZWR1
-YXJkb0BoYWJrb3N0Lm5ldD4gKG1haW50YWluZXI6WDg2IFRDRyBDUFVzKQpDYzogcWVtdS10cml2
-aWFsQG5vbmdudS5vcmcKRml4ZXM6IDA2NTdjNjU3ZWIzNwpTaWduZWQtb2ZmLWJ5OiBMYXN6bG8g
-RXJzZWsgPGxlcnNla0ByZWRoYXQuY29tPgotLS0KCk5vdGVzOgogICAgdjI6CiAgICAKICAgIC0g
-dXNlIHRoZSBiaW5hcnkgdW5pdHMgTWlCLCBLaUIsIEdpQiBjb21wcmVoZW5zaXZlbHkgaW4gdGhl
-IGNvbW1lbnQKCiBody9pMzg2L3BjLmMgfCAxMiArKysrKystLS0tLS0KIDEgZmlsZSBjaGFuZ2Vk
-LCA2IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaHcvaTM4Ni9w
-Yy5jIGIvaHcvaTM4Ni9wYy5jCmluZGV4IDU0ODM4YzBjNDExZC4uMGI2NDJlOGFmNTkwIDEwMDY0
-NAotLS0gYS9ody9pMzg2L3BjLmMKKysrIGIvaHcvaTM4Ni9wYy5jCkBAIC0xNzQ2LDEyICsxNzQ2
-LDEyIEBAIHN0YXRpYyB2b2lkIHBjX21hY2hpbmVfc2V0X21heF9md19zaXplKE9iamVjdCAqb2Jq
-LCBWaXNpdG9yICp2LAogICAgIH0KIAogICAgIC8qCi0gICAgKiBXZSBkb24ndCBoYXZlIGEgdGhl
-b3JldGljYWxseSBqdXN0aWZpYWJsZSBleGFjdCBsb3dlciBib3VuZCBvbiB0aGUgYmFzZQotICAg
-ICogYWRkcmVzcyBvZiBhbnkgZmxhc2ggbWFwcGluZy4gSW4gcHJhY3RpY2UsIHRoZSBJTy1BUElD
-IE1NSU8gcmFuZ2UgaXMKLSAgICAqIFsweEZFRTAwMDAwLi4weEZFRTAxMDAwXSAtLSBzZWUgSU9f
-QVBJQ19ERUZBVUxUX0FERFJFU1MgLS0sIGxlYXZpbmcgZnJlZQotICAgICogb25seSAxOE1CLTRL
-QiBiZWxvdyA0Ry4gRm9yIG5vdywgcmVzdHJpY3QgdGhlIGN1bXVsYXRpdmUgbWFwcGluZyB0byA4
-TUIgaW4KLSAgICAqIHNpemUuCi0gICAgKi8KKyAgICAgKiBXZSBkb24ndCBoYXZlIGEgdGhlb3Jl
-dGljYWxseSBqdXN0aWZpYWJsZSBleGFjdCBsb3dlciBib3VuZCBvbiB0aGUgYmFzZQorICAgICAq
-IGFkZHJlc3Mgb2YgYW55IGZsYXNoIG1hcHBpbmcuIEluIHByYWN0aWNlLCB0aGUgSU8tQVBJQyBN
-TUlPIHJhbmdlIGlzCisgICAgICogWzB4RkVFMDAwMDAuLjB4RkVFMDEwMDBdIC0tIHNlZSBJT19B
-UElDX0RFRkFVTFRfQUREUkVTUyAtLSwgbGVhdmluZyBmcmVlCisgICAgICogb25seSAxOE1pQi00
-S2lCIGJlbG93IDRHaUIuIEZvciBub3csIHJlc3RyaWN0IHRoZSBjdW11bGF0aXZlIG1hcHBpbmcg
-dG8KKyAgICAgKiAxNk1pQiBpbiBzaXplLgorICAgICAqLwogICAgIGlmICh2YWx1ZSA+IDE2ICog
-TWlCKSB7CiAgICAgICAgIGVycm9yX3NldGcoZXJycCwKICAgICAgICAgICAgICAgICAgICAiVXNl
-ciBzcGVjaWZpZWQgbWF4IGFsbG93ZWQgZmlybXdhcmUgc2l6ZSAlIiBQUkl1NjQgIiBpcyAiCg==
 
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+
+> On Tue, Sep 12, 2023 at 11:06:11AM -0400, Stefan Hajnoczi wrote:
+>> The avocado-system-alpine, avocado-system-fedora, and
+>> avocado-system-ubuntu jobs are unreliable. I identified them while
+>> looking over CI failures from the past week:
+>> https://gitlab.com/qemu-project/qemu/-/jobs/5058610614
+>> https://gitlab.com/qemu-project/qemu/-/jobs/5058610654
+>> https://gitlab.com/qemu-project/qemu/-/jobs/5030428571
+>>=20
+>> Thomas Huth suggest on IRC today that there may be a legitimate failure
+>> in there:
+>>=20
+>>   th_huth: f4bug, yes, seems like it does not start at all correctly on
+>>   alpine anymore ... and it's broken since ~ 2 weeks already, so if nobo=
+dy
+>>   noticed this by now, this is worrying
+>>=20
+>> It crept in because the jobs were already unreliable.
+>>=20
+>> I don't know how to interpret the job output, so all I can do is to
+>> propose removing these jobs. A useful CI job has two outcomes: pass or
+>> fail. Timeouts and other in-between states are not useful because they
+>> require constant triaging by someone who understands the details of the
+>> tests and they can occur when run against pull requests that have
+>> nothing to do with the area covered by the test.
+>>=20
+>> Hopefully test owners will be able to identify the root causes and solve
+>> them so that these jobs can stay. In their current state the jobs are
+>> not useful since I cannot cannot tell whether job failures are real or
+>> just intermittent when merging qemu.git pull requests.
+>>=20
+>> If you are a test owner, please take a look.
+>>=20
+>> It is likely that other avocado-system-* CI jobs have similar failures
+>> from time to time, but I'll leave them as long as they are passing.
+>>=20
+>> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1884
+>> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+>> ---
+>>  .gitlab-ci.d/buildtest.yml | 27 ---------------------------
+>>  1 file changed, 27 deletions(-)
+>>=20
+>> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+>> index aee9101507..83ce448c4d 100644
+>> --- a/.gitlab-ci.d/buildtest.yml
+>> +++ b/.gitlab-ci.d/buildtest.yml
+>> @@ -22,15 +22,6 @@ check-system-alpine:
+>>      IMAGE: alpine
+>>      MAKE_CHECK_ARGS: check-unit check-qtest
+>>=20=20
+>> -avocado-system-alpine:
+>> -  extends: .avocado_test_job_template
+>> -  needs:
+>> -    - job: build-system-alpine
+>> -      artifacts: true
+>> -  variables:
+>> -    IMAGE: alpine
+>> -    MAKE_CHECK_ARGS: check-avocado
+>
+> Instead of entirely deleting, I'd suggest adding
+>
+>    # Disabled due to frequent random failures
+>    # https://gitlab.com/qemu-project/qemu/-/issues/1884
+>    when: manual
+>
+> See example: https://docs.gitlab.com/ee/ci/yaml/#when
+>
+> This disables the job from running unless someone explicitly
+> tells it to run
+
+What I don't understand is why we didn't gate the release back when they
+first tripped. We should have noticed between:
+
+  https://gitlab.com/qemu-project/qemu/-/pipelines/956543770
+
+and
+
+  https://gitlab.com/qemu-project/qemu/-/pipelines/957154381
+
+that the system tests where regressing. Yet we merged the changes
+anyway.
+
+>
+>> -
+>>  build-system-ubuntu:
+>>    extends:
+>>      - .native_build_job_template
+>> @@ -53,15 +44,6 @@ check-system-ubuntu:
+>>      IMAGE: ubuntu2204
+>>      MAKE_CHECK_ARGS: check
+>>=20=20
+>> -avocado-system-ubuntu:
+>> -  extends: .avocado_test_job_template
+>> -  needs:
+>> -    - job: build-system-ubuntu
+>> -      artifacts: true
+>> -  variables:
+>> -    IMAGE: ubuntu2204
+>> -    MAKE_CHECK_ARGS: check-avocado
+>> -
+>>  build-system-debian:
+>>    extends:
+>>      - .native_build_job_template
+>> @@ -127,15 +109,6 @@ check-system-fedora:
+>>      IMAGE: fedora
+>>      MAKE_CHECK_ARGS: check
+>>=20=20
+>> -avocado-system-fedora:
+>> -  extends: .avocado_test_job_template
+>> -  needs:
+>> -    - job: build-system-fedora
+>> -      artifacts: true
+>> -  variables:
+>> -    IMAGE: fedora
+>> -    MAKE_CHECK_ARGS: check-avocado
+>> -
+>>  crash-test-fedora:
+>>    extends: .native_test_job_template
+>>    needs:
+>> --=20
+>> 2.41.0
+>>=20
+>>=20
+>
+> With regards,
+> Daniel
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
