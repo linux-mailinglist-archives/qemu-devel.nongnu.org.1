@@ -2,75 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3C279D8D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D1A79D8DB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:43:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg8Kf-0004X1-1l; Tue, 12 Sep 2023 14:41:53 -0400
+	id 1qg8Ly-0006YT-2r; Tue, 12 Sep 2023 14:43:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8Kb-0004V4-7h
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8KZ-0001Sl-7w
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694544106;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vrKTV5q71INoyKwvAjiPZ+w9+kylVYW0lrRSYUV0Cfw=;
- b=gMvLIMLN0x1DVmx/OqVjqg5wOxN3A282KQA6cbit0Lg66w6rPFE9soxCTFG3Zk7DW6/QY+
- Xc9Jo9Wv2Z5sA83/2TFIsWeeKAmJKDps4OP9Qq821wPRzPj0mZbZujY4ySRAn7X5T+DkbV
- P3u4sS/uwldbwySuFetnqFFTDaw3QXk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-147-nHacdlGFPt6vjqe_z6T_xg-1; Tue, 12 Sep 2023 14:41:41 -0400
-X-MC-Unique: nHacdlGFPt6vjqe_z6T_xg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB74D8564EF;
- Tue, 12 Sep 2023 18:41:40 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1E05A7B62;
- Tue, 12 Sep 2023 18:41:39 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <lvivier@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- qemu-arm@nongnu.org, Stefan Hajnoczi <stefanha@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 4/4] gitlab: make Cirrus CI jobs gating
-Date: Tue, 12 Sep 2023 19:41:30 +0100
-Message-ID: <20230912184130.3056054-5-berrange@redhat.com>
-In-Reply-To: <20230912184130.3056054-1-berrange@redhat.com>
-References: <20230912184130.3056054-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qg8La-0006MC-Vy
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:42:51 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qg8LX-0002qS-H7
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:42:50 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1bf7a6509deso41237415ad.3
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 11:42:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694544166; x=1695148966; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=B8o0NZWOLnNKN5dJ2mSwfRJOYZJv8zacKJ/K/79RCPM=;
+ b=deN4KaCCGniKPntuRKuAlzfQyUamTrebMhHgQ1qA8y8lACCS8cgjirMuvtnSmoUYrf
+ 9PwcKkswyUtGw7NyHClh8oX5BPRzBPNSXtBf4sJOLkVJE5hOPGmodTkqtRMWywblSCzS
+ d5HhbKLk4mFM+BWGZTABd+c0JNYlGeq72+pyLagMAAfuo5/+WgfFxRmYw+f0SI3BKVYa
+ A77g9+75GFfaANMIbikuEknwHt6pzwotXfFEEWlgMnALG4F+1nx1eG3OmD8BAOtkqj/z
+ T9ABDG7qt2XP/KWHF47yitQYubHZ1Ba50CeIqhA1CgW0Abo8bMjk2pXq0ICq+/UOTYpw
+ kf5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694544166; x=1695148966;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=B8o0NZWOLnNKN5dJ2mSwfRJOYZJv8zacKJ/K/79RCPM=;
+ b=b2+dts1V8mYP+2QTEakWz/bMeHIkO8gSw3MXKID1oiHnEJmSH4J3RCByJ8B8MyymrL
+ +ncyIlAshkLHwZfHwO4Ru2PBCB2ZEHRX+KqnGHIZ1qLDIkODzt/HfYvg8MglFRBcJgn2
+ AUpdeWpz36Tb1roVCzDRwjCeZ/ATfF2VejmCiatEmOldd5B3ASaGgCrohSk40S2rjuHJ
+ 6+BN2W12+GfLnCmaVanDn9lEvUznjWiWzy8pT9pE9s3OYYGmZCceqCCHi87QfV8Al+KC
+ mHT/mjZAqWLnqaW/30juXxTRTS8fS6FKRQ5UfT5ePquYCXho5gHYK5lEWfwI79gYimAy
+ llkQ==
+X-Gm-Message-State: AOJu0YyVL2yu+P7m3SSOysBDIkcagnqBpQMbUljsxKOsBBaSrL8/tnqp
+ y5pSVfVRU6BWgA/n5cCUw6nxZI7YsDgS0W1Wubk=
+X-Google-Smtp-Source: AGHT+IHle09d0z2KgoyBCKNeT3JTeU/BP7ArdxFFe83YPbdeOtO3s2V7TyicZWATl4FRzVSJ95xcng==
+X-Received: by 2002:a17:902:b494:b0:1c0:9ae1:6f8d with SMTP id
+ y20-20020a170902b49400b001c09ae16f8dmr556985plr.32.1694544165775; 
+ Tue, 12 Sep 2023 11:42:45 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ q9-20020a170902788900b001b89466a5f4sm8782849pll.105.2023.09.12.11.42.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Sep 2023 11:42:45 -0700 (PDT)
+Message-ID: <f5bb1f4f-ccab-5245-8f99-2daefd6aecf0@linaro.org>
+Date: Tue, 12 Sep 2023 11:42:38 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH 03/11] accel/tcg: Modify tlb_*() to use CPUState
+Content-Language: en-US
+To: Anton Johansson <anjo@rev.ng>, qemu-devel@nongnu.org
+Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org,
+ peter.maydell@linaro.org
+References: <20230912153428.17816-1-anjo@rev.ng>
+ <20230912153428.17816-4-anjo@rev.ng>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230912153428.17816-4-anjo@rev.ng>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,30 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Cirrus CI jobs have been non-gating for a while to let us build
-confidence in their reliability. Aside from periodic dependancy
-problems when FreeBSD Ports switches to be based on a new FreeBSD
-image version, the jobs have been reliable. It is thus worth making
-them gating to prevent build failures being missed during merges.
+On 9/12/23 08:34, Anton Johansson wrote:
+> Changes tlb_*() functions to take CPUState instead of CPUArchState, as
+> they don't require the full CPUArchState. This makes it easier to
+> decouple target-(in)dependent code.
+> 
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> ---
+>   include/exec/cpu_ldst.h |   8 +-
+>   accel/tcg/cputlb.c      | 218 +++++++++++++++++++---------------------
+>   2 files changed, 107 insertions(+), 119 deletions(-)
+> 
+> diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+> index da10ba1433..8d168f76ce 100644
+> --- a/include/exec/cpu_ldst.h
+> +++ b/include/exec/cpu_ldst.h
+> @@ -361,19 +361,19 @@ static inline uint64_t tlb_addr_write(const CPUTLBEntry *entry)
+>   }
+>   
+>   /* Find the TLB index corresponding to the mmu_idx + address pair.  */
+> -static inline uintptr_t tlb_index(CPUArchState *env, uintptr_t mmu_idx,
+> +static inline uintptr_t tlb_index(CPUState *cpu, uintptr_t mmu_idx,
+>                                     vaddr addr)
+>   {
+> -    uintptr_t size_mask = env_tlb(env)->f[mmu_idx].mask >> CPU_TLB_ENTRY_BITS;
+> +    uintptr_t size_mask = cpu_tlb(cpu)->f[mmu_idx].mask >> CPU_TLB_ENTRY_BITS;
 
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
- .gitlab-ci.d/cirrus.yml | 1 -
- 1 file changed, 1 deletion(-)
+No, I think this is a bad idea, because it bakes an extra memory indirection into very 
+fundamental routines.
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 816d89cc2a..e7f1f83c2c 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -19,7 +19,6 @@
-   # as there's often a 5-10 minute delay before Cirrus CI
-   # actually starts the task
-   timeout: 80m
--  allow_failure: true
-   script:
-     - source .gitlab-ci.d/cirrus/$NAME.vars
-     - sed -e "s|[@]CI_REPOSITORY_URL@|$CI_REPOSITORY_URL|g"
--- 
-2.41.0
+If we change anything here, we should pass in CPUTLB.
 
+
+r~
 
