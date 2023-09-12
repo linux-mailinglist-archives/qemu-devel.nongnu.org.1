@@ -2,85 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A44579CFAC
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 13:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 787AD79CFD2
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 13:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg1P5-0005Bl-2n; Tue, 12 Sep 2023 07:17:59 -0400
+	id 1qg1VE-0007JL-Gz; Tue, 12 Sep 2023 07:24:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qg1P3-0005BI-7a
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:17:57 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qg1Oz-0001kz-8E
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:17:56 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-313e742a787so3445774f8f.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 04:17:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694517471; x=1695122271; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=85UTq3jAiV07PhU0DmElk1A0UttCR8iC8owBGfX2y+8=;
- b=UThyTTbZJgZCq737HLPts5Rdcp9nn3RLXRFPKhnxAX0+RgNqikFtDS4hq+AEKbCA55
- ST2UwDSzDvaUFW6EeYKm3oj1udVzMoJAacY7I55IpNKP2oyjkX5T2dnsFnC00baHlDdd
- EeOlGiK61BzJwo7enPPtih9272npk4mB3bgFrYteRHsZXVe+gnV14GO8eIx75kdgWC+p
- rAiulb++C6J1JI7UW53ULjgW+w+rjrd3uj6D8aG3mYlt3SYlvSi//yELunOsCSDeGKoC
- nNdcwN+2xOjbvMEFPXxVruqINnSIwt+kmIEZseBsbDJU7xWu68mRVgng7ekPisN37Lbz
- fAZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694517471; x=1695122271;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=85UTq3jAiV07PhU0DmElk1A0UttCR8iC8owBGfX2y+8=;
- b=rhyMfo5VY/5zKLT2byWdaJBkQoYDQLcY3ISucBCn3W8Zz1PTj8SboujrOWoMfVn5Tu
- /Y/BQ8FsuYvuDOWY+u9QeVy+Ziv0vxAPgKDpAVKFbF4jmsKfdPXnQnFe7zJZV/l6FZyl
- 6xCcsaimjVUNX9V3ZZROAIit02ClzlffLelfmRFGHY2xnS77JSmJS8Co13S7MTSBih1N
- xT1H451pIlyynnRciZG+bzes/XFMvAxP2fI96QyTOq/nhNDcg+HdYcm/udJ4gd5Se0Py
- R6LGjmTIPsxPfkCO03FdlW0lUqxDoTxw/Gbs2ZR9odWCU8a7MMlqkxUTnZpNA4mUTUbR
- v7cw==
-X-Gm-Message-State: AOJu0Yx0UHZ730G8NdbvDnqua6XOkUNzY8bujg/N1Ff6vliWcaSCmO3T
- RUuSY+AlMZorWO9azqqQ9e8EdQ==
-X-Google-Smtp-Source: AGHT+IE2XjbMJr1Xz0aEVEjQIzSKR/Nbf4LjA9MD+JhFQksbFQctZv8ArpT0Yfmcf4gejE34gAUk9A==
-X-Received: by 2002:a05:6000:1364:b0:31c:8c5f:877e with SMTP id
- q4-20020a056000136400b0031c8c5f877emr1556316wrz.33.1694517470994; 
- Tue, 12 Sep 2023 04:17:50 -0700 (PDT)
-Received: from [192.168.69.115] (cou50-h01-176-172-50-150.dsl.sta.abo.bbox.fr.
- [176.172.50.150]) by smtp.gmail.com with ESMTPSA id
- bu21-20020a056000079500b003196b1bb528sm4781870wrb.64.2023.09.12.04.17.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 04:17:50 -0700 (PDT)
-Message-ID: <b8e7e4c5-92dc-d82c-cb61-abfbaa6e5f0b@linaro.org>
-Date: Tue, 12 Sep 2023 13:17:48 +0200
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qg1VA-0007FN-3x
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:24:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qg1V6-000760-PC
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:24:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694517852;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=NwUupKOp6Yp1nzu8wjcbmmKh7R11nA+GVOj+Fv3uRLI=;
+ b=hXHdLpDpo6w3lRjCIh0b/n1kMgFRImVEoTCY8kAhmN6YbSYTuOShWG27JChAxmH6oJoqp0
+ hMxMaB9w5hlFvy669pjGUYoI9ZAbiPs56PFE0J70l4/TH9pZVEMYeZg8kt2TYCyan2K+Mr
+ sQBPJDFWekzZC/WrOXHRg9byqKlafqY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-530-I6LMR3CjNT-50PcHOkGfJg-1; Tue, 12 Sep 2023 07:24:08 -0400
+X-MC-Unique: I6LMR3CjNT-50PcHOkGfJg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 76C388030B1;
+ Tue, 12 Sep 2023 11:24:08 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.95])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3BBCC7B62;
+ Tue, 12 Sep 2023 11:24:08 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 0A4B71800097; Tue, 12 Sep 2023 13:24:07 +0200 (CEST)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 0/5] Firmware/edk2 20230912 patches
+Date: Tue, 12 Sep 2023 13:23:54 +0200
+Message-ID: <20230912112406.571966-1-kraxel@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] vdpa: fix gcc cvq_isolated uninitialized variable warning
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?Eugenio_P=c3=a9rez?=
- <eperezma@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-References: <20230911215435.4156314-1-stefanha@redhat.com>
- <430ea775-678f-e5ac-d548-6556dcf54e06@linaro.org>
- <CAJSP0QUiTQVuq3OhVcZmHjmChDJtVFhH8YmEZQmHBfTAWhESwQ@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CAJSP0QUiTQVuq3OhVcZmHjmChDJtVFhH8YmEZQmHBfTAWhESwQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,97 +76,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/9/23 12:48, Stefan Hajnoczi wrote:
-> On Tue, 12 Sept 2023 at 02:19, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
->>
->> On 11/9/23 23:54, Stefan Hajnoczi wrote:
->>> gcc 13.2.1 emits the following warning:
->>>
->>>     net/vhost-vdpa.c: In function ‘net_vhost_vdpa_init.constprop’:
->>>     net/vhost-vdpa.c:1394:25: error: ‘cvq_isolated’ may be used uninitialized [-Werror=maybe-uninitialized]
->>>      1394 |         s->cvq_isolated = cvq_isolated;
->>>           |         ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
->>>     net/vhost-vdpa.c:1355:9: note: ‘cvq_isolated’ was declared here
->>>      1355 |     int cvq_isolated;
->>>           |         ^~~~~~~~~~~~
->>>     cc1: all warnings being treated as errors
->>>
->>> Cc: Eugenio Pérez <eperezma@redhat.com>
->>> Cc: Michael S. Tsirkin <mst@redhat.com>
->>> Cc: Jason Wang <jasowang@redhat.com>
->>> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->>> ---
->>>    net/vhost-vdpa.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->>> index 34202ca009..7eaee841aa 100644
->>> --- a/net/vhost-vdpa.c
->>> +++ b/net/vhost-vdpa.c
->>> @@ -1352,7 +1352,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
->>>        VhostVDPAState *s;
->>>        int ret = 0;
->>>        assert(name);
->>> -    int cvq_isolated;
->>> +    int cvq_isolated = 0;
->>>
->>>        if (is_datapath) {
->>>            nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
->>
->> Alternatively:
->>
->> -- >8 --
->> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
->> index 34202ca009..218fe0c305 100644
->> --- a/net/vhost-vdpa.c
->> +++ b/net/vhost-vdpa.c
->> @@ -1352,13 +1352,12 @@ static NetClientState
->> *net_vhost_vdpa_init(NetClientState *peer,
->>        VhostVDPAState *s;
->>        int ret = 0;
->>        assert(name);
->> -    int cvq_isolated;
->>
->>        if (is_datapath) {
->>            nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
->>                                     name);
->>        } else {
->> -        cvq_isolated = vhost_vdpa_probe_cvq_isolation(vdpa_device_fd,
->> features,
->> +        int cvq_isolated =
->> vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, features,
->>                                                          queue_pair_index
->> * 2,
->>                                                          errp);
->>            if (unlikely(cvq_isolated < 0)) {
->> @@ -1391,7 +1390,7 @@ static NetClientState
->> *net_vhost_vdpa_init(NetClientState *peer,
->>
->>            s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
->>            s->vhost_vdpa.shadow_vq_ops_opaque = s;
->> -        s->cvq_isolated = cvq_isolated;
->> +        s->cvq_isolated = true;
-> 
-> This is incorrect because the return value of
-> vhost_vdpa_probe_cvq_isolation() is -errno for errors, 0 for no cvq
-> isolation, and 1 for cvq isolation. A variable is still needed to
-> distinguish between no cvq isolation and cvq isolation.
+The following changes since commit c5ea91da443b458352c1b629b490ee6631775cb4:
 
-Oh, I was expecting a boolean for a field named 'cvq_isolated',
-my bad. R-b stands for your patch.
+  Merge tag 'pull-trivial-patches' of https://gitlab.com/mjt0k/qemu into staging (2023-09-08 10:06:25 -0400)
 
-Regards,
+are available in the Git repository at:
 
-Phil.
+  https://gitlab.com/kraxel/qemu.git tags/firmware/edk2-20230912-pull-request
 
-> 
->>
->> ---
->>
->> Whichever you prefer:
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->>
+for you to fetch changes up to ab3169385f4a8bb35b6e102f73383b66aa7b9f86:
+
+  edk2: update binaries to edk2-stable202308 (2023-09-12 13:20:41 +0200)
+
+----------------------------------------------------------------
+edk2: update to Aug 2023 stable tag
+
+----------------------------------------------------------------
+
+Gerd Hoffmann (5):
+  edk2: update build script
+  edk2: update build config
+  edk2: update submodule to edk2-stable202308
+  edk2: workaround edk-stable202308 bug
+  edk2: update binaries to edk2-stable202308
+
+ roms/edk2-build.py                     | 202 ++++++++++++++++---------
+ pc-bios/edk2-aarch64-code.fd.bz2       | Bin 1508184 -> 1573561 bytes
+ pc-bios/edk2-arm-code.fd.bz2           | Bin 1483149 -> 1560966 bytes
+ pc-bios/edk2-i386-code.fd.bz2          | Bin 1695318 -> 1770410 bytes
+ pc-bios/edk2-i386-secure-code.fd.bz2   | Bin 1922002 -> 2121818 bytes
+ pc-bios/edk2-riscv-code.fd.bz2         | Bin 0 -> 1177402 bytes
+ pc-bios/edk2-riscv-vars.fd.bz2         | Bin 0 -> 231 bytes
+ pc-bios/edk2-riscv.fd.bz2              | Bin 1096418 -> 0 bytes
+ pc-bios/edk2-x86_64-code.fd.bz2        | Bin 1796544 -> 1887921 bytes
+ pc-bios/edk2-x86_64-microvm.fd.bz2     | Bin 1697788 -> 1782629 bytes
+ pc-bios/edk2-x86_64-secure-code.fd.bz2 | Bin 1999841 -> 2200701 bytes
+ roms/edk2                              |   2 +-
+ roms/edk2-build.config                 |  12 +-
+ 13 files changed, 139 insertions(+), 77 deletions(-)
+ create mode 100644 pc-bios/edk2-riscv-code.fd.bz2
+ create mode 100644 pc-bios/edk2-riscv-vars.fd.bz2
+ delete mode 100644 pc-bios/edk2-riscv.fd.bz2
+
+-- 
+2.41.0
 
 
