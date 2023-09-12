@@ -2,87 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5618179C766
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 09:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF48179C765
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 09:00:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfxMT-00018J-8Q; Tue, 12 Sep 2023 02:59:01 -0400
+	id 1qfxM6-0000be-7f; Tue, 12 Sep 2023 02:58:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qfxMM-0000ul-Oh
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:55 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qfxMK-0007as-FN
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:54 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-273d10d3df3so3305444a91.3
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694501929; x=1695106729;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YR6f2ljT/PkMnpwGwuqVmtD8rXDReW0mqLVfL5y4OQE=;
- b=OM+of/Y48FEkCqJOufpI9t1/OzCNnJdKc3O13Eqc3MP++EFysxbREvC0onTvkP8HEk
- 1Zra+OC+fUy1+faCeFIXigP56MQ3HvGBxZXB0PL855XPJYidwbpMErzbt3oXaqY3QCRQ
- fR5Ytlzomxdbale4OKwLYI/bL9ea/i6d4A1kSFOqyR2hkRQZFcW8ZjHI0Q3WefSZ5F1H
- ryN2/fgehZjn1LfySy0liPd/4JjCd/s1f7fNmanzEhORKLxY/CY/hqq9s7D2qVTr7ymC
- j9zoqSdHTVTQpsDRyIOjLf79qNzF8W9RidZOAUW2k6qNUXf87w+LlGzwaakQ5FBepj3r
- VhCA==
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qfxM2-0000U2-GI
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qfxLz-0007Ug-VY
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:58:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694501910;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=wZrTqukWHnPWWbvnZDqlF5kaRTDI2U9oKEUB+v8CpRA=;
+ b=UXmCyIk6sCnoS+EXAcvRWOfavIiKHHmypqKRwIQhBodv5gmkA3xZgMO8/eBqMZ+F2S1Ph2
+ PIsIeHWVIO6Q6WbXXsAsOp1Dv8yTK+KUBOl/wWsIjpHGSWCiIfpnsLJ2vSPeuCst/Y49v7
+ +R648QZ2gbB+kq1z4PhaFjS8FIbd0ho=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-439-5UR58K-TOSKU6iwfo8V_FA-1; Tue, 12 Sep 2023 02:58:28 -0400
+X-MC-Unique: 5UR58K-TOSKU6iwfo8V_FA-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-273983789adso6327480a91.0
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:58:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694501929; x=1695106729;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YR6f2ljT/PkMnpwGwuqVmtD8rXDReW0mqLVfL5y4OQE=;
- b=SCuK62SxWyM/cRl8HFfNq4bVjN0zglLlNg0u9EcQ8dm/8dxKyHC8iKApENk9aka0BF
- VUEXJdlCfL7mDKXnXMxnSwjqxpyvj/KnMlOy69HdKItVxtviCFTjmCcO3zc1y3DR2YPf
- mUHd49r+lOU3DDK83dvNIGv9VmOUsP6VSGHMuHNjJFCeh7PrM3vpvfbKIiJ34ZNDqUXp
- 7ojZhfwgZQ4A6+EdIv2KWUlPCVoCAbdu0XZaNOnMHO8jPfnZNiCjbB/+YABBPzQZhpiR
- WsCPudq0vwIY/Kq6skoXPGfQQZJ4adIe44Q4FUP67isbT5IldZOoFyDO74c7izwtcikc
- ZY6w==
-X-Gm-Message-State: AOJu0YxhXJLJJjV09fBNcp7gtq/Lzuz+DaIFqR8uktx2Qhv7LC4oaNE2
- aT9WVjfZfEXTHQeFbCJKsPUEhA==
-X-Google-Smtp-Source: AGHT+IF9TOgQPUhoOgxLskBgRqjhDi4h3eqOseqbEVO+VnHesztNvq+S0N4PgK4b1DJ9DyTzhXr8Jw==
-X-Received: by 2002:a17:90b:1488:b0:268:ac99:4bb4 with SMTP id
- js8-20020a17090b148800b00268ac994bb4mr9709232pjb.46.1694501929190; 
- Mon, 11 Sep 2023 23:58:49 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- i8-20020a17090a2ac800b002696aeb72e5sm9315058pjg.2.2023.09.11.23.58.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 11 Sep 2023 23:58:48 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH v2 11/11] gdbstub: Replace gdb_regs with an array
-Date: Tue, 12 Sep 2023 15:58:06 +0900
-Message-ID: <20230912065811.27796-12-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230912065811.27796-1-akihiko.odaki@daynix.com>
-References: <20230912065811.27796-1-akihiko.odaki@daynix.com>
+ d=1e100.net; s=20230601; t=1694501907; x=1695106707;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wZrTqukWHnPWWbvnZDqlF5kaRTDI2U9oKEUB+v8CpRA=;
+ b=CMeEIleIaSSatNozq60iziKCEUixihl+ALU9w+6qQ1GYlGIHOp6p33FAPBZ4WTfxDQ
+ 0LWLimhJdlUcRFxYT0aW0Yf4MquFGukUrSnILErSQs2MdzPUnEPa7hKZh/nkSGeBGFsj
+ wYrAj5WtXgkbH9/QBMjvOQcNpjUCoSWTHkutwWOQS4kYsONtugfH3rSLsbMMnrn850yQ
+ Wm0j9YxQOaP9t5cxUfnehHmiNza8074mzA7C6rPzNqV8//EvLTXHN9xc9Z/KCfKRndhH
+ 1LN7nT6q9txlQ1z+f/b7r5UPFpd2zlxdkklfJNM4VboNhydjMZpe2jm+4jqeNFDQnnV+
+ HcYg==
+X-Gm-Message-State: AOJu0YydGf4v4BDp3BLXuA5p8pL+1c0eR0cMGt+7fSwQIFGfPQ6h/SF6
+ ye+nN2kf1+l5LkkeLd8o+CTtNZFciKK+1ot5FQ49S+TZzieGF1XQbJ9a+C0TEPnBQYmNI+R1F8/
+ /Tb4yH1as+AOfPyeJeaVyyLQFB07Nj+M=
+X-Received: by 2002:a17:90b:1988:b0:262:ded7:63d with SMTP id
+ mv8-20020a17090b198800b00262ded7063dmr9558697pjb.17.1694501907584; 
+ Mon, 11 Sep 2023 23:58:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEdhPk2C53JGPn6b40/XqlpTSfZL9/bzKuDoxeb/5Ra9gFzlgnRZoIqPlSwcJcjyRHBsEig8rOITNLrzDKCuoA=
+X-Received: by 2002:a17:90b:1988:b0:262:ded7:63d with SMTP id
+ mv8-20020a17090b198800b00262ded7063dmr9558688pjb.17.1694501907303; Mon, 11
+ Sep 2023 23:58:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1034;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20230912062836.1530898-1-marcandre.lureau@redhat.com>
+In-Reply-To: <20230912062836.1530898-1-marcandre.lureau@redhat.com>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Tue, 12 Sep 2023 08:58:16 +0200
+Message-ID: <CADSE00+RX4=0zGs+JvP=Un2+f44MrXpKB+buL=C_Za_K=Zya9g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] ui: fix crash when there are no active_console
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: multipart/alternative; boundary="00000000000041a4f7060523f8c5"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,112 +92,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An array is a more appropriate data structure than a list for gdb_regs
-since it is initialized only with append operation and read-only after
-initialization.
+--00000000000041a4f7060523f8c5
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- include/hw/core/cpu.h |  2 +-
- gdbstub/gdbstub.c     | 34 ++++++++++++++++++++--------------
- 2 files changed, 21 insertions(+), 15 deletions(-)
+On Tue, Sep 12, 2023 at 8:28=E2=80=AFAM <marcandre.lureau@redhat.com> wrote=
+:
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 4f5c7eb04e..c84c631242 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -375,7 +375,7 @@ struct CPUState {
- 
-     CPUJumpCache *tb_jmp_cache;
- 
--    struct GDBRegisterState *gdb_regs;
-+    GArray *gdb_regs;
-     int gdb_num_regs;
-     int gdb_num_g_regs;
-     QTAILQ_ENTRY(CPUState) node;
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 177dce9ba2..9810d15278 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -51,7 +51,6 @@ typedef struct GDBRegisterState {
-     gdb_get_reg_cb get_reg;
-     gdb_set_reg_cb set_reg;
-     const char *xml;
--    struct GDBRegisterState *next;
- } GDBRegisterState;
- 
- GDBState gdbserver_state;
-@@ -386,7 +385,8 @@ static const char *get_feature_xml(const char *p, const char **newp,
-                 xml,
-                 g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-                                         cc->gdb_core_xml_file));
--            for (r = cpu->gdb_regs; r; r = r->next) {
-+            for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+                r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-                 g_ptr_array_add(
-                     xml,
-                     g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-@@ -430,7 +430,8 @@ static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-         return cc->gdb_read_register(cpu, buf, reg);
-     }
- 
--    for (r = cpu->gdb_regs; r; r = r->next) {
-+    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+        r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-         if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-             return r->get_reg(env, buf, reg - r->base_reg);
-         }
-@@ -448,7 +449,8 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-         return cc->gdb_write_register(cpu, mem_buf, reg);
-     }
- 
--    for (r = cpu->gdb_regs; r; r = r->next) {
-+    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+        r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-         if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-             return r->set_reg(env, mem_buf, reg - r->base_reg);
-         }
-@@ -461,17 +463,22 @@ void gdb_register_coprocessor(CPUState *cpu,
-                               int num_regs, const char *xml, int g_pos)
- {
-     GDBRegisterState *s;
--    GDBRegisterState **p;
--
--    p = &cpu->gdb_regs;
--    while (*p) {
--        /* Check for duplicates.  */
--        if (strcmp((*p)->xml, xml) == 0)
--            return;
--        p = &(*p)->next;
-+    guint i;
-+
-+    if (cpu->gdb_regs) {
-+        for (i = 0; i < cpu->gdb_regs->len; i++) {
-+            /* Check for duplicates.  */
-+            s = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+            if (strcmp(s->xml, xml) == 0)
-+                return;
-+        }
-+    } else {
-+        cpu->gdb_regs = g_array_new(false, false, sizeof(GDBRegisterState));
-+        i = 0;
-     }
- 
--    s = g_new0(GDBRegisterState, 1);
-+    g_array_set_size(cpu->gdb_regs, i + 1);
-+    s = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-     s->base_reg = cpu->gdb_num_regs;
-     s->num_regs = num_regs;
-     s->get_reg = get_reg;
-@@ -480,7 +487,6 @@ void gdb_register_coprocessor(CPUState *cpu,
- 
-     /* Add to end of list.  */
-     cpu->gdb_num_regs += num_regs;
--    *p = s;
-     if (g_pos) {
-         if (g_pos != s->base_reg) {
-             error_report("Error: Bad gdb register numbering for '%s', "
--- 
-2.42.0
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+> 0x0000555555888630 in dpy_ui_info_supported (con=3D0x0) at
+> ../ui/console.c:812
+> 812         return con->hw_ops->ui_info !=3D NULL;
+> (gdb) bt
+> #0  0x0000555555888630 in dpy_ui_info_supported (con=3D0x0) at
+> ../ui/console.c:812
+> #1  0x00005555558a44b1 in protocol_client_msg (vs=3D0x5555578c76c0,
+> data=3D0x5555581e93f0 <incomplete sequence \373>, len=3D24) at ../ui/vnc.=
+c:2585
+> #2  0x00005555558a19ac in vnc_client_read (vs=3D0x5555578c76c0) at
+> ../ui/vnc.c:1607
+> #3  0x00005555558a1ac2 in vnc_client_io (ioc=3D0x5555581eb0e0,
+> condition=3DG_IO_IN, opaque=3D0x5555578c76c0) at ../ui/vnc.c:1635
+>
+> Fixes:
+> https://issues.redhat.com/browse/RHEL-2600
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> ---
+>  ui/console.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/ui/console.c b/ui/console.c
+> index 90ae4be602..0fbec4d0bd 100644
+> --- a/ui/console.c
+> +++ b/ui/console.c
+> @@ -808,6 +808,9 @@ bool dpy_ui_info_supported(QemuConsole *con)
+>      if (con =3D=3D NULL) {
+>          con =3D active_console;
+>      }
+> +    if (con =3D=3D NULL) {
+> +        return false;
+> +    }
+>
+>      return con->hw_ops->ui_info !=3D NULL;
+>  }
+> --
+> 2.41.0
+>
+> Reviewed-by: Albert Esteve <aesteve@redhat.com>
+
+--00000000000041a4f7060523f8c5
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Sep 12, 2023 at 8:28=E2=80=AF=
+AM &lt;<a href=3D"mailto:marcandre.lureau@redhat.com">marcandre.lureau@redh=
+at.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
+argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
+:1ex">From: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@r=
+edhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
+<br>
+Thread 1 &quot;qemu-system-x86&quot; received signal SIGSEGV, Segmentation =
+fault.<br>
+0x0000555555888630 in dpy_ui_info_supported (con=3D0x0) at ../ui/console.c:=
+812<br>
+812=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return con-&gt;hw_ops-&gt;ui_info !=3D=
+ NULL;<br>
+(gdb) bt<br>
+#0=C2=A0 0x0000555555888630 in dpy_ui_info_supported (con=3D0x0) at ../ui/c=
+onsole.c:812<br>
+#1=C2=A0 0x00005555558a44b1 in protocol_client_msg (vs=3D0x5555578c76c0, da=
+ta=3D0x5555581e93f0 &lt;incomplete sequence \373&gt;, len=3D24) at ../ui/vn=
+c.c:2585<br>
+#2=C2=A0 0x00005555558a19ac in vnc_client_read (vs=3D0x5555578c76c0) at ../=
+ui/vnc.c:1607<br>
+#3=C2=A0 0x00005555558a1ac2 in vnc_client_io (ioc=3D0x5555581eb0e0, conditi=
+on=3DG_IO_IN, opaque=3D0x5555578c76c0) at ../ui/vnc.c:1635<br>
+<br>
+Fixes:<br>
+<a href=3D"https://issues.redhat.com/browse/RHEL-2600" rel=3D"noreferrer" t=
+arget=3D"_blank">https://issues.redhat.com/browse/RHEL-2600</a><br>
+<br>
+Signed-off-by: Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lurea=
+u@redhat.com" target=3D"_blank">marcandre.lureau@redhat.com</a>&gt;<br>
+---<br>
+=C2=A0ui/console.c | 3 +++<br>
+=C2=A01 file changed, 3 insertions(+)<br>
+<br>
+diff --git a/ui/console.c b/ui/console.c<br>
+index 90ae4be602..0fbec4d0bd 100644<br>
+--- a/ui/console.c<br>
++++ b/ui/console.c<br>
+@@ -808,6 +808,9 @@ bool dpy_ui_info_supported(QemuConsole *con)<br>
+=C2=A0 =C2=A0 =C2=A0if (con =3D=3D NULL) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0con =3D active_console;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
++=C2=A0 =C2=A0 if (con =3D=3D NULL) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return false;<br>
++=C2=A0 =C2=A0 }<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0return con-&gt;hw_ops-&gt;ui_info !=3D NULL;<br>
+=C2=A0}<br>
+-- <br>
+2.41.0<br>
+<br></blockquote><div>Reviewed-by: Albert Esteve &lt;<a href=3D"mailto:aest=
+eve@redhat.com">aesteve@redhat.com</a>&gt;=C2=A0</div></div></div>
+
+--00000000000041a4f7060523f8c5--
 
 
