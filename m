@@ -2,93 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 619A079C965
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AED79C9E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:28:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfyUB-0001M7-Qa; Tue, 12 Sep 2023 04:11:03 -0400
+	id 1qfyjN-00018f-Ng; Tue, 12 Sep 2023 04:26:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfyU7-0001Lt-MU
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:10:59 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfyU5-0001d6-C2
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:10:59 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9a645e54806so660083866b.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 01:10:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694506256; x=1695111056; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tag4LaXwTeMt6fj7GAFey8WPL6VPvTFiR3Hdgjc7UmM=;
- b=fFQ9GPa87s5wvOCQXydyGBEtWLgg4i4raRlSlr6Ow0iRT1k8UrqNd1ilG68FYEbhkk
- ShhkcBvITGkEpVNNJM2RZa+RIgqxBuQJwZ8hraHYVBfg2sHnxiQs0twcvqDAtQ9YbS+1
- w3Kk/SNtw5C8v5/oshX/1X3G9Xbf28dV4E1rGP8/zApt/pBrJr1PQWjiRPJwtkUZk3W/
- Z/Tt+07FYNK/AG3E4tZlV+WLuuY3i2o6EA6YIL0ZEAKFQH8EnpGUhrx02+BlD/UMqECe
- /MNy931449GDsxwQmmcDTaLoK8RtLsOHESONCLfyWYk/5dQLJDkidSwvPQyB4o936uaC
- AYyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694506256; x=1695111056;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tag4LaXwTeMt6fj7GAFey8WPL6VPvTFiR3Hdgjc7UmM=;
- b=BfVxZddgPuL1I7vEaweIxDPWalIsF9XcQm/vtZtiGrGXYiNRySR7ql+7BujOW4LwsR
- 4bX9X4AZDnfA3iklx19BT065OqYTtH4Ex4bytInsGIgnfw9DW9ArpxoCWYuomGROMw9t
- B2Cpcn6pu/vLuAxlhK5njHQ7+NeqkZpV5MnIXfv+nDRF/QDzHYVpCqxrFitgqVS4nitV
- QMablPw7B+fLxR0gPTvREBlSyKu1Mf0bIJUWSDizSMaTHWVFkwMHwPg80/aOgSsOYIoJ
- BQhQoherPkOe+O06KD1j6KKWJ0GxXqDtz0fBTJe0FP4xNx3KNcAcrJRufpvZ38Qc9G9T
- xDJQ==
-X-Gm-Message-State: AOJu0YwosSXs2NNaDdlV5O90TvhkelCKZWyVmS1f1dgqd7p0QNSgHHqu
- RKmQczm9E4e2qknua5Z0NesZfQ==
-X-Google-Smtp-Source: AGHT+IH0ylhRMhSNzsWFXyfg5x0Sfu+tWbJgQOWeUKAKg7TqUrBPa1fJMR7QK2oGi09pwkz3d1qIqg==
-X-Received: by 2002:a17:906:3299:b0:9a1:c447:3c62 with SMTP id
- 25-20020a170906329900b009a1c4473c62mr9853044ejw.49.1694506255671; 
- Tue, 12 Sep 2023 01:10:55 -0700 (PDT)
-Received: from [192.168.69.115] (cou50-h01-176-172-50-150.dsl.sta.abo.bbox.fr.
- [176.172.50.150]) by smtp.gmail.com with ESMTPSA id
- i18-20020a17090671d200b0099cf840527csm6497784ejk.153.2023.09.12.01.10.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 01:10:54 -0700 (PDT)
-Message-ID: <043acdaf-219b-b2b5-6b2d-056ba1bd9ce2@linaro.org>
-Date: Tue, 12 Sep 2023 10:10:52 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 03/10] make qdev_disconnect_gpio_out_named() public
-Content-Language: en-US
-To: xianglai li <lixianglai@loongson.cn>, Salil Mehta <salil.mehta@opnsrc.net>
-Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>, 
- qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qfyjJ-00018N-M7
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:26:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qfyjG-0007PZ-Ib
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:26:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694507195;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jhmke+dGn8Kyd2GVWFpaViofWfgkfL6LGx7bEbBVGW4=;
+ b=jORl/e1fzVVTucPjsCGUwlV7FjHvwYR8/MBapZBjPLPnxNMBaoWwf0G+B+m9EyM9vfQCK9
+ CSAv0vtkw8r7VrozTaBo0CthSgyXuCCv4q6ZfGpa//1pshwkyR/FQZJDhW9cb9CzYoTf5Z
+ BufCjzeySurlYjOHItM9HqIQTgE08DM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-49-x81DcOawMm-pFJ7Hcrt9fA-1; Tue, 12 Sep 2023 04:26:31 -0400
+X-MC-Unique: x81DcOawMm-pFJ7Hcrt9fA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A65F6101FAA0;
+ Tue, 12 Sep 2023 08:26:30 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.38])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BBCF87B62;
+ Tue, 12 Sep 2023 08:26:28 +0000 (UTC)
+Date: Tue, 12 Sep 2023 09:26:26 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
+ joao.m.martins@oracle.com,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Bibo Mao <maobibo@loongson.cn>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Markus Armbruster <armbru@redhat.com>
-References: <cover.1694433326.git.lixianglai@loongson.cn>
- <d3e388d55f36a93108d0f7b1736f97435237cb77.1694433326.git.lixianglai@loongson.cn>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <d3e388d55f36a93108d0f7b1736f97435237cb77.1694433326.git.lixianglai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened
+ format when necessary
+Message-ID: <ZQAgsmXRYFqRx7dI@redhat.com>
+References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
+ <20230717163855.7383-3-stephen.s.brennan@oracle.com>
+ <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
+ <87edl4d9wi.fsf@oracle.com> <87fs4aha4t.fsf@oracle.com>
+ <CAJ+F1CKCdy3J8AD9EGvVO+CU6-yFPrLZ2Lum1SDgdj_kghFdQw@mail.gmail.com>
+ <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,99 +89,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-
-On 12/9/23 04:11, xianglai li wrote:
-> It will be reused in loongarch/virt.c for unwiring
-> the vcpu<->exioi interrupts for the vcpu hot-(un)plug
-> cases.
-
-Since we never had to use this, I'm surprised we really need it.
-
-QEMU IRQs/GPIOs are similar to hardware ones, and aren't expected
-to be rewired at runtime. Usually another hot-pluggable bus layer is
-used, and the bus is physically wired toward the hardware.
-
-
-I suppose you want to add that because a unplugged vCPU is still
-receiving IRQs. The question is, why? Before unplugging, I expect
-the INTC (IPI) here to be signaled a vCPU is going to be unplugged,
-so maybe you are missing handling the unplug event there. See
-in loongarch_ipi_writel():
-
-     switch (addr) {
-     case CORE_EN_OFF:
-         s->en = val;
-         break;
-     case CORE_SET_OFF:
-         s->status |= val;
-         if (s->status != 0 && (s->status & s->en) != 0) {
-             qemu_irq_raise(s->irq);
-         }
-         break;
-     case CORE_CLEAR_OFF:
-         s->status &= ~val;
-         if (s->status == 0 && s->en != 0) {
-             qemu_irq_lower(s->irq);
-         }
-         break;
-
-Maybe you need to factor ipi_raise/lower() helpers which check cores
-are available & enabled before propagating IRQ?
-
-> Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
-> Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
-> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-> Cc: Song Gao <gaosong@loongson.cn>
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Igor Mammedov <imammedo@redhat.com>
-> Cc: Ani Sinha <anisinha@redhat.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Eduardo Habkost <eduardo@habkost.net>
-> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-> Cc: Yanan Wang <wangyanan55@huawei.com>
-> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Signed-off-by: xianglai li <lixianglai@loongson.cn>
-> ---
->   hw/core/gpio.c         | 4 ++--
->   include/hw/qdev-core.h | 2 ++
->   2 files changed, 4 insertions(+), 2 deletions(-)
+On Tue, Sep 12, 2023 at 10:34:04AM +0400, Marc-André Lureau wrote:
+> Hi
 > 
-> diff --git a/hw/core/gpio.c b/hw/core/gpio.c
-> index 80d07a6ec9..4fc6409545 100644
-> --- a/hw/core/gpio.c
-> +++ b/hw/core/gpio.c
-> @@ -143,8 +143,8 @@ qemu_irq qdev_get_gpio_out_connector(DeviceState *dev, const char *name, int n)
->   
->   /* disconnect a GPIO output, returning the disconnected input (if any) */
->   
-> -static qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
-> -                                               const char *name, int n)
-> +qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
-> +                                        const char *name, int n)
->   {
->       char *propname = g_strdup_printf("%s[%d]",
->                                        name ? name : "unnamed-gpio-out", n);
-> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-> index 151d968238..32bb54163e 100644
-> --- a/include/hw/qdev-core.h
-> +++ b/include/hw/qdev-core.h
-> @@ -739,6 +739,8 @@ qemu_irq qdev_get_gpio_out_connector(DeviceState *dev, const char *name, int n);
->    */
->   qemu_irq qdev_intercept_gpio_out(DeviceState *dev, qemu_irq icpt,
->                                    const char *name, int n);
-> +qemu_irq qdev_disconnect_gpio_out_named(DeviceState *dev,
-> +                                        const char *name, int n);
->   
->   BusState *qdev_get_child_bus(DeviceState *dev, const char *name);
->   
+> On Wed, Aug 23, 2023 at 2:03 PM Marc-André Lureau
+> <marcandre.lureau@gmail.com> wrote:
+> >
+> > Hi
+> >
+> > On Wed, Aug 23, 2023 at 4:31 AM Stephen Brennan
+> > <stephen.s.brennan@oracle.com> wrote:
+> > >
+> > > Stephen Brennan <stephen.s.brennan@oracle.com> writes:
+> > > > Marc-André Lureau <marcandre.lureau@gmail.com> writes:
+> > > >> I am a bit reluctant to change the dump format by default. But since the
+> > > >> flatten format is more "complicated" than the "normal" format, perhaps we
+> > > >> can assume all users will handle it.
+> > > >>
+> > > >> The change is probably late for 8.1 though..
+> > > >
+> > > > Thank you for your review and testing!
+> > > >
+> > > > I totally understand the concern about making the change by default. I
+> > > > do believe that nobody should notice too much because the normal format
+> > > > should be easier to work with, and more broadly compatible. I don't know
+> > > > of any tool which deals with the flattened format that can't handle the
+> > > > normal format, except for "makedumpfile -R" itself.
+> > > >
+> > > > If it's a blocker, I can go ahead and add a new flag to the command to
+> > > > enable the behavior. However there are a few good justifications not to
+> > > > add a new flag. I think it's going to be difficult to explain the
+> > > > difference between the two formats in documentation, as the
+> > > > implementation of the formats is a bit "into the weeds". The libvirt API
+> > > > also specifies each format separately (kdump-zlib, kdump-lzo,
+> > > > kdump-snappy) and so adding several new options there would be
+> > > > unfortunate for end-users as well.
+> > > >
+> > > > At the end of the day, it's your judgment call, and I'll implement it
+> > > > how you prefer.
+> > >
+> > > I just wanted to check back on this to clarify the next step. Are you
+> > > satisfied with this and waiting to apply it until the right time? Or
+> > > would you prefer me to send a new version making this opt-in?
+> > >
+> >
+> > Nobody seems to raise concerns. If it would be just me, I would change
+> > it. But we should rather be safe, so let's make it this opt-in please.
+> 
+> Alex, Daniel, Thomas .. Do you have an opinion on changing the dump format?
+
+I think it is a bad idea for the command to output data in a different
+format, silently switching based on whether it is passed a pipe or and
+file FD.
+
+Libvirt may pass either a plain file FD or a pipe FD, depending on
+whether the user set the VIR_DUMP_BYPASS_CACHE API flag. IMHO it
+is unacceptable for that to result in a change of data format as a
+silent side effect.
+
+Looking back at the history, the patches originally did NOT use the
+flatten makedumpfile format, but to ensure it was able to work with
+non-seekable files, it jumped through hoops to write to a temporary
+file first process it and then write to the real file. Switching to
+makedumpfile format was to enable it to avoid temp files and always
+be compatible with non-seekable FDs.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
