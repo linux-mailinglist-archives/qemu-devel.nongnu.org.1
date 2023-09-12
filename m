@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BBF79DC78
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 01:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE59A79DC82
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 01:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgCTe-0007x9-8G; Tue, 12 Sep 2023 19:07:26 -0400
+	id 1qgCWx-0001YJ-Lz; Tue, 12 Sep 2023 19:10:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qgCTc-0007x1-6x
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:07:24 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qgCTZ-0002DQ-Pl
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:07:23 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-1c504386370so4179679fac.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 16:07:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694560040; x=1695164840; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=hNxavf4uSggFasx9glYjIOk2EPVVAKLZsZqqPfBn0M8=;
- b=PCBKe/A0Dht88Ob7yamOzXB6r/yefubz3tja+DCKeS7JIGLfuruQLjHHQcgI5tL+91
- c0oKSZ1W4Hr1u437N11h2kdmBrujbs3C/nodvOvH8bdy1Ylp2+YnpZLGaM6NPCVa3mW5
- 8H9D809XDp4OhNDKWgHTS4OKQu6WC7XFr4SqKaUld9FpsUGrQ8/Sy9pGKHmfgFkWUXaD
- cOtAE7cbJfa3TWASD+KVeuQe7y4PF4oWUxENbwIU4CxvSVpKDjgkGbgVhrz4WGSKI+Vq
- mlFy1ELKW2o0wJ38qFe4F8CtJ43NOhaj9WcFGIOQnDGhGvReQ6I5jrv3ttIQe3e245pt
- F/Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694560040; x=1695164840;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hNxavf4uSggFasx9glYjIOk2EPVVAKLZsZqqPfBn0M8=;
- b=DW+ar84BaBU7+WGdH7GKeH8uPi36y1uCGhPyPQUlPylHla5L0O9nvbwKiNkWnEREHj
- jXoKHcXZo+C1IWP3/qGoboBCFwg9Mhs6C876azboF3iAjqzLGRkQL1cD2ZMyOoTEvm8Z
- CCR0GyToVWW1KjVJRFb5pYsUYksLftzSlUW8mPZbKLPNQsusVTOWLhmQ8nQdXjzuc+By
- Xx+qtu53JiwqSjTtvTljJiaQXT1ETMcDObQpJyzyKjX/agnQBx2mGorkQZs/M7TZNnY3
- U3Q+mwobHNmCiZB31Di4D6IOCuEg6jekoNdJ163Wc5JBJIe5+QTv7s28yZSeGYoXrJxT
- GcHQ==
-X-Gm-Message-State: AOJu0YxyVdJPp5xfpnR7P2BokZOyj3q2s+fBM2CFrA5Qwb2NtKVI0Lbz
- Qz0G3/GdldXuSuk3WNS07y5E4Zlf76bOtKsukF/MNAoj8Lo=
-X-Google-Smtp-Source: AGHT+IGOOecwPIQFQzW+71TKUjPePGbSP8I840j0wh0hUXcbclu3W2sO2xD/vyU06ldNRa3ibnMUzgvcTaCZEzFpiDo=
-X-Received: by 2002:a05:6870:d58e:b0:1d4:cebb:63ba with SMTP id
- u14-20020a056870d58e00b001d4cebb63bamr950695oao.1.1694560038338; Tue, 12 Sep
- 2023 16:07:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qgCWv-0001Xh-BN
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:10:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qgCWr-0003G4-C8
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 19:10:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694560243;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=K7anETkDXXXiRfa8RqDRjycoca48nNZQuJRNAC9X3yE=;
+ b=Ljs8eEerDudGSIwyoJJ+om5cHkm67nSfvGLA+MyI7v7eB8PcDn52meMBEv1PaHlCfN0Rre
+ gKMYTmVpf0W/K0/s9i7Kpm6iR0rcHa8MXUFyM0oP+pE4XDVolBccDx4I0naw6KpjrtT5Xp
+ 4zFgDZ6e3sa3Qcul9kw9iFsa79nXcmM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-385-CP9GICi-O_-8s5gsUtpUDA-1; Tue, 12 Sep 2023 19:10:39 -0400
+X-MC-Unique: CP9GICi-O_-8s5gsUtpUDA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3233D1C060DA;
+ Tue, 12 Sep 2023 23:10:39 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6E6CD21B20B1;
+ Tue, 12 Sep 2023 23:10:38 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Klaus Jensen <its@irrelevant.dk>, kwolf@redhat.com,
+ Cleber Rosa <crosa@redhat.com>, John Snow <jsnow@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Keith Busch <kbusch@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, <qemu-block@nongnu.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ David Hildenbrand <david@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PATCH v3 0/5] block-backend: process I/O in the current AioContext
+Date: Tue, 12 Sep 2023 19:10:32 -0400
+Message-ID: <20230912231037.826804-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 12 Sep 2023 19:07:06 -0400
-Message-ID: <CAJSP0QXukZuLRF0x1Yt06n2rbeOMAAG0SRsx4Z_QTTro9vMFTw@mail.gmail.com>
-Subject: CI container image interference between staging and staging-7.2
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel <qemu-devel@nongnu.org>,
- "Daniel P. Berrange" <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x31.google.com
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,30 +83,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-TL;DR Michael: Please check that the staging-7.2 branch has Dan's
-commit e28112d00703abd136e2411d23931f4f891c9244 ("gitlab: stable
-staging branches publish containers in a separate tag").
+v3
+- Add Patch 2 to fix a race condition in test-bdrv-drain. This was the CI
+  failure that bumped this patch series from Kevin's pull request.
+- Add missing 051.pc.out file. I tried qemu-system-aarch64 to see of 051.out
+  also needs to be updated, but no changes were necessary. [Kevin]
+v2
+- Add patch to remove AIOCBInfo->get_aio_context() [Kevin]
+- Add patch to use qemu_get_current_aio_context() in block-coroutine-wrapper so
+  that the wrappers use the current AioContext instead of
+  bdrv_get_aio_context().
 
-I couldn't explain a check-cfi-x86_64 failure
-(https://gitlab.com/qemu-project/qemu/-/jobs/5072006964), so I reran
-build-cfi-x86_64 to see if it has an effect on its dependencies.
+Switch blk_aio_*() APIs over to multi-queue by using
+qemu_get_current_aio_context() instead of blk_get_aio_context(). This change
+will allow devices to process I/O in multiple IOThreads in the future.
 
-To my surprise the rerun of build-cfi-x86_64 failed:
-https://gitlab.com/qemu-project/qemu/-/jobs/5072087783
+The final patch requires my QIOChannel AioContext series to pass
+tests/qemu-iotests/check -qcow2 281 because the nbd block driver is now
+accessed from the main loop thread in addition to the IOThread:
+https://lore.kernel.org/qemu-devel/20230823234504.1387239-1-stefanha@redhat.com/T/#t
 
-The first run was successful:
-https://gitlab.com/qemu-project/qemu/-/jobs/5071532799
+Based-on: 20230823234504.1387239-1-stefanha@redhat.com
 
-Diffing the output shows that the software versions are different. The
-successful run has Python 3.11.5 and meson 1.0.1 while the failed run
-has Python 3.10.8 and meson 0.63.3.
+Stefan Hajnoczi (5):
+  block: remove AIOCBInfo->get_aio_context()
+  test-bdrv-drain: avoid race with BH in IOThread drain test
+  block-backend: process I/O in the current AioContext
+  block-backend: process zoned requests in the current AioContext
+  block-coroutine-wrapper: use qemu_get_current_aio_context()
 
-I think staging and staging-7.2 pipelines are interfering with each
-other. My understanding is that build-cfi-x86_64 uses
-registry.gitlab.com/qemu-project/qemu/qemu/fedora:latest and that
-should be built from fedora:38. Python 3.10.8 is what Fedora 35 uses.
-The staging-7.2 branch's fedora.docker file uses fedora:35.
+ include/block/aio.h                |  1 -
+ include/block/block-global-state.h |  2 ++
+ include/block/block-io.h           |  1 -
+ block/block-backend.c              | 35 ++++++++----------------------
+ block/io.c                         | 23 +++++++-------------
+ hw/nvme/ctrl.c                     |  7 ------
+ softmmu/dma-helpers.c              |  8 -------
+ tests/unit/test-bdrv-drain.c       |  8 +++++++
+ util/thread-pool.c                 |  8 -------
+ scripts/block-coroutine-wrapper.py |  6 ++---
+ tests/qemu-iotests/051.pc.out      |  4 ++--
+ 11 files changed, 31 insertions(+), 72 deletions(-)
 
-Stefan
+-- 
+2.41.0
+
 
