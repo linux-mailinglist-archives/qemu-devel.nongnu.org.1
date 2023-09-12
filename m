@@ -2,54 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6E579C670
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:07:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEEA79C6D5
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:20:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfwXK-0007zo-TH; Tue, 12 Sep 2023 02:06:11 -0400
+	id 1qfwjk-0003Jg-Pr; Tue, 12 Sep 2023 02:19:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qfwX1-0007zg-Vj
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:05:52 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qfwWx-0006E5-AS
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:05:50 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id AAA5A20F68;
- Tue, 12 Sep 2023 09:05:44 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 33A1D2760F;
- Tue, 12 Sep 2023 09:05:41 +0300 (MSK)
-Message-ID: <48e7e9bb-1fb5-5233-bdef-c958498b90c4@tls.msk.ru>
-Date: Tue, 12 Sep 2023 09:05:41 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfwjd-0003Hq-W7
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:18:54 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfwjZ-00036O-Uv
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:18:52 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2b9d07a8d84so86999091fa.3
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:18:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694499528; x=1695104328; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=kJGOOeXFzyrerTR66woHzjHXj+yy+nJR/mF/XS+IRFs=;
+ b=eZ8yiAjnHkatHbuH18z5T+dUZcFSii+n965rKZUHgNjjAYXKJ9YuYw3iybk/vohRIV
+ MOe96d/+IEziXrNkg5Bo/v5pXx2ZxmCfyNX4XMuz7+sgWKhXPPvOtMVhT1w7RT6rdIwM
+ Q0tt09wfXHhr7X5N+gEqAzrZvbcqCPJb68N21diTo9k9TGRh/z/OFdGNKee9ztWfyfOw
+ RuMfRb/xkBls363YhD0qN4KgyQrClsm6n6KGGfY+2q0PZ4P91Ez6agDpO8K65n/0R/Hi
+ xThHMoRAKh/AqfSrdajSSjki2Xzpf+G/HY8faUmjucE3vuVx7PKwljjBwoVXhu2LeLGs
+ wNYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694499528; x=1695104328;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kJGOOeXFzyrerTR66woHzjHXj+yy+nJR/mF/XS+IRFs=;
+ b=IjKcVQiKkZzoXXuzrj1KRtbo2MY3UM2IPrINWfAwfD9qjaOCjiMxFhqK5GqpEdDInb
+ 15BnmJxCcnDkvesc+3UHJjV+5VETqHpqx+phaJEYN5TjKRTHYYY9lwHYSqujkAx40f1o
+ hAjtjK6ls2RxXS39EQi6iuRMWqKLJqSsNbt6w8Fbe2qlYISrev45es0rlc7k32Ftmn91
+ AkzyOYbXpD3OgRVsNI2QMU8sPotVhJkSUMzvcz5HRnuRrHLyGWQXT24k3UWYtClM/Lt3
+ mFpweXV1zvxPq9jDCkh5T8IzsxxwyCTuqpfKOXuxhGUefK+6qtxvsk6bGhJLW1PLNC+S
+ cz0A==
+X-Gm-Message-State: AOJu0YzzA9tUss0J7QH7kFqiDiHINkgOMnhrlvpJ2LffgynGjij7OiJh
+ +tiZTCyHy1EgupcuW24hkoChjQ==
+X-Google-Smtp-Source: AGHT+IFivHBIa4rX3gemNkEY2AIr8hcFrEcTe/VGv86zq5I/+MasPIYJUnOShIEpVOXODDwuQ9QNAQ==
+X-Received: by 2002:a2e:88c5:0:b0:2bb:b01a:9226 with SMTP id
+ a5-20020a2e88c5000000b002bbb01a9226mr9561613ljk.7.1694499527102; 
+ Mon, 11 Sep 2023 23:18:47 -0700 (PDT)
+Received: from [192.168.69.115] (cou50-h01-176-172-50-150.dsl.sta.abo.bbox.fr.
+ [176.172.50.150]) by smtp.gmail.com with ESMTPSA id
+ op5-20020a170906bce500b00992ea405a79sm6365265ejb.166.2023.09.11.23.18.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 Sep 2023 23:18:46 -0700 (PDT)
+Message-ID: <430ea775-678f-e5ac-d548-6556dcf54e06@linaro.org>
+Date: Tue, 12 Sep 2023 08:18:44 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PULL v2 38/45] hw/riscv/virt.c: fix non-KVM --enable-debug build
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] vdpa: fix gcc cvq_isolated uninitialized variable warning
 Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Andrew Jones <ajones@ventanamicro.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-References: <20230911064320.939791-1-alistair.francis@wdc.com>
- <20230911064320.939791-39-alistair.francis@wdc.com>
- <e44b65ab-ae5a-c5be-c27e-f961a1d878cc@tls.msk.ru>
- <aad03dca-e1d9-b5c5-22a9-6711841a3516@ventanamicro.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <aad03dca-e1d9-b5c5-22a9-6711841a3516@ventanamicro.com>
+To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?Eugenio_P=c3=a9rez?=
+ <eperezma@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
+References: <20230911215435.4156314-1-stefanha@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230911215435.4156314-1-stefanha@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,55 +93,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.09.2023 00:43, Daniel Henrique Barboza:
-> On 9/11/23 16:54, Michael Tokarev wrote:
-...
->>>       /* KVM AIA only has one APLIC instance */
->>> -    if (virt_use_kvm_aia(s)) {
->>> +    if (kvm_enabled() && virt_use_kvm_aia(s)) {
->>>           create_fdt_socket_aplic(s, memmap, 0,
->> ...
->>
->> As has been discovered earlier (see "target/i386: Restrict system-specific
->> features from user emulation" threads), this is not enough, - compiler does
->> not always eliminate if (0 && foo) { bar; } construct, it's too fragile and
->> does not actually work.  Either some #ifdef'fery is needed here or some other,
->> more explicit, way to eliminate such code, like introducing stub functions.
->>
->> I know it's too late and this change is already in, but unfortunately that's
->> when I noticed this.  While the "Fixes:" tag can't be changed anymore, a more
->> proper fix for the actual problem (with the proper Fixes tag now) can still
->> be applied on top of this fix.
+On 11/9/23 23:54, Stefan Hajnoczi wrote:
+> gcc 13.2.1 emits the following warning:
 > 
-> This works fine on current master on my machine:
+>    net/vhost-vdpa.c: In function ‘net_vhost_vdpa_init.constprop’:
+>    net/vhost-vdpa.c:1394:25: error: ‘cvq_isolated’ may be used uninitialized [-Werror=maybe-uninitialized]
+>     1394 |         s->cvq_isolated = cvq_isolated;
+>          |         ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+>    net/vhost-vdpa.c:1355:9: note: ‘cvq_isolated’ was declared here
+>     1355 |     int cvq_isolated;
+>          |         ^~~~~~~~~~~~
+>    cc1: all warnings being treated as errors
 > 
-> $ ../configure --cc=clang --target-list=riscv64-softmmu,riscv64-linux-user,riscv32-softmmu,riscv32-linux-user --enable-debug
-> $ make -j
+> Cc: Eugenio Pérez <eperezma@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>   net/vhost-vdpa.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> So I'm not sure what do you mean by 'actual problem'. If you refer to the non-existence
-> of stub functions, earlier today we had a review by Phil in this patch here where I was
-> adding stubs for all KVM functions:
-> 
-> https://lore.kernel.org/qemu-riscv/f30d8589-8b59-2fd7-c38c-3f79508a4ac6@linaro.org/
-> 
-> Phil mentioned that we don't need a function stub if the KVM only function is protected by
-> "kvm_enabled()". And this is fine, but then, from what you're saying, we can't rely on
-> (kvm_enabled() && foo) working all the time, so we're one conditional away from breaking
-> things it seems.
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 34202ca009..7eaee841aa 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1352,7 +1352,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
+>       VhostVDPAState *s;
+>       int ret = 0;
+>       assert(name);
+> -    int cvq_isolated;
+> +    int cvq_isolated = 0;
+>   
+>       if (is_datapath) {
+>           nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
 
-Please see:
+Alternatively:
 
-https://lore.kernel.org/qemu-devel/20230911211317.28773-1-philmd@linaro.org/T/#t  (fix v4)
-https://lore.kernel.org/qemu-devel/ZP9Cmqgy2H3ypDf3@redhat.com/T/#t (fix v3)
-https://lore.kernel.org/qemu-devel/28c832bc-2fbf-8caa-e141-51288fc0d544@linaro.org/T/#t (fix v2)
-https://lore.kernel.org/qemu-devel/ZP74b%2FByEaVW5bZO@redhat.com/T/#t (fix v1)
+-- >8 --
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 34202ca009..218fe0c305 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -1352,13 +1352,12 @@ static NetClientState 
+*net_vhost_vdpa_init(NetClientState *peer,
+      VhostVDPAState *s;
+      int ret = 0;
+      assert(name);
+-    int cvq_isolated;
 
-and the original issue at
-https://lore.kernel.org/qemu-devel/8ee6684b-cdc3-78cb-9b76-e5875743bdcf@tls.msk.ru/T/#m65801e9edf31688a45722271a97e628ec98a0c23
-(this is an i386 pullreq which removed stub functions in presence of (!kvm_enabled() && foo)).
+      if (is_datapath) {
+          nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
+                                   name);
+      } else {
+-        cvq_isolated = vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, 
+features,
++        int cvq_isolated = 
+vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, features,
+                                                        queue_pair_index 
+* 2,
+                                                        errp);
+          if (unlikely(cvq_isolated < 0)) {
+@@ -1391,7 +1390,7 @@ static NetClientState 
+*net_vhost_vdpa_init(NetClientState *peer,
 
-It is exactly the same issue as this one, with exactly the same fix, which resulted in
-breakage.  I dunno why your build succeeded, but the whole thing is.. not easy.
+          s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
+          s->vhost_vdpa.shadow_vq_ops_opaque = s;
+-        s->cvq_isolated = cvq_isolated;
++        s->cvq_isolated = true;
 
-/mjt
+---
+
+Whichever you prefer:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
