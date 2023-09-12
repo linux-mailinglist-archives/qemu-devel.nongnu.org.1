@@ -2,80 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEEA79C6D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D7879C6E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 08:29:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfwjk-0003Jg-Pr; Tue, 12 Sep 2023 02:19:00 -0400
+	id 1qfwsN-000525-39; Tue, 12 Sep 2023 02:27:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfwjd-0003Hq-W7
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:18:54 -0400
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qfwsK-00051i-Eu
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:27:52 -0400
+Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qfwjZ-00036O-Uv
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:18:52 -0400
-Received: by mail-lj1-x22c.google.com with SMTP id
- 38308e7fff4ca-2b9d07a8d84so86999091fa.3
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:18:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qfwsI-0000NH-0s
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 02:27:52 -0400
+Received: by mail-qt1-x836.google.com with SMTP id
+ d75a77b69052e-412137ae07aso32469121cf.2
+ for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 23:27:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694499528; x=1695104328; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=kJGOOeXFzyrerTR66woHzjHXj+yy+nJR/mF/XS+IRFs=;
- b=eZ8yiAjnHkatHbuH18z5T+dUZcFSii+n965rKZUHgNjjAYXKJ9YuYw3iybk/vohRIV
- MOe96d/+IEziXrNkg5Bo/v5pXx2ZxmCfyNX4XMuz7+sgWKhXPPvOtMVhT1w7RT6rdIwM
- Q0tt09wfXHhr7X5N+gEqAzrZvbcqCPJb68N21diTo9k9TGRh/z/OFdGNKee9ztWfyfOw
- RuMfRb/xkBls363YhD0qN4KgyQrClsm6n6KGGfY+2q0PZ4P91Ez6agDpO8K65n/0R/Hi
- xThHMoRAKh/AqfSrdajSSjki2Xzpf+G/HY8faUmjucE3vuVx7PKwljjBwoVXhu2LeLGs
- wNYQ==
+ d=gmail.com; s=20221208; t=1694500069; x=1695104869; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=IZzlgzm5eTYSHk3DJ+WwQurhXPMrb+lk6OvI5lP8x0M=;
+ b=OYgrMqwV3xnEmP91lKqQdL7FnfNq2TOjys9Ui6sbMP0u/YikkTH/Y8xa+mxWscP+n6
+ k2gimx9qW6LMbfHIiwzrqm+ff7zsW0FYoHAhSXVSH4QqdM8cRqtSIKp1m/spfnGVlqB6
+ HoA4ez4qFvJXQwz2Jlj8sJgjgWpOsWBD0Nom6GVDrqzZDZW/ZcmLXwjAcwnmeXX9DqLC
+ 5a5FOQAS4fiW7m/oaWDSie474PBIEeOQXLfEx3rBsR86P89ZJjtHDkolxOuCQG+/8N+x
+ eefEbLOQq1rDg9ioBR/WGJkNGzAu7MalJY7JEjUNxGLvQ5Nv7G9jgjSklf9cYnRBGQBA
+ H1pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694499528; x=1695104328;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kJGOOeXFzyrerTR66woHzjHXj+yy+nJR/mF/XS+IRFs=;
- b=IjKcVQiKkZzoXXuzrj1KRtbo2MY3UM2IPrINWfAwfD9qjaOCjiMxFhqK5GqpEdDInb
- 15BnmJxCcnDkvesc+3UHJjV+5VETqHpqx+phaJEYN5TjKRTHYYY9lwHYSqujkAx40f1o
- hAjtjK6ls2RxXS39EQi6iuRMWqKLJqSsNbt6w8Fbe2qlYISrev45es0rlc7k32Ftmn91
- AkzyOYbXpD3OgRVsNI2QMU8sPotVhJkSUMzvcz5HRnuRrHLyGWQXT24k3UWYtClM/Lt3
- mFpweXV1zvxPq9jDCkh5T8IzsxxwyCTuqpfKOXuxhGUefK+6qtxvsk6bGhJLW1PLNC+S
- cz0A==
-X-Gm-Message-State: AOJu0YzzA9tUss0J7QH7kFqiDiHINkgOMnhrlvpJ2LffgynGjij7OiJh
- +tiZTCyHy1EgupcuW24hkoChjQ==
-X-Google-Smtp-Source: AGHT+IFivHBIa4rX3gemNkEY2AIr8hcFrEcTe/VGv86zq5I/+MasPIYJUnOShIEpVOXODDwuQ9QNAQ==
-X-Received: by 2002:a2e:88c5:0:b0:2bb:b01a:9226 with SMTP id
- a5-20020a2e88c5000000b002bbb01a9226mr9561613ljk.7.1694499527102; 
- Mon, 11 Sep 2023 23:18:47 -0700 (PDT)
-Received: from [192.168.69.115] (cou50-h01-176-172-50-150.dsl.sta.abo.bbox.fr.
- [176.172.50.150]) by smtp.gmail.com with ESMTPSA id
- op5-20020a170906bce500b00992ea405a79sm6365265ejb.166.2023.09.11.23.18.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 23:18:46 -0700 (PDT)
-Message-ID: <430ea775-678f-e5ac-d548-6556dcf54e06@linaro.org>
-Date: Tue, 12 Sep 2023 08:18:44 +0200
+ d=1e100.net; s=20230601; t=1694500069; x=1695104869;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=IZzlgzm5eTYSHk3DJ+WwQurhXPMrb+lk6OvI5lP8x0M=;
+ b=H/BesB9EANY8BEVN/ok9GFTYia+MIQ6KS1UOQok+J+EGhIqbZPpJBDb84J+tr753zc
+ K6fwwRJK19tNyCjEf7PZ3JvuJWSr3dvwMQumaEBRoSpQ/rxl3TbAAkXrsajFRxmHYv2f
+ VjUHk31I6ZNa6Xfs5uX9/Pv2eNzEq7uVNZN8hxG8yNggRwYLvw+ERUWIqrWDYoVQOqNy
+ VPDZXUrRT2969+vL71JFpL5KZbez2l4ZrEO3x4OTXZTw/oq3gypp0w0j04n3JErzSoX7
+ i+iMsXDuvzAWCIrkZd/bPwsjMSJa3IDWhcjl+A5CpGHc0ik6ferZHyYwFN4Ulpc1OUhz
+ JS8A==
+X-Gm-Message-State: AOJu0YyOoxIXHIuS2rZMbVMRnUSL7Xy6Ew8KpiK0930HIWbfLBSHrvNN
+ ydvZkS2CyOTOKQSgr1AtLOe/HryRO72YwscFaTY=
+X-Google-Smtp-Source: AGHT+IFi6qHbGUe+0sKTL8p1aD/u3JPVXuYynoX7XSErHmownf4cQF5ZILdb7X5vsWRYfzPYwWj1n8WJfAm1L1D6sSY=
+X-Received: by 2002:ac8:5bc5:0:b0:406:804b:e0f5 with SMTP id
+ b5-20020ac85bc5000000b00406804be0f5mr12968790qtb.55.1694500068871; Mon, 11
+ Sep 2023 23:27:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH] vdpa: fix gcc cvq_isolated uninitialized variable warning
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, =?UTF-8?Q?Eugenio_P=c3=a9rez?=
- <eperezma@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>
-References: <20230911215435.4156314-1-stefanha@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230911215435.4156314-1-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22c.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+References: <20230911140638.1458156-1-marcandre.lureau@redhat.com>
+ <CADSE00JJjgi8mdcHA304GAW=HxoKA4G-uBwasnUOZrREpXdWnQ@mail.gmail.com>
+In-Reply-To: <CADSE00JJjgi8mdcHA304GAW=HxoKA4G-uBwasnUOZrREpXdWnQ@mail.gmail.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 12 Sep 2023 10:27:37 +0400
+Message-ID: <CAJ+F1C+_b1=LVyXNsh6UoazRCrUNO3yGwyp7BY6xpyFQwNFtVA@mail.gmail.com>
+Subject: Re: [PATCH] ui: fix crash when there are no active_console
+To: Albert Esteve <aesteve@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x836.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,78 +87,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/9/23 23:54, Stefan Hajnoczi wrote:
-> gcc 13.2.1 emits the following warning:
-> 
->    net/vhost-vdpa.c: In function ‘net_vhost_vdpa_init.constprop’:
->    net/vhost-vdpa.c:1394:25: error: ‘cvq_isolated’ may be used uninitialized [-Werror=maybe-uninitialized]
->     1394 |         s->cvq_isolated = cvq_isolated;
->          |         ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
->    net/vhost-vdpa.c:1355:9: note: ‘cvq_isolated’ was declared here
->     1355 |     int cvq_isolated;
->          |         ^~~~~~~~~~~~
->    cc1: all warnings being treated as errors
-> 
-> Cc: Eugenio Pérez <eperezma@redhat.com>
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Jason Wang <jasowang@redhat.com>
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->   net/vhost-vdpa.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 34202ca009..7eaee841aa 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -1352,7 +1352,7 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
->       VhostVDPAState *s;
->       int ret = 0;
->       assert(name);
-> -    int cvq_isolated;
-> +    int cvq_isolated = 0;
->   
->       if (is_datapath) {
->           nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
+Hi
 
-Alternatively:
+On Mon, Sep 11, 2023 at 6:44=E2=80=AFPM Albert Esteve <aesteve@redhat.com> =
+wrote:
+>
+>
+>
+> On Mon, Sep 11, 2023 at 4:08=E2=80=AFPM <marcandre.lureau@redhat.com> wro=
+te:
+>>
+>> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>>
+>> Thread 1 "qemu-system-x86" received signal SIGSEGV, Segmentation fault.
+>> 0x0000555555888630 in dpy_ui_info_supported (con=3D0x0) at ../ui/console=
+.c:812
+>> 812         return con->hw_ops->ui_info !=3D NULL;
+>> (gdb) bt
+>> #0  0x0000555555888630 in dpy_ui_info_supported (con=3D0x0) at ../ui/con=
+sole.c:812
+>> #1  0x00005555558a44b1 in protocol_client_msg (vs=3D0x5555578c76c0, data=
+=3D0x5555581e93f0 <incomplete sequence \373>, len=3D24) at ../ui/vnc.c:2585
+>> #2  0x00005555558a19ac in vnc_client_read (vs=3D0x5555578c76c0) at ../ui=
+/vnc.c:1607
+>> #3  0x00005555558a1ac2 in vnc_client_io (ioc=3D0x5555581eb0e0, condition=
+=3DG_IO_IN, opaque=3D0x5555578c76c0) at ../ui/vnc.c:1635
+>>
+>> Fixes:
+>> https://issues.redhat.com/browse/RHEL-2600
+>>
+>> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>> ---
+>>  ui/console.c | 25 +++++++++++++++++++++++++
+>>  1 file changed, 25 insertions(+)
+>>
+>> diff --git a/ui/console.c b/ui/console.c
+>> index 90ae4be602..0f31ecece6 100644
+>> --- a/ui/console.c
+>> +++ b/ui/console.c
+>> @@ -808,6 +808,9 @@ bool dpy_ui_info_supported(QemuConsole *con)
+>>      if (con =3D=3D NULL) {
+>>          con =3D active_console;
+>>      }
+>> +    if (con =3D=3D NULL) {
+>> +        return false;
+>> +    }
+>>
+>>      return con->hw_ops->ui_info !=3D NULL;
+>>  }
+>> @@ -817,6 +820,9 @@ const QemuUIInfo *dpy_get_ui_info(const QemuConsole =
+*con)
+>>      if (con =3D=3D NULL) {
+>>          con =3D active_console;
+>>      }
+>> +    if (con =3D=3D NULL) {
+>> +        return NULL;
+>> +    }
+>>
+>>      return &con->ui_info;
+>>  }
+>> @@ -826,6 +832,9 @@ int dpy_set_ui_info(QemuConsole *con, QemuUIInfo *in=
+fo, bool delay)
+>>      if (con =3D=3D NULL) {
+>>          con =3D active_console;
+>>      }
+>> +    if (con =3D=3D NULL) {
+>> +        return -1;
+>> +    }
+>>
+>>      if (!dpy_ui_info_supported(con)) {
+>>          return -1;
+>> @@ -1401,6 +1410,10 @@ QEMUCursor *qemu_console_get_cursor(QemuConsole *=
+con)
+>>      if (con =3D=3D NULL) {
+>>          con =3D active_console;
+>>      }
+>> +    if (con =3D=3D NULL) {
+>> +        return NULL;
+>> +    }
+>> +
+>>      return QEMU_IS_GRAPHIC_CONSOLE(con) ? QEMU_GRAPHIC_CONSOLE(con)->cu=
+rsor : NULL;
+>>  }
+>>
+>> @@ -1414,6 +1427,10 @@ bool qemu_console_is_graphic(QemuConsole *con)
+>>      if (con =3D=3D NULL) {
+>>          con =3D active_console;
+>>      }
+>> +    if (con =3D=3D NULL) {
+>> +        return false;
+>> +    }
+>> +
+>>      return con && QEMU_IS_GRAPHIC_CONSOLE(con);
+>>  }
+>>
+>> @@ -1422,6 +1439,10 @@ bool qemu_console_is_fixedsize(QemuConsole *con)
+>>      if (con =3D=3D NULL) {
+>>          con =3D active_console;
+>>      }
+>> +    if (con =3D=3D NULL) {
+>> +        return false;
+>> +    }
+>> +
+>
+>
+> The "con" initialization condition is already checked in the line below (=
+now unnecessarily).
+> If the if block is preferred for consistency with other functions, we cou=
+ld remove the con check from
+> the condition below:
+> ```
+> return QEMU_IS_GRAPHIC_CONSOLE(con) || QEMU_IS_FIXED_TEXT_CONSOLE(con);
+> ```
+>
+>>
+>>      return con && (QEMU_IS_GRAPHIC_CONSOLE(con) || QEMU_IS_FIXED_TEXT_C=
+ONSOLE(con));
+>>  }
+>>
+>> @@ -1493,6 +1514,10 @@ int qemu_console_get_index(QemuConsole *con)
+>>      if (con =3D=3D NULL) {
+>>          con =3D active_console;
+>>      }
+>> +    if (con =3D=3D NULL) {
+>> +        return -1;
+>> +    }
+>> +
+>
+>
+> Same as before, here we could simply "return con->index;"
+>
+>>
+>>      return con ? con->index : -1;
+>>
+>>  }
+>>
 
--- >8 --
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 34202ca009..218fe0c305 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1352,13 +1352,12 @@ static NetClientState 
-*net_vhost_vdpa_init(NetClientState *peer,
-      VhostVDPAState *s;
-      int ret = 0;
-      assert(name);
--    int cvq_isolated;
+You are right, the added checks are mostly redundant. I'll make the
+patch touch only dpy_ui_info_supported(). And another patch for the
+related precondition when calling dpy_get_ui_info().
 
-      if (is_datapath) {
-          nc = qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
-                                   name);
-      } else {
--        cvq_isolated = vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, 
-features,
-+        int cvq_isolated = 
-vhost_vdpa_probe_cvq_isolation(vdpa_device_fd, features,
-                                                        queue_pair_index 
-* 2,
-                                                        errp);
-          if (unlikely(cvq_isolated < 0)) {
-@@ -1391,7 +1390,7 @@ static NetClientState 
-*net_vhost_vdpa_init(NetClientState *peer,
 
-          s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
-          s->vhost_vdpa.shadow_vq_ops_opaque = s;
--        s->cvq_isolated = cvq_isolated;
-+        s->cvq_isolated = true;
-
----
-
-Whichever you prefer:
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
