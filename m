@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6371A79DBBE
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 00:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABA779DBD5
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 00:23:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgBgn-0006I8-0Z; Tue, 12 Sep 2023 18:16:57 -0400
+	id 1qgBlc-0007mD-3f; Tue, 12 Sep 2023 18:21:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgBgk-0006HO-H9
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:16:54 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgBlZ-0007li-RS
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:21:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgBgi-0008Tx-9y
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:16:54 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgBlW-0003Gl-IM
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:21:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694557010;
+ s=mimecast20190719; t=1694557309;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Q7pM0dH+qD/W7oxo4fiBaJLMQ4GgYbYPoG7KZcwI2Ec=;
- b=eRFWc4fMOVpDbo5wvTUU2xiN4rJpB1B3Vmn/BrR61WS3uWm2ed9mTewBKmqaKf0oUoaiEt
- g80xRtoLJnhOmZoAV+JBPwnLPrRlb/yTZKf/yh8ZehfQncYmmAobUlFEFkic6A3bntbH/5
- Xrdt0U+RpR/Mo9GBt9zDjNLEyj5go2k=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=50A1im5IKgq0EUCsZQlbowS4Huk2fy08MtfHck/f0YE=;
+ b=X+qLmzGRIWXADpc2ot7Yq5awBrJgMtBO58I5VtZcF4eBrhcH6v7YDWg++7L5Nm/hPhnPds
+ ndlVkGk3xJidSKDBMfcQyBkPaW9gmFN/lxTnCcu2djQmpu8QTowwdvIqFejPCriKymz/SY
+ 2qPvID+r1XkTXXPthVnpUd3zmvhFmyw=
 Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
  [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-R1crF9f0NfOqW28R8nBfGg-1; Tue, 12 Sep 2023 18:16:49 -0400
-X-MC-Unique: R1crF9f0NfOqW28R8nBfGg-1
+ us-mta-438--bgvAHOxMMWRu_BNg3oB7A-1; Tue, 12 Sep 2023 18:21:48 -0400
+X-MC-Unique: -bgvAHOxMMWRu_BNg3oB7A-1
 Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-63d2b88325bso14324176d6.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 15:16:49 -0700 (PDT)
+ 6a1803df08f44-637948b24bdso16835646d6.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 15:21:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694557008; x=1695161808;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Q7pM0dH+qD/W7oxo4fiBaJLMQ4GgYbYPoG7KZcwI2Ec=;
- b=iYbtRXdZtpjs4x1MajGToRC+ESzDkLhIgyqD+ArnAq0gAH22/vYjtbAlSHlCrlhxV3
- 0pYiwPUiPOmBm+t149rKyvavs60W88RlMNkbO8Fk9OmF1y0GgaQUhAgU3zKq2jH5sYva
- +JnPnAiBqS28mrrNLMAzWBfMBF8+yCGA5Lb8sWKhTtQtDxBpzHRaBJl/gN/4ykli1KDp
- ExcF/YgovtsqJzorUrXQfiRQ7XFJKhWs49+yLka71d0T5IkW530xy3dY/pE0vLW0ThGm
- SqxMAMkisfGlsYWrN7DssEDyyFAh5XcfuaqPk1kQMswwMA8TwHEtV4u4VkD+eWWXcWjS
- hTgw==
-X-Gm-Message-State: AOJu0YyO9N4zHvfF4OU56glJW9ycBj9UmxSA9H/FizjKLQR7o4wL/8Mu
- +jYEGH0vyR8Yg14sIgF0esMQNDMy90DJEKELs4HALbdVvG9vyBXA5Q5PQUOFGS5CFdLh2OZx0X6
- akUZQns0/alSIIqE=
-X-Received: by 2002:a05:6214:528a:b0:63f:89d3:bf21 with SMTP id
- kj10-20020a056214528a00b0063f89d3bf21mr731644qvb.5.1694557008714; 
- Tue, 12 Sep 2023 15:16:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFVq2zL/kE5vOGTHcrVv2rzyQIL+tvHhWdGPpoDst8HyMCxYRuCIViJhrxV1WYyfIx68VPjcw==
-X-Received: by 2002:a05:6214:528a:b0:63f:89d3:bf21 with SMTP id
- kj10-20020a056214528a00b0063f89d3bf21mr731640qvb.5.1694557008453; 
- Tue, 12 Sep 2023 15:16:48 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- b15-20020a0cf04f000000b00647290bd591sm3974037qvl.121.2023.09.12.15.16.47
+ d=1e100.net; s=20230601; t=1694557307; x=1695162107;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=50A1im5IKgq0EUCsZQlbowS4Huk2fy08MtfHck/f0YE=;
+ b=aw2WoC83Z0DCeZfq0fD5ZQRIdVaiC8NbYSamBS6M3hb9k0M6iQWG5O7D539zCiyz/8
+ 233h4vAwwj0V47B8uCZc1QaxSN6xOH/1Q7GV5ZV/zJtI+SaNZKWbiTVnnrAM+h2nY3+8
+ AZ11ApDwfyah4AgnSE2jl9PPrzNyaYx24uiymqVhxkaGa6fKGCuxqBrnAl56gM1RHh5F
+ zfLJmk4amXb7mwV7j5EK590c3XGJQ1Eu/jQ2nB+IKF4UqXiHVlGLhaS4EiqjQPkB/fVV
+ yTjzNmrE9m+dvlshDIaN3rFKjJ/rAm482NmHwsGj4o+A2bqsATEeNBVJBU6zsqQB+7Sy
+ B+ig==
+X-Gm-Message-State: AOJu0YwR322DDsmA2NivOW+azwCy7q1UAGnR1gfVnEWl0vPoDM9tJgEs
+ dkkszRqFfgvHGxeMVdOngT/2fRIikICsqFc9Dbr+rys5NVdc14/SSiBVZldEeSKMMiVpTAOKJpo
+ zm4G4XxW2jsWc3wo58SwlMsQbzCDvd9iMlQwZ2+RQl079Wc6afmAbeaNkqqmBIaC4KWN6PFCE
+X-Received: by 2002:ad4:5dcc:0:b0:616:870c:96b8 with SMTP id
+ m12-20020ad45dcc000000b00616870c96b8mr768260qvh.3.1694557307434; 
+ Tue, 12 Sep 2023 15:21:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhBD3xHZ6VymVD3BlQbX4bZPwvFX9KjtIlDd0SD7v0YREfSu+4D/wA5g1boCp4tK7HmzQhRw==
+X-Received: by 2002:ad4:5dcc:0:b0:616:870c:96b8 with SMTP id
+ m12-20020ad45dcc000000b00616870c96b8mr768240qvh.3.1694557307076; 
+ Tue, 12 Sep 2023 15:21:47 -0700 (PDT)
+Received: from x1n.redhat.com
+ (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ d5-20020a05620a136500b0076f206cf16fsm3494272qkl.89.2023.09.12.15.21.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 15:16:48 -0700 (PDT)
-Date: Tue, 12 Sep 2023 18:16:45 -0400
+ Tue, 12 Sep 2023 15:21:46 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Xiaohui Li <xiaohli@redhat.com>
-Subject: Re: [PATCH 9/9] migration/postcopy: Allow network to fail even
- during recovery
-Message-ID: <ZQDjTRtNVbtruUtD@x1n>
-References: <20230829214235.69309-1-peterx@redhat.com>
- <20230829214235.69309-10-peterx@redhat.com>
- <877cowmdu0.fsf@suse.de> <ZQDEh85X2IcC+o8M@x1n>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH v2 00/11] migration: Better error handling in rp thread,
+ allow failures in recover
+Date: Tue, 12 Sep 2023 18:21:34 -0400
+Message-ID: <20230912222145.731099-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZQDEh85X2IcC+o8M@x1n>
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -99,48 +97,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 12, 2023 at 04:05:27PM -0400, Peter Xu wrote:
-> Thanks for contributing the test case!
-> 
-> Do you want me to pick this patch up (with modifications) and repost
-> together with this series?  It'll also work if you want to send a separate
-> test patch.  Let me know!
+v2:
+- Patch "migration: Let migrate_set_error() take ownership"
+  - Fix three new call sites that uses migrate_set_error(), by dropping the
+    error_report_err() later on.  [Fabiano]
+- Patch "migration: Allow network to fail even during recovery"
+  - Fixed wrong check for dest QEMU
+- Patch "migration: Allow RECOVER->PAUSED convertion for dest qemu"
+  - Newly added
+- Patch "tests/migration-test: Add a test for postcopy hangs during RECOVER"
+  - Newly added, based on Fabiano's test case provided
 
-It turns out I found more bug when I was reworking that test case based on
-yours.  E.g., currently we'll crash dest qemu if we really fail during
-recovery, because we miss:
+v1: https://lore.kernel.org/r/20230829214235.69309-1-peterx@redhat.com
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index bb3e99194c..422406e0ee 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2723,7 +2723,8 @@ static bool postcopy_pause_incoming(MigrationIncomingState *mis)
-         qemu_mutex_unlock(&mis->postcopy_prio_thread_mutex);
-     }
- 
--    migrate_set_state(&mis->state, MIGRATION_STATUS_POSTCOPY_ACTIVE,
-+    /* Current state can be either ACTIVE or RECOVER */
-+    migrate_set_state(&mis->state, mis->state,
-                       MIGRATION_STATUS_POSTCOPY_PAUSED);
- 
-     /* Notify the fault thread for the invalidated file handle */
+Again, if this collapse with anything I can rebase.
 
-So in double failure case we'll not set RECOVER to PAUSED, and we'll crash
-right afterwards, as we'll skip the semaphore:
+This series allow better error handling in the postcopy return path thread,
+also it enables double-failures to happen during postcopy recovery, IOW,
+one can fail again right during RECOVER phase on both sides.
 
-    while (mis->state == MIGRATION_STATUS_POSTCOPY_PAUSED) {  <--- not true, continue
-        qemu_sem_wait(&mis->postcopy_pause_sem_dst);
-    }
+Big thanks for Fabiano on prioviding a base test case for the double
+failure case.
 
-Now within the new test case I am 100% sure I can kick both sides into
-RECOVER state (one trick still needed along the way; the test patch will
-tell soon), then kick them back, then proceed with a successful migration.
+Please have a look, thanks.
 
-Let me just repost everything with the new test case.
+Fabiano Rosas (1):
+  tests/migration-test: Add a test for postcopy hangs during RECOVER
 
-Thanks,
+Peter Xu (10):
+  migration: Display error in query-migrate irrelevant of status
+  migration: Let migrate_set_error() take ownership
+  migration: Introduce migrate_has_error()
+  migration: Refactor error handling in source return path
+  migration: Deliver return path file error to migrate state too
+  qemufile: Always return a verbose error
+  migration: Remember num of ramblocks to sync during recovery
+  migration: Add migration_rp_wait|kick()
+  migration: Allow network to fail even during recovery
+  migration: Allow RECOVER->PAUSED convertion for dest qemu
+
+ qapi/migration.json          |   5 +-
+ migration/migration.h        |  25 +++-
+ migration/qemu-file.h        |   1 +
+ migration/ram.h              |   5 +-
+ migration/channel.c          |   1 -
+ migration/migration.c        | 231 +++++++++++++++++++++++------------
+ migration/multifd.c          |  10 +-
+ migration/postcopy-ram.c     |   1 -
+ migration/qemu-file.c        |  17 ++-
+ migration/ram.c              |  77 +++++++-----
+ migration/savevm.c           |   3 +-
+ tests/qtest/migration-test.c |  94 ++++++++++++++
+ migration/trace-events       |   2 +-
+ 13 files changed, 342 insertions(+), 130 deletions(-)
 
 -- 
-Peter Xu
+2.41.0
 
 
