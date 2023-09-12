@@ -2,79 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EFD79D32D
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B965C79D336
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:07:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg418-00008n-8B; Tue, 12 Sep 2023 10:05:26 -0400
+	id 1qg417-000071-En; Tue, 12 Sep 2023 10:05:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40l-0008Cs-UX
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:06 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qg40j-00089U-46
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:01 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg40d-0003qD-8k
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:05:02 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-313e742a787so3586496f8f.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:41 -0700 (PDT)
+ id 1qg40T-0003qN-Hn
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:04:53 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-31adc5c899fso6021433f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:04:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694527480; x=1695132280; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694527481; x=1695132281; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=D1EL7OiWD9A0VKuolOshZyjZ0Z6pN9Kqa/FPwzECxhk=;
- b=eSYmUH1qm07IE+JQVdD1GLSqHmcBVWc9ikwtZXrKqF1WfAZcgNYp7vXb6QwlCZV/uI
- 3/zWahF/QirsdCuXt+F9BUfvyRlxHdHxI5kbB2YACkmYM6F4lCesBI+nZOfYcumJ5nUj
- b35WNUXIlBlhJ+mvuy+uqCIb6i4TGCD2ZtICn/GE6l4ruVHYXL8aUJ/qPUGa/x2ZHURp
- XglHwwa2/nnXt1Mu02FmPsD0orqpFqSULUxlETCIYtqF93tv7J9DgaXHkieUfXpsGec7
- SS2pKIyjuhtnjRpotwKirhsLhPRqX0IWmJ4JtyuCrlTVWbPOe3EYPTrrMx9ddJwLJHBB
- Eb+A==
+ :reply-to; bh=xWeyt5EAvAefsdum7L+OXTH/QqXTlR2KtCZ49pT3dfQ=;
+ b=COOtc1xrzDh9kb9L2kACv89d0fQXeWU3OL0jYvA8B8v9ikB2oNTX7pGkSiBSHjSiKZ
+ pjDup06YdEuzqG48nxpfREGzaEcKBYzRoM6Moatr/FDxiVOdoAZSosjRADCqABCbSzUH
+ Z/33u5vYgurYDPBuv5vRoKTHIDlCUTLC+IRGD2IL54qZz4+8D5VZxqkl2yBFu11Y+HbG
+ xWrPycE45y++TLTMWob73AtfwlPQCzfxokFcQK6nSA3Cd5kB+YK7UWnIiyJUBBUbUNlP
+ rkcuPsvZ53++ieC8l/SG/OPtWPiEXBHeGYgV7BdZfHcrHYZJgC+nIFPpQDF7vkPSzp5c
+ NJGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694527480; x=1695132280;
+ d=1e100.net; s=20230601; t=1694527481; x=1695132281;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D1EL7OiWD9A0VKuolOshZyjZ0Z6pN9Kqa/FPwzECxhk=;
- b=UKaUIWnuA4qvHg1BgURcxtMdl5mLyfPF8Y4bjVB/fcs9lcR9MXNjP5Ad6uWVWS1VnS
- UvLRUWyzBZh2XblYsYZmFgA9bbUFYng+Bw1nqbA1fzEytJ6PwyywsldNM4kCV6AMuXMt
- 3DpTo/jnOvBJEZDV1GJINuecLcFJki/ToCKeD02jSTVQf8dryMwfCLjs2wrNC+O7Wb0c
- V+UMMGC8PQVZEC1HEJCeBEZQSm0PR9Bx7oZpcV36QfWA+meUeMe359xiKQsUZIvvY4/w
- IwPAFHvIdt4d58yp43BUIWkbUC5/SRm4YEXBS9SsisOvj4SK8zH+8rdxzozXaAi90uN0
- QHOA==
-X-Gm-Message-State: AOJu0YxRS2zOKSJPXDlJtFYOWxKEoPR6K9gCXcsWJhDr2KJdq+qyaeIL
- lWs8tnNprijtnS1gB6CDV/hPQw==
-X-Google-Smtp-Source: AGHT+IHebKWNiycVJy/JvW++Srh6TmF0Ykuz+YbWlTbN/nhoRycYvsc4n3FUXIFRyWj8iAhE6dpNWg==
-X-Received: by 2002:a5d:440f:0:b0:314:c6b:b9a2 with SMTP id
- z15-20020a5d440f000000b003140c6bb9a2mr2019596wrq.13.1694527480383; 
+ bh=xWeyt5EAvAefsdum7L+OXTH/QqXTlR2KtCZ49pT3dfQ=;
+ b=dX6CJN7kkSpA+8SHu4xCu2X7aPi65ie0CjMf7i9qCKcmsU/GaZkj4JbgLJ7YbJatuO
+ 0lRUJmzbbkxNF6tKccr2cEq/HfcRwhISycNMwdr4gdGm2yGAZIMVxw15UYXSm84LD126
+ GEEg6MNXu4aoFiDatCZMPXSb7aVEG/py47tgjHMVgz0eUxFaTRpw4A3OWzmGKadwaAOW
+ 4ySqEYgXWsSszKZivQratHvIAN4ejPwhkHL95jSuheGUw+0JitkphhrARYOZEBojAZxi
+ GZDm4HF3IbwkJIx7AbBRA+lkMKv+vvcbrfEUsg3GMbMbfPa9NzvxE0Jmre9HMeuSIdPN
+ JRaA==
+X-Gm-Message-State: AOJu0YwW4+n4Mvou7bXrV9+8u2A2rpy8BPD428QweFTaLat1O0MhPS5z
+ f8KtJ4aGKNq+niugECLuCBVqzCwnTYpGVWVku8k=
+X-Google-Smtp-Source: AGHT+IFvx3xNAaChV9hb4NkUUYrKbvdyBEXorJk86+v0HUO/bge27MZydC37a04O/j0MlBvwBE8d/Q==
+X-Received: by 2002:adf:ea85:0:b0:314:3b1f:8ea2 with SMTP id
+ s5-20020adfea85000000b003143b1f8ea2mr10796405wrm.6.1694527480996; 
  Tue, 12 Sep 2023 07:04:40 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.39
+ r3-20020a5d4983000000b00317ab75748bsm12892672wrq.49.2023.09.12.07.04.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 12 Sep 2023 07:04:40 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v2 05/12] target/arm: New function allocation_tag_mem_probe()
-Date: Tue, 12 Sep 2023 15:04:27 +0100
-Message-Id: <20230912140434.1333369-6-peter.maydell@linaro.org>
+Subject: [PATCH v2 06/12] target/arm: Implement MTE tag-checking functions for
+ FEAT_MOPS
+Date: Tue, 12 Sep 2023 15:04:28 +0100
+Message-Id: <20230912140434.1333369-7-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230912140434.1333369-1-peter.maydell@linaro.org>
 References: <20230912140434.1333369-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,129 +91,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For the FEAT_MOPS operations, the existing allocation_tag_mem()
-function almost does what we want, but it will take a watchpoint
-exception even for an ra == 0 probe request, and it requires that the
-caller guarantee that the memory is accessible.  For FEAT_MOPS we
-want a function that will not take any kind of exception, and will
-return NULL for the not-accessible case.
-
-Rename allocation_tag_mem() to allocation_tag_mem_probe() and add an
-extra 'probe' argument that lets us distinguish these cases;
-allocation_tag_mem() is now a wrapper that always passes 'false'.
+The FEAT_MOPS instructions need a couple of helper routines that
+check for MTE tag failures:
+ * mte_mops_probe() checks whether there is going to be a tag
+   error in the next up-to-a-page worth of data
+ * mte_check_fail() is an existing function to record the fact
+   of a tag failure, which we need to make global so we can
+   call it from helper-a64.c
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/mte_helper.c | 48 ++++++++++++++++++++++++++++---------
- 1 file changed, 37 insertions(+), 11 deletions(-)
+ target/arm/internals.h      | 28 +++++++++++++++++++
+ target/arm/tcg/mte_helper.c | 54 +++++++++++++++++++++++++++++++++++--
+ 2 files changed, 80 insertions(+), 2 deletions(-)
 
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 5f5393b25c4..a70a7fd50f6 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1272,6 +1272,34 @@ FIELD(MTEDESC, SIZEM1, 12, SIMD_DATA_BITS - 12)  /* size - 1 */
+ bool mte_probe(CPUARMState *env, uint32_t desc, uint64_t ptr);
+ uint64_t mte_check(CPUARMState *env, uint32_t desc, uint64_t ptr, uintptr_t ra);
+ 
++/**
++ * mte_mops_probe: Check where the next MTE failure is for a FEAT_MOPS operation
++ * @env: CPU env
++ * @ptr: start address of memory region (dirty pointer)
++ * @size: length of region (guaranteed not to cross a page boundary)
++ * @desc: MTEDESC descriptor word (0 means no MTE checks)
++ * Returns: the size of the region that can be copied without hitting
++ *          an MTE tag failure
++ *
++ * Note that we assume that the caller has already checked the TBI
++ * and TCMA bits with mte_checks_needed() and an MTE check is definitely
++ * required.
++ */
++uint64_t mte_mops_probe(CPUARMState *env, uint64_t ptr, uint64_t size,
++                        uint32_t desc);
++
++/**
++ * mte_check_fail: Record an MTE tag check failure
++ * @env: CPU env
++ * @desc: MTEDESC descriptor word
++ * @dirty_ptr: Failing dirty address
++ * @ra: TCG retaddr
++ *
++ * This may never return (if the MTE tag checks are configured to fault).
++ */
++void mte_check_fail(CPUARMState *env, uint32_t desc,
++                    uint64_t dirty_ptr, uintptr_t ra);
++
+ static inline int allocation_tag_from_addr(uint64_t ptr)
+ {
+     return extract64(ptr, 56, 4);
 diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index e2494f73cf3..303bcc7fd84 100644
+index 303bcc7fd84..1cb61cea7af 100644
 --- a/target/arm/tcg/mte_helper.c
 +++ b/target/arm/tcg/mte_helper.c
-@@ -50,13 +50,14 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
+@@ -617,8 +617,8 @@ static void mte_async_check_fail(CPUARMState *env, uint64_t dirty_ptr,
  }
  
- /**
-- * allocation_tag_mem:
-+ * allocation_tag_mem_probe:
-  * @env: the cpu environment
-  * @ptr_mmu_idx: the addressing regime to use for the virtual address
-  * @ptr: the virtual address for which to look up tag memory
-  * @ptr_access: the access to use for the virtual address
-  * @ptr_size: the number of bytes in the normal memory access
-  * @tag_access: the access to use for the tag memory
-+ * @probe: true to merely probe, never taking an exception
-  * @ra: the return address for exception handling
-  *
-  * Our tag memory is formatted as a sequence of little-endian nibbles.
-@@ -65,15 +66,25 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
-  * for the higher addr.
-  *
-  * Here, resolve the physical address from the virtual address, and return
-- * a pointer to the corresponding tag byte.  Exit with exception if the
-- * virtual address is not accessible for @ptr_access.
-+ * a pointer to the corresponding tag byte.
-  *
-  * If there is no tag storage corresponding to @ptr, return NULL.
-+ *
-+ * If the page is inaccessible for @ptr_access, or has a watchpoint, there are
-+ * three options:
-+ * (1) probe = true, ra = 0 : pure probe -- we return NULL if the page is not
-+ *     accessible, and do not take watchpoint traps. The calling code must
-+ *     handle those cases in the right priority compared to MTE traps.
-+ * (2) probe = false, ra = 0 : probe, no fault expected -- the caller guarantees
-+ *     that the page is going to be accessible. We will take watchpoint traps.
-+ * (3) probe = false, ra != 0 : non-probe -- we will take both memory access
-+ *     traps and watchpoint traps.
-+ * (probe = true, ra != 0 is invalid and will assert.)
-  */
--static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
--                                   uint64_t ptr, MMUAccessType ptr_access,
--                                   int ptr_size, MMUAccessType tag_access,
--                                   uintptr_t ra)
-+static uint8_t *allocation_tag_mem_probe(CPUARMState *env, int ptr_mmu_idx,
-+                                         uint64_t ptr, MMUAccessType ptr_access,
-+                                         int ptr_size, MMUAccessType tag_access,
-+                                         bool probe, uintptr_t ra)
+ /* Record a tag check failure.  */
+-static void mte_check_fail(CPUARMState *env, uint32_t desc,
+-                           uint64_t dirty_ptr, uintptr_t ra)
++void mte_check_fail(CPUARMState *env, uint32_t desc,
++                    uint64_t dirty_ptr, uintptr_t ra)
  {
- #ifdef CONFIG_USER_ONLY
-     uint64_t clean_ptr = useronly_clean_ptr(ptr);
-@@ -81,6 +92,8 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
-     uint8_t *tags;
-     uintptr_t index;
- 
-+    assert(!(probe && ra));
-+
-     if (!(flags & (ptr_access == MMU_DATA_STORE ? PAGE_WRITE_ORG : PAGE_READ))) {
-         cpu_loop_exit_sigsegv(env_cpu(env), ptr, ptr_access,
-                               !(flags & PAGE_VALID), ra);
-@@ -111,12 +124,16 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
-      * exception for inaccessible pages, and resolves the virtual address
-      * into the softmmu tlb.
-      *
--     * When RA == 0, this is for mte_probe.  The page is expected to be
--     * valid.  Indicate to probe_access_flags no-fault, then assert that
--     * we received a valid page.
-+     * When RA == 0, this is either a pure probe or a no-fault-expected probe.
-+     * Indicate to probe_access_flags no-fault, then either return NULL
-+     * for the pure probe, or assert that we received a valid page for the
-+     * no-fault-expected probe.
-      */
-     flags = probe_access_full(env, ptr, 0, ptr_access, ptr_mmu_idx,
-                               ra == 0, &host, &full, ra);
-+    if (probe && (flags & TLB_INVALID_MASK)) {
-+        return NULL;
-+    }
-     assert(!(flags & TLB_INVALID_MASK));
- 
-     /* If the virtual page MemAttr != Tagged, access unchecked. */
-@@ -157,7 +174,7 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
-     }
- 
-     /* Any debug exception has priority over a tag check exception. */
--    if (unlikely(flags & TLB_WATCHPOINT)) {
-+    if (!probe && unlikely(flags & TLB_WATCHPOINT)) {
-         int wp = ptr_access == MMU_DATA_LOAD ? BP_MEM_READ : BP_MEM_WRITE;
-         assert(ra != 0);
-         cpu_check_watchpoint(env_cpu(env), ptr, ptr_size, attrs, wp, ra);
-@@ -199,6 +216,15 @@ static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
- #endif
+     int mmu_idx = FIELD_EX32(desc, MTEDESC, MIDX);
+     ARMMMUIdx arm_mmu_idx = core_to_aa64_mmu_idx(mmu_idx);
+@@ -991,3 +991,53 @@ uint64_t HELPER(mte_check_zva)(CPUARMState *env, uint32_t desc, uint64_t ptr)
+  done:
+     return useronly_clean_ptr(ptr);
  }
- 
-+static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
-+                                   uint64_t ptr, MMUAccessType ptr_access,
-+                                   int ptr_size, MMUAccessType tag_access,
-+                                   uintptr_t ra)
++
++uint64_t mte_mops_probe(CPUARMState *env, uint64_t ptr, uint64_t size,
++                        uint32_t desc)
 +{
-+    return allocation_tag_mem_probe(env, ptr_mmu_idx, ptr, ptr_access,
-+                                    ptr_size, tag_access, false, ra);
-+}
++    int mmu_idx, tag_count;
++    uint64_t ptr_tag, tag_first, tag_last;
++    void *mem;
++    bool w = FIELD_EX32(desc, MTEDESC, WRITE);
++    uint32_t n;
 +
- uint64_t HELPER(irg)(CPUARMState *env, uint64_t rn, uint64_t rm)
- {
-     uint16_t exclude = extract32(rm | env->cp15.gcr_el1, 0, 16);
++    mmu_idx = FIELD_EX32(desc, MTEDESC, MIDX);
++    /* True probe; this will never fault */
++    mem = allocation_tag_mem_probe(env, mmu_idx, ptr,
++                                   w ? MMU_DATA_STORE : MMU_DATA_LOAD,
++                                   size, MMU_DATA_LOAD, true, 0);
++    if (!mem) {
++        return size;
++    }
++
++    /*
++     * TODO: checkN() is not designed for checks of the size we expect
++     * for FEAT_MOPS operations, so we should implement this differently.
++     * Maybe we should do something like
++     *   if (region start and size are aligned nicely) {
++     *      do direct loads of 64 tag bits at a time;
++     *   } else {
++     *      call checkN()
++     *   }
++     */
++    /* Round the bounds to the tag granule, and compute the number of tags. */
++    ptr_tag = allocation_tag_from_addr(ptr);
++    tag_first = QEMU_ALIGN_DOWN(ptr, TAG_GRANULE);
++    tag_last = QEMU_ALIGN_DOWN(ptr + size - 1, TAG_GRANULE);
++    tag_count = ((tag_last - tag_first) / TAG_GRANULE) + 1;
++    n = checkN(mem, ptr & TAG_GRANULE, ptr_tag, tag_count);
++    if (likely(n == tag_count)) {
++        return size;
++    }
++
++    /*
++     * Failure; for the first granule, it's at @ptr. Otherwise
++     * it's at the first byte of the nth granule. Calculate how
++     * many bytes we can access without hitting that failure.
++     */
++    if (n == 0) {
++        return 0;
++    } else {
++        return n * TAG_GRANULE - (ptr - tag_first);
++    }
++}
 -- 
 2.34.1
 
