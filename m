@@ -2,126 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F59C79DAB8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7504979DAE0
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:30:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAtx-0005y0-P3; Tue, 12 Sep 2023 17:26:29 -0400
+	id 1qgAxH-0002Q6-6j; Tue, 12 Sep 2023 17:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qgAtw-0005xs-E3
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:26:28 -0400
-Received: from mailout1.w2.samsung.com ([211.189.100.11])
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qgAxF-0002GQ-3L; Tue, 12 Sep 2023 17:29:53 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qgAtt-000787-P3
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:26:28 -0400
-Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
- by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
- 20230912212624usoutp01c74e181be2e4e95ca344e4d54617bf51~EQ97RUayP1342113421usoutp01L;
- Tue, 12 Sep 2023 21:26:24 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
- 20230912212624usoutp01c74e181be2e4e95ca344e4d54617bf51~EQ97RUayP1342113421usoutp01L
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1694553984;
- bh=dG030Afgr7kI1bAa0mdYDuWl9G3i4mbEi6p4ncG1X4o=;
- h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=OvrTVgzZNW0eKSf+Ywbmrj9xWGZdWQbCKOVAEcMdzXanw2jZQhg3kXZkr4Rhi/JYt
- vJgwnk9hPGM8I0IsQzCXTBvP+XaFzyIGScR+bcnyAeCwMlhy/lUtrztVfVzllFGXka
- rSD6R4N8abA2YPsCF/5vWeqHtEe2v9O0pu9EMHuA=
-Received: from ussmges1new.samsung.com (u109.gpu85.samsung.co.kr
- [203.254.195.109]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230912212623uscas1p1620f0e2dc31cb7913e2947ec9c29a08b~EQ97Eme3c0565905659uscas1p1C;
- Tue, 12 Sep 2023 21:26:23 +0000 (GMT)
-Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
- ussmges1new.samsung.com (USCPEMTA) with SMTP id B2.BB.50148.F77D0056; Tue,
- 12 Sep 2023 17:26:23 -0400 (EDT)
-Received: from ussmgxs1new.samsung.com (u89.gpu85.samsung.co.kr
- [203.254.195.89]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230912212623uscas1p126ccb3e11966c55997487662157329ab~EQ96zhNgo2039620396uscas1p1v;
- Tue, 12 Sep 2023 21:26:23 +0000 (GMT)
-X-AuditID: cbfec36d-7bdff7000002c3e4-6b-6500d77f17e4
-Received: from SSI-EX1.ssi.samsung.com ( [105.128.2.145]) by
- ussmgxs1new.samsung.com (USCPEXMTA) with SMTP id 4A.14.28590.F77D0056; Tue,
- 12 Sep 2023 17:26:23 -0400 (EDT)
-Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
- SSI-EX1.ssi.samsung.com (105.128.2.226) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2375.24; Tue, 12 Sep 2023 14:26:22 -0700
-Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
- SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
- 12 Sep 2023 14:26:22 -0700
-From: Fan Ni <fan.ni@samsung.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
- <mst@redhat.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "Li Zhijian" <lizhijian@cn.fujitsu.com>, Dave Jiang <dave.jiang@intel.com>,
- =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- "linuxarm@huawei.com" <linuxarm@huawei.com>
-Subject: Re: [PATCH 4/4] docs/cxl: Change to lowercase as others
-Thread-Topic: [PATCH 4/4] docs/cxl: Change to lowercase as others
-Thread-Index: AQHZ3zPxuQPHf7bpkUqEeXB14iYtR7AYNn4A
-Date: Tue, 12 Sep 2023 21:26:22 +0000
-Message-ID: <20230912212622.GC2859961@sjcvldevvm72>
-In-Reply-To: <20230904132806.6094-5-Jonathan.Cameron@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [105.128.2.176]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <B4BAD5E3404CD6439967AE212CA2AE9E@ssi.samsung.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qgAxC-0007XC-M4; Tue, 12 Sep 2023 17:29:52 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38CLQp5A005502; Tue, 12 Sep 2023 21:27:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=Ty2i6N8zZdRbCSNJodS5nxJuLTl4coCL+W4QZr42REg=;
+ b=FJFvLqxR6ZZgC7bOsWcsZryzUz7KFMW/nSgWnnKAGguxc6DFBvBvmxS4dr+eis0myz1J
+ Cpd/4rF4tFWC/ZhoASoQEreRtRAZ8ltvezsiwtjzCtxNa9SOE9LOIH9xlUZIDOhctvHC
+ BrMHSOLGh27qmQJxd99iyQWZXETBid2zduYCqJjxtBeecfYKLoAGzVztbmby35FoFR0I
+ oYswbrZw8UKKrCFzK387TIpGVixUkfkILxbVuDoaIwRIf6L6LgqKaQxCuzGjVJUdtOLN
+ sPQ7JNMxPoscZekQA0kSA3pzsEBmq9EVXQIMKvyPaXrUj3XTaq2MQgNNc2yX0jM3stN+ GA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2ywkr0nq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Sep 2023 21:27:31 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38CLRUsL006927;
+ Tue, 12 Sep 2023 21:27:30 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2ywkr0n8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Sep 2023 21:27:30 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38CIsX0Q002304; Tue, 12 Sep 2023 21:27:30 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t158k5w68-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Sep 2023 21:27:30 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38CLRTRi1376928
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Sep 2023 21:27:29 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8509F58051;
+ Tue, 12 Sep 2023 21:27:29 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 743445805C;
+ Tue, 12 Sep 2023 21:27:29 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 12 Sep 2023 21:27:29 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
+ by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id DD3BA16A07B2;
+ Tue, 12 Sep 2023 16:27:28 -0500 (CDT)
+Received: (from mglenn@localhost)
+ by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38CLRSYj3433790;
+ Tue, 12 Sep 2023 16:27:28 -0500
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
+Subject: [PATCH 4/4] target/ppc: Add migration support for BHRB
+Date: Tue, 12 Sep 2023 16:27:18 -0500
+Message-Id: <20230912212718.3433736-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
+References: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFKsWRmVeSWpSXmKPExsWy7djXc7r11xlSDXq26lmcuNnIZrFq4TU2
- i/OzTrFYHN54hsli3a3/rBb/f71itVizQtjieO8OFgcOj/8HJzF7tBx5y+qxeM9LJo871/aw
- eTy5tpnJ4/2+q2wenzfJBbBHcdmkpOZklqUW6dslcGXsnzuRqeCqcMWNvU8ZGxgn8XUxcnJI
- CJhI3Ln3h62LkYtDSGAlo8TPX/OYIJxWJomWT3vYYKp2N0xnhEisZZQ4f+M7M4TziVGipWs9
- C4SzjFFi9oPHjCAtbAKKEvu6toO1iwgYSby7MQkszixwjkmiYY0ZiC0s4CBxq2E3C0SNo8Sl
- 67/h6ufuA9nAycEioCrx4HMfWJxXwFiibdtXsDgnUO+fWRvB4owCYhLfT61hgpgvLnHryXwm
- iLMFJRbN3sMMYYtJ/Nv1EOodRYn731+yQ9TrSdyYOoUNwraT+LhkNtQcbYllC18zQ+wVlDg5
- 8wkLRK+kxMEVN8AelhB4wiFxY9lbqKEuEk9P/2aEsKUlrl6fCtTMAWQnS6z6yAURzpGYv2QL
- 1BxriYV/1jNNYFSZheTsWUhOmoXkpFlITpqF5KQFjKyrGMVLi4tz01OLDfNSy/WKE3OLS/PS
- 9ZLzczcxApPX6X+Hc3cw7rj1Ue8QIxMH4yFGCQ5mJRHekkN/U4R4UxIrq1KL8uOLSnNSiw8x
- SnOwKInzGtqeTBYSSE8sSc1OTS1ILYLJMnFwSjUwLZoZ67vz7D/RSBcjhsUFXUUedU/jpppe
- rj1746AGt6nE+jSNzafuNe5bKr/2zUKmAq0l7D2uap7yjuefiK0KUDR9s3GvUN8CthtXH+e3
- XzlUNNtYfiXvn9zgpniRqyeX9i2ZHvDfuSpkwb1ppVPP77vIcHPmUmXD2p6pzt6NhmkJYdle
- xyTEf66L7DJJ2HbL+U6Z6P0JC8Skzs232niguWWW8Lw5s3//W2aa+C3VaPaSGJOb00M3rtjQ
- eVlqV3WX66xHM5bkhP94afRr557Hq95mhre0r9zwj7nqWcjXtzH3U3/UcKj+1VtftllY5/r1
- Q5FV022dn09L33L0SmTd1qPR4v2v9xszPQuv+XowcKMSS3FGoqEWc1FxIgBn5/X7zQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrJIsWRmVeSWpSXmKPExsWS2cA0Ubf+OkOqwc82GYsTNxvZLFYtvMZm
- cX7WKRaLwxvPMFmsu/Wf1eL/r1esFmtWCFsc793B4sDh8f/gJGaPliNvWT0W73nJ5HHn2h42
- jyfXNjN5vN93lc3j8ya5APYoLpuU1JzMstQifbsEroz9cycyFVwVrrix9yljA+Mkvi5GTg4J
- AROJ3Q3TGbsYuTiEBFYzSrz81g/lfGKUmDjjDAuEs4xRYt2BPjaQFjYBRYl9XdvBbBEBI4l3
- NyYxgtjMAueYJBrWmIHYwgIOErcadrNA1DhKXLr+G65+7r7vzCA2i4CqxIPPEDN5BYwl2rZ9
- ZYZYdpJRYtKPeawgCU6gQX9mbQQrYhQQk/h+ag0TxDJxiVtP5jNB/CAgsWTPeWYIW1Ti5eN/
- rBC2osT97y/ZIer1JG5MncIGYdtJfFwyG2qOtsSyha+ZIY4QlDg58wkLRK+kxMEVN1gmMErM
- QrJuFpJRs5CMmoVk1CwkoxYwsq5iFC8tLs5Nryg2zEst1ytOzC0uzUvXS87P3cQIjP3T/w5H
- 7mA8euuj3iFGJg7GQ4wSHMxKIrwlh/6mCPGmJFZWpRblxxeV5qQWH2KU5mBREufdMeViipBA
- emJJanZqakFqEUyWiYNTqoHJ9Z30g9Xf6oRDdB3lXlXVHe86cJM38eRBBkXfW9xuCroKryzP
- 7BKuiphk8MpuqqO95LHqtzs25xT7nr54+1X85A0LYtb16Om9bxH49HZNld4XiSvTvKZN/yx2
- RTKkdLrerIYVy2w/O52Q2Lh225mbTn1q7kqNn2bp+Gzj3FnwXD/J8dvs7L3H/Rcoz0jPXaWn
- Y5o4MeDiX12vO6fmmMWc4TTP0ePXfbive7mhfSb3KaGZZTuYNUMuZl0z47xicVH/+j6nO7c3
- FB3fuK5h0ZEfK8x2MBdvY8lNMF2mJL750rzGs4yqL8sy7PNvax/+JTRnXvAE59sPWrcve+3I
- wHhq2stHP47aSt1ruSOdbBOQp8RSnJFoqMVcVJwIAL/AZJBsAwAA
-X-CMS-MailID: 20230912212623uscas1p126ccb3e11966c55997487662157329ab
-CMS-TYPE: 301P
-X-CMS-RootMailID: 20230904133015uscas1p20abb7c3cb2dfc05225c31c8eb54ff02b
-References: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
- <CGME20230904133015uscas1p20abb7c3cb2dfc05225c31c8eb54ff02b@uscas1p2.samsung.com>
- <20230904132806.6094-5-Jonathan.Cameron@huawei.com>
-Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
- helo=mailout1.w2.samsung.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nPNeRmgdXXB4QRpofYqPjAVYoneLYsZy
+X-Proofpoint-ORIG-GUID: 01g0LlpwEAuD3SpEpsrdTVCSN1XICHSD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-12_20,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ priorityscore=1501 bulkscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ lowpriorityscore=0 adultscore=0 suspectscore=0 phishscore=0
+ impostorscore=0 mlxlogscore=808 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2309120178
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -137,60 +122,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 04, 2023 at 02:28:06PM +0100, Jonathan Cameron wrote:
-> From: Li Zhijian <lizhijian@cn.fujitsu.com>
->=20
-> Using the same style as elsewhere for topology / topo
->=20
-> Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
-> Link: https://urldefense.com/v3/__https://lore.kernel.org/r/2023051908580=
-2.2106900-2-lizhijian@cn.fujitsu.com__;!!EwVzqGoTKBqv-0DWAJBm!TWHVrdL5Ys7OO=
-FU_w1CJQ5DC6mxu649kYA9GYDJ182CNPuQqpVkWYsB5mlJpVd_BAAmhxCD4Si2CkMERZI7ZE03k=
-Pz2c$=20
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
+Adds migration support for Branch History Rolling
+Buffer (BHRB) internal state.
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+---
+ target/ppc/machine.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
->  docs/system/devices/cxl.rst | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
-> index f12011e230..b742120657 100644
-> --- a/docs/system/devices/cxl.rst
-> +++ b/docs/system/devices/cxl.rst
-> @@ -157,7 +157,7 @@ responsible for allocating appropriate ranges from wi=
-thin the CFMWs
->  and exposing those via normal memory configurations as would be done
->  for system RAM.
-> =20
-> -Example system Topology. x marks the match in each decoder level::
-> +Example system topology. x marks the match in each decoder level::
-> =20
->    |<------------------SYSTEM PHYSICAL ADDRESS MAP (1)----------------->|
->    |    __________   __________________________________   __________    |
-> @@ -187,8 +187,8 @@ Example system Topology. x marks the match in each de=
-coder level::
->         ___________|___   __________|__   __|_________   ___|_________
->     (3)|  Root Port 0  | | Root Port 1 | | Root Port 2| | Root Port 3 |
->        |  Appears in   | | Appears in  | | Appears in | | Appear in   |
-> -      |  PCI topology | | PCI Topology| | PCI Topo   | | PCI Topo    |
-> -      |  As 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
-> +      |  PCI topology | | PCI topology| | PCI topo   | | PCI topo    |
-> +      |  as 0c:00.0   | | as 0c:01.0  | | as de:00.0 | | as de:01.0  |
->        |_______________| |_____________| |____________| |_____________|
->              |                  |               |              |
->              |                  |               |              |
-> @@ -272,7 +272,7 @@ Example topology involving a switch::
->        |  Root Port 0  |
->        |  Appears in   |
->        |  PCI topology |
-> -      |  As 0c:00.0   |
-> +      |  as 0c:00.0   |
->        |___________x___|
->                    |
->                    |
-> --=20
-> 2.39.2
-> =
+diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+index b195fb4dc8..89146969c8 100644
+--- a/target/ppc/machine.c
++++ b/target/ppc/machine.c
+@@ -314,6 +314,7 @@ static int cpu_post_load(void *opaque, int version_id)
+ 
+     if (tcg_enabled()) {
+         pmu_mmcr01a_updated(env);
++        hreg_bhrb_filter_update(env);
+     }
+ 
+     return 0;
+@@ -670,6 +671,27 @@ static const VMStateDescription vmstate_compat = {
+     }
+ };
+ 
++#ifdef TARGET_PPC64
++static bool bhrb_needed(void *opaque)
++{
++    PowerPCCPU *cpu = opaque;
++    return (cpu->env.flags & POWERPC_FLAG_BHRB) != 0;
++}
++
++static const VMStateDescription vmstate_bhrb = {
++    .name = "cpu/bhrb",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = bhrb_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINTTL(env.bhrb_num_entries, PowerPCCPU),
++        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
++        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES),
++        VMSTATE_END_OF_LIST()
++    }
++};
++#endif
++
+ const VMStateDescription vmstate_ppc_cpu = {
+     .name = "cpu",
+     .version_id = 5,
+@@ -716,6 +738,7 @@ const VMStateDescription vmstate_ppc_cpu = {
+ #ifdef TARGET_PPC64
+         &vmstate_tm,
+         &vmstate_slb,
++        &vmstate_bhrb,
+ #endif /* TARGET_PPC64 */
+         &vmstate_tlb6xx,
+         &vmstate_tlbemb,
+-- 
+2.31.1
+
 
