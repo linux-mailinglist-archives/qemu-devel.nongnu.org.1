@@ -2,92 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2071A79D8C9
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A073C79D86C
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:10:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg8G5-0001z6-2z; Tue, 12 Sep 2023 14:37:09 -0400
+	id 1qg7os-00005M-1W; Tue, 12 Sep 2023 14:09:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qg8G2-0001ye-Gi
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:37:06 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qg8Fz-0000fy-N7
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:37:06 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-317c3ac7339so5594806f8f.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 11:36:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694543815; x=1695148615; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=48LTsRCisHnBhWvEgWJoGT8ScULA8r7Liu/73Z80Puc=;
- b=MfWpV8RwuLXuNcGuZyY/0VUORTyVTNLaqqNNOmTBZSGhTvZ6nHG4KXq7O2G5EJPXBx
- pFPM3Lx2NB+gcveOB9TPPiSivOqiRLmBi7z9bfdlLl4ckwhvraUyg4sg5Pge0miZevAa
- Q+QSs/bC44ZcHhng5fiYqnichVE4tuDSTPUlxtLF5rGu54RnQfaw58U6UIWTqOs7QoDk
- bIv5GTwGCbCd0pCPmAa9MSuGbYE2Kpo+k0Y0QdDXoeK7QqhSztCmrfllTgWAsMmRjWbD
- IZU3I7ca9+TmAS1+YnLn7OAS5kpdST1e+D6r7/53/qicP0ihP6/1UFHG6IdCP6ma9y0A
- 3JLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694543815; x=1695148615;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=48LTsRCisHnBhWvEgWJoGT8ScULA8r7Liu/73Z80Puc=;
- b=bWZ6f9UDBHZ8FL8pDqJ1y13+KkPt/5TPBggzB0HnIOQgEVTl1sYCaEFmkkWPiVpA6I
- nBXC56l0IyGfCxFbhyYfYk3z0fV+v4SXS8Rx380oxDW4GyP/QjpsIBdTWKIGBGAEBsgK
- 2u3Yn5k4kDM5c0Ib+HrbjjHakBwqYyF6/p7lX0JLKJYBQ5lV5KpjQ6o6dZhp8Q2EXelp
- ivPWovBkjRKflZJWDzDJea+farvsF3yyL3MLAzpQP8nsMoUudL4eQe9IXToKbLSFH+AX
- L/yDVLJhyHwazXmCPxB/DFw3J+4haKGJLgSVOD9FLN/jFvpf3k74Y+po7FV05JMExgIE
- smPg==
-X-Gm-Message-State: AOJu0YxEZo37XNbdePv3PH4YlikC5L2DULC/DnXCdu0gYIOEPgDYMosV
- InuSupCboYY/lQPcXGISKqpE5A==
-X-Google-Smtp-Source: AGHT+IHAdUs6k41sET5dMq/9NBUD9YTbfD27EZvvhTGVeHeEeRINTQASkLlzmbPRUf7X7cjbOBf+Zg==
-X-Received: by 2002:a5d:6b41:0:b0:319:6caa:ada2 with SMTP id
- x1-20020a5d6b41000000b003196caaada2mr231084wrw.47.1694543815375; 
- Tue, 12 Sep 2023 11:36:55 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- l17-20020a5d6751000000b003140f47224csm13437017wrw.15.2023.09.12.11.36.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 11:36:54 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 46A021FFBB;
- Tue, 12 Sep 2023 19:36:54 +0100 (BST)
-References: <20230912150611.70676-1-stefanha@redhat.com>
- <ZQCBoCI6lvJqhsbd@redhat.com> <8734zjv0ph.fsf@linaro.org>
- <ZQCOTJMyMCgNCu3l@redhat.com>
- <CAJSP0QX09DUU1GQNLBW2ZkAsiR2HNC03+ZohmOZpwJDq04fz3Q@mail.gmail.com>
-User-agent: mu4e 1.11.17; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Stefan
- Hajnoczi
- <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, Wainer dos
- Santos Moschetta <wainersm@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Beraldo Leal
- <bleal@redhat.com>
-Subject: Re: [PATCH] gitlab: remove unreliable avocado CI jobs
-Date: Tue, 12 Sep 2023 18:39:29 +0100
-In-reply-to: <CAJSP0QX09DUU1GQNLBW2ZkAsiR2HNC03+ZohmOZpwJDq04fz3Q@mail.gmail.com>
-Message-ID: <87y1hbtf09.fsf@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qg7oo-0008VG-OO
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:08:58 -0400
+Received: from mailout2.w2.samsung.com ([211.189.100.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qg7oi-0007fR-TT
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:08:58 -0400
+Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
+ by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912180846usoutp02505cce85f3ca7c010b2383ad857c1896~EORXmK49D2333423334usoutp02E;
+ Tue, 12 Sep 2023 18:08:46 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
+ 20230912180846usoutp02505cce85f3ca7c010b2383ad857c1896~EORXmK49D2333423334usoutp02E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1694542126;
+ bh=jv0LV8utv1i7ApfFwqwNk7q1AKUz3NnBOj9mV7cQ+x0=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=hhOEgC2eVqGIoksPFw/7FDhSaebjeLTfVRKH5ruDh/7trA7KZfU1QiKAgIXE6mhmB
+ OpScjnTggTrhFXMmGixP93FmbithuohN3LS8B7wXcvkxYxSV5w08nVvOyoeP0boH5f
+ 8BIamPuV3Tj7e8bNG1c/o5eDnklHzIjFE1YGu3TI=
+Received: from ussmges2new.samsung.com (u111.gpu85.samsung.co.kr
+ [203.254.195.111]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912180845uscas1p254803e01094846b2579cb1772dd47b15~EORXeX8ON0142701427uscas1p2B;
+ Tue, 12 Sep 2023 18:08:45 +0000 (GMT)
+Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
+ ussmges2new.samsung.com (USCPEMTA) with SMTP id 70.9B.40279.D29A0056; Tue,
+ 12 Sep 2023 14:08:45 -0400 (EDT)
+Received: from ussmgxs3new.samsung.com (u92.gpu85.samsung.co.kr
+ [203.254.195.92]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912180845uscas1p28e989eaff6b92939cfdb85886137354b~EORXQMVzD3243332433uscas1p2M;
+ Tue, 12 Sep 2023 18:08:45 +0000 (GMT)
+X-AuditID: cbfec36f-4cbfe70000009d57-b1-6500a92d93f4
+Received: from SSI-EX1.ssi.samsung.com ( [105.128.2.145]) by
+ ussmgxs3new.samsung.com (USCPEXMTA) with SMTP id F8.B9.31410.D29A0056; Tue,
+ 12 Sep 2023 14:08:45 -0400 (EDT)
+Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
+ SSI-EX1.ssi.samsung.com (105.128.2.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.1.2375.24; Tue, 12 Sep 2023 11:08:44 -0700
+Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
+ SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
+ 12 Sep 2023 11:08:44 -0700
+From: Fan Ni <fan.ni@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
+ <philmd@linaro.org>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>, "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH v3 4/4] hw/cxl: Support 4 HDM decoders at all levels of
+ topology
+Thread-Topic: [PATCH v3 4/4] hw/cxl: Support 4 HDM decoders at all levels of
+ topology
+Thread-Index: AQHZ5KVz5ehTY0A1Q0y1rQVyt8XI/bAX9GMA
+Date: Tue, 12 Sep 2023 18:08:44 +0000
+Message-ID: <20230912180844.GD319114@bgt-140510-bm03>
+In-Reply-To: <20230911114313.6144-5-Jonathan.Cameron@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <5B1F8F0FB6CBEA4F930CE02189990A2A@ssi.samsung.com>
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrOKsWRmVeSWpSXmKPExsWy7djXc7q6KxlSDdq/GlisWniNzeL8rFMs
+ Foc3nmGy+P/rFavFmhXCFsd7d7A4sHm0HHnL6nHn2h42jyfXNjN5vN93lc3j8ya5ANYoLpuU
+ 1JzMstQifbsErozV6+4wF5zIrni0v4WlgXG/TxcjJ4eEgIlE29T9LF2MXBxCAisZJc51v2SF
+ cFqZJC4/7WWFqVrbf58dIrGWUeLz5V+MEM4nRoneNaugnGWMEkfuHgdrYRNQlNjXtZ0NxBYR
+ MJJ4d2MSWBGzQAOTxLV759hBEsICYRI93QuZIIrCJX5MaWSEaWiZuZwFxGYRUJV4dXcWWA2v
+ gKlEy7XpYL2cAg4SZ161MIPYjAJiEt9PrQGrYRYQl7j1ZD4TxN2CEotm72GGsMUk/u16yAZh
+ K0rc//6SHaJeT+LG1ClsELadxMv1y1khbG2JZQtfM0PsFZQ4OfMJC0SvpMTBFTfAISYhcIFD
+ 4lzbBmgguUgcufUbqkhaYvqay0A2B5CdLLHqIxdEOEdi/pItUCXWEgv/rGeawKgyC8nZs5Cc
+ NAvJSbOQnDQLyUkLGFlXMYqXFhfnpqcWG+WllusVJ+YWl+al6yXn525iBKal0/8O5+9gvH7r
+ o94hRiYOxkOMEhzMSiK8JYf+pgjxpiRWVqUW5ccXleakFh9ilOZgURLnNbQ9mSwkkJ5Ykpqd
+ mlqQWgSTZeLglGpg4gxy8/JlNVzKciTtyNFYhfTgjcIquZvfFLi9MzrwOPaw16Svqinrj2uu
+ 7/vc/b/TbNK6mz6pOz5mGzRVbH4sJy7ldDvVouLFhLjQX48nSZvXHX7sXf8zzHDq9h/1/ZpL
+ NWLuH3D0sL7Pz3ovu3VJ4QTrDJ2znKfV1Td80njhOjNLIz5NRHh6XKIow6kFvAt8eUu+zHlr
+ rrF+5q/FBYpWFwONXy7zL2Wq/JfH5ZKXv4j38KvMZVI7lso8Pb1e9n6Fb+EjTbajEV5bX6j5
+ ZZS/yKtv+8Z7WlRONSajMyLy/DbnuXYMm38tKqyTl5TeIfZ9a4Bghq3siad5Uk6Vjp0M/5Iq
+ xRezykj4PAmdqKbEUpyRaKjFXFScCAAB8awPugMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrCIsWRmVeSWpSXmKPExsWS2cA0UVd3JUOqwb5f8harFl5jszg/6xSL
+ xeGNZ5gs/v96xWqxZoWwxfHeHSwObB4tR96yety5tofN48m1zUwe7/ddZfP4vEkugDWKyyYl
+ NSezLLVI3y6BK2P1ujvMBSeyKx7tb2FpYNzv08XIySEhYCKxtv8+excjF4eQwGpGibbj8xgh
+ nE+MErfPNkA5yxgl9v6eygrSwiagKLGvazsbiC0iYCTx7sYksCJmgQYmidZ7RxlBEsICYRI9
+ 3QuZIIrCJX7dX8YO09AyczkLiM0ioCrx6u4ssBpeAVOJlmvTgWo4gLaVShzYHQ8S5hRwkDjz
+ qoUZxGYUEJP4fmoNWDmzgLjErSfzmSBeEJBYsuc8M4QtKvHy8T9WCFtR4v73l+wQ9XoSN6ZO
+ YYOw7SRerl/OCmFrSyxb+JoZ4gRBiZMzn7BA9EpKHFxxg2UCo8QsJOtmIRk1C8moWUhGzUIy
+ agEj6ypG8dLi4tz0imLjvNRyveLE3OLSvHS95PzcTYzAiD7973DMDsZ7tz7qHWJk4mA8xCjB
+ wawkwlty6G+KEG9KYmVValF+fFFpTmrxIUZpDhYlcd4dUy6mCAmkJ5akZqemFqQWwWSZODil
+ GphEWot89n54djB8qvA/Lq4J1us+mLk0/j4vvHz6IeXM+/ct72qqmb+3vLVLadse0UuBknt2
+ xYpX7Ux713stScLNUmXvAbubaw6Hi3Ve5p3z6vE3lbea9bK5fgw8WwOmvmJeprtsy8WG1JOC
+ j314P5musZ73xvGbS/Ne/id3xSf/tJ7lu3iV59lP1/xe5CgWRZcv2/Ph8Jk3fFYRpmkfJtwN
+ tLvC8Ouia8rTqNyzZ9UeT+Hz/PxASuzOhzvvL7TbGJncf+jzKX6389F5XtfPfP0mPaPuVpi2
+ +FzF1EKV+jPzInx27P96f+d5bosjguWS3q//sm8Ib9OX+BfCoSYm5Wq1fr3buxfFZxk0NzRK
+ ns3LVGIpzkg01GIuKk4EACBYQOhXAwAA
+X-CMS-MailID: 20230912180845uscas1p28e989eaff6b92939cfdb85886137354b
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20230912180845uscas1p28e989eaff6b92939cfdb85886137354b
+References: <20230911114313.6144-1-Jonathan.Cameron@huawei.com>
+ <20230911114313.6144-5-Jonathan.Cameron@huawei.com>
+ <CGME20230912180845uscas1p28e989eaff6b92939cfdb85886137354b@uscas1p2.samsung.com>
+Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
+ helo=mailout2.w2.samsung.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,143 +138,370 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, Sep 11, 2023 at 12:43:13PM +0100, Jonathan Cameron wrote:
 
-Stefan Hajnoczi <stefanha@gmail.com> writes:
+> Support these decoders in CXL host bridges (pxb-cxl), CXL Switch USP
+> and CXL Type 3 end points.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> ---
 
-> On Tue, Sep 12, 2023, 12:14 Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
->
->  On Tue, Sep 12, 2023 at 05:01:26PM +0100, Alex Benn=C3=A9e wrote:
->  >=20
->  > Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->  >=20
->  > > On Tue, Sep 12, 2023 at 11:06:11AM -0400, Stefan Hajnoczi wrote:
->  > >> The avocado-system-alpine, avocado-system-fedora, and
->  > >> avocado-system-ubuntu jobs are unreliable. I identified them while
->  > >> looking over CI failures from the past week:
->  > >> https://gitlab.com/qemu-project/qemu/-/jobs/5058610614
->  > >> https://gitlab.com/qemu-project/qemu/-/jobs/5058610654
->  > >> https://gitlab.com/qemu-project/qemu/-/jobs/5030428571
->  > >>=20
->  > >> Thomas Huth suggest on IRC today that there may be a legitimate fai=
-lure
->  > >> in there:
->  > >>=20
->  > >>   th_huth: f4bug, yes, seems like it does not start at all correctl=
-y on
->  > >>   alpine anymore ... and it's broken since ~ 2 weeks already, so if=
- nobody
->  > >>   noticed this by now, this is worrying
->  > >>=20
->  > >> It crept in because the jobs were already unreliable.
->  > >>=20
->  > >> I don't know how to interpret the job output, so all I can do is to
->  > >> propose removing these jobs. A useful CI job has two outcomes: pass=
- or
->  > >> fail. Timeouts and other in-between states are not useful because t=
-hey
->  > >> require constant triaging by someone who understands the details of=
- the
->  > >> tests and they can occur when run against pull requests that have
->  > >> nothing to do with the area covered by the test.
->  > >>=20
->  > >> Hopefully test owners will be able to identify the root causes and =
-solve
->  > >> them so that these jobs can stay. In their current state the jobs a=
-re
->  > >> not useful since I cannot cannot tell whether job failures are real=
- or
->  > >> just intermittent when merging qemu.git pull requests.
->  > >>=20
->  > >> If you are a test owner, please take a look.
->  > >>=20
->  > >> It is likely that other avocado-system-* CI jobs have similar failu=
-res
->  > >> from time to time, but I'll leave them as long as they are passing.
->  > >>=20
->  > >> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1884
->  > >> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
->  > >> ---
->  > >>  .gitlab-ci.d/buildtest.yml | 27 ---------------------------
->  > >>  1 file changed, 27 deletions(-)
->  > >>=20
->  > >> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
->  > >> index aee9101507..83ce448c4d 100644
->  > >> --- a/.gitlab-ci.d/buildtest.yml
->  > >> +++ b/.gitlab-ci.d/buildtest.yml
->  > >> @@ -22,15 +22,6 @@ check-system-alpine:
->  > >>      IMAGE: alpine
->  > >>      MAKE_CHECK_ARGS: check-unit check-qtest
->  > >>=20=20
->  > >> -avocado-system-alpine:
->  > >> -  extends: .avocado_test_job_template
->  > >> -  needs:
->  > >> -    - job: build-system-alpine
->  > >> -      artifacts: true
->  > >> -  variables:
->  > >> -    IMAGE: alpine
->  > >> -    MAKE_CHECK_ARGS: check-avocado
->  > >
->  > > Instead of entirely deleting, I'd suggest adding
->  > >
->  > >    # Disabled due to frequent random failures
->  > >    # https://gitlab.com/qemu-project/qemu/-/issues/1884
->  > >    when: manual
->  > >
->  > > See example: https://docs.gitlab.com/ee/ci/yaml/#when
->  > >
->  > > This disables the job from running unless someone explicitly
->  > > tells it to run
->  >=20
->  > What I don't understand is why we didn't gate the release back when th=
-ey
->  > first tripped. We should have noticed between:
->  >=20
->  >   https://gitlab.com/qemu-project/qemu/-/pipelines/956543770
->  >=20
->  > and
->  >=20
->  >   https://gitlab.com/qemu-project/qemu/-/pipelines/957154381
->  >=20
->  > that the system tests where regressing. Yet we merged the changes
->  > anyway.
->
->  I think that green series is misleading, based on Richard's
->  mail on list wrt the TCG pull series:
->
->    https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg04014.html
->
->    "It's some sort of timing issue, which sometimes goes away
->     when re-run. I was re-running tests *a lot* in order to
->     get them to go green while running the 8.1 release. "
-
-But I think in that actual case a change exposed a race condition which
-has only recently been fixed - however we've had additional regresssions
-since.
-
-Rather than kill the system tests we can disable the flaky individual
-tests in avocado.=20
-
->
->  Essentially I'd put this down to the tests being soo non-deterministic
->  that we've given up trusting them.
->
-> Yes.
->
-> Stefan
->
->  With regards,
->  Daniel
->  --=20
->  |: https://berrange.com      -o-    https://www.flickr.com/photos/dberra=
-nge :|
->  |: https://libvirt.org         -o-            https://fstop138.berrange.=
-com :|
->  |: https://entangle-photo.org    -o-    https://www.instagram.com/dberra=
-nge :|
+One comment inline, other than that, looks good to me.
 
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> v3: Factor out the hdm_inc changes to previous patch.
+>     Fix use of encoded hdm count as if it were decoded in cxl-host.
+>     Minor refactoring to make that path and one in cxl_type3.c
+>     look more similar.
+> ---
+>  include/hw/cxl/cxl_component.h | 10 +++-
+>  hw/cxl/cxl-component-utils.c   |  7 ++-
+>  hw/cxl/cxl-host.c              | 67 ++++++++++++++++--------
+>  hw/mem/cxl_type3.c             | 96 +++++++++++++++++++++++-----------
+>  4 files changed, 124 insertions(+), 56 deletions(-)
+>=20
+> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_componen=
+t.h
+> index 7c864d2044..3c795a6278 100644
+> --- a/include/hw/cxl/cxl_component.h
+> +++ b/include/hw/cxl/cxl_component.h
+> @@ -135,6 +135,10 @@ REG32(CXL_RAS_ERR_HEADER0, CXL_RAS_REGISTERS_OFFSET =
++ 0x18)
+>    REG32(CXL_HDM_DECODER##n##_TARGET_LIST_LO,                            =
+       \
+>          CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x24)                   =
+       \
+>    REG32(CXL_HDM_DECODER##n##_TARGET_LIST_HI,                            =
+       \
+> +        CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x28)                   =
+       \
+> +  REG32(CXL_HDM_DECODER##n##_DPA_SKIP_LO,                               =
+       \
+> +        CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x24)                   =
+       \
+> +  REG32(CXL_HDM_DECODER##n##_DPA_SKIP_HI,                               =
+       \
+>          CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x28)
+> =20
+>  REG32(CXL_HDM_DECODER_CAPABILITY, CXL_HDM_REGISTERS_OFFSET)
+> @@ -147,9 +151,13 @@ REG32(CXL_HDM_DECODER_GLOBAL_CONTROL, CXL_HDM_REGIST=
+ERS_OFFSET + 4)
+>      FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, POISON_ON_ERR_EN, 0, 1)
+>      FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, HDM_DECODER_ENABLE, 1, 1)
+> =20
+> +/* Support 4 decoders at all levels of topology */
+> +#define CXL_HDM_DECODER_COUNT 4
+> +
+>  HDM_DECODER_INIT(0);
+> -/* Only used for HDM decoder registers block address increment */
+>  HDM_DECODER_INIT(1);
+> +HDM_DECODER_INIT(2);
+> +HDM_DECODER_INIT(3);
+> =20
+>  /* 8.2.5.13 - CXL Extended Security Capability Structure (Root complex o=
+nly) */
+>  #define EXTSEC_ENTRY_MAX        256
+> diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> index aa011a8f34..3ecdad4a5e 100644
+> --- a/hw/cxl/cxl-component-utils.c
+> +++ b/hw/cxl/cxl-component-utils.c
+> @@ -90,6 +90,9 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cst=
+ate, hwaddr offset,
+> =20
+>      switch (offset) {
+>      case A_CXL_HDM_DECODER0_CTRL:
+> +    case A_CXL_HDM_DECODER1_CTRL:
+> +    case A_CXL_HDM_DECODER2_CTRL:
+> +    case A_CXL_HDM_DECODER3_CTRL:
+>          should_commit =3D FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMI=
+T);
+>          should_uncommit =3D !should_commit;
+
+So for the commit/uncommit flag, we always check decoder 0 control
+register? Or i read it wrong? I thought the commit bit is per control regis=
+ter
+thing?
+
+Fan
+
+>          break;
+> @@ -129,7 +132,7 @@ static void cxl_cache_mem_write_reg(void *opaque, hwa=
+ddr offset, uint64_t value,
+>      }
+> =20
+>      if (offset >=3D A_CXL_HDM_DECODER_CAPABILITY &&
+> -        offset <=3D A_CXL_HDM_DECODER0_TARGET_LIST_HI) {
+> +        offset <=3D A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
+>          dumb_hdm_handler(cxl_cstate, offset, value);
+>      } else {
+>          cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_reg=
+isters)] =3D value;
+> @@ -209,7 +212,7 @@ static void ras_init_common(uint32_t *reg_state, uint=
+32_t *write_msk)
+>  static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
+>                              enum reg_type type)
+>  {
+> -    int decoder_count =3D 1;
+> +    int decoder_count =3D CXL_HDM_DECODER_COUNT;
+>      int hdm_inc =3D R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE=
+_LO;
+>      int i;
+> =20
+> diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+> index 73c5426476..2aa776c79c 100644
+> --- a/hw/cxl/cxl-host.c
+> +++ b/hw/cxl/cxl-host.c
+> @@ -97,35 +97,58 @@ void cxl_fmws_link_targets(CXLState *cxl_state, Error=
+ **errp)
+>      }
+>  }
+> =20
+> -/* TODO: support, multiple hdm decoders */
+>  static bool cxl_hdm_find_target(uint32_t *cache_mem, hwaddr addr,
+>                                  uint8_t *target)
+>  {
+>      int hdm_inc =3D R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE=
+_LO;
+> -    uint32_t ctrl;
+> -    uint32_t ig_enc;
+> -    uint32_t iw_enc;
+> -    uint32_t target_idx;
+> -    int i =3D 0;
+> -
+> -    ctrl =3D cache_mem[R_CXL_HDM_DECODER0_CTRL + i * hdm_inc];
+> -    if (!FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
+> -        return false;
+> -    }
+> -
+> -    ig_enc =3D FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IG);
+> -    iw_enc =3D FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IW);
+> -    target_idx =3D (addr / cxl_decode_ig(ig_enc)) % (1 << iw_enc);
+> +    unsigned int hdm_count;
+> +    bool found =3D false;
+> +    int i;
+> +    uint32_t cap;
+> +
+> +    cap =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
+> +    hdm_count =3D cxl_decoder_count_dec(FIELD_EX32(cap,
+> +                                                 CXL_HDM_DECODER_CAPABIL=
+ITY,
+> +                                                 DECODER_COUNT));
+> +    for (i =3D 0; i < hdm_count; i++) {
+> +        uint32_t ctrl, ig_enc, iw_enc, target_idx;
+> +        uint32_t low, high;
+> +        uint64_t base, size;
+> +
+> +        low =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hd=
+m_inc);
+> +        high =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * h=
+dm_inc);
+> +        base =3D (low & 0xf0000000) | ((uint64_t)high << 32);
+> +        low =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hd=
+m_inc);
+> +        high =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * h=
+dm_inc);
+> +        size =3D (low & 0xf0000000) | ((uint64_t)high << 32);
+> +        if (addr < base || addr >=3D base + size) {
+> +            continue;
+> +        }
+> =20
+> -    if (target_idx < 4) {
+> -        *target =3D extract32(cache_mem[R_CXL_HDM_DECODER0_TARGET_LIST_L=
+O],
+> -                            target_idx * 8, 8);
+> -    } else {
+> -        *target =3D extract32(cache_mem[R_CXL_HDM_DECODER0_TARGET_LIST_H=
+I],
+> -                            (target_idx - 4) * 8, 8);
+> +        ctrl =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * hdm_=
+inc);
+> +        if (!FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
+> +            return false;
+> +        }
+> +        found =3D true;
+> +        ig_enc =3D FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IG);
+> +        iw_enc =3D FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IW);
+> +        target_idx =3D (addr / cxl_decode_ig(ig_enc)) % (1 << iw_enc);
+> +
+> +        if (target_idx < 4) {
+> +            uint32_t val =3D ldl_le_p(cache_mem +
+> +                                    R_CXL_HDM_DECODER0_TARGET_LIST_LO +
+> +                                    i * hdm_inc);
+> +            *target =3D extract32(val, target_idx * 8, 8);
+> +        } else {
+> +            uint32_t val =3D ldl_le_p(cache_mem +
+> +                                    R_CXL_HDM_DECODER0_TARGET_LIST_HI +
+> +                                    i * hdm_inc);
+> +            *target =3D extract32(val, (target_idx - 4) * 8, 8);
+> +        }
+> +        break;
+>      }
+> =20
+> -    return true;
+> +    return found;
+>  }
+> =20
+>  static PCIDevice *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr)
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index cd92813436..1658e0cc59 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -382,8 +382,6 @@ static void hdm_decoder_commit(CXLType3Dev *ct3d, int=
+ which)
+>      uint32_t *cache_mem =3D cregs->cache_mem_registers;
+>      uint32_t ctrl;
+> =20
+> -    assert(which =3D=3D 0);
+> -
+>      ctrl =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_=
+inc);
+>      /* TODO: Sanity checks that the decoder is possible */
+>      ctrl =3D FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, ERR, 0);
+> @@ -399,8 +397,6 @@ static void hdm_decoder_uncommit(CXLType3Dev *ct3d, i=
+nt which)
+>      uint32_t *cache_mem =3D cregs->cache_mem_registers;
+>      uint32_t ctrl;
+> =20
+> -    assert(which =3D=3D 0);
+> -
+>      ctrl =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_=
+inc);
+> =20
+>      ctrl =3D FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, ERR, 0);
+> @@ -489,6 +485,21 @@ static void ct3d_reg_write(void *opaque, hwaddr offs=
+et, uint64_t value,
+>          should_uncommit =3D !should_commit;
+>          which_hdm =3D 0;
+>          break;
+> +    case A_CXL_HDM_DECODER1_CTRL:
+> +        should_commit =3D FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMI=
+T);
+> +        should_uncommit =3D !should_commit;
+> +        which_hdm =3D 1;
+> +        break;
+> +    case A_CXL_HDM_DECODER2_CTRL:
+> +        should_commit =3D FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMI=
+T);
+> +        should_uncommit =3D !should_commit;
+> +        which_hdm =3D 2;
+> +        break;
+> +    case A_CXL_HDM_DECODER3_CTRL:
+> +        should_commit =3D FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMI=
+T);
+> +        should_uncommit =3D !should_commit;
+> +        which_hdm =3D 3;
+> +        break;
+>      case A_CXL_RAS_UNC_ERR_STATUS:
+>      {
+>          uint32_t capctrl =3D ldl_le_p(cache_mem + R_CXL_RAS_ERR_CAP_CTRL=
+);
+> @@ -760,40 +771,63 @@ static void ct3_exit(PCIDevice *pci_dev)
+>      }
+>  }
+> =20
+> -/* TODO: Support multiple HDM decoders and DPA skip */
+>  static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t =
+*dpa)
+>  {
+>      int hdm_inc =3D R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE=
+_LO;
+>      uint32_t *cache_mem =3D ct3d->cxl_cstate.crb.cache_mem_registers;
+> -    uint64_t decoder_base, decoder_size, hpa_offset;
+> -    uint32_t hdm0_ctrl;
+> -    int ig, iw;
+> -    int i =3D 0;
+> -
+> -    decoder_base =3D
+> -        (((uint64_t)cache_mem[R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc] =
+<< 32) |
+> -                    cache_mem[R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc])=
+;
+> -    if ((uint64_t)host_addr < decoder_base) {
+> -        return false;
+> -    }
+> -
+> -    hpa_offset =3D (uint64_t)host_addr - decoder_base;
+> -
+> -    decoder_size =3D
+> -        ((uint64_t)cache_mem[R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc] <=
+< 32) |
+> -        cache_mem[R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc];
+> -    if (hpa_offset >=3D decoder_size) {
+> -        return false;
+> -    }
+> +    unsigned int hdm_count;
+> +    uint32_t cap;
+> +    uint64_t dpa_base =3D 0;
+> +    int i;
+> =20
+> -    hdm0_ctrl =3D cache_mem[R_CXL_HDM_DECODER0_CTRL + i * hdm_inc];
+> -    iw =3D FIELD_EX32(hdm0_ctrl, CXL_HDM_DECODER0_CTRL, IW);
+> -    ig =3D FIELD_EX32(hdm0_ctrl, CXL_HDM_DECODER0_CTRL, IG);
+> +    cap =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
+> +    hdm_count =3D cxl_decoder_count_dec(FIELD_EX32(cap,
+> +                                                 CXL_HDM_DECODER_CAPABIL=
+ITY,
+> +                                                 DECODER_COUNT));
+> +
+> +    for (i =3D 0; i < hdm_count; i++) {
+> +        uint64_t decoder_base, decoder_size, hpa_offset, skip;
+> +        uint32_t hdm_ctrl, low, high;
+> +        int ig, iw;
+> +
+> +        low =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hd=
+m_inc);
+> +        high =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * h=
+dm_inc);
+> +        decoder_base =3D ((uint64_t)high << 32) | (low & 0xf0000000);
+> +
+> +        low =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hd=
+m_inc);
+> +        high =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * h=
+dm_inc);
+> +        decoder_size =3D ((uint64_t)high << 32) | (low & 0xf0000000);
+> +
+> +        low =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_LO +
+> +                       i * hdm_inc);
+> +        high =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_HI +
+> +                        i * hdm_inc);
+> +        skip =3D ((uint64_t)high << 32) | (low & 0xf0000000);
+> +        dpa_base +=3D skip;
+> +
+> +        hpa_offset =3D (uint64_t)host_addr - decoder_base;
+> +
+> +        hdm_ctrl =3D ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * =
+hdm_inc);
+> +        iw =3D FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IW);
+> +        ig =3D FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IG);
+> +        if (!FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
+> +            return false;
+> +        }
+> +        if (((uint64_t)host_addr < decoder_base) ||
+> +            (hpa_offset >=3D decoder_size)) {
+> +            dpa_base +=3D decoder_size /
+> +                cxl_interleave_ways_dec(iw, &error_fatal);
+> +            continue;
+> +        }
+> =20
+> -    *dpa =3D (MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
+> -        ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offset) >=
+> iw);
+> +        *dpa =3D dpa_base +
+> +            ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
+> +             ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offs=
+et)
+> +              >> iw));
+> =20
+> -    return true;
+> +        return true;
+> +    }
+> +    return false;
+>  }
+> =20
+>  static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
+> --=20
+> 2.39.2
+>=20
+> =
 
