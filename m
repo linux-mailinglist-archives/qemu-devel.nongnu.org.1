@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569D779D360
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70DE479D363
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:16:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg4B4-00009N-FA; Tue, 12 Sep 2023 10:15:42 -0400
+	id 1qg4BN-0000iA-Ja; Tue, 12 Sep 2023 10:16:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg4B2-0008OA-IX
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:15:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg4Ay-0000yJ-Ae
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:15:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694528135;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=4+260vb1Ej7++ZaiEWxkX6MDaucQgJFobrhdQexa1fY=;
- b=JIradUBRX7+mffyicV8AxesYzRxMla8dVG852WyeVM+tZuZ3hSmiH5WmQ2UQzhJWMgCrN3
- j4BOP/K67aK5buCHabJ92J77jnQxA8+1qSERYbSCX4MFtfwVueI/SKeh8z41sVnR4TbcTT
- 0xFOIvB32nT31ZsbUi5nV5ZDNNea1Bc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-272-MBe4g2vHMfWgtZXWlClD-g-1; Tue, 12 Sep 2023 10:15:32 -0400
-X-MC-Unique: MBe4g2vHMfWgtZXWlClD-g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9C474101FAA0;
- Tue, 12 Sep 2023 14:15:31 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8CC7840C2064;
- Tue, 12 Sep 2023 14:15:30 +0000 (UTC)
-Date: Tue, 12 Sep 2023 15:15:28 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Beraldo Leal <bleal@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>
-Subject: Re: [PATCH] gitlab-ci/cirrus: Increase timeout to 100 minutes
-Message-ID: <ZQBygFxijkkQWNO/@redhat.com>
-References: <20230912133829.61352-1-stefanha@redhat.com>
- <ZQBtH7rBWm2Sze68@redhat.com>
- <CAJSP0QWUqry-CtrnL8hodgD6gsJGVCaY5vG5Tn5UHecZT0kQ3g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qg4BH-0000gJ-OS
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:15:55 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qg4B7-0000zk-2b
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:15:55 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-52e64bc7c10so7417998a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:15:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694528143; x=1695132943; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8g3cktqW9q2V/g6QTpPuDP5+W/gEdBoajslMdf72mLk=;
+ b=QnlcK9XZnlDWatG/RLlxS7WXcX9ApxHfaK/MYKjWOqE141SB42MY0b4gX21I+AYpD1
+ +X7TgXCSirOEYVRjNja4hlP5w4HoL2Zdm+rJ8V2cmx2ATqrys4vmm7fc3HDmVdmjT8MD
+ Gbol4x3zbYCSO4r46bATe0oU2X5GDdHf+MXVNAg4ez/Gilw/Xt9Jy7dcAOQ40OUWgGQs
+ RkrwSR0xFdB5FXViBtm3IJ0G1IgGf4/pND41LKriM7WJCUgjxSWvzBGseYXc6DeCWuwA
+ 48a0gall+Gh1UBFPxtdUAaUrkgCe/NfuLm77iwFD0Gbvbn5jxeEzRM5mHnItDqvlG8eA
+ KLQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694528143; x=1695132943;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8g3cktqW9q2V/g6QTpPuDP5+W/gEdBoajslMdf72mLk=;
+ b=NJWNsl5f+GTpQHAEdFR5NXicU4/YY5r88a/4fFVuJ8R6l5uCQ07M0SQtFpR0jtGY6B
+ f8/rtbKzwssskKXGxkUQ0kTVg+XoNiyvnTuW6N1kgozOdWWOUyw9jNUBw0OLlJu5ezRK
+ hnGTXSysN9WvSj8ReenQS+FbeSVDf6tCQv51GjBOxigH+tosw/yESqV1JgtfjifKEfXj
+ V8eB6s4OxyAZHKQgnXOdQ6oBhzEA3hup+0kRhI8tjWORKkERPYFC4vRepUPDql4nv41u
+ kyD0HQuGdpWy7lJNiMbnH45m/swxewr71xfK+DvflDMqZX91QHGV88r5HhSByIaumjBs
+ DD6A==
+X-Gm-Message-State: AOJu0Yz7QPSnrZGTbca/2qmjlgFYVc8p+Uag4tPrABWzl+pyuIuOSc4G
+ OxaYXjja806UxL9DGQ2Tezci9m+P6lk7bUGKevflSQ==
+X-Google-Smtp-Source: AGHT+IFgYm5vqC3uH5wPTiiRka8pGD2nuQOTucFmxwNIeQgavLe1XtUKaZIMKix7vJjPOevwFWCDdu0oFWgcHpMHdVw=
+X-Received: by 2002:a05:6402:2023:b0:523:aef9:3b7b with SMTP id
+ ay3-20020a056402202300b00523aef93b7bmr10030389edb.4.1694528143280; Tue, 12
+ Sep 2023 07:15:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJSP0QWUqry-CtrnL8hodgD6gsJGVCaY5vG5Tn5UHecZT0kQ3g@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230811174751.784620-1-peter.maydell@linaro.org>
+ <ZNnTO1qnA308CUtb@cormorant.local>
+In-Reply-To: <ZNnTO1qnA308CUtb@cormorant.local>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Sep 2023 15:15:32 +0100
+Message-ID: <CAFEAcA9LZvwceR7973Vz=p78S8CMUja-zhEdjB9MfKeCs8qvWA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] nvme: avoid dynamic stack allocations
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Keith Busch <kbusch@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,52 +86,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 12, 2023 at 10:02:17AM -0400, Stefan Hajnoczi wrote:
-> On Tue, 12 Sept 2023 at 09:53, Daniel P. Berrangé <berrange@redhat.com> wrote:
+On Mon, 14 Aug 2023 at 08:09, Klaus Jensen <its@irrelevant.dk> wrote:
+>
+> On Aug 11 18:47, Peter Maydell wrote:
+> > The QEMU codebase has very few C variable length arrays, and if we can
+> > get rid of them all we can make the compiler error on new additions.
+> > This is a defensive measure against security bugs where an on-stack
+> > dynamic allocation isn't correctly size-checked (e.g.  CVE-2021-3527).
 > >
-> > On Tue, Sep 12, 2023 at 09:38:29AM -0400, Stefan Hajnoczi wrote:
-> > > The 80m timeout is not enough:
-> > >
-> > >   672/832 qemu:block / io-qcow2-041          OK             39.77s   1 subtests passed
-> > >   Timed out!
+> > We last had a go at this a few years ago, when Philippe wrote
+> > patches for this:
+> > https://patchew.org/QEMU/20210505211047.1496765-1-philmd@redhat.com/
+> > Some of the fixes made it into the tree, but some didn't (either
+> > because of lack of review or because review found some changes
+> > that needed to be made). I'm going through the remainder as a
+> > non-urgent Friday afternoon task...
 > >
-> > IIUC, that 'timed out' message is coming from Cirrus CI logs, which
-> > we can see over on the cirrus task:
+> > This patchset deals with two VLAs in the NVME code.
 > >
-> >   https://cirrus-ci.com/task/6462328380588032
+> > thanks
+> > -- PMM
 > >
-> > > https://gitlab.com/qemu-project/qemu/-/jobs/5058610599
+> > Peter Maydell (1):
+> >   hw/nvme: Avoid dynamic stack allocation
 > >
-> > This reports duration "64 minutes", vs a GitLab timeout of 1hr20.
+> > Philippe Mathieu-Daud=C3=A9 (1):
+> >   hw/nvme: Use #define to avoid variable length array
 > >
-> > IOW, we're not hitting the gitlab timeout, we're hitting hte
-> > Cirrus CI timeout, which defaults to 60 minutes.  The other
-> > 4 minuts gitlab reports is likely because Cirrus queued the
-> > job for 4 minutes before starting execution.
-> 
-> I'm glad you spotted that. I'm not familiar with Cirrus. Could you
-> send a patch that sets 'timeout_in'?
-
-Yes, testing now
-
-  https://gitlab.com/berrange/qemu/-/commit/c15d677de5ed2965464bc6212f049ed9785c4434
-
-  https://gitlab.com/berrange/qemu/-/jobs/5069195895
-
-  https://cirrus-ci.com/task/5135339078025216
-
-The cirrus CI job page looks to be picking up the elevated timeout.
+> >  hw/nvme/ctrl.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > --
+> > 2.34.1
+> >
+>
+> Thanks Peter,
+>
+> Applied to nvme-next!
 
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Hi Klaus -- did these patches get lost? They don't seem to
+have appeared in master yet.
 
+thanks
+-- PMM
 
