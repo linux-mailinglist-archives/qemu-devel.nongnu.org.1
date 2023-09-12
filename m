@@ -2,60 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB1179CEB9
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D27379CECB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:49:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg0vG-0002rL-5D; Tue, 12 Sep 2023 06:47:10 -0400
+	id 1qg0vM-0002uR-FB; Tue, 12 Sep 2023 06:47:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qg0vE-0002qo-BE
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:08 -0400
+ id 1qg0vL-0002uE-08
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qg0vC-0003EL-1M
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:08 -0400
+ id 1qg0vI-0003F0-PS
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:47:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694515625;
+ s=mimecast20190719; t=1694515632;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/2bxcIHBHpFaidbRkCTSYJN8Ogex1gp3OkpT+6Cmerk=;
- b=Ja1yYlPtB4TPjHdDzDW4kNAQCBHTjaTj/mazKYOEfsWPIyf+fpOvbK5pApeInHP3xyTONH
- Py+WQOt/TpnCQJ9QBbHVJBBsKfULzDIAMuLhOrwIQKyLeqdqc2hkIH9CYbsv/WOrfmy0qA
- bkN5XV8O7z59hyiG1rySdVf8QoOlJqQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-450-QGeoN68HPtmtzfv1lRWq3Q-1; Tue, 12 Sep 2023 06:47:04 -0400
-X-MC-Unique: QGeoN68HPtmtzfv1lRWq3Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=3bOMOL54my+Z6wYAOPlQ8SoK9BwSXftLjsjq4KCtGRE=;
+ b=aIpS6svT+3/So/XhIGkyF2FfZUHzxGqxkQz3MFq3PEdkLtj9Ev1r3q+lPF8K6ocDgKtIzx
+ AFSrIij1srhynaFO3PK3mTxh1M0XbajlYRxr8N7Q2qPuNCWjrco7pjIANekACcegkF50fU
+ NoGXy4dOO8I9TFJAU1+U4bRYwutJHfc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-652-1jqcNwdQO_CVK0MumC4j4Q-1; Tue, 12 Sep 2023 06:47:08 -0400
+X-MC-Unique: 1jqcNwdQO_CVK0MumC4j4Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D07BD181A6E7
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:47:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8E9012A59541;
+ Tue, 12 Sep 2023 10:47:07 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.8])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EE50C2156722;
- Tue, 12 Sep 2023 10:47:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A261E40C6EBF;
+ Tue, 12 Sep 2023 10:47:06 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Erico Nunes <ernunes@redhat.com>,
+Cc: stefanha@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PULL 03/14] vhost-user-gpu: support dmabuf modifiers
-Date: Tue, 12 Sep 2023 14:46:37 +0400
-Message-ID: <20230912104649.1638640-4-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 04/14] vmmouse: replace DPRINTF with tracing
+Date: Tue, 12 Sep 2023 14:46:38 +0400
+Message-ID: <20230912104649.1638640-5-marcandre.lureau@redhat.com>
 In-Reply-To: <20230912104649.1638640-1-marcandre.lureau@redhat.com>
 References: <20230912104649.1638640-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -81,89 +85,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Erico Nunes <ernunes@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-When the backend sends VHOST_USER_GPU_DMABUF_SCANOUT2, handle it
-by getting the modifiers information which is now available.
-
-Signed-off-by: Erico Nunes <ernunes@redhat.com>
-Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Sergio Lopez <slp@redhat.com>
-Message-Id: <20230714153900.475857-4-ernunes@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/display/vhost-user-gpu.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ hw/i386/vmmouse.c    | 29 ++++++++++++++---------------
+ hw/i386/trace-events | 10 ++++++++++
+ 2 files changed, 24 insertions(+), 15 deletions(-)
 
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index e8ee03094e..1150521d9d 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -32,6 +32,7 @@ typedef enum VhostUserGpuRequest {
-     VHOST_USER_GPU_DMABUF_SCANOUT,
-     VHOST_USER_GPU_DMABUF_UPDATE,
-     VHOST_USER_GPU_GET_EDID,
-+    VHOST_USER_GPU_DMABUF_SCANOUT2,
- } VhostUserGpuRequest;
+diff --git a/hw/i386/vmmouse.c b/hw/i386/vmmouse.c
+index 6cd624bd09..99b84a3817 100644
+--- a/hw/i386/vmmouse.c
++++ b/hw/i386/vmmouse.c
+@@ -32,6 +32,8 @@
+ #include "cpu.h"
+ #include "qom/object.h"
  
- typedef struct VhostUserGpuDisplayInfoReply {
-@@ -79,6 +80,11 @@ typedef struct VhostUserGpuDMABUFScanout {
-     int fd_drm_fourcc;
- } QEMU_PACKED VhostUserGpuDMABUFScanout;
- 
-+typedef struct VhostUserGpuDMABUFScanout2 {
-+    struct VhostUserGpuDMABUFScanout dmabuf_scanout;
-+    uint64_t modifier;
-+} QEMU_PACKED VhostUserGpuDMABUFScanout2;
++#include "trace.h"
 +
- typedef struct VhostUserGpuEdidRequest {
-     uint32_t scanout_id;
- } QEMU_PACKED VhostUserGpuEdidRequest;
-@@ -93,6 +99,7 @@ typedef struct VhostUserGpuMsg {
-         VhostUserGpuScanout scanout;
-         VhostUserGpuUpdate update;
-         VhostUserGpuDMABUFScanout dmabuf_scanout;
-+        VhostUserGpuDMABUFScanout2 dmabuf_scanout2;
-         VhostUserGpuEdidRequest edid_req;
-         struct virtio_gpu_resp_edid resp_edid;
-         struct virtio_gpu_resp_display_info display_info;
-@@ -107,6 +114,7 @@ static VhostUserGpuMsg m __attribute__ ((unused));
- #define VHOST_USER_GPU_MSG_FLAG_REPLY 0x4
+ /* debug only vmmouse */
+ //#define DEBUG_VMMOUSE
  
- #define VHOST_USER_GPU_PROTOCOL_F_EDID 0
-+#define VHOST_USER_GPU_PROTOCOL_F_DMABUF2 1
+@@ -50,12 +52,6 @@
+ #define VMMOUSE_RIGHT_BUTTON       0x10
+ #define VMMOUSE_MIDDLE_BUTTON      0x08
  
- static void vhost_user_gpu_update_blocked(VhostUserGPU *g, bool blocked);
+-#ifdef DEBUG_VMMOUSE
+-#define DPRINTF(fmt, ...) printf(fmt, ## __VA_ARGS__)
+-#else
+-#define DPRINTF(fmt, ...) do { } while (0)
+-#endif
+-
+ #define TYPE_VMMOUSE "vmmouse"
+ OBJECT_DECLARE_SIMPLE_TYPE(VMMouseState, VMMOUSE)
  
-@@ -171,7 +179,8 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-             .flags = VHOST_USER_GPU_MSG_FLAG_REPLY,
-             .size = sizeof(uint64_t),
-             .payload = {
--                .u64 = (1 << VHOST_USER_GPU_PROTOCOL_F_EDID)
-+                .u64 = (1 << VHOST_USER_GPU_PROTOCOL_F_EDID) |
-+                       (1 << VHOST_USER_GPU_PROTOCOL_F_DMABUF2)
-             }
-         };
+@@ -93,7 +89,8 @@ static void vmmouse_set_data(const uint32_t *data)
  
-@@ -236,6 +245,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
- 
-         break;
-     }
-+    case VHOST_USER_GPU_DMABUF_SCANOUT2:
-     case VHOST_USER_GPU_DMABUF_SCANOUT: {
-         VhostUserGpuDMABUFScanout *m = &msg->payload.dmabuf_scanout;
-         int fd = qemu_chr_fe_get_msgfd(&g->vhost_chr);
-@@ -269,6 +279,11 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-             .fourcc = m->fd_drm_fourcc,
-             .y0_top = m->fd_flags & VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP,
-         };
-+        if (msg->request == VHOST_USER_GPU_DMABUF_SCANOUT2) {
-+            VhostUserGpuDMABUFScanout2 *m2 = &msg->payload.dmabuf_scanout2;
-+            dmabuf->modifier = m2->modifier;
-+        }
+ static uint32_t vmmouse_get_status(VMMouseState *s)
+ {
+-    DPRINTF("vmmouse_get_status()\n");
++    trace_vmmouse_get_status();
 +
-         dpy_gl_scanout_dmabuf(con, dmabuf);
-         break;
-     }
+     return (s->status << 16) | s->nb_queue;
+ }
+ 
+@@ -105,8 +102,7 @@ static void vmmouse_mouse_event(void *opaque, int x, int y, int dz, int buttons_
+     if (s->nb_queue > (VMMOUSE_QUEUE_SIZE - 4))
+         return;
+ 
+-    DPRINTF("vmmouse_mouse_event(%d, %d, %d, %d)\n",
+-            x, y, dz, buttons_state);
++    trace_vmmouse_mouse_event(x, y, dz, buttons_state);
+ 
+     if ((buttons_state & MOUSE_EVENT_LBUTTON))
+         buttons |= VMMOUSE_LEFT_BUTTON;
+@@ -160,7 +156,7 @@ static void vmmouse_update_handler(VMMouseState *s, int absolute)
+ 
+ static void vmmouse_read_id(VMMouseState *s)
+ {
+-    DPRINTF("vmmouse_read_id()\n");
++    trace_vmmouse_read_id();
+ 
+     if (s->nb_queue == VMMOUSE_QUEUE_SIZE)
+         return;
+@@ -172,19 +168,22 @@ static void vmmouse_read_id(VMMouseState *s)
+ 
+ static void vmmouse_request_relative(VMMouseState *s)
+ {
+-    DPRINTF("vmmouse_request_relative()\n");
++    trace_vmmouse_request_relative();
++
+     vmmouse_update_handler(s, 0);
+ }
+ 
+ static void vmmouse_request_absolute(VMMouseState *s)
+ {
+-    DPRINTF("vmmouse_request_absolute()\n");
++    trace_vmmouse_request_absolute();
++
+     vmmouse_update_handler(s, 1);
+ }
+ 
+ static void vmmouse_disable(VMMouseState *s)
+ {
+-    DPRINTF("vmmouse_disable()\n");
++    trace_vmmouse_disable();
++
+     s->status = 0xffff;
+     vmmouse_remove_handler(s);
+ }
+@@ -193,7 +192,7 @@ static void vmmouse_data(VMMouseState *s, uint32_t *data, uint32_t size)
+ {
+     int i;
+ 
+-    DPRINTF("vmmouse_data(%d)\n", size);
++    trace_vmmouse_data(size);
+ 
+     if (size == 0 || size > 6 || size > s->nb_queue) {
+         printf("vmmouse: driver requested too much data %d\n", size);
+@@ -293,7 +292,7 @@ static void vmmouse_realizefn(DeviceState *dev, Error **errp)
+ {
+     VMMouseState *s = VMMOUSE(dev);
+ 
+-    DPRINTF("vmmouse_init\n");
++    trace_vmmouse_init();
+ 
+     if (!s->i8042) {
+         error_setg(errp, "'i8042' link is not set");
+diff --git a/hw/i386/trace-events b/hw/i386/trace-events
+index 04fd71bfc4..53c02d7ac8 100644
+--- a/hw/i386/trace-events
++++ b/hw/i386/trace-events
+@@ -121,3 +121,13 @@ x86_pic_interrupt(int irqn, int level) "PIC interrupt #%d level:%d"
+ # port92.c
+ port92_read(uint8_t val) "port92: read 0x%02x"
+ port92_write(uint8_t val) "port92: write 0x%02x"
++
++# vmmouse.c
++vmmouse_get_status(void) ""
++vmmouse_mouse_event(int x, int y, int dz, int buttons_state) "event: x=%d y=%d dz=%d state=%d"
++vmmouse_init(void) ""
++vmmouse_read_id(void) ""
++vmmouse_request_relative(void) ""
++vmmouse_request_absolute(void) ""
++vmmouse_disable(void) ""
++vmmouse_data(uint32_t size) "data: size=%" PRIu32
 -- 
 2.41.0
 
