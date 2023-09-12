@@ -2,77 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F4179D92F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 487F879D949
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 21:02:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg8VO-0002yA-Ba; Tue, 12 Sep 2023 14:52:58 -0400
+	id 1qg8cp-0004d9-Gb; Tue, 12 Sep 2023 15:00:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg8VL-0002xt-VI
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:52:55 -0400
-Received: from mail-oa1-x35.google.com ([2001:4860:4864:20::35])
+ id 1qg8cc-0004cM-Mi; Tue, 12 Sep 2023 15:00:28 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qg8VJ-00064v-9l
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:52:55 -0400
-Received: by mail-oa1-x35.google.com with SMTP id
- 586e51a60fabf-1c4cd0f6cb2so86788fac.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 11:52:52 -0700 (PDT)
+ id 1qg8cU-0001at-9i; Tue, 12 Sep 2023 15:00:20 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-573ac2fa37aso3623295eaf.3; 
+ Tue, 12 Sep 2023 12:00:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694544772; x=1695149572; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694545216; x=1695150016; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=miDYP6HgxDn8yu7Whcb7lZzYSppWF66NKk5ZhUw4L0c=;
- b=KoIH1hn04JB6JvF2SLc5VoW+hdXBDQBUk0NPitw+jzdLDvhbJSMaF1H3Qnm2FvcHuz
- SYnrUgq45L9IGrUXXyeHl+oPzbmEDiqyGQxP7ZZAPGAt8nTKXkTaRg9wU0WlR/cbnhN3
- 1Nti7Imby7h4ezHBQFvP55fNjmj5JPFywl/90NAk9efIPaE5AB0y/YcObq3GoNVbaPmG
- 8OoMRdNoAcTFlLBhS5CQup1+w/qZUa5Z032xYYyUThvtNGctsV4l6f1aFVsH4YHvjjax
- BrZdp1IV5MuHgYhp0mUXdypSxU0/4YlC70JBWMJS80DPsGgZYlrtMM2qBynO1Jn62oVp
- 8K3w==
+ bh=piu0eHKYmcAc4W9uppF+EeQSMzIi9xiD6eKhcA2ryU0=;
+ b=AijSRNt2J7kYD+JDq7tw6L89UmyxLO3L/MrQQzuzcwflUbx/1d1sgE59X0vUQxT538
+ Yaulz+cd4sxUE2gQn6ktrhPVV8H0gIVx5Aw/Kq/5fbJ3aJ3fWwDjDCqSarG/KHWlqKcU
+ Q4NEOaJJastqrKLvaA9dE+Hiy78B/XP/7gMf54QAATyWQj/YPTqmG6YHoveAhl8Jql3A
+ m+Rn8Z228Mw20g+xMJ5qf9mmoA4edRnLTF8bojGYl7c1Wy+pn0tRcDgH4hvEJH7BBHRC
+ j+H8J1lov26ZgIJ6EN/yg+LTHn/coxUzcGeoGitIGk2RhIR0HiCBE9/etct3oB+y3wRL
+ +Igg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694544772; x=1695149572;
+ d=1e100.net; s=20230601; t=1694545216; x=1695150016;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=miDYP6HgxDn8yu7Whcb7lZzYSppWF66NKk5ZhUw4L0c=;
- b=HjTzHUQv3gj9L5cbLbRZHOMw5UoaMKbbaKzR4A3b5vYyblm8dqW70FKPMsNNQldx9J
- DjcByR8nWLZX4ggYLc4uriNDUaqCBILGRkNoRu9QHxjIeNg8EcAxNCbydJ++m3CMEfX6
- jsrL3frAl4LHnMN/hnWq6xaXEw55fQL/Sp8RrdWCJpfVAjExmSdYRArZrkKj0RT585pz
- TOIgK6OPKlqjwB/X+GoUmrIpcLC7ZHp9L8IFm6mfZp298koASNA6T2IPNt6rjs1qpxrT
- zBxX0iK8JNs4fMKGqTcCjALEcprPkGh5+7Tp4/UR989/gAhjXaeYfn+YJQcmwDsuWmCw
- plmA==
-X-Gm-Message-State: AOJu0YznjYVQgozeF7ifM9Sy7L4vol0Lnoy8VVkR2Eaut/CgVU0r1jMT
- UXfn/l+k9WN05nHr7JXJtU1dC85mPPeYPyqEAsI=
-X-Google-Smtp-Source: AGHT+IGhhJQwh29ScMLWoAKq+GUEgI1XiW4cWO+iA6xnWT9VdMYalvdB4ThXZv8SdLJpbQ/M8oFra0o/qKQrYaoX8jo=
-X-Received: by 2002:a05:6870:860a:b0:1d5:cdf7:bdbc with SMTP id
- h10-20020a056870860a00b001d5cdf7bdbcmr377185oal.2.1694544772126; Tue, 12 Sep
- 2023 11:52:52 -0700 (PDT)
+ bh=piu0eHKYmcAc4W9uppF+EeQSMzIi9xiD6eKhcA2ryU0=;
+ b=p8oWTmZoPl90S2283jZkIA1PP3UJtaacMUhSjbV+7dJKnP0wH75SQlraw0imBfXiRE
+ u4JzECGNJj0mNN0zwf9mG5TWxxZwdmOSMQpluHcetUZY5hlldOispkRLMLB5VsfvJYzv
+ 5SrQ3yxeobTgj4OMH+63xLd+UZZwVToksqcqMH/wK1BAJkcX6e9Tq690tcTpNUPqP1jl
+ CM9kJFpxNLErRWsItLR1+1YRJKFQmOgO1/YBYJlNm4GoE3vD6FbJTJhFfL3ha0Tpcrpv
+ wmNgQLkXHj8yNm1zgtgpDZ3wr6XyNzfdNbMhYDuvxiYAhis+vMcIGu/qifGG+7RB/W4C
+ nG8Q==
+X-Gm-Message-State: AOJu0YwhWu0F/vKcU02T9nytMS3TFU5zyvUoU/wYaY+UIrPZjf+CqEFZ
+ j6zNHIuefTbHs5cODxhghWsN6cVSaZOL33LTu4w=
+X-Google-Smtp-Source: AGHT+IHV93FpCnhqVsit2bwizRL6P5PzDuK2CadshF9ddMo+or4565E1M0joWr2fG669upfbvHKfrjYxDystHhJ8X/s=
+X-Received: by 2002:a4a:7452:0:b0:570:c8fa:4ad7 with SMTP id
+ t18-20020a4a7452000000b00570c8fa4ad7mr508407ooe.1.1694545216659; Tue, 12 Sep
+ 2023 12:00:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230912150611.70676-1-stefanha@redhat.com>
- <ZQCBoCI6lvJqhsbd@redhat.com>
- <8734zjv0ph.fsf@linaro.org> <ZQCOTJMyMCgNCu3l@redhat.com>
- <CAJSP0QX09DUU1GQNLBW2ZkAsiR2HNC03+ZohmOZpwJDq04fz3Q@mail.gmail.com>
- <87y1hbtf09.fsf@linaro.org>
-In-Reply-To: <87y1hbtf09.fsf@linaro.org>
+References: <20230912184130.3056054-1-berrange@redhat.com>
+In-Reply-To: <20230912184130.3056054-1-berrange@redhat.com>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 12 Sep 2023 14:52:40 -0400
-Message-ID: <CAJSP0QUDtVStEx-u8k5akeG-_XdOpyWi221Xo4RGaQDwTe6Qhg@mail.gmail.com>
-Subject: Re: [PATCH] gitlab: remove unreliable avocado CI jobs
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
+Date: Tue, 12 Sep 2023 15:00:04 -0400
+Message-ID: <CAJSP0QW_Oa2w-WdSeSkHnd6kFN6OxAkPr03_UO_rDWDhpT7Wxg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] ci: fix hang of FreeBSD CI jobs
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Beraldo Leal <bleal@redhat.com>
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, qemu-arm@nongnu.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, Joel Stanley <joel@jms.id.au>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::35;
- envelope-from=stefanha@gmail.com; helo=mail-oa1-x35.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,159 +90,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Sept 2023 at 14:36, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
-ote:
+On Tue, 12 Sept 2023 at 14:41, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
+> wrote:
 >
+> This addresses
 >
-> Stefan Hajnoczi <stefanha@gmail.com> writes:
+>   https://gitlab.com/qemu-project/qemu/-/issues/1882
 >
-> > On Tue, Sep 12, 2023, 12:14 Daniel P. Berrang=C3=A9 <berrange@redhat.co=
-m> wrote:
-> >
-> >  On Tue, Sep 12, 2023 at 05:01:26PM +0100, Alex Benn=C3=A9e wrote:
-> >  >
-> >  > Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
-> >  >
-> >  > > On Tue, Sep 12, 2023 at 11:06:11AM -0400, Stefan Hajnoczi wrote:
-> >  > >> The avocado-system-alpine, avocado-system-fedora, and
-> >  > >> avocado-system-ubuntu jobs are unreliable. I identified them whil=
-e
-> >  > >> looking over CI failures from the past week:
-> >  > >> https://gitlab.com/qemu-project/qemu/-/jobs/5058610614
-> >  > >> https://gitlab.com/qemu-project/qemu/-/jobs/5058610654
-> >  > >> https://gitlab.com/qemu-project/qemu/-/jobs/5030428571
-> >  > >>
-> >  > >> Thomas Huth suggest on IRC today that there may be a legitimate f=
-ailure
-> >  > >> in there:
-> >  > >>
-> >  > >>   th_huth: f4bug, yes, seems like it does not start at all correc=
-tly on
-> >  > >>   alpine anymore ... and it's broken since ~ 2 weeks already, so =
-if nobody
-> >  > >>   noticed this by now, this is worrying
-> >  > >>
-> >  > >> It crept in because the jobs were already unreliable.
-> >  > >>
-> >  > >> I don't know how to interpret the job output, so all I can do is =
-to
-> >  > >> propose removing these jobs. A useful CI job has two outcomes: pa=
-ss or
-> >  > >> fail. Timeouts and other in-between states are not useful because=
- they
-> >  > >> require constant triaging by someone who understands the details =
-of the
-> >  > >> tests and they can occur when run against pull requests that have
-> >  > >> nothing to do with the area covered by the test.
-> >  > >>
-> >  > >> Hopefully test owners will be able to identify the root causes an=
-d solve
-> >  > >> them so that these jobs can stay. In their current state the jobs=
- are
-> >  > >> not useful since I cannot cannot tell whether job failures are re=
-al or
-> >  > >> just intermittent when merging qemu.git pull requests.
-> >  > >>
-> >  > >> If you are a test owner, please take a look.
-> >  > >>
-> >  > >> It is likely that other avocado-system-* CI jobs have similar fai=
-lures
-> >  > >> from time to time, but I'll leave them as long as they are passin=
-g.
-> >  > >>
-> >  > >> Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1884
-> >  > >> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> >  > >> ---
-> >  > >>  .gitlab-ci.d/buildtest.yml | 27 ---------------------------
-> >  > >>  1 file changed, 27 deletions(-)
-> >  > >>
-> >  > >> diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.=
-yml
-> >  > >> index aee9101507..83ce448c4d 100644
-> >  > >> --- a/.gitlab-ci.d/buildtest.yml
-> >  > >> +++ b/.gitlab-ci.d/buildtest.yml
-> >  > >> @@ -22,15 +22,6 @@ check-system-alpine:
-> >  > >>      IMAGE: alpine
-> >  > >>      MAKE_CHECK_ARGS: check-unit check-qtest
-> >  > >>
-> >  > >> -avocado-system-alpine:
-> >  > >> -  extends: .avocado_test_job_template
-> >  > >> -  needs:
-> >  > >> -    - job: build-system-alpine
-> >  > >> -      artifacts: true
-> >  > >> -  variables:
-> >  > >> -    IMAGE: alpine
-> >  > >> -    MAKE_CHECK_ARGS: check-avocado
-> >  > >
-> >  > > Instead of entirely deleting, I'd suggest adding
-> >  > >
-> >  > >    # Disabled due to frequent random failures
-> >  > >    # https://gitlab.com/qemu-project/qemu/-/issues/1884
-> >  > >    when: manual
-> >  > >
-> >  > > See example: https://docs.gitlab.com/ee/ci/yaml/#when
-> >  > >
-> >  > > This disables the job from running unless someone explicitly
-> >  > > tells it to run
-> >  >
-> >  > What I don't understand is why we didn't gate the release back when =
-they
-> >  > first tripped. We should have noticed between:
-> >  >
-> >  >   https://gitlab.com/qemu-project/qemu/-/pipelines/956543770
-> >  >
-> >  > and
-> >  >
-> >  >   https://gitlab.com/qemu-project/qemu/-/pipelines/957154381
-> >  >
-> >  > that the system tests where regressing. Yet we merged the changes
-> >  > anyway.
-> >
-> >  I think that green series is misleading, based on Richard's
-> >  mail on list wrt the TCG pull series:
-> >
-> >    https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg04014.html
-> >
-> >    "It's some sort of timing issue, which sometimes goes away
-> >     when re-run. I was re-running tests *a lot* in order to
-> >     get them to go green while running the 8.1 release. "
+> Which turned out to be a genuine flaw which we missed during merge
+> as the patch hitting master co-incided with the FreeBSD CI job
+> having an temporary outage due to changed release image version.
 >
-> But I think in that actual case a change exposed a race condition which
-> has only recently been fixed - however we've had additional regresssions
-> since.
+> Daniel P. Berrang=C3=A9 (4):
+>   microbit: add missing qtest_quit() call
+>   qtest: kill orphaned qtest QEMU processes on FreeBSD
+>   gitlab: make Cirrus CI timeout explicit
+>   gitlab: make Cirrus CI jobs gating
 >
-> Rather than kill the system tests we can disable the flaky individual
-> tests in avocado.
+>  .gitlab-ci.d/cirrus.yml       | 4 +++-
+>  .gitlab-ci.d/cirrus/build.yml | 2 ++
+>  tests/qtest/libqtest.c        | 7 +++++++
+>  tests/qtest/microbit-test.c   | 2 ++
+>  4 files changed, 14 insertions(+), 1 deletion(-)
 
-That would be nice, please send an alternative patch.
+Thank you!
 
-I can't do that myself because there are a bunch of test cases with
-suspicious output and I don't know which ones are legitimate failures,
-intermittent problems, or expected failures.
-
-Stefan
-
->
-> >
-> >  Essentially I'd put this down to the tests being soo non-deterministic
-> >  that we've given up trusting them.
-> >
-> > Yes.
-> >
-> > Stefan
-> >
-> >  With regards,
-> >  Daniel
-> >  --
-> >  |: https://berrange.com      -o-    https://www.flickr.com/photos/dber=
-range :|
-> >  |: https://libvirt.org         -o-            https://fstop138.berrang=
-e.com :|
-> >  |: https://entangle-photo.org    -o-    https://www.instagram.com/dber=
-range :|
->
->
-> --
-> Alex Benn=C3=A9e
-> Virtualisation Tech Lead @ Linaro
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
