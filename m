@@ -2,127 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7231179D771
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 19:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C337779D783
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 19:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg745-00077j-W4; Tue, 12 Sep 2023 13:20:42 -0400
+	id 1qg78v-0000tp-Mf; Tue, 12 Sep 2023 13:25:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qg73w-00077E-9D
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:20:32 -0400
-Received: from mailout1.w2.samsung.com ([211.189.100.11])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qg78l-0000rD-G5
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:25:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qg73m-0005II-E3
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:20:31 -0400
-Received: from uscas1p2.samsung.com (unknown [182.198.245.207])
- by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
- 20230912172007usoutp017f77180f11ab4977ba470917a73b2389~ENm5GsvY43050830508usoutp01z;
- Tue, 12 Sep 2023 17:20:07 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
- 20230912172007usoutp017f77180f11ab4977ba470917a73b2389~ENm5GsvY43050830508usoutp01z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1694539207;
- bh=CIxYPRTkuFpoAChnuA/tH4z8/j7yUnW2sG8f8hgyxeA=;
- h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=Puiukjuz7onofxesLN4m45RcUQFHb1vfY6Ye86b3FSicjBIqUkM0thX79TbPwp3Qu
- 7HG+I1qmoM3avcPPb8Ya4pAG1eskazJV+8JiWwH2tZXK2XjK1DbqFvG4v4LSwFE5ew
- 5wNAcZ2ZYlcfFfdqabMp1RibCPx9jJVbc3V4T1Pc=
-Received: from ussmges1new.samsung.com (u109.gpu85.samsung.co.kr
- [203.254.195.109]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230912172006uscas1p2dfc0c64b49b2e7d42ccb360058282069~ENm4-EeSk0315503155uscas1p2I;
- Tue, 12 Sep 2023 17:20:06 +0000 (GMT)
-Received: from uscas1p2.samsung.com ( [182.198.245.207]) by
- ussmges1new.samsung.com (USCPEMTA) with SMTP id C0.D1.50148.6CD90056; Tue,
- 12 Sep 2023 13:20:06 -0400 (EDT)
-Received: from ussmgxs2new.samsung.com (u91.gpu85.samsung.co.kr
- [203.254.195.91]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230912172006uscas1p1f48a880aeaf7fad3400929d4bc919ae5~ENm4vrGDb3162831628uscas1p1u;
- Tue, 12 Sep 2023 17:20:06 +0000 (GMT)
-X-AuditID: cbfec36d-7bdff7000002c3e4-f8-65009dc68c57
-Received: from SSI-EX1.ssi.samsung.com ( [105.128.2.146]) by
- ussmgxs2new.samsung.com (USCPEXMTA) with SMTP id E7.D8.31200.6CD90056; Tue,
- 12 Sep 2023 13:20:06 -0400 (EDT)
-Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
- SSI-EX1.ssi.samsung.com (105.128.2.226) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2375.24; Tue, 12 Sep 2023 10:20:05 -0700
-Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
- SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
- 12 Sep 2023 10:20:05 -0700
-From: Fan Ni <fan.ni@samsung.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
- <mst@redhat.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
- <philmd@linaro.org>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>, "linuxarm@huawei.com" <linuxarm@huawei.com>
-Subject: Re: [PATCH v3 2/4] hw/cxl: Add utility functions decoder interleave
- ways and target count.
-Thread-Topic: [PATCH v3 2/4] hw/cxl: Add utility functions decoder
- interleave ways and target count.
-Thread-Index: AQHZ5KVVRlx6CQB570OdfIT+NsNCjbAX5syA
-Date: Tue, 12 Sep 2023 17:20:05 +0000
-Message-ID: <20230912172005.GB319114@bgt-140510-bm03>
-In-Reply-To: <20230911114313.6144-3-Jonathan.Cameron@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [105.128.2.176]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <53B52ADF7766A545881FFEF2F17B3A21@ssi.samsung.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qg78i-0006BP-Uk
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:25:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694539527;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6zvVoqM18tFa4GhEBShiqBiVCdfvF1tMw923jp7LbnQ=;
+ b=jAXUHkT2rHr8GDJPBHkvr8467eQY3FTowx5wnDLedodMlmOGl/LRpzo3k8pnUaGx9iOX8C
+ GYREEhPeyQJ+LbEThOXhIACKPq5c0MsH6z5CcO3XyPVLxl/H4FVKHjkgvlnBoKJ/9kgQYc
+ DfqU/7JzyD5gwT8RNT3Ge87WWtdE2qE=
+Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
+ [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-298-N2ITuJUlNrepE1fG25tazw-1; Tue, 12 Sep 2023 13:25:25 -0400
+X-MC-Unique: N2ITuJUlNrepE1fG25tazw-1
+Received: by mail-ua1-f72.google.com with SMTP id
+ a1e0cc1a2514c-79d966b4c6fso1463634241.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:25:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694539525; x=1695144325;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6zvVoqM18tFa4GhEBShiqBiVCdfvF1tMw923jp7LbnQ=;
+ b=DxDSetwPGEecuB8Z7Svlj8oA6AN2gte8zQ3aLV+42/ZDyNzOSDFqSTLo4kwXuut/l/
+ 8hlJbAwi2RPaPxiCiuoj7M0xwoaP01PRAMrhj6vZXO1HUIWnyFmwtiZYdMrYVtJmahKa
+ 4bNqfxq7WAQmfcNbIZZW75hqq8dr1ClH2+tdfw2fWEBR17KCTagf6smC8c5Tw8ewbQZI
+ du2nfU4xB+I0tbm/F1nZoyxVHQ7gghXpEwZF4mNdWlb2w3sNuivkKQg/fJLfkkw7MkZn
+ KfNVuwoVSwwIDnyVsE2BGdrQAPJ10uUQ2DgF7YXePkhcjdFyutY3C22Kf4rti/E0YEEf
+ ecmQ==
+X-Gm-Message-State: AOJu0Yz/z4iq23mpypFsxbo7mdDZu10F2wb2cbQMsbqMkmH/MCVFXF+R
+ iYCF8+kOsCtC5ZXS6ONeaQWiaal+rAbh9BWXYooOKiXI4k+AFEqhAe+Z/MlL5mnP6aiJFGF8OF1
+ bYWAQowCYkQ4siCW1rDTcP2HSwXCY39M=
+X-Received: by 2002:a67:f5cc:0:b0:44e:b77e:f976 with SMTP id
+ t12-20020a67f5cc000000b0044eb77ef976mr8724700vso.20.1694539524957; 
+ Tue, 12 Sep 2023 10:25:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZAo462tYrV3Dx6sAHrylVgeeH56dSJlqTLb07aXnhGQkWOCmwnAsm+ia2dfbt3A99oAKyeLHQks1oA0QRcWo=
+X-Received: by 2002:a67:f5cc:0:b0:44e:b77e:f976 with SMTP id
+ t12-20020a67f5cc000000b0044eb77ef976mr8724678vso.20.1694539524644; Tue, 12
+ Sep 2023 10:25:24 -0700 (PDT)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrKKsWRmVeSWpSXmKPExsWy7djX87rH5jKkGqycaWqxauE1Novzs06x
- WBzeeIbJ4v+vV6wWa1YIWxzv3cHiwObRcuQtq8eda3vYPJ5c28zk8X7fVTaPz5vkAlijuGxS
- UnMyy1KL9O0SuDIOfn3GWjBBqeLB3W+MDYxXJLsYOTgkBEwk9m1P72Lk4hASWMko0fOtnQXC
- aWWS+DLlN3sXIydY0ePTbxghEmsZJX6+eckE4XxilPjbtRkqs4xR4tfxFjaQFjYBRYl9XdvB
- bBEBI4l3NyaBFTELNDBJXLt3DmyusECqxNu53Wwgh4gIpEncOx4CU/9z6VUWEJtFQFXi24KT
- YOW8AqYSvVe3MYLYnAIOEucn/mcGsRkFxCS+n1rDBGIzC4hL3HoynwnibEGJRbP3MEPYYhL/
- dj1kg7AVJe5/f8kOUa8ncWPqFDYI207i/KJ7zBC2tsSyha+ZIfYKSpyc+YQFoldS4uCKG+Aw
- khA4wyGxrmMT1DIXicfrTkMtk5b4e3cZEySAkyVWfeSCCOdIzF+yBWqOtcTCP+uZJjCqzEJy
- 9iwkJ81CctIsJCfNQnLSAkbWVYzipcXFuempxYZ5qeV6xYm5xaV56XrJ+bmbGIEp6fS/w7k7
- GHfc+qh3iJGJg/EQowQHs5IIb8mhvylCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeQ1tTyYLCaQn
- lqRmp6YWpBbBZJk4OKUamLZrPMpdJ7U05lDqDWGJ1Cqe469XX+rc7iCxSfd4r1/KiUt9WQF7
- Z03zLr77/jWv4nT9xX9tVivy/zsfM1emX32mb8dr72DlPQ5XVjUIM15+eEev92jDkXifSPWz
- ApucbGOkfp64l6M1t/zZFgWO8peefzk++Wz5JRxd/1R5eurEd992NE7lvnLy+Y0dziKaqz8e
- 9Z8UeehfgW53n6vNx7KovAunll0VVN+eXvB+lctb+U83HBtCDapf2z57zfc96+jvp99VLuuc
- DeWW6pyd79ZSu/TZ7nyLC06ryrw2r83d81v+s3kfz2OBZY+yZvE/uHp9dsTrTWcPvd3dbrz7
- 7RSLk1PPPZe+unGnzyLnZJMwJZbijERDLeai4kQAS5yqo7gDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrMIsWRmVeSWpSXmKPExsWS2cA0SffYXIZUg81T5SxWLbzGZnF+1ikW
- i8MbzzBZ/P/1itVizQphi+O9O1gc2Dxajrxl9bhzbQ+bx5Nrm5k83u+7yubxeZNcAGsUl01K
- ak5mWWqRvl0CV8bBr89YCyYoVTy4+42xgfGKZBcjJ4eEgInE49NvGEFsIYHVjBLvzhVC2J8Y
- JdZd0uxi5AKylzFKzJ7UzQSSYBNQlNjXtZ0NxBYRMJJ4d2MSI0gRs0ADk0TrvaNgk4QFUiXe
- zu2GKkqT2DL1ATtMw8+lV1lAbBYBVYlvC06CxXkFTCV6r26DuqJUYubkz2A2p4CDxPmJ/5lB
- bEYBMYnvp9aAHcEsIC5x68l8JogPBCSW7DnPDGGLSrx8/I8VwlaUuP/9JTtEvZ7EjalT2CBs
- O4nzi+4xQ9jaEssWvmaGuEFQ4uTMJywQvZISB1fcYJnAKDELybpZSEbNQjJqFpJRs5CMWsDI
- uopRvLS4ODe9otgoL7Vcrzgxt7g0L10vOT93EyMwnk//Oxy9g/H2rY96hxiZOBgPMUpwMCuJ
- 8JYc+psixJuSWFmVWpQfX1Sak1p8iFGag0VJnHfHlIspQgLpiSWp2ampBalFMFkmDk6pBqae
- /8zdb7+mfZz6Z9Hc9taTUivUGY8Lf+k5teGHw4t037X9RpJHLJMePXpjo/k1JvnA9YtZfXvM
- uI2mqCjln7AQOfRh9XY1rk0f1gk117z983360eDO7GlKuxbJKZRN8ih9vqnnukNloeyxU/d2
- vJfebDjJLML+tzKLz/VdVfxbn5o12e8pKTd9ZBqRMFVmqkznlVOqkyQP7E+c1X5bcs7egESf
- TjlRpueT4nTL3Ts6e85UP7v55ZtOlsprhYP7gh3q09Ye2WwRndezntlbbpH/p2dBxvxywbIv
- 28//e7LK9t/9lbFWTNc0PLX/NzxiFg5elPAr+FT1ga1zSrWP3/JJO2d1637ujbzepTP+/2NU
- YinOSDTUYi4qTgQAWqBrnVYDAAA=
-X-CMS-MailID: 20230912172006uscas1p1f48a880aeaf7fad3400929d4bc919ae5
-CMS-TYPE: 301P
-X-CMS-RootMailID: 20230912172006uscas1p1f48a880aeaf7fad3400929d4bc919ae5
-References: <20230911114313.6144-1-Jonathan.Cameron@huawei.com>
- <20230911114313.6144-3-Jonathan.Cameron@huawei.com>
- <CGME20230912172006uscas1p1f48a880aeaf7fad3400929d4bc919ae5@uscas1p1.samsung.com>
-Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
- helo=mailout1.w2.samsung.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20230911211317.28773-1-philmd@linaro.org>
+ <fabf2451-e8ad-8171-b583-16b238c578e7@redhat.com>
+ <111b9277-59b6-7252-6ddd-13edff9b2505@linaro.org>
+In-Reply-To: <111b9277-59b6-7252-6ddd-13edff9b2505@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 12 Sep 2023 19:25:12 +0200
+Message-ID: <CABgObfaz+Tdb6YzwbAeRH=zdXtzVK7VLFv2Lc-MxQMAxbhwnfg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] target/i386: Restrict system-specific features
+ from user emulation
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000006cbb9d06052cbaf7"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,144 +100,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 11, 2023 at 12:43:11PM +0100, Jonathan Cameron wrote:
+--0000000000006cbb9d06052cbaf7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> As an encoded version of these key configuration parameters is available
-> in a register, provide functions to extract it again so as to avoid
-> the need for duplicating the storage.
->=20
-> Whilst here update the _enc() function to include additional values
-> as defined in the CXL 3.0 specification. Whilst they are not
-> currently used in the emulation, they may be in future and it is
-> easier to compare with the specification if all values are covered.
->=20
-> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
+Il mar 12 set 2023, 18:44 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> h=
+a
+scritto:
 
-LGTM. Only one minor comment inline.
+> I can try to improve it with your comments, but I have no idea of
+> x86 CPU features.
+>
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
+I will take a look.
+
+> However, the dependency of user-mode emulation on KVM is really an
+> > implementation detail of QEMU.  It's very much baked into linux-user an=
+d
+> > hard to remove, but I'm not sure it's a good idea to add more #ifdef
+> > CONFIG_USER_ONLY around KVM code.
+>
+> Do you rather v3 then?
+>
+>
+> https://lore.kernel.org/qemu-devel/20230911142729.25548-1-philmd@linaro.o=
+rg/
 
 
-> v3: No changes, picked up tags.
-> v2: Thanks to Philippe Mathieu-Daud=E9
->  - Expand both enc() and dec() functions to include full set of values
->    defined in CXL r3.0
->  - Pushed implementation down into the .c file.
-> ---
->  include/hw/cxl/cxl_component.h |  2 ++
->  hw/cxl/cxl-component-utils.c   | 59 ++++++++++++++++++++++++++++++----
->  2 files changed, 55 insertions(+), 6 deletions(-)
->=20
-> diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_componen=
-t.h
-> index bdb3881a6b..ef9e033919 100644
-> --- a/include/hw/cxl/cxl_component.h
-> +++ b/include/hw/cxl/cxl_component.h
-> @@ -226,8 +226,10 @@ void cxl_component_create_dvsec(CXLComponentState *c=
-xl_cstate,
->                                  uint16_t type, uint8_t rev, uint8_t *bod=
-y);
-> =20
->  int cxl_decoder_count_enc(int count);
-> +int cxl_decoder_count_dec(int enc_cnt);
-> =20
->  uint8_t cxl_interleave_ways_enc(int iw, Error **errp);
-> +int cxl_interleave_ways_dec(uint8_t iw_enc, Error **errp);
->  uint8_t cxl_interleave_granularity_enc(uint64_t gran, Error **errp);
-> =20
->  hwaddr cxl_decode_ig(int ig);
-> diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-> index ea2d4770ec..352d0dace2 100644
-> --- a/hw/cxl/cxl-component-utils.c
-> +++ b/hw/cxl/cxl-component-utils.c
-> @@ -13,15 +13,45 @@
->  #include "hw/pci/pci.h"
->  #include "hw/cxl/cxl.h"
-> =20
-> +/* CXL r3.0 Section 8.2.4.19.1 CXL HDM Decoder Capability Register */
->  int cxl_decoder_count_enc(int count)
->  {
->      switch (count) {
-> -    case 1: return 0;
-> -    case 2: return 1;
-> -    case 4: return 2;
-> -    case 6: return 3;
-> -    case 8: return 4;
-> -    case 10: return 5;
-> +    case 1: return 0x0;
-> +    case 2: return 0x1;
-> +    case 4: return 0x2;
-> +    case 6: return 0x3;
-> +    case 8: return 0x4;
-> +    case 10: return 0x5;
-> +    /* Switches and Host Bridges may have more than 10 decoders */
-> +    case 12: return 0x6;
-> +    case 14: return 0x7;
-> +    case 16: return 0x8;
-> +    case 20: return 0x9;
-> +    case 24: return 0xa;
-> +    case 28: return 0xb;
-> +    case 32: return 0xc;
-> +    }
-> +    return 0;
-> +}
-> +
-> +int cxl_decoder_count_dec(int enc_cnt)
-> +{
-> +    switch (enc_cnt) {
-> +    case 0x0: return 1;
-> +    case 0x1: return 2;
-> +    case 0x2: return 4;
-> +    case 0x3: return 6;
-> +    case 0x4: return 8;
-> +    case 0x5: return 10;
-> +    /* Switches and Host Bridges may have more than 10 decoders */
-> +    case 0x6: return 12;
-> +    case 0x7: return 14;
-> +    case 0x8: return 16;
-> +    case 0x9: return 20;
-> +    case 0xa: return 24;
-> +    case 0xb: return 28;
-> +    case 0xc: return 32;
->      }
->      return 0;
->  }
-> @@ -410,6 +440,23 @@ uint8_t cxl_interleave_ways_enc(int iw, Error **errp=
-)
->      }
->  }
-> =20
+No, if we want a small patch it is better to replace kvm_enabled() with
+CONFIG_KVM, and also follow Kevin's suggestion to make it fail at compile
+time.
 
-Similar as decoder count dec/enc, maybe we want to add a line of comment be=
-low.
-/* CXL r3.0 Section 8.2.4.19.7 CXL HDM Decoder n Control Register */
+Having stub prototypes was done because we expected the compiler to remove
+the dead code.
 
-Fan
-> +int cxl_interleave_ways_dec(uint8_t iw_enc, Error **errp)
-> +{
-> +    switch (iw_enc) {
-> +    case 0x0: return 1;
-> +    case 0x1: return 2;
-> +    case 0x2: return 4;
-> +    case 0x3: return 8;
-> +    case 0x4: return 16;
-> +    case 0x8: return 3;
-> +    case 0x9: return 6;
-> +    case 0xa: return 12;
-> +    default:
-> +        error_setg(errp, "Encoded interleave ways: %d not supported", iw=
-_enc);
-> +        return 0;
-> +    }
-> +}
-> +
->  uint8_t cxl_interleave_granularity_enc(uint64_t gran, Error **errp)
->  {
->      switch (gran) {
-> --=20
-> 2.39.2
->=20
-> =
+Paolo
+
+--0000000000006cbb9d06052cbaf7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il mar 12 set 2023, 18:44 Philippe Mathieu-Daud=C3=A9 =
+&lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; ha scrit=
+to:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
+order-left:1px #ccc solid;padding-left:1ex">I can try to improve it with yo=
+ur comments, but I have no idea of<br>
+x86 CPU features.<br></blockquote></div></div><div dir=3D"auto"><br></div><=
+div dir=3D"auto">I will take a look.</div><div dir=3D"auto"><br></div><div =
+dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">&gt;=
+ However, the dependency of user-mode emulation on KVM is really an <br>
+&gt; implementation detail of QEMU.=C2=A0 It&#39;s very much baked into lin=
+ux-user and <br>
+&gt; hard to remove, but I&#39;m not sure it&#39;s a good idea to add more =
+#ifdef <br>
+&gt; CONFIG_USER_ONLY around KVM code.<br>
+<br>
+Do you rather v3 then?<br>
+<br>
+<a href=3D"https://lore.kernel.org/qemu-devel/20230911142729.25548-1-philmd=
+@linaro.org/" rel=3D"noreferrer noreferrer" target=3D"_blank">https://lore.=
+kernel.org/qemu-devel/20230911142729.25548-1-philmd@linaro.org/</a></blockq=
+uote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">No, if we wa=
+nt a small patch it is better to replace kvm_enabled() with CONFIG_KVM, and=
+ also follow Kevin&#39;s suggestion to make it fail at compile time.</div><=
+div dir=3D"auto"><br></div><div dir=3D"auto">Having stub prototypes was don=
+e because we expected the compiler to remove the dead code.</div><div dir=
+=3D"auto"><br></div><div dir=3D"auto">Paolo</div></div>
+
+--0000000000006cbb9d06052cbaf7--
+
 
