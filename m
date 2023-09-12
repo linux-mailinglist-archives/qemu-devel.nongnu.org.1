@@ -2,57 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDF279D27A
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF24579D280
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 15:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg3YM-0001dY-Cb; Tue, 12 Sep 2023 09:35:42 -0400
+	id 1qg3bR-0002tV-KW; Tue, 12 Sep 2023 09:38:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qg3YF-0001cm-Lu
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:35:37 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qg3bP-0002sF-60
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:38:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qg3Y8-0000Rk-92
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:35:31 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlPhZ3tc6z6F9CD;
- Tue, 12 Sep 2023 21:34:54 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 12 Sep
- 2023 14:35:24 +0100
-Date: Tue, 12 Sep 2023 14:35:23 +0100
-To: Gregory Price <gourry.memverge@gmail.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
- <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
-Subject: Re: [PATCH v3 2/6] cxl/type3: Cleanup multiple CXL_TYPE3() calls in
- read/write functions
-Message-ID: <20230912143523.00004068@Huawei.com>
-In-Reply-To: <20230912131351.00007e5e@Huawei.com>
-References: <20230906001517.324380-1-gregory.price@memverge.com>
- <20230906001517.324380-3-gregory.price@memverge.com>
- <20230912131351.00007e5e@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qg3bM-0000sy-Sb
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 09:38:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694525927;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=hHAW9GGq3S6O7h1R7aXWPqYkkkwHH7HfhYhV3l02Up0=;
+ b=ddeNCA/SlRySNkluxX9nMnKF6/35O8tOs1ooD316k/1xnp4NQESXRmUVVjecMoozOPioz6
+ 5B7WXBSCCDtmn3p3Et7Qpxpoktc5wch7pMPxVOr/v/eqjrUPxJO8Xqorq8GF//KCSloGMZ
+ D9PDWbZoigWnFrNPwdHvht8XMklnFlY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-339-Q9haGkgmN7C60V5YGLlBQw-1; Tue, 12 Sep 2023 09:38:44 -0400
+X-MC-Unique: Q9haGkgmN7C60V5YGLlBQw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E84493804530;
+ Tue, 12 Sep 2023 13:38:43 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.246])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7361163F9D;
+ Tue, 12 Sep 2023 13:38:43 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Daniel Berrange <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH] gitlab-ci/cirrus: Increase timeout to 100 minutes
+Date: Tue, 12 Sep 2023 09:38:29 -0400
+Message-ID: <20230912133829.61352-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,82 +76,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Sep 2023 13:13:51 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+The 80m timeout is not enough:
 
-> On Tue,  5 Sep 2023 20:15:13 -0400
-> Gregory Price <gourry.memverge@gmail.com> wrote:
-> 
-> > Call CXL_TYPE3 once at top of function to avoid multiple invocations.
-> > 
-> > Signed-off-by: Gregory Price <gregory.price@memverge.com>  
-> 
-> This one is queued up in a set I posted for Michael to hopefully pick up.
-> So no need to keep it in this series (I'll post tree short etc)
+  672/832 qemu:block / io-qcow2-041          OK             39.77s   1 subtests passed
+  Timed out!
 
-Ah. Not yet queued up, but moved up my tree to next to the sanitize patch
-that introduces this code.
+https://gitlab.com/qemu-project/qemu/-/jobs/5058610599
 
-Jonathan
+Buglink: https://gitlab.com/qemu-project/qemu/-/issues/1882
+Fixes: d06f3bf92267 ("gitlab-ci/cirrus: Increase timeout to 80 minutes")
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+---
+ .gitlab-ci.d/cirrus.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> Jonathan
-> 
-> > ---
-> >  hw/mem/cxl_type3.c | 10 ++++++----
-> >  1 file changed, 6 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> > index fd9d134d46..80d596ee10 100644
-> > --- a/hw/mem/cxl_type3.c
-> > +++ b/hw/mem/cxl_type3.c
-> > @@ -1248,17 +1248,18 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
-> >  MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
-> >                             unsigned size, MemTxAttrs attrs)
-> >  {
-> > +    CXLType3Dev *ct3d = CXL_TYPE3(d);
-> >      uint64_t dpa_offset = 0;
-> >      AddressSpace *as = NULL;
-> >      int res;
-> >  
-> > -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
-> > +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
-> >                                        &as, &dpa_offset);
-> >      if (res) {
-> >          return MEMTX_ERROR;
-> >      }
-> >  
-> > -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
-> > +    if (sanitize_running(&ct3d->cci)) {
-> >          qemu_guest_getrandom_nofail(data, size);
-> >          return MEMTX_OK;
-> >      }
-> > @@ -1268,16 +1269,17 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
-> >  MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
-> >                              unsigned size, MemTxAttrs attrs)
-> >  {
-> > +    CXLType3Dev *ct3d = CXL_TYPE3(d);
-> >      uint64_t dpa_offset = 0;
-> >      AddressSpace *as = NULL;
-> >      int res;
-> >  
-> > -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
-> > +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
-> >                                        &as, &dpa_offset);
-> >      if (res) {
-> >          return MEMTX_ERROR;
-> >      }
-> > -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
-> > +    if (sanitize_running(&ct3d->cci)) {
-> >          return MEMTX_OK;
-> >      }
-> >      return address_space_write(as, dpa_offset, attrs, &data, size);  
-> 
-> 
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index 41d64d6680..d19633f758 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -15,7 +15,7 @@
+   stage: build
+   image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
+   needs: []
+-  timeout: 80m
++  timeout: 100m
+   allow_failure: true
+   script:
+     - source .gitlab-ci.d/cirrus/$NAME.vars
+-- 
+2.41.0
 
 
