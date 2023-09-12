@@ -2,98 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4BF79C81C
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 09:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D3279C8C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 09:56:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfxih-0007LO-Pb; Tue, 12 Sep 2023 03:21:59 -0400
+	id 1qfyEk-0002iq-NM; Tue, 12 Sep 2023 03:55:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qfxig-0007LG-F7
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 03:21:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qfxie-0001TI-4z
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 03:21:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694503314;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7BvHu4veckrfz6KuzpbP7HjPDSNgySXMvrxCBE5h/HI=;
- b=T455IqLFuJiVjWJM4KrxfIKl8kUk28KBkZkRFMRArjY94bLEjW5HGqNYob7vgL4QuM8/Xm
- oKzXpcBvdLvtbtKzIZI01CEPnwxyJjVIChSnUMkAG8aX3FyGPNyGqP1TJSXH1wEe4WYhVV
- YSObWFmwYFW+SDTQY4EdTiMrogB6BpY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-107-vkAsVNFTNyiDD7Z83W_EUw-1; Tue, 12 Sep 2023 03:21:52 -0400
-X-MC-Unique: vkAsVNFTNyiDD7Z83W_EUw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-30e3ee8a42eso3502871f8f.1
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 00:21:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qfyEh-0002iZ-98
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 03:55:03 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qfyEc-0008Na-PU
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 03:55:02 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-26f57f02442so3729522a91.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 00:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1694505174; x=1695109974;
+ darn=nongnu.org; 
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=apyVjfda1HbLm+xMWAmTY/C9TvKlW5L5forlTKvmJUk=;
+ b=NYeDAeLYCNLXzoZbtC8gUiAvo15JrQ85Yb9aGb4piY0Ccsh0Rrrni42szyqyDx3cuw
+ BaEVBg9qRLTw5BkxSO/gCEn0ryc/OdYbXxp8424hoXDwe1mKFbjN/t/knPbOkugYeXsA
+ M8PfhfKu/eZpvzhMcPxpL0y0yDeYz+OaNUklrolQxDFLsWxO80S8Ee1Da1mrKy7MKZex
+ r/ZjpEH4VEeERV9cW+h6G8aIkfBNCxuDnY4AwMq8W7DGNohES33Em17PJeeBQnCLC7Dx
+ 5OzxbbLWpHBx9IiEpQKrW4G5lpf/JQyUC3BYp3J/fUjlYMX9GOlZjsaUP7bMi6M8Ckiw
+ qwqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694503311; x=1695108111;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=7BvHu4veckrfz6KuzpbP7HjPDSNgySXMvrxCBE5h/HI=;
- b=CHiSBeQyKaUFRcLDQs80uy5WOeKNQe5wq8TR0DDgbXvy/6iMhQXnfjfnQ1r6zOJJkI
- t7HBF1JWeL2zBxxf3Z/K12ZDFLe5CWWqJOdhR0btJoxPNFZj1Ni1pmLsbt/3JhX2eQ7n
- 4P2ieX0INAPrkjq46R6NFbUVYA8Ji34O/Fll9MdmAw6k77ooP+lbgPMTJSpb3qbGN1SS
- NRP5/8CPLUd5phkBNo0S5kqspAJzh9i8KvukjBmpCoOE54jgevqadb4xXExCXNufN31L
- eqSNBnWS80X9QXC9lOaerz0wDjcBDNIXZopgICuaUNERSsRxKvA4Ocf37tjTITMO2f77
- GoAg==
-X-Gm-Message-State: AOJu0Yzt1brUuWPQhrB8N17C+n2dCNZhenXNLK5C3d6bup3sKhx4cDP1
- CmCwPKrZn6//gppVzrUwU+eUBfF/836Zt30uWMKCXW0jRDuZN94vEudPZNTy6NHYU2lnkoNm89O
- UHs4ZMzfIB1iL3Js=
-X-Received: by 2002:a5d:560d:0:b0:313:f1c8:a968 with SMTP id
- l13-20020a5d560d000000b00313f1c8a968mr9698786wrv.2.1694503310925; 
- Tue, 12 Sep 2023 00:21:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExPMGW5JeNv0plxANul4UmSCGkcVkAYBI6a0kzV65U4Gnwp0uyItKr5o8r5UsXS9UU/zZwIA==
-X-Received: by 2002:a5d:560d:0:b0:313:f1c8:a968 with SMTP id
- l13-20020a5d560d000000b00313f1c8a968mr9698773wrv.2.1694503310569; 
- Tue, 12 Sep 2023 00:21:50 -0700 (PDT)
-Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de.
- [109.43.179.28]) by smtp.gmail.com with ESMTPSA id
- x5-20020a5d54c5000000b0031773a8e5c4sm11985034wrv.37.2023.09.12.00.21.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 00:21:50 -0700 (PDT)
-Message-ID: <b614f33c9fcc461f8099a11b97af4340ceb4cf1a.camel@redhat.com>
-Subject: Re: [PATCH qemu 2/2] dump: Only use the makedumpfile flattened
- format when necessary
-From: Thomas Huth <thuth@redhat.com>
-To: =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>, 
- Stephen Brennan <stephen.s.brennan@oracle.com>, Alex
- =?ISO-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,  "Daniel P. Berrange"
- <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org, 
- joao.m.martins@oracle.com, Richard Henderson
- <richard.henderson@linaro.org>,  Janosch Frank <frankja@linux.ibm.com>
-Date: Tue, 12 Sep 2023 09:21:49 +0200
-In-Reply-To: <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
-References: <20230717163855.7383-1-stephen.s.brennan@oracle.com>
- <20230717163855.7383-3-stephen.s.brennan@oracle.com>
- <CAJ+F1C+VFpU=xpqOPjJU1VLt4kofVqV8EN4pj5MjkkwWvVuxZw@mail.gmail.com>
- <87edl4d9wi.fsf@oracle.com> <87fs4aha4t.fsf@oracle.com>
- <CAJ+F1CKCdy3J8AD9EGvVO+CU6-yFPrLZ2Lum1SDgdj_kghFdQw@mail.gmail.com>
- <CAJ+F1CK0PTM-wHaK90EiuvvsG5OBVXQ4X8iV-AbBxdc6_=RvPQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
-MIME-Version: 1.0
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
+ d=1e100.net; s=20230601; t=1694505174; x=1695109974;
+ h=references:to:cc:in-reply-to:date:subject:mime-version:message-id
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=apyVjfda1HbLm+xMWAmTY/C9TvKlW5L5forlTKvmJUk=;
+ b=uX1rp4bGWcFEyxXtRgcFryo6K7E76o928b5WX18dVSNPqZszzfqsVzck/ogo6uqWQq
+ FbvNpGeg5SHMAz9xELfhND252s/8gGMLoFPvnPZWuNpNF86oVlGwAnpBxlFxoS5WX3NN
+ CGMz6ZBzJmVDPHiVvoXU/glct+oEKMm2fmvAYeTIAH+DG3txl1RwYPWHWV/HfMrbp05G
+ 44X1jo+iXK31EDGpeEXc0pN17Lpqewprg81GC7AGJxC2cY9I0LKrOfMt0eLAVQcUlmsO
+ dNAOxZygAcPP3ZaGXPPfbOq/6kqZseHasg2MwfngY8xBKiz3KSva547WFXYuzwJjXNdE
+ A1/Q==
+X-Gm-Message-State: AOJu0Yy9cZzclI4fzqZRajQKOg70/w8nuGPUX5Cu3PuZhZfq8mytu3H1
+ 9m1GiRgKEKfcnrg9mzbiMYcHyA==
+X-Google-Smtp-Source: AGHT+IHJq2HRW3aUY0bGELfYqEpAN1QRTubSYp6Aa5GumRZZIyIN+wJF7RDu0N3reuGW6Y3QzCB/NQ==
+X-Received: by 2002:a17:90a:c246:b0:263:ebab:a152 with SMTP id
+ d6-20020a17090ac24600b00263ebaba152mr9399685pjx.19.1694505173446; 
+ Tue, 12 Sep 2023 00:52:53 -0700 (PDT)
+Received: from smtpclient.apple ([8.210.91.195])
+ by smtp.gmail.com with ESMTPSA id
+ k92-20020a17090a4ce500b00267d9f4d340sm9281045pjh.44.2023.09.12.00.52.50
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 12 Sep 2023 00:52:52 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+Message-Id: <B76BE374-5FFC-4805-B985-CA61AAEE3C62@smartx.com>
+Content-Type: multipart/alternative;
+ boundary="Apple-Mail=_95C061BD-D7ED-49F0-8258-280653F57B60"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [PATCH v3 5/5] vhost-user-scsi: start vhost when guest kicks
+Date: Tue, 12 Sep 2023 15:53:00 +0800
+In-Reply-To: <87zg2686ex.fsf@pond.sub.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ "open list:Block layer core" <qemu-block@nongnu.org>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+To: Markus Armbruster <armbru@redhat.com>
+References: <20230721105205.1714449-1-fengli@smartx.com>
+ <20230731121018.2856310-1-fengli@smartx.com>
+ <20230731121018.2856310-6-fengli@smartx.com> <87zg2686ex.fsf@pond.sub.org>
+X-Mailer: Apple Mail (2.3731.700.6)
+Received-SPF: none client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=fengli@smartx.com; helo=mail-pj1-x1031.google.com
+X-Spam_score_int: 14
+X-Spam_score: 1.4
 X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,77 +97,282 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-09-12 at 10:34 +0400, Marc-Andr=C3=A9 Lureau wrote:
-> Hi
+
+--Apple-Mail=_95C061BD-D7ED-49F0-8258-280653F57B60
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=us-ascii
+
+
+
+> On 1 Sep 2023, at 7:44 PM, Markus Armbruster <armbru@redhat.com> =
+wrote:
 >=20
-> On Wed, Aug 23, 2023 at 2:03=E2=80=AFPM Marc-Andr=C3=A9 Lureau
-> <marcandre.lureau@gmail.com> wrote:
-> >=20
-> > Hi
-> >=20
-> > On Wed, Aug 23, 2023 at 4:31=E2=80=AFAM Stephen Brennan
-> > <stephen.s.brennan@oracle.com> wrote:
-> > >=20
-> > > Stephen Brennan <stephen.s.brennan@oracle.com> writes:
-> > > > Marc-Andr=C3=A9 Lureau <marcandre.lureau@gmail.com> writes:
-> > > > > I am a bit reluctant to change the dump format by default.
-> > > > > But since the
-> > > > > flatten format is more "complicated" than the "normal"
-> > > > > format, perhaps we
-> > > > > can assume all users will handle it.
-> > > > >=20
-> > > > > The change is probably late for 8.1 though..
-> > > >=20
-> > > > Thank you for your review and testing!
-> > > >=20
-> > > > I totally understand the concern about making the change by
-> > > > default. I
-> > > > do believe that nobody should notice too much because the
-> > > > normal format
-> > > > should be easier to work with, and more broadly compatible. I
-> > > > don't know
-> > > > of any tool which deals with the flattened format that can't
-> > > > handle the
-> > > > normal format, except for "makedumpfile -R" itself.
-> > > >=20
-> > > > If it's a blocker, I can go ahead and add a new flag to the
-> > > > command to
-> > > > enable the behavior. However there are a few good
-> > > > justifications not to
-> > > > add a new flag. I think it's going to be difficult to explain
-> > > > the
-> > > > difference between the two formats in documentation, as the
-> > > > implementation of the formats is a bit "into the weeds". The
-> > > > libvirt API
-> > > > also specifies each format separately (kdump-zlib, kdump-lzo,
-> > > > kdump-snappy) and so adding several new options there would be
-> > > > unfortunate for end-users as well.
-> > > >=20
-> > > > At the end of the day, it's your judgment call, and I'll
-> > > > implement it
-> > > > how you prefer.
-> > >=20
-> > > I just wanted to check back on this to clarify the next step. Are
-> > > you
-> > > satisfied with this and waiting to apply it until the right time?
-> > > Or
-> > > would you prefer me to send a new version making this opt-in?
-> > >=20
-> >=20
-> > Nobody seems to raise concerns. If it would be just me, I would
-> > change
-> > it. But we should rather be safe, so let's make it this opt-in
-> > please.
-> >=20
-> >=20
+> Li Feng <fengli@smartx.com <mailto:fengli@smartx.com>> writes:
 >=20
-> Alex, Daniel, Thomas .. Do you have an opinion on changing the dump
-> format?
+>> Let's keep the same behavior as vhost-user-blk.
+>>=20
+>> Some old guests kick virtqueue before setting =
+VIRTIO_CONFIG_S_DRIVER_OK.
+>>=20
+>> Signed-off-by: Li Feng <fengli@smartx.com>
+>> ---
+>> hw/scsi/vhost-user-scsi.c | 48 =
++++++++++++++++++++++++++++++++++++----
+>> 1 file changed, 44 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+>> index 5bf012461b..a7fa8e8df2 100644
+>> --- a/hw/scsi/vhost-user-scsi.c
+>> +++ b/hw/scsi/vhost-user-scsi.c
+>> @@ -113,8 +113,48 @@ static void vhost_user_scsi_reset(VirtIODevice =
+*vdev)
+>>     }
+>> }
+>>=20
+>> -static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue =
+*vq)
+>> +static void vhost_user_scsi_handle_output(VirtIODevice *vdev, =
+VirtQueue *vq)
+>> {
+>> +    VHostUserSCSI *s =3D (VHostUserSCSI *)vdev;
+>> +    DeviceState *dev =3D =
+&s->parent_obj.parent_obj.parent_obj.parent_obj;
+>> +    VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);
+>> +    VirtIOSCSICommon *vs =3D VIRTIO_SCSI_COMMON(dev);
+>> +
+>> +    Error *local_err =3D NULL;
+>> +    int i, ret;
+>> +
+>> +    if (!vdev->start_on_kick) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (!s->connected) {
+>> +        return;
+>> +    }
+>> +
+>> +    if (vhost_dev_is_started(&vsc->dev)) {
+>> +        return;
+>> +    }
+>> +
+>> +    /*
+>> +     * Some guests kick before setting VIRTIO_CONFIG_S_DRIVER_OK so =
+start
+>> +     * vhost here instead of waiting for .set_status().
+>> +     */
+>> +    ret =3D vhost_user_scsi_start(s);
+>> +    if (ret < 0) {
+>> +        error_reportf_err(local_err, "vhost-user-scsi: vhost start =
+failed: ");
+>=20
+> Crashes, since @local_err is null.  Please test your error paths.
+>=20
+> Obvious fix: drop this call.
+Emmm, actually I have tested the error path, so I find some issues that =
+I have fixed
+in the following patches.
+I will merge the later series into this series.
 
-I just double-checked with Janosch Frank, and from s390x perspective
-we're mostly interested in the ELF dump format, so from the s390x side
-of view: =C2=AF\_(=E3=83=84)_/=C2=AF
 
- Thomas
+>=20
+>> +        qemu_chr_fe_disconnect(&vs->conf.chardev);
+>> +        return;
+>> +    }
+>> +
+>> +    /* Kick right away to begin processing requests already in vring =
+*/
+>> +    for (i =3D 0; i < vsc->dev.nvqs; i++) {
+>> +        VirtQueue *kick_vq =3D virtio_get_queue(vdev, i);
+>> +
+>> +        if (!virtio_queue_get_desc_addr(vdev, i)) {
+>> +            continue;
+>> +        }
+>> +        event_notifier_set(virtio_queue_get_host_notifier(kick_vq));
+>> +    }
+>> }
+>>=20
+>> static int vhost_user_scsi_connect(DeviceState *dev, Error **errp)
+>> @@ -243,9 +283,9 @@ static void vhost_user_scsi_realize(DeviceState =
+*dev, Error **errp)
+>>         return;
+>>     }
+>>=20
+>> -    virtio_scsi_common_realize(dev, vhost_dummy_handle_output,
+>> -                               vhost_dummy_handle_output,
+>> -                               vhost_dummy_handle_output, &err);
+>> +    virtio_scsi_common_realize(dev, vhost_user_scsi_handle_output,
+>> +                               vhost_user_scsi_handle_output,
+>> +                               vhost_user_scsi_handle_output, &err);
+>>     if (err !=3D NULL) {
+>>         error_propagate(errp, err);
+>>         return;
 
+
+--Apple-Mail=_95C061BD-D7ED-49F0-8258-280653F57B60
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=us-ascii
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; =
+charset=3Dus-ascii"></head><body style=3D"overflow-wrap: break-word; =
+-webkit-nbsp-mode: space; line-break: =
+after-white-space;"><br><div><br><blockquote type=3D"cite"><div>On 1 Sep =
+2023, at 7:44 PM, Markus Armbruster &lt;armbru@redhat.com&gt; =
+wrote:</div><br class=3D"Apple-interchange-newline"><div><meta =
+charset=3D"UTF-8"><span style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none; float: none; display: inline !important;">Li Feng &lt;</span><a =
+href=3D"mailto:fengli@smartx.com" style=3D"font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-stroke-width: =
+0px;">fengli@smartx.com</a><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;">&gt; =
+writes:</span><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><br style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><blockquote type=3D"cite" style=3D"font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">Let's keep the same behavior as =
+vhost-user-blk.<br><br>Some old guests kick virtqueue before setting =
+VIRTIO_CONFIG_S_DRIVER_OK.<br><br>Signed-off-by: Li Feng =
+&lt;fengli@smartx.com&gt;<br>---<br>hw/scsi/vhost-user-scsi.c | 48 =
++++++++++++++++++++++++++++++++++++----<br>1 file changed, 44 =
+insertions(+), 4 deletions(-)<br><br>diff --git =
+a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c<br>index =
+5bf012461b..a7fa8e8df2 100644<br>--- a/hw/scsi/vhost-user-scsi.c<br>+++ =
+b/hw/scsi/vhost-user-scsi.c<br>@@ -113,8 +113,48 @@ static void =
+vhost_user_scsi_reset(VirtIODevice =
+*vdev)<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>-static void =
+vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)<br>+static =
+void vhost_user_scsi_handle_output(VirtIODevice *vdev, VirtQueue =
+*vq)<br>{<br>+ &nbsp;&nbsp;&nbsp;VHostUserSCSI *s =3D (VHostUserSCSI =
+*)vdev;<br>+ &nbsp;&nbsp;&nbsp;DeviceState *dev =3D =
+&amp;s-&gt;parent_obj.parent_obj.parent_obj.parent_obj;<br>+ =
+&nbsp;&nbsp;&nbsp;VHostSCSICommon *vsc =3D VHOST_SCSI_COMMON(s);<br>+ =
+&nbsp;&nbsp;&nbsp;VirtIOSCSICommon *vs =3D =
+VIRTIO_SCSI_COMMON(dev);<br>+<br>+ &nbsp;&nbsp;&nbsp;Error *local_err =3D =
+NULL;<br>+ &nbsp;&nbsp;&nbsp;int i, ret;<br>+<br>+ &nbsp;&nbsp;&nbsp;if =
+(!vdev-&gt;start_on_kick) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>+ =
+&nbsp;&nbsp;&nbsp;}<br>+<br>+ &nbsp;&nbsp;&nbsp;if (!s-&gt;connected) =
+{<br>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>+ =
+&nbsp;&nbsp;&nbsp;}<br>+<br>+ &nbsp;&nbsp;&nbsp;if =
+(vhost_dev_is_started(&amp;vsc-&gt;dev)) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>+ =
+&nbsp;&nbsp;&nbsp;}<br>+<br>+ &nbsp;&nbsp;&nbsp;/*<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;* Some guests kick before setting =
+VIRTIO_CONFIG_S_DRIVER_OK so start<br>+ &nbsp;&nbsp;&nbsp;&nbsp;* vhost =
+here instead of waiting for .set_status().<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;*/<br>+ &nbsp;&nbsp;&nbsp;ret =3D =
+vhost_user_scsi_start(s);<br>+ &nbsp;&nbsp;&nbsp;if (ret &lt; 0) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_reportf_err(local_err, =
+"vhost-user-scsi: vhost start failed: ");<br></blockquote><br =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none;"><span =
+style=3D"caret-color: rgb(0, 0, 0); font-family: Monaco; font-size: =
+12px; font-style: normal; font-variant-caps: normal; font-weight: 400; =
+letter-spacing: normal; text-align: start; text-indent: 0px; =
+text-transform: none; white-space: normal; word-spacing: 0px; =
+-webkit-text-stroke-width: 0px; text-decoration: none; float: none; =
+display: inline !important;">Crashes, since @local_err is null. =
+&nbsp;Please test your error paths.</span><br style=3D"caret-color: =
+rgb(0, 0, 0); font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"><span style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none; float: none; display: inline !important;">Obvious =
+fix: drop this call.</span><br style=3D"caret-color: rgb(0, 0, 0); =
+font-family: Monaco; font-size: 12px; font-style: normal; =
+font-variant-caps: normal; font-weight: 400; letter-spacing: normal; =
+text-align: start; text-indent: 0px; text-transform: none; white-space: =
+normal; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;"></div></blockquote>Emmm, actually I have tested =
+the error path, so I find some issues that I have fixed</div><div>in the =
+following patches.</div><div>I will merge the later series into this =
+series.</div><div><br></div><div><br></div><div><blockquote =
+type=3D"cite"><div><br style=3D"caret-color: rgb(0, 0, 0); font-family: =
+Monaco; font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; text-align: start; =
+text-indent: 0px; text-transform: none; white-space: normal; =
+word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration: =
+none;"><blockquote type=3D"cite" style=3D"font-family: Monaco; =
+font-size: 12px; font-style: normal; font-variant-caps: normal; =
+font-weight: 400; letter-spacing: normal; orphans: auto; text-align: =
+start; text-indent: 0px; text-transform: none; white-space: normal; =
+widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; =
+text-decoration: none;">+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qemu_chr_fe_disconnect(&amp;vs-&=
+gt;conf.chardev);<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>+ =
+&nbsp;&nbsp;&nbsp;}<br>+<br>+ &nbsp;&nbsp;&nbsp;/* Kick right away to =
+begin processing requests already in vring */<br>+ &nbsp;&nbsp;&nbsp;for =
+(i =3D 0; i &lt; vsc-&gt;dev.nvqs; i++) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VirtQueue *kick_vq =3D =
+virtio_get_queue(vdev, i);<br>+<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if =
+(!virtio_queue_get_desc_addr(vdev, i)) {<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue=
+;<br>+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_notifier_set(virtio_queue_=
+get_host_notifier(kick_vq));<br>+ &nbsp;&nbsp;&nbsp;}<br>}<br><br>static =
+int vhost_user_scsi_connect(DeviceState *dev, Error **errp)<br>@@ -243,9 =
++283,9 @@ static void vhost_user_scsi_realize(DeviceState *dev, Error =
+**errp)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>&nbs=
+p;&nbsp;&nbsp;&nbsp;}<br><br>- =
+&nbsp;&nbsp;&nbsp;virtio_scsi_common_realize(dev, =
+vhost_dummy_handle_output,<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_dummy_handle_output,<br>- =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_dummy_handle_output, =
+&amp;err);<br>+ &nbsp;&nbsp;&nbsp;virtio_scsi_common_realize(dev, =
+vhost_user_scsi_handle_output,<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_scsi_handle_output,<br>+ =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vhost_user_scsi_handle_output, =
+&amp;err);<br>&nbsp;&nbsp;&nbsp;&nbsp;if (err !=3D NULL) =
+{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_propagate(errp,=
+ =
+err);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;</blockquo=
+te></div></blockquote></div><br></body></html>=
+
+--Apple-Mail=_95C061BD-D7ED-49F0-8258-280653F57B60--
 
