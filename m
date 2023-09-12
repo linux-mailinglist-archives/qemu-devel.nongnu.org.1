@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24B279C275
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 04:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B4879C27A
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 04:14:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfstM-0001HZ-5H; Mon, 11 Sep 2023 22:12:40 -0400
+	id 1qfstM-0001IS-NK; Mon, 11 Sep 2023 22:12:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qfst5-0001F1-Gn
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:24 -0400
+ id 1qfstB-0001Fk-VI
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:30 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qfst1-0005TT-5c
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:22 -0400
+ (envelope-from <lixianglai@loongson.cn>) id 1qfst5-0005U7-Gg
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 22:12:27 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxRujzyP9kDTIlAA--.19207S3;
- Tue, 12 Sep 2023 10:12:03 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxXOr0yP9kGTIlAA--.45555S3;
+ Tue, 12 Sep 2023 10:12:04 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxfSPqyP9kCnh4AA--.42014S10; 
+ AQAAf8DxfSPqyP9kCnh4AA--.42014S11; 
  Tue, 12 Sep 2023 10:12:03 +0800 (CST)
 From: xianglai li <lixianglai@loongson.cn>
 To: qemu-devel@nongnu.org
@@ -38,16 +38,16 @@ Cc: "Salil Mehta" <salil.mehta@opnsrc.net>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
  Bibo Mao <maobibo@loongson.cn>
-Subject: [PATCH v2 08/10] Add support of *unrealize* for Loongarch cpu
-Date: Tue, 12 Sep 2023 10:11:45 +0800
-Message-Id: <f5fdf5c1230cb5c01482dba7ff1f5c07ca0f5a65.1694433326.git.lixianglai@loongson.cn>
+Subject: [PATCH v2 09/10] Add generic event device for Loongarch
+Date: Tue, 12 Sep 2023 10:11:46 +0800
+Message-Id: <775b9d1abd52286fa3af945ac23ec3631b110fbe.1694433326.git.lixianglai@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1694433326.git.lixianglai@loongson.cn>
 References: <cover.1694433326.git.lixianglai@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxfSPqyP9kCnh4AA--.42014S10
+X-CM-TRANSID: AQAAf8DxfSPqyP9kCnh4AA--.42014S11
 X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -74,7 +74,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the unrealize function to the Loongarch CPU for cpu hot-(un)plug
+Create a new GED device type for Loongarch,
+mount cpu_madt function to update the ACPI table.
 
 Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
 Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
@@ -94,69 +95,121 @@ Cc: David Hildenbrand <david@redhat.com>
 Cc: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: xianglai li <lixianglai@loongson.cn>
 ---
- target/loongarch/cpu.c | 22 ++++++++++++++++++++++
- target/loongarch/cpu.h |  1 +
- 2 files changed, 23 insertions(+)
+ hw/loongarch/acpi-build.c                     | 17 +++++++++
+ hw/loongarch/generic_event_device_loongarch.c | 36 +++++++++++++++++++
+ hw/loongarch/meson.build                      |  2 +-
+ include/hw/acpi/generic_event_device.h        |  1 +
+ include/hw/loongarch/virt.h                   |  4 +++
+ 5 files changed, 59 insertions(+), 1 deletion(-)
+ create mode 100644 hw/loongarch/generic_event_device_loongarch.c
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index a5153cb3bc..03134d7bac 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -572,6 +572,24 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
-     lacc->parent_realize(dev, errp);
- }
+diff --git a/hw/loongarch/acpi-build.c b/hw/loongarch/acpi-build.c
+index ae292fc543..66fad295cc 100644
+--- a/hw/loongarch/acpi-build.c
++++ b/hw/loongarch/acpi-build.c
+@@ -46,6 +46,23 @@
+ #define ACPI_BUILD_DPRINTF(fmt, ...)
+ #endif
  
-+static void loongarch_cpu_unrealizefn(DeviceState *dev)
++void virt_madt_cpu_entry(int uid,
++                         const CPUArchIdList *apic_ids,
++                         GArray *entry, bool force_enabled)
 +{
-+    LoongArchCPUClass *mcc = LOONGARCH_CPU_GET_CLASS(dev);
++    uint32_t apic_id = apic_ids->cpus[uid].arch_id;
++    /* Flags – Local APIC Flags */
++    uint32_t flags = apic_ids->cpus[uid].cpu != NULL || force_enabled ?
++                     1 /* Enabled */ : 0;
 +
-+#ifndef CONFIG_USER_ONLY
-+    CPUState *cs = CPU(dev);
-+    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
-+    CPULoongArchState *env = &cpu->env;
-+
-+    cpu_remove_sync(CPU(dev));
-+    cpu_address_space_destroy(cs, 0);
-+    address_space_destroy(&env->address_space_iocsr);
-+    memory_region_del_subregion(&env->system_iocsr, &env->iocsr_mem);
-+#endif
-+
-+    mcc->parent_unrealize(dev);
++    /* Rev 1.0b, Table 5-13 Processor Local APIC Structure */
++    build_append_int_noprefix(entry, 0, 1);       /* Type */
++    build_append_int_noprefix(entry, 8, 1);       /* Length */
++    build_append_int_noprefix(entry, uid, 1);     /* ACPI Processor ID */
++    build_append_int_noprefix(entry, apic_id, 1); /* APIC ID */
++    build_append_int_noprefix(entry, flags, 4); /* Flags */
 +}
 +
- #ifndef CONFIG_USER_ONLY
- static void loongarch_qemu_write(void *opaque, hwaddr addr,
-                                  uint64_t val, unsigned size)
-@@ -752,6 +770,9 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
-     device_class_set_props(dc, loongarch_cpu_properties);
-     device_class_set_parent_realize(dc, loongarch_cpu_realizefn,
-                                     &lacc->parent_realize);
-+    device_class_set_parent_unrealize(dc, loongarch_cpu_unrealizefn,
-+                                      &lacc->parent_unrealize);
+ /* build FADT */
+ static void init_common_fadt_data(AcpiFadtData *data)
+ {
+diff --git a/hw/loongarch/generic_event_device_loongarch.c b/hw/loongarch/generic_event_device_loongarch.c
+new file mode 100644
+index 0000000000..1fe550239b
+--- /dev/null
++++ b/hw/loongarch/generic_event_device_loongarch.c
+@@ -0,0 +1,36 @@
++/*
++ * loongarch variant of the generic event device for hw reduced acpi
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ */
 +
-     resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hold, NULL,
-                                        &lacc->parent_phases);
++#include "qemu/osdep.h"
++#include "hw/acpi/generic_event_device.h"
++#include "hw/loongarch/virt.h"
++
++static void acpi_ged_loongarch_class_init(ObjectClass *class, void *data)
++{
++    AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_CLASS(class);
++
++    adevc->madt_cpu = virt_madt_cpu_entry;
++}
++
++static const TypeInfo acpi_ged_loongarch_info = {
++    .name          = TYPE_ACPI_GED_LOONGARCH,
++    .parent        = TYPE_ACPI_GED,
++    .class_init    = acpi_ged_loongarch_class_init,
++    .interfaces = (InterfaceInfo[]) {
++        { TYPE_HOTPLUG_HANDLER },
++        { TYPE_ACPI_DEVICE_IF },
++        { }
++    }
++};
++
++static void acpi_ged_loongarch_register_types(void)
++{
++    type_register_static(&acpi_ged_loongarch_info);
++}
++
++type_init(acpi_ged_loongarch_register_types)
+diff --git a/hw/loongarch/meson.build b/hw/loongarch/meson.build
+index c0421502ab..8d21addee3 100644
+--- a/hw/loongarch/meson.build
++++ b/hw/loongarch/meson.build
+@@ -3,6 +3,6 @@ loongarch_ss.add(files(
+     'fw_cfg.c',
+ ))
+ loongarch_ss.add(when: 'CONFIG_LOONGARCH_VIRT', if_true: [files('virt.c'), fdt])
+-loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c'))
++loongarch_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-build.c', 'generic_event_device_loongarch.c'))
  
-@@ -773,6 +794,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
- #ifdef CONFIG_TCG
-     cc->tcg_ops = &loongarch_tcg_ops;
+ hw_arch += {'loongarch': loongarch_ss}
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index d0a5a43abf..2923bd9d82 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -71,6 +71,7 @@
+ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ 
+ #define TYPE_ACPI_GED_X86 "acpi-ged-x86"
++#define TYPE_ACPI_GED_LOONGARCH "acpi-ged-loongarch"
+ 
+ #define ACPI_GED_EVT_SEL_OFFSET    0x0
+ #define ACPI_GED_EVT_SEL_LEN       0x4
+diff --git a/include/hw/loongarch/virt.h b/include/hw/loongarch/virt.h
+index 176dc43a93..f6c9495af2 100644
+--- a/include/hw/loongarch/virt.h
++++ b/include/hw/loongarch/virt.h
+@@ -60,4 +60,8 @@ struct LoongArchMachineState {
+ OBJECT_DECLARE_SIMPLE_TYPE(LoongArchMachineState, LOONGARCH_MACHINE)
+ bool loongarch_is_acpi_enabled(LoongArchMachineState *lams);
+ void loongarch_acpi_setup(LoongArchMachineState *lams);
++void virt_madt_cpu_entry(int uid,
++                         const CPUArchIdList *apic_ids, GArray *entry,
++                         bool force_enabled);
++
  #endif
-+    dc->user_creatable = true;
- }
- 
- static gchar *loongarch32_gdb_arch_name(CPUState *cs)
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index 058bc53bde..4143138b12 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -412,6 +412,7 @@ struct LoongArchCPUClass {
-     /*< public >*/
- 
-     DeviceRealize parent_realize;
-+    DeviceUnrealize parent_unrealize;
-     ResettablePhases parent_phases;
- };
- 
 -- 
 2.39.1
 
