@@ -2,78 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E94C79D3F3
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC2679D461
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 17:07:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg4ad-0003C7-Ip; Tue, 12 Sep 2023 10:42:07 -0400
+	id 1qg4y8-0002T3-NE; Tue, 12 Sep 2023 11:06:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qg4aY-0003BY-MW
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:42:03 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qg4aW-0003Pw-7b
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:42:02 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-99c1d03e124so708617566b.2
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1694529718; x=1695134518;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=vUKHpgqm2iAf2/dABtDx/F3pyl52yT4elio4vAfKCc8=;
- b=aFkY+d9/nXXBRuOH5kMCvxZh+qqkqP8eRJuN9HVAuF7KNelHCLdXbApCkzf9d3iOSt
- SK0nQonci+b2abuHb5/u+pc+/8P8XvcqxtHsw+N0bq1s/kMSJwEhLkyU6kEqgEUaU4M1
- A/h2NLR6drm8XjP0/wDNzkFO4mqouzKGenR0SLf+TLt6JjZ8UMJbSzv7HhGuvUYRhBLA
- 73z6cxtDUZgE5ViG1VZK6Ei2Ycpb9qe8EgT7p4JLLMsPSPNZgSupCkWpTj0tBb/Ahtr1
- JyFcwuKRWOxJBJ0o4Qr6NCF9yAx0kv7ia3dGLG15xq/miRqy8foCPCH1pNQzu1f0YdpD
- 5pKw==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qg4xt-0002Iy-3B
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 11:06:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qg4xp-0004gZ-DN
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 11:06:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694531161;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=r58xNz7MOICk+ek8QJ2aXUpfTAEKlzJFYU1kdpEwxbI=;
+ b=HjdGBSRhmm9moWu7mzFEw4B4V6+38TIE1WVtdVWLgVwtBm/4el4ILUkwtnGqE7pf7sZYZl
+ 3yCo6A9dE5d8v6aNDm4YkZt1KqLRU4cOODFl+PbHJW0y4NfCFdluwoAiLjgXid7R4Ed8/l
+ 9fWkHl+aezpVYvk4lTcXHSXiXDhJosA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-128-nt6Pw3-8N2-rtXErQAlC6A-1; Tue, 12 Sep 2023 11:05:57 -0400
+X-MC-Unique: nt6Pw3-8N2-rtXErQAlC6A-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-31c6c275c83so3785015f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 08:05:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694529718; x=1695134518;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1694531156; x=1695135956;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=vUKHpgqm2iAf2/dABtDx/F3pyl52yT4elio4vAfKCc8=;
- b=bHOlkqhzEe9U4IUh+IAPqVS0By6VYPYYkDj556qeVwAfazisSKviHMQz0dxzYrM3RC
- 24oqt42jhNdxrWq6E8bYKdj3SWXdvlDyzTf4RHkhLewM7j2SDhfG0/fxZAhobtqHVW6J
- kKVvirLzNrnQuEGBTU+Bxx0YhuWINwquL7SVRzMOk+mlikqp7Mknlyegjqocfl13SSK0
- 5Hs3ZV2C0zQRzVcLeXFOOq6tUUh70aygIawZbfNtohxc0AqDorQDSL2Ubfjje2uBb7AU
- UuRfC5q6W6s9/SxRecL/WV0p+Stte/pmcJRGg/5lGCN3tswix3+j/WFY5CftT2CyqFPm
- XOAQ==
-X-Gm-Message-State: AOJu0YyOyQcZsWe8qhTxf48dILWOipaeW0pv4mcJaq9oxfpP/tZTKltl
- 96iWib9v7rQn6Ui4dOM2XBAvk1sbSM4HbyTAJT8jgw==
-X-Google-Smtp-Source: AGHT+IEthlxM/u4JRpesHRXncrj89CpcRBs21oHMZfSUlKSn7L4l1sxHSo5Lyj8aOqZgrA36z4bJyb0+lNAFBD7nTF0=
-X-Received: by 2002:a17:907:2ceb:b0:9ad:8ef8:a7e8 with SMTP id
- hz11-20020a1709072ceb00b009ad8ef8a7e8mr1133664ejc.25.1694529718089; Tue, 12
- Sep 2023 07:41:58 -0700 (PDT)
+ bh=r58xNz7MOICk+ek8QJ2aXUpfTAEKlzJFYU1kdpEwxbI=;
+ b=da1WeQrLuvV8/gHOlcFi+OqFjLhnt1Dl0mgQfq5iJ+DnQmsSP5QfHN/Ln868GwA2TQ
+ /o976st5ze4vICVTAyy6PFgSLF9iyhvUhA2sOd0VzcLZeraxVdck+MdIGZ7iNefpfev9
+ kvXkaNKMu1lLtxwTVRjKpewfU84a0pqgYHGGnM2Fw9TRDkfyxvseVT6ybRXNelD4C1MV
+ XDnr3MK5JfLQK9IGoEa9iRV9dfMW5G58tW6F/BqPbmL35z+Zuxr0vuJfB21+oMIs16v2
+ 4OQnut7+qCJio3dGpkRl9avC66OdazWUk6/ToYhCR6HDLnEHbHOz9YGPHf8UcA7vkyrY
+ 2ztg==
+X-Gm-Message-State: AOJu0YwLAHL7v91RRKq+sQH4lEIlGkvyjUmdCDois6lx2VmzqucooKSQ
+ Xvq/0T+UHkVQDQ2u0RSR7RlNVj+R2y3qNqgA5fODxFUighU2eg2Afrt4ezZPiyTeG6obF/vqVVo
+ ov908vG92BTMUbXs=
+X-Received: by 2002:a5d:598f:0:b0:31f:b9ea:769 with SMTP id
+ n15-20020a5d598f000000b0031fb9ea0769mr2122866wri.66.1694531156255; 
+ Tue, 12 Sep 2023 08:05:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHhjHnrPPv+Qo5hK1hK+c1q6c6FKmKV4IKOt9BTtUyMt9bIyg3sAWXVn47IY0wTaxqqDvbRlQ==
+X-Received: by 2002:a5d:598f:0:b0:31f:b9ea:769 with SMTP id
+ n15-20020a5d598f000000b0031fb9ea0769mr2122828wri.66.1694531155695; 
+ Tue, 12 Sep 2023 08:05:55 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c74f:d600:c705:bc25:17b2:71c9?
+ (p200300cbc74fd600c705bc2517b271c9.dip0.t-ipconnect.de.
+ [2003:cb:c74f:d600:c705:bc25:17b2:71c9])
+ by smtp.gmail.com with ESMTPSA id
+ x18-20020adfdd92000000b0031aeca90e1fsm13171450wrl.70.2023.09.12.08.05.54
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Sep 2023 08:05:55 -0700 (PDT)
+Message-ID: <252c4a36-5e00-7208-3069-d38905b8e341@redhat.com>
+Date: Tue, 12 Sep 2023 17:05:54 +0200
 MIME-Version: 1.0
-References: <e6385fc7-0889-ea16-4fc0-337796814636@tls.msk.ru>
- <CAJSP0QUfF64wWQbbAqKpeUWGEOz6jB2ZHkmJhaRXfRDFLpD_kw@mail.gmail.com>
-In-Reply-To: <CAJSP0QUfF64wWQbbAqKpeUWGEOz6jB2ZHkmJhaRXfRDFLpD_kw@mail.gmail.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Tue, 12 Sep 2023 08:41:46 -0600
-Message-ID: <CANCZdfptn3UMMpgxSJYb7YFmt8YOxg2tB+y68Jb878vQyQWOGQ@mail.gmail.com>
-Subject: Re: cherry-picking something to -stable which might require other
- changes
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>, QEMU Developers <qemu-devel@nongnu.org>, 
- qemu-stable <qemu-stable@nongnu.org>, Thomas Huth <thuth@redhat.com>,
- Bin Meng <bmeng@tinylab.org>, 
- Paul Menzel <pmenzel@molgen.mpg.de>, Stefan Hajnoczi <stefanha@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000e8950d06052a71d2"
-Received-SPF: none client-ip=2a00:1450:4864:20::633;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] cpu/cpuid: check CPUID_PAE to determine 36 bit processor
+ address space
+Content-Language: en-US
+To: Ani Sinha <anisinha@redhat.com>
+Cc: pbonzini@redhat.com, mst@redhat.com, richard.henderson@linaro.org,
+ philmd@linaro.org, qemu-devel@nongnu.org
+References: <20230912120650.371781-1-anisinha@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230912120650.371781-1-anisinha@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,62 +106,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e8950d06052a71d2
-Content-Type: text/plain; charset="UTF-8"
+On 12.09.23 14:06, Ani Sinha wrote:
+> PAE mode in x86 supports 36 bit address space. Check the PAE CPUID on the
+> guest processor and set phys_bits to 36 if PAE feature is set. This is in
+> addition to checking the presence of PSE36 CPUID feature for setting 36 bit
+> phys_bits.
+> 
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>   target/i386/cpu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Note: Not sure what tests I should be running in order to make sure I am
+> not breaking any guest OSes. Usual qtests pass.
+> 
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 24ee67b42d..f3a5c99117 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -7375,7 +7375,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+>               return;
+>           }
+>   
+> -        if (env->features[FEAT_1_EDX] & CPUID_PSE36) {
+> +        if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
+>               cpu->phys_bits = 36;
+>           } else {
+>               cpu->phys_bits = 32;
 
-On Tue, Sep 12, 2023, 8:01 AM Stefan Hajnoczi <stefanha@gmail.com> wrote:
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-> When I backport patches into RHEL, the general process I follow is:
-> 1. For context conflicts, just adjust the patch to resolve them.
-> 2. For real dependencies, backport the dependencies, if possible.
-> 3. If backporting the dependencies is not possible, think of a
-> downstream-only solution. This should be rare.
->
-> People make different backporting decisions (just like structuring
-> patch series). It can be a matter of taste.
->
+-- 
+Cheers,
 
-We've done almost exactly the same thing in FreeBSD for the past almost 30
-years (with varying degrees of success and nuance, to be true, often
-limited by early tools). It's an excellent ideal to shoot for, and we've
-had troubles more often than not the further one gets aways from it.
+David / dhildenb
 
-Warner
-
-
-Stefan
->
->
-
---000000000000e8950d06052a71d2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Tue, Sep 12, 2023, 8:01 AM Stefan Hajnoczi &lt;<a h=
-ref=3D"mailto:stefanha@gmail.com">stefanha@gmail.com</a>&gt; wrote:<br></di=
-v><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
-1px #ccc solid;padding-left:1ex">When I backport patches into RHEL, the gen=
-eral process I follow is:<br>
-1. For context conflicts, just adjust the patch to resolve them.<br>
-2. For real dependencies, backport the dependencies, if possible.<br>
-3. If backporting the dependencies is not possible, think of a<br>
-downstream-only solution. This should be rare.<br>
-<br>
-People make different backporting decisions (just like structuring<br>
-patch series). It can be a matter of taste.<br></blockquote></div></div><di=
-v dir=3D"auto"><br></div><div dir=3D"auto">We&#39;ve done almost exactly=C2=
-=A0the same thing in FreeBSD for the past almost 30 years (with varying deg=
-rees of success and nuance, to be true, often limited by early tools). It&#=
-39;s an excellent ideal to shoot for, and we&#39;ve had troubles more often=
- than not the further one gets aways from it.</div><div dir=3D"auto"><br></=
-div><div dir=3D"auto">Warner</div><div dir=3D"auto"><br></div><div dir=3D"a=
-uto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote cla=
-ss=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;pa=
-dding-left:1ex">
-Stefan<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000e8950d06052a71d2--
 
