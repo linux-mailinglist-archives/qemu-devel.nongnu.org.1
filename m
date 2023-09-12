@@ -2,55 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9CC79D0D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF42A79D10C
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:28:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg2HH-00064Q-Qw; Tue, 12 Sep 2023 08:13:59 -0400
+	id 1qg2UF-00035z-BZ; Tue, 12 Sep 2023 08:27:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qg2HG-00061A-DT
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:13:58 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qg2HD-0004g3-Vr
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:13:58 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlMnk39zTz67QKJ;
- Tue, 12 Sep 2023 20:09:14 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 12 Sep
- 2023 13:13:52 +0100
-Date: Tue, 12 Sep 2023 13:13:51 +0100
-To: Gregory Price <gourry.memverge@gmail.com>
-CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, <junhee.ryu@sk.com>, 
- <kwangjin.ko@sk.com>, Gregory Price <gregory.price@memverge.com>
-Subject: Re: [PATCH v3 2/6] cxl/type3: Cleanup multiple CXL_TYPE3() calls in
- read/write functions
-Message-ID: <20230912131351.00007e5e@Huawei.com>
-In-Reply-To: <20230906001517.324380-3-gregory.price@memverge.com>
-References: <20230906001517.324380-1-gregory.price@memverge.com>
- <20230906001517.324380-3-gregory.price@memverge.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qg2UD-00035C-2S
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:27:21 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qg2UA-0002AY-Mm
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:27:20 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-31c3df710bdso5059964f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 05:27:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694521637; x=1695126437; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=a+QJ6aLCYJHfzYSh+WK/aIRaGCoM4QdlNhV2yGIGdAg=;
+ b=lI+pE8NUnoxtLrGFjMEYBs03Ix1zq3lgSiOMtxWE3QvWbunzPRiEda0CgnlYq0qAbO
+ 39qh113X8Y3gTx/JePuGLAqutEQVX+dYqfiw7rW7qwR1haXnjml/XXlk/kCcyRWnhiM3
+ 5XZTMzz9IC/yd0dmEfKaQFufovlq9pf1nAdGF26LyUAY0gCGv3b2fhTb6cXXQqsl6yxj
+ u0nQQEvZ/3J96c3C9zAMkiimrMjtvmybGFeINi3lucPYHO56u0aZktZBhsC3L3YYYyKz
+ WM7Uc2tyMSyytIJibyopr9EfEmKgH1MnNpvl6p3edJfrAe3Nwb5y5m1sjk02DrF+ZeLY
+ Pstg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694521637; x=1695126437;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=a+QJ6aLCYJHfzYSh+WK/aIRaGCoM4QdlNhV2yGIGdAg=;
+ b=KFL4s1KRSr85HdJ4eV7d4bOTzZSqDq+C1a7ZqOj7AdbXTfIqf28XuCpHPwjpM/3bpo
+ tdRnGsbI4tZqqE/QlBLM5G556lyjoxpUP0K9EiU1HN6LdZhua0OFwc/4y3a8SAM5aHUO
+ p9sQhdJ2nu9HTrFPSxheegOISEOJLr98C6mKOodXyADEmLtpvYYCukBLGvSiwQVnC4ss
+ Zzb0JcFAzK5f6+PJp819AmLt/z8Jxrz9/NJ9WGnLtUeNUix4SAcQeOEn3FkjD3rKuEIP
+ tNtJHvsbAgC62FDqPGMJU5LHHn7Dl+D4PmjCBAm+yKU6etG+xOZ7oubC7zxiiQn3/h7t
+ 7P+w==
+X-Gm-Message-State: AOJu0Yx6oQbe0HXKIfYi96jZoxpuSOuC0wSxuchWpB2xgt23XtSHRgHm
+ dtnQTma8q11cCojy0SWLyg38qaH08rFfZJMF4TrFaQ==
+X-Google-Smtp-Source: AGHT+IE7d34oCkjFJt4Gv1KuLzZRvX8Jmzx2z9RIMXDdOZm2E6TYFsQjSqc+w9pz5u1kadJp5fxRc+iZj23dtSVVMks=
+X-Received: by 2002:a5d:4ac3:0:b0:31a:e6c2:7705 with SMTP id
+ y3-20020a5d4ac3000000b0031ae6c27705mr10915143wrs.50.1694521636880; Tue, 12
+ Sep 2023 05:27:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20230907160340.260094-1-peter.maydell@linaro.org>
+ <20230907160340.260094-14-peter.maydell@linaro.org>
+ <28b64da1-6c0f-012e-1af9-ac27a8581f6f@linaro.org>
+In-Reply-To: <28b64da1-6c0f-012e-1af9-ac27a8581f6f@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Sep 2023 13:27:05 +0100
+Message-ID: <CAFEAcA89pF2mw7ePuVOsee1n8+L8PMuBSKEYg-gCNLd2gLFKoA@mail.gmail.com>
+Subject: Re: [PATCH 13/14] target/arm: Implement the CPY* instructions
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,71 +83,81 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue,  5 Sep 2023 20:15:13 -0400
-Gregory Price <gourry.memverge@gmail.com> wrote:
+On Sat, 9 Sept 2023 at 18:06, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 9/7/23 09:03, Peter Maydell wrote:
+> > +void HELPER(cpyp)(CPUARMState *env, uint32_t syndrome, uint32_t wdesc,
+> > +                  uint32_t rdesc, uint32_t move)
+> > +{
+> > +    int rd = mops_destreg(syndrome);
+> > +    int rs = mops_srcreg(syndrome);
+> > +    int rn = mops_sizereg(syndrome);
+> > +    uint32_t rmemidx = FIELD_EX32(rdesc, MTEDESC, MIDX);
+> > +    uint32_t wmemidx = FIELD_EX32(wdesc, MTEDESC, MIDX);
+> > +    bool forwards = true;
+> > +    uintptr_t ra = GETPC();
+> > +    uint64_t toaddr = env->xregs[rd];
+> > +    uint64_t fromaddr = env->xregs[rs];
+> > +    uint64_t copysize = env->xregs[rn];
+> > +    uint64_t stagecopysize, step;
+> > +
+> > +    check_mops_enabled(env, ra);
+> > +
+> > +    if (copysize > 0x007FFFFFFFFFFFFFULL) {
+> > +        copysize = 0x007FFFFFFFFFFFFFULL;
+> > +    }
+>
+> CPYFP does not have the same saturation as CPYP.
+>
+> Again, you would do better if 'move' was a parameter for an inline, so that the tests can
+> be folded away.
+>
+> > +void HELPER(cpym)(CPUARMState *env, uint32_t syndrome, uint32_t wdesc,
+> > +                  uint32_t rdesc, uint32_t move)
+> > +{
+> > +    /* Main: we choose to copy until less than a page remaining */
+> > +    CPUState *cs = env_cpu(env);
+> > +    int rd = mops_destreg(syndrome);
+> > +    int rs = mops_srcreg(syndrome);
+> > +    int rn = mops_sizereg(syndrome);
+> > +    uint32_t rmemidx = FIELD_EX32(rdesc, MTEDESC, MIDX);
+> > +    uint32_t wmemidx = FIELD_EX32(wdesc, MTEDESC, MIDX);
+> > +    uintptr_t ra = GETPC();
+> > +    bool forwards;
+> > +    uint64_t toaddr, fromaddr, copysize, step;
+> > +
+> > +    check_mops_enabled(env, ra);
+> > +
+> > +    /* We choose to NOP out "no data to copy" before consistency checks */
+> > +    if (env->xregs[rn] == 0) {
+> > +        return;
+> > +    }
+> > +
+> > +    check_mops_wrong_option(env, syndrome, ra);
+> > +
+> > +    if ((int64_t)env->xregs[rn] < 0) {
+> > +        forwards = true;
+> > +        toaddr = env->xregs[rd] + env->xregs[rn];
+> > +        fromaddr = env->xregs[rs] + env->xregs[rn];
+> > +        copysize = -env->xregs[rn];
+> > +    } else {
+> > +        forwards = false;
+> > +        copysize = env->xregs[rn];
+> > +        /* This toaddr and fromaddr point to the *last* byte to copy */
+> > +        toaddr = env->xregs[rd] + copysize - 1;
+> > +        fromaddr = env->xregs[rs] + copysize - 1;
+> > +    }
+>
+> You're passing 'move' but not using it.  I would have expected that here.
 
-> Call CXL_TYPE3 once at top of function to avoid multiple invocations.
-> 
-> Signed-off-by: Gregory Price <gregory.price@memverge.com>
+Whoops. You can't tell the difference for correct guest code,
+because CPYFP will always set up Xn so that it is negative,
+but yes, CPYFM and CPYFE should be forwards always.
 
-This one is queued up in a set I posted for Michael to hopefully pick up.
-So no need to keep it in this series (I'll post tree short etc)
-
-Jonathan
-
-> ---
->  hw/mem/cxl_type3.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> index fd9d134d46..80d596ee10 100644
-> --- a/hw/mem/cxl_type3.c
-> +++ b/hw/mem/cxl_type3.c
-> @@ -1248,17 +1248,18 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
->  MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
->                             unsigned size, MemTxAttrs attrs)
->  {
-> +    CXLType3Dev *ct3d = CXL_TYPE3(d);
->      uint64_t dpa_offset = 0;
->      AddressSpace *as = NULL;
->      int res;
->  
-> -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
-> +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
->                                        &as, &dpa_offset);
->      if (res) {
->          return MEMTX_ERROR;
->      }
->  
-> -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
-> +    if (sanitize_running(&ct3d->cci)) {
->          qemu_guest_getrandom_nofail(data, size);
->          return MEMTX_OK;
->      }
-> @@ -1268,16 +1269,17 @@ MemTxResult cxl_type3_read(PCIDevice *d, hwaddr host_addr, uint64_t *data,
->  MemTxResult cxl_type3_write(PCIDevice *d, hwaddr host_addr, uint64_t data,
->                              unsigned size, MemTxAttrs attrs)
->  {
-> +    CXLType3Dev *ct3d = CXL_TYPE3(d);
->      uint64_t dpa_offset = 0;
->      AddressSpace *as = NULL;
->      int res;
->  
-> -    res = cxl_type3_hpa_to_as_and_dpa(CXL_TYPE3(d), host_addr, size,
-> +    res = cxl_type3_hpa_to_as_and_dpa(ct3d, host_addr, size,
->                                        &as, &dpa_offset);
->      if (res) {
->          return MEMTX_ERROR;
->      }
-> -    if (sanitize_running(&CXL_TYPE3(d)->cci)) {
-> +    if (sanitize_running(&ct3d->cci)) {
->          return MEMTX_OK;
->      }
->      return address_space_write(as, dpa_offset, attrs, &data, size);
-
+thanks
+-- PMM
 
