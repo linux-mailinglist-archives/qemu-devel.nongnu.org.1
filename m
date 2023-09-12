@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A6379CE46
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE6C79CE74
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 12:36:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg0cF-0008Ar-L8; Tue, 12 Sep 2023 06:27:31 -0400
+	id 1qg0jp-0003TI-7X; Tue, 12 Sep 2023 06:35:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qg0c5-00088Y-0Q
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:27:21 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qg0jS-0003SI-J9
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:34:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qg0bz-0001jE-MK
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:27:18 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qg0jQ-0000DX-46
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 06:34:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 58D43210E2;
- Tue, 12 Sep 2023 13:27:03 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6D22A210EF;
+ Tue, 12 Sep 2023 13:34:55 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 7334A27783;
- Tue, 12 Sep 2023 13:26:59 +0300 (MSK)
-Message-ID: <a4e6217f-8d83-944d-6852-b85c276b05f4@tls.msk.ru>
-Date: Tue, 12 Sep 2023 13:26:59 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9F9392778E;
+ Tue, 12 Sep 2023 13:34:51 +0300 (MSK)
+Message-ID: <36562fcb-77f2-2a18-acec-47f155decf71@tls.msk.ru>
+Date: Tue, 12 Sep 2023 13:34:51 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PULL v2 00/45] riscv-to-apply queue
+Subject: Re: [PATCH v4 00/10] linux-user: Detect and report host crashes
 Content-Language: en-US
-To: Alistair Francis <alistair23@gmail.com>, qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230911064320.939791-1-alistair.francis@wdc.com>
+To: Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230823051615.1297706-1-richard.henderson@linaro.org>
+ <d2e3266e-dbb8-07a6-07d7-008e788c3862@linaro.org>
+ <329a2c4b-9fa9-5e73-aa95-57512d60c1ec@gmx.de>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230911064320.939791-1-alistair.francis@wdc.com>
+In-Reply-To: <329a2c4b-9fa9-5e73-aa95-57512d60c1ec@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -61,60 +61,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-11.09.2023 09:42, Alistair Francis:>    target/riscv: don't read CSR in riscv_csrrw_do64 (2023-09-11 11:45:55 +1000)
-2 more questions about this pull-req and -stable.
+12.09.2023 12:45, Helge Deller:
 
+> /usr/bin/ld: /usr/lib/gcc/x86_64-redhat-linux/13/../../../../lib64/libc.a(abort.o): in function `abort':
+> (.text.unlikely+0x0): multiple definition of `abort'; 
+> libqemu-aarch64-linux-user.fa.p/linux-user_signal.c.o:/srv/_build/../../home/cvs/qemu/qemu/linux-user/signal.c:723: first defined here
 
-commit 50f9464962fb41f04fd5f42e7ee2cb60942aba89
-Author: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Date:   Thu Jul 20 10:24:23 2023 -0300
+[PATCH v4 03/10] linux-user: Use die_with_signal with abort
 
-     target/riscv/cpu.c: add zmmul isa string
+Sigh.
 
-     zmmul was promoted from experimental to ratified in commit 6d00ffad4e95.
-     Add a riscv,isa string for it.
-
-     Fixes: 6d00ffad4e95 ("target/riscv: move zmmul out of the experimental properties")
-
-Does this need to be picked for -stable (based on the "Fixes" tag)?
-I don't know the full impact of this change (or lack thereof).
-
-
-commit 4cc9f284d5971ecd8055d26ef74c23ef0be8b8f5
-Author: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Date:   Sat Jul 29 11:16:18 2023 +0800
-
-     target/riscv: Fix page_check_range use in fault-only-first
-
-     Commit bef6f008b98(accel/tcg: Return bool from page_check_range) converts
-     integer return value to bool type. However, it wrongly converted the use
-     of the API in riscv fault-only-first, where page_check_range < = 0, should
-     be converted to !page_check_range.
-
-This one also catches an eye, the commit in question is in 8.1, and it is
-a clear bugfix (from the patch anyway).
-
-
-I probably should stop making such questions and rely more on Cc: qemu-stable@
-instead. It just so happened that I had a closer look at this patchset/pullreq
-while trying to cherry-pick already agreed-upon changes from there.
-
-So far, I picked the following changes for -stable from this pullreq:
-
-c255946e3d hw/char/riscv_htif: Fix printing of console characters on big endian hosts
-058096f1c5 hw/char/riscv_htif: Fix the console syscall on big endian hosts
-50f9464962 target/riscv/cpu.c: add zmmul isa string
-4cc9f284d5 target/riscv: Fix page_check_range use in fault-only-first
-eda633a534 target/riscv: Fix zfa fleq.d and fltq.d
-e0922b73ba hw/intc: Fix upper/lower mtime write calculation
-9382a9eafc hw/intc: Make rtc variable names consistent
-ae7d4d625c linux-user/riscv: Use abi type for target_ucontext
-9ff3140631 hw/riscv: virt: Fix riscv,pmu DT node path
-3a2fc23563 target/riscv: fix satp_mode_finalize() when satp_mode.supported = 0
-4e3adce124 target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX changes
-a7c272df82 target/riscv: Allocate itrigger timers only once
-
-Thanks,
+I'd be double-cautious when overriding system functions like this, - it's
+almost always a bad idea.
 
 /mjt
 
