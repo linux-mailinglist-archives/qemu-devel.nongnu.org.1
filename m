@@ -2,111 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E8E79DA9F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 828F679DAA2
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:23:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgAnD-0001nJ-MJ; Tue, 12 Sep 2023 17:19:31 -0400
+	id 1qgAqO-0003rI-3B; Tue, 12 Sep 2023 17:22:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
- id 1qgAnC-0001n4-Ha
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:19:30 -0400
-Received: from mail-dm6nam11on20617.outbound.protection.outlook.com
- ([2a01:111:f400:7eaa::617]
- helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qgAqL-0003r0-Ao
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:22:46 -0400
+Received: from mailout1.w2.samsung.com ([211.189.100.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <John.Allen@amd.com>)
- id 1qgAn7-0004pR-RH
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:19:29 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m4NXkiX1Z6TApmefM3S2xJU+AFHiYi+zO7VgS8P0iu9TedIsVFaC7wWpimdUtIpJ4j/t7Y5acCoTO/SgyYS7QTZ1Ut/8IHV1x/FnNIT9fMgC4XfKJfMuhbltSOiSYe97yqw5E8f5HVqMYO22ZrgFuN2eeD44EmjrI/ydmZco/kZuoRSzeJ+7nsTNaU2HALgt3tEOGptswem5MleDQoYqvkgldmH7LNLFlWobcrNdCCGCW13+sIT2ACudH6s7cK0woK4AcDm7OVH/ObTBC0RwZvEJYxqjJdKBnUquMMX2oDv7uuYripWbdXSOiF6I2KQf9fSye53rXgFEwy6GUFW6/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=syfvB1Uw9nYmLuJfQCrLQco9Tw0+lq98/tlDjFaIX24=;
- b=P4d6AKcAC8moLESwlqGuHePDlW4v5GdwkpNp6A7bKm1jMu8XEPphxk2vXdeoCC3pcCDoCoCzpizeM6olXlcppqt3b1QmO8Yrp+qsmlKS1Er3Yqse5iVHJR9r6wN4FOdkQ8Lvf/a6ttNW1MImcGnLk4mgSLiJNgV4pdRyaWspMZGEEv9/hLR1t2u0SvT/f7FMRFqM7ziNdmxittl9cIGRUijmNsjSc+R5J+jr9Mpouq3jr/4B26TgXZLpi76zALT8wsJ5UJVRawMpjx4EcW7gd5+g7CXBKBJhac8ABKMaGGD3OGZ1E4BzUhzOll0tdTqujQeEMOBrIdnF187wFckcGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=syfvB1Uw9nYmLuJfQCrLQco9Tw0+lq98/tlDjFaIX24=;
- b=kE8f6DOwp1nqhhajtBiAE4astzvFbLkMCnLx8t8zKFB59BIfhfnHwPzxYunG3Bs+MAkw8QqvJLtiZgV9aIL1Ns114OigVTKPw1So59QA8LToQaEJ3gDgsOH7630EPOFEL7gNiaU75GOgMKp0yOg04+FyS3Nvov//nih0VnVhyxU=
-Received: from MN2PR01CA0013.prod.exchangelabs.com (2603:10b6:208:10c::26) by
- CY8PR12MB7292.namprd12.prod.outlook.com (2603:10b6:930:53::8) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6768.30; Tue, 12 Sep 2023 21:19:22 +0000
-Received: from BL6PEPF0001AB4A.namprd04.prod.outlook.com
- (2603:10b6:208:10c:cafe::cb) by MN2PR01CA0013.outlook.office365.com
- (2603:10b6:208:10c::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.35 via Frontend
- Transport; Tue, 12 Sep 2023 21:19:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB4A.mail.protection.outlook.com (10.167.242.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.17 via Frontend Transport; Tue, 12 Sep 2023 21:19:22 +0000
-Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 12 Sep
- 2023 16:19:20 -0500
-From: John Allen <john.allen@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <yazen.ghannam@amd.com>, <michael.roth@amd.com>, <babu.moger@amd.com>,
- <william.roche@oracle.com>, <joao.m.martins@oracle.com>,
- <pbonzini@redhat.com>, <richard.henderson@linaro.org>, <eduardo@habkost.net>, 
- John Allen <john.allen@amd.com>
-Subject: [PATCH v4 3/3] i386: Add support for SUCCOR feature
-Date: Tue, 12 Sep 2023 21:18:24 +0000
-Message-ID: <20230912211824.90952-4-john.allen@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230912211824.90952-1-john.allen@amd.com>
-References: <20230912211824.90952-1-john.allen@amd.com>
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qgAqI-0006O0-1N
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:22:45 -0400
+Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
+ by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912212235usoutp01ed301f252e6d37126619df4476403aa4~EQ6m2bW9y0680606806usoutp013;
+ Tue, 12 Sep 2023 21:22:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
+ 20230912212235usoutp01ed301f252e6d37126619df4476403aa4~EQ6m2bW9y0680606806usoutp013
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1694553756;
+ bh=SYvbnKo2sb9mKtI57XTS8IXRPs9ojxS/MTYYcxJ5hs0=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=WZelynJ2Q8Hyvm/Unmkt+y4Im+BWnhOOyPe76JwRWj8EOMOoD1AiJyx1ADOwIl/fZ
+ fuwOD9/jcQgGvS/iymOe4URALNiT4fVAB7ujdtNhNv3KhmTO5pauJ/Ah3mZq/Ncrkg
+ CTsjAQL9/iw9qbHHp98EwOfaQHTk5BgtZT0TGEQE=
+Received: from ussmges1new.samsung.com (u109.gpu85.samsung.co.kr
+ [203.254.195.109]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912212235uscas1p2046a74fcbcdd28c1d0a11f83a5a3b8d1~EQ6mwJyAn0898208982uscas1p2P;
+ Tue, 12 Sep 2023 21:22:35 +0000 (GMT)
+Received: from uscas1p2.samsung.com ( [182.198.245.207]) by
+ ussmges1new.samsung.com (USCPEMTA) with SMTP id 44.2B.50148.B96D0056; Tue,
+ 12 Sep 2023 17:22:35 -0400 (EDT)
+Received: from ussmgxs1new.samsung.com (u89.gpu85.samsung.co.kr
+ [203.254.195.89]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230912212235uscas1p108e0b8173a84f73bee0b84ee602a88b0~EQ6mfPD4p2551725517uscas1p1f;
+ Tue, 12 Sep 2023 21:22:35 +0000 (GMT)
+X-AuditID: cbfec36d-559ff7000002c3e4-8c-6500d69b9e9d
+Received: from SSI-EX1.ssi.samsung.com ( [105.128.2.145]) by
+ ussmgxs1new.samsung.com (USCPEXMTA) with SMTP id F1.C3.28590.B96D0056; Tue,
+ 12 Sep 2023 17:22:35 -0400 (EDT)
+Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
+ SSI-EX1.ssi.samsung.com (105.128.2.226) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.1.2375.24; Tue, 12 Sep 2023 14:22:34 -0700
+Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
+ SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
+ 12 Sep 2023 14:22:34 -0700
+From: Fan Ni <fan.ni@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "Li Zhijian" <lizhijian@cn.fujitsu.com>, Dave Jiang <dave.jiang@intel.com>,
+ =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH 1/4] hw/cxl: Fix CFMW config memory leak
+Thread-Topic: [PATCH 1/4] hw/cxl: Fix CFMW config memory leak
+Thread-Index: AQHZ3zO5qoDvJPDU50aXD0Diw5uLobAYNWoA
+Date: Tue, 12 Sep 2023 21:22:34 +0000
+Message-ID: <20230912212225.GA2859961@sjcvldevvm72>
+In-Reply-To: <20230904132806.6094-2-Jonathan.Cameron@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <4647D00079BE664CBF2CD4716AA34E4A@ssi.samsung.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4A:EE_|CY8PR12MB7292:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1f24a780-c504-4c4c-94f1-08dbb3d5eee6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: c8tWnolwChR9iBXzPL5Pzyhc1m8Rc1XfE/QYcbkld7O75XaIS68sTkjLIO6Zd7LaQpNqqDnNCgIBUOjvNcX7nFX129LnocYRd90UX+QWxkl6uTw3xD6Oezmip9qGEr5K3wuL1BTbw+b0sAKLTdc3SJneRyFf597+YRiu4SkplKaOAEhfXGkFp/l/Zs93cpDlUy1ySF/u77n3GXsHK3DXbmJvamofHczvLvk1v7Zaw9yT9V4Q5zIaRuir6Ais8RvEuAuykV0uQ9kYxNWUp7sWfccOuVWLQ7ykh6Zhjfa5FvkhHEDHc1vmo5ITxiZ2EeHixrMTucLovJfr7k6WnVyhMg64uNVda3eGDyVe7BZTJ+++smRK75mTQVTHfDyRuRUqPEOR2WH3B4W8H9koGx7lwf2v0+xB9Zn65SfbRHdbWDHWQJc6oLHCIkXanZIO9rVarQBjoqq25twWQwVyKP2vKjIfvh/2pwtyRDxiRwnAOy1h7a/IqEFtuObWu3ABRWnxRona7BGkuR2o3aW5vEk/RXL//1eHupPR86ct7CC2dnSLQ2uvob3kAal6PPvSOecO6CurBZIW80pXwN8tABAwpR09/eGLnGLh9CqTpGGjGhez/LQqTKrh8lofapsjlzjKvHRerwPK7hSkRsgeKn1C9VqEjLXjTjD9Al2L3Rra/JaB25zrd10i2T/y8xVRdf9EMtXn7Xb5LNZE0ek48TirxQEBduEbFv4ukx03GUhlktDtfteVSNFfGacFQjtZXed8y6fjr9OU/zx0W3N9jNafAA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(396003)(39860400002)(376002)(136003)(346002)(1800799009)(82310400011)(186009)(451199024)(40470700004)(46966006)(36840700001)(356005)(426003)(82740400003)(81166007)(36756003)(40480700001)(86362001)(40460700003)(478600001)(2906002)(8676002)(70586007)(7696005)(4326008)(8936002)(26005)(5660300002)(44832011)(70206006)(6916009)(41300700001)(54906003)(316002)(36860700001)(47076005)(83380400001)(2616005)(16526019)(336012)(1076003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2023 21:19:22.0083 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f24a780-c504-4c4c-94f1-08dbb3d5eee6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7292
-Received-SPF: softfail client-ip=2a01:111:f400:7eaa::617;
- envelope-from=John.Allen@amd.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SeUwTURCHfbvbslSJS4syaoKKeEFEUdQ1SiNRSY3G4BE1HtEWlkKkQLrU
+ +yje1iheoBSNXFbEqnhwaBqP1iAtKIJQKCEesR6ASNRAA0IrZSHy3/dmfm/eN8kjcWERbywZ
+ l5DMKBOk8f58AVFc1lE1I9M6jJml+ziTLrel8OmCbCufrtJaCNp0vxKj7za6eLSru4VH6/NF
+ 9KszpcRiUuJ6cQGXHH3ZxpPkGpoxSZPVwJfYrQ8xSfvTOr7kzwO/SI9NgkXRTHzcTkY5U7xd
+ ENtqWp/UNnK33n7FQ400IzTIkwQqFLJ6c3ANEpBC6haCGmsNjzscw+Da2d/8wVTv1Q+Em4XU
+ HQQtp9Zyod8IuvJf4lxDh6DdnORmPjURnmpK+i/7ULPhZ8MF5GaceoOBWj/PzSJqEdjL2hGX
+ CYO3qRpsMF/sMPYzQU0Gizmjf44XNQdqy9/x3OxJLQZ9U2q/EKJGg8Oix7j5vtBov45x0t6Q
+ k2nAOR4NziefBpaZCB8czR5cPhga0i711ck+FkOhLpErB4EuuxXnnvUGc4ad4K6OgRf5DYR7
+ d6B+kGDLsCOusRSclo6B0Dioq0/D3TOBioKCXwKuHA/X8x4NRBZCds897BwK0A6x1g4x0v43
+ 0g4x0g4xykK8AuSrYlmFnGFDEphdwaxUwaoS5MFRiYoHqO9nVThNilJU2vgr2IgwEhkRkLi/
+ j1eysTda6BUt3bOXUSZuU6riGdaIxpGEv69XSJg5SkjJpcnMDoZJYpSDXYz0HKvGNjz+dux4
+ vUOuFk+SZW5dvSZk85T041veVoeGHyoUbTeHV6+0Feh7sg6fUBMHO3VXZZ3TSy7fXLlA+yzI
+ mPb84v6unuzhfvkbbLWWYtO32oh9cebo96+kor0u9jlh/pwq6namTLiN3U7XVNTRX3JvKIuc
+ 8z13Bx35WOnMGLX8bKReRnYEFJvqY0bkruhNryzJWz8sYm7g95MBnVFg+3n6XtGjL/KYlsCw
+ ZQdScqtkqtfzvnbU/O0qMaCuCbsi/17MYQrrxBsrdNMIb4efqxsvQuNHTb2mKvM539yoRlu7
+ Vy0RG8K1ibHl1VMotUGibpN9viVON8Vcac1TlLfOMK1LFfoTbKw0JBBXstJ/WM2q08gDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrGIsWRmVeSWpSXmKPExsWS2cA0UXf2NYZUg4mHZS1O3Gxks1i18Bqb
+ xflZp1gsDm88w2Sx7tZ/Vov/v16xWqxZIWxxvHcHiwOHx/+Dk5g9Wo68ZfVYvOclk8eda3vY
+ PJ5c28zk8X7fVTaPz5vkAtijuGxSUnMyy1KL9O0SuDJeHw4reMtfsebJDPYGxi6eLkZODgkB
+ E4m/c+6zdDFycQgJrGaUONP5jBnC+cQosX/3WnYIZxmjxMtfz5hAWtgEFCX2dW1nA7FFBIwk
+ 3t2YxAhiMwucY5JoWGMGYgsL2Eg8OfaeEaLGVuJCfxcTTP2274fAbBYBVYlTJ2eCzeEVMJa4
+ cuIyK8Syk4wS2//9ZwVJcAo4SKy5088CYjMKiEl8P7WGCWKZuMStJ/OZIH4QkFiy5zwzhC0q
+ 8fLxP1YIW1Hi/veX7BD1ehI3pk4BWsYBZNtJbFiWDxHWlli28DUzxA2CEidnPmGBaJWUOLji
+ BssERolZSLbNQjJpFsKkWUgmzUIyaQEj6ypG8dLi4tz0imLDvNRyveLE3OLSvHS95PzcTYzA
+ qD/973DkDsajtz7qHWJk4mA8xCjBwawkwlty6G+KEG9KYmVValF+fFFpTmrxIUZpDhYlcd4d
+ Uy6mCAmkJ5akZqemFqQWwWSZODilGpikl/+23b2p7m2os8GmxVPmbNXrMpurf8RWn1NgzjmP
+ 0yeYs5fEZh5cFTXtQPP2CV0TJt3SvfjiX3NP6zLV5lny8o/KrhT/Mli9a3P7JyfJBUtNmJMT
+ vDy8lxkGHHt/RtbguUurp8W7tO1bZk2abX7hsfPa1OtzuiezHeGum385+smTJ5ufxVUc7m87
+ yf4mflXSgcLfBQ1MT/bq34/MXmK71dj48+xr2ocUslXebp0p3DVJdYq/roJTp9OeBPbaNod/
+ SRZLTX82ilgbb3BpF9oQaSM+I0CqbHuMuULs/Ihoiw9VMyNM3sz9xfBkRtnkbcfnlHtVJZi6
+ MoamCflMqxSb4Sb9l19Oyev7vYPJ7CpKLMUZiYZazEXFiQBqQ3HKaQMAAA==
+X-CMS-MailID: 20230912212235uscas1p108e0b8173a84f73bee0b84ee602a88b0
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20230904132842uscas1p128006ff43c37f1be89b516626c7d3d17
+References: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
+ <CGME20230904132842uscas1p128006ff43c37f1be89b516626c7d3d17@uscas1p1.samsung.com>
+ <20230904132806.6094-2-Jonathan.Cameron@huawei.com>
+Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
+ helo=mailout1.w2.samsung.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,95 +137,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add cpuid bit definition for the SUCCOR feature. This cpuid bit is required to
-be exposed to guests to allow them to handle machine check exceptions on AMD
-hosts.
+On Mon, Sep 04, 2023 at 02:28:03PM +0100, Jonathan Cameron wrote:
 
-Reported-by: William Roche <william.roche@oracle.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: John Allen <john.allen@amd.com>
-----
-v2:
-  - Add "succor" feature word.
-  - Add case to kvm_arch_get_supported_cpuid for the SUCCOR feature.
----
- target/i386/cpu.c     | 18 +++++++++++++++++-
- target/i386/cpu.h     |  4 ++++
- target/i386/kvm/kvm.c |  2 ++
- 3 files changed, 23 insertions(+), 1 deletion(-)
+> From: Li Zhijian <lizhijian@cn.fujitsu.com>
+>=20
+> Allocate targets and targets[n] resources when all sanity checks are
+> passed to avoid memory leaks.
+>=20
+> Suggested-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+> Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
+> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 00f913b638..d90d3a9489 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1029,6 +1029,22 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         .tcg_features = TCG_APM_FEATURES,
-         .unmigratable_flags = CPUID_APM_INVTSC,
-     },
-+    [FEAT_8000_0007_EBX] = {
-+        .type = CPUID_FEATURE_WORD,
-+        .feat_names = {
-+            NULL, "succor", NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+            NULL, NULL, NULL, NULL,
-+        },
-+        .cpuid = { .eax = 0x80000007, .reg = R_EBX, },
-+        .tcg_features = 0,
-+        .unmigratable_flags = 0,
-+    },
-     [FEAT_8000_0008_EBX] = {
-         .type = CPUID_FEATURE_WORD,
-         .feat_names = {
-@@ -6554,7 +6570,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         break;
-     case 0x80000007:
-         *eax = 0;
--        *ebx = 0;
-+        *ebx = env->features[FEAT_8000_0007_EBX];
-         *ecx = 0;
-         *edx = env->features[FEAT_8000_0007_EDX];
-         break;
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index a6000e93bd..f5afc5e4fd 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -598,6 +598,7 @@ typedef enum FeatureWord {
-     FEAT_7_1_EAX,       /* CPUID[EAX=7,ECX=1].EAX */
-     FEAT_8000_0001_EDX, /* CPUID[8000_0001].EDX */
-     FEAT_8000_0001_ECX, /* CPUID[8000_0001].ECX */
-+    FEAT_8000_0007_EBX, /* CPUID[8000_0007].EBX */
-     FEAT_8000_0007_EDX, /* CPUID[8000_0007].EDX */
-     FEAT_8000_0008_EBX, /* CPUID[8000_0008].EBX */
-     FEAT_8000_0021_EAX, /* CPUID[8000_0021].EAX */
-@@ -942,6 +943,9 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- /* Packets which contain IP payload have LIP values */
- #define CPUID_14_0_ECX_LIP              (1U << 31)
- 
-+/* RAS Features */
-+#define CPUID_8000_0007_EBX_SUCCOR      (1U << 1)
-+
- /* CLZERO instruction */
- #define CPUID_8000_0008_EBX_CLZERO      (1U << 0)
- /* Always save/restore FP error pointers */
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 7e9fc0cac5..15a642a894 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -477,6 +477,8 @@ uint32_t kvm_arch_get_supported_cpuid(KVMState *s, uint32_t function,
-          */
-         cpuid_1_edx = kvm_arch_get_supported_cpuid(s, 1, 0, R_EDX);
-         ret |= cpuid_1_edx & CPUID_EXT2_AMD_ALIASES;
-+    } else if (function == 0x80000007 && reg == R_EBX) {
-+        ret |= CPUID_8000_0007_EBX_SUCCOR;
-     } else if (function == KVM_CPUID_FEATURES && reg == R_EAX) {
-         /* kvm_pv_unhalt is reported by GET_SUPPORTED_CPUID, but it can't
-          * be enabled without the in-kernel irqchip
--- 
-2.39.3
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
+> ---
+>  hw/cxl/cxl-host.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+> index 034c7805b3..f0920da956 100644
+> --- a/hw/cxl/cxl-host.c
+> +++ b/hw/cxl/cxl-host.c
+> @@ -39,12 +39,6 @@ static void cxl_fixed_memory_window_config(CXLState *c=
+xl_state,
+>          return;
+>      }
+> =20
+> -    fw->targets =3D g_malloc0_n(fw->num_targets, sizeof(*fw->targets));
+> -    for (i =3D 0, target =3D object->targets; target; i++, target =3D ta=
+rget->next) {
+> -        /* This link cannot be resolved yet, so stash the name for now *=
+/
+> -        fw->targets[i] =3D g_strdup(target->value);
+> -    }
+> -
+>      if (object->size % (256 * MiB)) {
+>          error_setg(errp,
+>                     "Size of a CXL fixed memory window must be a multiple=
+ of 256MiB");
+> @@ -64,6 +58,12 @@ static void cxl_fixed_memory_window_config(CXLState *c=
+xl_state,
+>          fw->enc_int_gran =3D 0;
+>      }
+> =20
+> +    fw->targets =3D g_malloc0_n(fw->num_targets, sizeof(*fw->targets));
+> +    for (i =3D 0, target =3D object->targets; target; i++, target =3D ta=
+rget->next) {
+> +        /* This link cannot be resolved yet, so stash the name for now *=
+/
+> +        fw->targets[i] =3D g_strdup(target->value);
+> +    }
+> +
+>      cxl_state->fixed_windows =3D g_list_append(cxl_state->fixed_windows,
+>                                               g_steal_pointer(&fw));
+> =20
+> --=20
+> 2.39.2
+> =
 
