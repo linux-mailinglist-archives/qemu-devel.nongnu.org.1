@@ -2,66 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFCC79D04C
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A9B79D04E
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 13:46:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg1lk-0004DP-P5; Tue, 12 Sep 2023 07:41:24 -0400
+	id 1qg1ll-0004EJ-7C; Tue, 12 Sep 2023 07:41:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qg1lh-0004CA-HS
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:41:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qg1lj-0004DJ-00
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:41:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qg1lf-00033w-C5
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:41:21 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qg1lg-00034B-Ob
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 07:41:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694518878;
+ s=mimecast20190719; t=1694518880;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=69bhnkcFiwVJpuv0J4SOnj2OEW/vDKghwWAD/I9fWIo=;
- b=KAP1gzs+T5mgScv5vbW3zZYPXeiyG0B2gK6Cm6iuLW+68hVvw5xNkE2NQJxdUigJ7IrbxH
- jetb3o6y40J+MZLIqBV8BvwqgX3mzvHFJtYQ+RZRumn4m7PCC8vqZHksgW+Gj2FlSZnrbW
- EPL5sDijRW/r4Kvygh9RE10thIUGhwM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-433-gwFuDsNuNS-JAjdGTF0KTA-1; Tue, 12 Sep 2023 07:41:15 -0400
-X-MC-Unique: gwFuDsNuNS-JAjdGTF0KTA-1
+ bh=sslEPt2l/B+52i7MHt49StiyA6tp17JZtLHfUQqi7ac=;
+ b=ItwqxGDpzH14eYa0LPyQ6JxcKigChnoJayPVeHQjZ7hgJKFS09Bk2W7uU6qNHbGwgVgcFx
+ BGPQAi4LQXjOPAZX575NYxUelRvz0B0/BarkrLjIljsntfkbL65XmyH8QSZ/lK0+gkD0F8
+ nrZbHcsmRIY0dMhOQitjacegbNByy74=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-374-FEEI5Q5-PdSbz_w6lJYLlQ-1; Tue, 12 Sep 2023 07:41:17 -0400
+X-MC-Unique: FEEI5Q5-PdSbz_w6lJYLlQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4609D38149A3;
- Tue, 12 Sep 2023 11:41:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9931B101FAA3;
+ Tue, 12 Sep 2023 11:41:16 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.161])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 342A11054FC0;
- Tue, 12 Sep 2023 11:41:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 86FCD1054FC0;
+ Tue, 12 Sep 2023 11:41:15 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>,
  Janosch Frank <frankja@linux.ibm.com>,
- "Jason J . Herne" <jjherne@linux.ibm.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>
-Subject: [PULL 1/7] s390x/ap: fix missing subsystem reset registration
-Date: Tue, 12 Sep 2023 13:41:06 +0200
-Message-ID: <20230912114112.296428-2-thuth@redhat.com>
+ Viktor Mihajlovski <mihajlov@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: [PULL 2/7] s390x: do a subsystem reset before the unprotect on reboot
+Date: Tue, 12 Sep 2023 13:41:07 +0200
+Message-ID: <20230912114112.296428-3-thuth@redhat.com>
 In-Reply-To: <20230912114112.296428-1-thuth@redhat.com>
 References: <20230912114112.296428-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,32 +80,50 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Janosch Frank <frankja@linux.ibm.com>
 
-A subsystem reset contains a reset of AP resources which has been
-missing.  Adding the AP bridge to the list of device types that need
-reset fixes this issue.
+Bound APQNs have to be reset before tearing down the secure config via
+s390_machine_unprotect(). Otherwise the Ultravisor will return a error
+code.
 
-Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-Reviewed-by: Tony Krowiak <akrowiak@linux.ibm.com>
+So let's do a subsystem_reset() which includes a AP reset before the
+unprotect call. We'll do a full device_reset() afterwards which will
+reset some devices twice. That's ok since we can't move the
+device_reset() before the unprotect as it includes a CPU clear reset
+which the Ultravisor does not expect at that point in time.
+
 Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Fixes: a51b3153 ("s390x/ap: base Adjunct Processor (AP) object model")
-Message-ID: <20230823142219.1046522-2-seiden@linux.ibm.com>
+Message-ID: <20230901114851.154357-1-frankja@linux.ibm.com>
+Tested-by: Viktor Mihajlovski <mihajlov@linux.ibm.com>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/s390x/s390-virtio-ccw.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/s390x/s390-virtio-ccw.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index bfcf64d007..3dd0b2372d 100644
+index 3dd0b2372d..2d75f2131f 100644
 --- a/hw/s390x/s390-virtio-ccw.c
 +++ b/hw/s390x/s390-virtio-ccw.c
-@@ -109,6 +109,7 @@ static const char *const reset_dev_types[] = {
-     "s390-flic",
-     "diag288",
-     TYPE_S390_PCI_HOST_BRIDGE,
-+    TYPE_AP_BRIDGE,
- };
+@@ -438,10 +438,20 @@ static void s390_machine_reset(MachineState *machine, ShutdownCause reason)
+     switch (reset_type) {
+     case S390_RESET_EXTERNAL:
+     case S390_RESET_REIPL:
++        /*
++         * Reset the subsystem which includes a AP reset. If a PV
++         * guest had APQNs attached the AP reset is a prerequisite to
++         * unprotecting since the UV checks if all APQNs are reset.
++         */
++        subsystem_reset();
+         if (s390_is_pv()) {
+             s390_machine_unprotect(ms);
+         }
  
- static void subsystem_reset(void)
++        /*
++         * Device reset includes CPU clear resets so this has to be
++         * done AFTER the unprotect call above.
++         */
+         qemu_devices_reset(reason);
+         s390_crypto_reset();
+ 
 -- 
 2.41.0
 
