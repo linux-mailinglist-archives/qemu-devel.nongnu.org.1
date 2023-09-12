@@ -2,111 +2,125 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF0079DB40
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 405AD79DA9A
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 23:14:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgBOi-0002Ak-AV; Tue, 12 Sep 2023 17:58:16 -0400
+	id 1qgAgr-0000iw-HW; Tue, 12 Sep 2023 17:12:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgBOg-0002AY-9D; Tue, 12 Sep 2023 17:58:14 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qgAgo-0000ht-Nz
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:12:55 -0400
+Received: from mailout2.w2.samsung.com ([211.189.100.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qgBOc-0002vH-Qm; Tue, 12 Sep 2023 17:58:14 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CL4S3L022733; Tue, 12 Sep 2023 21:05:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Ty2i6N8zZdRbCSNJodS5nxJuLTl4coCL+W4QZr42REg=;
- b=Ry11CW77LpklUSiOFLooNcrwGDMZkKjHHQKK84qiezShIH/9vI4oyup8zQhv239KI11N
- feiAHZ5wfj/rQUC211ll7yrBEb1xtNyHxO3Nin9qXkyw86bWfvj14sPnmzomRrjJBIy0
- BZVt6pL9iF3UPiFBvEdgD84RNmC1N6fryb81sAYaSfq40TpL5E+MQ+ABGg7eOFEqFBf4
- HHxxKN7eo0jTE2NDPR3tOitSPYmggii9ixCfXx2+138sGmTa2ozTX/9+pxwxZ1SK0j2a
- hC5OKN9/KODYW5O71+lImmzcHUTfGLalI+y4zA1OsJh3+1zoJTJiVEOsTQsnhHxs5JjB wQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2yk381k2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:05:15 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38CL5FA3026853;
- Tue, 12 Sep 2023 21:05:15 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2yk381hx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:05:15 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38CKrmFN002806; Tue, 12 Sep 2023 21:05:14 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t14hkx0ka-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Sep 2023 21:05:14 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38CL5Drg6619902
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Sep 2023 21:05:13 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 97A6B58056;
- Tue, 12 Sep 2023 21:05:13 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8032D58062;
- Tue, 12 Sep 2023 21:05:13 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 12 Sep 2023 21:05:13 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
- by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id AE99916A07B2;
- Tue, 12 Sep 2023 16:05:12 -0500 (CDT)
-Received: (from mglenn@localhost)
- by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38CL5CA13416132;
- Tue, 12 Sep 2023 16:05:12 -0500
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- qemu-ppc@nongnu.org (open list:PowerPC TCG CPUs)
-Subject: [PATCH 4/4] target/ppc: Add migration support for BHRB
-Date: Tue, 12 Sep 2023 16:05:05 -0500
-Message-Id: <20230912210505.3416084-1-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
-References: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qgAgk-0000pU-LF
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 17:12:54 -0400
+Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
+ by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912211247usoutp0264d047a72e0f8c56d2d8c010abd4b02f~EQyCw7nWT2864628646usoutp02U;
+ Tue, 12 Sep 2023 21:12:47 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
+ 20230912211247usoutp0264d047a72e0f8c56d2d8c010abd4b02f~EQyCw7nWT2864628646usoutp02U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1694553167;
+ bh=vrJ9Xv0nSeHw73RZ0ZY6/6CHdHdk1ntnj1JgD0HIubQ=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=WKfahQ2fjuf+EvrX5OzvqFk+ZbXDfYOqasKT2edRb5R/Ya6frFe2EmDTLYO/qYtIr
+ RVXefGlJlNHeGoWDEs/vP06z7LBvEXfEQEYPjTXFWo9MTNXqonhJkAY2z77xC4gVmb
+ 3XCL5J1gxemyOCBkKcbrLEBYVi4lpkIy2ENTBLv0=
+Received: from ussmges3new.samsung.com (u112.gpu85.samsung.co.kr
+ [203.254.195.112]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
+ 20230912211247uscas1p2dbe4c2433b7eac59b638b1d36ec72a45~EQyClPOHI0466504665uscas1p2X;
+ Tue, 12 Sep 2023 21:12:47 +0000 (GMT)
+Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
+ ussmges3new.samsung.com (USCPEMTA) with SMTP id 62.22.62237.F44D0056; Tue,
+ 12 Sep 2023 17:12:47 -0400 (EDT)
+Received: from ussmgxs2new.samsung.com (u91.gpu85.samsung.co.kr
+ [203.254.195.91]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230912211246uscas1p168389b2f62884b970e348f8b94e550d2~EQyCRsahY1803918039uscas1p1E;
+ Tue, 12 Sep 2023 21:12:46 +0000 (GMT)
+X-AuditID: cbfec370-823ff7000001f31d-11-6500d44f192a
+Received: from SSI-EX2.ssi.samsung.com ( [105.128.2.146]) by
+ ussmgxs2new.samsung.com (USCPEXMTA) with SMTP id 59.22.31200.E44D0056; Tue,
+ 12 Sep 2023 17:12:46 -0400 (EDT)
+Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
+ SSI-EX2.ssi.samsung.com (105.128.2.227) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.1.2375.24; Tue, 12 Sep 2023 14:12:46 -0700
+Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
+ SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Tue,
+ 12 Sep 2023 14:12:46 -0700
+From: Fan Ni <fan.ni@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
+ <philmd@linaro.org>, "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 2/3] hw/cxl: Add QTG _DSM support for ACPI0017 device
+Thread-Topic: [PATCH v2 2/3] hw/cxl: Add QTG _DSM support for ACPI0017 device
+Thread-Index: AQHZ30ukYJg3kNCKi0GmQIpXWUW3L7AYMoGA
+Date: Tue, 12 Sep 2023 21:12:45 +0000
+Message-ID: <20230912211245.GC2828853@sjcvldevvm72>
+In-Reply-To: <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <0470824E4FEA984DA883B903FA2F7BC7@ssi.samsung.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: QeFD2H08wUgRsXzElRWYVuQHBG0aXQcI
-X-Proofpoint-GUID: I3INT5zvK2KXMo86Ljo34WJdmGrNHpKQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_20,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- adultscore=0 suspectscore=0 phishscore=0 spamscore=0 bulkscore=0
- mlxlogscore=813 clxscore=1015 impostorscore=0 mlxscore=0
- lowpriorityscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309120178
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrAKsWRmVeSWpSXmKPExsWy7djXc7r+VxhSDZoP8lmcuNnIZrFq4TU2
+ i/OzTrFYHN54hsni/69XrBZrVghbHO/dweLA7tFy5C2rx+I9L5k87lzbw+bx5NpmJo/3+66y
+ eXzeJBfAFsVlk5Kak1mWWqRvl8CVsfzRH7aCDo2Kr4/uMDUw9kp3MXJySAiYSFyY9oC5i5GL
+ Q0hgJaPEp18PWCCcViaJTXcOssBUzWm8AFW1llHi2IY1rBDOJ0aJZ/8eQmWWMUpMebyUCaSF
+ TUBRYl/XdjYQW0TASOLdjUmMIDazwGImifa/VSC2sICPxPHfjYwQNf4S+5t+s8DUL371EMxm
+ EVCVaF66DKyGV8BY4uLDZ2A2p4CjxIZpb8HmMwqISXw/tYYJYr64xK0n85kgzhaUWDR7DzOE
+ LSbxb9dDNghbUeL+95fsEPV6EjemTmGDsO0kFrVfh7K1JZYtfM0MsVdQ4uTMJ9CgkJQ4uOIG
+ OIwkBO5wSHzvfgS1wEVi/Yxv7BC2tMTfu8uAjuAAspMlVn3kggjnSMxfsgVqjrXEwj/rmSYw
+ qsxCcvYsJCfNQnLSLCQnzUJy0gJG1lWM4qXFxbnpqcXGeanlesWJucWleel6yfm5mxiBier0
+ v8MFOxhv3fqod4iRiYPxEKMEB7OSCG/Job8pQrwpiZVVqUX58UWlOanFhxilOViUxHkNbU8m
+ CwmkJ5akZqemFqQWwWSZODilGpjydt2PsThlWywU4RM+e8FcTtc3O+89YAhwMj+otf/wFCa5
+ aVHWeldX3TjRcZf56Zn7Da/5WtyY2njKVM5xf84/1axy4fwq29t3W83FVup7OU83P+D9b5u9
+ xCGWz1umGEf4ajc1dwdZH562/rPxcafeKSumvvNanbRFSVVCTNTyaf6GvB3BPbcKH0a7d618
+ er2675bTivaQnXcXzGapzyzh2mOtpRV6X+f9l4hJ91XEFhp083QfbrMP2cv3hs9Ny6+qxlJd
+ PyygdE2zdPeSNIP0r7/s1rK+COlKnpu22uvbrzvNeULx5jGuezx+6uZMWz11Vrxx5pTQfb/2
+ Vy9tvdq71HpdZkfvbTFb4QNJd5VYijMSDbWYi4oTAXY4WfPDAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHIsWRmVeSWpSXmKPExsWS2cA0SdfvCkOqwdkfRhYnbjayWaxaeI3N
+ 4vysUywWhzeeYbL4/+sVq8WaFcIWx3t3sDiwe7QcecvqsXjPSyaPO9f2sHk8ubaZyeP9vqts
+ Hp83yQWwRXHZpKTmZJalFunbJXBlLH/0h62gQ6Pi66M7TA2MvdJdjJwcEgImEnMaLzB3MXJx
+ CAmsZpRofrCTHcL5xCjxbclPFghnGaPE+i/rmUFa2AQUJfZ1bWcDsUUEjCTe3ZjECGIzCyxm
+ kmj/WwViCwv4SBz/3cgIUeMr8XHuVHaY+sWvHrKA2CwCqhLNS5eB1fAKGEtcfPgMzBYSKJfo
+ mNXPCmJzCjhKbJj2FmwXo4CYxPdTa5ggdolL3HoynwniBQGJJXvOM0PYohIvH/9jhbAVJe5/
+ f8kOUa8ncWPqFDYI205iUft1KFtbYtnC18wQNwhKnJz5hAWiV1Li4IobLBMYJWYhWTcLyahZ
+ SEbNQjJqFpJRCxhZVzGKlxYX56ZXFBvlpZbrFSfmFpfmpesl5+duYgRG+el/h6N3MN6+9VHv
+ ECMTB+MhRgkOZiUR3pJDf1OEeFMSK6tSi/Lji0pzUosPMUpzsCiJ8+6YcjFFSCA9sSQ1OzW1
+ ILUIJsvEwSnVwGS24OIes7e6YUv/7v2yaenhIx1MZ7pTE85VyE8vqrHl2fru6GsJ14sXHgYq
+ LZmwW+5Ej43Cl2zHTZf1Cyd0+WgINm1vfNX878LLM/2v014vV2ucExi08Sxj7ZdKpbkJ/Fpn
+ t3/XurX8gdrsPd8yJqXmcSlsZTw3uUvGPbLIRqG2Yv3x6JcXqnwvPjZgU2xfeabwOlv6CcNj
+ dh+eBc3Sl3+1fnJMpUC393tlmZRSt6BF/ifVHJY3vergXeXOaOkeavfwl/nKb7xcEx0e+W05
+ +F38Taxw+zy1V5NZnNnddJJNjWMnJdyNyDjWz/b+/J78vYuO6Uc4TezPW+20dNH91FW/TjX5
+ uSyM7BAQlrXiaFFiKc5INNRiLipOBABCQuh7YQMAAA==
+X-CMS-MailID: 20230912211246uscas1p168389b2f62884b970e348f8b94e550d2
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20230912211246uscas1p168389b2f62884b970e348f8b94e550d2
+References: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
+ <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
+ <CGME20230912211246uscas1p168389b2f62884b970e348f8b94e550d2@uscas1p1.samsung.com>
+Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
+ helo=mailout2.w2.samsung.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,63 +136,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds migration support for Branch History Rolling
-Buffer (BHRB) internal state.
+On Mon, Sep 04, 2023 at 05:18:46PM +0100, Jonathan Cameron wrote:
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
- target/ppc/machine.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+> From: Dave Jiang <dave.jiang@intel.com>
+>=20
+> Add a simple _DSM call support for the ACPI0017 device to return a fake Q=
+TG
+> ID value of 0 in all cases. The enabling is for _DSM plumbing testing
+> from the OS.
+>=20
+> Following edited for readbility only
+>=20
+> Device (CXLM)
+> {
+>     Name (_HID, "ACPI0017")  // _HID: Hardware ID
+> ...
+>     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+>     {
+>         If ((Arg0 =3D=3D ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52"))=
+)
+>         {
+>             If ((Arg2 =3D=3D Zero))
+>             {
+>                 Return (Buffer (One) { 0x01 })
+>             }
+>=20
+>             If ((Arg2 =3D=3D One))
+>             {
+>                 Return (Package (0x02)
+>                 {
+>                     Buffer (0x02)
+>                     { 0x01, 0x00 },
+>                     Package (0x01)
+>                     {
+>                         Buffer (0x02)
+>                         { 0x00, 0x00 }
+>                     }
+>                 })
+>             }
+>         }
+>     }
+>=20
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index b195fb4dc8..89146969c8 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -314,6 +314,7 @@ static int cpu_post_load(void *opaque, int version_id)
- 
-     if (tcg_enabled()) {
-         pmu_mmcr01a_updated(env);
-+        hreg_bhrb_filter_update(env);
-     }
- 
-     return 0;
-@@ -670,6 +671,27 @@ static const VMStateDescription vmstate_compat = {
-     }
- };
- 
-+#ifdef TARGET_PPC64
-+static bool bhrb_needed(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
-+    return (cpu->env.flags & POWERPC_FLAG_BHRB) != 0;
-+}
-+
-+static const VMStateDescription vmstate_bhrb = {
-+    .name = "cpu/bhrb",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = bhrb_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINTTL(env.bhrb_num_entries, PowerPCCPU),
-+        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-+        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+#endif
-+
- const VMStateDescription vmstate_ppc_cpu = {
-     .name = "cpu",
-     .version_id = 5,
-@@ -716,6 +738,7 @@ const VMStateDescription vmstate_ppc_cpu = {
- #ifdef TARGET_PPC64
-         &vmstate_tm,
-         &vmstate_slb,
-+        &vmstate_bhrb,
- #endif /* TARGET_PPC64 */
-         &vmstate_tlb6xx,
-         &vmstate_tlbemb,
--- 
-2.31.1
+Looks good to me. One minor comment inline.
+>=20
+> --
+> v2: Minor edit to drop reference to switches in patch description.
+> ---
+>  include/hw/acpi/cxl.h |  1 +
+>  hw/acpi/cxl.c         | 57 +++++++++++++++++++++++++++++++++++++++++++
+>  hw/i386/acpi-build.c  |  1 +
+>  3 files changed, 59 insertions(+)
+>=20
+> diff --git a/include/hw/acpi/cxl.h b/include/hw/acpi/cxl.h
+> index acf4418886..8f22c71530 100644
+> --- a/include/hw/acpi/cxl.h
+> +++ b/include/hw/acpi/cxl.h
+> @@ -25,5 +25,6 @@ void cxl_build_cedt(GArray *table_offsets, GArray *tabl=
+e_data,
+>                      BIOSLinker *linker, const char *oem_id,
+>                      const char *oem_table_id, CXLState *cxl_state);
+>  void build_cxl_osc_method(Aml *dev);
+> +void build_cxl_dsm_method(Aml *dev);
+> =20
+>  #endif
+> diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
+> index 92b46bc932..5e9039785a 100644
+> --- a/hw/acpi/cxl.c
+> +++ b/hw/acpi/cxl.c
+> @@ -30,6 +30,63 @@
+>  #include "qapi/error.h"
+>  #include "qemu/uuid.h"
+> =20
+> +void build_cxl_dsm_method(Aml *dev)
 
+Not a concern for now, I think, do we need to check the revision
+field?
+
+Fan
+> +{
+> +    Aml *method, *ifctx, *ifctx2;
+> +
+> +    method =3D aml_method("_DSM", 4, AML_SERIALIZED);
+> +    {
+> +        Aml *function, *uuid;
+> +
+> +        uuid =3D aml_arg(0);
+> +        function =3D aml_arg(2);
+> +        /* CXL spec v3.0 9.17.3.1 *, QTG ID _DSM */
+> +        ifctx =3D aml_if(aml_equal(
+> +            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
+> +
+> +        /* Function 0, standard DSM query function */
+> +        ifctx2 =3D aml_if(aml_equal(function, aml_int(0)));
+> +        {
+> +            uint8_t byte_list[1] =3D { 0x01 }; /* functions 1 only */
+> +
+> +            aml_append(ifctx2,
+> +                       aml_return(aml_buffer(sizeof(byte_list), byte_lis=
+t)));
+> +        }
+> +        aml_append(ifctx, ifctx2);
+> +
+> +        /*
+> +         * Function 1
+> +         * A return value of {1, {0}} inciate that
+> +         * max supported QTG ID of 1 and recommended QTG is 0.
+> +         * The values here are faked to simplify emulation.
+> +         */
+> +        ifctx2 =3D aml_if(aml_equal(function, aml_int(1)));
+> +        {
+> +            uint16_t word_list[1] =3D { 0x01 };
+> +            uint16_t word_list2[1] =3D { 0 };
+> +            uint8_t *byte_list =3D (uint8_t *)word_list;
+> +            uint8_t *byte_list2 =3D (uint8_t *)word_list2;
+> +            Aml *pak, *pak1;
+> +
+> +            /*
+> +             * The return package is a package of a WORD and another pac=
+kage.
+> +             * The embedded package contains 0 or more WORDs for the
+> +             * recommended QTG IDs.
+> +             */
+> +            pak1 =3D aml_package(1);
+> +            aml_append(pak1, aml_buffer(sizeof(uint16_t), byte_list2));
+> +            pak =3D aml_package(2);
+> +            aml_append(pak, aml_buffer(sizeof(uint16_t), byte_list));
+> +            aml_append(pak, pak1);
+> +
+> +            aml_append(ifctx2, aml_return(pak));
+> +        }
+> +        aml_append(ifctx, ifctx2);
+> +    }
+> +    aml_append(method, ifctx);
+> +    aml_append(dev, method);
+> +}
+> +
+>  static void cedt_build_chbs(GArray *table_data, PXBCXLDev *cxl)
+>  {
+>      PXBDev *pxb =3D PXB_DEV(cxl);
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index bb12b0ad43..d3bc5875eb 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -1422,6 +1422,7 @@ static void build_acpi0017(Aml *table)
+>      method =3D aml_method("_STA", 0, AML_NOTSERIALIZED);
+>      aml_append(method, aml_return(aml_int(0x01)));
+>      aml_append(dev, method);
+> +    build_cxl_dsm_method(dev);
+> =20
+>      aml_append(scope, dev);
+>      aml_append(table, scope);
+> --=20
+> 2.39.2
+>=20
+> =
 
