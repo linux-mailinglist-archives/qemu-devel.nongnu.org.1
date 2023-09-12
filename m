@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DCA79B99E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 02:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DFB79C126
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 02:33:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfqyf-0007u7-3Y; Mon, 11 Sep 2023 20:10:01 -0400
+	id 1qfrK3-000738-06; Mon, 11 Sep 2023 20:32:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qfqyc-0007rF-6T
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:09:59 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfrK1-00072y-7Z
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:32:05 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qfqyZ-00045B-Sd
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:09:57 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c1ff5b741cso45944135ad.2
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 17:09:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694477394; x=1695082194; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=SDuWF8c9b4lA5L05Gq1UPOVSFQIGxlGtRayvwvGbKMs=;
- b=QkG4Ue4kS4KetTTOolvYg3PGd1YYLdPSPkaMSWSEO1CIxcQQedoQu2YJQbBUqSkkJQ
- equMP1rR1qsY3jCDBHT3iJaGShSgtvO3xnP/K58NvFLXkqrv8WnqqDYJUoPk1HraT5h7
- WJaWvtLhonWMWDu8jmvnCc9GyyP+0dG+IEZcftQjkBezUaMQ/rXaQUlQVhzzYsURGIie
- t/C1elogEDMbi+LRan6dvgLvRZAwHICZbgk8OZ5qvJVvREmEBRmKXOwqMZ1Jh/+/8si6
- uavakbLk9Y5xAmJ/v8AMi+EJPgHpiTOvZ8V2GcK9jRq4g0tB+VJr5fZRG4mZcqtc/Wy4
- Mt5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694477394; x=1695082194;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SDuWF8c9b4lA5L05Gq1UPOVSFQIGxlGtRayvwvGbKMs=;
- b=LOWIYkn5ee2QH7KX2X9tGzVxoh2QaFr0Eyns+UJMUolNNlOnQkpRVDr6j3oyeSNLIK
- H8dFTQO1YoHfYCGY6anSDWnX1/9k1QKMR9EppYiV8hZzZO1B3hDc/OC6NwDV1YZ13guk
- 6NF4c23miSOfNOukP2hwHC5xkqKL3VY46jqgfaI23PDNzZIorVd9Q5j3NulfA7zzEJPK
- yutz3+5A1qQ53fVG60JIH6o0B8APoNycL6FWueKFJ9UkLU6Bm/nEub2x5Z/S0FHT08rf
- /80WTwPEEN2AWQU1gAVrIzcVwRLO9OLVkiYe4p5qyNe2GzFYVIB3Yoqh4A4eCkm0cIO0
- MBcg==
-X-Gm-Message-State: AOJu0YyCd8IspjQxNvVwndoO/3TzNnNidZrbzzVU/SzlS4k1NEDhgEUp
- 1d/lSrVy2wxv7XvSoYHtevi5QKnhNtYE4IeN6qg=
-X-Google-Smtp-Source: AGHT+IE3aq0MbJbAVORPpAnVEDU9PD6FP84s1m0ch4LOlL4umqVzBHz2Uy8QzNWFXs5/FbhBQalAPw==
-X-Received: by 2002:a17:902:ea0d:b0:1b6:6e3a:77fb with SMTP id
- s13-20020a170902ea0d00b001b66e3a77fbmr13187683plg.2.1694477394528; 
- Mon, 11 Sep 2023 17:09:54 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- z5-20020a170902708500b001a80ad9c599sm6993201plk.294.2023.09.11.17.09.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 17:09:54 -0700 (PDT)
-Message-ID: <f38f5742-72a3-03cd-860a-71dcd444a3c5@linaro.org>
-Date: Mon, 11 Sep 2023 17:09:52 -0700
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qfrJy-0003tB-Cj
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:32:04 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 20D691F8C3;
+ Tue, 12 Sep 2023 00:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1694478718; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jlbm1bJsUQJwXfCbLo5zGlKNOQB0RbHkbzF8jCf6hU8=;
+ b=wxUhEi4aCF0xiP6s7F7lBEJhEUjEwSJt22jYa6EawQ+++JCdwPjoD/AbK0TBw82RxY1+kI
+ npuGX4R6nWZPB24j5cYTXC9ktAyLJJ4vYJy9q2PklSRmgNNkvbjaT0+dn64BdgrGfFKO+H
+ nXfFqDIpFXmeFykGL4yvEJEBHKG8rGY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1694478718;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jlbm1bJsUQJwXfCbLo5zGlKNOQB0RbHkbzF8jCf6hU8=;
+ b=uf92GXNYC7rW7oCtL+61JxGdNj7b9aOCnmjy3XvGerMSd+twcrDhDV/o7B9tVBzSu+EoQT
+ 68122I6MZ46ooaCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 67CA313780;
+ Tue, 12 Sep 2023 00:31:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id UT19BH2x/2TBVQAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 12 Sep 2023 00:31:57 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>, Xiaohui Li
+ <xiaohli@redhat.com>
+Subject: Re: [PATCH 9/9] migration/postcopy: Allow network to fail even
+ during recovery
+In-Reply-To: <20230829214235.69309-10-peterx@redhat.com>
+References: <20230829214235.69309-1-peterx@redhat.com>
+ <20230829214235.69309-10-peterx@redhat.com>
+Date: Mon, 11 Sep 2023 21:31:51 -0300
+Message-ID: <877cowmdu0.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v3 23/23] bsd-user: Add stubs for vadvise(), sbrk() and
- sstk()
-Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com
-References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
- <20230909193704.1827-24-kariem.taha2.7@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230909193704.1827-24-kariem.taha2.7@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,19 +84,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/9/23 12:37, Karim Taha wrote:
-> From: Warner Losh<imp@bsdimp.com>
-> 
-> The above system calls are not supported by qemu.
-> 
-> Signed-off-by: Warner Losh<imp@bsdimp.com>
-> Signed-off-by: Karim Taha<kariem.taha2.7@gmail.com>
-> ---
->   bsd-user/bsd-mem.h            | 18 ++++++++++++++++++
->   bsd-user/freebsd/os-syscall.c | 12 ++++++++++++
->   2 files changed, 30 insertions(+)
+Peter Xu <peterx@redhat.com> writes:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Hi, sorry it took me so long to get to this.
 
-r~
+> Normally the postcopy recover phase should only exist for a super short
+> period, that's the duration when QEMU is trying to recover from an
+> interrupted postcopy migration, during which handshake will be carried out
+> for continuing the procedure with state changes from PAUSED -> RECOVER ->
+> POSTCOPY_ACTIVE again.
+>
+> Here RECOVER phase should be super small, that happens right after the
+> admin specified a new but working network link for QEMU to reconnect to
+> dest QEMU.
+>
+> However there can still be case where the channel is broken in this small
+> RECOVER window.
+>
+> If it happens, with current code there's no way the src QEMU can got kicked
+> out of RECOVER stage. No way either to retry the recover in another channel
+> when established.
+>
+> This patch allows the RECOVER phase to fail itself too - we're mostly
+> ready, just some small things missing, e.g. properly kick the main
+> migration thread out when sleeping on rp_sem when we found that we're at
+> RECOVER stage.  When this happens, it fails the RECOVER itself, and
+> rollback to PAUSED stage.  Then the user can retry another round of
+> recovery.
+>
+> To make it even stronger, teach QMP command migrate-pause to explicitly
+> kick src/dst QEMU out when needed, so even if for some reason the migration
+> thread didn't got kicked out already by a failing rethrn-path thread, the
+> admin can also kick it out.
+>
+> This will be an super, super corner case, but still try to cover that.
+
+It would be nice to have a test for this. Being such a corner case, it
+will be hard to keep this scenario working.
+
+I wrote two tests[1] that do the recovery each using a different URI:
+1) fd: using a freshly opened file,
+2) fd: using a socketpair that simply has nothing on the other end.
+
+These might be too far from the original bug, but it seems to exercise
+some of the same paths:
+
+Scenario 1:
+/x86_64/migration/postcopy/recovery/fail-twice
+
+the stacks are:
+
+Thread 8 (Thread 0x7fffd5ffe700 (LWP 30282) "live_migration"):
+ qemu_sem_wait
+ ram_dirty_bitmap_sync_all
+ ram_resume_prepare
+ qemu_savevm_state_resume_prepare
+ postcopy_do_resume
+ postcopy_pause
+ migration_detect_error
+ migration_thread
+
+Thread 7 (Thread 0x7fffd67ff700 (LWP 30281) "return path"):
+ qemu_sem_wait
+ postcopy_pause_return_path_thread
+ source_return_path_thread
+
+This patch seems to fix it, although we cannot call qmp_migrate_recover
+a second time because the mis state is now in RECOVER:
+
+  "Migrate recover can only be run when postcopy is paused."
+
+Do we maybe need to return the state to PAUSED, or allow
+qmp_migrate_recover to run in RECOVER, like you did on the src side?
+
+
+Scenario 2:
+/x86_64/migration/postcopy/recovery/fail-twice/rp
+
+Thread 8 (Thread 0x7fffd5ffe700 (LWP 30456) "live_migration"):
+ qemu_sem_wait
+ ram_dirty_bitmap_sync_all
+ ram_resume_prepare
+ qemu_savevm_state_resume_prepare
+ postcopy_do_resume
+ postcopy_pause
+ migration_detect_error
+ migration_thread
+
+Thread 7 (Thread 0x7fffd67ff700 (LWP 30455) "return path"):
+ recvmsg
+ qio_channel_socket_readv
+ qio_channel_readv_full
+ qio_channel_read
+ qemu_fill_buffer
+ qemu_peek_byte
+ qemu_get_byte
+ qemu_get_be16
+ source_return_path_thread
+
+Here, with this patch the migration gets stuck unless we call
+migrate_pause() one more time. After another round of migrate_pause +
+recover, it finishes properly.
+
+
+1- hacked-together test:
+-->8--
+From a34685c8795799350665a880cd2ddddbf53c5812 Mon Sep 17 00:00:00 2001
+From: Fabiano Rosas <farosas@suse.de>
+Date: Mon, 11 Sep 2023 20:45:33 -0300
+Subject: [PATCH] test patch
+
+---
+ tests/qtest/migration-test.c | 87 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 1b43df5ca7..4d9d2209c1 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -695,6 +695,7 @@ typedef struct {
+     /* Postcopy specific fields */
+     void *postcopy_data;
+     bool postcopy_preempt;
++    int postcopy_recovery_method;
+ } MigrateCommon;
+ 
+ static int test_migrate_start(QTestState **from, QTestState **to,
+@@ -1357,6 +1358,61 @@ static void test_postcopy_preempt_tls_psk(void)
+ }
+ #endif
+ 
++static void postcopy_recover_fail(QTestState *from, QTestState *to, int method)
++{
++    int src, dst;
++
++    if (method == 1) {
++        /* give it some random fd to recover */
++        g_autofree char *uri = g_strdup_printf("%s/noop", tmpfs);
++        src = dst = open(uri, O_CREAT|O_RDWR);
++    } else if (method == 2) {
++        int ret, pair1[2], pair2[2];
++
++        /* create two unrelated socketpairs */
++        ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair1);
++        g_assert_cmpint(ret, ==, 0);
++
++        ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair2);
++        g_assert_cmpint(ret, ==, 0);
++
++        /* give the guests unpaired ends of the sockets */
++        src = pair1[0];
++        dst = pair2[0];
++    }
++
++    qtest_qmp_fds_assert_success(to, &src, 1,
++                                 "{ 'execute': 'getfd',"
++                                 "  'arguments': { 'fdname': 'fd-mig' }}");
++
++    qtest_qmp_fds_assert_success(from, &dst, 1,
++                                 "{ 'execute': 'getfd',"
++                                 "  'arguments': { 'fdname': 'fd-mig' }}");
++
++    migrate_recover(to, "fd:fd-mig");
++
++    wait_for_migration_status(from, "postcopy-paused",
++                              (const char * []) { "failed", "active",
++                                  "completed", NULL });
++    migrate_qmp(from, "fd:fd-mig", "{'resume': true}");
++
++    printf("WAIT\n");
++    if (method == 2) {
++        /* This would be issued by the admin upon noticing the hang */
++        migrate_pause(from);
++    }
++
++    wait_for_migration_status(from, "postcopy-paused",
++                              (const char * []) { "failed", "active",
++                                  "completed", NULL });
++    printf("PAUSED\n");
++
++    close(src);
++    if (method == 2) {
++        close(dst);
++    }
++}
++
+ static void test_postcopy_recovery_common(MigrateCommon *args)
+ {
+     QTestState *from, *to;
+@@ -1396,6 +1452,13 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
+                               (const char * []) { "failed", "active",
+                                                   "completed", NULL });
+ 
++    if (args->postcopy_recovery_method) {
++        /* fail the recovery */
++        postcopy_recover_fail(from, to, args->postcopy_recovery_method);
++
++        /* continue with a good recovery */
++    }
++
+     /*
+      * Create a new socket to emulate a new channel that is different
+      * from the broken migration channel; tell the destination to
+@@ -1435,6 +1498,24 @@ static void test_postcopy_recovery_compress(void)
+     test_postcopy_recovery_common(&args);
+ }
+ 
++static void test_postcopy_recovery_fail(void)
++{
++    MigrateCommon args = {
++        .postcopy_recovery_method = 1,
++    };
++
++    test_postcopy_recovery_common(&args);
++}
++
++static void test_postcopy_recovery_fail_rp(void)
++{
++    MigrateCommon args = {
++        .postcopy_recovery_method = 2,
++    };
++
++    test_postcopy_recovery_common(&args);
++}
++
+ #ifdef CONFIG_GNUTLS
+ static void test_postcopy_recovery_tls_psk(void)
+ {
+@@ -2825,6 +2906,12 @@ int main(int argc, char **argv)
+             qtest_add_func("/migration/postcopy/recovery/compress/plain",
+                            test_postcopy_recovery_compress);
+         }
++        qtest_add_func("/migration/postcopy/recovery/fail-twice",
++                       test_postcopy_recovery_fail);
++
++        qtest_add_func("/migration/postcopy/recovery/fail-twice/rp",
++                       test_postcopy_recovery_fail_rp);
++
+     }
+ 
+     qtest_add_func("/migration/bad_dest", test_baddest);
+-- 
+2.35.3
+
 
