@@ -2,93 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6962779D0AB
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B87DD79D0BC
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 14:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg27O-00070x-5E; Tue, 12 Sep 2023 08:03:46 -0400
+	id 1qg2BI-0001GS-OK; Tue, 12 Sep 2023 08:07:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qg27J-0006zv-5h
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:03:41 -0400
-Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qg27G-0007lh-CJ
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:03:40 -0400
-Received: by mail-oi1-x233.google.com with SMTP id
- 5614622812f47-3a88ff732aeso3486947b6e.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 05:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694520217; x=1695125017; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fVbNVTbGXA7gLCxs/ebjUGIrWrRNl9I4tZuk03OnHZ8=;
- b=VVF9Alq6PjbXe2XBcL/VwNcpgct+yjmJjCfIDNqAA2L5seopw6VgvZMmURL/GlAgEB
- q+mwIUsLgSAeYxSbxf2hoA4YbzStYQOFWyqWFbOgFd+MginG5Agzzc3pkiWo4cPjD4DO
- 67VuVdtHxH2FbLUs+5/OBgr0VC1IP9W+E4/rsxJudXFWK+PUQG8bQJ4AeAE6qoxXRqBp
- q74gkfnjjwizIS4qPLxR1j70cgrBsE4RIdh3G8S03xUy+VUKClI3HvzOyJEmZaGy061r
- QTJbALeCOEfTBrq0il7I3iqehC+Rmn6l+RWL29OKmdVr6hV+wc039p2HC2nj/nYY+CFG
- HNgA==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qg2BF-0001Ey-QT
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:07:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qg2BA-0000pS-JG
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 08:07:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694520459;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=d29cq8t30AkGY6F/sKv63lCp4G5bgRg+h27bd+M4al8=;
+ b=DLVebQSz4eJQ6MG76VIraMAx6T9NPmGjPj0SlTk+trEz+DGS8rYNnhpHnKFNUrX7+7gcNF
+ Tsb60AL/vwXecNa0muz3uZUQALuUSGE/kT5Jui5cQ4LeFaTkIrlcN4UMOsSvXVQdgz465a
+ lbmz8GcehBpEwWLSDfMpmnReDRXo5a8=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-q0MtiZmIO3CsVzrn8RlAGw-1; Tue, 12 Sep 2023 08:07:38 -0400
+X-MC-Unique: q0MtiZmIO3CsVzrn8RlAGw-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1c3a2c5a58bso38388565ad.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 05:07:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694520217; x=1695125017;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fVbNVTbGXA7gLCxs/ebjUGIrWrRNl9I4tZuk03OnHZ8=;
- b=nav7uW66DMHyM/8UDSU8idwLCUp15GmIKYY5paWvTUQEPKrftHfsYDU4+tRkSs3Ldq
- dU4rvv9sHD1YexcEd5IQFT4UGHhUSzuxXFrhqM+ED8VFSKI9RlXiF8JDfe8lO7G6PPJP
- eTv07rJwYrFVbkzr+8C+ILhFF1qfzoX73d8lLOXq7dsMOBB3LvpUW/7EzAEoYCZWpbBW
- qzkrW8/XvFiWCgIQ9ZJKG2gX5ehKdUW/bA1+kQimH0zP68QeORXYyjFLaHvXV7NwMGYa
- Sb65pc60VjKaEtw/8FIWpLJ6cdE/n5LroBkiTxjoxKjmnQiSaVJfOptr1CwX6AxaTbs6
- xRBw==
-X-Gm-Message-State: AOJu0YyfswX4V6abIuXuBBBomKs4VPJP+1JdVMHJaqQzrErC2k7+i0QY
- JkZiiGqQy2wIDKLrBc62sH7Khg==
-X-Google-Smtp-Source: AGHT+IEhbpbsqLsa01adLUkKwLSqe7tOnauYikMCLo4jAoNYcDLJn8y+Qcum70PvH7h2T9QApke/qQ==
-X-Received: by 2002:a05:6808:144c:b0:3ab:3a20:e8a3 with SMTP id
- x12-20020a056808144c00b003ab3a20e8a3mr1296811oiv.28.1694520216399; 
- Tue, 12 Sep 2023 05:03:36 -0700 (PDT)
-Received: from [192.168.68.107] ([177.9.182.82])
- by smtp.gmail.com with ESMTPSA id
- v20-20020a4ae6d4000000b00565d41ba4d0sm3234917oot.35.2023.09.12.05.03.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 05:03:36 -0700 (PDT)
-Message-ID: <32308056-2b74-cc9f-3f97-564929f0483a@ventanamicro.com>
-Date: Tue, 12 Sep 2023 09:03:32 -0300
+ d=1e100.net; s=20230601; t=1694520457; x=1695125257;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=d29cq8t30AkGY6F/sKv63lCp4G5bgRg+h27bd+M4al8=;
+ b=EKtXCJojBbBuuFas6HK2bZpxrcQy8wObSGwIXKsoiaxaC5KWldqVjU0sI7Zj+XQwl2
+ k0JPpvyYM0kNhwF5SXoOvubCIrfZYLpMJLIE07vK29jCPP3DEXiuXCY7xe3z5rJ0T+nN
+ tE8t4F9YUmu7dRkIGfWEIsWsPLRKiQvwfG8+6b1YTx+fPMjMho4aIG35n4qp3lWgQQxC
+ e9pPAFAVuphzQVODg/6wcQHjDZqLu0RYa5p3LvGqzkKJC8r0QaWZlNMLOH73qk6gVNYS
+ kwHADBAOqpqn857i6kTcRaJIjtttqMfwqdJo/7j/fBfbix/l9pKw6IiRVZS2+oyvUFOp
+ LOAw==
+X-Gm-Message-State: AOJu0YwOPxR2omvtvbN6G3iqvrbT7kMTKUWXUmVqBnAfWQCsAlGrH4tN
+ KUmg7/OK41DoblqOkfTGeKRn8SFF3D5AXUPsAB8t0uZOGg/2VTozShV5kF1y6+QMQAUs3HhYFuN
+ 5cNn8lH4AjbnIxSw=
+X-Received: by 2002:a17:902:d4c4:b0:1b8:a88c:4dc6 with SMTP id
+ o4-20020a170902d4c400b001b8a88c4dc6mr15483763plg.45.1694520457328; 
+ Tue, 12 Sep 2023 05:07:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF34QWMpGeE5xKdCFg/2Xen82Of23R9Qj5xedJeeNMugyNToIu4XmaHxejZKsDQe2PMdLBvbw==
+X-Received: by 2002:a17:902:d4c4:b0:1b8:a88c:4dc6 with SMTP id
+ o4-20020a170902d4c400b001b8a88c4dc6mr15483735plg.45.1694520457000; 
+ Tue, 12 Sep 2023 05:07:37 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.158.157])
+ by smtp.googlemail.com with ESMTPSA id
+ x18-20020a170902821200b001bb9d6b1baasm8275480pln.198.2023.09.12.05.07.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Sep 2023 05:07:36 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: david@redhat.com
+Cc: pbonzini@redhat.com, mst@redhat.com, richard.henderson@linaro.org,
+ philmd@linaro.org, Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH] cpu/cpuid: check CPUID_PAE to determine 36 bit processor
+ address space
+Date: Tue, 12 Sep 2023 17:36:50 +0530
+Message-Id: <20230912120650.371781-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 10/19] target/riscv: remove kvm-stub.c
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, Michael Tokarev <mjt@tls.msk.ru>
-References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
- <20230906091647.1667171-11-dbarboza@ventanamicro.com>
- <f30d8589-8b59-2fd7-c38c-3f79508a4ac6@linaro.org>
- <20230911-0ff170da2e7063d0eb82ded9@orel>
- <20230911-df4609b7aca0b1fe00fb2e17@orel>
- <8c4158b7-6c44-aec1-e25a-4804df70af49@ventanamicro.com>
- <0aa9885e-f56f-d72d-1d41-773661974746@ventanamicro.com>
- <e095221f-9d15-df10-3aa3-31310dad57f9@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <e095221f-9d15-df10-3aa3-31310dad57f9@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oi1-x233.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,104 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+PAE mode in x86 supports 36 bit address space. Check the PAE CPUID on the
+guest processor and set phys_bits to 36 if PAE feature is set. This is in
+addition to checking the presence of PSE36 CPUID feature for setting 36 bit
+phys_bits.
 
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ target/i386/cpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 9/12/23 08:15, Philippe Mathieu-Daudé wrote:
-> On 12/9/23 12:48, Daniel Henrique Barboza wrote:
->> On 9/11/23 09:23, Daniel Henrique Barboza wrote:
->>> On 9/11/23 06:04, Andrew Jones wrote:
->>>> On Mon, Sep 11, 2023 at 09:49:06AM +0200, Andrew Jones wrote:
->>>>> On Wed, Sep 06, 2023 at 12:23:19PM +0200, Philippe Mathieu-Daudé wrote:
->>>>>> On 6/9/23 11:16, Daniel Henrique Barboza wrote:
->>>>>>> This file is not needed for some time now. All the stubs implemented in
->>>>>>> it (kvm_riscv_reset_vcpu() and kvm_riscv_set_irq()) are wrapped in 'if
->>>>>>> kvm_enabled()' blocks that the compiler will rip it out in non-KVM
->>>>>>> builds.
->>>>>>>
->>>>>>> We'll also add non-KVM stubs for all functions declared in kvm_riscv.h.
->>>>>>> All stubs are implemented as g_asserted_not_reached(), meaning that we
->>>>>>> won't support them in non-KVM builds. This is done by other kvm headers
->>>>>>> like kvm_arm.h and kvm_ppc.h.
->>>>>>
->>>>>> Aren't them also protected by kvm_enabled()? Otherwise shouldn't they?
->>>>>
->>>>> Yes, I think your earlier suggestion that we always invoke kvm functions
->>>>> from non-kvm files with a kvm_enabled() guard makes sense.
->>>>>
->>>>>>
->>>>>>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->>>>>>> ---
->>>>>>>    target/riscv/kvm-stub.c  | 30 ------------------------------
->>>>>>>    target/riscv/kvm_riscv.h | 31 +++++++++++++++++++++++++++++++
->>>>>>>    target/riscv/meson.build |  2 +-
->>>>>>>    3 files changed, 32 insertions(+), 31 deletions(-)
->>>>>>>    delete mode 100644 target/riscv/kvm-stub.c
->>>>>>
->>>>>>
->>>>>>> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
->>>>>>> index f6501e68e2..c9ecd9a967 100644
->>>>>>> --- a/target/riscv/kvm_riscv.h
->>>>>>> +++ b/target/riscv/kvm_riscv.h
->>>>>>> @@ -19,6 +19,7 @@
->>>>>>>    #ifndef QEMU_KVM_RISCV_H
->>>>>>>    #define QEMU_KVM_RISCV_H
->>>>>>> +#ifdef CONFIG_KVM
->>>>>>>    void kvm_riscv_cpu_add_kvm_properties(Object *obj);
->>>>>>
->>>>>> At a glance kvm_riscv_cpu_add_kvm_properties() is.
->>>>>> Keep the prototype declared (before #ifdef CONFIG_KVM) is enough for the
->>>>>> compiler to elide it.
->>>>>
->>>>> Yes, when building without CONFIG_KVM enabled it's actually better to not
->>>>> have the stubs, since the compiler will catch an unguarded kvm function
->>>>> call (assuming the kvm function is defined in a file which is only built
->>>>> with CONFIG_KVM).
->>>>>
->>>>> Unfortunately we don't have anything to protect developers from forgetting
->>>>> the kvm_enabled() guard when building a QEMU which supports both TCG and
->>>>> KVM. We could try to remember to put 'assert(kvm_enabled())' at the start
->>>>> of each of these types of functions. It looks like mips does that for a
->>>>> couple functions.
->>>>
->>>> Eh, ignore this suggestion. We don't need asserts, because we have CI. As
->>>> long as our CI does a CONFIG_KVM=n build and all KVM functions are in kvm-
->>>> only files, then we'll always catch calls of KVM functions which are
->>>> missing their kvm_enabled() guards.
->>>
->>> So, to sum up, get rid of the 'g_assert_not_reached()' stubs since they should
->>> be cropped by well placed kvm_enabled() calls in the code and, if that's not
->>> the case, a non-KVM build failure will let us know that there's something wrong.
->>>
->>> I can live with that. It's less code to deal with in the header as well. Thanks,
->>
->>
->> I changed my mind after talking with Michael in this thread:
->>
->> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg02567.html
->>
->>
->> There are differences in how gcc and clang (and probably other toolchains) behave
->> when choosing to crop code gated with 'if (kvm_enabled && something)'. It is
->> better to have stubs for all KVM functions to avoid relying on compiler behavior.
->>
->> We should keep the stubs in this patch as is. Thanks,
-> 
-> Don't get stuck at this; get your series merged, we'll have a look
-> at that later, this is not important.
+Note: Not sure what tests I should be running in order to make sure I am
+not breaking any guest OSes. Usual qtests pass.
 
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 24ee67b42d..f3a5c99117 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7375,7 +7375,7 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+             return;
+         }
+ 
+-        if (env->features[FEAT_1_EDX] & CPUID_PSE36) {
++        if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
+             cpu->phys_bits = 36;
+         } else {
+             cpu->phys_bits = 32;
+-- 
+2.39.1
 
-Ok, so we'll simplify here and avoid the unneeded stubs for now as we initially discussed,
-while making sure we're not breaking builds with --enable-debug and clang. After this
-is merged we can reevaluate the best approach to take.
-
-
-Thanks,
-
-
-Daniel
-
-> 
-> Regards,
-> 
-> Phil.
 
