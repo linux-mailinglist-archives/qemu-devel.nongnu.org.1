@@ -2,88 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C337779D783
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 19:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 345D879D78F
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 19:31:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg78v-0000tp-Mf; Tue, 12 Sep 2023 13:25:42 -0400
+	id 1qg7E9-0002QV-I3; Tue, 12 Sep 2023 13:31:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qg78l-0000rD-G5
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:25:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qg7E0-0002Pv-Rv; Tue, 12 Sep 2023 13:30:57 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qg78i-0006BP-Uk
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 13:25:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694539527;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6zvVoqM18tFa4GhEBShiqBiVCdfvF1tMw923jp7LbnQ=;
- b=jAXUHkT2rHr8GDJPBHkvr8467eQY3FTowx5wnDLedodMlmOGl/LRpzo3k8pnUaGx9iOX8C
- GYREEhPeyQJ+LbEThOXhIACKPq5c0MsH6z5CcO3XyPVLxl/H4FVKHjkgvlnBoKJ/9kgQYc
- DfqU/7JzyD5gwT8RNT3Ge87WWtdE2qE=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-N2ITuJUlNrepE1fG25tazw-1; Tue, 12 Sep 2023 13:25:25 -0400
-X-MC-Unique: N2ITuJUlNrepE1fG25tazw-1
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-79d966b4c6fso1463634241.2
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 10:25:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694539525; x=1695144325;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=6zvVoqM18tFa4GhEBShiqBiVCdfvF1tMw923jp7LbnQ=;
- b=DxDSetwPGEecuB8Z7Svlj8oA6AN2gte8zQ3aLV+42/ZDyNzOSDFqSTLo4kwXuut/l/
- 8hlJbAwi2RPaPxiCiuoj7M0xwoaP01PRAMrhj6vZXO1HUIWnyFmwtiZYdMrYVtJmahKa
- 4bNqfxq7WAQmfcNbIZZW75hqq8dr1ClH2+tdfw2fWEBR17KCTagf6smC8c5Tw8ewbQZI
- du2nfU4xB+I0tbm/F1nZoyxVHQ7gghXpEwZF4mNdWlb2w3sNuivkKQg/fJLfkkw7MkZn
- KfNVuwoVSwwIDnyVsE2BGdrQAPJ10uUQ2DgF7YXePkhcjdFyutY3C22Kf4rti/E0YEEf
- ecmQ==
-X-Gm-Message-State: AOJu0Yz/z4iq23mpypFsxbo7mdDZu10F2wb2cbQMsbqMkmH/MCVFXF+R
- iYCF8+kOsCtC5ZXS6ONeaQWiaal+rAbh9BWXYooOKiXI4k+AFEqhAe+Z/MlL5mnP6aiJFGF8OF1
- bYWAQowCYkQ4siCW1rDTcP2HSwXCY39M=
-X-Received: by 2002:a67:f5cc:0:b0:44e:b77e:f976 with SMTP id
- t12-20020a67f5cc000000b0044eb77ef976mr8724700vso.20.1694539524957; 
- Tue, 12 Sep 2023 10:25:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZAo462tYrV3Dx6sAHrylVgeeH56dSJlqTLb07aXnhGQkWOCmwnAsm+ia2dfbt3A99oAKyeLHQks1oA0QRcWo=
-X-Received: by 2002:a67:f5cc:0:b0:44e:b77e:f976 with SMTP id
- t12-20020a67f5cc000000b0044eb77ef976mr8724678vso.20.1694539524644; Tue, 12
- Sep 2023 10:25:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qg7Dy-0007Ei-Di; Tue, 12 Sep 2023 13:30:56 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id EC7D821350;
+ Tue, 12 Sep 2023 20:30:52 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 814C72795A;
+ Tue, 12 Sep 2023 20:30:48 +0300 (MSK)
+Message-ID: <493a1b6b-ba3a-1f9c-d71c-a51ca521f734@tls.msk.ru>
+Date: Tue, 12 Sep 2023 20:30:48 +0300
 MIME-Version: 1.0
-References: <20230911211317.28773-1-philmd@linaro.org>
- <fabf2451-e8ad-8171-b583-16b238c578e7@redhat.com>
- <111b9277-59b6-7252-6ddd-13edff9b2505@linaro.org>
-In-Reply-To: <111b9277-59b6-7252-6ddd-13edff9b2505@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 12 Sep 2023 19:25:12 +0200
-Message-ID: <CABgObfaz+Tdb6YzwbAeRH=zdXtzVK7VLFv2Lc-MxQMAxbhwnfg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] target/i386: Restrict system-specific features
- from user emulation
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel <qemu-devel@nongnu.org>, kvm <kvm@vger.kernel.org>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: multipart/alternative; boundary="0000000000006cbb9d06052cbaf7"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v2] hw/i386/pc: fix code comment on cumulative flash size
+Content-Language: en-US
+To: Laszlo Ersek <lersek@redhat.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org
+References: <20230912155553.82514-1-lersek@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230912155553.82514-1-lersek@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,75 +63,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000006cbb9d06052cbaf7
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+12.09.2023 18:55, Laszlo Ersek:
+> - The comment is incorrectly indented / formatted.
+> 
+> - The comment states a 8MB limit, even though the code enforces a 16MB
+>    limit.
+> 
+> Both of these warts come from commit 0657c657eb37 ("hw/i386/pc: add max
+> combined fw size as machine configuration option", 2020-12-09); clean them
+> up.
+> 
+> Arguably, it's also better to be consistent with the binary units (such as
+> "MiB") that QEMU uses nowadays.
 
-Il mar 12 set 2023, 18:44 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> h=
-a
-scritto:
+Applied to my trivial-patches tree. Thanks!
 
-> I can try to improve it with your comments, but I have no idea of
-> x86 CPU features.
->
-
-I will take a look.
-
-> However, the dependency of user-mode emulation on KVM is really an
-> > implementation detail of QEMU.  It's very much baked into linux-user an=
-d
-> > hard to remove, but I'm not sure it's a good idea to add more #ifdef
-> > CONFIG_USER_ONLY around KVM code.
->
-> Do you rather v3 then?
->
->
-> https://lore.kernel.org/qemu-devel/20230911142729.25548-1-philmd@linaro.o=
-rg/
-
-
-No, if we want a small patch it is better to replace kvm_enabled() with
-CONFIG_KVM, and also follow Kevin's suggestion to make it fail at compile
-time.
-
-Having stub prototypes was done because we expected the compiler to remove
-the dead code.
-
-Paolo
-
---0000000000006cbb9d06052cbaf7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mar 12 set 2023, 18:44 Philippe Mathieu-Daud=C3=A9 =
-&lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; ha scrit=
-to:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
-order-left:1px #ccc solid;padding-left:1ex">I can try to improve it with yo=
-ur comments, but I have no idea of<br>
-x86 CPU features.<br></blockquote></div></div><div dir=3D"auto"><br></div><=
-div dir=3D"auto">I will take a look.</div><div dir=3D"auto"><br></div><div =
-dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" s=
-tyle=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">&gt;=
- However, the dependency of user-mode emulation on KVM is really an <br>
-&gt; implementation detail of QEMU.=C2=A0 It&#39;s very much baked into lin=
-ux-user and <br>
-&gt; hard to remove, but I&#39;m not sure it&#39;s a good idea to add more =
-#ifdef <br>
-&gt; CONFIG_USER_ONLY around KVM code.<br>
-<br>
-Do you rather v3 then?<br>
-<br>
-<a href=3D"https://lore.kernel.org/qemu-devel/20230911142729.25548-1-philmd=
-@linaro.org/" rel=3D"noreferrer noreferrer" target=3D"_blank">https://lore.=
-kernel.org/qemu-devel/20230911142729.25548-1-philmd@linaro.org/</a></blockq=
-uote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">No, if we wa=
-nt a small patch it is better to replace kvm_enabled() with CONFIG_KVM, and=
- also follow Kevin&#39;s suggestion to make it fail at compile time.</div><=
-div dir=3D"auto"><br></div><div dir=3D"auto">Having stub prototypes was don=
-e because we expected the compiler to remove the dead code.</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">Paolo</div></div>
-
---0000000000006cbb9d06052cbaf7--
-
+/mjt
 
