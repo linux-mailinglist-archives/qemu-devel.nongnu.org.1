@@ -2,73 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D7E79D375
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B37A979D38D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 16:28:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg4GE-0007UN-3o; Tue, 12 Sep 2023 10:21:02 -0400
+	id 1qg4M6-0001VX-Iv; Tue, 12 Sep 2023 10:27:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg4G1-0007El-9S
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:20:49 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qg4Fy-00033S-4e
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 10:20:48 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-31c5a2e8501so5629841f8f.0
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 07:20:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694528444; x=1695133244; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=AX9kRtARvGVRVaVejvoBCBiu0Q3LHhNAnC0dAvhisyM=;
- b=XH0ty5EwmrFRjG14z14tSZbdlmcAP7Ef+i8SLTURROawgurDLENqGoXeJR6ltthVXw
- N0KO81GoZpdSYiFvFT2mGYVaNFcBIznNI9dAV1fpx5EQaqZhG6fkilk7NDTEGKEf57oK
- MI25yz6XK1i0cUrcAOtvjC2RDJIg/RQj2F1dwk8Rxm/66jv7tXQP53pDDm4sWXwXLzJI
- s6kM/WC6U150mfqZhLdBAf5uA6Z71ibYizImc/V77Y6Fnu/QvKhJwZjeJK7O4O+MeRDQ
- w6tuqiSCGln/wLCWiW3JM3gHrfT9PCma6mTxnL3db2kNk7TWd/j9jeUs5kyXS4wrEz3y
- 8JEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694528444; x=1695133244;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=AX9kRtARvGVRVaVejvoBCBiu0Q3LHhNAnC0dAvhisyM=;
- b=CtofEjO7byDv2lirQVjt/FTs4S8NP1UR9ghICHQBPQI7qCuleh6hbZFM5vnm3Vaeqd
- 2ZxYnACfLJCKvNc9KuWTfkjI5a9KJcMQ8a0u5tP1CM50bZyXMnlpNnL/KULHWaPz3FQN
- o6/pWW4AbDyhC3UFkwa6UopAubHZ7vFEjKok31XXZk026AyaisQbE5X3QThUWJCEmTQm
- VqKulaso74IB8yl8BkIa9a7PBqHuckTTGfTMJSoQpjdsSzMHdXCGWiemmH+gAAc4zvXW
- RXzIm1sgD7AtbNDW/95RagcIdC/6IkfhZgU6vP2VawkgkFn1fzrI+7xlrtcxx+Onw6Tf
- OPyQ==
-X-Gm-Message-State: AOJu0YwA166UajNxGAXv8N049sUNTh2e/gyNyN/2zFtvkxHJm3GEx1Hr
- xzV+MfbZQD5ATbLv65FMBXWF0npm45kPTWQtTaw7HXuEYPEfz0hP
-X-Google-Smtp-Source: AGHT+IFlEi+z0e9xFhTBZmmbONCqWnRnQNWThjMKQLFy0Ah8bOnQZ817t/xhme3/VDh+KKq7mt4KDO9inmQHuf4qbLQ=
-X-Received: by 2002:a5d:5451:0:b0:317:70cb:4f58 with SMTP id
- w17-20020a5d5451000000b0031770cb4f58mr10945917wrv.63.1694528444323; Tue, 12
- Sep 2023 07:20:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qg4M3-0001Ux-2K; Tue, 12 Sep 2023 10:27:03 -0400
+Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qg4Lz-0006En-57; Tue, 12 Sep 2023 10:27:02 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.west.internal (Postfix) with ESMTP id B7B70320097A;
+ Tue, 12 Sep 2023 10:26:55 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute4.internal (MEProxy); Tue, 12 Sep 2023 10:26:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:sender:subject:subject:to:to; s=fm3; t=1694528815; x=
+ 1694615215; bh=G5lHCtMYsA3iCzT8iPwbnIJH7HD1zis9WPC+UUFA2DE=; b=X
+ yiWQXA6gxyDBSRH+EwMC5WsxamX7w/hfQ3bJLxGvzwbIZLnSjXkmQrvreai0U90G
+ BeOIGZwYEC3MNeRbrwoUkZmLPWVB1TgHL6BRxF/ogsiCIdKwvLVeFRfpWSROB063
+ iPaAs3vbr50qUGcr5FT8sReu7sMydoENcpks2L4pB39E18o0ZxB9Pbsaer2qUYbI
+ D07euAr5Ih7XqerMEEILm+8du6tfan7KuubzFTdDl/mslQmYhF6gmGllCA5bjmaP
+ xBYOg7LMgqkgbPNk6xnbQRFJo2Zz+UG669qE4whStIxel1sspH8vxqn56g1/Wm/5
+ xrIYm0hSvVgD9LAb9Ex3g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+ :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+ :x-me-sender:x-sasl-enc; s=fm1; t=1694528815; x=1694615215; bh=G
+ 5lHCtMYsA3iCzT8iPwbnIJH7HD1zis9WPC+UUFA2DE=; b=h2XTfXfxwzReg8ECF
+ FZrUe2b12dPaeCj6swcHhG30wptLsUXKuXKs7dvv2P/oiW5qOY6y9r7P9nDRyBGM
+ RESfwiRQdQZgFPaQj0ttqSxKVJQfEVRhcBzzcm0h9E2RnJSv4x4VmT61bO4AmrAS
+ dYOatoSMmB7qzpG4i29WcfSAYTN2mSdz7Z0MbHMLuixdW7vpkX9mrtA4/VJ/OgVI
+ VLPtJzt+P/JD9qp/JqBCXi+Jwi18Ls5ELYdW8e89cqRMn4AX+hFMmj5VZ6Jl8FPY
+ +kbm08OlLVNoNjJRkhDFZdSKFIwXZC8d+/M/QomFSKMwIqOblcKSofYbKGnrrclW
+ k3NTg==
+X-ME-Sender: <xms:LXUAZYdZbb7qr6s1-C9y7Uu0ZYkJOCK2lLAYDIzUoRt5D5h2DKgdJg>
+ <xme:LXUAZaOEaDWALmBE__IZxxQkI1mKIJOrBVa3FkCpeoDUUIeaLXnY8aJP7EIEK9OzF
+ JrE3A4HER-B2jt_h7k>
+X-ME-Received: <xmr:LXUAZZhDTzwFkBXK7LKBlPXhmron8QMoRVlMl7Kjh8CAW1tTI4s-EQR6nRnDC51HVjX40h0PAdQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgjeeiucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffvvefufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeffkeelkedtudeujeehjefghfeivdehteevtdeikeejkedvheeigeefleetfeeh
+ ieenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhgihhtlhgrsgdrtghomhenucevlh
+ hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehithhssehirhhr
+ vghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:LXUAZd_DfUlT9086G-wxxzVlWXKyBoMQbKDB2WpQMtbKcIc5JiHADw>
+ <xmx:LXUAZUuEXnhEJLcRTF3Oo8r2ZU8QTWx5wzXfM0SIxKNElqCX-b5VqA>
+ <xmx:LXUAZUFSJKslo2gW4a6n8OGdlPuTXzaYbelZETO215J6l5OjGu26Lw>
+ <xmx:L3UAZWKalyIhAUcMob38oXDfC73h79Bw89swBI5JLRuMZ3HlAEcHrQ>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Sep 2023 10:26:51 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Fam Zheng <fam@euphon.net>,
+ qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Hanna Reitz <hreitz@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
+ Kevin Wolf <kwolf@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL 0/2] hw/nvme: updates
+Date: Tue, 12 Sep 2023 16:26:50 +0200
+Message-ID: <20230912142649.11002-4-its@irrelevant.dk>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <20230824153224.2517486-1-peter.maydell@linaro.org>
-In-Reply-To: <20230824153224.2517486-1-peter.maydell@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 12 Sep 2023 15:20:33 +0100
-Message-ID: <CAFEAcA9Btq5W4+WD3go6JLEL+0ZNu8hW5Q16GB5MLSXyNwJDOA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] net: avoid variable length arrays
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Jiri Pirko <jiri@resnulli.us>,
- qemu-ppc@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1401; i=k.jensen@samsung.com;
+ h=from:subject; bh=DxFmuIz3ByNvtLRmxghUMTdttXF41Dr6fd0ltxw+k7E=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGUAdSkGXSsfrLoINI9gL0Rp733JLNDy33FMW
+ afPmkHa+jITa4kBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJlAHUpAAoJEE3hrzFt
+ Tw3pgSgIAIz7KQ5+aXhxBlKcywzcUmd5eSF48Y+qLEAyX9M1IEZkKX87GUYvlycXxXW1eNON/Kl
+ EABIVvPQjt8P26Ufv7pe5XZFMOz/GkDenirZUL+uO9quf2/d9PjtIDxjY0MhlHDZmCo68zIrt4y
+ K5W2ES/3wbSm3LMU4+28rIO+1eYM11dO7T0LmPBBqvYs5TYe/8R8pvmOCVLDQLzgrv7BoYK91Fd
+ jSON5QcCh6Bzdr4TeZjKNa6f92vmXYoQmxYKrpA6XQmluc3U/48p6xiBLHHf8FzmgZwspMSSa6L
+ 11m0seah6+3vs3vYtWK8zqHUGXj5me++dNCZbuGNP0/+T8yhNZzNs6oV
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=64.147.123.24; envelope-from=its@irrelevant.dk;
+ helo=wout1-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,43 +116,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Jason. This patchset has been reviewed -- do you want to
-pick it up via the net tree?
+From: Klaus Jensen <k.jensen@samsung.com>
 
-thanks
--- PMM
+Hi,
 
-On Thu, 24 Aug 2023 at 16:32, Peter Maydell <peter.maydell@linaro.org> wrote:
->
-> This patchset removes the use of variable length arrays in a couple
-> of network devices and the net/ core code.  In one case we can switch
-> to a fixed-sized array on the stack; in the other three we have to
-> use a heap allocation.
->
-> The codebase has very few VLAs, and if we can get rid of them all we
-> can make the compiler error on new additions.  This is a defensive
-> measure against security bugs where an on-stack dynamic allocation
-> isn't correctly size-checked (e.g.  CVE-2021-3527).
->
-> Philippe had a go at these in  a patch in 2021:
-> https://patchew.org/QEMU/20210505211047.1496765-1-philmd@redhat.com/20210505211047.1496765-16-philmd@redhat.com/
-> but these are re-implementations, mostly.
->
-> Usual disclaimer: I have tested these patches only with
-> "make check" and "make check-avocado".
->
-> thanks
-> -- PMM
->
-> Peter Maydell (4):
->   hw/net/fsl_etsec/rings.c: Avoid variable length array
->   hw/net/rocker: Avoid variable length array
->   net/dump: Avoid variable length array
->   net/tap: Avoid variable-length array
->
->  hw/net/fsl_etsec/rings.c      | 12 ++++++++++--
->  hw/net/rocker/rocker_of_dpa.c |  2 +-
->  net/dump.c                    |  2 +-
->  net/tap.c                     |  3 ++-
->  4 files changed, 14 insertions(+), 5 deletions(-)
+The following changes since commit 9ef497755afc252fb8e060c9ea6b0987abfd20b6:
+
+  Merge tag 'pull-vfio-20230911' of https://github.com/legoater/qemu into staging (2023-09-11 09:13:08 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/birkelund/qemu.git tags/nvme-next-pull-request
+
+for you to fetch changes up to b3c8246750b7077add335559341268f2956f6470:
+
+  hw/nvme: Avoid dynamic stack allocation (2023-09-12 16:17:05 +0200)
+
+----------------------------------------------------------------
+hw/nvme updates
+
+Two fixes for dynamic array allocation.
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmUAc8AACgkQTeGvMW1P
+DelwhQgAxD7imw85V89Dz58LgrFoq5XZz2cq6Q5BsudyZd8FW5r7lOn9c1i0Yu2x
+iiP93FX0b5LPQ9/8/liz3oHu1HZ7+hX+VeDZSQ1/bugfXM/eDSPA7lf7GG1np312
+9lKRs8o+T4Di7v93kdiEi6G3b0jQSmZ722aMa54isk58hy1mcUTnGxvPZpVZutTP
+lYhwuElQIsnnKXB0jaRlpcDkpXdHJ1wwziaYLM7pus+tElMiSkFP05j2pX9iigKu
+7g+Hs+DaqrOzdoF/6uu72IKygq3/5H8iou1No/7OICWbFti5Qhhra0OKQE6nrlKd
+51fnWA6VjpO5g9+diwRRYbjEiOrkqQ==
+=wn4B
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+
+Peter Maydell (1):
+  hw/nvme: Avoid dynamic stack allocation
+
+Philippe Mathieu-Daudé (1):
+  hw/nvme: Use #define to avoid variable length array
+
+ hw/nvme/ctrl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+-- 
+2.42.0
+
 
