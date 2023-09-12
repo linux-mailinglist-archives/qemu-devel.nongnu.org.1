@@ -2,87 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DCD79CAC0
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E9579CAAB
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 10:55:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfzCO-0008P9-3h; Tue, 12 Sep 2023 04:56:44 -0400
+	id 1qfz9S-000670-0q; Tue, 12 Sep 2023 04:53:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qfzBm-0008E4-Ar
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:56:07 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qfzBk-0002C0-47
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:56:06 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-572a7141434so3090858eaf.2
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 01:54:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1694508843; x=1695113643;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZngRalemChwakz8wrbTdzeq+OAAg9Tm3RzDMb6BGc10=;
- b=O6gLf8NhIJgjzA/Xc81o5KC5CLyK0iinAMP/vOXoKS2cNtND1gGAyQSyqjwYkwQddW
- irG3RZqXgSNX1mHQxFn2r4Euxn1nyhQBUh0H7jsm+AMehMcH+arR/anInptLo1CWHd0F
- 6Nk3BxzvvlfX4my0hpJc+Jv1+S2vk5biMFOCSkRF8sAWIlENduHbaUmNOF7hW9u82qbU
- k0zg6ktVeVf+ZLkAlIw8RZMdZnngwNp0wk/JEsqoSNk9z2EsOKsL/xM1BKvyxorNNhWA
- 9Ioh+fsaKio+TEaE3E2B3kwcm/Z70I62qiGLDRj8AlfsRWYSEkWwb4gSh8s4BWLW1+ky
- a7CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694508843; x=1695113643;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZngRalemChwakz8wrbTdzeq+OAAg9Tm3RzDMb6BGc10=;
- b=cdnn2FMh8OmfqoeHEGsaqL8Ftmr25LLq9gHWO354evfo/lHvwMljjTbGKnUS5CYzzY
- OLs983G9/qmWWppAmpiSWSET40nYD08onmXpqIL7GBk6pZD4x67ukEZGIaUdNIMDl2I0
- P2/hXvzseV/x9jhNYfGccPluetAO84GZxKI48WMKuQ0Vg9VtHLJxvXSNS7NvNTTPf35i
- jTwfKHgbZ/R9vndzmC8o52X1kvPX6CudqrLZRWyla+5vlK56jbXWhRYYEU/q8q8t5GfZ
- Q24JXQMTD/7TmJIGENsliq3cxnZaGJGlWsvO25klHeAGAlz1HeLx3h/gwPz4xvHxjzfT
- 12rw==
-X-Gm-Message-State: AOJu0Yz9Kh4DepSTl+dwJrDfrqHdY3lsUTJLQh+ckKry/PE7BLPJr7K5
- 4WRCGOXSAQXK1xUVJ89tLJFpRg==
-X-Google-Smtp-Source: AGHT+IFGbt9vQaNXPVAuhW90D5Tn3O/t6/5Io0taecRANDY8WpyhrJX13sC+2ZotOSuYj8jwxXfuoQ==
-X-Received: by 2002:a05:6359:4e97:b0:141:10f4:1cbc with SMTP id
- os23-20020a0563594e9700b0014110f41cbcmr2559945rwb.14.1694508842505; 
- Tue, 12 Sep 2023 01:54:02 -0700 (PDT)
-Received: from 64217.gitgo.cc ([8.210.91.195])
- by smtp.gmail.com with ESMTPSA id
- m6-20020a637d46000000b00570668ccd5bsm6523754pgn.14.2023.09.12.01.53.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Sep 2023 01:54:02 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-To: Markus Armbruster <armbru@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core),
- qemu-devel@nongnu.org (open list:All patches CC here)
-Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v4 5/5] vhost-user: fix lost reconnect
-Date: Tue, 12 Sep 2023 16:52:47 +0800
-Message-ID: <20230912085315.2524857-6-fengli@smartx.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230912085315.2524857-1-fengli@smartx.com>
-References: <20230721105205.1714449-1-fengli@smartx.com>
- <20230912085315.2524857-1-fengli@smartx.com>
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qfz9P-00061M-S1
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:53:39 -0400
+Received: from out3-smtp.messagingengine.com ([66.111.4.27])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qfz9M-00027K-Ei
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 04:53:39 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 0F7615C023A;
+ Tue, 12 Sep 2023 04:53:30 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute4.internal (MEProxy); Tue, 12 Sep 2023 04:53:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:sender
+ :subject:subject:to:to; s=fm3; t=1694508810; x=1694595210; bh=3v
+ CEM+mD1XErZvAUf+X4qJF5ALIdOdJiS2lCqkUSsvk=; b=EBrQ2T5vEcpfMTAHNa
+ q1ywCfZVnaaploxKJU+co9Wq24//fmFSs4vyOSQ6+myGB0bbSzluSV2UhJOt9p1T
+ Rr7118pptfb/GicEuy5pQ5VQcPb05G64kOO5+HaOqXPe8fCXbzSCzAqJRtoHGi4v
+ Rr97+Nhn6OJyC2fEAJjGvV0tLoG1q3T7czwd+49vy0JVJPgaKtb8rtq9Ex8YtReo
+ bw686Jvp/LA3UiARCaTKcg1D0sloMFiFFyaZQ55e/ilrMilZmApACjpcoq4aON2P
+ 0CNRxxaXaB3RcXPkichBJaVzAYLALOpxH4seHTu71XCT2BCU7Q5XD9kL65lD6+A5
+ Bd9w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1694508810; x=1694595210; bh=3vCEM+mD1XErZ
+ vAUf+X4qJF5ALIdOdJiS2lCqkUSsvk=; b=fwn9KAjaIvhnxw0w0KsSD+P9dUcxP
+ Gw8627UMzU9jSS5VZ8mPnbmdoaSIhAOxD7uqplT8E+if2+QYBcQyVhTcc1tnZrE7
+ T0lIlUZz5axFUevN5JhAo8Imcg3Ox1bryqYbccQEwdZn13yeQuvm35FGDVO+1FWO
+ pAMcIrh7SX8C+RtRS3nyKI15sxADR6mKzXeOwcnGEVlGGkTk20dVcfjI0+aiWk/N
+ DUQitJfGgeUUcMpBY1IOSoHkg2wBdcUJZAt/ZKjB5NOTDshF8wNvkW9VtMZBAsDf
+ XPQJjICW4XechDROHFCh+h8z76dN2dHgGksM1LbLhBnH1CLnnGwU5edEg==
+X-ME-Sender: <xms:CScAZcGFdU0q5dhzil-AVfxjHEqlFRLvCQ9ZnoaAJaKLKJbk-RohCA>
+ <xme:CScAZVV1F4WSK6Lk1Y-naRfAmNBqcJDJ2kaTEzrx0iBCIHqpnhdlcqcr4d7zY4S6r
+ hYP_G-x0xlFigZziA>
+X-ME-Received: <xmr:CScAZWKrI5ZF9Zn6t7xG68j_QyEFKci0JANX8O118GSdWfMJwwOdzv5A7uE3oXpu_k-ydNTJqYCRvty3xSI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgtdekucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffvvefujghffffkgggtsehgtderredttdejnecuhfhrohhmpeetlhihshhs
+ rgcutfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpeehte
+ dvgfegvdeggfehieefueejieeffeevgffhfedtuefftdelffelveeuhfduhfenucffohhm
+ rghinheptghrrhgvvhdrtghomhdptghrohhsvhhmrdguvghvpdgtrhgrthgvshdrihhone
+ cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhephhhisegr
+ lhihshhsrgdrihhs
+X-ME-Proxy: <xmx:CScAZeFwZThNlStMyKeudD_7GeJOydc1IRfzC8k8fLNOvSEKxewt2w>
+ <xmx:CScAZSX6SpBOu3ock9bROhJ3pS0V0jMM13mAZMsOJQi_wXef7t8ASw>
+ <xmx:CScAZRNcrP28iCpbkVrdVyRJN__ThWN2XES2MICieraKUmNdrmihrg>
+ <xmx:CicAZWowfAbkfOczE_ZyaS-NQJJIINxlGfDgaQbJDByZ8eUgjuGVMQ>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Sep 2023 04:53:29 -0400 (EDT)
+Received: by x220.qyliss.net (Postfix, from userid 1000)
+ id DA19C85DD; Tue, 12 Sep 2023 08:53:27 +0000 (UTC)
+From: Alyssa Ross <hi@alyssa.is>
+To: Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com,
+ akihiko.odaki@gmail.com, ray.huang@amd.com, alex.bennee@linaro.org,
+ shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org,
+ philmd@linaro.org
+Subject: Re: [PATCH v11 0/9] rutabaga_gfx + gfxstream
+In-Reply-To: <CAAfnVBno8-Ue_4L=yRxM6woDRQ0_QDorhOvvpFfMV4S=5PutrQ@mail.gmail.com>
+References: <20230823012541.485-1-gurchetansingh@chromium.org>
+ <87a5uiyq35.fsf@alyssa.is>
+ <CAAfnVB=qW99pYK04g6ZdM+c8HLLmE5kwc_UWyJgRVSPnGB84=g@mail.gmail.com>
+ <871qfriok0.fsf@alyssa.is>
+ <CAAfnVBmxE4ThprAFuEj2khoX9LqxuVe02K7B-ps4g0r77vqmyg@mail.gmail.com>
+ <87v8d2hqdu.fsf@alyssa.is> <87sf86hq0x.fsf@alyssa.is>
+ <CAAfnVBno8-Ue_4L=yRxM6woDRQ0_QDorhOvvpFfMV4S=5PutrQ@mail.gmail.com>
+Date: Tue, 12 Sep 2023 08:53:25 +0000
+Message-ID: <87jzsvrcvu.fsf@alyssa.is>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::c29;
- envelope-from=fengli@smartx.com; helo=mail-oo1-xc29.google.com
-X-Spam_score_int: 14
-X-Spam_score: 1.4
-X-Spam_bar: +
-X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=66.111.4.27; envelope-from=hi@alyssa.is;
+ helo=out3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,114 +110,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the vhost-user is reconnecting to the backend, and if the vhost-user fails
-at the get_features in vhost_dev_init(), then the reconnect will fail
-and it will not be retriggered forever.
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The reason is:
-When the vhost-user fails at get_features, the vhost_dev_cleanup will be called
-immediately.
+Gurchetan Singh <gurchetansingh@chromium.org> writes:
 
-vhost_dev_cleanup calls 'memset(hdev, 0, sizeof(struct vhost_dev))'.
+> On Fri, Aug 25, 2023 at 12:37=E2=80=AFPM Alyssa Ross <hi@alyssa.is> wrote:
+>
+>> Alyssa Ross <hi@alyssa.is> writes:
+>>
+>> > Gurchetan Singh <gurchetansingh@chromium.org> writes:
+>> >
+>> >> On Fri, Aug 25, 2023 at 12:11=E2=80=AFAM Alyssa Ross <hi@alyssa.is> w=
+rote:
+>> >>
+>> >>> Gurchetan Singh <gurchetansingh@chromium.org> writes:
+>> >>>
+>> >>> > On Wed, Aug 23, 2023 at 4:07=E2=80=AFAM Alyssa Ross <hi@alyssa.is>=
+ wrote:
+>> >>> >
+>> >>> >> Gurchetan Singh <gurchetansingh@chromium.org> writes:
+>> >>> >>
+>> >>> >> > - Official "release commits" issued for rutabaga_gfx_ffi,
+>> >>> >> >   gfxstream, aemu-base.  For example, see crrev.com/c/4778941
+>> >>> >> >
+>> >>> >> > - The release commits can make packaging easier, though once
+>> >>> >> >   again all known users will likely just build from sources
+>> >>> >> >   anyways
+>> >>> >>
+>> >>> >> It's a small thing, but could there be actual tags, rather than j=
+ust
+>> >>> >> blessed commits?  It'd just make them easier to find, and save a
+>> bit of
+>> >>> >> time in review for packages.
+>> >>> >>
+>> >>> >
+>> >>> > I added:
+>> >>> >
+>> >>> >
+>> >>>
+>> https://crosvm.dev/book/appendix/rutabaga_gfx.html#latest-releases-for-p=
+otential-packaging
+>> >>> >
+>> >>> > Tags are possible, but I want to clarify the use case before
+>> packaging.
+>> >>> > Where are you thinking of packaging it for (Debian??)? Are you mos=
+tly
+>> >>> > interested in Wayland passthrough (my guess) or gfxstream too?
+>> Depending
+>> >>> > your use case, we may be able to minimize the work involved.
+>> >>>
+>> >>> Packaging for Nixpkgs (where I already maintain what to my knowledge=
+ is
+>> >>> the only crosvm distro package).  I'm personally mostly interested in
+>> >>> Wayland passthroug, but I wouldn't be surprised if others are
+>> interested
+>> >>> in gfxstream.  The packaging work is already done, I've just been
+>> >>> holding off actually pushing the packages waiting for the stable
+>> >>> releases.
+>> >>>
+>> >>> The reason that tags would be useful is that it allows a reviewer of
+>> the
+>> >>> package to see at a glance that the package is built from a stable
+>> >>> release.  If it's just built from a commit hash, they have to go and
+>> >>> verify that it's a stable release, which is mildly annoying and
+>> >>> unconventional.
+>> >>>
+>> >>
+>> >> Understood.  Request to have gfxstream and AEMU v0.1.2 release tags
+>> made.
+>> >>
+>> >> For rutabaga_gfx_ffi, is the crates.io upload sufficient?
+>> >>
+>> >> https://crates.io/crates/rutabaga_gfx_ffi
+>> >>
+>> >> Debian, for example, treats crates.io as the source of truth and buil=
+ds
+>> >> tooling around that.  I wonder if Nixpkgs as similar tooling around
+>> >> crates.io.
+>> >
+>> > We do, and I'll use the crates.io release for the package =E2=80=94 go=
+od
+>> > suggestion, but it's still useful to also have a tag in a git repo.  It
+>> > makes it easier if I need to do a bisect, for example.  As a distro
+>> > developer, I'm frequently jumping across codebases I am not very
+>> > familiar with to try to track down regressions, etc., and it's much
+>> > easier when I don't have to learn some special quirk of the package li=
+ke
+>> > not having git tags.
+>>
+>> Aha, trying to switch my package over to it has revealed that there is
+>> actually a reason not to use the crates.io release.  It doesn't include
+>> a Cargo.lock, which would mean we'd have to obtain one from elsewhere.
+>> Either from the crosvm git repo, at which point we might just get all
+>> the sources from there, or by vendoring a Cargo.lock into our own git
+>> tree for packages, which we try to avoid because when you have a lot of
+>> them, they become quite a large proportion of the overall size of the
+>> repo.
+>>
+>
+> Ack.  Request to have a rutabaga release tag in crosvm also made, should =
+be
+> complete in a few days.
 
-The reconnect path is:
-vhost_user_blk_event
-   vhost_user_async_close(.. vhost_user_blk_disconnect ..)
-     qemu_chr_fe_set_handlers <----- clear the notifier callback
-       schedule vhost_user_async_close_bh
+Thanks!  I've found the rutabaga tag, but I still don't see any relevant
+tags for aemu or gfxstream.  Any news there?
 
-The vhost->vdev is null, so the vhost_user_blk_disconnect will not be
-called, then the event fd callback will not be reinstalled.
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-All vhost-user devices have this issue, including vhost-user-blk/scsi.
+-----BEGIN PGP SIGNATURE-----
 
-With this patch, if the vdev->vdev is null, the fd callback will still
-be reinstalled.
-
-Fixes: 71e076a07d ("hw/virtio: generalise CHR_EVENT_CLOSED handling")
-
-Signed-off-by: Li Feng <fengli@smartx.com>
----
- hw/block/vhost-user-blk.c      | 2 +-
- hw/virtio/vhost-user-gpio.c    | 2 +-
- hw/virtio/vhost-user.c         | 9 +++++++--
- include/hw/virtio/vhost-user.h | 3 ++-
- 4 files changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 3c69fa47d5..95c758200d 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -391,7 +391,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &s->chardev, &s->dev,
--                               vhost_user_blk_disconnect);
-+                               vhost_user_blk_disconnect, vhost_user_blk_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
-index d9979aa5db..04c2cc79f4 100644
---- a/hw/virtio/vhost-user-gpio.c
-+++ b/hw/virtio/vhost-user-gpio.c
-@@ -283,7 +283,7 @@ static void vu_gpio_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &gpio->chardev, &gpio->vhost_dev,
--                               vu_gpio_disconnect);
-+                               vu_gpio_disconnect, vu_gpio_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..12c4a41f30 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -2643,6 +2643,7 @@ typedef struct {
-     DeviceState *dev;
-     CharBackend *cd;
-     struct vhost_dev *vhost;
-+    IOEventHandler *event_cb;
- } VhostAsyncCallback;
- 
- static void vhost_user_async_close_bh(void *opaque)
-@@ -2657,7 +2658,10 @@ static void vhost_user_async_close_bh(void *opaque)
-      */
-     if (vhost->vdev) {
-         data->cb(data->dev);
--    }
-+    } else if (data->event_cb) {
-+        qemu_chr_fe_set_handlers(data->cd, NULL, NULL, data->event_cb,
-+                                 NULL, data->dev, NULL, true);
-+   }
- 
-     g_free(data);
- }
-@@ -2669,7 +2673,8 @@ static void vhost_user_async_close_bh(void *opaque)
-  */
- void vhost_user_async_close(DeviceState *d,
-                             CharBackend *chardev, struct vhost_dev *vhost,
--                            vu_async_close_fn cb)
-+                            vu_async_close_fn cb,
-+                            IOEventHandler *event_cb)
- {
-     if (!runstate_check(RUN_STATE_SHUTDOWN)) {
-         /*
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 191216a74f..649e9dd54f 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -84,6 +84,7 @@ typedef void (*vu_async_close_fn)(DeviceState *cb);
- 
- void vhost_user_async_close(DeviceState *d,
-                             CharBackend *chardev, struct vhost_dev *vhost,
--                            vu_async_close_fn cb);
-+                            vu_async_close_fn cb,
-+                            IOEventHandler *event_cb);
- 
- #endif
--- 
-2.41.0
-
+iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmUAJwUACgkQ+dvtSFmy
+ccBvZA//ZCdWEGZVmGEz1C0AxOO6S3vBM9MpeXBlulmEJQYHY6qVb8MQJjHp5IhM
+lCBzIcjCnEIyNvv3f7Q3MJHPLR3Hb/3L8bkD0dXHvCxqfnOTgJV7W6mAEwIhkBum
+K1C0ks2ziWijZaIsc2rYopGxDkszlu5XNS6jCMZ3HDbDxnl8AMQQMrvglPWkRhZq
+DWkfeCJMUIm5ARQlY7SRLK0P35oauN184YsM6TUqxETKviCir6P1so53wx7srY/g
+C7CteeMoshAZ8zQu/DsZGl1LByXO+ERkbd7Rp1MOIchCKTPc2+brFiiPpj1peqid
+hUMQDA4zNoYiHibv8l0S5pOYSfsAbrZ4yGTh+ucFNIOtIvGNvAq7PwXsYJ2AcE62
+Q7YZv2kZYnQDVgc1F0uqQVymcYhGijur7E8AD2tJ45UYl/Ib3tHv//6dzORM4He8
+Y2aCcf1/Qk97H5m9wfTKOqTjAc5bdVhoKMWguZWfaZe44jx+eRBMI9L9H5tD+7nx
+K/0CnfQDeBdSpTGXCso5SNfGH3MpBVe4xZRd7593T8Hj+Z+ZIApnvDfkNy0tOoAO
+Nk7GzKS5ZGS0fH0iWxAXNTzaae8rIgE2L9gB42WjFIdLojiBfjRkfUqqOxcgk8kx
+R3ubhGcbb005jdDMI94xOmb+TgUuK1DOgfhJvwfWPu1BG9yJz28=
+=6eUk
+-----END PGP SIGNATURE-----
+--=-=-=--
 
