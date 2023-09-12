@@ -2,37 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F05379DBE8
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 00:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C4E79DC04
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 00:42:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgBv9-0000wR-J2; Tue, 12 Sep 2023 18:31:47 -0400
+	id 1qgC4R-0002Ns-N7; Tue, 12 Sep 2023 18:41:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qgBv8-0000wF-9o; Tue, 12 Sep 2023 18:31:46 -0400
-Received: from dev.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
- helo=smtp.gentoo.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qgBv5-0006Mg-3G; Tue, 12 Sep 2023 18:31:46 -0400
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Subject: qemu-riscv32 usermode still broken?
-Date: Wed, 13 Sep 2023 00:31:32 +0200
-Message-ID: <10817413.NyiUUSuA9g@pinacolada>
-Organization: Gentoo Linux
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qgC4Q-0002NN-EV
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:41:22 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qgC4J-00016C-1a
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 18:41:22 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-53482b44007so4366198a12.2
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 15:41:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694558473; x=1695163273;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=d6uMNey5witV9gBGN2Ca/8BOOVeXwvVhVa4lwuWxcsA=;
+ b=Uks7wXABOCTYZEDhIYXdV6i5eIjCiFPlTSFh3Y2qWn15gii5Tikv92D4Gm8mOVFeqs
+ k6Bj6A6LtCFDetS0EeSA1J0IjuA7Xksm97oyoaKcWYq0m6nVq0F8pBpTR2PzTLrlAM0r
+ uuz6bvuxDsFwUatcDaUmc0NNkbPnyt+PCnPY7N3Zh0GUQZG/f63NiS1JhCqqA6AU39BV
+ fGJQS9cFf8nOPP/+DYZPS7fEB8hIPxEKdRDyjSeQCPxfMZzvtj/RjEflEH+mDtSWhYuM
+ xailpc4vrH9tXFS8vLdt4QW4dDDBbYelHQkisIQL7napJ2drEhvC7dcMsGRtDQZy293n
+ 34dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694558473; x=1695163273;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=d6uMNey5witV9gBGN2Ca/8BOOVeXwvVhVa4lwuWxcsA=;
+ b=gt/HEG7t3bwc3sStO+1sDcOgcSTtrjgKX9OdbBdeHkPNqgAcaXdtMHOeu5WCcZQpzA
+ F//P43EG3yL1pcv3kGKNVrD/UkVlg5LxTf+uLJRkdT77cODU8NScxKlHKOkbOzbtQ4LX
+ Ni2vuYZNN5YdKj2nKOq2UI8IPaZ2wARAQmK2L7mPBN5RaFEj3+BMxmyz12l/v3e+pSLy
+ WYT4oIIYNGHifap/As1K80OkYML40HisJUluLP/6WIwWnpFJuBeuVBHkrhdclpKGezzA
+ /A+t0ESCleZ73LzH0g7oxc5xl1kjz85M3YJLsmfZJheBie3hpmnUYz5y5n6pB/yKLRdW
+ yJbQ==
+X-Gm-Message-State: AOJu0YwAK3GouZTXX75cEirFAhqHf9Z/i2X5MZQPhxWK28e6L2KZY7Ox
+ lyHE3x7V9Nn3S7Q70MrKkVG8VA==
+X-Google-Smtp-Source: AGHT+IHtU3EwT2MzJh2ABzz6sBoMgq+bRPCd+84YWLxqV0F5OlTQbKIecjG4mjGfXBsWAH7a95dNeg==
+X-Received: by 2002:a05:6a20:9388:b0:155:6e4f:8c1a with SMTP id
+ x8-20020a056a20938800b001556e4f8c1amr936096pzh.25.1694558473117; 
+ Tue, 12 Sep 2023 15:41:13 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ l13-20020a170902d34d00b001bbbc655ca1sm8996977plk.219.2023.09.12.15.41.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Sep 2023 15:41:12 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>,
+ Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v3 00/12] gdbstub and TCG plugin improvements
+Date: Wed, 13 Sep 2023 07:40:49 +0900
+Message-ID: <20230912224107.29669-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4469783.usQuhbGJ8B";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
- envelope-from=dilfridge@gentoo.org; helo=smtp.gentoo.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::529;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x529.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -48,116 +93,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---nextPart4469783.usQuhbGJ8B
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Subject: qemu-riscv32 usermode still broken?
-Date: Wed, 13 Sep 2023 00:31:32 +0200
-Message-ID: <10817413.NyiUUSuA9g@pinacolada>
-Organization: Gentoo Linux
-MIME-Version: 1.0
+This series extracts fixes and refactorings that can be applied
+independently from "[PATCH RESEND v5 00/26] plugins: Allow to read
+registers" as suggested by Nicholas Piggin.
 
-Dear all,=20
+Patch "target/ppc: Remove references to gdb_has_xml" is also updated to
+remove some dead code I missed earlier and thus the Reviewed-by tag is
+dropped.
 
-I've once more tried to build up a riscv32 linux install in a qemu-riscv32
-usermode systemd-nspawn, and am running into the same problems as some time
-ago...
+V2 -> V3:
+  Added patch "plugins: Check if vCPU is realized".
 
-https://dev.gentoo.org/~dilfridge/riscv32/riscv32.tar.xz   (220M)
+V1 -> V2:
+  Rebased.
+  Added patch "gdbstub: Fix target_xml initialization".
+  Added patch "gdbstub: Fix target.xml response".
+  Added patch "gdbstub: Replace gdb_regs with an array".
 
-The problems manifest themselves mostly in bash; if I replace /bin/bash=20
-with a static x86-64 binary (in the tarball as /bin/bash.amd64), bypassing
-qemu, I can make the chroot rebuild itself completely.
+Akihiko Odaki (12):
+  gdbstub: Fix target_xml initialization
+  gdbstub: Fix target.xml response
+  plugins: Check if vCPU is realized
+  contrib/plugins: Use GRWLock in execlog
+  gdbstub: Introduce GDBFeature structure
+  target/arm: Move the reference to arm-core.xml
+  hw/core/cpu: Return static value with gdb_arch_name()
+  gdbstub: Use g_markup_printf_escaped()
+  target/arm: Remove references to gdb_has_xml
+  target/ppc: Remove references to gdb_has_xml
+  gdbstub: Remove gdb_has_xml variable
+  gdbstub: Replace gdb_regs with an array
 
-https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00119.html
-^ Here I'm trying to find out more.=20
+ MAINTAINERS               |  2 +-
+ meson.build               |  2 +-
+ gdbstub/internals.h       |  2 -
+ include/exec/gdbstub.h    | 17 +++----
+ include/hw/core/cpu.h     |  4 +-
+ target/ppc/internal.h     |  2 +-
+ contrib/plugins/execlog.c | 16 ++++---
+ gdbstub/gdbstub.c         | 94 +++++++++++++++++++--------------------
+ gdbstub/softmmu.c         |  2 +-
+ plugins/core.c            |  2 +-
+ stubs/gdbstub.c           |  6 +--
+ target/arm/cpu.c          |  9 ++--
+ target/arm/cpu64.c        |  4 +-
+ target/arm/gdbstub.c      | 32 +------------
+ target/i386/cpu.c         |  6 +--
+ target/loongarch/cpu.c    |  8 ++--
+ target/ppc/gdbstub.c      | 24 ++--------
+ target/riscv/cpu.c        |  6 +--
+ target/s390x/cpu.c        |  4 +-
+ target/tricore/cpu.c      |  4 +-
+ scripts/feature_to_c.py   | 48 ++++++++++++++++++++
+ scripts/feature_to_c.sh   | 69 ----------------------------
+ 22 files changed, 146 insertions(+), 217 deletions(-)
+ create mode 100755 scripts/feature_to_c.py
+ delete mode 100644 scripts/feature_to_c.sh
 
-Bash tests apparently indicate that argv[0] is overwritten, and that
-reading through a pipe or from /dev/tty fails or loses data.
-
-Apart from the bash testsuite failing, symptoms are as follows:
-
-* Something seems wrong in the signal handling (?):
-=2D-- our package manager (bash/python combo, there bash) hangs reproducibl=
-y at=20
-one point.
-=2D-- when I run a console program and try to background it with ctl-z, it =
-hangs
-    (only the first time per bash instance, it seems)
-    repeated ctl-c gets me back to the shell, then the program is in the=20
-background
-
-riscv32 ~ # python
-Python 3.11.5 (main, Aug 31 2023, 21:56:30) [GCC 13.2.1 20230826] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>>=20
-[1]+  Stopped                 python
-^C^C^C^C^C^C^C
-riscv32 ~ # ^C
-riscv32 ~ #=20
-riscv32 ~ # jobs
-[1]+  Stopped                 python
-riscv32 ~ # fg
-python
-
-
->>>=20
-
-=2D-- make, when building something, seems to always start only one job in=
-=20
-parallel
-
-Any advice or debugging would be appreciated.=20
-
-If we get this running then I can set up regular riscv32 Gentoo stage builds
-within a week. [*]
-
-Thanks in advance,
-Andreas
-
-PS.
-huettel@pinacolada ~ $ /var/lib/machines/riscv32/usr/bin/qemu-riscv32 -vers=
-ion
-qemu-riscv32 version 8.1.0
-Copyright (c) 2003-2023 Fabrice Bellard and the QEMU Project developers
-
-
-[*] https://www.gentoo.org/downloads/#riscv
-
-=2D-=20
-Andreas K. H=FCttel
-dilfridge@gentoo.org
-Gentoo Linux developer
-(council, toolchain, base-system, perl, libreoffice)
---nextPart4469783.usQuhbGJ8B
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQKTBAABCgB9FiEE/Rnm0xsZLuTcY+rT3CsWIV7VQSoFAmUA5sRfFIAAAAAALgAo
-aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEZE
-MTlFNkQzMUIxOTJFRTREQzYzRUFEM0RDMkIxNjIxNUVENTQxMkEACgkQ3CsWIV7V
-QSpcEBAAoe/5kNZ3rZV5+g0u/1NTx1Cu8Q7FOub4hWFRjiUXE9kpykBrfCrCH//m
-A9AEO/rhn/QVnDs0N132pOtyIvgujRUeQu5VUc78v7WYcbO7OujmpJC9yCINYt2y
-cV9/YGUoqAKS3TASe+KKPtdu8zDvzi45EXXx3odaxhDFSC38KAZXaETRRUrQg7ke
-IZMoBxUo5c0fq72zvFSh18EDvcHZiSmwN2mBQ4RtuI0SbsJ+TUj0bvyNEfRGyijM
-xjZLANRIZge21t9m3oSzml6kIX0lri0PEVjNgIgdtHAM+jzNBQ50oyOew09HBvqW
-lxulu6FrU7xoVr9cKeI1DwZpqu5Bb7XYpXyIZT6r8VQOYlsGd+PGN0D0kupTL/ZU
-qKYlrt4avdUNSCb7aHgI+Lb96v0e9STOWYR9Wkhw75AzyVuO6zL9BfMX9PBcOEg+
-XBvLPnBb1uFe/fS27zt90Una7KMqQ5eSbJbA+2yV6qniAVWdvqu4pzFii1Su6DEw
-zG8N3KGPlXmF6arUkYkaj6NLq0K/ovyBkjUdRlEP4MKBHIHoiRuEFrZlGOhh4dtK
-CJUncJS3Oy1ApNBRY6F/Md/KLuJashsBvxqILIuq+2ixx13BJh7qCxcintXlsvJ2
-wmpXEBeHBwc4Fv2WJeRd9uBzGVzceRdey44sFGD9nicJORwrwyw=
-=JFxa
------END PGP SIGNATURE-----
-
---nextPart4469783.usQuhbGJ8B--
-
-
+-- 
+2.42.0
 
 
