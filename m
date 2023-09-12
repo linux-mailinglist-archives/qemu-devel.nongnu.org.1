@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3983879D8DA
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BED8779D8D9
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 20:43:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qg8Kd-0004Ug-AC; Tue, 12 Sep 2023 14:41:51 -0400
+	id 1qg8Kd-0004Uz-Gv; Tue, 12 Sep 2023 14:41:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8KV-0004T6-9x
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:43 -0400
+ id 1qg8KX-0004Tc-3w
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qg8KS-0001QU-9O
- for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:43 -0400
+ id 1qg8KU-0001R3-3H
+ for qemu-devel@nongnu.org; Tue, 12 Sep 2023 14:41:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694544099;
+ s=mimecast20190719; t=1694544101;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1AIiAYRZUIN3tB/gUJdVsd76BMtXSUjRQoKp5b2WIkc=;
- b=GVa9fJKlLmFQ5rEaVH+9vnH/ebzH93Aa91hQeEMOmkjNWsoUOD4TeUKuEctUqL43kWVyGm
- sb7Da/3Mv4EWQD6TGdEbWX72+GipvwTo6ts/y6elXYoOe7VRBKAyNJlVqcsts1TzAbJ+cG
- To/ek7YocERIwG2lV5hfiPdzNIv6YKI=
+ bh=jmz3fnUyyNHeeq0yChyHiqQDJDibl5/ScPj+H4Udnqs=;
+ b=UUGDy8PZ5niu5eO0J6mvqwflsWTPIQJgE5PRfo1tqOOV0E9DJNqYlrBeruEmftXicFjk4E
+ g+SeVSgzxcj5kB09ih9lvsi//FMplPodHEmHAPCqXoaN0zd/NyG4XXeaMjT27/lgOW/rd5
+ 0Vb84dWzzfQuU8e9GSU6UnnM74n5pjQ=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-275-HbIXb2yRPzy_eoWRstNw4Q-1; Tue, 12 Sep 2023 14:41:35 -0400
-X-MC-Unique: HbIXb2yRPzy_eoWRstNw4Q-1
+ us-mta-681-yQX6Wp6JMdGc5unjBWGJDA-1; Tue, 12 Sep 2023 14:41:37 -0400
+X-MC-Unique: yQX6Wp6JMdGc5unjBWGJDA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 69BF53810D39;
- Tue, 12 Sep 2023 18:41:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 297003C0EAA0;
+ Tue, 12 Sep 2023 18:41:37 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A22ED63F9D;
- Tue, 12 Sep 2023 18:41:33 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9823B7B62;
+ Tue, 12 Sep 2023 18:41:35 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <lvivier@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Laurent Vivier <lvivier@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 1/4] microbit: add missing qtest_quit() call
-Date: Tue, 12 Sep 2023 19:41:27 +0100
-Message-ID: <20230912184130.3056054-2-berrange@redhat.com>
+Subject: [PATCH 2/4] qtest: kill orphaned qtest QEMU processes on FreeBSD
+Date: Tue, 12 Sep 2023 19:41:28 +0100
+Message-ID: <20230912184130.3056054-3-berrange@redhat.com>
 In-Reply-To: <20230912184130.3056054-1-berrange@redhat.com>
 References: <20230912184130.3056054-1-berrange@redhat.com>
 MIME-Version: 1.0
@@ -86,37 +86,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Without this call, the QEMU process is being left running which on
-FreeBSD 13.2 at least, makes meson think the test is still running,
-and thus execution of "make check" continues forever.
+On Linux we use PR_SET_PDEATHSIG to kill orphaned QEMU processes
+if we fail to call qtest_quit(), or the test program aborts/segvs.
+This prevents meson from hanging forever due to the orphaned
+process keeping stdout open.
 
-This fixes the regression introduced in:
+On FreeBSD we can achieve the same using PROC_PDEATHSIG_CTL, which
+gives us the equivalent protection against hangs.
 
-  commit a9c9bbee855877293683012942d3485d50f286af
-  Author: Chris Laplante <chris@laplante.io>
-  Date:   Tue Aug 22 17:31:02 2023 +0100
-
-    qtest: microbit-test: add tests for nRF51 DETECT
-
-Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1882
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- tests/qtest/microbit-test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tests/qtest/libqtest.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/qtest/microbit-test.c b/tests/qtest/microbit-test.c
-index 2abcad8e31..72190d38f7 100644
---- a/tests/qtest/microbit-test.c
-+++ b/tests/qtest/microbit-test.c
-@@ -434,6 +434,8 @@ static void test_nrf51_gpio_detect(void)
-     g_assert_true(qtest_get_irq(qts, 0));
-     qtest_set_irq_in(qts, "/machine/nrf51", "unnamed-gpio-in", 3, 0);
-     g_assert_true(qtest_get_irq(qts, 0));
-+
-+    qtest_quit(qts);
- }
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index 34b9c14b75..b1eba71ffe 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -24,6 +24,9 @@
+ #ifdef __linux__
+ #include <sys/prctl.h>
+ #endif /* __linux__ */
++#ifdef __FreeBSD__
++#include <sys/procctl.h>
++#endif /* __FreeBSD__ */
  
- static void timer_task(QTestState *qts, hwaddr task)
+ #include "libqtest.h"
+ #include "libqmp.h"
+@@ -414,6 +417,10 @@ static QTestState *G_GNUC_PRINTF(1, 2) qtest_spawn_qemu(const char *fmt, ...)
+          */
+         prctl(PR_SET_PDEATHSIG, SIGKILL, 0, 0, 0);
+ #endif /* __linux__ */
++#ifdef __FreeBSD__
++        int sig = SIGKILL;
++        procctl(P_PID, getpid(), PROC_PDEATHSIG_CTL, &sig);
++#endif /* __FreeBSD__ */
+         if (!g_setenv("QEMU_AUDIO_DRV", "none", true)) {
+             exit(1);
+         }
 -- 
 2.41.0
 
