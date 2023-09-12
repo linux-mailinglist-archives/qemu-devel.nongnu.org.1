@@ -2,83 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B2379B90B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 02:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC2179B961
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Sep 2023 02:10:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qfqxm-0006fw-It; Mon, 11 Sep 2023 20:09:06 -0400
+	id 1qfqxk-0006fN-Vt; Mon, 11 Sep 2023 20:09:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qfqxi-0006f8-4i
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:09:02 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qfqxX-0003xr-Ok
- for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:09:01 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68a3ced3ec6so4424547b3a.1
- for <qemu-devel@nongnu.org>; Mon, 11 Sep 2023 17:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694477330; x=1695082130; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mdAbQVk3u6dHUgpW/VGu3f1FA+J0QHIdcy6TGoXHp5w=;
- b=GvM0Is1xjB8tKsVs2PLfa4N8SZgClnCP8/F8DNUtGDDazdbWLOy3TyMbUdbhMCt2Q+
- /M9vl1SNQxr2GOwCE5RNXYg7Sn9lJAbHdfgOwYVfsQ0ditkvPIw4ppnv2+pJxZhWTNda
- MLH+XJ2+5zOmg/VmY+OPdajrPore0dvi3ndyFr/hjZx6vjRqnm/50HfvU2JyM0GNtWz2
- pLgmZqkHqBOjq+o9A9VpKFjoqmJi8ga+ZugdZGzrfrmUo6aTnUS9SkvfQu3yQY7Gar6Z
- Jqi3v4jGJjtJqmexD6RxBG/8swJjlqMTF31Bm6i0JoBeNRxntoKR75y1VoFou+U4uPu0
- htuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694477330; x=1695082130;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mdAbQVk3u6dHUgpW/VGu3f1FA+J0QHIdcy6TGoXHp5w=;
- b=aJYsYov+P8KqR5i5fETzmY9imfaPAa/TKfOzsQFSlUvxxkz+MKeV8X3LfFceso98pa
- fT7MIcFQn+g7H1ZXLJxWCX0+NIbb7xa5kwxH7LxOoDlIFB6EQBeaKUf1lXG09dxLo0UY
- ktHSlgaY6a86oNMDNI2It9DPNa2iAANKQU2kNZ3ju5AtG+NuO6cYM7ZFOlfZaP4AarcW
- 92nZ4n9R+jsM0Qhx9a9KJfEGmJ7ercePy3uiobjw310SqLuJDrOMcGygdSPLt4CzgT/L
- V2Gwdt3ViwhP9RBIcqU32XB5J733gm9m5XkmF87nsatjmX0xxz3UIe+jSFSfbpvzl8Bs
- eShw==
-X-Gm-Message-State: AOJu0YwLOjlSQDXb5g9zd8qXPOvOartyJNAT0VvytrOwDFvqplEE60O+
- +yCa5IjHMG8VBIT3uFgrOMLfVw==
-X-Google-Smtp-Source: AGHT+IGL7cUiL63rDwMwfoNyyuggoLtTTAVCpz8r1rP/6JeI+c/CPbU57dH/vr9mJVVLxGN+TMjo2Q==
-X-Received: by 2002:a05:6a20:1448:b0:14c:f16a:2b78 with SMTP id
- a8-20020a056a20144800b0014cf16a2b78mr13392428pzi.45.1694477330174; 
- Mon, 11 Sep 2023 17:08:50 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- c3-20020aa78803000000b00686bef8e55csm6143220pfo.39.2023.09.11.17.08.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 Sep 2023 17:08:49 -0700 (PDT)
-Message-ID: <0bdcfe70-58ac-4ed0-4f75-33d30653a9c2@linaro.org>
-Date: Mon, 11 Sep 2023 17:08:48 -0700
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qfqxf-0006eM-4q
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:08:59 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qfqxb-0003yK-Gu
+ for qemu-devel@nongnu.org; Mon, 11 Sep 2023 20:08:58 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38C06GYZ007710
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 00:08:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=aOY5ZqcHpCqEQ9OC+5/IM81aK919yoRuJpchQiqeqFs=;
+ b=VDeY8Qwek8ninlydfZn4Cfe/qtWOSTNiQF5YiM4sbaGO8QHY1RZSJJhZ9z+BSb7oslkW
+ mytiXJSsoZMZxEEDcooYjsVhgT0mC/xVFMPc4pUWkwLtkoGztXmQ/b61NskMjRqGJT1X
+ Tp2bWG8WCyWZ41NuzaxTM/wFw+a7vtn5LiYdjB3j9A1P/SBslI6CDYmstkwMZc6+LQ5Y
+ WGz1IZ4hAoPSW//rLGwStzdJc6zO6pObUxzee6ccnue5ZOm3EL24SJtrmGIlyB+jd8UD
+ T2aOeNf5owv/bLzeYQg5RK2yrjiRzlFGMb627nXm7Tmu3+LDxGoeHvrNyqnEXX40akEX aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2bm9a3j2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 00:08:53 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38C06nlx012224
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 00:08:52 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t2bm9a3ht-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Sep 2023 00:08:52 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38BNu0X8012169; Tue, 12 Sep 2023 00:08:52 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t13dyf036-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 12 Sep 2023 00:08:51 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38C08pvI17039678
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 12 Sep 2023 00:08:51 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3EDB658060;
+ Tue, 12 Sep 2023 00:08:51 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0533C5805A;
+ Tue, 12 Sep 2023 00:08:51 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Tue, 12 Sep 2023 00:08:50 +0000 (GMT)
+Message-ID: <dcf26f94-4b0b-e992-1207-a1ee73f21508@linux.ibm.com>
+Date: Mon, 11 Sep 2023 20:08:50 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v3 22/23] bsd-user: Implement shmat(2) and shmdt(2)
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] tpm: fix crash when FD >= 1024
 Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
-References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
- <20230909193704.1827-23-kariem.taha2.7@gmail.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230909193704.1827-23-kariem.taha2.7@gmail.com>
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20230911132551.1421276-1-marcandre.lureau@redhat.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20230911132551.1421276-1-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: YrsMeVY3GXSpnXnmbQG-4mguYUshRL8s
+X-Proofpoint-ORIG-GUID: DL-uhSSp08hD7xuSg7xZl2Sei-wtHcSN
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_19,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 phishscore=0 adultscore=0
+ clxscore=1015 spamscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309110221
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,25 +117,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/9/23 12:37, Karim Taha wrote:
-> +static inline abi_long do_bsd_shmdt(abi_ulong shmaddr)
-> +{
-> +    int i;
-> +
-> +    for (i = 0; i < N_BSD_SHM_REGIONS; ++i) {
-> +        if (bsd_shm_regions[i].start == shmaddr) {
-> +            bsd_shm_regions[i].start = 0;
-> +            page_set_flags(shmaddr,
-> +                shmaddr + bsd_shm_regions[i].size, 0);
-> +            break;
-> +        }
-> +    }
-> +
-> +    return get_errno(shmdt(g2h_untagged(shmaddr)));
-> +}
 
-On success, this needs to mmap_reserve the region for reserved_va.
+On 9/11/23 09:25, marcandre.lureau@redhat.com wrote:
+> From: Marc-Andr޸ Lureau <marcandre.lureau@redhat.com>
+>
+> Replace select() with poll() to fix a crash when QEMU has a large number
+> of FDs.
+>
+> Fixes:
+> https://bugzilla.redhat.com/show_bug.cgi?id=2020133
+
+For backporting I think we should also add this tag here:
+
+Fixes:  ca64b08638 ("tpm: Move backend code under the 'backends/' 
+directory")
+
+Though RETRY_ON_EINTR was only introduced in 8.0.0-rc0. What's the right 
+tag for backporting then?
+
+    Stefan
 
 
-r~
+> Signed-off-by: Marc-Andr޸ Lureau <marcandre.lureau@redhat.com>
+> Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>   backends/tpm/tpm_util.c | 11 ++---------
+>   1 file changed, 2 insertions(+), 9 deletions(-)
+>
+> diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
+> index a6e6d3e72f..1856589c3b 100644
+> --- a/backends/tpm/tpm_util.c
+> +++ b/backends/tpm/tpm_util.c
+> @@ -112,12 +112,8 @@ static int tpm_util_request(int fd,
+>                               void *response,
+>                               size_t responselen)
+>   {
+> -    fd_set readfds;
+> +    GPollFD fds[1] = { {.fd = fd, .events = G_IO_IN } };
+>       int n;
+> -    struct timeval tv = {
+> -        .tv_sec = 1,
+> -        .tv_usec = 0,
+> -    };
+>
+>       n = write(fd, request, requestlen);
+>       if (n < 0) {
+> @@ -127,11 +123,8 @@ static int tpm_util_request(int fd,
+>           return -EFAULT;
+>       }
+>
+> -    FD_ZERO(&readfds);
+> -    FD_SET(fd, &readfds);
+> -
+>       /* wait for a second */
+> -    n = select(fd + 1, &readfds, NULL, NULL, &tv);
+> +    n = RETRY_ON_EINTR(g_poll(fds, 1, 1000));
+>       if (n != 1) {
+>           return -errno;
+>       }
 
