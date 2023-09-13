@@ -2,88 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2C179E352
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FCD79E363
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:19:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgLxw-00049h-8L; Wed, 13 Sep 2023 05:15:20 -0400
+	id 1qgM13-0005bF-KV; Wed, 13 Sep 2023 05:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qgLxr-00047t-VB; Wed, 13 Sep 2023 05:15:16 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qgM0y-0005ag-Rf
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:18:29 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qgLxj-0005Tf-8r; Wed, 13 Sep 2023 05:15:15 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6c0f2addaefso1537123a34.2; 
- Wed, 13 Sep 2023 02:14:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qgM0w-0006I5-L8
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:18:28 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-52e64bc7c10so8492974a12.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 02:18:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694596497; x=1695201297; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=G3w5yIpwhY+I6554KNWUDhdjV7BQ5x1Kg/Kbnew7tEk=;
- b=IlbXNnKuJ8EZctoLqb6BuSm+okI0ez6W0Ark+12cZ5uVqVMfN75ghn3B11UdRsm+S1
- TbP9tOASnx+8abiu8gdue8XXxsXi2dH01Mt0q4u2kgTHrYvySZBknkuLt8GLSxdGNc0i
- RPszEhK5BGtqk4K6Q5bYV3TcTuqsik9e+bSelVQ9VaRoys8D2aFv8tE77yqe/wLslday
- r27tP7ggSD+nIst0mffEZtnVWT/9SLyZ5w/Hz6J0XHCjGfY0Nbt0noi1VdDk34OZI1w+
- fOpAQF+N8DOTP54d6SXAgh19Fkgac9mYw2e/W/dNEAW10X3TDI9Jlt/pK+bJPwUfKTJD
- HuAw==
+ d=linaro.org; s=google; t=1694596703; x=1695201503; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=jIUwBMgg3G97ZH9wzmRimjfRiWE7dmnEgFhigWWp/Pg=;
+ b=w8E/UWQmvMQUvQufhPPOpgp4OXj/Zn2Ydev2DhpvHOmCW6WMKw1+04oocL6atrTUvC
+ qUFUIsyGMFucebBDH18DJWUEB/AvIkdKMSmCPLp3oJboIJUpKmRb6/ieeJYt8HJmmqtH
+ RctCGaKmBnESPQdFF9H+aOi6dkhPccW3RlWmYlPYWpA/pUNfhcLXBCpFNFBE9hIh6GIv
+ VBb/QxIIDZhP77y/ajcLWFd/ZpqV6trPeXUZ68KNmA6eJpE94duirx4YlJr9lBJ4GeZB
+ NNHgX3JXN03gOjtUShAAAwioQKcHmfuFhH2R3g6hMUEKyLEujnb/e06RmKPl5pVmOYho
+ 3udw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694596497; x=1695201297;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=G3w5yIpwhY+I6554KNWUDhdjV7BQ5x1Kg/Kbnew7tEk=;
- b=BafqGGReGKVOt0vp603EHle8FA+rswkthSFwPatkfZlz3NJrTO8/kpKkrozAEKoayO
- pu1iz7/FU3jFyDtnwWMRSqKbzzmAjuIxPuUvVXu/MnDtO8a7WHARtYaLL10QBJnGxyQ5
- McNKKUqfbKmP0rh19VTuVdeUiMJmULXqPXKTX86dAMfVBspA0lbpNZUJXfm2coAEZ/zv
- 06HAGNL5s9OCMLqTA71wHK1RA3rynzQoL/ANLVZd84fHkDS/KOwYj+eeZlg1A7YuYgPs
- PmyL27CwtZeDXhj8nfqFu3lm3/k3fbxo1mbDLbPcHxueswwScbxciA+x3cG2fidtY1jm
- ay7w==
-X-Gm-Message-State: AOJu0YzDRhkW+POvk68wqrp6oGXMmIper2VxKo3XKR8BgIe35u4Gw3Zy
- JeIzKZRmSFgA3JKJry5+VDc=
-X-Google-Smtp-Source: AGHT+IFGkyvWdDB3ZCQ/uHBly/7wo13+AsvoNYqSa8U34IEVGJ4FgTHUxXJZZEk2mGUPceo5gjUA6Q==
-X-Received: by 2002:a9d:65d7:0:b0:6b8:9932:b8ad with SMTP id
- z23-20020a9d65d7000000b006b89932b8admr2124323oth.1.1694596497177; 
- Wed, 13 Sep 2023 02:14:57 -0700 (PDT)
-Received: from [192.168.68.107] ([177.9.182.82])
- by smtp.gmail.com with ESMTPSA id
- x6-20020a05683000c600b006b9ad7d0046sm4733699oto.57.2023.09.13.02.14.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 02:14:56 -0700 (PDT)
-Message-ID: <014ba528-db84-3a81-f2c1-0306965d40b9@gmail.com>
-Date: Wed, 13 Sep 2023 06:14:48 -0300
+ d=1e100.net; s=20230601; t=1694596703; x=1695201503;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jIUwBMgg3G97ZH9wzmRimjfRiWE7dmnEgFhigWWp/Pg=;
+ b=ZBusxvmuBCyq9GqzHdwoc3hJ/Y9JgDLujyKIJLbfqs0OQpSdMNnmzg+fR13PtUUXAs
+ eb1jl6HMxnmVPi02n9odGJDv69FSGc4wR+SsamjsYL1b0ic7O9mBTAsGa7Vt9kyCyHix
+ OGl9X41AlEcCkHwskam29X7X0hqXm4Z6DmA9JvX62BvGhlyjMQWLY6DX4F0oGUHULu3W
+ vxcfD0JdwJgRA3IQ7rewQnT7xAjoGpVpSKQYrjRGlaKr6RiBobziVcrjTmfPcRabUYyN
+ lXVvx8eHbluNB+A/LtSCE15BemH0hMBWHrBt9wrsd0HlDoNesCf4TnZokdLnmT3K9uWf
+ VUxA==
+X-Gm-Message-State: AOJu0YzARhrNdglRtaOgbgOUwLR5z/AHA3ScGgER9OHBRa8q2KT60b9O
+ xsRBlkZtiQPDgyn7sTBeD8V4VcKt7b3vEsqQXf9+/g==
+X-Google-Smtp-Source: AGHT+IGxdXxMNAt6Q4xJXxZs/fF+zOoF+7ydFhtAFEBj4X1PgscWgmo2+vS657GIPKzhh+nkBHKHmEoAXR3J2n7e2M0=
+X-Received: by 2002:aa7:c6d0:0:b0:525:5a65:6dfa with SMTP id
+ b16-20020aa7c6d0000000b005255a656dfamr1670116eds.14.1694596703667; Wed, 13
+ Sep 2023 02:18:23 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 4/4] target/ppc: Prohibit target specific KVM prototypes
- on user emulation
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-ppc@nongnu.org,
- Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
- <clg@kaod.org>, Michael Tokarev <mjt@tls.msk.ru>, Greg Kurz <groug@kaod.org>
-References: <20230912113027.63941-1-philmd@linaro.org>
- <20230912113027.63941-5-philmd@linaro.org>
-Content-Language: en-US
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20230912113027.63941-5-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=danielhb413@gmail.com; helo=mail-ot1-x32c.google.com
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20230912150611.70676-1-stefanha@redhat.com>
+ <27e38912-0bad-7398-dda6-1670fc644f74@redhat.com>
+In-Reply-To: <27e38912-0bad-7398-dda6-1670fc644f74@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 13 Sep 2023 10:18:12 +0100
+Message-ID: <CAFEAcA_roU-_E4P94km1RF=u6c+GRBxrGP0jS1_dXsRABCymJg@mail.gmail.com>
+Subject: Re: [PATCH] gitlab: remove unreliable avocado CI jobs
+To: Thomas Huth <thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Beraldo Leal <bleal@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,37 +89,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 12 Sept 2023 at 21:00, Thomas Huth <thuth@redhat.com> wrote:
+> Please don't remove the whole job! Just disable the failing tests within the job, e.g.:
+>
+> diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+> --- a/tests/avocado/replay_kernel.py
+> +++ b/tests/avocado/replay_kernel.py
+> @@ -503,6 +503,7 @@ def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
+>           console_pattern = 'Kernel command line: %s' % kernel_command_line
+>           self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+>
+> +    @skipIf(os.getenv('GITLAB_CI'), 'Skipping unstable test on GitLab')
+>       def test_mips_malta32el_nanomips_4k(self):
+>           """
+>           :avocado: tags=arch:mipsel
 
+Please don't skip unstable tests on gitlab only. If they're
+unstable, then nobody wants to be running them and wondering
+if these are flaky tests or real issues, whether theyr'e doing
+it on gitlab or locally. (I know we already have a lot of these,
+but the effect is that instead of saying 'make check-avocado'
+you have to say 'GITLAB_CI=1 make check-avocado'.)
 
-On 9/12/23 08:30, Philippe Mathieu-Daudé wrote:
-> None of these target-specific prototypes should be used
-> by user emulation. Remove their declaration there, so we
-> get a compile failure if ever used (instead of having to
-> deal with linker and its possible optimizations, such
-> dead code removal).
-> 
-> Suggested-by: Kevin Wolf <kwolf@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
-
-Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
-
->   target/ppc/kvm_ppc.h | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/target/ppc/kvm_ppc.h b/target/ppc/kvm_ppc.h
-> index 440e93f923..ffda8054b2 100644
-> --- a/target/ppc/kvm_ppc.h
-> +++ b/target/ppc/kvm_ppc.h
-> @@ -13,6 +13,10 @@
->   #include "exec/hwaddr.h"
->   #include "cpu.h"
->   
-> +#ifdef CONFIG_USER_ONLY
-> +#error Cannot include kvm_ppc.h from user emulation
-> +#endif
-> +
->   #ifdef CONFIG_KVM
->   
->   uint32_t kvmppc_get_tbfreq(void);
+thanks
+-- PMM
 
