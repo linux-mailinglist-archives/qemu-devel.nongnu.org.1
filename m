@@ -2,82 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1ACE79EF75
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 18:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17CE579EF80
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 18:58:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgT9n-0000ib-K7; Wed, 13 Sep 2023 12:56:03 -0400
+	id 1qgTB4-0001GZ-EF; Wed, 13 Sep 2023 12:57:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgT9m-0000hX-AP
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 12:56:02 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgT9j-0004OK-J5
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 12:56:02 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c0ecb9a075so52917025ad.2
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 09:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694624158; x=1695228958; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=1KRCjUOxyzReqnQBZmjiPDgFqMCswZgDzYqJUA6afw8=;
- b=l+dlCtlD7Gvt594sBp6d82bnhNJjCgLRi5LDfEQaVl7FLyDuOWeCFShUsxP3o0a2zZ
- RjTD0uWu60YL+Xb9MrLQfS4ZFPr/yCcmP4A7qCmBuruIHAmUv9841l2yR71qXxlN2rJ7
- ms1FFBOauIn4Q7EwYX8fOA6pJiGlUWprK3zylpIZvgP3vx3T+G7KqCcXsSX2FlsiKHnR
- xGjAxh8y47DD1HtPWTBUhaVdpN/fTp9pHGIwd0IK+n7nN+CV4aI2evTdombooMErMbv0
- TqzzNAkNZpaoAzlQcW4FD3Apy2qMaTbAEySFB7S8xqLC03e4TyuSSZFkCEhst7gNm3x4
- ymyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694624158; x=1695228958;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1KRCjUOxyzReqnQBZmjiPDgFqMCswZgDzYqJUA6afw8=;
- b=qqs4lO5bGdnS7w17vxUnkFbf2DSPWmdZ1dNS1lIsslFWlppIvEMIjBpfjj+LSGVrvQ
- 0QcmPkP/tk+yPcNiBeI1XJmY+zzVxKbo4W/4Loq9sxj3wTeGRTbG8Kc/yrTyju2rD0l8
- kUB7dbI8JkuVsXJ8SKl4PZ0XpTJePQMF1MEGdu9QoY7jQ+8ab/MPgvEeLLv1qIb7YzFH
- MCzwx93fDtsMxTkLkCzPeZ4Pcrb3fjywKUpfSZxnIRkylCFyIxmoJ9fd4XZigv1vdpiO
- DfshTUTtQketytqenNLgcdbdwwsFfHvriFkI4OFfg96YWYm4ZgQTTZ9ioIKOFt0YGWwQ
- YlGQ==
-X-Gm-Message-State: AOJu0YwrpDwEgTu8oozSwQQZ/3iXh4fEap/KpKvZPca1PuGPxr/CVE4B
- iPPXwPfpSTXHdtki8byVs7LhVQ==
-X-Google-Smtp-Source: AGHT+IGBYHqSCZPgWpS6wHaIx5pxkJRlA41vhQUH+7gk8e8rzcSW2rOLBa3ldnhd0tcPP34afntM+w==
-X-Received: by 2002:a17:902:c244:b0:1c3:94a4:34bd with SMTP id
- 4-20020a170902c24400b001c394a434bdmr3327556plg.40.1694624157654; 
- Wed, 13 Sep 2023 09:55:57 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- p12-20020a170902a40c00b001b891259eddsm10637946plq.197.2023.09.13.09.55.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 09:55:57 -0700 (PDT)
-Message-ID: <ba047867-db8b-8bb6-d2e7-563516c5afb6@linaro.org>
-Date: Wed, 13 Sep 2023 09:55:55 -0700
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgTB2-0001C9-2R
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 12:57:20 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgTAo-0004a5-Dw
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 12:57:16 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rm61k5PRyz67bbM;
+ Thu, 14 Sep 2023 00:52:10 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 13 Sep
+ 2023 17:56:50 +0100
+Date: Wed, 13 Sep 2023 17:56:49 +0100
+To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+CC: Dmitry Frolov <frolov@swemel.ru>, <fan.ni@samsung.com>,
+ <qemu-devel@nongnu.org>, <sdl.qemu@linuxtesting.org>
+Subject: Re: [PATCH] hw/cxl: Fix out of bound array access
+Message-ID: <20230913175649.00001447@Huawei.com>
+In-Reply-To: <057bee7c-92e0-1cf2-bcdd-ef7eeb223db4@linaro.org>
+References: <20230913101055.754709-1-frolov@swemel.ru>
+ <057bee7c-92e0-1cf2-bcdd-ef7eeb223db4@linaro.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] target/hppa: Optimize ldcw/ldcd instruction translation
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
-References: <ZQHLcL6E5uNvjkaN@p100>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <ZQHLcL6E5uNvjkaN@p100>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,26 +63,95 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/13/23 07:47, Helge Deller wrote:
-> +        haddr = (uint32_t *)((uintptr_t)vaddr);
-> +        old = *haddr;
+On Wed, 13 Sep 2023 13:36:46 +0200
+Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
 
-This is horribly incorrect, both for user-only and system mode.
+> Hi Dmitry,
+>=20
+> On 13/9/23 12:10, Dmitry Frolov wrote:
+> > According to cxl_interleave_ways_enc(),
+> > fw->num_targets is allowed to be up to 16.
+> > This also corresponds to CXL specs.
+> > So, the fw->target_hbs[] array is iterated from 0 to 15.
+> > But it is staticaly declared of length 8. =20
+>=20
+> "statically"
+>=20
+> > Thus, out of bound array access may occur.
 
-> +        /* if already zero, do not write 0 again to reduce memory presssure */
-> +        if (old == 0) {
-> +            return 0;
-> +        }
-> +        old = qatomic_xchg(haddr, (uint32_t) 0);
+If going around again:
+Rewrap the above text to be around 75 chars long.
+> >=20
+> > Fixes: c28db9e000 ("hw/pci-bridge: Make PCIe and CXL PXB Devices inheri=
+t from TYPE_PXB_DEV")
+> >=20
 
-You're also dropping the required host memory barrier.
+No blank line here. Fixes tag is part of the tag block that automated tools
+will pick up.
 
-Frankly, the current tcg_gen_atomic_xchg_reg is as optimized as you'll be able to do.  I 
-really doubt the "avoid write 0" is measurable at all.
+> > Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+> > ---
+> >   include/hw/cxl/cxl.h | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
+> > index 56c9e7676e..4944725849 100644
+> > --- a/include/hw/cxl/cxl.h
+> > +++ b/include/hw/cxl/cxl.h
+> > @@ -29,7 +29,7 @@ typedef struct PXBCXLDev PXBCXLDev;
+> >   typedef struct CXLFixedWindow {
+> >       uint64_t size;
+> >       char **targets;
+> > -    PXBCXLDev *target_hbs[8];
+> > +    PXBCXLDev *target_hbs[16];
+> >       uint8_t num_targets;
+> >       uint8_t enc_int_ways;
+> >       uint8_t enc_int_gran; =20
+>=20
+> The loop in cxl_fixed_memory_window_config() is indeed unsafe.
+>=20
+> OOB can be catched adding:
+>=20
+> -- >8 -- =20
+> diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+> index 034c7805b3..fe9143409b 100644
+> --- a/hw/cxl/cxl-host.c
+> +++ b/hw/cxl/cxl-host.c
+> @@ -33,6 +33,7 @@ static void cxl_fixed_memory_window_config(CXLState=20
+> *cxl_state,
+>       for (target =3D object->targets; target; target =3D target->next) {
+>           fw->num_targets++;
+>       }
+> +    assert(fw->num_targets <=3D ARRAY_SIZE(fw->target_hbs));
+>=20
+>       fw->enc_int_ways =3D cxl_interleave_ways_enc(fw->num_targets, errp);
+>       if (*errp) {
+> ---
+>=20
+> If Jonathan concurs, please add to your patch.
+I disagree.=20
+
+cxl_interleave_ways_enc() will spit out an error if the value greater
+than 16 as well as handling all the other invalid cases as this
+can only take values
+1,2,3,4,6,8,12,16
+
+Only issue here was that 12 and 16 were values that are accepted but
+would overflow the buffer.
+Note we don't yet support decoding multiple of 3 interleaves but for
+this particular bit of code that isn't a problem.
 
 
-r~
+
+>=20
+> Thanks,
+>=20
+> Phil.
+>=20
+
 
