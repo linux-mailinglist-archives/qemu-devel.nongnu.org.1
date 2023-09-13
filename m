@@ -2,105 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BA479E143
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 09:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CAD79E175
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 10:06:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgKjB-0004zQ-Tj; Wed, 13 Sep 2023 03:56:01 -0400
+	id 1qgKrY-0000pB-AC; Wed, 13 Sep 2023 04:04:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qgKj9-0004z2-3m
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 03:55:59 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qgKrW-0000oK-2g
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:04:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qgKj6-0000yd-R5
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 03:55:58 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qgKrS-0004gA-8k
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:04:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694591755;
+ s=mimecast20190719; t=1694592273;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=e+T78EfLbD3W1gVbFVQtm2/Wf6HsuIT6BGfT58aZwZw=;
- b=JgmBUUlOS0nKgCnKnJeCIOWOa4ePRCoNhfD7gY5KD5WpccWaK6vt4qSvEHU/Vpf/IneNag
- unEdKL6XuQDHucK3CdU+E8UKB4UWj4LMA2du8YT3KUBjHkKInnEHe4dqVxUqx5fZOTLG5p
- ZkRi/yFo0EpKAWQHvA9X9iRASJf5HC8=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-WntRzEu3PRan1bvrIUtD_A-1; Wed, 13 Sep 2023 03:55:52 -0400
-X-MC-Unique: WntRzEu3PRan1bvrIUtD_A-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-26d63b60934so8484230a91.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 00:55:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694591751; x=1695196551;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=e+T78EfLbD3W1gVbFVQtm2/Wf6HsuIT6BGfT58aZwZw=;
- b=LiVx8GtLK5Ad3w1Ngj2rGsP5Adj+T0dYAIPqRuNHMn/zwUUp4+kWRNuCO1P09/haKp
- yZZWUD5+uAPh8ZPZzH1v2m1qNUBrN81OYojhOnMaX+WmO1edrqyWXfrNedH1XYuRIh8v
- qYp78NCD79HBh3x8bvqkyMUdT4K7OBYp3ZTC7lpOP+vkd1HcN1db6Cyig1WRsxZPfj8K
- kP/E4TN/VAma2Z3EvAJC68792inYBE4BFezlNNI4LFgvdp40A6tOYtHSqt9W3QeOAFft
- iMP3nOMV3xrNW6/L1uPln1AzLR33Rp/Q9VaRg2FxPL/81hasvM9a7vwnSRVCGc9GEK1/
- XiJg==
-X-Gm-Message-State: AOJu0YwGYul2VJUWLjQPqTGV8Na91aWWKWjYsPKHEIbRXzPZ7CyxqBmQ
- DOd9O4Lbtfh7MAeUzrBHWbhTIP7GXRVZFn1QlOnAd44hSWvcam4yXA94lFxRWPk3nz+mbL4feku
- e1n/Rvk0M0JHfXg5lVowq+TOxF3rdO2c=
-X-Received: by 2002:a17:90a:8b08:b0:26d:19bb:8638 with SMTP id
- y8-20020a17090a8b0800b0026d19bb8638mr1496802pjn.10.1694591751109; 
- Wed, 13 Sep 2023 00:55:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQDoMVGHdXgv2xWZ7r2lD7d0hK7dARmCmw/01FsyS8gPxJf+i2yGrB7deHiK5PDvY06n/0dOktVZqMDRxiiEs=
-X-Received: by 2002:a17:90a:8b08:b0:26d:19bb:8638 with SMTP id
- y8-20020a17090a8b0800b0026d19bb8638mr1496776pjn.10.1694591750673; Wed, 13 Sep
- 2023 00:55:50 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding;
+ bh=PPVRIvAgkA5YR8E3rFX/1jrGZAYS59cVb1MApJrU1Gs=;
+ b=TQan/RhXkRgYYQ5ezTr2kUzo5Rnw4dKk9cNfEfGD+Pz6U7PFuvQfEO63CIT6xpd1FN1OMA
+ NqRxCkDr1L7bcYHhSoN2LIRcIzByXbpw/X02xDe18p1avixuOAsYjS86K/U4xFyznNPScy
+ RbxArT2GB+k+iQJMDqRn+xOvxS4QIdc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-496--REtdB83M3ymPXBpAG1Hkw-1; Wed, 13 Sep 2023 04:04:30 -0400
+X-MC-Unique: -REtdB83M3ymPXBpAG1Hkw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE2F8816521;
+ Wed, 13 Sep 2023 08:04:29 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.192.7])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7EEA12026D4B;
+ Wed, 13 Sep 2023 08:04:27 +0000 (UTC)
+From: Eric Auger <eric.auger@redhat.com>
+To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org, alex.williamson@redhat.com, clg@redhat.com,
+ jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
+Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
+ philmd@linaro.org
+Subject: [PATCH v2 00/12] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+Date: Wed, 13 Sep 2023 10:01:35 +0200
+Message-ID: <20230913080423.523953-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-11-ray.huang@amd.com>
- <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
- <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
-In-Reply-To: <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Wed, 13 Sep 2023 09:55:39 +0200
-Message-ID: <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
-Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony.perard@citrix.com>, 
- Antonio Caggiano <antonio.caggiano@collabora.com>, 
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>, 
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
- Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Content-Type: multipart/alternative; boundary="00000000000056af01060538e319"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,48 +78,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000056af01060538e319
-Content-Type: text/plain; charset="UTF-8"
+On x86, when assigning VFIO-PCI devices protected with virtio-iommu
+we encounter the case where the guest tries to map IOVAs beyond 48b
+whereas the physical VTD IOMMU only supports 48b. This ends up with
+VFIO_MAP_DMA failures at qemu level because at kernel level,
+vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
 
-Hi Antonio,
+This is due to the fact the virtio-iommu currently unconditionally
+exposes an IOVA range of 64b through its config input range fields.
 
-If I'm not mistaken, this patch is related with:
-https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html
-IMHO, ideally, virtio-gpu and vhost-user-gpu both, would use the
-infrastructure from the patch I linked to store the
-virtio objects, so that they can be later shared with other devices.
+This series removes this assumption by retrieving the usable IOVA
+regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
+a VFIO device is attached. This info is communicated to the
+virtio-iommu memory region, transformed into the inversed info, ie.
+the host reserved IOVA regions. Then those latter are combined with the
+reserved IOVA regions set though the virtio-iommu reserved-regions
+property. That way, the guest virtio-iommu driver, unchanged, is
+able to probe the whole set of reserved regions and prevent any IOVA
+belonging to those ranges from beeing used, achieving the original goal.
 
-Which, in terms of code, would mean changing:
-g_hash_table_insert(g->resource_uuids,
-GUINT_TO_POINTER(assign.resource_id), uuid);
-by:
-virtio_add_dmabuf(uuid, assign.resource_id);
+Best Regards
 
-...and simplify part of the infrastructure.
+Eric
 
-Let me know what you think.
+This series can be found at:
+https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v2
 
-Regard,
-Albert
+History:
+v1 -> v2:
+- Remove "[PATCH 12/13] virtio-iommu: Resize memory region according
+  to the max iova info" which causes way too much trouble: trigger
+  a coredump in vhost, causes duplication of IOMMU notifiers causing
+  EEXIST vfio_dma_map errors, ... This looks like a bad usage of the
+  memory API so I prefer removing this from this series. So I was
+  also obliged to remove the vfio_find_hostwin() check in the case
+  of an IOMMU MR.
+- Let range_inverse_array() take low/high args instead of hardcoding
+  0, UINT64_MAX which both complexifies the algo and the tests.
+- Move range function description in header.
+- Check that if set_iova_ranges is called several times, new resv
+  regions are included in previous ones
 
---00000000000056af01060538e319
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Eric Auger (12):
+  memory: Let ReservedRegion use Range
+  memory: Introduce memory_region_iommu_set_iova_ranges
+  vfio: Collect container iova range info
+  virtio-iommu: Rename reserved_regions into prop_resv_regions
+  virtio-iommu: Introduce per IOMMUDevice reserved regions
+  range: Introduce range_inverse_array()
+  virtio-iommu: Implement set_iova_ranges() callback
+  range: Make range_compare() public
+  util/reserved-region: Add new ReservedRegion helpers
+  virtio-iommu: Consolidate host reserved regions and property set ones
+  test: Add some tests for range and resv-mem helpers
+  vfio: Remove 64-bit IOVA address space assumption
 
-<div dir=3D"ltr"><div class=3D"gmail_quote"><div>Hi Antonio,</div><div><br>=
-</div><div>If I&#39;m not mistaken, this patch is related with:=C2=A0<a hre=
-f=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html">h=
-ttps://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html</a></div=
-><div>IMHO, ideally, virtio-gpu and vhost-user-gpu both, would use the infr=
-astructure from the patch I linked to store the<br></div><div>virtio object=
-s, so that they can be later shared with other devices.</div><div><br></div=
-><div>Which, in terms of code, would mean changing:</div><div>g_hash_table_=
-insert(g-&gt;resource_uuids, GUINT_TO_POINTER(assign.resource_id), uuid);<b=
-r></div><div>by:</div><div>virtio_add_dmabuf(uuid, assign.resource_id);</di=
-v><div><br></div><div>...and simplify part of the infrastructure.</div><div=
-><br></div><div>Let me know what you think.</div><div><br></div><div>Regard=
-,</div><div>Albert</div></div></div>
+ include/exec/memory.h            |  30 +++-
+ include/hw/vfio/vfio-common.h    |   2 +
+ include/hw/virtio/virtio-iommu.h |   7 +-
+ include/qemu/range.h             |  14 ++
+ include/qemu/reserved-region.h   |  32 ++++
+ hw/core/qdev-properties-system.c |   9 +-
+ hw/vfio/common.c                 |  70 +++++++--
+ hw/virtio/virtio-iommu-pci.c     |   8 +-
+ hw/virtio/virtio-iommu.c         | 110 ++++++++++++--
+ softmmu/memory.c                 |  15 ++
+ tests/unit/test-resv-mem.c       | 251 +++++++++++++++++++++++++++++++
+ util/range.c                     |  51 ++++++-
+ util/reserved-region.c           |  94 ++++++++++++
+ hw/virtio/trace-events           |   1 +
+ tests/unit/meson.build           |   1 +
+ util/meson.build                 |   1 +
+ 16 files changed, 655 insertions(+), 41 deletions(-)
+ create mode 100644 include/qemu/reserved-region.h
+ create mode 100644 tests/unit/test-resv-mem.c
+ create mode 100644 util/reserved-region.c
 
---00000000000056af01060538e319--
+-- 
+2.41.0
 
 
