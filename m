@@ -2,81 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB4479E7EA
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A31C79E81E
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:36:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgOxp-0003BZ-Kr; Wed, 13 Sep 2023 08:27:25 -0400
+	id 1qgP4z-0006I1-PK; Wed, 13 Sep 2023 08:34:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgOxn-0003BD-Mj
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:27:23 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgOxl-000218-7Q
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:27:23 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31f8a05aa24so4557336f8f.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 05:27:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694608039; x=1695212839; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Zv95AECmAp+x0WkRUMICkPH4BbqoKl12iX5o1Ycs2q4=;
- b=Zaf0QpDY9umRFcpxM0O9IFRVQwReqRUOtiXDqGnF9fvcrHThWnf5AO+5sTLoZuPeRz
- 4SRWat2Um/P+vQRF/GKrAb81mS1LXIK+t236chhLWxZ50RUBcygZfN6SrquFcBPazpYE
- TB6dLNLhZsd9ShOHkJYgiJMRru7PLVj5iPkadzP5wj3kpNj/V4Hq8EPNwvog1O0xK90q
- 1nPO+UT6JyVc0vyqVu2PEe3tkPgwDFjnEUy5xXKVpj3ml7I2FGjc9Kf+BNSizLazvNWy
- ERcO0rMCT1StgUJ7IhPlubCobnYH735GicIDzz9vbFdVtUSs8t5fS1YTuWWs6qhmYl+m
- Ji5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694608039; x=1695212839;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zv95AECmAp+x0WkRUMICkPH4BbqoKl12iX5o1Ycs2q4=;
- b=t5zyRB4reTPfj2bn2bGRD5dvRCgyHg8AENfcE7gThAMr99jTPCBXQvoqyWcWbyQfDI
- 4ITHPZlo6rNgfdpFeNbVUfYh+XjMY90at7Ugq5XRRj8XPNVs8G/SUr6Ac1b94/tilYgi
- bzvUzE6UBlxt44KnJeTOgtXbp15GtbCLx7pV0Oc47oDDSOiBx3hPkiodEuwiwLvDxz38
- fE30fj3gnYwceyjpk3GureCsCgiVlLt7+JU9/J58Ec7Gsvp5+PS1NWWWroSt2befZczt
- dAjzZAxKJCeup/G/1I/tzY2f6aXQiWvf4+YZs4ykSile3jYNhQeSBk5utIWCr1vjvhzZ
- dl0A==
-X-Gm-Message-State: AOJu0YwUzVm1IKdve+OQa0D06+dFJV8PJuH/rEZJe7o2RG/Gc7lEvhUK
- e5J/Bib5V1dtfifuyClVdd9ONQ==
-X-Google-Smtp-Source: AGHT+IFeBaMFkdhAOz7TmFLWYAom1qcsbJe0CM2dI1KxS8ugA33IY+mAlGnEmjmy4ywL2dh9YnKVSg==
-X-Received: by 2002:adf:f08c:0:b0:31d:c3d2:4300 with SMTP id
- n12-20020adff08c000000b0031dc3d24300mr1792843wro.71.1694608038681; 
- Wed, 13 Sep 2023 05:27:18 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
- [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
- v26-20020a1cf71a000000b003fe1630a8f0sm1933698wmh.24.2023.09.13.05.27.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 05:27:18 -0700 (PDT)
-Message-ID: <da9342e8-f38b-9276-60bc-62594651a4a9@linaro.org>
-Date: Wed, 13 Sep 2023 14:27:16 +0200
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qgP4y-0006Gg-In
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:34:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qgP4w-0005HE-Aj
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:34:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694608484;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=XVw4GRxatcpQqAJGImKIhxIW8psWIf1dgl4ffg5nHtY=;
+ b=N67q0yvNFQH1p/MI3wkNGYcRlVdl7EI0jBn2xrz/rhqWlVZO3TOAZmHUYFFu+fJBsq8VZ4
+ uJPZEP53AUI6Q4sbmXI7j/uOa8HEWQdoHS6D3wtnZUR8pkBmpPUBdZnB45BBiSjDiFu8Td
+ ff0UIdiZcNu9mZDne3tb7gZC9l+cb5g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-197-OZlGsEwZPJ2whcvfa2HdsQ-1; Wed, 13 Sep 2023 08:34:41 -0400
+X-MC-Unique: OZlGsEwZPJ2whcvfa2HdsQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5968993F354;
+ Wed, 13 Sep 2023 12:34:13 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.192.131])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 18B0F40C6EC0;
+ Wed, 13 Sep 2023 12:34:10 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Lei Yang <leiyang@redhat.com>, Shannon Nelson <snelson@pensando.io>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Zhu Lingshan <lingshan.zhu@intel.com>, yama@redhat.com,
+ Hawkins Jiawei <yin31149@gmail.com>, Cindy Lu <lulu@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, qemu-stable@nongnu.org,
+ Dragos Tatulea <dtatulea@nvidia.com>, si-wei.liu@oracle.com,
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH] vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
+Date: Wed, 13 Sep 2023 14:34:08 +0200
+Message-Id: <20230913123408.2819185-1-eperezma@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PULL v2 0/1] Merge tpm 2023/09/12 v2
-Content-Language: en-US
-To: Stefan Berger <stefanb@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-References: <20230913115449.502183-1-stefanb@linux.ibm.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230913115449.502183-1-stefanb@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,36 +81,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Stefan,
+Not zeroing it causes a SIGSEGV if the live migration is cancelled, at
+net device restart.
 
-On 13/9/23 13:54, Stefan Berger wrote:
-> Hello!
-> 
->    This PR contains a fix for the case where the TPM file descriptor is >= 1024
-> and the select() call cannot be used. It also avoids unnecessary errors due to
-> EINTR being returned from the syscall.
-> 
-> Regards,
->     Stefan
-> 
-> The following changes since commit 9ef497755afc252fb8e060c9ea6b0987abfd20b6:
-> 
->    Merge tag 'pull-vfio-20230911' of https://github.com/legoater/qemu into staging (2023-09-11 09:13:08 -0400)
-> 
-> are available in the Git repository at:
-> 
->    https://github.com/stefanberger/qemu-tpm.git tags/pull-tpm-2023-09-12-2
-> 
-> for you to fetch changes up to 07160c57e47ce38bd256af3eae0481543fb52626:
-> 
->    tpm: fix crash when FD >= 1024 and unnecessary errors due to EINTR (2023-09-13 07:46:59 -0400)
-> 
-> ----------------------------------------------------------------
-> 
-> Marc-Andr޸ Lureau (1):
->    tpm: fix crash when FD >= 1024 and unnecessary errors due to EINTR
+This is caused because CVQ tries to reuse the iova_tree that is present
+in the first vhost_vdpa device at the end of vhost_vdpa_net_cvq_start.
+As a consequence, it tries to access an iova_tree that has been already
+free.
 
-I recommend you the b4 tool, see:
-https://pypi.org/project/b4/
-https://people.kernel.org/monsieuricon/introducing-b4-and-patch-attestation
+Fixes: 00ef422e9fbf ("vdpa net: move iova tree creation from init to start")
+Reported-by: Yanhui Ma <yama@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+---
+ net/vhost-vdpa.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 34202ca009..1714ff4b11 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -385,6 +385,8 @@ static void vhost_vdpa_net_client_stop(NetClientState *nc)
+     dev = s->vhost_vdpa.dev;
+     if (dev->vq_index + dev->nvqs == dev->vq_index_end) {
+         g_clear_pointer(&s->vhost_vdpa.iova_tree, vhost_iova_tree_delete);
++    } else {
++        s->vhost_vdpa.iova_tree = NULL;
+     }
+ }
+ 
+-- 
+2.39.3
+
 
