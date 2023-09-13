@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18EE879E90C
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F03DC79E8FF
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:19:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPkx-00075D-5X; Wed, 13 Sep 2023 09:18:11 -0400
+	id 1qgPl2-00078o-9V; Wed, 13 Sep 2023 09:18:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPku-000733-6J; Wed, 13 Sep 2023 09:18:08 -0400
+ id 1qgPky-00077b-MK; Wed, 13 Sep 2023 09:18:12 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPkq-0002kU-CV; Wed, 13 Sep 2023 09:18:07 -0400
+ id 1qgPkv-0002or-LN; Wed, 13 Sep 2023 09:18:12 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D02512175B;
- Wed, 13 Sep 2023 16:18:06 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 14E482175C;
+ Wed, 13 Sep 2023 16:18:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D755427C7E;
- Wed, 13 Sep 2023 16:18:00 +0300 (MSK)
-Received: (nullmailer pid 4073267 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0350727C7F;
+ Wed, 13 Sep 2023 16:18:01 +0300 (MSK)
+Received: (nullmailer pid 4073271 invoked by uid 1000);
  Wed, 13 Sep 2023 13:18:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 01/66] memory: prevent dma-reentracy issues
-Date: Wed, 13 Sep 2023 16:17:25 +0300
-Message-Id: <20230913131757.4073200-1-mjt@tls.msk.ru>
+ Darren Kenny <darren.kenny@oracle.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 02/66] async: Add an optional reentrancy guard to the
+ BH API
+Date: Wed, 13 Sep 2023 16:17:26 +0300
+Message-Id: <20230913131757.4073200-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
@@ -60,126 +62,204 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Bulekov <alxndr@bu.edu>
 
-Add a flag to the DeviceState, when a device is engaged in PIO/MMIO/DMA.
-This flag is set/checked prior to calling a device's MemoryRegion
-handlers, and set when device code initiates DMA.  The purpose of this
-flag is to prevent two types of DMA-based reentrancy issues:
-
-1.) mmio -> dma -> mmio case
-2.) bh -> dma write -> mmio case
-
-These issues have led to problems such as stack-exhaustion and
-use-after-frees.
-
-Summary of the problem from Peter Maydell:
-https://lore.kernel.org/qemu-devel/CAFEAcA_23vc7hE3iaM-JVA6W38LK4hJoWae5KcknhPRD5fPBZA@mail.gmail.com
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/62
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/540
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/541
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/556
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/557
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/827
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1282
-Resolves: CVE-2023-0330
+Devices can pass their MemoryReentrancyGuard (from their DeviceState),
+when creating new BHes. Then, the async API will toggle the guard
+before/after calling the BH call-back. This prevents bh->mmio reentrancy
+issues.
 
 Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230427211013.2994127-2-alxndr@bu.edu>
-[thuth: Replace warn_report() with warn_report_once()]
+Reviewed-by: Darren Kenny <darren.kenny@oracle.com>
+Message-Id: <20230427211013.2994127-3-alxndr@bu.edu>
+[thuth: Fix "line over 90 characters" checkpatch.pl error]
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit a2e1753b8054344f32cf94f31c6399a58794a380)
+(cherry picked from commit 9c86c97f12c060bf7484dd931f38634e166a81f0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 15ade918ba..e45ce6061f 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -767,6 +767,8 @@ struct MemoryRegion {
-     bool is_iommu;
-     RAMBlock *ram_block;
-     Object *owner;
-+    /* owner as TYPE_DEVICE. Used for re-entrancy checks in MR access hotpath */
-+    DeviceState *dev;
+diff --git a/docs/devel/multiple-iothreads.txt b/docs/devel/multiple-iothreads.txt
+index 343120f2ef..a3e949f6b3 100644
+--- a/docs/devel/multiple-iothreads.txt
++++ b/docs/devel/multiple-iothreads.txt
+@@ -61,6 +61,7 @@ There are several old APIs that use the main loop AioContext:
+  * LEGACY qemu_aio_set_event_notifier() - monitor an event notifier
+  * LEGACY timer_new_ms() - create a timer
+  * LEGACY qemu_bh_new() - create a BH
++ * LEGACY qemu_bh_new_guarded() - create a BH with a device re-entrancy guard
+  * LEGACY qemu_aio_wait() - run an event loop iteration
  
-     const MemoryRegionOps *ops;
-     void *opaque;
-@@ -791,6 +793,9 @@ struct MemoryRegion {
-     unsigned ioeventfd_nb;
-     MemoryRegionIoeventfd *ioeventfds;
-     RamDiscardManager *rdm; /* Only for RAM */
+ Since they implicitly work on the main loop they cannot be used in code that
+@@ -72,8 +73,14 @@ Instead, use the AioContext functions directly (see include/block/aio.h):
+  * aio_set_event_notifier() - monitor an event notifier
+  * aio_timer_new() - create a timer
+  * aio_bh_new() - create a BH
++ * aio_bh_new_guarded() - create a BH with a device re-entrancy guard
+  * aio_poll() - run an event loop iteration
+ 
++The qemu_bh_new_guarded/aio_bh_new_guarded APIs accept a "MemReentrancyGuard"
++argument, which is used to check for and prevent re-entrancy problems. For
++BHs associated with devices, the reentrancy-guard is contained in the
++corresponding DeviceState and named "mem_reentrancy_guard".
 +
-+    /* For devices designed to perform re-entrant IO into their own IO MRs */
-+    bool disable_reentrancy_guard;
- };
- 
- struct IOMMUMemoryRegion {
-diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-index bd50ad5ee1..7623703943 100644
---- a/include/hw/qdev-core.h
-+++ b/include/hw/qdev-core.h
-@@ -162,6 +162,10 @@ struct NamedClockList {
-     QLIST_ENTRY(NamedClockList) node;
- };
- 
-+typedef struct {
-+    bool engaged_in_io;
-+} MemReentrancyGuard;
+ The AioContext can be obtained from the IOThread using
+ iothread_get_aio_context() or for the main loop using qemu_get_aio_context().
+ Code that takes an AioContext argument works both in IOThreads or the main
+diff --git a/include/block/aio.h b/include/block/aio.h
+index 543717f294..db6f23c619 100644
+--- a/include/block/aio.h
++++ b/include/block/aio.h
+@@ -23,6 +23,8 @@
+ #include "qemu/thread.h"
+ #include "qemu/timer.h"
+ #include "block/graph-lock.h"
++#include "hw/qdev-core.h"
 +
+ 
+ typedef struct BlockAIOCB BlockAIOCB;
+ typedef void BlockCompletionFunc(void *opaque, int ret);
+@@ -331,9 +333,11 @@ void aio_bh_schedule_oneshot_full(AioContext *ctx, QEMUBHFunc *cb, void *opaque,
+  * is opaque and must be allocated prior to its use.
+  *
+  * @name: A human-readable identifier for debugging purposes.
++ * @reentrancy_guard: A guard set when entering a cb to prevent
++ * device-reentrancy issues
+  */
+ QEMUBH *aio_bh_new_full(AioContext *ctx, QEMUBHFunc *cb, void *opaque,
+-                        const char *name);
++                        const char *name, MemReentrancyGuard *reentrancy_guard);
+ 
  /**
-  * DeviceState:
-  * @realized: Indicates whether the device has been fully constructed.
-@@ -194,6 +198,9 @@ struct DeviceState {
-     int alias_required_for_version;
-     ResettableState reset;
-     GSList *unplug_blockers;
+  * aio_bh_new: Allocate a new bottom half structure
+@@ -342,7 +346,17 @@ QEMUBH *aio_bh_new_full(AioContext *ctx, QEMUBHFunc *cb, void *opaque,
+  * string.
+  */
+ #define aio_bh_new(ctx, cb, opaque) \
+-    aio_bh_new_full((ctx), (cb), (opaque), (stringify(cb)))
++    aio_bh_new_full((ctx), (cb), (opaque), (stringify(cb)), NULL)
 +
-+    /* Is the device currently in mmio/pio/dma? Used to prevent re-entrancy */
-+    MemReentrancyGuard mem_reentrancy_guard;
- };
++/**
++ * aio_bh_new_guarded: Allocate a new bottom half structure with a
++ * reentrancy_guard
++ *
++ * A convenience wrapper for aio_bh_new_full() that uses the cb as the name
++ * string.
++ */
++#define aio_bh_new_guarded(ctx, cb, opaque, guard) \
++    aio_bh_new_full((ctx), (cb), (opaque), (stringify(cb)), guard)
  
- struct DeviceListener {
-diff --git a/softmmu/memory.c b/softmmu/memory.c
-index b1a6cae6f5..b7b3386e9d 100644
---- a/softmmu/memory.c
-+++ b/softmmu/memory.c
-@@ -542,6 +542,18 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
-         access_size_max = 4;
-     }
+ /**
+  * aio_notify: Force processing of pending events.
+diff --git a/include/qemu/main-loop.h b/include/qemu/main-loop.h
+index b3e54e00bc..68e70e61aa 100644
+--- a/include/qemu/main-loop.h
++++ b/include/qemu/main-loop.h
+@@ -387,9 +387,12 @@ void qemu_cond_timedwait_iothread(QemuCond *cond, int ms);
  
-+    /* Do not allow more than one simultaneous access to a device's IO Regions */
-+    if (mr->dev && !mr->disable_reentrancy_guard &&
-+        !mr->ram_device && !mr->ram && !mr->rom_device && !mr->readonly) {
-+        if (mr->dev->mem_reentrancy_guard.engaged_in_io) {
-+            warn_report_once("Blocked re-entrant IO on MemoryRegion: "
-+                             "%s at addr: 0x%" HWADDR_PRIX,
-+                             memory_region_name(mr), addr);
-+            return MEMTX_ACCESS_ERROR;
-+        }
-+        mr->dev->mem_reentrancy_guard.engaged_in_io = true;
-+    }
-+
-     /* FIXME: support unaligned access? */
-     access_size = MAX(MIN(size, access_size_max), access_size_min);
-     access_mask = MAKE_64BIT_MASK(0, access_size * 8);
-@@ -556,6 +568,9 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
-                         access_mask, attrs);
-         }
-     }
-+    if (mr->dev) {
-+        mr->dev->mem_reentrancy_guard.engaged_in_io = false;
-+    }
-     return r;
+ /* internal interfaces */
+ 
++#define qemu_bh_new_guarded(cb, opaque, guard) \
++    qemu_bh_new_full((cb), (opaque), (stringify(cb)), guard)
+ #define qemu_bh_new(cb, opaque) \
+-    qemu_bh_new_full((cb), (opaque), (stringify(cb)))
+-QEMUBH *qemu_bh_new_full(QEMUBHFunc *cb, void *opaque, const char *name);
++    qemu_bh_new_full((cb), (opaque), (stringify(cb)), NULL)
++QEMUBH *qemu_bh_new_full(QEMUBHFunc *cb, void *opaque, const char *name,
++                         MemReentrancyGuard *reentrancy_guard);
+ void qemu_bh_schedule_idle(QEMUBH *bh);
+ 
+ enum {
+diff --git a/tests/unit/ptimer-test-stubs.c b/tests/unit/ptimer-test-stubs.c
+index f2bfcede93..8c9407c560 100644
+--- a/tests/unit/ptimer-test-stubs.c
++++ b/tests/unit/ptimer-test-stubs.c
+@@ -107,7 +107,8 @@ int64_t qemu_clock_deadline_ns_all(QEMUClockType type, int attr_mask)
+     return deadline;
  }
  
-@@ -1170,6 +1185,7 @@ static void memory_region_do_init(MemoryRegion *mr,
-     }
-     mr->name = g_strdup(name);
-     mr->owner = owner;
-+    mr->dev = (DeviceState *) object_dynamic_cast(mr->owner, TYPE_DEVICE);
-     mr->ram_block = NULL;
+-QEMUBH *qemu_bh_new_full(QEMUBHFunc *cb, void *opaque, const char *name)
++QEMUBH *qemu_bh_new_full(QEMUBHFunc *cb, void *opaque, const char *name,
++                         MemReentrancyGuard *reentrancy_guard)
+ {
+     QEMUBH *bh = g_new(QEMUBH, 1);
  
-     if (name) {
+diff --git a/util/async.c b/util/async.c
+index 856e1a8a33..9df7674b4e 100644
+--- a/util/async.c
++++ b/util/async.c
+@@ -65,6 +65,7 @@ struct QEMUBH {
+     void *opaque;
+     QSLIST_ENTRY(QEMUBH) next;
+     unsigned flags;
++    MemReentrancyGuard *reentrancy_guard;
+ };
+ 
+ /* Called concurrently from any thread */
+@@ -137,7 +138,7 @@ void aio_bh_schedule_oneshot_full(AioContext *ctx, QEMUBHFunc *cb,
+ }
+ 
+ QEMUBH *aio_bh_new_full(AioContext *ctx, QEMUBHFunc *cb, void *opaque,
+-                        const char *name)
++                        const char *name, MemReentrancyGuard *reentrancy_guard)
+ {
+     QEMUBH *bh;
+     bh = g_new(QEMUBH, 1);
+@@ -146,13 +147,28 @@ QEMUBH *aio_bh_new_full(AioContext *ctx, QEMUBHFunc *cb, void *opaque,
+         .cb = cb,
+         .opaque = opaque,
+         .name = name,
++        .reentrancy_guard = reentrancy_guard,
+     };
+     return bh;
+ }
+ 
+ void aio_bh_call(QEMUBH *bh)
+ {
++    bool last_engaged_in_io = false;
++
++    if (bh->reentrancy_guard) {
++        last_engaged_in_io = bh->reentrancy_guard->engaged_in_io;
++        if (bh->reentrancy_guard->engaged_in_io) {
++            trace_reentrant_aio(bh->ctx, bh->name);
++        }
++        bh->reentrancy_guard->engaged_in_io = true;
++    }
++
+     bh->cb(bh->opaque);
++
++    if (bh->reentrancy_guard) {
++        bh->reentrancy_guard->engaged_in_io = last_engaged_in_io;
++    }
+ }
+ 
+ /* Multiple occurrences of aio_bh_poll cannot be called concurrently. */
+diff --git a/util/main-loop.c b/util/main-loop.c
+index e180c85145..7022f02ef8 100644
+--- a/util/main-loop.c
++++ b/util/main-loop.c
+@@ -605,9 +605,11 @@ void main_loop_wait(int nonblocking)
+ 
+ /* Functions to operate on the main QEMU AioContext.  */
+ 
+-QEMUBH *qemu_bh_new_full(QEMUBHFunc *cb, void *opaque, const char *name)
++QEMUBH *qemu_bh_new_full(QEMUBHFunc *cb, void *opaque, const char *name,
++                         MemReentrancyGuard *reentrancy_guard)
+ {
+-    return aio_bh_new_full(qemu_aio_context, cb, opaque, name);
++    return aio_bh_new_full(qemu_aio_context, cb, opaque, name,
++                           reentrancy_guard);
+ }
+ 
+ /*
+diff --git a/util/trace-events b/util/trace-events
+index 16f78d8fe5..3f7e766683 100644
+--- a/util/trace-events
++++ b/util/trace-events
+@@ -11,6 +11,7 @@ poll_remove(void *ctx, void *node, int fd) "ctx %p node %p fd %d"
+ # async.c
+ aio_co_schedule(void *ctx, void *co) "ctx %p co %p"
+ aio_co_schedule_bh_cb(void *ctx, void *co) "ctx %p co %p"
++reentrant_aio(void *ctx, const char *name) "ctx %p name %s"
+ 
+ # thread-pool.c
+ thread_pool_submit(void *pool, void *req, void *opaque) "pool %p req %p opaque %p"
 -- 
 2.39.2
 
