@@ -2,77 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5871D79E20D
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 10:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8BE79E25B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 10:39:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgLCc-0002og-QO; Wed, 13 Sep 2023 04:26:26 -0400
+	id 1qgLOF-0005Jz-83; Wed, 13 Sep 2023 04:38:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qgLCb-0002oX-2P
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:26:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qgLCY-0005WG-9g
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:26:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694593581;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qyideyPRIQV+X/FGO4m/PhGms/irdUmq9FY+SbkaL40=;
- b=Mb4p8T7SzJbUjFoWKEAwCkcdUojZ42XOhstonEvBJfia/z5iPt9kxcpLm2IhqlIrsxVmGy
- vFYv96+vt5QWdXyeaEoarrMttW59/uYrOXA+PguhzyoQYfgR+V7/v6l4ppcwAVOjRkS1Z8
- 3aUIOVrW+RmtqTB8UaWYTKwbl1m8VtA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-661-ZD5DkSfENoinm7XyHhVYSg-1; Wed, 13 Sep 2023 04:26:18 -0400
-X-MC-Unique: ZD5DkSfENoinm7XyHhVYSg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE0C888B7A2;
- Wed, 13 Sep 2023 08:26:17 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.38])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AF62240C6EA8;
- Wed, 13 Sep 2023 08:26:16 +0000 (UTC)
-Date: Wed, 13 Sep 2023 09:26:14 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-discuss <qemu-discuss@nongnu.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH] hw/i386/pc_piix: Mark the machine types from version 1.4
- to 1.7 as deprecated
-Message-ID: <ZQFyJnRyVJXP/eLX@redhat.com>
-References: <20220117191639.278497-1-thuth@redhat.com>
- <YeXNoKzsFeIPSy6E@redhat.com>
- <44b4ce3f-030a-993a-b959-e8e722c7cee4@redhat.com>
- <3cc2c925-d2a8-36f4-28b6-db391b5bbf38@linaro.org>
+ (Exim 4.90_1) (envelope-from <18622748025@163.com>)
+ id 1qgLOD-0005Jc-3l
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:38:25 -0400
+Received: from m12.mail.163.com ([220.181.12.199])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <18622748025@163.com>) id 1qgLO7-0001SI-Pm
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:38:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+ s=s110527; h=From:Subject:Date:Message-ID:MIME-Version:
+ Content-Type; bh=whI2Ki7PMNBWiTCEJyk5Jn08eNCcOYGjzvryQHF9hM0=;
+ b=LB4ZnQwuMwH7Du6coG+NDgPao68QnCklSfJY6x5GHkAId9UXUcUEmFTafT/D61
+ 3R+HKL+/RDufPpw0gCK+cb/BNg+QLtWpBqpyVJZ8pdlNJt3cpDkmQejPP/QYmBf7
+ 1Q34S0d+Fx5TVwgsW8DE1p6DV9IPoQkPJ5M7mg1C76bhw=
+Received: from localhost.localdomain (unknown [218.69.55.90])
+ by zwqz-smtp-mta-g1-3 (Coremail) with SMTP id _____wC3OznhdAFl6BDUBw--.5734S2; 
+ Wed, 13 Sep 2023 16:37:54 +0800 (CST)
+From: "liguang.zhang" <18622748025@163.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	"liguang.zhang" <liguang.zhang@hexintek.com>
+Subject: Re: Re: [PATCH v3] target/riscv: Clearing the CSR values at reset and
+ syncing the MPSTATE with the host
+Date: Wed, 13 Sep 2023 16:37:12 +0800
+Message-ID: <20230913083728.16935-1-18622748025@163.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <CAKmqyKM1aAvdLssjtXfU6h+VptmMY7vhctrW6aSzQn4BCFiDPA@mail.gmail.com>
+References: <CAKmqyKM1aAvdLssjtXfU6h+VptmMY7vhctrW6aSzQn4BCFiDPA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3cc2c925-d2a8-36f4-28b6-db391b5bbf38@linaro.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: _____wC3OznhdAFl6BDUBw--.5734S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Wry5WFWfuF18tw1xXF4rGrg_yoW7Kr4fpF
+ s3C3ZxCr4kJryxJw1SqF1DXFyrW3yFgF45Z3y2kryfA3Z0yrW5Jr4kKrWFkF98Cry0kr1Y
+ 9F45WF17ua1UtFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYKZJUUUUU=
+X-Originating-IP: [218.69.55.90]
+X-CM-SenderInfo: bpryljasxumiisv6il2tof0z/1tbivgjpWVZcitOkswAAsC
+Received-SPF: pass client-ip=220.181.12.199; envelope-from=18622748025@163.com;
+ helo=m12.mail.163.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, FROM_LOCAL_DIGITS=0.001,
+ FROM_LOCAL_HEX=0.006, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,117 +69,174 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 13, 2023 at 08:33:01AM +0200, Philippe Mathieu-Daudé wrote:
-> On 18/1/22 09:49, Thomas Huth wrote:
-> > On 17/01/2022 21.12, Daniel P. Berrangé wrote:
-> > > On Mon, Jan 17, 2022 at 08:16:39PM +0100, Thomas Huth wrote:
-> > > > The list of machine types grows larger and larger each release ... and
-> > > > it is unlikely that many people still use the very old ones for live
-> > > > migration. QEMU v1.7 has been released more than 8 years ago, so most
-> > > > people should have updated their machines to a newer version in those
-> > > > 8 years at least once. Thus let's mark the very old 1.x machine types
-> > > > as deprecated now.
-> > > 
-> > > What criteria did you use for picking v1.7 as the end point ?
-> > 
-> > I picked everything starting with a "1." this time ;-)
-> > 
-> > No, honestly, since we don't have a deprecation policy in place yet,
-> > there was no real good criteria around this time. For the machine types
-> > < 1.3 there was a bug with migration, so these machine types could not
-> > be used for reliable migration anymore anyway. But for the newer machine
-> > types, we likely have to decide by other means indeed.
-> > 
-> > > I'm fine with the idea of aging out machine types, but I'd like us
-> > > to explain the criteria we use for this, so that we can set clear
-> > > expectations for users. I'm not a fan of adhoc decisions that have
-> > > different impact every time we randomly decide to apply them.
-> > > 
-> > > A simple rule could be time based - eg we could say
-> > > 
-> > >    "we'll keep machine type versions for 5 years or 15 releases."
-> > > 
-> > > one factor is how long our downstream consumers have been keeping
-> > > machines around for.
-> > > 
-> > > In RHEL-9 for example, the oldest machine is "pc-i440fx-rhel7.6.0"
-> > > which IIUC is derived from QEMU 2.12.0. RHEL-9 is likely to rebase
-> > > QEMU quite a few times over the coming years, so that 2.12.0 version
-> > > sets an example baseline for how long machines might need to live for.
-> > > That's 4 years this April, and could potentially be 6-7 years by the
-> > > time RHEL-9 stops rebasing QEMU.
-> > 
-> > Yeah, 5 years still seemed a little bit short to me, that's one of the
-> > reasons why I did not add more machine types in my patch here. I think
-> > with 7 or 8 years, we should be on the safe side.
-> > 
-> > Any other opinions? And if we agree on an amount of years, where should
-> > we document this? At the top of docs/about/deprecated.rst?
-> 
-> I suppose x86 being the oldest, x86 maintainers have to comment, but
-> 5 years should be enough from sysadmins to migrate their VMs, isn't it?
-> (No need to migrate from 1 -> 8, they can do 1 -> 3 -> 5 -> 8, right?)
+From: "liguang.zhang" <liguang.zhang@hexintek.com>
 
-You can't change guest hardware during migrate. So whether you go direct
-from 1 -> 8, or go from 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8, you're
-going to have the same guest hardware before and after every step.
+>  On Mon, Jul 24, 2023 at 2:26 AM liguang.zhang <18622748...@163.com> wrote:
+>  >
+>  > From: "liguang.zhang" <liguang.zh...@hexintek.com>
+>  >
+>  > Fix the guest reboot error when using KVM
+>  > There are two issues when rebooting a guest using KVM
+>  > 1. When the guest initiates a reboot the host is unable to stop the vcpu
+>  > 2. When running a SMP guest the qemu monitor system_reset causes a vcpu crash
+>  >
+>  > This can be fixed by clearing the CSR values at reset and syncing the
+>  > MPSTATE with the host.
+>  >
+>  > Signed-off-by: liguang.zhang <liguang.zh...@hexintek.com>
+>  > ---
+>  >  target/riscv/kvm.c       | 42 ++++++++++++++++++++++++++++++++++++++++
+>  >  target/riscv/kvm_riscv.h |  1 +
+>  >  2 files changed, 43 insertions(+)
+>  >
+>  > diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+>  > index 9d8a8982f9..ecc8ab8238 100644
+>  > --- a/target/riscv/kvm.c
+>  > +++ b/target/riscv/kvm.c
+>  > @@ -44,6 +44,8 @@
+>  >  #include "migration/migration.h"
+>  >  #include "sysemu/runstate.h"
+>  >
+>  > +static bool cap_has_mp_state;
+>  > +
+>  >  static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+>  >                                   uint64_t idx)
+>  >  {
+>  > @@ -790,6 +792,24 @@ int kvm_arch_get_registers(CPUState *cs)
+>  >      return ret;
+>  >  }
+>  >
+>  > +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
+>  > +{
+>  > +    if (cap_has_mp_state) {
+>  > +        struct kvm_mp_state mp_state = {
+>  > +            .mp_state = state
+>  > +        };
+>  > +
+>  > +        int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state);
+>  > +        if (ret) {
+>  > +            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
+>  > +                    __func__, ret, strerror(-ret));
+>  > +            return -1;
+>  > +        }
+>  > +    }
+>  > +
+>  > +    return 0;
+>  > +}
+>  > +
+>  >  int kvm_arch_put_registers(CPUState *cs, int level)
+>  >  {
+>  >      int ret = 0;
+>  > @@ -809,6 +829,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>  >          return ret;
+>  >      }
+>  >
+>  > +    if (KVM_PUT_RESET_STATE == level) {
+>  > +        RISCVCPU *cpu = RISCV_CPU(cs);
+>  > +        if (cs->cpu_index == 0) {
+>  > +            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNNABLE);
+>  > +        } else {
+>  > +            ret = kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOPPED);
+>  > +        }
+>  > +        if (ret) {
+>  > +            return ret;
+>  > +        }
+>  > +    }
+>  
+>  You are adding code to kvm_arch_put_registers() don't you also need to
+>  add code to kvm_arch_get_registers()? and a *_mpstate_to_qemu()
+>  function to match?
+>  
+>  Alistair
 
+I think don't need to add code to kvm_arch_get_registers, because i just add reset behavior 
+to kvm_arch_put_registers, system reset will come to this point; this is just an suitable entry.
+There is no code using when vcpu reset, qemu don't need to get register from vcpu.
+According the reset logic of riscv, vcpu is just in pause state in kvm but not destroyed.
+Just when qemu reset all system point, call in this entry, and sync vcpu power state and register state to kvm is ok.
+And it don't need to modify kvm code to adapt with this change.
 
-If someone is using upstream QEMU, I'm sceptical they will successfully
-live migrate over QEMU versions spanning 5+ years. While we make a pretty
-decent effort at ensuring back compat, and fixing problems, we've had
-a number of mistakes over the years, that were caught in RHEL downstream
-testing.
+2 scenarios of reboot:
+1. When a reboot executed from the guest's internal shell enters KVM through SBI, it sets all vcpu->arch.power_off to 'on,' effectively powering off all vCPUs
+2. When QEMU issues 'system_reset,' it does not handle kvm's vcpu->arch.power_off; instead, it simply causes all vCPU threads to exit the KVM_RUN loop, effectively ending the ioctl(KVM_RUN) call. This behavior is similar to the guest shell reboot. This also explains why in non-SMP scenarios, 'system_reset' can perform a normal restart. Because the vCPU responsible for booting (boot_hart) remains powered on, it can be scheduled properly.so just to actively send a vCPU power-off command to KVM for vCPUs other than boot_hart, causing the vcpu->arch.power_off state of non-boot_hart vCPUs to return to 'on'
+and boot_hart vcpu in kernel call up other vcpu by opensbi hsm_hart_start ecall to kvm hypervisor change the power_off state to off.
 
-If someone is using RHEL QEMU (or another vendor who's putting in alot
-of effort at live migration testing), then I can see them spanning over
-5 years for a VM deployment. Of course they *should* have VM reboots over
-that timeframe to deploy new kernels for example, so they will have had
-opportunities to update the machine type, but it does not mean they have
-actually done so.
+```log
+$ reboot
+The system is going down NOW!
+Sent SIGTERM to all processes
+Sent SIGKILL to all processes
+Requesting system reboot
+[   90.660001] reboot: Restarting system
+--------- all smp vcpu means paused not destroyed ------------------
+vcpu csrs registers all in a intermediate state, and vcpu in power_off state
+[just a kvm vcpu flag vcpu->arch.power_off=true]
+---------------- qemu need at system reset point end stage call vcpu up and reset its registers csrs-------------
 
-The pc-i440fx-rhel7.6.0 machine type I mentioned earlier in the thread is
-a bit of an unusual case, as that has lasted longer than intended (RHEL-7,
-RHEL-8, and RHEL-9). Normally our downstream policy is for machine types
-to last 2 major RHEL releases, so you can deploy on N and later upgrade
-the VM to N+1 without a reboot for re-configuration.
+as this flow https://gitee.com/zhangliguang1/tuchuang/raw/master/img/20230913161603.png
 
-Now in the case of RHEL we don't use upstream QEMU machines types, so we
-don't actually care when QEMU deprecates and deletes old machine types.
+qemu_system_reset
+qemu_devices_reset
+cpu_synchronize_all_post_reset
+do_kvm_cpu_synchronize_post_reset
+kvm_arch_put_registers(cpu, KVM_PUT_RESET_STATE)
 
-What matter is whether there are any internal tunable knobs that were
-used in the pc_compat_*_fn() functions that get deleted as a result
-of their usage going away.  For example our rhel7.6.0 machine type uses
+```
 
-    m->async_pf_vmexit_disable = true;
-    m->smbus_no_migration_support = true;
-    m->deprecation_reason = rhel_old_machine_deprecation;
-    pcmc->pvh_enabled = false;
-    pcmc->default_cpu_version = CPU_VERSION_LEGACY;
-    pcmc->kvmclock_create_always = false;
-    pcmc->pci_root_uid = 1;
-    pcmc->legacy_no_rng_seed = true;
-    pcmc->enforce_amd_1tb_hole = false;
+Thanks~
 
-Deleting any of those upstream is what would impact us downstream.
+from liguang.zhang@hexintek.com
 
-
-Personally I think we could make a case for QEMU upstream only
-preserving machine types for 5 years, on the basis that people
-interested in longer lifetimes should be using a vendor supported
-QEMU. Upstream community just doesn't have the resources todo the
-level of testing needed to provide such long life guarantees on
-migration compat.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+>  
+>  > +
+>  >      return ret;
+>  >  }
+>  >
+>  > @@ -909,6 +941,7 @@ int kvm_arch_add_msi_route_post(struct 
+>  > kvm_irq_routing_entry *route,
+>  >
+>  >  int kvm_arch_init(MachineState *ms, KVMState *s)
+>  >  {
+>  > +    cap_has_mp_state = kvm_check_extension(s, KVM_CAP_MP_STATE);
+>  >      return 0;
+>  >  }
+>  >
+>  > @@ -987,10 +1020,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+>  >      if (!kvm_enabled()) {
+>  >          return;
+>  >      }
+>  > +    for (int i=0; i<32; i++)
+>  > +        env->gpr[i] = 0;
+>  >      env->pc = cpu->env.kernel_addr;
+>  >      env->gpr[10] = kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+>  >      env->gpr[11] = cpu->env.fdt_addr;          /* a1 */
+>  >      env->satp = 0;
+>  > +    env->mie = 0;
+>  > +    env->stvec = 0;
+>  > +    env->sscratch = 0;
+>  > +    env->sepc = 0;
+>  > +    env->scause = 0;
+>  > +    env->stval = 0;
+>  > +    env->mip = 0;
+>  >  }
+>  >
+>  >  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+>  > diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+>  > index e3ba935808..3ea68c38e3 100644
+>  > --- a/target/riscv/kvm_riscv.h
+>  > +++ b/target/riscv/kvm_riscv.h
+>  > @@ -22,5 +22,6 @@
+>  >  void kvm_riscv_init_user_properties(Object *cpu_obj);
+>  >  void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+>  >  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+>  > +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+>  >
+>  >  #endif
+>  > --
+>  > 2.41.0
+>  >
 
 
