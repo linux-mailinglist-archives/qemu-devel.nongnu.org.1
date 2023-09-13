@@ -2,106 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DE579E6ED
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 13:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B8179E6F6
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 13:37:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgO92-0005zx-Ld; Wed, 13 Sep 2023 07:34:56 -0400
+	id 1qgOAy-0006rC-Ka; Wed, 13 Sep 2023 07:36:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qgO8z-0005zn-3t
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:34:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qgO8v-0005u4-Lv
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:34:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694604888;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=zMskR6cu9i22y34XL44NEQPqeIL9khl3qtNSgvRoqCA=;
- b=UEdbPOl9ki3vIpYwgQz3MUW1y34grgy0FcSW2jH49t/ICsnwZmDvdIHj/BfV2p8V7FBsQo
- aztSwu/clhVEOZ8XbUWcg2qKrOZvs3dhpRYKunGdNHk0lSlCO8Tv6sqKxy1hqCd7wxuDvg
- 8jYSVYhMqixk9q7AxRtpdEnJDkby7nA=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-Veg6Qre4M7m01Oc_xWAmVA-1; Wed, 13 Sep 2023 07:34:47 -0400
-X-MC-Unique: Veg6Qre4M7m01Oc_xWAmVA-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-27372e336b2so810513a91.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 04:34:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgOAw-0006pL-1E
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:36:54 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgOAt-0007oE-G2
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:36:53 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2bf66a32f25so88508731fa.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 04:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694605009; x=1695209809; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mhPxlCP5iiHhxUWlXW9Ln6C+XMWrmPesBr1seUxNxDk=;
+ b=c6/6zB5p9bwvze+6d+9MYBKDcuotdiyjK3ypwnAOqic6ldj8meRSLUdZbG1wkraWOH
+ CmSi+atqpRuM41K0z9e9iSVheiLfGUPZxS2f+Z8Cpus46lJOypplIG/D42MYsD+bGWUh
+ oksPc9BC1CR1AnXs9kVATLLiuXhTKnVh7rTmMborQXGypze8n3jGJWj57D7PfS0euC0u
+ 5zWx2nUGz4x/y0wz4du31BrLB2O7LiJUmNR/eeepQnaIgRPkURaosV6adxkqcmbtsL5+
+ FrhIDB9GculfO/3ztMcl0AShOQbtj2nmM/5PF8UooAHDRPVSL3PEixlG5jWap5VQ6Ps9
+ scvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694604886; x=1695209686;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zMskR6cu9i22y34XL44NEQPqeIL9khl3qtNSgvRoqCA=;
- b=KiI0Lc3uqlBBTULWTMgIVVHwsQ1fWuH8f+cmM4I9THfRWl202f9hU9HcL93k+M6nAU
- OA9KJS3mpBYAQXddibj0yN1zvtOMSZgj8FeIgDnueUNHZkBO+z/v/L1zBY3f3EW1xImi
- qk+X9ooxh7BlJtPYyeXonNuht21i6MUjDuYAM6HGbCj+5QStVijZ3NRlQWh7ESFaP8hg
- wXh3YBdy31yOH9L5azIZW6eMunNzRK5qOX1wHTYqmh5nXmKgQtKXBuXDyddHiee+Juub
- A1NitifPYLAoPAUV25fwFv4tBh5Ueg+TEhdAsLAcdgLmYy4Iep55Slvex+ItsN4MD97M
- X8Kg==
-X-Gm-Message-State: AOJu0YwtCN0RE6y4/d6r6BSW341AWLmSAnw7XNJxA7ZosXRy3YLQ3uIf
- 63gp6o7nw6OKc4Km1MxZaqzkBmd2BZVrmrQc9n+aOmH3ED6STdWxI5kbFug9CCsl9j96DVuWeRM
- QiGUPAgCab0vsrJogAlfmkxBfatZyLcM=
-X-Received: by 2002:a17:90b:4b82:b0:26d:689f:4253 with SMTP id
- lr2-20020a17090b4b8200b0026d689f4253mr7447242pjb.6.1694604885616; 
- Wed, 13 Sep 2023 04:34:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJWBwNCbFL7Jyu5Boq2Q8xMqbev4t/zbOs3GqV/MXKXOUFx1M1LMxGo4WIMdWApSj5iZlPgc9WjXu2ERG7xSA=
-X-Received: by 2002:a17:90b:4b82:b0:26d:689f:4253 with SMTP id
- lr2-20020a17090b4b8200b0026d689f4253mr7447190pjb.6.1694604885258; Wed, 13 Sep
- 2023 04:34:45 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694605009; x=1695209809;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mhPxlCP5iiHhxUWlXW9Ln6C+XMWrmPesBr1seUxNxDk=;
+ b=KYITtZXaaMnxasdefkGvR48qsGPq46B9/dA/Z3GaHPXCkH+CP9LxskAnT3Oti2iT5r
+ plbaZoiZJrG0eqQdMAEjkuayMzAR9F+7il3+9BI9weZ+gUDMeAi/qVsPX4KStDg8QadD
+ A5y1HN4jrb8THBWlQ06o/V9fOh/zXMPff4DhyoH+Ilhk6ogFQ4Lc9hIX+gsRm7mfSRyN
+ FfwRm8C49RKqOaR/3rQZs0EBBdqaCvqTfqVFoZ2+7P1hByTeCwBF1x1cQIhyyPO83QCV
+ B0V3UGMEcqx2MN45PeBimpyRUO4Tr4GgVNzyGwqW7hV5KztQGR7spwPIFshfIH9Gjm2b
+ 82lw==
+X-Gm-Message-State: AOJu0YxA45O2EZ7xRlpNts2tTMoyQKRRi0moORk1hhluPppxd1Ojz336
+ h3+8+T/xQ2wFgL6vG2/Q1f/pug==
+X-Google-Smtp-Source: AGHT+IFZvXgI/R2WpgmboOJzSPJFZH9vzpiJA3z7YOs84vTrd3+eMT+7vC/TUaRM+X/Uy+yA1Q9WLw==
+X-Received: by 2002:a2e:3c0b:0:b0:2bd:14cc:ab1b with SMTP id
+ j11-20020a2e3c0b000000b002bd14ccab1bmr2054585lja.44.1694605009080; 
+ Wed, 13 Sep 2023 04:36:49 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
+ [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
+ mc14-20020a170906eb4e00b009888aa1da11sm8228757ejb.188.2023.09.13.04.36.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 04:36:48 -0700 (PDT)
+Message-ID: <057bee7c-92e0-1cf2-bcdd-ef7eeb223db4@linaro.org>
+Date: Wed, 13 Sep 2023 13:36:46 +0200
 MIME-Version: 1.0
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-11-ray.huang@amd.com>
- <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
- <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
- <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
- <cf99ac00-6f48-4778-b319-6079a931ba5d@daynix.com>
-In-Reply-To: <cf99ac00-6f48-4778-b319-6079a931ba5d@daynix.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Wed, 13 Sep 2023 13:34:34 +0200
-Message-ID: <CADSE00+6zcT7iKR0JW1Bk8es6HtBpzAKa9JW6u5yyjDoLPw2KQ@mail.gmail.com>
-Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony.perard@citrix.com>, 
- Antonio Caggiano <antonio.caggiano@collabora.com>, 
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>, 
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
- Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Content-Type: multipart/alternative; boundary="000000000000388aee06053bf2d0"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] hw/cxl: Fix out of bound array access
+Content-Language: en-US
+To: Dmitry Frolov <frolov@swemel.ru>, jonathan.cameron@huawei.com,
+ fan.ni@samsung.com, qemu-devel@nongnu.org
+Cc: sdl.qemu@linuxtesting.org
+References: <20230913101055.754709-1-frolov@swemel.ru>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230913101055.754709-1-frolov@swemel.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22f.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,85 +93,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000388aee06053bf2d0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Dmitry,
 
-On Wed, Sep 13, 2023 at 12:34=E2=80=AFPM Akihiko Odaki <akihiko.odaki@dayni=
-x.com>
-wrote:
+On 13/9/23 12:10, Dmitry Frolov wrote:
+> According to cxl_interleave_ways_enc(),
+> fw->num_targets is allowed to be up to 16.
+> This also corresponds to CXL specs.
+> So, the fw->target_hbs[] array is iterated from 0 to 15.
+> But it is staticaly declared of length 8.
 
-> On 2023/09/13 16:55, Albert Esteve wrote:
-> > Hi Antonio,
-> >
-> > If I'm not mistaken, this patch is related with:
-> > https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html
-> > <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>
-> > IMHO, ideally, virtio-gpu and vhost-user-gpu both, would use the
-> > infrastructure from the patch I linked to store the
-> > virtio objects, so that they can be later shared with other devices.
->
-> I don't think such sharing is possible because the resources are
-> identified by IDs that are local to the device. That also complicates
-> migration.
->
-> Regards,
-> Akihiko Odaki
->
-> Hi Akihiko,
+"statically"
 
-As far as I understand, the feature to export dma-bufs from the
-virtgpu was introduced as part of the virtio cross-device sharing
-proposal [1]. Thus, it shall be posible. When virtgpu ASSING_UUID,
-it exports and identifies the dmabuf resource, so that when the dmabuf gets
-shared inside the guest (e.g., with virtio-video), we can use the assigned
-UUID to find the dmabuf in the host (using the patch that I linked above),
-and import it.
+> Thus, out of bound array access may occur.
+> 
+> Fixes: c28db9e000 ("hw/pci-bridge: Make PCIe and CXL PXB Devices inherit from TYPE_PXB_DEV")
+> 
+> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+> ---
+>   include/hw/cxl/cxl.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
+> index 56c9e7676e..4944725849 100644
+> --- a/include/hw/cxl/cxl.h
+> +++ b/include/hw/cxl/cxl.h
+> @@ -29,7 +29,7 @@ typedef struct PXBCXLDev PXBCXLDev;
+>   typedef struct CXLFixedWindow {
+>       uint64_t size;
+>       char **targets;
+> -    PXBCXLDev *target_hbs[8];
+> +    PXBCXLDev *target_hbs[16];
+>       uint8_t num_targets;
+>       uint8_t enc_int_ways;
+>       uint8_t enc_int_gran;
 
-[1] - https://lwn.net/Articles/828988/
+The loop in cxl_fixed_memory_window_config() is indeed unsafe.
 
---000000000000388aee06053bf2d0
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+OOB can be catched adding:
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Sep 13, 2023 at 12:34=E2=80=
-=AFPM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com" target=
-=3D"_blank">akihiko.odaki@daynix.com</a>&gt; wrote:<br></div><blockquote cl=
-ass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid=
- rgb(204,204,204);padding-left:1ex">On 2023/09/13 16:55, Albert Esteve wrot=
-e:<br>
-&gt; Hi Antonio,<br>
-&gt; <br>
-&gt; If I&#39;m not mistaken, this patch is related with: <br>
-&gt; <a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01=
-853.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archiv=
-e/html/qemu-devel/2023-09/msg01853.html</a> <br>
-&gt; &lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/m=
-sg01853.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/ar=
-chive/html/qemu-devel/2023-09/msg01853.html</a>&gt;<br>
-&gt; IMHO, ideally, virtio-gpu and vhost-user-gpu both, would use the <br>
-&gt; infrastructure from the patch I linked to store the<br>
-&gt; virtio objects, so that they can be later shared with other devices.<b=
-r>
-<br>
-I don&#39;t think such sharing is possible because the resources are <br>
-identified by IDs that are local to the device. That also complicates <br>
-migration.<br>
-<br>
-Regards,<br>
-Akihiko Odaki<br>
-<br></blockquote><div>Hi Akihiko,</div><div><br></div><div>As far as I unde=
-rstand, the feature to export dma-bufs=C2=A0from the</div><div>virtgpu was =
-introduced as part of the virtio cross-device sharing</div><div>proposal [1=
-]. Thus, it shall be posible. When virtgpu=C2=A0ASSING_UUID,</div><div>it e=
-xports and identifies the dmabuf resource, so that when the dmabuf gets</di=
-v><div>shared inside the guest (e.g., with virtio-video), we can use the as=
-signed</div><div>UUID to find the dmabuf in the host (using the patch that =
-I linked above),</div><div>and import it.</div><div><br></div><div>[1] -=C2=
-=A0<a href=3D"https://lwn.net/Articles/828988/" target=3D"_blank">https://l=
-wn.net/Articles/828988/</a></div></div></div>
+-- >8 --
+diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
+index 034c7805b3..fe9143409b 100644
+--- a/hw/cxl/cxl-host.c
++++ b/hw/cxl/cxl-host.c
+@@ -33,6 +33,7 @@ static void cxl_fixed_memory_window_config(CXLState 
+*cxl_state,
+      for (target = object->targets; target; target = target->next) {
+          fw->num_targets++;
+      }
++    assert(fw->num_targets <= ARRAY_SIZE(fw->target_hbs));
 
---000000000000388aee06053bf2d0--
+      fw->enc_int_ways = cxl_interleave_ways_enc(fw->num_targets, errp);
+      if (*errp) {
+---
 
+If Jonathan concurs, please add to your patch.
+
+Thanks,
+
+Phil.
 
