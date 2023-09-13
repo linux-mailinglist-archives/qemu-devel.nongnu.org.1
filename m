@@ -2,53 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6FE979E054
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 09:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1377679E055
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 09:01:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgJqw-0003p9-6i; Wed, 13 Sep 2023 02:59:58 -0400
+	id 1qgJrJ-0003ro-Ee; Wed, 13 Sep 2023 03:00:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgJqu-0003oy-5e
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 02:59:56 -0400
+ id 1qgJrF-0003qx-75
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 03:00:17 -0400
 Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgJqq-00047J-80
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 02:59:55 -0400
+ id 1qgJrA-0004EF-7D
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 03:00:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694588392; x=1726124392;
+ t=1694588412; x=1726124412;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=C6mQa9xWJ5rj5rAaxGCawIPJlfT6aTwLFeDPxzx9A+k=;
- b=h6Mg6MtFVND8NFo+kZV2rf+oP+N8PKxArCPZokqZS7AqH4J8gzHIwBQK
- 0ehNo3RpcRQLQ72HJPl/7O2TNsseZuzoywuh0f+PCe3BxID3OqZoG8xOr
- IsXTfml++/d5o4W3AmdFn6S8hs4pYgRfrWAADcnsn1h8jYS4U5c8Y6zBr
- LiE15ybsoWaET3pALFmahE7IAMIB18N2NDYW90bEzbkj+UHVsSCwAztqX
- 5LOHM+wEb8TaGATCf9f8c8RWoajBqBS3j36Du+DOP6hxvx5QkuVrPVgmn
- Vje95qdil2nV0LRqvKiXmICXWFKUJ0X0UfaNu3f74BX2Ip546Ja8dpmEN w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="377491112"
-X-IronPort-AV: E=Sophos;i="6.02,142,1688454000"; d="scan'208";a="377491112"
+ bh=6ZOTolQaVZtDkdndjG007mer0l08MC5v1of/bXfVgh0=;
+ b=JeP8AjcNAO/9gWPSsPlJP8iw9op2sHj+k+Pzc218yScVT/vUpbovDsNY
+ GbsE1PZ2afHl8jhnEhrk0MCBaIj6szqbrisszbO2DpeM1Ry4prJ80ajNV
+ a1hlrOWAHjKxTsJ+8N0LUXu7SO4eZaOXj+E4+piFrOExKf1lPC5jPpTet
+ IJZe9ThPACus5DhyQnh1U2nFNbTPTfavP1ospD3mItRXHBxvPmuHoyjHO
+ DZUcAQJ6F5PPdcSoFH/n6OQKJcWN4IlvOeSHBFOkoqewrH2hTBl3v/QqZ
+ 6IggSrrhre1KbduOGUzDEE5cuLxwV2u/pYBV5o6Zx1Q8OvEoHJzyfaJNH w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="377491298"
+X-IronPort-AV: E=Sophos;i="6.02,142,1688454000"; d="scan'208";a="377491298"
 Received: from fmsmga007.fm.intel.com ([10.253.24.52])
  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2023 23:59:31 -0700
+ 13 Sep 2023 00:00:09 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="747192882"
-X-IronPort-AV: E=Sophos;i="6.02,142,1688454000"; d="scan'208";a="747192882"
+X-IronPort-AV: E=McAfee;i="6600,9927,10831"; a="747193142"
+X-IronPort-AV: E=Sophos;i="6.02,142,1688454000"; d="scan'208";a="747193142"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.16.87])
  ([10.93.16.87])
  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2023 23:59:26 -0700
-Message-ID: <fc235a15-53be-033a-1281-ff94ecb8c269@intel.com>
-Date: Wed, 13 Sep 2023 14:59:23 +0800
+ 13 Sep 2023 00:00:04 -0700
+Message-ID: <a19427f8-3432-0918-0e0e-e972de5aa9df@intel.com>
+Date: Wed, 13 Sep 2023 15:00:02 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.15.0
 Subject: Re: [RFC PATCH 15/19] kvm: handle KVM_EXIT_MEMORY_FAULT
-To: Isaku Yamahata <isaku.yamahata@gmail.com>
+Content-Language: en-US
+To: Xu Yilun <yilun.xu@intel.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Sean Christopherson <seanjc@google.com>, David Hildenbrand
  <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -60,14 +61,13 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  Peter Xu <peterx@redhat.com>, Chao Peng <chao.p.peng@linux.intel.com>,
- Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org
 References: <20230731162201.271114-1-xiaoyao.li@intel.com>
  <20230731162201.271114-16-xiaoyao.li@intel.com>
- <20230802222545.GC1807130@ls.amr.corp.intel.com>
-Content-Language: en-US
+ <ZNOqhy1NlGzDA6/F@yilunxu-OptiPlex-7050>
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20230802222545.GC1807130@ls.amr.corp.intel.com>
+In-Reply-To: <ZNOqhy1NlGzDA6/F@yilunxu-OptiPlex-7050>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=192.55.52.120; envelope-from=xiaoyao.li@intel.com;
@@ -95,10 +95,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/3/2023 6:25 AM, Isaku Yamahata wrote:
-> On Mon, Jul 31, 2023 at 12:21:57PM -0400,
-> Xiaoyao Li <xiaoyao.li@intel.com> wrote:
-> 
+On 8/9/2023 11:02 PM, Xu Yilun wrote:
+> On 2023-07-31 at 12:21:57 -0400, Xiaoyao Li wrote:
 >> From: Chao Peng <chao.p.peng@linux.intel.com>
 >>
 >> Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
@@ -145,18 +143,32 @@ On 8/3/2023 6:25 AM, Isaku Yamahata wrote:
 >> +
 >> +        if (ret) {
 >> +            return ret;
+> 
+> Should we unref the memory region before return?
+
+Thanks for catching this!
+
+> Thanks,
+> Yilun
+> 
 >> +        }
 >> +
 >> +        addr = memory_region_get_ram_ptr(section.mr) +
 >> +               section.offset_within_region;
 >> +        rb = qemu_ram_block_from_host(addr, false, &offset);
-> 
-> Here we have already section. section.mr->ram_block.  We don't have to
-> scan the existing RAMBlocks.
-
-But we don't have the @offset, do we?
-
-> Except that, looks good to me.
-> Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>> +        /*
+>> +         * With KVM_SET_MEMORY_ATTRIBUTES by kvm_set_memory_attributes(),
+>> +         * operation on underlying file descriptor is only for releasing
+>> +         * unnecessary pages.
+>> +         */
+>> +        ram_block_convert_range(rb, offset, size, to_private);
+>> +    } else {
+>> +        warn_report("Convert non guest-memfd backed memory region (0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
+>> +                    start, size, to_private ? "private" : "shared");
+>> +    }
+>> +
+>> +    memory_region_unref(section.mr);
+>> +    return ret;
+>> +}
 
 
