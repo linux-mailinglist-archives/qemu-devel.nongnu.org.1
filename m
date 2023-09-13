@@ -2,87 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B07879E2AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 10:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF2979E2A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 10:52:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgLdI-0007mB-F1; Wed, 13 Sep 2023 04:54:00 -0400
+	id 1qgLbQ-0005RL-CO; Wed, 13 Sep 2023 04:52:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qgLdG-0007lW-NF
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:53:58 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qgLd1-0006Ii-4E
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:53:58 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-401bdff4cb4so70852625e9.3
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 01:53:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694595221; x=1695200021; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PaCDfbshZj02stCbL44BQ0+P3R5i6JmtaBXQZ2vXVRU=;
- b=tTWAB96S9gzGS4W0PuWtsj/f61OCrLZluIjwgqW8K96DaQwCfOICPLK2KJcsO0P0C8
- Hfy/rsS1Fw+bRqy0TZW2H+5S4TGIxJS98UhxGrvv0/PGaZ/IlIhfcXMsAwRAikNJ/lui
- 78puv31B9fZ/O6nzyW/V2OhK6gkcxBJsiqWHiDR2w6lntZKp0iiJJBNhLck2L8bJpmE6
- Zzq6RimqwCbmYUXuSE586YZyzFIrsmEYp2NkVqqk2yL1CfhjYpSqh1Dfn0O5BQ53B/HW
- B/t2yRJkhKP+PtZwdXVAupYotks/CxlrQgdGA7QbrE1655yL+ipeuefMnuMHFHy1qY+Z
- 0dGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694595221; x=1695200021;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=PaCDfbshZj02stCbL44BQ0+P3R5i6JmtaBXQZ2vXVRU=;
- b=p6KpCMHJe/IdfKw+dwXb7bkFYEa1CA9l4r4xxa/g9ZbMdSBc6MHB5RTErRlDFUgt/g
- dGv1LTTT8svMW+1B2+6xrRIPMg/knlLY6qSDTHgacQK4pHcRqAh4yTPaeL2fYlu8ntt4
- +1IKE+iWR8aCmbWxatJLuZK/CW8ddRso/GxEPUenYmMY7KluEIplZfqYuAa0HLpb3rx6
- 9TZOZr0HYE77GQytVCl5booP7ieNPQaaCeYh6lUC43wxEJtpq4RbTa46k8zyGxf6HOuu
- bGb1ROhf01R/Ka+d8BGkz+jZoaqjQAWIWfya4bm2fCPWB390Bhr7ceR+OaOOyInxcNdp
- TgWw==
-X-Gm-Message-State: AOJu0YwPy14jf4Qg2epNIJZTMkDdvBiSf7f2ugqRW0otJqtGhMFbT/bA
- qjxLB07ad/OtYlYxXeugD3nurA==
-X-Google-Smtp-Source: AGHT+IGw0NUP2FP1GMXOy+FYv+kKDB2WVdwLvLhWjrn8OyYSTegRhBzRK/DgEF/+OTrhtgIPwpL04w==
-X-Received: by 2002:a05:600c:2108:b0:401:b76d:3b8b with SMTP id
- u8-20020a05600c210800b00401b76d3b8bmr1409086wml.16.1694595221249; 
- Wed, 13 Sep 2023 01:53:41 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- s1-20020a5d69c1000000b0031aef72a021sm14876434wrw.86.2023.09.13.01.53.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Sep 2023 01:53:40 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 56DE91FFBB;
- Wed, 13 Sep 2023 09:53:40 +0100 (BST)
-References: <20230912131340.405619-1-npiggin@gmail.com>
-User-agent: mu4e 1.11.17; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>, Beraldo
- Leal <bleal@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] tests/avocado: Fix console data loss
-Date: Wed, 13 Sep 2023 09:51:23 +0100
-In-reply-to: <20230912131340.405619-1-npiggin@gmail.com>
-Message-ID: <87h6nytpwr.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgLbN-0005OX-9k
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:52:01 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgLbI-0005xh-PV
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:52:00 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlvGB3zCVz6J6F2;
+ Wed, 13 Sep 2023 16:47:14 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 13 Sep
+ 2023 09:51:53 +0100
+Date: Wed, 13 Sep 2023 09:51:52 +0100
+To: Fan Ni <fan.ni@samsung.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud?=
+ =?ISO-8859-1?Q?=E9?= <philmd@linaro.org>, "linuxarm@huawei.com"
+ <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 2/3] hw/cxl: Add QTG _DSM support for ACPI0017 device
+Message-ID: <20230913095152.00005053@Huawei.com>
+In-Reply-To: <20230912211245.GC2828853@sjcvldevvm72>
+References: <20230904161847.18468-1-Jonathan.Cameron@huawei.com>
+ <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
+ <CGME20230912211246uscas1p168389b2f62884b970e348f8b94e550d2@uscas1p1.samsung.com>
+ <20230912211245.GC2828853@sjcvldevvm72>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,131 +68,173 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 12 Sep 2023 21:12:45 +0000
+Fan Ni <fan.ni@samsung.com> wrote:
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+> On Mon, Sep 04, 2023 at 05:18:46PM +0100, Jonathan Cameron wrote:
+> 
+> > From: Dave Jiang <dave.jiang@intel.com>
+> > 
+> > Add a simple _DSM call support for the ACPI0017 device to return a fake QTG
+> > ID value of 0 in all cases. The enabling is for _DSM plumbing testing
+> > from the OS.
+> > 
+> > Following edited for readbility only
+> > 
+> > Device (CXLM)
+> > {
+> >     Name (_HID, "ACPI0017")  // _HID: Hardware ID
+> > ...
+> >     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+> >     {
+> >         If ((Arg0 == ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52")))
+> >         {
+> >             If ((Arg2 == Zero))
+> >             {
+> >                 Return (Buffer (One) { 0x01 })
+> >             }
+> > 
+> >             If ((Arg2 == One))
+> >             {
+> >                 Return (Package (0x02)
+> >                 {
+> >                     Buffer (0x02)
+> >                     { 0x01, 0x00 },
+> >                     Package (0x01)
+> >                     {
+> >                         Buffer (0x02)
+> >                         { 0x00, 0x00 }
+> >                     }
+> >                 })
+> >             }
+> >         }
+> >     }
+> > 
+> > Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> 
+> Looks good to me. One minor comment inline.
+> > 
+> > --
+> > v2: Minor edit to drop reference to switches in patch description.
+> > ---
+> >  include/hw/acpi/cxl.h |  1 +
+> >  hw/acpi/cxl.c         | 57 +++++++++++++++++++++++++++++++++++++++++++
+> >  hw/i386/acpi-build.c  |  1 +
+> >  3 files changed, 59 insertions(+)
+> > 
+> > diff --git a/include/hw/acpi/cxl.h b/include/hw/acpi/cxl.h
+> > index acf4418886..8f22c71530 100644
+> > --- a/include/hw/acpi/cxl.h
+> > +++ b/include/hw/acpi/cxl.h
+> > @@ -25,5 +25,6 @@ void cxl_build_cedt(GArray *table_offsets, GArray *table_data,
+> >                      BIOSLinker *linker, const char *oem_id,
+> >                      const char *oem_table_id, CXLState *cxl_state);
+> >  void build_cxl_osc_method(Aml *dev);
+> > +void build_cxl_dsm_method(Aml *dev);
+> >  
+> >  #endif
+> > diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
+> > index 92b46bc932..5e9039785a 100644
+> > --- a/hw/acpi/cxl.c
+> > +++ b/hw/acpi/cxl.c
+> > @@ -30,6 +30,63 @@
+> >  #include "qapi/error.h"
+> >  #include "qemu/uuid.h"
+> >  
+> > +void build_cxl_dsm_method(Aml *dev)  
+> 
+> Not a concern for now, I think, do we need to check the revision
+> field?
 
-> Occasionally some avocado tests will fail waiting for console line
-> despite the machine running correctly. Console data goes missing, as can
-> be seen in the console log. This is due to _console_interaction calling
-> makefile() on the console socket each time it is invoked, which must be
-> losing old buffer contents when going out of scope.
->
-> It is not enough to makefile() with buffered=3D0. That helps significantly
-> but data loss is still possible. My guess is that readline() has a line
-> buffer even when the file is in unbuffered mode, that can eat data.
->
-> Fix this by providing a console file that persists for the life of the
-> console.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Any new versions should be defined to be backwards compatible...
+So hopefully not (though it has gone wrong a few times in the
+past when spec reviewers like me haven't been paying attention :(
+If that happens we'll have to deal with it when it becomes public.
 
-Queued to testing/next, thanks.
+Jonathan
 
-> ---
->
-> For some reason, ppc_prep_40p.py:IbmPrep40pMachine.test_openbios_192m
-> was flakey for me due to this bug. I don't know why that in particular,
-> 3 calls to wait_for_console_pattern probably helps.
->
-> I didn't pinpoint when the bug was introduced because the original
-> was probably not buggy because it was only run once at the end of the
-> test. At some point after it was moved to common code, something would
-> have started to call it more than once which is where potential for bug
-> is introduced.
+> 
+> Fan
+> > +{
+> > +    Aml *method, *ifctx, *ifctx2;
+> > +
+> > +    method = aml_method("_DSM", 4, AML_SERIALIZED);
+> > +    {
+> > +        Aml *function, *uuid;
+> > +
+> > +        uuid = aml_arg(0);
+> > +        function = aml_arg(2);
+> > +        /* CXL spec v3.0 9.17.3.1 *, QTG ID _DSM */
+> > +        ifctx = aml_if(aml_equal(
+> > +            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
+> > +
+> > +        /* Function 0, standard DSM query function */
+> > +        ifctx2 = aml_if(aml_equal(function, aml_int(0)));
+> > +        {
+> > +            uint8_t byte_list[1] = { 0x01 }; /* functions 1 only */
+> > +
+> > +            aml_append(ifctx2,
+> > +                       aml_return(aml_buffer(sizeof(byte_list), byte_list)));
+> > +        }
+> > +        aml_append(ifctx, ifctx2);
+> > +
+> > +        /*
+> > +         * Function 1
+> > +         * A return value of {1, {0}} inciate that
+> > +         * max supported QTG ID of 1 and recommended QTG is 0.
+> > +         * The values here are faked to simplify emulation.
+> > +         */
+> > +        ifctx2 = aml_if(aml_equal(function, aml_int(1)));
+> > +        {
+> > +            uint16_t word_list[1] = { 0x01 };
+> > +            uint16_t word_list2[1] = { 0 };
+> > +            uint8_t *byte_list = (uint8_t *)word_list;
+> > +            uint8_t *byte_list2 = (uint8_t *)word_list2;
+> > +            Aml *pak, *pak1;
+> > +
+> > +            /*
+> > +             * The return package is a package of a WORD and another package.
+> > +             * The embedded package contains 0 or more WORDs for the
+> > +             * recommended QTG IDs.
+> > +             */
+> > +            pak1 = aml_package(1);
+> > +            aml_append(pak1, aml_buffer(sizeof(uint16_t), byte_list2));
+> > +            pak = aml_package(2);
+> > +            aml_append(pak, aml_buffer(sizeof(uint16_t), byte_list));
+> > +            aml_append(pak, pak1);
+> > +
+> > +            aml_append(ifctx2, aml_return(pak));
+> > +        }
+> > +        aml_append(ifctx, ifctx2);
+> > +    }
+> > +    aml_append(method, ifctx);
+> > +    aml_append(dev, method);
+> > +}
+> > +
+> >  static void cedt_build_chbs(GArray *table_data, PXBCXLDev *cxl)
+> >  {
+> >      PXBDev *pxb = PXB_DEV(cxl);
+> > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> > index bb12b0ad43..d3bc5875eb 100644
+> > --- a/hw/i386/acpi-build.c
+> > +++ b/hw/i386/acpi-build.c
+> > @@ -1422,6 +1422,7 @@ static void build_acpi0017(Aml *table)
+> >      method = aml_method("_STA", 0, AML_NOTSERIALIZED);
+> >      aml_append(method, aml_return(aml_int(0x01)));
+> >      aml_append(dev, method);
+> > +    build_cxl_dsm_method(dev);
+> >  
+> >      aml_append(scope, dev);
+> >      aml_append(table, scope);
+> > -- 
+> > 2.39.2
+> > 
+> >  
 
-There is a sprawling mass somewhere between:
-
-  - pythons buffering of IO
-  - device models dropping chars when blocked
-  - noisy tests with competing console output
-
-that adds up to unreliable tests that rely on seeing certain patterns on
-the console.=20
-
->
-> Thanks,
-> Nick
->
->  python/qemu/machine/machine.py         | 19 +++++++++++++++++++
->  tests/avocado/avocado_qemu/__init__.py |  2 +-
->  2 files changed, 20 insertions(+), 1 deletion(-)
->
-> diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine=
-.py
-> index c16a0b6fed..35d5a672db 100644
-> --- a/python/qemu/machine/machine.py
-> +++ b/python/qemu/machine/machine.py
-> @@ -191,6 +191,7 @@ def __init__(self,
->              self.sock_dir, f"{self._name}.con"
->          )
->          self._console_socket: Optional[socket.socket] =3D None
-> +        self._console_file: Optional[socket.SocketIO] =3D None
->          self._remove_files: List[str] =3D []
->          self._user_killed =3D False
->          self._quit_issued =3D False
-> @@ -509,6 +510,11 @@ def _early_cleanup(self) -> None:
->          # If we keep the console socket open, we may deadlock waiting
->          # for QEMU to exit, while QEMU is waiting for the socket to
->          # become writable.
-> +        if self._console_file is not None:
-> +            LOG.debug("Closing console file")
-> +            self._console_file.close()
-> +            self._console_file =3D None
-> +
->          if self._console_socket is not None:
->              LOG.debug("Closing console socket")
->              self._console_socket.close()
-> @@ -874,12 +880,25 @@ def console_socket(self) -> socket.socket:
->          Returns a socket connected to the console
->          """
->          if self._console_socket is None:
-> +            LOG.debug("Opening console socket")
->              self._console_socket =3D console_socket.ConsoleSocket(
->                  self._console_address,
->                  file=3Dself._console_log_path,
->                  drain=3Dself._drain_console)
->          return self._console_socket
->=20=20
-> +    @property
-> +    def console_file(self) -> socket.SocketIO:
-> +        """
-> +        Returns a file associated with the console socket
-> +        """
-> +        if self._console_file is None:
-> +            LOG.debug("Opening console file")
-> +            self._console_file =3D self.console_socket.makefile(mode=3D'=
-rb',
-> +                                                              buffering=
-=3D0,
-> +                                                              encoding=
-=3D'utf-8')
-> +        return self._console_file
-> +
->      @property
->      def temp_dir(self) -> str:
->          """
-> diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avoca=
-do_qemu/__init__.py
-> index 33090903f1..0172a359b7 100644
-> --- a/tests/avocado/avocado_qemu/__init__.py
-> +++ b/tests/avocado/avocado_qemu/__init__.py
-> @@ -137,7 +137,7 @@ def _console_interaction(test, success_message, failu=
-re_message,
->      assert not keep_sending or send_string
->      if vm is None:
->          vm =3D test.vm
-> -    console =3D vm.console_socket.makefile(mode=3D'rb', encoding=3D'utf-=
-8')
-> +    console =3D vm.console_file
->      console_logger =3D logging.getLogger('console')
->      while True:
->          if send_string:
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
