@@ -2,99 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D1779E4EF
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 12:30:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE10079E50D
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 12:35:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgN7d-0006aU-1s; Wed, 13 Sep 2023 06:29:25 -0400
+	id 1qgNCJ-0000N1-G0; Wed, 13 Sep 2023 06:34:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qgN7b-0006aM-7Z
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:29:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qgN7Y-0004mn-WA
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:29:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694600959;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0bxFVe/E2XvfrFqG8Yrr1bPRLJ8gbzxCcYIWyf9wMMg=;
- b=SEtO//4XqdqmKw26OrP4dGeP0BtkzRCKMU1sOZYgw0lLSlE6xI4Jncj2P9cdecJnkNg8ao
- iK3uuFAbgQrlBSiJrrk9htTKdzJE8BU4iu0rqF7CRd8+w+qMDeqo2W5idS3CL4ufPxo27t
- 8EIscCNvwbL0GoyrIV5s1Y/oMj9Yz1E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-NZqXdayuOOi5qMoAjJDGSw-1; Wed, 13 Sep 2023 06:29:18 -0400
-X-MC-Unique: NZqXdayuOOi5qMoAjJDGSw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fd0fa4d08cso49992605e9.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 03:29:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694600957; x=1695205757;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0bxFVe/E2XvfrFqG8Yrr1bPRLJ8gbzxCcYIWyf9wMMg=;
- b=wh3vm3QA0gWgDQba/peTghNWqrzWG6o5deAhpQjXBJ3pPqo0ioHsHWPidDAYH0ZCqL
- 2QxRLqfCOD7NUGjhHQsuZ06GHlEcq1sJY0RVjEOZEuZGTXjzys64fSU7AfRl5nMD4bYQ
- 2geswUdoJ0i7kYG427zTW3NgbNzuGMdIrZ1QtGa6U32YsrjPMgIvKWMn24Akk3g8oA3z
- JncaIx/5qmOUsY/zp8QnqSo3ZHD9q+W0hAL540E9BRyCskYRLVZ53T1b7wXuYR+rxYec
- ei19RQjujua7a7rT5TdkRAuE80jeFBYN3mjxMNOsoL6npiCPcC6cs0pwgxYR5XvRJwRG
- 6dTg==
-X-Gm-Message-State: AOJu0YxuWO4w+cDPtRUUFJJYaUaSB2C7PmnYbl6gjmtvsMpAxhQpwT7o
- ASn7ug97TOC0bNICxAneER6nZJlxWYbPlOSZbkMIinov7W04vBN1nScIRpafYdMr2ZWd1PqzXVX
- qLdQtCJVNX21o8YY=
-X-Received: by 2002:a1c:7213:0:b0:401:d5bb:9b40 with SMTP id
- n19-20020a1c7213000000b00401d5bb9b40mr1791337wmc.15.1694600957305; 
- Wed, 13 Sep 2023 03:29:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJQ20OnDZTTPIGLgVTuejcFW7U3fILnen/CmHvty2+jekejpqdkNJ3ZrDotViC4vJgjVrZ9Q==
-X-Received: by 2002:a1c:7213:0:b0:401:d5bb:9b40 with SMTP id
- n19-20020a1c7213000000b00401d5bb9b40mr1791319wmc.15.1694600956978; 
- Wed, 13 Sep 2023 03:29:16 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- a16-20020a5d4570000000b00317f70240afsm15203183wrc.27.2023.09.13.03.29.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 03:29:16 -0700 (PDT)
-Message-ID: <7b544940-0cf2-652e-732e-934dfac63182@redhat.com>
-Date: Wed, 13 Sep 2023 12:29:15 +0200
+ (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
+ id 1qgNCF-0000Mm-R3; Wed, 13 Sep 2023 06:34:11 -0400
+Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
+ helo=smtp.gentoo.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
+ (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
+ id 1qgNCB-0007BA-56; Wed, 13 Sep 2023 06:34:11 -0400
+From: "Andreas K. Huettel" <dilfridge@gentoo.org>
+To: LIU Zhiwei <baxiantai@gmail.com>,
+ "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
+ "open list:RISC-V" <qemu-riscv@nongnu.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: qemu-riscv32 usermode still broken?
+Date: Wed, 13 Sep 2023 12:33:49 +0200
+Message-ID: <5225193.mvXUDI8C0e@kona>
+Organization: Gentoo Linux
+In-Reply-To: <b065fa54-28fc-d64e-c8dd-16104128326d@tls.msk.ru>
+References: <10817413.NyiUUSuA9g@pinacolada>
+ <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
+ <b065fa54-28fc-d64e-c8dd-16104128326d@tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5 0/6] target/i386: Restrict system-specific features
- from user emulation
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- kvm@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>, Kevin Wolf <kwolf@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-References: <20230913093009.83520-1-philmd@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230913093009.83520-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; boundary="nextPart14810793.O9o76ZdvQC";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
+ envelope-from=dilfridge@gentoo.org; helo=smtp.gentoo.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,26 +55,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/13/23 11:30, Philippe Mathieu-Daudé wrote:
-> Since v4:
-> - Addressed Paolo's suggestions (clearly better)
-> 
-> Too many system-specific code (and in particular KVM related)
-> is pulled in user-only build. This led to adding unjustified
-> stubs as kludge to unagressive linker non-optimizations.
-> 
-> This series restrict x86 system-specific features to sysemu,
-> so we don't require any stub, and remove all x86 KVM declarations
-> from user emulation code (to trigger compile failure instead of
-> link one).
+--nextPart14810793.O9o76ZdvQC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
+From: "Andreas K. Huettel" <dilfridge@gentoo.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: qemu-riscv32 usermode still broken?
+Date: Wed, 13 Sep 2023 12:33:49 +0200
+Message-ID: <5225193.mvXUDI8C0e@kona>
+Organization: Gentoo Linux
+In-Reply-To: <b065fa54-28fc-d64e-c8dd-16104128326d@tls.msk.ru>
+MIME-Version: 1.0
 
-I'm still not sure about patch 5, though I'd like to have something like 
-patch 6.  But fortunately patches 1-3 are enough to placate clang, so I 
-have queued them.
+Am Mittwoch, 13. September 2023, 10:06:01 CEST schrieb Michael Tokarev:
+> 13.09.2023 04:41, LIU Zhiwei wrote:
+> >=20
+> > On 2023/9/13 6:31, Andreas K. Huettel wrote:
+> ..
+> >> * Something seems wrong in the signal handling (?):
+> >=20
+> > If it is wrong for signal handling and for 32-bit, I guess it may be fi=
+xed by this patch
+> >=20
+> > https://www.mail-archive.com/qemu-devel@nongnu.org/msg981238.html
+> >=20
+> > And this patch has been merged into master branch yesterday.
+>=20
+> I picked this one up for stable yesterday, scheduled to be released
+> on Sep-21.
 
-Thanks Philippe!
+Oh great, thanks! I'll test this and report back.
+=2Da
 
-Paolo
+>=20
+> Thanks,
+>=20
+> /mjt
+>=20
+>=20
+>=20
+
+
+=2D-=20
+Andreas K. H=FCttel
+dilfridge@gentoo.org
+Gentoo Linux developer
+(council, toolchain, base-system, perl, libreoffice)
+--nextPart14810793.O9o76ZdvQC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQKTBAABCgB9FiEE/Rnm0xsZLuTcY+rT3CsWIV7VQSoFAmUBkA1fFIAAAAAALgAo
+aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEZE
+MTlFNkQzMUIxOTJFRTREQzYzRUFEM0RDMkIxNjIxNUVENTQxMkEACgkQ3CsWIV7V
+QSqCWg/8CAbGJTmRcNYO4RKEhqyMMP2iHe3qnWCUPp30v/dmrL/fA8MCrNy7gleK
+tb0kmqu5dy/V2R7FCrBCV69XnR7OdGDaf32JBUNpmc6/at0KTrFg+f0o8kjPGR/i
+dTyyL/bnnzIzC1iiWNLbLGxKKZgBhYCag+Nw3rULpVCo85ilFepjuGeIU9r4xbKy
+fzPyHcvOaStW5Z8Inz4MgrfuY9EHR+rEcFYVDj8VUtXDdQLFHj2a9XAVrJsTb+Yy
+RncSkmgpY2vxHnd9zB40EORgnmWLjVoML6Mq248sIJKEW6vgUEAyQiHeG6AJga0j
+HSyXC6sgfVS8GUVDKkLrIWOSQyilZBnmg0E5/GEFbpCVU1wtwCSMlR/3yUrUDDl0
+MWGsE4LJ7W+/a5LQXiMsbVXI0Z367z4r/jx0V2LGEMnS+dMY+VZxXG9YJCu9OtSE
+luSJVdGAkUE++fzusYdWzypvq9ANdyBnl4pK9R7Yx8t7X1oR4stTqK3KSHPGBvba
+71NhoPJoaLVOBvDC4fwgtBODLylmVq8YQam9H6yLiJta1Fk9wGohEA/9xMu3JN/N
+hllJVQtiWGwlEgYGBrkx4gzA4dyarZSekrdGunPCTDMBQGL77vMvXIKuwxAUexjF
+2H0E1KrA69TLZ1cOJkl/amUybo60SXgQrIZISCE67zwjFI4zfrk=
+=EsgL
+-----END PGP SIGNATURE-----
+
+--nextPart14810793.O9o76ZdvQC--
+
 
 
 
