@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A189079E3C8
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1737579E3C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:31:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgMCx-0001H8-1L; Wed, 13 Sep 2023 05:30:51 -0400
+	id 1qgMD8-0001JZ-57; Wed, 13 Sep 2023 05:31:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMCv-0001Gk-Bu
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:30:49 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMD1-0001Iz-D5
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:30:55 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMCs-0002Ky-5V
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:30:48 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31f4a286ae1so6199289f8f.3
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 02:30:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMCz-0002ME-5U
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:30:55 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40037db2fe7so70558695e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 02:30:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694597444; x=1695202244; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694597450; x=1695202250; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eKbeAfeEWeYWq6ZMSQ2gP4OMkhbj3lmxF1/S1lGxkFI=;
- b=CHE19x6SBYVp28nEZ6D7kT6ITh4PMkcmBelUH8DsZgnjFb5s7kS0TmVoa66QkEwquE
- r37JlKtPfQVC6YEnqwAp4N5uJMrIBQGQA748c62L7inPkwy7Ze9QfikXEjdanjstak96
- 4UvXTDciyedHazOsWDpKSKIeXyxMD8gw2+Kjf1eXKA2Rvfz4It62w0VC7NSIdPIZ8m6k
- nmbLml89r7NzpwmejN+ChOAkJ6vthdbaIjI5jbOvKcPkVnW0kF+kzjIlNl7Mu6zx9/1t
- IF65uFZfQRc2QMzx7LP9oqXAkB4I534SiLUVDJFFcFwb2/+DwftjPFZOD/ZN9fPQzget
- xG+A==
+ bh=jtT3ML1tHJnWRfmIXQrD6YCHmxZTPOtervgh4drQU7s=;
+ b=wyNU+9QIuqMCKmLMuDVDitnZ9U2QI4gOrUOvDogfi5g/eXEY3JeqLu+i9+ey11C5gj
+ 6Uzzhm02qLc8nq70C7SMk2Kb1oOencxz0rBgbVDtw5C8FpDt1mrVRKs7hZwUTrO+2wxh
+ /Yb4+bJPtwb3SIKlxi2LC8Vm4uLp3SvijNkt3ltsSNWYZO1BpvoCn0+ADbe6EcHsSLsR
+ frU82Q8MPNQUfa6MfzdQ+XFyCkgpX0EcWjPmnWRk02Yxig+t03P/NvGCnKdZqMPl1cZu
+ kPED3u4zfpS1tvXN4M1l3h+Bn/RkJ/vIaC/oEPyyrn0s3HE3LALhyCSGLG7R4XN52cL+
+ 5kjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694597444; x=1695202244;
+ d=1e100.net; s=20230601; t=1694597450; x=1695202250;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eKbeAfeEWeYWq6ZMSQ2gP4OMkhbj3lmxF1/S1lGxkFI=;
- b=rQVbqhAHleW5yiXcwfQpI0Ksv0RiF1myS25wDxvEiRG5POdxzXxyVqm6a/gRJgKsBs
- NWXjJd96r3MMyJN/XcyuDaNaDvWGfp/UVAZueYiFFHfZBgBE86HTxx81COdnp6Ral4Pz
- FW3qO53cYZeJSV54KgmxbMUJvx8udTdbzQmK3nAsSY4z7gGy2boomnpfHoeixHndsaCy
- S36K4VKHKcqGy116el9Fx6j9h3jgyBdsJt9eTAMOHQ/nY1E95FXIZ2taC14F/0CJ9adR
- D6n71BlsAUkh1RMeOHc3d6/VJ+ysJnINxYCFlQOR28nOt/rCwb9f618pYGWT9XSJgj9j
- ZmAw==
-X-Gm-Message-State: AOJu0Yz/c+nERp8I633xn9npAAT7eJ6BpPtilv7xqUshk/JIYeyum3D7
- zJBIuTiVTTj4xuSq2kZ5qeRbPrXb08aGH5ogfgk=
-X-Google-Smtp-Source: AGHT+IFygu3BAr+7UcI3dOenQQ5WxeefjdnW+wv88rHPugEcR1Z+feWe0l1BCnKAc2a9M86WKXr2Zg==
-X-Received: by 2002:adf:ebc8:0:b0:31a:e6c2:770d with SMTP id
- v8-20020adfebc8000000b0031ae6c2770dmr1565964wrn.36.1694597444117; 
- Wed, 13 Sep 2023 02:30:44 -0700 (PDT)
+ bh=jtT3ML1tHJnWRfmIXQrD6YCHmxZTPOtervgh4drQU7s=;
+ b=Ngl/74MDcxPDIb9luUwgdxI/VUkK8CMbsDyd642dHPDsEqojC8CEpKakvVMcdYnT2X
+ Zg58L+KIe0bGFNDU4sbvg4YcEAvgmrfN7rXxQx/F2R/fLogQUDCDxCXOBoqJqVOsgGjf
+ t4Mk73Ky7qWe6/rYSsfGfSa4dO30jy0ir29QsRZHP7SjXxhF4fFT7URpm326SfLPxEtb
+ RGWmRsaGWNvarrX3LWaQe97wAH8iIUAUPyf3qo6513opfCxw3Bv6W95Iv0BaGvi4m/D3
+ d0HK6935xDYzFZiUi0e4BYkfqCL/7v8EpQXJdYjq40WTdJE2Y39XyMlJH82KqbFVHH5/
+ sdcA==
+X-Gm-Message-State: AOJu0Yy3j/eFCMdHItsap4RmuwRHjUQ5zqwXWVCWLmeQtnOrom22A7vy
+ s9HkcJIejuQcPHWypVZrqXeEHuTjBj3C3sk6ad4=
+X-Google-Smtp-Source: AGHT+IGD2WPDLCyweINrRoQof3jTKC1mX87q6WXI/fyFE1kXJNwVQRZhwnclukg8a31JArVaogLfzA==
+X-Received: by 2002:a7b:c397:0:b0:402:ea6f:e88f with SMTP id
+ s23-20020a7bc397000000b00402ea6fe88fmr1496700wmj.5.1694597450118; 
+ Wed, 13 Sep 2023 02:30:50 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-211-241.abo.bbox.fr. [176.131.211.241])
  by smtp.gmail.com with ESMTPSA id
- u4-20020a5d6da4000000b0031fb91f23e9sm4107295wrs.43.2023.09.13.02.30.42
+ l14-20020a1c790e000000b003fe4ca8decdsm1465100wme.31.2023.09.13.02.30.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Sep 2023 02:30:43 -0700 (PDT)
+ Wed, 13 Sep 2023 02:30:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -64,18 +64,18 @@ Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Marcelo Tosatti <mtosatti@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH v5 5/6] target/i386: Restrict system-specific code from
- user emulation
-Date: Wed, 13 Sep 2023 11:30:07 +0200
-Message-ID: <20230913093009.83520-6-philmd@linaro.org>
+Subject: [PATCH v5 6/6] target/i386: Prohibit target specific KVM prototypes
+ on user emulation
+Date: Wed, 13 Sep 2023 11:30:08 +0200
+Message-ID: <20230913093009.83520-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230913093009.83520-1-philmd@linaro.org>
 References: <20230913093009.83520-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,107 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Restrict calls to:
- - kvm_arch_get_supported_cpuid()
- - kvm_arch_get_supported_msr_feature()
- - kvm_request_xsave_components()
- - kvm_hyperv_expand_features()
-so we can remove restrict "kvm/kvm_i386.h" and all its
-declarations to system emulation (see the next commit).
+None of these target-specific prototypes should be used
+by user emulation. Remove their declaration there, so we
+get a compile failure if ever used (instead of having to
+deal with linker and its possible optimizations, such
+dead code removal).
 
+Suggested-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/cpu.c | 41 ++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 38 insertions(+), 3 deletions(-)
+ target/i386/kvm/kvm_i386.h | 4 ++++
+ target/i386/cpu.c          | 3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index 55d4e68c34..5ef73f0a1c 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -13,6 +13,10 @@
+ 
+ #include "sysemu/kvm.h"
+ 
++#ifdef CONFIG_USER_ONLY
++#error Cannot include kvm_i386.h from user emulation
++#endif
++
+ #ifdef CONFIG_KVM
+ 
+ #define kvm_pit_in_kernel() \
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3df85a6347..c201ff26bd 100644
+index c201ff26bd..db8ed6284d 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -5654,8 +5654,6 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
-     return cpu_list;
- }
+@@ -26,7 +26,7 @@
+ #include "tcg/helper-tcg.h"
+ #include "sysemu/reset.h"
+ #include "sysemu/hvf.h"
+-#include "kvm/kvm_i386.h"
++#include "sysemu/kvm.h"
+ #include "sev.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+@@ -40,6 +40,7 @@
+ #include "exec/address-spaces.h"
+ #include "hw/boards.h"
+ #include "hw/i386/sgx-epc.h"
++#include "kvm/kvm_i386.h"
+ #endif
  
--#endif /* !CONFIG_USER_ONLY */
--
- /*
-  * Returns the set of feature flags that are supported and migratable by
-  * QEMU, for a given FeatureWord.
-@@ -5781,6 +5779,38 @@ static void x86_cpu_get_cache_cpuid(uint32_t func, uint32_t index,
-     }
- }
- 
-+#else /* CONFIG_USER_ONLY */
-+
-+uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
-+                                            bool migratable_only)
-+{
-+    FeatureWordInfo *wi = &feature_word_info[w];
-+
-+    return wi->tcg_features;
-+}
-+
-+static void x86_cpu_get_supported_cpuid(uint32_t func, uint32_t index,
-+                                        uint32_t *eax, uint32_t *ebx,
-+                                        uint32_t *ecx, uint32_t *edx)
-+{
-+    *eax = 0;
-+    *ebx = 0;
-+    *ecx = 0;
-+    *edx = 0;
-+}
-+
-+static void x86_cpu_get_cache_cpuid(uint32_t func, uint32_t index,
-+                                    uint32_t *eax, uint32_t *ebx,
-+                                    uint32_t *ecx, uint32_t *edx)
-+{
-+    *eax = 0;
-+    *ebx = 0;
-+    *ecx = 0;
-+    *edx = 0;
-+}
-+
-+#endif /* !CONFIG_USER_ONLY */
-+
- /*
-  * Only for builtin_x86_defs models initialized with x86_register_cpudef_types.
-  */
-@@ -6918,7 +6948,6 @@ static void x86_cpu_enable_xsave_components(X86CPU *cpu)
-     CPUX86State *env = &cpu->env;
-     int i;
-     uint64_t mask;
--    static bool request_perm;
- 
-     if (!(env->features[FEAT_1_ECX] & CPUID_EXT_XSAVE)) {
-         env->features[FEAT_XSAVE_XCR0_LO] = 0;
-@@ -6934,11 +6963,15 @@ static void x86_cpu_enable_xsave_components(X86CPU *cpu)
-         }
-     }
- 
-+#ifndef CONFIG_USER_ONLY
-+    static bool request_perm;
-+
-     /* Only request permission for first vcpu */
-     if (kvm_enabled() && !request_perm) {
-         kvm_request_xsave_components(cpu, mask);
-         request_perm = true;
-     }
-+#endif /* !CONFIG_USER_ONLY */
- 
-     env->features[FEAT_XSAVE_XCR0_LO] = mask & CPUID_XSTATE_XCR0_MASK;
-     env->features[FEAT_XSAVE_XCR0_HI] = mask >> 32;
-@@ -7119,9 +7152,11 @@ void x86_cpu_expand_features(X86CPU *cpu, Error **errp)
-         env->cpuid_xlevel2 = env->cpuid_min_xlevel2;
-     }
- 
-+#ifndef CONFIG_USER_ONLY
-     if (kvm_enabled() && !kvm_hyperv_expand_features(cpu, errp)) {
-         return;
-     }
-+#endif /* !CONFIG_USER_ONLY */
- }
- 
- /*
+ #include "disas/capstone.h"
 -- 
 2.41.0
 
