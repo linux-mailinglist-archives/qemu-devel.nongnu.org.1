@@ -2,94 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825A979ED7C
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 17:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6921F79EDA2
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 17:49:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgRys-0000WW-D8; Wed, 13 Sep 2023 11:40:42 -0400
+	id 1qgS6A-0003ri-75; Wed, 13 Sep 2023 11:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgRyn-0000Tk-3h
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:40:37 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qgS62-0003qy-Cy
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:48:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgRyj-0006Xi-Cr
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:40:36 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qgS5z-0000nC-Br
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:48:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694619631;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7wQZgsRotTzKuf4fRL9l80Nh9mocniKKPjhGczoG0v0=;
- b=Wf89hgCoUmkrwZSXFxcM4R7hcEObePmmSV3N70uXT83gg7Mxi9UoXmvhXAtJAhj3QsZ11R
- ujyNoLDwZjDxjhp5igoQGViUONTDSIDoIr3xyM6KmwEmE7//AYfaK52i1TC9vgyLasHdjX
- S51ftVLED2hYTIqHSR+b7QK5kSBQDC4=
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com
- [209.85.222.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-361-w3WsatUdMQqkSc3KjBrxeg-1; Wed, 13 Sep 2023 11:40:30 -0400
-X-MC-Unique: w3WsatUdMQqkSc3KjBrxeg-1
-Received: by mail-ua1-f72.google.com with SMTP id
- a1e0cc1a2514c-7a28090eb26so1046241.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 08:40:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694619629; x=1695224429;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=7wQZgsRotTzKuf4fRL9l80Nh9mocniKKPjhGczoG0v0=;
- b=lZyV79xf9gFLQ0bvgVBf/7lmkKvCZIPZjKDg+ZF1njEpEYiyXrfpdlil+xkQ2x2Fqp
- 49ab53A14qhyS1TXpV9ekDmSxsfqxKc02Sg096/fqV/xQKt+kenwAaOz+8qCAD4YXG4p
- vWvoP8XLfaOKN64wzthJXHO1dpS/956Zs5lCCBvujYJp40A/0fBhjzS9dKMRarRzy9oe
- smhnLDuKAL1JCUybJf3fIXtc/CFwwo4fAJRBMptNesH8xW+nT38Ur3g1ZI1UlxqffO0K
- G9YmgG8w1lO2nRKK7Dd4K5XD+R91t1bMSZ6OXI/uGbWFarXE59K+o7UvrFZn0LIJOMsZ
- Td7w==
-X-Gm-Message-State: AOJu0YxwoaV6kq9uMi6MSkIKWteNmI8uMBAj9DJDOneqNP7udjTyNMvq
- dO+ZNBRP1i7HWgMJS0W+EiwdVXAOc9SunzWz8HVvVTDLK2RFVkttcEzxNYDRoHDBj77I0PHIwWl
- yxy/A04lpX2U7iNk=
-X-Received: by 2002:a67:f352:0:b0:44d:40b1:926d with SMTP id
- p18-20020a67f352000000b0044d40b1926dmr2447764vsm.32.1694619629531; 
- Wed, 13 Sep 2023 08:40:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFuArVPWTp0tjBQxScSbJZ0Obhy+geuhKy2oCRGC+tNSII4zpHcb70pkekkkEjncCqRQuDJfQ==
-X-Received: by 2002:a67:f352:0:b0:44d:40b1:926d with SMTP id
- p18-20020a67f352000000b0044d40b1926dmr2447750vsm.32.1694619629284; 
- Wed, 13 Sep 2023 08:40:29 -0700 (PDT)
-Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de.
- [109.43.179.28]) by smtp.gmail.com with ESMTPSA id
- kr14-20020a0562142b8e00b0064f5174bc84sm3826587qvb.20.2023.09.13.08.40.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 08:40:29 -0700 (PDT)
-Message-ID: <03ed6dda-d80a-c0eb-595b-ce6a87d4df91@redhat.com>
-Date: Wed, 13 Sep 2023 17:40:25 +0200
+ s=mimecast20190719; t=1694620082;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=Krvldp3da7WWa0WGsG2AQM90knl2ZflzeK6iY/cXt5U=;
+ b=OuBoz0elhCFTNjdiwR4H8wDjCJ9bghKlgJp5lw9W/O+DkFZb/oWZqK49sh+2v1aT+zoa/t
+ NPJJ972Wri5URSK/r3c8TBm5VEiUWSmf1/uG7uh62xMHt3cn9sy7HLY/W+D2ikfx3oKQk0
+ 1GItTT0r0UGVCtoN0mWobcLRMq3NCLg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-689-MgNc587oOtiKC2Oa4kXbBw-1; Wed, 13 Sep 2023 11:47:58 -0400
+X-MC-Unique: MgNc587oOtiKC2Oa4kXbBw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 28AB4932500;
+ Wed, 13 Sep 2023 15:47:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.38])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B859F7B62;
+ Wed, 13 Sep 2023 15:47:56 +0000 (UTC)
+Date: Wed, 13 Sep 2023 16:47:54 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: "Denis V. Lunev" <den@openvz.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH 3/3] iotests: distinguish 'skipped' and 'not run' states
+Message-ID: <ZQHZquVrpTFaU7kD@redhat.com>
+References: <20230906140917.559129-1-den@openvz.org>
+ <20230906140917.559129-4-den@openvz.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: Did Avocado assets hashing system changed?
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: avocado-devel@redhat.com, Cleber Rosa <crosa@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <4169f3e6-96b8-81af-ef09-35629b34caa7@linaro.org>
- <ZQHTR9UIdViemD2k@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <ZQHTR9UIdViemD2k@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230906140917.559129-4-den@openvz.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -1
-X-Spam_score: -0.2
-X-Spam_bar: /
-X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,50 +79,264 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/09/2023 17.20, Daniel P. Berrangé wrote:
-> On Wed, Sep 13, 2023 at 04:17:24PM +0200, Philippe Mathieu-Daudé wrote:
->> Hi,
->>
->> We are trying to figure out why old assets saved in our Avocado
->> cache (which we populate in our various CI jobs) isn't used
->> anymore.
->>
->> Trying to reproduce locally, I see for example:
->>
->> 2023-09-13 14:39:18,834 test             L0520 INFO | START
->> 14-tests/avocado/machine_mips_malta.py:MaltaMachine.test_mipsel_malta_yamon
->> 2023-09-13 14:39:18,834 test             L0205 DEBUG| DATA
->> (filename=output.expected) => NOT FOUND (data sources: variant, test, file)
->> 2023-09-13 14:39:18,861 asset            L0339 INFO | Asset not in cache,
->> fetching it.
->> 2023-09-13 14:39:18,862 download         L0067 INFO | Fetching
->> http://www.imgtec.com/tools/mips-tools/downloads/yamon/yamon-bin-02.22.zip
->> -> /home/philippe.mathieu-daude/avocado/data/cache/by_location/70c32932b7794b6b37a5040a8808ac943699b944/yamon-bin-02.22.zip.csi3gk2v
->> 2023-09-13 14:39:18,940 asset            L0144 INFO | Temporary asset file
->> unavailable due to failed download attempt.
->> 2023-09-13 14:39:18,940 asset            L0378 ERROR| HTTPError: HTTP Error
->> 403: Forbidden
->>
->> I remember this test used to pass last year, so checking the file I
->> can see:
->>
->> $ find ~/avocado/data/ -name yamon-bin-02.22.zip\* -ls
->>    1489611   6629 -rw-r--r--   1 philmd primary   6776580 Dec 30  2022 /home/philmd/avocado/data/cache/by_location/c1961386ba52f06c6005b48cd32195a371152769/yamon-bin-02.22.zip
->>    1489613      1 -rw-r--r--   1 philmd primary        46 Dec 30  2022 /home/philmd/avocado/data/cache/by_location/c1961386ba52f06c6005b48cd32195a371152769/yamon-bin-02.22.zip-CHECKSUM
->>
->> But the hash is different... Looking at QEMU git history we haven't
->> changed the URL in tests/avocado/machine_mips_malta.py, so I wonder,
->> did Avocado changed its asset hashing during the last year?
+On Wed, Sep 06, 2023 at 04:09:17PM +0200, Denis V. Lunev wrote:
+> Each particular testcase could skipped intentionally and accidentally.
+> For example the test is not designed for a particular image format or
+> is not run due to the missed library.
 > 
-> How can it have changed when we've been pinned to avocado 88.1 for
-> ages now, not consuming new versions ?
+> The latter case is unwanted in reality. Though the discussion has
+> revealed that failing the test in such a case would be bad. Thus the
+> patch tries to do different thing. It adds additional status for
+> the test case - 'skipped' and bound intentinal cases to that state.
 
-We've temporarily switched to version 101 some months ago, see commit 
-ec5ffa0056389c3c.
+I'm not convinced this distinction makes sense and I fear it is
+leading us down the same undesirable route as avocado with too
+many distinct states leading to confusion:
 
-  Thomas
+  https://lore.kernel.org/qemu-devel/Yy1gB1KB3YSIUcoC@redhat.com/
+
+If I looked at the output I can't tell you the difference between
+"not run" and "skipped" - they both sound the same to me.
+
+IMHO there's alot to be said for the simplicity of sticking with
+nothing more than PASS/FAIL/SKIP as status names.  The descriptive
+text associated with each SKIP would give more context as to the
+reason in each case if needed.
+
+> 
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
+> CC: Kevin Wolf <kwolf@redhat.com>
+> CC: Hanna Reitz <hreitz@redhat.com>
+> CC: Eric Blake <eblake@redhat.com>
+> CC: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  tests/qemu-iotests/common.rc     | 23 ++++++++++++++++-------
+>  tests/qemu-iotests/iotests.py    | 19 +++++++++++++++----
+>  tests/qemu-iotests/testrunner.py | 17 +++++++++++++++--
+>  3 files changed, 46 insertions(+), 13 deletions(-)
+> 
+> diff --git a/tests/qemu-iotests/common.rc b/tests/qemu-iotests/common.rc
+> index 95c12577dd..74f64e8af8 100644
+> --- a/tests/qemu-iotests/common.rc
+> +++ b/tests/qemu-iotests/common.rc
+> @@ -37,6 +37,15 @@ _notrun()
+>      exit
+>  }
+>  
+> +# bail out, setting up .skip file
+> +_skip()
+> +{
+> +    echo "$*" >"$TEST_DIR/$seq.skip"
+> +    echo "$seq skipped: $*"
+> +    status=0
+> +    exit
+> +}
+> +
+>  if ! command -v gsed >/dev/null 2>&1; then
+>      if sed --version 2>&1 | grep -v 'not GNU sed' | grep 'GNU sed' > /dev/null;
+>      then
+> @@ -782,7 +791,7 @@ _supported_fmt()
+>          fi
+>      done
+>  
+> -    _notrun "not suitable for this image format: $IMGFMT"
+> +    _skip "not suitable for this image format: $IMGFMT"
+>  }
+>  
+>  # tests whether $IMGFMT is one of the unsupported image format for a test
+> @@ -791,7 +800,7 @@ _unsupported_fmt()
+>  {
+>      for f; do
+>          if [ "$f" = "$IMGFMT" ]; then
+> -            _notrun "not suitable for this image format: $IMGFMT"
+> +            _skip "not suitable for this image format: $IMGFMT"
+>          fi
+>      done
+>  }
+> @@ -806,7 +815,7 @@ _supported_proto()
+>          fi
+>      done
+>  
+> -    _notrun "not suitable for this image protocol: $IMGPROTO"
+> +    _skip "not suitable for this image protocol: $IMGPROTO"
+>  }
+>  
+>  # tests whether $IMGPROTO is specified as an unsupported image protocol for a test
+> @@ -815,7 +824,7 @@ _unsupported_proto()
+>  {
+>      for f; do
+>          if [ "$f" = "$IMGPROTO" ]; then
+> -            _notrun "not suitable for this image protocol: $IMGPROTO"
+> +            _skip "not suitable for this image protocol: $IMGPROTO"
+>              return
+>          fi
+>      done
+> @@ -843,7 +852,7 @@ _supported_cache_modes()
+>              return
+>          fi
+>      done
+> -    _notrun "not suitable for cache mode: $CACHEMODE"
+> +    _skip "not suitable for cache mode: $CACHEMODE"
+>  }
+>  
+>  # Check whether the filesystem supports O_DIRECT
+> @@ -895,7 +904,7 @@ _supported_aio_modes()
+>              return
+>          fi
+>      done
+> -    _notrun "not suitable for aio mode: $AIOMODE"
+> +    _skip "not suitable for aio mode: $AIOMODE"
+>  }
+>  _default_aio_mode()
+>  {
+> @@ -911,7 +920,7 @@ _unsupported_imgopts()
+>          # end of an option (\b or \> are not portable)
+>          if echo "$IMGOPTS " | grep -q 2>/dev/null "$bad_opt"
+>          then
+> -            _notrun "not suitable for image option: $bad_opt"
+> +            _skip "not suitable for image option: $bad_opt"
+>          fi
+>      done
+>  }
+> diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+> index ef66fbd62b..746772fab0 100644
+> --- a/tests/qemu-iotests/iotests.py
+> +++ b/tests/qemu-iotests/iotests.py
+> @@ -1353,6 +1353,17 @@ def notrun(reason):
+>      logger.warning("%s not run: %s", seq, reason)
+>      sys.exit(0)
+>  
+> +def skip(reason):
+> +    '''Skip this test suite for a purpose'''
+> +    # Each test in qemu-iotests has a number ("seq")
+> +    seq = os.path.basename(sys.argv[0])
+> +
+> +    with open('%s/%s.skip' % (test_dir, seq), 'w', encoding='utf-8') \
+> +            as outfile:
+> +        outfile.write(reason + '\n')
+> +    logger.warning("%s not run: %s", seq, reason)
+> +    sys.exit(0)
+> +
+>  def case_notrun(reason):
+>      '''Mark this test case as not having been run (without actually
+>      skipping it, that is left to the caller).  See
+> @@ -1377,7 +1388,7 @@ def _verify_image_format(supported_fmts: Sequence[str] = (),
+>  
+>      not_sup = supported_fmts and (imgfmt not in supported_fmts)
+>      if not_sup or (imgfmt in unsupported_fmts):
+> -        notrun('not suitable for this image format: %s' % imgfmt)
+> +        skip('not suitable for this image format: %s' % imgfmt)
+>  
+>      if imgfmt == 'luks':
+>          verify_working_luks()
+> @@ -1391,7 +1402,7 @@ def _verify_protocol(supported: Sequence[str] = (),
+>  
+>      not_sup = supported and (imgproto not in supported)
+>      if not_sup or (imgproto in unsupported):
+> -        notrun('not suitable for this protocol: %s' % imgproto)
+> +        skip('not suitable for this protocol: %s' % imgproto)
+>  
+>  def _verify_platform(supported: Sequence[str] = (),
+>                       unsupported: Sequence[str] = ()) -> None:
+> @@ -1404,11 +1415,11 @@ def _verify_platform(supported: Sequence[str] = (),
+>  
+>  def _verify_cache_mode(supported_cache_modes: Sequence[str] = ()) -> None:
+>      if supported_cache_modes and (cachemode not in supported_cache_modes):
+> -        notrun('not suitable for this cache mode: %s' % cachemode)
+> +        skip('not suitable for this cache mode: %s' % cachemode)
+>  
+>  def _verify_aio_mode(supported_aio_modes: Sequence[str] = ()) -> None:
+>      if supported_aio_modes and (aiomode not in supported_aio_modes):
+> -        notrun('not suitable for this aio mode: %s' % aiomode)
+> +        skip('not suitable for this aio mode: %s' % aiomode)
+>  
+>  def _verify_formats(required_formats: Sequence[str] = ()) -> None:
+>      usf_list = list(set(required_formats) - set(supported_formats()))
+> diff --git a/tests/qemu-iotests/testrunner.py b/tests/qemu-iotests/testrunner.py
+> index 7b322272e9..137dd6e06c 100644
+> --- a/tests/qemu-iotests/testrunner.py
+> +++ b/tests/qemu-iotests/testrunner.py
+> @@ -200,6 +200,8 @@ def test_print_one_line(self, test: str,
+>                  col = '\033[1m\033[31m'
+>              elif status == 'not run':
+>                  col = '\033[33m'
+> +            elif status == 'skipped':
+> +                col = '\033[34m'
+>              else:
+>                  col = ''
+>  
+> @@ -268,8 +270,9 @@ def do_run_test(self, test: str) -> TestResult:
+>          f_bad = Path(test_dir, f_test.name + '.out.bad')
+>          f_notrun = Path(test_dir, f_test.name + '.notrun')
+>          f_casenotrun = Path(test_dir, f_test.name + '.casenotrun')
+> +        f_skipped = Path(test_dir, f_test.name + '.skip')
+>  
+> -        for p in (f_notrun, f_casenotrun):
+> +        for p in (f_notrun, f_casenotrun, f_skipped):
+>              silent_unlink(p)
+>  
+>          t0 = time.time()
+> @@ -298,6 +301,10 @@ def do_run_test(self, test: str) -> TestResult:
+>              return TestResult(
+>                  status='not run',
+>                  description=f_notrun.read_text(encoding='utf-8').strip())
+> +        if f_skipped.exists():
+> +            return TestResult(
+> +                status='skipped',
+> +                description=f_skipped.read_text(encoding='utf-8').strip())
+>  
+>          casenotrun = ''
+>          if f_casenotrun.exists():
+> @@ -370,6 +377,7 @@ def run_tests(self, tests: List[str], jobs: int = 1) -> bool:
+>          n_run = 0
+>          failed = []
+>          notrun = []
+> +        skipped = []
+>          casenotrun = []
+>  
+>          if self.tap:
+> @@ -392,7 +400,7 @@ def run_tests(self, tests: List[str], jobs: int = 1) -> bool:
+>              else:
+>                  res = self.run_test(t, test_field_width)
+>  
+> -            assert res.status in ('pass', 'fail', 'not run')
+> +            assert res.status in ('pass', 'fail', 'not run', 'skipped')
+>  
+>              if res.casenotrun:
+>                  casenotrun.append(t)
+> @@ -409,6 +417,8 @@ def run_tests(self, tests: List[str], jobs: int = 1) -> bool:
+>                          print('\n'.join(res.diff))
+>              elif res.status == 'not run':
+>                  notrun.append(name)
+> +            elif res.status == 'skipped':
+> +                skipped.append(name)
+>              elif res.status == 'pass':
+>                  assert res.elapsed is not None
+>                  self.last_elapsed.update(t, res.elapsed)
+> @@ -418,6 +428,9 @@ def run_tests(self, tests: List[str], jobs: int = 1) -> bool:
+>                  break
+>  
+>          if not self.tap:
+> +            if skipped:
+> +                print('Skipped:', ' '.join(skipped))
+> +
+>              if notrun:
+>                  print('Not run:', ' '.join(notrun))
+>  
+> -- 
+> 2.34.1
+> 
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
