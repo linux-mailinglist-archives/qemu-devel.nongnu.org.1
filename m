@@ -2,102 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F90A79E00C
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 08:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F66379E015
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 08:34:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgJOv-0001Vr-5v; Wed, 13 Sep 2023 02:31:01 -0400
+	id 1qgJR0-0002Rw-PU; Wed, 13 Sep 2023 02:33:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qgJOa-0001K8-VR; Wed, 13 Sep 2023 02:30:45 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
- id 1qgJOY-00005i-GQ; Wed, 13 Sep 2023 02:30:40 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38D66wQx031957; Wed, 13 Sep 2023 06:30:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=QEMrhgHzEjou2OdYpiU4LtTarJVBHYR/713vcLGcDNs=;
- b=RaMVaYoXY/wupoSU9ODLGIw1qqpRz9o2W1sRedN9HvHnteUmELosEvwIILyGzOWT8gz6
- gFrSY5M4XDepr7Po6ZvktwqV5ip0aT7CdcWPbu9ovi2m+RMsUzf+CUC4OorvXnK6xMEM
- hbOz+Vs/Zy2j4SwOh46m0qonLcGLDztukedGRkHIa+R2X+jWcq8mKtv9YTBAp3TI0pos
- 9AlvTT/AXqHdqcoBF7KMwbvuwakpsT9u9tUzaxIqXgbB0tZ/n0iz8jhDeivBYYkd1hwf
- IcJAXCJBv+J6WVyfjOQWLwNJpNo+IDGW1Hn8V680eizDjqiWbuRjbZdukdDKN8qMAoUF xw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t36w29pp5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 Sep 2023 06:30:31 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38D6Ig4X029409;
- Wed, 13 Sep 2023 06:30:30 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t36w29pns-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 Sep 2023 06:30:30 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38D68QAv002304; Wed, 13 Sep 2023 06:30:30 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t158k8pt3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 Sep 2023 06:30:30 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38D6US2d12255982
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Sep 2023 06:30:28 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 56D3020043;
- Wed, 13 Sep 2023 06:30:28 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1487820040;
- Wed, 13 Sep 2023 06:30:28 +0000 (GMT)
-Received: from [9.179.15.72] (unknown [9.179.15.72])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed, 13 Sep 2023 06:30:27 +0000 (GMT)
-Message-ID: <167950e7-eced-f4ca-03ca-40b61a3b0a46@linux.ibm.com>
-Date: Wed, 13 Sep 2023 08:30:27 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgJQy-0002RX-9d
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 02:33:08 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgJQv-0001Fy-LK
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 02:33:07 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-51e28cac164so1234225a12.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 23:33:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694586784; x=1695191584; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IBqoLX8n4mBPQs1Fsg8dkBrrU8QOs/EEJuvO0t7lf/s=;
+ b=WPqDALFou75AOCVi2srlSeSnZ5twTmcy9F2pY44pvMQ968CVo/qhJGWTpvzKXw6KBp
+ vRTJEekkxLk4dD71UEJWcfu7dXgYEjaa0mKt47IoJZmgto3fxjMsKziYeC2fEUVtE7ep
+ E8AywWIV5tOgE8n/zZ2oIcDLz80OnBFe8UG2Pk3htEtyXkTJocr6DB8T6lX2f/m1bWTq
+ UYzjpc/ocbPLmH6yjP1znIKz0Y4hXvKuV6Envc+q6VT/iMuZ9CpoC8WscyJn1OZCRKlX
+ NpEErJcIK76hwCahOtxWciIysmPyB8z3oQVIECRSfCnvIU1wtH4H26g6q1qHN4NapD31
+ c4Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694586784; x=1695191584;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IBqoLX8n4mBPQs1Fsg8dkBrrU8QOs/EEJuvO0t7lf/s=;
+ b=wD3jkRh1v38hSsMAgAqa4tCjlAwuc5VmwbeEIOWrYJq9eIAEC0x6FmLtlR7a3/FAkw
+ BcL0Q3YZw3AUxbi8qAztYRQwMhi1QjlTZ/peEsVuTmDJmAXCUihOGkMyA7oSp+c0izpr
+ UuRS3xl6kBDn8/0W46lI5L2p+v4C8PU19/LlRfhP/8S+gSYLAnk+uHE6baazKP5zOEFd
+ E/3AmvupPt1N/J5vUSOnX7BeM4mfsJyGZHRR6WhsXz7CtiQSCAjp7R3Bqz1AOv1VqZjM
+ 0LFGjjV7pqEG11bj9Zbtr406h7qAqLWgQaIGlVQAOl9mqSxZ4eHsblxyEH7hPXG2AR1q
+ +drg==
+X-Gm-Message-State: AOJu0YwdX97Xv6hi3+Z5CWBPNv1VWdgvxi+UiEUU1IFZ69EkwVzTGUKz
+ egVJ/dy+UrMR/lkz2818dhSq8A==
+X-Google-Smtp-Source: AGHT+IENdmcJARXfZVVX1LtplJqC4G9SExLMGDxMZj52L6CjMRCdxKmz1xBpCaRZyichT5IBJfyB1Q==
+X-Received: by 2002:a17:906:74dd:b0:9a5:cc2b:50e5 with SMTP id
+ z29-20020a17090674dd00b009a5cc2b50e5mr2419702ejl.32.1694586783857; 
+ Tue, 12 Sep 2023 23:33:03 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
+ [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
+ q18-20020a170906a09200b0099b8234a9fesm7903371ejy.1.2023.09.12.23.33.02
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Sep 2023 23:33:03 -0700 (PDT)
+Message-ID: <3cc2c925-d2a8-36f4-28b6-db391b5bbf38@linaro.org>
+Date: Wed, 13 Sep 2023 08:33:01 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] ppc/xive: Fix uint32_t overflow
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>
-References: <20230913055639.174032-1-clg@kaod.org>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] hw/i386/pc_piix: Mark the machine types from version 1.4
+ to 1.7 as deprecated
 Content-Language: en-US
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-In-Reply-To: <20230913055639.174032-1-clg@kaod.org>
+To: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, qemu-discuss <qemu-discuss@nongnu.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini
+ <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>
+References: <20220117191639.278497-1-thuth@redhat.com>
+ <YeXNoKzsFeIPSy6E@redhat.com>
+ <44b4ce3f-030a-993a-b959-e8e722c7cee4@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <44b4ce3f-030a-993a-b959-e8e722c7cee4@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UgGxthCuPOp50zEWVpR-rjNnu4iLxnWq
-X-Proofpoint-ORIG-GUID: MzPzH_JMsk4up7GDPU1FI-zfrZxqbT0M
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-12_24,2023-09-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=930 clxscore=1011
- priorityscore=1501 malwarescore=0 impostorscore=0 mlxscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309130051
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,36 +98,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 13/09/2023 07:56, Cédric Le Goater wrote:
-> As reported by Coverity, "idx << xive->pc_shift" is evaluated using
-> 32-bit arithmetic, and then used in a context expecting a "uint64_t".
-> Add a uint64_t cast.
+On 18/1/22 09:49, Thomas Huth wrote:
+> On 17/01/2022 21.12, Daniel P. Berrangé wrote:
+>> On Mon, Jan 17, 2022 at 08:16:39PM +0100, Thomas Huth wrote:
+>>> The list of machine types grows larger and larger each release ... and
+>>> it is unlikely that many people still use the very old ones for live
+>>> migration. QEMU v1.7 has been released more than 8 years ago, so most
+>>> people should have updated their machines to a newer version in those
+>>> 8 years at least once. Thus let's mark the very old 1.x machine types
+>>> as deprecated now.
+>>
+>> What criteria did you use for picking v1.7 as the end point ?
 > 
-> Fixes: Coverity CID 1519049
-> Fixes: b68147b7a5bf ("ppc/xive: Add support for the PC MMIOs")
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
-
-
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-
->   hw/intc/pnv_xive.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> I picked everything starting with a "1." this time ;-)
 > 
-> diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
-> index 9b10e905195a..a36b3bf08c92 100644
-> --- a/hw/intc/pnv_xive.c
-> +++ b/hw/intc/pnv_xive.c
-> @@ -210,7 +210,7 @@ static uint64_t pnv_xive_vst_addr_remote(PnvXive *xive, uint32_t type,
->           return 0;
->       }
->   
-> -    remote_addr |= idx << xive->pc_shift;
-> +    remote_addr |= ((uint64_t) idx) << xive->pc_shift;
->   
->       vst_addr = address_space_ldq_be(&address_space_memory, remote_addr,
->                                       MEMTXATTRS_UNSPECIFIED, &result);
+> No, honestly, since we don't have a deprecation policy in place yet, 
+> there was no real good criteria around this time. For the machine types 
+> < 1.3 there was a bug with migration, so these machine types could not 
+> be used for reliable migration anymore anyway. But for the newer machine 
+> types, we likely have to decide by other means indeed.
+> 
+>> I'm fine with the idea of aging out machine types, but I'd like us
+>> to explain the criteria we use for this, so that we can set clear
+>> expectations for users. I'm not a fan of adhoc decisions that have
+>> different impact every time we randomly decide to apply them.
+>>
+>> A simple rule could be time based - eg we could say
+>>
+>>    "we'll keep machine type versions for 5 years or 15 releases."
+>>
+>> one factor is how long our downstream consumers have been keeping
+>> machines around for.
+>>
+>> In RHEL-9 for example, the oldest machine is "pc-i440fx-rhel7.6.0"
+>> which IIUC is derived from QEMU 2.12.0. RHEL-9 is likely to rebase
+>> QEMU quite a few times over the coming years, so that 2.12.0 version
+>> sets an example baseline for how long machines might need to live for.
+>> That's 4 years this April, and could potentially be 6-7 years by the
+>> time RHEL-9 stops rebasing QEMU.
+> 
+> Yeah, 5 years still seemed a little bit short to me, that's one of the 
+> reasons why I did not add more machine types in my patch here. I think 
+> with 7 or 8 years, we should be on the safe side.
+> 
+> Any other opinions? And if we agree on an amount of years, where should 
+> we document this? At the top of docs/about/deprecated.rst?
+
+I suppose x86 being the oldest, x86 maintainers have to comment, but
+5 years should be enough from sysadmins to migrate their VMs, isn't it?
+(No need to migrate from 1 -> 8, they can do 1 -> 3 -> 5 -> 8, right?)
+
+Anyhow you are right, better is to clearly state that in deprecated.rst,
+at least to start and widen the discussion.
 
