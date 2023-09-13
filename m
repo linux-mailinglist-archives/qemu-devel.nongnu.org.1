@@ -2,47 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADBB79E4A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 12:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D1779E4EF
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 12:30:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgMqe-0007KY-H0; Wed, 13 Sep 2023 06:11:52 -0400
+	id 1qgN7d-0006aU-1s; Wed, 13 Sep 2023 06:29:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1qgMqb-00077m-Ef
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:11:50 -0400
-Received: from mx.swemel.ru ([95.143.211.150])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qgN7b-0006aM-7Z
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:29:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frolov@swemel.ru>) id 1qgMqY-0007Vl-AJ
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:11:49 -0400
-From: Dmitry Frolov <frolov@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
- t=1694599899;
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qgN7Y-0004mn-WA
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:29:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694600959;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=opkTXzXwUW4l5u0XV1NVIwOVm2FHjnhJyZi7mWtgYWE=;
- b=e3VnGYRAQiftmWZwnzQi2rbQWHv3nep3dA7Ha1SMd7vjgKPzp0f9AalsoFfqn50Edt4EId
- s88J49VosP0Vs2PBpkJjgVTXe6KPRVXSRi6lmqPJN31YwKqymnXumcjOpKmth7V0Ag4KBY
- ThEkkYyHFxQxrIBf1NHq6/bVwPlP21Q=
-To: jonathan.cameron@huawei.com,
-	fan.ni@samsung.com,
-	qemu-devel@nongnu.org
-Cc: sdl.qemu@linuxtesting.org,
-	Dmitry Frolov <frolov@swemel.ru>
-Subject: [PATCH] hw/cxl: Fix out of bound array access
-Date: Wed, 13 Sep 2023 13:10:56 +0300
-Message-Id: <20230913101055.754709-1-frolov@swemel.ru>
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0bxFVe/E2XvfrFqG8Yrr1bPRLJ8gbzxCcYIWyf9wMMg=;
+ b=SEtO//4XqdqmKw26OrP4dGeP0BtkzRCKMU1sOZYgw0lLSlE6xI4Jncj2P9cdecJnkNg8ao
+ iK3uuFAbgQrlBSiJrrk9htTKdzJE8BU4iu0rqF7CRd8+w+qMDeqo2W5idS3CL4ufPxo27t
+ 8EIscCNvwbL0GoyrIV5s1Y/oMj9Yz1E=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-NZqXdayuOOi5qMoAjJDGSw-1; Wed, 13 Sep 2023 06:29:18 -0400
+X-MC-Unique: NZqXdayuOOi5qMoAjJDGSw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fd0fa4d08cso49992605e9.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 03:29:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694600957; x=1695205757;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0bxFVe/E2XvfrFqG8Yrr1bPRLJ8gbzxCcYIWyf9wMMg=;
+ b=wh3vm3QA0gWgDQba/peTghNWqrzWG6o5deAhpQjXBJ3pPqo0ioHsHWPidDAYH0ZCqL
+ 2QxRLqfCOD7NUGjhHQsuZ06GHlEcq1sJY0RVjEOZEuZGTXjzys64fSU7AfRl5nMD4bYQ
+ 2geswUdoJ0i7kYG427zTW3NgbNzuGMdIrZ1QtGa6U32YsrjPMgIvKWMn24Akk3g8oA3z
+ JncaIx/5qmOUsY/zp8QnqSo3ZHD9q+W0hAL540E9BRyCskYRLVZ53T1b7wXuYR+rxYec
+ ei19RQjujua7a7rT5TdkRAuE80jeFBYN3mjxMNOsoL6npiCPcC6cs0pwgxYR5XvRJwRG
+ 6dTg==
+X-Gm-Message-State: AOJu0YxuWO4w+cDPtRUUFJJYaUaSB2C7PmnYbl6gjmtvsMpAxhQpwT7o
+ ASn7ug97TOC0bNICxAneER6nZJlxWYbPlOSZbkMIinov7W04vBN1nScIRpafYdMr2ZWd1PqzXVX
+ qLdQtCJVNX21o8YY=
+X-Received: by 2002:a1c:7213:0:b0:401:d5bb:9b40 with SMTP id
+ n19-20020a1c7213000000b00401d5bb9b40mr1791337wmc.15.1694600957305; 
+ Wed, 13 Sep 2023 03:29:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHJQ20OnDZTTPIGLgVTuejcFW7U3fILnen/CmHvty2+jekejpqdkNJ3ZrDotViC4vJgjVrZ9Q==
+X-Received: by 2002:a1c:7213:0:b0:401:d5bb:9b40 with SMTP id
+ n19-20020a1c7213000000b00401d5bb9b40mr1791319wmc.15.1694600956978; 
+ Wed, 13 Sep 2023 03:29:16 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ a16-20020a5d4570000000b00317f70240afsm15203183wrc.27.2023.09.13.03.29.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 03:29:16 -0700 (PDT)
+Message-ID: <7b544940-0cf2-652e-732e-934dfac63182@redhat.com>
+Date: Wed, 13 Sep 2023 12:29:15 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5 0/6] target/i386: Restrict system-specific features
+ from user emulation
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ kvm@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+References: <20230913093009.83520-1-philmd@linaro.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <20230913093009.83520-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=95.143.211.150; envelope-from=frolov@swemel.ru;
- helo=mx.swemel.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -59,34 +110,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to cxl_interleave_ways_enc(),
-fw->num_targets is allowed to be up to 16.
-This also corresponds to CXL specs.
-So, the fw->target_hbs[] array is iterated from 0 to 15.
-But it is staticaly declared of length 8.
-Thus, out of bound array access may occur.
+On 9/13/23 11:30, Philippe Mathieu-Daudé wrote:
+> Since v4:
+> - Addressed Paolo's suggestions (clearly better)
+> 
+> Too many system-specific code (and in particular KVM related)
+> is pulled in user-only build. This led to adding unjustified
+> stubs as kludge to unagressive linker non-optimizations.
+> 
+> This series restrict x86 system-specific features to sysemu,
+> so we don't require any stub, and remove all x86 KVM declarations
+> from user emulation code (to trigger compile failure instead of
+> link one).
 
-Fixes: c28db9e000 ("hw/pci-bridge: Make PCIe and CXL PXB Devices inherit from TYPE_PXB_DEV")
+I'm still not sure about patch 5, though I'd like to have something like 
+patch 6.  But fortunately patches 1-3 are enough to placate clang, so I 
+have queued them.
 
-Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
----
- include/hw/cxl/cxl.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks Philippe!
 
-diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
-index 56c9e7676e..4944725849 100644
---- a/include/hw/cxl/cxl.h
-+++ b/include/hw/cxl/cxl.h
-@@ -29,7 +29,7 @@ typedef struct PXBCXLDev PXBCXLDev;
- typedef struct CXLFixedWindow {
-     uint64_t size;
-     char **targets;
--    PXBCXLDev *target_hbs[8];
-+    PXBCXLDev *target_hbs[16];
-     uint8_t num_targets;
-     uint8_t enc_int_ways;
-     uint8_t enc_int_gran;
--- 
-2.34.1
+Paolo
+
 
 
