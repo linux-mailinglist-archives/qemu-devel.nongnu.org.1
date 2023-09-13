@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A211D79E908
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9018479E90B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPlK-0007N3-A2; Wed, 13 Sep 2023 09:18:34 -0400
+	id 1qgPlP-0007RD-MJ; Wed, 13 Sep 2023 09:18:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPlG-0007MK-QA; Wed, 13 Sep 2023 09:18:30 -0400
+ id 1qgPlM-0007PS-Of; Wed, 13 Sep 2023 09:18:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPlD-00038t-DR; Wed, 13 Sep 2023 09:18:30 -0400
+ id 1qgPlI-0003EA-6z; Wed, 13 Sep 2023 09:18:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A99D521764;
+ by isrv.corpit.ru (Postfix) with ESMTP id D857121765;
  Wed, 13 Sep 2023 16:18:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 984F827C87;
+ by tsrv.corpit.ru (Postfix) with SMTP id D1E1927C88;
  Wed, 13 Sep 2023 16:18:02 +0300 (MSK)
-Received: (nullmailer pid 4073295 invoked by uid 1000);
+Received: (nullmailer pid 4073298 invoked by uid 1000);
  Wed, 13 Sep 2023 13:18:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- Darren Kenny <darren.kenny@oracle.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 10/66] apic: disable reentrancy detection for apic-msi
-Date: Wed, 13 Sep 2023 16:17:34 +0300
-Message-Id: <20230913131757.4073200-10-mjt@tls.msk.ru>
+ Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 11/66] loongarch: mark loongarch_ipi_iocsr re-entrnacy
+ safe
+Date: Wed, 13 Sep 2023 16:17:35 +0300
+Message-Id: <20230913131757.4073200-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
@@ -61,34 +61,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Bulekov <alxndr@bu.edu>
 
-As the code is designed for re-entrant calls to apic-msi, mark apic-msi
-as reentrancy-safe.
+loongarch_ipi_iocsr MRs rely on re-entrant IO through the ipi_send
+function. As such, mark these MRs re-entrancy-safe.
 
+Fixes: a2e1753b80 ("memory: prevent dma-reentracy issues")
 Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-Reviewed-by: Darren Kenny <darren.kenny@oracle.com>
-Message-Id: <20230427211013.2994127-9-alxndr@bu.edu>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 50795ee051a342c681a9b45671c552fbd6274db8)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
+Message-Id: <20230506112145.3563708-1-alxndr@bu.edu>
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+(cherry picked from commit 6d0589e0e6c64b888864a2bf980537be20389264)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index 20b5a94073..ac3d47d231 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -885,6 +885,13 @@ static void apic_realize(DeviceState *dev, Error **errp)
-     memory_region_init_io(&s->io_memory, OBJECT(s), &apic_io_ops, s, "apic-msi",
-                           APIC_SPACE_SIZE);
- 
-+    /*
-+     * apic-msi's apic_mem_write can call into ioapic_eoi_broadcast, which can
-+     * write back to apic-msi. As such mark the apic-msi region re-entrancy
-+     * safe.
-+     */
-+    s->io_memory.disable_reentrancy_guard = true;
+diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
+index aa4bf9eb74..40e98af2ce 100644
+--- a/hw/intc/loongarch_ipi.c
++++ b/hw/intc/loongarch_ipi.c
+@@ -215,6 +215,10 @@ static void loongarch_ipi_init(Object *obj)
+     for (cpu = 0; cpu < MAX_IPI_CORE_NUM; cpu++) {
+         memory_region_init_io(&s->ipi_iocsr_mem[cpu], obj, &loongarch_ipi_ops,
+                             &lams->ipi_core[cpu], "loongarch_ipi_iocsr", 0x48);
 +
-     s->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, apic_timer, s);
-     local_apics[s->id] = s;
++        /* loongarch_ipi_iocsr performs re-entrant IO through ipi_send */
++        s->ipi_iocsr_mem[cpu].disable_reentrancy_guard = true;
++
+         sysbus_init_mmio(sbd, &s->ipi_iocsr_mem[cpu]);
  
+         memory_region_init_io(&s->ipi64_iocsr_mem[cpu], obj, &loongarch_ipi64_ops,
 -- 
 2.39.2
 
