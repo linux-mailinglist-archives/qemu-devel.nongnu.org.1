@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53E579E569
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 12:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C6879E564
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 12:55:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgNVK-0007dF-DG; Wed, 13 Sep 2023 06:53:54 -0400
+	id 1qgNVT-0007gR-1Y; Wed, 13 Sep 2023 06:54:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qgNVG-0007bs-9T
+ id 1qgNVG-0007br-92
  for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:53:50 -0400
-Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
+Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qgNVC-0006Pd-Mo
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:53:49 -0400
+ id 1qgNVC-0006Pr-Lt
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:53:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=N501HXmFkxmMt7uB5nNxBzP4tNg4mkPuaGMnn1wSmMY=; b=Ez+ZB7cUPmixrDdW+QJjAtv266
- srdv9rCMo/bR0V9IuiJuWyxIFZwIuMK3uc+oLJsN9SwArB/ed/8fOkychIWliz22zNCm1SlvCX+kN
- VdrIuh4zZUWM1RKRw6Tu6wCAv9dOTnXxN4tEgRM9LwmQMqPoCvW7ray4+EFTV2D3/R9I=;
+ bh=dqwCAOtPvJ9gF/Ymjs1qOqGF8CY2z7YYHyI/eZmKqBs=; b=ua0xqT6KS+y7lHHzmrAxZKeSft
+ zFueayKhTNED5qtmPz3EDzfDH9dGbI1Hfo96q0tSvJYAoAmztjLAhNfStwKuTrp+y5tDndO9JhGmH
+ lDc9csYzJ3r02uKvn2QTBZ3ZprzEPzVAE9pkvBYx7Rct5ApPhFIhBpAI3Zp9KZ2r9AW8=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PATCH 04/10] tests/tcg/tricore: Add test for all arith insns up to
- addx
-Date: Wed, 13 Sep 2023 12:53:20 +0200
-Message-ID: <20230913105326.40832-5-kbastian@mail.uni-paderborn.de>
+Subject: [PATCH 05/10] tests/tcg/tricore: Add test for and to csub
+Date: Wed, 13 Sep 2023 12:53:21 +0200
+Message-ID: <20230913105326.40832-6-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230913105326.40832-1-kbastian@mail.uni-paderborn.de>
 References: <20230913105326.40832-1-kbastian@mail.uni-paderborn.de>
@@ -44,13 +43,13 @@ X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.13.104216, AntiVirus-Engine: 6.0.2,
  AntiVirus-Data: 2023.9.13.602000
-X-Sophos-SenderHistory: ip=84.184.54.91, fs=8, da=182211485, mc=8, sc=0, hc=8,
- sp=0, fso=8, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=84.184.54.91, fs=10, da=182211487, mc=10, sc=0,
+ hc=10, sp=0, fso=10, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::16;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
+Received-SPF: pass client-ip=2001:638:502:c003::17;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -74,148 +73,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- tests/tcg/tricore/Makefile.softmmu-target |  3 +-
- tests/tcg/tricore/asm/macros.h            | 50 +++++++++++++++++++++++
- tests/tcg/tricore/asm/test_arith.S        | 41 +++++++++++++++++++
- 3 files changed, 93 insertions(+), 1 deletion(-)
- create mode 100644 tests/tcg/tricore/asm/test_arith.S
+ tests/tcg/tricore/asm/macros.h     | 11 +++++++
+ tests/tcg/tricore/asm/test_arith.S | 47 ++++++++++++++++++++++++++++++
+ 2 files changed, 58 insertions(+)
 
-diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index afcf41a977..018858c592 100644
---- a/tests/tcg/tricore/Makefile.softmmu-target
-+++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -6,6 +6,7 @@ LDFLAGS = -T$(TESTS_PATH)/link.ld --mcpu=tc162
- ASFLAGS = -mtc162
- CFLAGS = -mtc162 -c -I$(TESTS_PATH)
- 
-+TESTS += test_arith.asm.tst
- TESTS += test_abs.asm.tst
- TESTS += test_bmerge.asm.tst
- TESTS += test_clz.asm.tst
-@@ -29,7 +30,7 @@ TESTS += test_muls.asm.tst
- TESTS += test_boot_to_main.c.tst
- TESTS += test_context_save_areas.c.tst
- 
--QEMU_OPTS += -M tricore_testboard -cpu tc37x -nographic -kernel
-+QEMU_OPTS += -M tricore_testboard -cpu tc37x -nographic -d guest_errors -kernel 
- 
- %.pS: $(ASM_TESTS_PATH)/%.S
- 	$(HOST_CC) -E -o $@ $<
 diff --git a/tests/tcg/tricore/asm/macros.h b/tests/tcg/tricore/asm/macros.h
-index e831f73721..8ed2249b0d 100644
+index 8ed2249b0d..3000e15590 100644
 --- a/tests/tcg/tricore/asm/macros.h
 +++ b/tests/tcg/tricore/asm/macros.h
-@@ -112,6 +112,11 @@ test_ ## num:                                                    \
-     insn DREG_CORRECT_RESULT, DREG_RS1;               \
+@@ -117,6 +117,11 @@ test_ ## num:                                                    \
+     insn DREG_CALC_RESULT, imm;               \
      )
  
-+#define TEST_D_I(insn, num, result, imm)      \
-+    TEST_CASE(num, DREG_CALC_RESULT, result,  \
-+    insn DREG_CALC_RESULT, imm;               \
++#define TEST_D15_I(insn, num, result, imm)      \
++    TEST_CASE(num, %d15, result,  \
++    insn %d15, imm;               \
 +    )
 +
  #define TEST_D_DDD(insn, num, result, rs1, rs2, rs3)        \
      TEST_CASE(num, DREG_CALC_RESULT, result,                \
      LI(DREG_RS1, rs1);                                      \
-@@ -129,6 +134,51 @@ test_ ## num:                                                    \
-     insn DREG_CALC_RESULT, DREG_RS1, DREG_RS2;          \
+@@ -236,6 +241,12 @@ test_ ## num:                                                    \
+     insn DREG_CALC_RESULT, DREG_RS1, imm1, imm2, imm3;       \
      )
  
-+#define TEST_D_DI(insn, num, result, rs1, imm1) \
-+    TEST_CASE(num, DREG_CALC_RESULT, result,     \
-+    LI(DREG_RS1, rs1);                          \
-+    rstv;                                       \
-+    insn DREG_CALC_RESULT, DREG_RS1, imm1;      \
-+    )
-+
-+#define TEST_D_D15I(insn, num, result, rs1, imm1) \
-+    TEST_CASE(num, DREG_CALC_RESULT, result,       \
-+    LI(%d15, rs1);                                \
-+    rstv;                                         \
-+    insn DREG_CALC_RESULT, %d15, imm1;            \
-+    )
-+
-+#define TEST_D15_DD(insn, num, result, rs1, rs2) \
-+    TEST_CASE(num, %d15, result,                 \
++#define TEST_E_D(insn, num, res_lo, res_hi, rs1) \
++    TEST_CASE_E(num, res_lo, res_hi,             \
 +    LI(DREG_RS1, rs1);                           \
-+    LI(DREG_RS2, rs2);                           \
-+    rstv;                                        \
-+    insn %d15, DREG_RS1, DREG_RS2;               \
++    insn EREG_CALC_RESULT, DREG_RS1;             \
 +    )
 +
-+#define TEST_D15_DI(insn, num, result, rs1, imm) \
-+    TEST_CASE(num, %d15, result,                 \
-+    LI(DREG_RS1, rs1);                           \
-+    rstv;                                        \
-+    insn %d15, DREG_RS1, imm;                    \
-+    )
-+
-+#define TEST_D_DD(insn, num, result, rs1, rs2) \
-+    TEST_CASE(num, DREG_CALC_RESULT, result,   \
-+    LI(DREG_RS1, rs1);                         \
-+    LI(DREG_RS2, rs2);                         \
-+    rstv;                                      \
-+    insn DREG_CALC_RESULT, DREG_RS1, DREG_RS2; \
-+    )
-+
-+#define TEST_D_D15D(insn, num, result, rs1, rs2) \
-+    TEST_CASE(num, DREG_CALC_RESULT, result,   \
-+    LI(%d15, rs1);                             \
-+    LI(DREG_RS2, rs2);                         \
-+    rstv;                                      \
-+    insn DREG_CALC_RESULT, %d15, DREG_RS2;     \
-+    )
-+
- #define TEST_D_DDD_PSW(insn, num, result, psw, rs1, rs2, rs3) \
-     TEST_CASE_PSW(num, DREG_CALC_RESULT, result, psw,         \
-     LI(DREG_RS1, rs1);                                        \
+ #define TEST_E_ED(insn, num, res_hi, res_lo, rs1_hi, rs1_lo, rs2) \
+     TEST_CASE_E(num, res_lo, res_hi,                              \
+     LI(EREG_RS1_LO, rs1_lo);                                      \
 diff --git a/tests/tcg/tricore/asm/test_arith.S b/tests/tcg/tricore/asm/test_arith.S
-new file mode 100644
-index 0000000000..07c4b876e9
---- /dev/null
+index 07c4b876e9..ec87413777 100644
+--- a/tests/tcg/tricore/asm/test_arith.S
 +++ b/tests/tcg/tricore/asm/test_arith.S
-@@ -0,0 +1,41 @@
-+#include "macros.h"
-+.text
-+.global _start
-+_start:
-+    TEST_D_D(abs, 1, 0x778636a7, 0x778636a7 )
-+    TEST_D_D(abs.b, 2, 0x497a4902, 0xb786b702 )
-+    TEST_D_D(abs.h, 3, 0x48331698, 0xb7cde968 )
-+    TEST_D_DI(absdif, 4, 0x22a52402, 0xdd5adc1a ,0x1c )
-+    TEST_D_DD(absdif, 5, 0x1e106273, 0x56f0cea3 ,0x75013116 )
-+    TEST_D_DD(absdif.b, 6, 0xa650a3b, 0xa7ee8b2a ,0x9d899565 )
-+    TEST_D_DD(absdif.h, 7, 0x7dd06888, 0x88292922 ,0x5f9c09a )
-+    TEST_D_DI(absdifs, 8, 0x79adddf7, 0x865222d1 ,0xc8 )
-+    TEST_D_DD(absdifs, 9, 0x7fffffff, 0x2ac1008b ,0x80032055 )
-+    TEST_D_DD(absdifs.h, 10, 0x65ae7fff, 0xf70a7a05 ,0x915cc1b3 )
-+    TEST_D_D(abss, 11, 0x2a671868, 0xd598e798 )
-+    TEST_D_D(abss.h, 12, 0x60fc7ce5, 0x9f04831b )
-+    TEST_D_DI(add, 13, 0x951ce738, 0x951ce6b4 ,0x84 )
-+    TEST_D_DD(add, 14, 0x53975df5, 0xc003e25a ,0x93937b9b )
-+    TEST_D_I(add, 15, 0x5, 0x5 )
-+    TEST_D_D15I(add, 16, 0x3c330214, 0x3c33020f ,0x5 )
-+    TEST_D15_DI(add, 17, 0x55eb1b8, 0x55eb1b8 ,0x0 )
-+    TEST_D_D(add, 18, 0xe66ead54, 0xe66ead54 )
-+    TEST_D_D15D(add, 19, 0xe450f787, 0xc7100fee ,0x1d40e799 )
-+    TEST_D15_DD(add, 20, 0x73f6d886, 0x27ca8a80 ,0x4c2c4e06 )
-+    TEST_D_DD(add.b, 21, 0x631bd462, 0xf9702965 ,0x6aababfd )
-+    TEST_D_DD(add.h, 22, 0x76ce127a, 0xf5402796 ,0x818eeae4 )
-+    TEST_D_DI(addc, 23, 0xcf8399c3, 0xcf839920 ,0xa3 )
-+    TEST_D_DD(addc, 24, 0xa455054c, 0x85d0b9ed ,0x1e844b5f )
-+    TEST_D_DI(addi, 25, 0xbf202fe6, 0xbf1fd903 ,0x56e3 )
-+    TEST_D_DI(addih, 26, 0xf28a99cc, 0xc10499cc ,12678 )
-+    TEST_D_DI(adds, 27, 0x233892ad, 0x233892ad ,0x0 )
-+    TEST_D_DD(adds, 28, 0xc1b1184d, 0x100a2339 ,0xb1a6f514 )
-+    TEST_D_D(adds, 29, 0x19143e9a, 0x19143e9a )
-+    TEST_D_DD(adds.h, 30, 0x7fff9de3, 0x668ebcc8 ,0x7462e11b )
-+    TEST_D_DD(adds.hu, 31, 0xffffffff, 0xbe0776eb ,0x5d69b388 )
-+    TEST_D_DI(adds.u, 32, 0x84c176ba, 0x84c176a9 ,0x11 )
-+    TEST_D_DD(adds.u, 33, 0xffffffff, 0xd4a91e39 ,0x55b1baed )
-+    TEST_D_DI(addx, 34, 0x38f63b5, 0x38f632b ,0x8a )
-+    TEST_D_DD(addx, 35, 0x8b9da5a4, 0x16e32e7 ,0x8a2f72bd )
-+
-+    TEST_PASSFAIL
+@@ -37,5 +37,52 @@ _start:
+     TEST_D_DD(adds.u, 33, 0xffffffff, 0xd4a91e39 ,0x55b1baed )
+     TEST_D_DI(addx, 34, 0x38f63b5, 0x38f632b ,0x8a )
+     TEST_D_DD(addx, 35, 0x8b9da5a4, 0x16e32e7 ,0x8a2f72bd )
++    TEST_D_DI(and, 36, 0x1, 0xf9683907 ,0x69 )
++    TEST_D_DD(and, 37, 0x40102090, 0x48d86c91 ,0x511123d0 )
++    TEST_D15_I(and, 38, 0x0, 0x1a )
++    TEST_D_D(and, 39, 0x0, 0x551343d6 )
++    TEST_D_DIDI(and.and.t, 40, 0x0, 0x60343d14 ,0x4 ,0x922020d8 ,0x3 )
++    TEST_D_DIDI(and.andn.t, 41, 0x0, 0xd4f95dad ,0x5 ,0xb9fff576 ,0x3 )
++    TEST_D_DI(and.eq, 42, 0x0, 0x9945aaf ,0xf )
++    TEST_D_DD(and.eq, 43, 0x0, 0x32a94b38 ,0xf53b9463 )
++    TEST_D_DI(and.ge, 44, 0x0, 0xe66d0f6e ,0x55 )
++    TEST_D_DD(and.ge, 45, 0x0, 0x43ea87d0 ,0x5adacf4d )
++    TEST_D_DI(and.ge.u, 46, 0x0, 0x4bef5bd1 ,0xb3 )
++    TEST_D_DD(and.ge.u, 47, 0x0, 0x9b5504c2 ,0x3787f19 )
++    TEST_D_DI(and.lt, 48, 0x0, 0x36daf216 ,0xc8 )
++    TEST_D_DD(and.lt, 49, 0x0, 0x6bf175f7 ,0x769bc7db )
++    TEST_D_DI(and.lt.u, 50, 0x0, 0xbef4b04a ,0x1d )
++    TEST_D_DD(and.lt.u, 51, 0x0, 0xa89ea455 ,0x84dc9898 )
++    TEST_D_DI(and.ne, 52, 0x0, 0xf3bb3559 ,0x5e )
++    TEST_D_DD(and.ne, 53, 0x0, 0xa05258eb ,0x50c5b0e4 )
++    TEST_D_DIDI(and.nor.t, 54, 0x0, 0xd7534767 ,0x1 ,0x5fac529f ,0x6 )
++    TEST_D_DIDI(and.or.t, 55, 0x0, 0xa3dd1690 ,0x7 ,0xe25f7361 ,0x4 )
++    TEST_D_DIDI(and.t, 56, 0x0, 0x9f6f71d5 ,0x1 ,0xe9dfe144 ,0x2 )
++    TEST_D_DI(andn, 57, 0xb2ed0c01, 0xb2ed0cf1 ,0xfc )
++    TEST_D_DD(andn, 58, 0x102d884, 0x494ad98c ,0xf87d077a )
++    TEST_D_DIDI(andn.t, 59, 0x0, 0x24ef957a ,0x5 ,0xaf95e01e ,0x4 )
++    TEST_D_DD(bmerge, 60, 0xbfe56f84, 0x2a0fc78 ,0xf7127bb2 )
++    TEST_E_D(bsplit, 61, 0x1ae2, 0xef60, 0xa9ee7c04 )
++    TEST_D_DDI(cadd, 62, 0x3ac01dec, 0x7770d9a ,0x3ac01d3d ,0xaf )
++    TEST_D_DDD(cadd, 63, 0x48a771b4, 0xdf020dda ,0xb81cdead ,0x908a9307 )
++    TEST_D_D15I(cadd, 64, 0x4, 0x6a766c11 ,0x4 )
++    TEST_D_DDI(caddn, 65, 0xdc0cd85d, 0xfe1fbf45 ,0xdc0cd85d ,0x1c )
++    TEST_D_DDD(caddn, 66, 0xd7bd5cb5, 0x70a930bd ,0xd7bd5cb5 ,0xb5dce80d )
++    TEST_D_D15I(caddn, 67, 0x0, 0xb6051252 ,0x4 )
++    TEST_D_D(clo, 68, 0x1, 0xa15f7ebc )
++    TEST_D_D(clo.h, 69, 0x0, 0x2bf418ef )
++    TEST_D_D(cls, 70, 0x1, 0xcbda5b50 )
++    TEST_D_D(cls.h, 71, 0x10001, 0xd15ac540 )
++    TEST_D_D(clz, 72, 0x1, 0x62ddf743 )
++    TEST_D_D(clz.h, 73, 0x0, 0xa859df54 )
++    TEST_D_D15I(cmov, 74, 0x5, 0x7d06b438 ,0x5 )
++    TEST_D_D15D(cmov, 75, 0x4d24e162, 0xd07651a5 ,0x4d24e162 )
++    TEST_D_D15I(cmovn, 76, 0x0, 0xea576d5 ,0x6 )
++    TEST_D_D15D(cmovn, 77, 0x0, 0x6a1d2b48 ,0xb28bc831 )
++    TEST_D_DD(crc32.b, 78, 0x3baca290, 0xcde828a2 ,0x869b2ea4 )
++    TEST_D_DD(crc32b.w, 79, 0x7f9d8908, 0xdaf396a5 ,0xa9011cf2 )
++    TEST_D_DD(crc32l.w, 80, 0x1707579b, 0x87572060 ,0x8cdfa395 )
++    TEST_D_DDD(csub, 81, 0xf389f12f, 0xae9c7e04 ,0x63247211 ,0x6f9a80e2 )
++    TEST_D_DDD(csubn, 82, 0x2a7dd20d, 0xc39caf46 ,0x2a7dd20d ,0xa8ab6269 )
+ 
+     TEST_PASSFAIL
 -- 
 2.42.0
 
