@@ -2,88 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D820079E2DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B621B79E2E7
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:04:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgLlQ-00053H-35; Wed, 13 Sep 2023 05:02:24 -0400
+	id 1qgLn2-0007bJ-HD; Wed, 13 Sep 2023 05:04:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgLlJ-00052s-I2
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:02:17 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgLlH-0001EW-Ar
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:02:17 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-403061cdf2bso40355485e9.2
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 02:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694595733; x=1695200533; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Xe6MqFGK/ptUu+T86YHQkfsfUOxtldvwwlNPM1pFiTI=;
- b=bThjB8+bmOsDpu9xaibYZxabZVihZdmw3SMg7/CNhiOY+Z4Z/vhnVbktc/pHOiZakm
- VfExF0dfZAOSVtkQP4bqeTHEVHUP8CtqFZZ3MFh6GjlQTUH4gfP9BIymOIKaf09umzmF
- Di+FW9Gm/I3yYzNGkuiEMBMgN4s3/SHYFlT3ifNO3DKeVyZXWeoCOaNanb/uiC8CrOAV
- wofqkIIQLTVi2aZ4Kkxu2uMgH3tw5/RBWJvAjn+0iXgBwv5EVLOFGFOtyhWxEMwpfxAm
- 4pkBmVLAqtlkWcdN4ARLrYYUC8X2UDLS7GEinHGmUTBIbBrLNQCEfmr2Nf33arRxuTig
- 5JRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694595733; x=1695200533;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Xe6MqFGK/ptUu+T86YHQkfsfUOxtldvwwlNPM1pFiTI=;
- b=tfXT4FEdWm1K0QaRygZsWHQbgnPPtmLURt4FX7myuq2bUOc87zFk0Hhzd7vLn7WQ1x
- 5Rz6rBsv88QL5kYWVROBN4C3UOvPMjus1W3tfic3kpn/4h/GWsiGjGtfo7uhdl4RTBjD
- ay+kqG+SbqrsLh3GkFQyeAMRphB0B/suTzeIKFUkF4geX/Bd84dAycapEtv5OGQ2V5J7
- k+50AJ/viDYnavxCUHQ6V2e7Os/jRKh598E7uQw2Cx7bQu64aXW9fwWdShTHlOi34nWL
- Z0LrG7UGbicm50Ba7CvTYc23mIevoySOCsfMR/iHOrXL7RTkdivx9Rcr3pPe5W0GSsPi
- 9WOw==
-X-Gm-Message-State: AOJu0YwolIGUVk1WQBxgcoYwJWT5y0xvhHbPCwomECzHccKqrtPPY7U+
- 4Q0wVMTARu4p4XCwdkMB5rK87w==
-X-Google-Smtp-Source: AGHT+IE6yyLIhYgsfFaQXW0eEC/aUhEtR8RrznU/yaYwzA3qd8pvyYQIuLDFOKRx9JhVmh92Z0EAPA==
-X-Received: by 2002:a05:600c:2802:b0:401:6800:703c with SMTP id
- m2-20020a05600c280200b004016800703cmr1494028wmb.21.1694595733164; 
- Wed, 13 Sep 2023 02:02:13 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
- [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
- f18-20020a7bcd12000000b00402f7e473b7sm1402592wmj.15.2023.09.13.02.02.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 02:02:12 -0700 (PDT)
-Message-ID: <361eaa5e-67d4-bce0-679b-8faf6cb5ce32@linaro.org>
-Date: Wed, 13 Sep 2023 11:02:10 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgLmu-0007Zh-3a
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:03:57 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgLmi-0001X2-BC
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:03:49 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rlvb93q9Cz6HJbM;
+ Wed, 13 Sep 2023 17:01:57 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 13 Sep
+ 2023 10:03:39 +0100
+Date: Wed, 13 Sep 2023 10:03:38 +0100
+To: Fan Ni <fan.ni@samsung.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, 
+ "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH v3 4/4] hw/cxl: Support 4 HDM decoders at all levels of
+ topology
+Message-ID: <20230913100338.000006c2@Huawei.com>
+In-Reply-To: <20230912180844.GD319114@bgt-140510-bm03>
+References: <20230911114313.6144-1-Jonathan.Cameron@huawei.com>
+ <20230911114313.6144-5-Jonathan.Cameron@huawei.com>
+ <CGME20230912180845uscas1p28e989eaff6b92939cfdb85886137354b@uscas1p2.samsung.com>
+ <20230912180844.GD319114@bgt-140510-bm03>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [RFC PATCH v4 2/3] target/i386: Restrict system-specific features
- from user emulation
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>, 
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>
-References: <20230911211317.28773-1-philmd@linaro.org>
- <20230911211317.28773-3-philmd@linaro.org>
- <c33130ec-661a-a1ed-c285-eeaa52365358@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <c33130ec-661a-a1ed-c285-eeaa52365358@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,38 +68,57 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/9/23 16:05, Paolo Bonzini wrote:
-> On 9/11/23 23:13, Philippe Mathieu-Daudé wrote:
->>   /*
->>    * Only for builtin_x86_defs models initialized with 
->> x86_register_cpudef_types.
->>    */
->> @@ -6163,6 +6195,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t 
->> index, uint32_t count,
->>               }
->>               *edx = env->features[FEAT_7_0_EDX]; /* Feature flags */
->> +#ifndef CONFIG_USER_ONLY
->>               /*
->>                * SGX cannot be emulated in software.  If hardware does 
->> not
->>                * support enabling SGX and/or SGX flexible launch control,
->> @@ -6181,6 +6214,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t 
->> index, uint32_t count,
->>                       CPUID_7_0_ECX_SGX_LC))) {
->>                   *ecx &= ~CPUID_7_0_ECX_SGX_LC;
->>               }
->> +#endif
+On Tue, 12 Sep 2023 18:08:44 +0000
+Fan Ni <fan.ni@samsung.com> wrote:
+
+> On Mon, Sep 11, 2023 at 12:43:13PM +0100, Jonathan Cameron wrote:
 > 
-> This can use a variant of x86_cpu_get_supported_cpuid that returns a 
-> single register; or it can be rewritten to use x86_cpu_get_supported_cpuid.
+> > Support these decoders in CXL host bridges (pxb-cxl), CXL Switch USP
+> > and CXL Type 3 end points.
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > ---  
+> 
+> One comment inline, other than that, looks good to me.
 
-Great suggestion, thanks!
+I think we are fine, but also possible I'm missing something :)
 
-> In general, a lot of checks for accel_uses_host_cpuid() are unnecessary, 
-> and the code can be modified to not depend on either KVM or HVF.
+> >  
+> >  /* 8.2.5.13 - CXL Extended Security Capability Structure (Root complex only) */
+> >  #define EXTSEC_ENTRY_MAX        256
+> > diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> > index aa011a8f34..3ecdad4a5e 100644
+> > --- a/hw/cxl/cxl-component-utils.c
+> > +++ b/hw/cxl/cxl-component-utils.c
+> > @@ -90,6 +90,9 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cstate, hwaddr offset,
+> >  
+> >      switch (offset) {
+> >      case A_CXL_HDM_DECODER0_CTRL:
+> > +    case A_CXL_HDM_DECODER1_CTRL:
+> > +    case A_CXL_HDM_DECODER2_CTRL:
+> > +    case A_CXL_HDM_DECODER3_CTRL:
+> >          should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
+> >          should_uncommit = !should_commit;  
+> 
+> So for the commit/uncommit flag, we always check decoder 0 control
+> register? Or i read it wrong? I thought the commit bit is per control register
+> thing?
 
-OK.
+This is in the write handler and the value passed in that we are looking at is
+for whichever of the _CTRL registers is being written.
+
+I could have coded this as separate entries for each register as
+FIELD_EX32(value, CXL_HDM_DECODER[X]_CTRL, COMMIT)
+but as this only figures out the field offset and mask, it is the same for X=0,1,2,3
+
+Jonathan
+
+
+
 
