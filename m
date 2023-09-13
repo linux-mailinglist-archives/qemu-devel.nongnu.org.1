@@ -2,59 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D25779E452
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B86C779E45E
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:55:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgMZS-00058J-TP; Wed, 13 Sep 2023 05:54:06 -0400
+	id 1qgMah-0007NO-FG; Wed, 13 Sep 2023 05:55:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qgMZM-00057F-Da
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:54:00 -0400
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qgMaV-0007HE-Dz
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:55:12 -0400
+Received: from out30-113.freemail.mail.aliyun.com ([115.124.30.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qgMZI-0001RW-Ly
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:54:00 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 981F1B822AB;
- Wed, 13 Sep 2023 09:53:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF4BC433C9;
- Wed, 13 Sep 2023 09:53:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1694598833;
- bh=72vttsxH4HaLGQ64elAicjy8DukNowyQIn6ibqURcto=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sQlbU02GYmzdvKkgEfmDqGK5d9jaL+2WO5vztVg36dB88VKxkCNv5DNBJX5mB5bXx
- nrPMdhO3OIT2n3tO/0f1Fh6dBeycO3suFBRtLFcm/8+5fR+pxjJN/ek3/XMl1nk1sW
- Si89c2iMk/H47CiQv65FrrlWO9bdv9iaXIKHJIfCyk6ADfedpVrADphxw6hy7HYXXt
- NiOBPYjJeZw7iaDkmdCb+tOXvDP7YbObYWxtai26GAlKy5xiHUxoPuJ0osRekOcPbz
- TZrJwBZPcUllxyWGrp+Pp4j/UFT7QKMiSqyGW/WdetvX+dr9kUAXFMGWw4Uaf74r7z
- Z+Fm7Unv46x7w==
-From: deller@kernel.org
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Helge Deller <deller@gmx.de>
-Subject: [PATCH 6/6] target/hppa: Wire up diag instruction to support BTLB
-Date: Wed, 13 Sep 2023 11:53:40 +0200
-Message-ID: <20230913095340.32951-7-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230913095340.32951-1-deller@kernel.org>
-References: <20230913095340.32951-1-deller@kernel.org>
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qgMaO-0002HX-AW
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:55:11 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R491e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=5; SR=0;
+ TI=SMTPD_---0Vs-IEPv_1694598892; 
+Received: from 30.221.106.200(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0Vs-IEPv_1694598892) by smtp.aliyun-inc.com;
+ Wed, 13 Sep 2023 17:54:52 +0800
+Message-ID: <9aa175fb-24f2-3cd8-7ab4-13a6dc640993@linux.alibaba.com>
+Date: Wed, 13 Sep 2023 17:54:00 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=deller@kernel.org; helo=ams.source.kernel.org
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] fpu: Add conversions between bfloat16 and [u]int8
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: aurelien@aurel32.net, peter.maydell@linaro.org, alex.bennee@linaro.org,
+ "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>
+References: <20230531065458.2082-1-zhiwei_liu@linux.alibaba.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20230531065458.2082-1-zhiwei_liu@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=115.124.30.113;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-113.freemail.mail.aliyun.com
+X-Spam_score_int: -113
+X-Spam_score: -11.4
+X-Spam_bar: -----------
+X-Spam_report: (-11.4 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01, UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,160 +65,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+Hi Richard,
 
-Wire up the hppa diag instruction to support Block-TLBs
-when called with the 0x100 value.
+Can you pick it to your tree?
 
-The diag_btlb() helper function does all necessary steps
-to emulate the PDC BTLB firmware function, which includes
-providing BTLB info, adding a new BTLB, deleting a BTLB
-and removing all BTLBs.
+Thanks,
+Zhiwei
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- target/hppa/helper.h     |  1 +
- target/hppa/mem_helper.c | 92 ++++++++++++++++++++++++++++++++++++++++
- target/hppa/translate.c  | 15 +++++--
- 3 files changed, 105 insertions(+), 3 deletions(-)
-
-diff --git a/target/hppa/helper.h b/target/hppa/helper.h
-index c7e35ce8c7..647f043c85 100644
---- a/target/hppa/helper.h
-+++ b/target/hppa/helper.h
-@@ -95,4 +95,5 @@ DEF_HELPER_FLAGS_2(ptlb, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_1(ptlbe, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_2(lpa, TCG_CALL_NO_WG, tr, env, tl)
- DEF_HELPER_FLAGS_1(change_prot_id, TCG_CALL_NO_RWG, void, env)
-+DEF_HELPER_1(diag_btlb, void, env)
- #endif
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index ea33b58ddd..da0f03aa4f 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -412,3 +412,95 @@ int hppa_artype_for_page(CPUHPPAState *env, target_ulong vaddr)
-     hppa_tlb_entry *ent = hppa_find_tlb(env, vaddr);
-     return ent ? ent->ar_type : -1;
- }
-+
-+/*
-+ * diag_btlb() emulates the PDC PDC_BLOCK_TLB firmware call to
-+ * allow operating systems to modify the Block TLB (BTLB) entries.
-+ * For implementation details see page 1-13 in
-+ * https://parisc.wiki.kernel.org/images-parisc/e/ef/Pdc11-v0.96-Ch1-procs.pdf
-+ */
-+void HELPER(diag_btlb)(CPUHPPAState *env)
-+{
-+    unsigned int phys_page, len, slot;
-+    int mmu_idx = cpu_mmu_index(env, 0);
-+    uintptr_t ra = GETPC();
-+    hppa_tlb_entry *btlb;
-+    uint64_t virt_page;
-+    uint32_t *vaddr;
-+
-+#ifdef TARGET_HPPA64
-+    /* BTLBs are not supported on 64-bit CPUs */
-+    env->gr[28] = -1; /* nonexistent procedure */
-+    return;
-+#endif
-+    env->gr[28] = 0; /* PDC_OK */
-+
-+    switch (env->gr[25]) {
-+    case 0:
-+        /* return BTLB parameters */
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INFO\n");
-+        vaddr = probe_access(env, env->gr[24], 4 * sizeof(target_ulong),
-+                             MMU_DATA_STORE, mmu_idx, ra);
-+        if (vaddr == NULL) {
-+            env->gr[28] = -10; /* invalid argument */
-+        } else {
-+            vaddr[0] = cpu_to_be32(1);
-+            vaddr[1] = cpu_to_be32(16 * 1024);
-+            vaddr[2] = cpu_to_be32(HPPA_BTLB_FIXED);
-+            vaddr[3] = cpu_to_be32(HPPA_BTLB_VARIABLE);
-+        }
-+        break;
-+    case 1:
-+        /* insert BTLB entry */
-+        virt_page = env->gr[24];        /* upper 32 bits */
-+        virt_page <<= 32;
-+        virt_page |= env->gr[23];       /* lower 32 bits */
-+        phys_page = env->gr[22];
-+        len = env->gr[21];
-+        slot = env->gr[19];
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INSERT "
-+                    "0x%08llx-0x%08llx: vpage 0x%lx for phys page 0x%04x len %d "
-+                    "into slot %d\n",
-+                    (long long)virt_page << TARGET_PAGE_BITS,
-+                    (long long)(virt_page + len) << TARGET_PAGE_BITS,
-+                    virt_page, phys_page, len, slot);
-+        if (slot < HPPA_BTLB_ENTRIES) {
-+            btlb = &env->tlb[slot];
-+            /* force flush of possibly existing BTLB entry */
-+            hppa_flush_tlb_ent(env, btlb, true);
-+            /* create new BTLB entry */
-+            btlb->va_b = virt_page << TARGET_PAGE_BITS;
-+            btlb->va_e = btlb->va_b + len * TARGET_PAGE_SIZE - 1;
-+            btlb->pa = phys_page << TARGET_PAGE_BITS;
-+            set_access_bits(env, btlb, env->gr[20]);
-+            btlb->t = 0;
-+            btlb->d = 1;
-+        } else {
-+            env->gr[28] = -10; /* invalid argument */
-+        }
-+        break;
-+    case 2:
-+        /* Purge BTLB entry */
-+        slot = env->gr[22];
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_PURGE slot %d\n",
-+                                    slot);
-+        if (slot < HPPA_BTLB_ENTRIES) {
-+            btlb = &env->tlb[slot];
-+            hppa_flush_tlb_ent(env, btlb, true);
-+        } else {
-+            env->gr[28] = -10; /* invalid argument */
-+        }
-+        break;
-+    case 3:
-+        /* Purge all BTLB entries */
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_PURGE_ALL\n");
-+        for (slot = 0; slot < HPPA_BTLB_ENTRIES; slot++) {
-+            btlb = &env->tlb[slot];
-+            hppa_flush_tlb_ent(env, btlb, true);
-+        }
-+        break;
-+    default:
-+        env->gr[28] = -2; /* nonexistent option */
-+        break;
-+    }
-+}
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index c04dc15228..650bbcfe95 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -4042,9 +4042,18 @@ static bool trans_fmpyfadd_d(DisasContext *ctx, arg_fmpyfadd_d *a)
- 
- static bool trans_diag(DisasContext *ctx, arg_diag *a)
- {
--    qemu_log_mask(LOG_UNIMP, "DIAG opcode ignored\n");
--    cond_free(&ctx->null_cond);
--    return true;
-+    nullify_over(ctx);
-+    CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
-+#ifndef CONFIG_USER_ONLY
-+    if (a->i == 0x100) {
-+        /* emulate PDC BTLB, called by SeaBIOS-hppa */
-+        gen_helper_diag_btlb(cpu_env);
-+    } else
-+#endif
-+    {
-+        qemu_log_mask(LOG_UNIMP, "DIAG opcode 0x%04x ignored\n", a->i);
-+    }
-+    return nullify_end(ctx);
- }
- 
- static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
--- 
-2.41.0
-
+On 2023/5/31 14:54, LIU Zhiwei wrote:
+> We missed these functions when upstreaming the bfloat16 support.
+>
+> Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> ---
+>   fpu/softfloat.c         | 58 +++++++++++++++++++++++++++++++++++++++++
+>   include/fpu/softfloat.h | 12 +++++++++
+>   2 files changed, 70 insertions(+)
+>
+> diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+> index 108f9cb224..576b026f4e 100644
+> --- a/fpu/softfloat.c
+> +++ b/fpu/softfloat.c
+> @@ -3113,6 +3113,15 @@ int64_t float64_to_int64_scalbn(float64 a, FloatRoundMode rmode, int scale,
+>       return parts_float_to_sint(&p, rmode, scale, INT64_MIN, INT64_MAX, s);
+>   }
+>   
+> +int8_t bfloat16_to_int8_scalbn(bfloat16 a, FloatRoundMode rmode, int scale,
+> +                               float_status *s)
+> +{
+> +    FloatParts64 p;
+> +
+> +    bfloat16_unpack_canonical(&p, a, s);
+> +    return parts_float_to_sint(&p, rmode, scale, INT8_MIN, INT8_MAX, s);
+> +}
+> +
+>   int16_t bfloat16_to_int16_scalbn(bfloat16 a, FloatRoundMode rmode, int scale,
+>                                    float_status *s)
+>   {
+> @@ -3379,6 +3388,11 @@ int64_t floatx80_to_int64_round_to_zero(floatx80 a, float_status *s)
+>       return floatx80_to_int64_scalbn(a, float_round_to_zero, 0, s);
+>   }
+>   
+> +int8_t bfloat16_to_int8(bfloat16 a, float_status *s)
+> +{
+> +    return bfloat16_to_int8_scalbn(a, s->float_rounding_mode, 0, s);
+> +}
+> +
+>   int16_t bfloat16_to_int16(bfloat16 a, float_status *s)
+>   {
+>       return bfloat16_to_int16_scalbn(a, s->float_rounding_mode, 0, s);
+> @@ -3394,6 +3408,11 @@ int64_t bfloat16_to_int64(bfloat16 a, float_status *s)
+>       return bfloat16_to_int64_scalbn(a, s->float_rounding_mode, 0, s);
+>   }
+>   
+> +int8_t bfloat16_to_int8_round_to_zero(bfloat16 a, float_status *s)
+> +{
+> +    return bfloat16_to_int8_scalbn(a, float_round_to_zero, 0, s);
+> +}
+> +
+>   int16_t bfloat16_to_int16_round_to_zero(bfloat16 a, float_status *s)
+>   {
+>       return bfloat16_to_int16_scalbn(a, float_round_to_zero, 0, s);
+> @@ -3503,6 +3522,15 @@ uint64_t float64_to_uint64_scalbn(float64 a, FloatRoundMode rmode, int scale,
+>       return parts_float_to_uint(&p, rmode, scale, UINT64_MAX, s);
+>   }
+>   
+> +uint8_t bfloat16_to_uint8_scalbn(bfloat16 a, FloatRoundMode rmode,
+> +                                 int scale, float_status *s)
+> +{
+> +    FloatParts64 p;
+> +
+> +    bfloat16_unpack_canonical(&p, a, s);
+> +    return parts_float_to_uint(&p, rmode, scale, UINT8_MAX, s);
+> +}
+> +
+>   uint16_t bfloat16_to_uint16_scalbn(bfloat16 a, FloatRoundMode rmode,
+>                                      int scale, float_status *s)
+>   {
+> @@ -3728,6 +3756,11 @@ Int128 float128_to_uint128_round_to_zero(float128 a, float_status *s)
+>       return float128_to_uint128_scalbn(a, float_round_to_zero, 0, s);
+>   }
+>   
+> +uint8_t bfloat16_to_uint8(bfloat16 a, float_status *s)
+> +{
+> +    return bfloat16_to_uint8_scalbn(a, s->float_rounding_mode, 0, s);
+> +}
+> +
+>   uint16_t bfloat16_to_uint16(bfloat16 a, float_status *s)
+>   {
+>       return bfloat16_to_uint16_scalbn(a, s->float_rounding_mode, 0, s);
+> @@ -3743,6 +3776,11 @@ uint64_t bfloat16_to_uint64(bfloat16 a, float_status *s)
+>       return bfloat16_to_uint64_scalbn(a, s->float_rounding_mode, 0, s);
+>   }
+>   
+> +uint8_t bfloat16_to_uint8_round_to_zero(bfloat16 a, float_status *s)
+> +{
+> +    return bfloat16_to_uint8_scalbn(a, float_round_to_zero, 0, s);
+> +}
+> +
+>   uint16_t bfloat16_to_uint16_round_to_zero(bfloat16 a, float_status *s)
+>   {
+>       return bfloat16_to_uint16_scalbn(a, float_round_to_zero, 0, s);
+> @@ -3898,6 +3936,11 @@ bfloat16 int16_to_bfloat16_scalbn(int16_t a, int scale, float_status *status)
+>       return int64_to_bfloat16_scalbn(a, scale, status);
+>   }
+>   
+> +bfloat16 int8_to_bfloat16_scalbn(int8_t a, int scale, float_status *status)
+> +{
+> +    return int64_to_bfloat16_scalbn(a, scale, status);
+> +}
+> +
+>   bfloat16 int64_to_bfloat16(int64_t a, float_status *status)
+>   {
+>       return int64_to_bfloat16_scalbn(a, 0, status);
+> @@ -3913,6 +3956,11 @@ bfloat16 int16_to_bfloat16(int16_t a, float_status *status)
+>       return int64_to_bfloat16_scalbn(a, 0, status);
+>   }
+>   
+> +bfloat16 int8_to_bfloat16(int8_t a, float_status *status)
+> +{
+> +    return int64_to_bfloat16_scalbn(a, 0, status);
+> +}
+> +
+>   float128 int128_to_float128(Int128 a, float_status *status)
+>   {
+>       FloatParts128 p = { };
+> @@ -4108,6 +4156,11 @@ bfloat16 uint16_to_bfloat16_scalbn(uint16_t a, int scale, float_status *status)
+>       return uint64_to_bfloat16_scalbn(a, scale, status);
+>   }
+>   
+> +bfloat16 uint8_to_bfloat16_scalbn(uint8_t a, int scale, float_status *status)
+> +{
+> +    return uint64_to_bfloat16_scalbn(a, scale, status);
+> +}
+> +
+>   bfloat16 uint64_to_bfloat16(uint64_t a, float_status *status)
+>   {
+>       return uint64_to_bfloat16_scalbn(a, 0, status);
+> @@ -4123,6 +4176,11 @@ bfloat16 uint16_to_bfloat16(uint16_t a, float_status *status)
+>       return uint64_to_bfloat16_scalbn(a, 0, status);
+>   }
+>   
+> +bfloat16 uint8_to_bfloat16(uint8_t a, float_status *status)
+> +{
+> +    return uint64_to_bfloat16_scalbn(a, 0, status);
+> +}
+> +
+>   float128 uint64_to_float128(uint64_t a, float_status *status)
+>   {
+>       FloatParts128 p;
+> diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
+> index 3dcf20e3a2..6d02f619d0 100644
+> --- a/include/fpu/softfloat.h
+> +++ b/include/fpu/softfloat.h
+> @@ -366,6 +366,8 @@ float32 bfloat16_to_float32(bfloat16, float_status *status);
+>   bfloat16 float64_to_bfloat16(float64 a, float_status *status);
+>   float64 bfloat16_to_float64(bfloat16 a, float_status *status);
+>   
+> +int8_t bfloat16_to_int8_scalbn(bfloat16, FloatRoundMode,
+> +                               int, float_status *status);
+>   int16_t bfloat16_to_int16_scalbn(bfloat16, FloatRoundMode,
+>                                    int, float_status *status);
+>   int32_t bfloat16_to_int32_scalbn(bfloat16, FloatRoundMode,
+> @@ -373,14 +375,18 @@ int32_t bfloat16_to_int32_scalbn(bfloat16, FloatRoundMode,
+>   int64_t bfloat16_to_int64_scalbn(bfloat16, FloatRoundMode,
+>                                    int, float_status *status);
+>   
+> +int8_t bfloat16_to_int8(bfloat16, float_status *status);
+>   int16_t bfloat16_to_int16(bfloat16, float_status *status);
+>   int32_t bfloat16_to_int32(bfloat16, float_status *status);
+>   int64_t bfloat16_to_int64(bfloat16, float_status *status);
+>   
+> +int8_t bfloat16_to_int8_round_to_zero(bfloat16, float_status *status);
+>   int16_t bfloat16_to_int16_round_to_zero(bfloat16, float_status *status);
+>   int32_t bfloat16_to_int32_round_to_zero(bfloat16, float_status *status);
+>   int64_t bfloat16_to_int64_round_to_zero(bfloat16, float_status *status);
+>   
+> +uint8_t bfloat16_to_uint8_scalbn(bfloat16 a, FloatRoundMode,
+> +                                 int, float_status *status);
+>   uint16_t bfloat16_to_uint16_scalbn(bfloat16 a, FloatRoundMode,
+>                                      int, float_status *status);
+>   uint32_t bfloat16_to_uint32_scalbn(bfloat16 a, FloatRoundMode,
+> @@ -388,24 +394,30 @@ uint32_t bfloat16_to_uint32_scalbn(bfloat16 a, FloatRoundMode,
+>   uint64_t bfloat16_to_uint64_scalbn(bfloat16 a, FloatRoundMode,
+>                                      int, float_status *status);
+>   
+> +uint8_t bfloat16_to_uint8(bfloat16 a, float_status *status);
+>   uint16_t bfloat16_to_uint16(bfloat16 a, float_status *status);
+>   uint32_t bfloat16_to_uint32(bfloat16 a, float_status *status);
+>   uint64_t bfloat16_to_uint64(bfloat16 a, float_status *status);
+>   
+> +uint8_t bfloat16_to_uint8_round_to_zero(bfloat16 a, float_status *status);
+>   uint16_t bfloat16_to_uint16_round_to_zero(bfloat16 a, float_status *status);
+>   uint32_t bfloat16_to_uint32_round_to_zero(bfloat16 a, float_status *status);
+>   uint64_t bfloat16_to_uint64_round_to_zero(bfloat16 a, float_status *status);
+>   
+> +bfloat16 int8_to_bfloat16_scalbn(int8_t a, int, float_status *status);
+>   bfloat16 int16_to_bfloat16_scalbn(int16_t a, int, float_status *status);
+>   bfloat16 int32_to_bfloat16_scalbn(int32_t a, int, float_status *status);
+>   bfloat16 int64_to_bfloat16_scalbn(int64_t a, int, float_status *status);
+> +bfloat16 uint8_to_bfloat16_scalbn(uint8_t a, int, float_status *status);
+>   bfloat16 uint16_to_bfloat16_scalbn(uint16_t a, int, float_status *status);
+>   bfloat16 uint32_to_bfloat16_scalbn(uint32_t a, int, float_status *status);
+>   bfloat16 uint64_to_bfloat16_scalbn(uint64_t a, int, float_status *status);
+>   
+> +bfloat16 int8_to_bfloat16(int8_t a, float_status *status);
+>   bfloat16 int16_to_bfloat16(int16_t a, float_status *status);
+>   bfloat16 int32_to_bfloat16(int32_t a, float_status *status);
+>   bfloat16 int64_to_bfloat16(int64_t a, float_status *status);
+> +bfloat16 uint8_to_bfloat16(uint8_t a, float_status *status);
+>   bfloat16 uint16_to_bfloat16(uint16_t a, float_status *status);
+>   bfloat16 uint32_to_bfloat16(uint32_t a, float_status *status);
+>   bfloat16 uint64_to_bfloat16(uint64_t a, float_status *status);
 
