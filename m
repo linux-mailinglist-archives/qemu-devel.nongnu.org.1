@@ -2,86 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBEC379EA0D
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BFF79EA22
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:55:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgQF6-0002Nw-Gr; Wed, 13 Sep 2023 09:49:20 -0400
+	id 1qgQJS-0004b0-Df; Wed, 13 Sep 2023 09:53:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qgQF5-0002Nj-Fu
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:49:19 -0400
-Received: from mail-qt1-x834.google.com ([2607:f8b0:4864:20::834])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgQJP-0004ZK-U2
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:53:48 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qgQF0-0006XY-TK
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:49:19 -0400
-Received: by mail-qt1-x834.google.com with SMTP id
- d75a77b69052e-41215efeb1aso46177681cf.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 06:49:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgQJM-0007hc-Sf
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:53:47 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-402d499580dso72647855e9.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 06:53:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694612953; x=1695217753; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sf89dov2mof29WnidCDd+eLRxZDVTjwn4le0xz6RB4g=;
- b=FExtGqD3vES7o3KpUe3ZgFWm/iDiTf7IbsxBKVpEN+iRnkvkvP+vIzXbSS0UZYCNY9
- +4NBySQA17DLlw10+r7K8OjRQaVtH71pgqVhy24wyQnl/JJzKkdvNSzdFBtg+Z3NfscX
- Ql006CkI3fabfv6kLdaWXGZ8iNzlyOk+nzyMtmlmuDB00Ey2DdeiSS+JIMh9rxFpVhqr
- q7C9VvQJZvaYhXwnrRYXaqCmRWddcS0kByCmVoJCWyxEUq4OG6d4eQWcCMFk82TV0IQt
- t6H71IbiErUuV9n06lVr1Fkyo4V3Xpv023MyeZFOvGiBvJ3GVY4kbIUBRWWqR6gLRXuC
- 8Lww==
+ d=linaro.org; s=google; t=1694613223; x=1695218023; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BDDdExk20zd/02ellCNAq2+QL4Gk6TOthMaHP+jpfQk=;
+ b=e9XGFZPj7uW4eSMFyorXiy5lwIyfABERUhh6Adb3gogU5d43QaVLswVb8h85hzToF+
+ WqB4XI/nVzXRK9QC4lAzBgeQhk1+d0iEKkGym1AJFOR6Gutw92SLq1cZJtyQyKP4VL3i
+ 210ylYMdmKGRxscw2tz2g7v9Tq8WSOuI6RwfI2xeWcpFMcGioOwHKlz+mns7CC4GuC/Z
+ wjqV2yLetwpz7Jh2WeIEH97ABzpCIgj5UXAVUSp8M6b3z+HUvyFK0ySXr72gDDnOgisd
+ EOEyvDvgXHaxrgNHLF/yEmJA5UFjVAiT86NXqiR1BkRiYqe8ISdtSUDYccDGbLyq0Lk8
+ SNmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694612953; x=1695217753;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=sf89dov2mof29WnidCDd+eLRxZDVTjwn4le0xz6RB4g=;
- b=au0J7W684pF2FkNwtWiNTn4PHMXQQjbTT/UoYmX0Pju8gzSfQMS0lPJHpwzjGXdskS
- JvAC2KXGSLXBU1rQKiIxcT2BkxKOyByyuVgYHe1kNx1D8Cyr3zaYMuQAR8GxOb3uEWZa
- 6iFd3Asa11bBDfe2CCtsQ2X9xqNHeaW+3irejpYUTl/nF5nVtRIFxfzbzPctzb4Y3orI
- ZBgMiwOHFKCtuV8f2rb2BmXZk4BgmtUemsHrOhV77g5pGwRWlGU/2jVpH71NsAMlC3bu
- +fHoOmI0lqcGXNHmkmJxCI86ejMmK5/ZnD3zx2eVs2Sw3nxCII9Kk5xqW+cecS40eM0o
- JTOw==
-X-Gm-Message-State: AOJu0Yyjx3ZcLrX0Qo1BfTJhCelxXZF811VGBtjhrc6xHVdsDyBp15Cc
- l8XT8orAmzse4lN2uHu5USZwrIRzpjLFD6BJyNI=
-X-Google-Smtp-Source: AGHT+IGMv7/P8VM6KWJ5wScILpkj83LajinQXU6NVq6ECADcxBtQ7yswKrLGuXYZ9gxz3Qr7o6HTHBqvUotUeqxSvW0=
-X-Received: by 2002:a05:622a:1a93:b0:400:9126:3f16 with SMTP id
- s19-20020a05622a1a9300b0040091263f16mr2806035qtc.1.1694612953450; Wed, 13 Sep
- 2023 06:49:13 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694613223; x=1695218023;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BDDdExk20zd/02ellCNAq2+QL4Gk6TOthMaHP+jpfQk=;
+ b=Ph1AW1QS9O+rv19SwUT8qDLf3B5gZKu6YH20X8OB3nMuD83KyFEfe/o8oF8R5cqNNr
+ M6XEXFEsEdJEm7HicuLJ/lwAficZ5zpBAdOiX+OeJgRY9QDD/LLJngL2PMpzv+V4w0lZ
+ 1rHPOkHwkRcOszYZfiV96y2R62CVTEJV08xXlXtz6fMRnbUQ3t0SRhQAu3coop8gKrae
+ DpZ8XThyJLIDZ+kRBATd0leCtUUztMsqDppIJXZc3vpF8YPO0/6gs5BHVTjWV/0Vvq5B
+ ocpu+zqMFV+uqWZaoeX5EEw07iKV+W4oJdU/UYjtqL53hvN9Qd64TRmPaJ8PeweaiiEP
+ 9tCA==
+X-Gm-Message-State: AOJu0YyUwmW5+Z0atPc7lSOF/8cf/1cS90BRdVYC/GC0P7pBH0tgvH1b
+ /FqaQ+IQ23wf1NXA2vB5f0R+mrCsoLUEpbMvlr4=
+X-Google-Smtp-Source: AGHT+IHq+GoEU/VlyW0+aaw/Q3OzEC5ZxxrIqe8J2DB/8Lr2Jceso3jNKoc6Vf4LG+axCTfTAm2OCA==
+X-Received: by 2002:a5d:4110:0:b0:319:83e8:fccf with SMTP id
+ l16-20020a5d4110000000b0031983e8fccfmr2182771wrp.23.1694613222912; 
+ Wed, 13 Sep 2023 06:53:42 -0700 (PDT)
+Received: from m1x-phil.lan (176-131-211-241.abo.bbox.fr. [176.131.211.241])
+ by smtp.gmail.com with ESMTPSA id
+ w9-20020aa7cb49000000b0051bed21a635sm7415826edt.74.2023.09.13.06.53.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 13 Sep 2023 06:53:42 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Beraldo Leal <bleal@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH] tests/avocado: Disable MIPS Malta tests due to GitLab issue
+ #1884
+Date: Wed, 13 Sep 2023 15:53:39 +0200
+Message-ID: <20230913135339.9128-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230829003629.410-1-gurchetansingh@chromium.org>
- <ZO/6JXmYm/lW9dSZ@amd.com>
- <CAAfnVBmxaAbEX-0wVVwE94cKrGtoCRWKv58X73P+_hKM8-_hkQ@mail.gmail.com>
- <CAJ+F1CJwATzG8by1tZucq15KbDHfE9OJEGq1jZ71UHivoTRsXQ@mail.gmail.com>
- <CAAfnVBn4yjOCi+OzqjYJ2wos1wsjrCAj+9j1kZ4v63a4LVX7mQ@mail.gmail.com>
-In-Reply-To: <CAAfnVBn4yjOCi+OzqjYJ2wos1wsjrCAj+9j1kZ4v63a4LVX7mQ@mail.gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 13 Sep 2023 17:49:01 +0400
-Message-ID: <CAJ+F1CLfJ_0yYh4ZaNwLt5JRB-QfijRZ3DPEEipbUbqV2Sv+=Q@mail.gmail.com>
-Subject: Re: [PATCH v13 0/9] rutabaga_gfx + gfxstream
-To: Gurchetan Singh <gurchetansingh@chromium.org>
-Cc: Huang Rui <ray.huang@amd.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "akihiko.odaki@gmail.com" <akihiko.odaki@gmail.com>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>, 
- "shentey@gmail.com" <shentey@gmail.com>, "hi@alyssa.is" <hi@alyssa.is>, 
- "ernunes@redhat.com" <ernunes@redhat.com>, 
- "manos.pitsidianakis@linaro.org" <manos.pitsidianakis@linaro.org>,
- "philmd@linaro.org" <philmd@linaro.org>, 
- "mark.cave-ayland@ilande.co.uk" <mark.cave-ayland@ilande.co.uk>,
- Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::834;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x834.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -99,126 +98,243 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Commit 0d58c66068 ("softmmu: Use async_run_on_cpu in tcg_commit")
+introduced a regression which is only triggered by the MIPS Malta
+machine. Since those tests are gatting and disturb the CI workflow,
+disable them until https://gitlab.com/qemu-project/qemu/-/issues/1866
+is fixed.
 
-On Wed, Sep 13, 2023 at 5:08=E2=80=AFAM Gurchetan Singh
-<gurchetansingh@chromium.org> wrote:
-> On Tue, Sep 12, 2023 at 6:59=E2=80=AFAM Marc-Andr=C3=A9 Lureau <marcandre=
-.lureau@gmail.com> wrote:
->> Packaging aemu and gfxstream is a bit problematic. I have some WIP
->> Fedora packages.
->>
->> AEMU:
->> - installs files under /usr/include/host-common and
->> /usr/include/snapshot. Can this be moved under /usr/include/aemu
->> instead?
->> - builds only static versions of libaemu-host-common.a and
->> liblogging-base.a (distros don't like static libs much)
->> - could liblogging-base(.a,.so,..) also have "aemu" name in it?
->> - libaemu-base.so is not versioned
->> - I can't find a release tarball, nor the (v0.1.2) release tag
->> - could have a README file
->>
->> I am not very familiar with cmake, so it's not obvious how to make the
->> required changes. Would you like me to open an issue (where?) or try
->> to make some patches?
->
->
-> I filed an internal bug with all the issues you listed: Android side shou=
-ld fix this internally.
->
-> I see a few options for packaging:
->
-> 1) Punt on gfxstream/AEMU packaging, just do rutabaga
->
-> gfxstream is mostly useful for Android guests, and I didn't expect anyone=
- to actually package it at this point since most here are interested in Lin=
-ux guests (where gfxstream VK is headless only right now).  Plus ioctl-fowa=
-rding > API forwarding for security and performance, so I'm not sure if it'=
-ll have any sticking power even if everything is supported (outside of a fe=
-w niche use cases).
->
-> Though, I sense interest in Wayland passthrough for dual Linux use cases.=
-  I put up:
->
-> crrev.com/c/4860836
->
-> that'll allow packaging on rutabaga_gfx and even CI testing without gfxst=
-ream, since it is designed to function without it.  We could issue another =
-rutabaga-release tag, or you can simply add a patch (a common packaging pra=
-ctice) on the Fedora package with the "UPSTEAM label".
->
-> 2) Actually package gfxstream only
->
-> Probably an intermediate solution that doesn't introduce versioning/stati=
-c library issues would be just to have a copy of AEMU in the gfxstream repo=
-, and link it statically.  Will need another release tag/commit of gfxstrea=
-m.
->
-> 3) Don't package at all
->
-> For my particular use case since we have to build QEMU for sources, this =
-is fine.  If upstream breaks virtio-gpu-rutabaga.c, we'll send a patch and =
-fix it.  Being in-tree is most important.
->
-> Let me know what you prefer!
->
+  $ make check-avocado \
+      AVOCADO_TAGS='arch:mipsel arch:mips64el' \
+      AVOCADO_ALLOW_UNTRUSTED_CODE=1 \
+      AVOCADO_TIMEOUT_EXPECTED=1
+    AVOCADO tests/avocado
+   (04/24) tests/avocado/boot_linux_console.py:BootLinuxConsole.test_mips_malta32el_nanomips_4k: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (90.39 s)
+   (05/24) tests/avocado/boot_linux_console.py:BootLinuxConsole.test_mips_malta32el_nanomips_16k_up: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (90.29 s)
+   (06/24) tests/avocado/boot_linux_console.py:BootLinuxConsole.test_mips_malta32el_nanomips_64k_dbg: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (92.53 s)
+   (11/24) tests/avocado/machine_mips_malta.py:MaltaMachineFramebuffer.test_mips_malta_i6400_framebuffer_logo_1core: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (25.78 s)
+  RESULTS    : PASS 8 | ERROR 0 | FAIL 0 | SKIP 7 | WARN 2 | INTERRUPT 5 | CANCEL 2
+  JOB TIME   : 525.60 s                                      ^^^^^^^^^^^
 
-I would rather have standard packaging of the various projects, so we
-can test and develop easily.
+Reported-by: Thomas Huth <thuth@redhat.com>
+Suggested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/avocado/boot_linux_console.py | 7 +++++++
+ tests/avocado/machine_mips_malta.py | 6 ++++++
+ tests/avocado/replay_kernel.py      | 7 +++++++
+ tests/avocado/tuxrun_baselines.py   | 4 ++++
+ 4 files changed, 24 insertions(+)
 
-For rutabaga, I ended up having to patch a little bit the shared
-library, to fix SONAME:
+diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
+index 6eab515718..01ee149812 100644
+--- a/tests/avocado/boot_linux_console.py
++++ b/tests/avocado/boot_linux_console.py
+@@ -116,6 +116,7 @@ def test_x86_64_pc(self):
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.wait_for_console_pattern(console_pattern)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta(self):
+         """
+         :avocado: tags=arch:mips
+@@ -138,6 +139,7 @@ def test_mips_malta(self):
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.wait_for_console_pattern(console_pattern)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips64el_malta(self):
+         """
+         This test requires the ar tool to extract "data.tar.gz" from
+@@ -191,6 +193,7 @@ def test_mips64el_fuloong2e(self):
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.wait_for_console_pattern(console_pattern)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta_cpio(self):
+         """
+         :avocado: tags=arch:mips
+@@ -232,6 +235,7 @@ def test_mips_malta_cpio(self):
+         # Wait for VM to shut down gracefully
+         self.vm.wait()
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
+     def test_mips64el_malta_5KEc_cpio(self):
+         """
+@@ -292,6 +296,7 @@ def do_test_mips_malta32el_nanomips(self, kernel_url, kernel_hash):
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.wait_for_console_pattern(console_pattern)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta32el_nanomips_4k(self):
+         """
+         :avocado: tags=arch:mipsel
+@@ -305,6 +310,7 @@ def test_mips_malta32el_nanomips_4k(self):
+         kernel_hash = '477456aafd2a0f1ddc9482727f20fe9575565dd6'
+         self.do_test_mips_malta32el_nanomips(kernel_url, kernel_hash)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta32el_nanomips_16k_up(self):
+         """
+         :avocado: tags=arch:mipsel
+@@ -318,6 +324,7 @@ def test_mips_malta32el_nanomips_16k_up(self):
+         kernel_hash = 'e882868f944c71c816e832e2303b7874d044a7bc'
+         self.do_test_mips_malta32el_nanomips(kernel_url, kernel_hash)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta32el_nanomips_64k_dbg(self):
+         """
+         :avocado: tags=arch:mipsel
+diff --git a/tests/avocado/machine_mips_malta.py b/tests/avocado/machine_mips_malta.py
+index 92233451c5..3620266589 100644
+--- a/tests/avocado/machine_mips_malta.py
++++ b/tests/avocado/machine_mips_malta.py
+@@ -11,6 +11,7 @@
+ import gzip
+ import logging
+ 
++from avocado import skip
+ from avocado import skipIf
+ from avocado import skipUnless
+ from avocado.utils import archive
+@@ -93,6 +94,7 @@ def do_test_i6400_framebuffer_logo(self, cpu_cores_count):
+             cv2.imwrite(debug_png, screendump_bgr)
+         self.assertGreaterEqual(tuxlogo_count, cpu_cores_count)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta_i6400_framebuffer_logo_1core(self):
+         """
+         :avocado: tags=arch:mips64el
+@@ -101,6 +103,7 @@ def test_mips_malta_i6400_framebuffer_logo_1core(self):
+         """
+         self.do_test_i6400_framebuffer_logo(1)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
+     def test_mips_malta_i6400_framebuffer_logo_7cores(self):
+         """
+@@ -111,6 +114,7 @@ def test_mips_malta_i6400_framebuffer_logo_7cores(self):
+         """
+         self.do_test_i6400_framebuffer_logo(7)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
+     def test_mips_malta_i6400_framebuffer_logo_8cores(self):
+         """
+@@ -142,6 +146,7 @@ def do_test_yamon(self):
+         wait_for_console_pattern(self, prompt)
+         self.vm.shutdown()
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mipsel_malta_yamon(self):
+         """
+         :avocado: tags=arch:mipsel
+@@ -150,6 +155,7 @@ def test_mipsel_malta_yamon(self):
+         """
+         self.do_test_yamon()
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips64el_malta_yamon(self):
+         """
+         :avocado: tags=arch:mips64el
+diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+index a18610542e..f7ccfd2462 100644
+--- a/tests/avocado/replay_kernel.py
++++ b/tests/avocado/replay_kernel.py
+@@ -98,6 +98,7 @@ def test_x86_64_pc(self):
+ 
+         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta(self):
+         """
+         :avocado: tags=arch:mips
+@@ -116,6 +117,7 @@ def test_mips_malta(self):
+ 
+         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips64el_malta(self):
+         """
+         This test requires the ar tool to extract "data.tar.gz" from
+@@ -431,6 +433,7 @@ class ReplayKernelSlow(ReplayKernelBase):
+     # making it very slow.
+     timeout = 180
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta_cpio(self):
+         """
+         :avocado: tags=arch:mips
+@@ -460,6 +463,7 @@ def test_mips_malta_cpio(self):
+         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5,
+                     args=('-initrd', initrd_path))
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
+     def test_mips64el_malta_5KEc_cpio(self):
+         """
+@@ -502,6 +506,7 @@ def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
+         console_pattern = 'Kernel command line: %s' % kernel_command_line
+         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta32el_nanomips_4k(self):
+         """
+         :avocado: tags=arch:mipsel
+@@ -516,6 +521,7 @@ def test_mips_malta32el_nanomips_4k(self):
+         kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+         self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta32el_nanomips_16k_up(self):
+         """
+         :avocado: tags=arch:mipsel
+@@ -530,6 +536,7 @@ def test_mips_malta32el_nanomips_16k_up(self):
+         kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
+         self.do_test_mips_malta32el_nanomips(kernel_path_xz)
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips_malta32el_nanomips_64k_dbg(self):
+         """
+         :avocado: tags=arch:mipsel
+diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
+index e12250eabb..610b7e2bfa 100644
+--- a/tests/avocado/tuxrun_baselines.py
++++ b/tests/avocado/tuxrun_baselines.py
+@@ -352,6 +352,7 @@ def test_i386(self):
+ 
+         self.common_tuxrun(csums=sums, drive="virtio-blk-pci")
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips32(self):
+         """
+         :avocado: tags=arch:mips
+@@ -370,6 +371,7 @@ def test_mips32(self):
+ 
+         self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips32el(self):
+         """
+         :avocado: tags=arch:mipsel
+@@ -387,6 +389,7 @@ def test_mips32el(self):
+ 
+         self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips64(self):
+         """
+         :avocado: tags=arch:mips64
+@@ -404,6 +407,7 @@ def test_mips64(self):
+ 
+         self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
+ 
++    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
+     def test_mips64el(self):
+         """
+         :avocado: tags=arch:mips64el
+-- 
+2.41.0
 
-diff --git a/ffi/Makefile b/ffi/Makefile
-index d2f0d38..7efc8f3 100644
---- a/ffi/Makefile
-+++ b/ffi/Makefile
-@@ -47,13 +47,13 @@ build:
-
- install: build
- ifeq ($(UNAME), Linux)
--    install -D -m 755 -t $(DESTDIR)$(libdir) $(OUT)/$(LIB_NAME)
-+    install -D -m 755 $(OUT)/$(LIB_NAME)
-$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)
- endif
- ifeq ($(UNAME), Darwin)
--        install_name_tool -id $(DESTDIR)$(libdir)/$(LIB_NAME)
-$(DESTDIR)$(libdir)/$(LIB_NAME)
-+        install_name_tool -id
-$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)
-$(DESTDIR)$(libdir)/$(LIB_NAME)
- endif
--    ln -sf $(DESTDIR)$(libdir)/$(LIB_NAME)
-$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)
--    ln -sf $(DESTDIR)$(libdir)/$(LIB_NAME)
-$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION_MAJOR)
-+    ln -s $(LIB_NAME).$(RUTABAGA_VERSION)
-$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION_MAJOR)
-+    ln -s $(LIB_NAME).$(RUTABAGA_VERSION) $(DESTDIR)$(libdir)/$(LIB_NAME)
- ifeq ($(UNAME), Linux)
-     install -D -m 0644 $(SRC)/share/rutabaga_gfx_ffi.pc
-$(DESTDIR)$(libdir)/pkgconfig/rutabaga_gfx_ffi.pc
-     install -D -m 0644 $(SRC)/include/rutabaga_gfx_ffi.h
-$(DESTDIR)$(includedir)/rutabaga_gfx_ffi.h
-diff --git a/ffi/build.rs b/ffi/build.rs
-new file mode 100644
-index 0000000..efa18d3
---- /dev/null
-+++ b/ffi/build.rs
-@@ -0,0 +1,3 @@
-+fn main() {
-+       println!("cargo:rustc-cdylib-link-arg=3D-Wl,-soname,librutabaga_gfx=
-_ffi.so.0");
-+}
-
-
-The package is a bit unconventional, since it's a rust project
-providing a C shared library. I am not sure I did Fedora packaging
-right, let see:
-https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=3D2238751
-
-
---=20
-Marc-Andr=C3=A9 Lureau
 
