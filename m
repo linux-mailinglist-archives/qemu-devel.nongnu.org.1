@@ -2,44 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE10079E50D
+	by mail.lfdr.de (Postfix) with ESMTPS id DC85479E50C
 	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 12:35:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgNCJ-0000N1-G0; Wed, 13 Sep 2023 06:34:15 -0400
+	id 1qgNCq-0000UE-44; Wed, 13 Sep 2023 06:34:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qgNCF-0000Mm-R3; Wed, 13 Sep 2023 06:34:11 -0400
-Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
- helo=smtp.gentoo.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qgNCB-0007BA-56; Wed, 13 Sep 2023 06:34:11 -0400
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-To: LIU Zhiwei <baxiantai@gmail.com>,
- "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
- "open list:RISC-V" <qemu-riscv@nongnu.org>
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Wed, 13 Sep 2023 12:33:49 +0200
-Message-ID: <5225193.mvXUDI8C0e@kona>
-Organization: Gentoo Linux
-In-Reply-To: <b065fa54-28fc-d64e-c8dd-16104128326d@tls.msk.ru>
-References: <10817413.NyiUUSuA9g@pinacolada>
- <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
- <b065fa54-28fc-d64e-c8dd-16104128326d@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qgNCo-0000Tn-BR
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:34:46 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qgNCl-0007K9-ID
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 06:34:46 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68fdcc37827so591986b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 03:34:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694601281; x=1695206081;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/gsX13CnQ+RiKdonhmGaJWnagAUBmE64zMiE8InJYMY=;
+ b=CvbgQ85oUmSI6WTYc+EnVa5bOXudv3GffXLvcp5xCJdtG7vP2ENiro50qG97QqiITV
+ 8wUswpId8xV6qvlxXtM5cXI5Lf+ckvwNOCMN4ooBru9MMgDg1XDePMfrQS5s4ZILkvDs
+ lQ9EQLgFZtf7Xc9m/0ydNLMuwtpO+7NZYPzb01zCrI1MMYy8MpF0hBVlCadjyK9lpDyG
+ atCLzQZDzoW2eZOXOoQZugrucr06gIuj4ixXtL5UuLo8t5L9ps4IkxleRZTka2rxlAQi
+ vCgH+l7TJbSNbMgnoRbUd5rgdytkCIR9Fz5cD+y84WpjidFiKTIcNmhDwTLLWn6esK+b
+ WBcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694601281; x=1695206081;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/gsX13CnQ+RiKdonhmGaJWnagAUBmE64zMiE8InJYMY=;
+ b=noBon1VMrTTEQDm4m/Kb27Zc8kuNS00PFvti8qWHzh+hk7GKKUZ5SrvValcIV6meon
+ DoQZfqygSSj0DsnrZRIxpNPUfhKeUpxSJ+hib1cn0VLTn5iNvAwNF80zMMdiRWSjjTDv
+ 8V1Sde3u7HZQIOuA3fofFOXWodpZZ1kNoIe7h+/OvIXN8uaRUXZ9ySEPhf7wmR/crxDY
+ +F/MtvjBU04e/IR0jDhn359tlHbNAknP+YOH92no/py5cwhvnFalN8Nd9TZuzLLdi7kq
+ 8oqnPZu10gTmFYq+ryzIl6aGsnyZ0hGHjrBYsLjLCznml0NHPQuKC0kVWyKOBiH3/4Sr
+ HBeg==
+X-Gm-Message-State: AOJu0YyJmvH9AOYu/pmoT6YmxDGUe/8IVW1PjOOXMmNIU0qr3DCpHlMC
+ 2QdAFOiNzvtwxwEuSkBruFZd3Q==
+X-Google-Smtp-Source: AGHT+IHTPT0tjzcnAJSUL9nT+wX3MjCaTXTLpkly5af71VyfGqmKrnsGwP6chzxn+R6v3usXUofQAw==
+X-Received: by 2002:a17:90a:4101:b0:26d:3e6a:cd93 with SMTP id
+ u1-20020a17090a410100b0026d3e6acd93mr7104225pjf.17.1694601280912; 
+ Wed, 13 Sep 2023 03:34:40 -0700 (PDT)
+Received: from [157.82.204.253] ([157.82.204.253])
+ by smtp.gmail.com with ESMTPSA id
+ l5-20020a63be05000000b00528513c6bbcsm7566372pgf.28.2023.09.13.03.34.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 03:34:40 -0700 (PDT)
+Message-ID: <cf99ac00-6f48-4778-b319-6079a931ba5d@daynix.com>
+Date: Wed, 13 Sep 2023 19:34:34 +0900
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart14810793.O9o76ZdvQC";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
- envelope-from=dilfridge@gentoo.org; helo=smtp.gentoo.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
+To: Albert Esteve <aesteve@redhat.com>
+Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+References: <20230831093252.2461282-1-ray.huang@amd.com>
+ <20230831093252.2461282-11-ray.huang@amd.com>
+ <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
+ <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
+ <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::431;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -55,79 +117,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---nextPart14810793.O9o76ZdvQC
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Wed, 13 Sep 2023 12:33:49 +0200
-Message-ID: <5225193.mvXUDI8C0e@kona>
-Organization: Gentoo Linux
-In-Reply-To: <b065fa54-28fc-d64e-c8dd-16104128326d@tls.msk.ru>
-MIME-Version: 1.0
+On 2023/09/13 16:55, Albert Esteve wrote:
+> Hi Antonio,
+> 
+> If I'm not mistaken, this patch is related with: 
+> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html 
+> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>
+> IMHO, ideally, virtio-gpu and vhost-user-gpu both, would use the 
+> infrastructure from the patch I linked to store the
+> virtio objects, so that they can be later shared with other devices.
 
-Am Mittwoch, 13. September 2023, 10:06:01 CEST schrieb Michael Tokarev:
-> 13.09.2023 04:41, LIU Zhiwei wrote:
-> >=20
-> > On 2023/9/13 6:31, Andreas K. Huettel wrote:
-> ..
-> >> * Something seems wrong in the signal handling (?):
-> >=20
-> > If it is wrong for signal handling and for 32-bit, I guess it may be fi=
-xed by this patch
-> >=20
-> > https://www.mail-archive.com/qemu-devel@nongnu.org/msg981238.html
-> >=20
-> > And this patch has been merged into master branch yesterday.
->=20
-> I picked this one up for stable yesterday, scheduled to be released
-> on Sep-21.
+I don't think such sharing is possible because the resources are 
+identified by IDs that are local to the device. That also complicates 
+migration.
 
-Oh great, thanks! I'll test this and report back.
-=2Da
-
->=20
-> Thanks,
->=20
-> /mjt
->=20
->=20
->=20
-
-
-=2D-=20
-Andreas K. H=FCttel
-dilfridge@gentoo.org
-Gentoo Linux developer
-(council, toolchain, base-system, perl, libreoffice)
---nextPart14810793.O9o76ZdvQC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQKTBAABCgB9FiEE/Rnm0xsZLuTcY+rT3CsWIV7VQSoFAmUBkA1fFIAAAAAALgAo
-aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEZE
-MTlFNkQzMUIxOTJFRTREQzYzRUFEM0RDMkIxNjIxNUVENTQxMkEACgkQ3CsWIV7V
-QSqCWg/8CAbGJTmRcNYO4RKEhqyMMP2iHe3qnWCUPp30v/dmrL/fA8MCrNy7gleK
-tb0kmqu5dy/V2R7FCrBCV69XnR7OdGDaf32JBUNpmc6/at0KTrFg+f0o8kjPGR/i
-dTyyL/bnnzIzC1iiWNLbLGxKKZgBhYCag+Nw3rULpVCo85ilFepjuGeIU9r4xbKy
-fzPyHcvOaStW5Z8Inz4MgrfuY9EHR+rEcFYVDj8VUtXDdQLFHj2a9XAVrJsTb+Yy
-RncSkmgpY2vxHnd9zB40EORgnmWLjVoML6Mq248sIJKEW6vgUEAyQiHeG6AJga0j
-HSyXC6sgfVS8GUVDKkLrIWOSQyilZBnmg0E5/GEFbpCVU1wtwCSMlR/3yUrUDDl0
-MWGsE4LJ7W+/a5LQXiMsbVXI0Z367z4r/jx0V2LGEMnS+dMY+VZxXG9YJCu9OtSE
-luSJVdGAkUE++fzusYdWzypvq9ANdyBnl4pK9R7Yx8t7X1oR4stTqK3KSHPGBvba
-71NhoPJoaLVOBvDC4fwgtBODLylmVq8YQam9H6yLiJta1Fk9wGohEA/9xMu3JN/N
-hllJVQtiWGwlEgYGBrkx4gzA4dyarZSekrdGunPCTDMBQGL77vMvXIKuwxAUexjF
-2H0E1KrA69TLZ1cOJkl/amUybo60SXgQrIZISCE67zwjFI4zfrk=
-=EsgL
------END PGP SIGNATURE-----
-
---nextPart14810793.O9o76ZdvQC--
-
-
-
+Regards,
+Akihiko Odaki
 
