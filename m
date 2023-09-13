@@ -2,53 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C6979E5A9
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 13:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7427079E5AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 13:03:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgNeB-0008JT-UL; Wed, 13 Sep 2023 07:03:03 -0400
+	id 1qgNeh-0000j4-Uf; Wed, 13 Sep 2023 07:03:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgNe8-0008FK-Ri
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:03:00 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qgNeJ-0000Y5-5e
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:03:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgNe4-0002Ax-Lk
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:03:00 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlyG36XcVz6K6C6;
- Wed, 13 Sep 2023 19:02:19 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 13 Sep
- 2023 12:02:52 +0100
-Date: Wed, 13 Sep 2023 12:02:57 +0100
-To: Dmitry Frolov <frolov@swemel.ru>, Michael Tsirkin <mst@redhat.com>
-CC: <fan.ni@samsung.com>, <qemu-devel@nongnu.org>, <sdl.qemu@linuxtesting.org>
-Subject: Re: [PATCH] hw/cxl: Fix out of bound array access
-Message-ID: <20230913120257.00004d2e@Huawei.com>
-In-Reply-To: <20230913101055.754709-1-frolov@swemel.ru>
-References: <20230913101055.754709-1-frolov@swemel.ru>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qgNeD-0002CP-Bh
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:03:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694602984;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Z5gcQNTNLHmmy+uQMPBp920TBQ4Kf4a5M3vofMatqLM=;
+ b=gKutuS8rALVGvc6FA0Tq/LFrH3abdN0R60qyLjcJh3AqWIj4YL3zQmcgqoXJhVopGI1FAz
+ QCdfDTp2pqdOKdR08h9DM3rqQp2g/rrAKkBFYVmbC5raPS4wB4iZp+AhzhlKRqObiBLSm+
+ I7QzRZ80In2cZdwuJmrQ3bW//FZ6IJQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-643-qEVuJrf3MXCz9DXZNQLXUQ-1; Wed, 13 Sep 2023 07:03:01 -0400
+X-MC-Unique: qEVuJrf3MXCz9DXZNQLXUQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 14BD6805B32;
+ Wed, 13 Sep 2023 11:03:01 +0000 (UTC)
+Received: from [10.39.194.255] (unknown [10.39.194.255])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A5632200A4B6;
+ Wed, 13 Sep 2023 11:02:59 +0000 (UTC)
+Message-ID: <611b3a2e-449a-dec3-84f4-ac344db07fad@redhat.com>
+Date: Wed, 13 Sep 2023 13:02:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Subject: Re: [PATCH v2] hw/i386/pc: fix code comment on cumulative flash size
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-trivial@nongnu.org
+References: <20230912155553.82514-1-lersek@redhat.com>
+ <47336aed-d6e9-a844-d7ee-1f8944cbb882@linaro.org>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <47336aed-d6e9-a844-d7ee-1f8944cbb882@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,63 +81,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 13 Sep 2023 13:10:56 +0300
-Dmitry Frolov <frolov@swemel.ru> wrote:
-
-> According to cxl_interleave_ways_enc(),
-> fw->num_targets is allowed to be up to 16.
-> This also corresponds to CXL specs.
-> So, the fw->target_hbs[] array is iterated from 0 to 15.
-> But it is staticaly declared of length 8.
-> Thus, out of bound array access may occur.
+On 9/12/23 18:40, Philippe Mathieu-Daudé wrote:
+> On 12/9/23 17:55, Laszlo Ersek wrote:
+>> - The comment is incorrectly indented / formatted.
+>>
+>> - The comment states a 8MB limit, even though the code enforces a 16MB
+>>    limit.
+>>
+>> Both of these warts come from commit 0657c657eb37 ("hw/i386/pc: add max
+>> combined fw size as machine configuration option", 2020-12-09); clean
+>> them
+>> up.
+>>
+>> Arguably, it's also better to be consistent with the binary units
+>> (such as
+>> "MiB") that QEMU uses nowadays.
+>>
+>> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:PC)
+>> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com> (supporter:PC)
+>> Cc: Paolo Bonzini <pbonzini@redhat.com> (maintainer:X86 TCG CPUs)
+>> Cc: Richard Henderson <richard.henderson@linaro.org> (maintainer:X86
+>> TCG CPUs)
+>> Cc: Eduardo Habkost <eduardo@habkost.net> (maintainer:X86 TCG CPUs)
+>> Cc: qemu-trivial@nongnu.org
+>> Fixes: 0657c657eb37
+>> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+>> ---
+>>
+>> Notes:
+>>      v2:
+>>           - use the binary units MiB, KiB, GiB comprehensively in the
+>> comment
 > 
-> Fixes: c28db9e000 ("hw/pci-bridge: Make PCIe and CXL PXB Devices inherit from TYPE_PXB_DEV")
+> I was going to suggest that ;)
 > 
-> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Hi Dmitry,
+And when I was writing the patch, I was 100% sure that you were going to
+be my first reviewer. :)
 
-Good spot - though I'm curious on whether you hit this in a 16 way interleave test and
-hence care about this case?  My tests tend to burn the available ways in the topology
-rather than doing a flat 16 way host interleave (which would be a crazy physical system
-- I want one of those :)
+Thanks!
+Laszlo
 
-This looks to be a missed update when we expanded the decoded number of interleave ways.
-I think (looking at published ECNs) that occurred in a CXL r2.0 ECN dated Oct 2021.
-The CFWMS table was introduced as an ECN published in May 2021.  I'll note the r3.0
-spec is confusing because CFMWS refers to the HDM decoder spec that says the values
-beyond 1,2,4,8 are for endpoints only and this isn't one.  Examples make it clear
-that rule doesn't apply though.
-
-I suspect this bug was introduced whilst the code was still out of tree so hard to point at
-when.
-
-Anyhow, I'll queue this one or Michael can pick it up directly if he'd prefer.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
-> ---
->  include/hw/cxl/cxl.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
-> index 56c9e7676e..4944725849 100644
-> --- a/include/hw/cxl/cxl.h
-> +++ b/include/hw/cxl/cxl.h
-> @@ -29,7 +29,7 @@ typedef struct PXBCXLDev PXBCXLDev;
->  typedef struct CXLFixedWindow {
->      uint64_t size;
->      char **targets;
-> -    PXBCXLDev *target_hbs[8];
-> +    PXBCXLDev *target_hbs[16];
->      uint8_t num_targets;
->      uint8_t enc_int_ways;
->      uint8_t enc_int_gran;
+>>
+>>   hw/i386/pc.c | 12 ++++++------
+>>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
 
 
