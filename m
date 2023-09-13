@@ -2,53 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7903979F15C
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 20:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B59C79F1B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 21:08:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgUsM-0001Yp-6T; Wed, 13 Sep 2023 14:46:10 -0400
+	id 1qgVCT-000071-Pl; Wed, 13 Sep 2023 15:06:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qgUs8-0001WX-I8
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 14:46:06 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qgUs5-0002Rx-NS
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 14:45:56 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3FF66E0005;
- Wed, 13 Sep 2023 18:45:46 +0000 (UTC)
-Message-ID: <c406b8fb-a2f1-8eb2-abc5-af2474edf940@ovn.org>
-Date: Wed, 13 Sep 2023 20:46:42 +0200
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qgVCR-00006d-Bo
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 15:06:55 -0400
+Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qgVCO-0007br-P2
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 15:06:55 -0400
+Received: by mail-oi1-x22f.google.com with SMTP id
+ 5614622812f47-3ab244e7113so70052b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 12:06:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694632011; x=1695236811; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=e7eil43de4H6tS8C7n4z8OeAGLpjZydzRmA57AVHxDw=;
+ b=T0Y1hc8ILj6RvixS5fhK8jG4qS8f2C9RA0JNF7HdH7siYN3XPM+DVpFwhOZPfm7bEp
+ OV4T8NKv/Me4TLuo3IPu/Og86GtauXweiPE44sjzhuRnGIp4QfiHIZ9/aWaM8eiEI321
+ ou4vrqm/P92pAlHPuLA1eg1fNFiTLACwaUHzoHldIo6MbzatdPdazSJLqNQDOCf8J6V3
+ LliNxJtM4c2octsOSovwvS4E/77ol5xNT2Tgx7quxXJjCZR8AR6mC/l39EI0777iZ342
+ wlJPKCMnS0YOZLDafas+xElWDAvb+uT5fZayqoTtf+CUAEwZDrE1e4Q1VF0td5Vsw3P7
+ bgpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694632011; x=1695236811;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=e7eil43de4H6tS8C7n4z8OeAGLpjZydzRmA57AVHxDw=;
+ b=R5LSRdjdHzIN3ALPeZnUSZPmE1Ni3tzLycuBbH/vNJp2Z7Q2n1lP2syhPfEuCbnXi+
+ b2jqX3gb1RuBx8uEAupMcXEB2XykNDjyOSGcDxJ/aLyhG/TQ3c6smxxKHg3bJn0au1vA
+ QQ6J8fepENjYdGiFwQ2jnbmZmhayB8WKrDHzMTo/FndIHuWSVLAjXwyc9t6wwVMB2IPA
+ 5cgZwqxungN7Sa/QqNoQJs16zNF3bGIBPytC3806RmixPydq84YYznwITW2l2vNAMYPx
+ JfznHLicAnQE65WbbzkohLPDCORbUi56V/tJUPkN6v7N51LEEaKvp7+hXUrl9av3z2/g
+ uxyw==
+X-Gm-Message-State: AOJu0Yw5WtxcS45ZAFGPJp1sk+ykEtdbPvHJ/va+eOqi6dbqBAG/MUkb
+ p9OyKOA11pyTiTERL5xcddH4icGQWDrEVmwY0Uo=
+X-Google-Smtp-Source: AGHT+IHQL972O65gIu8WxFWRBu73Wtzzj+zSWRO81YA2K1OeVaqLmhIgu4TIG1CXtqj9jB4O7y1TrwkUt8OXEiaDHU0=
+X-Received: by 2002:a05:6870:179d:b0:1bf:87af:e6df with SMTP id
+ r29-20020a056870179d00b001bf87afe6dfmr3801602oae.55.1694632011289; Wed, 13
+ Sep 2023 12:06:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: i.maximets@ovn.org, Stefan Hajnoczi <stefanha@gmail.com>,
- qemu-devel@nongnu.org
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-References: <20230908064507.14596-1-jasowang@redhat.com>
- <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
- <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org> <ZPsKUDp7nVS/Z+j2@redhat.com>
- <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org> <ZPsQcu0HYBaTScnb@redhat.com>
- <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org> <ZPsscpzj9fNtCEOY@redhat.com>
-From: Ilya Maximets <i.maximets@ovn.org>
-Subject: Re: [PULL 00/17] Net patches
-In-Reply-To: <ZPsscpzj9fNtCEOY@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: i.maximets@ovn.org
-Received-SPF: pass client-ip=217.70.183.196; envelope-from=i.maximets@ovn.org;
- helo=relay4-d.mail.gandi.net
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <CAJSP0QXv4Kds=Yqt+hyX4ngOYLfU=nyKASSyMr0OP6_+Mw=sqA@mail.gmail.com>
+In-Reply-To: <CAJSP0QXv4Kds=Yqt+hyX4ngOYLfU=nyKASSyMr0OP6_+Mw=sqA@mail.gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 13 Sep 2023 15:06:39 -0400
+Message-ID: <CAJSP0QWPNU-WyW6v45zgwO=2U97F_ex7Ctk17F-oWDpXSJmFiA@mail.gmail.com>
+Subject: Re: Assertion `dpy_ui_info_supported(con)' failed
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
+ envelope-from=stefanha@gmail.com; helo=mail-oi1-x22f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,88 +84,241 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/8/23 16:15, Daniel P. Berrangé wrote:
-> On Fri, Sep 08, 2023 at 04:06:35PM +0200, Ilya Maximets wrote:
->> On 9/8/23 14:15, Daniel P. Berrangé wrote:
->>> On Fri, Sep 08, 2023 at 02:00:47PM +0200, Ilya Maximets wrote:
->>>> On 9/8/23 13:49, Daniel P. Berrangé wrote:
->>>>> On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
->>>>>> On 9/8/23 13:19, Stefan Hajnoczi wrote:
->>>>>>> Hi Ilya and Jason,
->>>>>>> There is a CI failure related to a missing Debian libxdp-dev package:
->>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
->>>>>>>
->>>>>>> I think the issue is that the debian-amd64 container image that QEMU
->>>>>>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
->>>>>>> and libxdp is not available on that release:
->>>>>>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
->>>>>>
->>>>>> Hmm.  Sorry about that.
->>>>>>
->>>>>>>
->>>>>>> If we need to support Debian 11 CI then either XDP could be disabled
->>>>>>> for that distro or libxdp could be compiled from source.
->>>>>>
->>>>>> I'd suggest we just remove the attempt to install the package for now,
->>>>>> building libxdp from sources may be a little painful to maintain.
->>>>>>
->>>>>> Can be re-added later once distributions with libxdp 1.4+ will be more
->>>>>> widely available, i.e. when fedora dockerfile will be updated to 39,
->>>>>> for example.  That should be soon-ish, right?
->>>>>
->>>>> If you follow the process in docs/devel/testing.rst for adding
->>>>> libxdp in libvirt-ci, then lcitool will "do the right thing"
->>>>> when we move the auto-generated dockerfiles to new distro versions.
->>>>
->>>> Thanks!  I'll prepare changes for libvirt-ci.
->>>>
->>>> In the meantime, none of the currently tested images will have a required
->>>> version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
->>>> modification from the patch.  What do you think?
->>>
->>> Sure, if none of the distros have it, then lcitool won't emit the
->>> dockerfile changes until we update the inherited distro version.
->>> So it is sufficient to just update libvirt-ci.git with the mappings.yml
->>> info for libxdp, and add 'libxdp' to the tests/lcitool/projects/qemu.yml
->>> file in qemu.git. It will then 'just work' when someone updates the
->>> distro versions later.
->>
->> I posted an MR for libvirt-ci adding libxdp:
->>   https://gitlab.com/libvirt/libvirt-ci/-/merge_requests/429
->>
->> Please, take a look.
->>
->> The docs say that CI will try to build containers with the MR changes,
->> but I don't think anything except sanity checks is actually tested on MR.
->> Sorry if I missed something, never used GitLab pipelines before.
-> 
-> No, that's our fault - we've broken the CI and your change alerted
-> me to that fact :-)
-> 
->> Note that with this update we will be installing older version of libxdp
->> in many containers, even though they will not be used by QEMU, unless
->> they are newer than 1.4.0.
-> 
-> No problem, as it means QEMU CI will demonstrate the the meson.build
-> change is ignoring the outdatd libxdp.
-> 
->> tests/lcitool/projects/qemu.yml in qemu.git cannot be updated without
->> updating a submodule after the MR merge.
-> 
-> Yep.
+Oops, I forgot to CC qemu-devel.
 
-Since all the required changes went into libvirt-ci project, I posted an
-updated patch set named:
-
-  '[PATCH v4 0/2] net: add initial support for AF_XDP network backend'
-
-Please, take a look.
-
-This should fix the CI issues, though I'm not sure how to run QEMU gitlab
-pipelines myself, so I didn't actually test all the images.
-
-Sent as a patch set because the libvirt-ci submodule bump brings in a few
-unrelated changes.  So, I split that into a separate patch.
-
-Best regards, Ilya Maximets.
+On Wed, 13 Sept 2023 at 15:06, Stefan Hajnoczi <stefanha@gmail.com> wrote:
+>
+> I can't start a qemu.git build with a GTK UI but -display vnc=:0 works:
+>
+> $ ./configure --target-list=x86_64-softmmu
+> $ build/qemu-system-x86_64
+> qemu-system-x86_64: ../ui/console.c:818: dpy_get_ui_info: Assertion
+> `dpy_ui_info_supported(con)' failed.
+>
+> Here is the configure output:
+>   Build environment
+>     Build directory                              : /home/stefanha/qemu/build
+>     Source path                                  : /home/stefanha/qemu
+>     Download dependencies                        : YES
+>
+>   Directories
+>     Build directory                              : /home/stefanha/qemu/build
+>     Source path                                  : /home/stefanha/qemu
+>     Download dependencies                        : YES
+>     Install prefix                               : /usr/local
+>     BIOS directory                               : share/qemu
+>     firmware path                                : share/qemu-firmware
+>     binary directory                             : /usr/local/bin
+>     library directory                            : /usr/local/lib64
+>     module directory                             : lib64/qemu
+>     libexec directory                            : /usr/local/libexec
+>     include directory                            : /usr/local/include
+>     config directory                             : /usr/local/etc
+>     local state directory                        : /var/local
+>     Manual directory                             : /usr/local/share/man
+>     Doc directory                                : /usr/local/share/doc
+>
+>   Host binaries
+>     python                                       :
+> /home/stefanha/qemu/build/pyvenv/bin/python3 (version: 3.11)
+>     sphinx-build                                 :
+> /home/stefanha/qemu/build/pyvenv/bin/sphinx-build
+>     gdb                                          : /usr/bin/gdb
+>     iasl                                         : NO
+>     genisoimage                                  : /usr/bin/genisoimage
+>     smbd                                         : /usr/sbin/smbd
+>
+>   Configurable features
+>     Documentation                                : YES
+>     system-mode emulation                        : YES
+>     user-mode emulation                          : NO
+>     block layer                                  : YES
+>     Install blobs                                : YES
+>     module support                               : NO
+>     fuzzing support                              : NO
+>     Audio drivers                                : pa oss
+>     Trace backends                               : log
+>     D-Bus display                                : YES
+>     QOM debugging                                : YES
+>     vhost-kernel support                         : YES
+>     vhost-net support                            : YES
+>     vhost-user support                           : YES
+>     vhost-user-crypto support                    : YES
+>     vhost-user-blk server support                : YES
+>     vhost-vdpa support                           : YES
+>     build guest agent                            : YES
+>
+>   Compilation
+>     host CPU                                     : x86_64
+>     host endianness                              : little
+>     C compiler                                   : cc -m64 -mcx16
+>     Host C compiler                              : cc -m64 -mcx16
+>     C++ compiler                                 : NO
+>     CFLAGS                                       : -g -O2
+>     QEMU_CFLAGS                                  : -D_GNU_SOURCE
+> -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
+> -fno-common -fwrapv -fstack-protector-strong -U_FORTIFY_SOURCE
+> -D_FORTIFY_SOURCE=2
+>     QEMU_LDFLAGS                                 :
+> -fstack-protector-strong -Wl,-z,relro -Wl,-z,now -Wl,--warn-common
+>     link-time optimization (LTO)                 : NO
+>     PIE                                          : YES
+>     static build                                 : NO
+>     malloc trim support                          : YES
+>     membarrier                                   : NO
+>     debug graph lock                             : NO
+>     debug stack usage                            : NO
+>     mutex debugging                              : NO
+>     memory allocator                             : system
+>     avx2 optimization                            : YES
+>     avx512bw optimization                        : YES
+>     avx512f optimization                         : NO
+>     gprof                                        : NO
+>     gcov                                         : NO
+>     thread sanitizer                             : NO
+>     CFI support                                  : NO
+>     strip binaries                               : NO
+>     sparse                                       : NO
+>     mingw32 support                              : NO
+>
+>   Cross compilers
+>     x86_64                                       : cc
+>
+>   Targets and accelerators
+>     KVM support                                  : YES
+>     HVF support                                  : NO
+>     WHPX support                                 : NO
+>     NVMM support                                 : NO
+>     Xen support                                  : NO
+>     Xen emulation                                : YES
+>     TCG support                                  : YES
+>     TCG backend                                  : native (x86_64)
+>     TCG plugins                                  : YES
+>     TCG debug enabled                            : NO
+>     target list                                  : x86_64-softmmu
+>     default devices                              : YES
+>     out of process emulation                     : YES
+>     vfio-user server                             : NO
+>
+>   Block layer support
+>     coroutine backend                            : ucontext
+>     coroutine pool                               : YES
+>     Block whitelist (rw)                         :
+>     Block whitelist (ro)                         :
+>     Use block whitelist in tools                 : NO
+>     VirtFS (9P) support                          : YES
+>     VirtFS (9P) Proxy Helper support (deprecated): YES
+>     Live block migration                         : YES
+>     replication support                          : YES
+>     bochs support                                : YES
+>     cloop support                                : YES
+>     dmg support                                  : YES
+>     qcow v1 support                              : YES
+>     vdi support                                  : YES
+>     vhdx support                                 : YES
+>     vmdk support                                 : YES
+>     vpc support                                  : YES
+>     vvfat support                                : YES
+>     qed support                                  : YES
+>     parallels support                            : YES
+>     FUSE exports                                 : YES 3.14.1
+>     VDUSE block exports                          : YES
+>
+>   Crypto
+>     TLS priority                                 : NORMAL
+>     GNUTLS support                               : YES 3.8.1
+>       GNUTLS crypto                              : YES
+>     libgcrypt                                    : NO
+>     nettle                                       : NO
+>     AF_ALG support                               : NO
+>     rng-none                                     : NO
+>     Linux keyring                                : YES
+>
+>   User interface
+>     SDL support                                  : YES 2.26.3
+>     SDL image support                            : YES 2.6.3
+>     GTK support                                  : YES
+>     pixman                                       : YES 0.42.2
+>     VTE support                                  : YES 0.72.2
+>     PNG support                                  : YES 1.6.37
+>     VNC support                                  : YES
+>     VNC SASL support                             : YES
+>     VNC JPEG support                             : YES 2.1.4
+>     spice protocol support                       : YES 0.14.4
+>       spice server support                       : YES 0.15.1
+>     curses support                               : YES
+>     brlapi support                               : YES
+>
+>   Audio backends
+>     OSS support                                  : YES
+>     sndio support                                : NO
+>     ALSA support                                 : YES 1.2.10
+>     PulseAudio support                           : YES 16.1
+>     PipeWire support                             : YES 0.3.79
+>     JACK support                                 : YES 1.9.17
+>
+>   Network backends
+>     slirp support                                : YES 4.7.0
+>     vde support                                  : NO
+>     netmap support                               : NO
+>     l2tpv3 support                               : YES
+>
+>   Dependencies
+>     libtasn1                                     : YES 4.19.0
+>     PAM                                          : YES
+>     iconv support                                : YES
+>     virgl support                                : YES 0.10.4
+>     blkio support                                : YES 1.2.2
+>     curl support                                 : YES 8.0.1
+>     Multipath support                            : YES
+>     Linux AIO support                            : YES
+>     Linux io_uring support                       : YES 2.4
+>     ATTR/XATTR support                           : YES
+>     RDMA support                                 : NO
+>     PVRDMA support                               : NO
+>     fdt support                                  : system
+>     libcap-ng support                            : YES
+>     bpf support                                  : YES 1.1.0
+>     rbd support                                  : NO
+>     smartcard support                            : YES 2.8.1
+>     U2F support                                  : NO
+>     libusb                                       : YES 1.0.26
+>     usb net redir                                : YES 0.13.0
+>     OpenGL support (epoxy)                       : YES 1.5.10
+>     GBM                                          : YES 23.1.6
+>     libiscsi support                             : YES 1.19.0
+>     libnfs support                               : YES 4.0.0
+>     seccomp support                              : YES 2.5.3
+>     GlusterFS support                            : YES 7.11.0
+>     TPM support                                  : YES
+>     libssh support                               : YES 0.10.5
+>     lzo support                                  : YES
+>     snappy support                               : YES
+>     bzip2 support                                : YES
+>     lzfse support                                : NO
+>     zstd support                                 : YES 1.5.5
+>     NUMA host support                            : NO
+>     capstone                                     : YES 4.0.2
+>     libpmem support                              : NO
+>     libdaxctl support                            : YES 78
+>     libudev                                      : YES 253
+>     FUSE lseek                                   : YES
+>     selinux                                      : YES 3.5
+>     libdw                                        : YES 0.189
+>
+>   Subprojects
+>     berkeley-softfloat-3                         : YES
+>     berkeley-testfloat-3                         : YES
+>     keycodemapdb                                 : YES
+>     libvduse                                     : YES
+>     libvhost-user                                : YES
+>
+>   User defined options
+>     Native files                                 : config-meson.cross
+>     prefix                                       : /usr/local
+>     werror                                       : true
+>     docs                                         : enabled
+>     plugins                                      : true
+>
+> Stefan
 
