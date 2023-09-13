@@ -2,40 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9018479E90B
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0130C79E917
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:22:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPlP-0007RD-MJ; Wed, 13 Sep 2023 09:18:39 -0400
+	id 1qgPlh-0007b4-JL; Wed, 13 Sep 2023 09:18:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPlM-0007PS-Of; Wed, 13 Sep 2023 09:18:36 -0400
+ id 1qgPlf-0007ah-Gu; Wed, 13 Sep 2023 09:18:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPlI-0003EA-6z; Wed, 13 Sep 2023 09:18:35 -0400
+ id 1qgPld-0003ET-1T; Wed, 13 Sep 2023 09:18:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D857121765;
- Wed, 13 Sep 2023 16:18:08 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0B91F21766;
+ Wed, 13 Sep 2023 16:18:09 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D1E1927C88;
- Wed, 13 Sep 2023 16:18:02 +0300 (MSK)
-Received: (nullmailer pid 4073298 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0B95E27C89;
+ Wed, 13 Sep 2023 16:18:03 +0300 (MSK)
+Received: (nullmailer pid 4073301 invoked by uid 1000);
  Wed, 13 Sep 2023 13:18:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- Song Gao <gaosong@loongson.cn>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 11/66] loongarch: mark loongarch_ipi_iocsr re-entrnacy
- safe
-Date: Wed, 13 Sep 2023 16:17:35 +0300
-Message-Id: <20230913131757.4073200-11-mjt@tls.msk.ru>
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 12/66] pnv_lpc: disable reentrancy detection for lpc-hc
+Date: Wed, 13 Sep 2023 16:17:36 +0300
+Message-Id: <20230913131757.4073200-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,32 +65,38 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Bulekov <alxndr@bu.edu>
 
-loongarch_ipi_iocsr MRs rely on re-entrant IO through the ipi_send
-function. As such, mark these MRs re-entrancy-safe.
+As lpc-hc is designed for re-entrant calls from xscom, mark it
+re-entrancy safe.
 
-Fixes: a2e1753b80 ("memory: prevent dma-reentracy issues")
+Reported-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-Reviewed-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20230506112145.3563708-1-alxndr@bu.edu>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-(cherry picked from commit 6d0589e0e6c64b888864a2bf980537be20389264)
+[clg: mark opb_master_regs as re-entrancy safe also ]
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20230526073850.2772197-1-clg@kaod.org>
+Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+(cherry picked from commit 76f9ebffcd41b62ae9ec26a1c25676f2ae1d9cc3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/intc/loongarch_ipi.c b/hw/intc/loongarch_ipi.c
-index aa4bf9eb74..40e98af2ce 100644
---- a/hw/intc/loongarch_ipi.c
-+++ b/hw/intc/loongarch_ipi.c
-@@ -215,6 +215,10 @@ static void loongarch_ipi_init(Object *obj)
-     for (cpu = 0; cpu < MAX_IPI_CORE_NUM; cpu++) {
-         memory_region_init_io(&s->ipi_iocsr_mem[cpu], obj, &loongarch_ipi_ops,
-                             &lams->ipi_core[cpu], "loongarch_ipi_iocsr", 0x48);
-+
-+        /* loongarch_ipi_iocsr performs re-entrant IO through ipi_send */
-+        s->ipi_iocsr_mem[cpu].disable_reentrancy_guard = true;
-+
-         sysbus_init_mmio(sbd, &s->ipi_iocsr_mem[cpu]);
+diff --git a/hw/ppc/pnv_lpc.c b/hw/ppc/pnv_lpc.c
+index 01f44c19eb..605d390861 100644
+--- a/hw/ppc/pnv_lpc.c
++++ b/hw/ppc/pnv_lpc.c
+@@ -734,10 +734,13 @@ static void pnv_lpc_realize(DeviceState *dev, Error **errp)
+     /* Create MMIO regions for LPC HC and OPB registers */
+     memory_region_init_io(&lpc->opb_master_regs, OBJECT(dev), &opb_master_ops,
+                           lpc, "lpc-opb-master", LPC_OPB_REGS_OPB_SIZE);
++    lpc->opb_master_regs.disable_reentrancy_guard = true;
+     memory_region_add_subregion(&lpc->opb_mr, LPC_OPB_REGS_OPB_ADDR,
+                                 &lpc->opb_master_regs);
+     memory_region_init_io(&lpc->lpc_hc_regs, OBJECT(dev), &lpc_hc_ops, lpc,
+                           "lpc-hc", LPC_HC_REGS_OPB_SIZE);
++    /* xscom writes to lpc-hc. As such mark lpc-hc re-entrancy safe */
++    lpc->lpc_hc_regs.disable_reentrancy_guard = true;
+     memory_region_add_subregion(&lpc->opb_mr, LPC_HC_REGS_OPB_ADDR,
+                                 &lpc->lpc_hc_regs);
  
-         memory_region_init_io(&s->ipi64_iocsr_mem[cpu], obj, &loongarch_ipi64_ops,
 -- 
 2.39.2
 
