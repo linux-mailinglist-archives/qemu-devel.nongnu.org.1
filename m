@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E256479F4E2
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 00:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CED79F4FE
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 00:31:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgYHN-0007j4-A7; Wed, 13 Sep 2023 18:24:13 -0400
+	id 1qgYMx-0000mu-N9; Wed, 13 Sep 2023 18:29:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgYHK-0007iC-Gr
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 18:24:10 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qgYMv-0000mH-G5
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 18:29:57 -0400
+Received: from mail-ot1-x330.google.com ([2607:f8b0:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgYHI-0000S3-Cb
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 18:24:10 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bf55a81eeaso2367765ad.0
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 15:24:07 -0700 (PDT)
+ id 1qgYMu-0002Er-0n
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 18:29:57 -0400
+Received: by mail-ot1-x330.google.com with SMTP id
+ 46e09a7af769-6bf298ef1f5so190067a34.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 15:29:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694643846; x=1695248646; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694644193; x=1695248993; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5luaKmPsVcUi2NnpV0mmnLlASFEM7TrHnpLk+frE6bw=;
- b=RGqfxB2Btnz7MRYujSOeAV2x2H/eUnU9ulOZq3ZYzSGfUpdxN6ko/izlNocbaCy8ZX
- dwE/eYRJ5VpYc6PSxjuopbZPCIRhNSxVQNRD1zcIfqD+r0LANxOAGg5paK+D0pOB6Uoy
- OBtXB9q0p+EvhO1aNf8SONKk84PrurtzE6ZtRRHCqlweayQeYjISXS4AaQdKy7d5UdV/
- noilW7MMJDOzUqr3grKJQq4KxuC9SiCdIXGGkhYmJeXcV2X8W072yianyvVFdp/LFWrn
- jn/DpU2CcKhqVtvxeTTnF3QMPkbkMnYyFOFJpMV7HTYzbpbEUQPo7p2B382wSZeBGsgX
- qYLw==
+ bh=UNiQCcYAvGYiUraFs3oTVIVfioDO0n0A3ZUNU4TWH0Y=;
+ b=qdJaH3D7zbve3Rkef8QlmCr2iN5YWAjw2wDiqfqcPrnFHduPCveFe5mDv6GlQVj9jo
+ HpTLuFm6MRX1hGLxZjk6AVhhv4YihnuLcl4bhXscQCOO/ykSKEGVFgSvb0mOq+jyOqYn
+ F6ddguNT5i+VHYGGNCY/Yk7EG4uFn4lGLU82Q8A63MrPPgliAM3cqJ84MVMSaMo9JJ0v
+ Kztg95RpwHRMzdRH+HRykIJCylS47YhE2OhNZ5OAiHjcLjCq+y5/LlT9G145BQpnHcjv
+ itiqJV/IIcldDqkv7Dg8BjHs8xAA8rcIb15nXdONad/6znLJTrwdbMdd9YN97NXbcW51
+ jAqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694643846; x=1695248646;
+ d=1e100.net; s=20230601; t=1694644193; x=1695248993;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5luaKmPsVcUi2NnpV0mmnLlASFEM7TrHnpLk+frE6bw=;
- b=XlmbByU5QwXBa46XWDiSlujOMp/8mTq8ffPK+1mKmPYJjHCradQ0lIOfZ24OIELbhz
- zEmKITc1DnvSncKYtdC7J/VZ3h3E+SndzlKcpdFPQuo+9+CKdV1+MhKjV5f2djCbyohK
- dQ4KYBH/paCMQEPPc36OMUosBo0GWEj+ye9HUsTcY+mknKHAx3+fxiEoSDns2fBGVD5A
- SSrU9Bb+yFjMBSAxt3yRXfv8oIWmTrvwi6at9U99B2Ev6j1mgOGetUmtLFedoscz9Y2e
- zQ6wqeHszh5oFuu8Ujltrf4N2CCDG3xdDnE2ABg2cNsyxgmqS5Rn6xJrLsIYZlV+GtyU
- pK+A==
-X-Gm-Message-State: AOJu0YwODaseVhvD6Jvl3UWkwqu4T9BN4NN+l/ipQVxvbYpTBp33hhnG
- Kxt9H/C8nYmj2cQ4VRtz5GCY3Q==
-X-Google-Smtp-Source: AGHT+IHKD0hDyWOCPXScmg7+el5GfCMXOZRUynXiWrGRjrFxNlG1FrIAi92mur5/aGLxBYFXemcM5g==
-X-Received: by 2002:a17:903:2351:b0:1c0:ee60:470a with SMTP id
- c17-20020a170903235100b001c0ee60470amr5171961plh.66.1694643846442; 
- Wed, 13 Sep 2023 15:24:06 -0700 (PDT)
+ bh=UNiQCcYAvGYiUraFs3oTVIVfioDO0n0A3ZUNU4TWH0Y=;
+ b=S0ZTCdD01KIf/np4ON4Qx89LxzJIXW0obZDGLu/E2llaotVt8cjwluFCu/xqYoiUxM
+ q4YC3+k5zxe/82n9iGv+2s9v3eMDruFY4c3m/W3LgW+ZjVFGL0Uh8BnPtkXZhHqH6NS2
+ GwFOS4oh9VikaXyIP7mIWQonpOxWu4tFQjPUrJghj1oc8RSIbp9F8QQmXtDo8AmYEXmS
+ m3GopvhbkHoLzQM14xfzr7tzVnXaV70ia5Cw+cpoTyUuhls76let92uw3LlDv20yijLW
+ bJy+ow8AypSM+G6ogWyuOY0JnGDyDHipVdXOcrMMb5nDWryOyup9W4dUugy2/JvolYCW
+ +RgQ==
+X-Gm-Message-State: AOJu0YzqS/LLtSw89orrhDYiPuMUOSYif8v7uiFb69bE5Ni+iH91pIcV
+ O6EOY4zBv64l8gJtf/7DPxWzdg==
+X-Google-Smtp-Source: AGHT+IE0FXGFmj0lPO/Bsq3YaGOKU8qAUpxbjJCvp8YfXJUvrkJxTfd+H7pbrFxgJDHUIbPQd6WQ0w==
+X-Received: by 2002:a05:6830:1e89:b0:6b8:82ed:ea2e with SMTP id
+ n9-20020a0568301e8900b006b882edea2emr4332013otr.4.1694644193515; 
+ Wed, 13 Sep 2023 15:29:53 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- iw12-20020a170903044c00b001c32fd9e412sm122651plb.58.2023.09.13.15.24.05
+ w16-20020aa78590000000b0068fece22469sm68391pfn.4.2023.09.13.15.29.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 15:24:05 -0700 (PDT)
-Message-ID: <f6a452cb-4eb3-95b2-cdf1-6ed9e9502693@linaro.org>
-Date: Wed, 13 Sep 2023 15:24:03 -0700
+ Wed, 13 Sep 2023 15:29:52 -0700 (PDT)
+Message-ID: <a4773f18-f5c5-166a-ae06-5b14c1010964@linaro.org>
+Date: Wed, 13 Sep 2023 15:29:51 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH v3 17/23] bsd-user: Implement mincore(2)
+Subject: Re: [RFC PATCH 0/3] target/ppc: Change CR registers from i32 to tl
 Content-Language: en-US
-To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
-Cc: imp@bsdimp.com
-References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
- <20230909193704.1827-18-kariem.taha2.7@gmail.com>
- <d019b498-d0ef-e006-a0c3-a2dfa29a5d35@linaro.org> <874jjx91fi.fsf@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ qemu-devel@nongnu.org
+References: <20230913005814.413113-1-npiggin@gmail.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <874jjx91fi.fsf@gmail.com>
+In-Reply-To: <20230913005814.413113-1-npiggin@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::330;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x330.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,60 +97,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/13/23 15:02, Karim Taha wrote:
-> Richard Henderson <richard.henderson@linaro.org> wrote:
+On 9/12/23 17:58, Nicholas Piggin wrote:
+> This is a bit of churn so I might leave it for later in the cycle (or
+> defer if we get a lot of other changes) since it's a relatively
+> mechanical change. So don't spend time reviewing details, I'm just
+> wondering about concept and general approach.
 > 
->> On 9/9/23 12:36, Karim Taha wrote:
->>> From: Stacey Son <sson@FreeBSD.org>
->>>
->>> Signed-off-by: Stacey Son <sson@FreeBSD.org>
->>> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
->>> ---
->>>    bsd-user/bsd-mem.h            | 22 ++++++++++++++++++++++
->>>    bsd-user/freebsd/os-syscall.c |  4 ++++
->>>    2 files changed, 26 insertions(+)
->>>
->>> diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
->>> index 0e16051418..1dabbe36e6 100644
->>> --- a/bsd-user/bsd-mem.h
->>> +++ b/bsd-user/bsd-mem.h
->>> @@ -189,4 +189,26 @@ static inline abi_long do_bsd_minherit(abi_long addr, abi_long len,
->>>        return get_errno(minherit(g2h_untagged(addr), len, inherit));
->>>    }
->>>    
->>> +/* mincore(2) */
->>> +static inline abi_long do_bsd_mincore(abi_ulong target_addr, abi_ulong len,
->>> +        abi_ulong target_vec)
->>> +{
->>> +    abi_long ret;
->>> +    void *p;
->>> +    abi_ulong vec_len = DIV_ROUND_UP(len,TARGET_PAGE_SIZE);
->>> +
->>> +    if (!guest_range_valid_untagged(target_addr,len) || !page_check_range(target_addr, len, PAGE_VALID)) {
->>> +        return -TARGET_EFAULT;
->>> +    }
->>> +
->>> +    p = lock_user(VERIFY_WRITE, target_vec, vec_len, 0);
->>> +    if (p == NULL) {
->>> +        return -TARGET_EFAULT;
->>> +    }
->>> +    ret = get_errno(mincore(g2h_untagged(target_addr), len, p));
->>> +    unlock_user(p, target_vec, 0);
->>
->> You don't need the lock/unlock_user at all.  It is wrongly checking for WRITE.
->>
->>
->> r~
->>
-> AFAIU, the host is writing to the target's memory, right?
+> I'm not sure the history of why these are 32-bit, maybe better code gen
+> on 32-bit host emulating 64-bit? If so, that shouldn't be so important
+> now that most people use 64-bit systems to develop and test with.
 
-Oops, I misread this.  The lock/unlock is for the output vector,
-which means you do need it.
+It was probably in order to save space, but I have no specific knowledge.
 
-You also need unlock_user(p, target_vec, vec_len).
+What does this do to the generated code?  I suspect, without looking, that it doesn't 
+change things much at all on e.g. a ppc64 host, and for an x86_64 host merely changes the 
+types of some instructions (which, considering the rex64 encoding, might consume a few 
+more bytes).
 
-With that,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
