@@ -2,55 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761A579E947
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C3979E950
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:32:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPu2-0003I3-Rn; Wed, 13 Sep 2023 09:27:34 -0400
+	id 1qgPxd-0005qb-1L; Wed, 13 Sep 2023 09:31:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgPtz-0003DC-Oa
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:27:31 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qgPxa-0005qI-Kd
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:31:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgPtw-00079q-PH
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:27:31 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rm1Ss4fP7z6K6T2;
- Wed, 13 Sep 2023 21:26:53 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Wed, 13 Sep 2023 14:27:26 +0100
-To: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, <linux-cxl@vger.kernel.org>
-CC: <linuxarm@huawei.com>
-Subject: [PATCH v4 4/4] hw/cxl: Support 4 HDM decoders at all levels of
- topology
-Date: Wed, 13 Sep 2023 14:25:23 +0100
-Message-ID: <20230913132523.29780-5-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230913132523.29780-1-Jonathan.Cameron@huawei.com>
-References: <20230913132523.29780-1-Jonathan.Cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qgPxV-0000Tu-Te
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:31:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694611867;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=k8em+ckyu93xvOSS/N4/Faz8KQ/soEJdBBJ+ajnYqlA=;
+ b=jP6uaVmR9KND1oiO8idPEnPi5+34Q/w2SILJCY2DM1cpJzdcXCcjQdWpCFYyauECrvYtpc
+ DsQKdBLultcWdlbdpvSya+0Ln4V7C7k5439aYAgXyekvLagY/MzrqKKe9puEi457txNWwX
+ fCH6FHvAmg/ylCYr3dNzavBWgYUI1gA=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-484-AI5ouLHJN4a-Ne_semQIWA-1; Wed, 13 Sep 2023 09:31:06 -0400
+X-MC-Unique: AI5ouLHJN4a-Ne_semQIWA-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-502d7ccdda3so1430626e87.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 06:31:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694611865; x=1695216665;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=k8em+ckyu93xvOSS/N4/Faz8KQ/soEJdBBJ+ajnYqlA=;
+ b=SkMi+r+ADjOutkG35rYBCJD9fEYcikykt006KIpQVLXTYCAMl7oKfOZQnVSWEAUZFk
+ kcNnM2iBD6YrgUiMvI0YT3r/iLVm07SlZde+WK5uxblNgLOEqKb9x30TMbO1Acnzov4J
+ wELIFr7bNdMW9mbGzYWBaEGEE1l7eI551VzfRDBpKgWrLHVuE8Z5auugQEyCMfGwp+ZS
+ 7GAdgSZF3kvSi0t+8h8COXww4rQNBKUr7mZmfXNubNbB3vo3S7ShUbPTK1QGFrWh+R7q
+ D+XHEltRDO62yWMzFz6cm/LjrBjk9riOGoK1/mNuRdZvCBj2UuZ6Kd2h65qbfANp2Rkm
+ ez9g==
+X-Gm-Message-State: AOJu0Yzd6RVCDdXOeVJHHEkYHG01tHhqd4Ks5tSndl0XB6Kpp+w354Wl
+ Gg0Sw8pBGXX2mfHimK7e8XddnOCv+E0zEIFnGvOcZcqdO75OnIxlpYeWquOHatU/OkWOFAMrwWX
+ FZDnmhzVAcBEd59s=
+X-Received: by 2002:a05:6512:2823:b0:502:a63c:113e with SMTP id
+ cf35-20020a056512282300b00502a63c113emr2360822lfb.61.1694611864759; 
+ Wed, 13 Sep 2023 06:31:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFIHUAbleEtnSJ6IaIDWhrS0uye/y4oKocNfSgOmm/4BgA9BsivEvDKP3rfVSiJogPAGjYNjQ==
+X-Received: by 2002:a05:6512:2823:b0:502:a63c:113e with SMTP id
+ cf35-20020a056512282300b00502a63c113emr2360799lfb.61.1694611864388; 
+ Wed, 13 Sep 2023 06:31:04 -0700 (PDT)
+Received: from redhat.com ([2.52.10.100]) by smtp.gmail.com with ESMTPSA id
+ y19-20020a17090668d300b0098884f86e41sm8333607ejr.123.2023.09.13.06.31.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Sep 2023 06:31:03 -0700 (PDT)
+Date: Wed, 13 Sep 2023 09:31:00 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Cindy Lu <lulu@redhat.com>
+Cc: jasowang@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [RFC 0/7] vhost-vdpa: add support for iommufd
+Message-ID: <20230913093042-mutt-send-email-mst@kernel.org>
+References: <20230503091337.2130631-1-lulu@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230503091337.2130631-1-lulu@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,311 +91,40 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support these decoders in CXL host bridges (pxb-cxl), CXL Switch USP
-and CXL Type 3 end points.
+On Wed, May 03, 2023 at 05:13:30PM +0800, Cindy Lu wrote:
+> Hi All
+> There is the RFC to support the IOMMUFD in vdpa device
+> any comments are welcome
+> Thanks
+> Cindy
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Any plans to work on this or should I consider this abandoned?
 
----
-v3: Factor out the hdm_inc changes to previous patch.
-    Fix use of encoded hdm count as if it were decoded in cxl-host.
-    Minor refactoring to make that path and one in cxl_type3.c
-    look more similar.
----
- include/hw/cxl/cxl_component.h | 10 +++-
- hw/cxl/cxl-component-utils.c   |  7 ++-
- hw/cxl/cxl-host.c              | 67 ++++++++++++++++--------
- hw/mem/cxl_type3.c             | 96 +++++++++++++++++++++++-----------
- 4 files changed, 124 insertions(+), 56 deletions(-)
 
-diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
-index 7c864d2044..3c795a6278 100644
---- a/include/hw/cxl/cxl_component.h
-+++ b/include/hw/cxl/cxl_component.h
-@@ -135,6 +135,10 @@ REG32(CXL_RAS_ERR_HEADER0, CXL_RAS_REGISTERS_OFFSET + 0x18)
-   REG32(CXL_HDM_DECODER##n##_TARGET_LIST_LO,                                   \
-         CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x24)                          \
-   REG32(CXL_HDM_DECODER##n##_TARGET_LIST_HI,                                   \
-+        CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x28)                          \
-+  REG32(CXL_HDM_DECODER##n##_DPA_SKIP_LO,                                      \
-+        CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x24)                          \
-+  REG32(CXL_HDM_DECODER##n##_DPA_SKIP_HI,                                      \
-         CXL_HDM_REGISTERS_OFFSET + (0x20 * n) + 0x28)
- 
- REG32(CXL_HDM_DECODER_CAPABILITY, CXL_HDM_REGISTERS_OFFSET)
-@@ -147,9 +151,13 @@ REG32(CXL_HDM_DECODER_GLOBAL_CONTROL, CXL_HDM_REGISTERS_OFFSET + 4)
-     FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, POISON_ON_ERR_EN, 0, 1)
-     FIELD(CXL_HDM_DECODER_GLOBAL_CONTROL, HDM_DECODER_ENABLE, 1, 1)
- 
-+/* Support 4 decoders at all levels of topology */
-+#define CXL_HDM_DECODER_COUNT 4
-+
- HDM_DECODER_INIT(0);
--/* Only used for HDM decoder registers block address increment */
- HDM_DECODER_INIT(1);
-+HDM_DECODER_INIT(2);
-+HDM_DECODER_INIT(3);
- 
- /* 8.2.5.13 - CXL Extended Security Capability Structure (Root complex only) */
- #define EXTSEC_ENTRY_MAX        256
-diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index c0630ba5c1..f3bbf0fd13 100644
---- a/hw/cxl/cxl-component-utils.c
-+++ b/hw/cxl/cxl-component-utils.c
-@@ -90,6 +90,9 @@ static void dumb_hdm_handler(CXLComponentState *cxl_cstate, hwaddr offset,
- 
-     switch (offset) {
-     case A_CXL_HDM_DECODER0_CTRL:
-+    case A_CXL_HDM_DECODER1_CTRL:
-+    case A_CXL_HDM_DECODER2_CTRL:
-+    case A_CXL_HDM_DECODER3_CTRL:
-         should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-         should_uncommit = !should_commit;
-         break;
-@@ -129,7 +132,7 @@ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
-     }
- 
-     if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
--        offset <= A_CXL_HDM_DECODER0_TARGET_LIST_HI) {
-+        offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
-         dumb_hdm_handler(cxl_cstate, offset, value);
-     } else {
-         cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)] = value;
-@@ -209,7 +212,7 @@ static void ras_init_common(uint32_t *reg_state, uint32_t *write_msk)
- static void hdm_init_common(uint32_t *reg_state, uint32_t *write_msk,
-                             enum reg_type type)
- {
--    int decoder_count = 1;
-+    int decoder_count = CXL_HDM_DECODER_COUNT;
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-     int i;
- 
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index 73c5426476..2aa776c79c 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -97,35 +97,58 @@ void cxl_fmws_link_targets(CXLState *cxl_state, Error **errp)
-     }
- }
- 
--/* TODO: support, multiple hdm decoders */
- static bool cxl_hdm_find_target(uint32_t *cache_mem, hwaddr addr,
-                                 uint8_t *target)
- {
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
--    uint32_t ctrl;
--    uint32_t ig_enc;
--    uint32_t iw_enc;
--    uint32_t target_idx;
--    int i = 0;
--
--    ctrl = cache_mem[R_CXL_HDM_DECODER0_CTRL + i * hdm_inc];
--    if (!FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
--        return false;
--    }
--
--    ig_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IG);
--    iw_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IW);
--    target_idx = (addr / cxl_decode_ig(ig_enc)) % (1 << iw_enc);
-+    unsigned int hdm_count;
-+    bool found = false;
-+    int i;
-+    uint32_t cap;
-+
-+    cap = ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
-+    hdm_count = cxl_decoder_count_dec(FIELD_EX32(cap,
-+                                                 CXL_HDM_DECODER_CAPABILITY,
-+                                                 DECODER_COUNT));
-+    for (i = 0; i < hdm_count; i++) {
-+        uint32_t ctrl, ig_enc, iw_enc, target_idx;
-+        uint32_t low, high;
-+        uint64_t base, size;
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc);
-+        base = (low & 0xf0000000) | ((uint64_t)high << 32);
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc);
-+        size = (low & 0xf0000000) | ((uint64_t)high << 32);
-+        if (addr < base || addr >= base + size) {
-+            continue;
-+        }
- 
--    if (target_idx < 4) {
--        *target = extract32(cache_mem[R_CXL_HDM_DECODER0_TARGET_LIST_LO],
--                            target_idx * 8, 8);
--    } else {
--        *target = extract32(cache_mem[R_CXL_HDM_DECODER0_TARGET_LIST_HI],
--                            (target_idx - 4) * 8, 8);
-+        ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * hdm_inc);
-+        if (!FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
-+            return false;
-+        }
-+        found = true;
-+        ig_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IG);
-+        iw_enc = FIELD_EX32(ctrl, CXL_HDM_DECODER0_CTRL, IW);
-+        target_idx = (addr / cxl_decode_ig(ig_enc)) % (1 << iw_enc);
-+
-+        if (target_idx < 4) {
-+            uint32_t val = ldl_le_p(cache_mem +
-+                                    R_CXL_HDM_DECODER0_TARGET_LIST_LO +
-+                                    i * hdm_inc);
-+            *target = extract32(val, target_idx * 8, 8);
-+        } else {
-+            uint32_t val = ldl_le_p(cache_mem +
-+                                    R_CXL_HDM_DECODER0_TARGET_LIST_HI +
-+                                    i * hdm_inc);
-+            *target = extract32(val, (target_idx - 4) * 8, 8);
-+        }
-+        break;
-     }
- 
--    return true;
-+    return found;
- }
- 
- static PCIDevice *cxl_cfmws_find_device(CXLFixedWindow *fw, hwaddr addr)
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index cd92813436..1658e0cc59 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -382,8 +382,6 @@ static void hdm_decoder_commit(CXLType3Dev *ct3d, int which)
-     uint32_t *cache_mem = cregs->cache_mem_registers;
-     uint32_t ctrl;
- 
--    assert(which == 0);
--
-     ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_inc);
-     /* TODO: Sanity checks that the decoder is possible */
-     ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, ERR, 0);
-@@ -399,8 +397,6 @@ static void hdm_decoder_uncommit(CXLType3Dev *ct3d, int which)
-     uint32_t *cache_mem = cregs->cache_mem_registers;
-     uint32_t ctrl;
- 
--    assert(which == 0);
--
-     ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + which * hdm_inc);
- 
-     ctrl = FIELD_DP32(ctrl, CXL_HDM_DECODER0_CTRL, ERR, 0);
-@@ -489,6 +485,21 @@ static void ct3d_reg_write(void *opaque, hwaddr offset, uint64_t value,
-         should_uncommit = !should_commit;
-         which_hdm = 0;
-         break;
-+    case A_CXL_HDM_DECODER1_CTRL:
-+        should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-+        should_uncommit = !should_commit;
-+        which_hdm = 1;
-+        break;
-+    case A_CXL_HDM_DECODER2_CTRL:
-+        should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-+        should_uncommit = !should_commit;
-+        which_hdm = 2;
-+        break;
-+    case A_CXL_HDM_DECODER3_CTRL:
-+        should_commit = FIELD_EX32(value, CXL_HDM_DECODER0_CTRL, COMMIT);
-+        should_uncommit = !should_commit;
-+        which_hdm = 3;
-+        break;
-     case A_CXL_RAS_UNC_ERR_STATUS:
-     {
-         uint32_t capctrl = ldl_le_p(cache_mem + R_CXL_RAS_ERR_CAP_CTRL);
-@@ -760,40 +771,63 @@ static void ct3_exit(PCIDevice *pci_dev)
-     }
- }
- 
--/* TODO: Support multiple HDM decoders and DPA skip */
- static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
- {
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-     uint32_t *cache_mem = ct3d->cxl_cstate.crb.cache_mem_registers;
--    uint64_t decoder_base, decoder_size, hpa_offset;
--    uint32_t hdm0_ctrl;
--    int ig, iw;
--    int i = 0;
--
--    decoder_base =
--        (((uint64_t)cache_mem[R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc] << 32) |
--                    cache_mem[R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc]);
--    if ((uint64_t)host_addr < decoder_base) {
--        return false;
--    }
--
--    hpa_offset = (uint64_t)host_addr - decoder_base;
--
--    decoder_size =
--        ((uint64_t)cache_mem[R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc] << 32) |
--        cache_mem[R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc];
--    if (hpa_offset >= decoder_size) {
--        return false;
--    }
-+    unsigned int hdm_count;
-+    uint32_t cap;
-+    uint64_t dpa_base = 0;
-+    int i;
- 
--    hdm0_ctrl = cache_mem[R_CXL_HDM_DECODER0_CTRL + i * hdm_inc];
--    iw = FIELD_EX32(hdm0_ctrl, CXL_HDM_DECODER0_CTRL, IW);
--    ig = FIELD_EX32(hdm0_ctrl, CXL_HDM_DECODER0_CTRL, IG);
-+    cap = ldl_le_p(cache_mem + R_CXL_HDM_DECODER_CAPABILITY);
-+    hdm_count = cxl_decoder_count_dec(FIELD_EX32(cap,
-+                                                 CXL_HDM_DECODER_CAPABILITY,
-+                                                 DECODER_COUNT));
-+
-+    for (i = 0; i < hdm_count; i++) {
-+        uint64_t decoder_base, decoder_size, hpa_offset, skip;
-+        uint32_t hdm_ctrl, low, high;
-+        int ig, iw;
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc);
-+        decoder_base = ((uint64_t)high << 32) | (low & 0xf0000000);
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_LO + i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_SIZE_HI + i * hdm_inc);
-+        decoder_size = ((uint64_t)high << 32) | (low & 0xf0000000);
-+
-+        low = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_LO +
-+                       i * hdm_inc);
-+        high = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_DPA_SKIP_HI +
-+                        i * hdm_inc);
-+        skip = ((uint64_t)high << 32) | (low & 0xf0000000);
-+        dpa_base += skip;
-+
-+        hpa_offset = (uint64_t)host_addr - decoder_base;
-+
-+        hdm_ctrl = ldl_le_p(cache_mem + R_CXL_HDM_DECODER0_CTRL + i * hdm_inc);
-+        iw = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IW);
-+        ig = FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, IG);
-+        if (!FIELD_EX32(hdm_ctrl, CXL_HDM_DECODER0_CTRL, COMMITTED)) {
-+            return false;
-+        }
-+        if (((uint64_t)host_addr < decoder_base) ||
-+            (hpa_offset >= decoder_size)) {
-+            dpa_base += decoder_size /
-+                cxl_interleave_ways_dec(iw, &error_fatal);
-+            continue;
-+        }
- 
--    *dpa = (MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
--        ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offset) >> iw);
-+        *dpa = dpa_base +
-+            ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
-+             ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_offset)
-+              >> iw));
- 
--    return true;
-+        return true;
-+    }
-+    return false;
- }
- 
- static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
--- 
-2.39.2
+> Cindy Lu (7):
+>   vhost: introduce new UAPI to support IOMMUFD
+>   qapi: support iommufd in vdpa
+>   virtio : add a ptr for vdpa_iommufd in VirtIODevice
+>   net/vhost-vdpa: Add the check for iommufd
+>   vhost-vdpa: Add the iommufd support in the map/unmap function
+>   vhost-vdpa: init iommufd function in vhost_vdpa start
+>   vhost-vdpa-iommufd: Add iommufd support for vdpa
+> 
+>  hw/virtio/meson.build          |   2 +-
+>  hw/virtio/vhost-vdpa-iommufd.c | 240 +++++++++++++++++++++++++++++++++
+>  hw/virtio/vhost-vdpa.c         |  74 +++++++++-
+>  include/hw/virtio/vhost-vdpa.h |  47 +++++++
+>  include/hw/virtio/virtio.h     |   5 +
+>  linux-headers/linux/vhost.h    |  72 ++++++++++
+>  net/vhost-vdpa.c               |  31 +++--
+>  qapi/net.json                  |   1 +
+>  8 files changed, 451 insertions(+), 21 deletions(-)
+>  create mode 100644 hw/virtio/vhost-vdpa-iommufd.c
+> 
+> -- 
+> 2.34.3
 
 
