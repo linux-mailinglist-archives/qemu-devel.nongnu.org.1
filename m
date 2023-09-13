@@ -2,56 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E56079E2DB
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EFA79E2DE
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:02:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgLkR-0003hy-Rv; Wed, 13 Sep 2023 05:01:23 -0400
+	id 1qgLlG-00050H-4D; Wed, 13 Sep 2023 05:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgLkM-0003fV-Ls
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:01:18 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgLlC-0004zu-GW
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:02:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgLkK-00016H-AP
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:01:18 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlvXM0Vvyz6HJcx;
- Wed, 13 Sep 2023 16:59:31 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 13 Sep
- 2023 10:01:13 +0100
-Date: Wed, 13 Sep 2023 10:01:12 +0100
-To: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v3 3/4] hw/cxl: Fix and use same calculation for HDM
- decoder block size everywhere
-Message-ID: <20230913100112.000031a8@Huawei.com>
-In-Reply-To: <b4ad0199-2df5-05ee-dde4-eb85ffb0a2b0@linaro.org>
-References: <20230911114313.6144-1-Jonathan.Cameron@huawei.com>
- <20230911114313.6144-4-Jonathan.Cameron@huawei.com>
- <b4ad0199-2df5-05ee-dde4-eb85ffb0a2b0@linaro.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgLlA-0001DO-4D
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:02:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694595727;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=slLPdvZwGLgcsnZnsC8K9w2N/TZJ4yvIEAk6TSfFTMw=;
+ b=A4iRFEQvudnOmYgUGvEMvlSGP/qk2ldf6/Cn2i+pGfQp+N68n5Nx3lONY2d1CR8l2rsxFF
+ wRlOMU6rsft7+qfLa4eNN8puKQj4kcs3RzUMAdAzrKXilhTs+HkLfoOsHLKkGFDZ1L5iuT
+ 3LUu5Ir5rNew6+rMJd92//BTOn6GaVM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-63-edqGPZH1O_SJXh8QYj4lIw-1; Wed, 13 Sep 2023 05:02:05 -0400
+X-MC-Unique: edqGPZH1O_SJXh8QYj4lIw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-402493d2997so47138605e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 02:02:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694595724; x=1695200524;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=slLPdvZwGLgcsnZnsC8K9w2N/TZJ4yvIEAk6TSfFTMw=;
+ b=g4AwyBKPnicidAqtFr74Ojscohkpd8+XPljhLSnWRwHZUHKQfVKe65mHxGBGTWF5q1
+ WWdrGvudZEQLEkq+lPn06o1L4YDC6ba8jzXKd4JIVCJvB1c0eyUfFwH4rbout6G8vOYI
+ K4FAhSL0M5O71tV/12nmmIzCwTR1lOV++aP1xPWvY4Af7g441ZXYTDAo709OLUAnAZF6
+ Bw9YRn3d2R2UYkXBU+0sq+Hg4Ox4JTlQm7XgiL1xC320AKDPvLA70SwxaD9y1SKfLAjT
+ xLGugMYVG52Q25+5R0rUCzBdaBl/Iw8WDjqxWDPnLtq2+M0SrlDr7jOUtSEZ6FIxLShj
+ yevw==
+X-Gm-Message-State: AOJu0YwguY9o/H+8KNjPlyMTXp6n1GZsedPQjBSVLriIHs+Nr0zzXOF4
+ jCGpigDd+tcSGWqBmak+MWDHfnoTuoVofUmyuUso4d9iFTqA2kTE2SLKIiIj7tRHi3hW9rQqF+R
+ 9vbE4PtMxypmSdkA=
+X-Received: by 2002:a1c:f701:0:b0:400:46db:1b68 with SMTP id
+ v1-20020a1cf701000000b0040046db1b68mr1498568wmh.35.1694595724651; 
+ Wed, 13 Sep 2023 02:02:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZuIdbWZuk8ijbewFn8uAsr7n1tCPmUhqaefXnrEircZ5TYuQx+wt4bUG8NTMPMZOuS65GRA==
+X-Received: by 2002:a1c:f701:0:b0:400:46db:1b68 with SMTP id
+ v1-20020a1cf701000000b0040046db1b68mr1498544wmh.35.1694595724354; 
+ Wed, 13 Sep 2023 02:02:04 -0700 (PDT)
+Received: from [10.33.192.218] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ by smtp.gmail.com with ESMTPSA id
+ k23-20020a05600c0b5700b00402fa98abe3sm1390242wmr.46.2023.09.13.02.02.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 02:02:03 -0700 (PDT)
+Message-ID: <2a8bc661-5fb0-f514-3ae5-4c6c9acb935f@redhat.com>
+Date: Wed, 13 Sep 2023 11:02:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 0/4] ci: fix hang of FreeBSD CI jobs
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Stefan Hajnoczi <stefanha@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+References: <20230912184130.3056054-1-berrange@redhat.com>
+ <5cbb92ab-f8b5-4d03-5698-06d0a0b7cfda@redhat.com> <87ledatq3s.fsf@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <87ledatq3s.fsf@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,84 +105,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 13 Sep 2023 08:53:55 +0200
-Philippe Mathieu-Daud=E9 <philmd@linaro.org> wrote:
+On 13/09/2023 10.48, Alex Bennée wrote:
+> 
+> Thomas Huth <thuth@redhat.com> writes:
+> 
+>> On 12/09/2023 20.41, Daniel P. Berrangé wrote:
+>>> This addresses
+>>>     https://gitlab.com/qemu-project/qemu/-/issues/1882
+>>> Which turned out to be a genuine flaw which we missed during merge
+>>> as the patch hitting master co-incided with the FreeBSD CI job
+>>> having an temporary outage due to changed release image version.
+>>> Daniel P. Berrangé (4):
+>>>     microbit: add missing qtest_quit() call
+>>>     qtest: kill orphaned qtest QEMU processes on FreeBSD
+>>>     gitlab: make Cirrus CI timeout explicit
+>>>     gitlab: make Cirrus CI jobs gating
+>>>    .gitlab-ci.d/cirrus.yml       | 4 +++-
+>>>    .gitlab-ci.d/cirrus/build.yml | 2 ++
+>>>    tests/qtest/libqtest.c        | 7 +++++++
+>>>    tests/qtest/microbit-test.c   | 2 ++
+>>>    4 files changed, 14 insertions(+), 1 deletion(-)
+>>>
+>>
+>> Series
+>> Reviewed-by: Thomas Huth <thuth@redhat.com>
+>>
+>> Alex, will you pick these up or shall I take them for my next PR?
+> 
+> Queued to testing/next, thanks.
+> 
+> Do you have a patch to disable the borked avacado tests? Or maybe I
+> should just include Philippe's fix?
 
-> On 11/9/23 13:43, Jonathan Cameron wrote:
-> > In order to avoid having the size of the per HDM decoder register block
-> > repeated in lots of places, create the register definitions for HDM
-> > decoder 1 and use the offset between the first registers in HDM decoder=
- 0 and
-> > HDM decoder 1 to establish the offset.
-> >=20
-> > Calculate in each function as this is more obvious and leads to shorter
-> > line lengths than a single #define which would need a long name
-> > to be specific enough.
-> >=20
-> > Note that the code currently only supports one decoder, so the bugs this
-> > fixes don't actually affect anything. Previously the offset didn't
-> > take into account that the write_msk etc are 4 byte fields.
-> >=20
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >=20
-> > --
-> > v3:
-> > New patch to separate this out from the addition of HDM decoders.
-> > ---
-> >   include/hw/cxl/cxl_component.h |  2 ++
-> >   hw/cxl/cxl-component-utils.c   | 19 +++++++++++--------
-> >   hw/cxl/cxl-host.c              |  4 +++-
-> >   hw/mem/cxl_type3.c             | 24 +++++++++++++++---------
-> >   4 files changed, 31 insertions(+), 18 deletions(-) =20
->=20
->=20
-> > @@ -761,26 +763,30 @@ static void ct3_exit(PCIDevice *pci_dev)
-> >   /* TODO: Support multiple HDM decoders and DPA skip */
-> >   static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64=
-_t *dpa)
-> >   {
-> > +    int hdm_inc =3D R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BA=
-SE_LO;
-> >       uint32_t *cache_mem =3D ct3d->cxl_cstate.crb.cache_mem_registers;
-> >       uint64_t decoder_base, decoder_size, hpa_offset;
-> >       uint32_t hdm0_ctrl;
-> >       int ig, iw;
-> > +    int i =3D 0;
-> >  =20
-> > -    decoder_base =3D (((uint64_t)cache_mem[R_CXL_HDM_DECODER0_BASE_HI]=
- << 32) |
-> > -                    cache_mem[R_CXL_HDM_DECODER0_BASE_LO]);
-> > +    decoder_base =3D
-> > +        (((uint64_t)cache_mem[R_CXL_HDM_DECODER0_BASE_HI + i * hdm_inc=
-] << 32) |
-> > +                    cache_mem[R_CXL_HDM_DECODER0_BASE_LO + i * hdm_inc=
-]); =20
->=20
-> Alternatively easier to review as (matter of taste ?):
->=20
-> decoder_base =3D deposit64(cache_mem[R_CXL_HDM_DECODER0_BASE_LO + i *=20
-> hdm_inc], 32, 32,
->                           cache_mem[R_CXL_HDM_DECODER0_BASE_HI + i *=20
-> hdm_inc]);
+I thought that Philippe mentioned that he wanted to provide a patch that 
+disables the broken tests?
 
-I'll leave if for now for consistency in the CXL code.  Might make
-sense to consider this as a cross subsystem cleanup at some point though!
-Thanks for the suggestion.
-
->=20
-> Regardless:
->=20
-> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-Thanks.
-
-Jonathan
-
->=20
->=20
+  Thomas
 
 
