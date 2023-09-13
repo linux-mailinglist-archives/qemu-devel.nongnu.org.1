@@ -2,83 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B2879E5A0
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 13:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C6979E5A9
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 13:03:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgNcm-0007e6-UM; Wed, 13 Sep 2023 07:01:36 -0400
+	id 1qgNeB-0008JT-UL; Wed, 13 Sep 2023 07:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgNci-0007dQ-M1
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:01:33 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgNcg-0001rt-DW
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:01:32 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-52a3ff5f0abso8620218a12.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 04:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694602888; x=1695207688; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=o6bQ9qIFAQjmGDcYvu8QwCAp5qPKggwYx6E19UhI450=;
- b=PI2Guz+8t+ZpHYBdmwYY5Y7qiJZCxdaYwSO/e9POP1yoZNg8h3r6vka82LkOdjK5Nn
- 3Q+YFGYMnwu7PEJCJaTe51nAJxQe11AmBK7I3rLv17umbzuTMcIFqB7ep2l/LzCe3uwz
- qMimHQBOLEyVtn7qW/xF9v6incRtt85E6V7MzIEKmeQDt7Hf4pWmkvxdspkByzBqZ8VH
- 3XbXe9M7ILL9vkMBBfL7EZ4e11txysq8Nn6sAmvwABRrJFnMejIGgNrJh+ff2r4mdQF0
- GPP3lJPDL8FON0+jcPXNa+01gwAOEyrjCdu7uBDRwWjIkr/sLamSN1yN90RhjJyyUkoB
- /h0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694602888; x=1695207688;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o6bQ9qIFAQjmGDcYvu8QwCAp5qPKggwYx6E19UhI450=;
- b=gyZgE2fOCP4iKiJUZrWEkvT1hB2VcpjDy45IQaj58nGiiXoIoGVNK/N/obod2g6IVf
- uR+1gKL5hmfgYU6mvgGkMkVcVe6+0nmfthSVy1l8jITai30Kp6Qh5fMrUYiQ+rGaLq1L
- pT4bjP3JMEeZGP8k6O5TpDuUB5zzCjX+ZG4xvlWdH/RMr56h4gq6HeHyzNwPRyqiYsXX
- Opun3W8WHmyAFQMKkhaCA28Jz8VL6pbcF/rxzKQOpGkK63TJB9rLsHZbUk8WGnsj7Btg
- ITNzyI+zQoX8sS8gpwqG/RZ8ei1sQPHOJPUNuzdbsbW6kPJd6vnFl4lY3fFU1z7emKzI
- 5E4Q==
-X-Gm-Message-State: AOJu0YwYI/kOn8Z4/ttbSo+ANM0EJGHCyGQc8bI4AOkZZ9T9T3GwJZXr
- xuWYI60fan9Dm1+zmYSjNoYgOg==
-X-Google-Smtp-Source: AGHT+IE4omAlPVmfnLAIvG/joqNM9bdlE3Hh2WkpgY5OF3atbeSWVsDHR9QNDMtmPgTV28DSwVU8Qg==
-X-Received: by 2002:a17:906:53c5:b0:9a2:2842:f1c6 with SMTP id
- p5-20020a17090653c500b009a22842f1c6mr1510581ejo.28.1694602888668; 
- Wed, 13 Sep 2023 04:01:28 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
- [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
- t14-20020a1709064f0e00b0099e05fb8f95sm8270935eju.137.2023.09.13.04.01.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 04:01:28 -0700 (PDT)
-Message-ID: <ccdf7e04-b85b-8086-dda8-c1394930fa96@linaro.org>
-Date: Wed, 13 Sep 2023 13:01:26 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgNe8-0008FK-Ri
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:03:00 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qgNe4-0002Ax-Lk
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 07:03:00 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlyG36XcVz6K6C6;
+ Wed, 13 Sep 2023 19:02:19 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 13 Sep
+ 2023 12:02:52 +0100
+Date: Wed, 13 Sep 2023 12:02:57 +0100
+To: Dmitry Frolov <frolov@swemel.ru>, Michael Tsirkin <mst@redhat.com>
+CC: <fan.ni@samsung.com>, <qemu-devel@nongnu.org>, <sdl.qemu@linuxtesting.org>
+Subject: Re: [PATCH] hw/cxl: Fix out of bound array access
+Message-ID: <20230913120257.00004d2e@Huawei.com>
+In-Reply-To: <20230913101055.754709-1-frolov@swemel.ru>
+References: <20230913101055.754709-1-frolov@swemel.ru>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v5 3/6] target/i386: Call accel-agnostic
- x86_cpu_get_supported_cpuid()
-Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org
-References: <20230913093009.83520-1-philmd@linaro.org>
- <20230913093009.83520-4-philmd@linaro.org>
- <b905884e-04ad-f195-3228-b0bedc59b66c@tls.msk.ru>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <b905884e-04ad-f195-3228-b0bedc59b66c@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,26 +61,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/9/23 12:59, Michael Tokarev wrote:
-> 13.09.2023 12:30, Philippe Mathieu-Daudé:
->> x86_cpu_get_supported_cpuid() is generic and handles the different
->> accelerators. Use it instead of kvm_arch_get_supported_cpuid().
->>
->> That fixes a link failure introduced by commit 3adce820cf
->> ("target/i386: Remove unused KVM stubs") when QEMU is configured
->> as:
-> ..
->> Cc: qemu-stable@nongnu.org
->> Fixes: 3adce820cf ("target/i386: Remove unused KVM stubs")
+On Wed, 13 Sep 2023 13:10:56 +0300
+Dmitry Frolov <frolov@swemel.ru> wrote:
+
+> According to cxl_interleave_ways_enc(),
+> fw->num_targets is allowed to be up to 16.
+> This also corresponds to CXL specs.
+> So, the fw->target_hbs[] array is iterated from 0 to 15.
+> But it is staticaly declared of length 8.
+> Thus, out of bound array access may occur.
 > 
-> This hopefully should not go to -stable as the issue has been
-> introduced in v8.1.0-291-g3adce820cf which is past latest release.
-> That's okay though, - just a small side-note.
+> Fixes: c28db9e000 ("hw/pci-bridge: Make PCIe and CXL PXB Devices inherit from TYPE_PXB_DEV")
+> 
+> Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
 
-Oh indeed. Paolo, do you mind removing the tag?
+Hi Dmitry,
 
-Thanks both!
+Good spot - though I'm curious on whether you hit this in a 16 way interleave test and
+hence care about this case?  My tests tend to burn the available ways in the topology
+rather than doing a flat 16 way host interleave (which would be a crazy physical system
+- I want one of those :)
+
+This looks to be a missed update when we expanded the decoded number of interleave ways.
+I think (looking at published ECNs) that occurred in a CXL r2.0 ECN dated Oct 2021.
+The CFWMS table was introduced as an ECN published in May 2021.  I'll note the r3.0
+spec is confusing because CFMWS refers to the HDM decoder spec that says the values
+beyond 1,2,4,8 are for endpoints only and this isn't one.  Examples make it clear
+that rule doesn't apply though.
+
+I suspect this bug was introduced whilst the code was still out of tree so hard to point at
+when.
+
+Anyhow, I'll queue this one or Michael can pick it up directly if he'd prefer.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+
+> ---
+>  include/hw/cxl/cxl.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
+> index 56c9e7676e..4944725849 100644
+> --- a/include/hw/cxl/cxl.h
+> +++ b/include/hw/cxl/cxl.h
+> @@ -29,7 +29,7 @@ typedef struct PXBCXLDev PXBCXLDev;
+>  typedef struct CXLFixedWindow {
+>      uint64_t size;
+>      char **targets;
+> -    PXBCXLDev *target_hbs[8];
+> +    PXBCXLDev *target_hbs[16];
+>      uint8_t num_targets;
+>      uint8_t enc_int_ways;
+>      uint8_t enc_int_gran;
+
 
