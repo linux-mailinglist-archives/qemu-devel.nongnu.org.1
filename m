@@ -2,35 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1845479E901
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C51F79E900
 	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:19:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPl5-0007AQ-6t; Wed, 13 Sep 2023 09:18:19 -0400
+	id 1qgPl8-0007C0-Ru; Wed, 13 Sep 2023 09:18:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPky-00077c-ML; Wed, 13 Sep 2023 09:18:12 -0400
+ id 1qgPl2-00079M-IF; Wed, 13 Sep 2023 09:18:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPkw-0002pK-06; Wed, 13 Sep 2023 09:18:12 -0400
+ id 1qgPl0-0002s0-4p; Wed, 13 Sep 2023 09:18:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4C03B2175D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 76ABB2175E;
  Wed, 13 Sep 2023 16:18:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 3D39D27C80;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7433327C81;
  Wed, 13 Sep 2023 16:18:01 +0300 (MSK)
-Received: (nullmailer pid 4073274 invoked by uid 1000);
+Received: (nullmailer pid 4073277 invoked by uid 1000);
  Wed, 13 Sep 2023 13:18:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 03/66] async: avoid use-after-free on re-entrancy guard
-Date: Wed, 13 Sep 2023 16:17:27 +0300
-Message-Id: <20230913131757.4073200-3-mjt@tls.msk.ru>
+ Darren Kenny <darren.kenny@oracle.com>, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 04/66] checkpatch: add qemu_bh_new/aio_bh_new checks
+Date: Wed, 13 Sep 2023 16:17:28 +0300
+Message-Id: <20230913131757.4073200-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
@@ -60,49 +61,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Alexander Bulekov <alxndr@bu.edu>
 
-A BH callback can free the BH, causing a use-after-free in aio_bh_call.
-Fix that by keeping a local copy of the re-entrancy guard pointer.
+Advise authors to use the _guarded versions of the APIs, instead.
 
-Buglink: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=58513
-Fixes: 9c86c97f12 ("async: Add an optional reentrancy guard to the BH API")
 Signed-off-by: Alexander Bulekov <alxndr@bu.edu>
-Message-Id: <20230501141956.3444868-1-alxndr@bu.edu>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Darren Kenny <darren.kenny@oracle.com>
+Message-Id: <20230427211013.2994127-4-alxndr@bu.edu>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 7915bd06f25e1803778081161bf6fa10c42dc7cd)
+(cherry picked from commit ef56ffbdd6b0605dc1e305611287b948c970e236)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/util/async.c b/util/async.c
-index 9df7674b4e..055070ffbd 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -156,18 +156,20 @@ void aio_bh_call(QEMUBH *bh)
- {
-     bool last_engaged_in_io = false;
- 
--    if (bh->reentrancy_guard) {
--        last_engaged_in_io = bh->reentrancy_guard->engaged_in_io;
--        if (bh->reentrancy_guard->engaged_in_io) {
-+    /* Make a copy of the guard-pointer as cb may free the bh */
-+    MemReentrancyGuard *reentrancy_guard = bh->reentrancy_guard;
-+    if (reentrancy_guard) {
-+        last_engaged_in_io = reentrancy_guard->engaged_in_io;
-+        if (reentrancy_guard->engaged_in_io) {
-             trace_reentrant_aio(bh->ctx, bh->name);
-         }
--        bh->reentrancy_guard->engaged_in_io = true;
-+        reentrancy_guard->engaged_in_io = true;
-     }
- 
-     bh->cb(bh->opaque);
- 
--    if (bh->reentrancy_guard) {
--        bh->reentrancy_guard->engaged_in_io = last_engaged_in_io;
-+    if (reentrancy_guard) {
-+        reentrancy_guard->engaged_in_io = last_engaged_in_io;
-     }
- }
- 
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index d768171dcf..eeaec436eb 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -2865,6 +2865,14 @@ sub process {
+ 		if ($line =~ /\bsignal\s*\(/ && !($line =~ /SIG_(?:IGN|DFL)/)) {
+ 			ERROR("use sigaction to establish signal handlers; signal is not portable\n" . $herecurr);
+ 		}
++# recommend qemu_bh_new_guarded instead of qemu_bh_new
++        if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\bqemu_bh_new\s*\(/) {
++			ERROR("use qemu_bh_new_guarded() instead of qemu_bh_new() to avoid reentrancy problems\n" . $herecurr);
++		}
++# recommend aio_bh_new_guarded instead of aio_bh_new
++        if ($realfile =~ /.*\/hw\/.*/ && $line =~ /\baio_bh_new\s*\(/) {
++			ERROR("use aio_bh_new_guarded() instead of aio_bh_new() to avoid reentrancy problems\n" . $herecurr);
++		}
+ # check for module_init(), use category-specific init macros explicitly please
+ 		if ($line =~ /^module_init\s*\(/) {
+ 			ERROR("please use block_init(), type_init() etc. instead of module_init()\n" . $herecurr);
 -- 
 2.39.2
 
