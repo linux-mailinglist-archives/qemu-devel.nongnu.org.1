@@ -2,99 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8AD79E841
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EF679E842
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:45:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPDn-0001x6-Av; Wed, 13 Sep 2023 08:43:55 -0400
+	id 1qgPEd-0002tV-GN; Wed, 13 Sep 2023 08:44:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qgPDj-0001wb-7R
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:43:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <den-plotnikov@yandex-team.ru>)
+ id 1qgPEM-0002i2-MG
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:44:32 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qgPDg-0008Hs-Mi
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:43:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694609026;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yRRXz5abAmrfuNK69eRoRPCU5vQoBVAknXWz/PNhH2Q=;
- b=akxJ/GfEsSz4ufzh+41mNiVuPImKuj40stD5eFB8xDId5Banv0Y0/doPsboc75DA7HCAs0
- cK8Y9FTbvVpkb6rRIg3Q1lCzhgSAe47ES8jHYbXuIuiGQZYFpNDGYVcyrmQW0t1QDySOPu
- edVoINfZvCWKlVFctDZpKHYQc2uh4jA=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507--giDTcYVPq6mNLM4pUErzw-1; Wed, 13 Sep 2023 08:43:45 -0400
-X-MC-Unique: -giDTcYVPq6mNLM4pUErzw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-401db2550e0so55379165e9.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 05:43:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694609024; x=1695213824;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yRRXz5abAmrfuNK69eRoRPCU5vQoBVAknXWz/PNhH2Q=;
- b=V54To7TDlzsFSm7DXqP/TK7ioijZ/T6xDHEKUw781exG4yuCDcq6XaEP3ePV910fr5
- EynHDxsQk/XapMHAFtSY36HFGSaRPYt3hlVDSefMnyvUbkJ1hJ6F9PVm7Q9fivebNT4I
- BaNwj/s1qyOEDfN36C8cOdu+7QAGXMisbmMBE6cukj5EMsKULcDXJmN+Pyu5w/LW4Duf
- vqGEUoxa2GMY5mveTHLnwmnztrgnjrPtJ0CpxF9/4pJXaxUrTEafEA5waQKZV2k3ygWO
- 7n6O161ubBnEdP8Nw0/aGJq3GkbcVkTSekdRg12ipjELXDBj5OJk4TN/l0Q135fzjOLE
- 2VKQ==
-X-Gm-Message-State: AOJu0YyMENijh8NZISvswigDTSxBswGfdeEQHeF+rqx2jRbAAxHQXQ/f
- IicPu+a3k09p99+y8PQNNrV1rZbcrK9g9zM48/HzKVZGVBt+XDF8N24dae4ki7D1ksRTTdMTMgP
- vZjegDoK/vmtnOUY=
-X-Received: by 2002:a05:600c:2150:b0:402:95a0:b2ae with SMTP id
- v16-20020a05600c215000b0040295a0b2aemr1933441wml.32.1694609024301; 
- Wed, 13 Sep 2023 05:43:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFs2R0x4RBqKKLnGnpljqQ6rrF7NRiPk1j+4As5/wPCf69+v+1XprkKw5DHPn0SDjHF3XgSBA==
-X-Received: by 2002:a05:600c:2150:b0:402:95a0:b2ae with SMTP id
- v16-20020a05600c215000b0040295a0b2aemr1933407wml.32.1694609023797; 
- Wed, 13 Sep 2023 05:43:43 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- q5-20020a7bce85000000b004013797efb6sm1966912wmj.9.2023.09.13.05.43.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 05:43:43 -0700 (PDT)
-Message-ID: <b79903b5-1f9c-68ae-0b4b-e4bf94e44281@redhat.com>
-Date: Wed, 13 Sep 2023 14:43:42 +0200
+ (Exim 4.90_1) (envelope-from <den-plotnikov@yandex-team.ru>)
+ id 1qgPED-0008Nw-0O
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:44:24 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:5429:0:640:6285:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 4183F5EF95;
+ Wed, 13 Sep 2023 15:44:13 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b691::1:31] (unknown
+ [2a02:6b8:b081:b691::1:31])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id Aieors0OfKo0-DF3WesQ9; Wed, 13 Sep 2023 15:44:12 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1694609052;
+ bh=gDLJnbfoQ9q+mRwWSvisU/n+D69fWboANpuCUBROPyo=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VB7gRbOWrd09eHqFSCnEF42sxVsmF0DZwY0+iCGCPyORmKTszcNjfsHAR9ZLGOBbD
+ 8tke6ArJ07K9M6Q9smlfLgP1RHLRqRDWgp27A9IEVT6L4AyRXt+wUvmPYL+JDgFzLx
+ S0QJlWX+PBmai5l4ETv89LAxhCUy6b8raZg8Z9Hc=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <b1bc0af3-8c3e-3e7f-a18c-dac1a8356469@yandex-team.ru>
+Date: Wed, 13 Sep 2023 15:44:10 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 02/12] memory: Introduce
- memory_region_iommu_set_iova_ranges
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] virtio: add VIRTQUEUE_ERROR QAPI event
 Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, alex.williamson@redhat.com,
- jean-philippe@linaro.org, mst@redhat.com, pbonzini@redhat.com
-Cc: peter.maydell@linaro.org, peterx@redhat.com, david@redhat.com,
- philmd@linaro.org
-References: <20230913080423.523953-1-eric.auger@redhat.com>
- <20230913080423.523953-3-eric.auger@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230913080423.523953-3-eric.auger@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ qemu-devel@nongnu.org
+Cc: yc-core@yandex-team.ru, eduardo@habkost.net, berrange@redhat.com,
+ pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, dave@treblig.org,
+ mst@redhat.com
+References: <20230912175756.151047-1-vsementsov@yandex-team.ru>
+From: Denis Plotnikov <den-plotnikov@yandex-team.ru>
+In-Reply-To: <20230912175756.151047-1-vsementsov@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=den-plotnikov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -106,93 +78,141 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/13/23 10:01, Eric Auger wrote:
-> This helper will allow to convey information about valid
-> IOVA ranges to virtual IOMMUS.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Denis Plotnikov <den-plotnikov@yandex-team.ru>
 
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
+On 9/12/23 20:57, Vladimir Sementsov-Ogievskiy wrote:
+> For now we only log the vhost device error, when virtqueue is actually
+> stopped. Let's add a QAPI event, which makes possible:
+>
+>   - collect statistics of such errors
+>   - make immediate actions: take core dumps or do some other debugging
+>   - inform the user through a management API or UI, so that (s)he can
+>    react somehow, e.g. reset the device driver in the guest or even
+>    build up some automation to do so
+>
+> Note that basically every inconsistency discovered during virtqueue
+> processing results in a silent virtqueue stop.  The guest then just
+> sees the requests getting stuck somewhere in the device for no visible
+> reason.  This event provides a means to inform the management layer of
+> this situation in a timely fashion.
+>
+> The event could be reused for some other virtqueue problems (not only
+> for vhost devices) in future. For this it gets a generic name and
+> structure.
+>
+> We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
+> here, it's not the only call to VHOST_OPS_DEBUG in the file.
+>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->   include/exec/memory.h | 26 ++++++++++++++++++++++++++
->   softmmu/memory.c      | 15 +++++++++++++++
->   2 files changed, 41 insertions(+)
-> 
-> diff --git a/include/exec/memory.h b/include/exec/memory.h
-> index 184cb3a01b..f6fb99dd3f 100644
-> --- a/include/exec/memory.h
-> +++ b/include/exec/memory.h
-> @@ -519,6 +519,27 @@ struct IOMMUMemoryRegionClass {
->        int (*iommu_set_page_size_mask)(IOMMUMemoryRegion *iommu,
->                                        uint64_t page_size_mask,
->                                        Error **errp);
-> +    /**
-> +     * @iommu_set_iova_ranges:
-> +     *
-> +     * Propagate information about the usable IOVA ranges for a given IOMMU
-> +     * memory region. Used for example to propagate host physical device
-> +     * reserved memory region constraints to the virtual IOMMU.
-> +     *
-> +     * Optional method: if this method is not provided, then the default IOVA
-> +     * aperture is used.
-> +     *
-> +     * @nr_ranges: number of IOVA ranges
-> +     *
-> +     * @iova_ranges: an array of @nr_ranges usable IOVA ranges
-> +     *
-> +     * Returns 0 on success, or a negative error. In case of failure, the error
-> +     * object must be created.
-> +     */
-> +     int (*iommu_set_iova_ranges)(IOMMUMemoryRegion *iommu,
-> +                                  uint32_t nr_ranges,
-> +                                  struct Range *iova_ranges,
-> +                                  Error **errp);
->   };
+>
+> v2: - improve commit message (just stole wording by Roman, hope he don't
+>                                mind:)
+>      - add event throttling
+>
+>   hw/virtio/vhost.c | 12 +++++++++---
+>   monitor/monitor.c | 10 ++++++++++
+>   qapi/qdev.json    | 25 +++++++++++++++++++++++++
+>   3 files changed, 44 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index e2f6ffb446..162899feee 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -15,6 +15,7 @@
 >   
->   typedef struct RamDiscardListener RamDiscardListener;
-> @@ -1845,6 +1866,11 @@ int memory_region_iommu_set_page_size_mask(IOMMUMemoryRegion *iommu_mr,
->                                              uint64_t page_size_mask,
->                                              Error **errp);
+>   #include "qemu/osdep.h"
+>   #include "qapi/error.h"
+> +#include "qapi/qapi-events-qdev.h"
+>   #include "hw/virtio/vhost.h"
+>   #include "qemu/atomic.h"
+>   #include "qemu/range.h"
+> @@ -1332,11 +1333,16 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
+>       struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
+>                                                 error_notifier);
+>       struct vhost_dev *dev = vq->dev;
+> -    int index = vq - dev->vqs;
 >   
-> +int memory_region_iommu_set_iova_ranges(IOMMUMemoryRegion *iommu,
-> +                                        uint32_t nr_ranges,
-> +                                        struct Range *iova_ranges,
-> +                                        Error **errp);
+>       if (event_notifier_test_and_clear(n) && dev->vdev) {
+> -        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
+> -                        dev->vq_index + index);
+> +        int ind = vq - dev->vqs + dev->vq_index;
+> +        DeviceState *ds = &dev->vdev->parent_obj;
 > +
->   /**
->    * memory_region_name: get a memory region's name
->    *
-> diff --git a/softmmu/memory.c b/softmmu/memory.c
-> index 7d9494ce70..07499457aa 100644
-> --- a/softmmu/memory.c
-> +++ b/softmmu/memory.c
-> @@ -1905,6 +1905,21 @@ int memory_region_iommu_set_page_size_mask(IOMMUMemoryRegion *iommu_mr,
->       return ret;
+> +        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d", ind);
+> +        qapi_event_send_virtqueue_error(ds->id, ds->canonical_path, ind,
+> +                                        VIRTQUEUE_ERROR_VHOST_VRING_ERR,
+> +                                        "vhost reported failure through vring "
+> +                                        "error fd");
+>       }
 >   }
 >   
-> +int memory_region_iommu_set_iova_ranges(IOMMUMemoryRegion *iommu_mr,
-> +                                        uint32_t nr_ranges,
-> +                                        struct Range *iova_ranges,
-> +                                        Error **errp)
-> +{
-> +    IOMMUMemoryRegionClass *imrc = IOMMU_MEMORY_REGION_GET_CLASS(iommu_mr);
-> +    int ret = 0;
-> +
-> +    if (imrc->iommu_set_iova_ranges) {
-> +        ret = imrc->iommu_set_iova_ranges(iommu_mr, nr_ranges,
-> +                                          iova_ranges, errp);
+> diff --git a/monitor/monitor.c b/monitor/monitor.c
+> index 941f87815a..cb1ee31156 100644
+> --- a/monitor/monitor.c
+> +++ b/monitor/monitor.c
+> @@ -313,6 +313,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
+>       [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
+>       [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
+>       [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
+> +    [QAPI_EVENT_VIRTQUEUE_ERROR]   = { 1000 * SCALE_MS },
+>       [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
+>       [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
+>   };
+> @@ -497,6 +498,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
+>           hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
+>       }
+>   
+> +    if (evstate->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
+> +        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
 > +    }
-> +    return ret;
-> +}
 > +
->   int memory_region_register_iommu_notifier(MemoryRegion *mr,
->                                             IOMMUNotifier *n, Error **errp)
->   {
-
+>       return hash;
+>   }
+>   
+> @@ -524,6 +529,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
+>                          qdict_get_str(evb->data, "qom-path"));
+>       }
+>   
+> +    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
+> +        return !strcmp(qdict_get_str(eva->data, "device"),
+> +                       qdict_get_str(evb->data, "device"));
+> +    }
+> +
+>       return TRUE;
+>   }
+>   
+> diff --git a/qapi/qdev.json b/qapi/qdev.json
+> index 6bc5a733b8..199e21cae7 100644
+> --- a/qapi/qdev.json
+> +++ b/qapi/qdev.json
+> @@ -161,3 +161,28 @@
+>   ##
+>   { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
+>     'data': { '*device': 'str', 'path': 'str' } }
+> +
+> +##
+> +# @VirtqueueError:
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'enum': 'VirtqueueError',
+> +  'data': [ 'vhost-vring-err' ] }
+> +
+> +##
+> +# @VIRTQUEUE_ERROR:
+> +#
+> +# Emitted when a device virtqueue fails in runtime.
+> +#
+> +# @device: the device's ID if it has one
+> +# @path: the device's QOM path
+> +# @virtqueue: virtqueue index
+> +# @error: error identifier
+> +# @description: human readable description
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'event': 'VIRTQUEUE_ERROR',
+> + 'data': { '*device': 'str', 'path': 'str', 'virtqueue': 'int',
+> +            'error': 'VirtqueueError', 'description': 'str'} }
 
