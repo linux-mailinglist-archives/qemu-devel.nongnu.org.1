@@ -2,71 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1EF679E842
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E95D79E861
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPEd-0002tV-GN; Wed, 13 Sep 2023 08:44:47 -0400
+	id 1qgPMR-0000GT-Vm; Wed, 13 Sep 2023 08:52:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den-plotnikov@yandex-team.ru>)
- id 1qgPEM-0002i2-MG
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:44:32 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qgPMP-0000Fw-50
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:52:49 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den-plotnikov@yandex-team.ru>)
- id 1qgPED-0008Nw-0O
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:44:24 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:5429:0:640:6285:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 4183F5EF95;
- Wed, 13 Sep 2023 15:44:13 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b691::1:31] (unknown
- [2a02:6b8:b081:b691::1:31])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id Aieors0OfKo0-DF3WesQ9; Wed, 13 Sep 2023 15:44:12 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1694609052;
- bh=gDLJnbfoQ9q+mRwWSvisU/n+D69fWboANpuCUBROPyo=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=VB7gRbOWrd09eHqFSCnEF42sxVsmF0DZwY0+iCGCPyORmKTszcNjfsHAR9ZLGOBbD
- 8tke6ArJ07K9M6Q9smlfLgP1RHLRqRDWgp27A9IEVT6L4AyRXt+wUvmPYL+JDgFzLx
- S0QJlWX+PBmai5l4ETv89LAxhCUy6b8raZg8Z9Hc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <b1bc0af3-8c3e-3e7f-a18c-dac1a8356469@yandex-team.ru>
-Date: Wed, 13 Sep 2023 15:44:10 +0300
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qgPMM-0002gC-Mj
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:52:48 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38DCiRWL020050; Wed, 13 Sep 2023 12:52:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pp1; bh=jVCscq/lyrjDydjl3zogHwCbvEwETxgGWRfqOQ+/pbM=;
+ b=ZMu9vBihH4pSg4F/LdhpXOTEmhltOCykkNp+alUxb4CT72YdOhdsV0JR3Z77IZxIwugu
+ RUil0os8xzY/llQ0TTm3qbUUKOeZ2BfHduHsEo9za4qJS4QNhafb6f+Zszb+aWo5Yi8M
+ H+egG5FMjp2g+Ma96osKc6ZCD/QuU/RU8LdFuU9KcUaliqz3YUT9u7fIwbWfFqXxWgC4
+ /vHJVUNzw2TQghuRcFwXuLx3zCnirHD8OnCm9KG/Hy+sckaYaxS4NXWrFY2XDc9jrGsP
+ DVrpZzWRy+bv79jqjs8t0DCBBYDDEDAa4GiUZGgFXTK+jj8IdlsU7EUDPtPCW9DWsbH/ jA== 
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t3dbq8bm4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 Sep 2023 12:52:41 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38DCA5BZ011942; Wed, 13 Sep 2023 12:52:40 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t15r22kmr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 Sep 2023 12:52:40 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38DCqdAI58523964
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 13 Sep 2023 12:52:39 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1096E58068;
+ Wed, 13 Sep 2023 12:52:39 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BE6F58059;
+ Wed, 13 Sep 2023 12:52:38 +0000 (GMT)
+Received: from sbct-3.bos2.lab (unknown [9.47.158.153])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 13 Sep 2023 12:52:38 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PULL v3 0/1] Merge tpm 2023/09/12 v3
+Date: Wed, 13 Sep 2023 08:52:26 -0400
+Message-ID: <20230913125227.504709-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Ub_-Jrb68UguAJISS-tGhAjBzI7aDvZa
+X-Proofpoint-GUID: Ub_-Jrb68UguAJISS-tGhAjBzI7aDvZa
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2] virtio: add VIRTQUEUE_ERROR QAPI event
-Content-Language: en-US
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-devel@nongnu.org
-Cc: yc-core@yandex-team.ru, eduardo@habkost.net, berrange@redhat.com,
- pbonzini@redhat.com, eblake@redhat.com, armbru@redhat.com, dave@treblig.org,
- mst@redhat.com
-References: <20230912175756.151047-1-vsementsov@yandex-team.ru>
-From: Denis Plotnikov <den-plotnikov@yandex-team.ru>
-In-Reply-To: <20230912175756.151047-1-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=den-plotnikov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-13_06,2023-09-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=637
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 phishscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309130101
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -78,141 +104,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Denis Plotnikov <den-plotnikov@yandex-team.ru>
+Hello!
 
-On 9/12/23 20:57, Vladimir Sementsov-Ogievskiy wrote:
-> For now we only log the vhost device error, when virtqueue is actually
-> stopped. Let's add a QAPI event, which makes possible:
->
->   - collect statistics of such errors
->   - make immediate actions: take core dumps or do some other debugging
->   - inform the user through a management API or UI, so that (s)he can
->    react somehow, e.g. reset the device driver in the guest or even
->    build up some automation to do so
->
-> Note that basically every inconsistency discovered during virtqueue
-> processing results in a silent virtqueue stop.  The guest then just
-> sees the requests getting stuck somewhere in the device for no visible
-> reason.  This event provides a means to inform the management layer of
-> this situation in a timely fashion.
->
-> The event could be reused for some other virtqueue problems (not only
-> for vhost devices) in future. For this it gets a generic name and
-> structure.
->
-> We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
-> here, it's not the only call to VHOST_OPS_DEBUG in the file.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->
-> v2: - improve commit message (just stole wording by Roman, hope he don't
->                                mind:)
->      - add event throttling
->
->   hw/virtio/vhost.c | 12 +++++++++---
->   monitor/monitor.c | 10 ++++++++++
->   qapi/qdev.json    | 25 +++++++++++++++++++++++++
->   3 files changed, 44 insertions(+), 3 deletions(-)
->
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index e2f6ffb446..162899feee 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -15,6 +15,7 @@
->   
->   #include "qemu/osdep.h"
->   #include "qapi/error.h"
-> +#include "qapi/qapi-events-qdev.h"
->   #include "hw/virtio/vhost.h"
->   #include "qemu/atomic.h"
->   #include "qemu/range.h"
-> @@ -1332,11 +1333,16 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
->       struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
->                                                 error_notifier);
->       struct vhost_dev *dev = vq->dev;
-> -    int index = vq - dev->vqs;
->   
->       if (event_notifier_test_and_clear(n) && dev->vdev) {
-> -        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
-> -                        dev->vq_index + index);
-> +        int ind = vq - dev->vqs + dev->vq_index;
-> +        DeviceState *ds = &dev->vdev->parent_obj;
-> +
-> +        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d", ind);
-> +        qapi_event_send_virtqueue_error(ds->id, ds->canonical_path, ind,
-> +                                        VIRTQUEUE_ERROR_VHOST_VRING_ERR,
-> +                                        "vhost reported failure through vring "
-> +                                        "error fd");
->       }
->   }
->   
-> diff --git a/monitor/monitor.c b/monitor/monitor.c
-> index 941f87815a..cb1ee31156 100644
-> --- a/monitor/monitor.c
-> +++ b/monitor/monitor.c
-> @@ -313,6 +313,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
->       [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
->       [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
->       [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-> +    [QAPI_EVENT_VIRTQUEUE_ERROR]   = { 1000 * SCALE_MS },
->       [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
->       [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
->   };
-> @@ -497,6 +498,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
->           hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
->       }
->   
-> +    if (evstate->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-> +        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-> +    }
-> +
->       return hash;
->   }
->   
-> @@ -524,6 +529,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
->                          qdict_get_str(evb->data, "qom-path"));
->       }
->   
-> +    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-> +        return !strcmp(qdict_get_str(eva->data, "device"),
-> +                       qdict_get_str(evb->data, "device"));
-> +    }
-> +
->       return TRUE;
->   }
->   
-> diff --git a/qapi/qdev.json b/qapi/qdev.json
-> index 6bc5a733b8..199e21cae7 100644
-> --- a/qapi/qdev.json
-> +++ b/qapi/qdev.json
-> @@ -161,3 +161,28 @@
->   ##
->   { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
->     'data': { '*device': 'str', 'path': 'str' } }
-> +
-> +##
-> +# @VirtqueueError:
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'enum': 'VirtqueueError',
-> +  'data': [ 'vhost-vring-err' ] }
-> +
-> +##
-> +# @VIRTQUEUE_ERROR:
-> +#
-> +# Emitted when a device virtqueue fails in runtime.
-> +#
-> +# @device: the device's ID if it has one
-> +# @path: the device's QOM path
-> +# @virtqueue: virtqueue index
-> +# @error: error identifier
-> +# @description: human readable description
-> +#
-> +# Since: 8.2
-> +##
-> +{ 'event': 'VIRTQUEUE_ERROR',
-> + 'data': { '*device': 'str', 'path': 'str', 'virtqueue': 'int',
-> +            'error': 'VirtqueueError', 'description': 'str'} }
+  This PR contains a fix for the case where the TPM file descriptor is >= 1024
+and the select() call cannot be used. It also avoids unnecessary errors due to
+EINTR being returned from the syscall.
+
+Regards,
+   Stefan
+
+
+The following changes since commit 9ef497755afc252fb8e060c9ea6b0987abfd20b6:
+
+  Merge tag 'pull-vfio-20230911' of https://github.com/legoater/qemu into staging (2023-09-11 09:13:08 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/stefanberger/qemu-tpm.git tags/pull-tpm-2023-09-12-3
+
+for you to fetch changes up to 8e32ddff69b6b4547cc00592ad816484e160817a:
+
+  tpm: fix crash when FD >= 1024 and unnecessary errors due to EINTR (2023-09-13 08:42:57 -0400)
+
+----------------------------------------------------------------
+
+Marc-André Lureau (1):
+  tpm: fix crash when FD >= 1024 and unnecessary errors due to EINTR
+
+ backends/tpm/tpm_util.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
+
+-- 
+2.41.0
+
 
