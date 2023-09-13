@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1737579E3C7
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E50B79E416
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:47:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgMD8-0001JZ-57; Wed, 13 Sep 2023 05:31:02 -0400
+	id 1qgMR4-00014M-Qj; Wed, 13 Sep 2023 05:45:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMD1-0001Iz-D5
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:30:55 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMR2-000146-7x
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:45:24 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMCz-0002ME-5U
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:30:55 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-40037db2fe7so70558695e9.0
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 02:30:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgMQz-00089R-HZ
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:45:24 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-52f33659d09so4953148a12.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 02:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694597450; x=1695202250; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jtT3ML1tHJnWRfmIXQrD6YCHmxZTPOtervgh4drQU7s=;
- b=wyNU+9QIuqMCKmLMuDVDitnZ9U2QI4gOrUOvDogfi5g/eXEY3JeqLu+i9+ey11C5gj
- 6Uzzhm02qLc8nq70C7SMk2Kb1oOencxz0rBgbVDtw5C8FpDt1mrVRKs7hZwUTrO+2wxh
- /Yb4+bJPtwb3SIKlxi2LC8Vm4uLp3SvijNkt3ltsSNWYZO1BpvoCn0+ADbe6EcHsSLsR
- frU82Q8MPNQUfa6MfzdQ+XFyCkgpX0EcWjPmnWRk02Yxig+t03P/NvGCnKdZqMPl1cZu
- kPED3u4zfpS1tvXN4M1l3h+Bn/RkJ/vIaC/oEPyyrn0s3HE3LALhyCSGLG7R4XN52cL+
- 5kjw==
+ d=linaro.org; s=google; t=1694598319; x=1695203119; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NlEuFrbLbnFvdp7u5cagwWG5ekfzjk87zL3lXOG+/zk=;
+ b=WFl9dXW5rAZiyYvot598inJ5VX3ome38308NYdxwmpbhQgGUn02daYc+mg9fzwAvTG
+ 8f4Jg5aJZntn2VVAn9eTn2qXZYwbf13MYnlKbB57g41Vjk3gbPbYUGK2yaNAWNC53OD8
+ wOnVSLOFrsKkpx/Vu0yQV+qdbRAYFXyBcpUAO0GkxJq4Xul9mfeS1U33SaFiRAqaBvJt
+ CrSBZMoJxK7UXFenwDth8UatYuW/3VxW2TZDgkbwPaz/6UpDrZ7nN3cPL90R1AG1b1Er
+ BILNmpJlxAWvkSC3ZLqj83UH5X7gnKN1mD5vFKr8MsgX7Tz0msDwVdMn/4WGf/gOP7JX
+ O9Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694597450; x=1695202250;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=jtT3ML1tHJnWRfmIXQrD6YCHmxZTPOtervgh4drQU7s=;
- b=Ngl/74MDcxPDIb9luUwgdxI/VUkK8CMbsDyd642dHPDsEqojC8CEpKakvVMcdYnT2X
- Zg58L+KIe0bGFNDU4sbvg4YcEAvgmrfN7rXxQx/F2R/fLogQUDCDxCXOBoqJqVOsgGjf
- t4Mk73Ky7qWe6/rYSsfGfSa4dO30jy0ir29QsRZHP7SjXxhF4fFT7URpm326SfLPxEtb
- RGWmRsaGWNvarrX3LWaQe97wAH8iIUAUPyf3qo6513opfCxw3Bv6W95Iv0BaGvi4m/D3
- d0HK6935xDYzFZiUi0e4BYkfqCL/7v8EpQXJdYjq40WTdJE2Y39XyMlJH82KqbFVHH5/
- sdcA==
-X-Gm-Message-State: AOJu0Yy3j/eFCMdHItsap4RmuwRHjUQ5zqwXWVCWLmeQtnOrom22A7vy
- s9HkcJIejuQcPHWypVZrqXeEHuTjBj3C3sk6ad4=
-X-Google-Smtp-Source: AGHT+IGD2WPDLCyweINrRoQof3jTKC1mX87q6WXI/fyFE1kXJNwVQRZhwnclukg8a31JArVaogLfzA==
-X-Received: by 2002:a7b:c397:0:b0:402:ea6f:e88f with SMTP id
- s23-20020a7bc397000000b00402ea6fe88fmr1496700wmj.5.1694597450118; 
- Wed, 13 Sep 2023 02:30:50 -0700 (PDT)
-Received: from m1x-phil.lan (176-131-211-241.abo.bbox.fr. [176.131.211.241])
- by smtp.gmail.com with ESMTPSA id
- l14-20020a1c790e000000b003fe4ca8decdsm1465100wme.31.2023.09.13.02.30.48
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Sep 2023 02:30:49 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Kevin Wolf <kwolf@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 6/6] target/i386: Prohibit target specific KVM prototypes
- on user emulation
-Date: Wed, 13 Sep 2023 11:30:08 +0200
-Message-ID: <20230913093009.83520-7-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230913093009.83520-1-philmd@linaro.org>
-References: <20230913093009.83520-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1694598319; x=1695203119;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NlEuFrbLbnFvdp7u5cagwWG5ekfzjk87zL3lXOG+/zk=;
+ b=XE/ZgkargoCAAlmaWKgs3aK3P5N6DBRoZ7LMBY2OyYIXUhrgQGM4V430vn6fBYA/ZM
+ Zn0DveqExPP334osR8SCQyiifqFB1ghjowUdjy9TiSH5OytEgeJeyxbo52NFmHfL578V
+ s72EnRmcPswwGEcFoNWQjyKVgGuXuHpmKEHmJYrN9c/tac8jKpi0he43fU7bvBuVTNt6
+ k28MiysleeNn3Un3fl0EVM7S5ZvRFrTSjLFtQEMEJ9GJV3kWQllRK/5mChJNKKCnQc9Q
+ o5kUOxZ6PvVPlNCiImm4e68Dtgw1G9vGf/CPXNVNCUCS4uPH0XMXYNMVkSGFFyEPWjSt
+ cFSg==
+X-Gm-Message-State: AOJu0YyXjyWX2VFc14HHMyXIYmElgygzWQlIolJ+MbO5OQM2TnmDYB/V
+ mQyOzu8zyLHFzpFVq5c0kK5Idw==
+X-Google-Smtp-Source: AGHT+IGJXNk0WLG385Oweuudz718AK1F+X/0W9vFdotUi2W47VYU9PSarLMMOqPadDZcv7eYMGOdjQ==
+X-Received: by 2002:a05:6402:8d6:b0:525:7d81:71ee with SMTP id
+ d22-20020a05640208d600b005257d8171eemr1731190edz.15.1694598319279; 
+ Wed, 13 Sep 2023 02:45:19 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
+ [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
+ g12-20020a056402114c00b0052ea9ad21bdsm7034651edw.72.2023.09.13.02.45.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 02:45:18 -0700 (PDT)
+Message-ID: <4e335f86-d075-4cc0-af5a-9dca9b3bf261@linaro.org>
+Date: Wed, 13 Sep 2023 11:45:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH] gitlab: remove unreliable avocado CI jobs
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>
+References: <20230912150611.70676-1-stefanha@redhat.com>
+ <27e38912-0bad-7398-dda6-1670fc644f74@redhat.com>
+ <CAFEAcA_roU-_E4P94km1RF=u6c+GRBxrGP0jS1_dXsRABCymJg@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA_roU-_E4P94km1RF=u6c+GRBxrGP0jS1_dXsRABCymJg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,56 +98,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-None of these target-specific prototypes should be used
-by user emulation. Remove their declaration there, so we
-get a compile failure if ever used (instead of having to
-deal with linker and its possible optimizations, such
-dead code removal).
+On 13/9/23 11:18, Peter Maydell wrote:
+> On Tue, 12 Sept 2023 at 21:00, Thomas Huth <thuth@redhat.com> wrote:
+>> Please don't remove the whole job! Just disable the failing tests within the job, e.g.:
+>>
+>> diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
+>> --- a/tests/avocado/replay_kernel.py
+>> +++ b/tests/avocado/replay_kernel.py
+>> @@ -503,6 +503,7 @@ def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
+>>            console_pattern = 'Kernel command line: %s' % kernel_command_line
+>>            self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
+>>
+>> +    @skipIf(os.getenv('GITLAB_CI'), 'Skipping unstable test on GitLab')
+>>        def test_mips_malta32el_nanomips_4k(self):
+>>            """
+>>            :avocado: tags=arch:mipsel
+> 
+> Please don't skip unstable tests on gitlab only. If they're
+> unstable, then nobody wants to be running them and wondering
+> if these are flaky tests or real issues, whether theyr'e doing
+> it on gitlab or locally. (I know we already have a lot of these,
+> but the effect is that instead of saying 'make check-avocado'
+> you have to say 'GITLAB_CI=1 make check-avocado'.)
 
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/i386/kvm/kvm_i386.h | 4 ++++
- target/i386/cpu.c          | 3 ++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+Good point, I'll simply use:
 
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 55d4e68c34..5ef73f0a1c 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -13,6 +13,10 @@
- 
- #include "sysemu/kvm.h"
- 
-+#ifdef CONFIG_USER_ONLY
-+#error Cannot include kvm_i386.h from user emulation
-+#endif
-+
- #ifdef CONFIG_KVM
- 
- #define kvm_pit_in_kernel() \
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index c201ff26bd..db8ed6284d 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -26,7 +26,7 @@
- #include "tcg/helper-tcg.h"
- #include "sysemu/reset.h"
- #include "sysemu/hvf.h"
--#include "kvm/kvm_i386.h"
-+#include "sysemu/kvm.h"
- #include "sev.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
-@@ -40,6 +40,7 @@
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
- #include "hw/i386/sgx-epc.h"
-+#include "kvm/kvm_i386.h"
- #endif
- 
- #include "disas/capstone.h"
--- 
-2.41.0
+         @skip('Pending https://gitlab.com/qemu-project/qemu/-/issues/1884')
 
+Looking at other ones:
+
+$ git grep -w @skip tests/avocado/
+tests/avocado/machine_sparc_leon3.py:17:    @skip("Test currently broken")
+tests/avocado/netdev-ethtool.py:89:    @skip("Incomplete reg 0x00178 
+support")
+tests/avocado/netdev-ethtool.py:96:    @skip("Incomplete reg 0x00178 
+support")
+tests/avocado/replay_kernel.py:333:    @skip("Test currently broken") # 
+Console stuck as of 5.2-rc1
+tests/avocado/replay_kernel.py:368:    @skip("nios2 emulation is buggy 
+under record/replay")
+tests/avocado/virtio_check_params.py:119:    @skip("break multi-arch CI")
+
+Looking at the first one:
+
+commit 5baecf58ad9fb3ce24d331978526909d0beca482
+Author: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Date:   Tue Mar 31 12:50:42 2020 +0200
+
+     tests/acceptance/machine_sparc_leon3: Disable HelenOS test
+
+     This test was written/tested around beginning of 2019, but was
+     extracted from a bigger series and posted end of June 2019 [*].
+     Unfortunately I did not notice commit 162abf1a8 was merged by
+     then, which implements the AHB and APB plug and play devices.
+
+     HelenOS 0.6 is expecting the PnP registers to be not implemented
+     by QEMU, then forces the discovered AMBA devices (see [2]).
+
+     Before 162abf1a8, the console was displaying:
+
+       HelenOS bootloader, release 0.6.0 (Elastic Horse)
+       Built on 2014-12-21 20:17:42 for sparc32
+       Copyright (c) 2001-2014 HelenOS project
+        0x4000bf20|0x4000bf20: kernel image (496640/128466 bytes)
+        0x4002b4f2|0x4002b4f2: ns image (154195/66444 bytes)
+        0x4003b87e|0x4003b87e: loader image (153182/66437 bytes)
+        0x4004bc03|0x4004bc03: init image (155339/66834 bytes)
+        0x4005c115|0x4005c115: locsrv image (162063/70267 bytes)
+        0x4006d390|0x4006d390: rd image (152678/65889 bytes)
+        0x4007d4f1|0x4007d4f1: vfs image (168480/73394 bytes)
+        0x4008f3a3|0x4008f3a3: logger image (158034/68368 bytes)
+        0x4009feb3|0x4009feb3: ext4fs image (234510/100301 bytes)
+        0x400b8680|0x400b8680: initrd image (8388608/1668901 bytes)
+       ABMA devices:
+       <1:00c> at 0x80000100 irq 3
+       <1:00d> at 0x80000200
+       <1:011> at 0x80000300 irq 8
+       Memory size: 64 MB
+
+     As of this commit, it is now confused:
+
+       ABMA devices:
+       <1:3000> at 0x00000000 irq 0
+       <1:3000> at 0x00000000 irq 0
+       <1:3000> at 0x00000000 irq 0
+       <1:3000> at 0x00000000 irq 0
+       <1:3000> at 0x00000000 irq 0
+       <1:3000> at 0x00000000 irq 0
+       <1:3000> at 0x00000000 irq 0
+       ...
+
+     As this test is not working as expected, simply disable it (by
+     skipping it) for now.
+
+More than 3 years passed already, what a disappointment.
+Offending commit is 4 years old.
+
+commit 162abf1a83ddd06ce1618666f84f88ba4dbffe10
+Author: KONRAD Frederic <frederic.konrad@adacore.com>
+Date:   Wed May 15 14:31:32 2019 +0200
+
+     leon3: introduce the plug and play mechanism
+
+     This adds the AHB and APB plug and play devices.
+     They are scanned during the linux boot to discover the various
+     peripheral.
+
+I'm not complaining about that particular commit, I wonder about
+usefulness of disabling tests from unmaintained areas.
+
+Maybe we can commit a date when disabling a test, having a disabled
+test failing _after_ that date, so if it isn't fixed we remove it.
+Smth like,
+
+   @SkipBroken(date='2023-11-15',
+               desc='Pending 
+https://gitlab.com/qemu-project/qemu/-/issues/1884') # Will fail if run 
+after 2023-11-15 and this test isn't fixed
+
+Thoughts?
 
