@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8806679F244
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 21:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F82A79F24A
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 21:44:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgViX-00058e-2f; Wed, 13 Sep 2023 15:40:05 -0400
+	id 1qgVlO-000798-BM; Wed, 13 Sep 2023 15:43:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgViV-00055o-85
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 15:40:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgViS-0007IA-MC
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 15:40:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694633999;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=76/ewL4c7/k1SZpXhmL+Sg/xYYAmvWTOVxC4Gwpe93c=;
- b=HUZJ/4Yyl3G6IRx0Qhqmwna3F5oZvK74aWP36VvAOh70v/vJjTPnFmBp5U5x1cPQuRXq7Y
- iTorllEfYBN6M1C8TJLtnePlnO5G4fVDciDDhh2rz6S+qYYsIrbf2Mz2eooY4rYYxKnSqF
- bZ+o1ppNBEEcMfxgwHclTOyunWVWmvE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-688-ChcbR3hJOZ-Ea6N80BKXWA-1; Wed, 13 Sep 2023 15:39:55 -0400
-X-MC-Unique: ChcbR3hJOZ-Ea6N80BKXWA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgVlK-00077Y-Ka
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 15:42:58 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgVl5-0000Cz-9U
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 15:42:58 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CA548185A790;
- Wed, 13 Sep 2023 19:39:54 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.13])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 044F12156721;
- Wed, 13 Sep 2023 19:39:53 +0000 (UTC)
-Date: Wed, 13 Sep 2023 15:39:52 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Fam Zheng <fam@euphon.net>, xen-devel@lists.xenproject.org,
- Anthony Perard <anthony.perard@citrix.com>,
- Hanna Reitz <hreitz@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Julia Suvorova <jusual@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Aarushi Mehta <mehta.aaru20@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Paul Durrant <paul@xen.org>, Ilya Maximets <i.maximets@ovn.org>
-Subject: Re: [PATCH v2 2/4] util/defer-call: move defer_call() to util/
-Message-ID: <20230913193952.GA917540@fedora>
-References: <20230817155847.3605115-1-stefanha@redhat.com>
- <20230817155847.3605115-3-stefanha@redhat.com>
- <5ad95579-f8f3-2926-dd37-bd84151f10ac@linaro.org>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id D14F321886;
+ Wed, 13 Sep 2023 19:42:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1694634154; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f01QA1azbWEuKe4UQkyLp8pFNmoA9Vh72SF3DmIUazU=;
+ b=bwM+RbGp8J8EDxU5T6IOTWrzWo0hqxaSaG+8XFp3lvVoS6clOE+7V1MkwLfhT/iklCiKVa
+ Czgc8P5IfmXnj6DjwfFLTsVWdoLJbG99OYCIkbiNvWoTXKL+hTa51yKR8Jpl/c7pzGODlO
+ FYGe4mS5sM1NZUFpVRbXpb1vDR+9v5o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1694634154;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=f01QA1azbWEuKe4UQkyLp8pFNmoA9Vh72SF3DmIUazU=;
+ b=+TYY9Qd/EhzhJrNApFLerwxMpy5RSDYqkjK+aAhcHFlVRhndCuzHhgB2Do+ArTNGk3XpQA
+ qUYijgCaNI5FnIAA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4D8BB13440;
+ Wed, 13 Sep 2023 19:42:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 6X+LA6oQAmUMcwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 13 Sep 2023 19:42:34 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Peter Xu <peterx@redhat.com>, Leonardo Bras
+ <leobras@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: QEMU migration-test CI intermittent failure
+In-Reply-To: <20230913192301.GA917052@fedora>
+References: <20230913192301.GA917052@fedora>
+Date: Wed, 13 Sep 2023 16:42:31 -0300
+Message-ID: <87r0n1kggo.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="lyQbDpdO8ddpDhX4"
-Content-Disposition: inline
-In-Reply-To: <5ad95579-f8f3-2926-dd37-bd84151f10ac@linaro.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,136 +85,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Stefan Hajnoczi <stefanha@redhat.com> writes:
 
---lyQbDpdO8ddpDhX4
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Hi,
+> The following intermittent failure occurred in the CI and I have filed
+> an Issue for it:
+> https://gitlab.com/qemu-project/qemu/-/issues/1886
+>
+> Output:
+>
+>   >>> QTEST_QEMU_IMG=3D./qemu-img MALLOC_PERTURB_=3D116 QTEST_QEMU_STORAG=
+E_DAEMON_BINARY=3D./storage-daemon/qemu-storage-daemon G_TEST_DBUS_DAEMON=
+=3D/builds/qemu-project/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_BINARY=
+=3D./qemu-system-x86_64 /builds/qemu-project/qemu/build/tests/qtest/migrati=
+on-test --tap -k
+>   =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95
+>   stderr:
+>   qemu-system-x86_64: Unable to read from socket: Connection reset by peer
+>   Memory content inconsistency at 5b43000 first_byte =3D bd last_byte =3D=
+ bc current =3D 4f hit_edge =3D 1
+>   **
+>   ERROR:../tests/qtest/migration-test.c:300:check_guests_ram: assertion f=
+ailed: (bad =3D=3D 0)
+>   (test program exited with status code -6)
+>
+> You can find the full output here:
+> https://gitlab.com/qemu-project/qemu/-/jobs/5080200417
 
-On Fri, Aug 18, 2023 at 10:31:40AM +0200, Philippe Mathieu-Daud=E9 wrote:
-> Hi Stefan,
->=20
-> On 17/8/23 17:58, Stefan Hajnoczi wrote:
-> > The networking subsystem may wish to use defer_call(), so move the code
-> > to util/ where it can be reused.
-> >=20
-> > As a reminder of what defer_call() does:
-> >=20
-> > This API defers a function call within a defer_call_begin()/defer_call_=
-end()
-> > section, allowing multiple calls to batch up. This is a performance
-> > optimization that is used in the block layer to submit several I/O requ=
-ests
-> > at once instead of individually:
-> >=20
-> >    defer_call_begin(); <-- start of section
-> >    ...
-> >    defer_call(my_func, my_obj); <-- deferred my_func(my_obj) call
-> >    defer_call(my_func, my_obj); <-- another
-> >    defer_call(my_func, my_obj); <-- another
-> >    ...
-> >    defer_call_end(); <-- end of section, my_func(my_obj) is called once
-> >=20
-> > Suggested-by: Ilya Maximets <i.maximets@ovn.org>
-> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > ---
-> >   MAINTAINERS                       |  3 ++-
-> >   include/qemu/defer-call.h         | 15 +++++++++++++++
-> >   include/sysemu/block-backend-io.h |  4 ----
-> >   block/blkio.c                     |  1 +
-> >   block/io_uring.c                  |  1 +
-> >   block/linux-aio.c                 |  1 +
-> >   block/nvme.c                      |  1 +
-> >   hw/block/dataplane/xen-block.c    |  1 +
-> >   hw/block/virtio-blk.c             |  1 +
-> >   hw/scsi/virtio-scsi.c             |  1 +
-> >   block/plug.c =3D> util/defer-call.c |  2 +-
-> >   block/meson.build                 |  1 -
-> >   util/meson.build                  |  1 +
-> >   13 files changed, 26 insertions(+), 7 deletions(-)
-> >   create mode 100644 include/qemu/defer-call.h
-> >   rename block/plug.c =3D> util/defer-call.c (99%)
-> >=20
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 6111b6b4d9..7cd7132ffc 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -2676,12 +2676,13 @@ S: Supported
-> >   F: util/async.c
-> >   F: util/aio-*.c
-> >   F: util/aio-*.h
-> > +F: util/defer-call.c
->=20
-> If used by network/other backends, maybe worth adding a
-> brand new section instead, rather than "Block I/O path".
+This is the postcopy return path issue that I'm addressing here:
 
-Changes to defer-call.c will go through my block tree. We don't split
-out the event loop (async.c, aio-*.c, etc) either even though it's
-shared by other subsystems. The important thing is that
-scripts/get_maintainer.pl identifies the maintainers.
-
-I'd rather not create lots of micro-subsystems in MAINTAINERS that
-duplicate my email and block git repo URL.
-
->=20
-> >   F: util/fdmon-*.c
-> >   F: block/io.c
-> > -F: block/plug.c
-> >   F: migration/block*
-> >   F: include/block/aio.h
-> >   F: include/block/aio-wait.h
-> > +F: include/qemu/defer-call.h
-> >   F: scripts/qemugdb/aio.py
-> >   F: tests/unit/test-fdmon-epoll.c
-> >   T: git https://github.com/stefanha/qemu.git block
-> > diff --git a/include/qemu/defer-call.h b/include/qemu/defer-call.h
-> > new file mode 100644
-> > index 0000000000..291f86c987
-> > --- /dev/null
-> > +++ b/include/qemu/defer-call.h
-> > @@ -0,0 +1,15 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > +/*
-> > + * Deferred calls
-> > + *
-> > + * Copyright Red Hat.
-> > + */
-> > +
-> > +#ifndef QEMU_DEFER_CALL_H
-> > +#define QEMU_DEFER_CALL_H
-> > +
->=20
-> Please add smth like:
->=20
->    /* See documentation in util/defer-call.c */
-
-Sure, will fix.
-
->=20
-> > +void defer_call_begin(void);
-> > +void defer_call_end(void);
-> > +void defer_call(void (*fn)(void *), void *opaque);
-> > +
-> > +#endif /* QEMU_DEFER_CALL_H */
->=20
-> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
->=20
-
---lyQbDpdO8ddpDhX4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUCEAgACgkQnKSrs4Gr
-c8hAmgf9E2O/DQNWurhzEXWw4NoN8tFv+RFmdKRjgSWppte+VSUZO46QaWB4y6/C
-B1LwPQTljnRoxfLeThTaVcryoGp74Bpt9KmA6X1/0WIz+eQBV7EpEGZtYfgJVaPI
-idS4XylvuP7bW34HjBT8dnRo/femAuCiheV/cK/mXu/w1N2pnqmRL3wwsjjh9uh+
-msGLG3NbFr+GoJDX/XyogX+em9DiNZeiKNKs1b6VIqOxQIYKV/Tm9lh/ujDjwtu+
-whUB+602U4J1IHG46NOfPYrt3jskfKbduRBn4za/lyFB7UHv/a1HeshAIIkrDDsK
-fWnDKU89QGtDJT7heQeFsu8ek/TJZQ==
-=qWcW
------END PGP SIGNATURE-----
-
---lyQbDpdO8ddpDhX4--
-
+https://lore.kernel.org/r/20230911171320.24372-1-farosas@suse.de
+Subject: [PATCH v6 00/10] Fix segfault on migration return path
+Message-ID: <20230911171320.24372-1-farosas@suse.de>
 
