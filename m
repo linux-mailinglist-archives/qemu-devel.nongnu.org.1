@@ -2,51 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E401779ECB9
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 17:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B84379ED26
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 17:35:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgRir-0006Is-C8; Wed, 13 Sep 2023 11:24:09 -0400
+	id 1qgRsB-0004ND-Hs; Wed, 13 Sep 2023 11:33:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgRio-0006IO-Qe
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:24:06 -0400
-Received: from rev.ng ([5.9.113.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgRim-0000y5-98
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:24:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
- Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=vXZldfMcrnLZHr6RDODdxCA1BVpu8mtVTcaeDyZQ7mQ=; b=G81agT3Okpk8PfoeMYnUdyCLWD
- A0uw68OmZPHR8JgTvwjC+Z01wKaRtRUJOZrA8IeMcVPg0NbTKcESZ8mOtMFLF7gkkoU9VnKZRSupf
- KX4aF0+0IqFkqHYY5Xsc33n4GQejmu0L2pWIB8aJYd8yxNMYXSDfRqU9ShnmzR1tjVCw=;
-Message-ID: <b5b181c2-1e42-4d19-a044-e23a6d1aef03@rev.ng>
-Date: Wed, 13 Sep 2023 17:23:53 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qgRs0-0004AD-Va
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:33:41 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qgRrx-000520-ST
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 11:33:35 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1c336f3f449so61115175ad.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 08:33:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694619212; x=1695224012; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=xJMrqKZRUHk8/HtrhGEOXel85p0g+0Tehn58+TOL8pk=;
+ b=K3TrfDYzfjRYR6SCSz5XLdsYkovguH6JJ4xnp+e1xhj2e2bBs6lYQi8wds8Wv4S4QF
+ 6yUcpg+gk5UZleGDAa9tmBUo45juSqDvcUwVpZEuS6eqvGODQxavAvB4WDkUEecDjw+h
+ F1MV9Pbh7VDsBpUQc8UQh2cdr49eNqUJWwNBK0qSfvnaXnJq+FaI71O2+0orpHTKvaYB
+ 2GFQ3ZFHaaU0RkenGX0bC1/v3Yi75RFGYXw8gGi4gW3+IQKCu/uxx8c2plJDw/pRSDi1
+ sf8RgrJGnne7ISHHEu+S6wdcSw0V6kS2BQIe+zjaL+bVnCqhdE9P/60EafGp566iUDT7
+ neeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694619212; x=1695224012;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xJMrqKZRUHk8/HtrhGEOXel85p0g+0Tehn58+TOL8pk=;
+ b=O33gRRCAb0I03X88C21phE8bzUDKqb8Ayk+EhS+x5WJHNDI3TbtlSAmEBpodmuqgjE
+ pqHGaSKAcqDTwizPHQP25KdC5KEyLMd+t7vYBMjfrzqA1y4Mfr7KyhpQ05BZ24j/EMAb
+ iNnG12eVO7Rk1FdPyhLJY/RCZ7n8gMSbbGBWL6eCad4SIxR2CUVpOvQa4hm8tjT89Tb1
+ z691xjker9N0Pvrh+ghKujL0BmkmJmxLwdB3b3/eA302Z51c0wS+motqG2ovGizdhIxu
+ qRe0TfUzKi0tueuQNhNq3kP/NlnUXMDhSCB0wRFP2KzqCqkL3GUtgIUmb4LyN8z2OZlK
+ OjuQ==
+X-Gm-Message-State: AOJu0YxDGQlr9CZAQWNk7M4neEZ2jhgnNGAQyJuu/Xk80pJYYkN31Y05
+ MwWr7AQI4hGwLZYumXWIIZE9lg==
+X-Google-Smtp-Source: AGHT+IFNcbr1qvY385MB/j9HIaEYMG3ZQbdeZjh8xCfrLv79ZdpDx7AdLqTqbf1qK95VL8LuC3voOw==
+X-Received: by 2002:a17:902:e84d:b0:1b8:8af0:416f with SMTP id
+ t13-20020a170902e84d00b001b88af0416fmr3494607plg.1.1694619212059; 
+ Wed, 13 Sep 2023 08:33:32 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ w5-20020a1709029a8500b001bb3beb2bc6sm8405703plp.65.2023.09.13.08.33.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 08:33:31 -0700 (PDT)
+Message-ID: <1231b992-7122-45a4-ca0e-0d1be57edb7c@linaro.org>
+Date: Wed, 13 Sep 2023 08:33:29 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/11] include: Introduce tlb_ptr field to CPUState
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v3 21/23] bsd-user: Implement shmctl(2)
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: ale@rev.ng, pbonzini@redhat.com, philmd@linaro.org,
- peter.maydell@linaro.org
-References: <20230912153428.17816-1-anjo@rev.ng>
- <20230912153428.17816-3-anjo@rev.ng>
- <c0049873-fb1c-571d-baf7-ff53b34c2f23@linaro.org>
-Organization: rev.ng
-In-Reply-To: <c0049873-fb1c-571d-baf7-ff53b34c2f23@linaro.org>
+To: Karim Taha <kariem.taha2.7@gmail.com>, qemu-devel@nongnu.org
+Cc: imp@bsdimp.com, Stacey Son <sson@FreeBSD.org>
+References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
+ <20230909193704.1827-22-kariem.taha2.7@gmail.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230909193704.1827-22-kariem.taha2.7@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,27 +92,22 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  anjo@rev.ng
-X-ACL-Warn: ,  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 9/9/23 12:37, Karim Taha wrote:
+> From: Stacey Son<sson@FreeBSD.org>
+> 
+> Signed-off-by: Stacey Son<sson@FreeBSD.org>
+> Signed-off-by: Karim Taha<kariem.taha2.7@gmail.com>
+> 
+> Reviewed-by: Warner Losh<imp@bsdimp.com>
+> ---
+>   bsd-user/bsd-mem.h            | 39 +++++++++++++++++++++++++++++++++++
+>   bsd-user/freebsd/os-syscall.c |  4 ++++
+>   2 files changed, 43 insertions(+)
 
-> On 9/12/23 08:34, Anton Johansson wrote:
->>       IcountDecr *icount_decr_ptr;
->> +    struct CPUTLB *tlb_ptr;
->
-> These are both in CPUNegativeOffsetState.
-> We might as well use that pointer instead.
->
->
-> r~
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Ah, good point.
-
--- 
-Anton Johansson,
-rev.ng Labs Srl.
-
+r~
 
