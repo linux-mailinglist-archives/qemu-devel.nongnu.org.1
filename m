@@ -2,97 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33D879E7CF
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C20579E7D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 14:23:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgOqx-0000bp-2y; Wed, 13 Sep 2023 08:20:19 -0400
+	id 1qgOtg-0001XX-GI; Wed, 13 Sep 2023 08:23:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgOqo-0000Zm-VD
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:20:11 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qgOtF-0001WT-MG
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:22:45 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgOql-0000MV-UD
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:20:10 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4018af1038cso73269065e9.0
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 05:20:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qgOt9-0000wu-Hg
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 08:22:38 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68fba57030fso3154931b3a.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 05:22:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694607604; x=1695212404; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694607753; x=1695212553;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=cw/GU2hpkfIr/4amrzLmC4xtCt8GrYzMMKVVf+xAAJc=;
- b=FGquiurstw1csFcZDmuqoxEY1FzFtvYDTs2PRgJ37wvCH1pc8YtGlL7lO7kAm7lRWe
- OsevpTcEjntYyZGIPF9UsvGhPzI4HFoFb94al8lM4T6BAkg034VU5j+PJFxGe8TV12J/
- Wj9xt1Zw+6EJNWSyBMiBdEc0a7bdbkam0GNQk43l4JJKLl2r7C9gAl7JjH8wrXlGwcbP
- eBpLIXFcPdToA/nxAdhSGtmESDyg8CmyqjzMpEBMx4jlmg3mlfpf9xGT7mMYEElKKS2R
- YRs4GBfX6cDVrdSb+b30QIaZmI6b8OvSDe5dBaMSGLgni3RLXO1X5YdxRFTm208ThjMP
- pcUQ==
+ bh=bd7AjsFGHVU9ZgF8t64qnNi1wuPnAXka53rRg0j9Ps8=;
+ b=MLLFtYMlLZloUxjY5dilAgVSioaR4Fl3wRwaWskxOKBxw57LpHP7XigW0psvRlomam
+ UfYk+UDjI9ssL7C0kZI6dKn8E5DDJCAQ7PvmoP7gSKzzZEYmSZfnZWuEmKxHhQ5mvFqj
+ KtmUfSShiemT/2ylH1pTh4WrZw2qGg0gTsp50PcYzVJDAi8ZIstQ7JrOGmCpaVpjRqkc
+ eqhUgKPSj0g2+4Vg8BxTgXYNfY9McpwqRCQCnTxll5DSAmkYtza7l9WksNgkc0E86vGb
+ iRaFuFxUH8Ze34baQ2ZcUMSBz7UrXt2WRHIQJ0ExBZp/URvlK2kxdMI0DY/eN08vH1wQ
+ 6SIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694607604; x=1695212404;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1694607753; x=1695212553;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=cw/GU2hpkfIr/4amrzLmC4xtCt8GrYzMMKVVf+xAAJc=;
- b=M4sBt4uyfbQz7Gs0rAhkW3lKAiOjNSRt+J0kH/somnKGLi4VlXqLAjMBTGKeko47AU
- wuDDWYbGCTwA0RHNBBxTv9nqp0MITv7u7FCPrWPdgxqhkNOsYIM3aIfWrrkLsnMUWqOv
- VSoV+VAMpzQ+he2z/TnyJpX/Hgse41A6HEThIxgejxIq0av+iDsrUylOjuOIEi8Vf2v3
- nXXrDUC3iMDEol6XvZGiZHb32luP/41U9MErQC1ZwpBEmbt6KpWDYXpeG9Dh2RzvGpTV
- 4U7HOhQa+z868aqyRIz5y2p3riburag/QoNtFj6VMoHJiyJ0FbfE6m9XoA+EFGWFlvJ+
- ssdQ==
-X-Gm-Message-State: AOJu0Yy37xqEnl9NNn3U85ITznLmhD5br/w+33fIM+jXdXVfqTb1SXuR
- oZ4V1InXuC/bhB3kx3TD7IEQ6A==
-X-Google-Smtp-Source: AGHT+IGNFuDPHGRBGc6156rZGRaGHciVdYu8mbA56Iadsbp4KcddKfFOSxwyp21ik/zNQ3sH2wk3pg==
-X-Received: by 2002:a5d:538f:0:b0:317:51da:83b9 with SMTP id
- d15-20020a5d538f000000b0031751da83b9mr1971357wrv.49.1694607603805; 
- Wed, 13 Sep 2023 05:20:03 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
- [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
- r16-20020adff110000000b00317b0155502sm15521167wro.8.2023.09.13.05.20.01
+ bh=bd7AjsFGHVU9ZgF8t64qnNi1wuPnAXka53rRg0j9Ps8=;
+ b=kaGSC4H+sky+huPtSbWEVfP/Dpv6QrmsoKDsZTtLoRCJnSisdC2w3pf6AsCssX4PPX
+ Pe4STrmMSful75CBjrxtEYJnl7h7Sj5z+Gq+ymvLWnFogVTX9wnwltYZfaz/1cVIAF2J
+ AIK5HhFuSHIUxi0ckKXMTgwJou4Bjw9cCnduYioW5+ZXi1MA9Uxu5JpoIq603jT2S9q8
+ jOWIy8YA7i/R6DLgMuEGrbEwexpDuuzGR3IFDOcOfeH1FhdsG22jrViZpY6PYn772mPn
+ o5l4y9PFUxijBn+xfElQV3dARlkLDWpbNUG2eMysDHC/LMGn1sjer4TQzBXGLj/jowZ7
+ KyyA==
+X-Gm-Message-State: AOJu0YxSDNZ+qvGmM4fMCBYn2XFpp+nJter6l12vDB/NupkwMT54J4e7
+ 79trNvn2M1so07CCVxEf/UZbnA==
+X-Google-Smtp-Source: AGHT+IFUceWhWOwzr7PceZj0Aedx/pJWoToZ/n1XM68m4HSxGEeSRi2V9aKihvMef0Dz/aLMOl/mPA==
+X-Received: by 2002:a05:6a20:e125:b0:137:3c67:85d7 with SMTP id
+ kr37-20020a056a20e12500b001373c6785d7mr2865750pzb.16.1694607752788; 
+ Wed, 13 Sep 2023 05:22:32 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ g1-20020a170902c38100b001c3267ae314sm10323061plg.156.2023.09.13.05.22.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 05:20:03 -0700 (PDT)
-Message-ID: <c524da2a-f6e6-135b-bf22-b633b684961e@linaro.org>
-Date: Wed, 13 Sep 2023 14:20:00 +0200
+ Wed, 13 Sep 2023 05:22:32 -0700 (PDT)
+Message-ID: <5e88f5d5-5aa2-4052-b250-69c2a443344f@daynix.com>
+Date: Wed, 13 Sep 2023 21:22:26 +0900
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v10 17/45] hw/cxl/device: Add a memory device (8.2.8.5)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
+To: Albert Esteve <aesteve@redhat.com>
+Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ "ernunes@redhat.com" <ernunes@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
+References: <20230831093252.2461282-1-ray.huang@amd.com>
+ <20230831093252.2461282-11-ray.huang@amd.com>
+ <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
+ <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
+ <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
+ <cf99ac00-6f48-4778-b319-6079a931ba5d@daynix.com>
+ <CADSE00+6zcT7iKR0JW1Bk8es6HtBpzAKa9JW6u5yyjDoLPw2KQ@mail.gmail.com>
 Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, linuxarm@huawei.com,
- qemu-devel@nongnu.org, alex.bennee@linaro.org,
- Marcel Apfelbaum <marcel@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Adam Manzanares <a.manzanares@samsung.com>, Tong Zhang <ztong0001@gmail.com>
-Cc: linux-cxl@vger.kernel.org, Ben Widawsky <ben.widawsky@intel.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Saransh Gupta1 <saransh@ibm.com>,
- Shreyas Shah <shreyas.shah@elastics.cloud>,
- Chris Browy <cbrowy@avery-design.com>, Samarth Saxena
- <samarths@cadence.com>, Dan Williams <dan.j.williams@intel.com>,
- k.jensen@samsung.com, dave@stgolabs.net,
- Alison Schofield <alison.schofield@intel.com>, Thomas Huth <thuth@redhat.com>
-References: <20220429144110.25167-1-Jonathan.Cameron@huawei.com>
- <20220429144110.25167-18-Jonathan.Cameron@huawei.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20220429144110.25167-18-Jonathan.Cameron@huawei.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CADSE00+6zcT7iKR0JW1Bk8es6HtBpzAKa9JW6u5yyjDoLPw2KQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::434;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,218 +120,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Ben, Jonathan,
-
-On 29/4/22 16:40, Jonathan Cameron via wrote:
-> From: Ben Widawsky <ben.widawsky@intel.com>
+On 2023/09/13 20:34, Albert Esteve wrote:
 > 
-> A CXL memory device (AKA Type 3) is a CXL component that contains some
-> combination of volatile and persistent memory. It also implements the
-> previously defined mailbox interface as well as the memory device
-> firmware interface.
 > 
-> Although the memory device is configured like a normal PCIe device, the
-> memory traffic is on an entirely separate bus conceptually (using the
-> same physical wires as PCIe, but different protocol).
+> On Wed, Sep 13, 2023 at 12:34 PM Akihiko Odaki <akihiko.odaki@daynix.com 
+> <mailto:akihiko.odaki@daynix.com>> wrote:
 > 
-> Once the CXL topology is fully configure and address decoders committed,
-> the guest physical address for the memory device is part of a larger
-> window which is owned by the platform.  The creation of these windows
-> is later in this series.
+>     On 2023/09/13 16:55, Albert Esteve wrote:
+>      > Hi Antonio,
+>      >
+>      > If I'm not mistaken, this patch is related with:
+>      >
+>     https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html
+>     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>
+>      >
+>     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html
+>     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>
+>      > IMHO, ideally, virtio-gpu and vhost-user-gpu both, would use the
+>      > infrastructure from the patch I linked to store the
+>      > virtio objects, so that they can be later shared with other devices.
 > 
-> The following example will create a 256M device in a 512M window:
-> -object "memory-backend-file,id=cxl-mem1,share,mem-path=cxl-type3,size=512M"
-> -device "cxl-type3,bus=rp0,memdev=cxl-mem1,id=cxl-pmem0"
+>     I don't think such sharing is possible because the resources are
+>     identified by IDs that are local to the device. That also complicates
+>     migration.
 > 
-> Note: Dropped PCDIMM info interfaces for now.  They can be added if
-> appropriate at a later date.
+>     Regards,
+>     Akihiko Odaki
 > 
-> Signed-off-by: Ben Widawsky <ben.widawsky@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->   hw/cxl/cxl-component-utils.c |  18 ++++
->   hw/cxl/cxl-mailbox-utils.c   |  46 ++++++++++
->   hw/mem/Kconfig               |   5 ++
->   hw/mem/cxl_type3.c           | 162 +++++++++++++++++++++++++++++++++++
->   hw/mem/meson.build           |   1 +
->   include/hw/cxl/cxl_device.h  |  15 ++++
->   include/hw/cxl/cxl_pci.h     |  21 +++++
->   include/hw/pci/pci_ids.h     |   1 +
->   8 files changed, 269 insertions(+)
+> Hi Akihiko,
+> 
+> As far as I understand, the feature to export dma-bufs from the
+> virtgpu was introduced as part of the virtio cross-device sharing
+> proposal [1]. Thus, it shall be posible. When virtgpu ASSING_UUID,
+> it exports and identifies the dmabuf resource, so that when the dmabuf gets
+> shared inside the guest (e.g., with virtio-video), we can use the assigned
+> UUID to find the dmabuf in the host (using the patch that I linked above),
+> and import it.
+> 
+> [1] - https://lwn.net/Articles/828988/ <https://lwn.net/Articles/828988/>
 
+The problem is that virtio-gpu can have other kind of resources like 
+pixman and OpenGL textures and manage them and DMA-BUFs with unified 
+resource ID.
 
-> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> new file mode 100644
-> index 0000000000..290c088dd6
-> --- /dev/null
-> +++ b/hw/mem/cxl_type3.c
-> @@ -0,0 +1,162 @@
+So you cannot change:
+g_hash_table_insert(g->resource_uuids, 
+GUINT_TO_POINTER(assign.resource_id), uuid);
+by:
+virtio_add_dmabuf(uuid, assign.resource_id);
 
-This file lacks a license, do you mind adding one?
+assign.resource_id is not DMA-BUF file descriptor, and the underlying 
+resource my not be DMA-BUF at first place.
 
-Thanks!
+Also, since this lives in the common code that is not used only by 
+virtio-gpu-gl but also virtio-gpu, which supports migration, we also 
+need to take care of that. It is not a problem for DMA-BUF as DMA-BUF is 
+not migratable anyway, but the situation is different in this case.
 
-> +#include "qemu/osdep.h"
-> +#include "qemu/units.h"
-> +#include "qemu/error-report.h"
-> +#include "hw/mem/memory-device.h"
-> +#include "hw/mem/pc-dimm.h"
-> +#include "hw/pci/pci.h"
-> +#include "hw/qdev-properties.h"
-> +#include "qapi/error.h"
-> +#include "qemu/log.h"
-> +#include "qemu/module.h"
-> +#include "qemu/range.h"
-> +#include "qemu/rcu.h"
-> +#include "sysemu/hostmem.h"
-> +#include "hw/cxl/cxl.h"
-> +
-> +static void build_dvsecs(CXLType3Dev *ct3d)
-> +{
-> +    CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
-> +    uint8_t *dvsec;
-> +
-> +    dvsec = (uint8_t *)&(CXLDVSECDevice){
-> +        .cap = 0x1e,
-> +        .ctrl = 0x2,
-> +        .status2 = 0x2,
-> +        .range1_size_hi = ct3d->hostmem->size >> 32,
-> +        .range1_size_lo = (2 << 5) | (2 << 2) | 0x3 |
-> +        (ct3d->hostmem->size & 0xF0000000),
-> +        .range1_base_hi = 0,
-> +        .range1_base_lo = 0,
-> +    };
-> +    cxl_component_create_dvsec(cxl_cstate, CXL2_TYPE3_DEVICE,
-> +                               PCIE_CXL_DEVICE_DVSEC_LENGTH,
-> +                               PCIE_CXL_DEVICE_DVSEC,
-> +                               PCIE_CXL2_DEVICE_DVSEC_REVID, dvsec);
-> +
-> +    dvsec = (uint8_t *)&(CXLDVSECRegisterLocator){
-> +        .rsvd         = 0,
-> +        .reg0_base_lo = RBI_COMPONENT_REG | CXL_COMPONENT_REG_BAR_IDX,
-> +        .reg0_base_hi = 0,
-> +        .reg1_base_lo = RBI_CXL_DEVICE_REG | CXL_DEVICE_REG_BAR_IDX,
-> +        .reg1_base_hi = 0,
-> +    };
-> +    cxl_component_create_dvsec(cxl_cstate, CXL2_TYPE3_DEVICE,
-> +                               REG_LOC_DVSEC_LENGTH, REG_LOC_DVSEC,
-> +                               REG_LOC_DVSEC_REVID, dvsec);
-> +    dvsec = (uint8_t *)&(CXLDVSECDeviceGPF){
-> +        .phase2_duration = 0x603, /* 3 seconds */
-> +        .phase2_power = 0x33, /* 0x33 miliwatts */
-> +    };
-> +    cxl_component_create_dvsec(cxl_cstate, CXL2_TYPE3_DEVICE,
-> +                               GPF_DEVICE_DVSEC_LENGTH, GPF_PORT_DVSEC,
-> +                               GPF_DEVICE_DVSEC_REVID, dvsec);
-> +}
-> +
-> +static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
-> +{
-> +    MemoryRegion *mr;
-> +
-> +    if (!ct3d->hostmem) {
-> +        error_setg(errp, "memdev property must be set");
-> +        return false;
-> +    }
-> +
-> +    mr = host_memory_backend_get_memory(ct3d->hostmem);
-> +    if (!mr) {
-> +        error_setg(errp, "memdev property must be set");
-> +        return false;
-> +    }
-> +    memory_region_set_nonvolatile(mr, true);
-> +    memory_region_set_enabled(mr, true);
-> +    host_memory_backend_set_mapped(ct3d->hostmem, true);
-> +    ct3d->cxl_dstate.pmem_size = ct3d->hostmem->size;
-> +
-> +    return true;
-> +}
-> +
-> +static void ct3_realize(PCIDevice *pci_dev, Error **errp)
-> +{
-> +    CXLType3Dev *ct3d = CXL_TYPE3(pci_dev);
-> +    CXLComponentState *cxl_cstate = &ct3d->cxl_cstate;
-> +    ComponentRegisters *regs = &cxl_cstate->crb;
-> +    MemoryRegion *mr = &regs->component_registers;
-> +    uint8_t *pci_conf = pci_dev->config;
-> +
-> +    if (!cxl_setup_memory(ct3d, errp)) {
-> +        return;
-> +    }
-> +
-> +    pci_config_set_prog_interface(pci_conf, 0x10);
-> +    pci_config_set_class(pci_conf, PCI_CLASS_MEMORY_CXL);
-> +
-> +    pcie_endpoint_cap_init(pci_dev, 0x80);
-> +    cxl_cstate->dvsec_offset = 0x100;
-> +
-> +    ct3d->cxl_cstate.pdev = pci_dev;
-> +    build_dvsecs(ct3d);
-> +
-> +    cxl_component_register_block_init(OBJECT(pci_dev), cxl_cstate,
-> +                                      TYPE_CXL_TYPE3);
-> +
-> +    pci_register_bar(
-> +        pci_dev, CXL_COMPONENT_REG_BAR_IDX,
-> +        PCI_BASE_ADDRESS_SPACE_MEMORY | PCI_BASE_ADDRESS_MEM_TYPE_64, mr);
-> +
-> +    cxl_device_register_block_init(OBJECT(pci_dev), &ct3d->cxl_dstate);
-> +    pci_register_bar(pci_dev, CXL_DEVICE_REG_BAR_IDX,
-> +                     PCI_BASE_ADDRESS_SPACE_MEMORY |
-> +                         PCI_BASE_ADDRESS_MEM_TYPE_64,
-> +                     &ct3d->cxl_dstate.device_registers);
-> +}
-> +
-> +static void ct3d_reset(DeviceState *dev)
-> +{
-> +    CXLType3Dev *ct3d = CXL_TYPE3(dev);
-> +    uint32_t *reg_state = ct3d->cxl_cstate.crb.cache_mem_registers;
-> +    uint32_t *write_msk = ct3d->cxl_cstate.crb.cache_mem_regs_write_mask;
-> +
-> +    cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
-> +    cxl_device_register_init_common(&ct3d->cxl_dstate);
-> +}
-> +
-> +static Property ct3_props[] = {
-> +    DEFINE_PROP_LINK("memdev", CXLType3Dev, hostmem, TYPE_MEMORY_BACKEND,
-> +                     HostMemoryBackend *),
-> +    DEFINE_PROP_END_OF_LIST(),
-> +};
-> +
-> +static void ct3_class_init(ObjectClass *oc, void *data)
-> +{
-> +    DeviceClass *dc = DEVICE_CLASS(oc);
-> +    PCIDeviceClass *pc = PCI_DEVICE_CLASS(oc);
-> +
-> +    pc->realize = ct3_realize;
-> +    pc->class_id = PCI_CLASS_STORAGE_EXPRESS;
-> +    pc->vendor_id = PCI_VENDOR_ID_INTEL;
-> +    pc->device_id = 0xd93; /* LVF for now */
-> +    pc->revision = 1;
-> +
-> +    set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
-> +    dc->desc = "CXL PMEM Device (Type 3)";
-> +    dc->reset = ct3d_reset;
-> +    device_class_set_props(dc, ct3_props);
-> +}
-> +
-> +static const TypeInfo ct3d_info = {
-> +    .name = TYPE_CXL_TYPE3,
-> +    .parent = TYPE_PCI_DEVICE,
-> +    .class_init = ct3_class_init,
-> +    .instance_size = sizeof(CXLType3Dev),
-> +    .interfaces = (InterfaceInfo[]) {
-> +        { INTERFACE_CXL_DEVICE },
-> +        { INTERFACE_PCIE_DEVICE },
-> +        {}
-> +    },
-> +};
-> +
-> +static void ct3d_registers(void)
-> +{
-> +    type_register_static(&ct3d_info);
-> +}
-> +
-> +type_init(ct3d_registers);
-
+Implementing cross-device sharing is certainly a possibility, but that 
+requires more than dealing with DMA-BUFs.
 
