@@ -2,60 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0769679E2D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 10:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800AA79E2DA
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 11:01:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgLhS-0001UH-RO; Wed, 13 Sep 2023 04:58:18 -0400
+	id 1qgLkH-0003Y6-Nu; Wed, 13 Sep 2023 05:01:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgLhQ-0001U1-BU
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:58:16 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qgLkE-0003Xk-Ii
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:01:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qgLhN-0000Ro-QK
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 04:58:16 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RlvV85Tj0z6H7HS;
- Wed, 13 Sep 2023 16:57:36 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 13 Sep
- 2023 09:58:09 +0100
-Date: Wed, 13 Sep 2023 09:58:08 +0100
-To: Fan Ni <fan.ni@samsung.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Michael Tsirkin
- <mst@redhat.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, 
- "linuxarm@huawei.com" <linuxarm@huawei.com>
-Subject: Re: [PATCH v3 2/4] hw/cxl: Add utility functions decoder interleave
- ways and target count.
-Message-ID: <20230913095808.00000df4@Huawei.com>
-In-Reply-To: <20230912172005.GB319114@bgt-140510-bm03>
-References: <20230911114313.6144-1-Jonathan.Cameron@huawei.com>
- <20230911114313.6144-3-Jonathan.Cameron@huawei.com>
- <CGME20230912172006uscas1p1f48a880aeaf7fad3400929d4bc919ae5@uscas1p1.samsung.com>
- <20230912172005.GB319114@bgt-140510-bm03>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qgLk7-00014k-Mr
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 05:01:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694595661;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=syBSAHxmtbJOl+EUTI5blRbznmIrn6eKkKeoN3Js9nM=;
+ b=Lu5mgEq+OSr80LHZL1NaYKnR8hhES00/+fIeDIkJAk0lut5kTPK5hhDVkgaXrkgt5UYGpX
+ d256dHDL3YGhTyMDaJ0HoJcXcIzgxBaTUlMPkPchFIsGllOFSmr8ua8tcah4t4rsyYuJ3n
+ AXCpB/nf9GDBpB7GYZYQRXnVK7HTQMg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-271-PAfXDCWNNQyWqT_SExY1sQ-1; Wed, 13 Sep 2023 05:00:57 -0400
+X-MC-Unique: PAfXDCWNNQyWqT_SExY1sQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03E67101FAA1;
+ Wed, 13 Sep 2023 09:00:57 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.38])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1FA54409AFC1;
+ Wed, 13 Sep 2023 09:00:53 +0000 (UTC)
+Date: Wed, 13 Sep 2023 10:00:51 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org, Stefan Hajnoczi <stefanha@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: Re: [PATCH 0/4] ci: fix hang of FreeBSD CI jobs
+Message-ID: <ZQF6Q3a9aMK5xSL6@redhat.com>
+References: <20230912184130.3056054-1-berrange@redhat.com>
+ <5cbb92ab-f8b5-4d03-5698-06d0a0b7cfda@redhat.com>
+ <87ledatq3s.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ledatq3s.fsf@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,93 +87,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Sep 2023 17:20:05 +0000
-Fan Ni <fan.ni@samsung.com> wrote:
+On Wed, Sep 13, 2023 at 09:48:34AM +0100, Alex Bennée wrote:
+> 
+> Thomas Huth <thuth@redhat.com> writes:
+> 
+> > On 12/09/2023 20.41, Daniel P. Berrangé wrote:
+> >> This addresses
+> >>    https://gitlab.com/qemu-project/qemu/-/issues/1882
+> >> Which turned out to be a genuine flaw which we missed during merge
+> >> as the patch hitting master co-incided with the FreeBSD CI job
+> >> having an temporary outage due to changed release image version.
+> >> Daniel P. Berrangé (4):
+> >>    microbit: add missing qtest_quit() call
+> >>    qtest: kill orphaned qtest QEMU processes on FreeBSD
+> >>    gitlab: make Cirrus CI timeout explicit
+> >>    gitlab: make Cirrus CI jobs gating
+> >>   .gitlab-ci.d/cirrus.yml       | 4 +++-
+> >>   .gitlab-ci.d/cirrus/build.yml | 2 ++
+> >>   tests/qtest/libqtest.c        | 7 +++++++
+> >>   tests/qtest/microbit-test.c   | 2 ++
+> >>   4 files changed, 14 insertions(+), 1 deletion(-)
+> >> 
+> >
+> > Series
+> > Reviewed-by: Thomas Huth <thuth@redhat.com>
+> >
+> > Alex, will you pick these up or shall I take them for my next PR?
+> 
+> Queued to testing/next, thanks.
+> 
+> Do you have a patch to disable the borked avacado tests? Or maybe I
+> should just include Philippe's fix?
 
-> On Mon, Sep 11, 2023 at 12:43:11PM +0100, Jonathan Cameron wrote:
->=20
-> > As an encoded version of these key configuration parameters is available
-> > in a register, provide functions to extract it again so as to avoid
-> > the need for duplicating the storage.
-> >=20
-> > Whilst here update the _enc() function to include additional values
-> > as defined in the CXL 3.0 specification. Whilst they are not
-> > currently used in the emulation, they may be in future and it is
-> > easier to compare with the specification if all values are covered.
-> >=20
-> > Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > --- =20
->=20
-> LGTM. Only one minor comment inline.
->=20
-> Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Thanks!
+Not at this time. My hope was that this patch might address at least
+some of the broken tests:
 
-> > +
-> > +int cxl_decoder_count_dec(int enc_cnt)
-> > +{
-> > +    switch (enc_cnt) {
-> > +    case 0x0: return 1;
-> > +    case 0x1: return 2;
-> > +    case 0x2: return 4;
-> > +    case 0x3: return 6;
-> > +    case 0x4: return 8;
-> > +    case 0x5: return 10;
-> > +    /* Switches and Host Bridges may have more than 10 decoders */
-> > +    case 0x6: return 12;
-> > +    case 0x7: return 14;
-> > +    case 0x8: return 16;
-> > +    case 0x9: return 20;
-> > +    case 0xa: return 24;
-> > +    case 0xb: return 28;
-> > +    case 0xc: return 32;
-> >      }
-> >      return 0;
-> >  }
-> > @@ -410,6 +440,23 @@ uint8_t cxl_interleave_ways_enc(int iw, Error **er=
-rp)
-> >      }
-> >  }
-> >   =20
->=20
-> Similar as decoder count dec/enc, maybe we want to add a line of comment =
-below.
-> /* CXL r3.0 Section 8.2.4.19.7 CXL HDM Decoder n Control Register */
+https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg02797.html
 
-I'll do it before cxl_interleave_ways_enc() - one function up in the file
-as applies equally well there.
->=20
-> Fan
-> > +int cxl_interleave_ways_dec(uint8_t iw_enc, Error **errp)
-> > +{
-> > +    switch (iw_enc) {
-> > +    case 0x0: return 1;
-> > +    case 0x1: return 2;
-> > +    case 0x2: return 4;
-> > +    case 0x3: return 8;
-> > +    case 0x4: return 16;
-> > +    case 0x8: return 3;
-> > +    case 0x9: return 6;
-> > +    case 0xa: return 12;
-> > +    default:
-> > +        error_setg(errp, "Encoded interleave ways: %d not supported", =
-iw_enc);
-> > +        return 0;
-> > +    }
-> > +}
-> > +
-> >  uint8_t cxl_interleave_granularity_enc(uint64_t gran, Error **errp)
-> >  {
-> >      switch (gran) {
-> > --=20
-> > 2.39.2
-> >=20
-> > =20
+but I ran out of time to test that yesterday.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
