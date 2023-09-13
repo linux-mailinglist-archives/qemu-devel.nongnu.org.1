@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CF3679F315
+	by mail.lfdr.de (Postfix) with ESMTPS id 7604579F314
 	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 22:46:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgWj0-0007wN-Lq; Wed, 13 Sep 2023 16:44:38 -0400
+	id 1qgWj3-0007x7-7u; Wed, 13 Sep 2023 16:44:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qgWiw-0007w7-IT
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:44:34 -0400
+ id 1qgWj1-0007wz-Jp
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:44:39 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qgWir-0007NS-CQ
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:44:33 -0400
+ id 1qgWit-0007a7-G8
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:44:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=DVxzxH+aMVL1Mz4gK1nPDYOSkhTi79kfdn8A6RFNfUs=; b=L5DuVP03okpisSZhps1ev3WEuh
- xeQP1M1H4vZ37ZucteHUAfSwFQ5VJbf8HX9FfSDFVmCWr2z7CM/+/mn/vijl7mYmaYmVn8eOTpIww
- JH6D2Q+8YgVmd/0sgUUhxkKCZhIPJnV8GPyEaMtiaTmzA4iDuDDD01j9pc7Sd3B/Ml2ezwXbNW+Ro
- E6SBlkynaiaPYCyM4LDvf2XRe1BDLdBrtWJHoZmnLq0L+LXbgE8Bukt2aZRLL6a6L/dP2JeCMCVXb
- h9x/LIqAdcx+nQsQqffWyaQapRdmt8jj5NUzHh6piuBgm1LNFf0wZxNgCOFFS7LZH7QHwkjZyiRv4
- pL3BrCd+PasTMuXFZPfHfJg9wBNXfTA+oOc5Pkq6EhqPgoxEbQI7C/vbi//HSQrod5/mSHLjWq4bd
- xfT28dSX1hjVWy0WTUH4pIGjt7M4thOSoDd79ecDsQvDnk2O0/9MvUVf0mzyHdi5/28tR3/ZRQZJw
- VKO8nC+a23aAa3uwi6eEYkDgOZkwXS38enckqu5J4zJEc/+04RWyUgeN74ml+WrcorRXwIdNAWbe9
- 3P8GljLvDWR9vUW9OF4vLv1w3N8qbV90mBz6LFZsN0rmpgUMo44nvtBksMi7FhRl0AG4giUscAClx
- +Amx5YKzSWf+PgVHxg9JstJuCxaXPGN/UT7YJUrH8=;
+ bh=jndB8n2H6Bo7XmQ+0Mz5XDVcRQkLTrjD1HFlDra3TIA=; b=ciSGGjY2Kr9HY3y0VpCroENdWH
+ ArgPTvRgntsnM/J5V4mvkiKN0gL6y9OvwY1eCdInhjrwsUbMV+3CC8bU6bDW/ly2AFjZAT5wkHccM
+ +rvBYQKK7fEGehZx3VJeK20o9M10xXmvLM+yath5Kd0UF4RXbmOR2Ek0J0ZHIUKhUNJhy4mgTUa+w
+ RgHk79N2obhCvELKak35CxihrMPhNfMQQSmiAOuK8aTzyMKeJ8g/Iv5DFZg92edLZFrl8+qkju7Yd
+ EKHW6GzvuY5KnWNLi3RmIriNB1e+RTKbAXtKkoQKYmCsWQTSI4N0bLhxpzc3oiC+JgUkwsHPeF4/i
+ tka5pPfRAl5uw0VasHpysNhoOTHF6BlfRqwEggJMKuYYPYopT6K3yNrTAVWYLDdBCRl63KwvkVMUC
+ /KDlMpZgDSkXk8uH/wd60uLzVRPy7CHV0BeFT7MFZfdAaTFmrg4CHmPIjg/6mdhnIzDVYX/GX4WsW
+ SOLOAiuNGAiiHIhkMxErFCvi0nMNaHPUGNlrU/zQCc8KqXdG/C9OrCVe7bih7mVs8I8BShQ0zEYZN
+ JlY0BAcZvzWwkhHiEIyiqE80NDIiccGRVDWRg6HuOYwQAQ7PRo9Fo6R+yn83csf6GGKaxeCNUAITl
+ 4KHQkndkZ+5ubhR4Ik1GEFgOTl8VSZ5VeR9/psGzc=;
 Received: from [2a00:23c4:8baf:5f00:38a1:1ac:b42:501a]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qgWid-0003uU-P8; Wed, 13 Sep 2023 21:44:19 +0100
+ id 1qgWih-0003uU-VY; Wed, 13 Sep 2023 21:44:24 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com,
 	fam@euphon.net,
 	qemu-devel@nongnu.org
-Date: Wed, 13 Sep 2023 21:44:08 +0100
-Message-Id: <20230913204410.65650-2-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 13 Sep 2023 21:44:09 +0100
+Message-Id: <20230913204410.65650-3-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230913204410.65650-1-mark.cave-ayland@ilande.co.uk>
 References: <20230913204410.65650-1-mark.cave-ayland@ilande.co.uk>
@@ -52,8 +52,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:38a1:1ac:b42:501a
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH 1/3] esp: use correct type for esp_dma_enable() in
- sysbus_esp_gpio_demux()
+Subject: [PATCH 2/3] esp: restrict non-DMA transfer length to that of
+ available data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,30 +79,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The call to esp_dma_enable() was being made with the SYSBUS_ESP type instead of
-the ESP type. This meant that when GPIO 1 was being used to trigger a DMA
-request from an external DMA controller, the setting of ESPState's dma_enabled
-field would clobber unknown memory whilst the dma_cb callback pointer would
-typically return NULL so the DMA request would never start.
+In the case where a SCSI layer transfer is incorrectly terminated, it is
+possible for a TI command to cause a SCSI buffer overflow due to the
+expected transfer data length being less than the available data in the
+FIFO. When this occurs the unsigned async_len variable underflows and
+becomes a large offset which writes past the end of the allocated SCSI
+buffer.
+
+Restrict the non-DMA transfer length to be the smallest of the expected
+transfer length and the available FIFO data to ensure that it is no longer
+possible for the SCSI buffer overflow to occur.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1810
 ---
- hw/scsi/esp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/scsi/esp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index e52188d022..4218a6a960 100644
+index 4218a6a960..9b11d8c573 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -1395,7 +1395,7 @@ static void sysbus_esp_gpio_demux(void *opaque, int irq, int level)
-         parent_esp_reset(s, irq, level);
-         break;
-     case 1:
--        esp_dma_enable(opaque, irq, level);
-+        esp_dma_enable(s, irq, level);
-         break;
+@@ -759,7 +759,8 @@ static void esp_do_nodma(ESPState *s)
      }
- }
+ 
+     if (to_device) {
+-        len = MIN(fifo8_num_used(&s->fifo), ESP_FIFO_SZ);
++        len = MIN(s->async_len, ESP_FIFO_SZ);
++        len = MIN(len, fifo8_num_used(&s->fifo));
+         esp_fifo_pop_buf(&s->fifo, s->async_buf, len);
+         s->async_buf += len;
+         s->async_len -= len;
 -- 
 2.39.2
 
