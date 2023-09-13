@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD7879E882
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B852A79E88B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:03:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPTh-0006iW-2p; Wed, 13 Sep 2023 09:00:21 -0400
+	id 1qgPW8-0000VS-Do; Wed, 13 Sep 2023 09:02:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qgPTa-0006hQ-V6
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:00:14 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qgPW6-0000Sn-5B
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:02:50 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>) id 1qgPTX-0005j3-Hq
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:00:14 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 4C66121862;
- Wed, 13 Sep 2023 13:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1694610007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=38PfL/oA6T+78sEhRE218waRNXO+A+1jiK9au6wECp0=;
- b=tp/+1gfZz97le7WAhxQ+TnV8SOWYIpi4I6CS29IqDbgMPPFF17V7JCCcSN7kydzaJ9eoxz
- Xz38EVX1ZwL4C1xf0wBW0BI+HKqQ5NBu0ldxhPd9wRdurk7SvaJv0OCgNdAuFcRD+dRkT4
- 0801FwNfawlZmBkZAUu6gQ175au8CJQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1694610007;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=38PfL/oA6T+78sEhRE218waRNXO+A+1jiK9au6wECp0=;
- b=wAVw1tvvvj6TCSOrt3xURrpyIQEmSEL8SrVAcRVu9hu80p1CJLgOfl98q4uhnXK1XwSrdO
- DY7bryfAkMVLThAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 05AC813440;
- Wed, 13 Sep 2023 13:00:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id VolWO1ayAWWHNgAAMHmgww
- (envelope-from <cfontana@suse.de>); Wed, 13 Sep 2023 13:00:06 +0000
-Message-ID: <a4adf886-7018-4cf5-14d6-cd85172ea501@suse.de>
-Date: Wed, 13 Sep 2023 15:00:06 +0200
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qgPW1-0006G8-06
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 09:02:49 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-401da71b85eso73785955e9.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 06:02:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694610162; x=1695214962; darn=nongnu.org;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QA8QumC1Q6UUp+DMPh/apBvf2M+RjN21PI86HZj4ZkU=;
+ b=MJ3I4zuuN5Vpn3j5bfXrQ8yqj3+xuV2jz6r/ygg8qrPPj2DMfuFEFtRlGn1DV5p4/P
+ nJumaFuNjDZ/i3HQxk3JESf/vkEU93ALMKlskQsJZDIQakQjLoDYnrksAroQAOj4C5JK
+ xCu5zDcN9PcrSRwWEPpEYJdaWx0E8yyuX3d3Ga+JyYDi98/ArIhvTpkSni5Fj4Yw9x/X
+ 7nIedwP8maL8clFS9M81lmOP1nfaSad7YveHMHzOkTEZnBQHnhPrMqN6yCNrklSVfYQu
+ S5zDR0bYZkh8OLh6Bdyn7KliJlhGWt70/FT0MQjVc3r/5mF/MhhADDs+hcG9V4zP1XqU
+ oWuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694610162; x=1695214962;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QA8QumC1Q6UUp+DMPh/apBvf2M+RjN21PI86HZj4ZkU=;
+ b=jmtG+rfd4TM9cqD+m8+40jdd5ft5PIOAPVzju92pT2wnfGyVHvcbCYx1mIIwI/pGED
+ XsV8HBiVWUUMBu+3JA9512216W4WO4fRll2scvW8399/o99T6xqf09a8/kW4sc76FHFe
+ i0VOiZNG+Mxg0nE2w3opx0M0p4iL8qv4jEHyje59Eb+3LSQEzFkI35tcQBYAH7IgB+ik
+ qvDDVcGZCvSl8+E3YP4RRmPyuZR7Mkd0y4oWuEALoXjP6hwm0N8F9bdY1LmpgXw/+FhC
+ zaS08kPsEeNciIZHrsDE/D4hmu8yqkvKfaTNBc7qRc4zkOwpVnHg8wumO0Z2wHwXsfJS
+ FdAA==
+X-Gm-Message-State: AOJu0Yx1qti0BYeIiIc1az7tMF1WuatRW2nvSiVl7T3HhfxjuD3chZg+
+ DfiJyNeWvduopgsYuKZoH4fWo3GmRyA=
+X-Google-Smtp-Source: AGHT+IFQnrgT3DuxVAwIYkdPcbtxJ8VHsWr+CxhakH3m95QEJvVogNvejJa9jVffKbInuDHQrhgUXA==
+X-Received: by 2002:a5d:6748:0:b0:317:7062:32d2 with SMTP id
+ l8-20020a5d6748000000b00317706232d2mr2116321wrw.54.1694610161687; 
+ Wed, 13 Sep 2023 06:02:41 -0700 (PDT)
+Received: from karim ([2c0f:fc89:80a4:a16:ec3b:1041:e2b8:3030])
+ by smtp.gmail.com with ESMTPSA id
+ j8-20020aa7c0c8000000b00525503fac84sm7317599edp.25.2023.09.13.06.02.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Sep 2023 06:02:41 -0700 (PDT)
+From: Karim Taha <kariem.taha2.7@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org> , qemu-devel@nongnu.org
+Cc: 
+Subject: Re: [PATCH v3 21/23] bsd-user: Implement shmctl(2)
+In-Reply-To: <20230909193704.1827-22-kariem.taha2.7@gmail.com>
+References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
+ <20230909193704.1827-22-kariem.taha2.7@gmail.com>
+Date: Wed, 13 Sep 2023 16:01:15 +0300
+Message-ID: <877cou8bxg.fsf@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH V4 0/2] migration file URI
-Content-Language: en-US
-From: Claudio Fontana <cfontana@suse.de>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, "Daniel P. Berrange" <berrange@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Steve Sistare <steven.sistare@oracle.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <1688135108-316997-1-git-send-email-steven.sistare@oracle.com>
- <dba1e07d-6ebf-9329-7be7-4702ff5dc16d@suse.de>
- <1290963e-9f63-fc70-6729-d355d247c2fd@linaro.org>
- <2f5b9774-e089-3606-905a-8b991dcc5e87@suse.de>
-In-Reply-To: <2f5b9774-e089-3606-905a-8b991dcc5e87@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=cfontana@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,72 +90,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/30/23 15:09, Claudio Fontana wrote:
-> On 8/22/23 15:25, Philippe Mathieu-Daudé wrote:
->> Hi Claudio,
->>
->> On 22/8/23 14:00, Claudio Fontana wrote:
->>> Hello,
->>>
->>> this series is all reviewed,
->>>
->>> and is needed as a precondition for further work to improve dramatically the performance of virsh save, virsh restore
->>> when migrating to disk, can it be merged?
->>
->> $ ./scripts/get_maintainer.pl -f migration/meson.build
->> Juan Quintela <quintela@redhat.com> (maintainer:Migration)
->> Peter Xu <peterx@redhat.com> (reviewer:Migration)
->> Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
->> qemu-devel@nongnu.org (open list:All patches CC here)
->>
->> One maintainer, one single point of failure. When the
->> maintainer is busy or offline (vacations?) then everybody
->> is stuck.
->>
->> This is usually solved by adding co-maintainers.
->>
->> Juan, would you accept having co-maintainers helping you
->> dealing with the merge process? I'm not volunteering, but
->> this can be a good opportunity to make a formal request to
->> the community.
->>
->> Regards,
->>
->> Phil.
->>
-> 
-> Thanks Philippe,
-> 
-> I would like to highlight to the QEMU community here how important this is for SUSE,
-> 
-> to see progress for all the series in the migration area that are currently still waiting and competing for attention.
-> 
-> The specific features and improvements we are developing or helping to review are a priority for us,
-> and we are concerned about the rate of progress with the existing governance processes.
-> 
-> Fabiano is investing a lot of his attention to this area, with features, bugfixes and reviews,
-> but of course it is up to the community as a whole to address the issue so that reviewed work is merged.
-> 
-> My attempt here is to make sure that it is recognized as a problem, so it can be hopefully be addressed by the community in a timely fashion,
-> and we can all benefit from the already developed and reviewed work that is pending.
-> 
-> Thanks!
-> 
-> CLaudio
-> 
-> 
+Karim Taha <kariem.taha2.7@gmail.com> wrote:
 
-Hi Juan, any comments? Would additional help for co-maintenance of live migration help?
-How can we make things proceed?
-
-From our (SUSE) side we are willing to help as much as we can, and all options are open,
-whatever it takes to get the multiple series currently waiting to flow again.
-
-Thanks,
-
-Claudio
-
-
-
-
+This mistakenly has a `Reviewed-by` line, this is from v2 of the series
+when I thought the implementation was correct, before you replied to
+me on v1 series thread that IPC_SET does not need the VERIFY_WRITE,
+I'm writing this so you know why I will remove it in v4.
+> From: Stacey Son <sson@FreeBSD.org>
+>
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+>
+> Reviewed-by: Warner Losh <imp@bsdimp.com>
+> ---
+>  bsd-user/bsd-mem.h            | 39 +++++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c |  4 ++++
+>  2 files changed, 43 insertions(+)
+>
+> diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
+> index 27d4e7f079..68f34b5d36 100644
+> --- a/bsd-user/bsd-mem.h
+> +++ b/bsd-user/bsd-mem.h
+> @@ -304,4 +304,43 @@ static inline abi_long do_bsd_shmget(abi_long arg1, abi_ulong arg2,
+>      return get_errno(shmget(arg1, arg2, arg3));
+>  }
+>  
+> +/* shmctl(2) */
+> +static inline abi_long do_bsd_shmctl(abi_long shmid, abi_long cmd,
+> +        abi_ulong buff)
+> +{
+> +    struct shmid_ds dsarg;
+> +    abi_long ret = -TARGET_EINVAL;
+> +
+> +    cmd &= 0xff;
+> +
+> +    switch (cmd) {
+> +    case IPC_STAT:
+> +        if (target_to_host_shmid_ds(&dsarg, buff)) {
+> +            return -TARGET_EFAULT;
+> +        }
+> +        ret = get_errno(shmctl(shmid, cmd, &dsarg));
+> +        if (host_to_target_shmid_ds(buff, &dsarg)) {
+> +            return -TARGET_EFAULT;
+> +        }
+> +        break;
+> +
+> +    case IPC_SET:
+> +        if (target_to_host_shmid_ds(&dsarg, buff)) {
+> +            return -TARGET_EFAULT;
+> +        }
+> +        ret = get_errno(shmctl(shmid, cmd, &dsarg));
+> +        break;
+> +
+> +    case IPC_RMID:
+> +        ret = get_errno(shmctl(shmid, cmd, NULL));
+> +        break;
+> +
+> +    default:
+> +        ret = -TARGET_EINVAL;
+> +        break;
+> +    }
+> +
+> +    return ret;
+> +}
+> +
+>  #endif /* BSD_USER_BSD_MEM_H */
+> diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
+> index 52cca2300f..35f94f51fc 100644
+> --- a/bsd-user/freebsd/os-syscall.c
+> +++ b/bsd-user/freebsd/os-syscall.c
+> @@ -555,6 +555,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+>          ret = do_bsd_shmget(arg1, arg2, arg3);
+>          break;
+>  
+> +    case TARGET_FREEBSD_NR_shmctl: /* shmctl(2) */
+> +        ret = do_bsd_shmctl(arg1, arg2, arg3);
+> +        break;
+> +
+>          /*
+>           * Misc
+>           */
+> -- 
+> 2.42.0
 
