@@ -2,82 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB5079DFF1
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 08:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F90A79E00C
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 08:32:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgJFG-0006kl-Mn; Wed, 13 Sep 2023 02:21:02 -0400
+	id 1qgJOv-0001Vr-5v; Wed, 13 Sep 2023 02:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgJFD-0006il-NK
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 02:21:00 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgJF9-0003po-0w
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 02:20:59 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-31c5cac3ae2so5947924f8f.3
- for <qemu-devel@nongnu.org>; Tue, 12 Sep 2023 23:20:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694586052; x=1695190852; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jACZrebzlRMu+VcTNCBWL6fONnEnF8xCCnriazAVUW8=;
- b=To21gnDmpujNsTq7BmVZMmaaRI5WD9n6sr/iZieXc5/hz/IVYFisvn55Cn6gDKkc2h
- Z2SkCcDtvZjDBOgFV9y+ySg7m2qZqIhu2o2O8AR2tNbJev1+uUWogFFcAPPlMWdka4R3
- N4M8pZUNig1j/pKP+KJlgmHyM8XeBYxoU2IjvFK5vTqbmIw2Sg31I1rbeY53CWaj/O/n
- O7Zl43/CyYcss1KqiTw4cbQGoW6Hc3Xkzot5ETj/uVbiZ/EDNUPHO7/6PjrLWaNCE7TZ
- 6GkjgUwodafWdsXPb/b2+hCg36q9R2N3nXYvwXwpwn4pvu6EcSqJfldfCRED4wxygwbk
- ayig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694586052; x=1695190852;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jACZrebzlRMu+VcTNCBWL6fONnEnF8xCCnriazAVUW8=;
- b=SCChy3veOLSthUyut5d9PmgTBMya0BJY9Q8KKe9fpJr4WUDEGuqJtpA51sUa9M0+Nj
- RGwzuTWE9Ezse15DsbcY6f9stYuQNq8/UQ48xkHylARUTqq5Zq3K9YfhtgFJjaXIjbEn
- iYRBHjCbtsD3KWq9QusRyCfVR4R+eUu/GWxwFuSnDEaiyhfM4RqDlGsllqAh5X8mrgih
- l2fV86JwaT3ZKQFTmYh8TpcV2G30n6+AOZBR4twkK3jgLcer40gP+6f9zhPFING9hXs4
- uOKUCToZ4fnu5ZPCzNOd3u75sVKYfXKKhApGWhEpuSzFV0dlvLCSglRdcCy8UZeetm8h
- 5wyw==
-X-Gm-Message-State: AOJu0Yw0XDzdkCim9pauSu33h+Zt5VefzDWZwLoDd5D/3szdpVEJPjic
- ufh0YYb4rVwcwwtPJHjKYc8RgA==
-X-Google-Smtp-Source: AGHT+IEj8+EjlBL6nLoMVuH7EpdiAit6Fc34Q+KMuWXtClbqNZCb2U9FWP2hpraE3OUdAZcrT7jXDg==
-X-Received: by 2002:a5d:65c6:0:b0:31f:b0ba:f2ce with SMTP id
- e6-20020a5d65c6000000b0031fb0baf2cemr1427220wrw.9.1694586052725; 
- Tue, 12 Sep 2023 23:20:52 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-211-241.abo.bbox.fr.
- [176.131.211.241]) by smtp.gmail.com with ESMTPSA id
- b14-20020a5d550e000000b0031f34a395e7sm14588304wrv.45.2023.09.12.23.20.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Sep 2023 23:20:52 -0700 (PDT)
-Message-ID: <3e41f9bf-9f54-43d9-ab18-f18034a4fc2d@linaro.org>
-Date: Wed, 13 Sep 2023 08:20:50 +0200
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qgJOa-0001K8-VR; Wed, 13 Sep 2023 02:30:45 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <fbarrat@linux.ibm.com>)
+ id 1qgJOY-00005i-GQ; Wed, 13 Sep 2023 02:30:40 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38D66wQx031957; Wed, 13 Sep 2023 06:30:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=QEMrhgHzEjou2OdYpiU4LtTarJVBHYR/713vcLGcDNs=;
+ b=RaMVaYoXY/wupoSU9ODLGIw1qqpRz9o2W1sRedN9HvHnteUmELosEvwIILyGzOWT8gz6
+ gFrSY5M4XDepr7Po6ZvktwqV5ip0aT7CdcWPbu9ovi2m+RMsUzf+CUC4OorvXnK6xMEM
+ hbOz+Vs/Zy2j4SwOh46m0qonLcGLDztukedGRkHIa+R2X+jWcq8mKtv9YTBAp3TI0pos
+ 9AlvTT/AXqHdqcoBF7KMwbvuwakpsT9u9tUzaxIqXgbB0tZ/n0iz8jhDeivBYYkd1hwf
+ IcJAXCJBv+J6WVyfjOQWLwNJpNo+IDGW1Hn8V680eizDjqiWbuRjbZdukdDKN8qMAoUF xw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t36w29pp5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 Sep 2023 06:30:31 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38D6Ig4X029409;
+ Wed, 13 Sep 2023 06:30:30 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t36w29pns-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 Sep 2023 06:30:30 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38D68QAv002304; Wed, 13 Sep 2023 06:30:30 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t158k8pt3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 Sep 2023 06:30:30 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
+ [10.20.54.101])
+ by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38D6US2d12255982
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 13 Sep 2023 06:30:28 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 56D3020043;
+ Wed, 13 Sep 2023 06:30:28 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1487820040;
+ Wed, 13 Sep 2023 06:30:28 +0000 (GMT)
+Received: from [9.179.15.72] (unknown [9.179.15.72])
+ by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 13 Sep 2023 06:30:27 +0000 (GMT)
+Message-ID: <167950e7-eced-f4ca-03ca-40b61a3b0a46@linux.ibm.com>
+Date: Wed, 13 Sep 2023 08:30:27 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Subject: Re: [PATCH] ppc/xive: Fix uint32_t overflow
-Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Cc: =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 References: <20230913055639.174032-1-clg@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Content-Language: en-US
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 In-Reply-To: <20230913055639.174032-1-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: UgGxthCuPOp50zEWVpR-rjNnu4iLxnWq
+X-Proofpoint-ORIG-GUID: MzPzH_JMsk4up7GDPU1FI-zfrZxqbT0M
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-12_24,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=930 clxscore=1011
+ priorityscore=1501 malwarescore=0 impostorscore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309130051
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=fbarrat@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,7 +114,9 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/9/23 07:56, Cédric Le Goater wrote:
+
+
+On 13/09/2023 07:56, Cédric Le Goater wrote:
 > As reported by Coverity, "idx << xive->pc_shift" is evaluated using
 > 32-bit arithmetic, and then used in a context expecting a "uint64_t".
 > Add a uint64_t cast.
@@ -103,9 +125,25 @@ On 13/9/23 07:56, Cédric Le Goater wrote:
 > Fixes: b68147b7a5bf ("ppc/xive: Add support for the PC MMIOs")
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
+
+
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+
 >   hw/intc/pnv_xive.c | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+> 
+> diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+> index 9b10e905195a..a36b3bf08c92 100644
+> --- a/hw/intc/pnv_xive.c
+> +++ b/hw/intc/pnv_xive.c
+> @@ -210,7 +210,7 @@ static uint64_t pnv_xive_vst_addr_remote(PnvXive *xive, uint32_t type,
+>           return 0;
+>       }
+>   
+> -    remote_addr |= idx << xive->pc_shift;
+> +    remote_addr |= ((uint64_t) idx) << xive->pc_shift;
+>   
+>       vst_addr = address_space_ldq_be(&address_space_memory, remote_addr,
+>                                       MEMTXATTRS_UNSPECIFIED, &result);
 
