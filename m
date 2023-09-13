@@ -2,68 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5522179F287
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 22:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4513779F28F
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 22:05:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgW38-0002Kl-AG; Wed, 13 Sep 2023 16:01:22 -0400
+	id 1qgW75-00062f-TP; Wed, 13 Sep 2023 16:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgW33-0002Gh-0s
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:01:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgW6z-00062A-Ox
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:05:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgW2q-0005Pf-GH
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:01:15 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgW6s-0006KE-59
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 16:05:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694635263;
+ s=mimecast20190719; t=1694635513;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=c7TW1/CILt/+UW3nXOTVhsXTMbwN0KKvdAoGezBqwmI=;
- b=LJ7Nr5yv9tpAhOZpJK8evPwyUGcA5M72oSmV7FrkqzVwUL3qEB4vGSpA4KWopofOnbxnHo
- oD+3sawHI0R00v9YYsYDZ1YnS9rzP2C3tftrZjYttdx1/zqZS4eBiizFwkUvDXFzCXtzW/
- AYClMNOkKPUAG9XxJQjVLehS87o0pL8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-653-zPjeAJD3Ooe0jC7EMpIwiA-1; Wed, 13 Sep 2023 16:01:01 -0400
-X-MC-Unique: zPjeAJD3Ooe0jC7EMpIwiA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04CD0805B3E;
- Wed, 13 Sep 2023 20:01:01 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.13])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7FB6640C6EA8;
- Wed, 13 Sep 2023 20:01:00 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Stefano Stabellini <sstabellini@kernel.org>,
- Ilya Maximets <i.maximets@ovn.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, xen-devel@lists.xenproject.org,
- Anthony Perard <anthony.perard@citrix.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- <qemu-block@nongnu.org>, Julia Suvorova <jusual@redhat.com>,
- Aarushi Mehta <mehta.aaru20@gmail.com>, Paul Durrant <paul@xen.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Fam Zheng <fam@euphon.net>,
- Stefano Garzarella <sgarzare@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Eric Blake <eblake@redhat.com>
-Subject: [PATCH v3 4/4] virtio-blk: remove batch notification BH
-Date: Wed, 13 Sep 2023 16:00:45 -0400
-Message-ID: <20230913200045.1024233-5-stefanha@redhat.com>
-In-Reply-To: <20230913200045.1024233-1-stefanha@redhat.com>
-References: <20230913200045.1024233-1-stefanha@redhat.com>
+ bh=D1AF/JAavGJjJOzdTmuh5PIwSO/Vf8+r+596p2Hq8nc=;
+ b=ZCcb0jHeAftlENHtmn1fujbeTZtqHRLaL2JHS2xGaQ+0+lG42sSlKpv1+zErNyADJwU7nh
+ dImV9eBvCPPb+LNF1caCHxANx9D/KqIhandNWN9M9k0OOCkJhRe0GyTi/nBBsij+UqBCOR
+ 2q7R+z0hOglj4R01bI11kHzOibc6cVA=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-681-UrLNbOtTOxmwk6ZvfvF5QA-1; Wed, 13 Sep 2023 16:05:11 -0400
+X-MC-Unique: UrLNbOtTOxmwk6ZvfvF5QA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-655cbf1c0d2so530356d6.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 13:05:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694635511; x=1695240311;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=D1AF/JAavGJjJOzdTmuh5PIwSO/Vf8+r+596p2Hq8nc=;
+ b=AwECnr8N4IJHSA9/AhQVs5ttIemRzSZa4p11PjU1OH4NKRnBVYg6vcV1f5uE3kJW82
+ My/t0UEjlwyM6/k9IoKp1sKIGM+blfgbAb++DX08bhmGH8ucxukjtW3Tgk0ObmFBdfGi
+ IScwRezZ7jgv5h9rQz0Ghi3l1840X3AHQuHp9f4PBPBgzm/BO9mlZ90oRDPeW0d4a1T/
+ okqXtZczBZo5LcOAq/3rm8yiDhUrkwzXAewyOx8ljDQe6GjXOSwYw6vT1elvkhbhX+2F
+ hTJTeYdhIvoE4mOY0tM2QgBLTv4m8zuFdiTTDkejbmQ5LcxX9B7/8RMU6itTnrbTNgVa
+ /YhQ==
+X-Gm-Message-State: AOJu0YykxsnIENOBEx2pCiPxzvs3nD8C6XtWLfx5SpA2qOSQpByPUiya
+ /OV2gDjpMl1MJpFO+4DYcqkWsfcjMioVOmhENDC+ZbR2h75VRLeu5PjfNFhLHlVA7ho7L9JGCC9
+ cR1vwL1abreyObC0=
+X-Received: by 2002:a05:6214:21ac:b0:63d:2d7e:39f1 with SMTP id
+ t12-20020a05621421ac00b0063d2d7e39f1mr3595061qvc.2.1694635510985; 
+ Wed, 13 Sep 2023 13:05:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0Z+aFh57sydx5mh8Wbx9qb4P0ExXl2Q9J/s4e5DIag4dSVTMQMi0RJOOLVzwJmYzoFs0ifQ==
+X-Received: by 2002:a05:6214:21ac:b0:63d:2d7e:39f1 with SMTP id
+ t12-20020a05621421ac00b0063d2d7e39f1mr3595039qvc.2.1694635510722; 
+ Wed, 13 Sep 2023 13:05:10 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ p10-20020ad451ca000000b00655e4f57732sm2969918qvq.35.2023.09.13.13.05.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Sep 2023 13:05:10 -0700 (PDT)
+Date: Wed, 13 Sep 2023 16:05:09 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Lukas Straub <lukasstraub2@web.de>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v6 08/10] migration/yank: Use channel features
+Message-ID: <ZQIV9RZFS0soEOJ4@x1n>
+References: <20230911171320.24372-1-farosas@suse.de>
+ <20230911171320.24372-9-farosas@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230911171320.24372-9-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -71,7 +81,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,115 +97,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is a batching mechanism for virtio-blk Used Buffer Notifications
-that is no longer needed because the previous commit added batching to
-virtio_notify_irqfd().
+On Mon, Sep 11, 2023 at 02:13:18PM -0300, Fabiano Rosas wrote:
+> Stop using outside knowledge about the io channels when registering
+> yank functions. Query for features instead.
+> 
+> The yank method for all channels used with migration code currently is
+> to call the qio_channel_shutdown() function, so query for
+> QIO_CHANNEL_FEATURE_SHUTDOWN. We could add a separate feature in the
+> future for indicating whether a channel supports yanking, but that
+> seems overkill at the moment.
+> 
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-Note that this mechanism was rarely used in practice because it is only
-enabled when EVENT_IDX is not negotiated by the driver. Modern drivers
-enable EVENT_IDX.
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- hw/block/dataplane/virtio-blk.c | 48 +--------------------------------
- 1 file changed, 1 insertion(+), 47 deletions(-)
-
-diff --git a/hw/block/dataplane/virtio-blk.c b/hw/block/dataplane/virtio-blk.c
-index da36fcfd0b..f83bb0f116 100644
---- a/hw/block/dataplane/virtio-blk.c
-+++ b/hw/block/dataplane/virtio-blk.c
-@@ -31,9 +31,6 @@ struct VirtIOBlockDataPlane {
- 
-     VirtIOBlkConf *conf;
-     VirtIODevice *vdev;
--    QEMUBH *bh;                     /* bh for guest notification */
--    unsigned long *batch_notify_vqs;
--    bool batch_notifications;
- 
-     /* Note that these EventNotifiers are assigned by value.  This is
-      * fine as long as you do not call event_notifier_cleanup on them
-@@ -47,36 +44,7 @@ struct VirtIOBlockDataPlane {
- /* Raise an interrupt to signal guest, if necessary */
- void virtio_blk_data_plane_notify(VirtIOBlockDataPlane *s, VirtQueue *vq)
- {
--    if (s->batch_notifications) {
--        set_bit(virtio_get_queue_index(vq), s->batch_notify_vqs);
--        qemu_bh_schedule(s->bh);
--    } else {
--        virtio_notify_irqfd(s->vdev, vq);
--    }
--}
--
--static void notify_guest_bh(void *opaque)
--{
--    VirtIOBlockDataPlane *s = opaque;
--    unsigned nvqs = s->conf->num_queues;
--    unsigned long bitmap[BITS_TO_LONGS(nvqs)];
--    unsigned j;
--
--    memcpy(bitmap, s->batch_notify_vqs, sizeof(bitmap));
--    memset(s->batch_notify_vqs, 0, sizeof(bitmap));
--
--    for (j = 0; j < nvqs; j += BITS_PER_LONG) {
--        unsigned long bits = bitmap[j / BITS_PER_LONG];
--
--        while (bits != 0) {
--            unsigned i = j + ctzl(bits);
--            VirtQueue *vq = virtio_get_queue(s->vdev, i);
--
--            virtio_notify_irqfd(s->vdev, vq);
--
--            bits &= bits - 1; /* clear right-most bit */
--        }
--    }
-+    virtio_notify_irqfd(s->vdev, vq);
- }
- 
- /* Context: QEMU global mutex held */
-@@ -126,9 +94,6 @@ bool virtio_blk_data_plane_create(VirtIODevice *vdev, VirtIOBlkConf *conf,
-     } else {
-         s->ctx = qemu_get_aio_context();
-     }
--    s->bh = aio_bh_new_guarded(s->ctx, notify_guest_bh, s,
--                               &DEVICE(vdev)->mem_reentrancy_guard);
--    s->batch_notify_vqs = bitmap_new(conf->num_queues);
- 
-     *dataplane = s;
- 
-@@ -146,8 +111,6 @@ void virtio_blk_data_plane_destroy(VirtIOBlockDataPlane *s)
- 
-     vblk = VIRTIO_BLK(s->vdev);
-     assert(!vblk->dataplane_started);
--    g_free(s->batch_notify_vqs);
--    qemu_bh_delete(s->bh);
-     if (s->iothread) {
-         object_unref(OBJECT(s->iothread));
-     }
-@@ -173,12 +136,6 @@ int virtio_blk_data_plane_start(VirtIODevice *vdev)
- 
-     s->starting = true;
- 
--    if (!virtio_vdev_has_feature(vdev, VIRTIO_RING_F_EVENT_IDX)) {
--        s->batch_notifications = true;
--    } else {
--        s->batch_notifications = false;
--    }
--
-     /* Set up guest notifier (irq) */
-     r = k->set_guest_notifiers(qbus->parent, nvqs, true);
-     if (r != 0) {
-@@ -370,9 +327,6 @@ void virtio_blk_data_plane_stop(VirtIODevice *vdev)
- 
-     aio_context_release(s->ctx);
- 
--    qemu_bh_cancel(s->bh);
--    notify_guest_bh(s); /* final chance to notify guest */
--
-     /* Clean up guest notifier (irq) */
-     k->set_guest_notifiers(qbus->parent, nvqs, false);
- 
 -- 
-2.41.0
+Peter Xu
 
 
