@@ -2,44 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE53779E91B
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4C079E91C
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Sep 2023 15:23:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgPmM-0000gf-SM; Wed, 13 Sep 2023 09:19:39 -0400
+	id 1qgPmQ-0000oP-49; Wed, 13 Sep 2023 09:19:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPmJ-0000Uw-Pr; Wed, 13 Sep 2023 09:19:35 -0400
+ id 1qgPmK-0000aB-Oa; Wed, 13 Sep 2023 09:19:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgPmH-0003qq-8O; Wed, 13 Sep 2023 09:19:35 -0400
+ id 1qgPmH-00049T-03; Wed, 13 Sep 2023 09:19:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CE56F2176D;
- Wed, 13 Sep 2023 16:18:10 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 04E5F2176E;
+ Wed, 13 Sep 2023 16:18:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C33B327C90;
- Wed, 13 Sep 2023 16:18:04 +0300 (MSK)
-Received: (nullmailer pid 4073322 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 01D7F27C91;
+ Wed, 13 Sep 2023 16:18:05 +0300 (MSK)
+Received: (nullmailer pid 4073325 invoked by uid 1000);
  Wed, 13 Sep 2023 13:18:00 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, LIU Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Conor Dooley <conor.dooley@microchip.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.0.5 62/66] linux-user/riscv: Use abi type for
- target_ucontext
-Date: Wed, 13 Sep 2023 16:17:43 +0300
-Message-Id: <20230913131757.4073200-19-mjt@tls.msk.ru>
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.0.5 63/66] hw/riscv: virt: Fix riscv,pmu DT node path
+Date: Wed, 13 Sep 2023 16:17:44 +0300
+Message-Id: <20230913131757.4073200-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
 References: <qemu-stable-8.0.5-20230913160844@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,35 +60,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-We should not use types dependend on host arch for target_ucontext.
-This bug is found when run rv32 applications.
+On a dtb dumped from the virt machine, dt-validate complains:
+soc: pmu: {'riscv,event-to-mhpmcounters': [[1, 1, 524281], [2, 2, 524284], [65561, 65561, 524280], [65563, 65563, 524280], [65569, 65569, 524280]], 'compatible': ['riscv,pmu']} should not be valid under {'type': 'object'}
+        from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
+That's pretty cryptic, but running the dtb back through dtc produces
+something a lot more reasonable:
+Warning (simple_bus_reg): /soc/pmu: missing or empty reg/ranges property
 
-Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Moving the riscv,pmu node out of the soc bus solves the problem.
+
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Alistair Francis <alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20230811055438.1945-1-zhiwei_liu@linux.alibaba.com>
+Message-ID: <20230727-groom-decline-2c57ce42841c@spud>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit ae7d4d625cab49657b9fc2be09d895afb9bcdaf0)
+(cherry picked from commit 9ff31406312500053ecb5f92df01dd9ce52e635d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/riscv/signal.c b/linux-user/riscv/signal.c
-index eaa168199a..f989f7f51f 100644
---- a/linux-user/riscv/signal.c
-+++ b/linux-user/riscv/signal.c
-@@ -38,8 +38,8 @@ struct target_sigcontext {
- }; /* cf. riscv-linux:arch/riscv/include/uapi/asm/ptrace.h */
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 4e3efbee16..be8f0cb26e 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -731,7 +731,7 @@ static void create_fdt_pmu(RISCVVirtState *s)
+     MachineState *ms = MACHINE(s);
+     RISCVCPU hart = s->soc[0].harts[0];
  
- struct target_ucontext {
--    unsigned long uc_flags;
--    struct target_ucontext *uc_link;
-+    abi_ulong uc_flags;
-+    abi_ptr uc_link;
-     target_stack_t uc_stack;
-     target_sigset_t uc_sigmask;
-     uint8_t   __unused[1024 / 8 - sizeof(target_sigset_t)];
+-    pmu_name = g_strdup_printf("/soc/pmu");
++    pmu_name = g_strdup_printf("/pmu");
+     qemu_fdt_add_subnode(ms->fdt, pmu_name);
+     qemu_fdt_setprop_string(ms->fdt, pmu_name, "compatible", "riscv,pmu");
+     riscv_pmu_generate_fdt_node(ms->fdt, hart.cfg.pmu_num, pmu_name);
 -- 
 2.39.2
 
