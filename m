@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4AA79F859
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2751379F857
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:46:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgcLh-0000ff-F2; Wed, 13 Sep 2023 22:44:57 -0400
+	id 1qgcLr-0000iJ-79; Wed, 13 Sep 2023 22:45:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgcLf-0000fN-Fa
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:44:55 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1qgcLo-0000hZ-Tp
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:45:04 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgcLb-0000hv-0f
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:44:55 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1c1e780aa95so3355085ad.3
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 19:44:50 -0700 (PDT)
+ id 1qgcLb-0000i1-Tc
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:45:03 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1bdf4752c3cso3580205ad.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 19:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1694659490; x=1695264290; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=k4j+H0K7+KUNinwEA1FXynyFHtVQVA0RM5pMAErdRCM=;
- b=qV9iX6MO8TrwaK7Yv95dP7BdFWeLsPkvz/642QzZDZpBCX5jYa1Gf6JrE2aosRtj2A
- Ii6sU/KAzb1RZ2wnmDQnLJi1BgfuYk7vZBvOyOMaFXmVeqQIYxZyinZd41jUaDEMN05a
- Kuub2GjruD3Dn86kbLVSl6Lysw4FE9d4SKcq+SQeJHmF6iS1qICLmOTEb0P1wj/8MkeS
- g2NooBZmGABVKxdW1v3P9IhE6yzsjsekmbMARxwJ/CV/vSk8RCasAojumF9KfpcjCxmv
- UuBkbKd5M42MTDGSm8eXlKyIFCUJbxaQA3WOeydjzbfyiM7VtSfwevfIfPQ31heVCAn+
- 9uiQ==
+ bh=NfIoZ9oSQnl/4o/PnGZQeYb7irRxzp/BGWlADSKRGzI=;
+ b=ctvWVp0xeVATZXnoRBz5jh00g5ReBnGvVyl4gaEkvhQeN4OoG7+JiwZD+bD+hYL7az
+ B61XfxBwoumTNIaW51Fw0cBbNOIBigoPM7wgEoDsCtJX2m1TUk1TXcOuqyrDj7BZUu+Q
+ ypDFwa7ZArd0MPnezGmnq88RBcAsel2uKPNzLph/UMNe9KVLvKlbTYiizcqXc/zwj1n3
+ 52rjwMlJOIThUl4936vaYsQ4luW56YduxRsoGbG1dGo/qcnCJ2JnBayxpb4cfClxfRLF
+ t8vwSgUJrhJCqlQlSy9JGxUUwcVn0SUpPlg1uzLGtGbwTXgVJMYkTsvROgP+IjGgYY10
+ 5aHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1694659490; x=1695264290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k4j+H0K7+KUNinwEA1FXynyFHtVQVA0RM5pMAErdRCM=;
- b=tZk+RrDhQlyRlr2ZlqL2IkmMp1R/AWO1viEyK8kFkcHP0Yh2measirXM5xGVSo7elN
- U50QfJYh9GWTtKfxSq0mbmcpaEAKKq25it8t+4LZw2Lmaa2itQAIDoUoe/NbuY4TQV+A
- wKXlbISynDHhLY5igMZ9pticBgaZJ/dN0wLf6qZOprVMVluSUGaY91Kn+beEiiCCQZQT
- y4AKVYsDEQ2zNpEHfxwG1pgHb9xjs/pvotBtbWVX0o37evbQFyBsFaQTENHFDh9pck2P
- aipjNTEjTAPF874lciXidlbkuLwBaeQlm4yPwnQzrtaDh9PqZQmnQlIVOJsEeEJcH/ET
- 1rFA==
-X-Gm-Message-State: AOJu0YzEB+cyOhOiCMvJcm0xsE3E1NCE4nocax+LmsVjR4BiyKhp5u8w
- qH2QnGLgveMSFz/hVry0oRhgllf7xk3wty0iczY=
-X-Google-Smtp-Source: AGHT+IGhwvHQqmSPPQpcW7ueKjDgLcuRdZQUezgjPo+XyMW8hd8Y8tTIX9gDlhwpVWX3pTStQI9SCA==
-X-Received: by 2002:a17:903:188:b0:1c0:e472:5412 with SMTP id
- z8-20020a170903018800b001c0e4725412mr5508485plg.18.1694659489467; 
- Wed, 13 Sep 2023 19:44:49 -0700 (PDT)
+ bh=NfIoZ9oSQnl/4o/PnGZQeYb7irRxzp/BGWlADSKRGzI=;
+ b=vTYUisSb2S4+VJLMCri8vwQi+B5OBHxIKOYyRB+UCWHzEwfDlLHerwvCWVWnEte6JS
+ Vjg9RkrNDeoPTTOTUnXg6ZUtmftxHF9MNh1Cl7D1wZ+03JGIQ5+K/SCARGHdj2QuWrMN
+ Pp26Q6bNIf8ctrsloUpYSEg/E6xFa+G6MRQOIkCwyd9kjzC7gx9S4iNK/hEsOC8HenVw
+ 5/eMbqLdo6QFwy17LD7cR9kFR/6gqQdEvCVoP3IgYs5ByF/eoP3ljRYIPIz3RSNts5Jm
+ u/91oWzHCz7qyNjcRT0ZN/ezKHMcKvnI/V7/fRNiFInZ7HCTHzjZPBxz/FNFN6+jb5/M
+ V72w==
+X-Gm-Message-State: AOJu0YwGPKUeY+XKEyHlKhhg3Nvs4qXo6seIAyz4B7K77HAsjSx/NnPl
+ UhCv18bUBEZXUgqze5x6QMGI4q40EzARBKNIMqc=
+X-Google-Smtp-Source: AGHT+IHTCj1MAHrcqZeTJx7PGbuUSv7XVF5pycNrJunFoT0yPTG07mgn6x4perrprHVBFM0EBl4RTA==
+X-Received: by 2002:a17:902:7446:b0:1bc:9794:22ef with SMTP id
+ e6-20020a170902744600b001bc979422efmr4086324plt.1.1694659490342; 
+ Wed, 13 Sep 2023 19:44:50 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- x24-20020a170902b41800b001bbdf32f011sm304336plr.269.2023.09.13.19.44.48
+ x24-20020a170902b41800b001bbdf32f011sm304336plr.269.2023.09.13.19.44.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 13 Sep 2023 19:44:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
@@ -60,23 +60,22 @@ To: qemu-devel@nongnu.org
 Cc: anjo@rev.ng,
 	ale@rev.ng,
 	philmd@linaro.org
-Subject: [PATCH v2 13/24] accel/tcg: Replace CPUState.env_ptr with cpu_env()
-Date: Wed, 13 Sep 2023 19:44:24 -0700
-Message-Id: <20230914024435.1381329-14-richard.henderson@linaro.org>
+Subject: [PATCH v2 14/24] accel/tcg: Remove cpu_set_cpustate_pointers
+Date: Wed, 13 Sep 2023 19:44:25 -0700
+Message-Id: <20230914024435.1381329-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230914024435.1381329-1-richard.henderson@linaro.org>
 References: <20230914024435.1381329-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,1385 +91,377 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This function is now empty, so remove it.  In the case of
+m68k and tricore, this empties the class instance initfn,
+so remove those as well.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-all.h               |  1 -
- include/hw/core/cpu.h                |  9 ++++++---
- target/arm/common-semi-target.h      |  2 +-
- accel/tcg/cpu-exec.c                 |  8 ++++----
- accel/tcg/cputlb.c                   | 18 +++++++++---------
- accel/tcg/translate-all.c            |  4 ++--
- gdbstub/gdbstub.c                    |  4 ++--
- gdbstub/user-target.c                |  2 +-
- hw/i386/kvm/clock.c                  |  2 +-
- hw/intc/mips_gic.c                   |  2 +-
- hw/intc/riscv_aclint.c               | 12 ++++++------
- hw/intc/riscv_imsic.c                |  2 +-
- hw/ppc/e500.c                        |  4 ++--
- hw/ppc/spapr.c                       |  2 +-
- linux-user/elfload.c                 |  4 ++--
- linux-user/i386/cpu_loop.c           |  2 +-
- linux-user/main.c                    |  4 ++--
- linux-user/signal.c                  | 15 +++++++--------
- monitor/hmp-cmds-target.c            |  2 +-
- semihosting/arm-compat-semi.c        |  6 +++---
- semihosting/syscalls.c               | 28 ++++++++++++++--------------
- target/alpha/translate.c             |  4 ++--
- target/arm/cpu.c                     |  8 ++++----
- target/arm/helper.c                  |  2 +-
- target/arm/tcg/translate-a64.c       |  4 ++--
- target/arm/tcg/translate.c           |  6 +++---
- target/avr/translate.c               |  2 +-
- target/cris/translate.c              |  4 ++--
- target/hexagon/translate.c           |  4 ++--
- target/hppa/mem_helper.c             |  2 +-
- target/hppa/translate.c              |  4 ++--
- target/i386/tcg/sysemu/excp_helper.c |  2 +-
- target/i386/tcg/tcg-cpu.c            |  2 +-
- target/i386/tcg/translate.c          |  4 ++--
- target/loongarch/translate.c         |  4 ++--
- target/m68k/translate.c              |  4 ++--
- target/microblaze/translate.c        |  2 +-
- target/mips/tcg/sysemu/mips-semi.c   |  4 ++--
- target/mips/tcg/translate.c          |  4 ++--
- target/nios2/translate.c             |  4 ++--
- target/openrisc/translate.c          |  2 +-
- target/ppc/excp_helper.c             | 10 +++++-----
- target/ppc/translate.c               |  4 ++--
- target/riscv/translate.c             |  6 +++---
- target/rx/cpu.c                      |  3 ---
- target/rx/translate.c                |  2 +-
- target/s390x/tcg/translate.c         |  2 +-
- target/sh4/op_helper.c               |  2 +-
- target/sh4/translate.c               |  4 ++--
- target/sparc/translate.c             |  4 ++--
- target/tricore/translate.c           |  4 ++--
- target/xtensa/translate.c            |  4 ++--
- target/i386/tcg/decode-new.c.inc     |  2 +-
- 53 files changed, 125 insertions(+), 127 deletions(-)
+ include/exec/cpu-all.h  | 10 ----------
+ target/alpha/cpu.c      |  2 --
+ target/arm/cpu.c        |  1 -
+ target/avr/cpu.c        |  2 --
+ target/cris/cpu.c       |  2 --
+ target/hexagon/cpu.c    |  3 ---
+ target/hppa/cpu.c       |  1 -
+ target/i386/cpu.c       |  1 -
+ target/loongarch/cpu.c  |  8 +++-----
+ target/m68k/cpu.c       |  8 --------
+ target/microblaze/cpu.c |  1 -
+ target/mips/cpu.c       |  1 -
+ target/nios2/cpu.c      |  4 +---
+ target/openrisc/cpu.c   |  6 +-----
+ target/ppc/cpu_init.c   |  1 -
+ target/riscv/cpu.c      |  6 +-----
+ target/rx/cpu.c         |  1 -
+ target/s390x/cpu.c      |  2 --
+ target/sh4/cpu.c        |  2 --
+ target/sparc/cpu.c      |  2 --
+ target/tricore/cpu.c    |  9 ---------
+ target/xtensa/cpu.c     |  1 -
+ 22 files changed, 6 insertions(+), 68 deletions(-)
 
 diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index ae0cb2ce50..40831122ce 100644
+index 40831122ce..9db8544125 100644
 --- a/include/exec/cpu-all.h
 +++ b/include/exec/cpu-all.h
-@@ -433,7 +433,6 @@ void tcg_exec_unrealizefn(CPUState *cpu);
-  */
- static inline void cpu_set_cpustate_pointers(ArchCPU *cpu)
- {
--    cpu->parent_obj.env_ptr = &cpu->env;
- }
+@@ -425,16 +425,6 @@ int cpu_exec(CPUState *cpu);
+ void tcg_exec_realizefn(CPUState *cpu, Error **errp);
+ void tcg_exec_unrealizefn(CPUState *cpu);
  
- /* Validate correct placement of CPUArchState. */
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 99066da2f3..f3fa1ffa95 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -440,7 +440,6 @@ struct qemu_work_item;
-  * @num_ases: number of CPUAddressSpaces in @cpu_ases
-  * @as: Pointer to the first AddressSpace, for the convenience of targets which
-  *      only have a single AddressSpace
-- * @env_ptr: Pointer to subclass-specific CPUArchState field.
-  * @gdb_regs: Additional GDB registers.
-  * @gdb_num_regs: Number of total registers accessible to GDB.
-  * @gdb_num_g_regs: Number of registers in GDB 'g' packets.
-@@ -511,8 +510,6 @@ struct CPUState {
-     AddressSpace *as;
-     MemoryRegion *memory;
- 
--    CPUArchState *env_ptr;
+-/**
+- * cpu_set_cpustate_pointers(cpu)
+- * @cpu: The cpu object
+- *
+- * Set the generic pointers in CPUState into the outer object.
+- */
+-static inline void cpu_set_cpustate_pointers(ArchCPU *cpu)
+-{
+-}
 -
-     CPUJumpCache *tb_jmp_cache;
+ /* Validate correct placement of CPUArchState. */
+ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
+ QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index e2156fcb41..51b7d8d1bf 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -209,8 +209,6 @@ static void alpha_cpu_initfn(Object *obj)
+     AlphaCPU *cpu = ALPHA_CPU(obj);
+     CPUAlphaState *env = &cpu->env;
  
-     struct GDBRegisterState *gdb_regs;
-@@ -594,6 +591,12 @@ struct CPUState {
- QEMU_BUILD_BUG_ON(offsetof(CPUState, neg) + sizeof(CPUNegativeOffsetState)
-                   != sizeof(CPUState));
- 
-+static inline CPUArchState *cpu_env(CPUState *cpu)
-+{
-+    /* We validate that CPUArchState follows CPUState in cpu-all.h. */
-+    return (CPUArchState *)(cpu + 1);
-+}
-+
- typedef QTAILQ_HEAD(CPUTailQ, CPUState) CPUTailQ;
- extern CPUTailQ cpus;
- 
-diff --git a/target/arm/common-semi-target.h b/target/arm/common-semi-target.h
-index 629d75ca5a..19438ed8cd 100644
---- a/target/arm/common-semi-target.h
-+++ b/target/arm/common-semi-target.h
-@@ -38,7 +38,7 @@ static inline void common_semi_set_ret(CPUState *cs, target_ulong ret)
- 
- static inline bool common_semi_sys_exit_extended(CPUState *cs, int nr)
- {
--    return (nr == TARGET_SYS_EXIT_EXTENDED || is_a64(cs->env_ptr));
-+    return nr == TARGET_SYS_EXIT_EXTENDED || is_a64(cpu_env(cs));
- }
- 
- static inline bool is_64bit_semihosting(CPUArchState *env)
-diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index 4abbd037f3..0e7eeef001 100644
---- a/accel/tcg/cpu-exec.c
-+++ b/accel/tcg/cpu-exec.c
-@@ -222,7 +222,7 @@ static TranslationBlock *tb_htable_lookup(CPUState *cpu, vaddr pc,
-     struct tb_desc desc;
-     uint32_t h;
- 
--    desc.env = cpu->env_ptr;
-+    desc.env = cpu_env(cpu);
-     desc.cs_base = cs_base;
-     desc.flags = flags;
-     desc.cflags = cflags;
-@@ -444,7 +444,7 @@ const void *HELPER(lookup_tb_ptr)(CPUArchState *env)
- static inline TranslationBlock * QEMU_DISABLE_CFI
- cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     uintptr_t ret;
-     TranslationBlock *last_tb;
-     const void *tb_ptr = itb->tc.ptr;
-@@ -565,7 +565,7 @@ static void cpu_exec_longjmp_cleanup(CPUState *cpu)
- 
- void cpu_exec_step_atomic(CPUState *cpu)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     TranslationBlock *tb;
-     vaddr pc;
-     uint64_t cs_base;
-@@ -976,7 +976,7 @@ cpu_exec_loop(CPUState *cpu, SyncClocks *sc)
-             uint64_t cs_base;
-             uint32_t flags, cflags;
- 
--            cpu_get_tb_cpu_state(cpu->env_ptr, &pc, &cs_base, &flags);
-+            cpu_get_tb_cpu_state(cpu_env(cpu), &pc, &cs_base, &flags);
- 
-             /*
-              * When requested, use an exact setting for cflags for the next
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 21c035497f..095bc79b6f 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -274,7 +274,7 @@ static inline void tlb_n_used_entries_dec(CPUArchState *env, uintptr_t mmu_idx)
- 
- void tlb_init(CPUState *cpu)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     int64_t now = get_clock_realtime();
-     int i;
- 
-@@ -290,7 +290,7 @@ void tlb_init(CPUState *cpu)
- 
- void tlb_destroy(CPUState *cpu)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     int i;
- 
-     qemu_spin_destroy(&env_tlb(env)->c.lock);
-@@ -328,7 +328,7 @@ void tlb_flush_counts(size_t *pfull, size_t *ppart, size_t *pelide)
-     size_t full = 0, part = 0, elide = 0;
- 
-     CPU_FOREACH(cpu) {
--        CPUArchState *env = cpu->env_ptr;
-+        CPUArchState *env = cpu_env(cpu);
- 
-         full += qatomic_read(&env_tlb(env)->c.full_flush_count);
-         part += qatomic_read(&env_tlb(env)->c.part_flush_count);
-@@ -341,7 +341,7 @@ void tlb_flush_counts(size_t *pfull, size_t *ppart, size_t *pelide)
- 
- static void tlb_flush_by_mmuidx_async_work(CPUState *cpu, run_on_cpu_data data)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     uint16_t asked = data.host_int;
-     uint16_t all_dirty, work, to_clean;
-     int64_t now = get_clock_realtime();
-@@ -523,7 +523,7 @@ static void tlb_flush_page_by_mmuidx_async_0(CPUState *cpu,
-                                              vaddr addr,
-                                              uint16_t idxmap)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     int mmu_idx;
- 
-     assert_cpu_is_self(cpu);
-@@ -769,7 +769,7 @@ typedef struct {
- static void tlb_flush_range_by_mmuidx_async_0(CPUState *cpu,
-                                               TLBFlushRangeData d)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     int mmu_idx;
- 
-     assert_cpu_is_self(cpu);
-@@ -1032,7 +1032,7 @@ void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length)
- 
-     int mmu_idx;
- 
--    env = cpu->env_ptr;
-+    env = cpu_env(cpu);
-     qemu_spin_lock(&env_tlb(env)->c.lock);
-     for (mmu_idx = 0; mmu_idx < NB_MMU_MODES; mmu_idx++) {
-         unsigned int i;
-@@ -1064,7 +1064,7 @@ static inline void tlb_set_dirty1_locked(CPUTLBEntry *tlb_entry,
-    so that it is no longer dirty */
- void tlb_set_dirty(CPUState *cpu, vaddr addr)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     int mmu_idx;
- 
-     assert_cpu_is_self(cpu);
-@@ -1137,7 +1137,7 @@ static inline void tlb_set_compare(CPUTLBEntryFull *full, CPUTLBEntry *ent,
- void tlb_set_page_full(CPUState *cpu, int mmu_idx,
-                        vaddr addr, CPUTLBEntryFull *full)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     CPUTLB *tlb = env_tlb(env);
-     CPUTLBDesc *desc = &tlb->d[mmu_idx];
-     MemoryRegionSection *section;
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index ed0c7ef7ce..6fac5b7e29 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -288,7 +288,7 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
-                               vaddr pc, uint64_t cs_base,
-                               uint32_t flags, int cflags)
- {
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     TranslationBlock *tb, *existing_tb;
-     tb_page_addr_t phys_pc, phys_p2;
-     tcg_insn_unit *gen_code_buf;
-@@ -580,7 +580,7 @@ void tb_check_watchpoint(CPUState *cpu, uintptr_t retaddr)
-     } else {
-         /* The exception probably happened in a helper.  The CPU state should
-            have been saved before calling it. Fetch the PC from there.  */
--        CPUArchState *env = cpu->env_ptr;
-+        CPUArchState *env = cpu_env(cpu);
-         vaddr pc;
-         uint64_t cs_base;
-         tb_page_addr_t addr;
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 349d348c7b..8eea21450c 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -423,7 +423,7 @@ static const char *get_feature_xml(const char *p, const char **newp,
- static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
- {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     GDBRegisterState *r;
- 
-     if (reg < cc->gdb_num_core_regs) {
-@@ -441,7 +441,7 @@ static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
- static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
- {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     GDBRegisterState *r;
- 
-     if (reg < cc->gdb_num_core_regs) {
-diff --git a/gdbstub/user-target.c b/gdbstub/user-target.c
-index 6e21c3161c..c4bba4c72c 100644
---- a/gdbstub/user-target.c
-+++ b/gdbstub/user-target.c
-@@ -310,7 +310,7 @@ void gdb_handle_v_file_open(GArray *params, void *user_ctx)
-     uint64_t mode = get_param(params, 2)->val_ull;
- 
- #ifdef CONFIG_LINUX
--    int fd = do_guest_openat(gdbserver_state.g_cpu->env_ptr, 0, filename,
-+    int fd = do_guest_openat(cpu_env(gdbserver_state.g_cpu), 0, filename,
-                              flags, mode, false);
- #else
-     int fd = open(filename, flags, mode);
-diff --git a/hw/i386/kvm/clock.c b/hw/i386/kvm/clock.c
-index 34348a3324..f25977d3f6 100644
---- a/hw/i386/kvm/clock.c
-+++ b/hw/i386/kvm/clock.c
-@@ -66,7 +66,7 @@ struct pvclock_vcpu_time_info {
- static uint64_t kvmclock_current_nsec(KVMClockState *s)
- {
-     CPUState *cpu = first_cpu;
--    CPUX86State *env = cpu->env_ptr;
-+    CPUX86State *env = cpu_env(cpu);
-     hwaddr kvmclock_struct_pa;
-     uint64_t migration_tsc = env->tsc;
-     struct pvclock_vcpu_time_info time;
-diff --git a/hw/intc/mips_gic.c b/hw/intc/mips_gic.c
-index 4bdc3b1bd1..77ba7348a3 100644
---- a/hw/intc/mips_gic.c
-+++ b/hw/intc/mips_gic.c
-@@ -423,7 +423,7 @@ static void mips_gic_realize(DeviceState *dev, Error **errp)
-     /* Register the env for all VPs with the GIC */
-     for (i = 0; i < s->num_vps; i++) {
-         if (cs != NULL) {
--            s->vps[i].env = cs->env_ptr;
-+            s->vps[i].env = cpu_env(cs);
-             cs = CPU_NEXT(cs);
-         } else {
-             error_setg(errp,
-diff --git a/hw/intc/riscv_aclint.c b/hw/intc/riscv_aclint.c
-index 25cf7a5d9d..ab1a0b4b3a 100644
---- a/hw/intc/riscv_aclint.c
-+++ b/hw/intc/riscv_aclint.c
-@@ -131,7 +131,7 @@ static uint64_t riscv_aclint_mtimer_read(void *opaque, hwaddr addr,
-         size_t hartid = mtimer->hartid_base +
-                         ((addr - mtimer->timecmp_base) >> 3);
-         CPUState *cpu = cpu_by_arch_id(hartid);
--        CPURISCVState *env = cpu ? cpu->env_ptr : NULL;
-+        CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "aclint-mtimer: invalid hartid: %zu", hartid);
-@@ -174,7 +174,7 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
-         size_t hartid = mtimer->hartid_base +
-                         ((addr - mtimer->timecmp_base) >> 3);
-         CPUState *cpu = cpu_by_arch_id(hartid);
--        CPURISCVState *env = cpu ? cpu->env_ptr : NULL;
-+        CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "aclint-mtimer: invalid hartid: %zu", hartid);
-@@ -233,7 +233,7 @@ static void riscv_aclint_mtimer_write(void *opaque, hwaddr addr,
-         /* Check if timer interrupt is triggered for each hart. */
-         for (i = 0; i < mtimer->num_harts; i++) {
-             CPUState *cpu = cpu_by_arch_id(mtimer->hartid_base + i);
--            CPURISCVState *env = cpu ? cpu->env_ptr : NULL;
-+            CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-             if (!env) {
-                 continue;
-             }
-@@ -375,7 +375,7 @@ DeviceState *riscv_aclint_mtimer_create(hwaddr addr, hwaddr size,
-     for (i = 0; i < num_harts; i++) {
-         CPUState *cpu = cpu_by_arch_id(hartid_base + i);
-         RISCVCPU *rvcpu = RISCV_CPU(cpu);
--        CPURISCVState *env = cpu ? cpu->env_ptr : NULL;
-+        CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         riscv_aclint_mtimer_callback *cb =
-             g_new0(riscv_aclint_mtimer_callback, 1);
- 
-@@ -409,7 +409,7 @@ static uint64_t riscv_aclint_swi_read(void *opaque, hwaddr addr,
-     if (addr < (swi->num_harts << 2)) {
-         size_t hartid = swi->hartid_base + (addr >> 2);
-         CPUState *cpu = cpu_by_arch_id(hartid);
--        CPURISCVState *env = cpu ? cpu->env_ptr : NULL;
-+        CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "aclint-swi: invalid hartid: %zu", hartid);
-@@ -432,7 +432,7 @@ static void riscv_aclint_swi_write(void *opaque, hwaddr addr, uint64_t value,
-     if (addr < (swi->num_harts << 2)) {
-         size_t hartid = swi->hartid_base + (addr >> 2);
-         CPUState *cpu = cpu_by_arch_id(hartid);
--        CPURISCVState *env = cpu ? cpu->env_ptr : NULL;
-+        CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
-         if (!env) {
-             qemu_log_mask(LOG_GUEST_ERROR,
-                           "aclint-swi: invalid hartid: %zu", hartid);
-diff --git a/hw/intc/riscv_imsic.c b/hw/intc/riscv_imsic.c
-index 760dbddcf7..b31d07980c 100644
---- a/hw/intc/riscv_imsic.c
-+++ b/hw/intc/riscv_imsic.c
-@@ -333,7 +333,7 @@ static void riscv_imsic_realize(DeviceState *dev, Error **errp)
-     RISCVIMSICState *imsic = RISCV_IMSIC(dev);
-     RISCVCPU *rcpu = RISCV_CPU(cpu_by_arch_id(imsic->hartid));
-     CPUState *cpu = cpu_by_arch_id(imsic->hartid);
--    CPURISCVState *env = cpu ? cpu->env_ptr : NULL;
-+    CPURISCVState *env = cpu ? cpu_env(cpu) : NULL;
- 
-     if (!kvm_irqchip_in_kernel()) {
-         imsic->num_eistate = imsic->num_pages * imsic->num_irqs;
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index d5b6820d1d..e04114fb3c 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -373,7 +373,7 @@ static int ppce500_load_device_tree(PPCE500MachineState *pms,
-     MachineState *machine = MACHINE(pms);
-     unsigned int smp_cpus = machine->smp.cpus;
-     const PPCE500MachineClass *pmc = PPCE500_MACHINE_GET_CLASS(pms);
--    CPUPPCState *env = first_cpu->env_ptr;
-+    CPUPPCState *env = cpu_env(first_cpu);
-     int ret = -1;
-     uint64_t mem_reg_property[] = { 0, cpu_to_be64(machine->ram_size) };
-     int fdt_size;
-@@ -499,7 +499,7 @@ static int ppce500_load_device_tree(PPCE500MachineState *pms,
-         if (cpu == NULL) {
-             continue;
-         }
--        env = cpu->env_ptr;
-+        env = cpu_env(cpu);
- 
-         cpu_name = g_strdup_printf("/cpus/PowerPC,8544@%x", i);
-         qemu_fdt_add_subnode(fdt, cpu_name);
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index f7cc6a890f..f919ecd8a3 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -1119,7 +1119,7 @@ static void spapr_dt_hypervisor(SpaprMachineState *spapr, void *fdt)
-          * Older KVM versions with older guest kernels were broken
-          * with the magic page, don't allow the guest to map it.
-          */
--        if (!kvmppc_get_hypercall(first_cpu->env_ptr, hypercall,
-+        if (!kvmppc_get_hypercall(cpu_env(first_cpu), hypercall,
-                                   sizeof(hypercall))) {
-             _FDT(fdt_setprop(fdt, hypervisor, "hcall-instructions",
-                              hypercall, sizeof(hypercall)));
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index a5b28fa3e7..85cff102d1 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -565,7 +565,7 @@ const char *elf_hwcap2_str(uint32_t bit)
- 
- static const char *get_elf_platform(void)
- {
--    CPUARMState *env = thread_cpu->env_ptr;
-+    CPUARMState *env = cpu_env(thread_cpu);
- 
- #if TARGET_BIG_ENDIAN
- # define END  "b"
-@@ -4372,7 +4372,7 @@ static int fill_note_info(struct elf_note_info *info,
-             if (cpu == thread_cpu) {
-                 continue;
-             }
--            fill_thread_info(info, cpu->env_ptr);
-+            fill_thread_info(info, cpu_env(cpu));
-         }
-     }
- 
-diff --git a/linux-user/i386/cpu_loop.c b/linux-user/i386/cpu_loop.c
-index ef2dcb3d76..42ecb4bf0a 100644
---- a/linux-user/i386/cpu_loop.c
-+++ b/linux-user/i386/cpu_loop.c
-@@ -323,7 +323,7 @@ void cpu_loop(CPUX86State *env)
- 
- static void target_cpu_free(void *obj)
- {
--    CPUArchState *env = ((CPUState *)obj)->env_ptr;
-+    CPUArchState *env = cpu_env(obj);
-     target_munmap(env->gdt.base, sizeof(uint64_t) * TARGET_GDT_ENTRIES);
-     g_free(obj);
- }
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 96be354897..0a62e2be47 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -229,7 +229,7 @@ CPUArchState *cpu_copy(CPUArchState *env)
- {
-     CPUState *cpu = env_cpu(env);
-     CPUState *new_cpu = cpu_create(cpu_type);
--    CPUArchState *new_env = new_cpu->env_ptr;
-+    CPUArchState *new_env = cpu_env(new_cpu);
-     CPUBreakpoint *bp;
- 
-     /* Reset non arch specific state */
-@@ -794,7 +794,7 @@ int main(int argc, char **argv, char **envp)
-         ac->init_machine(NULL);
-     }
-     cpu = cpu_create(cpu_type);
--    env = cpu->env_ptr;
-+    env = cpu_env(cpu);
-     cpu_reset(cpu);
-     thread_cpu = cpu;
- 
-diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 748a98f3e5..a7ba2ccaf4 100644
---- a/linux-user/signal.c
-+++ b/linux-user/signal.c
-@@ -618,7 +618,7 @@ void signal_init(void)
- void force_sig(int sig)
- {
-     CPUState *cpu = thread_cpu;
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     target_siginfo_t info = {};
- 
-     info.si_signo = sig;
-@@ -636,7 +636,7 @@ void force_sig(int sig)
- void force_sig_fault(int sig, int code, abi_ulong addr)
- {
-     CPUState *cpu = thread_cpu;
--    CPUArchState *env = cpu->env_ptr;
-+    CPUArchState *env = cpu_env(cpu);
-     target_siginfo_t info = {};
- 
-     info.si_signo = sig;
-@@ -695,10 +695,9 @@ void cpu_loop_exit_sigbus(CPUState *cpu, target_ulong addr,
- 
- /* abort execution with signal */
- static G_NORETURN
--void dump_core_and_abort(CPUArchState *cpu_env, int target_sig)
-+void dump_core_and_abort(CPUArchState *env, int target_sig)
- {
--    CPUState *cpu = thread_cpu;
--    CPUArchState *env = cpu->env_ptr;
-+    CPUState *cpu = env_cpu(env);
-     TaskState *ts = (TaskState *)cpu->opaque;
-     int host_sig, core_dumped = 0;
-     struct sigaction act;
-@@ -724,7 +723,7 @@ void dump_core_and_abort(CPUArchState *cpu_env, int target_sig)
-             target_sig, strsignal(host_sig), "core dumped" );
-     }
- 
--    preexit_cleanup(cpu_env, 128 + target_sig);
-+    preexit_cleanup(env, 128 + target_sig);
- 
-     /* The proper exit code for dying from an uncaught signal is
-      * -<signal>.  The kernel doesn't allow exit() or _exit() to pass
-@@ -783,8 +782,8 @@ static inline void rewind_if_in_safe_syscall(void *puc)
- 
- static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
- {
--    CPUArchState *env = thread_cpu->env_ptr;
--    CPUState *cpu = env_cpu(env);
-+    CPUState *cpu = thread_cpu;
-+    CPUArchState *env = cpu_env(cpu);
-     TaskState *ts = cpu->opaque;
-     target_siginfo_t tinfo;
-     host_sigcontext *uc = puc;
-diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-index 0d3e84d960..d9fbcac08d 100644
---- a/monitor/hmp-cmds-target.c
-+++ b/monitor/hmp-cmds-target.c
-@@ -81,7 +81,7 @@ CPUArchState *mon_get_cpu_env(Monitor *mon)
- {
-     CPUState *cs = mon_get_cpu(mon);
- 
--    return cs ? cs->env_ptr : NULL;
-+    return cs ? cpu_env(cs) : NULL;
- }
- 
- int monitor_get_cpu_index(Monitor *mon)
-diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
-index 564fe17f75..29c5670fdf 100644
---- a/semihosting/arm-compat-semi.c
-+++ b/semihosting/arm-compat-semi.c
-@@ -251,7 +251,7 @@ static void common_semi_dead_cb(CPUState *cs, uint64_t ret, int err)
- static void common_semi_rw_cb(CPUState *cs, uint64_t ret, int err)
- {
-     /* Recover the original length from the third argument. */
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     target_ulong args = common_semi_arg(cs, 1);
-     target_ulong arg2;
-     GET_ARG(2);
-@@ -322,7 +322,7 @@ static void
- common_semi_readc_cb(CPUState *cs, uint64_t ret, int err)
- {
-     if (!err) {
--        CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+        CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-         uint8_t ch;
- 
-         if (get_user_u8(ch, common_semi_stack_bottom(cs) - 1)) {
-@@ -361,7 +361,7 @@ static const uint8_t featurefile_data[] = {
-  */
- void do_common_semihosting(CPUState *cs)
- {
--    CPUArchState *env = cs->env_ptr;
-+    CPUArchState *env = cpu_env(cs);
-     target_ulong args;
-     target_ulong arg0, arg1, arg2, arg3;
-     target_ulong ul_ret;
-diff --git a/semihosting/syscalls.c b/semihosting/syscalls.c
-index d27574a1e2..1ab4809567 100644
---- a/semihosting/syscalls.c
-+++ b/semihosting/syscalls.c
-@@ -24,7 +24,7 @@
-  */
- static int validate_strlen(CPUState *cs, target_ulong str, target_ulong tlen)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char c;
- 
-     if (tlen == 0) {
-@@ -54,7 +54,7 @@ static int validate_lock_user_string(char **pstr, CPUState *cs,
-                                      target_ulong tstr, target_ulong tlen)
- {
-     int ret = validate_strlen(cs, tstr, tlen);
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char *str = NULL;
- 
-     if (ret > 0) {
-@@ -74,7 +74,7 @@ static int validate_lock_user_string(char **pstr, CPUState *cs,
- static int copy_stat_to_user(CPUState *cs, target_ulong addr,
-                              const struct stat *s)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     struct gdb_stat *p;
- 
-     if (s->st_dev != (uint32_t)s->st_dev ||
-@@ -258,7 +258,7 @@ static void host_open(CPUState *cs, gdb_syscall_complete_cb complete,
-                       target_ulong fname, target_ulong fname_len,
-                       int gdb_flags, int mode)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char *p;
-     int ret, host_flags = O_BINARY;
- 
-@@ -316,7 +316,7 @@ static void host_close(CPUState *cs, gdb_syscall_complete_cb complete,
- static void host_read(CPUState *cs, gdb_syscall_complete_cb complete,
-                       GuestFD *gf, target_ulong buf, target_ulong len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     void *ptr = lock_user(VERIFY_WRITE, buf, len, 0);
-     ssize_t ret;
- 
-@@ -337,7 +337,7 @@ static void host_read(CPUState *cs, gdb_syscall_complete_cb complete,
- static void host_write(CPUState *cs, gdb_syscall_complete_cb complete,
-                        GuestFD *gf, target_ulong buf, target_ulong len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     void *ptr = lock_user(VERIFY_READ, buf, len, 1);
-     ssize_t ret;
- 
-@@ -411,7 +411,7 @@ static void host_stat(CPUState *cs, gdb_syscall_complete_cb complete,
-                       target_ulong fname, target_ulong fname_len,
-                       target_ulong addr)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     struct stat buf;
-     char *name;
-     int ret, err;
-@@ -440,7 +440,7 @@ static void host_stat(CPUState *cs, gdb_syscall_complete_cb complete,
- static void host_remove(CPUState *cs, gdb_syscall_complete_cb complete,
-                         target_ulong fname, target_ulong fname_len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char *p;
-     int ret;
- 
-@@ -459,7 +459,7 @@ static void host_rename(CPUState *cs, gdb_syscall_complete_cb complete,
-                         target_ulong oname, target_ulong oname_len,
-                         target_ulong nname, target_ulong nname_len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char *ostr, *nstr;
-     int ret;
- 
-@@ -484,7 +484,7 @@ static void host_rename(CPUState *cs, gdb_syscall_complete_cb complete,
- static void host_system(CPUState *cs, gdb_syscall_complete_cb complete,
-                         target_ulong cmd, target_ulong cmd_len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char *p;
-     int ret;
- 
-@@ -502,7 +502,7 @@ static void host_system(CPUState *cs, gdb_syscall_complete_cb complete,
- static void host_gettimeofday(CPUState *cs, gdb_syscall_complete_cb complete,
-                               target_ulong tv_addr, target_ulong tz_addr)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     struct gdb_timeval *p;
-     int64_t rt;
- 
-@@ -547,7 +547,7 @@ static void host_poll_one(CPUState *cs, gdb_syscall_complete_cb complete,
- static void staticfile_read(CPUState *cs, gdb_syscall_complete_cb complete,
-                             GuestFD *gf, target_ulong buf, target_ulong len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     target_ulong rest = gf->staticfile.len - gf->staticfile.off;
-     void *ptr;
- 
-@@ -605,7 +605,7 @@ static void staticfile_flen(CPUState *cs, gdb_syscall_complete_cb complete,
- static void console_read(CPUState *cs, gdb_syscall_complete_cb complete,
-                          GuestFD *gf, target_ulong buf, target_ulong len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char *ptr;
-     int ret;
- 
-@@ -622,7 +622,7 @@ static void console_read(CPUState *cs, gdb_syscall_complete_cb complete,
- static void console_write(CPUState *cs, gdb_syscall_complete_cb complete,
-                           GuestFD *gf, target_ulong buf, target_ulong len)
- {
--    CPUArchState *env G_GNUC_UNUSED = cs->env_ptr;
-+    CPUArchState *env G_GNUC_UNUSED = cpu_env(cs);
-     char *ptr = lock_user(VERIFY_READ, buf, len, 1);
-     int ret;
- 
-diff --git a/target/alpha/translate.c b/target/alpha/translate.c
-index 46af6574bf..32333081d8 100644
---- a/target/alpha/translate.c
-+++ b/target/alpha/translate.c
-@@ -2871,7 +2871,7 @@ static DisasJumpType translate_one(DisasContext *ctx, uint32_t insn)
- static void alpha_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUAlphaState *env = cpu->env_ptr;
-+    CPUAlphaState *env = cpu_env(cpu);
-     int64_t bound;
- 
-     ctx->tbflags = ctx->base.tb->flags;
-@@ -2917,7 +2917,7 @@ static void alpha_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void alpha_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUAlphaState *env = cpu->env_ptr;
-+    CPUAlphaState *env = cpu_env(cpu);
-     uint32_t insn = translator_ldl(env, &ctx->base, ctx->base.pc_next);
- 
-     ctx->base.pc_next += 4;
+-    cpu_set_cpustate_pointers(cpu);
+-
+     env->lock_addr = -1;
+ #if defined(CONFIG_USER_ONLY)
+     env->flags = ENV_FLAG_PS_USER | ENV_FLAG_FEN;
 diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index d0f279b87f..b76025485d 100644
+index b76025485d..78e42d6dcc 100644
 --- a/target/arm/cpu.c
 +++ b/target/arm/cpu.c
-@@ -80,7 +80,7 @@ void arm_cpu_synchronize_from_tb(CPUState *cs,
+@@ -1215,7 +1215,6 @@ static void arm_cpu_initfn(Object *obj)
  {
-     /* The program counter is always up to date with CF_PCREL. */
-     if (!(tb_cflags(tb) & CF_PCREL)) {
--        CPUARMState *env = cs->env_ptr;
-+        CPUARMState *env = cpu_env(cs);
-         /*
-          * It's OK to look at env for the current mode here, because it's
-          * never possible for an AArch64 TB to chain to an AArch32 TB.
-@@ -97,7 +97,7 @@ void arm_restore_state_to_opc(CPUState *cs,
-                               const TranslationBlock *tb,
-                               const uint64_t *data)
- {
--    CPUARMState *env = cs->env_ptr;
-+    CPUARMState *env = cpu_env(cs);
+     ARMCPU *cpu = ARM_CPU(obj);
  
-     if (is_a64(env)) {
-         if (tb_cflags(tb) & CF_PCREL) {
-@@ -560,7 +560,7 @@ static inline bool arm_excp_unmasked(CPUState *cs, unsigned int excp_idx,
-                                      unsigned int cur_el, bool secure,
-                                      uint64_t hcr_el2)
- {
--    CPUARMState *env = cs->env_ptr;
-+    CPUARMState *env = cpu_env(cs);
-     bool pstate_unmasked;
-     bool unmasked = false;
+-    cpu_set_cpustate_pointers(cpu);
+     cpu->cp_regs = g_hash_table_new_full(g_direct_hash, g_direct_equal,
+                                          NULL, g_free);
  
-@@ -690,7 +690,7 @@ static inline bool arm_excp_unmasked(CPUState *cs, unsigned int excp_idx,
- static bool arm_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+index c5a6436336..14d8b9d1f0 100644
+--- a/target/avr/cpu.c
++++ b/target/avr/cpu.c
+@@ -147,8 +147,6 @@ static void avr_cpu_initfn(Object *obj)
  {
-     CPUClass *cc = CPU_GET_CLASS(cs);
--    CPUARMState *env = cs->env_ptr;
-+    CPUARMState *env = cpu_env(cs);
-     uint32_t cur_el = arm_current_el(env);
-     bool secure = arm_is_secure(env);
-     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 3b22596eab..096f1bbe6d 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -10274,7 +10274,7 @@ static const int8_t target_el_table[2][2][2][2][2][4] = {
- uint32_t arm_phys_excp_target_el(CPUState *cs, uint32_t excp_idx,
-                                  uint32_t cur_el, bool secure)
- {
--    CPUARMState *env = cs->env_ptr;
-+    CPUARMState *env = cpu_env(cs);
-     bool rw;
-     bool scr;
-     bool hcr;
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index cb520efcd0..f9aff44dac 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -13853,7 +13853,7 @@ static void aarch64_tr_init_disas_context(DisasContextBase *dcbase,
-                                           CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUARMState *env = cpu->env_ptr;
-+    CPUARMState *env = cpu_env(cpu);
-     ARMCPU *arm_cpu = env_archcpu(env);
-     CPUARMTBFlags tb_flags = arm_tbflags_from_tb(dc->base.tb);
-     int bound, core_mmu_idx;
-@@ -13959,7 +13959,7 @@ static void aarch64_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *s = container_of(dcbase, DisasContext, base);
--    CPUARMState *env = cpu->env_ptr;
-+    CPUARMState *env = cpu_env(cpu);
-     uint64_t pc = s->base.pc_next;
-     uint32_t insn;
+     AVRCPU *cpu = AVR_CPU(obj);
  
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index d5a8467905..862eaf10a0 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -9127,7 +9127,7 @@ static bool insn_crosses_page(CPUARMState *env, DisasContext *s)
- static void arm_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUARMState *env = cs->env_ptr;
-+    CPUARMState *env = cpu_env(cs);
-     ARMCPU *cpu = env_archcpu(env);
-     CPUARMTBFlags tb_flags = arm_tbflags_from_tb(dc->base.tb);
-     uint32_t condexec, core_mmu_idx;
-@@ -9355,7 +9355,7 @@ static void arm_post_translate_insn(DisasContext *dc)
- static void arm_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUARMState *env = cpu->env_ptr;
-+    CPUARMState *env = cpu_env(cpu);
-     uint32_t pc = dc->base.pc_next;
-     unsigned int insn;
+-    cpu_set_cpustate_pointers(cpu);
+-
+     /* Set the number of interrupts supported by the CPU. */
+     qdev_init_gpio_in(DEVICE(cpu), avr_cpu_set_int,
+                       sizeof(cpu->env.intsrc) * 8);
+diff --git a/target/cris/cpu.c b/target/cris/cpu.c
+index 8ab8a30b8d..be4a44c218 100644
+--- a/target/cris/cpu.c
++++ b/target/cris/cpu.c
+@@ -201,8 +201,6 @@ static void cris_cpu_initfn(Object *obj)
+     CRISCPUClass *ccc = CRIS_CPU_GET_CLASS(obj);
+     CPUCRISState *env = &cpu->env;
  
-@@ -9445,7 +9445,7 @@ static bool thumb_insn_is_unconditional(DisasContext *s, uint32_t insn)
- static void thumb_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUARMState *env = cpu->env_ptr;
-+    CPUARMState *env = cpu_env(cpu);
-     uint32_t pc = dc->base.pc_next;
-     uint32_t insn;
-     bool is_16bit;
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index 8d67570d17..cdffa04519 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -2657,7 +2657,7 @@ static bool canonicalize_skip(DisasContext *ctx)
- static void avr_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUAVRState *env = cs->env_ptr;
-+    CPUAVRState *env = cpu_env(cs);
-     uint32_t tb_flags = ctx->base.tb->flags;
- 
-     ctx->cs = cs;
-diff --git a/target/cris/translate.c b/target/cris/translate.c
-index 395ba12bea..b3974ba0bb 100644
---- a/target/cris/translate.c
-+++ b/target/cris/translate.c
-@@ -2948,7 +2948,7 @@ static unsigned int crisv32_decoder(CPUCRISState *env, DisasContext *dc)
- static void cris_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUCRISState *env = cs->env_ptr;
-+    CPUCRISState *env = cpu_env(cs);
-     uint32_t tb_flags = dc->base.tb->flags;
-     uint32_t pc_start;
- 
-@@ -3006,7 +3006,7 @@ static void cris_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void cris_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUCRISState *env = cs->env_ptr;
-+    CPUCRISState *env = cpu_env(cs);
-     unsigned int insn_len;
- 
-     /* Pretty disas.  */
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 012c3c68ec..663b7bbc3a 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -1053,7 +1053,7 @@ static void hexagon_tr_init_disas_context(DisasContextBase *dcbase,
-                                           CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    HexagonCPU *hex_cpu = env_archcpu(cs->env_ptr);
-+    HexagonCPU *hex_cpu = env_archcpu(cpu_env(cs));
-     uint32_t hex_flags = dcbase->tb->flags;
- 
-     ctx->mem_idx = MMU_USER_IDX;
-@@ -1094,7 +1094,7 @@ static bool pkt_crosses_page(CPUHexagonState *env, DisasContext *ctx)
- static void hexagon_tr_translate_packet(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUHexagonState *env = cpu->env_ptr;
-+    CPUHexagonState *env = cpu_env(cpu);
- 
-     decode_and_translate_packet(env, ctx);
- 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 46c3dcaf15..f28888ccca 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -305,7 +305,7 @@ void HELPER(itlbp)(CPUHPPAState *env, target_ulong addr, target_ureg reg)
-    synchronous across all processors.  */
- static void ptlb_work(CPUState *cpu, run_on_cpu_data data)
- {
--    CPUHPPAState *env = cpu->env_ptr;
-+    CPUHPPAState *env = cpu_env(cpu);
-     target_ulong addr = (target_ulong) data.target_ptr;
-     hppa_tlb_entry *ent = hppa_find_tlb(env, addr);
- 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index a1046e4672..902cd642ae 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3450,7 +3450,7 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
+-    cpu_set_cpustate_pointers(cpu);
+-
+     env->pregs[PR_VR] = ccc->vr;
  
  #ifndef CONFIG_USER_ONLY
-     if (ctx->tb_flags & PSW_C) {
--        CPUHPPAState *env = ctx->cs->env_ptr;
-+        CPUHPPAState *env = cpu_env(ctx->cs);
-         int type = hppa_artype_for_page(env, ctx->base.pc_next);
-         /* If we could not find a TLB entry, then we need to generate an
-            ITLB miss exception so the kernel will provide it.
-@@ -4111,7 +4111,7 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUHPPAState *env = cs->env_ptr;
-+    CPUHPPAState *env = cpu_env(cs);
-     DisasJumpType ret;
-     int i, n;
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index 65f198b956..1adc11b713 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -353,9 +353,6 @@ static void hexagon_cpu_realize(DeviceState *dev, Error **errp)
  
-diff --git a/target/i386/tcg/sysemu/excp_helper.c b/target/i386/tcg/sysemu/excp_helper.c
-index 226689a4f2..5b86f439ad 100644
---- a/target/i386/tcg/sysemu/excp_helper.c
-+++ b/target/i386/tcg/sysemu/excp_helper.c
-@@ -597,7 +597,7 @@ bool x86_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-                       MMUAccessType access_type, int mmu_idx,
-                       bool probe, uintptr_t retaddr)
+ static void hexagon_cpu_init(Object *obj)
  {
--    CPUX86State *env = cs->env_ptr;
-+    CPUX86State *env = cpu_env(cs);
-     TranslateResult out;
-     TranslateFault err;
+-    HexagonCPU *cpu = HEXAGON_CPU(obj);
+-
+-    cpu_set_cpustate_pointers(cpu);
+     qdev_property_add_static(DEVICE(obj), &hexagon_lldb_compat_property);
+     qdev_property_add_static(DEVICE(obj), &hexagon_lldb_stack_adjust_property);
+     qdev_property_add_static(DEVICE(obj), &hexagon_short_circuit_property);
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 17fa901f6a..1644297bf8 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -149,7 +149,6 @@ static void hppa_cpu_initfn(Object *obj)
+     HPPACPU *cpu = HPPA_CPU(obj);
+     CPUHPPAState *env = &cpu->env;
  
-diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-index b942c306d6..cbde3abe97 100644
---- a/target/i386/tcg/tcg-cpu.c
-+++ b/target/i386/tcg/tcg-cpu.c
-@@ -51,7 +51,7 @@ static void x86_cpu_synchronize_from_tb(CPUState *cs,
+-    cpu_set_cpustate_pointers(cpu);
+     cs->exception_index = -1;
+     cpu_hppa_loaded_fr0(env);
+     cpu_hppa_put_psw(env, PSW_W);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 9565e3d160..b72affdbe3 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7590,7 +7590,6 @@ static void x86_cpu_initfn(Object *obj)
+     CPUX86State *env = &cpu->env;
+ 
+     env->nr_dies = 1;
+-    cpu_set_cpustate_pointers(cpu);
+ 
+     object_property_add(obj, "feature-words", "X86CPUFeatureWordInfo",
+                         x86_cpu_get_feature_words,
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 56e67cea8d..e70773c22e 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -614,17 +614,15 @@ static const MemoryRegionOps loongarch_qemu_ops = {
+ 
+ static void loongarch_cpu_init(Object *obj)
  {
-     /* The instruction pointer is always up to date with CF_PCREL. */
-     if (!(tb_cflags(tb) & CF_PCREL)) {
--        CPUX86State *env = cs->env_ptr;
-+        CPUX86State *env = cpu_env(cs);
-         env->eip = tb->pc - tb->cs_base;
-     }
+-    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+-
+-    cpu_set_cpustate_pointers(cpu);
+-
+ #ifndef CONFIG_USER_ONLY
++    LoongArchCPU *cpu = LOONGARCH_CPU(obj);
+     CPULoongArchState *env = &cpu->env;
++
+     qdev_init_gpio_in(DEVICE(cpu), loongarch_cpu_set_irq, N_IRQS);
+     timer_init_ns(&cpu->timer, QEMU_CLOCK_VIRTUAL,
+                   &loongarch_constant_timer_cb, cpu);
+     memory_region_init_io(&env->system_iocsr, OBJECT(cpu), NULL,
+-                      env, "iocsr", UINT64_MAX);
++                          env, "iocsr", UINT64_MAX);
+     address_space_init(&env->address_space_iocsr, &env->system_iocsr, "IOCSR");
+     memory_region_init_io(&env->iocsr_mem, OBJECT(cpu), &loongarch_qemu_ops,
+                           NULL, "iocsr_misc", 0x428);
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index d34d1b57d0..538d9473c2 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -327,13 +327,6 @@ static void m68k_cpu_realizefn(DeviceState *dev, Error **errp)
+     mcc->parent_realize(dev, errp);
  }
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index a8a4687227..c6894d66b1 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -3079,7 +3079,7 @@ static void gen_cmpxchg16b(DisasContext *s, CPUX86State *env, int modrm)
-    be stopped. Return the next pc value */
- static bool disas_insn(DisasContext *s, CPUState *cpu)
- {
--    CPUX86State *env = cpu->env_ptr;
-+    CPUX86State *env = cpu_env(cpu);
-     int b, prefixes;
-     int shift;
-     MemOp ot, aflag, dflag;
-@@ -6920,7 +6920,7 @@ void tcg_x86_init(void)
- static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUX86State *env = cpu->env_ptr;
-+    CPUX86State *env = cpu_env(cpu);
-     uint32_t flags = dc->base.tb->flags;
-     uint32_t cflags = tb_cflags(dc->base.tb);
-     int cpl = (flags >> HF_CPL_SHIFT) & 3;
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index 4a4c022f51..a75fed1d98 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -104,7 +104,7 @@ static void loongarch_tr_init_disas_context(DisasContextBase *dcbase,
-                                             CPUState *cs)
- {
-     int64_t bound;
--    CPULoongArchState *env = cs->env_ptr;
-+    CPULoongArchState *env = cpu_env(cs);
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
  
-     ctx->page_start = ctx->base.pc_first & TARGET_PAGE_MASK;
-@@ -265,7 +265,7 @@ static uint64_t make_address_pc(DisasContext *ctx, uint64_t addr)
- 
- static void loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+-static void m68k_cpu_initfn(Object *obj)
+-{
+-    M68kCPU *cpu = M68K_CPU(obj);
+-
+-    cpu_set_cpustate_pointers(cpu);
+-}
+-
+ #if !defined(CONFIG_USER_ONLY)
+ static bool fpu_needed(void *opaque)
  {
--    CPULoongArchState *env = cs->env_ptr;
-+    CPULoongArchState *env = cpu_env(cs);
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+@@ -612,7 +605,6 @@ static const TypeInfo m68k_cpus_type_infos[] = {
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(M68kCPU),
+         .instance_align = __alignof(M68kCPU),
+-        .instance_init = m68k_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(M68kCPUClass),
+         .class_init = m68k_cpu_class_init,
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index c53711da52..bbb3335cad 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -296,7 +296,6 @@ static void mb_cpu_initfn(Object *obj)
+     MicroBlazeCPU *cpu = MICROBLAZE_CPU(obj);
+     CPUMBState *env = &cpu->env;
  
-     ctx->opcode = translator_ldl(env, &ctx->base, ctx->base.pc_next);
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 0989a5b6bd..d22df2a8dc 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -5990,7 +5990,7 @@ void register_m68k_insns (CPUM68KState *env)
- static void m68k_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
+-    cpu_set_cpustate_pointers(cpu);
+     gdb_register_coprocessor(CPU(cpu), mb_cpu_gdb_read_stack_protect,
+                              mb_cpu_gdb_write_stack_protect, 2,
+                              "microblaze-stack-protect.xml", 0);
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index fee791aa44..a0023edd43 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -504,7 +504,6 @@ static void mips_cpu_initfn(Object *obj)
+     CPUMIPSState *env = &cpu->env;
+     MIPSCPUClass *mcc = MIPS_CPU_GET_CLASS(obj);
+ 
+-    cpu_set_cpustate_pointers(cpu);
+     cpu->clock = qdev_init_clock_in(DEVICE(obj), "clk-in", NULL, cpu, 0);
+     cpu->count_div = clock_new(OBJECT(obj), "clk-div-count");
+     env->count_clock = clock_new(OBJECT(obj), "clk-count");
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index 598976305f..15e499f828 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -113,11 +113,9 @@ static void iic_set_irq(void *opaque, int irq, int level)
+ 
+ static void nios2_cpu_initfn(Object *obj)
  {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUM68KState *env = cpu->env_ptr;
-+    CPUM68KState *env = cpu_env(cpu);
++#if !defined(CONFIG_USER_ONLY)
+     Nios2CPU *cpu = NIOS2_CPU(obj);
  
-     dc->env = env;
-     dc->pc = dc->base.pc_first;
-@@ -6021,7 +6021,7 @@ static void m68k_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void m68k_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUM68KState *env = cpu->env_ptr;
-+    CPUM68KState *env = cpu_env(cpu);
-     uint16_t insn = read_im16(env, dc);
- 
-     opcode_table[insn](env, dc, insn);
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index bb178219f1..49bfb4a0ea 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -1630,7 +1630,7 @@ static void mb_tr_insn_start(DisasContextBase *dcb, CPUState *cs)
- static void mb_tr_translate_insn(DisasContextBase *dcb, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcb, DisasContext, base);
--    CPUMBState *env = cs->env_ptr;
-+    CPUMBState *env = cpu_env(cs);
-     uint32_t ir;
- 
-     /* TODO: This should raise an exception, not terminate qemu. */
-diff --git a/target/mips/tcg/sysemu/mips-semi.c b/target/mips/tcg/sysemu/mips-semi.c
-index f3735df7b9..b3e4e49ff7 100644
---- a/target/mips/tcg/sysemu/mips-semi.c
-+++ b/target/mips/tcg/sysemu/mips-semi.c
-@@ -126,7 +126,7 @@ static void report_fault(CPUMIPSState *env)
- 
- static void uhi_cb(CPUState *cs, uint64_t ret, int err)
- {
--    CPUMIPSState *env = cs->env_ptr;
-+    CPUMIPSState *env = cpu_env(cs);
- 
- #define E(N) case E##N: err = UHI_E##N; break
- 
-@@ -167,7 +167,7 @@ static void uhi_fstat_cb(CPUState *cs, uint64_t ret, int err)
-     QEMU_BUILD_BUG_ON(sizeof(UHIStat) < sizeof(struct gdb_stat));
- 
-     if (!err) {
--        CPUMIPSState *env = cs->env_ptr;
-+        CPUMIPSState *env = cpu_env(cs);
-         target_ulong addr = env->active_tc.gpr[5];
-         UHIStat *dst = lock_user(VERIFY_WRITE, addr, sizeof(UHIStat), 1);
-         struct gdb_stat s;
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index c8183710e5..adbdcb1472 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -15377,7 +15377,7 @@ static void decode_opc(CPUMIPSState *env, DisasContext *ctx)
- static void mips_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUMIPSState *env = cs->env_ptr;
-+    CPUMIPSState *env = cpu_env(cs);
- 
-     ctx->page_start = ctx->base.pc_first & TARGET_PAGE_MASK;
-     ctx->saved_pc = -1;
-@@ -15448,7 +15448,7 @@ static void mips_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- 
- static void mips_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
--    CPUMIPSState *env = cs->env_ptr;
-+    CPUMIPSState *env = cpu_env(cs);
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-     int insn_bytes;
-     int is_slot;
-diff --git a/target/nios2/translate.c b/target/nios2/translate.c
-index 93ded65f9a..e806623594 100644
---- a/target/nios2/translate.c
-+++ b/target/nios2/translate.c
-@@ -944,7 +944,7 @@ static const char * const cr_regnames[NUM_CR_REGS] = {
- static void nios2_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUNios2State *env = cs->env_ptr;
-+    CPUNios2State *env = cpu_env(cs);
-     Nios2CPU *cpu = env_archcpu(env);
-     int page_insns;
- 
-@@ -970,7 +970,7 @@ static void nios2_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- static void nios2_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUNios2State *env = cs->env_ptr;
-+    CPUNios2State *env = cpu_env(cs);
-     const Nios2Instruction *instr;
-     uint32_t code, pc;
-     uint8_t op;
-diff --git a/target/openrisc/translate.c b/target/openrisc/translate.c
-index 1b4df1c214..ecff4412b7 100644
---- a/target/openrisc/translate.c
-+++ b/target/openrisc/translate.c
-@@ -1525,7 +1525,7 @@ static bool trans_lf_sfun_d(DisasContext *dc, arg_ab_pair *a)
- static void openrisc_tr_init_disas_context(DisasContextBase *dcb, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcb, DisasContext, base);
--    CPUOpenRISCState *env = cs->env_ptr;
-+    CPUOpenRISCState *env = cpu_env(cs);
-     int bound;
- 
-     dc->mem_idx = cpu_mmu_index(env, false);
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 72ec2be92e..437527a47c 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -3189,7 +3189,7 @@ void ppc_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
-                                  MMUAccessType access_type,
-                                  int mmu_idx, uintptr_t retaddr)
- {
--    CPUPPCState *env = cs->env_ptr;
-+    CPUPPCState *env = cpu_env(cs);
-     uint32_t insn;
- 
-     /* Restore state and reload the insn we executed, for filling in DSISR.  */
-@@ -3220,7 +3220,7 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-                                    int mmu_idx, MemTxAttrs attrs,
-                                    MemTxResult response, uintptr_t retaddr)
- {
--    CPUPPCState *env = cs->env_ptr;
-+    CPUPPCState *env = cpu_env(cs);
- 
-     switch (env->excp_model) {
- #if defined(TARGET_PPC64)
-@@ -3264,7 +3264,7 @@ void ppc_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
- void ppc_cpu_debug_excp_handler(CPUState *cs)
- {
- #if defined(TARGET_PPC64)
--    CPUPPCState *env = cs->env_ptr;
-+    CPUPPCState *env = cpu_env(cs);
- 
-     if (env->insns_flags2 & PPC2_ISA207S) {
-         if (cs->watchpoint_hit) {
-@@ -3286,7 +3286,7 @@ void ppc_cpu_debug_excp_handler(CPUState *cs)
- bool ppc_cpu_debug_check_breakpoint(CPUState *cs)
- {
- #if defined(TARGET_PPC64)
--    CPUPPCState *env = cs->env_ptr;
-+    CPUPPCState *env = cpu_env(cs);
- 
-     if (env->insns_flags2 & PPC2_ISA207S) {
-         target_ulong priv;
-@@ -3313,7 +3313,7 @@ bool ppc_cpu_debug_check_breakpoint(CPUState *cs)
- bool ppc_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
- {
- #if defined(TARGET_PPC64)
--    CPUPPCState *env = cs->env_ptr;
-+    CPUPPCState *env = cpu_env(cs);
- 
-     if (env->insns_flags2 & PPC2_ISA207S) {
-         if (wp == env->dawr0_watchpoint) {
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index e20a1bea62..329da4d518 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -7320,7 +7320,7 @@ static bool decode_legacy(PowerPCCPU *cpu, DisasContext *ctx, uint32_t insn)
- static void ppc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUPPCState *env = cs->env_ptr;
-+    CPUPPCState *env = cpu_env(cs);
-     uint32_t hflags = ctx->base.tb->flags;
- 
-     ctx->spr_cb = env->spr_cb;
-@@ -7384,7 +7384,7 @@ static void ppc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
--    CPUPPCState *env = cs->env_ptr;
-+    CPUPPCState *env = cpu_env(cs);
-     target_ulong pc;
-     uint32_t insn;
-     bool ok;
-diff --git a/target/riscv/translate.c b/target/riscv/translate.c
-index 2ad5192866..f0be79bb16 100644
---- a/target/riscv/translate.c
-+++ b/target/riscv/translate.c
-@@ -1074,7 +1074,7 @@ static uint32_t opcode_at(DisasContextBase *dcbase, target_ulong pc)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-     CPUState *cpu = ctx->cs;
--    CPURISCVState *env = cpu->env_ptr;
-+    CPURISCVState *env = cpu_env(cpu);
- 
-     return cpu_ldl_code(env, pc);
+-    cpu_set_cpustate_pointers(cpu);
+-
+-#if !defined(CONFIG_USER_ONLY)
+     mmu_init(&cpu->env);
+ #endif
  }
-@@ -1166,7 +1166,7 @@ static void decode_opc(CPURISCVState *env, DisasContext *ctx, uint16_t opcode)
- static void riscv_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPURISCVState *env = cs->env_ptr;
-+    CPURISCVState *env = cpu_env(cs);
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     uint32_t tb_flags = ctx->base.tb->flags;
+diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
+index be067709b8..f5a3d5273b 100644
+--- a/target/openrisc/cpu.c
++++ b/target/openrisc/cpu.c
+@@ -149,12 +149,8 @@ static void openrisc_cpu_realizefn(DeviceState *dev, Error **errp)
  
-@@ -1219,7 +1219,7 @@ static void riscv_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void riscv_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+ static void openrisc_cpu_initfn(Object *obj)
  {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPURISCVState *env = cpu->env_ptr;
-+    CPURISCVState *env = cpu_env(cpu);
-     uint16_t opcode16 = translator_lduw(env, &ctx->base, ctx->base.pc_next);
+-    OpenRISCCPU *cpu = OPENRISC_CPU(obj);
+-
+-    cpu_set_cpustate_pointers(cpu);
+-
+ #ifndef CONFIG_USER_ONLY
+-    qdev_init_gpio_in_named(DEVICE(cpu), openrisc_cpu_set_irq, "IRQ", NR_IRQS);
++    qdev_init_gpio_in_named(DEVICE(obj), openrisc_cpu_set_irq, "IRQ", NR_IRQS);
+ #endif
+ }
  
-     ctx->ol = ctx->xl;
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 7830640f01..62571b0f16 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -7246,7 +7246,6 @@ static void ppc_cpu_instance_init(Object *obj)
+     PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
+     CPUPPCState *env = &cpu->env;
+ 
+-    cpu_set_cpustate_pointers(cpu);
+     cpu->vcpu_id = UNASSIGNED_CPU_INDEX;
+ 
+     env->msr_mask = pcc->msr_mask;
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 8a765d5117..6fca8ce0d2 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1649,12 +1649,8 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+ 
+ static void riscv_cpu_init(Object *obj)
+ {
+-    RISCVCPU *cpu = RISCV_CPU(obj);
+-
+-    cpu_set_cpustate_pointers(cpu);
+-
+ #ifndef CONFIG_USER_ONLY
+-    qdev_init_gpio_in(DEVICE(cpu), riscv_cpu_set_irq,
++    qdev_init_gpio_in(DEVICE(obj), riscv_cpu_set_irq,
+                       IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
+ #endif /* CONFIG_USER_ONLY */
+ }
 diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 51559943fb..2e7a736590 100644
+index 2e7a736590..4d0d3a0c8c 100644
 --- a/target/rx/cpu.c
 +++ b/target/rx/cpu.c
-@@ -183,12 +183,9 @@ static bool rx_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
- 
- static void rx_cpu_init(Object *obj)
+@@ -185,7 +185,6 @@ static void rx_cpu_init(Object *obj)
  {
--    CPUState *cs = CPU(obj);
      RXCPU *cpu = RX_CPU(obj);
--    CPURXState *env = &cpu->env;
  
-     cpu_set_cpustate_pointers(cpu);
--    cs->env_ptr = env;
+-    cpu_set_cpustate_pointers(cpu);
      qdev_init_gpio_in(DEVICE(cpu), rx_cpu_set_irq, 2);
  }
  
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index 9fd4d36b08..f8860830ae 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -2200,7 +2200,7 @@ static bool trans_WAIT(DisasContext *ctx, arg_WAIT *a)
- 
- static void rx_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index d9625bc266..c69ed4b291 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -274,9 +274,7 @@ out:
+ static void s390_cpu_initfn(Object *obj)
  {
--    CPURXState *env = cs->env_ptr;
-+    CPURXState *env = cpu_env(cs);
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
-     ctx->env = env;
-     ctx->tb_flags = ctx->base.tb->flags;
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 22f43974dd..4bae1509f5 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -6463,7 +6463,7 @@ static target_ulong get_next_pc(CPUS390XState *env, DisasContext *s,
+     CPUState *cs = CPU(obj);
+-    S390CPU *cpu = S390_CPU(obj);
  
- static void s390x_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+-    cpu_set_cpustate_pointers(cpu);
+     cs->exception_index = EXCP_HLT;
+ 
+ #if !defined(CONFIG_USER_ONLY)
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index a90e41c4ec..788e41fea6 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -239,8 +239,6 @@ static void superh_cpu_initfn(Object *obj)
+     SuperHCPU *cpu = SUPERH_CPU(obj);
+     CPUSH4State *env = &cpu->env;
+ 
+-    cpu_set_cpustate_pointers(cpu);
+-
+     env->movcal_backup_tail = &(env->movcal_backup);
+ }
+ 
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index d6d3c4b031..8ba96ae225 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -793,8 +793,6 @@ static void sparc_cpu_initfn(Object *obj)
+     SPARCCPUClass *scc = SPARC_CPU_GET_CLASS(obj);
+     CPUSPARCState *env = &cpu->env;
+ 
+-    cpu_set_cpustate_pointers(cpu);
+-
+     if (scc->cpu_def) {
+         env->def = *scc->cpu_def;
+     }
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index 50aec6cf10..d1477622e6 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -124,14 +124,6 @@ static void tricore_cpu_realizefn(DeviceState *dev, Error **errp)
+     tcc->parent_realize(dev, errp);
+ }
+ 
+-
+-static void tricore_cpu_initfn(Object *obj)
+-{
+-    TriCoreCPU *cpu = TRICORE_CPU(obj);
+-
+-    cpu_set_cpustate_pointers(cpu);
+-}
+-
+ static ObjectClass *tricore_cpu_class_by_name(const char *cpu_model)
  {
--    CPUS390XState *env = cs->env_ptr;
-+    CPUS390XState *env = cpu_env(cs);
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
+     ObjectClass *oc;
+@@ -231,7 +223,6 @@ static const TypeInfo tricore_cpu_type_infos[] = {
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(TriCoreCPU),
+         .instance_align = __alignof(TriCoreCPU),
+-        .instance_init = tricore_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(TriCoreCPUClass),
+         .class_init = tricore_cpu_class_init,
+diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+index 281872d7ca..ea1dae7390 100644
+--- a/target/xtensa/cpu.c
++++ b/target/xtensa/cpu.c
+@@ -185,7 +185,6 @@ static void xtensa_cpu_initfn(Object *obj)
+     XtensaCPUClass *xcc = XTENSA_CPU_GET_CLASS(obj);
+     CPUXtensaState *env = &cpu->env;
  
-     dc->base.is_jmp = translate_one(env, dc);
-diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
-index a663335c39..ada41ba0a2 100644
---- a/target/sh4/op_helper.c
-+++ b/target/sh4/op_helper.c
-@@ -29,7 +29,7 @@ void superh_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
-                                     MMUAccessType access_type,
-                                     int mmu_idx, uintptr_t retaddr)
- {
--    CPUSH4State *env = cs->env_ptr;
-+    CPUSH4State *env = cpu_env(cs);
+-    cpu_set_cpustate_pointers(cpu);
+     env->config = xcc->config;
  
-     env->tea = addr;
-     switch (access_type) {
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 30e3ea509b..cbd8dfc02f 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -2179,7 +2179,7 @@ static void decode_gusa(DisasContext *ctx, CPUSH4State *env)
- static void sh4_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUSH4State *env = cs->env_ptr;
-+    CPUSH4State *env = cpu_env(cs);
-     uint32_t tbflags;
-     int bound;
- 
-@@ -2236,7 +2236,7 @@ static void sh4_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- 
- static void sh4_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
--    CPUSH4State *env = cs->env_ptr;
-+    CPUSH4State *env = cpu_env(cs);
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
- #ifdef CONFIG_USER_ONLY
-diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index 71b48cb3b7..f92ff80ac8 100644
---- a/target/sparc/translate.c
-+++ b/target/sparc/translate.c
-@@ -5568,7 +5568,7 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
- static void sparc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUSPARCState *env = cs->env_ptr;
-+    CPUSPARCState *env = cpu_env(cs);
-     int bound;
- 
-     dc->pc = dc->base.pc_first;
-@@ -5625,7 +5625,7 @@ static void sparc_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- static void sparc_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUSPARCState *env = cs->env_ptr;
-+    CPUSPARCState *env = cpu_env(cs);
-     unsigned int insn;
- 
-     insn = translator_ldl(env, &dc->base, dc->pc);
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 4206728afd..1b625629bb 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -8331,7 +8331,7 @@ static void tricore_tr_init_disas_context(DisasContextBase *dcbase,
-                                           CPUState *cs)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUTriCoreState *env = cs->env_ptr;
-+    CPUTriCoreState *env = cpu_env(cs);
-     ctx->mem_idx = cpu_mmu_index(env, false);
- 
-     uint32_t tb_flags = (uint32_t)ctx->base.tb->flags;
-@@ -8376,7 +8376,7 @@ static bool insn_crosses_page(CPUTriCoreState *env, DisasContext *ctx)
- static void tricore_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
--    CPUTriCoreState *env = cpu->env_ptr;
-+    CPUTriCoreState *env = cpu_env(cpu);
-     uint16_t insn_lo;
-     bool is_16bit;
- 
-diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
-index fca1b9aba4..54bee7ddba 100644
---- a/target/xtensa/translate.c
-+++ b/target/xtensa/translate.c
-@@ -1140,7 +1140,7 @@ static void xtensa_tr_init_disas_context(DisasContextBase *dcbase,
-                                          CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUXtensaState *env = cpu->env_ptr;
-+    CPUXtensaState *env = cpu_env(cpu);
-     uint32_t tb_flags = dc->base.tb->flags;
- 
-     dc->config = env->config;
-@@ -1180,7 +1180,7 @@ static void xtensa_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void xtensa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
--    CPUXtensaState *env = cpu->env_ptr;
-+    CPUXtensaState *env = cpu_env(cpu);
-     target_ulong page_start;
- 
-     /* These two conditions only apply to the first insn in the TB,
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index af1878c38a..7d76f15275 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -1595,7 +1595,7 @@ illegal:
-  */
- static void disas_insn_new(DisasContext *s, CPUState *cpu, int b)
- {
--    CPUX86State *env = cpu->env_ptr;
-+    CPUX86State *env = cpu_env(cpu);
-     bool first = true;
-     X86DecodedInsn decode;
-     X86DecodeFunc decode_func = decode_root;
+ #ifndef CONFIG_USER_ONLY
 -- 
 2.34.1
 
