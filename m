@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A4979FC48
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE1E79FC56
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:53:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgg6T-0004xh-8F; Thu, 14 Sep 2023 02:45:29 -0400
+	id 1qggCn-0008QI-Nj; Thu, 14 Sep 2023 02:52:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qgg6J-0004w4-3U; Thu, 14 Sep 2023 02:45:20 -0400
+ id 1qggCd-0008NZ-R3; Thu, 14 Sep 2023 02:51:52 -0400
 Received: from out3-smtp.messagingengine.com ([66.111.4.27])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1qgg6E-0007Ei-7X; Thu, 14 Sep 2023 02:45:18 -0400
+ id 1qggCb-0000jq-Fo; Thu, 14 Sep 2023 02:51:51 -0400
 Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.nyi.internal (Postfix) with ESMTP id ED9205C0657;
- Thu, 14 Sep 2023 02:45:07 -0400 (EDT)
+ by mailout.nyi.internal (Postfix) with ESMTP id 661125C05FB;
+ Thu, 14 Sep 2023 02:51:41 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute3.internal (MEProxy); Thu, 14 Sep 2023 02:45:07 -0400
+ by compute3.internal (MEProxy); Thu, 14 Sep 2023 02:51:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-type:content-type:date:date:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm1; t=1694673907; x=
- 1694760307; bh=Gy097/RytwXGNZkyUWIM71lYsTIPAH1HMh+nAleZvP8=; b=m
- l0kTd3C8S5bNNGBcAZniP5ZXLpbzF9kjuyZ4fa8n7s519oPRgsKQSgW8vnFDYqD+
- ZQweXyCHnB4cDUSg5ojPMqszu8fHvWlfn08OMzo8/ZuLhOwrfPOrXUazyv2W/lkT
- EdToI93SNVt0fIafHNokvkD7oci+HSf5GCmcGsOaXAipSzy8QpItbRZWO6xqxB/k
- VgmAf7P0HB2c0sesBfGQuhJtqgH7gpmBZL2cdfl2q3xbdAdVKdp9mEdrod52Jv9z
- 00knUW4GV9FhZHqGD0jg68a+7sdG6Hs0qVf9men/eeLs5GCL3cTk8fhkCgST17tD
- r+Ys9YQkFc/34A3KPT56Q==
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1694674301; x=
+ 1694760701; bh=J/HLeLEXpeRVYhte1bdBX42F5BQJM/gXB81PJla/K6o=; b=o
+ Kwy0E7VCCEK+XWLyhErTInkHrb44iLyQVytzAiM4h8y6FxUuUu1ExvO24nLvFZWp
+ Kfdzno0HbJ7Whlx/yEK9795ISO46kSKRFvxKVkjvEd+rPO057Yz6IU5FO0bjUtiA
+ q1gKRTm11FdumnkcqVve6igMdfdIDNnjcmcGhodhc3750yePx1E3M8Taw5vYFivC
+ 8nWmGWaKiM85Z0FBdsIBfA1bUqe46nI3m0YdHRQsB7lJPd7mtJuz5GG07PdkXx5T
+ Ca8m6+IpZSiAmyc+7boNDWBVlMqNLOFtq6WRKZ2oyJNus6cJuo3eLGc+ht+w9CAB
+ z5x946c2TSKsUK2ZK9P0g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-type:content-type:date:date
  :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
  :message-id:mime-version:references:reply-to:sender:subject
  :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; t=1694673907; x=1694760307; bh=Gy097/RytwXGN
- ZkyUWIM71lYsTIPAH1HMh+nAleZvP8=; b=B5gvjVs8M+uMbb7sVQURcDB/EyN62
- PB2kHHwqRbvcmEzReQpdDlvAAXN/sF6eLd+BASotsia3jB9t47ZvnpSsaktSRPbI
- B9yy5cypB9FtPCU96HfUKtm8gKaYONMfzQIggWObN5X94EOpqAZIQbW00p1ag+x2
- wJVMvr6Q/0V+7XU1bQJm/0iqGTpJu96PM/xMwkNtiqI7BYl852G3wrG18YjZ1/1c
- toS2HY6VGTuDppsbqeGRpapB4YU2OH4wVYHeJRGYszvjRbSpZMsOMenB651OXl8a
- +le8nl2zFTNJ3oxqMwI8ft31q620ywkszKm5SJIJj+S76PDs/B4ydEjcQ==
-X-ME-Sender: <xms:8qsCZTlG45ptRevdW0tglKLwYnTrU0-4uUjs1Ppj-N921Et-eTd2Fw>
- <xme:8qsCZW04XpaTG2Q3cuejkfrEIghZH7wp4wpgx9C9sVL2g5z4d-KYXVUfUxN5wBWIA
- ZkVInPaa4f-MK2hIsg>
-X-ME-Received: <xmr:8qsCZZpMrC6tMr9hH1wp0oEdSsvPrtr5SdkknW1aGv_jvUuNkwGYQT3a1xE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiledguddtlecutefuodetggdotefrod
+ :x-sasl-enc; s=fm2; t=1694674301; x=1694760701; bh=J/HLeLEXpeRVY
+ hte1bdBX42F5BQJM/gXB81PJla/K6o=; b=cTovbXHuwDSEFxUNy5T0hUuAtuV3T
+ sdPtYkYgDTNzZawwyhzO3KkV2sfN4zI9uMUOIRNsiJ9OC769ZQ+G7dnMjn7I2a89
+ 2/FooRaaQ2o0FBqMaXzLIM7DJfoTigggjzhL7xCfW/CRNP+OvmCGyqWj9e7JrXyh
+ haoqc6v5FdbAe8TWgvoHwrGidOcC0dvN/WIYzgT2vKPbSAQmuOP1FpJ85tF6ku9C
+ 3Tu7q74e1wQ8ewDidkKqxjc6ftyM+qY3bjL4k9WHiY/sNqWcssfojLXBpC2AqdAx
+ 8XqTEXttjfhihdnnTJEe6lFGzdqBJISG/LIXDbqhV4gUq0GOLzY/B0q2g==
+X-ME-Sender: <xms:fK0CZdSvBR8ZY8iWMnK6C48aoAVNkrTnUKIsu6Rhe9RxeB32ucxbBQ>
+ <xme:fK0CZWxxyogRQ8ApQgnLTzVDBf7zd_e1UcHiAKYiHTGCDpaN8D7FRGbIdp157GdGF
+ Xp2M1PWA3oQmLINi3o>
+X-ME-Received: <xmr:fK0CZS2rCU-mFnju7YRll6x_ZFsNqDEdd2IFVnPjIubD_luF2ztBWv3_ZJ8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiledguddutdcutefuodetggdotefrod
  ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
  necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
  enucfjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgr
  uhhsucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrg
- htthgvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteff
- ffejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
- hithhssehirhhrvghlvghvrghnthdrughk
-X-ME-Proxy: <xmx:8qsCZbllChtTrBU8thEf6wVMUK5jCvi4XmtlF1_g2seNZsQtx01anA>
- <xmx:8qsCZR1KoUubauM3c_ry3xw-KbozWkX1Fj4jmPc17HNyoW0VnMKwJQ>
- <xmx:8qsCZas45RVXpoAbtmw3XjynhiCWePe2jXTpx5-vQp3ezG0usuIzCg>
- <xmx:86sCZQ1MJLacPvJ_BzCsEc-wivtJBO9wNYyHtI_cRxHYD5EaCncSvA>
+ htthgvrhhnpedtvdelleetkeekheeiveethfehkeffveethffgveekiedvieegfefgtdeu
+ tdetveenucffohhmrghinhepqhgvmhhurdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+ enucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:fK0CZVC8R2-Ur06QQIA0qpvEowrln3NZBTbC6b5ojDk6SAGCiZDTYA>
+ <xmx:fK0CZWjSvgprx6vcQutW2qPrAlvCThkirIHt8-vU8s47Dv-Z8hFQ2w>
+ <xmx:fK0CZZqiD627QWyLkgQD3ih_iqCWzeaJLXluH_arjk2ArZG53VB6Bw>
+ <xmx:fa0CZaxnKZTI56NnCIBLlrSxnZh2cGFwRNzwbYxq8jm61T1SEHAUVw>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 14 Sep 2023 02:45:06 -0400 (EDT)
-Date: Thu, 14 Sep 2023 08:44:59 +0200
+ 14 Sep 2023 02:51:39 -0400 (EDT)
+Date: Thu, 14 Sep 2023 08:51:33 +0200
 From: Klaus Jensen <its@irrelevant.dk>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, Cleber Rosa <crosa@redhat.com>,
- John Snow <jsnow@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Keith Busch <kbusch@kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- qemu-block@nongnu.org,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- David Hildenbrand <david@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: Re: [PATCH v3 1/5] block: remove AIOCBInfo->get_aio_context()
-Message-ID: <ZQKr62RXhpBWkI_R@cormorant.local>
-References: <20230912231037.826804-1-stefanha@redhat.com>
- <20230912231037.826804-2-stefanha@redhat.com>
+To: Andrew Jeffery <andrew@codeconstruct.com.au>
+Cc: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Lior Weintraub <liorw@pliops.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
+ Matt Johnston <matt@codeconstruct.com.au>,
+ Peter Delevoryas <peter@pjd.dev>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ Klaus Jensen <k.jensen@samsung.com>, Andrew Jeffery <andrew@aj.id.au>
+Subject: Re: [PATCH v5 3/3] hw/nvme: add nvme management interface model
+Message-ID: <ZQKtdSI-wZ20_V0F@cormorant.local>
+References: <20230905-nmi-i2c-v5-0-0001d372a728@samsung.com>
+ <20230905-nmi-i2c-v5-3-0001d372a728@samsung.com>
+ <130f973070f4422e226a9e68218109094f0420fa.camel@codeconstruct.com.au>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="81uW9M3yYwgvZt0B"
+ protocol="application/pgp-signature"; boundary="1B1Z7rKIwxgV248n"
 Content-Disposition: inline
-In-Reply-To: <20230912231037.826804-2-stefanha@redhat.com>
+In-Reply-To: <130f973070f4422e226a9e68218109094f0420fa.camel@codeconstruct.com.au>
 Received-SPF: pass client-ip=66.111.4.27; envelope-from=its@irrelevant.dk;
  helo=out3-smtp.messagingengine.com
 X-Spam_score_int: -27
@@ -108,86 +110,134 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---81uW9M3yYwgvZt0B
+--1B1Z7rKIwxgV248n
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sep 12 19:10, Stefan Hajnoczi wrote:
-> The synchronous bdrv_aio_cancel() function needs the acb's AioContext so
-> it can call aio_poll() to wait for cancellation.
+On Sep 12 13:50, Andrew Jeffery wrote:
+> Hi Klaus,
 >=20
-> It turns out that all users run under the BQL in the main AioContext, so
-> this callback is not needed.
+> On Tue, 2023-09-05 at 10:38 +0200, Klaus Jensen wrote:
+> > >=20
+> > > +static void nmi_handle_mi_config_get(NMIDevice *nmi, NMIRequest
+> > > *request)
+> > > +{
+> > > +=C2=A0=C2=A0=C2=A0 uint32_t dw0 =3D le32_to_cpu(request->dw0);
+> > > +=C2=A0=C2=A0=C2=A0 uint8_t identifier =3D FIELD_EX32(dw0,
+> > > NMI_CMD_CONFIGURATION_GET_DW0,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IDENT=
+IFIER);
+> > > +=C2=A0=C2=A0=C2=A0 const uint8_t *buf;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 static const uint8_t smbus_freq[4] =3D {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x00,=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* succe=
+ss */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x01, 0x00, 0x00,=C2=A0=
+=C2=A0 /* 100 kHz */
+> > > +=C2=A0=C2=A0=C2=A0 };
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 static const uint8_t mtu[4] =3D {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x00,=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 /* success */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x40, 0x00, /* 64 */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x00,=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 /* reserved */
+> > > +=C2=A0=C2=A0=C2=A0 };
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 trace_nmi_handle_mi_config_get(identifier);
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 switch (identifier) {
+> > > +=C2=A0=C2=A0=C2=A0 case NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ:
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 buf =3D smbus_freq;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 case NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSION_=
+UNIT:
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 buf =3D mtu;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 default:
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 nmi_set_parameter_error(n=
+mi, 0x0, offsetof(NMIRequest,
+> > > dw0));
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > > +=C2=A0=C2=A0=C2=A0 }
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0 nmi_scratch_append(nmi, buf, sizeof(buf));
+> > > +}
 >=20
-> Remove the callback, mark bdrv_aio_cancel() GLOBAL_STATE_CODE just like
-> its blk_aio_cancel() caller, and poll the main loop AioContext.
+> When I tried to build this patch I got:
 >=20
-> The purpose of this cleanup is to identify bdrv_aio_cancel() as an API
-> that does not work with the multi-queue block layer.
+> ```
+> In file included from /usr/include/string.h:535,
+>                  from /home/andrew/src/qemu.org/qemu/include/qemu/osdep.h=
+:112,
+>                  from ../hw/nvme/nmi-i2c.c:12:
+> In function =E2=80=98memcpy=E2=80=99,
+>     inlined from =E2=80=98nmi_scratch_append=E2=80=99 at ../hw/nvme/nmi-i=
+2c.c:80:5,
+>     inlined from =E2=80=98nmi_handle_mi_config_get=E2=80=99 at ../hw/nvme=
+/nmi-i2c.c:246:5,
+>     inlined from =E2=80=98nmi_handle_mi=E2=80=99 at ../hw/nvme/nmi-i2c.c:=
+266:9,
+>     inlined from =E2=80=98nmi_handle=E2=80=99 at ../hw/nvme/nmi-i2c.c:313=
+:9:
+> /usr/include/x86_64-linux-gnu/bits/string_fortified.h:29:10: error: =E2=
+=80=98__builtin_memcpy=E2=80=99 forming offset [4, 7] is out of the bounds =
+[0, 4] [-Werror=3Darray-bounds=3D]
+>    29 |   return __builtin___memcpy_chk (__dest, __src, __len,
+>       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    30 |                                  __glibc_objsize0 (__dest));
+>       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ```
 >=20
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->  include/block/aio.h                |  1 -
->  include/block/block-global-state.h |  2 ++
->  include/block/block-io.h           |  1 -
->  block/block-backend.c              | 17 -----------------
->  block/io.c                         | 23 ++++++++---------------
->  hw/nvme/ctrl.c                     |  7 -------
->  softmmu/dma-helpers.c              |  8 --------
->  util/thread-pool.c                 |  8 --------
->  8 files changed, 10 insertions(+), 57 deletions(-)
+> It wasn't clear initially from the error that the source of the problem
+> was the size associated with the source buffer, especially as there is
+> some pointer arithmetic being done to derive `__dest`.
 >=20
-> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-> index 539d273553..ee7273daa1 100644
-> --- a/hw/nvme/ctrl.c
-> +++ b/hw/nvme/ctrl.c
-> @@ -2130,11 +2130,6 @@ static inline bool nvme_is_write(NvmeRequest *req)
->             rw->opcode =3D=3D NVME_CMD_WRITE_ZEROES;
->  }
-> =20
-> -static AioContext *nvme_get_aio_context(BlockAIOCB *acb)
-> -{
-> -    return qemu_get_aio_context();
-> -}
-> -
->  static void nvme_misc_cb(void *opaque, int ret)
->  {
->      NvmeRequest *req =3D opaque;
-> @@ -3302,7 +3297,6 @@ static void nvme_flush_cancel(BlockAIOCB *acb)
->  static const AIOCBInfo nvme_flush_aiocb_info =3D {
->      .aiocb_size =3D sizeof(NvmeFlushAIOCB),
->      .cancel_async =3D nvme_flush_cancel,
-> -    .get_aio_context =3D nvme_get_aio_context,
->  };
-> =20
->  static void nvme_do_flush(NvmeFlushAIOCB *iocb);
-> @@ -6478,7 +6472,6 @@ static void nvme_format_cancel(BlockAIOCB *aiocb)
->  static const AIOCBInfo nvme_format_aiocb_info =3D {
->      .aiocb_size =3D sizeof(NvmeFormatAIOCB),
->      .cancel_async =3D nvme_format_cancel,
-> -    .get_aio_context =3D nvme_get_aio_context,
->  };
-> =20
->  static void nvme_format_set(NvmeNamespace *ns, uint8_t lbaf, uint8_t mse=
-t,
+> Anyway, what we're trying to express is that the size to copy from buf
+> is the size of the array pointed to by buf. However, buf is declared as
+> a pointer to uint8_t, which loses the length information. To fix that I
+> think we need:
+>=20
+> - const uint8_t *buf;
+> + const uint8_t (*buf)[4];
+>=20
+> and then:
+>=20
+> - nmi_scratch_append(nmi, buf, sizeof(buf));
+> + nmi_scratch_append(nmi, buf, sizeof(*buf));
+>=20
+> Andrew
+>=20
 
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+Hi Andrew,
 
---81uW9M3yYwgvZt0B
+Nice (and important) catch! Just curious, are you massaging QEMU's build
+system into adding additional checks or how did your compiler catch
+this?
+
+Thanks,
+Klaus
+
+--1B1Z7rKIwxgV248n
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmUCq+oACgkQTeGvMW1P
-Del9hgf/VZwh2QW+QT0QyXutSYipURnZd+/QMM5g3+GR1Rwr+pLUEdAocE4ltVBG
-Nvz4xF+8W6XiB/IakMovGA4QI1ZTCCSCEHuGW4W7+YDRh6ju+eFp3uiMTZi4TpRo
-JKOnNasDXDLmBGgtOoapwpD6SNsIsJhpOJi+RtazQzf+mS/QtOrXiqRq238Y8TAz
-40mTKVPfFnk8Vc1yXrKvGr7GlFr0o7xamsD/3m/5syS0FfNgi9XVHwSIbrv7k9Se
-rxkM/nsErraR8sfBEw0Jz5Hlcct58BSimwcvdD8YAdD7Ed4PefkV9WEIrfUIZrrQ
-Gszfo0VjPivThVH9ZsZY4kmjVLjU0g==
-=KcHi
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmUCrXUACgkQTeGvMW1P
+Dekx4wgApZQGNZtaA6hPhghkuAImuNPkRQCLDO6+lYjNM7hstaOPddfh4UxeWscM
+1mb79VN35VpYbPkMiRh/nN5eMx/XHkBcStCCrEKSexjaplpSap6/9jUs/ZUENg5c
+wRyLPE7OMU+nGtixWgJVwNBAsVouM/Wz29/s70YJcVfCjXNpI5WU+mHmZ9npDRDH
+Izu2mB9z+m355KLbG3PbcNjh4hjGBt0GX38AMwjucExko87cWmlEQflxeviEwdbC
+nR2N/PVXpsSo9NUHMBBlIy1Uq0YlGZHSoR3ZIVYhMXgczIS3H2LsyHWXv43yvZnd
+L5rDKIUwV+mIDtAZyS03t6+PKI0Ymg==
+=NgxH
 -----END PGP SIGNATURE-----
 
---81uW9M3yYwgvZt0B--
+--1B1Z7rKIwxgV248n--
 
