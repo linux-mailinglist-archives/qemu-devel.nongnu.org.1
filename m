@@ -2,155 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CCF79F60F
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 03:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAC679F611
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 03:05:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgalb-0000lS-4z; Wed, 13 Sep 2023 21:03:35 -0400
+	id 1qgalv-0000nR-V8; Wed, 13 Sep 2023 21:03:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qgalZ-0000lD-FK
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 21:03:33 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ id 1qgalt-0000nC-NU
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 21:03:53 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qgalW-0008Rh-FM
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 21:03:33 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ id 1qgalr-0008TX-0F
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 21:03:52 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38DGFlpt013674; Thu, 14 Sep 2023 01:03:22 GMT
+ 38E10OJt028872; Thu, 14 Sep 2023 01:03:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id : content-transfer-encoding : content-type :
- mime-version; s=corp-2023-03-30;
- bh=bUBpr/41z2nneCaY5mrf2Ws2Tmr2pjPFvw0jP1+I/XI=;
- b=tqcAP2l5WmODu+qTmzByI1sdE4OtY/WZPNVi3PA+xP6ixfkqzsdgVzpwev3yOlw8GWKR
- z+6/yoR+04kzAA6czix+PJnB31pEyZqq4QkmCHsykaJXxOIqHngBTfOWLDWZo91XpWO7
- 6SC8ffdvMqpdaqutwLvU51I1u660zAlU+zf81pUJxn7et9yB+Wv9vz0TeYG97IO+oD7C
- EMTNcZCMzsU59s4Gio3LCvZ8MBldM8IokyWaMkN1SUreZiOvarXy4LOxW2xfx308Vdqn
- H8OBiCPzC1X14T9jldI4FilwoIzd7+5lMnEJLVjgifziuesMpKlHpHqRQ6Y576X1ulxa ug== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t2y7kkghb-1
+ subject : date : message-id : in-reply-to : references :
+ content-transfer-encoding : content-type : mime-version;
+ s=corp-2023-03-30; bh=VDjMH15QvTorDnQEicGRQUIbqfla0KR8+0o1p10RMSk=;
+ b=JBoeIDO4zoTWHkkzoadqKAcQJdgFxV5BfNn9KeVMApQVFgtVxwzopfUjGYBZFdnPvoUP
+ CVUELA/vc7Tq/ndDca6Au+oIWZNBGl+ovtwO/eZGBnUlTsqoOQ710fGteLnDz4889h4J
+ N+m93g3L20isx3NUhf8wUzBAPtW4juyTT/TpgFCTdWa+u3qEAhPsjYOXSEbZbg8xGI7A
+ muPykO+U4S9eNi9aBYHI8Qg1ZgVzboyESVjzAz0NP7NnhcQPXKlKLs2iY1SxDLOtciaQ
+ hnm9aUFKtXYWKeChG3M0yxIkB/91sNcoeBVp91/Bu7am/WbMQJBgqK1LRiSZGEUoGl5C qg== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t2y7kbkvg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Sep 2023 01:03:22 +0000
+ Thu, 14 Sep 2023 01:03:48 +0000
 Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 38DMSQwR002629; Thu, 14 Sep 2023 01:03:21 GMT
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 38E117OS023178; Thu, 14 Sep 2023 01:03:47 GMT
 Received: from nam04-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam04lp2042.outbound.protection.outlook.com [104.47.74.42])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3t0f5e9b75-1
+ (mail-bn8nam04lp2040.outbound.protection.outlook.com [104.47.74.40])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3t0f588p9a-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Sep 2023 01:03:20 +0000
+ Thu, 14 Sep 2023 01:03:47 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BsgrFDVLe7cNdChDUtCQ9cL9fS7j8nhXd0iEHA38jTAqZqAOYG/TeYUWc5xWUq0Ei1Bm6WDQdMstIu5CM60ehHXzy5zSO8WK76YEVOOFhYdJmFXcNTz7mWGdy8LyQKtehQ2B0VZrhxSlf9koKZwbPe7FE7DPkgLM6frVxR05w3VuSjEUOhIKdAFYTRwNxZJ9/YMOkErPvWrEnixwZHWRp5q8FbDCVNVjdHaVAVbTxVByd8mmC0flQj3C9qDmZp0FuMNWw+ZOuRiyvIMeIJGYtOlQN8TeJMOQQLYpRR64MInL973f5p30xQDZ5K73jjcjoV3z2SK9g9o7/CknjWkVrw==
+ b=BXlwRe99uhl1oiIX1V65SNV43zq9nbUETNDMMrgTQ/5hCqhzPZfuhlFrgu8FC4EAnM1ZTR+2FFb1Bru17okdBSw6/xiOiFrAJqlQkqw7OQaaSUEKfkYguLCvxOF9gSXgaaigNj3cLyPQEIixJ7tPSUqkCk3ryeMguHe+JsXBn0B+hO4wq1l0rpiEnFR2aQF4+plspgFU9rGmYLn+lAXs8M7YT3gp9j6+ffuaEvkPQ/Z+oD5HG4gQeAuNn0kDAnv/VySMwPOKsKPFFNUvegmsusLZq3ifucS8oFb7ijkc2+JHeZei9rOXUAGUPcY2nwlDMk/7R75TkH+4vfibA57B1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bUBpr/41z2nneCaY5mrf2Ws2Tmr2pjPFvw0jP1+I/XI=;
- b=Axj/UtC/IgphE42Hv25Wwx6XDuiwJ24Ye48+S7P4rFBkr059FAUvFA9aQZ/125fx89f3g2svtjjxYG+D9n11xQ63DuWWDRu+7AM6rFrty5J2TBxiSWzcmSwYmOlmhzW8eqpBvtFofSn0VSaUkUNzGWm4lngB1CPZ5Ku9Z5n78qkSFA8cCWLsNF9ChDalNbhO+jW6X9UpjRN8v7HoIRjEK7N5r/w7mrt3bLwQVDqTXXq16PQqjtydGjj9gx113N2geUrzazZpP6jVdhdOjXtnJotLc0Yu1uppFg4A61q3WxGlHC3cIIbAh0wfolczkSMNKrgTRGTBtAaX4SlUURbriw==
+ bh=VDjMH15QvTorDnQEicGRQUIbqfla0KR8+0o1p10RMSk=;
+ b=EU621zZFEhURdcnsG5PA12ZwlGHjcUJW+3+uy19fd4JHJgDS9zi8GXDkhUAMNtsRrci2IyiloU3Ks66TAduD50NhxS3Rl5HQTcdekomEXz67JflGA5QNV/L7dz9SfbqY55VH5w/O4JH+mmawe8q6DksPxgS9Don3JcpQ8fKD3F6rEZf6Hy2lqN3d3NmkfeVn0yTa+In7PUd4z8E9Bz//Hi/wL++kG22eARULsaKOmwn6XXYb7Jrx50U6eforDAk8N7w0WARzRdOIjtT6uWQ03GG0sJJkK4QGLQwNXoq4WksN9SNsRWdF4nS5ucRjMldwzbYBX8cVSLsICv+ooXXjhw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bUBpr/41z2nneCaY5mrf2Ws2Tmr2pjPFvw0jP1+I/XI=;
- b=FW+XJvul/dF1guf5d8+Mp/ipzGLMXfdnrlJijnkfowSmygdAMGOX8T3pkx/2DH68jpoNfHDc7ARqMSmc5F1phS7z/FVrdruPQ4YYfn7Qv94N/bs0SO8EkCaZf3rjFoW4DnnsT+G8fritaEjl3SAh3YbASTpRdF0QlkUGZuwRPas=
+ bh=VDjMH15QvTorDnQEicGRQUIbqfla0KR8+0o1p10RMSk=;
+ b=FQLJY65qD2SxtVz0Q1LaqzgS6GWEdAthjJ9A/+dlkI9iGRw54U5SFzHAjQkLXDoYJF1zVIckWvIjJrhRn/zVGRk/wPmoHjOCwk1Eo622jFMKbsGjSpbSSmifCm1e6TpryAB9VvAgSUNM+NUIOK9fNs9VeFY8qsqpc+dOzfNjjj4=
 Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
  by DS7PR10MB4975.namprd10.prod.outlook.com (2603:10b6:5:3b1::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Thu, 14 Sep
- 2023 01:03:19 +0000
+ 2023 01:03:21 +0000
 Received: from PH8PR10MB6597.namprd10.prod.outlook.com
  ([fe80::35e3:7e4c:72b2:cf74]) by PH8PR10MB6597.namprd10.prod.outlook.com
  ([fe80::35e3:7e4c:72b2:cf74%7]) with mapi id 15.20.6768.029; Thu, 14 Sep 2023
- 01:03:19 +0000
+ 01:03:20 +0000
 From: Stephen Brennan <stephen.s.brennan@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: linux-debuggers@vger.kernel.org, stephen.s.brennan@oracle.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
  Omar Sandoval <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v2 qemu 0/3] Allow dump-guest-memory to output standard kdump
- format
-Date: Wed, 13 Sep 2023 18:03:12 -0700
-Message-Id: <20230914010315.945705-1-stephen.s.brennan@oracle.com>
+Subject: [PATCH v2 qemu 1/3] dump: Pass DumpState to write_ functions
+Date: Wed, 13 Sep 2023 18:03:13 -0700
+Message-Id: <20230914010315.945705-2-stephen.s.brennan@oracle.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230914010315.945705-1-stephen.s.brennan@oracle.com>
+References: <20230914010315.945705-1-stephen.s.brennan@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SN6PR08CA0029.namprd08.prod.outlook.com
- (2603:10b6:805:66::42) To PH8PR10MB6597.namprd10.prod.outlook.com
+X-ClientProxiedBy: SA9PR11CA0029.namprd11.prod.outlook.com
+ (2603:10b6:806:6e::34) To PH8PR10MB6597.namprd10.prod.outlook.com
  (2603:10b6:510:226::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|DS7PR10MB4975:EE_
-X-MS-Office365-Filtering-Correlation-Id: c844ec4c-5719-4a08-94bb-08dbb4be6240
+X-MS-Office365-Filtering-Correlation-Id: 7c3e2e3b-2bd7-449a-29e7-08dbb4be6368
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 3v7N1zE2o1BXsII0HSwJvJW3mjcww5xdKZyi2K8vmR/H+Tu+Xl4Dymreo7gBzylYWU6FoxiHn5uAeOce9zl4G/+ayOF6waUHHvWM4UiMz6QUiFV1+jSuQkDY0gpNHl+CWJuuD/KQEhpeV+gOrUEAmiX2iviWIbE4yCn1goa/DvcJrZEs6+M3a5E2Qq5MWWKhomTrfqoAAgKEw3vHH3J0mfFeei9Iovn2tBjoAF1o9Wcif5mNGwNfT/l+0WZSX+vRGV6ZFXhhLn/g3kDUF/hp9yZRjwyc9hE9mjzkNQKp3a0JGF0eu+hwU/eyEZWq7dKUNqTtfKD36WZXfVhAGjQU+2Wy17rqI1jnGmHItHtWzfD72yFS1CTu+cS8Ei7a95UL2SeSy9yQIXSZOWA469iROHGE6alAu/9KS/x6fHRvKewqDpK4AzGviquErBGP5yBLH5YuPq/0EDdbonMt67ueqYZ/0rrn2RU/notsWxyj3bAUbJ9t/NSrjWEgDyLmiZRWWQnIybTnWzyrfJIPE6xBFLpxFaJLzWDZk//JDnQ5vQ8lET3ZK/h5wyvAgviAGpPIcZjTnms7dZBPt+J52ttPAw==
+X-Microsoft-Antispam-Message-Info: lTryy5K6CHSJ1C4d/EZQfF7rsRatDuZO5fDHXSAMSs9dx5nY2aaLVUhLErxXAbR3uTE5vqgp+huZahw4ILgjYv+a27umZWUoyM+97e74bLpaTPSxgw+8PKQYP6kfcXVmj08CE0Wh0+lzftomTyGgHy+6oFvAwj3RZxBetrv8VG+3EoxIOMTfjwUd5Wscg/sXUFzphYh5ezapoJt+HLf0PxYt3yCNxA+6gverxAL7Z67GMtkOnje7vmgj1PFvQ5gQ+yp8yFfl9CduwBJiPc9RgIR0GwhNdXRDu1fhzXP0FF1bYbpprBgy0NjU0Gt0SEvVGkb1fk3AuTkTNbQjAUXxkAuyrl47eybr+6vhufeS66CIi5cnd8Cm+fbgMNXcqMM7+oJXf+t/LEiEd9eEq3LIEFCBclkTSTThWxtykAxdRRMRGVb9QWnZCATER7ebeoxhhgmFUUN08+sIFCbmJKzEuiqj5YFap0f4J75jttUHt8pl1h3ytX68BcfMNmElTWXGsnhfPq9VBHXZRzG0Aadbaxz65fLV71s8HFQ+z1SvFgxCzkjpOjvH2zXBwpGvRDb0
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH8PR10MB6597.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(396003)(136003)(346002)(376002)(39860400002)(451199024)(1800799009)(186009)(38100700002)(5660300002)(36756003)(86362001)(103116003)(83380400001)(66946007)(1076003)(66476007)(478600001)(966005)(66556008)(6506007)(6666004)(6486002)(6916009)(316002)(41300700001)(8676002)(8936002)(4326008)(54906003)(6512007)(2616005)(2906002);
+ SFS:(13230031)(366004)(396003)(136003)(346002)(376002)(39860400002)(451199024)(1800799009)(186009)(38100700002)(5660300002)(36756003)(86362001)(103116003)(83380400001)(66946007)(1076003)(66476007)(478600001)(66556008)(6506007)(6666004)(6486002)(6916009)(316002)(41300700001)(8676002)(8936002)(4326008)(54906003)(6512007)(2616005)(2906002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DGPrUcVjasueLw92CtupsBAU3xv/mjU8VNQpn0frf2yISPZ1W0dgJklasQTX?=
- =?us-ascii?Q?ilAt9hhScbdIZyiPyNqW/9vqbtcym3+W9WO/Zlcq5C6Kr7NEoTjGstRb1YP7?=
- =?us-ascii?Q?7UaSySo+6bnZsrLgWtJaPUDmJ1nkoIxFhYyDXqz0ACV7x5p/xi84wrR5K+v6?=
- =?us-ascii?Q?fHgLlxhzDeUKs2hPBKugtXwE1X2KO+B5Wf5saT9oUDj/rnTq7t2l6WrTNXsT?=
- =?us-ascii?Q?bTlTla/PJMsp+oApj7kcumV7Zuslr/70i2pyfEb5HP+kirre3dsc/iVZNGRz?=
- =?us-ascii?Q?f8k5w9k7aPSzypgTwNhc2FK18U/c6OqywjWIVKhkBVapuWvpIbKuCdj4qvDU?=
- =?us-ascii?Q?moNr1LGxpBS/l02K+vC+SQ+Zpmc38s5aX1hXrFQtHCRotKPC2fzspyBB02zl?=
- =?us-ascii?Q?kUYZMEHXppMxmaAzz69EvqSO9GJJ4dkbniSNU4wAASZzPDtemVqd+bH0T6dL?=
- =?us-ascii?Q?nBta6V2clDPHTPxzUlUGDH8I+XbTEdK4CL8D6M74fIrPWm2LWvy7lNwTEOj7?=
- =?us-ascii?Q?HAcjZFE90kHr8Fl0L0AAHR03VwWkahp6iBIjzcI0Pacw/Tex8pGC3We/Uzp0?=
- =?us-ascii?Q?UkFGuYPz/OfenrL51rTE5w56KGxM0JTxFCQgq6A/X07XRfjAiBTCOqhQCkEp?=
- =?us-ascii?Q?IeH8/d40wJ6SxmROopF/Y0zZxLQr8ZUZ1D+MMbni3GKuXJ3uRKEiNLC01/ZO?=
- =?us-ascii?Q?OQyKonItbBxa1I+7PbVo0MOO18A97tSoxwlpVG93gkT6ErRCDnGlR4rlj9K7?=
- =?us-ascii?Q?nMSiuyBKrDFM1FN2zPKal+A82JyWcvK5kaP7w1/H4Ma2PTmo/2QDuq3hDMDX?=
- =?us-ascii?Q?9bRQtXLt07rL3PZdsGB69nnl/WyEJiTtDx11/i1MWQdpWZWUpnkUIdq4EHtO?=
- =?us-ascii?Q?F7z66fWIzzm8W0hMu9BNCTydBZ4Zh2xg30023smSQm7e1h6of8bD/AgHNx+T?=
- =?us-ascii?Q?vaoGZhxYojmjaR6lwXeeDImaYjI53Z0YJpMKU7iIU3jAZlS0ymsy0tw99OXT?=
- =?us-ascii?Q?VSCQY+VtpzcZQh1zTHNWTzdQ7zfLts7QWBhPy3vqjetJN/Xsdvz6lpCoCLIJ?=
- =?us-ascii?Q?PSbz1UqTmKvpRA3vOkXM37jMfQ5Jq2gfl0qe0i3xISZtYcDZVpIuK60MLTrt?=
- =?us-ascii?Q?qzu1w6W1+QKcBr64BiH+JvNubHzXJ4kmegHT4brUUvG9zxNtVPJ+6OeVy77E?=
- =?us-ascii?Q?psphDOe0FGV9SvYhvwaGPqv1O7CeccC6Ro8uwwrErqxR7ZZ77yoQBpX/HeuE?=
- =?us-ascii?Q?aBqQ3wE4/potLtAsNPbyolDbFceSOKm/jhrDOr+rcrcd1x26EO+j3lw0sGHl?=
- =?us-ascii?Q?a8q9UsE0dAtEjR51NOzhJvGd7H8XBVdgIHf6HNH69VluvR0/iQEsmOgX+uCQ?=
- =?us-ascii?Q?MXDj0QlCQ1Ot1Fp9W+d4WsVFV0s0w1Cxg0U2oNp0Z1U/ZCnVp+goEMcgVScd?=
- =?us-ascii?Q?iVjFMrMc9guzEGhTYZf/SrNjEbD1wXJM6cSR7cJ+uz32nQxzzJqPbFTTn22Y?=
- =?us-ascii?Q?QNVCSCsYyG1vpg64bAkEhUB72b9q4+HC6tSbR38ncux77X6HFZANNdNz7pZe?=
- =?us-ascii?Q?bLHdPyg9u8LT0LyJIFBQsOp1/eJ2f6fGsHAmKUbsHxScxdp7YSwHKZTbl8yy?=
- =?us-ascii?Q?cgwEfZi3cq7U5KbQAto8mIWeQYOBEOwNf0QlFfE0tLNC?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PuivxonRHvlwD0tIoMUWdeBoSI07hz3fTLCnf3pVQPri738iM8o+F4rUVUEZ?=
+ =?us-ascii?Q?/HkNvodDXS9f6aYvZjTBL4PHwrpdfRM5EaooKvIpd7VzuQYKoGKTa0rIdz5g?=
+ =?us-ascii?Q?y6Jn/xh9bCnyxQ1jKzPdDWALtzq3JWGoDqaHBH9NzeXPjOeZSkpll3sYu/kp?=
+ =?us-ascii?Q?ok/ogktxHLGGdSUSzPhTYs7CMvkqodLYsQBQImAoCVhhiOHeZUq2pb+3p9lB?=
+ =?us-ascii?Q?0f21f9NNi3WoQaouJ1HuNGc1xm62EZ8LihCh11ue27ioF89RQ2AoAEF5jRMN?=
+ =?us-ascii?Q?MDjY4osIKBoEIXHFoLdWKf0zCXdfGN3rjABVCupIVW+Nq1mfHDq+oC8g5uUu?=
+ =?us-ascii?Q?Z3Jov9hgmHneIJIIVoxlj2LUXwpWWG7vi5MYoCCQlzCVFAAnoeB7YnqF5AMk?=
+ =?us-ascii?Q?fusACS6RX5TxemV4qs1/dPwrs2r9XZ6NogX4BcZwvH1+LxnmoCxk5pbWWOJD?=
+ =?us-ascii?Q?EhSJI7ea74+frQ06k27jnAW6c2uwvrM7a5B8UZrxvBjccK2PtcHFYELdM49P?=
+ =?us-ascii?Q?XLC4r6Q/izM4RJDEwdDn8B1BxdMbY5mMTnbbNZXFKmgI9HWTHAQ/rg1e7ivJ?=
+ =?us-ascii?Q?p5mKpdndioDCyC9DkrbfzI//jcLHhnFfsA5ADEh6+rlL0i7kI6Yb4HunDnKQ?=
+ =?us-ascii?Q?XQbliztng94nm/aaeNARQy6d8XoUrboRmmXuEP0I8XQLZH41mf8PyJxpKGOp?=
+ =?us-ascii?Q?Wmx+T78o/RwpxLhoRChOnrR3uhw0swzfNblpes1meN2SgN2E+TBN2vstWHbo?=
+ =?us-ascii?Q?20OtoI5yM+2gb5tTXjwqv+pKsBiw1HmMbzOtdikEkb2mcMoN7qohB3CreILf?=
+ =?us-ascii?Q?59SUC1Cbw/Mfh3qrO6S2YWwNGD68W0dd7JkH9LaVu9WCIG68HbDgZIvHO7N+?=
+ =?us-ascii?Q?fU0WfxMNJK/yKNn+abzcRG7bYaHC1WpqUw5hMzc7cDBGmskYwaKFRvj0zAGZ?=
+ =?us-ascii?Q?BQotma9QVPONeb9K4Ng1u5KeJiCJCbvZuRfAa+x8yMQTu4m5oghsHzEpc86v?=
+ =?us-ascii?Q?uBZu2NsM7OV4Ma0svddsROloca0SbeXGZ6XLhAp7+nNv8nnE8vkl3sj76IUx?=
+ =?us-ascii?Q?vSqg6DyY6ubl28XLEv7gBROEHzP3K8urVKvUoH3E/ynj4KbOFjbh+/AtRe6b?=
+ =?us-ascii?Q?iXq4FH7xVNhf6qtYdCN/1GuhxB5uPRmC6/YYf+KeVRwWYUdKgikZFnYC7sYI?=
+ =?us-ascii?Q?RgRRt0oZGcDD4+qBuUljUj9GM82Q7MVJusQTLnYesv6yhqprOlKD4e5Ts6jb?=
+ =?us-ascii?Q?x1t+ND1fCP9jYB+ef97RP775xoOjU5dyjY7Excdob0rGTXVpl4xkrA1SCuW7?=
+ =?us-ascii?Q?dai04e7bF7qXXJ3EIOtpXiiZVbtp4gIxKC8nXkp7OedOEdEuR0kuprmOhpFR?=
+ =?us-ascii?Q?1B9f7zHxbJTIKwt+moEUWazRIs0ogyEPsryL20VRixQJPjgqYAxKTGgTGIWi?=
+ =?us-ascii?Q?ZFQc5nJJWqgskkfHNTR6bvFgiSPXs+TQsZGXesvAbU+t/6ihU/WK5eJT0Wvu?=
+ =?us-ascii?Q?UwoUxS3rVgWFA2QrIV4ln2EMmFdW19oHkX0nGvPfU6oRvf9ehbSri9GTfV0G?=
+ =?us-ascii?Q?HAUk90phUaNSgFiy0ZdHrV3IGnjFLMrjDDcng36XQ001rXrFo26+/K2xsIJK?=
+ =?us-ascii?Q?yAS9iSNFxHCLuqAVynBuwHyuoVMIj/Or0Fj6/CRXcYAJ?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: fWzJ6e6EYi5YrMbaJ2SjOsFDN7WN/37SRVYsaswmCKKWlp6VN/thhluNEfHqw/fnIOzceKuQhhsmeg3Grtg8gCyrlew+VU5nCH6IDciCgl/1FwE/shSH3wY6ygRugPQe03mHlU6Q463RiBl6QdGs0IRj+shO+DyYMHhVfTSOhtqRoVqc/Ce0QxCHhcyh2QfVDEVngTrGvelL2GcZOLtEsZvTUDD8zXi641BdceLah44kgr4m0LE9mEKDzN1arMrqvFfUV20YndNr3IdJto6FaOdzpoBWWY98nNUpWshOYMLPjCJj2yh4GqOAhv5a6SUv+ggdkWMeGMP3T7oUS3V/5mpg1Wi6M2vrleY5vApHKtQJTpw9QLm1S5Gp2EiSByZ6AB8e7+uihKv10g1Ac7pCYl4vKoY8a1qrYnnEU0Rdyb0MpRmb+DnBdjpvw/lbxrAZxpeBzhEZY2G2H0h29jX67fICl0zho5wkuX3+O7B7y98iNybhK7V47jsqad5NUvfErxWZNynOcPDg9+VlvIKeVHf6mbWX4kYAFZlGjvAe6xAdubzrUYjfxHsdbn97FFpYOpBbqm8q4bpZE68vyuyfzxXd1m4a7dl3j2Vh59K1qJNadUwqooH9RcaRGcARKV/daEk8MM8GGw0GvyjvPVzWaAG6/Ua/CJ3vllX4Kh2fKPPB52Jk4O9bzOVkP8tQ+oyNxuLkTGwBTFPg1eaBd4lFkqXSkNPwUotHeQlbs9ZGHGtTkupEBm2oqQ8pNfxVZd7+PXtL7G7oouN9x65pXA6KRRU5ecMKcyXrEZumVWBE8xLJS2HnTpqgpjJP3Z5SlYsXi34TQqTI7txbOX7b3Ax36Cip5DX6Zk3kFTdfKil8NrtAceHrxxcGmtnsGW3qZ1kv
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Afhl1qkiA25xguKLwURpP2VLa+UT2QznfDD0Ecj5FZdtk2S628kJe/qsiB9QjCx3hdFnCX1tNJS1gmUKSyjCEEU5jDK+/yQ6gPWMJCpHB+qZWx6dbchsZCraipOCJel+20t59Ax0h6fcpIhrIogdHNmzJLaAAkdZfoLfOj5SxwqP6F7+ZwstlqUZjJh8XjEJ3V2I0gr19U216ESGgg1Y1AILt7x4n/h4oaALj+a6UW5by/xY62VJ2OQecrObHyI1SqEu82l/x4qTr7lcXuedMG6PndCF3n/tvzg93kqUs3MGGtT8JRlvPBhNKOxz3okvJgEN9iWBsmhglL6WYMfrl4QJKguD2NiUgDEmey5fGVcB03i1IL6NL1VrU9wPe6oNKUJ0gNgeN8wqdt9WY99g0NhALLUf8i6cQM8mFl+ikPSU8xIBFfqJEMq7+mXU7BnvlCNCEN1B7ltVtKkEPW7qgTWm6uB/Bu2RLrXD1VE5ic/7AG9yKJ0D0+S4yF0t5R7FJfZ/E8RBagq0NHnwEuZIeVv5F6JQqvLzK0VftoMdjBPq5do1Jbv6TTLgUynKF/vHA3YZezfGUXtKmgkSuCaiom3kXubYwRYzYva6dTx0z2yANbDxxHfylp5rudOqLGbvsQZSIZb4hj8qIUOu72AkrjKjeeA4QkSSBR0o+67WF5O0bqIeHggcCVnqkqTJuyUo2/F0HJgqhAgyYuRVh2XsnvUtC8jg3bHyQm5Kvj1K7vNbWpDzuxHNDOuiIy+qJXChdj7oc5W4xfHPAAVQhVQftSPH5Uku+YMjkWbwJV+s9IYclNaz7Odu3iSXRk8tWlihqABQLfWglA5kFf6aAo0un2cZod/Rfk10JrbDEsW6X3eVfKSW8q0qH5keoKhYkZ5Q
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c844ec4c-5719-4a08-94bb-08dbb4be6240
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c3e2e3b-2bd7-449a-29e7-08dbb4be6368
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 01:03:18.9655 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 01:03:20.9141 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aZrNYocEtnPMIFNH37UcFjHNXU4ZBzyyJysEBZSqIRxr/4DtYCSF8lKATgbA+4yCqDIE//05YgTfGu9tY3nrAFWm+Q+d0zoVBPPh9cBIIU4=
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xr8FrhhkOCGjOMM3MO63/KdVgnk+GUrN+VwHmeAaoyN+aB2L3ktAVAT767lelZE1bVfx+aoVrWBsgjWm8DqAMHEO7lYvBKppTYAyaNmQkws=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB4975
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-13_19,2023-09-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0 bulkscore=0
- adultscore=0 phishscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309140007
-X-Proofpoint-GUID: SCsqtnNvB1Acxb1sISIYklpeAxd15BFw
-X-Proofpoint-ORIG-GUID: SCsqtnNvB1Acxb1sISIYklpeAxd15BFw
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=stephen.s.brennan@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ adultscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 mlxscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140008
+X-Proofpoint-GUID: 72zAap1s_IPlSvk6vhNl2MsLff7FQHWk
+X-Proofpoint-ORIG-GUID: 72zAap1s_IPlSvk6vhNl2MsLff7FQHWk
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=stephen.s.brennan@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -173,54 +174,204 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello all,
+For the next patch, we need a reference to DumpState when writing data.
 
-This is the second version of my patch series about the kdump format,
-you can see the first version here [1].
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+---
+ dump/dump.c           | 40 ++++++++++++++++++++--------------------
+ include/sysemu/dump.h |  2 +-
+ 2 files changed, 21 insertions(+), 21 deletions(-)
 
-The current output format for dump-guest-memory's kdump compressed
-format is actually the "makedumpfile flattened" format. It was done
-intentionally to allow the flexibility to write to non-seekable file
-descriptors, like pipes [2], without using temporary files. Currently
-libvirt uses this ability when VIR_DUMP_BYPASS_CACHE flag is set, to
-avoid the dump process using page cache. The standard kdump output
-format needs the page cache so that it can seek back and forth as part
-of writing the dump file.
-
-So the default kdump dump format cannot be changed to the standard
-format. This patch series adds the ability to use the standard format,
-and adds a QMP / HMP argument to enable it.
-
-An open question for Daniel et al.:
-
-Would it be possible to make flattened the default only for libvirt? I
-totally agree that this would be a bad backward incompatible change
-there. But for QMP / HMP commands, I think using the standard, broadly
-compatible format as the default is important for user friendliness. If
-a user needs to know the difference between flavors of kdump formats
-like the flattened format, in order to set the correct option, then
-we've already lost.
-
-Changes from v1 to v2:
-- Keep the default as the flattened format
-- Add QMP / HMP arguments for "reassembled"
-
-[1]: https://lore.kernel.org/qemu-devel/20230717163855.7383-1-stephen.s.brennan@oracle.com/
-[2]: https://lore.kernel.org/qemu-devel/1390890126-17377-1-git-send-email-qiaonuohan@cn.fujitsu.com/
--> see "changes from v4 to v5" in this patch
-
-Stephen Brennan (3):
-  dump: Pass DumpState to write_ functions
-  dump: Allow directly outputting reassembled kdumps
-  dump: Add qmp argument "reassembled"
-
- dump/dump-hmp-cmds.c  |  8 +++-
- dump/dump.c           | 86 ++++++++++++++++++++++++++++++-------------
- hmp-commands.hx       |  7 +++-
- include/sysemu/dump.h |  3 +-
- qapi/dump.json        | 14 ++++++-
- 5 files changed, 87 insertions(+), 31 deletions(-)
-
+diff --git a/dump/dump.c b/dump/dump.c
+index d4ef713cd0..74071a1565 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -809,7 +809,7 @@ static void create_vmcore(DumpState *s, Error **errp)
+     dump_end(s, errp);
+ }
+ 
+-static int write_start_flat_header(int fd)
++static int write_start_flat_header(DumpState *s)
+ {
+     MakedumpfileHeader *mh;
+     int ret = 0;
+@@ -824,7 +824,7 @@ static int write_start_flat_header(int fd)
+     mh->version = cpu_to_be64(VERSION_FLAT_HEADER);
+ 
+     size_t written_size;
+-    written_size = qemu_write_full(fd, mh, MAX_SIZE_MDF_HEADER);
++    written_size = qemu_write_full(s->fd, mh, MAX_SIZE_MDF_HEADER);
+     if (written_size != MAX_SIZE_MDF_HEADER) {
+         ret = -1;
+     }
+@@ -833,7 +833,7 @@ static int write_start_flat_header(int fd)
+     return ret;
+ }
+ 
+-static int write_end_flat_header(int fd)
++static int write_end_flat_header(DumpState *s)
+ {
+     MakedumpfileDataHeader mdh;
+ 
+@@ -841,7 +841,7 @@ static int write_end_flat_header(int fd)
+     mdh.buf_size = END_FLAG_FLAT_HEADER;
+ 
+     size_t written_size;
+-    written_size = qemu_write_full(fd, &mdh, sizeof(mdh));
++    written_size = qemu_write_full(s->fd, &mdh, sizeof(mdh));
+     if (written_size != sizeof(mdh)) {
+         return -1;
+     }
+@@ -849,7 +849,7 @@ static int write_end_flat_header(int fd)
+     return 0;
+ }
+ 
+-static int write_buffer(int fd, off_t offset, const void *buf, size_t size)
++static int write_buffer(DumpState *s, off_t offset, const void *buf, size_t size)
+ {
+     size_t written_size;
+     MakedumpfileDataHeader mdh;
+@@ -857,12 +857,12 @@ static int write_buffer(int fd, off_t offset, const void *buf, size_t size)
+     mdh.offset = cpu_to_be64(offset);
+     mdh.buf_size = cpu_to_be64(size);
+ 
+-    written_size = qemu_write_full(fd, &mdh, sizeof(mdh));
++    written_size = qemu_write_full(s->fd, &mdh, sizeof(mdh));
+     if (written_size != sizeof(mdh)) {
+         return -1;
+     }
+ 
+-    written_size = qemu_write_full(fd, buf, size);
++    written_size = qemu_write_full(s->fd, buf, size);
+     if (written_size != size) {
+         return -1;
+     }
+@@ -982,7 +982,7 @@ static void create_header32(DumpState *s, Error **errp)
+ #endif
+     dh->status = cpu_to_dump32(s, status);
+ 
+-    if (write_buffer(s->fd, 0, dh, size) < 0) {
++    if (write_buffer(s, 0, dh, size) < 0) {
+         error_setg(errp, "dump: failed to write disk dump header");
+         goto out;
+     }
+@@ -1012,7 +1012,7 @@ static void create_header32(DumpState *s, Error **errp)
+     kh->offset_note = cpu_to_dump64(s, offset_note);
+     kh->note_size = cpu_to_dump32(s, s->note_size);
+ 
+-    if (write_buffer(s->fd, DISKDUMP_HEADER_BLOCKS *
++    if (write_buffer(s, DISKDUMP_HEADER_BLOCKS *
+                      block_size, kh, size) < 0) {
+         error_setg(errp, "dump: failed to write kdump sub header");
+         goto out;
+@@ -1027,7 +1027,7 @@ static void create_header32(DumpState *s, Error **errp)
+     if (*errp) {
+         goto out;
+     }
+-    if (write_buffer(s->fd, offset_note, s->note_buf,
++    if (write_buffer(s, offset_note, s->note_buf,
+                      s->note_size) < 0) {
+         error_setg(errp, "dump: failed to write notes");
+         goto out;
+@@ -1093,7 +1093,7 @@ static void create_header64(DumpState *s, Error **errp)
+ #endif
+     dh->status = cpu_to_dump32(s, status);
+ 
+-    if (write_buffer(s->fd, 0, dh, size) < 0) {
++    if (write_buffer(s, 0, dh, size) < 0) {
+         error_setg(errp, "dump: failed to write disk dump header");
+         goto out;
+     }
+@@ -1123,7 +1123,7 @@ static void create_header64(DumpState *s, Error **errp)
+     kh->offset_note = cpu_to_dump64(s, offset_note);
+     kh->note_size = cpu_to_dump64(s, s->note_size);
+ 
+-    if (write_buffer(s->fd, DISKDUMP_HEADER_BLOCKS *
++    if (write_buffer(s, DISKDUMP_HEADER_BLOCKS *
+                      block_size, kh, size) < 0) {
+         error_setg(errp, "dump: failed to write kdump sub header");
+         goto out;
+@@ -1139,7 +1139,7 @@ static void create_header64(DumpState *s, Error **errp)
+         goto out;
+     }
+ 
+-    if (write_buffer(s->fd, offset_note, s->note_buf,
++    if (write_buffer(s, offset_note, s->note_buf,
+                      s->note_size) < 0) {
+         error_setg(errp, "dump: failed to write notes");
+         goto out;
+@@ -1204,7 +1204,7 @@ static int set_dump_bitmap(uint64_t last_pfn, uint64_t pfn, bool value,
+     while (old_offset < new_offset) {
+         /* calculate the offset and write dump_bitmap */
+         offset_bitmap1 = s->offset_dump_bitmap + old_offset;
+-        if (write_buffer(s->fd, offset_bitmap1, buf,
++        if (write_buffer(s, offset_bitmap1, buf,
+                          bitmap_bufsize) < 0) {
+             return -1;
+         }
+@@ -1212,7 +1212,7 @@ static int set_dump_bitmap(uint64_t last_pfn, uint64_t pfn, bool value,
+         /* dump level 1 is chosen, so 1st and 2nd bitmap are same */
+         offset_bitmap2 = s->offset_dump_bitmap + s->len_dump_bitmap +
+                          old_offset;
+-        if (write_buffer(s->fd, offset_bitmap2, buf,
++        if (write_buffer(s, offset_bitmap2, buf,
+                          bitmap_bufsize) < 0) {
+             return -1;
+         }
+@@ -1380,7 +1380,7 @@ out:
+ static void prepare_data_cache(DataCache *data_cache, DumpState *s,
+                                off_t offset)
+ {
+-    data_cache->fd = s->fd;
++    data_cache->state = s;
+     data_cache->data_size = 0;
+     data_cache->buf_size = 4 * dump_bitmap_get_bufsize(s);
+     data_cache->buf = g_malloc0(data_cache->buf_size);
+@@ -1399,11 +1399,11 @@ static int write_cache(DataCache *dc, const void *buf, size_t size,
+     /*
+      * if flag_sync is set, synchronize data in dc->buf into vmcore.
+      * otherwise check if the space is enough for caching data in buf, if not,
+-     * write the data in dc->buf to dc->fd and reset dc->buf
++     * write the data in dc->buf to dc->state->fd and reset dc->buf
+      */
+     if ((!flag_sync && dc->data_size + size > dc->buf_size) ||
+         (flag_sync && dc->data_size > 0)) {
+-        if (write_buffer(dc->fd, dc->offset, dc->buf, dc->data_size) < 0) {
++        if (write_buffer(dc->state, dc->offset, dc->buf, dc->data_size) < 0) {
+             return -1;
+         }
+ 
+@@ -1644,7 +1644,7 @@ static void create_kdump_vmcore(DumpState *s, Error **errp)
+      *  +------------------------------------------+
+      */
+ 
+-    ret = write_start_flat_header(s->fd);
++    ret = write_start_flat_header(s);
+     if (ret < 0) {
+         error_setg(errp, "dump: failed to write start flat header");
+         return;
+@@ -1665,7 +1665,7 @@ static void create_kdump_vmcore(DumpState *s, Error **errp)
+         return;
+     }
+ 
+-    ret = write_end_flat_header(s->fd);
++    ret = write_end_flat_header(s);
+     if (ret < 0) {
+         error_setg(errp, "dump: failed to write end flat header");
+         return;
+diff --git a/include/sysemu/dump.h b/include/sysemu/dump.h
+index 7008d43d04..e27af8fb34 100644
+--- a/include/sysemu/dump.h
++++ b/include/sysemu/dump.h
+@@ -137,7 +137,7 @@ typedef struct QEMU_PACKED KdumpSubHeader64 {
+ } KdumpSubHeader64;
+ 
+ typedef struct DataCache {
+-    int fd;             /* fd of the file where to write the cached data */
++    DumpState *state;   /* dump state related to this data */
+     uint8_t *buf;       /* buffer for cached data */
+     size_t buf_size;    /* size of the buf */
+     size_t data_size;   /* size of cached data in buf */
 -- 
 2.39.3
 
