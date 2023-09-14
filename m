@@ -2,72 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92897A03D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:29:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2E77A03E1
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:31:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qglSV-00022F-DU; Thu, 14 Sep 2023 08:28:35 -0400
+	id 1qglTn-00045K-LZ; Thu, 14 Sep 2023 08:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qglSU-00021Y-5v
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:28:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qglSS-0006tY-1h
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:28:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694694510;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KvgAjAoWCEdXVX+hfH6P2BpT50D34U2ytvSifhhQocg=;
- b=DnMhNiOjmP9YCvzO8QtiK4/Bjl9FjZefNvDOeIAa2AEAIm7c4ciCFas+u0gzB9oARvumVA
- zIUTAxHlDqbT95QAix4D0jL3XImUGTTU0UrDRqX7xzbB5p7LWm5jB1kJ7XCagxOLcEFBLK
- kl1OfyuRD3AUSQxPKIJgGHAK8VVsUEU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-652-OoIt5ED-PIWS1IT94f_OLA-1; Thu, 14 Sep 2023 08:28:29 -0400
-X-MC-Unique: OoIt5ED-PIWS1IT94f_OLA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AFDC0185A79B;
- Thu, 14 Sep 2023 12:28:28 +0000 (UTC)
-Received: from redhat.com (dhcp-192-218.str.redhat.com [10.33.192.218])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 82C7640C6EBF;
- Thu, 14 Sep 2023 12:28:27 +0000 (UTC)
-Date: Thu, 14 Sep 2023 14:28:26 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Eric Blake <eblake@redhat.com>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, Hanna Reitz <hreitz@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: Re: [PATCH 3/3] iotests: distinguish 'skipped' and 'not run' states
-Message-ID: <ZQL8avIMyJq4xvHz@redhat.com>
-References: <20230906140917.559129-1-den@openvz.org>
- <20230906140917.559129-4-den@openvz.org>
- <ZQHZquVrpTFaU7kD@redhat.com>
- <4si43aghmpl4yxtlqhg63q2ivecnsxi5sm67ec5dhtezrhbijy@7zcuqmytr2qt>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qglTj-00040K-F5
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:29:51 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qglTh-00071h-Hh
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:29:51 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9ad8a822508so121040366b.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 05:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694694587; x=1695299387; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jw4Hfo8TH8sgjRLsFOGJsKNdsCAQUPtxKM5/nbg9gN4=;
+ b=EyzGvgHLluT3mJ9KRNHPoT0ZMkIO6jc7I4VSYBjUlshaws7StqtuLHDNjg3ztbm+jY
+ 5geOiwMos6Pn1ZhHm5W6lOHVsxlpTVoTbYz03wSLxdIFf5ZQ/nn8Rn3mFdd+dNErr2Dy
+ /s6jFqu6KNWMeVJknXWjSehWJyP8rvCDcT6xyqwew4yniMIfSB4j8ODtoC4Er3pQZIlf
+ skRcA4+fANfqqKQXfqj5MS1oaO4G51Ji50cXPl6k4uIenehWmABRYQ3PYgezSruOgygb
+ EINpaZ/0wd9sAn+mHwddhouEbt2EWfKFDSxoBi0mJ54L7fMrwEdOTW4JUdTlUom+bFN3
+ DjiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694694587; x=1695299387;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jw4Hfo8TH8sgjRLsFOGJsKNdsCAQUPtxKM5/nbg9gN4=;
+ b=td41av3STP/+a7bltdJNs3/ZYbXvewxctV7qKvjEsOrXD+xb2oQjdZHPsURE94/R3J
+ jMny79rndf+m65VpTUgTuiZXKXhNkPcCTmdvddJQ2Xa9dXrqazZxPtiFhShA0ZB7ub54
+ hYxw7WZPr7i+K17rOuEFa4YWH1Qi/MmalrSXwPljbv8OjIKDnpfKFfXd5JcSh6MTFb8V
+ IxV3fwUeIov3f2pJe1Motv9Y2PmPvb2p3z28gd+P1BXEb52HOfEKHI5eCSHrQzdeOGLK
+ RI9WJyEopr7WU9gbS8qpjKgrplZ3Xl0RUOw/NJ7yFnOz6bpCHwIlxIRku1tOYe/xW23F
+ a28Q==
+X-Gm-Message-State: AOJu0Ywb7mCNZWqbQC279KJyoj0V7DDeUjbSWtKB7HawwJ/BJlwwiT/G
+ 3QQ440IuU2BEVoicCLucS1gyiDXjNKtrQWMnn4U=
+X-Google-Smtp-Source: AGHT+IFL2p+Y2pAchcmQ38M5PXXfA7wNRL8pT4Ja2y4nEPAKMDd4BijI1/bIHNQ38783UOVja+GgZw==
+X-Received: by 2002:a17:907:75e5:b0:9a9:ef41:e5c7 with SMTP id
+ jz5-20020a17090775e500b009a9ef41e5c7mr4159453ejc.8.1694694587638; 
+ Thu, 14 Sep 2023 05:29:47 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-223-129.abo.bbox.fr.
+ [176.131.223.129]) by smtp.gmail.com with ESMTPSA id
+ cf20-20020a170906b2d400b0099bd453357esm945557ejb.41.2023.09.14.05.29.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Sep 2023 05:29:47 -0700 (PDT)
+Message-ID: <703f0e35-128b-0c0c-4c8f-0fd182095d18@linaro.org>
+Date: Thu, 14 Sep 2023 14:29:45 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v3 01/12] gdbstub: Fix target_xml initialization
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Nikita Shubin <nikita.shubin@maquefel.me>, Nikita Shubin <n.shubin@yadro.com>
+Cc: Mikhail Tyutin <m.tyutin@yadro.com>,
+ Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org
+References: <20230912224107.29669-1-akihiko.odaki@daynix.com>
+ <20230912224107.29669-2-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230912224107.29669-2-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4si43aghmpl4yxtlqhg63q2ivecnsxi5sm67ec5dhtezrhbijy@7zcuqmytr2qt>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,96 +96,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 13.09.2023 um 18:31 hat Eric Blake geschrieben:
-> On Wed, Sep 13, 2023 at 04:47:54PM +0100, Daniel P. BerrangÈ wrote:
-> > On Wed, Sep 06, 2023 at 04:09:17PM +0200, Denis V. Lunev wrote:
-> > > Each particular testcase could skipped intentionally and accidentally.
-> > > For example the test is not designed for a particular image format or
-> > > is not run due to the missed library.
-> > > 
-> > > The latter case is unwanted in reality. Though the discussion has
-> > > revealed that failing the test in such a case would be bad. Thus the
-> > > patch tries to do different thing. It adds additional status for
-> > > the test case - 'skipped' and bound intentinal cases to that state.
-> > 
-> > I'm not convinced this distinction makes sense and I fear it is
-> > leading us down the same undesirable route as avocado with too
-> > many distinct states leading to confusion:
-> > 
-> >   https://lore.kernel.org/qemu-devel/Yy1gB1KB3YSIUcoC@redhat.com/
-> > 
-> > If I looked at the output I can't tell you the difference between
-> > "not run" and "skipped" - they both sound the same to me.
-> > 
-> > IMHO there's alot to be said for the simplicity of sticking with
-> > nothing more than PASS/FAIL/SKIP as status names.  The descriptive
-> > text associated with each SKIP would give more context as to the
-> > reason in each case if needed.
+On 13/9/23 00:40, Akihiko Odaki wrote:
+> target_xml is no longer a fixed-length array but a pointer to a
+> variable-length memory.
 > 
-> I guess it boils down to whether there is an actionable response in
-> that message.  If a test is skipped because it is the wrong format
-> (for example, ./check -raw skipping a test that only works with
-> qcow2), there's nothing for me to do.  If a test is skipped because my
-> setup didn't permit running the test, but where I could enhance my
-> environment (install more software, pick a different file system,
-> ...), then having the skip message call that out is useful if I want
-> to take action to get more test coverage.
-
-I'm not sure if there is a clear line to define whether there is an
-actionable response or not, because that completely depends on what the
-user considers an acceptable response.
-
-You have the relatively clear cases like the test being for another
-format, though you could argue that the actionable response is running
-./check -qcow2 if raw doesn't work - in fact, why don't we allow ./check
--raw -qcow2 to run both and count it as skipped only if it wasn't run at
-all?
-
-The relatively clear case on the other end of the spectrum is if a tool
-is missing on the host that you could possibly install. Though maybe
-your distro doesn't even package it, so is that still a reasonable
-action to take?
-
-What about cases where a block driver isn't compiled in or not
-whitelisted? (We've seen this often enough with quorum.) That could be
-an accident, but more likely it was a conscious decision and while just
-enabling it might fix the test case, enabling additional features in
-your product just to make tests happy might not be considered
-acceptable. So should this be "not run" or "skipped"? [1]
-
-You could find other unclear cases like tests depending on a different
-target architecture, or testing different code paths on different target
-architectures.
-
-> Even if the message is present, we have so many tests intentionally
-> skipped that it is hard to see the few tests where a skip could be
-> turned into a pass by installing a prerequisite.
+> Fixes: 56e534bd11 ("gdbstub: refactor get_feature_xml")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   gdbstub/softmmu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> > > +++ b/tests/qemu-iotests/testrunner.py
-> > > @@ -200,6 +200,8 @@ def test_print_one_line(self, test: str,
-> > >                  col = '\033[1m\033[31m'
-> > >              elif status == 'not run':
-> > >                  col = '\033[33m'
-> > > +            elif status == 'skipped':
-> > > +                col = '\033[34m'
-> > >              else:
-> > >                  col = ''
-> 
-> It looks like for now, the only difference in the two designations is
-> the output color, and even then, only if you are running the tests in
-> an environment where color matters (CI systems may not be showing
-> colors as intended).
+> diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+> index 9f0b8b5497..42645d2220 100644
+> --- a/gdbstub/softmmu.c
+> +++ b/gdbstub/softmmu.c
+> @@ -292,7 +292,7 @@ static int find_cpu_clusters(Object *child, void *opaque)
+>           assert(cluster->cluster_id != UINT32_MAX);
+>           process->pid = cluster->cluster_id + 1;
+>           process->attached = false;
+> -        process->target_xml[0] = '\0';
+> +        process->target_xml = NULL;
+>   
+>           return 0;
+>       }
 
-Well, and the different status text, obviously.
-
-CI will probably use the tap interface, which is not modified at all by
-the patch, so no result would be recorded for "skipped" tests (while
-"not run" tests will still return "ok ... # SKIP").
-
-Kevin
-
-[1] If you do answer this rhetorical question, please note that I
-    already forgot which is which, so maybe also specify if you mean the
-    bad skip or the harmless skip.
+Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
 
 
