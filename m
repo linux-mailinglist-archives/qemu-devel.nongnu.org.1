@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B1D79F92A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABC479F926
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgdPE-0007e5-W1; Wed, 13 Sep 2023 23:52:42 -0400
+	id 1qgdPJ-000837-He; Wed, 13 Sep 2023 23:52:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdP4-0007UF-Sa
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:31 -0400
+ id 1qgdP9-0007dp-2d
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:36 -0400
 Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdP2-0000r7-QK
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:30 -0400
+ id 1qgdP6-0000r7-Ko
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694663548; x=1726199548;
+ t=1694663552; x=1726199552;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=K9SNVbRXg6fOO0WdYvXxGQ1S9s3Q8v1uTfTUmIhxgis=;
- b=WS7d9WyyX25MgVDO+83b7jyj72q0A+QXmWjPGBu4cDVFu+MLAl96522Z
- ooc1N1bbldHGh5vbdPSp84IPEjo5rVKLoXSCO0w+44Hw+wh+k9QSdBAJr
- UImkQDdkzaSjoYD1rWs+pVVH0x7dmQDogIUc1Tg3Y/lrUuX1o7c0nVQL1
- F2S8ria3dOkyHMnxchMkurYIUAubbyUJMZJ7JmyrcaxDMg7mWCi3RDfkg
- 9yV5NMYdX8d7HhqSvvDtGZYmg5AKZ9VuR7sQ54SC9dwVC9nsn8VvpZQPB
- pCQBvzoikWknxhMmQDzBuOxoGGSXE9UrZVxhk6pIcJv70bLK+EzbJGdEl A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528492"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528492"
+ bh=P7JD5Z/Zea9/ImjYPBZjZe+vU1JZG61vgXwgTLUb5Js=;
+ b=g2D/R85zhhIMkPTEeRC7h9Sdl+FtU6IeP6v2fK0yrDR3iyDOCBis5w7Z
+ zDX0npoIcP/0MqlxaTZfw99EBuS2cTE5RAFHgO6qpIA5+Gh78vDnVDFIF
+ 0eON0ClbcPUSPBiyLj4NuNIS+rXZ/jZ7rZpNkkdIH9VVHspZ1TdSDWl34
+ ydeB+mpNLNpIrJHxnIVXL7f3IH7qeRbtz4oA04U5fQC7j7yZS08LBdKuO
+ hhwvolvCSqK+IrUq+WMUqhUsDR/IgpO/kpks7zhUN2kMkaK+v2hzdhmly
+ epP8FkwpqgBKZRG1GBuoiPgEldXgd9fAp/Lzjc3RCv6HIU2dBtTYQFwAz A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528503"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528503"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Sep 2023 20:52:27 -0700
+ 13 Sep 2023 20:52:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500650"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500650"
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500659"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500659"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:52:22 -0700
+ by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:52:27 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -54,10 +54,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [RFC PATCH v2 14/21] physmem: replace function name with __func__ in
- ram_block_discard_range()
-Date: Wed, 13 Sep 2023 23:51:10 -0400
-Message-Id: <20230914035117.3285885-15-xiaoyao.li@intel.com>
+Subject: [RFC PATCH v2 15/21] physmem: extract ram_block_discard_range_fd()
+ from ram_block_discard_range()
+Date: Wed, 13 Sep 2023 23:51:11 -0400
+Message-Id: <20230914035117.3285885-16-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230914035117.3285885-1-xiaoyao.li@intel.com>
 References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
@@ -88,101 +88,243 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Extract the alignment check and sanity check out from
+ram_block_discard_range() into a seperate function
+ram_block_discard_range_fd(), which can be passed with an explicit fd as
+input parameter.
+
+ram_block_discard_range_fd() can be used to discard private memory range
+from gmem fd with later patch. When doing private memory <-> shared
+memory conversion, it requires 4KB alignment instead of
+RamBlock.page_size.
+
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- softmmu/physmem.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+ softmmu/physmem.c | 192 ++++++++++++++++++++++++----------------------
+ 1 file changed, 100 insertions(+), 92 deletions(-)
 
 diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 2d98a88f41f0..34d580ec0d39 100644
+index 34d580ec0d39..6ee6bc794f44 100644
 --- a/softmmu/physmem.c
 +++ b/softmmu/physmem.c
-@@ -3440,16 +3440,15 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+@@ -3425,117 +3425,125 @@ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque)
+     return ret;
+ }
+ 
++static int ram_block_discard_range_fd(RAMBlock *rb, uint64_t start,
++                                      size_t length, int fd)
++{
++    uint8_t *host_startaddr = rb->host + start;
++    bool need_madvise, need_fallocate;
++    int ret = -1;
++
++    errno = ENOTSUP; /* If we are missing MADVISE etc */
++
++    /* The logic here is messy;
++     *    madvise DONTNEED fails for hugepages
++     *    fallocate works on hugepages and shmem
++     *    shared anonymous memory requires madvise REMOVE
++     */
++    need_madvise = (rb->page_size == qemu_host_page_size) && (rb->fd == fd);
++    need_fallocate = fd != -1;
++
++    if (need_fallocate) {
++        /* For a file, this causes the area of the file to be zero'd
++         * if read, and for hugetlbfs also causes it to be unmapped
++         * so a userfault will trigger.
++         */
++#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
++        /*
++         * We'll discard data from the actual file, even though we only
++         * have a MAP_PRIVATE mapping, possibly messing with other
++         * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
++         * change that behavior whithout violating the promised
++         * semantics of ram_block_discard_range().
++         *
++         * Only warn, because it works as long as nobody else uses that
++         * file.
++         */
++        if (!qemu_ram_is_shared(rb)) {
++            warn_report_once("%s: Discarding RAM"
++                                " in private file mappings is possibly"
++                                " dangerous, because it will modify the"
++                                " underlying file and will affect other"
++                                " users of the file", __func__);
++        }
++
++        ret = fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
++                        start, length);
++        if (ret) {
++            ret = -errno;
++            error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
++                            __func__, rb->idstr, start, length, ret);
++            return ret;
++        }
++#else
++        ret = -ENOSYS;
++        error_report("%s: fallocate not available/file "
++                     "%s:%" PRIx64 " +%zx (%d)",
++                     __func__, rb->idstr, start, length, ret);
++        return ret;
++#endif
++    }
++
++    if (need_madvise) {
++        /* For normal RAM this causes it to be unmapped,
++         * for shared memory it causes the local mapping to disappear
++         * and to fall back on the file contents (which we just
++         * fallocate'd away).
++         */
++#if defined(CONFIG_MADVISE)
++        if (qemu_ram_is_shared(rb) && fd < 0) {
++            ret = madvise(host_startaddr, length, QEMU_MADV_REMOVE);
++        } else {
++            ret = madvise(host_startaddr, length, QEMU_MADV_DONTNEED);
++        }
++        if (ret) {
++            ret = -errno;
++            error_report("%s: Failed to discard range %s:%" PRIx64 " +%zx (%d)",
++                         __func__, rb->idstr, start, length, ret);
++            return ret;
++        }
++#else
++        ret = -ENOSYS;
++        error_report("%s: MADVISE not available %s:%" PRIx64 " +%zx (%d)",
++                        __func__, rb->idstr, start, length, ret);
++        return ret;
++#endif
++    }
++
++    trace_ram_block_discard_range(rb->idstr, host_startaddr, length,
++                                  need_madvise, need_fallocate, ret);
++    return ret;
++}
++
+ /*
+  * Unmap pages of memory from start to start+length such that
+  * they a) read as 0, b) Trigger whatever fault mechanism
+  * the OS provides for postcopy.
++ *
+  * The pages must be unmapped by the end of the function.
+- * Returns: 0 on success, none-0 on failure
+- *
++ * Returns: 0 on success, none-0 on failure.
+  */
+ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
+ {
+-    int ret = -1;
+-
      uint8_t *host_startaddr = rb->host + start;
  
      if (!QEMU_PTR_IS_ALIGNED(host_startaddr, rb->page_size)) {
--        error_report("ram_block_discard_range: Unaligned start address: %p",
--                     host_startaddr);
-+        error_report("%s: Unaligned start address: %p",
-+                     __func__, host_startaddr);
-         goto err;
+         error_report("%s: Unaligned start address: %p",
+                      __func__, host_startaddr);
+-        goto err;
++        return -1;
      }
  
-     if ((start + length) <= rb->max_length) {
-         bool need_madvise, need_fallocate;
-         if (!QEMU_IS_ALIGNED(length, rb->page_size)) {
--            error_report("ram_block_discard_range: Unaligned length: %zx",
--                         length);
-+            error_report("%s: Unaligned length: %zx", __func__, length);
-             goto err;
-         }
- 
-@@ -3479,27 +3478,26 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-              * file.
-              */
-             if (!qemu_ram_is_shared(rb)) {
--                warn_report_once("ram_block_discard_range: Discarding RAM"
-+                warn_report_once("%s: Discarding RAM"
-                                  " in private file mappings is possibly"
-                                  " dangerous, because it will modify the"
-                                  " underlying file and will affect other"
--                                 " users of the file");
-+                                 " users of the file", __func__);
-             }
- 
-             ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-                             start, length);
-             if (ret) {
-                 ret = -errno;
--                error_report("ram_block_discard_range: Failed to fallocate "
--                             "%s:%" PRIx64 " +%zx (%d)",
--                             rb->idstr, start, length, ret);
-+                error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
-+                             __func__, rb->idstr, start, length, ret);
-                 goto err;
-             }
- #else
-             ret = -ENOSYS;
--            error_report("ram_block_discard_range: fallocate not available/file"
-+            error_report("%s: fallocate not available/file"
-                          "%s:%" PRIx64 " +%zx (%d)",
--                         rb->idstr, start, length, ret);
-+                         __func__, rb->idstr, start, length, ret);
-             goto err;
- #endif
-         }
-@@ -3517,25 +3515,23 @@ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length)
-             }
-             if (ret) {
-                 ret = -errno;
--                error_report("ram_block_discard_range: Failed to discard range "
-+                error_report("%s: Failed to discard range "
-                              "%s:%" PRIx64 " +%zx (%d)",
--                             rb->idstr, start, length, ret);
-+                             __func__, rb->idstr, start, length, ret);
-                 goto err;
-             }
- #else
-             ret = -ENOSYS;
--            error_report("ram_block_discard_range: MADVISE not available"
+-    if ((start + length) <= rb->max_length) {
+-        bool need_madvise, need_fallocate;
+-        if (!QEMU_IS_ALIGNED(length, rb->page_size)) {
+-            error_report("%s: Unaligned length: %zx", __func__, length);
+-            goto err;
+-        }
+-
+-        errno = ENOTSUP; /* If we are missing MADVISE etc */
+-
+-        /* The logic here is messy;
+-         *    madvise DONTNEED fails for hugepages
+-         *    fallocate works on hugepages and shmem
+-         *    shared anonymous memory requires madvise REMOVE
+-         */
+-        need_madvise = (rb->page_size == qemu_host_page_size);
+-        need_fallocate = rb->fd != -1;
+-        if (need_fallocate) {
+-            /* For a file, this causes the area of the file to be zero'd
+-             * if read, and for hugetlbfs also causes it to be unmapped
+-             * so a userfault will trigger.
+-             */
+-#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
+-            /*
+-             * We'll discard data from the actual file, even though we only
+-             * have a MAP_PRIVATE mapping, possibly messing with other
+-             * MAP_PRIVATE/MAP_SHARED mappings. There is no easy way to
+-             * change that behavior whithout violating the promised
+-             * semantics of ram_block_discard_range().
+-             *
+-             * Only warn, because it works as long as nobody else uses that
+-             * file.
+-             */
+-            if (!qemu_ram_is_shared(rb)) {
+-                warn_report_once("%s: Discarding RAM"
+-                                 " in private file mappings is possibly"
+-                                 " dangerous, because it will modify the"
+-                                 " underlying file and will affect other"
+-                                 " users of the file", __func__);
+-            }
+-
+-            ret = fallocate(rb->fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
+-                            start, length);
+-            if (ret) {
+-                ret = -errno;
+-                error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
+-                             __func__, rb->idstr, start, length, ret);
+-                goto err;
+-            }
+-#else
+-            ret = -ENOSYS;
+-            error_report("%s: fallocate not available/file"
 -                         "%s:%" PRIx64 " +%zx (%d)",
--                         rb->idstr, start, length, ret);
-+            error_report("%s: MADVISE not available %s:%" PRIx64 " +%zx (%d)",
-+                         __func__, rb->idstr, start, length, ret);
-             goto err;
- #endif
-         }
-         trace_ram_block_discard_range(rb->idstr, host_startaddr, length,
-                                       need_madvise, need_fallocate, ret);
-     } else {
--        error_report("ram_block_discard_range: Overrun block '%s' (%" PRIu64
--                     "/%zx/" RAM_ADDR_FMT")",
--                     rb->idstr, start, length, rb->max_length);
-+        error_report("%s: Overrun block '%s' (%" PRIu64 "/%zx/" RAM_ADDR_FMT")",
-+                     __func__, rb->idstr, start, length, rb->max_length);
+-                         __func__, rb->idstr, start, length, ret);
+-            goto err;
+-#endif
+-        }
+-        if (need_madvise) {
+-            /* For normal RAM this causes it to be unmapped,
+-             * for shared memory it causes the local mapping to disappear
+-             * and to fall back on the file contents (which we just
+-             * fallocate'd away).
+-             */
+-#if defined(CONFIG_MADVISE)
+-            if (qemu_ram_is_shared(rb) && rb->fd < 0) {
+-                ret = madvise(host_startaddr, length, QEMU_MADV_REMOVE);
+-            } else {
+-                ret = madvise(host_startaddr, length, QEMU_MADV_DONTNEED);
+-            }
+-            if (ret) {
+-                ret = -errno;
+-                error_report("%s: Failed to discard range "
+-                             "%s:%" PRIx64 " +%zx (%d)",
+-                             __func__, rb->idstr, start, length, ret);
+-                goto err;
+-            }
+-#else
+-            ret = -ENOSYS;
+-            error_report("%s: MADVISE not available %s:%" PRIx64 " +%zx (%d)",
+-                         __func__, rb->idstr, start, length, ret);
+-            goto err;
+-#endif
+-        }
+-        trace_ram_block_discard_range(rb->idstr, host_startaddr, length,
+-                                      need_madvise, need_fallocate, ret);
+-    } else {
++    if ((start + length) > rb->max_length) {
+         error_report("%s: Overrun block '%s' (%" PRIu64 "/%zx/" RAM_ADDR_FMT")",
+                      __func__, rb->idstr, start, length, rb->max_length);
++        return -1;
      }
  
- err:
+-err:
+-    return ret;
++    if (!QEMU_IS_ALIGNED(length, rb->page_size)) {
++        error_report("%s: Unaligned length: %zx", __func__, length);
++        return -1;
++    }
++
++    return ram_block_discard_range_fd(rb, start, length, rb->fd);
+ }
+ 
+ bool ramblock_is_pmem(RAMBlock *rb)
 -- 
 2.34.1
 
