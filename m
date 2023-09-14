@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719957A083B
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A905F7A089F
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:08:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgnnw-0003AG-4G; Thu, 14 Sep 2023 10:58:53 -0400
+	id 1qgnvf-0003Bb-RI; Thu, 14 Sep 2023 11:06:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgnnA-00034g-9O
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:58:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qgnvY-0003BK-Ow; Thu, 14 Sep 2023 11:06:45 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgnn0-0004YJ-HQ
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:58:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694703473;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5XDTmTCut5/L8MUgx8kKfcXkI3rjaUua+4ckBX5B6UE=;
- b=iUVBXbKv0A1Ig/r/HtyYq1tPElcHFzUVhkSzQ44pOF/ZzvAVkG7WArqcU1/OY7+ufzGjU3
- 8NimOdYtsGSBPks2+IjeXreVGCObuMDp6LRMgD+NFVb/Uh0kvwYqe3KqlmMbEU1iNSiXVb
- pBpFmwQ9FZjduX7V+byviqzIcUQVwZs=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-bJ-LMEcWM52NTfJewAfb3A-1; Thu, 14 Sep 2023 10:57:50 -0400
-X-MC-Unique: bJ-LMEcWM52NTfJewAfb3A-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-413650a9d6dso2465051cf.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 07:57:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694703470; x=1695308270;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5XDTmTCut5/L8MUgx8kKfcXkI3rjaUua+4ckBX5B6UE=;
- b=fa15YlH3tYo+SObOXvhkfxlvwOt4lP/qIf6pbAvP86f/E2wXky1kaOW6Ik/f31Fumh
- 7vtWwe3WgU+87T90R9J0M66Uyjuptny2Ra75iFX8l1ghDbcC0WbzpmLcu/g4tpvFRUIs
- Fb4Y9K4XuWbKvWfo6vUrk6llgVCDHJNLCESHyDeGjG8vMwhIxPdCELdg7jjYH0/FQJlb
- Rw72ZRwK0wwoQsbpt2wiNDiv6QENQxqByh3W3k/f76qx7ZoT0oQpGq1K8URWHtKOiYch
- T7I9LL3Ae6D8ZkzhUvBhqFgIaxy0kZ1N+0acx97kwX7liIqsgHF9/Zptx3l9jNyDIwcj
- mqww==
-X-Gm-Message-State: AOJu0YzQocc0331RIw8I4Ip+QjGFBBPGXWtcz7fywSVRfruYiL7f3Y2e
- zuN0mitPq8gZ8JHdzldXPYHSpSfU4qqoueBeMWxb7N4a27xZ8N6kUUmmekeqNr1BxtwgGTBlJ7W
- 8o8DWwUKO30PdKGE=
-X-Received: by 2002:a05:622a:448:b0:412:2dac:acb7 with SMTP id
- o8-20020a05622a044800b004122dacacb7mr5925847qtx.1.1694703469733; 
- Thu, 14 Sep 2023 07:57:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHAxYDuuXOcCefpoENFFDb+sgoOZ9+aIVIPommSG5HxEYU8eriS2kfJdPJNHTmJA8Jh2CF1w==
-X-Received: by 2002:a05:622a:448:b0:412:2dac:acb7 with SMTP id
- o8-20020a05622a044800b004122dacacb7mr5925830qtx.1.1694703469418; 
- Thu, 14 Sep 2023 07:57:49 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- hx17-20020a05622a669100b0040324785e4csm493072qtb.13.2023.09.14.07.57.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 07:57:49 -0700 (PDT)
-Date: Thu, 14 Sep 2023 10:57:47 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Lukas Straub <lukasstraub2@web.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v6 09/10] migration/yank: Keep track of registered yank
- instances
-Message-ID: <ZQMfa38ulqQiRZ3d@x1n>
-References: <20230911171320.24372-1-farosas@suse.de>
- <20230911171320.24372-10-farosas@suse.de> <ZQIX+KUgL5V6H/gj@x1n>
- <87jzstkaen.fsf@suse.de> <ZQJKQLNNZe772MUA@x1n>
- <87h6nwkhwl.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qgnvV-0006Rq-PU; Thu, 14 Sep 2023 11:06:44 -0400
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38EErVfk006838; Thu, 14 Sep 2023 15:06:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=qQvrPrh+xvIe56d5uo0qvDn3JmUfFi6M5giv99B/asQ=;
+ b=bTOBAQoUDXhNzhzen5BW9Aq7792R3KHYWtqMeG2FjnGztzNvyZhqQo3oiR0bIDvuVaY3
+ pFhL41CqjAMHm9XlbbtqhOWkA7m8X7hKGjV9RInKEKGanUmUQsr80XjY9Bxa7yb/DhqF
+ RdAwnSN+c/etanpPPggJ6UeW+FDQtr170wuoiOYBC47GXp71FT2nUGjxOSTi5XMvQ0Pg
+ 4YtEmCNyjPD7X/ZZ4Frye0IwpDOmM3LHBlIphWQxaGDk1ntfDxuEJ4ODnWkO9wkN5ewl
+ VjNUzT82zWb7VXFUoYCCS4DVuwQtkwBuUPllnBYFW8tz9Fgzs3fxjYtWEoPUDavHBoXX NQ== 
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t3h0dk0cv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Sep 2023 15:06:33 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
+ [10.45.79.139])
+ by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38EF6WVC030080
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Sep 2023 15:06:32 GMT
+Received: from [10.111.140.37] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 14 Sep
+ 2023 08:06:31 -0700
+Message-ID: <54fb614b-a2a2-4472-81e9-da0cb81441a9@quicinc.com>
+Date: Thu, 14 Sep 2023 16:06:28 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87h6nwkhwl.fsf@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/3] Refactor PPI logic/definitions for virt/sbsa-ref
+Content-Language: en-GB
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, <qemu-devel@nongnu.org>
+CC: <qemu-arm@nongnu.org>, Radoslaw Biernacki <rad@semihalf.com>, Peter
+ Maydell <peter.maydell@linaro.org>
+References: <20230914120124.55410-1-quic_llindhol@quicinc.com>
+ <986148e3-2830-4333-bfd7-29de9fa2dab8@linaro.org>
+From: Leif Lindholm <quic_llindhol@quicinc.com>
+In-Reply-To: <986148e3-2830-4333-bfd7-29de9fa2dab8@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: JgbG12oTUPPFAMA5EDXkjRtJOf_G_4st
+X-Proofpoint-GUID: JgbG12oTUPPFAMA5EDXkjRtJOf_G_4st
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-14_09,2023-09-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 malwarescore=0 bulkscore=0 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140130
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_llindhol@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,164 +99,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 14, 2023 at 10:23:38AM -0300, Fabiano Rosas wrote:
-> Peter Xu <peterx@redhat.com> writes:
+On 2023-09-14 14:15, Marcin Juszkiewicz wrote:
+> W dniu 14.09.2023 o 14:01, Leif Lindholm pisze:
+>> While reviewing Marcin's patch this morning, cross referencing different
+>> specifications and looking at various places around the source code in
+>> order to convinced myself he really hadn't missed something out (the
+>> existing plumbing made it *so* clean to add), my brain broke slightly
+>> at keeping track of PPIs/INTIDs between the various sources.
+>>
+>> Moreover, I found the PPI() macro in virt.h to be doing the exact
+>> opposite of what I would have expected it to (it converts a PPI to an
+>> INTID rather than the other way around).
+>>
+>> So I refactored stuff so that:
+>> - PPIs defined by BSA are moved to a (new) common header.
+>> - The _IRQ definitions for those PPIs refer to the INTIDs.
+>> - sbsa-ref and virt both use these definitions.
+>>
+>> This change does objectively add a bit more noise to the code, since it
+>> means more locations need to use the PPI macro than before, but it felt
+>> like a readability improvement to me.
 > 
-> > On Wed, Sep 13, 2023 at 06:53:20PM -0300, Fabiano Rosas wrote:
-> >> Peter Xu <peterx@redhat.com> writes:
-> >> 
-> >> > On Mon, Sep 11, 2023 at 02:13:19PM -0300, Fabiano Rosas wrote:
-> >> >> The core yank code is strict about balanced registering and
-> >> >> unregistering of yank functions.
-> >> >> 
-> >> >> This creates a difficulty because the migration code registers one
-> >> >> yank function per QIOChannel, but each QIOChannel can be referenced by
-> >> >> more than one QEMUFile. The yank function should not be removed until
-> >> >> all QEMUFiles have been closed.
-> >> >> 
-> >> >> Keep a reference count of how many QEMUFiles are using a QIOChannel
-> >> >> that has a yank function. Only unregister the yank function when all
-> >> >> QEMUFiles have been closed.
-> >> >> 
-> >> >> This improves the current code by removing the need for the programmer
-> >> >> to know which QEMUFile is the last one to be cleaned up and fixes the
-> >> >> theoretical issue of removing the yank function while another QEMUFile
-> >> >> could still be using the ioc and require a yank.
-> >> >> 
-> >> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> >> >> ---
-> >> >>  migration/yank_functions.c | 81 ++++++++++++++++++++++++++++++++++----
-> >> >>  migration/yank_functions.h |  8 ++++
-> >> >>  2 files changed, 81 insertions(+), 8 deletions(-)
-> >> >
-> >> > I worry this over-complicate things.
-> >> 
-> >> It does. We ran out of simple options.
-> >> 
-> >> > If you prefer the cleaness that we operate always on qemufile level, can we
-> >> > just register each yank function per-qemufile?
-> >> 
-> >> "just" hehe
-> >> 
-> >> we could, but:
-> >> 
-> >> i) the yank is a per-channel operation, so this is even more unintuitive;
-> >
-> > I mean we can provide something like:
-> >
-> > void migration_yank_qemufile(void *opaque)
-> > {
-> >     QEMUFile *file = opaque;
-> >     QIOChannel *ioc = file->ioc;
-> >
-> >     qio_channel_shutdown(ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
-> > }
-> >
-> > void migration_qemufile_register_yank(QEMUFile *file)
-> > {
-> >     if (migration_ioc_yank_supported(file->ioc)) {
-> >         yank_register_function(MIGRATION_YANK_INSTANCE,
-> >                                migration_yank_qemufile,
-> >                                file);
-> >     }
-> > }
+> I like how code looks after those changes. No more adding 16 to irq
+> numbers to fit them into BSA spec numbers is nice to have.
 > 
-> Sure, this is what I was thinking as well. IMO it will be yet another
-> operation that happens on the channel, but it performed via the
-> file. Just like qio_channel_close() at qemu_fclose(). Not the end of the
-> world, of course, I just find it error-prone.
+> Will rebase my "non-secure EL2 virtual timer" patch on top of it.
 > 
-> >> 
-> >> ii) multifd doesn't have a QEMUFile, so it will have to continue using
-> >>     the ioc;
-> >
-> > We can keep using migration_ioc_[un]register_yank() for them if there's no
-> > qemufile attached.  As long as the function will all be registered under
-> > MIGRATION_YANK_INSTANCE we should be fine having different yank func.
-> >
+>> Not even compilation tested, just the least confusing way of asking
+>> whether the change could be accepted at all.
 > 
-> ok
-> 
-> >> 
-> >> iii) we'll have to add a yank to every new QEMUFile created during the
-> >>      incoming migration (colo, rdma, etc), otherwise the incoming side
-> >>      will be left using iocs while the src uses the QEMUFile;
-> >
-> > For RDMA, IIUC it'll simply be a noop as migration_ioc_yank_supported()
-> > will be a noop for it for either reg/unreg.
-> >
-> > Currently it seems we will also unreg the ioc even for RDMA (even though we
-> > don't reg for it).  But since unreg will be a noop it seems all fine even
-> > if not paired.. maybe we should still try to pair it, e.g. register also in
-> > rdma_start_outgoing_migration() for the rdma ioc so at least they're paired.
-> >
-> > I don't see why COLO is special here, though.  Maybe I missed something.
-> 
-> For colo I was thinking we'd have to register the yank just to be sure
-> that all paths unregistering it have something to unregister.
-> 
-> Maybe I should move the register into qemu_file_new_impl() with a
-> matching unregister at qemu_fclose().
+> There are build warnings and final binary segfaults on start.
 
-Sounds good.  Or...
+Ah, yes. In my rush, I failed to spot that the -virt gic_create function 
+contained shadows of different type variables called irq.
+Will address if there's a v1.
 
-> 
-> >> 
-> >> iv) this is a functional change of the yank feature for which we have no
-> >>     tests.
-> >
-> > Having yank tested should be preferrable.  Lukas is in the loop, let's see
-> > whether he has something. We can still smoke test it before a selftest
-> > being there.
-> >
-> > Taking one step back.. I doubt whether anyone is using yank for migration?
-> > Knowing that migration already have migrate-cancel (for precopy) and
-> > migrate-pause (for postcopy).
-> 
-> Right, both already call qio_channel_shutdown().
-> 
-> > I never used it myself, and I don't think
-> > it's supported for RHEL.  How's that in suse's case?
-> 
-> Never heard mention of it and I don't see it in our virtualization
-> documentation.
-> 
-> >
-> > If no one is using it, maybe we can even avoid registering migration to
-> > yank?
-> >
-> 
-> Seems reasonable to me.
+Thanks!
 
-... let's wait for a few days from Lukas to see whether he as any more
-input, or I'd vote for dropping yank for migration as a whole. It caused
-mostly more crashes that I knew than benefits, so far..
+/
+     Leif
 
-I also checked libvirt is not using yank.
-
-> 
-> >> 
-> >> If that's all ok to you I'll go ahead and git it a try.
-> >> 
-> >> > I think qmp yank will simply fail the 2nd call on the qemufile if the
-> >> > iochannel is shared with the other one, but that's totally fine, IMHO.
-> >> >
-> >> > What do you think?
-> >> >
-> >> > In all cases, we should probably at least merge patch 1-8 if that can
-> >> > resolve the CI issue.  I think all of them are properly reviewed.
-> >> 
-> >> I agree. Someone needs to queue this though since Juan has been busy.
-> >
-> > Yes, I'll see what I can do.
-> 
-> Thanks. I could even send a pull request myself if it would make things
-> easier. Let me know.
-
-That's definitely an option.  But I want to make sure it's the same thing;
-I replied in Stefan's report.  We can continue the discussion there for that.
-
--- 
-Peter Xu
+> --------------------------------------------
+> [1799/2931] Compiling C object 
+> libqemu-aarch64-softmmu.fa.p/hw_arm_sbsa-ref.c.o
+> ../hw/arm/sbsa-ref.c: In function ‘create_gic’:
+> ../hw/arm/sbsa-ref.c:496:13: warning: assignment to ‘int’ from 
+> ‘qemu_irq’ {aka ‘struct IRQState *’} makes integer from pointer without 
+> a cast [-Wint-conversion]
+>    496 |         irq = qdev_get_gpio_in(sms->gic,
+>        |             ^
+> ../hw/arm/sbsa-ref.c:499:37: warning: passing argument 4 of 
+> ‘qdev_connect_gpio_out_named’ makes pointer from integer without a cast 
+> [-Wint-conversion]
+>    499 |                                     irq);
+>        |                                     ^~~
+>        |                                     |
+>        |                                     int
+> In file included from 
+> /home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/hw/core/cpu.h:23,
+>                   from ../target/arm/cpu-qom.h:23,
+>                   from ../target/arm/cpu.h:26,
+>                   from 
+> /home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/sysemu/kvm.h:244,
+>                   from ../hw/arm/sbsa-ref.c:27:
+> /home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/hw/qdev-core.h:699:43: note: expected ‘qemu_irq’ {aka ‘struct IRQState *’} but argument is of type ‘int’
+>    699 |                                  qemu_irq input_pin);
+>        |                                  ~~~~~~~~~^~~~~~~~~
+> ../hw/arm/sbsa-ref.c:501:13: warning: assignment to ‘int’ from 
+> ‘qemu_irq’ {aka ‘struct IRQState *’} makes integer from pointer without 
+> a cast [-Wint-conversion]
+>    501 |         irq = qdev_get_gpio_in(sms->gic,
+>        |             ^
+> ../hw/arm/sbsa-ref.c:503:65: warning: passing argument 4 of 
+> ‘qdev_connect_gpio_out_named’ makes pointer from integer without a cast 
+> [-Wint-conversion]
+>    503 |         qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0, 
+> irq);
+>        |                                                                 
+> ^~~
+>        |                                                                 |
+>        |                                                                 
+> int
+> /home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/hw/qdev-core.h:699:43: note: expected ‘qemu_irq’ {aka ‘struct IRQState *’} but argument is of type ‘int’
+>    699 |                                  qemu_irq input_pin);
+>        |                                  ~~~~~~~~~^~~~~~~~~
+> --------------------------------------------
 
 
