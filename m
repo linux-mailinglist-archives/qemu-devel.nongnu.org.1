@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B42D7A040A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1947A041A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:41:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qglbW-0007BW-O0; Thu, 14 Sep 2023 08:37:54 -0400
+	id 1qgle2-0002Bi-8U; Thu, 14 Sep 2023 08:40:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qglbN-000713-Kn; Thu, 14 Sep 2023 08:37:47 -0400
+ id 1qgldy-0002BI-Pm; Thu, 14 Sep 2023 08:40:26 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qglbJ-0000hV-Nv; Thu, 14 Sep 2023 08:37:45 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ id 1qgldw-0001BA-4Q; Thu, 14 Sep 2023 08:40:26 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38ECLioX027208; Thu, 14 Sep 2023 12:37:31 GMT
+ 38ECQnRa027629; Thu, 14 Sep 2023 12:40:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : mime-version : content-type :
+ : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=vOR2YQldXjfPVODr+Ibu/T2jyy0iuHsnOSDdHDypLNA=;
- b=BhrCDtzI5Y4dADV4PHWPjjEHl7Rh0hGiA5R5osHYbJom7mjImrTNFGFjphW4sMV4qKa8
- tai1i+N0PqcHMmP+B2BtFpGD5gnwZU5gnulNseMEL+1rWko3/GgIV5evhc3o1K0eQwhJ
- L0jVtTyut+2pzbPJKQyEN8JBTD1dYGTn6EJ/SL+RAeaWIYme/PlCy1uMnyi3H1cXjKMB
- oFqkTn3EZn/QUqIyfrX+1yD1B/oajS3ivsFbbBSIlGn4QGzct7ePo0/bAZSV0LnaGZJK
- F9mseUrBnVM667x+u0+BpMEQ2QiMu4sJoQ61TBrKmARa+v1fw6sDYs+e9j9KE1AfaP6+ VQ== 
+ bh=IzSs1tXQMiUAuLaiMoqhU3MQp6ekAoHEnR6TN9j3HHQ=;
+ b=bwP4wr2L5I1SRo82DtMo6AvE/adbJfhq+irApHJ+5sc6qXbO6p0KRdJr3NRSWe5Kv254
+ FWLVUHMsmP+U01BJPNSW4z9qLXr4qLCtnsfdW5QwGJFyfjpWrc98TkvZ0qUAnEASoz0E
+ gNwQU42WpzCyaGTbkJcyPpLnCI2xkIMuB6AOe4HGVC9l4bWsfDvoQxLyKn3znDZNMJXI
+ +B/Vij4cPeWFhaujmR9q+VOtDz1I3qenadDdTlqw8ckVUU78/JUD+8ZD17ppmG1NWqBU
+ oXeQBaUNmNWNlzNhECjuh/FREzYQZif6YBlqFR+6Ins0Qmrkhuw9kCb9r/kr+ObyC+Cn Ow== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4244gpt2-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t426grjcp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Sep 2023 12:37:30 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38ECLrP1027716;
- Thu, 14 Sep 2023 12:37:29 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4244gkkw-8
+ Thu, 14 Sep 2023 12:40:14 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38ECR3Jk028726;
+ Thu, 14 Sep 2023 12:37:41 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t426grfhe-10
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Sep 2023 12:37:29 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38EBPjqL002410; Thu, 14 Sep 2023 12:06:58 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t158kjb1k-1
+ Thu, 14 Sep 2023 12:37:41 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38EAYa83022728; Thu, 14 Sep 2023 12:06:58 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t141p2pnv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Sep 2023 12:06:57 +0000
+ Thu, 14 Sep 2023 12:06:58 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
- by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38EC6sKv16581136
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38EC6tQl28901690
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Sep 2023 12:06:54 GMT
+ Thu, 14 Sep 2023 12:06:55 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F7D82006C;
+ by IMSVA (Postfix) with ESMTP id 1DB5C20071;
+ Thu, 14 Sep 2023 12:06:55 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7B41D2006E;
  Thu, 14 Sep 2023 12:06:54 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF86A2005A;
- Thu, 14 Sep 2023 12:06:53 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 14 Sep 2023 12:06:53 +0000 (GMT)
+ Thu, 14 Sep 2023 12:06:54 +0000 (GMT)
 From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
@@ -80,26 +80,27 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH v23 00/20] s390x: CPU Topology
-Date: Thu, 14 Sep 2023 14:06:30 +0200
-Message-Id: <20230914120650.1318932-1-nsg@linux.ibm.com>
+ Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
+Subject: [PATCH v23 01/20] CPU topology: extend with s390 specifics
+Date: Thu, 14 Sep 2023 14:06:31 +0200
+Message-Id: <20230914120650.1318932-2-nsg@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230914120650.1318932-1-nsg@linux.ibm.com>
+References: <20230914120650.1318932-1-nsg@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SDMgzHRO7Fp6WCkC4OZsW7HTaVkaotpX
-X-Proofpoint-ORIG-GUID: _8te63p8xTkfYafcy59zvIEvTvjScy3T
+X-Proofpoint-GUID: nl0JzG3cFQr48ObTDiPno9-dB5k-WjXc
+X-Proofpoint-ORIG-GUID: QEXSG_vsO4VvNMe7EZnfKh_EB3RkBLG0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-14_09,2023-09-14_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 spamscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
- malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309140108
+ phishscore=0 clxscore=1015
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140108
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -124,989 +125,478 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes since v22 (range-diff below):
-
-* fix compile issues (thanks Thomas, Cédric)
-* incorporate feedback (thanks Thomas!), most notably
- * forbid books and drawers in older machine types
- * changed implementation of TLE entry ordering
-* also got rid of another ERRP_GUARD in s390_change_topology
-* pick up R-b's (thanks Thomas)
-* misc minor stuff
-
-Changes since v21:
-
-* fix ordering of entries in topology list
-* don't leak topology list on error condition in insert_stsi_15_1_x
-* make entitlement, dedication optional in query-cpu-info-fast
-* rename query-cpu-polarization to query-s390x-cpu-polarization
-* documentation changes
-* add tests of guest view to avocado tests
-* require KVM in avocado tests
-* increase timeout in tests
-* bump version in comments documenting availability to 8.2
-* rename some symbols
-* picked up R-b's (thanks Thomas)
-* minor stuff, typos
-
-Implementation discussions
-==========================
-
-CPU models
-----------
-
-Since the facility 11, S390_FEAT_CONFIGURATION_TOPOLOGY is already
-in the CPU model for old QEMU we could not activate it as usual from
-KVM but needed a KVM capability: KVM_CAP_S390_CPU_TOPOLOGY.
-Checking and enabling this capability enables facility 11,
-S390_FEAT_CONFIGURATION_TOPOLOGY.
-
-It is the responsibility of the admin to ensure the same CPU
-model for source and target host in a migration.
-
-Migration
----------
-
-When the target guest is started, the Multi-processor Topology Change
-Report (MTCR) bit is set during the creation of the vCPU by KVM.
-We do not need to migrate its state, in the worst case, the target
-guest will see the MTCR and actualize its view of the topology
-without necessity, but this will be done only one time.
-
-Reset
------
-
-Reseting the topology is done during subsystem reset, the
-polarization is reset to horizontal polarization.
-
-Topology attributes
--------------------
-
-The topology attributes are carried by the CPU object and defined
-on object creation.
-In the case the new attributes, socket, book, drawer, dedicated,
-entitlement are not provided QEMU provides defaults values.
-
-- Geometry defaults
-  The geometry default are based on the core-id of the core to
-  fill the geometry in a monotone way starting with drawer 0,
-  book 0, and filling socket 0 with the number of cores per socket,
-  then filling socket 1, socket 2 ... etc until the book is complete
-  and all books until the first drawer is complete before starting with
-  the next drawer.
-
-  This allows to keep existing start scripts and Libvirt existing
-  interface until it is extended.
-
-- Modifiers defaults
-  Default entitlement is medium
-  Default dedication is not dedicated.
-
-- Machine polarization default to horizontal
-
-Dynamic topology modification
------------------------------
-
-QAPI interface is extended with:
-- a command: 'set-cpu-topology'
-- a query: 'query-cpu-polarization'
-- a query: extension of qmp 'query-cpus-fast'
-- a query: extension of hmp 'hotpluggable-cpus'
-- an event: 'CPU_POLARITY_CHANGE'
-
-New command and interface are specified as unstable.
-
-The admin may use query-cpus-fast to verify the topology provided
-to the guest and set-cpu-topology to modify it.
-
-The event CPU_POLARITY_CHANGE is sent when the guest successfuly
-uses the PTF(2) instruction to request a polarization change.
-In that case, the admin is supposed to modify the CPU provisioning
-accordingly.
-
-Testing
-=======
-
-To use the QEMU patches, you will need Linux V6-rc1 or newer,
-or use the following Linux mainline patches:
-
-f5ecfee94493 2022-07-20 KVM: s390: resetting the Topology-Change-Report
-24fe0195bc19 2022-07-20 KVM: s390: guest support for topology function
-0130337ec45b 2022-07-20 KVM: s390: Cleanup ipte lock access and SIIF fac..
-
-Currently this code is for KVM only, I have no idea if it is interesting
-to provide a TCG patch. If ever it will be done in another series.
-
-This series provide 12 avocado tests using Fedora-35 kernel and initrd
-image.
-
-Documentation
-=============
-
-To have a better understanding of the S390x CPU Topology and its
-implementation in QEMU you can have a look at the documentation in the
-last patch of this series.
-
-The admin will want to match the host and the guest topology, taking
-into account that the guest does not recognize multithreading.
-Consequently, two vCPU assigned to threads of the same real CPU should
-preferably be assigned to the same socket of the guest machine.
-
-Previous changes:
-Since v20:
-
-- changed name of target/s390/kvm/cpu_topology to
-  target/s390/kvm/stsi-topology
-  (Thomas, Cedric)
-
-- moved the TLE list head from a global to a local in
-  insert_stsi_15_1_x()
-  (Nina)
-
-- cleaning and merging some of the avocado tests
-  (Nina)
-
-- Several cleanings
-  (Cedric, Thomas, Nina)
-
-- moved setting of entitlement and dedicated from disapeared
-  cpustate_to_cpuinfo_s390() to new s390_query_cpu_fast()
-
-- small changes to documentation to reflect last changes using
-  enum instead of int for polarization.
-  0 -> horizontal and 1 -> vertical
-
-Since v19:
-
-- use enum to specify the entitlement
-  (Nina)
-
-- Change default entitlement to "auto"
-
-- suppress skip_basis in avocado tests
-  (after comment from Cedric)
-
-- Correction of the documentation
-  (Cedric)
-
-- better code organization for s390_topology_add_core_to_socket
-  and s390_socket_nb
-  (Cedric)
-
-- Changed Copyright to respect IBM policy
-  (Nina)
-
-- set vertical_polarization back into s390_topology
-  (Nina)
-
-Since v18:
-
-- Changed default entitlement to S390_CPU_ENTITLEMENT__MAX
-  because no default can be correct.
-
-- added polarization entry to the S390CcwMachineState
-  which allow to suppress shadow entitlement
-
-- Suppress shadow entitlement
-  (Nina)
-
-- Added query-cpu-polarization
-
-- Added more avocado tests
-
-- modified cpu_hierarchy_to_string to look better
-  (Nina)
-
-Since v17:
-
-- bug correction in handling PTF
-
-- added avocado tests
-  (Thomas)
-
-- Change comments on QEMU machine to 8.1
-
-Since v16:
-
-- documentation, split, bug correction and rephrasing
-  (Nina, Thomas)
-
-- create machine-common.json
-
-- use of entitlement_shadow to keep track of the entitlement
-
-- adding drawers and books to query-hotpluggable-cpus
-
-- keep hmp interface for set-cpu-topology for a future series
-
-Since v15:
-
-- Use Enum for polarity and entitlement
-  (Nina)
-
-- move kvm_vm_enable_cap(KVM_CAP_S390_CPU_TOPOLOGY) to
-  kvm_arch_init()
-  (Thomas)
-
-- Make all CPU attributes optional for set-cpu-topology monitor
-  command
-  (Thomas, Nina)
-
-- Change use of the prefix "x-" to the use of feature unstable
-  to declare set-cpu-topology as unstable.
-  (Nina)
-
-- Make CPU_POLARITY_CHANGE even as unstable
-  (Nina)
-
-- Documentation update
-  (Thomas, Nina)
-
-Since v14:
-
-- move the ordering of TLE to just before filling the SYSIB,
-  optimize TLE ordering to be done on need only.
-  (Cedric in previous series)
-
-- remove 'query-topology' and instead extend 'query-cpus-fast'
-  (Daniel)
-
-- rename POLARITY_CHANGE to CPU_POLARITY_CHANGE
-  (Thomas)
-
-- Divers bugs correction and doc changes
-  (Thomas, Nina)
-
-- Separate topology and entitlement, simplify pft handling
-  (Nina)
-
-- add the resetting of all CPU to horizontal polarity
-  once implementing PTF interpretation
-
-Since v13:
-
-- Suppress the topology device to simplify the code
-  (Cedric)
-
-- moved reset of MTCR from device reset into subsystem
-  reset and removed previous reviewed-by from Nico and
-  Janis
-
-- No need for Migration
-
-- No need for machine dependencies
-  (Christian, Thomas)
-
-- Adding all features, drawer/book and dynamic
-  (Cedric)
-
-- since v12
-
-- suppress new CPU flag "disable-topology" just use ctop
-
-- no use of special fields in CCW machine or in CPU
-
-- modifications in documentation
-
-- insert documentation in tree
-  (Cedric)
-
-- moved cpu-topology.c from target/s390 to target/s390/kvm
-  to compile smoothly (without topology) for TCG
-  (Cedric)
-
-- since v11
-
-- new CPU flag "disable-topology"
-  I would have take "topology" if I was able to have
-  it false on default.
-  (Christian, Thomas)
-
-- Build the topology during the interception of the
-  STSI instruction.
-  (Cedric)
-
-- return CC3 in case the calculated SYSIB length is
-  greater than 4096.
-  (Janis)
-
-- minor corections on documentation
-
-- since v10
-
-- change machine attribute "topology-disable" to "topology"
-  (Cedric)
-- Add preliminary patch for machine properties
-  (Cedric)
-- Use next machine as 7.2
-  (Cedric / Connie)
-- Remove unecessary mutex
-  (Thomas)
-- use ENOTSUP return value for kvm_s390_topology_set_mtcr()
-  (Cedric)
-- Add explanation on container and cpu TLEs
-  (Thomas)
-- use again cpu and socket count in topology structure
-  (Cedric)
-- Suppress the S390TopoTLE structure and integrate
-  the TLE masks to the socket structure.
-  (-)
-- the STSI instruction now finds the topology from the machine
-  (Cedric)
-
-- since v9
-
-- remove books and drawers
-
-- remove thread denying and replace with a merge
-  of cores * threads to specify the CPUs available
-  to the guest
-
-- add a class option to avoid topology on older
-  machines
-  (Cedric)
-
-- Allocate a SYSIB buffer of the maximal length to
-  avoid overflow.
-  (Nico, Janis)
-
-- suppress redundancy of smp parameters in topology
-  and use directly the machine smp structure
-
-- Early check for topology support
-  (Cedric)
-
-- since v8
-
-- Linux patches are now mainline
-
-- simplification of the implementation
-  (Janis)
-
-- Migration, new machine definition
-  (Thomas)
-
-- Documentation
-
-- since v7
-
-- Coherence with the Linux patch series changes for MTCR get
-  (Pierre)
-
-- check return values during new CPU creation
-  (Thomas)
-
-- Improving codding style and argument usages
-  (Thomas)
-
-- since v6
-
-- Changes on smp args in qemu-options
-  (Daniel)
-
-- changed comments in machine.jason
-  (Daniel)
-
-- Added reset
-  (Janosch)
-
-- since v5
-
-- rebasing on newer QEMU version
-
-- reworked most lines above 80 characters.
-
-- since v4
-
-- Added drawer and books to topology
-
-- Added numa topology
-
-- Added documentation
-
-- since v3
-
-- Added migration
-  (Thomas)
-
-- Separated STSI instruction from KVM to prepare TCG
-  (Thomas)
-
-- Take care of endianess to prepare TCG
-  (Thomas)
-
-- Added comments on STSI CPU container and PFT instruction
-  (Thomas)
-
-- Moved enabling the instructions as the last patch
-  (Thomas)
-
-Pierre Morel (20):
-  CPU topology: extend with s390 specifics
-  s390x/cpu topology: add topology entries on CPU hotplug
-  target/s390x/cpu topology: handle STSI(15) and build the SYSIB
-  s390x/sclp: reporting the maximum nested topology entries
-  s390x/cpu topology: resetting the Topology-Change-Report
-  s390x/cpu topology: interception of PTF instruction
-  target/s390x/cpu topology: activate CPU topology
-  qapi/s390x/cpu topology: set-cpu-topology qmp command
-  machine: adding s390 topology to query-cpu-fast
-  machine: adding s390 topology to info hotpluggable-cpus
-  qapi/s390x/cpu topology: CPU_POLARIZATION_CHANGE qapi event
-  qapi/s390x/cpu topology: query-cpu-polarization qmp command
-  docs/s390x/cpu topology: document s390x cpu topology
-  tests/avocado: s390x cpu topology core
-  tests/avocado: s390x cpu topology polarization
-  tests/avocado: s390x cpu topology entitlement tests
-  tests/avocado: s390x cpu topology test dedicated CPU
-  tests/avocado: s390x cpu topology test socket full
-  tests/avocado: s390x cpu topology dedicated errors
-  tests/avocado: s390x cpu topology bad move
-
- MAINTAINERS                         |  10 +
- docs/devel/index-internals.rst      |   1 +
- docs/devel/s390-cpu-topology.rst    | 170 ++++++++++
- docs/system/s390x/cpu-topology.rst  | 242 ++++++++++++++
- docs/system/target-s390x.rst        |   1 +
- qapi/machine-common.json            |  21 ++
- qapi/machine-target.json            | 113 +++++++
- qapi/machine.json                   |  28 +-
- include/hw/boards.h                 |  10 +-
- include/hw/qdev-properties-system.h |   4 +
- include/hw/s390x/cpu-topology.h     |  78 +++++
- include/hw/s390x/s390-virtio-ccw.h  |   6 +
- include/hw/s390x/sclp.h             |   4 +-
- target/s390x/cpu.h                  |  82 +++++
- target/s390x/kvm/kvm_s390x.h        |   1 +
- hw/core/machine-hmp-cmds.c          |   6 +
- hw/core/machine-smp.c               |  48 ++-
- hw/core/machine.c                   |   4 +
- hw/core/qdev-properties-system.c    |  13 +
- hw/s390x/cpu-topology.c             | 469 ++++++++++++++++++++++++++++
- hw/s390x/s390-virtio-ccw.c          |  29 +-
- hw/s390x/sclp.c                     |   5 +
- softmmu/vl.c                        |   6 +
- target/s390x/cpu-sysemu.c           |  13 +
- target/s390x/cpu.c                  |  16 +
- target/s390x/cpu_models.c           |   1 +
- target/s390x/kvm/kvm.c              |  42 ++-
- target/s390x/kvm/stsi-topology.c    | 338 ++++++++++++++++++++
- hw/s390x/meson.build                |   1 +
- qapi/meson.build                    |   1 +
- qemu-options.hx                     |   7 +-
- target/s390x/kvm/meson.build        |   3 +-
- tests/avocado/s390_topology.py      | 439 ++++++++++++++++++++++++++
- 33 files changed, 2193 insertions(+), 19 deletions(-)
- create mode 100644 docs/devel/s390-cpu-topology.rst
- create mode 100644 docs/system/s390x/cpu-topology.rst
+From: Pierre Morel <pmorel@linux.ibm.com>
+
+S390 adds two new SMP levels, drawers and books to the CPU
+topology.
+S390 CPUs have specific topology features like dedication and
+entitlement. These indicate to the guest information on host
+vCPU scheduling and help the guest make better scheduling decisions.
+
+Let us provide the SMP properties with books and drawers levels
+and S390 CPU with dedication and entitlement,
+
+Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+---
+ qapi/machine-common.json            | 21 +++++++++++++
+ qapi/machine.json                   | 19 ++++++++++--
+ include/hw/boards.h                 | 10 +++++-
+ include/hw/qdev-properties-system.h |  4 +++
+ target/s390x/cpu.h                  |  6 ++++
+ hw/core/machine-smp.c               | 48 ++++++++++++++++++++++++-----
+ hw/core/machine.c                   |  4 +++
+ hw/core/qdev-properties-system.c    | 13 ++++++++
+ hw/s390x/s390-virtio-ccw.c          |  4 +++
+ softmmu/vl.c                        |  6 ++++
+ target/s390x/cpu.c                  |  7 +++++
+ qapi/meson.build                    |  1 +
+ qemu-options.hx                     |  7 +++--
+ 13 files changed, 137 insertions(+), 13 deletions(-)
  create mode 100644 qapi/machine-common.json
- create mode 100644 include/hw/s390x/cpu-topology.h
- create mode 100644 hw/s390x/cpu-topology.c
- create mode 100644 target/s390x/kvm/stsi-topology.c
- create mode 100644 tests/avocado/s390_topology.py
 
-Range-diff against v22:
- 1:  c26d3df9f9 !  1:  f2219b7583 CPU topology: extend with s390 specifics
-    @@ qapi/machine.json
-      # @thread-id: ID of the underlying host thread
-      #
-     -# @props: properties describing to which node/socket/core/thread
-    --#     virtual CPU belongs to, provided if supported by board
-     +# @props: properties describing to which node/drawer/book/socket/core/thread
-    -+#         virtual CPU belongs to, provided if supported by board
-    + #     virtual CPU belongs to, provided if supported by board
-      #
-      # @target: the QEMU system emulation target, which determines which
-    - #     additional fields will be listed (since 3.0)
-     @@
-      #
-      # @node-id: NUMA node ID the CPU belongs to
-    @@ hw/s390x/s390-virtio-ccw.c: static void ccw_machine_class_init(ObjectClass *oc,
-          assert(!mc->get_hotplug_handler);
-          mc->get_hotplug_handler = s390_get_hotplug_handler;
-          mc->cpu_index_to_instance_props = s390_cpu_index_to_props;
-    +@@ hw/s390x/s390-virtio-ccw.c: static void ccw_machine_8_1_class_options(MachineClass *mc)
-    + {
-    +     ccw_machine_8_2_class_options(mc);
-    +     compat_props_add(mc->compat_props, hw_compat_8_1, hw_compat_8_1_len);
-    ++    mc->smp_props.drawers_supported = false;
-    ++    mc->smp_props.books_supported = false;
-    + }
-    + DEFINE_CCW_MACHINE(8_1, "8.1", false);
-    + 
-     
-      ## softmmu/vl.c ##
-     @@ softmmu/vl.c: static QemuOptsList qemu_smp_opts = {
- 2:  6d32f1e3d4 !  2:  5fae55e5a1 s390x/cpu topology: add topology entries on CPU hotplug
-    @@ Commit message
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-         Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Reviewed-by: Thomas Huth <thuth@redhat.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-      ## MAINTAINERS ##
-    @@ hw/s390x/cpu-topology.c (new)
-     +        return false;
-     +    }
-     +
-    -+    /* Check if one of the geometry topology is unset */
-    ++    /* If one value is unset all are unset -> calculate defaults */
-     +    if (env->socket_id < 0) {
-    -+        /* Calculate default geometry topology attributes */
-     +        env->socket_id = s390_std_socket(env->core_id, smp);
-     +        env->book_id = s390_std_book(env->core_id, smp);
-     +        env->drawer_id = s390_std_drawer(env->core_id, smp);
-    @@ hw/s390x/cpu-topology.c (new)
-     +                                bool dedicated, Error **errp)
-     +{
-     +    CpuTopology *smp = &current_machine->smp;
-    -+    ERRP_GUARD();
-     +
-     +    if (socket_id >= smp->sockets) {
-     +        error_setg(errp, "Unavailable socket: %d", socket_id);
-    @@ hw/s390x/cpu-topology.c (new)
-     + */
-     +void s390_topology_setup_cpu(MachineState *ms, S390CPU *cpu, Error **errp)
-     +{
-    -+    ERRP_GUARD();
-     +    int entry;
-     +
-     +    /*
- 3:  ab54bb7881 !  3:  c775d90904 target/s390x/cpu topology: handle STSI(15) and build the SYSIB
-    @@ Commit message
-         (SYSIB) is built from the list of pre-ordered topology entries.
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-    +    Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-    @@ qapi/machine-target.json
-     +{ 'enum': 'CpuS390Polarization',
-     +  'prefix': 'S390_CPU_POLARIZATION',
-     +  'data': [ 'horizontal', 'vertical' ],
-    -+    'if': { 'all': [ 'TARGET_S390X' , 'CONFIG_KVM' ] }
-    ++    'if': 'TARGET_S390X'
-     +}
-     
-      ## include/hw/s390x/cpu-topology.h ##
-    @@ include/hw/s390x/cpu-topology.h
-      
-     +#define S390_TOPOLOGY_CPU_IFL   0x03
-     +
-    -+typedef union s390_topology_id {
-    -+    uint64_t id;
-    -+    struct {
-    -+        uint8_t _reserved0;
-    -+        uint8_t drawer;
-    -+        uint8_t book;
-    -+        uint8_t socket;
-    -+        uint8_t type;
-    -+        uint8_t inv_polarization;
-    -+        uint8_t not_dedicated;
-    -+        uint8_t origin;
-    -+    };
-    ++typedef struct s390_topology_id {
-    ++    uint8_t sentinel;
-    ++    uint8_t drawer;
-    ++    uint8_t book;
-    ++    uint8_t socket;
-    ++    uint8_t type;
-    ++    uint8_t vertical:1;
-    ++    uint8_t entitlement:2;
-    ++    uint8_t dedicated;
-    ++    uint8_t origin;
-     +} s390_topology_id;
-     +
-     +typedef struct S390TopologyEntry {
-    @@ target/s390x/cpu.h: typedef union SysIB {
-     + *
-     + * The CPU TLE defines the position of the CPUs of identical qualities
-     + * using a 64bits mask which first bit has its offset defined by
-    -+ * the CPU address orgin field of the CPU TLE like in:
-    ++ * the CPU address origin field of the CPU TLE like in:
-     + * CPU address = origin * 64 + bit position within the mask
-    -+ *
-     + */
-     +/* Container type Topology List Entry */
-     +typedef struct SYSIBContainerListEntry {
-    @@ target/s390x/kvm/stsi-topology.c (new)
-     +    s390_topology_id topology_id = entry->id;
-     +
-     +    tle->nl = 0;
-    -+    tle->flags = 3 - topology_id.inv_polarization;
-    -+    if (!topology_id.not_dedicated) {
-    ++    tle->flags = 0;
-    ++    if (topology_id.vertical) {
-    ++        tle->flags |= topology_id.entitlement;
-    ++    }
-    ++    if (topology_id.dedicated) {
-     +        tle->flags |= SYSIB_TLE_DEDICATED;
-     +    }
-     +    tle->type = topology_id.type;
-    @@ target/s390x/kvm/stsi-topology.c (new)
-     +
-     +/**
-     + * setup_stsi:
-    -+ * sysib: pointer to a SysIB to be filled with SysIB_151x data
-    -+ * level: Nested level specified by the guest
-    ++ * @topology_list: ordered list of groups of CPUs with same properties
-    ++ * @sysib: pointer to a SysIB to be filled with SysIB_151x data
-    ++ * @level: Nested level specified by the guest
-     + *
-     + * Setup the SYSIB for STSI 15.1, the header as well as the description
-     + * of the topology.
-    @@ target/s390x/kvm/stsi-topology.c (new)
-     + */
-     +static s390_topology_id s390_topology_from_cpu(S390CPU *cpu)
-     +{
-    -+    s390_topology_id topology_id = {0};
-    ++    s390_topology_id topology_id = {
-    ++        .drawer = cpu->env.drawer_id,
-    ++        .book = cpu->env.book_id,
-    ++        .socket = cpu->env.socket_id,
-    ++        .type = S390_TOPOLOGY_CPU_IFL,
-    ++        .vertical = s390_topology.polarization == S390_CPU_POLARIZATION_VERTICAL,
-    ++        .entitlement = cpu->env.entitlement,
-    ++        .dedicated = cpu->env.dedicated,
-    ++        .origin = cpu->env.core_id / 64,
-    ++    };
-     +
-    -+    topology_id.drawer = cpu->env.drawer_id;
-    -+    topology_id.book = cpu->env.book_id;
-    -+    topology_id.socket = cpu->env.socket_id;
-    -+    topology_id.type = S390_TOPOLOGY_CPU_IFL;
-    -+    topology_id.not_dedicated = !cpu->env.dedicated;
-    ++    return topology_id;
-    ++}
-     +
-    -+    topology_id.inv_polarization = 3;
-    -+    if (s390_topology.polarization == S390_CPU_POLARIZATION_VERTICAL) {
-    -+        topology_id.inv_polarization -= cpu->env.entitlement;
-    -+    }
-    ++/**
-    ++ * s390_topology_id_cmp:
-    ++ * @l: first s390_topology_id
-    ++ * @r: second s390_topology_id
-    ++ *
-    ++ * Compare two topology ids according to the sorting order specified by the PoP.
-    ++ *
-    ++ * Returns a negative number if the first id is less than, 0 if it is equal to
-    ++ *     and positive if it is larger than the second id.
-    ++ */
-    ++static int s390_topology_id_cmp(const s390_topology_id *l,
-    ++                                const s390_topology_id *r)
-    ++{
-    ++    /*
-    ++     * lexical order, compare less significant values only if more significant
-    ++     * ones are equal
-    ++     */
-    ++    return l->sentinel - r->sentinel ?:
-    ++           l->drawer - r->drawer ?:
-    ++           l->book - r->book ?:
-    ++           l->socket - r->socket ?:
-    ++           l->type - r->type ?:
-    ++           -1 * (l->vertical - r->vertical) ?:
-    ++           -1 * (l->entitlement - r->entitlement) ?:
-    ++           -1 * (l->dedicated - r->dedicated) ?:
-    ++           l->origin - r->origin;
-    ++}
-     +
-    -+    topology_id.origin = cpu->env.core_id / 64;
-    ++static bool s390_topology_id_eq(const s390_topology_id *l,
-    ++                               const s390_topology_id *r)
-    ++{
-    ++    return !s390_topology_id_cmp(l, r);
-    ++}
-     +
-    -+    return topology_id;
-    ++static bool s390_topology_id_lt(const s390_topology_id *l,
-    ++                                const s390_topology_id *r)
-    ++{
-    ++    return s390_topology_id_cmp(l, r) < 0;
-     +}
-     +
-     +/**
-     + * s390_topology_fill_list_sorted:
-    ++ * @topology_list: list to fill
-     + *
-     + * Loop over all CPU and insert it at the right place
-     + * inside the TLE entry list.
-    @@ target/s390x/kvm/stsi-topology.c (new)
-     +static void s390_topology_fill_list_sorted(S390TopologyList *topology_list)
-     +{
-     +    CPUState *cs;
-    -+    S390TopologyEntry sentinel;
-    ++    S390TopologyEntry sentinel = { .id.sentinel = 1 };
-     +
-     +    QTAILQ_INIT(topology_list);
-     +
-    -+    sentinel.id.id = cpu_to_be64(UINT64_MAX);
-     +    QTAILQ_INSERT_HEAD(topology_list, &sentinel, next);
-     +
-     +    CPU_FOREACH(cs) {
-     +        s390_topology_id id = s390_topology_from_cpu(S390_CPU(cs));
-    -+        S390TopologyEntry *entry, *tmp;
-    ++        S390TopologyEntry *entry = NULL, *tmp;
-     +
-     +        QTAILQ_FOREACH(tmp, topology_list, next) {
-    -+            if (id.id == tmp->id.id) {
-    ++            if (s390_topology_id_eq(&id, &tmp->id)) {
-     +                entry = tmp;
-     +                break;
-    -+            } else if (be64_to_cpu(id.id) < be64_to_cpu(tmp->id.id)) {
-    ++            } else if (s390_topology_id_lt(&id, &tmp->id)) {
-     +                entry = g_malloc0(sizeof(*entry));
-    -+                entry->id.id = id.id;
-    ++                entry->id = id;
-     +                QTAILQ_INSERT_BEFORE(tmp, entry, next);
-     +                break;
-     +            }
-     +        }
-    ++        assert(entry);
-     +        s390_topology_add_cpu_to_entry(entry, S390_CPU(cs));
-     +    }
-     +
-    @@ target/s390x/kvm/stsi-topology.c (new)
-     +
-     +/**
-     + * insert_stsi_15_1_x:
-    -+ * cpu: the CPU doing the call for which we set CC
-    -+ * sel2: the selector 2, containing the nested level
-    -+ * addr: Guest logical address of the guest SysIB
-    -+ * ar: the access register number
-    ++ * @cpu: the CPU doing the call for which we set CC
-    ++ * @sel2: the selector 2, containing the nested level
-    ++ * @addr: Guest logical address of the guest SysIB
-    ++ * @ar: the access register number
-    ++ * @ra: the return address
-     + *
-     + * Emulate STSI 15.1.x, that is, perform all necessary checks and
-     + * fill the SYSIB.
- 4:  67278aa3a0 =  4:  7c68edeb44 s390x/sclp: reporting the maximum nested topology entries
- 5:  ce87494fd1 =  5:  78d0a953c9 s390x/cpu topology: resetting the Topology-Change-Report
- 6:  c56178005a =  6:  f15c30a1b9 s390x/cpu topology: interception of PTF instruction
- 7:  e56149e34f =  7:  837eb0924f target/s390x/cpu topology: activate CPU topology
- 8:  c94943deef !  8:  394e0ae6c0 qapi/s390x/cpu topology: set-cpu-topology qmp command
-    @@ qapi/machine-target.json
-      #
-     @@
-        'data': [ 'horizontal', 'vertical' ],
-    -     'if': { 'all': [ 'TARGET_S390X' , 'CONFIG_KVM' ] }
-    +     'if': 'TARGET_S390X'
-      }
-     +
-     +##
-    @@ hw/s390x/cpu-topology.c: static bool s390_topology_check(uint16_t socket_id, uin
-     + * tree or the topology attributes change.
-     + */
-     +static bool s390_topology_need_report(S390CPU *cpu, int drawer_id,
-    -+                                   int book_id, int socket_id,
-    -+                                   uint16_t entitlement, bool dedicated)
-    ++                                      int book_id, int socket_id,
-    ++                                      uint16_t entitlement, bool dedicated)
-     +{
-     +    return cpu->env.drawer_id != drawer_id ||
-     +           cpu->env.book_id != book_id ||
-    @@ hw/s390x/cpu-topology.c: void s390_topology_setup_cpu(MachineState *ms, S390CPU
-     +    int new_socket_entry;
-     +    bool report_needed;
-     +    S390CPU *cpu;
-    -+    ERRP_GUARD();
-     +
-     +    cpu = s390_cpu_addr2state(core_id);
-     +    if (!cpu) {
-    @@ hw/s390x/cpu-topology.c: void s390_topology_setup_cpu(MachineState *ms, S390CPU
-     +
-     +    /*
-     +     * When the user specifies the entitlement as 'auto' on the command line,
-    -+     * qemu will set the entitlement as:
-    ++     * QEMU will set the entitlement as:
-     +     * Medium when the CPU is not dedicated.
-     +     * High when dedicated is true.
-     +     */
-    -+    if (!has_entitlement || (entitlement == S390_CPU_ENTITLEMENT_AUTO)) {
-    ++    if (!has_entitlement || entitlement == S390_CPU_ENTITLEMENT_AUTO) {
-     +        if (dedicated) {
-     +            entitlement = S390_CPU_ENTITLEMENT_HIGH;
-     +        } else {
-    @@ hw/s390x/cpu-topology.c: void s390_topology_setup_cpu(MachineState *ms, S390CPU
-     +                         bool has_dedicated, bool dedicated,
-     +                         Error **errp)
-     +{
-    -+    ERRP_GUARD();
-    -+
-     +    if (!s390_has_topology()) {
-     +        error_setg(errp, "This machine doesn't support topology");
-     +        return;
- 9:  516a727ef5 !  9:  a4b6738536 machine: adding s390 topology to query-cpu-fast
-    @@ Commit message
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-         Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Reviewed-by: Thomas Huth <thuth@redhat.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-      ## qapi/machine.json ##
-10:  4b8bfddea9 ! 10:  c74f719b43 machine: adding s390 topology to info hotpluggable-cpus
-    @@ Commit message
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-         Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Reviewed-by: Thomas Huth <thuth@redhat.com>
-     
-      ## hw/core/machine-hmp-cmds.c ##
-     @@ hw/core/machine-hmp-cmds.c: void hmp_hotpluggable_cpus(Monitor *mon, const QDict *qdict)
-11:  6584a655e9 = 11:  a2bf4b54b3 qapi/s390x/cpu topology: CPU_POLARIZATION_CHANGE qapi event
-12:  7e18ccdbcc ! 12:  6a9e834176 qapi/s390x/cpu topology: query-cpu-polarization qmp command
-    @@ Commit message
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-         Reviewed-by: Thomas Huth <thuth@redhat.com>
-    +    Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-13:  810118478c ! 13:  24d2a3507b docs/s390x/cpu topology: document s390x cpu topology
-    @@ Commit message
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Reviewed-by: Thomas Huth <thuth@redhat.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-      ## MAINTAINERS ##
-    @@ docs/devel/s390-cpu-topology.rst (new)
-     +    -enable-kvm \
-     +    -cpu z14,ctop=on \
-     +    -smp 1,drawers=3,books=3,sockets=2,cores=2,maxcpus=36 \
-    -+    \
-     +    -device z14-s390x-cpu,core-id=19,entitlement=high \
-     +    -device z14-s390x-cpu,core-id=11,entitlement=low \
-     +    -device z14-s390x-cpu,core-id=112,entitlement=high \
-    @@ docs/system/s390x/cpu-topology.rst (new)
-     +  They will take the core-ids 0,1,2,3,4
-     +  As we have 4 cores in a socket, we have 4 CPUs provided
-     +  to the guest in socket 0, with core-ids 0,1,2,3.
-    -+  The last cpu, with core-id 4, will be on socket 1.
-    ++  The last CPU, with core-id 4, will be on socket 1.
-     +
-     +* the core with ID 14 provided by the ``-device`` command line will
-     +  be placed in socket 3, with core-id 14
-14:  717f901bb0 ! 14:  bc1adfbdb7 tests/avocado: s390x cpu topology core
-    @@ Commit message
-         the QMP results in query-cpus-fast for various CPU topology.
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-    +    Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-      ## MAINTAINERS ##
-     @@ MAINTAINERS: F: hw/s390x/cpu-topology.c
-    @@ tests/avocado/s390_topology.py (new)
-     +        self.assertEqual(res['return'], {})
-     +        self.check_topology(0, 2, 0, 0, 'low', False)
-     +
-    -+    def test_hotplug_full(self):
-    ++    def test_dash_device(self):
-     +        """
-    -+        This test verifies that a hotplugged defined with '-device'
-    -+        command line argument finds its right place inside the topology.
-    ++        This test verifies that a CPU defined with the '-device'
-    ++        command line option finds its right place inside the topology.
-     +
-     +        :avocado: tags=arch:s390x
-     +        :avocado: tags=machine:s390-ccw-virtio
-15:  7c5793cf9b ! 15:  d2be50e3a7 tests/avocado: s390x cpu topology polarization
-    @@ Commit message
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Reviewed-by: Thomas Huth <thuth@redhat.com>
-    +    Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-      ## tests/avocado/s390_topology.py ##
-    @@ tests/avocado/s390_topology.py: def kernel_init(self):
-     +        exec_command_and_wait_for_pattern(self,
-     +                """ mount proc -t proc /proc;
-     +                    mount sys -t sysfs /sys;
-    -+                    /bin/cat /sys/devices/system/cpu/dispatching """,
-    ++                    cat /sys/devices/system/cpu/dispatching """,
-     +                    '0')
-     +
-          def test_single(self):
-              """
-              This test checks the simplest topology with a single CPU.
-    -@@ tests/avocado/s390_topology.py: def test_hotplug_full(self):
-    +@@ tests/avocado/s390_topology.py: def test_dash_device(self):
-              self.check_topology(3, 1, 1, 1, 'high', False)
-              self.check_topology(4, 1, 1, 1, 'medium', False)
-              self.check_topology(5, 2, 1, 1, 'high', True)
-    @@ tests/avocado/s390_topology.py: def test_hotplug_full(self):
-     +                f'echo {dispatching} > /sys/devices/system/cpu/dispatching')
-     +        self.vm.event_wait('CPU_POLARIZATION_CHANGE', self.event_timeout)
-     +        exec_command_and_wait_for_pattern(self,
-    -+                '/bin/cat /sys/devices/system/cpu/dispatching', dispatching)
-    ++                'cat /sys/devices/system/cpu/dispatching', dispatching)
-     +
-     +
-     +    def test_polarization(self):
-16:  f1aa5e3d91 ! 16:  4ba53284b1 tests/avocado: s390x cpu topology entitlement tests
-    @@ Commit message
-         view, depending on the polarization.
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-    +    Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-    @@ tests/avocado/s390_topology.py: def test_polarization(self):
-     +
-     +
-     +    def check_polarization(self, polarization):
-    -+        """
-    -+        We need the polarization change to get stabilized in kernel
-    -+        before we check it through the sysfs.
-    -+        """
-    ++        #We need to wait for the change to have been propagated to the kernel
-     +        exec_command_and_wait_for_pattern(self,
-    -+                """ sleep 1 ;
-    -+                    /bin/cat /sys/devices/system/cpu/cpu0/polarization """,
-    -+                polarization)
-    ++            "\n".join([
-    ++                "timeout 1 sh -c 'while true",
-    ++                'do',
-    ++                '    syspath="/sys/devices/system/cpu/cpu0/polarization"',
-    ++                '    polarization="$(cat "$syspath")" || exit',
-    ++               f'    if [ "$polarization" = "{polarization}" ]; then',
-    ++                '        exit 0',
-    ++                '    fi',
-    ++                '    sleep 0.01',
-    ++                #searched for strings mustn't show up in command, '' to obfuscate
-    ++                "done' && echo succ''ess || echo fail''ure",
-    ++            ]),
-    ++            "success", "failure")
-     +
-     +
-     +    def test_entitlement(self):
-17:  820481f18c ! 17:  bfabe0aaf1 tests/avocado: s390x cpu topology test dedicated CPU
-    @@ Commit message
-     
-         Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-         Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-    +    Reviewed-by: Thomas Huth <thuth@redhat.com>
-    +    Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-         Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-     
-      ## tests/avocado/s390_topology.py ##
-18:  d1efe180f3 = 18:  32009fe084 tests/avocado: s390x cpu topology test socket full
-19:  568de9fef9 = 19:  e607efc139 tests/avocado: s390x cpu topology dedicated errors
-20:  9f9672adc2 = 20:  e600011277 tests/avocado: s390x cpu topology bad move
-
-base-commit: 9ef497755afc252fb8e060c9ea6b0987abfd20b6
+diff --git a/qapi/machine-common.json b/qapi/machine-common.json
+new file mode 100644
+index 0000000000..e40421bb37
+--- /dev/null
++++ b/qapi/machine-common.json
+@@ -0,0 +1,21 @@
++# -*- Mode: Python -*-
++# vim: filetype=python
++#
++# This work is licensed under the terms of the GNU GPL, version 2 or later.
++# See the COPYING file in the top-level directory.
++
++##
++# = Machines S390 data types
++##
++
++##
++# @CpuS390Entitlement:
++#
++# An enumeration of cpu entitlements that can be assumed by a virtual
++# S390 CPU
++#
++# Since: 8.2
++##
++{ 'enum': 'CpuS390Entitlement',
++  'prefix': 'S390_CPU_ENTITLEMENT',
++  'data': [ 'auto', 'low', 'medium', 'high' ] }
+diff --git a/qapi/machine.json b/qapi/machine.json
+index a08b6576ca..a63cb951d2 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -9,6 +9,7 @@
+ ##
+ 
+ { 'include': 'common.json' }
++{ 'include': 'machine-common.json' }
+ 
+ ##
+ # @SysEmuTarget:
+@@ -71,7 +72,7 @@
+ #
+ # @thread-id: ID of the underlying host thread
+ #
+-# @props: properties describing to which node/socket/core/thread
++# @props: properties describing to which node/drawer/book/socket/core/thread
+ #     virtual CPU belongs to, provided if supported by board
+ #
+ # @target: the QEMU system emulation target, which determines which
+@@ -901,7 +902,11 @@
+ #
+ # @node-id: NUMA node ID the CPU belongs to
+ #
+-# @socket-id: socket number within node/board the CPU belongs to
++# @drawer-id: drawer number within node/board the CPU belongs to (since 8.2)
++#
++# @book-id: book number within drawer/node/board the CPU belongs to (since 8.2)
++#
++# @socket-id: socket number within book/node/board the CPU belongs to
+ #
+ # @die-id: die number within socket the CPU belongs to (since 4.1)
+ #
+@@ -912,7 +917,7 @@
+ #
+ # @thread-id: thread number within core the CPU belongs to
+ #
+-# Note: currently there are 6 properties that could be present but
++# Note: currently there are 8 properties that could be present but
+ #     management should be prepared to pass through other properties
+ #     with device_add command to allow for future interface extension.
+ #     This also requires the filed names to be kept in sync with the
+@@ -922,6 +927,8 @@
+ ##
+ { 'struct': 'CpuInstanceProperties',
+   'data': { '*node-id': 'int',
++            '*drawer-id': 'int',
++            '*book-id': 'int',
+             '*socket-id': 'int',
+             '*die-id': 'int',
+             '*cluster-id': 'int',
+@@ -1480,6 +1487,10 @@
+ #
+ # @cpus: number of virtual CPUs in the virtual machine
+ #
++# @drawers: number of drawers in the CPU topology (since 8.2)
++#
++# @books: number of books in the CPU topology (since 8.2)
++#
+ # @sockets: number of sockets in the CPU topology
+ #
+ # @dies: number of dies per socket in the CPU topology
+@@ -1498,6 +1509,8 @@
+ ##
+ { 'struct': 'SMPConfiguration', 'data': {
+      '*cpus': 'int',
++     '*drawers': 'int',
++     '*books': 'int',
+      '*sockets': 'int',
+      '*dies': 'int',
+      '*clusters': 'int',
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 6c67af196a..6dcfc879eb 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -134,12 +134,16 @@ typedef struct {
+  * @clusters_supported - whether clusters are supported by the machine
+  * @has_clusters - whether clusters are explicitly specified in the user
+  *                 provided SMP configuration
++ * @books_supported - whether books are supported by the machine
++ * @drawers_supported - whether drawers are supported by the machine
+  */
+ typedef struct {
+     bool prefer_sockets;
+     bool dies_supported;
+     bool clusters_supported;
+     bool has_clusters;
++    bool books_supported;
++    bool drawers_supported;
+ } SMPCompatProps;
+ 
+ /**
+@@ -310,7 +314,9 @@ typedef struct DeviceMemoryState {
+ /**
+  * CpuTopology:
+  * @cpus: the number of present logical processors on the machine
+- * @sockets: the number of sockets on the machine
++ * @drawers: the number of drawers on the machine
++ * @books: the number of books in one drawer
++ * @sockets: the number of sockets in one book
+  * @dies: the number of dies in one socket
+  * @clusters: the number of clusters in one die
+  * @cores: the number of cores in one cluster
+@@ -319,6 +325,8 @@ typedef struct DeviceMemoryState {
+  */
+ typedef struct CpuTopology {
+     unsigned int cpus;
++    unsigned int drawers;
++    unsigned int books;
+     unsigned int sockets;
+     unsigned int dies;
+     unsigned int clusters;
+diff --git a/include/hw/qdev-properties-system.h b/include/hw/qdev-properties-system.h
+index 0ac327ae60..e4f8a13afc 100644
+--- a/include/hw/qdev-properties-system.h
++++ b/include/hw/qdev-properties-system.h
+@@ -22,6 +22,7 @@ extern const PropertyInfo qdev_prop_audiodev;
+ extern const PropertyInfo qdev_prop_off_auto_pcibar;
+ extern const PropertyInfo qdev_prop_pcie_link_speed;
+ extern const PropertyInfo qdev_prop_pcie_link_width;
++extern const PropertyInfo qdev_prop_cpus390entitlement;
+ 
+ #define DEFINE_PROP_PCI_DEVFN(_n, _s, _f, _d)                   \
+     DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_pci_devfn, int32_t)
+@@ -73,5 +74,8 @@ extern const PropertyInfo qdev_prop_pcie_link_width;
+ #define DEFINE_PROP_UUID_NODEFAULT(_name, _state, _field) \
+     DEFINE_PROP(_name, _state, _field, qdev_prop_uuid, QemuUUID)
+ 
++#define DEFINE_PROP_CPUS390ENTITLEMENT(_n, _s, _f, _d) \
++    DEFINE_PROP_SIGNED(_n, _s, _f, _d, qdev_prop_cpus390entitlement, \
++                       CpuS390Entitlement)
+ 
+ #endif
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index 304029e57c..dfcc1aa1fc 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -30,6 +30,7 @@
+ #include "exec/cpu-defs.h"
+ #include "qemu/cpu-float.h"
+ #include "tcg/tcg_s390x.h"
++#include "qapi/qapi-types-machine-common.h"
+ 
+ #define ELF_MACHINE_UNAME "S390X"
+ 
+@@ -132,6 +133,11 @@ struct CPUArchState {
+ 
+ #if !defined(CONFIG_USER_ONLY)
+     uint32_t core_id; /* PoP "CPU address", same as cpu_index */
++    int32_t socket_id;
++    int32_t book_id;
++    int32_t drawer_id;
++    bool dedicated;
++    CpuS390Entitlement entitlement; /* Used only for vertical polarization */
+     uint64_t cpuid;
+ #endif
+ 
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index 0f4d9b6f7a..25019c91ee 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -33,6 +33,14 @@ static char *cpu_hierarchy_to_string(MachineState *ms)
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+     GString *s = g_string_new(NULL);
+ 
++    if (mc->smp_props.drawers_supported) {
++        g_string_append_printf(s, "drawers (%u) * ", ms->smp.drawers);
++    }
++
++    if (mc->smp_props.books_supported) {
++        g_string_append_printf(s, "books (%u) * ", ms->smp.books);
++    }
++
+     g_string_append_printf(s, "sockets (%u)", ms->smp.sockets);
+ 
+     if (mc->smp_props.dies_supported) {
+@@ -75,6 +83,8 @@ void machine_parse_smp_config(MachineState *ms,
+ {
+     MachineClass *mc = MACHINE_GET_CLASS(ms);
+     unsigned cpus    = config->has_cpus ? config->cpus : 0;
++    unsigned drawers = config->has_drawers ? config->drawers : 0;
++    unsigned books   = config->has_books ? config->books : 0;
+     unsigned sockets = config->has_sockets ? config->sockets : 0;
+     unsigned dies    = config->has_dies ? config->dies : 0;
+     unsigned clusters = config->has_clusters ? config->clusters : 0;
+@@ -87,6 +97,8 @@ void machine_parse_smp_config(MachineState *ms,
+      * explicit configuration like "cpus=0" is not allowed.
+      */
+     if ((config->has_cpus && config->cpus == 0) ||
++        (config->has_drawers && config->drawers == 0) ||
++        (config->has_books && config->books == 0) ||
+         (config->has_sockets && config->sockets == 0) ||
+         (config->has_dies && config->dies == 0) ||
+         (config->has_clusters && config->clusters == 0) ||
+@@ -113,6 +125,19 @@ void machine_parse_smp_config(MachineState *ms,
+     dies = dies > 0 ? dies : 1;
+     clusters = clusters > 0 ? clusters : 1;
+ 
++    if (!mc->smp_props.books_supported && books > 1) {
++        error_setg(errp, "books not supported by this machine's CPU topology");
++        return;
++    }
++    books = books > 0 ? books : 1;
++
++    if (!mc->smp_props.drawers_supported && drawers > 1) {
++        error_setg(errp,
++                   "drawers not supported by this machine's CPU topology");
++        return;
++    }
++    drawers = drawers > 0 ? drawers : 1;
++
+     /* compute missing values based on the provided ones */
+     if (cpus == 0 && maxcpus == 0) {
+         sockets = sockets > 0 ? sockets : 1;
+@@ -126,33 +151,41 @@ void machine_parse_smp_config(MachineState *ms,
+             if (sockets == 0) {
+                 cores = cores > 0 ? cores : 1;
+                 threads = threads > 0 ? threads : 1;
+-                sockets = maxcpus / (dies * clusters * cores * threads);
++                sockets = maxcpus /
++                          (drawers * books * dies * clusters * cores * threads);
+             } else if (cores == 0) {
+                 threads = threads > 0 ? threads : 1;
+-                cores = maxcpus / (sockets * dies * clusters * threads);
++                cores = maxcpus /
++                        (drawers * books * sockets * dies * clusters * threads);
+             }
+         } else {
+             /* prefer cores over sockets since 6.2 */
+             if (cores == 0) {
+                 sockets = sockets > 0 ? sockets : 1;
+                 threads = threads > 0 ? threads : 1;
+-                cores = maxcpus / (sockets * dies * clusters * threads);
++                cores = maxcpus /
++                        (drawers * books * sockets * dies * clusters * threads);
+             } else if (sockets == 0) {
+                 threads = threads > 0 ? threads : 1;
+-                sockets = maxcpus / (dies * clusters * cores * threads);
++                sockets = maxcpus /
++                          (drawers * books * dies * clusters * cores * threads);
+             }
+         }
+ 
+         /* try to calculate omitted threads at last */
+         if (threads == 0) {
+-            threads = maxcpus / (sockets * dies * clusters * cores);
++            threads = maxcpus /
++                      (drawers * books * sockets * dies * clusters * cores);
+         }
+     }
+ 
+-    maxcpus = maxcpus > 0 ? maxcpus : sockets * dies * clusters * cores * threads;
++    maxcpus = maxcpus > 0 ? maxcpus : drawers * books * sockets * dies *
++                                      clusters * cores * threads;
+     cpus = cpus > 0 ? cpus : maxcpus;
+ 
+     ms->smp.cpus = cpus;
++    ms->smp.drawers = drawers;
++    ms->smp.books = books;
+     ms->smp.sockets = sockets;
+     ms->smp.dies = dies;
+     ms->smp.clusters = clusters;
+@@ -163,7 +196,8 @@ void machine_parse_smp_config(MachineState *ms,
+     mc->smp_props.has_clusters = config->has_clusters;
+ 
+     /* sanity-check of the computed topology */
+-    if (sockets * dies * clusters * cores * threads != maxcpus) {
++    if (drawers * books * sockets * dies * clusters * cores * threads !=
++        maxcpus) {
+         g_autofree char *topo_msg = cpu_hierarchy_to_string(ms);
+         error_setg(errp, "Invalid CPU topology: "
+                    "product of the hierarchy must match maxcpus: "
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index da699cf4e1..363ddafc89 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -843,6 +843,8 @@ static void machine_get_smp(Object *obj, Visitor *v, const char *name,
+     MachineState *ms = MACHINE(obj);
+     SMPConfiguration *config = &(SMPConfiguration){
+         .has_cpus = true, .cpus = ms->smp.cpus,
++        .has_drawers = true, .drawers = ms->smp.drawers,
++        .has_books = true, .books = ms->smp.books,
+         .has_sockets = true, .sockets = ms->smp.sockets,
+         .has_dies = true, .dies = ms->smp.dies,
+         .has_clusters = true, .clusters = ms->smp.clusters,
+@@ -1108,6 +1110,8 @@ static void machine_initfn(Object *obj)
+     /* default to mc->default_cpus */
+     ms->smp.cpus = mc->default_cpus;
+     ms->smp.max_cpus = mc->default_cpus;
++    ms->smp.drawers = 1;
++    ms->smp.books = 1;
+     ms->smp.sockets = 1;
+     ms->smp.dies = 1;
+     ms->smp.clusters = 1;
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 6d5d43eda2..7f50ce9746 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -1147,3 +1147,16 @@ const PropertyInfo qdev_prop_uuid = {
+     .set   = set_uuid,
+     .set_default_value = set_default_uuid_auto,
+ };
++
++/* --- s390 cpu entitlement policy --- */
++
++QEMU_BUILD_BUG_ON(sizeof(CpuS390Entitlement) != sizeof(int));
++
++const PropertyInfo qdev_prop_cpus390entitlement = {
++    .name  = "CpuS390Entitlement",
++    .description = "low/medium (default)/high",
++    .enum_table  = &CpuS390Entitlement_lookup,
++    .get   = qdev_propinfo_get_enum,
++    .set   = qdev_propinfo_set_enum,
++    .set_default_value = qdev_propinfo_set_default_value_enum,
++};
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index bfcf64d007..bbb001cb9e 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -733,6 +733,8 @@ static void ccw_machine_class_init(ObjectClass *oc, void *data)
+     mc->no_sdcard = 1;
+     mc->max_cpus = S390_MAX_CPUS;
+     mc->has_hotpluggable_cpus = true;
++    mc->smp_props.books_supported = true;
++    mc->smp_props.drawers_supported = true;
+     assert(!mc->get_hotplug_handler);
+     mc->get_hotplug_handler = s390_get_hotplug_handler;
+     mc->cpu_index_to_instance_props = s390_cpu_index_to_props;
+@@ -842,6 +844,8 @@ static void ccw_machine_8_1_class_options(MachineClass *mc)
+ {
+     ccw_machine_8_2_class_options(mc);
+     compat_props_add(mc->compat_props, hw_compat_8_1, hw_compat_8_1_len);
++    mc->smp_props.drawers_supported = false;
++    mc->smp_props.books_supported = false;
+ }
+ DEFINE_CCW_MACHINE(8_1, "8.1", false);
+ 
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index 3db4fd2680..eb2450ac24 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -724,6 +724,12 @@ static QemuOptsList qemu_smp_opts = {
+         {
+             .name = "cpus",
+             .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "drawers",
++            .type = QEMU_OPT_NUMBER,
++        }, {
++            .name = "books",
++            .type = QEMU_OPT_NUMBER,
+         }, {
+             .name = "sockets",
+             .type = QEMU_OPT_NUMBER,
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index df167493c3..74405beb51 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -31,6 +31,7 @@
+ #include "qapi/qapi-types-machine.h"
+ #include "sysemu/hw_accel.h"
+ #include "hw/qdev-properties.h"
++#include "hw/qdev-properties-system.h"
+ #include "fpu/softfloat-helpers.h"
+ #include "disas/capstone.h"
+ #include "sysemu/tcg.h"
+@@ -292,6 +293,12 @@ static gchar *s390_gdb_arch_name(CPUState *cs)
+ static Property s390x_cpu_properties[] = {
+ #if !defined(CONFIG_USER_ONLY)
+     DEFINE_PROP_UINT32("core-id", S390CPU, env.core_id, 0),
++    DEFINE_PROP_INT32("socket-id", S390CPU, env.socket_id, -1),
++    DEFINE_PROP_INT32("book-id", S390CPU, env.book_id, -1),
++    DEFINE_PROP_INT32("drawer-id", S390CPU, env.drawer_id, -1),
++    DEFINE_PROP_BOOL("dedicated", S390CPU, env.dedicated, false),
++    DEFINE_PROP_CPUS390ENTITLEMENT("entitlement", S390CPU, env.entitlement,
++                                   S390_CPU_ENTITLEMENT_AUTO),
+ #endif
+     DEFINE_PROP_END_OF_LIST()
+ };
+diff --git a/qapi/meson.build b/qapi/meson.build
+index 60a668b343..f81a37565c 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -36,6 +36,7 @@ qapi_all_modules = [
+   'error',
+   'introspect',
+   'job',
++  'machine-common',
+   'machine',
+   'machine-target',
+   'migration',
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 6be621c232..09889913c3 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -272,11 +272,14 @@ SRST
+ ERST
+ 
+ DEF("smp", HAS_ARG, QEMU_OPTION_smp,
+-    "-smp [[cpus=]n][,maxcpus=maxcpus][,sockets=sockets][,dies=dies][,clusters=clusters][,cores=cores][,threads=threads]\n"
++    "-smp [[cpus=]n][,maxcpus=maxcpus][,drawers=drawers][,books=books][,sockets=sockets]\n"
++    "               [,dies=dies][,clusters=clusters][,cores=cores][,threads=threads]\n"
+     "                set the number of initial CPUs to 'n' [default=1]\n"
+     "                maxcpus= maximum number of total CPUs, including\n"
+     "                offline CPUs for hotplug, etc\n"
+-    "                sockets= number of sockets on the machine board\n"
++    "                drawers= number of drawers on the machine board\n"
++    "                books= number of books in one drawer\n"
++    "                sockets= number of sockets in one book\n"
+     "                dies= number of dies in one socket\n"
+     "                clusters= number of clusters in one die\n"
+     "                cores= number of cores in one cluster\n"
 -- 
 2.39.2
 
