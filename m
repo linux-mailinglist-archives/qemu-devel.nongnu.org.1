@@ -2,100 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE95D7A0E5C
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 21:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E88487A0E69
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 21:36:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgs1M-0005CK-AC; Thu, 14 Sep 2023 15:29:00 -0400
+	id 1qgs6t-00073r-5z; Thu, 14 Sep 2023 15:34:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1qgs1F-0005Bv-Lz
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:28:54 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qgs6r-00073V-7Y
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:34:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1qgs19-00088g-J5
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:28:53 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38EJC2Gx020309
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=qDXPVFMT77A7SWyP/a2SnMqwkQRKrNh6gJONEMH9toQ=;
- b=fYpauxsDhyxIZ+gr/mvwf5Ic/+5xhsjiOqRSXzKQsuSx+m7cVTHML0eQa4PXzgPgRfx7
- 4GFhtnVp0g5x9yLsembV2XUmXXXio/jvkKYwSVwKVMd4AvuAeJuA0d9lhnTbgvrpdpYK
- z5a8vWVLYq8dzcYssb54iTQvft6UlCXJkgk1XRhc0/d5ecww3XIBV5fgfF9PK0cQEh7B
- 3P954ELlfrI6G4zyT2QuVykYdetBBsrgfkak7rAdXBthR81R5iTZAPUbl4VfpYqcHubl
- 5S6Sf+ftF4AgiuSox0i4oqWruGX+09FPabPYgmEyryy9/y8y6f+7A5Epnyxqc2all8u2 Yw== 
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4848rduk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:42 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38EJK8Pf002478
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:41 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t158kmx8n-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:41 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38EJSetp23528112
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:41 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B057358053
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:40 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 78C4358043
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:40 +0000 (GMT)
-Received: from [9.67.14.133] (unknown [9.67.14.133])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 19:28:40 +0000 (GMT)
-Message-ID: <ea93b16f-f295-1108-ebe7-543bb7070489@linux.ibm.com>
-Date: Thu, 14 Sep 2023 15:28:39 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qgs6p-0001OV-IP
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:34:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694720077;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dyQgtSS2sDlsPzeXyPR/i4txkO22/a60POyvmeZdcs8=;
+ b=CTetHf27oxIEp7nTsA2BT2iY3IICREGAvAMyv22xBWRQXvFO0kTA3e4VS0Ar46yU5PEs84
+ O9O6dYn3XqbmyIiw13dkeoz0noH3QtQX5+jpy9124G2AUGZkGahk+3i797dTuXFaBY+xAj
+ Q9ZtEpO8HjfJwBWt/iC3R2GzKnrVmx4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-458-tTnpCYSYN3miy1tNbokf7Q-1; Thu, 14 Sep 2023 15:34:32 -0400
+X-MC-Unique: tTnpCYSYN3miy1tNbokf7Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C06C101B456;
+ Thu, 14 Sep 2023 19:34:32 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.105])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B9A191054FC0;
+ Thu, 14 Sep 2023 19:34:31 +0000 (UTC)
+Date: Thu, 14 Sep 2023 15:34:30 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: qemu-devel@nongnu.org, john.levon@nutanix.com,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 5/5] vfio-user: Fix config space access byte order
+Message-ID: <20230914193430.GD1066211@fedora>
+References: <20230907130410.498935-1-mnissler@rivosinc.com>
+ <20230907130410.498935-6-mnissler@rivosinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 1/2] target/s390x: introduce "host-recommended" option
- for model expansion
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-References: <20230911205232.71735-1-walling@linux.ibm.com>
- <bbf67ab2-2868-7c3a-0e8e-8f53fd62c1fb@redhat.com>
-From: Collin Walling <walling@linux.ibm.com>
-In-Reply-To: <bbf67ab2-2868-7c3a-0e8e-8f53fd62c1fb@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SLZCcKhHUFqi-9d4fWrLxtW8Y-oQ1cxM
-X-Proofpoint-GUID: SLZCcKhHUFqi-9d4fWrLxtW8Y-oQ1cxM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-14_11,2023-09-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- priorityscore=1501 mlxlogscore=999 malwarescore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 clxscore=1015 spamscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309140166
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=walling@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="MXBt3DPGoq7m1tgY"
+Content-Disposition: inline
+In-Reply-To: <20230907130410.498935-6-mnissler@rivosinc.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,75 +87,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/12/23 02:57, David Hildenbrand wrote:
-> On 11.09.23 22:52, Collin Walling wrote:
-> 
-> Patch subject is wrong (should contain "static-recommended")
-> 
->> Newer S390 machines may drop support for features completely, rendering
->> guests operating with older CPU models incapable of running on said
->> machines. A manual effort to disable certain CPU features would be
->> required.
->>
->> To alleviate this issue, a list of "deprecated" features are now
->> retained within QEMU, and a new "static-recommended" CPU model expansion
->> type has been created to allow a query of the host-model with deprecated
->> features explicitly disabled.
->>
->> Signed-off-by: Collin Walling <walling@linux.ibm.com>
->> ---
->>   qapi/machine-target.json         |  8 +++++++-
->>   target/s390x/cpu_features.c      | 14 ++++++++++++++
->>   target/s390x/cpu_features.h      |  1 +
->>   target/s390x/cpu_models_sysemu.c | 26 +++++++++++++++++++++-----
->>   4 files changed, 43 insertions(+), 6 deletions(-)
->>
->> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
->> index f0a6b72414..4dc891809d 100644
->> --- a/qapi/machine-target.json
->> +++ b/qapi/machine-target.json
->> @@ -42,6 +42,12 @@
->>   #     to be migration-safe, but allows tooling to get an insight and
->>   #     work with model details.
->>   #
->> +# @static-recommended: Expand to a static CPU model with property
->> +#     changes suggested by the architecture. This is useful for
->> +#     expanding a CPU model expected to operate in mixed
->> +#     CPU-generation environments. The @static-recommended CPU
->> +#     models are migration-safe.
->> +#
-> 
-> Can we instead make this a new parameter for query-cpu-model-expansion 
-> ("no-deprecated-features" ? ), that properly gets rejected from other 
-> archs when not supported?
-> 
-> [...]
-> 
 
-So instead of a "type": "static-recommended" add an entirely new
-(optional) parameter key-value to the command?
-"disable-deprecated-features": "true|false"?
+--MXBt3DPGoq7m1tgY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->>   /* convert S390CPUDef into a static CpuModelInfo */
->>   static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
->> -                                bool delta_changes)
->> +                                bool delta_changes, bool disable_dep_feats)
-> 
-> "dep" can be misleading ("depended")
-> 
-> "no_deprecated_feat" ?
-> 
-> 
+On Thu, Sep 07, 2023 at 06:04:10AM -0700, Mattias Nissler wrote:
+> PCI config space is little-endian, so on a big-endian host we need to
+> perform byte swaps for values as they are passed to and received from
+> the generic PCI config space access machinery.
 
-Good call. Tricky one to short-hand :)
+Byteswapping only works when registers are accessed with their natural
+size, even with this patch.
 
-With respect to labeling this as "no-deprecated-features", I think that
-may also be misleading: it sounds like an exclusion, when in fact we
-*want* the deprecated feats to show up paired with the false value. So I
-think "disable-deprecated-features" is a better label. Would you agree?
+If there is something like a PCI Capability structure, then it needs to
+be read one register at a time to get back valid data. It cannot simply
+be copied in a single multi-DWORD access.
 
--- 
-Regards,
-  Collin
+I'm not sure if this fix is sufficient. Maybe pci_host_*() needs to be
+extended to support little-endian accesses instead?
+
+>=20
+> Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
+> ---
+>  hw/remote/vfio-user-obj.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
+> index cee5e615a9..d38b4700f3 100644
+> --- a/hw/remote/vfio-user-obj.c
+> +++ b/hw/remote/vfio-user-obj.c
+> @@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_c=
+tx, char * const buf,
+>      while (bytes > 0) {
+>          len =3D (bytes > pci_access_width) ? pci_access_width : bytes;
+>          if (is_write) {
+> -            memcpy(&val, ptr, len);
+> +            val =3D ldn_le_p(ptr, len);
+>              pci_host_config_write_common(o->pci_dev, offset,
+>                                           pci_config_size(o->pci_dev),
+>                                           val, len);
+> @@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_c=
+tx, char * const buf,
+>          } else {
+>              val =3D pci_host_config_read_common(o->pci_dev, offset,
+>                                                pci_config_size(o->pci_dev=
+), len);
+> -            memcpy(ptr, &val, len);
+> +            stn_le_p(ptr, len, val);
+>              trace_vfu_cfg_read(offset, val);
+>          }
+>          offset +=3D len;
+> --=20
+> 2.34.1
+>=20
+
+--MXBt3DPGoq7m1tgY
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUDYEYACgkQnKSrs4Gr
+c8jNEggAgjVfyDQ5d5bmRSdvdX5oUNXPFyDpLesIy2n5lb9N6TbyJ5so+OTYYWqO
+1DQCsgzLQbrSUIQgqFuUs5v12wRuvRWgHqGbuWCg2dSLtmv7sQsehPsg6GgxRJNP
+la2O78M18dA38Paps0FwwihQgQ1DDmgozM/3VBOhOcOQOUEZ3PZFUPyf2VL6L8DZ
+203+Y5oRQKYTPCqexiW05nIQuTUMMoL8gOpSDRZdviYyEMeSW+hRk/BrumAO0M8d
+2br0FSS20dK7ysFTY73jiYscCrv2FG0/UG1i6OYK8eFFQfrh7PFl1kECJTDxMQdG
+ejaAdcDdwmENjX8FC4om5NKS1SU75A==
+=pTCm
+-----END PGP SIGNATURE-----
+
+--MXBt3DPGoq7m1tgY--
 
 
