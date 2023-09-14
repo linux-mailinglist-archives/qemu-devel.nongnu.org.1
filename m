@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAA57A0D9E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B677A0D99
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:58:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgrX7-0007ru-3k; Thu, 14 Sep 2023 14:57:45 -0400
+	id 1qgrXD-0007sg-Mf; Thu, 14 Sep 2023 14:57:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrX5-0007rR-6J
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:43 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrXC-0007sP-Dl
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:50 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrX3-0007bt-GZ
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:42 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-401b0d97850so13488665e9.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:57:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrXA-0007d3-Qk
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:50 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2bcb89b476bso21877711fa.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:57:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694717860; x=1695322660; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694717866; x=1695322666; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9zKv/AFUEShTVcBgdcujYDWfR46YFV/IRpKp0NuzD1I=;
- b=HNjGM8AcEJEyYaFv9ELrtim5YO2zMU/Rsz6I1aHW2F38CvT6QXCVbQnXV1uiscL1E8
- 4WFlvroD9MY55Iuf0kwHIaw/f1DWXW/cvFAd20eoMETVw9weOurvsNXG3/ysNaQThxr6
- mbnkh+sYHjkkQw/jMC+TPbamsxUi1oQU0S/tsYVJxVAZgjAisag+bnegcrtUHz914xuN
- Gc434icm8QDBpCzLrPOFVNrqW9OAXSdLVllmgc8nZ/nWiUPo87feKtp7w0UjKpZxU5fl
- T8yHdY/zlWU7ZSYehiNNfVsb4pZuMu4UQlU47cj2gWeWGCiqzITX2iAZULBsgjHE2/Zx
- mj8g==
+ bh=Dh8+LaQRQPmPlmPUdoCBAfz86Ho/nQrcFJbdDxanoB0=;
+ b=C64I2qwSafRk4RtkOmEWuhwMN+vVjU56ZuW2XVVhEOLWcZFTMJgJXSbb/e4A66trow
+ gQ3Uz1Tmk5qS9eogtd0YNfBz5gkJSLbV53skSeW2EPW/tpect0vS17N5Nm8Ff2F8sEnP
+ HWPIRGf8WjNu/BVvIlPeSGqZm+nkPUGvaKSwSunDsR8DgYoQFEzOOnZSH1OO9zAPlWhY
+ xk2xDoKLGNekgWfOQB5YkW201/KqnwVpbKWlDQMoFvGam+I8Qp87bcCCSMAuR1Y+VxJ/
+ jHpbA2ox0qz1dwOwegfiob8qAoUZKVoCT+QzhILnqIPXKSzzdnF+NNkZD/TmBFHV3Zok
+ ex5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694717860; x=1695322660;
+ d=1e100.net; s=20230601; t=1694717866; x=1695322666;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9zKv/AFUEShTVcBgdcujYDWfR46YFV/IRpKp0NuzD1I=;
- b=pQVIyXaVY1Nz16iaZ052VZ3WgPJNWcrfmU+nnpWBEbbLCsWXgJ1OIO1sZIoG3blXS+
- lt2bUBI9sb3sR2Ru60AT895XEBe0ovn+n4HR5wbInvvsuP1YmYtAM0GkFEblSJ/V+Ofa
- WljXJdg6pveBeZwZrqy2VDRIhITmv5P5pE9H+/h+ZdcybGjpMMwS56lxqbPHeEON79EN
- bN1fCPL2lDH+sa0rn6dXNGtuq8Gla9wJlV5F6uMkLo3mYZ/0D+aHRWA2BRkDGPY4ukhN
- /UOmG1p2nWjmfpt07W7SFhXJYsp6Vj0hW9g8koSOfvRz2noLEHTyrQtPu2DSlmAA/6u3
- nbbg==
-X-Gm-Message-State: AOJu0YylJt/u/xyuKBkqGb329EmROkDzHNWG1ymonKdsmnFxM98Zb8mG
- E3n9UW9aPaui7jgyJqTwwoOuKiHUouANNkaNaDA=
-X-Google-Smtp-Source: AGHT+IEHFtbFmNTS8niehLXaXXrkhluRaMDyOB98q1d86LQhOmgI9PXQC4RcZMY3IeN0e/LtUxlpGQ==
-X-Received: by 2002:a5d:518f:0:b0:31f:a9db:b838 with SMTP id
- k15-20020a5d518f000000b0031fa9dbb838mr5850535wrv.15.1694717859697; 
- Thu, 14 Sep 2023 11:57:39 -0700 (PDT)
+ bh=Dh8+LaQRQPmPlmPUdoCBAfz86Ho/nQrcFJbdDxanoB0=;
+ b=D5A27cseDScVqaZZF/JMMvXjy7HXj7W/YU799S5+IrVFtku8EKL+TMN44XfsRKMpde
+ Yrl1yfhEsQ3p3LRnf9HqhdnR+s0EYg/jDj1bXWKeccYz83YIMHQWAc813K2FdIV98mEE
+ BkdnKlr2QohlRa85pz3cd2wdwTKdQRQqRCsCB/t6Eb8WLMavMwvj37Z4ROS57LUydFD4
+ 8JWx4AcXEJHcFPbJvPPjER74nW9pHiXR512jobJBk+Gh5lzPwce8rm+TxyCKMPfKVsL3
+ UASIi/TCGBtSNEJ9nRgoyY9/a1CPYjfZwNJnPDwEWxMZol4/pfmPcmXTBObNcrsP+2l+
+ Kwcw==
+X-Gm-Message-State: AOJu0YzHTnFpZdzfvkhMebPdUvQux5Hc97Tr+SMT9Ao0dMcWdKvKpCpz
+ lSn4W1BNOtXACOHu6pE51CW4CQ7CFrYrGTcNhlE=
+X-Google-Smtp-Source: AGHT+IENqwwpP5sU+cDZK2nYF0CKO0oQIMhho0iZB262wD1FW0LHcCWWNmzAHRHWV7kk7+XA+S7SFQ==
+X-Received: by 2002:a2e:990f:0:b0:2b9:412a:111d with SMTP id
+ v15-20020a2e990f000000b002b9412a111dmr6442567lji.42.1694717865804; 
+ Thu, 14 Sep 2023 11:57:45 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
  by smtp.gmail.com with ESMTPSA id
- e10-20020a50ec8a000000b0052565298bedsm1262703edr.34.2023.09.14.11.57.38
+ z18-20020a1709067e5200b0099d798a6bb5sm1358420ejr.67.2023.09.14.11.57.44
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Sep 2023 11:57:39 -0700 (PDT)
+ Thu, 14 Sep 2023 11:57:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -63,17 +63,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Anton Johansson <anjo@rev.ng>, Riku Voipio <riku.voipio@iki.fi>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 03/11] accel/tcg: Restrict dump_exec_info() declaration
-Date: Thu, 14 Sep 2023 20:57:09 +0200
-Message-ID: <20230914185718.76241-4-philmd@linaro.org>
+Subject: [PATCH 04/11] accel: Make accel-blocker.o target agnostic
+Date: Thu, 14 Sep 2023 20:57:10 +0200
+Message-ID: <20230914185718.76241-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230914185718.76241-1-philmd@linaro.org>
 References: <20230914185718.76241-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,45 +96,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In commit 00c9a5c2c3 ("accel/tcg: Restrict 'qapi-commands-machine.h'
-to system emulation") we moved the definition to accel/tcg/ which is
-where this function is called. No need to expose it outside.
+accel-blocker.c is not target specific, move it to system_ss[].
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/internal.h   | 2 ++
- include/exec/cpu-all.h | 5 -----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ accel/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/accel/tcg/internal.h b/accel/tcg/internal.h
-index e8cbbde581..cd6b9eb7f0 100644
---- a/accel/tcg/internal.h
-+++ b/accel/tcg/internal.h
-@@ -102,6 +102,8 @@ static inline bool cpu_in_serial_context(CPUState *cs)
- extern int64_t max_delay;
- extern int64_t max_advance;
+diff --git a/accel/meson.build b/accel/meson.build
+index 638a9a03ba..76f3cbc530 100644
+--- a/accel/meson.build
++++ b/accel/meson.build
+@@ -1,5 +1,5 @@
+-specific_ss.add(files('accel-common.c', 'accel-blocker.c'))
+-system_ss.add(files('accel-softmmu.c'))
++specific_ss.add(files('accel-common.c'))
++system_ss.add(files('accel-softmmu.c', 'accel-blocker.c'))
+ user_ss.add(files('accel-user.c'))
  
-+void dump_exec_info(GString *buf);
-+
- extern bool one_insn_per_tb;
- 
- /**
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 71efc2d404..221ada2b6d 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -406,11 +406,6 @@ static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
-     return tlb_hit_page(tlb_addr, addr & TARGET_PAGE_MASK);
- }
- 
--#ifdef CONFIG_TCG
--/* accel/tcg/translate-all.c */
--void dump_exec_info(GString *buf);
--#endif /* CONFIG_TCG */
--
- #endif /* !CONFIG_USER_ONLY */
- 
- /* accel/tcg/cpu-exec.c */
+ subdir('tcg')
 -- 
 2.41.0
 
