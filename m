@@ -2,85 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE1879F8D0
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7873479F8D9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:25:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgcqq-00082e-5A; Wed, 13 Sep 2023 23:17:08 -0400
+	id 1qgcxR-0001aj-Sa; Wed, 13 Sep 2023 23:23:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgcqo-00082K-0W
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:17:06 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgcqm-0000J4-85
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:17:05 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1c35ee3b0d2so3584305ad.2
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 20:17:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694661422; x=1695266222; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mt0VwCPBSm/MnC5/2WCLIhtpuysfPOVVgcKtn8AQ9co=;
- b=NTSDj/9NHkmSy0WfVYby4UyfYSrpv/jMPJ/yFUdoetplQcFG45/U7KYb9RdutrLyPM
- iCgPxfZxQKQnw6gtstxNcrXbR6mjQZaRDIElA13pEdsDcKIA1o5Un0C0armlOo2Kggat
- wPMP3IjCbqB0C+qWXmtW4IQ/n9kmb9dmGuCgR0ItHQz7b7ywsaJ9F938mXoKjdFf1Xpl
- x36Qrs36kT7FHxj5+/ikED8x6Tafi25xbvG6JKPqVVYZH6WR5eEmgmgwAv42TN8cMTaA
- qbUDVaEbIPWRynVVFpBzZiv6LwTOBxUm/wfZ0Vyou9x7NyEZ22UCiMCqiOxpiplcm/gg
- UNvA==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qgcxP-0001a9-Br
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:23:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qgcxN-0001w9-Sn
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:23:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694661832;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vneL+oq3xwfR9ocFQ/2uBrhTiGeyAJTp2HiPgIyQ4Gs=;
+ b=b7faouWZMcnOVI2wenR++oyu8KR7YyS3qNFY7q7Ch7u199WnDWcVe647oTl5PeFM5rXdw+
+ v+NZrYYOeM98Yr4oWcjA+QRkLViLUd1v9spLF5us1h2vyqYIsrlakBCZ0RknlcVtZ+qXBm
+ nMJya7SIJdaxLwLwEZoFQrQRhMX7kd4=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-648-tTfiDgThMf-rIgCebqwqxg-1; Wed, 13 Sep 2023 23:23:51 -0400
+X-MC-Unique: tTfiDgThMf-rIgCebqwqxg-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-501c70f247cso539043e87.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 20:23:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694661422; x=1695266222;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mt0VwCPBSm/MnC5/2WCLIhtpuysfPOVVgcKtn8AQ9co=;
- b=ilHZEZK/6NqNwQS/3Pl5K9xISuDlgwLD19i6IggYs+MVmHR5zgmjIGJqKnZO5yuDxl
- Qw9t/BKXt0qF+R/+P7Nnf6Y5/1gzmO8vJ2OfIw9zkDvXRnKr2Oce0g8cVb87wfVjtyuq
- fE4zC50WvTZUVwPFpvoE5d4JGPQVK+Ijtil85RmCAAkfy27xRRK6tervVerRB7DWzgvg
- r9wFup78NF20bww17DjJLfNIEA0PUhtDXu9U+osfiXbpDrB0ER2X0CkSJ8C5Ha7ErPNc
- iJ4zNDqwj8TjcsCY54IZNtqPQe6keyxx8EUX4gIdAPPhuZWxX9T6BpFunKWzVmN5r9WX
- Te/A==
-X-Gm-Message-State: AOJu0YwuLTt408g2p+TAe9UqQnoOhiN6cKr6aNOo6F8KElvfosba8cCR
- OwEpvh8PmDn1YpbrvuMuegq8WA==
-X-Google-Smtp-Source: AGHT+IGVqFnnMEqu7uFIUhFhDs1PxCOhIrPFSknHtWDm7BvC1/UmasCd57iqsiLvSXXM2pNHVDX5Rw==
-X-Received: by 2002:a17:902:8210:b0:1b8:6cae:4400 with SMTP id
- x16-20020a170902821000b001b86cae4400mr4077606pln.37.1694661422020; 
- Wed, 13 Sep 2023 20:17:02 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- a4-20020a1709027d8400b001c0a4146961sm354425plm.19.2023.09.13.20.17.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 20:17:01 -0700 (PDT)
-Message-ID: <1e287c3c-0507-a176-5eb2-7ab43ae6b563@linaro.org>
-Date: Wed, 13 Sep 2023 20:16:59 -0700
+ d=1e100.net; s=20230601; t=1694661829; x=1695266629;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vneL+oq3xwfR9ocFQ/2uBrhTiGeyAJTp2HiPgIyQ4Gs=;
+ b=o4arwTN9JAqWyqMM0rCG35lSebZZ692ScWPeZplyVtNicRYhK5xLs2UgH5f7Ypxnfp
+ tGYKklGkU76iIofM+JTjhxw+gmumoLDPzpIPE37dbkRl6ToyUhst8h5gydi264YJ9LXD
+ Mvlnuaub6QdbsYxGl/vqS2cnazL4ArZe078CZueW11V2ybGzlIPrna59iD7QaeiUucCG
+ XidDKC9PPpZnl82SiE83fV/kKjKhFTP6EbsfT+Z1byBtZzAyMNlEE81oZDaZx67RHa/E
+ gHQlW3X+FKZlwb7wdBGs/RJCUkmAuNdK2tcwlKY/JJeD32r6EHPI0sodTos4Gf6h0+0y
+ +W0Q==
+X-Gm-Message-State: AOJu0Yzj67wdqcQZlALIE5e74wjeQHZyVIc2PlIz47xsBazACIyTeU3a
+ Lub0CUgzGAJV+g5pzwh6dja8laoJNxV9zef7x/XeDgG21G8+Kt4wu2gAK++/yfD/EKSXjhf/Jva
+ 9JMU+mS2oVNL+ddwEk0EQUjUD3AphVj4=
+X-Received: by 2002:a05:6512:2018:b0:500:a408:dbd with SMTP id
+ a24-20020a056512201800b00500a4080dbdmr3187795lfb.55.1694661829243; 
+ Wed, 13 Sep 2023 20:23:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkA0SvxcAtI1W8G0uz5Pf7FUlV4BuOwPdbWZtW4KhAUYithgpuXxw1TpJ4SJUTWD/G6FTuPGr64xDGfxIPGUU=
+X-Received: by 2002:a05:6512:2018:b0:500:a408:dbd with SMTP id
+ a24-20020a056512201800b00500a4080dbdmr3187785lfb.55.1694661828934; Wed, 13
+ Sep 2023 20:23:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v6 52/57] target/loongarch: Implement xvreplve xvinsve0
- xvpickve
-Content-Language: en-US
-To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: maobibo@loongson.cn
-References: <20230914022645.1151356-1-gaosong@loongson.cn>
- <20230914022645.1151356-53-gaosong@loongson.cn>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230914022645.1151356-53-gaosong@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230913123408.2819185-1-eperezma@redhat.com>
+In-Reply-To: <20230913123408.2819185-1-eperezma@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 14 Sep 2023 11:23:37 +0800
+Message-ID: <CACGkMEur1FEqDiH9ZY7hfds6eVeQFqMhyDdgFzU-O+nf2JqR5Q@mail.gmail.com>
+Subject: Re: [PATCH] vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, Lei Yang <leiyang@redhat.com>, 
+ Shannon Nelson <snelson@pensando.io>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Zhu Lingshan <lingshan.zhu@intel.com>, yama@redhat.com, 
+ Hawkins Jiawei <yin31149@gmail.com>, Cindy Lu <lulu@redhat.com>,
+ qemu-stable@nongnu.org, 
+ Dragos Tatulea <dtatulea@nvidia.com>, si-wei.liu@oracle.com, 
+ Laurent Vivier <lvivier@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,45 +99,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/13/23 19:26, Song Gao wrote:
-> +static bool gen_xvrepl128(DisasContext *ctx, arg_vv_i *a, MemOp mop)
->   {
-> -    int ofs;
-> -    TCGv_i64 desthigh, destlow, high, low;
-> +    int index = LSX_LEN / (8 * (1 << mop));
->   
-> -    if (!avail_LSX(ctx)) {
-> -        return false;
-> -    }
-> -
-> -    if (!check_vec(ctx, 16)) {
-> +    if (!check_vec(ctx, 32)) {
->           return true;
->       }
->   
-> -    desthigh = tcg_temp_new_i64();
-> -    destlow = tcg_temp_new_i64();
-> -    high = tcg_temp_new_i64();
-> -    low = tcg_temp_new_i64();
-> +    tcg_gen_gvec_dup_mem(mop, vec_reg_offset(a->vd, 0, mop),
-> +                         vec_reg_offset(a->vj, a->imm, mop), 16, 16);
-> +    tcg_gen_gvec_dup_mem(mop, vec_reg_offset(a->vd, index, mop),
-> +                         vec_reg_offset(a->vj, a->imm + index , mop), 16, 16);
+On Wed, Sep 13, 2023 at 8:34=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redhat=
+.com> wrote:
+>
+> Not zeroing it causes a SIGSEGV if the live migration is cancelled, at
+> net device restart.
+>
+> This is caused because CVQ tries to reuse the iova_tree that is present
+> in the first vhost_vdpa device at the end of vhost_vdpa_net_cvq_start.
+> As a consequence, it tries to access an iova_tree that has been already
+> free.
+>
+> Fixes: 00ef422e9fbf ("vdpa net: move iova tree creation from init to star=
+t")
+> Reported-by: Yanhui Ma <yama@redhat.com>
+> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-I think this isn't right, because vec_reg_offset(a->vd, 0, mop) is not the beginning of 
-the vector for a big-endian host -- remember the xor in vec_reg_offset.
+Acked-by: Jason Wang <jasowang@redhat.com>
 
-Better as
+Thanks
 
-     for (i = 0; i < 32; i += 16) {
-         tcg_gen_gvec_dup_mem(mop, vec_full_offset(a->vd) + i,
-                              vec_reg_offset(a->vj, a->imm, mop) + i, 16, 16);
-     }
+> ---
+>  net/vhost-vdpa.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 34202ca009..1714ff4b11 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -385,6 +385,8 @@ static void vhost_vdpa_net_client_stop(NetClientState=
+ *nc)
+>      dev =3D s->vhost_vdpa.dev;
+>      if (dev->vq_index + dev->nvqs =3D=3D dev->vq_index_end) {
+>          g_clear_pointer(&s->vhost_vdpa.iova_tree, vhost_iova_tree_delete=
+);
+> +    } else {
+> +        s->vhost_vdpa.iova_tree =3D NULL;
+>      }
+>  }
+>
+> --
+> 2.39.3
+>
 
-
-Otherwise,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-
-r~
 
