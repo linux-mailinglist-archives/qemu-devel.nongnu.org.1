@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D1A7A042E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:42:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F17B7A03E7
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:31:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qglf9-0004wQ-3R; Thu, 14 Sep 2023 08:41:39 -0400
+	id 1qglVJ-00070I-Si; Thu, 14 Sep 2023 08:31:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qglf6-0004uD-7y; Thu, 14 Sep 2023 08:41:36 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ id 1qglV8-0006eU-I7; Thu, 14 Sep 2023 08:31:21 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qglf4-0001KQ-3W; Thu, 14 Sep 2023 08:41:35 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+ id 1qglV2-0007g7-6H; Thu, 14 Sep 2023 08:31:17 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38ECcVZ8009441; Thu, 14 Sep 2023 12:41:27 GMT
+ 38ECCZpw030777; Thu, 14 Sep 2023 12:30:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=bmM+B4l49pIJr7BNq7OC1yRwpoSlUhCbcr1zwPacE84=;
- b=VY4/HFA2ORuNt6uZIkLVzLkxHhs/nzuH7HuEBis01FPcFfz93UlPwaFwHkrX/AkCTtYh
- h3ajl6bbcyITa8468/TsPwz1OJyQktCdvKXLkUwrkQaozBw44rBgo9XrOhDllzY0fLP5
- tmiL1HnF2+E36VPFMxLkFXXaF0Si6sbQw/8Eu0cfL8SGuFJqPPg/3zjdSAasoZCHJMP8
- KMQW7Y+GIKKBxEmKEfCQBctduvMBFu4qco2PDR+1I67idLmMHmdlUGsys2M+wyuCp4rH
- aOVjlt37JlEruZ9b/Ejmpiy49hmWQdRry0uBC8EMmUkqDRv5wFS5ErbWoesvZqu/I7EI ZQ== 
+ bh=4AlO1ZBJnQDsjmRHsztxn46OLbHuQQkpReXhrifbo6s=;
+ b=VZMaPhyAanfU+87QZ9G7tHeIU0mV0EUcCQTyxq8feH/sA6wYEjb6LGJTw+DVs1gXjFqk
+ 1Um2lYfSl/kqAGD200bF2i74BBIGhjfgd/1s8ngWBZSL0DgASdLyS2XMgpVRMspC/C/T
+ hSJJRYMVbu4X7bZlGRGGyQoWlNUxOziXdX0vNM+oz+TP6sOyqMie7lnKZjU0CWN1wRf4
+ P3u/udzSKjUwSVDcoX48WnonFXuRzZm84ciGtqXLqO2u3F76R71OEmbBtz5SAeR3XQgd
+ j+7F7KFtLhYq8o8/Dk6g333ydigKqAU+ybETde8z4adyqJbCRLzynHSO2B6uVhLlTAyC TA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4244grqu-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t41yq0kd6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Sep 2023 12:41:24 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38ECLjXL027264;
- Thu, 14 Sep 2023 12:40:58 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4244gk6m-13
+ Thu, 14 Sep 2023 12:30:54 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38ECD2pv001380;
+ Thu, 14 Sep 2023 12:30:53 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t41yq0k9j-6
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Sep 2023 12:40:58 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38EBuEQX002478; Thu, 14 Sep 2023 12:07:00 GMT
+ Thu, 14 Sep 2023 12:30:53 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38EA7ONc012083; Thu, 14 Sep 2023 12:07:00 GMT
 Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t158kjb1r-1
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t13e02wks-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 14 Sep 2023 12:07:00 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
  by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38EC6vGY22938126
+ 38EC6vpr22938132
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 14 Sep 2023 12:06:57 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 08EEC20043;
+ by IMSVA (Postfix) with ESMTP id A43A320067;
  Thu, 14 Sep 2023 12:06:57 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7FE6720073;
- Thu, 14 Sep 2023 12:06:56 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 1E0292006B;
+ Thu, 14 Sep 2023 12:06:57 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 14 Sep 2023 12:06:56 +0000 (GMT)
+ Thu, 14 Sep 2023 12:06:57 +0000 (GMT)
 From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
@@ -81,29 +81,29 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Subject: [PATCH v23 04/20] s390x/sclp: reporting the maximum nested topology
- entries
-Date: Thu, 14 Sep 2023 14:06:34 +0200
-Message-Id: <20230914120650.1318932-5-nsg@linux.ibm.com>
+Subject: [PATCH v23 05/20] s390x/cpu topology: resetting the
+ Topology-Change-Report
+Date: Thu, 14 Sep 2023 14:06:35 +0200
+Message-Id: <20230914120650.1318932-6-nsg@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230914120650.1318932-1-nsg@linux.ibm.com>
 References: <20230914120650.1318932-1-nsg@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: iTdzT_d3xtw8hXdOkbN2m7ONv_gaiSnA
-X-Proofpoint-ORIG-GUID: fyyTQT8V04Y0CLAAdrN8t7XJDV780ZzS
+X-Proofpoint-GUID: kz3PL9QbRZOr23gFtsoDjEdt4fhcDwSK
+X-Proofpoint-ORIG-GUID: SLpASFu9PZcWZvU0xWV_mPV-8sMKyl_T
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-14_09,2023-09-14_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  impostorscore=0
- suspectscore=0 spamscore=0 mlxlogscore=936 mlxscore=0 bulkscore=0
- malwarescore=0 adultscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309140108
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ priorityscore=1501 malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 clxscore=1015 suspectscore=0 phishscore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140103
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -128,63 +128,146 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierre Morel <pmorel@linux.ibm.com>
 
-The maximum nested topology entries is used by the guest to
-know how many nested topology are available on the machine.
-
-Let change the MNEST value from 2 to 4 in the SCLP READ INFO
-structure now that we support books and drawers.
+During a subsystem reset the Topology-Change-Report is cleared
+by the machine.
+Let's ask KVM to clear the Modified Topology Change Report (MTCR)
+bit of the SCA in the case of a subsystem reset.
 
 Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 ---
- include/hw/s390x/sclp.h | 5 +++--
- hw/s390x/sclp.c         | 5 +++++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ include/hw/s390x/cpu-topology.h |  1 +
+ target/s390x/cpu.h              |  1 +
+ target/s390x/kvm/kvm_s390x.h    |  1 +
+ hw/s390x/cpu-topology.c         | 11 +++++++++++
+ hw/s390x/s390-virtio-ccw.c      |  3 +++
+ target/s390x/cpu-sysemu.c       | 13 +++++++++++++
+ target/s390x/kvm/kvm.c          | 17 +++++++++++++++++
+ 7 files changed, 47 insertions(+)
 
-diff --git a/include/hw/s390x/sclp.h b/include/hw/s390x/sclp.h
-index c49051e17e..9aef6d9370 100644
---- a/include/hw/s390x/sclp.h
-+++ b/include/hw/s390x/sclp.h
-@@ -112,12 +112,13 @@ typedef struct CPUEntry {
- } QEMU_PACKED CPUEntry;
+diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topology.h
+index 350c7ea8aa..196c9afb3f 100644
+--- a/include/hw/s390x/cpu-topology.h
++++ b/include/hw/s390x/cpu-topology.h
+@@ -56,6 +56,7 @@ static inline void s390_topology_setup_cpu(MachineState *ms,
+ #endif
  
- #define SCLP_READ_SCP_INFO_FIXED_CPU_OFFSET     128
--#define SCLP_READ_SCP_INFO_MNEST                2
-+#define SCLP_READ_SCP_INFO_MNEST                4
- typedef struct ReadInfo {
-     SCCBHeader h;
-     uint16_t rnmax;
-     uint8_t rnsize;
--    uint8_t  _reserved1[16 - 11];       /* 11-15 */
-+    uint8_t  _reserved1[15 - 11];       /* 11-14 */
-+    uint8_t stsi_parm;                  /* 15-15 */
-     uint16_t entries_cpu;               /* 16-17 */
-     uint16_t offset_cpu;                /* 18-19 */
-     uint8_t  _reserved2[24 - 20];       /* 20-23 */
-diff --git a/hw/s390x/sclp.c b/hw/s390x/sclp.c
-index eff74479f4..d339cbb7e4 100644
---- a/hw/s390x/sclp.c
-+++ b/hw/s390x/sclp.c
-@@ -20,6 +20,7 @@
- #include "hw/s390x/event-facility.h"
- #include "hw/s390x/s390-pci-bus.h"
- #include "hw/s390x/ipl.h"
-+#include "hw/s390x/cpu-topology.h"
+ extern S390Topology s390_topology;
++void s390_topology_reset(void);
  
- static inline SCLPDevice *get_sclp_device(void)
+ static inline int s390_std_socket(int n, CpuTopology *smp)
  {
-@@ -123,6 +124,10 @@ static void read_SCP_info(SCLPDevice *sclp, SCCB *sccb)
-         return;
-     }
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index c1ba5c46d6..2722e7c450 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -655,6 +655,7 @@ typedef struct SysIBCPUListEntry {
+ QEMU_BUILD_BUG_ON(sizeof(SysIBCPUListEntry) != 16);
  
+ void insert_stsi_15_1_x(S390CPU *cpu, int sel2, uint64_t addr, uint8_t ar, uintptr_t ra);
++void s390_cpu_topology_set_changed(bool changed);
+ 
+ /* MMU defines */
+ #define ASCE_ORIGIN           (~0xfffULL) /* segment table origin             */
+diff --git a/target/s390x/kvm/kvm_s390x.h b/target/s390x/kvm/kvm_s390x.h
+index f9785564d0..649dae5948 100644
+--- a/target/s390x/kvm/kvm_s390x.h
++++ b/target/s390x/kvm/kvm_s390x.h
+@@ -47,5 +47,6 @@ void kvm_s390_crypto_reset(void);
+ void kvm_s390_restart_interrupt(S390CPU *cpu);
+ void kvm_s390_stop_interrupt(S390CPU *cpu);
+ void kvm_s390_set_diag318(CPUState *cs, uint64_t diag318_info);
++int kvm_s390_topology_set_mtcr(uint64_t attr);
+ 
+ #endif /* KVM_S390X_H */
+diff --git a/hw/s390x/cpu-topology.c b/hw/s390x/cpu-topology.c
+index 9bf13a6ebf..03de3d3d10 100644
+--- a/hw/s390x/cpu-topology.c
++++ b/hw/s390x/cpu-topology.c
+@@ -90,6 +90,17 @@ static void s390_topology_init(MachineState *ms)
+                                             smp->books * smp->drawers);
+ }
+ 
++/**
++ * s390_topology_reset:
++ *
++ * Generic reset for CPU topology, calls s390_topology_reset()
++ * to reset the kernel Modified Topology Change Record.
++ */
++void s390_topology_reset(void)
++{
++    s390_cpu_topology_set_changed(false);
++}
++
+ /**
+  * s390_topology_cpu_default:
+  * @cpu: pointer to a S390CPU
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 4e05a00de8..6c63636eee 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -123,6 +123,9 @@ static void subsystem_reset(void)
+             device_cold_reset(dev);
+         }
+     }
 +    if (s390_has_topology()) {
-+        read_info->stsi_parm = SCLP_READ_SCP_INFO_MNEST;
++        s390_topology_reset();
++    }
+ }
+ 
+ static int virtio_ccw_hcall_notify(const uint64_t *args)
+diff --git a/target/s390x/cpu-sysemu.c b/target/s390x/cpu-sysemu.c
+index 8112561e5e..1cd30c1d84 100644
+--- a/target/s390x/cpu-sysemu.c
++++ b/target/s390x/cpu-sysemu.c
+@@ -307,3 +307,16 @@ void s390_do_cpu_set_diag318(CPUState *cs, run_on_cpu_data arg)
+         kvm_s390_set_diag318(cs, arg.host_ulong);
+     }
+ }
++
++void s390_cpu_topology_set_changed(bool changed)
++{
++    int ret;
++
++    if (kvm_enabled()) {
++        ret = kvm_s390_topology_set_mtcr(changed);
++        if (ret) {
++            error_report("Failed to set Modified Topology Change Report: %s",
++                         strerror(-ret));
++        }
++    }
++}
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index 56b31b8aae..ee6345ba27 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -2584,6 +2584,23 @@ int kvm_s390_get_zpci_op(void)
+     return cap_zpci_op;
+ }
+ 
++int kvm_s390_topology_set_mtcr(uint64_t attr)
++{
++    struct kvm_device_attr attribute = {
++        .group = KVM_S390_VM_CPU_TOPOLOGY,
++        .attr  = attr,
++    };
++
++    if (!s390_has_feat(S390_FEAT_CONFIGURATION_TOPOLOGY)) {
++        return 0;
++    }
++    if (!kvm_vm_check_attr(kvm_state, KVM_S390_VM_CPU_TOPOLOGY, attr)) {
++        return -ENOTSUP;
 +    }
 +
-     /* CPU information */
-     prepare_cpu_entries(machine, entries_start, &cpu_count);
-     read_info->entries_cpu = cpu_to_be16(cpu_count);
++    return kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attribute);
++}
++
+ void kvm_arch_accel_class_init(ObjectClass *oc)
+ {
+ }
 -- 
 2.39.2
 
