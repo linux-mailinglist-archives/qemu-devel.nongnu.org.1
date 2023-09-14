@@ -2,92 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B97D7A0ED4
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:12:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAB27A0EBD
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:07:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgsgK-0002Ez-K2; Thu, 14 Sep 2023 16:11:20 -0400
+	id 1qgsZQ-0002r2-Hn; Thu, 14 Sep 2023 16:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
- id 1qgpKw-0005Ix-PW
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:37:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
- id 1qgpKv-0000kj-9Q
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:37:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694709420;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ubf6Ym3Oq8P1zXfUv1TaYbk1/ksNBIfco122yAwkkCU=;
- b=HwkWgNlvwcMEbODZr6uyLZyYLKI61Vs4e38i3zaVpwRsoFGiTFT6qYXX77NtkMD4/Iir8L
- O5F+oZVb4eu4Q0Y4GLSJoqkih2gEM3t2IEtJVst8SCieLKwq/BOOOg4z4fsu9jVAPQj+id
- UATEJWn+VQUp6LfCVdfXLb812svnQeo=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-6KGUs6JIPTmLVLp7Q5ez_A-1; Thu, 14 Sep 2023 12:35:40 -0400
-X-MC-Unique: 6KGUs6JIPTmLVLp7Q5ez_A-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-76ef205d695so165717885a.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 09:35:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qgsZN-0002qk-50
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:09 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qgsZL-0001SR-E3
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:08 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-401ec23be82so14382655e9.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:04:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20221208; t=1694721845; x=1695326645; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=11WTvmdgwwMkXwm1odvb/AW2+t/eSrG4IN0OwJQKhwI=;
+ b=Af845UEfAGBFRZJ/sV/RPDFl/1+D29Owq+8oetPNOyrTXIp88ugIdZtaNFOT9ulhaj
+ gIXDzFcWJhtVVnUmTgYhqvFk9DeXpZ0sjt7aji9GaGrtXS/cUNVJWSPAm0pdfToUxauW
+ Q94gf3cbLC/fFPr0LKUEzfkEjsil1MHAwOOb1mouFqfBWacNqlWEKdKu4VvBU/Wj9+qn
+ tcBCcZzx4gUvzztKPASICIFkhsA3Uv/bNPVLGPpi3clKug2SBYr00rwQGtWveQskgm+y
+ iemVA6vU6tc/ppVFF19+NRxQaZwr2PsdEScUsX9nZX8U1lvW3ASroHmtjXEjOZvvZC1Q
+ gREw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694709338; x=1695314138;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ubf6Ym3Oq8P1zXfUv1TaYbk1/ksNBIfco122yAwkkCU=;
- b=NZzIZiFMynPv7NlIgxSSWqjCHwhfHA2Z0/5ce/pBLCPoMgPZx++RXeG6cGAHwMIqPo
- 3U2AAkoppATZu9inodQLrr5pKpgYTdiKKWsIhONzwBKU8fN6L5eNo4AvSpkI0+fQZvAo
- wg8DSwgNUi33KVms0a8Y+n4qd+fd7RqmEHXcQTKlGFmiAKkC5qgfgVZ2XpqQ/JY/yeer
- 8QEJoMxVHQhx4mvFdY8gBmRBBqftW6x+lrzbcTxwUvIXHjj7ociWtzL3X/0umZgl1FOZ
- lEUSI/jRXdL6OYrISD6uvpb64Wbr41Lqv6/Cxhq64quYBYdaWHmF9YBjTvVLV1jKXusf
- Puzg==
-X-Gm-Message-State: AOJu0Yxu0VR+649x7fBjacmmeNESIFFBnT6gcP3yTC4YmUbcrUGlsbx2
- nQbDmX2gFwiPdhRdKLN0RAk1eKEAjjodIjeWkwpzIqtgEvgX1xjY0bFqlw1tmKc11D1vlT0Yawx
- uDM88CDyiNFQ1FRffZkPd+tKIZTTSY/YNjo4tTufGdWm6g0kyLKFv4+1qisiTI/xn+YaPDxg/ki
- cFgA==
-X-Received: by 2002:a05:620a:25d1:b0:76d:312a:e89a with SMTP id
- y17-20020a05620a25d100b0076d312ae89amr2796325qko.19.1694709338243; 
- Thu, 14 Sep 2023 09:35:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH13uC8O5NCcnCjOIAmr7FJj9ogJcBC3IIm3A2bL8w6acFHJ1yern3oXoDcnPRP7xLfAKZq5g==
-X-Received: by 2002:a05:620a:25d1:b0:76d:312a:e89a with SMTP id
- y17-20020a05620a25d100b0076d312ae89amr2796302qko.19.1694709338005; 
- Thu, 14 Sep 2023 09:35:38 -0700 (PDT)
-Received: from fedora.redhat.com ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
+ d=1e100.net; s=20230601; t=1694721845; x=1695326645;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=11WTvmdgwwMkXwm1odvb/AW2+t/eSrG4IN0OwJQKhwI=;
+ b=vkjs+J9l56mcD3Ia6TRuCb/3TVInmUpojJC2UDt9zCqE/5ynHdtqyMHtpVrnUsTp1i
+ A+LU3rYuh5I3GALMmWPh3pffYCn7zIytKUhHl5sa5BQwWo40r8/kHNIjqJAhv8NGolRf
+ MRUqEbx7nBmPTsEe8Tq3d1CYpSeECUaA79XLkbVWCgcPCAVUg71WbTyD/zca49vuSXGn
+ Vh0ZIYXjW1elIpiMUsBpwiHQdGzX9cWfKWvzpG8hxUEiLCUK7KdZgwF9ahTvZbxA1fhR
+ f7q4mRZkQeJrRMqFmYgc95cvfOPcAJjQ/bOoh4QaVqLdJ7KlxYyn0CWsr6WBEEqKCOxQ
+ u6Qg==
+X-Gm-Message-State: AOJu0Yy83arCkAoLMzxV2QQQ0elAtpw9h726Tc/bKUYyeKmXCFEHVtEm
+ FClofSQo/vt+tbQDl0HFIx8+6LnTGgE=
+X-Google-Smtp-Source: AGHT+IEec49f7D2MkITgU2TksoG46XxbWdGtdy1Y41cxjHLFU7pSzOVZ5ZrWTUBWD2klg1arLYVX2g==
+X-Received: by 2002:a05:600c:2611:b0:3fb:b5c0:a079 with SMTP id
+ h17-20020a05600c261100b003fbb5c0a079mr5671881wma.21.1694721845395; 
+ Thu, 14 Sep 2023 13:04:05 -0700 (PDT)
+Received: from karim.my.domain ([197.39.44.105])
  by smtp.gmail.com with ESMTPSA id
- l11-20020ae9f00b000000b007677347e20asm577244qkg.129.2023.09.14.09.35.37
+ z7-20020a7bc7c7000000b00402bda974ddsm2851130wmk.6.2023.09.14.13.04.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 09:35:37 -0700 (PDT)
-From: Tyler Fanelli <tfanelli@redhat.com>
+ Thu, 14 Sep 2023 13:04:04 -0700 (PDT)
+From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, stefanha@redhat.com,
- Tyler Fanelli <tfanelli@redhat.com>
-Subject: [RFC PATCH 8/8] i386/sev: Replace LAUNCH_FINISH ioctl with sev
- library equivalent
-Date: Thu, 14 Sep 2023 12:33:59 -0400
-Message-Id: <20230914163358.379957-9-tfanelli@redhat.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230914163358.379957-1-tfanelli@redhat.com>
-References: <20230914163358.379957-1-tfanelli@redhat.com>
+Cc: imp@bsdimp.com, Richard Henderson <richard.henderson@linaro.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v4 00/23] bsd-user: Implement mmap related system calls for
+ FreeBSD.
+Date: Thu, 14 Sep 2023 23:02:19 +0300
+Message-ID: <20230914200242.20148-1-kariem.taha2.7@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=tfanelli@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 14 Sep 2023 16:11:08 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,73 +92,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The LAUNCH_FINISH ioctl finishes the guest launch flow and transitions
-the guest into a state ready to be run.
+Upstream the implementation of the following mmap system calls, from the
+qemu-bsd-user fork:
+   mmap(2), munmap(2),
+   mprotect(2),
+   msync(2),
+   mlock(2), munlock(2), mlockall(2), munlockall(2), mincore(2),
+   madvise(2),
+   minherit(2),
+   shm_open(2),shm_open2(2), shm_rename2(2), shm_unlink(2), shmget(2), shmctl(2), shmat(2),
+   shmdt(2)
+   brk(2)
 
-If this API ioctl call fails, fw_error will be set accordingly.
+Karim Taha (2):
+  bsd-user: Add bsd-mem.c to meson.build
+  bsd-user: Implment madvise(2) to match the linux-user implementation.
 
-Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
----
- target/i386/sev.c | 38 ++++++++++++++++----------------------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+Kyle Evans (2):
+  bsd-user: Implement shm_open2(2) system call
+  bsd-user: Implement shm_rename(2) system call
 
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index a4510b5437..e52dcc67c3 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -785,35 +785,29 @@ static Notifier sev_machine_done_notify = {
-     .notify = sev_launch_get_measure,
- };
- 
--static void
--sev_launch_finish(SevGuestState *sev)
--{
--    int ret, error;
--
--    trace_kvm_sev_launch_finish();
--    ret = sev_ioctl(sev->sev_fd, KVM_SEV_LAUNCH_FINISH, 0, &error);
--    if (ret) {
--        error_report("%s: LAUNCH_FINISH ret=%d fw_error=%d '%s'",
--                     __func__, ret, error, fw_error_to_str(error));
--        exit(1);
--    }
--
--    sev_set_guest_state(sev, SEV_STATE_RUNNING);
--
--    /* add migration blocker */
--    error_setg(&sev_mig_blocker,
--               "SEV: Migration is not implemented");
--    migrate_add_blocker(sev_mig_blocker, &error_fatal);
--}
--
- static void
- sev_vm_state_change(void *opaque, bool running, RunState state)
- {
-     SevGuestState *sev = opaque;
-+    int ret, fw_error;
-+    KVMState *s = kvm_state;
- 
-     if (running) {
-         if (!sev_check_state(sev, SEV_STATE_RUNNING)) {
--            sev_launch_finish(sev);
-+            trace_kvm_sev_launch_finish();
-+            ret = sev_launch_finish(s->vmfd, &fw_error);
-+            if (ret) {
-+                error_report("%s: LAUNCH_FINISH ret=%d fw_error=%d '%s'",
-+                             __func__, ret, fw_error,
-+                             fw_error_to_str(fw_error));
-+                exit(1);
-+            }
-+
-+            sev_set_guest_state(sev, SEV_STATE_RUNNING);
-+
-+            // add migration blocker.
-+            error_setg(&sev_mig_blocker, "SEV: Migration is not implemented");
-+            migrate_add_blocker(sev_mig_blocker, &error_fatal);
-         }
-     }
- }
+Stacey Son (18):
+  bsd-user: Implement struct target_ipc_perm
+  bsd-user: Implement struct target_shmid_ds
+  bsd-user: Declarations for ipc_perm and shmid_ds conversion functions
+  bsd-user: Introduce freebsd/os-misc.h to the source tree
+  bsd-user: Implement target_set_brk function in bsd-mem.c instead of
+    os-syscall.c
+  bsd-user: Implement ipc_perm conversion between host and target.
+  bsd-user: Implement shmid_ds conversion between host and target.
+  bsd-user: Introduce bsd-mem.h to the source tree
+  bsd-user: Implement mmap(2) and munmap(2)
+  bsd-user: Implement mprotect(2)
+  bsd-user: Implement msync(2)
+  bsd-user: Implement mlock(2), munlock(2), mlockall(2), munlockall(2),
+    minherit(2)
+  bsd-user: Implement mincore(2)
+  bsd-user: Implement do_obreak function
+  bsd-user: Implement shm_open(2)
+  bsd-user: Implement shm_unlink(2) and shmget(2)
+  bsd-user: Implement shmctl(2)
+  bsd-user: Implement shmat(2) and shmdt(2)
+
+Warner Losh (1):
+  bsd-user: Add stubs for vadvise(), sbrk() and sstk()
+
+ bsd-user/bsd-mem.c            | 104 ++++++++
+ bsd-user/bsd-mem.h            | 452 ++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-misc.h    |  94 +++++++
+ bsd-user/freebsd/os-syscall.c | 112 ++++++++-
+ bsd-user/meson.build          |   1 +
+ bsd-user/mmap.c               |   2 +-
+ bsd-user/qemu-bsd.h           |  45 ++++
+ bsd-user/qemu.h               |   1 +
+ bsd-user/syscall_defs.h       |  39 +++
+ 9 files changed, 845 insertions(+), 5 deletions(-)
+ create mode 100644 bsd-user/bsd-mem.c
+ create mode 100644 bsd-user/bsd-mem.h
+ create mode 100644 bsd-user/freebsd/os-misc.h
+ create mode 100644 bsd-user/qemu-bsd.h
+
 -- 
-2.40.1
+2.42.0
 
 
