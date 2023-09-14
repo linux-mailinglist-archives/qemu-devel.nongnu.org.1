@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8738379F852
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC2079F882
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:55:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgcM9-0000n5-2k; Wed, 13 Sep 2023 22:45:25 -0400
+	id 1qgcVM-0000XN-RG; Wed, 13 Sep 2023 22:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgcM1-0000kJ-IW
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:45:19 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qgcVK-0000X1-72
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:54:54 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgcLk-0000jr-5b
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:45:10 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c06f6f98c0so3874865ad.3
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 19:44:59 -0700 (PDT)
+ id 1qgcVG-000389-E1
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:54:53 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-577a98f78b2so328546a12.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 19:54:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694659499; x=1695264299; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=b95YdmMsvfyRNSqPbIdUxwCOHziBt3/2z3CzyhMvTlw=;
- b=TGES/lZdC5rf8eObKmHJxfsUZSMl9bA/LlMQcbBWrtLb3aO5fbED/EfiopXLc2382B
- B3Dd8ZqegRnzUV4TEnsLIcNbBAvm820u+VkvGRUv6/phwC9/3Z3co95g8YCFqVBYwS20
- lhakX3+E49d87tP8xvMVmn8xGHTERgsTwhldlf0hQlVzeb23PGfZNhXc8JvSbdrjAq8n
- yDzprAEIi7VEeFKBHuYYm6mW6CxScndRM8GDRxOQgvBI8d+WxMSIDhRUZ/536Z4MXwdR
- OWCO0/b3ZBBQ77D3kfweuTPI5pRkSL0D6XggVZkQWZs1RprezCGRjvNO7GmkX7OGdhwq
- /cpw==
+ d=linaro.org; s=google; t=1694660088; x=1695264888; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EZhRpgvNAjRb+ruN/V/U/dLGCKh2q6fq9Hbpt3t4oE0=;
+ b=fxKfbdskC1VfRCBkArGzvavpSrCuTnozQIvRS+6aNMTXNOTuCmNvWKOkJFJVBqA1NE
+ 2Hnk9ylLOQ8WLdQ4x+uXKmGoDqlGq7RZZtgJJNfwswITxYD0df0XR80oIvH/pYvxsygF
+ itJ4MUOBM7nGjH1vBGQ/DSyC8z4hXoBvXDaF8iyML/KjXY1RieTZa7N6B4B8PnpdyyOd
+ zhu/W8d05n5Msq/AruMM8txZUuXM+1iVFkrnkmef6l1+2Vua2m+tAUEaJIKutVtQlEAU
+ XCmfPpm0sNW1ve/pVmGaFxTIue4RNGwT3erHQn+CLElY1PrBw5idnCeVzKjyO+DYSAG8
+ MaSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694659499; x=1695264299;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=b95YdmMsvfyRNSqPbIdUxwCOHziBt3/2z3CzyhMvTlw=;
- b=mlDe0Ny0XktPatSK4pwwgeWVlYDlKc+U7cWCltZ9IxS89eticgxdfvDngup0SRJv6s
- Th+Xx9u9isJEFRWoCqLi6ESyXQX7dTBbd/eMFhI3VZKnXPXUjNae2d0x5gBBv8m720tR
- 8dsil/qWKZ5uw+wFqRXb4pI1WAvzb8U67TkZSyU/J36IW7eaS0IPmLyeepxaGl+shIgD
- Qy80RAmbrC5J46gUxQsnH3tFyEs0Z6+lgtMUB9TJ6NltN3aLDcoAUJH//WuVVPQ1SBEQ
- 7P75eUccqKYXaYuxS72Tz5jcjZ5NkRO5B7260jO42eCQqc4VqVKBX5TBx4M83WsJE4tJ
- 4yDA==
-X-Gm-Message-State: AOJu0Yw76JsLFH+FpJtsmpZ9tpOpwo82WZHM+sOFenFutvffBBj9KvN4
- DH579fyG6P52PD+WTpW49iYQ7o0md4xpqOiUBK8=
-X-Google-Smtp-Source: AGHT+IEsDh+IvUHwqXagF/vjMpNehZINy0RgR3PyBJYXco77tQSoC3h75gKUsVzEeqgEASnBrIfziw==
-X-Received: by 2002:a17:902:e546:b0:1c3:6860:121d with SMTP id
- n6-20020a170902e54600b001c36860121dmr4978180plf.29.1694659498650; 
- Wed, 13 Sep 2023 19:44:58 -0700 (PDT)
-Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- x24-20020a170902b41800b001bbdf32f011sm304336plr.269.2023.09.13.19.44.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Sep 2023 19:44:58 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: anjo@rev.ng,
-	ale@rev.ng,
-	philmd@linaro.org
-Subject: [PATCH v2 24/24] accel/tcg: move ld/st helpers to ldst_common.c.inc
-Date: Wed, 13 Sep 2023 19:44:35 -0700
-Message-Id: <20230914024435.1381329-25-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230914024435.1381329-1-richard.henderson@linaro.org>
-References: <20230914024435.1381329-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1694660088; x=1695264888;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EZhRpgvNAjRb+ruN/V/U/dLGCKh2q6fq9Hbpt3t4oE0=;
+ b=eST2C9meeltC2s+/dknCCpzDLtNLOt/esSDjI3hjAELCWNkIfM0FwTFPQzY0T6G2Dr
+ U/f/IEdMZZlIT+SiiA1wb9bRNx7fabEHRbaPmvASv43kYZWDDytk2imkVcukdetYRRgs
+ PRBfiqTr/fRFZ5+1sdH40PAn57hT/al/J9GCQ2dKFt3SCZjfkQDDeFoprG2NWSi93VoF
+ oSwv9U6+F5D9upUjzMgrhFKSmxXO8hvdYMmk3PgceRPxR1b+Nbr0QFD7cMcfSxtRAuJ2
+ yGGDih5AGdLqmfXo7OUPFLqMcCcxZ2AMAJzardQiUtbqo84/g5OOkkWlsXa5IDLQYDHq
+ oQIA==
+X-Gm-Message-State: AOJu0Yyxv1N8Y1ibcRIqJYyrCMfxi1B72R1L7Y+MynAJcQT16zdbK0iv
+ 2Fq0RcDBcIGrpGR2GjswNRAzeDii/RDChyywTWs=
+X-Google-Smtp-Source: AGHT+IF/CHL20yF/rs7YVuploPGjaM5+s4wo9A/o3Kh2mph9OQx7uTzN87dwKwDrSfbEwL6BZhmz/g==
+X-Received: by 2002:a05:6a20:734d:b0:12c:b10d:693d with SMTP id
+ v13-20020a056a20734d00b0012cb10d693dmr4312449pzc.6.1694660088249; 
+ Wed, 13 Sep 2023 19:54:48 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ iz11-20020a170902ef8b00b001b03b7f8adfsm317547plb.246.2023.09.13.19.54.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 19:54:47 -0700 (PDT)
+Message-ID: <952cadf5-99c3-246f-6c55-495f48bbeb73@linaro.org>
+Date: Wed, 13 Sep 2023 19:54:45 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v6 06/57] target/loongarch: Use gen_helper_gvec_3 for 3OP
+ vector instructions
+Content-Language: en-US
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: maobibo@loongson.cn
+References: <20230914022645.1151356-1-gaosong@loongson.cn>
+ <20230914022645.1151356-7-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230914022645.1151356-7-gaosong@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x530.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,819 +96,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <anjo@rev.ng>
+On 9/13/23 19:25, Song Gao wrote:
+> Signed-off-by: Song Gao<gaosong@loongson.cn>
+> ---
+>   target/loongarch/helper.h                   | 214 +++++-----
+>   target/loongarch/vec_helper.c               | 444 +++++++++-----------
+>   target/loongarch/insn_trans/trans_vec.c.inc |  19 +-
+>   3 files changed, 326 insertions(+), 351 deletions(-)
 
-A large chunk of ld/st functions are moved from cputlb.c and user-exec.c
-to ldst_common.c.inc as their implementation is the same between both
-modes.
-
-Eventually, ldst_common.c.inc could be compiled into a separate
-target-specific compilation unit, and be linked in with the targets.
-Keeping CPUArchState usage out of cputlb.c (CPUArchState is primarily
-used to access the mmu index in these functions).
-
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20230912153428.17816-12-anjo@rev.ng>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/cputlb.c          | 214 ----------------------------------
- accel/tcg/user-exec.c       | 193 -------------------------------
- accel/tcg/ldst_common.c.inc | 225 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 225 insertions(+), 407 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index cbab7e2648..31472fb0b2 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2436,13 +2436,6 @@ static uint8_t do_ld1_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return do_ld_1(cpu, &l.page[0], l.mmu_idx, access_type, ra);
- }
- 
--tcg_target_ulong helper_ldub_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
--    return do_ld1_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
--}
--
- static uint16_t do_ld2_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
- {
-@@ -2468,13 +2461,6 @@ static uint16_t do_ld2_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--tcg_target_ulong helper_lduw_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    return do_ld2_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
--}
--
- static uint32_t do_ld4_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
- {
-@@ -2496,13 +2482,6 @@ static uint32_t do_ld4_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--tcg_target_ulong helper_ldul_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    return do_ld4_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
--}
--
- static uint64_t do_ld8_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
- {
-@@ -2524,36 +2503,6 @@ static uint64_t do_ld8_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--uint64_t helper_ldq_mmu(CPUArchState *env, uint64_t addr,
--                        MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    return do_ld8_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
--}
--
--/*
-- * Provide signed versions of the load routines as well.  We can of course
-- * avoid this for 64-bit data, or for 32-bit data on 32-bit host.
-- */
--
--tcg_target_ulong helper_ldsb_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t retaddr)
--{
--    return (int8_t)helper_ldub_mmu(env, addr, oi, retaddr);
--}
--
--tcg_target_ulong helper_ldsw_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t retaddr)
--{
--    return (int16_t)helper_lduw_mmu(env, addr, oi, retaddr);
--}
--
--tcg_target_ulong helper_ldsl_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t retaddr)
--{
--    return (int32_t)helper_ldul_mmu(env, addr, oi, retaddr);
--}
--
- static Int128 do_ld16_mmu(CPUState *cpu, vaddr addr,
-                           MemOpIdx oi, uintptr_t ra)
- {
-@@ -2619,81 +2568,6 @@ static Int128 do_ld16_mmu(CPUState *cpu, vaddr addr,
-     return ret;
- }
- 
--Int128 helper_ld16_mmu(CPUArchState *env, uint64_t addr,
--                       uint32_t oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
--    return do_ld16_mmu(env_cpu(env), addr, oi, retaddr);
--}
--
--Int128 helper_ld_i128(CPUArchState *env, uint64_t addr, uint32_t oi)
--{
--    return helper_ld16_mmu(env, addr, oi, GETPC());
--}
--
--/*
-- * Load helpers for cpu_ldst.h.
-- */
--
--static void plugin_load_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
--{
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--}
--
--uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr, MemOpIdx oi, uintptr_t ra)
--{
--    uint8_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_UB);
--    ret = do_ld1_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--uint16_t cpu_ldw_mmu(CPUArchState *env, abi_ptr addr,
--                     MemOpIdx oi, uintptr_t ra)
--{
--    uint16_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    ret = do_ld2_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--uint32_t cpu_ldl_mmu(CPUArchState *env, abi_ptr addr,
--                     MemOpIdx oi, uintptr_t ra)
--{
--    uint32_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    ret = do_ld4_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--uint64_t cpu_ldq_mmu(CPUArchState *env, abi_ptr addr,
--                     MemOpIdx oi, uintptr_t ra)
--{
--    uint64_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    ret = do_ld8_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
--Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    Int128 ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
--    ret = do_ld16_mmu(env_cpu(env), addr, oi, ra);
--    plugin_load_cb(env, addr, oi);
--    return ret;
--}
--
- /*
-  * Store Helpers
-  */
-@@ -2950,13 +2824,6 @@ static void do_st1_mmu(CPUState *cpu, vaddr addr, uint8_t val,
-     do_st_1(cpu, &l.page[0], val, l.mmu_idx, ra);
- }
- 
--void helper_stb_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
--    do_st1_mmu(env_cpu(env), addr, val, oi, ra);
--}
--
- static void do_st2_mmu(CPUState *cpu, vaddr addr, uint16_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-@@ -2980,13 +2847,6 @@ static void do_st2_mmu(CPUState *cpu, vaddr addr, uint16_t val,
-     do_st_1(cpu, &l.page[1], b, l.mmu_idx, ra);
- }
- 
--void helper_stw_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    do_st2_mmu(env_cpu(env), addr, val, oi, retaddr);
--}
--
- static void do_st4_mmu(CPUState *cpu, vaddr addr, uint32_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-@@ -3008,13 +2868,6 @@ static void do_st4_mmu(CPUState *cpu, vaddr addr, uint32_t val,
-     (void) do_st_leN(cpu, &l.page[1], val, l.mmu_idx, l.memop, ra);
- }
- 
--void helper_stl_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    do_st4_mmu(env_cpu(env), addr, val, oi, retaddr);
--}
--
- static void do_st8_mmu(CPUState *cpu, vaddr addr, uint64_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-@@ -3036,13 +2889,6 @@ static void do_st8_mmu(CPUState *cpu, vaddr addr, uint64_t val,
-     (void) do_st_leN(cpu, &l.page[1], val, l.mmu_idx, l.memop, ra);
- }
- 
--void helper_stq_mmu(CPUArchState *env, uint64_t addr, uint64_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    do_st8_mmu(env_cpu(env), addr, val, oi, retaddr);
--}
--
- static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
-                         MemOpIdx oi, uintptr_t ra)
- {
-@@ -3105,66 +2951,6 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
-     }
- }
- 
--void helper_st16_mmu(CPUArchState *env, uint64_t addr, Int128 val,
--                     MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
--    do_st16_mmu(env_cpu(env), addr, val, oi, retaddr);
--}
--
--void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
--{
--    helper_st16_mmu(env, addr, val, oi, GETPC());
--}
--
--/*
-- * Store Helpers for cpu_ldst.h
-- */
--
--static void plugin_store_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
--{
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
--void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
--                 MemOpIdx oi, uintptr_t retaddr)
--{
--    helper_stb_mmu(env, addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
--                 MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    do_st2_mmu(env_cpu(env), addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    do_st4_mmu(env_cpu(env), addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
--                 MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    do_st8_mmu(env_cpu(env), addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
--void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
--                  MemOpIdx oi, uintptr_t retaddr)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
--    do_st16_mmu(env_cpu(env), addr, val, oi, retaddr);
--    plugin_store_cb(env, addr, oi);
--}
--
- #include "ldst_common.c.inc"
- 
- /*
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index a6593d0e0f..17f9aff0cf 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -972,31 +972,6 @@ static uint8_t do_ld1_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--tcg_target_ulong helper_ldub_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
--    return do_ld1_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--}
--
--tcg_target_ulong helper_ldsb_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
--    return (int8_t)do_ld1_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--}
--
--uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    uint8_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
--    ret = do_ld1_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return ret;
--}
--
- static uint16_t do_ld2_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
- {
-@@ -1015,31 +990,6 @@ static uint16_t do_ld2_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--tcg_target_ulong helper_lduw_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    return do_ld2_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--}
--
--tcg_target_ulong helper_ldsw_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    return (int16_t)do_ld2_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--}
--
--uint16_t cpu_ldw_mmu(CPUArchState *env, abi_ptr addr,
--                     MemOpIdx oi, uintptr_t ra)
--{
--    uint16_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    ret = do_ld2_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return ret;
--}
--
- static uint32_t do_ld4_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
- {
-@@ -1058,31 +1008,6 @@ static uint32_t do_ld4_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--tcg_target_ulong helper_ldul_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    return do_ld4_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--}
--
--tcg_target_ulong helper_ldsl_mmu(CPUArchState *env, uint64_t addr,
--                                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    return (int32_t)do_ld4_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--}
--
--uint32_t cpu_ldl_mmu(CPUArchState *env, abi_ptr addr,
--                     MemOpIdx oi, uintptr_t ra)
--{
--    uint32_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    ret = do_ld4_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return ret;
--}
--
- static uint64_t do_ld8_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                            uintptr_t ra, MMUAccessType access_type)
- {
-@@ -1101,24 +1026,6 @@ static uint64_t do_ld8_mmu(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     return ret;
- }
- 
--uint64_t helper_ldq_mmu(CPUArchState *env, uint64_t addr,
--                        MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    return do_ld8_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--}
--
--uint64_t cpu_ldq_mmu(CPUArchState *env, abi_ptr addr,
--                     MemOpIdx oi, uintptr_t ra)
--{
--    uint64_t ret;
--
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    ret = do_ld8_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return ret;
--}
--
- static Int128 do_ld16_mmu(CPUState *cpu, abi_ptr addr,
-                           MemOpIdx oi, uintptr_t ra)
- {
-@@ -1138,25 +1045,6 @@ static Int128 do_ld16_mmu(CPUState *cpu, abi_ptr addr,
-     return ret;
- }
- 
--Int128 helper_ld16_mmu(CPUArchState *env, uint64_t addr,
--                       MemOpIdx oi, uintptr_t ra)
--{
--    return do_ld16_mmu(env_cpu(env), addr, get_memop(oi), ra);
--}
--
--Int128 helper_ld_i128(CPUArchState *env, uint64_t addr, MemOpIdx oi)
--{
--    return helper_ld16_mmu(env, addr, oi, GETPC());
--}
--
--Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    Int128 ret = do_ld16_mmu(env_cpu(env), addr, get_memop(oi), ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
--    return ret;
--}
--
- static void do_st1_mmu(CPUState *cpu, vaddr addr, uint8_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-@@ -1168,21 +1056,6 @@ static void do_st1_mmu(CPUState *cpu, vaddr addr, uint8_t val,
-     clear_helper_retaddr();
- }
- 
--void helper_stb_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
--    do_st1_mmu(env_cpu(env), addr, val, oi, ra);
--}
--
--void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
--                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
--    do_st1_mmu(env_cpu(env), addr, val, oi, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
- static void do_st2_mmu(CPUState *cpu, vaddr addr, uint16_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-@@ -1199,21 +1072,6 @@ static void do_st2_mmu(CPUState *cpu, vaddr addr, uint16_t val,
-     clear_helper_retaddr();
- }
- 
--void helper_stw_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    do_st2_mmu(env_cpu(env), addr, val, oi, ra);
--}
--
--void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
--    do_st2_mmu(env_cpu(env), addr, val, oi, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
- static void do_st4_mmu(CPUState *cpu, vaddr addr, uint32_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-@@ -1230,21 +1088,6 @@ static void do_st4_mmu(CPUState *cpu, vaddr addr, uint32_t val,
-     clear_helper_retaddr();
- }
- 
--void helper_stl_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    do_st4_mmu(env_cpu(env), addr, val, oi, ra);
--}
--
--void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
--                 MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
--    do_st4_mmu(env_cpu(env), addr, val, oi, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
- static void do_st8_mmu(CPUState *cpu, vaddr addr, uint64_t val,
-                        MemOpIdx oi, uintptr_t ra)
- {
-@@ -1261,21 +1104,6 @@ static void do_st8_mmu(CPUState *cpu, vaddr addr, uint64_t val,
-     clear_helper_retaddr();
- }
- 
--void helper_stq_mmu(CPUArchState *env, uint64_t addr, uint64_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    do_st8_mmu(env_cpu(env), addr, val, oi, ra);
--}
--
--void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
--                    MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
--    do_st8_mmu(env_cpu(env), addr, val, oi, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
- static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
-                         MemOpIdx oi, uintptr_t ra)
- {
-@@ -1292,27 +1120,6 @@ static void do_st16_mmu(CPUState *cpu, vaddr addr, Int128 val,
-     clear_helper_retaddr();
- }
- 
--void helper_st16_mmu(CPUArchState *env, uint64_t addr, Int128 val,
--                     MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
--    do_st16_mmu(env_cpu(env), addr, val, oi, ra);
--}
--
--void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
--    helper_st16_mmu(env, addr, val, oi, GETPC());
--}
--
--void cpu_st16_mmu(CPUArchState *env, abi_ptr addr,
--                  Int128 val, MemOpIdx oi, uintptr_t ra)
--{
--    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
--    do_st16_mmu(env_cpu(env), addr, val, oi, ra);
--    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
--}
--
- uint32_t cpu_ldub_code(CPUArchState *env, abi_ptr ptr)
- {
-     uint32_t ret;
-diff --git a/accel/tcg/ldst_common.c.inc b/accel/tcg/ldst_common.c.inc
-index 5f8144b33a..44833513fb 100644
---- a/accel/tcg/ldst_common.c.inc
-+++ b/accel/tcg/ldst_common.c.inc
-@@ -8,6 +8,231 @@
-  * This work is licensed under the terms of the GNU GPL, version 2 or later.
-  * See the COPYING file in the top-level directory.
-  */
-+/*
-+ * Load helpers for tcg-ldst.h
-+ */
-+
-+tcg_target_ulong helper_ldub_mmu(CPUArchState *env, uint64_t addr,
-+                                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
-+    return do_ld1_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
-+}
-+
-+tcg_target_ulong helper_lduw_mmu(CPUArchState *env, uint64_t addr,
-+                                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
-+    return do_ld2_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
-+}
-+
-+tcg_target_ulong helper_ldul_mmu(CPUArchState *env, uint64_t addr,
-+                                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
-+    return do_ld4_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
-+}
-+
-+uint64_t helper_ldq_mmu(CPUArchState *env, uint64_t addr,
-+                        MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
-+    return do_ld8_mmu(env_cpu(env), addr, oi, retaddr, MMU_DATA_LOAD);
-+}
-+
-+/*
-+ * Provide signed versions of the load routines as well.  We can of course
-+ * avoid this for 64-bit data, or for 32-bit data on 32-bit host.
-+ */
-+
-+tcg_target_ulong helper_ldsb_mmu(CPUArchState *env, uint64_t addr,
-+                                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    return (int8_t)helper_ldub_mmu(env, addr, oi, retaddr);
-+}
-+
-+tcg_target_ulong helper_ldsw_mmu(CPUArchState *env, uint64_t addr,
-+                                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    return (int16_t)helper_lduw_mmu(env, addr, oi, retaddr);
-+}
-+
-+tcg_target_ulong helper_ldsl_mmu(CPUArchState *env, uint64_t addr,
-+                                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    return (int32_t)helper_ldul_mmu(env, addr, oi, retaddr);
-+}
-+
-+Int128 helper_ld16_mmu(CPUArchState *env, uint64_t addr,
-+                       MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
-+    return do_ld16_mmu(env_cpu(env), addr, oi, retaddr);
-+}
-+
-+Int128 helper_ld_i128(CPUArchState *env, uint64_t addr, uint32_t oi)
-+{
-+    return helper_ld16_mmu(env, addr, oi, GETPC());
-+}
-+
-+/*
-+ * Store helpers for tcg-ldst.h
-+ */
-+
-+void helper_stb_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-+                    MemOpIdx oi, uintptr_t ra)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_8);
-+    do_st1_mmu(env_cpu(env), addr, val, oi, ra);
-+}
-+
-+void helper_stw_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-+                    MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
-+    do_st2_mmu(env_cpu(env), addr, val, oi, retaddr);
-+}
-+
-+void helper_stl_mmu(CPUArchState *env, uint64_t addr, uint32_t val,
-+                    MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
-+    do_st4_mmu(env_cpu(env), addr, val, oi, retaddr);
-+}
-+
-+void helper_stq_mmu(CPUArchState *env, uint64_t addr, uint64_t val,
-+                    MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
-+    do_st8_mmu(env_cpu(env), addr, val, oi, retaddr);
-+}
-+
-+void helper_st16_mmu(CPUArchState *env, uint64_t addr, Int128 val,
-+                     MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
-+    do_st16_mmu(env_cpu(env), addr, val, oi, retaddr);
-+}
-+
-+void helper_st_i128(CPUArchState *env, uint64_t addr, Int128 val, MemOpIdx oi)
-+{
-+    helper_st16_mmu(env, addr, val, oi, GETPC());
-+}
-+
-+/*
-+ * Load helpers for cpu_ldst.h
-+ */
-+
-+static void plugin_load_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
-+{
-+    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_R);
-+}
-+
-+uint8_t cpu_ldb_mmu(CPUArchState *env, abi_ptr addr, MemOpIdx oi, uintptr_t ra)
-+{
-+    uint8_t ret;
-+
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_UB);
-+    ret = do_ld1_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
-+    plugin_load_cb(env, addr, oi);
-+    return ret;
-+}
-+
-+uint16_t cpu_ldw_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
-+{
-+    uint16_t ret;
-+
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
-+    ret = do_ld2_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
-+    plugin_load_cb(env, addr, oi);
-+    return ret;
-+}
-+
-+uint32_t cpu_ldl_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
-+{
-+    uint32_t ret;
-+
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
-+    ret = do_ld4_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
-+    plugin_load_cb(env, addr, oi);
-+    return ret;
-+}
-+
-+uint64_t cpu_ldq_mmu(CPUArchState *env, abi_ptr addr,
-+                     MemOpIdx oi, uintptr_t ra)
-+{
-+    uint64_t ret;
-+
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
-+    ret = do_ld8_mmu(env_cpu(env), addr, oi, ra, MMU_DATA_LOAD);
-+    plugin_load_cb(env, addr, oi);
-+    return ret;
-+}
-+
-+Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
-+                    MemOpIdx oi, uintptr_t ra)
-+{
-+    Int128 ret;
-+
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
-+    ret = do_ld16_mmu(env_cpu(env), addr, oi, ra);
-+    plugin_load_cb(env, addr, oi);
-+    return ret;
-+}
-+
-+/*
-+ * Store helpers for cpu_ldst.h
-+ */
-+
-+static void plugin_store_cb(CPUArchState *env, abi_ptr addr, MemOpIdx oi)
-+{
-+    qemu_plugin_vcpu_mem_cb(env_cpu(env), addr, oi, QEMU_PLUGIN_MEM_W);
-+}
-+
-+void cpu_stb_mmu(CPUArchState *env, abi_ptr addr, uint8_t val,
-+                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    helper_stb_mmu(env, addr, val, oi, retaddr);
-+    plugin_store_cb(env, addr, oi);
-+}
-+
-+void cpu_stw_mmu(CPUArchState *env, abi_ptr addr, uint16_t val,
-+                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_16);
-+    do_st2_mmu(env_cpu(env), addr, val, oi, retaddr);
-+    plugin_store_cb(env, addr, oi);
-+}
-+
-+void cpu_stl_mmu(CPUArchState *env, abi_ptr addr, uint32_t val,
-+                    MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_32);
-+    do_st4_mmu(env_cpu(env), addr, val, oi, retaddr);
-+    plugin_store_cb(env, addr, oi);
-+}
-+
-+void cpu_stq_mmu(CPUArchState *env, abi_ptr addr, uint64_t val,
-+                 MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_64);
-+    do_st8_mmu(env_cpu(env), addr, val, oi, retaddr);
-+    plugin_store_cb(env, addr, oi);
-+}
-+
-+void cpu_st16_mmu(CPUArchState *env, abi_ptr addr, Int128 val,
-+                  MemOpIdx oi, uintptr_t retaddr)
-+{
-+    tcg_debug_assert((get_memop(oi) & MO_SIZE) == MO_128);
-+    do_st16_mmu(env_cpu(env), addr, val, oi, retaddr);
-+    plugin_store_cb(env, addr, oi);
-+}
-+
-+/*
-+ * Wrappers of the above
-+ */
- 
- uint32_t cpu_ldub_mmuidx_ra(CPUArchState *env, abi_ptr addr,
-                             int mmu_idx, uintptr_t ra)
--- 
-2.34.1
-
+r~
 
