@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AA447A0E90
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 21:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 800977A0E95
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 21:54:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgsOG-0005aj-7x; Thu, 14 Sep 2023 15:52:40 -0400
+	id 1qgsOL-0005gi-Eq; Thu, 14 Sep 2023 15:52:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgsOE-0005aJ-Kh
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:52:38 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgsOK-0005eA-3X
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:52:44 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgsOD-0006jx-5g
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:52:38 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so233058066b.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 12:52:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgsOI-0006lg-KS
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:52:43 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-99bdcade7fbso174725866b.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 12:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694721153; x=1695325953; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=pH/Gd9c3Al2hm3nRlXGcuzsIQc0Vb10/gJIBjNiHVrw=;
- b=BRYLum1RhgUbJ5zzLolUSlihnwZJIDt08z/PTYm2mxHPbMQBA5cmGYjZDr/Ad/DT0J
- JOMT/7IjmEIg2WpVPquKz+pLVTdEyNiGYfuA5V38yZq/m1a6uvdAO6lFfg3/VqYm094o
- qCmesYgdQlVlTDNmQPACquFLA2sWMPnDRz4XL4mFFfxI+tiD++RxA+XkTZcvoQOifxLe
- o8o+TQV6HFKMn42+jcUe3hcSO5w2eZXiBpZr2mX3wkidt6843zvVqE7UAT29E84LieAY
- 4G8Vx24qn5e7KwUB7C44q8iOJlZlxrOhHNIu5jvy5DnEFIVZKja/luAxczgDebsfTuHH
- LhzQ==
+ d=linaro.org; s=google; t=1694721161; x=1695325961; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rqTzRZqnlvONF3ZM8t6uAZIEh+prXa466EdrDg1ej9c=;
+ b=kf2+SrpgyHqHM2Gc3hX4ijG3xeBkFSYk4IdA16cFVmon5JM3nu7n0RFhjhuaZF7QDl
+ 0dm1uu1Ju6eATFi+gdSvjPoz19zwdoOxJ7Ss3cIswZS79KjgJiyV+FksPynr8zB0bOQK
+ KEIPIYnGV53K/kWYK7mcdYEAIQ+RE2vbfSeLiz4VShT5+FeWNdhSxWlQGFKFvy0LGB/b
+ eea5X4gzwBXejlSHjk1rbq9Jhb5MkA4Yvi+ryu/I5pESFGxY9YM0R3uPQaaDl6dHAn0j
+ 5ciI5h6GnEhTXBrZU2LqrcUEB6TkTJUsAO6WaPdDOjI7FIA/Su8E+39ASpqX2lknW7Wu
+ AofA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694721153; x=1695325953;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=pH/Gd9c3Al2hm3nRlXGcuzsIQc0Vb10/gJIBjNiHVrw=;
- b=K6ufuV5TQCSIfsgWLD4nLeIJMJMPQqSgBS3qjdwg0kjG8GH4a/ihdz/hJSaQlu+dDG
- j/mE7ZODG6vKD2fFe+yAz6egjsT8mGyjskor6V2jHOL/7jLc3vMRJLhu3ww/p0IaUFH+
- cY594FYtll9k74NDCT/fc+TU8ld3fFdwqvn+UogKGjeCWjCh/5RnvwW+QhbtjmONBTOf
- 3GNnhpk9DgSDKiDe/R6XXtdkfL7ds4Wnseve1u3dUJT49UqtHKupn3E8PQ0kB6mkb18L
- xEwTn5OPEoOXK1nzv2uJgFyGZF7DKoDDHi5r5uxkJdDeugP3/FRu2far4FYvG/jt4X8c
- 21RQ==
-X-Gm-Message-State: AOJu0YyiJ3oWeKnzvTpWU15L4auDNNZenSJZMDuZ2TJZG+AdJIJ4xTqj
- ggxQsdp4t+fnBddFyylQJyWYEy922yai6t2VYSc=
-X-Google-Smtp-Source: AGHT+IFMIkpAAfmS2OsHx2VNNlTohRKTz3utvIfbWkLfwXqhdEngpTdAsu4ZYyqA42tlNo4VNguf+Q==
-X-Received: by 2002:a17:906:6a19:b0:9a5:83f0:9bc5 with SMTP id
- qw25-20020a1709066a1900b009a583f09bc5mr3773895ejc.18.1694721153357; 
- Thu, 14 Sep 2023 12:52:33 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694721161; x=1695325961;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=rqTzRZqnlvONF3ZM8t6uAZIEh+prXa466EdrDg1ej9c=;
+ b=bxGoZ+yJd6tVqCLTN70eyv3e8EQQnZemincctiW8t6Kh97wmL7NuYuF003KQ2iqST7
+ NH1wsZ3NqeqWuYbazO5a7lhycYluZrZ+s6NUtZ+e/6QWCYuYdR6CPCAYIEsKxhjYy4jA
+ h2dIbQ93Qvh8NEfbL/ebwss7zpzS0/a1djYtbDn8pzkHuXyBwMwfBmSRiyaT6BhA63Ek
+ fTn3rla9Y7kRSlfCOkWHqzPWioxPg7d2p51JECTime8YD4G3ap7avih4GeQ9H/IYpdID
+ afENUFT4/Cos1Yl1F9zZPkwpfA6nTI/sV794dL7Qmk+V4kjEU68o6HKcY2+PLBXeGe60
+ AfnA==
+X-Gm-Message-State: AOJu0YxPe6mFW+bL/nHDZcJsFv4Yzyl6jxN3SL6eLiH13jyKn3t/u7Gg
+ J48nQwgZ822WZyt76cvVuotBVuI4DdSSkfVvvjE=
+X-Google-Smtp-Source: AGHT+IFD2mXEeKb7LvmLo0tQ3i6MvQ3KLLOC4uDgyJbnHjIDcB6RpNbCfVgqydagutx8sJrj5Wb91w==
+X-Received: by 2002:a17:906:300c:b0:993:d5bd:a757 with SMTP id
+ 12-20020a170906300c00b00993d5bda757mr5694413ejz.19.1694721160831; 
+ Thu, 14 Sep 2023 12:52:40 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
  by smtp.gmail.com with ESMTPSA id
- x8-20020a170906298800b0099bcb44493fsm1441278eje.147.2023.09.14.12.52.31
+ uz3-20020a170907118300b0099cc36c4681sm1423925ejb.157.2023.09.14.12.52.38
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Sep 2023 12:52:32 -0700 (PDT)
+ Thu, 14 Sep 2023 12:52:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
@@ -67,15 +68,17 @@ Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Subject: [PATCH 0/4] accel/tcg: Stubs cleanups
-Date: Thu, 14 Sep 2023 21:52:25 +0200
-Message-ID: <20230914195229.78244-1-philmd@linaro.org>
+Subject: [PATCH 1/4] accel/tcg: Remove tlb_set_dirty() stub
+Date: Thu, 14 Sep 2023 21:52:26 +0200
+Message-ID: <20230914195229.78244-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230914195229.78244-1-philmd@linaro.org>
+References: <20230914195229.78244-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,24 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- Remove unused stubs,
-- Guard with tcg_enabled() and remove more,
-- Reduce tlb_set_dirty() scope?
+Since commit 34d49937e4 ("accel/tcg: Handle atomic accesses
+to notdirty memory correctly") there is only a single call
+to tlb_set_dirty(), within accel/tcg/cputlb.c itself where
+the function is defined.
 
-Philippe Mathieu-Daudé (4):
-  accel/tcg: Remove tlb_set_dirty() stub
-  accel/tcg: Remove unused tcg_flush_jmp_cache() stub
-  accel/tcg: Guard tb_flush() with tcg_enabled() and remove the stub
-  accel/tcg: Keep tlb_set_dirty() internal
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ accel/stubs/tcg-stub.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
- include/exec/exec-all.h |  1 -
- accel/stubs/tcg-stub.c  | 12 ------------
- accel/tcg/cputlb.c      |  2 +-
- cpu.c                   | 15 +++++++++------
- gdbstub/softmmu.c       |  5 ++++-
- hw/ppc/spapr_hcall.c    |  2 +-
- 6 files changed, 15 insertions(+), 22 deletions(-)
-
+diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
+index a9e7a2d5b4..f088054f34 100644
+--- a/accel/stubs/tcg-stub.c
++++ b/accel/stubs/tcg-stub.c
+@@ -18,10 +18,6 @@ void tb_flush(CPUState *cpu)
+ {
+ }
+ 
+-void tlb_set_dirty(CPUState *cpu, vaddr vaddr)
+-{
+-}
+-
+ void tcg_flush_jmp_cache(CPUState *cpu)
+ {
+ }
 -- 
 2.41.0
 
