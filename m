@@ -2,85 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE377A09E4
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93D97A09EB
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:57:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgohv-0005yi-UQ; Thu, 14 Sep 2023 11:56:43 -0400
+	id 1qgoiV-0000yE-4D; Thu, 14 Sep 2023 11:57:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qgohX-0005kB-2L
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:56:24 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgoiT-0000on-18
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:57:17 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qgohU-0000Xy-5b
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:56:17 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-404314388ceso9852955e9.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 08:56:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694706974; x=1695311774; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2D3ULEhRy+9WwXw0QKX16DdcHnSzD2yth0Za/p9gC34=;
- b=zp/WHEzKs5g/2hADlFvDOIiOwd0TWHvBPPH9FXXB3BYECgHVBu8hO0SFl8/72ijmG5
- 2/Lu90Ym5DFksDjqMQJALg+slqkT3b5zFW13WTGItjNBMYMcTYZpSB7kh1dhzm/C5dTc
- yyD+ETXz1Q4UhQjGAhHSetUFpOGo+Z1G/XRbTXrV9X9dzZEBROq2MQMGXyxcIB2kxMva
- peAoWcgbvfRVin/r/3nBgZhaOZoXIW+5pHhPNpbyG2YtfNB0/GqlyEptfP1h0AG7bNCa
- +P1TPQMz9UX9EtSiCafr4/6VFF8O/ngrWMj9kdAmRUW2P0oF73y/yzXf68m4/VcSDhqQ
- oy5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694706974; x=1695311774;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=2D3ULEhRy+9WwXw0QKX16DdcHnSzD2yth0Za/p9gC34=;
- b=MvOBQNV+MuGIQymyCRyrM9ZRHmz4+iYqvWVCyCbLOMyW8LmmqiJyaaZyDSOGuKJlk0
- l0YDePQHu64XcGlPyiptpTemaNn70YC7Xn0+6bCBy9pG0HWa1B3K4XwHateuz37diqBM
- 13m9YOT7i3nDrkOFfZtCu8DuNB2bf5zhJwoJ7+bNVA+f+dVak7mC49r5r8iOsCbZQuYb
- vzXeLPiIIfGn8BJkcOtr3dkIqBCi/SY/jIx2xdRJYtMykBbUN+pgLaoZvSCGK0OgOjHn
- NMAJncrMy38qrX2qnuGT+D96mTVblFh7IGJKbhvsOD4tOQY0rGFwEwN4cHWFs+KDYRnW
- 3JGg==
-X-Gm-Message-State: AOJu0YzFl9wdrsJw1/Xfpba1S5+opdNZ9/XZyjJbJC7TgHTECaahidsd
- XXagUAN3HYgVexEFFmEHTYFZkw==
-X-Google-Smtp-Source: AGHT+IGwhfKmlzjpSxs7EVfMa+DSQPoBL9ASImlciwcbAAyCY+PudiZOCkIgzIek+/45o22v75Y11Q==
-X-Received: by 2002:a1c:4b16:0:b0:401:1066:53e4 with SMTP id
- y22-20020a1c4b16000000b00401106653e4mr5014131wma.38.1694706974345; 
- Thu, 14 Sep 2023 08:56:14 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- k23-20020a05600c0b5700b00402fa98abe3sm5180215wmr.46.2023.09.14.08.56.13
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 08:56:14 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 7E1F91FFBB;
- Thu, 14 Sep 2023 16:56:13 +0100 (BST)
-References: <20230912224107.29669-1-akihiko.odaki@daynix.com>
-User-agent: mu4e 1.11.17; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>, Aleksandr Anenkov
- <a.anenkov@yadro.com>, qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-?=
- =?utf-8?Q?Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v3 00/12] gdbstub and TCG plugin improvements
-Date: Thu, 14 Sep 2023 16:56:06 +0100
-In-reply-to: <20230912224107.29669-1-akihiko.odaki@daynix.com>
-Message-ID: <877cossq8y.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgoiQ-0000sQ-QX
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:57:16 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 27DBE2185C;
+ Thu, 14 Sep 2023 15:57:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1694707032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7EfFdZEuonjM68bai/z8oQRcqO0fqJKYCMVwwzvWZhg=;
+ b=qRxLtpERNQRWUU9nbdK8xH3YE/gi7vmchGLVYfyBk+GX7Pv2GXjv0yG7vUBZK5Hi6p951x
+ bdSWyBYf+INPB1WyNRPKgtHGyWN7trphjVvmGy3UwoA9wtpQidi6BOCZ6Kjzn3ABEeTY4U
+ QDO7VoZCENdvd/gnI6+BiADdnJuhygM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1694707032;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7EfFdZEuonjM68bai/z8oQRcqO0fqJKYCMVwwzvWZhg=;
+ b=9yY6D7s1OQ1Hy9/fr2GJdR+mysPrxe9r5dTxuO6DPHuzpsOGRti6G64SCgM2XgwlFWKr+e
+ DDcdAKUROYrtkOCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 96DD113580;
+ Thu, 14 Sep 2023 15:57:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 5mV5FVctA2VzIwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 14 Sep 2023 15:57:11 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: QEMU migration-test CI intermittent failure
+In-Reply-To: <ZQMoUzRH1BZKs39g@x1n>
+References: <20230913192301.GA917052@fedora> <87r0n1kggo.fsf@suse.de>
+ <ZQMfIO3oiqTsawtU@x1n> <87edj0kcz7.fsf@suse.de> <ZQMoUzRH1BZKs39g@x1n>
+Date: Thu, 14 Sep 2023 12:57:08 -0300
+Message-ID: <87bke4kasr.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,71 +87,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Peter Xu <peterx@redhat.com> writes:
 
-Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-
-> This series extracts fixes and refactorings that can be applied
-> independently from "[PATCH RESEND v5 00/26] plugins: Allow to read
-> registers" as suggested by Nicholas Piggin.
+> On Thu, Sep 14, 2023 at 12:10:04PM -0300, Fabiano Rosas wrote:
+>> Peter Xu <peterx@redhat.com> writes:
+>>=20
+>> > On Wed, Sep 13, 2023 at 04:42:31PM -0300, Fabiano Rosas wrote:
+>> >> Stefan Hajnoczi <stefanha@redhat.com> writes:
+>> >>=20
+>> >> > Hi,
+>> >> > The following intermittent failure occurred in the CI and I have fi=
+led
+>> >> > an Issue for it:
+>> >> > https://gitlab.com/qemu-project/qemu/-/issues/1886
+>> >> >
+>> >> > Output:
+>> >> >
+>> >> >   >>> QTEST_QEMU_IMG=3D./qemu-img MALLOC_PERTURB_=3D116 QTEST_QEMU_=
+STORAGE_DAEMON_BINARY=3D./storage-daemon/qemu-storage-daemon G_TEST_DBUS_DA=
+EMON=3D/builds/qemu-project/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_BI=
+NARY=3D./qemu-system-x86_64 /builds/qemu-project/qemu/build/tests/qtest/mig=
+ration-test --tap -k
+>> >> >   =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95
+>> >> >   stderr:
+>> >> >   qemu-system-x86_64: Unable to read from socket: Connection reset =
+by peer
+>> >> >   Memory content inconsistency at 5b43000 first_byte =3D bd last_by=
+te =3D bc current =3D 4f hit_edge =3D 1
+>> >> >   **
+>> >> >   ERROR:../tests/qtest/migration-test.c:300:check_guests_ram: asser=
+tion failed: (bad =3D=3D 0)
+>> >> >   (test program exited with status code -6)
+>> >> >
+>> >> > You can find the full output here:
+>> >> > https://gitlab.com/qemu-project/qemu/-/jobs/5080200417
+>> >>=20
+>> >> This is the postcopy return path issue that I'm addressing here:
+>> >>=20
+>> >> https://lore.kernel.org/r/20230911171320.24372-1-farosas@suse.de
+>> >> Subject: [PATCH v6 00/10] Fix segfault on migration return path
+>> >> Message-ID: <20230911171320.24372-1-farosas@suse.de>
+>> >
+>> > Hmm I just noticed one thing, that Stefan's failure is a ram check iss=
+ue
+>> > only, which means qemu won't crash?
+>> >
+>>=20
+>> The source could have crashed and left the migration at an inconsistent
+>> state and then the destination saw corrupted memory?
+>>=20
+>> > Fabiano, are you sure it's the same issue on your return-path fix?
+>> >
+>>=20
+>> I've been running the preempt tests on my branch for thousands of
+>> iterations and didn't see any other errors. Since there's no code going
+>> into the migration tree recently I assume it's the same error.
+>>=20
+>> I run the tests with GDB attached to QEMU, so I'll always see a crash
+>> before any memory corruption.
 >
-> Patch "target/ppc: Remove references to gdb_has_xml" is also updated to
-> remove some dead code I missed earlier and thus the Reviewed-by tag is
-> dropped.
-
-Queued to gdbstub/next, thanks.
-
+> Okay, maybe that stops you from seeing the above check_guests_ram() error?
+> Worth checking whether it fails differently always if you just don't atta=
+ch
+> gdb to it; I had a feeling that it'll always fail in the other way (I thi=
+nk
+> migration-test will say something like "qemu killed" etc. in most cases),
+> further to identify the issues.
 >
-> V2 -> V3:
->   Added patch "plugins: Check if vCPU is realized".
+>>=20
+>> > I'm also trying to reproduce either of them with some loads.  I think =
+I hit
+>> > some but it's very hard to reproduce solidly.
+>>=20
+>> Well, if you find anything else let me know and we'll fix it.
 >
-> V1 -> V2:
->   Rebased.
->   Added patch "gdbstub: Fix target_xml initialization".
->   Added patch "gdbstub: Fix target.xml response".
->   Added patch "gdbstub: Replace gdb_regs with an array".
+> I think Stefan's issue is the one I triggered once, but only once; I did
+> see check_guests_ram() lines.
 >
-> Akihiko Odaki (12):
->   gdbstub: Fix target_xml initialization
->   gdbstub: Fix target.xml response
->   plugins: Check if vCPU is realized
->   contrib/plugins: Use GRWLock in execlog
->   gdbstub: Introduce GDBFeature structure
->   target/arm: Move the reference to arm-core.xml
->   hw/core/cpu: Return static value with gdb_arch_name()
->   gdbstub: Use g_markup_printf_escaped()
->   target/arm: Remove references to gdb_has_xml
->   target/ppc: Remove references to gdb_has_xml
->   gdbstub: Remove gdb_has_xml variable
->   gdbstub: Replace gdb_regs with an array
->
->  MAINTAINERS               |  2 +-
->  meson.build               |  2 +-
->  gdbstub/internals.h       |  2 -
->  include/exec/gdbstub.h    | 17 +++----
->  include/hw/core/cpu.h     |  4 +-
->  target/ppc/internal.h     |  2 +-
->  contrib/plugins/execlog.c | 16 ++++---
->  gdbstub/gdbstub.c         | 94 +++++++++++++++++++--------------------
->  gdbstub/softmmu.c         |  2 +-
->  plugins/core.c            |  2 +-
->  stubs/gdbstub.c           |  6 +--
->  target/arm/cpu.c          |  9 ++--
->  target/arm/cpu64.c        |  4 +-
->  target/arm/gdbstub.c      | 32 +------------
->  target/i386/cpu.c         |  6 +--
->  target/loongarch/cpu.c    |  8 ++--
->  target/ppc/gdbstub.c      | 24 ++--------
->  target/riscv/cpu.c        |  6 +--
->  target/s390x/cpu.c        |  4 +-
->  target/tricore/cpu.c      |  4 +-
->  scripts/feature_to_c.py   | 48 ++++++++++++++++++++
->  scripts/feature_to_c.sh   | 69 ----------------------------
->  22 files changed, 146 insertions(+), 217 deletions(-)
->  create mode 100755 scripts/feature_to_c.py
->  delete mode 100644 scripts/feature_to_c.sh
+> I ran concurrently 10 migration-tests (on 8 cores; just to make scheduler
+> start to really work), each looping over preempt/plain for 500 times and
+> hit nothing..  I'm trying again with a larger host with more instances, so
+> far I've run 200 loops over 40 instances running together, I hit
+> nothing.. but I'm keeping trying.
 
+I managed to reproduce it. It's not the return path error. In hindsight
+that's obvious because that error happens in the 'recovery' test and this
+one in the 'plain' one. Sorry about the noise.
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+This one reproduced with just 4 iterations of preempt/plain. I'll
+investigate.
 
