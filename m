@@ -2,60 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CA017A0474
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2E47A03F9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:35:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgloU-0006td-Cw; Thu, 14 Sep 2023 08:51:18 -0400
+	id 1qglYV-0002ts-3V; Thu, 14 Sep 2023 08:34:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mironov@fintech.ru>)
- id 1qgj4t-0003kk-JV
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 05:56:03 -0400
-Received: from exchange.fintech.ru ([195.54.195.159])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
- (Exim 4.90_1) (envelope-from <mironov@fintech.ru>)
- id 1qgj4r-0003qH-W3
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 05:56:03 -0400
-Received: from Ex16-02.fintech.ru (10.0.10.19) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Thu, 14 Sep
- 2023 12:44:16 +0300
-Received: from Ex16-02.fintech.ru (10.0.10.19) by Ex16-02.fintech.ru
- (10.0.10.19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Thu, 14 Sep
- 2023 12:44:16 +0300
-Received: from Ex16-02.fintech.ru ([fe80::18b6:cd4a:a259:613c]) by
- Ex16-02.fintech.ru ([fe80::18b6:cd4a:a259:613c%3]) with mapi id
- 15.01.2242.004; Thu, 14 Sep 2023 12:44:16 +0300
-From: =?koi8-r?B?7cnSz87P1yDzxdLHxcog98zBxMnNydLP18ne?= <mironov@fintech.ru>
-To: "libvirt-security@redhat.com" <libvirt-security@redhat.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "libvir-list@redhat.com"
- <libvir-list@redhat.com>
-CC: "sdl.qemu@linuxtesting.org" <sdl.qemu@linuxtesting.org>
-Subject: [sdl-qemu] [PATCH 1/1] No checks, dereferencing possible
-Thread-Topic: [sdl-qemu] [PATCH 1/1] No checks, dereferencing possible
-Thread-Index: AQHZ5u5CEniT5U+quEGn3D2g2r/RJw==
-Date: Thu, 14 Sep 2023 09:44:16 +0000
-Message-ID: <59e6590ea8a04de788f69709ea4c54f8@fintech.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.1.141]
-Content-Type: multipart/alternative;
- boundary="_000_59e6590ea8a04de788f69709ea4c54f8fintechru_"
+ (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
+ id 1qglXW-0002O3-Ol
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:33:47 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
+ id 1qglXV-0008Eo-45
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:33:46 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-271c700efb2so704165a91.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 05:33:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1694694821; x=1695299621; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2i5iORmaPcRV7ieGSCV0tofWjzs027VAkkmm8l6mIu4=;
+ b=QZpd9GPNdta0IF3O/YHqqZZzaJJswotyKWJ/FHYQ59tuSc0/TzCk0JH792RybEmP4e
+ xy3lJ31M5luDSNtGUZrEr1cSMAjBRehs0b2LI0OC3/ZrlbFFpNt/EBfGBGwcOHieJOw2
+ wTG3mW1KXu6qFTWoKGn2lF3+RmbBtAPP56XyMEOkaJ59BqWRxZOsijDnx2Rf19MepiGP
+ yzi4H7BHt3vnjtSzMWIKCcUv8yHYz4yQgOlh2G7O+E/frPN456oiOgXRTz931VkW/PJD
+ jupyzuWRKhjQXmkWcIxaG9lPm2AZPPVxcRM4AS7dwpNpLGfoHK26dpuU+q8+298efV5P
+ i0Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694694821; x=1695299621;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=2i5iORmaPcRV7ieGSCV0tofWjzs027VAkkmm8l6mIu4=;
+ b=i1V5KZ1OJDLuh8unJ3cDh2rnJjSGton9E2Iu9DdfWahR/LNKN6DhHyeajccGTqpOoe
+ iq39IO/mM3B1bxqOWGg90ERw7GyjgNy8V7tFS6RVgeuh5PsKyQBg1I9nMWI2p6cJrMKa
+ QamIb6uhb/dl5ZNOQ3Zx/napWvsctu+0oanL+4ldaiwIXvoQvFhIKw6fWAPyMWklNPDa
+ Y2BAlpDq4qWCLjfqaMynVhpDllKUQwLz69XED0QRqBsBMnUb2jtPA87IiUtq4hc4tJar
+ uhG6jCXDL6NIhEaQ+jNEiuhbQmwekA6g+zN3ORjIm30oDHs+gdSFwxmiEadvWzXO32Ig
+ MRBQ==
+X-Gm-Message-State: AOJu0YxyfdYo7c7SjRlI5mKiZyTGewRMSkhWVq8It0VyGyxODg6j8nce
+ BN6hgUA2gAsyNaLVNRAVrMb9JfadNU1S+ZHe8TwoTg==
+X-Google-Smtp-Source: AGHT+IFlDiP+shAuXCGwOWWpk937o0m9ZHYJpzhq6Vi/xBPPCzOGN/ZZpvwt6xOJ9HLD5HUH+BxBjA==
+X-Received: by 2002:a17:90a:2ce2:b0:271:9c5f:fc42 with SMTP id
+ n89-20020a17090a2ce200b002719c5ffc42mr5028784pjd.31.1694694821567; 
+ Thu, 14 Sep 2023 05:33:41 -0700 (PDT)
+Received: from mchitale-vm.. ([103.97.165.210])
+ by smtp.googlemail.com with ESMTPSA id
+ 19-20020a17090a001300b00263f5ac814esm3311275pja.38.2023.09.14.05.33.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Sep 2023 05:33:40 -0700 (PDT)
+From: Mayuresh Chitale <mchitale@ventanamicro.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Mayuresh Chitale <mchitale@ventanamicro.com>,
+	alistair.francis@wdc.com
+Subject: [PATCH] target/riscv: pmp: Ignore writes when RW=01
+Date: Thu, 14 Sep 2023 15:47:51 +0530
+Message-Id: <20230914101751.772576-1-mchitale@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received-SPF: pass client-ip=195.54.195.159; envelope-from=mironov@fintech.ru;
- helo=exchange.fintech.ru
-X-Spam_score_int: 13
-X-Spam_score: 1.3
-X-Spam_bar: +
-X-Spam_report: (1.3 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
- HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=mchitale@ventanamicro.com; helo=mail-pj1-x102f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 14 Sep 2023 08:51:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,214 +90,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_59e6590ea8a04de788f69709ea4c54f8fintechru_
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+As per the Priv spec: "The R, W, and X fields form a collective WARL
+field for which the combinations with R=0 and W=1 are reserved."
+However currently such writes are not ignored as ought to be. The
+combinations with RW=01 are allowed only when the Smepmp extension
+is enabled and mseccfg.MML is set.
 
-No checks, dereferencing possible.
-
-
-Return value of a function 'virDomainChrSourceDefNew'
-is dereferenced at qemu_command.c without checking
-for NULL, but it is usually checked for this function.
-
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-
-Fixes: 1f85f0967b ("ci: jobs.sh: Add back '--no-suite syntax-check --print-=
-errorlogs'")
-
-Signed-off-by: Sergey Mironov <mironov@fintech.ru>
-
+Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
 ---
-src/qemu/qemu_command.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/riscv/pmp.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/src/qemu/qemu_command.c b/src/qemu/qemu_command.c
-index e84374b4cf..8d11972c88 100644
---- a/src/qemu/qemu_command.c
-+++ b/src/qemu/qemu_command.c
-@@ -4698,6 +4698,8 @@ qemuBuildVideoCommandLine(virCommand *cmd,
-             g_autofree char *name =3D g_strdup_printf("%s-vhost-user", vid=
-eo->info.alias);
-             qemuDomainChrSourcePrivate *chrsrcpriv =3D QEMU_DOMAIN_CHR_SOU=
-RCE_PRIVATE(chrsrc);
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index f3eb6e6585..5b430be18c 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -119,6 +119,14 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+         if (locked) {
+             qemu_log_mask(LOG_GUEST_ERROR, "ignoring pmpcfg write - locked\n");
+         } else if (env->pmp_state.pmp[pmp_index].cfg_reg != val) {
++            /* If !mseccfg.MML then ignore writes with encoding RW=01 */
++            if ((val & PMP_WRITE) && !(val & PMP_READ) &&
++                (!riscv_cpu_cfg(env)->ext_smepmp ||
++                !MSECCFG_MML_ISSET(env))) {
++                val &= ~(PMP_WRITE | PMP_READ);
++                val |= env->pmp_state.pmp[pmp_index].cfg_reg &
++                       (PMP_WRITE | PMP_READ);
++            }
+             env->pmp_state.pmp[pmp_index].cfg_reg = val;
+             pmp_update_rule_addr(env, pmp_index);
+             return true;
+-- 
+2.34.1
 
-+           if (chrsrc =3D=3D NULL)
-+                   return -1;
-             chrsrc->type =3D VIR_DOMAIN_CHR_TYPE_UNIX;
-             chrsrcpriv->directfd =3D qemuFDPassDirectNew(name, &videopriv-=
->vhost_user_fd);
---
-2.31.1
-
---_000_59e6590ea8a04de788f69709ea4c54f8fintechru_
-Content-Type: text/html; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dkoi8-r">
-<style type=3D"text/css" style=3D"display:none;"><!-- P {margin-top:0;margi=
-n-bottom:0;} --></style>
-</head>
-<body dir=3D"ltr">
-<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; color=
-:rgb(0,0,0); font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple=
- Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI=
- Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols">
-<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; color=
-:rgb(0,0,0); font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple=
- Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI=
- Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols">
-<p></p>
-<p><span style=3D"color:rgb(33,33,33); font-family:Calibri,Helvetica,sans-s=
-erif; font-size:14.6667px"><span>No checks, dereferencing possible</span>.<=
-/span><br>
-</p>
-<p><br>
-</p>
-<p><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
-;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
-t; font-size:13.3333px"><span style=3D"font-family:Calibri,Helvetica,sans-s=
-erif; font-size:11pt"></span></span></p>
-<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-family:Calibri,H=
-elvetica,sans-serif,EmojiFont,&quot;Apple Color Emoji&quot;,&quot;Segoe UI =
-Emoji&quot;,NotoColorEmoji,&quot;Segoe UI Symbol&quot;,&quot;Android Emoji&=
-quot;,EmojiSymbols; font-size:12pt">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">Re=
-turn value of a function 'virDomainChrSourceDefNew'&nbsp;</span></div>
-<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-family:Calibri,H=
-elvetica,sans-serif,EmojiFont,&quot;Apple Color Emoji&quot;,&quot;Segoe UI =
-Emoji&quot;,NotoColorEmoji,&quot;Segoe UI Symbol&quot;,&quot;Android Emoji&=
-quot;,EmojiSymbols; font-size:12pt">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">is=
- dereferenced at qemu_command.c without checking&nbsp;</span></div>
-<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-family:Calibri,H=
-elvetica,sans-serif,EmojiFont,&quot;Apple Color Emoji&quot;,&quot;Segoe UI =
-Emoji&quot;,NotoColorEmoji,&quot;Segoe UI Symbol&quot;,&quot;Android Emoji&=
-quot;,EmojiSymbols; font-size:12pt">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">fo=
-r NULL, but it is usually checked for this function</span><span style=3D"fo=
-nt-family:Calibri,Helvetica,sans-serif; font-size:11pt">.</span></div>
-</div>
-<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; color=
-:rgb(0,0,0); font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple=
- Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI=
- Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
-span>
-<p style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple =
-Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI =
-Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
-<br>
-</p>
-<p></p>
-<p><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
-;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
-t; font-size:13.3333px">Found by Linux Verification Center (linuxtesting.or=
-g) with SVACE.</span><br>
-</p>
-<p><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
-;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
-t; font-size:13.3333px"><br>
-</span></p>
-<p><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
-;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
-t; font-size:13.3333px">Fixes: 1f85f0967b (&quot;ci: jobs.sh: Add back '--n=
-o-suite syntax-check --print-errorlogs'&quot;)<br>
-</span></p>
-<p><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
-;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
-t; font-size:13.3333px">Signed-off-by: Sergey Mironov &lt;mironov@fintech.r=
-u&gt;<br>
-</span></p>
-<p><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
-;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
-t; font-size:13.3333px"></span></p>
-<div>
-<div></div>
-<span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot;Se=
-goe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFont; =
-font-size:13.3333px">---</span></div>
-<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
-t"><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
-;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
-t; font-size:13.3333px">
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
-e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
-I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"><s=
-pan id=3D"ms-rterangepaste-start"></span><span>src/qemu/qemu_command.c | 2 =
-&#43;&#43;</span><span id=3D"ms-rterangepaste-end"></span></span></div>
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
-span>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
-e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
-I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">&n=
-bsp;1 file changed, 2 insertions(&#43;)</span></div>
-</span></span></div>
-<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
-t"></span></div>
-<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
-t; color:rgb(33,33,33)"><br>
-<div>diff --git a/src/qemu/qemu_command.c b/src/qemu/qemu_command.c</div>
-<div>index e84374b4cf..8d11972c88 100644</div>
-<div>--- a/src/qemu/qemu_command.c</div>
-<div>&#43;&#43;&#43; b/src/qemu/qemu_command.c</div>
-<div>@@ -4698,6 &#43;4698,8 @@ qemuBuildVideoCommandLine(virCommand *cmd,</=
-div>
-<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;g_autofree char *name =
-=3D g_strdup_printf(&quot;%s-vhost-user&quot;, video-&gt;info.alias);</div>
-<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;qemuDomainChrSourcePri=
-vate *chrsrcpriv =3D QEMU_DOMAIN_CHR_SOURCE_PRIVATE(chrsrc);</div>
-<div>&nbsp;</div>
-<div>&#43;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;if (chrsrc =3D=3D NULL)<=
-/div>
-<div>&#43;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &n=
-bsp;return -1;</div>
-<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;chrsrc-&gt;type =3D VI=
-R_DOMAIN_CHR_TYPE_UNIX;</div>
-<div>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;chrsrcpriv-&gt;directf=
-d =3D qemuFDPassDirectNew(name, &amp;videopriv-&gt;vhost_user_fd);</div>
-</span></div>
-<div>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
-e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
-I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"><s=
-pan style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot;Sego=
-e UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFont; fo=
-nt-size:13.3333px">
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
-e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
-I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
-<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
-t"></span></div>
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
-span></div>
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
-span>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
-e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
-I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">--=
-</span></div>
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
-span>
-<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
-e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
-I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
-<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">2.=
-31.1</span></div>
-</span></span></div>
-</div>
-</div>
-</div>
-</body>
-</html>
-
---_000_59e6590ea8a04de788f69709ea4c54f8fintechru_--
 
