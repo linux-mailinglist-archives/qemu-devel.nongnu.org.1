@@ -2,61 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9763F7A067A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D49227A06C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:02:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgmkl-0008Ic-Gv; Thu, 14 Sep 2023 09:51:31 -0400
+	id 1qgmuQ-0007v2-Ep; Thu, 14 Sep 2023 10:01:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qgmkj-0008Hz-VA
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:51:29 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qgmu7-0007qC-Df
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:01:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qgmkh-0007kw-F4
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:51:29 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qgmu2-00015i-4V
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:01:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694699485;
+ s=mimecast20190719; t=1694700065;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=TClF1WKf5UWVgnaCYNZw028OXaAxI75B5gNpn3meHGc=;
- b=OWjfdrAKW574tBTcM+nl7eHqMcDF1IzcIHjI03pd0giQY4m+Tk/SKO2zI4lf0lnucqpxCX
- 106OhTMHD99kPxPv4sdhZ5dgo259I6g1vaEr5RGcAoMq2m+/FVRb4Kk77DLjLBMVfmScln
- NNKMbqYh2F18VnUkcwESZebpDXsupC4=
+ content-transfer-encoding:content-transfer-encoding;
+ bh=BQlmGCjMmXwzEzbzoyWciu+bvyqp8h88hY0oeCJESy0=;
+ b=NWEWV3jPghvYtYKCC3tY+zSnL/R5eSfd0uUSwTn0+P8shE9rWLNMjcciavv2Bltf2ioKwX
+ zhl16aDJW0wYbKLS+4VsOMVEXL5MSl2+09QQJIykulBt2oDbDf/bNxetZYMVLSmStn8chF
+ ME2Y8JDM1HmWEaVFUe67YwKPxfgYSE4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-17-vkH-dYusPxSJGUsAyzhYXg-1; Thu, 14 Sep 2023 09:51:21 -0400
-X-MC-Unique: vkH-dYusPxSJGUsAyzhYXg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-659-qXM7NthIO_y6njxoluUT9Q-1; Thu, 14 Sep 2023 10:01:03 -0400
+X-MC-Unique: qXM7NthIO_y6njxoluUT9Q-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BDEF8857A9E
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:51:20 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.127])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9B4E740C2070
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:51:20 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 96FE221E6900; Thu, 14 Sep 2023 15:51:19 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,  John
- Snow <jsnow@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>
-Subject: Re: [PATCH v2 00/11] Validate and test qapi examples
-References: <20230911104017.65397-1-victortoso@redhat.com>
-Date: Thu, 14 Sep 2023 15:51:19 +0200
-In-Reply-To: <20230911104017.65397-1-victortoso@redhat.com> (Victor Toso's
- message of "Mon, 11 Sep 2023 12:40:08 +0200")
-Message-ID: <87pm2kn9rc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 560D188B7AD;
+ Thu, 14 Sep 2023 14:01:03 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.105])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CB9191054FC0;
+ Thu, 14 Sep 2023 14:01:02 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ <qemu-block@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 0/4] virtio-blk: prepare for the multi-queue block layer
+Date: Thu, 14 Sep 2023 10:00:57 -0400
+Message-ID: <20230914140101.1065008-1-stefanha@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -80,7 +77,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PATCH 01-06,09:
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+The virtio-blk device will soon be able to assign virtqueues to IOThreads,
+eliminating the single IOThread bottleneck. In order to do that, the I/O code
+path must support running in multiple threads.
+
+This patch series removes the AioContext lock from the virtio-blk I/O code
+path, adds thread-safety where it is required, and ensures that Linux AIO and
+io_uring are available regardless of which thread calls into the block driver.
+With these changes virtio-blk is ready for the iothread-vq-mapping feature,
+which will be introduced in the next patch series.
+
+Based-on: 20230913200045.1024233-1-stefanha@redhat.com ("[PATCH v3 0/4] virtio-blk: use blk_io_plug_call() instead of notification BH")
+Based-on: 20230912231037.826804-1-stefanha@redhat.com ("[PATCH v3 0/5] block-backend: process I/O in the current AioContext")
+
+Stefan Hajnoczi (4):
+  block/file-posix: set up Linux AIO and io_uring in the current thread
+  virtio-blk: add lock to protect s->rq
+  virtio-blk: don't lock AioContext in the completion code path
+  virtio-blk: don't lock AioContext in the submission code path
+
+ include/hw/virtio/virtio-blk.h |   3 +-
+ block/file-posix.c             |  99 +++++++++++++++---------------
+ hw/block/virtio-blk.c          | 106 +++++++++++++++------------------
+ 3 files changed, 98 insertions(+), 110 deletions(-)
+
+-- 
+2.41.0
 
 
