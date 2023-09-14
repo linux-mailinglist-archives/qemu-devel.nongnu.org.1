@@ -2,115 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85CA07A0B15
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 18:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2877A0B16
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 18:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgpdV-0007ht-Ax; Thu, 14 Sep 2023 12:56:13 -0400
+	id 1qgped-0000fi-TD; Thu, 14 Sep 2023 12:57:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qgpdJ-0007gt-3n
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:56:01 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qgpec-0000fK-2D
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:57:22 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qgpdF-0005Qr-UI
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:56:00 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-57767b2058cso742697a12.1
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 09:55:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
+ id 1qgpea-0005hG-Dw
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:57:21 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-40434d284f7so10265185e9.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 09:57:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694710555; x=1695315355;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=OrtqeKPEOOIINFRPKzqcHJS5KfxI2xTmwWo1vlg8v1c=;
- b=zCuulaqd/qCCk0YdiL9hWy4qcMctEwGjSfCnUp5EL6mOwXPBkrLJ53mRtu5NTmIyZB
- 0cOTxBniFbFPPAncPKRfbDcYpKPu7siANXFzJRJPk+x53eYOOh2B3u9fstFsGxYlIFG7
- D1c5x/sZlrajxbLod4SLtL7tAie9CMm4Sh2VQVcmyWB3hvK7P4kKwA+wpk5kdUW+u0Yh
- zq/d3LLe2PEyr/1/UiU7jJTkm0dd7nsCybZpgm2BEqKOywAGcul/vd+DfidAy0BJQplO
- iYvLqC44UA7I/CWFeN9lB0N7A7oM/jSBi7qC0S++anwRsPvWL/vhFpNY6IsnAQmOoctx
- m7cQ==
+ d=gmail.com; s=20221208; t=1694710632; x=1695315432; darn=nongnu.org;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PFDrZg1H7FdsNSeJzSEmgLOu0CvwUXAeF443lrdS7FU=;
+ b=dpCgBlr4jI70vMTVPsmChIR9l1lSh69Mq+MA+goZ/C4hLrgapdQy88KyNSEF9V37Hg
+ lVnSy1+hpguFYAyd5xs8mKpd/fCzLy7iSqzZCdaTY/Uj0Y6xFwDPZqVz46d96+LDrHn0
+ wjwVnpGS97sxJolsObffxPrqTWeM/69p8c8vYE2dcHPkKNULgbQZ0Cp2d6HVnA6nFIyO
+ OXsGvXNw5gfDmP4FVNuNQ06GMJfYa+R/J9GE4MkkadtUShflj5HKFd5OLbIbHHwK1ijt
+ wCkHeRAZzw/wsDjfoSmw4xdqKeqmjwVWGpprRgqX1rwWNA8bv9oMyc4PLG/nZkDutxO0
+ NN/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694710555; x=1695315355;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OrtqeKPEOOIINFRPKzqcHJS5KfxI2xTmwWo1vlg8v1c=;
- b=b66i1s2PkW0bCCFWZtJsV8LmyoEbeeSOlJ3FSGgUuOJdaEkeLxbusG8rY86qpYzvMb
- q7dmgJuQJgYxU7mKPyynXEXCLeUHgVp2YnThld/s9PZo5PtQf0cBDu086ooHNgr9DQDY
- 3QBcjdR+5ITcprSqwUIhDJqz3JNShSvnpu3m7Qb6QwhxcrAbIX4STtaLVKdNnEd6sHni
- 2G16Vc4OTJx6lkInYMLHKUGyz3hnB+bqXNSCfqx9FAgRzq75v8twq0yIhrJTLcVenHYq
- wSXYJSNPkdmNiJtUAUpdWvg/0TTvuE4vwDR5gpuiZJ/MPf77b74TuVeA8MZGr7CTQTJp
- GsWg==
-X-Gm-Message-State: AOJu0Yw5iJZVTkSHwwz9SrPPuqHCDz6fL9ztXStj9NoFlh76KFmPPHpI
- kYdCJgU63pORPgetPXBUmHfp5Q==
-X-Google-Smtp-Source: AGHT+IFH+aMJ9MxqVh7hQkBwUE8p1M4OsCi6Yoo2pLbXlxxU5AWS+iFf9SUPNMuXAmVTCmy9BtEkkw==
-X-Received: by 2002:a17:90a:ba8b:b0:26b:5ba4:4948 with SMTP id
- t11-20020a17090aba8b00b0026b5ba44948mr5760315pjr.12.1694710554786; 
- Thu, 14 Sep 2023 09:55:54 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- ie18-20020a17090b401200b0026971450601sm1589586pjb.7.2023.09.14.09.55.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 09:55:54 -0700 (PDT)
-Message-ID: <391f745f-d00f-4289-be68-7590bceb902d@daynix.com>
-Date: Fri, 15 Sep 2023 01:55:47 +0900
+ d=1e100.net; s=20230601; t=1694710632; x=1695315432;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PFDrZg1H7FdsNSeJzSEmgLOu0CvwUXAeF443lrdS7FU=;
+ b=bQzpBMd4f2uP2bKR/Hjs1/A9Ikgy7TJTts+BQoqlbdaCXdZ3YLnoE2eICimvNV0Eqt
+ kO1Gs9aMqbSShDvqPgup3kzgJrwfX2iyMpFGpboiMxiSOpTSGbYUE+H48Bnwgy5m0uwO
+ 1KL/QD5Rl4CsQ/5BX82FGNLh40T4SWPbyUJx3w+LbRZOY/Z+hsh9bhUre+bp4UHbyjn8
+ LhlsPK063FmOu+0BOrOC3Yd4q9wFQ/vuqKmXkQJ8tsKDiVhZxOCeNfq25fRwSe2qhpBb
+ 7ct31M8/SlhpuxEjgFRb2EnotkWiWCUZgXH/os7cHlrzchKUDJA/sThB1EJOTen/kuNk
+ JvqQ==
+X-Gm-Message-State: AOJu0YxomxnfjmZIXsf4KOcyMp04fXTTKvl0FEwurkB0KppCEvHuX+I3
+ U50HPIHyz8xftTwpW3BlmLn+XZSAk1w=
+X-Google-Smtp-Source: AGHT+IHcgTAUpLDIpk6xes8cb0Lh/vjJMt8y5ALxtexCsQOKSOve+PfADFBaxlPn1IG/Q/1qE8x9cQ==
+X-Received: by 2002:a1c:4b0a:0:b0:3ff:28b8:c53d with SMTP id
+ y10-20020a1c4b0a000000b003ff28b8c53dmr5036856wma.33.1694710631778; 
+ Thu, 14 Sep 2023 09:57:11 -0700 (PDT)
+Received: from karim ([197.39.44.105]) by smtp.gmail.com with ESMTPSA id
+ k23-20020a05600c0b5700b00402fa98abe3sm5310533wmr.46.2023.09.14.09.57.10
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Sep 2023 09:57:11 -0700 (PDT)
+From: Karim Taha <kariem.taha2.7@gmail.com>
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: 
+Subject: Re: [PATCH v3 22/23] bsd-user: Implement shmat(2) and shmdt(2)
+In-Reply-To: <0bdcfe70-58ac-4ed0-4f75-33d30653a9c2@linaro.org>
+References: <20230909193704.1827-1-kariem.taha2.7@gmail.com>
+ <20230909193704.1827-23-kariem.taha2.7@gmail.com>
+ <0bdcfe70-58ac-4ed0-4f75-33d30653a9c2@linaro.org>
+Date: Thu, 14 Sep 2023 19:55:49 +0300
+Message-ID: <87jzss4ru2.fsf@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
-To: Albert Esteve <aesteve@redhat.com>
-Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-11-ray.huang@amd.com>
- <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
- <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
- <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
- <cf99ac00-6f48-4778-b319-6079a931ba5d@daynix.com>
- <CADSE00+6zcT7iKR0JW1Bk8es6HtBpzAKa9JW6u5yyjDoLPw2KQ@mail.gmail.com>
- <5e88f5d5-5aa2-4052-b250-69c2a443344f@daynix.com>
- <CADSE00+BUq-6jKH3v2PYNThn+9Z4UCFcr3Cv9Z48eUX0b=6ymA@mail.gmail.com>
- <3918c96c-f106-494d-8e97-6d86cef8df27@daynix.com>
- <CADSE00LNYm+vKaYwnTAdECGUXPCfiJ7aLqszDuqSzCLLhVOHhQ@mail.gmail.com>
- <0adaf816-e050-43c3-8284-fc41627543ef@daynix.com>
- <CADSE00Kyid+=FkkopSGDAyeJ_MY2exDdxoPf18pzthKy70kkKg@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CADSE00Kyid+=FkkopSGDAyeJ_MY2exDdxoPf18pzthKy70kkKg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::530;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x530.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x333.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -126,303 +90,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/14 17:29, Albert Esteve wrote:
-> 
-> 
-> On Thu, Sep 14, 2023 at 9:17 AM Akihiko Odaki <akihiko.odaki@daynix.com 
-> <mailto:akihiko.odaki@daynix.com>> wrote:
-> 
->     On 2023/09/13 23:18, Albert Esteve wrote:
->      >
->      >
->      > On Wed, Sep 13, 2023 at 3:43 PM Akihiko Odaki
->     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
->      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>> wrote:
->      >
->      >     On 2023/09/13 21:58, Albert Esteve wrote:
->      >      >
->      >      >
->      >      > On Wed, Sep 13, 2023 at 2:22 PM Akihiko Odaki
->      >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
->     <mailto:akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>>
->      >      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>>> wrote:
->      >      >
->      >      >     On 2023/09/13 20:34, Albert Esteve wrote:
->      >      >      >
->      >      >      >
->      >      >      > On Wed, Sep 13, 2023 at 12:34 PM Akihiko Odaki
->      >      >     <akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com> <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com> <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>>
->      >      >      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>
->      >      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>>>> wrote:
->      >      >      >
->      >      >      >     On 2023/09/13 16:55, Albert Esteve wrote:
->      >      >      >      > Hi Antonio,
->      >      >      >      >
->      >      >      >      > If I'm not mistaken, this patch is related with:
->      >      >      >      >
->      >      >      >
->      >      >
->      >
->     https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html
->     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>
->      >   
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>
->      >      >
->      >     
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>
->      >      >      >
->      >      >
->      >     
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>>
->      >      >      >      >
->      >      >      >
->      >      >
->      >     
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>
->      >      >      >
->      >      >
->      >     
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>>>
->      >      >      >      > IMHO, ideally, virtio-gpu and vhost-user-gpu
->     both,
->      >     would
->      >      >     use the
->      >      >      >      > infrastructure from the patch I linked to
->     store the
->      >      >      >      > virtio objects, so that they can be later
->     shared with
->      >      >     other devices.
->      >      >      >
->      >      >      >     I don't think such sharing is possible because the
->      >     resources are
->      >      >      >     identified by IDs that are local to the device.
->     That also
->      >      >     complicates
->      >      >      >     migration.
->      >      >      >
->      >      >      >     Regards,
->      >      >      >     Akihiko Odaki
->      >      >      >
->      >      >      > Hi Akihiko,
->      >      >      >
->      >      >      > As far as I understand, the feature to export
->      >     dma-bufs from the
->      >      >      > virtgpu was introduced as part of the virtio
->     cross-device
->      >     sharing
->      >      >      > proposal [1]. Thus, it shall be posible. When
->      >     virtgpu ASSING_UUID,
->      >      >      > it exports and identifies the dmabuf resource, so that
->      >     when the
->      >      >     dmabuf gets
->      >      >      > shared inside the guest (e.g., with virtio-video),
->     we can
->      >     use the
->      >      >     assigned
->      >      >      > UUID to find the dmabuf in the host (using the
->     patch that I
->      >      >     linked above),
->      >      >      > and import it.
->      >      >      >
->      >      >      > [1] - https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>
->      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>>
->      >      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>
->      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>>>
->      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/> <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>>
->      >      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>
->      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>>>>
->      >      >
->      >      >     The problem is that virtio-gpu can have other kind of
->      >     resources like
->      >      >     pixman and OpenGL textures and manage them and
->     DMA-BUFs with
->      >     unified
->      >      >     resource ID.
->      >      >
->      >      >
->      >      > I see.
->      >      >
->      >      >
->      >      >     So you cannot change:
->      >      >     g_hash_table_insert(g->resource_uuids,
->      >      >     GUINT_TO_POINTER(assign.resource_id), uuid);
->      >      >     by:
->      >      >     virtio_add_dmabuf(uuid, assign.resource_id);
->      >      >
->      >      >     assign.resource_id is not DMA-BUF file descriptor, and the
->      >     underlying
->      >      >     resource my not be DMA-BUF at first place.
->      >      >
->      >      >
->      >      > I didn't really look into the patch in-depth, so the code was
->      >     intended
->      >      > to give an idea of how the implementation would look like with
->      >      > the cross-device patch API. Indeed, it is not the resource_id,
->      >      > (I just took a brief look at the virtio
->     specificacion 1.2), but the
->      >      > underlying
->      >      > resource what we want to use here.
->      >      >
->      >      >
->      >      >     Also, since this lives in the common code that is not used
->      >     only by
->      >      >     virtio-gpu-gl but also virtio-gpu, which supports
->     migration,
->      >     we also
->      >      >     need to take care of that. It is not a problem for
->     DMA-BUF as
->      >      >     DMA-BUF is
->      >      >     not migratable anyway, but the situation is different
->     in this
->      >     case.
->      >      >
->      >      >     Implementing cross-device sharing is certainly a
->     possibility,
->      >     but that
->      >      >     requires more than dealing with DMA-BUFs.
->      >      >
->      >      >
->      >      > So, if I understood correctly, dmabufs are just a subset
->     of the
->      >     resources
->      >      > that the gpu manages, or can assign UUIDs to. I am not
->     sure why
->      >      > the virt gpu driver would want to send a ASSIGN_UUID for
->     anything
->      >      > that is not a dmabuf (are we sure it does?), but I am not
->     super
->      >     familiarized
->      >      > with virtgpu to begin with.
->      >
->      >     In my understanding, an resource will be first created as
->     OpenGL or
->      >     Vulkan textures and then exported as a DMA-BUF file
->     descriptor. For
->      >     these resource types exporting/importing code is mandatory.
->      >
->      >     For pixman buffers (i.e., non-virgl device), I don't see a
->     compelling
->      >     reason to have cross-device sharing. It is possible to omit
->     resource
->      >     UUID feature from non-virgl device to avoid implementing
->     complicated
->      >     migration.
->      >
->      >
->      > I see, thanks for the clarification.
->      > I would assume you could avoid the UUID feature for those
->     resources, but
->      > I will need to check the driver implementation. It is worth checking
->      > though, if
->      > that would simplify the implementation.
->      >
->      >
->      >      > But I see that internally, the GPU specs relate a UUID with a
->      >     resource_id,
->      >      > so we still need both tables:
->      >      > - one to relate UUID with resource_id to be able to locate the
->      >      > underlying resource
->      >      > - the table that holds the dmabuf with the UUID for
->     cross-device
->      >     sharing
->      >      >
->      >      > With that in mind, sounds to me that the support for
->     cross-device
->      >      > sharing could
->      >      > be added on top of this patch, once
->      >      >
->      >
->     https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html
->     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html>
->      >   
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html>>
->      >      >
->      >   
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html>
->      >   
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html>>>
->      >      > lands.
->      >
->      >     That is possible, but I think it's better to implement
->     cross-device
->      >     sharing at the same time introducing virtio-dmabuf.
->      >
->      >     The current design of virtio-dmabuf looks somewhat
->     inconsistent; it's
->      >     named "dmabuf", but internally the UUIDs are stored into
->     something
->      >     named
->      >     "resource_uuids" and it has SharedObjectType so it's more like a
->      >     generic
->      >     resource sharing mechanism. If you actually have an
->     implementation of
->      >     cross-device sharing using virtio-dmabuf, it will be clear
->     what kind of
->      >     feature is truly necessary.
->      >
->      >
->      > Yeah, the file was named as virtio-dmabuf following the kernel
->      > implementation. Also, because for the moment it only aims to share
->      > dmabufs. However, virtio specs leave the virtio object
->     defintion vague [1]
->      > (I guess purposely). It is up to the specific devices to define
->     what an
->      > object
->      > means for them. So the implementation tries to follow that, and
->      > leave the contents of the table generic. The table can hold any
->     kind of
->      > object,
->      > and the API exposes type-specific functions (for dmabufs, or others).
->     In the guest kernel, the name "virtio_dma_buf" represents the interface
->     between the *guest* kernel and *guest* user-space. It makes sense since
->     the cross-device resource sharing is managed by the userspace and
->     DMA-BUF is the only interface between them for this purpose.
-> 
->     The situation is different for QEMU; QEMU interacts with backends using
->     backend-specific interfaces (OpenGL/pixman) and virgl is capable to
->     export textures as DMA-BUF. DMA-BUF is not universal in this sense. As
->     such, we cannot just borrow the kernel-side naming but invent one.
-> 
-> It is not a gpu-specific feature. It is a generic cross-device sharing
-> mechanism for virtio objects. In this case, virtio objects happen to be
-> dmabufs in this first iteration. Hence, the name.
-> 
-> virtio-gpu (and vhost-user-gpu) will use this feature only with virgl, 
-> that is
-> fine, and transversal to the object-sharing mechanism. It allows
-> to share dmabufs in the host following how they are shared in the guest.
-> The virtgpu driver may call ASSIGN_UUID for other types of resources 
-> (not sure,
-> but could be), but they will never be shared with other virtio devices.
-> So they are not too relevant. Also, the shared objects table could 
-> potentially
-> be accessed from any virtio device, not only virtio-gpu or virtio-video.
+Richard Henderson <richard.henderson@linaro.org> writes:
 
-The virtgpu driver will call ASSIGN_UUID for resources that are backed 
-with pixman buffer. What is used as the backing store for resources is 
-an implementation detail of VMM and the guest cannot know it. For the 
-guest, they are same kind of resources (2D images).
+Do I need to enclose `shmdt implmenetation` in a WITH_MMAP_LOCK_GUARD() block?
+
+Mr.Warner forwared me a patch series ,that you sent on Sun 20 Aug,
+for the linux-user, which encloses the implementation in such a block.
+
+--
+Karim Taha
+> On 9/9/23 12:37, Karim Taha wrote:
+>> +static inline abi_long do_bsd_shmdt(abi_ulong shmaddr)
+>> +{
+>> +    int i;
+>> +
+>> +    for (i = 0; i < N_BSD_SHM_REGIONS; ++i) {
+>> +        if (bsd_shm_regions[i].start == shmaddr) {
+>> +            bsd_shm_regions[i].start = 0;
+>> +            page_set_flags(shmaddr,
+>> +                shmaddr + bsd_shm_regions[i].size, 0);
+>> +            break;
+>> +        }
+>> +    }
+>> +
+>> +    return get_errno(shmdt(g2h_untagged(shmaddr)));
+>> +}
+>
+> On success, this needs to mmap_reserve the region for reserved_va.
+>
+>
+> r~
 
