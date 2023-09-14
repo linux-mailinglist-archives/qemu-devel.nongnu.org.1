@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC1779F91F
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0341579F92D
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:53:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgdOw-00071X-O2; Wed, 13 Sep 2023 23:52:22 -0400
+	id 1qgdP1-0007FM-8R; Wed, 13 Sep 2023 23:52:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdOu-0006nf-Mb
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:20 -0400
+ id 1qgdOz-0007Dl-Bo
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:25 -0400
 Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdOs-0000r7-Ov
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:20 -0400
+ id 1qgdOx-0000r7-Kp
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694663538; x=1726199538;
+ t=1694663543; x=1726199543;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CMoUkTu0XoMVNmvzrbCVHiTlm286z9ePGh8MA6ueE+o=;
- b=ahyRE0PUsn2osuFBnWwzNZzEjilcV9DGtqQLDVd06K6L4YWgGH6OJPOR
- 2AXHShpkJbQ2PCpsM4z7VKWZcK7+upAy+WnBYaRKS3oklUWymfD0+jxu7
- jyHQW65W2gSGT3tuY04oq19UGXHe+LIjYOAIV5FP393DbgwwYs1iiS5wh
- akgq7FV5Y+TPJSgztAelUS0Ep9thPlobTtIeOuJbJ5smMhljS5hqu2b2/
- AEFHFi+k77zsbeXX/PrHPwtW56RN5+BAAXZf3cYn/jHHZId+bntBkB2EG
- J0uGLsLbEby2cvXA1OtSrBrNyBIi+DCmXkL6gU7FH5j536AeZ841fFL7J Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528471"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528471"
+ bh=eKloPCcRi+HIRDzS+h7jCyuEt7bYm6PhIvGdqysJsx8=;
+ b=CODPZ7y83/toBuJ3Pa9/G2/PjbH4unXpjTi+5msW0fxteLbWFkhxEoKk
+ hDCb0GfUllPgV20Vrlk6LsJNeKA3vndNP/2o+PszsQfRUk6mQqNSKuF2I
+ 5qszPDMaB9WzQdiZRg6ba17skSUTStQBwVKNVxMEk2iD6RDdEo7zV+naY
+ yPmVIB2e7cztFgZf+pxkCzL4nfqQomqxT3Rr30mjZQYw+IM+ngYs7JS6r
+ p3XazqPwwBGeqVZX1/Bpe8hPNP8ImmZXT5HC4QTffd58cxY/91l1twc3J
+ F4FuHvE3mPtbEQZDXZALIjm68t9oDwk/Y9X3Xk1mQzHR1zQf3Av96g4Kw w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528480"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528480"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Sep 2023 20:52:18 -0700
+ 13 Sep 2023 20:52:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500617"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500617"
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500625"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500625"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:52:13 -0700
+ by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:52:18 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -54,10 +54,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [RFC PATCH v2 12/21] kvm/memory: Introduce the infrastructure to set
- the default shared/private value
-Date: Wed, 13 Sep 2023 23:51:08 -0400
-Message-Id: <20230914035117.3285885-13-xiaoyao.li@intel.com>
+Subject: [RFC PATCH v2 13/21] i386/kvm: Set memory to default private for
+ KVM_X86_SW_PROTECTED_VM
+Date: Wed, 13 Sep 2023 23:51:09 -0400
+Message-Id: <20230914035117.3285885-14-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230914035117.3285885-1-xiaoyao.li@intel.com>
 References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
@@ -88,88 +88,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce new flag RAM_DEFAULT_PRIVATE for RAMBlock. It's used to
-indicate the default attribute,  private or not.
+Register a memory listener for KVM_X86_SW_PROVTED_VM. It set RAM to
+private by default.
 
-Set the RAM range to private explicitly when it's default private.
-
-Originated-from: Isaku Yamahata <isaku.yamahata@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- accel/kvm/kvm-all.c   | 10 ++++++++++
- include/exec/memory.h |  6 ++++++
- softmmu/memory.c      | 13 +++++++++++++
- 3 files changed, 29 insertions(+)
+ include/exec/memory.h             |  1 +
+ target/i386/kvm/sw-protected-vm.c | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index eeccc6317fa9..7e32ee83b258 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -1487,6 +1487,16 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
-                     strerror(-err));
-             abort();
-         }
-+
-+        if (memory_region_is_default_private(mr)) {
-+            err = kvm_set_memory_attributes_private(start_addr, slot_size);
-+            if (err) {
-+                error_report("%s: failed to set memory attribute private: %s\n",
-+                             __func__, strerror(-err));
-+                exit(1);
-+            }
-+        }
-+
-         start_addr += slot_size;
-         ram_start_offset += slot_size;
-         ram += slot_size;
 diff --git a/include/exec/memory.h b/include/exec/memory.h
-index 4b8486ca3632..2c738b5dc420 100644
+index 2c738b5dc420..a2602b783a38 100644
 --- a/include/exec/memory.h
 +++ b/include/exec/memory.h
-@@ -238,6 +238,9 @@ typedef struct IOMMUTLBEvent {
- /* RAM can be private that has kvm gmem backend */
- #define RAM_KVM_GMEM    (1 << 10)
+@@ -820,6 +820,7 @@ struct IOMMUMemoryRegion {
+ #define MEMORY_LISTENER_PRIORITY_MIN            0
+ #define MEMORY_LISTENER_PRIORITY_ACCEL          10
+ #define MEMORY_LISTENER_PRIORITY_DEV_BACKEND    10
++#define MEMORY_LISTENER_PRIORITY_ACCEL_HIGH     20
  
-+/* RAM is default private */
-+#define RAM_DEFAULT_PRIVATE     (1 << 11)
-+
- static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
-                                        IOMMUNotifierFlag flags,
-                                        hwaddr start, hwaddr end,
-@@ -1684,6 +1687,9 @@ bool memory_region_is_protected(MemoryRegion *mr);
-  */
- bool memory_region_has_gmem_fd(MemoryRegion *mr);
- 
-+void memory_region_set_default_private(MemoryRegion *mr);
-+bool memory_region_is_default_private(MemoryRegion *mr);
-+
  /**
-  * memory_region_get_iommu: check whether a memory region is an iommu
-  *
-diff --git a/softmmu/memory.c b/softmmu/memory.c
-index e69a5f96d5d1..dc5d0d7703b5 100644
---- a/softmmu/memory.c
-+++ b/softmmu/memory.c
-@@ -1851,6 +1851,19 @@ bool memory_region_has_gmem_fd(MemoryRegion *mr)
-     return mr->ram_block && mr->ram_block->gmem_fd >= 0;
- }
+  * struct MemoryListener: callbacks structure for updates to the physical memory map
+diff --git a/target/i386/kvm/sw-protected-vm.c b/target/i386/kvm/sw-protected-vm.c
+index 3cfcc89202a6..f47ac383e1dd 100644
+--- a/target/i386/kvm/sw-protected-vm.c
++++ b/target/i386/kvm/sw-protected-vm.c
+@@ -12,14 +12,32 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qom/object_interfaces.h"
++#include "exec/address-spaces.h"
++#include "sysemu/kvm.h"
  
-+bool memory_region_is_default_private(MemoryRegion *mr)
+ #include "hw/i386/x86.h"
+ #include "sw-protected-vm.h"
+ 
++static void kvm_x86_sw_protected_vm_region_add(MemoryListener *listenr,
++                                               MemoryRegionSection *section)
 +{
-+    return memory_region_has_gmem_fd(mr) &&
-+           (mr->ram_block->flags & RAM_DEFAULT_PRIVATE);
++    memory_region_set_default_private(section->mr);
 +}
 +
-+void memory_region_set_default_private(MemoryRegion *mr)
-+{
-+    if (memory_region_has_gmem_fd(mr)) {
-+        mr->ram_block->flags |= RAM_DEFAULT_PRIVATE;
-+    }
-+}
++static MemoryListener kvm_x86_sw_protected_vm_memory_listener = {
++    .name = "kvm_x86_sw_protected_vm_memory_listener",
++    .region_add = kvm_x86_sw_protected_vm_region_add,
++    /* Higher than KVM memory listener = 10. */
++    .priority = MEMORY_LISTENER_PRIORITY_ACCEL_HIGH,
++};
 +
- uint8_t memory_region_get_dirty_log_mask(MemoryRegion *mr)
+ int sw_protected_vm_kvm_init(MachineState *ms, Error **errp)
  {
-     uint8_t mask = mr->dirty_log_mask;
+     SwProtectedVm *spvm = SW_PROTECTED_VM(OBJECT(ms->cgs));
+ 
++    memory_listener_register(&kvm_x86_sw_protected_vm_memory_listener,
++                             &address_space_memory);
++
+     spvm->parent_obj.ready = true;
+     return 0;
+ }
 -- 
 2.34.1
 
