@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53BD97A06D3
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E28BF7A06C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:02:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgmur-00080h-RR; Thu, 14 Sep 2023 10:01:57 -0400
+	id 1qgmuY-0007x8-97; Thu, 14 Sep 2023 10:01:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgmuc-0007yZ-Bo
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:01:44 -0400
+ id 1qgmu9-0007qG-B4
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:01:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgmuV-00019T-LP
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:01:40 -0400
+ id 1qgmu7-00016D-Pb
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:01:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694700084;
+ s=mimecast20190719; t=1694700070;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MAOhD67sgYXgN63nbkZvtAVWc6L847RzatreqXJJcKg=;
- b=OtvgMg+a2oGF0N8ViVWKlunD/vS5Yj4A3eBBtQDIX4YDtFo68Bw+M2++0hyxjpUFYuZwla
- oxobt6Bjn8UzvV+WQUbLxwf1tRWC4nsURKbJJHGCNfd322jdPqCyTZkqsPsvCUoiOREN1E
- SBrtXVUIvhIWozRR38A7SPFIqd8uKhQ=
+ bh=+EW5i/CXHPkV539q/Tucf8Yr3W4QFWyx9CktEylXY7c=;
+ b=En79K4VxMVlqQ9YJgbfDMEiLe4gOFr7erq3NfvB5xCsPnjUNx+L8thSsrIgwdoMMW0TSvH
+ +MiRcBNk+X/qBOwnFhSKE1TYFjZyhAnF7xlQzzOluzu8pjT8X22Cn77HyGWLNQaNJdc79A
+ 7edjFTO1khGxvCZVfUwRsMQQnHbta6A=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-369-GnC-y2r4MJKOnvasmPRETg-1; Thu, 14 Sep 2023 10:01:20 -0400
-X-MC-Unique: GnC-y2r4MJKOnvasmPRETg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-691-R_MECfEePD-P1AdGHMebhA-1; Thu, 14 Sep 2023 10:01:07 -0400
+X-MC-Unique: R_MECfEePD-P1AdGHMebhA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34EA8857A9A;
- Thu, 14 Sep 2023 14:01:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 40CFC18312C0;
+ Thu, 14 Sep 2023 14:01:07 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.105])
- by smtp.corp.redhat.com (Postfix) with ESMTP id AD54E1054FC2;
- Thu, 14 Sep 2023 14:01:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BEA26200A35C;
+ Thu, 14 Sep 2023 14:01:06 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  <qemu-block@nongnu.org>, Hanna Reitz <hreitz@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 1/4] block/file-posix: set up Linux AIO and io_uring in the
- current thread
-Date: Thu, 14 Sep 2023 10:00:58 -0400
-Message-ID: <20230914140101.1065008-2-stefanha@redhat.com>
+Subject: [PATCH 2/4] virtio-blk: add lock to protect s->rq
+Date: Thu, 14 Sep 2023 10:00:59 -0400
+Message-ID: <20230914140101.1065008-3-stefanha@redhat.com>
 In-Reply-To: <20230914140101.1065008-1-stefanha@redhat.com>
 References: <20230914140101.1065008-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,199 +79,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The file-posix block driver currently only sets up Linux AIO and
-io_uring in the BDS's AioContext. In the multi-queue block layer we must
-be able to submit I/O requests in AioContexts that do not have Linux AIO
-and io_uring set up yet since any thread can call into the block driver.
-
-Set up Linux AIO and io_uring for the current AioContext during request
-submission. We lose the ability to return an error from
-.bdrv_file_open() when Linux AIO and io_uring setup fails (e.g. due to
-resource limits). Instead the user only gets warnings and we fall back
-to aio=threads. This is still better than a fatal error after startup.
+s->rq is accessed from IO_CODE and GLOBAL_STATE_CODE. Introduce a lock
+to protect s->rq and eliminate reliance on the AioContext lock.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- block/file-posix.c | 99 ++++++++++++++++++++++------------------------
- 1 file changed, 47 insertions(+), 52 deletions(-)
+ include/hw/virtio/virtio-blk.h |  3 +-
+ hw/block/virtio-blk.c          | 67 +++++++++++++++++++++++-----------
+ 2 files changed, 47 insertions(+), 23 deletions(-)
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 4757914ac0..e9dbb87c57 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -713,17 +713,11 @@ static int raw_open_common(BlockDriverState *bs, QDict *options,
- 
- #ifdef CONFIG_LINUX_AIO
-      /* Currently Linux does AIO only for files opened with O_DIRECT */
--    if (s->use_linux_aio) {
--        if (!(s->open_flags & O_DIRECT)) {
--            error_setg(errp, "aio=native was specified, but it requires "
--                             "cache.direct=on, which was not specified.");
--            ret = -EINVAL;
--            goto fail;
--        }
--        if (!aio_setup_linux_aio(bdrv_get_aio_context(bs), errp)) {
--            error_prepend(errp, "Unable to use native AIO: ");
--            goto fail;
--        }
-+    if (s->use_linux_aio && !(s->open_flags & O_DIRECT)) {
-+        error_setg(errp, "aio=native was specified, but it requires "
-+                         "cache.direct=on, which was not specified.");
-+        ret = -EINVAL;
-+        goto fail;
-     }
- #else
-     if (s->use_linux_aio) {
-@@ -734,14 +728,7 @@ static int raw_open_common(BlockDriverState *bs, QDict *options,
-     }
- #endif /* !defined(CONFIG_LINUX_AIO) */
- 
--#ifdef CONFIG_LINUX_IO_URING
--    if (s->use_linux_io_uring) {
--        if (!aio_setup_linux_io_uring(bdrv_get_aio_context(bs), errp)) {
--            error_prepend(errp, "Unable to use io_uring: ");
--            goto fail;
--        }
--    }
--#else
-+#ifndef CONFIG_LINUX_IO_URING
-     if (s->use_linux_io_uring) {
-         error_setg(errp, "aio=io_uring was specified, but is not supported "
-                          "in this build.");
-@@ -2442,6 +2429,44 @@ static bool bdrv_qiov_is_aligned(BlockDriverState *bs, QEMUIOVector *qiov)
-     return true;
- }
- 
-+static inline bool raw_check_linux_io_uring(BDRVRawState *s)
-+{
-+    Error *local_err = NULL;
-+    AioContext *ctx;
+diff --git a/include/hw/virtio/virtio-blk.h b/include/hw/virtio/virtio-blk.h
+index dafec432ce..9881009c22 100644
+--- a/include/hw/virtio/virtio-blk.h
++++ b/include/hw/virtio/virtio-blk.h
+@@ -54,7 +54,8 @@ struct VirtIOBlockReq;
+ struct VirtIOBlock {
+     VirtIODevice parent_obj;
+     BlockBackend *blk;
+-    void *rq;
++    QemuMutex rq_lock;
++    void *rq; /* protected by rq_lock */
+     VirtIOBlkConf conf;
+     unsigned short sector_mask;
+     bool original_wce;
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index a1f8e15522..ee38e089bc 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -82,8 +82,11 @@ static int virtio_blk_handle_rw_error(VirtIOBlockReq *req, int error,
+         /* Break the link as the next request is going to be parsed from the
+          * ring again. Otherwise we may end up doing a double completion! */
+         req->mr_next = NULL;
+-        req->next = s->rq;
+-        s->rq = req;
 +
-+    if (!s->use_linux_io_uring) {
-+        return false;
-+    }
-+
-+    ctx = qemu_get_current_aio_context();
-+    if (unlikely(!aio_setup_linux_io_uring(ctx, &local_err))) {
-+        error_reportf_err(local_err, "Unable to use linux io_uring, "
-+                                     "falling back to thread pool: ");
-+        s->use_linux_io_uring = false;
-+        return false;
-+    }
-+    return true;
-+}
-+
-+static inline bool raw_check_linux_aio(BDRVRawState *s)
-+{
-+    Error *local_err = NULL;
-+    AioContext *ctx;
-+
-+    if (!s->use_linux_aio) {
-+        return false;
-+    }
-+
-+    ctx = qemu_get_current_aio_context();
-+    if (unlikely(!aio_setup_linux_aio(ctx, &local_err))) {
-+        error_reportf_err(local_err, "Unable to use Linux AIO, "
-+                                     "falling back to thread pool: ");
-+        s->use_linux_aio = false;
-+        return false;
-+    }
-+    return true;
-+}
-+
- static int coroutine_fn raw_co_prw(BlockDriverState *bs, uint64_t offset,
-                                    uint64_t bytes, QEMUIOVector *qiov, int type)
++        WITH_QEMU_LOCK_GUARD(&s->rq_lock) {
++            req->next = s->rq;
++            s->rq = req;
++        }
+     } else if (action == BLOCK_ERROR_ACTION_REPORT) {
+         virtio_blk_req_complete(req, VIRTIO_BLK_S_IOERR);
+         if (acct_failed) {
+@@ -1183,10 +1186,13 @@ static void virtio_blk_dma_restart_bh(void *opaque)
  {
-@@ -2470,13 +2495,13 @@ static int coroutine_fn raw_co_prw(BlockDriverState *bs, uint64_t offset,
-     if (s->needs_alignment && !bdrv_qiov_is_aligned(bs, qiov)) {
-         type |= QEMU_AIO_MISALIGNED;
- #ifdef CONFIG_LINUX_IO_URING
--    } else if (s->use_linux_io_uring) {
-+    } else if (raw_check_linux_io_uring(s)) {
-         assert(qiov->size == bytes);
-         ret = luring_co_submit(bs, s->fd, offset, qiov, type);
-         goto out;
- #endif
- #ifdef CONFIG_LINUX_AIO
--    } else if (s->use_linux_aio) {
-+    } else if (raw_check_linux_aio(s)) {
-         assert(qiov->size == bytes);
-         ret = laio_co_submit(s->fd, offset, qiov, type,
-                               s->aio_max_batch);
-@@ -2566,39 +2591,13 @@ static int coroutine_fn raw_co_flush_to_disk(BlockDriverState *bs)
-     };
+     VirtIOBlock *s = opaque;
  
- #ifdef CONFIG_LINUX_IO_URING
--    if (s->use_linux_io_uring) {
-+    if (raw_check_linux_io_uring(s)) {
-         return luring_co_submit(bs, s->fd, 0, NULL, QEMU_AIO_FLUSH);
+-    VirtIOBlockReq *req = s->rq;
++    VirtIOBlockReq *req;
+     MultiReqBuffer mrb = {};
+ 
+-    s->rq = NULL;
++    WITH_QEMU_LOCK_GUARD(&s->rq_lock) {
++        req = s->rq;
++        s->rq = NULL;
++    }
+ 
+     aio_context_acquire(blk_get_aio_context(s->conf.conf.blk));
+     while (req) {
+@@ -1238,22 +1244,29 @@ static void virtio_blk_reset(VirtIODevice *vdev)
+     AioContext *ctx;
+     VirtIOBlockReq *req;
+ 
++    /* Dataplane has stopped... */
++    assert(!s->dataplane_started);
++
++    /* ...but requests may still be in flight. */
+     ctx = blk_get_aio_context(s->blk);
+     aio_context_acquire(ctx);
+     blk_drain(s->blk);
++    aio_context_release(ctx);
+ 
+     /* We drop queued requests after blk_drain() because blk_drain() itself can
+      * produce them. */
+-    while (s->rq) {
+-        req = s->rq;
+-        s->rq = req->next;
+-        virtqueue_detach_element(req->vq, &req->elem, 0);
+-        virtio_blk_free_request(req);
++    WITH_QEMU_LOCK_GUARD(&s->rq_lock) {
++        while (s->rq) {
++            req = s->rq;
++            s->rq = req->next;
++
++            /* No other threads can access req->vq here */
++            virtqueue_detach_element(req->vq, &req->elem, 0);
++
++            virtio_blk_free_request(req);
++        }
      }
- #endif
-     return raw_thread_pool_submit(handle_aiocb_flush, &acb);
- }
  
--static void raw_aio_attach_aio_context(BlockDriverState *bs,
--                                       AioContext *new_context)
--{
--    BDRVRawState __attribute__((unused)) *s = bs->opaque;
--#ifdef CONFIG_LINUX_AIO
--    if (s->use_linux_aio) {
--        Error *local_err = NULL;
--        if (!aio_setup_linux_aio(new_context, &local_err)) {
--            error_reportf_err(local_err, "Unable to use native AIO, "
--                                         "falling back to thread pool: ");
--            s->use_linux_aio = false;
--        }
--    }
--#endif
--#ifdef CONFIG_LINUX_IO_URING
--    if (s->use_linux_io_uring) {
--        Error *local_err = NULL;
--        if (!aio_setup_linux_io_uring(new_context, &local_err)) {
--            error_reportf_err(local_err, "Unable to use linux io_uring, "
--                                         "falling back to thread pool: ");
--            s->use_linux_io_uring = false;
--        }
--    }
--#endif
--}
+-    aio_context_release(ctx);
 -
- static void raw_close(BlockDriverState *bs)
+-    assert(!s->dataplane_started);
+     blk_set_enable_write_cache(s->blk, s->original_wce);
+ }
+ 
+@@ -1443,18 +1456,22 @@ static void virtio_blk_set_status(VirtIODevice *vdev, uint8_t status)
+ static void virtio_blk_save_device(VirtIODevice *vdev, QEMUFile *f)
  {
-     BDRVRawState *s = bs->opaque;
-@@ -3897,7 +3896,6 @@ BlockDriver bdrv_file = {
-     .bdrv_co_copy_range_from = raw_co_copy_range_from,
-     .bdrv_co_copy_range_to  = raw_co_copy_range_to,
-     .bdrv_refresh_limits = raw_refresh_limits,
--    .bdrv_attach_aio_context = raw_aio_attach_aio_context,
+     VirtIOBlock *s = VIRTIO_BLK(vdev);
+-    VirtIOBlockReq *req = s->rq;
  
-     .bdrv_co_truncate                   = raw_co_truncate,
-     .bdrv_co_getlength                  = raw_co_getlength,
-@@ -4267,7 +4265,6 @@ static BlockDriver bdrv_host_device = {
-     .bdrv_co_copy_range_from = raw_co_copy_range_from,
-     .bdrv_co_copy_range_to  = raw_co_copy_range_to,
-     .bdrv_refresh_limits = raw_refresh_limits,
--    .bdrv_attach_aio_context = raw_aio_attach_aio_context,
+-    while (req) {
+-        qemu_put_sbyte(f, 1);
++    WITH_QEMU_LOCK_GUARD(&s->rq_lock) {
++        VirtIOBlockReq *req = s->rq;
  
-     .bdrv_co_truncate                   = raw_co_truncate,
-     .bdrv_co_getlength                  = raw_co_getlength,
-@@ -4403,7 +4400,6 @@ static BlockDriver bdrv_host_cdrom = {
-     .bdrv_co_pwritev        = raw_co_pwritev,
-     .bdrv_co_flush_to_disk  = raw_co_flush_to_disk,
-     .bdrv_refresh_limits    = cdrom_refresh_limits,
--    .bdrv_attach_aio_context = raw_aio_attach_aio_context,
+-        if (s->conf.num_queues > 1) {
+-            qemu_put_be32(f, virtio_get_queue_index(req->vq));
++        while (req) {
++            qemu_put_sbyte(f, 1);
++
++            if (s->conf.num_queues > 1) {
++                qemu_put_be32(f, virtio_get_queue_index(req->vq));
++            }
++
++            qemu_put_virtqueue_element(vdev, f, &req->elem);
++            req = req->next;
+         }
+-
+-        qemu_put_virtqueue_element(vdev, f, &req->elem);
+-        req = req->next;
+     }
++
+     qemu_put_sbyte(f, 0);
+ }
  
-     .bdrv_co_truncate                   = raw_co_truncate,
-     .bdrv_co_getlength                  = raw_co_getlength,
-@@ -4529,7 +4525,6 @@ static BlockDriver bdrv_host_cdrom = {
-     .bdrv_co_pwritev        = raw_co_pwritev,
-     .bdrv_co_flush_to_disk  = raw_co_flush_to_disk,
-     .bdrv_refresh_limits    = cdrom_refresh_limits,
--    .bdrv_attach_aio_context = raw_aio_attach_aio_context,
+@@ -1480,8 +1497,11 @@ static int virtio_blk_load_device(VirtIODevice *vdev, QEMUFile *f,
  
-     .bdrv_co_truncate                   = raw_co_truncate,
-     .bdrv_co_getlength                  = raw_co_getlength,
+         req = qemu_get_virtqueue_element(vdev, f, sizeof(VirtIOBlockReq));
+         virtio_blk_init_request(s, virtio_get_queue(vdev, vq_idx), req);
+-        req->next = s->rq;
+-        s->rq = req;
++
++        WITH_QEMU_LOCK_GUARD(&s->rq_lock) {
++            req->next = s->rq;
++            s->rq = req;
++        }
+     }
+ 
+     return 0;
+@@ -1628,6 +1648,8 @@ static void virtio_blk_device_realize(DeviceState *dev, Error **errp)
+                                             s->host_features);
+     virtio_init(vdev, VIRTIO_ID_BLOCK, s->config_size);
+ 
++    qemu_mutex_init(&s->rq_lock);
++
+     s->blk = conf->conf.blk;
+     s->rq = NULL;
+     s->sector_mask = (s->conf.conf.logical_block_size / BDRV_SECTOR_SIZE) - 1;
+@@ -1679,6 +1701,7 @@ static void virtio_blk_device_unrealize(DeviceState *dev)
+         virtio_del_queue(vdev, i);
+     }
+     qemu_coroutine_dec_pool_size(conf->num_queues * conf->queue_size / 2);
++    qemu_mutex_destroy(&s->rq_lock);
+     blk_ram_registrar_destroy(&s->blk_ram_registrar);
+     qemu_del_vm_change_state_handler(s->change);
+     blockdev_mark_auto_del(s->blk);
 -- 
 2.41.0
 
