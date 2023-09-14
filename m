@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357BF7A0F39
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 507077A0F1E
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:44:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgtAz-0003Vr-3C; Thu, 14 Sep 2023 16:43:01 -0400
+	id 1qgtB2-0003Yi-4w; Thu, 14 Sep 2023 16:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgtAu-0003Re-Et
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:56 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ id 1qgtAx-0003WT-QT
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:59 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgtAs-0006Pr-Qh
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:56 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-31ad779e6b3so1307304f8f.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:42:54 -0700 (PDT)
+ id 1qgtAv-0006RA-P9
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:59 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-31fa666000dso1248084f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:42:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694724173; x=1695328973; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1694724175; x=1695328975; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Im10dMwtttdz40+pDpdw7Pjq0vbvB2AOAUIvjrDwia8=;
- b=EyXkDM8syb+P/Y7kdnd6D22n7Ap30HpYbHd3cZEsGR5Mvp4Aeu//wG3HoHuC/nL0Vo
- wkJHGwrTjwifeTJwghcDmaM4Wah4S4hVugBahCq9QHevWZyb1rNrJF6VX8aqDmQEsGDl
- 9ZYbd1Bnut/rrZbTajUav4gFL04rkEFZGTcY6jVnqYWqF7yTi2SKxmOeNNUxzdjZ+8jL
- cgxtCQYWTMbpsqPFdxJ98cEx5XWhKoYPa5CSg3i1TTNrYWW4Rdyuuk2/B9JWZ7Z4lbTd
- OrClrT6njV1YPmfVbH3pgfWdXvjvUhJ1hEw0vUYFwzzTXpYK+CG1jBaNpAj2QULuBx0F
- BI+w==
+ bh=Qn9zg45BrccDib3QRpTj6K0GvYzGUuL7OgrnPd2bB1A=;
+ b=nSXTLAO6/EHEMPOgSRqCK3X4+/Mo064eny0fg6ftmyHP8z1hEUBa17NeYIIsz6GL1Q
+ n0XffjaYIH12EJ1gzFacihvtpXGz3Wp/t6bAQI68aVspKpvTzZKC1eKVgn7lAoESuhyE
+ mzAUDLGY/n3Mi9tni95/J6MX/fmjOYfbDNq2x3cp6BXAEGtlXxzQf6Ww0dC0EhwBS5Yd
+ eNwuJrH6+7GUn7CX7HvRW1k54Xc7V6emMd0q4ZlnYnowAiLj7qeyFkQnJoilA5MapXBj
+ LnXHyZJJVKEoEgncc6JrdUzc1CinP61uVIow7mXsmMav10ROJUcWk6cRrwSMfmS/CTg1
+ IKzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694724173; x=1695328973;
+ d=1e100.net; s=20230601; t=1694724175; x=1695328975;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Im10dMwtttdz40+pDpdw7Pjq0vbvB2AOAUIvjrDwia8=;
- b=qsOCBnls0+e+p1CLDb3S8uG+6xugXR8NS9rHd/SucYctQLnpbJnPKSY62HJZqRXHZU
- 5x7hcErtyBRrKnKftbHBhFD4gD6w+nnnf9F4Xlx43shNVtdPZcMYz8nXIBINaxd6buvp
- 6YWxs+ZJ78uWMQkNZuD9NjrzUNNmyIPKS6ajQBOgDoz1OeoRGDKCl+XfOWXRn8VlWrjK
- 6J1QL7c4VwI11fadLEJvo9LHb/79p+rz/v8UHC86q5h6afdl1ecp6G0DqWN4zZM9pcTR
- muMbJQ+zr7K4bacltJqTKr7uGGhzLGCCYnyhtHGHS37BT/MirTvJ3kGsmzt2l+vESbQk
- HTrg==
-X-Gm-Message-State: AOJu0YzIaoFsVchWUobT3EaCspulBUGOwk6tKB/qGco/qsQ68zm1+E9n
- 0Dc1DG9hsEllH6eYYQHjVcmEufeaAnQ=
-X-Google-Smtp-Source: AGHT+IFJ5UdnO90b5qpCgVj/8ZJ9QEZ5NjJfAvmG49dPmBTx17Lk18Or2Qf8IFH+3ot1kmeYJsm+rA==
-X-Received: by 2002:adf:d4cf:0:b0:311:3fdc:109d with SMTP id
- w15-20020adfd4cf000000b003113fdc109dmr6174301wrk.1.1694724173081; 
- Thu, 14 Sep 2023 13:42:53 -0700 (PDT)
+ bh=Qn9zg45BrccDib3QRpTj6K0GvYzGUuL7OgrnPd2bB1A=;
+ b=mbvKfx00FQhjcIwcNGBfN4/iXbMgrP9EvY0moq+S6kuZIKRPKJTurowJRP71KprKZn
+ GGAnBu+BY3KNibaqcpqq2iz9DabC22l9w69DnFeDGIZAfqrq3TGt+cfgixZDMWnXsaj0
+ G1VLP4u/ngNpxszupRLj9lzucRDXJNa3sHyA5ia54QpcEFOUQsDS8VSQrP7fl6+Hbg22
+ OLhE83pVqDjLASXkhynk56ytUHo4n/d5sXud0g+jkxx7iJTmVj0gpyj0cwUANreHIiPR
+ R8I9t2fiK49MvpBAii4+Ra5ICLnr/MUNkYwzdZRtGBLWybNFqjk8U0wrb8sBsfg+pfIT
+ fXtw==
+X-Gm-Message-State: AOJu0YzOIfcN0FjbQm8teVyd76teTnttF5SQzqQaoodBd2YEsGVfJ1zn
+ zM2OyTa6lfdWvwxaNei6nC467F9jSR0=
+X-Google-Smtp-Source: AGHT+IGQSZ5zJxDNeJMjPhcrNpD/QB6tJLQC7IPL4twcFcbjTGZ8Y+0r94fMjEKLxXXRb/+63HzeKw==
+X-Received: by 2002:a5d:4086:0:b0:31f:e418:223d with SMTP id
+ o6-20020a5d4086000000b0031fe418223dmr1918413wrp.7.1694724174661; 
+ Thu, 14 Sep 2023 13:42:54 -0700 (PDT)
 Received: from karim.my.domain ([197.39.44.105])
  by smtp.gmail.com with ESMTPSA id
- j3-20020a056000124300b0031f34a395e7sm2661880wrx.45.2023.09.14.13.42.51
+ j3-20020a056000124300b0031f34a395e7sm2661880wrx.45.2023.09.14.13.42.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 13:42:52 -0700 (PDT)
+ Thu, 14 Sep 2023 13:42:54 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, imp@bsdimp.com,
- Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v5 18/23] bsd-user: Implement do_obreak function
-Date: Thu, 14 Sep 2023 23:41:02 +0300
-Message-ID: <20230914204107.23778-19-kariem.taha2.7@gmail.com>
+ Stacey Son <sson@FreeBSD.org>, Kyle Evans <kevans@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v5 19/23] bsd-user: Implement shm_open(2)
+Date: Thu, 14 Sep 2023 23:41:03 +0300
+Message-ID: <20230914204107.23778-20-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230914204107.23778-1-kariem.taha2.7@gmail.com>
 References: <20230914204107.23778-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -95,97 +96,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-Match linux-user, by manually applying the following commits, in order:
-
-d28b3c90cfad1a7e211ae2bce36ecb9071086129   linux-user: Make sure initial brk(0) is page-aligned
-15ad98536ad9410fb32ddf1ff09389b677643faa   linux-user: Fix qemu brk() to not zero bytes on current page
-dfe49864afb06e7e452a4366051697bc4fcfc1a5   linux-user: Prohibit brk() to to shrink below initial heap address
-eac78a4b0b7da4de2c0a297f4d528ca9cc6256a3   linux-user: Fix signed math overflow in brk() syscall
-c6cc059eca18d9f6e4e26bb8b6d1135ddb35d81a   linux-user: Do not call get_errno() in do_brk()
-e69e032d1a8ee8d754ca119009a3c2c997f8bb30   linux-user: Use MAP_FIXED_NOREPLACE for do_brk()
-cb9d5d1fda0bc2312fc0c779b4ea1d7bf826f31f   linux-user: Do nothing if too small brk is specified
-2aea137a425a87b930a33590177b04368fd7cc12   linux-user: Do not align brk with host page size
+Co-authored-by: Kyle Evans <kevans@FreeBSD.org>
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/bsd-mem.h            | 45 +++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  7 ++++++
- 2 files changed, 52 insertions(+)
+ bsd-user/bsd-mem.h            | 25 +++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  4 ++++
+ 2 files changed, 29 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index 0c8d96d9a4..b296c5c6f0 100644
+index b296c5c6f0..f8dc943c23 100644
 --- a/bsd-user/bsd-mem.h
 +++ b/bsd-user/bsd-mem.h
-@@ -212,4 +212,49 @@ static inline abi_long do_bsd_mincore(abi_ulong target_addr, abi_ulong len,
-     return ret;
+@@ -257,4 +257,29 @@ static inline abi_long do_obreak(abi_ulong brk_val)
+     return target_brk;
  }
  
-+/* do_brk() must return target values and target errnos. */
-+static inline abi_long do_obreak(abi_ulong brk_val)
++/* shm_open(2) */
++static inline abi_long do_bsd_shm_open(abi_ulong arg1, abi_long arg2,
++        abi_long arg3)
 +{
-+    abi_long mapped_addr;
-+    abi_ulong new_brk;
-+    abi_ulong old_brk;
++    int ret;
++    void *p;
 +
-+    /* brk pointers are always untagged */
++    if (arg1 == (uintptr_t)SHM_ANON) {
++        p = SHM_ANON;
++    } else {
++        p = lock_user_string(arg1);
++        if (p == NULL) {
++            return -TARGET_EFAULT;
++        }
++    }
++    ret = get_errno(shm_open(p, target_to_host_bitmask(arg2, fcntl_flags_tbl),
++                             arg3));
 +
-+    /* do not allow to shrink below initial brk value */
-+    if (brk_val < initial_target_brk) {
-+        return target_brk;
++    if (p != SHM_ANON) {
++        unlock_user(p, arg1, 0);
 +    }
 +
-+    new_brk = TARGET_PAGE_ALIGN(brk_val);
-+    old_brk = TARGET_PAGE_ALIGN(target_brk);
-+
-+    /* new and old target_brk might be on the same page */
-+    if (new_brk == old_brk) {
-+        target_brk = brk_val;
-+        return target_brk;
-+    }
-+
-+    /* Release heap if necesary */
-+    if (new_brk < old_brk) {
-+        target_munmap(new_brk, old_brk - new_brk);
-+
-+        target_brk = brk_val;
-+        return target_brk;
-+    }
-+
-+    mapped_addr = target_mmap(old_brk, new_brk - old_brk,
-+                              PROT_READ | PROT_WRITE,
-+                              MAP_FIXED | MAP_EXCL | MAP_ANON | MAP_PRIVATE,
-+                              -1, 0);
-+
-+    if (mapped_addr == old_brk) {
-+        target_brk = brk_val;
-+        return target_brk;
-+    }
-+
-+    /* For everything else, return the previous break. */
-+    return target_brk;
++    return ret;
 +}
 +
  #endif /* BSD_USER_BSD_MEM_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 8ba5fcc6ca..5cd60fc272 100644
+index 5cd60fc272..effa6dac54 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -651,6 +651,13 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+@@ -639,6 +639,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_mincore(arg1, arg2, arg3);
          break;
- #endif
  
-+        /*
-+         * Misc
-+         */
-+    case TARGET_FREEBSD_NR_break:
-+        ret = do_obreak(arg1);
++    case TARGET_FREEBSD_NR_freebsd12_shm_open: /* shm_open(2) */
++        ret = do_bsd_shm_open(arg1, arg2, arg3);
 +        break;
 +
-         /*
-          * sys{ctl, arch, call}
-          */
+ #if defined(__FreeBSD_version) && __FreeBSD_version >= 1300048
+     case TARGET_FREEBSD_NR_shm_open2: /* shm_open2(2) */
+         ret = do_freebsd_shm_open2(arg1, arg2, arg3, arg4, arg5);
 -- 
 2.42.0
 
