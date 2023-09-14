@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466757A0B66
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 19:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9024C7A0B78
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 19:22:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgpyp-00022h-Hz; Thu, 14 Sep 2023 13:18:15 -0400
+	id 1qgq1n-0004Mb-QM; Thu, 14 Sep 2023 13:21:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgpyn-00022R-MA
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 13:18:13 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgq1i-0004La-8j
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 13:21:14 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgpym-0001Q4-1m
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 13:18:13 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9ada2e6e75fso168521066b.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 10:18:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgq1g-0002Pr-Ou
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 13:21:14 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-4ff8f2630e3so2161727e87.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 10:21:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694711890; x=1695316690; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694712071; x=1695316871; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=owZbP7MsSmlYDdT3ZIi5snsWRVzy5b9I3UrCQ8r0uA8=;
- b=xWGcKcNqP2cnjNCKRocBgLttBVWXTMGDA2xRfCJmP895pQodtkEduEQFlt/hAMr47H
- xAxHvibnx4MyNLqiH/BKmoDWx/L/1j8GqEaSOhQMu76tGlu+6bZXuIRX+pWeFofy3Ev5
- x2895i2YUvxD7eo4OcRsg0Dt3lkPU1yu/FTUj9x3ukf5BjSxdmXQ0i5OOTs1GPwMjI15
- 90W3Up3ZDhzVKaYOVOVnVOn4IjZudol8hni5ny7h8HCHDGrV4R9sLhjyUfbtLSmgoQGb
- ArhXxPCSShkRg2Uad6stIbJeh5DEAWp501OMN/t3QBLq3Hs1wEfAYxgx8PPY2L+rSNMt
- ZEeg==
+ bh=YaZwKKFNBvaScjwndwG7Qbor/60HG7c3Yvxm6lplfXc=;
+ b=FQ/Ay5lWon0h8NPaEMI/Q/gy86HEsWJiXr1YbBhU+dNE9tqnYzqFSrrrSBlDeNtznZ
+ 0voIIfSeno+Q739IX153zWa1VabNCjqHvaxpAhEV18252qQyHZpQ27TsaFYZ5K+Yty5X
+ BCy31KRL5bkAxHM0OwJ54JTWTNKFfpa7k0nDZXWThcLqQHnP7VtTYlD1C2/406RICYNV
+ W8DbRjedjpgChx0L3EheN/H/h2lXZOpWsDyaeHn4WvYq2WGMiWk/g0wuTDQydZwBlKet
+ Z0OOkPrNGPj4cHnFV9bOLePFIPo/1lObJIe+qVESc2EtBLTtPlJinutPjhORVxGBQrr2
+ xkyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694711890; x=1695316690;
+ d=1e100.net; s=20230601; t=1694712071; x=1695316871;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=owZbP7MsSmlYDdT3ZIi5snsWRVzy5b9I3UrCQ8r0uA8=;
- b=mBtqY1Fe7351BWEBLxhD5CBX0JeBIGPfdYGPRgr3nqO5VkefzyfZYj7kIGPU2y4qU2
- PW8IF67is5DSpAkqcpWzTBYkASnxwyGmIrEnk6VbPFrHI3//HStn4l7YgXIYLcCxGbWD
- GQPuipTVZ8FEFUZaiKYvTMQCuCP+l4oqkmkv4yul5P7wPxdRVvbb6HuVPbX2lS+E7tBf
- S+UUSebRe4gvzLKODv+5iVjdTwCVe9aNncEcNH1oKgFoGSikEA9b4JDtWsu/vp1fibF8
- lTTVT/vLL7bWJ+t/OOompFHA9zbUGIuCkJ/W6DOupbQaTu+hb6NGlzrf/3wJdswkJ8mS
- ERJA==
-X-Gm-Message-State: AOJu0YwH5s1F6PoQuPbiwmcLFSY6agxk6ZfTAUuPLopvO5mbUqK67OG/
- JeIyPjxPjxCRj4NqGodHykBK3Q==
-X-Google-Smtp-Source: AGHT+IGoARNGjBa3fQmmpZHvd1d5tofIZ8dH6qaRtHFT6SgZ3xNpspXIgS5x1MHx9Z5WAANoHxH3qw==
-X-Received: by 2002:a17:907:784e:b0:9aa:1200:f74e with SMTP id
- lb14-20020a170907784e00b009aa1200f74emr4459743ejc.54.1694711890085; 
- Thu, 14 Sep 2023 10:18:10 -0700 (PDT)
+ bh=YaZwKKFNBvaScjwndwG7Qbor/60HG7c3Yvxm6lplfXc=;
+ b=fP+4UQ/EQTyedkRD48FY/PIHW+XYgmKU9S3w8q3tYm0QF7WGzy9+TyFphEWxsd9Y1u
+ HUfI1oY9bHgQLoabP3ylvfc5djUI8GnwpJHcUCsOkxrIirE8dYe0Gb/xfHprjXGlf5x9
+ ZiyHwoMOZdHOvY5cGOu4YjyQ1WT73nGoaIPFy+czTYSCfKbBhsw8r5JuPTB85eB55Lpa
+ 9UYuwmQR65a7Jc83dvEgYl6j8Pxf/4EFvhbWx1jXmnmiiRA97GD3jZNDI9NjVFY0o46H
+ LsEGlYzo9hUvDN8b4FwR832kQP2c38IC+0TuUPDrPhQURHL7eQNGjubSyZBo6xL2jiPv
+ 0S1w==
+X-Gm-Message-State: AOJu0Yyxqe0Q+LX4mHS4sMkrGT8WZeYJwOJWxl3r1XQoLI8A9U/h7gDJ
+ LtTDUQYvh6kTzVKti8tYV0Biig==
+X-Google-Smtp-Source: AGHT+IEnI5WIX+XU6f1bfZhrN2yN9bOj0UHNTm8jQPZZw+9/j9kwj5pYdeq9vZfnDy73k2Fgp6T4eA==
+X-Received: by 2002:a05:6512:3d0e:b0:500:9ab8:b790 with SMTP id
+ d14-20020a0565123d0e00b005009ab8b790mr5725765lfv.60.1694712070211; 
+ Thu, 14 Sep 2023 10:21:10 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-223-129.abo.bbox.fr.
  [176.131.223.129]) by smtp.gmail.com with ESMTPSA id
- u11-20020a170906068b00b00991faf3810esm1272924ejb.146.2023.09.14.10.18.08
+ z15-20020a1709060acf00b0098d2d219649sm1285399ejf.174.2023.09.14.10.21.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 10:18:09 -0700 (PDT)
-Message-ID: <b4976774-5cde-84a4-889a-17b7028554a9@linaro.org>
-Date: Thu, 14 Sep 2023 19:18:07 +0200
+ Thu, 14 Sep 2023 10:21:09 -0700 (PDT)
+Message-ID: <b707a129-5881-430d-708f-00687ae724ca@linaro.org>
+Date: Thu, 14 Sep 2023 19:21:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v3 00/12] gdbstub and TCG plugin improvements
+Subject: Re: [PATCH 2/9] gitlab: fix typo/spelling in comments
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Mikhail Tyutin <m.tyutin@yadro.com>,
- Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org
-References: <20230912224107.29669-1-akihiko.odaki@daynix.com>
- <877cossq8y.fsf@linaro.org>
+ qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ John Snow <jsnow@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230914155422.426639-1-alex.bennee@linaro.org>
+ <20230914155422.426639-3-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <877cossq8y.fsf@linaro.org>
+In-Reply-To: <20230914155422.426639-3-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,27 +106,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/9/23 17:56, Alex Bennée wrote:
-> 
-> Akihiko Odaki <akihiko.odaki@daynix.com> writes:
-> 
->> This series extracts fixes and refactorings that can be applied
->> independently from "[PATCH RESEND v5 00/26] plugins: Allow to read
->> registers" as suggested by Nicholas Piggin.
->>
->> Patch "target/ppc: Remove references to gdb_has_xml" is also updated to
->> remove some dead code I missed earlier and thus the Reviewed-by tag is
->> dropped.
-> 
-> Queued to gdbstub/next, thanks.
+On 14/9/23 17:54, Alex Bennée wrote:
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   .gitlab-ci.d/base.yml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-I left a comment in patch #3:
-https://lore.kernel.org/qemu-devel/bf33447c-119f-c4b9-5f80-d4ad6169c708@linaro.org/
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-If you agree with the comment I can send a patch to replace so
-you can keep this series queued.
-
-Regards,
-
-Phil.
 
