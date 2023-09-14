@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A39579F93A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BB979F925
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgdPN-0000Am-EL; Wed, 13 Sep 2023 23:52:49 -0400
+	id 1qgdPL-0008Qt-NB; Wed, 13 Sep 2023 23:52:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdPF-0007xa-4k
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:42 -0400
+ id 1qgdPI-00086k-QO
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:44 -0400
 Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdPB-0000r7-0Y
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:40 -0400
+ id 1qgdPH-0000r7-4V
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694663557; x=1726199557;
+ t=1694663563; x=1726199563;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=C1mGXkusPnhkfU37hQJOr1iYXe1QHqcmTFhsRyRYjTI=;
- b=O4JaCnfQ/rbii/1nNX/wgeAdxvQth2uFXblgaChUbOjj5MDMpjUJgpMO
- qXC8rFA0VM0RCKOU2o5wdm+UXUIQWAV60F0akdaBSqjaewnvvYdh4KOYY
- GYzMQYL0WqU5/ohyHJj2OzGBFxRPdQyTbQkesqVLfLBfSZypAjbg7d4aQ
- RcdpInjZeOPWzZUe8I7pY76LjCqzPpuhwbkHKbNApkPfJdVvoUCi4ANEH
- T0SH1QgqqJHYvTUkDqEpCo9KgLx+8xRUQuKLzmdy5KHRuFGPwEkehUQjO
- EtwuJI8uIfPQlWotOyLmAP6iOAKI5AHGAv/GrvAp88GX57co8sIBHDujB A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528513"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528513"
+ bh=HN90WpAcWxivDLGkYoPpDo7sWsy3b6+tOvB3ht8MLBY=;
+ b=BTev+agIVvOVzSfM3f690ydEBugotf0WpJZ9+VrDT5fFxmjO9AE+3tPo
+ TNfL0jQD+kVCXVoJLvPmHE9HNyX02PT6WeilqQ8J/nQyp6jFwHJ8O5vM9
+ PNM5RsbAp5I/DhoWpGn5k2D5Ak69w2ilOxjiaOz3S5RhaNDqiT5+ukzfx
+ tHZ7+FzaMkahxZK6G3/KlhikbWvVRHIkdBKgKCzPmKWCvhKt+ZqeBnvf1
+ XB4ac0VEhqHNt3N5slcJJWImknXBBojRP+FSjuuKIIZKgHnS2YKpJAP7J
+ /3H47nMHiNlAvmFoh5DFwPu/GVGf2PbwTvlCyX58Nx5BvtX2To3AzPwHU g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528538"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528538"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Sep 2023 20:52:36 -0700
+ 13 Sep 2023 20:52:40 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500677"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500677"
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500685"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500685"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:52:31 -0700
+ by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:52:36 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -54,9 +54,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [RFC PATCH v2 16/21] physmem: Introduce ram_block_convert_range()
-Date: Wed, 13 Sep 2023 23:51:12 -0400
-Message-Id: <20230914035117.3285885-17-xiaoyao.li@intel.com>
+Subject: [RFC PATCH v2 17/21] kvm: handle KVM_EXIT_MEMORY_FAULT
+Date: Wed, 13 Sep 2023 23:51:13 -0400
+Message-Id: <20230914035117.3285885-18-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230914035117.3285885-1-xiaoyao.li@intel.com>
 References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
@@ -87,77 +87,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's used for discarding oppsite memory after memory conversion to
-shared/private.
+From: Chao Peng <chao.p.peng@linux.intel.com>
 
-Note, private-shared page conversion is done at 4KB granularity. Don't
-check alignment with rb->page_size, instead qemu_host_page_size, which
-is 4K.
+Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
+KVM_EXIT_MEMORY_FAULT happens. It indicates userspace needs to do
+the memory conversion on the RAMBlock to turn the memory into desired
+attribute, i.e., private/shared.
 
-Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
+Note, KVM_EXIT_MEMORY_FAULT makes sense only when the RAMBlock has
+gmem memory backend.
+
+Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 ---
- include/exec/cpu-common.h |  2 ++
- softmmu/physmem.c         | 36 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ accel/kvm/kvm-all.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 87dc9a752c9a..558684b9f246 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -157,6 +157,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
- 
- int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
- int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
-+int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
-+                            bool shared_to_private);
- 
- #endif
- 
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 6ee6bc794f44..dab3247d461c 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -3733,3 +3733,39 @@ bool ram_block_discard_is_required(void)
-     return qatomic_read(&ram_block_discard_required_cnt) ||
-            qatomic_read(&ram_block_coordinated_discard_required_cnt);
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 7e32ee83b258..c67aa66b0559 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -3040,6 +3040,50 @@ static void kvm_eat_signals(CPUState *cpu)
+     } while (sigismember(&chkset, SIG_IPI));
  }
-+
-+int ram_block_convert_range(RAMBlock *rb, uint64_t start, size_t length,
-+                            bool shared_to_private)
+ 
++static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
 +{
-+    int fd;
++    MemoryRegionSection section;
++    ram_addr_t offset;
++    RAMBlock *rb;
++    void *addr;
++    int ret = -1;
 +
-+    if (!rb || rb->gmem_fd < 0) {
-+        return -1;
++    section = memory_region_find(get_system_memory(), start, size);
++    if (!section.mr) {
++        return ret;
 +    }
 +
-+    if (!QEMU_PTR_IS_ALIGNED(start, qemu_host_page_size) ||
-+        !QEMU_PTR_IS_ALIGNED(length, qemu_host_page_size)) {
-+        return -1;
-+    }
-+
-+    if (!length) {
-+        return -1;
-+    }
-+
-+    if (start + length > rb->max_length) {
-+        return -1;
-+    }
-+
-+    if (shared_to_private) {
-+        void *host_startaddr = rb->host + start;
-+
-+        if (!QEMU_PTR_IS_ALIGNED(host_startaddr, qemu_host_page_size)) {
-+            return -1;
++    if (memory_region_has_gmem_fd(section.mr)) {
++        if (to_private) {
++            ret = kvm_set_memory_attributes_private(start, size);
++        } else {
++            ret = kvm_set_memory_attributes_shared(start, size);
 +        }
-+        fd = rb->fd;
++
++        if (ret) {
++            memory_region_unref(section.mr);
++            return ret;
++        }
++
++        addr = memory_region_get_ram_ptr(section.mr) +
++               section.offset_within_region;
++        rb = qemu_ram_block_from_host(addr, false, &offset);
++        /*
++         * With KVM_SET_MEMORY_ATTRIBUTES by kvm_set_memory_attributes(),
++         * operation on underlying file descriptor is only for releasing
++         * unnecessary pages.
++         */
++        ram_block_convert_range(rb, offset, size, to_private);
 +    } else {
-+        fd = rb->gmem_fd;
++        warn_report("Convert non guest-memfd backed memory region "
++                    "(0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
++                    start, size, to_private ? "private" : "shared");
 +    }
 +
-+    return ram_block_discard_range_fd(rb, start, length, fd);
++    memory_region_unref(section.mr);
++    return ret;
 +}
++
+ int kvm_cpu_exec(CPUState *cpu)
+ {
+     struct kvm_run *run = cpu->kvm_run;
+@@ -3198,6 +3242,16 @@ int kvm_cpu_exec(CPUState *cpu)
+                 break;
+             }
+             break;
++        case KVM_EXIT_MEMORY_FAULT:
++            if (run->memory.flags & ~KVM_MEMORY_EXIT_FLAG_PRIVATE) {
++                error_report("KVM_EXIT_MEMORY_FAULT: Unknown flag 0x%" PRIx64,
++                             (uint64_t)run->memory.flags);
++                ret = -1;
++                break;
++            }
++            ret = kvm_convert_memory(run->memory.gpa, run->memory.size,
++                                     run->memory.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE);
++            break;
+         default:
+             DPRINTF("kvm_arch_handle_exit\n");
+             ret = kvm_arch_handle_exit(cpu, run);
 -- 
 2.34.1
 
