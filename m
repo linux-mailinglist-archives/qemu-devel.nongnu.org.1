@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108E77A10DB
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 00:20:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E317A10F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 00:29:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgugO-0006Ac-3y; Thu, 14 Sep 2023 18:19:32 -0400
+	id 1qguov-0005vo-Lb; Thu, 14 Sep 2023 18:28:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qgugK-000694-Kb; Thu, 14 Sep 2023 18:19:28 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1qguot-0005v5-0J; Thu, 14 Sep 2023 18:28:19 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qgugI-0001vi-Bo; Thu, 14 Sep 2023 18:19:28 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-68fbb10dec7so1362428b3a.3; 
- Thu, 14 Sep 2023 15:19:25 -0700 (PDT)
+ id 1qguor-0003hK-7B; Thu, 14 Sep 2023 18:28:18 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68fba57030fso1412118b3a.3; 
+ Thu, 14 Sep 2023 15:28:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694729964; x=1695334764; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=gmail.com; s=20230601; t=1694730495; x=1695335295; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=LzhWTu4lS5kGUJhMfDONX7tYBkJw0NgyLAdBVf5/Y04=;
- b=RCRMHrgBoi6cFdrrvRn61zmWMN9e4ssQYt3GZ7Y2zENVgWVSBh8Tp86//0WvQMK0DO
- rNl9wm+n/onaX1r2h75mS7SybXMDk4TPAlfDRtefvGi5XR/cw7JYEvDhXQurjy4bj1cU
- QQ5KhUC4PMWZG4azy5gST/ZO6myU9Xz33xdCvbGHqvOeXw7SuQVH07dCwxeVgpSUaIae
- RbXi/WOlIk6T4pXCgWIYeXpl52E+mNXsYZVHHEdXQJyTcSL+Y+tjauZr5Jn2NNjISX91
- 7VZsrR+abefBNQ4h+so8MYtA4Ff6AJ2NhYM7vL02i/5I0jR1qFM2qXwOMCqUWGpYobvm
- ak0w==
+ bh=S8iTArZtGeAdX5fKAFf03LEg/lDVKveA5Jc4LV6x8Uw=;
+ b=LuSl1mNJShmTrBXn317cZyoVA1pM3/IPPO0mdAbK/Ba03GTpL4atg08L65VlEQ/eek
+ WqXwH8cfOb9seBhH0TG3DNiAHF8IWRRd9yoVxP1wiOxCSA3cbYKYo74FDk4xRe/WUoJP
+ s5PGIxGiJ7QBkLeK8b5hNlcUhATezFuQcgfFz69o0jGc1VgBC6RegOClxwqHxogtBIQp
+ HQxFXGK7RJGewhTstsh2FYHUlYsDlfSkETZ33DJByFZtLz/cg7xq8aUoiCSSil4wjQ0X
+ v6tETsL52fnY70j+pzoGN8mqTtfNkr+ZxuG1ILZnPQtY9KJ0ZsYmdCxfcOxIMOVhJdFO
+ Kwrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694729964; x=1695334764;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1694730495; x=1695335295;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LzhWTu4lS5kGUJhMfDONX7tYBkJw0NgyLAdBVf5/Y04=;
- b=TWY8wLiHAkG2zykJVn5x2bDHKZM2QqvcWKyjzKxnhULTtdkb3gGen07uhNSiuZMrVK
- aaXeMAShTMWPwZKQRjS5IrKpgilEcDJEMtQNQS6A5wOtpK437Yl5Vc4YG9Lz6/nkse8Z
- wSWpRLUgdon2wOtRut9VPQ3OJ7b2eKZf5an1lKwB6TyiZAd0c7ChN2gR31DkP0KXZZFT
- a7/WEgbCdmBY+/SjTFFFKoT4R6WF/5D40kBX/bPZcozg/lknD3jvih0M4djtpUvqluoB
- 4jfgsgnzv+V1FzLhdCGtH7ShSwGa2FWQW7Ok9ZPW8NR72y35Bv57KKxcm4ujgzRN+wUS
- rxuQ==
-X-Gm-Message-State: AOJu0YxZhAPu040ykAkGGSjuLGQ1FuxHQbcZyBPA+ye/Axq/jfauKBgo
- m/U03lnlhzivziGgIei4oc0=
-X-Google-Smtp-Source: AGHT+IFQb0X3v5CkEzhbLediqd1V7oGJR6cZ4K8BzCgsdftiMFmLZ+GnuPOXiEXT8+ztwKOGKMin2A==
-X-Received: by 2002:a05:6a20:394f:b0:14c:d105:2a59 with SMTP id
- r15-20020a056a20394f00b0014cd1052a59mr121029pzg.55.1694729963966; 
- Thu, 14 Sep 2023 15:19:23 -0700 (PDT)
+ bh=S8iTArZtGeAdX5fKAFf03LEg/lDVKveA5Jc4LV6x8Uw=;
+ b=GdTBGhla0YhoMLbk5RA1D8emH/Wpt54crVLwFLxd08PpFAjF/aCUEw9WZ/RTrC9Vwo
+ hS7awAlyP+hTXdtsZl57umyBewv/L8NugTt5LsAdiiiS9YGkfazEdYG7yndak+XGY3jL
+ buO5o66/MZQ6gD7BSkNWYQNogB2ciK9ZXAmXrNUjtsVRR3+puiugJbanyfwGxSYDv7/h
+ kC/mFCvBcsfH/N+eXciV+tjnsiBbLCHR6IZYq0Tw9GTq25CLZVJwc8vYoGJCR5yKXMwg
+ i4S1ZGNUhLKGwDUBBPaVlTF51v3tXu/Xk2HJhfxUvocF9UfV3UjUVuZgs0qsU+Pc6vh9
+ ZFMA==
+X-Gm-Message-State: AOJu0YzEV1zx4runIhOVRcOiehWbVMUzeXXgZe+zICVG5Wgb3KTH3kYG
+ 0N2Gb3ybDvR4CnkIl++NcUbCoFqjq7YQjg==
+X-Google-Smtp-Source: AGHT+IHozXEHR49L6EGOz7DAC7CjdcXSAG4Uwe9J6SA9fuK4m4wkeL+nFOk+agXgyQUAsAUV4KYX3w==
+X-Received: by 2002:a05:6a00:2d8f:b0:68f:dd50:aef8 with SMTP id
+ fb15-20020a056a002d8f00b0068fdd50aef8mr7884540pfb.4.1694730495331; 
+ Thu, 14 Sep 2023 15:28:15 -0700 (PDT)
 Received: from [192.168.0.62] ([218.147.112.168])
  by smtp.gmail.com with ESMTPSA id
- y10-20020a170902b48a00b001bdc8a5e96csm2075236plr.169.2023.09.14.15.19.20
+ 18-20020a056a00073200b0067ab572c72fsm1789990pfm.84.2023.09.14.15.28.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 15:19:23 -0700 (PDT)
-Message-ID: <160581dc-bdbc-03e8-64a5-1adb818a15b2@gmail.com>
-Date: Fri, 15 Sep 2023 07:19:18 +0900
+ Thu, 14 Sep 2023 15:28:14 -0700 (PDT)
+Message-ID: <da63cc27-2ac9-9d45-52c9-5ad1a0962f9c@gmail.com>
+Date: Fri, 15 Sep 2023 07:28:10 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PULL 4/5] hw/ufs: Support for UFS logical unit
-To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi
- <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Jeuk Kim <jeuk20.kim@samsung.com>, Hanna Reitz <hreitz@redhat.com>,
+Subject: Re: [PULL 3/5] hw/ufs: Support for Query Transfer Requests
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Jeuk Kim <jeuk20.kim@samsung.com>,
+ Hanna Reitz <hreitz@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
 References: <20230907181628.1594401-1-stefanha@redhat.com>
- <20230907181628.1594401-5-stefanha@redhat.com>
- <c4dc2292-4690-f16f-4b70-d6f759c16633@redhat.com>
-Content-Language: en-US
+ <20230907181628.1594401-4-stefanha@redhat.com>
+ <CAFEAcA8K=TxoqUV-XK+_5KvmKxc+ue7rZ28Sd_yY=V_TVxmMcw@mail.gmail.com>
 From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <c4dc2292-4690-f16f-4b70-d6f759c16633@redhat.com>
+In-Reply-To: <CAFEAcA8K=TxoqUV-XK+_5KvmKxc+ue7rZ28Sd_yY=V_TVxmMcw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x42a.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -25
 X-Spam_score: -2.6
 X-Spam_bar: --
@@ -103,79 +105,95 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-On 23. 9. 15. 02:31, Paolo Bonzini wrote:
-> On 9/7/23 20:16, Stefan Hajnoczi wrote:
->> From: Jeuk Kim<jeuk20.kim@samsung.com>
+On 23. 9. 14. 23:40, Peter Maydell wrote:
+> On Thu, 7 Sept 2023 at 19:17, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+>> From: Jeuk Kim <jeuk20.kim@samsung.com>
 >>
->> This commit adds support for ufs logical unit.
->> The LU handles processing for the SCSI command,
->> unit descriptor query request.
+>> This commit makes the UFS device support query
+>> and nop out transfer requests.
 >>
->> This commit enables the UFS device to process
->> IO requests.
+>> The next patch would be support for UFS logical
+>> unit and scsi command transfer request.
 >>
->> Signed-off-by: Jeuk Kim<jeuk20.kim@samsung.com>
->> Reviewed-by: Stefan Hajnoczi<stefanha@redhat.com>
->> Message-id:beacc504376ab6a14b1a3830bb3c69382cf6aebc.1693980783.git.jeuk20.kim@gmail.com 
->>
->> Signed-off-by: Stefan Hajnoczi<stefanha@redhat.com>
+>> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
+>> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>> Message-id: ff7a5f0fd26761936a553ffb89d3df0ba62844e9.1693980783.git.jeuk20.kim@gmail.com
+>> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 >> ---
+>>   hw/ufs/ufs.h        |  46 +++
+>>   hw/ufs/ufs.c        | 988 +++++++++++++++++++++++++++++++++++++++++++-
+>>   hw/ufs/trace-events |   1 +
+>>   3 files changed, 1033 insertions(+), 2 deletions(-)
+> Hi; Coverity isn't happy about the code in this function
+> (CID 1519050). The code isn't strictly wrong, but it's
+> probably possible to make it a bit more clearly correct.
 >
-> Jeuk,
+>> +static void ufs_process_db(UfsHc *u, uint32_t val)
+>> +{
+>> +    unsigned long doorbell;
+>> +    uint32_t slot;
+>> +    uint32_t nutrs = u->params.nutrs;
+>> +    UfsRequest *req;
+>> +
+>> +    val &= ~u->reg.utrldbr;
+>> +    if (!val) {
+>> +        return;
+>> +    }
+>> +
+>> +    doorbell = val;
+>> +    slot = find_first_bit(&doorbell, nutrs);
+> Here we pass the address of a single 'unsigned long' to
+> find_first_bit(). That function operates on arrays, so
+> unless nutrs is guaranteed to be less than 32 this might
+> walk off the end of memory.
 >
-> can you explain the differences between scsi-hd and ufs-lu, apart from 
-> the different bus type?  Ideally, the UFS controller would be in 
-> hw/scsi/ufs.c and there would be no need for ufs-lu at all.
+> There is a check on params.nutrs in ufs_check_constraints(),
+> which checks for "> UFS_MAX_NUTRS" and that value is 32,
+> so this won't actually overflow, but Coverity can't
+> see that check and in any case what it really doesn't
+> like here is the passing of the address of a 'long'
+> variable to a function that is prototyped as taking
+> an array of longs.
 >
-> Would it make sense to allow any SCSI device into a UFS bus without 
-> the need to have duplicate code?
+> You can probably make Coverity happy by defining
+> doorbell here as a 1 element array, and asserting
+> that nutrs is 32 or less. Alternatively, we have
+> ctz32() for working through bits in a uint32_t, though
+> that is a bit lower-level than find_first_bit/find_next_bit.
 >
-> Thanks!
+>> +
+>> +    while (slot < nutrs) {
+>> +        req = &u->req_list[slot];
+>> +        if (req->state == UFS_REQUEST_ERROR) {
+>> +            trace_ufs_err_utrl_slot_error(req->slot);
+>> +            return;
+>> +        }
+>> +
+>> +        if (req->state != UFS_REQUEST_IDLE) {
+>> +            trace_ufs_err_utrl_slot_busy(req->slot);
+>> +            return;
+>> +        }
+>> +
+>> +        trace_ufs_process_db(slot);
+>> +        req->state = UFS_REQUEST_READY;
+>> +        slot = find_next_bit(&doorbell, nutrs, slot + 1);
+>> +    }
+>> +
+>> +    qemu_bh_schedule(u->doorbell_bh);
+>> +}
+> thanks
+> -- PMM
 >
-> Paolo
->
->
 
-Hi Paolo,
+Thank you for letting me know about the coverity issue with a detailed 
+description!
 
+I have checked all the coverity issues related to ufs.
+(cid 1519042, cid 1519043, cid 1519050, cid 1519051)
 
-While ufs does use the SCSI specification to communicate with the driver,
+I will fix them with an additional patch as soon as possible.
 
-it doesn't behave exactly like a typical scsi device.
-
-
-First, ufs-lu has a feature called "unit descriptor". This feature shows 
-the status of the ufs-lu
-
-and only works with UFS-specific "query request" commands, not SCSI 
-commands.
-
-
-UFS also has something called a well-known lu. Unlike typical SCSI 
-devices, where each lu is independent,
-
-UFS can control other lu's through the well-known lu.
-
-
-Finally, UFS-LU will have features that SCSI-HD does not have, such as 
-the zone block command.
-
-
-In addition to this, I wanted some scsi commands to behave differently 
-from scsi-hd, for example,
-
-the Inquiry command should read "QEMU UFS" instead of "QEMU HARDDISK",
-
-and the mode_sense_page command should have a different result.
-
-
-For these reasons, I chose to generate the ufs-lu code separately.
-
-
-Please let me know if you have any comments on this.
-
-
-Thanks!
+Thank you!
 
 Jeuk
 
