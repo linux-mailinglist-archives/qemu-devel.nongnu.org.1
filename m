@@ -2,69 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBCE79FEFC
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D49579FF44
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:59:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgi2Y-000670-Nd; Thu, 14 Sep 2023 04:49:34 -0400
+	id 1qgiBA-0000aq-AW; Thu, 14 Sep 2023 04:58:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qgi2V-00066s-TR
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:49:31 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qgi2T-0007Nq-Be
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:49:31 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Cxh+gVyQJlDkInAA--.40204S3;
- Thu, 14 Sep 2023 16:49:25 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Bx3y8TyQJlS5EEAA--.8595S3; 
- Thu, 14 Sep 2023 16:49:23 +0800 (CST)
-Subject: Re: [PATCH v3] hw/loongarch: Add virtio-mmio bus support
-To: Tianrui Zhao <zhaotianrui@loongson.cn>, qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, maobibo@loongson.cn, yangxiaojuan@loongson.cn
-References: <20230911085903.664996-1-zhaotianrui@loongson.cn>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <30fd65d6-930f-8a02-68fb-25d0ccded9db@loongson.cn>
-Date: Thu, 14 Sep 2023 16:49:23 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgiB7-0000a9-Sy
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:58:25 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgiAx-0000QN-1r
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:58:25 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-99bdeae1d0aso92289166b.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 01:58:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694681890; x=1695286690; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZY6bj8pOEE53hD8eYsi1398NGKLgp3tvJXGrO7CzlGk=;
+ b=QZtRePtUv+0bfm+30yypjMKBQzzrFSLm+0r2fHn9zIsDGWfbkPdwbxG5mMklpOJYgn
+ Km/P8PK9Cednqk51tkpyrJEZwyIc7Rhj77Ik/IeU0VuuyKDdVW674JiNJnUfbaR7B39c
+ lxbeZcDPnT5apTmigoipwT1EqkwtuifjpKe2dOtXKOWh0bt4o/SprJInZUPGHI93jhY+
+ EMovIKCwzKCyOOllyIitF64dJws17lGWGkSqo0UgWClDC2A1e2FOPLv+3+71z1cXgVSD
+ dptYgz4r4QE/HqSDG3/EBc19FIytrd6TF0rq04Ux3dT/N+9KRDWaaL1GcMN95MhpWKWJ
+ ReCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694681890; x=1695286690;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZY6bj8pOEE53hD8eYsi1398NGKLgp3tvJXGrO7CzlGk=;
+ b=ovcdJaCQ0+ibaSqvmZ0PcWRTpX47+I8SwY88tjGYBexk1jzO1985wnmitzV38xmsT0
+ bpUn3Ya8Xg3XGArtxOqQeDZYi+aN1Ylb2CHPzDuYM6cHcZN/2ABGuDzdwGtNfLWevhLU
+ uQ7vyuNcEURwpWjVWGK44HMI/0PQTn1u+xz/0c5JO207p/u//3rTvf0y7t9p295PfIdG
+ dghBccucJHsOfNPhWgjwus7R4ODXnLvKcvecDXTsvr8uwc8V+XPu33F0/vVQGm0j3obG
+ fV9hDjjr+Lv5KyQZ0+EfYITQqc7UkR/dsTkNPiZcAGQyvLjwZbbjEu3KGUt4nlDjnWbh
+ E8dA==
+X-Gm-Message-State: AOJu0YxeacnpVJ02nMMATbTZ2tFkxAlzwtgucbR1S4CubpcILY/Rb6xw
+ Cji10jB+Xqw4ZAv6NikzgbNkUfSy6AoKFC4Rtv8=
+X-Google-Smtp-Source: AGHT+IE/PF0s7w2sm4x/aCHnZLCxE0fM5Dp6EvcAMgDVjVhWfPpt4awgsdfDZv6A1gpnKfosy6bZ0w==
+X-Received: by 2002:a17:906:8a41:b0:9a5:c49e:7145 with SMTP id
+ gx1-20020a1709068a4100b009a5c49e7145mr3943612ejc.69.1694681889987; 
+ Thu, 14 Sep 2023 01:58:09 -0700 (PDT)
+Received: from m1x-phil.lan (sem44-h01-176-172-56-29.dsl.sta.abo.bbox.fr.
+ [176.172.56.29]) by smtp.gmail.com with ESMTPSA id
+ mj12-20020a170906af8c00b009a1c05bd672sm692518ejb.127.2023.09.14.01.58.08
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 14 Sep 2023 01:58:09 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Ni Hui <shuizhuyuanluo@126.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ qemu-stable@nongnu.org, Sergey Evlashev <vectorchiefrocks@gmail.com>
+Subject: [PATCH] target/mips: Fix MSA BZ/BNZ opcodes displacement
+Date: Thu, 14 Sep 2023 10:58:06 +0200
+Message-ID: <20230914085807.12241-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-In-Reply-To: <20230911085903.664996-1-zhaotianrui@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Bx3y8TyQJlS5EEAA--.8595S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7Xr1UuFy5AFWUtF43uFW7GFX_yoWxKFc_uF
- 1xAw43W3W5AF4fWFZ0yry2kFW8J3WUWr1rJF95Gr4kZw1Fyw4Y9F4IgFyUZFW8Xrn5Arnx
- C34qqa18ta1kCosvyTuYvTs0mTUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUj1kv1TuYvT
- s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
- cSsGvfJTRUUUbakYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
- vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
- w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
- WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
- 6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
- Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE
- 14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1c
- AE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E
- 14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
- CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
- MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
- 4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnI
- WIevJa73UjIFyTuYvjxUrNtxDUUUU
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.473, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,29 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-‘⁄ 2023/9/11 œ¬ŒÁ4:59, Tianrui Zhao –¥µ¿:
-> +static void fdt_add_virtio_mmio_node(LoongArchMachineState *lams)
-> +{
-> +    int i;
-> +    MachineState *ms = MACHINE(lams);
-> +
-> +    for (i = VIRT_VIRTIO_MMIO_NUM - 1; i >= 0; i--) {
-> +        char *nodename;
-> +        hwaddr base = VIRT_VIRTIO_MMIO_BASE + i * VIRT_VIRTIO_MMIO_SIZE;
-> +
-> +        nodename = g_strdup_printf("/virtio_mmio@%" PRIx64, base);
-> +        qemu_fdt_add_subnode(ms->fdt, nodename);
-> +        qemu_fdt_setprop_string(ms->fdt, nodename,
-> +                                "compatible", "virtio,mmio");
-> +        qemu_fdt_setprop_sized_cells(ms->fdt, nodename, "reg",
-> +                                     2, base, 2, VIRT_VIRTIO_MMIO_SIZE);
-Missing node interrupts.
+The PC offset is *signed*.
 
-Thanks.
-Song Gao
+Cc: qemu-stable@nongnu.org
+Reported-by: Sergey Evlashev <vectorchiefrocks@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1624
+Fixes: c7a9ef7517 ("target/mips: Introduce decode tree bindings for MSA ASE")
+Signed-off-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
+---
+ target/mips/tcg/msa.decode | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +        g_free(nodename);
-> +    }
-> +}
+diff --git a/target/mips/tcg/msa.decode b/target/mips/tcg/msa.decode
+index 9575289195..4410e2a02e 100644
+--- a/target/mips/tcg/msa.decode
++++ b/target/mips/tcg/msa.decode
+@@ -31,8 +31,8 @@
+ 
+ @lsa                ...... rs:5 rt:5 rd:5 ... sa:2 ......   &r
+ @ldst               ...... sa:s10 ws:5 wd:5 .... df:2       &msa_i
+-@bz_v               ...... ... ..    wt:5 sa:16             &msa_bz df=3
+-@bz                 ...... ...  df:2 wt:5 sa:16             &msa_bz
++@bz_v               ...... ... ..    wt:5 sa:s16            &msa_bz df=3
++@bz                 ...... ...  df:2 wt:5 sa:s16            &msa_bz
+ @elm_df             ...... .... ......    ws:5 wd:5 ......  &msa_elm_df df=%elm_df n=%elm_n
+ @elm                ...... ..........     ws:5 wd:5 ......  &msa_elm
+ @vec                ...... .....     wt:5 ws:5 wd:5 ......  &msa_r df=0
+-- 
+2.41.0
 
 
