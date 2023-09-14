@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853D579FD64
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 09:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1D479FD65
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 09:44:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgh14-00018k-H5; Thu, 14 Sep 2023 03:43:58 -0400
+	id 1qgh17-0001JE-27; Thu, 14 Sep 2023 03:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qgh0y-00010Q-5w
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:43:52 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qgh10-00014L-8F
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:43:54 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qgh0w-0007om-HQ
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:43:51 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qgh0x-0007pf-Qv
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:43:53 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C8CA021C34
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 10:43:52 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B068121C35
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 10:43:53 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5AD0927F6A;
- Thu, 14 Sep 2023 10:43:45 +0300 (MSK)
-Received: (nullmailer pid 149926 invoked by uid 1000);
- Thu, 14 Sep 2023 07:43:45 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 4217427F6B;
+ Thu, 14 Sep 2023 10:43:46 +0300 (MSK)
+Received: (nullmailer pid 149930 invoked by uid 1000);
+ Thu, 14 Sep 2023 07:43:46 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v3 2/3] linux-user/syscall.c: do_ppoll: consolidate and fix
- the forgotten unlock_user
-Date: Thu, 14 Sep 2023 10:43:36 +0300
-Message-Id: <20230914074337.149897-3-mjt@tls.msk.ru>
+Subject: [PATCH v3 3/3] linux-user/syscall.c: do_ppoll: eliminate large alloca
+Date: Thu, 14 Sep 2023 10:43:37 +0300
+Message-Id: <20230914074337.149897-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230914074337.149897-1-mjt@tls.msk.ru>
 References: <20230914074337.149897-1-mjt@tls.msk.ru>
@@ -58,81 +57,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-in do_ppoll we've one place where unlock_user isn't done
-at all, while other places use 0 for the size of the area
-being unlocked instead of the actual size.
+do_ppoll() in linux-user/syscall.c uses alloca() to allocate
+an array of struct pullfds on the stack.  The only upper
+boundary for number of entries for this array is so that
+whole thing fits in INT_MAX.  This is definitely too much
+for stack allocation.
 
-Instead of open-coding calls to unlock_user(), jump to the
-end of this function and do a single call to unlock there.
+Use heap allocation when large number of entries is requested
+(currently 32, arbitrary), and continue to use alloca() for
+smaller allocations, to optimize small operations for small
+sizes.  The code for this optimization is small, I see no
+reason for dropping it.
 
-Note: original code calls unlock_user() with target_pfd being
-NULL in one case (when nfds == 0).   Move initializers to
-variable declarations, - I wondered a few times if target_pfd
-isn't being initialized at all for unlock_user.
+This eliminates last large user-controlled on-stack allocation
+from syscall.c.
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- linux-user/syscall.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ linux-user/syscall.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 33bf84c205..eabdf50abc 100644
+index eabdf50abc..1dbe28eba4 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -1487,14 +1487,12 @@ static abi_long do_pselect6(abi_long arg1, abi_long arg2, abi_long arg3,
- static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
-                          abi_long arg4, abi_long arg5, bool ppoll, bool time64)
+@@ -1489,7 +1489,7 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
  {
--    struct target_pollfd *target_pfd;
-+    struct target_pollfd *target_pfd = NULL;
+     struct target_pollfd *target_pfd = NULL;
      unsigned int nfds = arg2;
--    struct pollfd *pfd;
-+    struct pollfd *pfd = NULL;
+-    struct pollfd *pfd = NULL;
++    struct pollfd *pfd = NULL, *heap_pfd = NULL;
      unsigned int i;
      abi_long ret;
  
--    pfd = NULL;
--    target_pfd = NULL;
-     if (nfds) {
-         if (nfds > (INT_MAX / sizeof(struct target_pollfd))) {
-             return -TARGET_EINVAL;
-@@ -1519,8 +1517,8 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
-             if (time64
-                 ? target_to_host_timespec64(timeout_ts, arg3)
-                 : target_to_host_timespec(timeout_ts, arg3)) {
--                unlock_user(target_pfd, arg1, 0);
--                return -TARGET_EFAULT;
-+                ret = -TARGET_EFAULT;
-+                goto out;
-             }
-         } else {
-             timeout_ts = NULL;
-@@ -1529,8 +1527,7 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
-         if (arg4) {
-             ret = process_sigsuspend_mask(&set, arg4, arg5);
-             if (ret != 0) {
--                unlock_user(target_pfd, arg1, 0);
--                return ret;
-+                goto out;
-             }
+@@ -1503,7 +1503,17 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+             return -TARGET_EFAULT;
          }
  
-@@ -1544,7 +1541,8 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
-             if (time64
-                 ? host_to_target_timespec64(arg3, timeout_ts)
-                 : host_to_target_timespec(arg3, timeout_ts)) {
--                return -TARGET_EFAULT;
-+                ret = -TARGET_EFAULT;
+-        pfd = alloca(sizeof(struct pollfd) * nfds);
++        /* arbitrary "small" number to limit stack usage */
++        if (nfds <= 64) {
++            pfd = alloca(sizeof(struct pollfd) * nfds);
++        } else {
++            heap_pfd = g_try_new(struct pollfd, nfds);
++            if (!heap_pfd) {
++                ret = -TARGET_ENOMEM;
 +                goto out;
-             }
-         }
-     } else {
-@@ -1567,6 +1565,8 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
-             target_pfd[i].revents = tswap16(pfd[i].revents);
-         }
++            }
++            pfd = heap_pfd;
++        }
+         for (i = 0; i < nfds; i++) {
+             pfd[i].fd = tswap32(target_pfd[i].fd);
+             pfd[i].events = tswap16(target_pfd[i].events);
+@@ -1567,6 +1577,7 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
      }
-+
-+out:
+ 
+ out:
++    g_free(heap_pfd);
      unlock_user(target_pfd, arg1, sizeof(struct target_pollfd) * nfds);
      return ret;
  }
