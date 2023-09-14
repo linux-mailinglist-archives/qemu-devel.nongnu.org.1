@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700077A090B
+	by mail.lfdr.de (Postfix) with ESMTPS id 648377A090A
 	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:25:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgoCU-0006Aw-S7; Thu, 14 Sep 2023 11:24:14 -0400
+	id 1qgoD8-0006cM-9x; Thu, 14 Sep 2023 11:24:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qgoCS-00067d-P6
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:24:12 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1qgoCQ-0001eQ-UM
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:24:12 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-404773f2501so1442255e9.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 08:24:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1694705049; x=1695309849; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=6sakCjyOjzqHhR3CcEqZlqRPiVTdIvwbyRiiVCqWrmU=;
- b=LwEqWrppcfSHMMlS36z9NmN9uWOe889T7KIG0Rzf3EZntaKAIPA6qnLg91TBH5FhFn
- Y8Fae1c7NYvI5i55KiVxwgY78IWdbC7cBYbjFBsNb4tkbq1OIa7sEuGK1q2cmeQA/R1v
- iaRTk1BVhQQbJ2cKU8NoHRWaB9BOlujIk/5q29cOxeIYY/yOpKNJ16agxcKeQaIvSIBL
- gQuJ2MUbFJU1/KSxjS0aqv8gBO0eTsa8jh36eeCg6Dt1Gz9q8BYG7abSURE4nQdcVDd0
- w5Nuwx/oqd46mxLkrNxER6Xbd7+0kHM0dAeVHx1wFNZorWiW4Of05Qp47lpDHGJwF8Hj
- pNzA==
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qgoCy-0006UI-82
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:24:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qgoCl-0001i0-0H
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:24:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694705069;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=UlGP9ycf8RgHUGP67fHJ8K+zXtfhFB7ofC4Du2Dy+VQ=;
+ b=itw9Jm1JJ9/ucrWq0DJqH/+ZFdYX1aG5W5XN+p3vIn+BHVYnrajub6qAgkH0fnKMCe4DmF
+ 7bDmqubfndk6wUj19/loVmEOfJ8iW4cWjATcAtcZYP8tyQYIiuq/K7QYwvYsRYIx3Bf0S8
+ kLohB+A0JqT1GKi24snT8OhwzYBoS7c=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-413-C5cThb1MN2mGumyjCqAjwA-1; Thu, 14 Sep 2023 11:24:28 -0400
+X-MC-Unique: C5cThb1MN2mGumyjCqAjwA-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-27484fabc22so265506a91.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 08:24:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694705049; x=1695309849;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6sakCjyOjzqHhR3CcEqZlqRPiVTdIvwbyRiiVCqWrmU=;
- b=njsc+TBM+Ey2PSJwD2fgzBQmp8xMBTKvczwijdSTtm2A8yZEBgnP2DU4rhUdRvIn0r
- VHapFve2yREEk7BaroWFr7HAguBqNpTyDZjSgFQG3XpFDut30HvGdjmGFhYhyViNMiBf
- Qf0Uok9USqWdaIx5SZgDsK4ZgLaN0y0XzerzJme6nAazYajpDkM5NgXYTfPpZ/YGjLDQ
- okecyXisnKB6v9kZ1ptPX13ToQ7h/sJTXXiFDjH+2DxolbB6ua57iE3S9KVNASRbFvsz
- S0cisXdS2K1dF7OcbSD0cUQgWWj03Xzgz3VGIjnmlBBMDCOQO4KPKxrnaXjSfcR7uFb9
- v+vA==
-X-Gm-Message-State: AOJu0YxoUybrb96wDkoj0YLWIwrATBeQPHxRMFO3+g1WaKH3jWsOyWVs
- CFkXMHP9utaisxwXr6l/nEm5jw==
-X-Google-Smtp-Source: AGHT+IG233p9Vdz021pVsPgNKU6wr/f3oR4Eul7tUikEc6PZ2w8OqjnlHjmwn9W6/zsraTpVIy8DNQ==
-X-Received: by 2002:a05:6000:1846:b0:31f:d95d:20a6 with SMTP id
- c6-20020a056000184600b0031fd95d20a6mr2571981wri.12.1694705048839; 
- Thu, 14 Sep 2023 08:24:08 -0700 (PDT)
-Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
- by smtp.gmail.com with ESMTPSA id
- k3-20020a056000004300b0031fba0a746bsm2056808wrx.9.2023.09.14.08.24.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 08:24:08 -0700 (PDT)
-Date: Thu, 14 Sep 2023 17:24:07 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Alvin Chang <alvinga@andestech.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
- Mayuresh Chitale <mchitale@ventanamicro.com>
-Subject: Re: [PATCH v2] target/riscv: update checks on writing pmpcfg for
- Smepmp version 1.0
-Message-ID: <20230914-cb9bcd81a83afb82fa971d89@orel>
-References: <20230908083834.628708-1-alvinga@andestech.com>
+ d=1e100.net; s=20230601; t=1694705067; x=1695309867;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=UlGP9ycf8RgHUGP67fHJ8K+zXtfhFB7ofC4Du2Dy+VQ=;
+ b=jauycPDtI+Sx/0pg323aqQFbEPSFqfrd9rXdtPLpJ+aHxQ+Qsm6daqbXdsgsNMq3ax
+ 3NeH8wxdPiMn1U0UtZQkyvT4v4Tfyouo+0ZSSZVLFOELPxEOfUVtuRH1WzNNlXnGXlUz
+ W8vXi5C/saXUwC6ajkDXNPVtAjGGtNjYYmdGLa2xYtVsGl8mH7cBODsihj17TUBgrgAD
+ 2zVdEMzxNU4JEEvJubTMgEdApLlOTdjVjpDQ/53/xAaT11jgQlSpTMTyCGUNdhH1LMnq
+ uAnB+tXuC/T88gWQwl6vCVxWbZ2JHH3aFtxKlbx8RZ87N0OLm0hGBUCGIPDCfig0j8J6
+ Jo1w==
+X-Gm-Message-State: AOJu0YyrU9cJ367mb1QclPb3TW9jJ27z3asli8O6zYSXhhvh6gnXsY/U
+ n/XOdGRbwqB1FB5szIx7ukMz/WTydssWADiIO2CthR9RzIlGWA4QzkVnO7Dox94YeWLnGdHOZz7
+ cBkAD+/gXQ607LfGtpygBNvGvq3WD8qw=
+X-Received: by 2002:a17:90a:f291:b0:274:5e18:851c with SMTP id
+ fs17-20020a17090af29100b002745e18851cmr2750105pjb.4.1694705067149; 
+ Thu, 14 Sep 2023 08:24:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7M7X4hWMJCnF3J9IlVuFxG1UeHT75Zw8Wa4XY14GgRgbEhv7x+UcR7YrVYLfrbxAb8irC5gMs6VsXEBvzEr8=
+X-Received: by 2002:a17:90a:f291:b0:274:5e18:851c with SMTP id
+ fs17-20020a17090af29100b002745e18851cmr2750085pjb.4.1694705066865; Thu, 14
+ Sep 2023 08:24:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230908083834.628708-1-alvinga@andestech.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x335.google.com
+References: <20230912131340.405619-1-npiggin@gmail.com>
+ <87h6nytpwr.fsf@linaro.org>
+In-Reply-To: <87h6nytpwr.fsf@linaro.org>
+From: John Snow <jsnow@redhat.com>
+Date: Thu, 14 Sep 2023 11:24:15 -0400
+Message-ID: <CAFn=p-ZnV_cBNHTEUmWTYE1d-VrUerCcx7hj2Lgh8jx9BvfO7A@mail.gmail.com>
+Subject: Re: [PATCH] tests/avocado: Fix console data loss
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Cleber Rosa <crosa@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,113 +96,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 08, 2023 at 04:38:34PM +0800, Alvin Chang wrote:
-> Current checks on writing pmpcfg for Smepmp follows Smepmp version
-> 0.9.1. However, Smepmp specification has already been ratified, and
-> there are some differences between version 0.9.1 and 1.0. In this commit
-> we update the checks of writing pmpcfg to follow Smepmp version 1.0.
-> 
-> When mseccfg.MML is set, the constraints to modify PMP rules are:
-> 1. Locked rules connot be removed or modified until a PMP reset, unless
->    mseccfg.RLB is set.
-> 2. From Smepmp specification version 1.0, chapter 2 section 4b:
->    Adding a rule with executable privileges that either is M-mode-only
->    or a locked Shared-Region is not possible and such pmpcfg writes are
->    ignored, leaving pmpcfg unchanged.
-> 
-> The commit transfers the value of pmpcfg into the index of the Smepmp
-> truth table, and checks the rules by aforementioned specification
-> changes.
-> 
-> Signed-off-by: Alvin Chang <alvinga@andestech.com>
-> ---
-> Changes from v1: Convert ePMP over to Smepmp.
-> 
->  target/riscv/pmp.c | 51 ++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 42 insertions(+), 9 deletions(-)
-> 
-> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-> index 9d8db493e6..d1c3fc1e4f 100644
-> --- a/target/riscv/pmp.c
-> +++ b/target/riscv/pmp.c
-> @@ -98,16 +98,49 @@ static bool pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
->                  locked = false;
->              }
->  
-> -            /* mseccfg.MML is set */
-> -            if (MSECCFG_MML_ISSET(env)) {
-> -                /* not adding execute bit */
-> -                if ((val & PMP_LOCK) != 0 && (val & PMP_EXEC) != PMP_EXEC) {
-> -                    locked = false;
-> -                }
-> -                /* shared region and not adding X bit */
-> -                if ((val & PMP_LOCK) != PMP_LOCK &&
-> -                    (val & 0x7) != (PMP_WRITE | PMP_EXEC)) {
-> +            /*
-> +             * mseccfg.MML is set. Locked rules cannot be removed or modified
-> +             * until a PMP reset. Besides, from Smepmp specification version 1.0
-> +             * , chapter 2 section 4b says:
-> +             * Adding a rule with executable privileges that either is
-> +             * M-mode-only or a locked Shared-Region is not possible and such
-> +             * pmpcfg writes are ignored, leaving pmpcfg unchanged.
-> +             */
-> +            if (MSECCFG_MML_ISSET(env) && !pmp_is_locked(env, pmp_index)) {
-> +                /*
-> +                 * Convert the PMP permissions to match the truth table in the
-> +                 * ePMP spec.
-> +                 */
-> +                const uint8_t epmp_operation =
-> +                    ((val & PMP_LOCK) >> 4) | ((val & PMP_READ) << 2) |
-> +                    (val & PMP_WRITE) | ((val & PMP_EXEC) >> 2);
-> +
-> +                switch (epmp_operation) {
-> +                /* pmpcfg.L = 0. Neither M-mode-only nor locked Shared-Region */
-> +                case 0:
-> +                case 1:
-> +                case 2:
-> +                case 3:
-> +                case 4:
-> +                case 5:
-> +                case 6:
-> +                case 7:
-> +                /* pmpcfg.L = 1 and pmpcfg.X = 0 (but case 10 is not allowed) */
-> +                case 8:
+On Wed, Sep 13, 2023 at 4:53=E2=80=AFAM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
+>
+>
+> Nicholas Piggin <npiggin@gmail.com> writes:
+>
+> > Occasionally some avocado tests will fail waiting for console line
+> > despite the machine running correctly. Console data goes missing, as ca=
+n
+> > be seen in the console log. This is due to _console_interaction calling
+> > makefile() on the console socket each time it is invoked, which must be
+> > losing old buffer contents when going out of scope.
+> >
+> > It is not enough to makefile() with buffered=3D0. That helps significan=
+tly
+> > but data loss is still possible. My guess is that readline() has a line
+> > buffer even when the file is in unbuffered mode, that can eat data.
+> >
+> > Fix this by providing a console file that persists for the life of the
+> > console.
+> >
+> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>
+> Queued to testing/next, thanks.
 
-case 0 ... 8:
+Sure, ACK.
 
-> +                case 12:
-> +                case 14:
-> +                /* pmpcfg.LRWX = 1111 */
-> +                case 15:  /* Read-only locked Shared-Region on all modes */
->                      locked = false;
-> +                    break;
-> +                /* Other rules which add new code regions are not allowed */
-> +                case 9:
-> +                case 10:  /* Execute-only locked Shared-Region on all modes */
-> +                case 11:
+I didn't realize that avocado was technically creating multiple
+buffered files like this.
 
-case 9 ... 11:
+--js
 
-And why not put these cases in numerical order?
-
-> +                case 13:
-> +                    break;
-> +                default:
-> +                    g_assert_not_reached();
->                  }
->              }
->          } else {
-> -- 
-> 2.34.1
-> 
+>
+> > ---
+> >
+> > For some reason, ppc_prep_40p.py:IbmPrep40pMachine.test_openbios_192m
+> > was flakey for me due to this bug. I don't know why that in particular,
+> > 3 calls to wait_for_console_pattern probably helps.
+> >
+> > I didn't pinpoint when the bug was introduced because the original
+> > was probably not buggy because it was only run once at the end of the
+> > test. At some point after it was moved to common code, something would
+> > have started to call it more than once which is where potential for bug
+> > is introduced.
+>
+> There is a sprawling mass somewhere between:
+>
+>   - pythons buffering of IO
+>   - device models dropping chars when blocked
+>   - noisy tests with competing console output
+>
+> that adds up to unreliable tests that rely on seeing certain patterns on
+> the console.
+>
+> >
+> > Thanks,
+> > Nick
+> >
+> >  python/qemu/machine/machine.py         | 19 +++++++++++++++++++
+> >  tests/avocado/avocado_qemu/__init__.py |  2 +-
+> >  2 files changed, 20 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machi=
+ne.py
+> > index c16a0b6fed..35d5a672db 100644
+> > --- a/python/qemu/machine/machine.py
+> > +++ b/python/qemu/machine/machine.py
+> > @@ -191,6 +191,7 @@ def __init__(self,
+> >              self.sock_dir, f"{self._name}.con"
+> >          )
+> >          self._console_socket: Optional[socket.socket] =3D None
+> > +        self._console_file: Optional[socket.SocketIO] =3D None
+> >          self._remove_files: List[str] =3D []
+> >          self._user_killed =3D False
+> >          self._quit_issued =3D False
+> > @@ -509,6 +510,11 @@ def _early_cleanup(self) -> None:
+> >          # If we keep the console socket open, we may deadlock waiting
+> >          # for QEMU to exit, while QEMU is waiting for the socket to
+> >          # become writable.
+> > +        if self._console_file is not None:
+> > +            LOG.debug("Closing console file")
+> > +            self._console_file.close()
+> > +            self._console_file =3D None
+> > +
+> >          if self._console_socket is not None:
+> >              LOG.debug("Closing console socket")
+> >              self._console_socket.close()
+> > @@ -874,12 +880,25 @@ def console_socket(self) -> socket.socket:
+> >          Returns a socket connected to the console
+> >          """
+> >          if self._console_socket is None:
+> > +            LOG.debug("Opening console socket")
+> >              self._console_socket =3D console_socket.ConsoleSocket(
+> >                  self._console_address,
+> >                  file=3Dself._console_log_path,
+> >                  drain=3Dself._drain_console)
+> >          return self._console_socket
+> >
+> > +    @property
+> > +    def console_file(self) -> socket.SocketIO:
+> > +        """
+> > +        Returns a file associated with the console socket
+> > +        """
+> > +        if self._console_file is None:
+> > +            LOG.debug("Opening console file")
+> > +            self._console_file =3D self.console_socket.makefile(mode=
+=3D'rb',
+> > +                                                              bufferin=
+g=3D0,
+> > +                                                              encoding=
+=3D'utf-8')
+> > +        return self._console_file
+> > +
+> >      @property
+> >      def temp_dir(self) -> str:
+> >          """
+> > diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avo=
+cado_qemu/__init__.py
+> > index 33090903f1..0172a359b7 100644
+> > --- a/tests/avocado/avocado_qemu/__init__.py
+> > +++ b/tests/avocado/avocado_qemu/__init__.py
+> > @@ -137,7 +137,7 @@ def _console_interaction(test, success_message, fai=
+lure_message,
+> >      assert not keep_sending or send_string
+> >      if vm is None:
+> >          vm =3D test.vm
+> > -    console =3D vm.console_socket.makefile(mode=3D'rb', encoding=3D'ut=
+f-8')
+> > +    console =3D vm.console_file
+> >      console_logger =3D logging.getLogger('console')
+> >      while True:
+> >          if send_string:
+>
+>
+> --
+> Alex Benn=C3=A9e
+> Virtualisation Tech Lead @ Linaro
 >
 
-It looks like this patch has overlap with 
-
-https://lore.kernel.org/all/20230907062440.1174224-1-mchitale@ventanamicro.com/
-
-Maybe you and Mayuresh can work together on a final patch.
-
-Thanks,
-drew
 
