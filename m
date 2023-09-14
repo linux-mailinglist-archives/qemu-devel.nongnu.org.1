@@ -2,87 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 687F37A0341
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 536B27A0473
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:52:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgl2z-0008WM-Jo; Thu, 14 Sep 2023 08:02:13 -0400
+	id 1qgloT-0006rJ-OU; Thu, 14 Sep 2023 08:51:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qgl2s-0008PF-81; Thu, 14 Sep 2023 08:02:06 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qgl2q-0007OL-95; Thu, 14 Sep 2023 08:02:05 -0400
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38EB96Qs018686; Thu, 14 Sep 2023 12:02:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=Lqdl6Z1r2s58ylVKuHPXl/YcHu8ZddiHLMl9E7wr8vI=;
- b=jzqy/YPPUH7IIc/s2cFvpoSHIUVrXMgVkj0ZQVrJ/hBxkbdsb2t4M9hsV/aOJfPIOHCb
- FlwBURkKDHQNoyiqWfLIadSXRx+VCWdlmvCOfQHu3v1tF1ThBLf1F8RWyY76SlLcK0Cn
- GFrYjeZyksp5C+rh4WLJdGymfzYg2D7Fs8mJk/Pi2H+ubZ64fxS+f/CZBFbQfqFYNHrX
- 9H0HdDtskyLY6rsNmaOV9QL/swsfqLZW0bb7USTUdej6Kp3Ca5u/AqTrzrYpSD2Pb/k7
- ozMWYSer3mXpsqoN8ZZ0UMHDMFwdAKliutmqQb184fTyXa7n9V6ZtsPQSJT1Z4w5cgye mA== 
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t411s85gu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Sep 2023 12:02:00 +0000
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
- [10.45.79.139])
- by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38EC1edj014126
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 14 Sep 2023 12:01:40 GMT
-Received: from qc-i7.qualcomm.com (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 14 Sep
- 2023 05:01:39 -0700
-From: Leif Lindholm <quic_llindhol@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-arm@nongnu.org>, Radoslaw Biernacki <rad@semihalf.com>, Peter
- Maydell <peter.maydell@linaro.org>, Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>
-Subject: [RFC PATCH 1/3] include/hw/arm: move BSA definitions to bsa.h
-Date: Thu, 14 Sep 2023 13:01:22 +0100
-Message-ID: <20230914120124.55410-2-quic_llindhol@quicinc.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230914120124.55410-1-quic_llindhol@quicinc.com>
-References: <20230914120124.55410-1-quic_llindhol@quicinc.com>
+ (Exim 4.90_1) (envelope-from <mironov@fintech.ru>)
+ id 1qgj4r-0003Ms-Jo
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 05:56:01 -0400
+Received: from exchange.fintech.ru ([195.54.195.159])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_CBC_SHA1:256)
+ (Exim 4.90_1) (envelope-from <mironov@fintech.ru>)
+ id 1qgj4p-0003qH-3Z
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 05:56:01 -0400
+Received: from Ex16-02.fintech.ru (10.0.10.19) by exchange.fintech.ru
+ (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Thu, 14 Sep
+ 2023 12:44:13 +0300
+Received: from Ex16-02.fintech.ru (10.0.10.19) by Ex16-02.fintech.ru
+ (10.0.10.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Thu, 14 Sep
+ 2023 12:44:13 +0300
+Received: from Ex16-02.fintech.ru ([fe80::18b6:cd4a:a259:613c]) by
+ Ex16-02.fintech.ru ([fe80::18b6:cd4a:a259:613c%3]) with mapi id
+ 15.01.2242.004; Thu, 14 Sep 2023 12:44:13 +0300
+From: =?koi8-r?B?7cnSz87P1yDzxdLHxcog98zBxMnNydLP18ne?= <mironov@fintech.ru>
+To: "libvirt-security@redhat.com" <libvirt-security@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "libvir-list@redhat.com"
+ <libvir-list@redhat.com>
+CC: "sdl.qemu@linuxtesting.org" <sdl.qemu@linuxtesting.org>
+Subject: [sdl-qemu] [PATCH 0/1] There are no checks, virDomainChrSourceDefNew
+ can return 0
+Thread-Topic: [sdl-qemu] [PATCH 0/1] There are no checks,
+ virDomainChrSourceDefNew can return 0
+Thread-Index: AQHZ5ucq0iitK7oRi0GnkRn5iTU/ZA==
+Date: Thu, 14 Sep 2023 09:44:13 +0000
+Message-ID: <ace59b33a24b45dbb4075800c0922641@fintech.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.1.141]
+Content-Type: multipart/alternative;
+ boundary="_000_ace59b33a24b45dbb4075800c0922641fintechru_"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: HdSWgMbPp3FyKuawXKVXrTCiQXLgvhau
-X-Proofpoint-GUID: HdSWgMbPp3FyKuawXKVXrTCiQXLgvhau
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-14_09,2023-09-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0
- bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=352 lowpriorityscore=0 suspectscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309140103
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_llindhol@quicinc.com; helo=mx0b-0031df01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=195.54.195.159; envelope-from=mironov@fintech.ru;
+ helo=exchange.fintech.ru
+X-Spam_score_int: 13
+X-Spam_score: 1.3
+X-Spam_bar: +
+X-Spam_report: (1.3 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 14 Sep 2023 08:51:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,90 +72,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-virt.h defines a number of IRQs that are ultimately described by Arm's
-Base System Architecture specification. Move these to a dedicated header
-so that they can be reused by other platforms that do the same.
-Include that header from virt.h to minimise churn.
+--_000_ace59b33a24b45dbb4075800c0922641fintechru_
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Leif Lindholm <quic_llindhol@quicinc.com>
+There are no checks, virDomainChrSourceDefNew can return 0.
+
+
+Return value of a function 'virDomainChrSourceDefNew'
+
+is dereferenced at qemu_hotplug.c without checking for NULL,
+
+but it is usually checked for this function.
+
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+
+Fixes: 1f85f0967b ("ci: jobs.sh: Add back '--no-suite syntax-check --print-=
+errorlogs'")
+
+Signed-off-by: Sergey Mironov <mironov@fintech.ru>
+
 ---
- include/hw/arm/bsa.h  | 35 +++++++++++++++++++++++++++++++++++
- include/hw/arm/virt.h | 12 +-----------
- 2 files changed, 36 insertions(+), 11 deletions(-)
- create mode 100644 include/hw/arm/bsa.h
+src/qemu/qemu_hotplug.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/hw/arm/bsa.h b/include/hw/arm/bsa.h
-new file mode 100644
-index 0000000000..8277b3a379
---- /dev/null
-+++ b/include/hw/arm/bsa.h
-@@ -0,0 +1,35 @@
-+/*
-+ * Common definitions for Arm Base System Architecture (BSA) platforms.
-+ *
-+ * Copyright (c) 2015 Linaro Limited
-+ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU General Public License,
-+ * version 2 or later, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT
-+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-+ * more details.
-+ *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program.  If not, see <http://www.gnu.org/licenses/>.
-+ *
-+ */
-+
-+#ifndef QEMU_ARM_BSA_H
-+#define QEMU_ARM_BSA_H
-+
-+#define ARCH_GIC_MAINT_IRQ  9
-+
-+#define ARCH_TIMER_VIRT_IRQ   11
-+#define ARCH_TIMER_S_EL1_IRQ  13
-+#define ARCH_TIMER_NS_EL1_IRQ 14
-+#define ARCH_TIMER_NS_EL2_IRQ 10
-+
-+#define VIRTUAL_PMU_IRQ 7
-+
-+#define PPI(irq) ((irq) + 16)
-+
-+#endif /* QEMU_ARM_BSA_H */
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index e1ddbea96b..f69239850e 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -34,6 +34,7 @@
- #include "qemu/notify.h"
- #include "hw/boards.h"
- #include "hw/arm/boot.h"
-+#include "hw/arm/bsa.h"
- #include "hw/block/flash.h"
- #include "sysemu/kvm.h"
- #include "hw/intc/arm_gicv3_common.h"
-@@ -43,17 +44,6 @@
- #define NUM_VIRTIO_TRANSPORTS 32
- #define NUM_SMMU_IRQS          4
- 
--#define ARCH_GIC_MAINT_IRQ  9
--
--#define ARCH_TIMER_VIRT_IRQ   11
--#define ARCH_TIMER_S_EL1_IRQ  13
--#define ARCH_TIMER_NS_EL1_IRQ 14
--#define ARCH_TIMER_NS_EL2_IRQ 10
--
--#define VIRTUAL_PMU_IRQ 7
--
--#define PPI(irq) ((irq) + 16)
--
- /* See Linux kernel arch/arm64/include/asm/pvclock-abi.h */
- #define PVTIME_SIZE_PER_CPU 64
- 
--- 
-2.30.2
+diff --git a/src/qemu/qemu_hotplug.c b/src/qemu/qemu_hotplug.c
+index 177ca87d11..09e16c2c7e 100644
+--- a/src/qemu/qemu_hotplug.c
++++ b/src/qemu/qemu_hotplug.c
+@@ -3207,6 +3207,8 @@ qemuDomainAttachFSDevice(virQEMUDriver *driver,
+     qemuAssignDeviceFSAlias(vm->def, fs);
 
+     chardev =3D virDomainChrSourceDefNew(priv->driver->xmlopt);
++    if (chardev =3D=3D NULL)
++           goto cleanup;
+     chardev->type =3D VIR_DOMAIN_CHR_TYPE_UNIX;
+     chardev->data.nix.path =3D qemuDomainGetVHostUserFSSocketPath(priv, fs=
+);
+--
+2.31.1
+
+--_000_ace59b33a24b45dbb4075800c0922641fintechru_
+Content-Type: text/html; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dkoi8-r">
+<style type=3D"text/css" style=3D"display:none;"><!-- P {margin-top:0;margi=
+n-bottom:0;} --></style>
+</head>
+<body dir=3D"ltr">
+<div id=3D"divtagdefaultwrapper" dir=3D"ltr" style=3D"font-size:12pt; color=
+:rgb(0,0,0); font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple=
+ Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI=
+ Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols">
+<p><span style=3D"color:rgb(33,33,33); font-family:Calibri,Helvetica,sans-s=
+erif; font-size:14.6667px">There are no checks, virDomainChrSourceDefNew ca=
+n return 0.</span><br>
+</p>
+<p><span><br>
+</span></p>
+<p><span><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal=
+,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,Em=
+ojiFont; font-size:13.3333px"><span style=3D"color:rgb(33,33,33); font-fami=
+ly:wf_segoe-ui_normal,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Aria=
+l,sans-serif,serif,EmojiFont; font-size:13.3333px"><span style=3D"color:rgb=
+(33,33,33); font-family:Calibri,Helvetica,sans-serif; font-size:11pt">Retur=
+n
+ value of a function 'virDomainChrSourceDefNew'&nbsp;</span><span style=3D"=
+color:rgb(33,33,33); font-family:Calibri,Helvetica,sans-serif,EmojiFont,&qu=
+ot;Apple Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;=
+Segoe UI Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16p=
+x"><span style=3D"font-family:wf_segoe-ui_normal,&quot;Segoe UI&quot;,&quot=
+;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFont; font-size:13.3333p=
+x"></span></span></span></span></span></p>
+<p style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple =
+Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI =
+Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<span style=3D"font-size:11pt; font-family:Calibri,Helvetica,sans-serif">is=
+ dereferenced at qemu_hotplug.c without checking for NULL,&nbsp;</span></p>
+<p style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple =
+Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI =
+Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<span style=3D"font-size:11pt; font-family:Calibri,Helvetica,sans-serif">bu=
+t it is usually checked for this function.</span><br>
+</p>
+<p style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Apple =
+Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe UI =
+Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<br>
+</p>
+<p></p>
+<p><span><span><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_=
+normal,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,se=
+rif,EmojiFont; font-size:13.3333px">Found by Linux Verification Center (lin=
+uxtesting.org) with SVACE.</span><br>
+</span></span></p>
+<p><span><span><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_=
+normal,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,se=
+rif,EmojiFont; font-size:13.3333px"><br>
+</span></span></span></p>
+<p><span><span><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_=
+normal,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,se=
+rif,EmojiFont; font-size:13.3333px"><span>Fixes: 1f85f0967b (&quot;ci: jobs=
+.sh: Add back '--no-suite syntax-check --print-errorlogs'&quot;)</span><br>
+</span></span></span></p>
+<p><span><span><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_=
+normal,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,se=
+rif,EmojiFont; font-size:13.3333px"><span style=3D"color:rgb(33,33,33); fon=
+t-family:wf_segoe-ui_normal,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahom=
+a,Arial,sans-serif,serif,EmojiFont; font-size:13.3333px">Signed-off-by:
+ Sergey Mironov &lt;mironov@fintech.ru&gt;</span><br>
+</span></span></span></p>
+<p><span><span><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_=
+normal,&quot;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,se=
+rif,EmojiFont; font-size:13.3333px"></span></span></span></p>
+<div>
+<div></div>
+<span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot;Se=
+goe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFont; =
+font-size:13.3333px">---</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t"><span style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot=
+;Segoe UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFon=
+t; font-size:13.3333px">
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
+e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
+I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">sr=
+c/qemu/qemu_hotplug.c | 2 &#43;&#43;</span></div>
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
+span>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
+e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
+I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">&n=
+bsp;1 file changed, 2 insertions(&#43;)</span></div>
+</span></span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t"></span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t; color:rgb(33,33,33)"><br>
+diff --git a/src/qemu/qemu_hotplug.c b/src/qemu/qemu_hotplug.c</span><br>
+</div>
+<div>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
+e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
+I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"><s=
+pan style=3D"color:rgb(33,33,33); font-family:wf_segoe-ui_normal,&quot;Sego=
+e UI&quot;,&quot;Segoe WP&quot;,Tahoma,Arial,sans-serif,serif,EmojiFont; fo=
+nt-size:13.3333px">
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
+e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
+I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">index 177ca87d11..09e16c2c7e 100644</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">--- a/src/qemu/qemu_hotplug.c</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&#43;&#43;&#43; b/src/qemu/qemu_hotplug.c</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">@@ -3207,6 &#43;3207,8 @@ qemuDomainAttachFSDevice(virQEMUDriver *driver=
+,</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&nbsp; &nbsp; &nbsp;qemuAssignDeviceFSAlias(vm-&gt;def, fs);</span></div=
+>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&nbsp;</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&nbsp; &nbsp; &nbsp;chardev =3D virDomainChrSourceDefNew(priv-&gt;driver=
+-&gt;xmlopt);</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&#43;&nbsp; &nbsp; if (chardev =3D=3D NULL)</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&#43;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;goto cleanup;</span></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&nbsp; &nbsp; &nbsp;chardev-&gt;type =3D VIR_DOMAIN_CHR_TYPE_UNIX;</span=
+></div>
+<div><span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11p=
+t">&nbsp; &nbsp; &nbsp;chardev-&gt;data.nix.path =3D qemuDomainGetVHostUser=
+FSSocketPath(priv, fs);</span></div>
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
+span></div>
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
+span>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
+e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
+I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">--=
+</span></div>
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt"></=
+span>
+<div style=3D"font-family:Calibri,Helvetica,sans-serif,EmojiFont,&quot;Appl=
+e Color Emoji&quot;,&quot;Segoe UI Emoji&quot;,NotoColorEmoji,&quot;Segoe U=
+I Symbol&quot;,&quot;Android Emoji&quot;,EmojiSymbols; font-size:16px">
+<span style=3D"font-family:Calibri,Helvetica,sans-serif; font-size:11pt">2.=
+31.1</span></div>
+</span></span></div>
+</div>
+</div>
+</body>
+</html>
+
+--_000_ace59b33a24b45dbb4075800c0922641fintechru_--
 
