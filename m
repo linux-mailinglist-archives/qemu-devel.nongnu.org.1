@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C559679F938
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BDD579F934
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 05:53:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgdOa-0006Ac-Mz; Wed, 13 Sep 2023 23:52:00 -0400
+	id 1qgdOf-0006df-9A; Wed, 13 Sep 2023 23:52:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdOY-0005xQ-Fx
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:51:58 -0400
+ id 1qgdOd-0006VL-2N
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:03 -0400
 Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgdOW-0000r7-Ob
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:51:58 -0400
+ id 1qgdOb-0000r7-6v
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 23:52:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694663516; x=1726199516;
+ t=1694663521; x=1726199521;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=FG1fIIQsL7KuIyJ5EhfyBMqHsFgdwKABD8LZczmIAnc=;
- b=PyNw6cSHFQ35uOy18lfxKMIZXZPY48DxxSGc6kDgBbWPeNOCQwC9+MEB
- B5UyV/WCjfuC02zuXaOqZrmTgIadwxUdt4JbUVGqQcezggXz58tX7RVTj
- HGORQe5cuXYBtfZFIawXMzH1R2cXr6yZtW15wx7ZR02W6tt/57K1D+OkE
- kcN5cWbaAFZvAIZ0iPXR7tBqtmDV5JKABFmazWIOHVR3CUJsdaMFpY3mV
- JAdPe6oUvphdK4Axrb1l0KL3bPFvzhivQKb04x/XD/Ihn5+JBRGpkHiTt
- jDukPPlGypyhecsnImdj+ow6Xb1B8SVWB7Vk55dVavxeywkj9TlSFg/zC g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528393"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528393"
+ bh=8xg5bqjhBbAM8gPiQzHBRvDRVKCRRm1mhZpgTQ/bsFc=;
+ b=jQpDTDcUpcnxirxhw6LRF6RGNhKOy7uVYxcJUJnz3KzOS7bLAQuUVrjk
+ ayg6tiEwZfkttGV7bu0SUPl/+7RyNpDT6s5a4QAziOrfTumSwvMtIOalq
+ gv7gSaFwz+PTE7m00Np0Yg1FT1hWww9dB1uU8mr7rT9ij7+85DF6FbOCZ
+ 35VWDIx4ty3iX5+x2agrNZF1xzJPuzzjkIOFHQUlWOLfURhDDvUkwqFAq
+ qjdC5ejad0RdMWvA8lZDVHY5cWhkDVlfQA86sspUfROZbSXb6TWDgZ4rE
+ QuNIw766ad6+2X8OlX3qGL+cYv6tHMaYiKL+uhgXQ+IS4LiwnSDwBaDW6 w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="381528409"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="381528409"
 Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Sep 2023 20:51:55 -0700
+ 13 Sep 2023 20:52:00 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500592"
-X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500592"
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="814500596"
+X-IronPort-AV: E=Sophos;i="6.02,144,1688454000"; d="scan'208";a="814500596"
 Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:51:51 -0700
+ by fmsmga004.fm.intel.com with ESMTP; 13 Sep 2023 20:51:55 -0700
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -54,9 +54,10 @@ To: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, xiaoyao.li@intel.com,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-Subject: [RFC PATCH v2 07/21] i386/pc: Drop pc_machine_kvm_type()
-Date: Wed, 13 Sep 2023 23:51:03 -0400
-Message-Id: <20230914035117.3285885-8-xiaoyao.li@intel.com>
+Subject: [RFC PATCH v2 08/21] target/i386: Implement mc->kvm_type() to get VM
+ type
+Date: Wed, 13 Sep 2023 23:51:04 -0400
+Message-Id: <20230914035117.3285885-9-xiaoyao.li@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230914035117.3285885-1-xiaoyao.li@intel.com>
 References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
@@ -87,60 +88,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pc_machine_kvm_type() was introduced by commit e21be724eaf5 ("i386/xen:
-add pc_machine_kvm_type to initialize XEN_EMULATE mode") to do Xen
-specific initialization by utilizing kvm_type method.
+Implement mc->kvm_type() for i386 machines. It provides a way for user
+to create SW_PROTECTE_VM.
 
-commit eeedfe6c6316 ("hw/xen: Simplify emulated Xen platform init")
-moves the Xen specific initialization to pc_basic_device_init().
-
-There is no need to keep the PC specific kvm_type() implementation
-anymore. On the other hand, later patch will implement kvm_type()
-method for all x86/i386 machines to support KVM_X86_SW_PROTECTED_VM.
+Also store the vm_type in machinestate to other code to query what the
+VM type is.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 ---
- hw/i386/pc.c         | 5 -----
- include/hw/i386/pc.h | 3 ---
- 2 files changed, 8 deletions(-)
+ hw/i386/x86.c              | 12 ++++++++++++
+ include/hw/i386/x86.h      |  1 +
+ target/i386/kvm/kvm.c      | 30 ++++++++++++++++++++++++++++++
+ target/i386/kvm/kvm_i386.h |  1 +
+ 4 files changed, 44 insertions(+)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 3109d5e0e035..abeadd903827 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1794,11 +1794,6 @@ static void pc_machine_initfn(Object *obj)
-     cxl_machine_init(obj, &pcms->cxl_devices_state);
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index a88a126123be..660f83935315 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -1382,6 +1382,17 @@ static void machine_set_sgx_epc(Object *obj, Visitor *v, const char *name,
+     qapi_free_SgxEPCList(list);
  }
  
--int pc_machine_kvm_type(MachineState *machine, const char *kvm_type)
--{
--    return 0;
--}
--
- static void pc_machine_reset(MachineState *machine, ShutdownCause reason)
++static int x86_kvm_type(MachineState *ms, const char *vm_type)
++{
++    X86MachineState *x86ms = X86_MACHINE(ms);
++    int kvm_type;
++
++    kvm_type = kvm_get_vm_type(ms, vm_type);
++    x86ms->vm_type = kvm_type;
++
++    return kvm_type;
++}
++
+ static void x86_machine_initfn(Object *obj)
  {
-     CPUState *cs;
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index d54e8b1101e4..c98d628a76f3 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -296,15 +296,12 @@ extern const size_t pc_compat_1_5_len;
- extern GlobalProperty pc_compat_1_4[];
- extern const size_t pc_compat_1_4_len;
+     X86MachineState *x86ms = X86_MACHINE(obj);
+@@ -1406,6 +1417,7 @@ static void x86_machine_class_init(ObjectClass *oc, void *data)
+     mc->cpu_index_to_instance_props = x86_cpu_index_to_props;
+     mc->get_default_cpu_node_id = x86_get_default_cpu_node_id;
+     mc->possible_cpu_arch_ids = x86_possible_cpu_arch_ids;
++    mc->kvm_type = x86_kvm_type;
+     x86mc->save_tsc_khz = true;
+     x86mc->fwcfg_dma_enabled = true;
+     nc->nmi_monitor_handler = x86_nmi;
+diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
+index da19ae15463a..ab1d38569019 100644
+--- a/include/hw/i386/x86.h
++++ b/include/hw/i386/x86.h
+@@ -41,6 +41,7 @@ struct X86MachineState {
+     MachineState parent;
  
--int pc_machine_kvm_type(MachineState *machine, const char *vm_type);
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
-     { \
-         MachineClass *mc = MACHINE_CLASS(oc); \
-         optsfn(mc); \
-         mc->init = initfn; \
--        mc->kvm_type = pc_machine_kvm_type; \
-     } \
-     static const TypeInfo pc_machine_type_##suffix = { \
-         .name       = namestr TYPE_MACHINE_SUFFIX, \
+     /*< public >*/
++    unsigned int vm_type;
+ 
+     /* Pointers to devices and objects: */
+     ISADevice *rtc;
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index f8cc8eb1fe70..d1cf6c1f63b3 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -32,6 +32,7 @@
+ #include "sysemu/runstate.h"
+ #include "kvm_i386.h"
+ #include "sev.h"
++#include "sw-protected-vm.h"
+ #include "xen-emu.h"
+ #include "hyperv.h"
+ #include "hyperv-proto.h"
+@@ -154,6 +155,35 @@ static KVMMSRHandlers msr_handlers[KVM_MSR_FILTER_MAX_RANGES];
+ static RateLimit bus_lock_ratelimit_ctrl;
+ static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
+ 
++static const char* vm_type_name[] = {
++    [KVM_X86_DEFAULT_VM] = "default",
++    [KVM_X86_SW_PROTECTED_VM] = "sw-protected-vm",
++};
++
++int kvm_get_vm_type(MachineState *ms, const char *vm_type)
++{
++    int kvm_type = KVM_X86_DEFAULT_VM;
++
++    if (ms->cgs && object_dynamic_cast(OBJECT(ms->cgs), TYPE_SW_PROTECTED_VM)) {
++        kvm_type = KVM_X86_SW_PROTECTED_VM;
++    }
++
++    /*
++     * old KVM doesn't support KVM_CAP_VM_TYPES and KVM_X86_DEFAULT_VM
++     * is always supported
++     */
++    if (kvm_type == KVM_X86_DEFAULT_VM) {
++        return kvm_type;
++    }
++
++    if (!(kvm_check_extension(KVM_STATE(ms->accelerator), KVM_CAP_VM_TYPES) & BIT(kvm_type))) {
++        error_report("vm-type %s not supported by KVM", vm_type_name[kvm_type]);
++        exit(1);
++    }
++
++    return kvm_type;
++}
++
+ int kvm_has_pit_state2(void)
+ {
+     return has_pit_state2;
+diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+index e24753abfe6a..ea3a5b174ac0 100644
+--- a/target/i386/kvm/kvm_i386.h
++++ b/target/i386/kvm/kvm_i386.h
+@@ -37,6 +37,7 @@ bool kvm_has_adjust_clock(void);
+ bool kvm_has_adjust_clock_stable(void);
+ bool kvm_has_exception_payload(void);
+ void kvm_synchronize_all_tsc(void);
++int kvm_get_vm_type(MachineState *ms, const char *vm_type);
+ void kvm_arch_reset_vcpu(X86CPU *cs);
+ void kvm_arch_after_reset_vcpu(X86CPU *cpu);
+ void kvm_arch_do_init_vcpu(X86CPU *cs);
 -- 
 2.34.1
 
