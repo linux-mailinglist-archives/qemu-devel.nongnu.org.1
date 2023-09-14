@@ -2,69 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C7179FE42
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B94B79FE49
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:26:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qghf8-0003jb-R6; Thu, 14 Sep 2023 04:25:22 -0400
+	id 1qghfx-0004f4-N6; Thu, 14 Sep 2023 04:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qghf5-0003fg-Pu
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:25:20 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qghf3-0002Fd-Do
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:25:19 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8DxVuhqwwJl6zsnAA--.40541S3;
- Thu, 14 Sep 2023 16:25:14 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxnd5pwwJl2IYEAA--.10885S3; 
- Thu, 14 Sep 2023 16:25:13 +0800 (CST)
-Subject: Re: [PATCH v6 51/57] target/loongarch: Implement xvinsgr2vr
- xvpickve2gr
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: maobibo@loongson.cn
-References: <20230914022645.1151356-1-gaosong@loongson.cn>
- <20230914022645.1151356-52-gaosong@loongson.cn>
- <2643cbdb-e73e-644a-3052-5a1867434b5b@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <014f3015-3ada-df84-cb8b-5c6c4918bb19@loongson.cn>
-Date: Thu, 14 Sep 2023 16:25:13 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qghfv-0004ew-8V
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:26:11 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qghfs-0002On-Et
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:26:10 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 6A00621C73;
+ Thu, 14 Sep 2023 11:26:10 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id DAC6427FA1;
+ Thu, 14 Sep 2023 11:26:02 +0300 (MSK)
+Message-ID: <33f3e825-97ba-eeef-c991-75c2317fdc11@tls.msk.ru>
+Date: Thu, 14 Sep 2023 11:26:02 +0300
 MIME-Version: 1.0
-In-Reply-To: <2643cbdb-e73e-644a-3052-5a1867434b5b@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v3 3/3] linux-user/syscall.c: do_ppoll: eliminate large
+ alloca
 Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20230914074337.149897-1-mjt@tls.msk.ru>
+ <20230914074337.149897-4-mjt@tls.msk.ru> <ZQLBvThMJK7LzoOw@redhat.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <ZQLBvThMJK7LzoOw@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dxnd5pwwJl2IYEAA--.10885S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29K
- BjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26c
- xKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vE
- j48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxV
- AFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x02
- 67AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6x
- ACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1DMcIj6I8E
- 87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0V
- AS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
- 6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jr
- v_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvE
- c7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
- v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7I
- U1LiSJUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,28 +61,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/9/14 上午11:02, Richard Henderson 写道:
-> On 9/13/23 19:26, Song Gao wrote:
->> +static inline int vec_reg_offset(int regno, int index, MemOp mop)
->> +{
->> +    const uint8_t size = 1 << mop;
->> +    int offs = index * size;
->> +
->> +#if HOST_BIG_ENDIAN
->> +    if (size < 8 ) {
->> +        offs ^ = (8 - size);
->> +    }
->> +#endif
->> +    return offs + vec_full_offset(regno);
->> +}
+14.09.2023 11:18, Daniel P. Berrangé wrote:
+> On Thu, Sep 14, 2023 at 10:43:37AM +0300, Michael Tokarev wrote:
+>> do_ppoll() in linux-user/syscall.c uses alloca() to allocate
+>> an array of struct pullfds on the stack.  The only upper
+>> boundary for number of entries for this array is so that
+>> whole thing fits in INT_MAX.  This is definitely too much
+>> for stack allocation.
+>>
+>> Use heap allocation when large number of entries is requested
+>> (currently 32, arbitrary), and continue to use alloca() for
 > 
-> Merge the #if into the if:
-> 
->     if (HOST_BIG_ENDIAN && size < 8)
-> 
-Got it.
+> Typo ? The code uses 64 rather than 32.
 
-Thanks.
-Song Gao
+Yeah, it's a typo, after a few iterations trying to split this
+all into pieces and editing in the process.
 
+
+>> -    struct pollfd *pfd = NULL;
+>> +    struct pollfd *pfd = NULL, *heap_pfd = NULL;
+> 
+> g_autofree struct pollfd *heap_pdf = NULL;
+> 
+...
+>>   
+>>   out:
+>> +    g_free(heap_pfd);
+> 
+> This can be dropped with g_autofree usage
+
+Yes, I know this, - this was deliberate choice.
+Personally I'm just too used to old-school explicit resource deallocations.
+Here, there's a single place where everything gets freed, so there's little
+reason to use fancy modern automatic deallocations. To my taste anyway.
+Maybe some future modifications adding some future ppoll3.. :)
+
+Sure thing I can drop that and change it to autofree.
+
+Thanks,
+
+/mjt
 
