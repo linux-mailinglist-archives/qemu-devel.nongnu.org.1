@@ -2,85 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0937A0554
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CA07A0557
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:17:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgmD5-0001R5-7P; Thu, 14 Sep 2023 09:16:43 -0400
+	id 1qgmDY-00022Q-Hs; Thu, 14 Sep 2023 09:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgmCs-0001Di-Lu
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:16:30 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgmCq-00007r-9k
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:16:30 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-52c9be5e6f0so1059695a12.1
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 06:16:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694697385; x=1695302185; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=vi+RdWrj91FTr+9PtMRp4SvcchdQmWSydsre43PpMPA=;
- b=wOgstdmVOZ8PEwvavAAyHSPsanSe8KGq9uBLCiVgOXt1TwGfM7cN8H6xGZHjCk4aDt
- 30w4FBwD0FHDdzZzkQhOOVivaOyfxm+/0REVxWFgI7ARQBykAbHPpnNKuhz4Y/A2Usix
- PRdu0OPATXbeUkbH5oYwMMNQI22NaBIIafRNx5j2DNyJ8vrvH1v4uVc549mGNRgR5sFc
- mMizjb22n4Yaa+1lNOsuLgYDvn8tL5jrWsvFazZ9DqtpaONMArtgkB5xEjb+BQgvKVBx
- qsJviH4SXIKZ/2H9+wpz1gZthRnoD3DQqWcg603AavY8jHRBTFMcH1k+pbNRJemUTrUG
- tf4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694697385; x=1695302185;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vi+RdWrj91FTr+9PtMRp4SvcchdQmWSydsre43PpMPA=;
- b=dMOCwV2pZ2sN3carqgvAiA8gBOo3EwyeeJLZn3Va6QLeBzfAC3hpG7Q+y+J6dxMszH
- Qx3hOlDETCbKOHgOJ2Lu0+XxJxyMa19aPFiGJfXebsc1lwE8OWm4G0auKtnA0A1/cY+8
- mY0EvtKLyfnGh5zxQ+RkzwCDUKPrOg+wsfmACxIKzfNKcb8kZU9bJd90VtxcTDOMd9JR
- oj2Cz6ReN/BqOJ8BqO3dJWx68HpEnIa8i0unslB3LmLrdE14zZDvYwpS2JFpQp/EK+yD
- JjyFTNXF4Ho9pwqR5aBGQVVssvI9g55E8uk8FOdJi3EUJUVTPutyVbzgi9wRasLTAuHl
- Ihjg==
-X-Gm-Message-State: AOJu0YyfCjgdfU+WFKw89qXv2UmWH+sBU7RpSBuKB9uKCTQHM++Gpr+H
- z0f+5wahjxRMTXcNCjUbXTfE7g==
-X-Google-Smtp-Source: AGHT+IFTFRLbxUS27lbwHTUbgUvgdbLpaLKVgsrUXmOPY2xB5eBB8wlfexjEVa3oHtiTV2JITiDO4g==
-X-Received: by 2002:aa7:da14:0:b0:525:466c:5fda with SMTP id
- r20-20020aa7da14000000b00525466c5fdamr5144185eds.28.1694697385329; 
- Thu, 14 Sep 2023 06:16:25 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-223-129.abo.bbox.fr.
- [176.131.223.129]) by smtp.gmail.com with ESMTPSA id
- n10-20020aa7c44a000000b00522572f323dsm914429edr.16.2023.09.14.06.16.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 06:16:24 -0700 (PDT)
-Message-ID: <289d323e-2726-c957-4150-fd0595d5213c@linaro.org>
-Date: Thu, 14 Sep 2023 15:16:22 +0200
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qgmDB-0001wB-Pj; Thu, 14 Sep 2023 09:16:49 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qgmD9-00008m-M8; Thu, 14 Sep 2023 09:16:49 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id BD52021E7C;
+ Thu, 14 Sep 2023 16:16:50 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D2568281AA;
+ Thu, 14 Sep 2023 16:16:42 +0300 (MSK)
+Message-ID: <76815283-496e-9806-1c26-f659abcf7976@tls.msk.ru>
+Date: Thu, 14 Sep 2023 16:16:42 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 08/20] asc: generate silence if FIFO empty but engine
- still running
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] hw/cxl: Fix out of bound array access
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
- qemu-devel@nongnu.org, =?UTF-8?Q?Volker_R=c3=bcmelin?=
- <vr_qemu@t-online.de>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
- <20230909094827.33871-9-mark.cave-ayland@ilande.co.uk>
- <25d8059c-422a-3f2a-3f33-7a9848f4b3da@linaro.org>
-In-Reply-To: <25d8059c-422a-3f2a-3f33-7a9848f4b3da@linaro.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-stable <qemu-stable@nongnu.org>
+References: <20230913101055.754709-1-frolov@swemel.ru>
+ <fb3f6b07-3310-f008-a512-1d155e21c024@tls.msk.ru>
+ <79f03e2f-4cc9-fd44-1101-0dd8a398ff42@tls.msk.ru>
+ <15f6d627-b88a-f6a0-abb8-70ec5198fd45@linaro.org>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <15f6d627-b88a-f6a0-abb8-70ec5198fd45@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,101 +63,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/9/23 09:56, Philippe Mathieu-Daudé wrote:
-> 
-> On 9/9/23 11:48, Mark Cave-Ayland wrote:
->> MacOS (un)helpfully leaves the FIFO engine running even when all the 
->> samples have
->> been written to the hardware, and expects the FIFO status flags and 
->> IRQ to be
->> updated continuously.
->>
->> There is an additional problem in that not all audio backends 
->> guarantee an
->> all-zero output when there is no FIFO data available, in particular 
->> the Windows
->> dsound backend which re-uses its internal circular buffer causing the 
->> last played
->> sound to loop indefinitely.
->>
->> Whilst this is effectively a bug in the Windows dsound backend, work 
->> around it
->> for now using a simple heuristic: if the FIFO remains empty for half a 
->> cycle
->> (~23ms) then continuously fill the generated buffer with empty silence.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/audio/asc.c         | 19 +++++++++++++++++++
->>   include/hw/audio/asc.h |  2 ++
->>   2 files changed, 21 insertions(+)
->>
->> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
->> index 336ace0cd6..b01b285512 100644
->> --- a/hw/audio/asc.c
->> +++ b/hw/audio/asc.c
->> @@ -334,6 +334,21 @@ static void asc_out_cb(void *opaque, int free_b)
->>       }
->>       if (!generated) {
->> +        /* Workaround for audio underflow bug on Windows dsound 
->> backend */
->> +        int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->> +        int silent_samples = muldiv64(now - s->fifo_empty_ns,
->> +                                      NANOSECONDS_PER_SECOND, ASC_FREQ);
->> +
->> +        if (silent_samples > ASC_FIFO_CYCLE_TIME / 2) {
->> +            /*
->> +             * No new FIFO data within half a cycle time (~23ms) so 
->> fill the
->> +             * entire available buffer with silence. This prevents an 
->> issue
->> +             * with the Windows dsound backend whereby the sound 
->> appears to
->> +             * loop because the FIFO has run out of data, and the driver
->> +             * reuses the stale content in its circular audio buffer.
->> +             */
->> +            AUD_write(s->voice, s->silentbuf, samples << s->shift);
->> +        }
->>           return;
->>       }
-> 
-> What about having audio_callback_fn returning a boolean, and using
-> a flag in backends for that silence case? Roughtly:
-> 
-> -- >8 --
-> diff --git a/audio/audio.h b/audio/audio.h
-> index 01bdc567fb..4844771c92 100644
-> --- a/audio/audio.h
-> +++ b/audio/audio.h
-> @@ -30,7 +30,7 @@
->   #include "hw/qdev-properties.h"
->   #include "hw/qdev-properties-system.h"
-> 
-> -typedef void (*audio_callback_fn) (void *opaque, int avail);
-> +typedef bool (*audio_callback_fn) (void *opaque, int avail);
-> 
->   #if HOST_BIG_ENDIAN
->   #define AUDIO_HOST_ENDIANNESS 1
-> diff --git a/audio/audio.c b/audio/audio.c
-> index 90c7c49d11..5b6e69fbd6 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -1178,8 +1178,11 @@ static void audio_run_out (AudioState *s)
->                   if (free > sw->resample_buf.pos) {
->                       free = MIN(free, sw->resample_buf.size)
->                              - sw->resample_buf.pos;
-> -                    sw->callback.fn(sw->callback.opaque,
-> -                                    free * sw->info.bytes_per_frame);
-> +                    if (!sw->callback.fn(sw->callback.opaque,
-> +                                         free * sw->info.bytes_per_frame)
-> +                            && unlikely(hw->silentbuf_required)) {
-> +                        /* write silence ... */
-> +                    }
->                   }
->               }
->           }
-> ---
+14.09.2023 15:59, Philippe Mathieu-Daudé wrote:
 
-(Clarifying, not a blocker for this series, just wondering)
+>> Cc: qemu-stable@nongnu.org
+>> for stable-8.1.
+> 
+> [not related to this particular patch]
+> 
+> Maybe this can help if we specify the releases range as a comment
+> in the Cc tag, for example here:
+> 
+> Cc: qemu-stable@nongnu.org # v8.1
+> 
+> and if it were a range:
+> 
+> Cc: qemu-stable@nongnu.org # v6.2 to v8.0
+> 
+> Michael would that help? If so feel free to modify
+> docs/devel/stable-process.rst :)
 
+I don't think this is necessary so far.
+
+Or, actually it might help for sure, but it is an extra burden
+for regular developers.
+
+For quite some things I can see where it is applicable if there's
+a proper Fixes: tag already (that's why I've added this Cc), - it's
+trivial to run `git describe' for this commit ID, so it doesn't even
+need to have a Cc: stable.
+
+In some cases though it is hard to tell how deep a change needs to
+be backported. In such cases some hint can help for sure, but when
+in doubt I can ask too.  When you're in context of fixing something,
+you usually don't want to think about how to backport it or somesuch,
+you concentrate on the fix itself. If you're willing to think about
+that too, give a small note in the comment, like some authors do.
+If not, and it's entirely okay, and it's unclear if the change should
+be applied to earlier versions, I can ask (or notify when picking the
+change up for stable), and the author might think about this in another
+context.  It's not often - so far anyway - when it's unclear if a
+change should be propagated to older releases.
+
+Changing stable-process.rst isn't very useful, as most changes are
+changing master, - if anything, regular "contribution" docs should
+be changed for that.  But since most stuff is going on through various
+subsystem maintainers, they don't usually look there anyway :)
+
+For now, it's basically my own whim to provide stable series for
+older qemu releases.  Or an experiment.  I don't know how useful it
+is (or will be) and how it will go long-term.  We've never had this
+before.
+
+In my view it is much more important to either add the Fixes: tag
+(which gives me a hint already, as I check for all Fixes: in patches
+being applied, and can automate this further by doing git-desc on
+the hashes, alerting me if it is before the current release) or realize
+something needs to go to stable at all. Even at the cost of sending
+extra stuff to stable which is actually not needed at all - this is
+entirely okay.  This is why I'm asking about various changes going
+in, reminding about -stable existance, - because some stuff isn't
+marked as a fix at all but in fact it is an important thing for
+stable (one or another).
+
+Thank you for your support Phil! :)
+
+/mjt
 
