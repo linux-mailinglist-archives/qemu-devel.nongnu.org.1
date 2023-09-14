@@ -2,68 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B533479FDF8
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7CE79FE20
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qghTf-0006tM-9P; Thu, 14 Sep 2023 04:13:31 -0400
+	id 1qghYL-0000Ne-14; Thu, 14 Sep 2023 04:18:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qghTZ-0006r8-OW
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:13:27 -0400
+ id 1qghYH-0000NP-HR
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:18:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qghTU-0008Ol-BU
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:13:25 -0400
+ id 1qghYD-0000yI-I9
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:18:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694679192;
+ s=mimecast20190719; t=1694679492;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tCr4AqBXhV+iN3dcPf59NZZ8rjS43iI9YH3TMkQ2aiw=;
- b=Ck8KFq+wys6h2hgP2qUBJHAdEtpoVkJFo8k7TDAgBGhPUFpAXFq/lAjFeXi+LI7AF16cgM
- heJ1oWlaxvloCEGb4Kt4+nqcqCWX7x9EWyHU2eRDkeMqv+nVzdWy30Z6VeQLJlEd1SmuWI
- 1N8K5dmsEglzyjWUyjKC51mNfcJwJ2Q=
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=KHZkvMYQUVYiftqEwDriFaOumZdYBnbGU8+Fb6CiNeA=;
+ b=OrbcZVXV3eKNqhMtBYzbe+OrIKV2/0Y5/rUY7jjU4uYwxkhJqHGFPu6DaxTxyXS73MAHsu
+ 2sCKVG7bSbzm6XOX60xFEQtyqVMxOAxKHgm3Ksac75wvTCUnAI3g/nEIk3QuJ/ylf2dF8e
+ DykV+vVztZRxyn2aBG1NON+6j12PA7I=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-519-V2KYDE1vOr6dVaZUAp4sBw-1; Thu, 14 Sep 2023 04:13:08 -0400
-X-MC-Unique: V2KYDE1vOr6dVaZUAp4sBw-1
+ us-mta-599-7-mSPFGfOg-Pc3ck9gsVwg-1; Thu, 14 Sep 2023 04:18:08 -0400
+X-MC-Unique: 7-mSPFGfOg-Pc3ck9gsVwg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47235855329;
- Thu, 14 Sep 2023 08:13:08 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4A921856501;
+ Thu, 14 Sep 2023 08:18:08 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E9CF1054FC0;
- Thu, 14 Sep 2023 08:13:07 +0000 (UTC)
-Date: Thu, 14 Sep 2023 09:13:04 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BDD0410F1BE8;
+ Thu, 14 Sep 2023 08:18:07 +0000 (UTC)
+Date: Thu, 14 Sep 2023 09:18:05 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jason Wang <jasowang@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PULL 00/17] Net patches
-Message-ID: <ZQLAkNPdOA4ncDvF@redhat.com>
-References: <20230908064507.14596-1-jasowang@redhat.com>
- <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
- <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org>
- <ZPsKUDp7nVS/Z+j2@redhat.com>
- <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org>
- <ZPsQcu0HYBaTScnb@redhat.com>
- <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org>
- <ZPsscpzj9fNtCEOY@redhat.com>
- <c406b8fb-a2f1-8eb2-abc5-af2474edf940@ovn.org>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 3/3] linux-user/syscall.c: do_ppoll: eliminate large
+ alloca
+Message-ID: <ZQLBvThMJK7LzoOw@redhat.com>
+References: <20230914074337.149897-1-mjt@tls.msk.ru>
+ <20230914074337.149897-4-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c406b8fb-a2f1-8eb2-abc5-af2474edf940@ovn.org>
+In-Reply-To: <20230914074337.149897-4-mjt@tls.msk.ru>
 User-Agent: Mutt/2.2.9 (2022-11-12)
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
@@ -91,105 +81,80 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 13, 2023 at 08:46:42PM +0200, Ilya Maximets wrote:
-> On 9/8/23 16:15, Daniel P. Berrangé wrote:
-> > On Fri, Sep 08, 2023 at 04:06:35PM +0200, Ilya Maximets wrote:
-> >> On 9/8/23 14:15, Daniel P. Berrangé wrote:
-> >>> On Fri, Sep 08, 2023 at 02:00:47PM +0200, Ilya Maximets wrote:
-> >>>> On 9/8/23 13:49, Daniel P. Berrangé wrote:
-> >>>>> On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
-> >>>>>> On 9/8/23 13:19, Stefan Hajnoczi wrote:
-> >>>>>>> Hi Ilya and Jason,
-> >>>>>>> There is a CI failure related to a missing Debian libxdp-dev package:
-> >>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
-> >>>>>>>
-> >>>>>>> I think the issue is that the debian-amd64 container image that QEMU
-> >>>>>>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
-> >>>>>>> and libxdp is not available on that release:
-> >>>>>>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
-> >>>>>>
-> >>>>>> Hmm.  Sorry about that.
-> >>>>>>
-> >>>>>>>
-> >>>>>>> If we need to support Debian 11 CI then either XDP could be disabled
-> >>>>>>> for that distro or libxdp could be compiled from source.
-> >>>>>>
-> >>>>>> I'd suggest we just remove the attempt to install the package for now,
-> >>>>>> building libxdp from sources may be a little painful to maintain.
-> >>>>>>
-> >>>>>> Can be re-added later once distributions with libxdp 1.4+ will be more
-> >>>>>> widely available, i.e. when fedora dockerfile will be updated to 39,
-> >>>>>> for example.  That should be soon-ish, right?
-> >>>>>
-> >>>>> If you follow the process in docs/devel/testing.rst for adding
-> >>>>> libxdp in libvirt-ci, then lcitool will "do the right thing"
-> >>>>> when we move the auto-generated dockerfiles to new distro versions.
-> >>>>
-> >>>> Thanks!  I'll prepare changes for libvirt-ci.
-> >>>>
-> >>>> In the meantime, none of the currently tested images will have a required
-> >>>> version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
-> >>>> modification from the patch.  What do you think?
-> >>>
-> >>> Sure, if none of the distros have it, then lcitool won't emit the
-> >>> dockerfile changes until we update the inherited distro version.
-> >>> So it is sufficient to just update libvirt-ci.git with the mappings.yml
-> >>> info for libxdp, and add 'libxdp' to the tests/lcitool/projects/qemu.yml
-> >>> file in qemu.git. It will then 'just work' when someone updates the
-> >>> distro versions later.
-> >>
-> >> I posted an MR for libvirt-ci adding libxdp:
-> >>   https://gitlab.com/libvirt/libvirt-ci/-/merge_requests/429
-> >>
-> >> Please, take a look.
-> >>
-> >> The docs say that CI will try to build containers with the MR changes,
-> >> but I don't think anything except sanity checks is actually tested on MR.
-> >> Sorry if I missed something, never used GitLab pipelines before.
-> > 
-> > No, that's our fault - we've broken the CI and your change alerted
-> > me to that fact :-)
-> > 
-> >> Note that with this update we will be installing older version of libxdp
-> >> in many containers, even though they will not be used by QEMU, unless
-> >> they are newer than 1.4.0.
-> > 
-> > No problem, as it means QEMU CI will demonstrate the the meson.build
-> > change is ignoring the outdatd libxdp.
-> > 
-> >> tests/lcitool/projects/qemu.yml in qemu.git cannot be updated without
-> >> updating a submodule after the MR merge.
-> > 
-> > Yep.
+On Thu, Sep 14, 2023 at 10:43:37AM +0300, Michael Tokarev wrote:
+> do_ppoll() in linux-user/syscall.c uses alloca() to allocate
+> an array of struct pullfds on the stack.  The only upper
+> boundary for number of entries for this array is so that
+> whole thing fits in INT_MAX.  This is definitely too much
+> for stack allocation.
 > 
-> Since all the required changes went into libvirt-ci project, I posted an
-> updated patch set named:
+> Use heap allocation when large number of entries is requested
+> (currently 32, arbitrary), and continue to use alloca() for
+
+Typo ? The code uses 64 rather than 32.
+
+> smaller allocations, to optimize small operations for small
+> sizes.  The code for this optimization is small, I see no
+> reason for dropping it.
 > 
->   '[PATCH v4 0/2] net: add initial support for AF_XDP network backend'
+> This eliminates last large user-controlled on-stack allocation
+> from syscall.c.
 > 
-> Please, take a look.
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+> ---
+>  linux-user/syscall.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
 > 
-> This should fix the CI issues, though I'm not sure how to run QEMU gitlab
-> pipelines myself, so I didn't actually test all the images.
+> diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+> index eabdf50abc..1dbe28eba4 100644
+> --- a/linux-user/syscall.c
+> +++ b/linux-user/syscall.c
+> @@ -1489,7 +1489,7 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>  {
+>      struct target_pollfd *target_pfd = NULL;
+>      unsigned int nfds = arg2;
+> -    struct pollfd *pfd = NULL;
+> +    struct pollfd *pfd = NULL, *heap_pfd = NULL;
 
-  git push gitlab  -o ci.variable=QEMU_CI=2
+g_autofree struct pollfd *heap_pdf = NULL;
 
-will create pipeline and immediately run all jobs.
+>      unsigned int i;
+>      abi_long ret;
+>  
+> @@ -1503,7 +1503,17 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>              return -TARGET_EFAULT;
+>          }
+>  
+> -        pfd = alloca(sizeof(struct pollfd) * nfds);
+> +        /* arbitrary "small" number to limit stack usage */
+> +        if (nfds <= 64) {
+> +            pfd = alloca(sizeof(struct pollfd) * nfds);
+> +        } else {
+> +            heap_pfd = g_try_new(struct pollfd, nfds);
+> +            if (!heap_pfd) {
+> +                ret = -TARGET_ENOMEM;
+> +                goto out;
+> +            }
+> +            pfd = heap_pfd;
+> +        }
+>          for (i = 0; i < nfds; i++) {
+>              pfd[i].fd = tswap32(target_pfd[i].fd);
+>              pfd[i].events = tswap16(target_pfd[i].events);
+> @@ -1567,6 +1577,7 @@ static abi_long do_ppoll(abi_long arg1, abi_long arg2, abi_long arg3,
+>      }
+>  
+>  out:
+> +    g_free(heap_pfd);
 
-Replace 'gitlab' with the name of the git remote pointing to your
-gitlab fork of QEMU.
+This can be dropped with g_autofree usage
 
-Using QEMU_CI=1 will create pipeline, but let you manually start
-individual jobs from the web UI.
-
-For further details see docs/devel/ci-jobs.rst.inc
-
-
+>      unlock_user(target_pfd, arg1, sizeof(struct target_pollfd) * nfds);
+>      return ret;
+>  }
+> -- 
+> 2.39.2
 > 
-> Sent as a patch set because the libvirt-ci submodule bump brings in a few
-> unrelated changes.  So, I split that into a separate patch.
-
-Yep, that's perfect thanks.
+> 
 
 With regards,
 Daniel
