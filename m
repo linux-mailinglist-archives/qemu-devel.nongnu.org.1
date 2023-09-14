@@ -2,87 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457227A0D8D
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4757A0D9D
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:58:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgrSk-0004VM-6Z; Thu, 14 Sep 2023 14:53:14 -0400
+	id 1qgrWp-0007ou-8Q; Thu, 14 Sep 2023 14:57:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgrSe-0004Uv-6j
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:53:09 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrWo-0007of-6k
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:26 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qgrSb-0005mb-CZ
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:53:07 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c336f3f449so10999915ad.3
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:53:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrWm-0007OW-Cd
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:25 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-52fe27898e9so1489397a12.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:57:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694717582; x=1695322382; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Wy7itTZlkPKa8bpVg5vwOWaOikACXIWpVgb/kYRt73s=;
- b=fOOY5c7ehWF+Akk4C4GCxe+yUz6hX0hw+Ugywi6plmcw9Toy6vTKTVtSytkqwuu/bc
- AsjFCHhqnYjrXkHC5MxT5PPoByvKm9se0VBhodCExyJ4IDTfbd6Cw6aO9jzHKyCkCd2m
- WC4Dp411XKBdUe/mYyK8XWfYUrWGRZ300SWGWYovl7lgIcBItUjZs1eOSaWarPfFuMPa
- 32/AjzFnvaBPlX7buueLZmMHd0oSdLMgh5nffRD3E+8RucXb+xrRR+fYWNG1dlnHCmax
- 3PIHYtxZJrRthrjqqPh08kZsUCxJvFcfllABWb5OndNh5MU9WvY9hjBp57jx1dLtDv5z
- biAA==
+ d=linaro.org; s=google; t=1694717841; x=1695322641; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=EOGtRH5OrHHNV11C5N1Q2XQkWUzQc7LaJZa+4HrbN3M=;
+ b=rf1s+7C/aCieV5nztvFKY+uwrY5oAlJVkfOmI3ysNst9FjStSYijZDFrdB/iYZXK8i
+ qJhhY7ijIvZxrKbE5l4Ybh7wK6Cw7rF3HYLCM6T4ThplMle+g31k/w8szEZmqBg7MJ8d
+ bt5AeFje4XF/RDFZTbTF70nushhAmPAKxiJ7QZImMKClW9xywTThMEPC7xZMwQKWJwXu
+ xfU+ZjKKL1Kmcg7GtBcqUqI1TlASoaa81cfi1EBhR6HsYfOsxIq+R4Lyk/Eb/MGZS46k
+ z1r/Kpe4KLCgyoPPqG0tcWoQIjHXcKXSD0KBt2i+gPM86vdUkSnqU/gEZ0D7Uxm1EmU8
+ hmJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694717582; x=1695322382;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wy7itTZlkPKa8bpVg5vwOWaOikACXIWpVgb/kYRt73s=;
- b=cg9jK07V+S8JjkPE8XqmYto/f1Wd5419oRs8qYlVavqqs67j41UIg6nQl+qMrtxDae
- ZvvCI9lXX3AGDC1smCmD22N4mQM7CrROQr5K4oiJ6R14HgQ0jbUpnMvT14VahQBP87D0
- /Lq3qx9NVmJDqRvsTLMfszqunFqH0C0immmMzVt3udns6cYPR91wOXTU4a0TfSTmLjxy
- wOWXg58yG+PNGVR6TUGY0/beY8ti4e02qI1p6KVNHoX3u/31+r/EdUxD1KBNfpyCgb+L
- r31q1ZVV0fV2x/xoQwHQNABubLhAILf7d0awCGvi8ZAzDQEC2J+gKoOgj3O16T8IhZKr
- gCuw==
-X-Gm-Message-State: AOJu0YxS6BnfIvJa3BeY015OVEywD3HmklEMSqDDVEgnDd9gGwYPT98N
- yG4yorJrGv9RaL0EHk1QTiGm0Q==
-X-Google-Smtp-Source: AGHT+IHqgY2o5fOYsRMuCpNBiPlAhIr+gWW2KcnK+setYl1dn5LSjpK85YPpEG1KFjd01zOlJ/xssg==
-X-Received: by 2002:a17:902:8693:b0:1c0:cbaf:6930 with SMTP id
- g19-20020a170902869300b001c0cbaf6930mr5964938plo.54.1694717582320; 
- Thu, 14 Sep 2023 11:53:02 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
+ d=1e100.net; s=20230601; t=1694717841; x=1695322641;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=EOGtRH5OrHHNV11C5N1Q2XQkWUzQc7LaJZa+4HrbN3M=;
+ b=MXbC9wGHTMYcuYeSekMdMCBU6B+YxPl0MjYmQYVIHOBdTB9BZNZeGnR/F1amvRxuAJ
+ YeJSxDIYCkIr13dHD8+03x4qyfqfkMQLUS8Gv5OYoFULDoYG6WS5/pS/g7S1GiSQglJb
+ VkVB0uLjfuEs5xVWG5ItX/fLvIWuWxhAdCxXM/hC5hMKU4FL34gR+3AC5mkresF98noy
+ pr37ajeiY6vs9jx92erDj+2eIHeTFy75GI/CY5KQlI4REeYpEJ7E8LmtgieUFcYWgAjg
+ vbhCnLRCUXW9kUiZdUcosgcbqWJLUufMuSYkJgEcwR3OX986vvldrv0bgm3ki1Qe5he2
+ kHaA==
+X-Gm-Message-State: AOJu0YxGsD0BraY1SgT+i4AlKXaF858YVGyR/OZiEZ1+HAxDql0l9sr8
+ FYYQ8lbMa2CnCXlpZRTg7Ahd56A92J3Jn3fzk34=
+X-Google-Smtp-Source: AGHT+IHzBdLIB6vghVsLwUO+e0VS48Ll9glaTFREv17nKa9L+NZKWUs1wYny4G5IKkzMGZT0a/MkcQ==
+X-Received: by 2002:a05:6402:5163:b0:523:7192:6803 with SMTP id
+ d3-20020a056402516300b0052371926803mr6123381ede.8.1694717841346; 
+ Thu, 14 Sep 2023 11:57:21 -0700 (PDT)
+Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
  by smtp.gmail.com with ESMTPSA id
- s11-20020a170902ea0b00b001bdd68b3f52sm1917111plg.302.2023.09.14.11.53.01
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 11:53:01 -0700 (PDT)
-Message-ID: <1242f2f8-6881-5caf-7cae-593e6e6f7ebb@linaro.org>
-Date: Thu, 14 Sep 2023 11:53:00 -0700
+ f5-20020a056402068500b005254b41f507sm1271715edy.32.2023.09.14.11.57.19
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 14 Sep 2023 11:57:20 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Alessandro Di Federico <ale@rev.ng>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Anton Johansson <anjo@rev.ng>, Riku Voipio <riku.voipio@iki.fi>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/11] accel/tcg: Make more files target agnostic (& exec/
+ housekeeping)
+Date: Thu, 14 Sep 2023 20:57:06 +0200
+Message-ID: <20230914185718.76241-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v2 13/24] accel/tcg: Replace CPUState.env_ptr with
- cpu_env()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: anjo@rev.ng, ale@rev.ng
-References: <20230914024435.1381329-1-richard.henderson@linaro.org>
- <20230914024435.1381329-14-richard.henderson@linaro.org>
- <c606e0d9-c164-11da-8ae1-9a602459961c@linaro.org>
- <a4ab6acb-3db0-23db-b728-b779698f1ab0@linaro.org>
- <a4a69a18-01cc-7817-c842-f4a7bc4a9502@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <a4a69a18-01cc-7817-c842-f4a7bc4a9502@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -100,18 +94,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/14/23 11:38, Philippe Mathieu-Daudé wrote:
->> I presume this is --disable-tcg, since I saw the same thing in CI testing.
-> 
-> Yes (I didn't even noticed, I was testing my kvm_only setup).
-> 
->> No, we don't remove the check (that would explicit assumptions elsewhere), we adjust the 
->> alignment of CPUNegativeOffsetState.
-> 
-> I'm not sure I understand, should we guard with #ifdef CONFIG_TCG?
+While reviewing Anton/Richard series [*] it was a bit hard
+for me to figure out which headers are target specific and
+"taint" the source which include them, in that we can not
+compile them once for all targets.
 
-No.  I'll fix in v3.
+My understanding is -all.h suffix is a target specific header,
+and -common.c is a target agnostic file. I tried to consolidate
+a bit renaming some files with the -target.c suffix (I'd like
+to rename -all.h -> .target.h for parity / clarity, but that
+is too much code churn at this point).
 
+This series basically:
+- Rename few files using -common/-target suffix,
+- Move icount to accel/tcg/
+- Make 3 files from accel/tcg/ target agnostic.
 
-r~
+Based-on: <20230914024435.1381329-1-richard.henderson@linaro.org>
+[*] https://lore.kernel.org/qemu-devel/20230914024435.1381329-1-richard.henderson@linaro.org/
+
+Philippe Mathieu-Daudé (11):
+  exec: Make EXCP_FOO definitions target agnostic
+  exec: Move cpu_loop_foo() target agnostic functions to 'cpu-common.h'
+  accel/tcg: Restrict dump_exec_info() declaration
+  accel: Make accel-blocker.o target agnostic
+  accel: Rename accel-common.c -> accel-target.c
+  exec: Rename cpu.c -> cpu-target.c
+  exec: Rename target specific page-vary.c -> page-vary-target.c
+  accel/tcg: Rename target-specific 'internal.h' -> 'internal-target.h'
+  accel/tcg: Make monitor.c a target-agnostic unit
+  accel/tcg: Make icount.o a target agnostic unit
+  accel/tcg: Make cpu-exec-common.c a target agnostic unit
+
+ MAINTAINERS                                   |  7 ++--
+ meson.build                                   |  6 +--
+ accel/tcg/internal-common.h                   | 28 +++++++++++++
+ accel/tcg/{internal.h => internal-target.h}   | 18 ++-------
+ include/exec/cpu-all.h                        | 12 ------
+ include/exec/cpu-common.h                     | 39 +++++++++++++++++++
+ include/exec/exec-all.h                       | 30 --------------
+ accel/{accel-common.c => accel-target.c}      |  0
+ accel/tcg/cpu-exec-common.c                   |  3 +-
+ accel/tcg/cpu-exec.c                          |  3 +-
+ accel/tcg/cputlb.c                            |  3 +-
+ softmmu/icount.c => accel/tcg/icount-common.c |  3 +-
+ accel/tcg/monitor.c                           |  2 +-
+ accel/tcg/tb-maint.c                          |  3 +-
+ accel/tcg/tcg-all.c                           |  2 +-
+ accel/tcg/translate-all.c                     |  3 +-
+ accel/tcg/translator.c                        |  2 +-
+ accel/tcg/user-exec.c                         |  3 +-
+ cpus-common.c => cpu-common.c                 |  0
+ cpu.c => cpu-target.c                         |  0
+ page-vary.c => page-vary-target.c             |  0
+ accel/meson.build                             |  4 +-
+ accel/tcg/meson.build                         |  8 +++-
+ softmmu/meson.build                           |  4 --
+ 24 files changed, 100 insertions(+), 83 deletions(-)
+ create mode 100644 accel/tcg/internal-common.h
+ rename accel/tcg/{internal.h => internal-target.h} (89%)
+ rename accel/{accel-common.c => accel-target.c} (100%)
+ rename softmmu/icount.c => accel/tcg/icount-common.c (99%)
+ rename cpus-common.c => cpu-common.c (100%)
+ rename cpu.c => cpu-target.c (100%)
+ rename page-vary.c => page-vary-target.c (100%)
+
+-- 
+2.41.0
+
 
