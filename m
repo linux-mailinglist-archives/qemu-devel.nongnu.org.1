@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9237B7A083C
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D35407A0830
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgnmN-000166-6k; Thu, 14 Sep 2023 10:57:15 -0400
+	id 1qgnmQ-00018P-1m; Thu, 14 Sep 2023 10:57:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qgnmL-00014r-4B
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:57:13 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qgnmO-00016e-95
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:57:16 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qgnmI-0004O3-RV
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:57:12 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-401ec23be82so11096735e9.0
+ id 1qgnmJ-0004O9-D9
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:57:15 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-403012f276dso11371565e9.0
  for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 07:57:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694703429; x=1695308229; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694703430; x=1695308230; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5tmvXXEw+PIenQIWy8ii+pQoWpYFcR+dhA762ZF8vgU=;
- b=yVyqLT6qz5spH23sy8LP6fT/XWzcglPhIF0vcopmtQsUH9j6qJm7+Jgq5TDIeIm4eo
- F5gsKbyf7nCUKwVzeIkaogSQgZPwUMBCWlB/RnTB1G6d2vYLZrlHBOhlIxmE1l6NS4FD
- 8nWW8wtokeqQL/SGEublhpu2Fk6+Q2pvwUaRfaeab8WSBCNQfStW2krLzlbv3lNZnTKg
- jmmIcEVMzXKzxOyJ6P6AGaiZofpGtbukv+qj5YaVzj/iFv6Mnf/TQtNDKFAaDtGM4s4M
- mJjUuthDv2WiE2dEHNPO/caJJfTg25qmL8lbKoyIiOuUBEsTyHzWA26Tw6X2+MmC3lZj
- zKVw==
+ bh=MZb7UPVv9vYl+ixEjhnMDHgoC3lxCKqKktEldyauho4=;
+ b=Zx5JJ86oF8q3sv6ybm/XZZ7okSP4hfQ9VzNvmKA43yA85RkoarwSrkWCRiJkismeyy
+ KiGFUOWu1rFSRWY6cqZ9uxUHw+m+uIPttDZLHCrpfjeHizi967OV8wKpYH6xLKnP9Ls0
+ lYCx6rHy5RD04uCtIXJgk17SudiVIDS3Q2bqDNYoORGjyZUqAYxRZBvI5tf0JnjgxAeG
+ orQAEktbKeS9yIJydNvTuTa8ZrusDTHmaJZ7tHpM3TFhQ3LhGRqaH+U42NwsDT/A/uS/
+ E8WILFyym0bo0KnJVj8iMDK8AXWjBoU7ywmMq/Eva4VhMKmf2aj/5kAzs1MltRHRxnXO
+ nPvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694703429; x=1695308229;
+ d=1e100.net; s=20230601; t=1694703430; x=1695308230;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5tmvXXEw+PIenQIWy8ii+pQoWpYFcR+dhA762ZF8vgU=;
- b=T3GyB+ZXTZ6BD5MTkueyxBMIjmCCC3hYOb7KnWuPuUm/pdSpVniDPTbsmljlSN6z5H
- aTe+1+92gxoLTo0VtdVRo2wQQqSwrXsw8HtxUKTnOwL4Ge6GvGH+ptpZDOdyR1pf6aQB
- 4d6IGdW6ZFl8F3+V+Cm98JWr+lLOL/6KHmf7EAVuNBmDvdEhubqP6jkfQzhH+JufezE9
- +iKtAYat2KlAO7oXQPlgkQxZyNc7oocfvQRsI7JXIxwIuztweePBdHYMkU3QXrL2/Saj
- JnR91CFzdFwSZmkJxx2NDvJa3LoscLDnIVBH1R9KnHFDZIR2w6kwVEsV0p+BOOpER2X5
- ALKA==
-X-Gm-Message-State: AOJu0YwwhutKbeFG0u+7VFC9o8CgBPJR/4SJjr+wXG4BPhOPpgc/bwzN
- BadQMcw/L7+SihnuIB4HFgQ6WpsKiNsY1gt0h34=
-X-Google-Smtp-Source: AGHT+IF/qqM16BIxW99H9bQE6sDnbMh8zbLXMtsmD1bolrD22vBSTneSbB/D2Gk19Nhke1Sv7S/CpQ==
-X-Received: by 2002:a5d:6211:0:b0:31d:1833:4135 with SMTP id
- y17-20020a5d6211000000b0031d18334135mr4213971wru.28.1694703429214; 
+ bh=MZb7UPVv9vYl+ixEjhnMDHgoC3lxCKqKktEldyauho4=;
+ b=ild/N4ZJrqJ7D3P6clNRkcOjBAhJidKpxkTchyRBktEvzliidTF2xOCUUqujvmE6wl
+ 3Vy2Ct426yQsPwpJcAc/hbIgyX1mz1IWPKXUf5n/FGObtIftxmevS7gqMbXPmMBSzEii
+ u5e4VXr6D/iIgCbDjnJKuX8do55rQor1ICdPltxQEryIwmuAS+6j6k1Kqxb7vjQAYCWA
+ EZ8fVOeHb7I67Wdf5/qK0gXTfUO2UBC5CLiJY6sazZ6Zvjs4kuGhv1/340shniqQGj/j
+ zwi/Fp1zJ87m/UkwtMnWdjgCbbBgZ8GtBeQMj2/yLTMG7mKS8WHxR4YmV6s8EuetdZ4V
+ ocPw==
+X-Gm-Message-State: AOJu0YwtuZcZbSMvNHHDsnd24g1mw/E8Qhpr5IO0aq/zbqtAkyO1w8cY
+ 0EygNayeU5jGa6axUQSw93C0yg==
+X-Google-Smtp-Source: AGHT+IHe0GI4++6mV23vSG2u05BsefAgKSd9EUFY5MBHzT/pLD0P3X8uySW5R9oxU3rATdaKvenQ4g==
+X-Received: by 2002:a1c:f717:0:b0:401:bcb4:f128 with SMTP id
+ v23-20020a1cf717000000b00401bcb4f128mr4940859wmh.35.1694703429725; 
  Thu, 14 Sep 2023 07:57:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- y15-20020a5d470f000000b0031981c500aasm1978483wrq.25.2023.09.14.07.57.08
+ y15-20020a5d470f000000b0031981c500aasm1978483wrq.25.2023.09.14.07.57.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 07:57:08 -0700 (PDT)
+ Thu, 14 Sep 2023 07:57:09 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Eric Auger <eric.auger@redhat.com>,
 	Mostafa Saleh <smostafa@google.com>
-Subject: [PATCH 2/3] hw/arm/smmuv3: Sort ID register setting into field order
-Date: Thu, 14 Sep 2023 15:57:04 +0100
-Message-Id: <20230914145705.1648377-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/3] hw/arm/smmuv3: Advertise SMMUv3.1-XNX feature
+Date: Thu, 14 Sep 2023 15:57:05 +0100
+Message-Id: <20230914145705.1648377-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230914145705.1648377-1-peter.maydell@linaro.org>
 References: <20230914145705.1648377-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,38 +93,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In smmuv3_init_regs() when we set the various bits in the ID
-registers, we do this almost in order of the fields in the
-registers, but not quite. Move the initialization of
-SMMU_IDR3.RIL and SMMU_IDR5.OAS into their correct places.
+The SMMUv3.1-XNX feature is mandatory for an SMMUv3.1 if S2P is
+supported, so we should theoretically have implemented it as part of
+the recent S2P work.  Fortunately, for us the implementation is a
+no-op.
+
+This feature is about interpretation of the stage 2 page table
+descriptor XN bits, which control execute permissions.
+
+For QEMU, the permission bits passed to an IOMMU (via MemTxAttrs and
+IOMMUAccessFlags) only indicate read and write; we do not distinguish
+data reads from instruction reads outside the CPU proper.  In the
+SMMU architecture's terms, our interconnect between the client device
+and the SMMU doesn't have the ability to convey the INST attribute,
+and we therefore use the default value of "data" for this attribute.
+
+We also do not support the bits in the Stream Table Entry that can
+override the on-the-bus transaction attribute permissions (we do not
+set SMMU_IDR1.ATTR_PERMS_OVR=1).
+
+These two things together mean that for our implementation, it never
+has to deal with transactions with the INST attribute, and so it can
+correctly ignore the XN bits entirely.  So we already implement
+FEAT_XNX's "XN field is now 2 bits, not 1" behaviour to the extent
+that we need to.
+
+Advertise the presence of the feature in SMMU_IDR3.XNX.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/smmuv3.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/arm/smmuv3.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 1e9be8e89af..94d388fc950 100644
+index 94d388fc950..d9e639f7c41 100644
 --- a/hw/arm/smmuv3.c
 +++ b/hw/arm/smmuv3.c
-@@ -278,15 +278,15 @@ static void smmuv3_init_regs(SMMUv3State *s)
-     s->idr[1] = FIELD_DP32(s->idr[1], IDR1, EVENTQS, SMMU_EVENTQS);
+@@ -279,6 +279,7 @@ static void smmuv3_init_regs(SMMUv3State *s)
      s->idr[1] = FIELD_DP32(s->idr[1], IDR1, CMDQS,   SMMU_CMDQS);
  
--    s->idr[3] = FIELD_DP32(s->idr[3], IDR3, RIL, 1);
      s->idr[3] = FIELD_DP32(s->idr[3], IDR3, HAD, 1);
-+    s->idr[3] = FIELD_DP32(s->idr[3], IDR3, RIL, 1);
++    s->idr[3] = FIELD_DP32(s->idr[3], IDR3, XNX, 1);
+     s->idr[3] = FIELD_DP32(s->idr[3], IDR3, RIL, 1);
      s->idr[3] = FIELD_DP32(s->idr[3], IDR3, BBML, 2);
  
-+    s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, SMMU_IDR5_OAS); /* 44 bits */
-     /* 4K, 16K and 64K granule support */
-     s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN4K, 1);
-     s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN16K, 1);
-     s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN64K, 1);
--    s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, SMMU_IDR5_OAS); /* 44 bits */
- 
-     s->cmdq.base = deposit64(s->cmdq.base, 0, 5, SMMU_CMDQS);
-     s->cmdq.prod = 0;
 -- 
 2.34.1
 
