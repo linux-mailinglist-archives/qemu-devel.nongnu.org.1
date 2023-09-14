@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761FF79FBD8
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E222479FC45
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:45:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgfki-0006og-TG; Thu, 14 Sep 2023 02:23:00 -0400
+	id 1qgg4p-0003Wb-0q; Thu, 14 Sep 2023 02:43:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1qgfkh-0006oN-83
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:59 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgg4d-0003Uf-Ol
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:43:37 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
- id 1qgfkf-0001oT-9x
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:59 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-529fb2c6583so616568a12.1
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:22:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgg4Z-0006qJ-Ea
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:43:33 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-404539209ffso2691565e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:43:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ionos.com; s=google; t=1694672572; x=1695277372; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=pEQqLAGfGXDXNSVrgkSbbPwz6XvycvCh9/uDhckRC2s=;
- b=FW90GCzaupX7li/kCQq9AM2zcPXCD404BG8fvcNVhC01tPR597db30NxIqVazVbVsR
- W/ynM/NOgM7sQp6olJ+AgIDFiyS1EYrkHaZqGB0Ovo5oHfzAU0VQiKwUa5MCHNgzW+RT
- OtY/p/QRYHz1dsGkUtzRCRBiADB/QKT1CbC6aXxRgKj2qG1S/JUU1Bm9y+k7+sJWAiPX
- 4EUNHYnTLxu4sb7hAf8vcSxwYZ7pWaHrYO0Yk0nsUF2w4yjODGpQj3dpfYL3SJT4Q6Qb
- uhMwn/8yGgrSAv5TzIj6FZ9emBp4J97GF6a5Ng3zJiXZmXhY3QFl1ye2X8QwpyarpQAE
- +u/Q==
+ d=linaro.org; s=google; t=1694673809; x=1695278609; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0c0RdhxjT9fw3zfg4l4zqfkSQr52Mx0YOhxeNDT5qb8=;
+ b=XWrKcIFzaFBU8jYxvsb67zPtOC+OzcNES5frrfiSDEXFSgGNfinfh4rlU0VOCDEnXN
+ dP5u60zPfiumkypMjBUHbcRy4PSdlwm6mA7FTt2p4iqqu82vqj6jBGoL/Db9OVqUEAVC
+ +aIeBj3tLGIqucsp1B4K2aASmPDZFCAi6T9QT5l2VnM5z3xsb/ZpLfW2/LGmWHFTRC2s
+ yvntC7p7/6PnzuWT9oQirx9h6JLvT/PyA9EUIJ27pr6bWe36UggroddO/KmUL5+IrwA1
+ alXPAZTuqECB5c9PhUq+azNj5suASKfWf23a0WQRhP8TPSiRrWkgJsPfS3623V/iGFOb
+ kJQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694672572; x=1695277372;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=pEQqLAGfGXDXNSVrgkSbbPwz6XvycvCh9/uDhckRC2s=;
- b=dWc74PLM1sa8dYN25pmx/d9ig4OrYvqoE6mpC4jXejxylDAXqDh888Ps79xF+NHNIK
- z4Dl7HScfA1QeyvWO4ViIUoMzyZ2wCG+Dj2QSkbhOKQHk194mKJa4T7vSF9bu1VUWIPi
- OyV8hK2gsmk1rWnUwYPwqeE4TQn7eD8lo1/QZVzhEoeiK7AiJuk5KO/WT0DjQEtkGtVc
- tM+350BL9DvQ3+WzIgZuKzhMlmCjOBzNG1A2CXhvhcNb5K80Iv5H5C40lOETsnDys9/h
- XxbN9QDyNZY7ChG3Lsjm6qrKFlrUWE1mXYxQtNsdItJvS8eKzOnSY0S4+D5eqZgr3ZK1
- OSHw==
-X-Gm-Message-State: AOJu0YzupOijtqg15mNjrjvQ//w+4iehoc+fqajZis+vYFtQd//rKcdq
- 3KjXXRaJBwFfGQQs7XtaOiHdikazYREvDn4UlSe6xw==
-X-Google-Smtp-Source: AGHT+IHt3Fgp9GWKZ/0ZJrSAvXweB0M/RmQCqluhvfxrL8t9CjRrGiZVhq//tf8nEhITaZDMb/ToqqvOHlEPe1fIBew=
-X-Received: by 2002:a05:6402:1807:b0:52e:585a:e96 with SMTP id
- g7-20020a056402180700b0052e585a0e96mr4173367edy.7.1694672571986; Wed, 13 Sep
- 2023 23:22:51 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694673809; x=1695278609;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0c0RdhxjT9fw3zfg4l4zqfkSQr52Mx0YOhxeNDT5qb8=;
+ b=xUCfQSewtOCPChMWRfG22XT/4DEZfuo1xWFGj4utm9yD/sJMr1FwylOolP9bCsZoiK
+ tD2a8Or3GVpzjzezemmhldEj2khML8OqoxMyii3pemR2VaZbWZRGUVvTtlYEeFoM2WsX
+ egHTKhc7FbynbRS+Hn4TSdMXfWdh+i2D2L5ZjRjcYb06Z0N1tlufxaRe7FmdUNtcP5EA
+ x9j94sMOY3Nu4D2cPsUEZGic6SXHCT4rlAnjb2SxSzaAC9LN0DiYyYOLkUm/4UCaIduy
+ deSMClbYK0d1hPeXxZmnTZOIFHxolYhsKi/mfmroyPV8g82qNqxGt3I0Qn5C4Ie4iI2w
+ 0FgA==
+X-Gm-Message-State: AOJu0YxsXW2mvgKDZ1caOqcUlAsGChcJlz359SeBdIZbijzGMQwE/I5s
+ 4hByp0UZ2N/UxmTDdmVJZSG7FQ==
+X-Google-Smtp-Source: AGHT+IG2VFpDUqYn3lGBsLZurKj7+msGQWMiUAbNcr/X9hur1uv4sdY7azS2/yDJGwAnWySGTIX1ig==
+X-Received: by 2002:a7b:cbc8:0:b0:3fe:111a:d1d9 with SMTP id
+ n8-20020a7bcbc8000000b003fe111ad1d9mr3989932wmi.25.1694673809498; 
+ Wed, 13 Sep 2023 23:43:29 -0700 (PDT)
+Received: from [192.168.69.115] (sem44-h01-176-172-56-29.dsl.sta.abo.bbox.fr.
+ [176.172.56.29]) by smtp.gmail.com with ESMTPSA id
+ t11-20020a1c770b000000b003fc04d13242sm3905804wmi.0.2023.09.13.23.43.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 23:43:28 -0700 (PDT)
+Message-ID: <8fe21876-be8c-22ba-ac91-78e8d014acf7@linaro.org>
+Date: Thu, 14 Sep 2023 08:43:26 +0200
 MIME-Version: 1.0
-References: <fde42d81ce454477ca8e27d5429a190b7366fe86.1692074650.git.pawan.kumar.gupta@linux.intel.com>
- <89e97deb-65ca-e1a2-da53-7ae29f13ea26@intel.com>
-In-Reply-To: <89e97deb-65ca-e1a2-da53-7ae29f13ea26@intel.com>
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Thu, 14 Sep 2023 08:22:41 +0200
-Message-ID: <CAMGffEkfQUJi=shsySeSCvB7d-LwbqXib9j7eAKuRivaiz0t_g@mail.gmail.com>
-Subject: Re: [PATCH v2] target/i386: Export GDS_NO bit to guests
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, 
- qemu-devel <qemu-devel@nongnu.org>, tao1.su@linux.intel.com, 
- Yu Zhang <yu.zhang@ionos.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: permerror client-ip=2a00:1450:4864:20::531;
- envelope-from=jinpu.wang@ionos.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH 1/3] esp: use correct type for esp_dma_enable() in
+ sysbus_esp_gpio_demux()
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, pbonzini@redhat.com,
+ fam@euphon.net, qemu-devel@nongnu.org
+References: <20230913204410.65650-1-mark.cave-ayland@ilande.co.uk>
+ <20230913204410.65650-2-mark.cave-ayland@ilande.co.uk>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230913204410.65650-2-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,54 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
+On 13/9/23 22:44, Mark Cave-Ayland wrote:
+> The call to esp_dma_enable() was being made with the SYSBUS_ESP type instead of
+> the ESP type. This meant that when GPIO 1 was being used to trigger a DMA
+> request from an external DMA controller, the setting of ESPState's dma_enabled
+> field would clobber unknown memory whilst the dma_cb callback pointer would
+> typically return NULL so the DMA request would never start.
+> 
 
-Ping!
+Cc: qemu-stable@nongnu.org
+Fixes: a391fdbc7f ("esp: split esp code into generic chip emulation and 
+sysbus layer")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Thx!
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/scsi/esp.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+> index e52188d022..4218a6a960 100644
+> --- a/hw/scsi/esp.c
+> +++ b/hw/scsi/esp.c
+> @@ -1395,7 +1395,7 @@ static void sysbus_esp_gpio_demux(void *opaque, int irq, int level)
+>           parent_esp_reset(s, irq, level);
+>           break;
+>       case 1:
+> -        esp_dma_enable(opaque, irq, level);
+> +        esp_dma_enable(s, irq, level);
+>           break;
+>       }
+>   }
 
-On Tue, Aug 15, 2023 at 7:44=E2=80=AFAM Xiaoyao Li <xiaoyao.li@intel.com> w=
-rote:
->
-> On 8/15/2023 12:54 PM, Pawan Gupta wrote:
-> > Gather Data Sampling (GDS) is a side-channel attack using Gather
-> > instructions. Some Intel processors will set ARCH_CAP_GDS_NO bit in
-> > MSR IA32_ARCH_CAPABILITIES to report that they are not vulnerable to
-> > GDS.
-> >
-> > Make this bit available to guests.
-> >
-> > Closes: https://lore.kernel.org/qemu-devel/CAMGffEmG6TNq0n3+4OJAgXc8J0O=
-evY60KHZekXCBs3LoK9vehA@mail.gmail.com/
-> > Reported-by: Jack Wang <jinpu.wang@ionos.com>
-> > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> > Tested-by: Jack Wang <jinpu.wang@ionos.com>
-> > Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
->
-> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
->
-> > ---
-> > v2: Added commit tags
-> >
-> > v1: https://lore.kernel.org/qemu-devel/c373f3f92b542b738f296d44bb6a916a=
-1cded7bd.1691774049.git.pawan.kumar.gupta@linux.intel.com/
-> >
-> >   target/i386/cpu.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index 97ad229d8ba3..48709b77689f 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -1155,7 +1155,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] =
-=3D {
-> >               NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
-> >               NULL, "fb-clear", NULL, NULL,
-> >               NULL, NULL, NULL, NULL,
-> > -            "pbrsb-no", NULL, NULL, NULL,
-> > +            "pbrsb-no", NULL, "gds-no", NULL,
-> >               NULL, NULL, NULL, NULL,
-> >           },
-> >           .msr =3D {
->
 
