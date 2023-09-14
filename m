@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2DC7A0788
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186837A078A
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:41:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgnVB-0008Nf-Gq; Thu, 14 Sep 2023 10:39:29 -0400
+	id 1qgnWL-0000uQ-KG; Thu, 14 Sep 2023 10:40:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgnV8-0008NF-Mx
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:39:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qgnV0-0000KY-Vq
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:39:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694702357;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=cQCiT93qxcDF6QFB3Lc11Kn3Rg0j5FjV7iyKL8A+fVc=;
- b=UDg/TRdkujIapKSQAn3e860SAEV26bfx5ovo+1FwnkBE3gjT1L4FKc30nB0dt7I54/+2JJ
- BwyryrpK+nhhfklpUhn4jzHC7YzLVcwSEciaCqGJxRZQ6rcxzYlLBdZvFHMbqYIr0jK5bW
- 5wQjArsFNXdfoi47DU2cJY2fe38tE2k=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-36-9BSByDa-OO28I0WhQQ7nrQ-1; Thu, 14 Sep 2023 10:39:16 -0400
-X-MC-Unique: 9BSByDa-OO28I0WhQQ7nrQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6EE87101D25D;
- Thu, 14 Sep 2023 14:39:14 +0000 (UTC)
-Received: from localhost (unknown [10.39.194.105])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B734B40C6EA8;
- Thu, 14 Sep 2023 14:39:13 +0000 (UTC)
-Date: Thu, 14 Sep 2023 10:39:12 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Mattias Nissler <mnissler@rivosinc.com>
-Cc: qemu-devel@nongnu.org, john.levon@nutanix.com,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Jagannathan Raman <jag.raman@oracle.com>,
- Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v3 0/5] Support message-based DMA in vfio-user server
-Message-ID: <20230914143912.GA1066211@fedora>
-References: <20230907130410.498935-1-mnissler@rivosinc.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qgnWI-0000tn-VZ
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:40:39 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qgnWG-0000dE-WE
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:40:38 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-402c46c49f4so10926385e9.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 07:40:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694702434; x=1695307234; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=S1GDB0R+c9oAwqJttqwTtfkLtxH7usjq17smL1mLLK0=;
+ b=o58YnuMViiPFFGQoWHWRwQRHEomo1ZYL1tNExv4DN2SK73o9Y0Y4jSjg5bUXuE/9GK
+ zO6FDOylo1DppDrhtB/AVJU6uBk6jmxSezF/wmRuqNz4brZf7l1y6JrKfceY6sEAgjHO
+ UpOuSHqQ2HEsXDC9WmVL2wx2N1Q6vHthC56+2Yx/z46fREbOWhqYNrmoFTZcYuWZGgBz
+ XQTET+wenhe2RnK6R1NaRCblDtN3lRh48ttyIPkvhgkfEphlul7wj5KLu2PvjWFWOfhZ
+ y/3vkMPhCsEhpCt9+Mftc8XwfrcDn3H0AE5gb57sCrVZrx1e+cZiRdiI7hwA5IDkTU9T
+ Jghw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694702434; x=1695307234;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=S1GDB0R+c9oAwqJttqwTtfkLtxH7usjq17smL1mLLK0=;
+ b=NkUeTDvxuXc31TzURK/CNX+Sj6M842AEainpoYfKK45OQFNb8TGtY4FHVwZ+aRKQ82
+ 9ndNOkLkyt1JixB4PW6EPiS3QF5ypsw3lFBTplqNsLmNmLhT4vOMvwy8w8x+T849UMkE
+ V9lI7dLxmMOjlkgr5ImBxuyPy1c/yiDI62NEvuF+zEQKpFTl8aZJA5fMw4012fROQT1K
+ y9cLSXx3+kVg6WTD2QASZsWpQR86WRINFbOATD2u67XzDeUVIq+Tc7V5C1EBGwuY8byp
+ o0apKEiZmX3s5i+bWCVDL6k0DtTHz6y18wD2MfvJORqZQ7iU4ZCeZ/h9U3BfMIaQhAGY
+ gATw==
+X-Gm-Message-State: AOJu0Yzm2sUtNIsD77a+exofoEQ72iHGAv6bGevfHSozTe9241Jm+aYT
+ GUAaEdigdkZYBZsMGoJY7s/sZ74FxcVjzxO3ApR/eA==
+X-Google-Smtp-Source: AGHT+IE6QxikUJlaajSQ6g/Tf1IFkFLX9YIZl2XVNsJHaWp+UxH1Q7KaK9XrZZQCLg/TkUUM0o2kz9DQdJxWr0R8zvw=
+X-Received: by 2002:a05:600c:1c9d:b0:403:af4:3178 with SMTP id
+ k29-20020a05600c1c9d00b004030af43178mr5097409wms.1.1694702433950; Thu, 14 Sep
+ 2023 07:40:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="K95de4OWTPElmcR4"
-Content-Disposition: inline
-In-Reply-To: <20230907130410.498935-1-mnissler@rivosinc.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230907181628.1594401-1-stefanha@redhat.com>
+ <20230907181628.1594401-4-stefanha@redhat.com>
+In-Reply-To: <20230907181628.1594401-4-stefanha@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 14 Sep 2023 15:40:13 +0100
+Message-ID: <CAFEAcA8K=TxoqUV-XK+_5KvmKxc+ue7rZ28Sd_yY=V_TVxmMcw@mail.gmail.com>
+Subject: Re: [PULL 3/5] hw/ufs: Support for Query Transfer Requests
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Jeuk Kim <jeuk20.kim@samsung.com>, 
+ Hanna Reitz <hreitz@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,122 +93,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 7 Sept 2023 at 19:17, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+>
+> From: Jeuk Kim <jeuk20.kim@samsung.com>
+>
+> This commit makes the UFS device support query
+> and nop out transfer requests.
+>
+> The next patch would be support for UFS logical
+> unit and scsi command transfer request.
+>
+> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Message-id: ff7a5f0fd26761936a553ffb89d3df0ba62844e9.1693980783.git.jeuk20.kim@gmail.com
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> ---
+>  hw/ufs/ufs.h        |  46 +++
+>  hw/ufs/ufs.c        | 988 +++++++++++++++++++++++++++++++++++++++++++-
+>  hw/ufs/trace-events |   1 +
+>  3 files changed, 1033 insertions(+), 2 deletions(-)
 
---K95de4OWTPElmcR4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi; Coverity isn't happy about the code in this function
+(CID 1519050). The code isn't strictly wrong, but it's
+probably possible to make it a bit more clearly correct.
 
-On Thu, Sep 07, 2023 at 06:04:05AM -0700, Mattias Nissler wrote:
-> This series adds basic support for message-based DMA in qemu's vfio-user
-> server. This is useful for cases where the client does not provide file
-> descriptors for accessing system memory via memory mappings. My motivatin=
-g use
-> case is to hook up device models as PCIe endpoints to a hardware design. =
-This
-> works by bridging the PCIe transaction layer to vfio-user, and the endpoi=
-nt
-> does not access memory directly, but sends memory requests TLPs to the ha=
-rdware
-> design in order to perform DMA.
->=20
-> Note that there is some more work required on top of this series to get
-> message-based DMA to really work well:
->=20
-> * libvfio-user has a long-standing issue where socket communication gets =
-messed
->   up when messages are sent from both ends at the same time. See
->   https://github.com/nutanix/libvfio-user/issues/279 for more details. I'=
-ve
->   been engaging there and a fix is in review.
->=20
-> * qemu currently breaks down DMA accesses into chunks of size 8 bytes at
->   maximum, each of which will be handled in a separate vfio-user DMA requ=
-est
->   message. This is quite terrible for large DMA accesses, such as when nv=
-me
->   reads and writes page-sized blocks for example. Thus, I would like to i=
-mprove
->   qemu to be able to perform larger accesses, at least for indirect memory
->   regions. I have something working locally, but since this will likely r=
-esult
->   in more involved surgery and discussion, I am leaving this to be addres=
-sed in
->   a separate patch.
+> +static void ufs_process_db(UfsHc *u, uint32_t val)
+> +{
+> +    unsigned long doorbell;
+> +    uint32_t slot;
+> +    uint32_t nutrs = u->params.nutrs;
+> +    UfsRequest *req;
+> +
+> +    val &= ~u->reg.utrldbr;
+> +    if (!val) {
+> +        return;
+> +    }
+> +
+> +    doorbell = val;
+> +    slot = find_first_bit(&doorbell, nutrs);
 
-Have you tried setting mr->ops->valid.max_access_size to something like
-64 KB?
+Here we pass the address of a single 'unsigned long' to
+find_first_bit(). That function operates on arrays, so
+unless nutrs is guaranteed to be less than 32 this might
+walk off the end of memory.
 
-Paolo: Any suggestions for increasing DMA transaction sizes?
+There is a check on params.nutrs in ufs_check_constraints(),
+which checks for "> UFS_MAX_NUTRS" and that value is 32,
+so this won't actually overflow, but Coverity can't
+see that check and in any case what it really doesn't
+like here is the passing of the address of a 'long'
+variable to a function that is prototyped as taking
+an array of longs.
 
-Stefan
+You can probably make Coverity happy by defining
+doorbell here as a 1 element array, and asserting
+that nutrs is 32 or less. Alternatively, we have
+ctz32() for working through bits in a uint32_t, though
+that is a bit lower-level than find_first_bit/find_next_bit.
 
->=20
-> Changes from v1:
->=20
-> * Address Stefan's review comments. In particular, enforce an allocation =
-limit
->   and don't drop the map client callbacks given that map requests can fai=
-l when
->   hitting size limits.
->=20
-> * libvfio-user version bump now included in the series.
->=20
-> * Tested as well on big-endian s390x. This uncovered another byte order i=
-ssue
->   in vfio-user server code that I've included a fix for.
->=20
-> Changes from v2:
->=20
-> * Add a preparatory patch to make bounce buffering an AddressSpace-specif=
-ic
->   concept.
->=20
-> * The total buffer size limit parameter is now per AdressSpace and can be
->   configured for PCIDevice via a property.
->=20
-> * Store a magic value in first bytes of bounce buffer struct as a best ef=
-fort
->   measure to detect invalid pointers in address_space_unmap.
->=20
-> Mattias Nissler (5):
->   softmmu: Per-AddressSpace bounce buffering
->   softmmu: Support concurrent bounce buffers
->   Update subprojects/libvfio-user
->   vfio-user: Message-based DMA support
->   vfio-user: Fix config space access byte order
->=20
->  hw/pci/pci.c                  |   8 ++
->  hw/remote/trace-events        |   2 +
->  hw/remote/vfio-user-obj.c     |  88 +++++++++++++++++--
->  include/exec/cpu-common.h     |   2 -
->  include/exec/memory.h         |  39 ++++++++-
->  include/hw/pci/pci_device.h   |   3 +
->  softmmu/dma-helpers.c         |   4 +-
->  softmmu/memory.c              |   4 +
->  softmmu/physmem.c             | 155 ++++++++++++++++++----------------
->  subprojects/libvfio-user.wrap |   2 +-
->  10 files changed, 220 insertions(+), 87 deletions(-)
->=20
-> --=20
-> 2.34.1
->=20
+> +
+> +    while (slot < nutrs) {
+> +        req = &u->req_list[slot];
+> +        if (req->state == UFS_REQUEST_ERROR) {
+> +            trace_ufs_err_utrl_slot_error(req->slot);
+> +            return;
+> +        }
+> +
+> +        if (req->state != UFS_REQUEST_IDLE) {
+> +            trace_ufs_err_utrl_slot_busy(req->slot);
+> +            return;
+> +        }
+> +
+> +        trace_ufs_process_db(slot);
+> +        req->state = UFS_REQUEST_READY;
+> +        slot = find_next_bit(&doorbell, nutrs, slot + 1);
+> +    }
+> +
+> +    qemu_bh_schedule(u->doorbell_bh);
+> +}
 
---K95de4OWTPElmcR4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUDGxAACgkQnKSrs4Gr
-c8j+Owf9EwUZlanvgfUnPHV6AFc/RQRtwk27eeI8Tacprr4oUmgrw+6ye5bv8Jui
-D+diUcuS6K48GDE+vXeHPxfK1PDQV0JMjzyT6yVxFof9BNXFP368TwvUa3TIz3RX
-rMzzIFAxaDWkh9MlcP/6MEmiq0zMrE/pcW3DWYJa6W1Oj4+7eiHrjgYsbyLCmYLN
-effNbo6oV1n6tVhuLQ1GcwtSVvUn4K57FZgNOjs5xFtBEtgxKHSkaA6ENmAmB184
-9c0C/Fr6mX6+BEi/x7mohkRClIJtNwV+qU99IxybMoOhb44ohCjMewCit6EvUmEj
-4kNirJ1bs+vNxBHXuAf4ZBPWCjwdkw==
-=O2H0
------END PGP SIGNATURE-----
-
---K95de4OWTPElmcR4--
-
+thanks
+-- PMM
 
