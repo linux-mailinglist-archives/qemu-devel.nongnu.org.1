@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765AF79FB83
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF4779FB93
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:04:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgfRC-0000Ly-Cg; Thu, 14 Sep 2023 02:02:50 -0400
+	id 1qgfSU-0001w8-LY; Thu, 14 Sep 2023 02:04:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfR6-0000Cw-W8
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:02:47 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfSS-0001vl-Fm
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:04:08 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfR2-00055f-UO
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:02:43 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-401b393ddd2so6292405e9.0
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:02:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfSQ-0005KP-Vc
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:04:08 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-9a64619d8fbso77381066b.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694671359; x=1695276159; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694671445; x=1695276245; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=YX6vGeqyVem/HzcqhZ4oNSM+sednCUTkpVTReyBQTJU=;
- b=aEJeeXUaI2vG0CP9qLsnSc7WiQhsBFxrIrNRd/z3IxsSE1kJ+Iu1JGq7O1AEKrRW8m
- kC50Y/CQW8fIQX8tKuFttmXa9oVtWm6/PmScaCkfiAfzctb0ixpzPYiHk/7ECejLmz9V
- 3JSm2zF4bRS6tsSv4p/5fI5EQ+BIMyaOj/S7nq06UkBSwceOGD2/oSVyXhPv8HkFxNUB
- 0C6MSXkD7bai0m4Zz/BqwKG5lmVCYWJm8UVrvhcSD2qlNsgKJxgYDtvrwFU2t4xEl17F
- khz+rQp31OrpnrAGhYHhr3QZyVvM6TB7a6l6OB7HGpB3k0KrB7Om1QNQiDi6WoX9/Uyr
- Vi2w==
+ bh=sj7kEn9b0unkHMlbNISLmBDqKfLP4cNWnfu2ut+Iovw=;
+ b=u40CoaQknPu46IZkPvZgWysDomkEN0YW0w1d3jYltU91K1AcYL/RWYdeYyeSi7qety
+ ht4WPrV9BsBid88K7jA0IBV6jmLqFmxWRbRHzKirUkJvwfaHpYCGiJ4jq/tS7acbmm0G
+ 6ZtdJNCcUC/IkelMLydZn439TbZbwVcdPoR4qrvts6GJ++hNWz+QCWnsaBN5W/gCcMR0
+ dk3OANytZdcKxln4m814fA1TPm1sFPd4NB7jVAKeJs+qAh1EpTqpr7x9FE4H0RxhwOkx
+ zOQ35DClvhhBVoks6gimXK5pfqhPLlcXAtflbFviKu5+/GvycboDTU9QHCl4qucC4gYk
+ mZEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694671359; x=1695276159;
+ d=1e100.net; s=20230601; t=1694671445; x=1695276245;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YX6vGeqyVem/HzcqhZ4oNSM+sednCUTkpVTReyBQTJU=;
- b=tmPUh1aCMBRD7qG69ScIuCIdwB72BR98aFAD961lKWGvwaoB4QBul+2mA+WPZSe5F2
- 5PCx4zYZaaEQYCyUWutldX3JVDLnJOQtCQdg7BnS3CqQbZTEBtw9oaYuFmwAnjHvsj+r
- VPm3KnIcbHLs+28DGMEEFcjTPCa2Dz+qZgl4yGPRgvvbiMXcPPcu+/IAyt2mA3I1vlpv
- 87EDgByhspO/CbbDUf4Dw0mB2DYX97VODvin3Wgg7tYplO8qScGYy26cl7hNUh+ude2t
- RUvAUV5JU7IrYdAURkwmPfGBpT3/NMgWYt0yx3GsxJ8BuGPAmKFZT1XvxFrsXea3ksSo
- Gamg==
-X-Gm-Message-State: AOJu0Yw8MfZAk+buYXKcEzVFU8sxuBGfrmQ1kHA5I+9j0idncxfB5+wU
- C5N5ubi6u6A8IwlJr+bf50s0Kd/2hIZGHdMZf5A=
-X-Google-Smtp-Source: AGHT+IEOZN+9Zt6alVo1c1DLyRIVPet8EIqbUmVCS5bNxETBNlPLV/xEE6q7HNQmudSLBFWI2nEsjA==
-X-Received: by 2002:adf:de8a:0:b0:319:7c0f:d920 with SMTP id
- w10-20020adfde8a000000b003197c0fd920mr4137594wrl.57.1694671359375; 
- Wed, 13 Sep 2023 23:02:39 -0700 (PDT)
+ bh=sj7kEn9b0unkHMlbNISLmBDqKfLP4cNWnfu2ut+Iovw=;
+ b=aPmiEF9OIM73c7n4Gl9roA5md/4vXBk7jB8kmhLWGIbkr6fNkgyvj6rEeJ3k+6f6vt
+ vi/7iSFqcRQrN7kdaeeZzHzhKgFImzIEii5166wxXJssP5A9riYVk5it22Qd95dfTQzt
+ heUOJ3JwFVZ/wuA5SSZsQ7kRhmbdCb4ecwR0kdrDl9yd7JCG0L5VcdG2nfUS03KGwdF+
+ iQSWprMgSQcLn7xI6AJ9JuTJ1W2Gsjp6LPzb8LMnXqUJ3gUl48CLLAMlv6jzo+HJM+Bu
+ kM+8f1WOyoKjfzmXd3yrJM1/Qx8UjAErpCuojWgPeOdurz8ot8gwl/L1BRPDGuJRBTbU
+ yN3A==
+X-Gm-Message-State: AOJu0YxNDQuoi48tKNmsmDzOGuT+L18aC0pwkrGLNCTNLdZfmG5NP/UX
+ 66Uq5wMDAQTYYkRtY8F9CM6xFAVEXVVrPgF+SUM=
+X-Google-Smtp-Source: AGHT+IFxY8IY8tPMNuLZ58NOEr2rXHyULNTw+sYBHgFuR9WGd0CNiqncFfqci2mZU1RquHZr8ecFXg==
+X-Received: by 2002:a17:906:74de:b0:99b:627b:e96d with SMTP id
+ z30-20020a17090674de00b0099b627be96dmr3486329ejl.44.1694671445443; 
+ Wed, 13 Sep 2023 23:04:05 -0700 (PDT)
 Received: from [192.168.69.115] (sem44-h01-176-172-56-29.dsl.sta.abo.bbox.fr.
  [176.172.56.29]) by smtp.gmail.com with ESMTPSA id
- d6-20020adfef86000000b0031f82743e25sm756609wro.67.2023.09.13.23.02.38
+ w18-20020a170906481200b0099329b3ab67sm499758ejq.71.2023.09.13.23.04.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 23:02:38 -0700 (PDT)
-Message-ID: <5c52d7d7-cd04-2f3b-8f95-cfc538c9faf0@linaro.org>
-Date: Thu, 14 Sep 2023 08:02:37 +0200
+ Wed, 13 Sep 2023 23:04:04 -0700 (PDT)
+Message-ID: <518042c2-c158-a82e-04ee-413e5c3d9ef5@linaro.org>
+Date: Thu, 14 Sep 2023 08:04:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 05/24] target/arm: Remove size and alignment for cpu
- subclasses
+Subject: Re: [PATCH v2 06/24] target/*: Add instance_align to all cpu base
+ classes
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: anjo@rev.ng, ale@rev.ng
 References: <20230914024435.1381329-1-richard.henderson@linaro.org>
- <20230914024435.1381329-6-richard.henderson@linaro.org>
+ <20230914024435.1381329-7-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230914024435.1381329-6-richard.henderson@linaro.org>
+In-Reply-To: <20230914024435.1381329-7-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,13 +95,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14/9/23 04:44, Richard Henderson wrote:
-> Inherit the size and alignment from TYPE_ARM_CPU.
+> The omission of alignment has technically been wrong since
+> 269bd5d8f61, where QEMU_ALIGNED was added to CPUTLBDescFast.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/arm/cpu.c   | 3 ---
->   target/arm/cpu64.c | 4 ----
->   2 files changed, 7 deletions(-)
+>   target/alpha/cpu.c      | 1 +
+>   target/avr/cpu.c        | 1 +
+>   target/cris/cpu.c       | 1 +
+>   target/hexagon/cpu.c    | 1 +
+>   target/hppa/cpu.c       | 1 +
+>   target/i386/cpu.c       | 1 +
+>   target/loongarch/cpu.c  | 1 +
+>   target/m68k/cpu.c       | 1 +
+>   target/microblaze/cpu.c | 1 +
+>   target/mips/cpu.c       | 1 +
+>   target/nios2/cpu.c      | 1 +
+>   target/openrisc/cpu.c   | 1 +
+>   target/riscv/cpu.c      | 2 +-
+>   target/rx/cpu.c         | 1 +
+>   target/sh4/cpu.c        | 1 +
+>   target/sparc/cpu.c      | 1 +
+>   target/tricore/cpu.c    | 1 +
+>   target/xtensa/cpu.c     | 1 +
+>   18 files changed, 18 insertions(+), 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
