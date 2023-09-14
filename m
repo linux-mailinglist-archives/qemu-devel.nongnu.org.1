@@ -2,111 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C01079FE6C
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 106D579FE93
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:38:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qghjq-0006RB-QT; Thu, 14 Sep 2023 04:30:15 -0400
+	id 1qghrG-00081O-Fl; Thu, 14 Sep 2023 04:37:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qghjo-0006QX-5J
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:30:12 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qghrB-00081D-Kt
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:37:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
- id 1qghjl-00038W-2h
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:30:11 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qghr9-0005Jv-EW
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:37:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694680206;
+ s=mimecast20190719; t=1694680666;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yA6YEmooBezgU/7PUR3h+x7ndZimwJxchJ/tlSKweSU=;
- b=C7W9jFYR5xHKaVRzhDyZlWHWag1Aij2sRDHTdJpNSYnWBDy4bPcMXj6RoRDhHAyFz3x2MA
- dycezXP7/21naPTRSqiRuyM7Gn+h2jxfX6QQhrEWkLVf62p5eJPtd0IMlE+Ui3Nh94rXMp
- 5S9IGy1ejbz28D4Qae2Ne1tXZDW0nBg=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=G+otnmZp2gLKXSUMdSO4g+qnu7nKOs0lNDa7t5xSwqE=;
+ b=dZK7GiNIN2j8FM9XY3Tdu6Zn2ba6OJOI23qGP7ua2Vr+2uz7DGZ0OIEDbgXZD2O6Qjb9vL
+ APx0AuhbZHkf4jtPseQtqjbs4POgXwkmjFr2UlNshwKxasKjz3JORygpqnvuUGytRfyU24
+ 6jgA3sko6LZDw7OF2BeD0UQ0rKCcW2E=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-36-mJ8R9zTdNVKGarRbLZjAgg-1; Thu, 14 Sep 2023 04:30:04 -0400
-X-MC-Unique: mJ8R9zTdNVKGarRbLZjAgg-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-27463dbb521so523694a91.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 01:30:04 -0700 (PDT)
+ us-mta-640-fuYMLGU7PrmS3GpJS9tLww-1; Thu, 14 Sep 2023 04:37:44 -0400
+X-MC-Unique: fuYMLGU7PrmS3GpJS9tLww-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-401e1c55ddcso5644105e9.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 01:37:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694680203; x=1695285003;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1694680663; x=1695285463;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :content-language:references:cc:to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=yA6YEmooBezgU/7PUR3h+x7ndZimwJxchJ/tlSKweSU=;
- b=hGlc1hPEHPfPTp8vklhtnCfQ7FoshIuElgoPb0U0xw6XcGuUuAt1ju67BHGCJzEZYX
- qUnfRPnbZKCzcBdYBWtnIfQgVXvJg2uUz01cRgISklMetaQ+vZexWuCGCL7/uLJz5pB0
- 7BJa1w1kYDf7JPSrx+08kNg47DlEdW49Tk1jiuy3LzJALZVjNB+brWYvpIaWoSaq/L2E
- vSqi50I415GBRL2XfbweaiUDHNLaV0UQC8OOReUcvxtiENylEN+NewG6eVN6Rc8PPT0t
- PYEtQ++8rBwnTO9VFgPneDEgfFDFOGm8fFhB2V5OMNwS9wKAaXgc+1CB4Z6WLhwr/qwa
- WATA==
-X-Gm-Message-State: AOJu0YxirR6lV2dHFOFMEKW4MnTfbWoYD/vcC/PfzoYawnOqpIoDggYr
- fcV+vkO72HQ4qnVbcPmLi2PNwKhXEitSVEIlp8OEwS0GLzQpIhzg8tXaKFyZA5iHKbGBUhmyCxe
- 4TL3OMoZLWwdrlj0BZcOO4dMzvlpLyrE=
-X-Received: by 2002:a17:90a:8c88:b0:269:18f5:683e with SMTP id
- b8-20020a17090a8c8800b0026918f5683emr4549205pjo.3.1694680203472; 
- Thu, 14 Sep 2023 01:30:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHvpnIrI0fs8uswe/o8Tr9VmbnQC1HIMGfwSGp6+i8vBzb9EeSU1mTm5ednofrRjwOe2msFRh39ayPz1qPNx1c=
-X-Received: by 2002:a17:90a:8c88:b0:269:18f5:683e with SMTP id
- b8-20020a17090a8c8800b0026918f5683emr4549172pjo.3.1694680203144; Thu, 14 Sep
- 2023 01:30:03 -0700 (PDT)
+ bh=G+otnmZp2gLKXSUMdSO4g+qnu7nKOs0lNDa7t5xSwqE=;
+ b=KKm5jBeSj2mUNhTMJrMtux+aCyTKm4+60qpvW3YPFq+YM4+M3zWH8tWXpVsu7vUT2y
+ +JCNox4osiY5mYzSjomwI1YP29Hi1q+R/owzVJlxKyHaomY+tcwwiGLAhnLyZqx08srO
+ vQc68AsYF6QSFw8fvVos+TyziW9I7QdgS/zQU2IQalEtrUb8rUpAR9ymKwfKz0g+xgwx
+ TbgejPigYFBQGA8IxEuX8M8uCcvJ3cMi4U/sMacjpRpbo/+inI/PShdrRFpmqWtySKb7
+ vZnEJFsi4g45aOQet4VXqVWYzjsd1LyP4IZAlKTYwjnIwB2FioLFzN1cJH3FLR4MgG2E
+ Km0A==
+X-Gm-Message-State: AOJu0YyUDQfUvUwp9sr8Hz7YfQ2ASybWKKDhd7b3GTdWEaN1YRIlcPWa
+ wXVHiBYtiEMSU0JIC3JFDXemBfasyC/xo4MmJnJTlprd+I7bBlU5zXIhqiF+7Iv17dQkAUkxbAl
+ /28snL7/ilPy+N3Q=
+X-Received: by 2002:a7b:ce0d:0:b0:401:daf2:2737 with SMTP id
+ m13-20020a7bce0d000000b00401daf22737mr4547158wmc.30.1694680663121; 
+ Thu, 14 Sep 2023 01:37:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEPPFg3EihE2GKu60wRd/5QCQkSA2p0IP97lJAwH0tVqEKdwBeBbMu2tV/2mWnfP9XlZa48Ag==
+X-Received: by 2002:a7b:ce0d:0:b0:401:daf2:2737 with SMTP id
+ m13-20020a7bce0d000000b00401daf22737mr4547123wmc.30.1694680662515; 
+ Thu, 14 Sep 2023 01:37:42 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ p20-20020a7bcc94000000b003feea62440bsm1307804wma.43.2023.09.14.01.37.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Sep 2023 01:37:41 -0700 (PDT)
+Message-ID: <34403090-b4b3-990f-7723-1d56d8053bd5@redhat.com>
+Date: Thu, 14 Sep 2023 10:37:40 +0200
 MIME-Version: 1.0
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-11-ray.huang@amd.com>
- <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
- <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
- <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
- <cf99ac00-6f48-4778-b319-6079a931ba5d@daynix.com>
- <CADSE00+6zcT7iKR0JW1Bk8es6HtBpzAKa9JW6u5yyjDoLPw2KQ@mail.gmail.com>
- <5e88f5d5-5aa2-4052-b250-69c2a443344f@daynix.com>
- <CADSE00+BUq-6jKH3v2PYNThn+9Z4UCFcr3Cv9Z48eUX0b=6ymA@mail.gmail.com>
- <3918c96c-f106-494d-8e97-6d86cef8df27@daynix.com>
- <CADSE00LNYm+vKaYwnTAdECGUXPCfiJ7aLqszDuqSzCLLhVOHhQ@mail.gmail.com>
- <0adaf816-e050-43c3-8284-fc41627543ef@daynix.com>
-In-Reply-To: <0adaf816-e050-43c3-8284-fc41627543ef@daynix.com>
-From: Albert Esteve <aesteve@redhat.com>
-Date: Thu, 14 Sep 2023 10:29:51 +0200
-Message-ID: <CADSE00Kyid+=FkkopSGDAyeJ_MY2exDdxoPf18pzthKy70kkKg@mail.gmail.com>
-Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony.perard@citrix.com>, 
- Antonio Caggiano <antonio.caggiano@collabora.com>, 
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>, 
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>, 
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
- Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Content-Type: multipart/alternative; boundary="00000000000084498506054d7be3"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=aesteve@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+To: Ani Sinha <anisinha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel <qemu-devel@nongnu.org>
+References: <20230908095024.270946-1-anisinha@redhat.com>
+ <77284898-c540-31ac-d438-ebff52f6d75d@redhat.com>
+ <1911B17C-24F2-406B-9ED4-DCF98E794A09@redhat.com>
+ <730648ed-55ac-aa2c-58d2-d79224aeb586@redhat.com>
+ <1574DF3A-7E1F-4C4F-9087-6E8DEE456906@redhat.com>
+ <6cbca7b9-381b-6268-27f0-d7ea1c5ed1bd@redhat.com>
+ <3A287C52-F547-4494-B803-8CFC50CBA175@redhat.com>
+ <30f0ddfb-6eb7-84a5-04a0-e11905451733@redhat.com>
+ <A354B36D-A86E-48D9-B8B6-DC35D8976410@redhat.com>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH] mem/x86: add processor address space check for VM memory
+In-Reply-To: <A354B36D-A86E-48D9-B8B6-DC35D8976410@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -124,677 +118,222 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000084498506054d7be3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 14.09.23 07:53, Ani Sinha wrote:
+> 
+> 
+>> On 12-Sep-2023, at 9:04 PM, David Hildenbrand <david@redhat.com> wrote:
+>>
+>> [...]
+>>
+>>>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>>>> index 54838c0c41..d187890675 100644
+>>>> --- a/hw/i386/pc.c
+>>>> +++ b/hw/i386/pc.c
+>>>> @@ -908,9 +908,12 @@ static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_size)
+>>>> {
+>>>>      X86CPU *cpu = X86_CPU(first_cpu);
+>>>>
+>>>> -    /* 32-bit systems don't have hole64 thus return max CPU address */
+>>>> -    if (cpu->phys_bits <= 32) {
+>>>> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
+>>>> +    /*
+>>>> +     * 32-bit systems don't have hole64, but we might have a region for
+>>>> +     * memory hotplug.
+>>>> +     */
+>>>> +    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
+>>>> +        return pc_pci_hole64_start() - 1;
+>>> Ok this is very confusing! I am looking at pc_pci_hole64_start() function. I have a few questions …
+>>> (a) pc_get_device_memory_range() returns the size of the device memory as the difference between ram_size and maxram_size. But from what I understand, ram_size is the actual size of the ram present and maxram_size is the max size of ram *after* hot plugging additional memory. How can we assume that the additional available space is already occupied by hot plugged memory?
+>>
+>> Let's take a look at an example:
+>>
+>> $ ./build/qemu-system-x86_64 -m 8g,maxmem=16g,slots=1 \
+>>   -object memory-backend-ram,id=mem0,size=1g \
+>>   -device pc-dimm,memdev=mem0 \
+>>   -nodefaults -nographic -S -monitor stdio
+>>
+>> (qemu) info mtree
+>> ...
+>> memory-region: system
+>>   0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>>     0000000000000000-00000000bfffffff (prio 0, ram): alias ram-below-4g @pc.ram 0000000000000000-00000000bfffffff
+>>     0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+>>       00000000000c0000-00000000000dffff (prio 1, rom): pc.rom
+>>       00000000000e0000-00000000000fffff (prio 1, rom): alias isa-bios @pc.bios 0000000000020000-000000000003ffff
+>>       00000000fffc0000-00000000ffffffff (prio 0, rom): pc.bios
+>>     00000000000a0000-00000000000bffff (prio 1, i/o): alias smram-region @pci 00000000000a0000-00000000000bffff
+>>     00000000000c0000-00000000000c3fff (prio 1, i/o): alias pam-pci @pci 00000000000c0000-00000000000c3fff
+>>     00000000000c4000-00000000000c7fff (prio 1, i/o): alias pam-pci @pci 00000000000c4000-00000000000c7fff
+>>     00000000000c8000-00000000000cbfff (prio 1, i/o): alias pam-pci @pci 00000000000c8000-00000000000cbfff
+>>     00000000000cc000-00000000000cffff (prio 1, i/o): alias pam-pci @pci 00000000000cc000-00000000000cffff
+>>     00000000000d0000-00000000000d3fff (prio 1, i/o): alias pam-pci @pci 00000000000d0000-00000000000d3fff
+>>     00000000000d4000-00000000000d7fff (prio 1, i/o): alias pam-pci @pci 00000000000d4000-00000000000d7fff
+>>     00000000000d8000-00000000000dbfff (prio 1, i/o): alias pam-pci @pci 00000000000d8000-00000000000dbfff
+>>     00000000000dc000-00000000000dffff (prio 1, i/o): alias pam-pci @pci 00000000000dc000-00000000000dffff
+>>     00000000000e0000-00000000000e3fff (prio 1, i/o): alias pam-pci @pci 00000000000e0000-00000000000e3fff
+>>     00000000000e4000-00000000000e7fff (prio 1, i/o): alias pam-pci @pci 00000000000e4000-00000000000e7fff
+>>     00000000000e8000-00000000000ebfff (prio 1, i/o): alias pam-pci @pci 00000000000e8000-00000000000ebfff
+>>     00000000000ec000-00000000000effff (prio 1, i/o): alias pam-pci @pci 00000000000ec000-00000000000effff
+>>     00000000000f0000-00000000000fffff (prio 1, i/o): alias pam-pci @pci 00000000000f0000-00000000000fffff
+>>     00000000fec00000-00000000fec00fff (prio 0, i/o): ioapic
+>>     00000000fed00000-00000000fed003ff (prio 0, i/o): hpet
+>>     00000000fee00000-00000000feefffff (prio 4096, i/o): apic-msi
+>>     0000000100000000-000000023fffffff (prio 0, ram): alias ram-above-4g @pc.ram 00000000c0000000-00000001ffffffff
+>>     0000000240000000-000000047fffffff (prio 0, i/o): device-memory
+>>       0000000240000000-000000027fffffff (prio 0, ram): mem0
+>>
+>>
+>> We requested 8G of boot memory, which is split between "<4G" memory and ">=4G" memory.
+>>
+>> We only place exactly 3G (0x0->0xbfffffff) under 4G, starting at address 0.
+> 
+> I can’t reconcile this with this code for q35:
+> 
+>     if (machine->ram_size >= 0xb0000000) {
+>          lowmem = 0x80000000; // max memory 0x8fffffff or 2.25 GiB
+>      } else {
+>          lowmem = 0xb0000000; // max memory 0xbfffffff or 3 GiB
+>      }
+> 
+> You assigned 8 Gib to ram which is > 0xb0000000 (2.75 Gib)
+> 
 
-On Thu, Sep 14, 2023 at 9:17=E2=80=AFAM Akihiko Odaki <akihiko.odaki@daynix=
-.com>
-wrote:
+QEMU defaults to the "pc" machine. If you add "-M q35" you get:
 
-> On 2023/09/13 23:18, Albert Esteve wrote:
-> >
-> >
-> > On Wed, Sep 13, 2023 at 3:43=E2=80=AFPM Akihiko Odaki <akihiko.odaki@da=
-ynix.com
-> > <mailto:akihiko.odaki@daynix.com>> wrote:
-> >
-> >     On 2023/09/13 21:58, Albert Esteve wrote:
-> >      >
-> >      >
-> >      > On Wed, Sep 13, 2023 at 2:22=E2=80=AFPM Akihiko Odaki
-> >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
-> >      > <mailto:akihiko.odaki@daynix.com
-> >     <mailto:akihiko.odaki@daynix.com>>> wrote:
-> >      >
-> >      >     On 2023/09/13 20:34, Albert Esteve wrote:
-> >      >      >
-> >      >      >
-> >      >      > On Wed, Sep 13, 2023 at 12:34=E2=80=AFPM Akihiko Odaki
-> >      >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
-> >     <mailto:akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>>
-> >      >      > <mailto:akihiko.odaki@daynix.com
-> >     <mailto:akihiko.odaki@daynix.com>
-> >      >     <mailto:akihiko.odaki@daynix.com
-> >     <mailto:akihiko.odaki@daynix.com>>>> wrote:
-> >      >      >
-> >      >      >     On 2023/09/13 16:55, Albert Esteve wrote:
-> >      >      >      > Hi Antonio,
-> >      >      >      >
-> >      >      >      > If I'm not mistaken, this patch is related with:
-> >      >      >      >
-> >      >      >
-> >      >
-> >     https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html
-> >     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.htm=
-l
-> >
-> >      >
-> >       <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>
-> >      >      >
-> >      >
-> >       <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>
-> >      >      >      >
-> >      >      >
-> >      >
-> >       <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>
-> >      >      >
-> >      >
-> >       <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>>
-> >      >      >      > IMHO, ideally, virtio-gpu and vhost-user-gpu both,
-> >     would
-> >      >     use the
-> >      >      >      > infrastructure from the patch I linked to store th=
-e
-> >      >      >      > virtio objects, so that they can be later shared
-> with
-> >      >     other devices.
-> >      >      >
-> >      >      >     I don't think such sharing is possible because the
-> >     resources are
-> >      >      >     identified by IDs that are local to the device. That
-> also
-> >      >     complicates
-> >      >      >     migration.
-> >      >      >
-> >      >      >     Regards,
-> >      >      >     Akihiko Odaki
-> >      >      >
-> >      >      > Hi Akihiko,
-> >      >      >
-> >      >      > As far as I understand, the feature to export
-> >     dma-bufs from the
-> >      >      > virtgpu was introduced as part of the virtio cross-device
-> >     sharing
-> >      >      > proposal [1]. Thus, it shall be posible. When
-> >     virtgpu ASSING_UUID,
-> >      >      > it exports and identifies the dmabuf resource, so that
-> >     when the
-> >      >     dmabuf gets
-> >      >      > shared inside the guest (e.g., with virtio-video), we can
-> >     use the
-> >      >     assigned
-> >      >      > UUID to find the dmabuf in the host (using the patch that=
- I
-> >      >     linked above),
-> >      >      > and import it.
-> >      >      >
-> >      >      > [1] - https://lwn.net/Articles/828988/
-> >     <https://lwn.net/Articles/828988/>
-> >      >     <https://lwn.net/Articles/828988/
-> >     <https://lwn.net/Articles/828988/>>
-> >     <https://lwn.net/Articles/828988/ <https://lwn.net/Articles/828988/=
->
-> >      >     <https://lwn.net/Articles/828988/
-> >     <https://lwn.net/Articles/828988/>>>
-> >      >
-> >      >     The problem is that virtio-gpu can have other kind of
-> >     resources like
-> >      >     pixman and OpenGL textures and manage them and DMA-BUFs with
-> >     unified
-> >      >     resource ID.
-> >      >
-> >      >
-> >      > I see.
-> >      >
-> >      >
-> >      >     So you cannot change:
-> >      >     g_hash_table_insert(g->resource_uuids,
-> >      >     GUINT_TO_POINTER(assign.resource_id), uuid);
-> >      >     by:
-> >      >     virtio_add_dmabuf(uuid, assign.resource_id);
-> >      >
-> >      >     assign.resource_id is not DMA-BUF file descriptor, and the
-> >     underlying
-> >      >     resource my not be DMA-BUF at first place.
-> >      >
-> >      >
-> >      > I didn't really look into the patch in-depth, so the code was
-> >     intended
-> >      > to give an idea of how the implementation would look like with
-> >      > the cross-device patch API. Indeed, it is not the resource_id,
-> >      > (I just took a brief look at the virtio specificacion 1.2), but
-> the
-> >      > underlying
-> >      > resource what we want to use here.
-> >      >
-> >      >
-> >      >     Also, since this lives in the common code that is not used
-> >     only by
-> >      >     virtio-gpu-gl but also virtio-gpu, which supports migration,
-> >     we also
-> >      >     need to take care of that. It is not a problem for DMA-BUF a=
-s
-> >      >     DMA-BUF is
-> >      >     not migratable anyway, but the situation is different in thi=
-s
-> >     case.
-> >      >
-> >      >     Implementing cross-device sharing is certainly a possibility=
-,
-> >     but that
-> >      >     requires more than dealing with DMA-BUFs.
-> >      >
-> >      >
-> >      > So, if I understood correctly, dmabufs are just a subset of the
-> >     resources
-> >      > that the gpu manages, or can assign UUIDs to. I am not sure why
-> >      > the virt gpu driver would want to send a ASSIGN_UUID for anythin=
-g
-> >      > that is not a dmabuf (are we sure it does?), but I am not super
-> >     familiarized
-> >      > with virtgpu to begin with.
-> >
-> >     In my understanding, an resource will be first created as OpenGL or
-> >     Vulkan textures and then exported as a DMA-BUF file descriptor. For
-> >     these resource types exporting/importing code is mandatory.
-> >
-> >     For pixman buffers (i.e., non-virgl device), I don't see a compelli=
-ng
-> >     reason to have cross-device sharing. It is possible to omit resourc=
-e
-> >     UUID feature from non-virgl device to avoid implementing complicate=
-d
-> >     migration.
-> >
-> >
-> > I see, thanks for the clarification.
-> > I would assume you could avoid the UUID feature for those resources, bu=
-t
-> > I will need to check the driver implementation. It is worth checking
-> > though, if
-> > that would simplify the implementation.
-> >
-> >
-> >      > But I see that internally, the GPU specs relate a UUID with a
-> >     resource_id,
-> >      > so we still need both tables:
-> >      > - one to relate UUID with resource_id to be able to locate the
-> >      > underlying resource
-> >      > - the table that holds the dmabuf with the UUID for cross-device
-> >     sharing
-> >      >
-> >      > With that in mind, sounds to me that the support for cross-devic=
-e
-> >      > sharing could
-> >      > be added on top of this patch, once
-> >      >
-> >     https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html
-> >     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.htm=
-l
-> >
-> >      >
-> >     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.htm=
-l
-> >     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.htm=
-l
-> >>
-> >      > lands.
-> >
-> >     That is possible, but I think it's better to implement cross-device
-> >     sharing at the same time introducing virtio-dmabuf.
-> >
-> >     The current design of virtio-dmabuf looks somewhat inconsistent; it=
-'s
-> >     named "dmabuf", but internally the UUIDs are stored into something
-> >     named
-> >     "resource_uuids" and it has SharedObjectType so it's more like a
-> >     generic
-> >     resource sharing mechanism. If you actually have an implementation =
-of
-> >     cross-device sharing using virtio-dmabuf, it will be clear what kin=
-d
-> of
-> >     feature is truly necessary.
-> >
-> >
-> > Yeah, the file was named as virtio-dmabuf following the kernel
-> > implementation. Also, because for the moment it only aims to share
-> > dmabufs. However, virtio specs leave the virtio object defintion vague
-> [1]
-> > (I guess purposely). It is up to the specific devices to define what an
-> > object
-> > means for them. So the implementation tries to follow that, and
-> > leave the contents of the table generic. The table can hold any kind of
-> > object,
-> > and the API exposes type-specific functions (for dmabufs, or others).
-> In the guest kernel, the name "virtio_dma_buf" represents the interface
-> between the *guest* kernel and *guest* user-space. It makes sense since
-> the cross-device resource sharing is managed by the userspace and
-> DMA-BUF is the only interface between them for this purpose.
->
-> The situation is different for QEMU; QEMU interacts with backends using
-> backend-specific interfaces (OpenGL/pixman) and virgl is capable to
-> export textures as DMA-BUF. DMA-BUF is not universal in this sense. As
-> such, we cannot just borrow the kernel-side naming but invent one.
->
-> It is not a gpu-specific feature. It is a generic cross-device sharing
-mechanism for virtio objects. In this case, virtio objects happen to be
-dmabufs in this first iteration. Hence, the name.
+address-space: memory
+   0000000000000000-ffffffffffffffff (prio 0, i/o): system
+     0000000000000000-000000007fffffff (prio 0, ram): alias ram-below-4g @pc.ram 0000000000000000-000000007fffffff
+[...]
+     0000000100000000-000000027fffffff (prio 0, ram): alias ram-above-4g @pc.ram 0000000080000000-00000001ffffffff
+     0000000280000000-00000004bfffffff (prio 0, i/o): device-memory
+       0000000280000000-00000002bfffffff (prio 0, ram): mem0
 
-virtio-gpu (and vhost-user-gpu) will use this feature only with virgl, that
-is
-fine, and transversal to the object-sharing mechanism. It allows
-to share dmabufs in the host following how they are shared in the guest.
-The virtgpu driver may call ASSIGN_UUID for other types of resources (not
-sure,
-but could be), but they will never be shared with other virtio devices.
-So they are not too relevant. Also, the shared objects table could
-potentially
-be accessed from any virtio device, not only virtio-gpu or virtio-video.
 
-What I am trying to say, is that the name focuses solely in its current
-usage,
-i.e., sharing dmabufs between virtio-gpu (as exporter), and virtio-video
-(as importer).
-If it grows to something more, imo it can be renamed later.
+> 
+>>
+>> We leave the remainder (1G) of the <4G addresses available for I/O devices (32bit PCI hole).
+>>
+>> So we end up with 5G (0x100000000->0x23fffffff) of memory starting exactly at address 4G.
+>>
+>> "maxram_size - ram_size"=8G is the maximum amount of memory you can hotplug. We use it to size the
+>> "device-memory" region:
+>>
+>> 0x47fffffff - 0x240000000+1 = 0x240000000
+>> -> 9 GiB
+>>
+>> We requested a to hotplug a maximum of "8 GiB", and sized the area slightly larger to allow for some flexibility
+>> when it comes to placing DIMMs in that "device-memory" area.
+> 
+> Right but here in this example you do not hot plug memory while the VM is running. We can hot plug 8G yes, but the memory may not physically exist yet (and may never exist). How can we use this math to provision device-memory when the memory may not exist physically?
 
-Regards,
-Albert
+We simply reserve a region in GPA space where we can coldplug and hotplug a
+predefined maximum amount of memory we can hotplug.
 
---00000000000084498506054d7be3
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+What do you think is wrong with that?
 
-<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
-ature"><div dir=3D"ltr"><br></div></div></div></div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Sep 14, 2023 at 9:17=
-=E2=80=AFAM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki@daynix.com">a=
-kihiko.odaki@daynix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
-quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
-204);padding-left:1ex">On 2023/09/13 23:18, Albert Esteve wrote:<br>
-&gt; <br>
-&gt; <br>
-&gt; On Wed, Sep 13, 2023 at 3:43=E2=80=AFPM Akihiko Odaki &lt;<a href=3D"m=
-ailto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com<=
-/a> <br>
-&gt; &lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blan=
-k">akihiko.odaki@daynix.com</a>&gt;&gt; wrote:<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0On 2023/09/13 21:58, Albert Esteve wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; On Wed, Sep 13, 2023 at 2:22=E2=80=AFPM Akihi=
-ko Odaki<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"mailto:akihiko.odaki@daynix.com" tar=
-get=3D"_blank">akihiko.odaki@daynix.com</a> &lt;mailto:<a href=3D"mailto:ak=
-ihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; &lt;mailto:<a href=3D"mailto:akihiko.odaki@da=
-ynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;&gt;&gt; wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0On 2023/09/13 20:34, Alber=
-t Esteve wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; On Wed, Sep 13, 2023=
- at 12:34=E2=80=AFPM Akihiko Odaki<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"mailto:akih=
-iko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a> &lt;ma=
-ilto:<a href=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.=
-odaki@daynix.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a> &lt;mailto:<a href=3D"ma=
-ilto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</=
-a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; &lt;mailto:<a href=
-=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix=
-.com</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mail=
-to:akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a>=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
-om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;&gt;&gt;&gt; wrote:<b=
-r>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0O=
-n 2023/09/13 16:55, Albert Esteve wrote:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; Hi Antonio,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; If I&#39;m not mistaken, this patch is related with:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0<a href=3D"https://lists.gnu.org/archive/html/qemu-=
-devel/2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank">https://l=
-ists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive/html/q=
-emu-devel/2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank">https=
-://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive=
-/html/qemu-devel/2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank=
-">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html</a> &=
-lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg0185=
-3.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archive/=
-html/qemu-devel/2023-09/msg01853.html</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive=
-/html/qemu-devel/2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank=
-">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html</a> &=
-lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg0185=
-3.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archive/=
-html/qemu-devel/2023-09/msg01853.html</a>&gt; &lt;<a href=3D"https://lists.=
-gnu.org/archive/html/qemu-devel/2023-09/msg01853.html" rel=3D"noreferrer" t=
-arget=3D"_blank">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg0=
-1853.html</a> &lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/=
-2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank">https://lists.g=
-nu.org/archive/html/qemu-devel/2023-09/msg01853.html</a>&gt;&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive=
-/html/qemu-devel/2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank=
-">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html</a> &=
-lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg0185=
-3.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archive/=
-html/qemu-devel/2023-09/msg01853.html</a>&gt; &lt;<a href=3D"https://lists.=
-gnu.org/archive/html/qemu-devel/2023-09/msg01853.html" rel=3D"noreferrer" t=
-arget=3D"_blank">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg0=
-1853.html</a> &lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/=
-2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank">https://lists.g=
-nu.org/archive/html/qemu-devel/2023-09/msg01853.html</a>&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive=
-/html/qemu-devel/2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank=
-">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html</a> &=
-lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg0185=
-3.html" rel=3D"noreferrer" target=3D"_blank">https://lists.gnu.org/archive/=
-html/qemu-devel/2023-09/msg01853.html</a>&gt; &lt;<a href=3D"https://lists.=
-gnu.org/archive/html/qemu-devel/2023-09/msg01853.html" rel=3D"noreferrer" t=
-arget=3D"_blank">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg0=
-1853.html</a> &lt;<a href=3D"https://lists.gnu.org/archive/html/qemu-devel/=
-2023-09/msg01853.html" rel=3D"noreferrer" target=3D"_blank">https://lists.g=
-nu.org/archive/html/qemu-devel/2023-09/msg01853.html</a>&gt;&gt;&gt;&gt;<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; IMHO, ideally, virtio-gpu and vhost-user-gpu both,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0would<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0use the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; infrastructure from the patch I linked to store the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 =
-&gt; virtio objects, so that they can be later shared with<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0other devices.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0I=
- don&#39;t think such sharing is possible because the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0resources are<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0i=
-dentified by IDs that are local to the device. That also<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0complicates<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0m=
-igration.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0R=
-egards,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0A=
-kihiko Odaki<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; Hi Akihiko,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; As far as I understa=
-nd, the feature to export<br>
-&gt;=C2=A0 =C2=A0 =C2=A0dma-bufs=C2=A0from the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; virtgpu was introduc=
-ed as part of the virtio cross-device<br>
-&gt;=C2=A0 =C2=A0 =C2=A0sharing<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; proposal [1]. Thus, =
-it shall be posible. When<br>
-&gt;=C2=A0 =C2=A0 =C2=A0virtgpu=C2=A0ASSING_UUID,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; it exports and ident=
-ifies the dmabuf resource, so that<br>
-&gt;=C2=A0 =C2=A0 =C2=A0when the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0dmabuf gets<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; shared inside the gu=
-est (e.g., with virtio-video), we can<br>
-&gt;=C2=A0 =C2=A0 =C2=A0use the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0assigned<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; UUID to find the dma=
-buf in the host (using the patch that I<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0linked above),<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; and import it.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0 &gt; [1] - <a href=3D"htt=
-ps://lwn.net/Articles/828988/" rel=3D"noreferrer" target=3D"_blank">https:/=
-/lwn.net/Articles/828988/</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lwn.net/Articles/828988/" re=
-l=3D"noreferrer" target=3D"_blank">https://lwn.net/Articles/828988/</a>&gt;=
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lwn=
-.net/Articles/828988/" rel=3D"noreferrer" target=3D"_blank">https://lwn.net=
-/Articles/828988/</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lwn.net/Articles/828988/" re=
-l=3D"noreferrer" target=3D"_blank">https://lwn.net/Articles/828988/</a>&gt;=
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lwn.net/Articles/828988/" re=
-l=3D"noreferrer" target=3D"_blank">https://lwn.net/Articles/828988/</a> &lt=
-;<a href=3D"https://lwn.net/Articles/828988/" rel=3D"noreferrer" target=3D"=
-_blank">https://lwn.net/Articles/828988/</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lwn=
-.net/Articles/828988/" rel=3D"noreferrer" target=3D"_blank">https://lwn.net=
-/Articles/828988/</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lwn.net/Articles/828988/" re=
-l=3D"noreferrer" target=3D"_blank">https://lwn.net/Articles/828988/</a>&gt;=
-&gt;&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0The problem is that virtio=
--gpu can have other kind of<br>
-&gt;=C2=A0 =C2=A0 =C2=A0resources like<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0pixman and OpenGL textures=
- and manage them and DMA-BUFs with<br>
-&gt;=C2=A0 =C2=A0 =C2=A0unified<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0resource ID.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; I see.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0So you cannot change:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0g_hash_table_insert(g-&gt;=
-resource_uuids,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0GUINT_TO_POINTER(assign.re=
-source_id), uuid);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0by:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0virtio_add_dmabuf(uuid, as=
-sign.resource_id);<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0assign.resource_id is not =
-DMA-BUF file descriptor, and the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0underlying<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0resource my not be DMA-BUF=
- at first place.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; I didn&#39;t really look into the patch in-de=
-pth, so the=C2=A0code was<br>
-&gt;=C2=A0 =C2=A0 =C2=A0intended<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; to give an idea of how the implementation wou=
-ld look like with<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; the cross-device patch API. Indeed, it is not=
- the resource_id,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; (I just took a brief look at the virtio speci=
-ficacion=C2=A01.2), but the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; underlying<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; resource what we want to use here.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0Also, since this lives in =
-the common code that is not used<br>
-&gt;=C2=A0 =C2=A0 =C2=A0only by<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0virtio-gpu-gl but also vir=
-tio-gpu, which supports migration,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0we also<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0need to take care of that.=
- It is not a problem for DMA-BUF as<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0DMA-BUF is<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0not migratable anyway, but=
- the situation is different in this<br>
-&gt;=C2=A0 =C2=A0 =C2=A0case.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0Implementing cross-device =
-sharing is certainly a possibility,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0but that<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;=C2=A0 =C2=A0 =C2=A0requires more than dealing=
- with DMA-BUFs.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; So, if I understood correctly, dmabufs=C2=A0a=
-re just a subset of the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0resources<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; that the gpu manages, or can assign UUIDs to.=
- I am not sure why<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; the virt gpu driver would want to send a ASSI=
-GN_UUID for anything<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; that is not a dmabuf (are we sure it does?), =
-but I am not super<br>
-&gt;=C2=A0 =C2=A0 =C2=A0familiarized<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; with virtgpu=C2=A0to begin with.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0In my understanding, an resource will be first crea=
-ted as OpenGL or<br>
-&gt;=C2=A0 =C2=A0 =C2=A0Vulkan textures and then exported as a DMA-BUF file=
- descriptor. For<br>
-&gt;=C2=A0 =C2=A0 =C2=A0these resource types exporting/importing code is ma=
-ndatory.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0For pixman buffers (i.e., non-virgl device), I don&=
-#39;t see a compelling<br>
-&gt;=C2=A0 =C2=A0 =C2=A0reason to have cross-device sharing. It is possible=
- to omit resource<br>
-&gt;=C2=A0 =C2=A0 =C2=A0UUID feature from non-virgl device to avoid impleme=
-nting complicated<br>
-&gt;=C2=A0 =C2=A0 =C2=A0migration.<br>
-&gt; <br>
-&gt; <br>
-&gt; I see, thanks for the clarification.<br>
-&gt; I would assume you could avoid the UUID feature for those resources, b=
-ut<br>
-&gt; I will need to check the driver implementation. It is worth checking <=
-br>
-&gt; though, if<br>
-&gt; that would simplify the implementation.<br>
-&gt; <br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; But I see that internally, the GPU specs rela=
-te a UUID with a<br>
-&gt;=C2=A0 =C2=A0 =C2=A0resource_id,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; so we still need both tables:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; - one to relate UUID with resource_id to be a=
-ble to locate the<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; underlying resource<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; - the table that holds the dmabuf with the UU=
-ID for cross-device<br>
-&gt;=C2=A0 =C2=A0 =C2=A0sharing<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; With that in mind, sounds to me that the supp=
-ort for cross-device<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; sharing could<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; be added on top of this patch, once<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0<a href=3D"https://lists.gnu.org/archive/html/qemu-=
-devel/2023-09/msg01850.html" rel=3D"noreferrer" target=3D"_blank">https://l=
-ists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive/html/q=
-emu-devel/2023-09/msg01850.html" rel=3D"noreferrer" target=3D"_blank">https=
-://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html</a>&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive/html/q=
-emu-devel/2023-09/msg01850.html" rel=3D"noreferrer" target=3D"_blank">https=
-://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html</a><br>
-&gt;=C2=A0 =C2=A0 =C2=A0&lt;<a href=3D"https://lists.gnu.org/archive/html/q=
-emu-devel/2023-09/msg01850.html" rel=3D"noreferrer" target=3D"_blank">https=
-://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html</a>&gt;&gt;<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 &gt; lands.<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0That is possible, but I think it&#39;s better to im=
-plement cross-device<br>
-&gt;=C2=A0 =C2=A0 =C2=A0sharing at the same time introducing virtio-dmabuf.=
-<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 =C2=A0The current design of virtio-dmabuf looks somewhat =
-inconsistent; it&#39;s<br>
-&gt;=C2=A0 =C2=A0 =C2=A0named &quot;dmabuf&quot;, but internally the UUIDs =
-are stored into something<br>
-&gt;=C2=A0 =C2=A0 =C2=A0named<br>
-&gt;=C2=A0 =C2=A0 =C2=A0&quot;resource_uuids&quot; and it has SharedObjectT=
-ype so it&#39;s more like a<br>
-&gt;=C2=A0 =C2=A0 =C2=A0generic<br>
-&gt;=C2=A0 =C2=A0 =C2=A0resource sharing mechanism. If you actually have an=
- implementation of<br>
-&gt;=C2=A0 =C2=A0 =C2=A0cross-device sharing using virtio-dmabuf, it will b=
-e clear what kind of<br>
-&gt;=C2=A0 =C2=A0 =C2=A0feature is truly necessary.<br>
-&gt; <br>
-&gt; <br>
-&gt; Yeah, the file was named as virtio-dmabuf following the kernel<br>
-&gt; implementation. Also, because for the moment it only aims to share<br>
-&gt; dmabufs. However, virtio specs leave the virtio object defintion=C2=A0=
-vague [1]<br>
-&gt; (I guess purposely). It is up to the specific devices to define what a=
-n <br>
-&gt; object<br>
-&gt; means for them. So the implementation tries to follow that, and<br>
-&gt; leave the contents of the table generic. The table can hold any kind o=
-f <br>
-&gt; object,<br>
-&gt; and the API exposes type-specific functions (for dmabufs,=C2=A0or othe=
-rs).<br>
-In the guest kernel, the name &quot;virtio_dma_buf&quot; represents the int=
-erface <br>
-between the *guest* kernel and *guest* user-space. It makes sense since <br=
->
-the cross-device resource sharing is managed by the userspace and <br>
-DMA-BUF is the only interface between them for this purpose.<br>
-<br>
-The situation is different for QEMU; QEMU interacts with backends using <br=
->
-backend-specific interfaces (OpenGL/pixman) and virgl is capable to <br>
-export textures as DMA-BUF. DMA-BUF is not universal in this sense. As <br>
-such, we cannot just borrow the kernel-side naming but invent one.<br>
-<br></blockquote><div>It is not a gpu-specific feature. It is a generic cro=
-ss-device sharing</div><div>mechanism for virtio objects. In this case, vir=
-tio objects happen to be</div><div>dmabufs in this first iteration. Hence, =
-the name.</div><div><br></div><div>virtio-gpu (and vhost-user-gpu) will use=
- this feature only with virgl, that is</div><div>fine, and transversal to t=
-he object-sharing mechanism. It allows</div><div>to share dmabufs in the ho=
-st following how they are shared in the guest.</div><div>The virtgpu=C2=A0d=
-river may call ASSIGN_UUID for other types of resources (not sure,</div><di=
-v>but could be), but they will never be shared with other virtio devices.</=
-div><div>So they are not too relevant. Also, the shared objects table could=
- potentially</div><div>be accessed from any virtio device, not only virtio-=
-gpu or virtio-video.</div><div><br></div><div>What I am trying to say, is t=
-hat the name focuses solely in its current usage,</div><div>i.e., sharing d=
-mabufs between virtio-gpu (as exporter), and virtio-video (as importer).</d=
-iv><div>If it grows to something more, imo it can=C2=A0be renamed later.</d=
-iv><div><br></div><div>Regards,</div><div>Albert</div></div></div>
+> 
+>>
+>> We place that area for memory devices after the RAM. So it starts after the 5G of ">=4G" boot memory.
+>>
+>>
+>> Long story short, based on the initial RAM size and the maximum RAM size, you
+>> can construct the layout above and exactly know
+>> a) How much memory is below 4G, starting at address 0 -> leaving 1G for the 32bit PCI hole
+>> b) How much memory is above 4G, starting at address 4g.
+>> c) Where the region for memory devices starts (aligned after b) ) and how big it is.
+>> d) Where the 64bit PCI hole is (after c) )
+>>
+>>> (b) Another question is, in pc_pci_hole64_start(), why are we adding this size to the start address?
+>>> } else if (pcmc->has_reserved_memory && (ms->ram_size < ms->maxram_size)) {
+>>> 	pc_get_device_memory_range(pcms, &hole64_start, &size);
+>>>          if (!pcmc->broken_reserved_end) {
+>>>              hole64_start += size;
+>>
+>> The 64bit PCI hole starts after "device-memory" above.
+>>
+>> Apparently, we have to take care of some layout issues before QEMU 2.5. You can assume that nowadays,
+>> "pcmc->broken_reserved_end" is never set. So the PCI64 hole is always after the device-memory region.
+>>
+>>> I think this is trying to put the hole after the device memory. But if the ram size is <=maxram_size then the hole is after the above_4G memory? Why?
+>>
+>> I didn't quit get what the concern is, can you elaborate?
+> 
+> Oh I meant the else part here and made a typo, the else implies ram size == maxram_size
+> 
+>    } else {
+>          hole64_start = pc_above_4g_end(pcms);
+>      }
+> 
+> So in this case, there is no device_memory region?!
 
---00000000000084498506054d7be3--
+Yes. In this case ms->ram_size == ms->maxram_size and you cannot cold/hotplug any memory devices.
+
+See how pc_memory_init() doesn't call machine_memory_devices_init() in that case.
+
+That's what the QEMU user asked for when *not* specifying maxmem (e.g., -m 4g).
+
+In order to cold/hotplug any memory devices, you have to tell QEMU ahead of time how much memory
+you are intending to provide using memory devices (DIMM, NVDIMM, virtio-pmem, virtio-mem).
+
+So when specifying, say -m 4g,maxmem=20g, we can have memory devices of a total of 16g (20 - 4).
+We use reserve a GPA space for device_memory that is at least 16g, into which we can either coldplug
+(QEMU cmdline) or hotplug (qmp/hmp) memory later.
+
+> Another thing I do not understand is, for 32 -bit,
+> above_4g_mem_start is 4GiB  and above_4g_mem_size = ram_size - lowmem.
+> So we are allocating “above-4G” ram above address space of the processor?!
+> 
+>>
+>>> (c) in your above change, what does long mode have anything to do with all of this?
+>>
+>> According to my understanding, 32bit (i386) doesn't have a 64bit hole. And 32bit vs.
+>> 64bit (i386 vs. x86_64) is decided based on LM, not on the address bits (as we learned, PSE36, and PAE).
+>>
+>> But really, I just did what x86_cpu_realizefn() does to decide 32bit vs. 64bit ;)
+>>
+>>     /* For 64bit systems think about the number of physical bits to present.
+>>      * ideally this should be the same as the host; anything other than matching
+>>      * the host can cause incorrect guest behaviour.
+>>      * QEMU used to pick the magic value of 40 bits that corresponds to
+>>      * consumer AMD devices but nothing else.
+>>      *
+>>      * Note that this code assumes features expansion has already been done
+>>      * (as it checks for CPUID_EXT2_LM), and also assumes that potential
+>>      * phys_bits adjustments to match the host have been already done in
+>>      * accel-specific code in cpu_exec_realizefn.
+>>      */
+>>     if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+>>     ...
+>>     } else {
+>>         /* For 32 bit systems don't use the user set value, but keep
+>>          * phys_bits consistent with what we tell the guest.
+>>          */
+> 
+> Ah I see. I missed this. But I still can’t understand why for 32 bit, pc_pci_hole64_start() would be the right address for max gpa?
+
+You want "end of device memory region" if there is one, or
+"end of RAM" is there is none.
+
+What pc_pci_hole64_start() does:
+
+/*
+  * The 64bit pci hole starts after "above 4G RAM" and
+  * potentially the space reserved for memory hotplug.
+  */
+
+There is the
+	ROUND_UP(hole64_start, 1 * GiB);
+in there that is not really required for the !hole64 case. It
+shouldn't matter much in practice I think (besides an aligned value
+showing up in the error message).
+
+We could factor out most of that calculation into a
+separate function, skipping that alignment to make that
+clearer.
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
