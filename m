@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD8A7A09E2
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9897A09DB
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:56:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgogI-0002G3-Jd; Thu, 14 Sep 2023 11:55:02 -0400
+	id 1qgofz-0001hn-Qr; Thu, 14 Sep 2023 11:54:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qgofw-0001XZ-J1
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:54:41 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qgoft-0001VA-A6
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:54:39 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qgofn-00088G-Rw
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:54:39 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-403004a96a4so12347275e9.3
+ id 1qgofl-00088P-VH
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:54:36 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-402d499580dso11976005e9.1
  for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 08:54:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694706867; x=1695311667; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694706868; x=1695311668; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ar/Na+5UA9tN2heidPJESlS3zwJBlN8svfE9CzG3edA=;
- b=grxQCo/kEbmBb2ICFf6himleEERQgukNB2NFqj8sqrbW/MSkZpGJW46umGXNeUdHBy
- 9KAMvcQenUJL0VibZT28+NJYym/RmFkikFt033IFy+mlC7kgXGq4mcFfNZZ2asiw9lDV
- i1JoKNKhkWaqCbSTe4bwXTIC/uuR8jCU5qNGaGzjyTckFCNuU1CKppLDhkgPA2ftwNRX
- UsqjcRwE/bqZH+Ay+/CAwUvYipK+jn4kJynTEvBY6hnttYGnHJDO1wTXRFtwHJhIYpsh
- gCc+nZ0ewOtKyYGzx68oSyWu/3ynmA5Q6TWXVHy7Xw051/PtmMfCOPcDiQQpZJrLQpVI
- w/Pw==
+ bh=Aq8NmlF/vcFodf5p9FXdk6/zlLfm5raaYFWHiGtXyA8=;
+ b=jCzCbeZtub8O++9prSZ3QgpCZ/PF/ajpHTGmuuKIR959ZzDGngVy3aQLyYRuED8Y0X
+ p910tFDcQm0b2yfIVNfKo2jj+bm/Y7fz/C5WnBtKnoVIZDqxreMPqLfAzzceZC7PY4uf
+ 1fyAXAFtWcyY2oOpWTQRk83ueP662Ah0DZo0p6ClfdRmaLZQh5GDxBfFkRT8ZxO2i4tS
+ LNJd41BLEToIf7/f+jB28yecxH23gGNlA/W03ObF8o9dMocBve4YiEgyX2bYFApqdEli
+ xNwAe7qwRU/CgrvYX3eqQKIrb+R8WZFjkzMFor/ItlElnbRGv3crwsrtItzUXN1ZmMq3
+ FPlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694706867; x=1695311667;
+ d=1e100.net; s=20230601; t=1694706868; x=1695311668;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ar/Na+5UA9tN2heidPJESlS3zwJBlN8svfE9CzG3edA=;
- b=MjCO0gKG2f7XxU9mmC1mbvK+jmnVhFPkreT1a83Izvg/dA2cArMEACBzPTy3hnKWCV
- N91iYtMtJ4yXIOWdjhZ0haOI7Zt7cFov59NzTBp9VkvZN8hdxOWPaSpFymV6i1rbNS87
- YmjuaGGTbdPrt1FPVUO0vBkKBSRJW65xTCPQePqFyNbpOyAl3KzdreLm9ulz2lK6ilBh
- rSH5mNxozAAHrv+atj9ODXJ4eetIKqDTxQo76uoK27+L6LaCu0O4zTGV3UPHX+qWiP9b
- DTCIRO4QOEXTQYYZReBbMURSWAbFTsXNsZarz4w45b38kxSP9wJ6cXktYu/VEA/mRMjc
- 98NQ==
-X-Gm-Message-State: AOJu0Yz8NdYCxshY0BJO20jggvqnzv+0lCZYjfgIK2Z89JDVCoxCTWF4
- +dNhkM4uZ61PtSD+Y96hTyQIrw==
-X-Google-Smtp-Source: AGHT+IE+xPbO7ZdSSK1P8Xqc7zL1S0cRKyTJdvsfVa+0sVGguWG01Kg07e+O1eZr0oQDOSu2duguBw==
-X-Received: by 2002:a7b:c846:0:b0:3fc:3e1:7105 with SMTP id
- c6-20020a7bc846000000b003fc03e17105mr4926867wml.24.1694706867558; 
+ bh=Aq8NmlF/vcFodf5p9FXdk6/zlLfm5raaYFWHiGtXyA8=;
+ b=mK2PDYhkbxsmdE0pm1IpsEqdSxGpkjyq2XsCsB43JHW9exBUW7WLsu1MHNNAUpJjeF
+ Gjx4eBnnjz5lbH3EmaDHX1A4Pj2/QJv54V0mdmq6688oY6/jjhkVTWPWkT9gWbwghy9l
+ A/Jfddee7r8aoa7Q0MbIqBpo9p0LrZ+FzjDhFrplJTxm4M0UIXwbCe4/+sVJuvLp0t8d
+ dc7BJDHFHk2UW5pUkZkw5zBRGEbac7C2GlA6vj2CevJhyIyqabo7NRKawSTEItckv6Ug
+ Rfd5Z9vivmiy/Uz4aPePMMrWNe5dQYfE8bBDmuB6W63j/BPSSqwv2CWWnQ01s+YrVb1j
+ RDpQ==
+X-Gm-Message-State: AOJu0YxRxmcQQ2HRyaAq6lHrO/9HuJREUy7t/LXe6PM9YzB3CY4o8Ybz
+ VELkfKPirp8+/ZTPEdtwfe0UIw==
+X-Google-Smtp-Source: AGHT+IEYSX/Ft/B0fQUXPozpfU4/99hj5m7eMOiwCkpTA8cQHn/mnVfi3Il/+7U3W8VvO4egSVyhkw==
+X-Received: by 2002:a05:600c:210f:b0:403:be16:baa with SMTP id
+ u15-20020a05600c210f00b00403be160baamr4972026wml.29.1694706867810; 
  Thu, 14 Sep 2023 08:54:27 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- u17-20020a05600c00d100b003fe0a0e03fcsm5180621wmm.12.2023.09.14.08.54.23
+ s23-20020a7bc397000000b00403bbe69629sm2299139wmj.31.2023.09.14.08.54.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 08:54:25 -0700 (PDT)
+ Thu, 14 Sep 2023 08:54:26 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 355A61FFC2;
+ by zen.linaroharston (Postfix) with ESMTP id 4F3A11FFC3;
  Thu, 14 Sep 2023 16:54:23 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -77,19 +77,18 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 7/9] gitlab: make Cirrus CI jobs gating
-Date: Thu, 14 Sep 2023 16:54:20 +0100
-Message-Id: <20230914155422.426639-8-alex.bennee@linaro.org>
+ Markus Armbruster <armbru@redhat.com>, Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH 8/9] tests/avocado: Fix console data loss
+Date: Thu, 14 Sep 2023 16:54:21 +0100
+Message-Id: <20230914155422.426639-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230914155422.426639-1-alex.bennee@linaro.org>
 References: <20230914155422.426639-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -112,35 +111,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel P. Berrangé <berrange@redhat.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-The Cirrus CI jobs have been non-gating for a while to let us build
-confidence in their reliability. Aside from periodic dependancy
-problems when FreeBSD Ports switches to be based on a new FreeBSD
-image version, the jobs have been reliable. It is thus worth making
-them gating to prevent build failures being missed during merges.
+Occasionally some avocado tests will fail waiting for console line
+despite the machine running correctly. Console data goes missing, as can
+be seen in the console log. This is due to _console_interaction calling
+makefile() on the console socket each time it is invoked, which must be
+losing old buffer contents when going out of scope.
 
-Signed-off-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230912184130.3056054-5-berrange@redhat.com>
+It is not enough to makefile() with buffered=0. That helps significantly
+but data loss is still possible. My guess is that readline() has a line
+buffer even when the file is in unbuffered mode, that can eat data.
+
+Fix this by providing a console file that persists for the life of the
+console.
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Message-Id: <20230912131340.405619-1-npiggin@gmail.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- .gitlab-ci.d/cirrus.yml | 1 -
- 1 file changed, 1 deletion(-)
+ python/qemu/machine/machine.py         | 19 +++++++++++++++++++
+ tests/avocado/avocado_qemu/__init__.py |  2 +-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 816d89cc2a..e7f1f83c2c 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -19,7 +19,6 @@
-   # as there's often a 5-10 minute delay before Cirrus CI
-   # actually starts the task
-   timeout: 80m
--  allow_failure: true
-   script:
-     - source .gitlab-ci.d/cirrus/$NAME.vars
-     - sed -e "s|[@]CI_REPOSITORY_URL@|$CI_REPOSITORY_URL|g"
+diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
+index c16a0b6fed..35d5a672db 100644
+--- a/python/qemu/machine/machine.py
++++ b/python/qemu/machine/machine.py
+@@ -191,6 +191,7 @@ def __init__(self,
+             self.sock_dir, f"{self._name}.con"
+         )
+         self._console_socket: Optional[socket.socket] = None
++        self._console_file: Optional[socket.SocketIO] = None
+         self._remove_files: List[str] = []
+         self._user_killed = False
+         self._quit_issued = False
+@@ -509,6 +510,11 @@ def _early_cleanup(self) -> None:
+         # If we keep the console socket open, we may deadlock waiting
+         # for QEMU to exit, while QEMU is waiting for the socket to
+         # become writable.
++        if self._console_file is not None:
++            LOG.debug("Closing console file")
++            self._console_file.close()
++            self._console_file = None
++
+         if self._console_socket is not None:
+             LOG.debug("Closing console socket")
+             self._console_socket.close()
+@@ -874,12 +880,25 @@ def console_socket(self) -> socket.socket:
+         Returns a socket connected to the console
+         """
+         if self._console_socket is None:
++            LOG.debug("Opening console socket")
+             self._console_socket = console_socket.ConsoleSocket(
+                 self._console_address,
+                 file=self._console_log_path,
+                 drain=self._drain_console)
+         return self._console_socket
+ 
++    @property
++    def console_file(self) -> socket.SocketIO:
++        """
++        Returns a file associated with the console socket
++        """
++        if self._console_file is None:
++            LOG.debug("Opening console file")
++            self._console_file = self.console_socket.makefile(mode='rb',
++                                                              buffering=0,
++                                                              encoding='utf-8')
++        return self._console_file
++
+     @property
+     def temp_dir(self) -> str:
+         """
+diff --git a/tests/avocado/avocado_qemu/__init__.py b/tests/avocado/avocado_qemu/__init__.py
+index 33090903f1..0172a359b7 100644
+--- a/tests/avocado/avocado_qemu/__init__.py
++++ b/tests/avocado/avocado_qemu/__init__.py
+@@ -137,7 +137,7 @@ def _console_interaction(test, success_message, failure_message,
+     assert not keep_sending or send_string
+     if vm is None:
+         vm = test.vm
+-    console = vm.console_socket.makefile(mode='rb', encoding='utf-8')
++    console = vm.console_file
+     console_logger = logging.getLogger('console')
+     while True:
+         if send_string:
 -- 
 2.39.2
 
