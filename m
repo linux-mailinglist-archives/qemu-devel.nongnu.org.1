@@ -2,76 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93D97A09EB
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B337A0A75
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 18:09:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgoiV-0000yE-4D; Thu, 14 Sep 2023 11:57:19 -0400
+	id 1qgosj-00085S-EV; Thu, 14 Sep 2023 12:07:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgoiT-0000on-18
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:57:17 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgoiQ-0000sQ-QX
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:57:16 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 27DBE2185C;
- Thu, 14 Sep 2023 15:57:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1694707032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgosi-00085K-5j
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:07:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgosg-0003Oz-Kg
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:07:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694707669;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7EfFdZEuonjM68bai/z8oQRcqO0fqJKYCMVwwzvWZhg=;
- b=qRxLtpERNQRWUU9nbdK8xH3YE/gi7vmchGLVYfyBk+GX7Pv2GXjv0yG7vUBZK5Hi6p951x
- bdSWyBYf+INPB1WyNRPKgtHGyWN7trphjVvmGy3UwoA9wtpQidi6BOCZ6Kjzn3ABEeTY4U
- QDO7VoZCENdvd/gnI6+BiADdnJuhygM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1694707032;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7EfFdZEuonjM68bai/z8oQRcqO0fqJKYCMVwwzvWZhg=;
- b=9yY6D7s1OQ1Hy9/fr2GJdR+mysPrxe9r5dTxuO6DPHuzpsOGRti6G64SCgM2XgwlFWKr+e
- DDcdAKUROYrtkOCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 96DD113580;
- Thu, 14 Sep 2023 15:57:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 5mV5FVctA2VzIwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 14 Sep 2023 15:57:11 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: QEMU migration-test CI intermittent failure
-In-Reply-To: <ZQMoUzRH1BZKs39g@x1n>
-References: <20230913192301.GA917052@fedora> <87r0n1kggo.fsf@suse.de>
- <ZQMfIO3oiqTsawtU@x1n> <87edj0kcz7.fsf@suse.de> <ZQMoUzRH1BZKs39g@x1n>
-Date: Thu, 14 Sep 2023 12:57:08 -0300
-Message-ID: <87bke4kasr.fsf@suse.de>
+ bh=Az8ZxPLm0rmkC1LTrowXFJYbH4Umkg0WKL0/WVd4X9A=;
+ b=GRtJMiKnSQAkEBbmgL3zUypCZ0QFtrVCd973/X7i4Q1kk1Oz3ApHqERkvOzqc5DTlUzAho
+ nJXIXTDLuksX/58Vt2MAhk5mafv5a9mB4RTnufjX4A7N81jWGxz/2U/dHHiLEz9JP0rlRc
+ MwD2nqDyOUB2XQbPc9N42lHNyqEcBKU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-312-hYDmuHuhNDe2qIzP3qdXIw-1; Thu, 14 Sep 2023 12:07:47 -0400
+X-MC-Unique: hYDmuHuhNDe2qIzP3qdXIw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-31c5cc3b512so754404f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 09:07:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694707666; x=1695312466;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Az8ZxPLm0rmkC1LTrowXFJYbH4Umkg0WKL0/WVd4X9A=;
+ b=lhjJxODA19CydwXq3Tss351vhsoNzWDFSTA5JSYYaNH+WDMUlX1UYR/VaCPIMJLXIa
+ sqfWr30gfxb1u375kOh52BjC4hcfbURxaVVe9jhh+LsHGW0hKEFejFIrji9aVP4HmVkE
+ uglWRyk4Awe62c/OPjmaDtriWjEp5/Y99hWMv0RafkyMp+pUhtCsyZ7XA0+dMcN+PifE
+ 3Z/OS02tkmb4i/YTYZpSKGgcxyl4nrJpsWqo9rIqC/JM6kC5oaHGoiT+1w58nys7KoLu
+ 2IZSXqlsHQwn2BfcxmWf9Tg+Tk5+/BYduiNMTF8mApYiCFL4/NZflntdy68em3A5kNIE
+ xGAg==
+X-Gm-Message-State: AOJu0YzgJH1XJID35e3FDL3phD2RkRSHZNqBE6TsGDdFRHgNa9yemHkW
+ yvV2qVlFZ3WpP4lvdgcA8y/tWhVZx7tjLz6pxJTvPs8ib/fQlXLpiAvGcIsbcNlMtH424iiJ4HP
+ 7c0cBSu5mRK/M8AU=
+X-Received: by 2002:a5d:680c:0:b0:31a:ed75:75d9 with SMTP id
+ w12-20020a5d680c000000b0031aed7575d9mr4997327wru.16.1694707666653; 
+ Thu, 14 Sep 2023 09:07:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFYbF2aVsB9xQ/6LrTpbd6U2Rn7OeNJNcHO6I7qE59fuCj1nHQkyaxyjnA+VagttQUGbuwPYQ==
+X-Received: by 2002:a5d:680c:0:b0:31a:ed75:75d9 with SMTP id
+ w12-20020a5d680c000000b0031aed7575d9mr4997301wru.16.1694707666310; 
+ Thu, 14 Sep 2023 09:07:46 -0700 (PDT)
+Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de.
+ [109.43.179.28]) by smtp.gmail.com with ESMTPSA id
+ r4-20020adfdc84000000b0031753073abcsm2117881wrj.36.2023.09.14.09.07.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Sep 2023 09:07:45 -0700 (PDT)
+Message-ID: <9b8cad7b-8daf-caf5-2c4b-b465abee191f@redhat.com>
+Date: Thu, 14 Sep 2023 18:07:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 2/9] gitlab: fix typo/spelling in comments
+Content-Language: en-US
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Joel Stanley <joel@jms.id.au>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-arm@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, John Snow <jsnow@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230914155422.426639-1-alex.bennee@linaro.org>
+ <20230914155422.426639-3-alex.bennee@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230914155422.426639-3-alex.bennee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,102 +114,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 14/09/2023 17.54, Alex Bennée wrote:
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>   .gitlab-ci.d/base.yml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
+> index 188a770799..ef173a34e6 100644
+> --- a/.gitlab-ci.d/base.yml
+> +++ b/.gitlab-ci.d/base.yml
+> @@ -68,7 +68,7 @@ variables:
+>   
+>       #############################################################
+>       # Stage 2: fine tune execution of jobs in specific scenarios
+> -    # where the catch all logic is inapprorpaite
+> +    # where the catch all logic is inappropriate
+>       #############################################################
+>   
+>       # Optional jobs should not be run unless manually triggered
 
-> On Thu, Sep 14, 2023 at 12:10:04PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->>=20
->> > On Wed, Sep 13, 2023 at 04:42:31PM -0300, Fabiano Rosas wrote:
->> >> Stefan Hajnoczi <stefanha@redhat.com> writes:
->> >>=20
->> >> > Hi,
->> >> > The following intermittent failure occurred in the CI and I have fi=
-led
->> >> > an Issue for it:
->> >> > https://gitlab.com/qemu-project/qemu/-/issues/1886
->> >> >
->> >> > Output:
->> >> >
->> >> >   >>> QTEST_QEMU_IMG=3D./qemu-img MALLOC_PERTURB_=3D116 QTEST_QEMU_=
-STORAGE_DAEMON_BINARY=3D./storage-daemon/qemu-storage-daemon G_TEST_DBUS_DA=
-EMON=3D/builds/qemu-project/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_BI=
-NARY=3D./qemu-system-x86_64 /builds/qemu-project/qemu/build/tests/qtest/mig=
-ration-test --tap -k
->> >> >   =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95
->> >> >   stderr:
->> >> >   qemu-system-x86_64: Unable to read from socket: Connection reset =
-by peer
->> >> >   Memory content inconsistency at 5b43000 first_byte =3D bd last_by=
-te =3D bc current =3D 4f hit_edge =3D 1
->> >> >   **
->> >> >   ERROR:../tests/qtest/migration-test.c:300:check_guests_ram: asser=
-tion failed: (bad =3D=3D 0)
->> >> >   (test program exited with status code -6)
->> >> >
->> >> > You can find the full output here:
->> >> > https://gitlab.com/qemu-project/qemu/-/jobs/5080200417
->> >>=20
->> >> This is the postcopy return path issue that I'm addressing here:
->> >>=20
->> >> https://lore.kernel.org/r/20230911171320.24372-1-farosas@suse.de
->> >> Subject: [PATCH v6 00/10] Fix segfault on migration return path
->> >> Message-ID: <20230911171320.24372-1-farosas@suse.de>
->> >
->> > Hmm I just noticed one thing, that Stefan's failure is a ram check iss=
-ue
->> > only, which means qemu won't crash?
->> >
->>=20
->> The source could have crashed and left the migration at an inconsistent
->> state and then the destination saw corrupted memory?
->>=20
->> > Fabiano, are you sure it's the same issue on your return-path fix?
->> >
->>=20
->> I've been running the preempt tests on my branch for thousands of
->> iterations and didn't see any other errors. Since there's no code going
->> into the migration tree recently I assume it's the same error.
->>=20
->> I run the tests with GDB attached to QEMU, so I'll always see a crash
->> before any memory corruption.
->
-> Okay, maybe that stops you from seeing the above check_guests_ram() error?
-> Worth checking whether it fails differently always if you just don't atta=
-ch
-> gdb to it; I had a feeling that it'll always fail in the other way (I thi=
-nk
-> migration-test will say something like "qemu killed" etc. in most cases),
-> further to identify the issues.
->
->>=20
->> > I'm also trying to reproduce either of them with some loads.  I think =
-I hit
->> > some but it's very hard to reproduce solidly.
->>=20
->> Well, if you find anything else let me know and we'll fix it.
->
-> I think Stefan's issue is the one I triggered once, but only once; I did
-> see check_guests_ram() lines.
->
-> I ran concurrently 10 migration-tests (on 8 cores; just to make scheduler
-> start to really work), each looping over preempt/plain for 500 times and
-> hit nothing..  I'm trying again with a larger host with more instances, so
-> far I've run 200 loops over 40 instances running together, I hit
-> nothing.. but I'm keeping trying.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-I managed to reproduce it. It's not the return path error. In hindsight
-that's obvious because that error happens in the 'recovery' test and this
-one in the 'plain' one. Sorry about the noise.
-
-This one reproduced with just 4 iterations of preempt/plain. I'll
-investigate.
 
