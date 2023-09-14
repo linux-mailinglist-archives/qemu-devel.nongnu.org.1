@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119657A0D9B
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132747A0D9C
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:58:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgrWu-0007q3-RI; Thu, 14 Sep 2023 14:57:32 -0400
+	id 1qgrX1-0007qs-ES; Thu, 14 Sep 2023 14:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrWs-0007pU-Hq
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:30 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrWz-0007qX-Pt
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:37 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrWr-0007SW-1I
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:30 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-52bd9ddb741so1638682a12.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:57:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrWx-0007Y7-3R
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:36 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-52889bc61b6so1546038a12.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:57:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694717847; x=1695322647; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694717853; x=1695322653; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WvL3ArqDJTyQMa7Dhgweczo+eomNigdqJoFYXgKa+wU=;
- b=t0Mi3kXu6kKqN5Eo5ESu/k0OyC2spq01VIl2JNbcQNOphJuzBwbuMr0AoRhxU8OB0J
- KPQEYbauPzIEw3sD+qgJcO+z/NKQ4bx9bYOxd25s7nmDMA1UoFz3bdqYIfK3GS+wrHip
- ySryFQ1TIppkOL0bKAeaWOqIV7YrGOKGi0/ZtaLy/hRz35svLUO4AL0UkMaH34gCQy3W
- eTCvkCeWjLdk0rhwEytgZr9bNvXFwo1pmT0kGgOk9ebs3ofEoAXoMYIoaOVZa5V3ixS3
- uY59TNQ3mSbkInXPz8U6UKTKYnV0tYIkeh0NLlgLZF9CzHak5P/TUKCAgDPosdPvQMMa
- OKgg==
+ bh=zPNAVtdj61Dd1NsUTVG5W7vZpG0MSnrlxikP0a9bkyc=;
+ b=hwf9dN1XiBHf4iQ7HLqcVWH/kHVlli89AYCXEfqIFJjBWlD8MIES8nF/fJ+zXIWIBA
+ OYoWk2gwTMFiZh1GL58JdlGub6CKL1HbSdcmggDwuJt2Ti/PbEMlzXsKgJlhAHjLKy3q
+ NUGyzwg3sup6qGB4PKBrrLI6XcLhABkkNkiKtSBlD+SDyWWpLNUpFrNYRpC7II1Qrb9m
+ MlzcYKZ1z3uc/mQYs8hHsSdE9try4XqYzOu25IStELkgqEblBz/3OluInqauc8Eow5Y1
+ R7zVNSCSBKE7VBu9/CTBlUN5cNxkkCuyy0HEnbCl5dvq0Yiwf8HWfoRYV6NibWQF5iTg
+ w5pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694717847; x=1695322647;
+ d=1e100.net; s=20230601; t=1694717853; x=1695322653;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WvL3ArqDJTyQMa7Dhgweczo+eomNigdqJoFYXgKa+wU=;
- b=SA/af6iuXl3ih1Jc3/yKUZBAlQCTqzw5ue6F9TTbbdiOnEiTprtKshy+NG3MKCWa7h
- ohx4Kav19dToW9DjWkWrjl+bTisyJIPUk3ECxQVSivcBYkUT4l/7B0a45xzFEcjwsICq
- GyP17/H3/JKQ8OoSVTkDzyFmjStPjRsCVFYzpNBoQ+APvh8sE/7IEfh2Wz6rKJCj7Kvc
- LZCQiQefVzgzEQukBQ1vZe2elu0rxxNFdjvc3UVz/owVDFVBTQJtghBimg9czRVM70vJ
- DlHemTPECAQp2ytKVHdQd/hPqEC05RyWdpXYMAW5Oy29oAiDSd/CtPWvObSnWKL0pBSW
- 4pVg==
-X-Gm-Message-State: AOJu0YxU1Q/iBcJ+1DbIJGf2wJUH4c8ffwl7TpxrkxEnFXJjZFTzsLi5
- roEGv+wkDa+aAn9ltByXW/O69NJnrBQgjjsiW54=
-X-Google-Smtp-Source: AGHT+IHDYAEa5TZcbZhYbmcLS0ut7IVlOIzUfaZHdYGWcp9X52P2PwS+2Kzs2P1w9NaBSDHLB/o1eg==
-X-Received: by 2002:aa7:c147:0:b0:523:d51:bb2 with SMTP id
- r7-20020aa7c147000000b005230d510bb2mr5420515edp.15.1694717847409; 
- Thu, 14 Sep 2023 11:57:27 -0700 (PDT)
+ bh=zPNAVtdj61Dd1NsUTVG5W7vZpG0MSnrlxikP0a9bkyc=;
+ b=DZctj64ikthrC1GQZ9cGb/yUZlgnvnfev0v0OfeiNIuZ+eOygQ93u48zfvhFAwlnJh
+ x4IC+FOSPEhzx89CzVWGV4n0z56E4KFOaMb526l8qUUfTMNddtloe7W/GQdYcjEMpiGy
+ g3Cut0hbX3xsDSBfBreaD779SAkY3TpLJXPb6BNfbkQqkDHTgdcabARnnKTkZWH5WD9n
+ ZP7dRY5OTdCAVKwMN33UCaENQ7vES0/AsOB4QzEJq9xIWkp/zOjrOYdLpzPZeREGHQVC
+ ViphhA623F6XxIv7lXZ+2pXrIRG2m8egDrUwbbYB2ET/a0++t1Yj5oc1ODCPuMRUyMKz
+ rijg==
+X-Gm-Message-State: AOJu0YzcKSk3+lKQ0OfkP1agqlqLe48PjU4jLSeWVGmhdQ8PQo2+X6hI
+ f7lYx9eBoEMmIYQ5dfe+B0dey7LwDRtbxPR6SS0=
+X-Google-Smtp-Source: AGHT+IEBHI2bnWjF/vO/vnRzYHHXrViIg1z0542VFhKQTp34itEBvMtALuwL4XqQAQX28yghg5wLRA==
+X-Received: by 2002:a05:6402:517b:b0:51d:d4c3:6858 with SMTP id
+ d27-20020a056402517b00b0051dd4c36858mr5669878ede.12.1694717853497; 
+ Thu, 14 Sep 2023 11:57:33 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
  by smtp.gmail.com with ESMTPSA id
- c11-20020a056402120b00b005232c051605sm1259921edw.19.2023.09.14.11.57.25
+ d15-20020a056402078f00b0052f8c67a399sm1273708edy.37.2023.09.14.11.57.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Sep 2023 11:57:27 -0700 (PDT)
+ Thu, 14 Sep 2023 11:57:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -63,17 +63,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Anton Johansson <anjo@rev.ng>, Riku Voipio <riku.voipio@iki.fi>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 01/11] exec: Make EXCP_FOO definitions target agnostic
-Date: Thu, 14 Sep 2023 20:57:07 +0200
-Message-ID: <20230914185718.76241-2-philmd@linaro.org>
+Subject: [PATCH 02/11] exec: Move cpu_loop_foo() target agnostic functions to
+ 'cpu-common.h'
+Date: Thu, 14 Sep 2023 20:57:08 +0200
+Message-ID: <20230914185718.76241-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230914185718.76241-1-philmd@linaro.org>
 References: <20230914185718.76241-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,51 +97,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The EXCP_* definitions don't need to be target specific,
-move them to "exec/cpu-common.h".
+While these functions are not TCG specific, they are not target
+specific. Move them to "exec/cpu-common.h" so their callers don't
+have to be tainted as target specific.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/cpu-all.h    | 7 -------
- include/exec/cpu-common.h | 7 +++++++
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ include/exec/cpu-common.h | 32 ++++++++++++++++++++++++++++++++
+ include/exec/exec-all.h   | 30 ------------------------------
+ 2 files changed, 32 insertions(+), 30 deletions(-)
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 3b1cec390b..71efc2d404 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -26,13 +26,6 @@
- #include "hw/core/cpu.h"
- #include "qemu/rcu.h"
- 
--#define EXCP_INTERRUPT  0x10000 /* async interruption */
--#define EXCP_HLT        0x10001 /* hlt instruction reached */
--#define EXCP_DEBUG      0x10002 /* cpu stopped after a breakpoint or singlestep */
--#define EXCP_HALTED     0x10003 /* cpu is halted (waiting for external event) */
--#define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
--#define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
--
- /* some important defines:
-  *
-  * HOST_BIG_ENDIAN : whether the host cpu is big endian and
 diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 41788c0bdd..360b8298a4 100644
+index 360b8298a4..605b160a7e 100644
 --- a/include/exec/cpu-common.h
 +++ b/include/exec/cpu-common.h
-@@ -7,6 +7,13 @@
- #include "exec/hwaddr.h"
- #endif
+@@ -173,4 +173,36 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+ /* vl.c */
+ void list_cpus(void);
  
-+#define EXCP_INTERRUPT  0x10000 /* async interruption */
-+#define EXCP_HLT        0x10001 /* hlt instruction reached */
-+#define EXCP_DEBUG      0x10002 /* cpu stopped after a breakpoint or singlestep */
-+#define EXCP_HALTED     0x10003 /* cpu is halted (waiting for external event) */
-+#define EXCP_YIELD      0x10004 /* cpu wants to yield timeslice to another */
-+#define EXCP_ATOMIC     0x10005 /* stop-the-world and emulate atomic */
++#ifdef CONFIG_TCG
++/**
++ * cpu_unwind_state_data:
++ * @cpu: the cpu context
++ * @host_pc: the host pc within the translation
++ * @data: output data
++ *
++ * Attempt to load the the unwind state for a host pc occurring in
++ * translated code.  If @host_pc is not in translated code, the
++ * function returns false; otherwise @data is loaded.
++ * This is the same unwind info as given to restore_state_to_opc.
++ */
++bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
 +
++/**
++ * cpu_restore_state:
++ * @cpu: the cpu context
++ * @host_pc: the host pc within the translation
++ * @return: true if state was restored, false otherwise
++ *
++ * Attempt to restore the state for a fault occurring in translated
++ * code. If @host_pc is not in translated code no state is
++ * restored and the function returns false.
++ */
++bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc);
++
++G_NORETURN void cpu_loop_exit_noexc(CPUState *cpu);
++G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
++#endif /* CONFIG_TCG */
++G_NORETURN void cpu_loop_exit(CPUState *cpu);
++G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
++
+ #endif /* CPU_COMMON_H */
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 2e4d337805..ee90ef122b 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -27,36 +27,6 @@
+ #include "exec/translation-block.h"
+ #include "qemu/clang-tsa.h"
+ 
+-/**
+- * cpu_unwind_state_data:
+- * @cpu: the cpu context
+- * @host_pc: the host pc within the translation
+- * @data: output data
+- *
+- * Attempt to load the the unwind state for a host pc occurring in
+- * translated code.  If @host_pc is not in translated code, the
+- * function returns false; otherwise @data is loaded.
+- * This is the same unwind info as given to restore_state_to_opc.
+- */
+-bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
+-
+-/**
+- * cpu_restore_state:
+- * @cpu: the cpu context
+- * @host_pc: the host pc within the translation
+- * @return: true if state was restored, false otherwise
+- *
+- * Attempt to restore the state for a fault occurring in translated
+- * code. If @host_pc is not in translated code no state is
+- * restored and the function returns false.
+- */
+-bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc);
+-
+-G_NORETURN void cpu_loop_exit_noexc(CPUState *cpu);
+-G_NORETURN void cpu_loop_exit(CPUState *cpu);
+-G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
+-G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
+-
  /**
-  * vaddr:
-  * Type wide enough to contain any #target_ulong virtual address.
+  * cpu_loop_exit_requested:
+  * @cpu: The CPU state to be tested
 -- 
 2.41.0
 
