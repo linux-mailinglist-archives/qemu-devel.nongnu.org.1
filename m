@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B677A0D99
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2F27A0DA0
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:59:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgrXD-0007sg-Mf; Thu, 14 Sep 2023 14:57:51 -0400
+	id 1qgrXK-0007tr-3f; Thu, 14 Sep 2023 14:57:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrXC-0007sP-Dl
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:50 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrXH-0007tO-8r
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:55 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrXA-0007d3-Qk
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:50 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2bcb89b476bso21877711fa.1
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:57:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgrXF-0007eB-OF
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 14:57:55 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-31fa666000dso1164438f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 11:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694717866; x=1695322666; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694717872; x=1695322672; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Dh8+LaQRQPmPlmPUdoCBAfz86Ho/nQrcFJbdDxanoB0=;
- b=C64I2qwSafRk4RtkOmEWuhwMN+vVjU56ZuW2XVVhEOLWcZFTMJgJXSbb/e4A66trow
- gQ3Uz1Tmk5qS9eogtd0YNfBz5gkJSLbV53skSeW2EPW/tpect0vS17N5Nm8Ff2F8sEnP
- HWPIRGf8WjNu/BVvIlPeSGqZm+nkPUGvaKSwSunDsR8DgYoQFEzOOnZSH1OO9zAPlWhY
- xk2xDoKLGNekgWfOQB5YkW201/KqnwVpbKWlDQMoFvGam+I8Qp87bcCCSMAuR1Y+VxJ/
- jHpbA2ox0qz1dwOwegfiob8qAoUZKVoCT+QzhILnqIPXKSzzdnF+NNkZD/TmBFHV3Zok
- ex5w==
+ bh=DMn38YaRL7n1ZrYU6enGHYkM4IPLYAQFbb/wgKNFsZs=;
+ b=Ngm65eBnmiHgPbVZqDaNQ9i1iuI5/FqXHvwYxFDoEc7G+xOHfpQkgTf3vhw3dmNgIp
+ hZT7ezioSFeEUgap7GxvWkvEGBYmFkCPOzVT9s6Q+1uFlhTzSUIuDEDJ+hNmNj/ZOutf
+ LGj83M4euoVh1/nJYKwXOlKEm5toqc0Ouww+mZVy597v9zeYgoQKuIHdvDu+yGuwNI9h
+ kFwpCnl4z2Zu2uNaXl4++Z1OQAe3eT1lT3MqHBL0OXgepXnEAi3Tq3IfDFR/j4CLv5XG
+ j9jNR0lSA7wyRY9gfT9HwaJbCVyaRoNFDowzcVCT5QilQa+2BP1U/zfYvdm4NIGEUo2S
+ j5YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694717866; x=1695322666;
+ d=1e100.net; s=20230601; t=1694717872; x=1695322672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Dh8+LaQRQPmPlmPUdoCBAfz86Ho/nQrcFJbdDxanoB0=;
- b=D5A27cseDScVqaZZF/JMMvXjy7HXj7W/YU799S5+IrVFtku8EKL+TMN44XfsRKMpde
- Yrl1yfhEsQ3p3LRnf9HqhdnR+s0EYg/jDj1bXWKeccYz83YIMHQWAc813K2FdIV98mEE
- BkdnKlr2QohlRa85pz3cd2wdwTKdQRQqRCsCB/t6Eb8WLMavMwvj37Z4ROS57LUydFD4
- 8JWx4AcXEJHcFPbJvPPjER74nW9pHiXR512jobJBk+Gh5lzPwce8rm+TxyCKMPfKVsL3
- UASIi/TCGBtSNEJ9nRgoyY9/a1CPYjfZwNJnPDwEWxMZol4/pfmPcmXTBObNcrsP+2l+
- Kwcw==
-X-Gm-Message-State: AOJu0YzHTnFpZdzfvkhMebPdUvQux5Hc97Tr+SMT9Ao0dMcWdKvKpCpz
- lSn4W1BNOtXACOHu6pE51CW4CQ7CFrYrGTcNhlE=
-X-Google-Smtp-Source: AGHT+IENqwwpP5sU+cDZK2nYF0CKO0oQIMhho0iZB262wD1FW0LHcCWWNmzAHRHWV7kk7+XA+S7SFQ==
-X-Received: by 2002:a2e:990f:0:b0:2b9:412a:111d with SMTP id
- v15-20020a2e990f000000b002b9412a111dmr6442567lji.42.1694717865804; 
- Thu, 14 Sep 2023 11:57:45 -0700 (PDT)
+ bh=DMn38YaRL7n1ZrYU6enGHYkM4IPLYAQFbb/wgKNFsZs=;
+ b=WM/KxlXk5fvZk+QEEI6FB74Cn9TG0N63d1Zr8EbCj8ztGFcEzV4duUkvyY401GGm4E
+ 4x6mv6/NkA20SjUrVMqWq5CpJD5Ut3AEXLwflFiZClXXb+6aTOJkN/TkqvcDEnAT/8n3
+ Xp2acuLP3hnb/13p5oThskAI7rfgkWx8zIHD0ohzefxTCXIyRwx6JQhprPNyaD5IWAW1
+ MZmxOUCjixme2gaNkpoPyDyduOZvv4Gn9p9WN8lK1uevOOr/3vTuCUBjRnBydmNsJLMS
+ CJfX3aaw/Phirzwq1uVlqT64nOMKl1OEddupDckgPf6ArJc7OqaVdWplKsNin5jAjkVu
+ BBrg==
+X-Gm-Message-State: AOJu0YxiX2vNJsOI7H8LZ1f4cddrqjTqO2fO0gaQ1yk/dRh0xfxziCW/
+ TMSOmlR+t1qBiDR/RL1W1qDe/3sBH8sLvcCVbrk=
+X-Google-Smtp-Source: AGHT+IGTT96e/Ayp6To+jfGLrVaLcHYvpRhziH0s7AkzerW8QC3la5axOhrxs7z1xe44B5VI9Z8HOA==
+X-Received: by 2002:a5d:67c5:0:b0:319:775f:d553 with SMTP id
+ n5-20020a5d67c5000000b00319775fd553mr5521834wrw.9.1694717872003; 
+ Thu, 14 Sep 2023 11:57:52 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
  by smtp.gmail.com with ESMTPSA id
- z18-20020a1709067e5200b0099d798a6bb5sm1358420ejr.67.2023.09.14.11.57.44
+ p13-20020a056402074d00b005224d960e66sm1243411edy.96.2023.09.14.11.57.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Sep 2023 11:57:45 -0700 (PDT)
+ Thu, 14 Sep 2023 11:57:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -63,17 +63,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Anton Johansson <anjo@rev.ng>, Riku Voipio <riku.voipio@iki.fi>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/11] accel: Make accel-blocker.o target agnostic
-Date: Thu, 14 Sep 2023 20:57:10 +0200
-Message-ID: <20230914185718.76241-5-philmd@linaro.org>
+Subject: [PATCH 05/11] accel: Rename accel-common.c -> accel-target.c
+Date: Thu, 14 Sep 2023 20:57:11 +0200
+Message-ID: <20230914185718.76241-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230914185718.76241-1-philmd@linaro.org>
 References: <20230914185718.76241-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,25 +96,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-accel-blocker.c is not target specific, move it to system_ss[].
+We use the '-common.c' suffix for target agnostic units.
+This file is target specific, rename it using the '-target'
+suffix.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/{accel-common.c => accel-target.c} | 0
+ accel/meson.build                        | 2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename accel/{accel-common.c => accel-target.c} (100%)
 
+diff --git a/accel/accel-common.c b/accel/accel-target.c
+similarity index 100%
+rename from accel/accel-common.c
+rename to accel/accel-target.c
 diff --git a/accel/meson.build b/accel/meson.build
-index 638a9a03ba..76f3cbc530 100644
+index 76f3cbc530..fda3157a6e 100644
 --- a/accel/meson.build
 +++ b/accel/meson.build
-@@ -1,5 +1,5 @@
--specific_ss.add(files('accel-common.c', 'accel-blocker.c'))
--system_ss.add(files('accel-softmmu.c'))
-+specific_ss.add(files('accel-common.c'))
-+system_ss.add(files('accel-softmmu.c', 'accel-blocker.c'))
+@@ -1,4 +1,4 @@
+-specific_ss.add(files('accel-common.c'))
++specific_ss.add(files('accel-target.c'))
+ system_ss.add(files('accel-softmmu.c', 'accel-blocker.c'))
  user_ss.add(files('accel-user.c'))
  
- subdir('tcg')
 -- 
 2.41.0
 
