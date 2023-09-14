@@ -2,107 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588FC79FACE
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 07:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 235BE79F972
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 06:12:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qger0-0001kY-Ku; Thu, 14 Sep 2023 01:25:26 -0400
+	id 1qgdgp-0005a9-VH; Thu, 14 Sep 2023 00:10:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ken.Xue@amd.com>) id 1qgbIE-0002T1-LR
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 21:37:18 -0400
-Received: from mail-dm6nam10on2049.outbound.protection.outlook.com
- ([40.107.93.49] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ken.Xue@amd.com>) id 1qgbIB-0000t2-TX
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 21:37:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZCP+t9BR0KPprzU1Ru1Q7/ulDmNf5IC/i0XjnBZwOuHoU7JBgdaxogZAk8D9GQP8AVVCI0NHEq9zDJVvE+yIL7fIwP9lIn29LMT+rh8o5gaewmnxn4p2Lm3AlhR/HLgxIxoqP9bZrsaGOJHLkPfY9pb9xeCwqOoZhhM6RQrcRF3+j3k4jqpnP32botqEVrzJzaNW1SxDdmx9ZiS4wJi2dsS5toJBi59mCgMwBhv2s/9Px5xzEZ8u7h8r0dQfIpJvLNWqTjpeJVnd8GE2Z8Rbbl8/132KJji86IrageUSEplqwnxHhD/nGedS1yh0xKtBqYswLd94XOEiPBZZApa2uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lCGRKqcpmOGY1cAgfMH9c/O0XmB6WDVBhEP7vU/AfgU=;
- b=cUFQMg14ZtTJgN+m2KCbcDyxkjrDAAem3eVRIWaJtHpuPN0l8p2yHovPX97oVWAabnpI7NKwUbsGNkI/7RMhDUbk6PeZSYLzViaFkDHYrNrKpZkZU+Gx6GAMxbkoWjc4nWWusS+E/rtthSZEUXUIr+M5uyBVd8hLAOVQspdGuJ3Izl3C/rSs8JFsIVUI0Q/sX5WYPGN0rJ7Tt2W1ssU5GorTebMEVoEzUy1XfjkazNS7K3mq6C36/O/9DyzZwkYYDBhPRUF1QHgYCmWJJf+zrYFK89r8tbQAJs8libUH7nPSdUzm+RSbyHZ0UVcaSOmzpru4l0I6jKzYpjk/lx9G8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lCGRKqcpmOGY1cAgfMH9c/O0XmB6WDVBhEP7vU/AfgU=;
- b=ZIlc5A1yaZTUyMdOfhFx1R7otj3Jn2J4laDArTkbWI6tWY1LwPJ2Y97JJR4Q47YUkUBjrySsNYOycMeVBTULn+qTcm6YFmhSX1/eBHiNusdVMtyfwCwaguduY0LNM+lp2Vr0v87IqRLOZQd9aNabgs1+H4GoRab2HQtT/Xot3xc=
-Received: from MW4PR04CA0107.namprd04.prod.outlook.com (2603:10b6:303:83::22)
- by CH0PR12MB5330.namprd12.prod.outlook.com (2603:10b6:610:d5::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.19; Thu, 14 Sep
- 2023 01:32:08 +0000
-Received: from CO1PEPF000044EF.namprd05.prod.outlook.com
- (2603:10b6:303:83:cafe::db) by MW4PR04CA0107.outlook.office365.com
- (2603:10b6:303:83::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.19 via Frontend
- Transport; Thu, 14 Sep 2023 01:32:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044EF.mail.protection.outlook.com (10.167.241.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.20 via Frontend Transport; Thu, 14 Sep 2023 01:32:08 +0000
-Received: from nv14-test.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 13 Sep
- 2023 20:32:04 -0500
-From: Ken Xue <Ken.Xue@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <pierre-eric.pelloux-prayer@amd.com>, <Hui.Yu@amd.com>, Ken Xue
- <Ken.Xue@amd.com>
-Subject: [PATCH] ui: add XBGR8888 and ABGR8888 in drm_format_pixman_map
-Date: Thu, 14 Sep 2023 09:31:51 +0800
-Message-ID: <20230914013151.805363-1-Ken.Xue@amd.com>
-X-Mailer: git-send-email 2.35.1
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qgdgm-0005Zj-Di
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 00:10:49 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qgdgh-00071P-5k
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 00:10:47 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5280ef23593so483295a12.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 21:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1694664640; x=1695269440; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=wwtp2XTDX3TwT7XFP3w19LhrVFw6BRNCHoHJa0Xx26c=;
+ b=X1repaDqOrzxOXnHincITXWX1piAZwniFBetAZ156uby3eMYgSG4/HFx4wjVjASEPQ
+ 76w86ULMd6CU3apKAKa7DXP/Sui4NSCtJr9oE7wJ8Vz8BkRKmYLjH4mJWeQKvrNi8Lyt
+ m+c1c7ZmLHSHf40racWr8W4w6rvXeczAJQosQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694664640; x=1695269440;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wwtp2XTDX3TwT7XFP3w19LhrVFw6BRNCHoHJa0Xx26c=;
+ b=g3WP+SOPFEZzwIS+MZTVCou5WcGu2mRMblXriZvLqLydjwcDXLwTZX2X5EXF2zbMdY
+ ci2Q5e477En3Yvqotfyaqvxd8ylCY2mORggsAxsP0ljasLXHEnt2L5kDHEIFSVmL5GY1
+ ILZxKw7PRq0Co+xSBwFhZDdJz4iXdVonsAi8wegdSqzVPupbpC6XNit0xwKkq0zxMHSE
+ kx1tDi4Yg4xBDEhZVHbqevn+yoqAKz/iFrbSFA2tPQuqp8m5R4oHZ7yxIn9Cvadt24K+
+ Artb4EOvxV46Ub491kTA8vVovXhFvEw0Q7r6guu0L2E5Zj2Fx+rn6gNwNaJIU5o+imca
+ VVJw==
+X-Gm-Message-State: AOJu0YzRink/vBzPVatnI9YZV4+HSkOstfQte8YxjIRwsGLNwrHz9ICE
+ YGdLVNSOjzRMqtyN1HzkkHGKqdR/Prk/VMqscLLRow==
+X-Google-Smtp-Source: AGHT+IFTzu0F2+9hyFvVNvVpb/shvzvUtizN2jjttVYGT3xdInLyReXBpjua3qSrpkgC4aEoZsUITg==
+X-Received: by 2002:aa7:c648:0:b0:523:bfec:4912 with SMTP id
+ z8-20020aa7c648000000b00523bfec4912mr3909106edr.11.1694664640368; 
+ Wed, 13 Sep 2023 21:10:40 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com.
+ [209.85.208.54]) by smtp.gmail.com with ESMTPSA id
+ g8-20020a50ee08000000b00521d2f7459fsm352715eds.49.2023.09.13.21.10.39
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 13 Sep 2023 21:10:40 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id
+ 4fb4d7f45d1cf-52fa364f276so4705a12.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 21:10:39 -0700 (PDT)
+X-Received: by 2002:a50:bb44:0:b0:52f:5697:8dec with SMTP id
+ y62-20020a50bb44000000b0052f56978decmr284468ede.4.1694664639462; Wed, 13 Sep
+ 2023 21:10:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044EF:EE_|CH0PR12MB5330:EE_
-X-MS-Office365-Filtering-Correlation-Id: 72d395b0-5081-4834-874e-08dbb4c2692d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2ppdeLv7sAvr1db9aElm9b/CCvY3tqzVP467Npkx9fmNifEZy9FeFb0IQWSrvSGFCJLVmS80zgZrDIMBY/x8gtN6RLT4T0ZZTS7Ckb0svruqME4mvO556sd2bDUn25iB7S35M+c6Vjl1HtysIME6l1pwsCpIROCTeFrM3yDzeyELlD/pifBU80RYSwg9IAocPixQv4/5sQ7JLUVwSL6omNswoxJ4Yfp60KbfZfY3SqFHIOLYJRkvs+O5FyMyHfC+ytNUfGnrss6wObWs2Q+9K3GVIXP+yOkR/uEhGaBKkPkhLj3tvCcSCkovq2FvZ0CRf7c05FHNQlEki/MahpsaYPg7W3/3zQMNx+TEPuXNxOv9eDip7DG64Uo/rFGRLZodTCDnipYJWi+m6t7xXXCnT26lX2VRHogUCNbYxrfONJfByZU0mDqyEWTjvuFIu/gvWzeRHxxKXs1UK4Y00LXR+1NNybVIdX5wMTsgEQFLpLlNFF+WUNqXZD4AwKzUOLbuACQZMod5ZmOI8PQ9Xn6dm6q/+Kbm4SVQvY68S9heE3Ml2CIT5b/bc9jsY4IHQ+oEIEKQ4DrT20c90jwdyg2tlORgCLC5KcqLB+At6vBIg1HQRs/GdOxx3a2tkuBwosITcBlBBQDyKRTW/+0ld8d/Lr+8hpcIaqobcCJNSYX1D2PoZC+7dKLkhuItIi5iM74q/KlVzR3XxGqdJwS+pjpnwL+nesKaQTLsCb0DLnrxUsSsp9TIxL+Few7sGLeG0MZyo2p2S3t3qAOYR0Bn3ofcdA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(346002)(136003)(39860400002)(396003)(376002)(82310400011)(451199024)(1800799009)(186009)(36840700001)(46966006)(40470700004)(8676002)(86362001)(8936002)(4326008)(5660300002)(40480700001)(40460700003)(2906002)(36756003)(6666004)(83380400001)(356005)(426003)(7696005)(81166007)(336012)(82740400003)(16526019)(26005)(2616005)(478600001)(6916009)(70206006)(70586007)(54906003)(47076005)(316002)(36860700001)(41300700001)(1076003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 01:32:08.2741 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 72d395b0-5081-4834-874e-08dbb4c2692d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044EF.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5330
-Received-SPF: softfail client-ip=40.107.93.49; envelope-from=Ken.Xue@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+References: <20230829003629.410-1-gurchetansingh@chromium.org>
+ <ZO/6JXmYm/lW9dSZ@amd.com>
+ <CAAfnVBmxaAbEX-0wVVwE94cKrGtoCRWKv58X73P+_hKM8-_hkQ@mail.gmail.com>
+ <CAJ+F1CJwATzG8by1tZucq15KbDHfE9OJEGq1jZ71UHivoTRsXQ@mail.gmail.com>
+ <CAAfnVBn4yjOCi+OzqjYJ2wos1wsjrCAj+9j1kZ4v63a4LVX7mQ@mail.gmail.com>
+ <CAJ+F1CLfJ_0yYh4ZaNwLt5JRB-QfijRZ3DPEEipbUbqV2Sv+=Q@mail.gmail.com>
+In-Reply-To: <CAJ+F1CLfJ_0yYh4ZaNwLt5JRB-QfijRZ3DPEEipbUbqV2Sv+=Q@mail.gmail.com>
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+Date: Wed, 13 Sep 2023 21:10:26 -0700
+X-Gmail-Original-Message-ID: <CAAfnVBmaFT=ePb8jKcoL=kForNRZk7PrWvrtmvfU6T9-2Sj9SQ@mail.gmail.com>
+Message-ID: <CAAfnVBmaFT=ePb8jKcoL=kForNRZk7PrWvrtmvfU6T9-2Sj9SQ@mail.gmail.com>
+Subject: Re: [PATCH v13 0/9] rutabaga_gfx + gfxstream
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Cc: Huang Rui <ray.huang@amd.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "akihiko.odaki@gmail.com" <akihiko.odaki@gmail.com>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>, 
+ "shentey@gmail.com" <shentey@gmail.com>, "hi@alyssa.is" <hi@alyssa.is>, 
+ "ernunes@redhat.com" <ernunes@redhat.com>, 
+ "manos.pitsidianakis@linaro.org" <manos.pitsidianakis@linaro.org>,
+ "philmd@linaro.org" <philmd@linaro.org>, 
+ "mark.cave-ayland@ilande.co.uk" <mark.cave-ayland@ilande.co.uk>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000d995f2060549db94"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 14 Sep 2023 01:25:22 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,58 +108,331 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Android uses XBGR8888 and ABGR8888 as default scanout buffer, But qemu
-does not support them for qemu_pixman_to_drm_format conversion within
-virtio_gpu_create_dmabuf for virtio gpu.
+--000000000000d995f2060549db94
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-so, add those 2 formats into drm_format_pixman_map.
+On Wed, Sep 13, 2023 at 6:49=E2=80=AFAM Marc-Andr=C3=A9 Lureau <
+marcandre.lureau@gmail.com> wrote:
 
-Signed-off-by: Ken Xue <Ken.Xue@amd.com>
----
- include/ui/qemu-pixman.h | 4 ++++
- ui/qemu-pixman.c         | 4 +++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+> Hi
+>
+> On Wed, Sep 13, 2023 at 5:08=E2=80=AFAM Gurchetan Singh
+> <gurchetansingh@chromium.org> wrote:
+> > On Tue, Sep 12, 2023 at 6:59=E2=80=AFAM Marc-Andr=C3=A9 Lureau <
+> marcandre.lureau@gmail.com> wrote:
+> >> Packaging aemu and gfxstream is a bit problematic. I have some WIP
+> >> Fedora packages.
 
-diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-index 51f870932791..e587c48b1fde 100644
---- a/include/ui/qemu-pixman.h
-+++ b/include/ui/qemu-pixman.h
-@@ -32,6 +32,8 @@
- # define PIXMAN_LE_r8g8b8     PIXMAN_b8g8r8
- # define PIXMAN_LE_a8r8g8b8   PIXMAN_b8g8r8a8
- # define PIXMAN_LE_x8r8g8b8   PIXMAN_b8g8r8x8
-+# define PIXMAN_LE_a8b8g8r8   PIXMAN_r8g8b8a8
-+# define PIXMAN_LE_x8b8g8r8   PIXMAN_r8g8b8x8
- #else
- # define PIXMAN_BE_r8g8b8     PIXMAN_b8g8r8
- # define PIXMAN_BE_x8r8g8b8   PIXMAN_b8g8r8x8
-@@ -45,6 +47,8 @@
- # define PIXMAN_LE_r8g8b8     PIXMAN_r8g8b8
- # define PIXMAN_LE_a8r8g8b8   PIXMAN_a8r8g8b8
- # define PIXMAN_LE_x8r8g8b8   PIXMAN_x8r8g8b8
-+# define PIXMAN_LE_a8b8g8r8   PIXMAN_a8b8g8r8
-+# define PIXMAN_LE_x8b8g8r8   PIXMAN_x8b8g8r8
- #endif
- 
- #define QEMU_PIXMAN_COLOR(r, g, b)                                               \
-diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-index be00a96340d3..b43ec38bf0e9 100644
---- a/ui/qemu-pixman.c
-+++ b/ui/qemu-pixman.c
-@@ -96,7 +96,9 @@ static const struct {
- } drm_format_pixman_map[] = {
-     { DRM_FORMAT_RGB888,   PIXMAN_LE_r8g8b8   },
-     { DRM_FORMAT_ARGB8888, PIXMAN_LE_a8r8g8b8 },
--    { DRM_FORMAT_XRGB8888, PIXMAN_LE_x8r8g8b8 }
-+    { DRM_FORMAT_XRGB8888, PIXMAN_LE_x8r8g8b8 },
-+    { DRM_FORMAT_XBGR8888, PIXMAN_LE_x8b8g8r8 },
-+    { DRM_FORMAT_ABGR8888, PIXMAN_LE_a8b8g8r8 },
- };
- 
- pixman_format_code_t qemu_drm_format_to_pixman(uint32_t drm_format)
+>>
+> >> AEMU:
+> >> - installs files under /usr/include/host-common and
+> >> /usr/include/snapshot. Can this be moved under /usr/include/aemu
+> >> instead?
+> >> - builds only static versions of libaemu-host-common.a and
+> >> liblogging-base.a (distros don't like static libs much)
+> >> - could liblogging-base(.a,.so,..) also have "aemu" name in it?
+> >> - libaemu-base.so is not versioned
+> >> - I can't find a release tarball, nor the (v0.1.2) release tag
+> >> - could have a README file
+> >>
+> >> I am not very familiar with cmake, so it's not obvious how to make the
+> >> required changes. Would you like me to open an issue (where?) or try
+> >> to make some patches?
+> >
+> >
+> > I filed an internal bug with all the issues you listed: Android side
+> should fix this internally.
+> >
+> > I see a few options for packaging:
+> >
+> > 1) Punt on gfxstream/AEMU packaging, just do rutabaga
+> >
+> > gfxstream is mostly useful for Android guests, and I didn't expect
+> anyone to actually package it at this point since most here are intereste=
+d
+> in Linux guests (where gfxstream VK is headless only right now).  Plus
+> ioctl-fowarding > API forwarding for security and performance, so I'm not
+> sure if it'll have any sticking power even if everything is supported
+> (outside of a few niche use cases).
+> >
+> > Though, I sense interest in Wayland passthrough for dual Linux use
+> cases.  I put up:
+> >
+> > crrev.com/c/4860836
+> >
+> > that'll allow packaging on rutabaga_gfx and even CI testing without
+> gfxstream, since it is designed to function without it.  We could issue
+> another rutabaga-release tag, or you can simply add a patch (a common
+> packaging practice) on the Fedora package with the "UPSTEAM label".
+> >
+> > 2) Actually package gfxstream only
+> >
+> > Probably an intermediate solution that doesn't introduce
+> versioning/static library issues would be just to have a copy of AEMU in
+> the gfxstream repo, and link it statically.  Will need another release
+> tag/commit of gfxstream.
+> >
+> > 3) Don't package at all
+> >
+> > For my particular use case since we have to build QEMU for sources, thi=
+s
+> is fine.  If upstream breaks virtio-gpu-rutabaga.c, we'll send a patch an=
+d
+> fix it.  Being in-tree is most important.
+> >
+> > Let me know what you prefer!
+> >
+>
+> I would rather have standard packaging of the various projects, so we
+> can test and develop easily.
+>
 
-base-commit: 9a8af699677cdf58e92ff43f38ea74bbe9d37ab0
--- 
-2.35.1
+Ack.  Here are the requested changes:
 
+- https://android-review.googlesource.com/q/topic:%22aemu-package-fix%22
+- crrev.com/c/4865171
+
+The main change is:
+
+https://android-review.googlesource.com/c/platform/hardware/google/aemu/+/2=
+751066
+
+Once that's okay for packaging, I'll ping harder on v0.1.2 gfxstream/AEMU
+release tags.  Let me know if you want another release tag for rutabaga, or
+if just patching in upstream changes would be acceptable.
+
+For rutabaga, I ended up having to patch a little bit the shared
+> library, to fix SONAME:
+>
+
+Landed as crrev.com/c/4863380.
+
+
+>
+> diff --git a/ffi/Makefile b/ffi/Makefile
+> index d2f0d38..7efc8f3 100644
+> --- a/ffi/Makefile
+> +++ b/ffi/Makefile
+> @@ -47,13 +47,13 @@ build:
+>
+>  install: build
+>  ifeq ($(UNAME), Linux)
+> -    install -D -m 755 -t $(DESTDIR)$(libdir) $(OUT)/$(LIB_NAME)
+> +    install -D -m 755 $(OUT)/$(LIB_NAME)
+> $(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)
+>  endif
+>  ifeq ($(UNAME), Darwin)
+> -        install_name_tool -id $(DESTDIR)$(libdir)/$(LIB_NAME)
+> $(DESTDIR)$(libdir)/$(LIB_NAME)
+> +        install_name_tool -id
+> $(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)
+> $(DESTDIR)$(libdir)/$(LIB_NAME)
+>  endif
+> -    ln -sf $(DESTDIR)$(libdir)/$(LIB_NAME)
+> $(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)
+> -    ln -sf $(DESTDIR)$(libdir)/$(LIB_NAME)
+> $(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION_MAJOR)
+> +    ln -s $(LIB_NAME).$(RUTABAGA_VERSION)
+> $(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION_MAJOR)
+> +    ln -s $(LIB_NAME).$(RUTABAGA_VERSION) $(DESTDIR)$(libdir)/$(LIB_NAME=
+)
+>  ifeq ($(UNAME), Linux)
+>      install -D -m 0644 $(SRC)/share/rutabaga_gfx_ffi.pc
+> $(DESTDIR)$(libdir)/pkgconfig/rutabaga_gfx_ffi.pc
+>      install -D -m 0644 $(SRC)/include/rutabaga_gfx_ffi.h
+> $(DESTDIR)$(includedir)/rutabaga_gfx_ffi.h
+> diff --git a/ffi/build.rs b/ffi/build.rs
+> new file mode 100644
+> index 0000000..efa18d3
+> --- /dev/null
+> +++ b/ffi/build.rs
+> @@ -0,0 +1,3 @@
+> +fn main() {
+> +
+>  println!("cargo:rustc-cdylib-link-arg=3D-Wl,-soname,librutabaga_gfx_ffi.=
+so.0");
+> +}
+>
+>
+> The package is a bit unconventional, since it's a rust project
+> providing a C shared library. I am not sure I did Fedora packaging
+> right, let see:
+> https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=3D2238751
+>
+>
+> --
+> Marc-Andr=C3=A9 Lureau
+>
+
+--000000000000d995f2060549db94
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Sep 13, 2023 at 6:49=E2=80=AF=
+AM Marc-Andr=C3=A9 Lureau &lt;<a href=3D"mailto:marcandre.lureau@gmail.com"=
+>marcandre.lureau@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">Hi<br>
+<br>
+On Wed, Sep 13, 2023 at 5:08=E2=80=AFAM Gurchetan Singh<br>
+&lt;<a href=3D"mailto:gurchetansingh@chromium.org" target=3D"_blank">gurche=
+tansingh@chromium.org</a>&gt; wrote:<br>
+&gt; On Tue, Sep 12, 2023 at 6:59=E2=80=AFAM Marc-Andr=C3=A9 Lureau &lt;<a =
+href=3D"mailto:marcandre.lureau@gmail.com" target=3D"_blank">marcandre.lure=
+au@gmail.com</a>&gt; wrote:<br>
+&gt;&gt; Packaging aemu and gfxstream is a bit problematic. I have some WIP=
+<br>
+&gt;&gt; Fedora packages.</blockquote><blockquote class=3D"gmail_quote" sty=
+le=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddi=
+ng-left:1ex">
+&gt;&gt;<br>
+&gt;&gt; AEMU:<br>
+&gt;&gt; - installs files under /usr/include/host-common and<br>
+&gt;&gt; /usr/include/snapshot. Can this be moved under /usr/include/aemu<b=
+r>
+&gt;&gt; instead?<br>
+&gt;&gt; - builds only static versions of libaemu-host-common.a and<br>
+&gt;&gt; liblogging-base.a (distros don&#39;t like static libs much)<br>
+&gt;&gt; - could liblogging-base(.a,.so,..) also have &quot;aemu&quot; name=
+ in it?<br>
+&gt;&gt; - libaemu-base.so is not versioned<br>
+&gt;&gt; - I can&#39;t find a release tarball, nor the (v0.1.2) release tag=
+<br>
+&gt;&gt; - could have a README file<br>
+&gt;&gt;<br>
+&gt;&gt; I am not very familiar with cmake, so it&#39;s not obvious how to =
+make the<br>
+&gt;&gt; required changes. Would you like me to open an issue (where?) or t=
+ry<br>
+&gt;&gt; to make some patches?<br>
+&gt;<br>
+&gt;<br>
+&gt; I filed an internal bug with all the issues you listed: Android side s=
+hould fix this internally.<br>
+&gt;<br>
+&gt; I see a few options for packaging:<br>
+&gt;<br>
+&gt; 1) Punt on gfxstream/AEMU packaging, just do rutabaga<br>
+&gt;<br>
+&gt; gfxstream is mostly useful for Android guests, and I didn&#39;t expect=
+ anyone to actually package it at this point since most here are interested=
+ in Linux guests (where gfxstream VK is headless only right now).=C2=A0 Plu=
+s ioctl-fowarding &gt; API forwarding for security and performance, so I&#3=
+9;m not sure if it&#39;ll have any sticking power even if everything is sup=
+ported (outside of a few niche use cases).<br>
+&gt;<br>
+&gt; Though, I sense interest in Wayland passthrough for dual Linux use cas=
+es.=C2=A0 I put up:<br>
+&gt;<br>
+&gt; <a href=3D"http://crrev.com/c/4860836" rel=3D"noreferrer" target=3D"_b=
+lank">crrev.com/c/4860836</a><br>
+&gt;<br>
+&gt; that&#39;ll allow packaging on rutabaga_gfx and even CI testing withou=
+t gfxstream, since it is designed to function without it.=C2=A0 We could is=
+sue another rutabaga-release tag, or you can simply add a patch (a common p=
+ackaging practice) on the Fedora package with the &quot;UPSTEAM label&quot;=
+.<br>
+&gt;<br>
+&gt; 2) Actually package gfxstream only<br>
+&gt;<br>
+&gt; Probably an intermediate solution that doesn&#39;t introduce versionin=
+g/static library issues would be just to have a copy of AEMU in the gfxstre=
+am repo, and link it statically.=C2=A0 Will need another release tag/commit=
+ of gfxstream.<br>
+&gt;<br>
+&gt; 3) Don&#39;t package at all<br>
+&gt;<br>
+&gt; For my particular use case since we have to build QEMU for sources, th=
+is is fine.=C2=A0 If upstream breaks virtio-gpu-rutabaga.c, we&#39;ll send =
+a patch and fix it.=C2=A0 Being in-tree is most important.<br>
+&gt;<br>
+&gt; Let me know what you prefer!<br>
+&gt;<br>
+<br>
+I would rather have standard packaging of the various projects, so we<br>
+can test and develop easily.<br></blockquote><div><br></div><div><div>Ack.=
+=C2=A0 Here are the requested changes:</div><div><br></div><div>- <a href=
+=3D"https://android-review.googlesource.com/q/topic:%22aemu-package-fix%22"=
+>https://android-review.googlesource.com/q/topic:%22aemu-package-fix%22</a>=
+<br></div><div>- <a href=3D"http://crrev.com/c/4865171">crrev.com/c/4865171=
+</a></div><div><br></div><div>The main change is:</div><div><br></div><div>=
+<a href=3D"https://android-review.googlesource.com/c/platform/hardware/goog=
+le/aemu/+/2751066">https://android-review.googlesource.com/c/platform/hardw=
+are/google/aemu/+/2751066</a><br></div><div><br></div><div>Once that&#39;s =
+okay for packaging, I&#39;ll ping harder on v0.1.2 gfxstream/AEMU release t=
+ags.=C2=A0 Let me know if you want another release tag for rutabaga, or if =
+just patching in upstream changes would be acceptable.</div></div><div><br>=
+</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex">
+For rutabaga, I ended up having to patch a little bit the shared<br>
+library, to fix SONAME:<br></blockquote><div><br></div><div>Landed as <a hr=
+ef=3D"http://crrev.com/c/4863380">crrev.com/c/4863380</a>.</div><div>=C2=A0=
+</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+diff --git a/ffi/Makefile b/ffi/Makefile<br>
+index d2f0d38..7efc8f3 100644<br>
+--- a/ffi/Makefile<br>
++++ b/ffi/Makefile<br>
+@@ -47,13 +47,13 @@ build:<br>
+<br>
+=C2=A0install: build<br>
+=C2=A0ifeq ($(UNAME), Linux)<br>
+-=C2=A0 =C2=A0 install -D -m 755 -t $(DESTDIR)$(libdir) $(OUT)/$(LIB_NAME)<=
+br>
++=C2=A0 =C2=A0 install -D -m 755 $(OUT)/$(LIB_NAME)<br>
+$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)<br>
+=C2=A0endif<br>
+=C2=A0ifeq ($(UNAME), Darwin)<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 install_name_tool -id $(DESTDIR)$(libdir)/$(LI=
+B_NAME)<br>
+$(DESTDIR)$(libdir)/$(LIB_NAME)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 install_name_tool -id<br>
+$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)<br>
+$(DESTDIR)$(libdir)/$(LIB_NAME)<br>
+=C2=A0endif<br>
+-=C2=A0 =C2=A0 ln -sf $(DESTDIR)$(libdir)/$(LIB_NAME)<br>
+$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION)<br>
+-=C2=A0 =C2=A0 ln -sf $(DESTDIR)$(libdir)/$(LIB_NAME)<br>
+$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION_MAJOR)<br>
++=C2=A0 =C2=A0 ln -s $(LIB_NAME).$(RUTABAGA_VERSION)<br>
+$(DESTDIR)$(libdir)/$(LIB_NAME).$(RUTABAGA_VERSION_MAJOR)<br>
++=C2=A0 =C2=A0 ln -s $(LIB_NAME).$(RUTABAGA_VERSION) $(DESTDIR)$(libdir)/$(=
+LIB_NAME)<br>
+=C2=A0ifeq ($(UNAME), Linux)<br>
+=C2=A0 =C2=A0 =C2=A0install -D -m 0644 $(SRC)/share/rutabaga_gfx_ffi.pc<br>
+$(DESTDIR)$(libdir)/pkgconfig/rutabaga_gfx_ffi.pc<br>
+=C2=A0 =C2=A0 =C2=A0install -D -m 0644 $(SRC)/include/rutabaga_gfx_ffi.h<br=
+>
+$(DESTDIR)$(includedir)/rutabaga_gfx_ffi.h<br>
+diff --git a/ffi/<a href=3D"http://build.rs" rel=3D"noreferrer" target=3D"_=
+blank">build.rs</a> b/ffi/<a href=3D"http://build.rs" rel=3D"noreferrer" ta=
+rget=3D"_blank">build.rs</a><br>
+new file mode 100644<br>
+index 0000000..efa18d3<br>
+--- /dev/null<br>
++++ b/ffi/<a href=3D"http://build.rs" rel=3D"noreferrer" target=3D"_blank">=
+build.rs</a><br>
+@@ -0,0 +1,3 @@<br>
++fn main() {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0println!(&quot;cargo:rustc-cdylib-link-arg=3D-W=
+l,-soname,librutabaga_gfx_ffi.so.0&quot;);<br>
++}<br>
+<br>
+<br>
+The package is a bit unconventional, since it&#39;s a rust project<br>
+providing a C shared library. I am not sure I did Fedora packaging<br>
+right, let see:<br>
+<a href=3D"https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=3D2238751" =
+rel=3D"noreferrer" target=3D"_blank">https://bugzilla.redhat.com/bugzilla/s=
+how_bug.cgi?id=3D2238751</a><br>
+<br>
+<br>
+-- <br>
+Marc-Andr=C3=A9 Lureau<br>
+</blockquote></div></div>
+
+--000000000000d995f2060549db94--
 
