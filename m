@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2092F7A0E94
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 21:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF307A0ED3
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:12:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgsOf-0006N0-Id; Thu, 14 Sep 2023 15:53:05 -0400
+	id 1qgsgM-0002Kp-IY; Thu, 14 Sep 2023 16:11:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgsOe-0006MZ-Ep
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:53:04 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgsOc-0006pl-1A
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 15:53:04 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31f7400cb74so1164441f8f.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 12:53:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694721180; x=1695325980; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WMU91LA7BSC1SezrVUaA2bGYSFbwZkyvMxsyUhJZ/iI=;
- b=FezRqLgX83XjU7AY3UAwehBVqyVGKt/1L1XDJsrKu6r84EQ3KQJvW4P6O+2UaoyMyj
- DeCSzyqYl3LEheCOEi25pBAJ/t0t2fhgTfd0ymRnGSpRtrMIrhU8aYH4DJQgklpliHx/
- 52xsdvIEryJChhRMvE6G+kcgwcTyKNJiP4MBHjW3WBImeER0ULmrm0XNNNDbdEI1V7Q8
- hprlNFkIXllWZL8fHbMqkcmhBOYmbDaatmz89Ig4DLuFZ7qqJYby6GVEdtAEhTf+3MDl
- jbxfEcf1vCnZKNrn5j30k8/EXdt26HICL24IejU8Rmx/TJ5iFGJQnCqcTUtyKb3DnEGO
- 932A==
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qgpKc-00059T-1K
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:36:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qgpKY-0000g5-2S
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:36:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694709396;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/Omk7Ni+qBeGd+i5XKCDqwQQWbpXDsCe9OBzkcgD8LA=;
+ b=FjR9GyXVKuSziTMyZB7bVcDhU9BqrB4QNllogGt2rXb+UFXtABc+Yt+SEKjPUr0zDicaoB
+ PrdslKieAq4apyN7+pbzrg/FQFTRis4WsJJuAXQUZINm7Sq+UVtX+y0fXpvZXs5kWH9scb
+ mNmrRgWuIymXsn0U1AguwqamCZxH3pc=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-372-I03DXLnGM3mjXDMfigI0tw-1; Thu, 14 Sep 2023 12:35:23 -0400
+X-MC-Unique: I03DXLnGM3mjXDMfigI0tw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-76ef50e2513so143470185a.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 09:35:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694721180; x=1695325980;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WMU91LA7BSC1SezrVUaA2bGYSFbwZkyvMxsyUhJZ/iI=;
- b=u2YmjiiaIrWrXDnLhJjPAslefmghjTBvUv0eKcoiC03E74ErMddSfrrZ+WhsnN3JZl
- HivL36QUxk3VK+HIxxnQtSMujKNwEjV8OUG9WziqOu+HoyEvxsr3+n+n+o/1qslJDfq0
- 8/t46t91T9NnlT04gyxyrBD3VVcD6iKCSUvf5cSpxL5Ifxu1rkHAHeGO4uNIr53X8dP8
- TWbNN4W+WbOswzrWzkHMDBs19W55pbFC4/fp4Tjxd0LQPz+FS9kW4hPBmioTV4jPHSI/
- qI5TJO0C0hKrN1WqZrxmHhIGa3dfDN7GfgzmrEjeZGktMFbNgJV/og/3IHnFbfcerUpe
- Js3w==
-X-Gm-Message-State: AOJu0Yy1jykqEclDIbybfQ0pyP37dTRANH5kEXXOyyEd9vn2wtL0PmtI
- tliQz7tTIl/6TkycB8sVtjrzNj0gaPeIY2UK1AU=
-X-Google-Smtp-Source: AGHT+IGj4Ouv5qBvfaJuxneNj2YWgwwDv0agb2peWcvtGj+BdDeDg6oOmuebujutYejycvmI0e+tRw==
-X-Received: by 2002:adf:ebc8:0:b0:31a:e6c2:770d with SMTP id
- v8-20020adfebc8000000b0031ae6c2770dmr5628938wrn.36.1694721180203; 
- Thu, 14 Sep 2023 12:53:00 -0700 (PDT)
-Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
+ d=1e100.net; s=20230601; t=1694709322; x=1695314122;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/Omk7Ni+qBeGd+i5XKCDqwQQWbpXDsCe9OBzkcgD8LA=;
+ b=MHMrTt6QUXqBrNUVp5oIWS1yX2e3S4OqUEAE3PDdM+Vy/s/qCL3aJ8+9fhRI1K+b+c
+ hjS//Qt0p0sdx7MM3GmH08LssV/4Oymkb670r7vj4YHvhUIFjTd1PnSfKNMSEndGvxA2
+ PfbQqBG1HyZvI3Xv8ZmHwBgNo/TWsgYqBbg2y1GisIEFMb0WjrGUJgSLtLCQZoTEr88Z
+ iD7jktgWECMfZpjoruGre0u5l6rrjCiIbFIkvbht0tYJUtIFOj1ArqhOf7ATGcL5xFVr
+ NDty85NJy5Of0UmI7K5jpvtxiRIccwxrK5J8ZbvnRlHoyMiQKOpAsLXnyOuSdzJjrqVe
+ UTfw==
+X-Gm-Message-State: AOJu0Yzxf1dOK/i0Q4FpdX4XuIW924DWolrkaSANc1tavtvspmzQOqI+
+ 2L+TiR6YWS+sELS4IWSOzbeFgnPV1dIfLbRWVynWcz1o+ad0oL31wO8C+PI7jfUnlb9oSL8oPHy
+ oslfdYtUDW+DKi3RXsnzng/fzaSU5UK7WwXeLfHj3xCcz6gZb4zKOvBNs5gC7cVAguVwN3D/MMB
+ gkUA==
+X-Received: by 2002:a05:620a:4514:b0:76d:a89c:1e15 with SMTP id
+ t20-20020a05620a451400b0076da89c1e15mr7682387qkp.59.1694709321935; 
+ Thu, 14 Sep 2023 09:35:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZU9GMuvkdNtW/BC1aNJ2fI+p5xledm5O44JESz/ocki2kRHL8xbbLwGj9V3re6tcxFhxp2g==
+X-Received: by 2002:a05:620a:4514:b0:76d:a89c:1e15 with SMTP id
+ t20-20020a05620a451400b0076da89c1e15mr7682362qkp.59.1694709321658; 
+ Thu, 14 Sep 2023 09:35:21 -0700 (PDT)
+Received: from fedora.redhat.com ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
  by smtp.gmail.com with ESMTPSA id
- d14-20020a50fb0e000000b00521953ce6e0sm1281656edq.93.2023.09.14.12.52.58
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Sep 2023 12:52:59 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ l11-20020ae9f00b000000b007677347e20asm577244qkg.129.2023.09.14.09.35.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Sep 2023 09:35:20 -0700 (PDT)
+From: Tyler Fanelli <tfanelli@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Subject: [RFC PATCH 4/4] accel/tcg: Keep tlb_set_dirty() internal
-Date: Thu, 14 Sep 2023 21:52:29 +0200
-Message-ID: <20230914195229.78244-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230914195229.78244-1-philmd@linaro.org>
-References: <20230914195229.78244-1-philmd@linaro.org>
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, stefanha@redhat.com,
+ Tyler Fanelli <tfanelli@redhat.com>
+Subject: [RFC PATCH 0/8] i386/sev: Use C API of Rust SEV library
+Date: Thu, 14 Sep 2023 12:33:51 -0400
+Message-Id: <20230914163358.379957-1-tfanelli@redhat.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=tfanelli@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 14 Sep 2023 16:11:08 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,42 +99,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 34d49937e4 ("accel/tcg: Handle atomic accesses
-to notdirty memory correctly") tlb_set_dirty() is only used
-(once) in the very same file it is defined... Make it static.
+These patches are submitted as an RFC mainly because I'm a relative
+newcomer to QEMU with no knowledge of the community's views on
+including Rust code, nor it's preference of using library APIs for
+ioctls that were previously implemented in QEMU directly.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/exec/exec-all.h | 1 -
- accel/tcg/cputlb.c      | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+Recently, the Rust sev library [0] has introduced a C API to take
+advantage of the library outside of Rust.
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index b2f5cd4c2a..59efa7bc28 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -695,7 +695,6 @@ static inline void mmap_unlock(void) {}
- #define WITH_MMAP_LOCK_GUARD()
- 
- void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
--void tlb_set_dirty(CPUState *cpu, vaddr addr);
- 
- MemoryRegionSection *
- address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index c643d66190..fe9d702f3e 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1062,7 +1062,7 @@ static inline void tlb_set_dirty1_locked(CPUTLBEntry *tlb_entry,
- 
- /* update the TLB corresponding to virtual page vaddr
-    so that it is no longer dirty */
--void tlb_set_dirty(CPUState *cpu, vaddr addr)
-+static void tlb_set_dirty(CPUState *cpu, vaddr addr)
- {
-     CPUArchState *env = cpu->env_ptr;
-     int mmu_idx;
+Should the inclusion of the library as a dependency be desired, it can
+be extended further to include the firmware/platform ioctls, the
+attestation report fetching, and more. This would result in much of
+the AMD-SEV portion of QEMU being offloaded to the library.
+
+This series looks to explore the possibility of using the library and
+show a bit of what it would look like. I'm looking for comments
+regarding if this feature is desired.
+
+[0] https://github.com/virtee/sev
+
+Tyler Fanelli (8):
+  Add SEV Rust library as dependency with CONFIG_SEV
+  i386/sev: Replace INIT and ES_INIT ioctls with sev library equivalents
+  i386/sev: Replace LAUNCH_START ioctl with sev library equivalent
+  i386/sev: Replace UPDATE_DATA ioctl with sev library equivalent
+  i386/sev: Replace LAUNCH_UPDATE_VMSA ioctl with sev library equivalent
+  i386/sev: Replace LAUNCH_MEASURE ioctl with sev library equivalent
+  i386/sev: Replace LAUNCH_SECRET ioctl with sev library equivalent
+  i386/sev: Replace LAUNCH_FINISH ioctl with sev library equivalent
+
+ meson.build                   |   7 +
+ meson_options.txt             |   2 +
+ scripts/meson-buildoptions.sh |   3 +
+ target/i386/meson.build       |   2 +-
+ target/i386/sev.c             | 311 ++++++++++++----------------------
+ target/i386/sev.h             |   4 +-
+ target/i386/trace-events      |   1 +
+ 7 files changed, 123 insertions(+), 207 deletions(-)
+
 -- 
-2.41.0
+2.40.1
 
 
