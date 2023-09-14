@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D8D79F81D
+	by mail.lfdr.de (Postfix) with ESMTPS id A92EE79F81F
 	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:32:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgc6M-0006mQ-Pe; Wed, 13 Sep 2023 22:29:06 -0400
+	id 1qgc4f-0003Az-5X; Wed, 13 Sep 2023 22:27:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qgc5s-0004pX-Bq
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:28:36 -0400
+ id 1qgc4Z-000398-7t
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:15 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qgc5j-0005FH-36
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:28:36 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qgc4T-0004ql-92
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:15 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxIvBwbwJlYPgmAA--.9201S3;
- Thu, 14 Sep 2023 10:26:56 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8DxPOtxbwJlY_gmAA--.4368S3;
+ Thu, 14 Sep 2023 10:26:57 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxvdxmbwJlJ+UDAA--.7298S12; 
+ AQAAf8CxvdxmbwJlJ+UDAA--.7298S13; 
  Thu, 14 Sep 2023 10:26:56 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn
-Subject: [PATCH v6 10/57] target/loongarch: Replace CHECK_SXE to check_vec(ctx, 16)
-Date: Thu, 14 Sep 2023 10:25:58 +0800
-Message-Id: <20230914022645.1151356-11-gaosong@loongson.cn>
+Subject: [PATCH v6 11/57] target/loongarch: Add LASX data support
+Date: Thu, 14 Sep 2023 10:25:59 +0800
+Message-Id: <20230914022645.1151356-12-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230914022645.1151356-1-gaosong@loongson.cn>
 References: <20230914022645.1151356-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxvdxmbwJlJ+UDAA--.7298S12
+X-CM-TRANSID: AQAAf8CxvdxmbwJlJ+UDAA--.7298S13
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,617 +63,250 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a new function check_vec to replace CHECK_SXE
-
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/insn_trans/trans_vec.c.inc | 248 +++++++++++++++-----
- 1 file changed, 192 insertions(+), 56 deletions(-)
+ target/loongarch/cpu.h          | 24 ++++++++++++----------
+ target/loongarch/internals.h    | 22 --------------------
+ target/loongarch/vec.h          | 33 ++++++++++++++++++++++++++++++
+ linux-user/loongarch64/signal.c |  1 +
+ target/loongarch/cpu.c          |  1 +
+ target/loongarch/gdbstub.c      |  1 +
+ target/loongarch/machine.c      | 36 ++++++++++++++++++++++++++++++++-
+ target/loongarch/translate.c    |  1 +
+ target/loongarch/vec_helper.c   |  1 +
+ 9 files changed, 86 insertions(+), 34 deletions(-)
+ create mode 100644 target/loongarch/vec.h
 
-diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 7504e3a62d..d8ab7c3417 100644
---- a/target/loongarch/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -5,14 +5,23 @@
-  */
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 4d7201995a..347ad1c8a9 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -251,18 +251,20 @@ FIELD(TLB_MISC, ASID, 1, 10)
+ FIELD(TLB_MISC, VPPN, 13, 35)
+ FIELD(TLB_MISC, PS, 48, 6)
  
- #ifndef CONFIG_USER_ONLY
--#define CHECK_SXE do { \
--    if ((ctx->base.tb->flags & HW_FLAGS_EUEN_SXE) == 0) { \
--        generate_exception(ctx, EXCCODE_SXD); \
--        return true; \
--    } \
--} while (0)
+-#define LSX_LEN   (128)
++#define LSX_LEN    (128)
++#define LASX_LEN   (256)
 +
-+static bool check_vec(DisasContext *ctx, uint32_t oprsz)
-+{
-+    if ((oprsz == 16) && ((ctx->base.tb->flags & HW_FLAGS_EUEN_SXE) == 0)) {
-+        generate_exception(ctx, EXCCODE_SXD);
-+        return false;
+ typedef union VReg {
+-    int8_t   B[LSX_LEN / 8];
+-    int16_t  H[LSX_LEN / 16];
+-    int32_t  W[LSX_LEN / 32];
+-    int64_t  D[LSX_LEN / 64];
+-    uint8_t  UB[LSX_LEN / 8];
+-    uint16_t UH[LSX_LEN / 16];
+-    uint32_t UW[LSX_LEN / 32];
+-    uint64_t UD[LSX_LEN / 64];
+-    Int128   Q[LSX_LEN / 128];
+-}VReg;
++    int8_t   B[LASX_LEN / 8];
++    int16_t  H[LASX_LEN / 16];
++    int32_t  W[LASX_LEN / 32];
++    int64_t  D[LASX_LEN / 64];
++    uint8_t  UB[LASX_LEN / 8];
++    uint16_t UH[LASX_LEN / 16];
++    uint32_t UW[LASX_LEN / 32];
++    uint64_t UD[LASX_LEN / 64];
++    Int128   Q[LASX_LEN / 128];
++} VReg;
+ 
+ typedef union fpr_t fpr_t;
+ union fpr_t {
+diff --git a/target/loongarch/internals.h b/target/loongarch/internals.h
+index 7b0f29c942..c492863cc5 100644
+--- a/target/loongarch/internals.h
++++ b/target/loongarch/internals.h
+@@ -21,28 +21,6 @@
+ /* Global bit for huge page */
+ #define LOONGARCH_HGLOBAL_SHIFT     12
+ 
+-#if  HOST_BIG_ENDIAN
+-#define B(x)  B[15 - (x)]
+-#define H(x)  H[7 - (x)]
+-#define W(x)  W[3 - (x)]
+-#define D(x)  D[1 - (x)]
+-#define UB(x) UB[15 - (x)]
+-#define UH(x) UH[7 - (x)]
+-#define UW(x) UW[3 - (x)]
+-#define UD(x) UD[1 -(x)]
+-#define Q(x)  Q[x]
+-#else
+-#define B(x)  B[x]
+-#define H(x)  H[x]
+-#define W(x)  W[x]
+-#define D(x)  D[x]
+-#define UB(x) UB[x]
+-#define UH(x) UH[x]
+-#define UW(x) UW[x]
+-#define UD(x) UD[x]
+-#define Q(x)  Q[x]
+-#endif
+-
+ void loongarch_translate_init(void);
+ 
+ void loongarch_cpu_dump_state(CPUState *cpu, FILE *f, int flags);
+diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
+new file mode 100644
+index 0000000000..2f23cae7d7
+--- /dev/null
++++ b/target/loongarch/vec.h
+@@ -0,0 +1,33 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * QEMU LoongArch vector utilitites
++ *
++ * Copyright (c) 2023 Loongson Technology Corporation Limited
++ */
++
++#ifndef LOONGARCH_VEC_H
++#define LOONGARCH_VEC_H
++
++#if HOST_BIG_ENDIAN
++#define B(x)  B[(x) ^ 15]
++#define H(x)  H[(x) ^ 7]
++#define W(x)  W[(x) ^ 3]
++#define D(x)  D[(x) ^ 1]
++#define UB(x) UB[(x) ^ 15]
++#define UH(x) UH[(x) ^ 7]
++#define UW(x) UW[(x) ^ 3]
++#define UD(x) UD[(x) ^ 1]
++#define Q(x)  Q[x]
++#else
++#define B(x)  B[x]
++#define H(x)  H[x]
++#define W(x)  W[x]
++#define D(x)  D[x]
++#define UB(x) UB[x]
++#define UH(x) UH[x]
++#define UW(x) UW[x]
++#define UD(x) UD[x]
++#define Q(x)  Q[x]
++#endif /* HOST_BIG_ENDIAN */
++
++#endif /* LOONGARCH_VEC_H */
+diff --git a/linux-user/loongarch64/signal.c b/linux-user/loongarch64/signal.c
+index bb8efb1172..39572c1190 100644
+--- a/linux-user/loongarch64/signal.c
++++ b/linux-user/loongarch64/signal.c
+@@ -12,6 +12,7 @@
+ #include "linux-user/trace.h"
+ 
+ #include "target/loongarch/internals.h"
++#include "target/loongarch/vec.h"
+ 
+ /* FP context was used */
+ #define SC_USED_FP              (1 << 0)
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 65f9320e34..4d72e905aa 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -19,6 +19,7 @@
+ #include "cpu-csr.h"
+ #include "sysemu/reset.h"
+ #include "tcg/tcg.h"
++#include "vec.h"
+ 
+ const char * const regnames[32] = {
+     "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
+diff --git a/target/loongarch/gdbstub.c b/target/loongarch/gdbstub.c
+index b09804b62f..5fc2f19e96 100644
+--- a/target/loongarch/gdbstub.c
++++ b/target/loongarch/gdbstub.c
+@@ -11,6 +11,7 @@
+ #include "internals.h"
+ #include "exec/gdbstub.h"
+ #include "gdbstub/helpers.h"
++#include "vec.h"
+ 
+ uint64_t read_fcc(CPULoongArchState *env)
+ {
+diff --git a/target/loongarch/machine.c b/target/loongarch/machine.c
+index d8ac99c9a4..1c4e01d076 100644
+--- a/target/loongarch/machine.c
++++ b/target/loongarch/machine.c
+@@ -8,7 +8,7 @@
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+ #include "migration/cpu.h"
+-#include "internals.h"
++#include "vec.h"
+ 
+ static const VMStateDescription vmstate_fpu_reg = {
+     .name = "fpu_reg",
+@@ -76,6 +76,39 @@ static const VMStateDescription vmstate_lsx = {
+     },
+ };
+ 
++static const VMStateDescription vmstate_lasxh_reg = {
++    .name = "lasxh_reg",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT64(UD(2), VReg),
++        VMSTATE_UINT64(UD(3), VReg),
++        VMSTATE_END_OF_LIST()
 +    }
-+    return true;
++};
++
++#define VMSTATE_LASXH_REGS(_field, _state, _start)          \
++    VMSTATE_STRUCT_SUB_ARRAY(_field, _state, _start, 32, 0, \
++                             vmstate_lasxh_reg, fpr_t)
++
++static bool lasx_needed(void *opaque)
++{
++    LoongArchCPU *cpu = opaque;
++
++    return FIELD_EX64(cpu->env.cpucfg[2], CPUCFG2, LASX);
 +}
 +
- #else
--#define CHECK_SXE
++static const VMStateDescription vmstate_lasx = {
++    .name = "cpu/lasx",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = lasx_needed,
++    .fields = (VMStateField[]) {
++        VMSTATE_LASXH_REGS(env.fpr, LoongArchCPU, 0),
++        VMSTATE_END_OF_LIST()
++    },
++};
 +
-+static bool check_vec(DisasContext *ctx, uint32_t oprsz)
-+{
-+    return true;
-+}
-+
- #endif
- 
- static bool gen_vvvv_ptr_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
-@@ -30,7 +39,10 @@ static bool gen_vvvv_ptr_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
- static bool gen_vvvv_ptr(DisasContext *ctx, arg_vvvv *a,
-                          gen_helper_gvec_4_ptr *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvvv_ptr_vl(ctx, a, 16, fn);
- }
- 
-@@ -48,7 +60,10 @@ static bool gen_vvvv_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
- static bool gen_vvvv(DisasContext *ctx, arg_vvvv *a,
-                      gen_helper_gvec_4 *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvvv_vl(ctx, a, 16, fn);
- }
- 
-@@ -66,7 +81,10 @@ static bool gen_vvv_ptr_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
- static bool gen_vvv_ptr(DisasContext *ctx, arg_vvv *a,
-                         gen_helper_gvec_3_ptr *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvv_ptr_vl(ctx, a, 16, fn);
- }
- 
-@@ -82,7 +100,10 @@ static bool gen_vvv_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
- 
- static bool gen_vvv(DisasContext *ctx, arg_vvv *a, gen_helper_gvec_3 *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vvv_vl(ctx, a, 16, fn);
- }
- 
-@@ -99,7 +120,10 @@ static bool gen_vv_ptr_vl(DisasContext *ctx, arg_vv *a, uint32_t oprsz,
- static bool gen_vv_ptr(DisasContext *ctx, arg_vv *a,
-                        gen_helper_gvec_2_ptr *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vv_ptr_vl(ctx, a, 16, fn);
- }
- 
-@@ -114,7 +138,10 @@ static bool gen_vv_vl(DisasContext *ctx, arg_vv *a, uint32_t oprsz,
- 
- static bool gen_vv(DisasContext *ctx, arg_vv *a, gen_helper_gvec_2 *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vv_vl(ctx, a, 16, fn);
- }
- 
-@@ -130,7 +157,10 @@ static bool gen_vv_i_vl(DisasContext *ctx, arg_vv_i *a, uint32_t oprsz,
- 
- static bool gen_vv_i(DisasContext *ctx, arg_vv_i *a, gen_helper_gvec_2i *fn)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gen_vv_i_vl(ctx, a, 16, fn);
- }
- 
-@@ -140,7 +170,10 @@ static bool gen_cv(DisasContext *ctx, arg_cv *a,
-     TCGv_i32 vj = tcg_constant_i32(a->vj);
-     TCGv_i32 cd = tcg_constant_i32(a->cd);
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     func(cpu_env, cd, vj);
-     return true;
- }
-@@ -162,7 +195,10 @@ static bool gvec_vvv(DisasContext *ctx, arg_vvv *a, MemOp mop,
-                      void (*func)(unsigned, uint32_t, uint32_t,
-                                   uint32_t, uint32_t, uint32_t))
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_vvv_vl(ctx, a, 16, mop, func);
- }
- 
-@@ -184,7 +220,10 @@ static bool gvec_vv(DisasContext *ctx, arg_vv *a, MemOp mop,
-                     void (*func)(unsigned, uint32_t, uint32_t,
-                                  uint32_t, uint32_t))
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_vv_vl(ctx, a, 16, mop, func);
- }
- 
-@@ -204,7 +243,10 @@ static bool gvec_vv_i(DisasContext *ctx, arg_vv_i *a, MemOp mop,
-                       void (*func)(unsigned, uint32_t, uint32_t,
-                                    int64_t, uint32_t, uint32_t))
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_vv_i_vl(ctx, a, 16, mop, func);
- }
- 
-@@ -220,7 +262,10 @@ static bool gvec_subi_vl(DisasContext *ctx, arg_vv_i *a,
- 
- static bool gvec_subi(DisasContext *ctx, arg_vv_i *a, MemOp mop)
- {
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     return gvec_subi_vl(ctx, a, 16, mop);
- }
- 
-@@ -238,7 +283,9 @@ static bool trans_v## NAME ##_q(DisasContext *ctx, arg_vvv *a) \
-         return false;                                          \
-     }                                                          \
-                                                                \
--    CHECK_SXE;                                                 \
-+    if (!check_vec(ctx, 16)) {                                 \
-+        return true;                                           \
-+    }                                                          \
-                                                                \
-     rh = tcg_temp_new_i64();                                   \
-     rl = tcg_temp_new_i64();                                   \
-@@ -3138,7 +3185,9 @@ static bool trans_vldi(DisasContext *ctx, arg_vldi *a)
-         return false;
+ /* TLB state */
+ const VMStateDescription vmstate_tlb = {
+     .name = "cpu/tlb",
+@@ -163,6 +196,7 @@ const VMStateDescription vmstate_loongarch_cpu = {
+     .subsections = (const VMStateDescription*[]) {
+         &vmstate_fpu,
+         &vmstate_lsx,
++        &vmstate_lasx,
+         NULL
      }
+ };
+diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
+index 288727181b..7f3958a1f4 100644
+--- a/target/loongarch/translate.c
++++ b/target/loongarch/translate.c
+@@ -18,6 +18,7 @@
+ #include "fpu/softfloat.h"
+ #include "translate.h"
+ #include "internals.h"
++#include "vec.h"
  
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
+ /* Global register indices */
+ TCGv cpu_gpr[32], cpu_pc;
+diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
+index 4e10957b90..c784f98ab2 100644
+--- a/target/loongarch/vec_helper.c
++++ b/target/loongarch/vec_helper.c
+@@ -12,6 +12,7 @@
+ #include "fpu/softfloat.h"
+ #include "internals.h"
+ #include "tcg/tcg.h"
++#include "vec.h"
  
-     sel = (a->imm >> 12) & 0x1;
- 
-@@ -3168,7 +3217,9 @@ static bool trans_vandn_v(DisasContext *ctx, arg_vvv *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     vd_ofs = vec_full_offset(a->vd);
-     vj_ofs = vec_full_offset(a->vj);
-@@ -3795,7 +3846,9 @@ static bool do_cmp(DisasContext *ctx, arg_vvv *a, MemOp mop, TCGCond cond)
- {
-     uint32_t vd_ofs, vj_ofs, vk_ofs;
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     vd_ofs = vec_full_offset(a->vd);
-     vj_ofs = vec_full_offset(a->vj);
-@@ -3841,7 +3894,9 @@ static bool do_## NAME ##_s(DisasContext *ctx, arg_vv_i *a, MemOp mop) \
- {                                                                      \
-     uint32_t vd_ofs, vj_ofs;                                           \
-                                                                        \
--    CHECK_SXE;                                                         \
-+    if (!check_vec(ctx, 16)) {                                         \
-+        return true;                                                   \
-+    }                                                                  \
-                                                                        \
-     static const TCGOpcode vecop_list[] = {                            \
-         INDEX_op_cmp_vec, 0                                            \
-@@ -3890,7 +3945,9 @@ static bool do_## NAME ##_u(DisasContext *ctx, arg_vv_i *a, MemOp mop) \
- {                                                                      \
-     uint32_t vd_ofs, vj_ofs;                                           \
-                                                                        \
--    CHECK_SXE;                                                         \
-+    if (!check_vec(ctx, 16)) {                                         \
-+        return true;                                                   \
-+    }                                                                  \
-                                                                        \
-     static const TCGOpcode vecop_list[] = {                            \
-         INDEX_op_cmp_vec, 0                                            \
-@@ -3988,7 +4045,9 @@ static bool trans_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_s : gen_helper_vfcmp_c_s);
-     flags = get_fcmp_flags(a->fcond >> 1);
-@@ -4009,7 +4068,9 @@ static bool trans_vfcmp_cond_d(DisasContext *ctx, arg_vvv_fcond *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_d : gen_helper_vfcmp_c_d);
-     flags = get_fcmp_flags(a->fcond >> 1);
-@@ -4024,7 +4085,9 @@ static bool trans_vbitsel_v(DisasContext *ctx, arg_vvvv *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_gvec_bitsel(MO_64, vec_full_offset(a->vd), vec_full_offset(a->va),
-                         vec_full_offset(a->vk), vec_full_offset(a->vj),
-@@ -4050,7 +4113,9 @@ static bool trans_vbitseli_b(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_gvec_2i(vec_full_offset(a->vd), vec_full_offset(a->vj),
-                     16, ctx->vl/8, a->imm, &op);
-@@ -4073,7 +4138,10 @@ static bool trans_## NAME (DisasContext *ctx, arg_cv *a)                       \
-         return false;                                                          \
-     }                                                                          \
-                                                                                \
--    CHECK_SXE;                                                                 \
-+    if (!check_vec(ctx, 16)) {                                                 \
-+        return true;                                                           \
-+    }                                                                          \
-+                                                                               \
-     tcg_gen_or_i64(t1, al, ah);                                                \
-     tcg_gen_setcondi_i64(COND, t1, t1, 0);                                     \
-     tcg_gen_st8_tl(t1, cpu_env, offsetof(CPULoongArchState, cf[a->cd & 0x7])); \
-@@ -4101,7 +4169,10 @@ static bool trans_vinsgr2vr_b(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st8_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.B(a->imm)));
-     return true;
-@@ -4115,7 +4186,10 @@ static bool trans_vinsgr2vr_h(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st16_i64(src, cpu_env,
-                     offsetof(CPULoongArchState, fpr[a->vd].vreg.H(a->imm)));
-     return true;
-@@ -4129,7 +4203,10 @@ static bool trans_vinsgr2vr_w(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st32_i64(src, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vd].vreg.W(a->imm)));
-     return true;
-@@ -4143,7 +4220,10 @@ static bool trans_vinsgr2vr_d(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_st_i64(src, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vd].vreg.D(a->imm)));
-     return true;
-@@ -4157,7 +4237,10 @@ static bool trans_vpickve2gr_b(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld8s_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
-@@ -4171,7 +4254,10 @@ static bool trans_vpickve2gr_h(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld16s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
-@@ -4185,7 +4271,10 @@ static bool trans_vpickve2gr_w(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld32s_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
-@@ -4199,7 +4288,10 @@ static bool trans_vpickve2gr_d(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
-@@ -4213,7 +4305,10 @@ static bool trans_vpickve2gr_bu(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld8u_i64(dst, cpu_env,
-                      offsetof(CPULoongArchState, fpr[a->vj].vreg.B(a->imm)));
-     return true;
-@@ -4227,7 +4322,10 @@ static bool trans_vpickve2gr_hu(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld16u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.H(a->imm)));
-     return true;
-@@ -4241,7 +4339,10 @@ static bool trans_vpickve2gr_wu(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld32u_i64(dst, cpu_env,
-                       offsetof(CPULoongArchState, fpr[a->vj].vreg.W(a->imm)));
-     return true;
-@@ -4255,7 +4356,10 @@ static bool trans_vpickve2gr_du(DisasContext *ctx, arg_rv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_ld_i64(dst, cpu_env,
-                    offsetof(CPULoongArchState, fpr[a->vj].vreg.D(a->imm)));
-     return true;
-@@ -4269,7 +4373,9 @@ static bool gvec_dup(DisasContext *ctx, arg_vr *a, MemOp mop)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd),
-                          16, ctx->vl/8, src);
-@@ -4287,7 +4393,10 @@ static bool trans_vreplvei_b(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_8,vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.B((a->imm))),
-@@ -4301,7 +4410,10 @@ static bool trans_vreplvei_h(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_16, vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.H((a->imm))),
-@@ -4314,7 +4426,10 @@ static bool trans_vreplvei_w(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_32, vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.W((a->imm))),
-@@ -4327,7 +4442,10 @@ static bool trans_vreplvei_d(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_dup_mem(MO_64, vec_full_offset(a->vd),
-                          offsetof(CPULoongArchState,
-                                   fpr[a->vj].vreg.D((a->imm))),
-@@ -4346,7 +4464,9 @@ static bool gen_vreplve(DisasContext *ctx, arg_vvr *a, int vece, int bit,
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     tcg_gen_andi_i64(t0, gpr_src(ctx, a->rk, EXT_NONE), (LSX_LEN/bit) -1);
-     tcg_gen_shli_i64(t0, t0, vece);
-@@ -4376,7 +4496,9 @@ static bool trans_vbsll_v(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     desthigh = tcg_temp_new_i64();
-     destlow = tcg_temp_new_i64();
-@@ -4410,7 +4532,9 @@ static bool trans_vbsrl_v(DisasContext *ctx, arg_vv_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     desthigh = tcg_temp_new_i64();
-     destlow = tcg_temp_new_i64();
-@@ -4488,7 +4612,9 @@ static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     addr = gpr_src(ctx, a->rj, EXT_NONE);
-     val = tcg_temp_new_i128();
-@@ -4515,7 +4641,9 @@ static bool trans_vst(DisasContext *ctx, arg_vr_i *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     addr = gpr_src(ctx, a->rj, EXT_NONE);
-     val = tcg_temp_new_i128();
-@@ -4542,7 +4670,9 @@ static bool trans_vldx(DisasContext *ctx, arg_vrr *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     src2 = gpr_src(ctx, a->rk, EXT_NONE);
-@@ -4569,7 +4699,9 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
-         return false;
-     }
- 
--    CHECK_SXE;
-+    if (!check_vec(ctx, 16)) {
-+        return true;
-+    }
- 
-     src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     src2 = gpr_src(ctx, a->rk, EXT_NONE);
-@@ -4596,7 +4728,9 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
-         return false;                                                     \
-     }                                                                     \
-                                                                           \
--    CHECK_SXE;                                                            \
-+    if (!check_vec(ctx, 16)) {                                            \
-+        return true;                                                      \
-+    }                                                                     \
-                                                                           \
-     addr = gpr_src(ctx, a->rj, EXT_NONE);                                 \
-     val = tcg_temp_new_i64();                                             \
-@@ -4624,7 +4758,9 @@ static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
-         return false;                                                        \
-     }                                                                        \
-                                                                              \
--    CHECK_SXE;                                                               \
-+    if (!check_vec(ctx, 16)) {                                               \
-+        return true;                                                         \
-+    }                                                                        \
-                                                                              \
-     addr = gpr_src(ctx, a->rj, EXT_NONE);                                    \
-     val = tcg_temp_new_i64();                                                \
+ #define DO_ADD(a, b)  (a + b)
+ #define DO_SUB(a, b)  (a - b)
 -- 
 2.39.1
 
