@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A340C79F7F9
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B048D79F808
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:30:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgc4R-00037w-KS; Wed, 13 Sep 2023 22:27:07 -0400
+	id 1qgc4T-000384-Bb; Wed, 13 Sep 2023 22:27:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qgc4O-00036n-4j
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:04 -0400
+ id 1qgc4M-00036V-V3
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:03 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qgc4J-0004ps-N6
- for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:03 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qgc4J-0004pt-MG
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:02 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8BxIvBsbwJlTvgmAA--.9199S3;
+ by gateway (Coremail) with SMTP id _____8BxHOtsbwJlUfgmAA--.5142S3;
  Thu, 14 Sep 2023 10:26:52 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxvdxmbwJlJ+UDAA--.7298S3; 
- Thu, 14 Sep 2023 10:26:50 +0800 (CST)
+ AQAAf8CxvdxmbwJlJ+UDAA--.7298S4; 
+ Thu, 14 Sep 2023 10:26:52 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	maobibo@loongson.cn
-Subject: [PATCH v6 01/57] target/loongarch: Renamed lsx*.c to vec* .c
-Date: Thu, 14 Sep 2023 10:25:49 +0800
-Message-Id: <20230914022645.1151356-2-gaosong@loongson.cn>
+Subject: [PATCH v6 02/57] target/loongarch: Implement gvec_*_vl functions
+Date: Thu, 14 Sep 2023 10:25:50 +0800
+Message-Id: <20230914022645.1151356-3-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230914022645.1151356-1-gaosong@loongson.cn>
 References: <20230914022645.1151356-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxvdxmbwJlJ+UDAA--.7298S3
+X-CM-TRANSID: AQAAf8CxvdxmbwJlJ+UDAA--.7298S4
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,76 +63,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Renamed lsx_helper.c to vec_helper.c and trans_lsx.c.inc to trans_vec.c.inc
-So LASX can used them.
+Create gvec_*_vl functions in order to hide oprsz.
+This is used by gvec_v* functions for oprsz 16,
+and will be used by gvec_x* functions for oprsz 32.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/loongarch/translate.c                                    | 2 +-
- target/loongarch/{lsx_helper.c => vec_helper.c}                 | 2 +-
- .../loongarch/insn_trans/{trans_lsx.c.inc => trans_vec.c.inc}   | 2 +-
- target/loongarch/meson.build                                    | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
- rename target/loongarch/{lsx_helper.c => vec_helper.c} (99%)
- rename target/loongarch/insn_trans/{trans_lsx.c.inc => trans_vec.c.inc} (99%)
+ target/loongarch/insn_trans/trans_vec.c.inc | 68 +++++++++++++--------
+ 1 file changed, 44 insertions(+), 24 deletions(-)
 
-diff --git a/target/loongarch/translate.c b/target/loongarch/translate.c
-index fd393ed76d..288727181b 100644
---- a/target/loongarch/translate.c
-+++ b/target/loongarch/translate.c
-@@ -261,7 +261,7 @@ static uint64_t make_address_pc(DisasContext *ctx, uint64_t addr)
- #include "insn_trans/trans_fmemory.c.inc"
- #include "insn_trans/trans_branch.c.inc"
- #include "insn_trans/trans_privileged.c.inc"
--#include "insn_trans/trans_lsx.c.inc"
-+#include "insn_trans/trans_vec.c.inc"
- 
- static void loongarch_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- {
-diff --git a/target/loongarch/lsx_helper.c b/target/loongarch/vec_helper.c
-similarity index 99%
-rename from target/loongarch/lsx_helper.c
-rename to target/loongarch/vec_helper.c
-index 9571f0aef0..73f0974744 100644
---- a/target/loongarch/lsx_helper.c
-+++ b/target/loongarch/vec_helper.c
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- /*
-- * QEMU LoongArch LSX helper functions.
-+ * QEMU LoongArch vector helper functions.
-  *
-  * Copyright (c) 2022-2023 Loongson Technology Corporation Limited
-  */
-diff --git a/target/loongarch/insn_trans/trans_lsx.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-similarity index 99%
-rename from target/loongarch/insn_trans/trans_lsx.c.inc
-rename to target/loongarch/insn_trans/trans_vec.c.inc
-index 5fbf2718f7..aed5bac5bc 100644
---- a/target/loongarch/insn_trans/trans_lsx.c.inc
+diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
+index aed5bac5bc..aeeb2df41c 100644
+--- a/target/loongarch/insn_trans/trans_vec.c.inc
 +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -1,6 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- /*
-- * LSX translate functions
-+ * LoongArch vector translate functions
-  * Copyright (c) 2022-2023 Loongson Technology Corporation Limited
-  */
+@@ -76,34 +76,58 @@ static bool gen_cv(DisasContext *ctx, arg_cv *a,
+     return true;
+ }
  
-diff --git a/target/loongarch/meson.build b/target/loongarch/meson.build
-index b7a27df5a9..7fbf045a5d 100644
---- a/target/loongarch/meson.build
-+++ b/target/loongarch/meson.build
-@@ -11,7 +11,7 @@ loongarch_tcg_ss.add(files(
-   'op_helper.c',
-   'translate.c',
-   'gdbstub.c',
--  'lsx_helper.c',
-+  'vec_helper.c',
- ))
- loongarch_tcg_ss.add(zlib)
++static bool gvec_vvv_vl(DisasContext *ctx, arg_vvv *a,
++                        uint32_t oprsz, MemOp mop,
++                        void (*func)(unsigned, uint32_t, uint32_t,
++                                     uint32_t, uint32_t, uint32_t))
++{
++    uint32_t vd_ofs = vec_full_offset(a->vd);
++    uint32_t vj_ofs = vec_full_offset(a->vj);
++    uint32_t vk_ofs = vec_full_offset(a->vk);
++
++    func(mop, vd_ofs, vj_ofs, vk_ofs, oprsz, ctx->vl / 8);
++    return true;
++}
++
+ static bool gvec_vvv(DisasContext *ctx, arg_vvv *a, MemOp mop,
+                      void (*func)(unsigned, uint32_t, uint32_t,
+                                   uint32_t, uint32_t, uint32_t))
+ {
+-    uint32_t vd_ofs, vj_ofs, vk_ofs;
+-
+     CHECK_SXE;
++    return gvec_vvv_vl(ctx, a, 16, mop, func);
++}
  
+-    vd_ofs = vec_full_offset(a->vd);
+-    vj_ofs = vec_full_offset(a->vj);
+-    vk_ofs = vec_full_offset(a->vk);
+ 
+-    func(mop, vd_ofs, vj_ofs, vk_ofs, 16, ctx->vl/8);
++static bool gvec_vv_vl(DisasContext *ctx, arg_vv *a,
++                       uint32_t oprsz, MemOp mop,
++                       void (*func)(unsigned, uint32_t, uint32_t,
++                                    uint32_t, uint32_t))
++{
++    uint32_t vd_ofs = vec_full_offset(a->vd);
++    uint32_t vj_ofs = vec_full_offset(a->vj);
++
++    func(mop, vd_ofs, vj_ofs, oprsz, ctx->vl / 8);
+     return true;
+ }
+ 
++
+ static bool gvec_vv(DisasContext *ctx, arg_vv *a, MemOp mop,
+                     void (*func)(unsigned, uint32_t, uint32_t,
+                                  uint32_t, uint32_t))
+ {
+-    uint32_t vd_ofs, vj_ofs;
+-
+     CHECK_SXE;
++    return gvec_vv_vl(ctx, a, 16, mop, func);
++}
+ 
+-    vd_ofs = vec_full_offset(a->vd);
+-    vj_ofs = vec_full_offset(a->vj);
++static bool gvec_vv_i_vl(DisasContext *ctx, arg_vv_i *a,
++                         uint32_t oprsz, MemOp mop,
++                         void (*func)(unsigned, uint32_t, uint32_t,
++                                      int64_t, uint32_t, uint32_t))
++{
++    uint32_t vd_ofs = vec_full_offset(a->vd);
++    uint32_t vj_ofs = vec_full_offset(a->vj);
+ 
+-    func(mop, vd_ofs, vj_ofs, 16, ctx->vl/8);
++    func(mop, vd_ofs, vj_ofs, a->imm, oprsz, ctx->vl / 8);
+     return true;
+ }
+ 
+@@ -111,28 +135,24 @@ static bool gvec_vv_i(DisasContext *ctx, arg_vv_i *a, MemOp mop,
+                       void (*func)(unsigned, uint32_t, uint32_t,
+                                    int64_t, uint32_t, uint32_t))
+ {
+-    uint32_t vd_ofs, vj_ofs;
+-
+     CHECK_SXE;
++    return gvec_vv_i_vl(ctx, a, 16, mop, func);
++}
+ 
+-    vd_ofs = vec_full_offset(a->vd);
+-    vj_ofs = vec_full_offset(a->vj);
++static bool gvec_subi_vl(DisasContext *ctx, arg_vv_i *a,
++                         uint32_t oprsz, MemOp mop)
++{
++    uint32_t vd_ofs = vec_full_offset(a->vd);
++    uint32_t vj_ofs = vec_full_offset(a->vj);
+ 
+-    func(mop, vd_ofs, vj_ofs, a->imm , 16, ctx->vl/8);
++    tcg_gen_gvec_addi(mop, vd_ofs, vj_ofs, -a->imm, oprsz, ctx->vl / 8);
+     return true;
+ }
+ 
+ static bool gvec_subi(DisasContext *ctx, arg_vv_i *a, MemOp mop)
+ {
+-    uint32_t vd_ofs, vj_ofs;
+-
+     CHECK_SXE;
+-
+-    vd_ofs = vec_full_offset(a->vd);
+-    vj_ofs = vec_full_offset(a->vj);
+-
+-    tcg_gen_gvec_addi(mop, vd_ofs, vj_ofs, -a->imm, 16, ctx->vl/8);
+-    return true;
++    return gvec_subi_vl(ctx, a, 16, mop);
+ }
+ 
+ TRANS(vadd_b, LSX, gvec_vvv, MO_8, tcg_gen_gvec_add)
 -- 
 2.39.1
 
