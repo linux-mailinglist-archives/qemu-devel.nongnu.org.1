@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B337A0A75
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 18:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F307A0A7C
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 18:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgosj-00085S-EV; Thu, 14 Sep 2023 12:07:53 -0400
+	id 1qgovQ-0002iR-ER; Thu, 14 Sep 2023 12:10:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgosi-00085K-5j
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:07:52 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgovI-0002gy-3w
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:10:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgosg-0003Oz-Kg
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:07:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qgovF-00041J-3Q
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 12:10:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694707669;
+ s=mimecast20190719; t=1694707827;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Az8ZxPLm0rmkC1LTrowXFJYbH4Umkg0WKL0/WVd4X9A=;
- b=GRtJMiKnSQAkEBbmgL3zUypCZ0QFtrVCd973/X7i4Q1kk1Oz3ApHqERkvOzqc5DTlUzAho
- nJXIXTDLuksX/58Vt2MAhk5mafv5a9mB4RTnufjX4A7N81jWGxz/2U/dHHiLEz9JP0rlRc
- MwD2nqDyOUB2XQbPc9N42lHNyqEcBKU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YYnwQm6o9VtmknL+4X1Q0U1hzeJNypIOW9L9vbJFV4I=;
+ b=b3H8WtTfkSRzmiJeiAHfYKzrRjTAPxrEWR6WVBpHKCwH0tQX4g2GhlGBYAGezrOiuCLjL4
+ cf1ZrsbZ5t0agugvO1eGPyKOzVwugmseMv4SsSm2YEB3h5npO0oX9XSrkbDNIIdAqFj+CF
+ 8eZOfuwu9py7s2/AFKDjGpScdQBvydA=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-hYDmuHuhNDe2qIzP3qdXIw-1; Thu, 14 Sep 2023 12:07:47 -0400
-X-MC-Unique: hYDmuHuhNDe2qIzP3qdXIw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-31c5cc3b512so754404f8f.1
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 09:07:47 -0700 (PDT)
+ us-mta-394-oxWaYRB6PACQSVK1AKgdTg-1; Thu, 14 Sep 2023 12:10:24 -0400
+X-MC-Unique: oxWaYRB6PACQSVK1AKgdTg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40474e7323dso3966705e9.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 09:10:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694707666; x=1695312466;
+ d=1e100.net; s=20230601; t=1694707823; x=1695312623;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Az8ZxPLm0rmkC1LTrowXFJYbH4Umkg0WKL0/WVd4X9A=;
- b=lhjJxODA19CydwXq3Tss351vhsoNzWDFSTA5JSYYaNH+WDMUlX1UYR/VaCPIMJLXIa
- sqfWr30gfxb1u375kOh52BjC4hcfbURxaVVe9jhh+LsHGW0hKEFejFIrji9aVP4HmVkE
- uglWRyk4Awe62c/OPjmaDtriWjEp5/Y99hWMv0RafkyMp+pUhtCsyZ7XA0+dMcN+PifE
- 3Z/OS02tkmb4i/YTYZpSKGgcxyl4nrJpsWqo9rIqC/JM6kC5oaHGoiT+1w58nys7KoLu
- 2IZSXqlsHQwn2BfcxmWf9Tg+Tk5+/BYduiNMTF8mApYiCFL4/NZflntdy68em3A5kNIE
- xGAg==
-X-Gm-Message-State: AOJu0YzgJH1XJID35e3FDL3phD2RkRSHZNqBE6TsGDdFRHgNa9yemHkW
- yvV2qVlFZ3WpP4lvdgcA8y/tWhVZx7tjLz6pxJTvPs8ib/fQlXLpiAvGcIsbcNlMtH424iiJ4HP
- 7c0cBSu5mRK/M8AU=
-X-Received: by 2002:a5d:680c:0:b0:31a:ed75:75d9 with SMTP id
- w12-20020a5d680c000000b0031aed7575d9mr4997327wru.16.1694707666653; 
- Thu, 14 Sep 2023 09:07:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYbF2aVsB9xQ/6LrTpbd6U2Rn7OeNJNcHO6I7qE59fuCj1nHQkyaxyjnA+VagttQUGbuwPYQ==
-X-Received: by 2002:a5d:680c:0:b0:31a:ed75:75d9 with SMTP id
- w12-20020a5d680c000000b0031aed7575d9mr4997301wru.16.1694707666310; 
- Thu, 14 Sep 2023 09:07:46 -0700 (PDT)
+ bh=YYnwQm6o9VtmknL+4X1Q0U1hzeJNypIOW9L9vbJFV4I=;
+ b=XN6xzmyGr/1Pa1sI2ab9hR7A2TCkY7Gw1DZS9MqD4su64WhYqnjJE5ED43WrBiq1eC
+ 75DJ4cyrPO6cRszg7auJmwiogfkPPueaxcdVKz2nBbq17REv7cQR1Ke09kxNY6gic/mc
+ UFMEJWx657mSJVO3cdJxhO5tUw8ejaefJzYwf5x4DwGscOnugVVyr4BDUPj2BH4chQmg
+ X1RdnvjBxGf2VrRDajjy+VAfHVArMrm0py3UTZ+e06IW/0j0fzGPCqOJB+0P1QvwVCfm
+ lKNaOp1YY3OA4xhiIvsso18oIPoxPopZ1o5U0axsUqViV+OFH8EGjmO6iqjUSaGzfWI1
+ ZDQg==
+X-Gm-Message-State: AOJu0YzoaGh9jffEeA2r6U81fEIMDymdBSaCsEDxWwwUlnZcGr46a46u
+ 2upjLJ+13+2IH7EP6feFiBZEHH1rXfaXNsfOuj+GH5dU5yT+R2IP33vQDpNzOt306HW4aysXofZ
+ yEFDKq8Mo1puZqsrpieQGhc0gyA==
+X-Received: by 2002:a05:600c:2159:b0:402:f503:6d1b with SMTP id
+ v25-20020a05600c215900b00402f5036d1bmr5146670wml.0.1694707823352; 
+ Thu, 14 Sep 2023 09:10:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHN1NGFsNxrjeQxPKrRgJbnercpXgb/HtPnO9vDxCtWCvr34Tn0hFTfKyXq7B2C0toIa0/TxA==
+X-Received: by 2002:a05:600c:2159:b0:402:f503:6d1b with SMTP id
+ v25-20020a05600c215900b00402f5036d1bmr5146658wml.0.1694707823079; 
+ Thu, 14 Sep 2023 09:10:23 -0700 (PDT)
 Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de.
  [109.43.179.28]) by smtp.gmail.com with ESMTPSA id
- r4-20020adfdc84000000b0031753073abcsm2117881wrj.36.2023.09.14.09.07.44
+ l12-20020a1ced0c000000b003fed4fa0c19sm5208550wmh.5.2023.09.14.09.10.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 09:07:45 -0700 (PDT)
-Message-ID: <9b8cad7b-8daf-caf5-2c4b-b465abee191f@redhat.com>
-Date: Thu, 14 Sep 2023 18:07:44 +0200
+ Thu, 14 Sep 2023 09:10:22 -0700 (PDT)
+Message-ID: <00b3aa99-8ad6-27e2-2002-208805ee0196@redhat.com>
+Date: Thu, 14 Sep 2023 18:10:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 2/9] gitlab: fix typo/spelling in comments
+Subject: Re: [PATCH 1/9] tests: update Debian images to Bookworm
 Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  qemu-devel@nongnu.org
@@ -84,9 +84,9 @@ Cc: Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
  Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
  <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
 References: <20230914155422.426639-1-alex.bennee@linaro.org>
- <20230914155422.426639-3-alex.bennee@linaro.org>
+ <20230914155422.426639-2-alex.bennee@linaro.org>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230914155422.426639-3-alex.bennee@linaro.org>
+In-Reply-To: <20230914155422.426639-2-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -115,25 +115,28 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14/09/2023 17.54, Alex Bennée wrote:
+> Bookworm has been out a while now. Time to update our containers to
+> the current stable. This requires the latest lcitool repo so update
+> the sub-module too.
+> 
+> For some reason the MIPs containers won't build so skip those for now.
+> 
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   .gitlab-ci.d/base.yml | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/.gitlab-ci.d/base.yml b/.gitlab-ci.d/base.yml
-> index 188a770799..ef173a34e6 100644
-> --- a/.gitlab-ci.d/base.yml
-> +++ b/.gitlab-ci.d/base.yml
-> @@ -68,7 +68,7 @@ variables:
->   
->       #############################################################
->       # Stage 2: fine tune execution of jobs in specific scenarios
-> -    # where the catch all logic is inapprorpaite
-> +    # where the catch all logic is inappropriate
->       #############################################################
->   
->       # Optional jobs should not be run unless manually triggered
+>   .../dockerfiles/debian-amd64-cross.docker      | 10 +++-------
+>   tests/docker/dockerfiles/debian-amd64.docker   | 10 +++-------
+>   .../dockerfiles/debian-arm64-cross.docker      | 10 +++-------
+>   .../dockerfiles/debian-armel-cross.docker      | 10 +++-------
+>   .../dockerfiles/debian-armhf-cross.docker      | 10 +++-------
+>   .../dockerfiles/debian-ppc64el-cross.docker    | 10 +++-------
+>   .../dockerfiles/debian-s390x-cross.docker      | 10 +++-------
+>   tests/docker/dockerfiles/ubuntu2004.docker     |  2 +-
+>   tests/docker/dockerfiles/ubuntu2204.docker     |  2 +-
+>   tests/lcitool/libvirt-ci                       |  2 +-
+>   tests/lcitool/refresh                          | 18 +++++++++---------
+>   11 files changed, 33 insertions(+), 61 deletions(-)
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
 
