@@ -2,50 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD45B7A01E1
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 12:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF657A01EA
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 12:48:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgjpE-0001fl-67; Thu, 14 Sep 2023 06:43:56 -0400
+	id 1qgjsn-0003eB-Lu; Thu, 14 Sep 2023 06:47:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjpB-0001fc-Ki
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:43:54 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjsl-0003dy-00
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:47:35 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjp9-00075z-9K
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:43:52 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjsj-0008IB-K9
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:47:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
- Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
+ s=dkim; h=In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:
+ Date:Message-ID:Content-Type:Sender:Content-Transfer-Encoding:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=ktxnxQxZya5r/Zr3whX9cTeQDLL6iBiQ0HFkssnlDic=; b=U5rdlYgsGAAoFCtdJt0lIAoYZP
- /LZ22JEEwB3O1SRp4GPWQP5ijTC0328mPv4GcMGLM8BloCJhIUcu1at8clYIXPEcaKuDBG7uYuFa1
- b6zRqMB1jF7bUj3AVgt+U71zLD5zYKqWIpisNQaeW7rUfpke2EBgcZv5RCTMVvg9AxqE=;
-Message-ID: <70c7020f-a6e4-4bea-b340-bfc10b9423d3@rev.ng>
-Date: Thu, 14 Sep 2023 12:43:36 +0200
+ bh=qQvUFsgww0dtweHaGTRHggmwfQNja6JGiVdvKbfZORY=; b=uFqpjy2vN4Q1Os5KSnQfXhWyWQ
+ I08+VlRMS7/cSF80klQf6x04xIMsHe/AnMQsH6LKLWLBD3qxipVyTcvb9iQ7ruCLzbAIABS1MpaSV
+ rHt8M+b6cJzQk7P6Oly25I0P79/s76mOixW+zln1iNYXC83EOgqnj8z9vonUeznz5cd0=;
+Content-Type: multipart/alternative;
+ boundary="------------g2zsXb2F0P4vfMpJ1u1UojH5"
+Message-ID: <45698808-7668-4784-8c09-e059eccfbdd8@rev.ng>
+Date: Thu, 14 Sep 2023 12:47:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/24] tcg: Remove TCGContext.tlb_fast_offset
+Subject: Re: [PATCH v2 02/24] accel/tcg: Move CPUTLB definitions from
+ cpu-defs.h
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: ale@rev.ng, philmd@linaro.org
 References: <20230914024435.1381329-1-richard.henderson@linaro.org>
- <20230914024435.1381329-17-richard.henderson@linaro.org>
+ <20230914024435.1381329-3-richard.henderson@linaro.org>
 Organization: rev.ng
-In-Reply-To: <20230914024435.1381329-17-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20230914024435.1381329-3-richard.henderson@linaro.org>
 Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,16 +65,52 @@ From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+This is a multi-part message in MIME format.
+--------------g2zsXb2F0P4vfMpJ1u1UojH5
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
 
 On 9/14/23 04:44, Richard Henderson wrote:
-> Now that there is no padding between CPUNegativeOffsetState
-> and CPUArchState, this value is constant across all targets.
+> Accept that we will consume space in CPUState for CONFIG_USER_ONLY,
+> since we cannot test CONFIG_SOFTMMU within hw/core/cpu.h.
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Richard Henderson<richard.henderson@linaro.org>
 > ---
->   include/tcg/tcg.h         |  1 -
->   accel/tcg/translate-all.c |  2 --
->   tcg/tcg.c                 | 13 +++++++------
->   3 files changed, 7 insertions(+), 9 deletions(-)
+>   include/exec/cpu-defs.h | 150 ----------------------------------------
+>   include/hw/core/cpu.h   | 141 +++++++++++++++++++++++++++++++++++++
+>   2 files changed, 141 insertions(+), 150 deletions(-)
 Reviewed-by: Anton Johansson <anjo@rev.ng>
+--------------g2zsXb2F0P4vfMpJ1u1UojH5
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 9/14/23 04:44, Richard Henderson
+      wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:20230914024435.1381329-3-richard.henderson@linaro.org">
+      <pre class="moz-quote-pre" wrap="">Accept that we will consume space in CPUState for CONFIG_USER_ONLY,
+since we cannot test CONFIG_SOFTMMU within hw/core/cpu.h.
+
+Signed-off-by: Richard Henderson <a class="moz-txt-link-rfc2396E" href="mailto:richard.henderson@linaro.org">&lt;richard.henderson@linaro.org&gt;</a>
+---
+ include/exec/cpu-defs.h | 150 ----------------------------------------
+ include/hw/core/cpu.h   | 141 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 141 insertions(+), 150 deletions(-)
+</pre>
+    </blockquote>
+    Reviewed-by: Anton Johansson <a class="moz-txt-link-rfc2396E" href="mailto:anjo@rev.ng">&lt;anjo@rev.ng&gt;</a><br>
+  </body>
+</html>
+
+--------------g2zsXb2F0P4vfMpJ1u1UojH5--
 
