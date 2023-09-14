@@ -2,81 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616D17A0F20
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA9E7A0F5E
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:58:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgtAS-000361-LX; Thu, 14 Sep 2023 16:42:28 -0400
+	id 1qgtOK-0007Wj-Nb; Thu, 14 Sep 2023 16:56:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgtAD-00035S-6X
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:13 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1qgtOI-0007Vu-Ls; Thu, 14 Sep 2023 16:56:46 -0400
+Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgtAB-00063I-1k
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:12 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-9a9d6b98845so559136866b.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:42:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1qgtOG-0001nZ-Vg; Thu, 14 Sep 2023 16:56:46 -0400
+Received: by mail-oi1-x22f.google.com with SMTP id
+ 5614622812f47-3acac5d0b91so633957b6e.0; 
+ Thu, 14 Sep 2023 13:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694724129; x=1695328929; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=MUMu/RjMRNg/e06IUEJmt9iKdjw1m+hGQfjqbaKgZlE=;
- b=QbJUkOlfQBtKSf4UJEzmm6zPavCcgC9XhUWK8f7OyfUiJImewnWL1WkCygSrlEgkPC
- o5VKvy8tYT/haTxJfs5VeIbGHY/mGMcdBMP4f3yhqsiE61ap8uRyZXCaJKZ68Eh+bjC/
- TIfvg9fPO96Y1TqPB+xkKiro/zJn2+ZWCAjVM/tyz+R+R2MOuxUgJFd1Xz8k4Mii3UHw
- BTTSH/S120aZyIOaqu53zz43b+TReh6XpnqFcmhLqinAOQJjn0vTWvkR56Yc8n3gjzb0
- M406HXxv6PCOH/FeeGgnz1Oqthtu41LetcAJ7+VYVBsSDMMR4oF/7W/4yVKBUveaGyQ5
- /xoA==
+ d=gmail.com; s=20221208; t=1694725002; x=1695329802; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yH///efoKwzBbqbqbKoqlNogfct5RTcSS36xjQi8MoA=;
+ b=jKXh6q0F3L2sTcZfisU28b4NZaDxRoD+CMmWTUnPH7IWT1QfScfjJodLvarIxdOgXe
+ JsBZSYivljKY6mqNUt2FD4djzwYSVmH2GACI46N0VrLk6J0ZlP9xtJQYF8aWcNA9Wyn/
+ 1m89FXWoZRiRcXy3t5ctLDkV+9w9Wp1yIg5sOtwdMX3Rm4whJOo7o0JqJm54AtrLCI4o
+ HmINZmCvE59+rbynsxe9LLNset89wYXGCabDR2cbBuJOmY1QJ+s36F9r6NYijNd6o9hG
+ mlP0IkyxXuJdfnm0jDiJvXJnKBzuRs3NRajyNvO/FQq03BqLXmIA0dvEmDcQ6/w+q9vx
+ 5ckg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694724129; x=1695328929;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MUMu/RjMRNg/e06IUEJmt9iKdjw1m+hGQfjqbaKgZlE=;
- b=VAPh95Hl1BHuPoS4fgDVGq3tzdb+bni/flyDjMCVVYb9dx/maecb4FbRi7FXyhpfjb
- kogdN0lqODlWq2F+bb+yORXAMP4tRuiOfnyRn1kFtOIsIdj/1tClGCi8WRBm9qb51sLx
- w9NV1NSV3Gr4XeXNQg0Rl+uNGit2U6emIm+00JuQLVHcoqGbzr1bC4iYGcRo1q6Hez6Y
- q04qQ2piVGBoUzE5XV3/2m9eH+wdJzcOl2Ut9SSKfqC99OGIhLfNHc/LpViKv8KM3vcD
- BKdeJM1GlpyXbUYj5gCHKwPMeokSe39b959lUHveT390krYkkfnL4FYkWlW3lOzYqQNE
- wFfw==
-X-Gm-Message-State: AOJu0Yw6Pl14xvskqphUQjaZ4jA8a+UUrstBt9JEa0gfDCrD3SQ1Qmnm
- Pi9VHOfO8Bd/rPpVtQvCJuVmOLukqVttQATlNoM=
-X-Google-Smtp-Source: AGHT+IG8AXEUJLJOqsbBEoGfVk8a54E//KT3I8GELjDecfQYFou9+U0+3oXd+C9x7FO3IyNL+rM4Dw==
-X-Received: by 2002:a17:906:73cc:b0:9a9:f0e6:904e with SMTP id
- n12-20020a17090673cc00b009a9f0e6904emr4139944ejl.16.1694724129113; 
- Thu, 14 Sep 2023 13:42:09 -0700 (PDT)
-Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
+ d=1e100.net; s=20230601; t=1694725002; x=1695329802;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=yH///efoKwzBbqbqbKoqlNogfct5RTcSS36xjQi8MoA=;
+ b=WiIt3H0+D8bEO6EticrA1kwr5XZr0VhRnO5stH8vorR4BcpW/qHnW/uh8QoOZc/2pr
+ yg359jI+2Vazw7wQe/rNWJP+vAEz5t/3rqSXz1ALTPLePs22deBaH+hXclUSm3LK8Ktz
+ XaKl8ydlVvQULPlZ83+bvxOOcJy/TmGMbyY7VlpSyE66x9TMVF+WHS/bsyA5ICly80lq
+ nKLUxRVRfEH/b7Cne/NSBxhUQZCTftfZAT7rtj+ll8BXH3kjM8RclZL0CIpuzEDOhbXA
+ b/WuYE7jq10aPUw1xR+Z1sllareiZVe1IiwPMX2ULAfPr59VNrfRPx0jTiBRXtxoCeDK
+ XyPQ==
+X-Gm-Message-State: AOJu0Yzn+NiBTn6PavpIXT8mwbzQ+O8VdRDViwcS2mSNkKfMiXBJXsAV
+ aGtFB02KSZxqnvGkfxiHxQ==
+X-Google-Smtp-Source: AGHT+IFr1Ew0S7O3Qaj/lqtQY/yH93GtnMOhrXGXCtqd2ocHwjLsy2hc4v7BcHu8LpfBUBGxsGmSDw==
+X-Received: by 2002:a05:6808:d5:b0:3a8:ccf0:1a6d with SMTP id
+ t21-20020a05680800d500b003a8ccf01a6dmr6768163oic.52.1694725002497; 
+ Thu, 14 Sep 2023 13:56:42 -0700 (PDT)
+Received: from serve.minyard.net (serve.minyard.net. [2001:470:b8f6:1b::1])
  by smtp.gmail.com with ESMTPSA id
- g21-20020a170906595500b00992f2befcbcsm1477519ejr.180.2023.09.14.13.42.07
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 14 Sep 2023 13:42:08 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Fran=C3=A7ois=20Revol?= <revol@free.fr>,
- Michael Ellerman <mpe@ellerman.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- Stefan Agner <stefan@agner.ch>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] pc-bios/canyonlands.dts: Fix some DeviceTree warnings
-Date: Thu, 14 Sep 2023 22:42:05 +0200
-Message-ID: <20230914204206.79351-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ fa12-20020a0568082a4c00b003a4243d034dsm977047oib.17.2023.09.14.13.56.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Sep 2023 13:56:41 -0700 (PDT)
+Received: from mail.minyard.net (unknown
+ [IPv6:2001:470:b8f6:1b:82e2:1f7b:b4e5:7826])
+ by serve.minyard.net (Postfix) with ESMTPSA id E4678180108;
+ Thu, 14 Sep 2023 20:56:40 +0000 (UTC)
+Date: Thu, 14 Sep 2023 15:56:39 -0500
+From: Corey Minyard <minyard@acm.org>
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
+ Lior Weintraub <liorw@pliops.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Matt Johnston <matt@codeconstruct.com.au>,
+ Peter Delevoryas <peter@pjd.dev>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: Re: [PATCH v6 1/3] hw/i2c: add smbus pec utility function
+Message-ID: <ZQNzh6vL1HtTARMj@mail.minyard.net>
+References: <20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com>
+ <20230914-nmi-i2c-v6-1-11bbb4f74d18@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230914-nmi-i2c-v6-1-11bbb4f74d18@samsung.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
+ envelope-from=tcminyard@gmail.com; helo=mail-oi1-x22f.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,82 +101,81 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: minyard@acm.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-canyonlands.dts was imported in 2018, in commit 4b387f9ee1
-("ppc: Add aCube Sam460ex board"). The file content is based
-on Linux file arch/powerpc/boot/dts/canyonlands.dts from
-commit 5edc2aae16bc. Then Linux added 2 commits on top:
-- 86bc917d2ac1 ("powerpc/boot/dts: Fix dtc "pciex" warnings")
-- eca213152a36 ("powerpc/4xx: Complete removal of MSI support")
+On Thu, Sep 14, 2023 at 11:53:41AM +0200, Klaus Jensen wrote:
+> From: Klaus Jensen <k.jensen@samsung.com>
+> 
+> Add i2c_smbus_pec() to calculate the SMBus Packet Error Code for a
+> message.
 
-Backport the same commits in order to fix some of the following
-warnings which started to appear since commit 6e0dc9d2a8 ("meson:
-compile bundled device trees"):
+Seems fine.
 
-  [7831/8926] Generating pc-bios/canyonlands.dts with a custom command
-  pc-bios/canyonlands.dts:47.9-50.4: Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
-  pc-bios/canyonlands.dts:210.13-429.5: Warning (unit_address_vs_reg): /plb/opb: node has a reg or ranges property, but no unit name
-  pc-bios/canyonlands.dts:464.26-504.5: Warning (pci_bridge): /plb/pciex@d00000000: node name is not "pci" or "pcie"
-  pc-bios/canyonlands.dts:506.26-546.5: Warning (pci_bridge): /plb/pciex@d20000000: node name is not "pci" or "pcie"
-  pc-bios/canyonlands.dtb: Warning (unit_address_format): Failed prerequisite 'pci_bridge'
-  pc-bios/canyonlands.dtb: Warning (pci_device_reg): Failed prerequisite 'pci_bridge'
-  pc-bios/canyonlands.dtb: Warning (pci_device_bus_num): Failed prerequisite 'pci_bridge'
-  pc-bios/canyonlands.dts:268.14-289.7: Warning (avoid_unnecessary_addr_size): /plb/opb/ebc/ndfc@3,0: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
+Acked-by: Corey Minyard <cminyard@mvista.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- pc-bios/canyonlands.dts | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
-
-diff --git a/pc-bios/canyonlands.dts b/pc-bios/canyonlands.dts
-index 0d6ac92d0f..5db1bff6b2 100644
---- a/pc-bios/canyonlands.dts
-+++ b/pc-bios/canyonlands.dts
-@@ -461,7 +461,7 @@
- 			interrupt-map = < 0x0 0x0 0x0 0x0 &UIC1 0x0 0x8 >;
- 		};
- 
--		PCIE0: pciex@d00000000 {
-+		PCIE0: pcie@d00000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -503,7 +503,7 @@
- 				0x0 0x0 0x0 0x4 &UIC3 0xf 0x4 /* swizzled int D */>;
- 		};
- 
--		PCIE1: pciex@d20000000 {
-+		PCIE1: pcie@d20000000 {
- 			device_type = "pci";
- 			#interrupt-cells = <1>;
- 			#size-cells = <2>;
-@@ -544,23 +544,5 @@
- 				0x0 0x0 0x0 0x3 &UIC3 0x12 0x4 /* swizzled int C */
- 				0x0 0x0 0x0 0x4 &UIC3 0x13 0x4 /* swizzled int D */>;
- 		};
--
--		MSI: ppc4xx-msi@C10000000 {
--			compatible = "amcc,ppc4xx-msi", "ppc4xx-msi";
--			reg = < 0xC 0x10000000 0x100>;
--			sdr-base = <0x36C>;
--			msi-data = <0x00000000>;
--			msi-mask = <0x44440000>;
--			interrupt-count = <3>;
--			interrupts = <0 1 2 3>;
--			interrupt-parent = <&UIC3>;
--			#interrupt-cells = <1>;
--			#address-cells = <0>;
--			#size-cells = <0>;
--			interrupt-map = <0 &UIC3 0x18 1
--					1 &UIC3 0x19 1
--					2 &UIC3 0x1A 1
--					3 &UIC3 0x1B 1>;
--		};
- 	};
- };
--- 
-2.41.0
-
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> ---
+>  hw/i2c/smbus_master.c         | 26 ++++++++++++++++++++++++++
+>  include/hw/i2c/smbus_master.h |  2 ++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/hw/i2c/smbus_master.c b/hw/i2c/smbus_master.c
+> index 6a53c34e70b7..01a8e4700222 100644
+> --- a/hw/i2c/smbus_master.c
+> +++ b/hw/i2c/smbus_master.c
+> @@ -15,6 +15,32 @@
+>  #include "hw/i2c/i2c.h"
+>  #include "hw/i2c/smbus_master.h"
+>  
+> +static uint8_t crc8(uint16_t data)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < 8; i++) {
+> +        if (data & 0x8000) {
+> +            data ^= 0x1070U << 3;
+> +        }
+> +
+> +        data <<= 1;
+> +    }
+> +
+> +    return (uint8_t)(data >> 8);
+> +}
+> +
+> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len)
+> +{
+> +    int i;
+> +
+> +    for (i = 0; i < len; i++) {
+> +        crc = crc8((crc ^ buf[i]) << 8);
+> +    }
+> +
+> +    return crc;
+> +}
+> +
+>  /* Master device commands.  */
+>  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read)
+>  {
+> diff --git a/include/hw/i2c/smbus_master.h b/include/hw/i2c/smbus_master.h
+> index bb13bc423c22..d90f81767d86 100644
+> --- a/include/hw/i2c/smbus_master.h
+> +++ b/include/hw/i2c/smbus_master.h
+> @@ -27,6 +27,8 @@
+>  
+>  #include "hw/i2c/i2c.h"
+>  
+> +uint8_t i2c_smbus_pec(uint8_t crc, uint8_t *buf, size_t len);
+> +
+>  /* Master device commands.  */
+>  int smbus_quick_command(I2CBus *bus, uint8_t addr, int read);
+>  int smbus_receive_byte(I2CBus *bus, uint8_t addr);
+> 
+> -- 
+> 2.42.0
+> 
+> 
 
