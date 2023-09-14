@@ -2,87 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DFA79FD61
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 09:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22E379FD63
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 09:43:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qggzQ-0007Gt-TN; Thu, 14 Sep 2023 03:42:16 -0400
+	id 1qgh0P-0000MT-Jx; Thu, 14 Sep 2023 03:43:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qggzN-00079Z-O3
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:42:13 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qggzL-0007IW-Go
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:42:13 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-68fb2e9ebcdso484588b3a.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 00:42:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qgh0M-0000FM-Q4; Thu, 14 Sep 2023 03:43:14 -0400
+Received: from pi.codeconstruct.com.au ([203.29.241.158]
+ helo=codeconstruct.com.au)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
+ id 1qgh0J-0007Zn-72; Thu, 14 Sep 2023 03:43:14 -0400
+Received: from [192.168.2.137] (210-10-213-150.per.static-ipl.aapt.com.au
+ [210.10.213.150])
+ by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 7E46420135;
+ Thu, 14 Sep 2023 15:42:56 +0800 (AWST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694677330; x=1695282130;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6EU5+9YYyaVWi9hzEkNcZDNpLIKBvSPYj/acx/fpp38=;
- b=u06DnSJSBAHAO2qvIOEoM+F3uGuca2ydsAOyv3nW3U1fMd0UrEQOZUMn/uhNqlMvGq
- VsVHPIX1Iar+EgcfPuc1tajKNFMyEvYMLFF1p21U0YM164eBqN2mVDtbefgqAn3T+iBa
- YuVGrNjjLiOpt7tGLePrjnZ3pCQnAmr1Q825NxVr1GJLt4RTMEVNMLQB5jq5Hec9SXt8
- tepI4Yl5aOFfUsLxADzlkT0H4Duyn/uQR/9U1k7JO9qMj/ibGJhX8GYUNPQCBuUja0sj
- farYagntz8IpV2FEDGexMhEfmEm+F8jNR1Jv99VFlfFeCNtJ5zkV9MYe+90c0JSpv+uT
- 6HNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694677330; x=1695282130;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6EU5+9YYyaVWi9hzEkNcZDNpLIKBvSPYj/acx/fpp38=;
- b=FiDkPV98/r2ZRZk0KsUaFFdY9A4p4jsESXGQaHuafFeq/BSyg0+gYRBBuaykSL9wpF
- t1anylBFnSXecx3tyD4aYCGa1bLBKFrZalKKG/CMKQgYKcLAShCoRdeel8CPS3+YqefH
- 9/22uxt93fUVrjcDT4ELcRk+od5/3LZBhh2KnxB/azc0jSsI+MTO1JNcksBQl4sjS62x
- Q4HRl1sDFDiKeM0dmnZSyzQgDaI1fwQ0i5SgCAtl+64/9At9Qmc4YpDk2Z+OwuY0el8R
- j7exUr02JlcpkCGqgroB9QxY7wVfRcCb6diJL8QaHPLo3c70mT6w2p9riYRvuZMdqPM6
- +gaw==
-X-Gm-Message-State: AOJu0YyQw7pcnyjG6mcPzRFxu/SYkOfR6ZfA9KgQIE/tfplwJQCdoHbJ
- vXma7/JsdjoHGhK0M7tMhXhweQ==
-X-Google-Smtp-Source: AGHT+IEQr/OUkQvHm0Lxp0OdxZZ9R5eKjAJGFZ1pp89qTpIWNU8wuBcPrHdyqpM5NxemAsGRBD7svw==
-X-Received: by 2002:a05:6a21:1f03:b0:14c:def0:db07 with SMTP id
- ry3-20020a056a211f0300b0014cdef0db07mr3500128pzb.34.1694677330015; 
- Thu, 14 Sep 2023 00:42:10 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- ix6-20020a170902f80600b001b86e17ecacsm872975plb.131.2023.09.14.00.42.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 00:42:09 -0700 (PDT)
-Message-ID: <ed707975-71bc-4690-a463-2e461dedcba1@daynix.com>
-Date: Thu, 14 Sep 2023 16:42:06 +0900
+ d=codeconstruct.com.au; s=2022a; t=1694677379;
+ bh=VI5M9g0fg5M/tq9qucR+vI2hc+ARyReuglQM6j3n4bQ=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References;
+ b=h+BohXY3JF4PGMYD0PTD/VRHoMDHoqjzlZIlXmcdVrzyK5NsB5IHtcJ0KTq/bJWKn
+ JJcvPlEmZKVW5b1BBPkzaALiVcBACKnJycud62DY1B9aij7oMUnTttdycqqw3M4aTQ
+ RuFhnA89BNB9qIQjj79Gsu0PZdwwjwJpPez8tOPFyJRBNW8zXbJnPL3RuG04DNAOj9
+ Zq+qz0smd+ytyW7Zp8/f/dvYPSah8EbwXvFMbJj6A2Uq8u+M0EQqiWlnEaRqv/8rUt
+ ZllgKf6xTlzlXUYMXZN58E9Jgq43B5TnfJ3A1lhuITrYuT0zknk6CB4yc5rwCPZ/JQ
+ S+ZroRLXetkqA==
+Message-ID: <f375f6ed1d576586683cdba2a2710979e8bad369.camel@codeconstruct.com.au>
+Subject: Re: [PATCH v5 3/3] hw/nvme: add nvme management interface model
+From: Andrew Jeffery <andrew@codeconstruct.com.au>
+To: Klaus Jensen <its@irrelevant.dk>
+Cc: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,  Peter Maydell <peter.maydell@linaro.org>, Jason
+ Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,  Lior
+ Weintraub <liorw@pliops.com>, Jeremy Kerr <jk@codeconstruct.com.au>, Matt
+ Johnston <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org,  qemu-block@nongnu.org, Klaus Jensen
+ <k.jensen@samsung.com>, Andrew Jeffery <andrew@aj.id.au>
+Date: Thu, 14 Sep 2023 15:42:56 +0800
+In-Reply-To: <ZQKtdSI-wZ20_V0F@cormorant.local>
+References: <20230905-nmi-i2c-v5-0-0001d372a728@samsung.com>
+ <20230905-nmi-i2c-v5-3-0001d372a728@samsung.com>
+ <130f973070f4422e226a9e68218109094f0420fa.camel@codeconstruct.com.au>
+ <ZQKtdSI-wZ20_V0F@cormorant.local>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] elf2dmp: use Linux mmap with MAP_NORESERVE when
- possible
-Content-Language: en-US
-To: Viktor Prutyanov <viktor@daynix.com>, annie.li@oracle.com,
- kkostiuk@redhat.com
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, yan@daynix.com,
- viktor.prutyanov@phystech.edu
-References: <20230913224657.11606-1-viktor@daynix.com>
- <20230913224657.11606-5-viktor@daynix.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230913224657.11606-5-viktor@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::430;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=203.29.241.158;
+ envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,53 +76,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/14 7:46, Viktor Prutyanov wrote:
-> Glib's g_mapped_file_new maps file with PROT_READ|PROT_WRITE and
-> MAP_PRIVATE. This leads to premature physical memory allocation of dump
-> file size on Linux hosts and may fail. On Linux, mapping the file with
-> MAP_NORESERVE limits the allocation by available memory.
-> 
-> Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
-> ---
->   contrib/elf2dmp/qemu_elf.c | 66 +++++++++++++++++++++++++++++++-------
->   contrib/elf2dmp/qemu_elf.h |  4 +++
->   2 files changed, 58 insertions(+), 12 deletions(-)
-> 
-> diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-> index ebda60dcb8..94a8c3ad15 100644
-> --- a/contrib/elf2dmp/qemu_elf.c
-> +++ b/contrib/elf2dmp/qemu_elf.c
-> @@ -165,10 +165,37 @@ static bool check_ehdr(QEMU_Elf *qe)
->       return true;
->   }
->   
-> -int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
-> +static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
->   {
-> +#ifdef CONFIG_LINUX
+Hi Klaus,
 
-Here CONFIG_LINUX is used while qemu_elf.h uses CONFIG_POSIX.
-I also wonder if GLib implementation is really necessary.
+On Thu, 2023-09-14 at 08:51 +0200, Klaus Jensen wrote:
+> On Sep 12 13:50, Andrew Jeffery wrote:
+> > Hi Klaus,
+> >=20
+> > On Tue, 2023-09-05 at 10:38 +0200, Klaus Jensen wrote:
+> > > >=20
+> > > > +static void nmi_handle_mi_config_get(NMIDevice *nmi, NMIRequest
+> > > > *request)
+> > > > +{
+> > > > +=C2=A0=C2=A0=C2=A0 uint32_t dw0 =3D le32_to_cpu(request->dw0);
+> > > > +=C2=A0=C2=A0=C2=A0 uint8_t identifier =3D FIELD_EX32(dw0,
+> > > > NMI_CMD_CONFIGURATION_GET_DW0,
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IDENT=
+IFIER);
+> > > > +=C2=A0=C2=A0=C2=A0 const uint8_t *buf;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 static const uint8_t smbus_freq[4] =3D {
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x00,=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* succe=
+ss */
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x01, 0x00, 0x00,=C2=A0=
+=C2=A0 /* 100 kHz */
+> > > > +=C2=A0=C2=A0=C2=A0 };
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 static const uint8_t mtu[4] =3D {
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x00,=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 /* success */
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x40, 0x00, /* 64 */
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0x00,=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 /* reserved */
+> > > > +=C2=A0=C2=A0=C2=A0 };
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 trace_nmi_handle_mi_config_get(identifier);
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 switch (identifier) {
+> > > > +=C2=A0=C2=A0=C2=A0 case NMI_CMD_CONFIGURATION_GET_SMBUS_FREQ:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 buf =3D smbus_freq;
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 case NMI_CMD_CONFIGURATION_GET_MCTP_TRANSMISSIO=
+N_UNIT:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 buf =3D mtu;
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 default:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 nmi_set_parameter_error=
+(nmi, 0x0, offsetof(NMIRequest,
+> > > > dw0));
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+> > > > +=C2=A0=C2=A0=C2=A0 }
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0 nmi_scratch_append(nmi, buf, sizeof(buf));
+> > > > +}
+> >=20
+> > When I tried to build this patch I got:
+> >=20
+> > ```
+> > In file included from /usr/include/string.h:535,
+> >                  from /home/andrew/src/qemu.org/qemu/include/qemu/osdep=
+.h:112,
+> >                  from ../hw/nvme/nmi-i2c.c:12:
+> > In function =E2=80=98memcpy=E2=80=99,
+> >     inlined from =E2=80=98nmi_scratch_append=E2=80=99 at ../hw/nvme/nmi=
+-i2c.c:80:5,
+> >     inlined from =E2=80=98nmi_handle_mi_config_get=E2=80=99 at ../hw/nv=
+me/nmi-i2c.c:246:5,
+> >     inlined from =E2=80=98nmi_handle_mi=E2=80=99 at ../hw/nvme/nmi-i2c.=
+c:266:9,
+> >     inlined from =E2=80=98nmi_handle=E2=80=99 at ../hw/nvme/nmi-i2c.c:3=
+13:9:
+> > /usr/include/x86_64-linux-gnu/bits/string_fortified.h:29:10: error: =E2=
+=80=98__builtin_memcpy=E2=80=99 forming offset [4, 7] is out of the bounds =
+[0, 4] [-Werror=3Darray-bounds=3D]
+> >    29 |   return __builtin___memcpy_chk (__dest, __src, __len,
+> >       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >    30 |                                  __glibc_objsize0 (__dest));
+> >       |                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > ```
+> >=20
+> > It wasn't clear initially from the error that the source of the problem
+> > was the size associated with the source buffer, especially as there is
+> > some pointer arithmetic being done to derive `__dest`.
+> >=20
+> > Anyway, what we're trying to express is that the size to copy from buf
+> > is the size of the array pointed to by buf. However, buf is declared as
+> > a pointer to uint8_t, which loses the length information. To fix that I
+> > think we need:
+> >=20
+> > - const uint8_t *buf;
+> > + const uint8_t (*buf)[4];
+> >=20
+> > and then:
+> >=20
+> > - nmi_scratch_append(nmi, buf, sizeof(buf));
+> > + nmi_scratch_append(nmi, buf, sizeof(*buf));
+> >=20
+> > Andrew
+> >=20
+>=20
+> Hi Andrew,
+>=20
+> Nice (and important) catch! Just curious, are you massaging QEMU's build
+> system into adding additional checks or how did your compiler catch
+> this?
 
-> +    struct stat st;
-> +
-> +    printf("Using Linux's mmap\n");
-> +
-> +    qe->fd = open(filename, O_RDONLY, 0);
-> +    if (qe->fd == -1) {
-> +        eprintf("Failed to open ELF dump file \'%s\'\n", filename);
-> +        return 1;
-> +    }
-> +
-> +    if (fstat(qe->fd, &st)) {
-> +        eprintf("Failed to get size of ELF dump file\n");
-> +        close(qe->fd);
-> +        return 1;
-> +    }
-> +    qe->size = st.st_size;
-> +
-> +    qe->map = mmap(NULL, qe->size, PROT_READ | PROT_WRITE,
-> +            MAP_PRIVATE | MAP_NORESERVE, qe->fd, 0);
+No tricks to be honest, I just applied your patches on top of
+9ef497755afc ("Merge tag 'pull-vfio-20230911' of
+https://github.com/legoater/qemu into staging") using `b4 shazam ...`.
 
-It should be possible to close the file immediately after mmap().
+I'm building on Debian Bookworm:
+
+$ gcc --version | head -n1
+gcc (Debian 12.2.0-14) 12.2.0
+
+Andrew
 
