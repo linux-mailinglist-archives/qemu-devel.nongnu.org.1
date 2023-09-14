@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450237A094E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAA97A096F
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 17:37:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgoJ9-0005f8-NF; Thu, 14 Sep 2023 11:31:07 -0400
+	id 1qgoNq-0000tA-3n; Thu, 14 Sep 2023 11:35:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgoJ7-0005bL-0V
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:31:05 -0400
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgoJ3-0003BH-Fn
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:31:04 -0400
-Received: by mail-lf1-x12c.google.com with SMTP id
- 2adb3069b0e04-502e6d632b6so1491696e87.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 08:31:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694705459; x=1695310259; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/bpaD3WjXp/oNm1DnwX/X7M6HzSLrNm3+sUbvz1VpaY=;
- b=ffNlEyu4YFsbEIYpzOtI9eXxbOGST1KwOr9RW5yTU1ui1UTwwgix3L2VZdihE1sIuA
- T3fDYjP0Du+xpYHR7HoDSoQU7tgQuzoSD9B2XxSB8qngMNL5AKOVRaBIRhO3Eo/UhIy7
- ue+MPP/n+H32d5ff7CnsDPxCgKHwGZBoH4u03HOXwsobY2ladcGBklgT/PrGsefsVmZb
- ii9QMDnQ85IDAOFSaqAqWUjVbmo4nEkajaaaqiS6HBttlrHjTKSpYNxuS+SbQPDmIlbj
- kTh14B9txp/LZd+2JguDu1qjkuAwFlkI1rfEq0ls8i+mMgmzGggfKiza07lO4RAQi8RT
- MEIg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgoNn-0000sc-Vj
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:35:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qgoNl-0004IC-PJ
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 11:35:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694705752;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9iHZTSaJ3ekYDv4W0CJUWXaTtOwjmt3niZg23N1KwJs=;
+ b=WovhRZH1GfUqt5FT5wOn/xbDAz4kXhyk2n6HtTxeNOXNkP7QCxfDOM3gcTC21uj0d/Vq39
+ S22Pf/vhGuDblx18zqsqBduOgsrFJ1HUET/jZS9TwrbBJIq6VkbS0hmMh+BUDsD5zmtV9I
+ hmm8TOJ8w271FHdapU1uJqroEu5//24=
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
+ [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-wuCmV2FaOFaS9oG3qm8MMA-1; Thu, 14 Sep 2023 11:35:51 -0400
+X-MC-Unique: wuCmV2FaOFaS9oG3qm8MMA-1
+Received: by mail-oa1-f69.google.com with SMTP id
+ 586e51a60fabf-1a9e3f67989so293949fac.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 08:35:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694705459; x=1695310259;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1694705750; x=1695310550;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/bpaD3WjXp/oNm1DnwX/X7M6HzSLrNm3+sUbvz1VpaY=;
- b=fzdDREcqgRhLuTzLDLDHdWPQvlujZiCclXp15w/AwlFUrKJPdDFrhTrMkWfiIylx+O
- vMik2X8BczBtl5Zexww2cV4zplFk4kBETofznUk1zDis6Zq8nSrxrYBzrT4PxzKSSuZc
- zg4ZDT+4+xG3b2Cv8GTIjnPfzimTue8Y9DYMv1YQ3hlXf1Mc/lVLyloi1fQOW76jSGKr
- H9UaNZ0Bill+RQOWm82wSfG4X/94i/bEqK/r7GAaPlJxIeo6NdYCHXh55Dz7yrZGtXsN
- l7AlFYZnlRrISPlfHHcNQGCL88aOJ/R40VbIBUX1Ix3F1alzVOEF3lhgrqfg/kaFv2T0
- uBuA==
-X-Gm-Message-State: AOJu0YxsF1vFaU6w+Sc6G/ECI+CFE16y+NB4WZErkSv/ua8ZXZB2kR+R
- lNTM3DwTZwQ2tJ1x7yalVUaeKuDsSBApS6sEOCk=
-X-Google-Smtp-Source: AGHT+IGzHxyVxpUvvzCcAPMRLkEMgCo/YnVecRDvtOKKvVMIdWQK0WJY5ScUQKkW/11+PCceEgKxfA==
-X-Received: by 2002:a05:6512:3050:b0:501:bae0:36 with SMTP id
- b16-20020a056512305000b00501bae00036mr6206799lfb.16.1694705459476; 
- Thu, 14 Sep 2023 08:30:59 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-223-129.abo.bbox.fr.
- [176.131.223.129]) by smtp.gmail.com with ESMTPSA id
- kt26-20020a170906aada00b0098f99048053sm1180443ejb.148.2023.09.14.08.30.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 08:30:58 -0700 (PDT)
-Message-ID: <63024472-2a8b-3c3a-3e5f-a6c6bebdd727@linaro.org>
-Date: Thu, 14 Sep 2023 17:30:57 +0200
+ bh=9iHZTSaJ3ekYDv4W0CJUWXaTtOwjmt3niZg23N1KwJs=;
+ b=CiMIVYyMzuSW1RKitQb4D4S039iiZioPEF7Rp4f714p7AfYPHbWDHQbdPwz4Xp0F7D
+ B6GHhnp62F8COxl8GcEJXnrqJFHvoWg4c/VaGHI12NUa4Og7f4qk4GiQhWBShy041BI+
+ 5uH802X5kGj6n+h0WPrDSRBC9Uc0XER4gwVPtx7Jf1w9cSfIFvc4t3k1LicSx5bLVN5C
+ gNw0mFYJ5BTKjKE5/AXi8DyU+BGfqPQK3LLJULv9VIxzZRCL2Ge1SC+LsmvbVW4GIZww
+ OOQXm5giH93Hvr34DPZyAcPy+KDAZua4QvZT8Vnpk6fcNcZVmFa4bjNPts3yfYIem0vz
+ e/jA==
+X-Gm-Message-State: AOJu0YyOYvED0udq4WjLnBP/zEgJiaspZjRBh7sXrX/I4Nsgs+iVEgKG
+ nXcmpGgaqgGV5JAG03/8Pz8QSb50gnVlZ5cavTQIaPJZvZxCbRj4xOmE1CmG6CQFDvlJws95hoZ
+ qJVkyACP6Wh0aME8=
+X-Received: by 2002:a05:6359:b9c:b0:13f:1503:92f8 with SMTP id
+ gf28-20020a0563590b9c00b0013f150392f8mr4917081rwb.2.1694705750366; 
+ Thu, 14 Sep 2023 08:35:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzjQGA88AFJW1dbfKeN942c5glE6of0AhiyaMJD2ykSZeT7wV0nCqIOGO3pQH15WCRve0IvA==
+X-Received: by 2002:a05:6359:b9c:b0:13f:1503:92f8 with SMTP id
+ gf28-20020a0563590b9c00b0013f150392f8mr4917064rwb.2.1694705749975; 
+ Thu, 14 Sep 2023 08:35:49 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ d3-20020a0caa03000000b00655e3e86ad7sm555750qvb.6.2023.09.14.08.35.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Sep 2023 08:35:49 -0700 (PDT)
+Date: Thu, 14 Sep 2023 11:35:47 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: QEMU migration-test CI intermittent failure
+Message-ID: <ZQMoUzRH1BZKs39g@x1n>
+References: <20230913192301.GA917052@fedora> <87r0n1kggo.fsf@suse.de>
+ <ZQMfIO3oiqTsawtU@x1n> <87edj0kcz7.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 12/24] tcg: Rename cpu_env to tcg_env
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: anjo@rev.ng, ale@rev.ng
-References: <20230914024435.1381329-1-richard.henderson@linaro.org>
- <20230914024435.1381329-13-richard.henderson@linaro.org>
- <2bc511e7-9932-dd75-fb13-c3bb0196111a@linaro.org>
-In-Reply-To: <2bc511e7-9932-dd75-fb13-c3bb0196111a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12c.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <87edj0kcz7.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,153 +99,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/9/23 08:10, Philippe Mathieu-Daudé wrote:
-> On 14/9/23 04:44, Richard Henderson wrote:
->> Allow the name 'cpu_env' to be used for something else.
->>
->> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
->> ---
->>   include/tcg/tcg.h                             |    2 +-
->>   target/arm/tcg/translate-a32.h                |    2 +-
->>   target/arm/tcg/translate-a64.h                |    4 +-
->>   target/arm/tcg/translate.h                    |   16 +-
->>   target/hexagon/gen_tcg.h                      |  120 +-
->>   target/hexagon/gen_tcg_hvx.h                  |   20 +-
->>   target/hexagon/macros.h                       |    8 +-
->>   target/mips/tcg/translate.h                   |    6 +-
->>   accel/tcg/translator.c                        |    8 +-
->>   target/alpha/translate.c                      |  142 +-
->>   target/arm/tcg/translate-a64.c                |  374 ++---
->>   target/arm/tcg/translate-m-nocp.c             |   24 +-
->>   target/arm/tcg/translate-mve.c                |   52 +-
->>   target/arm/tcg/translate-neon.c               |   78 +-
->>   target/arm/tcg/translate-sme.c                |    8 +-
->>   target/arm/tcg/translate-sve.c                |  172 +--
->>   target/arm/tcg/translate-vfp.c                |   56 +-
->>   target/arm/tcg/translate.c                    |  228 +--
->>   target/avr/translate.c                        |   64 +-
->>   target/cris/translate.c                       |   68 +-
->>   target/hexagon/genptr.c                       |   36 +-
->>   target/hexagon/idef-parser/parser-helpers.c   |    2 +-
->>   target/hexagon/translate.c                    |   48 +-
->>   target/hppa/translate.c                       |  144 +-
->>   target/i386/tcg/translate.c                   |  580 ++++----
->>   target/loongarch/translate.c                  |   18 +-
->>   target/m68k/translate.c                       |  302 ++--
->>   target/microblaze/translate.c                 |   50 +-
->>   target/mips/tcg/lcsr_translate.c              |    6 +-
->>   target/mips/tcg/msa_translate.c               |   34 +-
->>   target/mips/tcg/mxu_translate.c               |    4 +-
->>   target/mips/tcg/translate.c                   | 1284 ++++++++---------
->>   target/mips/tcg/vr54xx_translate.c            |    2 +-
->>   target/nios2/translate.c                      |   48 +-
->>   target/openrisc/translate.c                   |   84 +-
->>   target/ppc/translate.c                        |  362 ++---
->>   target/riscv/translate.c                      |   50 +-
->>   target/rx/translate.c                         |   56 +-
->>   target/s390x/tcg/translate.c                  |  424 +++---
->>   target/sh4/translate.c                        |  124 +-
->>   target/sparc/translate.c                      |  328 ++---
->>   target/tricore/translate.c                    |  220 +--
->>   target/xtensa/translate.c                     |  188 +--
->>   tcg/tcg-op-gvec.c                             |  288 ++--
->>   tcg/tcg-op-ldst.c                             |   22 +-
->>   tcg/tcg-op.c                                  |    2 +-
->>   tcg/tcg.c                                     |    4 +-
->>   target/cris/translate_v10.c.inc               |   28 +-
->>   target/i386/tcg/decode-new.c.inc              |    2 +-
->>   target/i386/tcg/emit.c.inc                    |  262 ++--
->>   .../loongarch/insn_trans/trans_atomic.c.inc   |    4 +-
->>   .../loongarch/insn_trans/trans_branch.c.inc   |    2 +-
->>   target/loongarch/insn_trans/trans_extra.c.inc |   10 +-
->>   .../loongarch/insn_trans/trans_farith.c.inc   |    6 +-
->>   target/loongarch/insn_trans/trans_fcmp.c.inc  |    8 +-
->>   .../loongarch/insn_trans/trans_fmemory.c.inc  |    8 +-
->>   target/loongarch/insn_trans/trans_fmov.c.inc  |   20 +-
->>   target/loongarch/insn_trans/trans_lsx.c.inc   |   44 +-
->>   .../loongarch/insn_trans/trans_memory.c.inc   |    8 +-
->>   .../insn_trans/trans_privileged.c.inc         |   52 +-
->>   target/mips/tcg/micromips_translate.c.inc     |   12 +-
->>   target/mips/tcg/nanomips_translate.c.inc      |  200 +--
->>   target/ppc/power8-pmu-regs.c.inc              |    8 +-
->>   target/ppc/translate/branch-impl.c.inc        |    2 +-
->>   target/ppc/translate/dfp-impl.c.inc           |   22 +-
->>   target/ppc/translate/fixedpoint-impl.c.inc    |    2 +-
->>   target/ppc/translate/fp-impl.c.inc            |   50 +-
->>   .../ppc/translate/processor-ctrl-impl.c.inc   |    8 +-
->>   target/ppc/translate/spe-impl.c.inc           |   30 +-
->>   target/ppc/translate/storage-ctrl-impl.c.inc  |   26 +-
->>   target/ppc/translate/vmx-impl.c.inc           |   34 +-
->>   target/ppc/translate/vsx-impl.c.inc           |   54 +-
->>   .../riscv/insn_trans/trans_privileged.c.inc   |    8 +-
->>   target/riscv/insn_trans/trans_rvbf16.c.inc    |   10 +-
->>   target/riscv/insn_trans/trans_rvd.c.inc       |   48 +-
->>   target/riscv/insn_trans/trans_rvf.c.inc       |   46 +-
->>   target/riscv/insn_trans/trans_rvh.c.inc       |    8 +-
->>   target/riscv/insn_trans/trans_rvi.c.inc       |   16 +-
->>   target/riscv/insn_trans/trans_rvm.c.inc       |   16 +-
->>   target/riscv/insn_trans/trans_rvv.c.inc       |  130 +-
->>   target/riscv/insn_trans/trans_rvvk.c.inc      |   30 +-
->>   target/riscv/insn_trans/trans_rvzce.c.inc     |    2 +-
->>   target/riscv/insn_trans/trans_rvzfa.c.inc     |   38 +-
->>   target/riscv/insn_trans/trans_rvzfh.c.inc     |   54 +-
->>   target/riscv/insn_trans/trans_rvzicbo.c.inc   |    8 +-
->>   target/riscv/insn_trans/trans_svinval.c.inc   |    6 +-
->>   target/riscv/insn_trans/trans_xthead.c.inc    |    2 +-
->>   target/s390x/tcg/translate_vx.c.inc           |  104 +-
->>   target/hexagon/README                         |   10 +-
->>   target/hexagon/gen_tcg_funcs.py               |   16 +-
->>   90 files changed, 3808 insertions(+), 3808 deletions(-)
+On Thu, Sep 14, 2023 at 12:10:04PM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> > On Wed, Sep 13, 2023 at 04:42:31PM -0300, Fabiano Rosas wrote:
+> >> Stefan Hajnoczi <stefanha@redhat.com> writes:
+> >> 
+> >> > Hi,
+> >> > The following intermittent failure occurred in the CI and I have filed
+> >> > an Issue for it:
+> >> > https://gitlab.com/qemu-project/qemu/-/issues/1886
+> >> >
+> >> > Output:
+> >> >
+> >> >   >>> QTEST_QEMU_IMG=./qemu-img MALLOC_PERTURB_=116 QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon G_TEST_DBUS_DAEMON=/builds/qemu-project/qemu/tests/dbus-vmstate-daemon.sh QTEST_QEMU_BINARY=./qemu-system-x86_64 /builds/qemu-project/qemu/build/tests/qtest/migration-test --tap -k
+> >> >   ――――――――――――――――――――――――――――――――――――― ✀  ―――――――――――――――――――――――――――――――――――――
+> >> >   stderr:
+> >> >   qemu-system-x86_64: Unable to read from socket: Connection reset by peer
+> >> >   Memory content inconsistency at 5b43000 first_byte = bd last_byte = bc current = 4f hit_edge = 1
+> >> >   **
+> >> >   ERROR:../tests/qtest/migration-test.c:300:check_guests_ram: assertion failed: (bad == 0)
+> >> >   (test program exited with status code -6)
+> >> >
+> >> > You can find the full output here:
+> >> > https://gitlab.com/qemu-project/qemu/-/jobs/5080200417
+> >> 
+> >> This is the postcopy return path issue that I'm addressing here:
+> >> 
+> >> https://lore.kernel.org/r/20230911171320.24372-1-farosas@suse.de
+> >> Subject: [PATCH v6 00/10] Fix segfault on migration return path
+> >> Message-ID: <20230911171320.24372-1-farosas@suse.de>
+> >
+> > Hmm I just noticed one thing, that Stefan's failure is a ram check issue
+> > only, which means qemu won't crash?
+> >
+> 
+> The source could have crashed and left the migration at an inconsistent
+> state and then the destination saw corrupted memory?
+> 
+> > Fabiano, are you sure it's the same issue on your return-path fix?
+> >
+> 
+> I've been running the preempt tests on my branch for thousands of
+> iterations and didn't see any other errors. Since there's no code going
+> into the migration tree recently I assume it's the same error.
+> 
+> I run the tests with GDB attached to QEMU, so I'll always see a crash
+> before any memory corruption.
 
-Missing:
+Okay, maybe that stops you from seeing the above check_guests_ram() error?
+Worth checking whether it fails differently always if you just don't attach
+gdb to it; I had a feeling that it'll always fail in the other way (I think
+migration-test will say something like "qemu killed" etc. in most cases),
+further to identify the issues.
 
--- >8 --
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 5c13615112..985c980c92 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -104,7 +104,7 @@ static void gen_empty_udata_cb(void)
-      TCGv_ptr udata = tcg_temp_ebb_new_ptr();
+> 
+> > I'm also trying to reproduce either of them with some loads.  I think I hit
+> > some but it's very hard to reproduce solidly.
+> 
+> Well, if you find anything else let me know and we'll fix it.
 
-      tcg_gen_movi_ptr(udata, 0);
--    tcg_gen_ld_i32(cpu_index, cpu_env,
-+    tcg_gen_ld_i32(cpu_index, tcg_env,
-                     -offsetof(ArchCPU, env) + offsetof(CPUState, 
-cpu_index));
-      gen_helper_plugin_vcpu_udata_cb(cpu_index, udata);
+I think Stefan's issue is the one I triggered once, but only once; I did
+see check_guests_ram() lines.
 
-@@ -138,7 +138,7 @@ static void gen_empty_mem_cb(TCGv_i64 addr, uint32_t 
-info)
+I ran concurrently 10 migration-tests (on 8 cores; just to make scheduler
+start to really work), each looping over preempt/plain for 500 times and
+hit nothing..  I'm trying again with a larger host with more instances, so
+far I've run 200 loops over 40 instances running together, I hit
+nothing.. but I'm keeping trying.
 
-      tcg_gen_movi_i32(meminfo, info);
-      tcg_gen_movi_ptr(udata, 0);
--    tcg_gen_ld_i32(cpu_index, cpu_env,
-+    tcg_gen_ld_i32(cpu_index, tcg_env,
-                     -offsetof(ArchCPU, env) + offsetof(CPUState, 
-cpu_index));
-
-      gen_helper_plugin_vcpu_mem_cb(cpu_index, meminfo, addr, udata);
-@@ -157,7 +157,7 @@ static void gen_empty_mem_helper(void)
-      TCGv_ptr ptr = tcg_temp_ebb_new_ptr();
-
-      tcg_gen_movi_ptr(ptr, 0);
--    tcg_gen_st_ptr(ptr, cpu_env, offsetof(CPUState, plugin_mem_cbs) -
-+    tcg_gen_st_ptr(ptr, tcg_env, offsetof(CPUState, plugin_mem_cbs) -
-                                   offsetof(ArchCPU, env));
-      tcg_temp_free_ptr(ptr);
-  }
-@@ -581,7 +581,7 @@ void plugin_gen_disable_mem_helpers(void)
-      if (!tcg_ctx->plugin_tb->mem_helper) {
-          return;
-      }
--    tcg_gen_st_ptr(tcg_constant_ptr(NULL), cpu_env,
-+    tcg_gen_st_ptr(tcg_constant_ptr(NULL), tcg_env,
-                     offsetof(CPUState, plugin_mem_cbs) - 
-offsetof(ArchCPU, env));
-  }
-
----
+-- 
+Peter Xu
 
 
