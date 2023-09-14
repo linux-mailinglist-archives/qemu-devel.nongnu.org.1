@@ -2,67 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFF57A0330
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 687F37A0341
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:03:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgl00-000715-Eo; Thu, 14 Sep 2023 07:59:08 -0400
+	id 1qgl2z-0008WM-Jo; Thu, 14 Sep 2023 08:02:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qgkzx-00070s-P5
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 07:59:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qgl2s-0008PF-81; Thu, 14 Sep 2023 08:02:06 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qgkzv-0006OA-5i
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 07:59:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694692741;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6Or8iByS52dLUehYb2y8bUKCFrqhTmXdnFyG3YD2DdU=;
- b=YzexUf7F+WK+aHZ6OGFyoEgG15VN2wDkj9fNMcJy//I67M9D2XTLSuM4aZMWl/2GaGatwY
- 5GXKxrRXiGum0mLi8tMk/WOfWe6lCDpUkDG9sNzhiD38BVCuvVJwgcY7Vt7QexskTWrPrQ
- b42G1r9wlGTuyOaZl48H+kJFeN1gPi4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-1-GIvSUxl_NeiXhKinbzv02g-1; Thu, 14 Sep 2023 07:59:00 -0400
-X-MC-Unique: GIvSUxl_NeiXhKinbzv02g-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D189A800B23;
- Thu, 14 Sep 2023 11:58:59 +0000 (UTC)
-Received: from redhat.com (dhcp-192-218.str.redhat.com [10.33.192.218])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EC5FA40C6EA8;
- Thu, 14 Sep 2023 11:58:58 +0000 (UTC)
-Date: Thu, 14 Sep 2023 13:58:57 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, berrange@redhat.com,
- pbonzini@redhat.com
-Subject: Re: [PATCH 11/11] qdev: Rework array properties based on list visitor
-Message-ID: <ZQL1gbAbEt4p1pOm@redhat.com>
-References: <20230908143703.172758-1-kwolf@redhat.com>
- <20230908143703.172758-12-kwolf@redhat.com>
- <CAFEAcA-KAVhJhMCb+CqdSS_AO=VsVuj5akySS3pVYHKg=atE0w@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qgl2q-0007OL-95; Thu, 14 Sep 2023 08:02:05 -0400
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38EB96Qs018686; Thu, 14 Sep 2023 12:02:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding : content-type; s=qcppdkim1;
+ bh=Lqdl6Z1r2s58ylVKuHPXl/YcHu8ZddiHLMl9E7wr8vI=;
+ b=jzqy/YPPUH7IIc/s2cFvpoSHIUVrXMgVkj0ZQVrJ/hBxkbdsb2t4M9hsV/aOJfPIOHCb
+ FlwBURkKDHQNoyiqWfLIadSXRx+VCWdlmvCOfQHu3v1tF1ThBLf1F8RWyY76SlLcK0Cn
+ GFrYjeZyksp5C+rh4WLJdGymfzYg2D7Fs8mJk/Pi2H+ubZ64fxS+f/CZBFbQfqFYNHrX
+ 9H0HdDtskyLY6rsNmaOV9QL/swsfqLZW0bb7USTUdej6Kp3Ca5u/AqTrzrYpSD2Pb/k7
+ ozMWYSer3mXpsqoN8ZZ0UMHDMFwdAKliutmqQb184fTyXa7n9V6ZtsPQSJT1Z4w5cgye mA== 
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t411s85gu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Sep 2023 12:02:00 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
+ [10.45.79.139])
+ by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38EC1edj014126
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 14 Sep 2023 12:01:40 GMT
+Received: from qc-i7.qualcomm.com (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Thu, 14 Sep
+ 2023 05:01:39 -0700
+From: Leif Lindholm <quic_llindhol@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: <qemu-arm@nongnu.org>, Radoslaw Biernacki <rad@semihalf.com>, Peter
+ Maydell <peter.maydell@linaro.org>, Marcin Juszkiewicz
+ <marcin.juszkiewicz@linaro.org>
+Subject: [RFC PATCH 1/3] include/hw/arm: move BSA definitions to bsa.h
+Date: Thu, 14 Sep 2023 13:01:22 +0100
+Message-ID: <20230914120124.55410-2-quic_llindhol@quicinc.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230914120124.55410-1-quic_llindhol@quicinc.com>
+References: <20230914120124.55410-1-quic_llindhol@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA-KAVhJhMCb+CqdSS_AO=VsVuj5akySS3pVYHKg=atE0w@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: HdSWgMbPp3FyKuawXKVXrTCiQXLgvhau
+X-Proofpoint-GUID: HdSWgMbPp3FyKuawXKVXrTCiQXLgvhau
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-14_09,2023-09-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0
+ bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0
+ mlxlogscore=352 lowpriorityscore=0 suspectscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309140103
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_llindhol@quicinc.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,339 +97,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 14.09.2023 um 12:24 hat Peter Maydell geschrieben:
-> On Fri, 8 Sept 2023 at 15:37, Kevin Wolf <kwolf@redhat.com> wrote:
-> >
-> > Until now, array properties are actually implemented with a hack that
-> > uses multiple properties on the QOM level: a static "foo-len" property
-> > and after it is set, dynamically created "foo[i]" properties.
-> >
-> > In external interfaces (-device on the command line and device_add in
-> > QMP), this interface was broken by commit f3558b1b ('qdev: Base object
-> > creation on QDict rather than QemuOpts') because QDicts are unordered
-> > and therefore it could happen that QEMU tried to set the indexed
-> > properties before setting the length, which fails and effectively makes
-> > array properties inaccessible. In particular, this affects the 'ports'
-> > property of the 'rocker' device.
-> >
-> > This patch reworks the external interface so that instead of using a
-> > separate top-level property for the length and for each element, we use
-> > a single true array property that accepts a list value. In the external
-> > interfaces, this is naturally expressed as a JSON list and makes array
-> > properties accessible again.
-> >
-> > Creating an array property on the command line without using JSON format
-> > is currently not possible. This could be fixed by switching from
-> > QemuOpts to a keyval parser, which however requires consideration of the
-> > compatibility implications.
-> >
-> > All internal users of devices with array properties go through
-> > qdev_prop_set_array() at this point, so updating it takes care of all of
-> > them.
-> >
-> > Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1090
-> > Fixes: f3558b1b763683bb877f7dd5b282469cdadc65c3
-> > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> 
-> I'm hoping that somebody who understands the visitor APIs
-> better than me will have a look at this patch, but in the
-> meantime, here's my review, which I suspect has a lot of
-> comments that mostly reflect that I don't really understand
-> the visitor stuff...
+virt.h defines a number of IRQs that are ultimately described by Arm's
+Base System Architecture specification. Move these to a dedicated header
+so that they can be reused by other platforms that do the same.
+Include that header from virt.h to minimise churn.
 
-I discussed the visitor aspects with Markus before sending the series,
-so I think he agrees with the approach. But I wouldn't mind an explicit
-Reviewed-by, of course.
+Signed-off-by: Leif Lindholm <quic_llindhol@quicinc.com>
+---
+ include/hw/arm/bsa.h  | 35 +++++++++++++++++++++++++++++++++++
+ include/hw/arm/virt.h | 12 +-----------
+ 2 files changed, 36 insertions(+), 11 deletions(-)
+ create mode 100644 include/hw/arm/bsa.h
 
-> > ---
-> >  include/hw/qdev-properties.h     |  23 ++--
-> >  hw/core/qdev-properties-system.c |   2 +-
-> >  hw/core/qdev-properties.c        | 204 +++++++++++++++++++------------
-> >  3 files changed, 133 insertions(+), 96 deletions(-)
-> >
-> > diff --git a/include/hw/qdev-properties.h b/include/hw/qdev-properties.h
-> > index 7fa2fdb7c9..9370b36b72 100644
-> > --- a/include/hw/qdev-properties.h
-> > +++ b/include/hw/qdev-properties.h
-> > @@ -61,7 +61,7 @@ extern const PropertyInfo qdev_prop_size;
-> >  extern const PropertyInfo qdev_prop_string;
-> >  extern const PropertyInfo qdev_prop_on_off_auto;
-> >  extern const PropertyInfo qdev_prop_size32;
-> > -extern const PropertyInfo qdev_prop_arraylen;
-> > +extern const PropertyInfo qdev_prop_array;
-> >  extern const PropertyInfo qdev_prop_link;
-> >
-> >  #define DEFINE_PROP(_name, _state, _field, _prop, _type, ...) {  \
-> > @@ -115,8 +115,6 @@ extern const PropertyInfo qdev_prop_link;
-> >                  .bitmask    = (_bitmask),                     \
-> >                  .set_default = false)
-> >
-> > -#define PROP_ARRAY_LEN_PREFIX "len-"
-> > -
-> >  /**
-> >   * DEFINE_PROP_ARRAY:
-> >   * @_name: name of the array
-> > @@ -127,24 +125,21 @@ extern const PropertyInfo qdev_prop_link;
-> >   * @_arrayprop: PropertyInfo defining what property the array elements have
-> >   * @_arraytype: C type of the array elements
-> >   *
-> > - * Define device properties for a variable-length array _name.  A
-> > - * static property "len-arrayname" is defined. When the device creator
-> > - * sets this property to the desired length of array, further dynamic
-> > - * properties "arrayname[0]", "arrayname[1]", ...  are defined so the
-> > - * device creator can set the array element values. Setting the
-> > - * "len-arrayname" property more than once is an error.
-> > + * Define device properties for a variable-length array _name.  The array is
-> > + * represented as a list in the visitor interface.
-> > + *
-> > + * @_arraytype is required to be movable with memcpy().
-> >   *
-> > - * When the array length is set, the @_field member of the device
-> > + * When the array property is set, the @_field member of the device
-> >   * struct is set to the array length, and @_arrayfield is set to point
-> > - * to (zero-initialised) memory allocated for the array.  For a zero
-> > - * length array, @_field will be set to 0 and @_arrayfield to NULL.
-> > + * to the memory allocated for the array.
-> > + *
-> >   * It is the responsibility of the device deinit code to free the
-> >   * @_arrayfield memory.
-> >   */
-> >  #define DEFINE_PROP_ARRAY(_name, _state, _field,               \
-> >                            _arrayfield, _arrayprop, _arraytype) \
-> > -    DEFINE_PROP((PROP_ARRAY_LEN_PREFIX _name),                 \
-> > -                _state, _field, qdev_prop_arraylen, uint32_t,  \
-> > +    DEFINE_PROP(_name, _state, _field, qdev_prop_array, uint32_t,     \
-> >                  .set_default = true,                           \
-> >                  .defval.u = 0,                                 \
-> >                  .arrayinfo = &(_arrayprop),                    \
-> > diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-> > index 6d5d43eda2..f557ee886e 100644
-> > --- a/hw/core/qdev-properties-system.c
-> > +++ b/hw/core/qdev-properties-system.c
-> > @@ -450,7 +450,7 @@ static void set_netdev(Object *obj, Visitor *v, const char *name,
-> >      peers_ptr->queues = queues;
-> >
-> >  out:
-> > -    error_set_from_qdev_prop_error(errp, err, obj, name, str);
-> > +    error_set_from_qdev_prop_error(errp, err, obj, prop->name, str);
-> >      g_free(str);
-> >  }
-> 
-> Is this change intentional? It's not clear to me why the netdev
-> property setter needs to change.
-
-It is, but you're also right that it's not obvious. I should mention
-this hunk in the commit message or even move it to a separate patch.
-
-The problem is that @name is primarily used for the visitor interface,
-and for list elements it has to be NULL (because each element doesn't
-have a separate name; passing a non-NULL value runs into assertion
-failures in the visitor code).
-
-But of course, in error messages "(null)" isn't very helpful to identify
-what QEMU is complaining about. prop->name contains the name of the
-array property, so that's what I changed it to. Outside of lists, I
-think name and prop->name are always the same.
-
-> > diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-> > index 950ef48e01..b2303a6fbc 100644
-> > --- a/hw/core/qdev-properties.c
-> > +++ b/hw/core/qdev-properties.c
-> > @@ -546,98 +546,152 @@ const PropertyInfo qdev_prop_size32 = {
-> >
-> >  /* --- support for array properties --- */
-> >
-> > -/* Used as an opaque for the object properties we add for each
-> > - * array element. Note that the struct Property must be first
-> > - * in the struct so that a pointer to this works as the opaque
-> > - * for the underlying element's property hooks as well as for
-> > - * our own release callback.
-> > - */
-> > -typedef struct {
-> > -    struct Property prop;
-> > -    char *propname;
-> > -    ObjectPropertyRelease *release;
-> > -} ArrayElementProperty;
-> > -
-> > -/* object property release callback for array element properties:
-> > - * we call the underlying element's property release hook, and
-> > - * then free the memory we allocated when we added the property.
-> > +static Property array_elem_prop(Object *obj, Property *parent_prop,
-> > +                                const char *name, char *elem)
-> > +{
-> > +    return (Property) {
-> > +        .info = parent_prop->arrayinfo,
-> > +        .name = name,
-> > +        /*
-> > +         * This ugly piece of pointer arithmetic sets up the offset so
-> > +         * that when the underlying release hook calls qdev_get_prop_ptr
-> > +         * they get the right answer despite the array element not actually
-> > +         * being inside the device struct.
-> > +         */
-> > +        .offset = elem - (char *) obj,
-> 
-> Stray space after ')'.
-> 
-> > +    };
-> > +}
-> > +
-> > +/*
-> > + * Object property release callback for array properties: We call the underlying
-> > + * element's property release hook for each element.
-> > + *
-> > + * Note that it is the responsibility of the individual device's deinit to free
-> > + * the array proper.
-> >   */
-> > -static void array_element_release(Object *obj, const char *name, void *opaque)
-> > +static void release_prop_array(Object *obj, const char *name, void *opaque)
-> >  {
-> > -    ArrayElementProperty *p = opaque;
-> > -    if (p->release) {
-> > -        p->release(obj, name, opaque);
-> > +    Property *prop = opaque;
-> > +    uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-> > +    void **arrayptr = (void *)obj + prop->arrayoffset;
-> > +    char *elem = *arrayptr;
-> > +    int i;
-> > +
-> > +    for (i = 0; i < *alenptr; i++) {
-> 
-> Is there something somewhere that enforces that a list can't
-> have more than INT_MAX elements? Otherwise this will go wrong,
-> I think, since we're iterating with an 'int'.
-
-I expect you might run out of memory or get another problem before that,
-but you're right, there is no explicit check. Maybe set_prop_array()
-should check that *alenptr doesn't become larger than some limit. It
-could be INT_MAX or maybe even something lower.
-
-> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem);
-> > +        prop->arrayinfo->release(obj, NULL, &elem_prop);
-> > +        elem += prop->arrayfieldsize;
-> >      }
-> > -    g_free(p->propname);
-> > -    g_free(p);
-> >  }
-> >
-> > -static void set_prop_arraylen(Object *obj, Visitor *v, const char *name,
-> > -                              void *opaque, Error **errp)
-> > +/*
-> > + * Setter for an array property. This sets both the array length (which is
-> > + * technically the property field in the object) and the array itself (a pointer
-> > + * to which is stored in the additional field described by prop->arrayoffset).
-> > + */
-> > +static void set_prop_array(Object *obj, Visitor *v, const char *name,
-> > +                           void *opaque, Error **errp)
-> 
-> Is there something somewhere in this that guards against the
-> caller trying to set an array property with a list that doesn't
-> have elements that are all the same type?
-
-Kind of, we always call the same prop->arrayinfo->set() callback for
-every element, which is what visits the element. So unless that is doing
-crazy things, it should always parse the same structure.
-
-If we ever get to QAPIfying device_add/-device, QAPI would actually
-enforce it in a way that individual property implementations can't work
-around. For now, we just rely on property implementations being
-sensible.
-
-> >  {
-> > -    /* Setter for the property which defines the length of a
-> > -     * variable-sized property array. As well as actually setting the
-> > -     * array-length field in the device struct, we have to create the
-> > -     * array itself and dynamically add the corresponding properties.
-> > -     */
-> > +    ERRP_GUARD();
-> > +
-> >      Property *prop = opaque;
-> >      uint32_t *alenptr = object_field_prop_ptr(obj, prop);
-> >      void **arrayptr = (void *)obj + prop->arrayoffset;
-> > -    void *eltptr;
-> > -    const char *arrayname;
-> > -    int i;
-> > +    GenericList *list, *elem, *next;
-> > +    const size_t list_elem_size = sizeof(*list) + prop->arrayfieldsize;
-> > +    char *elemptr;
-> > +    bool ok = true;
-> >
-> >      if (*alenptr) {
-> >          error_setg(errp, "array size property %s may not be set more than once",
-> >                     name);
-> >          return;
-> >      }
-> > -    if (!visit_type_uint32(v, name, alenptr, errp)) {
-> > +
-> > +    if (!visit_start_list(v, name, &list, list_elem_size, errp)) {
-> >          return;
-> >      }
-> > -    if (!*alenptr) {
-> > +
-> > +    /* Read the whole input into a temporary list */
-> 
-> Why do we need the temporary list? Shouldn't we already know
-> at this point the length of the list and be able to allocate
-> the memory and write directly into that?
-
-No, unfortunately we don't know the length yet. I discussed adding a
-visitor interface to return the length with Markus, but even ignoring
-the complexity of defining the finer details of that interface and
-implementing it in all visitor types, in the end it would essentially
-mean that the visitor parses the input twice, which isn't any better.
-
-> > +    elem = list;
-> > +    while (elem) {
-> > +        Property elem_prop = array_elem_prop(obj, prop, name, elem->padding);
-> > +        prop->arrayinfo->set(obj, v, NULL, &elem_prop, errp);
-> 
-> Why do we call a set() function if we're getting the value
-> of the array item ?
-
-This is set_prop_array(), i.e. the setter for the whole property array.
-This line sets individual elements that will be in the array (on the QOM
-level), so we need the setter for the element property - which of course
-does internally get values from the visitor, but it's the set method of
-the QOM property, not of the visitor.
-
-> > +        if (*errp) {
-> > +            ok = false;
-> > +            goto out_obj;
-> > +        }
-> > +        (*alenptr)++;
-> > +        elem = visit_next_list(v, elem, list_elem_size);
-> > +    }
-> > +
-> > +    ok = visit_check_list(v, errp);
-> > +out_obj:
-> > +    visit_end_list(v, (void**) &list);
-> > +
-> > +    if (!ok) {
-> > +        for (elem = list; elem; elem = next) {
-> > +            next = elem->next;
-> > +            g_free(elem);
-> > +        }
-> >          return;
-> >      }
-> >
-> > -    /* DEFINE_PROP_ARRAY guarantees that name should start with this prefix;
-> > -     * strip it off so we can get the name of the array itself.
-> > +    /*
-> > +     * Now that we know how big the array has to be, move the data over to a
-> > +     * linear array and free the temporary list.
-> >       */
-> > -    assert(strncmp(name, PROP_ARRAY_LEN_PREFIX,
-> > -                   strlen(PROP_ARRAY_LEN_PREFIX)) == 0);
-> > -    arrayname = name + strlen(PROP_ARRAY_LEN_PREFIX);
-> > +    *arrayptr = g_malloc_n(*alenptr, prop->arrayfieldsize);
-> > +    elemptr = *arrayptr;
-> > +    for (elem = list; elem; elem = next) {
-> > +        memcpy(elemptr, elem->padding, prop->arrayfieldsize);
-> > +        elemptr += prop->arrayfieldsize;
-> > +        next = elem->next;
-> > +        g_free(elem);
-> > +    }
-> > +}
-
-Kevin
+diff --git a/include/hw/arm/bsa.h b/include/hw/arm/bsa.h
+new file mode 100644
+index 0000000000..8277b3a379
+--- /dev/null
++++ b/include/hw/arm/bsa.h
+@@ -0,0 +1,35 @@
++/*
++ * Common definitions for Arm Base System Architecture (BSA) platforms.
++ *
++ * Copyright (c) 2015 Linaro Limited
++ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms and conditions of the GNU General Public License,
++ * version 2 or later, as published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
++ *
++ * You should have received a copy of the GNU General Public License along with
++ * this program.  If not, see <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#ifndef QEMU_ARM_BSA_H
++#define QEMU_ARM_BSA_H
++
++#define ARCH_GIC_MAINT_IRQ  9
++
++#define ARCH_TIMER_VIRT_IRQ   11
++#define ARCH_TIMER_S_EL1_IRQ  13
++#define ARCH_TIMER_NS_EL1_IRQ 14
++#define ARCH_TIMER_NS_EL2_IRQ 10
++
++#define VIRTUAL_PMU_IRQ 7
++
++#define PPI(irq) ((irq) + 16)
++
++#endif /* QEMU_ARM_BSA_H */
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index e1ddbea96b..f69239850e 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -34,6 +34,7 @@
+ #include "qemu/notify.h"
+ #include "hw/boards.h"
+ #include "hw/arm/boot.h"
++#include "hw/arm/bsa.h"
+ #include "hw/block/flash.h"
+ #include "sysemu/kvm.h"
+ #include "hw/intc/arm_gicv3_common.h"
+@@ -43,17 +44,6 @@
+ #define NUM_VIRTIO_TRANSPORTS 32
+ #define NUM_SMMU_IRQS          4
+ 
+-#define ARCH_GIC_MAINT_IRQ  9
+-
+-#define ARCH_TIMER_VIRT_IRQ   11
+-#define ARCH_TIMER_S_EL1_IRQ  13
+-#define ARCH_TIMER_NS_EL1_IRQ 14
+-#define ARCH_TIMER_NS_EL2_IRQ 10
+-
+-#define VIRTUAL_PMU_IRQ 7
+-
+-#define PPI(irq) ((irq) + 16)
+-
+ /* See Linux kernel arch/arm64/include/asm/pvclock-abi.h */
+ #define PVTIME_SIZE_PER_CPU 64
+ 
+-- 
+2.30.2
 
 
