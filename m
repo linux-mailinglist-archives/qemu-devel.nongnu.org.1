@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAB27A0EBD
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF29D7A0EB3
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgsZQ-0002r2-Hn; Thu, 14 Sep 2023 16:04:12 -0400
+	id 1qgsZQ-0002rD-Ej; Thu, 14 Sep 2023 16:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgsZN-0002qk-50
+ id 1qgsZN-0002qm-OF
  for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:09 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgsZL-0001SR-E3
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:08 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-401ec23be82so14382655e9.0
+ id 1qgsZM-0001Sc-8Z
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:09 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-40473f1fe9fso9771535e9.2
  for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:04:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694721845; x=1695326645; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=11WTvmdgwwMkXwm1odvb/AW2+t/eSrG4IN0OwJQKhwI=;
- b=Af845UEfAGBFRZJ/sV/RPDFl/1+D29Owq+8oetPNOyrTXIp88ugIdZtaNFOT9ulhaj
- gIXDzFcWJhtVVnUmTgYhqvFk9DeXpZ0sjt7aji9GaGrtXS/cUNVJWSPAm0pdfToUxauW
- Q94gf3cbLC/fFPr0LKUEzfkEjsil1MHAwOOb1mouFqfBWacNqlWEKdKu4VvBU/Wj9+qn
- tcBCcZzx4gUvzztKPASICIFkhsA3Uv/bNPVLGPpi3clKug2SBYr00rwQGtWveQskgm+y
- iemVA6vU6tc/ppVFF19+NRxQaZwr2PsdEScUsX9nZX8U1lvW3ASroHmtjXEjOZvvZC1Q
- gREw==
+ d=gmail.com; s=20221208; t=1694721846; x=1695326646; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=W1JJvYfQaijMliqHhsRQy54P2Tgf046fCUOip2mqXz4=;
+ b=NSMp2FYTzDiWTtcTwAcKjTcHm5I/l6loimuSq6rvqkf2ZQrNjk5Xb+aQDoYl6N+Pj7
+ vr1uOdEPHJkDiI1N5vZht7kgGkNjwdgYkx8uPWov9x1J2RBlPKEarauWvdLlfnwX9rxP
+ 3URiSMhgmnN0M4ucAGcuRZqMluAK56lSPbAJ+nQH24SZKdlpLrwwHBduSmaM8dH6s25o
+ nlBY7UeNu7tPd7/NuhEXDMI16crG3S19AwWoNUtsepAlpRQT9ZqJkbL1+tpr+CPZGDNW
+ 5+eVFj+uD0q8Maa6EJRBkX5iJyoWNFm6P3Py+qKtZ+9/+Qjzzbmd/hX2G5WVaKt85/CW
+ /BJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694721845; x=1695326645;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=11WTvmdgwwMkXwm1odvb/AW2+t/eSrG4IN0OwJQKhwI=;
- b=vkjs+J9l56mcD3Ia6TRuCb/3TVInmUpojJC2UDt9zCqE/5ynHdtqyMHtpVrnUsTp1i
- A+LU3rYuh5I3GALMmWPh3pffYCn7zIytKUhHl5sa5BQwWo40r8/kHNIjqJAhv8NGolRf
- MRUqEbx7nBmPTsEe8Tq3d1CYpSeECUaA79XLkbVWCgcPCAVUg71WbTyD/zca49vuSXGn
- Vh0ZIYXjW1elIpiMUsBpwiHQdGzX9cWfKWvzpG8hxUEiLCUK7KdZgwF9ahTvZbxA1fhR
- f7q4mRZkQeJrRMqFmYgc95cvfOPcAJjQ/bOoh4QaVqLdJ7KlxYyn0CWsr6WBEEqKCOxQ
- u6Qg==
-X-Gm-Message-State: AOJu0Yy83arCkAoLMzxV2QQQ0elAtpw9h726Tc/bKUYyeKmXCFEHVtEm
- FClofSQo/vt+tbQDl0HFIx8+6LnTGgE=
-X-Google-Smtp-Source: AGHT+IEec49f7D2MkITgU2TksoG46XxbWdGtdy1Y41cxjHLFU7pSzOVZ5ZrWTUBWD2klg1arLYVX2g==
-X-Received: by 2002:a05:600c:2611:b0:3fb:b5c0:a079 with SMTP id
- h17-20020a05600c261100b003fbb5c0a079mr5671881wma.21.1694721845395; 
- Thu, 14 Sep 2023 13:04:05 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694721846; x=1695326646;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=W1JJvYfQaijMliqHhsRQy54P2Tgf046fCUOip2mqXz4=;
+ b=P0HGIQ9CFQZSha2uge7uYq4j0dgG5+JpA+6eKEj8jnnOotqMJqPm7thEJCDEuUXGm0
+ HimkXrIrYSsp1XMiC+QFog2bhy1+5yggKN1mjXSDpxdXxftG0SjryDVyM3UzoXe0EgeS
+ UAdvTOgxEEOdVlL/TYGjxXHhKxXnBArVIvzFfpkCHxQc5f8FYSPlX94CIlXxFF1jMO1z
+ HFxDu6bvFzNCAFFps5EcmxVdSMfLv3bHKW0TkO+ZaNyyWbYfZlyUOdjqnA6jMexG7jM/
+ yiM0qTE3d0XGiyDH1L7Jh9Md9Y+zeBDQpBTs3nvBk5wxvzXtY0tNuYSovl6nDUf/mQKq
+ huFQ==
+X-Gm-Message-State: AOJu0Yz2oebrZ27rMh2f4O340fg6hsXBGHGjr1/paWmRelQYa/peVB1J
+ UOZhAzUQxYb7EybRtKeH+WV3vBAlkbI=
+X-Google-Smtp-Source: AGHT+IH36bohLuLbyDCNDSnj/HZ6a+t5AujjX9kFFu6brnsh3pfdMfImMtJEUg6GQVHWbNZb8vfW4w==
+X-Received: by 2002:a7b:ca47:0:b0:3fe:4cbc:c345 with SMTP id
+ m7-20020a7bca47000000b003fe4cbcc345mr5675389wml.41.1694721846599; 
+ Thu, 14 Sep 2023 13:04:06 -0700 (PDT)
 Received: from karim.my.domain ([197.39.44.105])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a7bc7c7000000b00402bda974ddsm2851130wmk.6.2023.09.14.13.04.04
+ z7-20020a7bc7c7000000b00402bda974ddsm2851130wmk.6.2023.09.14.13.04.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 13:04:04 -0700 (PDT)
+ Thu, 14 Sep 2023 13:04:06 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Richard Henderson <richard.henderson@linaro.org>,
- Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v4 00/23] bsd-user: Implement mmap related system calls for
- FreeBSD.
-Date: Thu, 14 Sep 2023 23:02:19 +0300
-Message-ID: <20230914200242.20148-1-kariem.taha2.7@gmail.com>
+ Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v4 01/23] bsd-user: Implement struct target_ipc_perm
+Date: Thu, 14 Sep 2023 23:02:20 +0300
+Message-ID: <20230914200242.20148-2-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230914200242.20148-1-kariem.taha2.7@gmail.com>
+References: <20230914200242.20148-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -92,66 +93,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Upstream the implementation of the following mmap system calls, from the
-qemu-bsd-user fork:
-   mmap(2), munmap(2),
-   mprotect(2),
-   msync(2),
-   mlock(2), munlock(2), mlockall(2), munlockall(2), mincore(2),
-   madvise(2),
-   minherit(2),
-   shm_open(2),shm_open2(2), shm_rename2(2), shm_unlink(2), shmget(2), shmctl(2), shmat(2),
-   shmdt(2)
-   brk(2)
+From: Stacey Son <sson@FreeBSD.org>
 
-Karim Taha (2):
-  bsd-user: Add bsd-mem.c to meson.build
-  bsd-user: Implment madvise(2) to match the linux-user implementation.
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+---
+ bsd-user/syscall_defs.h | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Kyle Evans (2):
-  bsd-user: Implement shm_open2(2) system call
-  bsd-user: Implement shm_rename(2) system call
-
-Stacey Son (18):
-  bsd-user: Implement struct target_ipc_perm
-  bsd-user: Implement struct target_shmid_ds
-  bsd-user: Declarations for ipc_perm and shmid_ds conversion functions
-  bsd-user: Introduce freebsd/os-misc.h to the source tree
-  bsd-user: Implement target_set_brk function in bsd-mem.c instead of
-    os-syscall.c
-  bsd-user: Implement ipc_perm conversion between host and target.
-  bsd-user: Implement shmid_ds conversion between host and target.
-  bsd-user: Introduce bsd-mem.h to the source tree
-  bsd-user: Implement mmap(2) and munmap(2)
-  bsd-user: Implement mprotect(2)
-  bsd-user: Implement msync(2)
-  bsd-user: Implement mlock(2), munlock(2), mlockall(2), munlockall(2),
-    minherit(2)
-  bsd-user: Implement mincore(2)
-  bsd-user: Implement do_obreak function
-  bsd-user: Implement shm_open(2)
-  bsd-user: Implement shm_unlink(2) and shmget(2)
-  bsd-user: Implement shmctl(2)
-  bsd-user: Implement shmat(2) and shmdt(2)
-
-Warner Losh (1):
-  bsd-user: Add stubs for vadvise(), sbrk() and sstk()
-
- bsd-user/bsd-mem.c            | 104 ++++++++
- bsd-user/bsd-mem.h            | 452 ++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-misc.h    |  94 +++++++
- bsd-user/freebsd/os-syscall.c | 112 ++++++++-
- bsd-user/meson.build          |   1 +
- bsd-user/mmap.c               |   2 +-
- bsd-user/qemu-bsd.h           |  45 ++++
- bsd-user/qemu.h               |   1 +
- bsd-user/syscall_defs.h       |  39 +++
- 9 files changed, 845 insertions(+), 5 deletions(-)
- create mode 100644 bsd-user/bsd-mem.c
- create mode 100644 bsd-user/bsd-mem.h
- create mode 100644 bsd-user/freebsd/os-misc.h
- create mode 100644 bsd-user/qemu-bsd.h
-
+diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
+index e4825f2662..39a9bc8ed7 100644
+--- a/bsd-user/syscall_defs.h
++++ b/bsd-user/syscall_defs.h
+@@ -55,6 +55,23 @@ struct target_iovec {
+     abi_long iov_len;   /* Number of bytes */
+ };
+ 
++/*
++ * sys/ipc.h
++ */
++struct target_ipc_perm {
++    uint32_t    cuid;       /* creator user id */
++    uint32_t    cgid;       /* creator group id */
++    uint32_t    uid;        /* user id */
++    uint32_t    gid;        /* group id */
++    uint16_t    mode;       /* r/w permission */
++    uint16_t    seq;        /* sequence # */
++    abi_long    key;        /* user specified msg/sem/shm key */
++};
++
++#define TARGET_IPC_RMID 0   /* remove identifier */
++#define TARGET_IPC_SET  1   /* set options */
++#define TARGET_IPC_STAT 2   /* get options */
++
+ /*
+  *  sys/mman.h
+  */
 -- 
 2.42.0
 
