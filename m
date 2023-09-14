@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A707A0553
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0937A0554
 	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:17:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgmCM-0000rR-Bj; Thu, 14 Sep 2023 09:15:58 -0400
+	id 1qgmD5-0001R5-7P; Thu, 14 Sep 2023 09:16:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qgmCJ-0000qv-9x
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:15:55 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgmCs-0001Di-Lu
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:16:30 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1qgmCH-0008V5-Cw
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:15:55 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-500913779f5so1605353e87.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 06:15:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgmCq-00007r-9k
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:16:30 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-52c9be5e6f0so1059695a12.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 06:16:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694697351; x=1695302151; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=rvg5/oqSKaJkI/BDusWToy5I7SmDAvtrYXFEZErW++g=;
- b=ONtyu94HwLfgzGGyd4G3vWPE6jnBW7M+0keSIx7NG6fnZu9p8qWAHynONs/Ds8kQ2T
- +nWW0NwISvN3W7K50g+xgyNax7XISk26CVGyvYvc80wxQaW2iBnThZwLOKbBXrv5QsWR
- h/WC8ODFfsCasb9E6rnjvheAgwdH1Bp0/WEPHInjCIyw01gdKCpyF9PCKXTgMASo6WRs
- LOqiyxp9ii79wSbYaAOfF9sSgz+QoXuT7trXC/NiCP7rUMn7y/2DU6ujmO2UTmN7xdOw
- mEPzJiL6t4dWU6kGlo6FMJaLurGGcSd9dM3OOtYMbzVCayOYs28oMrzHiHVVO3oLYGKD
- DQJQ==
+ d=linaro.org; s=google; t=1694697385; x=1695302185; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vi+RdWrj91FTr+9PtMRp4SvcchdQmWSydsre43PpMPA=;
+ b=wOgstdmVOZ8PEwvavAAyHSPsanSe8KGq9uBLCiVgOXt1TwGfM7cN8H6xGZHjCk4aDt
+ 30w4FBwD0FHDdzZzkQhOOVivaOyfxm+/0REVxWFgI7ARQBykAbHPpnNKuhz4Y/A2Usix
+ PRdu0OPATXbeUkbH5oYwMMNQI22NaBIIafRNx5j2DNyJ8vrvH1v4uVc549mGNRgR5sFc
+ mMizjb22n4Yaa+1lNOsuLgYDvn8tL5jrWsvFazZ9DqtpaONMArtgkB5xEjb+BQgvKVBx
+ qsJviH4SXIKZ/2H9+wpz1gZthRnoD3DQqWcg603AavY8jHRBTFMcH1k+pbNRJemUTrUG
+ tf4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694697351; x=1695302151;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rvg5/oqSKaJkI/BDusWToy5I7SmDAvtrYXFEZErW++g=;
- b=kxcR6WKIUIgtDbPaW1WDhFLxvqIr5Zv7+nuFpKQht5BT+KWEUV2pMJVcjCIYk/q/pu
- er2O0khShmYUScvk8zbp8PDeJxlBXSAMKIRirIcjA97ucJoynM0epk/kuPA+XquOlfHe
- JFdws6NWlIlx5rZXo8WtJ65GoQ6Kf0SVzSTAOOIP7msBVnKNtqpcc/ydvOgtLuYgCBER
- ynTyflGUC1KKdKFun6cj6vi4sQlBwLYQRgviDJMfHOs2gnAmQXXpie2jyDNsMdq8kWcw
- 1AfPfRkxxyizqBCjofEVIbL7ICBmchQ1CdfU/rPEiyca/QujCe+z07g4tFUmy0iTN97H
- zMtw==
-X-Gm-Message-State: AOJu0Yz1QYvFnqeeER2CbVv5RI2hszoCRh3ufJVCNuVIeks98mSRhz4J
- Dy5NrJZBjKPCyFHwj2+V9w/c/A==
-X-Google-Smtp-Source: AGHT+IH+Fkzovzdl/8Qt7RIZpNGd0AJlKqu2BV1WEkvnZupomVTCblCzX2S4eauu3RDF0rvoANq6Qg==
-X-Received: by 2002:a19:2d52:0:b0:500:be7e:e84d with SMTP id
- t18-20020a192d52000000b00500be7ee84dmr3810806lft.61.1694697351067; 
- Thu, 14 Sep 2023 06:15:51 -0700 (PDT)
-Received: from [192.168.200.206] (83.21.94.247.ipv4.supernova.orange.pl.
- [83.21.94.247]) by smtp.gmail.com with ESMTPSA id
- m25-20020a195219000000b004fe119b0105sm269684lfb.272.2023.09.14.06.15.50
+ d=1e100.net; s=20230601; t=1694697385; x=1695302185;
+ h=content-transfer-encoding:in-reply-to:references:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vi+RdWrj91FTr+9PtMRp4SvcchdQmWSydsre43PpMPA=;
+ b=dMOCwV2pZ2sN3carqgvAiA8gBOo3EwyeeJLZn3Va6QLeBzfAC3hpG7Q+y+J6dxMszH
+ Qx3hOlDETCbKOHgOJ2Lu0+XxJxyMa19aPFiGJfXebsc1lwE8OWm4G0auKtnA0A1/cY+8
+ mY0EvtKLyfnGh5zxQ+RkzwCDUKPrOg+wsfmACxIKzfNKcb8kZU9bJd90VtxcTDOMd9JR
+ oj2Cz6ReN/BqOJ8BqO3dJWx68HpEnIa8i0unslB3LmLrdE14zZDvYwpS2JFpQp/EK+yD
+ JjyFTNXF4Ho9pwqR5aBGQVVssvI9g55E8uk8FOdJi3EUJUVTPutyVbzgi9wRasLTAuHl
+ Ihjg==
+X-Gm-Message-State: AOJu0YyfCjgdfU+WFKw89qXv2UmWH+sBU7RpSBuKB9uKCTQHM++Gpr+H
+ z0f+5wahjxRMTXcNCjUbXTfE7g==
+X-Google-Smtp-Source: AGHT+IFTFRLbxUS27lbwHTUbgUvgdbLpaLKVgsrUXmOPY2xB5eBB8wlfexjEVa3oHtiTV2JITiDO4g==
+X-Received: by 2002:aa7:da14:0:b0:525:466c:5fda with SMTP id
+ r20-20020aa7da14000000b00525466c5fdamr5144185eds.28.1694697385329; 
+ Thu, 14 Sep 2023 06:16:25 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-223-129.abo.bbox.fr.
+ [176.131.223.129]) by smtp.gmail.com with ESMTPSA id
+ n10-20020aa7c44a000000b00522572f323dsm914429edr.16.2023.09.14.06.16.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 06:15:50 -0700 (PDT)
-Message-ID: <986148e3-2830-4333-bfd7-29de9fa2dab8@linaro.org>
-Date: Thu, 14 Sep 2023 15:15:49 +0200
+ Thu, 14 Sep 2023 06:16:24 -0700 (PDT)
+Message-ID: <289d323e-2726-c957-4150-fd0595d5213c@linaro.org>
+Date: Thu, 14 Sep 2023 15:16:22 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] Refactor PPI logic/definitions for virt/sbsa-ref
-Content-Language: pl-PL, en-GB, en-HK
-To: Leif Lindholm <quic_llindhol@quicinc.com>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230914120124.55410-1-quic_llindhol@quicinc.com>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <20230914120124.55410-1-quic_llindhol@quicinc.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v2 08/20] asc: generate silence if FIFO empty but engine
+ still running
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org, =?UTF-8?Q?Volker_R=c3=bcmelin?=
+ <vr_qemu@t-online.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
+ <20230909094827.33871-9-mark.cave-ayland@ilande.co.uk>
+ <25d8059c-422a-3f2a-3f33-7a9848f4b3da@linaro.org>
+In-Reply-To: <25d8059c-422a-3f2a-3f33-7a9848f4b3da@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,65 +97,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 14.09.2023 o 14:01, Leif Lindholm pisze:
-> While reviewing Marcin's patch this morning, cross referencing different
-> specifications and looking at various places around the source code in
-> order to convinced myself he really hadn't missed something out (the
-> existing plumbing made it *so* clean to add), my brain broke slightly
-> at keeping track of PPIs/INTIDs between the various sources.
+On 14/9/23 09:56, Philippe Mathieu-Daudé wrote:
 > 
-> Moreover, I found the PPI() macro in virt.h to be doing the exact
-> opposite of what I would have expected it to (it converts a PPI to an
-> INTID rather than the other way around).
+> On 9/9/23 11:48, Mark Cave-Ayland wrote:
+>> MacOS (un)helpfully leaves the FIFO engine running even when all the 
+>> samples have
+>> been written to the hardware, and expects the FIFO status flags and 
+>> IRQ to be
+>> updated continuously.
+>>
+>> There is an additional problem in that not all audio backends 
+>> guarantee an
+>> all-zero output when there is no FIFO data available, in particular 
+>> the Windows
+>> dsound backend which re-uses its internal circular buffer causing the 
+>> last played
+>> sound to loop indefinitely.
+>>
+>> Whilst this is effectively a bug in the Windows dsound backend, work 
+>> around it
+>> for now using a simple heuristic: if the FIFO remains empty for half a 
+>> cycle
+>> (~23ms) then continuously fill the generated buffer with empty silence.
+>>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>>   hw/audio/asc.c         | 19 +++++++++++++++++++
+>>   include/hw/audio/asc.h |  2 ++
+>>   2 files changed, 21 insertions(+)
+>>
+>> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+>> index 336ace0cd6..b01b285512 100644
+>> --- a/hw/audio/asc.c
+>> +++ b/hw/audio/asc.c
+>> @@ -334,6 +334,21 @@ static void asc_out_cb(void *opaque, int free_b)
+>>       }
+>>       if (!generated) {
+>> +        /* Workaround for audio underflow bug on Windows dsound 
+>> backend */
+>> +        int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+>> +        int silent_samples = muldiv64(now - s->fifo_empty_ns,
+>> +                                      NANOSECONDS_PER_SECOND, ASC_FREQ);
+>> +
+>> +        if (silent_samples > ASC_FIFO_CYCLE_TIME / 2) {
+>> +            /*
+>> +             * No new FIFO data within half a cycle time (~23ms) so 
+>> fill the
+>> +             * entire available buffer with silence. This prevents an 
+>> issue
+>> +             * with the Windows dsound backend whereby the sound 
+>> appears to
+>> +             * loop because the FIFO has run out of data, and the driver
+>> +             * reuses the stale content in its circular audio buffer.
+>> +             */
+>> +            AUD_write(s->voice, s->silentbuf, samples << s->shift);
+>> +        }
+>>           return;
+>>       }
 > 
-> So I refactored stuff so that:
-> - PPIs defined by BSA are moved to a (new) common header.
-> - The _IRQ definitions for those PPIs refer to the INTIDs.
-> - sbsa-ref and virt both use these definitions.
+> What about having audio_callback_fn returning a boolean, and using
+> a flag in backends for that silence case? Roughtly:
 > 
-> This change does objectively add a bit more noise to the code, since it
-> means more locations need to use the PPI macro than before, but it felt
-> like a readability improvement to me.
+> -- >8 --
+> diff --git a/audio/audio.h b/audio/audio.h
+> index 01bdc567fb..4844771c92 100644
+> --- a/audio/audio.h
+> +++ b/audio/audio.h
+> @@ -30,7 +30,7 @@
+>   #include "hw/qdev-properties.h"
+>   #include "hw/qdev-properties-system.h"
+> 
+> -typedef void (*audio_callback_fn) (void *opaque, int avail);
+> +typedef bool (*audio_callback_fn) (void *opaque, int avail);
+> 
+>   #if HOST_BIG_ENDIAN
+>   #define AUDIO_HOST_ENDIANNESS 1
+> diff --git a/audio/audio.c b/audio/audio.c
+> index 90c7c49d11..5b6e69fbd6 100644
+> --- a/audio/audio.c
+> +++ b/audio/audio.c
+> @@ -1178,8 +1178,11 @@ static void audio_run_out (AudioState *s)
+>                   if (free > sw->resample_buf.pos) {
+>                       free = MIN(free, sw->resample_buf.size)
+>                              - sw->resample_buf.pos;
+> -                    sw->callback.fn(sw->callback.opaque,
+> -                                    free * sw->info.bytes_per_frame);
+> +                    if (!sw->callback.fn(sw->callback.opaque,
+> +                                         free * sw->info.bytes_per_frame)
+> +                            && unlikely(hw->silentbuf_required)) {
+> +                        /* write silence ... */
+> +                    }
+>                   }
+>               }
+>           }
+> ---
 
-I like how code looks after those changes. No more adding 16 to irq
-numbers to fit them into BSA spec numbers is nice to have.
+(Clarifying, not a blocker for this series, just wondering)
 
-Will rebase my "non-secure EL2 virtual timer" patch on top of it.
-
-> Not even compilation tested, just the least confusing way of asking
-> whether the change could be accepted at all.
-
-There are build warnings and final binary segfaults on start.
-
---------------------------------------------
-[1799/2931] Compiling C object libqemu-aarch64-softmmu.fa.p/hw_arm_sbsa-ref.c.o
-../hw/arm/sbsa-ref.c: In function ‘create_gic’:
-../hw/arm/sbsa-ref.c:496:13: warning: assignment to ‘int’ from ‘qemu_irq’ {aka ‘struct IRQState *’} makes integer from pointer without a cast [-Wint-conversion]
-   496 |         irq = qdev_get_gpio_in(sms->gic,
-       |             ^
-../hw/arm/sbsa-ref.c:499:37: warning: passing argument 4 of ‘qdev_connect_gpio_out_named’ makes pointer from integer without a cast [-Wint-conversion]
-   499 |                                     irq);
-       |                                     ^~~
-       |                                     |
-       |                                     int
-In file included from /home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/hw/core/cpu.h:23,
-                  from ../target/arm/cpu-qom.h:23,
-                  from ../target/arm/cpu.h:26,
-                  from /home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/sysemu/kvm.h:244,
-                  from ../hw/arm/sbsa-ref.c:27:
-/home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/hw/qdev-core.h:699:43: note: expected ‘qemu_irq’ {aka ‘struct IRQState *’} but argument is of type ‘int’
-   699 |                                  qemu_irq input_pin);
-       |                                  ~~~~~~~~~^~~~~~~~~
-../hw/arm/sbsa-ref.c:501:13: warning: assignment to ‘int’ from ‘qemu_irq’ {aka ‘struct IRQState *’} makes integer from pointer without a cast [-Wint-conversion]
-   501 |         irq = qdev_get_gpio_in(sms->gic,
-       |             ^
-../hw/arm/sbsa-ref.c:503:65: warning: passing argument 4 of ‘qdev_connect_gpio_out_named’ makes pointer from integer without a cast [-Wint-conversion]
-   503 |         qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0, irq);
-       |                                                                 ^~~
-       |                                                                 |
-       |                                                                 int
-/home/marcin/devel/linaro/sbsa-qemu/code/qemu/include/hw/qdev-core.h:699:43: note: expected ‘qemu_irq’ {aka ‘struct IRQState *’} but argument is of type ‘int’
-   699 |                                  qemu_irq input_pin);
-       |                                  ~~~~~~~~~^~~~~~~~~
---------------------------------------------
 
