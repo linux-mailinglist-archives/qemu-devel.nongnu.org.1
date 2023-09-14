@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4977979FBD4
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 761FF79FBD8
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:23:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgfk7-0006So-TF; Thu, 14 Sep 2023 02:22:23 -0400
+	id 1qgfki-0006og-TG; Thu, 14 Sep 2023 02:23:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfk5-0006SX-Uv
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:21 -0400
-Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
+ (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
+ id 1qgfkh-0006oN-83
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:59 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfk4-0001jP-6g
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:21 -0400
-Received: by mail-ej1-x634.google.com with SMTP id
- a640c23a62f3a-9ad8a33fd0dso72653066b.3
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:22:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jinpu.wang@ionos.com>)
+ id 1qgfkf-0001oT-9x
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:59 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-529fb2c6583so616568a12.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:22:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694672537; x=1695277337; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=hP01JpjVhAghEymlQp5fC7eYgVrV/Ngb7ZY8IMC2q4k=;
- b=uGaBSYChGS4hfIfT9il25elqlNVyjcetHva9qX6JZjMpn75ZVCOfjA9tS03wSTY74F
- wzTB/rkeqCZLjccNQx42ULR6nYwSKFZPcVcumhvBKuDXlbgv8xdplhS8cXQIirL+Iu/M
- oRGZAb2HNsYytIAYlnWkfJz91ZJuV5VPjZPUXPQASPXYR7XyUupPGdA2FDL4UziCqWvl
- dE97Z5g7LPBMJ1Lhl/HKr8Mnr/IPAg+v76gdqg2q+g7UPknAH4I1+XFt5LRqJ+T6aYWo
- IVLzpi+VxmFKp3uVfOP7fZ2OChmzCt04CEqVPZeJtUxWuw5aJiE0Cniu5x2tXc6t/B7l
- BIBQ==
+ d=ionos.com; s=google; t=1694672572; x=1695277372; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pEQqLAGfGXDXNSVrgkSbbPwz6XvycvCh9/uDhckRC2s=;
+ b=FW90GCzaupX7li/kCQq9AM2zcPXCD404BG8fvcNVhC01tPR597db30NxIqVazVbVsR
+ W/ynM/NOgM7sQp6olJ+AgIDFiyS1EYrkHaZqGB0Ovo5oHfzAU0VQiKwUa5MCHNgzW+RT
+ OtY/p/QRYHz1dsGkUtzRCRBiADB/QKT1CbC6aXxRgKj2qG1S/JUU1Bm9y+k7+sJWAiPX
+ 4EUNHYnTLxu4sb7hAf8vcSxwYZ7pWaHrYO0Yk0nsUF2w4yjODGpQj3dpfYL3SJT4Q6Qb
+ uhMwn/8yGgrSAv5TzIj6FZ9emBp4J97GF6a5Ng3zJiXZmXhY3QFl1ye2X8QwpyarpQAE
+ +u/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694672537; x=1695277337;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=hP01JpjVhAghEymlQp5fC7eYgVrV/Ngb7ZY8IMC2q4k=;
- b=fbBdAhVAZhYYQZMHw5L8MzkK9UwDUMLdO8D+0WbzbapGafQ4UyWiG86sSxaDNZTznv
- yNdcmpfTncBZWk9wrxGSOJxPkhYDyfk3q8GbVn0n63vlDZRj4jB7Sy/RNiMjWCssM5ip
- 0Nk5SKk9PfA1sC7oMhBU9RxIFgHuAO0LGKOOwpyF4BZuHTK9vSSWzq7zLfQpz3+UU1Ji
- TScTXbzjt1Bo/c7OazhRWCdWWRPH0E0DmFKbRlQxXTvE0zPplnTJT8gzGBThUaX5IEpu
- DHRbO0eCg+KLp61KpeuGDvGS5pp39w9tur0REsJoGufOcGln7HLzVq4A/bpOMM5hGYiY
- jNbg==
-X-Gm-Message-State: AOJu0Yyk/usJKuW19T3vINMPYOuhaAMM01nR/JlqCZz3vP7P9MT/8pIi
- gpxNUfqn3HP0iB99F66qiC+Meg==
-X-Google-Smtp-Source: AGHT+IGI7ghFph0XoqEwcnit7jkOGvEjrmpaL8dm7HU2SHTLIZALvFnmDQUFSRYgF6odt7bm3vNyLw==
-X-Received: by 2002:a17:907:2cc9:b0:9a5:b8c1:2ce1 with SMTP id
- hg9-20020a1709072cc900b009a5b8c12ce1mr3289390ejc.31.1694672537599; 
- Wed, 13 Sep 2023 23:22:17 -0700 (PDT)
-Received: from [192.168.69.115] (sem44-h01-176-172-56-29.dsl.sta.abo.bbox.fr.
- [176.172.56.29]) by smtp.gmail.com with ESMTPSA id
- gg23-20020a170906e29700b0099364d9f0e6sm507880ejb.117.2023.09.13.23.22.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 23:22:17 -0700 (PDT)
-Message-ID: <ba8e2a44-710f-dc02-e571-1c36e8634332@linaro.org>
-Date: Thu, 14 Sep 2023 08:22:15 +0200
+ d=1e100.net; s=20230601; t=1694672572; x=1695277372;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pEQqLAGfGXDXNSVrgkSbbPwz6XvycvCh9/uDhckRC2s=;
+ b=dWc74PLM1sa8dYN25pmx/d9ig4OrYvqoE6mpC4jXejxylDAXqDh888Ps79xF+NHNIK
+ z4Dl7HScfA1QeyvWO4ViIUoMzyZ2wCG+Dj2QSkbhOKQHk194mKJa4T7vSF9bu1VUWIPi
+ OyV8hK2gsmk1rWnUwYPwqeE4TQn7eD8lo1/QZVzhEoeiK7AiJuk5KO/WT0DjQEtkGtVc
+ tM+350BL9DvQ3+WzIgZuKzhMlmCjOBzNG1A2CXhvhcNb5K80Iv5H5C40lOETsnDys9/h
+ XxbN9QDyNZY7ChG3Lsjm6qrKFlrUWE1mXYxQtNsdItJvS8eKzOnSY0S4+D5eqZgr3ZK1
+ OSHw==
+X-Gm-Message-State: AOJu0YzupOijtqg15mNjrjvQ//w+4iehoc+fqajZis+vYFtQd//rKcdq
+ 3KjXXRaJBwFfGQQs7XtaOiHdikazYREvDn4UlSe6xw==
+X-Google-Smtp-Source: AGHT+IHt3Fgp9GWKZ/0ZJrSAvXweB0M/RmQCqluhvfxrL8t9CjRrGiZVhq//tf8nEhITaZDMb/ToqqvOHlEPe1fIBew=
+X-Received: by 2002:a05:6402:1807:b0:52e:585a:e96 with SMTP id
+ g7-20020a056402180700b0052e585a0e96mr4173367edy.7.1694672571986; Wed, 13 Sep
+ 2023 23:22:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 21/24] accel/tcg: Use CPUState in atomicity helpers
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: anjo@rev.ng, ale@rev.ng
-References: <20230914024435.1381329-1-richard.henderson@linaro.org>
- <20230914024435.1381329-22-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230914024435.1381329-22-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::634;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+References: <fde42d81ce454477ca8e27d5429a190b7366fe86.1692074650.git.pawan.kumar.gupta@linux.intel.com>
+ <89e97deb-65ca-e1a2-da53-7ae29f13ea26@intel.com>
+In-Reply-To: <89e97deb-65ca-e1a2-da53-7ae29f13ea26@intel.com>
+From: Jinpu Wang <jinpu.wang@ionos.com>
+Date: Thu, 14 Sep 2023 08:22:41 +0200
+Message-ID: <CAMGffEkfQUJi=shsySeSCvB7d-LwbqXib9j7eAKuRivaiz0t_g@mail.gmail.com>
+Subject: Re: [PATCH v2] target/i386: Export GDS_NO bit to guests
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, 
+ qemu-devel <qemu-devel@nongnu.org>, tao1.su@linux.intel.com, 
+ Yu Zhang <yu.zhang@ionos.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: permerror client-ip=2a00:1450:4864:20::531;
+ envelope-from=jinpu.wang@ionos.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,22 +90,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/9/23 04:44, Richard Henderson wrote:
-> From: Anton Johansson <anjo@rev.ng>
-> 
-> Makes ldst_atomicity.c.inc almost target-independent, with the exception
-> of TARGET_PAGE_MASK, which will be addressed in a future patch.
-> 
-> Signed-off-by: Anton Johansson <anjo@rev.ng>
-> Message-Id: <20230912153428.17816-8-anjo@rev.ng>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/cputlb.c             | 20 ++++----
->   accel/tcg/user-exec.c          | 16 +++----
->   accel/tcg/ldst_atomicity.c.inc | 88 +++++++++++++++++-----------------
->   3 files changed, 62 insertions(+), 62 deletions(-)
+Hi Paolo,
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Ping!
 
+Thx!
+
+On Tue, Aug 15, 2023 at 7:44=E2=80=AFAM Xiaoyao Li <xiaoyao.li@intel.com> w=
+rote:
+>
+> On 8/15/2023 12:54 PM, Pawan Gupta wrote:
+> > Gather Data Sampling (GDS) is a side-channel attack using Gather
+> > instructions. Some Intel processors will set ARCH_CAP_GDS_NO bit in
+> > MSR IA32_ARCH_CAPABILITIES to report that they are not vulnerable to
+> > GDS.
+> >
+> > Make this bit available to guests.
+> >
+> > Closes: https://lore.kernel.org/qemu-devel/CAMGffEmG6TNq0n3+4OJAgXc8J0O=
+evY60KHZekXCBs3LoK9vehA@mail.gmail.com/
+> > Reported-by: Jack Wang <jinpu.wang@ionos.com>
+> > Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > Tested-by: Jack Wang <jinpu.wang@ionos.com>
+> > Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>
+> > ---
+> > v2: Added commit tags
+> >
+> > v1: https://lore.kernel.org/qemu-devel/c373f3f92b542b738f296d44bb6a916a=
+1cded7bd.1691774049.git.pawan.kumar.gupta@linux.intel.com/
+> >
+> >   target/i386/cpu.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> > index 97ad229d8ba3..48709b77689f 100644
+> > --- a/target/i386/cpu.c
+> > +++ b/target/i386/cpu.c
+> > @@ -1155,7 +1155,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] =
+=3D {
+> >               NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
+> >               NULL, "fb-clear", NULL, NULL,
+> >               NULL, NULL, NULL, NULL,
+> > -            "pbrsb-no", NULL, NULL, NULL,
+> > +            "pbrsb-no", NULL, "gds-no", NULL,
+> >               NULL, NULL, NULL, NULL,
+> >           },
+> >           .msr =3D {
+>
 
