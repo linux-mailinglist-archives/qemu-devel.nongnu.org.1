@@ -2,81 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4AF77A03FA
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C637A03F4
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 14:34:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qglXg-0002BI-PJ; Thu, 14 Sep 2023 08:33:59 -0400
+	id 1qglXW-0001yN-So; Thu, 14 Sep 2023 08:33:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qglWQ-0001Ro-LM
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qglWX-0001UW-AN
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:32:46 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qglWU-0007vS-Ck
  for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:32:44 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qglWJ-0007v1-Ua
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 08:32:38 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-52a1ce52ef4so1074646a12.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 05:32:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694694750; x=1695299550; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=y77LemRAvSjjAxY/Iljm98eTvEMCyTFElmsA3BUeXbE=;
- b=J//91M7XipfHLYz54w0sqajtSEb+G7zSBZrUgA6RdT/EigEmz5Jf2egBD2wlPocvby
- cxZEjt0l/gl70+AV/Ks5eIMcQ+DsUSE8CEhbrLChHoigg7mm5edqG+7vJxiacHhBoqMv
- ScvfwPSFVP5DzqFlAANLWtsMvsAe8R+7tTA3mmzEfmA5Z4hyq2rg2jtXI4TeydHEmlY8
- 3L6Z4C+m0ufmYnnikxuK6EvzGr8ARRHPYQ0a5rx2QJXHAk+zj0Fg9F1golkWkH98nJYv
- DzbZhBXQG5Zs6861ecYyw7hpJjHETlQf332RB0pNCPnh2eLOLeuP/3mszqmO1+ztUfm1
- lcjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694694750; x=1695299550;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=y77LemRAvSjjAxY/Iljm98eTvEMCyTFElmsA3BUeXbE=;
- b=RhHO5IpzExEaADvisThikGEPEV+jUvt28rEeL8zqiDHIZZF85xqW2Awg30Ja4wCn+f
- zDmVa2o/5Ry4rxxjVN6qfSZUNVbnMD+YgfbHqLVeQpoTFxkhYUdpO+hAxW4fStD6YK3U
- zMu/oMHsChpFANhqYAZJMlsRLV/xHOdAVlYnVbLGoS1KUxM0MJsl+ayntgtYMqHIs2lL
- VHJfU3MLnDQOTgm/QY8ofTXVTxcZt6R1pvnKEIidQExxkdYrA9mfTzRTmZm0QszgV8t5
- pozPtiy2gy5XQQ+lCYUIV8dvV742qDtO3MbstTVaZQTFm23fpbVb0PukZPDOmw3dDS1b
- 8coA==
-X-Gm-Message-State: AOJu0YzhDp0NhoQsrYRDs5FQAm7OZDlrBxsl1VMshHunvCgFellCBIF+
- JRYkz6krMG8kIQcBMsqr592R3XuN9POtynPK7g85Gg==
-X-Google-Smtp-Source: AGHT+IFf+qV2A25h4AmbM1+HsL5aHDIh7LinQWynyheOo9qdvqr2rz5ssebnINUHHLXUrFMg221cB/6Sax66zjHuRYI=
-X-Received: by 2002:aa7:d793:0:b0:525:7091:124c with SMTP id
- s19-20020aa7d793000000b005257091124cmr4947808edq.19.1694694750020; Thu, 14
- Sep 2023 05:32:30 -0700 (PDT)
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 79A7621E27;
+ Thu, 14 Sep 2023 15:32:43 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9A63E28165;
+ Thu, 14 Sep 2023 15:32:35 +0300 (MSK)
+Message-ID: <36b2ff6b-32c4-f8a2-ed89-fec14bf925af@tls.msk.ru>
+Date: Thu, 14 Sep 2023 15:32:35 +0300
 MIME-Version: 1.0
-References: <20230906140917.559129-1-den@openvz.org>
- <20230906140917.559129-4-den@openvz.org>
- <ZQHZquVrpTFaU7kD@redhat.com>
- <4si43aghmpl4yxtlqhg63q2ivecnsxi5sm67ec5dhtezrhbijy@7zcuqmytr2qt>
- <ZQL8avIMyJq4xvHz@redhat.com>
-In-Reply-To: <ZQL8avIMyJq4xvHz@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 14 Sep 2023 13:32:09 +0100
-Message-ID: <CAFEAcA8bqOw=r=hK+J5G9xqaRei3b1T-SpLAB+He3DadhzUXjQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] iotests: distinguish 'skipped' and 'not run' states
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: Eric Blake <eblake@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- "Denis V. Lunev" <den@openvz.org>, qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] hw/qxl: move check of slot_id before accessing guest_slots
+Content-Language: en-US
+To: Anastasia Belova <abelova@astralinux.ru>, Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org
+References: <20230914092717.7158-1-abelova@astralinux.ru>
+From: Michael Tokarev <mjt@tls.msk.ru>
+In-Reply-To: <20230914092717.7158-1-abelova@astralinux.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -83
+X-Spam_score: -8.4
+X-Spam_bar: --------
+X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,40 +59,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Sept 2023 at 13:29, Kevin Wolf <kwolf@redhat.com> wrote:
->
-> Am 13.09.2023 um 18:31 hat Eric Blake geschrieben:
-> > I guess it boils down to whether there is an actionable response in
-> > that message.  If a test is skipped because it is the wrong format
-> > (for example, ./check -raw skipping a test that only works with
-> > qcow2), there's nothing for me to do.  If a test is skipped because my
-> > setup didn't permit running the test, but where I could enhance my
-> > environment (install more software, pick a different file system,
-> > ...), then having the skip message call that out is useful if I want
-> > to take action to get more test coverage.
->
-> I'm not sure if there is a clear line to define whether there is an
-> actionable response or not, because that completely depends on what the
-> user considers an acceptable response.
->
-> You have the relatively clear cases like the test being for another
-> format, though you could argue that the actionable response is running
-> ./check -qcow2 if raw doesn't work - in fact, why don't we allow ./check
-> -raw -qcow2 to run both and count it as skipped only if it wasn't run at
-> all?
->
-> The relatively clear case on the other end of the spectrum is if a tool
-> is missing on the host that you could possibly install. Though maybe
-> your distro doesn't even package it, so is that still a reasonable
-> action to take?
+14.09.2023 12:27, Anastasia Belova wrote:
+> If slot_id >= NUM_MEMSLOTS, buffer overflow is possible.
+> So the check should be upper than d->guest_slots[slot_id]
+> where size of d->guest_slots is NUM_MEMSLOTS.
+> 
+> Fixes: e954ea2873 ("qxl: qxl_add_memslot: remove guest trigerrable panics")
+> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
 
-I think for that sort of thing you need to actually collect the
-reasons so that at the end you can say "skipped 21 tests because
-frobnicator not present on system; skipped 4 tests because
-bazulator not present on system". Then when you're running the
-tests you can either (a) install the listed tools or (b) know
-you can ignore those specific skips as ones you're aware you
-can't run. But that would be a lot of pain and effort to implement...
+Good catch.
 
--- PMM
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+
+The change is trivial enough for trivial-patches tree,
+picked it up if Gerd don't mind.
+
+/mjt
+
+>   hw/display/qxl.c | 11 ++++++-----
+>   1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/display/qxl.c b/hw/display/qxl.c
+> index 7bb00d68f5..dc618727c0 100644
+> --- a/hw/display/qxl.c
+> +++ b/hw/display/qxl.c
+> @@ -1309,16 +1309,17 @@ static int qxl_add_memslot(PCIQXLDevice *d, uint32_t slot_id, uint64_t delta,
+>       QXLDevMemSlot memslot;
+>       int i;
+>   
+> -    guest_start = le64_to_cpu(d->guest_slots[slot_id].slot.mem_start);
+> -    guest_end   = le64_to_cpu(d->guest_slots[slot_id].slot.mem_end);
+> -
+> -    trace_qxl_memslot_add_guest(d->id, slot_id, guest_start, guest_end);
+> -
+>       if (slot_id >= NUM_MEMSLOTS) {
+>           qxl_set_guest_bug(d, "%s: slot_id >= NUM_MEMSLOTS %d >= %d", __func__,
+>                         slot_id, NUM_MEMSLOTS);
+>           return 1;
+>       }
+> +
+> +    guest_start = le64_to_cpu(d->guest_slots[slot_id].slot.mem_start);
+> +    guest_end   = le64_to_cpu(d->guest_slots[slot_id].slot.mem_end);
+> +
+> +    trace_qxl_memslot_add_guest(d->id, slot_id, guest_start, guest_end);
+> +
+>       if (guest_start > guest_end) {
+>           qxl_set_guest_bug(d, "%s: guest_start > guest_end 0x%" PRIx64
+>                            " > 0x%" PRIx64, __func__, guest_start, guest_end);
+
 
