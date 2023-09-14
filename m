@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F397A0C23
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 20:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E26207A0C17
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 19:59:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgqc7-0003Kv-0W; Thu, 14 Sep 2023 13:58:51 -0400
+	id 1qgqc6-0003KY-7G; Thu, 14 Sep 2023 13:58:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
- id 1qgqc5-0003KO-9M
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 13:58:49 -0400
+ id 1qgqc4-0003KG-VZ
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 13:58:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
- id 1qgqc2-0002ER-I5
+ id 1qgqc3-0002Es-Cc
  for qemu-devel@nongnu.org; Thu, 14 Sep 2023 13:58:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694714324;
+ s=mimecast20190719; t=1694714326;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yhhRFK0ZCoglrBy3GmbzRXf2oYIiYOmczFpn9U0TMwE=;
- b=aQy89sP7TOTwK2w5meoqKPc2GQMcs7HZSLdy2k6efrrihM4nMquOVOcDHbIFQOGpB7zbni
- Ca/v1P3Rdb0GdGKGX9DElLal3iLPSMHO6WabTIZtQIZLzdc8Q/zpzlXZ8ziMjB74VNOUMR
- DSZw/WpxCESRusI83CiFfN5zLQUBISs=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5VBskaJXZziliJm4qr2RVmqGx7fudPW2YJcT+hAMbW0=;
+ b=M8Q8yucXe7XIM1tZsgankyagWiZha7t4MDFEFtwEWC/Yc823lFEIfR4a8IYUIj9hHe68EV
+ 6jYtkdhVicb0ULNRw+iDyKbcmrLb2B9ptR323rl0iynFyIMMaUPolPuLE6lxc1138uK9sL
+ RyUVNFZerIfAx/NjY9TMmr6Pwv3+hf4=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-340-Pt1WoCarOKGgs0fC9lJz3g-1; Thu, 14 Sep 2023 13:58:43 -0400
-X-MC-Unique: Pt1WoCarOKGgs0fC9lJz3g-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-655d7107e70so14181006d6.1
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 10:58:43 -0700 (PDT)
+ us-mta-542-JLQtxqIPOImShJvJSLwAog-1; Thu, 14 Sep 2023 13:58:45 -0400
+X-MC-Unique: JLQtxqIPOImShJvJSLwAog-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6562fff4a2fso2912166d6.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 10:58:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694714322; x=1695319122;
+ d=1e100.net; s=20230601; t=1694714324; x=1695319124;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yhhRFK0ZCoglrBy3GmbzRXf2oYIiYOmczFpn9U0TMwE=;
- b=s7RPUXB8ijP6uhq7AnQZzyqyeBwkZ/x/tZa4WI43mUdDVsZX9cx8ZOO+benit6SO1T
- o9PJm4OQPt1MdwOdZuTfzHeYyaB2ntLziPTckprX0y94YKzIRHwDWKL5Y/LyFfqFLoGK
- RiqGuVc+gXiOzeqi+igIP5IWYbMPiYC3nwF3AgVfWb0eT/Yk4062PLQBoz+RV/26G9mm
- RFZWH+JMsIVpr/XjGvbvn+yWO7Dx7AcdS38wkBNPWu78bkxybbxdiQabM+m9j3Vg2xok
- cfAHJdBAPUdCRjsLwUroQIaweJgf1WWgdG0lkaKlJybEzIQNJzsSLyTnkn8daO4zQfHz
- xsFA==
-X-Gm-Message-State: AOJu0YyShzT4kg81pjnHAKj9H4eCWuTRpXKEnZHv/e04R+Zm52vUlnL0
- HDBeoYeF5sAAwRE7XUF3Aryq8rqha9XQqLQRjgL+m5YUhAmKTA4iUQpFcQYrtxo4oF9njqoj+xf
- reMBoD065+nJhCAZ/VFUQyVbmP9x/UbKJrkZkxtI24vL4LIBqc+UlZ7RLHhqAG8gz/TSjBxmsfd
- ElZw==
-X-Received: by 2002:a0c:ed4d:0:b0:64f:3bec:9b29 with SMTP id
- v13-20020a0ced4d000000b0064f3bec9b29mr6910288qvq.39.1694714321798; 
- Thu, 14 Sep 2023 10:58:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzo9lelr4NQTAzGe2D1O+I9Nxb6+S7xkx1vnm1PmEcgPIv/P4mZVUwP+UK1g/OkkCeA9eLVw==
-X-Received: by 2002:a0c:ed4d:0:b0:64f:3bec:9b29 with SMTP id
- v13-20020a0ced4d000000b0064f3bec9b29mr6910274qvq.39.1694714321486; 
- Thu, 14 Sep 2023 10:58:41 -0700 (PDT)
+ bh=5VBskaJXZziliJm4qr2RVmqGx7fudPW2YJcT+hAMbW0=;
+ b=hX7leFd+Sf17JRD/wPE2bVkkxOUqO+DMqKEAaebtKn+f6jAek7WiANnV5XHaW7ib7e
+ VXtmCzLaFsMu2GQKP+VDVrK9g9znQXdMRWIh85WN5EfeIsnUsEu1XlewL7EWTvb99pnU
+ VkFSU5Dw5Gx1NfL33nuZKla35BmZhaLfLcwtzM360Jo80IicJOAJrevub2IlbxuQRYLN
+ Br3g3YqhhDOv1Tk9JD/nx8v/AMzWzkEckaFEHk7We075AA2ns0WnAYpDuUcuHQ19r6tI
+ mBYTWbMEdTq9hTj/WkDNXxfPsWaYxzpzqGqJcGbmytGX7i4XFbTspCDD6v8NTidjCL8c
+ OfzA==
+X-Gm-Message-State: AOJu0YxjelJg/0VmOlwlxHm1NlUGLqPPSwjERPZRmddrmrs2QWTQTNIF
+ dDXjsPf9wg+koQKjCOESQw7zy38yuuk9776yCKKxaB0aO9luYsFS+wjBsXyx5LcWVs29WrdFAXw
+ XOJE/V/3IJONPDGEzWr3mmgkNT8/0EfL2MoLUFgDWB7XtidunK8nZ0JbuqZT7gZ/WDYHOgHND4T
+ fAKw==
+X-Received: by 2002:a0c:f10b:0:b0:651:5b77:1ab5 with SMTP id
+ i11-20020a0cf10b000000b006515b771ab5mr7275951qvl.22.1694714324084; 
+ Thu, 14 Sep 2023 10:58:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG/C3ZzQf/VrPFSK1890wSlPyBMkHQsQpaVv3m+QuVGKsDzg0cvU6R2E5puh2W7fBe2LDq4gg==
+X-Received: by 2002:a0c:f10b:0:b0:651:5b77:1ab5 with SMTP id
+ i11-20020a0cf10b000000b006515b771ab5mr7275928qvl.22.1694714323765; 
+ Thu, 14 Sep 2023 10:58:43 -0700 (PDT)
 Received: from fedora.redhat.com ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
  by smtp.gmail.com with ESMTPSA id
- d1-20020a0cf0c1000000b0064733ac9a9dsm628489qvl.122.2023.09.14.10.58.39
+ d1-20020a0cf0c1000000b0064733ac9a9dsm628489qvl.122.2023.09.14.10.58.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 10:58:39 -0700 (PDT)
+ Thu, 14 Sep 2023 10:58:41 -0700 (PDT)
 From: Tyler Fanelli <tfanelli@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, mtosatti@redhat.com, stefanha@redhat.com,
  Tyler Fanelli <tfanelli@redhat.com>
-Subject: [RFC PATCH 1/8] Add SEV Rust library as dependency with CONFIG_SEV
-Date: Thu, 14 Sep 2023 13:58:28 -0400
-Message-Id: <20230914175835.382972-2-tfanelli@redhat.com>
+Subject: [RFC PATCH 2/8] i386/sev: Replace INIT and ES_INIT ioctls with sev
+ library equivalents
+Date: Thu, 14 Sep 2023 13:58:29 -0400
+Message-Id: <20230914175835.382972-3-tfanelli@redhat.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230914175835.382972-1-tfanelli@redhat.com>
 References: <20230914175835.382972-1-tfanelli@redhat.com>
@@ -100,89 +101,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Rust sev library provides a type-safe implementation of the AMD
-Secure Encrypted Virtualization (SEV) APIs.
+The sev library offers APIs for SEV_INIT and SEV_ES_INIT, both taking
+the file descriptors of the encrypting VM and /dev/sev as input.
+
+If this API ioctl call fails, fw_error will be set accordingly.
 
 Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
 ---
- meson.build                   | 7 +++++++
- meson_options.txt             | 2 ++
- scripts/meson-buildoptions.sh | 3 +++
- target/i386/meson.build       | 2 +-
- 4 files changed, 13 insertions(+), 1 deletion(-)
+ target/i386/sev.c        | 14 +++++++++-----
+ target/i386/trace-events |  1 +
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 5150a74831..7114a4a2b9 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1079,6 +1079,12 @@ if targetos == 'linux' and (have_system or have_tools)
-                        method: 'pkg-config',
-                        required: get_option('libudev'))
- endif
-+sev = not_found
-+if not get_option('sev').auto()
-+  sev = dependency('sev', version: '1.2.1',
-+                      method: 'pkg-config',
-+                      required: get_option('sev'))
-+endif
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index fe2144c038..f0fd291e68 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -18,6 +18,8 @@
  
- mpathlibs = [libudev]
- mpathpersist = not_found
-@@ -4283,6 +4289,7 @@ summary_info += {'PAM':               pam}
- summary_info += {'iconv support':     iconv}
- summary_info += {'virgl support':     virgl}
- summary_info += {'blkio support':     blkio}
-+summary_info += {'sev support':       sev}
- summary_info += {'curl support':      curl}
- summary_info += {'Multipath support': mpathpersist}
- summary_info += {'Linux AIO support': libaio}
-diff --git a/meson_options.txt b/meson_options.txt
-index f82d88b7c6..c57d542c0b 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -134,6 +134,8 @@ option('cap_ng', type : 'feature', value : 'auto',
-        description: 'cap_ng support')
- option('blkio', type : 'feature', value : 'auto',
-        description: 'libblkio block device driver')
-+option('sev', type : 'feature', value : 'auto',
-+        description: 'SEV Rust library')
- option('bpf', type : 'feature', value : 'auto',
-         description: 'eBPF support')
- option('cocoa', type : 'feature', value : 'auto',
-diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
-index e1d178370c..d7deb50bda 100644
---- a/scripts/meson-buildoptions.sh
-+++ b/scripts/meson-buildoptions.sh
-@@ -83,6 +83,7 @@ meson_options_help() {
-   printf "%s\n" '  avx512bw        AVX512BW optimizations'
-   printf "%s\n" '  avx512f         AVX512F optimizations'
-   printf "%s\n" '  blkio           libblkio block device driver'
-+  printf "%s\n" '  sev             SEV Rust library'
-   printf "%s\n" '  bochs           bochs image format support'
-   printf "%s\n" '  bpf             eBPF support'
-   printf "%s\n" '  brlapi          brlapi character device driver'
-@@ -227,6 +228,8 @@ _meson_option_parse() {
-     --disable-lto) printf "%s" -Db_lto=false ;;
-     --enable-blkio) printf "%s" -Dblkio=enabled ;;
-     --disable-blkio) printf "%s" -Dblkio=disabled ;;
-+    --enable-sev) printf "%s" -Dsev=enabled ;;
-+    --disable-sev) printf "%s" -Dsev=disabled ;;
-     --block-drv-ro-whitelist=*) quote_sh "-Dblock_drv_ro_whitelist=$2" ;;
-     --block-drv-rw-whitelist=*) quote_sh "-Dblock_drv_rw_whitelist=$2" ;;
-     --enable-block-drv-whitelist-in-tools) printf "%s" -Dblock_drv_whitelist_in_tools=true ;;
-diff --git a/target/i386/meson.build b/target/i386/meson.build
-index 6f1036d469..18450dc134 100644
---- a/target/i386/meson.build
-+++ b/target/i386/meson.build
-@@ -6,7 +6,7 @@ i386_ss.add(files(
-   'xsave_helper.c',
-   'cpu-dump.c',
- ))
--i386_ss.add(when: 'CONFIG_SEV', if_true: files('host-cpu.c'))
-+i386_ss.add(when: 'CONFIG_SEV', if_true: [sev, files('host-cpu.c')])
+ #include <sys/ioctl.h>
  
- # x86 cpu type
- i386_ss.add(when: 'CONFIG_KVM', if_true: files('host-cpu.c'))
++#include <sev/sev.h>
++
+ #include "qapi/error.h"
+ #include "qom/object_interfaces.h"
+ #include "qemu/base64.h"
+@@ -27,6 +29,7 @@
+ #include "crypto/hash.h"
+ #include "sysemu/kvm.h"
+ #include "sev.h"
++#include "sysemu/kvm_int.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/runstate.h"
+ #include "trace.h"
+@@ -911,10 +914,11 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     SevGuestState *sev
+         = (SevGuestState *)object_dynamic_cast(OBJECT(cgs), TYPE_SEV_GUEST);
+     char *devname;
+-    int ret, fw_error, cmd;
++    int ret, fw_error;
+     uint32_t ebx;
+     uint32_t host_cbitpos;
+     struct sev_user_data_status status = {};
++    KVMState *s = kvm_state;
+ 
+     if (!sev) {
+         return 0;
+@@ -990,13 +994,13 @@ int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+                          __func__);
+             goto err;
+         }
+-        cmd = KVM_SEV_ES_INIT;
++        trace_kvm_sev_es_init();
++        ret = sev_es_init(s->vmfd, sev->sev_fd, &fw_error);
+     } else {
+-        cmd = KVM_SEV_INIT;
++        trace_kvm_sev_init();
++        ret = sev_init(s->vmfd, sev->sev_fd, &fw_error);
+     }
+ 
+-    trace_kvm_sev_init();
+-    ret = sev_ioctl(sev->sev_fd, cmd, NULL, &fw_error);
+     if (ret) {
+         error_setg(errp, "%s: failed to initialize ret=%d fw_error=%d '%s'",
+                    __func__, ret, fw_error, fw_error_to_str(fw_error));
+diff --git a/target/i386/trace-events b/target/i386/trace-events
+index 2cd8726eeb..2dca4ee117 100644
+--- a/target/i386/trace-events
++++ b/target/i386/trace-events
+@@ -2,6 +2,7 @@
+ 
+ # sev.c
+ kvm_sev_init(void) ""
++kvm_sev_es_init(void) ""
+ kvm_memcrypt_register_region(void *addr, size_t len) "addr %p len 0x%zx"
+ kvm_memcrypt_unregister_region(void *addr, size_t len) "addr %p len 0x%zx"
+ kvm_sev_change_state(const char *old, const char *new) "%s -> %s"
 -- 
 2.40.1
 
