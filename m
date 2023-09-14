@@ -2,75 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186837A078A
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2654A7A079C
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 16:44:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgnWL-0000uQ-KG; Thu, 14 Sep 2023 10:40:41 -0400
+	id 1qgnYu-00035r-3r; Thu, 14 Sep 2023 10:43:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qgnWI-0000tn-VZ
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:40:39 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qgnYr-000355-M1
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:43:17 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qgnWG-0000dE-WE
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:40:38 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-402c46c49f4so10926385e9.1
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 07:40:36 -0700 (PDT)
+ id 1qgnYq-00016i-2x
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 10:43:17 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-4ff8f2630e3so1866219e87.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 07:43:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694702434; x=1695307234; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=S1GDB0R+c9oAwqJttqwTtfkLtxH7usjq17smL1mLLK0=;
- b=o58YnuMViiPFFGQoWHWRwQRHEomo1ZYL1tNExv4DN2SK73o9Y0Y4jSjg5bUXuE/9GK
- zO6FDOylo1DppDrhtB/AVJU6uBk6jmxSezF/wmRuqNz4brZf7l1y6JrKfceY6sEAgjHO
- UpOuSHqQ2HEsXDC9WmVL2wx2N1Q6vHthC56+2Yx/z46fREbOWhqYNrmoFTZcYuWZGgBz
- XQTET+wenhe2RnK6R1NaRCblDtN3lRh48ttyIPkvhgkfEphlul7wj5KLu2PvjWFWOfhZ
- y/3vkMPhCsEhpCt9+Mftc8XwfrcDn3H0AE5gb57sCrVZrx1e+cZiRdiI7hwA5IDkTU9T
- Jghw==
+ d=linaro.org; s=google; t=1694702593; x=1695307393; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YxaY4CcZ9l95kr6sXtBF4WnDKq063r4MZG5I7MgmObA=;
+ b=qZe8lT9pkYH9sa+/hBR91OU+fvckIwR0BG7/81ZV28BV14THPy0R6tlZDkBaZvHpkw
+ kzFYikIoa/a+ga6yFxFieoAvrlMAZA7pVx5sVyfYNY8xblWW1LhB7ZUDmtaJH2QQ2Z/W
+ RGKV8WVZjsYvW7D5PtypB2YnvjAQZG9ZR5bG/RfIx64TMmE40DDp1zq9ubtiwN+N7IqW
+ lK0bdm2iLHafYx2LHjyYGw7Bz9joWGyyOEDtDNyRADK2C5PBylRhMsBqfiXvH37ZabjD
+ OE9W/IJpbB2PK8asWvTDPpN9oSUyVwzbaYVLnez3pqUUvQnXT5lMooLYdQ+ok/Rb/Re0
+ BIug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694702434; x=1695307234;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=S1GDB0R+c9oAwqJttqwTtfkLtxH7usjq17smL1mLLK0=;
- b=NkUeTDvxuXc31TzURK/CNX+Sj6M842AEainpoYfKK45OQFNb8TGtY4FHVwZ+aRKQ82
- 9ndNOkLkyt1JixB4PW6EPiS3QF5ypsw3lFBTplqNsLmNmLhT4vOMvwy8w8x+T849UMkE
- V9lI7dLxmMOjlkgr5ImBxuyPy1c/yiDI62NEvuF+zEQKpFTl8aZJA5fMw4012fROQT1K
- y9cLSXx3+kVg6WTD2QASZsWpQR86WRINFbOATD2u67XzDeUVIq+Tc7V5C1EBGwuY8byp
- o0apKEiZmX3s5i+bWCVDL6k0DtTHz6y18wD2MfvJORqZQ7iU4ZCeZ/h9U3BfMIaQhAGY
- gATw==
-X-Gm-Message-State: AOJu0Yzm2sUtNIsD77a+exofoEQ72iHGAv6bGevfHSozTe9241Jm+aYT
- GUAaEdigdkZYBZsMGoJY7s/sZ74FxcVjzxO3ApR/eA==
-X-Google-Smtp-Source: AGHT+IE6QxikUJlaajSQ6g/Tf1IFkFLX9YIZl2XVNsJHaWp+UxH1Q7KaK9XrZZQCLg/TkUUM0o2kz9DQdJxWr0R8zvw=
-X-Received: by 2002:a05:600c:1c9d:b0:403:af4:3178 with SMTP id
- k29-20020a05600c1c9d00b004030af43178mr5097409wms.1.1694702433950; Thu, 14 Sep
- 2023 07:40:33 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694702593; x=1695307393;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=YxaY4CcZ9l95kr6sXtBF4WnDKq063r4MZG5I7MgmObA=;
+ b=LDqfm+zKYZp319+vzuFl/e2SI39+cVz5UEJOnEzT0gozbPz95TYtXOcD3I4LAd7MSZ
+ qu0AkbvfGjVGP8vW7KHRX1yigfmvvj0jwbeLHyXufkVMADMShpvLMP73/+XOG/Uu9vvO
+ Da4UV1yk/iRUPS1FYAx59n1uyCz1B8M6IUSEBRgrBpKq69yF3rey1w0/lWBmMjCIXTkH
+ GEVy83MMRy6bqCwJbH2TQP3/RfSr+fWNVpir9WX1vZ4BFcE/N5mb+s8UjK1vgyAdlR7w
+ x8B/Mnc1+Nf0CojZqcZxD348VrMVufJL/M8XssmYPEiQstBcQ6ynf1qCvQOAjJvmnnOC
+ kO2g==
+X-Gm-Message-State: AOJu0YzawyEzXrkAo3rLnw4zm3Ud7dSPaU838zvzUwqA2bMub2lF/cjz
+ EF9BGlnugPKZLOzmaCBI8XnUl3FOL6pVxWle7fWj3A==
+X-Google-Smtp-Source: AGHT+IGawwQqv8Vf07k34lNJthmWITTz6/F6+GqKm5mmEv62N31ZTgNY6Lfy4W3yn1Aw2eX4ZN+nJRNZOVWHqvh5lwA=
+X-Received: by 2002:a05:6512:e81:b0:4fb:889c:c53d with SMTP id
+ bi1-20020a0565120e8100b004fb889cc53dmr6427041lfb.10.1694702592918; Thu, 14
+ Sep 2023 07:43:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230907181628.1594401-1-stefanha@redhat.com>
- <20230907181628.1594401-4-stefanha@redhat.com>
-In-Reply-To: <20230907181628.1594401-4-stefanha@redhat.com>
+References: <20230913055639.174032-1-clg@kaod.org>
+In-Reply-To: <20230913055639.174032-1-clg@kaod.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 14 Sep 2023 15:40:13 +0100
-Message-ID: <CAFEAcA8K=TxoqUV-XK+_5KvmKxc+ue7rZ28Sd_yY=V_TVxmMcw@mail.gmail.com>
-Subject: Re: [PULL 3/5] hw/ufs: Support for Query Transfer Requests
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Jeuk Kim <jeuk20.kim@samsung.com>, 
- Hanna Reitz <hreitz@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, Fam Zheng <fam@euphon.net>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Thu, 14 Sep 2023 15:42:53 +0100
+Message-ID: <CAFEAcA-u-nhK9YQU8wr5+YnXie5-uhXCPjTDwmkpPHGBSA77uA@mail.gmail.com>
+Subject: Re: [PATCH] ppc/xive: Fix uint32_t overflow
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-ppc@nongnu.org, qemu-devel@nongnu.org, 
+ =?UTF-8?B?RnLDqWTDqXJpYyBCYXJyYXQ=?= <fbarrat@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,84 +88,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 7 Sept 2023 at 19:17, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+On Wed, 13 Sept 2023 at 06:57, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 >
-> From: Jeuk Kim <jeuk20.kim@samsung.com>
+> As reported by Coverity, "idx << xive->pc_shift" is evaluated using
+> 32-bit arithmetic, and then used in a context expecting a "uint64_t".
+> Add a uint64_t cast.
 >
-> This commit makes the UFS device support query
-> and nop out transfer requests.
->
-> The next patch would be support for UFS logical
-> unit and scsi command transfer request.
->
-> Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Message-id: ff7a5f0fd26761936a553ffb89d3df0ba62844e9.1693980783.git.jeuk20.kim@gmail.com
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Fixes: Coverity CID 1519049
+> Fixes: b68147b7a5bf ("ppc/xive: Add support for the PC MMIOs")
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 > ---
->  hw/ufs/ufs.h        |  46 +++
->  hw/ufs/ufs.c        | 988 +++++++++++++++++++++++++++++++++++++++++++-
->  hw/ufs/trace-events |   1 +
->  3 files changed, 1033 insertions(+), 2 deletions(-)
+>  hw/intc/pnv_xive.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+> index 9b10e905195a..a36b3bf08c92 100644
+> --- a/hw/intc/pnv_xive.c
+> +++ b/hw/intc/pnv_xive.c
+> @@ -210,7 +210,7 @@ static uint64_t pnv_xive_vst_addr_remote(PnvXive *xiv=
+e, uint32_t type,
+>          return 0;
+>      }
+>
+> -    remote_addr |=3D idx << xive->pc_shift;
+> +    remote_addr |=3D ((uint64_t) idx) << xive->pc_shift;
 
-Hi; Coverity isn't happy about the code in this function
-(CID 1519050). The code isn't strictly wrong, but it's
-probably possible to make it a bit more clearly correct.
-
-> +static void ufs_process_db(UfsHc *u, uint32_t val)
-> +{
-> +    unsigned long doorbell;
-> +    uint32_t slot;
-> +    uint32_t nutrs = u->params.nutrs;
-> +    UfsRequest *req;
-> +
-> +    val &= ~u->reg.utrldbr;
-> +    if (!val) {
-> +        return;
-> +    }
-> +
-> +    doorbell = val;
-> +    slot = find_first_bit(&doorbell, nutrs);
-
-Here we pass the address of a single 'unsigned long' to
-find_first_bit(). That function operates on arrays, so
-unless nutrs is guaranteed to be less than 32 this might
-walk off the end of memory.
-
-There is a check on params.nutrs in ufs_check_constraints(),
-which checks for "> UFS_MAX_NUTRS" and that value is 32,
-so this won't actually overflow, but Coverity can't
-see that check and in any case what it really doesn't
-like here is the passing of the address of a 'long'
-variable to a function that is prototyped as taking
-an array of longs.
-
-You can probably make Coverity happy by defining
-doorbell here as a 1 element array, and asserting
-that nutrs is 32 or less. Alternatively, we have
-ctz32() for working through bits in a uint32_t, though
-that is a bit lower-level than find_first_bit/find_next_bit.
-
-> +
-> +    while (slot < nutrs) {
-> +        req = &u->req_list[slot];
-> +        if (req->state == UFS_REQUEST_ERROR) {
-> +            trace_ufs_err_utrl_slot_error(req->slot);
-> +            return;
-> +        }
-> +
-> +        if (req->state != UFS_REQUEST_IDLE) {
-> +            trace_ufs_err_utrl_slot_busy(req->slot);
-> +            return;
-> +        }
-> +
-> +        trace_ufs_process_db(slot);
-> +        req->state = UFS_REQUEST_READY;
-> +        slot = find_next_bit(&doorbell, nutrs, slot + 1);
-> +    }
-> +
-> +    qemu_bh_schedule(u->doorbell_bh);
-> +}
+Nit: our coding style doesn't want a space after the '(uint64_t)'.
 
 thanks
 -- PMM
