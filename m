@@ -2,113 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137E979FD1E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 09:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A07DE79FCF9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 09:13:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qggcA-0007yA-26; Thu, 14 Sep 2023 03:18:14 -0400
+	id 1qggVm-0002od-C8; Thu, 14 Sep 2023 03:11:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qggbi-0007od-Ps
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:17:54 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qggbg-0007zG-B8
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:17:46 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-68fb79ef55eso558417b3a.0
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 00:17:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694675862; x=1695280662;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uqTMjI12oEslN/cdU8+lG8JyAFXx0YetqvWil7XV4Mg=;
- b=dD5sYYRG/ieWs0BzQXP9/Dzmd9uQGsjONHS1uBJA8kiRIPVP9hSSWLFh6AuQyvIYkE
- PsE/tuGVe9yYcLtBaZXV5RtxcTg35rcS1Ic6YiHZjcN8k8S96+oAs6ShpcJkh+ap7bFJ
- KAgB3b7zzjg4TmAb4GydkM2Ip/LArmDKRDIMRQYowCK8t+0diFtrL61KSDQDzSJWQXna
- yDrVXn1uEWrtY/xkj06CqffpMb12vH00oMbX42TX9Csh3rb1mY5c56JKEwR7AYdNrNTr
- CulKaOgjAJVoOjVW1rw5S7u5hAYDazwo7gZDR9bX6YH0KZWO+27VagP2mcwQgE5/7EOd
- t01A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694675862; x=1695280662;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uqTMjI12oEslN/cdU8+lG8JyAFXx0YetqvWil7XV4Mg=;
- b=t5Y2UpJDjrRhCdMjIFxq2zIlTix4br4GLRwQ9iVUeowDl7VVtdINGYGouw4O7OLbAb
- x8GA0Yek6qd+LOPQ8Vd1URdIRProwfSlJhvADdC+NNigGuOG7gyRR+rPhkvZVc1FfiAc
- EOOHW657vrMbtcdRmO9rxn2ZA69IEElf8uhOlTaHUrcYrVJwAPzZxC2fkhei0HNJitZF
- 5lChHzmiAKxmAhsdIMab6I+uDg9W626zo+YvjOCmoz+nZqvmbY/4pNkfaculsbOzqSYu
- kqAT8USBjUDwM2Wu4ujQmx4bzYUyqgewZHIQqI7rwP9O6k9+H3SNJkrzsD/agyE5Wn+S
- 0OjA==
-X-Gm-Message-State: AOJu0Yy05+xIGB5hua1xcFOMn8loWabcP4VcWw2bctoZB1Id2RuiJpZU
- eTmbKr7w7fL/N+i//nmSGxwhgg==
-X-Google-Smtp-Source: AGHT+IFXFXaRHWzlAZYk1FLs37f3CLh1srkB+0ieEvWKyB3reXm+soQ/M+35zTXGmfSIImIrYn3hdg==
-X-Received: by 2002:a05:6a00:1d8d:b0:690:2ad9:1454 with SMTP id
- z13-20020a056a001d8d00b006902ad91454mr947350pfw.33.1694675861823; 
- Thu, 14 Sep 2023 00:17:41 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- x42-20020a056a000bea00b0068fcb70ccafsm677725pfu.129.2023.09.14.00.17.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 00:17:41 -0700 (PDT)
-Message-ID: <0adaf816-e050-43c3-8284-fc41627543ef@daynix.com>
-Date: Thu, 14 Sep 2023 16:17:34 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v4 10/13] virtio-gpu: Resource UUID
-To: Albert Esteve <aesteve@redhat.com>
-Cc: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qggVd-0002o9-HZ
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:11:29 -0400
+Received: from mgamail.intel.com ([192.55.52.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qggVX-00065J-1P
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 03:11:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1694675483; x=1726211483;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=YCpwc3+QRF8Pf+VbVNyGN15wW+Qn1lxZ48k7jujYHC8=;
+ b=VChiBMiPidDXS0cANSSZkdwGF1PTSHfmdd7rDDzVUFzhMinSlbhqcj+Z
+ UuY3wKuS5zIlkKN3E1efAZx0OHid+uwsoCSppmkDgEzeF94QFIdXQksf1
+ fWNcgBAfYizPxlIsJUa1a0V/gcle71JfDqJDQJ57zSpNzXKiF4DmZHW/R
+ Immchop92707BPM+BtT6KZJ2bne0pElqzY5eDsEcTNxMXEMilxiERAdbo
+ S0IgrMPMgYlDPnyBNwEaacDGg1KxoMCdbtlZUVeJNZ1vOxoBwP+CsrxX6
+ QL/3yG5/ltZ2FElE7/58ypSL1998PsZVTVpo8f4YfBJLOY6AwkkILqRvj w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="359135761"
+X-IronPort-AV: E=Sophos;i="6.02,145,1688454000"; d="scan'208";a="359135761"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2023 00:11:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10832"; a="779525965"
+X-IronPort-AV: E=Sophos;i="6.02,145,1688454000"; d="scan'208";a="779525965"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by orsmga001.jf.intel.com with ESMTP; 14 Sep 2023 00:11:13 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
  "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>
-References: <20230831093252.2461282-1-ray.huang@amd.com>
- <20230831093252.2461282-11-ray.huang@amd.com>
- <58a4e81f-b0ce-49db-8a6a-f6b5bdc3d2d6@daynix.com> <ZPw2UjxogIULU722@amd.com>
- <11c227e8-a464-41ce-a435-82c570746388@daynix.com>
- <CADSE00Kc1Jza7sbERRndWbXgoF1s2V-FNxEOWJ6WgvomzgvMPA@mail.gmail.com>
- <cf99ac00-6f48-4778-b319-6079a931ba5d@daynix.com>
- <CADSE00+6zcT7iKR0JW1Bk8es6HtBpzAKa9JW6u5yyjDoLPw2KQ@mail.gmail.com>
- <5e88f5d5-5aa2-4052-b250-69c2a443344f@daynix.com>
- <CADSE00+BUq-6jKH3v2PYNThn+9Z4UCFcr3Cv9Z48eUX0b=6ymA@mail.gmail.com>
- <3918c96c-f106-494d-8e97-6d86cef8df27@daynix.com>
- <CADSE00LNYm+vKaYwnTAdECGUXPCfiJ7aLqszDuqSzCLLhVOHhQ@mail.gmail.com>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CADSE00LNYm+vKaYwnTAdECGUXPCfiJ7aLqszDuqSzCLLhVOHhQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v4 00/21] Support smp.clusters for x86 in QEMU
+Date: Thu, 14 Sep 2023 15:21:38 +0800
+Message-Id: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=192.55.52.151;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,211 +81,267 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/13 23:18, Albert Esteve wrote:
-> 
-> 
-> On Wed, Sep 13, 2023 at 3:43 PM Akihiko Odaki <akihiko.odaki@daynix.com 
-> <mailto:akihiko.odaki@daynix.com>> wrote:
-> 
->     On 2023/09/13 21:58, Albert Esteve wrote:
->      >
->      >
->      > On Wed, Sep 13, 2023 at 2:22 PM Akihiko Odaki
->     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
->      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>> wrote:
->      >
->      >     On 2023/09/13 20:34, Albert Esteve wrote:
->      >      >
->      >      >
->      >      > On Wed, Sep 13, 2023 at 12:34 PM Akihiko Odaki
->      >     <akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>
->     <mailto:akihiko.odaki@daynix.com <mailto:akihiko.odaki@daynix.com>>
->      >      > <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>
->      >     <mailto:akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>>> wrote:
->      >      >
->      >      >     On 2023/09/13 16:55, Albert Esteve wrote:
->      >      >      > Hi Antonio,
->      >      >      >
->      >      >      > If I'm not mistaken, this patch is related with:
->      >      >      >
->      >      >
->      >
->     https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html
->     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>
->      >   
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>
->      >      >
->      >     
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>
->      >      >      >
->      >      >
->      >     
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>
->      >      >
->      >     
->       <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01853.html>>>>
->      >      >      > IMHO, ideally, virtio-gpu and vhost-user-gpu both,
->     would
->      >     use the
->      >      >      > infrastructure from the patch I linked to store the
->      >      >      > virtio objects, so that they can be later shared with
->      >     other devices.
->      >      >
->      >      >     I don't think such sharing is possible because the
->     resources are
->      >      >     identified by IDs that are local to the device. That also
->      >     complicates
->      >      >     migration.
->      >      >
->      >      >     Regards,
->      >      >     Akihiko Odaki
->      >      >
->      >      > Hi Akihiko,
->      >      >
->      >      > As far as I understand, the feature to export
->     dma-bufs from the
->      >      > virtgpu was introduced as part of the virtio cross-device
->     sharing
->      >      > proposal [1]. Thus, it shall be posible. When
->     virtgpu ASSING_UUID,
->      >      > it exports and identifies the dmabuf resource, so that
->     when the
->      >     dmabuf gets
->      >      > shared inside the guest (e.g., with virtio-video), we can
->     use the
->      >     assigned
->      >      > UUID to find the dmabuf in the host (using the patch that I
->      >     linked above),
->      >      > and import it.
->      >      >
->      >      > [1] - https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>
->      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>>
->     <https://lwn.net/Articles/828988/ <https://lwn.net/Articles/828988/>
->      >     <https://lwn.net/Articles/828988/
->     <https://lwn.net/Articles/828988/>>>
->      >
->      >     The problem is that virtio-gpu can have other kind of
->     resources like
->      >     pixman and OpenGL textures and manage them and DMA-BUFs with
->     unified
->      >     resource ID.
->      >
->      >
->      > I see.
->      >
->      >
->      >     So you cannot change:
->      >     g_hash_table_insert(g->resource_uuids,
->      >     GUINT_TO_POINTER(assign.resource_id), uuid);
->      >     by:
->      >     virtio_add_dmabuf(uuid, assign.resource_id);
->      >
->      >     assign.resource_id is not DMA-BUF file descriptor, and the
->     underlying
->      >     resource my not be DMA-BUF at first place.
->      >
->      >
->      > I didn't really look into the patch in-depth, so the code was
->     intended
->      > to give an idea of how the implementation would look like with
->      > the cross-device patch API. Indeed, it is not the resource_id,
->      > (I just took a brief look at the virtio specificacion 1.2), but the
->      > underlying
->      > resource what we want to use here.
->      >
->      >
->      >     Also, since this lives in the common code that is not used
->     only by
->      >     virtio-gpu-gl but also virtio-gpu, which supports migration,
->     we also
->      >     need to take care of that. It is not a problem for DMA-BUF as
->      >     DMA-BUF is
->      >     not migratable anyway, but the situation is different in this
->     case.
->      >
->      >     Implementing cross-device sharing is certainly a possibility,
->     but that
->      >     requires more than dealing with DMA-BUFs.
->      >
->      >
->      > So, if I understood correctly, dmabufs are just a subset of the
->     resources
->      > that the gpu manages, or can assign UUIDs to. I am not sure why
->      > the virt gpu driver would want to send a ASSIGN_UUID for anything
->      > that is not a dmabuf (are we sure it does?), but I am not super
->     familiarized
->      > with virtgpu to begin with.
-> 
->     In my understanding, an resource will be first created as OpenGL or
->     Vulkan textures and then exported as a DMA-BUF file descriptor. For
->     these resource types exporting/importing code is mandatory.
-> 
->     For pixman buffers (i.e., non-virgl device), I don't see a compelling
->     reason to have cross-device sharing. It is possible to omit resource
->     UUID feature from non-virgl device to avoid implementing complicated
->     migration.
-> 
-> 
-> I see, thanks for the clarification.
-> I would assume you could avoid the UUID feature for those resources, but
-> I will need to check the driver implementation. It is worth checking 
-> though, if
-> that would simplify the implementation.
-> 
-> 
->      > But I see that internally, the GPU specs relate a UUID with a
->     resource_id,
->      > so we still need both tables:
->      > - one to relate UUID with resource_id to be able to locate the
->      > underlying resource
->      > - the table that holds the dmabuf with the UUID for cross-device
->     sharing
->      >
->      > With that in mind, sounds to me that the support for cross-device
->      > sharing could
->      > be added on top of this patch, once
->      >
->     https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html
->     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html>
->      >
->     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html
->     <https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01850.html>>
->      > lands.
-> 
->     That is possible, but I think it's better to implement cross-device
->     sharing at the same time introducing virtio-dmabuf.
-> 
->     The current design of virtio-dmabuf looks somewhat inconsistent; it's
->     named "dmabuf", but internally the UUIDs are stored into something
->     named
->     "resource_uuids" and it has SharedObjectType so it's more like a
->     generic
->     resource sharing mechanism. If you actually have an implementation of
->     cross-device sharing using virtio-dmabuf, it will be clear what kind of
->     feature is truly necessary.
-> 
-> 
-> Yeah, the file was named as virtio-dmabuf following the kernel
-> implementation. Also, because for the moment it only aims to share
-> dmabufs. However, virtio specs leave the virtio object defintion vague [1]
-> (I guess purposely). It is up to the specific devices to define what an 
-> object
-> means for them. So the implementation tries to follow that, and
-> leave the contents of the table generic. The table can hold any kind of 
-> object,
-> and the API exposes type-specific functions (for dmabufs, or others).
-In the guest kernel, the name "virtio_dma_buf" represents the interface 
-between the *guest* kernel and *guest* user-space. It makes sense since 
-the cross-device resource sharing is managed by the userspace and 
-DMA-BUF is the only interface between them for this purpose.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-The situation is different for QEMU; QEMU interacts with backends using 
-backend-specific interfaces (OpenGL/pixman) and virgl is capable to 
-export textures as DMA-BUF. DMA-BUF is not universal in this sense. As 
-such, we cannot just borrow the kernel-side naming but invent one.
+Hi list,
+
+(CC kvm@vger.kernel.org for better browsing.)
+
+This is the our v4 patch series, rebased on the master branch at the
+commit 9ef497755afc2 ("Merge tag 'pull-vfio-20230911' of
+https://github.com/legoater/qemu into staging").
+
+Comparing with v3 [1], v4 mainly refactors the CPUID[0x1F] encoding and
+exposes module level in CPUID[0x1F] with these new patches:
+
+* [PATCH v4 08/21] i386: Split topology types of CPUID[0x1F] from the
+definitions of CPUID[0xB]
+* [PATCH v4 09/21] i386: Decouple CPUID[0x1F] subleaf with specific
+topology level
+* [PATCH v4 12/21] i386: Expose module level in CPUID[0x1F]
+
+v4 also fixes compile warnings and fixes cache topology uninitialization
+bugs for some AMD CPUs.
+
+Welcome your comments!
+
+
+# Introduction
+
+This series add the cluster support for x86 PC machine, which allows
+x86 can use smp.clusters to configure the module level CPU topology
+of x86.
+
+And since the compatibility issue (see section: ## Why not share L2
+cache in cluster directly), this series also introduce a new command
+to adjust the topology of the x86 L2 cache.
+
+Welcome your comments!
+
+
+# Background
+
+The "clusters" parameter in "smp" is introduced by ARM [2], but x86
+hasn't supported it.
+
+At present, x86 defaults L2 cache is shared in one core, but this is
+not enough. There're some platforms that multiple cores share the
+same L2 cache, e.g., Alder Lake-P shares L2 cache for one module of
+Atom cores [3], that is, every four Atom cores shares one L2 cache.
+Therefore, we need the new CPU topology level (cluster/module).
+
+Another reason is for hybrid architecture. cluster support not only
+provides another level of topology definition in x86, but would also
+provide required code change for future our hybrid topology support.
+
+
+# Overview
+
+## Introduction of module level for x86
+
+"cluster" in smp is the CPU topology level which is between "core" and
+die.
+
+For x86, the "cluster" in smp is corresponding to the module level [4],
+which is above the core level. So use the "module" other than "cluster"
+in x86 code.
+
+And please note that x86 already has a cpu topology level also named
+"cluster" [4], this level is at the upper level of the package. Here,
+the cluster in x86 cpu topology is completely different from the
+"clusters" as the smp parameter. After the module level is introduced,
+the cluster as the smp parameter will actually refer to the module level
+of x86.
+
+
+## Why not share L2 cache in cluster directly
+
+Though "clusters" was introduced to help define L2 cache topology
+[2], using cluster to define x86's L2 cache topology will cause the
+compatibility problem:
+
+Currently, x86 defaults that the L2 cache is shared in one core, which
+actually implies a default setting "cores per L2 cache is 1" and
+therefore implicitly defaults to having as many L2 caches as cores.
+
+For example (i386 PC machine):
+-smp 16,sockets=2,dies=2,cores=2,threads=2,maxcpus=16 (*)
+
+Considering the topology of the L2 cache, this (*) implicitly means "1
+core per L2 cache" and "2 L2 caches per die".
+
+If we use cluster to configure L2 cache topology with the new default
+setting "clusters per L2 cache is 1", the above semantics will change
+to "2 cores per cluster" and "1 cluster per L2 cache", that is, "2
+cores per L2 cache".
+
+So the same command (*) will cause changes in the L2 cache topology,
+further affecting the performance of the virtual machine.
+
+Therefore, x86 should only treat cluster as a cpu topology level and
+avoid using it to change L2 cache by default for compatibility.
+
+
+## module level in CPUID
+
+Linux kernel (from v6.4, with commit edc0a2b595765 ("x86/topology: Fix
+erroneous smp_num_siblings on Intel Hybrid platforms") is able to
+handle platforms with Module level enumerated via CPUID.1F.
+
+Expose the module level in CPUID[0x1F] (for Intel CPUs) if the machine
+has more than 1 modules since v3.
+
+We can configure CPUID.04H.02H (L2 cache topology) with module level by
+a new command:
+
+        "-cpu,x-l2-cache-topo=cluster"
+
+More information about this command, please see the section: "## New
+property: x-l2-cache-topo".
+
+
+## New cache topology info in CPUCacheInfo
+
+Currently, by default, the cache topology is encoded as:
+1. i/d cache is shared in one core.
+2. L2 cache is shared in one core.
+3. L3 cache is shared in one die.
+
+This default general setting has caused a misunderstanding, that is, the
+cache topology is completely equated with a specific cpu topology, such
+as the connection between L2 cache and core level, and the connection
+between L3 cache and die level.
+
+In fact, the settings of these topologies depend on the specific
+platform and are not static. For example, on Alder Lake-P, every
+four Atom cores share the same L2 cache [2].
+
+Thus, in this patch set, we explicitly define the corresponding cache
+topology for different cpu models and this has two benefits:
+1. Easy to expand to new CPU models in the future, which has different
+   cache topology.
+2. It can easily support custom cache topology by some command (e.g.,
+   x-l2-cache-topo).
+
+
+## New property: x-l2-cache-topo
+
+The property x-l2-cache-topo will be used to change the L2 cache
+topology in CPUID.04H.
+
+Now it allows user to set the L2 cache is shared in core level or
+cluster level.
+
+If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
+topology will be overrode by the new topology setting.
+
+Since CPUID.04H is used by Intel CPUs, this property is available on
+Intel CPUs as for now.
+
+When necessary, it can be extended to CPUID[0x8000001D] for AMD CPUs.
+
+
+# Patch description
+
+patch 1-2 Cleanups about coding style and test name.
+
+patch 3-5 Fixes about x86 topology and Intel l1 cache topology.
+
+patch 6-7 Cleanups about topology related CPUID encoding and QEMU
+          topology variables.
+
+patch 8-9 Refactor CPUID[0x1F] encoding to prepare to introduce module
+          level.
+
+patch 10-16 Add the module as the new CPU topology level in x86, and it
+            is corresponding to the cluster level in generic code.
+
+patch 17,18,20 Add cache topology information in cache models.
+
+patch 19 Update AMD CPUs' cache topology encoding.
+
+patch 21 Introduce a new command to configure L2 cache topology.
+
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00022.html
+[2]: https://patchew.org/QEMU/20211228092221.21068-1-wangyanan55@huawei.com/
+[3]: https://www.intel.com/content/www/us/en/products/platforms/details/alder-lake-p.html
+[4]: SDM, vol.3, ch.9, 9.9.1 Hierarchical Mapping of Shared Resources.
+
+Best Regards,
+Zhao
+---
+Changelog:
+
+Changes since v3 (main changes):
+ * Expose module level in CPUID[0x1F].
+ * Fix compile warnings. (Babu)
+ * Fixes cache topology uninitialization bugs for some AMD CPUs. (Babu)
+
+Changes since v2:
+ * Add "Tested-by", "Reviewed-by" and "ACKed-by" tags.
+ * Use newly added wrapped helper to get cores per socket in
+   qemu_init_vcpu().
+
+Changes since v1:
+ * Reordered patches. (Yanan)
+ * Deprecated the patch to fix comment of machine_parse_smp_config().
+   (Yanan)
+ * Rename test-x86-cpuid.c to test-x86-topo.c. (Yanan)
+ * Split the intel's l1 cache topology fix into a new separate patch.
+   (Yanan)
+ * Combined module_id and APIC ID for module level support into one
+   patch. (Yanan)
+ * Make cache_into_passthrough case of cpuid 0x04 leaf in
+ * cpu_x86_cpuid() use max_processor_ids_for_cache() and
+   max_core_ids_in_package() to encode CPUID[4]. (Yanan)
+ * Add the prefix "CPU_TOPO_LEVEL_*" for CPU topology level names.
+   (Yanan)
+---
+Zhao Liu (14):
+  i386: Fix comment style in topology.h
+  tests: Rename test-x86-cpuid.c to test-x86-topo.c
+  hw/cpu: Update the comments of nr_cores and nr_dies
+  i386/cpu: Fix i/d-cache topology to core level for Intel CPU
+  i386/cpu: Use APIC ID offset to encode cache topo in CPUID[4]
+  i386/cpu: Consolidate the use of topo_info in cpu_x86_cpuid()
+  i386: Split topology types of CPUID[0x1F] from the definitions of
+    CPUID[0xB]
+  i386: Decouple CPUID[0x1F] subleaf with specific topology level
+  i386: Expose module level in CPUID[0x1F]
+  i386: Add cache topology info in CPUCacheInfo
+  i386: Use CPUCacheInfo.share_level to encode CPUID[4]
+  i386: Use offsets get NumSharingCache for CPUID[0x8000001D].EAX[bits
+    25:14]
+  i386: Use CPUCacheInfo.share_level to encode
+    CPUID[0x8000001D].EAX[bits 25:14]
+  i386: Add new property to control L2 cache topo in CPUID.04H
+
+Zhuocheng Ding (7):
+  softmmu: Fix CPUSTATE.nr_cores' calculation
+  i386: Introduce module-level cpu topology to CPUX86State
+  i386: Support modules_per_die in X86CPUTopoInfo
+  i386: Support module_id in X86CPUTopoIDs
+  i386/cpu: Introduce cluster-id to X86CPU
+  tests: Add test case of APIC ID for module level parsing
+  hw/i386/pc: Support smp.clusters for x86 PC machine
+
+ MAINTAINERS                                   |   2 +-
+ hw/i386/pc.c                                  |   1 +
+ hw/i386/x86.c                                 |  49 ++-
+ include/hw/core/cpu.h                         |   2 +-
+ include/hw/i386/topology.h                    |  68 ++--
+ qemu-options.hx                               |  10 +-
+ softmmu/cpus.c                                |   2 +-
+ target/i386/cpu.c                             | 322 ++++++++++++++----
+ target/i386/cpu.h                             |  46 ++-
+ target/i386/kvm/kvm.c                         |   2 +-
+ tests/unit/meson.build                        |   4 +-
+ .../{test-x86-cpuid.c => test-x86-topo.c}     |  58 ++--
+ 12 files changed, 437 insertions(+), 129 deletions(-)
+ rename tests/unit/{test-x86-cpuid.c => test-x86-topo.c} (73%)
+
+-- 
+2.34.1
+
 
