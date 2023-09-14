@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3177A0EC4
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE177A0EAF
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:05:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgsZZ-0002uC-C2; Thu, 14 Sep 2023 16:04:21 -0400
+	id 1qgsZb-0002vR-Ev; Thu, 14 Sep 2023 16:04:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgsZX-0002tw-UP
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:19 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1qgsZZ-0002ue-5R
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:21 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgsZW-0001Vn-7P
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:19 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40473f1fe9fso9773255e9.2
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:04:17 -0700 (PDT)
+ id 1qgsZX-0001WY-Iw
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:04:20 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-400a087b0bfso14625275e9.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:04:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694721856; x=1695326656; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694721858; x=1695326658; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=F866fnYal64jgJhD1WaHqOztZB6EhKD+Jyo2iWQ5ErA=;
- b=MCWc3QkSmuZ/hwcC0mKX22WvaApTmJUgUWn6YT1wT7AJMv9Ki+4tX7cBtL2U2vhvEm
- C2z3Qa+1fKp7l43dN1h0/cQagCAUvWgKNFP6iFxNWu+YS7FUGi2CfKkMjjqWTiepRXo6
- q0R/ML96nDWcmGSG65R7yD0/Ln/oM3AkQAck32FIJrX+yhNMQa3lYY2v1VvqFkTeZmvA
- Xe93HCnxoukH4yVaCmov4D5meMgxB4bdkrEimcHjuVKgw71tSEBEyVKpN/CktP+VCiRc
- /dcdNSPjLQ431ECRoTa5RIBqUvxt58k9O49WFQv/ZYmlQPfWyoAUEZtZTd2QsVEwnpOp
- G5eA==
+ bh=6kOFVD7x0CWlInCOpBq7W9+nfPWQu2AwCNVWCQ27xk4=;
+ b=jBCaeTVZSOImL9L6adqQxxmuOzP0Lrp6fq+0HHe3c2pLQFLjKqalXTrVuKq8H1dW2/
+ 2NdHEXbmmdX0t27gcOUsimPnwS5aHIuh2+Ycn19m2n0E6pRVf2ULAlYPJYNLy3aJUkO5
+ sKnOwbcFpDhMBqwOt/DU84yGPL7W8Tz90oXO105mRBs8TqDiyWhpwy/2aZvTb8pRwB8c
+ /4rSWpM0G4ejXneEQMHTsTPdU72p0lMcSebSgiWrNnYBiXutXOIOaAChVFP8wxgC5Bxw
+ aDvUYU4+dtZUf7wIvj8QwQLgdaKbkSRP0+q709wSOH51Ey6bf/let5L8C9DrtBg9kWyJ
+ Cvxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694721856; x=1695326656;
+ d=1e100.net; s=20230601; t=1694721858; x=1695326658;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=F866fnYal64jgJhD1WaHqOztZB6EhKD+Jyo2iWQ5ErA=;
- b=ZkZSREBSTz80A/4Noo2NZJWVwCMnHcPBNBSAjpSUJhEUFz954IzWhACgOyg4WjcQzO
- 3a2h4N/clJisOpRk9rQk9DtaKNAh8r445JtfB5OL7I/AgseXXtlpaHNh9oFTFmMI5s0H
- +gZOayVDK27K0cJo3ZOeVcB9a9tX+DGKuq5AzfdsMjseO9HB60MPHQEecpAEWzrZSVDE
- 6H/lPkTvgGOecdOD2O5TW+UrpfNmUf1ZC4sUAYzNCxN3lvs/ObUBk4Yq2JdEdr8vLSBv
- 34pBPDspFzH2T8mkA5lv+1N4MP1jl77dgQO+gpUQ6wYp8VpJNCFD8c0HWwmNKWAf8CuF
- HA9A==
-X-Gm-Message-State: AOJu0YwEGOhyRZd5dXtO9RG7QheX27Gw79Rz4slk0riEdFO7eF3i6pRG
- eyGCtCvt8EpUO9M9ngdOwsbvw+K7Hl8=
-X-Google-Smtp-Source: AGHT+IEhYgYUGPUPP+Cvc5DgQBceASnC67Y8TFAjRmq5uNUHF+IHzaZ/e06rnZKVfecADMCNO2J8zw==
-X-Received: by 2002:a7b:c3c2:0:b0:3fe:d448:511a with SMTP id
- t2-20020a7bc3c2000000b003fed448511amr5595823wmj.9.1694721856164; 
- Thu, 14 Sep 2023 13:04:16 -0700 (PDT)
+ bh=6kOFVD7x0CWlInCOpBq7W9+nfPWQu2AwCNVWCQ27xk4=;
+ b=mRwNi0HwZfEyJAap3sR0pSppEC/uWiuUy3cUvUUgc56cgFnJQmMijbjlNc+1x9Nt15
+ gFEPjhtvr9v21b0eU56DYeRdDgXNN5JX2i1zrWXUZaY8RgKHrBULBr+JWH9+4tNsayuN
+ nezTmjF+hwqG/D1jx6tGeQFennVqTbINY5VQcPGKOQDDV05Emv/cN6ZWlq03sL+GdG34
+ JA9h/65VRInbbd5rKl3/C02/4kcJffDJZAzDyMJDuQjpCuC+3qQL+DkdLf1X0TB2y8JG
+ ez347To8DAeW/+DYlN3UZCHo298QP/DFfIrRaDoCy/M2XGKq7dcpYcVU+84g5GG5+4/x
+ FkVg==
+X-Gm-Message-State: AOJu0YwR3Q31E+5tFMlwsqg72RlHZ+FJ52htdGHwaiTz7pbOJLHIIZbH
+ 00Kk2SiyqdIeptEr5b1MYo9aIcpi0Vc=
+X-Google-Smtp-Source: AGHT+IG8jzRqIxbpt/750EpYKd9bOU8JHR5C9hb1jFCmvhGPsgNXoqduuh/ClMnYUCH881OI2b+qyg==
+X-Received: by 2002:a7b:cb8b:0:b0:401:d258:ad26 with SMTP id
+ m11-20020a7bcb8b000000b00401d258ad26mr5317873wmi.19.1694721857557; 
+ Thu, 14 Sep 2023 13:04:17 -0700 (PDT)
 Received: from karim.my.domain ([197.39.44.105])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a7bc7c7000000b00402bda974ddsm2851130wmk.6.2023.09.14.13.04.14
+ z7-20020a7bc7c7000000b00402bda974ddsm2851130wmk.6.2023.09.14.13.04.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 13:04:15 -0700 (PDT)
+ Thu, 14 Sep 2023 13:04:17 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Richard Henderson <richard.henderson@linaro.org>,
- Stacey Son <sson@FreeBSD.org>,
- =?UTF-8?q?Mika=C3=ABl=20Urankar?= <mikael.urankar@gmail.com>,
- Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v4 08/23] bsd-user: Implement target_set_brk function in
- bsd-mem.c instead of os-syscall.c
-Date: Thu, 14 Sep 2023 23:02:27 +0300
-Message-ID: <20230914200242.20148-9-kariem.taha2.7@gmail.com>
+ Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v4 09/23] bsd-user: Implement ipc_perm conversion between host
+ and target.
+Date: Thu, 14 Sep 2023 23:02:28 +0300
+Message-ID: <20230914200242.20148-10-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230914200242.20148-1-kariem.taha2.7@gmail.com>
 References: <20230914200242.20148-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,71 +96,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-The definitions and variables names matches the corresponding ones in
-linux-user/syscall.c, for making later implementation of do_obreak easier
-
-Co-authored-by: Mikaël Urankar <mikael.urankar@gmail.com>
-Signed-off-by: Mikaël Urankar <mikael.urankar@gmail.com>
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/bsd-mem.c            | 32 ++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  4 ----
- 2 files changed, 32 insertions(+), 4 deletions(-)
+ bsd-user/bsd-mem.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c
-index e69de29bb2..8834ab2e58 100644
+index 8834ab2e58..46cda8eb5c 100644
 --- a/bsd-user/bsd-mem.c
 +++ b/bsd-user/bsd-mem.c
-@@ -0,0 +1,32 @@
-+/*
-+ *  memory management system conversion routines
-+ *
-+ *  Copyright (c) 2013 Stacey D. Son
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
-+#include "qemu/osdep.h"
-+#include "qemu.h"
-+#include "qemu-bsd.h"
+@@ -30,3 +30,28 @@ void target_set_brk(abi_ulong new_brk)
+     target_brk = TARGET_PAGE_ALIGN(new_brk);
+     initial_target_brk = target_brk;
+ }
 +
-+struct bsd_shm_regions bsd_shm_regions[N_BSD_SHM_REGIONS];
-+
-+abi_ulong target_brk;
-+abi_ulong initial_target_brk;
-+
-+void target_set_brk(abi_ulong new_brk)
++void target_to_host_ipc_perm__locked(struct ipc_perm *host_ip,
++                                     struct target_ipc_perm *target_ip)
 +{
-+    target_brk = TARGET_PAGE_ALIGN(new_brk);
-+    initial_target_brk = target_brk;
++    __get_user(host_ip->cuid, &target_ip->cuid);
++    __get_user(host_ip->cgid, &target_ip->cgid);
++    __get_user(host_ip->uid,  &target_ip->uid);
++    __get_user(host_ip->gid,  &target_ip->gid);
++    __get_user(host_ip->mode, &target_ip->mode);
++    __get_user(host_ip->seq,  &target_ip->seq);
++    __get_user(host_ip->key,  &target_ip->key);
 +}
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 2920370ad2..c0a22eb746 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -59,10 +59,6 @@ safe_syscall3(ssize_t, writev, int, fd, const struct iovec *, iov, int, iovcnt);
- safe_syscall4(ssize_t, pwritev, int, fd, const struct iovec *, iov, int, iovcnt,
-     off_t, offset);
- 
--void target_set_brk(abi_ulong new_brk)
--{
--}
--
- /*
-  * errno conversion.
-  */
++
++void host_to_target_ipc_perm__locked(struct target_ipc_perm *target_ip,
++                                     struct ipc_perm *host_ip)
++{
++    __put_user(host_ip->cuid, &target_ip->cuid);
++    __put_user(host_ip->cgid, &target_ip->cgid);
++    __put_user(host_ip->uid,  &target_ip->uid);
++    __put_user(host_ip->gid,  &target_ip->gid);
++    __put_user(host_ip->mode, &target_ip->mode);
++    __put_user(host_ip->seq,  &target_ip->seq);
++    __put_user(host_ip->key,  &target_ip->key);
++}
++
 -- 
 2.42.0
 
