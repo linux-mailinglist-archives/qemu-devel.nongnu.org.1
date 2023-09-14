@@ -2,42 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3E079F645
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 03:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7D079F805
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 04:29:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgb4S-0005a7-VW; Wed, 13 Sep 2023 21:23:04 -0400
+	id 1qgc4R-000375-7j; Wed, 13 Sep 2023 22:27:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qgb4R-0005Zf-7J; Wed, 13 Sep 2023 21:23:03 -0400
-Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
- helo=smtp.gentoo.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qgb4O-0005nq-U6; Wed, 13 Sep 2023 21:23:02 -0400
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-To: "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
- "open list:RISC-V" <qemu-riscv@nongnu.org>
-Cc: LIU Zhiwei <baxiantai@gmail.com>
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Thu, 14 Sep 2023 03:22:49 +0200
-Message-ID: <4344798.atdPhlSkOF@pinacolada>
-Organization: Gentoo Linux
-In-Reply-To: <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
-References: <10817413.NyiUUSuA9g@pinacolada>
- <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qgc4M-00036U-Uf
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:03 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qgc4J-0004pp-Kk
+ for qemu-devel@nongnu.org; Wed, 13 Sep 2023 22:27:02 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8AxTetrbwJlTfgmAA--.4349S3;
+ Thu, 14 Sep 2023 10:26:51 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxvdxmbwJlJ+UDAA--.7298S2; 
+ Thu, 14 Sep 2023 10:26:46 +0800 (CST)
+From: Song Gao <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org,
+	maobibo@loongson.cn
+Subject: [PATCH v6 00/57] Add LoongArch LASX instructions 
+Date: Thu, 14 Sep 2023 10:25:48 +0800
+Message-Id: <20230914022645.1151356-1-gaosong@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart48312231.fMDQidcC6G";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
- envelope-from=dilfridge@gentoo.org; helo=smtp.gentoo.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8CxvdxmbwJlJ+UDAA--.7298S2
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -53,90 +61,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---nextPart48312231.fMDQidcC6G
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-Cc: LIU Zhiwei <baxiantai@gmail.com>
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Thu, 14 Sep 2023 03:22:49 +0200
-Message-ID: <4344798.atdPhlSkOF@pinacolada>
-Organization: Gentoo Linux
-In-Reply-To: <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
-MIME-Version: 1.0
+Based-on: https://patchew.org/QEMU/20230831030904.1194667-1-richard.henderson@linaro.org/
 
-> > https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00119.html
-> > ^ Here I'm trying to find out more.
-> >
-> > Bash tests apparently indicate that argv[0] is overwritten, and that
-> > reading through a pipe or from /dev/tty fails or loses data.
-> >
-> > Apart from the bash testsuite failing, symptoms are as follows:
-> >
-> > * Something seems wrong in the signal handling (?):
->=20
-> If it is wrong for signal handling and for 32-bit, I guess it may be=20
-> fixed by this patch
->=20
-> https://www.mail-archive.com/qemu-devel@nongnu.org/msg981238.html
->=20
-> And this patch has been merged into master branch yesterday.
->=20
-> May be you can have a try based on the master branch.
+Hi,
 
-I added the patch to 8.0.3 (easier for the moment), and this did
-unfortunately *not* lead to any improvements.=20
+This series adds LoongArch LASX instructions.
 
-More debugging coming (weekend hopefully).
+About test:
+We use RISU test the LoongArch LASX instructions.
 
-However, in the meantime on the GNU Make tracker Alejandro Colomar
-pointed me to another detail based on my oddities [1]:
+QEMU:
+    https://github.com/loongson/qemu/tree/tcg-old-abi-support-lasx
+RISU:
+    https://github.com/loongson/risu/tree/loongarch-suport-lasx
 
-> I think [make] it's failing here:
->=20
-> <https://git.savannah.gnu.org/cgit/make.git/tree/src/job.c#n757>
->=20
-> But it's failing with ENOENT, which is not one of the documented
-> errors for wait(2):
+patch6, 51, 52, 54 need review. please review, Thanks.
 
-So maybe another point to look at would be the origin of the return
-values of wait, and whether that's wired correctly for rv32...
+Chagnes for v6:
+- Rebase;
+- tcg_gen_gvec_xx, set data = 0;
+- Move check_vec to gen/gvec_xxx_vl;
+- Create gen_{v/x}2r/gen_r2(x/v) common helper fucntions, (patch 51);
+- Some functions use a loop;
+- xvrepl128vei use a helper function gen_xvrepl128, (patch 52);
+- xvreplve0 use a helper function and TRANS(), (patch52);
+- Optimize vshuf vpermi_q instructions, (patch54);
+- Use tcg_gen_gvec_cmpi(), (patch48);
+- R-b.
 
-[1] https://savannah.gnu.org/bugs/?64664
+Changes for v5:
+- Rebase;
+- Split V4'patch 10 to 7 patches(patch3-9);
+- LSX use gen/gvec_vv..
+- LASX use gen/gvec_xx...
+- Don't use an array of shift_res. (patch40,41);
+- Move simply DO_XX marcos together. (patch56);
+- Renamed lsx*.c to vec*.c. (patch 1);
+- Change marcos CHECK_VEC to check_vec(ctx, oprsz);
+- R-b.
 
+Changes for v4:
+- Rebase;
+- Add avail_LASX to check.
 
-=2D-=20
-Andreas K. H=FCttel
-dilfridge@gentoo.org
-Gentoo Linux developer
-(council, toolchain, base-system, perl, libreoffice)
---nextPart48312231.fMDQidcC6G
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Changes for v3:
+- Add a new patch 9, rename lsx_helper.c to vec_helper.c,
+  and use gen_helper_gvec_* series functions;
+- Use i < oprsz / (BIT / 8) in loop;
+- Some helper functions use loop;
+- patch 46: use tcg_gen_qemu_ld/st_i64 for xvld/xvst{x};
+- R-b.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Changes for v2:
+- Expand the definition of VReg to be 256 bits.
+- Use more LSX functions.
+- R-b.
 
-iQKTBAABCgB9FiEE/Rnm0xsZLuTcY+rT3CsWIV7VQSoFAmUCYGlfFIAAAAAALgAo
-aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEZE
-MTlFNkQzMUIxOTJFRTREQzYzRUFEM0RDMkIxNjIxNUVENTQxMkEACgkQ3CsWIV7V
-QSqoTxAAuqyx+sWRmn0AqgD7Gn2IwpsszmCWUwvJEetQm9br4NatnVXk6Wn0ipqC
-7D8qwCs2xm9KYlVhaJm3cfJ2DCQWEKGNW2egmzFdwtRO8ltG7lRKx4y2FTrZNeuH
-onYEksEH91mnuv5EmQ43dn11YSmrtE2k8jHN0sprMZQ+iukuAxdTpCsLgG3Z42Tb
-vKwoyYlLuFirHZZeXse7Ir7X2KVqW/IUef8/5PIkmV8jfTDN9FONAEE9rn8MQD+e
-VlYbrgs0crRKvgWgxxbdBOP5M64Mp+Z+RWH5cnEMaj4XZ9G6Dd8yZ+c7Gys1pnol
-Tjd28EKeC7sAheAspJqEyMPwqxuisGGo/QpWjzq8mRPhgQSzFxYZlsazGWB0L5dx
-bWK2VFuaFb7dx6N70cF5GH4iJHNcgkma+BB09W6xJLOP7mCwB/mx6BLzI0sC7m4y
-a3lAoELXswt/UvNbJ8OTvDrYdxRohwTcyDjyHCH5kCiKXgQy7oUgjCzVoQGlTiVe
-54QKJlApKamNM+nq6rSRi7ucV9TsdWh7Ip3P3XiWpxtV4lHkibNmo4wb5rT31c36
-MqPP/Agm9+LMxH4KY2SsxBfCSBib0Y8t8UPzUfz4XAdkAyu1MFRRMAjUzCm0Acz9
-fW2djqULqSbdRdhZussK9DNa2EJh3Arrq7X429yGeDSg1C6NelQ=
-=GJMM
------END PGP SIGNATURE-----
+Song Gao (57):
+  target/loongarch: Renamed lsx*.c to vec* .c
+  target/loongarch: Implement gvec_*_vl functions
+  target/loongarch: Use gen_helper_gvec_4_ptr for 4OP + env vector
+    instructions
+  target/loongarch: Use gen_helper_gvec_4 for 4OP vector instructions
+  target/loongarch: Use gen_helper_gvec_3_ptr for 3OP + env vector
+    instructions
+  target/loongarch: Use gen_helper_gvec_3 for 3OP vector instructions
+  target/loongarch: Use gen_helper_gvec_2_ptr for 2OP + env vector
+    instructions
+  target/loongarch: Use gen_helper_gvec_2 for 2OP vector instructions
+  target/loongarch: Use gen_helper_gvec_2i for 2OP + imm vector
+    instructions
+  target/loongarch: Replace CHECK_SXE to check_vec(ctx, 16)
+  target/loongarch: Add LASX data support
+  target/loongarch: check_vec support check LASX instructions
+  target/loongarch: Add avail_LASX to check LASX instructions
+  target/loongarch: Implement xvadd/xvsub
+  target/loongarch: Implement xvreplgr2vr
+  target/loongarch: Implement xvaddi/xvsubi
+  target/loongarch: Implement xvneg
+  target/loongarch: Implement xvsadd/xvssub
+  target/loongarch: Implement xvhaddw/xvhsubw
+  target/loongarch: Implement xvaddw/xvsubw
+  target/loongarch: Implement xavg/xvagr
+  target/loongarch: Implement xvabsd
+  target/loongarch: Implement xvadda
+  target/loongarch: Implement xvmax/xvmin
+  target/loongarch: Implement xvmul/xvmuh/xvmulw{ev/od}
+  target/loongarch: Implement xvmadd/xvmsub/xvmaddw{ev/od}
+  target/loongarch; Implement xvdiv/xvmod
+  target/loongarch: Implement xvsat
+  target/loongarch: Implement xvexth
+  target/loongarch: Implement vext2xv
+  target/loongarch: Implement xvsigncov
+  target/loongarch: Implement xvmskltz/xvmskgez/xvmsknz
+  target/loognarch: Implement xvldi
+  target/loongarch: Implement LASX logic instructions
+  target/loongarch: Implement xvsll xvsrl xvsra xvrotr
+  target/loongarch: Implement xvsllwil xvextl
+  target/loongarch: Implement xvsrlr xvsrar
+  target/loongarch: Implement xvsrln xvsran
+  target/loongarch: Implement xvsrlrn xvsrarn
+  target/loongarch: Implement xvssrln xvssran
+  target/loongarch: Implement xvssrlrn xvssrarn
+  target/loongarch: Implement xvclo xvclz
+  target/loongarch: Implement xvpcnt
+  target/loongarch: Implement xvbitclr xvbitset xvbitrev
+  target/loongarch: Implement xvfrstp
+  target/loongarch: Implement LASX fpu arith instructions
+  target/loongarch: Implement LASX fpu fcvt instructions
+  target/loongarch: Implement xvseq xvsle xvslt
+  target/loongarch: Implement xvfcmp
+  target/loongarch: Implement xvbitsel xvset
+  target/loongarch: Implement xvinsgr2vr xvpickve2gr
+  target/loongarch: Implement xvreplve xvinsve0 xvpickve
+  target/loongarch: Implement xvpack xvpick xvilv{l/h}
+  target/loongarch: Implement xvshuf xvperm{i} xvshuf4i
+  target/loongarch: Implement xvld xvst
+  target/loongarch: Move simply DO_XX marcos togther
+  target/loongarch: CPUCFG support LASX
 
---nextPart48312231.fMDQidcC6G--
+ target/loongarch/cpu.h                        |   26 +-
+ target/loongarch/helper.h                     |  689 ++--
+ target/loongarch/internals.h                  |   22 -
+ target/loongarch/translate.h                  |    1 +
+ target/loongarch/vec.h                        |   75 +
+ target/loongarch/insns.decode                 |  782 ++++
+ linux-user/loongarch64/signal.c               |    1 +
+ target/loongarch/cpu.c                        |    4 +
+ target/loongarch/disas.c                      |  924 +++++
+ target/loongarch/gdbstub.c                    |    1 +
+ target/loongarch/lsx_helper.c                 | 3004 --------------
+ target/loongarch/machine.c                    |   36 +-
+ target/loongarch/translate.c                  |   20 +-
+ target/loongarch/vec_helper.c                 | 3494 +++++++++++++++++
+ .../{trans_lsx.c.inc => trans_vec.c.inc}      | 2394 +++++++----
+ target/loongarch/meson.build                  |    2 +-
+ 16 files changed, 7387 insertions(+), 4088 deletions(-)
+ create mode 100644 target/loongarch/vec.h
+ delete mode 100644 target/loongarch/lsx_helper.c
+ create mode 100644 target/loongarch/vec_helper.c
+ rename target/loongarch/insn_trans/{trans_lsx.c.inc => trans_vec.c.inc} (61%)
 
-
+-- 
+2.39.1
 
 
