@@ -2,51 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CA07A0557
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A1D7A0571
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:20:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgmDY-00022Q-Hs; Thu, 14 Sep 2023 09:17:12 -0400
+	id 1qgmGi-0005pZ-O0; Thu, 14 Sep 2023 09:20:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgmDB-0001wB-Pj; Thu, 14 Sep 2023 09:16:49 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qgmD9-00008m-M8; Thu, 14 Sep 2023 09:16:49 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BD52021E7C;
- Thu, 14 Sep 2023 16:16:50 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D2568281AA;
- Thu, 14 Sep 2023 16:16:42 +0300 (MSK)
-Message-ID: <76815283-496e-9806-1c26-f659abcf7976@tls.msk.ru>
-Date: Thu, 14 Sep 2023 16:16:42 +0300
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qgmGg-0005oi-32
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:20:26 -0400
+Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qgmGe-00014B-IF
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:20:25 -0400
+Received: by mail-oi1-x22b.google.com with SMTP id
+ 5614622812f47-3aa1c046659so575649b6e.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 06:20:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694697622; x=1695302422; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=zx/uqGtlEEVl8CtogtbEb0sVM+5Rf+fOAVU7XeVmeVQ=;
+ b=N7Lk5vlft+20Vu/OhbAn6NyI3cDTYZfftQWxNcJi32YapOHxnqtK+7t1LxcQ+Ec9i2
+ 0l4TEe3YR7fqbUXlKz9jGBytH/15F/SwhqJrmzg4MxI3agZ1JYzQgM8iXzJv8oRVRb14
+ F6b+xjBebHLup3dOajmI+aZQvC/6IdvyY7H+g/8SNMALwqT3dRRi7wzytxe3WA7vEwdG
+ mF2HGCmejcWrp3yZ2wV0YlxrY/YuxFmrj4RjUZuxWIQMaD0zxYvyaJ9hrrZrevPGvKAx
+ leza4g/DrrMH78lVDkhhhVGnTusIwISgG3JEs9FcDX0fGXOH2JMBcl+zOAROVkUyNyTw
+ jVhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694697622; x=1695302422;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zx/uqGtlEEVl8CtogtbEb0sVM+5Rf+fOAVU7XeVmeVQ=;
+ b=Z0FCHaOY7Fz6HXZc3XbTmt6nmwYoVQBYk1y9ScZ/nrwnuafhcv3KsedoGhnDwc0Q71
+ mWY8HxrajKYhbJKG0VJBJayBxFOmiT69CS5LfTShaY+mBpsLRLhEwd1qkT5uqaZErT0o
+ hj7qtE1GHjBBIgo6iWZC5VvvjgFgMkKjQQLy/J4zXoxY9hxFYOELGIOp52zrRydPHI5j
+ /u6UFWdEv7Pv7DORYwQ32JYPvVlaaaoSqPb9Juy35kRg6q+zy4EIyR+rErtcjgKrQ++7
+ vupCChS5lPRAEZPDRtc0CqeFm2pZ508ERyH1SMFnscXQeoVVrBqtgXOhIMVUVu4fohKs
+ Cztw==
+X-Gm-Message-State: AOJu0YzcymR9FIg10uEe/WF/0v0/f6TCRmLYKSARc6lMoSGSg/EWAwVb
+ CRjd0r5DCvUhkIHx5nSSKviVVQ==
+X-Google-Smtp-Source: AGHT+IGzghytlEmqSZuDCiGi0bUq4MI/r6VF3e7b9ILROP26uDimGqVHsmNR/8IRue6rGp3noFw3Bw==
+X-Received: by 2002:a05:6808:1a13:b0:3a7:b15d:b58c with SMTP id
+ bk19-20020a0568081a1300b003a7b15db58cmr6899458oib.34.1694697622061; 
+ Thu, 14 Sep 2023 06:20:22 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ w16-20020aa78590000000b0068fece22469sm1329480pfn.4.2023.09.14.06.20.21
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Sep 2023 06:20:21 -0700 (PDT)
+Message-ID: <093c4948-ca13-0de0-664c-4c58daa9da2e@linaro.org>
+Date: Thu, 14 Sep 2023 06:20:19 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.0
-Subject: Re: [PATCH] hw/cxl: Fix out of bound array access
+Subject: Re: [PATCH] target/mips: Fix MSA BZ/BNZ opcodes displacement
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: qemu-stable <qemu-stable@nongnu.org>
-References: <20230913101055.754709-1-frolov@swemel.ru>
- <fb3f6b07-3310-f008-a512-1d155e21c024@tls.msk.ru>
- <79f03e2f-4cc9-fd44-1101-0dd8a398ff42@tls.msk.ru>
- <15f6d627-b88a-f6a0-abb8-70ec5198fd45@linaro.org>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <15f6d627-b88a-f6a0-abb8-70ec5198fd45@linaro.org>
+Cc: Aurelien Jarno <aurelien@aurel32.net>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Ni Hui <shuizhuyuanluo@126.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ qemu-stable@nongnu.org, Sergey Evlashev <vectorchiefrocks@gmail.com>
+References: <20230914085807.12241-1-philmd@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230914085807.12241-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,69 +98,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-14.09.2023 15:59, Philippe Mathieu-Daudé wrote:
-
->> Cc: qemu-stable@nongnu.org
->> for stable-8.1.
+On 9/14/23 01:58, Philippe Mathieu-Daudé wrote:
+> The PC offset is*signed*.
 > 
-> [not related to this particular patch]
-> 
-> Maybe this can help if we specify the releases range as a comment
-> in the Cc tag, for example here:
-> 
-> Cc: qemu-stable@nongnu.org # v8.1
-> 
-> and if it were a range:
-> 
-> Cc: qemu-stable@nongnu.org # v6.2 to v8.0
-> 
-> Michael would that help? If so feel free to modify
-> docs/devel/stable-process.rst :)
+> Cc:qemu-stable@nongnu.org
+> Reported-by: Sergey Evlashev<vectorchiefrocks@gmail.com>
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1624
+> Fixes: c7a9ef7517 ("target/mips: Introduce decode tree bindings for MSA ASE")
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   target/mips/tcg/msa.decode | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-I don't think this is necessary so far.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Or, actually it might help for sure, but it is an extra burden
-for regular developers.
-
-For quite some things I can see where it is applicable if there's
-a proper Fixes: tag already (that's why I've added this Cc), - it's
-trivial to run `git describe' for this commit ID, so it doesn't even
-need to have a Cc: stable.
-
-In some cases though it is hard to tell how deep a change needs to
-be backported. In such cases some hint can help for sure, but when
-in doubt I can ask too.  When you're in context of fixing something,
-you usually don't want to think about how to backport it or somesuch,
-you concentrate on the fix itself. If you're willing to think about
-that too, give a small note in the comment, like some authors do.
-If not, and it's entirely okay, and it's unclear if the change should
-be applied to earlier versions, I can ask (or notify when picking the
-change up for stable), and the author might think about this in another
-context.  It's not often - so far anyway - when it's unclear if a
-change should be propagated to older releases.
-
-Changing stable-process.rst isn't very useful, as most changes are
-changing master, - if anything, regular "contribution" docs should
-be changed for that.  But since most stuff is going on through various
-subsystem maintainers, they don't usually look there anyway :)
-
-For now, it's basically my own whim to provide stable series for
-older qemu releases.  Or an experiment.  I don't know how useful it
-is (or will be) and how it will go long-term.  We've never had this
-before.
-
-In my view it is much more important to either add the Fixes: tag
-(which gives me a hint already, as I check for all Fixes: in patches
-being applied, and can automate this further by doing git-desc on
-the hashes, alerting me if it is before the current release) or realize
-something needs to go to stable at all. Even at the cost of sending
-extra stuff to stable which is actually not needed at all - this is
-entirely okay.  This is why I'm asking about various changes going
-in, reminding about -stable existance, - because some stuff isn't
-marked as a fix at all but in fact it is an important thing for
-stable (one or another).
-
-Thank you for your support Phil! :)
-
-/mjt
+r~
 
