@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC2979FBD3
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4977979FBD4
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 08:22:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgfig-0005ns-Uu; Thu, 14 Sep 2023 02:20:54 -0400
+	id 1qgfk7-0006So-TF; Thu, 14 Sep 2023 02:22:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfie-0005nd-1z
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:20:52 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfk5-0006SX-Uv
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:21 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfib-0001Uo-H3
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:20:51 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-9a9f139cd94so79100866b.2
- for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:20:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qgfk4-0001jP-6g
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 02:22:21 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-9ad8a33fd0dso72653066b.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Sep 2023 23:22:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694672448; x=1695277248; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694672537; x=1695277337; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=o1rop36AMVn+zfjVENo25LieEq70uL//xvcMPBt/KDE=;
- b=mi1b96oo3JO1GgY0Lgw791cxrcehVU4NI+QMz6SSBW5NRpmqfY23RBhbms8Tqhe6ft
- Edtr+Np+Hbu3EhjNfaIVQUowgHDfSXBj+sQyISaF+mrMU4aywE0jmNu4ZoVXJxnm1A59
- vaek5gfXpUzkzgD2TdYWtqffFwl7ghYQyA4S7NldRalMm9Nxjbs89wLD1G5fY3Yn3MOS
- cl3A+ein2oxatb3GrghJbtzjxiMwPmWsVRmAkUQSqSFUgarMOOeVexlGmL815Ej1Tcrc
- 1h7S2Ord9al8wNUYqefEpxEO1GyXYbNVRfvfsQaWi6GHiFWguc5C+vLUXe8yaLt4yNVy
- +2HQ==
+ bh=hP01JpjVhAghEymlQp5fC7eYgVrV/Ngb7ZY8IMC2q4k=;
+ b=uGaBSYChGS4hfIfT9il25elqlNVyjcetHva9qX6JZjMpn75ZVCOfjA9tS03wSTY74F
+ wzTB/rkeqCZLjccNQx42ULR6nYwSKFZPcVcumhvBKuDXlbgv8xdplhS8cXQIirL+Iu/M
+ oRGZAb2HNsYytIAYlnWkfJz91ZJuV5VPjZPUXPQASPXYR7XyUupPGdA2FDL4UziCqWvl
+ dE97Z5g7LPBMJ1Lhl/HKr8Mnr/IPAg+v76gdqg2q+g7UPknAH4I1+XFt5LRqJ+T6aYWo
+ IVLzpi+VxmFKp3uVfOP7fZ2OChmzCt04CEqVPZeJtUxWuw5aJiE0Cniu5x2tXc6t/B7l
+ BIBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694672448; x=1695277248;
+ d=1e100.net; s=20230601; t=1694672537; x=1695277337;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o1rop36AMVn+zfjVENo25LieEq70uL//xvcMPBt/KDE=;
- b=hDV99FmdMRBVMEfXHHlQj1lccT1lhtE8niK/JaP5p4+9cmwC647j23n12YkuwUvc7o
- XcHX2aKQ/Y14EfA/F5vBCjfMhLoM5BKusog9p4gwgRtQ1Bw/rj7CFn1TaJTvqxWJGU2A
- 0nlbxjBnlSiCcWGBdtQ1WQAkFwM1Y6GZbI0v+PRUANj3jNknum5xoP5b8iAQ/12kSf2y
- hWouHaMP75q8FAZbKl5ce8U3tTlFZeOv2iwlv3YdmtrnbFgsmaN1gVGE1/iyFCnfRuoX
- PHnD6iVDpltwo/H29+rBmwNikmRkbtt4OHwmfSt/zvsCj8dXRRGNXOBm/1BzXNT+kHZM
- ztmg==
-X-Gm-Message-State: AOJu0YxT7/6zS8pT1rgwrlCM+VVZGyjx7JkEdu2hjhOFsliqeKHV0ZeX
- 6GBUdCyO5srNjOWaV8RhyRGjnQ==
-X-Google-Smtp-Source: AGHT+IGcpaxhhqm+H0iW1J3VxRrO6bRtJx6uhAdaFsqK2WP2y/cL6q8k/SEMA0SBJk6W8ce74fsNkw==
-X-Received: by 2002:a17:907:62a5:b0:9a1:e758:fc73 with SMTP id
- nd37-20020a17090762a500b009a1e758fc73mr4100102ejc.67.1694672448035; 
- Wed, 13 Sep 2023 23:20:48 -0700 (PDT)
+ bh=hP01JpjVhAghEymlQp5fC7eYgVrV/Ngb7ZY8IMC2q4k=;
+ b=fbBdAhVAZhYYQZMHw5L8MzkK9UwDUMLdO8D+0WbzbapGafQ4UyWiG86sSxaDNZTznv
+ yNdcmpfTncBZWk9wrxGSOJxPkhYDyfk3q8GbVn0n63vlDZRj4jB7Sy/RNiMjWCssM5ip
+ 0Nk5SKk9PfA1sC7oMhBU9RxIFgHuAO0LGKOOwpyF4BZuHTK9vSSWzq7zLfQpz3+UU1Ji
+ TScTXbzjt1Bo/c7OazhRWCdWWRPH0E0DmFKbRlQxXTvE0zPplnTJT8gzGBThUaX5IEpu
+ DHRbO0eCg+KLp61KpeuGDvGS5pp39w9tur0REsJoGufOcGln7HLzVq4A/bpOMM5hGYiY
+ jNbg==
+X-Gm-Message-State: AOJu0Yyk/usJKuW19T3vINMPYOuhaAMM01nR/JlqCZz3vP7P9MT/8pIi
+ gpxNUfqn3HP0iB99F66qiC+Meg==
+X-Google-Smtp-Source: AGHT+IGI7ghFph0XoqEwcnit7jkOGvEjrmpaL8dm7HU2SHTLIZALvFnmDQUFSRYgF6odt7bm3vNyLw==
+X-Received: by 2002:a17:907:2cc9:b0:9a5:b8c1:2ce1 with SMTP id
+ hg9-20020a1709072cc900b009a5b8c12ce1mr3289390ejc.31.1694672537599; 
+ Wed, 13 Sep 2023 23:22:17 -0700 (PDT)
 Received: from [192.168.69.115] (sem44-h01-176-172-56-29.dsl.sta.abo.bbox.fr.
  [176.172.56.29]) by smtp.gmail.com with ESMTPSA id
- n19-20020a170906165300b009ad75d318ffsm523238ejd.17.2023.09.13.23.20.47
+ gg23-20020a170906e29700b0099364d9f0e6sm507880ejb.117.2023.09.13.23.22.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Sep 2023 23:20:47 -0700 (PDT)
-Message-ID: <4ffa33a4-803c-987c-3cdf-4170ae603e86@linaro.org>
-Date: Thu, 14 Sep 2023 08:20:46 +0200
+ Wed, 13 Sep 2023 23:22:17 -0700 (PDT)
+Message-ID: <ba8e2a44-710f-dc02-e571-1c36e8634332@linaro.org>
+Date: Thu, 14 Sep 2023 08:22:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v2 20/24] accel/tcg: Modify atomic_mmu_lookup() to use
- CPUState
+Subject: Re: [PATCH v2 21/24] accel/tcg: Use CPUState in atomicity helpers
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: anjo@rev.ng, ale@rev.ng
 References: <20230914024435.1381329-1-richard.henderson@linaro.org>
- <20230914024435.1381329-21-richard.henderson@linaro.org>
+ <20230914024435.1381329-22-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230914024435.1381329-21-richard.henderson@linaro.org>
+In-Reply-To: <20230914024435.1381329-22-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,20 +96,18 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 14/9/23 04:44, Richard Henderson wrote:
 > From: Anton Johansson <anjo@rev.ng>
 > 
-> The goal is to (in the future) allow for per-target compilation of
-> functions in atomic_template.h whilst atomic_mmu_lookup() and cputlb.c
-> are compiled once-per user- or system mode.
+> Makes ldst_atomicity.c.inc almost target-independent, with the exception
+> of TARGET_PAGE_MASK, which will be addressed in a future patch.
 > 
 > Signed-off-by: Anton Johansson <anjo@rev.ng>
-> Message-Id: <20230912153428.17816-7-anjo@rev.ng>
+> Message-Id: <20230912153428.17816-8-anjo@rev.ng>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> [rth: Use cpu->neg.tlb instead of cpu_tlb()]
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   accel/tcg/atomic_template.h | 20 ++++++++++++--------
->   accel/tcg/cputlb.c          | 26 +++++++++++++-------------
->   accel/tcg/user-exec.c       |  8 ++++----
->   3 files changed, 29 insertions(+), 25 deletions(-)
+>   accel/tcg/cputlb.c             | 20 ++++----
+>   accel/tcg/user-exec.c          | 16 +++----
+>   accel/tcg/ldst_atomicity.c.inc | 88 +++++++++++++++++-----------------
+>   3 files changed, 62 insertions(+), 62 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
