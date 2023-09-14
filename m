@@ -2,78 +2,135 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3D97A0FB7
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 23:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D80B7A0FF5
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 23:39:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgtkh-0003Hi-9v; Thu, 14 Sep 2023 17:19:55 -0400
+	id 1qgu2N-0008MS-DE; Thu, 14 Sep 2023 17:38:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qgtkf-0003GP-EF
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 17:19:54 -0400
-Received: from mout.gmx.net ([212.227.17.20])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qgu2K-0008Lv-1j; Thu, 14 Sep 2023 17:38:08 -0400
+Received: from mail-db3eur04on070c.outbound.protection.outlook.com
+ ([2a01:111:f400:fe0c::70c]
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qgtkd-0007HE-BP
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 17:19:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1694726385; x=1695331185; i=deller@gmx.de;
- bh=7DhPwe1dJLN7G43PV/TXiqGH/8jS9Wr6/1ISWqBOSrw=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=LTB35eDhsZPgv7dPdnI/9w/z+BfFvECxVHLu2IpsMQKy1kTxdcpRtFfCwladtQ3mDizSlIiYath
- cXoZ2aliVCLMyitmm9pT6RASvJA6ennH6DEQZBbCN9Mpg77lPMEPYv7VXu2yRJeXiaAS8zDQpDzkL
- JunPGy21lMHmD0M4g/yUMCBU9BpbIFDeRrytclBjUZQS7CrYieUBW8AeMeiZVQyHy5ceIrRO4UZxs
- lBulMNlVtrQjE5c80W4dJcKqnEcYPSK109JznWbovFWW3VYBhdooQ8OUbJk1frfbbzJrD5gWhf0fP
- VKhheDNrlI+tf/dKGoqWDBcYXZJDVbu5bHbQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.145.203]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3UV8-1qgLml1hgo-000ZTo; Thu, 14
- Sep 2023 23:19:45 +0200
-Message-ID: <6e6a7003-0c62-d208-da3c-6b25efa809e3@gmx.de>
-Date: Thu, 14 Sep 2023 23:19:44 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/hppa: Optimize ldcw/ldcd instruction translation
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1qgu2H-0002po-Gb; Thu, 14 Sep 2023 17:38:07 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AozHxtlN+4UuY/UosFDXgfSLIJdkzQtq4X07gpb9+x+E++tU23yIFabA5LLVNsT+qjjauhKJ6LuCT7XaSsCVRQYqhHWxIE1dOQxxImMLf7GHflwxLEbrqKL1cF7wLE5z8GB3DDFvgWnszFyJJ5IOiyusuaRLTEKzcca1i6IOCpIusA6vqFOlqD+hT8H5SlQKi1sk4v91TW328uqPc+QB3dz9Vk7UrrSDJbYtJBD13P7AoRKesXCHsPZ6K/VggIUel9chuywVRq9tIxVMrX/4jQDNSA3vP2A2FHBOv0RNaC/nNpPSTJkXU0YsDkXnpL5VDwitHjMxuS6x2LliHDliRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VS6ef2PehWecAjjTlZ3ph2+mnW5KHfBkEDL+yo9IVVo=;
+ b=OuXOTghyRvCKea3FshqAYWdKFYe6p3+zvN73SeThref9T1oxYg3KAx+bUGHDoShbsrmik5ZuHbbIK4aHj3UjSevo3ImNARE/EMSj0jBbMdUS7qB2k6DMZ+HkffP005cxqog1kxfTGj0MqFSLVuxfko7paztxtGFSr8RKcCngWcY9ZDPvX8a5fAA5a/oInr+VHCWjeGbCYUW/CjohIRfaLRnABl4aSXfgkFo1WGJVPBfA2v9j9Wvwbyx/vXxqWg66SywlywprAV0sW352grG6WsJVmrz4ImFJHtFKEYQ7/O3D87KOJ8biOMJemPsoleFugNiURpBv8HDRnw7tzxRwVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VS6ef2PehWecAjjTlZ3ph2+mnW5KHfBkEDL+yo9IVVo=;
+ b=j8ZvSk80EVd0kQlBojYIOe7ftj1XL7z3dnevoqOqA0RzJ9dyWJgdqrXwnk7j8Ohqm/PEJ3+ZdLysYC/EmwGuNUO0w+4PVb3Idx/LDv9cecP2bSXWUCgqoW0aHRdX07TMoMmvupR00QLkIShq2CfnyRiGnjZ3bp6iQqO/UIvwmuHwu7FTOu5VqyBCjf++/WZZAzcVNU2y/0l27lLMk5IAf3Nc0AgQtpYk8EcPH3NXBV/s9VGHdhWJynsPo71rLh1wbxwoNLdmebZRizuUgH4GphNILsP9QKbFWJayYL0DjN9+aM38Xf4W+v6IM8/se20BjMKkvyIVRQSBQH8u7clnSw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from HE1PR0802MB2331.eurprd08.prod.outlook.com (2603:10a6:3:c1::13)
+ by DBBPR08MB6281.eurprd08.prod.outlook.com (2603:10a6:10:1f6::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Thu, 14 Sep
+ 2023 21:37:59 +0000
+Received: from HE1PR0802MB2331.eurprd08.prod.outlook.com
+ ([fe80::4190:cf8e:abd7:68c8]) by HE1PR0802MB2331.eurprd08.prod.outlook.com
+ ([fe80::4190:cf8e:abd7:68c8%11]) with mapi id 15.20.6792.020; Thu, 14 Sep
+ 2023 21:37:58 +0000
+Message-ID: <e2e0bf60-1a3e-4f48-8c5a-81e16d5245ad@virtuozzo.com>
+Date: Fri, 15 Sep 2023 00:40:12 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] qemu-img: map: report compressed data blocks
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
-References: <ZQHLcL6E5uNvjkaN@p100>
- <ba047867-db8b-8bb6-d2e7-563516c5afb6@linaro.org>
- <acc0b3f5-959c-ac8d-89e1-5c862b39a721@gmx.de>
- <f824fa25-0d7f-b417-11a4-e3c84efe1b7a@linaro.org>
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <f824fa25-0d7f-b417-11a4-e3c84efe1b7a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GIHag+YevQPBgoFX26/c71kuHAe3awhUeNv0/qO3ULVUxWWB4GD
- XxdYJreYVEfALo7OkQrc9ytx0e1Y2zY/falvZtQyPnMF58ncnp/4hfkgN+fKs1uAQHex8o5
- cQTVY/25BBDTh23x4sHdl3mQ25MZUmS0V6ioAprNAnFBbsrIxvYtdoxbFQ2LZ0exRCcudFn
- MrCuYtsofHG7CKbPAtyOQ==
-UI-OutboundReport: notjunk:1;M01:P0:6cL2DDs2Muw=;u6HQt3geYtB43Z/jwsKg+rBiDhJ
- JpfrUB6DmUpI8hQk2LmHU5ccTpOGIN55EQyoSMKr9yvl93rXs+2FQi4q+UYIqiXCYRkZ9HFjJ
- caQPP3dlWkNIf9EXDbiTwyakwY9dFbSnbdtshOOKLtwoXuc/goNigeM14iUEwxlWn11wS7MhN
- d/d3irZRQH2kVbQ0YVT1VkMlOIVKHGMINdCUeopjVRyQEFnJRArCkgc8lGjQf43YPhe/oQiBO
- cmOQfj0zrw+Tu7l6LpHkzZdnpGWUzXtCzml5QnEvt5f6UY61lU1VHc7AB5lNo/G+GPLPi+XvR
- aNOzCqMD75xXRUH0m3rM0nbyHS+G84S7VpFN/zUETx1hL0y/6qfIT5+vX87CcB4Vt/XkQ6FRJ
- Z6xKVN3R6MAsUftUjtIGUibvZLX+NwzcCFJN3R6Wj9x+qJzFtMJFSSQlZe7r+NA2FzKjRHeX1
- AclOc3a9/WEqc7KR5GxJauvnn4Li7wjH3/+XfiAhKgcSFSIaBYwCPZcs1hbSyWvv3/NXwlxtr
- 6qCgZRnymFYuuPv4BwoCFBPBx4CjNF9BU+10Nta0uf4WyxOnd7tDsztnpTZXoY40phQiHL37z
- LmIrFbfd2/bENgn9yvlIgVIL02ebukawE+0wTb1HeXWhDYTSKOubYYLqzN6v/yQlqocl55lA/
- h/atIAmhtNSZQJwZPuuFW3P0iLv4V1tKwX1xBs2XuEE0F8WB0NuyaSLcoBicHvKDFx9oMUiI6
- MRvagtpTDtfSvKAITfkpD+kFrUBanAWftDjr47Ba8/BRMzwwS8MrJ4Sdvqqr2Kyu8fuyKqPYV
- PtoU/364S/WYCeMykXfzeQzHiQTVuxlw13fxf1im7gbh7OHkrOklRPuE6quktUQs62tG1NddZ
- uhOo+qNZEOnppxaqJVzbf2aXzwxA9CaJ9sw96esc85mtccAso5+KOHvgvmJ0AU5ZYn3rmugwh
- AP++/A==
-Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, hreitz@redhat.com,
+ kwolf@redhat.com, fam@euphon.net, vsementsov@yandex-team.ru,
+ den@virtuozzo.com
+References: <20230907210226.953821-1-andrey.drobyshev@virtuozzo.com>
+ <20230907210226.953821-3-andrey.drobyshev@virtuozzo.com>
+ <b6yyul657xkv3usgp7vrczy6r5xssbhmzfgftvrp2srlnct7gt@ja5barlss2kh>
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+In-Reply-To: <b6yyul657xkv3usgp7vrczy6r5xssbhmzfgftvrp2srlnct7gt@ja5barlss2kh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0005.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c8::13) To HE1PR0802MB2331.eurprd08.prod.outlook.com
+ (2603:10a6:3:c1::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: HE1PR0802MB2331:EE_|DBBPR08MB6281:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1664cd83-fd5e-40d2-4f85-08dbb56adcb6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: QTa4pAunxn9JWYCHOJpSqkH6zh33UrAZ30OhglnbZ6qVb3l9LICerbl6riexv1qhIQzXwl4H/WhuIZ6+QdIFlXHa5owqkz1H1hnNfKT6v99rC6aV/tsfSP7KAM9wZxYY4zzBhv6Bmgu+96uP83pBuLL4W71H0kcUOJjT6oCnMeiqQR30444SkcQL47ES8XDWz27vNFtRP3iQB+20sHHNCz7wGXvMCwOWPwvsRFQsfIxq7luUmzjSgAySgipmdAdwHIQqTAAH4zHKz9CPcK7UskDtYSwyQkXZAddWcX9dYWjR8JJCwN+lZ8K2YPKuZzBV9gDCoeJiTQi/tc80Oxuh/T+Rf083FamskMQpTN4XOeKb/p7tvyTfQgJCdRYmxNVyuLNJzCq7d7TD9K9G8T8DkzroJsui725Wut8gUcc/ot2GHKPu5lV2UdFrJkJkOwEDNJweQ6LVAk8y0Z00ZwFAWKupVM6l6hCTuXi5MyNLb2GTueigtkZebQ1BAGnLIIQkZ+diydZjJGQuljfjv4PTWgYauHFezMo3p9WRQWtzLJYAbbz5fCO1V6Y83erOmtuNru1v5bhPZuk7rXVwSvKhsAuM+LcgfqVjF7dUZvoKiM6yYy0EcHTO0Ez6awC7PHKxdakmKjq+wjjmLA+LIBhoWw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:HE1PR0802MB2331.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(376002)(39850400004)(136003)(396003)(346002)(451199024)(186009)(1800799009)(2616005)(107886003)(44832011)(5660300002)(4326008)(26005)(8676002)(8936002)(6666004)(53546011)(6486002)(6512007)(6506007)(31686004)(83380400001)(478600001)(316002)(6916009)(66476007)(41300700001)(66556008)(66946007)(36756003)(31696002)(2906002)(86362001)(38100700002)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WTMvOHY1akpYSzJ0WVVkWW5UaDUvaEFpZE83ZWRvdXIrM3ZieG5sMmxXSllM?=
+ =?utf-8?B?ejNHK0d5YUx0MFZCREtiVjhsNWZQeTFTV0hTbS9VTnNKQmJFTkc3bGFEZVF0?=
+ =?utf-8?B?SEdzb0ZTSm1NZTBPZDdVZDFtOXZ5V3pRUldoYU5PVmRtRnNWRWZabU51TEx2?=
+ =?utf-8?B?UURlUWhrNjhWVHY0NEZTblNFbTBvbkJMVzR3dGk5Y1Z2YkVJS2xkZy82bkor?=
+ =?utf-8?B?SWtRUGlKWWRZK1ZaOTcxVFdaMDVXYTNVNHI1cWN2Yjg0REJYK1VIYU9kUlBJ?=
+ =?utf-8?B?NCtMM1pHYjNPWDNhdzdBaHAwZHZybHVPNW5hMHRzVEtiY2dxUlZ4YzVQZVVk?=
+ =?utf-8?B?dzYvNVg5TnpUQjdESE9qV0VYTkxGMHdiYWRFbG0zTGk5Z2NzRXFRSkpOTkFP?=
+ =?utf-8?B?VDBzMUJWMGVCUzhxc1FkcTRJa25OZ0NqNHI2ZytyTnZ0N1N6SnVZSldlSkdJ?=
+ =?utf-8?B?OUNheitlcWdkVjQ2T1AwOG5hY2RMZ2JsaDdaWVU4ck1qOU1ZWmRNVVVCZlpr?=
+ =?utf-8?B?S0FDbDRET1dmRnBkWHNwUytCSzBWVmZNYzdDaHEzeEY2SWpaOXVOeUFKVTlG?=
+ =?utf-8?B?YzM2N2xOaU9yc3VRdnVjd0ZuMm82d1pjYXAreWRpeVFhYjN4YWtOMXNRbUtY?=
+ =?utf-8?B?dFhNUldvQ2liRzdPcldaWVRRc0F3ZFB0WTY1ZnlJK05HT3dsWDFKQXlpd3lp?=
+ =?utf-8?B?UlEvWVg2VEUvMnhtVi9KSGgvQUw0WXNUNnY0b0ZnTDBlNGFKQk0xeG4zclhY?=
+ =?utf-8?B?eXFSVE5rVnZEdjVwb1pnSFlxS283dTUxYmVzZW05VWdCS3U4SXBBTllwU3NX?=
+ =?utf-8?B?NU5VcHdaTUtpSVllaFN3dVdwTUVlYmE2bHVNbFRneTc4UjlzVmJSMGZla3VF?=
+ =?utf-8?B?SW0wYjRZOTJPZlZJQW5aQlQySnZqbXFQWTgrd0FVemNQbjJPMmpBQS9KMEhs?=
+ =?utf-8?B?SG4zVlpTZTByaDhUejVnaUp6Z2gwSWFqM096UHQ2b2RWUlk0anZybE5vSzZt?=
+ =?utf-8?B?by91bFF6WTJWekkzWTZtSGlHWVJLNnp5RGV0Y2xzTlpiQVpWT3YzWFVBL29V?=
+ =?utf-8?B?UzVUdkN5V2xWa015WVBzVGpxSmxJd2h0MXczclAwQkk2YnFyc1RuNDYzMlNX?=
+ =?utf-8?B?dTNucFFwTFV1VlRvam5iQnU1ZktqdTdBMmNXNURoM0pDeThkREg1YmN1UFpK?=
+ =?utf-8?B?REtWZDdYSlhMS0xrTjlIcEhPN2FFL1pvUWwzaUpNYlpacmZWQk4vWXZiM0Jm?=
+ =?utf-8?B?cllXWG9aMWZOWjN4aUZNc01qTi9aSWxXbDN0c2k1ek9zWVozTGNIdWZPMDJv?=
+ =?utf-8?B?ZGdUMzFLeFIwRldrQ3dlUWlWQUVXRFZ2L0hTcmFmTERwUWJIeUpQd3hSd1lQ?=
+ =?utf-8?B?cS83UzJERXN1bjFCS08yWWQ3SlRQaW5ZdGxPZzVCVEQ3b2xESmdtY3gvRXo0?=
+ =?utf-8?B?b3hVUTZsQ1VISzBnb2poSHFZMG5pekF4YzdmWGxnWEx1QnNHckF6RzI3aG9S?=
+ =?utf-8?B?ZWMva2lGT1ZRVjJ6TFQ3cUpHNGtFZE55a2lsRFk4ZStqMDZiNGgvdTg1blBp?=
+ =?utf-8?B?bFBzNHRPRXo4TG5nWEVQeXpRbWw1MGY3QmVPUE5vYm1lY0xVTXRLOEorLzFq?=
+ =?utf-8?B?WTNWVkNXckVHQ2NycWVvYjZ2RmxielNqZkRzUEFlb2pJTTBJTDkvYnFPaTBC?=
+ =?utf-8?B?Y3R1cjNmVTJQSnZKaVpOdEk0cHU3NXFaM0pJLzZqZ01wNE1lbE1KdWRqcExq?=
+ =?utf-8?B?UFZ5MzVwdVRsbko1RXpQa0ZlSWJURGtrRFF0WTFyclVReVNsTHR1NjRQSkp5?=
+ =?utf-8?B?OHhaa2Z1WHFzMDh4RFZaTTltZjQ1aUJMUGZrTjludVh2dzhVWVFTV3VkYUp3?=
+ =?utf-8?B?VmlJZlhBd0V3VWtET2c2TEJtVWR5QWRZck1lN1JTS2I3bXpjbnNsK05oREhP?=
+ =?utf-8?B?WXB3UVhQdW9lSjI0L3pRZVVzbnVteFFWQ1pQdGxGRUk4eTBRSXVza2tuY3ln?=
+ =?utf-8?B?amZvd1gwSFI5OW9CamtJYWE1VmFGVGdUdXdFOEtkUDVxMDVndWI3cHpCR3Ny?=
+ =?utf-8?B?SGgzMVludE1VdkNtKzliYTFYOXRDOEtUa0xMeERQbk40U1dHaVI3d2tJZ1cy?=
+ =?utf-8?B?Q2FlYXdFQjArdFEydTVVU29oNEJKZG9OOE82Qnh6T2swdCtWNGlkNzVEMTR3?=
+ =?utf-8?Q?TrrsCmkPttZIrSDj/qs6998=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1664cd83-fd5e-40d2-4f85-08dbb56adcb6
+X-MS-Exchange-CrossTenant-AuthSource: HE1PR0802MB2331.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2023 21:37:58.1505 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8ywkVMggldpa+QCOmq2HbQoabatMxvNRWjGE4Qa9bhgamsAX4JRke/ts0ZedhkTp7rLm2JjCe/8U6tXe/hiAJu0b0LnbSsDmzmY818QsgaY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB6281
+Received-SPF: pass client-ip=2a01:111:f400:fe0c::70c;
+ envelope-from=andrey.drobyshev@virtuozzo.com;
+ helo=EUR04-DB3-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,55 +147,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
-
-On 9/13/23 22:30, Richard Henderson wrote:
-> On 9/13/23 10:19, Helge Deller wrote:
->> On 9/13/23 18:55, Richard Henderson wrote:
->>> On 9/13/23 07:47, Helge Deller wrote:
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 haddr =3D (uint32_t *)((u=
-intptr_t)vaddr);
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 old =3D *haddr;
->>>
->>> This is horribly incorrect, both for user-only and system mode.
+On 9/15/23 00:17, Eric Blake wrote:
+> On Fri, Sep 08, 2023 at 12:02:26AM +0300, Andrey Drobyshev wrote:
+>> Right now "qemu-img map" reports compressed blocks as containing data
+>> but having no host offset.  This is not very informative.  Instead,
+>> let's add another boolean field named "compressed" in case JSON output
+>> mode is specified.  This is achieved by utilizing new allocation status
+>> flag BDRV_BLOCK_COMPRESSED for bdrv_block_status().
 >>
->> Richard, thank you for the review!
->> But would you mind explaining why this is incorrect?
->> I thought the "vaddr =3D probe_access()" calculates the host address, s=
-o
->> shouldn't it be the right address?
->
-> The vaddr name is confusing (since it implies virtual address, which
-> the return from probe_access is not) as are the casts, which are
-> unnecessary.
+>> Also update the expected qemu-iotests outputs to contain the new field.
+>>
+>> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+>> ---
+> 
+>> +++ b/qapi/block-core.json
+>> @@ -409,6 +409,9 @@
+>>  #
+>>  # @zero: whether the virtual blocks read as zeroes
+>>  #
+>> +# @compressed: true indicates that data is stored compressed.  Only valid
+>> +#     for the formats whith support compression (since 8.2)
+> 
+> s/whith/which/
+> 
+> "compressed":false seems universally valid for all other file formats,
+> and the field is not marked as optional.  Do we really need the
+> disclaimer?  Could we get by with the shorter 'Will be false for
+> formats that do not support compression', or by omitting it
+> altogether?
+> 
 
-Still, I think my code isn't as wrong as you said.
+You're right, this remark should've been removed as it only makes sense
+in case of the field being optional.  Feel free to remove it altogether,
+or I can send a follow-up if you prefer.
 
-But I tend to agree with you on this:
-> Frankly, the current tcg_gen_atomic_xchg_reg is as optimized as
-> you'll be able to do.
-tcg_gen_atomic_xchg_reg() seems to generate on x86-64:
-
-0000000000525160 <helper_atomic_xchgl_be>:
-   525160:       53                      push   %rbx
-   525161:       4c 8b 44 24 08          mov    0x8(%rsp),%r8
-   525166:       89 d3                   mov    %edx,%ebx
-   525168:       89 ca                   mov    %ecx,%edx
-   52516a:       b9 04 00 00 00          mov    $0x4,%ecx
-   52516f:       e8 1c a6 ff ff          call   51f790 <atomic_mmu_lookup>
-   525174:       48 89 c2                mov    %rax,%rdx
-   525177:       89 d8                   mov    %ebx,%eax
-   525179:       0f c8                   bswap  %eax
-   52517b:       87 02                   xchg   %eax,(%rdx)
-   52517d:       5b                      pop    %rbx
-   52517e:       0f c8                   bswap  %eax
-   525180:       c3                      ret
-
-and atomic_mmu_lookup() is basically the same as probe_access(),
-so there is probably no gain in my patch.
-
-Please ignore my patch.
-
-Thank you!
-Helge
+Andrey
 
