@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC507A0F41
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B067A0F3C
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 22:47:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgtAt-0003OQ-UD; Thu, 14 Sep 2023 16:42:55 -0400
+	id 1qgtAs-0003NR-9V; Thu, 14 Sep 2023 16:42:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgtAo-0003K8-GU
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:50 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qgtAp-0003Kn-0j
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:51 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qgtAi-0006NG-IJ
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:49 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-31f7638be6eso1300692f8f.3
- for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:42:43 -0700 (PDT)
+ id 1qgtAl-0006Ne-GX
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 16:42:50 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-401b0d97850so14445285e9.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 13:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694724163; x=1695328963; darn=nongnu.org;
+ d=gmail.com; s=20221208; t=1694724164; x=1695328964; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=K19uu8/17P76Q44mQCDZAyL1sOi2UHp67TYKWHLTGQs=;
- b=UECPSfBl8Fr3H0iTrQ5DqcSmPgIewr0h8VDGrJIRKppjgvKXirIWXWYlKCIsw95t0T
- XEFwJczmyfZvQMX4ouwX3UGhV5mLcCJiSwBzFQeqGPtR4FAeQS/ybctfkitNWGx4F14M
- HqMMV7F4TpFUXE+qRf6GOqdKOF6p9+VsC04+51rP6+wxU9eVtXZ3zXDavFDY/mzLfq6B
- DKYwK2Fm/bIqx6hEM+U0Sfr4L1//eMj5KdRr82FnbluYJXj+OmEB/9nZksY5cORhW9I/
- 4rp3JxI8AkHlSpwXn89PSSCs0L8gaRw+vQJ5V054TEIl/rgypxaHpHY9rLqYB4aeN3Gn
- 4x+g==
+ bh=kz+23oIf5l7ES1zwv+zlawDrL/8dIy3f1vjxlJaYUac=;
+ b=SFAtbsY/FUUa0qycDs+sh3REk6Ii8RIIMJjZ8Sbgjs2nVOfbXn4Bl99dtqx40BnyP8
+ Ms6jqHVR1feVMWvqekmUEkp+Gr/yGTbwb4+u++3XbghVd5qWtntzOyLrEZdxzTIeohl+
+ oBtjnhQ306DW5juzes6BfaDCFii2EWuBEGrdqH0st1h3iPrkCh7huRXQg/iwAP7nBAft
+ A0pobBYl5IccaiiMCmHL/LR0rFAzOX4Oc+f3cfmVc0t2b0vnLdqVphmu4AShsFVO+WsT
+ nNEOJm9Kn4mV8+JZVf+iSVbHtlO3N+Ghn1kuvmh1FJmkpURkgy/ScUoGjj4VtLo8AB/A
+ z6WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694724163; x=1695328963;
+ d=1e100.net; s=20230601; t=1694724164; x=1695328964;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=K19uu8/17P76Q44mQCDZAyL1sOi2UHp67TYKWHLTGQs=;
- b=oTJl/5Wuazh7Q26BBpIcDPrkTuW2fxLC+grr3ep+z0E4AESCl8jfbNq+M8Vops1cRZ
- /a51CWt2kHXiHz2KjmNoJ6fYBMEde5MZBdFyou0NxNIEHX5pJnHpSpruKOYksGswu6YO
- X1Kzn/QpyUiA7hvdrMhGFyH9DUtvUYj34jwwHHfQm3O8cnccELnq+tDeQKB/4mNwvOQR
- 4SofQVTwE4vbpndy/ecnEsa/ZB9G/WCJ8x66ebRf+TiXLuOL+G0zUzc4vrEyUJRc9nzw
- aCWQ6E9UKE0pvWJ37GB0xFS6MkpjPhCtIzBPlMkYWr+5HZW1VM9i7P1SaJJjvyAanO7T
- AbTw==
-X-Gm-Message-State: AOJu0YyduDTqXUnYoUdpCUqm1A2EdLRg/LJibCgwgAam57t4wYIOTUJ5
- jsqSlgdOwZLNbV3vRl7gdX3ACD9rULY=
-X-Google-Smtp-Source: AGHT+IGvClaumgiL4vDjmJkeUqzBtQjedNyGCSEg1cw3YTwIfuj6rB2m8L4OpkmW+HiOaa72xiOYkQ==
-X-Received: by 2002:a5d:67c8:0:b0:317:5a99:4549 with SMTP id
- n8-20020a5d67c8000000b003175a994549mr5701313wrw.0.1694724162658; 
- Thu, 14 Sep 2023 13:42:42 -0700 (PDT)
+ bh=kz+23oIf5l7ES1zwv+zlawDrL/8dIy3f1vjxlJaYUac=;
+ b=ZQCMIJoAtpck7VldfVIVYT5j3rWX2cZ4eK8hqGKcn2/po+M583xouFuy/jwFzviLDl
+ eqpn0K9w03WT5GF8rNAaCxzn1mviwDmRN5U2SYoIr9WsGFuI7fo4Lu/WAuK7Davb5zmO
+ VRSLqasB5bsffkjsyQ3juRcXC9L32frQrm8fH49AgmLYiNKohut1f+6neqt8w8TfIpDe
+ JKdTLnZ3J0bmOnEFoZ1R5iEuJqWTEoJwFptGGffeBTJxlweRWz9WPHGX5HfaLW3BWqRX
+ a1rVUKyb2c+vfukvewc6bxMwc54kbYqwb0DVsYG2xc47ZJd3jmyoRayXYIVLsiskT2m9
+ qUOA==
+X-Gm-Message-State: AOJu0Yz6DEORos8T7ahSn9rm9N+ffdMbr+qLTyyRl7a10XwtkPy8xkSc
+ uDSX4Si5CNWS3UBlyPid1Yrp8DQQqlA=
+X-Google-Smtp-Source: AGHT+IHd6Bi9n+rQLRhkvQDVxOvkOyfc3Sd/1qKmbx06Nc7KUU7WlAGXy5wtQEo4E+/3Of3kfQ01wg==
+X-Received: by 2002:a1c:7c0e:0:b0:401:b204:3b84 with SMTP id
+ x14-20020a1c7c0e000000b00401b2043b84mr5543398wmc.40.1694724164160; 
+ Thu, 14 Sep 2023 13:42:44 -0700 (PDT)
 Received: from karim.my.domain ([197.39.44.105])
  by smtp.gmail.com with ESMTPSA id
- j3-20020a056000124300b0031f34a395e7sm2661880wrx.45.2023.09.14.13.42.41
+ j3-20020a056000124300b0031f34a395e7sm2661880wrx.45.2023.09.14.13.42.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Sep 2023 13:42:42 -0700 (PDT)
+ Thu, 14 Sep 2023 13:42:43 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, imp@bsdimp.com,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v5 11/23] bsd-user: Introduce bsd-mem.h to the source tree
-Date: Thu, 14 Sep 2023 23:40:55 +0300
-Message-ID: <20230914204107.23778-12-kariem.taha2.7@gmail.com>
+Subject: [PATCH v5 12/23] bsd-user: Implement mmap(2) and munmap(2)
+Date: Thu, 14 Sep 2023 23:40:56 +0300
+Message-ID: <20230914204107.23778-13-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230914204107.23778-1-kariem.taha2.7@gmail.com>
 References: <20230914204107.23778-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -95,101 +95,64 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-Preserve the copyright notice and help with the 'Author' info for
-subsequent changes to the file.
-
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/bsd-mem.h            | 64 +++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  1 +
- 2 files changed, 65 insertions(+)
- create mode 100644 bsd-user/bsd-mem.h
+ bsd-user/bsd-mem.h            | 20 ++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  9 +++++++++
+ 2 files changed, 29 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-new file mode 100644
-index 0000000000..d865e0807d
---- /dev/null
+index d865e0807d..76b504f70c 100644
+--- a/bsd-user/bsd-mem.h
 +++ b/bsd-user/bsd-mem.h
-@@ -0,0 +1,64 @@
-+/*
-+ *  memory management system call shims and definitions
-+ *
-+ *  Copyright (c) 2013-15 Stacey D. Son
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
-+ */
+@@ -61,4 +61,24 @@ extern struct bsd_shm_regions bsd_shm_regions[];
+ extern abi_ulong target_brk;
+ extern abi_ulong initial_target_brk;
+ 
++/* mmap(2) */
++static inline abi_long do_bsd_mmap(void *cpu_env, abi_long arg1, abi_long arg2,
++    abi_long arg3, abi_long arg4, abi_long arg5, abi_long arg6, abi_long arg7,
++    abi_long arg8)
++{
++    if (regpairs_aligned(cpu_env) != 0) {
++        arg6 = arg7;
++        arg7 = arg8;
++    }
++    return get_errno(target_mmap(arg1, arg2, arg3,
++                                 target_to_host_bitmask(arg4, mmap_flags_tbl),
++                                 arg5, target_arg64(arg6, arg7)));
++}
 +
-+/*
-+ * Copyright (c) 1982, 1986, 1993
-+ *      The Regents of the University of California.  All rights reserved.
-+ *
-+ * Redistribution and use in source and binary forms, with or without
-+ * modification, are permitted provided that the following conditions
-+ * are met:
-+ * 1. Redistributions of source code must retain the above copyright
-+ *    notice, this list of conditions and the following disclaimer.
-+ * 2. Redistributions in binary form must reproduce the above copyright
-+ *    notice, this list of conditions and the following disclaimer in the
-+ *    documentation and/or other materials provided with the distribution.
-+ * 4. Neither the name of the University nor the names of its contributors
-+ *    may be used to endorse or promote products derived from this software
-+ *    without specific prior written permission.
-+ *
-+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
-+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
-+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-+ * SUCH DAMAGE.
-+ */
++/* munmap(2) */
++static inline abi_long do_bsd_munmap(abi_long arg1, abi_long arg2)
++{
++    return get_errno(target_munmap(arg1, arg2));
++}
 +
-+#ifndef BSD_USER_BSD_MEM_H
-+#define BSD_USER_BSD_MEM_H
-+
-+#include <sys/types.h>
-+#include <sys/ipc.h>
-+#include <sys/mman.h>
-+#include <sys/shm.h>
-+#include <fcntl.h>
-+
-+#include "qemu-bsd.h"
-+
-+extern struct bsd_shm_regions bsd_shm_regions[];
-+extern abi_ulong target_brk;
-+extern abi_ulong initial_target_brk;
-+
-+#endif /* BSD_USER_BSD_MEM_H */
+ #endif /* BSD_USER_BSD_MEM_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 4c99760a21..42cd52a406 100644
+index 42cd52a406..893881c179 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -35,6 +35,7 @@
- 
- /* BSD independent syscall shims */
- #include "bsd-file.h"
-+#include "bsd-mem.h"
- #include "bsd-proc.h"
- 
- /* *BSD dependent syscall shims */
+@@ -594,6 +594,15 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         /*
+          * Memory management system calls.
+          */
++    case TARGET_FREEBSD_NR_mmap: /* mmap(2) */
++        ret = do_bsd_mmap(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6, arg7,
++                          arg8);
++        break;
++
++    case TARGET_FREEBSD_NR_munmap: /* munmap(2) */
++        ret = do_bsd_munmap(arg1, arg2);
++        break;
++
+ #if defined(__FreeBSD_version) && __FreeBSD_version >= 1300048
+     case TARGET_FREEBSD_NR_shm_open2: /* shm_open2(2) */
+         ret = do_freebsd_shm_open2(arg1, arg2, arg3, arg4, arg5);
 -- 
 2.42.0
 
