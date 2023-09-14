@@ -2,73 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1924B7A057C
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4F97A058F
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 15:27:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgmJw-0007t7-R8; Thu, 14 Sep 2023 09:23:48 -0400
+	id 1qgmMu-0000jg-Mz; Thu, 14 Sep 2023 09:26:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgmJt-0007so-3b
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:23:46 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgmJr-0001fg-4a
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:23:44 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 09BD41F459;
- Thu, 14 Sep 2023 13:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1694697822; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qgmMm-0000ii-GT
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:26:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qgmMk-0002Ml-ML
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 09:26:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694698001;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bUE7JEiegkyIm1yvGt2Y/uONzYRP6of28Hyhb3T0sa0=;
- b=HASw94rudRKxT9sD1QS+xwVz7Ii4TsvSfWsW1zHQZ4itq1ZSx1rfU/vJYyrT7mu022kfXP
- n2wTIyIwr451zYtFVRIKdu9KjJJYDwG7EOkU2KGkvGCLRkmCyPNPRYTpGyF9jbzuND3pQj
- 0Kal0Xy4xgUnt4JsIKjD/ChJU/7OtgU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1694697822;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bUE7JEiegkyIm1yvGt2Y/uONzYRP6of28Hyhb3T0sa0=;
- b=mrZJwdQqz/hI/E3+iBcs7zlDWkkf1NbBRE/nt6z6ENkASAU7WsI39qh22Gvrd+oWggoO8+
- 1LTM+daUjLTkmbBg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7895D13580;
- Thu, 14 Sep 2023 13:23:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id YNwqDl0JA2XpUAAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 14 Sep 2023 13:23:41 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Lukas Straub
- <lukasstraub2@web.de>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v6 09/10] migration/yank: Keep track of registered yank
- instances
-In-Reply-To: <ZQJKQLNNZe772MUA@x1n>
-References: <20230911171320.24372-1-farosas@suse.de>
- <20230911171320.24372-10-farosas@suse.de> <ZQIX+KUgL5V6H/gj@x1n>
- <87jzstkaen.fsf@suse.de> <ZQJKQLNNZe772MUA@x1n>
-Date: Thu, 14 Sep 2023 10:23:38 -0300
-Message-ID: <87h6nwkhwl.fsf@suse.de>
+ bh=Z8sdgAWO/TNc29sLG7+b1GfNQJO7VLFCsAR98kIxrPY=;
+ b=DuGykrI9881j27z1aHxmnm97LBZq3mBOaA7n9rjZ073ItIFAPMj9lwkq/KwdAc7Y+nCHJT
+ N95LjAjD++57aAi6RQfluUf0yRe8Btregs4pt6ZDsABj5otNyywOllNKoiTBOY6jAjamAX
+ 71Cf1uwOf7XbSh0u58f/tx+lCpfFVDY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-491-aGdmgN5HPJOUBBH-vg2M0g-1; Thu, 14 Sep 2023 09:26:40 -0400
+X-MC-Unique: aGdmgN5HPJOUBBH-vg2M0g-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3f42bcef2acso7311635e9.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 06:26:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694697999; x=1695302799;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :references:cc:to:content-language:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Z8sdgAWO/TNc29sLG7+b1GfNQJO7VLFCsAR98kIxrPY=;
+ b=rpxUiDY9eocF/m5BIFyXUzM1nhBkyKJvylQyzbsungwe3IBtHBvLHHNXm4vqG6jx7H
+ j6PQC2odyvXvB+m0HTC3ZOlIUySrinWun8lim6OaFqLRe6QUmPxuuxXfP8tcUTS+oJKP
+ 9a9UpDgd4SA1F2DoWo3nYCAe1sOczkM51RPVlI5jBhxclswkNaiIdLD24A6OCkt1odWp
+ aIoIeCN2A1N2ZZAzsTUjfJEwIuHMMQef4dgRr4cCax4cAEsTw74w7dp8xJNprjiIxETP
+ mwXy7ei2Sgk7wQ+bKMqMqOcwHg6PRiSJDGoTun6NS4L6ppl03VWWdlm0rIAqXCy6514A
+ F3HA==
+X-Gm-Message-State: AOJu0YztAWuHv+g5P+R5X8kqf6FcitktYpW6rv+F7A9j70W3qifzwU76
+ m6zb3xbO8g/aO/xz5kMJD8Qjfb8aca2QPqWZJMd9sdj7MHRLbb+HsF+DdkZFvK8DzrdIEe/UHiR
+ 4iFRFsq7tD7AlOIc=
+X-Received: by 2002:a7b:c414:0:b0:3fe:22a9:907 with SMTP id
+ k20-20020a7bc414000000b003fe22a90907mr5051915wmi.20.1694697999295; 
+ Thu, 14 Sep 2023 06:26:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFbh0T0X+yrqq4FcaY2pX7xzKrQcqe15Z+3IOBSp7j789JloxBnDig7VyzsO86HSIVYEoSR1g==
+X-Received: by 2002:a7b:c414:0:b0:3fe:22a9:907 with SMTP id
+ k20-20020a7bc414000000b003fe22a90907mr5051891wmi.20.1694697998914; 
+ Thu, 14 Sep 2023 06:26:38 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7?
+ ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+ by smtp.gmail.com with ESMTPSA id
+ x7-20020a05600c2d0700b00404719b05b5sm1535055wmf.27.2023.09.14.06.26.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 14 Sep 2023 06:26:38 -0700 (PDT)
+Message-ID: <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
+Date: Thu, 14 Sep 2023 15:26:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: lixianglai <lixianglai@loongson.cn>, qemu-devel@nongnu.org
+Cc: Salil Mehta <salil.mehta@opnsrc.net>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Bibo Mao <maobibo@loongson.cn>
+References: <cover.1694433326.git.lixianglai@loongson.cn>
+ <3a4fc2a3df4b767c3c296a7da3bc15ca9c251316.1694433326.git.lixianglai@loongson.cn>
+ <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
+ <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v2 04/10] Introduce the CPU address space destruction
+ function
+In-Reply-To: <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,146 +117,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 14.09.23 15:00, lixianglai wrote:
+> Hi David:
 
-> On Wed, Sep 13, 2023 at 06:53:20PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Mon, Sep 11, 2023 at 02:13:19PM -0300, Fabiano Rosas wrote:
->> >> The core yank code is strict about balanced registering and
->> >> unregistering of yank functions.
->> >> 
->> >> This creates a difficulty because the migration code registers one
->> >> yank function per QIOChannel, but each QIOChannel can be referenced by
->> >> more than one QEMUFile. The yank function should not be removed until
->> >> all QEMUFiles have been closed.
->> >> 
->> >> Keep a reference count of how many QEMUFiles are using a QIOChannel
->> >> that has a yank function. Only unregister the yank function when all
->> >> QEMUFiles have been closed.
->> >> 
->> >> This improves the current code by removing the need for the programmer
->> >> to know which QEMUFile is the last one to be cleaned up and fixes the
->> >> theoretical issue of removing the yank function while another QEMUFile
->> >> could still be using the ioc and require a yank.
->> >> 
->> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
->> >> ---
->> >>  migration/yank_functions.c | 81 ++++++++++++++++++++++++++++++++++----
->> >>  migration/yank_functions.h |  8 ++++
->> >>  2 files changed, 81 insertions(+), 8 deletions(-)
->> >
->> > I worry this over-complicate things.
->> 
->> It does. We ran out of simple options.
->> 
->> > If you prefer the cleaness that we operate always on qemufile level, can we
->> > just register each yank function per-qemufile?
->> 
->> "just" hehe
->> 
->> we could, but:
->> 
->> i) the yank is a per-channel operation, so this is even more unintuitive;
->
-> I mean we can provide something like:
->
-> void migration_yank_qemufile(void *opaque)
-> {
->     QEMUFile *file = opaque;
->     QIOChannel *ioc = file->ioc;
->
->     qio_channel_shutdown(ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
-> }
->
-> void migration_qemufile_register_yank(QEMUFile *file)
-> {
->     if (migration_ioc_yank_supported(file->ioc)) {
->         yank_register_function(MIGRATION_YANK_INSTANCE,
->                                migration_yank_qemufile,
->                                file);
->     }
-> }
+Hi!
 
-Sure, this is what I was thinking as well. IMO it will be yet another
-operation that happens on the channel, but it performed via the
-file. Just like qio_channel_close() at qemu_fclose(). Not the end of the
-world, of course, I just find it error-prone.
+> 
+>> On 12.09.23 04:11, xianglai li wrote:
+>>> Introduce new function to destroy CPU address space resources
+>>> for cpu hot-(un)plug.
+>>>
+>> How do other archs handle that? Or how are they able to get away
+>> without destroying?
+>>
+> They do not remove the cpu address space, taking the X86 architecture as
+> an example:
+> 
+> 1.Start the x86 VM:
+> 
+> ./qemu-system-x86_64 \
+> -machine q35  \
+> -cpu Broadwell-IBRS \
+> -smp 1,maxcpus=100,sockets=100,cores=1,threads=1 \
+> -m 4G \
+> -drive file=~/anolis-8.8.qcow2  \
+> -serial stdio   \
+> -monitor telnet:localhost:4498,server,nowait   \
+> -nographic
+> 
+> 2.Connect the qemu monitor
+> 
+> telnet 127.0.0.1 4498
+> 
+> info mtree
+> 
+> address-space: cpu-memory-0
+> address-space: memory
+>     0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>       0000000000000000-000000007fffffff (prio 0, ram): alias ram-below-4g
+> @pc.ram 0000000000000000-000000007fffffff
+>       0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+>         00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+> 
+> 3.Perform cpu hot swap int qemu monitor
+> 
+> device_add
+> Broadwell-IBRS-x86_64-cpu,socket-id=1,core-id=0,thread-id=0,id=cpu1
+> device_del cpu1
+> 
 
->> 
->> ii) multifd doesn't have a QEMUFile, so it will have to continue using
->>     the ioc;
->
-> We can keep using migration_ioc_[un]register_yank() for them if there's no
-> qemufile attached.  As long as the function will all be registered under
-> MIGRATION_YANK_INSTANCE we should be fine having different yank func.
->
+Hm, doesn't seem to work for me on upstream QEMU for some reason: 
+"Error: acpi: device unplug request for not supported device type: 
+Broadwell-IBRS-x86_64-cpu"
 
-ok
+What happens if you re-add that CPU? Will we reuse the previous address 
+space?
 
->> 
->> iii) we'll have to add a yank to every new QEMUFile created during the
->>      incoming migration (colo, rdma, etc), otherwise the incoming side
->>      will be left using iocs while the src uses the QEMUFile;
->
-> For RDMA, IIUC it'll simply be a noop as migration_ioc_yank_supported()
-> will be a noop for it for either reg/unreg.
->
-> Currently it seems we will also unreg the ioc even for RDMA (even though we
-> don't reg for it).  But since unreg will be a noop it seems all fine even
-> if not paired.. maybe we should still try to pair it, e.g. register also in
-> rdma_start_outgoing_migration() for the rdma ioc so at least they're paired.
->
-> I don't see why COLO is special here, though.  Maybe I missed something.
+> info mtree
+> 
+> address-space: cpu-memory-0
+> address-space: cpu-memory-1
+> address-space: memory
+>     0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>       0000000000000000-000000007fffffff (prio 0, ram): alias ram-below-4g
+> @pc.ram 0000000000000000-000000007fffffff
+>       0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+>         00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+> 
+> 
+>   From the above test, you can see whether the address space of cpu1 is
+> residual after a cpu hot swap, and whether it is reasonable?
 
-For colo I was thinking we'd have to register the yank just to be sure
-that all paths unregistering it have something to unregister.
 
-Maybe I should move the register into qemu_file_new_impl() with a
-matching unregister at qemu_fclose().
+Probably we should teach other archs to destroy that address space as well.
 
->> 
->> iv) this is a functional change of the yank feature for which we have no
->>     tests.
->
-> Having yank tested should be preferrable.  Lukas is in the loop, let's see
-> whether he has something. We can still smoke test it before a selftest
-> being there.
->
-> Taking one step back.. I doubt whether anyone is using yank for migration?
-> Knowing that migration already have migrate-cancel (for precopy) and
-> migrate-pause (for postcopy).
+Can we do that from the core, instead of having to do that in each CPU 
+unrealize function?
 
-Right, both already call qio_channel_shutdown().
+-- 
+Cheers,
 
-> I never used it myself, and I don't think
-> it's supported for RHEL.  How's that in suse's case?
+David / dhildenb
 
-Never heard mention of it and I don't see it in our virtualization
-documentation.
-
->
-> If no one is using it, maybe we can even avoid registering migration to
-> yank?
->
-
-Seems reasonable to me.
-
->> 
->> If that's all ok to you I'll go ahead and git it a try.
->> 
->> > I think qmp yank will simply fail the 2nd call on the qemufile if the
->> > iochannel is shared with the other one, but that's totally fine, IMHO.
->> >
->> > What do you think?
->> >
->> > In all cases, we should probably at least merge patch 1-8 if that can
->> > resolve the CI issue.  I think all of them are properly reviewed.
->> 
->> I agree. Someone needs to queue this though since Juan has been busy.
->
-> Yes, I'll see what I can do.
-
-Thanks. I could even send a pull request myself if it would make things
-easier. Let me know.
 
