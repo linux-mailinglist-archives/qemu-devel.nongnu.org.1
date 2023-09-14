@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E5379FDEC
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B533479FDF8
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 10:13:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qghQx-0004qM-FH; Thu, 14 Sep 2023 04:10:43 -0400
+	id 1qghTf-0006tM-9P; Thu, 14 Sep 2023 04:13:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qghQu-0004mm-Uh
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:10:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qghTZ-0006r8-OW
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:13:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qghQs-0007cS-RO
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:10:40 -0400
+ id 1qghTU-0008Ol-BU
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 04:13:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694679038;
+ s=mimecast20190719; t=1694679192;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bSY+A8RmTp2walZZ4Y5UykgGqgkY0oQjmrP2J2UPF+U=;
- b=WtUqyDk+NLZQKZ9NJsi8zVz+bIt4xJEqQGq723pgSQDirYGstj15Sm6ZD31QGdhawXSAAv
- JuBPJboej0JtlYJAJL0EKGX9Hm7BoBgueKzVRd/ZYvlF8lRa7Ea6ow5of9ZsF8X6yUqPE5
- 966v+tAh50QHi/neEg94jLSbwRmJ54E=
+ bh=tCr4AqBXhV+iN3dcPf59NZZ8rjS43iI9YH3TMkQ2aiw=;
+ b=Ck8KFq+wys6h2hgP2qUBJHAdEtpoVkJFo8k7TDAgBGhPUFpAXFq/lAjFeXi+LI7AF16cgM
+ heJ1oWlaxvloCEGb4Kt4+nqcqCWX7x9EWyHU2eRDkeMqv+nVzdWy30Z6VeQLJlEd1SmuWI
+ 1N8K5dmsEglzyjWUyjKC51mNfcJwJ2Q=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-614-Nj51S1ZmPp-Jgz3eYqnRqA-1; Thu, 14 Sep 2023 04:10:36 -0400
-X-MC-Unique: Nj51S1ZmPp-Jgz3eYqnRqA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-519-V2KYDE1vOr6dVaZUAp4sBw-1; Thu, 14 Sep 2023 04:13:08 -0400
+X-MC-Unique: V2KYDE1vOr6dVaZUAp4sBw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BD2CB823D49;
- Thu, 14 Sep 2023 08:10:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 47235855329;
+ Thu, 14 Sep 2023 08:13:08 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8FCA116847;
- Thu, 14 Sep 2023 08:10:34 +0000 (UTC)
-Date: Thu, 14 Sep 2023 09:10:32 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E9CF1054FC0;
+ Thu, 14 Sep 2023 08:13:07 +0000 (UTC)
+Date: Thu, 14 Sep 2023 09:13:04 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH v4 2/2] net: add initial support for AF_XDP network backend
-Message-ID: <ZQK/+Avc48o7kmQh@redhat.com>
-References: <20230913183620.1278418-1-i.maximets@ovn.org>
- <20230913183620.1278418-3-i.maximets@ovn.org>
+Cc: Jason Wang <jasowang@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PULL 00/17] Net patches
+Message-ID: <ZQLAkNPdOA4ncDvF@redhat.com>
+References: <20230908064507.14596-1-jasowang@redhat.com>
+ <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
+ <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org>
+ <ZPsKUDp7nVS/Z+j2@redhat.com>
+ <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org>
+ <ZPsQcu0HYBaTScnb@redhat.com>
+ <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org>
+ <ZPsscpzj9fNtCEOY@redhat.com>
+ <c406b8fb-a2f1-8eb2-abc5-af2474edf940@ovn.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230913183620.1278418-3-i.maximets@ovn.org>
+In-Reply-To: <c406b8fb-a2f1-8eb2-abc5-af2474edf940@ovn.org>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,164 +91,105 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 13, 2023 at 08:34:37PM +0200, Ilya Maximets wrote:
-> AF_XDP is a network socket family that allows communication directly
-> with the network device driver in the kernel, bypassing most or all
-> of the kernel networking stack.  In the essence, the technology is
-> pretty similar to netmap.  But, unlike netmap, AF_XDP is Linux-native
-> and works with any network interfaces without driver modifications.
-> Unlike vhost-based backends (kernel, user, vdpa), AF_XDP doesn't
-> require access to character devices or unix sockets.  Only access to
-> the network interface itself is necessary.
+On Wed, Sep 13, 2023 at 08:46:42PM +0200, Ilya Maximets wrote:
+> On 9/8/23 16:15, Daniel P. Berrangé wrote:
+> > On Fri, Sep 08, 2023 at 04:06:35PM +0200, Ilya Maximets wrote:
+> >> On 9/8/23 14:15, Daniel P. Berrangé wrote:
+> >>> On Fri, Sep 08, 2023 at 02:00:47PM +0200, Ilya Maximets wrote:
+> >>>> On 9/8/23 13:49, Daniel P. Berrangé wrote:
+> >>>>> On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
+> >>>>>> On 9/8/23 13:19, Stefan Hajnoczi wrote:
+> >>>>>>> Hi Ilya and Jason,
+> >>>>>>> There is a CI failure related to a missing Debian libxdp-dev package:
+> >>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
+> >>>>>>>
+> >>>>>>> I think the issue is that the debian-amd64 container image that QEMU
+> >>>>>>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
+> >>>>>>> and libxdp is not available on that release:
+> >>>>>>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
+> >>>>>>
+> >>>>>> Hmm.  Sorry about that.
+> >>>>>>
+> >>>>>>>
+> >>>>>>> If we need to support Debian 11 CI then either XDP could be disabled
+> >>>>>>> for that distro or libxdp could be compiled from source.
+> >>>>>>
+> >>>>>> I'd suggest we just remove the attempt to install the package for now,
+> >>>>>> building libxdp from sources may be a little painful to maintain.
+> >>>>>>
+> >>>>>> Can be re-added later once distributions with libxdp 1.4+ will be more
+> >>>>>> widely available, i.e. when fedora dockerfile will be updated to 39,
+> >>>>>> for example.  That should be soon-ish, right?
+> >>>>>
+> >>>>> If you follow the process in docs/devel/testing.rst for adding
+> >>>>> libxdp in libvirt-ci, then lcitool will "do the right thing"
+> >>>>> when we move the auto-generated dockerfiles to new distro versions.
+> >>>>
+> >>>> Thanks!  I'll prepare changes for libvirt-ci.
+> >>>>
+> >>>> In the meantime, none of the currently tested images will have a required
+> >>>> version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
+> >>>> modification from the patch.  What do you think?
+> >>>
+> >>> Sure, if none of the distros have it, then lcitool won't emit the
+> >>> dockerfile changes until we update the inherited distro version.
+> >>> So it is sufficient to just update libvirt-ci.git with the mappings.yml
+> >>> info for libxdp, and add 'libxdp' to the tests/lcitool/projects/qemu.yml
+> >>> file in qemu.git. It will then 'just work' when someone updates the
+> >>> distro versions later.
+> >>
+> >> I posted an MR for libvirt-ci adding libxdp:
+> >>   https://gitlab.com/libvirt/libvirt-ci/-/merge_requests/429
+> >>
+> >> Please, take a look.
+> >>
+> >> The docs say that CI will try to build containers with the MR changes,
+> >> but I don't think anything except sanity checks is actually tested on MR.
+> >> Sorry if I missed something, never used GitLab pipelines before.
+> > 
+> > No, that's our fault - we've broken the CI and your change alerted
+> > me to that fact :-)
+> > 
+> >> Note that with this update we will be installing older version of libxdp
+> >> in many containers, even though they will not be used by QEMU, unless
+> >> they are newer than 1.4.0.
+> > 
+> > No problem, as it means QEMU CI will demonstrate the the meson.build
+> > change is ignoring the outdatd libxdp.
+> > 
+> >> tests/lcitool/projects/qemu.yml in qemu.git cannot be updated without
+> >> updating a submodule after the MR merge.
+> > 
+> > Yep.
 > 
-> This patch implements a network backend that communicates with the
-> kernel by creating an AF_XDP socket.  A chunk of userspace memory
-> is shared between QEMU and the host kernel.  4 ring buffers (Tx, Rx,
-> Fill and Completion) are placed in that memory along with a pool of
-> memory buffers for the packet data.  Data transmission is done by
-> allocating one of the buffers, copying packet data into it and
-> placing the pointer into Tx ring.  After transmission, device will
-> return the buffer via Completion ring.  On Rx, device will take
-> a buffer form a pre-populated Fill ring, write the packet data into
-> it and place the buffer into Rx ring.
+> Since all the required changes went into libvirt-ci project, I posted an
+> updated patch set named:
 > 
-> AF_XDP network backend takes on the communication with the host
-> kernel and the network interface and forwards packets to/from the
-> peer device in QEMU.
+>   '[PATCH v4 0/2] net: add initial support for AF_XDP network backend'
 > 
-> Usage example:
+> Please, take a look.
 > 
->   -device virtio-net-pci,netdev=guest1,mac=00:16:35:AF:AA:5C
->   -netdev af-xdp,ifname=ens6f1np1,id=guest1,mode=native,queues=1
-> 
-> XDP program bridges the socket with a network interface.  It can be
-> attached to the interface in 2 different modes:
-> 
-> 1. skb - this mode should work for any interface and doesn't require
->          driver support.  With a caveat of lower performance.
-> 
-> 2. native - this does require support from the driver and allows to
->             bypass skb allocation in the kernel and potentially use
->             zero-copy while getting packets in/out userspace.
-> 
-> By default, QEMU will try to use native mode and fall back to skb.
-> Mode can be forced via 'mode' option.  To force 'copy' even in native
-> mode, use 'force-copy=on' option.  This might be useful if there is
-> some issue with the driver.
-> 
-> Option 'queues=N' allows to specify how many device queues should
-> be open.  Note that all the queues that are not open are still
-> functional and can receive traffic, but it will not be delivered to
-> QEMU.  So, the number of device queues should generally match the
-> QEMU configuration, unless the device is shared with something
-> else and the traffic re-direction to appropriate queues is correctly
-> configured on a device level (e.g. with ethtool -N).
-> 'start-queue=M' option can be used to specify from which queue id
-> QEMU should start configuring 'N' queues.  It might also be necessary
-> to use this option with certain NICs, e.g. MLX5 NICs.  See the docs
-> for examples.
-> 
-> In a general case QEMU will need CAP_NET_ADMIN and CAP_SYS_ADMIN
-> or CAP_BPF capabilities in order to load default XSK/XDP programs to
-> the network interface and configure BPF maps.  It is possible, however,
-> to run with no capabilities.  For that to work, an external process
-> with enough capabilities will need to pre-load default XSK program,
-> create AF_XDP sockets and pass their file descriptors to QEMU process
-> on startup via 'sock-fds' option.  Network backend will need to be
-> configured with 'inhibit=on' to avoid loading of the program.
-> QEMU will need 32 MB of locked memory (RLIMIT_MEMLOCK) per queue
-> or CAP_IPC_LOCK.
-> 
-> There are few performance challenges with the current network backends.
-> 
-> First is that they do not support IO threads.  This means that data
-> path is handled by the main thread in QEMU and may slow down other
-> work or may be slowed down by some other work.  This also means that
-> taking advantage of multi-queue is generally not possible today.
-> 
-> Another thing is that data path is going through the device emulation
-> code, which is not really optimized for performance.  The fastest
-> "frontend" device is virtio-net.  But it's not optimized for heavy
-> traffic either, because it expects such use-cases to be handled via
-> some implementation of vhost (user, kernel, vdpa).  In practice, we
-> have virtio notifications and rcu lock/unlock on a per-packet basis
-> and not very efficient accesses to the guest memory.  Communication
-> channels between backend and frontend devices do not allow passing
-> more than one packet at a time as well.
-> 
-> Some of these challenges can be avoided in the future by adding better
-> batching into device emulation or by implementing vhost-af-xdp variant.
-> 
-> There are also a few kernel limitations.  AF_XDP sockets do not
-> support any kinds of checksum or segmentation offloading.  Buffers
-> are limited to a page size (4K), i.e. MTU is limited.  Multi-buffer
-> support implementation for AF_XDP is in progress, but not ready yet.
-> Also, transmission in all non-zero-copy modes is synchronous, i.e.
-> done in a syscall.  That doesn't allow high packet rates on virtual
-> interfaces.
-> 
-> However, keeping in mind all of these challenges, current implementation
-> of the AF_XDP backend shows a decent performance while running on top
-> of a physical NIC with zero-copy support.
-> 
-> Test setup:
-> 
-> 2 VMs running on 2 physical hosts connected via ConnectX6-Dx card.
-> Network backend is configured to open the NIC directly in native mode.
-> The driver supports zero-copy.  NIC is configured to use 1 queue.
-> 
-> Inside a VM - iperf3 for basic TCP performance testing and dpdk-testpmd
-> for PPS testing.
-> 
-> iperf3 result:
->  TCP stream      : 19.1 Gbps
-> 
-> dpdk-testpmd (single queue, single CPU core, 64 B packets) results:
->  Tx only         : 3.4 Mpps
->  Rx only         : 2.0 Mpps
->  L2 FWD Loopback : 1.5 Mpps
-> 
-> In skb mode the same setup shows much lower performance, similar to
-> the setup where pair of physical NICs is replaced with veth pair:
-> 
-> iperf3 result:
->   TCP stream      : 9 Gbps
-> 
-> dpdk-testpmd (single queue, single CPU core, 64 B packets) results:
->   Tx only         : 1.2 Mpps
->   Rx only         : 1.0 Mpps
->   L2 FWD Loopback : 0.7 Mpps
-> 
-> Results in skb mode or over the veth are close to results of a tap
-> backend with vhost=on and disabled segmentation offloading bridged
-> with a NIC.
-> 
-> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-> ---
->  MAINTAINERS                                   |   4 +
->  hmp-commands.hx                               |   3 +
->  meson.build                                   |   9 +
->  meson_options.txt                             |   2 +
->  net/af-xdp.c                                  | 526 ++++++++++++++++++
->  net/clients.h                                 |   5 +
->  net/meson.build                               |   3 +
->  net/net.c                                     |   6 +
->  qapi/net.json                                 |  58 ++
->  qemu-options.hx                               |  70 ++-
->  .../ci/org.centos/stream/8/x86_64/configure   |   1 +
->  scripts/meson-buildoptions.sh                 |   3 +
->  tests/docker/dockerfiles/alpine.docker        |   1 +
->  tests/docker/dockerfiles/centos8.docker       |   1 +
->  tests/docker/dockerfiles/fedora.docker        |   1 +
->  tests/lcitool/projects/qemu.yml               |   1 +
->  16 files changed, 693 insertions(+), 1 deletion(-)
->  create mode 100644 net/af-xdp.c
+> This should fix the CI issues, though I'm not sure how to run QEMU gitlab
+> pipelines myself, so I didn't actually test all the images.
 
-For the docker/lcitool changes,
+  git push gitlab  -o ci.variable=QEMU_CI=2
 
-  Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+will create pipeline and immediately run all jobs.
+
+Replace 'gitlab' with the name of the git remote pointing to your
+gitlab fork of QEMU.
+
+Using QEMU_CI=1 will create pipeline, but let you manually start
+individual jobs from the web UI.
+
+For further details see docs/devel/ci-jobs.rst.inc
 
 
+> 
+> Sent as a patch set because the libvirt-ci submodule bump brings in a few
+> unrelated changes.  So, I split that into a separate patch.
+
+Yep, that's perfect thanks.
 
 With regards,
 Daniel
