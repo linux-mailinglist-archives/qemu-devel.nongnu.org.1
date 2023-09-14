@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BAE7A01AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 12:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 696AA7A01D6
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Sep 2023 12:40:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgjaS-0001xl-I0; Thu, 14 Sep 2023 06:28:40 -0400
+	id 1qgjkG-0005jO-2X; Thu, 14 Sep 2023 06:38:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjaL-0001xP-OD
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:28:35 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjkD-0005Xv-BW
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:38:45 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjaI-0003U6-Di
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:28:31 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qgjkB-0005qe-UI
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 06:38:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
  Cc:To:Subject:Reply-To:MIME-Version:Date:Message-ID:Sender:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=Xam6hF4irrnMOZzdVpp2Jq0TLVALPfEsBjpKJx0YUKo=; b=q116RUM4wwfi3HSXC1cEVFqvQ3
- OO44LHPQx91UI0HstUBMxMwpdVjYblE1iQcvAjeELMSzqSIamzeDykixcvgs5S9aRrbXb+IiJEaD9
- mHzhKuAyATGxDv18Z4uaN00ee3V3DlBQlnFXtUZXmm3x971yXQFRiGG6bYVcimBoiJzA=;
-Message-ID: <35998b4c-68d4-4c1e-854d-62f2b912f606@rev.ng>
-Date: Thu, 14 Sep 2023 12:28:15 +0200
+ bh=Y8BadgFzqBhWSa1uekObvZ1nz7/bRW1kEw3wnUXXlUM=; b=gMdmi9k7OZLknG3dB+R6q+/3AZ
+ oYjPERm0eidZ2BCbK06CZlvpETtF8yAk5UR2bHTPZBh1sSSQ4h8BRicPf4wjDTELsgUjxZd7lLOre
+ uoGJN0hOJbFyYxJl5WJBmNOPmNwCiB7s/FSCKx2of2pjYNuMtk2VAJz2f8bLEIrzvsZY=;
+Message-ID: <cd99c4d3-fd85-4c37-8b08-64a66b728e5f@rev.ng>
+Date: Thu, 14 Sep 2023 12:38:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/24] accel/tcg: Remove CPUState.icount_decr_ptr
+Subject: Re: [PATCH v2 13/24] accel/tcg: Replace CPUState.env_ptr with
+ cpu_env()
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: ale@rev.ng, philmd@linaro.org
 References: <20230914024435.1381329-1-richard.henderson@linaro.org>
- <20230914024435.1381329-10-richard.henderson@linaro.org>
+ <20230914024435.1381329-14-richard.henderson@linaro.org>
 Organization: rev.ng
-In-Reply-To: <20230914024435.1381329-10-richard.henderson@linaro.org>
+In-Reply-To: <20230914024435.1381329-14-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
@@ -66,68 +67,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 9/14/23 04:44, Richard Henderson wrote:
-> We can now access icount_decr directly.
->
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   include/exec/cpu-all.h | 1 -
->   include/hw/core/cpu.h  | 2 --
->   hw/core/cpu-common.c   | 4 ++--
->   3 files changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-> index c3c78ed8ab..3b01e4ee25 100644
-> --- a/include/exec/cpu-all.h
-> +++ b/include/exec/cpu-all.h
-> @@ -434,7 +434,6 @@ void tcg_exec_unrealizefn(CPUState *cpu);
->   static inline void cpu_set_cpustate_pointers(ArchCPU *cpu)
->   {
->       cpu->parent_obj.env_ptr = &cpu->env;
-> -    cpu->parent_obj.icount_decr_ptr = &cpu->parent_obj.neg.icount_decr;
->   }
->   
->   /* Validate correct placement of CPUArchState. */
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index 1f289136ec..44955af3bc 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -440,7 +440,6 @@ struct qemu_work_item;
->    * @as: Pointer to the first AddressSpace, for the convenience of targets which
->    *      only have a single AddressSpace
->    * @env_ptr: Pointer to subclass-specific CPUArchState field.
-> - * @icount_decr_ptr: Pointer to IcountDecr field within subclass.
->    * @gdb_regs: Additional GDB registers.
->    * @gdb_num_regs: Number of total registers accessible to GDB.
->    * @gdb_num_g_regs: Number of registers in GDB 'g' packets.
-> @@ -512,7 +511,6 @@ struct CPUState {
->       MemoryRegion *memory;
->   
->       CPUArchState *env_ptr;
-> -    IcountDecr *icount_decr_ptr;
->   
->       CPUJumpCache *tb_jmp_cache;
->   
-> diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-> index ced66c2b34..08d5bbc873 100644
-> --- a/hw/core/cpu-common.c
-> +++ b/hw/core/cpu-common.c
-> @@ -86,7 +86,7 @@ void cpu_exit(CPUState *cpu)
->       qatomic_set(&cpu->exit_request, 1);
->       /* Ensure cpu_exec will see the exit request after TCG has exited.  */
->       smp_wmb();
-> -    qatomic_set(&cpu->icount_decr_ptr->u16.high, -1);
-> +    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
->   }
->   
->   static int cpu_common_gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-> @@ -130,7 +130,7 @@ static void cpu_common_reset_hold(Object *obj)
->       cpu->halted = cpu->start_powered_off;
->       cpu->mem_io_pc = 0;
->       cpu->icount_extra = 0;
-> -    qatomic_set(&cpu->icount_decr_ptr->u32, 0);
-> +    qatomic_set(&cpu->neg.icount_decr.u32, 0);
->       cpu->can_do_io = 1;
->       cpu->exception_index = -1;
->       cpu->crash_occurred = false;
+>   include/exec/cpu-all.h               |  1 -
+>   include/hw/core/cpu.h                |  9 ++++++---
+>   target/arm/common-semi-target.h      |  2 +-
+>   accel/tcg/cpu-exec.c                 |  8 ++++----
+>   accel/tcg/cputlb.c                   | 18 +++++++++---------
+>   accel/tcg/translate-all.c            |  4 ++--
+>   gdbstub/gdbstub.c                    |  4 ++--
+>   gdbstub/user-target.c                |  2 +-
+>   hw/i386/kvm/clock.c                  |  2 +-
+>   hw/intc/mips_gic.c                   |  2 +-
+>   hw/intc/riscv_aclint.c               | 12 ++++++------
+>   hw/intc/riscv_imsic.c                |  2 +-
+>   hw/ppc/e500.c                        |  4 ++--
+>   hw/ppc/spapr.c                       |  2 +-
+>   linux-user/elfload.c                 |  4 ++--
+>   linux-user/i386/cpu_loop.c           |  2 +-
+>   linux-user/main.c                    |  4 ++--
+>   linux-user/signal.c                  | 15 +++++++--------
+>   monitor/hmp-cmds-target.c            |  2 +-
+>   semihosting/arm-compat-semi.c        |  6 +++---
+>   semihosting/syscalls.c               | 28 ++++++++++++++--------------
+>   target/alpha/translate.c             |  4 ++--
+>   target/arm/cpu.c                     |  8 ++++----
+>   target/arm/helper.c                  |  2 +-
+>   target/arm/tcg/translate-a64.c       |  4 ++--
+>   target/arm/tcg/translate.c           |  6 +++---
+>   target/avr/translate.c               |  2 +-
+>   target/cris/translate.c              |  4 ++--
+>   target/hexagon/translate.c           |  4 ++--
+>   target/hppa/mem_helper.c             |  2 +-
+>   target/hppa/translate.c              |  4 ++--
+>   target/i386/tcg/sysemu/excp_helper.c |  2 +-
+>   target/i386/tcg/tcg-cpu.c            |  2 +-
+>   target/i386/tcg/translate.c          |  4 ++--
+>   target/loongarch/translate.c         |  4 ++--
+>   target/m68k/translate.c              |  4 ++--
+>   target/microblaze/translate.c        |  2 +-
+>   target/mips/tcg/sysemu/mips-semi.c   |  4 ++--
+>   target/mips/tcg/translate.c          |  4 ++--
+>   target/nios2/translate.c             |  4 ++--
+>   target/openrisc/translate.c          |  2 +-
+>   target/ppc/excp_helper.c             | 10 +++++-----
+>   target/ppc/translate.c               |  4 ++--
+>   target/riscv/translate.c             |  6 +++---
+>   target/rx/cpu.c                      |  3 ---
+>   target/rx/translate.c                |  2 +-
+>   target/s390x/tcg/translate.c         |  2 +-
+>   target/sh4/op_helper.c               |  2 +-
+>   target/sh4/translate.c               |  4 ++--
+>   target/sparc/translate.c             |  4 ++--
+>   target/tricore/translate.c           |  4 ++--
+>   target/xtensa/translate.c            |  4 ++--
+>   target/i386/tcg/decode-new.c.inc     |  2 +-
+>   53 files changed, 125 insertions(+), 127 deletions(-)
 Reviewed-by: Anton Johansson <anjo@rev.ng>
 
