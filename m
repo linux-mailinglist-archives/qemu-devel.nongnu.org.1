@@ -2,23 +2,23 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DEB7A2662
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCF57A2677
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:45:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhDlA-0004YG-CV; Fri, 15 Sep 2023 14:41:44 -0400
+	id 1qhDl7-0004Vb-TH; Fri, 15 Sep 2023 14:41:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDl5-0004RL-Fw; Fri, 15 Sep 2023 14:41:39 -0400
+ id 1qhDl5-0004S1-PX; Fri, 15 Sep 2023 14:41:39 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDl3-00037H-Hv; Fri, 15 Sep 2023 14:41:39 -0400
+ id 1qhDl3-00037I-Ii; Fri, 15 Sep 2023 14:41:39 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qhDhc-00Fs9Q-26;
+ (envelope-from <den@openvz.org>) id 1qhDhd-00Fs9Q-0L;
  Fri, 15 Sep 2023 20:41:29 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
@@ -26,8 +26,8 @@ To: qemu-block@nongnu.org,
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
 Subject: [PATCH 02/21] parallels: mark driver as supporting CBT
-Date: Fri, 15 Sep 2023 20:41:09 +0200
-Message-Id: <20230915184130.403366-3-den@openvz.org>
+Date: Fri, 15 Sep 2023 20:41:10 +0200
+Message-Id: <20230915184130.403366-4-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915184130.403366-1-den@openvz.org>
 References: <20230915184130.403366-1-den@openvz.org>
