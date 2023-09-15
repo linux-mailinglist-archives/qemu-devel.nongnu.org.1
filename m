@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D917A2484
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524807A2487
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:20:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCSl-0008Sj-EI; Fri, 15 Sep 2023 13:18:39 -0400
+	id 1qhCTk-0001WY-Ow; Fri, 15 Sep 2023 13:19:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhCSk-0008SP-8M
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:18:38 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qhCTh-0001Tj-2u
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:19:38 -0400
+Received: from mail-il1-x12c.google.com ([2607:f8b0:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhCSi-0003SU-Ra
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:18:38 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c39a4f14bcso21831055ad.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 10:18:36 -0700 (PDT)
+ id 1qhCTd-0003hK-MU
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:19:36 -0400
+Received: by mail-il1-x12c.google.com with SMTP id
+ e9e14a558f8ab-34e15f33a72so8305135ab.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 10:19:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694798315; x=1695403115; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694798372; x=1695403172; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=aLHAKYos0z6jWorzwGa/hbYJq/9F4x2XB6oO1RrsPW8=;
- b=QCCvA1uVQ1TXqzyPjD7Y5oVx3+Ps8r6VGD0BOhobIEZy/yjhnLi6AhxwkpFHbTBXzV
- xQTLnCt3OtmBPuAR4OxUYCbhj1vw42c0lCFkagQuhO/S0h5jsiGSrvkX0rQ196u3/rF6
- Y6xdn6FxMMS3TnB7MWKcxR93yHHoDlsbL5u2oYxF+KuLCrBhZ9bXSM8Iv9U1N6rJfV2j
- 2nhvptyuPRMm3VMnW11BzBH6/5NtlxzjBRdJdSMkF3DDsGG0cDGCcQ1FqxHXCpZAch6y
- R478RpJnkhUCpwGznk1wABI2U/Z1IHku8SESU9KBj1a63331crLDBc4R+cnIG5TroPEd
- lkPg==
+ bh=MIXgE7Mb8n3GueLj3X3zWtU+AI6Uk0jRW5mOaHXlKac=;
+ b=NSc5Yy5D3WfyUCRDpBPLpO4TvtjfH9YWpSvt3WKwE/6wdjJZQVhFve3dXqE52j1r5F
+ C6v9f8H2CTj5xdBchnt9QQQVYSCjaJQsxCDfUl8TLaCufVmC1y39ojCyLPMuKBbE3HTs
+ oej+10PAUX7IzCLVwQAvB5WRIMWb0XK2yIb4rLakK70ANGLuu3D9Tm8hf7Yo5DT7qipM
+ 9rWXNR9hJliDZBVj0I+6aF3VGN1YcosjH3COgBRaQ0j9uECUqhZB9dTFY9VJJwEbTGA0
+ ctTbCO5yCF6X54Uj2CqJrG+hWUbAMd/buW0DGOigEzOjEMaGJJObd349qcG8Vwgwgsx6
+ 786w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694798315; x=1695403115;
+ d=1e100.net; s=20230601; t=1694798372; x=1695403172;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aLHAKYos0z6jWorzwGa/hbYJq/9F4x2XB6oO1RrsPW8=;
- b=XrEqpz0LgLSGAlGVIXiWughj9zRNrTW3q5r9gI/XH+Yr/5xH8sfflIBkBYxFwTkzUh
- 6+kzEzjzULkgUqfyAPTJi/u0cLud3piy4ryuAjC8Gijhp0Brwta8oQBGMTP/PQ6e4yAK
- u9L+I5yazyQ+rjCe5Xe4ylOcQrznYGsxcciEMm6hBqTclj6+aIFXaYt+p46AcR2kT7ao
- 1xpbRgMln4NhcQ5QGmBg5MNat4aI9nld5oIT9vbMPI92yfl/wU0hOsSvK7LIG0iPp2sF
- curuARJg75VyI2+U/zCTosa3C7tUS3BfFHFKa8Vl/Rv4CwO7/spfgfmo6ea8e7yReQf6
- 20bA==
-X-Gm-Message-State: AOJu0YzKrlzjorz8BBiZZS8HEvFtitJ74GqpOPBK+MyyJmNGAVnxStOr
- DkZoREinhXaem+V+98aBH1A1zsn80oARV4ILI/0=
-X-Google-Smtp-Source: AGHT+IGDWoDlw01/iYldLPKh3kdZXJdLthNweWpcSjE0YiR+zwFuJUSj9Oz244d7TeZ2bXNn+sEnwA==
-X-Received: by 2002:a17:902:7202:b0:1c0:7e86:4f6 with SMTP id
- ba2-20020a170902720200b001c07e8604f6mr2247897plb.14.1694798314934; 
- Fri, 15 Sep 2023 10:18:34 -0700 (PDT)
+ bh=MIXgE7Mb8n3GueLj3X3zWtU+AI6Uk0jRW5mOaHXlKac=;
+ b=X7jmZHN+mceBFCI12MEGLDc3Ato0pocE3on7y8io6jwEsq/ciPQpy7A81uCeuQGGvr
+ 0gTkoWZHq0QpaWJP04HQwC2DG+mW9LQroyhTM40IR6Hypv4m3Xv4fuuxt0U+GuhVQu1c
+ PIAgddr0WcmkvLuAtTsLtcijdZRGAmjTEbVaQ3ssFlRsF21lZAUGZmPOfz3X1iD+YAlq
+ GiNaMyKlq/UBPnud0Z/ORHSZWT2h6XJXuirSR5KMauQomXfsaeoFNXj/L0OHTgWROph4
+ 2ldfAx11veQx6TRjBFuV3k+KUe6mPV+Q1XFhm/6DwJoS8GfrXbsacss4Sw2fE3d2mi1H
+ 3XNg==
+X-Gm-Message-State: AOJu0YwUYRQpCIp07mzVYtEg3bS82IbPkKkEhNkV6P6ceE9lrc6GwTdu
+ 25LjLJfxEThMVWba8ghugFcI5g==
+X-Google-Smtp-Source: AGHT+IFuAVoLrfjw5LtZbtW7Nz1mY2nwwGURPxJhcoXaBgC6JiTD9Zrzc2gJ1Kf6gn0D6oHViFV1Kw==
+X-Received: by 2002:a05:6e02:1244:b0:34a:a4a5:3f93 with SMTP id
+ j4-20020a056e02124400b0034aa4a53f93mr2787468ilq.5.1694798372346; 
+ Fri, 15 Sep 2023 10:19:32 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- d5-20020a170902c18500b001b8062c1db3sm3767974pld.82.2023.09.15.10.18.34
+ v10-20020a63ac0a000000b00563e1ef0491sm2994542pge.8.2023.09.15.10.19.31
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 10:18:34 -0700 (PDT)
-Message-ID: <80be26fc-b37a-fd09-4f2f-de1fa8d5aef5@linaro.org>
-Date: Fri, 15 Sep 2023 10:18:32 -0700
+ Fri, 15 Sep 2023 10:19:31 -0700 (PDT)
+Message-ID: <c4e81221-d693-83ae-99e9-333954101c33@linaro.org>
+Date: Fri, 15 Sep 2023 10:19:30 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v2 0/3] accel/tcg: Alternate fix for #1866
+Subject: Re: [PATCH v2 3/3] softmmu: Introduce cpu_address_space_sync
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20230915163254.123338-1-richard.henderson@linaro.org>
- <bc786411-2802-4e77-54de-a406f2b0c909@linaro.org>
+ <20230915163254.123338-4-richard.henderson@linaro.org>
+ <fc6589b5-afc7-8fd1-a53b-ca600ab03100@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <bc786411-2802-4e77-54de-a406f2b0c909@linaro.org>
+In-Reply-To: <fc6589b5-afc7-8fd1-a53b-ca600ab03100@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::12c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-il1-x12c.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,17 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/15/23 09:55, Philippe Mathieu-Daudé wrote:
+On 9/15/23 09:57, Philippe Mathieu-Daudé wrote:
 > On 15/9/23 18:32, Richard Henderson wrote:
->> Supercedes: 20230914174436.1597356-1-richard.henderson@linaro.org
->> ("[PATCH 0/6] accel/tcg: Always require can_do_io (#1866)")
+>> Synchronously check and update the address space for the
+>> current cpu for any slow path access.
+>>
+>> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1866
+>> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>> ---
+>>   include/exec/memory.h |  6 ++++++
+>>   accel/tcg/cputlb.c    |  2 ++
+>>   softmmu/physmem.c     | 20 ++++++++++++++++++++
+>>   3 files changed, 28 insertions(+)
+>>
+>> diff --git a/include/exec/memory.h b/include/exec/memory.h
+>> index 68284428f8..7ec842076f 100644
+>> --- a/include/exec/memory.h
+>> +++ b/include/exec/memory.h
+>> @@ -2780,6 +2780,12 @@ void address_space_cache_destroy(MemoryRegionCache *cache);
+>>   IOMMUTLBEntry address_space_get_iotlb_entry(AddressSpace *as, hwaddr addr,
+>>                                               bool is_write, MemTxAttrs attrs);
+>> +/*
+>> + * Ensure all cpu address spaces are up-to-date.
+>> + * Return true if changes made and tlb flushed.
 > 
-> Patches 1-4 (5?) are cleanups although, isn't it?
+> No return value, stale comment?
 
-Yes, 1-4 are good cleanups, and 5 is probably a bug fix
-(though I don't see the hang without patch 6), despite
-the fact that the hang is *with* icount (replay tests).
-
+Whoops, yes.
 
 r~
 
