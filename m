@@ -2,81 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF477A122A
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 02:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9687A1268
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 02:37:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgwMq-0003M2-0Z; Thu, 14 Sep 2023 20:07:28 -0400
+	id 1qgwom-0005rO-4a; Thu, 14 Sep 2023 20:36:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qgwMo-0003La-2T; Thu, 14 Sep 2023 20:07:26 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qgwMm-000471-Gy; Thu, 14 Sep 2023 20:07:25 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1bf55a81eeaso12592115ad.0; 
- Thu, 14 Sep 2023 17:07:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694736442; x=1695341242; darn=nongnu.org;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=akMA5DHTLp8/TK4390g5G9f8eKB/RVwJvhVQoNI8nwA=;
- b=pjGpma0FC1zCGB8j4BT2UQgadliHxrnzadwlkYwLQSZznQdJOGSPNgwg0L71XWJIUd
- 2zpjmiQu36K0dvD5GGNT3+Lx3JdJNzQ7yUE5bSStG/GiyqsIsMJQE94qbjBxIcC+Ap0A
- hbmvu8+1hLNQi7LlC5xsc3jJQLuuMAdVb3gGhpdI2nlmcpkzWfuSauObUgRrVt/L/wWv
- ZlOttbJyrI4APggpbVHlTP5xg7n5iVd8axzJQ4BBCwDPSTpJ8vos5CYzUXDPhOkJOJL0
- BKfrzMsXQaxNhBkBdzcIaed/slmQFrsa7789Cq7ddVnZwjg21TUHOm4jFc63NO0HQAaO
- A2bA==
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qgwoj-0005lO-Mw
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 20:36:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qgwoh-0001ll-N4
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 20:36:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694738174;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=o+QpG+hXelNlFLXeCI0bikOJeUujy0EpBnQIiHS+urc=;
+ b=BfGDcuCxTkc60worgV0HVmnfHFKCSiKQmdyOQxtiUzhNkhAAur3TuBuCtlnGuYq4zgLQ5g
+ Up/fQvWOc8yHis/hARr4hVreOxV2KYPJzIEyPgD4dc0uJOPNz26KRnbqy29WCysRRFpoBP
+ dljY+zci0ld+TIFOak+qHX7L+3C62Vc=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-329-6jp8-7g1PxaEHz-aslwySg-1; Thu, 14 Sep 2023 20:36:12 -0400
+X-MC-Unique: 6jp8-7g1PxaEHz-aslwySg-1
+Received: by mail-ua1-f70.google.com with SMTP id
+ a1e0cc1a2514c-7a7770e5cd0so544730241.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 17:36:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694736442; x=1695341242;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=akMA5DHTLp8/TK4390g5G9f8eKB/RVwJvhVQoNI8nwA=;
- b=VCxE0WuT/xc/LhBjyC2caB4kPRX3LxcRgryrZHz/Ky8lq5hvaIaQvqve+haKqz5IbZ
- DnrgclD/ifrDDH/jlKsjiXtynmTTOGmdwMnwVktYatCEZVeAMwg9KBwb+s54nGX3qaAF
- qJyAYXwUOMm6G9Zr96v5ZQVfK/LJbdZ+3AsWX/vBxz2HvtPbpPFLo233gcIyhHa0KG99
- CPTZH/SMADx83rDmnKd3k1zyi4Eqe1r85q98TOYoCTtoy1Y9NU2zjDpDS/fR5Wel/07C
- qshmwp8JElbUpKYtOzfexyff+IZpUuA7ALwXZ0qmMbFJpoSkOLaKS/vwhUR+UCbR2hzE
- dgXw==
-X-Gm-Message-State: AOJu0YzmXX5/1ebXZTc8g7BuaWmP9ayKVAihd6V6SJ6+tpsCCEBHQ02J
- DW8crpDTevK05uAGPEkcpT4=
-X-Google-Smtp-Source: AGHT+IEwPpHYBSuGlb2geknI+C5e9qp7iOtMECPROdZplGUVS8ZMz4sIB9kZmqFsh4oEO4LoY0Z3Cw==
-X-Received: by 2002:a17:902:d895:b0:1c1:e4f8:a5a9 with SMTP id
- b21-20020a170902d89500b001c1e4f8a5a9mr105321plz.34.1694736442153; 
- Thu, 14 Sep 2023 17:07:22 -0700 (PDT)
-Received: from localhost ([193.114.103.68]) by smtp.gmail.com with ESMTPSA id
- j21-20020a170902c3d500b001bb8895848bsm2150165plj.71.2023.09.14.17.07.18
+ d=1e100.net; s=20230601; t=1694738172; x=1695342972;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o+QpG+hXelNlFLXeCI0bikOJeUujy0EpBnQIiHS+urc=;
+ b=scRYnvWOia4rsofODAvFl6S8V3aNzdofr+3h1U/yDmYhr1SdojLsRclPm/6wQfo9QF
+ JB1q6UsM2Zn/d8m4w3GjMjSES11eeig7FHEmIxcdFGpPY8n35mbji/Vpj0X64kUIVxQR
+ zQmkyhHIpYO66nGtWiS04yzDmJLgnPHjZOkUMml7go4gOuHc6kaZbJWpJEgN3q7juA8P
+ B07IpkXw5WPmomfPhBxCjTLXJxd9BYkoVf0tuLW+8u5V/o9mFs17VdOC83OM289l9KfY
+ gxIRABNZAa6B7DIBIevisn3VJ6NBaBy272X+cX2SqIF9U87e6a44CzAx6Gai0Cmby79d
+ DTvg==
+X-Gm-Message-State: AOJu0Yy1Re6iojfDZuqrtfUMLkpH0bwnshfmBqmacOhoF7wcNySkCtVL
+ 8I/9jlRkSeIng6gAY50iGRAWP1kAKi3VGXD+xuDOK2WneNOp3me11kRwietMUQJMBeu2lE7fWFE
+ Fu++hxMFgHt32e2U=
+X-Received: by 2002:a05:6102:4ad:b0:44e:adc4:7eba with SMTP id
+ r13-20020a05610204ad00b0044eadc47ebamr271457vsa.26.1694738172067; 
+ Thu, 14 Sep 2023 17:36:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH70JbJom7I8MGlMZFLbcb/STRfhYuOWCavGZ6O8qC+lxyAcHOLAOkGE1y03m73IcWvEKErrw==
+X-Received: by 2002:a05:6102:4ad:b0:44e:adc4:7eba with SMTP id
+ r13-20020a05610204ad00b0044eadc47ebamr271446vsa.26.1694738171825; 
+ Thu, 14 Sep 2023 17:36:11 -0700 (PDT)
+Received: from ?IPV6:2600:4040:7c46:e800:32a2:d966:1af4:8863?
+ ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
+ by smtp.gmail.com with ESMTPSA id
+ a18-20020a0c8bd2000000b0063d1f967268sm869658qvc.111.2023.09.14.17.36.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 17:07:21 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Sep 2023 10:07:15 +1000
-Message-Id: <CVJ1XEE2EVJ1.LRJP84PIGBIG@wheely>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: "John Snow" <jsnow@redhat.com>, "Cleber Rosa" <crosa@redhat.com>,
- "Beraldo Leal" <bleal@redhat.com>, =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, "Wainer dos Santos Moschetta" <wainersm@redhat.com>,
- <qemu-ppc@nongnu.org>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH] tests/avocado: Fix console data loss
-X-Mailer: aerc 0.15.2
-References: <20230912131340.405619-1-npiggin@gmail.com>
- <87h6nytpwr.fsf@linaro.org>
-In-Reply-To: <87h6nytpwr.fsf@linaro.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ Thu, 14 Sep 2023 17:36:10 -0700 (PDT)
+Message-ID: <864e1a0d-207a-bf64-a474-87275dd2f930@redhat.com>
+Date: Thu, 14 Sep 2023 20:36:09 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 0/8] i386/sev: Use C API of Rust SEV library
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com, mtosatti@redhat.com, stefanha@redhat.com
+References: <20230914175835.382972-1-tfanelli@redhat.com>
+ <39f8528a-9f95-3bc4-07c1-91f705c7bb10@linaro.org>
+From: Tyler Fanelli <tfanelli@redhat.com>
+In-Reply-To: <39f8528a-9f95-3bc4-07c1-91f705c7bb10@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=tfanelli@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,61 +105,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Sep 13, 2023 at 6:51 PM AEST, Alex Benn=C3=A9e wrote:
+On 9/14/23 3:04 PM, Philippe Mathieu-Daudé wrote:
+> Hi Tyler,
 >
-> Nicholas Piggin <npiggin@gmail.com> writes:
+> On 14/9/23 19:58, Tyler Fanelli wrote:
+>> These patches are submitted as an RFC mainly because I'm a relative
+>> newcomer to QEMU with no knowledge of the community's views on
+>> including Rust code, nor it's preference of using library APIs for
+>> ioctls that were previously implemented in QEMU directly.
+>>
+>> Recently, the Rust sev library [0] has introduced a C API to take
+>> advantage of the library outside of Rust.
+>>
+>> Should the inclusion of the library as a dependency be desired, it can
+>> be extended further to include the firmware/platform ioctls, the
+>> attestation report fetching, and more. This would result in much of
+>> the AMD-SEV portion of QEMU being offloaded to the library.
+>>
+>> This series looks to explore the possibility of using the library and
+>> show a bit of what it would look like. I'm looking for comments
+>> regarding if this feature is desired.
+>>
+>> [0] https://github.com/virtee/sev
+>>
+>> Tyler Fanelli (8):
+>>    Add SEV Rust library as dependency with CONFIG_SEV
+>>    i386/sev: Replace INIT and ES_INIT ioctls with sev library 
+>> equivalents
+>>    i386/sev: Replace LAUNCH_START ioctl with sev library equivalent
+>>    i386/sev: Replace UPDATE_DATA ioctl with sev library equivalent
+>>    i386/sev: Replace LAUNCH_UPDATE_VMSA ioctl with sev library 
+>> equivalent
+>>    i386/sev: Replace LAUNCH_MEASURE ioctl with sev library equivalent
+>>    i386/sev: Replace LAUNCH_SECRET ioctl with sev library equivalent
+>>    i386/sev: Replace LAUNCH_FINISH ioctl with sev library equivalent
 >
-> > Occasionally some avocado tests will fail waiting for console line
-> > despite the machine running correctly. Console data goes missing, as ca=
-n
-> > be seen in the console log. This is due to _console_interaction calling
-> > makefile() on the console socket each time it is invoked, which must be
-> > losing old buffer contents when going out of scope.
-> >
-> > It is not enough to makefile() with buffered=3D0. That helps significan=
-tly
-> > but data loss is still possible. My guess is that readline() has a line
-> > buffer even when the file is in unbuffered mode, that can eat data.
-> >
-> > Fix this by providing a console file that persists for the life of the
-> > console.
-> >
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> There is still one ioctl use, GET_ATTESTATION_REPORT. No libsev
+> equivalent for this one yet?
 >
-> Queued to testing/next, thanks.
->
-> > ---
-> >
-> > For some reason, ppc_prep_40p.py:IbmPrep40pMachine.test_openbios_192m
-> > was flakey for me due to this bug. I don't know why that in particular,
-> > 3 calls to wait_for_console_pattern probably helps.
-> >
-> > I didn't pinpoint when the bug was introduced because the original
-> > was probably not buggy because it was only run once at the end of the
-> > test. At some point after it was moved to common code, something would
-> > have started to call it more than once which is where potential for bug
-> > is introduced.
->
-> There is a sprawling mass somewhere between:
->
->   - pythons buffering of IO
->   - device models dropping chars when blocked
->   - noisy tests with competing console output
->
-> that adds up to unreliable tests that rely on seeing certain patterns on
-> the console.=20
+There is an equivalent, however the machine that I'm using currently 
+hangs when trying to fetch an attestation report (not a libsev issue, as 
+it hangs when I try with latest qemu release as well). When I can either 
+update its firmware or get access to another SEV machine, I can test and 
+confirm it behaves as intended with the libsev API. Once this is done, I 
+can add that API to the patch series.
 
-Yeah it's a tricky bug and a difficult stack to diagnose. I started to
-look at 40p machine firmware console at first since it was happening on
-there.
 
-It's actually not too bad now, I was irritating it by putting delays in
-various avocado console socket reading, which can trigger it easily (my
-guess is due to delay allowing file buffer to pull in more data than is
-consumed). With patch the only check-avocado failures I was getting was
-some OS watchdog timeouts in their console print code caused by back
-pressure.
+Tyler
 
-Thanks,
-Nick
 
