@@ -2,53 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8F77A20D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E02037A20F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:30:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh9ll-0004Rr-IV; Fri, 15 Sep 2023 10:26:05 -0400
+	id 1qh9ow-0006gd-GB; Fri, 15 Sep 2023 10:29:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9lb-0004Or-QA
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:25:55 -0400
-Received: from rev.ng ([5.9.113.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9la-0001tb-B6
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:25:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=07LRzKry2XMMNMjYbAXSW8tb1pw+n33WItGE5YP7sHs=; b=BUCTfd1LTOTw24EPIPjk4009qc
- KDsoUsj1NDizWNrySw0tSvjwtd+Me11VqEOKgHSBTIGgmhROxHNiQR0WvMl3loINI1WmoRMdWVAoz
- safQ5OSxzvOVo71MrVeOtYsqMTMnM7L0WAxAhn4eGWLMVsnINKc2PanTxOQWKvDS9kX0=;
-Date: Fri, 15 Sep 2023 16:25:42 +0200
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Alessandro Di Federico <ale@rev.ng>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
- Riku Voipio <riku.voipio@iki.fi>
-Subject: Re: [PATCH 09/11] accel/tcg: Make monitor.c a target-agnostic unit
-Message-ID: <r5nm6enkeo5vgrdqe6dvntlcg4qonqtzhz53frmmrnrh2wup7z@w3uvaalq3md5>
-References: <20230914185718.76241-1-philmd@linaro.org>
- <20230914185718.76241-10-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qh9ou-0006fp-QV
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:29:20 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qh9ot-0002Fx-8O
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:29:20 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-502e7d66c1eso3298987e87.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 07:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694788157; x=1695392957; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=9svSgG7YN8+asSGiL3ULeSkm2S7SnRq8qEawkaWRqAU=;
+ b=jnsrr9iDY2jCD+9x8NkDMw9oFxmxRYGRwz+jSB0FanN8fXAUJfMivIwaXYe7NIkVeP
+ 50cZrW9AyDJlZmQy+h4kalAaPyKvNxQjtuuelF1m0eW7sh7ErIwLKQT16eykr4o2v6/4
+ mm3fa6Jg3vHRiDrLtLyHCICD6ADtCdTfIUtN0kLI+STE6Y3to+Qgf5nLm02jtCqanVXt
+ zXevgSDlrHTCYYv2K1ZhYI7Ol+OLrhPI2E91Tg+eWsOW31OU8FILlAqU9StDYJ0O28PE
+ dqyX4+JekLAE//7jj941o+QrOsXkCGcAu3vrTXRQyF9NDmApZUikDWDnhBQRe3t4LN+a
+ R6Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694788157; x=1695392957;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9svSgG7YN8+asSGiL3ULeSkm2S7SnRq8qEawkaWRqAU=;
+ b=sTqvfbUBMI4Ribffeyaz9RnYhvQ//vJb1YooLX4BmCyDaBOBszcX/fAxmI2DClmHua
+ fR6ikm7NNP8YJrn3YEppVUY5CVkhdh0LaEKxfSagYzyim99kF+kTrfkN6lO09Qza/Uvy
+ rn6wwTFrITlwleECLV8wQVqQzw6qPwx/BOzLk6k6gor53nkaiyLFKSDusnIrGiQrr/xA
+ 0kG97V1F9BVYJtJOSQoCpDDp1eX7GI9KGG5WbLCkxA5ggFNn1Cv5TKngHszjQO2WVm+8
+ dBtyrHIk54mhAkhAX3RMyiPOaLWVr5dwzZxcc9iUkzYTqLTGSYX61fLjbYxZ5QrS613A
+ gLZg==
+X-Gm-Message-State: AOJu0YzeMxRfS7f5lpqbxiclPWTgxTD0ranQxOl7hxYgMgIs3HB3TNSW
+ 9qIlXqGe9oCHEgwG4QJoKpiCDHb5e951jmQMtm9aaw==
+X-Google-Smtp-Source: AGHT+IGtwu3v4Jl6NDa9nu4DgY/mLpFSYZ/YzLCsORFG/pIXYjKdricRBilfsHOk5/N++Yu8Qo2F2A6rcBPxYiWzxI8=
+X-Received: by 2002:a19:761a:0:b0:4f9:7aee:8dc5 with SMTP id
+ c26-20020a19761a000000b004f97aee8dc5mr1660135lff.19.1694788156673; Fri, 15
+ Sep 2023 07:29:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230914185718.76241-10-philmd@linaro.org>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+References: <4831384.GXAFRqVoOG@linux-e202.suse.de>
+In-Reply-To: <4831384.GXAFRqVoOG@linux-e202.suse.de>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 15 Sep 2023 15:28:57 +0100
+Message-ID: <CAFEAcA_pAcmej1XY_NCPhLxm5qO55AdAHqQXtfXxe5oOJ_MguA@mail.gmail.com>
+Subject: Re: [PATCH] hw/arm/boot: Set SCR_EL3.FGTEn when booting kernel
+To: Fabian Vogt <fvogt@suse.de>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,120 +81,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/09/23, Philippe Mathieu-Daudé wrote:
-> Move target-agnostic declarations from "internal-target.h"
-> to a new "internal-common.h" header.
-> monitor.c now don't include target specific headers and can
-> be compiled once in system_ss[].
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Wed, 13 Sept 2023 at 12:58, Fabian Vogt <fvogt@suse.de> wrote:
+>
+> Just like d7ef5e16a17c sets SCR_EL3.HXEn for FEAT_HCX, this commit
+> handles SCR_EL3.FGTEn for FEAT_FGT:
+>
+> When we direct boot a kernel on a CPU which emulates EL3, we need to
+> set up the EL3 system registers as the Linux kernel documentation
+> specifies:
+>     https://www.kernel.org/doc/Documentation/arm64/booting.rst
+>
+> > For CPUs with the Fine Grained Traps (FEAT_FGT) extension present:
+> > - If EL3 is present and the kernel is entered at EL2:
+> >   - SCR_EL3.FGTEn (bit 27) must be initialised to 0b1.
+>
+> Signed-off-by: Fabian Vogt <fvogt@suse.de>
 > ---
->  accel/tcg/internal-common.h | 17 +++++++++++++++++
->  accel/tcg/internal-target.h |  5 -----
->  accel/tcg/cpu-exec.c        |  1 +
->  accel/tcg/monitor.c         |  2 +-
->  accel/tcg/translate-all.c   |  1 +
->  accel/tcg/meson.build       |  3 +++
->  6 files changed, 23 insertions(+), 6 deletions(-)
->  create mode 100644 accel/tcg/internal-common.h
-> 
-> diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
-> new file mode 100644
-> index 0000000000..5d5247442e
-> --- /dev/null
-> +++ b/accel/tcg/internal-common.h
-> @@ -0,0 +1,17 @@
-> +/*
-> + * Internal execution defines for qemu (target agnostic)
-> + *
-> + *  Copyright (c) 2003 Fabrice Bellard
-> + *
-> + * SPDX-License-Identifier: LGPL-2.1-or-later
-> + */
-> +
-> +#ifndef ACCEL_TCG_INTERNAL_COMMON_H
-> +#define ACCEL_TCG_INTERNAL_COMMON_H
-> +
-> +extern int64_t max_delay;
-> +extern int64_t max_advance;
-> +
-> +void dump_exec_info(GString *buf);
-> +
-> +#endif
-> diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
-> index 4ce3b29056..f9eec1ce28 100644
-> --- a/accel/tcg/internal-target.h
-> +++ b/accel/tcg/internal-target.h
-> @@ -99,11 +99,6 @@ static inline bool cpu_in_serial_context(CPUState *cs)
->      return !(cs->tcg_cflags & CF_PARALLEL) || cpu_in_exclusive_context(cs);
->  }
->  
-> -extern int64_t max_delay;
-> -extern int64_t max_advance;
-> -
-> -void dump_exec_info(GString *buf);
-> -
->  extern bool one_insn_per_tb;
->  
->  /**
-> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-> index f5625e047a..95dd8a30cb 100644
-> --- a/accel/tcg/cpu-exec.c
-> +++ b/accel/tcg/cpu-exec.c
-> @@ -42,6 +42,7 @@
->  #include "tb-jmp-cache.h"
->  #include "tb-hash.h"
->  #include "tb-context.h"
-> +#include "internal-common.h"
->  #include "internal-target.h"
->  
->  /* -icount align implementation. */
-> diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-> index 30724fdb98..caf1189e0b 100644
-> --- a/accel/tcg/monitor.c
-> +++ b/accel/tcg/monitor.c
-> @@ -16,7 +16,7 @@
->  #include "sysemu/cpu-timers.h"
->  #include "sysemu/tcg.h"
->  #include "tcg/tcg.h"
-> -#include "internal-target.h"
-> +#include "internal-common.h"
->  
->  
->  static void dump_drift_info(GString *buf)
-> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-> index 6c09b7f50d..8cb6ad3511 100644
-> --- a/accel/tcg/translate-all.c
-> +++ b/accel/tcg/translate-all.c
-> @@ -61,6 +61,7 @@
->  #include "tb-jmp-cache.h"
->  #include "tb-hash.h"
->  #include "tb-context.h"
-> +#include "internal-common.h"
->  #include "internal-target.h"
->  #include "perf.h"
->  #include "tcg/insn-start-words.h"
-> diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-> index 8ace783707..0fb03bd7d3 100644
-> --- a/accel/tcg/meson.build
-> +++ b/accel/tcg/meson.build
-> @@ -20,6 +20,9 @@ specific_ss.add_all(when: 'CONFIG_TCG', if_true: tcg_ss)
->  
->  specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
->    'cputlb.c',
-> +))
-> +
-> +system_ss.add(when: ['CONFIG_TCG'], if_true: files(
->    'monitor.c',
->  ))
->  
-> -- 
-> 2.41.0
-> 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+
+Applied to target-arm.next, thanks.
+(We seem to have a habit of forgetting these...)
+
+-- PMM
 
