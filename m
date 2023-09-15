@@ -2,105 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B4A7A1D60
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:25:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C91947A1D70
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:29:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh6vy-00088P-P1; Fri, 15 Sep 2023 07:24:27 -0400
+	id 1qh6zO-0002IH-Lo; Fri, 15 Sep 2023 07:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qh6vr-00087g-0H
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:24:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qh6vo-0007b1-Ib
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:24:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694777055;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=TBc/uVBazeKY4iJBuo/xzGp3L+IEGUgDpqNfs+vuw50=;
- b=UlQcp91VrrzEcBcD+hgYH1WAITh72d5TXgQiEOz2JprkgQn1wCCk3jsU2FItWiSFLjzQTE
- X+BFGJIXMYsJIoCG8zITxgWYDzPH7YcCx9tzTj4x8XWdp+K2P3P/enEHYdWZ09bm4enJqQ
- DIjWP1moAYLXC7Da4p1vKDXNJvyj8yY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-xbdjK--PMRyiAzwZ-nRvvw-1; Fri, 15 Sep 2023 07:24:14 -0400
-X-MC-Unique: xbdjK--PMRyiAzwZ-nRvvw-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-30932d15a30so1353819f8f.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 04:24:14 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qh6zM-0002Em-Rb; Fri, 15 Sep 2023 07:27:56 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qh6zL-0008Dq-Cv; Fri, 15 Sep 2023 07:27:56 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1c3d6d88231so17177565ad.0; 
+ Fri, 15 Sep 2023 04:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1694777259; x=1695382059; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IcdT9tgTzwyZG5PnKDZ4UxZv7lGrxB6DWITLWfeqGiM=;
+ b=cG/1whifklAoNZAcYAUHC5dusQUmX82RQ2C2V/ZL7S5PcQa9dww6TRAw/SDaIwnJOM
+ GJO33ljzCGcRvkW7Gpw8NHNKx13d2aIn4OyPjgauuBOsiXPqASH4VwR4U7WiMlWNkGAQ
+ xiVIIJRBujx9+YzMpgUYpQ7RrmsoZJtbU7YA9sV+QFMFCTMykWg80SWqK6H7jTYyc3hy
+ wH1uD6j+939Ixfy2PVOy4GzRPlFyIUevCKLRU7bHrL8t7NaqbU9aiSD0bF3V1K0QmDCv
+ oVbiJfCrogAg2aD2k3nnMtWCzly69+Zcwqeq18gkWpFI3j998daJ6zesdflPTPPAdlAq
+ m6LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694777053; x=1695381853;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TBc/uVBazeKY4iJBuo/xzGp3L+IEGUgDpqNfs+vuw50=;
- b=EI50ubQFfLywDQBgLUiPhRzsgdIFOLguTIuKzqJJPY9MI+2L2gycaNY4vQp2iVpIIU
- F15l8Y849cOuOAfJoxJnLljDiOVjxEepIRLSzN7wCCVi6xmMU7/+om/+MePWFGKbTVRR
- glwAc7UphLdSmHYofxhgKP+amc9aawIH3D+vx5kt2IjClLf8OLL8+t2cbkrRnVhP+7/H
- xadG+Un2xu6nqyMEUaQv69x66QAQeSJRkEgpIhYhXSVOpY9WwY4Wo/6AMP9OtyUiWvGc
- c8veChskniBiMk/0Jp3Z6SuTka15On+IRqChlBq7Sie9tdsE7zrn8bvPkkMKrZKcYudz
- TCNw==
-X-Gm-Message-State: AOJu0YzDSG+IW4jYENgAkeZZbko+xxDkkgmIiR8pQBpsz/17U7SbFRFE
- pWef3d8EamGHTV28L9W94pC4+a36X3LIcrcx3HugRoDr5pLSFB8GpdZPZQ2lbEcT7PRsoepU/up
- vyYKWjF3g3PY9CCz9cNMrM6E=
-X-Received: by 2002:a5d:6309:0:b0:314:3a4b:6cc6 with SMTP id
- i9-20020a5d6309000000b003143a4b6cc6mr1121831wru.53.1694777053380; 
- Fri, 15 Sep 2023 04:24:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHfzS1bf7I5k4K089S7rfBvdAMDbotC0N/rrzu5TzO/lEHtytbqBRVpJl+wb7RJM3LzhrjGQA==
-X-Received: by 2002:a5d:6309:0:b0:314:3a4b:6cc6 with SMTP id
- i9-20020a5d6309000000b003143a4b6cc6mr1121816wru.53.1694777053005; 
- Fri, 15 Sep 2023 04:24:13 -0700 (PDT)
-Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de.
- [109.43.179.28]) by smtp.gmail.com with ESMTPSA id
- s10-20020a5d510a000000b0031971ab70c9sm4208989wrt.73.2023.09.15.04.24.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 04:24:12 -0700 (PDT)
-Message-ID: <665c03fe-37e7-4e2c-666d-156cf70e0f70@redhat.com>
-Date: Fri, 15 Sep 2023 13:24:10 +0200
+ d=1e100.net; s=20230601; t=1694777259; x=1695382059;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IcdT9tgTzwyZG5PnKDZ4UxZv7lGrxB6DWITLWfeqGiM=;
+ b=N/rzC7FqlAxtJoYlLPs1dnogwA5x9ovPAFuHRvxh5NdJlNLVMTDGkRqB8/Do7XQAEM
+ TdDCYE7HlI/3Kj3/lkFB+y7D1LWT2QOpRj05XjlvvgOawV5Q5LZTEthGEoqsyo1ufO6G
+ jbdo8KTb02PUP6HG5VjuWOtD14mwQ9HOLgJKXyM9lG/v+aKZj3oy9qglmO59FK2KecWS
+ Yo6c2JMO5fWSjhEilCbQSxxQMlf0CwFERwb7Ll4+VXE10CFnbtrg97IIljWpkQcqYIvT
+ T6KPg687yfNqamO9CaMMY2Npkab3gEg2nxjNKo+Klomsc+tO1jOvraj8PXx07YGVJw1/
+ 5kHw==
+X-Gm-Message-State: AOJu0YzcWz3dJ/5oAICxsaobIeWGmPpcqFp+Mbe/VZPP/217IyJtvLpv
+ JT8Az6ZeotjgwxWEXrkonKQ=
+X-Google-Smtp-Source: AGHT+IH76EGh4Vle5cM6a41QZg96Mx92ipzSi/wletjpTklZwDR6jeuw6EtK1crd0GWoznQ7/y/QNA==
+X-Received: by 2002:a17:903:258f:b0:1c3:f4fa:b1a2 with SMTP id
+ jb15-20020a170903258f00b001c3f4fab1a2mr1230985plb.8.1694777258646; 
+ Fri, 15 Sep 2023 04:27:38 -0700 (PDT)
+Received: from toolbox.alistair23.me
+ (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
+ [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
+ by smtp.gmail.com with ESMTPSA id
+ u1-20020a170902e5c100b001b1a2c14a4asm3277691plf.38.2023.09.15.04.27.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Sep 2023 04:27:37 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: lukas@wunner.de, wilfred.mallawa@wdc.com, Jonathan.Cameron@Huawei.com,
+ jiewen.yao@intel.com, qemu-devel@nongnu.org, kbusch@kernel.org,
+ its@irrelevant.dk, mst@redhat.com, marcel.apfelbaum@gmail.com,
+ hchkuo@avery-design.com.tw, cbrowy@avery-design.com
+Cc: alistair23@gmail.com, qemu-block@nongnu.org,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PATCH 1/3] hw/pci: Add all Data Object Types
+Date: Fri, 15 Sep 2023 21:27:21 +1000
+Message-ID: <20230915112723.2033330-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/9] tests: update Debian images to Bookworm
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Cleber Rosa <crosa@redhat.com>, Joel Stanley <joel@jms.id.au>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-arm@nongnu.org,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, John Snow <jsnow@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
- <lvivier@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230914155422.426639-1-alex.bennee@linaro.org>
- <20230914155422.426639-2-alex.bennee@linaro.org>
- <30ac04ad-eb02-90ad-57ff-089538413602@linaro.org>
- <ZQQi6n+3mp+bQIgu@redhat.com>
- <242dc7bd-f0c4-d58c-fc6a-f3ddc0168bf2@linaro.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <242dc7bd-f0c4-d58c-fc6a-f3ddc0168bf2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,41 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/09/2023 12.53, Philippe Mathieu-Daudé wrote:
-> On 15/9/23 11:24, Daniel P. Berrangé wrote:
->> On Fri, Sep 15, 2023 at 11:14:29AM +0200, Philippe Mathieu-Daudé wrote:
->>> On 14/9/23 17:54, Alex Bennée wrote:
->>>> Bookworm has been out a while now. Time to update our containers to
->>>> the current stable. This requires the latest lcitool repo so update
->>>> the sub-module too.
->>>>
->>>> For some reason the MIPs containers won't build so skip those for now.
->>>
->>> Debian removed mipsel:
->>> https://lists.debian.org/debian-devel-announce/2023/09/msg00000.html
->>> https://lists.debian.org/debian-release/2019/08/msg00582.html ...
->>
->> Wwith our general aim to support latest release, plus the previous
->> release (capped to a maximum of 2 years), we can still consider
->> mipsel supportable in QEMU CI by sticking with oldstable (Bullseye)
->> for the mipsel containers.
->>
->> Once Debian 13 comes out, however, we'll be discarding Bullseye
->> from CI and so we'll be unable to do CI for mipsel. At the very
->> least this means we'll consider mipsel to be downgraded in terms
->> of supportability when that happens. We might then consider
->> explicitly dropping it as a buld target entirely, as the writing
->> is on the wall for 32-bit OS platforms in general...
-> 
-> I'm fine with dropping system emulation on 32-bit hosts, but a bit
-> reluctant to drop user emulation there. Anyhow I agree with our
-> distrib releases support rules, so the mipsel buildsys part is
-> effectively condemned.
+Add all of the defined protocols/features from the PCIe-SIG
+"Table 6-32 PCI-SIG defined Data Object Types (Vendor ID = 0001h)"
+table.
 
-Could you maybe send a patch for docs/about/deprecated.rst to make this 
-clear for the users, too?
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ include/hw/pci/pcie_doe.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  Thanks,
-   Thomas
+diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
+index 87dc17dcef..15d94661f9 100644
+--- a/include/hw/pci/pcie_doe.h
++++ b/include/hw/pci/pcie_doe.h
+@@ -46,6 +46,8 @@ REG32(PCI_DOE_CAP_STATUS, 0)
+ 
+ /* PCI-SIG defined Data Object Types - r6.0 Table 6-32 */
+ #define PCI_SIG_DOE_DISCOVERY       0x00
++#define PCI_SIG_DOE_CMA             0x01
++#define PCI_SIG_DOE_SECURED_CMA     0x02
+ 
+ #define PCI_DOE_DW_SIZE_MAX         (1 << 18)
+ #define PCI_DOE_PROTOCOL_NUM_MAX    256
+-- 
+2.41.0
 
 
