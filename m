@@ -2,30 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5277A13FA
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 04:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 442F37A140A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 04:53:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgysW-00020c-3w; Thu, 14 Sep 2023 22:48:20 -0400
+	id 1qgyxU-000347-RN; Thu, 14 Sep 2023 22:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qgysT-00020S-W1
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 22:48:18 -0400
+ id 1qgyxS-00033e-7a
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 22:53:26 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qgysQ-0001sR-Ts
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 22:48:17 -0400
+ (envelope-from <lixianglai@loongson.cn>) id 1qgyxI-0002y2-1H
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 22:53:25 -0400
 Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8Cx77vqxQNlTQUoAA--.17923S3;
- Fri, 15 Sep 2023 10:48:10 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8AxXOoYxwNltAUoAA--.50100S3;
+ Fri, 15 Sep 2023 10:53:12 +0800 (CST)
 Received: from [10.20.42.32] (unknown [10.20.42.32])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx3t7nxQNl5kMGAA--.623S2; 
- Fri, 15 Sep 2023 10:48:08 +0800 (CST)
+ AQAAf8DxT90XxwNl6UYGAA--.521S2; 
+ Fri, 15 Sep 2023 10:53:12 +0800 (CST)
 Subject: Re: [PATCH v2 04/10] Introduce the CPU address space destruction
  function
+From: lixianglai <lixianglai@loongson.cn>
 To: David Hildenbrand <david@redhat.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
  Salil Mehta <salil.mehta@huawei.com>
@@ -45,35 +46,35 @@ References: <cover.1694433326.git.lixianglai@loongson.cn>
  <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
  <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
  <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
-Date: Fri, 15 Sep 2023 10:48:07 +0800
+ <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
+Message-ID: <e4e88068-4754-f7d4-e080-b7b8d5bcf006@loongson.cn>
+Date: Fri, 15 Sep 2023 10:53:11 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
+In-Reply-To: <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-X-CM-TRANSID: AQAAf8Dx3t7nxQNl5kMGAA--.623S2
+X-CM-TRANSID: AQAAf8DxT90XxwNl6UYGAA--.521S2
 X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxurW5Xw4xGF45Ar4DJFy8tFc_yoW7JF4rpF
- 95ZF4UKrW8Jr1xJw4UX3Z8JryUtr18A3W5Jr17JF1UCr1UGr10vr4jvryj93ZxJr4rJw17
+X-Coremail-Antispam: 1Uk129KBj93XoWxKFW5Xryktr13ury3ZrW3CFX_yoW7Wrykpa
+ s5Za1UKrW8Jrn7Aw4jqwn8JryUtr10y3W5Xr17JF1UCr1DKF10vr4jvryY93ZxJr4rGr17
  Jr1DXr42vr1UAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
  sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0xBIdaVrnRJUUU9Sb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
  0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
  xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_Wr
- ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8zw
- Z7UUUUU==
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv
+ 67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C2
+ 67AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI
+ 8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8
+ JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r
+ 1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBI
+ daVFxhVjvjDU0xZFpf9x07jOdb8UUUUU=
 Received-SPF: pass client-ip=114.242.206.163;
  envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
 X-Spam_score_int: -33
@@ -96,164 +97,176 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
 Hi David Hildenbrand:
-> On 14.09.23 15:00, lixianglai wrote:
->> Hi David:
+
 >
-> Hi!
->
+> Hi David Hildenbrand:
+>> On 14.09.23 15:00, lixianglai wrote:
+>>> Hi David:
 >>
->>> On 12.09.23 04:11, xianglai li wrote:
->>>> Introduce new function to destroy CPU address space resources
->>>> for cpu hot-(un)plug.
->>>>
->>> How do other archs handle that? Or how are they able to get away
->>> without destroying?
+>> Hi!
+>>
 >>>
->> They do not remove the cpu address space, taking the X86 architecture as
->> an example:
+>>>> On 12.09.23 04:11, xianglai li wrote:
+>>>>> Introduce new function to destroy CPU address space resources
+>>>>> for cpu hot-(un)plug.
+>>>>>
+>>>> How do other archs handle that? Or how are they able to get away
+>>>> without destroying?
+>>>>
+>>> They do not remove the cpu address space, taking the X86 
+>>> architecture as
+>>> an example:
+>>>
+>>> 1.Start the x86 VM:
+>>>
+>>> ./qemu-system-x86_64 \
+>>> -machine q35  \
+>>> -cpu Broadwell-IBRS \
+>>> -smp 1,maxcpus=100,sockets=100,cores=1,threads=1 \
+>>> -m 4G \
+>>> -drive file=~/anolis-8.8.qcow2  \
+>>> -serial stdio   \
+>>> -monitor telnet:localhost:4498,server,nowait   \
+>>> -nographic
+>>>
+>>> 2.Connect the qemu monitor
+>>>
+>>> telnet 127.0.0.1 4498
+>>>
+>>> info mtree
+>>>
+>>> address-space: cpu-memory-0
+>>> address-space: memory
+>>>     0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>>>       0000000000000000-000000007fffffff (prio 0, ram): alias 
+>>> ram-below-4g
+>>> @pc.ram 0000000000000000-000000007fffffff
+>>>       0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+>>>         00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+>>>
+>>> 3.Perform cpu hot swap int qemu monitor
+>>>
+>>> device_add
+>>> Broadwell-IBRS-x86_64-cpu,socket-id=1,core-id=0,thread-id=0,id=cpu1
+>>> device_del cpu1
+>>>
 >>
->> 1.Start the x86 VM:
->>
->> ./qemu-system-x86_64 \
->> -machine q35  \
->> -cpu Broadwell-IBRS \
->> -smp 1,maxcpus=100,sockets=100,cores=1,threads=1 \
->> -m 4G \
->> -drive file=~/anolis-8.8.qcow2  \
->> -serial stdio   \
->> -monitor telnet:localhost:4498,server,nowait   \
->> -nographic
->>
->> 2.Connect the qemu monitor
->>
->> telnet 127.0.0.1 4498
->>
->> info mtree
->>
->> address-space: cpu-memory-0
->> address-space: memory
->>     0000000000000000-ffffffffffffffff (prio 0, i/o): system
->>       0000000000000000-000000007fffffff (prio 0, ram): alias 
->> ram-below-4g
->> @pc.ram 0000000000000000-000000007fffffff
->>       0000000000000000-ffffffffffffffff (prio -1, i/o): pci
->>         00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
->>
->> 3.Perform cpu hot swap int qemu monitor
->>
->> device_add
->> Broadwell-IBRS-x86_64-cpu,socket-id=1,core-id=0,thread-id=0,id=cpu1
->> device_del cpu1
->>
+>> Hm, doesn't seem to work for me on upstream QEMU for some reason: 
+>> "Error: acpi: device unplug request for not supported device type: 
+>> Broadwell-IBRS-x86_64-cpu"
 >
-> Hm, doesn't seem to work for me on upstream QEMU for some reason: 
-> "Error: acpi: device unplug request for not supported device type: 
-> Broadwell-IBRS-x86_64-cpu"
-
->
-> What happens if you re-add that CPU? Will we reuse the previous 
-> address space?
-
-
-Here is the memory layout where I inserted cpu1 again. It does not 
-appear that the original address space was reused, and the address space 
-is now duplicated
-
-info mtree
-
-address-space: cpu-memory-0
-address-space: cpu-memory-1
-address-space: cpu-memory-1
-address-space: memory
-   0000000000000000-ffffffffffffffff (prio 0, i/o): system
-     0000000000000000-000000007fffffff (prio 0, ram): alias ram-below-4g 
-@pc.ram 0000000000000000-000000007fffffff
-     0000000000000000-ffffffffffffffff (prio -1, i/o): pci
-       00000000000a0000-00000000000affff (prio 2, ram): alias vga.chain4 
-@vga.vram 0000000000000000-000000000000ffff
-       00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
-       00000000000c0000-00000000000dffff (prio 1, rom): pc.rom
-       00000000000e0000-00000000000fffff (prio 1, rom): alias isa-bios 
-@pc.bios 0000000000020000-000000000003ffff
-       00000000fd000000-00000000fdffffff (prio 1, ram): vga.vram
-
-
-In addition, I do not find the corresponding resource release action for 
-cpu->cpu_ases requested in function cpu_address_space_init.
-
-I wonder if there is a leak in the memory space requested here. Maybe 
-qemu automatically reclaims memory space
-
-or frees resources somewhere else I didn't find? I thought I'd try 
-running the following valgrind to see if I could verify my suspicions.
-
-void cpu_address_space_init(CPUState *cpu, int asidx,
-                             const char *prefix, MemoryRegion *mr)
-{
-
-...
-
-     if (!cpu->cpu_ases) {
-         cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
-     }
-
-...
-
-}
-
->
->> info mtree
->>
->> address-space: cpu-memory-0
->> address-space: cpu-memory-1
->> address-space: memory
->>     0000000000000000-ffffffffffffffff (prio 0, i/o): system
->>       0000000000000000-000000007fffffff (prio 0, ram): alias 
->> ram-below-4g
->> @pc.ram 0000000000000000-000000007fffffff
->>       0000000000000000-ffffffffffffffff (prio -1, i/o): pci
->>         00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
->>
->>
->>   From the above test, you can see whether the address space of cpu1 is
->> residual after a cpu hot swap, and whether it is reasonable?
->
->
-> Probably we should teach other archs to destroy that address space as 
-> well.
->
-> Can we do that from the core, instead of having to do that in each CPU 
-> unrealize function?
->
-I think it can also be done in the public code flow. Since I refer to 
-arm's scheme
-
-(https://lore.kernel.org/all/20200613213629.21984-1-salil.mehta@huawei.com/), 
-
-
-and arm's patch will be issued soon, I will conduct rebase based on arm 
-patch in the future.
-
-Therefore, I would like to see if arm has any good suggestions. If there 
-are no good suggestions at this stage,
-
-I think we can shelve this problem for the first time, and I can 
-consider not referencing this function for the first time,
-
-and we can submit another patch to solve this problem.
-
-Hi Salil Mehta:
-
-Is the cpu_address_space_destroy function still present in the new patch 
-version of arm?
-
-Can we put this function on the public path of cpu destroy?
-
+First I use qemu tcg, and then the cpu needs to be removed after the 
+operating system is booted.
 
 Thanks,
 
 xianglai.
+
+
+>>
+>> What happens if you re-add that CPU? Will we reuse the previous 
+>> address space?
+>
+>
+> Here is the memory layout where I inserted cpu1 again. It does not 
+> appear that the original address space was reused, and the address 
+> space is now duplicated
+>
+> info mtree
+>
+> address-space: cpu-memory-0
+> address-space: cpu-memory-1
+> address-space: cpu-memory-1
+> address-space: memory
+>   0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>     0000000000000000-000000007fffffff (prio 0, ram): alias 
+> ram-below-4g @pc.ram 0000000000000000-000000007fffffff
+>     0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+>       00000000000a0000-00000000000affff (prio 2, ram): alias 
+> vga.chain4 @vga.vram 0000000000000000-000000000000ffff
+>       00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+>       00000000000c0000-00000000000dffff (prio 1, rom): pc.rom
+>       00000000000e0000-00000000000fffff (prio 1, rom): alias isa-bios 
+> @pc.bios 0000000000020000-000000000003ffff
+>       00000000fd000000-00000000fdffffff (prio 1, ram): vga.vram
+>
+>
+> In addition, I do not find the corresponding resource release action 
+> for cpu->cpu_ases requested in function cpu_address_space_init.
+>
+> I wonder if there is a leak in the memory space requested here. Maybe 
+> qemu automatically reclaims memory space
+>
+> or frees resources somewhere else I didn't find? I thought I'd try 
+> running the following valgrind to see if I could verify my suspicions.
+>
+> void cpu_address_space_init(CPUState *cpu, int asidx,
+>                             const char *prefix, MemoryRegion *mr)
+> {
+>
+> ...
+>
+>     if (!cpu->cpu_ases) {
+>         cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
+>     }
+>
+> ...
+>
+> }
+>
+>>
+>>> info mtree
+>>>
+>>> address-space: cpu-memory-0
+>>> address-space: cpu-memory-1
+>>> address-space: memory
+>>>     0000000000000000-ffffffffffffffff (prio 0, i/o): system
+>>>       0000000000000000-000000007fffffff (prio 0, ram): alias 
+>>> ram-below-4g
+>>> @pc.ram 0000000000000000-000000007fffffff
+>>>       0000000000000000-ffffffffffffffff (prio -1, i/o): pci
+>>>         00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
+>>>
+>>>
+>>>   From the above test, you can see whether the address space of cpu1 is
+>>> residual after a cpu hot swap, and whether it is reasonable?
+>>
+>>
+>> Probably we should teach other archs to destroy that address space as 
+>> well.
+>>
+>> Can we do that from the core, instead of having to do that in each 
+>> CPU unrealize function?
+>>
+> I think it can also be done in the public code flow. Since I refer to 
+> arm's scheme
+>
+> (https://lore.kernel.org/all/20200613213629.21984-1-salil.mehta@huawei.com/), 
+>
+>
+> and arm's patch will be issued soon, I will conduct rebase based on 
+> arm patch in the future.
+>
+> Therefore, I would like to see if arm has any good suggestions. If 
+> there are no good suggestions at this stage,
+>
+> I think we can shelve this problem for the first time, and I can 
+> consider not referencing this function for the first time,
+>
+> and we can submit another patch to solve this problem.
+>
+> Hi Salil Mehta:
+>
+> Is the cpu_address_space_destroy function still present in the new 
+> patch version of arm?
+>
+> Can we put this function on the public path of cpu destroy?
+>
+>
+> Thanks,
+>
+> xianglai.
+>
 
 
