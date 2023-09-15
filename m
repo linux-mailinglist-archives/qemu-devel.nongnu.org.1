@@ -2,75 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515267A1D94
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:41:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42577A1DAB
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:48:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh7Bl-0002VI-GU; Fri, 15 Sep 2023 07:40:46 -0400
+	id 1qh7I3-0005do-NP; Fri, 15 Sep 2023 07:47:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qh7Bg-0002UH-0T
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:40:40 -0400
-Received: from mail-yb1-xb2e.google.com ([2607:f8b0:4864:20::b2e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qh7Bd-0002yf-5Z
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:40:39 -0400
-Received: by mail-yb1-xb2e.google.com with SMTP id
- 3f1490d57ef6-d8195078f69so1633611276.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 04:40:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694778035; x=1695382835; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+JHXYu4Ur6dLU/HP4NvzLACJ8yHhL6lfseAh2wl1O/M=;
- b=nIe8wWVOUdz/YB22jySw7fXthIju4bf3pgvaXGt97tGNIqgNm3K3bM8bJsapfE+4xN
- k+b6YElx4ZNNwTaqREHBOJk+9a7ovC92b/lzIIlLgqz/Jsf4TIvMADjAbmWRWTDEd5kS
- XAE8PYNL7QSh3V3NUUqk8RUYzJDF+Xch246r/Hox81SFAU+7GfhwOUtzmoFAin8q/Kjh
- IHRtCBGrfl34b2NGNjNust6u+Z3ZMctKtKciAdrgTB9soG0qaLh66YnqLGkIbPejRV+Z
- ouohtKQl9fp3JP1f3POmse3tiPJacOCDyWDRFEWAbZTKSRHOMkaERWBodKsK4lBXtaAp
- Wpqw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qh7I1-0005bB-Ei
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:47:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qh7Hz-0004Lo-VX
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:47:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694778430;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=T/MK1tB5cQEByC0xImgoCjW6VOQYSzKzjLE/QjMxozQmPBusCgGUPjHp8MOIsWUgQb+Bkx
+ GWveKDi/goUH2cGCm+qLik8nNoznazUyTJKIo3pK76eyn8bDUColc9lBHFP3i8AQWlcKC6
+ sqBaL0maZsrvKH0FC3hHc27OIbG71QI=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-424-IC7cUsadNWWG-bxnloWb1Q-1; Fri, 15 Sep 2023 07:47:09 -0400
+X-MC-Unique: IC7cUsadNWWG-bxnloWb1Q-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-31fd48da316so1423845f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 04:47:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694778035; x=1695382835;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1694778428; x=1695383228;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+JHXYu4Ur6dLU/HP4NvzLACJ8yHhL6lfseAh2wl1O/M=;
- b=kMXV99dZPKcSe5cei2uJZss7qBZiKnA/SMZIQSHZ/qztL+iDzl4Bh8GJr2fWd3dt1X
- 1DVVFhR7ICRFbfT0nPbdF2eJR2VVlbzdQ/NOh+531EdlSUJQY7HSwe2fNpig3zzGm8/9
- +X7xjHP39wTnQaAEvTrtdeJtWdw3xKTFXtPCAEqegMQdSZ9av2OXthwkNjUbge5SnhX2
- F8zBkjkxZHUHAwZFIXwrj7Jd3rRcpvI4a3ha4I2iMeSgqVAurvUFxBs6A/SSpTKeS48r
- PKw6dt6XAr4qrvxS15WtLdjUvWgUgrhKAw2g29NASZv2qncEVWB2yq9PTRQNWyaFQQre
- saYQ==
-X-Gm-Message-State: AOJu0YwmFRmUTFYnv0ZvQPQG2QbRwZ1rXr0PZWqEKtnApWiXmQZPhtUz
- uM6KYSmSMWoc33YxMO3oPvM38YFHugiEcHOtkOw=
-X-Google-Smtp-Source: AGHT+IG+lfDv6XzLoI/CpSSDJAC5ChXew44fv95k3EyPaMEoSDQU6zn54qLNcY5+laefj+9IeH+5GIj0mWW+/9XGGcg=
-X-Received: by 2002:a25:109:0:b0:d7f:362:1d9a with SMTP id
- 9-20020a250109000000b00d7f03621d9amr1186702ybb.2.1694778034914; 
- Fri, 15 Sep 2023 04:40:34 -0700 (PDT)
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=d2VM12tlAeX7J8UzQfqhBZLvYyBNv7H/UDzZWZveOkSKq5jW0jy8YeRDVkMuPkDiGf
+ BT4+CUkt96C67q4+Vek27Y6p7qXnLl1k+WABsRfyTxV1ZFmzjLQT3sU/hb8XMuSqIA7z
+ j2TW+5VRLucqB2CTxqT607XiytCCI97H/wDhCDMY+mewdoU21F4XncSvnjNoQUAuN8Dn
+ FNGWz9xQ4paDaGhZ/UBF9+9ohiD/QLI3A3hoNBZ1Y5HXp8CUIK7XyHsVrDIH2/vhLZEo
+ 0NVxir4beLiznL0mXtsT+jc4GJnci7BBHKr5+dkQP+Er+/6NJEctBN6ooxVDxdCDnAkP
+ nRXQ==
+X-Gm-Message-State: AOJu0Yz0MQyurRX/cdywQcxtyrafcOAMHN353SiArkkNrj1r7ypKrCRT
+ Jwz1R7WG6yr5pTNVkpKMwOyUlW9OhbP4IwR8BbV6aobpGh9OPFGlOlcgmSu4K9YtPGzpulygin2
+ AucefCKwqFylg3O8=
+X-Received: by 2002:adf:f805:0:b0:31f:e5b8:469a with SMTP id
+ s5-20020adff805000000b0031fe5b8469amr1110759wrp.16.1694778428047; 
+ Fri, 15 Sep 2023 04:47:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGP1jxgmaa5FuSOTYyIT/kmJiYbf36gfTMYbQTBiqqiufJO6CjyOfBzPhrdFtEVDE5raU4GGA==
+X-Received: by 2002:adf:f805:0:b0:31f:e5b8:469a with SMTP id
+ s5-20020adff805000000b0031fe5b8469amr1110743wrp.16.1694778427720; 
+ Fri, 15 Sep 2023 04:47:07 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ c1-20020a5d4141000000b0031f300a4c26sm4197370wrq.93.2023.09.15.04.47.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Sep 2023 04:47:07 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ atishp@atishpatra.org, palmer@dabbelt.com, richard.henderson@linaro.org
+Subject: Re: [PATCH v2] qemu/timer: Add host ticks function for RISC-V
+Date: Fri, 15 Sep 2023 13:47:03 +0200
+Message-ID: <20230915114703.1094513-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230911063223.742-1-zhiwei._5Fliu@linux.alibaba.com>
+References: 
 MIME-Version: 1.0
-References: <20230914013151.805363-1-Ken.Xue@amd.com>
-In-Reply-To: <20230914013151.805363-1-Ken.Xue@amd.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Fri, 15 Sep 2023 15:40:23 +0400
-Message-ID: <CAJ+F1C+hXgnZdDX1iWEPwrqhQNjbyzrwJMfvfqNVYvunAWzEhg@mail.gmail.com>
-Subject: Re: [PATCH] ui: add XBGR8888 and ABGR8888 in drm_format_pixman_map
-To: Ken Xue <Ken.Xue@amd.com>
-Cc: qemu-devel@nongnu.org, pierre-eric.pelloux-prayer@amd.com, Hui.Yu@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2e;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-yb1-xb2e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,69 +99,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 14, 2023 at 9:26=E2=80=AFAM Ken Xue <Ken.Xue@amd.com> wrote:
->
-> Android uses XBGR8888 and ABGR8888 as default scanout buffer, But qemu
-> does not support them for qemu_pixman_to_drm_format conversion within
-> virtio_gpu_create_dmabuf for virtio gpu.
->
-> so, add those 2 formats into drm_format_pixman_map.
->
-> Signed-off-by: Ken Xue <Ken.Xue@amd.com>
+Queued, thanks.
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Paolo
 
-> ---
->  include/ui/qemu-pixman.h | 4 ++++
->  ui/qemu-pixman.c         | 4 +++-
->  2 files changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
-> index 51f870932791..e587c48b1fde 100644
-> --- a/include/ui/qemu-pixman.h
-> +++ b/include/ui/qemu-pixman.h
-> @@ -32,6 +32,8 @@
->  # define PIXMAN_LE_r8g8b8     PIXMAN_b8g8r8
->  # define PIXMAN_LE_a8r8g8b8   PIXMAN_b8g8r8a8
->  # define PIXMAN_LE_x8r8g8b8   PIXMAN_b8g8r8x8
-> +# define PIXMAN_LE_a8b8g8r8   PIXMAN_r8g8b8a8
-> +# define PIXMAN_LE_x8b8g8r8   PIXMAN_r8g8b8x8
->  #else
->  # define PIXMAN_BE_r8g8b8     PIXMAN_b8g8r8
->  # define PIXMAN_BE_x8r8g8b8   PIXMAN_b8g8r8x8
-> @@ -45,6 +47,8 @@
->  # define PIXMAN_LE_r8g8b8     PIXMAN_r8g8b8
->  # define PIXMAN_LE_a8r8g8b8   PIXMAN_a8r8g8b8
->  # define PIXMAN_LE_x8r8g8b8   PIXMAN_x8r8g8b8
-> +# define PIXMAN_LE_a8b8g8r8   PIXMAN_a8b8g8r8
-> +# define PIXMAN_LE_x8b8g8r8   PIXMAN_x8b8g8r8
->  #endif
->
->  #define QEMU_PIXMAN_COLOR(r, g, b)                                      =
-         \
-> diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
-> index be00a96340d3..b43ec38bf0e9 100644
-> --- a/ui/qemu-pixman.c
-> +++ b/ui/qemu-pixman.c
-> @@ -96,7 +96,9 @@ static const struct {
->  } drm_format_pixman_map[] =3D {
->      { DRM_FORMAT_RGB888,   PIXMAN_LE_r8g8b8   },
->      { DRM_FORMAT_ARGB8888, PIXMAN_LE_a8r8g8b8 },
-> -    { DRM_FORMAT_XRGB8888, PIXMAN_LE_x8r8g8b8 }
-> +    { DRM_FORMAT_XRGB8888, PIXMAN_LE_x8r8g8b8 },
-> +    { DRM_FORMAT_XBGR8888, PIXMAN_LE_x8b8g8r8 },
-> +    { DRM_FORMAT_ABGR8888, PIXMAN_LE_a8b8g8r8 },
->  };
->
->  pixman_format_code_t qemu_drm_format_to_pixman(uint32_t drm_format)
->
-> base-commit: 9a8af699677cdf58e92ff43f38ea74bbe9d37ab0
-> --
-> 2.35.1
->
->
-
-
---=20
-Marc-Andr=C3=A9 Lureau
 
