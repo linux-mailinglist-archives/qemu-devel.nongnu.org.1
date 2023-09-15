@@ -2,104 +2,112 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77377A2234
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E7F7A223D
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:23:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhAd2-0001pb-Aw; Fri, 15 Sep 2023 11:21:08 -0400
+	id 1qhAeV-0002ie-IP; Fri, 15 Sep 2023 11:22:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qhAcr-0001jb-8a
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:20:58 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qhAcp-0004In-4F
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:20:56 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-68fb898ab3bso1867115b3a.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:20:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694791252; x=1695396052;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=/c8yieboNB6oo1mu8ZkACI0svLfzvvTV7i2vZIioxzw=;
- b=aEFjuHzpu/HTsxMMkMGPOq6FSRkeHdp9AGVL9x+HvIvKhS8lJFaO+l2Sk4VM18l2kt
- S1p98e4zEpv4P9q1rxTXtlN9gJaE0Qma61hGWznlzLFc7he0LLoM6tdUB6YzCqHmWCzO
- KATkUjEcHawp+CD4iruU3y909YmlA+bNtdoBLkMfl9MuIP3+l2jgDLHazvb9YJgqXKl3
- PFSLPgDenIwXyb9f27KHEFqyYwgaQElSwzPuEPErHpkPKhkdtWsTkxf/iZ5ugNYnMx6W
- fKJr/fYqxmfib8lSJBMZ8So1sq78MSj8Tbp4ZmJa5ImxJEz17Ux8cPkRFV+Mw1eU2OUP
- +/2w==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qhAeS-0002i5-R6
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:22:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qhAeR-0004WK-5q
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:22:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694791353;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=2T/zZu4VyPomINT5UufpNNHe6oSXbAbUnk48doVSyvc=;
+ b=a0lpTiAtw7eIR/hcbhzPkVrt/6/HbVuFor8KnmlKxsgrl5AQi8LzgUC69rW6MG4ue9nR0j
+ 77xxBWxZlLMJibCzZXJ8ZjXyDWc/B2YcCnvOL5EKS31XVQIYFnhBVG3hgJM3wg0uRHd3Ty
+ kTOFVvpi48pKPqlUKHfpOG2+x1GEivY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-608-8wJhSs3MMVCPNAJ6vYpQoQ-1; Fri, 15 Sep 2023 11:22:32 -0400
+X-MC-Unique: 8wJhSs3MMVCPNAJ6vYpQoQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-402493650c6so14118035e9.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:22:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694791252; x=1695396052;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/c8yieboNB6oo1mu8ZkACI0svLfzvvTV7i2vZIioxzw=;
- b=XOU9G30uc55b0Q08+y2gtKdWe/ABtdPSww66uRktfIBGFHXy/dx+axiUpkDsq98uBX
- rdkHgv4UKMQgl3qBF8WClt84N1hs2/gZwYNezxHQzLyVHt9gG/lBnW9XuvSfzyoPlH5s
- NgtndjCMqAtJGHHwVtQrOUft4XI3sqPPmTQRi6kwKdtXowYEPKf66sxwyEcvQWfhRVHy
- SesSMnL2WiiPNiTSKvCkpeIe40VMFbfjvBFcUeDdqrpt9ULp3qUn4abV3joTVR0WlxgG
- HMaxoqaDUjwA1MNQRSUy3p8Qh1FXXMXzM58oRs5Rfb0pHjcYvrzh9Ogfx8Hu6vnco2pf
- A/DA==
-X-Gm-Message-State: AOJu0YwzKySDN/JLHatOJUSRaFXNGJIuoK2CZ2alneUwWwh77JxnljD/
- J+R5DiWpMCm9wTBXGyvTAHhCKWToBrtOGPQtNsw=
-X-Google-Smtp-Source: AGHT+IEGzwW/4d4Bs56A/WRm7j4T8sgYlpdt8z9DxtjMDAWb6/tf9I3QEoiPKszLJbdDXkW5LyBbjg==
-X-Received: by 2002:a05:6a00:851:b0:690:42d5:4332 with SMTP id
- q17-20020a056a00085100b0069042d54332mr2285518pfk.6.1694791252653; 
- Fri, 15 Sep 2023 08:20:52 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ d=1e100.net; s=20230601; t=1694791351; x=1695396151;
+ h=content-transfer-encoding:in-reply-to:organization:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2T/zZu4VyPomINT5UufpNNHe6oSXbAbUnk48doVSyvc=;
+ b=rRXGzvWwncVthSU6O5w5iA4EK2IwOAf9eTEwNBGaFiqj8VnMb5paDowIpsuBh+sMoF
+ tWFylvSYro9Ub/VpgbNak14IjWXDwuSWU5bNVNGYHZGcZv2j+hQlQrU7YPKyRKioEKcy
+ hqU2KA40SBYFg6CSNfOMKInzlBvi87CiLVheppvuR6mESEXIXemxUdVGzF23C717IKs2
+ +mc5dn4G4OEHdkU8LHxSAeJ4z9n5CmBhoG1s4yg2osE1rj2mhOm+khafKJESu7GBhlRd
+ RjGaq7FcZ45AvipAowVAfinuwzDulNNZldLbVLEI1wf1igC02Y2cBB9V+bzICSYOQXUL
+ qEHw==
+X-Gm-Message-State: AOJu0YzMz4C7ZN/baZ9/wkQddcPPvqeUJ5uZF9MMpyQKMC2H5w6jAd+L
+ T1QEuQnTcAao6teiizC9ZaWAI5rxnJP/BrxxIFK7Hxxftyk+M36j4GnF/d4pthBeCbvTjFETafx
+ Dk9t6ZrIyrq/+Wfw=
+X-Received: by 2002:a05:600c:44d4:b0:3ff:a95b:9751 with SMTP id
+ f20-20020a05600c44d400b003ffa95b9751mr3629655wmo.7.1694791350643; 
+ Fri, 15 Sep 2023 08:22:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7zLDdxFfKyO7KjN6tc1wV5b5CgHbv26YSnMiFwjTpVXRYix3l+VtOmRtoOb2ciBrJtNgATg==
+X-Received: by 2002:a05:600c:44d4:b0:3ff:a95b:9751 with SMTP id
+ f20-20020a05600c44d400b003ffa95b9751mr3629642wmo.7.1694791350275; 
+ Fri, 15 Sep 2023 08:22:30 -0700 (PDT)
+Received: from [192.168.3.108] (p5b0c6d49.dip0.t-ipconnect.de. [91.12.109.73])
  by smtp.gmail.com with ESMTPSA id
- n17-20020aa78a51000000b0068bc014f352sm3106609pfa.7.2023.09.15.08.20.47
+ 18-20020a05600c235200b003fe61c33df5sm7826099wmq.3.2023.09.15.08.22.29
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 08:20:52 -0700 (PDT)
-Message-ID: <561abf48-d72c-467d-94fd-54ffa1dfb512@daynix.com>
-Date: Sat, 16 Sep 2023 00:20:46 +0900
+ Fri, 15 Sep 2023 08:22:29 -0700 (PDT)
+Message-ID: <b3975bd1-dd79-5206-9a8f-580161cc7b22@redhat.com>
+Date: Fri, 15 Sep 2023 17:22:28 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v5 06/13] virtio-gpu: Support context init feature
- with virglrenderer
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 04/10] Introduce the CPU address space destruction
+ function
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ lixianglai <lixianglai@loongson.cn>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Salil Mehta <salil.mehta@huawei.com>
+Cc: Salil Mehta <salil.mehta@opnsrc.net>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Bibo Mao <maobibo@loongson.cn>
+References: <cover.1694433326.git.lixianglai@loongson.cn>
+ <3a4fc2a3df4b767c3c296a7da3bc15ca9c251316.1694433326.git.lixianglai@loongson.cn>
+ <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
+ <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
+ <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
+ <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
+ <e4e88068-4754-f7d4-e080-b7b8d5bcf006@loongson.cn>
+ <5f610a1d-da1b-0094-41e7-f69164c4d0e0@redhat.com>
+ <cd28d7e5-cf77-dce0-756d-d6f75657727d@linaro.org>
 Content-Language: en-US
-To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-7-ray.huang@amd.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230915111130.24064-7-ray.huang@amd.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <cd28d7e5-cf77-dce0-756d-d6f75657727d@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,43 +123,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/15 20:11, Huang Rui wrote:
-> Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
-> feature flags.
-> We would like to enable the feature with virglrenderer, so add to create
-> virgl renderer context with flags using context_id when valid.
+On 15.09.23 16:19, Philippe Mathieu-Daudé wrote:
+> On 15/9/23 10:07, David Hildenbrand wrote:
 > 
-> Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> ---
+>> The CPU implementation end up call qemu_init_vcpu() in their realize
+>> function; there should be something like qemu_destroy_vcpu() on the
+>> unrealize path that takes care of undoing any cpu_address_space_init().
+>>
+>> We seem to have cpu_common_unrealizefn()->cpu_exec_unrealizefn() but
+>> that doesn't take care of address spaces.
+>>
+>> Also, in qemu_init_vcpu() we do a cpus_accel->create_vcpu_thread(cpu).
+>> I'm, curious if we destroy that thread somehow.
 > 
-> V4 -> V5:
->      - Inverted patch 5 and 6 because we should configure
->        HAVE_VIRGL_CONTEXT_INIT firstly. (Philippe)
-> 
->   hw/display/virtio-gpu-virgl.c | 13 +++++++++++--
->   hw/display/virtio-gpu.c       |  2 ++
->   2 files changed, 13 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> index 8bb7a2c21f..312953ec16 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -106,8 +106,17 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
->       trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
->                                       cc.debug_name);
->   
-> -    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
-> -                                  cc.debug_name);
-> +    if (cc.context_init) {
-> +#ifdef HAVE_VIRGL_CONTEXT_INIT
-> +        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
-> +                                                 cc.context_init,
-> +                                                 cc.nlen,
-> +                                                 cc.debug_name);
-> +        return;
-> +#endif
+> Implicitly in cpu_remove_sync().
 
-This should deal with the case when context_init is set while 
-HAVE_VIRGL_CONTEXT_INIT is not defined.
+Ah, indeed. there is the qemu_thread_join().
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
