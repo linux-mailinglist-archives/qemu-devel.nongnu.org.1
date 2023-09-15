@@ -2,92 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DCC7A2200
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 641A87A220B
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:12:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhARV-0003NL-0Q; Fri, 15 Sep 2023 11:09:13 -0400
+	id 1qhAU5-0000d6-S1; Fri, 15 Sep 2023 11:11:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qhARH-0003F1-RH
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:09:00 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qhATr-0000T2-Ky
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:11:39 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qhARE-00029d-V8
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:08:59 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40473f1fe9fso20226595e9.2
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:08:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qhATn-0002h6-1o
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:11:37 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1c3cbfa40d6so20149465ad.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:11:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694790535; x=1695395335; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SpdZx8AhfyM9DvxuaSn+YqR/ZDFVc/G0t+hRFJe45y8=;
- b=sRlG5p5JXh+HAN1yPJM8xnqVBuDYoVC85jxCONXFvR9k4UwzmIsctgQFvhXbL0WeHI
- 0cj22nRu2qUcnQnyl0nbD96FvmIYKWBTwUBxDgyZ69cQpvgTDs8qoKxqH+45lgb+YaxP
- 3K4MhqanOTQj+qTAGsTGJAjt71tzRu88Hmy8t+NWl0I+IoAjwJQLCWSKnAT5TTZMTeI2
- JtVK/jZHERABEGdrnoeSINn7V0pa2xexIo433M4X7hiB6Y6jBVkI2A3ES4jVvqCG4hLO
- laXk3TfAX9ywu3Jan6Vyhf57eHGGhnYW/EXe0rqFozKVIGmMqU7i1uyMz3bBsrk27GNu
- cz+g==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694790693; x=1695395493;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=KCQqoZ18jpGX1KCrU7S3I3Im0sSOsGzv0y0heQncKU4=;
+ b=yOoviG0ITZXUPTmQyEB0g/8Aavw8teR7pxiRETr1yXJZnMsiV5Kkf39yw7i1RoKocN
+ ZqfNTlVKGF8gTxMNRST8AynJxLya3UAniWtKwzWDbndcVI34dtZIdQe8HiH4ZYVOTSfz
+ Y5QJU5KUUAbaq+1BTOKL1xYpdJXZE2FmxNavQBzJXxpQWOm5xMBXZPa88Rw2vQC39E59
+ Nkr1uyQGJjZQ9VM+fJhuEq6zwEwuwEF9yNaOQeYVSUuxS0+vWrhJBkHsMIe6ztbj7QYV
+ z8rXgkEU1eM6nK84dwT9GPd9pqExbDGBhbJU93c61ieHkP7UIjjPCzL4PuUgiyhOtbr3
+ jYLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694790535; x=1695395335;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SpdZx8AhfyM9DvxuaSn+YqR/ZDFVc/G0t+hRFJe45y8=;
- b=aK1l+J62SVbFDfFSy6TdPpXEpCv5W8LRXgYHD7Pgy3E2nVzCGQBP+D0ztjGC1SIuv4
- KjTLGvNscup6PaIP/HRxcJ29KT73f2W/R+kqxvZ/sGAE3SQQyQcJ+T4tYEm96H2zM27I
- BFitUriB5JW5/RV3pM/mGQRaSysDkIRbfLvp6c5jlmAbpsZEmC2+lNPVBIhnjOL54Hb6
- GDC75W+DtmPqsGw6FqV92sBbXNcxVFwF39rvyKv0nIN1J/XqfdPYgmeBkGI+wOpKstlu
- tm6f3iWleI6zL323JBpx8ueMePMvOu7hqHlpuZxzEttuGRqtG7Uhs5E7JLGlBxZusT7b
- +BeA==
-X-Gm-Message-State: AOJu0Yy78KYHkCOWl6uems9eT8GKr2tzi+uT4SdQ77ZjS4f/jngRkuKV
- 2VWmWXTeyGzFIMRfQJHOgTZZww==
-X-Google-Smtp-Source: AGHT+IH9B5qlza0u4uZwicGAQQsthifR+XlW7udv/PbMu5++4LZUhvAY38J/y3KeumitUCIBuTiK5w==
-X-Received: by 2002:a05:600c:2288:b0:404:7865:bf4 with SMTP id
- 8-20020a05600c228800b0040478650bf4mr1727405wmf.39.1694790535164; 
- Fri, 15 Sep 2023 08:08:55 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1694790693; x=1695395493;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KCQqoZ18jpGX1KCrU7S3I3Im0sSOsGzv0y0heQncKU4=;
+ b=eqFiOqMrDx8UMQTmzWTqoxHaH63e2y65affMC1PWGTXt2BwwpWLvqR/JhCyuT0trJM
+ U3LqSgt7+2H/dmQ59zoqmGaDR8HZh/b3yPozNaJO45/Y9FltbyOTqTwXo3ex8kxird6c
+ 1vLZwcP4oSUNWjlcmAoXQhibzF6lZJZonEYK8/ytBnOb+thul3sEV9uKLfTlWEJs8jVP
+ eRC03T/NguiVwy2XGLA17/3rXBumnx0g+7LrkNL1ObRkVM3P0pfDrREe+O8TTlun3TZ1
+ 6fVFtBP8QtbeeDkY2N2H0ZEfsJtp/sSybdf1NWXRLCKvKD9GVHQ7+lNEnhKiFA6XDHyf
+ A9qw==
+X-Gm-Message-State: AOJu0Yy/BF7KWrXYY5GOQppE9w4nNUoEkcOpE0X/kp3vSsgG+giVabf9
+ mmhKQ7qBeORE7TYebsr2335C/g==
+X-Google-Smtp-Source: AGHT+IFeBqAAw/xZfJOIrv+PMMlVSoIDSLdN/PSNRJYjvS4mbp4KtNnaSSjCRhmZFu3zOoD/wmVTFw==
+X-Received: by 2002:a17:902:e552:b0:1c3:3682:f83f with SMTP id
+ n18-20020a170902e55200b001c33682f83fmr2476230plf.30.1694790693438; 
+ Fri, 15 Sep 2023 08:11:33 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- 16-20020a05600c029000b003fee8793911sm4864159wmk.44.2023.09.15.08.08.51
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 08:08:53 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E63FB1FFC3;
- Fri, 15 Sep 2023 16:08:50 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
- Paolo Bonzini <pbonzini@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 9/9] tests/avocado: Disable MIPS Malta tests due to GitLab
- issue #1884
-Date: Fri, 15 Sep 2023 16:08:49 +0100
-Message-Id: <20230915150849.595896-10-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230915150849.595896-1-alex.bennee@linaro.org>
-References: <20230915150849.595896-1-alex.bennee@linaro.org>
+ u6-20020a17090341c600b001c3f7fd1ef7sm3623245ple.12.2023.09.15.08.11.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Sep 2023 08:11:32 -0700 (PDT)
+Message-ID: <99fb4575-9f8d-4ab6-bc22-911bbaa7ca55@daynix.com>
+Date: Sat, 16 Sep 2023 00:11:27 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v5 07/13] softmmu/memory: enable automatic
+ deallocation of memory regions
+Content-Language: en-US
+To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-8-ray.huang@amd.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230915111130.24064-8-ray.huang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,242 +114,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 2023/09/15 20:11, Huang Rui wrote:
+> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+> 
+> When the memory region has a different life-cycle from that of her parent,
+> could be automatically released, once has been unparent and once all of her
+> references have gone away, via the object's free callback.
+> 
+> However, currently, references to the memory region are held by its owner
+> without first incrementing the memory region object's reference count.
+> As a result, the automatic deallocation of the object, not taking into
+> account those references, results in use-after-free memory corruption.
+> 
+> This patch increases the reference count of an owned memory region object
+> on each memory_region_ref() and decreases it on each memory_region_unref().
+> 
+> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> ---
+> 
+> V4 -> V5:
+>      - ref/unref only owned memory regions (Akihiko)
+> 
+>   softmmu/memory.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/softmmu/memory.c b/softmmu/memory.c
+> index 7d9494ce70..15e1699750 100644
+> --- a/softmmu/memory.c
+> +++ b/softmmu/memory.c
+> @@ -1800,6 +1800,9 @@ void memory_region_ref(MemoryRegion *mr)
+>       /* MMIO callbacks most likely will access data that belongs
+>        * to the owner, hence the need to ref/unref the owner whenever
+>        * the memory region is in use.
+> +     * Likewise, the owner keeps references to the memory region,
+> +     * hence the need to ref/unref the memory region object to prevent
+> +     * its automatic deallocation while still referenced by its owner.
 
-Commit 0d58c66068 ("softmmu: Use async_run_on_cpu in tcg_commit")
-introduced a regression which is only triggered by the MIPS Malta
-machine. Since those tests are gatting and disturb the CI workflow,
-disable them until https://gitlab.com/qemu-project/qemu/-/issues/1866
-is fixed.
+This comment does not make sense. Traditionally no such automatic 
+deallocation happens so the owner has been always required to free the 
+memory region when it gets finalized.
 
-  $ make check-avocado \
-      AVOCADO_TAGS='arch:mipsel arch:mips64el' \
-      AVOCADO_ALLOW_UNTRUSTED_CODE=1 \
-      AVOCADO_TIMEOUT_EXPECTED=1
-    AVOCADO tests/avocado
-   (04/24) tests/avocado/boot_linux_console.py:BootLinuxConsole.test_mips_malta32el_nanomips_4k: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (90.39 s)
-   (05/24) tests/avocado/boot_linux_console.py:BootLinuxConsole.test_mips_malta32el_nanomips_16k_up: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (90.29 s)
-   (06/24) tests/avocado/boot_linux_console.py:BootLinuxConsole.test_mips_malta32el_nanomips_64k_dbg: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (92.53 s)
-   (11/24) tests/avocado/machine_mips_malta.py:MaltaMachineFramebuffer.test_mips_malta_i6400_framebuffer_logo_1core: INTERRUPTED: Test interrupted by SIGTERM\nRunner error occurred: Timeout reached\nOriginal status: ERROR\n... (25.78 s)
-  RESULTS    : PASS 8 | ERROR 0 | FAIL 0 | SKIP 7 | WARN 2 | INTERRUPT 5 | CANCEL 2
-  JOB TIME   : 525.60 s                                      ^^^^^^^^^^^
+"[QEMU PATCH v5 09/13] virtio-gpu: Handle resource blob commands" 
+introduces a different kind of memory region, which can be freed anytime 
+before the device gets finalized. Even in this case, the owner removes 
+the reference to the memory owner by doing res->region = NULL;
 
-Reported-by: Thomas Huth <thuth@redhat.com>
-Suggested-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230913135339.9128-1-philmd@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230914155422.426639-10-alex.bennee@linaro.org>
-
-diff --git a/tests/avocado/boot_linux_console.py b/tests/avocado/boot_linux_console.py
-index 6eab515718..01ee149812 100644
---- a/tests/avocado/boot_linux_console.py
-+++ b/tests/avocado/boot_linux_console.py
-@@ -116,6 +116,7 @@ def test_x86_64_pc(self):
-         console_pattern = 'Kernel command line: %s' % kernel_command_line
-         self.wait_for_console_pattern(console_pattern)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta(self):
-         """
-         :avocado: tags=arch:mips
-@@ -138,6 +139,7 @@ def test_mips_malta(self):
-         console_pattern = 'Kernel command line: %s' % kernel_command_line
-         self.wait_for_console_pattern(console_pattern)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips64el_malta(self):
-         """
-         This test requires the ar tool to extract "data.tar.gz" from
-@@ -191,6 +193,7 @@ def test_mips64el_fuloong2e(self):
-         console_pattern = 'Kernel command line: %s' % kernel_command_line
-         self.wait_for_console_pattern(console_pattern)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta_cpio(self):
-         """
-         :avocado: tags=arch:mips
-@@ -232,6 +235,7 @@ def test_mips_malta_cpio(self):
-         # Wait for VM to shut down gracefully
-         self.vm.wait()
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
-     def test_mips64el_malta_5KEc_cpio(self):
-         """
-@@ -292,6 +296,7 @@ def do_test_mips_malta32el_nanomips(self, kernel_url, kernel_hash):
-         console_pattern = 'Kernel command line: %s' % kernel_command_line
-         self.wait_for_console_pattern(console_pattern)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta32el_nanomips_4k(self):
-         """
-         :avocado: tags=arch:mipsel
-@@ -305,6 +310,7 @@ def test_mips_malta32el_nanomips_4k(self):
-         kernel_hash = '477456aafd2a0f1ddc9482727f20fe9575565dd6'
-         self.do_test_mips_malta32el_nanomips(kernel_url, kernel_hash)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta32el_nanomips_16k_up(self):
-         """
-         :avocado: tags=arch:mipsel
-@@ -318,6 +324,7 @@ def test_mips_malta32el_nanomips_16k_up(self):
-         kernel_hash = 'e882868f944c71c816e832e2303b7874d044a7bc'
-         self.do_test_mips_malta32el_nanomips(kernel_url, kernel_hash)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta32el_nanomips_64k_dbg(self):
-         """
-         :avocado: tags=arch:mipsel
-diff --git a/tests/avocado/machine_mips_malta.py b/tests/avocado/machine_mips_malta.py
-index 92233451c5..3620266589 100644
---- a/tests/avocado/machine_mips_malta.py
-+++ b/tests/avocado/machine_mips_malta.py
-@@ -11,6 +11,7 @@
- import gzip
- import logging
- 
-+from avocado import skip
- from avocado import skipIf
- from avocado import skipUnless
- from avocado.utils import archive
-@@ -93,6 +94,7 @@ def do_test_i6400_framebuffer_logo(self, cpu_cores_count):
-             cv2.imwrite(debug_png, screendump_bgr)
-         self.assertGreaterEqual(tuxlogo_count, cpu_cores_count)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta_i6400_framebuffer_logo_1core(self):
-         """
-         :avocado: tags=arch:mips64el
-@@ -101,6 +103,7 @@ def test_mips_malta_i6400_framebuffer_logo_1core(self):
-         """
-         self.do_test_i6400_framebuffer_logo(1)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-     def test_mips_malta_i6400_framebuffer_logo_7cores(self):
-         """
-@@ -111,6 +114,7 @@ def test_mips_malta_i6400_framebuffer_logo_7cores(self):
-         """
-         self.do_test_i6400_framebuffer_logo(7)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     @skipIf(os.getenv('GITLAB_CI'), 'Running on GitLab')
-     def test_mips_malta_i6400_framebuffer_logo_8cores(self):
-         """
-@@ -142,6 +146,7 @@ def do_test_yamon(self):
-         wait_for_console_pattern(self, prompt)
-         self.vm.shutdown()
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mipsel_malta_yamon(self):
-         """
-         :avocado: tags=arch:mipsel
-@@ -150,6 +155,7 @@ def test_mipsel_malta_yamon(self):
-         """
-         self.do_test_yamon()
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips64el_malta_yamon(self):
-         """
-         :avocado: tags=arch:mips64el
-diff --git a/tests/avocado/replay_kernel.py b/tests/avocado/replay_kernel.py
-index a18610542e..f7ccfd2462 100644
---- a/tests/avocado/replay_kernel.py
-+++ b/tests/avocado/replay_kernel.py
-@@ -98,6 +98,7 @@ def test_x86_64_pc(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta(self):
-         """
-         :avocado: tags=arch:mips
-@@ -116,6 +117,7 @@ def test_mips_malta(self):
- 
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips64el_malta(self):
-         """
-         This test requires the ar tool to extract "data.tar.gz" from
-@@ -431,6 +433,7 @@ class ReplayKernelSlow(ReplayKernelBase):
-     # making it very slow.
-     timeout = 180
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta_cpio(self):
-         """
-         :avocado: tags=arch:mips
-@@ -460,6 +463,7 @@ def test_mips_malta_cpio(self):
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5,
-                     args=('-initrd', initrd_path))
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     @skipUnless(os.getenv('AVOCADO_ALLOW_UNTRUSTED_CODE'), 'untrusted code')
-     def test_mips64el_malta_5KEc_cpio(self):
-         """
-@@ -502,6 +506,7 @@ def do_test_mips_malta32el_nanomips(self, kernel_path_xz):
-         console_pattern = 'Kernel command line: %s' % kernel_command_line
-         self.run_rr(kernel_path, kernel_command_line, console_pattern, shift=5)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta32el_nanomips_4k(self):
-         """
-         :avocado: tags=arch:mipsel
-@@ -516,6 +521,7 @@ def test_mips_malta32el_nanomips_4k(self):
-         kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-         self.do_test_mips_malta32el_nanomips(kernel_path_xz)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta32el_nanomips_16k_up(self):
-         """
-         :avocado: tags=arch:mipsel
-@@ -530,6 +536,7 @@ def test_mips_malta32el_nanomips_16k_up(self):
-         kernel_path_xz = self.fetch_asset(kernel_url, asset_hash=kernel_hash)
-         self.do_test_mips_malta32el_nanomips(kernel_path_xz)
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips_malta32el_nanomips_64k_dbg(self):
-         """
-         :avocado: tags=arch:mipsel
-diff --git a/tests/avocado/tuxrun_baselines.py b/tests/avocado/tuxrun_baselines.py
-index e12250eabb..610b7e2bfa 100644
---- a/tests/avocado/tuxrun_baselines.py
-+++ b/tests/avocado/tuxrun_baselines.py
-@@ -352,6 +352,7 @@ def test_i386(self):
- 
-         self.common_tuxrun(csums=sums, drive="virtio-blk-pci")
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips32(self):
-         """
-         :avocado: tags=arch:mips
-@@ -370,6 +371,7 @@ def test_mips32(self):
- 
-         self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips32el(self):
-         """
-         :avocado: tags=arch:mipsel
-@@ -387,6 +389,7 @@ def test_mips32el(self):
- 
-         self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips64(self):
-         """
-         :avocado: tags=arch:mips64
-@@ -404,6 +407,7 @@ def test_mips64(self):
- 
-         self.common_tuxrun(csums=sums, drive="driver=ide-hd,bus=ide.0,unit=0")
- 
-+    @skip('https://gitlab.com/qemu-project/qemu/-/issues/1884')
-     def test_mips64el(self):
-         """
-         :avocado: tags=arch:mips64el
--- 
-2.39.2
-
+Regards,
+Akihiko Odaki
 
