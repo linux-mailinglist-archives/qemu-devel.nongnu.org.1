@@ -2,56 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3472B7A2230
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D77377A2234
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:21:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhAbk-0001H1-SR; Fri, 15 Sep 2023 11:19:48 -0400
+	id 1qhAd2-0001pb-Aw; Fri, 15 Sep 2023 11:21:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhAbh-0001GJ-U9; Fri, 15 Sep 2023 11:19:46 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhAbf-000409-8C; Fri, 15 Sep 2023 11:19:45 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnHsG37mmz6K6CB;
- Fri, 15 Sep 2023 23:18:58 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 15 Sep
- 2023 16:19:38 +0100
-Date: Fri, 15 Sep 2023 16:19:37 +0100
-To: Alistair Francis <alistair23@gmail.com>
-CC: <lukas@wunner.de>, <wilfred.mallawa@wdc.com>, <jiewen.yao@intel.com>,
- <qemu-devel@nongnu.org>, <kbusch@kernel.org>, <its@irrelevant.dk>,
- <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <hchkuo@avery-design.com.tw>, 
- <cbrowy@avery-design.com>, <qemu-block@nongnu.org>, Alistair Francis
- <alistair.francis@wdc.com>
-Subject: Re: [PATCH 2/3] backends: Initial support for SPDM socket support
-Message-ID: <20230915161937.00005da0@Huawei.com>
-In-Reply-To: <20230915112723.2033330-2-alistair.francis@wdc.com>
-References: <20230915112723.2033330-1-alistair.francis@wdc.com>
- <20230915112723.2033330-2-alistair.francis@wdc.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qhAcr-0001jb-8a
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:20:58 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qhAcp-0004In-4F
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:20:56 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-68fb898ab3bso1867115b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694791252; x=1695396052;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=/c8yieboNB6oo1mu8ZkACI0svLfzvvTV7i2vZIioxzw=;
+ b=aEFjuHzpu/HTsxMMkMGPOq6FSRkeHdp9AGVL9x+HvIvKhS8lJFaO+l2Sk4VM18l2kt
+ S1p98e4zEpv4P9q1rxTXtlN9gJaE0Qma61hGWznlzLFc7he0LLoM6tdUB6YzCqHmWCzO
+ KATkUjEcHawp+CD4iruU3y909YmlA+bNtdoBLkMfl9MuIP3+l2jgDLHazvb9YJgqXKl3
+ PFSLPgDenIwXyb9f27KHEFqyYwgaQElSwzPuEPErHpkPKhkdtWsTkxf/iZ5ugNYnMx6W
+ fKJr/fYqxmfib8lSJBMZ8So1sq78MSj8Tbp4ZmJa5ImxJEz17Ux8cPkRFV+Mw1eU2OUP
+ +/2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694791252; x=1695396052;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=/c8yieboNB6oo1mu8ZkACI0svLfzvvTV7i2vZIioxzw=;
+ b=XOU9G30uc55b0Q08+y2gtKdWe/ABtdPSww66uRktfIBGFHXy/dx+axiUpkDsq98uBX
+ rdkHgv4UKMQgl3qBF8WClt84N1hs2/gZwYNezxHQzLyVHt9gG/lBnW9XuvSfzyoPlH5s
+ NgtndjCMqAtJGHHwVtQrOUft4XI3sqPPmTQRi6kwKdtXowYEPKf66sxwyEcvQWfhRVHy
+ SesSMnL2WiiPNiTSKvCkpeIe40VMFbfjvBFcUeDdqrpt9ULp3qUn4abV3joTVR0WlxgG
+ HMaxoqaDUjwA1MNQRSUy3p8Qh1FXXMXzM58oRs5Rfb0pHjcYvrzh9Ogfx8Hu6vnco2pf
+ A/DA==
+X-Gm-Message-State: AOJu0YwzKySDN/JLHatOJUSRaFXNGJIuoK2CZ2alneUwWwh77JxnljD/
+ J+R5DiWpMCm9wTBXGyvTAHhCKWToBrtOGPQtNsw=
+X-Google-Smtp-Source: AGHT+IEGzwW/4d4Bs56A/WRm7j4T8sgYlpdt8z9DxtjMDAWb6/tf9I3QEoiPKszLJbdDXkW5LyBbjg==
+X-Received: by 2002:a05:6a00:851:b0:690:42d5:4332 with SMTP id
+ q17-20020a056a00085100b0069042d54332mr2285518pfk.6.1694791252653; 
+ Fri, 15 Sep 2023 08:20:52 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ n17-20020aa78a51000000b0068bc014f352sm3106609pfa.7.2023.09.15.08.20.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Sep 2023 08:20:52 -0700 (PDT)
+Message-ID: <561abf48-d72c-467d-94fd-54ffa1dfb512@daynix.com>
+Date: Sat, 16 Sep 2023 00:20:46 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v5 06/13] virtio-gpu: Support context init feature
+ with virglrenderer
+Content-Language: en-US
+To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-7-ray.huang@amd.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230915111130.24064-7-ray.huang@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,133 +112,46 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Sep 2023 21:27:22 +1000
-Alistair Francis <alistair23@gmail.com> wrote:
-
-> From: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
-
-Great to see you taking this forwards!
-
-
+On 2023/09/15 20:11, Huang Rui wrote:
+> Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
+> feature flags.
+> We would like to enable the feature with virglrenderer, so add to create
+> virgl renderer context with flags using context_id when valid.
 > 
-> SPDM enables authentication, attestation and key exchange to assist in
-> providing infrastructure security enablement. It's a standard published
-> by the DMTF [1].
-> 
-> SPDM currently supports PCIe DOE and MCTP transports, but it can be
-> extended to support others in the future. This patch adds
-> support to QEMU to connect to an external SPDM instance.
-
-It supports way more that that these days.  I'd just say 'multiple'
-transports.
-
-> 
-> SPDM support can be added to any QEMU device by exposing a
-> TCP socket to a SPDM server. The server can then implement the SPDM
-> decoding/encoding support, generally using libspdm [2].
-> 
-> This is similar to how the current TPM implementation works and means
-> that the heavy lifting of setting up certificate chains, capabilities,
-> measurements and complex crypto can be done outside QEMU by a well
-> supported and tested library.
-
-Is this sufficient for usecases beyond initial attestation flows?
-How does measurement work for example?  We need settings from the
-emulated device to squirt into the SPDM agent so that it can be
-encrypted and signed etc.
-
-Measurement reports often need to include the status of various config
-space registers + any device specific additional stuff - not sure
-what is defined for NVME but I suspect the list will grow, particularly
-when tdisp is included.  There are some things called out in the PCIe
-state as must haves, like any debug features must be reported.
-Also we need a way to mess with firmware revisions reported
-as those are likely to be checked.
-
-I'm not sure that model will work with the spdm-emu approach.
-
-Anyhow, I think we need to have gotten a little further figuring that
-out before we merge a solution.  I've been carrying this on the CXL
-staging tree for a long time because I couldn't figure out a good solution
-to the amount of information that needs to go between them.
-
-For those not familiar with the fun of libSPDM it is a pain to work with
-which is why Huai-Cheng instead connected with the demo app.
-
-Any more luck getting a reliable build to work?
-
-> 
-> 1: https://www.dmtf.org/standards/SPDM
-> 2: https://github.com/DMTF/libspdm
-> 
-> Signed-off-by: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
-> Signed-off-by: Chris Browy <cbrowy@avery-design.com>
-> Co-developed-by: Jonathan Cameron <Jonathan.cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> [ Changes by AF:
->  - Convert to be more QEMU-ified
->  - Move to backends as it isn't PCIe specific
-> ]
-> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Alistair, you sent this so I think your sign off should be last
-+ some indication of Wilfred's involvement would be good?
-Probably another Co-developed-by
-
-
-
-> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
 > ---
+> 
+> V4 -> V5:
+>      - Inverted patch 5 and 6 because we should configure
+>        HAVE_VIRGL_CONTEXT_INIT firstly. (Philippe)
+> 
+>   hw/display/virtio-gpu-virgl.c | 13 +++++++++++--
+>   hw/display/virtio-gpu.c       |  2 ++
+>   2 files changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> index 8bb7a2c21f..312953ec16 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -106,8 +106,17 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
+>       trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+>                                       cc.debug_name);
+>   
+> -    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
+> -                                  cc.debug_name);
+> +    if (cc.context_init) {
+> +#ifdef HAVE_VIRGL_CONTEXT_INIT
+> +        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
+> +                                                 cc.context_init,
+> +                                                 cc.nlen,
+> +                                                 cc.debug_name);
+> +        return;
+> +#endif
 
-I've looked at this code too much in the past to give much
-real review.  Still a few comments inline.
-I'm very keen to get a solution to this upstream, though I think
-we do need to discuss a few general points (no cover letter so I'll
-do it here).
-
-
-...
-
-> diff --git a/backends/spdm-socket.c b/backends/spdm-socket.c
-> new file mode 100644
-> index 0000000000..2f31ba80ba
-> --- /dev/null
-> +++ b/backends/spdm-socket.c
-> @@ -0,0 +1,215 @@
-
-
-> +
-> +int spdm_socket_connect(uint16_t port, Error **errp)
-> +{
-> +    int client_socket;
-> +    struct sockaddr_in server_addr;
-> +
-> +    client_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-> +    if (client_socket < 0) {
-> +        error_setg(errp, "cannot create socket: %s", strerror(errno));
-> +        return -1;
-> +    }
-> +
-> +    memset((char *)&server_addr, 0, sizeof(server_addr));
-> +    server_addr.sin_family = AF_INET;
-> +    server_addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-> +    server_addr.sin_port = htons(port);
-> +
-> +
-> +    if (connect(client_socket, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
-Wrap the line.
-
-> +        error_setg(errp, "cannot connect: %s", strerror(errno));
-> +        close(client_socket);
-> +        return -1;
-> +    }
-> +
-> +    return client_socket;
-> +}
-
-
+This should deal with the case when context_init is set while 
+HAVE_VIRGL_CONTEXT_INIT is not defined.
 
