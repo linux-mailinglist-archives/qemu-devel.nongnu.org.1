@@ -2,70 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD227A1DF4
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 14:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 050687A1E0A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 14:05:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh7XF-0001oT-FY; Fri, 15 Sep 2023 08:02:57 -0400
+	id 1qh7Z5-0003ai-Tk; Fri, 15 Sep 2023 08:04:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qh7Wx-0001nT-B3
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:02:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qh7Wv-0006uT-H3
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:02:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694779356;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=5ddIrqavdfmTLZ3xvfQjaukZtshD8d8bNOIyeMGt5wc=;
- b=TeD03l3CqO3PuGRSzmNJf1UG6OL6Gu2KOxD9ODg0bbCgDa7eLvQqy9IIFFJ1lBmnvyZLNw
- 5y6Ew00aJpdZSkYRj3bIjCo9UfZTY9cBYHWHZ2S25xk7qUmXRxrYQg2/L6il9fko0ScLB7
- wR9A7Azb5jJbPoDscYLTN77ug7FTvvw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-495-SB0Iw_DAP16wVXNBSftwUQ-1; Fri, 15 Sep 2023 08:02:35 -0400
-X-MC-Unique: SB0Iw_DAP16wVXNBSftwUQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B90C6185A797;
- Fri, 15 Sep 2023 12:02:34 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.37])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D716B176C3;
- Fri, 15 Sep 2023 12:02:33 +0000 (UTC)
-Date: Fri, 15 Sep 2023 13:02:31 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Tyler Fanelli <tfanelli@redhat.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, mtosatti@redhat.com, stefanha@redhat.com
-Subject: Re: [RFC PATCH 0/8] i386/sev: Use C API of Rust SEV library
-Message-ID: <ZQRH125LBK5ktpLY@redhat.com>
-References: <20230914175835.382972-1-tfanelli@redhat.com>
- <ZQQplEOUE2GhBL07@redhat.com>
- <CAJSP0QUA--fpGAjj9JJ2BW7VSunw6mb7=8NDmTt7+k71OOAd1g@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qh7Yx-0003a1-J1
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:04:43 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1qh7Yv-0007Ev-I6
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:04:42 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2bcd7a207f7so32747221fa.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 05:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694779480; x=1695384280; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=P6eM/yXaj8PkWr4TkEd5T8HyKUWTDYyMeFOOkASi5e4=;
+ b=UYVdstXXQVbAPlzr7f6z/y2lBeTZHUorXOtoqD9vFbRgkzArJn+UvOJ97WwFaJp8lU
+ TCxE+spUTQoO9uOj7tYfiEvot2lwXc0GeZCcvFEi9lEEEMEhpKXFf9O3cF8c8wxSSyTw
+ U7GcQJ8HXgX2loH0jtFQF6iDSFURY6eZnL9NwYJeku4AAHCynBaCHFuVXu0lWArQnvbk
+ uCfbZeZh9Qr5fAiYGv2Gyf7gLjULDjYSRqqIGf8z5203Y3yCaqxbrtcwnwnP80IHJXVF
+ m3N0dbzeuKv82zI+8xfzq3m86urRcUT8HTCu6Gh2UalNxfCMb8dstSUBE/JAaRvV2GM8
+ kZKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694779480; x=1695384280;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=P6eM/yXaj8PkWr4TkEd5T8HyKUWTDYyMeFOOkASi5e4=;
+ b=W7JABt3YU468P+1xneiFutMr13ed4TauLNKdePhu6IsZ4CWKIzGhB+pd+nO7XGl6Ci
+ JfA9F4rEetN+/CehPUs+f6GZtOwNM1ofMnDXK+P5z3yiplimNpXwOgWTYSlSvNyY5+D0
+ /6L2pxfapVsl7NSZLl9MVzmrNhChNR+hmN+TCe16DrSkjxU0ZNkox7Qz0eB6CpK+JJcO
+ qZ6fXkjG2PNhWbIgiZlPvrNrR9Xu8hI14BKKbgxjE74I3sjohKFAI/VT0jdLMxzNNQuv
+ 4wkUAPGscQvc/t9HmTjhjvF7tT0FDyLHCyOsX9xjGUkUh8JbxAh59aJGzU7lK3yKuV6r
+ RNlQ==
+X-Gm-Message-State: AOJu0YzXHcopPO522c59uD85rb5vCT/ZwmGVf3stqBwQb+QsTnCgpwfB
+ /wcnD6xbI6cmS8ibpc8Wxsfe4A==
+X-Google-Smtp-Source: AGHT+IHVZVPa9Y87BoU8Xv4kj9Ep7b0KDtHjnc2vqmZYi89DJxA5OTCKQHyVR7Y1sQkufrHJhBbHyw==
+X-Received: by 2002:a2e:924f:0:b0:2bb:b1da:27be with SMTP id
+ v15-20020a2e924f000000b002bbb1da27bemr1376020ljg.45.1694779479724; 
+ Fri, 15 Sep 2023 05:04:39 -0700 (PDT)
+Received: from [192.168.200.206] (83.21.94.247.ipv4.supernova.orange.pl.
+ [83.21.94.247]) by smtp.gmail.com with ESMTPSA id
+ z2-20020a05651c022200b002bceae8b9fasm686129ljn.109.2023.09.15.05.04.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Sep 2023 05:04:39 -0700 (PDT)
+Message-ID: <27a83a16-20ff-47e5-b71b-82e6b9ea832e@linaro.org>
+Date: Fri, 15 Sep 2023 14:04:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJSP0QUA--fpGAjj9JJ2BW7VSunw6mb7=8NDmTt7+k71OOAd1g@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/3] Refactor PPI logic/definitions for virt/sbsa-ref
+Content-Language: pl-PL, en-GB, en-HK
+To: Leif Lindholm <quic_llindhol@quicinc.com>, qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, Radoslaw Biernacki <rad@semihalf.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20230915115535.129834-1-quic_llindhol@quicinc.com>
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Organization: Linaro
+In-Reply-To: <20230915115535.129834-1-quic_llindhol@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,37 +94,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 15, 2023 at 07:33:32AM -0400, Stefan Hajnoczi wrote:
-> The library approach worked well for libblkio but the overhead of
-> creating a separate shared library and shipping it is significant.
-> When QEMU is the only user of some code, then it should definitely be
-> part of QEMU. Also, when QEMU needs early access to code that isn't
-> widely available yet, then bundling it inside QEMU until packages are
-> available also seems reasonable to me (I think we already do that for
-> libvfio-user and maybe other libraries).
+W dniu 15.09.2023 o 13:55, Leif Lindholm pisze:
+> This set reworks the handling of private peripheral interrupts in virt
+> to use INTIDs instead of PPI IDs, to make it easier to cross reference
+> against Arm's Base System Architecture specification.
+> 
+> It then breaks those definitions out into a separate header and switches
+> sbsa-ref to use the same header instead of defining its own values
+> locally.
+> 
+> Changes since RFC:
+> - Compilation tested
+> - Reordered patches 1-2 as suggested by Philippe.
+> 
+> Leif Lindholm (3):
+>    {include/}hw/arm: refactor virt PPI logic
+>    include/hw/arm: move BSA definitions to bsa.h
+>    hw/arm/sbsa-ref: use bsa.h for PPI definitions
+> 
+>   hw/arm/sbsa-ref.c        | 23 +++++++++++------------
+>   hw/arm/virt-acpi-build.c |  4 ++--
+>   hw/arm/virt.c            |  9 +++++----
+>   include/hw/arm/bsa.h     | 35 +++++++++++++++++++++++++++++++++++
+>   include/hw/arm/virt.h    | 12 +-----------
+>   5 files changed, 54 insertions(+), 29 deletions(-)
+>   create mode 100644 include/hw/arm/bsa.h
+> 
 
-Yep, avoiding the public shared library significantly cuts down the
-maint burden, as you can freely adapt the exposed C  FFI API to
-suit QEMU's needs and not worry about ABI compatibility.
-
-> I would prefer it if we minimize Rust wrappers for C APIs and instead
-> focus on using Rust to build new subsystems. Writing and maintaing two
-> sets of the same API is expensive and I hope we don't get bogged down
-> keeping C and Rust APIs in sync. That said, I think there's an
-> argument for wrapping core QEMU APIs needed for device emulation (e.g.
-> DeviceState, PCIDevice) because of the security benefits of writing
-> new device emulation code in Rust.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Reviewed-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
