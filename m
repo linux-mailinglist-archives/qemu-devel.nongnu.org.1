@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5CE7A26D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 21:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C14007A26D6
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 21:01:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhE3M-0005md-4H; Fri, 15 Sep 2023 15:00:32 -0400
+	id 1qhE3S-0005n1-0s; Fri, 15 Sep 2023 15:00:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhE3C-0005lO-7F
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 15:00:30 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhE3N-0005ml-Sa
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 15:00:33 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhE3A-0007U3-Ja
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 15:00:21 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-530a6cbbb47so664905a12.0
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 12:00:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhE3H-0007YG-2O
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 15:00:33 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2bfbbd55158so39985661fa.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 12:00:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694804418; x=1695409218; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694804425; x=1695409225; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Z/oPseRALW5l8mhzSg1GPJ0x0BU257Ov4LZVxdjT9FU=;
- b=PslIBvQoGzp4w8abC8mUdbENUG26RaBahvMc7ig3/DG9Ju2riqB/5NZe413CVd6605
- qYG3j55vdrxL+DDFBTACoIxqDnSDOe/QSmp+QfE77DIridIyZ/+ZWT6Wkot71Z+bIfCJ
- USAZWM2X06x4/4ID1uCrLvEk/B/lNiUi3hnGkkLOqJdOXDp3faDeZGIm7XyWz73JH7jx
- QR4n8/biRD+cdGw6a9TK8OBaOmEIUDqD1WpANLHT+95mCDRT7VsMj0ZqPcI8tgJdgEJ8
- kreggnZWbg+w7vsDSQusfOd4hMiVl9UXSEL1JPXTqx6xZTBoHTrrCYVjfOKxlutzr3GT
- k9iA==
+ bh=yj/VmI3CWTgvZ6wzrxeZ+28cs5rrw6eKGcMTnrAf39k=;
+ b=xUHo19+vptao8kqSuuUWv/Q39lEv+7Htw0FWGKlTZGLOuXPgNKFgtFmJ5VhU89TVDD
+ UgSBqWuFWP1vpwH2Ew0HcQ9jY/7o7FgP2p1F4ZOiA4U+N9RT3olu50mAmAT3gmHFsXVg
+ Wa9OxnS9upj/4r+qNkS6Bw0yEKwweBRkH1hfsr0/22H54na1maPE3pO6SkdsiYiDqeB9
+ 9ZrBrNZg6PsLUrKf2Bq96Bji1erzBmAbwXhrSPqF57ok13WKdVutV+Gkw3HYZKjWN1Bv
+ IKa2nMPKz1xWS04Qo4DJ/txBgBa3AjEBC70y5+zyhBS3RZ0eXz7C1mmDs/4TPSYi5g3M
+ PSog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694804418; x=1695409218;
+ d=1e100.net; s=20230601; t=1694804425; x=1695409225;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Z/oPseRALW5l8mhzSg1GPJ0x0BU257Ov4LZVxdjT9FU=;
- b=iaHsTvpCa91G+vppLmG1K2A4kmEmFSOQTr3Xqqpv+BnW7XVFEnU0/vVtHg9oIQCNoE
- tJkGN2CLhaOPZE47Qy4HwR6ImyL3TXFtfJavZiRHj3SY9U8SkrjdjjKcZeBHPywT2Iqw
- T36DpliNcG4oLcZxna1vB0rHm1E35n0K4F7sko3IiSY8p4U1bhWEC+WGEOsHgl96r0I1
- 440RrT2XN7VisZ8HlRBNAj6k4mZzXVvWTCHvrEJvkq+oa3GDba3bg1U9YLujKVdp60hJ
- +jQKugC3vZKE+Y2qnav77E/U7/SILHhq2WAghCBxcdOSK4Pz4WDhLMOGrYb4SxssGTao
- OMdA==
-X-Gm-Message-State: AOJu0YwRLV/HnviB9LdAq5Ss274dSsNCJbA1h+QMS0Bd9Y8uQb08qh7q
- lhcZu7nPOoGFDwaomOrCgY9cpmDgWYRbyu8hzHI=
-X-Google-Smtp-Source: AGHT+IEbQAuDRA4Cf7TJdz/ag9Jfi6f6vhHvUllHoGBImu9i64hdmiTexC51Mb0Aga2sWMgRs5JN6w==
-X-Received: by 2002:aa7:caca:0:b0:523:387d:f5f1 with SMTP id
- l10-20020aa7caca000000b00523387df5f1mr2283637edt.24.1694804418561; 
- Fri, 15 Sep 2023 12:00:18 -0700 (PDT)
+ bh=yj/VmI3CWTgvZ6wzrxeZ+28cs5rrw6eKGcMTnrAf39k=;
+ b=Q9bFmnSO6+YwlqxM5zP1qanSXm1dqGGmAoucw4t/u8zwFeP8jiNVeR6Zqkiog779Fd
+ WAGW37OX5u3WCGJT9EMkwdHFqIRhH2iP7kiHLSjyksH4gfhZXlxgEhC6D7e+udYhxYQW
+ dvouDytbFxaYyvATXVtVF1fXDvRAPookvMSJIUVv5hvIRLni5+RZ7aOExDRayXcXfiFB
+ EBZpnLNqpw4Zr24WFi/j9bhIbUtmlOc2OyustNW90mJ94BtlemC5b4KJM6c7Vw3r8tdW
+ ysDsty2UDBuToaj1/rMFLPC3LyXppY0TEe5z77U7GzdQqWhKZoDY8C+AI8ctSTRBgp+u
+ fDgQ==
+X-Gm-Message-State: AOJu0Yzy4wsNP6qFJNo99Np73alNdsWaonJMlbRS+wLUhQLVCu9ExXSt
+ 4j+DlJoTCVX2cggl7xZZ7202qMdEfOvAn2ta+Gs=
+X-Google-Smtp-Source: AGHT+IFqQLY3Tj7eqeOV4Qk/KF83QEwxNZjoYa3bqymzIJPp2j/TFg6tNe+VoWlEZLh1FUBo2pLong==
+X-Received: by 2002:a2e:3e0e:0:b0:2b6:bc30:7254 with SMTP id
+ l14-20020a2e3e0e000000b002b6bc307254mr2206820lja.13.1694804424824; 
+ Fri, 15 Sep 2023 12:00:24 -0700 (PDT)
 Received: from m1x-phil.lan (6lp61-h01-176-171-209-234.dsl.sta.abo.bbox.fr.
  [176.171.209.234]) by smtp.gmail.com with ESMTPSA id
- i8-20020a0564020f0800b005309eb7544fsm890148eda.45.2023.09.15.12.00.17
+ lc25-20020a170906dff900b0099bd86f9248sm2776714ejc.63.2023.09.15.12.00.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Sep 2023 12:00:18 -0700 (PDT)
+ Fri, 15 Sep 2023 12:00:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -63,17 +63,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  kvm@vger.kernel.org, Yanan Wang <wangyanan55@huawei.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH 1/5] accel: Rename accel_cpu_realizefn() -> accel_cpu_realize()
-Date: Fri, 15 Sep 2023 21:00:04 +0200
-Message-ID: <20230915190009.68404-2-philmd@linaro.org>
+Subject: [PATCH 2/5] accel: Introduce accel_cpu_unrealize() stub
+Date: Fri, 15 Sep 2023 21:00:05 +0200
+Message-ID: <20230915190009.68404-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230915190009.68404-1-philmd@linaro.org>
 References: <20230915190009.68404-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,74 +96,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We use the '*fn' suffix for handlers, this is a public method.
-Drop the suffix.
+Prepare the stub for parity with accel_cpu_realize().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qemu/accel.h      | 4 ++--
- accel/accel-common.c      | 2 +-
- cpu.c                     | 2 +-
- target/i386/kvm/kvm-cpu.c | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ include/qemu/accel.h | 6 ++++++
+ accel/accel-common.c | 4 ++++
+ cpu.c                | 3 ++-
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-index e84db2e3e5..cb64a07b84 100644
+index cb64a07b84..23254c6c9c 100644
 --- a/include/qemu/accel.h
 +++ b/include/qemu/accel.h
-@@ -90,11 +90,11 @@ void accel_setup_post(MachineState *ms);
- void accel_cpu_instance_init(CPUState *cpu);
- 
- /**
-- * accel_cpu_realizefn:
-+ * accel_cpu_realize:
-  * @cpu: The CPU that needs to call accel-specific cpu realization.
-  * @errp: currently unused.
+@@ -96,6 +96,12 @@ void accel_cpu_instance_init(CPUState *cpu);
   */
--bool accel_cpu_realizefn(CPUState *cpu, Error **errp);
-+bool accel_cpu_realize(CPUState *cpu, Error **errp);
+ bool accel_cpu_realize(CPUState *cpu, Error **errp);
  
++/**
++ * accel_cpu_unrealizefn:
++ * @cpu: The CPU that needs to call accel-specific cpu unrealization.
++ */
++void accel_cpu_unrealize(CPUState *cpu);
++
  /**
   * accel_supported_gdbstub_sstep_flags:
+  *
 diff --git a/accel/accel-common.c b/accel/accel-common.c
-index df72cc989a..b953855e8b 100644
+index b953855e8b..cc3a45e663 100644
 --- a/accel/accel-common.c
 +++ b/accel/accel-common.c
-@@ -119,7 +119,7 @@ void accel_cpu_instance_init(CPUState *cpu)
-     }
+@@ -129,6 +129,10 @@ bool accel_cpu_realize(CPUState *cpu, Error **errp)
+     return true;
  }
  
--bool accel_cpu_realizefn(CPUState *cpu, Error **errp)
-+bool accel_cpu_realize(CPUState *cpu, Error **errp)
++void accel_cpu_unrealize(CPUState *cpu)
++{
++}
++
+ int accel_supported_gdbstub_sstep_flags(void)
  {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
- 
+     AccelState *accel = current_accel();
 diff --git a/cpu.c b/cpu.c
-index 0769b0b153..61c9760e62 100644
+index 61c9760e62..b928bbed50 100644
 --- a/cpu.c
 +++ b/cpu.c
-@@ -136,7 +136,7 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
-     /* cache the cpu class for the hotpath */
-     cpu->cc = CPU_GET_CLASS(cpu);
- 
--    if (!accel_cpu_realizefn(cpu, errp)) {
-+    if (!accel_cpu_realize(cpu, errp)) {
-         return;
-     }
- 
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 7237378a7d..4474689f81 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -35,7 +35,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-      * x86_cpu_realize():
-      *  -> x86_cpu_expand_features()
-      *  -> cpu_exec_realizefn():
--     *            -> accel_cpu_realizefn()
-+     *            -> accel_cpu_realize()
-      *               kvm_cpu_realizefn() -> host_cpu_realizefn()
-      *  -> check/update ucode_rev, phys_bits, mwait
+@@ -187,8 +187,9 @@ void cpu_exec_unrealizefn(CPUState *cpu)
+     cpu_list_remove(cpu);
+     /*
+      * Now that the vCPU has been removed from the RCU list, we can call
+-     * tcg_exec_unrealizefn, which may free fields using call_rcu.
++     * accel_cpu_unrealize, which may free fields using call_rcu.
       */
++    accel_cpu_unrealize(cpu);
+     if (tcg_enabled()) {
+         tcg_exec_unrealizefn(cpu);
+     }
 -- 
 2.41.0
 
