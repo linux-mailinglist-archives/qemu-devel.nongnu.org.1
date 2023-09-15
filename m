@@ -2,85 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DABC17A2185
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:51:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 076E67A218E
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:54:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhA79-00081s-1z; Fri, 15 Sep 2023 10:48:11 -0400
+	id 1qhA7y-0002ys-4O; Fri, 15 Sep 2023 10:49:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qhA70-0007jc-Qv
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:48:03 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qhA7n-0002ls-Fu
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:48:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qhA6y-0005pQ-RQ
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:48:02 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qhA7j-0005xR-Sh
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:48:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694789279;
+ s=mimecast20190719; t=1694789327;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DDZd0j05ISiiASU+Undv8ratNzoMS8WQhDvNfKUB/cQ=;
- b=T7UUZ2Vl4aKRY1Di6O+uq7xIe7uwSOcBpffWQ6FHC+9qmoEewM/ou4u0BDj25BlIkYS5Y1
- eWz1uNKdWRKwTHlLGI4gYRSD/Kr34rfaaArrA2v184No2WEELj1RFaTJSxWEDMkDT64E1p
- 7u5zesqHgKmMOzqbXz6oZU0F2b31S3s=
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com
- [209.85.166.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MtCgSiQxxkUwLODCl8bh9vKD4ivhlH7JDUMGKOPfP1w=;
+ b=B0Anxk8zH9EZN3kljdhiKZoFdpTTQnY9KH45zPw+ANj95vpQyvUs/e06aQ+mF45RewkJrU
+ 8mM+oktrhxorM9iV4P+13+haGxMJEFbkL6ear/+2vxlOOQ5iYMpEamFIKGUX2UmEbADVp3
+ 7xKwCD6321eQTbYGqs2bM1LZkdZEJ1Q=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-zPk6BeyzNourZs-WjyNC0g-1; Fri, 15 Sep 2023 10:47:58 -0400
-X-MC-Unique: zPk6BeyzNourZs-WjyNC0g-1
-Received: by mail-il1-f200.google.com with SMTP id
- e9e14a558f8ab-34fc965c70bso5324755ab.2
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 07:47:58 -0700 (PDT)
+ us-mta-110-1hGW9AbJMpezoJQj04Gpmg-1; Fri, 15 Sep 2023 10:48:46 -0400
+X-MC-Unique: 1hGW9AbJMpezoJQj04Gpmg-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-99bcb13d8ddso157979766b.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 07:48:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694789277; x=1695394077;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DDZd0j05ISiiASU+Undv8ratNzoMS8WQhDvNfKUB/cQ=;
- b=aURm9DHZkWr7AgBPN/qPD0JKyzdKtY58OOPz7bKZsDb13z/fiTRW9u2PGUOz71SofX
- /tZwDfTri8V3kahjRnvW9oPzrw1/Z0+S1jcq+vuWjFAsN+TdlES8Dl/by9/mkoMh5dZF
- ujFFR9DwhEjVQL+W8g1zXDcyxkWsj2YWyg3OfCFabYapzXzJfnkOl5tccgHzAUibQ4CF
- RwYOHxeL45z/nYvA+6S1Mzqb/Ce3TUDdcsfyqdgORVhSUR/QeNYFrXYQY10GIv8e9Raq
- qkdXreEOP3DB6P4BjUkVT2g+v1rdOX46dIYN+hvZhJxIjeuR5bfYIPk3uyIzYfLnvE26
- ILpw==
-X-Gm-Message-State: AOJu0YzUzRHjQ+aFOEO/KG8kmetb67YPZT6RHR9VPMFXKaibWyCyj6S7
- NJm58Q8E/W71gN8eCUt2UwZA3EHkUMa9P92b6kuGmrX8a2+HWoPABHCb3oQB+mcALgAiyiI0cAB
- KoJM8exUavfhTGxc=
-X-Received: by 2002:a05:6e02:152:b0:349:3020:d103 with SMTP id
- j18-20020a056e02015200b003493020d103mr2261475ilr.25.1694789277387; 
- Fri, 15 Sep 2023 07:47:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYFh7dOoql31zCBrMZRAc1j1yiGoTS+TocXy1TXtr0DOsdvipZYMRqtaoX2EJ1ECww3PnOHg==
-X-Received: by 2002:a05:6e02:152:b0:349:3020:d103 with SMTP id
- j18-20020a056e02015200b003493020d103mr2261447ilr.25.1694789277125; 
- Fri, 15 Sep 2023 07:47:57 -0700 (PDT)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- g26-20020a02b71a000000b00433dd6c78b0sm1067707jam.97.2023.09.15.07.47.55
+ d=1e100.net; s=20230601; t=1694789323; x=1695394123;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MtCgSiQxxkUwLODCl8bh9vKD4ivhlH7JDUMGKOPfP1w=;
+ b=MIsSC+OEuJYSEgFcHMk5qmmtNMBUZu4quTNH3GHZlW2kF8kVDusi1uCrg5pjCGAPGO
+ jhrrshbQk9TuFRT5bXN0M7EKE1Uu5AYdJWMdUFWwOlbw6Mm2TGEfAWbChSyCfA4Udvxb
+ qofya5zY7SFnE4rT0Og6TLA58wR94k+hK1oOCj6fuEy+Nslt9OMvoDj705RAvxwTNGOF
+ 0OwJS8aTP+hb/cG72MxKqkN/IH+jzDnZCGef/RNR3FKwNS34qEAVdd7sPDepUUKh9itP
+ cAoAOt/KnsnM43ToD1Ji4tmLAZfybr7Xm6grnn+NQVSB0XTjezpAFPulASvoStkh6ojT
+ CAGA==
+X-Gm-Message-State: AOJu0Yx8geM972ENq+ZWkyLN7el4RCd8RKAktX14P0IHn5r6PROmC+zB
+ ZKbTJVrAIa4hlQPeWhg3iXepPpcaR/bvThpls6BANtAfszcgrC158s0JgrlVh3pjiRfH7p/H9Gy
+ j+GfrIGdYgEl/zHYbKMeLvXMYVXOZdvAP5Zu2tt8wESBXkklPX9Jr8sDpssBYzs/iW9j4ikbm+l
+ k=
+X-Received: by 2002:a05:6402:514f:b0:522:2ba9:6fce with SMTP id
+ n15-20020a056402514f00b005222ba96fcemr1669392edd.8.1694789323287; 
+ Fri, 15 Sep 2023 07:48:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3s91L11WQG4dq29k3tK9MzlQAbo8Qp78u35fk1vO2s+QAlneNNjKf/yPp06nl+XASg1xWRQ==
+X-Received: by 2002:a05:6402:514f:b0:522:2ba9:6fce with SMTP id
+ n15-20020a056402514f00b005222ba96fcemr1669346edd.8.1694789322805; 
+ Fri, 15 Sep 2023 07:48:42 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ n16-20020a05640204d000b005272523b162sm2352993edw.69.2023.09.15.07.48.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 07:47:56 -0700 (PDT)
-Date: Fri, 15 Sep 2023 08:47:54 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>
-Cc: ankita@nvidia.com, jgg@nvidia.com, shannon.zhaosl@gmail.com,
- peter.maydell@linaro.org, ani@anisinha.ca, aniketa@nvidia.com,
- cjia@nvidia.com, kwankhede@nvidia.com, targupta@nvidia.com,
- vsethi@nvidia.com, acurrid@nvidia.com, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH v1 0/4] vfio: report NUMA nodes for device memory
-Message-ID: <20230915084754.4b49d5c0.alex.williamson@redhat.com>
-In-Reply-To: <d09b3df6-74f8-c93b-b26e-59de5b2dd114@redhat.com>
+ Fri, 15 Sep 2023 07:48:42 -0700 (PDT)
+Date: Fri, 15 Sep 2023 16:48:41 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Jonathan Cameron via <qemu-devel@nongnu.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, <ankita@nvidia.com>,
+ <jgg@nvidia.com>, <alex.williamson@redhat.com>, <clg@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>, <ani@anisinha.ca>,
+ <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
+ <qemu-arm@nongnu.org>, mst@redhat.com
+Subject: Re: [PATCH v1 1/4] vfio: new command line params for device memory
+ NUMA nodes
+Message-ID: <20230915164841.15d20ecc@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230915152509.00003788@Huawei.com>
 References: <20230915024559.6565-1-ankita@nvidia.com>
- <d09b3df6-74f8-c93b-b26e-59de5b2dd114@redhat.com>
-Organization: Red Hat
+ <20230915024559.6565-2-ankita@nvidia.com>
+ <20230915152509.00003788@Huawei.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,7 +92,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,83 +108,332 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Sep 2023 16:19:29 +0200
-C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+On Fri, 15 Sep 2023 15:25:09 +0100
+Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
 
-> Hello Ankit,
->=20
-> On 9/15/23 04:45, ankita@nvidia.com wrote:
+> On Thu, 14 Sep 2023 19:45:56 -0700
+> <ankita@nvidia.com> wrote:
+> 
 > > From: Ankit Agrawal <ankita@nvidia.com>
-> >=20
-> > For devices which allow CPU to cache coherently access their memory,
-> > it is sensible to expose such memory as NUMA nodes separate from
-> > the sysmem node. Qemu currently do not provide a mechanism for creation
-> > of NUMA nodes associated with a vfio-pci device.
-> >=20
-> > Implement a mechanism to create and associate a set of unique NUMA nodes
-> > with a vfio-pci device.>
-> > NUMA node is created by inserting a series of the unique proximity
-> > domains (PXM) in the VM SRAT ACPI table. The ACPI tables are read once
-> > at the time of bootup by the kernel to determine the NUMA configuration
-> > and is inflexible post that. Hence this feature is incompatible with
-> > device hotplug. The added node range associated with the device is
-> > communicated through ACPI DSD and can be fetched by the VM kernel or
-> > kernel modules. QEMU's VM SRAT and DSD builder code is modified
-> > accordingly.
-> >=20
-> > New command line params are introduced for admin to have a control on
-> > the NUMA node assignment. =20
->=20
-> This approach seems to bypass the NUMA framework in place in QEMU and
-> will be a challenge for the upper layers. QEMU is generally used from
-> libvirt when dealing with KVM guests.
->=20
-> Typically, a command line for a virt machine with NUMA nodes would look
-> like :
->=20
->    -object memory-backend-ram,id=3Dram-node0,size=3D1G \
->    -numa node,nodeid=3D0,memdev=3Dram-node0 \
->    -object memory-backend-ram,id=3Dram-node1,size=3D1G \
->    -numa node,nodeid=3D1,cpus=3D0-3,memdev=3Dram-node1
->=20
-> which defines 2 nodes, one with memory and all CPUs and a second with
-> only memory.
->=20
->    # numactl -H
->    available: 2 nodes (0-1)
->    node 0 cpus: 0 1 2 3
->    node 0 size: 1003 MB
->    node 0 free: 734 MB
->    node 1 cpus:
->    node 1 size: 975 MB
->    node 1 free: 968 MB
->    node distances:
->    node   0   1
->      0:  10  20
->      1:  20  10
->=20
->   =20
-> Could it be a new type of host memory backend ?  Have you considered
-> this approach ?
+> > 
+> > The CPU cache coherent device memory can be added as a set of
+> > NUMA nodes distinct from the system memory nodes. The Qemu currently
+> > do not provide a mechanism to support node creation for a vfio-pci
+> > device.
+> > 
+> > Introduce new command line parameters to allow host admin provide
+> > the desired starting NUMA node id (pxm-ns) and the number of such
+> > nodes (pxm-nc) associated with the device. In this implementation,
+> > a numerically consecutive nodes from pxm-ns to pxm-ns + pxm-nc
+> > is created. Also validate the requested range of nodes to check  
+> 
+> 
+> Hi Ankit,
+> 
+> That's not a particularly intuitive bit of interface!
+> 
+> pxm-start
+> pxm-number
+> perhaps?  However, in QEMU commmand lines the node terminology is used so
+> numa-node-start
+> numa-node-number
+> 
+> Though in general this feels backwards compared to how the rest of
+> the numa definition is currently done.
 
-Good idea.  Fundamentally the device should not be creating NUMA nodes,
-the VM should be configured with NUMA nodes and the device memory
-associated with those nodes.
+QEMU have already means to assign NUMA node affinity
+to PCI hierarchies in generic way by using a PBX per node
+(also done 'backwards') by setting node option on it.
+So every device behind it should belong to that node as well
+and guest OS shall pickup device affinity from PCI tree it belongs to.
+(I'd suspect that CXL is supposed to work the same way).
 
-I think we're also dealing with a lot of very, very device specific
-behavior, so I question whether we shouldn't create a separate device
-for this beyond vifo-pci or vfio-pci-nohotplug.
+PS:
+But then, I don't know much about PCI
+(ccing Michael)
 
-In particular, a PCI device typically only has association to a single
-proximity domain, so what sense does it make to describe the coherent
-memory as a PCI BAR to only then create a confusing mapping where the
-device has a proximity domain separate from a resources associated with
-the device?
-
-It's seeming like this device should create memory objects that can be
-associated as memory backing for command line specified NUMA nodes.
-Thanks,
-
-Alex
+> 
+> Could the current interface be extended.
+> 
+> -numa node,vfio-device=X
+> 
+> at the cost of a bit of house keeping and lookup.
+> 
+> We need something similar for generic initiators, so maybe
+> vfio-mem=X? (might not even need to be vfio specific - even
+> if we only support it for now on VFIO devices).
+> leaving
+> initiator=X available for later...
+> 
+> Also, good to say why multiple nodes per device are needed.
+> 
+> Jonathan
+> 
+> > for conflict with other nodes and to ensure that the id do not cross
+> > QEMU limit.
+> > 
+> > Since the QEMU's SRAT and DST builder code needs the proximity
+> > domain (PXM) id range, expose PXM start and count as device object
+> > properties.
+> > 
+> > The device driver module communicates support for such feature through
+> > sysfs. Check the presence of the feature to activate the code.
+> > 
+> > E.g. the following argument adds 8 PXM nodes starting from id 0x10.
+> > -device vfio-pci-nohotplug,host=<pci-bdf>,pxm-ns=0x10,pxm-nc=8
+> > 
+> > Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> > ---
+> >  hw/vfio/pci.c               | 144 ++++++++++++++++++++++++++++++++++++
+> >  hw/vfio/pci.h               |   2 +
+> >  include/hw/pci/pci_device.h |   3 +
+> >  3 files changed, 149 insertions(+)
+> > 
+> > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> > index a205c6b113..cc0c516161 100644
+> > --- a/hw/vfio/pci.c
+> > +++ b/hw/vfio/pci.c
+> > @@ -42,6 +42,8 @@
+> >  #include "qapi/error.h"
+> >  #include "migration/blocker.h"
+> >  #include "migration/qemu-file.h"
+> > +#include "qapi/visitor.h"
+> > +#include "include/hw/boards.h"
+> >  
+> >  #define TYPE_VFIO_PCI_NOHOTPLUG "vfio-pci-nohotplug"
+> >  
+> > @@ -2955,6 +2957,22 @@ static void vfio_register_req_notifier(VFIOPCIDevice *vdev)
+> >      }
+> >  }
+> >  
+> > +static void vfio_pci_get_dev_mem_pxm_start(Object *obj, Visitor *v,
+> > +                                           const char *name,
+> > +                                           void *opaque, Error **errp)
+> > +{
+> > +    uint64_t pxm_start = (uintptr_t) opaque;
+> > +    visit_type_uint64(v, name, &pxm_start, errp);
+> > +}
+> > +
+> > +static void vfio_pci_get_dev_mem_pxm_count(Object *obj, Visitor *v,
+> > +                                           const char *name,
+> > +                                           void *opaque, Error **errp)
+> > +{
+> > +    uint64_t pxm_count = (uintptr_t) opaque;
+> > +    visit_type_uint64(v, name, &pxm_count, errp);
+> > +}
+> > +
+> >  static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+> >  {
+> >      Error *err = NULL;
+> > @@ -2974,6 +2992,125 @@ static void vfio_unregister_req_notifier(VFIOPCIDevice *vdev)
+> >      vdev->req_enabled = false;
+> >  }
+> >  
+> > +static int validate_dev_numa(uint32_t dev_node_start, uint32_t num_nodes)
+> > +{
+> > +    MachineState *ms = MACHINE(qdev_get_machine());
+> > +    unsigned int i;
+> > +
+> > +    if (num_nodes >= MAX_NODES) {
+> > +        return -EINVAL;
+> > +    }
+> > +
+> > +    for (i = 0; i < num_nodes; i++) {
+> > +        if (ms->numa_state->nodes[dev_node_start + i].present) {
+> > +            return -EBUSY;
+> > +        }
+> > +    }
+> > +
+> > +    return 0;
+> > +}
+> > +
+> > +static int mark_dev_node_present(uint32_t dev_node_start, uint32_t num_nodes)
+> > +{
+> > +    MachineState *ms = MACHINE(qdev_get_machine());
+> > +    unsigned int i;
+> > +
+> > +    for (i = 0; i < num_nodes; i++) {
+> > +        ms->numa_state->nodes[dev_node_start + i].present = true;
+> > +    }
+> > +
+> > +    return 0;
+> > +}
+> > +
+> > +
+> > +static bool vfio_pci_read_cohmem_support_sysfs(VFIODevice *vdev)
+> > +{
+> > +    gchar *contents = NULL;
+> > +    gsize length;
+> > +    char *path;
+> > +    bool ret = false;
+> > +    uint32_t supported;
+> > +
+> > +    path = g_strdup_printf("%s/coherent_mem", vdev->sysfsdev);  
+> 
+> If someone has asked for it, why should we care if they specify it on a
+> device where it doesn't do anything useful?  This to me feels like something
+> to check at a higher level of the stack.
+> 
+> > +    if (g_file_get_contents(path, &contents, &length, NULL) && length > 0) {
+> > +        if ((sscanf(contents, "%u", &supported) == 1) && supported) {
+> > +            ret = true;
+> > +        }
+> > +    }
+> > +
+> > +    if (length) {
+> > +        g_free(contents);  
+> 
+> g_autofree will clean this up for you I think
+> 
+> > +    }
+> > +    g_free(path);  
+> 
+> and this.
+> 
+> > +
+> > +    return ret;
+> > +}
+> > +
+> > +static int vfio_pci_dev_mem_probe(VFIOPCIDevice *vPciDev,
+> > +                                         Error **errp)
+> > +{
+> > +    Object *obj = NULL;
+> > +    VFIODevice *vdev = &vPciDev->vbasedev;
+> > +    MachineState *ms = MACHINE(qdev_get_machine());
+> > +    int ret = 0;
+> > +    uint32_t dev_node_start = vPciDev->dev_node_start;
+> > +    uint32_t dev_node_count = vPciDev->dev_nodes;
+> > +
+> > +    if (!vdev->sysfsdev || !vfio_pci_read_cohmem_support_sysfs(vdev)) {
+> > +        ret = -ENODEV;  
+> return -ENODEV; 
+> 
+> and similar in all the other cases as no cleanup to do.
+> 
+> > +        goto done;
+> > +    }
+> > +
+> > +    if (vdev->type == VFIO_DEVICE_TYPE_PCI) {  
+> 
+> nicer to handle one condition at a time.
+> 
+>     if (vdev->type != VFIO_DEVICE_TYPE_PCI) {
+>         return -EINVAL;
+>     }
+> 
+>     obj = vfio_pci_get_object(vdev);
+> this can't fail
+> 
+> Also get rid of assigning it to NULL above.
+> 
+>    if (DEVICE_CLASS(object...)) {
+>       return -EINVAL;
+>    }
+> 
+> 
+> > +        obj = vfio_pci_get_object(vdev);
+> > +    }
+> > +
+> > +    /* Since this device creates new NUMA node, hotplug is not supported. */
+> > +    if (!obj || DEVICE_CLASS(object_get_class(obj))->hotpluggable) {
+> > +        ret = -EINVAL;
+> > +        goto done;
+> > +    }
+> > +
+> > +    /*
+> > +     * This device has memory that is coherently accessible from the CPU.
+> > +     * The memory can be represented seperate memory-only NUMA nodes.
+> > +     */
+> > +    vPciDev->pdev.has_coherent_memory = true;
+> > +
+> > +    /*
+> > +     * The device can create several NUMA nodes with consecutive IDs
+> > +     * from dev_node_start to dev_node_start + dev_node_count.
+> > +     * Verify
+> > +     * - whether any node ID is occupied in the desired range.
+> > +     * - Node ID is not crossing MAX_NODE.
+> > +     */
+> > +    ret = validate_dev_numa(dev_node_start, dev_node_count);
+> > +    if (ret) {
+> > +        goto done;  
+>         return ret;
+> 
+> > +    }
+> > +
+> > +    /* Reserve the node by marking as present */
+> > +    mark_dev_node_present(dev_node_start, dev_node_count);
+> > +
+> > +    /*
+> > +     * To have multiple unique nodes in the VM, a series of PXM nodes are
+> > +     * required to be added to VM's SRAT. Send the information about the
+> > +     * starting node ID and the node count to the ACPI builder code.
+> > +     */
+> > +    object_property_add(OBJECT(vPciDev), "dev_mem_pxm_start", "uint64",
+> > +                        vfio_pci_get_dev_mem_pxm_start, NULL, NULL,
+> > +                        (void *) (uintptr_t) dev_node_start);
+> > +
+> > +    object_property_add(OBJECT(vPciDev), "dev_mem_pxm_count", "uint64",
+> > +                        vfio_pci_get_dev_mem_pxm_count, NULL, NULL,
+> > +                        (void *) (uintptr_t) dev_node_count);
+> > +
+> > +    ms->numa_state->num_nodes += dev_node_count;
+> > +
+> > +done:
+> > +    return ret;
+> > +}
+> > +
+> >  static void vfio_realize(PCIDevice *pdev, Error **errp)
+> >  {
+> >      VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+> > @@ -3291,6 +3428,11 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+> >          }
+> >      }
+> >  
+> > +    ret = vfio_pci_dev_mem_probe(vdev, errp);
+> > +    if (ret && ret != -ENODEV) {
+> > +        error_report("Failed to setup device memory with error %d", ret);
+> > +    }
+> > +
+> >      vfio_register_err_notifier(vdev);
+> >      vfio_register_req_notifier(vdev);
+> >      vfio_setup_resetfn_quirk(vdev);
+> > @@ -3454,6 +3596,8 @@ static Property vfio_pci_dev_properties[] = {
+> >      DEFINE_PROP_UINT32("x-pci-sub-device-id", VFIOPCIDevice,
+> >                         sub_device_id, PCI_ANY_ID),
+> >      DEFINE_PROP_UINT32("x-igd-gms", VFIOPCIDevice, igd_gms, 0),
+> > +    DEFINE_PROP_UINT32("pxm-ns", VFIOPCIDevice, dev_node_start, 0),
+> > +    DEFINE_PROP_UINT32("pxm-nc", VFIOPCIDevice, dev_nodes, 0),
+> >      DEFINE_PROP_UNSIGNED_NODEFAULT("x-nv-gpudirect-clique", VFIOPCIDevice,
+> >                                     nv_gpudirect_clique,
+> >                                     qdev_prop_nv_gpudirect_clique, uint8_t),
+> > diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> > index a2771b9ff3..eef5ddfd06 100644
+> > --- a/hw/vfio/pci.h
+> > +++ b/hw/vfio/pci.h
+> > @@ -158,6 +158,8 @@ struct VFIOPCIDevice {
+> >      uint32_t display_yres;
+> >      int32_t bootindex;
+> >      uint32_t igd_gms;
+> > +    uint32_t dev_node_start;
+> > +    uint32_t dev_nodes;
+> >      OffAutoPCIBAR msix_relo;
+> >      uint8_t pm_cap;
+> >      uint8_t nv_gpudirect_clique;
+> > diff --git a/include/hw/pci/pci_device.h b/include/hw/pci/pci_device.h
+> > index d3dd0f64b2..aacd2279ae 100644
+> > --- a/include/hw/pci/pci_device.h
+> > +++ b/include/hw/pci/pci_device.h
+> > @@ -157,6 +157,9 @@ struct PCIDevice {
+> >      MSIVectorReleaseNotifier msix_vector_release_notifier;
+> >      MSIVectorPollNotifier msix_vector_poll_notifier;
+> >  
+> > +    /* GPU coherent memory */
+> > +    bool has_coherent_memory;
+> > +
+> >      /* ID of standby device in net_failover pair */
+> >      char *failover_pair_id;
+> >      uint32_t acpi_index;  
+> 
+> 
 
 
