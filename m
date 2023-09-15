@@ -2,76 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074317A14C1
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 06:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1BE7A157A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 07:32:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh0JK-0006Pb-FR; Fri, 15 Sep 2023 00:20:06 -0400
+	id 1qh1Q0-0000Rn-Gi; Fri, 15 Sep 2023 01:31:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
- id 1qh0JI-0006P3-03; Fri, 15 Sep 2023 00:20:04 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
- id 1qh0JG-0003x1-5z; Fri, 15 Sep 2023 00:20:03 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-273527a8fdeso1391382a91.2; 
- Thu, 14 Sep 2023 21:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694751600; x=1695356400; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=w/vF/auRmwtqaYptNIKpo6xzEVDQm+M6qdjqAb3x/GE=;
- b=FdZLsRaQtj0hbU43ySjNQp5klqK3VCkNfXd+QuiLNI2mxpiEI6+ZXCjG2plpfjN+Ar
- zUXGxIlWAA4VW/Cc4utwG67XGdIX/kkHIy5lHsmfzqYJPMqaguZCyLj0yjRjfiWrpZc3
- t8JttkjVrnIUJPyWbQRFbCBOROyX5AWaacBdIczJj7L3y4NzgJZI0qoDGMGnf6zFHB78
- fanwqzIuaYnN4fkXmJ2wORWDbxhMHolbcYj+RS+blopKQai8cPhR4OnhcZUHaBg8yGHR
- sZHgwbrfngixF2dmCiWzMlQOS7LlUnY8S7VTAO75WiAtFcA39ybgcbU0At0cH70m0qcV
- lOww==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qh1Pu-0000RA-L6
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 01:31:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qh1Pn-0003GF-OC
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 01:30:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694755845;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wM6d6/2w7EhB0FFchjxYZVeo9hU6deaT7Xe6W8TWeSs=;
+ b=caNpENZ1ERUk1kPd38zpr13hiSSO2jcY1eHV1kVTPDEyHUzR0+xtEHR789Irp5Py/lFJUl
+ YMXM16PReVouxBVqfQccZbKceF/U2CTG4W18tg/7ulyRwgGcmyGF8qxBYH3aTX7WvJhRyB
+ CurW2p/gzZvUDngZo4ki8rdXKJYsb98=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-eMeZrccPOMerTTnpWqJfMg-1; Fri, 15 Sep 2023 01:30:44 -0400
+X-MC-Unique: eMeZrccPOMerTTnpWqJfMg-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-502d58d14beso170899e87.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Sep 2023 22:30:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694751600; x=1695356400;
+ d=1e100.net; s=20230601; t=1694755842; x=1695360642;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w/vF/auRmwtqaYptNIKpo6xzEVDQm+M6qdjqAb3x/GE=;
- b=t+aHPX5Uk6p7Z6nSdn/xe5EFGh3Gi1kswrq1b9xU5Y2Z0oZgDTQiFlJsABEnON0xd8
- CZ4AyDhISh42cmnaFEXtTxoWEJakXkE1qShj7jXa+fRpXo8IJuqv1dvgqTaOhJdQOPKp
- yiGYKrvYVxqQIDOZGMOiUuO3NC3W1lFWJgw0a73VFZPGBR7N+GWp5/6RNtlNUIT2rBQz
- Xn6ou+T56931IbdCa3fcUvWpPBwWifY9lh0/ojhWuLQMpif5yB4I9WVkO6MKJsSs/rk0
- keu80wz+71L5mhOHRTawAe5RR6rAFHa3vGarQn0rGNknPr5gjOor6e3FpQbpCmRNKgvS
- GXBw==
-X-Gm-Message-State: AOJu0Yz2Z1NgCrAMk018F+S9LXrmPcKl0Soj9AH/8lLYRNfvUGAiF6ZB
- 39LEdh++6KQQ3mArTQDbLgpdjLovBauDLk0Ngfw=
-X-Google-Smtp-Source: AGHT+IEN8HVTtGUJsK1x91PrGrAa1ICPxxlW//3henrKhGL9/++hb5NCFegiNjHcbfJ6OdP41utWw23WLiFEJY1V9U4=
-X-Received: by 2002:a17:90a:cb0e:b0:274:748c:9c55 with SMTP id
- z14-20020a17090acb0e00b00274748c9c55mr416669pjt.20.1694751599632; Thu, 14 Sep
- 2023 21:19:59 -0700 (PDT)
+ bh=wM6d6/2w7EhB0FFchjxYZVeo9hU6deaT7Xe6W8TWeSs=;
+ b=EGKUB40skSdKt2BGBUknpvamKqLZ3y55aDc9EbqvCKrN9frp0MYCzrnAavmLhnA+LA
+ 1kmc2shHWosCObgX9oVZUPnbvGMWCPpYqKlc38t30gzZEOIIy7e9I/PlLQxUtf3a0/p4
+ R7JgtgobuVSFi9Jx/VUuDjQJMY3W+ARUnYqvTzt57d6SZrGIYQDaWW3MVpdVr4/XtiGK
+ PNCHaQqfGByd9LsUf2HPkiUmPoUkJA0BDyYvM3t5nJsoAtWqIvm8BUfAbZChcFFMmK/B
+ 6ZzNsIMfWZhDxrx49xZhTbvy4JMJMSFSFSRad3gdDQbFOSmllj5vccYytmMy89XwldSI
+ 2BDA==
+X-Gm-Message-State: AOJu0YwyCxKsFxMnMt4bx95zN5NfdGIy9uzhWT9ZBSaODsGT5d4WtrBy
+ AN5mXCvzDPLc1Q8qI07akYdZ9zk2UlCRag0iPX9ncQ2fLf6On6A2wtUVrfHtGN1hi8adYuAtWkR
+ eIpDSwmYz73ohsfsiFJg5WkSTSVtkCjCdgYtSMz5flQ==
+X-Received: by 2002:a19:790f:0:b0:500:7685:83d with SMTP id
+ u15-20020a19790f000000b005007685083dmr432378lfc.48.1694755842485; 
+ Thu, 14 Sep 2023 22:30:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7TUjgNN4CXFs2v89yb7sZebh1IazZnZsBdGvHXNUX6Je8alrgYIX86p5d9wAAp/vnEKOudgc69N7Qo4ZDPos=
+X-Received: by 2002:a19:790f:0:b0:500:7685:83d with SMTP id
+ u15-20020a19790f000000b005007685083dmr432369lfc.48.1694755842164; Thu, 14 Sep
+ 2023 22:30:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230815195741.8325-1-richard.henderson@linaro.org>
- <20230815195741.8325-15-richard.henderson@linaro.org>
-In-Reply-To: <20230815195741.8325-15-richard.henderson@linaro.org>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Fri, 15 Sep 2023 14:19:48 +1000
-Message-ID: <CACzsE9qPn5gMNLmRhYb_OhvOw7-bFOkQyD+08VzFogsVJKSNkg@mail.gmail.com>
-Subject: Re: [PATCH v3 14/14] RFC tcg/ppc: Disable TCG_REG_TB for
- Power9/Power10
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+References: <20230911215435.4156314-1-stefanha@redhat.com>
+In-Reply-To: <20230911215435.4156314-1-stefanha@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 15 Sep 2023 13:30:31 +0800
+Message-ID: <CACGkMEv1zui3mnQDXF3BLWqVCz3mtdSyS4jjKdO8ZABXTTD1gg@mail.gmail.com>
+Subject: Re: [PATCH] vdpa: fix gcc cvq_isolated uninitialized variable warning
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=jniethe5@gmail.com; helo=mail-pj1-x1034.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,76 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Aug 16, 2023 at 5:57=E2=80=AFAM Richard Henderson
-<richard.henderson@linaro.org> wrote:
+On Tue, Sep 12, 2023 at 5:54=E2=80=AFAM Stefan Hajnoczi <stefanha@redhat.co=
+m> wrote:
 >
-> This may or may not improve performance.
-> It appears to result in slightly larger code,
-> but perhaps not enough to matter.
-
-I have collected some power9 macro performance data for an smp compile work=
-load:
-
-Setup
------
-
-- Power9 powernv host
-- mttcg smp 8 guest
-
-Method
-------
-
-- Warm up compile skiboot (https://github.com/open-power/skiboot)
-- Average time taken for 5 trials compiling skiboot with -j `nproc`
-
-Results
--------
-
-
-|                Patch                | Mean time (s) | stdev | Decrease (%=
-) |
-|-------------------------------------|---------------|-------|------------=
---|
-| tcg: Add tcg_out_tb_start...        |        161.77 |  2.39 |            =
-- |
-| tcg/ppc: Enable direct branching... |        145.81 |  1.71 |          9.=
-9 |
-| tcg/ppc: Use ADDPCIS...             |        146.44 |  1.28 |          9.=
-5 |
-| RFC tcg/ppc: Disable TCG_REG_TB...  |        145.95 |  1.07 |          9.=
-7 |
-
-
-- Enabling direct branching is a performance gain, beyond that less conclus=
-ive.
-- Using pcaddis for direct branching seems slightly better than bl +4
-sequence for ISA v3.0.
-- PC relative addressing seems slightly better than TOC relative addressing=
-.
-
-Any other suggestions for performance comparison?
-I still have to try on a Power10.
-
+> gcc 13.2.1 emits the following warning:
 >
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+>   net/vhost-vdpa.c: In function =E2=80=98net_vhost_vdpa_init.constprop=E2=
+=80=99:
+>   net/vhost-vdpa.c:1394:25: error: =E2=80=98cvq_isolated=E2=80=99 may be =
+used uninitialized [-Werror=3Dmaybe-uninitialized]
+>    1394 |         s->cvq_isolated =3D cvq_isolated;
+>         |         ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+>   net/vhost-vdpa.c:1355:9: note: =E2=80=98cvq_isolated=E2=80=99 was decla=
+red here
+>    1355 |     int cvq_isolated;
+>         |         ^~~~~~~~~~~~
+>   cc1: all warnings being treated as errors
+>
+> Cc: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> Cc: Michael S. Tsirkin <mst@redhat.com>
+> Cc: Jason Wang <jasowang@redhat.com>
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+Thanks
+
 > ---
->  tcg/ppc/tcg-target.c.inc | 2 +-
+>  net/vhost-vdpa.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
-> index 20aaa90af2..c1e0efb498 100644
-> --- a/tcg/ppc/tcg-target.c.inc
-> +++ b/tcg/ppc/tcg-target.c.inc
-> @@ -83,7 +83,7 @@
->  #define TCG_VEC_TMP2    TCG_REG_V1
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 34202ca009..7eaee841aa 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1352,7 +1352,7 @@ static NetClientState *net_vhost_vdpa_init(NetClien=
+tState *peer,
+>      VhostVDPAState *s;
+>      int ret =3D 0;
+>      assert(name);
+> -    int cvq_isolated;
+> +    int cvq_isolated =3D 0;
 >
->  #define TCG_REG_TB     TCG_REG_R31
-> -#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64)
-> +#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64 && !have_isa_3_00)
->
->  /* Shorthand for size of a pointer.  Avoid promotion to unsigned.  */
->  #define SZP  ((int)sizeof(void *))
+>      if (is_datapath) {
+>          nc =3D qemu_new_net_client(&net_vhost_vdpa_info, peer, device,
 > --
-> 2.34.1
+> 2.41.0
 >
+
 
