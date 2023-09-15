@@ -2,37 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356A37A243A
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8CF7A243B
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:05:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCF4-0001Kt-PH; Fri, 15 Sep 2023 13:04:30 -0400
+	id 1qhCFa-0001sG-Pw; Fri, 15 Sep 2023 13:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhCF1-0001E7-3I
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:04:27 -0400
+ id 1qhCFR-0001pu-Nw
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:04:53 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhCEz-0000er-Ci
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:04:26 -0400
+ id 1qhCFQ-0000hW-Ag
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:04:53 -0400
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnL8k59Qvz685Td;
- Sat, 16 Sep 2023 01:02:30 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnL5z2t9Xz6J7WC;
+ Sat, 16 Sep 2023 01:00:07 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 15 Sep 2023 18:04:19 +0100
+ 15.1.2507.31; Fri, 15 Sep 2023 18:04:49 +0100
 To: Michael Tokarev <mjt@tls.msk.ru>, <qemu-devel@nongnu.org>, Michael Tsirkin
  <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 CC: <linuxarm@huawei.com>
-Subject: [PATCH v2 0/4] hw/cxl: Line length reduction and related
-Date: Fri, 15 Sep 2023 18:04:14 +0100
-Message-ID: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 1/4] hw/cxl: Use a switch to explicitly check size in
+ caps_reg_read()
+Date: Fri, 15 Sep 2023 18:04:15 +0100
+Message-ID: <20230915170418.21337-2-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
+References: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
@@ -65,50 +68,39 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2:
- Replace patch 2 with a change to use switch statements and some asserts
- to improve code readability at same time as dealing with the overly
- long lines.
+Bring this read function inline with the others that do
+check for unexpected size values.
 
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+Also reduces line lengths to sub 80 chars.
 
-Michael observed that the CXL code regularly went above the 80 character
-recommendation and in many cases this was not necessary for readability.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/cxl/cxl-device-utils.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-This series is focused on tidying this up for the existing code so that
-we can maintain the preferred formatting going forwards.
-
-Based on: [PATCH 0/4] hw/cxl: Minor CXL emulation fixes and cleanup
-Based on: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
-Based-on: [PATCH V2] hw/pci-bridge/cxl-upstream: Add serial number extended capability support
-
-
-Based on: Message ID: 20230904132806.6094-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230913133615.29876-1-Jonathan.Cameron@huawei.com
-
-Jonathan Cameron (4):
-  hw/cxl: Use a switch to explicitly check size in caps_reg_read()
-  hw/cxl: Use switch statements for read and write of cachemem registers
-  hw/cxl: CXLDVSECPortExtensions renamed to CXLDVSECPortExt
-  hw/cxl: Line length reductions
-
- include/hw/cxl/cxl_component.h |   3 +-
- include/hw/cxl/cxl_device.h    |   5 +-
- include/hw/cxl/cxl_events.h    |   3 +-
- include/hw/cxl/cxl_pci.h       |   6 +-
- hw/cxl/cxl-cdat.c              |   3 +-
- hw/cxl/cxl-component-utils.c   | 124 ++++++++++++++++++++-------------
- hw/cxl/cxl-device-utils.c      |  11 +--
- hw/cxl/cxl-events.c            |   9 ++-
- hw/cxl/cxl-mailbox-utils.c     |  21 ++++--
- hw/mem/cxl_type3.c             |  31 +++++----
- hw/mem/cxl_type3_stubs.c       |   5 +-
- hw/pci-bridge/cxl_downstream.c |   2 +-
- hw/pci-bridge/cxl_root_port.c  |   2 +-
- hw/pci-bridge/cxl_upstream.c   |   2 +-
- 14 files changed, 141 insertions(+), 86 deletions(-)
-
+diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+index 517f06d869..cd0c45a2ed 100644
+--- a/hw/cxl/cxl-device-utils.c
++++ b/hw/cxl/cxl-device-utils.c
+@@ -32,10 +32,13 @@ static uint64_t caps_reg_read(void *opaque, hwaddr offset, unsigned size)
+ {
+     CXLDeviceState *cxl_dstate = opaque;
+ 
+-    if (size == 4) {
+-        return cxl_dstate->caps_reg_state32[offset / sizeof(*cxl_dstate->caps_reg_state32)];
+-    } else {
+-        return cxl_dstate->caps_reg_state64[offset / sizeof(*cxl_dstate->caps_reg_state64)];
++    switch (size) {
++    case 4:
++        return cxl_dstate->caps_reg_state32[offset / size];
++    case 8:
++        return cxl_dstate->caps_reg_state64[offset / size];
++    default:
++        g_assert_not_reached();
+     }
+ }
+ 
 -- 
 2.39.2
 
