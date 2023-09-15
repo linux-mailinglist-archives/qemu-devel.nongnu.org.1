@@ -2,85 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C115E7A1FE2
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 15:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DED7A202A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 15:49:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh8wU-0004zy-DQ; Fri, 15 Sep 2023 09:33:06 -0400
+	id 1qh9BF-00044G-RT; Fri, 15 Sep 2023 09:48:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qh8wJ-0004rs-2s
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:32:55 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qh8wD-0008Tb-Iy
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:32:54 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-402cc6b8bedso24771415e9.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 06:32:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694784767; x=1695389567; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZKmCXGdF513ZUDMT3ATipCBLXUXXnoYQzqFSa/oBSDI=;
- b=tlorPF8UtTg0cfYXNCsamwNiHDEdwpRxoGUrXNK3UODltUEDRc2tpBcKBcUtYS8zLK
- 7TWoQr6G9vQQhMYesuaYBto4K+QjN9k7ewmU7dEmDEI3hxA9cerxiXt2g30GbRffBylC
- c+Vc5mmWwfUeHCdrFHJNPtGIfmiXcvM2Lczbe7bwWfwQZ1+P0M5kadJmf7wglDREV2w4
- ZY7uwntQ81iPWFHlaw9GA+1DSdwxZD3NPDiPjRp/Hc+Zc+/1xX/BC8ZdW1C2d5PIGiQq
- 5DXZGXry5YMeENO8+jpqb7bHA9VwRhKFNCSpDhNpNnVVZ6cuAAbdk2JpIw3XYIGTphBL
- hI8A==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qh9BE-000440-6Q
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:48:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qh9BC-0002J9-B9
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:48:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694785696;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=rdtgocDR7xDH4ohn2sFbtABcWOLCxlCQv8vIIo71e/w=;
+ b=IcRrpxP5r1ib+k+TkM4/FcJRBJ8FiRSHWWrkcS3bUROsy61DPNHd59zWSm8YKQBMYmksKS
+ oxzyq4rRQPk0P2lBhQjSlyrrAzYu2LOd/pL582ifphGFWNh51PoOuP7Ge1AVSN728lILVs
+ Ep925+LUqveZ67XUA/rUjNswgc4fyzc=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-M9q8s2ctMoaPvY5TAQrrEw-1; Fri, 15 Sep 2023 09:48:14 -0400
+X-MC-Unique: M9q8s2ctMoaPvY5TAQrrEw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9a9e3f703dfso157349966b.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 06:48:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694784767; x=1695389567;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=ZKmCXGdF513ZUDMT3ATipCBLXUXXnoYQzqFSa/oBSDI=;
- b=XUAaLGGW4yAAJCeIuV/pxxVwpEk5IHfEBuJBclyraAfT9VdLe+qzFyyA+XGEHrBpEY
- K+p11D7liNZm9biMhUSpKaQxh40V1YwgtUmGsKE1+QEhX1X25YFH9IY/RRl4NOZmAqao
- ob8UP4m1sZ1fRsfllXnF1QPRnFyb+OTbzWTRN6tlMsbyvWq/AlqJvAgmJBd5ijTs7UHx
- 5NH5vbHviqd5Q+RNJjw6SzR3P7bMT2TUd+K6f1MwGWcF+7fGTOx7czMLAB3UazdtrBXN
- c/ZJN70nh6pxZGAPPEjOGCIlQUTNVc/rYIFEr0fYN2EoO+qltembrQlWgAL0K5N0mLDm
- O3iQ==
-X-Gm-Message-State: AOJu0YwQT1NQ49v2ZXtBvhxRbVxo2MX2bVHbDrkQOPIWpbVelaKfuvrI
- p7tYSm+UAHuU7WNMYaxnbqCF+g==
-X-Google-Smtp-Source: AGHT+IEEMRkaMK37cNJ57K4rNHLguoxGd1gNLh9YntSmegzjZ4vcMe4y9ldyYcdkXel9chJdyNjjdw==
-X-Received: by 2002:a05:600c:2241:b0:403:787:e878 with SMTP id
- a1-20020a05600c224100b004030787e878mr1835726wmm.21.1694784767590; 
- Fri, 15 Sep 2023 06:32:47 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- v13-20020a05600c214d00b003fc16ee2864sm4642524wml.48.2023.09.15.06.32.47
+ d=1e100.net; s=20230601; t=1694785693; x=1695390493;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rdtgocDR7xDH4ohn2sFbtABcWOLCxlCQv8vIIo71e/w=;
+ b=EkcmIouZ/sd2xxJD0h9nIPDAuBK5hTajswxvDUY7e/FDSQf4lnfY9MbpyJeULagC6u
+ sLFXlQ/5WK5Brj+GA4ggBhbR4Kad2+tEBqsQeXrOOc0i1pF0+MXdtVzIHDSVrcNuBOZk
+ wCTgerzeDkTvXif/9VmV0kBD44wPZvjelv5HbWV/2sd8gxI6v54FrPq7RilZI1gSX9Ct
+ 7POFSKzypMqNp1GkUU2zyDattbu/ttZd/uEpywHTTqrH1R+X4AYor9mDhMyVl58c/meb
+ eYWZius+M+BIN4rXWehjeuTr2ZdMjyho94C7SpHQXyLJzl+7SnsQ2kdNsxuaydUtFcQM
+ rUjg==
+X-Gm-Message-State: AOJu0YzltEb5DV0DKUA+gho8l/u5baAE6f6Vb7wgzWRQMr85qfA3+YqY
+ YQYHmlkOQZLKNCsroC1oNxFNPd52UHcOMtZ5+8tlaTCUQYacBD/lvHWr8AHZGGDIjozu+g3VC9d
+ vA030ZUGrkuGcZtQ=
+X-Received: by 2002:a17:907:7719:b0:9a5:cb18:3b11 with SMTP id
+ kw25-20020a170907771900b009a5cb183b11mr1626700ejc.17.1694785693458; 
+ Fri, 15 Sep 2023 06:48:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUp7sKh8QJcSHhDKBFG1LuB2JNSPOctx2Pv+BEaEpy2aPjLymvzK1OqlJaJEaHXnEj/cl9Gw==
+X-Received: by 2002:a17:907:7719:b0:9a5:cb18:3b11 with SMTP id
+ kw25-20020a170907771900b009a5cb183b11mr1626682ejc.17.1694785693130; 
+ Fri, 15 Sep 2023 06:48:13 -0700 (PDT)
+Received: from redhat.com ([2.52.27.167]) by smtp.gmail.com with ESMTPSA id
+ oz11-20020a170906cd0b00b009a1dbf55665sm2464385ejb.161.2023.09.15.06.48.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 06:32:47 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A33821FFBB;
- Fri, 15 Sep 2023 14:32:46 +0100 (BST)
-References: <20230915110507.194762-1-danielhb413@gmail.com>
-User-agent: mu4e 1.11.17; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: qemu-ppc@nongnu.org, david@gibson.dropbear.id.au, groug@kaod.org,
- npiggin@gmail.com, aik@ozlabs.ru, =?utf-8?Q?C=C3=A9dric?= Le Goater
- <clg@kaod.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
-Date: Fri, 15 Sep 2023 14:32:41 +0100
-In-reply-to: <20230915110507.194762-1-danielhb413@gmail.com>
-Message-ID: <87y1h7r281.fsf@linaro.org>
+ Fri, 15 Sep 2023 06:48:12 -0700 (PDT)
+Date: Fri, 15 Sep 2023 09:48:08 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 00/16] tests: Add CPU topology related smbios test cases
+Message-ID: <20230915094735-mutt-send-email-mst@kernel.org>
+References: <20230825033619.2075837-1-zhao1.liu@linux.intel.com>
+ <663cf3d4-47ea-262d-36b3-cf826f870ef0@tls.msk.ru>
+ <ZPbRLtS6Txn0a2LX@liuzhao-OptiPlex-7080>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZPbRLtS6Txn0a2LX@liuzhao-OptiPlex-7080>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,38 +101,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Sep 05, 2023 at 02:56:46PM +0800, Zhao Liu wrote:
+> Hi Michael,
+> 
+> On Fri, Sep 01, 2023 at 12:55:33PM +0300, Michael Tokarev wrote:
+> > Date: Fri, 1 Sep 2023 12:55:33 +0300
+> > From: Michael Tokarev <mjt@tls.msk.ru>
+> > Subject: Re: [PATCH 00/16] tests: Add CPU topology related smbios test cases
+> > 
+> > 25.08.2023 06:36, Zhao Liu wrote:
+> > > From: Zhao Liu <zhao1.liu@intel.com>
+> > > 
+> > > Hi all,
+> > > 
+> > > This patchset is the follow up tests of previous topology fixes in
+> > > smbios [1].
+> > > 
+> > > In this patchset, add these test cases:
+> > > 
+> > > 1. Add the case to test 2 newly added topology helpers (patch 1):
+> > >     * machine_topo_get_cores_per_socket()
+> > >     * machine_topo_get_threads_per_socket()
+> > > 
+> > > 2. Add the cases in bios-tables-test.c to:
+> > >     * test smbios type4 table count (patch 2-4).
+> > >     * test smbios type4 core count field (patch 5-7).
+> > >     * update the test of smbios type4 core count2 field (patch 8-10).
+> > >     * test smbios type4 thread count (patch 11-13).
+> > >     * test smbios type4 thread count2 (patch 14-16).
+> > > 
+> > > With the above new cases, cover all commits of [1] in test.
+> > > 
+> > > [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html
+> > 
+> > Hmm.  I definitely didn't expect such a large patchset..  I asked for just
+> > a small, maybe manual (from command-line) reproducer of the original issue,
+> > so I can verify it is fixed before applying the change in question to qemu
+> > stable trees. 
+> 
+> Since these issues are found by coding reading, they are "byproducts" of
+> other topology-related work I've been woring on, not directly identified
+> by any anomaly...
+> 
+> ...So I'm not quite sure what the consequences of these few misuses of
+> topology fields are, and how they might manifest themselves.
+> 
+> > It is a large work.  Lemme at least give it a try in the
+> > gitlab CI...
+> 
+> The test cases are the ones that clearly define the relevant topology
+> issues.
+> 
+> 
+> Thanks,
+> Zhao
 
-Daniel Henrique Barboza <danielhb413@gmail.com> writes:
+I think it's ok, as long as Igor's happy.
 
-> Update all relevant PowerPC entries as follows:
->
-> - Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
->   Nick has  been a solid contributor for the last couple of years and
->   has the required knowledge and motivation to drive the boat.
->
-> - Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
->   to other areas of interest and will retire from qemu-ppc.  Thanks Mr
->   Kurz for all the years of service.
->
-> - David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
->   KVM CPUs. Change done per his request.
->
-> - Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
->   PPC KVM CPUs. It has been a long since I last touched those areas and
->   it's not justified to be kept as maintainer in them.
->
-> - Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
->   don't have the required knowledge to justify it.
->
-> - VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
->   better reflects the current state of the subsystem.
->
-> Acked-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+> > 
+> > Philippe, can you pick this up for the misc tree?
+> > 
+> > /mjt
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
