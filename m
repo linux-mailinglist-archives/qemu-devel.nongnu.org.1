@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153637A2203
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DDB7A21FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:10:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhARe-0003Xx-KP; Fri, 15 Sep 2023 11:09:22 -0400
+	id 1qhARe-0003Xv-Ld; Fri, 15 Sep 2023 11:09:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qhARG-0003Cl-8P
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:08:58 -0400
+ id 1qhARG-0003Eb-U8
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:08:59 -0400
 Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qhARD-00029H-HH
+ id 1qhARE-00029a-NW
  for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:08:58 -0400
 Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-401b393ddd2so25870755e9.0
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:08:55 -0700 (PDT)
+ 5b1f17b1804b1-40078c4855fso24310385e9.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:08:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694790534; x=1695395334; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694790535; x=1695395335; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xTrovK4fIdtvshi0BSJ6A7SGaTiEX1KvDjEUM74fc78=;
- b=ZQV3TrVjCvf9BPyQ5Fct6sxl/U6/q8f1SiYfjG8kX3XrfCXinXqXE0ANqHrw+bXZK0
- JQY7Y3g/3im48WjlRr4xk6kloThVeSj5v243cOrQQMbt5vH06+upGzKIA+hpi+4Z1d5w
- U0jduwqzjAIdg2PWjRR4zl4xqozwGGJh0kKfKFbxzIaU20Bgju9/7idufEJ1v41Glili
- gtosfZ7iTBM66jgAte43pw27dzpAHWeMUBq0fEcr1x7I5X2aXXsa9n6eeXUBgArMyv/4
- n3aRIHoZC5TSIgzZdjL653KbF/UUcm5bAUQV7HrJKp3XWpGGTRgcdrZ8Wtf8QrKCZJGi
- EtSg==
+ bh=l0mIdmdlmXswKm589oYcvupbnyEZRR+lBvL3XDXcnX4=;
+ b=C9+a61VjONv3hLMulKsUUJ9Wxuuqwaa2PN+5O5pqY2k1I5B5f4lPG+lMNJS1JVSGlR
+ GRTl/EsQUO4K2gFuqiM5cwINmZv+cSBm9frjSi8DjUIx3nRgSgyIr3JevSVWqNlcmZRe
+ 5i5GftgxZPwLB9Xi5ahbdeHeQV3X7Vifbfa+hm666Egy7xrqSQ0QKbEEJ8CFbToptYPV
+ Pm446ZBAgr2giHyFLxhMBFhPdgwO2PYVoUcAXKsdjG1GSWCPXKybOBLZfvb4G08FzaUN
+ z/LI0XQGizdjH446VVV40ooTBDMKfBqovJw0akLsy/MkOn/4ZZRHNFrXBygd+P3NroMX
+ KD1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694790534; x=1695395334;
+ d=1e100.net; s=20230601; t=1694790535; x=1695395335;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xTrovK4fIdtvshi0BSJ6A7SGaTiEX1KvDjEUM74fc78=;
- b=HY+7kXCbkfYZhCE6lnZdaVqwKUNtDH999kZ/i0eCbM+nGihTZWNJyHHzN4k8YMS/gy
- BtaCv+y9u0VybciSnBQRHMK/YVbQrKuRrFBzVcEEw5801a0nxhbyg/JD+5fqe8OEiiVs
- bRSML3t4JdLdj6snMwRMRvHsnJAGx34FT7LuYHcJB7YXW/6Hn4INO/kKemh8slDlZEbp
- oAUiWbfUe0KNYNfVY5DtbUMsJq5cr49sn3Nd5x+hcvQAXtCTZRT3e0VVjOeBZJeRXjzA
- XlNYNzFIdWQrkj9c13l8tIt5TMlsf4BC8FcTVBa1wHBV5nssW0kk0kI71Ogf+Cta+Dtj
- t8aw==
-X-Gm-Message-State: AOJu0Ywrss2gnRH6YF3c/jeDvQ7BtjB0yZ/Eon6gPh7pF6JhfWoWlBkw
- Gm/wZoLuL5O/Ns17BCtXJtny/A==
-X-Google-Smtp-Source: AGHT+IFl5Gn38Fb1Fs8+hYQfrM21xDtZSRgdwe2RKprtFax3+Jc4+DirnnYM4o54cDRwXJkFOVal+g==
-X-Received: by 2002:a7b:c857:0:b0:3ff:233f:2cfb with SMTP id
- c23-20020a7bc857000000b003ff233f2cfbmr1778245wml.23.1694790534095; 
+ bh=l0mIdmdlmXswKm589oYcvupbnyEZRR+lBvL3XDXcnX4=;
+ b=JkyRwwTX95lxpfjTYCMnnqaRE3u88GSg5nvWtvXuWY87+lFtjNqXA+EUSioEEN78TF
+ XGkjtb1m/6oapRrsAxMTnBI2egi21fncY+byXaKrOCQ42e6BdQV2pcKaRSsPL5CZms+L
+ BA4sWS38+h2FcBpO0waEzCAFe9J3TSNJyouhV8eWHUOTwG2X2lOTp4CYvRCx1fhBnwoy
+ hWl5YCsQJ4WHLZXP+r6G5T2/LKCEDTzO2Pd/aNzbyixpVYGxCbrSCaCe31nleEjmGxme
+ xeqe7kEwMsJdjjrsaq2cE0B2swQNgI9hunT5YiW5Au+JQAJPioYRuzlBnrQqDTIrD1W9
+ mLxw==
+X-Gm-Message-State: AOJu0YwKVY17UbkVzB7DRD8PwpLVl8vkIl8JF/qGU5yZ96xUgp9c/S0Y
+ CuonoZ64PeIs2SUveGC8cSZAjw==
+X-Google-Smtp-Source: AGHT+IECXrTGTHUOetFMq9HbwvWy8UdRzu90bxlj6k3O7ITVG1CVGl4FPwiNxUB0uH/Zvqt7SzNEaQ==
+X-Received: by 2002:a7b:ca4a:0:b0:401:c436:8999 with SMTP id
+ m10-20020a7bca4a000000b00401c4368999mr2031176wml.30.1694790534932; 
  Fri, 15 Sep 2023 08:08:54 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- y6-20020a7bcd86000000b003fee6e170f9sm4857598wmj.45.2023.09.15.08.08.51
+ l20-20020a1c7914000000b003fe29dc0ff2sm4927349wme.21.2023.09.15.08.08.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 15 Sep 2023 08:08:52 -0700 (PDT)
 Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 93CDE1FFC1;
+ by zen.linaroharston (Postfix) with ESMTP id AAC231FFC2;
  Fri, 15 Sep 2023 16:08:50 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>
-Subject: [PULL 6/9] gitlab: make Cirrus CI timeout explicit
-Date: Fri, 15 Sep 2023 16:08:46 +0100
-Message-Id: <20230915150849.595896-7-alex.bennee@linaro.org>
+Subject: [PULL 7/9] gitlab: make Cirrus CI jobs gating
+Date: Fri, 15 Sep 2023 16:08:47 +0100
+Message-Id: <20230915150849.595896-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230915150849.595896-1-alex.bennee@linaro.org>
 References: <20230915150849.595896-1-alex.bennee@linaro.org>
@@ -102,54 +102,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Daniel P. Berrangé <berrange@redhat.com>
 
-On the GitLab side we're invoking the Cirrus CI job using the
-cirrus-run tool which speaks to the Cirrus REST API. Cirrus
-sometimes tasks 5-10 minutes to actually schedule the task,
-and thus the execution time of 'cirrus-run' inside GitLab will
-be slightly longer than the execution time of the Cirrus CI
-task.
-
-Setting the timeout in the GitLab CI job should thus be done
-in relation to the timeout set for the Cirrus CI job. While
-Cirrus CI defaults to 60 minutes, it is better to set this
-explicitly, and make the relationship between the jobs
-explicit
+The Cirrus CI jobs have been non-gating for a while to let us build
+confidence in their reliability. Aside from periodic dependancy
+problems when FreeBSD Ports switches to be based on a new FreeBSD
+image version, the jobs have been reliable. It is thus worth making
+them gating to prevent build failures being missed during merges.
 
 Signed-off-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20230912184130.3056054-4-berrange@redhat.com>
+Message-Id: <20230912184130.3056054-5-berrange@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230914155422.426639-7-alex.bennee@linaro.org>
+Message-Id: <20230914155422.426639-8-alex.bennee@linaro.org>
 
 diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 41d64d6680..816d89cc2a 100644
+index 816d89cc2a..e7f1f83c2c 100644
 --- a/.gitlab-ci.d/cirrus.yml
 +++ b/.gitlab-ci.d/cirrus.yml
-@@ -15,6 +15,9 @@
-   stage: build
-   image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
-   needs: []
-+  # 20 mins larger than "timeout_in" in cirrus/build.yml
-+  # as there's often a 5-10 minute delay before Cirrus CI
-+  # actually starts the task
+@@ -19,7 +19,6 @@
+   # as there's often a 5-10 minute delay before Cirrus CI
+   # actually starts the task
    timeout: 80m
-   allow_failure: true
+-  allow_failure: true
    script:
-diff --git a/.gitlab-ci.d/cirrus/build.yml b/.gitlab-ci.d/cirrus/build.yml
-index a9444902ec..29d55c4aa3 100644
---- a/.gitlab-ci.d/cirrus/build.yml
-+++ b/.gitlab-ci.d/cirrus/build.yml
-@@ -16,6 +16,8 @@ env:
-   TEST_TARGETS: "@TEST_TARGETS@"
- 
- build_task:
-+  # A little shorter than GitLab timeout in ../cirrus.yml
-+  timeout_in: 60m
-   install_script:
-     - @UPDATE_COMMAND@
-     - @INSTALL_COMMAND@ @PKGS@
+     - source .gitlab-ci.d/cirrus/$NAME.vars
+     - sed -e "s|[@]CI_REPOSITORY_URL@|$CI_REPOSITORY_URL|g"
 -- 
 2.39.2
 
