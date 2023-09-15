@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA677A2255
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8837A225B
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:28:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhAiJ-0004oy-21; Fri, 15 Sep 2023 11:26:35 -0400
+	id 1qhAji-0005ed-Cz; Fri, 15 Sep 2023 11:28:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qhAiF-0004oB-O3; Fri, 15 Sep 2023 11:26:31 -0400
+ id 1qhAjY-0005dd-1N; Fri, 15 Sep 2023 11:27:52 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qhAi9-0005CP-Li; Fri, 15 Sep 2023 11:26:31 -0400
+ id 1qhAjW-0005PI-HP; Fri, 15 Sep 2023 11:27:51 -0400
 Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38FFQ1fO009309; Fri, 15 Sep 2023 15:26:01 GMT
+ 38FFQ55Q009486; Fri, 15 Sep 2023 15:27:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=/zH+vCIA/0iEMhYfJT6mCElazOiCpfv3UX6EXBab5eo=;
- b=cnDTvbEEOEvEPdvu/93Mq5IUypIH7dw8QeIg33vdQpYN5xHVb/Ox1gfJWKlPtKJp4qLd
- ZIpkwEgO+/2JqESOCvcmW03GZY0U2INmaGpSLRWlD863T1rSX6PbTc01mD+yzCvGmoch
- 9LVQruWhsVWy0i5Ar8y1NmIWB9WNPD9eJjr06Ogri2fvCBqGtcsLn0LPCBIcQTP0AIXI
- WoNFQUEqy79DC91FUOSNPBOqVx6xHr+wNmGblKR2ooKeybPXwkN/FNf7zzKJOQ6Vkh3x
- Y9pz/kUN74Ys0GRRmE1ldxwNuX4ZkDaQwxJ59XgpHGQpVA6raRKTL3x4hfSJo/Q5ptj3 gA== 
+ bh=DrCFFHnu1MJ8O5oleEIdNSOBejb4lif0Xt5UGdSZh2I=;
+ b=hpDVR3lB88U79h0fE7wYP+UGAXaiiwidOl+s9fBE3X6IvT056S/j4yDU5YwTQPeHj0o7
+ jXoEnkKs/gIiU5jSUhpVXMoFjD4cHbjaeY4QiZjH/Skwq2SaKdd7Sz5UKA5FHaJg/YHo
+ Ts5bpyfgA/oGP2rxYHlrBzvB1z0K1QWrDeIoHdvMAlDIW05i1mS75laDEIF3quZtbb22
+ 6vsAVUZI1WwFfqHAFmBlG4LI0JKsqWjTz0Y5gkSJC+9Vx8x22Q4c+KQZ8lDNbW7xnoMP
+ hUgzZEiGiyfAh9czbvmTXE3tyXMTHEpC/y4I91hzrXvhh8yBba4rT8TcDGD+7xFBpRGE Gw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4swhr00s-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4swhr1tt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:26:00 +0000
+ Fri, 15 Sep 2023 15:27:36 +0000
 Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38FFQ0qY009253;
- Fri, 15 Sep 2023 15:26:00 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4swhr006-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38FFQbOf011726;
+ Fri, 15 Sep 2023 15:27:35 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4swhr1te-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:25:59 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38FESjLG011971; Fri, 15 Sep 2023 15:25:59 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t15r2mb90-1
+ Fri, 15 Sep 2023 15:27:35 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38FEATRJ002755; Fri, 15 Sep 2023 15:27:34 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t14hmmqk4-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:25:59 +0000
+ Fri, 15 Sep 2023 15:27:34 +0000
 Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
  [10.39.53.233])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38FFPwuQ7799490
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38FFRYcc37749354
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 15 Sep 2023 15:25:58 GMT
+ Fri, 15 Sep 2023 15:27:34 GMT
 Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4B5D758054;
- Fri, 15 Sep 2023 15:25:58 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id E1F395803F;
+ Fri, 15 Sep 2023 15:27:33 +0000 (GMT)
 Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2CD715803F;
- Fri, 15 Sep 2023 15:25:53 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A4F8F58055;
+ Fri, 15 Sep 2023 15:27:28 +0000 (GMT)
 Received: from [9.195.40.219] (unknown [9.195.40.219])
  by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 15 Sep 2023 15:25:52 +0000 (GMT)
-Message-ID: <ce35def0-318f-91ac-592f-517bb5bce09b@linux.ibm.com>
-Date: Fri, 15 Sep 2023 20:55:50 +0530
+ Fri, 15 Sep 2023 15:27:28 +0000 (GMT)
+Message-ID: <09b837fe-d2a7-083d-c67b-b38a7a46bfbf@linux.ibm.com>
+Date: Fri, 15 Sep 2023 20:57:26 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [RFC PATCH 3/4] accel/tcg: Guard tb_flush() with tcg_enabled()
- and remove the stub
+Subject: Re: [RFC PATCH 4/4] accel/tcg: Keep tlb_set_dirty() internal
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -84,20 +83,20 @@ Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
  =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org
 References: <20230914195229.78244-1-philmd@linaro.org>
- <20230914195229.78244-4-philmd@linaro.org>
+ <20230914195229.78244-5-philmd@linaro.org>
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230914195229.78244-4-philmd@linaro.org>
+In-Reply-To: <20230914195229.78244-5-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jKuNaX6O-2MUL0h9VQLvsSj_RS8khDEZ
-X-Proofpoint-ORIG-GUID: PIO8bW2akO1pXJYAp_OONC7_wTA2zUzl
+X-Proofpoint-GUID: FPeWnLe5LAokuHoWknVPMaewQWK98yU1
+X-Proofpoint-ORIG-GUID: z_uRWNNUBNai6oxzncoxEHxtLVBlAWMZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-15_11,2023-09-15_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0
- priorityscore=1501 mlxlogscore=999 mlxscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=917 mlxscore=0 clxscore=1015
  impostorscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0
  adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2308100000 definitions=main-2309150134
@@ -128,99 +127,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 9/15/23 01:22, Philippe Mathieu-Daudé wrote:
-> The check on tcg_enabled() make it clearer we want
-> this call under TCG.
+> Since commit 34d49937e4 ("accel/tcg: Handle atomic accesses
+> to notdirty memory correctly") tlb_set_dirty() is only used
+> (once) in the very same file it is defined... Make it static.
 > 
-
-tb_flush already has a check for tcg_enabled() in its definition.
-Do we really need to check for same before calling it?
-
-Thanks
-Harsh
-
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
 > ---
->   accel/stubs/tcg-stub.c |  4 ----
->   cpu.c                  | 15 +++++++++------
->   gdbstub/softmmu.c      |  5 ++++-
->   hw/ppc/spapr_hcall.c   |  2 +-
->   4 files changed, 14 insertions(+), 12 deletions(-)
+>   include/exec/exec-all.h | 1 -
+>   accel/tcg/cputlb.c      | 2 +-
+>   2 files changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
-> index dd890d6cf6..7d9846f7f2 100644
-> --- a/accel/stubs/tcg-stub.c
-> +++ b/accel/stubs/tcg-stub.c
-> @@ -14,10 +14,6 @@
->   #include "exec/tb-flush.h"
->   #include "exec/exec-all.h"
+> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+> index b2f5cd4c2a..59efa7bc28 100644
+> --- a/include/exec/exec-all.h
+> +++ b/include/exec/exec-all.h
+> @@ -695,7 +695,6 @@ static inline void mmap_unlock(void) {}
+>   #define WITH_MMAP_LOCK_GUARD()
 >   
-> -void tb_flush(CPUState *cpu)
-> -{
-> -}
-> -
->   int probe_access_flags(CPUArchState *env, vaddr addr, int size,
->                          MMUAccessType access_type, int mmu_idx,
->                          bool nonfault, void **phost, uintptr_t retaddr)
-> diff --git a/cpu.c b/cpu.c
-> index 0769b0b153..ce3b04f21f 100644
-> --- a/cpu.c
-> +++ b/cpu.c
-> @@ -57,12 +57,15 @@ static int cpu_common_post_load(void *opaque, int version_id)
->       cpu->interrupt_request &= ~0x01;
->       tlb_flush(cpu);
+>   void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
+> -void tlb_set_dirty(CPUState *cpu, vaddr addr);
 >   
-> -    /* loadvm has just updated the content of RAM, bypassing the
-> -     * usual mechanisms that ensure we flush TBs for writes to
-> -     * memory we've translated code from. So we must flush all TBs,
-> -     * which will now be stale.
-> -     */
-> -    tb_flush(cpu);
-> +    if (tcg_enabled()) {
-> +        /*
-> +         * loadvm has just updated the content of RAM, bypassing the
-> +         * usual mechanisms that ensure we flush TBs for writes to
-> +         * memory we've translated code from. So we must flush all TBs,
-> +         * which will now be stale.
-> +         */
-> +        tb_flush(cpu);
-> +    }
+>   MemoryRegionSection *
+>   address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index c643d66190..fe9d702f3e 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -1062,7 +1062,7 @@ static inline void tlb_set_dirty1_locked(CPUTLBEntry *tlb_entry,
 >   
->       return 0;
->   }
-> diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-> index 9f0b8b5497..edd13f047d 100644
-> --- a/gdbstub/softmmu.c
-> +++ b/gdbstub/softmmu.c
-> @@ -21,6 +21,7 @@
->   #include "sysemu/cpus.h"
->   #include "sysemu/runstate.h"
->   #include "sysemu/replay.h"
-> +#include "sysemu/tcg.h"
->   #include "hw/core/cpu.h"
->   #include "hw/cpu/cluster.h"
->   #include "hw/boards.h"
-> @@ -170,7 +171,9 @@ static void gdb_vm_state_change(void *opaque, bool running, RunState state)
->           } else {
->               trace_gdbstub_hit_break();
->           }
-> -        tb_flush(cpu);
-> +        if (tcg_enabled()) {
-> +            tb_flush(cpu);
-> +        }
->           ret = GDB_SIGNAL_TRAP;
->           break;
->       case RUN_STATE_PAUSED:
-> diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
-> index b7dc388f2f..306f8fdf55 100644
-> --- a/hw/ppc/spapr_hcall.c
-> +++ b/hw/ppc/spapr_hcall.c
-> @@ -296,7 +296,7 @@ static target_ulong h_page_init(PowerPCCPU *cpu, SpaprMachineState *spapr,
->       if (flags & (H_ICACHE_SYNCHRONIZE | H_ICACHE_INVALIDATE)) {
->           if (kvm_enabled()) {
->               kvmppc_icbi_range(cpu, pdst, len);
-> -        } else {
-> +        } else if (tcg_enabled()) {
->               tb_flush(CPU(cpu));
->           }
->       }
+>   /* update the TLB corresponding to virtual page vaddr
+>      so that it is no longer dirty */
+> -void tlb_set_dirty(CPUState *cpu, vaddr addr)
+> +static void tlb_set_dirty(CPUState *cpu, vaddr addr)
+>   {
+>       CPUArchState *env = cpu->env_ptr;
+>       int mmu_idx;
 
