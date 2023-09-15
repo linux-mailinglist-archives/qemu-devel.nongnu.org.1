@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6847A12CE
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 03:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8839E7A12DF
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 03:21:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgxOZ-0004a3-Gm; Thu, 14 Sep 2023 21:13:19 -0400
+	id 1qgxWD-0005sK-La; Thu, 14 Sep 2023 21:21:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qgxOX-0004Zr-TI; Thu, 14 Sep 2023 21:13:17 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qgxW6-0005s2-QS; Thu, 14 Sep 2023 21:21:07 -0400
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qgxOV-00083M-LK; Thu, 14 Sep 2023 21:13:17 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bf55a81eeaso12955475ad.0; 
- Thu, 14 Sep 2023 18:13:14 -0700 (PDT)
+ id 1qgxW0-0000ow-DV; Thu, 14 Sep 2023 21:21:06 -0400
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-5731fe1d2bfso915357eaf.3; 
+ Thu, 14 Sep 2023 18:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694740394; x=1695345194; darn=nongnu.org;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=gmail.com; s=20221208; t=1694740858; x=1695345658; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ssdLI8uuzpET2t77s60vQQVZHhENjtHfcO48jXVtQ3g=;
- b=f20Kpq0UwAbeFLz5fXFrBLThbp8fdBW2+m7BKRemoH3fm9+4srokVEHHTTBg9x6Otw
- 1E3ZlpEBUcfmyQtL5YHu0GzaOIWURYuJf0s+PIot1LPVKOOMw85hF+D5IQ3odKjxBt8X
- YqFAE7DeaOzzlIwBSzT1RpF4tICcdX8XwC+2Ju0y9t7ZvVMPNI19Zcjy29sKn3S0GVP+
- ffQJsUQLDgvn12QFQ4C4EGRVJD+QRGYnyJIBI8SruHpo64TMBEdo4n03xQVpENHj7D9L
- vIlE0DZgKNuMOd2lAL/1vMI3Xbyg28gCQ8L0YKM6wR1RH9q5Ib7vbG0uTCl+OW4wzsRg
- 0PYw==
+ bh=gDJOEB59coJCMpMAiDGT07EGBmulG2Bnl8XuBpKvcvc=;
+ b=JGcXOY14EgNx/lrR51ynLR6hzZE+mI8CA5KY6Xa2knaimRula+Gd9jEA9q0NwrW6LM
+ etNlF8OLP6+i8T1YKCaSn0uhrPTFvz7SK/gO9piDhM60ZarBbAs3D0UVcDJEZllogUiZ
+ qnnvwuDOInnVxq2RKKvHWsauinAe2N+DtPQMpx9QhR1C3mLu8Lcb2I18lo2LdE7Yztyh
+ kYLvPBmdlxMp8fOL62M8LidlogrHfNm/85ah+VwHppFgIYiNrhLHtP2WyzeypSdLu97y
+ nCoAYJsycuVIo6c344AvTk2BcGrT2sIZD0ej/yds0yrVrAOXLA92UQz3EiY2R+gYkt3M
+ HRHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694740394; x=1695345194;
- h=in-reply-to:references:from:subject:cc:to:message-id:date
+ d=1e100.net; s=20230601; t=1694740858; x=1695345658;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
  :content-transfer-encoding:mime-version:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=ssdLI8uuzpET2t77s60vQQVZHhENjtHfcO48jXVtQ3g=;
- b=BsIWn9rpbogDX90QWOn9SGTfhNZ2c40W8EcQOj/zD1BgxFEwLtcE8qUhSBrVLr4RlX
- FO5Ud5fYpeoPAQNJbl6j+B27mCjjt92vEA5g0zJ9MyEg8k2tQ0B5nXQmjUw7d8gVKqSs
- nyNL8OeLaXiglrOTwccI+EIGTqZP80g6F1dBwoXBWHf5W9IkrE0lQiUQxDhbp0JGauFo
- yIVxVBkLG8gPYGNfhDLMpdy5T3jW6CeSfppNTw0Sf9oxKarcqJIj2L+nTstUQwFBqcE5
- hU+SiEE79KURito+OjbGNocsuh6cp28QirFcNQPFxJcGcz8ccbKyzqkOYYOkzFhJfiFv
- sSMQ==
-X-Gm-Message-State: AOJu0YykzDBgO3p8QTzdRkTLYFsxi8W+lE9FAN9CsyC04CQ0AaHbedtm
- SOr6nDVFr1G9/c5QM3LfoTc=
-X-Google-Smtp-Source: AGHT+IEqq8/nF9jALWuJkQaAqOQM5TWHfOQrWzj7tFX2QquW4XrNm7EWjN6BJgb5YJ9Hl+IrVHb6eg==
-X-Received: by 2002:a17:903:32ca:b0:1c1:f3f8:3949 with SMTP id
- i10-20020a17090332ca00b001c1f3f83949mr320903plr.1.1694740393637; 
- Thu, 14 Sep 2023 18:13:13 -0700 (PDT)
+ bh=gDJOEB59coJCMpMAiDGT07EGBmulG2Bnl8XuBpKvcvc=;
+ b=hZjC3xLSEY1SVLXY/y46aq7SoVr62XdqdqM5LfKtWErQC6PcoNf4KJEd/YHKwaLYqj
+ 8Vi0BQ8xN99AV84Gc6/Wtn2HAiTVONqTV40wtcVAt6+7ETWu6wsrTBPNUpw2XuFGDvTR
+ kWybu+tz5MNYrdi7CGB665eUfhqjqdOPjPR6usGwxBbk7L9XBhNk+w4VtFoaQobVbEPo
+ MHbz0uHqNfL7aQ+9iVAZs3nHxevxcDVi1YquXP6gFfpqeXoEYjnVhab0zgbYygNtRqjd
+ uVci0oXVDjUf4m9w0vLqgRvpwoyTXrZPdGWkkiazyXVKVUrzTWc8sKKa8T791OxT45zg
+ CQ3g==
+X-Gm-Message-State: AOJu0YwDrnd2I1cOamFtiLf/pBVAX9eXMYm45zrpoe3AkAcr/0rFhhoX
+ xLd9FZ8AIuqWNLzJ7tLTW5k=
+X-Google-Smtp-Source: AGHT+IHgrGStFajlnrjBxzum6yLl78krdWhGODg5hzUXsOXBMArcH3huOJEW6sGLRMxPyy8obnhNuQ==
+X-Received: by 2002:a05:6358:52d4:b0:13c:dd43:f741 with SMTP id
+ z20-20020a05635852d400b0013cdd43f741mr490882rwz.24.1694740858565; 
+ Thu, 14 Sep 2023 18:20:58 -0700 (PDT)
 Received: from localhost ([193.114.103.68]) by smtp.gmail.com with ESMTPSA id
- o10-20020a170902d4ca00b001bf3bdbceb5sm2191520plg.134.2023.09.14.18.13.10
+ x4-20020a656aa4000000b0056428865aadsm1511350pgu.82.2023.09.14.18.20.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 18:13:13 -0700 (PDT)
+ Thu, 14 Sep 2023 18:20:58 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Sep 2023 11:13:07 +1000
-Message-Id: <CVJ3BU3MZKOR.1SBA8KVQYWOXL@wheely>
-To: "Glenn Miles" <milesg@linux.vnet.ibm.com>, <qemu-devel@nongnu.org>
+Date: Fri, 15 Sep 2023 11:20:52 +1000
+Message-Id: <CVJ3HRR2EADR.15F9G78LN7PKL@wheely>
 Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>,
  =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "David Gibson"
  <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>, "open
  list:PowerPC TCG CPUs" <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH 3/4] target/ppc: Add clrbhrb and mfbhrbe instructions
+Subject: Re: [PATCH 4/4] target/ppc: Add migration support for BHRB
 From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Glenn Miles" <milesg@linux.vnet.ibm.com>, <qemu-devel@nongnu.org>
 X-Mailer: aerc 0.15.2
 References: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
- <20230912202447.3381835-1-milesg@linux.vnet.ibm.com>
-In-Reply-To: <20230912202447.3381835-1-milesg@linux.vnet.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62b.google.com
+ <20230912202514.3382619-1-milesg@linux.vnet.ibm.com>
+In-Reply-To: <20230912202514.3382619-1-milesg@linux.vnet.ibm.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=npiggin@gmail.com; helo=mail-oo1-xc33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,164 +93,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Sep 13, 2023 at 6:24 AM AEST, Glenn Miles wrote:
-> Add support for the clrbhrb and mfbhrbe instructions.
->
-> Since neither instruction is believed to be critical to
-> performance, both instructions were implemented using helper
-> functions.
->
-> Access to both instructions is controlled by bits in the
-> HFSCR (for privileged state) and MMCR0 (for problem state).
-> A new function, helper_mmcr0_facility_check, was added for
-> checking MMCR0[BHRBA] and raising a facility_unavailable exception
-> if required.
+On Wed Sep 13, 2023 at 6:25 AM AEST, Glenn Miles wrote:
+> Adds migration support for Branch History Rolling
+> Buffer (BHRB) internal state.
 >
 > Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 > ---
->  target/ppc/cpu.h         |  1 +
->  target/ppc/helper.h      |  4 ++++
->  target/ppc/misc_helper.c | 43 ++++++++++++++++++++++++++++++++++++++++
->  target/ppc/translate.c   | 13 ++++++++++++
->  4 files changed, 61 insertions(+)
+>  target/ppc/machine.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
 >
-> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-> index bda1afb700..ee81ede4ee 100644
-> --- a/target/ppc/cpu.h
-> +++ b/target/ppc/cpu.h
-> @@ -541,6 +541,7 @@ FIELD(MSR, LE, MSR_LE, 1)
+> diff --git a/target/ppc/machine.c b/target/ppc/machine.c
+> index b195fb4dc8..89146969c8 100644
+> --- a/target/ppc/machine.c
+> +++ b/target/ppc/machine.c
+> @@ -314,6 +314,7 @@ static int cpu_post_load(void *opaque, int version_id=
+)
 > =20
->  /* HFSCR bits */
->  #define HFSCR_MSGP     PPC_BIT(53) /* Privileged Message Send Facilities=
- */
-> +#define HFSCR_BHRB     PPC_BIT(59) /* BHRB Instructions */
->  #define HFSCR_IC_MSGP  0xA
-> =20
->  #define DBCR0_ICMP (1 << 27)
-> diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-> index 1a3d9a7e57..bbc32ff114 100644
-> --- a/target/ppc/helper.h
-> +++ b/target/ppc/helper.h
-> @@ -816,3 +816,7 @@ DEF_HELPER_4(DSCLIQ, void, env, fprp, fprp, i32)
-> =20
->  DEF_HELPER_1(tbegin, void, env)
->  DEF_HELPER_FLAGS_1(fixup_thrm, TCG_CALL_NO_RWG, void, env)
-> +
-> +DEF_HELPER_1(clrbhrb, void, env)
-> +DEF_HELPER_FLAGS_2(mfbhrbe, TCG_CALL_NO_WG, i64, env, i32)
-> +
-> diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
-> index 692d058665..45abe04f66 100644
-> --- a/target/ppc/misc_helper.c
-> +++ b/target/ppc/misc_helper.c
-> @@ -139,6 +139,17 @@ void helper_fscr_facility_check(CPUPPCState *env, ui=
-nt32_t bit,
->  #endif
->  }
-> =20
-> +static void helper_mmcr0_facility_check(CPUPPCState *env, uint32_t bit,
-> +                                 uint32_t sprn, uint32_t cause)
-> +{
-> +#ifdef TARGET_PPC64
-> +    if (FIELD_EX64(env->msr, MSR, PR) &&
-> +        !(env->spr[SPR_POWER_MMCR0] & (1ULL << bit))) {
-> +        raise_fu_exception(env, bit, sprn, cause, GETPC());
-> +    }
-> +#endif
-> +}
-> +
->  void helper_msr_facility_check(CPUPPCState *env, uint32_t bit,
->                                 uint32_t sprn, uint32_t cause)
->  {
-> @@ -351,3 +362,35 @@ void helper_fixup_thrm(CPUPPCState *env)
->          env->spr[i] =3D v;
+>      if (tcg_enabled()) {
+>          pmu_mmcr01a_updated(env);
+> +        hreg_bhrb_filter_update(env);
 >      }
->  }
-> +
-> +void helper_clrbhrb(CPUPPCState *env)
-> +{
-> +    helper_hfscr_facility_check(env, HFSCR_BHRB, "clrbhrb", FSCR_IC_BHRB=
-);
-> +
-> +    helper_mmcr0_facility_check(env, MMCR0_BHRBA, 0, FSCR_IC_BHRB);
-
-Repeating the comment about MMCR0_BHRBA and PPC_BIT_NR discrepancy here
-for posterity.
-
-> +
-> +    memset(env->bhrb, 0, sizeof(env->bhrb));
-> +}
-> +
-> +uint64_t helper_mfbhrbe(CPUPPCState *env, uint32_t bhrbe)
-> +{
-> +    unsigned int index;
-> +
-> +    helper_hfscr_facility_check(env, HFSCR_BHRB, "mfbhrbe", FSCR_IC_BHRB=
-);
-> +
-> +    helper_mmcr0_facility_check(env, MMCR0_BHRBA, 0, FSCR_IC_BHRB);
-> +
-> +    if ((bhrbe >=3D env->bhrb_num_entries) ||
-> +       (env->spr[SPR_POWER_MMCR0] & MMCR0_PMAE)) {
-
-Nitpick, but multi line statment starts again inside the first
-parenthesis after a keyword like this.
-
-> +        return 0;
-> +    }
-> +
-> +    /*
-> +     * Note: bhrb_offset is the byte offset for writing the
-> +     * next entry (over the oldest entry), which is why we
-> +     * must offset bhrbe by 1 to get to the 0th entry.
-> +     */
-> +    index =3D ((env->bhrb_offset / sizeof(uint64_t)) - (bhrbe + 1)) %
-> +            env->bhrb_num_entries;
-> +    return env->bhrb[index];
-> +}
-> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-> index 7824475f54..b330871793 100644
-> --- a/target/ppc/translate.c
-> +++ b/target/ppc/translate.c
-> @@ -6549,12 +6549,25 @@ static void gen_brh(DisasContext *ctx)
->  }
->  #endif
 > =20
-> +static void gen_clrbhrb(DisasContext *ctx)
+>      return 0;
+> @@ -670,6 +671,27 @@ static const VMStateDescription vmstate_compat =3D {
+>      }
+>  };
+> =20
+> +#ifdef TARGET_PPC64
+> +static bool bhrb_needed(void *opaque)
 > +{
-> +    gen_helper_clrbhrb(cpu_env);
+> +    PowerPCCPU *cpu =3D opaque;
+> +    return (cpu->env.flags & POWERPC_FLAG_BHRB) !=3D 0;
 > +}
 > +
-> +static void gen_mfbhrbe(DisasContext *ctx)
-> +{
-> +    TCGv_i32 bhrbe =3D tcg_constant_i32(_SPR(ctx->opcode));
-> +    gen_helper_mfbhrbe(cpu_gpr[rD(ctx->opcode)], cpu_env, bhrbe);
-> +}
-> +
->  static opcode_t opcodes[] =3D {
->  #if defined(TARGET_PPC64)
->  GEN_HANDLER_E(brd, 0x1F, 0x1B, 0x05, 0x0000F801, PPC_NONE, PPC2_ISA310),
->  GEN_HANDLER_E(brw, 0x1F, 0x1B, 0x04, 0x0000F801, PPC_NONE, PPC2_ISA310),
->  GEN_HANDLER_E(brh, 0x1F, 0x1B, 0x06, 0x0000F801, PPC_NONE, PPC2_ISA310),
->  #endif
-> +GEN_HANDLER_E(clrbhrb, 0x1F, 0x0E, 0x0D, 0x3FFF801, PPC_NONE, PPC2_ISA20=
-7S),
-> +GEN_HANDLER_E(mfbhrbe, 0x1F, 0x0E, 0x09, 0x0000001, PPC_NONE, PPC2_ISA20=
-7S),
+> +static const VMStateDescription vmstate_bhrb =3D {
+> +    .name =3D "cpu/bhrb",
+> +    .version_id =3D 1,
+> +    .minimum_version_id =3D 1,
+> +    .needed =3D bhrb_needed,
+> +    .fields =3D (VMStateField[]) {
+> +        VMSTATE_UINTTL(env.bhrb_num_entries, PowerPCCPU),
 
-How much of a pain would it be to add it as decodetree? If there is an
-addition a family of existing instrutions here it makes sense to add it
-here, for new family would be nice to use decodetree.
+Maybe don't need bhrb_num_entries since target machine should have the
+same?
 
-I think they're only supported in 64-bit ISA so it could be ifdef
-TARGET_PPC64.
+> +        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
+> +        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES)=
+,
+
+Is it possible to migrate only bhrb_num_entries items? Wants a VARRAY
+AFAIKS but there is no VARRAY_UINT64?
+
+Since all sizes are the same 32 now, would it be possible to turn it
+into a VARRAY sometime later if supposing a new CPU changed to a
+different size, and would the wire format for the VARRAY still be
+compatible with this fixed size array, or does a VARRAY look different
+I wonder?
 
 Thanks,
 Nick
-
->  GEN_HANDLER(invalid, 0x00, 0x00, 0x00, 0xFFFFFFFF, PPC_NONE),
->  #if defined(TARGET_PPC64)
->  GEN_HANDLER_E(cmpeqb, 0x1F, 0x00, 0x07, 0x00600000, PPC_NONE, PPC2_ISA30=
-0),
-
 
