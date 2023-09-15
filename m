@@ -2,66 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C5F7A1A27
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 11:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80CB7A1A2E
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 11:16:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh4uN-0002a4-SI; Fri, 15 Sep 2023 05:14:39 -0400
+	id 1qh4vq-0003oe-HS; Fri, 15 Sep 2023 05:16:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh4uM-0002Zc-Ai
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:14:38 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh4vo-0003nl-Kp
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:16:08 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh4uK-0002YH-FG
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:14:38 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-52683b68c2fso2195248a12.0
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 02:14:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh4vj-0002yr-3p
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:16:08 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2bcb0b973a5so29846351fa.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 02:16:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694769274; x=1695374074; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1694769361; x=1695374161; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=csH8uynrhAKRyNtySU3G0SLyp0u8KMtuWG9AGTXrGYE=;
- b=eeV8RGuENRVbFrHa6EFByWY5J+f8gMay0l7FYTHweqjf2Gr/P815SEu5sWI0sDEKx7
- 1e6QIXube+NkvVJTwGM8pBBJlCkbBEGkDiTqvFsvgdDDgNc9zv5BAuaSNwMOUGh0pWKO
- I2rCOz7YB6HFz+Eay8O8WxPRYiTTJLXLI1w9AgQk3aj40OcqRf4QHvr0xQFqv4wFb6rI
- TOfSIlKiD5IMcsn826W12AEgFxYC7t1S6hagMsuLc3yONTTeghjB3mcwbkGwBG5pMJoS
- 7k2un9pq7aHd1JaQVdUK3FBH4bg1GKgTWvWZkKgDV0RXH8XNMKZTxP8yKaL8MfbYFBkR
- P+Qg==
+ bh=tobk7HZZ2nYrp4ct5icjk2NTeyFuWk3+o1WLYBkX2hg=;
+ b=FchmmzsNBiC6OSNGsjBmDwSNoti31NytkU3TYGkzN1Zdx35Gd1eZm5iabwunhsw1BI
+ zQzG3bmpnN8HqWVPFj1p4RR0UnITrAluNeUnkVvDSeuN5ZXIxqL4QA1qFUzE+UdOojoF
+ lE5vKetxIe5H22Qaxv/5WoeppsbVvzLZLmTEBYO7NTk3T9eKjcJIpREwzSIGqsxYcdWu
+ 3QOwku9/AQtgfxMeoxl3yXYEcr+pP7D4I6wYMLltdWg8Dx5fy6tprwTul2LVssGK2Td4
+ tc38p7xVrTgPdJeoNF0XGt4k3D1JO428xvCLuJoEtin2SU16/am1XsFASVQSeK0HQbv6
+ OIZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694769274; x=1695374074;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1694769361; x=1695374161;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=csH8uynrhAKRyNtySU3G0SLyp0u8KMtuWG9AGTXrGYE=;
- b=a4GEjLo3E3bNDiz4BLffHrUYSkSQlpAWy1gHGnxOQBjLH81kWNp1T2AND6YeHM1dKb
- oKc9LipfCHTDwOncRRY9/NjqB4Z4VOj3Atq+0u7i+Xa2nylnBiRGUnjECgm7LTNK8XQD
- pH+Rz8REgnQjz1rpKewmTTWsiyB+DjnABTl//9KwS89HHoUjxzteTT9wtz2GzjaKk7dq
- kznIiXHKErEU9Xy3AnMfbs+dL84CDEZe3oPm3bJoqqckh3YeEc3Iyd9Hq6vSsZG4/QZV
- QPFWjV0p0+O5BJmexiIltjDy9uF+PL6aYynSkWVVwyjWWYiGjkVYdnVSAFIicXiviaRH
- Fuzw==
-X-Gm-Message-State: AOJu0YwqIfVt6TAY9hbExUoVh21MR0SLajKqMZZp41V0hoJW0FmHDI+N
- GVQo/NNHgCu/vlQHZNNZqnHjqw==
-X-Google-Smtp-Source: AGHT+IGZ8EaVyfDw9TBqdJ0RB7ZP2Pmyqfw5bkWeQJt1slikn5Yy00nkOq7A/UCdrE0Ei0pkv+6ijQ==
-X-Received: by 2002:a05:6402:703:b0:523:3889:542a with SMTP id
- w3-20020a056402070300b005233889542amr1023965edx.34.1694769273712; 
- Fri, 15 Sep 2023 02:14:33 -0700 (PDT)
+ bh=tobk7HZZ2nYrp4ct5icjk2NTeyFuWk3+o1WLYBkX2hg=;
+ b=XttQut4KiJdf8UfpIeDCXZ3OWkLgnf+92/QgluidKRPEIgQ1IlJeUJWVSbUeab2Nst
+ MfWckGRDCe4vGusKbnDJ/FHCc+zuEPCvN6jzusalL0NJ8r6z/YNWeY78KzBwKTEeQ/jE
+ Ktd+niRnGwbqE8rwbeNMQlkbroxLwAI8b13qgQQj5fO3ecc+x4Ak7VlOepAw9Oy16EQa
+ KK9eIqsE/jMUE3AA0k4/+LML8LMFYuFq88LHUUVR1rtl21iq7UK7nGGEmn3U470K8gWi
+ K9ifFdwIVExVIIdqtiR15R66mauTOc36JxdxcJBRgh2pUQEXqwGuZD2XsWpNJSS2Qrcy
+ gUZw==
+X-Gm-Message-State: AOJu0YzRj9zrhWQunLLLOpRQB5viG29I0/j0t0EYUFw79SxO44n7q7Vj
+ 4pqT996IZOlBR9mM/30Tz4VE+w==
+X-Google-Smtp-Source: AGHT+IEjZXZdEw+lJzWMbLz6wDxyKQXhvBdiHgegnk4M/OtscX/4t77+pJMTJGHMcRhWL55+y7zRow==
+X-Received: by 2002:a2e:b001:0:b0:2bc:ee89:6976 with SMTP id
+ y1-20020a2eb001000000b002bcee896976mr1054643ljk.24.1694769361253; 
+ Fri, 15 Sep 2023 02:16:01 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-223-129.abo.bbox.fr.
  [176.131.223.129]) by smtp.gmail.com with ESMTPSA id
- v15-20020a056402348f00b005308a170845sm532918edc.29.2023.09.15.02.14.30
+ qx9-20020a170906fcc900b0099d0a8ccb5fsm2152978ejb.152.2023.09.15.02.15.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 02:14:33 -0700 (PDT)
-Message-ID: <30ac04ad-eb02-90ad-57ff-089538413602@linaro.org>
-Date: Fri, 15 Sep 2023 11:14:29 +0200
+ Fri, 15 Sep 2023 02:16:00 -0700 (PDT)
+Message-ID: <a7300e20-6979-e286-0d87-e5a14007b154@linaro.org>
+Date: Fri, 15 Sep 2023 11:15:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 1/9] tests: update Debian images to Bookworm
+Subject: Re: [PATCH 7/9] gitlab: make Cirrus CI jobs gating
+Content-Language: en-US
 To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+ qemu-devel@nongnu.org
 Cc: Cleber Rosa <crosa@redhat.com>, Joel Stanley <joel@jms.id.au>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>,
@@ -74,23 +75,22 @@ Cc: Cleber Rosa <crosa@redhat.com>, Joel Stanley <joel@jms.id.au>,
  <lvivier@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
  =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
 References: <20230914155422.426639-1-alex.bennee@linaro.org>
- <20230914155422.426639-2-alex.bennee@linaro.org>
-Content-Language: en-US
+ <20230914155422.426639-8-alex.bennee@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230914155422.426639-2-alex.bennee@linaro.org>
+In-Reply-To: <20230914155422.426639-8-alex.bennee@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,75 +107,22 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14/9/23 17:54, Alex Bennée wrote:
-> Bookworm has been out a while now. Time to update our containers to
-> the current stable. This requires the latest lcitool repo so update
-> the sub-module too.
+> From: Daniel P. Berrangé <berrange@redhat.com>
 > 
-> For some reason the MIPs containers won't build so skip those for now.
-
-Debian removed mipsel:
-https://lists.debian.org/debian-devel-announce/2023/09/msg00000.html
-https://lists.debian.org/debian-release/2019/08/msg00582.html ...
-
+> The Cirrus CI jobs have been non-gating for a while to let us build
+> confidence in their reliability. Aside from periodic dependancy
+> problems when FreeBSD Ports switches to be based on a new FreeBSD
+> image version, the jobs have been reliable. It is thus worth making
+> them gating to prevent build failures being missed during merges.
+> 
+> Signed-off-by: "Daniel P. Berrangé" <berrange@redhat.com>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Message-Id: <20230912184130.3056054-5-berrange@redhat.com>
 > Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 > ---
->   .../dockerfiles/debian-amd64-cross.docker      | 10 +++-------
->   tests/docker/dockerfiles/debian-amd64.docker   | 10 +++-------
->   .../dockerfiles/debian-arm64-cross.docker      | 10 +++-------
->   .../dockerfiles/debian-armel-cross.docker      | 10 +++-------
->   .../dockerfiles/debian-armhf-cross.docker      | 10 +++-------
->   .../dockerfiles/debian-ppc64el-cross.docker    | 10 +++-------
->   .../dockerfiles/debian-s390x-cross.docker      | 10 +++-------
->   tests/docker/dockerfiles/ubuntu2004.docker     |  2 +-
->   tests/docker/dockerfiles/ubuntu2204.docker     |  2 +-
->   tests/lcitool/libvirt-ci                       |  2 +-
->   tests/lcitool/refresh                          | 18 +++++++++---------
->   11 files changed, 33 insertions(+), 61 deletions(-)
-
-
-> @@ -133,24 +133,24 @@ try:
->       #
->       # Cross compiling builds
->       #
-> -    generate_dockerfile("debian-amd64-cross", "debian-11",
-> +    generate_dockerfile("debian-amd64-cross", "debian-12",
->                           cross="x86_64",
->                           trailer=cross_build("x86_64-linux-gnu-",
->                                               "x86_64-softmmu,"
->                                               "x86_64-linux-user,"
->                                               "i386-softmmu,i386-linux-user"))
->   
-> -    generate_dockerfile("debian-arm64-cross", "debian-11",
-> +    generate_dockerfile("debian-arm64-cross", "debian-12",
->                           cross="aarch64",
->                           trailer=cross_build("aarch64-linux-gnu-",
->                                               "aarch64-softmmu,aarch64-linux-user"))
->   
-> -    generate_dockerfile("debian-armel-cross", "debian-11",
-> +    generate_dockerfile("debian-armel-cross", "debian-12",
->                           cross="armv6l",
->                           trailer=cross_build("arm-linux-gnueabi-",
->                                               "arm-softmmu,arm-linux-user,armeb-linux-user"))
->   
-> -    generate_dockerfile("debian-armhf-cross", "debian-11",
-> +    generate_dockerfile("debian-armhf-cross", "debian-12",
->                           cross="armv7l",
->                           trailer=cross_build("arm-linux-gnueabihf-",
->                                               "arm-softmmu,arm-linux-user"))
-> @@ -165,7 +165,7 @@ try:
-
-... so we have to keep bullseye here:
-
->      generate_dockerfile("debian-mipsel-cross", "debian-11",
->                           trailer=cross_build("mipsel-linux-gnu-",
->                                               "mipsel-softmmu,mipsel-linux-user"))
-
-but the mips64el should work:
-
-     generate_dockerfile("debian-mips64el-cross", "debian-12",
-                         cross="mips64el", ...
-
-Anyhow,
+>   .gitlab-ci.d/cirrus.yml | 1 -
+>   1 file changed, 1 deletion(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
