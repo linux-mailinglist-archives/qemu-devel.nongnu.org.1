@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E03F7A1489
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 05:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 074317A14C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 06:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgzlw-0002Wd-PC; Thu, 14 Sep 2023 23:45:36 -0400
+	id 1qh0JK-0006Pb-FR; Fri, 15 Sep 2023 00:20:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgzlq-0002Ux-IW
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 23:45:34 -0400
-Received: from mgamail.intel.com ([192.55.52.115])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgzlm-0005Lt-QB
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 23:45:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694749526; x=1726285526;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Y5O8yBf2hm2V5a0KPQnIgJP46w9iulxKXoLXHLGRFlM=;
- b=RubEw65Rfyoifm86SJsGDOYOeD9rJIyUhBLmt4kSyVq/Hj3b6OgdrdYc
- n68Kf/ItFJkwgUioT85nOAK4ROs8Us+8PKIaib/Z6CIqVhgLCXbrtIPtT
- SU5KPLB202UEEGbW/4edonsGlErl9bw6lEtUpSShvB1Mdd5MM+QO6sEsL
- KkxlWi5VpyXGeeCEj6uW7tAu9YgpEhKfoIr4Inub/S66RS9ON/JtcT7tO
- l501OXmlG1Mybu1nKW+LDnBDN3q+MfiKt5z6N8V03a7+tZuCsYN22MCPx
- bfpkaHuVEgSUVVT91ciMdyGAiJyOdQy8RKMxOSo2yIuAlabp2wQOWIImB w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="379067619"
-X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="379067619"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2023 20:45:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="815026475"
-X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="815026475"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
- ([10.93.29.154])
- by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2023 20:45:16 -0700
-Message-ID: <a47ca6f9-6c2f-8212-151c-44f5ec117dbf@intel.com>
-Date: Fri, 15 Sep 2023 11:45:14 +0800
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qh0JI-0006P3-03; Fri, 15 Sep 2023 00:20:04 -0400
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jniethe5@gmail.com>)
+ id 1qh0JG-0003x1-5z; Fri, 15 Sep 2023 00:20:03 -0400
+Received: by mail-pj1-x1034.google.com with SMTP id
+ 98e67ed59e1d1-273527a8fdeso1391382a91.2; 
+ Thu, 14 Sep 2023 21:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1694751600; x=1695356400; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=w/vF/auRmwtqaYptNIKpo6xzEVDQm+M6qdjqAb3x/GE=;
+ b=FdZLsRaQtj0hbU43ySjNQp5klqK3VCkNfXd+QuiLNI2mxpiEI6+ZXCjG2plpfjN+Ar
+ zUXGxIlWAA4VW/Cc4utwG67XGdIX/kkHIy5lHsmfzqYJPMqaguZCyLj0yjRjfiWrpZc3
+ t8JttkjVrnIUJPyWbQRFbCBOROyX5AWaacBdIczJj7L3y4NzgJZI0qoDGMGnf6zFHB78
+ fanwqzIuaYnN4fkXmJ2wORWDbxhMHolbcYj+RS+blopKQai8cPhR4OnhcZUHaBg8yGHR
+ sZHgwbrfngixF2dmCiWzMlQOS7LlUnY8S7VTAO75WiAtFcA39ybgcbU0At0cH70m0qcV
+ lOww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694751600; x=1695356400;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=w/vF/auRmwtqaYptNIKpo6xzEVDQm+M6qdjqAb3x/GE=;
+ b=t+aHPX5Uk6p7Z6nSdn/xe5EFGh3Gi1kswrq1b9xU5Y2Z0oZgDTQiFlJsABEnON0xd8
+ CZ4AyDhISh42cmnaFEXtTxoWEJakXkE1qShj7jXa+fRpXo8IJuqv1dvgqTaOhJdQOPKp
+ yiGYKrvYVxqQIDOZGMOiUuO3NC3W1lFWJgw0a73VFZPGBR7N+GWp5/6RNtlNUIT2rBQz
+ Xn6ou+T56931IbdCa3fcUvWpPBwWifY9lh0/ojhWuLQMpif5yB4I9WVkO6MKJsSs/rk0
+ keu80wz+71L5mhOHRTawAe5RR6rAFHa3vGarQn0rGNknPr5gjOor6e3FpQbpCmRNKgvS
+ GXBw==
+X-Gm-Message-State: AOJu0Yz2Z1NgCrAMk018F+S9LXrmPcKl0Soj9AH/8lLYRNfvUGAiF6ZB
+ 39LEdh++6KQQ3mArTQDbLgpdjLovBauDLk0Ngfw=
+X-Google-Smtp-Source: AGHT+IEN8HVTtGUJsK1x91PrGrAa1ICPxxlW//3henrKhGL9/++hb5NCFegiNjHcbfJ6OdP41utWw23WLiFEJY1V9U4=
+X-Received: by 2002:a17:90a:cb0e:b0:274:748c:9c55 with SMTP id
+ z14-20020a17090acb0e00b00274748c9c55mr416669pjt.20.1694751599632; Thu, 14 Sep
+ 2023 21:19:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [RFC PATCH v2 02/21] RAMBlock: Add support of KVM private gmem
-Content-Language: en-US
-To: "Wang, Lei" <lei4.wang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <20230914035117.3285885-3-xiaoyao.li@intel.com>
- <bd1eca88-98f4-718f-4d40-c2ea40f65d95@intel.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <bd1eca88-98f4-718f-4d40-c2ea40f65d95@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.55.52.115; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+References: <20230815195741.8325-1-richard.henderson@linaro.org>
+ <20230815195741.8325-15-richard.henderson@linaro.org>
+In-Reply-To: <20230815195741.8325-15-richard.henderson@linaro.org>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Fri, 15 Sep 2023 14:19:48 +1000
+Message-ID: <CACzsE9qPn5gMNLmRhYb_OhvOw7-bFOkQyD+08VzFogsVJKSNkg@mail.gmail.com>
+Subject: Re: [PATCH v3 14/14] RFC tcg/ppc: Disable TCG_REG_TB for
+ Power9/Power10
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
+ envelope-from=jniethe5@gmail.com; helo=mail-pj1-x1034.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,21 +87,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/15/2023 10:04 AM, Wang, Lei wrote:
-> On 9/14/2023 11:50, Xiaoyao Li wrote:
->> From: Chao Peng<chao.p.peng@linux.intel.com>
->>
->> Add KVM gmem support to RAMBlock so both normal hva based memory
->> and kvm gmem fd based private memory can be associated in one RAMBlock.
->>
->> Introduce new flag RAM_KVM_GMEM. It calls KVM ioctl to create private
->> gmem for the RAMBlock when it's set.
->>
->> Signed-off-by: Xiaoyao Li<xiaoyao.li@intel.com>
-> Kindly reminding the author's Signed-off-by is missing.
+On Wed, Aug 16, 2023 at 5:57=E2=80=AFAM Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> This may or may not improve performance.
+> It appears to result in slightly larger code,
+> but perhaps not enough to matter.
 
-I will fix it.
-Thanks!
+I have collected some power9 macro performance data for an smp compile work=
+load:
+
+Setup
+-----
+
+- Power9 powernv host
+- mttcg smp 8 guest
+
+Method
+------
+
+- Warm up compile skiboot (https://github.com/open-power/skiboot)
+- Average time taken for 5 trials compiling skiboot with -j `nproc`
+
+Results
+-------
 
 
+|                Patch                | Mean time (s) | stdev | Decrease (%=
+) |
+|-------------------------------------|---------------|-------|------------=
+--|
+| tcg: Add tcg_out_tb_start...        |        161.77 |  2.39 |            =
+- |
+| tcg/ppc: Enable direct branching... |        145.81 |  1.71 |          9.=
+9 |
+| tcg/ppc: Use ADDPCIS...             |        146.44 |  1.28 |          9.=
+5 |
+| RFC tcg/ppc: Disable TCG_REG_TB...  |        145.95 |  1.07 |          9.=
+7 |
+
+
+- Enabling direct branching is a performance gain, beyond that less conclus=
+ive.
+- Using pcaddis for direct branching seems slightly better than bl +4
+sequence for ISA v3.0.
+- PC relative addressing seems slightly better than TOC relative addressing=
+.
+
+Any other suggestions for performance comparison?
+I still have to try on a Power10.
+
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  tcg/ppc/tcg-target.c.inc | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tcg/ppc/tcg-target.c.inc b/tcg/ppc/tcg-target.c.inc
+> index 20aaa90af2..c1e0efb498 100644
+> --- a/tcg/ppc/tcg-target.c.inc
+> +++ b/tcg/ppc/tcg-target.c.inc
+> @@ -83,7 +83,7 @@
+>  #define TCG_VEC_TMP2    TCG_REG_V1
+>
+>  #define TCG_REG_TB     TCG_REG_R31
+> -#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64)
+> +#define USE_REG_TB     (TCG_TARGET_REG_BITS =3D=3D 64 && !have_isa_3_00)
+>
+>  /* Shorthand for size of a pointer.  Avoid promotion to unsigned.  */
+>  #define SZP  ((int)sizeof(void *))
+> --
+> 2.34.1
+>
 
