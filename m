@@ -2,81 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CAF7A2425
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4664B7A2433
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:03:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCCs-0003Rj-Ee; Fri, 15 Sep 2023 13:02:14 -0400
+	id 1qhCE7-0007Ld-Ho; Fri, 15 Sep 2023 13:03:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qhCCq-0003Oj-Iv
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:02:12 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qhCCo-0000Lf-Ej
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:02:12 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-502a25ab777so3778784e87.2
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 10:02:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694797329; x=1695402129;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FyhglYJ5pbQBkUGv5WkINwdsbdNBkbHZUQKyK9LQHl4=;
- b=P0IhuH8Jr002M8B4onCr+XpRgQr2u1Ijpv6VKYMA5JSwbiiSbFVZQIABT6LJisnTXD
- J90zqXGhSGoMWUtYNfTJKtq1wKCzBqrexKj4OKfQ4XC4XsUsp3S/WN1q8gfzFl0Kc+Z3
- RzvzSJpiASzjXlObjgITdD2//a+75o3PqPlUCaW2FaZttFic/ES8WW2DQnzefUaTxkze
- jfaxdgb5iEdDQdhSR9vtahLcF4T55kzR35rOuVjgTU1Lti2KrTv+aBmRlD+wk5hdHdmR
- RA6kX/nSczC+tePC8J2UHgLine8c4+Q8pYrHMBIRnkOYZ3YwzfVyBU/i3H1GBWUlL1TJ
- Hvng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694797329; x=1695402129;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FyhglYJ5pbQBkUGv5WkINwdsbdNBkbHZUQKyK9LQHl4=;
- b=H4iUQH/TEDgQT0AcYn1tyyApK0aEA1BrwSeZPl/XDtfwzq3aANQB83+556/gqyP5vG
- gnbvp0Y9mBpy85uidVDcKNKhNo+u5zD7sL/56SVFywBswFCjST06Zcio3VitPddz8i7N
- usQw0rlNhvK3ew2He3ite9DsxEXUppMNsTDxeFaGcQnSnMzs7/+fRXRQ2+hojef4q8Hz
- YClYotSPxm13Pf8Op5/CqM6SZWwtXVq/92HUdjWf8ZENM1tr6yw2X6bifUWwz1IyApSv
- TLrtSEDASE55DdWPyRLKpafH0zYVFWlnOInO4vo56/crx7NC6qxfY1Nse4DEkSpwEjNj
- Vblw==
-X-Gm-Message-State: AOJu0YymlKZJR3QIf+4GD0mE7hLsVbVrH7dE5T58QMAqSDppy5N7dMRx
- 0Ubo2DTlsM+H3JeOxGG7S/YaqA==
-X-Google-Smtp-Source: AGHT+IF9ZwuI0AuFZD+KpwXCREmHVC9qBatbDrVLhofe/2MBYV7qELZ59PbuwNOwdo8ZxlrcLrqkqQ==
-X-Received: by 2002:a05:6512:3d8c:b0:500:c4f1:6bb6 with SMTP id
- k12-20020a0565123d8c00b00500c4f16bb6mr2531377lfv.61.1694797328886; 
- Fri, 15 Sep 2023 10:02:08 -0700 (PDT)
-Received: from localhost.localdomain (109-252-90-8.nat.spd-mgts.ru.
- [109.252.90.8]) by smtp.gmail.com with ESMTPSA id
- u7-20020a056512040700b005009ab1992esm690431lfk.154.2023.09.15.10.02.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 10:02:08 -0700 (PDT)
-From: Viktor Prutyanov <viktor@daynix.com>
-To: annie.li@oracle.com,
-	akihiko.odaki@daynix.com,
-	kkostiuk@redhat.com
-Cc: qemu-devel@nongnu.org, peter.maydell@linaro.org, yan@daynix.com,
- viktor@daynix.com, viktor.prutyanov@phystech.edu
-Subject: [PATCH v2 5/5] elf2dmp: rework PDB_STREAM_INDEXES::segments obtaining
-Date: Fri, 15 Sep 2023 20:01:53 +0300
-Message-Id: <20230915170153.10959-6-viktor@daynix.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20230915170153.10959-1-viktor@daynix.com>
-References: <20230915170153.10959-1-viktor@daynix.com>
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qhCE5-0007KZ-RI
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:03:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qhCE4-0000ZO-GC
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:03:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694797407;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=h3Tlwpagf50Ohcj0LOU4P+Z2NHV6cu600aIiywd76VM=;
+ b=ZSaxm7oqfUVyZwfVnxmrhyk9boJZOU3jW7gVkQk150ISaiLxtd1X95Tndq5c7qp3yoZTUI
+ UcuwTgTXf3ZgNMecD3ZPxqVKdLjfk/6sSQ4k93zls9llLH2SCyckaziDJJ1bnfTR5eRRNp
+ jNEtaP41FiJMbslZjh0qlezgqJGVdP0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-253-SK0sL2VpOKiBPyeHhm3J3A-1; Fri, 15 Sep 2023 13:03:26 -0400
+X-MC-Unique: SK0sL2VpOKiBPyeHhm3J3A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9E3FB101AA6F;
+ Fri, 15 Sep 2023 17:03:25 +0000 (UTC)
+Received: from eperezma.remote.csb (unknown [10.39.192.183])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 78D161C554;
+ Fri, 15 Sep 2023 17:03:24 +0000 (UTC)
+From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Hawkins Jiawei <yin31149@gmail.com>,
+ si-wei.liu@oracle.com, Jason Wang <jasowang@redhat.com>,
+ Lei Yang <leiyang@redhat.com>
+Subject: [PATCH 0/3] Follow VirtIO initialization properly at vdpa net cvq
+ isolation probing
+Date: Fri, 15 Sep 2023 19:03:19 +0200
+Message-Id: <20230915170322.3076956-1-eperezma@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::131;
- envelope-from=viktor@daynix.com; helo=mail-lf1-x131.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,72 +78,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PDB for Windows 11 kernel has slightly different structure compared to
-previous versions. Since elf2dmp don't use the other fields, copy only
-'segments' field from PDB_STREAM_INDEXES.
-
-Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
----
- contrib/elf2dmp/pdb.c | 15 ++++-----------
- contrib/elf2dmp/pdb.h |  2 +-
- 2 files changed, 5 insertions(+), 12 deletions(-)
-
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index adcfa7e154..6ca5086f02 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -160,7 +160,7 @@ static void *pdb_ds_read_file(struct pdb_reader* r, uint32_t file_number)
- static int pdb_init_segments(struct pdb_reader *r)
- {
-     char *segs;
--    unsigned stream_idx = r->sidx.segments;
-+    unsigned stream_idx = r->segments;
- 
-     segs = pdb_ds_read_file(r, stream_idx);
-     if (!segs) {
-@@ -177,9 +177,6 @@ static int pdb_init_symbols(struct pdb_reader *r)
- {
-     int err = 0;
-     PDB_SYMBOLS *symbols;
--    PDB_STREAM_INDEXES *sidx = &r->sidx;
--
--    memset(sidx, -1, sizeof(*sidx));
- 
-     symbols = pdb_ds_read_file(r, 3);
-     if (!symbols) {
-@@ -188,15 +185,11 @@ static int pdb_init_symbols(struct pdb_reader *r)
- 
-     r->symbols = symbols;
- 
--    if (symbols->stream_index_size != sizeof(PDB_STREAM_INDEXES)) {
--        err = 1;
--        goto out_symbols;
--    }
--
--    memcpy(sidx, (const char *)symbols + sizeof(PDB_SYMBOLS) +
-+    r->segments = *(uint16_t *)((const char *)symbols + sizeof(PDB_SYMBOLS) +
-             symbols->module_size + symbols->offset_size +
-             symbols->hash_size + symbols->srcmodule_size +
--            symbols->pdbimport_size + symbols->unknown2_size, sizeof(*sidx));
-+            symbols->pdbimport_size + symbols->unknown2_size +
-+            offsetof(PDB_STREAM_INDEXES, segments));
- 
-     /* Read global symbol table */
-     r->modimage = pdb_ds_read_file(r, symbols->gsym_file);
-diff --git a/contrib/elf2dmp/pdb.h b/contrib/elf2dmp/pdb.h
-index 4ea8925ee8..2a50da56ac 100644
---- a/contrib/elf2dmp/pdb.h
-+++ b/contrib/elf2dmp/pdb.h
-@@ -227,7 +227,7 @@ struct pdb_reader {
-     } ds;
-     uint32_t file_used[1024];
-     PDB_SYMBOLS *symbols;
--    PDB_STREAM_INDEXES sidx;
-+    uint16_t segments;
-     uint8_t *modimage;
-     char *segs;
-     size_t segs_size;
--- 
-2.21.0
+This series solves a few issues.  The most obvious is that the feature set =
+was=0D
+done previous to ACKNOWLEDGE | DRIVER status bit set.  Current vdpa devices=
+ are=0D
+permissive with this, but it is better to follow the standard.=0D
+=0D
+Apart from that it fixes two issues reported by Peter Maydell:=0D
+* Stop probing CVQ isolation if cannot set features (goto missed).=0D
+* Fix incorrect error message statis "error setting features", while it sho=
+uld=0D
+say status.=0D
+=0D
+Eugenio P=C3=A9rez (3):=0D
+  vdpa net: fix error message setting virtio status=0D
+  vdpa net: stop probing if cannot set features=0D
+  vdpa net: follow VirtIO initialization properly at cvq isolation=0D
+    probing=0D
+=0D
+ net/vhost-vdpa.c | 15 +++++++++++----=0D
+ 1 file changed, 11 insertions(+), 4 deletions(-)=0D
+=0D
+-- =0D
+2.39.3=0D
+=0D
 
 
