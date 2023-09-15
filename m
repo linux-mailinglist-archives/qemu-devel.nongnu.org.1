@@ -2,90 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F337A1D54
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B4A7A1D60
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:25:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh6sq-0006bq-GS; Fri, 15 Sep 2023 07:21:12 -0400
+	id 1qh6vy-00088P-P1; Fri, 15 Sep 2023 07:24:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qh6sn-0006be-P0
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:21:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qh6vr-00087g-0H
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:24:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qh6sj-0007Fz-S9
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:21:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qh6vo-0007b1-Ib
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:24:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694776864;
+ s=mimecast20190719; t=1694777055;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SuK9/466IRkOOTjyBDluAgz9uNgmFaySnLSKDb/XSIA=;
- b=dYeuflM4zUiP3B+ItKEZBMIbZwD5F4gQw+DsiXwUkaE0C8tK4uOYGMlhS3uYYoFAK8pQAr
- JKgKE5nCv2jh4wr/TiTm8hfVBbLjCJ0a5s9saN6Q25IazZuD7s+zJP4JZChomNvCkvG7wE
- Odnb2MWa00EG+YxBzIVLXJKbRk+48jg=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TBc/uVBazeKY4iJBuo/xzGp3L+IEGUgDpqNfs+vuw50=;
+ b=UlQcp91VrrzEcBcD+hgYH1WAITh72d5TXgQiEOz2JprkgQn1wCCk3jsU2FItWiSFLjzQTE
+ X+BFGJIXMYsJIoCG8zITxgWYDzPH7YcCx9tzTj4x8XWdp+K2P3P/enEHYdWZ09bm4enJqQ
+ DIjWP1moAYLXC7Da4p1vKDXNJvyj8yY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-DdbLIlGbO8qGINdRZvyqIQ-1; Fri, 15 Sep 2023 07:21:03 -0400
-X-MC-Unique: DdbLIlGbO8qGINdRZvyqIQ-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2bfbdcd728cso25081041fa.2
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 04:21:03 -0700 (PDT)
+ us-mta-596-xbdjK--PMRyiAzwZ-nRvvw-1; Fri, 15 Sep 2023 07:24:14 -0400
+X-MC-Unique: xbdjK--PMRyiAzwZ-nRvvw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-30932d15a30so1353819f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 04:24:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694776861; x=1695381661;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1694777053; x=1695381853;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SuK9/466IRkOOTjyBDluAgz9uNgmFaySnLSKDb/XSIA=;
- b=p2mfeO+T6+6JRDd4A726WMjXOxnfEcvwX0sM8ZM+jg0LMfWN5c3RsMrN35yIn+cAPx
- L24/lF7kxlwd9iwhRGENVuMGbmSXdK5hKO8H1jt8GFvj8Fu3zrPgkYEDLeiuF2VCqZrm
- B91dtCoOJgdZSZ1eFP7Ij4/mbIU102BYTbOvc/VM5rd/u3G4IHwddWq2VqgG2rlqkpnI
- hH62542jl5dvdna8HJ1nYTtzskuY56hd28xNbNM7C72Oj+TFjypZESDniht6/6FbE2Yc
- 7hVpQfcPUU/dLfcCOA1ExIi6ygVwckb50neT9wLAzk+LUnl4RDWwqyHbaXbDBL0Domhy
- 54Hw==
-X-Gm-Message-State: AOJu0YyGbBaaNXTyv8SMHjOUFy4WLswahRGoeODrf/FHI0etC3OfRlQ8
- U8bUe5d5Aao4gpmSR7d+flnEGN2UatzhcoMQ/qVwQwHfDrM71UbVRDIzueUT5yNY+3lqtuHNNRt
- 49q84kOrFj8eTGzOSku7CGH4=
-X-Received: by 2002:a2e:9248:0:b0:2b6:e2cd:20f5 with SMTP id
- v8-20020a2e9248000000b002b6e2cd20f5mr1428527ljg.9.1694776861784; 
- Fri, 15 Sep 2023 04:21:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGh7/SV7foEDRaJJLK1TWrPSJ0Tw9S3P18b+71779v96rBrW1vbqKUec2FhfTlxTrnHEO5spw==
-X-Received: by 2002:a2e:9248:0:b0:2b6:e2cd:20f5 with SMTP id
- v8-20020a2e9248000000b002b6e2cd20f5mr1428514ljg.9.1694776861444; 
- Fri, 15 Sep 2023 04:21:01 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
- by smtp.gmail.com with ESMTPSA id
- jw24-20020a17090776b800b009a168ab6ee2sm2275216ejc.164.2023.09.15.04.21.00
+ bh=TBc/uVBazeKY4iJBuo/xzGp3L+IEGUgDpqNfs+vuw50=;
+ b=EI50ubQFfLywDQBgLUiPhRzsgdIFOLguTIuKzqJJPY9MI+2L2gycaNY4vQp2iVpIIU
+ F15l8Y849cOuOAfJoxJnLljDiOVjxEepIRLSzN7wCCVi6xmMU7/+om/+MePWFGKbTVRR
+ glwAc7UphLdSmHYofxhgKP+amc9aawIH3D+vx5kt2IjClLf8OLL8+t2cbkrRnVhP+7/H
+ xadG+Un2xu6nqyMEUaQv69x66QAQeSJRkEgpIhYhXSVOpY9WwY4Wo/6AMP9OtyUiWvGc
+ c8veChskniBiMk/0Jp3Z6SuTka15On+IRqChlBq7Sie9tdsE7zrn8bvPkkMKrZKcYudz
+ TCNw==
+X-Gm-Message-State: AOJu0YzDSG+IW4jYENgAkeZZbko+xxDkkgmIiR8pQBpsz/17U7SbFRFE
+ pWef3d8EamGHTV28L9W94pC4+a36X3LIcrcx3HugRoDr5pLSFB8GpdZPZQ2lbEcT7PRsoepU/up
+ vyYKWjF3g3PY9CCz9cNMrM6E=
+X-Received: by 2002:a5d:6309:0:b0:314:3a4b:6cc6 with SMTP id
+ i9-20020a5d6309000000b003143a4b6cc6mr1121831wru.53.1694777053380; 
+ Fri, 15 Sep 2023 04:24:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfzS1bf7I5k4K089S7rfBvdAMDbotC0N/rrzu5TzO/lEHtytbqBRVpJl+wb7RJM3LzhrjGQA==
+X-Received: by 2002:a5d:6309:0:b0:314:3a4b:6cc6 with SMTP id
+ i9-20020a5d6309000000b003143a4b6cc6mr1121816wru.53.1694777053005; 
+ Fri, 15 Sep 2023 04:24:13 -0700 (PDT)
+Received: from [192.168.0.2] (ip-109-43-179-28.web.vodafone.de.
+ [109.43.179.28]) by smtp.gmail.com with ESMTPSA id
+ s10-20020a5d510a000000b0031971ab70c9sm4208989wrt.73.2023.09.15.04.24.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 04:21:00 -0700 (PDT)
-Message-ID: <1088caf4-3f59-84be-25d4-f2574674cb2a@redhat.com>
-Date: Fri, 15 Sep 2023 13:21:00 +0200
+ Fri, 15 Sep 2023 04:24:12 -0700 (PDT)
+Message-ID: <665c03fe-37e7-4e2c-666d-156cf70e0f70@redhat.com>
+Date: Fri, 15 Sep 2023 13:24:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2] qcow2: keep reference on zeroize with discard-no-unref
- enabled
+Subject: Re: [PATCH 1/9] tests: update Debian images to Bookworm
 Content-Language: en-US
-To: Jean-Louis Dupond <jean-louis@dupond.be>, qemu-devel@nongnu.org,
- kwolf@redhat.com
-References: <20230905130839.923041-2-jean-louis@dupond.be>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230905130839.923041-2-jean-louis@dupond.be>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Cleber Rosa <crosa@redhat.com>, Joel Stanley <joel@jms.id.au>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>, qemu-arm@nongnu.org,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, John Snow <jsnow@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Peter Maydell <peter.maydell@linaro.org>, Laurent Vivier
+ <lvivier@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230914155422.426639-1-alex.bennee@linaro.org>
+ <20230914155422.426639-2-alex.bennee@linaro.org>
+ <30ac04ad-eb02-90ad-57ff-089538413602@linaro.org>
+ <ZQQi6n+3mp+bQIgu@redhat.com>
+ <242dc7bd-f0c4-d58c-fc6a-f3ddc0168bf2@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <242dc7bd-f0c4-d58c-fc6a-f3ddc0168bf2@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,33 +117,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05.09.23 15:08, Jean-Louis Dupond wrote:
-> When the discard-no-unref flag is enabled, we keep the reference for
-> normal discard requests.
-> But when a discard is executed on a snapshot/qcow2 image with backing,
-> the discards are saved as zero clusters in the snapshot image.
->
-> When committing the snapshot to the backing file, not
-> discard_in_l2_slice is called but zero_in_l2_slice. Which did not had
-> any logic to keep the reference when discard-no-unref is enabled.
->
-> Therefor we add logic in the zero_in_l2_slice call to keep the reference
-> on commit.
->
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
-> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
-> ---
->   block/qcow2-cluster.c | 22 ++++++++++++++++++----
->   1 file changed, 18 insertions(+), 4 deletions(-)
+On 15/09/2023 12.53, Philippe Mathieu-Daudé wrote:
+> On 15/9/23 11:24, Daniel P. Berrangé wrote:
+>> On Fri, Sep 15, 2023 at 11:14:29AM +0200, Philippe Mathieu-Daudé wrote:
+>>> On 14/9/23 17:54, Alex Bennée wrote:
+>>>> Bookworm has been out a while now. Time to update our containers to
+>>>> the current stable. This requires the latest lcitool repo so update
+>>>> the sub-module too.
+>>>>
+>>>> For some reason the MIPs containers won't build so skip those for now.
+>>>
+>>> Debian removed mipsel:
+>>> https://lists.debian.org/debian-devel-announce/2023/09/msg00000.html
+>>> https://lists.debian.org/debian-release/2019/08/msg00582.html ...
+>>
+>> Wwith our general aim to support latest release, plus the previous
+>> release (capped to a maximum of 2 years), we can still consider
+>> mipsel supportable in QEMU CI by sticking with oldstable (Bullseye)
+>> for the mipsel containers.
+>>
+>> Once Debian 13 comes out, however, we'll be discarding Bullseye
+>> from CI and so we'll be unable to do CI for mipsel. At the very
+>> least this means we'll consider mipsel to be downgraded in terms
+>> of supportability when that happens. We might then consider
+>> explicitly dropping it as a buld target entirely, as the writing
+>> is on the wall for 32-bit OS platforms in general...
+> 
+> I'm fine with dropping system emulation on 32-bit hosts, but a bit
+> reluctant to drop user emulation there. Anyhow I agree with our
+> distrib releases support rules, so the mipsel buildsys part is
+> effectively condemned.
 
-The code looks OK, but the obvious problem I find is that this is not 
-what the discard-no-unref option describes.  It talks about discards, 
-but this now changes the zero-write path.
+Could you maybe send a patch for docs/about/deprecated.rst to make this 
+clear for the users, too?
 
-I’m fairly certain that you are the only one using this option for now, 
-so we might as well change its definition to include zero writes for 
-8.2, but we should do that.
-
-Hanna
+  Thanks,
+   Thomas
 
 
