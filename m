@@ -2,79 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1967A1D19
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E205B7A1D26
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 13:12:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh6df-00074O-2F; Fri, 15 Sep 2023 07:05:33 -0400
+	id 1qh6jI-0001nk-FN; Fri, 15 Sep 2023 07:11:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qh6dV-00072L-KT; Fri, 15 Sep 2023 07:05:23 -0400
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qh6dT-0003Du-OM; Fri, 15 Sep 2023 07:05:21 -0400
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3a7ca8720a0so1241776b6e.2; 
- Fri, 15 Sep 2023 04:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694775918; x=1695380718; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=s2qJqpHwIiH62Z1Y+zBBpb+4FQJFpoLY7LPSH6IwqB0=;
- b=evJsl+x3Lyt67AoIOQUtH32F2LGHj2c7tFNyQWMuDcmtX4jPpnClNZj7YJ0UYv0/qR
- 1qAkp02VAzkqS31URLwyscQzfZGNe8qYa4kXi8alYMi2buJXuiio2+DuG0SGKCKxb+EU
- HgyQ6dLmea948mfOpNTypvyJWzvX42Q10FFgL4sD3MjZbSE9B5B0qkqhqLmf17Hnu2lO
- RPnKwcaZzfvgfs2DKuOvfY1PUwArwRJ3UxVRH+hrRewxOA9rAUlToIXOtBbPfUHgjzz8
- TAPDStZzhRxVUvn+y9qNTSkk0xTlFBbeOTfMkjyr6woI5v4RKHjyiP3vYAzhLWLdwktq
- vHPQ==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qh6jF-0001nA-0m
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:11:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qh6jB-0005lw-TV
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 07:11:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694776272;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=jc7fy8fbNH7XT47e4NgDuc0zks3SMia0IFkVwXqiGy0=;
+ b=iR95TY3Z0a77a8qeho4CodLd7rjt/ko9HiEbJ71efGnGfQMGDQWWt2pdGFrVY/E10LzM/o
+ jDiGl7VI9Io/y5kaF7UkFkp2Q7AH4Rdz7XbKSESeZ5Rtv52wjPVRL2SdRnjyIKsB3wnjrO
+ tfsI9dqip9eMcAtdJaHChoU2Ij6Poyk=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-462-uWFcCDKTMBSFqUOJWebg2Q-1; Fri, 15 Sep 2023 07:10:07 -0400
+X-MC-Unique: uWFcCDKTMBSFqUOJWebg2Q-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-31f3cfe7269so1269145f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 04:10:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694775918; x=1695380718;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=s2qJqpHwIiH62Z1Y+zBBpb+4FQJFpoLY7LPSH6IwqB0=;
- b=GdY26wvAv4i/2+mY9rlna+CErXTIVzWlZzL2XT7MbCmkVwN8e3ND+c4OcvjuHR+1IS
- a33UBAsH//HEnM9z5tdhJ3KaQMIpNZ6IMWqS17V3xdgS93DRcUAVN1G7N1yADfk9PJe0
- DDLxsNWtXbXK5Upom/50IMP9cNHlVXiOB9EXwAFlU6SiS8Iq/ZnFodfTKBDxy8fDeeEi
- RavavY0qBW1QplA3rjsvbntXO049oEF3kw7VhorEMqfpO3NhaEu8J3kP09TIN9H1blhO
- OpScS7CPSiAuwqkzYubZqRe8Pg0zGhniJ0VMc0y60odKfHG+S9jbRTK2AKUe1O0wT7ix
- e27Q==
-X-Gm-Message-State: AOJu0YyRZbxDgDGg3kx5VbmLcUjp51rTM2w4Z9693EaY8EBRt7v0GrOs
- fD+ed6kyjRvrG/Ua5W64s37n26Gj8KU=
-X-Google-Smtp-Source: AGHT+IF38Yn6192xZ5mypT1eIXBWhrRRI+RRQpXvIkRc+lymR9RiWvbGEu84s7eSxtbK3fTUPKTjiQ==
-X-Received: by 2002:a05:6870:468e:b0:1b3:715c:463e with SMTP id
- a14-20020a056870468e00b001b3715c463emr1612628oap.0.1694775917809; 
- Fri, 15 Sep 2023 04:05:17 -0700 (PDT)
-Received: from grind.. ([177.9.182.82]) by smtp.gmail.com with ESMTPSA id
- h22-20020a056870a3d600b001ccab369c09sm1730291oak.42.2023.09.15.04.05.15
+ d=1e100.net; s=20230601; t=1694776204; x=1695381004;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jc7fy8fbNH7XT47e4NgDuc0zks3SMia0IFkVwXqiGy0=;
+ b=BbVnq7N0GujldYvJLfeHxjHzx0rkdxPiqV0Oe+B2ZXJ2AfNCXMbLUzoDlOEaN1kJd8
+ 4dwjuSJqb3H80VWMhBRQM3+IHi/f8AWJUH9n74LT/W5csYqKkTd+itpEWpTcTEg4XyLm
+ fRbh99fYYT+r+az7WwsZZghtV8fnmwv2fJL5GLZZJsdtrD/zSD1zIchcbHhX7HE+mtHS
+ OlEU+ll93w7PDD2hV6R+QeV4aPENzcYm0lZaNwdGPG25plRD4fZhOuYEixXx7eT3oKIp
+ 4BzrfeF9aUEW5S1HpkFYAxUJgwpK9zwPr9xL077Wk0pOmOHQvUJx881ZCZ6OeT053osJ
+ OtRQ==
+X-Gm-Message-State: AOJu0Yw8k1Sin4x/ZpSKtgMW/0tUEBDq30F7dPGssAHRaiqeNzE72dYd
+ SR46HFe4nz703/ymQAOYUzt0nmvWJimvFeI/3YAVdJgbkxkeWisnJumRN9UoSDGAQDtSJjbqaMg
+ IqIrYyIgiiqwCjAo=
+X-Received: by 2002:a5d:6ad2:0:b0:31f:ec06:204 with SMTP id
+ u18-20020a5d6ad2000000b0031fec060204mr1113652wrw.52.1694776204752; 
+ Fri, 15 Sep 2023 04:10:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUv3O1aCxJRsu4XkcMgJqUn6mGTghQB5N727wwTUQ3OIcn/jBCHh1YBrAZuN1/VJovbbNnQw==
+X-Received: by 2002:a5d:6ad2:0:b0:31f:ec06:204 with SMTP id
+ u18-20020a5d6ad2000000b0031fec060204mr1113608wrw.52.1694776204385; 
+ Fri, 15 Sep 2023 04:10:04 -0700 (PDT)
+Received: from redhat.com ([196.89.220.12]) by smtp.gmail.com with ESMTPSA id
+ j4-20020a5d6184000000b003176c6e87b1sm4162665wru.81.2023.09.15.04.10.02
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 04:05:17 -0700 (PDT)
-From: Daniel Henrique Barboza <danielhb413@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, david@gibson.dropbear.id.au, groug@kaod.org,
- npiggin@gmail.com, aik@ozlabs.ru,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
-Date: Fri, 15 Sep 2023 08:05:07 -0300
-Message-ID: <20230915110507.194762-1-danielhb413@gmail.com>
-X-Mailer: git-send-email 2.41.0
+ Fri, 15 Sep 2023 04:10:03 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: f4bug@amsat.org
+Cc: Joao Martins <joao.m.martins@oracle.com>,  mdean@redhat.com,
+ felipe@nutanix.com,  afaerber@suse.de,  bazulay@redhat.com,
+ bbauman@redhat.com,  cw@f00f.org,  dustin.kirkland@canonical.com,
+ eblake@redhat.com,  edgar.iglesias@gmail.com,  eric.auger@redhat.com,
+ iggy@theiggy.com,  jan.kiszka@web.de,  jidong.xiao@gmail.com,
+ jjherne@linux.vnet.ibm.com,  mimu@linux.vnet.ibm.com,
+ peter.maydell@linaro.org,  richard.henderson@linaro.org,
+ stefanha@gmail.com,  imp@bsdimp.com,  z.huo@139.com,
+ zwu.kernel@gmail.com,  jgg@nvidia.com,  cjia@nvidia.com,
+ david.edmondson@oracle.com,  elena.ufimtseva@oracle.com,
+ konrad.wilk@oracle.com,  Alessandro Di Federico <ale@rev.ng>,
+ anjo@rev.ng,  shameerali.kolothum.thodi@huawei.com,
+ wei.w.wang@intel.com,  chao.p.peng@linux.intel.com,
+ qemu-devel@nongnu.org,  Mark Burton <mburton@qti.qualcomm.com>
+Subject: Re: Call for agenda for 2023-09-19 QEMU developers call
+In-Reply-To: <CALUyDQ5Tcby25VQ05REYXsv8v_MO-nVcsHcrQWEAJefPArCoXA@mail.gmail.com>
+ (Juan Quintela's message of "Fri, 15 Sep 2023 09:45:46 +0100")
+References: <CALUyDQ5Tcby25VQ05REYXsv8v_MO-nVcsHcrQWEAJefPArCoXA@mail.gmail.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Date: Fri, 15 Sep 2023 13:09:59 +0200
+Message-ID: <87pm2jvgjc.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22b.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,106 +107,21 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update all relevant PowerPC entries as follows:
+Juan Quintela <juan.quintela@gmail.com> wrote:
+> Hi
+>
+> If you have any topics, please add to this email.
 
-- Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
-  Nick has  been a solid contributor for the last couple of years and
-  has the required knowledge and motivation to drive the boat.
+You can also update here if you preffer:
 
-- Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
-  to other areas of interest and will retire from qemu-ppc.  Thanks Mr
-  Kurz for all the years of service.
+https://wiki.qemu.org/QEMUCall#Call_for_agenda_for_2023-09-19
 
-- David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
-  KVM CPUs. Change done per his request.
+Later, Juan.
 
-- Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
-  PPC KVM CPUs. It has been a long since I last touched those areas and
-  it's not justified to be kept as maintainer in them.
-
-- Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
-  don't have the required knowledge to justify it.
-
-- VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
-  better reflects the current state of the subsystem.
-
-Acked-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
----
- MAINTAINERS | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 00562f924f..c4aa1c1c9f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -298,11 +298,9 @@ F: hw/openrisc/
- F: tests/tcg/openrisc/
- 
- PowerPC TCG CPUs
-+M: Nicholas Piggin <npiggin@gmail.com>
- M: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: Cédric Le Goater <clg@kaod.org>
--R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
--R: Nicholas Piggin <npiggin@gmail.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: target/ppc/
-@@ -438,10 +436,9 @@ F: target/mips/kvm*
- F: target/mips/sysemu/
- 
- PPC KVM CPUs
--M: Daniel Henrique Barboza <danielhb413@gmail.com>
-+M: Nicholas Piggin <npiggin@gmail.com>
-+R: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: Cédric Le Goater <clg@kaod.org>
--R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
- S: Odd Fixes
- F: target/ppc/kvm.c
- 
-@@ -1430,10 +1427,10 @@ F: include/hw/rtc/m48t59.h
- F: tests/avocado/ppc_prep_40p.py
- 
- sPAPR (pseries)
--M: Daniel Henrique Barboza <danielhb413@gmail.com>
-+M: Nicholas Piggin <npiggin@gmail.com>
-+R: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: Cédric Le Goater <clg@kaod.org>
- R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
- R: Harsh Prateek Bora <harshpb@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
-@@ -1452,8 +1449,8 @@ F: tests/avocado/ppc_pseries.py
- 
- PowerNV (Non-Virtualized)
- M: Cédric Le Goater <clg@kaod.org>
-+M: Nicholas Piggin <npiggin@gmail.com>
- R: Frédéric Barrat <fbarrat@linux.ibm.com>
--R: Nicholas Piggin <npiggin@gmail.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: docs/system/ppc/powernv.rst
-@@ -1497,12 +1494,9 @@ F: include/hw/pci-host/mv64361.h
- 
- Virtual Open Firmware (VOF)
- M: Alexey Kardashevskiy <aik@ozlabs.ru>
--R: Cédric Le Goater <clg@kaod.org>
--R: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
- L: qemu-ppc@nongnu.org
--S: Maintained
-+S: Odd Fixes
- F: hw/ppc/spapr_vof*
- F: hw/ppc/vof*
- F: include/hw/ppc/vof*
--- 
-2.41.0
+> Thanks, Juan.
 
 
