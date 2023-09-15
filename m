@@ -2,31 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2441D7A2375
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF64F7A237A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:22:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhBYe-0005Mx-4S; Fri, 15 Sep 2023 12:20:40 -0400
+	id 1qhBYe-0005ND-8S; Fri, 15 Sep 2023 12:20:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qhBYT-0005Ef-FP; Fri, 15 Sep 2023 12:20:31 -0400
+ id 1qhBYQ-0005Dj-KR; Fri, 15 Sep 2023 12:20:27 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qhBYN-0000Ry-6O; Fri, 15 Sep 2023 12:20:27 -0400
+ id 1qhBYN-0000Rw-3L; Fri, 15 Sep 2023 12:20:26 -0400
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qhBUx-00Ezdu-11;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qhBUx-00Ezdu-1C;
  Fri, 15 Sep 2023 18:20:15 +0200
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
  eblake@redhat.com, andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 3/8] qemu-img: rebase: use backing files' BlockBackend for
- buffer alignment
-Date: Fri, 15 Sep 2023 19:20:11 +0300
-Message-Id: <20230915162016.141771-4-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 4/8] qemu-img: add chunk size parameter to compare_buffers()
+Date: Fri, 15 Sep 2023 19:20:12 +0300
+Message-Id: <20230915162016.141771-5-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
 References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
@@ -56,39 +55,77 @@ From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit bb1c05973cf ("qemu-img: Use qemu_blockalign"), buffers for
-the data read from the old and new backing files are aligned using
-BlockDriverState (or BlockBackend later on) referring to the target image.
-However, this isn't quite right, because buf_new is only being used for
-reading from the new backing, while buf_old is being used for both reading
-from the old backing and writing to the target.  Let's take that into account
-and use more appropriate values as alignments.
+Add @chsize param to the function which, if non-zero, would represent
+the chunk size to be used for comparison.  If it's zero, then
+BDRV_SECTOR_SIZE is used as default chunk size, which is the previous
+behaviour.
+
+In particular, we're going to use this param in img_rebase() to make the
+write requests aligned to a predefined alignment value.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- qemu-img.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ qemu-img.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 50660ba920..d12e4a4753 100644
+index d12e4a4753..fcd31d7b5b 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -3750,8 +3750,13 @@ static int img_rebase(int argc, char **argv)
-         int64_t n;
-         float local_progress = 0;
+@@ -1274,23 +1274,29 @@ static int is_allocated_sectors_min(const uint8_t *buf, int n, int *pnum,
+ }
  
--        buf_old = blk_blockalign(blk, IO_BUF_SIZE);
--        buf_new = blk_blockalign(blk, IO_BUF_SIZE);
-+        if (blk_old_backing && bdrv_opt_mem_align(blk_bs(blk)) >
-+            bdrv_opt_mem_align(blk_bs(blk_old_backing))) {
-+            buf_old = blk_blockalign(blk, IO_BUF_SIZE);
-+        } else {
-+            buf_old = blk_blockalign(blk_old_backing, IO_BUF_SIZE);
-+        }
-+        buf_new = blk_blockalign(blk_new_backing, IO_BUF_SIZE);
+ /*
+- * Compares two buffers sector by sector. Returns 0 if the first
+- * sector of each buffer matches, non-zero otherwise.
++ * Compares two buffers chunk by chunk, where @chsize is the chunk size.
++ * If @chsize is 0, default chunk size of BDRV_SECTOR_SIZE is used.
++ * Returns 0 if the first chunk of each buffer matches, non-zero otherwise.
+  *
+- * pnum is set to the sector-aligned size of the buffer prefix that
++ * @pnum is set to the size of the buffer prefix aligned to @chsize that
+  * has the same matching status as the first sector.
+  */
+ static int compare_buffers(const uint8_t *buf1, const uint8_t *buf2,
+-                           int64_t bytes, int64_t *pnum)
++                           int64_t bytes, uint64_t chsize, int64_t *pnum)
+ {
+     bool res;
+-    int64_t i = MIN(bytes, BDRV_SECTOR_SIZE);
++    int64_t i;
  
-         size = blk_getlength(blk);
-         if (size < 0) {
+     assert(bytes > 0);
+ 
++    if (!chsize) {
++        chsize = BDRV_SECTOR_SIZE;
++    }
++    i = MIN(bytes, chsize);
++
+     res = !!memcmp(buf1, buf2, i);
+     while (i < bytes) {
+-        int64_t len = MIN(bytes - i, BDRV_SECTOR_SIZE);
++        int64_t len = MIN(bytes - i, chsize);
+ 
+         if (!!memcmp(buf1 + i, buf2 + i, len) != res) {
+             break;
+@@ -1559,7 +1565,7 @@ static int img_compare(int argc, char **argv)
+                     ret = 4;
+                     goto out;
+                 }
+-                ret = compare_buffers(buf1, buf2, chunk, &pnum);
++                ret = compare_buffers(buf1, buf2, chunk, 0, &pnum);
+                 if (ret || pnum != chunk) {
+                     qprintf(quiet, "Content mismatch at offset %" PRId64 "!\n",
+                             offset + (ret ? 0 : pnum));
+@@ -3878,7 +3884,7 @@ static int img_rebase(int argc, char **argv)
+                 int64_t pnum;
+ 
+                 if (compare_buffers(buf_old + written, buf_new + written,
+-                                    n - written, &pnum))
++                                    n - written, 0, &pnum))
+                 {
+                     if (buf_old_is_zero) {
+                         ret = blk_pwrite_zeroes(blk, offset + written, pnum, 0);
 -- 
 2.39.3
 
