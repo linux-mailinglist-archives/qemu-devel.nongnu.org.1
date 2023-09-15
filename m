@@ -2,103 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641A87A220B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E067A2212
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:13:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhAU5-0000d6-S1; Fri, 15 Sep 2023 11:11:55 -0400
+	id 1qhAVM-0003Rn-W8; Fri, 15 Sep 2023 11:13:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qhATr-0000T2-Ky
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:11:39 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qhATn-0002h6-1o
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:11:37 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1c3cbfa40d6so20149465ad.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:11:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694790693; x=1695395493;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=KCQqoZ18jpGX1KCrU7S3I3Im0sSOsGzv0y0heQncKU4=;
- b=yOoviG0ITZXUPTmQyEB0g/8Aavw8teR7pxiRETr1yXJZnMsiV5Kkf39yw7i1RoKocN
- ZqfNTlVKGF8gTxMNRST8AynJxLya3UAniWtKwzWDbndcVI34dtZIdQe8HiH4ZYVOTSfz
- Y5QJU5KUUAbaq+1BTOKL1xYpdJXZE2FmxNavQBzJXxpQWOm5xMBXZPa88Rw2vQC39E59
- Nkr1uyQGJjZQ9VM+fJhuEq6zwEwuwEF9yNaOQeYVSUuxS0+vWrhJBkHsMIe6ztbj7QYV
- z8rXgkEU1eM6nK84dwT9GPd9pqExbDGBhbJU93c61ieHkP7UIjjPCzL4PuUgiyhOtbr3
- jYLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694790693; x=1695395493;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=KCQqoZ18jpGX1KCrU7S3I3Im0sSOsGzv0y0heQncKU4=;
- b=eqFiOqMrDx8UMQTmzWTqoxHaH63e2y65affMC1PWGTXt2BwwpWLvqR/JhCyuT0trJM
- U3LqSgt7+2H/dmQ59zoqmGaDR8HZh/b3yPozNaJO45/Y9FltbyOTqTwXo3ex8kxird6c
- 1vLZwcP4oSUNWjlcmAoXQhibzF6lZJZonEYK8/ytBnOb+thul3sEV9uKLfTlWEJs8jVP
- eRC03T/NguiVwy2XGLA17/3rXBumnx0g+7LrkNL1ObRkVM3P0pfDrREe+O8TTlun3TZ1
- 6fVFtBP8QtbeeDkY2N2H0ZEfsJtp/sSybdf1NWXRLCKvKD9GVHQ7+lNEnhKiFA6XDHyf
- A9qw==
-X-Gm-Message-State: AOJu0Yy/BF7KWrXYY5GOQppE9w4nNUoEkcOpE0X/kp3vSsgG+giVabf9
- mmhKQ7qBeORE7TYebsr2335C/g==
-X-Google-Smtp-Source: AGHT+IFeBqAAw/xZfJOIrv+PMMlVSoIDSLdN/PSNRJYjvS4mbp4KtNnaSSjCRhmZFu3zOoD/wmVTFw==
-X-Received: by 2002:a17:902:e552:b0:1c3:3682:f83f with SMTP id
- n18-20020a170902e55200b001c33682f83fmr2476230plf.30.1694790693438; 
- Fri, 15 Sep 2023 08:11:33 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- u6-20020a17090341c600b001c3f7fd1ef7sm3623245ple.12.2023.09.15.08.11.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 08:11:32 -0700 (PDT)
-Message-ID: <99fb4575-9f8d-4ab6-bc22-911bbaa7ca55@daynix.com>
-Date: Sat, 16 Sep 2023 00:11:27 +0900
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qhAVK-0003Oi-1F; Fri, 15 Sep 2023 11:13:10 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qhAVD-0002qq-I7; Fri, 15 Sep 2023 11:13:09 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38FF7RhX001290; Fri, 15 Sep 2023 15:12:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=3rL+PgYMavuWtXtIUs08z44CzPNrgXcgFex6uW/WezM=;
+ b=ZN6ISjfn0xO4d9hW76No012ZMKhmzavupO3ocvdGMo6p5DvJvfA/akuWsSbG6Z+E7HS3
+ njMygIlYQdJMHVqXFo9l8mmWyc5zSZ9gKW5421qEu38sjMRew/HADgOjMzx0/tM8Inab
+ 7jPxQLP6QbKJ6KC+c9tHb46WOaljeopdV6qPzzIZ3Y0gHiceK5GbMp9W2tk9717a4LTg
+ td5lbCJYNCimUUqaQalrJpA87TfuyNShon0H55CH4y87BB/A1DISbvNsLLMDJ+YgBE/M
+ N3WRU5YVF9meatLxGwzz0f0nu321IXoR/AyeSdqZir4NgH/9918OFdBGz5xv3jv3fq3M jQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4s63s40a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 Sep 2023 15:12:42 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38FF7dIH004206;
+ Fri, 15 Sep 2023 15:12:41 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4s63s400-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 Sep 2023 15:12:41 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38FEVcFj011942; Fri, 15 Sep 2023 15:12:40 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t15r2m7j5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 Sep 2023 15:12:40 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38FFCdP926345854
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 15 Sep 2023 15:12:39 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B2F4D58066;
+ Fri, 15 Sep 2023 15:12:39 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B883E58063;
+ Fri, 15 Sep 2023 15:12:34 +0000 (GMT)
+Received: from [9.79.181.197] (unknown [9.79.181.197])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 15 Sep 2023 15:12:34 +0000 (GMT)
+Message-ID: <76e01d80-c1ff-6a7c-9f2d-3fa2e02b7144@linux.ibm.com>
+Date: Fri, 15 Sep 2023 20:42:32 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v5 07/13] softmmu/memory: enable automatic
- deallocation of memory regions
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 2/4] accel/tcg: Remove unused tcg_flush_jmp_cache() stub
 Content-Language: en-US
-To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-8-ray.huang@amd.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20230915111130.24064-8-ray.huang@amd.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org
+References: <20230914195229.78244-1-philmd@linaro.org>
+ <20230914195229.78244-3-philmd@linaro.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230914195229.78244-3-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: HWZAubNdNqEnXDwSVZFHgkhkHIZLGmPF
+X-Proofpoint-GUID: tut3qvJtJEuXdTVdgVmRiq90SVuZXzPO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-15_11,2023-09-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ malwarescore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 bulkscore=0 adultscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309150134
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,52 +124,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/15 20:11, Huang Rui wrote:
-> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+
+
+On 9/15/23 01:22, Philippe Mathieu-Daudé wrote:
+> Since commit ba7d3d1858 ("cpu_common_reset: wrap TCG
+> specific code in tcg_enabled()") we protect the single call
+> to tcg_flush_jmp_cache() with a check on tcg_enabled(). The
+> stub isn't needed anymore.
 > 
-> When the memory region has a different life-cycle from that of her parent,
-> could be automatically released, once has been unparent and once all of her
-> references have gone away, via the object's free callback.
-> 
-> However, currently, references to the memory region are held by its owner
-> without first incrementing the memory region object's reference count.
-> As a result, the automatic deallocation of the object, not taking into
-> account those references, results in use-after-free memory corruption.
-> 
-> This patch increases the reference count of an owned memory region object
-> on each memory_region_ref() and decreases it on each memory_region_unref().
-> 
-> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Commit log might need rephrase as I see multiple instance of call,
+with one without check for tcg_enabled() in plugin_cpu_update__async but 
+seems to be building only with tcg enabled so no build breaks.
+
+Thanks
+Harsh
 > ---
+>   accel/stubs/tcg-stub.c | 4 ----
+>   1 file changed, 4 deletions(-)
 > 
-> V4 -> V5:
->      - ref/unref only owned memory regions (Akihiko)
-> 
->   softmmu/memory.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/softmmu/memory.c b/softmmu/memory.c
-> index 7d9494ce70..15e1699750 100644
-> --- a/softmmu/memory.c
-> +++ b/softmmu/memory.c
-> @@ -1800,6 +1800,9 @@ void memory_region_ref(MemoryRegion *mr)
->       /* MMIO callbacks most likely will access data that belongs
->        * to the owner, hence the need to ref/unref the owner whenever
->        * the memory region is in use.
-> +     * Likewise, the owner keeps references to the memory region,
-> +     * hence the need to ref/unref the memory region object to prevent
-> +     * its automatic deallocation while still referenced by its owner.
-
-This comment does not make sense. Traditionally no such automatic 
-deallocation happens so the owner has been always required to free the 
-memory region when it gets finalized.
-
-"[QEMU PATCH v5 09/13] virtio-gpu: Handle resource blob commands" 
-introduces a different kind of memory region, which can be freed anytime 
-before the device gets finalized. Even in this case, the owner removes 
-the reference to the memory owner by doing res->region = NULL;
-
-Regards,
-Akihiko Odaki
+> diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
+> index f088054f34..dd890d6cf6 100644
+> --- a/accel/stubs/tcg-stub.c
+> +++ b/accel/stubs/tcg-stub.c
+> @@ -18,10 +18,6 @@ void tb_flush(CPUState *cpu)
+>   {
+>   }
+>   
+> -void tcg_flush_jmp_cache(CPUState *cpu)
+> -{
+> -}
+> -
+>   int probe_access_flags(CPUArchState *env, vaddr addr, int size,
+>                          MMUAccessType access_type, int mmu_idx,
+>                          bool nonfault, void **phost, uintptr_t retaddr)
 
