@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AC67A2299
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3797A229D
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:40:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhAuI-0003Fa-15; Fri, 15 Sep 2023 11:38:58 -0400
+	id 1qhAuK-0003H9-R2; Fri, 15 Sep 2023 11:39:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qhAuD-0003FK-A9
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:38:53 -0400
-Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qhAuH-0003GT-Vw
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:38:58 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qhAuB-0007Kq-RZ
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:38:53 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qhAuF-0007LL-98
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:38:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id ACA4BB82CCA;
- Fri, 15 Sep 2023 15:38:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6E2C433C8;
- Fri, 15 Sep 2023 15:38:47 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 7B79ACE2B28;
+ Fri, 15 Sep 2023 15:38:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9BAC433CA;
+ Fri, 15 Sep 2023 15:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1694792328;
- bh=2DIxnKAjYl9IN9C+NelvsaIGXF9IdMY+PnzUk012rH4=;
+ s=k20201202; t=1694792329;
+ bh=lMC9fwkpn5xWfNEcwZzLXSPlfHS2thRrwL2OjWwWbZk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=mGvaMu5LCgqB8tP7LN68JFMmDQNhei96hRjxqLdPmIpCdfjzZsqSMc6SWRLqK9gfr
- f9tW2lfwSSo8Kl5GcmbQwnqsf/l4wQFi//fTOprgT5WojJFpYbLHeRk2RixiEa3oj+
- 1tgNt7xP+I6jHLwQZYa6JVEPWyIoT9jyEcCWmLcwzDjOqSvOtRHymbKbvODi4eFvyI
- GWtoq0tFii5IjY5qRvThqjfqxpmogNOjkmucTSVT3eylfem5wCtAooKubWNNQZvrVI
- Wh7/OiyBsXh9QcLCQq38c+CpHrgUJtTz2SZ5CfrLYICMKH8RZLoUKJCrySn4q5zeRq
- WcRFc3sakAHZw==
+ b=pjbjRnrSKa+qzXeOF4Hos3OJv5rBMgGTtHaXm8jzjDocz8d5XYHpDTCMDsGl6yqw7
+ cVaYHH1BQifNr+9bXqnkawDMm0apShZ0jr4Dof3YVjPw7Do4x0qby1noFpa4LB5jx5
+ 7rWqF90qlnu9LDW61T4WZAcVSw0zK4v1mqs3oLLKuaSAs6rtN2KAmoFiNQ5si1P4WC
+ Y8AzMPcT3ToAxlXkjTCYfq9sKx4YDuKfUOXHS2lG3gDdVUBlH2+BNO1y2IgTYoLbRy
+ 6vmyMcc0IsYv28gVoxTMH5+iscZhfTJ4pAt/sW7XmbtNo6SY0dMvQHWxkTT81clsXW
+ lO13rBUaGgmhw==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2 2/6] target/hppa: Allow up to 16 BTLB entries
-Date: Fri, 15 Sep 2023 17:38:37 +0200
-Message-ID: <20230915153841.57564-3-deller@kernel.org>
+Subject: [PATCH v2 3/6] target/hppa: Report and clear BTLBs via fw_cfg at
+ startup
+Date: Fri, 15 Sep 2023 17:38:38 +0200
+Message-ID: <20230915153841.57564-4-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230915153841.57564-1-deller@kernel.org>
 References: <20230915153841.57564-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4601:e00::1;
- envelope-from=deller@kernel.org; helo=ams.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -72,33 +73,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Helge Deller <deller@gmx.de>
 
-Reserve 16 out of the 256 TLB entries for Block-TLBs.
+Report the new number of TLB entries (without BTLBs) to the
+guest and drop reporting of BTLB entries which weren't used at all.
+
+Clear all BTLB and TLB entries at machine reset.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/cpu.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ hw/hppa/machine.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index fa13694dab..23852d89b2 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -211,8 +211,14 @@ typedef struct CPUArchState {
-     target_ureg shadow[7];   /* shadow registers */
+diff --git a/hw/hppa/machine.c b/hw/hppa/machine.c
+index 866e11d208..cf28cb9586 100644
+--- a/hw/hppa/machine.c
++++ b/hw/hppa/machine.c
+@@ -133,14 +133,10 @@ static FWCfgState *create_fw_cfg(MachineState *ms)
+     fw_cfg_add_file(fw_cfg, "/etc/firmware-min-version",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
  
-     /* ??? The number of entries isn't specified by the architecture.  */
-+#ifdef TARGET_HPPA64
-+#define HPPA_BTLB_FIXED         0       /* BTLBs are not supported in 64-bit machines */
-+#else
-+#define HPPA_BTLB_FIXED         16
-+#endif
-+#define HPPA_BTLB_VARIABLE      0
- #define HPPA_TLB_ENTRIES        256
--#define HPPA_BTLB_ENTRIES       0
-+#define HPPA_BTLB_ENTRIES       (HPPA_BTLB_FIXED + HPPA_BTLB_VARIABLE)
+-    val = cpu_to_le64(HPPA_TLB_ENTRIES);
++    val = cpu_to_le64(HPPA_TLB_ENTRIES - HPPA_BTLB_ENTRIES);
+     fw_cfg_add_file(fw_cfg, "/etc/cpu/tlb_entries",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
  
-     /* ??? Implement a unified itlb/dtlb for the moment.  */
-     /* ??? We should use a more intelligent data structure.  */
+-    val = cpu_to_le64(HPPA_BTLB_ENTRIES);
+-    fw_cfg_add_file(fw_cfg, "/etc/cpu/btlb_entries",
+-                    g_memdup(&val, sizeof(val)), sizeof(val));
+-
+     val = cpu_to_le64(HPA_POWER_BUTTON);
+     fw_cfg_add_file(fw_cfg, "/etc/power-button-addr",
+                     g_memdup(&val, sizeof(val)), sizeof(val));
+@@ -433,6 +429,10 @@ static void hppa_machine_reset(MachineState *ms, ShutdownCause reason)
+ 
+         cs->exception_index = -1;
+         cs->halted = 0;
++
++        /* clear any existing TLB and BTLB entries */
++        memset(cpu[i]->env.tlb, 0, sizeof(cpu[i]->env.tlb));
++        cpu[i]->env.tlb_last = HPPA_BTLB_ENTRIES;
+     }
+ 
+     /* already initialized by machine_hppa_init()? */
 -- 
 2.41.0
 
