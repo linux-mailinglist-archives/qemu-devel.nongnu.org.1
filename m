@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF647A2671
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0909B7A2665
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhDn7-0000kU-1O; Fri, 15 Sep 2023 14:43:45 -0400
+	id 1qhDmL-0007mt-Qg; Fri, 15 Sep 2023 14:42:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDmc-0008M0-57; Fri, 15 Sep 2023 14:43:15 -0400
+ id 1qhDmE-0007gf-2P; Fri, 15 Sep 2023 14:42:50 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDma-0003OS-Lq; Fri, 15 Sep 2023 14:43:13 -0400
+ id 1qhDmC-0003Lv-9O; Fri, 15 Sep 2023 14:42:49 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qhDhh-00Fs9Q-1z;
+ (envelope-from <den@openvz.org>) id 1qhDhi-00Fs9Q-09;
  Fri, 15 Sep 2023 20:41:34 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 11/21] parallels: collect bitmap of used clusters at open
-Date: Fri, 15 Sep 2023 20:41:20 +0200
-Message-Id: <20230915184130.403366-14-den@openvz.org>
+Subject: [PATCH 12/21] tests: fix broken deduplication check in parallels
+ format test
+Date: Fri, 15 Sep 2023 20:41:21 +0200
+Message-Id: <20230915184130.403366-15-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915184130.403366-1-den@openvz.org>
 References: <20230915184130.403366-1-den@openvz.org>
@@ -55,150 +56,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the operation is failed, we need to check image consistency if the
-problem is not about memory allocation.
+Original check is broken as supposed reading from 2 different clusters
+results in read from the same file offset twice. This is definitely
+wrong.
 
-Bitmap adjustments in allocate_cluster are not performed yet.
-They worth to be separate. This was proven useful during debug of this
-series. Kept as is for future bissecting.
-
-It should be specifically noted that used bitmap must be recalculated
-if data_off has been fixed during image consistency check.
+We should be sure that
+* the content of both clusters is correct after repair
+* clusters are at the different offsets after repair
+In order to check the latter we write some content into the first one
+and validate that fact.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- block/parallels.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++
- block/parallels.h |  3 ++
- 2 files changed, 76 insertions(+)
+ tests/qemu-iotests/tests/parallels-checks     | 14 ++++++++++----
+ tests/qemu-iotests/tests/parallels-checks.out | 16 ++++++++++++----
+ 2 files changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/block/parallels.c b/block/parallels.c
-index 182ef98872..d677a1a253 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -193,6 +193,58 @@ static int mark_used(BlockDriverState *bs,
-     return 0;
- }
+diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
+index f4ca50295e..df99558486 100755
+--- a/tests/qemu-iotests/tests/parallels-checks
++++ b/tests/qemu-iotests/tests/parallels-checks
+@@ -117,14 +117,20 @@ echo "== check second cluster =="
+ echo "== repair image =="
+ _check_test_img -r all
  
-+/*
-+ * Collect used bitmap. The image can contain errors, we should fill the
-+ * bitmap anyway, as much as we can. This information will be used for
-+ * error resolution.
-+ */
-+static int parallels_fill_used_bitmap(BlockDriverState *bs)
-+{
-+    BDRVParallelsState *s = bs->opaque;
-+    int64_t payload_bytes;
-+    uint32_t i;
-+    int err = 0;
++echo "== check the first cluster =="
++{ $QEMU_IO -r -c "read -P 0x11 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
-+    payload_bytes = bdrv_co_getlength(bs->file->bs);
-+    if (payload_bytes < 0) {
-+        return payload_bytes;
-+    }
-+    payload_bytes -= s->data_start * BDRV_SECTOR_SIZE;
-+    if (payload_bytes < 0) {
-+        return -EINVAL;
-+    }
-+
-+    s->used_bmap_size = DIV_ROUND_UP(payload_bytes, s->cluster_size);
-+    if (s->used_bmap_size == 0) {
-+        return 0;
-+    }
-+    s->used_bmap = bitmap_try_new(s->used_bmap_size);
-+    if (s->used_bmap == NULL) {
-+        return -ENOMEM;
-+    }
-+
-+    for (i = 0; i < s->bat_size; i++) {
-+        int err2;
-+        int64_t host_off = bat2sect(s, i) << BDRV_SECTOR_BITS;
-+        if (host_off == 0) {
-+            continue;
-+        }
-+
-+        err2 = mark_used(bs, s->used_bmap, s->used_bmap_size, host_off);
-+        if (err2 < 0 && err == 0) {
-+            err = err2;
-+        }
-+    }
-+    return err;
-+}
-+
-+static void parallels_free_used_bitmap(BlockDriverState *bs)
-+{
-+    BDRVParallelsState *s = bs->opaque;
-+    s->used_bmap_size = 0;
-+    g_free(s->used_bmap);
-+}
-+
- static int64_t coroutine_fn GRAPH_RDLOCK
- allocate_clusters(BlockDriverState *bs, int64_t sector_num,
-                   int nb_sectors, int *pnum)
-@@ -530,8 +582,17 @@ parallels_check_data_off(BlockDriverState *bs, BdrvCheckResult *res,
+ echo "== check second cluster =="
+ { $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
-     res->corruptions++;
-     if (fix & BDRV_FIX_ERRORS) {
-+        int err;
-         s->header->data_off = cpu_to_le32(data_off);
-         s->data_start = data_off;
+-echo "== check first cluster on host =="
+-printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
++echo "== write another pattern to the first clusters =="
++{ $QEMU_IO -c "write -P 0x66 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
-+        parallels_free_used_bitmap(bs);
-+        err = parallels_fill_used_bitmap(bs);
-+        if (err == -ENOMEM) {
-+            res->check_errors++;
-+            return err;
-+        }
-+
-         res->corruptions_fixed++;
-     }
++echo "== check the first cluster =="
++{ $QEMU_IO -r -c "read -P 0x66 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
-@@ -1214,6 +1275,14 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-     }
-     need_check = need_check || s->data_end > file_nb_sectors;
+-echo "== check second cluster on host =="
+-printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
++echo "== check the second cluster (deduplicated) =="
++{ $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
-+    if (!need_check) {
-+        ret = parallels_fill_used_bitmap(bs);
-+        if (ret == -ENOMEM) {
-+            goto fail;
-+        }
-+        need_check = need_check || ret < 0; /* These are correctable errors */
-+    }
-+
-     /*
-      * We don't repair the image here if it's opened for checks. Also we don't
-      * want to change inactive images and can't change readonly images.
-@@ -1243,6 +1312,8 @@ fail:
-      * "s" object was allocated by g_malloc0 so we can safely
-      * try to free its fields even they were not allocated.
-      */
-+    parallels_free_used_bitmap(bs);
-+
-     error_free(s->migration_blocker);
-     g_free(s->bat_dirty_bmap);
-     qemu_vfree(s->header);
-@@ -1263,6 +1334,8 @@ static void parallels_close(BlockDriverState *bs)
-                       PREALLOC_MODE_OFF, 0, NULL);
-     }
+ # Clear image
+ _make_test_img $SIZE
+diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
+index 74a5e29260..1325d2b611 100644
+--- a/tests/qemu-iotests/tests/parallels-checks.out
++++ b/tests/qemu-iotests/tests/parallels-checks.out
+@@ -55,13 +55,21 @@ The following inconsistencies were found and repaired:
  
-+    parallels_free_used_bitmap(bs);
-+
-     g_free(s->bat_dirty_bmap);
-     qemu_vfree(s->header);
- 
-diff --git a/block/parallels.h b/block/parallels.h
-index 4e53e9572d..6b199443cf 100644
---- a/block/parallels.h
-+++ b/block/parallels.h
-@@ -72,6 +72,9 @@ typedef struct BDRVParallelsState {
-     unsigned long *bat_dirty_bmap;
-     unsigned int  bat_dirty_block;
- 
-+    unsigned long *used_bmap;
-+    unsigned long used_bmap_size;
-+
-     uint32_t *bat_bitmap;
-     unsigned int bat_size;
- 
+ Double checking the fixed image now...
+ No errors were found on the image.
++== check the first cluster ==
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == check second cluster ==
+ read 1048576/1048576 bytes at offset 1048576
+ 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+-== check first cluster on host ==
+-content: 0x11
+-== check second cluster on host ==
+-content: 0x11
++== write another pattern to the first clusters ==
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check the first cluster ==
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check the second cluster (deduplicated) ==
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
+ == TEST DATA_OFF CHECK ==
+ == write pattern to first cluster ==
 -- 
 2.34.1
 
