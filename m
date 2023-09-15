@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7385A7A23C0
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3957A23D0
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:45:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhBtu-0004QA-2A; Fri, 15 Sep 2023 12:42:38 -0400
+	id 1qhBtu-0004QY-IO; Fri, 15 Sep 2023 12:42:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhBts-0004Iq-75
+ id 1qhBts-0004Kf-OG
  for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:36 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhBtq-0004sh-F3
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:35 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-68fdd6011f2so1946208b3a.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 09:42:33 -0700 (PDT)
+ id 1qhBtr-0004sq-4E
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:36 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-68fe39555a0so2117534b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 09:42:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1694796153; x=1695400953; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=WvshgsM5HCbzos1/2tQ3Q09/zhrQ3ymu2EsWiCZ5Ulk=;
- b=E+NVLJRRLuxPiKiJzEHKLfOyxSg51FSagRVEF+iM4F4GtgliJ56l4FTvOLTBSrYSPB
- tt50kv6QOLP3L0jCCusn9Z1+RwTG5dtfW4oBKhHiJwboZa8sMfpH5NNmEBkFXkRg2/dJ
- fMRXc/kR2I6k313feOFI2ByIvqCIenlUgw2zH/FtQ2Ou8Ga8McO9OS+aC18ccImrW0ml
- JbbWbTiKMLGwMZgHLet/lrHTkD4RF7fs8bzfM4UeGYEhoLe6s0kjP9tBWTusxh3ndSQA
- 7RQCVFGEAJr54s0sBNX+pOjzt3AG5LiJ2DQTW/rrrXCgROcPtto9nL4s8IZJrXiincrP
- AeMQ==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=b1NLv1NBVG2fZ70ohDbUJX8NkURlg/p6IknSOTaveXw=;
+ b=T6oMtT9WVYjCicF1ZWc7TNMa6Yn3ik7rnBAsqvlZmPoG7EQKquju2V1NjQdkPvHLws
+ y7wgx5tWN/4J67jjrjYrdDwCXMR03jLNMtzQDQsKlyNz/E5c41ZhdWdrY8uEhEVUr1Iz
+ QZUqJQ+LdEQ3R0BeiNVz0bj9p4Cu/8Voq5WOfskeyZvtJKU4QAJxchTEZH7r6H5PIhbR
+ rCmWfVxWpabXbR+mAzqPq3d/IPK14lPwfWaX9Y9YmQNtedS0HmKM4+OKwvhT2rT10Sva
+ LhpN+hMp3mCl9/+nfeG8RzCPvmPNCwztNN4Bko39Li6K5nW9wN7ozM8AYkPYkaFMQHcT
+ yV0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1694796153; x=1695400953;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WvshgsM5HCbzos1/2tQ3Q09/zhrQ3ymu2EsWiCZ5Ulk=;
- b=rFRv4bckzGBzDgje8evPdoQPPANbg+5b8dDXkJKV/GSNqPYXqBho+43OGA3cnqmUSY
- lTidkAKj9TGIRtPclZV5JTVrekdjolBakGjOjO9MH6kxgRJXZ4gmqpqXF98QYUCnfmhp
- Mw8CtjALlA8EzVOGMcpnNZYDkvDMDj7DdiOXvq+FLXiiYmwHdPsuxWLxfPHjFZc1PUlG
- 2WUS1nke4WapQom/0p6I/mGWLb1nbzmVMGhz76QhUv4TNG6F4Pfq3OPmmJCnNawrqRtN
- 5l9tdGqE0f8OL68/IOKcf5hf49dmqYvkg9TEbAmfdz+x3mFlOplpkI9SLP+pSAnGQosC
- UG9w==
-X-Gm-Message-State: AOJu0Yzd+JuEzDF5VDl1v8MP6keKJOZGARhNBq5qsiBdxi/0mhvFJ+/o
- vNY5mhZRaxU5MOz4pr1YmVyqhUfotZAJb+Fhl0Q=
-X-Google-Smtp-Source: AGHT+IFnKe7ZtJ4wreWHhaIAE+v5nve5OGN5xP+uZsTff33RNHJiW6SL6YoiQMV144ZBTTsvh9YT9A==
-X-Received: by 2002:a05:6a20:549f:b0:135:4df7:f165 with SMTP id
- i31-20020a056a20549f00b001354df7f165mr2553534pzk.21.1694796152771; 
- Fri, 15 Sep 2023 09:42:32 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=b1NLv1NBVG2fZ70ohDbUJX8NkURlg/p6IknSOTaveXw=;
+ b=YfUgnAoK3SZgBk1H6kg3GRkB5LnuoRjykoZbb6nMpnuub2KPzGC9KmSB++uV1Z6udA
+ uaOBQ//jhYsrf/d+yggLPBbYQ9GAixZG5GAB7O6fut1l7ERlccsreZyIWmbgg7sJML4D
+ oHTrpvglXfHY1dI1qAheYlh35oAch9ES1k1ghFPxcWm/G0Sqeo6GfW0zO9DtNTsYwGi5
+ bMQG0w/9YfC+0yACPLyT/uwG5Dqx2zFApJRuh+oYDgdEDqa0yb8LqfgglwG2Vvw+twO/
+ dqI15boNiuYyq4i3Q7t4qi00BYuA4s4BxJFCMMDqePAWX3kLdcuLPchW29eO9PDTt+fr
+ GJbA==
+X-Gm-Message-State: AOJu0YzYB8Dk1q5NXfaFVBHZC7kZpwzEMikayCUuJbXzyERxwro5YwIQ
+ QQdk04x9e2z6IrYqku/dsFI9O54UhYFPLJVhEzI=
+X-Google-Smtp-Source: AGHT+IE6OenehM6n0Mr2sksr74NaeTtKfpDKQPgcpn2z1PjSrC+FuU4I+EPRRyAK8ACrALpPyxrEhA==
+X-Received: by 2002:a05:6a00:1996:b0:68f:dfea:9100 with SMTP id
+ d22-20020a056a00199600b0068fdfea9100mr2451745pfl.21.1694796153619; 
+ Fri, 15 Sep 2023 09:42:33 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
  s187-20020a6377c4000000b00577f55e4a4esm3010087pgc.20.2023.09.15.09.42.32
- for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 09:42:32 -0700 (PDT)
+ Fri, 15 Sep 2023 09:42:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/19] crypto: Provide clmul.h and host accel
-Date: Fri, 15 Sep 2023 09:42:12 -0700
-Message-Id: <20230915164231.123580-1-richard.henderson@linaro.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Subject: [PULL 01/19] crypto: Add generic 8-bit carry-less multiply routines
+Date: Fri, 15 Sep 2023 09:42:13 -0700
+Message-Id: <20230915164231.123580-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230915164231.123580-1-richard.henderson@linaro.org>
+References: <20230915164231.123580-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,67 +90,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 005ad32358f12fe9313a4a01918a55e60d4f39e5:
-
-  Merge tag 'pull-tpm-2023-09-12-3' of https://github.com/stefanberger/qemu-tpm into staging (2023-09-13 13:41:57 -0400)
-
-are available in the Git repository at:
-
-  https://gitlab.com/rth7680/qemu.git tags/pull-crypto-20230915
-
-for you to fetch changes up to 055c99015a4ec3c608d0260592368adc604429ea:
-
-  host/include/aarch64: Implement clmul.h (2023-09-15 13:57:00 +0000)
-
-----------------------------------------------------------------
-Unify implementation of carry-less multiply.
-Accelerate carry-less multiply for 64x64->128.
-
-----------------------------------------------------------------
-Richard Henderson (19):
-      crypto: Add generic 8-bit carry-less multiply routines
-      target/arm: Use clmul_8* routines
-      target/s390x: Use clmul_8* routines
-      target/ppc: Use clmul_8* routines
-      crypto: Add generic 16-bit carry-less multiply routines
-      target/arm: Use clmul_16* routines
-      target/s390x: Use clmul_16* routines
-      target/ppc: Use clmul_16* routines
-      crypto: Add generic 32-bit carry-less multiply routines
-      target/arm: Use clmul_32* routines
-      target/s390x: Use clmul_32* routines
-      target/ppc: Use clmul_32* routines
-      crypto: Add generic 64-bit carry-less multiply routine
-      target/arm: Use clmul_64
-      target/i386: Use clmul_64
-      target/s390x: Use clmul_64
-      target/ppc: Use clmul_64
-      host/include/i386: Implement clmul.h
-      host/include/aarch64: Implement clmul.h
-
- host/include/aarch64/host/cpuinfo.h      |   1 +
- host/include/aarch64/host/crypto/clmul.h |  41 +++++++
- host/include/generic/host/crypto/clmul.h |  15 +++
- host/include/i386/host/cpuinfo.h         |   1 +
- host/include/i386/host/crypto/clmul.h    |  29 +++++
- host/include/x86_64/host/crypto/clmul.h  |   1 +
- include/crypto/clmul.h                   |  83 ++++++++++++++
- include/qemu/cpuid.h                     |   3 +
- target/arm/tcg/vec_internal.h            |  11 --
- target/i386/ops_sse.h                    |  40 ++-----
- crypto/clmul.c                           | 111 ++++++++++++++++++
- target/arm/tcg/mve_helper.c              |  16 +--
- target/arm/tcg/vec_helper.c              | 102 ++---------------
- target/ppc/int_helper.c                  |  64 +++++------
- target/s390x/tcg/vec_int_helper.c        | 186 ++++++++++++++-----------------
- util/cpuinfo-aarch64.c                   |   4 +-
- util/cpuinfo-i386.c                      |   1 +
- crypto/meson.build                       |   9 +-
- 18 files changed, 433 insertions(+), 285 deletions(-)
- create mode 100644 host/include/aarch64/host/crypto/clmul.h
- create mode 100644 host/include/generic/host/crypto/clmul.h
- create mode 100644 host/include/i386/host/crypto/clmul.h
- create mode 100644 host/include/x86_64/host/crypto/clmul.h
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/crypto/clmul.h | 41 +++++++++++++++++++++++++++++
+ crypto/clmul.c         | 60 ++++++++++++++++++++++++++++++++++++++++++
+ crypto/meson.build     |  9 ++++---
+ 3 files changed, 107 insertions(+), 3 deletions(-)
  create mode 100644 include/crypto/clmul.h
  create mode 100644 crypto/clmul.c
+
+diff --git a/include/crypto/clmul.h b/include/crypto/clmul.h
+new file mode 100644
+index 0000000000..153b5e3057
+--- /dev/null
++++ b/include/crypto/clmul.h
+@@ -0,0 +1,41 @@
++/*
++ * Carry-less multiply operations.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright (C) 2023 Linaro, Ltd.
++ */
++
++#ifndef CRYPTO_CLMUL_H
++#define CRYPTO_CLMUL_H
++
++/**
++ * clmul_8x8_low:
++ *
++ * Perform eight 8x8->8 carry-less multiplies.
++ */
++uint64_t clmul_8x8_low(uint64_t, uint64_t);
++
++/**
++ * clmul_8x4_even:
++ *
++ * Perform four 8x8->16 carry-less multiplies.
++ * The odd bytes of the inputs are ignored.
++ */
++uint64_t clmul_8x4_even(uint64_t, uint64_t);
++
++/**
++ * clmul_8x4_odd:
++ *
++ * Perform four 8x8->16 carry-less multiplies.
++ * The even bytes of the inputs are ignored.
++ */
++uint64_t clmul_8x4_odd(uint64_t, uint64_t);
++
++/**
++ * clmul_8x4_packed:
++ *
++ * Perform four 8x8->16 carry-less multiplies.
++ */
++uint64_t clmul_8x4_packed(uint32_t, uint32_t);
++
++#endif /* CRYPTO_CLMUL_H */
+diff --git a/crypto/clmul.c b/crypto/clmul.c
+new file mode 100644
+index 0000000000..82d873fee5
+--- /dev/null
++++ b/crypto/clmul.c
+@@ -0,0 +1,60 @@
++/*
++ * Carry-less multiply operations.
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ *
++ * Copyright (C) 2023 Linaro, Ltd.
++ */
++
++#include "qemu/osdep.h"
++#include "crypto/clmul.h"
++
++uint64_t clmul_8x8_low(uint64_t n, uint64_t m)
++{
++    uint64_t r = 0;
++
++    for (int i = 0; i < 8; ++i) {
++        uint64_t mask = (n & 0x0101010101010101ull) * 0xff;
++        r ^= m & mask;
++        m = (m << 1) & 0xfefefefefefefefeull;
++        n >>= 1;
++    }
++    return r;
++}
++
++static uint64_t clmul_8x4_even_int(uint64_t n, uint64_t m)
++{
++    uint64_t r = 0;
++
++    for (int i = 0; i < 8; ++i) {
++        uint64_t mask = (n & 0x0001000100010001ull) * 0xffff;
++        r ^= m & mask;
++        n >>= 1;
++        m <<= 1;
++    }
++    return r;
++}
++
++uint64_t clmul_8x4_even(uint64_t n, uint64_t m)
++{
++    n &= 0x00ff00ff00ff00ffull;
++    m &= 0x00ff00ff00ff00ffull;
++    return clmul_8x4_even_int(n, m);
++}
++
++uint64_t clmul_8x4_odd(uint64_t n, uint64_t m)
++{
++    return clmul_8x4_even(n >> 8, m >> 8);
++}
++
++static uint64_t unpack_8_to_16(uint64_t x)
++{
++    return  (x & 0x000000ff)
++         | ((x & 0x0000ff00) << 8)
++         | ((x & 0x00ff0000) << 16)
++         | ((x & 0xff000000) << 24);
++}
++
++uint64_t clmul_8x4_packed(uint32_t n, uint32_t m)
++{
++    return clmul_8x4_even_int(unpack_8_to_16(n), unpack_8_to_16(m));
++}
+diff --git a/crypto/meson.build b/crypto/meson.build
+index 5f03a30d34..9ac1a89802 100644
+--- a/crypto/meson.build
++++ b/crypto/meson.build
+@@ -48,9 +48,12 @@ if have_afalg
+ endif
+ crypto_ss.add(when: gnutls, if_true: files('tls-cipher-suites.c'))
+ 
+-util_ss.add(files('sm4.c'))
+-util_ss.add(files('aes.c'))
+-util_ss.add(files('init.c'))
++util_ss.add(files(
++  'aes.c',
++  'clmul.c',
++  'init.c',
++  'sm4.c',
++))
+ if gnutls.found()
+   util_ss.add(gnutls)
+ endif
+-- 
+2.34.1
+
 
