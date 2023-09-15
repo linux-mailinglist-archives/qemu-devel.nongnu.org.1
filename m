@@ -2,112 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8837A225B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B53857A228A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:37:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhAji-0005ed-Cz; Fri, 15 Sep 2023 11:28:02 -0400
+	id 1qhArq-0001hp-Ku; Fri, 15 Sep 2023 11:36:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qhAjY-0005dd-1N; Fri, 15 Sep 2023 11:27:52 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qhAjW-0005PI-HP; Fri, 15 Sep 2023 11:27:51 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38FFQ55Q009486; Fri, 15 Sep 2023 15:27:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=DrCFFHnu1MJ8O5oleEIdNSOBejb4lif0Xt5UGdSZh2I=;
- b=hpDVR3lB88U79h0fE7wYP+UGAXaiiwidOl+s9fBE3X6IvT056S/j4yDU5YwTQPeHj0o7
- jXoEnkKs/gIiU5jSUhpVXMoFjD4cHbjaeY4QiZjH/Skwq2SaKdd7Sz5UKA5FHaJg/YHo
- Ts5bpyfgA/oGP2rxYHlrBzvB1z0K1QWrDeIoHdvMAlDIW05i1mS75laDEIF3quZtbb22
- 6vsAVUZI1WwFfqHAFmBlG4LI0JKsqWjTz0Y5gkSJC+9Vx8x22Q4c+KQZ8lDNbW7xnoMP
- hUgzZEiGiyfAh9czbvmTXE3tyXMTHEpC/y4I91hzrXvhh8yBba4rT8TcDGD+7xFBpRGE Gw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4swhr1tt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:27:36 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38FFQbOf011726;
- Fri, 15 Sep 2023 15:27:35 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4swhr1te-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:27:35 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38FEATRJ002755; Fri, 15 Sep 2023 15:27:34 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t14hmmqk4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:27:34 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
- [10.39.53.233])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38FFRYcc37749354
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 15 Sep 2023 15:27:34 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1F395803F;
- Fri, 15 Sep 2023 15:27:33 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A4F8F58055;
- Fri, 15 Sep 2023 15:27:28 +0000 (GMT)
-Received: from [9.195.40.219] (unknown [9.195.40.219])
- by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 15 Sep 2023 15:27:28 +0000 (GMT)
-Message-ID: <09b837fe-d2a7-083d-c67b-b38a7a46bfbf@linux.ibm.com>
-Date: Fri, 15 Sep 2023 20:57:26 +0530
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhArm-0001hF-8u
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:36:22 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhArk-0006uW-JJ
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:36:22 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-403012f276dso24939885e9.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:36:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694792177; x=1695396977; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5CI3NNC9SiJ1TxUL6btnHuQ4dhmRN5gG+G3zcqeRXVM=;
+ b=sFJ+/LVIj96uWg40x7AmQA/MatKjp2eFUB/6chzmMqRrH7kKvG4rJMUiij+9l7VHmV
+ nTA5ilqE9jNBpwUTsgb7nsKQCKv5QSrsYLWegmocWMiVqY6ExzvV6SeS8p1nn6VXU5b0
+ YPKI+q9EzS0mKJU9HG70lgduJeYAkOt5RhnrYA3WE0V+jsFtUYVTKyWL17o5Nf4tp3Qs
+ 8r72Uz75YCma1/19jq2gLggE186taPSYWRhnd3Nw16uF461OEKw3JwpLMxtRSrdDmc0Z
+ SOPAZw96YTCm1IdRtjS95WwMefIQL+VuXLlmyCUoO8QkEkI36KHUfw5PGvGuVM23xUYz
+ Ik+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694792177; x=1695396977;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5CI3NNC9SiJ1TxUL6btnHuQ4dhmRN5gG+G3zcqeRXVM=;
+ b=bxz6q7vszgIhZADuufmsbA6zYDKGtmqW4qapnErqyvbLTx1UC6o/yQio8GY8xFMZFP
+ 5dbaDaRC2BLSwAd1/1q7tsge4fq541R7xkRrTlYqZYKEgqSxhlwkAuynbZj0vnPp4i5H
+ IdeqWvRGcpJur0fmUaEhe78An1Blh35Nc4taYYCjfrXF/hHlYbcIXds5wPhtYeDYAV77
+ xhj9Y4s4zMEuC/bPndRy08PlLzUGX70RzLW6/qIoqPU4TD2G3cAlHztTOWQdHZoWAIqi
+ qUym4PfHip0cNOI625EfMY87p3MUUSma/MwN8sZzfuU9bQ79ujrdxrEgrhHLUBPJxGZD
+ FzhA==
+X-Gm-Message-State: AOJu0YzX4m39jqD6Ifyq94EDZi5nar/5qGXLoO7jEKp1dbMofYUEhX5G
+ ifskBCV75vGS/tFOz+16A03WMA==
+X-Google-Smtp-Source: AGHT+IG41nLabpVAug2wTxpDa0exGVJNCN+kLHtI6EhFWzLSnPMKB9/WwA+qFIvR70brxexwhCSqTA==
+X-Received: by 2002:a5d:4acb:0:b0:313:eb09:c029 with SMTP id
+ y11-20020a5d4acb000000b00313eb09c029mr1787008wrs.43.1694792177339; 
+ Fri, 15 Sep 2023 08:36:17 -0700 (PDT)
+Received: from [192.168.69.115]
+ (6lp61-h01-176-171-209-234.dsl.sta.abo.bbox.fr. [176.171.209.234])
+ by smtp.gmail.com with ESMTPSA id
+ ci8-20020a5d5d88000000b0031fedb25b85sm2435154wrb.84.2023.09.15.08.36.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Sep 2023 08:36:16 -0700 (PDT)
+Message-ID: <4cf84e75-2602-6676-9b85-92f5918232ba@linaro.org>
+Date: Fri, 15 Sep 2023 17:36:15 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [RFC PATCH 4/4] accel/tcg: Keep tlb_set_dirty() internal
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 06/11] exec: Rename cpu.c -> cpu-target.c
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org
-References: <20230914195229.78244-1-philmd@linaro.org>
- <20230914195229.78244-5-philmd@linaro.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230914195229.78244-5-philmd@linaro.org>
+To: Anton Johansson <anjo@rev.ng>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Alessandro Di Federico <ale@rev.ng>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Riku Voipio <riku.voipio@iki.fi>
+References: <20230914185718.76241-1-philmd@linaro.org>
+ <20230914185718.76241-7-philmd@linaro.org>
+ <fzzskmx5koxw7xzzwwv6jejnntnjdw7psfjgnwkulxaq2sw7qf@2ro4ydtvieyg>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <fzzskmx5koxw7xzzwwv6jejnntnjdw7psfjgnwkulxaq2sw7qf@2ro4ydtvieyg>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: FPeWnLe5LAokuHoWknVPMaewQWK98yU1
-X-Proofpoint-ORIG-GUID: z_uRWNNUBNai6oxzncoxEHxtLVBlAWMZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-15_11,2023-09-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 mlxlogscore=917 mlxscore=0 clxscore=1015
- impostorscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309150134
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -124,45 +100,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 15/9/23 16:19, Anton Johansson wrote:
+> On 14/09/23, Philippe Mathieu-Daudé wrote:
+>> We have exec/cpu code split in 2 files for target agnostic
+>> ("common") and specific. Rename 'cpu.c' which is target
+>> specific using the '-target' suffix. Update MAINTAINERS.
+>> Remove the 's from 'cpus-common.c' to match the API cpu_foo()
+>> functions.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   MAINTAINERS                   | 4 ++--
+>>   meson.build                   | 4 ++--
+>>   cpus-common.c => cpu-common.c | 0
+>>   cpu.c => cpu-target.c         | 0
+>>   4 files changed, 4 insertions(+), 4 deletions(-)
+>>   rename cpus-common.c => cpu-common.c (100%)
+>>   rename cpu.c => cpu-target.c (100%)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 00562f924f..12261d8eaf 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -139,7 +139,8 @@ R: Paolo Bonzini <pbonzini@redhat.com>
+>>   S: Maintained
+>>   F: softmmu/cpus.c
+>>   F: softmmu/watchpoint.c
+>> -F: cpus-common.c
+>> +F: cpu-common.c
+>> +F: cpu-target.c
 
+The renamed file is here ^
 
-On 9/15/23 01:22, Philippe Mathieu-Daudé wrote:
-> Since commit 34d49937e4 ("accel/tcg: Handle atomic accesses
-> to notdirty memory correctly") tlb_set_dirty() is only used
-> (once) in the very same file it is defined... Make it static.
+>>   F: page-vary.c
+>>   F: page-vary-common.c
+>>   F: accel/tcg/
+>> @@ -1772,7 +1773,6 @@ M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+>>   R: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>   R: Yanan Wang <wangyanan55@huawei.com>
+>>   S: Supported
+>> -F: cpu.c
+> Was the maintainer switch intentional?
+
+(yes, see earlier)
+
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Either way,
+> Reviewed-by: Anton Johansson <anjo@rev.ng>
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
-> ---
->   include/exec/exec-all.h | 1 -
->   accel/tcg/cputlb.c      | 2 +-
->   2 files changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-> index b2f5cd4c2a..59efa7bc28 100644
-> --- a/include/exec/exec-all.h
-> +++ b/include/exec/exec-all.h
-> @@ -695,7 +695,6 @@ static inline void mmap_unlock(void) {}
->   #define WITH_MMAP_LOCK_GUARD()
->   
->   void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
-> -void tlb_set_dirty(CPUState *cpu, vaddr addr);
->   
->   MemoryRegionSection *
->   address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
-> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-> index c643d66190..fe9d702f3e 100644
-> --- a/accel/tcg/cputlb.c
-> +++ b/accel/tcg/cputlb.c
-> @@ -1062,7 +1062,7 @@ static inline void tlb_set_dirty1_locked(CPUTLBEntry *tlb_entry,
->   
->   /* update the TLB corresponding to virtual page vaddr
->      so that it is no longer dirty */
-> -void tlb_set_dirty(CPUState *cpu, vaddr addr)
-> +static void tlb_set_dirty(CPUState *cpu, vaddr addr)
->   {
->       CPUArchState *env = cpu->env_ptr;
->       int mmu_idx;
+Thanks!
 
