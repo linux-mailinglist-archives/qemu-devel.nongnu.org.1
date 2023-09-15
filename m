@@ -2,52 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B3E7A18E2
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 10:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 328367A1905
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 10:39:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh4Eb-00060D-2v; Fri, 15 Sep 2023 04:31:29 -0400
+	id 1qh4L0-0007Hy-9v; Fri, 15 Sep 2023 04:38:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
- id 1qh4EN-0005zt-NJ; Fri, 15 Sep 2023 04:31:16 -0400
-Received: from 60-248-80-70.hinet-ip.hinet.net ([60.248.80.70]
- helo=Atcsqr.andestech.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alvinga@andestech.com>)
- id 1qh4EK-0002qh-QS; Fri, 15 Sep 2023 04:31:15 -0400
-Received: from mail.andestech.com (ATCPCS16.andestech.com [10.0.1.222])
- by Atcsqr.andestech.com with ESMTP id 38F8Uroq046952;
- Fri, 15 Sep 2023 16:30:53 +0800 (+08)
- (envelope-from alvinga@andestech.com)
-Received: from alvinga-VirtualBox.andestech.com (10.0.13.76) by
- ATCPCS16.andestech.com (10.0.1.222) with Microsoft SMTP Server id 14.3.498.0; 
- Fri, 15 Sep 2023 16:30:54 +0800
-From: Alvin Chang <alvinga@andestech.com>
-To: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>
-CC: <alistair.francis@wdc.com>, <ajones@ventanamicro.com>, Alvin Chang
- <alvinga@andestech.com>
-Subject: [PATCH v3] target/riscv: update checks on writing pmpcfg for Smepmp
- to version 1.0
-Date: Fri, 15 Sep 2023 16:30:47 +0800
-Message-ID: <20230915083047.4067186-1-alvinga@andestech.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qh4Kr-0007HI-8U
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 04:37:58 -0400
+Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qh4Kp-0004Mj-FT
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 04:37:56 -0400
+Received: by mail-oo1-xc33.google.com with SMTP id
+ 006d021491bc7-5712b68dbc0so1020784eaf.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 01:37:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1694767074; x=1695371874;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=d6yW9YAY0+F09Wpw7lIs3Q1PIudBAo+5u5BItTpalfA=;
+ b=YDy4o3Te1tO7O/9KA2BL9x2oMgVwWZfzRTJvAkz12pGRCPEkBRXnFhxhcd1iv0i7w7
+ 6IU07wijmv3euOA476F3YVZIfk/Z977+qQ33SEVwoHjYKen+GIjhV3tPPkZDmgFwmzwt
+ lqOJwCLInXDM8jVt4P9/ZnJ5PGvCCFSneugLUNwClKBJBvH9QV5hmSaSK+I7wLSV7Dpp
+ cnYEFbJZqZ03KdYLmRyVBWz/7HBmeFtnQ61TOX/D6pP/nF7JLGhXWqAk0ruM9N2D8482
+ /WaJgEDfZfXbcaRjfyEOczpL1DPS7dwGHQaIkMOwSzsG6YppM9NSTOb/GCPjdNLmV7mT
+ OrfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694767074; x=1695371874;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=d6yW9YAY0+F09Wpw7lIs3Q1PIudBAo+5u5BItTpalfA=;
+ b=KFgqlUB2KZL9Wu184IWYxgUY21sG3aD/WEO61KVKMWVuUFQJiOmYKuopLxsoQ5Xyyk
+ xIxRjCvs3Iwm5ojTex9B2nD+/c6bu2PIKYo3QNQkFP47KxfAxSed3nLQ4QKnPMbjk8Ek
+ frFt7RAwGuao5OyJy22bdAc4I0zNAFRqzRFovBZEEyetQ6koZ90Pz4pkDhtscdmUmUQi
+ s0SaKj312lMP5zE38sYJlVPOLgZRjpiaklzpt5/aVGbcMep8OkBubIJDZfyOPOp2yP2r
+ wPCHTH3RhdfhckyfsRXI2TSjTCIwwc9CCrMnyV2k4MpoLMr3w1y+UBCjWldv/EM/cwlz
+ p3hA==
+X-Gm-Message-State: AOJu0YyQijE2J+TZww5fZzf1BO8GP0693AQ/C4md85kT43CEG19XClFD
+ i3MjD8Y+5TEv2bArZCbzWpBToJHMmVjMI+VAWTCtKA==
+X-Google-Smtp-Source: AGHT+IGEi0dPBV+JF/IV+SLFGTnDHpknRMF0PNRt68J2ALCZdjGWlnmddyRijsZ8nZoZY3vIowgzPVnr3F/bGgt3QAM=
+X-Received: by 2002:a05:6870:d69c:b0:1bb:75af:37b5 with SMTP id
+ z28-20020a056870d69c00b001bb75af37b5mr1104828oap.10.1694767073786; Fri, 15
+ Sep 2023 01:37:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.13.76]
-X-DNSRBL: 
-X-SPAM-SOURCE-CHECK: pass
-X-MAIL: Atcsqr.andestech.com 38F8Uroq046952
-Received-SPF: pass client-ip=60.248.80.70; envelope-from=alvinga@andestech.com;
- helo=Atcsqr.andestech.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, RDNS_DYNAMIC=0.982,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- TVD_RCVD_IP=0.001 autolearn=no autolearn_force=no
+References: <20230907130410.498935-1-mnissler@rivosinc.com>
+ <20230907130410.498935-2-mnissler@rivosinc.com> <ZQH/1pRzHhaXbl+E@x1n>
+In-Reply-To: <ZQH/1pRzHhaXbl+E@x1n>
+From: Mattias Nissler <mnissler@rivosinc.com>
+Date: Fri, 15 Sep 2023 10:37:43 +0200
+Message-ID: <CAGNS4TYLqUogVTAxR1eBzbukp5YLDHzVJDqEwvp0sxg9dFWogw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] softmmu: Per-AddressSpace bounce buffering
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, 
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jagannathan Raman <jag.raman@oracle.com>, stefanha@redhat.com, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
+ envelope-from=mnissler@rivosinc.com; helo=mail-oo1-xc33.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,87 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Current checks on writing pmpcfg for Smepmp follows Smepmp version
-0.9.1. However, Smepmp specification has already been ratified, and
-there are some differences between version 0.9.1 and 1.0. In this
-commit we update the checks of writing pmpcfg to follow Smepmp version
-1.0.
+On Wed, Sep 13, 2023 at 8:30=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+>
+> On Thu, Sep 07, 2023 at 06:04:06AM -0700, Mattias Nissler wrote:
+> > @@ -3105,6 +3105,9 @@ void address_space_init(AddressSpace *as, MemoryR=
+egion *root, const char *name)
+> >      as->ioeventfds =3D NULL;
+> >      QTAILQ_INIT(&as->listeners);
+> >      QTAILQ_INSERT_TAIL(&address_spaces, as, address_spaces_link);
+> > +    as->bounce.in_use =3D false;
+> > +    qemu_mutex_init(&as->map_client_list_lock);
+> > +    QLIST_INIT(&as->map_client_list);
+> >      as->name =3D g_strdup(name ? name : "anonymous");
+> >      address_space_update_topology(as);
+> >      address_space_update_ioeventfds(as);
+>
+> Missing the counterpart in do_address_space_destroy()?
 
-When mseccfg.MML is set, the constraints to modify PMP rules are:
-1. Locked rules cannot be removed or modified until a PMP reset, unless
-   mseccfg.RLB is set.
-2. From Smepmp specification version 1.0, chapter 2 section 4b:
-   Adding a rule with executable privileges that either is M-mode-only
-   or a locked Shared-Region is not possible and such pmpcfg writes are
-   ignored, leaving pmpcfg unchanged.
+Of course, thanks for pointing this out.
 
-The commit transfers the value of pmpcfg into the index of the Smepmp
-truth table, and checks the rules by aforementioned specification
-changes.
+>
+> Perhaps we should assert on having no one using the buffer, or on the
+> client list too.
 
-Signed-off-by: Alvin Chang <alvinga@andestech.com>
----
-Changes from v2: Adopt switch case ranges and numerical order.
+I agree it makes sense to put these assertions, but let me dig a bit
+and do some experiments to see whether these hold true in practice.
 
-Changes from v1: Convert ePMP over to Smepmp.
-
- target/riscv/pmp.c | 40 ++++++++++++++++++++++++++++++++--------
- 1 file changed, 32 insertions(+), 8 deletions(-)
-
-diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index a08cd95658..b144932b3b 100644
---- a/target/riscv/pmp.c
-+++ b/target/riscv/pmp.c
-@@ -99,16 +99,40 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
-                 locked = false;
-             }
- 
--            /* mseccfg.MML is set */
--            if (MSECCFG_MML_ISSET(env)) {
--                /* not adding execute bit */
--                if ((val & PMP_LOCK) != 0 && (val & PMP_EXEC) != PMP_EXEC) {
-+            /*
-+             * mseccfg.MML is set. Locked rules cannot be removed or modified
-+             * until a PMP reset. Besides, from Smepmp specification version 1.0
-+             * , chapter 2 section 4b says:
-+             * Adding a rule with executable privileges that either is
-+             * M-mode-only or a locked Shared-Region is not possible and such
-+             * pmpcfg writes are ignored, leaving pmpcfg unchanged.
-+             */
-+            if (MSECCFG_MML_ISSET(env) && !pmp_is_locked(env, pmp_index)) {
-+                /*
-+                 * Convert the PMP permissions to match the truth table in the
-+                 * ePMP spec.
-+                 */
-+                const uint8_t epmp_operation =
-+                    ((val & PMP_LOCK) >> 4) | ((val & PMP_READ) << 2) |
-+                    (val & PMP_WRITE) | ((val & PMP_EXEC) >> 2);
-+
-+                switch (epmp_operation) {
-+                case 0 ... 8:
-                     locked = false;
--                }
--                /* shared region and not adding X bit */
--                if ((val & PMP_LOCK) != PMP_LOCK &&
--                    (val & 0x7) != (PMP_WRITE | PMP_EXEC)) {
-+                    break;
-+                case 9 ... 11:
-+                    break;
-+                case 12:
-+                    locked = false;
-+                    break;
-+                case 13:
-+                    break;
-+                case 14:
-+                case 15:
-                     locked = false;
-+                    break;
-+                default:
-+                    g_assert_not_reached();
-                 }
-             }
-         } else {
--- 
-2.34.1
-
+>
+> Thanks,
+>
+> --
+> Peter Xu
+>
 
