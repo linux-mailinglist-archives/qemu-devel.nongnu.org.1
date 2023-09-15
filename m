@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C582C7A23C6
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFE97A23C1
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:43:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhBu6-0004Vj-Rv; Fri, 15 Sep 2023 12:42:50 -0400
+	id 1qhBu8-0004Wv-M3; Fri, 15 Sep 2023 12:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhBu4-0004VR-VH
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:48 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1qhBu6-0004Ve-9A
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:50 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhBu3-0004wm-Cg
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:48 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-68fdd5c1bbbso1722775b3a.1
+ id 1qhBu4-0004x0-6M
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:49 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-68fb7074348so2162535b3a.2
  for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 09:42:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694796166; x=1695400966; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694796167; x=1695400967; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b+3/8IiHtNpBs5dwlAlcrSMhCtecqGkkP2HhC4y759E=;
- b=TrLqvRrkTYTzuerEopt6OwLgWG+K1+eZXhWlX7gLqT0ERI1lu9nCQOaj/YXeueIbg/
- Ndru3nJK8XqtfVgGmoB47DhwhkF6uHcet2JBGtYUhKdtIYBw8Xe7jktUCAFhFzyEEk8Y
- 8zrzbw6Z0XLZ4hl57B80j+CrYOc/hd/tS5NAyj2roRG2vw+k/c59FwiDadY4pqARujgl
- VYzwET2qadZlj08pjLDrxZ+rrhF4sU75z3ZMlS9g6n/3BLLrxz9XsImGwuE6suNd1xWx
- eINCtF1qg6XW/8lx+swIAS1PMdZ+eLGl8G4DONrh6p8b+9MwzVKyi4VG0Lg1cDhkOtVm
- 1xPQ==
+ bh=mA3cEFgfatbmP6xNVJY+hnrvCkua8Jz5pM6YfngoFhc=;
+ b=q2jbA0or9bLiKmnvehCglhM+gRZjrwGLNVEhIUfbgtz/gDNGPoEzYzgsqBeEI/B/SS
+ MvWeJ8qjW0on6pyr5Wj43r75WwhbHkbjiibg6zaf3fHS1gho7BCZwVLty4x9RJCbgyw+
+ 4DlZvq/gHk3lr70QBCsjvgkWFwfb+LZmyKeLzoQEOPSayBpbF1SDojrzgNivuXFbPmMx
+ hLqxFs1t2j2JyT1R6XfzdZP1oTswgI1pj1r2NfYv5aRpl6lRn06vdby5OhSol3uMY/nA
+ nl0K6HO0LCmQbs3IVxDgJXsO6IyXydE2ZmXqpGfeYpcplqlS/kIBPp+tJb8O+sxk/uip
+ C2xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694796166; x=1695400966;
+ d=1e100.net; s=20230601; t=1694796167; x=1695400967;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b+3/8IiHtNpBs5dwlAlcrSMhCtecqGkkP2HhC4y759E=;
- b=Ld3tWyey6gp/7jfLZ2cJpnPszToXdUtw3K811gjJiEJHbpo+L+9RclE4RbkfHagTp6
- Zjetx3+ICloxh7+nURrIH+h45zEOwqNYwiqp/gync8QvYjePltppANtQLeOfs3fhb+rr
- smrz5wBrMWK8EufhYs3cGRhBHJtin0V63c7nM4J20bEmKM34rM/BpTTtz7IYw960zMQj
- dnCKZRU+DUgx+TQINNLDXylm/wIupjUddtvjG+SPSEQInXO75NY/VdSJ3domrVqGp5tk
- JGArRnx/DRnWAI1vVSzakCW4uxCQc1LiXY8a801nyR5oqEcH9qTS1L2go7XW3y9FLwsP
- itqg==
-X-Gm-Message-State: AOJu0YydBY5AlytmRIv3D3ZmbidpwhMv/3F7ywhL+nFPqqAxUIJ7eJy/
- DTFd2J4ZX7W0WI36Kll4O+ipLh2quEq1u1OyviA=
-X-Google-Smtp-Source: AGHT+IG9a5LF1bnb7JgZGyu37DmTsoquDayqpwsPPcJLa+/QfHcqowgeBLyb8bczV4L7DjNxH4mtcQ==
-X-Received: by 2002:a05:6a20:430d:b0:159:d061:58e9 with SMTP id
- h13-20020a056a20430d00b00159d06158e9mr7314745pzk.26.1694796165954; 
- Fri, 15 Sep 2023 09:42:45 -0700 (PDT)
+ bh=mA3cEFgfatbmP6xNVJY+hnrvCkua8Jz5pM6YfngoFhc=;
+ b=eNuCAtjRM1UJLnxQruMn0Fgfsk6WeFwli8Dy60My1cKNa1lcOVVmttrC5NldA0up7a
+ XMveBmo+rRbHWObiGOo5kmMjJgm22LmmCICw+5gUuaCfmD9Oo96jTFMWtWh9i5fNESmp
+ m+Hl7Q7znfiNJmktTCTXBVATWnJQLp4Zmbyql63BPkuogtleXUxXRHJjjH3zpEdWsyuj
+ n4kZdxFBi6DZhuzmfBeX3zudgmUbeiZaQASOXU73HaZ+/iJKdjhlGha7cYTuqkgpN0oq
+ 2ldfkIRLetsIG7fjKFUaW+gTquSLck/3Zeosd5a67QxvO2cYSUNnW+AZP2wDWtXOE8pk
+ fxLA==
+X-Gm-Message-State: AOJu0YzzKc8pxbk6YwzfypGkAlg87aHvoLZVhw04xfdDWp+X8M/aME5r
+ E4bsiKDZYtV8b6bGx69ble+Fssd/2geFt9qxV8E=
+X-Google-Smtp-Source: AGHT+IFl6TJZcSBal5yZaoaTLe1xJU+eipZ/bZ0fA/7qmkLlWLniU/zZXosqIXujwh3OlvH5pT//WA==
+X-Received: by 2002:a05:6a20:1442:b0:14c:a53c:498e with SMTP id
+ a2-20020a056a20144200b0014ca53c498emr2841900pzi.42.1694796166943; 
+ Fri, 15 Sep 2023 09:42:46 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- s187-20020a6377c4000000b00577f55e4a4esm3010087pgc.20.2023.09.15.09.42.45
+ s187-20020a6377c4000000b00577f55e4a4esm3010087pgc.20.2023.09.15.09.42.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 09:42:45 -0700 (PDT)
+ Fri, 15 Sep 2023 09:42:46 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 15/19] target/i386: Use clmul_64
-Date: Fri, 15 Sep 2023 09:42:27 -0700
-Message-Id: <20230915164231.123580-16-richard.henderson@linaro.org>
+Subject: [PULL 16/19] target/s390x: Use clmul_64
+Date: Fri, 15 Sep 2023 09:42:28 -0700
+Message-Id: <20230915164231.123580-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915164231.123580-1-richard.henderson@linaro.org>
 References: <20230915164231.123580-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,76 +91,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use generic routine for 64-bit carry-less multiply.
+Use the generic routine for 64-bit carry-less multiply.
+Remove our local version of galois_multiply64.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/ops_sse.h | 40 +++++++++-------------------------------
- 1 file changed, 9 insertions(+), 31 deletions(-)
+ target/s390x/tcg/vec_int_helper.c | 58 +++++++------------------------
+ 1 file changed, 12 insertions(+), 46 deletions(-)
 
-diff --git a/target/i386/ops_sse.h b/target/i386/ops_sse.h
-index a0e425733f..33908c0691 100644
---- a/target/i386/ops_sse.h
-+++ b/target/i386/ops_sse.h
-@@ -20,6 +20,7 @@
- 
- #include "crypto/aes.h"
- #include "crypto/aes-round.h"
-+#include "crypto/clmul.h"
- 
- #if SHIFT == 0
- #define Reg MMXReg
-@@ -2122,41 +2123,18 @@ target_ulong helper_crc32(uint32_t crc1, target_ulong msg, uint32_t len)
- 
- #endif
- 
--#if SHIFT == 1
--static void clmulq(uint64_t *dest_l, uint64_t *dest_h,
--                          uint64_t a, uint64_t b)
--{
--    uint64_t al, ah, resh, resl;
--
--    ah = 0;
--    al = a;
--    resh = resl = 0;
--
--    while (b) {
--        if (b & 1) {
--            resl ^= al;
--            resh ^= ah;
--        }
--        ah = (ah << 1) | (al >> 63);
--        al <<= 1;
--        b >>= 1;
--    }
--
--    *dest_l = resl;
--    *dest_h = resh;
--}
--#endif
--
- void glue(helper_pclmulqdq, SUFFIX)(CPUX86State *env, Reg *d, Reg *v, Reg *s,
-                                     uint32_t ctrl)
- {
--    uint64_t a, b;
--    int i;
-+    int a_idx = (ctrl & 1) != 0;
-+    int b_idx = (ctrl & 16) != 0;
- 
--    for (i = 0; i < 1 << SHIFT; i += 2) {
--        a = v->Q(((ctrl & 1) != 0) + i);
--        b = s->Q(((ctrl & 16) != 0) + i);
--        clmulq(&d->Q(i), &d->Q(i + 1), a, b);
-+    for (int i = 0; i < SHIFT; i++) {
-+        uint64_t a = v->Q(2 * i + a_idx);
-+        uint64_t b = s->Q(2 * i + b_idx);
-+        Int128 *r = (Int128 *)&d->ZMM_X(i);
-+
-+        *r = clmul_64(a, b);
-     }
+diff --git a/target/s390x/tcg/vec_int_helper.c b/target/s390x/tcg/vec_int_helper.c
+index ba284b5379..b18d8a6d16 100644
+--- a/target/s390x/tcg/vec_int_helper.c
++++ b/target/s390x/tcg/vec_int_helper.c
+@@ -21,13 +21,6 @@ static bool s390_vec_is_zero(const S390Vector *v)
+     return !v->doubleword[0] && !v->doubleword[1];
  }
  
+-static void s390_vec_xor(S390Vector *res, const S390Vector *a,
+-                         const S390Vector *b)
+-{
+-    res->doubleword[0] = a->doubleword[0] ^ b->doubleword[0];
+-    res->doubleword[1] = a->doubleword[1] ^ b->doubleword[1];
+-}
+-
+ static void s390_vec_and(S390Vector *res, const S390Vector *a,
+                          const S390Vector *b)
+ {
+@@ -166,26 +159,6 @@ DEF_VCTZ(16)
+ 
+ /* like binary multiplication, but XOR instead of addition */
+ 
+-static S390Vector galois_multiply64(uint64_t a, uint64_t b)
+-{
+-    S390Vector res = {};
+-    S390Vector va = {
+-        .doubleword[1] = a,
+-    };
+-    S390Vector vb = {
+-        .doubleword[1] = b,
+-    };
+-
+-    while (!s390_vec_is_zero(&vb)) {
+-        if (vb.doubleword[1] & 0x1) {
+-            s390_vec_xor(&res, &res, &va);
+-        }
+-        s390_vec_shl(&va, &va, 1);
+-        s390_vec_shr(&vb, &vb, 1);
+-    }
+-    return res;
+-}
+-
+ /*
+  * There is no carry across the two doublewords, so their order does
+  * not matter.  Nor is there partial overlap between registers.
+@@ -265,32 +238,25 @@ void HELPER(gvec_vgfma32)(void *v1, const void *v2, const void *v3,
+ void HELPER(gvec_vgfm64)(void *v1, const void *v2, const void *v3,
+                          uint32_t desc)
+ {
+-    S390Vector tmp1, tmp2;
+-    uint64_t a, b;
++    uint64_t *q1 = v1;
++    const uint64_t *q2 = v2, *q3 = v3;
++    Int128 r;
+ 
+-    a = s390_vec_read_element64(v2, 0);
+-    b = s390_vec_read_element64(v3, 0);
+-    tmp1 = galois_multiply64(a, b);
+-    a = s390_vec_read_element64(v2, 1);
+-    b = s390_vec_read_element64(v3, 1);
+-    tmp2 = galois_multiply64(a, b);
+-    s390_vec_xor(v1, &tmp1, &tmp2);
++    r = int128_xor(clmul_64(q2[0], q3[0]), clmul_64(q2[1], q3[1]));
++    q1[0] = int128_gethi(r);
++    q1[1] = int128_getlo(r);
+ }
+ 
+ void HELPER(gvec_vgfma64)(void *v1, const void *v2, const void *v3,
+                           const void *v4, uint32_t desc)
+ {
+-    S390Vector tmp1, tmp2;
+-    uint64_t a, b;
++    uint64_t *q1 = v1;
++    const uint64_t *q2 = v2, *q3 = v3, *q4 = v4;
++    Int128 r;
+ 
+-    a = s390_vec_read_element64(v2, 0);
+-    b = s390_vec_read_element64(v3, 0);
+-    tmp1 = galois_multiply64(a, b);
+-    a = s390_vec_read_element64(v2, 1);
+-    b = s390_vec_read_element64(v3, 1);
+-    tmp2 = galois_multiply64(a, b);
+-    s390_vec_xor(&tmp1, &tmp1, &tmp2);
+-    s390_vec_xor(v1, &tmp1, v4);
++    r = int128_xor(clmul_64(q2[0], q3[0]), clmul_64(q2[1], q3[1]));
++    q1[0] = q4[0] ^ int128_gethi(r);
++    q1[1] = q4[1] ^ int128_getlo(r);
+ }
+ 
+ #define DEF_VMAL(BITS)                                                         \
 -- 
 2.34.1
 
