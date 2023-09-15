@@ -2,70 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC7B7A2450
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B23E07A2453
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:10:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCJM-0007AG-Qr; Fri, 15 Sep 2023 13:08:56 -0400
+	id 1qhCKb-00012U-If; Fri, 15 Sep 2023 13:10:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qhCJL-0007A2-Ba
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:08:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qhCJJ-0001oH-9g
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:08:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694797732;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8RKJXcpA2mblb71AL3uNtpVV/ZRzqmgBylDJpExCPzw=;
- b=W0ZsXFSbZ0Y7JijV0SqYl2Aw7SOWPO0oOgPW+KwH/5PjkuHIgUuycsZIVUnb6VbjAKOHp0
- QGyXRVSf+tfBzEfHKcZjgqcDtKLcf5YsM3mZsSr410DS8vAa//NN+2L1PxCkHwrs2UfAjj
- 2fJ9MAI6WUit+Hl5RXA9MzU6Yhao2UI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-173-Jdyb2Z4EPuibCRAxxipabw-1; Fri, 15 Sep 2023 13:08:46 -0400
-X-MC-Unique: Jdyb2Z4EPuibCRAxxipabw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0FEDE858285;
- Fri, 15 Sep 2023 17:08:44 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.192.183])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C285A2026D4B;
- Fri, 15 Sep 2023 17:08:42 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Hawkins Jiawei <yin31149@gmail.com>, qemu-stable@nongnu.org,
- si-wei.liu@oracle.com, "Michael S. Tsirkin" <mst@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PATCH v2 3/3] vdpa net: follow VirtIO initialization properly at cvq
- isolation probing
-Date: Fri, 15 Sep 2023 19:08:36 +0200
-Message-Id: <20230915170836.3078172-4-eperezma@redhat.com>
-In-Reply-To: <20230915170836.3078172-1-eperezma@redhat.com>
-References: <20230915170836.3078172-1-eperezma@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qhCKV-00011R-Fi
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:10:07 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qhCKS-00022V-Le
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:10:07 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6bdacc5ed66so1294811a34.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 10:10:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1694797803; x=1695402603; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XDdn3611HSw8poly4seHNvUveHpcRhKefTwKphbLwqM=;
+ b=JYIJWRFGwsymN40Mx1ZVXX6pZSheKI+FTicNriJQBBLxglcbs9rEJjwwtQI2hVa32S
+ cFW1wv/SllPS4l3coO2phhE2Rvis7bd98RMPrn5vcIe7MWVMRFxHg0gvHOolnWz6RYgs
+ yXOYPSiFge2PYIMm0ijHuN5x5EDSsZAi8fkI33/R8JveBlu4W+sKyKMvn9UAE/x0AvQK
+ sNWDUCeocZvgQlPHt4K82LfDU1O3UGUwHpfgZMlwKeKx4zNfnuTEy1kbIw/xjhejWUNL
+ /9yf80O5SnEcoFLr4qPVIXrEPRWQm5i+xoo8PEcC1tJ1l78Yz1HzQHKKcrjlv4QMr2vR
+ BSwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694797803; x=1695402603;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XDdn3611HSw8poly4seHNvUveHpcRhKefTwKphbLwqM=;
+ b=UWpOfDSfwubGanFm4MO+A+l9jjkM5Xy/Zxq8OL8HHu9/S3jfFSazgN05o0BBgGeLj/
+ i5vuDssTEYx3GPH0+A0b7VOVD7RG29XXtgGvUIK+2tYFh7akpz2bvqQLZLElpc2A4M3P
+ pdzx/PXCgpn6hGuBG5RG2cARcGxEszIzQN9JXn64FOgrzIEitQRqhQ/D+guEqnjct/+E
+ 6aqWLFgqvhdqg3Nue5KuYi92nLZgYMow6c6ji5UEAFNzXp++O9Vq1/tkpHjUogDnVz1n
+ vywEkhwY/xilyfQGR/Cmu3IlzTF30gnE5aArN4I01WjiDPEhQlp6s8kSnd48xilElkpU
+ Qimw==
+X-Gm-Message-State: AOJu0YzqxKoRAZHwc3Q1YuS3rvAXjR3hVXAM/NMpyt3Ly0hJikehdCZl
+ HvQObqVkXp4bi2ely2u3Ua1sIltT4zSyl+Nu3flyGxNR
+X-Google-Smtp-Source: AGHT+IEbxqhb+nSSkGm1GnciPyWIz014+Z5dW7NoO567O3mYuhtGcXVC5STplxxFXc/Uu6+4EYsA8i2U5DSHV5SpDfg=
+X-Received: by 2002:a05:6830:3188:b0:6be:f8fc:8207 with SMTP id
+ p8-20020a056830318800b006bef8fc8207mr3418566ots.17.1694797803005; Fri, 15 Sep
+ 2023 10:10:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230914175835.382972-1-tfanelli@redhat.com>
+ <ZQQplEOUE2GhBL07@redhat.com>
+ <CAFEAcA-DnH4oQ5kUioTiQr7COEbAqCKdkDPkBS0iJ3XUrKzOLw@mail.gmail.com>
+In-Reply-To: <CAFEAcA-DnH4oQ5kUioTiQr7COEbAqCKdkDPkBS0iJ3XUrKzOLw@mail.gmail.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Fri, 15 Sep 2023 13:09:50 -0400
+Message-ID: <CAJSP0QWprJhr_yiTLBuJ+aPDsanFdO-CfaTvoti-KT5V2kRK8g@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/8] i386/sev: Use C API of Rust SEV library
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Tyler Fanelli <tfanelli@redhat.com>, qemu-devel@nongnu.org, pbonzini@redhat.com,
+ mtosatti@redhat.com, stefanha@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,57 +90,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch solves a few issues.  The most obvious is that the feature
-set was done previous to ACKNOWLEDGE | DRIVER status bit set.  Current
-vdpa devices are permissive with this, but it is better to follow the
-standard.
+On Fri, 15 Sept 2023 at 09:50, Peter Maydell <peter.maydell@linaro.org> wro=
+te:
+>
+> On Fri, 15 Sept 2023 at 10:54, Daniel P. Berrang=C3=A9 <berrange@redhat.c=
+om> wrote:
+> > My summary, is that I'd personally be in favour of opening the door
+> > to Rust code as a mandatory pre-requisite for QEMU, at the very least
+> > for system emulators. Not because this particular series is compelling,
+> > but because I think Rust could be more beneficial to QEMU over the long
+> > term than we expect. In terms of consuming it though, if we're going
+> > to replace existing QEMU functionality, then I think we need to bundle
+> > the Rust code and natively integrate it into the build system, as we
+> > have recently started doing with our python deps, to detach ourselves
+> > from the limits of what distros ship.
+>
+> I'm not against this, but there is a fair amount of work here
+> in figuring out how exactly to integrate Rust components
+> into the build system, questions like what our minimum required
+> rust version would be, liasing with downstream distros to
+> check that what we're proposing isn't a nightmare for them
+> to package, etc.
 
-Fixes: 152128d646 ("vdpa: move CVQ isolation check to net_init_vhost_vdpa")
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
- net/vhost-vdpa.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Those details are similar to what librsvg2, libblkio, and other
+libraries (like the sev crate in this patch series) have had to solve.
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 51d8144070..4b30325977 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1270,8 +1270,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-     uint64_t backend_features;
-     int64_t cvq_group;
-     uint8_t status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
--                     VIRTIO_CONFIG_S_DRIVER |
--                     VIRTIO_CONFIG_S_FEATURES_OK;
-+                     VIRTIO_CONFIG_S_DRIVER;
-     int r;
- 
-     ERRP_GUARD();
-@@ -1286,15 +1285,22 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-         return 0;
-     }
- 
-+    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot set device status");
-+        goto out;
-+    }
-+
-     r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-     if (unlikely(r)) {
--        error_setg_errno(errp, errno, "Cannot set features");
-+        error_setg_errno(errp, -r, "Cannot set features");
-         goto out;
-     }
- 
-+    status |= VIRTIO_CONFIG_S_FEATURES_OK;
-     r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-     if (unlikely(r)) {
--        error_setg_errno(errp, -r, "Cannot set status");
-+        error_setg_errno(errp, -r, "Cannot set device status");
-         goto out;
-     }
- 
--- 
-2.39.3
+libblkio uses meson as the build system and has C tests that cover the
+C API. Cargo is still used to build the Rust code. It is possible to
+integrate the two and I think QEMU could take that approach. It's a
+little ugly to glue together the two build systems, but it has been
+shown to work.
 
+Finding the minimum Rust version across QEMU's support matrix is doable.
+
+Stefan
 
