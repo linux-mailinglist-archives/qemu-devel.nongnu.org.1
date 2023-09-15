@@ -2,70 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5419F7A2435
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356A37A243A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:04:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCEE-0007XE-TN; Fri, 15 Sep 2023 13:03:38 -0400
+	id 1qhCF4-0001Kt-PH; Fri, 15 Sep 2023 13:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qhCEB-0007R0-Ic
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:03:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qhCF1-0001E7-3I
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:04:27 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qhCEA-0000bL-47
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:03:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694797413;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VmVRSRSAHQO60KH1ReIR3Iv78Lf0S/KPjRrS5RCKBQs=;
- b=FY6870OzYp/dc5974NqXPyj3JCVKVw1rd/DbqvQJAHhNvKcvBOLxAK92y+EfctisaxjVbU
- CZay3ffYJQzy6yfWhQ6xrC91Zbj4ecyX3oVyCyGTSAbcgf8M4tjrsj8rpWRYxTDcRu68IE
- o9p3Iyt8jjoeZPy7J6tlcZFrktdJ724=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-648-ruxyvtK-MzqJxJ2TAZbfrA-1; Fri, 15 Sep 2023 13:03:30 -0400
-X-MC-Unique: ruxyvtK-MzqJxJ2TAZbfrA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C3CA3858F19;
- Fri, 15 Sep 2023 17:03:29 +0000 (UTC)
-Received: from eperezma.remote.csb (unknown [10.39.192.183])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A5B33167F8;
- Fri, 15 Sep 2023 17:03:28 +0000 (UTC)
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Hawkins Jiawei <yin31149@gmail.com>,
- si-wei.liu@oracle.com, Jason Wang <jasowang@redhat.com>,
- Lei Yang <leiyang@redhat.com>
-Subject: [PATCH 3/3] vdpa net: follow VirtIO initialization properly at cvq
- isolation probing
-Date: Fri, 15 Sep 2023 19:03:22 +0200
-Message-Id: <20230915170322.3076956-4-eperezma@redhat.com>
-In-Reply-To: <20230915170322.3076956-1-eperezma@redhat.com>
-References: <20230915170322.3076956-1-eperezma@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qhCEz-0000er-Ci
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:04:26 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnL8k59Qvz685Td;
+ Sat, 16 Sep 2023 01:02:30 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Fri, 15 Sep 2023 18:04:19 +0100
+To: Michael Tokarev <mjt@tls.msk.ru>, <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+CC: <linuxarm@huawei.com>
+Subject: [PATCH v2 0/4] hw/cxl: Line length reduction and related
+Date: Fri, 15 Sep 2023 18:04:14 +0100
+Message-ID: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,59 +60,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch solves a few issues.  The most obvious is that the feature
-set was done previous to ACKNOWLEDGE | DRIVER status bit set.  Current
-vdpa devices are permissive with this, but it is better to follow the
-standard.
+v2:
+ Replace patch 2 with a change to use switch statements and some asserts
+ to improve code readability at same time as dealing with the overly
+ long lines.
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
----
- net/vhost-vdpa.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 51d8144070..4b30325977 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1270,8 +1270,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-     uint64_t backend_features;
-     int64_t cvq_group;
-     uint8_t status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
--                     VIRTIO_CONFIG_S_DRIVER |
--                     VIRTIO_CONFIG_S_FEATURES_OK;
-+                     VIRTIO_CONFIG_S_DRIVER;
-     int r;
- 
-     ERRP_GUARD();
-@@ -1286,15 +1285,22 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-         return 0;
-     }
- 
-+    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot set device status");
-+        goto out;
-+    }
-+
-     r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-     if (unlikely(r)) {
--        error_setg_errno(errp, errno, "Cannot set features");
-+        error_setg_errno(errp, -r, "Cannot set features");
-         goto out;
-     }
- 
-+    status |= VIRTIO_CONFIG_S_FEATURES_OK;
-     r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-     if (unlikely(r)) {
--        error_setg_errno(errp, -r, "Cannot set status");
-+        error_setg_errno(errp, -r, "Cannot set device status");
-         goto out;
-     }
- 
+Michael observed that the CXL code regularly went above the 80 character
+recommendation and in many cases this was not necessary for readability.
+
+This series is focused on tidying this up for the existing code so that
+we can maintain the preferred formatting going forwards.
+
+Based on: [PATCH 0/4] hw/cxl: Minor CXL emulation fixes and cleanup
+Based on: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
+Based-on: [PATCH V2] hw/pci-bridge/cxl-upstream: Add serial number extended capability support
+
+
+Based on: Message ID: 20230904132806.6094-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230913133615.29876-1-Jonathan.Cameron@huawei.com
+
+Jonathan Cameron (4):
+  hw/cxl: Use a switch to explicitly check size in caps_reg_read()
+  hw/cxl: Use switch statements for read and write of cachemem registers
+  hw/cxl: CXLDVSECPortExtensions renamed to CXLDVSECPortExt
+  hw/cxl: Line length reductions
+
+ include/hw/cxl/cxl_component.h |   3 +-
+ include/hw/cxl/cxl_device.h    |   5 +-
+ include/hw/cxl/cxl_events.h    |   3 +-
+ include/hw/cxl/cxl_pci.h       |   6 +-
+ hw/cxl/cxl-cdat.c              |   3 +-
+ hw/cxl/cxl-component-utils.c   | 124 ++++++++++++++++++++-------------
+ hw/cxl/cxl-device-utils.c      |  11 +--
+ hw/cxl/cxl-events.c            |   9 ++-
+ hw/cxl/cxl-mailbox-utils.c     |  21 ++++--
+ hw/mem/cxl_type3.c             |  31 +++++----
+ hw/mem/cxl_type3_stubs.c       |   5 +-
+ hw/pci-bridge/cxl_downstream.c |   2 +-
+ hw/pci-bridge/cxl_root_port.c  |   2 +-
+ hw/pci-bridge/cxl_upstream.c   |   2 +-
+ 14 files changed, 141 insertions(+), 86 deletions(-)
+
 -- 
-2.39.3
+2.39.2
 
 
