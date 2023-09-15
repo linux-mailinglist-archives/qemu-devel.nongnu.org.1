@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25077A243E
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 330557A2442
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:06:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCG2-0002bH-Gh; Fri, 15 Sep 2023 13:05:30 -0400
+	id 1qhCGS-0002tQ-Ev; Fri, 15 Sep 2023 13:05:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhCFx-0002Uy-IW
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:05:26 -0400
+ id 1qhCGQ-0002or-Ik
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:05:54 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhCFu-0000uS-KF
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:05:24 -0400
+ id 1qhCGO-000158-La
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:05:54 -0400
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnL6Y6ZGpz67ZCl;
- Sat, 16 Sep 2023 01:00:37 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnL782KyZz6J6Cj;
+ Sat, 16 Sep 2023 01:01:08 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 15 Sep 2023 18:05:20 +0100
+ 15.1.2507.31; Fri, 15 Sep 2023 18:05:50 +0100
 To: Michael Tokarev <mjt@tls.msk.ru>, <qemu-devel@nongnu.org>, Michael Tsirkin
  <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 CC: <linuxarm@huawei.com>
-Subject: [PATCH v2 2/4] hw/cxl: Use switch statements for read and write of
- cachemem registers
-Date: Fri, 15 Sep 2023 18:04:16 +0100
-Message-ID: <20230915170418.21337-3-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 3/4] hw/cxl: CXLDVSECPortExtensions renamed to
+ CXLDVSECPortExt
+Date: Fri, 15 Sep 2023 18:04:17 +0100
+Message-ID: <20230915170418.21337-4-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
 References: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Originating-IP: [10.122.247.231]
 X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -68,112 +68,143 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Establishing that only register accesses of size 4 and 8 can occur
-using these functions requires looking at their callers. Make it
-easier to see that by using switch statements.
-Assertions are used to enforce that the register storage is of the
-matching size, allowing fixed values to be used for divisors of
-the array indices.
+Done to reduce line lengths where this is used.
+Ext seems sufficiently obvious that it need not be spelt out
+fully.
 
-Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-v2: Use switch statements. Note we coudl have renamed registers to make
-    the sizes visible as is true of some other cases, but that felt odd
-    as this is the only size these registers can be, so why call it out.
-    The asserts do the same job.
- hw/cxl/cxl-component-utils.c | 65 +++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 23 deletions(-)
+ include/hw/cxl/cxl_pci.h       |  6 ++---
+ hw/cxl/cxl-component-utils.c   | 49 ++++++++++++++++++++--------------
+ hw/pci-bridge/cxl_downstream.c |  2 +-
+ hw/pci-bridge/cxl_root_port.c  |  2 +-
+ hw/pci-bridge/cxl_upstream.c   |  2 +-
+ 5 files changed, 35 insertions(+), 26 deletions(-)
 
+diff --git a/include/hw/cxl/cxl_pci.h b/include/hw/cxl/cxl_pci.h
+index 407be95b9e..ddf01a543b 100644
+--- a/include/hw/cxl/cxl_pci.h
++++ b/include/hw/cxl/cxl_pci.h
+@@ -86,7 +86,7 @@ typedef struct CXLDVSECDevice {
+ QEMU_BUILD_BUG_ON(sizeof(CXLDVSECDevice) != 0x38);
+ 
+ /* CXL 2.0 - 8.1.5 (ID 0003) */
+-typedef struct CXLDVSECPortExtensions {
++typedef struct CXLDVSECPortExt {
+     DVSECHeader hdr;
+     uint16_t status;
+     uint16_t control;
+@@ -100,8 +100,8 @@ typedef struct CXLDVSECPortExtensions {
+     uint32_t alt_prefetch_limit_high;
+     uint32_t rcrb_base;
+     uint32_t rcrb_base_high;
+-} CXLDVSECPortExtensions;
+-QEMU_BUILD_BUG_ON(sizeof(CXLDVSECPortExtensions) != 0x28);
++} CXLDVSECPortExt;
++QEMU_BUILD_BUG_ON(sizeof(CXLDVSECPortExt) != 0x28);
+ 
+ #define PORT_CONTROL_OFFSET          0xc
+ #define PORT_CONTROL_UNMASK_SBR      1
 diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-index f3bbf0fd13..7ef3ef2bd6 100644
+index 7ef3ef2bd6..c8d632d540 100644
 --- a/hw/cxl/cxl-component-utils.c
 +++ b/hw/cxl/cxl-component-utils.c
-@@ -67,16 +67,24 @@ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
-     CXLComponentState *cxl_cstate = opaque;
-     ComponentRegisters *cregs = &cxl_cstate->crb;
+@@ -392,26 +392,35 @@ void cxl_component_create_dvsec(CXLComponentState *cxl,
+     case NON_CXL_FUNCTION_MAP_DVSEC:
+         break; /* Not yet implemented */
+     case EXTENSIONS_PORT_DVSEC:
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, control)] = 0x0F;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, control) + 1] = 0x40;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_bus_base)] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_bus_limit)] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_base)] = 0xF0;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_base) + 1] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_limit)] = 0xF0;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_limit) + 1] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_base)] = 0xF0;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_base) + 1] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_limit)] = 0xF0;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_limit) + 1] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_base_high)] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_base_high) + 1] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_base_high) + 2] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_base_high) + 3] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_limit_high)] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_limit_high) + 1] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_limit_high) + 2] = 0xFF;
+-        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_limit_high) + 3] = 0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, control)] = 0x0F;
++        wmask[offset + offsetof(CXLDVSECPortExt, control) + 1] = 0x40;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_bus_base)] = 0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_bus_limit)] = 0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_base)] = 0xF0;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_base) + 1] = 0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_limit)] = 0xF0;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_limit) + 1] = 0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base)] = 0xF0;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base) + 1] = 0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit)] = 0xF0;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit) + 1] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high)] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high) + 1] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high) + 2] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high) + 3] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high)] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high) + 1] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high) + 2] =
++            0xFF;
++        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high) + 3] =
++            0xFF;
+         break;
+     case GPF_PORT_DVSEC:
+         wmask[offset + offsetof(CXLDVSECPortGPF, phase1_ctrl)] = 0x0F;
+diff --git a/hw/pci-bridge/cxl_downstream.c b/hw/pci-bridge/cxl_downstream.c
+index 54f507318f..cdd79ea1c0 100644
+--- a/hw/pci-bridge/cxl_downstream.c
++++ b/hw/pci-bridge/cxl_downstream.c
+@@ -98,7 +98,7 @@ static void build_dvsecs(CXLComponentState *cxl)
+ {
+     uint8_t *dvsec;
  
--    if (size == 8) {
-+    switch (size) {
-+    case 4:
-+        if (cregs->special_ops && cregs->special_ops->read) {
-+            return cregs->special_ops->read(cxl_cstate, offset, 4);
-+        } else {
-+            static_assert(sizeof(*cregs->cache_mem_registers) == 4);
-+            return cregs->cache_mem_registers[offset / 4];
-+        }
-+    case 8:
-         qemu_log_mask(LOG_UNIMP,
-                       "CXL 8 byte cache mem registers not implemented\n");
-         return 0;
--    }
--
--    if (cregs->special_ops && cregs->special_ops->read) {
--        return cregs->special_ops->read(cxl_cstate, offset, size);
--    } else {
--        return cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
-+    default:
-+        /*
-+         * In line with specifiction limitaions on access sizes, this
-+         * routine is not called with other sizes.
-+         */
-+        g_assert_not_reached();
-     }
- }
+-    dvsec = (uint8_t *)&(CXLDVSECPortExtensions){ 0 };
++    dvsec = (uint8_t *)&(CXLDVSECPortExt){ 0 };
+     cxl_component_create_dvsec(cxl, CXL2_DOWNSTREAM_PORT,
+                                EXTENSIONS_PORT_DVSEC_LENGTH,
+                                EXTENSIONS_PORT_DVSEC,
+diff --git a/hw/pci-bridge/cxl_root_port.c b/hw/pci-bridge/cxl_root_port.c
+index 7dfd20aa67..8f97697631 100644
+--- a/hw/pci-bridge/cxl_root_port.c
++++ b/hw/pci-bridge/cxl_root_port.c
+@@ -107,7 +107,7 @@ static void build_dvsecs(CXLComponentState *cxl)
+ {
+     uint8_t *dvsec;
  
-@@ -117,25 +125,36 @@ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
-     ComponentRegisters *cregs = &cxl_cstate->crb;
-     uint32_t mask;
+-    dvsec = (uint8_t *)&(CXLDVSECPortExtensions){ 0 };
++    dvsec = (uint8_t *)&(CXLDVSECPortExt){ 0 };
+     cxl_component_create_dvsec(cxl, CXL2_ROOT_PORT,
+                                EXTENSIONS_PORT_DVSEC_LENGTH,
+                                EXTENSIONS_PORT_DVSEC,
+diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+index a57806fb31..b81bb5fec9 100644
+--- a/hw/pci-bridge/cxl_upstream.c
++++ b/hw/pci-bridge/cxl_upstream.c
+@@ -116,7 +116,7 @@ static void build_dvsecs(CXLComponentState *cxl)
+ {
+     uint8_t *dvsec;
  
--    if (size == 8) {
-+    switch (size) {
-+    case 4:
-+        static_assert(sizeof(*cregs->cache_mem_regs_write_mask) == 4);
-+        static_assert(sizeof(*cregs->cache_mem_registers) == 4);
-+        mask = cregs->cache_mem_regs_write_mask[offset / 4];
-+        value &= mask;
-+        /* RO bits should remain constant. Done by reading existing value */
-+        value |= ~mask & cregs->cache_mem_registers[offset / 4];
-+        if (cregs->special_ops && cregs->special_ops->write) {
-+            cregs->special_ops->write(cxl_cstate, offset, value, size);
-+            return;
-+        }
-+
-+        if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
-+            offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
-+            dumb_hdm_handler(cxl_cstate, offset, value);
-+        } else {
-+            cregs->cache_mem_registers[offset / 4] = value;
-+        }
-+        return;
-+    case 8:
-         qemu_log_mask(LOG_UNIMP,
-                       "CXL 8 byte cache mem registers not implemented\n");
-         return;
--    }
--    mask = cregs->cache_mem_regs_write_mask[offset / sizeof(*cregs->cache_mem_regs_write_mask)];
--    value &= mask;
--    /* RO bits should remain constant. Done by reading existing value */
--    value |= ~mask & cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
--    if (cregs->special_ops && cregs->special_ops->write) {
--        cregs->special_ops->write(cxl_cstate, offset, value, size);
--        return;
--    }
--
--    if (offset >= A_CXL_HDM_DECODER_CAPABILITY &&
--        offset <= A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
--        dumb_hdm_handler(cxl_cstate, offset, value);
--    } else {
--        cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)] = value;
-+    default:
-+        /*
-+         * In line with specifiction limitaions on access sizes, this
-+         * routine is not called with other sizes.
-+         */
-+        g_assert_not_reached();
-     }
- }
- 
+-    dvsec = (uint8_t *)&(CXLDVSECPortExtensions){
++    dvsec = (uint8_t *)&(CXLDVSECPortExt){
+         .status = 0x1, /* Port Power Management Init Complete */
+     };
+     cxl_component_create_dvsec(cxl, CXL2_UPSTREAM_PORT,
 -- 
 2.39.2
 
