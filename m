@@ -2,81 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8839E7A12DF
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 03:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C187A135B
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 03:58:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgxWD-0005sK-La; Thu, 14 Sep 2023 21:21:16 -0400
+	id 1qgy4Q-0001Bo-Um; Thu, 14 Sep 2023 21:56:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qgxW6-0005s2-QS; Thu, 14 Sep 2023 21:21:07 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgy4O-0001Bd-Qr
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 21:56:32 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1qgxW0-0000ow-DV; Thu, 14 Sep 2023 21:21:06 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-5731fe1d2bfso915357eaf.3; 
- Thu, 14 Sep 2023 18:20:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20221208; t=1694740858; x=1695345658; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gDJOEB59coJCMpMAiDGT07EGBmulG2Bnl8XuBpKvcvc=;
- b=JGcXOY14EgNx/lrR51ynLR6hzZE+mI8CA5KY6Xa2knaimRula+Gd9jEA9q0NwrW6LM
- etNlF8OLP6+i8T1YKCaSn0uhrPTFvz7SK/gO9piDhM60ZarBbAs3D0UVcDJEZllogUiZ
- qnnvwuDOInnVxq2RKKvHWsauinAe2N+DtPQMpx9QhR1C3mLu8Lcb2I18lo2LdE7Yztyh
- kYLvPBmdlxMp8fOL62M8LidlogrHfNm/85ah+VwHppFgIYiNrhLHtP2WyzeypSdLu97y
- nCoAYJsycuVIo6c344AvTk2BcGrT2sIZD0ej/yds0yrVrAOXLA92UQz3EiY2R+gYkt3M
- HRHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694740858; x=1695345658;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=gDJOEB59coJCMpMAiDGT07EGBmulG2Bnl8XuBpKvcvc=;
- b=hZjC3xLSEY1SVLXY/y46aq7SoVr62XdqdqM5LfKtWErQC6PcoNf4KJEd/YHKwaLYqj
- 8Vi0BQ8xN99AV84Gc6/Wtn2HAiTVONqTV40wtcVAt6+7ETWu6wsrTBPNUpw2XuFGDvTR
- kWybu+tz5MNYrdi7CGB665eUfhqjqdOPjPR6usGwxBbk7L9XBhNk+w4VtFoaQobVbEPo
- MHbz0uHqNfL7aQ+9iVAZs3nHxevxcDVi1YquXP6gFfpqeXoEYjnVhab0zgbYygNtRqjd
- uVci0oXVDjUf4m9w0vLqgRvpwoyTXrZPdGWkkiazyXVKVUrzTWc8sKKa8T791OxT45zg
- CQ3g==
-X-Gm-Message-State: AOJu0YwDrnd2I1cOamFtiLf/pBVAX9eXMYm45zrpoe3AkAcr/0rFhhoX
- xLd9FZ8AIuqWNLzJ7tLTW5k=
-X-Google-Smtp-Source: AGHT+IHgrGStFajlnrjBxzum6yLl78krdWhGODg5hzUXsOXBMArcH3huOJEW6sGLRMxPyy8obnhNuQ==
-X-Received: by 2002:a05:6358:52d4:b0:13c:dd43:f741 with SMTP id
- z20-20020a05635852d400b0013cdd43f741mr490882rwz.24.1694740858565; 
- Thu, 14 Sep 2023 18:20:58 -0700 (PDT)
-Received: from localhost ([193.114.103.68]) by smtp.gmail.com with ESMTPSA id
- x4-20020a656aa4000000b0056428865aadsm1511350pgu.82.2023.09.14.18.20.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 Sep 2023 18:20:58 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Sep 2023 11:20:52 +1000
-Message-Id: <CVJ3HRR2EADR.15F9G78LN7PKL@wheely>
-Cc: "Daniel Henrique Barboza" <danielhb413@gmail.com>,
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, "David Gibson"
- <david@gibson.dropbear.id.au>, "Greg Kurz" <groug@kaod.org>, "open
- list:PowerPC TCG CPUs" <qemu-ppc@nongnu.org>
-Subject: Re: [PATCH 4/4] target/ppc: Add migration support for BHRB
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Glenn Miles" <milesg@linux.vnet.ibm.com>, <qemu-devel@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
- <20230912202514.3382619-1-milesg@linux.vnet.ibm.com>
-In-Reply-To: <20230912202514.3382619-1-milesg@linux.vnet.ibm.com>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=npiggin@gmail.com; helo=mail-oo1-xc33.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgy4N-0007W7-1O
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 21:56:32 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 6464B218DF;
+ Fri, 15 Sep 2023 01:56:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1694742987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QG8Hd9AANb+Ua9NJ6ImZE7FB1rpMvm23l+0eGlve+Yg=;
+ b=qJ3tmrvbY+wdtnYgQzx/Q2+vcYKGfxEq8prUmeH0Pi4R1ahvZDaw86KAKo1o66aoHWqx+Y
+ yFrGW7TOa99AtOZiNL2FsEPjPLot/MUaWANftYH4SA8xEoqwIXJYvhNDHNOSnclbo8HYoh
+ u5CVpPgRImtAh51avtf+9rzh7CFlIhI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1694742987;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QG8Hd9AANb+Ua9NJ6ImZE7FB1rpMvm23l+0eGlve+Yg=;
+ b=DIOUc9gpa2E5TmoGzzwBSKRVvtk4IVkTRPefhsKFlXzlWxu+y9pIcHQs5Oz2IQXGIzY6bR
+ HALGPuXoYvp1t4BQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C464C1358A;
+ Fri, 15 Sep 2023 01:56:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id cL3DHcq5A2VsEwAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 15 Sep 2023 01:56:26 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela
+ <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: QEMU migration-test CI intermittent failure
+In-Reply-To: <ZQOW4BS1ZcDTN7tK@x1n>
+References: <20230913192301.GA917052@fedora> <87r0n1kggo.fsf@suse.de>
+ <ZQMfIO3oiqTsawtU@x1n> <87edj0kcz7.fsf@suse.de> <ZQMoUzRH1BZKs39g@x1n>
+ <87bke4kasr.fsf@suse.de> <ZQM3SV4eqSltoQSe@x1n> <87led8e9vv.fsf@suse.de>
+ <87r0n0nz6u.fsf@suse.de> <ZQOW4BS1ZcDTN7tK@x1n>
+Date: Thu, 14 Sep 2023 22:56:23 -0300
+Message-ID: <87o7i4nqrc.fsf@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,63 +86,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed Sep 13, 2023 at 6:25 AM AEST, Glenn Miles wrote:
-> Adds migration support for Branch History Rolling
-> Buffer (BHRB) internal state.
+Peter Xu <peterx@redhat.com> writes:
+
+> On Thu, Sep 14, 2023 at 07:54:17PM -0300, Fabiano Rosas wrote:
+>> Fabiano Rosas <farosas@suse.de> writes:
+>> 
+>> > Peter Xu <peterx@redhat.com> writes:
+>> >
+>> >> On Thu, Sep 14, 2023 at 12:57:08PM -0300, Fabiano Rosas wrote:
+>> >>> I managed to reproduce it. It's not the return path error. In hindsight
+>> >>> that's obvious because that error happens in the 'recovery' test and this
+>> >>> one in the 'plain' one. Sorry about the noise.
+>> >>
+>> >> No worry.  It's good to finally identify that.
+>> >>
+>> >>> 
+>> >>> This one reproduced with just 4 iterations of preempt/plain. I'll
+>> >>> investigate.
+>> >
+>> > It seems that we're getting a tcp disconnect (ECONNRESET) on when doing
+>> > that shutdown() on postcopy_qemufile_src. The one from commit 6621883f93
+>> > ("migration: Fix potential race on postcopy_qemufile_src").
+>> >
+>> > I'm trying to determine why that happens when other times it just
+>> > returns 0 as expected.
+>> >
+>> > Could this mean that we're kicking the dest too soon while it is still
+>> > receiving valid data?
+>> 
+>> Looking a bit more into this, what's happening is that
+>> postcopy_ram_incoming_cleanup() is shutting the postcopy_qemufile_dst
+>> while ram_load_postcopy() is still running.
+>> 
+>> The postcopy_ram_listen_thread() function waits for the
+>> main_thread_load_event, but that only works when not using preempt. With
+>> the preempt thread, the event is set right away and we proceed to do the
+>> cleanup without waiting.
+>> 
+>> So the assumption of commit 6621883f93 that the incoming side knows when
+>> it has finished migrating is wrong IMO. Without the EOS we're relying on
+>> the chance that the shutdown() happens after the last recvmsg has
+>> returned and not during it.
+>> 
+>> Peter, what do you think?
 >
-> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-> ---
->  target/ppc/machine.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
+> That's a good point.
 >
-> diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-> index b195fb4dc8..89146969c8 100644
-> --- a/target/ppc/machine.c
-> +++ b/target/ppc/machine.c
-> @@ -314,6 +314,7 @@ static int cpu_post_load(void *opaque, int version_id=
-)
-> =20
->      if (tcg_enabled()) {
->          pmu_mmcr01a_updated(env);
-> +        hreg_bhrb_filter_update(env);
->      }
-> =20
->      return 0;
-> @@ -670,6 +671,27 @@ static const VMStateDescription vmstate_compat =3D {
->      }
->  };
-> =20
-> +#ifdef TARGET_PPC64
-> +static bool bhrb_needed(void *opaque)
-> +{
-> +    PowerPCCPU *cpu =3D opaque;
-> +    return (cpu->env.flags & POWERPC_FLAG_BHRB) !=3D 0;
-> +}
-> +
-> +static const VMStateDescription vmstate_bhrb =3D {
-> +    .name =3D "cpu/bhrb",
-> +    .version_id =3D 1,
-> +    .minimum_version_id =3D 1,
-> +    .needed =3D bhrb_needed,
-> +    .fields =3D (VMStateField[]) {
-> +        VMSTATE_UINTTL(env.bhrb_num_entries, PowerPCCPU),
+> One thing to verify that (sorry, I still cannot reproduce it myself, which
+> is so weirdly... it seems loads won't really help reproducing this) is to
+> let the main thread wait for all requested pages to arrive:
+>
+> diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+> index 29aea9456d..df055c51ea 100644
+> --- a/migration/postcopy-ram.c
+> +++ b/migration/postcopy-ram.c
+> @@ -597,6 +597,12 @@ int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
+>      trace_postcopy_ram_incoming_cleanup_entry();
+>  
+>      if (mis->preempt_thread_status == PREEMPT_THREAD_CREATED) {
+> +        /*
+> +         * NOTE!  it's possible that the preempt thread is still handling
+> +         * the last pages to arrive which were requested by faults.  Making
+> +         * sure nothing is left behind.
+> +         */
+> +        while (qatomic_read(&mis->page_requested_count));
+>          /* Notify the fast load thread to quit */
+>          mis->preempt_thread_status = PREEMPT_THREAD_QUIT;
+>          if (mis->postcopy_qemufile_dst) {
+>
+> If that can work solidly, we can figure out a better way than a dead loop
+> here.
 
-Maybe don't need bhrb_num_entries since target machine should have the
-same?
+Yep, 2000+ iterations so far and no error.
 
-> +        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-> +        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES)=
-,
-
-Is it possible to migrate only bhrb_num_entries items? Wants a VARRAY
-AFAIKS but there is no VARRAY_UINT64?
-
-Since all sizes are the same 32 now, would it be possible to turn it
-into a VARRAY sometime later if supposing a new CPU changed to a
-different size, and would the wire format for the VARRAY still be
-compatible with this fixed size array, or does a VARRAY look different
-I wonder?
-
-Thanks,
-Nick
+Should we add something that makes ram_load_postcopy return once it's
+finished? Then this code could just set PREEMPT_THREAD_QUIT and join the
+preempt thread.
 
