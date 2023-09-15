@@ -2,52 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5A07A204A
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 15:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AF17A208A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:12:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh9Ix-00077E-1Z; Fri, 15 Sep 2023 09:56:19 -0400
+	id 1qh9WX-0002al-0A; Fri, 15 Sep 2023 10:10:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9Is-00076r-Lz
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:56:15 -0400
-Received: from rev.ng ([5.9.113.41])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qh9WO-0002Zl-UM; Fri, 15 Sep 2023 10:10:13 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9Iq-0004UM-6L
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:56:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=29ZFRgjzL91uz0et6ub4oGM37ULm7y8dZtLkXfc+KnQ=; b=vg6Chcn+JKTYvt9nYCtj0l7rz0
- vflMQFuwlcTOozQOBPSh3nJDuyzzFr9iR/Rqm+paJLAfS17ORSIFGFR8QEVruSIsK8dYv76ixN1K+
- ZjUdI0WrI4MlBNcPypl6d1hddBZEs0kMsW7EW/sv9ZwvtU52LEBTVLeHaOOp4VGWXAqk=;
-Date: Fri, 15 Sep 2023 15:56:01 +0200
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
- Alessandro Di Federico <ale@rev.ng>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
- Riku Voipio <riku.voipio@iki.fi>
-Subject: Re: [PATCH 03/11] accel/tcg: Restrict dump_exec_info() declaration
-Message-ID: <xdbgvwejhucu7bvepjxm7pzh27ydrfqyvmg2kpojcpk5seq3bd@ep4idscf4b7c>
-References: <20230914185718.76241-1-philmd@linaro.org>
- <20230914185718.76241-4-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qh9WJ-0007Ox-LC; Fri, 15 Sep 2023 10:10:09 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38FE85A1008413; Fri, 15 Sep 2023 14:09:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=j2q77u//MYjHd7cR/skD7qX5Xmcctg5Hn9/EGalsodA=;
+ b=SeekE8NBQiPm3L3f6XWt8oUXC22YmMTlRZS818Rlk3VY8PBaMm3y2KbD93utFwCwCc0Q
+ uU+AvmzLedJSbyA9FM5heBzji9F9lwvRMj29+rzlmoHJpYxPGzE8I4Z+i6KwfPqMoylG
+ MivZL5BxqS1v1wfDo0ZNvD9SyTLFsaa5RGfYhqvH1eGhJQXOxyk1Q00a43Im82u3BGrz
+ iUn217BVLHU3nN1rBvO/ux5NraxuLkJmDJ6mKdt+PHX43r9F7GX3ICADb7q3/iEq4QVH
+ idH8t0fMzemuPSEWJ6tngVDz1uztq6FJuWKHxXayDn1eFKuy5nJN9yKJEynwCNBP1oeF bA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4qxnskpp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 Sep 2023 14:09:49 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38FE8UkY011644;
+ Fri, 15 Sep 2023 14:08:56 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4qxnshr1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 Sep 2023 14:08:55 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38FCkBw9012064; Fri, 15 Sep 2023 14:03:29 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t13e0cbv3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 Sep 2023 14:03:29 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
+ [10.39.53.228])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38FE3SMJ25952830
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 15 Sep 2023 14:03:28 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 34A095804B;
+ Fri, 15 Sep 2023 14:03:28 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1DAB258055;
+ Fri, 15 Sep 2023 14:03:24 +0000 (GMT)
+Received: from [9.195.38.120] (unknown [9.195.38.120])
+ by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Fri, 15 Sep 2023 14:03:23 +0000 (GMT)
+Message-ID: <fdcb3e3a-027b-fdc3-7853-a6e9d02ebb6b@linux.ibm.com>
+Date: Fri, 15 Sep 2023 19:33:22 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
+Content-Language: en-US
+To: Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, david@gibson.dropbear.id.au, groug@kaod.org,
+ npiggin@gmail.com, aik@ozlabs.ru, =?UTF-8?Q?C=c3=a9dric_Le_Goater?=
+ <clg@kaod.org>
+References: <20230915110507.194762-1-danielhb413@gmail.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230915110507.194762-1-danielhb413@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230914185718.76241-4-philmd@linaro.org>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IaayR3UUmJsX8loUYE4sX2MnomYp6QIQ
+X-Proofpoint-ORIG-GUID: nEdlGxuoy1kszsGTxyfriYuLxJPxthB7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-15_11,2023-09-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 mlxlogscore=999 mlxscore=0 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 clxscore=1011 suspectscore=0
+ spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309150126
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,53 +112,110 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/09/23, Philippe Mathieu-Daudé wrote:
-> In commit 00c9a5c2c3 ("accel/tcg: Restrict 'qapi-commands-machine.h'
-> to system emulation") we moved the definition to accel/tcg/ which is
-> where this function is called. No need to expose it outside.
+
+
+On 9/15/23 16:35, Daniel Henrique Barboza wrote:
+> Update all relevant PowerPC entries as follows:
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> - Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
+>    Nick has  been a solid contributor for the last couple of years and
+>    has the required knowledge and motivation to drive the boat.
+> 
+> - Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
+>    to other areas of interest and will retire from qemu-ppc.  Thanks Mr
+>    Kurz for all the years of service.
+> 
+> - David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
+>    KVM CPUs. Change done per his request.
+> 
+> - Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
+>    PPC KVM CPUs. It has been a long since I last touched those areas and
+>    it's not justified to be kept as maintainer in them.
+> 
+> - Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
+>    don't have the required knowledge to justify it.
+> 
+
+Thanks all for your contributions and support so far. Welcome Nick !
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+
+> - VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
+>    better reflects the current state of the subsystem.
+> 
+> Acked-by: Cédric Le Goater <clg@kaod.org>
+> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 > ---
->  accel/tcg/internal.h   | 2 ++
->  include/exec/cpu-all.h | 5 -----
->  2 files changed, 2 insertions(+), 5 deletions(-)
+>   MAINTAINERS | 20 +++++++-------------
+>   1 file changed, 7 insertions(+), 13 deletions(-)
 > 
-> diff --git a/accel/tcg/internal.h b/accel/tcg/internal.h
-> index e8cbbde581..cd6b9eb7f0 100644
-> --- a/accel/tcg/internal.h
-> +++ b/accel/tcg/internal.h
-> @@ -102,6 +102,8 @@ static inline bool cpu_in_serial_context(CPUState *cs)
->  extern int64_t max_delay;
->  extern int64_t max_advance;
->  
-> +void dump_exec_info(GString *buf);
-> +
->  extern bool one_insn_per_tb;
->  
->  /**
-> diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-> index 71efc2d404..221ada2b6d 100644
-> --- a/include/exec/cpu-all.h
-> +++ b/include/exec/cpu-all.h
-> @@ -406,11 +406,6 @@ static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
->      return tlb_hit_page(tlb_addr, addr & TARGET_PAGE_MASK);
->  }
->  
-> -#ifdef CONFIG_TCG
-> -/* accel/tcg/translate-all.c */
-> -void dump_exec_info(GString *buf);
-> -#endif /* CONFIG_TCG */
-> -
->  #endif /* !CONFIG_USER_ONLY */
->  
->  /* accel/tcg/cpu-exec.c */
-> -- 
-> 2.41.0
-> 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 00562f924f..c4aa1c1c9f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -298,11 +298,9 @@ F: hw/openrisc/
+>   F: tests/tcg/openrisc/
+>   
+>   PowerPC TCG CPUs
+> +M: Nicholas Piggin <npiggin@gmail.com>
+>   M: Daniel Henrique Barboza <danielhb413@gmail.com>
+>   R: Cédric Le Goater <clg@kaod.org>
+> -R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+> -R: Nicholas Piggin <npiggin@gmail.com>
+>   L: qemu-ppc@nongnu.org
+>   S: Odd Fixes
+>   F: target/ppc/
+> @@ -438,10 +436,9 @@ F: target/mips/kvm*
+>   F: target/mips/sysemu/
+>   
+>   PPC KVM CPUs
+> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>   R: Cédric Le Goater <clg@kaod.org>
+> -R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>   S: Odd Fixes
+>   F: target/ppc/kvm.c
+>   
+> @@ -1430,10 +1427,10 @@ F: include/hw/rtc/m48t59.h
+>   F: tests/avocado/ppc_prep_40p.py
+>   
+>   sPAPR (pseries)
+> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>   R: Cédric Le Goater <clg@kaod.org>
+>   R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>   R: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>   L: qemu-ppc@nongnu.org
+>   S: Odd Fixes
+> @@ -1452,8 +1449,8 @@ F: tests/avocado/ppc_pseries.py
+>   
+>   PowerNV (Non-Virtualized)
+>   M: Cédric Le Goater <clg@kaod.org>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+>   R: Frédéric Barrat <fbarrat@linux.ibm.com>
+> -R: Nicholas Piggin <npiggin@gmail.com>
+>   L: qemu-ppc@nongnu.org
+>   S: Odd Fixes
+>   F: docs/system/ppc/powernv.rst
+> @@ -1497,12 +1494,9 @@ F: include/hw/pci-host/mv64361.h
+>   
+>   Virtual Open Firmware (VOF)
+>   M: Alexey Kardashevskiy <aik@ozlabs.ru>
+> -R: Cédric Le Goater <clg@kaod.org>
+> -R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>   R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>   L: qemu-ppc@nongnu.org
+> -S: Maintained
+> +S: Odd Fixes
+>   F: hw/ppc/spapr_vof*
+>   F: hw/ppc/vof*
+>   F: include/hw/ppc/vof*
 
