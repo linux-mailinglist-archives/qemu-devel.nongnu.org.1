@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4357A20BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 655CA7A20C7
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:23:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh9h5-0001T6-BG; Fri, 15 Sep 2023 10:21:15 -0400
+	id 1qh9iu-0002jP-QI; Fri, 15 Sep 2023 10:23:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9h3-0001Np-Ud
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:21:13 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9is-0002jB-LI
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:23:06 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9h2-0000tf-Dz
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:21:13 -0400
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9ir-0001JP-1W
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:23:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=tMpX2IFiGssMQbYM/cfJeeGFBRQZbQfjivaQOVHsMDc=; b=kCCkcVpWBg/zmP1x25bEBbE0DD
- f2mKdM3Ti3AAVj0cZlzqmUzkP2RlmO18ao9Sjo/Yuo6RYlkjc4G1StUxWTvP4MPs5tzJ4/1h2xHDb
- nDcCSTGhLwNh97Jyyertf/pWK4/GRDnBI+FPl1JGyIHT07kPiyUNoGT5Xj6MfXpQN+yI=;
-Date: Fri, 15 Sep 2023 16:20:58 +0200
+ bh=d+5AZ2+cRQ7cpQFOx6zcc/uyQPrEoRrBLqxLo+m+dhI=; b=sw1g2J2VhGRhwkJiMABUcvFqIm
+ yMQE92JRm7wadQDmGIpgb0/y6e686psu5DaId4a7AqljuT9QiEW1/EcNq3sJUGnSWZPVoVtYWeUWo
+ oJfahzxzhstRwT06pCIaLyoTAhrJlMWYBh0tyjByx/ntiDdVO3DH4cIWNIwV88hjcQv0=;
+Date: Fri, 15 Sep 2023 16:22:46 +0200
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
@@ -33,16 +33,16 @@ Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  Alessandro Di Federico <ale@rev.ng>,
  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
  Riku Voipio <riku.voipio@iki.fi>
-Subject: Re: [PATCH 07/11] exec: Rename target specific page-vary.c ->
- page-vary-target.c
-Message-ID: <gqmt2j76pepd4fv4jtwjlgcll6leuhnwx5visq3tmkdmrqfcaj@jmrrvlst6zxe>
+Subject: Re: [PATCH 08/11] accel/tcg: Rename target-specific 'internal.h' ->
+ 'internal-target.h'
+Message-ID: <pn43tbxeoudy3bodooozlc6my2dyoav2dnos6pbuezzbcir7mc@6mhjyuoe4ted>
 References: <20230914185718.76241-1-philmd@linaro.org>
- <20230914185718.76241-8-philmd@linaro.org>
+ <20230914185718.76241-9-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230914185718.76241-8-philmd@linaro.org>
+In-Reply-To: <20230914185718.76241-9-philmd@linaro.org>
 Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -68,46 +68,167 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 14/09/23, Philippe Mathieu-Daudé wrote:
-> This matches the target agnostic 'page-vary-common.c' counterpart.
+> accel/tcg/internal.h contains target specific declarations.
+> Unit files including it become "target tainted": they can not
+> be compiled as target agnostic. Rename using the '-target'
+> suffix to make this explicit.
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  MAINTAINERS                       | 2 +-
->  meson.build                       | 2 +-
->  page-vary.c => page-vary-target.c | 0
->  3 files changed, 2 insertions(+), 2 deletions(-)
->  rename page-vary.c => page-vary-target.c (100%)
+>  accel/tcg/{internal.h => internal-target.h} | 6 +++---
+>  accel/tcg/cpu-exec-common.c                 | 2 +-
+>  accel/tcg/cpu-exec.c                        | 2 +-
+>  accel/tcg/cputlb.c                          | 2 +-
+>  accel/tcg/monitor.c                         | 2 +-
+>  accel/tcg/tb-maint.c                        | 2 +-
+>  accel/tcg/tcg-all.c                         | 2 +-
+>  accel/tcg/translate-all.c                   | 2 +-
+>  accel/tcg/translator.c                      | 2 +-
+>  accel/tcg/user-exec.c                       | 2 +-
+>  10 files changed, 12 insertions(+), 12 deletions(-)
+>  rename accel/tcg/{internal.h => internal-target.h} (96%)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 12261d8eaf..ff436dbf21 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -141,7 +141,7 @@ F: softmmu/cpus.c
->  F: softmmu/watchpoint.c
->  F: cpu-common.c
->  F: cpu-target.c
-> -F: page-vary.c
-> +F: page-vary-target.c
->  F: page-vary-common.c
->  F: accel/tcg/
->  F: accel/stubs/tcg-stub.c
-> diff --git a/meson.build b/meson.build
-> index 3e86a6cebf..3282f888a3 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -3439,7 +3439,7 @@ if get_option('b_lto')
->    pagevary = declare_dependency(link_with: pagevary)
->  endif
->  common_ss.add(pagevary)
-> -specific_ss.add(files('page-vary.c'))
-> +specific_ss.add(files('page-vary-target.c'))
+> diff --git a/accel/tcg/internal.h b/accel/tcg/internal-target.h
+> similarity index 96%
+> rename from accel/tcg/internal.h
+> rename to accel/tcg/internal-target.h
+> index cd6b9eb7f0..4ce3b29056 100644
+> --- a/accel/tcg/internal.h
+> +++ b/accel/tcg/internal-target.h
+> @@ -1,13 +1,13 @@
+>  /*
+> - * Internal execution defines for qemu
+> + * Internal execution defines for qemu (target specific)
+>   *
+>   *  Copyright (c) 2003 Fabrice Bellard
+>   *
+>   * SPDX-License-Identifier: LGPL-2.1-or-later
+>   */
 >  
->  subdir('backends')
->  subdir('disas')
-> diff --git a/page-vary.c b/page-vary-target.c
-> similarity index 100%
-> rename from page-vary.c
-> rename to page-vary-target.c
+> -#ifndef ACCEL_TCG_INTERNAL_H
+> -#define ACCEL_TCG_INTERNAL_H
+> +#ifndef ACCEL_TCG_INTERNAL_TARGET_H
+> +#define ACCEL_TCG_INTERNAL_TARGET_H
+>  
+>  #include "exec/exec-all.h"
+>  #include "exec/translate-all.h"
+> diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
+> index 8ac2af4d0c..55980417b4 100644
+> --- a/accel/tcg/cpu-exec-common.c
+> +++ b/accel/tcg/cpu-exec-common.c
+> @@ -22,7 +22,7 @@
+>  #include "sysemu/tcg.h"
+>  #include "exec/exec-all.h"
+>  #include "qemu/plugin.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  
+>  bool tcg_allowed;
+>  
+> diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+> index 0e7eeef001..f5625e047a 100644
+> --- a/accel/tcg/cpu-exec.c
+> +++ b/accel/tcg/cpu-exec.c
+> @@ -42,7 +42,7 @@
+>  #include "tb-jmp-cache.h"
+>  #include "tb-hash.h"
+>  #include "tb-context.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  
+>  /* -icount align implementation. */
+>  
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index 31e34700ea..a912d746a9 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -35,7 +35,7 @@
+>  #include "exec/translate-all.h"
+>  #include "trace.h"
+>  #include "tb-hash.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  #ifdef CONFIG_PLUGIN
+>  #include "qemu/plugin-memory.h"
+>  #endif
+> diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
+> index d48de23999..30724fdb98 100644
+> --- a/accel/tcg/monitor.c
+> +++ b/accel/tcg/monitor.c
+> @@ -16,7 +16,7 @@
+>  #include "sysemu/cpu-timers.h"
+>  #include "sysemu/tcg.h"
+>  #include "tcg/tcg.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  
+>  
+>  static void dump_drift_info(GString *buf)
+> diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+> index 32ae8af61c..85cf51445d 100644
+> --- a/accel/tcg/tb-maint.c
+> +++ b/accel/tcg/tb-maint.c
+> @@ -29,7 +29,7 @@
+>  #include "tcg/tcg.h"
+>  #include "tb-hash.h"
+>  #include "tb-context.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  
+>  
+>  /* List iterators for lists of tagged pointers in TranslationBlock. */
+> diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
+> index 03dfd67e9e..b32e0b80ec 100644
+> --- a/accel/tcg/tcg-all.c
+> +++ b/accel/tcg/tcg-all.c
+> @@ -38,7 +38,7 @@
+>  #if !defined(CONFIG_USER_ONLY)
+>  #include "hw/boards.h"
+>  #endif
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  
+>  struct TCGState {
+>      AccelState parent_obj;
+> diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+> index 83e07b830f..6c09b7f50d 100644
+> --- a/accel/tcg/translate-all.c
+> +++ b/accel/tcg/translate-all.c
+> @@ -61,7 +61,7 @@
+>  #include "tb-jmp-cache.h"
+>  #include "tb-hash.h"
+>  #include "tb-context.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  #include "perf.h"
+>  #include "tcg/insn-start-words.h"
+>  
+> diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+> index d9fcb4cbe8..65219b52eb 100644
+> --- a/accel/tcg/translator.c
+> +++ b/accel/tcg/translator.c
+> @@ -14,7 +14,7 @@
+>  #include "exec/translator.h"
+>  #include "exec/plugin-gen.h"
+>  #include "tcg/tcg-op-common.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  
+>  static void gen_io_start(void)
+>  {
+> diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+> index 17f9aff0cf..f925dd0305 100644
+> --- a/accel/tcg/user-exec.c
+> +++ b/accel/tcg/user-exec.c
+> @@ -29,7 +29,7 @@
+>  #include "qemu/atomic128.h"
+>  #include "trace/trace-root.h"
+>  #include "tcg/tcg-ldst.h"
+> -#include "internal.h"
+> +#include "internal-target.h"
+>  
+>  __thread uintptr_t helper_retaddr;
+>  
 > -- 
 > 2.41.0
 > 
