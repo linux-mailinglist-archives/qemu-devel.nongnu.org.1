@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C187A135B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 03:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA417A1388
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 04:06:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgy4Q-0001Bo-Um; Thu, 14 Sep 2023 21:56:34 -0400
+	id 1qgyCU-0000Fp-N1; Thu, 14 Sep 2023 22:04:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgy4O-0001Bd-Qr
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 21:56:32 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qgy4N-0007W7-1O
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 21:56:32 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6464B218DF;
- Fri, 15 Sep 2023 01:56:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1694742987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QG8Hd9AANb+Ua9NJ6ImZE7FB1rpMvm23l+0eGlve+Yg=;
- b=qJ3tmrvbY+wdtnYgQzx/Q2+vcYKGfxEq8prUmeH0Pi4R1ahvZDaw86KAKo1o66aoHWqx+Y
- yFrGW7TOa99AtOZiNL2FsEPjPLot/MUaWANftYH4SA8xEoqwIXJYvhNDHNOSnclbo8HYoh
- u5CVpPgRImtAh51avtf+9rzh7CFlIhI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1694742987;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=QG8Hd9AANb+Ua9NJ6ImZE7FB1rpMvm23l+0eGlve+Yg=;
- b=DIOUc9gpa2E5TmoGzzwBSKRVvtk4IVkTRPefhsKFlXzlWxu+y9pIcHQs5Oz2IQXGIzY6bR
- HALGPuXoYvp1t4BQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C464C1358A;
- Fri, 15 Sep 2023 01:56:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id cL3DHcq5A2VsEwAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 15 Sep 2023 01:56:26 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- qemu-devel@nongnu.org
-Subject: Re: QEMU migration-test CI intermittent failure
-In-Reply-To: <ZQOW4BS1ZcDTN7tK@x1n>
-References: <20230913192301.GA917052@fedora> <87r0n1kggo.fsf@suse.de>
- <ZQMfIO3oiqTsawtU@x1n> <87edj0kcz7.fsf@suse.de> <ZQMoUzRH1BZKs39g@x1n>
- <87bke4kasr.fsf@suse.de> <ZQM3SV4eqSltoQSe@x1n> <87led8e9vv.fsf@suse.de>
- <87r0n0nz6u.fsf@suse.de> <ZQOW4BS1ZcDTN7tK@x1n>
-Date: Thu, 14 Sep 2023 22:56:23 -0300
-Message-ID: <87o7i4nqrc.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
+ id 1qgyCS-0000FQ-Ma
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 22:04:52 -0400
+Received: from mgamail.intel.com ([192.55.52.88])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
+ id 1qgyCQ-0000Pf-1r
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 22:04:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1694743490; x=1726279490;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=gNbd2uMO56K/Am9d6XoS/Yc3/dZvvXn/e4usolVRnMA=;
+ b=n9DCtoeW+NZsL2c9fg4cnmiWrE9l4JnYWSGGFpgwdTC++e4C3OSNq0DK
+ P5jMn1IjChqg8uNgV4Rz/CqpCSh7ffGlASqdGks4rDmEUkwEKYuyDdZLr
+ BmmSDV8gkWMOzKAEoy5gIoNb8DUrsQtcl/058BQp5sxE1qyL029fv3Jt+
+ 1YfnSmNZwmzkmfgVcinBsvdn7SyccKeLD2SzkrzGxofbhdU9Cbt7BCJC+
+ Q1JqbcaQHJgf1iv55zj0qhnTJJd1h47n1mj2sJ7rNObvIzFK5cEY2bOwJ
+ 7sKdWagzr3pRl6jNSqrOhhahie5emr9Y1BUD0j+PhMJW+LA1JmCKMEQTc w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="410076114"
+X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="410076114"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2023 19:04:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="694553407"
+X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="694553407"
+Received: from leiwang7-mobl.ccr.corp.intel.com (HELO [10.93.2.122])
+ ([10.93.2.122])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2023 19:04:30 -0700
+Message-ID: <bd1eca88-98f4-718f-4d40-c2ea40f65d95@intel.com>
+Date: Fri, 15 Sep 2023 10:04:28 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [RFC PATCH v2 02/21] RAMBlock: Add support of KVM private gmem
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-3-xiaoyao.li@intel.com>
+From: "Wang, Lei" <lei4.wang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20230914035117.3285885-3-xiaoyao.li@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.55.52.88; envelope-from=lei4.wang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,80 +93,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+On 9/14/2023 11:50, Xiaoyao Li wrote:
+> From: Chao Peng <chao.p.peng@linux.intel.com>
+> 
+> Add KVM gmem support to RAMBlock so both normal hva based memory
+> and kvm gmem fd based private memory can be associated in one RAMBlock.
+> 
+> Introduce new flag RAM_KVM_GMEM. It calls KVM ioctl to create private
+> gmem for the RAMBlock when it's set.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-> On Thu, Sep 14, 2023 at 07:54:17PM -0300, Fabiano Rosas wrote:
->> Fabiano Rosas <farosas@suse.de> writes:
->> 
->> > Peter Xu <peterx@redhat.com> writes:
->> >
->> >> On Thu, Sep 14, 2023 at 12:57:08PM -0300, Fabiano Rosas wrote:
->> >>> I managed to reproduce it. It's not the return path error. In hindsight
->> >>> that's obvious because that error happens in the 'recovery' test and this
->> >>> one in the 'plain' one. Sorry about the noise.
->> >>
->> >> No worry.  It's good to finally identify that.
->> >>
->> >>> 
->> >>> This one reproduced with just 4 iterations of preempt/plain. I'll
->> >>> investigate.
->> >
->> > It seems that we're getting a tcp disconnect (ECONNRESET) on when doing
->> > that shutdown() on postcopy_qemufile_src. The one from commit 6621883f93
->> > ("migration: Fix potential race on postcopy_qemufile_src").
->> >
->> > I'm trying to determine why that happens when other times it just
->> > returns 0 as expected.
->> >
->> > Could this mean that we're kicking the dest too soon while it is still
->> > receiving valid data?
->> 
->> Looking a bit more into this, what's happening is that
->> postcopy_ram_incoming_cleanup() is shutting the postcopy_qemufile_dst
->> while ram_load_postcopy() is still running.
->> 
->> The postcopy_ram_listen_thread() function waits for the
->> main_thread_load_event, but that only works when not using preempt. With
->> the preempt thread, the event is set right away and we proceed to do the
->> cleanup without waiting.
->> 
->> So the assumption of commit 6621883f93 that the incoming side knows when
->> it has finished migrating is wrong IMO. Without the EOS we're relying on
->> the chance that the shutdown() happens after the last recvmsg has
->> returned and not during it.
->> 
->> Peter, what do you think?
->
-> That's a good point.
->
-> One thing to verify that (sorry, I still cannot reproduce it myself, which
-> is so weirdly... it seems loads won't really help reproducing this) is to
-> let the main thread wait for all requested pages to arrive:
->
-> diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-> index 29aea9456d..df055c51ea 100644
-> --- a/migration/postcopy-ram.c
-> +++ b/migration/postcopy-ram.c
-> @@ -597,6 +597,12 @@ int postcopy_ram_incoming_cleanup(MigrationIncomingState *mis)
->      trace_postcopy_ram_incoming_cleanup_entry();
+Kindly reminding the author's Signed-off-by is missing.
+
+> ---
+>  accel/kvm/kvm-all.c     | 17 +++++++++++++++++
+>  include/exec/memory.h   |  3 +++
+>  include/exec/ramblock.h |  1 +
+>  include/sysemu/kvm.h    |  2 ++
+>  softmmu/physmem.c       | 18 +++++++++++++++---
+>  5 files changed, 38 insertions(+), 3 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 60aacd925393..185ae16d9620 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -4225,3 +4225,20 @@ void query_stats_schemas_cb(StatsSchemaList **result, Error **errp)
+>          query_stats_schema_vcpu(first_cpu, &stats_args);
+>      }
+>  }
+> +
+> +int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp)
+> +{
+> +    int fd;
+> +    struct kvm_create_guest_memfd gmem = {
+> +        .size = size,
+> +        /* TODO: to decide whether KVM_GUEST_MEMFD_ALLOW_HUGEPAGE is supported */
+> +        .flags = flags,
+> +    };
+> +
+> +    fd = kvm_vm_ioctl(kvm_state, KVM_CREATE_GUEST_MEMFD, &gmem);
+> +    if (fd < 0) {
+> +        error_setg_errno(errp, errno, "%s: error creating kvm gmem\n", __func__);
+> +    }
+> +
+> +    return fd;
+> +}
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 68284428f87c..227cb2578e95 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -235,6 +235,9 @@ typedef struct IOMMUTLBEvent {
+>  /* RAM is an mmap-ed named file */
+>  #define RAM_NAMED_FILE (1 << 9)
 >  
->      if (mis->preempt_thread_status == PREEMPT_THREAD_CREATED) {
-> +        /*
-> +         * NOTE!  it's possible that the preempt thread is still handling
-> +         * the last pages to arrive which were requested by faults.  Making
-> +         * sure nothing is left behind.
-> +         */
-> +        while (qatomic_read(&mis->page_requested_count));
->          /* Notify the fast load thread to quit */
->          mis->preempt_thread_status = PREEMPT_THREAD_QUIT;
->          if (mis->postcopy_qemufile_dst) {
->
-> If that can work solidly, we can figure out a better way than a dead loop
-> here.
-
-Yep, 2000+ iterations so far and no error.
-
-Should we add something that makes ram_load_postcopy return once it's
-finished? Then this code could just set PREEMPT_THREAD_QUIT and join the
-preempt thread.
+> +/* RAM can be private that has kvm gmem backend */
+> +#define RAM_KVM_GMEM    (1 << 10)
+> +
+>  static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
+>                                         IOMMUNotifierFlag flags,
+>                                         hwaddr start, hwaddr end,
+> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
+> index 69c6a5390293..0d158b3909c9 100644
+> --- a/include/exec/ramblock.h
+> +++ b/include/exec/ramblock.h
+> @@ -41,6 +41,7 @@ struct RAMBlock {
+>      QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
+>      int fd;
+>      uint64_t fd_offset;
+> +    int gmem_fd;
+>      size_t page_size;
+>      /* dirty bitmap used during migration */
+>      unsigned long *bmap;
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index 115f0cca79d1..f5b74c8dd8c5 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -580,4 +580,6 @@ bool kvm_arch_cpu_check_are_resettable(void);
+>  bool kvm_dirty_ring_enabled(void);
+>  
+>  uint32_t kvm_dirty_ring_size(void);
+> +
+> +int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp);
+>  #endif
+> diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+> index 3df73542e1fe..2d98a88f41f0 100644
+> --- a/softmmu/physmem.c
+> +++ b/softmmu/physmem.c
+> @@ -1824,6 +1824,16 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
+>          }
+>      }
+>  
+> +    if (kvm_enabled() && new_block->flags & RAM_KVM_GMEM &&
+> +        new_block->gmem_fd < 0) {
+> +        new_block->gmem_fd = kvm_create_guest_memfd(new_block->max_length,
+> +                                                    0, errp);
+> +        if (new_block->gmem_fd < 0) {
+> +            qemu_mutex_unlock_ramlist();
+> +            return;
+> +        }
+> +    }
+> +
+>      new_ram_size = MAX(old_ram_size,
+>                (new_block->offset + new_block->max_length) >> TARGET_PAGE_BITS);
+>      if (new_ram_size > old_ram_size) {
+> @@ -1885,7 +1895,7 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+>  
+>      /* Just support these ram flags by now. */
+>      assert((ram_flags & ~(RAM_SHARED | RAM_PMEM | RAM_NORESERVE |
+> -                          RAM_PROTECTED | RAM_NAMED_FILE)) == 0);
+> +                          RAM_PROTECTED | RAM_NAMED_FILE | RAM_KVM_GMEM)) == 0);
+>  
+>      if (xen_enabled()) {
+>          error_setg(errp, "-mem-path not supported with Xen");
+> @@ -1920,6 +1930,7 @@ RAMBlock *qemu_ram_alloc_from_fd(ram_addr_t size, MemoryRegion *mr,
+>      new_block->used_length = size;
+>      new_block->max_length = size;
+>      new_block->flags = ram_flags;
+> +    new_block->gmem_fd = -1;
+>      new_block->host = file_ram_alloc(new_block, size, fd, readonly,
+>                                       !file_size, offset, errp);
+>      if (!new_block->host) {
+> @@ -1978,7 +1989,7 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+>      Error *local_err = NULL;
+>  
+>      assert((ram_flags & ~(RAM_SHARED | RAM_RESIZEABLE | RAM_PREALLOC |
+> -                          RAM_NORESERVE)) == 0);
+> +                          RAM_NORESERVE| RAM_KVM_GMEM)) == 0);
+>      assert(!host ^ (ram_flags & RAM_PREALLOC));
+>  
+>      size = HOST_PAGE_ALIGN(size);
+> @@ -1990,6 +2001,7 @@ RAMBlock *qemu_ram_alloc_internal(ram_addr_t size, ram_addr_t max_size,
+>      new_block->max_length = max_size;
+>      assert(max_size >= size);
+>      new_block->fd = -1;
+> +    new_block->gmem_fd = -1;
+>      new_block->page_size = qemu_real_host_page_size();
+>      new_block->host = host;
+>      new_block->flags = ram_flags;
+> @@ -2012,7 +2024,7 @@ RAMBlock *qemu_ram_alloc_from_ptr(ram_addr_t size, void *host,
+>  RAMBlock *qemu_ram_alloc(ram_addr_t size, uint32_t ram_flags,
+>                           MemoryRegion *mr, Error **errp)
+>  {
+> -    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE)) == 0);
+> +    assert((ram_flags & ~(RAM_SHARED | RAM_NORESERVE | RAM_KVM_GMEM)) == 0);
+>      return qemu_ram_alloc_internal(size, size, NULL, NULL, ram_flags, mr, errp);
+>  }
+>  
 
