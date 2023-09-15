@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0F27A1F36
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 14:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1A47A1F49
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 14:55:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh8II-00083z-1A; Fri, 15 Sep 2023 08:51:34 -0400
+	id 1qh8LM-0001h5-F3; Fri, 15 Sep 2023 08:54:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qh8IF-00083e-Bd
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:51:31 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qh8ID-0007fN-Rd
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:51:31 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-68fbd31d9deso1983380b3a.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 05:51:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694782288; x=1695387088; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=elOgSevuCNgAMJDDaNVSLwmdEKFfMYYrJOJft5/GhbE=;
- b=S0Bhk0A3lLY6Ut4r61oy+x4u2An528xmRMHaHwWx19GtSrVg2X5hDm/LG5lZbXvLE/
- tqOGYbqSrFb1LSfwWt3VSpZ2qa+m7kEsxj8gi3dyBvaLo40izdWlul/E90WvUxjFoPEl
- Fqdr5UKYW8MVOcFc0zAS5kRSYWOZvPAFvZbDBboRHymAwDZWT2wM7+mXt92jp5bkRA5J
- MNiLKWPrFkxhQRC3u6s+UwDvFxMerZmbQHfJpqHgvVrcKRPDlAz6tQewarBqNquIxpJ8
- yJjUoiykAHRQ42yj4PrT4bfwIn3TZv5GpQ7iiQVpNV3JQHzbpizvamhlJ95Or0aytYgy
- WRCA==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qh8LJ-0001gp-Mb
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:54:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qh8LG-0000Dl-3C
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 08:54:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694782476;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=4bF/uF8NsmIwjAsrL4ZkBoM7Z0nvO7gveXnYFzGT+mA=;
+ b=dJU3EFMugp9QWfxV8I083zXyhaavNz2dfXQhthYL7zASXMenvByzV7VrhGRP/AzRN8oLa2
+ i149SNjBJtxDE92GLAAx732UAoQw0AV6FAz1W8Nd2dYlRKN2Ip1VGRRzbCJlP1wx96Q+7s
+ /J12iyweMmeymyKplUs7c2DRcYypSoQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-621-yCuats6APi-ptGTJ12lZ5A-1; Fri, 15 Sep 2023 08:54:35 -0400
+X-MC-Unique: yCuats6APi-ptGTJ12lZ5A-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-31aef28315eso1430539f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 05:54:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694782288; x=1695387088;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=elOgSevuCNgAMJDDaNVSLwmdEKFfMYYrJOJft5/GhbE=;
- b=JJr4lxnlygULoCM0fngCv9aYvD7l9mkuvZEWEmA+7Cg8eqLoSCZVf8AeLKTezx7B4e
- iQa3Ni3OcqCtMssEgeiBZTVFms6FddmXqDRsuBCXTHy+bi8R7IGcXOoH2ZQHKV+51zm/
- LuazZX0uxI/klpSiHkV372oqsPLHyQrXzIaEm4ZYF0QqxcNUljEgNnzokAGg9dWg2Quz
- MEjTnSyl8UX6vGUN3fq2CqEEHPWXkQ5xId6HkL8m7R1WblRiRmWgu3o4labzw24SFEmh
- ZeFtyYpaaN+ev3H5SyWxoUSGO1+S8FIrGxtSpPkJKCzGwB0S+dkNI54QiPNc0EtHNrxJ
- 8s1Q==
-X-Gm-Message-State: AOJu0YwqAYVlmlgiM18YXEUciWWRgpsL9II9CAivPH8eoofXXPYgGoRl
- ucKHCJyjcN0ke6ySfNYVTR68Xg==
-X-Google-Smtp-Source: AGHT+IFXK06FDxK/aVM92kvtkgrIdC9GRzge6Y/ssMGGx9gIZ0t/pWwo6zP7xK3I6uC68iwBb2VhEA==
-X-Received: by 2002:a05:6a20:8f01:b0:152:6b63:f1e7 with SMTP id
- b1-20020a056a208f0100b001526b63f1e7mr1864873pzk.1.1694782288447; 
- Fri, 15 Sep 2023 05:51:28 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- p15-20020a62ab0f000000b00682a27905b9sm3039571pff.13.2023.09.15.05.51.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 05:51:28 -0700 (PDT)
-Message-ID: <30591e5e-2f8f-1fde-c5e2-a1b543f8bc30@linaro.org>
-Date: Fri, 15 Sep 2023 05:51:25 -0700
+ d=1e100.net; s=20230601; t=1694782474; x=1695387274;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=4bF/uF8NsmIwjAsrL4ZkBoM7Z0nvO7gveXnYFzGT+mA=;
+ b=GMfr1zziiIGmKOe+lnMCunXRkSHjPWHEIBArhAlgcK4TTNq9K8Dxa97mfkqXdz2e4X
+ UKbfFPjG8UkLNsXi/VtyCyNQjP1fdrXS5EEtuDMz5+lWWNTX6jCOqlL29F0rdREat+df
+ LZyoazXZOF/Av77N29E8H+crupINGBgtXBmPGB0k0cFBqGxLFvt++lf2qCy/nJBeMnCg
+ 27bplpmVi9hHBfabBDWlcT+8djPBTqv7zw93QtQDq3ns+M9XS9kBsPgfZhNY8zo4FIl2
+ zFZc8JqEuCpoPZYt2Pd/zfka4t/mf2W1RiU/+pQ3Ur6ziZ7Onq/XHztqBx2Wv43aBhOq
+ Rs4w==
+X-Gm-Message-State: AOJu0YzfQbuGVCDvF1uCu8tej6D02j7LD7ZfAo0aKNEkWKgYUMCseJYu
+ C4NDtkCvGK93Dk9N3degzifMqB1lxcJ01JXzU6IZrHklhd+Zkec2XvaIynwU339j5VndP2FMmOL
+ xuY8G8+n59piQmzA=
+X-Received: by 2002:adf:e24d:0:b0:31f:a682:d27f with SMTP id
+ bl13-20020adfe24d000000b0031fa682d27fmr1259983wrb.67.1694782473986; 
+ Fri, 15 Sep 2023 05:54:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGgtzPHUttTokU8xqQEaLa9kGzX2Q1AYD4pWVprQo3p6gE0lwc3bQxDGCgPa3cjNXBp3tT3LQ==
+X-Received: by 2002:adf:e24d:0:b0:31f:a682:d27f with SMTP id
+ bl13-20020adfe24d000000b0031fa682d27fmr1259966wrb.67.1694782473553; 
+ Fri, 15 Sep 2023 05:54:33 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ f23-20020a056402151700b0052fa02d8efdsm2253744edw.39.2023.09.15.05.54.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Sep 2023 05:54:33 -0700 (PDT)
+Date: Fri, 15 Sep 2023 14:54:32 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>, Yanan Wang <wangyanan55@huawei.com>,
+ qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>, Zhenyu Wang
+ <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 03/16] tests: bios-tables-test: Add test for smbios
+ type4 count
+Message-ID: <20230915145432.79d27d83@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230825033619.2075837-4-zhao1.liu@linux.intel.com>
+References: <20230825033619.2075837-1-zhao1.liu@linux.intel.com>
+ <20230825033619.2075837-4-zhao1.liu@linux.intel.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 1/1] tests/avocado: update firmware to enable
- sbsa-ref/neoverse-v1
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, Beraldo Leal <bleal@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>
-References: <20230915113519.269290-1-marcin.juszkiewicz@linaro.org>
- <1e7ac58f-907b-826f-5a06-5caf8fb3b963@linaro.org>
-In-Reply-To: <1e7ac58f-907b-826f-5a06-5caf8fb3b963@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,27 +106,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/15/23 05:50, Richard Henderson wrote:
-> On 9/15/23 04:35, Marcin Juszkiewicz wrote:
->>       def test_sbsaref_alpine_linux_neoverse_n1(self):
->>           """
->> -        :avocado: tags=cpu:max
->> +        :avocado: tags=cpu:neoverse-n1
->>           """
->>           self.boot_alpine_linux("neoverse-n1")
->> +    def test_sbsaref_alpine_linux_neoverse_v1(self):
->> +        """
->> +        :avocado: tags=cpu:neoverse-v1
->> +        """
->> +        self.boot_alpine_linux("neoverse-v1,pauth-impdef=on")
->> +
+On Fri, 25 Aug 2023 11:36:06 +0800
+Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> Second function shadows the first?
+> This tests the commit d79a284a44bb7 ("hw/smbios: Fix smbios_smp_sockets
+> calculation").
+> 
+> Test the count of type4 tables for multiple sockets case.
+> 
+> Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>  tests/qtest/bios-tables-test.c | 33 ++++++++++++++++++++++++++++++++-
+>  1 file changed, 32 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> index 47ba20b9579b..8679255449cf 100644
+> --- a/tests/qtest/bios-tables-test.c
+> +++ b/tests/qtest/bios-tables-test.c
+> @@ -97,6 +97,7 @@ typedef struct {
+>      uint16_t smbios_core_count2;
+>      uint8_t *required_struct_types;
+>      int required_struct_types_len;
+> +    int type4_count;
+>      QTestState *qts;
+>  } test_data;
+>  
+> @@ -673,12 +674,21 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+>      }
+>  }
+>  
+> +static void smbios_type4_count_test(test_data *data, int type4_count)
+> +{
+> +    int expected_type4_count = data->type4_count;
+> +
+> +    if (expected_type4_count) {
+> +        g_assert_cmpuint(type4_count, ==, expected_type4_count);
+> +    }
+> +}
+> +
+>  static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
+>  {
+>      DECLARE_BITMAP(struct_bitmap, SMBIOS_MAX_TYPE+1) = { 0 };
+>  
+>      SmbiosEntryPoint *ep_table = &data->smbios_ep_table;
+> -    int i = 0, len, max_len = 0;
+> +    int i = 0, len, max_len = 0, type4_count = 0;
+>      uint8_t type, prv, crt;
+>      uint64_t addr;
+>  
+> @@ -704,6 +714,7 @@ static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
+>  
+>          if (type == 4) {
+>              smbios_cpu_test(data, addr, ep_type);
+> +            type4_count++;
+>          }
+>  
+>          /* seek to end of unformatted string area of this struct ("\0\0") */
+> @@ -747,6 +758,8 @@ static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
+>      for (i = 0; i < data->required_struct_types_len; i++) {
+>          g_assert(test_bit(data->required_struct_types[i], struct_bitmap));
+>      }
+> +
+> +    smbios_type4_count_test(data, type4_count);
+>  }
+>  
+>  static void test_acpi_load_tables(test_data *data)
+> @@ -970,6 +983,22 @@ static void test_acpi_q35_tcg(void)
+>      free_test_data(&data);
+>  }
+>  
+> +static void test_acpi_q35_tcg_type4_count(void)
+> +{
+> +    test_data data = {
+> +        .machine = MACHINE_Q35,
+> +        .variant = ".type4-count",
+> +        .required_struct_types = base_required_struct_types,
+> +        .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+> +        .type4_count = 5,
+> +    };
+> +
+> +    test_acpi_one("-machine smbios-entry-point-type=64 "
+> +                  "-smp cpus=100,maxcpus=120,sockets=5,"
+> +                  "dies=2,cores=4,threads=3", &data);
 
-Bah.  -ENOCOFFEE.  n1/v1.
+I'd add to commit message an explanation why above topology was picked up
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
-r~
+> +    free_test_data(&data);
+> +}
+> +
+>  static void test_acpi_q35_tcg_core_count2(void)
+>  {
+>      test_data data = {
+> @@ -2135,6 +2164,8 @@ int main(int argc, char *argv[])
+>              if (has_kvm) {
+>                  qtest_add_func("acpi/q35/kvm/xapic", test_acpi_q35_kvm_xapic);
+>                  qtest_add_func("acpi/q35/kvm/dmar", test_acpi_q35_kvm_dmar);
+> +                qtest_add_func("acpi/q35/type4-count",
+> +                               test_acpi_q35_tcg_type4_count);
+>                  qtest_add_func("acpi/q35/core-count2",
+>                                 test_acpi_q35_tcg_core_count2);
+>              }
 
 
