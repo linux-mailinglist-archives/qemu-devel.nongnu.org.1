@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A99D7A214B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A279C7A2161
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:48:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhA3I-0000EX-Mj; Fri, 15 Sep 2023 10:44:13 -0400
+	id 1qhA3R-0000Ms-6G; Fri, 15 Sep 2023 10:44:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qhA3A-0008Vl-SH
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:44:04 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qhA3E-0000Cq-HV
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:44:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qhA38-0004ym-Tz
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:44:04 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qhA3A-0004zg-St
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:44:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694789042;
+ s=mimecast20190719; t=1694789044;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f6EUkit0xMHtJ4so0G6TDNmWl9zDVLIzk+bi2i8HzCs=;
- b=A+RlO+yOstAy9phmyZDPine2qos8Xtp4jqyMqXPlF8BDggYdUt9C4DDOSCiOJMFVFlQgVp
- LlE8zmiyq6X5EZ4uGVSPnWysjV619c8+pJ2p+uGvMSdlILOlqle6TzJaTSl5IGdJapR13G
- zE3bBt3Avh41RG9B+0eR+1wLd7phzyA=
+ bh=Is3eISa7I4QuYXyaovXvpDTZP0fWgUREHknSZaozYZ0=;
+ b=QMPd8nix9GueLS5B7S+PFih3IvERpPT3TDvauDeniEoQSmylgOmv8+qkI4MnVWTcUoV7jI
+ weuVPsm+rGz3UfGiQ6ALp/rXjiBsiRjVKkLPOuvV9vpHatSD7tSL2PXvB7ZEK9O3x0tbLl
+ n8fR4zxtl15zK+d99yeLpeOxtmdjnIg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-161-UmwyG1gMNV653i01LRz7-Q-1; Fri, 15 Sep 2023 10:43:58 -0400
-X-MC-Unique: UmwyG1gMNV653i01LRz7-Q-1
+ us-mta-587-OobykDQ0OhazSRa171uawg-1; Fri, 15 Sep 2023 10:43:59 -0400
+X-MC-Unique: OobykDQ0OhazSRa171uawg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9DFE918162CC;
- Fri, 15 Sep 2023 14:43:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7054A80D2B0;
+ Fri, 15 Sep 2023 14:43:59 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.146])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0B7102026D4B;
- Fri, 15 Sep 2023 14:43:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D33FC2026D68;
+ Fri, 15 Sep 2023 14:43:58 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 12/28] block: Mark bdrv_attach_child() GRAPH_WRLOCK
-Date: Fri, 15 Sep 2023 16:43:28 +0200
-Message-ID: <20230915144344.238596-13-kwolf@redhat.com>
+Subject: [PULL 13/28] block: Mark bdrv_parent_perms_conflict() and callers
+ GRAPH_RDLOCK
+Date: Fri, 15 Sep 2023 16:43:29 +0200
+Message-ID: <20230915144344.238596-14-kwolf@redhat.com>
 In-Reply-To: <20230915144344.238596-1-kwolf@redhat.com>
 References: <20230915144344.238596-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -76,300 +77,375 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of taking the writer lock internally, require callers to already
-hold it when calling bdrv_attach_child_common(). These callers will
-typically already hold the graph lock once the locking work is
-completed, which means that they can't call functions that take it
-internally.
+The function reads the parents list, so it needs to hold the graph lock.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230911094620.45040-13-kwolf@redhat.com>
+Message-ID: <20230911094620.45040-14-kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/block/block-global-state.h | 14 ++++++++------
- block.c                            |  7 +++----
- block/quorum.c                     |  2 ++
- block/replication.c                |  6 ++++++
- tests/unit/test-bdrv-drain.c       | 14 ++++++++++++++
- tests/unit/test-bdrv-graph-mod.c   | 10 ++++++++++
- 6 files changed, 43 insertions(+), 10 deletions(-)
+ include/block/block_int-common.h            |  6 ++---
+ include/block/block_int-global-state.h      |  8 +++---
+ include/sysemu/block-backend-global-state.h |  4 +--
+ block.c                                     | 28 +++++++++++++--------
+ block/block-backend.c                       | 26 ++++++++++++++-----
+ block/crypto.c                              |  6 +++--
+ block/mirror.c                              |  8 ++++++
+ block/vmdk.c                                |  2 ++
+ tests/unit/test-bdrv-graph-mod.c            |  4 +++
+ 9 files changed, 66 insertions(+), 26 deletions(-)
 
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index e570799f85..eb12a35439 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -226,12 +226,14 @@ void no_coroutine_fn bdrv_unref(BlockDriverState *bs);
- void coroutine_fn no_co_wrapper bdrv_co_unref(BlockDriverState *bs);
- void GRAPH_WRLOCK bdrv_schedule_unref(BlockDriverState *bs);
- void bdrv_unref_child(BlockDriverState *parent, BdrvChild *child);
--BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
--                             BlockDriverState *child_bs,
--                             const char *child_name,
--                             const BdrvChildClass *child_class,
--                             BdrvChildRole child_role,
--                             Error **errp);
-+
-+BdrvChild * GRAPH_WRLOCK
-+bdrv_attach_child(BlockDriverState *parent_bs,
-+                  BlockDriverState *child_bs,
-+                  const char *child_name,
-+                  const BdrvChildClass *child_class,
-+                  BdrvChildRole child_role,
-+                  Error **errp);
+diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
+index 85be256c09..fda9d8b5c8 100644
+--- a/include/block/block_int-common.h
++++ b/include/block/block_int-common.h
+@@ -311,7 +311,7 @@ struct BlockDriver {
+      */
+     void (*bdrv_cancel_in_flight)(BlockDriverState *bs);
  
- bool bdrv_op_is_blocked(BlockDriverState *bs, BlockOpType op, Error **errp);
- void bdrv_op_block(BlockDriverState *bs, BlockOpType op, Error *reason);
+-    int (*bdrv_inactivate)(BlockDriverState *bs);
++    int GRAPH_RDLOCK_PTR (*bdrv_inactivate)(BlockDriverState *bs);
+ 
+     int (*bdrv_snapshot_create)(BlockDriverState *bs,
+                                 QEMUSnapshotInfo *sn_info);
+@@ -944,8 +944,8 @@ struct BdrvChildClass {
+      * when migration is completing) and it can start/stop requesting
+      * permissions and doing I/O on it.
+      */
+-    void (*activate)(BdrvChild *child, Error **errp);
+-    int (*inactivate)(BdrvChild *child);
++    void GRAPH_RDLOCK_PTR (*activate)(BdrvChild *child, Error **errp);
++    int GRAPH_RDLOCK_PTR (*inactivate)(BdrvChild *child);
+ 
+     void GRAPH_WRLOCK_PTR (*attach)(BdrvChild *child);
+     void GRAPH_WRLOCK_PTR (*detach)(BdrvChild *child);
+diff --git a/include/block/block_int-global-state.h b/include/block/block_int-global-state.h
+index da5fb31089..bebcc08bce 100644
+--- a/include/block/block_int-global-state.h
++++ b/include/block/block_int-global-state.h
+@@ -212,8 +212,9 @@ void bdrv_get_cumulative_perm(BlockDriverState *bs, uint64_t *perm,
+  * bdrv_child_refresh_perms() instead and make the parent's
+  * .bdrv_child_perm() implementation return the correct values.
+  */
+-int bdrv_child_try_set_perm(BdrvChild *c, uint64_t perm, uint64_t shared,
+-                            Error **errp);
++int GRAPH_RDLOCK
++bdrv_child_try_set_perm(BdrvChild *c, uint64_t perm, uint64_t shared,
++                        Error **errp);
+ 
+ /**
+  * Calls bs->drv->bdrv_child_perm() and updates the child's permission
+@@ -223,7 +224,8 @@ int bdrv_child_try_set_perm(BdrvChild *c, uint64_t perm, uint64_t shared,
+  * values than before, but which will not result in the block layer
+  * automatically refreshing the permissions.
+  */
+-int bdrv_child_refresh_perms(BlockDriverState *bs, BdrvChild *c, Error **errp);
++int GRAPH_RDLOCK
++bdrv_child_refresh_perms(BlockDriverState *bs, BdrvChild *c, Error **errp);
+ 
+ bool GRAPH_RDLOCK bdrv_recurse_can_replace(BlockDriverState *bs,
+                                            BlockDriverState *to_replace);
+diff --git a/include/sysemu/block-backend-global-state.h b/include/sysemu/block-backend-global-state.h
+index 184e667ebd..d5f675493a 100644
+--- a/include/sysemu/block-backend-global-state.h
++++ b/include/sysemu/block-backend-global-state.h
+@@ -61,8 +61,8 @@ int blk_insert_bs(BlockBackend *blk, BlockDriverState *bs, Error **errp);
+ int blk_replace_bs(BlockBackend *blk, BlockDriverState *new_bs, Error **errp);
+ bool bdrv_has_blk(BlockDriverState *bs);
+ bool bdrv_is_root_node(BlockDriverState *bs);
+-int blk_set_perm(BlockBackend *blk, uint64_t perm, uint64_t shared_perm,
+-                 Error **errp);
++int GRAPH_UNLOCKED blk_set_perm(BlockBackend *blk, uint64_t perm,
++                                uint64_t shared_perm, Error **errp);
+ void blk_get_perm(BlockBackend *blk, uint64_t *perm, uint64_t *shared_perm);
+ 
+ void blk_iostatus_enable(BlockBackend *blk);
 diff --git a/block.c b/block.c
-index f06de58a3b..369023872a 100644
+index 369023872a..6720bc4f8a 100644
 --- a/block.c
 +++ b/block.c
-@@ -3219,8 +3219,6 @@ BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
+@@ -2202,7 +2202,8 @@ static bool bdrv_a_allow_b(BdrvChild *a, BdrvChild *b, Error **errp)
+     return false;
+ }
+ 
+-static bool bdrv_parent_perms_conflict(BlockDriverState *bs, Error **errp)
++static bool GRAPH_RDLOCK
++bdrv_parent_perms_conflict(BlockDriverState *bs, Error **errp)
+ {
+     BdrvChild *a, *b;
+     GLOBAL_STATE_CODE();
+@@ -2255,8 +2256,8 @@ static void bdrv_child_perm(BlockDriverState *bs, BlockDriverState *child_bs,
+  * simplest way to satisfy this criteria: use only result of
+  * bdrv_topological_dfs() or NULL as @list parameter.
+  */
+-static GSList *bdrv_topological_dfs(GSList *list, GHashTable *found,
+-                                    BlockDriverState *bs)
++static GSList * GRAPH_RDLOCK
++bdrv_topological_dfs(GSList *list, GHashTable *found, BlockDriverState *bs)
+ {
+     BdrvChild *child;
+     g_autoptr(GHashTable) local_found = NULL;
+@@ -2532,8 +2533,9 @@ static int bdrv_node_refresh_perm(BlockDriverState *bs, BlockReopenQueue *q,
+  * @list is a product of bdrv_topological_dfs() (may be called several times) -
+  * a topologically sorted subgraph.
+  */
+-static int bdrv_do_refresh_perms(GSList *list, BlockReopenQueue *q,
+-                                 Transaction *tran, Error **errp)
++static int GRAPH_RDLOCK
++bdrv_do_refresh_perms(GSList *list, BlockReopenQueue *q, Transaction *tran,
++                      Error **errp)
+ {
+     int ret;
+     BlockDriverState *bs;
+@@ -2560,8 +2562,9 @@ static int bdrv_do_refresh_perms(GSList *list, BlockReopenQueue *q,
+  * topologically sorted. It's not a problem if some node occurs in the @list
+  * several times.
+  */
+-static int bdrv_list_refresh_perms(GSList *list, BlockReopenQueue *q,
+-                                   Transaction *tran, Error **errp)
++static int GRAPH_RDLOCK
++bdrv_list_refresh_perms(GSList *list, BlockReopenQueue *q, Transaction *tran,
++                        Error **errp)
+ {
+     g_autoptr(GHashTable) found = g_hash_table_new(NULL, NULL);
+     g_autoptr(GSList) refresh_list = NULL;
+@@ -2621,8 +2624,8 @@ char *bdrv_perm_names(uint64_t perm)
+ 
+ 
+ /* @tran is allowed to be NULL. In this case no rollback is possible */
+-static int bdrv_refresh_perms(BlockDriverState *bs, Transaction *tran,
+-                              Error **errp)
++static int GRAPH_RDLOCK
++bdrv_refresh_perms(BlockDriverState *bs, Transaction *tran, Error **errp)
+ {
+     int ret;
+     Transaction *local_tran = NULL;
+@@ -3247,7 +3250,6 @@ void bdrv_root_unref_child(BdrvChild *child)
+     GLOBAL_STATE_CODE();
+     bdrv_graph_wrlock(NULL);
+     bdrv_replace_child_noperm(child, NULL);
+-    bdrv_graph_wrunlock();
+     bdrv_child_free(child);
+ 
+     if (child_bs) {
+@@ -3266,6 +3268,7 @@ void bdrv_root_unref_child(BdrvChild *child)
+                                     NULL);
+     }
+ 
++    bdrv_graph_wrunlock();
+     bdrv_unref(child_bs);
+ }
+ 
+@@ -4585,7 +4588,10 @@ int bdrv_reopen_multiple(BlockReopenQueue *bs_queue, Error **errp)
+      * reconfiguring the fd and that's why it does it in raw_check_perm(), not
+      * in raw_reopen_prepare() which is called with "old" permissions.
+      */
++    bdrv_graph_rdlock_main_loop();
+     ret = bdrv_list_refresh_perms(refresh_list, bs_queue, tran, errp);
++    bdrv_graph_rdunlock_main_loop();
++
+     if (ret < 0) {
+         goto abort;
+     }
+@@ -6833,6 +6839,7 @@ int bdrv_activate(BlockDriverState *bs, Error **errp)
+     BdrvDirtyBitmap *bm;
  
      GLOBAL_STATE_CODE();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
  
--    bdrv_graph_wrlock(child_bs);
--
-     child = bdrv_attach_child_noperm(parent_bs, child_bs, child_name,
-                                      child_class, child_role, tran, errp);
-     if (!child) {
-@@ -3235,9 +3233,8 @@ BdrvChild *bdrv_attach_child(BlockDriverState *parent_bs,
+     if (!bs->drv)  {
+         return -ENOMEDIUM;
+@@ -6963,6 +6970,7 @@ static int bdrv_inactivate_recurse(BlockDriverState *bs)
+     uint64_t cumulative_perms, cumulative_shared_perms;
  
- out:
-     tran_finalize(tran, ret);
--    bdrv_graph_wrunlock();
+     GLOBAL_STATE_CODE();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
  
--    bdrv_unref(child_bs);
-+    bdrv_schedule_unref(child_bs);
+     if (!bs->drv) {
+         return -ENOMEDIUM;
+diff --git a/block/block-backend.c b/block/block-backend.c
+index 4009ed5fed..8d0282a5d9 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -121,6 +121,10 @@ static QTAILQ_HEAD(, BlockBackend) block_backends =
+ static QTAILQ_HEAD(, BlockBackend) monitor_block_backends =
+     QTAILQ_HEAD_INITIALIZER(monitor_block_backends);
  
-     return ret < 0 ? NULL : child;
- }
-@@ -3758,11 +3755,13 @@ BdrvChild *bdrv_open_child(const char *filename,
-         return NULL;
-     }
- 
-+    bdrv_graph_wrlock(NULL);
-     ctx = bdrv_get_aio_context(bs);
-     aio_context_acquire(ctx);
-     child = bdrv_attach_child(parent, bs, bdref_key, child_class, child_role,
-                               errp);
-     aio_context_release(ctx);
-+    bdrv_graph_wrunlock();
- 
-     return child;
- }
-diff --git a/block/quorum.c b/block/quorum.c
-index f28758cf2b..def0539fda 100644
---- a/block/quorum.c
-+++ b/block/quorum.c
-@@ -1094,8 +1094,10 @@ static void quorum_add_child(BlockDriverState *bs, BlockDriverState *child_bs,
-     /* We can safely add the child now */
-     bdrv_ref(child_bs);
- 
-+    bdrv_graph_wrlock(child_bs);
-     child = bdrv_attach_child(bs, child_bs, indexstr, &child_of_bds,
-                               BDRV_CHILD_DATA, errp);
-+    bdrv_graph_wrunlock();
-     if (child == NULL) {
-         s->next_child_index--;
-         goto out;
-diff --git a/block/replication.c b/block/replication.c
-index ea4bf1aa80..eec9819625 100644
---- a/block/replication.c
-+++ b/block/replication.c
-@@ -542,12 +542,15 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-             return;
-         }
- 
-+        bdrv_graph_wrlock(bs);
++static int coroutine_mixed_fn GRAPH_RDLOCK
++blk_set_perm_locked(BlockBackend *blk, uint64_t perm, uint64_t shared_perm,
++                    Error **errp);
 +
-         bdrv_ref(hidden_disk->bs);
-         s->hidden_disk = bdrv_attach_child(bs, hidden_disk->bs, "hidden disk",
-                                            &child_of_bds, BDRV_CHILD_DATA,
-                                            &local_err);
-         if (local_err) {
-             error_propagate(errp, local_err);
-+            bdrv_graph_wrunlock();
-             aio_context_release(aio_context);
-             return;
-         }
-@@ -558,10 +561,13 @@ static void replication_start(ReplicationState *rs, ReplicationMode mode,
-                                               BDRV_CHILD_DATA, &local_err);
-         if (local_err) {
-             error_propagate(errp, local_err);
-+            bdrv_graph_wrunlock();
-             aio_context_release(aio_context);
-             return;
-         }
- 
-+        bdrv_graph_wrunlock();
-+
-         /* start backup job now */
-         error_setg(&s->blocker,
-                    "Block device is in use by internal backup job");
-diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
-index 89c8fa6780..6d33249656 100644
---- a/tests/unit/test-bdrv-drain.c
-+++ b/tests/unit/test-bdrv-drain.c
-@@ -1055,8 +1055,10 @@ static void do_test_delete_by_drain(bool detach_instead_of_delete,
- 
-     null_bs = bdrv_open("null-co://", NULL, NULL, BDRV_O_RDWR | BDRV_O_PROTOCOL,
-                         &error_abort);
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(bs, null_bs, "null-child", &child_of_bds,
-                       BDRV_CHILD_DATA, &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     /* This child will be the one to pass to requests through to, and
-      * it will stall until a drain occurs */
-@@ -1064,17 +1066,21 @@ static void do_test_delete_by_drain(bool detach_instead_of_delete,
-                                     &error_abort);
-     child_bs->total_sectors = 65536 >> BDRV_SECTOR_BITS;
-     /* Takes our reference to child_bs */
-+    bdrv_graph_wrlock(NULL);
-     tts->wait_child = bdrv_attach_child(bs, child_bs, "wait-child",
-                                         &child_of_bds,
-                                         BDRV_CHILD_DATA | BDRV_CHILD_PRIMARY,
-                                         &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     /* This child is just there to be deleted
-      * (for detach_instead_of_delete == true) */
-     null_bs = bdrv_open("null-co://", NULL, NULL, BDRV_O_RDWR | BDRV_O_PROTOCOL,
-                         &error_abort);
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(bs, null_bs, "null-child", &child_of_bds, BDRV_CHILD_DATA,
-                       &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     blk = blk_new(qemu_get_aio_context(), BLK_PERM_ALL, BLK_PERM_ALL);
-     blk_insert_bs(blk, bs, &error_abort);
-@@ -1159,9 +1165,11 @@ static void detach_indirect_bh(void *opaque)
-     bdrv_unref_child(data->parent_b, data->child_b);
- 
-     bdrv_ref(data->c);
-+    bdrv_graph_wrlock(NULL);
-     data->child_c = bdrv_attach_child(data->parent_b, data->c, "PB-C",
-                                       &child_of_bds, BDRV_CHILD_DATA,
-                                       &error_abort);
-+    bdrv_graph_wrunlock();
- }
- 
- static void detach_by_parent_aio_cb(void *opaque, int ret)
-@@ -1258,6 +1266,7 @@ static void test_detach_indirect(bool by_parent_cb)
-     /* Set child relationships */
-     bdrv_ref(b);
-     bdrv_ref(a);
-+    bdrv_graph_wrlock(NULL);
-     child_b = bdrv_attach_child(parent_b, b, "PB-B", &child_of_bds,
-                                 BDRV_CHILD_DATA, &error_abort);
-     child_a = bdrv_attach_child(parent_b, a, "PB-A", &child_of_bds,
-@@ -1267,6 +1276,7 @@ static void test_detach_indirect(bool by_parent_cb)
-     bdrv_attach_child(parent_a, a, "PA-A",
-                       by_parent_cb ? &child_of_bds : &detach_by_driver_cb_class,
-                       BDRV_CHILD_DATA, &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     g_assert_cmpint(parent_a->refcnt, ==, 1);
-     g_assert_cmpint(parent_b->refcnt, ==, 1);
-@@ -1685,6 +1695,7 @@ static void test_drop_intermediate_poll(void)
-      * Establish the chain last, so the chain links are the first
-      * elements in the BDS.parents lists
+ static void blk_root_inherit_options(BdrvChildRole role, bool parent_is_format,
+                                      int *child_flags, QDict *child_options,
+                                      int parent_flags, QDict *parent_options)
+@@ -186,7 +190,7 @@ static void blk_vm_state_changed(void *opaque, bool running, RunState state)
+  *
+  * If an error is returned, the VM cannot be allowed to be resumed.
+  */
+-static void blk_root_activate(BdrvChild *child, Error **errp)
++static void GRAPH_RDLOCK blk_root_activate(BdrvChild *child, Error **errp)
+ {
+     BlockBackend *blk = child->opaque;
+     Error *local_err = NULL;
+@@ -207,7 +211,7 @@ static void blk_root_activate(BdrvChild *child, Error **errp)
       */
-+    bdrv_graph_wrlock(NULL);
-     for (i = 0; i < 3; i++) {
-         if (i) {
-             /* Takes the reference to chain[i - 1] */
-@@ -1692,6 +1703,7 @@ static void test_drop_intermediate_poll(void)
-                               &chain_child_class, BDRV_CHILD_COW, &error_abort);
-         }
+     saved_shared_perm = blk->shared_perm;
+ 
+-    blk_set_perm(blk, blk->perm, BLK_PERM_ALL, &local_err);
++    blk_set_perm_locked(blk, blk->perm, BLK_PERM_ALL, &local_err);
+     if (local_err) {
+         error_propagate(errp, local_err);
+         blk->disable_perm = true;
+@@ -226,7 +230,7 @@ static void blk_root_activate(BdrvChild *child, Error **errp)
+         return;
      }
-+    bdrv_graph_wrunlock();
  
-     job = block_job_create("job", &test_simple_job_driver, NULL, job_node,
-                            0, BLK_PERM_ALL, 0, 0, NULL, NULL, &error_abort);
-@@ -1936,8 +1948,10 @@ static void do_test_replace_child_mid_drain(int old_drain_count,
-     new_child_bs->total_sectors = 1;
+-    blk_set_perm(blk, blk->perm, blk->shared_perm, &local_err);
++    blk_set_perm_locked(blk, blk->perm, blk->shared_perm, &local_err);
+     if (local_err) {
+         error_propagate(errp, local_err);
+         blk->disable_perm = true;
+@@ -259,7 +263,7 @@ static bool blk_can_inactivate(BlockBackend *blk)
+     return blk->force_allow_inactivate;
+ }
  
-     bdrv_ref(old_child_bs);
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(parent_bs, old_child_bs, "child", &child_of_bds,
-                       BDRV_CHILD_COW, &error_abort);
-+    bdrv_graph_wrunlock();
-     parent_s->setup_completed = true;
+-static int blk_root_inactivate(BdrvChild *child)
++static int GRAPH_RDLOCK blk_root_inactivate(BdrvChild *child)
+ {
+     BlockBackend *blk = child->opaque;
  
-     for (i = 0; i < old_drain_count; i++) {
+@@ -953,8 +957,9 @@ int blk_replace_bs(BlockBackend *blk, BlockDriverState *new_bs, Error **errp)
+ /*
+  * Sets the permission bitmasks that the user of the BlockBackend needs.
+  */
+-int blk_set_perm(BlockBackend *blk, uint64_t perm, uint64_t shared_perm,
+-                 Error **errp)
++static int coroutine_mixed_fn GRAPH_RDLOCK
++blk_set_perm_locked(BlockBackend *blk, uint64_t perm, uint64_t shared_perm,
++                    Error **errp)
+ {
+     int ret;
+     GLOBAL_STATE_CODE();
+@@ -972,6 +977,15 @@ int blk_set_perm(BlockBackend *blk, uint64_t perm, uint64_t shared_perm,
+     return 0;
+ }
+ 
++int blk_set_perm(BlockBackend *blk, uint64_t perm, uint64_t shared_perm,
++                 Error **errp)
++{
++    GLOBAL_STATE_CODE();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
++
++    return blk_set_perm_locked(blk, perm, shared_perm, errp);
++}
++
+ void blk_get_perm(BlockBackend *blk, uint64_t *perm, uint64_t *shared_perm)
+ {
+     GLOBAL_STATE_CODE();
+diff --git a/block/crypto.c b/block/crypto.c
+index 6ee8d46d30..c9c9a39fa3 100644
+--- a/block/crypto.c
++++ b/block/crypto.c
+@@ -777,7 +777,7 @@ block_crypto_get_specific_info_luks(BlockDriverState *bs, Error **errp)
+     return spec_info;
+ }
+ 
+-static int
++static int GRAPH_RDLOCK
+ block_crypto_amend_prepare(BlockDriverState *bs, Error **errp)
+ {
+     BlockCrypto *crypto = bs->opaque;
+@@ -793,7 +793,7 @@ block_crypto_amend_prepare(BlockDriverState *bs, Error **errp)
+     return ret;
+ }
+ 
+-static void
++static void GRAPH_RDLOCK
+ block_crypto_amend_cleanup(BlockDriverState *bs)
+ {
+     BlockCrypto *crypto = bs->opaque;
+@@ -841,6 +841,8 @@ block_crypto_amend_options_luks(BlockDriverState *bs,
+     QCryptoBlockAmendOptions *amend_options = NULL;
+     int ret = -EINVAL;
+ 
++    assume_graph_lock(); /* FIXME */
++
+     assert(crypto);
+     assert(crypto->block);
+ 
+diff --git a/block/mirror.c b/block/mirror.c
+index aae4bebbb6..3cc0757a03 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -702,8 +702,12 @@ static int mirror_exit_common(Job *job)
+      * mirror_top_bs from now on, so keep it drained. */
+     bdrv_drained_begin(mirror_top_bs);
+     bs_opaque->stop = true;
++
++    bdrv_graph_rdlock_main_loop();
+     bdrv_child_refresh_perms(mirror_top_bs, mirror_top_bs->backing,
+                              &error_abort);
++    bdrv_graph_rdunlock_main_loop();
++
+     if (!abort && s->backing_mode == MIRROR_SOURCE_BACKING_CHAIN) {
+         BlockDriverState *backing = s->is_none_mode ? src : s->base;
+         BlockDriverState *unfiltered_target = bdrv_skip_filters(target_bs);
+@@ -1670,6 +1674,8 @@ static BlockJob *mirror_start_job(
+     uint64_t target_perms, target_shared_perms;
+     int ret;
+ 
++    GLOBAL_STATE_CODE();
++
+     if (granularity == 0) {
+         granularity = bdrv_get_default_bitmap_granularity(target);
+     }
+@@ -1906,8 +1912,10 @@ fail:
+     }
+ 
+     bs_opaque->stop = true;
++    bdrv_graph_rdlock_main_loop();
+     bdrv_child_refresh_perms(mirror_top_bs, mirror_top_bs->backing,
+                              &error_abort);
++    bdrv_graph_rdunlock_main_loop();
+     bdrv_replace_node(mirror_top_bs, mirror_top_bs->backing->bs, &error_abort);
+ 
+     bdrv_unref(mirror_top_bs);
+diff --git a/block/vmdk.c b/block/vmdk.c
+index 58ce290e9c..84185b73a2 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -1309,6 +1309,8 @@ static int vmdk_open(BlockDriverState *bs, QDict *options, int flags,
+     BDRVVmdkState *s = bs->opaque;
+     uint32_t magic;
+ 
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
++
+     ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
+     if (ret < 0) {
+         return ret;
 diff --git a/tests/unit/test-bdrv-graph-mod.c b/tests/unit/test-bdrv-graph-mod.c
-index d8503165b3..621e616655 100644
+index 621e616655..8609f7f42b 100644
 --- a/tests/unit/test-bdrv-graph-mod.c
 +++ b/tests/unit/test-bdrv-graph-mod.c
-@@ -137,8 +137,10 @@ static void test_update_perm_tree(void)
- 
-     blk_insert_bs(root, bs, &error_abort);
- 
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(filter, bs, "child", &child_of_bds,
-                       BDRV_CHILD_DATA, &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     aio_context_acquire(qemu_get_aio_context());
-     ret = bdrv_append(filter, bs, NULL);
-@@ -205,8 +207,10 @@ static void test_should_update_child(void)
-     bdrv_set_backing_hd(target, bs, &error_abort);
- 
-     g_assert(target->backing->bs == bs);
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(filter, target, "target", &child_of_bds,
-                       BDRV_CHILD_DATA, &error_abort);
-+    bdrv_graph_wrunlock();
-     aio_context_acquire(qemu_get_aio_context());
-     bdrv_append(filter, bs, &error_abort);
-     aio_context_release(qemu_get_aio_context());
-@@ -236,6 +240,7 @@ static void test_parallel_exclusive_write(void)
-      */
-     bdrv_ref(base);
- 
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(top, fl1, "backing", &child_of_bds,
-                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
-                       &error_abort);
-@@ -245,6 +250,7 @@ static void test_parallel_exclusive_write(void)
-     bdrv_attach_child(fl2, base, "backing", &child_of_bds,
-                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
-                       &error_abort);
-+    bdrv_graph_wrunlock();
- 
-     bdrv_replace_node(fl1, fl2, &error_abort);
- 
-@@ -349,6 +355,7 @@ static void test_parallel_perm_update(void)
-      */
-     bdrv_ref(base);
- 
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(top, ws, "file", &child_of_bds, BDRV_CHILD_DATA,
-                       &error_abort);
-     c_fl1 = bdrv_attach_child(ws, fl1, "first", &child_of_bds,
-@@ -361,6 +368,7 @@ static void test_parallel_perm_update(void)
-     bdrv_attach_child(fl2, base, "backing", &child_of_bds,
-                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
-                       &error_abort);
-+    bdrv_graph_wrunlock();
+@@ -372,6 +372,9 @@ static void test_parallel_perm_update(void)
  
      /* Select fl1 as first child to be active */
      s->selected = c_fl1;
-@@ -410,9 +418,11 @@ static void test_append_greedy_filter(void)
-     BlockDriverState *base = no_perm_node("base");
-     BlockDriverState *fl = exclusive_writer_node("fl1");
++
++    bdrv_graph_rdlock_main_loop();
++
+     bdrv_child_refresh_perms(top, top->children.lh_first, &error_abort);
  
-+    bdrv_graph_wrlock(NULL);
-     bdrv_attach_child(top, base, "backing", &child_of_bds,
-                       BDRV_CHILD_FILTERED | BDRV_CHILD_PRIMARY,
-                       &error_abort);
-+    bdrv_graph_wrunlock();
+     assert(c_fl1->perm & BLK_PERM_WRITE);
+@@ -391,6 +394,7 @@ static void test_parallel_perm_update(void)
+     assert(c_fl1->perm & BLK_PERM_WRITE);
+     assert(!(c_fl2->perm & BLK_PERM_WRITE));
  
-     aio_context_acquire(qemu_get_aio_context());
-     bdrv_append(fl, base, &error_abort);
++    bdrv_graph_rdunlock_main_loop();
+     bdrv_unref(top);
+ }
+ 
 -- 
 2.41.0
 
