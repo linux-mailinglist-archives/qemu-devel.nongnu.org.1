@@ -2,31 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20877A237F
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A637A237C
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:22:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhBYd-0005MC-SO; Fri, 15 Sep 2023 12:20:39 -0400
+	id 1qhBYc-0005KZ-HF; Fri, 15 Sep 2023 12:20:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qhBYS-0005Ej-HY; Fri, 15 Sep 2023 12:20:31 -0400
+ id 1qhBYP-0005CV-87; Fri, 15 Sep 2023 12:20:25 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qhBYN-0000Rr-3b; Fri, 15 Sep 2023 12:20:26 -0400
+ id 1qhBYN-0000Rq-2G; Fri, 15 Sep 2023 12:20:24 -0400
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qhBUx-00Ezdu-0c;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1qhBUx-00Ezdu-0n;
  Fri, 15 Sep 2023 18:20:15 +0200
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
  eblake@redhat.com, andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v2 0/8] qemu-img: rebase: add compression support
-Date: Fri, 15 Sep 2023 19:20:08 +0300
-Message-Id: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v2 1/8] qemu-img: rebase: stop when reaching EOF of old
+ backing file
+Date: Fri, 15 Sep 2023 19:20:09 +0300
+Message-Id: <20230915162016.141771-2-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
+References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111;
@@ -53,49 +56,53 @@ From:  Andrey Drobyshev via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1 --> v2:
- * Choose proper BlockBackend when aligning buf_old;
- * Add new patch ("qemu-img: add chunk size parameter to
-   compare_buffers()");
- * Rework write alignment logic; now writes are aligned to either
-   subcluster or cluster size, depending on whether compressionis enabled;
- * Add new patch ("iotests/{024, 271}: add testcases for qemu-img
-   rebase");
- * Add another compressed rebase testcase for images having subclusters.
+In case when we're rebasing within one backing chain, and when target image
+is larger than old backing file, bdrv_is_allocated_above() ends up setting
+*pnum = 0.  As a result, target offset isn't getting incremented, and we
+get stuck in an infinite for loop.  Let's detect this case and proceed
+further down the loop body, as the offsets beyond the old backing size need
+to be explicitly zeroed.
 
-v1: https://lists.nongnu.org/archive/html/qemu-block/2023-06/msg00068.html
+Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Reviewed-by: Denis V. Lunev <den@openvz.org>
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+---
+ qemu-img.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-NOTE: compressed rebase testcase for subclusters assume "compressed"
-field in "qemu-img map" output.  This series is currently in the block
-branch and is likely to be merged into master soon:
-
-https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg01489.html
-
-
-Andrey Drobyshev (8):
-  qemu-img: rebase: stop when reaching EOF of old backing file
-  qemu-iotests: 024: add rebasing test case for overlay_size >
-    backing_size
-  qemu-img: rebase: use backing files' BlockBackend for buffer alignment
-  qemu-img: add chunk size parameter to compare_buffers()
-  qemu-img: rebase: avoid unnecessary COW operations
-  iotests/{024, 271}: add testcases for qemu-img rebase
-  qemu-img: add compression option to rebase subcommand
-  iotests: add tests for "qemu-img rebase" with compression
-
- docs/tools/qemu-img.rst    |   6 +-
- qemu-img-cmds.hx           |   4 +-
- qemu-img.c                 | 136 +++++++++++++++++++++++-------
- tests/qemu-iotests/024     | 117 ++++++++++++++++++++++++++
- tests/qemu-iotests/024.out |  73 ++++++++++++++++
- tests/qemu-iotests/271     | 131 +++++++++++++++++++++++++++++
- tests/qemu-iotests/271.out |  82 ++++++++++++++++++
- tests/qemu-iotests/314     | 165 +++++++++++++++++++++++++++++++++++++
- tests/qemu-iotests/314.out |  75 +++++++++++++++++
- 9 files changed, 753 insertions(+), 36 deletions(-)
- create mode 100755 tests/qemu-iotests/314
- create mode 100644 tests/qemu-iotests/314.out
-
+diff --git a/qemu-img.c b/qemu-img.c
+index a48edb7101..50660ba920 100644
+--- a/qemu-img.c
++++ b/qemu-img.c
+@@ -3805,6 +3805,8 @@ static int img_rebase(int argc, char **argv)
+             }
+ 
+             if (prefix_chain_bs) {
++                uint64_t bytes = n;
++
+                 /*
+                  * If cluster wasn't changed since prefix_chain, we don't need
+                  * to take action
+@@ -3817,9 +3819,18 @@ static int img_rebase(int argc, char **argv)
+                                  strerror(-ret));
+                     goto out;
+                 }
+-                if (!ret) {
++                if (!ret && n) {
+                     continue;
+                 }
++                if (!n) {
++                    /*
++                     * If we've reached EOF of the old backing, it means that
++                     * offsets beyond the old backing size were read as zeroes.
++                     * Now we will need to explicitly zero the cluster in
++                     * order to preserve that state after the rebase.
++                     */
++                    n = bytes;
++                }
+             }
+ 
+             /*
 -- 
 2.39.3
 
