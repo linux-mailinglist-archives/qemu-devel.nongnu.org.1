@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCF57A2677
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F35EB7A263D
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:42:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhDl7-0004Vb-TH; Fri, 15 Sep 2023 14:41:41 -0400
+	id 1qhDl9-0004Xf-Pg; Fri, 15 Sep 2023 14:41:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDl5-0004S1-PX; Fri, 15 Sep 2023 14:41:39 -0400
+ id 1qhDl4-0004ML-HF; Fri, 15 Sep 2023 14:41:38 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDl3-00037I-Ii; Fri, 15 Sep 2023 14:41:39 -0400
+ id 1qhDl1-00037K-Lj; Fri, 15 Sep 2023 14:41:38 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qhDhd-00Fs9Q-0L;
+ (envelope-from <den@openvz.org>) id 1qhDhd-00Fs9Q-1l;
  Fri, 15 Sep 2023 20:41:29 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 02/21] parallels: mark driver as supporting CBT
-Date: Fri, 15 Sep 2023 20:41:10 +0200
-Message-Id: <20230915184130.403366-4-den@openvz.org>
+Subject: [PATCH 03/21] parallels: invent parallels_opts_prealloc() helper to
+ parse prealloc opts
+Date: Fri, 15 Sep 2023 20:41:11 +0200
+Message-Id: <20230915184130.403366-5-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915184130.403366-1-den@openvz.org>
 References: <20230915184130.403366-1-den@openvz.org>
@@ -55,44 +56,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Parallels driver indeed support Parallels Dirty Bitmap Feature in
-read-only mode. The patch adds bdrv_supports_persistent_dirty_bitmap()
-callback which always return 1 to indicate that.
+This patch creates above mentioned helper and moves its usage to the
+beginning of parallels_open(). This simplifies parallels_open() a bit.
 
-This will allow to copy CBT from Parallels image with qemu-img.
-
-Note: read-write support is signalled through
-bdrv_co_can_store_new_dirty_bitmap() and is different.
+The patch also ensures that we store prealloc_size on block driver state
+always in sectors. This makes code cleaner and avoids wrong opinion at
+the assignment that the value is in bytes.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- block/parallels.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ block/parallels.c | 65 +++++++++++++++++++++++++++--------------------
+ 1 file changed, 38 insertions(+), 27 deletions(-)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index 2ebd8e1301..428f72de1c 100644
+index 428f72de1c..1d5409f2ba 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -1248,6 +1248,11 @@ static void parallels_close(BlockDriverState *bs)
-     error_free(s->migration_blocker);
+@@ -1025,6 +1025,38 @@ static int parallels_update_header(BlockDriverState *bs)
+     return bdrv_pwrite_sync(bs->file, 0, size, s->header, 0);
  }
  
-+static bool parallels_is_support_dirty_bitmaps(BlockDriverState *bs)
++
++static int parallels_opts_prealloc(BlockDriverState *bs, QDict *options,
++                                   Error **errp)
 +{
-+    return 1;
++    char *buf;
++    int64_t bytes;
++    BDRVParallelsState *s = bs->opaque;
++    Error *local_err = NULL;
++    QemuOpts *opts = qemu_opts_create(&parallels_runtime_opts, NULL, 0, errp);
++    if (!opts) {
++        return -ENOMEM;
++    }
++
++    if (!qemu_opts_absorb_qdict(opts, options, errp)) {
++        return -EINVAL;
++    }
++
++    bytes = qemu_opt_get_size_del(opts, PARALLELS_OPT_PREALLOC_SIZE, 0);
++    s->prealloc_size = bytes >> BDRV_SECTOR_BITS;
++    buf = qemu_opt_get_del(opts, PARALLELS_OPT_PREALLOC_MODE);
++    /* prealloc_mode can be downgraded later during allocate_clusters */
++    s->prealloc_mode = qapi_enum_parse(&prealloc_mode_lookup, buf,
++                                       PRL_PREALLOC_MODE_FALLOCATE,
++                                       &local_err);
++    g_free(buf);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        return -EINVAL;
++    }
++    return 0;
 +}
 +
- static BlockDriver bdrv_parallels = {
-     .format_name                = "parallels",
-     .instance_size              = sizeof(BDRVParallelsState),
-@@ -1256,6 +1261,7 @@ static BlockDriver bdrv_parallels = {
-     .supports_backing           = true,
+ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+                           Error **errp)
+ {
+@@ -1033,11 +1065,13 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+     int ret, size, i;
+     int64_t file_nb_sectors, sector;
+     uint32_t data_start;
+-    QemuOpts *opts = NULL;
+-    Error *local_err = NULL;
+-    char *buf;
+     bool data_off_is_correct;
  
-     .bdrv_has_zero_init         = bdrv_has_zero_init_1,
-+    .bdrv_supports_persistent_dirty_bitmap = parallels_is_support_dirty_bitmaps,
++    ret = parallels_opts_prealloc(bs, options, errp);
++    if (ret < 0) {
++        return ret;
++    }
++
+     ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
+     if (ret < 0) {
+         return ret;
+@@ -1078,6 +1112,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+         ret = -EFBIG;
+         goto fail;
+     }
++    s->prealloc_size = MAX(s->tracks, s->prealloc_size);
+     s->cluster_size = s->tracks << BDRV_SECTOR_BITS;
  
-     .bdrv_probe                 = parallels_probe,
-     .bdrv_open                  = parallels_open,
+     s->bat_size = le32_to_cpu(ph.bat_entries);
+@@ -1117,29 +1152,6 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+         s->header_size = size;
+     }
+ 
+-    opts = qemu_opts_create(&parallels_runtime_opts, NULL, 0, errp);
+-    if (!opts) {
+-        goto fail_options;
+-    }
+-
+-    if (!qemu_opts_absorb_qdict(opts, options, errp)) {
+-        goto fail_options;
+-    }
+-
+-    s->prealloc_size =
+-        qemu_opt_get_size_del(opts, PARALLELS_OPT_PREALLOC_SIZE, 0);
+-    s->prealloc_size = MAX(s->tracks, s->prealloc_size >> BDRV_SECTOR_BITS);
+-    buf = qemu_opt_get_del(opts, PARALLELS_OPT_PREALLOC_MODE);
+-    /* prealloc_mode can be downgraded later during allocate_clusters */
+-    s->prealloc_mode = qapi_enum_parse(&prealloc_mode_lookup, buf,
+-                                       PRL_PREALLOC_MODE_FALLOCATE,
+-                                       &local_err);
+-    g_free(buf);
+-    if (local_err != NULL) {
+-        error_propagate(errp, local_err);
+-        goto fail_options;
+-    }
+-
+     if (ph.ext_off) {
+         if (flags & BDRV_O_RDWR) {
+             /*
+@@ -1214,7 +1226,6 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+ 
+ fail_format:
+     error_setg(errp, "Image not in Parallels format");
+-fail_options:
+     ret = -EINVAL;
+ fail:
+     /*
 -- 
 2.34.1
 
