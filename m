@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2437A2301
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E51AF7A2306
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:58:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhBBX-000361-TO; Fri, 15 Sep 2023 11:56:47 -0400
+	id 1qhBCP-0003pU-Ls; Fri, 15 Sep 2023 11:57:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qhBBV-00035n-Cq
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:56:45 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qhBCL-0003f8-O8
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:57:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qhBBT-0003fg-N4
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:56:45 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qhBCK-0003mF-7o
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:57:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694793402;
+ s=mimecast20190719; t=1694793455;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/JtYBfkx/DlY6daXTAxaG7usLPdYRZ6h7QkgUGdkBJY=;
- b=fHnVrmg206r1p65ZQviSZqHOSIXj1FbeKZJGpmAYte8j+OuGuM2SmQLUjAIcNsU8lN76U9
- /uo8AM286MrrOApxKwdCAtPjRYqDtUx2+70sigoKlKa5K4LJ1v4tSRnliEC19pz1TJCZgA
- Ig+JsmcESaD+WocFWCuypzkY7MAVC2E=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=dpeTD/kOaSY69EXt0DrLHveer7V6JgBE760GZsZK7cw=;
+ b=L6CZEDFAo8jv8zMvRAdxjQOcYSB414zVHLMQ/HjScbxa5PgownDYRSuhtEVfBRteYeY3IE
+ k8Zbs+MAaf8jr43wrAcKMqHSkjgqVknuK+nMmVJ0pqQdC+IOefNnCbeTvfpHnSiszj7oWJ
+ Dqk9p8OIGR202cmrqaAc1aVGebgxC+A=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-8MPe2ccFOf23yBp2GJk_4w-1; Fri, 15 Sep 2023 11:56:40 -0400
-X-MC-Unique: 8MPe2ccFOf23yBp2GJk_4w-1
-Received: by mail-yb1-f200.google.com with SMTP id
- 3f1490d57ef6-d814634fe4bso2814435276.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:56:40 -0700 (PDT)
+ us-mta-606-U2DbvFr1OiSH_iOCCUM0AA-1; Fri, 15 Sep 2023 11:57:34 -0400
+X-MC-Unique: U2DbvFr1OiSH_iOCCUM0AA-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6561d472234so4212506d6.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:57:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694793400; x=1695398200;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/JtYBfkx/DlY6daXTAxaG7usLPdYRZ6h7QkgUGdkBJY=;
- b=rz6nFBRADJvVjtUtD7N+6nsjFLQ4eH0kzFmypvdomi15VaT1+3C/KUDUWrMiNgHeYL
- ihfkV2ha7u7ktw7AZFMsTTKb1EcTr4WEAIJ/tTQN/wtcZTkNQxcf1f9jF/kebXIgQu5i
- i2khQ/Ykla0dMgVMjvII+OHoF13QOdtcm1w1x6b3NvWJhk+85ws4Dl2wmc/EPLXDtIg0
- wqMtjzqKfg/tnI9vTZD6M0C82ZuI1tUs1tIuCa3AcwYVEFKH5OKz4Su4ZAPa5SsGYjW9
- m2MeVWt0UoFYmjQex+zTdSYkEoG3a4RMeG/NtC094c8LtA212Gyl8IJ5U3XsGfI+gJQy
- vySg==
-X-Gm-Message-State: AOJu0YynVSKvDFQmOCo9vIgbKN2rJKXDdOiEgyRd8cMEhAHHZxw1aFZr
- JM1G+SbdvylUzKIW1p2QNBv5koteu5aboE/rieFsG5Fv/ioRGOmbvH0M67hCEY7BKGqQYkUmroD
- zlGZ5XedlpZ+XMkkm2dSTHCypjvdIRuU=
-X-Received: by 2002:a25:848c:0:b0:d81:57db:7589 with SMTP id
- v12-20020a25848c000000b00d8157db7589mr2008799ybk.48.1694793400409; 
- Fri, 15 Sep 2023 08:56:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHVKfFRub1KdhvUF18KzgwbE3BmABO1kdt5gJjND0Ds/qT6JhwDqKZlOz0oJfuo0Cz27Q1i32QdEkDiMz2Sz8=
-X-Received: by 2002:a25:848c:0:b0:d81:57db:7589 with SMTP id
- v12-20020a25848c000000b00d8157db7589mr2008781ybk.48.1694793400148; Fri, 15
- Sep 2023 08:56:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694793454; x=1695398254;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dpeTD/kOaSY69EXt0DrLHveer7V6JgBE760GZsZK7cw=;
+ b=P0lj9mgtC1Wu3gKABk5yEPPesx59pLg+/2ra8lI42Uvf+iCZQtocLqJwKgX3KdppG6
+ p9QDMzGhd7tbaExV5PtJ4OFY3ge2CTT5HjRjaimfa93QF3llttcnGEZ3ZyZ4IqL7z3MT
+ UWw/znzA2ZfSOk3hiYQ2933r+BN5r4MdaX/NU19i9giFFkKp1x5TmhHIMWb/KDLHOCvx
+ HbFrz4E866kIWY3eBrCTIcVvabviQIm9y9WmoAS0/gFpErs7/yizZ13R5LzVtZG8TfOH
+ 5j9MbEhoC4orioWO4GI2IjAvgtemR+T3j2lI3Wr1LbTkpYCr0pbRTfWbnTXIn8wrPisW
+ eq3A==
+X-Gm-Message-State: AOJu0Yx4qXwjozIoWtV2fBhGx7c271ZU5chVcDlEu8WdkgEaZZrVdzZc
+ cLShvPhFfQuIm1q6eNiQ32jUQZakaCHzruRObke3JVTyxVn9cm80wSxpBXK34/zXnNjPfaFmAkX
+ 9q6C/iNA+22oVloA=
+X-Received: by 2002:a05:6214:1249:b0:656:308b:98d2 with SMTP id
+ r9-20020a056214124900b00656308b98d2mr2427999qvv.0.1694793453861; 
+ Fri, 15 Sep 2023 08:57:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiYcLS1+ho9iDvoXlyvAcw1Ax8y41T5dfgS4gM2W1j++liUMgpcju6UcWRyRKKOrMmvEOtZQ==
+X-Received: by 2002:a05:6214:1249:b0:656:308b:98d2 with SMTP id
+ r9-20020a056214124900b00656308b98d2mr2427982qvv.0.1694793453494; 
+ Fri, 15 Sep 2023 08:57:33 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ v17-20020a0ca791000000b0064f378f89a7sm1376238qva.73.2023.09.15.08.57.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Sep 2023 08:57:33 -0700 (PDT)
+Date: Fri, 15 Sep 2023 11:57:31 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: qemu-devel@nongnu.org, john.levon@nutanix.com,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Jagannathan Raman <jag.raman@oracle.com>, stefanha@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v3 2/5] softmmu: Support concurrent bounce buffers
+Message-ID: <ZQR+62uSJlt/QQOn@x1n>
+References: <20230907130410.498935-1-mnissler@rivosinc.com>
+ <20230907130410.498935-3-mnissler@rivosinc.com>
+ <ZQIJeaZPnzSAMZyk@x1n>
+ <CAGNS4TYKVesUYepbwsLPi_-ST=c-2+=QDf5oHKhJp_UGLbXhrg@mail.gmail.com>
 MIME-Version: 1.0
-References: <cover.1687782442.git.mst@redhat.com>
- <152128d646973ed298d41dafd7a5bccff43336c8.1687782442.git.mst@redhat.com>
- <CAFEAcA8mNRZL2hQoRxtz1rKqbNS4srbSXY-paBQjPqbEXXE0SQ@mail.gmail.com>
- <CAFEAcA8W2doGJ3iRJxs5RRTj1ffxA8mi8J5VdaOMb1C_xAYncw@mail.gmail.com>
-In-Reply-To: <CAFEAcA8W2doGJ3iRJxs5RRTj1ffxA8mi8J5VdaOMb1C_xAYncw@mail.gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 15 Sep 2023 17:56:03 +0200
-Message-ID: <CAJaqyWcFxJoVZ-11400y5gbb4_Sy6NuLu=e0zR42umbDCfHs1g@mail.gmail.com>
-Subject: Re: [PULL 28/53] vdpa: move CVQ isolation check to net_init_vhost_vdpa
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAGNS4TYKVesUYepbwsLPi_-ST=c-2+=QDf5oHKhJp_UGLbXhrg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,106 +106,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 15, 2023 at 4:53=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> On Tue, 27 Jun 2023 at 12:30, Peter Maydell <peter.maydell@linaro.org> wr=
-ote:
+On Fri, Sep 15, 2023 at 11:32:31AM +0200, Mattias Nissler wrote:
+> > > @@ -3105,7 +3105,8 @@ void address_space_init(AddressSpace *as, MemoryRegion *root, const char *name)
+> > >      as->ioeventfds = NULL;
+> > >      QTAILQ_INIT(&as->listeners);
+> > >      QTAILQ_INSERT_TAIL(&address_spaces, as, address_spaces_link);
+> > > -    as->bounce.in_use = false;
+> > > +    as->max_bounce_buffer_size = 4096;
 > >
-> > On Mon, 26 Jun 2023 at 13:29, Michael S. Tsirkin <mst@redhat.com> wrote=
-:
-> > >
-> > > From: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> > >
-> > > Evaluating it at start time instead of initialization time may make t=
-he
-> > > guest capable of dynamically adding or removing migration blockers.
-> > >
-> > > Also, moving to initialization reduces the number of ioctls in the
-> > > migration, reducing failure possibilities.
-> > >
-> > > As a drawback we need to check for CVQ isolation twice: one time with=
- no
-> > > MQ negotiated and another one acking it, as long as the device suppor=
-ts
-> > > it.  This is because Vring ASID / group management is based on vq
-> > > indexes, but we don't know the index of CVQ before negotiating MQ.
-> >
-> > I was looking at this code because of a Coverity report.
-> > That turned out to be a false positive, but I did notice
-> > something here that looks like it might be wrong:
->
-> Ping? Would somebody like to have a look at whether there's
-> a missing return statement here?
->
+> > Instead of hard-code this 4k again (besides the pci property), maybe we can
+> > have address_space_init_with_bouncebuffer() and always pass it in from pci
+> > do_realize?  Then by default no bounce buffer supported for the AS only if
+> > requested.
+> 
+> I haven't verified in a running configuration, but I believe bounce
+> buffering is also used with non-PCI code, for example
+> sysbus_ahci_realize grabs &address_space_memory. So, IMO it makes
+> sense to keep at the old default for non-PCI address spaces, unless we
+> create additional knobs to set the limit for these?
 
-Hi Peter,
+Oh okay, in that case do we want to have a macro defining the default for
+all (as 4K), then also use the macro in the pci property for the default
+value?  Maybe it's slightly better than the hard-coded.
 
-I'm sorry, it fell through the cracks. I'll send two patches to fix it
-right now.
+> > > +            /* Write bounce_buffer_size before reading map_client_list. */
+> > > +            smp_mb();
+> >
+> > I know it comes from the old code.. but I don't know why this is needed;
+> > mutex lock should contain an mb() already before the list iterations later.
+> > Just to raise it up, maybe Paolo would like to comment.
+> 
+> Hm, are you sure that qemu_mutex_lock includes a full memory barrier?
 
-Thanks!
+No. :)
 
-> > >
-> > > +/**
-> > > + * Probe if CVQ is isolated
-> > > + *
-> > > + * @device_fd         The vdpa device fd
-> > > + * @features          Features offered by the device.
-> > > + * @cvq_index         The control vq pair index
-> > > + *
-> > > + * Returns <0 in case of failure, 0 if false and 1 if true.
-> > > + */
-> > > +static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t fe=
-atures,
-> > > +                                          int cvq_index, Error **err=
-p)
-> > > +{
-> > > +    uint64_t backend_features;
-> > > +    int64_t cvq_group;
-> > > +    uint8_t status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE |
-> > > +                     VIRTIO_CONFIG_S_DRIVER |
-> > > +                     VIRTIO_CONFIG_S_FEATURES_OK;
-> > > +    int r;
-> > > +
-> > > +    ERRP_GUARD();
-> > > +
-> > > +    r =3D ioctl(device_fd, VHOST_GET_BACKEND_FEATURES, &backend_feat=
-ures);
-> > > +    if (unlikely(r < 0)) {
-> > > +        error_setg_errno(errp, errno, "Cannot get vdpa backend_featu=
-res");
-> > > +        return r;
-> > > +    }
-> > > +
-> > > +    if (!(backend_features & BIT_ULL(VHOST_BACKEND_F_IOTLB_ASID))) {
-> > > +        return 0;
-> > > +    }
-> > > +
-> > > +    r =3D ioctl(device_fd, VHOST_SET_FEATURES, &features);
-> > > +    if (unlikely(r)) {
-> > > +        error_setg_errno(errp, errno, "Cannot set features");
-> >
-> > Shouldn't we have a 'return r' (or maybe a 'goto out') here ?
-> > Otherwise we'll just plough onward and attempt to continue
-> > execution...
-> >
-> > > +    }
-> > > +
-> > > +    r =3D ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-> > > +    if (unlikely(r)) {
-> > > +        error_setg_errno(errp, -r, "Cannot set device features");
-> >
-> > Isn't this trying to set device status, not features ?
-> >
-> > > +        goto out;
-> > > +    }
-> >
-> > thanks
-> > -- PMM
->
-> thanks
-> -- PMM
->
+> The atomics docs say that pthread_mutex_lock is guaranteed to have
+> acquire semantics, but that doesn't guarantee that previous writes are
+> visible elsewhere. We need a release of bounce_buffer_size and an
+> acquire of map_client_list. The latter is implied by qemu_mutex_lock,
+> so I could arguably change this to smp_wmb().
+
+Yeah I think I made such mistake before, sorry.  I think some day I looked
+into x86 impl and I believe it was mb() there but I always kept that
+impression in mind that it will always be, but not really.  I think you're
+right that mutex_lock semantics only guarantees an REQUIRE, and that's not
+the same as mb(), at least not always.
+
+Changing it to wmb() makes sense to me but indeed that may be more suitable
+for another patch.  Maybe easier to just leave it as-is as it shouldn't be
+super hot path anyway.
+
+Thanks,
+
+-- 
+Peter Xu
 
 
