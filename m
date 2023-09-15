@@ -2,104 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C630D7A23AE
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7385A7A23C0
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:43:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhBp8-0002iK-Lb; Fri, 15 Sep 2023 12:37:42 -0400
+	id 1qhBtu-0004QA-2A; Fri, 15 Sep 2023 12:42:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qhBp6-0002i9-Iw
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:37:40 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qhBts-0004Iq-75
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:36 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qhBp3-00045W-Gz
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:37:40 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1c35ee3b0d2so18697775ad.2
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 09:37:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qhBtq-0004sh-F3
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:42:35 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-68fdd6011f2so1946208b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 09:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694795856; x=1695400656;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QvbdwGc2q9ykrPdPA/5vXC1OmEEsdu9JN7M2jZpSlQY=;
- b=zz1HphnrwvJSZXF1+ur6g7UeVxPQ6qEYpxC/vrg09pyZQQAVWU4Wqvq+OaAGYqGhd+
- CEyOkNDky278RYV+byqilJggICxIkMqsbrMxJ/Tqd/uzKC7HQBaEKJ846e7tJQgcMk9s
- QOw3/WuigduPfBYzXNNtwmqA7VL7V/i39U4jPSnJS7ds/wFgaKfjo+M/rUfWNtUZJ6Sc
- b7KPa5yY/tz13T2w4ILCxfDXSKZTnZfatVPVYFCLdpdSOaHrN9CgVbU16jUBSnTY3+vo
- 4UiEi7gAv9MtCHRNy7L12Kpgp2DYMTA+PoMV8JrBMb/TsQti1wFObGNuQIqQQ2s4re76
- RV4g==
+ d=linaro.org; s=google; t=1694796153; x=1695400953; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=WvshgsM5HCbzos1/2tQ3Q09/zhrQ3ymu2EsWiCZ5Ulk=;
+ b=E+NVLJRRLuxPiKiJzEHKLfOyxSg51FSagRVEF+iM4F4GtgliJ56l4FTvOLTBSrYSPB
+ tt50kv6QOLP3L0jCCusn9Z1+RwTG5dtfW4oBKhHiJwboZa8sMfpH5NNmEBkFXkRg2/dJ
+ fMRXc/kR2I6k313feOFI2ByIvqCIenlUgw2zH/FtQ2Ou8Ga8McO9OS+aC18ccImrW0ml
+ JbbWbTiKMLGwMZgHLet/lrHTkD4RF7fs8bzfM4UeGYEhoLe6s0kjP9tBWTusxh3ndSQA
+ 7RQCVFGEAJr54s0sBNX+pOjzt3AG5LiJ2DQTW/rrrXCgROcPtto9nL4s8IZJrXiincrP
+ AeMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694795856; x=1695400656;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QvbdwGc2q9ykrPdPA/5vXC1OmEEsdu9JN7M2jZpSlQY=;
- b=PbtQy4+J+Y8XxBQ5DIZpNOcDomLUqwESWYiMlUCHMPS/l4ka6KkESN3vNGtoWnArwi
- fQUS8x4SnTtrdgxcxj+oZJtOFoZ4qnRd7nCN6mSaTTjlwJ0wE7CA//Jw++TpHl4KJVZB
- VnyjcPqlQzjXqxBtQ0X1Bwy9BG2QTvzefAIKUTGrCkt0xTmbsTVweYJKpRjHNhG0eQWd
- r5J0hGNjvHG2KUaqZ7Hujx/nJWmVWCrOwC8GjKVbj5Ua9wgf6O8vXpna32LDDyoQraQg
- Ea7RqYcyKmX74HYEk69GDg9EFa0Vp6xGub1CFD6GoP47gwERWZLiB6bgcJR93cF2H7WJ
- MKMg==
-X-Gm-Message-State: AOJu0YztV+mT0V/ZmDtsSCX33PzQairS2fNJIM+1W6a1qOOMPS0Z++in
- wCwQyPeiH/vNd4q+V2Bm8LKvaQ==
-X-Google-Smtp-Source: AGHT+IHbWHKGZmN4Ilxyi7utzfQU0/OWAKabcK7DzJPoXar13eQHnjOLF+Kj6/lxHHwJgWxPUH4Dfw==
-X-Received: by 2002:a17:903:2291:b0:1b8:6cae:4400 with SMTP id
- b17-20020a170903229100b001b86cae4400mr2373071plh.37.1694795855923; 
- Fri, 15 Sep 2023 09:37:35 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- 13-20020a170902ee4d00b001aaecc0b6ffsm3708212plo.160.2023.09.15.09.37.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 09:37:35 -0700 (PDT)
-Message-ID: <9700c2ed-93c5-4bf6-bc6b-d5d33359d9a7@daynix.com>
-Date: Sat, 16 Sep 2023 01:37:29 +0900
+ d=1e100.net; s=20230601; t=1694796153; x=1695400953;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WvshgsM5HCbzos1/2tQ3Q09/zhrQ3ymu2EsWiCZ5Ulk=;
+ b=rFRv4bckzGBzDgje8evPdoQPPANbg+5b8dDXkJKV/GSNqPYXqBho+43OGA3cnqmUSY
+ lTidkAKj9TGIRtPclZV5JTVrekdjolBakGjOjO9MH6kxgRJXZ4gmqpqXF98QYUCnfmhp
+ Mw8CtjALlA8EzVOGMcpnNZYDkvDMDj7DdiOXvq+FLXiiYmwHdPsuxWLxfPHjFZc1PUlG
+ 2WUS1nke4WapQom/0p6I/mGWLb1nbzmVMGhz76QhUv4TNG6F4Pfq3OPmmJCnNawrqRtN
+ 5l9tdGqE0f8OL68/IOKcf5hf49dmqYvkg9TEbAmfdz+x3mFlOplpkI9SLP+pSAnGQosC
+ UG9w==
+X-Gm-Message-State: AOJu0Yzd+JuEzDF5VDl1v8MP6keKJOZGARhNBq5qsiBdxi/0mhvFJ+/o
+ vNY5mhZRaxU5MOz4pr1YmVyqhUfotZAJb+Fhl0Q=
+X-Google-Smtp-Source: AGHT+IFnKe7ZtJ4wreWHhaIAE+v5nve5OGN5xP+uZsTff33RNHJiW6SL6YoiQMV144ZBTTsvh9YT9A==
+X-Received: by 2002:a05:6a20:549f:b0:135:4df7:f165 with SMTP id
+ i31-20020a056a20549f00b001354df7f165mr2553534pzk.21.1694796152771; 
+ Fri, 15 Sep 2023 09:42:32 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ s187-20020a6377c4000000b00577f55e4a4esm3010087pgc.20.2023.09.15.09.42.32
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Sep 2023 09:42:32 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/19] crypto: Provide clmul.h and host accel
+Date: Fri, 15 Sep 2023 09:42:12 -0700
+Message-Id: <20230915164231.123580-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v5 09/13] virtio-gpu: Handle resource blob commands
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: Huang Rui <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
-Cc: xen-devel@lists.xenproject.org,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-10-ray.huang@amd.com>
- <a14b26dc-c804-4be8-83d5-088e71d37a7b@daynix.com>
-In-Reply-To: <a14b26dc-c804-4be8-83d5-088e71d37a7b@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::635;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,86 +87,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/16 1:04, Akihiko Odaki wrote:
-> On 2023/09/15 20:11, Huang Rui wrote:
->> From: Antonio Caggiano <antonio.caggiano@collabora.com>
->>
->> Support BLOB resources creation, mapping and unmapping by calling the
->> new stable virglrenderer 0.10 interface. Only enabled when available and
->> via the blob config. E.g. -device virtio-vga-gl,blob=true
->>
->> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
->> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->> Signed-off-by: Huang Rui <ray.huang@amd.com>
->> ---
->>
->> V4 -> V5:
->>      - Use memory_region_init_ram_ptr() instead of
->>        memory_region_init_ram_device_ptr() (Akihiko)
->>
->>   hw/display/virtio-gpu-virgl.c  | 213 +++++++++++++++++++++++++++++++++
->>   hw/display/virtio-gpu.c        |   4 +-
->>   include/hw/virtio/virtio-gpu.h |   5 +
->>   meson.build                    |   4 +
->>   4 files changed, 225 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/display/virtio-gpu-virgl.c 
->> b/hw/display/virtio-gpu-virgl.c
->> index 312953ec16..563a6f2f58 100644
->> --- a/hw/display/virtio-gpu-virgl.c
->> +++ b/hw/display/virtio-gpu-virgl.c
->> @@ -17,6 +17,7 @@
->>   #include "trace.h"
->>   #include "hw/virtio/virtio.h"
->>   #include "hw/virtio/virtio-gpu.h"
->> +#include "hw/virtio/virtio-gpu-bswap.h"
->>   #include "ui/egl-helpers.h"
->> @@ -78,9 +79,24 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
->>       virgl_renderer_resource_create(&args, NULL, 0);
->>   }
->> +static void virgl_resource_destroy(VirtIOGPU *g,
->> +                                   struct virtio_gpu_simple_resource 
->> *res)
->> +{
->> +    if (!res)
->> +        return;
->> +
->> +    QTAILQ_REMOVE(&g->reslist, res, next);
->> +
->> +    virtio_gpu_cleanup_mapping_iov(g, res->iov, res->iov_cnt);
->> +    g_free(res->addrs);
->> +
->> +    g_free(res);
->> +}
->> +
->>   static void virgl_cmd_resource_unref(VirtIOGPU *g,
->>                                        struct virtio_gpu_ctrl_command 
->> *cmd)
->>   {
->> +    struct virtio_gpu_simple_resource *res;
->>       struct virtio_gpu_resource_unref unref;
->>       struct iovec *res_iovs = NULL;
->>       int num_iovs = 0;
->> @@ -88,13 +104,22 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
->>       VIRTIO_GPU_FILL_CMD(unref);
->>       trace_virtio_gpu_cmd_res_unref(unref.resource_id);
->> +    res = virtio_gpu_find_resource(g, unref.resource_id);
->> +
->>       virgl_renderer_resource_detach_iov(unref.resource_id,
->>                                          &res_iovs,
->>                                          &num_iovs);
->>       if (res_iovs != NULL && num_iovs != 0) {
->>           virtio_gpu_cleanup_mapping_iov(g, res_iovs, num_iovs);
->> +        if (res) {
->> +            res->iov = NULL;
->> +            res->iov_cnt = 0;
->> +        }
->>       }
->> +
->>       virgl_renderer_resource_unref(unref.resource_id);
->> +
->> +    virgl_resource_destroy(g, res);
+The following changes since commit 005ad32358f12fe9313a4a01918a55e60d4f39e5:
 
-This may leak memory region.
+  Merge tag 'pull-tpm-2023-09-12-3' of https://github.com/stefanberger/qemu-tpm into staging (2023-09-13 13:41:57 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-crypto-20230915
+
+for you to fetch changes up to 055c99015a4ec3c608d0260592368adc604429ea:
+
+  host/include/aarch64: Implement clmul.h (2023-09-15 13:57:00 +0000)
+
+----------------------------------------------------------------
+Unify implementation of carry-less multiply.
+Accelerate carry-less multiply for 64x64->128.
+
+----------------------------------------------------------------
+Richard Henderson (19):
+      crypto: Add generic 8-bit carry-less multiply routines
+      target/arm: Use clmul_8* routines
+      target/s390x: Use clmul_8* routines
+      target/ppc: Use clmul_8* routines
+      crypto: Add generic 16-bit carry-less multiply routines
+      target/arm: Use clmul_16* routines
+      target/s390x: Use clmul_16* routines
+      target/ppc: Use clmul_16* routines
+      crypto: Add generic 32-bit carry-less multiply routines
+      target/arm: Use clmul_32* routines
+      target/s390x: Use clmul_32* routines
+      target/ppc: Use clmul_32* routines
+      crypto: Add generic 64-bit carry-less multiply routine
+      target/arm: Use clmul_64
+      target/i386: Use clmul_64
+      target/s390x: Use clmul_64
+      target/ppc: Use clmul_64
+      host/include/i386: Implement clmul.h
+      host/include/aarch64: Implement clmul.h
+
+ host/include/aarch64/host/cpuinfo.h      |   1 +
+ host/include/aarch64/host/crypto/clmul.h |  41 +++++++
+ host/include/generic/host/crypto/clmul.h |  15 +++
+ host/include/i386/host/cpuinfo.h         |   1 +
+ host/include/i386/host/crypto/clmul.h    |  29 +++++
+ host/include/x86_64/host/crypto/clmul.h  |   1 +
+ include/crypto/clmul.h                   |  83 ++++++++++++++
+ include/qemu/cpuid.h                     |   3 +
+ target/arm/tcg/vec_internal.h            |  11 --
+ target/i386/ops_sse.h                    |  40 ++-----
+ crypto/clmul.c                           | 111 ++++++++++++++++++
+ target/arm/tcg/mve_helper.c              |  16 +--
+ target/arm/tcg/vec_helper.c              | 102 ++---------------
+ target/ppc/int_helper.c                  |  64 +++++------
+ target/s390x/tcg/vec_int_helper.c        | 186 ++++++++++++++-----------------
+ util/cpuinfo-aarch64.c                   |   4 +-
+ util/cpuinfo-i386.c                      |   1 +
+ crypto/meson.build                       |   9 +-
+ 18 files changed, 433 insertions(+), 285 deletions(-)
+ create mode 100644 host/include/aarch64/host/crypto/clmul.h
+ create mode 100644 host/include/generic/host/crypto/clmul.h
+ create mode 100644 host/include/i386/host/crypto/clmul.h
+ create mode 100644 host/include/x86_64/host/crypto/clmul.h
+ create mode 100644 include/crypto/clmul.h
+ create mode 100644 crypto/clmul.c
 
