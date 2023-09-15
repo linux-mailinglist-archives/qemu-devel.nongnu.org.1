@@ -2,77 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E302B7A17B1
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 09:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8C77A17E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 10:00:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh3TD-0005RI-Dt; Fri, 15 Sep 2023 03:42:31 -0400
+	id 1qh3jd-0002Qe-0L; Fri, 15 Sep 2023 03:59:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qh3TB-0005LH-Ha
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:42:29 -0400
-Received: from mgamail.intel.com ([192.55.52.115])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qh3jW-0002Nh-HO
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:59:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qh3T9-00017H-Th
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:42:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694763747; x=1726299747;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=cDgMalxwmA0/rs78BBy/qTkAwU1CeKaTo0idZtPsVfs=;
- b=EsPAziSSJ7u+gh/AQ0lnopHn4s53VX9lSTUReKZY8fc5d8q7qGFhBYHh
- 1It1xHjR+ewN1V+ZoVl6GA9OYZwfcFg2eGQcMhjeW4W0IiSWNKu0bNwSW
- Y56JS71D0ExzJ6oCV0jXJeu/ONgsJvKfY2Fc+NhtSMQahi4y4+KnT0GqU
- 3FDZ0czg3kJKAS+9oxqz5xSYXbWCZXiNQAwRjypM9xHOXGXI3zNsiZTwH
- NNz1Tfy7oiWzES5Gm3HkJfrnd5CUoRX08YsdevkdVL0ZVdg4lZ4cC3hcp
- EYl4aL62M0AbufkrjeiDsFPzosfq1pDiETypC8pZ8lP7F99hs4TG2orYc A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="379104079"
-X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; d="scan'208";a="379104079"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2023 00:42:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="860059358"
-X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; d="scan'208";a="860059358"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmsmga002.fm.intel.com with ESMTP; 15 Sep 2023 00:42:22 -0700
-Date: Fri, 15 Sep 2023 15:53:25 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache topo
- in CPUID.04H
-Message-ID: <ZQQNddiCky/cImAz@liuzhao-OptiPlex-7080>
-References: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
- <20230914072159.1177582-22-zhao1.liu@linux.intel.com>
- <75ea5477-ca1b-7016-273c-abd6c36f4be4@linaro.org>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qh3jQ-0004mq-Vf
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:59:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694764754;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I5UjlkA4DOtAXo0rFo2CE+9Oxuoa+is6gY8rdTXhXp4=;
+ b=GpMmnbyEZlA9mHkwGI01CM5XHzQ5nEKGGhSbpzsg+lu2cSHFh/oDgEKbyBsgS+JTg6I5FZ
+ P1S/LveP2xWsoN3K9eEyz9gpPdhRsdy2qmfv1j79sJigEnal5SBy12nytbAVJpMXww5+H7
+ NQiySLseCdLvT3oViAsobJpdxF+WTPg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447-pu1_UJ1qOOCCdsEC2okYuA-1; Fri, 15 Sep 2023 03:59:12 -0400
+X-MC-Unique: pu1_UJ1qOOCCdsEC2okYuA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-402ff13f749so14261975e9.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 00:59:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694764751; x=1695369551;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I5UjlkA4DOtAXo0rFo2CE+9Oxuoa+is6gY8rdTXhXp4=;
+ b=sIPdeZKwWRq4jeqFyBExhRRkxo5qUin/5aXsIJugqqYAKGqRmmxaH2xIVlBlPlDHKa
+ pjicyyYU+qkk/5IKilJONKHJ3XitL5oQnwRcUhZhOoYZm9nJ4bK1idXqbQAb+ElB3gbi
+ uzs3fHVNxPA8dyqnQOz1s/BhBksxefYswgwNGSbGDt2mCM9jk4snieqdPEDLHaNinLKA
+ EytgYV8uyR5jNL65KoDlquJYS+7SQKBta8nfJ82jfq6qX02HlawXGyHpeVYy/qM5Bf6m
+ MUP862lh3g2u209jq6Y+4zmr7QVRVSw1OlaSnyqih2oz7rHze9xwhGmE8jfnYhoIJQhU
+ /+jg==
+X-Gm-Message-State: AOJu0YxCfDgE7czb6V5euqmq3zMlwv6U5pTGWTQPuU7h62MOTGoFYN7P
+ QnwKQhW/kZdytwcPETgEgQd9o92nu1adqaUIKDU5mh/sm7gMIvPm1hhL2wA2FHLr+yyQgzeXotB
+ GAkb85m+dTdaIDuw=
+X-Received: by 2002:a7b:c84e:0:b0:401:b204:3b97 with SMTP id
+ c14-20020a7bc84e000000b00401b2043b97mr785053wml.4.1694764751035; 
+ Fri, 15 Sep 2023 00:59:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKjUJtNb13ai+syLtFGtg0LvaewGZ3/7vOjwvPPgm6bcxmpgwypjhpsMoKSS2unxl9XtI52w==
+X-Received: by 2002:a7b:c84e:0:b0:401:b204:3b97 with SMTP id
+ c14-20020a7bc84e000000b00401b2043b97mr785038wml.4.1694764750704; 
+ Fri, 15 Sep 2023 00:59:10 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ k21-20020a05600c0b5500b003fbe791a0e8sm3939781wmr.0.2023.09.15.00.59.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Sep 2023 00:59:09 -0700 (PDT)
+Message-ID: <86ebcc33-491c-8820-2ca0-51d46b0b7375@redhat.com>
+Date: Fri, 15 Sep 2023 09:59:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <75ea5477-ca1b-7016-273c-abd6c36f4be4@linaro.org>
-Received-SPF: none client-ip=192.55.52.115;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PULL 4/5] hw/ufs: Support for UFS logical unit
+Content-Language: en-US
+To: Jeuk Kim <jeuk20.kim@gmail.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Jeuk Kim <jeuk20.kim@samsung.com>, Hanna Reitz <hreitz@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20230907181628.1594401-1-stefanha@redhat.com>
+ <20230907181628.1594401-5-stefanha@redhat.com>
+ <c4dc2292-4690-f16f-4b70-d6f759c16633@redhat.com>
+ <160581dc-bdbc-03e8-64a5-1adb818a15b2@gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <160581dc-bdbc-03e8-64a5-1adb818a15b2@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,73 +113,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
-
-On Thu, Sep 14, 2023 at 09:41:30AM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu, 14 Sep 2023 09:41:30 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache
->  topo in CPUID.04H
+On 9/15/23 00:19, Jeuk Kim wrote:
+> First, ufs-lu has a feature called "unit descriptor". This feature shows 
+> the status of the ufs-lu
 > 
-> On 14/9/23 09:21, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > The property x-l2-cache-topo will be used to change the L2 cache
-> > topology in CPUID.04H.
-> > 
-> > Now it allows user to set the L2 cache is shared in core level or
-> > cluster level.
-> > 
-> > If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
-> > topology will be overrode by the new topology setting.
-> > 
-> > Here we expose to user "cluster" instead of "module", to be consistent
-> > with "cluster-id" naming.
-> > 
-> > Since CPUID.04H is used by intel CPUs, this property is available on
-> > intel CPUs as for now.
-> > 
-> > When necessary, it can be extended to CPUID.8000001DH for AMD CPUs.
-> > 
-> > (Tested the cache topology in CPUID[0x04] leaf with "x-l2-cache-topo=[
-> > core|cluster]", and tested the live migration between the QEMUs w/ &
-> > w/o this patch series.)
-> > 
-> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > ---
-> > Changes since v3:
-> >   * Add description about test for live migration compatibility. (Babu)
-> > 
-> > Changes since v1:
-> >   * Rename MODULE branch to CPU_TOPO_LEVEL_MODULE to match the previous
-> >     renaming changes.
-> > ---
-> >   target/i386/cpu.c | 34 +++++++++++++++++++++++++++++++++-
-> >   target/i386/cpu.h |  2 ++
-> >   2 files changed, 35 insertions(+), 1 deletion(-)
-> 
-> 
-> > @@ -8079,6 +8110,7 @@ static Property x86_cpu_properties[] = {
-> >                        false),
-> >       DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
-> >                        true),
-> > +    DEFINE_PROP_STRING("x-l2-cache-topo", X86CPU, l2_cache_topo_level),
-> 
-> We use the 'x-' prefix for unstable features, is it the case here?
+> and only works with UFS-specific "query request" commands, not SCSI 
+> commands.
 
-I thought that if we can have a more general CLI way to define cache
-topology in the future, then this option can be removed.
+This looks like something that can be implemented in the UFS subsystem.
 
-I'm not sure if this option could be treated as unstable, what do you
-think?
+> UFS also has something called a well-known lu. Unlike typical SCSI 
+> devices, where each lu is independent,
+> UFS can control other lu's through the well-known lu.
 
+This can also be implemented in UfsBus.
 
-Thanks,
-Zhao
+> Finally, UFS-LU will have features that SCSI-HD does not have, such as 
+> the zone block command.
 
-> 
-> >       DEFINE_PROP_END_OF_LIST()
-> >   };
-> 
+These should be implemented in scsi-hd as well.
+
+> In addition to this, I wanted some scsi commands to behave differently 
+> from scsi-hd, for example,
+> the Inquiry command should read "QEMU UFS" instead of "QEMU HARDDISK",
+> and the mode_sense_page command should have a different result.
+
+Some of these don't have much justification, and others (such as the 
+control page) could be done in scsi-hd as well.
+
+We should look into cleaning this up and making ufs-lu share a lot more 
+code with scsi-hd; possibly even supporting -device scsi-hd with UFS 
+devices.  I am not going to ask you for a revert, but if this is not 
+done before 8.2 is out, I will ask you to disable it by default in 
+hw/ufs/Kconfig.
+
+In the future, please Cc the SCSI maintainers for UFS patches.
+
+Paolo
+
 
