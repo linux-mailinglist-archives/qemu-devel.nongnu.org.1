@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24CB7A17D6
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 09:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E302B7A17B1
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 09:42:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh3dS-00010E-8a; Fri, 15 Sep 2023 03:53:06 -0400
+	id 1qh3TD-0005RI-Dt; Fri, 15 Sep 2023 03:42:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qh3dO-0000zc-O1
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:53:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qh3TB-0005LH-Ha
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:42:29 -0400
+Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qh3dN-0003XN-5b
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:53:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694764380;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=kcVDXYMT8LMkjLVvlYxNFSFHVpcbcXjDofWehTamLNU=;
- b=TjZhJhTyV/K91oa4SkAGBvzlehPYimBE6blukykM3KxLzxmALLLmQw83OuKwvdT3vTkf04
- Aj5cMld838FmafWlOqXR2S3moHLLlVqHt6t+p7umzHQwQNHUP2tioRybpSWG0DwFZyrEI8
- RLeB+M+zoJGrVuLbRGY4SRZwEPvtil0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-390-pcOupwDDMkugD5Y9jR6PPg-1; Fri, 15 Sep 2023 03:52:56 -0400
-X-MC-Unique: pcOupwDDMkugD5Y9jR6PPg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 670C7101A58B;
- Fri, 15 Sep 2023 07:52:55 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.146])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id BA87E2026D4B;
- Fri, 15 Sep 2023 07:52:51 +0000 (UTC)
-Date: Fri, 15 Sep 2023 09:52:50 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
- vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com,
- pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
- anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, stefanha@redhat.com, fam@euphon.net,
- quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- kraxel@redhat.com, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH 4/7] block/dirty-bitmap: Clean up local variable shadowing
-Message-ID: <ZQQNUjN4Laf+k1Nk@redhat.com>
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-5-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qh3T9-00017H-Th
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 03:42:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1694763747; x=1726299747;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=cDgMalxwmA0/rs78BBy/qTkAwU1CeKaTo0idZtPsVfs=;
+ b=EsPAziSSJ7u+gh/AQ0lnopHn4s53VX9lSTUReKZY8fc5d8q7qGFhBYHh
+ 1It1xHjR+ewN1V+ZoVl6GA9OYZwfcFg2eGQcMhjeW4W0IiSWNKu0bNwSW
+ Y56JS71D0ExzJ6oCV0jXJeu/ONgsJvKfY2Fc+NhtSMQahi4y4+KnT0GqU
+ 3FDZ0czg3kJKAS+9oxqz5xSYXbWCZXiNQAwRjypM9xHOXGXI3zNsiZTwH
+ NNz1Tfy7oiWzES5Gm3HkJfrnd5CUoRX08YsdevkdVL0ZVdg4lZ4cC3hcp
+ EYl4aL62M0AbufkrjeiDsFPzosfq1pDiETypC8pZ8lP7F99hs4TG2orYc A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="379104079"
+X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; d="scan'208";a="379104079"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2023 00:42:25 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="860059358"
+X-IronPort-AV: E=Sophos;i="6.02,148,1688454000"; d="scan'208";a="860059358"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga002.fm.intel.com with ESMTP; 15 Sep 2023 00:42:22 -0700
+Date: Fri, 15 Sep 2023 15:53:25 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
+Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache topo
+ in CPUID.04H
+Message-ID: <ZQQNddiCky/cImAz@liuzhao-OptiPlex-7080>
+References: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
+ <20230914072159.1177582-22-zhao1.liu@linux.intel.com>
+ <75ea5477-ca1b-7016-273c-abd6c36f4be4@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230831132546.3525721-5-armbru@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <75ea5477-ca1b-7016-273c-abd6c36f4be4@linaro.org>
+Received-SPF: none client-ip=192.55.52.115;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,61 +88,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 31.08.2023 um 15:25 hat Markus Armbruster geschrieben:
-> Local variables shadowing other local variables or parameters make the
-> code needlessly hard to understand.  Tracked down with -Wshadow=local.
-> Clean up: delete inner declarations when they are actually redundant,
-> else rename variables.
+Hi Philippe,
+
+On Thu, Sep 14, 2023 at 09:41:30AM +0200, Philippe Mathieu-Daudé wrote:
+> Date: Thu, 14 Sep 2023 09:41:30 +0200
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache
+>  topo in CPUID.04H
 > 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  block/monitor/bitmap-qmp-cmds.c | 2 +-
->  block/qcow2-bitmap.c            | 3 +--
->  2 files changed, 2 insertions(+), 3 deletions(-)
+> On 14/9/23 09:21, Zhao Liu wrote:
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > The property x-l2-cache-topo will be used to change the L2 cache
+> > topology in CPUID.04H.
+> > 
+> > Now it allows user to set the L2 cache is shared in core level or
+> > cluster level.
+> > 
+> > If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
+> > topology will be overrode by the new topology setting.
+> > 
+> > Here we expose to user "cluster" instead of "module", to be consistent
+> > with "cluster-id" naming.
+> > 
+> > Since CPUID.04H is used by intel CPUs, this property is available on
+> > intel CPUs as for now.
+> > 
+> > When necessary, it can be extended to CPUID.8000001DH for AMD CPUs.
+> > 
+> > (Tested the cache topology in CPUID[0x04] leaf with "x-l2-cache-topo=[
+> > core|cluster]", and tested the live migration between the QEMUs w/ &
+> > w/o this patch series.)
+> > 
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > ---
+> > Changes since v3:
+> >   * Add description about test for live migration compatibility. (Babu)
+> > 
+> > Changes since v1:
+> >   * Rename MODULE branch to CPU_TOPO_LEVEL_MODULE to match the previous
+> >     renaming changes.
+> > ---
+> >   target/i386/cpu.c | 34 +++++++++++++++++++++++++++++++++-
+> >   target/i386/cpu.h |  2 ++
+> >   2 files changed, 35 insertions(+), 1 deletion(-)
 > 
-> diff --git a/block/monitor/bitmap-qmp-cmds.c b/block/monitor/bitmap-qmp-cmds.c
-> index 55f778f5af..4d018423d8 100644
-> --- a/block/monitor/bitmap-qmp-cmds.c
-> +++ b/block/monitor/bitmap-qmp-cmds.c
-> @@ -276,7 +276,7 @@ BdrvDirtyBitmap *block_dirty_bitmap_merge(const char *node, const char *target,
->  
->      for (lst = bms; lst; lst = lst->next) {
->          switch (lst->value->type) {
-> -            const char *name, *node;
-> +            const char *name;
->          case QTYPE_QSTRING:
->              name = lst->value->u.local;
->              src = bdrv_find_dirty_bitmap(bs, name);
+> 
+> > @@ -8079,6 +8110,7 @@ static Property x86_cpu_properties[] = {
+> >                        false),
+> >       DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
+> >                        true),
+> > +    DEFINE_PROP_STRING("x-l2-cache-topo", X86CPU, l2_cache_topo_level),
+> 
+> We use the 'x-' prefix for unstable features, is it the case here?
 
-The names in this function are all over the place... A more ambitious
-patch could rename the parameters to dst_node/dst_bitmap and these
-variables to src_node/src_bitmap to get some more consistency (both with
-each other and with the existing src/dst variables).
+I thought that if we can have a more general CLI way to define cache
+topology in the future, then this option can be removed.
 
-Preexisting, so I'm not insisting that you should do this.
+I'm not sure if this option could be treated as unstable, what do you
+think?
 
-> diff --git a/block/qcow2-bitmap.c b/block/qcow2-bitmap.c
-> index 037fa2d435..ffd5cd3b23 100644
-> --- a/block/qcow2-bitmap.c
-> +++ b/block/qcow2-bitmap.c
-> @@ -1555,7 +1555,6 @@ bool qcow2_store_persistent_dirty_bitmaps(BlockDriverState *bs,
->      FOR_EACH_DIRTY_BITMAP(bs, bitmap) {
->          const char *name = bdrv_dirty_bitmap_name(bitmap);
->          uint32_t granularity = bdrv_dirty_bitmap_granularity(bitmap);
-> -        Qcow2Bitmap *bm;
->  
->          if (!bdrv_dirty_bitmap_get_persistence(bitmap) ||
->              bdrv_dirty_bitmap_inconsistent(bitmap)) {
-> @@ -1625,7 +1624,7 @@ bool qcow2_store_persistent_dirty_bitmaps(BlockDriverState *bs,
->  
->      /* allocate clusters and store bitmaps */
->      QSIMPLEQ_FOREACH(bm, bm_list, entry) {
-> -        BdrvDirtyBitmap *bitmap = bm->dirty_bitmap;
-> +        bitmap = bm->dirty_bitmap;
->  
->          if (bitmap == NULL || bdrv_dirty_bitmap_readonly(bitmap)) {
->              continue;
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+Thanks,
+Zhao
 
+> 
+> >       DEFINE_PROP_END_OF_LIST()
+> >   };
+> 
 
