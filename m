@@ -2,33 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3C97A2642
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C937A2664
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhDmB-00079K-58; Fri, 15 Sep 2023 14:42:47 -0400
+	id 1qhDn8-0000wg-3W; Fri, 15 Sep 2023 14:43:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDm5-0006vV-6O; Fri, 15 Sep 2023 14:42:41 -0400
+ id 1qhDmb-0008Lx-C7; Fri, 15 Sep 2023 14:43:15 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDm3-0003JC-Ik; Fri, 15 Sep 2023 14:42:40 -0400
+ id 1qhDmZ-0003MS-E7; Fri, 15 Sep 2023 14:43:13 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qhDhg-00Fs9Q-2M;
+ (envelope-from <den@openvz.org>) id 1qhDhh-00Fs9Q-0W;
  Fri, 15 Sep 2023 20:41:33 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 10/21] parallels: add test which will validate data_off fixes
- through repair
-Date: Fri, 15 Sep 2023 20:41:18 +0200
-Message-Id: <20230915184130.403366-12-den@openvz.org>
+Subject: [PATCH 11/21] parallels: collect bitmap of used clusters at open
+Date: Fri, 15 Sep 2023 20:41:19 +0200
+Message-Id: <20230915184130.403366-13-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915184130.403366-1-den@openvz.org>
 References: <20230915184130.403366-1-den@openvz.org>
@@ -56,69 +55,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have only check through self-repair and that proven to be not enough.
+If the operation is failed, we need to check image consistency if the
+problem is not about memory allocation.
+
+Bitmap adjustments in allocate_cluster are not performed yet.
+They worth to be separate. This was proven useful during debug of this
+series. Kept as is for future bissecting.
+
+It should be specifically noted that used bitmap must be recalculated
+if data_off has been fixed during image consistency check.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- tests/qemu-iotests/tests/parallels-checks     | 17 +++++++++++++++++
- tests/qemu-iotests/tests/parallels-checks.out | 18 ++++++++++++++++++
- 2 files changed, 35 insertions(+)
+ block/parallels.c | 73 +++++++++++++++++++++++++++++++++++++++++++++++
+ block/parallels.h |  3 ++
+ 2 files changed, 76 insertions(+)
 
-diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
-index 5917ee079d..f4ca50295e 100755
---- a/tests/qemu-iotests/tests/parallels-checks
-+++ b/tests/qemu-iotests/tests/parallels-checks
-@@ -140,6 +140,23 @@ poke_file "$TEST_IMG" "$DATA_OFF_OFFSET" "\xff\xff\xff\xff"
- echo "== check first cluster =="
- { $QEMU_IO -c "read -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+diff --git a/block/parallels.c b/block/parallels.c
+index bdc4dd081b..2517f35581 100644
+--- a/block/parallels.c
++++ b/block/parallels.c
+@@ -193,6 +193,58 @@ static int mark_used(BlockDriverState *bs,
+     return 0;
+ }
  
-+# Clear image
-+_make_test_img $SIZE
++/*
++ * Collect used bitmap. The image can contain errors, we should fill the
++ * bitmap anyway, as much as we can. This information will be used for
++ * error resolution.
++ */
++static int parallels_fill_used_bitmap(BlockDriverState *bs)
++{
++    BDRVParallelsState *s = bs->opaque;
++    int64_t payload_bytes;
++    uint32_t i;
++    int err = 0;
 +
-+echo "== TEST DATA_OFF THROUGH REPAIR =="
++    payload_bytes = bdrv_co_getlength(bs->file->bs);
++    if (payload_bytes < 0) {
++        return payload_bytes;
++    }
++    payload_bytes -= s->data_start * BDRV_SECTOR_SIZE;
++    if (payload_bytes < 0) {
++        return -EINVAL;
++    }
 +
-+echo "== write pattern to first cluster =="
-+{ $QEMU_IO -c "write -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++    s->used_bmap_size = DIV_ROUND_UP(payload_bytes, s->cluster_size);
++    if (s->used_bmap_size == 0) {
++        return 0;
++    }
++    s->used_bmap = bitmap_try_new(s->used_bmap_size);
++    if (s->used_bmap == NULL) {
++        return -ENOMEM;
++    }
 +
-+echo "== spoil data_off field =="
-+poke_file "$TEST_IMG" "$DATA_OFF_OFFSET" "\xff\xff\xff\xff"
++    for (i = 0; i < s->bat_size; i++) {
++        int err2;
++        int64_t host_off = bat2sect(s, i) << BDRV_SECTOR_BITS;
++        if (host_off == 0) {
++            continue;
++        }
 +
-+echo "== repair image =="
-+_check_test_img -r all
++        err2 = mark_used(bs, s->used_bmap, s->used_bmap_size, host_off);
++        if (err2 < 0 && err == 0) {
++            err = err2;
++        }
++    }
++    return err;
++}
 +
-+echo "== check first cluster =="
-+{ $QEMU_IO -r -c "read -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++static void parallels_free_used_bitmap(BlockDriverState *bs)
++{
++    BDRVParallelsState *s = bs->opaque;
++    s->used_bmap_size = 0;
++    g_free(s->used_bmap);
++}
 +
- # success, all done
- echo "*** done"
- rm -f $seq.full
-diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
-index 98a3a7f55e..74a5e29260 100644
---- a/tests/qemu-iotests/tests/parallels-checks.out
-+++ b/tests/qemu-iotests/tests/parallels-checks.out
-@@ -72,4 +72,22 @@ wrote 1048576/1048576 bytes at offset 0
- Repairing data_off field has incorrect value
- read 1048576/1048576 bytes at offset 0
- 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
-+== TEST DATA_OFF THROUGH REPAIR ==
-+== write pattern to first cluster ==
-+wrote 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
-+== spoil data_off field ==
-+== repair image ==
-+Repairing data_off field has incorrect value
-+The following inconsistencies were found and repaired:
+ static int64_t coroutine_fn GRAPH_RDLOCK
+ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+                   int nb_sectors, int *pnum)
+@@ -530,8 +582,17 @@ parallels_check_data_off(BlockDriverState *bs, BdrvCheckResult *res,
+ 
+     res->corruptions++;
+     if (fix & BDRV_FIX_ERRORS) {
++        int err;
+         s->header->data_off = cpu_to_le32(data_off);
+         s->data_start = data_off;
 +
-+    0 leaked clusters
-+    1 corruptions
++        parallels_free_used_bitmap(bs);
++        err = parallels_fill_used_bitmap(bs);
++        if (err == -ENOMEM) {
++            res->check_errors++;
++            return err;
++        }
 +
-+Double checking the fixed image now...
-+No errors were found on the image.
-+== check first cluster ==
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- *** done
+         res->corruptions_fixed++;
+     }
+ 
+@@ -1214,6 +1275,14 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+     }
+     need_check = need_check || s->data_end > file_nb_sectors;
+ 
++    if (!need_check) {
++        ret = parallels_fill_used_bitmap(bs);
++        if (ret == -ENOMEM) {
++            goto fail;
++        }
++        need_check = need_check || ret < 0; /* These are correctable errors */
++    }
++
+     /*
+      * We don't repair the image here if it's opened for checks. Also we don't
+      * want to change inactive images and can't change readonly images.
+@@ -1243,6 +1312,8 @@ fail:
+      * "s" object was allocated by g_malloc0 so we can safely
+      * try to free its fields even they were not allocated.
+      */
++    parallels_free_used_bitmap(bs);
++
+     error_free(s->migration_blocker);
+     g_free(s->bat_dirty_bmap);
+     qemu_vfree(s->header);
+@@ -1263,6 +1334,8 @@ static void parallels_close(BlockDriverState *bs)
+                       PREALLOC_MODE_OFF, 0, NULL);
+     }
+ 
++    parallels_free_used_bitmap(bs);
++
+     g_free(s->bat_dirty_bmap);
+     qemu_vfree(s->header);
+ 
+diff --git a/block/parallels.h b/block/parallels.h
+index 4e53e9572d..6b199443cf 100644
+--- a/block/parallels.h
++++ b/block/parallels.h
+@@ -72,6 +72,9 @@ typedef struct BDRVParallelsState {
+     unsigned long *bat_dirty_bmap;
+     unsigned int  bat_dirty_block;
+ 
++    unsigned long *used_bmap;
++    unsigned long used_bmap_size;
++
+     uint32_t *bat_bitmap;
+     unsigned int bat_size;
+ 
 -- 
 2.34.1
 
