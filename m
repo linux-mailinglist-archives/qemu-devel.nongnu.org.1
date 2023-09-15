@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0909B7A2665
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9EE77A2658
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhDmL-0007mt-Qg; Fri, 15 Sep 2023 14:42:59 -0400
+	id 1qhDm4-0006lZ-De; Fri, 15 Sep 2023 14:42:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDmE-0007gf-2P; Fri, 15 Sep 2023 14:42:50 -0400
+ id 1qhDm0-0006dN-Oj; Fri, 15 Sep 2023 14:42:36 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDmC-0003Lv-9O; Fri, 15 Sep 2023 14:42:49 -0400
+ id 1qhDlx-0003II-7T; Fri, 15 Sep 2023 14:42:35 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qhDhi-00Fs9Q-09;
+ (envelope-from <den@openvz.org>) id 1qhDhi-00Fs9Q-1Y;
  Fri, 15 Sep 2023 20:41:34 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 12/21] tests: fix broken deduplication check in parallels
- format test
-Date: Fri, 15 Sep 2023 20:41:21 +0200
-Message-Id: <20230915184130.403366-15-den@openvz.org>
+Subject: [PATCH 13/21] tests: test self-cure of parallels image with
+ duplicated clusters
+Date: Fri, 15 Sep 2023 20:41:22 +0200
+Message-Id: <20230915184130.403366-16-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915184130.403366-1-den@openvz.org>
 References: <20230915184130.403366-1-den@openvz.org>
@@ -56,69 +56,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Original check is broken as supposed reading from 2 different clusters
-results in read from the same file offset twice. This is definitely
-wrong.
-
-We should be sure that
-* the content of both clusters is correct after repair
-* clusters are at the different offsets after repair
-In order to check the latter we write some content into the first one
-and validate that fact.
+The test is quite similar with the original one for duplicated clusters.
+There is the only difference in the operation which should fix the
+image.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- tests/qemu-iotests/tests/parallels-checks     | 14 ++++++++++----
- tests/qemu-iotests/tests/parallels-checks.out | 16 ++++++++++++----
- 2 files changed, 22 insertions(+), 8 deletions(-)
+ tests/qemu-iotests/tests/parallels-checks     | 36 +++++++++++++++++++
+ tests/qemu-iotests/tests/parallels-checks.out | 31 ++++++++++++++++
+ 2 files changed, 67 insertions(+)
 
 diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
-index f4ca50295e..df99558486 100755
+index df99558486..b281246a42 100755
 --- a/tests/qemu-iotests/tests/parallels-checks
 +++ b/tests/qemu-iotests/tests/parallels-checks
-@@ -117,14 +117,20 @@ echo "== check second cluster =="
- echo "== repair image =="
- _check_test_img -r all
+@@ -135,6 +135,42 @@ echo "== check the second cluster (deduplicated) =="
+ # Clear image
+ _make_test_img $SIZE
  
-+echo "== check the first cluster =="
-+{ $QEMU_IO -r -c "read -P 0x11 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++echo "== TEST DUPLICATION SELF-CURE =="
 +
- echo "== check second cluster =="
- { $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- 
--echo "== check first cluster on host =="
--printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
++echo "== write pattern to whole image =="
++{ $QEMU_IO -c "write -P 0x11 0 $SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== write another pattern to second cluster =="
++{ $QEMU_IO -c "write -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== check second cluster =="
++{ $QEMU_IO -r -c "read -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++
++echo "== corrupt image =="
++poke_file "$TEST_IMG" "$(($BAT_OFFSET + 4))" "\x01\x00\x00\x00"
++
++echo "== check second cluster =="
++{ $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== check the first cluster with self-repair =="
++{ $QEMU_IO -c "read -P 0x11 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== check second cluster =="
++{ $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
 +echo "== write another pattern to the first clusters =="
 +{ $QEMU_IO -c "write -P 0x66 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
 +echo "== check the first cluster =="
 +{ $QEMU_IO -r -c "read -P 0x66 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
- 
--echo "== check second cluster on host =="
--printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
++
 +echo "== check the second cluster (deduplicated) =="
 +{ $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++# Clear image
++_make_test_img $SIZE
++
+ echo "== TEST DATA_OFF CHECK =="
  
- # Clear image
- _make_test_img $SIZE
+ echo "== write pattern to first cluster =="
 diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
-index 74a5e29260..1325d2b611 100644
+index 1325d2b611..9793423111 100644
 --- a/tests/qemu-iotests/tests/parallels-checks.out
 +++ b/tests/qemu-iotests/tests/parallels-checks.out
-@@ -55,13 +55,21 @@ The following inconsistencies were found and repaired:
- 
- Double checking the fixed image now...
- No errors were found on the image.
-+== check the first cluster ==
-+read 1048576/1048576 bytes at offset 0
-+1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- == check second cluster ==
+@@ -71,6 +71,37 @@ read 1048576/1048576 bytes at offset 0
  read 1048576/1048576 bytes at offset 1048576
  1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
--== check first cluster on host ==
--content: 0x11
--== check second cluster on host ==
--content: 0x11
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
++== TEST DUPLICATION SELF-CURE ==
++== write pattern to whole image ==
++wrote 4194304/4194304 bytes at offset 0
++4 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== write another pattern to second cluster ==
++wrote 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check second cluster ==
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== corrupt image ==
++== check second cluster ==
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check the first cluster with self-repair ==
++Repairing duplicate offset in BAT entry 1
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check second cluster ==
++read 1048576/1048576 bytes at offset 1048576
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
 +== write another pattern to the first clusters ==
 +wrote 1048576/1048576 bytes at offset 0
 +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
@@ -128,9 +151,10 @@ index 74a5e29260..1325d2b611 100644
 +== check the second cluster (deduplicated) ==
 +read 1048576/1048576 bytes at offset 1048576
 +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
- Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
  == TEST DATA_OFF CHECK ==
  == write pattern to first cluster ==
+ wrote 1048576/1048576 bytes at offset 0
 -- 
 2.34.1
 
