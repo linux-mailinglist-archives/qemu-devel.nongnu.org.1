@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDB7F7A1AEC
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 11:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F6C7A1AFC
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 11:44:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh5LK-0003Mt-5k; Fri, 15 Sep 2023 05:42:30 -0400
+	id 1qh5NE-0005OA-Gc; Fri, 15 Sep 2023 05:44:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh5LH-0003D8-Dn
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:42:27 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh5LD-0000zw-Re
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:42:25 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-52a1ce529fdso2286796a12.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 02:42:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694770940; x=1695375740; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=z59JdjTlzcvY5qzMVvAIzK0FZpxGB5G0TuGBATGHgiQ=;
- b=qalTmfj5eWEIro1OcxDKcTWBb4BssPvr97w+IUgcC92HA3QnSPLluLJAFNjihewllF
- LjpqXu2iLTyqbpR6AfKB40jWeZx1k0r/NT1sTRYKOqFgTn6tEHy+QL+LW+iM3UQp95HE
- IUI7NXqojJowWLSxCHXJ/tDBbAiqsoAuQYZia/YN1BBBd/l/vSmDZWzdPm2+ZeDJInH3
- fHX5cSegRh6SNYs+wod+IZzaSRDDmSG94/BVXNl1Qf64Gh8+1FOdToSw/pBRvgvqx7+g
- wCMft4eh1CK7XM3kpl2NE7+wt8e/dGBZDs0Zq8Ip77zFMFKqqYp3DmXfzXEKXY+PylP0
- bNpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694770940; x=1695375740;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z59JdjTlzcvY5qzMVvAIzK0FZpxGB5G0TuGBATGHgiQ=;
- b=BhlbGQEbkrySVoRzJMOTKsAIOM8pMrJ7RoeD4msEaRqbLWYd+so7bzjgAA33uprKi/
- N8m0PlNxZ5LwHC29o08DSom9oSnSasInjPYXcy02Y2Wm1TNxXC9Ffnoh8PxTcRb/22DS
- Nv4vPNvzKUM36eu+jWdI5CLwF85okTSof/rfTdPzZB3yEpP7rp2blsMRzrvB42tZtSgj
- cO/9BqBvSXCXNF/MjyiLY6DcRBfo/La4Tcqv1OUz/uSXDBteORR+6YeL7EPLPUcTNFZn
- qX6htR17yu3LCOn20jUw9+JqbjvcO2juCe5azkHj+zYNz9K30kdEuUmO4hyzA9ut6CFr
- SiJw==
-X-Gm-Message-State: AOJu0YysZElpqEzdT2m6XN/O7mPrbTHJT++GYEkBUGsiwXMRv6kI5l37
- toiVfTRoQ11luK7wZ52e5nL30wBOD8//l5fyWcY=
-X-Google-Smtp-Source: AGHT+IG7vNmHRsmMvrP4gXo9bU0mICSZd+iLIQQeqXWpp0rD14YvhtHopII78M2fdCOLYXnkPrfx1w==
-X-Received: by 2002:aa7:cd57:0:b0:522:20a0:7eb8 with SMTP id
- v23-20020aa7cd57000000b0052220a07eb8mr1003587edw.33.1694770940596; 
- Fri, 15 Sep 2023 02:42:20 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-223-129.abo.bbox.fr.
- [176.131.223.129]) by smtp.gmail.com with ESMTPSA id
- q18-20020aa7da92000000b0052cdc596652sm2015427eds.23.2023.09.15.02.42.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 02:42:20 -0700 (PDT)
-Message-ID: <11460e6d-9fda-3e41-a792-288cd15f0caa@linaro.org>
-Date: Fri, 15 Sep 2023 11:42:18 +0200
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qh5NB-0005NM-Ln
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:44:25 -0400
+Received: from mout.gmx.net ([212.227.17.22])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qh5N9-0001lF-1J
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:44:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1694771060; x=1695375860; i=deller@gmx.de;
+ bh=qFPN+mXqrO+UHgrED4oOODl67pHnaiEewuDVsph5aK0=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=aZcDjkcXh92wfW2AeHLDLt52yrs6kza4BVtShyzgvmluOamdWHVjxNuzcFSZl7lWGlTsxVgHbk9
+ vWY0lPJ4hq7MzFqxcDoX1aFY2wCHxn+cR/+3QOLOvoU/Smg7vS5capkIwY7PGGtQ2weDuUY/NGKFI
+ MqND1jxdt9Koc4GAjuCYNmBR27Rv3YNUedHzUDS6BKATfANBvLKkyOpiIMVfgq+naPVP4tnsX9vRD
+ 06pAfKQECmHKuxOKyAbkNoFa47+33V6Y/2cb+bfbChfeGKqqzBPuGX8sixWIfyFRQLp4tTPNaq/6u
+ NKl4sfyqLCe9y/DZ2oBIcnNWk+d9QeL/YYbg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.157.117]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mv2xU-1rY5Z61aDI-00r1jc; Fri, 15
+ Sep 2023 11:44:20 +0200
+Message-ID: <373d527a-6d34-442a-b225-3bc68ad586ee@gmx.de>
+Date: Fri, 15 Sep 2023 11:44:19 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 3/6: 1/2] accel/tcg: Refactor gen_io_start() as
- set_can_do_io()
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC v6 2/9] build: Implement libnative library and the build
+ machinery for libnative
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20230914174436.1597356-4-richard.henderson@linaro.org>
- <20230915094109.82757-1-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230915094109.82757-1-philmd@linaro.org>
+To: Yeqi Fu <fufuyqqqqqq@gmail.com>, qemu-devel@nongnu.org
+References: <20230912212842.658374-1-fufuyqqqqqq@gmail.com>
+ <20230912212842.658374-3-fufuyqqqqqq@gmail.com>
+From: Helge Deller <deller@gmx.de>
+In-Reply-To: <20230912212842.658374-3-fufuyqqqqqq@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:uggvYbWmNop6a6rJAdlCKgtsKMR8GasA6ba0syYwRa0fFrzW6a2
+ DV+Re+GJVcLxOIDfbZU+qcnuD08hHR6cs6A7P8QtUMGMHhNzL4wd0H7a9qB/TK4+RMKrx3g
+ RTs+ERyxyf1RT5T0ItVSbQLfsyrC0KvqIsSIaOP9UUSrbc2ms93KnkoiodNUYjzRhVbAzjP
+ 7n9wFJLDjKRt0z2mzxmWQ==
+UI-OutboundReport: notjunk:1;M01:P0:ctfriBMFges=;m+cc1rQZDXmBfgtRNrWygVOADnE
+ znIPrxF0YXf5KIm384y259VZiSFEByhB43dQBRWDdYzZ+hN+gqI7yem2puQNCS/5f/BWbsnxk
+ Ky056RBFS4tLgzalHF/bnkY9HqcqxR1uWoXxb0FJQJ902kft30wabmy4RINI+WfbiOBrex/8x
+ 4n4Xbw5fGSt/L/umO1BVkgt5QYhuM7zi5ZFMzhU2zJouaGjzznplxAozB5S7P+F3G6IPBme8R
+ HQrxEbtVUxkDoBcR9FqAhJ8WBnhX06b6LgLjI64lmTeNWlFzrhudvfOzZceTL2l8I0Q+hj/0w
+ +fJn+41/EluKw/HgARjPdwzmikfpaLhmPEN4mE5dJ+uDmbW/xNNBTTYiO8/fAK+i/R3OaAhsx
+ TtMeTMY36Kftkv7tc4I9bufsoQlKrgFPGIBEIPS5hqIrdatTxFeDF8cM/6UMmxLHPFvEvhjKl
+ eQ86t3AR5EnsMBrgKsadUTlEBPPzHHzIw+V/Jfhu+34ITJ3/eZr+1hFrQcY7xfZX2yDalnTcb
+ yZFAoH6mee4ltw7jDQVurqW0OYw+eP06MFh4l2zxPD2Qm2M+qg8cdvLZ6I3cHgP/X69TEHR9n
+ bhN5unmyZxCGcJIxQvWHZU+3hVlk+wN3tPuMz2Smn+pGDIrb6n7unvwkmIqFnUU0jDrUre8+K
+ x8KB/7zLPHA1Q6kSVQlEi00vrcA0Ls7/HWxKJZd/lFyUu+N3M9IwULZoyPeC9ZufUxCWPP5kx
+ nUu0HTnzpltmeflYBJMLFtBfERO1vOUWTtFxsyzMSDtYuggEhVqhNiioNgmAcpft7ceribo42
+ RROLN/+fvyuWJ9sZLbkQIEBKljHc+cJrYI2HOemgV1eaPGUPtBCY3SLYaqG2I2Z0CFB2TjlCh
+ 4o8dtb3VF7IReicikZBoutamerNWDOIvvBZGOA50t+Lgcq4WGmfUg2O7sr8oyO/iPaWZZlCzz
+ 1YJ0NA==
+Received-SPF: pass client-ip=212.227.17.22; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,15 +88,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/9/23 11:41, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-ID: <20230914174436.1597356-4-richard.henderson@linaro.org>
-> [PMD: Split patch in 2, extracting set_can_do_io() first]
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   accel/tcg/translator.c | 19 ++++++++-----------
->   1 file changed, 8 insertions(+), 11 deletions(-)
+On 9/12/23 23:28, Yeqi Fu wrote:
+> This commit implements a shared library, where native functions are
+> rewritten as special instructions. At runtime, user programs load
+> the shared library, and special instructions are executed when
+> native functions are called.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Hello Yeqi,
 
+I like the idea of speeding up linux-user with your approach.
+Do you have a git tree which I can pull for testing (or please
+mention the base commit your patches are based on)?
+
+How does the emulation behaves if a guest has bugs and accesses
+wrong memory locations, e.g.:
+	memcpy(NULL, "Hello", 6)
+Will it segfault the same way as if it would have run natively?
+At least I think the signal IP addresses will be different.
+
+Regarding you implemenation:
+
+> diff --git a/common-user/native/libnative.S b/common-user/native/libnative.S
+> new file mode 100644
+> index 0000000000..bc51dabedf
+> --- /dev/null
+> +++ b/common-user/native/libnative.S
+> @@ -0,0 +1,51 @@
+> +.macro special_instr sym
+> +#if defined(__i386__)
+
+you use here #ifdefs,
+
+> +         ud0     \sym-1f, %eax; 1:
+> +#elif defined(__x86_64__)
+> +         ud0     \sym(%rip), %eax
+> +#elif defined(__arm__) || defined(__aarch64__)
+> +         hlt     0xffff
+> +1:      .word   \sym - 1b
+> +#elif defined(__mips__)
+> +         syscall 0xffff
+> +1:      .word   \sym - 1b
+> +#else
+> +# error
+> +#endif
+> +.endm
+> +
+> +.macro ret_instr
+> +#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
+
+and here again,
+
+> +         ret
+> +#elif defined(__arm__)
+> +         bx     lr
+> +#elif defined(__mips__)
+> +         jr     $ra
+> +#else
+> +# error
+> +#endif
+> +.endm
+> +
+> +/* Symbols of native functions */
+> +
+> +.macro define_function name
+> +         .text
+> +\name:
+> +         special_instr 9f
+
+and here the pointer to the string.
+
+> +         ret_instr
+> +         .globl \name
+> +         .type \name, %function
+> +         .size \name, . - \name
+> +
+> +         .section .rodata
+> +9:      .asciz  "\name"
+> +.endm
+
+IMHO, I think it would be easier if you just do:
+
++/* wrapper for native functions */
++
++.macro define_function name
++         .text
++         .align 8  /* function is 8-byte aligned */
++\name:
++/* every arch has up to 8 bytes for trigger and return instruction */
++#if defined(__i386__)
++         ud0     0, %eax
++         ret
++#elif defined(__x86_64__)
++         ud0     0, %eax
++         ret
++#elif defined(__mips__)
++         syscall 0xffff
++         jr     $ra
++#<...more ifdef for arches...>
++#endif
++
++/* the native function name is stored 8 bytes behind \name symbol: */
++         .align 8
++         .asciz  "\name"
++
++         .globl \name
++         .type \name, %function
++         .size \name, . - \name
++.endm
+
+with that you
+- save some bytes, code & pointers
+- don't need to load the pointer to the native function string (as it's
+   always stored as ascii 8 bytes behind the function itself)
+- don't need to adjust the IP
+- simplifies the asm code and reduced the ifdefs
+- ...
+
+Helge
+
+> +
+> +define_function memcmp
+> +define_function memcpy
+> +define_function memset
+> +define_function strcat
+> +define_function strcmp
+> +define_function strcpy
+> +define_function strncmp
+> +define_function strncpy
 
