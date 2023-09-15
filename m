@@ -2,113 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E067A2212
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D53D97A2215
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:14:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhAVM-0003Rn-W8; Fri, 15 Sep 2023 11:13:13 -0400
+	id 1qhAVd-0003mG-KS; Fri, 15 Sep 2023 11:13:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qhAVK-0003Oi-1F; Fri, 15 Sep 2023 11:13:10 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qhAVV-0003gW-5d
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:13:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qhAVD-0002qq-I7; Fri, 15 Sep 2023 11:13:09 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38FF7RhX001290; Fri, 15 Sep 2023 15:12:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=3rL+PgYMavuWtXtIUs08z44CzPNrgXcgFex6uW/WezM=;
- b=ZN6ISjfn0xO4d9hW76No012ZMKhmzavupO3ocvdGMo6p5DvJvfA/akuWsSbG6Z+E7HS3
- njMygIlYQdJMHVqXFo9l8mmWyc5zSZ9gKW5421qEu38sjMRew/HADgOjMzx0/tM8Inab
- 7jPxQLP6QbKJ6KC+c9tHb46WOaljeopdV6qPzzIZ3Y0gHiceK5GbMp9W2tk9717a4LTg
- td5lbCJYNCimUUqaQalrJpA87TfuyNShon0H55CH4y87BB/A1DISbvNsLLMDJ+YgBE/M
- N3WRU5YVF9meatLxGwzz0f0nu321IXoR/AyeSdqZir4NgH/9918OFdBGz5xv3jv3fq3M jQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4s63s40a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:12:42 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38FF7dIH004206;
- Fri, 15 Sep 2023 15:12:41 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t4s63s400-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:12:41 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38FEVcFj011942; Fri, 15 Sep 2023 15:12:40 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t15r2m7j5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Sep 2023 15:12:40 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38FFCdP926345854
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 15 Sep 2023 15:12:39 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B2F4D58066;
- Fri, 15 Sep 2023 15:12:39 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B883E58063;
- Fri, 15 Sep 2023 15:12:34 +0000 (GMT)
-Received: from [9.79.181.197] (unknown [9.79.181.197])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 15 Sep 2023 15:12:34 +0000 (GMT)
-Message-ID: <76e01d80-c1ff-6a7c-9f2d-3fa2e02b7144@linux.ibm.com>
-Date: Fri, 15 Sep 2023 20:42:32 +0530
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1qhAVT-00030s-4F
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:13:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694790798;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NrmuwfORkHV088XJeZg8fDdUukeiMUFR5uqXJlDPelc=;
+ b=LFkCCX0h8MnNOxy3LAvWF/mG555T9tPzXp68DKGPo1lDJgguTNOzolUmCbpfmlM+9ln9lb
+ lxxylDNISd71pXX11EGYUWz1CAk4cGboz9vBBX8faRxesL78P8Yp+f5NxYEqBKQwHjwuId
+ 1WP1XyrrE9Sz6QozZ108d+texnYuwvM=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-594-qBNZkPJJNIOI1X2uWCrWZw-1; Fri, 15 Sep 2023 11:13:16 -0400
+X-MC-Unique: qBNZkPJJNIOI1X2uWCrWZw-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5301927ab91so1372636a12.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:13:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694790795; x=1695395595;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NrmuwfORkHV088XJeZg8fDdUukeiMUFR5uqXJlDPelc=;
+ b=NLSacLmek0KSmcd2mbZzOGnVc26+gn9G+UVGkoED9MrXvLtoIy36uFeyk2DZcNmn5Z
+ R+zt6lvR9xLuCt2/wu+ceRE6wwmL2GZDK8OBRR1PcKO5c27efFF/pzdYONBUASjsLdSa
+ 886onbJ6fizdTlMXltf4MXqjPG8R+1WaRqhZhClv6YDH3N4TJSJWApq6nA6k+sconGdA
+ YCgIvEUnSbf5VxHwSBDM+qTVqfuV3sE1Uqb9jf/iYiRnlh97uQ90kxEq7B3jXhwqiz5L
+ zhihaM/udMdeHpbJx9QJTj6GtRYqLAdd1D8Vu6SUMWlBGyDNg2/uo6NGi6KW4HCSTzYH
+ xd2Q==
+X-Gm-Message-State: AOJu0YwQhMUvD+YLglpjUGRe7EYdS03gSKvwip9bkzDHe0ALC8JXNoPu
+ z81fmG0gOZUtkpdj6rXu9QPVthqeBMUW02vVVUq4EsMQn1iIxGhnDB33VoI1aSWdomcx+PpfGo8
+ CbWRC7XSmntzwvvI=
+X-Received: by 2002:a05:6402:d61:b0:530:9e59:5795 with SMTP id
+ ec33-20020a0564020d6100b005309e595795mr1285265edb.4.1694790795407; 
+ Fri, 15 Sep 2023 08:13:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrG1LCJli3OUzC0RwtPVtkJWBrrD47FDT/9isfLrosF9OBSOzCQ1de03l0poJXJ4QvBtLA5w==
+X-Received: by 2002:a05:6402:d61:b0:530:9e59:5795 with SMTP id
+ ec33-20020a0564020d6100b005309e595795mr1285235edb.4.1694790795106; 
+ Fri, 15 Sep 2023 08:13:15 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ q18-20020aa7da92000000b0052cdc596652sm2390205eds.23.2023.09.15.08.13.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Sep 2023 08:13:14 -0700 (PDT)
+Date: Fri, 15 Sep 2023 17:13:13 +0200
+From: Igor Mammedov <imammedo@redhat.com>
+To: <ankita@nvidia.com>
+Cc: <jgg@nvidia.com>, <alex.williamson@redhat.com>, <clg@redhat.com>,
+ <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>, <ani@anisinha.ca>,
+ <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
+ <targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
+ <qemu-arm@nongnu.org>, <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v1 4/4] acpi/gpex: patch guest DSDT for dev mem information
+Message-ID: <20230915171313.1a6cb98b@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230915024559.6565-5-ankita@nvidia.com>
+References: <20230915024559.6565-1-ankita@nvidia.com>
+ <20230915024559.6565-5-ankita@nvidia.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 2/4] accel/tcg: Remove unused tcg_flush_jmp_cache() stub
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org
-References: <20230914195229.78244-1-philmd@linaro.org>
- <20230914195229.78244-3-philmd@linaro.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230914195229.78244-3-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HWZAubNdNqEnXDwSVZFHgkhkHIZLGmPF
-X-Proofpoint-GUID: tut3qvJtJEuXdTVdgVmRiq90SVuZXzPO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-15_11,2023-09-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- malwarescore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
- impostorscore=0 priorityscore=1501 bulkscore=0 adultscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309150134
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,39 +104,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 14 Sep 2023 19:45:59 -0700
+<ankita@nvidia.com> wrote:
 
-
-On 9/15/23 01:22, Philippe Mathieu-Daudé wrote:
-> Since commit ba7d3d1858 ("cpu_common_reset: wrap TCG
-> specific code in tcg_enabled()") we protect the single call
-> to tcg_flush_jmp_cache() with a check on tcg_enabled(). The
-> stub isn't needed anymore.
+> From: Ankit Agrawal <ankita@nvidia.com>
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> To add the memory in the guest as NUMA nodes, it needs the PXM node index
+> and the total count of nodes associated with the memory. The range of
+> proximity domains are communicated to the VM as part of the guest ACPI
 
-Commit log might need rephrase as I see multiple instance of call,
-with one without check for tcg_enabled() in plugin_cpu_update__async but 
-seems to be building only with tcg enabled so no build breaks.
+> using the nvidia,gpu-mem-pxm-start and nvidia,gpu-mem-pxm-count DSD
+above examples should use devices that are (or to be) available in QEMU,
+not some out of tree ones.
 
-Thanks
-Harsh
+> properties. These value respectively represent the staring proximity
+> domain id and the count. Kernel modules can then fetch this information
+> and determine the numa node id using pxm_to_node().
+> 
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 > ---
->   accel/stubs/tcg-stub.c | 4 ----
->   1 file changed, 4 deletions(-)
+>  hw/pci-host/gpex-acpi.c | 69 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 69 insertions(+)
 > 
-> diff --git a/accel/stubs/tcg-stub.c b/accel/stubs/tcg-stub.c
-> index f088054f34..dd890d6cf6 100644
-> --- a/accel/stubs/tcg-stub.c
-> +++ b/accel/stubs/tcg-stub.c
-> @@ -18,10 +18,6 @@ void tb_flush(CPUState *cpu)
->   {
->   }
->   
-> -void tcg_flush_jmp_cache(CPUState *cpu)
-> -{
-> -}
-> -
->   int probe_access_flags(CPUArchState *env, vaddr addr, int size,
->                          MMUAccessType access_type, int mmu_idx,
->                          bool nonfault, void **phost, uintptr_t retaddr)
+> diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
+> index 7c7316bc96..0548feace1 100644
+> --- a/hw/pci-host/gpex-acpi.c
+> +++ b/hw/pci-host/gpex-acpi.c
+> @@ -49,6 +49,72 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq)
+>      }
+>  }
+>  
+> +static void acpi_dsdt_add_cohmem_device(Aml *dev, int32_t devfn,
+> +                                        uint64_t dev_mem_pxm_start,
+> +                                        uint64_t dev_mem_pxm_count)
+> +{
+> +    Aml *memdev = aml_device("CMD%X", PCI_SLOT(devfn));
+> +    Aml *pkg = aml_package(2);
+> +    Aml *pkg1 = aml_package(2);
+> +    Aml *pkg2 = aml_package(2);
+> +    Aml *dev_pkg = aml_package(2);
+> +    Aml *UUID;
+> +
+> +    aml_append(memdev, aml_name_decl("_ADR", aml_int(PCI_SLOT(devfn) << 16)));
+
+PCI devices (especially endpoints) are typically enumerated by
+bus specific means (i.e not by ACPI).
+
+And whether OSPM will honor the remainder of AML here is very questionable.
+
+> +
+> +    aml_append(pkg1, aml_string("dev-mem-pxm-start"));
+> +    aml_append(pkg1, aml_int(dev_mem_pxm_start));
+> +
+> +    aml_append(pkg2, aml_string("dev-mem-pxm-count"));
+> +    aml_append(pkg2, aml_int(dev_mem_pxm_count));
+> +
+> +    aml_append(pkg, pkg1);
+> +    aml_append(pkg, pkg2);
+> +
+> +    UUID = aml_touuid("DAFFD814-6EBA-4D8C-8A91-BC9BBF4AA301");
+
+I'm not a fun of free form UUIDs and above one seems to be the case:
+https://uefi.org/sites/default/files/resources/_DSD-device-properties-UUID.pdf
+
+looking at above doc this UUID also requires HID/ACPI ID
+to describe data structure definition which this patch is missing.
+It's also questionable whether _HID and _ADR are allowed to go together.
+
+PS:
+Commit message and comments here should have appropriate pointers
+to relevant specs.
+
+> +    aml_append(dev_pkg, UUID);
+> +    aml_append(dev_pkg, pkg);
+> +
+> +    aml_append(memdev, aml_name_decl("_DSD", dev_pkg));
+> +    aml_append(dev, memdev);
+> +}
+> +
+> +static void find_mem_device(PCIBus *bus, PCIDevice *pdev,
+> +                            void *opaque)
+> +{
+> +    Aml *dev = (Aml *)opaque;
+> +
+> +    if (bus == NULL) {
+> +        return;
+> +    }
+> +
+> +    if (pdev->has_coherent_memory) {
+> +        Object *po = OBJECT(pdev);
+> +
+> +        if (po == NULL) {
+> +            return;
+> +        }
+> +
+> +        uint64_t pxm_start
+> +           = object_property_get_uint(po, "dev_mem_pxm_start", NULL);
+> +        uint64_t pxm_count
+> +           = object_property_get_uint(po, "dev_mem_pxm_count", NULL);
+> +
+> +        acpi_dsdt_add_cohmem_device(dev, pdev->devfn, pxm_start, pxm_count);
+> +    }
+> +}
+> +
+> +static void acpi_dsdt_find_and_add_cohmem_device(PCIBus *bus, Aml *dev)
+> +{
+> +    if (bus == NULL) {
+> +        return;
+> +    }
+> +
+> +    pci_for_each_device_reverse(bus, pci_bus_num(bus),
+> +                                find_mem_device, dev);
+> +
+> +}
+> +
+>  static void acpi_dsdt_add_pci_osc(Aml *dev)
+>  {
+>      Aml *method, *UUID, *ifctx, *ifctx1, *elsectx, *buf;
+> @@ -207,7 +273,10 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+>  
+>      acpi_dsdt_add_pci_route_table(dev, cfg->irq);
+>  
+> +    acpi_dsdt_find_and_add_cohmem_device(cfg->bus, dev);
+> +
+>      method = aml_method("_CBA", 0, AML_NOTSERIALIZED);
+> +
+>      aml_append(method, aml_return(aml_int(cfg->ecam.base)));
+>      aml_append(dev, method);
+>  
+
 
