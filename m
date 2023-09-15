@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856857A22F6
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:53:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 311B87A22F7
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:54:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhB88-0000ut-9n; Fri, 15 Sep 2023 11:53:16 -0400
+	id 1qhB8I-00011R-41; Fri, 15 Sep 2023 11:53:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qhB86-0000qJ-MZ
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:53:14 -0400
+ id 1qhB8F-00010x-AO
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:53:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <twiederh@redhat.com>)
- id 1qhB85-0002Qg-4L
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:53:14 -0400
+ id 1qhB8D-0002Rh-LX
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:53:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694793192;
+ s=mimecast20190719; t=1694793201;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D1RLaDyInCF09Gr5sPUWUBrVgmC2bXuPT7JM9TDMQsk=;
- b=P+RHMt4bU6DHPOqxj7fVkbrWea+E3NuctumM2O/ER+m7kVUAwFrb5qJJaslWDT5glisB6U
- 5xEG5hvBNNCOEHtndsCVVYnWy6QI+a8a7bYMAt1D/qVLdpSWv6UUR97cRFsyQHULjC24V7
- 7z1tppVuY8VWGeA01Us+VVwoLhX5Rmg=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=xfdTHNvw1+EKSfdvGLPxVyi5z1lrFRjBped8uf6AKR0=;
+ b=Nq4oo7LFTTONVNGIAAasIqpAQFR2BjDMakypttdjukFEp5w9fZqOCW9BGXT397yk8Fn8ey
+ u4CJ1IPw/R8eCY7piTuYzzTMm6k0VXFuTWXfFfe8cn+J3LG3O2d3dEWg+nBDq9b7ImMtbW
+ KQvZa1p55VXTA60W8m4eicbYrHt7vKs=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-540-6h_h_rlQPEmfQpycGB7hBw-1; Fri, 15 Sep 2023 11:53:09 -0400
-X-MC-Unique: 6h_h_rlQPEmfQpycGB7hBw-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2b6ff15946fso28655241fa.2
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:53:08 -0700 (PDT)
+ us-mta-136-7qcr4-kYPRyff763MUZn9A-1; Fri, 15 Sep 2023 11:53:19 -0400
+X-MC-Unique: 7qcr4-kYPRyff763MUZn9A-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-94a34d3e5ebso151369666b.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:53:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694793187; x=1695397987;
+ d=1e100.net; s=20230601; t=1694793198; x=1695397998;
  h=mime-version:user-agent:content-transfer-encoding:references
  :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
  :from:to:cc:subject:date:message-id:reply-to;
- bh=D1RLaDyInCF09Gr5sPUWUBrVgmC2bXuPT7JM9TDMQsk=;
- b=MvbGnwBB9KS6qgniITfuTTEXh0I/KqqOPMXxgVjPhgkqPcmaqPEovdI94U5a5d3RdC
- G8/UE/TXzHMm03aKpafHTvHkOVe8t4UoOSUuq+mhw0pkmdZnOEI41byeXGIQeLzxR6lH
- h/Pz02a6Xhoo2XYMx4w2rqpL0+mRG+PUnE7wI8PkX47q2sEW598A3FkYzTcTEEi9xiHi
- SD2jf18hphZ5rVFnbv0MxuLOn/80UFIqraOvT2U8EE4g87wxjo3L6doDq1nz8z1IlYuc
- u1hweARnyZdj+2O89w4UNHTqlWWafrEb4uf8dsyY88A3GHRSkoLgs7xdPtSkSOGLZYSL
- 6TLQ==
-X-Gm-Message-State: AOJu0YzySSSo0VaupRlC4IZhJXxdDi6FPmsDafyniUvUDZDV1YUot54U
- NNDlA3pckpnkI9HC4yAzsdIpIABPTF6EbjWYQuu4/YV3j0sFwoyIAVXb7gkTTHgB+S02GS9HRX3
- +l+MmdWQWijOmCMA=
-X-Received: by 2002:a05:651c:149:b0:2bd:169e:3819 with SMTP id
- c9-20020a05651c014900b002bd169e3819mr1977944ljd.17.1694793187738; 
- Fri, 15 Sep 2023 08:53:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPcDQtwaKIVoees5dcADucHbA6Xf00OvJpa1QyeK28bMv6is/g08afc5kAMoXkNglupA6dNw==
-X-Received: by 2002:a05:651c:149:b0:2bd:169e:3819 with SMTP id
- c9-20020a05651c014900b002bd169e3819mr1977929ljd.17.1694793187409; 
- Fri, 15 Sep 2023 08:53:07 -0700 (PDT)
+ bh=xfdTHNvw1+EKSfdvGLPxVyi5z1lrFRjBped8uf6AKR0=;
+ b=G/LACquV31XBXdrXVPHLQkBV9rThEBKxiBHlg0BTcpGRIbwMwyTTLKGA86i0RVVSZe
+ Zs6qPORIgDjf+mP+RYa4Fe/E0VD5dx1sajb2Lla2WrzWNF/2x7CWnG9VErIU+FbcP43T
+ iDpd4Rzo3E9FMQqBDwVSPp11JhEnzKVGZX/1D4aYtiPua8+Z9qIbof6sFzUj3iXN49wQ
+ 2r09MtXzkcnd5c89bUqjFR52aI3ioAADHsxsn2dnxNxyfIxitJGNucRN8sL4TSsi+K+M
+ UkW1QXHB3i5x+50328ugCoKpspqnuew9NFPnQgsegCc8KYyd3EpNQT/BbXlVn5v8fyUT
+ ut9w==
+X-Gm-Message-State: AOJu0YyJ+u5qI9JAvZEftHM9XN5ULKnm0l3VOVPOv4J1RHy1KiiLSntM
+ 8OnZPJuw9EJ7ha8UXkc7TLWWxLCFKGtzg/yiJDjHZDnUOWBP4/+Wvjp1DueR9Ck2WcQ28CYHMYG
+ 5jE6iqq/6ezst5yM=
+X-Received: by 2002:a17:906:10c:b0:9a6:4fe0:4552 with SMTP id
+ 12-20020a170906010c00b009a64fe04552mr1816406eje.46.1694793198485; 
+ Fri, 15 Sep 2023 08:53:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPRcWTIUT6mx9aXVAg3HcXHREoZlzBKPTDb96GIOC2S8EeH/9Wg8WMsvlfeiUUnV0xo/y6YA==
+X-Received: by 2002:a17:906:10c:b0:9a6:4fe0:4552 with SMTP id
+ 12-20020a170906010c00b009a64fe04552mr1816391eje.46.1694793198086; 
+ Fri, 15 Sep 2023 08:53:18 -0700 (PDT)
 Received: from [192.168.178.136] (port-92-192-229-70.dynamic.as20676.net.
  [92.192.229.70]) by smtp.gmail.com with ESMTPSA id
- t25-20020a1709064f1900b009ad8084e08asm2580503eju.0.2023.09.15.08.53.06
+ sd5-20020a170906ce2500b00992a8a54f32sm2561095ejb.139.2023.09.15.08.53.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 08:53:06 -0700 (PDT)
-Message-ID: <0c66fd2ada7a317deb2a0e2cf561f626b6f766b6.camel@redhat.com>
-Subject: Re: [PATCH v2 03/10] target/i386: Fix duplicated feature name in
- FEAT_KVM
+ Fri, 15 Sep 2023 08:53:16 -0700 (PDT)
+Message-ID: <bbf3127802e95a7c9985c179bb470de4a970b64f.camel@redhat.com>
+Subject: Re: [PATCH v2 00/10] Generate x86 cpu features
 From: Tim Wiederhake <twiederh@redhat.com>
-To: Igor Mammedov <imammedo@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>, "Daniel P."
+ =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, "Daniel P ." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S .
+ <philmd@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>, "Michael S .
  Tsirkin" <mst@redhat.com>
-Date: Fri, 15 Sep 2023 17:53:05 +0200
-In-Reply-To: <20230908162109.0878826d@imammedo.users.ipa.redhat.com>
+Date: Fri, 15 Sep 2023 17:53:16 +0200
+In-Reply-To: <20230911132618.16af94de@imammedo.users.ipa.redhat.com>
 References: <20230908124534.25027-1-twiederh@redhat.com>
- <20230908124534.25027-4-twiederh@redhat.com>
- <20230908162109.0878826d@imammedo.users.ipa.redhat.com>
+ <20230908164846.184aba1c@imammedo.users.ipa.redhat.com>
+ <ZPtR8BQquJ3BRgPH@redhat.com>
+ <20230911132618.16af94de@imammedo.users.ipa.redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
@@ -105,61 +105,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-09-08 at 16:21 +0200, Igor Mammedov wrote:
-> On Fri,=C2=A0 8 Sep 2023 14:45:27 +0200
-> Tim Wiederhake <twiederh@redhat.com> wrote:
+On Mon, 2023-09-11 at 13:26 +0200, Igor Mammedov wrote:
+> On Fri, 8 Sep 2023 17:55:12 +0100
+> Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
 >=20
-> > The mistake became apparent as there were two features with the
-> > same name
-> > in this cpuid leaf. The names are now in line with the
-> > documentation from
-> > https://kernel.org/doc/html/latest/virt/kvm/x86/cpuid.html
+> > On Fri, Sep 08, 2023 at 04:48:46PM +0200, Igor Mammedov wrote:
+> > > On Fri,=C2=A0 8 Sep 2023 14:45:24 +0200
+> > > Tim Wiederhake <twiederh@redhat.com> wrote:
+> > > =C2=A0=20
+> > > > Synchronizing the list of cpu features and models with qemu is
+> > > > a recurring
+> > > > task in libvirt. For x86, this is done by reading qom-list-
+> > > > properties for
+> > > > max-x86_64-cpu and manually filtering out everthing that does
+> > > > not look like
+> > > > a feature name, as well as parsing target/i386/cpu.c for cpu
+> > > > models.=C2=A0=20
+> > >=20
+> > > modulo fixing typos/name conflicts in 1st 3 patches,
+> > >=20
+> > > I don't think it's a great idea for libvirt (or any other user)
+> > > to parse
+> > > QEMU source (whether it's C code or yaml) or other way around for
+> > > users
+> > > to influence QEMU internals.=C2=A0=20
+> >=20
+> > NB It isn't for libvirt to parse at runtime, rather it is for
+> > libvirt
+> > maintainers to consume during dev, so libvirt keeps in sync with
+> > QEMU
+> > features.
 >=20
-> I'd describe what duplication breaks and it's effects.
+> As QEMU dev, I'm not fond of code generators as sometimes they make
+> difficult for me to read, and on to of that inventing new 'language'
+> to describe features that works on some cases only (not everything
+> is described in feature array, and for non x86 properties mostly
+> coded in initfn/realizefn).
+> (I'd dislike it less if it were part of QMP schema as it gets us
+> closer to processing '-device' with QMP machinery).
 >=20
-> and also why it's considered that it's safe to change names here.
+> why not use existing QMP interface there as well (or alter it if
+> it's not sufficient)?
 >=20
-This is my first contribution to qemu. I do not know whether it is safe
-to change the names, nor how to find out I'm afraid. I ran `make test`,
-if that is what you mean.
+>=20
+I understand your concern regarding the legibility of generated code.
+If you have a look at patches 6 - 9, you will see that the only changes
+introduced are white space changes, harmonizing the usage of trailing
+commas, breaking lines, and filling the "feat_names" field fully. That,
+if anything, makes the code more readable in my opinion.
 
-Please let me know what you need me to do here.
+The format of the yaml file is chosen to mimic struct FeatureWordInfo
+as closely as possible, it is effectively a 1:1 mapping.
 
-In the meantime, I will separate the patches that rename / fix feature
-names from the remaining patch set, and split the changes up as
-requested.
+Regarding using the QMP interface: That is what libvirt is currently
+doing, see [1] if you are interested. The problem with that approach is
+that the response to
+
+    {
+        "execute": "qom-list-properties",
+        "arguments": { "typename": "max-x86_64-cpu"}
+    }
+
+does not distinguish between cpu features and other information about
+that cpu model, thus forcing libvirt to maintain a list of non-
+features. Examples of such items are "check", "enforce", "start-
+powered-off", or "migratable".
+
+Additionally, the response does not include information about the cpuid
+leaf, register and bit, or msr register respectively. This has to be
+supplemented manually.
+
+If there is a way to query for this information that I am not aware of,
+please let me know.
+
+Ultimately I would love to see libvirt stop querying qemu for x86 cpu
+feature information but instead have both qemu and libvirt query a
+common source / database for this kind of information, for all
+architectures, not only x86.
 
 Regards,
 Tim
 
-> > Fixes: 642258c6c7 ("kvm: add kvmclock to its second bit")
-> > Signed-off-by: Tim Wiederhake <twiederh@redhat.com>
-> > ---
-> > =C2=A0target/i386/cpu.c | 2 +-
-> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> > index f10d343935..f0fedf4b88 100644
-> > --- a/target/i386/cpu.c
-> > +++ b/target/i386/cpu.c
-> > @@ -852,7 +852,7 @@ FeatureWordInfo
-> > feature_word_info[FEATURE_WORDS] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 [FEAT_KVM] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .type =3D CPUID_FEATUR=
-E_WORD,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .feat_names =3D {
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "kv=
-mclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock",
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "kv=
-mclock", "kvm-nopiodelay", "kvm-mmu", "kvmclock2",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 "kvm-asyncpf", "kvm-steal-time", "kvm-pv-eoi", "kvm-
-> > pv-unhalt",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 NULL, "kvm-pv-tlb-flush", NULL, "kvm-pv-ipi",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 "kvm-poll-control", "kvm-pv-sched-yield", "kvm-
-> > asyncpf-int", "kvm-msi-ext-dest-id",
->=20
+[1]
+https://gitlab.com/libvirt/libvirt/-/blob/master/src/cpu_map/sync_qemu_feat=
+ures_i386.py
 
 
