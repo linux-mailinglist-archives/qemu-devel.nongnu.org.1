@@ -2,88 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53857A228A
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 201CD7A2298
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 17:40:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhArq-0001hp-Ku; Fri, 15 Sep 2023 11:36:26 -0400
+	id 1qhAuH-0003FV-Q8; Fri, 15 Sep 2023 11:38:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhArm-0001hF-8u
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:36:22 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhArk-0006uW-JJ
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:36:22 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-403012f276dso24939885e9.0
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 08:36:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694792177; x=1695396977; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5CI3NNC9SiJ1TxUL6btnHuQ4dhmRN5gG+G3zcqeRXVM=;
- b=sFJ+/LVIj96uWg40x7AmQA/MatKjp2eFUB/6chzmMqRrH7kKvG4rJMUiij+9l7VHmV
- nTA5ilqE9jNBpwUTsgb7nsKQCKv5QSrsYLWegmocWMiVqY6ExzvV6SeS8p1nn6VXU5b0
- YPKI+q9EzS0mKJU9HG70lgduJeYAkOt5RhnrYA3WE0V+jsFtUYVTKyWL17o5Nf4tp3Qs
- 8r72Uz75YCma1/19jq2gLggE186taPSYWRhnd3Nw16uF461OEKw3JwpLMxtRSrdDmc0Z
- SOPAZw96YTCm1IdRtjS95WwMefIQL+VuXLlmyCUoO8QkEkI36KHUfw5PGvGuVM23xUYz
- Ik+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694792177; x=1695396977;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5CI3NNC9SiJ1TxUL6btnHuQ4dhmRN5gG+G3zcqeRXVM=;
- b=bxz6q7vszgIhZADuufmsbA6zYDKGtmqW4qapnErqyvbLTx1UC6o/yQio8GY8xFMZFP
- 5dbaDaRC2BLSwAd1/1q7tsge4fq541R7xkRrTlYqZYKEgqSxhlwkAuynbZj0vnPp4i5H
- IdeqWvRGcpJur0fmUaEhe78An1Blh35Nc4taYYCjfrXF/hHlYbcIXds5wPhtYeDYAV77
- xhj9Y4s4zMEuC/bPndRy08PlLzUGX70RzLW6/qIoqPU4TD2G3cAlHztTOWQdHZoWAIqi
- qUym4PfHip0cNOI625EfMY87p3MUUSma/MwN8sZzfuU9bQ79ujrdxrEgrhHLUBPJxGZD
- FzhA==
-X-Gm-Message-State: AOJu0YzX4m39jqD6Ifyq94EDZi5nar/5qGXLoO7jEKp1dbMofYUEhX5G
- ifskBCV75vGS/tFOz+16A03WMA==
-X-Google-Smtp-Source: AGHT+IG41nLabpVAug2wTxpDa0exGVJNCN+kLHtI6EhFWzLSnPMKB9/WwA+qFIvR70brxexwhCSqTA==
-X-Received: by 2002:a5d:4acb:0:b0:313:eb09:c029 with SMTP id
- y11-20020a5d4acb000000b00313eb09c029mr1787008wrs.43.1694792177339; 
- Fri, 15 Sep 2023 08:36:17 -0700 (PDT)
-Received: from [192.168.69.115]
- (6lp61-h01-176-171-209-234.dsl.sta.abo.bbox.fr. [176.171.209.234])
- by smtp.gmail.com with ESMTPSA id
- ci8-20020a5d5d88000000b0031fedb25b85sm2435154wrb.84.2023.09.15.08.36.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 08:36:16 -0700 (PDT)
-Message-ID: <4cf84e75-2602-6676-9b85-92f5918232ba@linaro.org>
-Date: Fri, 15 Sep 2023 17:36:15 +0200
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qhAuC-0003F2-Cu
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:38:52 -0400
+Received: from ams.source.kernel.org ([2604:1380:4601:e00::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qhAu9-0007KS-Hh
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 11:38:51 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id B85EEB82CC7;
+ Fri, 15 Sep 2023 15:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D707C433C8;
+ Fri, 15 Sep 2023 15:38:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1694792324;
+ bh=g0TXvUhufHEnZNGcQlb60TNhnSlA3Q1CgMsvY7Ipt1c=;
+ h=From:To:Cc:Subject:Date:From;
+ b=PZxbFr0awlY7kFq+hzhif/kY3lauUMflVAE5fvROICMTMaF5qtFzf1+3irSAqTCsu
+ TC7E7EV8kq0KIA8TiMbyGjfYll/Li5VcLK6ZHti2nbTW8JCQticNfFEui6OGIdCEyR
+ PNy9vQps2jLX6jKb7G8XgYENjVi8YQA30+EfRqfLcLxH/IbfwU7UMSzND/jenZBnXS
+ +7xHftRBLsQu9HUUzGsVn0GIslsfoKi9kuu802iB3buonQ1PUxfouKIeR9DZUEI/CN
+ Ax9UMRqmssM/g6d2dGiW2eKTm4/Ms8QmG1rqoTG8JNTEBaAXUuOLHGmSGgg4dGSrtt
+ 8iSot5gEHOA+Q==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v2 0/6] Add Block-TLB support for hppa target
+Date: Fri, 15 Sep 2023 17:38:35 +0200
+Message-ID: <20230915153841.57564-1-deller@kernel.org>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 06/11] exec: Rename cpu.c -> cpu-target.c
-Content-Language: en-US
-To: Anton Johansson <anjo@rev.ng>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Alessandro Di Federico <ale@rev.ng>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Riku Voipio <riku.voipio@iki.fi>
-References: <20230914185718.76241-1-philmd@linaro.org>
- <20230914185718.76241-7-philmd@linaro.org>
- <fzzskmx5koxw7xzzwwv6jejnntnjdw7psfjgnwkulxaq2sw7qf@2ro4ydtvieyg>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <fzzskmx5koxw7xzzwwv6jejnntnjdw7psfjgnwkulxaq2sw7qf@2ro4ydtvieyg>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2604:1380:4601:e00::1;
+ envelope-from=deller@kernel.org; helo=ams.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,53 +69,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/9/23 16:19, Anton Johansson wrote:
-> On 14/09/23, Philippe Mathieu-Daudé wrote:
->> We have exec/cpu code split in 2 files for target agnostic
->> ("common") and specific. Rename 'cpu.c' which is target
->> specific using the '-target' suffix. Update MAINTAINERS.
->> Remove the 's from 'cpus-common.c' to match the API cpu_foo()
->> functions.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   MAINTAINERS                   | 4 ++--
->>   meson.build                   | 4 ++--
->>   cpus-common.c => cpu-common.c | 0
->>   cpu.c => cpu-target.c         | 0
->>   4 files changed, 4 insertions(+), 4 deletions(-)
->>   rename cpus-common.c => cpu-common.c (100%)
->>   rename cpu.c => cpu-target.c (100%)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 00562f924f..12261d8eaf 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -139,7 +139,8 @@ R: Paolo Bonzini <pbonzini@redhat.com>
->>   S: Maintained
->>   F: softmmu/cpus.c
->>   F: softmmu/watchpoint.c
->> -F: cpus-common.c
->> +F: cpu-common.c
->> +F: cpu-target.c
+From: Helge Deller <deller@gmx.de>
 
-The renamed file is here ^
+All 32-bit hppa CPUs allow a fixed number of TLB entries to have a
+different page size than the default 4k.
+Those are called "Block-TLBs" and are created at startup by the
+operating system and managed by the firmware of hppa machines
+through the firmware PDC_BLOCK_TLB call.
 
->>   F: page-vary.c
->>   F: page-vary-common.c
->>   F: accel/tcg/
->> @@ -1772,7 +1773,6 @@ M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
->>   R: Philippe Mathieu-Daudé <philmd@linaro.org>
->>   R: Yanan Wang <wangyanan55@huawei.com>
->>   S: Supported
->> -F: cpu.c
-> Was the maintainer switch intentional?
+This patchset adds the necessary glue to SeaBIOS-hppa and
+qemu to allow up to 16 BTLB entries in the emulation.
 
-(yes, see earlier)
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-> 
-> Either way,
-> Reviewed-by: Anton Johansson <anjo@rev.ng>
+Patch series can be pulled from branch
+https://github.com/hdeller/qemu-hppa.git   hppa-btlb
 
-Thanks!
+v2:
+- no code changes, just rephrased commit title and
+  commit message of patches #3 and #4
+
+Helge Deller (6):
+  target/hppa: Update to SeaBIOS-hppa version 9
+  target/hppa: Allow up to 16 BTLB entries
+  target/hppa: Report and clear BTLBs via fw_cfg at startup
+  target/hppa: Add BTLB support to hppa TLB functions
+  target/hppa: Extract diagnose immediate value
+  target/hppa: Wire up diag instruction to support BTLB
+
+ hw/hppa/machine.c         |  10 +--
+ pc-bios/hppa-firmware.img | Bin 720216 -> 732376 bytes
+ roms/seabios-hppa         |   2 +-
+ target/hppa/cpu.h         |  11 ++-
+ target/hppa/helper.h      |   1 +
+ target/hppa/insns.decode  |   2 +-
+ target/hppa/int_helper.c  |   2 +-
+ target/hppa/mem_helper.c  | 179 ++++++++++++++++++++++++++++++++------
+ target/hppa/op_helper.c   |   3 +-
+ target/hppa/translate.c   |  15 +++-
+ 10 files changed, 184 insertions(+), 41 deletions(-)
+
+-- 
+2.41.0
+
 
