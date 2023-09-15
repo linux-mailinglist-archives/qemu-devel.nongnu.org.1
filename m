@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF087A23A7
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 851DC7A23A4
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 18:33:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhBkc-0008FM-AB; Fri, 15 Sep 2023 12:33:02 -0400
+	id 1qhBkc-0008FO-LM; Fri, 15 Sep 2023 12:33:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhBka-0008EW-2T
+ id 1qhBka-0008Ee-Sc
  for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:33:00 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhBkY-00037H-Jm
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:32:59 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-68fc9e0e22eso1938327b3a.1
+ id 1qhBkZ-00037L-7W
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 12:33:00 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68fb79ef55eso2137444b3a.0
  for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 09:32:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694795577; x=1695400377; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694795578; x=1695400378; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=roQeQsya1pJNmaqO3L7g1proDq+Pgx0B2L/hs/vf2TU=;
- b=BUb9ga6+9KOd60zUZ3WLPmCp6TwPWnMkhWqdJVtDUiKy526rNvT7NgfLK2Sj/e2CkL
- pkT+hlQx4pw/KCoMB6CbYHU+eYe8JCk81oRpd7W4WLPoAYbzUXsUUcSjGJBiq4ApE8Y/
- /8eklMNysROvzwclCA6Pviq3WC4x/uS0jEV+Z6lEkgf/hvuSrodNsYRD8N5q0xdtl/OD
- WpCKB6UMH6VeLUTxoKBbbQM8FPK7Z66jzETr3jYHnM4Mzvr8LiGXjNlbnBb+6H/o89Do
- hFMmIXCvKrlmrMjIN2XFmhcSYiHHgYay/q4P9RW5SZA8DvTcT47ytFuE9oesaLh/pnmj
- 8/MA==
+ bh=iJ6Oywpvjr1xG7Guou9tEnbUmyP3OUnn4VhCnCRzKJY=;
+ b=BoHXb9ezG57eYc6uny9thtZ+GyAvtvLAWsvuG7K3IA6JdWWE8iYKOcpa3pwq5uBKKU
+ xTRtw9WvIQlADM1orag8E9Gd18zaPELz5PJ/vm7qYzat/ZqkxV5Wy2dWF7Fkpls/YN69
+ eQIGbbWTBQCPKOWGB+XNKW4k6XYgMIU+dxIjgOKHrIcYxq2JMy18jbL7xTscPfoOQD0N
+ C5FvXKdkXQZLes3a3hg6C9wHtVHUsc74UGJLatmcToDl1CVCgiV2mWS8M322t/YXK7T8
+ 89Uj22CyPNgETbdrwT3qhn2jYgH32Dx3jId9TSFMlCNOT88Q+MnehVGSTWI5w1qPRKV+
+ RA6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694795577; x=1695400377;
+ d=1e100.net; s=20230601; t=1694795578; x=1695400378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=roQeQsya1pJNmaqO3L7g1proDq+Pgx0B2L/hs/vf2TU=;
- b=UmPB1WHXNiDxuimXwMjuTY3k8uUsE3t5zrcOuvmfJcaJBi1n4sShQT+LIShnHHUqYA
- h4Y3vSzQgnxzGCaolNs91CxtOBoDjHrOf7g6g3HW4mYlREi+Zg3p97i9OKp6sH5YKBbz
- z4LidGEv+xMHO362GK2fY7JMHTh5J8monAp3KmzORxda+gogtD+I9MTkXRSABGTMjl8P
- aca9uIWFZewGqwht4KtypIQtYeRXAnqBXQXtyIIeouqIjegMmf5uxaMSA4woGHwo1L+H
- /FcEk8lNO+MXwO/P0s27PrtByfxNlnH4mPAbv6mrQ8wXUhjxeWTBZK2ffVloZMtY5Lyb
- +scw==
-X-Gm-Message-State: AOJu0YzaA+bwbIsGJpEQqfyDcbsfToZ6QPJodylTItMhYOUziSzmfBv5
- Be+6jp528zguPr0msyzpXmTTo3aotIjN5/BTfME=
-X-Google-Smtp-Source: AGHT+IGKI0YKamdN3yHj+xj8V0xVFvuA216Tz+cccLsnHVVcUg/eUa/3bhQQGuEiRM/maL3evvmaiQ==
-X-Received: by 2002:a05:6a20:12ce:b0:137:2f8c:fab0 with SMTP id
- v14-20020a056a2012ce00b001372f8cfab0mr2706822pzg.49.1694795576927; 
- Fri, 15 Sep 2023 09:32:56 -0700 (PDT)
+ bh=iJ6Oywpvjr1xG7Guou9tEnbUmyP3OUnn4VhCnCRzKJY=;
+ b=gb4vYcHghb+K3wppA3VaK4RR4241nCam3uJm99q6yV+4aGxqJRjeTz17N05rDQjPcu
+ AH0hJnRd2hHN7zkhCEYyIb+nRyRrpeFIR11VJRhv3SswcIzt2WxwA1fqCQngvl57S1Tm
+ F875PsUObkAxRk3YC6TVAPtG3FqwXInFT3wPn2Df+IUfoPBpqYgt/Wstv8MnXjO4Tb+Z
+ +G1Rjf54x3VDhgUx2pKkB4KbkTOgtN3pTT2VfncQC35EJAU6z2pxUnL6PwKb4vSdN7It
+ RWQBgsY56XZgyZACJxFmPgzly4ox4ZRM0Te5IvyvpCGEPm7+RMYULalZ/XxlwAeMvMma
+ YbVw==
+X-Gm-Message-State: AOJu0YxX28T++bMEPxNf7t4UEwa2gT9fTqd19dMRo05ARAfO5p94hFjg
+ 0/bCi7pqI+ekJoGw2kjVI+uLnpoA0rBZBi0Cz+E=
+X-Google-Smtp-Source: AGHT+IHmBWeoqa475C9Bo6s5X6vPH5xf3QnpRGzSFb+/ImQCwZ/mfNMX1sfgbdg61SmgMpulVGHWjA==
+X-Received: by 2002:a05:6a21:18d:b0:129:d944:2e65 with SMTP id
+ le13-20020a056a21018d00b00129d9442e65mr3105614pzb.13.1694795577935; 
+ Fri, 15 Sep 2023 09:32:57 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- z3-20020a637e03000000b0057754ae4eb7sm2958497pgc.39.2023.09.15.09.32.56
+ z3-20020a637e03000000b0057754ae4eb7sm2958497pgc.39.2023.09.15.09.32.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 09:32:56 -0700 (PDT)
+ Fri, 15 Sep 2023 09:32:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH v2 1/3] softmmu: Use cpu->created in tcg_commit
-Date: Fri, 15 Sep 2023 09:32:52 -0700
-Message-Id: <20230915163254.123338-2-richard.henderson@linaro.org>
+Subject: [PATCH v2 2/3] softmmu: Introduce AddressSpaceDispatch generation
+ numbers
+Date: Fri, 15 Sep 2023 09:32:53 -0700
+Message-Id: <20230915163254.123338-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915163254.123338-1-richard.henderson@linaro.org>
 References: <20230915163254.123338-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,31 +91,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use created not halt_cond to test for cpu created.
+Allow the cpu to easily check if an address space update
+is required.  The acquire/release semantics will be used
+by a subsequent patch.
 
-Fixes: 0d58c660689f ("softmmu: Use async_run_on_cpu in tcg_commit")
-Reported-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- softmmu/physmem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ softmmu/physmem.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 18277ddd67..88fafec1da 100644
+index 88fafec1da..e1c535380a 100644
 --- a/softmmu/physmem.c
 +++ b/softmmu/physmem.c
-@@ -2515,9 +2515,9 @@ static void tcg_commit(MemoryListener *listener)
-      * the memory data structures.
-      *
-      * That said, the listener is also called during realize, before
--     * all of the tcg machinery for run-on is initialized: thus halt_cond.
-+     * all of the tcg machinery for run-on is initialized: thus created.
+@@ -163,6 +163,8 @@ struct CPUAddressSpace {
+     AddressSpace *as;
+     struct AddressSpaceDispatch *memory_dispatch;
+     MemoryListener tcg_as_listener;
++    uint32_t commit_gen;
++    uint32_t layout_gen;
+ };
+ 
+ struct DirtyBitmapSnapshot {
+@@ -2486,14 +2488,23 @@ static void tcg_log_global_after_sync(MemoryListener *listener)
+     }
+ }
+ 
+-static void tcg_commit_cpu(CPUState *cpu, run_on_cpu_data data)
++static void tcg_commit_cpu_0(CPUState *cpu, CPUAddressSpace *cpuas)
+ {
+-    CPUAddressSpace *cpuas = data.host_ptr;
+-
+     cpuas->memory_dispatch = address_space_to_dispatch(cpuas->as);
+     tlb_flush(cpu);
+ }
+ 
++static void tcg_commit_cpu_1(CPUState *cpu, run_on_cpu_data data)
++{
++    CPUAddressSpace *cpuas = data.host_ptr;
++    uint32_t gen = qatomic_load_acquire(&cpuas->layout_gen);
++
++    if (cpuas->commit_gen != gen) {
++        cpuas->commit_gen = gen;
++        tcg_commit_cpu_0(cpu, cpuas);
++    }
++}
++
+ static void tcg_commit(MemoryListener *listener)
+ {
+     CPUAddressSpace *cpuas;
+@@ -2518,9 +2529,10 @@ static void tcg_commit(MemoryListener *listener)
+      * all of the tcg machinery for run-on is initialized: thus created.
       */
--    if (cpu->halt_cond) {
-+    if (cpu->created) {
-         async_run_on_cpu(cpu, tcg_commit_cpu, RUN_ON_CPU_HOST_PTR(cpuas));
+     if (cpu->created) {
+-        async_run_on_cpu(cpu, tcg_commit_cpu, RUN_ON_CPU_HOST_PTR(cpuas));
++        qatomic_store_release(&cpuas->layout_gen, cpuas->layout_gen + 1);
++        async_run_on_cpu(cpu, tcg_commit_cpu_1, RUN_ON_CPU_HOST_PTR(cpuas));
      } else {
-         tcg_commit_cpu(cpu, RUN_ON_CPU_HOST_PTR(cpuas));
+-        tcg_commit_cpu(cpu, RUN_ON_CPU_HOST_PTR(cpuas));
++        tcg_commit_cpu_0(cpu, cpuas);
+     }
+ }
+ 
 -- 
 2.34.1
 
