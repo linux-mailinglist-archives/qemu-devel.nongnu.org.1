@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E757A1AEB
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FF97A1AEA
 	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 11:42:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh5KC-0001lR-Qh; Fri, 15 Sep 2023 05:41:20 -0400
+	id 1qh5KI-0001m3-10; Fri, 15 Sep 2023 05:41:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh5K7-0001kA-MY
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:41:15 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh5KE-0001ln-2c
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:41:22 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh5K6-0000d1-0m
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:41:15 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9a9d82d73f9so237306166b.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 02:41:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qh5KC-0000e4-D7
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 05:41:21 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-5280ef23593so2189305a12.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 02:41:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694770872; x=1695375672; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694770877; x=1695375677; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xKB6i1a2Yf+Z+ixpNmbbmyHoSOgE6srsg9geAh24tEo=;
- b=NhAz04SUeTyUKiLhH++IXVolxZ5v5/GSpRC2MRGvAQBv22aSDLcMp1mtlWShnlG0Uf
- RcTwLnul59EPyfpOpdSWfq8xJV8/NWLNElc8mocRw8i3TNPywMHvgYXOBiw8gLKo60iL
- lkLe4DKiaxn2KJtvjTjvp6p59vENw3KUVNfoKPaJUinEN9UY6aASok8wUVPrpssnZV8u
- 0KL9wV5fABIAAQZ0n53v49z4tGFUFlj2Sxl1XWbakl9jYJeuXBO59eJVqXiSEu2hzJDw
- b8eezZA1f7DgqytegSVE6ClJUVse2S7inb0RK683UlhdmQBrBnBcv+KLun8nTM683FEe
- WGVg==
+ bh=HIu2ocilQq5vP7WdRJFP99+NTs9YWbgGeSYR/hElyzM=;
+ b=r4NjXcKAN3i2mQymMqEvhpsQofHX6Bg6E8adshWXsZcZfbyoCT3NmzzwPl6RgYkw76
+ v8sWud+H8wBoUjlIQiqJ6vJ1dUKWHLeVsO8Mi6LteH/4xYif6LbnGOkM/c9OcsL8hAlM
+ 8OP4foL9R1JwF0ky2Kvz+7ZwXI2BI31o0rlU9p/neHhfHP2Wzi8iGVNkYVoUnBv9ylzG
+ UIX7isJyeOqarO4ReqoS+fyJhQMB21BFatuzgMwj7mYEIw8wocYfe3npSrQ1MKjKfbhg
+ bE9uXqLDX910+8E5VUP4B92tu7/FJfEN6kWApj0/NLqn6eptqScf5tIbRuw9BlDUYFg6
+ 5mXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694770872; x=1695375672;
+ d=1e100.net; s=20230601; t=1694770877; x=1695375677;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xKB6i1a2Yf+Z+ixpNmbbmyHoSOgE6srsg9geAh24tEo=;
- b=weynLDz0cnjqhco6yPLKYmu2CO8TR///pE9o2s/4Itap7WHsuuSjhXLYIWMili1rsT
- ok+NppBLH8lopEUiu8EKqvrL611fGX215g8RoVwF97wVfqa4iBMkRCJvFljUfKjF4uvj
- jt4n6jaOyxJAVcQtmfdblfACV6Xlb2b/hrhrmVRiuA9QdajkNmtb4LR3X80HQ+a/m8ya
- rpuMiVy3N4ykYwUii3lGMsGSSgiiw5Eiy9DJkVwAgybyBGLmTD6AfZ3NzavbYOTEjE14
- v8OLpOZ6OOe72y1dDcEEKniOusyQZh2DX8LytgXUYmrc1KtoRe3AQpMyM9FZ6rqnKcQp
- xPAQ==
-X-Gm-Message-State: AOJu0Yw9qHTLy34rJT+mMZJvkMvEYQBSoGSUtyWaWtWECfsX8nKQBmij
- 2ZJNigAgiTmo5iAUqDjdrVxVp996qhx1HPJYAuw=
-X-Google-Smtp-Source: AGHT+IHMua0kXMs+CT6573NXMVTjtIFyMEqAxnfXet5wx6RqT8IZFtyFSqAZONgxfdz+rbP0L5Lc1w==
-X-Received: by 2002:a17:906:15b:b0:9a1:a134:8cb4 with SMTP id
- 27-20020a170906015b00b009a1a1348cb4mr927969ejh.32.1694770871969; 
- Fri, 15 Sep 2023 02:41:11 -0700 (PDT)
+ bh=HIu2ocilQq5vP7WdRJFP99+NTs9YWbgGeSYR/hElyzM=;
+ b=PZGZdNCvXVrFIRvQbJ2yb5CyN9Z26P6RT2G/CuSzGGffQ4W2YkW1WZX6zM4886IGBk
+ aIuT+ZrIfRb2IhcPaz6IOaE1HrQiFSupMT2VGhxxc5q/rRp7De8YY2dtE+vZNYsNrTID
+ uClT+ojzY3oyeVlu1xsuGPTsGtF4NLVoOYmFaVUQX2ExCOMeMTWleB2ODdUuS29TeCOv
+ FUgu52w3J3mJh36KNs+PIwylPtcVOMoFcq46ZNw9ssD27Y3/NzHe/DLuNfxoTKJklgWP
+ wuym7IIUrIlaKLvTsnQTn82mx56JvCPJiqQVHrOIaP49C57LMWjFVJfninLMgbCTnArK
+ jboQ==
+X-Gm-Message-State: AOJu0YysRTRYxPjroPQpdZuEPIeClw4Yql3b9zQKmhq+oSV7JZSyYhtM
+ 24UR/M9/0RpmciaQeOIg0UsdNFEFr9z5DBBEt5Q=
+X-Google-Smtp-Source: AGHT+IFwYBtNhrErlqaXDo9hpYT9N+9RMEqEuAlTElPIxs3KZC9inayRbmOtMQ6tBDWODqVuW3ZfQg==
+X-Received: by 2002:a50:ed11:0:b0:52c:164:efe4 with SMTP id
+ j17-20020a50ed11000000b0052c0164efe4mr888892eds.34.1694770877557; 
+ Fri, 15 Sep 2023 02:41:17 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-223-129.abo.bbox.fr. [176.131.223.129])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a17090655cf00b00997d7aa59fasm2211850ejp.14.2023.09.15.02.41.10
+ o7-20020aa7d3c7000000b005233deb30aesm2022015edr.10.2023.09.15.02.41.16
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Sep 2023 02:41:11 -0700 (PDT)
+ Fri, 15 Sep 2023 02:41:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/6: 1/2] accel/tcg: Refactor gen_io_start() as set_can_do_io()
-Date: Fri, 15 Sep 2023 11:41:08 +0200
-Message-ID: <20230915094109.82757-1-philmd@linaro.org>
+Subject: [PATCH 3/6: 2/2] accel/tcg: Track current value of can_do_io in the TB
+Date: Fri, 15 Sep 2023 11:41:09 +0200
+Message-ID: <20230915094109.82757-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230914174436.1597356-4-richard.henderson@linaro.org>
+In-Reply-To: <20230915094109.82757-1-philmd@linaro.org>
 References: <20230914174436.1597356-4-richard.henderson@linaro.org>
+ <20230915094109.82757-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,80 +93,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Richard Henderson <richard.henderson@linaro.org>
+
+Simplify translator_io_start by recording the current
+known value of can_do_io within DisasContextBase.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 Message-ID: <20230914174436.1597356-4-richard.henderson@linaro.org>
 [PMD: Split patch in 2, extracting set_can_do_io() first]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/translator.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ include/exec/translator.h |  2 ++
+ accel/tcg/translator.c    | 14 +++++++-------
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 4e17c4f401..9d9e980819 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -72,6 +72,7 @@ typedef enum DisasJumpType {
+  * @num_insns: Number of translated instructions (including current).
+  * @max_insns: Maximum number of instructions to be translated in this TB.
+  * @singlestep_enabled: "Hardware" single stepping enabled.
++ * @saved_can_do_io: Known value of cpu->neg.can_do_io, or -1 for unknown.
+  *
+  * Architecture-agnostic disassembly context.
+  */
+@@ -83,6 +84,7 @@ typedef struct DisasContextBase {
+     int num_insns;
+     int max_insns;
+     bool singlestep_enabled;
++    int8_t saved_can_do_io;
+     void *host_addr[2];
+ } DisasContextBase;
+ 
 diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index b6ab9f3d33..cebf0a84cc 100644
+index cebf0a84cc..850d82e26f 100644
 --- a/accel/tcg/translator.c
 +++ b/accel/tcg/translator.c
-@@ -16,9 +16,9 @@
- #include "tcg/tcg-op-common.h"
- #include "internal.h"
+@@ -18,9 +18,12 @@
  
--static void gen_io_start(void)
-+static void set_can_do_io(DisasContextBase *db, bool val)
+ static void set_can_do_io(DisasContextBase *db, bool val)
  {
--    tcg_gen_st_i32(tcg_constant_i32(1), cpu_env,
-+    tcg_gen_st_i32(tcg_constant_i32(val), cpu_env,
-                    offsetof(ArchCPU, parent_obj.can_do_io) -
-                    offsetof(ArchCPU, env));
- }
-@@ -35,7 +35,7 @@ bool translator_io_start(DisasContextBase *db)
-         return true;
-     }
- 
--    gen_io_start();
-+    set_can_do_io(db, true);
- 
-     /*
-      * Ensure that this instruction will be the last in the TB.
-@@ -47,7 +47,7 @@ bool translator_io_start(DisasContextBase *db)
-     return true;
+-    tcg_gen_st_i32(tcg_constant_i32(val), cpu_env,
+-                   offsetof(ArchCPU, parent_obj.can_do_io) -
+-                   offsetof(ArchCPU, env));
++    if (db->saved_can_do_io != val) {
++        db->saved_can_do_io = val;
++        tcg_gen_st_i32(tcg_constant_i32(val), cpu_env,
++                       offsetof(ArchCPU, parent_obj.can_do_io) -
++                       offsetof(ArchCPU, env));
++    }
  }
  
--static TCGOp *gen_tb_start(uint32_t cflags)
-+static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
- {
-     TCGv_i32 count = NULL;
-     TCGOp *icount_start_insn = NULL;
-@@ -91,12 +91,9 @@ static TCGOp *gen_tb_start(uint32_t cflags)
-          * cpu->can_do_io is cleared automatically here at the beginning of
-          * each translation block.  The cost is minimal and only paid for
-          * -icount, plus it would be very easy to forget doing it in the
--         * translator. Doing it here means we don't need a gen_io_end() to
--         * go with gen_io_start().
-+         * translator.
-          */
--        tcg_gen_st_i32(tcg_constant_i32(0), cpu_env,
--                       offsetof(ArchCPU, parent_obj.can_do_io) -
--                       offsetof(ArchCPU, env));
-+        set_can_do_io(db, false);
+ bool translator_io_start(DisasContextBase *db)
+@@ -30,10 +33,6 @@ bool translator_io_start(DisasContextBase *db)
+     if (!(cflags & CF_USE_ICOUNT)) {
+         return false;
      }
+-    if (db->num_insns == db->max_insns && (cflags & CF_LAST_IO)) {
+-        /* Already started in translator_loop. */
+-        return true;
+-    }
  
-     return icount_start_insn;
-@@ -154,7 +151,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+     set_can_do_io(db, true);
  
-     /* Start translating.  */
--    icount_start_insn = gen_tb_start(cflags);
-+    icount_start_insn = gen_tb_start(db, cflags);
-     ops->tb_start(db, cpu);
-     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
- 
-@@ -181,7 +178,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-            the next instruction.  */
-         if (db->num_insns == db->max_insns && (cflags & CF_LAST_IO)) {
-             /* Accept I/O on the last instruction.  */
--            gen_io_start();
-+            set_can_do_io(db, true);
-         }
-         ops->translate_insn(db, cpu);
+@@ -144,6 +143,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     db->num_insns = 0;
+     db->max_insns = *max_insns;
+     db->singlestep_enabled = cflags & CF_SINGLE_STEP;
++    db->saved_can_do_io = -1;
+     db->host_addr[0] = host_pc;
+     db->host_addr[1] = NULL;
  
 -- 
 2.41.0
