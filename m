@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D041F7A2676
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE1F7A2655
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:43:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhDl7-0004Va-Ov; Fri, 15 Sep 2023 14:41:41 -0400
+	id 1qhDlB-0004bK-LF; Fri, 15 Sep 2023 14:41:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDl4-0004M9-Es; Fri, 15 Sep 2023 14:41:38 -0400
+ id 1qhDl6-0004Ss-6T; Fri, 15 Sep 2023 14:41:40 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDl2-00037r-ED; Fri, 15 Sep 2023 14:41:38 -0400
+ id 1qhDl4-00037y-Cj; Fri, 15 Sep 2023 14:41:39 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qhDhe-00Fs9Q-31;
+ (envelope-from <den@openvz.org>) id 1qhDhf-00Fs9Q-1B;
  Fri, 15 Sep 2023 20:41:31 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 06/21] parallels: refactor path when we need to re-check image
- in parallels_open
-Date: Fri, 15 Sep 2023 20:41:14 +0200
-Message-Id: <20230915184130.403366-8-den@openvz.org>
+Subject: [PATCH 07/21] parallels: create mark_used() helper which sets bit in
+ used bitmap
+Date: Fri, 15 Sep 2023 20:41:15 +0200
+Message-Id: <20230915184130.403366-9-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915184130.403366-1-den@openvz.org>
 References: <20230915184130.403366-1-den@openvz.org>
@@ -56,73 +56,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-More conditions follows thus the check should be more scalable.
+This functionality is used twice already and next patch will add more
+code with it.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 ---
- block/parallels.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ block/parallels.c | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index 8f223bfd89..aa29df9f77 100644
+index aa29df9f77..60ad41b49b 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -1065,7 +1065,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-     int ret, size, i;
-     int64_t file_nb_sectors, sector;
-     uint32_t data_start;
--    bool data_off_is_correct;
-+    bool need_check = false;
+@@ -178,6 +178,21 @@ static void parallels_set_bat_entry(BDRVParallelsState *s,
+     bitmap_set(s->bat_dirty_bmap, bat_entry_off(index) / s->bat_dirty_block, 1);
+ }
  
-     ret = parallels_opts_prealloc(bs, options, errp);
-     if (ret < 0) {
-@@ -1133,11 +1133,12 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-     s->bat_bitmap = (uint32_t *)(s->header + 1);
- 
-     if (le32_to_cpu(ph.inuse) == HEADER_INUSE_MAGIC) {
--        s->header_unclean = true;
-+        need_check = s->header_unclean = true;
-     }
- 
--    data_off_is_correct = parallels_test_data_off(s, file_nb_sectors,
--                                                  &data_start);
-+    need_check = need_check ||
-+                 !parallels_test_data_off(s, file_nb_sectors, &data_start);
++static int mark_used(BlockDriverState *bs,
++                     unsigned long *bitmap, uint32_t bitmap_size, int64_t off)
++{
++    BDRVParallelsState *s = bs->opaque;
++    uint32_t cluster_index = host_cluster_index(s, off);
++    if (cluster_index >= bitmap_size) {
++        return -E2BIG;
++    }
++    if (test_bit(cluster_index, bitmap)) {
++        return -EBUSY;
++    }
++    bitmap_set(bitmap, cluster_index, 1);
++    return 0;
++}
 +
-     s->data_start = data_start;
-     s->data_end = s->data_start;
-     if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
-@@ -1194,6 +1195,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-             s->data_end = sector + s->tracks;
+ static int64_t coroutine_fn GRAPH_RDLOCK
+ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+                   int nb_sectors, int *pnum)
+@@ -621,7 +636,7 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
+     BDRVParallelsState *s = bs->opaque;
+     int64_t host_off, host_sector, guest_sector;
+     unsigned long *bitmap;
+-    uint32_t i, bitmap_size, cluster_index, bat_entry;
++    uint32_t i, bitmap_size, bat_entry;
+     int n, ret = 0;
+     uint64_t *buf = NULL;
+     bool fixed = false;
+@@ -655,10 +670,9 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
+             continue;
          }
-     }
-+    need_check = need_check || s->data_end > file_nb_sectors;
  
-     /*
-      * We don't repair the image here if it's opened for checks. Also we don't
-@@ -1203,12 +1205,8 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-         return 0;
-     }
- 
--    /*
--     * Repair the image if it's dirty or
--     * out-of-image corruption was detected.
--     */
--    if (s->data_end > file_nb_sectors || s->header_unclean
--        || !data_off_is_correct) {
-+    /* Repair the image if corruption was detected. */
-+    if (need_check) {
-         BdrvCheckResult res;
-         ret = bdrv_check(bs, &res, BDRV_FIX_ERRORS | BDRV_FIX_LEAKS);
-         if (ret < 0) {
-@@ -1217,7 +1215,6 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-             goto fail;
+-        cluster_index = host_cluster_index(s, host_off);
+-        assert(cluster_index < bitmap_size);
+-        if (!test_bit(cluster_index, bitmap)) {
+-            bitmap_set(bitmap, cluster_index, 1);
++        ret = mark_used(bs, bitmap, bitmap_size, host_off);
++        assert(ret != -E2BIG);
++        if (ret == 0) {
+             continue;
          }
-     }
--
-     return 0;
  
- fail_format:
+@@ -713,11 +727,13 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
+          * consistent for the new allocated clusters too.
+          *
+          * Note, clusters allocated outside the current image are not
+-         * considered, and the bitmap size doesn't change.
++         * considered, and the bitmap size doesn't change. This specifically
++         * means that -E2BIG is OK.
+          */
+-        cluster_index = host_cluster_index(s, host_off);
+-        if (cluster_index < bitmap_size) {
+-            bitmap_set(bitmap, cluster_index, 1);
++        ret = mark_used(bs, bitmap, bitmap_size, host_off);
++        if (ret == -EBUSY) {
++            res->check_errors++;
++            goto out_repair_bat;
+         }
+ 
+         fixed = true;
 -- 
 2.34.1
 
