@@ -2,66 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1397A215C
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 715AC7A218B
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:54:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhA3Z-0000Xs-3Z; Fri, 15 Sep 2023 10:44:29 -0400
+	id 1qhA6V-0006sg-Gc; Fri, 15 Sep 2023 10:47:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qhA3N-0000JE-Rt
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:44:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qhA5q-0006Sd-4n; Fri, 15 Sep 2023 10:46:57 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qhA3L-00055p-ED
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:44:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694789053;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=e1ZNFh4cyyiQUdJMOtCof5P3KhhngdZUdVDGwlRANFc=;
- b=axYeoBYu8vfEzKxvaBw4qTkwYmBEYSBjOY6rx5BNqYHg6mHCmdWkbi4mPCi6paR/nbbCIM
- wQCGiQ70RwG0Fi/W83LFsKRhwAFEtVYy/4dnOXjU7a4+c7aKkjDTdokmfIWn34l3ui2Dz2
- TlJJrsRsUoUQyEtU2yagRWbb+bXrSjs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-76-x1wgglk5NJ2_ze4ISrHziQ-1; Fri, 15 Sep 2023 10:44:12 -0400
-X-MC-Unique: x1wgglk5NJ2_ze4ISrHziQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F1FB8955977;
- Fri, 15 Sep 2023 14:44:11 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.193.146])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7B9C72026D68;
- Fri, 15 Sep 2023 14:44:11 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	qemu-devel@nongnu.org
-Subject: [PULL 28/28] block-coroutine-wrapper: use
- qemu_get_current_aio_context()
-Date: Fri, 15 Sep 2023 16:43:44 +0200
-Message-ID: <20230915144344.238596-29-kwolf@redhat.com>
-In-Reply-To: <20230915144344.238596-1-kwolf@redhat.com>
-References: <20230915144344.238596-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qhA5i-0005bO-Az; Fri, 15 Sep 2023 10:46:44 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnH7B56jNz6K5yV;
+ Fri, 15 Sep 2023 22:45:58 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 15 Sep
+ 2023 15:46:38 +0100
+Date: Fri, 15 Sep 2023 15:46:37 +0100
+To: Alistair Francis <alistair23@gmail.com>
+CC: <lukas@wunner.de>, <wilfred.mallawa@wdc.com>, <jiewen.yao@intel.com>,
+ <qemu-devel@nongnu.org>, <kbusch@kernel.org>, <its@irrelevant.dk>,
+ <mst@redhat.com>, <marcel.apfelbaum@gmail.com>, <hchkuo@avery-design.com.tw>, 
+ <cbrowy@avery-design.com>, <qemu-block@nongnu.org>, Alistair Francis
+ <alistair.francis@wdc.com>
+Subject: Re: [PATCH 1/3] hw/pci: Add all Data Object Types
+Message-ID: <20230915154637.000035eb@Huawei.com>
+In-Reply-To: <20230915112723.2033330-1-alistair.francis@wdc.com>
+References: <20230915112723.2033330-1-alistair.francis@wdc.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,69 +63,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+On Fri, 15 Sep 2023 21:27:21 +1000
+Alistair Francis <alistair23@gmail.com> wrote:
 
-Use qemu_get_current_aio_context() in mixed wrappers and coroutine
-wrappers so that code runs in the caller's AioContext instead of moving
-to the BlockDriverState's AioContext. This change is necessary for the
-multi-queue block layer where any thread can call into the block layer.
+> Add all of the defined protocols/features from the PCIe-SIG
+> "Table 6-32 PCI-SIG defined Data Object Types (Vendor ID = 0001h)"
 
-Most wrappers are IO_CODE where it's safe to use the current AioContext
-nowadays. BlockDrivers and the core block layer use their own locks and
-no longer depend on the AioContext lock for thread-safety.
+Which version of the specification?  These references can rot.
+Obviously it's below, but who knows if anyone will look there ;)
+It's already changed in 6.1 and the table has more entries.
 
-The bdrv_create() wrapper invokes GLOBAL_STATE code. Using the current
-AioContext is safe because this code is only called with the BQL held
-from the main loop thread.
+I'd just change this to say, Add all Data Object Types defined in PCIe r6.0
 
-The output of qemu-iotests 051 is sensitive to event loop activity.
-Update the output because the monitor BH runs at a different time,
-causing prompts to be printed differently in the output.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230912231037.826804-6-stefanha@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- scripts/block-coroutine-wrapper.py | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/scripts/block-coroutine-wrapper.py b/scripts/block-coroutine-wrapper.py
-index 685d0b4ed4..66cda6b8db 100644
---- a/scripts/block-coroutine-wrapper.py
-+++ b/scripts/block-coroutine-wrapper.py
-@@ -91,8 +91,6 @@ def __init__(self, wrapper_type: str, return_type: str, name: str,
-                 raise ValueError(f"no_co function can't be rdlock: {self.name}")
-             self.target_name = f'{subsystem}_{subname}'
- 
--        self.ctx = self.gen_ctx()
--
-         self.get_result = 's->ret = '
-         self.ret = 'return s.ret;'
-         self.co_ret = 'return '
-@@ -166,7 +164,7 @@ def create_mixed_wrapper(func: FuncDecl) -> str:
-         {func.co_ret}{name}({ func.gen_list('{name}') });
-     }} else {{
-         {struct_name} s = {{
--            .poll_state.ctx = {func.ctx},
-+            .poll_state.ctx = qemu_get_current_aio_context(),
-             .poll_state.in_progress = true,
- 
- { func.gen_block('            .{name} = {name},') }
-@@ -190,7 +188,7 @@ def create_co_wrapper(func: FuncDecl) -> str:
- {func.return_type} {func.name}({ func.gen_list('{decl}') })
- {{
-     {struct_name} s = {{
--        .poll_state.ctx = {func.ctx},
-+        .poll_state.ctx = qemu_get_current_aio_context(),
-         .poll_state.in_progress = true,
- 
- { func.gen_block('        .{name} = {name},') }
--- 
-2.41.0
+> table.
+> 
+> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> ---
+>  include/hw/pci/pcie_doe.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/hw/pci/pcie_doe.h b/include/hw/pci/pcie_doe.h
+> index 87dc17dcef..15d94661f9 100644
+> --- a/include/hw/pci/pcie_doe.h
+> +++ b/include/hw/pci/pcie_doe.h
+> @@ -46,6 +46,8 @@ REG32(PCI_DOE_CAP_STATUS, 0)
+>  
+>  /* PCI-SIG defined Data Object Types - r6.0 Table 6-32 */
+>  #define PCI_SIG_DOE_DISCOVERY       0x00
+> +#define PCI_SIG_DOE_CMA             0x01
+> +#define PCI_SIG_DOE_SECURED_CMA     0x02
+>  
+>  #define PCI_DOE_DW_SIZE_MAX         (1 << 18)
+>  #define PCI_DOE_PROTOCOL_NUM_MAX    256
 
 
