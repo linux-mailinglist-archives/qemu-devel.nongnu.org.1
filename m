@@ -2,96 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A80DC7A2105
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2786A7A2107
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 16:32:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh9qi-00084W-EQ; Fri, 15 Sep 2023 10:31:12 -0400
+	id 1qh9rM-0008Dc-U0; Fri, 15 Sep 2023 10:31:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qh9qg-00084F-3a
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:31:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9rF-0008CG-BC
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:31:45 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1qh9qX-0002o9-Lc
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:31:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694788260;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZQO9HnqTEJUO3+XhcMPhocND21MsaKHX2FSxEV9cKDY=;
- b=GaYTi2rxv3ZzQJH6X0b5XvQs55rErNk+wE92UDZRNxS21g63bsI5ZO+R8lntqy0E9N5h2i
- rXTvKA5xkAVhGGnWxF63C36ldhW+EC5kAup5EvK4xCsjPZn+WwIM5xK60/CXzjz2bWqFK3
- FWR8qHj8ihz+SeyjnHc7IhBTfIPfX2Y=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-582-aoV4QDMINSW6ukk4h4pH9g-1; Fri, 15 Sep 2023 10:30:58 -0400
-X-MC-Unique: aoV4QDMINSW6ukk4h4pH9g-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9aa05c1934aso488606566b.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 07:30:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694788257; x=1695393057;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZQO9HnqTEJUO3+XhcMPhocND21MsaKHX2FSxEV9cKDY=;
- b=N+CGiqfcn4uzLfcZPZw6Xo2ivcGScGUfrRl4hpDi5/cSbOwfImbZqDegEsE6EMjaMf
- Fthhw3Iku9fvTnyI8Du7k9gLxOtmLJhaQQLufN4CjdqrYHEpGBmEfN3tKA7JQtXVf7lh
- 9W+Q2ci+W7h5y0k3X8VMJa0lyHJB3Rs4XZNDtnt5OI/bmx9WRbUqVlZ/NBnB9Zfx4buA
- dJNgMV3T4uvJBuQRWQeMWWT3UjfXVAyf+6INdWUYm3ttOXGySkiZzpHViz5+NUQuGfAc
- yJTwgmEHLlYaGsMGUiLJisV4KhCUHuFtEHXJ1iDRTAocsHCU2VIo+Q3y4oYkB8GP+Q1w
- eXDQ==
-X-Gm-Message-State: AOJu0YyXDijV1tJfU+KzNhwjnMGQF3XOoSOqf4O+zYrBH6JkwEpmtxc3
- 7ZeyxUEnInBjeqFcj314t4yUFon9t0FyxBBdCTRpnLLG5tbyOiqRbDRrWfbUKtM9lXjDGmhFnn1
- bRW++WkFksuAmm0A=
-X-Received: by 2002:a17:907:1c1e:b0:9a5:7dec:fab9 with SMTP id
- nc30-20020a1709071c1e00b009a57decfab9mr5865385ejc.9.1694788257377; 
- Fri, 15 Sep 2023 07:30:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtqSoMzO3meBOH7EH9Ik1ql21mQ6Cwq7w1iBxxe8pUO1ythL1clXNB6FvkW/t/MBGr75IZyA==
-X-Received: by 2002:a17:907:1c1e:b0:9a5:7dec:fab9 with SMTP id
- nc30-20020a1709071c1e00b009a57decfab9mr5865363ejc.9.1694788257058; 
- Fri, 15 Sep 2023 07:30:57 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- i23-20020a1709061cd700b009ad8796a6aesm2470759ejh.56.2023.09.15.07.30.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 07:30:56 -0700 (PDT)
-Date: Fri, 15 Sep 2023 16:30:55 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Zhao Liu <zhao1.liu@linux.intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Philippe =?UTF-8?B?TWF0?=
- =?UTF-8?B?aGlldS1EYXVkw6k=?= <philmd@linaro.org>, Yanan Wang
- <wangyanan55@huawei.com>, qemu-devel@nongnu.org, Zhenyu Wang
- <zhenyu.z.wang@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 00/16] tests: Add CPU topology related smbios test cases
-Message-ID: <20230915163055.7a989af4@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20230915094735-mutt-send-email-mst@kernel.org>
-References: <20230825033619.2075837-1-zhao1.liu@linux.intel.com>
- <663cf3d4-47ea-262d-36b3-cf826f870ef0@tls.msk.ru>
- <ZPbRLtS6Txn0a2LX@liuzhao-OptiPlex-7080>
- <20230915094735-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9rA-0002sl-Pj
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 10:31:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=2UwKFVJ1axZ5vpK1/bxbmKsL5lVWPxXTo9X5TnuR/OU=; b=AaNv5yjzTLNc9KuSQHeC/SKpa+
+ y0hF6W2WGUMX1ABVpS28a8luDw2q5SWcZDXOtB5zgeNUZA7YPZn1JjduRenLFug/La9+KurfKaxpW
+ E1k8s47Od40ZA3irROQBHO76l7c6Nqm+D8nZ4vO3yg0fu1+vlF+EjE956Jc+EdHxGQ9M=;
+Date: Fri, 15 Sep 2023 16:31:28 +0200
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Alessandro Di Federico <ale@rev.ng>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+ Riku Voipio <riku.voipio@iki.fi>
+Subject: Re: [PATCH 10/11] accel/tcg: Make icount.o a target agnostic unit
+Message-ID: <d5zts77uzfyow6uelyq3zux736yjakwnu5rytjyczvvwc3zty3@ubcout4dobll>
+References: <20230914185718.76241-1-philmd@linaro.org>
+ <20230914185718.76241-11-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230914185718.76241-11-philmd@linaro.org>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,77 +61,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Sep 2023 09:48:08 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
-
-> On Tue, Sep 05, 2023 at 02:56:46PM +0800, Zhao Liu wrote:
-> > Hi Michael,
-> > 
-> > On Fri, Sep 01, 2023 at 12:55:33PM +0300, Michael Tokarev wrote:  
-> > > Date: Fri, 1 Sep 2023 12:55:33 +0300
-> > > From: Michael Tokarev <mjt@tls.msk.ru>
-> > > Subject: Re: [PATCH 00/16] tests: Add CPU topology related smbios test cases
-> > > 
-> > > 25.08.2023 06:36, Zhao Liu wrote:  
-> > > > From: Zhao Liu <zhao1.liu@intel.com>
-> > > > 
-> > > > Hi all,
-> > > > 
-> > > > This patchset is the follow up tests of previous topology fixes in
-> > > > smbios [1].
-> > > > 
-> > > > In this patchset, add these test cases:
-> > > > 
-> > > > 1. Add the case to test 2 newly added topology helpers (patch 1):
-> > > >     * machine_topo_get_cores_per_socket()
-> > > >     * machine_topo_get_threads_per_socket()
-> > > > 
-> > > > 2. Add the cases in bios-tables-test.c to:
-> > > >     * test smbios type4 table count (patch 2-4).
-> > > >     * test smbios type4 core count field (patch 5-7).
-> > > >     * update the test of smbios type4 core count2 field (patch 8-10).
-> > > >     * test smbios type4 thread count (patch 11-13).
-> > > >     * test smbios type4 thread count2 (patch 14-16).
-> > > > 
-> > > > With the above new cases, cover all commits of [1] in test.
-> > > > 
-> > > > [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html  
-> > > 
-> > > Hmm.  I definitely didn't expect such a large patchset..  I asked for just
-> > > a small, maybe manual (from command-line) reproducer of the original issue,
-> > > so I can verify it is fixed before applying the change in question to qemu
-> > > stable trees.   
-> > 
-> > Since these issues are found by coding reading, they are "byproducts" of
-> > other topology-related work I've been woring on, not directly identified
-> > by any anomaly...
-> > 
-> > ...So I'm not quite sure what the consequences of these few misuses of
-> > topology fields are, and how they might manifest themselves.
-> >   
-> > > It is a large work.  Lemme at least give it a try in the
-> > > gitlab CI...  
-> > 
-> > The test cases are the ones that clearly define the relevant topology
-> > issues.
-> > 
-> > 
-> > Thanks,
-> > Zhao  
+On 14/09/23, Philippe Mathieu-Daudé wrote:
+> Remove the unused "exec/exec-all.h" header. There is
+> no more target specific code in it: make it target
+> agnostic (rename using the '-common' suffix). Since
+> it is TCG specific, move it to accel/tcg, updating
+> MAINTAINERS.
 > 
-> I think it's ok, as long as Igor's happy.
-
-series looks fine to me
-(modulo cosmetic issues and better commit messages as noted in per patch review)
-
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  MAINTAINERS                                   | 1 -
+>  softmmu/icount.c => accel/tcg/icount-common.c | 3 +--
+>  accel/tcg/meson.build                         | 1 +
+>  softmmu/meson.build                           | 4 ----
+>  4 files changed, 2 insertions(+), 7 deletions(-)
+>  rename softmmu/icount.c => accel/tcg/icount-common.c (99%)
 > 
-> > > 
-> > > Philippe, can you pick this up for the misc tree?
-> > > 
-> > > /mjt  
-> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ff436dbf21..047d143b9d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2912,7 +2912,6 @@ F: softmmu/main.c
+>  F: softmmu/cpus.c
+>  F: softmmu/cpu-throttle.c
+>  F: softmmu/cpu-timers.c
+> -F: softmmu/icount.c
+Would also be a maintainer switch
 
+Otherwise,
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
