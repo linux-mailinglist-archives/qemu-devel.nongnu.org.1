@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A297A2448
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 801C67A244D
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:08:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCI4-0005IB-45; Fri, 15 Sep 2023 13:07:36 -0400
+	id 1qhCIl-0006Op-QQ; Fri, 15 Sep 2023 13:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhCI1-0005G2-Hs
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:07:33 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhCHz-0001aJ-Of
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:07:33 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9ada6b0649fso315600066b.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 10:07:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694797650; x=1695402450; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XbqSdXH1MoJlTITE7WSI6E/OHMbYZ0n+B+DEnDta5Gg=;
- b=giHpuzpyufvhOqlRsHzC5zFBofXRJXxObqG9aGIn3H3SrQWhFrCPcXfz8bVyOQRGHA
- wbpn/BpbM0OCCey8wc0l97nxaYALW14vjqCfjEL/geDeQTZdNGNHQqkD17eQ5GwG+kNW
- NUseENNvHUAz0RtjtZZ+trFG2CEDKUbBwOJhRRf0S/BJXAXTJZZJAcEzSSo1ARpV/bGc
- nJubhd3Z4AbBVAvah/9lhR8PVBXkJkpqJaQ5gSKB8qSN2RQ95oXq2DMIVJJB4fzMc2i1
- gjim1Zl7tMFRIENLzDMvivnQlEATynUuBFG00URRwfaGhLdAlCVZPimxdCfxP5hISFzd
- HRGA==
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qhCIi-0006B7-Om
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:08:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <tfanelli@redhat.com>)
+ id 1qhCIf-0001jT-Hq
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:08:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1694797692;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oOfdfUJRZovh0oLJG+mpXWOXTGOt+Z4vKEZjTHKmqfw=;
+ b=FhiJNaE90v4kOihUkaHQ4LypwD/Y8+pqxLqtYmzJU2gjyfvDwX93bKzUNGkA7oBDOySOQp
+ bRwaoAqBxOJIqGBt0KLZGjcKI082613x2uJIDpbIVjUYDPnwn5JWASiFJ/tPSsqJ8ny/Jr
+ mqsDLI2m6lxa8tXiIJ0BmOOWaEHEasM=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-cNejCsYUNR-AxESn3tIpTQ-1; Fri, 15 Sep 2023 13:08:10 -0400
+X-MC-Unique: cNejCsYUNR-AxESn3tIpTQ-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-76dbe1865c1so305786985a.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 10:08:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694797650; x=1695402450;
+ d=1e100.net; s=20230601; t=1694797690; x=1695402490;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XbqSdXH1MoJlTITE7WSI6E/OHMbYZ0n+B+DEnDta5Gg=;
- b=iLWBpSx8k6RdJvCVa7NKHCwlf4e/TmS9xXF7UoV/MafE2gHiEFW1XqBsDfiSqIjpBg
- ogZMkdDnc8TlXw2MeVRS9j2dhgwbNzdRFQa2dCH5q9vgRf46MbhQTRvQVfSfm36DlHmM
- 8H63CV12X4oiz9zORTbtR0JqP0dixp0dhdRiSMKe3NY4Y5bfaVkT50hmXmlnvpMXmXTz
- liEL0AvFEdGKBXQsU/GzW58OcSdD837iHcOtuY/ICw/qQWBw2o0GGnmw6DlkNOSMXWuN
- efsHE6N+ve48f0zJpILxBzlWL1GrZ/40WFVjandTN8kNubyu6/Te+D9dZR2Fec4K7lvu
- YWLQ==
-X-Gm-Message-State: AOJu0Yw+TPeWEBOqM5OaxF2RM6oPoW0vkLvpwOI/RIs7FYax2QhbgN0T
- NN41/qvd7/lLp0PnShyoo3qORw==
-X-Google-Smtp-Source: AGHT+IHKHPMbyG8LaYxgPp8S/QIojwaDdksanLzU+ridBHRGT3E2ZW1aql2oUcXX4eSqGh0AZeqvMA==
-X-Received: by 2002:a17:906:20ce:b0:9a5:d48f:c906 with SMTP id
- c14-20020a17090620ce00b009a5d48fc906mr2427148ejc.15.1694797650258; 
- Fri, 15 Sep 2023 10:07:30 -0700 (PDT)
-Received: from [192.168.69.115]
- (6lp61-h01-176-171-209-234.dsl.sta.abo.bbox.fr. [176.171.209.234])
+ bh=oOfdfUJRZovh0oLJG+mpXWOXTGOt+Z4vKEZjTHKmqfw=;
+ b=oJrQQzf4txy4zym8ey1svpjFyoEiA7SAZe6BLvMKYIjYz/gG3MjzkfMhSc9Hml+j+9
+ AmQ+XGtjeazJNTPTcc7NjuikX061cvPHbc+TecGHusC3NjqQMCPNg2i48B/jqypanlUa
+ c9VrUQ2X1IE28e/kVNa4Smr212ihbucI9RBA0gcAiAxEjzzC9T3fcNzUZq3MAYTA8r0I
+ V5IPc5I5X0tDkCMvVGUeCxxci/UBYbQo4vhjdZqisC8mwKJAcyInHCk9IR/D+ODiLHVg
+ BTUFwYTuZoCNuDsf0f9zsuwjDmVENam8OA/T5SEcAyzc3VuL6pYoYZ9zgoxlaK0GtNVX
+ A4pA==
+X-Gm-Message-State: AOJu0YzGjaNp22jTbH5mo9UY7PegG16P7mIFAXz0nIHuC5RgR7Tv4MIv
+ 8YpifzkasKfkcw4LV42gzEAQuRKLoxaDPZgbR6J7bfETTkCDMo6p8Tntg/6pDuSKkF2nZcmztZZ
+ TT9m6jWJs8Bu3jL4=
+X-Received: by 2002:a05:620a:29d3:b0:76e:e68d:14b2 with SMTP id
+ s19-20020a05620a29d300b0076ee68d14b2mr2844313qkp.7.1694797690232; 
+ Fri, 15 Sep 2023 10:08:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzejvgQW96z+E3F+fAWqE/63enoK1WFNUOq9srI06FYqemikSDuP7l4E7uArGKzKEqPzGAZQ==
+X-Received: by 2002:a05:620a:29d3:b0:76e:e68d:14b2 with SMTP id
+ s19-20020a05620a29d300b0076ee68d14b2mr2844286qkp.7.1694797689914; 
+ Fri, 15 Sep 2023 10:08:09 -0700 (PDT)
+Received: from ?IPV6:2600:4040:7c46:e800:32a2:d966:1af4:8863?
+ ([2600:4040:7c46:e800:32a2:d966:1af4:8863])
  by smtp.gmail.com with ESMTPSA id
- x8-20020a170906298800b009ad778a68c5sm2663096eje.60.2023.09.15.10.07.28
+ i20-20020a05620a145400b0076f18be9a64sm1351003qkl.81.2023.09.15.10.08.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 15 Sep 2023 10:07:29 -0700 (PDT)
-Message-ID: <e9585e42-5750-bf32-500d-9b4f1d3ff4b8@linaro.org>
-Date: Fri, 15 Sep 2023 19:07:28 +0200
+ Fri, 15 Sep 2023 10:08:08 -0700 (PDT)
+Message-ID: <6e626dba-8be2-5cfe-4f81-75de19febd6e@redhat.com>
+Date: Fri, 15 Sep 2023 13:08:07 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 2/3] vdpa net: stop probing if cannot set features
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [RFC PATCH 0/8] i386/sev: Use C API of Rust SEV library
 Content-Language: en-US
-To: =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Hawkins Jiawei
- <yin31149@gmail.com>, si-wei.liu@oracle.com, Jason Wang
- <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
-References: <20230915170322.3076956-1-eperezma@redhat.com>
- <20230915170322.3076956-3-eperezma@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230915170322.3076956-3-eperezma@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, mtosatti@redhat.com,
+ stefanha@redhat.com
+References: <20230914175835.382972-1-tfanelli@redhat.com>
+ <ZQQplEOUE2GhBL07@redhat.com>
+ <CAJSP0QUA--fpGAjj9JJ2BW7VSunw6mb7=8NDmTt7+k71OOAd1g@mail.gmail.com>
+From: Tyler Fanelli <tfanelli@redhat.com>
+In-Reply-To: <CAJSP0QUA--fpGAjj9JJ2BW7VSunw6mb7=8NDmTt7+k71OOAd1g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=tfanelli@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,17 +107,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/9/23 19:03, Eugenio Pérez wrote:
-> Otherwise it continues the CVQ isolation probing.
-> 
+On 9/15/23 7:33 AM, Stefan Hajnoczi wrote:
+> On Fri, 15 Sept 2023 at 05:54, Daniel P. Berrangé <berrange@redhat.com> wrote:
+>> On Thu, Sep 14, 2023 at 01:58:27PM -0400, Tyler Fanelli wrote:
+>>> These patches are submitted as an RFC mainly because I'm a relative
+>>> newcomer to QEMU with no knowledge of the community's views on
+>>> including Rust code, nor it's preference of using library APIs for
+>>> ioctls that were previously implemented in QEMU directly.
+>> We've talked about Rust alot, but thus far most focus has been on
+>> areas peripheral to QEMU. Projects that might have been part of
+>> QEMU in the past, and now being done as separate efforts, and
+>> have bene taking advantage of Rust. eg virtiofsd Rust replacing
+>> QEMU's in -tree C impl. eg passt providing an alternative to
+>> slirp. eg the dbus display in QEMU allowing a remote display
+>> frontend to be provided, written in rust. eg libblkio providing
+>> a block backend in Rust.
+>>
+>> The libblkio work is likely closest to what you've proposed
+>> here, in that it is a Rust create exposed as a C shared library
+>> for apps to consume. In theory apps don't need to care that it
+>> is written in Rust, as it is opaque.
+>>
+>> The one key difference though is that it was not replacing
+>> existing functionality, it was adding a new feature. So users
+>> who didn't have libblkio or whom want to avoid Rust dependancies
+>> didn't loose anything they were already using.
+>>
+>> If we use the libsev.so we create a hard dependancy on the Rust
+>> sev crate, otherwise users loose the SEV feature in QEMU. Right
+>> now the sev crate C library is not present in *any* distro that
+>> I can see.
 
-Fixes: 152128d646 ("vdpa: move CVQ isolation check to net_init_vhost_vdpa")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Yes, the C API is very new and not packaged in any distro at the moment.
 
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-> ---
->   net/vhost-vdpa.c | 1 +
->   1 file changed, 1 insertion(+)
+>>
+>> If we treat 'sev' as just another opaque 3rd party library to be
+>> provided by the distro, this creates a problem. Our support
+>> policy is that we usually won't drop features in existing distros,
+>> but that is what would happen if we applied this patchset today.
+>> We did bend that rule slightly with virtiofsd, but that was already
+>> a separate binary and we followed our deprecation path before
+>> deleting it, giving distros time to adapt.
+>>
+>>
+>> If we rollback the curtain, however, and decide to expose Rust
+>> directly to QEMU we could address this problem. We could bundle
+>> the dependant Rust crates directly with QEMU tarballs, and
+>> generate the FFI C library as part of QEMU build and static
+>> link the library. Distros would not have todo anything, though
+>> they could have the choice of dyn linking if they really wanted
+>> to.
+>>
+>> If we directly exposed the notion of Rust to QEMU, then we are
+>> also not limited by whether a Rust crate provides a C FFI itself.
+>> QEMU could provide C FFI glue for any Rust crate it sees as
+>> useful to its code.
+>>
+>> This all forces us, however, to have the difficult discussion
+>> about whether we're willing to make Rust a mandatory dependancy
+>> of QEMU and permit (or even welcome) its use /anywhere/ in the
+>> QEMU tree that looks relevant.
+>>
+>> We've already queried whether Rust will actually benefit the
+>> core QEMU codebase, or whether we'll end up punching too many
+>> holes in its safety net to make it worthwhile. My opinion is
+>> that we probably shouldn't obsess over that as I think it is
+>> hard to predict the future, it has a habit of surprising us.
+>> Your patch series here doesn't demonstrate an obvious safety
+>> benefit, since we have existing working code and that code is
+>> not especially complex.
+
+Correct, there isn't any new features being added here. SEV on QEMU 
+should work _exactly_ how it did before these patches.
+
+>> Once we open the doors to Rust code
+>> in QEMU though, we will probably surprise ourselves with the
+>> range of benefits we'll see 2, 3, 5 years down the road.
+>>
+>> IOW, we shouldn't judge future benefits based on this patch
+>> series. It is great that this series is actually quite simple,
+>> because it lets us focus on how we might integrate Rust more
+>> directly into QEMU, without worrying much about the actual
+>> code being replaced.
+
+It also shows that much of Rust's security benefits in QEMU would depend 
+on Rust being integrated more directly, rather than just using C FFI. 
+Most of the code in the libsev C API is unsafe Rust anyway (it must be 
+in order to interact with C). Therefore there is not much of an added 
+security benefit here. However, if Rust can be further expanded in QEMU, 
+much of the unsafe bits can be removed entirely (i.e. by bypassing the C 
+API).
+
+>>
+>>> This series looks to explore the possibility of using the library and
+>>> show a bit of what it would look like. I'm looking for comments
+>>> regarding if this feature is desired.
+>> My summary, is that I'd personally be in favour of opening the door
+>> to Rust code as a mandatory pre-requisite for QEMU, at the very least
+>> for system emulators. Not because this particular series is compelling,
+>> but because I think Rust could be more beneficial to QEMU over the long
+>> term than we expect. In terms of consuming it though, if we're going
+>> to replace existing QEMU functionality, then I think we need to bundle
+>> the Rust code and natively integrate it into the build system, as we
+>> have recently started doing with our python deps, to detach ourselves
+>> from the limits of what distros ship.
+> I support using Rust directly within QEMU.
+>
+> David Gibson looked at Rust's operating system and CPU architecture
+> coverage a few years ago:
+> https://wiki.qemu.org/RustInQemu
+>
+> Please update that support matrix to check that depending on Rust in
+> core QEMU code really works everywhere where QEMU is supported today.
+> This is probably just a formality at this stage since Rust has become
+> widely used over the past few years.
+>
+> The library approach worked well for libblkio but the overhead of
+> creating a separate shared library and shipping it is significant.
+> When QEMU is the only user of some code, then it should definitely be
+> part of QEMU. Also, when QEMU needs early access to code that isn't
+> widely available yet, then bundling it inside QEMU until packages are
+> available also seems reasonable to me (I think we already do that for
+> libvfio-user and maybe other libraries).
+>
+> I would prefer it if we minimize Rust wrappers for C APIs and instead
+> focus on using Rust to build new subsystems. Writing and maintaing two
+> sets of the same API is expensive and I hope we don't get bogged down
+> keeping C and Rust APIs in sync.
+
+It would also allow QEMU to take advantage of other Rust crates without 
+having to add some type of shim layer to facilitate the interaction.
+
+
+Tyler
+
+> That said, I think there's an
+> argument for wrapping core QEMU APIs needed for device emulation (e.g.
+> DeviceState, PCIDevice) because of the security benefits of writing
+> new device emulation code in Rust.
+>
+> Stefan
+>
 
 
