@@ -2,54 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51E07A147C
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 05:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E03F7A1489
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 05:47:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qgzeJ-0000TX-V2; Thu, 14 Sep 2023 23:37:43 -0400
+	id 1qgzlw-0002Wd-PC; Thu, 14 Sep 2023 23:45:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgzeH-0000TP-7L
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 23:37:41 -0400
+ id 1qgzlq-0002Ux-IW
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 23:45:34 -0400
 Received: from mgamail.intel.com ([192.55.52.115])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qgzeD-0003qr-Rw
- for qemu-devel@nongnu.org; Thu, 14 Sep 2023 23:37:40 -0400
+ id 1qgzlm-0005Lt-QB
+ for qemu-devel@nongnu.org; Thu, 14 Sep 2023 23:45:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1694749057; x=1726285057;
+ t=1694749526; x=1726285526;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=PEq7BbJOpK/YDddrwIkD9257uy7E4R+5/3E5LkWOrPc=;
- b=KW/B6UE6UC/RK7kIYQYWBeZ76ORQ36uaNFF/E1ZLh0BjIVZQYVFqjTGD
- Bosl3s+P9LD5vvk51NLORROL523UPSkcMRZq8+lIldGB3h2Ii8JJaBqRA
- /29B2Y9U1FGXsZ5eK5zl8njFFfxBYft0gPXZem1XdZUBlz9vUSPsFKGQi
- tNZtswVstATQ+NY1VBW6tU7k4lYeMNQ8FSTNx7yAgdV83Aut077yiZFI7
- AL08tMplq9oBrvUK/S9+E2+2BAZe2CoGyWblRBaJGXBJJlFsmXcwIb7US
- h8KcPDSq3wxTEZY1eiicX7aTXIZ2extiYlh46C04bseVQwdQMI/UJ+Z2A w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="379066316"
-X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="379066316"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ bh=Y5O8yBf2hm2V5a0KPQnIgJP46w9iulxKXoLXHLGRFlM=;
+ b=RubEw65Rfyoifm86SJsGDOYOeD9rJIyUhBLmt4kSyVq/Hj3b6OgdrdYc
+ n68Kf/ItFJkwgUioT85nOAK4ROs8Us+8PKIaib/Z6CIqVhgLCXbrtIPtT
+ SU5KPLB202UEEGbW/4edonsGlErl9bw6lEtUpSShvB1Mdd5MM+QO6sEsL
+ KkxlWi5VpyXGeeCEj6uW7tAu9YgpEhKfoIr4Inub/S66RS9ON/JtcT7tO
+ l501OXmlG1Mybu1nKW+LDnBDN3q+MfiKt5z6N8V03a7+tZuCsYN22MCPx
+ bfpkaHuVEgSUVVT91ciMdyGAiJyOdQy8RKMxOSo2yIuAlabp2wQOWIImB w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="379067619"
+X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="379067619"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2023 20:37:33 -0700
+ 14 Sep 2023 20:45:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="888055878"
-X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="888055878"
+X-IronPort-AV: E=McAfee;i="6600,9927,10833"; a="815026475"
+X-IronPort-AV: E=Sophos;i="6.02,147,1688454000"; d="scan'208";a="815026475"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
  ([10.93.29.154])
- by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2023 20:36:54 -0700
-Message-ID: <a8cf6824-4228-8de5-0727-96ea6c5bad36@intel.com>
-Date: Fri, 15 Sep 2023 11:37:26 +0800
+ by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2023 20:45:16 -0700
+Message-ID: <a47ca6f9-6c2f-8212-151c-44f5ec117dbf@intel.com>
+Date: Fri, 15 Sep 2023 11:45:14 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [RFC PATCH v2 00/21] QEMU gmem implemention
-To: David Hildenbrand <david@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+Subject: Re: [RFC PATCH v2 02/21] RAMBlock: Add support of KVM private gmem
+Content-Language: en-US
+To: "Wang, Lei" <lei4.wang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -62,12 +63,12 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
 References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <fe9f3d19-df01-01e6-a253-f7fe5bdea41f@redhat.com>
-Content-Language: en-US
+ <20230914035117.3285885-3-xiaoyao.li@intel.com>
+ <bd1eca88-98f4-718f-4d40-c2ea40f65d95@intel.com>
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <fe9f3d19-df01-01e6-a253-f7fe5bdea41f@redhat.com>
+In-Reply-To: <bd1eca88-98f4-718f-4d40-c2ea40f65d95@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=192.55.52.115; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -58
@@ -93,103 +94,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/14/2023 9:09 PM, David Hildenbrand wrote:
-> On 14.09.23 05:50, Xiaoyao Li wrote:
->> It's the v2 RFC of enabling KVM gmem[1] as the backend for private
->> memory.
+On 9/15/2023 10:04 AM, Wang, Lei wrote:
+> On 9/14/2023 11:50, Xiaoyao Li wrote:
+>> From: Chao Peng<chao.p.peng@linux.intel.com>
 >>
->> For confidential-computing, KVM provides gmem/guest_mem interfaces for
->> userspace, like QEMU, to allocate user-unaccesible private memory. This
->> series aims to add gmem support in QEMU's RAMBlock so that each RAM can
->> have both hva-based shared memory and gmem_fd based private memory. QEMU
->> does the shared-private conversion on KVM_MEMORY_EXIT and discards the
->> memory.
+>> Add KVM gmem support to RAMBlock so both normal hva based memory
+>> and kvm gmem fd based private memory can be associated in one RAMBlock.
 >>
->> It chooses the design that adds "private" property to hostmeory backend.
->> If "private" property is set, QEMU will allocate/create KVM gmem when
->> initialize the RAMbloch of the memory backend.
+>> Introduce new flag RAM_KVM_GMEM. It calls KVM ioctl to create private
+>> gmem for the RAMBlock when it's set.
 >>
->> This sereis also introduces the first user of kvm gmem,
->> KVM_X86_SW_PROTECTED_VM. A KVM_X86_SW_PROTECTED_VM with private KVM gmem
->> can be created with
->>
->>    $qemu -object sw-protected-vm,id=sp-vm0 \
->>     -object memory-backend-ram,id=mem0,size=1G,private=on \
->>     -machine 
->> q35,kernel_irqchip=split,confidential-guest-support=sp-vm0,memory-backend=mem0 \
->>     ...
->>
->> Unfortunately this patch series fails the boot of OVMF at very early
->> stage due to triple fault, because KVM doesn't support emulating 
->> string IO
->> to private memory.
-> 
-> Is support being added? Or have we figured out what it would take to 
-> make it work?
+>> Signed-off-by: Xiaoyao Li<xiaoyao.li@intel.com>
+> Kindly reminding the author's Signed-off-by is missing.
 
-Hi David,
+I will fix it.
+Thanks!
 
-I only reply the questions that werrn't covered by Sean's reply.
-
-> How does this interact with other features (memory ballooning, virtiofs, 
-> vfio/mdev/...)?
-
-I need time to learn them before I can answer it.
-
->>
->> This version still leave some opens to be discussed:
->> 1. whether we need "private" propery to be user-settable?
->>
->>     It seems unnecessary because vm-type is determined. If the VM is
->>     confidential-guest, then the RAM of the guest must be able to be
->>     mapped as private, i.e., have kvm gmem backend. So QEMU can
->>     determine the value of "private" property automatiacally based on vm
->>     type.
->>
->>     This also aligns with the board internal MemoryRegion that needs to
->>     have kvm gmem backend, e.g., TDX requires OVMF to act as private
->>     memory so bios memory region needs to have kvm gmem fd associated.
->>     QEMU no doubt will do it internally automatically.
-> 
-> Would it make sense to have some regions without "pivate" semantics? 
-> Like NVDIMMs?
-
-Of course it can have regions without "private" semantics.
-
-Whether a region needs "private" backend depends on the definition of VM 
-type. E.g., for TDX,
-  - all the RAM needs to able to mapped as private. So it needs private 
-gmem.
-  - TDVF(OVMF) code must be mapped as private. So it needs private gmem.
-  - MMIO region needs to be shared for TDX 1.0, and it doesn't need 
-private gmem;
-
->>
->> 2. hugepage support.
->>
->>     KVM gmem can be allocated from hugetlbfs. How does QEMU determine
->>     when to allocate KVM gmem with KVM_GUEST_MEMFD_ALLOW_HUGEPAGE. The
->>     easiest solution is create KVM gmem with 
->> KVM_GUEST_MEMFD_ALLOW_HUGEPAGE
->>     only when memory backend is HostMemoryBackendFile of hugetlbfs.
-> 
-> Good question.
-> 
-> Probably "if the memory backend uses huge pages, also use huge pages for 
-> the private gmem" makes sense.
-> 
-> ... but it becomes a mess with preallocation ... which is what people 
-> should actually be using with hugetlb. Andeventual double 
-> memory-consumption ... but maybe that's all been taken care of already?
-> 
-> Probably it's best to leave hugetlb support as future work and start 
-> with something minimal.
-> 
-
-As Sean replied, I had some misunderstanding of 
-KVM_GUEST_MEMFD_ALLOW_HUGEPAGE. If it's for THP, I think we can allow it 
-for every gmem.
-
-As for hugetlb, we can leave it as future work.
 
 
