@@ -2,58 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90627A2447
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A297A2448
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 19:07:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhCHs-0005EK-Iy; Fri, 15 Sep 2023 13:07:24 -0400
+	id 1qhCI4-0005IB-45; Fri, 15 Sep 2023 13:07:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhCHp-0005Dw-De
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:07:21 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qhCHn-0001Zh-TN
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:07:21 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RnLFT74Dkz6K5xl;
- Sat, 16 Sep 2023 01:06:37 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 15 Sep
- 2023 18:07:17 +0100
-Date: Fri, 15 Sep 2023 18:07:16 +0100
-To: Jonathan Cameron via <qemu-devel@nongnu.org>, <linuxarm@huawei.com>
-CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Michael Tokarev
- <mjt@tls.msk.ru>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH 4/4] hw/cxl: Line length reductions
-Message-ID: <20230915180643.000057f7@huawei.com>
-In-Reply-To: <20230915180130.00001205@Huawei.com>
-References: <20230913150521.30035-1-Jonathan.Cameron@huawei.com>
- <20230913150521.30035-5-Jonathan.Cameron@huawei.com>
- <27faaaee-9fb0-3e11-0545-35945ec68e74@tls.msk.ru>
- <20230915180130.00001205@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhCI1-0005G2-Hs
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:07:33 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhCHz-0001aJ-Of
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 13:07:33 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9ada6b0649fso315600066b.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 10:07:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694797650; x=1695402450; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XbqSdXH1MoJlTITE7WSI6E/OHMbYZ0n+B+DEnDta5Gg=;
+ b=giHpuzpyufvhOqlRsHzC5zFBofXRJXxObqG9aGIn3H3SrQWhFrCPcXfz8bVyOQRGHA
+ wbpn/BpbM0OCCey8wc0l97nxaYALW14vjqCfjEL/geDeQTZdNGNHQqkD17eQ5GwG+kNW
+ NUseENNvHUAz0RtjtZZ+trFG2CEDKUbBwOJhRRf0S/BJXAXTJZZJAcEzSSo1ARpV/bGc
+ nJubhd3Z4AbBVAvah/9lhR8PVBXkJkpqJaQ5gSKB8qSN2RQ95oXq2DMIVJJB4fzMc2i1
+ gjim1Zl7tMFRIENLzDMvivnQlEATynUuBFG00URRwfaGhLdAlCVZPimxdCfxP5hISFzd
+ HRGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694797650; x=1695402450;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XbqSdXH1MoJlTITE7WSI6E/OHMbYZ0n+B+DEnDta5Gg=;
+ b=iLWBpSx8k6RdJvCVa7NKHCwlf4e/TmS9xXF7UoV/MafE2gHiEFW1XqBsDfiSqIjpBg
+ ogZMkdDnc8TlXw2MeVRS9j2dhgwbNzdRFQa2dCH5q9vgRf46MbhQTRvQVfSfm36DlHmM
+ 8H63CV12X4oiz9zORTbtR0JqP0dixp0dhdRiSMKe3NY4Y5bfaVkT50hmXmlnvpMXmXTz
+ liEL0AvFEdGKBXQsU/GzW58OcSdD837iHcOtuY/ICw/qQWBw2o0GGnmw6DlkNOSMXWuN
+ efsHE6N+ve48f0zJpILxBzlWL1GrZ/40WFVjandTN8kNubyu6/Te+D9dZR2Fec4K7lvu
+ YWLQ==
+X-Gm-Message-State: AOJu0Yw+TPeWEBOqM5OaxF2RM6oPoW0vkLvpwOI/RIs7FYax2QhbgN0T
+ NN41/qvd7/lLp0PnShyoo3qORw==
+X-Google-Smtp-Source: AGHT+IHKHPMbyG8LaYxgPp8S/QIojwaDdksanLzU+ridBHRGT3E2ZW1aql2oUcXX4eSqGh0AZeqvMA==
+X-Received: by 2002:a17:906:20ce:b0:9a5:d48f:c906 with SMTP id
+ c14-20020a17090620ce00b009a5d48fc906mr2427148ejc.15.1694797650258; 
+ Fri, 15 Sep 2023 10:07:30 -0700 (PDT)
+Received: from [192.168.69.115]
+ (6lp61-h01-176-171-209-234.dsl.sta.abo.bbox.fr. [176.171.209.234])
+ by smtp.gmail.com with ESMTPSA id
+ x8-20020a170906298800b009ad778a68c5sm2663096eje.60.2023.09.15.10.07.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Sep 2023 10:07:29 -0700 (PDT)
+Message-ID: <e9585e42-5750-bf32-500d-9b4f1d3ff4b8@linaro.org>
+Date: Fri, 15 Sep 2023 19:07:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 2/3] vdpa net: stop probing if cannot set features
+Content-Language: en-US
+To: =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>, qemu-devel@nongnu.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Hawkins Jiawei
+ <yin31149@gmail.com>, si-wei.liu@oracle.com, Jason Wang
+ <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
+References: <20230915170322.3076956-1-eperezma@redhat.com>
+ <20230915170322.3076956-3-eperezma@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230915170322.3076956-3-eperezma@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -67,58 +93,20 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Sep 2023 18:01:30 +0100
-Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
+On 15/9/23 19:03, Eugenio Pérez wrote:
+> Otherwise it continues the CVQ isolation probing.
+> 
 
-> On Thu, 14 Sep 2023 15:57:55 +0300
-> Michael Tokarev <mjt@tls.msk.ru> wrote:
-> 
-> > 13.09.2023 18:05, Jonathan Cameron via wrote:  
-> > > Michael Tsirkin observed that there were some unnecessarily
-> > > long lines in the CXL code in a recent review.
-> > > This patch is intended to rectify that where it does not
-> > > hurt readability.    
-> > 
-> > Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-> > 
-> > This whole series can be picked up into trivial-patches tree
-> > (whcih is getting ready to be pushed to master).  
-> 
-> I've reworked patch 2 as you made some good points about the
-> changes making unclear code even more unclear.
-> 
-> Also, I have this on top of a series that touches the same bit
-> of code.  For me landing that is more important than this, hence
-> the ordering of the series.
-> 
-> Hopefully Michael Tsirkin will pick up v2 along with the
-> other series, or whcih can take this in the future once the
-> dependency is in place.
+Fixes: 152128d646 ("vdpa: move CVQ isolation check to net_init_vhost_vdpa")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-You that is.  I briefly imagined there was someone using the
-tag whcih :) 
-
-Friday evening is my excuse...
-
-Too much code review today it seems.
-
-Jonathan
-
-> 
-> Jonathan
-> 
-> 
-> > 
-> > /mjt
-> > 
-> >   
-> 
-> 
-> 
+> Reported-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+> ---
+>   net/vhost-vdpa.c | 1 +
+>   1 file changed, 1 insertion(+)
 
 
