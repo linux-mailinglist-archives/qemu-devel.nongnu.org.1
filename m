@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328367A1905
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 10:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D577A1924
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 10:47:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh4L0-0007Hy-9v; Fri, 15 Sep 2023 04:38:06 -0400
+	id 1qh4Ss-0003EY-5V; Fri, 15 Sep 2023 04:46:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qh4Kr-0007HI-8U
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 04:37:58 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
+ (Exim 4.90_1) (envelope-from <juan.quintela@gmail.com>)
+ id 1qh4So-0003De-US
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 04:46:10 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qh4Kp-0004Mj-FT
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 04:37:56 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-5712b68dbc0so1020784eaf.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 01:37:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <juan.quintela@gmail.com>)
+ id 1qh4Se-0005b4-Dx
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 04:46:10 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5029e4bfa22so3136038e87.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 01:45:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1694767074; x=1695371874;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=d6yW9YAY0+F09Wpw7lIs3Q1PIudBAo+5u5BItTpalfA=;
- b=YDy4o3Te1tO7O/9KA2BL9x2oMgVwWZfzRTJvAkz12pGRCPEkBRXnFhxhcd1iv0i7w7
- 6IU07wijmv3euOA476F3YVZIfk/Z977+qQ33SEVwoHjYKen+GIjhV3tPPkZDmgFwmzwt
- lqOJwCLInXDM8jVt4P9/ZnJ5PGvCCFSneugLUNwClKBJBvH9QV5hmSaSK+I7wLSV7Dpp
- cnYEFbJZqZ03KdYLmRyVBWz/7HBmeFtnQ61TOX/D6pP/nF7JLGhXWqAk0ruM9N2D8482
- /WaJgEDfZfXbcaRjfyEOczpL1DPS7dwGHQaIkMOwSzsG6YppM9NSTOb/GCPjdNLmV7mT
- OrfQ==
+ d=gmail.com; s=20230601; t=1694767557; x=1695372357; darn=nongnu.org;
+ h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=2nVwK/Xj2EPf7VwkebDdUDBWWV1T0uPp8AJM8WHnuS8=;
+ b=ex9YJKZnfVHvg+HveJvUPFYRvYaWbcC+mYv+sOg3D59BZFrRQJ/v/Yze5ZJT462Akn
+ lxzUxsJV2lflViS6Jn9FmnWJR0Z9RJ2Xgfe+dpV4oKODikp02B8q0KIoXWe+D4r9vc1b
+ i7PvlBzBZBk5r8pkO8ftqtW6U26guajZ4Un6XIXJfQadHHmPix6FLdS37meU0bt3uq00
+ ZwVtSPw7DjzTIA0ZRnHS+KhONdW3JHAT4BRVuWngymHJgW9Rifdzra9DsFInZtrjz3/B
+ 6Mzs12z4U0F7KwKVfOAJMNQ8fw2JyJrVozYooTCqJPoibPB6RVKeGUlA6+9jvVP1dcPm
+ BIuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694767074; x=1695371874;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=d6yW9YAY0+F09Wpw7lIs3Q1PIudBAo+5u5BItTpalfA=;
- b=KFgqlUB2KZL9Wu184IWYxgUY21sG3aD/WEO61KVKMWVuUFQJiOmYKuopLxsoQ5Xyyk
- xIxRjCvs3Iwm5ojTex9B2nD+/c6bu2PIKYo3QNQkFP47KxfAxSed3nLQ4QKnPMbjk8Ek
- frFt7RAwGuao5OyJy22bdAc4I0zNAFRqzRFovBZEEyetQ6koZ90Pz4pkDhtscdmUmUQi
- s0SaKj312lMP5zE38sYJlVPOLgZRjpiaklzpt5/aVGbcMep8OkBubIJDZfyOPOp2yP2r
- wPCHTH3RhdfhckyfsRXI2TSjTCIwwc9CCrMnyV2k4MpoLMr3w1y+UBCjWldv/EM/cwlz
- p3hA==
-X-Gm-Message-State: AOJu0YyQijE2J+TZww5fZzf1BO8GP0693AQ/C4md85kT43CEG19XClFD
- i3MjD8Y+5TEv2bArZCbzWpBToJHMmVjMI+VAWTCtKA==
-X-Google-Smtp-Source: AGHT+IGEi0dPBV+JF/IV+SLFGTnDHpknRMF0PNRt68J2ALCZdjGWlnmddyRijsZ8nZoZY3vIowgzPVnr3F/bGgt3QAM=
-X-Received: by 2002:a05:6870:d69c:b0:1bb:75af:37b5 with SMTP id
- z28-20020a056870d69c00b001bb75af37b5mr1104828oap.10.1694767073786; Fri, 15
- Sep 2023 01:37:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694767557; x=1695372357;
+ h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=2nVwK/Xj2EPf7VwkebDdUDBWWV1T0uPp8AJM8WHnuS8=;
+ b=C8mN3m063paJ9aq5QlO1nlp4QliwnKf5indNbo7vm9PDM1IPVytwf7YIhe5Z8E8ZxD
+ 4MaKCDB0s8cQK8454KfHZnfrGzN6vSSOjddS0tbHvlKYJdaE//oYfxeu11+PsoKA6Koh
+ hCd/4vyTLGAi9fSKdub62V0pvUVmx61W+6bvB1khGyrsPhW8qZSRD+BYZPWW2I9K5elY
+ jDXMfFeehI7LgB2NEbcP/Lrqq8YILx7Imu48Hi5lKtamLnLkDYXBVuwspFnAEw4UFiWq
+ yFkvzZIIYnep/wSshTZo8xQMASrPnVx61YZtz8lX5808DtFhB+SsYOwVDvKWfkJ9j8by
+ waPA==
+X-Gm-Message-State: AOJu0YzRC8lU8ptHdIu/ZWhq7ExRKk7HzKxKuJuX9V1xcBj4pwZPi4bR
+ SivUDjQrhgQiOvKVZqppnR/BL8jENeK8pIDC+V4=
+X-Google-Smtp-Source: AGHT+IHJlFn6N4Vdtz+gu9MuiXdnhaQzDNgkSXDNf0LEd0migQOkgGTy6HxkSMf8GviRiSVkfjY+gF5a7FrZg7bX/fY=
+X-Received: by 2002:a05:6512:3b99:b0:500:bf33:3add with SMTP id
+ g25-20020a0565123b9900b00500bf333addmr1135810lfv.47.1694767557122; Fri, 15
+ Sep 2023 01:45:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230907130410.498935-1-mnissler@rivosinc.com>
- <20230907130410.498935-2-mnissler@rivosinc.com> <ZQH/1pRzHhaXbl+E@x1n>
-In-Reply-To: <ZQH/1pRzHhaXbl+E@x1n>
-From: Mattias Nissler <mnissler@rivosinc.com>
-Date: Fri, 15 Sep 2023 10:37:43 +0200
-Message-ID: <CAGNS4TYLqUogVTAxR1eBzbukp5YLDHzVJDqEwvp0sxg9dFWogw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] softmmu: Per-AddressSpace bounce buffering
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, 
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Jagannathan Raman <jag.raman@oracle.com>, stefanha@redhat.com, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=mnissler@rivosinc.com; helo=mail-oo1-xc33.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+From: Juan Quintela <juan.quintela@gmail.com>
+Date: Fri, 15 Sep 2023 09:45:46 +0100
+Message-ID: <CALUyDQ5Tcby25VQ05REYXsv8v_MO-nVcsHcrQWEAJefPArCoXA@mail.gmail.com>
+Subject: Call for agenda for 2023-09-19 QEMU developers call
+To: f4bug@amsat.org, Joao Martins <joao.m.martins@oracle.com>, 
+ Juan Quintela <quintela@redhat.com>, mdean@redhat.com, felipe@nutanix.com, 
+ afaerber@suse.de, bazulay@redhat.com, bbauman@redhat.com, cw@f00f.org, 
+ dustin.kirkland@canonical.com, eblake@redhat.com, edgar.iglesias@gmail.com, 
+ eric.auger@redhat.com, iggy@theiggy.com, jan.kiszka@web.de, 
+ jidong.xiao@gmail.com, jjherne@linux.vnet.ibm.com, mimu@linux.vnet.ibm.com, 
+ peter.maydell@linaro.org, richard.henderson@linaro.org, stefanha@gmail.com, 
+ imp@bsdimp.com, z.huo@139.com, zwu.kernel@gmail.com, jgg@nvidia.com, 
+ cjia@nvidia.com, david.edmondson@oracle.com, elena.ufimtseva@oracle.com, 
+ konrad.wilk@oracle.com, Alessandro Di Federico <ale@rev.ng>, anjo@rev.ng, 
+ shameerali.kolothum.thodi@huawei.com, wei.w.wang@intel.com, 
+ chao.p.peng@linux.intel.com, qemu-devel@nongnu.org, 
+ Mark Burton <mburton@qti.qualcomm.com>
+Content-Type: multipart/alternative; boundary="000000000000381e50060561d263"
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=juan.quintela@gmail.com; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,36 +92,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 13, 2023 at 8:30=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
->
-> On Thu, Sep 07, 2023 at 06:04:06AM -0700, Mattias Nissler wrote:
-> > @@ -3105,6 +3105,9 @@ void address_space_init(AddressSpace *as, MemoryR=
-egion *root, const char *name)
-> >      as->ioeventfds =3D NULL;
-> >      QTAILQ_INIT(&as->listeners);
-> >      QTAILQ_INSERT_TAIL(&address_spaces, as, address_spaces_link);
-> > +    as->bounce.in_use =3D false;
-> > +    qemu_mutex_init(&as->map_client_list_lock);
-> > +    QLIST_INIT(&as->map_client_list);
-> >      as->name =3D g_strdup(name ? name : "anonymous");
-> >      address_space_update_topology(as);
-> >      address_space_update_ioeventfds(as);
->
-> Missing the counterpart in do_address_space_destroy()?
+--000000000000381e50060561d263
+Content-Type: text/plain; charset="UTF-8"
 
-Of course, thanks for pointing this out.
+Hi
 
->
-> Perhaps we should assert on having no one using the buffer, or on the
-> client list too.
+If you have any topics, please add to this email.
 
-I agree it makes sense to put these assertions, but let me dig a bit
-and do some experiments to see whether these hold true in practice.
+Thanks, Juan.
 
->
-> Thanks,
->
-> --
-> Peter Xu
->
+--000000000000381e50060561d263
+Content-Type: text/html; charset="UTF-8"
+
+<div dir="auto">Hi<div dir="auto"><br></div><div dir="auto">If you have any topics, please add to this email.</div><div dir="auto"><br></div><div dir="auto">Thanks, Juan.</div></div>
+
+--000000000000381e50060561d263--
 
