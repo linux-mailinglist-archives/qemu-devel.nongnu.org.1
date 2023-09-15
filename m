@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C937A2664
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF647A2671
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 20:44:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhDn8-0000wg-3W; Fri, 15 Sep 2023 14:43:47 -0400
+	id 1qhDn7-0000kU-1O; Fri, 15 Sep 2023 14:43:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDmb-0008Lx-C7; Fri, 15 Sep 2023 14:43:15 -0400
+ id 1qhDmc-0008M0-57; Fri, 15 Sep 2023 14:43:15 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qhDmZ-0003MS-E7; Fri, 15 Sep 2023 14:43:13 -0400
+ id 1qhDma-0003OS-Lq; Fri, 15 Sep 2023 14:43:13 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qhDhh-00Fs9Q-0W;
- Fri, 15 Sep 2023 20:41:33 +0200
+ (envelope-from <den@openvz.org>) id 1qhDhh-00Fs9Q-1z;
+ Fri, 15 Sep 2023 20:41:34 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
 Subject: [PATCH 11/21] parallels: collect bitmap of used clusters at open
-Date: Fri, 15 Sep 2023 20:41:19 +0200
-Message-Id: <20230915184130.403366-13-den@openvz.org>
+Date: Fri, 15 Sep 2023 20:41:20 +0200
+Message-Id: <20230915184130.403366-14-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230915184130.403366-1-den@openvz.org>
 References: <20230915184130.403366-1-den@openvz.org>
@@ -72,7 +72,7 @@ Signed-off-by: Denis V. Lunev <den@openvz.org>
  2 files changed, 76 insertions(+)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index bdc4dd081b..2517f35581 100644
+index 182ef98872..d677a1a253 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
 @@ -193,6 +193,58 @@ static int mark_used(BlockDriverState *bs,
