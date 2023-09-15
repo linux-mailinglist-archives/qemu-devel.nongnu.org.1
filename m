@@ -2,76 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26197A202B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 15:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2079A7A2047
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 15:55:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qh9Cd-0004fk-6g; Fri, 15 Sep 2023 09:49:47 -0400
+	id 1qh9H6-0006Ge-62; Fri, 15 Sep 2023 09:54:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qh9Ca-0004fQ-Ib
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:49:44 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qh9CZ-0002XD-3D
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:49:44 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-52f9a45b4bdso2570292a12.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 06:49:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694785780; x=1695390580; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0eFEkffusovehClr8bSOhOCkCIRJsuwxhzKdW/qZm+w=;
- b=PSbbFo9eUbw/tNnRtnT5v4f90ILvBWUhsa6S7ntiLz0Tqyd9WTv4lNcUzBx2zb8+Fx
- 9Fw92dY3zJA/Uy3Le0R7pRprKN358AeyijmLLxIM56FkwcVfum3g5NF2WQ3m9nnAWW1q
- weQbnr6anfxubkmLTBnpkQlPoRqGAaYilct4V5KxU0fZG+skt1nHmWazb7hPV5Tz9K4I
- 87XjwQ36j3qGQD9dxjM5dsuSLffT1eBMZzqz9DD+lvEjyNe/5epL69PyT7zDxEFIWz8K
- fCKOHCXbo/CktyCApe6fUTbGgT3vNtWFlkXbQBmo4RaC6GkgAUL/ET+nkWeuPJLX2fv2
- E58Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694785780; x=1695390580;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0eFEkffusovehClr8bSOhOCkCIRJsuwxhzKdW/qZm+w=;
- b=PSAjcy7ZqxHWOVAB7iNZyBgM2JbcN6vvy8/I5UEN1MpYstrvaYAvjRjW0r4UqpyaMw
- 5Si7zVVyhly7+QkfFw2peLjbrBSPX46DysxAIuURfjkF1Cp7ydObB2yX0/KYLrTqWAcg
- Y6KQNstgtMqZj0pvj8IO/2X6zYC7Mvo0qXxZ2b3Jj5yXM4lEgnmDqLP4JoMhVKTwcWuA
- zgPNhx0B/o/pPcdnS+f7yqOm8awWhZztw0BJio+uMlXsYoLECPlSk7gFcICcgKlvX18j
- ZPgi2u6+2d2pZmjLr7lpmtWmoRiqq0C7EBJvHecid/K6lRX+jCCg3NMZr3qpvzyna3B0
- 0TTg==
-X-Gm-Message-State: AOJu0Yz6N0peAcMSqiOHn+ryPd6S8CWf08Bv2O2ptc0lAhmtIx0oJllp
- hHFmeYNYiffDQnoeJPcN0mUmCWCLsOoT9rZBj3hs6g==
-X-Google-Smtp-Source: AGHT+IGByFoA4k+mgCvWENnEGLu5d0m/j+QpKOMyysxD9jVRlRdYOv3WEb6e6OeNwY+EM7i7vik20ZBAoADgWcafFxY=
-X-Received: by 2002:a05:6402:14c8:b0:52f:bd60:b54b with SMTP id
- f8-20020a05640214c800b0052fbd60b54bmr1715538edx.37.1694785780320; Fri, 15 Sep
- 2023 06:49:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9H3-0006GO-GG
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:54:21 -0400
+Received: from rev.ng ([5.9.113.41])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qh9Gx-0003QX-VQ
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 09:54:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=tdh0Wi/c7IL2rPqjRoOV30UgkfpHSsCdb7sT8jUr5es=; b=QlnOKdKWciGl0oV5ddDMOUlQPG
+ GS0FPenno4xkup6mZcKeHmEOLHqbXwIbknICtMrYFbsd7S2l5Srzz1M/6l4ksFt5H23L/8d9S5hwy
+ XqiUjrW5ghhhACY1BkQrvm7HrU+G8aVKmXeDCLjDmgKW5PTVyVhPi7JQQCn4XhFc8e44=;
+Date: Fri, 15 Sep 2023 15:54:01 +0200
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Alessandro Di Federico <ale@rev.ng>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+ Riku Voipio <riku.voipio@iki.fi>
+Subject: Re: [PATCH 02/11] exec: Move cpu_loop_foo() target agnostic
+ functions to 'cpu-common.h'
+Message-ID: <wokmorg2uor6buclmnviwhuewycazrm4capr255h7ujg22xly7@wxantn4baxes>
+References: <20230914185718.76241-1-philmd@linaro.org>
+ <20230914185718.76241-3-philmd@linaro.org>
 MIME-Version: 1.0
-References: <20230914175835.382972-1-tfanelli@redhat.com>
- <ZQQplEOUE2GhBL07@redhat.com>
-In-Reply-To: <ZQQplEOUE2GhBL07@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 15 Sep 2023 14:49:20 +0100
-Message-ID: <CAFEAcA-DnH4oQ5kUioTiQr7COEbAqCKdkDPkBS0iJ3XUrKzOLw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/8] i386/sev: Use C API of Rust SEV library
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Tyler Fanelli <tfanelli@redhat.com>, qemu-devel@nongnu.org,
- pbonzini@redhat.com, mtosatti@redhat.com, stefanha@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230914185718.76241-3-philmd@linaro.org>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,27 +62,106 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 15 Sept 2023 at 10:54, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
-> wrote:
-> My summary, is that I'd personally be in favour of opening the door
-> to Rust code as a mandatory pre-requisite for QEMU, at the very least
-> for system emulators. Not because this particular series is compelling,
-> but because I think Rust could be more beneficial to QEMU over the long
-> term than we expect. In terms of consuming it though, if we're going
-> to replace existing QEMU functionality, then I think we need to bundle
-> the Rust code and natively integrate it into the build system, as we
-> have recently started doing with our python deps, to detach ourselves
-> from the limits of what distros ship.
-
-I'm not against this, but there is a fair amount of work here
-in figuring out how exactly to integrate Rust components
-into the build system, questions like what our minimum required
-rust version would be, liasing with downstream distros to
-check that what we're proposing isn't a nightmare for them
-to package, etc.
-
--- PMM
+On 14/09/23, Philippe Mathieu-Daudé wrote:
+> While these functions are not TCG specific, they are not target
+> specific. Move them to "exec/cpu-common.h" so their callers don't
+> have to be tainted as target specific.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  include/exec/cpu-common.h | 32 ++++++++++++++++++++++++++++++++
+>  include/exec/exec-all.h   | 30 ------------------------------
+>  2 files changed, 32 insertions(+), 30 deletions(-)
+> 
+> diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+> index 360b8298a4..605b160a7e 100644
+> --- a/include/exec/cpu-common.h
+> +++ b/include/exec/cpu-common.h
+> @@ -173,4 +173,36 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+>  /* vl.c */
+>  void list_cpus(void);
+>  
+> +#ifdef CONFIG_TCG
+> +/**
+> + * cpu_unwind_state_data:
+> + * @cpu: the cpu context
+> + * @host_pc: the host pc within the translation
+> + * @data: output data
+> + *
+> + * Attempt to load the the unwind state for a host pc occurring in
+> + * translated code.  If @host_pc is not in translated code, the
+> + * function returns false; otherwise @data is loaded.
+> + * This is the same unwind info as given to restore_state_to_opc.
+> + */
+> +bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
+> +
+> +/**
+> + * cpu_restore_state:
+> + * @cpu: the cpu context
+> + * @host_pc: the host pc within the translation
+> + * @return: true if state was restored, false otherwise
+> + *
+> + * Attempt to restore the state for a fault occurring in translated
+> + * code. If @host_pc is not in translated code no state is
+> + * restored and the function returns false.
+> + */
+> +bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc);
+> +
+> +G_NORETURN void cpu_loop_exit_noexc(CPUState *cpu);
+> +G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
+> +#endif /* CONFIG_TCG */
+> +G_NORETURN void cpu_loop_exit(CPUState *cpu);
+> +G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
+> +
+>  #endif /* CPU_COMMON_H */
+> diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+> index 2e4d337805..ee90ef122b 100644
+> --- a/include/exec/exec-all.h
+> +++ b/include/exec/exec-all.h
+> @@ -27,36 +27,6 @@
+>  #include "exec/translation-block.h"
+>  #include "qemu/clang-tsa.h"
+>  
+> -/**
+> - * cpu_unwind_state_data:
+> - * @cpu: the cpu context
+> - * @host_pc: the host pc within the translation
+> - * @data: output data
+> - *
+> - * Attempt to load the the unwind state for a host pc occurring in
+> - * translated code.  If @host_pc is not in translated code, the
+> - * function returns false; otherwise @data is loaded.
+> - * This is the same unwind info as given to restore_state_to_opc.
+> - */
+> -bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
+> -
+> -/**
+> - * cpu_restore_state:
+> - * @cpu: the cpu context
+> - * @host_pc: the host pc within the translation
+> - * @return: true if state was restored, false otherwise
+> - *
+> - * Attempt to restore the state for a fault occurring in translated
+> - * code. If @host_pc is not in translated code no state is
+> - * restored and the function returns false.
+> - */
+> -bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc);
+> -
+> -G_NORETURN void cpu_loop_exit_noexc(CPUState *cpu);
+> -G_NORETURN void cpu_loop_exit(CPUState *cpu);
+> -G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
+> -G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
+> -
+>  /**
+>   * cpu_loop_exit_requested:
+>   * @cpu: The CPU state to be tested
+> -- 
+> 2.41.0
+> 
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
