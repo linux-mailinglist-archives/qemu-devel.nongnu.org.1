@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B1C7A3194
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C417A3193
 	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 19:14:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhYqU-0006xo-VN; Sat, 16 Sep 2023 13:12:38 -0400
+	id 1qhYqU-0006xf-Lc; Sat, 16 Sep 2023 13:12:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhYqM-0006wv-Bi
+ id 1qhYqM-0006ww-Bu
  for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:12:30 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhYqI-0000Q0-QT
+ id 1qhYqJ-0000Q9-3Q
  for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:12:28 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-68fb2e9ebcdso2548455b3a.2
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-68fc292de9dso2299272b3a.0
  for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 10:12:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694884345; x=1695489145; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=Ow/QitEtIQLxnULpZl9GePjubstidjCAUIIrE9tA77A=;
- b=lNBRREWYhMmnwD9xKFgYE/Z2/17Ej5zpvtuhCF/pTywxN4IOjzljBNclK8ju2raZ4j
- anm3QoTdSl//VNkcOlcMwt4l5jbyXGbu1TJAOhdvya55p/tKBLpQWuR2kUM1bsRfIhmC
- r2kWAKQqcifnmtzkuQtVIPiYbb43HEbB144yxF6xXGFGjDqeBKfNEUDWGA5hrfZ20U+r
- Ii9yMrkxVVtJPENJwG6DLyvSGd77nhea53P+9s638l8nJK7rjMqdwBQ5/CNhC1J9rmZo
- EjTYLmGzwqpvRUON7EMLm6sf/GhJ//Joe91v/bZrOnODZEeEHctBL/G8Wi6xe7Q64pIu
- i7kw==
+ d=linaro.org; s=google; t=1694884346; x=1695489146; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=BAF//SWs/GLPIw5LBlcWf1jMcdaNmd2+u/L+v9zWp7w=;
+ b=lFteddp0h7aXjnNrzMAuOAckS3+pB1HzQJhSOi6StZ9m5FIXpyP1V7jnmo53qvWr7W
+ bcfoMa1i85lsr0mw5ph0GDcRTneVUFFRIc04lgKfmEDRyXBYiGf2SbCoTmc30xqsK2/o
+ ax0GgGABgRKhFHlo9PrYl9DPh3NT5drn3EjSVX7N+XBJWKG5TXPZzkN5dfK5dIJLFcoA
+ SRddFDyr7Zf3pdAQceZxgPLjAPxWSwn4nTaZqKTRKQnDZCQir/ZDGhEP0PidadpUGz/Q
+ nh0wvpphE/9W29T/8b9Gx44K7zeuieF925g8wovDlvNDdVmk4oXJLDTGV0iIT80ZjX/w
+ wNgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694884345; x=1695489145;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ow/QitEtIQLxnULpZl9GePjubstidjCAUIIrE9tA77A=;
- b=Dez/xhaDd98mhN0nsb5piHTTf5nd55Y4iTkZTD6S8GwYu1GE02ulhJXEXwUs5sQDCN
- dSZFloO6ACwfJ9Dpee38uKoqkzfAcYeGpfJmO1YBFpbh5rwaPNTh89gj6ZLCQjFCyv29
- ZsB54C24wBDPOqfDZyQeWBJMg+FskAjugNXuKRcv24npxX0axE6eGetPBOCvBBaO1Eua
- i6adUGGuAnMZH3t7/PZYJbxzxVSEuXJ82Z1wZpVZMpu7GgcT9lpzUy9gSLU5kuQ2kinm
- cqTC+b4MF2+oorUEhB8G2T4U7M99IuA9DjD4fVgXaF+b43BHt9YTGXXjkcEG6NuIY1Vd
- yKXg==
-X-Gm-Message-State: AOJu0YzUiGChRFOUkdAsk1jDL/GaD3dyf+zXyjp5buod3SzOflyeP6vH
- i3GV3aKcZ35p/SQvahUbLxZCXIjObBg6Tj0PGvA=
-X-Google-Smtp-Source: AGHT+IGAN0iauX/QFhBmfuT4e+pyIqm//K09PmQ39C4N1Zuq/QcSUGj1Gvb5dQh3QyK8KAqKZA9jOA==
-X-Received: by 2002:a05:6a00:1a13:b0:690:3f29:a874 with SMTP id
- g19-20020a056a001a1300b006903f29a874mr4081203pfv.23.1694884344595; 
- Sat, 16 Sep 2023 10:12:24 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694884346; x=1695489146;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=BAF//SWs/GLPIw5LBlcWf1jMcdaNmd2+u/L+v9zWp7w=;
+ b=oddJzMGrK66sY9XMHb63uORFSAv9Yvas76aZ3G+yeSX/o6F+3BaK9bI/0u0FthM608
+ NeRLLnOkSMoukQxuHZaGa4YVl4Bf3Q1r9m/sPGm9T6i9pQo1c+G2Hz1nBBYNT2GtrZWU
+ LtwhSK+5IdEwDxmHElCemJCdlt8eE9IJSUJR1O+cE94Icxq1Ad5bBo49vedK+OfRvuuV
+ EdK/cMZeRIc/ahm/6FDsVcIqtWYM4Tg7aAVpO43Oeq8cms97ZourgFKYUCo2QUPr/6ex
+ I++LnCcAsFfwtj1Xz8FwxR/9pjSz5ZnFNKw9BISzzHaU5YAx0qgBNvTvhGtthCFZs3Jb
+ Ay9g==
+X-Gm-Message-State: AOJu0Yx+WTF2FJxeZAejcbgPBaawFf///qYpFCw/3bYei2iE87PvOLQt
+ DeOswHfnSGdmEW0MddftLJ6u9KaUV+UF9vt8Oys=
+X-Google-Smtp-Source: AGHT+IHDrjbHt0Jo7S4B20z26lowzkEp4kwh7n6icM3+Ci7yTPsbinQZahTemwe3YYSnn523I57IgQ==
+X-Received: by 2002:a05:6a00:1f97:b0:68f:cbd3:5b01 with SMTP id
+ bg23-20020a056a001f9700b0068fcbd35b01mr8882526pfb.13.1694884345659; 
+ Sat, 16 Sep 2023 10:12:25 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- i14-20020aa78d8e000000b00689f8dc26c2sm4706705pfr.133.2023.09.16.10.12.23
- for <qemu-devel@nongnu.org>
+ i14-20020aa78d8e000000b00689f8dc26c2sm4706705pfr.133.2023.09.16.10.12.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Sep 2023 10:12:24 -0700 (PDT)
+ Sat, 16 Sep 2023 10:12:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL v2 00/39] tcg patch queue
-Date: Sat, 16 Sep 2023 10:12:22 -0700
-Message-Id: <20230916171223.521545-1-richard.henderson@linaro.org>
+Cc: Jiajie Chen <c@jia.je>
+Subject: [PULL v2 21/39] tcg/loongarch64: Implement 128-bit load & store
+Date: Sat, 16 Sep 2023 10:12:23 -0700
+Message-Id: <20230916171223.521545-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230916171223.521545-1-richard.henderson@linaro.org>
+References: <20230916171223.521545-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,123 +90,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v2: tcg/loongarch64 patch set without last minute tweaks.
+From: Jiajie Chen <c@jia.je>
 
-r~
+If LSX is available, use LSX instructions to implement 128-bit load &
+store when MO_128 is required, otherwise use two 64-bit loads & stores.
 
-The following changes since commit 005ad32358f12fe9313a4a01918a55e60d4f39e5:
+Signed-off-by: Jiajie Chen <c@jia.je>
+Message-Id: <20230908022302.180442-17-c@jia.je>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/loongarch64/tcg-target-con-set.h |  2 +
+ tcg/loongarch64/tcg-target.h         |  2 +-
+ tcg/loongarch64/tcg-target.c.inc     | 59 ++++++++++++++++++++++++++++
+ 3 files changed, 62 insertions(+), 1 deletion(-)
 
-  Merge tag 'pull-tpm-2023-09-12-3' of https://github.com/stefanberger/qemu-tpm into staging (2023-09-13 13:41:57 -0400)
+diff --git a/tcg/loongarch64/tcg-target-con-set.h b/tcg/loongarch64/tcg-target-con-set.h
+index 914572d21b..77d62e38e7 100644
+--- a/tcg/loongarch64/tcg-target-con-set.h
++++ b/tcg/loongarch64/tcg-target-con-set.h
+@@ -18,6 +18,7 @@ C_O0_I1(r)
+ C_O0_I2(rZ, r)
+ C_O0_I2(rZ, rZ)
+ C_O0_I2(w, r)
++C_O0_I3(r, r, r)
+ C_O1_I1(r, r)
+ C_O1_I1(w, r)
+ C_O1_I1(w, w)
+@@ -37,3 +38,4 @@ C_O1_I2(w, w, wM)
+ C_O1_I2(w, w, wA)
+ C_O1_I3(w, w, w, w)
+ C_O1_I4(r, rZ, rJ, rZ, rZ)
++C_O2_I1(r, r, r)
+diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
+index 67b0a95532..03017672f6 100644
+--- a/tcg/loongarch64/tcg-target.h
++++ b/tcg/loongarch64/tcg-target.h
+@@ -171,7 +171,7 @@ extern bool use_lsx_instructions;
+ #define TCG_TARGET_HAS_muluh_i64        1
+ #define TCG_TARGET_HAS_mulsh_i64        1
+ 
+-#define TCG_TARGET_HAS_qemu_ldst_i128   0
++#define TCG_TARGET_HAS_qemu_ldst_i128   use_lsx_instructions
+ 
+ #define TCG_TARGET_HAS_v64              0
+ #define TCG_TARGET_HAS_v128             use_lsx_instructions
+diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+index 82901d678a..fde744e766 100644
+--- a/tcg/loongarch64/tcg-target.c.inc
++++ b/tcg/loongarch64/tcg-target.c.inc
+@@ -1081,6 +1081,48 @@ static void tcg_out_qemu_st(TCGContext *s, TCGReg data_reg, TCGReg addr_reg,
+     }
+ }
+ 
++static void tcg_out_qemu_ldst_i128(TCGContext *s, TCGReg data_lo, TCGReg data_hi,
++                                   TCGReg addr_reg, MemOpIdx oi, bool is_ld)
++{
++    TCGLabelQemuLdst *ldst;
++    HostAddress h;
++
++    ldst = prepare_host_addr(s, &h, addr_reg, oi, is_ld);
++
++    if (h.aa.atom == MO_128) {
++        /*
++         * Use VLDX/VSTX when 128-bit atomicity is required.
++         * If address is aligned to 16-bytes, the 128-bit load/store is atomic.
++         */
++        if (is_ld) {
++            tcg_out_opc_vldx(s, TCG_VEC_TMP0, h.base, h.index);
++            tcg_out_opc_vpickve2gr_d(s, data_lo, TCG_VEC_TMP0, 0);
++            tcg_out_opc_vpickve2gr_d(s, data_hi, TCG_VEC_TMP0, 1);
++        } else {
++            tcg_out_opc_vinsgr2vr_d(s, TCG_VEC_TMP0, data_lo, 0);
++            tcg_out_opc_vinsgr2vr_d(s, TCG_VEC_TMP0, data_hi, 1);
++            tcg_out_opc_vstx(s, TCG_VEC_TMP0, h.base, h.index);
++        }
++    } else {
++        /* Otherwise use a pair of LD/ST. */
++        tcg_out_opc_add_d(s, TCG_REG_TMP0, h.base, h.index);
++        if (is_ld) {
++            tcg_out_opc_ld_d(s, data_lo, TCG_REG_TMP0, 0);
++            tcg_out_opc_ld_d(s, data_hi, TCG_REG_TMP0, 8);
++        } else {
++            tcg_out_opc_st_d(s, data_lo, TCG_REG_TMP0, 0);
++            tcg_out_opc_st_d(s, data_hi, TCG_REG_TMP0, 8);
++        }
++    }
++
++    if (ldst) {
++        ldst->type = TCG_TYPE_I128;
++        ldst->datalo_reg = data_lo;
++        ldst->datahi_reg = data_hi;
++        ldst->raddr = tcg_splitwx_to_rx(s->code_ptr);
++    }
++}
++
+ /*
+  * Entry-points
+  */
+@@ -1145,6 +1187,7 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     TCGArg a0 = args[0];
+     TCGArg a1 = args[1];
+     TCGArg a2 = args[2];
++    TCGArg a3 = args[3];
+     int c2 = const_args[2];
+ 
+     switch (opc) {
+@@ -1507,6 +1550,10 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_qemu_ld_a64_i64:
+         tcg_out_qemu_ld(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
++        tcg_out_qemu_ldst_i128(s, a0, a1, a2, a3, true);
++        break;
+     case INDEX_op_qemu_st_a32_i32:
+     case INDEX_op_qemu_st_a64_i32:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I32);
+@@ -1515,6 +1562,10 @@ static void tcg_out_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_qemu_st_a64_i64:
+         tcg_out_qemu_st(s, a0, a1, a2, TCG_TYPE_I64);
+         break;
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
++        tcg_out_qemu_ldst_i128(s, a0, a1, a2, a3, false);
++        break;
+ 
+     case INDEX_op_mov_i32:  /* Always emitted via tcg_out_mov.  */
+     case INDEX_op_mov_i64:
+@@ -1996,6 +2047,14 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_qemu_st_a64_i64:
+         return C_O0_I2(rZ, r);
+ 
++    case INDEX_op_qemu_ld_a32_i128:
++    case INDEX_op_qemu_ld_a64_i128:
++        return C_O2_I1(r, r, r);
++
++    case INDEX_op_qemu_st_a32_i128:
++    case INDEX_op_qemu_st_a64_i128:
++        return C_O0_I3(r, r, r);
++
+     case INDEX_op_brcond_i32:
+     case INDEX_op_brcond_i64:
+         return C_O0_I2(rZ, rZ);
+-- 
+2.34.1
 
-are available in the Git repository at:
-
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230915-2
-
-for you to fetch changes up to a97a83753c90d79ed15a716610af23fabd84aaed:
-
-  tcg: Map code_gen_buffer with PROT_BTI (2023-09-16 14:57:16 +0000)
-
-----------------------------------------------------------------
-*: Delete checks for old host definitions
-tcg/loongarch64: Generate LSX instructions
-fpu: Add conversions between bfloat16 and [u]int8
-fpu: Handle m68k extended precision denormals properly
-accel/tcg: Improve cputlb i/o organization
-accel/tcg: Simplify tlb_plugin_lookup
-accel/tcg: Remove false-negative halted assertion
-tcg: Add gvec compare with immediate and scalar operand
-tcg/aarch64: Emit BTI insns at jump landing pads
-
-----------------------------------------------------------------
-Akihiko Odaki (3):
-      util: Delete checks for old host definitions
-      softmmu: Delete checks for old host definitions
-      thunk: Delete checks for old host definitions
-
-Jiajie Chen (16):
-      tcg/loongarch64: Import LSX instructions
-      tcg/loongarch64: Lower basic tcg vec ops to LSX
-      tcg: pass vece to tcg_target_const_match()
-      tcg/loongarch64: Lower cmp_vec to vseq/vsle/vslt
-      tcg/loongarch64: Lower add/sub_vec to vadd/vsub
-      tcg/loongarch64: Lower vector bitwise operations
-      tcg/loongarch64: Lower neg_vec to vneg
-      tcg/loongarch64: Lower mul_vec to vmul
-      tcg/loongarch64: Lower vector min max ops
-      tcg/loongarch64: Lower vector saturated ops
-      tcg/loongarch64: Lower vector shift vector ops
-      tcg/loongarch64: Lower bitsel_vec to vbitsel
-      tcg/loongarch64: Lower vector shift integer ops
-      tcg/loongarch64: Lower rotv_vec ops to LSX
-      tcg/loongarch64: Lower rotli_vec to vrotri
-      tcg/loongarch64: Implement 128-bit load & store
-
-LIU Zhiwei (2):
-      accel/tcg: Fix the comment for CPUTLBEntryFull
-      fpu: Add conversions between bfloat16 and [u]int8
-
-Nicholas Piggin (1):
-      accel/tcg: mttcg remove false-negative halted assertion
-
-Richard Henderson (17):
-      tcg: Add gvec compare with immediate and scalar operand
-      target/arm: Use tcg_gen_gvec_cmpi for compare vs 0
-      accel/tcg: Simplify tlb_plugin_lookup
-      accel/tcg: Split out io_prepare and io_failed
-      accel/tcg: Use CPUTLBEntryFull.phys_addr in io_failed
-      plugin: Simplify struct qemu_plugin_hwaddr
-      accel/tcg: Merge cpu_transaction_failed into io_failed
-      accel/tcg: Replace direct use of io_readx/io_writex in do_{ld,st}_1
-      accel/tcg: Merge io_readx into do_ld_mmio_beN
-      accel/tcg: Merge io_writex into do_st_mmio_leN
-      accel/tcg: Introduce do_ld16_mmio_beN
-      accel/tcg: Introduce do_st16_mmio_leN
-      fpu: Handle m68k extended precision denormals properly
-      tcg: Add tcg_out_tb_start backend hook
-      util/cpuinfo-aarch64: Add CPUINFO_BTI
-      tcg/aarch64: Emit BTI insns at jump landing pads
-      tcg: Map code_gen_buffer with PROT_BTI
-
- accel/tcg/tcg-runtime.h              |   25 +
- host/include/aarch64/host/cpuinfo.h  |    1 +
- include/exec/cpu-defs.h              |   12 +-
- include/exec/user/thunk.h            |    3 +-
- include/fpu/softfloat.h              |   12 +
- include/hw/core/cpu.h                |   13 -
- include/qemu/plugin-memory.h         |   11 +-
- include/qemu/typedefs.h              |    1 -
- include/tcg/tcg-op-gvec-common.h     |    6 +
- tcg/loongarch64/tcg-target-con-set.h |    9 +
- tcg/loongarch64/tcg-target-con-str.h |    3 +
- tcg/loongarch64/tcg-target.h         |   40 +-
- tcg/loongarch64/tcg-target.opc.h     |   12 +
- accel/tcg/cputlb.c                   |  437 ++-
- accel/tcg/tcg-accel-ops-mttcg.c      |    9 +-
- accel/tcg/tcg-runtime-gvec.c         |   26 +
- fpu/softfloat.c                      |   67 +-
- plugins/api.c                        |   27 +-
- softmmu/async-teardown.c             |    3 -
- target/arm/tcg/translate.c           |   56 +-
- tcg/region.c                         |   41 +-
- tcg/tcg-op-gvec.c                    |  149 +
- tcg/tcg.c                            |    7 +-
- tests/tcg/m68k/denormal.c            |   53 +
- util/cpuinfo-aarch64.c               |    7 +
- util/oslib-posix.c                   |   15 +-
- fpu/softfloat-parts.c.inc            |    7 +-
- tcg/aarch64/tcg-target.c.inc         |   59 +-
- tcg/arm/tcg-target.c.inc             |    7 +-
- tcg/i386/tcg-target.c.inc            |    7 +-
- tcg/loongarch64/tcg-insn-defs.c.inc  | 6019 +++++++++++++++++++++++++++++++++-
- tcg/loongarch64/tcg-target.c.inc     |  624 +++-
- tcg/mips/tcg-target.c.inc            |    7 +-
- tcg/ppc/tcg-target.c.inc             |    7 +-
- tcg/riscv/tcg-target.c.inc           |    7 +-
- tcg/s390x/tcg-target.c.inc           |    7 +-
- tcg/sparc64/tcg-target.c.inc         |    7 +-
- tcg/tci/tcg-target.c.inc             |    7 +-
- tests/tcg/m68k/Makefile.target       |    2 +-
- 39 files changed, 7419 insertions(+), 393 deletions(-)
- create mode 100644 tcg/loongarch64/tcg-target.opc.h
- create mode 100644 tests/tcg/m68k/denormal.c
 
