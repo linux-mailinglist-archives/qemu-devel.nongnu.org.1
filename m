@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822BA7A32BB
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F407A32B8
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:45:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhd3t-0007AF-3B; Sat, 16 Sep 2023 17:42:45 -0400
+	id 1qhd3k-0005vk-AC; Sat, 16 Sep 2023 17:42:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd3A-0005ES-8j
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:42:01 -0400
-Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
+ id 1qhd3C-0005Eu-7l
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:42:03 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd37-0000Vv-KR
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:42:00 -0400
-Received: by mail-oo1-xc32.google.com with SMTP id
- 006d021491bc7-57128297bd7so2090803eaf.0
- for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 14:41:57 -0700 (PDT)
+ id 1qhd39-0000WK-MQ
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:42:01 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-68c576d35feso3072296b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 14:41:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694900516; x=1695505316; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694900517; x=1695505317; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pwAW1yDMAGo64PQxKFedXSqZpiMNes3r170GM9uSE/0=;
- b=TmMM4lZS//FNpzkbjnsTUjN9QfgIiZJhQ8sgtbV7BDohwgxN6qwS5Fh0XaPGvVKT6J
- DsG9zKaIvE4DZgbVtyJusuIHiXNUn8TL7yUnsPxACiiJ9JkO62ov4yiCI06Ldgdgz+mo
- m/zLt3qzsP5qQE455TcOWXJGUriM6OUjlAHrDhB9NnIqeWOKfCRJuyDXkFJvTvoOrOzZ
- qgNGuLh2XsZMElGp8tEBJD8CYCqzuM0B48CTDSlQJdns96bo9Ut6w9Wpw2JiW9n27UtB
- hU0nzrx8Okzw2pQrSWwfeMtJUj9VNDIuO6iRcb21yAXCcJiFVW/ZetPkB2i8469cVTgI
- QENw==
+ bh=6VTpBWRs4wNK7fliIDMYgMpLG0bEcOQT795ogcrcYr0=;
+ b=yRy/7G7Pm0V2+MwkQKB9d9p+Zc5ozkrW57msve/Uyn5o3I4jnOqmDbAa1D8iyi8lJM
+ EUkvbxnVzH/mtUR4iJwhBqZUwwsaicwGiYfquQCI2PC/ecKby/e1CLA5UPUaWkgyd9Iy
+ 0vI2QJIMHbYit7GksR3ZHxrkLzQNeDT53HepI6CPI0UUPy07QCbuMz2VtkOxww0nYkFw
+ 9Kmj4DQC1hQaJgzG65eAojR9PM+LGTZtPn68Yiw9Tb4M1l9671zoKZUm8uA5uGtVqTMx
+ 4tBp+I7yQ6Hrz2r7zFnHm5VpNMTU6sXYtNqibdGZQGQVIUslaPnnnaL+qAHvgTmtQ2Bs
+ /f2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694900516; x=1695505316;
+ d=1e100.net; s=20230601; t=1694900517; x=1695505317;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pwAW1yDMAGo64PQxKFedXSqZpiMNes3r170GM9uSE/0=;
- b=GeoUMBRfFtIizyiHgrwJIVlCBI07I3QIaNvIPX05PXTPpVA2ZOWrcJ+8RKhwOAbcEX
- x+dLO9oq9FxoavC+YBbRQGfmUtEpe6EBPIj87h5cZTODhAJNg2/CqxvGOEiVcV9Vz5L8
- YiVkM+0HE8ZhCErrkc2Q0mvxv2C+tt3OhryUQigRSTqyGeQo8+G+cfIkRQUQ3pyTNk8l
- bDiyfrICfZxUczg83tcKGqYnlNNPc+fBNJswwwxvXhyAPJfS8tjAPBuZH/qHplasMvNF
- r8wzGpvaLwgdx6QwQD6nuB0Knylmxvu9RtSTIBLyUxdD5lpBraWDxZSJatT2Ub9Gl29s
- fOLg==
-X-Gm-Message-State: AOJu0Yw3IjZPzcDH4ytkM1oTfxaHIIiG3GIiUETyfg9MgYqqP0cAU+L7
- EaXrRZC/9sQI/jIcDloj0+sFibFSGrr/ar2gm/w=
-X-Google-Smtp-Source: AGHT+IFfb8T50wfHGcCeNUcBrunri+MckzdQmUnL+Ivfri/AbKIIpLIz2sVELD3FnuoaFqJPutJ5sQ==
-X-Received: by 2002:a05:6870:e30f:b0:1d6:57ab:433e with SMTP id
- z15-20020a056870e30f00b001d657ab433emr6247855oad.47.1694900516561; 
- Sat, 16 Sep 2023 14:41:56 -0700 (PDT)
+ bh=6VTpBWRs4wNK7fliIDMYgMpLG0bEcOQT795ogcrcYr0=;
+ b=pIFvwaND3/dSt2CAJXrU6nv0NnEpPwCsGe6SJg8z2ICLqlgIDaWp34EDBWSVpm0fhi
+ L1Rrf+pr1UDFatM0AhJzO1aMk6g3BjFVGgeTZUGCdcCgRkh9Ygq6JL6bg78Qx8SyXOX3
+ 5aHThh4tRDiRUPX6rZ0knplTI8QndEHbgOHX958aVYPa3W52ADwpQi/9ndNQoKKNS2v7
+ DFNK9rlvuUfM7OmMIlnp11XAhxWXUS56UdxybeHYtBNJEN/PYbhDSyrmnZJRKjdJIcoT
+ ahhnEvmjTuRnFpzn7WHsiIuZ0NnZj96vX90+zoTVB333TisZgQxym5wBjs5fKnrrqohB
+ RW4Q==
+X-Gm-Message-State: AOJu0Yy6k5lUCbdxlAw80pUhiuKzPOmSGCHNbwor1mx3jqdCwlsP+AJo
+ Z07sUEa8460f9620pXn9fOyMG6o3z2Sc+4f984o=
+X-Google-Smtp-Source: AGHT+IEBaRerfQfLVI3HNp2zSufW/MjL0q8V3zM5SEUjxSJrYAOWlyj0POm/BQjRntRIZb4LnxHs8Q==
+X-Received: by 2002:a05:6a00:c96:b0:68f:d864:596 with SMTP id
+ a22-20020a056a000c9600b0068fd8640596mr6961545pfv.3.1694900517281; 
+ Sat, 16 Sep 2023 14:41:57 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.55
+ n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Sat, 16 Sep 2023 14:41:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH v3 33/39] accel/tcg: Make icount.o a target agnostic unit
-Date: Sat, 16 Sep 2023 14:41:17 -0700
-Message-Id: <20230916214123.525796-34-richard.henderson@linaro.org>
+Subject: [PATCH v3 34/39] accel/tcg: Make cpu-exec-common.c a target agnostic
+ unit
+Date: Sat, 16 Sep 2023 14:41:18 -0700
+Message-Id: <20230916214123.525796-35-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916214123.525796-1-richard.henderson@linaro.org>
 References: <20230916214123.525796-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc32.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,87 +95,139 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Remove the unused "exec/exec-all.h" header. There is
-no more target specific code in it: make it target
-agnostic (rename using the '-common' suffix). Since
-it is TCG specific, move it to accel/tcg, updating
-MAINTAINERS.
+cpu_in_serial_context() is not target specific,
+move it declaration to "internal-common.h" (which
+we include in the 4 source files modified).
+
+Remove the unused "exec/exec-all.h" header from
+cpu-exec-common.c.  There is no more target specific
+code in this file: make it target agnostic.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20230914185718.76241-11-philmd@linaro.org>
+Message-Id: <20230914185718.76241-12-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- MAINTAINERS                                   | 1 -
- softmmu/icount.c => accel/tcg/icount-common.c | 3 +--
- accel/tcg/meson.build                         | 1 +
- softmmu/meson.build                           | 4 ----
- 4 files changed, 2 insertions(+), 7 deletions(-)
- rename softmmu/icount.c => accel/tcg/icount-common.c (99%)
+ accel/tcg/internal-common.h | 11 +++++++++++
+ accel/tcg/internal-target.h |  9 ---------
+ accel/tcg/cpu-exec-common.c |  3 +--
+ accel/tcg/cputlb.c          |  1 +
+ accel/tcg/tb-maint.c        |  1 +
+ accel/tcg/user-exec.c       |  1 +
+ accel/tcg/meson.build       |  4 +++-
+ 7 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ff436dbf21..047d143b9d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2912,7 +2912,6 @@ F: softmmu/main.c
- F: softmmu/cpus.c
- F: softmmu/cpu-throttle.c
- F: softmmu/cpu-timers.c
--F: softmmu/icount.c
- F: softmmu/runstate*
- F: qapi/run-state.json
+diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
+index 5d5247442e..3b2277e6e9 100644
+--- a/accel/tcg/internal-common.h
++++ b/accel/tcg/internal-common.h
+@@ -9,9 +9,20 @@
+ #ifndef ACCEL_TCG_INTERNAL_COMMON_H
+ #define ACCEL_TCG_INTERNAL_COMMON_H
  
-diff --git a/softmmu/icount.c b/accel/tcg/icount-common.c
-similarity index 99%
-rename from softmmu/icount.c
-rename to accel/tcg/icount-common.c
-index 4527bfbd6e..0bf5bb5e21 100644
---- a/softmmu/icount.c
-+++ b/accel/tcg/icount-common.c
-@@ -27,7 +27,6 @@
- #include "migration/vmstate.h"
- #include "qapi/error.h"
- #include "qemu/error-report.h"
--#include "exec/exec-all.h"
++#include "exec/translation-block.h"
++
+ extern int64_t max_delay;
+ extern int64_t max_advance;
+ 
+ void dump_exec_info(GString *buf);
+ 
++/*
++ * Return true if CS is not running in parallel with other cpus, either
++ * because there are no other cpus or we are within an exclusive context.
++ */
++static inline bool cpu_in_serial_context(CPUState *cs)
++{
++    return !(cs->tcg_cflags & CF_PARALLEL) || cpu_in_exclusive_context(cs);
++}
++
+ #endif
+diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
+index f9eec1ce28..932bbe4b63 100644
+--- a/accel/tcg/internal-target.h
++++ b/accel/tcg/internal-target.h
+@@ -90,15 +90,6 @@ static inline vaddr log_pc(CPUState *cpu, const TranslationBlock *tb)
+     }
+ }
+ 
+-/*
+- * Return true if CS is not running in parallel with other cpus, either
+- * because there are no other cpus or we are within an exclusive context.
+- */
+-static inline bool cpu_in_serial_context(CPUState *cs)
+-{
+-    return !(cs->tcg_cflags & CF_PARALLEL) || cpu_in_exclusive_context(cs);
+-}
+-
+ extern bool one_insn_per_tb;
+ 
+ /**
+diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
+index 55980417b4..b6cc387482 100644
+--- a/accel/tcg/cpu-exec-common.c
++++ b/accel/tcg/cpu-exec-common.c
+@@ -20,9 +20,8 @@
+ #include "qemu/osdep.h"
  #include "sysemu/cpus.h"
- #include "sysemu/qtest.h"
- #include "qemu/main-loop.h"
-@@ -38,7 +37,7 @@
- #include "hw/core/cpu.h"
- #include "sysemu/cpu-timers.h"
- #include "sysemu/cpu-throttle.h"
--#include "timers-state.h"
-+#include "softmmu/timers-state.h"
+ #include "sysemu/tcg.h"
+-#include "exec/exec-all.h"
+ #include "qemu/plugin.h"
+-#include "internal-target.h"
++#include "internal-common.h"
  
- /*
-  * ICOUNT: Instruction Counter
+ bool tcg_allowed;
+ 
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index df20bf4034..b8c5e345b8 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -35,6 +35,7 @@
+ #include "exec/translate-all.h"
+ #include "trace.h"
+ #include "tb-hash.h"
++#include "internal-common.h"
+ #include "internal-target.h"
+ #ifdef CONFIG_PLUGIN
+ #include "qemu/plugin-memory.h"
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index 85cf51445d..b194f8f065 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -29,6 +29,7 @@
+ #include "tcg/tcg.h"
+ #include "tb-hash.h"
+ #include "tb-context.h"
++#include "internal-common.h"
+ #include "internal-target.h"
+ 
+ 
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
+index f925dd0305..5bf2761bf4 100644
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -29,6 +29,7 @@
+ #include "qemu/atomic128.h"
+ #include "trace/trace-root.h"
+ #include "tcg/tcg-ldst.h"
++#include "internal-common.h"
+ #include "internal-target.h"
+ 
+ __thread uintptr_t helper_retaddr;
 diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 0fb03bd7d3..4633a34d28 100644
+index 4633a34d28..8783edd06e 100644
 --- a/accel/tcg/meson.build
 +++ b/accel/tcg/meson.build
-@@ -23,6 +23,7 @@ specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: files(
- ))
- 
- system_ss.add(when: ['CONFIG_TCG'], if_true: files(
-+  'icount-common.c',
-   'monitor.c',
- ))
- 
-diff --git a/softmmu/meson.build b/softmmu/meson.build
-index c18b7ad738..3a64dd89de 100644
---- a/softmmu/meson.build
-+++ b/softmmu/meson.build
-@@ -6,10 +6,6 @@ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY', if_true: [files(
-   'watchpoint.c',
- )])
- 
--specific_ss.add(when: ['CONFIG_SYSTEM_ONLY', 'CONFIG_TCG'], if_true: [files(
--  'icount.c',
--)])
--
- system_ss.add(files(
-   'balloon.c',
-   'bootdevice.c',
+@@ -1,7 +1,9 @@
+ tcg_ss = ss.source_set()
++common_ss.add(when: 'CONFIG_TCG', if_true: files(
++  'cpu-exec-common.c',
++))
+ tcg_ss.add(files(
+   'tcg-all.c',
+-  'cpu-exec-common.c',
+   'cpu-exec.c',
+   'tb-maint.c',
+   'tcg-runtime-gvec.c',
 -- 
 2.34.1
 
