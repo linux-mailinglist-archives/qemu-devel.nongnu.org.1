@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D835D7A2DAB
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A37B7A2DC1
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:37:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhM0s-0005xS-8U; Fri, 15 Sep 2023 23:30:30 -0400
+	id 1qhM0v-0005yo-Hk; Fri, 15 Sep 2023 23:30:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM0p-0005wT-Ru
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:27 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qhM0q-0005wl-SN
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:28 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM0o-00080v-5b
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:27 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68cbbff84f6so2777426b3a.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:25 -0700 (PDT)
+ id 1qhM0p-00081D-6H
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:28 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-68fb6fd2836so2583244b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1694835025; x=1695439825; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gfBRrxx77NvM2gONPN+r7Oxv4+eOWyWr5yF2/BMEzhk=;
- b=xBXtvXlWFdKnj++OWDhF3a9txGNLDNRWohlnhABUPN/jxIrA6ypGx011qwQ4uPEPds
- EWKWcDMbj0BXDFhtAlX8aK4CVmYbK/dwAnhj4N4ZzqffcTh371LebTMu+pje0D5u9PaD
- u0g/UCE3FKISgQMGAzOUNTIACZv4fMCYrtTNTZQ3JNJG4w38VdvqSocRLg35VVSpxiIV
- NrIiYRVPBj218XhgKIhOTRMsCluceBGN/tqlrAqYjGTqRhXvjw7X34rUyjGsJQYqOeFf
- +WoRWMdBhtJVAoxrmZR+8Dbn/LeTjzRqkzIJdXkEsAhc+NL8X2HYZShDWE2Z6R0mI6UL
- gBWw==
+ bh=5dphprXiVkWukG2aEdEE9+dyRDyj0wtRjPfPE48D/nE=;
+ b=rAwDXOfhTyg+4kCUTzS1L+EKE7lKnVfoFitYjpDi6+8cSPoyHeMJi67U3dtJ/RugEQ
+ a5yW++B1PHlmiTPoBcZcWzTjli6SeJzqEAW2NvzBcKwj5F1uYyE4Qzl9MJ/aRS4PB8oq
+ u4mjWknhxR+mbdA6Zjkm4EYdsW6z+dZBsfQmlStHqfu04yYBpGCseceIRmyrSf2LZuvG
+ xV8b2Fsm8lohAg94kd7rZjJmRexJUHtQ5Y2ZrYmRD8k5uu1S7ckSdimgn7M98GBRJLIr
+ lkJk1BTbJey6JSDCahEmINFubd3b/FU8o0gwDUGSl4LanAdVBCqRh0buZyRwo8bCDKAj
+ CYgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1694835025; x=1695439825;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gfBRrxx77NvM2gONPN+r7Oxv4+eOWyWr5yF2/BMEzhk=;
- b=gIv4o/tXenhIIRVpKgWdQvYrmg+TN2aSeutYX1p/KLIaf2VeyPxerBoFYWEwpUIxGm
- 2ivLPxxvprJIQOBLDx9jN2VfF7PWwL/unuiEi64TgJamFB01QgFbw4FzCmlcry2sCESK
- r12CTX9xAs0BqQuD08Y2j+LrzEaS+f8S1jJsqz02PSLyx01fHChlZThKOOxnLLZKvXvq
- 2EAD6RjSEN72oR6/nR2cBudYpQ4mOdRd0qhb0SJswl1dTJE3cr+AgL9YtT+h86JTFqEQ
- WcU8Nw35AN0ZSbCh4Gy9TkDdudrIlEHZUxkI5UZf57XgVh8LUjuyu20mhwCnc7Obv2jd
- euNQ==
-X-Gm-Message-State: AOJu0Yxg3LeB3o+g6MEPzjh0VoSYZYBbxeFcfk89DhqZ0t+IHzo3wCUi
- ANoy5UTqbXPRXBvWLaqDJ71Y/3YDDtFFH/bbIts=
-X-Google-Smtp-Source: AGHT+IFuLaG/jYlBKrhTAGV/pEnRgINJnrnGB11PXiLbZxBU3KgqI6eYSSNa3/B5QncLpiFUANA6JQ==
-X-Received: by 2002:a05:6a21:3299:b0:159:c07d:66f0 with SMTP id
- yt25-20020a056a21329900b00159c07d66f0mr4447856pzb.6.1694835024734; 
- Fri, 15 Sep 2023 20:30:24 -0700 (PDT)
+ bh=5dphprXiVkWukG2aEdEE9+dyRDyj0wtRjPfPE48D/nE=;
+ b=Fesd3TsBt9t2cOMQM9pHUfYXAQZYPvMnws5y/InodcTl6u6S+bi7Pzaa6HEQvF44mv
+ YAM4jyhRD2nJlW21SNbXMaa0utno0tmHPRlri0dHs77QoPXd6Fr6bFxHgULWNpLaP5Mh
+ QGG1UfQpmm1FrTqsOWqEF9h6IiI4pX3QesueACXwd5epNYifBBtkMTVUinBbmHnI7cXj
+ hcohdH4tcgyBnhisiW2emR8uhRv6UqaS/npGpx9nrydrZjhPJr2EdXzpeEYugQ8pW9o+
+ lc35QFC58U+rhtMwkgjR4QirpIlNN2Wf0kCorYTsn0tPWAH1rFYSDb//dg775Sfldby9
+ H71Q==
+X-Gm-Message-State: AOJu0YwuDp1PFiDqAXA39JgWlvkJXjmfSFJE59V1FO+1KjA1V4deONWN
+ DwUwWbv89sZjTv3RLTstYMKis+tiA1ApxUd+4+0=
+X-Google-Smtp-Source: AGHT+IFOQjSS5ayXp8Stf2euwb4uisrnLq/8uuVgVCKlGK8FkRO0ntgQwZiVM8s3W9DX1JqS5b6BmA==
+X-Received: by 2002:a05:6a00:c96:b0:68f:d864:596 with SMTP id
+ a22-20020a056a000c9600b0068fd8640596mr4297267pfv.3.1694835025616; 
+ Fri, 15 Sep 2023 20:30:25 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.24
+ j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 20:30:24 -0700 (PDT)
+ Fri, 15 Sep 2023 20:30:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Jiajie Chen <c@jia.je>
-Subject: [PULL 12/39] tcg/loongarch64: Lower neg_vec to vneg
-Date: Fri, 15 Sep 2023 20:29:44 -0700
-Message-Id: <20230916033011.479144-13-richard.henderson@linaro.org>
+Subject: [PULL 13/39] tcg/loongarch64: Lower mul_vec to vmul
+Date: Fri, 15 Sep 2023 20:29:45 -0700
+Message-Id: <20230916033011.479144-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916033011.479144-1-richard.henderson@linaro.org>
 References: <20230916033011.479144-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,7 +94,7 @@ From: Jiajie Chen <c@jia.je>
 
 Signed-off-by: Jiajie Chen <c@jia.je>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230908022302.180442-8-c@jia.je>
+Message-Id: <20230908022302.180442-9-c@jia.je>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  tcg/loongarch64/tcg-target.h     | 2 +-
@@ -102,58 +102,58 @@ Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
  2 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-index f9c5cb12ca..64c72d0857 100644
+index 64c72d0857..2c2266ed31 100644
 --- a/tcg/loongarch64/tcg-target.h
 +++ b/tcg/loongarch64/tcg-target.h
-@@ -178,7 +178,7 @@ extern bool use_lsx_instructions;
- #define TCG_TARGET_HAS_v256             0
- 
- #define TCG_TARGET_HAS_not_vec          1
--#define TCG_TARGET_HAS_neg_vec          0
-+#define TCG_TARGET_HAS_neg_vec          1
- #define TCG_TARGET_HAS_abs_vec          0
- #define TCG_TARGET_HAS_andc_vec         1
- #define TCG_TARGET_HAS_orc_vec          1
+@@ -185,7 +185,7 @@ extern bool use_lsx_instructions;
+ #define TCG_TARGET_HAS_nand_vec         0
+ #define TCG_TARGET_HAS_nor_vec          1
+ #define TCG_TARGET_HAS_eqv_vec          0
+-#define TCG_TARGET_HAS_mul_vec          0
++#define TCG_TARGET_HAS_mul_vec          1
+ #define TCG_TARGET_HAS_shi_vec          0
+ #define TCG_TARGET_HAS_shs_vec          0
+ #define TCG_TARGET_HAS_shv_vec          0
 diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index d569e443dd..b36b706e39 100644
+index b36b706e39..0814f62905 100644
 --- a/tcg/loongarch64/tcg-target.c.inc
 +++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1695,6 +1695,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         [TCG_COND_LTU] = {OPC_VSLTI_BU, OPC_VSLTI_HU, OPC_VSLTI_WU, OPC_VSLTI_DU},
+@@ -1698,6 +1698,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     static const LoongArchInsn neg_vec_insn[4] = {
+         OPC_VNEG_B, OPC_VNEG_H, OPC_VNEG_W, OPC_VNEG_D
      };
-     LoongArchInsn insn;
-+    static const LoongArchInsn neg_vec_insn[4] = {
-+        OPC_VNEG_B, OPC_VNEG_H, OPC_VNEG_W, OPC_VNEG_D
++    static const LoongArchInsn mul_vec_insn[4] = {
++        OPC_VMUL_B, OPC_VMUL_H, OPC_VMUL_W, OPC_VMUL_D
 +    };
  
      a0 = args[0];
      a1 = args[1];
-@@ -1793,6 +1796,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-     case INDEX_op_sub_vec:
-         tcg_out_addsub_vec(s, vece, a0, a1, a2, const_args[2], false);
+@@ -1799,6 +1802,9 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
+     case INDEX_op_neg_vec:
+         tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], a0, a1));
          break;
-+    case INDEX_op_neg_vec:
-+        tcg_out32(s, encode_vdvj_insn(neg_vec_insn[vece], a0, a1));
++    case INDEX_op_mul_vec:
++        tcg_out32(s, encode_vdvjvk_insn(mul_vec_insn[vece], a0, a1, a2));
 +        break;
      case INDEX_op_dupm_vec:
          tcg_out_dupm_vec(s, type, vece, a0, a1, a2);
          break;
-@@ -1818,6 +1824,7 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
-     case INDEX_op_xor_vec:
+@@ -1825,6 +1831,7 @@ int tcg_can_emit_vec_op(TCGOpcode opc, TCGType type, unsigned vece)
      case INDEX_op_nor_vec:
      case INDEX_op_not_vec:
-+    case INDEX_op_neg_vec:
+     case INDEX_op_neg_vec:
++    case INDEX_op_mul_vec:
          return 1;
      default:
          return 0;
-@@ -1995,6 +2002,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+@@ -1999,6 +2006,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode op)
+     case INDEX_op_orc_vec:
+     case INDEX_op_xor_vec:
+     case INDEX_op_nor_vec:
++    case INDEX_op_mul_vec:
          return C_O1_I2(w, w, w);
  
      case INDEX_op_not_vec:
-+    case INDEX_op_neg_vec:
-         return C_O1_I1(w, w);
- 
-     default:
 -- 
 2.34.1
 
