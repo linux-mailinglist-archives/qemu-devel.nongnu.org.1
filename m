@@ -2,71 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF187A2DBD
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9EF7A2DBC
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:36:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhM1A-000691-F1; Fri, 15 Sep 2023 23:30:48 -0400
+	id 1qhM1C-0006A5-7k; Fri, 15 Sep 2023 23:30:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM18-00066W-Dv
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:46 -0400
-Received: from mail-qt1-x82a.google.com ([2607:f8b0:4864:20::82a])
+ id 1qhM19-00067y-Ly
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:47 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM16-00085q-HW
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:46 -0400
-Received: by mail-qt1-x82a.google.com with SMTP id
- d75a77b69052e-41215efeb1aso17101141cf.1
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:44 -0700 (PDT)
+ id 1qhM17-000863-OZ
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:47 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6903a452dfaso1851559b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694835043; x=1695439843; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694835044; x=1695439844; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aBqBQXzJtJdHMtNfnf/zOtS9LKrThM7LhRLI4QTpRQ8=;
- b=I3qqBGIzlfkPNufNpuI8QdfIW0wNKFNBYak9t0M6+kgQ9KxQeeUN5KIgNeGYTXH/m2
- IwkeGzWYSkTOoIRHDarOkQIfyhuhwQw2PZ8RHKLKetMQKYI3yVHbfZCk7bK548RQQZnQ
- OyPZEfoFZE24TMWUzjltvvm8Z9YTJVck7QnG0in+ScGSpl1CNY8GyCWZn51OLhIuFv0K
- Xy1ZwwLGcoYzEXEx7XDRB9DSnJIm8ev1x+Reo7UaC5OjMax3pqFEpnS1LKetWmGzdRwH
- nerY/+JJjG9PKz5xdPoiQyhpSTsUmSZL2hja+pMz0hWSLxrA8zLPD64qMPU5RvCZ1vjH
- HAOQ==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ycQcefZNeHey9zxJ1yK/vT8id1YHpxVEoaMGMx6Ei9k=;
+ b=cc/P920YE9487IpPi0SXAcRAMU6bWJz9qe9ywkoNUHikkhSFhWpSzoz0ovAhnCUSzr
+ 1gsJU6fQLJyHjlWYwnocttkDKOiXh9WabN6pOgq/mMP6WsPB/RsGDEsQBFmqmAU4k18N
+ 1AgH3a9m77qVsKeFcgLKcOd2wKbSlFiYNVp0H+2A0zeAicwrbQulb/ZeF+lkWjknDiXn
+ CxA/14fVxQzgEhb0Z8VyAfu2cWgjreRJzhSCBV59yVv5n+ADxNk1JTKFE6js+LxdkLB3
+ ZBQ9rdLv9UsUTjAeuJyBybT19WFrDPt/bqAmPj9ref3jyYEuZLF9NM7O5C7ZLJBmr6qf
+ mDbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694835043; x=1695439843;
+ d=1e100.net; s=20230601; t=1694835044; x=1695439844;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aBqBQXzJtJdHMtNfnf/zOtS9LKrThM7LhRLI4QTpRQ8=;
- b=P0mTkWy2zzVAwzix0s8t1g0sx2n/MHj8EktgUtfj5GG9JvDneRdcTBXymmTmKrPXyr
- wctTJE2kiDLQ2Z1ZPPESz9zv3VO1XApsKSxd87pNCwCnEYywHu0L4h9+dngmsgR4rCgu
- xiq8+1fQSfho87h8XZZXu5+No3Sl37cF6qUkd2etIK9I4sI1cFK/SPlXby9JTr5w4gMr
- 9sWV71egBKDu83eryy1JfX+WZp30p6F+JoFyaWbBcq0/LhrVYPT/rJzL4qgsYNAluHrO
- hvE32WOn1AZMKD7USIq04nE+MXrmH00BCpjtaufiVoLMeL7M5VuTDmO4JPOyXSX+NpDO
- i1wA==
-X-Gm-Message-State: AOJu0YyV89QBrlM5Xd9M60N9+DLfNq1tXpkaDvpIBjWGQhB5Av4FZ9Y7
- VL1O+IdVxaToHA1exazIG5MiTvXHd8xVjEt+OIw=
-X-Google-Smtp-Source: AGHT+IFMP3mxaEz28WUNHGh7Ux8qQF6Nmr0LZFG/eO6MHE694mFJk6NTXyDecPBwFNyqOLhr1mttqQ==
-X-Received: by 2002:a05:620a:3905:b0:76f:6c6:f0be with SMTP id
- qr5-20020a05620a390500b0076f06c6f0bemr4114977qkn.53.1694835043444; 
- Fri, 15 Sep 2023 20:30:43 -0700 (PDT)
+ bh=ycQcefZNeHey9zxJ1yK/vT8id1YHpxVEoaMGMx6Ei9k=;
+ b=YD5PuQ2oDSufGFDFUhwV8qvX+SjSc/2hTJPWRV3zlaPgjL+YZ41wXMD+KSmUrz5tbu
+ guC2Uca3avpPUCIH8jObQxMOyzc1tzZ43ORAME28cq43ZUv4vgzie+UHOLiR5RGfgdqa
+ +13NeRnnVPayY1R+wl5bIeP6BQyhDLY9vUm30klFffrs2a0vrvgLvZ4xiHJ7nLJYbHl6
+ KKEfuqIGlfxOb+P7UmqxGYhUqByqxrgnLNB1RskzOWBEGZBSTmzAbIcpjP/JyiNP1nx7
+ z6B2B5SiZ2OAtbyYP4cw2sPoVJcHHVH1Jz6d46B/x8xNALjYkkRyhN1poh6v9sMKeNz1
+ idPA==
+X-Gm-Message-State: AOJu0YzSm0B+w+wrazi4XtVNrwpDu7ICGpqDws4mXHI2/wVMNnVXGind
+ V4kw0z9b3pQVQjEzDm6pGWkjE+GxwzLCiTQdW4M=
+X-Google-Smtp-Source: AGHT+IHXgoAZld5F6rCnyAdjq6z9ENlSELzKbBZ+QziCsVt7EkTncEnmHJKDjCrCfy8SeryK7DbHfw==
+X-Received: by 2002:a05:6a00:1827:b0:68b:c2c7:a8ce with SMTP id
+ y39-20020a056a00182700b0068bc2c7a8cemr3721063pfa.17.1694835044396; 
+ Fri, 15 Sep 2023 20:30:44 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.42
- for <qemu-devel@nongnu.org>
+ j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 20:30:43 -0700 (PDT)
+ Fri, 15 Sep 2023 20:30:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 33/39] accel/tcg: Introduce do_st16_mmio_leN
-Date: Fri, 15 Sep 2023 20:30:05 -0700
-Message-Id: <20230916033011.479144-34-richard.henderson@linaro.org>
+Cc: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 34/39] fpu: Add conversions between bfloat16 and [u]int8
+Date: Fri, 15 Sep 2023 20:30:06 -0700
+Message-Id: <20230916033011.479144-35-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916033011.479144-1-richard.henderson@linaro.org>
 References: <20230916033011.479144-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82a;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,178 +90,213 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split out int_st_mmio_leN, to be used by both do_st_mmio_leN
-and do_st16_mmio_leN.  Move the locks down into the two
-functions, since each one now covers all accesses to once page.
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
+We missed these functions when upstreaming the bfloat16 support.
+
+Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Message-Id: <20230531065458.2082-1-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 88 ++++++++++++++++++++++++++++++----------------
- 1 file changed, 58 insertions(+), 30 deletions(-)
+ include/fpu/softfloat.h | 12 +++++++++
+ fpu/softfloat.c         | 58 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 70 insertions(+)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 7f6ccdecb1..3270f65c20 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2681,21 +2681,11 @@ Int128 cpu_ld16_mmu(CPUArchState *env, abi_ptr addr,
-  * The bytes to store are extracted in little-endian order from @val_le;
-  * return the bytes of @val_le beyond @p->size that have not been stored.
-  */
--static uint64_t do_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
--                               uint64_t val_le, vaddr addr, int size,
--                               int mmu_idx, uintptr_t ra)
-+static uint64_t int_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
-+                                uint64_t val_le, vaddr addr, int size,
-+                                int mmu_idx, uintptr_t ra,
-+                                MemoryRegion *mr, hwaddr mr_offset)
- {
--    MemoryRegionSection *section;
--    hwaddr mr_offset;
--    MemoryRegion *mr;
--    MemTxAttrs attrs;
--
--    tcg_debug_assert(size > 0 && size <= 8);
--
--    attrs = full->attrs;
--    section = io_prepare(&mr_offset, env, full->xlat_section, attrs, addr, ra);
--    mr = section->mr;
--
-     do {
-         MemOp this_mop;
-         unsigned this_size;
-@@ -2707,7 +2697,7 @@ static uint64_t do_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
-         this_mop |= MO_LE;
+diff --git a/include/fpu/softfloat.h b/include/fpu/softfloat.h
+index cd130564d8..eb64075b9c 100644
+--- a/include/fpu/softfloat.h
++++ b/include/fpu/softfloat.h
+@@ -366,6 +366,8 @@ float32 bfloat16_to_float32(bfloat16, float_status *status);
+ bfloat16 float64_to_bfloat16(float64 a, float_status *status);
+ float64 bfloat16_to_float64(bfloat16 a, float_status *status);
  
-         r = memory_region_dispatch_write(mr, mr_offset, val_le,
--                                         this_mop, attrs);
-+                                         this_mop, full->attrs);
-         if (unlikely(r != MEMTX_OK)) {
-             io_failed(env, full, addr, this_size, MMU_DATA_STORE,
-                       mmu_idx, r, ra);
-@@ -2725,6 +2715,56 @@ static uint64_t do_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
-     return val_le;
++int8_t bfloat16_to_int8_scalbn(bfloat16, FloatRoundMode,
++                               int, float_status *status);
+ int16_t bfloat16_to_int16_scalbn(bfloat16, FloatRoundMode,
+                                  int, float_status *status);
+ int32_t bfloat16_to_int32_scalbn(bfloat16, FloatRoundMode,
+@@ -373,14 +375,18 @@ int32_t bfloat16_to_int32_scalbn(bfloat16, FloatRoundMode,
+ int64_t bfloat16_to_int64_scalbn(bfloat16, FloatRoundMode,
+                                  int, float_status *status);
+ 
++int8_t bfloat16_to_int8(bfloat16, float_status *status);
+ int16_t bfloat16_to_int16(bfloat16, float_status *status);
+ int32_t bfloat16_to_int32(bfloat16, float_status *status);
+ int64_t bfloat16_to_int64(bfloat16, float_status *status);
+ 
++int8_t bfloat16_to_int8_round_to_zero(bfloat16, float_status *status);
+ int16_t bfloat16_to_int16_round_to_zero(bfloat16, float_status *status);
+ int32_t bfloat16_to_int32_round_to_zero(bfloat16, float_status *status);
+ int64_t bfloat16_to_int64_round_to_zero(bfloat16, float_status *status);
+ 
++uint8_t bfloat16_to_uint8_scalbn(bfloat16 a, FloatRoundMode,
++                                 int, float_status *status);
+ uint16_t bfloat16_to_uint16_scalbn(bfloat16 a, FloatRoundMode,
+                                    int, float_status *status);
+ uint32_t bfloat16_to_uint32_scalbn(bfloat16 a, FloatRoundMode,
+@@ -388,24 +394,30 @@ uint32_t bfloat16_to_uint32_scalbn(bfloat16 a, FloatRoundMode,
+ uint64_t bfloat16_to_uint64_scalbn(bfloat16 a, FloatRoundMode,
+                                    int, float_status *status);
+ 
++uint8_t bfloat16_to_uint8(bfloat16 a, float_status *status);
+ uint16_t bfloat16_to_uint16(bfloat16 a, float_status *status);
+ uint32_t bfloat16_to_uint32(bfloat16 a, float_status *status);
+ uint64_t bfloat16_to_uint64(bfloat16 a, float_status *status);
+ 
++uint8_t bfloat16_to_uint8_round_to_zero(bfloat16 a, float_status *status);
+ uint16_t bfloat16_to_uint16_round_to_zero(bfloat16 a, float_status *status);
+ uint32_t bfloat16_to_uint32_round_to_zero(bfloat16 a, float_status *status);
+ uint64_t bfloat16_to_uint64_round_to_zero(bfloat16 a, float_status *status);
+ 
++bfloat16 int8_to_bfloat16_scalbn(int8_t a, int, float_status *status);
+ bfloat16 int16_to_bfloat16_scalbn(int16_t a, int, float_status *status);
+ bfloat16 int32_to_bfloat16_scalbn(int32_t a, int, float_status *status);
+ bfloat16 int64_to_bfloat16_scalbn(int64_t a, int, float_status *status);
++bfloat16 uint8_to_bfloat16_scalbn(uint8_t a, int, float_status *status);
+ bfloat16 uint16_to_bfloat16_scalbn(uint16_t a, int, float_status *status);
+ bfloat16 uint32_to_bfloat16_scalbn(uint32_t a, int, float_status *status);
+ bfloat16 uint64_to_bfloat16_scalbn(uint64_t a, int, float_status *status);
+ 
++bfloat16 int8_to_bfloat16(int8_t a, float_status *status);
+ bfloat16 int16_to_bfloat16(int16_t a, float_status *status);
+ bfloat16 int32_to_bfloat16(int32_t a, float_status *status);
+ bfloat16 int64_to_bfloat16(int64_t a, float_status *status);
++bfloat16 uint8_to_bfloat16(uint8_t a, float_status *status);
+ bfloat16 uint16_to_bfloat16(uint16_t a, float_status *status);
+ bfloat16 uint32_to_bfloat16(uint32_t a, float_status *status);
+ bfloat16 uint64_to_bfloat16(uint64_t a, float_status *status);
+diff --git a/fpu/softfloat.c b/fpu/softfloat.c
+index 0cc130ae9b..2a33967094 100644
+--- a/fpu/softfloat.c
++++ b/fpu/softfloat.c
+@@ -3126,6 +3126,15 @@ int64_t float64_to_int64_scalbn(float64 a, FloatRoundMode rmode, int scale,
+     return parts_float_to_sint(&p, rmode, scale, INT64_MIN, INT64_MAX, s);
  }
  
-+static uint64_t do_st_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
-+                               uint64_t val_le, vaddr addr, int size,
-+                               int mmu_idx, uintptr_t ra)
++int8_t bfloat16_to_int8_scalbn(bfloat16 a, FloatRoundMode rmode, int scale,
++                               float_status *s)
 +{
-+    MemoryRegionSection *section;
-+    hwaddr mr_offset;
-+    MemoryRegion *mr;
-+    MemTxAttrs attrs;
-+    uint64_t ret;
++    FloatParts64 p;
 +
-+    tcg_debug_assert(size > 0 && size <= 8);
-+
-+    attrs = full->attrs;
-+    section = io_prepare(&mr_offset, env, full->xlat_section, attrs, addr, ra);
-+    mr = section->mr;
-+
-+    qemu_mutex_lock_iothread();
-+    ret = int_st_mmio_leN(env, full, val_le, addr, size, mmu_idx,
-+                          ra, mr, mr_offset);
-+    qemu_mutex_unlock_iothread();
-+
-+    return ret;
++    bfloat16_unpack_canonical(&p, a, s);
++    return parts_float_to_sint(&p, rmode, scale, INT8_MIN, INT8_MAX, s);
 +}
 +
-+static uint64_t do_st16_mmio_leN(CPUArchState *env, CPUTLBEntryFull *full,
-+                                 Int128 val_le, vaddr addr, int size,
-+                                 int mmu_idx, uintptr_t ra)
-+{
-+    MemoryRegionSection *section;
-+    MemoryRegion *mr;
-+    hwaddr mr_offset;
-+    MemTxAttrs attrs;
-+    uint64_t ret;
-+
-+    tcg_debug_assert(size > 8 && size <= 16);
-+
-+    attrs = full->attrs;
-+    section = io_prepare(&mr_offset, env, full->xlat_section, attrs, addr, ra);
-+    mr = section->mr;
-+
-+    qemu_mutex_lock_iothread();
-+    int_st_mmio_leN(env, full, int128_getlo(val_le), addr, 8,
-+                    mmu_idx, ra, mr, mr_offset);
-+    ret = int_st_mmio_leN(env, full, int128_gethi(val_le), addr + 8,
-+                          size - 8, mmu_idx, ra, mr, mr_offset + 8);
-+    qemu_mutex_unlock_iothread();
-+
-+    return ret;
-+}
-+
- /*
-  * Wrapper for the above.
-  */
-@@ -2736,7 +2776,6 @@ static uint64_t do_st_leN(CPUArchState *env, MMULookupPageData *p,
-     unsigned tmp, half_size;
- 
-     if (unlikely(p->flags & TLB_MMIO)) {
--        QEMU_IOTHREAD_LOCK_GUARD();
-         return do_st_mmio_leN(env, p->full, val_le, p->addr,
-                               p->size, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-@@ -2791,11 +2830,8 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
-     MemOp atom;
- 
-     if (unlikely(p->flags & TLB_MMIO)) {
--        QEMU_IOTHREAD_LOCK_GUARD();
--        do_st_mmio_leN(env, p->full, int128_getlo(val_le),
--                       p->addr, 8, mmu_idx, ra);
--        return do_st_mmio_leN(env, p->full, int128_gethi(val_le),
--                              p->addr + 8, size - 8, mmu_idx, ra);
-+        return do_st16_mmio_leN(env, p->full, val_le, p->addr,
-+                                size, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-         return int128_gethi(val_le) >> ((size - 8) * 8);
-     }
-@@ -2839,7 +2875,6 @@ static void do_st_1(CPUArchState *env, MMULookupPageData *p, uint8_t val,
-                     int mmu_idx, uintptr_t ra)
+ int16_t bfloat16_to_int16_scalbn(bfloat16 a, FloatRoundMode rmode, int scale,
+                                  float_status *s)
  {
-     if (unlikely(p->flags & TLB_MMIO)) {
--        QEMU_IOTHREAD_LOCK_GUARD();
-         do_st_mmio_leN(env, p->full, val, p->addr, 1, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-         /* nothing */
-@@ -2855,7 +2890,6 @@ static void do_st_2(CPUArchState *env, MMULookupPageData *p, uint16_t val,
-         if ((memop & MO_BSWAP) != MO_LE) {
-             val = bswap16(val);
-         }
--        QEMU_IOTHREAD_LOCK_GUARD();
-         do_st_mmio_leN(env, p->full, val, p->addr, 2, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-         /* nothing */
-@@ -2875,7 +2909,6 @@ static void do_st_4(CPUArchState *env, MMULookupPageData *p, uint32_t val,
-         if ((memop & MO_BSWAP) != MO_LE) {
-             val = bswap32(val);
-         }
--        QEMU_IOTHREAD_LOCK_GUARD();
-         do_st_mmio_leN(env, p->full, val, p->addr, 4, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-         /* nothing */
-@@ -2895,7 +2928,6 @@ static void do_st_8(CPUArchState *env, MMULookupPageData *p, uint64_t val,
-         if ((memop & MO_BSWAP) != MO_LE) {
-             val = bswap64(val);
-         }
--        QEMU_IOTHREAD_LOCK_GUARD();
-         do_st_mmio_leN(env, p->full, val, p->addr, 8, mmu_idx, ra);
-     } else if (unlikely(p->flags & TLB_DISCARD_WRITE)) {
-         /* nothing */
-@@ -3023,11 +3055,7 @@ static void do_st16_mmu(CPUArchState *env, vaddr addr, Int128 val,
-             if ((l.memop & MO_BSWAP) != MO_LE) {
-                 val = bswap128(val);
-             }
--            a = int128_getlo(val);
--            b = int128_gethi(val);
--            QEMU_IOTHREAD_LOCK_GUARD();
--            do_st_mmio_leN(env, l.page[0].full, a, addr, 8, l.mmu_idx, ra);
--            do_st_mmio_leN(env, l.page[0].full, b, addr + 8, 8, l.mmu_idx, ra);
-+            do_st16_mmio_leN(env, l.page[0].full, val, addr, 16, l.mmu_idx, ra);
-         } else if (unlikely(l.page[0].flags & TLB_DISCARD_WRITE)) {
-             /* nothing */
-         } else {
+@@ -3392,6 +3401,11 @@ int64_t floatx80_to_int64_round_to_zero(floatx80 a, float_status *s)
+     return floatx80_to_int64_scalbn(a, float_round_to_zero, 0, s);
+ }
+ 
++int8_t bfloat16_to_int8(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_int8_scalbn(a, s->float_rounding_mode, 0, s);
++}
++
+ int16_t bfloat16_to_int16(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_int16_scalbn(a, s->float_rounding_mode, 0, s);
+@@ -3407,6 +3421,11 @@ int64_t bfloat16_to_int64(bfloat16 a, float_status *s)
+     return bfloat16_to_int64_scalbn(a, s->float_rounding_mode, 0, s);
+ }
+ 
++int8_t bfloat16_to_int8_round_to_zero(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_int8_scalbn(a, float_round_to_zero, 0, s);
++}
++
+ int16_t bfloat16_to_int16_round_to_zero(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_int16_scalbn(a, float_round_to_zero, 0, s);
+@@ -3534,6 +3553,15 @@ uint64_t float64_to_uint64_scalbn(float64 a, FloatRoundMode rmode, int scale,
+     return parts_float_to_uint(&p, rmode, scale, UINT64_MAX, s);
+ }
+ 
++uint8_t bfloat16_to_uint8_scalbn(bfloat16 a, FloatRoundMode rmode,
++                                 int scale, float_status *s)
++{
++    FloatParts64 p;
++
++    bfloat16_unpack_canonical(&p, a, s);
++    return parts_float_to_uint(&p, rmode, scale, UINT8_MAX, s);
++}
++
+ uint16_t bfloat16_to_uint16_scalbn(bfloat16 a, FloatRoundMode rmode,
+                                    int scale, float_status *s)
+ {
+@@ -3759,6 +3787,11 @@ Int128 float128_to_uint128_round_to_zero(float128 a, float_status *s)
+     return float128_to_uint128_scalbn(a, float_round_to_zero, 0, s);
+ }
+ 
++uint8_t bfloat16_to_uint8(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_uint8_scalbn(a, s->float_rounding_mode, 0, s);
++}
++
+ uint16_t bfloat16_to_uint16(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_uint16_scalbn(a, s->float_rounding_mode, 0, s);
+@@ -3774,6 +3807,11 @@ uint64_t bfloat16_to_uint64(bfloat16 a, float_status *s)
+     return bfloat16_to_uint64_scalbn(a, s->float_rounding_mode, 0, s);
+ }
+ 
++uint8_t bfloat16_to_uint8_round_to_zero(bfloat16 a, float_status *s)
++{
++    return bfloat16_to_uint8_scalbn(a, float_round_to_zero, 0, s);
++}
++
+ uint16_t bfloat16_to_uint16_round_to_zero(bfloat16 a, float_status *s)
+ {
+     return bfloat16_to_uint16_scalbn(a, float_round_to_zero, 0, s);
+@@ -3929,6 +3967,11 @@ bfloat16 int16_to_bfloat16_scalbn(int16_t a, int scale, float_status *status)
+     return int64_to_bfloat16_scalbn(a, scale, status);
+ }
+ 
++bfloat16 int8_to_bfloat16_scalbn(int8_t a, int scale, float_status *status)
++{
++    return int64_to_bfloat16_scalbn(a, scale, status);
++}
++
+ bfloat16 int64_to_bfloat16(int64_t a, float_status *status)
+ {
+     return int64_to_bfloat16_scalbn(a, 0, status);
+@@ -3944,6 +3987,11 @@ bfloat16 int16_to_bfloat16(int16_t a, float_status *status)
+     return int64_to_bfloat16_scalbn(a, 0, status);
+ }
+ 
++bfloat16 int8_to_bfloat16(int8_t a, float_status *status)
++{
++    return int64_to_bfloat16_scalbn(a, 0, status);
++}
++
+ float128 int128_to_float128(Int128 a, float_status *status)
+ {
+     FloatParts128 p = { };
+@@ -4139,6 +4187,11 @@ bfloat16 uint16_to_bfloat16_scalbn(uint16_t a, int scale, float_status *status)
+     return uint64_to_bfloat16_scalbn(a, scale, status);
+ }
+ 
++bfloat16 uint8_to_bfloat16_scalbn(uint8_t a, int scale, float_status *status)
++{
++    return uint64_to_bfloat16_scalbn(a, scale, status);
++}
++
+ bfloat16 uint64_to_bfloat16(uint64_t a, float_status *status)
+ {
+     return uint64_to_bfloat16_scalbn(a, 0, status);
+@@ -4154,6 +4207,11 @@ bfloat16 uint16_to_bfloat16(uint16_t a, float_status *status)
+     return uint64_to_bfloat16_scalbn(a, 0, status);
+ }
+ 
++bfloat16 uint8_to_bfloat16(uint8_t a, float_status *status)
++{
++    return uint64_to_bfloat16_scalbn(a, 0, status);
++}
++
+ float128 uint64_to_float128(uint64_t a, float_status *status)
+ {
+     FloatParts128 p;
 -- 
 2.34.1
 
