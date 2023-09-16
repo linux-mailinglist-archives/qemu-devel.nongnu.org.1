@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD3C7A32B0
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBBB7A329F
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:43:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhd2u-00057u-FC; Sat, 16 Sep 2023 17:41:44 -0400
+	id 1qhd2w-00058G-2J; Sat, 16 Sep 2023 17:41:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd2n-00055r-48
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:37 -0400
-Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
+ id 1qhd2o-00056J-Ih
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:40 -0400
+Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd2k-0000RG-Pe
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:36 -0400
-Received: by mail-ot1-x332.google.com with SMTP id
- 46e09a7af769-6bd0a0a6766so2164834a34.2
- for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 14:41:34 -0700 (PDT)
+ id 1qhd2l-0000RY-Jz
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:38 -0400
+Received: by mail-pf1-x434.google.com with SMTP id
+ d2e1a72fcca58-68fe2470d81so3080162b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 14:41:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694900493; x=1695505293; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694900494; x=1695505294; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HBhsboT09KyjKosBF/aAd6AnLWjogoV21dS+/Gecdmc=;
- b=DOKWVkDxeeXQJSFekbcL0jUTihrsKOkUkY0d51TnKEvRzdXVBDotLhX4tdmKUN0jON
- BylJW+/sD09hW+WpOuCjxCito8o80/fzFAbNGsfdsUaTqC7oGI2/WrsqmwvbedIvfRlo
- vQFiyflbEX9fNUr0mOYIrsVYCvyaKG8TD9QiAqtTSuU7N9RUORK2HFiPQ78Aa7/0VdMc
- /e3a6KT7y5cqqmvMs2UkOWysyMn798HU/oiQyxyxU1SYJsVPdK3WYFEsDdlD3znzkvhZ
- XYXWEW5Xuz+u237Np4yyOsGqVLZWWPE58YKJLjNEnwOCkeAoUeKipgVOllsMxwp8ogZz
- XEOQ==
+ bh=En35xg7nXjvXLsrzg+GNnaGBjlT+fgROcZr2z/jSKT4=;
+ b=cE0dfn3ApjeME4mhmJzcYa8+3kZMOUeLJXl/n5Su36/bNftWPqJYkN6nCVy71KCMfZ
+ zbwqPFxl1CmVo8xLtH2s9e3LcluIfsD0smfvgC4DskzCjmtvQkGddTR3F2PQ/4YMnKpH
+ VYU/kVs+GpOkH8zSYFE5Yhy3G0PFvSz8/tnKLy4EbVDHCukayE6QG7D/n2hSB0YsGJwf
+ BxxmMxdwLhQbxPetEAd1OLAM/t28Y4UfH20JOXWnpJLIWtOAP+D0QXE+IxEU5um8hGNY
+ +/A0GmvaIQGwylTp6sn5r/SRDT/0UDu7i5Cp1WDV9jB7c9eTcoCSIVmedOqaHD7LjRBV
+ e5CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694900493; x=1695505293;
+ d=1e100.net; s=20230601; t=1694900494; x=1695505294;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HBhsboT09KyjKosBF/aAd6AnLWjogoV21dS+/Gecdmc=;
- b=UMhUlCCrKI8/8RV+F6AzUniq3HDO/vWULODvWc3+FQwfT9fdKhX1yTljRlbjqhF6vi
- DCuCa9Bjg/dhJcMRVAR3M/JHKjUnWk0RDiCGKlflOHq22Qtnfd6063SwxrvquYVrB9Wa
- 8Z31xA1XPe8UMWcQ70VPAd9s1XjEZgYuT8/Uy9mRrTyv/5yw0zRlBFU9AeWluz8FlpGi
- hodq1KAmhPBEdfdov4TJCoSX6Ma82mkgiacf91fDilp2sXRLRSAF0dWuslVXzHBiQugZ
- sOgTxw8kWgyrX8LRpJoGKd6bJF/NYiQAQHvClNDmDhsxAPVy3YxYAtEOwdedGooIC5ly
- VVGA==
-X-Gm-Message-State: AOJu0YxZZS3YfM/tw9Hf/Wbcu16gV9qjpuWzhprNWm0lwqF3+QwqEXCi
- FLdutcH2QIdckObOcdckQPO73R0k2A5BhP02YOs=
-X-Google-Smtp-Source: AGHT+IG8xaXM+rnfPN1Jarip+XTlseeZwNv2fFlPFm3lrGWQux9h423eMm/JT3y2V/ndcwvamVi+Uw==
-X-Received: by 2002:a05:6358:2907:b0:134:cd32:3565 with SMTP id
- y7-20020a056358290700b00134cd323565mr5087467rwb.31.1694900493346; 
- Sat, 16 Sep 2023 14:41:33 -0700 (PDT)
+ bh=En35xg7nXjvXLsrzg+GNnaGBjlT+fgROcZr2z/jSKT4=;
+ b=uwRDhguAahm322tUPN4ntTi/bCEHH3llH5FodqdaQWaGnYa737t6vXdu2ZMJuijnGN
+ 1493rKUEZ3+i4x2aREgCrF1XqacpDSysMUr2uQ62Sl3b/DLcChdM5k59PYpzcCkJUnY9
+ vkDEG+fIVPr9PpRtFHmHwoZYhMjlBvDv3Ha41LIxIlmwuvsQ8vmXzuQugbG16Xqwq7v/
+ qL5VgxFN3Y2eo5+O+waC8Nio2v15vFP7wGWwU0Yqi9SifeJGbIT3bFlnlbDP71sApN4s
+ YTJppk1BfLxMts9af3Kct0oopHrqBprNw7LBtiudu5/7jhceGRAszWoPjg9fQ3hqEaXN
+ mhag==
+X-Gm-Message-State: AOJu0YzC8yz9vplUNSH/0BWiRC1B2WtRsExSYK5jDx59hQ37U9uECZ/R
+ NUD6NB/Tb+09mjCFYYresHmBUAqkMyqpfI1QG/c=
+X-Google-Smtp-Source: AGHT+IGXWRBpi7P4yFxqpf883hLaeWGA/3DyFOAk1K8jC6JinQ/Yq28OeaqSEM9ac1cdI2Dkh+WK1A==
+X-Received: by 2002:aa7:88d4:0:b0:68e:3d83:e501 with SMTP id
+ k20-20020aa788d4000000b0068e3d83e501mr6708724pff.13.1694900494283; 
+ Sat, 16 Sep 2023 14:41:34 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.32
+ n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Sep 2023 14:41:32 -0700 (PDT)
+ Sat, 16 Sep 2023 14:41:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH v3 09/39] accel/tcg: Move can_do_io to CPUNegativeOffsetState
-Date: Sat, 16 Sep 2023 14:40:53 -0700
-Message-Id: <20230916214123.525796-10-richard.henderson@linaro.org>
+Subject: [PATCH v3 10/39] accel/tcg: Remove cpu_neg()
+Date: Sat, 16 Sep 2023 14:40:54 -0700
+Message-Id: <20230916214123.525796-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916214123.525796-1-richard.henderson@linaro.org>
 References: <20230916214123.525796-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::332;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x332.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,222 +92,210 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Minimize the displacement to can_do_io, since it may
-be touched at the start of each TranslationBlock.
-It fits into other padding within the substructure.
+Now that CPUNegativeOffsetState is part of CPUState,
+we can reference it directly.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h            | 2 +-
- accel/dummy-cpus.c               | 2 +-
- accel/kvm/kvm-accel-ops.c        | 2 +-
- accel/tcg/cpu-exec-common.c      | 2 +-
- accel/tcg/cpu-exec.c             | 2 +-
- accel/tcg/cputlb.c               | 2 +-
- accel/tcg/tcg-accel-ops-icount.c | 2 +-
- accel/tcg/tcg-accel-ops-mttcg.c  | 2 +-
- accel/tcg/tcg-accel-ops-rr.c     | 4 ++--
- accel/tcg/translator.c           | 4 ++--
- hw/core/cpu-common.c             | 2 +-
- softmmu/icount.c                 | 2 +-
- softmmu/watchpoint.c             | 2 +-
- 13 files changed, 15 insertions(+), 15 deletions(-)
+ include/exec/cpu-all.h           | 11 -----------
+ include/exec/exec-all.h          |  2 +-
+ accel/tcg/cpu-exec.c             | 14 +++++++-------
+ accel/tcg/tcg-accel-ops-icount.c |  6 +++---
+ accel/tcg/tcg-accel-ops.c        |  2 +-
+ accel/tcg/translate-all.c        |  6 +++---
+ softmmu/icount.c                 |  2 +-
+ 7 files changed, 16 insertions(+), 27 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 4609cf1ae0..819ff1ef2e 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -350,6 +350,7 @@ typedef union IcountDecr {
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 94fe80c979..fcd6ddac6a 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -473,17 +473,6 @@ static inline CPUNegativeOffsetState *env_neg(CPUArchState *env)
+     return &env_cpu(env)->neg;
+ }
+ 
+-/**
+- * cpu_neg(cpu)
+- * @cpu: The generic CPUState
+- *
+- * Return the CPUNegativeOffsetState associated with the cpu.
+- */
+-static inline CPUNegativeOffsetState *cpu_neg(CPUState *cpu)
+-{
+-    return &cpu->neg;
+-}
+-
+ /**
+  * env_tlb(env)
+  * @env: The architecture environment
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index b2f5cd4c2a..2e4d337805 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -71,7 +71,7 @@ G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
   */
- typedef struct CPUNegativeOffsetState {
-     CPUTLB tlb;
-+    uint32_t can_do_io;
-     IcountDecr icount_decr;
- } CPUNegativeOffsetState;
- 
-@@ -547,7 +548,6 @@ struct CPUState {
-     int cluster_index;
-     uint32_t tcg_cflags;
-     uint32_t halted;
--    uint32_t can_do_io;
-     int32_t exception_index;
- 
-     AccelCPUState *accel;
-diff --git a/accel/dummy-cpus.c b/accel/dummy-cpus.c
-index d6a1b8d0a2..af7f90a4da 100644
---- a/accel/dummy-cpus.c
-+++ b/accel/dummy-cpus.c
-@@ -27,7 +27,7 @@ static void *dummy_cpu_thread_fn(void *arg)
-     qemu_mutex_lock_iothread();
-     qemu_thread_get_self(cpu->thread);
-     cpu->thread_id = qemu_get_thread_id();
--    cpu->can_do_io = 1;
-+    cpu->neg.can_do_io = 1;
-     current_cpu = cpu;
- 
- #ifndef _WIN32
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index 457eafa380..b610c0d378 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -36,7 +36,7 @@ static void *kvm_vcpu_thread_fn(void *arg)
-     qemu_mutex_lock_iothread();
-     qemu_thread_get_self(cpu->thread);
-     cpu->thread_id = qemu_get_thread_id();
--    cpu->can_do_io = 1;
-+    cpu->neg.can_do_io = 1;
-     current_cpu = cpu;
- 
-     r = kvm_init_vcpu(cpu, &error_fatal);
-diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
-index 7e35d7f4b5..8ac2af4d0c 100644
---- a/accel/tcg/cpu-exec-common.c
-+++ b/accel/tcg/cpu-exec-common.c
-@@ -36,7 +36,7 @@ void cpu_loop_exit_noexc(CPUState *cpu)
- void cpu_loop_exit(CPUState *cpu)
+ static inline bool cpu_loop_exit_requested(CPUState *cpu)
  {
-     /* Undo the setting in cpu_tb_exec.  */
--    cpu->can_do_io = 1;
-+    cpu->neg.can_do_io = 1;
-     /* Undo any setting in generated code.  */
-     qemu_plugin_disable_mem_helpers(cpu);
-     siglongjmp(cpu->jmp_env, 1);
+-    return (int32_t)qatomic_read(&cpu_neg(cpu)->icount_decr.u32) < 0;
++    return (int32_t)qatomic_read(&cpu->neg.icount_decr.u32) < 0;
+ }
+ 
+ #if !defined(CONFIG_USER_ONLY) && defined(CONFIG_TCG)
 diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
-index e2c494e75e..b01e3e5dc8 100644
+index b01e3e5dc8..4abbd037f3 100644
 --- a/accel/tcg/cpu-exec.c
 +++ b/accel/tcg/cpu-exec.c
-@@ -455,7 +455,7 @@ cpu_tb_exec(CPUState *cpu, TranslationBlock *itb, int *tb_exit)
- 
-     qemu_thread_jit_execute();
-     ret = tcg_qemu_tb_exec(env, tb_ptr);
--    cpu->can_do_io = 1;
-+    cpu->neg.can_do_io = 1;
-     qemu_plugin_disable_mem_helpers(cpu);
-     /*
-      * TODO: Delay swapping back to the read-write region of the TB
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 3270f65c20..d69e046b80 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1361,7 +1361,7 @@ io_prepare(hwaddr *out_offset, CPUArchState *env, hwaddr xlat,
-     section = iotlb_to_section(cpu, xlat, attrs);
-     mr_offset = (xlat & TARGET_PAGE_MASK) + addr;
-     cpu->mem_io_pc = retaddr;
--    if (!cpu->can_do_io) {
-+    if (!cpu->neg.can_do_io) {
-         cpu_io_recompile(cpu, retaddr);
+@@ -73,7 +73,7 @@ static void align_clocks(SyncClocks *sc, CPUState *cpu)
+         return;
      }
  
+-    cpu_icount = cpu->icount_extra + cpu_neg(cpu)->icount_decr.u16.low;
++    cpu_icount = cpu->icount_extra + cpu->neg.icount_decr.u16.low;
+     sc->diff_clk += icount_to_ns(sc->last_cpu_icount - cpu_icount);
+     sc->last_cpu_icount = cpu_icount;
+ 
+@@ -124,7 +124,7 @@ static void init_delay_params(SyncClocks *sc, CPUState *cpu)
+     sc->realtime_clock = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL_RT);
+     sc->diff_clk = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) - sc->realtime_clock;
+     sc->last_cpu_icount
+-        = cpu->icount_extra + cpu_neg(cpu)->icount_decr.u16.low;
++        = cpu->icount_extra + cpu->neg.icount_decr.u16.low;
+     if (sc->diff_clk < max_delay) {
+         max_delay = sc->diff_clk;
+     }
+@@ -717,7 +717,7 @@ static inline bool cpu_handle_exception(CPUState *cpu, int *ret)
+     if (cpu->exception_index < 0) {
+ #ifndef CONFIG_USER_ONLY
+         if (replay_has_exception()
+-            && cpu_neg(cpu)->icount_decr.u16.low + cpu->icount_extra == 0) {
++            && cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0) {
+             /* Execute just one insn to trigger exception pending in the log */
+             cpu->cflags_next_tb = (curr_cflags(cpu) & ~CF_USE_ICOUNT)
+                 | CF_NOIRQ | 1;
+@@ -807,7 +807,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+      * Ensure zeroing happens before reading cpu->exit_request or
+      * cpu->interrupt_request (see also smp_wmb in cpu_exit())
+      */
+-    qatomic_set_mb(&cpu_neg(cpu)->icount_decr.u16.high, 0);
++    qatomic_set_mb(&cpu->neg.icount_decr.u16.high, 0);
+ 
+     if (unlikely(qatomic_read(&cpu->interrupt_request))) {
+         int interrupt_request;
+@@ -898,7 +898,7 @@ static inline bool cpu_handle_interrupt(CPUState *cpu,
+     if (unlikely(qatomic_read(&cpu->exit_request))
+         || (icount_enabled()
+             && (cpu->cflags_next_tb == -1 || cpu->cflags_next_tb & CF_USE_ICOUNT)
+-            && cpu_neg(cpu)->icount_decr.u16.low + cpu->icount_extra == 0)) {
++            && cpu->neg.icount_decr.u16.low + cpu->icount_extra == 0)) {
+         qatomic_set(&cpu->exit_request, 0);
+         if (cpu->exception_index == -1) {
+             cpu->exception_index = EXCP_INTERRUPT;
+@@ -923,7 +923,7 @@ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
+     }
+ 
+     *last_tb = NULL;
+-    insns_left = qatomic_read(&cpu_neg(cpu)->icount_decr.u32);
++    insns_left = qatomic_read(&cpu->neg.icount_decr.u32);
+     if (insns_left < 0) {
+         /* Something asked us to stop executing chained TBs; just
+          * continue round the main loop. Whatever requested the exit
+@@ -942,7 +942,7 @@ static inline void cpu_loop_exec_tb(CPUState *cpu, TranslationBlock *tb,
+     icount_update(cpu);
+     /* Refill decrementer and continue execution.  */
+     insns_left = MIN(0xffff, cpu->icount_budget);
+-    cpu_neg(cpu)->icount_decr.u16.low = insns_left;
++    cpu->neg.icount_decr.u16.low = insns_left;
+     cpu->icount_extra = cpu->icount_budget - insns_left;
+ 
+     /*
 diff --git a/accel/tcg/tcg-accel-ops-icount.c b/accel/tcg/tcg-accel-ops-icount.c
-index 3d2cfbbc97..0af643b217 100644
+index 0af643b217..b25685fb71 100644
 --- a/accel/tcg/tcg-accel-ops-icount.c
 +++ b/accel/tcg/tcg-accel-ops-icount.c
-@@ -153,7 +153,7 @@ void icount_handle_interrupt(CPUState *cpu, int mask)
+@@ -111,14 +111,14 @@ void icount_prepare_for_run(CPUState *cpu, int64_t cpu_budget)
+      * each vCPU execution. However u16.high can be raised
+      * asynchronously by cpu_exit/cpu_interrupt/tcg_handle_interrupt
+      */
+-    g_assert(cpu_neg(cpu)->icount_decr.u16.low == 0);
++    g_assert(cpu->neg.icount_decr.u16.low == 0);
+     g_assert(cpu->icount_extra == 0);
  
-     tcg_handle_interrupt(cpu, mask);
-     if (qemu_cpu_is_self(cpu) &&
--        !cpu->can_do_io
-+        !cpu->neg.can_do_io
-         && (mask & ~old_mask) != 0) {
-         cpu_abort(cpu, "Raised interrupt while not in I/O function");
-     }
-diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-mttcg.c
-index 4b0dfb4be7..785481dea3 100644
---- a/accel/tcg/tcg-accel-ops-mttcg.c
-+++ b/accel/tcg/tcg-accel-ops-mttcg.c
-@@ -80,7 +80,7 @@ static void *mttcg_cpu_thread_fn(void *arg)
-     qemu_thread_get_self(cpu->thread);
+     replay_mutex_lock();
  
-     cpu->thread_id = qemu_get_thread_id();
--    cpu->can_do_io = 1;
-+    cpu->neg.can_do_io = 1;
-     current_cpu = cpu;
-     cpu_thread_signal_created(cpu);
-     qemu_guest_random_seed_thread_part2(cpu->random_seed);
-diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
-index 2d523289a8..c0aceb0a04 100644
---- a/accel/tcg/tcg-accel-ops-rr.c
-+++ b/accel/tcg/tcg-accel-ops-rr.c
-@@ -192,7 +192,7 @@ static void *rr_cpu_thread_fn(void *arg)
-     qemu_thread_get_self(cpu->thread);
+     cpu->icount_budget = MIN(icount_get_limit(), cpu_budget);
+     insns_left = MIN(0xffff, cpu->icount_budget);
+-    cpu_neg(cpu)->icount_decr.u16.low = insns_left;
++    cpu->neg.icount_decr.u16.low = insns_left;
+     cpu->icount_extra = cpu->icount_budget - insns_left;
  
-     cpu->thread_id = qemu_get_thread_id();
--    cpu->can_do_io = 1;
-+    cpu->neg.can_do_io = 1;
-     cpu_thread_signal_created(cpu);
-     qemu_guest_random_seed_thread_part2(cpu->random_seed);
+     if (cpu->icount_budget == 0) {
+@@ -138,7 +138,7 @@ void icount_process_data(CPUState *cpu)
+     icount_update(cpu);
  
-@@ -334,7 +334,7 @@ void rr_start_vcpu_thread(CPUState *cpu)
-         cpu->thread = single_tcg_cpu_thread;
-         cpu->halt_cond = single_tcg_halt_cond;
-         cpu->thread_id = first_cpu->thread_id;
--        cpu->can_do_io = 1;
-+        cpu->neg.can_do_io = 1;
-         cpu->created = true;
-     }
- }
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 54190c785b..888302160c 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -19,7 +19,7 @@
- static void gen_io_start(void)
- {
-     tcg_gen_st_i32(tcg_constant_i32(1), cpu_env,
--                   offsetof(ArchCPU, parent_obj.can_do_io) -
-+                   offsetof(ArchCPU, parent_obj.neg.can_do_io) -
-                    offsetof(ArchCPU, env));
- }
- 
-@@ -92,7 +92,7 @@ static TCGOp *gen_tb_start(uint32_t cflags)
-          * go with gen_io_start().
-          */
-         tcg_gen_st_i32(tcg_constant_i32(0), cpu_env,
--                       offsetof(ArchCPU, parent_obj.can_do_io) -
-+                       offsetof(ArchCPU, parent_obj.neg.can_do_io) -
-                        offsetof(ArchCPU, env));
-     }
- 
-diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
-index 08d5bbc873..f0e07f3ae7 100644
---- a/hw/core/cpu-common.c
-+++ b/hw/core/cpu-common.c
-@@ -131,7 +131,7 @@ static void cpu_common_reset_hold(Object *obj)
-     cpu->mem_io_pc = 0;
+     /* Reset the counters */
+-    cpu_neg(cpu)->icount_decr.u16.low = 0;
++    cpu->neg.icount_decr.u16.low = 0;
      cpu->icount_extra = 0;
-     qatomic_set(&cpu->neg.icount_decr.u32, 0);
--    cpu->can_do_io = 1;
-+    cpu->neg.can_do_io = 1;
-     cpu->exception_index = -1;
-     cpu->crash_occurred = false;
-     cpu->cflags_next_tb = -1;
+     cpu->icount_budget = 0;
+ 
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 3973591508..d885cc1d3c 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -91,7 +91,7 @@ void tcg_handle_interrupt(CPUState *cpu, int mask)
+     if (!qemu_cpu_is_self(cpu)) {
+         qemu_cpu_kick(cpu);
+     } else {
+-        qatomic_set(&cpu_neg(cpu)->icount_decr.u16.high, -1);
++        qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
+     }
+ }
+ 
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 098d99b5d4..ed0c7ef7ce 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -214,7 +214,7 @@ void cpu_restore_state_from_tb(CPUState *cpu, TranslationBlock *tb,
+          * Reset the cycle counter to the start of the block and
+          * shift if to the number of actually executed instructions.
+          */
+-        cpu_neg(cpu)->icount_decr.u16.low += insns_left;
++        cpu->neg.icount_decr.u16.low += insns_left;
+     }
+ 
+     cpu->cc->tcg_ops->restore_state_to_opc(cpu, tb, data);
+@@ -623,7 +623,7 @@ void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr)
+     cc = CPU_GET_CLASS(cpu);
+     if (cc->tcg_ops->io_recompile_replay_branch &&
+         cc->tcg_ops->io_recompile_replay_branch(cpu, tb)) {
+-        cpu_neg(cpu)->icount_decr.u16.low++;
++        cpu->neg.icount_decr.u16.low++;
+         n = 2;
+     }
+ 
+@@ -779,7 +779,7 @@ void cpu_interrupt(CPUState *cpu, int mask)
+ {
+     g_assert(qemu_mutex_iothread_locked());
+     cpu->interrupt_request |= mask;
+-    qatomic_set(&cpu_neg(cpu)->icount_decr.u16.high, -1);
++    qatomic_set(&cpu->neg.icount_decr.u16.high, -1);
+ }
+ 
+ #endif /* CONFIG_USER_ONLY */
 diff --git a/softmmu/icount.c b/softmmu/icount.c
-index 144e24829c..956d15e343 100644
+index 956d15e343..4527bfbd6e 100644
 --- a/softmmu/icount.c
 +++ b/softmmu/icount.c
-@@ -111,7 +111,7 @@ static int64_t icount_get_raw_locked(void)
-     CPUState *cpu = current_cpu;
+@@ -75,7 +75,7 @@ static void icount_enable_adaptive(void)
+ static int64_t icount_get_executed(CPUState *cpu)
+ {
+     return (cpu->icount_budget -
+-            (cpu_neg(cpu)->icount_decr.u16.low + cpu->icount_extra));
++            (cpu->neg.icount_decr.u16.low + cpu->icount_extra));
+ }
  
-     if (cpu && cpu->running) {
--        if (!cpu->can_do_io) {
-+        if (!cpu->neg.can_do_io) {
-             error_report("Bad icount read");
-             exit(1);
-         }
-diff --git a/softmmu/watchpoint.c b/softmmu/watchpoint.c
-index 5350163385..45d1f12faf 100644
---- a/softmmu/watchpoint.c
-+++ b/softmmu/watchpoint.c
-@@ -177,7 +177,7 @@ void cpu_check_watchpoint(CPUState *cpu, vaddr addr, vaddr len,
-                  * Force recompile to succeed, because icount may
-                  * be read only at the end of the block.
-                  */
--                if (!cpu->can_do_io) {
-+                if (!cpu->neg.can_do_io) {
-                     /* Force execution of one insn next time.  */
-                     cpu->cflags_next_tb = 1 | CF_LAST_IO | CF_NOIRQ
-                                           | curr_cflags(cpu);
+ /*
 -- 
 2.34.1
 
