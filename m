@@ -2,67 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A26E7A29D3
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Sep 2023 23:54:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A967A2D2C
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 03:58:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhGkG-00062S-De; Fri, 15 Sep 2023 17:53:00 -0400
+	id 1qhKYX-0004qA-8U; Fri, 15 Sep 2023 21:57:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qhGkD-000628-QX
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 17:52:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1qhKYV-0004pr-40; Fri, 15 Sep 2023 21:57:07 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qhGkB-0004MJ-Lx
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 17:52:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694814774;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mV2d7z85Bdji/5HqvLbNnFMBLyw+Q+Ycq+unVFXCIBM=;
- b=LJCX+dQMvufLL2yhoCDLmBzgzQggtvPAxPaaKxX7BHlKBTtNQYtxnS9ETRdkWQ5kCcyCfE
- 7mV79iVEol4WsKJzuq+8K1KiVc7Cr8piQGVGM4+oM9JtydGjq6pXyfes7nQcDVlOcYgobf
- 8UiiSTKxdu6RPi6dp72Blf0BsQt7ITY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-46-Hx3hk-IhNxClnbtNl78e2A-1; Fri, 15 Sep 2023 17:52:52 -0400
-X-MC-Unique: Hx3hk-IhNxClnbtNl78e2A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06950101A59B;
- Fri, 15 Sep 2023 21:52:52 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.50])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5566D2026D68;
- Fri, 15 Sep 2023 21:52:51 +0000 (UTC)
-Date: Fri, 15 Sep 2023 16:52:49 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, hreitz@redhat.com, 
- kwolf@redhat.com, den@virtuozzo.com
-Subject: Re: [PATCH v2 5/8] qemu-img: rebase: avoid unnecessary COW operations
-Message-ID: <sqlvvsdvth4t5igud2t6gzoia2fzqxsq3dx5eacckkjtfzlb4z@f74rjuaafvzo>
-References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
- <20230915162016.141771-6-andrey.drobyshev@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <dgibson@gandalf.ozlabs.org>)
+ id 1qhKYQ-0002Fm-OW; Fri, 15 Sep 2023 21:57:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gibson.dropbear.id.au; s=201602; t=1694829411;
+ bh=/3BF0Jq3f8HNPqn3nhUORpcZl9ib7qPnnLNLQFfQy/0=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=NmzOiHCnh/mjJ4MTX6sa1Q5DWzG1/5Tonza4LZIMHcd2nOSFUNmnKOsLAMw+79Oji
+ EltoNMMxeT3/O70QXuvWqbc3HXp3Reb1STHZhfD9V1ScWaR+JjsCDMyyDFRmWD97op
+ ZL1bbUnacgorv1RnJFi4K/G5HDhumCFR2+5XhZ/8=
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+ id 4RnZ1H3X1xz4wxn; Sat, 16 Sep 2023 11:56:51 +1000 (AEST)
+Date: Sat, 16 Sep 2023 11:56:39 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Daniel Henrique Barboza <danielhb413@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, groug@kaod.org,
+ npiggin@gmail.com, aik@ozlabs.ru,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
+Message-ID: <ZQULV0pC5RliNCOh@zatzit>
+References: <20230915110507.194762-1-danielhb413@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="tJngtleW/484dk3R"
 Content-Disposition: inline
-In-Reply-To: <20230915162016.141771-6-andrey.drobyshev@virtuozzo.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230915110507.194762-1-danielhb413@gmail.com>
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=dgibson@gandalf.ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,242 +62,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 15, 2023 at 07:20:13PM +0300, Andrey Drobyshev wrote:
-> When rebasing an image from one backing file to another, we need to
-> compare data from old and new backings.  If the diff between that data
-> happens to be unaligned to the target cluster size, we might end up
-> doing partial writes, which would lead to copy-on-write and additional IO.
-> 
-> Consider the following simple case (virtual_size == cluster_size == 64K):
-> 
-> base <-- inc1 <-- inc2
-> 
-> qemu-io -c "write -P 0xaa 0 32K" base.qcow2
-> qemu-io -c "write -P 0xcc 32K 32K" base.qcow2
-> qemu-io -c "write -P 0xbb 0 32K" inc1.qcow2
-> qemu-io -c "write -P 0xcc 32K 32K" inc1.qcow2
-> qemu-img rebase -f qcow2 -b base.qcow2 -F qcow2 inc2.qcow2
-> 
-> While doing rebase, we'll write a half of the cluster to inc2, and block
-> layer will have to read the 2nd half of the same cluster from the base image
-> inc1 while doing this write operation, although the whole cluster is already
-> read earlier to perform data comparison.
-> 
-> In order to avoid these unnecessary IO cycles, let's make sure every
-> write request is aligned to the overlay subcluster boundaries.  Using
-> subcluster size is universal as for the images which don't have them
-> this size equals to the cluster size, so in any case we end up aligning
-> to the smallest unit of allocation.
-> 
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+
+--tJngtleW/484dk3R
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Sep 15, 2023 at 08:05:07AM -0300, Daniel Henrique Barboza wrote:
+> Update all relevant PowerPC entries as follows:
+>=20
+> - Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
+>   Nick has  been a solid contributor for the last couple of years and
+>   has the required knowledge and motivation to drive the boat.
+>=20
+> - Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
+>   to other areas of interest and will retire from qemu-ppc.  Thanks Mr
+>   Kurz for all the years of service.
+>=20
+> - David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
+>   KVM CPUs. Change done per his request.
+>=20
+> - Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
+>   PPC KVM CPUs. It has been a long since I last touched those areas and
+>   it's not justified to be kept as maintainer in them.
+>=20
+> - Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
+>   don't have the required knowledge to justify it.
+>=20
+> - VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
+>   better reflects the current state of the subsystem.
+>=20
+> Acked-by: C=E9dric Le Goater <clg@kaod.org>
+> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+
+Acked-by: David Gibson <david@gibson.dropbear.id.au>
+
 > ---
->  qemu-img.c | 76 ++++++++++++++++++++++++++++++++++++++++--------------
->  1 file changed, 56 insertions(+), 20 deletions(-)
-> 
-> diff --git a/qemu-img.c b/qemu-img.c
-> index fcd31d7b5b..83950af42b 100644
-> --- a/qemu-img.c
-> +++ b/qemu-img.c
-> @@ -3523,6 +3523,7 @@ static int img_rebase(int argc, char **argv)
->      uint8_t *buf_new = NULL;
->      BlockDriverState *bs = NULL, *prefix_chain_bs = NULL;
->      BlockDriverState *unfiltered_bs;
-> +    BlockDriverInfo bdi = {0};
->      char *filename;
->      const char *fmt, *cache, *src_cache, *out_basefmt, *out_baseimg;
->      int c, flags, src_flags, ret;
-> @@ -3533,6 +3534,7 @@ static int img_rebase(int argc, char **argv)
->      bool quiet = false;
->      Error *local_err = NULL;
->      bool image_opts = false;
-> +    int64_t write_align;
->  
->      /* Parse commandline parameters */
->      fmt = NULL;
-> @@ -3656,6 +3658,20 @@ static int img_rebase(int argc, char **argv)
->          }
->      }
->  
-> +    /*
-> +     * We need overlay subcluster size to make sure write requests are
-> +     * aligned.
-> +     */
-> +    ret = bdrv_get_info(unfiltered_bs, &bdi);
-> +    if (ret < 0) {
-> +        error_report("could not get block driver info");
-> +        goto out;
-> +    } else if (bdi.subcluster_size == 0) {
-> +        bdi.subcluster_size = 1;
-> +    }
-> +
-> +    write_align = bdi.subcluster_size;
-> +
->      /* For safe rebasing we need to compare old and new backing file */
->      if (!unsafe) {
->          QDict *options = NULL;
-> @@ -3753,7 +3769,7 @@ static int img_rebase(int argc, char **argv)
->          int64_t old_backing_size = 0;
->          int64_t new_backing_size = 0;
->          uint64_t offset;
-> -        int64_t n;
-> +        int64_t n, n_old = 0, n_new = 0;
->          float local_progress = 0;
->  
->          if (blk_old_backing && bdrv_opt_mem_align(blk_bs(blk)) >
-> @@ -3799,7 +3815,8 @@ static int img_rebase(int argc, char **argv)
->          }
->  
->          for (offset = 0; offset < size; offset += n) {
-> -            bool buf_old_is_zero = false;
-> +            bool old_backing_eof = false;
-> +            int64_t n_alloc;
->  
->              /* How many bytes can we handle with the next read? */
->              n = MIN(IO_BUF_SIZE, size - offset);
-> @@ -3844,33 +3861,48 @@ static int img_rebase(int argc, char **argv)
->                  }
->              }
->  
-> +            /*
-> +             * At this point we know that the region [offset; offset + n)
-> +             * is unallocated within the target image.  This region might be
-> +             * unaligned to the target image's (sub)cluster boundaries, as
-> +             * old backing may have smaller clusters (or have subclusters).
-> +             * We extend it to the aligned boundaries to avoid CoW on
-> +             * partial writes in blk_pwrite(),
-> +             */
-> +            n += offset - QEMU_ALIGN_DOWN(offset, write_align);
-> +            offset = QEMU_ALIGN_DOWN(offset, write_align);
+>  MAINTAINERS | 20 +++++++-------------
+>  1 file changed, 7 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 00562f924f..c4aa1c1c9f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -298,11 +298,9 @@ F: hw/openrisc/
+>  F: tests/tcg/openrisc/
+> =20
+>  PowerPC TCG CPUs
+> +M: Nicholas Piggin <npiggin@gmail.com>
+>  M: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: C=E9dric Le Goater <clg@kaod.org>
+> -R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+> -R: Nicholas Piggin <npiggin@gmail.com>
+>  L: qemu-ppc@nongnu.org
+>  S: Odd Fixes
+>  F: target/ppc/
+> @@ -438,10 +436,9 @@ F: target/mips/kvm*
+>  F: target/mips/sysemu/
+> =20
+>  PPC KVM CPUs
+> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: C=E9dric Le Goater <clg@kaod.org>
+> -R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>  S: Odd Fixes
+>  F: target/ppc/kvm.c
+> =20
+> @@ -1430,10 +1427,10 @@ F: include/hw/rtc/m48t59.h
+>  F: tests/avocado/ppc_prep_40p.py
+> =20
+>  sPAPR (pseries)
+> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: C=E9dric Le Goater <clg@kaod.org>
+>  R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>  R: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>  L: qemu-ppc@nongnu.org
+>  S: Odd Fixes
+> @@ -1452,8 +1449,8 @@ F: tests/avocado/ppc_pseries.py
+> =20
+>  PowerNV (Non-Virtualized)
+>  M: C=E9dric Le Goater <clg@kaod.org>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+>  R: Fr=E9d=E9ric Barrat <fbarrat@linux.ibm.com>
+> -R: Nicholas Piggin <npiggin@gmail.com>
+>  L: qemu-ppc@nongnu.org
+>  S: Odd Fixes
+>  F: docs/system/ppc/powernv.rst
+> @@ -1497,12 +1494,9 @@ F: include/hw/pci-host/mv64361.h
+> =20
+>  Virtual Open Firmware (VOF)
+>  M: Alexey Kardashevskiy <aik@ozlabs.ru>
+> -R: C=E9dric Le Goater <clg@kaod.org>
+> -R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>  L: qemu-ppc@nongnu.org
+> -S: Maintained
+> +S: Odd Fixes
+>  F: hw/ppc/spapr_vof*
+>  F: hw/ppc/vof*
+>  F: include/hw/ppc/vof*
 
-If we are always aligning to write_align on each iteration of this
-loop, won't this round down always be a no-op?
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
 
-> +            n += QEMU_ALIGN_UP(offset + n, write_align) - (offset + n);
-> +            n = MIN(n, size - offset);
+--tJngtleW/484dk3R
+Content-Type: application/pgp-signature; name="signature.asc"
 
-However, I can see how this round up can matter.
+-----BEGIN PGP SIGNATURE-----
 
-> +            assert(!bdrv_is_allocated(unfiltered_bs, offset, n, &n_alloc) &&
-> +                   n_alloc == n);
+iQIzBAEBCAAdFiEEO+dNsU4E3yXUXRK2zQJF27ox2GcFAmUFC0IACgkQzQJF27ox
+2Ge1rg/+Mi4SBLicQZ9qaHEzkQ5BR2ZJzz96wJE2yMz8KepIAaR/JjxWqzyVYrBO
+xaQ69gj2nkc5n8sFoZeXujZgpBDrVGvEUUPwtuqM+ZBhHB7suIWyDDusyFtF2k5p
+VIgNcG5adPidmH5f/CIT3yyYBPoyUxFueXaBbxKrLywwmIiuL2Mvpvb4oSTIz3c2
+GPWf6XxCC7SFgkF++uEOP8fLPOkFQ0zT5BVfVRsJlj5uFKUW3pZHNdMZGpj8ReVY
+B3hVzDRxkv9bLnbtxdx9enYIZrh5DzO91le3FVlGK8XrrgRqARXtb97Fjdd51rP3
++UmfzwemS56IFm7KFwUsqJqF3a9+aAHkcoCgTrHaIfMgMrU8FibOKZtZbgZsMI7c
+h9DuyMrRT+RwcJVIZu15/bxxEtEvj9BpO7AcEYK9cMqPMWQPPF78KrhIgzD+qbUZ
+7wVF3WsdOFTYLCTN6Rjr9xZyfbMAlh4xpn6KPIGozHd5P34BVWtv0GcvBMFKkB3h
+WJyb24jea1aSyUSXgMl3qcH7o542n93yBWoOfyQnqMnhIzTdw6SVcgxBLjDw+LZe
+dzDE4Kzm566KpFzZmIOiCkbzPpOFa/s0Mhk2zOHYaZA9kUS/RcUGcVe2So9Epb3e
+bwUKWtSugzbMGCVRN6ZA99zNmcHxet20xpzLL3r7vJ8m6yDiUs4=
+=KI5a
+-----END PGP SIGNATURE-----
 
-This assertion feels a bit heavyweight.  I see what you're trying to
-say: if we found a (partial) unallocated region in the destination,
-then since write_align is the minimum alignment of such allocation,
-our rounding up to alignment boundaries should not change the fact
-that we still have an unallocated region in the destination.  But we
-already checked the data from the original offset through the original
-n, and I argue that the original offset was unchanged; so really, all
-the more you'd need to assert (if the assertion is even necessary)
-could be something like
-
-assert(new_offset == orig_offset);
-tail = new_n - orig_n;
-assert(!bdrv_is_allocated(unfiltered_bs, orig_offset+orig_n, tail, &n_alloc) && n_alloc == tail);
-
-> +
-> +            /*
-> +             * Much like the with the target image, we'll try to read as much
-> +             * of the old and new backings as we can.
-> +             */
-> +            n_old = MIN(n, MAX(0, old_backing_size - (int64_t) offset));
-> +            if (blk_new_backing) {
-> +                n_new = MIN(n, MAX(0, new_backing_size - (int64_t) offset));
-> +            }
-> +
->              /*
->               * Read old and new backing file and take into consideration that
->               * backing files may be smaller than the COW image.
->               */
-> -            if (offset >= old_backing_size) {
-> -                memset(buf_old, 0, n);
-> -                buf_old_is_zero = true;
-> +            memset(buf_old + n_old, 0, n - n_old);
-> +            if (!n_old) {
-> +                old_backing_eof = true;
->              } else {
-> -                if (offset + n > old_backing_size) {
-> -                    n = old_backing_size - offset;
-> -                }
-> -
-> -                ret = blk_pread(blk_old_backing, offset, n, buf_old, 0);
-> +                ret = blk_pread(blk_old_backing, offset, n_old, buf_old, 0);
-
-Here's a more fundamental question.  Why are we reading from the old
-backing file?  At this point in time, isn't unfiltered_bs (the target
-image) still chained to the old backing file?  Why not just do a
-blk_pread() from the destination?  It will cause the block layer to
-read through the backing layers on our behalf, but the block layer
-will then take care of any needed zeroing without us having to do a
-memset here.
-
-Then, once we have the contents of the disk (as seen through the
-destination backed by the old image), we can compare to what the new
-image would read, to see if we still need to write into the
-destination or can just let the destination rely on backing from the
-new image.
-
->                  if (ret < 0) {
->                      error_report("error while reading from old backing file");
->                      goto out;
->                  }
->              }
->  
-> -            if (offset >= new_backing_size || !blk_new_backing) {
-> -                memset(buf_new, 0, n);
-> -            } else {
-> -                if (offset + n > new_backing_size) {
-> -                    n = new_backing_size - offset;
-> -                }
-> -
-> -                ret = blk_pread(blk_new_backing, offset, n, buf_new, 0);
-> +            memset(buf_new + n_new, 0, n - n_new);
-> +            if (blk_new_backing && n_new) {
-> +                ret = blk_pread(blk_new_backing, offset, n_new, buf_new, 0);
->                  if (ret < 0) {
->                      error_report("error while reading from new backing file");
->                      goto out;
-> @@ -3884,11 +3916,12 @@ static int img_rebase(int argc, char **argv)
->                  int64_t pnum;
->  
->                  if (compare_buffers(buf_old + written, buf_new + written,
-> -                                    n - written, 0, &pnum))
-> +                                    n - written, write_align, &pnum))
->                  {
-> -                    if (buf_old_is_zero) {
-> +                    if (old_backing_eof) {
->                          ret = blk_pwrite_zeroes(blk, offset + written, pnum, 0);
-
-Deciding whether to write zeroes (which can be more efficient) is
-possible for more than just when the old backing file has already
-reached EOF.
-
->                      } else {
-> +                        assert(written + pnum <= IO_BUF_SIZE);
->                          ret = blk_pwrite(blk, offset + written, pnum,
->                                           buf_old + written, 0);
->                      }
-> @@ -3900,6 +3933,9 @@ static int img_rebase(int argc, char **argv)
->                  }
->  
->                  written += pnum;
-> +                if (offset + written >= old_backing_size) {
-> +                    old_backing_eof = true;
-> +                }
->              }
->              qemu_progress_print(local_progress, 100);
->          }
-> -- 
-> 2.39.3
->
-
-The idea behind this patch makes sense, but the function is already so
-long and complicated and you are adding more complexity.  I'll
-continue reviewing the rest of the series, but I'll be interested in
-seeing if any other block maintainers has an opinion on this patch.
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+--tJngtleW/484dk3R--
 
