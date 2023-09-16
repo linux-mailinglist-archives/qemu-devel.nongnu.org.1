@@ -2,79 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34777A3329
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 00:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F487A3341
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 00:39:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhdMc-0006Jp-NZ; Sat, 16 Sep 2023 18:02:06 -0400
+	id 1qhdvA-0008Ht-1P; Sat, 16 Sep 2023 18:37:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhdMX-0006Ig-Oa
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 18:02:01 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhdMW-000489-1a
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 18:02:01 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c3cbfa40d6so30138165ad.1
- for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 15:01:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694901719; x=1695506519; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0eViiNfbcR2Apwmf5vG4n86TRv+yRmlz4znqJM2rMWs=;
- b=YZR2A/ugYMTD2f5V6X8pyCLDfiM2ZdjxdVCy9p5jAMxLj1gg0jd7ZYHF7hSECx1K9g
- vd5qcuVScxSE3NKBDvf/QtghsNkbgZbUZz5llUAU+UDd7Gmf62QDkFj/B+cQS/Dypcuh
- 65ij/cOkJHrhU+58MApRlNgU+BoQVT8s8NqjoyVPjH+lyfVnK5rfxttkwkEBFDPxX4cX
- Hhv6mSeBy1HP5qP5YworixXF/CTz46/HR8sEhpgqDvITCey6++vstHZx7oyE+GcsGcQy
- N4s4yM0OkabmHTg4u3FL4oOtkK9WEc9LJa8vyXBmtSBrIBqHOBLFB+XC3/NW9nUdA9dw
- FVfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694901719; x=1695506519;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0eViiNfbcR2Apwmf5vG4n86TRv+yRmlz4znqJM2rMWs=;
- b=XyF8O7dzbS07gy741o8/LNiojUP8AAApxDyZFQvjlIiPaaizBaiXUeYspixdXryvM8
- CMlElekOHZYWsRHJBQk5DfmSke+442ygmpEQ+fPb4K8b8ucxFcVDkQGAhEbxx5b3Tept
- FV5LoH4FZsYqDKcJg40UN7ir1aXIruWNczgLZ9lKvw+vx+lImtC7ZYLIULXYrroG/fdK
- OLHRwliMGLXkEKw1Yho5N3JC9OcCiqTKbF28FYbL/AW69s4GT8OxGjg8f+zhreSI36d2
- lRO+bQptyJ+doJ1BKWZzdmSPugY7iaSoUGS2vIX5QQXVf44IXe3oT6PCMJZar3qvyNH/
- FDEA==
-X-Gm-Message-State: AOJu0YyS4QrAKYXv+LHgx4fxCbFFzaqMuWI83CWLAzK8kpIN+JqKdh83
- hH/wMs/bcPsuqdhxZI0FIs4fGv1Y1CHnEQYxKQE=
-X-Google-Smtp-Source: AGHT+IEYQ3RMXr7Ry5/U/xA9cG0LlBfw8K6/KKMKYKRgIYYK3YGKK9g84sCm/BXy0UP78Me8i1gDgA==
-X-Received: by 2002:a17:902:c949:b0:1c0:b17a:7576 with SMTP id
- i9-20020a170902c94900b001c0b17a7576mr7407282pla.42.1694901718917; 
- Sat, 16 Sep 2023 15:01:58 -0700 (PDT)
-Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- q3-20020a170902788300b001b531e8a000sm5707763pll.157.2023.09.16.15.01.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Sep 2023 15:01:58 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: git@xen0n.name, c@jia.je, gaosong@loongson.cn, yangxiaojuan@loongson.cn
-Subject: [PATCH 7/7] accel/tcg: Fix condition for store_atom_insert_al16
-Date: Sat, 16 Sep 2023 15:01:51 -0700
-Message-Id: <20230916220151.526140-8-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230916220151.526140-1-richard.henderson@linaro.org>
-References: <20230916220151.526140-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
+ id 1qhdv8-0008HR-08; Sat, 16 Sep 2023 18:37:46 -0400
+Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
+ helo=smtp.gentoo.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
+ (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
+ id 1qhdv5-0002Zm-Df; Sat, 16 Sep 2023 18:37:45 -0400
+From: "Andreas K. Huettel" <dilfridge@gentoo.org>
+To: "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
+ "open list:RISC-V" <qemu-riscv@nongnu.org>
+Cc: LIU Zhiwei <baxiantai@gmail.com>,
+ "Andreas K. Huettel" <dilfridge@gentoo.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: qemu-riscv32 usermode still broken?
+Date: Sun, 17 Sep 2023 00:37:32 +0200
+Message-ID: <6353228.kQq0lBPeGt@pinacolada>
+Organization: Gentoo Linux
+In-Reply-To: <4344798.atdPhlSkOF@pinacolada>
+References: <10817413.NyiUUSuA9g@pinacolada>
+ <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
+ <4344798.atdPhlSkOF@pinacolada>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; boundary="nextPart6111525.iIbC2pHGDl";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
+ envelope-from=dilfridge@gentoo.org; helo=smtp.gentoo.org
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,78 +56,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Store bytes under a mask is fundamentally a cmpxchg, not a straight store.
-Use HAVE_CMPXCHG128 instead of HAVE_ATOMIC128_RW.
+--nextPart6111525.iIbC2pHGDl
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
+From: "Andreas K. Huettel" <dilfridge@gentoo.org>
+Subject: Re: qemu-riscv32 usermode still broken?
+Date: Sun, 17 Sep 2023 00:37:32 +0200
+Message-ID: <6353228.kQq0lBPeGt@pinacolada>
+Organization: Gentoo Linux
+In-Reply-To: <4344798.atdPhlSkOF@pinacolada>
+MIME-Version: 1.0
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/cputlb.c             |  2 +-
- accel/tcg/ldst_atomicity.c.inc | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+Am Donnerstag, 14. September 2023, 03:22:49 CEST schrieb Andreas K. Huettel:
+> > > https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00119.html
+> > > ^ Here I'm trying to find out more.
+> > >
+> > > Bash tests apparently indicate that argv[0] is overwritten, and that
+> > > reading through a pipe or from /dev/tty fails or loses data.
+> > >
+> > > Apart from the bash testsuite failing, symptoms are as follows:
+> > >
+> > > * Something seems wrong in the signal handling (?):
+> >=20
+> > If it is wrong for signal handling and for 32-bit, I guess it may be=20
+> > fixed by this patch
+> >=20
+> > https://www.mail-archive.com/qemu-devel@nongnu.org/msg981238.html
+> >=20
+> > And this patch has been merged into master branch yesterday.
+> >=20
+> > May be you can have a try based on the master branch.
+>=20
+> I added the patch to 8.0.3 (easier for the moment), and this did
+> unfortunately *not* lead to any improvements.=20
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 3270f65c20..3b76626666 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -2849,7 +2849,7 @@ static uint64_t do_st16_leN(CPUArchState *env, MMULookupPageData *p,
- 
-     case MO_ATOM_WITHIN16_PAIR:
-         /* Since size > 8, this is the half that must be atomic. */
--        if (!HAVE_ATOMIC128_RW) {
-+        if (!HAVE_CMPXCHG128) {
-             cpu_loop_exit_atomic(env_cpu(env), ra);
-         }
-         return store_whole_le16(p->haddr, p->size, val_le);
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 23d43f62a2..5c6e116cfe 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -825,7 +825,7 @@ static uint64_t store_whole_le16(void *pv, int size, Int128 val_le)
-     int sh = o * 8;
-     Int128 m, v;
- 
--    qemu_build_assert(HAVE_ATOMIC128_RW);
-+    qemu_build_assert(HAVE_CMPXCHG128);
- 
-     /* Like MAKE_64BIT_MASK(0, sz), but larger. */
-     if (sz <= 64) {
-@@ -887,7 +887,7 @@ static void store_atom_2(CPUArchState *env, uintptr_t ra,
-             return;
-         }
-     } else if ((pi & 15) == 7) {
--        if (HAVE_ATOMIC128_RW) {
-+        if (HAVE_CMPXCHG128) {
-             Int128 v = int128_lshift(int128_make64(val), 56);
-             Int128 m = int128_lshift(int128_make64(0xffff), 56);
-             store_atom_insert_al16(pv - 7, v, m);
-@@ -956,7 +956,7 @@ static void store_atom_4(CPUArchState *env, uintptr_t ra,
-                 return;
-             }
-         } else {
--            if (HAVE_ATOMIC128_RW) {
-+            if (HAVE_CMPXCHG128) {
-                 store_whole_le16(pv, 4, int128_make64(cpu_to_le32(val)));
-                 return;
-             }
-@@ -1021,7 +1021,7 @@ static void store_atom_8(CPUArchState *env, uintptr_t ra,
-         }
-         break;
-     case MO_64:
--        if (HAVE_ATOMIC128_RW) {
-+        if (HAVE_CMPXCHG128) {
-             store_whole_le16(pv, 8, int128_make64(cpu_to_le64(val)));
-             return;
-         }
-@@ -1076,7 +1076,7 @@ static void store_atom_16(CPUArchState *env, uintptr_t ra,
-         }
-         break;
-     case -MO_64:
--        if (HAVE_ATOMIC128_RW) {
-+        if (HAVE_CMPXCHG128) {
-             uint64_t val_le;
-             int s2 = pi & 15;
-             int s1 = 16 - s2;
--- 
-2.34.1
+Also with the patch on top of 8.1.0 no improvement or change.
+
+> However, in the meantime on the GNU Make tracker Alejandro Colomar
+> pointed me to another detail based on my oddities [1]:
+>=20
+> > I think [make] it's failing here:
+> >=20
+> > <https://git.savannah.gnu.org/cgit/make.git/tree/src/job.c#n757>
+> >=20
+> > But it's failing with ENOENT, which is not one of the documented
+> > errors for wait(2):
+>=20
+> So maybe another point to look at would be the origin of the return
+> values of wait, and whether that's wired correctly for rv32...
+>=20
+> [1] https://savannah.gnu.org/bugs/?64664
+
+In the meantime I tried to nail down a reproducible hang in bash on this=20
+frankensystem with qemu's gdb interface. This also pointed towards
+child handling and wait [2].
+
+[2] https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00128.html
+
+Some time ago we already debugged that corner, and Alistair Francis
+came up with a fix that improved the riscv32 situation back then [3].=20
+Maybe that fix was somehow incomplete? Just speculating...
+
+[3] https://bugs.launchpad.net/qemu/+bug/1906193
+
+
+=2D-=20
+Andreas K. H=FCttel
+dilfridge@gentoo.org
+Gentoo Linux developer
+(council, toolchain, base-system, perl, libreoffice)
+--nextPart6111525.iIbC2pHGDl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQKTBAABCgB9FiEE/Rnm0xsZLuTcY+rT3CsWIV7VQSoFAmUGLixfFIAAAAAALgAo
+aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEZE
+MTlFNkQzMUIxOTJFRTREQzYzRUFEM0RDMkIxNjIxNUVENTQxMkEACgkQ3CsWIV7V
+QSobDhAAq4zOXif0uxHFHv0BmJlzeQM2xxpsAtKmXaiQEymrUIv7Ioa9xVKSUUTp
+F18gmRxRefvbouJ+YQCHg2Pfs6QuI5IMvkKUCKvSfG9PnbROocXT2GiyEigHejGq
+38ZelAosJOEMG3gnuEqGm48NJAA8HhAONQt66SANEzb0g55B1YucWaoyZDhXKeA4
+vn1UT/tB/5DJjiXB53CE4aI9R9hEHNyCoJhtcCJTgZt/vhkPWuK2MDuOKkUA7G0Y
+tX1Sp1tR5Gqh0IqKnehJ+TYiQ/PwPSleGc9uHG9lKXGPJjL+UKzSM5x4gR/CwkYv
+b1dP6OTbOfXc2XRx+P255gWImi12V0JWQ2UStdWVC3/yhBu230Z/RXEehImJ8ez5
+2HM5htfodCw27FADvRw500NAH0fa1yEQPdrkYKTrYfHdyK5bdg60NyJTWthpbgZB
+NXZiHbxXuEtc5mrK1E/Mty3fVVLaTuiRP1JFZDjiUkK78aG3Bkm351tKVfNE5w/T
+tIU8QOqJBbYj+eIwBGOiIwGDStHyS5ibMemKWuUPQg5S1m18iq4bIfeIbPdcNJLi
+2emeqCTzQhLFOuKon9nhBf0Qpk6H1sF3o8lvhRMv3WDvBQyFsI7vniePPmMVcNs4
+ZKLgKpbFbEgIgCwydHIhu/0TW3z7eEHrNPpgGGgLb1kGpFRvu2A=
+=jS5C
+-----END PGP SIGNATURE-----
+
+--nextPart6111525.iIbC2pHGDl--
+
+
 
 
