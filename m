@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F407A32B8
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E39D77A32A6
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:43:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhd3k-0005vk-AC; Sat, 16 Sep 2023 17:42:36 -0400
+	id 1qhd3c-0005Xu-If; Sat, 16 Sep 2023 17:42:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd3C-0005Eu-7l
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:42:03 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qhd3C-0005Et-7g
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:42:02 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd39-0000WK-MQ
+ id 1qhd39-0000WG-MI
  for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:42:01 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-68c576d35feso3072296b3a.2
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-68fdd5c1bbbso2359887b3a.1
  for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 14:41:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694900517; x=1695505317; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694900518; x=1695505318; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6VTpBWRs4wNK7fliIDMYgMpLG0bEcOQT795ogcrcYr0=;
- b=yRy/7G7Pm0V2+MwkQKB9d9p+Zc5ozkrW57msve/Uyn5o3I4jnOqmDbAa1D8iyi8lJM
- EUkvbxnVzH/mtUR4iJwhBqZUwwsaicwGiYfquQCI2PC/ecKby/e1CLA5UPUaWkgyd9Iy
- 0vI2QJIMHbYit7GksR3ZHxrkLzQNeDT53HepI6CPI0UUPy07QCbuMz2VtkOxww0nYkFw
- 9Kmj4DQC1hQaJgzG65eAojR9PM+LGTZtPn68Yiw9Tb4M1l9671zoKZUm8uA5uGtVqTMx
- 4tBp+I7yQ6Hrz2r7zFnHm5VpNMTU6sXYtNqibdGZQGQVIUslaPnnnaL+qAHvgTmtQ2Bs
- /f2A==
+ bh=2JL8rjLVD092FwcI3216ms8eo5o4CvSUxoIR2XgkySs=;
+ b=C3aVPzFSb6sKY7GjEk5FMERAPd6qWkqK5kawrH01Fm1T7S86+91RhHdBxWFuZ4SxR5
+ obrmMRVkJNDLAYlkNB0w5VrPja67uZhQgi3u+o/cclrNj86KseiGVb61GjUUQUGJWIe2
+ ItPVfsqHU+DS8nVyTV35FYrMP82gQm6s8ylkpyhx7ue9o+Eh4lkTYHm2K2WFKTLSFDf2
+ d1l1lzCxHc/ud9QjadRN9mKCTjXpElTBe7ll+Z0Sbm0qkiNlYcNaz8/nJGxFiwHRmdMV
+ jgTzgwFr5QZpsgAHytEU5pDhgV4aGV96QrXaNtLpMpqNOg+xyakCRPBve1QC0t1luRnR
+ jpHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694900517; x=1695505317;
+ d=1e100.net; s=20230601; t=1694900518; x=1695505318;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6VTpBWRs4wNK7fliIDMYgMpLG0bEcOQT795ogcrcYr0=;
- b=pIFvwaND3/dSt2CAJXrU6nv0NnEpPwCsGe6SJg8z2ICLqlgIDaWp34EDBWSVpm0fhi
- L1Rrf+pr1UDFatM0AhJzO1aMk6g3BjFVGgeTZUGCdcCgRkh9Ygq6JL6bg78Qx8SyXOX3
- 5aHThh4tRDiRUPX6rZ0knplTI8QndEHbgOHX958aVYPa3W52ADwpQi/9ndNQoKKNS2v7
- DFNK9rlvuUfM7OmMIlnp11XAhxWXUS56UdxybeHYtBNJEN/PYbhDSyrmnZJRKjdJIcoT
- ahhnEvmjTuRnFpzn7WHsiIuZ0NnZj96vX90+zoTVB333TisZgQxym5wBjs5fKnrrqohB
- RW4Q==
-X-Gm-Message-State: AOJu0Yy6k5lUCbdxlAw80pUhiuKzPOmSGCHNbwor1mx3jqdCwlsP+AJo
- Z07sUEa8460f9620pXn9fOyMG6o3z2Sc+4f984o=
-X-Google-Smtp-Source: AGHT+IEBaRerfQfLVI3HNp2zSufW/MjL0q8V3zM5SEUjxSJrYAOWlyj0POm/BQjRntRIZb4LnxHs8Q==
-X-Received: by 2002:a05:6a00:c96:b0:68f:d864:596 with SMTP id
- a22-20020a056a000c9600b0068fd8640596mr6961545pfv.3.1694900517281; 
- Sat, 16 Sep 2023 14:41:57 -0700 (PDT)
+ bh=2JL8rjLVD092FwcI3216ms8eo5o4CvSUxoIR2XgkySs=;
+ b=eYM6dDBfuivKD0eHlFquwempcujmWxJk/5cR2z4ijOOx98oCsME+uOcEPjSnlUlj87
+ ZCMG7lrDc+Y8peLAJL0+Iq16BQTgkyvem5Ag9qik/pHx+KiEQTMRUiswEXlEbjKRryhE
+ lg2GUTqyILYg6nI1/AG84IpmpljisSL6EPBbi/ceG9nRDCUZ8yWXhJcpNkg3I7zsX7pY
+ JGmCQdwZtJxB7EK/Btc1y/7LTtlY9WWXaG74060sKVXWYRsfbmv2Fx+kpSTqECP7v2D3
+ /Mu6rItyPstO2ZpHvjLAWpTAo+3g0VkMPHziIxVwm2+eglsJbhMv/xcwWlYUUWRmD+X9
+ 3zXA==
+X-Gm-Message-State: AOJu0YwqF6TAYbCr/q7HL5QUbAgs6Usd3aqeLyZn6iGOfAD3bBAwDH2T
+ KhX6wsTaHbxSBuNulu2i49tnhMWeeRvOA1rPXkY=
+X-Google-Smtp-Source: AGHT+IGLBbl3oBKFjOyaS5oQce75UxI3GonvyE9r23p4b9EKmV2chnTHKP0mSuKAOnty1AuXu0u1Vg==
+X-Received: by 2002:a05:6a00:1a92:b0:68f:b015:ea99 with SMTP id
+ e18-20020a056a001a9200b0068fb015ea99mr6962101pfv.10.1694900518167; 
+ Sat, 16 Sep 2023 14:41:58 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.56
+ n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Sep 2023 14:41:56 -0700 (PDT)
+ Sat, 16 Sep 2023 14:41:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH v3 34/39] accel/tcg: Make cpu-exec-common.c a target agnostic
- unit
-Date: Sat, 16 Sep 2023 14:41:18 -0700
-Message-Id: <20230916214123.525796-35-richard.henderson@linaro.org>
+Subject: [PATCH v3 35/39] accel: Rename accel_cpu_realizefn() ->
+ accel_cpu_realize()
+Date: Sat, 16 Sep 2023 14:41:19 -0700
+Message-Id: <20230916214123.525796-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916214123.525796-1-richard.henderson@linaro.org>
 References: <20230916214123.525796-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,139 +95,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-cpu_in_serial_context() is not target specific,
-move it declaration to "internal-common.h" (which
-we include in the 4 source files modified).
-
-Remove the unused "exec/exec-all.h" header from
-cpu-exec-common.c.  There is no more target specific
-code in this file: make it target agnostic.
+We use the '*fn' suffix for handlers, this is a public method.
+Drop the suffix.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20230914185718.76241-12-philmd@linaro.org>
+Message-Id: <20230915190009.68404-2-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/internal-common.h | 11 +++++++++++
- accel/tcg/internal-target.h |  9 ---------
- accel/tcg/cpu-exec-common.c |  3 +--
- accel/tcg/cputlb.c          |  1 +
- accel/tcg/tb-maint.c        |  1 +
- accel/tcg/user-exec.c       |  1 +
- accel/tcg/meson.build       |  4 +++-
- 7 files changed, 18 insertions(+), 12 deletions(-)
+ include/qemu/accel.h      | 4 ++--
+ accel/accel-target.c      | 2 +-
+ cpu-target.c              | 2 +-
+ target/i386/kvm/kvm-cpu.c | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/accel/tcg/internal-common.h b/accel/tcg/internal-common.h
-index 5d5247442e..3b2277e6e9 100644
---- a/accel/tcg/internal-common.h
-+++ b/accel/tcg/internal-common.h
-@@ -9,9 +9,20 @@
- #ifndef ACCEL_TCG_INTERNAL_COMMON_H
- #define ACCEL_TCG_INTERNAL_COMMON_H
+diff --git a/include/qemu/accel.h b/include/qemu/accel.h
+index e84db2e3e5..cb64a07b84 100644
+--- a/include/qemu/accel.h
++++ b/include/qemu/accel.h
+@@ -90,11 +90,11 @@ void accel_setup_post(MachineState *ms);
+ void accel_cpu_instance_init(CPUState *cpu);
  
-+#include "exec/translation-block.h"
-+
- extern int64_t max_delay;
- extern int64_t max_advance;
+ /**
+- * accel_cpu_realizefn:
++ * accel_cpu_realize:
+  * @cpu: The CPU that needs to call accel-specific cpu realization.
+  * @errp: currently unused.
+  */
+-bool accel_cpu_realizefn(CPUState *cpu, Error **errp);
++bool accel_cpu_realize(CPUState *cpu, Error **errp);
  
- void dump_exec_info(GString *buf);
- 
-+/*
-+ * Return true if CS is not running in parallel with other cpus, either
-+ * because there are no other cpus or we are within an exclusive context.
-+ */
-+static inline bool cpu_in_serial_context(CPUState *cs)
-+{
-+    return !(cs->tcg_cflags & CF_PARALLEL) || cpu_in_exclusive_context(cs);
-+}
-+
- #endif
-diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
-index f9eec1ce28..932bbe4b63 100644
---- a/accel/tcg/internal-target.h
-+++ b/accel/tcg/internal-target.h
-@@ -90,15 +90,6 @@ static inline vaddr log_pc(CPUState *cpu, const TranslationBlock *tb)
+ /**
+  * accel_supported_gdbstub_sstep_flags:
+diff --git a/accel/accel-target.c b/accel/accel-target.c
+index df72cc989a..b953855e8b 100644
+--- a/accel/accel-target.c
++++ b/accel/accel-target.c
+@@ -119,7 +119,7 @@ void accel_cpu_instance_init(CPUState *cpu)
      }
  }
  
--/*
-- * Return true if CS is not running in parallel with other cpus, either
-- * because there are no other cpus or we are within an exclusive context.
-- */
--static inline bool cpu_in_serial_context(CPUState *cs)
--{
--    return !(cs->tcg_cflags & CF_PARALLEL) || cpu_in_exclusive_context(cs);
--}
--
- extern bool one_insn_per_tb;
+-bool accel_cpu_realizefn(CPUState *cpu, Error **errp)
++bool accel_cpu_realize(CPUState *cpu, Error **errp)
+ {
+     CPUClass *cc = CPU_GET_CLASS(cpu);
  
- /**
-diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
-index 55980417b4..b6cc387482 100644
---- a/accel/tcg/cpu-exec-common.c
-+++ b/accel/tcg/cpu-exec-common.c
-@@ -20,9 +20,8 @@
- #include "qemu/osdep.h"
- #include "sysemu/cpus.h"
- #include "sysemu/tcg.h"
--#include "exec/exec-all.h"
- #include "qemu/plugin.h"
--#include "internal-target.h"
-+#include "internal-common.h"
+diff --git a/cpu-target.c b/cpu-target.c
+index 0769b0b153..61c9760e62 100644
+--- a/cpu-target.c
++++ b/cpu-target.c
+@@ -136,7 +136,7 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
+     /* cache the cpu class for the hotpath */
+     cpu->cc = CPU_GET_CLASS(cpu);
  
- bool tcg_allowed;
+-    if (!accel_cpu_realizefn(cpu, errp)) {
++    if (!accel_cpu_realize(cpu, errp)) {
+         return;
+     }
  
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index df20bf4034..b8c5e345b8 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -35,6 +35,7 @@
- #include "exec/translate-all.h"
- #include "trace.h"
- #include "tb-hash.h"
-+#include "internal-common.h"
- #include "internal-target.h"
- #ifdef CONFIG_PLUGIN
- #include "qemu/plugin-memory.h"
-diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
-index 85cf51445d..b194f8f065 100644
---- a/accel/tcg/tb-maint.c
-+++ b/accel/tcg/tb-maint.c
-@@ -29,6 +29,7 @@
- #include "tcg/tcg.h"
- #include "tb-hash.h"
- #include "tb-context.h"
-+#include "internal-common.h"
- #include "internal-target.h"
- 
- 
-diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
-index f925dd0305..5bf2761bf4 100644
---- a/accel/tcg/user-exec.c
-+++ b/accel/tcg/user-exec.c
-@@ -29,6 +29,7 @@
- #include "qemu/atomic128.h"
- #include "trace/trace-root.h"
- #include "tcg/tcg-ldst.h"
-+#include "internal-common.h"
- #include "internal-target.h"
- 
- __thread uintptr_t helper_retaddr;
-diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
-index 4633a34d28..8783edd06e 100644
---- a/accel/tcg/meson.build
-+++ b/accel/tcg/meson.build
-@@ -1,7 +1,9 @@
- tcg_ss = ss.source_set()
-+common_ss.add(when: 'CONFIG_TCG', if_true: files(
-+  'cpu-exec-common.c',
-+))
- tcg_ss.add(files(
-   'tcg-all.c',
--  'cpu-exec-common.c',
-   'cpu-exec.c',
-   'tb-maint.c',
-   'tcg-runtime-gvec.c',
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 7237378a7d..4474689f81 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -35,7 +35,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+      * x86_cpu_realize():
+      *  -> x86_cpu_expand_features()
+      *  -> cpu_exec_realizefn():
+-     *            -> accel_cpu_realizefn()
++     *            -> accel_cpu_realize()
+      *               kvm_cpu_realizefn() -> host_cpu_realizefn()
+      *  -> check/update ucode_rev, phys_bits, mwait
+      */
 -- 
 2.34.1
 
