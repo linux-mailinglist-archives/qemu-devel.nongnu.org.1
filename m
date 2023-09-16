@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0F07A3186
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 18:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B1C7A3194
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 19:14:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhYcL-0005XD-JV; Sat, 16 Sep 2023 12:58:01 -0400
+	id 1qhYqU-0006xo-VN; Sat, 16 Sep 2023 13:12:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qhYcJ-0005Wx-Gi
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 12:57:59 -0400
-Received: from mout.gmx.net ([212.227.17.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1qhYcH-0004zK-ST
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 12:57:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1694883471; x=1695488271; i=deller@gmx.de;
- bh=3zCCFWfLejvfuiC5E4VlUCWZPoyVDyDDgJ+hR/5ERrc=;
- h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
- b=TUGJnm8COhoRGq43YQqNTdFMvz2Glb95gbTpTcZ5F/I8JUDJYBtqyfrbdN9kyWwf9VfqaV5tCZi
- ASK+cF2rXhAN7LzWgfv9lp2auQY3s6bmowC3Owk9P4Xn1GCjkXUxOSZLjN/gERrKCZqEYWKy5BPZF
- Mmc4+NZrWXqdw9nKMlCSEL6oByhteq4AjB821viKnuguxTKS/lt4FQ8t6TcoA+I4MRyQHfw/72Y8Z
- 76lQk/RCZ2RaXzdUWHBch+Y+Uxc/Y6kYmWvFpz0YlYwcVhWWUZeSjYkQeljatcXZtSHw+hUxnTflB
- KcZPH7gQRI1UW9BqEZ5kDUo69PO4XYxGUKvQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.154.45]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKKYx-1r0RsG2qIp-00LobU; Sat, 16
- Sep 2023 18:57:51 +0200
-Message-ID: <741fb0cc-8844-b892-7eae-26d5b14bb5dc@gmx.de>
-Date: Sat, 16 Sep 2023 18:57:50 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qhYqM-0006wv-Bi
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:12:30 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qhYqI-0000Q0-QT
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:12:28 -0400
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-68fb2e9ebcdso2548455b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 10:12:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694884345; x=1695489145; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ow/QitEtIQLxnULpZl9GePjubstidjCAUIIrE9tA77A=;
+ b=lNBRREWYhMmnwD9xKFgYE/Z2/17Ej5zpvtuhCF/pTywxN4IOjzljBNclK8ju2raZ4j
+ anm3QoTdSl//VNkcOlcMwt4l5jbyXGbu1TJAOhdvya55p/tKBLpQWuR2kUM1bsRfIhmC
+ r2kWAKQqcifnmtzkuQtVIPiYbb43HEbB144yxF6xXGFGjDqeBKfNEUDWGA5hrfZ20U+r
+ Ii9yMrkxVVtJPENJwG6DLyvSGd77nhea53P+9s638l8nJK7rjMqdwBQ5/CNhC1J9rmZo
+ EjTYLmGzwqpvRUON7EMLm6sf/GhJ//Joe91v/bZrOnODZEeEHctBL/G8Wi6xe7Q64pIu
+ i7kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694884345; x=1695489145;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ow/QitEtIQLxnULpZl9GePjubstidjCAUIIrE9tA77A=;
+ b=Dez/xhaDd98mhN0nsb5piHTTf5nd55Y4iTkZTD6S8GwYu1GE02ulhJXEXwUs5sQDCN
+ dSZFloO6ACwfJ9Dpee38uKoqkzfAcYeGpfJmO1YBFpbh5rwaPNTh89gj6ZLCQjFCyv29
+ ZsB54C24wBDPOqfDZyQeWBJMg+FskAjugNXuKRcv24npxX0axE6eGetPBOCvBBaO1Eua
+ i6adUGGuAnMZH3t7/PZYJbxzxVSEuXJ82Z1wZpVZMpu7GgcT9lpzUy9gSLU5kuQ2kinm
+ cqTC+b4MF2+oorUEhB8G2T4U7M99IuA9DjD4fVgXaF+b43BHt9YTGXXjkcEG6NuIY1Vd
+ yKXg==
+X-Gm-Message-State: AOJu0YzUiGChRFOUkdAsk1jDL/GaD3dyf+zXyjp5buod3SzOflyeP6vH
+ i3GV3aKcZ35p/SQvahUbLxZCXIjObBg6Tj0PGvA=
+X-Google-Smtp-Source: AGHT+IGAN0iauX/QFhBmfuT4e+pyIqm//K09PmQ39C4N1Zuq/QcSUGj1Gvb5dQh3QyK8KAqKZA9jOA==
+X-Received: by 2002:a05:6a00:1a13:b0:690:3f29:a874 with SMTP id
+ g19-20020a056a001a1300b006903f29a874mr4081203pfv.23.1694884344595; 
+ Sat, 16 Sep 2023 10:12:24 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ i14-20020aa78d8e000000b00689f8dc26c2sm4706705pfr.133.2023.09.16.10.12.23
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 16 Sep 2023 10:12:24 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL v2 00/39] tcg patch queue
+Date: Sat, 16 Sep 2023 10:12:22 -0700
+Message-Id: <20230916171223.521545-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] target/hppa: clear the PSW 'N' bit when delivering signals
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-To: Mikulas Patocka <mpatocka@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- John David Anglin <dave.anglin@bell.net>
-Cc: qemu-devel@nongnu.org, linux-parisc@vger.kernel.org
-References: <f69ce25f-733d-7931-e59c-e3f1279b965a@redhat.com>
- <bb1b594d-5526-7774-44ab-bab8c5262c49@gmx.de>
-In-Reply-To: <bb1b594d-5526-7774-44ab-bab8c5262c49@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+3SD+I0PyWQbf4Sf8al36nUVGA50gj1kVEZ0yyV85IXroRr8W3N
- ORVwbvLfLyNHE+gcvy/rMGprFY80p59xjhnMNH9mPKFUjOr0RXfrxtRK/MoITpyWARv9fBu
- WvLNRbp5r3qhGoXu2oahpIPBNlPYgQpFiiJq5ArOF4oWdo7dIvgJ1QyMR4Q7C4HKGJ4F9F+
- tYcy9Vjb4nE1mPW+qr2Pg==
-UI-OutboundReport: notjunk:1;M01:P0:U0MEenLZvrM=;wqQ3uMaIJGRe0JsXYKmPW2Jhp9B
- c5FPy1oMU6RP4a2T9pXnxhbsJnlN4lzTf5rErnSizYckwds/ZV5cHHw0m3l+kU60sfLRvDe5X
- Fai//bhx35Uau3jQ+WA8tA/Pdgkkwm7XwBejhocyYk2Kg9Z/2caVNRVVk3XuyOb2TRD96WHu7
- cE5wKIVayerG5jdNbfa5t8GxI/ZbzI7pFUmdfVLjV72TmGzcHjHEec5G/Wxpmg6qNK0JsYJyO
- ANXQi0yOkWiRwBq3z7PWLp4qWGNxn2UMhfx8EK0NK3RBt+tpYlRzXDqVeGAZlK7etG6ImRyjf
- 5GpRW51Tgg9gBsM7nfyxRqLehu4jqtWoK9EkB19r5lrVkJe2uhWPY+oZzMEMsCkRHCVIemM9J
- a7rN+Ymct5PK4BkLgHUSsdGuXcx4wUjAQhYciKAxYoh1bJz62fT+IzKy9zR4A26hn60hBxLxN
- 8JT6RXIzLPRq0J/4eq2oJs0enbQTmF9kxujhMBg3jYJQ7MN87b4Aq+8nHARQ4r3OMMsGeVCKA
- 9QcLWSWW8Yu5AqwQjiYC3gfFxhraEfqAZqK+HQNiEfWp5Vk4AzYRT+qbtbi417j7D4TnxAjGI
- 9sUaLymw9hxCiVxa6+bBurYnz2DUqM0zLEoS6EvdId2J9+0stifQhf6otwgs3XsOW8Bzvb89A
- HlU/tF4d8E38soz6L7SJYNlW3x1js+1zFA9vxy26mKfTF6Spe7LIEHzpv5fpOuqHBxgCfBaiF
- TTRf+xKnZhzU9dbErALppIf2qJ6T0TIgVJM/9TAkF/KpP5JfY4XM+3DmlhEnG6kq2afPd3r64
- c+zUkYKJL7agZN0Kh7KnAp2IWCNDVr0+WGaSdlcnXUVzN8X41NcPm3vKkik/wU8g/+Gl67mtW
- SBudeVB01UwuxTuxOndO4vDZfkNjjJZG/Y/zfLitzeLPE65hm4wqxryBEaNTw5SF777DMq36d
- WNkJR2iP/nAk2MdQ890iIMbpFKA=
-Received-SPF: pass client-ip=212.227.17.21; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,20 +87,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/16/23 18:49, Helge Deller wrote:
->> The reason for the crash is that the signal handling routine doesn't cl=
-ear
->> the 'N' flag in the PSW. If the signal interrupts a thread when the 'N'
->> flag is set, the flag remains set at the beginning of the signal handle=
-r
->> and the first instruction of the signal handler is skipped.
->>
->> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
->
-> Acked-by: Helge Deller <deller@gmx.de>
+v2: tcg/loongarch64 patch set without last minute tweaks.
 
-FYI, I've queued by both patches in my btlb branch and added backport
-to stable request.
+r~
 
-Helge
+The following changes since commit 005ad32358f12fe9313a4a01918a55e60d4f39e5:
+
+  Merge tag 'pull-tpm-2023-09-12-3' of https://github.com/stefanberger/qemu-tpm into staging (2023-09-13 13:41:57 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230915-2
+
+for you to fetch changes up to a97a83753c90d79ed15a716610af23fabd84aaed:
+
+  tcg: Map code_gen_buffer with PROT_BTI (2023-09-16 14:57:16 +0000)
+
+----------------------------------------------------------------
+*: Delete checks for old host definitions
+tcg/loongarch64: Generate LSX instructions
+fpu: Add conversions between bfloat16 and [u]int8
+fpu: Handle m68k extended precision denormals properly
+accel/tcg: Improve cputlb i/o organization
+accel/tcg: Simplify tlb_plugin_lookup
+accel/tcg: Remove false-negative halted assertion
+tcg: Add gvec compare with immediate and scalar operand
+tcg/aarch64: Emit BTI insns at jump landing pads
+
+----------------------------------------------------------------
+Akihiko Odaki (3):
+      util: Delete checks for old host definitions
+      softmmu: Delete checks for old host definitions
+      thunk: Delete checks for old host definitions
+
+Jiajie Chen (16):
+      tcg/loongarch64: Import LSX instructions
+      tcg/loongarch64: Lower basic tcg vec ops to LSX
+      tcg: pass vece to tcg_target_const_match()
+      tcg/loongarch64: Lower cmp_vec to vseq/vsle/vslt
+      tcg/loongarch64: Lower add/sub_vec to vadd/vsub
+      tcg/loongarch64: Lower vector bitwise operations
+      tcg/loongarch64: Lower neg_vec to vneg
+      tcg/loongarch64: Lower mul_vec to vmul
+      tcg/loongarch64: Lower vector min max ops
+      tcg/loongarch64: Lower vector saturated ops
+      tcg/loongarch64: Lower vector shift vector ops
+      tcg/loongarch64: Lower bitsel_vec to vbitsel
+      tcg/loongarch64: Lower vector shift integer ops
+      tcg/loongarch64: Lower rotv_vec ops to LSX
+      tcg/loongarch64: Lower rotli_vec to vrotri
+      tcg/loongarch64: Implement 128-bit load & store
+
+LIU Zhiwei (2):
+      accel/tcg: Fix the comment for CPUTLBEntryFull
+      fpu: Add conversions between bfloat16 and [u]int8
+
+Nicholas Piggin (1):
+      accel/tcg: mttcg remove false-negative halted assertion
+
+Richard Henderson (17):
+      tcg: Add gvec compare with immediate and scalar operand
+      target/arm: Use tcg_gen_gvec_cmpi for compare vs 0
+      accel/tcg: Simplify tlb_plugin_lookup
+      accel/tcg: Split out io_prepare and io_failed
+      accel/tcg: Use CPUTLBEntryFull.phys_addr in io_failed
+      plugin: Simplify struct qemu_plugin_hwaddr
+      accel/tcg: Merge cpu_transaction_failed into io_failed
+      accel/tcg: Replace direct use of io_readx/io_writex in do_{ld,st}_1
+      accel/tcg: Merge io_readx into do_ld_mmio_beN
+      accel/tcg: Merge io_writex into do_st_mmio_leN
+      accel/tcg: Introduce do_ld16_mmio_beN
+      accel/tcg: Introduce do_st16_mmio_leN
+      fpu: Handle m68k extended precision denormals properly
+      tcg: Add tcg_out_tb_start backend hook
+      util/cpuinfo-aarch64: Add CPUINFO_BTI
+      tcg/aarch64: Emit BTI insns at jump landing pads
+      tcg: Map code_gen_buffer with PROT_BTI
+
+ accel/tcg/tcg-runtime.h              |   25 +
+ host/include/aarch64/host/cpuinfo.h  |    1 +
+ include/exec/cpu-defs.h              |   12 +-
+ include/exec/user/thunk.h            |    3 +-
+ include/fpu/softfloat.h              |   12 +
+ include/hw/core/cpu.h                |   13 -
+ include/qemu/plugin-memory.h         |   11 +-
+ include/qemu/typedefs.h              |    1 -
+ include/tcg/tcg-op-gvec-common.h     |    6 +
+ tcg/loongarch64/tcg-target-con-set.h |    9 +
+ tcg/loongarch64/tcg-target-con-str.h |    3 +
+ tcg/loongarch64/tcg-target.h         |   40 +-
+ tcg/loongarch64/tcg-target.opc.h     |   12 +
+ accel/tcg/cputlb.c                   |  437 ++-
+ accel/tcg/tcg-accel-ops-mttcg.c      |    9 +-
+ accel/tcg/tcg-runtime-gvec.c         |   26 +
+ fpu/softfloat.c                      |   67 +-
+ plugins/api.c                        |   27 +-
+ softmmu/async-teardown.c             |    3 -
+ target/arm/tcg/translate.c           |   56 +-
+ tcg/region.c                         |   41 +-
+ tcg/tcg-op-gvec.c                    |  149 +
+ tcg/tcg.c                            |    7 +-
+ tests/tcg/m68k/denormal.c            |   53 +
+ util/cpuinfo-aarch64.c               |    7 +
+ util/oslib-posix.c                   |   15 +-
+ fpu/softfloat-parts.c.inc            |    7 +-
+ tcg/aarch64/tcg-target.c.inc         |   59 +-
+ tcg/arm/tcg-target.c.inc             |    7 +-
+ tcg/i386/tcg-target.c.inc            |    7 +-
+ tcg/loongarch64/tcg-insn-defs.c.inc  | 6019 +++++++++++++++++++++++++++++++++-
+ tcg/loongarch64/tcg-target.c.inc     |  624 +++-
+ tcg/mips/tcg-target.c.inc            |    7 +-
+ tcg/ppc/tcg-target.c.inc             |    7 +-
+ tcg/riscv/tcg-target.c.inc           |    7 +-
+ tcg/s390x/tcg-target.c.inc           |    7 +-
+ tcg/sparc64/tcg-target.c.inc         |    7 +-
+ tcg/tci/tcg-target.c.inc             |    7 +-
+ tests/tcg/m68k/Makefile.target       |    2 +-
+ 39 files changed, 7419 insertions(+), 393 deletions(-)
+ create mode 100644 tcg/loongarch64/tcg-target.opc.h
+ create mode 100644 tests/tcg/m68k/denormal.c
 
