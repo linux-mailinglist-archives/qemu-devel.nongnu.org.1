@@ -2,105 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9867A2E06
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 07:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 906EA7A2E6C
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 09:57:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhNgN-0008UJ-Ja; Sat, 16 Sep 2023 01:17:27 -0400
+	id 1qhQ9o-0007rB-GO; Sat, 16 Sep 2023 03:56:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qhNgL-0008U1-4Z
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 01:17:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qhNgI-0001AM-VO
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 01:17:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1694841441;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Q5rVi+zpArtalG4WWDrtQG3XyW4qdGgMsCkbDRswwJw=;
- b=SNK9RmOXfA+eyEmVUvx3N974Ce52rj87RzmMYnxtGuUR9uLbx0jh63/7dw78RB9j0gN6hI
- ICLM7pXoGA4VvGuNGGVO12LnvSF2gPSfKDluoeL3NM+kcm7ASh2Jdtt9nmIjoU61L7bnPL
- b38oZAI1W1l/CkBq0clBmM2MerT2LZA=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-c7sdIzwxPDm2aoJO0g1sOw-1; Sat, 16 Sep 2023 01:17:19 -0400
-X-MC-Unique: c7sdIzwxPDm2aoJO0g1sOw-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3aa154bf10cso4901491b6e.3
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 22:17:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694841439; x=1695446239;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Q5rVi+zpArtalG4WWDrtQG3XyW4qdGgMsCkbDRswwJw=;
- b=Ula4xoY2/eCF4BmGsOTtyUriSZcxsO1u5l5S0bKezvx4m3ZWOliXTId9qeFxcmm1Ap
- oTkkQd+d/KaGAPdhYv9iFA3SzVC6c573YLlY+4T6L4K7DIqPxvuvSHzfHVpS4hd5wBNi
- x1eENQ2VooO7cjXGCVvl4HQfHvt3mAzgxrcya//92j0qE5vczMoM0dlowE0U7UDZGWkp
- eINGhV1tZiznoXgWyN3f5NrExnu/7sAiOzYjWnwPb81WVttYaITiYVflGc9FTHz3doyc
- sIz7iXLKDBoNJVhWruGusNo96hJhrh4HUIQaBKVcX1rGKs93iTtLv0hIEoZXNcd7wUPM
- lSkg==
-X-Gm-Message-State: AOJu0YxpUE1tjVlCaQzUvrRy3nQuesT7Ftq2hK1UwmNIh3Zz7MvqWgZX
- QcLT8VQQtzHJHYKIZKUbCs9P1jSsof7ubWfiPe9cdYeJzjejZkOFeJmWrbXVyMS0wVykG8BkSwX
- 2hKp3m5W42r50c4c=
-X-Received: by 2002:a05:6870:9721:b0:1d0:f0a9:b3f2 with SMTP id
- n33-20020a056870972100b001d0f0a9b3f2mr4479378oaq.48.1694841438932; 
- Fri, 15 Sep 2023 22:17:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEsU/uM332Nx4Pke9AMOGSLWj0Kw9dZ8n5UiyOOEeWM65iNr2BKA8UFB++mdj3IKe4v5uTtjw==
-X-Received: by 2002:a05:6870:9721:b0:1d0:f0a9:b3f2 with SMTP id
- n33-20020a056870972100b001d0f0a9b3f2mr4479363oaq.48.1694841438515; 
- Fri, 15 Sep 2023 22:17:18 -0700 (PDT)
-Received: from smtpclient.apple ([203.163.244.16])
- by smtp.gmail.com with ESMTPSA id
- 10-20020aa7910a000000b0068890c19c49sm3750354pfh.180.2023.09.15.22.17.14
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 15 Sep 2023 22:17:18 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH] mem/x86: add processor address space check for VM memory
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <34403090-b4b3-990f-7723-1d56d8053bd5@redhat.com>
-Date: Sat, 16 Sep 2023 10:47:12 +0530
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D730C626-915E-4D57-8251-B19907195D06@redhat.com>
-References: <20230908095024.270946-1-anisinha@redhat.com>
- <77284898-c540-31ac-d438-ebff52f6d75d@redhat.com>
- <1911B17C-24F2-406B-9ED4-DCF98E794A09@redhat.com>
- <730648ed-55ac-aa2c-58d2-d79224aeb586@redhat.com>
- <1574DF3A-7E1F-4C4F-9087-6E8DEE456906@redhat.com>
- <6cbca7b9-381b-6268-27f0-d7ea1c5ed1bd@redhat.com>
- <3A287C52-F547-4494-B803-8CFC50CBA175@redhat.com>
- <30f0ddfb-6eb7-84a5-04a0-e11905451733@redhat.com>
- <A354B36D-A86E-48D9-B8B6-DC35D8976410@redhat.com>
- <34403090-b4b3-990f-7723-1d56d8053bd5@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qhQ9m-0007qh-5h
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 03:55:58 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qhQ9h-0004hN-Td
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 03:55:57 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8Dx_+t9XwVlAAMpAA--.12111S3;
+ Sat, 16 Sep 2023 15:55:42 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8CxeuR8XwVlgJcIAA--.19192S3; 
+ Sat, 16 Sep 2023 15:55:40 +0800 (CST)
+Subject: Re: [PATCH v6 54/57] target/loongarch: Implement xvshuf xvperm{i}
+ xvshuf4i
+From: gaosong <gaosong@loongson.cn>
+To: qemu-devel@nongnu.org
+Cc: richard.henderson@linaro.org, maobibo@loongson.cn
+References: <20230914022645.1151356-1-gaosong@loongson.cn>
+ <20230914022645.1151356-55-gaosong@loongson.cn>
+Message-ID: <8c58b6b0-730c-36b1-c3f0-d4e51597c3e5@loongson.cn>
+Date: Sat, 16 Sep 2023 15:55:40 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20230914022645.1151356-55-gaosong@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8CxeuR8XwVlgJcIAA--.19192S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW3uw1rZFyxGFWDKw17Zr1UJwc_yoWktw1fpa
+ n8JF17Ar48XFWxXr1vyw45t3ZxWFsxKw15uwn3KF1rZrWDJFn8XFy0grZFkF43W3ZYqFy0
+ vFsIkry7AFy2qacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
+ 05UUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-1.473, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,291 +82,378 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi, Richard
+
+Could you review this patch?  it's the lastet patch no review.
+
+Thanks.
+Song Gao
 
 
-> On 14-Sep-2023, at 2:07 PM, David Hildenbrand <david@redhat.com> =
-wrote:
->=20
-> On 14.09.23 07:53, Ani Sinha wrote:
->>> On 12-Sep-2023, at 9:04 PM, David Hildenbrand <david@redhat.com> =
-wrote:
->>>=20
->>> [...]
->>>=20
->>>>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
->>>>> index 54838c0c41..d187890675 100644
->>>>> --- a/hw/i386/pc.c
->>>>> +++ b/hw/i386/pc.c
->>>>> @@ -908,9 +908,12 @@ static hwaddr pc_max_used_gpa(PCMachineState =
-*pcms, uint64_t pci_hole64_size)
->>>>> {
->>>>>     X86CPU *cpu =3D X86_CPU(first_cpu);
->>>>>=20
->>>>> -    /* 32-bit systems don't have hole64 thus return max CPU =
-address */
->>>>> -    if (cpu->phys_bits <=3D 32) {
->>>>> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
->>>>> +    /*
->>>>> +     * 32-bit systems don't have hole64, but we might have a =
-region for
->>>>> +     * memory hotplug.
->>>>> +     */
->>>>> +    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) =
-{
->>>>> +        return pc_pci_hole64_start() - 1;
->>>> Ok this is very confusing! I am looking at pc_pci_hole64_start() =
-function. I have a few questions =E2=80=A6
->>>> (a) pc_get_device_memory_range() returns the size of the device =
-memory as the difference between ram_size and maxram_size. But from what =
-I understand, ram_size is the actual size of the ram present and =
-maxram_size is the max size of ram *after* hot plugging additional =
-memory. How can we assume that the additional available space is already =
-occupied by hot plugged memory?
->>>=20
->>> Let's take a look at an example:
->>>=20
->>> $ ./build/qemu-system-x86_64 -m 8g,maxmem=3D16g,slots=3D1 \
->>>  -object memory-backend-ram,id=3Dmem0,size=3D1g \
->>>  -device pc-dimm,memdev=3Dmem0 \
->>>  -nodefaults -nographic -S -monitor stdio
->>>=20
->>> (qemu) info mtree
->>> ...
->>> memory-region: system
->>>  0000000000000000-ffffffffffffffff (prio 0, i/o): system
->>>    0000000000000000-00000000bfffffff (prio 0, ram): alias =
-ram-below-4g @pc.ram 0000000000000000-00000000bfffffff
->>>    0000000000000000-ffffffffffffffff (prio -1, i/o): pci
->>>      00000000000c0000-00000000000dffff (prio 1, rom): pc.rom
->>>      00000000000e0000-00000000000fffff (prio 1, rom): alias isa-bios =
-@pc.bios 0000000000020000-000000000003ffff
->>>      00000000fffc0000-00000000ffffffff (prio 0, rom): pc.bios
->>>    00000000000a0000-00000000000bffff (prio 1, i/o): alias =
-smram-region @pci 00000000000a0000-00000000000bffff
->>>    00000000000c0000-00000000000c3fff (prio 1, i/o): alias pam-pci =
-@pci 00000000000c0000-00000000000c3fff
->>>    00000000000c4000-00000000000c7fff (prio 1, i/o): alias pam-pci =
-@pci 00000000000c4000-00000000000c7fff
->>>    00000000000c8000-00000000000cbfff (prio 1, i/o): alias pam-pci =
-@pci 00000000000c8000-00000000000cbfff
->>>    00000000000cc000-00000000000cffff (prio 1, i/o): alias pam-pci =
-@pci 00000000000cc000-00000000000cffff
->>>    00000000000d0000-00000000000d3fff (prio 1, i/o): alias pam-pci =
-@pci 00000000000d0000-00000000000d3fff
->>>    00000000000d4000-00000000000d7fff (prio 1, i/o): alias pam-pci =
-@pci 00000000000d4000-00000000000d7fff
->>>    00000000000d8000-00000000000dbfff (prio 1, i/o): alias pam-pci =
-@pci 00000000000d8000-00000000000dbfff
->>>    00000000000dc000-00000000000dffff (prio 1, i/o): alias pam-pci =
-@pci 00000000000dc000-00000000000dffff
->>>    00000000000e0000-00000000000e3fff (prio 1, i/o): alias pam-pci =
-@pci 00000000000e0000-00000000000e3fff
->>>    00000000000e4000-00000000000e7fff (prio 1, i/o): alias pam-pci =
-@pci 00000000000e4000-00000000000e7fff
->>>    00000000000e8000-00000000000ebfff (prio 1, i/o): alias pam-pci =
-@pci 00000000000e8000-00000000000ebfff
->>>    00000000000ec000-00000000000effff (prio 1, i/o): alias pam-pci =
-@pci 00000000000ec000-00000000000effff
->>>    00000000000f0000-00000000000fffff (prio 1, i/o): alias pam-pci =
-@pci 00000000000f0000-00000000000fffff
->>>    00000000fec00000-00000000fec00fff (prio 0, i/o): ioapic
->>>    00000000fed00000-00000000fed003ff (prio 0, i/o): hpet
->>>    00000000fee00000-00000000feefffff (prio 4096, i/o): apic-msi
->>>    0000000100000000-000000023fffffff (prio 0, ram): alias =
-ram-above-4g @pc.ram 00000000c0000000-00000001ffffffff
->>>    0000000240000000-000000047fffffff (prio 0, i/o): device-memory
->>>      0000000240000000-000000027fffffff (prio 0, ram): mem0
->>>=20
->>>=20
->>> We requested 8G of boot memory, which is split between "<4G" memory =
-and ">=3D4G" memory.
->>>=20
->>> We only place exactly 3G (0x0->0xbfffffff) under 4G, starting at =
-address 0.
->> I can=E2=80=99t reconcile this with this code for q35:
->>    if (machine->ram_size >=3D 0xb0000000) {
->>         lowmem =3D 0x80000000; // max memory 0x8fffffff or 2.25 GiB
->>     } else {
->>         lowmem =3D 0xb0000000; // max memory 0xbfffffff or 3 GiB
->>     }
->> You assigned 8 Gib to ram which is > 0xb0000000 (2.75 Gib)
->=20
-> QEMU defaults to the "pc" machine. If you add "-M q35" you get:
->=20
-> address-space: memory
->  0000000000000000-ffffffffffffffff (prio 0, i/o): system
->    0000000000000000-000000007fffffff (prio 0, ram): alias ram-below-4g =
-@pc.ram 0000000000000000-000000007fffffff
-> [...]
->    0000000100000000-000000027fffffff (prio 0, ram): alias ram-above-4g =
-@pc.ram 0000000080000000-00000001ffffffff
->    0000000280000000-00000004bfffffff (prio 0, i/o): device-memory
->      0000000280000000-00000002bfffffff (prio 0, ram): mem0
->=20
->=20
->>>=20
->>> We leave the remainder (1G) of the <4G addresses available for I/O =
-devices (32bit PCI hole).
->>>=20
->>> So we end up with 5G (0x100000000->0x23fffffff) of memory starting =
-exactly at address 4G.
->>>=20
->>> "maxram_size - ram_size"=3D8G is the maximum amount of memory you =
-can hotplug. We use it to size the
->>> "device-memory" region:
->>>=20
->>> 0x47fffffff - 0x240000000+1 =3D 0x240000000
->>> -> 9 GiB
->>>=20
->>> We requested a to hotplug a maximum of "8 GiB", and sized the area =
-slightly larger to allow for some flexibility
->>> when it comes to placing DIMMs in that "device-memory" area.
->> Right but here in this example you do not hot plug memory while the =
-VM is running. We can hot plug 8G yes, but the memory may not physically =
-exist yet (and may never exist). How can we use this math to provision =
-device-memory when the memory may not exist physically?
->=20
-> We simply reserve a region in GPA space where we can coldplug and =
-hotplug a
-> predefined maximum amount of memory we can hotplug.
->=20
-> What do you think is wrong with that?
->=20
->>>=20
->>> We place that area for memory devices after the RAM. So it starts =
-after the 5G of ">=3D4G" boot memory.
->>>=20
->>>=20
->>> Long story short, based on the initial RAM size and the maximum RAM =
-size, you
->>> can construct the layout above and exactly know
->>> a) How much memory is below 4G, starting at address 0 -> leaving 1G =
-for the 32bit PCI hole
->>> b) How much memory is above 4G, starting at address 4g.
->>> c) Where the region for memory devices starts (aligned after b) ) =
-and how big it is.
->>> d) Where the 64bit PCI hole is (after c) )
->>>=20
->>>> (b) Another question is, in pc_pci_hole64_start(), why are we =
-adding this size to the start address?
->>>> } else if (pcmc->has_reserved_memory && (ms->ram_size < =
-ms->maxram_size)) {
->>>> 	pc_get_device_memory_range(pcms, &hole64_start, &size);
->>>>         if (!pcmc->broken_reserved_end) {
->>>>             hole64_start +=3D size;
->>>=20
->>> The 64bit PCI hole starts after "device-memory" above.
->>>=20
->>> Apparently, we have to take care of some layout issues before QEMU =
-2.5. You can assume that nowadays,
->>> "pcmc->broken_reserved_end" is never set. So the PCI64 hole is =
-always after the device-memory region.
->>>=20
->>>> I think this is trying to put the hole after the device memory. But =
-if the ram size is <=3Dmaxram_size then the hole is after the above_4G =
-memory? Why?
->>>=20
->>> I didn't quit get what the concern is, can you elaborate?
->> Oh I meant the else part here and made a typo, the else implies ram =
-size =3D=3D maxram_size
->>   } else {
->>         hole64_start =3D pc_above_4g_end(pcms);
->>     }
->> So in this case, there is no device_memory region?!
->=20
-> Yes. In this case ms->ram_size =3D=3D ms->maxram_size and you cannot =
-cold/hotplug any memory devices.
->=20
-> See how pc_memory_init() doesn't call machine_memory_devices_init() in =
-that case.
->=20
-> That's what the QEMU user asked for when *not* specifying maxmem =
-(e.g., -m 4g).
->=20
-> In order to cold/hotplug any memory devices, you have to tell QEMU =
-ahead of time how much memory
-> you are intending to provide using memory devices (DIMM, NVDIMM, =
-virtio-pmem, virtio-mem).
->=20
-> So when specifying, say -m 4g,maxmem=3D20g, we can have memory devices =
-of a total of 16g (20 - 4).
-> We use reserve a GPA space for device_memory that is at least 16g, =
-into which we can either coldplug
-> (QEMU cmdline) or hotplug (qmp/hmp) memory later.
->=20
->> Another thing I do not understand is, for 32 -bit,
->> above_4g_mem_start is 4GiB  and above_4g_mem_size =3D ram_size - =
-lowmem.
->> So we are allocating =E2=80=9Cabove-4G=E2=80=9D ram above address =
-space of the processor?!
->>>=20
->>>> (c) in your above change, what does long mode have anything to do =
-with all of this?
->>>=20
->>> According to my understanding, 32bit (i386) doesn't have a 64bit =
-hole. And 32bit vs.
->>> 64bit (i386 vs. x86_64) is decided based on LM, not on the address =
-bits (as we learned, PSE36, and PAE).
->>>=20
->>> But really, I just did what x86_cpu_realizefn() does to decide 32bit =
-vs. 64bit ;)
->>>=20
->>>    /* For 64bit systems think about the number of physical bits to =
-present.
->>>     * ideally this should be the same as the host; anything other =
-than matching
->>>     * the host can cause incorrect guest behaviour.
->>>     * QEMU used to pick the magic value of 40 bits that corresponds =
-to
->>>     * consumer AMD devices but nothing else.
->>>     *
->>>     * Note that this code assumes features expansion has already =
-been done
->>>     * (as it checks for CPUID_EXT2_LM), and also assumes that =
-potential
->>>     * phys_bits adjustments to match the host have been already done =
-in
->>>     * accel-specific code in cpu_exec_realizefn.
->>>     */
->>>    if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
->>>    ...
->>>    } else {
->>>        /* For 32 bit systems don't use the user set value, but keep
->>>         * phys_bits consistent with what we tell the guest.
->>>         */
->> Ah I see. I missed this. But I still can=E2=80=99t understand why for =
-32 bit, pc_pci_hole64_start() would be the right address for max gpa?
->=20
-> You want "end of device memory region" if there is one, or
-> "end of RAM" is there is none.
->=20
-> What pc_pci_hole64_start() does:
->=20
-> /*
-> * The 64bit pci hole starts after "above 4G RAM" and
-> * potentially the space reserved for memory hotplug.
-> */
-
-Ok hopefully my last question. I am still confused on something. Does =
-the above mean that the hole64 will actually start from an address that =
-is beyond maxram? Like basically if you added all of ram_below_4G, =
-ram_above_4G, hot plug_mem and pci_hole64 then can it exceed maxram? I =
-think it will. Does this not an issue?
-
->=20
-> There is the
-> 	ROUND_UP(hole64_start, 1 * GiB);
-> in there that is not really required for the !hole64 case. It
-> shouldn't matter much in practice I think (besides an aligned value
-> showing up in the error message).
->=20
-> We could factor out most of that calculation into a
-> separate function, skipping that alignment to make that
-> clearer.
->=20
-> --=20
-> Cheers,
->=20
-> David / dhildenb
+ÔÚ 2023/9/14 ÉÏÎç10:26, Song Gao Ð´µÀ:
+> This patch includes:
+> - XVSHUF.{B/H/W/D};
+> - XVPERM.W;
+> - XVSHUF4i.{B/H/W/D};
+> - XVPERMI.{W/D/Q};
+> - XVEXTRINS.{B/H/W/D}.
+> 
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> ---
+>   target/loongarch/helper.h                   |   3 +
+>   target/loongarch/insns.decode               |  21 +++
+>   target/loongarch/disas.c                    |  21 +++
+>   target/loongarch/vec_helper.c               | 146 ++++++++++++++------
+>   target/loongarch/insn_trans/trans_vec.c.inc |  30 +++-
+>   5 files changed, 175 insertions(+), 46 deletions(-)
+> 
+> diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
+> index fb489dda2d..b3b64a0215 100644
+> --- a/target/loongarch/helper.h
+> +++ b/target/loongarch/helper.h
+> @@ -709,7 +709,10 @@ DEF_HELPER_FLAGS_4(vshuf4i_h, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+>   DEF_HELPER_FLAGS_4(vshuf4i_w, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+>   DEF_HELPER_FLAGS_4(vshuf4i_d, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+>   
+> +DEF_HELPER_FLAGS_4(vperm_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
+>   DEF_HELPER_FLAGS_4(vpermi_w, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(vpermi_d, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> +DEF_HELPER_FLAGS_4(vpermi_q, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+>   
+>   DEF_HELPER_FLAGS_4(vextrins_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+>   DEF_HELPER_FLAGS_4(vextrins_h, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+> diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
+> index a325b861c1..64b67ee9ac 100644
+> --- a/target/loongarch/insns.decode
+> +++ b/target/loongarch/insns.decode
+> @@ -2039,3 +2039,24 @@ xvilvh_b         0111 01010001 11000 ..... ..... .....    @vvv
+>   xvilvh_h         0111 01010001 11001 ..... ..... .....    @vvv
+>   xvilvh_w         0111 01010001 11010 ..... ..... .....    @vvv
+>   xvilvh_d         0111 01010001 11011 ..... ..... .....    @vvv
+> +
+> +xvshuf_b         0000 11010110 ..... ..... ..... .....    @vvvv
+> +xvshuf_h         0111 01010111 10101 ..... ..... .....    @vvv
+> +xvshuf_w         0111 01010111 10110 ..... ..... .....    @vvv
+> +xvshuf_d         0111 01010111 10111 ..... ..... .....    @vvv
+> +
+> +xvperm_w         0111 01010111 11010 ..... ..... .....    @vvv
+> +
+> +xvshuf4i_b       0111 01111001 00 ........ ..... .....    @vv_ui8
+> +xvshuf4i_h       0111 01111001 01 ........ ..... .....    @vv_ui8
+> +xvshuf4i_w       0111 01111001 10 ........ ..... .....    @vv_ui8
+> +xvshuf4i_d       0111 01111001 11 ........ ..... .....    @vv_ui8
+> +
+> +xvpermi_w        0111 01111110 01 ........ ..... .....    @vv_ui8
+> +xvpermi_d        0111 01111110 10 ........ ..... .....    @vv_ui8
+> +xvpermi_q        0111 01111110 11 ........ ..... .....    @vv_ui8
+> +
+> +xvextrins_d      0111 01111000 00 ........ ..... .....    @vv_ui8
+> +xvextrins_w      0111 01111000 01 ........ ..... .....    @vv_ui8
+> +xvextrins_h      0111 01111000 10 ........ ..... .....    @vv_ui8
+> +xvextrins_b      0111 01111000 11 ........ ..... .....    @vv_ui8
+> diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
+> index 74ae916a10..1ec8e21e01 100644
+> --- a/target/loongarch/disas.c
+> +++ b/target/loongarch/disas.c
+> @@ -2574,3 +2574,24 @@ INSN_LASX(xvilvh_b,          vvv)
+>   INSN_LASX(xvilvh_h,          vvv)
+>   INSN_LASX(xvilvh_w,          vvv)
+>   INSN_LASX(xvilvh_d,          vvv)
+> +
+> +INSN_LASX(xvshuf_b,          vvvv)
+> +INSN_LASX(xvshuf_h,          vvv)
+> +INSN_LASX(xvshuf_w,          vvv)
+> +INSN_LASX(xvshuf_d,          vvv)
+> +
+> +INSN_LASX(xvperm_w,          vvv)
+> +
+> +INSN_LASX(xvshuf4i_b,        vv_i)
+> +INSN_LASX(xvshuf4i_h,        vv_i)
+> +INSN_LASX(xvshuf4i_w,        vv_i)
+> +INSN_LASX(xvshuf4i_d,        vv_i)
+> +
+> +INSN_LASX(xvpermi_w,         vv_i)
+> +INSN_LASX(xvpermi_d,         vv_i)
+> +INSN_LASX(xvpermi_q,         vv_i)
+> +
+> +INSN_LASX(xvextrins_d,       vv_i)
+> +INSN_LASX(xvextrins_w,       vv_i)
+> +INSN_LASX(xvextrins_h,       vv_i)
+> +INSN_LASX(xvextrins_b,       vv_i)
+> diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
+> index 2bbaee628b..6b61a5c447 100644
+> --- a/target/loongarch/vec_helper.c
+> +++ b/target/loongarch/vec_helper.c
+> @@ -3381,57 +3381,65 @@ VILVH(vilvh_h, 32, H)
+>   VILVH(vilvh_w, 64, W)
+>   VILVH(vilvh_d, 128, D)
+>   
+> +#define SHF_POS(i, imm) (((i) & 0xfc) + (((imm) >> (2 * ((i) & 0x03))) & 0x03))
+> +
+>   void HELPER(vshuf_b)(void *vd, void *vj, void *vk, void *va, uint32_t desc)
+>   {
+> -    int i, m;
+> -    VReg temp;
+> +    int i, j, m;
+> +    VReg temp = {};
+>       VReg *Vd = (VReg *)vd;
+>       VReg *Vj = (VReg *)vj;
+>       VReg *Vk = (VReg *)vk;
+>       VReg *Va = (VReg *)va;
+> +    int oprsz = simd_oprsz(desc);
+>   
+> -    m = LSX_LEN/8;
+> -    for (i = 0; i < m ; i++) {
+> +    m = LSX_LEN / 8;
+> +    for (i = 0; i < (oprsz / 16) * m; i++) {
+> +        j = i < m ? 0 : 1;
+>           uint64_t k = (uint8_t)Va->B(i) % (2 * m);
+> -        temp.B(i) = k < m ? Vk->B(k) : Vj->B(k - m);
+> +        temp.B(i) = k < m ? Vk->B(k + j * m): Vj->B(k + (j - 1) * m);
+>       }
+>       *Vd = temp;
+>   }
+>   
+> -#define VSHUF(NAME, BIT, E)                                    \
+> -void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
+> -{                                                              \
+> -    int i, m;                                                  \
+> -    VReg temp;                                                 \
+> -    VReg *Vd = (VReg *)vd;                                     \
+> -    VReg *Vj = (VReg *)vj;                                     \
+> -    VReg *Vk = (VReg *)vk;                                     \
+> -                                                               \
+> -    m = LSX_LEN/BIT;                                           \
+> -    for (i = 0; i < m; i++) {                                  \
+> -        uint64_t k  = ((uint8_t) Vd->E(i)) % (2 * m);          \
+> -        temp.E(i) = k < m ? Vk->E(k) : Vj->E(k - m);           \
+> -    }                                                          \
+> -    *Vd = temp;                                                \
+> +#define VSHUF(NAME, BIT, E)                                            \
+> +void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)         \
+> +{                                                                      \
+> +    int i, j, m;                                                       \
+> +    VReg temp = {};                                                    \
+> +    VReg *Vd = (VReg *)vd;                                             \
+> +    VReg *Vj = (VReg *)vj;                                             \
+> +    VReg *Vk = (VReg *)vk;                                             \
+> +    int oprsz = simd_oprsz(desc);                                      \
+> +                                                                       \
+> +    m = LSX_LEN / BIT;                                                 \
+> +    for (i = 0; i < (oprsz / 16) * m; i++) {                           \
+> +        j = i < m ? 0 : 1;                                             \
+> +        uint64_t k  = ((uint8_t)Vd->E(i)) % (2 * m);                   \
+> +        temp.E(i) = k < m ? Vk->E(k + j * m) : Vj->E(k + (j - 1) * m); \
+> +    }                                                                  \
+> +    *Vd = temp;                                                        \
+>   }
+>   
+>   VSHUF(vshuf_h, 16, H)
+>   VSHUF(vshuf_w, 32, W)
+>   VSHUF(vshuf_d, 64, D)
+>   
+> -#define VSHUF4I(NAME, BIT, E)                                      \
+> -void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+> -{                                                                  \
+> -    int i;                                                         \
+> -    VReg temp;                                                     \
+> -    VReg *Vd = (VReg *)vd;                                         \
+> -    VReg *Vj = (VReg *)vj;                                         \
+> -                                                                   \
+> -    for (i = 0; i < LSX_LEN/BIT; i++) {                            \
+> -         temp.E(i) = Vj->E(((i) & 0xfc) + (((imm) >>               \
+> -                           (2 * ((i) & 0x03))) & 0x03));           \
+> -    }                                                              \
+> -    *Vd = temp;                                                    \
+> +#define VSHUF4I(NAME, BIT, E)                                               \
+> +void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc)          \
+> +{                                                                           \
+> +    int i, j, max;                                                          \
+> +    VReg temp = {};                                                         \
+> +    VReg *Vd = (VReg *)vd;                                                  \
+> +    VReg *Vj = (VReg *)vj;                                                  \
+> +    int oprsz = simd_oprsz(desc);                                           \
+> +                                                                            \
+> +    max = LSX_LEN / BIT;                                                    \
+> +    for (i = 0; i < oprsz / (BIT / 8); i++) {                               \
+> +        j = i < max ? 1 : 2;                                                \
+> +        temp.E(i) = Vj->E(SHF_POS(i - ((j -1)* max), imm) + (j - 1) * max); \
+> +    }                                                                       \
+> +    *Vd = temp;                                                             \
+>   }
+>   
+>   VSHUF4I(vshuf4i_b, 8, B)
+> @@ -3440,38 +3448,92 @@ VSHUF4I(vshuf4i_w, 32, W)
+>   
+>   void HELPER(vshuf4i_d)(void *vd, void *vj, uint64_t imm, uint32_t desc)
+>   {
+> +    int i;
+> +    VReg temp = {};
+>       VReg *Vd = (VReg *)vd;
+>       VReg *Vj = (VReg *)vj;
+> +    int oprsz = simd_oprsz(desc);
+>   
+> -    VReg temp;
+> -    temp.D(0) = (imm & 2 ? Vj : Vd)->D(imm & 1);
+> -    temp.D(1) = (imm & 8 ? Vj : Vd)->D((imm >> 2) & 1);
+> +    for (i = 0; i < oprsz / 16; i++) {
+> +        temp.D(2 * i) = (imm & 2 ? Vj : Vd)->D((imm & 1) + 2 * i);
+> +        temp.D(2 * i + 1) = (imm & 8 ? Vj : Vd)->D(((imm >> 2) & 1) + 2 * i);
+> +    }
+> +    *Vd = temp;
+> +}
+> +
+> +void HELPER(vperm_w)(void *vd, void *vj, void *vk, uint32_t desc)
+> +{
+> +    int i, m;
+> +    VReg temp = {};
+> +    VReg *Vd = (VReg *)vd;
+> +    VReg *Vj = (VReg *)vj;
+> +    VReg *Vk = (VReg *)vk;
+> +
+> +    m = LASX_LEN / 32;
+> +    for (i = 0; i < m ; i++) {
+> +        uint64_t k = (uint8_t)Vk->W(i) % 8;
+> +        temp.W(i) = Vj->W(k);
+> +    }
+>       *Vd = temp;
+>   }
+>   
+>   void HELPER(vpermi_w)(void *vd, void *vj, uint64_t imm, uint32_t desc)
+>   {
+> +    int i;
+> +    VReg temp = {};
+> +    VReg *Vd = (VReg *)vd;
+> +    VReg *Vj = (VReg *)vj;
+> +    int oprsz = simd_oprsz(desc);
+> +
+> +    for (i = 0; i < oprsz / 16; i++) {
+> +        temp.W(4 * i) = Vj->W((imm & 0x3) + 4 * i);
+> +        temp.W(4 * i + 1) = Vj->W(((imm >> 2) & 0x3) + 4 * i);
+> +        temp.W(4 * i + 2) = Vd->W(((imm >> 4) & 0x3) + 4 * i);
+> +        temp.W(4 * i + 3) = Vd->W(((imm >> 6) & 0x3) + 4 * i);
+> +    }
+> +    *Vd = temp;
+> +}
+> +
+> +void HELPER(vpermi_d)(void *vd, void *vj, uint64_t imm, uint32_t desc)
+> +{
+> +    VReg temp = {};
+> +    VReg *Vd = (VReg *)vd;
+> +    VReg *Vj = (VReg *)vj;
+> +
+> +    temp.D(0) = Vj->D(imm & 0x3);
+> +    temp.D(1) = Vj->D((imm >> 2) & 0x3);
+> +    temp.D(2) = Vj->D((imm >> 4) & 0x3);
+> +    temp.D(3) = Vj->D((imm >> 6) & 0x3);
+> +    *Vd = temp;
+> +}
+> +
+> +void HELPER(vpermi_q)(void *vd, void *vj, uint64_t imm, uint32_t desc)
+> +{
+> +    int i;
+>       VReg temp;
+>       VReg *Vd = (VReg *)vd;
+>       VReg *Vj = (VReg *)vj;
+>   
+> -    temp.W(0) = Vj->W(imm & 0x3);
+> -    temp.W(1) = Vj->W((imm >> 2) & 0x3);
+> -    temp.W(2) = Vd->W((imm >> 4) & 0x3);
+> -    temp.W(3) = Vd->W((imm >> 6) & 0x3);
+> +    for (i = 0; i < 2; i++, imm >>= 4) {
+> +        temp.Q(i) = (imm & 2 ? Vd: Vj)->Q(imm & 1);
+> +    }
+>       *Vd = temp;
+>   }
+>   
+>   #define VEXTRINS(NAME, BIT, E, MASK)                               \
+>   void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+>   {                                                                  \
+> -    int ins, extr;                                                 \
+> +    int i, ins, extr, max;                                         \
+>       VReg *Vd = (VReg *)vd;                                         \
+>       VReg *Vj = (VReg *)vj;                                         \
+> +    int oprsz = simd_oprsz(desc);                                  \
+>                                                                      \
+> +    max = LSX_LEN / BIT;                                           \
+>       ins = (imm >> 4) & MASK;                                       \
+>       extr = imm & MASK;                                             \
+> -    Vd->E(ins) = Vj->E(extr);                                      \
+> +    for (i = 0; i < oprsz / 16; i++) {                             \
+> +        Vd->E(ins + i * max) = Vj->E(extr + i * max);              \
+> +    }                                                              \
+>   }
+>   
+>   VEXTRINS(vextrins_b, 8, B, 0xf)
+> diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
+> index 2b55ce4464..3d0b8bfb74 100644
+> --- a/target/loongarch/insn_trans/trans_vec.c.inc
+> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
+> @@ -61,6 +61,10 @@ static bool gen_xxxx_ptr(DisasContext *ctx, arg_vvvv *a,
+>   static bool gen_vvvv_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
+>                           gen_helper_gvec_4 *fn)
+>   {
+> +    if (!check_vec(ctx, oprsz)) {
+> +        return true;
+> +    }
+> +
+>       tcg_gen_gvec_4_ool(vec_full_offset(a->vd),
+>                          vec_full_offset(a->vj),
+>                          vec_full_offset(a->vk),
+> @@ -72,13 +76,15 @@ static bool gen_vvvv_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
+>   static bool gen_vvvv(DisasContext *ctx, arg_vvvv *a,
+>                        gen_helper_gvec_4 *fn)
+>   {
+> -    if (!check_vec(ctx, 16)) {
+> -        return true;
+> -    }
+> -
+>       return gen_vvvv_vl(ctx, a, 16, fn);
+>   }
+>   
+> +static bool gen_xxxx(DisasContext *ctx, arg_vvvv *a,
+> +                     gen_helper_gvec_4 *fn)
+> +{
+> +    return gen_vvvv_vl(ctx, a, 32, fn);
+> +}
+> +
+>   static bool gen_vvv_ptr_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
+>                              gen_helper_gvec_3_ptr *fn)
+>   {
+> @@ -5217,17 +5223,33 @@ TRANS(vshuf_b, LSX, gen_vvvv, gen_helper_vshuf_b)
+>   TRANS(vshuf_h, LSX, gen_vvv, gen_helper_vshuf_h)
+>   TRANS(vshuf_w, LSX, gen_vvv, gen_helper_vshuf_w)
+>   TRANS(vshuf_d, LSX, gen_vvv, gen_helper_vshuf_d)
+> +TRANS(xvshuf_b, LASX, gen_xxxx, gen_helper_vshuf_b)
+> +TRANS(xvshuf_h, LASX, gen_xxx, gen_helper_vshuf_h)
+> +TRANS(xvshuf_w, LASX, gen_xxx, gen_helper_vshuf_w)
+> +TRANS(xvshuf_d, LASX, gen_xxx, gen_helper_vshuf_d)
+>   TRANS(vshuf4i_b, LSX, gen_vv_i, gen_helper_vshuf4i_b)
+>   TRANS(vshuf4i_h, LSX, gen_vv_i, gen_helper_vshuf4i_h)
+>   TRANS(vshuf4i_w, LSX, gen_vv_i, gen_helper_vshuf4i_w)
+>   TRANS(vshuf4i_d, LSX, gen_vv_i, gen_helper_vshuf4i_d)
+> +TRANS(xvshuf4i_b, LASX, gen_xx_i, gen_helper_vshuf4i_b)
+> +TRANS(xvshuf4i_h, LASX, gen_xx_i, gen_helper_vshuf4i_h)
+> +TRANS(xvshuf4i_w, LASX, gen_xx_i, gen_helper_vshuf4i_w)
+> +TRANS(xvshuf4i_d, LASX, gen_xx_i, gen_helper_vshuf4i_d)
+>   
+> +TRANS(xvperm_w, LASX, gen_xxx, gen_helper_vperm_w)
+>   TRANS(vpermi_w, LSX, gen_vv_i, gen_helper_vpermi_w)
+> +TRANS(xvpermi_w, LASX, gen_xx_i, gen_helper_vpermi_w)
+> +TRANS(xvpermi_d, LASX, gen_xx_i, gen_helper_vpermi_d)
+> +TRANS(xvpermi_q, LASX, gen_xx_i, gen_helper_vpermi_q)
+>   
+>   TRANS(vextrins_b, LSX, gen_vv_i, gen_helper_vextrins_b)
+>   TRANS(vextrins_h, LSX, gen_vv_i, gen_helper_vextrins_h)
+>   TRANS(vextrins_w, LSX, gen_vv_i, gen_helper_vextrins_w)
+>   TRANS(vextrins_d, LSX, gen_vv_i, gen_helper_vextrins_d)
+> +TRANS(xvextrins_b, LASX, gen_xx_i, gen_helper_vextrins_b)
+> +TRANS(xvextrins_h, LASX, gen_xx_i, gen_helper_vextrins_h)
+> +TRANS(xvextrins_w, LASX, gen_xx_i, gen_helper_vextrins_w)
+> +TRANS(xvextrins_d, LASX, gen_xx_i, gen_helper_vextrins_d)
+>   
+>   static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
+>   {
+> 
 
 
