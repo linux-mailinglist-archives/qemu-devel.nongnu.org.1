@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1AA7A3195
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 19:14:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBC27A31A5
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 19:17:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhYrc-0007oC-Bn; Sat, 16 Sep 2023 13:13:48 -0400
+	id 1qhYut-0000rJ-In; Sat, 16 Sep 2023 13:17:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qhYra-0007gV-9J
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:13:46 -0400
+ id 1qhYup-0000oe-0M
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:17:07 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qhYrY-0000Yt-Mt
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:13:46 -0400
+ id 1qhYuk-000185-Dx
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 13:17:06 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1qhYrL-0008IN-1D; Sat, 16 Sep 2023 19:13:31 +0200
-Message-ID: <0ba91aa9-6a4b-4e80-c382-33dd96e6561e@maciej.szmigiero.name>
-Date: Sat, 16 Sep 2023 19:13:25 +0200
+ id 1qhYuQ-0008KL-Vb; Sat, 16 Sep 2023 19:16:43 +0200
+Message-ID: <3e0da65c-71b0-dfba-b2fc-ae5557c13c1a@maciej.szmigiero.name>
+Date: Sat, 16 Sep 2023 19:16:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v3 10/16] kvm: Add stub for kvm_get_max_memslots()
+Subject: Re: [PATCH v3 11/16] vhost: Add vhost_get_max_memslots()
 Content-Language: en-US, pl-PL
 To: David Hildenbrand <david@redhat.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
@@ -42,9 +42,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
  qemu-devel@nongnu.org
 References: <20230908142136.403541-1-david@redhat.com>
- <20230908142136.403541-11-david@redhat.com>
+ <20230908142136.403541-12-david@redhat.com>
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-In-Reply-To: <20230908142136.403541-11-david@redhat.com>
+In-Reply-To: <20230908142136.403541-12-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=37.28.154.113;
@@ -70,12 +70,10 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8.09.2023 16:21, David Hildenbrand wrote:
-> We'll need the stub soon from memory device context.
-> 
-> While at it, use "unsigned int" as return value and place the
-> declaration next to kvm_get_free_memslots().
+> Let's add vhost_get_max_memslots().
 > 
 > Signed-off-by: David Hildenbrand <david@redhat.com>
+
 
 Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
