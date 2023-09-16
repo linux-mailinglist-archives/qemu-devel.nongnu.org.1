@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC3C7A2DC7
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5B07A2DB0
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:32:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhM0l-0005tc-JO; Fri, 15 Sep 2023 23:30:23 -0400
+	id 1qhM0m-0005u0-9i; Fri, 15 Sep 2023 23:30:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM0i-0005sl-F5
+ id 1qhM0i-0005tA-Sw
  for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:20 -0400
 Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM0f-0007yb-S6
+ id 1qhM0h-0007yr-Be
  for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:20 -0400
 Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1d63d38c74fso1327001fac.3
+ 586e51a60fabf-1d643db2c98so1257751fac.0
  for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694835016; x=1695439816; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694835017; x=1695439817; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PnAwpjjPQYUKoAysf3zPVEkKCoe8u86MgzkiH359pjE=;
- b=wF9ehr93L6KQH9jGXY8u77lIZH5A7YXjCPjGISuf6ZgT7PZxmeSjgVia4LSBMI5VB4
- Cqlwr6IkbvHHvcK3rC2oirGC+Et4JmwqP90+J7HKNVhLb34qED/PGThiYXo447MCxCoG
- 1cds5gltvYVE0/GOCxvTXpeDJHufk70EPYt4+r0H3MqkvfpF7IKdo3XXmChBRRT/DS7P
- w4nHL7HY+C7IyBX2nzNdDMYf4S7E5RGm8ho98+qdKdwmg4epLPXumHIvhuG0lI1rbtac
- 8MI0R1IHIjtGC7MIgnuN6jXKLwb4QsLvxX5x1WFPeRE/04a/ZXjpnhGktuR12o6sZhTb
- PmGQ==
+ bh=Gh4fScBKoyUlMU3zgx4IueUiBP67YjSVPb6IBGAB3cw=;
+ b=QjGhw6GYKFgDm8WlTD7Nnl5f3yPipwa+abdvekoJ/JBb9tkVn8b05SGF33zTIl5cXS
+ mBBYUZfnpJAjh4lr9dvo1bS4vLWJGB9Zcjhd+FBYGgA7fnpPLpmSZH9CVNP2rwDZpyJB
+ euovaJBvS8hDzeHwltNBsnnBZ2DqNzR5UWKb0hr3IsFwCbRuDW569wbAiXJ1MTy+qtDU
+ NRqLW7jHuzZLh/GNNwEg3dbvg6y33U49UZWnel8YCG6MbXe7m54tR+6f3DfiY5llZ8Gi
+ F0mys5gGgeBpliA7n6/tvgpBlH0C8HS72Rsqx1ccrBl9iXGBzniuI1KkJ+UO4v05jX0j
+ rW9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694835016; x=1695439816;
+ d=1e100.net; s=20230601; t=1694835017; x=1695439817;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PnAwpjjPQYUKoAysf3zPVEkKCoe8u86MgzkiH359pjE=;
- b=u/WOtjDmGTO9/nnQKYLyaXlD+BKlqQf/YiKzPUem+UQ12ixL+qy3FejGC0A5volyR1
- Ud+oZzNDERFckWRYyEtyix0A8J+vi8SUEaQE4fqpV0omgToY00JEa+Erov1YpwOiR/qg
- ldrIlJKHIyuc+mwqe/DGRhn38gBP2/GngxguRsktY2btnIFFqqpe3GhUXdHT8Bx3iUc2
- yp8VrC4h7rn6DHLCA9V8kjHtKIxsJPQeKNKrrmIZuGAbsNAHxxNYNPY1Q5/DyITEsRRa
- KV48Rc1OtslurYaWk0QGMlix+zKkuSjmVFQ3QdPmbSPdPQ+Jigfz7Qyb/PclS9z0Ut61
- EZJQ==
-X-Gm-Message-State: AOJu0YzQUvCEeJh9wMm5hwPllRSFAd/SLrx2z2h6sLnQ/gOFH2wibz4W
- x63yOmJ15cnwXyYWSY3oU7z4pIwJZAfynS0Idqs=
-X-Google-Smtp-Source: AGHT+IHbPIb2BqSPoiKB0rrFZMGq3zm3xKc27pL+nLIxLPjLEQPqay6ZaC2SI/g0l1HQ9fmKspdcSw==
-X-Received: by 2002:a05:6870:418e:b0:1a9:caa6:1337 with SMTP id
- y14-20020a056870418e00b001a9caa61337mr3941489oac.23.1694835016370; 
- Fri, 15 Sep 2023 20:30:16 -0700 (PDT)
+ bh=Gh4fScBKoyUlMU3zgx4IueUiBP67YjSVPb6IBGAB3cw=;
+ b=eb23QeTUIMOf5276Gwq6dMgXxCWv3kRGy2syeMNRxwrKJJHGFmqIOq+MDPMvdkhzZB
+ gx3DdZuTN7I4QfSQkS1uLr7SQVMV8hpN6z0RVHjd3BESXIU+nE9fMLB+0x2zS9yDaqeq
+ frhvYWLPtxJGn1ZlgiU9GXQkzDQVIXSiE6xRKrGzTlXCuMQCbxYinlTs8ZFdXkcv6oOM
+ 7vMQKT9XWryFjiDWbyg2/4k/w4BHkJpjfMjKWQayEUvGuc+izqan+vGvDXXORua9uXno
+ VguIsS7WTyl0SMPOuWPgzcPhk/CytRKQNvtDlLMUkIkd9yaiIp4r84HMnNCYP1p4gLDU
+ /GLw==
+X-Gm-Message-State: AOJu0YzH01uFfF1vKHhhWWlb+50Qq388TnVqxN3onM68+U2y+rb+iQPk
+ xRtNX9VI/LBnNCbvE6h5aVVUOXr/6PyIFsanxf8=
+X-Google-Smtp-Source: AGHT+IFo2K9h7PbdwB3jIFzXTbOoUlelqajtnm9hm1+/rG0Dwv0xNcPQnyndI5oA8FYaiz94jvOlzA==
+X-Received: by 2002:a05:6870:14ce:b0:1d0:d78b:982e with SMTP id
+ l14-20020a05687014ce00b001d0d78b982emr4286734oab.35.1694835017386; 
+ Fri, 15 Sep 2023 20:30:17 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.15
+ j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 20:30:15 -0700 (PDT)
+ Fri, 15 Sep 2023 20:30:17 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 03/39] util: Delete checks for old host definitions
-Date: Fri, 15 Sep 2023 20:29:35 -0700
-Message-Id: <20230916033011.479144-4-richard.henderson@linaro.org>
+Subject: [PULL 04/39] softmmu: Delete checks for old host definitions
+Date: Fri, 15 Sep 2023 20:29:36 -0700
+Message-Id: <20230916033011.479144-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916033011.479144-1-richard.henderson@linaro.org>
 References: <20230916033011.479144-1-richard.henderson@linaro.org>
@@ -92,49 +92,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-IA-64 and PA-RISC host support is already removed with commit
+PA-RISC host support is already removed with commit
 b1cef6d02f ("Drop remaining bits of ia64 host support").
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Message-Id: <20230810225922.21600-1-akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/oslib-posix.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ softmmu/async-teardown.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index 4d583da7ce..e86fd64e09 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -585,7 +585,7 @@ char *qemu_get_pid_name(pid_t pid)
+diff --git a/softmmu/async-teardown.c b/softmmu/async-teardown.c
+index 62cdeb0f20..396963c091 100644
+--- a/softmmu/async-teardown.c
++++ b/softmmu/async-teardown.c
+@@ -121,10 +121,7 @@ static void *new_stack_for_clone(void)
  
- void *qemu_alloc_stack(size_t *sz)
- {
--    void *ptr, *guardpage;
-+    void *ptr;
-     int flags;
- #ifdef CONFIG_DEBUG_STACK_USAGE
-     void *ptr2;
-@@ -618,17 +618,8 @@ void *qemu_alloc_stack(size_t *sz)
-         abort();
-     }
- 
--#if defined(HOST_IA64)
--    /* separate register stack */
--    guardpage = ptr + (((*sz - pagesz) / 2) & ~pagesz);
--#elif defined(HOST_HPPA)
--    /* stack grows up */
--    guardpage = ptr + *sz - pagesz;
--#else
--    /* stack grows down */
--    guardpage = ptr;
+     /* Allocate a new stack and get a pointer to its top. */
+     stack_ptr = qemu_alloc_stack(&stack_size);
+-#if !defined(HOST_HPPA)
+-    /* The top is at the end of the area, except on HPPA. */
+     stack_ptr += stack_size;
 -#endif
--    if (mprotect(guardpage, pagesz, PROT_NONE) != 0) {
-+    /* Stack grows down -- guard page at the bottom. */
-+    if (mprotect(ptr, pagesz, PROT_NONE) != 0) {
-         perror("failed to set up stack guard page");
-         abort();
-     }
+ 
+     return stack_ptr;
+ }
 -- 
 2.34.1
 
