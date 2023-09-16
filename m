@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA2397A32C8
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1537A32B3
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:44:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhd3q-0006iU-I5; Sat, 16 Sep 2023 17:42:42 -0400
+	id 1qhd3b-0005VM-P6; Sat, 16 Sep 2023 17:42:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd37-0005Do-JL
+ id 1qhd37-0005Dn-Is
  for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:57 -0400
-Received: from mail-oo1-xc2e.google.com ([2607:f8b0:4864:20::c2e])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd34-0000VD-Hq
+ id 1qhd35-0000VT-AO
  for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:56 -0400
-Received: by mail-oo1-xc2e.google.com with SMTP id
- 006d021491bc7-57355a16941so2076379eaf.2
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-68fb98745c1so2628339b3a.1
  for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 14:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694900513; x=1695505313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694900514; x=1695505314; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=HHBE2N1zmj6JeCBieiTBjGikB9utE52NnbMbL9slySg=;
- b=XmZJ97sNMHx5KuGy6wnVFiDjrk65q4HGmAX7bxH/iUumSsujQ9FC276QMybyeeVB1E
- chvZWDhGC3JcWMjbuEmu27OL3O2pAd61CLTbUx06X02xyVaFVfTXug9EJSi34i2fwpzA
- JTciEX3Rs+2Q1oqTzD1hf8yYLwRQadAFJJEfXGvDPNqNv9YQNRIrAyx1NCWnE+vRZXLC
- QfPt4aI6HyRva+86wA7J/pDah+mhN3+l6fnoQyyo9CiAknpahzj4rWIGpMtUCikCtAL+
- 72CgcP/e837roooBKBM20IAWBjmbCW0C6WgyLQSy9ryAzs2hmos2/t0QYXcSSns0c1mV
- Vpwg==
+ bh=50A87DiNBui2Aabq1+Nxd0earov0nrUH3Txq9Zcvjq0=;
+ b=PT4MrCq9UdpKjdeukrDd3wyIXbkbiqieGHplQzMBn7weCWL34jRZJMAs4KaO0sjs0b
+ z456e94v3hS6mxbjzBdShGbj4ECc4f1r13Wy1jLu+Zqt5a2g/Kp0kmdoWKpNs5sEkf8/
+ jjtDhdsk8GjONe5eScSAPW5cUfaWopgEWVGfFE0E4tZn3qVG+NDp98dSxBxZf+i/EcFo
+ xytgigmEZir9VjAI9E8c/gyEu0mgZyMGUQTO0m51o9+yGbfslB7rDJhpfGYIj9hqSfw/
+ cx6VOTZhqnXiO9bfpvxoKd5rbFWIV7xvK2SwZEbaLIHv16KPSZAI5gDg7E7lwJIP+dBZ
+ JGmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694900513; x=1695505313;
+ d=1e100.net; s=20230601; t=1694900514; x=1695505314;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HHBE2N1zmj6JeCBieiTBjGikB9utE52NnbMbL9slySg=;
- b=XkqAGSh/TLjc+LaNYkiyERvchE62qHIIAwPuLr4lLnCyXi8htaHQD1FCpbdG/dEral
- H3uzunG7jTsr7Bv9czBpBbvfrHJ7P70Qm+Qm2lDcPdDS2pS+SIGRlqOm9mLlRzBuz39Z
- ukRizhSJIE0Eur97p0PVDe5h1an9IGRfJaqd5qb6RpHIXN2fzbGHM7SaB2U2mL7YbLQf
- VgQcWd6zhQjD9BNUq2HVHpK8Mvw7ht4xIYJNXfZ65p1FI4befhXTEb86GeklX1BUdC9m
- wN0HGxuPjv6faqRbtRptkQMmO3JCq39ZjAePc68F8lADCLm2o9X8dLE6wuTY7BDwv3fk
- NU7Q==
-X-Gm-Message-State: AOJu0YzMGqoIWt5EIEfUXUz9wni6z08JnmsIAsvM012HJvN0Pj8oIgGx
- N1h9pH75+pptvKPrkRu65+U8jCF1o//fzreoKhg=
-X-Google-Smtp-Source: AGHT+IF5kUHx+KRIDXplYx9ID/+MIVZ+7PBuDy8F96q3q0aWdn4h6+eeyjsF4SKsdG9vLQoERk45wA==
-X-Received: by 2002:a05:6358:93a7:b0:142:fd2b:d165 with SMTP id
- h39-20020a05635893a700b00142fd2bd165mr6816545rwb.13.1694900513017; 
+ bh=50A87DiNBui2Aabq1+Nxd0earov0nrUH3Txq9Zcvjq0=;
+ b=ajD/NHzmha+F2xXjQugZzWSIcOYo8HIms3UCSXHoC6huXDQ/3qG4s10q9rAS6n3SbX
+ EUs0vgwHw+DU114K4CWUZwufZ7z/hrHcg7JH27T3m6o+eAOdcQCvnBIfVJCRH159FoAu
+ Gv4V+j9ofvOmRIM65y0z6kCtoMO94UzGVy1La3RHr2q5fK9HCiWFJQ8CyJowisuX7Tgf
+ 5axs8igOg8g9mLRY5mEICV4zExf0KSQK/8eTmqf5GIARJsPoPPww676P8cLXlPDFnhO9
+ BDa3sI6Qg5pL5axUqVsF82oF//FqwpQO+YTT+/4Kztuvl0w0DHN7LyAXqXs/DdvCeCYl
+ k+Fw==
+X-Gm-Message-State: AOJu0Yxh65HsJStK/QY1cdPDDCi1BN5Cz0cjl2YS48oxWjcY5PPfJfdu
+ UBlBe2Bqg+DXXPvDqQ+8GmwW896GVOgkkBAEt+g=
+X-Google-Smtp-Source: AGHT+IFm1UpsAJsbxMCZuZaJ6JUoSWQBqanN+cdIT9Jw+XQB/tw9B3bUmUYNi4Pt2/GT1caO4yFrDg==
+X-Received: by 2002:a05:6a00:b92:b0:68e:2cc4:c720 with SMTP id
+ g18-20020a056a000b9200b0068e2cc4c720mr5837543pfj.12.1694900513870; 
  Sat, 16 Sep 2023 14:41:53 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.52
+ n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Sep 2023 14:41:52 -0700 (PDT)
+ Sat, 16 Sep 2023 14:41:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH v3 29/39] exec: Rename cpu.c -> cpu-target.c
-Date: Sat, 16 Sep 2023 14:41:13 -0700
-Message-Id: <20230916214123.525796-30-richard.henderson@linaro.org>
+Subject: [PATCH v3 30/39] exec: Rename target specific page-vary.c ->
+ page-vary-target.c
+Date: Sat, 16 Sep 2023 14:41:14 -0700
+Message-Id: <20230916214123.525796-31-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916214123.525796-1-richard.henderson@linaro.org>
 References: <20230916214123.525796-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,70 +95,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We have exec/cpu code split in 2 files for target agnostic
-("common") and specific. Rename 'cpu.c' which is target
-specific using the '-target' suffix. Update MAINTAINERS.
-Remove the 's from 'cpus-common.c' to match the API cpu_foo()
-functions.
+This matches the target agnostic 'page-vary-common.c' counterpart.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20230914185718.76241-7-philmd@linaro.org>
+Message-Id: <20230914185718.76241-8-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- MAINTAINERS                   | 4 ++--
- meson.build                   | 4 ++--
- cpus-common.c => cpu-common.c | 0
- cpu.c => cpu-target.c         | 0
- 4 files changed, 4 insertions(+), 4 deletions(-)
- rename cpus-common.c => cpu-common.c (100%)
- rename cpu.c => cpu-target.c (100%)
+ MAINTAINERS                       | 2 +-
+ meson.build                       | 2 +-
+ page-vary.c => page-vary-target.c | 0
+ 3 files changed, 2 insertions(+), 2 deletions(-)
+ rename page-vary.c => page-vary-target.c (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 00562f924f..12261d8eaf 100644
+index 12261d8eaf..ff436dbf21 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -139,7 +139,8 @@ R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
- F: softmmu/cpus.c
+@@ -141,7 +141,7 @@ F: softmmu/cpus.c
  F: softmmu/watchpoint.c
--F: cpus-common.c
-+F: cpu-common.c
-+F: cpu-target.c
- F: page-vary.c
+ F: cpu-common.c
+ F: cpu-target.c
+-F: page-vary.c
++F: page-vary-target.c
  F: page-vary-common.c
  F: accel/tcg/
-@@ -1772,7 +1773,6 @@ M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
- R: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Yanan Wang <wangyanan55@huawei.com>
- S: Supported
--F: cpu.c
- F: hw/core/cpu.c
- F: hw/core/machine-qmp-cmds.c
- F: hw/core/machine.c
+ F: accel/stubs/tcg-stub.c
 diff --git a/meson.build b/meson.build
-index 5150a74831..3e86a6cebf 100644
+index 3e86a6cebf..3282f888a3 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3416,8 +3416,8 @@ if have_block
-   system_ss.add(when: 'CONFIG_WIN32', if_true: [files('os-win32.c')])
+@@ -3439,7 +3439,7 @@ if get_option('b_lto')
+   pagevary = declare_dependency(link_with: pagevary)
  endif
+ common_ss.add(pagevary)
+-specific_ss.add(files('page-vary.c'))
++specific_ss.add(files('page-vary-target.c'))
  
--common_ss.add(files('cpus-common.c'))
--specific_ss.add(files('cpu.c'))
-+common_ss.add(files('cpu-common.c'))
-+specific_ss.add(files('cpu-target.c'))
- 
- subdir('softmmu')
- 
-diff --git a/cpus-common.c b/cpu-common.c
+ subdir('backends')
+ subdir('disas')
+diff --git a/page-vary.c b/page-vary-target.c
 similarity index 100%
-rename from cpus-common.c
-rename to cpu-common.c
-diff --git a/cpu.c b/cpu-target.c
-similarity index 100%
-rename from cpu.c
-rename to cpu-target.c
+rename from page-vary.c
+rename to page-vary-target.c
 -- 
 2.34.1
 
