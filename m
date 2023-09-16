@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B597A32C7
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6187A32A0
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 23:43:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhd2s-000562-1J; Sat, 16 Sep 2023 17:41:42 -0400
+	id 1qhd2n-00055o-LL; Sat, 16 Sep 2023 17:41:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd2i-000543-1y
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:32 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1qhd2j-00054V-8o
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:34 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhd2g-0000Q8-JB
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:31 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-68fb7fb537dso3022530b3a.2
+ id 1qhd2h-0000QO-9u
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 17:41:33 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-690471b5889so1422291b3a.0
  for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 14:41:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694900489; x=1695505289; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694900490; x=1695505290; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PCZUgNuN/cpm5AWhhskU6xG8RA6Qz33ls/52yNT5Lro=;
- b=N/cAtsL6tpwGoqv9ja2GRcjv/vEIdtbNkM2l5nFhRF4JL6za4Xbu5nt0D+TMShGuDX
- SjHf2Km8xMN9xYJ6y8gNDpM1G/tJINlbB9AUa/q/ow2OVKAaeLoeqZzSJGSGlThOolhA
- g4rXmey2a5TZPnIogA/WyTE4jZsd5E3sZvhWxF6+kfG9RmM4YPpAi+8aFEjVw2aVrkk2
- Is3PTFPaMvHH2gDeBsZQpFcKwZN6dT09kSEyFaU/WXWGhZinx+A3s9khlx4Ky4wCB6hd
- K9jBnf4YZ0f6iLrKON80qT+wNX8WXsb8ekf5B7TFFdXD9pNn+suqC76m7/lqlzgZbqh4
- 0gkg==
+ bh=CL2g+I/aYKhCYdCOqJipcnPRCNs8rgqlHMh/Z1brbrI=;
+ b=PScSqbZ5qOtn45VoD1eVhb6WXLAfcsWephuqLN3xvgP2o8GWjgusVQdLHW1K8d/qy9
+ PwpATw7S5vwqLDQW3auB5QQPF/n3HIu6Vy7A0VZOf2NUtT5LXBcuky0jBGZaUdLS/uZe
+ O4XkZNVvsyZXmaz6b3HQHDHAdrcQsITIcYynBkGKJi9Wh91ihra45l0vB46aYItr+3k7
+ iwAp8t0N0WeGN4RAS839ubIcWiilxmZlA1zRC8RCA+sXBzEMjxKkmJ+XIfevaZh6Ijgq
+ XrLAs2GSDIW5N1DAc+pXVk2TIZAS9FFWthD/kA0iH1Uy/t2Iw2cA6VAhyAxLsGTrxdDe
+ 6NAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694900489; x=1695505289;
+ d=1e100.net; s=20230601; t=1694900490; x=1695505290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PCZUgNuN/cpm5AWhhskU6xG8RA6Qz33ls/52yNT5Lro=;
- b=dOH6fIMAzSvEgyu6/EwcZTdbrPTqb8UUwHuTjiLSLvPFKGH2MhquLwg+l9cf7mxPgS
- OirWUIHxcw17HJfo99Qqwh1BxxAnLoKW+J3EhYBT6HE1TZ9AWuBVAprDdjEj+sJvikrg
- 4t9o5K30zkKTjOFs618WfE203y/Mf5BFM5SBi6YwNE5mSmSxQfgJCjJyygxVL8ARDZ3Y
- j4tC5Y3tCQ9MAEEXkjBOwqAulj/ONR1l1A0+O6IzHk+rNQGwtfz08Ot4FQZ/Q9TQIk9z
- yYOCenb2//COOhreIAUx9EPclIIHm3XkWpXgvcm2hpB18tRtoshbJiadAcoYXKER1HGc
- cf+g==
-X-Gm-Message-State: AOJu0Yxdwwljh+7uGb4N742WJv4NtEgK1/OGq0fiO+RG0K9iugtesJOv
- fkb17/x0ybccp5uY6oFk337jRfpxHOPfxZf4c1A=
-X-Google-Smtp-Source: AGHT+IE5Ok6nbCQcYbdzeE4F531Scfgkae4hICFOdred4LaiI2c/g59BE+2MDTLFzKz1x7l0KhcGwg==
-X-Received: by 2002:a05:6a00:181b:b0:68e:3def:c3cd with SMTP id
- y27-20020a056a00181b00b0068e3defc3cdmr5675389pfa.17.1694900489105; 
+ bh=CL2g+I/aYKhCYdCOqJipcnPRCNs8rgqlHMh/Z1brbrI=;
+ b=sPMj19i56aAb91gEzAO8b5obcW8ou67aOTt6Ai3HjccxKOxafVcsW+u7etOZxrAOPq
+ 81GvbbQovZrXD55YdHkzps0bKRniNFk8aTQ4tFK6Xr9XbjeI/5/bqHa8okFujGQF6R7h
+ WHXkeoQzuuZjGufbHrdZUk0JfmOQ2VaAhcC5Ii6oB+d3FQaGS2+sHSZmKWvd12OuzzZd
+ /UyV79appyNDmN/KkHc7BYVjyhBoPePTyyVFsElpXTtkckPOdC444JURnrWIZEMxchFt
+ umbMlZhZZYJbKSGL6OIjb0wLTERY6UlI6aiDbwKp+JQAqwdkEvCSGC3bQICUonmJJHUJ
+ HMpA==
+X-Gm-Message-State: AOJu0YyxV4SA8gztZHtMvWZHV1L0W8wCWtIujorOY26smpY0dOropOZM
+ B/Nm/kix86km7T339tXjxDcq6W36/HP0FYEcHTg=
+X-Google-Smtp-Source: AGHT+IHEXUlVrbUyptiqEwM8YkOHuSvH2KZbK27eqslF6NeSbuHc8Rm9AXamuiICn96CTM+bP6NUzg==
+X-Received: by 2002:a05:6a00:2d04:b0:68f:dfe2:9f03 with SMTP id
+ fa4-20020a056a002d0400b0068fdfe29f03mr4427665pfb.11.1694900489944; 
  Sat, 16 Sep 2023 14:41:29 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.28
+ n21-20020aa79055000000b0068fde95aa93sm4871708pfo.135.2023.09.16.14.41.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 16 Sep 2023 14:41:28 -0700 (PDT)
+ Sat, 16 Sep 2023 14:41:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	anjo@rev.ng
-Subject: [PATCH v3 04/39] target/arm: Remove size and alignment for cpu
- subclasses
-Date: Sat, 16 Sep 2023 14:40:48 -0700
-Message-Id: <20230916214123.525796-5-richard.henderson@linaro.org>
+Subject: [PATCH v3 05/39] target/*: Add instance_align to all cpu base classes
+Date: Sat, 16 Sep 2023 14:40:49 -0700
+Message-Id: <20230916214123.525796-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916214123.525796-1-richard.henderson@linaro.org>
 References: <20230916214123.525796-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,55 +92,249 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inherit the size and alignment from TYPE_ARM_CPU.
+The omission of alignment has technically been wrong since
+269bd5d8f61, where QEMU_ALIGNED was added to CPUTLBDescFast.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/cpu.c   | 3 ---
- target/arm/cpu64.c | 4 ----
- 2 files changed, 7 deletions(-)
+ target/alpha/cpu.c      | 1 +
+ target/avr/cpu.c        | 1 +
+ target/cris/cpu.c       | 1 +
+ target/hexagon/cpu.c    | 1 +
+ target/hppa/cpu.c       | 1 +
+ target/i386/cpu.c       | 1 +
+ target/loongarch/cpu.c  | 1 +
+ target/m68k/cpu.c       | 1 +
+ target/microblaze/cpu.c | 1 +
+ target/mips/cpu.c       | 1 +
+ target/nios2/cpu.c      | 1 +
+ target/openrisc/cpu.c   | 1 +
+ target/riscv/cpu.c      | 2 +-
+ target/rx/cpu.c         | 1 +
+ target/sh4/cpu.c        | 1 +
+ target/sparc/cpu.c      | 1 +
+ target/tricore/cpu.c    | 1 +
+ target/xtensa/cpu.c     | 1 +
+ 18 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index b9e09a702d..d48a70c039 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -2423,10 +2423,7 @@ void arm_cpu_register(const ARMCPUInfo *info)
- {
-     TypeInfo type_info = {
-         .parent = TYPE_ARM_CPU,
--        .instance_size = sizeof(ARMCPU),
--        .instance_align = __alignof__(ARMCPU),
-         .instance_init = arm_cpu_instance_init,
--        .class_size = sizeof(ARMCPUClass),
-         .class_init = info->class_init ?: cpu_register_class_init,
-         .class_data = (void *)info,
-     };
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index f3d87e001f..811f3b38c2 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -822,9 +822,7 @@ void aarch64_cpu_register(const ARMCPUInfo *info)
- {
-     TypeInfo type_info = {
-         .parent = TYPE_AARCH64_CPU,
--        .instance_size = sizeof(ARMCPU),
-         .instance_init = aarch64_cpu_instance_init,
--        .class_size = sizeof(ARMCPUClass),
-         .class_init = info->class_init ?: cpu_register_class_init,
-         .class_data = (void *)info,
-     };
-@@ -837,10 +835,8 @@ void aarch64_cpu_register(const ARMCPUInfo *info)
- static const TypeInfo aarch64_cpu_type_info = {
-     .name = TYPE_AARCH64_CPU,
-     .parent = TYPE_ARM_CPU,
--    .instance_size = sizeof(ARMCPU),
-     .instance_finalize = aarch64_cpu_finalizefn,
-     .abstract = true,
--    .class_size = sizeof(AArch64CPUClass),
-     .class_init = aarch64_cpu_class_init,
- };
+diff --git a/target/alpha/cpu.c b/target/alpha/cpu.c
+index 270ae787b1..e2156fcb41 100644
+--- a/target/alpha/cpu.c
++++ b/target/alpha/cpu.c
+@@ -286,6 +286,7 @@ static const TypeInfo alpha_cpu_type_infos[] = {
+         .name = TYPE_ALPHA_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(AlphaCPU),
++        .instance_align = __alignof(AlphaCPU),
+         .instance_init = alpha_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(AlphaCPUClass),
+diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+index 8f741f258c..c5a6436336 100644
+--- a/target/avr/cpu.c
++++ b/target/avr/cpu.c
+@@ -390,6 +390,7 @@ static const TypeInfo avr_cpu_type_info[] = {
+         .name = TYPE_AVR_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(AVRCPU),
++        .instance_align = __alignof(AVRCPU),
+         .instance_init = avr_cpu_initfn,
+         .class_size = sizeof(AVRCPUClass),
+         .class_init = avr_cpu_class_init,
+diff --git a/target/cris/cpu.c b/target/cris/cpu.c
+index a6a93c2359..8ab8a30b8d 100644
+--- a/target/cris/cpu.c
++++ b/target/cris/cpu.c
+@@ -345,6 +345,7 @@ static const TypeInfo cris_cpu_model_type_infos[] = {
+         .name = TYPE_CRIS_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(CRISCPU),
++        .instance_align = __alignof(CRISCPU),
+         .instance_init = cris_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(CRISCPUClass),
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index f155936289..65f198b956 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -408,6 +408,7 @@ static const TypeInfo hexagon_cpu_type_infos[] = {
+         .name = TYPE_HEXAGON_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(HexagonCPU),
++        .instance_align = __alignof(HexagonCPU),
+         .instance_init = hexagon_cpu_init,
+         .abstract = true,
+         .class_size = sizeof(HexagonCPUClass),
+diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
+index 11022f9c99..17fa901f6a 100644
+--- a/target/hppa/cpu.c
++++ b/target/hppa/cpu.c
+@@ -212,6 +212,7 @@ static const TypeInfo hppa_cpu_type_info = {
+     .name = TYPE_HPPA_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(HPPACPU),
++    .instance_align = __alignof(HPPACPU),
+     .instance_init = hppa_cpu_initfn,
+     .abstract = false,
+     .class_size = sizeof(HPPACPUClass),
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index b2a20365e1..7f15ea4ec4 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8020,6 +8020,7 @@ static const TypeInfo x86_cpu_type_info = {
+     .name = TYPE_X86_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(X86CPU),
++    .instance_align = __alignof(X86CPU),
+     .instance_init = x86_cpu_initfn,
+     .instance_post_init = x86_cpu_post_initfn,
  
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 65f9320e34..56e67cea8d 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -804,6 +804,7 @@ static const TypeInfo loongarch_cpu_type_infos[] = {
+         .name = TYPE_LOONGARCH_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(LoongArchCPU),
++        .instance_align = __alignof(LoongArchCPU),
+         .instance_init = loongarch_cpu_init,
+ 
+         .abstract = true,
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 70d58471dc..d34d1b57d0 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -611,6 +611,7 @@ static const TypeInfo m68k_cpus_type_infos[] = {
+         .name = TYPE_M68K_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(M68kCPU),
++        .instance_align = __alignof(M68kCPU),
+         .instance_init = m68k_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(M68kCPUClass),
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 03c2c4db1f..c53711da52 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -439,6 +439,7 @@ static const TypeInfo mb_cpu_type_info = {
+     .name = TYPE_MICROBLAZE_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(MicroBlazeCPU),
++    .instance_align = __alignof(MicroBlazeCPU),
+     .instance_init = mb_cpu_initfn,
+     .class_size = sizeof(MicroBlazeCPUClass),
+     .class_init = mb_cpu_class_init,
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 63da1948fd..fee791aa44 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -600,6 +600,7 @@ static const TypeInfo mips_cpu_type_info = {
+     .name = TYPE_MIPS_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(MIPSCPU),
++    .instance_align = __alignof(MIPSCPU),
+     .instance_init = mips_cpu_initfn,
+     .abstract = true,
+     .class_size = sizeof(MIPSCPUClass),
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index bc5cbf81c2..598976305f 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -400,6 +400,7 @@ static const TypeInfo nios2_cpu_type_info = {
+     .name = TYPE_NIOS2_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(Nios2CPU),
++    .instance_align = __alignof(Nios2CPU),
+     .instance_init = nios2_cpu_initfn,
+     .class_size = sizeof(Nios2CPUClass),
+     .class_init = nios2_cpu_class_init,
+diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
+index 61d748cfdc..be067709b8 100644
+--- a/target/openrisc/cpu.c
++++ b/target/openrisc/cpu.c
+@@ -314,6 +314,7 @@ static const TypeInfo openrisc_cpus_type_infos[] = {
+         .name = TYPE_OPENRISC_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(OpenRISCCPU),
++        .instance_align = __alignof(OpenRISCCPU),
+         .instance_init = openrisc_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(OpenRISCCPUClass),
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index f227c7664e..8a765d5117 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -2314,7 +2314,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .name = TYPE_RISCV_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(RISCVCPU),
+-        .instance_align = __alignof__(RISCVCPU),
++        .instance_align = __alignof(RISCVCPU),
+         .instance_init = riscv_cpu_init,
+         .abstract = true,
+         .class_size = sizeof(RISCVCPUClass),
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 157e57da0f..51559943fb 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -248,6 +248,7 @@ static const TypeInfo rx_cpu_info = {
+     .name = TYPE_RX_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(RXCPU),
++    .instance_align = __alignof(RXCPU),
+     .instance_init = rx_cpu_init,
+     .abstract = true,
+     .class_size = sizeof(RXCPUClass),
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index 61769ffdfa..a90e41c4ec 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -315,6 +315,7 @@ static const TypeInfo superh_cpu_type_infos[] = {
+         .name = TYPE_SUPERH_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(SuperHCPU),
++        .instance_align = __alignof(SuperHCPU),
+         .instance_init = superh_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(SuperHCPUClass),
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 130ab8f578..d6d3c4b031 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -930,6 +930,7 @@ static const TypeInfo sparc_cpu_type_info = {
+     .name = TYPE_SPARC_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(SPARCCPU),
++    .instance_align = __alignof(SPARCCPU),
+     .instance_init = sparc_cpu_initfn,
+     .abstract = true,
+     .class_size = sizeof(SPARCCPUClass),
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index 133a9ac70e..50aec6cf10 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -230,6 +230,7 @@ static const TypeInfo tricore_cpu_type_infos[] = {
+         .name = TYPE_TRICORE_CPU,
+         .parent = TYPE_CPU,
+         .instance_size = sizeof(TriCoreCPU),
++        .instance_align = __alignof(TriCoreCPU),
+         .instance_init = tricore_cpu_initfn,
+         .abstract = true,
+         .class_size = sizeof(TriCoreCPUClass),
+diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+index acaf8c905f..281872d7ca 100644
+--- a/target/xtensa/cpu.c
++++ b/target/xtensa/cpu.c
+@@ -273,6 +273,7 @@ static const TypeInfo xtensa_cpu_type_info = {
+     .name = TYPE_XTENSA_CPU,
+     .parent = TYPE_CPU,
+     .instance_size = sizeof(XtensaCPU),
++    .instance_align = __alignof(XtensaCPU),
+     .instance_init = xtensa_cpu_initfn,
+     .abstract = true,
+     .class_size = sizeof(XtensaCPUClass),
 -- 
 2.34.1
 
