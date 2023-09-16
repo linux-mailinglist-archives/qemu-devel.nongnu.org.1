@@ -2,71 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906EA7A2E6C
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 09:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8427A2E6F
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 10:03:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhQ9o-0007rB-GO; Sat, 16 Sep 2023 03:56:00 -0400
+	id 1qhQG1-0003Bu-JU; Sat, 16 Sep 2023 04:02:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qhQ9m-0007qh-5h
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 03:55:58 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qhQ9h-0004hN-Td
- for qemu-devel@nongnu.org; Sat, 16 Sep 2023 03:55:57 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8Dx_+t9XwVlAAMpAA--.12111S3;
- Sat, 16 Sep 2023 15:55:42 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxeuR8XwVlgJcIAA--.19192S3; 
- Sat, 16 Sep 2023 15:55:40 +0800 (CST)
-Subject: Re: [PATCH v6 54/57] target/loongarch: Implement xvshuf xvperm{i}
- xvshuf4i
-From: gaosong <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, maobibo@loongson.cn
-References: <20230914022645.1151356-1-gaosong@loongson.cn>
- <20230914022645.1151356-55-gaosong@loongson.cn>
-Message-ID: <8c58b6b0-730c-36b1-c3f0-d4e51597c3e5@loongson.cn>
-Date: Sat, 16 Sep 2023 15:55:40 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qhQFu-0003Bi-Ui
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 04:02:18 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qhQFs-0005xj-Fm
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 04:02:18 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-68fb46f38f9so2742322b3a.1
+ for <qemu-devel@nongnu.org>; Sat, 16 Sep 2023 01:02:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1694851335; x=1695456135;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=iQ8HyBCroHZH3iih1FxoWv7eJyU63/SAW5zw/2IoJPM=;
+ b=Q2JK2OtTgpkFJXKFMzYaBZ7AAFVzKqPQ2/6bWxyDzWhe5jjCYTp6clldEhfgfRwAl3
+ dqypxqUOoaijlXin7Tkl6RlnyvWDMYfQjar0W3nyrX8Ig1Hx9337DxKclMiOltq7iwj8
+ hFWtu6x29kfFbBUV0lMvK+8PfsNfpYTp/3Eh1uQHwtZ0sYVj4FsXS9pr3emogXxsylAH
+ KnDqRBBVdikSuZR/B5FBtvwVHPeTIAY3wCupUE1cqm4e7Iijo4CMSIOvp8mObPU3EQHZ
+ /dGy3hCPvjfvS3HWRdM3n2NTEriuCdWObgS2o/cBiPf2e8z3cJrab+2o2r6VbEcLdXQy
+ rx5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694851335; x=1695456135;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=iQ8HyBCroHZH3iih1FxoWv7eJyU63/SAW5zw/2IoJPM=;
+ b=GEx/m9vC9LYLP72o79b3V9Sa4Y291PNVleAYjnn7BHmZx9nXTLqNfSMjz4CkpQoby5
+ 5ufV/9gjJGs/BTbO+tC5biFp5qp0qGVBjndc3xn/9h9IWoK1leYDSu/SRJJQD5ql75Og
+ w2R34tjoXQx1oLHnplyQMBaDU5YtgaMtX2PTTQyixJBJrNI/5s5hUdenXble0U61CvJ5
+ x2dCi3v7f9JZzjD1/IT1Ubm2Yyd1ceQ0FBqKpgyucmBEVgYezhT6RsLvDodSOLtsXYk0
+ 23PDcPK6Bs+QDkmtdvnWxShlRMvcnB7o1cX2XnTZuFp8W5O/d5z1OXxUtQWd+FQGaTDT
+ BSKg==
+X-Gm-Message-State: AOJu0Ywe0m0/L2/lYqCyuN5/reBbXwSEGmtQH5WfxGP2ab/hF7zq3kFS
+ OqmdcmrqW0f0YGqSVSn0IfaTu/IvIH71J86f4r4=
+X-Google-Smtp-Source: AGHT+IGEIJbuePY4+QEeezfi2D0SatfwCZAeGmFQxtOKNwe+Eed8VOvytTUHwwv2SqKrmyKxy6+18g==
+X-Received: by 2002:a05:6a00:1a86:b0:68c:3f2:6007 with SMTP id
+ e6-20020a056a001a8600b0068c03f26007mr4011186pfv.8.1694851334597; 
+ Sat, 16 Sep 2023 01:02:14 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ z21-20020aa791d5000000b0068a46cd4120sm4029484pfa.199.2023.09.16.01.02.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 16 Sep 2023 01:02:14 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Mikhail Tyutin <m.tyutin@yadro.com>,
+ Aleksandr Anenkov <a.anenkov@yadro.com>, qemu-devel@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v8 00/19] plugins: Allow to read registers
+Date: Sat, 16 Sep 2023 17:01:17 +0900
+Message-ID: <20230916080149.129989-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-In-Reply-To: <20230914022645.1151356-55-gaosong@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxeuR8XwVlgJcIAA--.19192S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3uw1rZFyxGFWDKw17Zr1UJwc_yoWktw1fpa
- n8JF17Ar48XFWxXr1vyw45t3ZxWFsxKw15uwn3KF1rZrWDJFn8XFy0grZFkF43W3ZYqFy0
- vFsIkry7AFy2qacCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jrv_JF
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL
- 05UUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
- NICE_REPLY_A=-1.473, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,378 +93,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, Richard
+Based-on: <20230912224107.29669-1-akihiko.odaki@daynix.com>
+("[PATCH v3 00/12] gdbstub and TCG plugin improvements")
 
-Could you review this patch?  it's the lastet patch no review.
+I and other people in the University of Tokyo, where I research processor
+design, found TCG plugins are very useful for processor design exploration.
 
-Thanks.
-Song Gao
+The feature we find missing is the capability to read registers from
+plugins. In this series, I propose to add such a capability by reusing
+gdbstub code.
 
+The reuse of gdbstub code ensures the long-term stability of the TCG plugin
+interface for register access without incurring a burden to maintain yet
+another interface for register access.
 
-‘⁄ 2023/9/14 …œŒÁ10:26, Song Gao –¥µ¿:
-> This patch includes:
-> - XVSHUF.{B/H/W/D};
-> - XVPERM.W;
-> - XVSHUF4i.{B/H/W/D};
-> - XVPERMI.{W/D/Q};
-> - XVEXTRINS.{B/H/W/D}.
-> 
-> Signed-off-by: Song Gao <gaosong@loongson.cn>
-> ---
->   target/loongarch/helper.h                   |   3 +
->   target/loongarch/insns.decode               |  21 +++
->   target/loongarch/disas.c                    |  21 +++
->   target/loongarch/vec_helper.c               | 146 ++++++++++++++------
->   target/loongarch/insn_trans/trans_vec.c.inc |  30 +++-
->   5 files changed, 175 insertions(+), 46 deletions(-)
-> 
-> diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
-> index fb489dda2d..b3b64a0215 100644
-> --- a/target/loongarch/helper.h
-> +++ b/target/loongarch/helper.h
-> @@ -709,7 +709,10 @@ DEF_HELPER_FLAGS_4(vshuf4i_h, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
->   DEF_HELPER_FLAGS_4(vshuf4i_w, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
->   DEF_HELPER_FLAGS_4(vshuf4i_d, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
->   
-> +DEF_HELPER_FLAGS_4(vperm_w, TCG_CALL_NO_RWG, void, ptr, ptr, ptr, i32)
->   DEF_HELPER_FLAGS_4(vpermi_w, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(vpermi_d, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> +DEF_HELPER_FLAGS_4(vpermi_q, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
->   
->   DEF_HELPER_FLAGS_4(vextrins_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
->   DEF_HELPER_FLAGS_4(vextrins_h, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
-> diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-> index a325b861c1..64b67ee9ac 100644
-> --- a/target/loongarch/insns.decode
-> +++ b/target/loongarch/insns.decode
-> @@ -2039,3 +2039,24 @@ xvilvh_b         0111 01010001 11000 ..... ..... .....    @vvv
->   xvilvh_h         0111 01010001 11001 ..... ..... .....    @vvv
->   xvilvh_w         0111 01010001 11010 ..... ..... .....    @vvv
->   xvilvh_d         0111 01010001 11011 ..... ..... .....    @vvv
-> +
-> +xvshuf_b         0000 11010110 ..... ..... ..... .....    @vvvv
-> +xvshuf_h         0111 01010111 10101 ..... ..... .....    @vvv
-> +xvshuf_w         0111 01010111 10110 ..... ..... .....    @vvv
-> +xvshuf_d         0111 01010111 10111 ..... ..... .....    @vvv
-> +
-> +xvperm_w         0111 01010111 11010 ..... ..... .....    @vvv
-> +
-> +xvshuf4i_b       0111 01111001 00 ........ ..... .....    @vv_ui8
-> +xvshuf4i_h       0111 01111001 01 ........ ..... .....    @vv_ui8
-> +xvshuf4i_w       0111 01111001 10 ........ ..... .....    @vv_ui8
-> +xvshuf4i_d       0111 01111001 11 ........ ..... .....    @vv_ui8
-> +
-> +xvpermi_w        0111 01111110 01 ........ ..... .....    @vv_ui8
-> +xvpermi_d        0111 01111110 10 ........ ..... .....    @vv_ui8
-> +xvpermi_q        0111 01111110 11 ........ ..... .....    @vv_ui8
-> +
-> +xvextrins_d      0111 01111000 00 ........ ..... .....    @vv_ui8
-> +xvextrins_w      0111 01111000 01 ........ ..... .....    @vv_ui8
-> +xvextrins_h      0111 01111000 10 ........ ..... .....    @vv_ui8
-> +xvextrins_b      0111 01111000 11 ........ ..... .....    @vv_ui8
-> diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-> index 74ae916a10..1ec8e21e01 100644
-> --- a/target/loongarch/disas.c
-> +++ b/target/loongarch/disas.c
-> @@ -2574,3 +2574,24 @@ INSN_LASX(xvilvh_b,          vvv)
->   INSN_LASX(xvilvh_h,          vvv)
->   INSN_LASX(xvilvh_w,          vvv)
->   INSN_LASX(xvilvh_d,          vvv)
-> +
-> +INSN_LASX(xvshuf_b,          vvvv)
-> +INSN_LASX(xvshuf_h,          vvv)
-> +INSN_LASX(xvshuf_w,          vvv)
-> +INSN_LASX(xvshuf_d,          vvv)
-> +
-> +INSN_LASX(xvperm_w,          vvv)
-> +
-> +INSN_LASX(xvshuf4i_b,        vv_i)
-> +INSN_LASX(xvshuf4i_h,        vv_i)
-> +INSN_LASX(xvshuf4i_w,        vv_i)
-> +INSN_LASX(xvshuf4i_d,        vv_i)
-> +
-> +INSN_LASX(xvpermi_w,         vv_i)
-> +INSN_LASX(xvpermi_d,         vv_i)
-> +INSN_LASX(xvpermi_q,         vv_i)
-> +
-> +INSN_LASX(xvextrins_d,       vv_i)
-> +INSN_LASX(xvextrins_w,       vv_i)
-> +INSN_LASX(xvextrins_h,       vv_i)
-> +INSN_LASX(xvextrins_b,       vv_i)
-> diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-> index 2bbaee628b..6b61a5c447 100644
-> --- a/target/loongarch/vec_helper.c
-> +++ b/target/loongarch/vec_helper.c
-> @@ -3381,57 +3381,65 @@ VILVH(vilvh_h, 32, H)
->   VILVH(vilvh_w, 64, W)
->   VILVH(vilvh_d, 128, D)
->   
-> +#define SHF_POS(i, imm) (((i) & 0xfc) + (((imm) >> (2 * ((i) & 0x03))) & 0x03))
-> +
->   void HELPER(vshuf_b)(void *vd, void *vj, void *vk, void *va, uint32_t desc)
->   {
-> -    int i, m;
-> -    VReg temp;
-> +    int i, j, m;
-> +    VReg temp = {};
->       VReg *Vd = (VReg *)vd;
->       VReg *Vj = (VReg *)vj;
->       VReg *Vk = (VReg *)vk;
->       VReg *Va = (VReg *)va;
-> +    int oprsz = simd_oprsz(desc);
->   
-> -    m = LSX_LEN/8;
-> -    for (i = 0; i < m ; i++) {
-> +    m = LSX_LEN / 8;
-> +    for (i = 0; i < (oprsz / 16) * m; i++) {
-> +        j = i < m ? 0 : 1;
->           uint64_t k = (uint8_t)Va->B(i) % (2 * m);
-> -        temp.B(i) = k < m ? Vk->B(k) : Vj->B(k - m);
-> +        temp.B(i) = k < m ? Vk->B(k + j * m): Vj->B(k + (j - 1) * m);
->       }
->       *Vd = temp;
->   }
->   
-> -#define VSHUF(NAME, BIT, E)                                    \
-> -void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
-> -{                                                              \
-> -    int i, m;                                                  \
-> -    VReg temp;                                                 \
-> -    VReg *Vd = (VReg *)vd;                                     \
-> -    VReg *Vj = (VReg *)vj;                                     \
-> -    VReg *Vk = (VReg *)vk;                                     \
-> -                                                               \
-> -    m = LSX_LEN/BIT;                                           \
-> -    for (i = 0; i < m; i++) {                                  \
-> -        uint64_t k  = ((uint8_t) Vd->E(i)) % (2 * m);          \
-> -        temp.E(i) = k < m ? Vk->E(k) : Vj->E(k - m);           \
-> -    }                                                          \
-> -    *Vd = temp;                                                \
-> +#define VSHUF(NAME, BIT, E)                                            \
-> +void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)         \
-> +{                                                                      \
-> +    int i, j, m;                                                       \
-> +    VReg temp = {};                                                    \
-> +    VReg *Vd = (VReg *)vd;                                             \
-> +    VReg *Vj = (VReg *)vj;                                             \
-> +    VReg *Vk = (VReg *)vk;                                             \
-> +    int oprsz = simd_oprsz(desc);                                      \
-> +                                                                       \
-> +    m = LSX_LEN / BIT;                                                 \
-> +    for (i = 0; i < (oprsz / 16) * m; i++) {                           \
-> +        j = i < m ? 0 : 1;                                             \
-> +        uint64_t k  = ((uint8_t)Vd->E(i)) % (2 * m);                   \
-> +        temp.E(i) = k < m ? Vk->E(k + j * m) : Vj->E(k + (j - 1) * m); \
-> +    }                                                                  \
-> +    *Vd = temp;                                                        \
->   }
->   
->   VSHUF(vshuf_h, 16, H)
->   VSHUF(vshuf_w, 32, W)
->   VSHUF(vshuf_d, 64, D)
->   
-> -#define VSHUF4I(NAME, BIT, E)                                      \
-> -void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
-> -{                                                                  \
-> -    int i;                                                         \
-> -    VReg temp;                                                     \
-> -    VReg *Vd = (VReg *)vd;                                         \
-> -    VReg *Vj = (VReg *)vj;                                         \
-> -                                                                   \
-> -    for (i = 0; i < LSX_LEN/BIT; i++) {                            \
-> -         temp.E(i) = Vj->E(((i) & 0xfc) + (((imm) >>               \
-> -                           (2 * ((i) & 0x03))) & 0x03));           \
-> -    }                                                              \
-> -    *Vd = temp;                                                    \
-> +#define VSHUF4I(NAME, BIT, E)                                               \
-> +void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc)          \
-> +{                                                                           \
-> +    int i, j, max;                                                          \
-> +    VReg temp = {};                                                         \
-> +    VReg *Vd = (VReg *)vd;                                                  \
-> +    VReg *Vj = (VReg *)vj;                                                  \
-> +    int oprsz = simd_oprsz(desc);                                           \
-> +                                                                            \
-> +    max = LSX_LEN / BIT;                                                    \
-> +    for (i = 0; i < oprsz / (BIT / 8); i++) {                               \
-> +        j = i < max ? 1 : 2;                                                \
-> +        temp.E(i) = Vj->E(SHF_POS(i - ((j -1)* max), imm) + (j - 1) * max); \
-> +    }                                                                       \
-> +    *Vd = temp;                                                             \
->   }
->   
->   VSHUF4I(vshuf4i_b, 8, B)
-> @@ -3440,38 +3448,92 @@ VSHUF4I(vshuf4i_w, 32, W)
->   
->   void HELPER(vshuf4i_d)(void *vd, void *vj, uint64_t imm, uint32_t desc)
->   {
-> +    int i;
-> +    VReg temp = {};
->       VReg *Vd = (VReg *)vd;
->       VReg *Vj = (VReg *)vj;
-> +    int oprsz = simd_oprsz(desc);
->   
-> -    VReg temp;
-> -    temp.D(0) = (imm & 2 ? Vj : Vd)->D(imm & 1);
-> -    temp.D(1) = (imm & 8 ? Vj : Vd)->D((imm >> 2) & 1);
-> +    for (i = 0; i < oprsz / 16; i++) {
-> +        temp.D(2 * i) = (imm & 2 ? Vj : Vd)->D((imm & 1) + 2 * i);
-> +        temp.D(2 * i + 1) = (imm & 8 ? Vj : Vd)->D(((imm >> 2) & 1) + 2 * i);
-> +    }
-> +    *Vd = temp;
-> +}
-> +
-> +void HELPER(vperm_w)(void *vd, void *vj, void *vk, uint32_t desc)
-> +{
-> +    int i, m;
-> +    VReg temp = {};
-> +    VReg *Vd = (VReg *)vd;
-> +    VReg *Vj = (VReg *)vj;
-> +    VReg *Vk = (VReg *)vk;
-> +
-> +    m = LASX_LEN / 32;
-> +    for (i = 0; i < m ; i++) {
-> +        uint64_t k = (uint8_t)Vk->W(i) % 8;
-> +        temp.W(i) = Vj->W(k);
-> +    }
->       *Vd = temp;
->   }
->   
->   void HELPER(vpermi_w)(void *vd, void *vj, uint64_t imm, uint32_t desc)
->   {
-> +    int i;
-> +    VReg temp = {};
-> +    VReg *Vd = (VReg *)vd;
-> +    VReg *Vj = (VReg *)vj;
-> +    int oprsz = simd_oprsz(desc);
-> +
-> +    for (i = 0; i < oprsz / 16; i++) {
-> +        temp.W(4 * i) = Vj->W((imm & 0x3) + 4 * i);
-> +        temp.W(4 * i + 1) = Vj->W(((imm >> 2) & 0x3) + 4 * i);
-> +        temp.W(4 * i + 2) = Vd->W(((imm >> 4) & 0x3) + 4 * i);
-> +        temp.W(4 * i + 3) = Vd->W(((imm >> 6) & 0x3) + 4 * i);
-> +    }
-> +    *Vd = temp;
-> +}
-> +
-> +void HELPER(vpermi_d)(void *vd, void *vj, uint64_t imm, uint32_t desc)
-> +{
-> +    VReg temp = {};
-> +    VReg *Vd = (VReg *)vd;
-> +    VReg *Vj = (VReg *)vj;
-> +
-> +    temp.D(0) = Vj->D(imm & 0x3);
-> +    temp.D(1) = Vj->D((imm >> 2) & 0x3);
-> +    temp.D(2) = Vj->D((imm >> 4) & 0x3);
-> +    temp.D(3) = Vj->D((imm >> 6) & 0x3);
-> +    *Vd = temp;
-> +}
-> +
-> +void HELPER(vpermi_q)(void *vd, void *vj, uint64_t imm, uint32_t desc)
-> +{
-> +    int i;
->       VReg temp;
->       VReg *Vd = (VReg *)vd;
->       VReg *Vj = (VReg *)vj;
->   
-> -    temp.W(0) = Vj->W(imm & 0x3);
-> -    temp.W(1) = Vj->W((imm >> 2) & 0x3);
-> -    temp.W(2) = Vd->W((imm >> 4) & 0x3);
-> -    temp.W(3) = Vd->W((imm >> 6) & 0x3);
-> +    for (i = 0; i < 2; i++, imm >>= 4) {
-> +        temp.Q(i) = (imm & 2 ? Vd: Vj)->Q(imm & 1);
-> +    }
->       *Vd = temp;
->   }
->   
->   #define VEXTRINS(NAME, BIT, E, MASK)                               \
->   void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
->   {                                                                  \
-> -    int ins, extr;                                                 \
-> +    int i, ins, extr, max;                                         \
->       VReg *Vd = (VReg *)vd;                                         \
->       VReg *Vj = (VReg *)vj;                                         \
-> +    int oprsz = simd_oprsz(desc);                                  \
->                                                                      \
-> +    max = LSX_LEN / BIT;                                           \
->       ins = (imm >> 4) & MASK;                                       \
->       extr = imm & MASK;                                             \
-> -    Vd->E(ins) = Vj->E(extr);                                      \
-> +    for (i = 0; i < oprsz / 16; i++) {                             \
-> +        Vd->E(ins + i * max) = Vj->E(extr + i * max);              \
-> +    }                                                              \
->   }
->   
->   VEXTRINS(vextrins_b, 8, B, 0xf)
-> diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-> index 2b55ce4464..3d0b8bfb74 100644
-> --- a/target/loongarch/insn_trans/trans_vec.c.inc
-> +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-> @@ -61,6 +61,10 @@ static bool gen_xxxx_ptr(DisasContext *ctx, arg_vvvv *a,
->   static bool gen_vvvv_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
->                           gen_helper_gvec_4 *fn)
->   {
-> +    if (!check_vec(ctx, oprsz)) {
-> +        return true;
-> +    }
-> +
->       tcg_gen_gvec_4_ool(vec_full_offset(a->vd),
->                          vec_full_offset(a->vj),
->                          vec_full_offset(a->vk),
-> @@ -72,13 +76,15 @@ static bool gen_vvvv_vl(DisasContext *ctx, arg_vvvv *a, uint32_t oprsz,
->   static bool gen_vvvv(DisasContext *ctx, arg_vvvv *a,
->                        gen_helper_gvec_4 *fn)
->   {
-> -    if (!check_vec(ctx, 16)) {
-> -        return true;
-> -    }
-> -
->       return gen_vvvv_vl(ctx, a, 16, fn);
->   }
->   
-> +static bool gen_xxxx(DisasContext *ctx, arg_vvvv *a,
-> +                     gen_helper_gvec_4 *fn)
-> +{
-> +    return gen_vvvv_vl(ctx, a, 32, fn);
-> +}
-> +
->   static bool gen_vvv_ptr_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
->                              gen_helper_gvec_3_ptr *fn)
->   {
-> @@ -5217,17 +5223,33 @@ TRANS(vshuf_b, LSX, gen_vvvv, gen_helper_vshuf_b)
->   TRANS(vshuf_h, LSX, gen_vvv, gen_helper_vshuf_h)
->   TRANS(vshuf_w, LSX, gen_vvv, gen_helper_vshuf_w)
->   TRANS(vshuf_d, LSX, gen_vvv, gen_helper_vshuf_d)
-> +TRANS(xvshuf_b, LASX, gen_xxxx, gen_helper_vshuf_b)
-> +TRANS(xvshuf_h, LASX, gen_xxx, gen_helper_vshuf_h)
-> +TRANS(xvshuf_w, LASX, gen_xxx, gen_helper_vshuf_w)
-> +TRANS(xvshuf_d, LASX, gen_xxx, gen_helper_vshuf_d)
->   TRANS(vshuf4i_b, LSX, gen_vv_i, gen_helper_vshuf4i_b)
->   TRANS(vshuf4i_h, LSX, gen_vv_i, gen_helper_vshuf4i_h)
->   TRANS(vshuf4i_w, LSX, gen_vv_i, gen_helper_vshuf4i_w)
->   TRANS(vshuf4i_d, LSX, gen_vv_i, gen_helper_vshuf4i_d)
-> +TRANS(xvshuf4i_b, LASX, gen_xx_i, gen_helper_vshuf4i_b)
-> +TRANS(xvshuf4i_h, LASX, gen_xx_i, gen_helper_vshuf4i_h)
-> +TRANS(xvshuf4i_w, LASX, gen_xx_i, gen_helper_vshuf4i_w)
-> +TRANS(xvshuf4i_d, LASX, gen_xx_i, gen_helper_vshuf4i_d)
->   
-> +TRANS(xvperm_w, LASX, gen_xxx, gen_helper_vperm_w)
->   TRANS(vpermi_w, LSX, gen_vv_i, gen_helper_vpermi_w)
-> +TRANS(xvpermi_w, LASX, gen_xx_i, gen_helper_vpermi_w)
-> +TRANS(xvpermi_d, LASX, gen_xx_i, gen_helper_vpermi_d)
-> +TRANS(xvpermi_q, LASX, gen_xx_i, gen_helper_vpermi_q)
->   
->   TRANS(vextrins_b, LSX, gen_vv_i, gen_helper_vextrins_b)
->   TRANS(vextrins_h, LSX, gen_vv_i, gen_helper_vextrins_h)
->   TRANS(vextrins_w, LSX, gen_vv_i, gen_helper_vextrins_w)
->   TRANS(vextrins_d, LSX, gen_vv_i, gen_helper_vextrins_d)
-> +TRANS(xvextrins_b, LASX, gen_xx_i, gen_helper_vextrins_b)
-> +TRANS(xvextrins_h, LASX, gen_xx_i, gen_helper_vextrins_h)
-> +TRANS(xvextrins_w, LASX, gen_xx_i, gen_helper_vextrins_w)
-> +TRANS(xvextrins_d, LASX, gen_xx_i, gen_helper_vextrins_d)
->   
->   static bool trans_vld(DisasContext *ctx, arg_vr_i *a)
->   {
-> 
+This process to add TCG plugin involves four major changes. The first one
+is to add GDBFeature structure that represents a GDB feature, which usually
+includes registers. GDBFeature can be generated from static XML files or
+dynamically generated by architecture-specific code. In fact, this is a
+refactoring independent of the feature this series adds, and potentially
+it's benefitial even without the plugin feature. The plugin feature will
+utilize this new structure to describe registers exposed to plugins.
+
+The second one is to make gdb_read_register/gdb_write_register usable
+outside of gdbstub context.
+
+The third one is to actually make registers readable for plugins.
+
+The last one is to allow to implement a QEMU plugin in C++. A plugin that
+I'll describe later is written in C++.
+
+The below is a summary of patches:
+Patch [01, 12] introduces num_regs member to GDBFeature.
+Patch 13 adds members useful to identify registers to GDBFeature.
+Patch 14 makes registers readable outside of gdbstub context.
+Patch [15, 17] add the feature to read registers from plugins.
+Patch [18, 19] make it possible to write plugins in C++.
+
+V7 -> V8:
+  Rebased to "[PATCH v3 00/12] gdbstub and TCG plugin improvements".
+  Clarified that initialization and exit hooks affect TCG state.
+  Simplified by adding the core feature to gdb_regs.
+
+V6 -> V7:
+  Rebased to "[PATCH v2 00/11] gdbstub and TCG plugin improvements".
+  Replaced functions to get register identifiers.
+
+V5 -> V6:
+  Rebased to "[PATCH 0/8] gdbstub and TCG plugin improvements".
+
+V4 -> V5:
+  Corrected g_rw_lock_writer_lock() call. (Richard Henderson)
+  Replaced abort() with g_assert_not_reached(). (Richard Henderson)
+  Fixed CSR name leak in target/riscv. (Richard Henderson)
+  Removed gdb_has_xml variable.
+
+V3 -> V4:
+  Added execlog changes I forgot to include in the last version.
+
+V2 -> V3:
+  Added patch "hw/core/cpu: Return static value with gdb_arch_name()".
+  Added patch "gdbstub: Dynamically allocate target.xml buffer".
+  (Alex Benn√©e)
+  Added patch "gdbstub: Introduce GDBFeatureBuilder". (Alex Benn√©e)
+  Dropped Reviewed-by tags for "target/*: Use GDBFeature for dynamic XML".
+  Changed gdb_find_static_feature() to abort on failure. (Alex Benn√©e)
+  Changed the execlog plugin to log the register value only when changed.
+  (Alex Benn√©e)
+  Dropped 0x prefixes for register value logs for conciseness.
+
+V1 -> V2:
+  Added SPDX-License-Identifier: GPL-2.0-or-later. (Philippe Mathieu-Daud√©)
+  Split long lines. (Philippe Mathieu-Daud√©)
+  Renamed gdb_features to gdb_static_features (Philippe Mathieu-Daud√©)
+  Dropped RFC.
+
+The execlog plugin will have new options to demonstrate the new feature.
+I also have a plugin that uses this new feature to generate execution
+traces for Sniper processor simulator, which is available at:
+https://github.com/shioya-lab/sniper/tree/akihikodaki/bb
+
+Akihiko Odaki (19):
+  gdbstub: Add num_regs member to GDBFeature
+  gdbstub: Introduce gdb_find_static_feature()
+  gdbstub: Introduce GDBFeatureBuilder
+  target/arm: Use GDBFeature for dynamic XML
+  target/ppc: Use GDBFeature for dynamic XML
+  target/riscv: Use GDBFeature for dynamic XML
+  gdbstub: Use GDBFeature for gdb_register_coprocessor
+  gdbstub: Use GDBFeature for GDBRegisterState
+  gdbstub: Change gdb_get_reg_cb and gdb_set_reg_cb
+  gdbstub: Simplify XML lookup
+  gdbstub: Infer number of core registers from XML
+  hw/core/cpu: Remove gdb_get_dynamic_xml member
+  gdbstub: Add members to identify registers to GDBFeature
+  gdbstub: Expose functions to read registers
+  cpu: Call plugin hooks only when ready
+  plugins: Allow to read registers
+  contrib/plugins: Allow to log registers
+  plugins: Support C++
+  contrib/plugins: Add cc plugin
+
+ docs/devel/tcg-plugins.rst   |  18 ++-
+ configure                    |  15 ++-
+ include/exec/gdbstub.h       |  39 ++++++-
+ include/hw/core/cpu.h        |   7 +-
+ include/qemu/qemu-plugin.h   |  56 ++++++++-
+ target/arm/cpu.h             |  27 ++---
+ target/arm/internals.h       |  14 +--
+ target/hexagon/internal.h    |   4 +-
+ target/microblaze/cpu.h      |   4 +-
+ target/ppc/cpu-qom.h         |   4 +-
+ target/ppc/cpu.h             |   3 +-
+ target/riscv/cpu.h           |   5 +-
+ target/s390x/cpu.h           |   2 -
+ contrib/plugins/execlog.c    | 120 ++++++++++++++-----
+ cpu.c                        |  11 --
+ gdbstub/gdbstub.c            | 216 ++++++++++++++++++++++++++--------
+ hw/core/cpu-common.c         |  15 ++-
+ plugins/api.c                |  20 ++++
+ target/arm/cpu.c             |   2 -
+ target/arm/cpu64.c           |   1 -
+ target/arm/gdbstub.c         | 221 +++++++++++++++++------------------
+ target/arm/gdbstub64.c       | 117 +++++++++----------
+ target/avr/cpu.c             |   1 -
+ target/hexagon/cpu.c         |   4 +-
+ target/hexagon/gdbstub.c     |  10 +-
+ target/i386/cpu.c            |   2 -
+ target/loongarch/cpu.c       |   2 -
+ target/loongarch/gdbstub.c   |  13 ++-
+ target/m68k/cpu.c            |   1 -
+ target/m68k/helper.c         |  26 +++--
+ target/microblaze/cpu.c      |   6 +-
+ target/microblaze/gdbstub.c  |   9 +-
+ target/ppc/cpu_init.c        |   5 +-
+ target/ppc/gdbstub.c         | 108 ++++++++---------
+ target/riscv/cpu.c           |  15 ---
+ target/riscv/gdbstub.c       | 135 +++++++++++----------
+ target/rx/cpu.c              |   1 -
+ target/s390x/cpu.c           |   1 -
+ target/s390x/gdbstub.c       | 105 ++++++++++-------
+ contrib/plugins/Makefile     |   5 +
+ contrib/plugins/cc.cc        |  17 +++
+ plugins/qemu-plugins.symbols |   3 +
+ scripts/feature_to_c.py      |  58 ++++++++-
+ tests/tcg/Makefile.target    |   3 +
+ 44 files changed, 921 insertions(+), 530 deletions(-)
+ create mode 100644 contrib/plugins/cc.cc
+
+-- 
+2.42.0
 
 
