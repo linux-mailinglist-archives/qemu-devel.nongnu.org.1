@@ -2,80 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A4A7A2DBB
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3B57A2DDE
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 06:09:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhM1G-0006Ba-KT; Fri, 15 Sep 2023 23:30:54 -0400
+	id 1qhMb4-0001Td-Oh; Sat, 16 Sep 2023 00:07:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM1D-0006Ar-Ob
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:51 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1qhMav-0001No-8r
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 00:07:46 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM1C-00088b-2G
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:51 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-68fdcc37827so2793943b3a.0
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:49 -0700 (PDT)
+ id 1qhMaq-0000Ju-2P
+ for qemu-devel@nongnu.org; Sat, 16 Sep 2023 00:07:45 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-2749b3e682aso1027137a91.2
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 21:07:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694835048; x=1695439848; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=H8VdfeDW6kikdde/NruMPkmBjI2wGO+ImbTcebxuJbg=;
- b=nDJXc1WBt6mXTr3z9L6x7L4JaAMw9Gu1GmAi8QpO8sA6Ee6MDW1Mj7E+WxLGujLqG2
- VN+c6gKq2+Y12oyuOmJGCCIVKhcFaOGnGVMTvNG0USxLdTAukp4PWxvQuq29bHQvYegv
- WWgyv4t+DnEJdlX6uy4vfjxEYB7znr1I6uxTiBPPAFol4H2to0/vandq7CPNuwzJbyy5
- GPcwSOLaY//QMnJ3tWcGMVba3cQGsp16H4yVWe9AcLQumtPH1xC9cmTHuL4AF+zBBb42
- RXITztNkVCQUghspixgz3kVyl1Shu2oq374JUBgjc4f2hiDPK2ggg6rocioShCTj5Qyx
- Ra6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694835048; x=1695439848;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=linaro.org; s=google; t=1694837257; x=1695442057; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
  :subject:date:message-id:reply-to;
- bh=H8VdfeDW6kikdde/NruMPkmBjI2wGO+ImbTcebxuJbg=;
- b=xPabuqLwFC1OTsQkQcVP9KlDjmcoCuyAlz2KOCWqBhD9l/+VAKValLTQPIXN7plFtZ
- wAB4yV54VLsVyx5751OC3yJrytbqwGvRM6Trc5AmZYkDeaUtrF+BY9ENbObXM0hZXNgt
- 26PW/ffN3UsX+b5WAnwW/d1F5Eb1xBPCP5l8GeYQNjkV+ooFovIrkg+ncPmvje/sISSl
- tK/G9J6vO0TNRac3hnV/+nAKRGhraI+IXU5ySm/gFP142EtHugo9/J7P8IMyH9mhAS/E
- rTKOOAw2LJ3W/lxJLT1ZacmVXenYsIgAiAFF1wn4NGqIfwAMo0A7OFl58F+O2I3REZcu
- z2uw==
-X-Gm-Message-State: AOJu0YzJQsnz45WfnAxZ7hizb47ELzqyXuZ4VD/NARBykTXCa1OMXwbf
- XfMNQd0ZU4xdBWVkNixhdtKEysKCvATX9/rM75E=
-X-Google-Smtp-Source: AGHT+IHtwUP4SLHuSlgdbm3Lc8fEXyh1Pt/ag7PO/5ePZgs0GvLGf2XTYtRV1WTrZ0LwLZFJLz4qJA==
-X-Received: by 2002:a05:6a20:3955:b0:137:c971:6a0c with SMTP id
- r21-20020a056a20395500b00137c9716a0cmr3605961pzg.31.1694835048684; 
- Fri, 15 Sep 2023 20:30:48 -0700 (PDT)
-Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 20:30:48 -0700 (PDT)
+ bh=BWUb1i0njYqAZ3C9wGle79TpkM6ksIC2UsLiIm0hXpI=;
+ b=d+JEBBNCl2X482/8vBDlwCzU9yELwMz9PeGz6imiouw8SyTSXQwB/k5Cu6tHX+xPQ+
+ /aRRpnXDsVLs4zd2NIn0yjAadDU9aGzgH2aA93I3kFlH9juKHWisze7ivpUoU65qisUX
+ 4KU9SiWsRyj5/FYWFkry+UCIryuDH2SEzaaEiOTvki46APXcdgGNmhZpioBK47uq2OhL
+ 2v8SUQ8cQ1vJ38HEeH0+Ux/I0P/w4KUu2FyBYmb6M0v/1NGL3beJ5vJ34N1EWsqJLPTa
+ rZe1g1Zsmp7Ij61Xsa8XAV0jzK+iGVj1Mj/GUrnWfl9mFaKhAeT6dSiQ6Ixsdc5/6Pd1
+ mgCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694837257; x=1695442057;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BWUb1i0njYqAZ3C9wGle79TpkM6ksIC2UsLiIm0hXpI=;
+ b=nSBPLZD1dUvBtapnm3+C026dYxKbaDfnSyL6ktVC+tbtnYg5R6K9e5F0Ri9aeGJq6o
+ 1JW+Afw4SXL126nRlzisqzwwfN7HNcHIukVqWgfMNzXO4sz6V+I7M22tFwi9YiKzDOtX
+ lGM9E+f3tkVjbVE0l17w5ph9oo0ydhGrD3k+Mg48S0F0ICU2C1GgcTmfuuVJEpRJoDCE
+ 3K1jjz3RX+AobPfT3ZYGypIBREmRYBQw+LHMGoL+IUfNRA2/N1bmQtLvxNPJssK4yCid
+ E6XU8v+tauV7opXk2xh3K6hybiTwtXlEp+l0Z2lWeZMz+vqnGdrrwlBsuy9cuosyAI7i
+ TNIQ==
+X-Gm-Message-State: AOJu0Yw4etxdlrbfvWxMg6dDOBKkFSJ3j+HXP9r4TL30BUtVGEArkSv3
+ jorpG+158W9CAUme4oRGqLuLgSf929xOTe+BI50=
+X-Google-Smtp-Source: AGHT+IHgnPFQrMapp/PVkWJw4MRKsBgKHBfLOBcQ3A5kF4/MC5sPUGK07eqqQ2mECyvyAI2MN3u31A==
+X-Received: by 2002:a17:90b:4b46:b0:267:ffcf:e9e3 with SMTP id
+ mi6-20020a17090b4b4600b00267ffcfe9e3mr3172286pjb.46.1694837257276; 
+ Fri, 15 Sep 2023 21:07:37 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ fw11-20020a17090b128b00b0025bd4db25f0sm3683034pjb.53.2023.09.15.21.07.36
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Sep 2023 21:07:36 -0700 (PDT)
+Message-ID: <baa351b1-ac5f-6c14-3ada-e98f559b8fd3@linaro.org>
+Date: Fri, 15 Sep 2023 21:07:34 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PULL 00/39] tcg patch queue
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 39/39] tcg: Map code_gen_buffer with PROT_BTI
-Date: Fri, 15 Sep 2023 20:30:11 -0700
-Message-Id: <20230916033011.479144-40-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230916033011.479144-1-richard.henderson@linaro.org>
 References: <20230916033011.479144-1-richard.henderson@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Language: en-US
+In-Reply-To: <20230916033011.479144-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,113 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For linux aarch64 host supporting BTI, map the buffer
-to require BTI instructions at branch landing pads.
+On 9/15/23 20:29, Richard Henderson wrote:
+> The following changes since commit 005ad32358f12fe9313a4a01918a55e60d4f39e5:
+> 
+>    Merge tag 'pull-tpm-2023-09-12-3' ofhttps://github.com/stefanberger/qemu-tpm  into staging (2023-09-13 13:41:57 -0400)
+> 
+> are available in the Git repository at:
+> 
+>    https://gitlab.com/rth7680/qemu.git  tags/pull-tcg-20230915
+> 
+> for you to fetch changes up to e0d9f49c143359b4a34cb80737af57228c62a008:
+> 
+>    accel/tcg: Restrict tcg_exec_[un]realizefn() to TCG (2023-09-15 19:06:29 -0700)
+> 
+> ----------------------------------------------------------------
+> *: Delete checks for old host definitions
+> tcg/loongarch64: Generate LSX instructions
+> fpu: Add conversions between bfloat16 and [u]int8
+> fpu: Handle m68k extended precision denormals properly
+> accel/tcg: Improve cputlb i/o organization
+> accel/tcg: Simplify tlb_plugin_lookup
+> accel/tcg: Remove false-negative halted assertion
+> tcg: Add gvec compare with immediate and scalar operand
+> tcg/aarch64: Emit BTI insns at jump landing pads
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/region.c | 41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+Ho hum.  Disregard this PR please.  I introduced an error applying tcg/loongarch patches.
 
-diff --git a/tcg/region.c b/tcg/region.c
-index 2b28ed3556..a078899096 100644
---- a/tcg/region.c
-+++ b/tcg/region.c
-@@ -33,8 +33,19 @@
- #include "tcg/tcg.h"
- #include "exec/translation-block.h"
- #include "tcg-internal.h"
-+#include "host/cpuinfo.h"
- 
- 
-+/*
-+ * Local source-level compatibility with Unix.
-+ * Used by tcg_region_init below.
-+ */
-+#if defined(_WIN32)
-+#define PROT_READ   1
-+#define PROT_WRITE  2
-+#define PROT_EXEC   4
-+#endif
-+
- struct tcg_region_tree {
-     QemuMutex lock;
-     QTree *tree;
-@@ -83,6 +94,18 @@ bool in_code_gen_buffer(const void *p)
-     return (size_t)(p - region.start_aligned) <= region.total_size;
- }
- 
-+#ifndef CONFIG_TCG_INTERPRETER
-+static int host_prot_read_exec(void)
-+{
-+#if defined(CONFIG_LINUX) && defined(HOST_AARCH64) && defined(PROT_BTI)
-+    if (cpuinfo & CPUINFO_BTI) {
-+        return PROT_READ | PROT_EXEC | PROT_BTI;
-+    }
-+#endif
-+    return PROT_READ | PROT_EXEC;
-+}
-+#endif
-+
- #ifdef CONFIG_DEBUG_TCG
- const void *tcg_splitwx_to_rx(void *rw)
- {
-@@ -505,14 +528,6 @@ static int alloc_code_gen_buffer(size_t tb_size, int splitwx, Error **errp)
-     return PROT_READ | PROT_WRITE;
- }
- #elif defined(_WIN32)
--/*
-- * Local source-level compatibility with Unix.
-- * Used by tcg_region_init below.
-- */
--#define PROT_READ   1
--#define PROT_WRITE  2
--#define PROT_EXEC   4
--
- static int alloc_code_gen_buffer(size_t size, int splitwx, Error **errp)
- {
-     void *buf;
-@@ -567,7 +582,7 @@ static int alloc_code_gen_buffer_splitwx_memfd(size_t size, Error **errp)
-         goto fail;
-     }
- 
--    buf_rx = mmap(NULL, size, PROT_READ | PROT_EXEC, MAP_SHARED, fd, 0);
-+    buf_rx = mmap(NULL, size, host_prot_read_exec(), MAP_SHARED, fd, 0);
-     if (buf_rx == MAP_FAILED) {
-         goto fail_rx;
-     }
-@@ -642,7 +657,7 @@ static int alloc_code_gen_buffer_splitwx_vmremap(size_t size, Error **errp)
-         return -1;
-     }
- 
--    if (mprotect((void *)buf_rx, size, PROT_READ | PROT_EXEC) != 0) {
-+    if (mprotect((void *)buf_rx, size, host_prot_read_exec()) != 0) {
-         error_setg_errno(errp, errno, "mprotect for jit splitwx");
-         munmap((void *)buf_rx, size);
-         munmap((void *)buf_rw, size);
-@@ -805,7 +820,7 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
-     need_prot = PROT_READ | PROT_WRITE;
- #ifndef CONFIG_TCG_INTERPRETER
-     if (tcg_splitwx_diff == 0) {
--        need_prot |= PROT_EXEC;
-+        need_prot |= host_prot_read_exec();
-     }
- #endif
-     for (size_t i = 0, n = region.n; i < n; i++) {
-@@ -820,7 +835,11 @@ void tcg_region_init(size_t tb_size, int splitwx, unsigned max_cpus)
-             } else if (need_prot == (PROT_READ | PROT_WRITE)) {
-                 rc = qemu_mprotect_rw(start, end - start);
-             } else {
-+#ifdef CONFIG_POSIX
-+                rc = mprotect(start, end - start, need_prot);
-+#else
-                 g_assert_not_reached();
-+#endif
-             }
-             if (rc) {
-                 error_setg_errno(&error_fatal, errno,
--- 
-2.34.1
 
+r~
 
