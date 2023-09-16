@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5B07A2DB0
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267DF7A2DAE
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Sep 2023 05:32:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhM0m-0005u0-9i; Fri, 15 Sep 2023 23:30:24 -0400
+	id 1qhM0m-0005ud-S5; Fri, 15 Sep 2023 23:30:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM0i-0005tA-Sw
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:20 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
+ id 1qhM0j-0005tL-LN
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:22 -0400
+Received: from mail-qv1-xf2d.google.com ([2607:f8b0:4864:20::f2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qhM0h-0007yr-Be
- for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:20 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1d643db2c98so1257751fac.0
- for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:17 -0700 (PDT)
+ id 1qhM0h-0007z9-QU
+ for qemu-devel@nongnu.org; Fri, 15 Sep 2023 23:30:21 -0400
+Received: by mail-qv1-xf2d.google.com with SMTP id
+ 6a1803df08f44-656262cd5aeso12353206d6.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Sep 2023 20:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1694835017; x=1695439817; darn=nongnu.org;
+ d=linaro.org; s=google; t=1694835018; x=1695439818; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Gh4fScBKoyUlMU3zgx4IueUiBP67YjSVPb6IBGAB3cw=;
- b=QjGhw6GYKFgDm8WlTD7Nnl5f3yPipwa+abdvekoJ/JBb9tkVn8b05SGF33zTIl5cXS
- mBBYUZfnpJAjh4lr9dvo1bS4vLWJGB9Zcjhd+FBYGgA7fnpPLpmSZH9CVNP2rwDZpyJB
- euovaJBvS8hDzeHwltNBsnnBZ2DqNzR5UWKb0hr3IsFwCbRuDW569wbAiXJ1MTy+qtDU
- NRqLW7jHuzZLh/GNNwEg3dbvg6y33U49UZWnel8YCG6MbXe7m54tR+6f3DfiY5llZ8Gi
- F0mys5gGgeBpliA7n6/tvgpBlH0C8HS72Rsqx1ccrBl9iXGBzniuI1KkJ+UO4v05jX0j
- rW9w==
+ bh=rRP2RNc4oTuBpL1/TRdUiohoElZew6gpwHeHdQINSsc=;
+ b=KqdkMkSX2lkHWYw0BUZEwRu72aAOANvwBzbhj0p5XiGobUVKuqKPi8A4uELbdOX1A+
+ z0fs+RWJWCnRZ/41NMc9gByQxfsXjYNCUVPzwsedbdRgpHSO5Nfusi4b4b+gdZbQ2lz6
+ Lp0wmCSXn6TOe0WSZa6lXO3OAs4T7DXHbTZqhmU4GsKKkujyDSYGoybKR3AEwkznJ5Cm
+ s8NT/Ndw8ow9RMg84XNm4Hxob2je2Lh/JO0hY+7cfXXsxdxp64EisOrdQcMJ+bLsUInP
+ WvD/XCu0Kuk38TTmDuxf1rJWbw1D/vRmbWZH/sVvt59Vf8lsfbo+D2Las6HRNTbllrBc
+ dOkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694835017; x=1695439817;
+ d=1e100.net; s=20230601; t=1694835018; x=1695439818;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gh4fScBKoyUlMU3zgx4IueUiBP67YjSVPb6IBGAB3cw=;
- b=eb23QeTUIMOf5276Gwq6dMgXxCWv3kRGy2syeMNRxwrKJJHGFmqIOq+MDPMvdkhzZB
- gx3DdZuTN7I4QfSQkS1uLr7SQVMV8hpN6z0RVHjd3BESXIU+nE9fMLB+0x2zS9yDaqeq
- frhvYWLPtxJGn1ZlgiU9GXQkzDQVIXSiE6xRKrGzTlXCuMQCbxYinlTs8ZFdXkcv6oOM
- 7vMQKT9XWryFjiDWbyg2/4k/w4BHkJpjfMjKWQayEUvGuc+izqan+vGvDXXORua9uXno
- VguIsS7WTyl0SMPOuWPgzcPhk/CytRKQNvtDlLMUkIkd9yaiIp4r84HMnNCYP1p4gLDU
- /GLw==
-X-Gm-Message-State: AOJu0YzH01uFfF1vKHhhWWlb+50Qq388TnVqxN3onM68+U2y+rb+iQPk
- xRtNX9VI/LBnNCbvE6h5aVVUOXr/6PyIFsanxf8=
-X-Google-Smtp-Source: AGHT+IFo2K9h7PbdwB3jIFzXTbOoUlelqajtnm9hm1+/rG0Dwv0xNcPQnyndI5oA8FYaiz94jvOlzA==
-X-Received: by 2002:a05:6870:14ce:b0:1d0:d78b:982e with SMTP id
- l14-20020a05687014ce00b001d0d78b982emr4286734oab.35.1694835017386; 
- Fri, 15 Sep 2023 20:30:17 -0700 (PDT)
+ bh=rRP2RNc4oTuBpL1/TRdUiohoElZew6gpwHeHdQINSsc=;
+ b=kmvN46r51MIZ8Ylu46b4d5xC232YT4gNv78Dod1WJdBFw3zaI0gDYtHJStyE6Tfx4Y
+ Qq9tkN7y385zbll3kllkvDKavpFH9LM5v841U0DsCuO/UjgDrzh6MgG3AaszfcdkhFhP
+ /60HyZG4HpSBGJi1RHI/pUEai33T9+XGhm7S1DsIv04Z5YZGsNdsbCYfOgTXiwz0tG1O
+ 6BrQGFVIpwHWe46BdXPxAV0CTEKgb9Q/pOcu2C8+txw0G1qExvJdP8m2BfqZlMYKGWos
+ rV5i3wTq/fcPpiW2jNlNdyszTdYo3HXyuAsmVw7fKblA0m4dYbgFsOr5+lmEs7w80tGF
+ 0TTA==
+X-Gm-Message-State: AOJu0YxTF/GWkow80UoQoRV9xfULgz9jayKeL6VLKyNI2J8rAhc6Dfc4
+ YtBPaVtvfsltRSO/NWkauRfNAtjgTz2h1S7PTGY=
+X-Google-Smtp-Source: AGHT+IG0Ds64BBmLHsdN3p5W7c25I7cIDeEMcyp4Ubc/sObkLst/8VBVMr7mJB2i3sQoEW8Ei1D6Pw==
+X-Received: by 2002:a05:620a:2981:b0:76c:ea00:e5d7 with SMTP id
+ r1-20020a05620a298100b0076cea00e5d7mr3557758qkp.12.1694835018386; 
+ Fri, 15 Sep 2023 20:30:18 -0700 (PDT)
 Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.16
+ j26-20020aa783da000000b00687a4b70d1esm3577320pfn.218.2023.09.15.20.30.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Sep 2023 20:30:17 -0700 (PDT)
+ Fri, 15 Sep 2023 20:30:18 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 04/39] softmmu: Delete checks for old host definitions
-Date: Fri, 15 Sep 2023 20:29:36 -0700
-Message-Id: <20230916033011.479144-5-richard.henderson@linaro.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 05/39] thunk: Delete checks for old host definitions
+Date: Fri, 15 Sep 2023 20:29:37 -0700
+Message-Id: <20230916033011.479144-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230916033011.479144-1-richard.henderson@linaro.org>
 References: <20230916033011.479144-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-qv1-xf2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,31 +93,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-PA-RISC host support is already removed with commit
-b1cef6d02f ("Drop remaining bits of ia64 host support").
+Alpha, IA-64, and PA-RISC hosts are no longer supported.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230810225922.21600-1-akihiko.odaki@daynix.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20230808152314.102036-1-akihiko.odaki@daynix.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- softmmu/async-teardown.c | 3 ---
- 1 file changed, 3 deletions(-)
+ include/exec/user/thunk.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/softmmu/async-teardown.c b/softmmu/async-teardown.c
-index 62cdeb0f20..396963c091 100644
---- a/softmmu/async-teardown.c
-+++ b/softmmu/async-teardown.c
-@@ -121,10 +121,7 @@ static void *new_stack_for_clone(void)
- 
-     /* Allocate a new stack and get a pointer to its top. */
-     stack_ptr = qemu_alloc_stack(&stack_size);
--#if !defined(HOST_HPPA)
--    /* The top is at the end of the area, except on HPPA. */
-     stack_ptr += stack_size;
--#endif
- 
-     return stack_ptr;
- }
+diff --git a/include/exec/user/thunk.h b/include/exec/user/thunk.h
+index 6eedef48d8..2ebfecf58e 100644
+--- a/include/exec/user/thunk.h
++++ b/include/exec/user/thunk.h
+@@ -111,8 +111,7 @@ static inline int thunk_type_size(const argtype *type_ptr, int is_host)
+         if (is_host) {
+ #if defined(HOST_X86_64)
+             return 8;
+-#elif defined(HOST_ALPHA) || defined(HOST_IA64) || defined(HOST_MIPS) || \
+-      defined(HOST_PARISC) || defined(HOST_SPARC64)
++#elif defined(HOST_MIPS) || defined(HOST_SPARC64)
+             return 4;
+ #elif defined(HOST_PPC)
+             return sizeof(void *);
 -- 
 2.34.1
 
