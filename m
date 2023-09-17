@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C797A3DF7
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 23:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5497A3DE7
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 23:40:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhzVN-0005Dz-97; Sun, 17 Sep 2023 17:40:37 -0400
+	id 1qhzVF-0004fS-42; Sun, 17 Sep 2023 17:40:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qhzV5-0004sl-4U
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:40:28 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qhzUq-0004dv-Fz
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:40:04 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qhzUm-0004K4-0V
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:40:16 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-401d80f4ef8so43414585e9.1
- for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 14:39:59 -0700 (PDT)
+ id 1qhzUn-0004KA-GM
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:40:02 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4050bd2e33aso2275465e9.2
+ for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 14:40:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694986798; x=1695591598; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1694986799; x=1695591599; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VpDK27XFYFlUK18Xjk609Zfh0efzDinwgtTC93pyvcY=;
- b=eRb3Tw1PeS5O6Bh0gyVt9sowuUA6LPS7x4k2ANby4VLQstrvue+Uzekh2HpGwBQmAS
- 7SK7XIt5gWftc2R3jLpj0JpQthdvq9gPn9mJPDeMqsU3Q52YtfFXKXol3n+jSCCc7fY5
- fCS3U6GftRUjw4Cgc7MzGDAVhD+JcHgT6kiLJTaqVdq5WObMCi6glINusErfz58Prwbn
- MlpSAGbJ0yOvB3+f6Z8NQkhbI94oopN+hszrrkqmomCbUt8Q0LEuGZ/Jqhk/qsE02wwK
- B/NBrJQyr4Ov0+NZoKCjLv/0Kx3LtQe36fRGvoNJELkqPifr2L0ISGFxRwxq6990liRt
- emvA==
+ bh=H227gA3OyYFvq4OxqZqbzoLKSUHlAdHUEYmn3BUB/W8=;
+ b=elyLhH9tRC7oEQqHgl/+b8Pn9fWIL5MfZPzCY5f5s7ejKkECwNqJxMx5Sm52sKJ6bT
+ /T754jBox2jPomG0GmWfbS7bXSuRMFGOXCX+Ri/eeDxb+8KDv2JZKGR+YRXuRAJhzEHX
+ fdUbBcR5HxF7T28vA5FoKGAoiDRaXntrthKhQdNjX7s+4pUkcI3xnQWZF8Nrptd7x3fE
+ TJzUW7aaVTgXjkGhNU+Boyd7RaT8xQV4WRX5ohZWHsE9fKgw34JX/2OZT/DIHQOrHhgw
+ AdbhG7RWYcGBLQN9Ex8Zhqj9DCbgYYGllWdhdE/Bwc/I9yOZqR52DqeRKdzm8w4SJ/+h
+ 72iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694986798; x=1695591598;
+ d=1e100.net; s=20230601; t=1694986799; x=1695591599;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VpDK27XFYFlUK18Xjk609Zfh0efzDinwgtTC93pyvcY=;
- b=c6Jci2zaKrGC8KrgTTp8qji7BQ7LcuZLkrRUdS+J4JPxBJ2OqOh9GtOTZegSKAS4rS
- Ssfku7uyFSuCLnktsX6ETrmEi6nGud8jCXxZ0EfSzIRbyGArQlNdKbigs9OftXpOrejk
- iRNsxPM88UGCojUpl5SVQ1sm2uTqWjUbUkjv+iz8WmdHyhHSIy7MikZIorCMZfuEiEdM
- G7oSvCVpGtHXkDxcPGGKWQ/hpZyK/ZzbQboSOg8lptfzqcXXH1n0wwrgnMsHBWQXu5z8
- /AcaLruGjwSRm75oX/f+gpHudkch215LfdSL7hfTvZZqYNmCJWlk3q4QJXYIL2uUBdSn
- uhjw==
-X-Gm-Message-State: AOJu0YxKjFUBDMgM96N6tPxT+vetXWCYyyq7Kbfi7/qocqmBD91b9iyV
- zdK2VxYSpiVuj4+VbymikGNXQRb+zHc=
-X-Google-Smtp-Source: AGHT+IGWJWbNamVJ0TJeNIcRyuGlI3ut/Bcnc+BjWDXkpk7VWpeVuf4WVKMuW0ulmDnHVa9HcaJjQQ==
-X-Received: by 2002:a05:600c:3657:b0:3fa:8db4:91ec with SMTP id
- y23-20020a05600c365700b003fa8db491ecmr6508351wmq.10.1694986797793; 
- Sun, 17 Sep 2023 14:39:57 -0700 (PDT)
+ bh=H227gA3OyYFvq4OxqZqbzoLKSUHlAdHUEYmn3BUB/W8=;
+ b=TxWRJ+yOT5TJgju7RTOunAKHLJ3xKp6LNvCzmxlDIM9BgmMxyJhvD0Cykm8IQQXKGd
+ b+s/kGzGyP38wtOmOOlU6w1C/nhhE0UtL7yxANmJVScf428aMLNRVtWDqQygks1IkHfW
+ O7Js/s7Ec9Ur1VUIQThx9EUvJT7MMu4coVsYbxgDRXUcDtYosS8B78tPpGU1isKGFnTP
+ KDXE8Aj4e7Z2qJPWoykCWoTFN81oBmF10/t3IADVdsc5GgvY4UpOL/IE/D725PwAiNdE
+ qvfXLC5U+pKfy8CtJmf/4f0OeuMm3noHc4auqTE6jeB9VHFzgoaIH/KxbM0hirgU9RTn
+ XEjg==
+X-Gm-Message-State: AOJu0YyS7Et4h/WMtpxsy5cfxhjcxwSpMHBIfgCmWjCotd0ngKSGY+Jh
+ RRJJYgyxtAjGvXZEwTcR7kLn6eCW6xI=
+X-Google-Smtp-Source: AGHT+IHhya36nlo0eZ/k/DQIHNZFY6KJWPRGYuO+1MeJT8sPegaCiapvUALgy6HufICXuZ7cZq5BQA==
+X-Received: by 2002:a5d:5e89:0:b0:321:52fb:5703 with SMTP id
+ ck9-20020a5d5e89000000b0032152fb5703mr575766wrb.13.1694986798851; 
+ Sun, 17 Sep 2023 14:39:58 -0700 (PDT)
 Received: from karim.my.domain ([197.39.215.8])
  by smtp.gmail.com with ESMTPSA id
- n11-20020a5d484b000000b00317ddccb0d1sm10561735wrs.24.2023.09.17.14.39.56
+ n11-20020a5d484b000000b00317ddccb0d1sm10561735wrs.24.2023.09.17.14.39.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Sep 2023 14:39:57 -0700 (PDT)
+ Sun, 17 Sep 2023 14:39:58 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Richard Henderson <richard.henderson@linaro.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v2 26/28] bsd-user: Implement fork(2) and vfork(2) system
- calls.
-Date: Mon, 18 Sep 2023 00:38:01 +0300
-Message-ID: <20230917213803.20683-27-kariem.taha2.7@gmail.com>
+Subject: [PATCH v2 27/28] bsd-user: Implement rfork(2) system call.
+Date: Mon, 18 Sep 2023 00:38:02 +0300
+Message-ID: <20230917213803.20683-28-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
 References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,26 +99,37 @@ Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/freebsd/os-proc.h    | 34 ++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  8 ++++++++
- 2 files changed, 42 insertions(+)
+ bsd-user/freebsd/os-proc.h    | 39 +++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  4 ++++
+ 2 files changed, 43 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index 47bcdcf8a3..14478d4bb5 100644
+index 14478d4bb5..a406ef7db8 100644
 --- a/bsd-user/freebsd/os-proc.h
 +++ b/bsd-user/freebsd/os-proc.h
-@@ -178,4 +178,38 @@ static inline abi_long do_freebsd___setugid(abi_long arg1)
-     return get_errno(__setugid(arg1));
+@@ -212,4 +212,43 @@ static inline abi_long do_freebsd_vfork(void *cpu_env)
+     return do_freebsd_fork(cpu_env);
  }
  
-+/* fork(2) */
-+static inline abi_long do_freebsd_fork(void *cpu_env)
++/* rfork(2) */
++static inline abi_long do_freebsd_rfork(void *cpu_env, abi_long flags)
 +{
 +    abi_long ret;
 +    abi_ulong child_flag;
 +
++    /*
++     * XXX We need to handle RFMEM here, as well.  Neither are safe to execute
++     * as-is on x86 hosts because they'll split memory but not the stack,
++     * wreaking havoc on host architectures that use the stack to store the
++     * return address as both threads try to pop it off.  Rejecting RFSPAWN
++     * entirely for now is ok, the only consumer at the moment is posix_spawn
++     * and it will fall back to classic vfork(2) if we return EINVAL.
++     */
++    if ((flags & TARGET_RFSPAWN) != 0) {
++        return -TARGET_EINVAL;
++    }
 +    fork_start();
-+    ret = fork();
++    ret = rfork(flags);
 +    if (ret == 0) {
 +        /* child */
 +        child_flag = 1;
@@ -132,33 +144,23 @@ index 47bcdcf8a3..14478d4bb5 100644
 +     * value: 0 for parent process, 1 for child process.
 +     */
 +    set_second_rval(cpu_env, child_flag);
-+
 +    fork_end(child_flag);
 +
 +    return ret;
-+}
 +
-+/* vfork(2) */
-+static inline abi_long do_freebsd_vfork(void *cpu_env)
-+{
-+    return do_freebsd_fork(cpu_env);
 +}
 +
  #endif /* BSD_USER_FREEBSD_OS_PROC_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 99af0f6b15..cb9425c9ba 100644
+index cb9425c9ba..4c4e773d1d 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -226,6 +226,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         /*
-          * process system calls
-          */
-+    case TARGET_FREEBSD_NR_fork: /* fork(2) */
-+        ret = do_freebsd_fork(cpu_env);
-+        break;
-+
-+    case TARGET_FREEBSD_NR_vfork: /* vfork(2) */
-+        ret = do_freebsd_vfork(cpu_env);
+@@ -234,6 +234,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_freebsd_vfork(cpu_env);
+         break;
+ 
++    case TARGET_FREEBSD_NR_rfork: /* rfork(2) */
++        ret = do_freebsd_rfork(cpu_env, arg1);
 +        break;
 +
      case TARGET_FREEBSD_NR_execve: /* execve(2) */
