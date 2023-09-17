@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2F17A3526
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 12:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BED77A3527
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 12:36:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhp7M-0004Pt-CY; Sun, 17 Sep 2023 06:35:08 -0400
+	id 1qhp8J-0005RQ-IY; Sun, 17 Sep 2023 06:36:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qhp7H-0004PC-Bs
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 06:35:03 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qhp8H-0005Qv-6S
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 06:36:05 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qhp7F-0000Hx-PJ
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 06:35:03 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-529fb04a234so4254454a12.3
- for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 03:35:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qhp8F-0000gW-EE
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 06:36:04 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-5007abb15e9so5967586e87.0
+ for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 03:36:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1694946899; x=1695551699;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1694946961; x=1695551761;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8zyXJWkYUTbzSz8ouSylvyS+phgkaZRdxTJx9pF3w28=;
- b=W3CbUmz7JD3ttpp3erWg5tBQ4yZuu0xyFt3o2EKSKwnUh12eHSoRq6JpZwyd4gUaFh
- 19SXkSfpHm2hLd4unz5HP/AjrlVmavA9+VYYIqghrhVStK1mQAJMpCkTac87H1tpifPr
- zmCNugQ+UIVMVGAO84kF1yVH4w9cZ9MfobrvjG+n8gf+eFcVzQ4Wh25ECnAILju4yFPI
- 17I8M82B6rxXeD9Hsxs2NDZmLg1czlcGntg2G/HvBN4+swtmsNwTN0uiN+YzFk0j0jz1
- 8BrhKpWgr8fO5Svv819TbcTBx7zyIgmN0L4xB35sLBv+8yq2bk/wcFBIRN8VyyZEKeLk
- 0VYg==
+ bh=emA1XaUx5aT41G94MNd+ejCP14CKISKMwqtAy5t9h3c=;
+ b=uRYOncvhlFWYSQRG3rwFmbWyyW1Y7DZdjnRDyTFDmhirBRaRJde5b27FGEMBAL+qGw
+ wigASP0gNKFduut7hJtmm2RlUAqvadd/2GHrNawvpMte/iuAlrqIzZofpkYHiDCI4jDZ
+ 9csm+dERX0imkWapnJRx5X6AyRbdoFMamjvIqlqqACfpa7XKnkYzY315WskuunfWKNHL
+ ol9qRtcnoApmBP66XMOAtEvBHV6K3WaT7QvLs9kkwreQUJyk7qJuBKl169pVJ5TUQt8u
+ G/OZy/VBlLppTi60vMFndHxgOrxLWJFf3IlMUyChmHAuBQSHNdMSdzA444Y4VNoV9Bq8
+ O63Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694946899; x=1695551699;
+ d=1e100.net; s=20230601; t=1694946961; x=1695551761;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=8zyXJWkYUTbzSz8ouSylvyS+phgkaZRdxTJx9pF3w28=;
- b=U+GRFD4KFuyEGIhc0NTluuJn/pu2703/svg3JMW0g2xHA18AzqL2U5hEB+rtHR5KwN
- OYZtDrpHVBXUTHfB7m9g83lEULFILSiAofxmBM/rLC+34bkE8d6/RbpmCCWj5D9XP611
- Qkhzk8jjC3qxLfwopEFwkRRLVXRCn1pCWPQyYeBdWwZYA6kEB/nFSiBBIsfzzxPZtvwQ
- RzfnszMzCJmsTtxP+IKQX4RzcSzZga1X+Eao874TIAr0ZQceoMIw4XSa2jDdD1/HfDG2
- alXzCsX36HpR6pF0Npo2IggLcW3o5nmIerCbmLlMRXl2cFCH5vbdcp24JGD6/xsFFv00
- 9edg==
-X-Gm-Message-State: AOJu0YwRNIvusvmi6HmHjtFkqHkE2fKG3eAGdmvHkQV5U7ZELwZHiPyR
- l5WKWfm9DKNHXcTy0Zeo+n6MA+frOm9XWtwGA2JhAw==
-X-Google-Smtp-Source: AGHT+IGgHUxDuNmWCVwNCFfinNEO4VFhcq2D135v2jDw676N5PTorQ5Bh9J5X1GfFJ2d6cP75M3L3ajvecygtNy8O2A=
-X-Received: by 2002:aa7:cb17:0:b0:525:4471:6b53 with SMTP id
- s23-20020aa7cb17000000b0052544716b53mr5512303edt.19.1694946898845; Sun, 17
- Sep 2023 03:34:58 -0700 (PDT)
+ bh=emA1XaUx5aT41G94MNd+ejCP14CKISKMwqtAy5t9h3c=;
+ b=PDSrdUUSoODRc9tFps2zWMjOPFY/kyySMB15RVBDEVzLS9Xgg5yMGjOEBmKb/xg3sC
+ pz3dSnB0yVZmLv9exbvI/AlHmdgOUl1H0pkhsRTAC944AUACZeKPMAHvE6imPsc4GnKG
+ IKp2+F+BCBkCVRsOQ4ast/DxR350J8Ojz4KoAk9DiwOckHR9qBT8B2eq0XpTr3mmK/M3
+ 3e2cIAX1TIHS0LjYPL8nmrFuicGwALJsk1nyZuYEN9RbYUJKzfawStMQchCp5hKp1djl
+ c0km0dCP/pGFJEOXPSGdaJiBoVCNMo7wnnbJyQgmqpMBwf6hUJZwf71Xod5JdwLXZy48
+ jQvQ==
+X-Gm-Message-State: AOJu0Yw+6bGelZqTwlNCTU4SwmGq0TcvmZ9SMqEcUHzpiet8J71qpLvR
+ 8fWVMI5EPsk7v6twA0CLhAJeZ++8KGNvXiPjZHds+w==
+X-Google-Smtp-Source: AGHT+IEtYNHO4OWXDa2Eb8xUDJNLxLf/YIkQa0uEiGf7WgZnNOUy68TqdFBYaBDu7vuRI0VgMRdnLvc3QMtEJGoJ394=
+X-Received: by 2002:a05:6512:3b27:b0:502:ff3b:766f with SMTP id
+ f39-20020a0565123b2700b00502ff3b766fmr4098607lfv.6.1694946960882; Sun, 17 Sep
+ 2023 03:36:00 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230914204107.23778-1-kariem.taha2.7@gmail.com>
- <20230914204107.23778-10-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230914204107.23778-10-kariem.taha2.7@gmail.com>
+ <20230914204107.23778-11-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230914204107.23778-11-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Sun, 17 Sep 2023 11:34:48 +0100
-Message-ID: <CANCZdfr7RJXBbmfOeYRWNOOYovFdgJ0gCyd8o+YEH2RsqFvczw@mail.gmail.com>
-Subject: Re: [PATCH v5 09/23] bsd-user: Implement ipc_perm conversion between
+Date: Sun, 17 Sep 2023 11:35:50 +0100
+Message-ID: <CANCZdfpVc1oAJzrpdXSeEPEP9Bt4Ld=K_jO+yWbZyZqSenvMtQ@mail.gmail.com>
+Subject: Re: [PATCH v5 10/23] bsd-user: Implement shmid_ds conversion between
  host and target.
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
  Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000d1b7c006058b9385"
-Received-SPF: none client-ip=2a00:1450:4864:20::52e;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x52e.google.com
+Content-Type: multipart/alternative; boundary="0000000000008455cd06058b97d3"
+Received-SPF: none client-ip=2a00:1450:4864:20::131;
+ envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x131.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -85,7 +85,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d1b7c006058b9385
+--0000000000008455cd06058b97d3
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -98,13 +98,13 @@ m> wrote:
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  bsd-user/bsd-mem.c | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+>  bsd-user/bsd-mem.c | 47 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
 >
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
---000000000000d1b7c006058b9385
+--0000000000008455cd06058b97d3
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -121,10 +121,11 @@ arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
 ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/bsd-mem.c | 25 +++++++++++++++++++++++++<br>
-=C2=A01 file changed, 25 insertions(+)<br></blockquote><div><br></div><div>=
+=C2=A0bsd-user/bsd-mem.c | 47 +++++++++++++++++++++++++++++++++++++++++++++=
++<br>
+=C2=A01 file changed, 47 insertions(+)<br></blockquote><div><br></div><div>=
 <div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsd=
 imp.com</a>&gt;</div></div></div></div>
 
---000000000000d1b7c006058b9385--
+--0000000000008455cd06058b97d3--
 
