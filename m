@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E327E7A3DF3
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 23:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F687A3DF5
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 23:42:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhzUM-0004Rw-N7; Sun, 17 Sep 2023 17:39:34 -0400
+	id 1qhzUN-0004S9-Pb; Sun, 17 Sep 2023 17:39:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qhzUK-0004RC-ID
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:39:32 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1qhzUL-0004RT-8R
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:39:33 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qhzUI-0004EV-In
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:39:31 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3214de9cd8bso418626f8f.2
+ id 1qhzUJ-0004Eb-ER
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:39:33 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-401f68602a8so42727085e9.3
  for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 14:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694986769; x=1695591569; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1694986770; x=1695591570; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4xyYvDm6vr5FBlsfvLve2y0GH2jJ4Bm4yKdVTAQCQ7A=;
- b=GOBiTGEX34Ox9qWdEPsVT+f+9UfvMsFG+ox7b40DE+t2HIIV7p+m+fiR/YJbXgm00u
- 52ROo7Fskg/cqY2Uw9DqZBgdMmPQGYrb3etyldQVn+zQeafl/+d1zA3fQhqivNmsRTC3
- iST6QK+q1JVpR9Yx6BERrg9Gz4KT9NNU+Ng32mg5ESm4n3+Pv9GGf7N64zT+/4MhMZaw
- XnCghVz88PBhiU6eomUfSyED5Q6wZvu6K/6bGnIgcUc/o9vWMnAFOQPVTGuzQdICMmZ2
- I77Or9HUSwgZ1rNMjCkC0FwZ79kPx2XthhlA+92CzcP4/xj/4B8NVez/PC8bIpkhoOmM
- ctUw==
+ bh=rUP8g2y0GYSaHwIi9+PE/D/jagxt1ep3Rybvm1zGJcc=;
+ b=DQhqIskI6oYTMtyQqRJXvvUvZVQk75JLuAlv3r9uvxgpDING0rP390iZllgnDH8BgX
+ jrEnAbB+TO6IMZlGrEUC87kBOtLMe5/kGK3uCHK/w8VNxoeRczgN9T/hr2L+OgT7UeVl
+ svN9MdpqMX6E0dVPX0b5E05a5KfEzvfvPra8mcNZY36nmTnDU9fvLhoWO9LwF8suVUS8
+ SOTVHOLSBZTU3VjZIWPx7EDVeNzk0iz7qTQWclomV+zrWITnO9JSIC+XlC7iiUw1Q0dV
+ fDfGefzmhfZDqFymSr7CM7iuZ93Ij7Kfns2N365V/4YGHkyNNsLfrixeHCpbYEZuy8Bv
+ s0tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694986769; x=1695591569;
+ d=1e100.net; s=20230601; t=1694986770; x=1695591570;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4xyYvDm6vr5FBlsfvLve2y0GH2jJ4Bm4yKdVTAQCQ7A=;
- b=vrmbgNTmvIDynVYLtjyV5Eapy37tBder4dbErkXUqP1OB3058dyzObooTO7d+KNOhF
- UOSkw26DYaxJ+2CGsIyIHmqRtooghMO38Ms3dsWnnAkk/7s7TQsQymvooZtay49LjWFK
- kbDjdXhn9cIF4qDmtPGhRjFA0W/AKIudDKpqdxlP8/a3OmGywMIT4ADRbg+ZqsJ9lcI6
- kC9XDzFzzwnbubgGEtDALoMLYId3CAqqp4spFEYzlDAS/SsaQsYZBWhzF6dd9jUzp4CA
- nyjdwRxib1ffkAkzXV7SXxtqUVMTkFF1DslTt0kIV+3uoxYdvMaXsF1XJ3FGWcWK7eCt
- U93g==
-X-Gm-Message-State: AOJu0YxTczm944SwT4etbPk5yiR06oQUExNPiv+dHIiG8pC6kTh0sU0/
- tr6ku9dvwUimvrvWmRk6GOT0LjAEViU=
-X-Google-Smtp-Source: AGHT+IHSv+V7gJr27VpQNDxBkUjCI+0Hbxa2NkUGlZrsOMn2516xiYxQkyjrLI27b6HtBPXLbSB2SA==
-X-Received: by 2002:adf:de90:0:b0:31f:a4fa:130a with SMTP id
- w16-20020adfde90000000b0031fa4fa130amr7690469wrl.14.1694986768525; 
- Sun, 17 Sep 2023 14:39:28 -0700 (PDT)
+ bh=rUP8g2y0GYSaHwIi9+PE/D/jagxt1ep3Rybvm1zGJcc=;
+ b=MGpUe409zxlzoJ4tC1weRnU0TI5moIP6WrZA6pp2UoFTYsBYamCZJ0Yrd0pOq2hjM0
+ ajU9YTmffhG8c5sQuHd4FEKCKLJvDTqUX1Tc8u429JWbnRzwLWTRyJCCGnfzRvRAIexT
+ AKn1WsqagVM6Bl5XuRolgM3w9LRWqErLVxoLnkk5yfaTDWm4E3D0ubOxN2at5tb0r2NY
+ EBj6WlTzaCH/0zNBR2czJDJVNDiEK/KeB+ak5MfQxU5hPGpNopvgKuy9bQKmMgzlofcv
+ XRB4lCiBLmEZbVbin/M0Z3alHIVK8uPVbJ5smmsk0KPZvjzlF/HH/ufzYHq96K+M3BMX
+ DYhw==
+X-Gm-Message-State: AOJu0YynH6m0mfs8cWcK0fQCjot+8/oUSncZDtX6cTt4gZZwY9/CR4kD
+ Gy57zEn4jvvXOzeWs1mxdFIoBnE1fsA=
+X-Google-Smtp-Source: AGHT+IEu6+H1TV9SN2OO0w5uFO6jrj2x/ArxAIdBmUyeed0Y69p2DshPjvvMXkFjzTkSWF1muPf8PQ==
+X-Received: by 2002:a05:600c:2057:b0:3fe:d1b9:7ea9 with SMTP id
+ p23-20020a05600c205700b003fed1b97ea9mr6743705wmg.36.1694986769709; 
+ Sun, 17 Sep 2023 14:39:29 -0700 (PDT)
 Received: from karim.my.domain ([197.39.215.8])
  by smtp.gmail.com with ESMTPSA id
- n11-20020a5d484b000000b00317ddccb0d1sm10561735wrs.24.2023.09.17.14.39.27
+ n11-20020a5d484b000000b00317ddccb0d1sm10561735wrs.24.2023.09.17.14.39.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Sep 2023 14:39:28 -0700 (PDT)
+ Sun, 17 Sep 2023 14:39:29 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: imp@bsdimp.com, Richard Henderson <richard.henderson@linaro.org>,
- Karim Taha <kariem.taha2.7@gmail.com>, Kyle Evans <kevans@FreeBSD.org>
-Subject: [PATCH v2 01/28] bsd-user: define TARGET_RFSPAWN for rfork to use
- vfork(2) semantics, and fix RLIM_INFINITY
-Date: Mon, 18 Sep 2023 00:37:36 +0300
-Message-ID: <20230917213803.20683-2-kariem.taha2.7@gmail.com>
+ Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v2 02/28] bsd-user: Define procctl(2) related structs
+Date: Mon, 18 Sep 2023 00:37:37 +0300
+Message-ID: <20230917213803.20683-3-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
 References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,40 +93,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-RLIM_INFINITY on FreeBSD, OpenBSD and NetBSD has value of ~(1<<63), caculated
-one way or another.
+From: Stacey Son <sson@FreeBSD.org>
 
-Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
+Implement procctl flags and related structs:
+struct target_procctl_reaper_status
+struct target_procctl_reaper_pidinfo
+struct target_procctl_reaper_pids
+struct target_procctl_reaper_kill
+
+Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/syscall_defs.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ bsd-user/syscall_defs.h | 42 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
 diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index 9c90616baa..ddd38c13e0 100644
+index ddd38c13e0..a3bc738ff8 100644
 --- a/bsd-user/syscall_defs.h
 +++ b/bsd-user/syscall_defs.h
-@@ -130,11 +130,7 @@ struct target_freebsd_timeval {
- /*
-  *  sys/resource.h
-  */
--#if defined(__FreeBSD__)
- #define TARGET_RLIM_INFINITY    RLIM_INFINITY
--#else
--#define TARGET_RLIM_INFINITY    ((abi_ulong)-1)
--#endif
+@@ -390,6 +390,48 @@ struct target_freebsd_flock {
+ /* user: vfork(2) semantics, clear signals */
+ #define TARGET_RFSPAWN (1U << 31)
  
- #define TARGET_RLIMIT_CPU       0
- #define TARGET_RLIMIT_FSIZE     1
-@@ -390,6 +386,10 @@ struct target_freebsd_flock {
-     int32_t l_sysid;
- } QEMU_PACKED;
- 
-+/* sys/unistd.h */
-+/* user: vfork(2) semantics, clear signals */
-+#define TARGET_RFSPAWN (1U << 31)
++/*
++ * from sys/procctl.h
++ */
++#define TARGET_PROC_SPROTECT            1
++#define TARGET_PROC_REAP_ACQUIRE        2
++#define TARGET_PROC_REAP_RELEASE        3
++#define TARGET_PROC_REAP_STATUS         4
++#define TARGET_PROC_REAP_GETPIDS        5
++#define TARGET_PROC_REAP_KILL           6
++
++struct target_procctl_reaper_status {
++    uint32_t rs_flags;
++    uint32_t rs_children;
++    uint32_t rs_descendants;
++    uint32_t rs_reaper;
++    uint32_t rs_pid;
++    uint32_t rs_pad0[15];
++};
++
++struct target_procctl_reaper_pidinfo {
++    uint32_t pi_pid;
++    uint32_t pi_subtree;
++    uint32_t pi_flags;
++    uint32_t pi_pad0[15];
++};
++
++struct target_procctl_reaper_pids {
++    uint32_t rp_count;
++    uint32_t rp_pad0[15];
++    abi_ulong rp_pids;
++};
++
++struct target_procctl_reaper_kill {
++    int32_t  rk_sig;
++    uint32_t rk_flags;
++    uint32_t rk_subtree;
++    uint32_t rk_killed;
++    uint32_t rk_fpid;
++    uint32_t rk_pad0[15];
++};
++
 +
  #define safe_syscall0(type, name) \
  type safe_##name(void) \
