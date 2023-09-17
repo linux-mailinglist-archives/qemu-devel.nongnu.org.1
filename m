@@ -2,45 +2,145 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F487A3341
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 00:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 318377A33E2
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 07:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhdvA-0008Ht-1P; Sat, 16 Sep 2023 18:37:48 -0400
+	id 1qhkgZ-0007F8-8M; Sun, 17 Sep 2023 01:51:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qhdv8-0008HR-08; Sat, 16 Sep 2023 18:37:46 -0400
-Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
- helo=smtp.gentoo.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qhdv5-0002Zm-Df; Sat, 16 Sep 2023 18:37:45 -0400
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-To: "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
- "open list:RISC-V" <qemu-riscv@nongnu.org>
-Cc: LIU Zhiwei <baxiantai@gmail.com>,
- "Andreas K. Huettel" <dilfridge@gentoo.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Sun, 17 Sep 2023 00:37:32 +0200
-Message-ID: <6353228.kQq0lBPeGt@pinacolada>
-Organization: Gentoo Linux
-In-Reply-To: <4344798.atdPhlSkOF@pinacolada>
-References: <10817413.NyiUUSuA9g@pinacolada>
- <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
- <4344798.atdPhlSkOF@pinacolada>
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qhkgX-0007Ep-Dh
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 01:51:09 -0400
+Received: from mail-mw2nam10on2040.outbound.protection.outlook.com
+ ([40.107.94.40] helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qhkgS-0005dN-CK
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 01:51:09 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g05UvUZ2gGuJyz9tPvzyjdAX/0uTjJONwkURoQKAqYSz386ce7/L64DxGml1Xpq0b3sNieKarA1rUjaIua6TNiAiBOC/3etWFIf7NOCZOGt6kUpR05g5ZxGZuo9x0SlmjLgvCi/6vRvyud4LU2ofRdU0ZWIcBKXYVOPrMSE3IE/AIqlwZdlEET0q+3CFI4K9pfMyg/c1r8LHDvvUEwMiXpqlcdQqUMb8CBWT627NWXYa5JNs3QNhtMgWQ0qNYNYGgQtQJLsvkqfYLwOJgjLGAVI1gqAPIlhhJkI1rdLSTptBR8LbIuknVEOQpXR9Z2RtTDU2uw5q8lcLWbBDeKZBmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FXU3qahuBo2iuTfNxhJKRcgHs6rO+mcqu5RSIXYG9pA=;
+ b=dH5kbPE8Doi+fyDcsP4cvexexuy410iICBQKMjaryW6wvikV6QaG/xSbyNxaD8cDr+RS2aRNhozGNkOiJ/ukNA+EzsHWuY2BheomwZwDP4D8/NhRxEXA91p1panKHpY1NJVhp/oCpvx5Y6pZwSfTtNdl8IAsxM8Jaok5YkEWjA+EiMWdfdxQV5i3LR3Wa7jexEcB4zGxyCwkXTykWY+p5gpUbMH75sMoAevpnrPmGyk+nhi9gDbdH7EZDlxgvlstS5VGqxBz0AuoBAt66s5rKweBUb+7Arfe9kg55fLpCs8k18YNnnTZs+jtHm/P5E51gnHPD+9BgEcNKjR17fe6fw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FXU3qahuBo2iuTfNxhJKRcgHs6rO+mcqu5RSIXYG9pA=;
+ b=HCeigAZIJ0hwQulu34F44/PFm0NVF4HNj9Hm3Cp0L4+alj7hzEC3INmUiTWZLD/xzMqfOLWefbFFQmon5S+raA5loNLLugksaBgN5fTUE6vkn+p5leAv3/FSAvDvW2XsSRKbXxn31Lx9BtPa9foK837y8QCikIxJNNthbYdYYvI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
+ by CH3PR12MB8330.namprd12.prod.outlook.com (2603:10b6:610:12c::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.23; Sun, 17 Sep
+ 2023 05:45:53 +0000
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::c3b:811:fd1d:c33e]) by SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::c3b:811:fd1d:c33e%6]) with mapi id 15.20.6792.021; Sun, 17 Sep 2023
+ 05:45:47 +0000
+Date: Sun, 17 Sep 2023 13:45:17 +0800
+From: Huang Rui <ray.huang@amd.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>,
+ "ernunes@redhat.com" <ernunes@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>
+Subject: Re: [QEMU PATCH v5 06/13] virtio-gpu: Support context init feature
+ with virglrenderer
+Message-ID: <ZQaSbaCUQ6iiHI/Y@amd.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-7-ray.huang@amd.com>
+ <561abf48-d72c-467d-94fd-54ffa1dfb512@daynix.com>
+ <ZQWEQ9ZHkokhKOSA@amd.com>
+ <d671bfad-7d78-41cf-a6f4-e92bf6ce2bd5@daynix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d671bfad-7d78-41cf-a6f4-e92bf6ce2bd5@daynix.com>
+X-ClientProxiedBy: SGXP274CA0010.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::22)
+ To SJ2PR12MB8690.namprd12.prod.outlook.com
+ (2603:10b6:a03:540::10)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6111525.iIbC2pHGDl";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
- envelope-from=dilfridge@gentoo.org; helo=smtp.gentoo.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|CH3PR12MB8330:EE_
+X-MS-Office365-Filtering-Correlation-Id: 694361cd-0d1c-45e3-b351-08dbb7415740
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: u1JFXLUWvXNMHu5jiksWzdN7ZIblNuSb808kpILP5YjShm3FqDllcux5N49Xwf5VlOz5I2lnkGNAX+Nc+XHQC/naAY6qxZR6kE4sYmf0gZ2FKYUewN55cqzQqGxoyNz6r3MbZdcOTjYQJIHxNCt3PAesLlenEn0VlnjpalsKOTitsx/1xXbZ9/oXoa9dMNeMJbqG2vZSCdyXTNKDUxqNi/qmACOpMOj5okk2Z6Bm3CVMfdn6G445WXI/mwQeDBBbKfWBSNvmecDyCugltCFnqycuTX701AnfaMw0+2TX5q8FiA5GsOKY4etruTNwXqK+24VBVBxjqhNWwlni6i/l00iCokJ0Afm9feHmKoVBvaNufI43ymA8sfgfiQTbVh9HhNxvC9ilNnVIMQLSf9UVGHX1mfM5lJ7okE8k/55Om8dfFK4SCTKArf02Faq3+NUjIA8/pvcPcCrRzfShlX0LF16cZZVzYG9qDqNeFHDEHGMozebm2zeNbmb+zuCg3qN0YN8pkuBzZ5cpmQ/N5aB9K3dBMDjgreg3oP5BgELZh5Q=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(136003)(396003)(376002)(39860400002)(346002)(186009)(1800799009)(451199024)(26005)(2616005)(8936002)(8676002)(4326008)(66899024)(7416002)(83380400001)(2906002)(36756003)(5660300002)(86362001)(53546011)(6506007)(6486002)(966005)(478600001)(6666004)(6916009)(316002)(54906003)(6512007)(66946007)(66476007)(66556008)(38100700002)(41300700001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pMPxUz/X1yuemL+Q9C1t9f0QTKxBDocJ3buxpI90+LPs75gHKif82Rb1u5s4?=
+ =?us-ascii?Q?hkvdZ2rSek3t83OYNMShdfVRjDPvL6YPqcUypfwFnNG7okvR+tndQbj4lV2B?=
+ =?us-ascii?Q?gAD32fF/LyLUvem/ox6Bh6BkkjwHDtEy4x+rDE83s/AX89jpsppfVdOjjN59?=
+ =?us-ascii?Q?lk3i4KE7HBzS7GWZRepaoQy0YOHSPMJxd04ZWt4cHXzDUtshLqqUF9t+zBIR?=
+ =?us-ascii?Q?66bOzpDWZ2SGPj7bMjYhz7MDasW0IAQjn4Ot/97ZLOlQ24oEsU60fQcxlHy4?=
+ =?us-ascii?Q?/KuDZR+V4x0FHH8aDFSdqdsPiT+uAw8i4zew2rxXzOSjkBbE9G89Y/BKUHtR?=
+ =?us-ascii?Q?lQ8XGFMY+I1DWD1Hp2geTSJcOrsvZXqGNFJy/MPiTO3R43jVoxtXQOt2NagV?=
+ =?us-ascii?Q?lfbMDZZ0oRIgNN+kk5N9uI9wOnUD89b1lQVYlBXJmlGhdL0ifYNo28D22fsw?=
+ =?us-ascii?Q?ygu43oTx9ICx8w1Ggi971GZTPCwXVNu0iQ3EBft+8az+ovpntDHYV4/RGdLy?=
+ =?us-ascii?Q?ZLbd8BXTP5SUCPXPBosy8dVfOyCr8EP0JGTZ3VZmHu8jAchH0+UfVF6cXyZO?=
+ =?us-ascii?Q?T4B6fGqnnihyUbJzUOQfYsyNX/4IrX+iKMJHWFad1+s4YlTSdPlhcVvCv4sL?=
+ =?us-ascii?Q?5b7WVyJCztdcsPjuMg5g/JEKKcqY0hLa3Eo7/XRjc6tX+MUP+3RnclHJr4hy?=
+ =?us-ascii?Q?werBniahulS6Br9zA0X/RUhaLMqXHYwHFjBmrFBLJWeKn8GWOX3dvfGSNw12?=
+ =?us-ascii?Q?Kz8sEmn3/KVLH0Q3Y0NEDAfUKkJLdAHquubJ3vhUb/en3sC4SBDJXkbBNkWb?=
+ =?us-ascii?Q?Saw5GuiCFbymK7u11IilJlpQjXa0LYFKsVWvtk77zlCGw0DoYYYHHg7qs2Nh?=
+ =?us-ascii?Q?8BSFmFl45pnwSYs2jiaGMoZqcUVpQgjyC/f9WzRHZPlzHHqCQbGaO55+H6xb?=
+ =?us-ascii?Q?hYgj/W+7X0DUc6qcnOTFttewZT2zOWM46s9nS4A3IlPbkXT9emfXsxIs0rkV?=
+ =?us-ascii?Q?HStBzr91oiV0vAlZPAt8doxglcQeCPtM56u0V4TlIRazXr5cqjSslFjujUjs?=
+ =?us-ascii?Q?fWgUV/l8lafdbZHuZ07xI6xMU+ld5Gx5TjZ7NJ1fVqyAM32HnzvXjjAOp2tP?=
+ =?us-ascii?Q?ii+P4+kiA4MsKsycLQ+BJ+Hb9UlfXe2yFES/SyQFezaxzSRaCnQXnCR/e0m4?=
+ =?us-ascii?Q?MX4wxHGpnFVnBLh5Pn1JMg1hnQiB9gWDNIKzQxWOgk03RjcGpXp1ehAqJIf3?=
+ =?us-ascii?Q?78r2WaD/YZARCJQFCLK62wAXTHlEZRfLX4odcz3Z21PWrZFy1rVzrSre5Q+F?=
+ =?us-ascii?Q?0TbXMBoASzWUWX4zlnGW1Qz9YH9slITzKKSFrfFenCOAIRHKv4S15pF5p0Bn?=
+ =?us-ascii?Q?5E5jMS9HI545eAg63yGKqEY/zuekwEdkfadAaTOXQUjpizhHxSnENc+03jj0?=
+ =?us-ascii?Q?GdfC6UoqDKU3xkgBoDFsfGjaUk5liJqsoJTNnRCwuxf6NElmrJWpIiFTIxVO?=
+ =?us-ascii?Q?A4L/4phU4t4Pq0YXaZFDozIX1O4UbVo1thVvMGNuIXaQNrPgFo3jgEApzCGo?=
+ =?us-ascii?Q?J9MDaBEzjcnpz6zmAiwguGM3BhomTFL4Z/xOrY8T?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 694361cd-0d1c-45e3-b351-08dbb7415740
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2023 05:45:47.0377 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9qzMrqX2nvTk1kNDCtLBoa40JcUwbdC0JWSB0xQ8FSODPG1d766XPOHwarU3kKuv/UDHaqXRPCaZ0c+/Md6Zog==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8330
+Received-SPF: softfail client-ip=40.107.94.40; envelope-from=Ray.Huang@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,102 +156,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---nextPart6111525.iIbC2pHGDl
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Sun, 17 Sep 2023 00:37:32 +0200
-Message-ID: <6353228.kQq0lBPeGt@pinacolada>
-Organization: Gentoo Linux
-In-Reply-To: <4344798.atdPhlSkOF@pinacolada>
-MIME-Version: 1.0
+On Sat, Sep 16, 2023 at 06:42:04PM +0800, Akihiko Odaki wrote:
+> On 2023/09/16 19:32, Huang Rui wrote:
+> > On Fri, Sep 15, 2023 at 11:20:46PM +0800, Akihiko Odaki wrote:
+> >> On 2023/09/15 20:11, Huang Rui wrote:
+> >>> Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
+> >>> feature flags.
+> >>> We would like to enable the feature with virglrenderer, so add to create
+> >>> virgl renderer context with flags using context_id when valid.
+> >>>
+> >>> Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> >>> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> >>> ---
+> >>>
+> >>> V4 -> V5:
+> >>>       - Inverted patch 5 and 6 because we should configure
+> >>>         HAVE_VIRGL_CONTEXT_INIT firstly. (Philippe)
+> >>>
+> >>>    hw/display/virtio-gpu-virgl.c | 13 +++++++++++--
+> >>>    hw/display/virtio-gpu.c       |  2 ++
+> >>>    2 files changed, 13 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> >>> index 8bb7a2c21f..312953ec16 100644
+> >>> --- a/hw/display/virtio-gpu-virgl.c
+> >>> +++ b/hw/display/virtio-gpu-virgl.c
+> >>> @@ -106,8 +106,17 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
+> >>>        trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+> >>>                                        cc.debug_name);
+> >>>    
+> >>> -    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
+> >>> -                                  cc.debug_name);
+> >>> +    if (cc.context_init) {
+> >>> +#ifdef HAVE_VIRGL_CONTEXT_INIT
+> >>> +        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
+> >>> +                                                 cc.context_init,
+> >>> +                                                 cc.nlen,
+> >>> +                                                 cc.debug_name);
+> >>> +        return;
+> >>> +#endif
+> >>
+> >> This should deal with the case when context_init is set while
+> >> HAVE_VIRGL_CONTEXT_INIT is not defined.
+> > 
+> > Actually, I received the comment below before:
+> > 
+> > https://lore.kernel.org/qemu-devel/32588d0e-a1f2-30c4-5e9f-e6e7c4190b65@linaro.org/
+> > 
+> > At original patch set, I have the case while HAVE_VIRGL_CONTEXT_INIT is set
+> > but HAVE_VIRGL_CONTEXT_INIT is not defined. But I think we may encounter
+> > the case that virgl_renderer_context_create_with_flags is not defined in
+> > virglrenderer early version. Should I bring the error message back?
+> > 
+> > Thanks,
+> > Ray
+> 
+> I suggest checking VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED instead of 
+> reporting an error here. Perhaps it may be easier to add #ifdef around:
+>  > +    DEFINE_PROP_BIT("context_init", VirtIOGPU, parent_obj.conf.flags,
+>  > +                    VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED, false),
 
-Am Donnerstag, 14. September 2023, 03:22:49 CEST schrieb Andreas K. Huettel:
-> > > https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00119.html
-> > > ^ Here I'm trying to find out more.
-> > >
-> > > Bash tests apparently indicate that argv[0] is overwritten, and that
-> > > reading through a pipe or from /dev/tty fails or loses data.
-> > >
-> > > Apart from the bash testsuite failing, symptoms are as follows:
-> > >
-> > > * Something seems wrong in the signal handling (?):
-> >=20
-> > If it is wrong for signal handling and for 32-bit, I guess it may be=20
-> > fixed by this patch
-> >=20
-> > https://www.mail-archive.com/qemu-devel@nongnu.org/msg981238.html
-> >=20
-> > And this patch has been merged into master branch yesterday.
-> >=20
-> > May be you can have a try based on the master branch.
->=20
-> I added the patch to 8.0.3 (easier for the moment), and this did
-> unfortunately *not* lead to any improvements.=20
+How about below changes:
 
-Also with the patch on top of 8.1.0 no improvement or change.
+---
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 8bb7a2c21f..54a3cfe136 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -106,8 +106,15 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
+     trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+                                     cc.debug_name);
 
-> However, in the meantime on the GNU Make tracker Alejandro Colomar
-> pointed me to another detail based on my oddities [1]:
->=20
-> > I think [make] it's failing here:
-> >=20
-> > <https://git.savannah.gnu.org/cgit/make.git/tree/src/job.c#n757>
-> >=20
-> > But it's failing with ENOENT, which is not one of the documented
-> > errors for wait(2):
->=20
-> So maybe another point to look at would be the origin of the return
-> values of wait, and whether that's wired correctly for rv32...
->=20
-> [1] https://savannah.gnu.org/bugs/?64664
+-    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
+-                                  cc.debug_name);
++    if (cc.context_init && virtio_gpu_context_init_enabled(g->conf)) {
++        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
++                                                 cc.context_init,
++                                                 cc.nlen,
++                                                 cc.debug_name);
++        return;
++    }
++
++    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name);
+ }
 
-In the meantime I tried to nail down a reproducible hang in bash on this=20
-frankensystem with qemu's gdb interface. This also pointed towards
-child handling and wait [2].
-
-[2] https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00128.html
-
-Some time ago we already debugged that corner, and Alistair Francis
-came up with a fix that improved the riscv32 situation back then [3].=20
-Maybe that fix was somehow incomplete? Just speculating...
-
-[3] https://bugs.launchpad.net/qemu/+bug/1906193
-
-
-=2D-=20
-Andreas K. H=FCttel
-dilfridge@gentoo.org
-Gentoo Linux developer
-(council, toolchain, base-system, perl, libreoffice)
---nextPart6111525.iIbC2pHGDl
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQKTBAABCgB9FiEE/Rnm0xsZLuTcY+rT3CsWIV7VQSoFAmUGLixfFIAAAAAALgAo
-aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEZE
-MTlFNkQzMUIxOTJFRTREQzYzRUFEM0RDMkIxNjIxNUVENTQxMkEACgkQ3CsWIV7V
-QSobDhAAq4zOXif0uxHFHv0BmJlzeQM2xxpsAtKmXaiQEymrUIv7Ioa9xVKSUUTp
-F18gmRxRefvbouJ+YQCHg2Pfs6QuI5IMvkKUCKvSfG9PnbROocXT2GiyEigHejGq
-38ZelAosJOEMG3gnuEqGm48NJAA8HhAONQt66SANEzb0g55B1YucWaoyZDhXKeA4
-vn1UT/tB/5DJjiXB53CE4aI9R9hEHNyCoJhtcCJTgZt/vhkPWuK2MDuOKkUA7G0Y
-tX1Sp1tR5Gqh0IqKnehJ+TYiQ/PwPSleGc9uHG9lKXGPJjL+UKzSM5x4gR/CwkYv
-b1dP6OTbOfXc2XRx+P255gWImi12V0JWQ2UStdWVC3/yhBu230Z/RXEehImJ8ez5
-2HM5htfodCw27FADvRw500NAH0fa1yEQPdrkYKTrYfHdyK5bdg60NyJTWthpbgZB
-NXZiHbxXuEtc5mrK1E/Mty3fVVLaTuiRP1JFZDjiUkK78aG3Bkm351tKVfNE5w/T
-tIU8QOqJBbYj+eIwBGOiIwGDStHyS5ibMemKWuUPQg5S1m18iq4bIfeIbPdcNJLi
-2emeqCTzQhLFOuKon9nhBf0Qpk6H1sF3o8lvhRMv3WDvBQyFsI7vniePPmMVcNs4
-ZKLgKpbFbEgIgCwydHIhu/0TW3z7eEHrNPpgGGgLb1kGpFRvu2A=
-=jS5C
------END PGP SIGNATURE-----
-
---nextPart6111525.iIbC2pHGDl--
-
-
+ static void virgl_cmd_context_destroy(VirtIOGPU *g,
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index be16efbd38..6ff2c8e92d 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1508,6 +1508,10 @@ static Property virtio_gpu_properties[] = {
+     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
++#ifdef HAVE_VIRGL_CONTEXT_INIT
++    DEFINE_PROP_BIT("context_init", VirtIOGPU, parent_obj.conf.flags,
++                    VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED, true),
++#endif
+     DEFINE_PROP_END_OF_LIST(),
+ };
 
 
