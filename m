@@ -2,137 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9B97A35A0
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 15:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B343E7A35B9
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 15:43:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhrTe-00047O-4J; Sun, 17 Sep 2023 09:06:18 -0400
+	id 1qhs2a-0008No-U1; Sun, 17 Sep 2023 09:42:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qhrTa-00046G-DE; Sun, 17 Sep 2023 09:06:14 -0400
-Received: from mail-am6eur05on2070b.outbound.protection.outlook.com
- ([2a01:111:f400:7e1b::70b]
- helo=EUR05-AM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qhrTY-0008O5-3J; Sun, 17 Sep 2023 09:06:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZnnTvsrWWCE3WcK4MYSBbgRCGXaE0ssDRihTYSGQrnHwTHmBFJuhg+VK2eFkSDbPSo4tahbcx8g09BTx9JnK/8P933Un7c+2VhCWPGmhFO0xh8R9XC1ywzv+CL3ybg5ZWlMPPx/3Vma39KHs640ejBnCZ8Nb+6/5FXWYXbnavyj6XqWEHFOMhpR+WvPlXYYt46jtIUDP5LbAYoKKFhjNDW635hhzR62awy7nbd6ZUpvLK6k5lkC6tzot+s4uNsjTdAbS/dW2xm3bDlsjLwGVw6xXLJeIkmO50tt1OGBdRsbkrckisMneijsvUdWOQadl7t0JsCOAAcyaE/sLMLwBOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3FTYJMLRnQAMi+KkhcOQbx0bTZHG0ArJGt7+tz6TD60=;
- b=QFfz1+PDPRBa0/T/mtTcgmmjipRquKZCPapcpTyONz5+6USurlc0qdAw8Xi5TsdIgwIBHLvo6GWMOr12kVUlS3OmbeqVW429V/QfKMmnBWOfb4aCMKGIzkMJfwTBmVc3LkTVou9GotyZFEj3LUKGSiLPmW34MGpp/b5spGmFkpuHd8XSEKuJlUu8P/zoZn0ewGHpSb3EXgpOk2xqGhdrWlRIN5Br7JOXrWBS10E4BurgWd0c1uVw/yZcekFi6xXVHEVGkW2cfQp2+lC/LRpV7qGV5P+Aj3yjY0TnxRZ+4Qe/Bl6mZ2I9XFoRz5JI6u0utYKIcLDhykvvAdCru7A9gA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3FTYJMLRnQAMi+KkhcOQbx0bTZHG0ArJGt7+tz6TD60=;
- b=X7Dokbu+sqb5PBE3OSCVQFie/lzyPohHpXIXcWqpML2qT2wCJbRuMGn0Fvjdplr4LmwAio960X4pT8vduRKAUGLKSKVJ1FhqhqyvXupBogXXJwPiV1+C/tnqLveFrO5jBPIDlzmvwGNy5lRJ1LxGoEiRN/Bv3wdhU9IpFvHgXwR4ZRTEax90u3Bi6WGswelkhuDPuNCXMU4d92IlMp+caTkaSPZI/rOt4CAf1CujuBKfq9k3LayPkpnNmSr6VBPrUMr6+U44ctaap52B0qGxKYsdmRm1EsOR/1zxjtKw3P31I1/BIkeTTXifveM9fWUajECjKJtzeC0cZPoaVw/BJQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by DB9PR08MB6700.eurprd08.prod.outlook.com (2603:10a6:10:2a3::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21; Sun, 17 Sep
- 2023 13:06:05 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::8ba1:5878:7574:628f]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::8ba1:5878:7574:628f%4]) with mapi id 15.20.6792.024; Sun, 17 Sep 2023
- 13:06:05 +0000
-Message-ID: <ed8bddaa-3f75-bb3c-e207-7219c6e39e90@virtuozzo.com>
-Date: Sun, 17 Sep 2023 15:06:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 03/21] parallels: invent parallels_opts_prealloc() helper
- to parse prealloc opts
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhs2Z-0008NS-CI
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 09:42:23 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qhs2X-0008Ev-P3
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 09:42:23 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-31f7638be6eso3473241f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 06:42:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1694958139; x=1695562939; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qFhEb8YapB6rTDJ2IWMFilHEZHv7zgHl6oyFlcFSeTk=;
+ b=Lh7WVpDFrKHaq3Cg1HquI6zZfvLRdmkcb4V1IF3PUKadi8Y64en38mS02tAiNfLbJG
+ Gtd8zslHYGp8rmnu/JqOC0CTiq4UOX/xZawYPFsbFTnZDZ/amDqQVfyaBGM1aszE/oDy
+ e7unvRAyJraLM22O4EndERke3VwB2SkRwfS9LqjtQtbE8aJnX9mJHxUKlUN1mMFEE5tF
+ j1PaZTMUYkF8k4EVyR3yHU3Lvm4YdrgKZQTA2Th67bPsup+XZQAMWSRx/rHijFF6ji/+
+ kSNWpmWCD7IlYpTPHga4l7L3BWydxY1YSoJ7mpqfxH6nUbHbsiAGNXRZknEPhcfb0y1M
+ 2UmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694958139; x=1695562939;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qFhEb8YapB6rTDJ2IWMFilHEZHv7zgHl6oyFlcFSeTk=;
+ b=PkZ6EVNd7PHxPHyFhmkaXhFjQdufjDgQvUMnVII2CtRfJxqsQji9Pvp8G1ieJYUMpV
+ eXO092jGTjiulmpM7vCJ0SYNeWImswB/JJfcuS7VXOqp6mozMAl1qtEwrKgKzPEMXvwk
+ onIAj7R5sT9g4Z9vtG+iaRE8wEZTSx6o/X3gWjRRQwDReENuFEL35mpLtp8/8zrjrtnH
+ lOHcn+JWdGaZTjL3yVhbVnOGEH7/zhgNngQaeFy3RgM7Acaow8z4KJ1nwHjD3xuAHGN4
+ ZK4Uc8NR4ezqhDYMkxXGnei7UDB0QPwFlAWCrVEtVTmvU6mMbLoePxbcbJGC9eRZNlN0
+ +sYQ==
+X-Gm-Message-State: AOJu0YyvISs79TQTMEVBhAQWjiawY0lr8RH04bvRqUVrsjPIEj/uSQa8
+ Fdcs24nDe0lpSdu9ARqVa4I5sA==
+X-Google-Smtp-Source: AGHT+IF1AvExKZCeUy2ZtrfMjr0GHFd2fyxci/0vDDkLOzx1+h/yO2i20h3/C7aa6XHaQ1hZLopQUQ==
+X-Received: by 2002:adf:f742:0:b0:319:6e3f:d5f0 with SMTP id
+ z2-20020adff742000000b003196e3fd5f0mr5005042wrp.44.1694958139590; 
+ Sun, 17 Sep 2023 06:42:19 -0700 (PDT)
+Received: from [192.168.69.115] (ric62-h01-176-170-218-28.dsl.sta.abo.bbox.fr.
+ [176.170.218.28]) by smtp.gmail.com with ESMTPSA id
+ l12-20020a5d674c000000b0030ae53550f5sm9692961wrw.51.2023.09.17.06.42.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 17 Sep 2023 06:42:19 -0700 (PDT)
+Message-ID: <07f1473f-d308-aa8d-ca04-6f2d45e53686@linaro.org>
+Date: Sun, 17 Sep 2023 15:42:17 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 08/20] asc: generate silence if FIFO empty but engine
+ still running
 Content-Language: en-US
-To: Mike Maslenkin <mike.maslenkin@gmail.com>, "Denis V. Lunev"
- <den@openvz.org>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, stefanha@redhat.com,
- alexander.ivanov@virtuozzo.com
-References: <20230915184130.403366-1-den@openvz.org>
- <20230915184130.403366-5-den@openvz.org>
- <CAL77WPBGUyrLmYLeosKmcDTiifi0j77TqdSQoGrmnC2pPzaxuA@mail.gmail.com>
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <CAL77WPBGUyrLmYLeosKmcDTiifi0j77TqdSQoGrmnC2pPzaxuA@mail.gmail.com>
+To: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu,
+ qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
+ <20230909094827.33871-9-mark.cave-ayland@ilande.co.uk>
+ <25d8059c-422a-3f2a-3f33-7a9848f4b3da@linaro.org>
+ <1ffc1fab-94ef-445f-9df3-a029bf9e68ef@t-online.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <1ffc1fab-94ef-445f-9df3-a029bf9e68ef@t-online.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR06CA0169.eurprd06.prod.outlook.com
- (2603:10a6:803:c8::26) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|DB9PR08MB6700:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d1eace0-a969-4883-ba78-08dbb77ed9e2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: GbR6+xMk5flsnwmVwrclq6am12youVUNcT0kO+PQJW09rjELzaVurYZRZ5T7WbXJnY+2cQaxH0+17hvDeC85Na90THXrJuRpuFSevhOalF0CuKpJbiSkB5+UdPxKSPDCepUdOYdWKjP3xXJOXOUcY7bEqR/OHGhrOJriBpVanq0OLrdYi624M4vNsSEgdeCv8iywKXfgSOJ4nVqsTM/f+wcdR63HIZPdy4OPROTI9nxzwcHcHVZXGcTclspbvByY4yz9F/3FUDl76L7Zc8sfq7OmjhyxCbgW8woOZlLDExM9V30hbgFyw9rxDnqQROqH+zYKHdGYvmubj0j2nITXMwxLAYSKwNxz+JDqQnNqTtvQLg+V9Z8xZjtuSYa1GH4ET1D648D9q6Ka5Aj5cqnaQfeABwV3FcB15bF4rIKVEMS1xUwb2zmJWscZW/RzCYXNOMkkdmj8fbEpOD8PhYGHm/pX8g2hRUknx88QbCzBEKZXpvPkiKgDLYCAmP2ofl7+DMtauMv3JZeGdnkyXb/mAW+bg8h3p9qlZdkONlO+div2RGfcdQdLfQP7P5u1OzTwWDKqyORhDazjBI9jJT7OBXKRzyOj2JyHJySkYSYYqTp+pJHRVDFN/qWJLxzS5bqsdEl8rsf5LJKQyfzxu3W9qg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(396003)(136003)(346002)(39840400004)(366004)(186009)(1800799009)(451199024)(83380400001)(478600001)(38100700002)(31686004)(107886003)(6486002)(6506007)(26005)(86362001)(6512007)(66899024)(53546011)(6666004)(2616005)(31696002)(8676002)(5660300002)(4326008)(8936002)(66946007)(66556008)(66476007)(41300700001)(2906002)(36756003)(110136005)(316002)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S0xiUFR5cXZHOUxUeTcwclRxVW9QOTBlZjBHSnhRelBDZjdqSDN6UjBDN0ph?=
- =?utf-8?B?WUlsb0xrNmo1YmxYMkNQZnFyeTJGSVh2cE03T0EyUjUvbzRWRnBZWFA4L0Fn?=
- =?utf-8?B?bTZ0dlB2MGdrUXVYeGRIWXFPbDBtMHdyM2V2S3drcW9VdXFIZDhrbE5UV1h5?=
- =?utf-8?B?dzlNcDlYTHNTQVBpSHI5bTNyY3NGS0p6V0RDWEIyODFIcmVsQjNtM041amp6?=
- =?utf-8?B?ckFmVkNSc29rODY4TVNweDAvdU0weGNpQ3l1VURsZzZUTmFJUmZZRUcrcEt1?=
- =?utf-8?B?YTJSVGpmSmdBZ21mY0RDcDZsRTlsbFQzVG1sNkt5aWxuSUJFS1ZobnFONC9i?=
- =?utf-8?B?TlZYc1JwZGFpb0xWS3p0ekhPUEVjUDZ0YVFkdEg3cFhQTWFvWFBuY3UvS3A5?=
- =?utf-8?B?YUZlSFRiVXFtRFU3Zm4rVS9HbmF5em1QRFVBa0ZnYlFla3o1U2JpS3BiMG1T?=
- =?utf-8?B?VjcvVkxKZ2M5Q2xnOFBHdVZjQUVwaTZhdjB5MCtpc1JzVFBDc1JOWlViek56?=
- =?utf-8?B?WUsvNHdmMlVtUmxDdEhNbFlTRk5VNFJMUnpZb2s4SE9pU2dkRHNkOXBuRGZF?=
- =?utf-8?B?RDlRYkhRUUI1TFBmb3VFVE1UeWFad21NRFNtc3N4aTVRVlF5b3k5QkdKNU01?=
- =?utf-8?B?c3B6dEdnblNVQjQ1M0xLNUFxWmVQTW8xaWRweXlveDdiYnFuUkR6TlUzMlF2?=
- =?utf-8?B?cXAxTkxsM0dFZ0FMVzJydnhNSjJFMDBMeEw5RE9kRXhJOG9aWVdEVzV5U1Ry?=
- =?utf-8?B?QWxWb0E2M054VVRlYmwyZEY3UFl6MUdmU3JOd3N4ZHhsZjN4WU54ZFNuS3BQ?=
- =?utf-8?B?NzB6YU1qdnJMaWdJb3FVS1YzMU5WU2pRZUFLQ3MzTllDb1FlbWoyN0haWklw?=
- =?utf-8?B?Vi9RVEFmeUVjZ3BtUlVnUjF5WUh6VVd3MlcyZXNocmVSNkwzdlovaGp2V3JR?=
- =?utf-8?B?MmdDRjB3eFlvVG5va2hPQ1ZBTXdiL1pZMUE1Nm1JOWxEYVFxQk43RjNOb2Ew?=
- =?utf-8?B?MTJyV0hqMXoxcE4wZWE4Q29HVGh1QkpEd0J5NU55N25aNFNHb3l1aHI2VjVO?=
- =?utf-8?B?dzdUa1FjTzF2QUZMTGpJaG1UWmxXTzN3S3l6TWtGaE53bnk5c3hseXRSQ1hn?=
- =?utf-8?B?L2N3dkZVNFRrZ0dHNVl3Mm9Vck8rcVNFSXV1SjJMZDQ5S0lvMGZibi9pL3Nu?=
- =?utf-8?B?UzVXVjRLbm1Wd0dZYytXOW05UGFYdFNRVGlsdnQ1MXpZN2dPVk56WUtVTElR?=
- =?utf-8?B?QXVoR1BEMENMdzZVUnkrT3kvRUpHUUdYM3JXMHFsOEtiZkZBVzZFRElZQmNQ?=
- =?utf-8?B?V2d2eVpndnJQRGVjYkE2RmEwcWZIVTRnc0kvUWlIdmRFQlA2RzBQRXY4YlNt?=
- =?utf-8?B?bWhuNWdiancwcy9objRlUnpSUmhaMlNhZExmMlJMSEV3V0RZcWY1ZWlWWGFh?=
- =?utf-8?B?alBKQnhlNFQrN3EzMEpDNnF1TWltNkMramJiWjAzeDhuUkZSQ291eklmdGNS?=
- =?utf-8?B?dk41czlTN0hxV3FFUXJhcEk1ODcwTCtHcll0V3lUYUtXZW56M3hVcGsxekpG?=
- =?utf-8?B?UnhPcWVZMURHWnFFZlc3YmNLNnF2Ymx6L2NLZGpnalVSdk4wMGtvQUxKTDc1?=
- =?utf-8?B?MFVXQlUrZFVWR0tHa053bGhZQy8ySGhPbEc0UGtRMEdqbnZrMElWaWR4emtv?=
- =?utf-8?B?dWNCTjlHMEM1TUFaOUJyTmJEMkRvMWpEQVBFTE5oRWFGazUxdm1GMG5PTnNx?=
- =?utf-8?B?b3NOendDMThCUWN4RlBHNnV6UE1LT0FjYVVSeUNrSFBlZFYzdWV6b3BrWHEx?=
- =?utf-8?B?U0p5ZjE4dEdwVmtKbWx5VnhKd0lJcmx1TWJkZk5WM3FmeVBVb2x2T3VwbWVJ?=
- =?utf-8?B?ZnBuenplSlIxZDJ3MnBuMi9QdSsvck9ua25FNVczSTJvSys1S0tZcWxKWDJS?=
- =?utf-8?B?blBZOFVHS001eVRzUnJRdUFmUnBBbWtMeTNwRkZHdGg5TnVHTFpUR25TOEdU?=
- =?utf-8?B?d3ozYUxRWGs4aGhRYTl2RTRvdVZ4SUY3MmU0VFVNRTU4L0haYTR4RDk1bTdj?=
- =?utf-8?B?OEI5VGZnVDlkd0EvVHdadmRDK3FxQkM4SXdJYnY4akxvWHJva3JUTEhSRWtC?=
- =?utf-8?Q?5167/T6tRzxZwvuTeKG/RIprw?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d1eace0-a969-4883-ba78-08dbb77ed9e2
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2023 13:06:05.3126 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JeSDwy22V95I8tjyQ5UI0dQ4pUrDQBxZNWs17KgNvCQj2cgktrugoHlKbVuEMMqnKF4OryUDWMwboftYlwVcbw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB6700
-Received-SPF: pass client-ip=2a01:111:f400:7e1b::70b;
- envelope-from=den@virtuozzo.com;
- helo=EUR05-AM6-obe.outbound.protection.outlook.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,66 +98,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/17/23 13:40, Mike Maslenkin wrote:
-> This is not introduced by this patch,
-> but looks like qemu_opts_del(opts) missed.
-nice spot!
-
-
-> On Fri, Sep 15, 2023 at 9:41 PM Denis V. Lunev <den@openvz.org> wrote:
->> This patch creates above mentioned helper and moves its usage to the
->> beginning of parallels_open(). This simplifies parallels_open() a bit.
+On 16/9/23 10:19, Volker Rümelin wrote:
+> Am 14.09.23 um 09:56 schrieb Philippe Mathieu-Daudé:
 >>
->> The patch also ensures that we store prealloc_size on block driver state
->> always in sectors. This makes code cleaner and avoids wrong opinion at
->> the assignment that the value is in bytes.
+>> On 9/9/23 11:48, Mark Cave-Ayland wrote:
+>>> MacOS (un)helpfully leaves the FIFO engine running even when all the
+>>> samples have
+>>> been written to the hardware, and expects the FIFO status flags and
+>>> IRQ to be
+>>> updated continuously.
+>>>
+>>> There is an additional problem in that not all audio backends
+>>> guarantee an
+>>> all-zero output when there is no FIFO data available, in particular
+>>> the Windows
+>>> dsound backend which re-uses its internal circular buffer causing the
+>>> last played
+>>> sound to loop indefinitely.
+>>>
+>>> Whilst this is effectively a bug in the Windows dsound backend, work
+>>> around it
+>>> for now using a simple heuristic: if the FIFO remains empty for half
+>>> a cycle
+>>> (~23ms) then continuously fill the generated buffer with empty silence.
+>>>
+>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>>> ---
+>>>    hw/audio/asc.c         | 19 +++++++++++++++++++
+>>>    include/hw/audio/asc.h |  2 ++
+>>>    2 files changed, 21 insertions(+)
+>>>
+>>> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+>>> index 336ace0cd6..b01b285512 100644
+>>> --- a/hw/audio/asc.c
+>>> +++ b/hw/audio/asc.c
+>>> @@ -334,6 +334,21 @@ static void asc_out_cb(void *opaque, int free_b)
+>>>        }
+>>>          if (!generated) {
+>>> +        /* Workaround for audio underflow bug on Windows dsound
+>>> backend */
+>>> +        int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+>>> +        int silent_samples = muldiv64(now - s->fifo_empty_ns,
+>>> +                                      NANOSECONDS_PER_SECOND,
+>>> ASC_FREQ);
+>>> +
+>>> +        if (silent_samples > ASC_FIFO_CYCLE_TIME / 2) {
+>>> +            /*
+>>> +             * No new FIFO data within half a cycle time (~23ms) so
+>>> fill the
+>>> +             * entire available buffer with silence. This prevents
+>>> an issue
+>>> +             * with the Windows dsound backend whereby the sound
+>>> appears to
+>>> +             * loop because the FIFO has run out of data, and the
+>>> driver
+>>> +             * reuses the stale content in its circular audio buffer.
+>>> +             */
+>>> +            AUD_write(s->voice, s->silentbuf, samples << s->shift);
+>>> +        }
+>>>            return;
+>>>        }
 >>
->> Signed-off-by: Denis V. Lunev <den@openvz.org>
->> ---
->>   block/parallels.c | 65 +++++++++++++++++++++++++++--------------------
->>   1 file changed, 38 insertions(+), 27 deletions(-)
+>> What about having audio_callback_fn returning a boolean, and using
+>> a flag in backends for that silence case? Roughtly:
 >>
->> diff --git a/block/parallels.c b/block/parallels.c
->> index 428f72de1c..1d5409f2ba 100644
->> --- a/block/parallels.c
->> +++ b/block/parallels.c
->> @@ -1025,6 +1025,38 @@ static int parallels_update_header(BlockDriverState *bs)
->>       return bdrv_pwrite_sync(bs->file, 0, size, s->header, 0);
->>   }
->>
->> +
->> +static int parallels_opts_prealloc(BlockDriverState *bs, QDict *options,
->> +                                   Error **errp)
->> +{
->> +    char *buf;
->> +    int64_t bytes;
->> +    BDRVParallelsState *s = bs->opaque;
->> +    Error *local_err = NULL;
->> +    QemuOpts *opts = qemu_opts_create(&parallels_runtime_opts, NULL, 0, errp);
->> +    if (!opts) {
->> +        return -ENOMEM;
->> +    }
->> +
->> +    if (!qemu_opts_absorb_qdict(opts, options, errp)) {
->> +        return -EINVAL;
->> +    }
->> +
->> +    bytes = qemu_opt_get_size_del(opts, PARALLELS_OPT_PREALLOC_SIZE, 0);
->> +    s->prealloc_size = bytes >> BDRV_SECTOR_BITS;
-> qemu_opt_get_size_del returns uint64_t, so what's a reason to declare
-> "bytes" variable  as int64_t
-> and then shift it to the right?  I see here it can not be negative,
-> but it's a common to use signed values and not to add explicit check
-> before shifting to right In this file
-> I takes time to ensure that initial values are not negative.
->
-> Regards,
-> Mike.
->
+> 
+> Hi Philippe,
+> 
+> I don't think there will be many audio devices that need this feature in
+> the future. It's probably better to keep the code in hw/audio/asc.c
+> 
+> I plan to change the buffer underflow behavior of the DirectSound
+> backend after these patches are commited. I already have a patch
+> available. This doesn't mean this patch is unnecessary after my patch.
+> It is a mistake when audio devices simply stop writing audio samples
+> without changing the status of the audio playback stream to deactivated.
+> At the moment the ASC device can't deactivate the audio stream.
 
-apparently no specific reason. Just all variables here
-dealing with offsets are int64_t. Will change.
+OK, thanks for clarifying.
 
-Thanks,
-     Den
 
