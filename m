@@ -2,54 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D8F7A3406
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 08:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A243F7A3524
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 12:35:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhljq-0006vh-Hr; Sun, 17 Sep 2023 02:58:38 -0400
+	id 1qhp6G-00032u-NC; Sun, 17 Sep 2023 06:34:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1qhljn-0006v8-QU
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 02:58:35 -0400
-Received: from mailout01.t-online.de ([194.25.134.80])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <volker.ruemelin@t-online.de>)
- id 1qhljm-000552-49
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 02:58:35 -0400
-Received: from fwd89.aul.t-online.de (fwd89.aul.t-online.de [10.223.144.115])
- by mailout01.t-online.de (Postfix) with SMTP id 5D1CA10125;
- Sun, 17 Sep 2023 08:58:32 +0200 (CEST)
-Received: from linpower.localnet ([79.208.31.89]) by fwd89.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1qhlji-2mKRIP0; Sun, 17 Sep 2023 08:58:30 +0200
-Received: by linpower.localnet (Postfix, from userid 1000)
- id A924E200209; Sun, 17 Sep 2023 08:58:13 +0200 (CEST)
-From: =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- BALATON Zoltan <balaton@eik.bme.hu>, qemu-devel@nongnu.org
-Subject: [PATCH 8/8] hw/audio/es1370: trace lost interrupts
-Date: Sun, 17 Sep 2023 08:58:13 +0200
-Message-Id: <20230917065813.6692-8-vr_qemu@t-online.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <cfc5a196-9939-44b5-8716-9525f1a08a2a@t-online.de>
-References: <cfc5a196-9939-44b5-8716-9525f1a08a2a@t-online.de>
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qhp6E-00032h-DK
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 06:33:58 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qhp6C-0000Ds-D6
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 06:33:58 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2bffa8578feso9066591fa.2
+ for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 03:33:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1694946833; x=1695551633;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XH4ZIcpAPKee0Y2Ck7XnVkjJ79hA8L4gJJDQJ6JBXnc=;
+ b=2MMS+NQMcYc1S5sl67T2JBUmqog4plmeCN+ocmm1PkKc9aOLIiRaxflq7KQ0z3vKpU
+ EwZMYGR/eyW2pPg+EsPn5T+wEQrMY4hbLUwO+lF7Dp6bOaC1eEjv2LRH5RDpw4M/Rq/k
+ hLtY9su9oqx6scpq9W/X+u1iBo3OsOa5MTTrZg7dV1lvO6ZgDC22qhRCclbaEQzanE3y
+ 4sB/0EttjLv01Gn5TL6hBd790JFbMwgBt3Qy1U/0KKV69UieLyOG2DJzbb3CKzgRwboP
+ WkCEUIZ55KmQMUyCv08gerHmfJWzWwIex7wxyHPV7jfATErIB42ByJdkVMdviMOHFQ1z
+ 2pdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1694946833; x=1695551633;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XH4ZIcpAPKee0Y2Ck7XnVkjJ79hA8L4gJJDQJ6JBXnc=;
+ b=iHFNaaXDTqc2m9h97zGdHKeiNLz/0uUGBfRYoECz9TCq5urcE8CHXYdUoAqSfWdyfM
+ 8X7PD5tPrBlPzgnOoeAc9oufuuOm1XhVXyak/HL5QaC1+jH9YiZ8SfS+63XAeoJW7aR6
+ gmfSzc3Ywq+W1CTDNiFKn0ct2SbH3p6BzsFBK8SVgIgDqs1114GQ4hD2fBhqsB/iEpZj
+ BsKZhixA4ld6XaqCycExrcQtWNl3LUlLUN5w32Y/qalALfLaSYTTnF75TMkrLZrrOLyx
+ XNOxDKwL7Gy/lOku0WUaEeSobcRAN0Kf3E+IlAWKHsb+lZVk60Dd/g4Y455ggeeiGRn5
+ CbZw==
+X-Gm-Message-State: AOJu0YyNa+TYy0RWJtOjHh5R+hhHj8Hi7bgl3B0cW1FNU1LoBRLWR6Bs
+ HMJSYtjBTwX7HEL8GsEU12GpUiftmb2A9GqFu6VpLQ==
+X-Google-Smtp-Source: AGHT+IFO88lmMkJ/xxqmoFsYDmvwgyS4AHMKDZc2OriIAo0Cot3nh8xYNnFQxoUZi/NH+RT9m4P/2AqtwJSQLaq8cI4=
+X-Received: by 2002:ac2:4831:0:b0:500:9dd4:2969 with SMTP id
+ 17-20020ac24831000000b005009dd42969mr4530668lft.59.1694946832576; Sun, 17 Sep
+ 2023 03:33:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1694933910-BF7E49BF-B142A45C/0/0 CLEAN NORMAL
-X-TOI-MSGID: 99bbe9f7-0738-44ab-ad2b-b42ac29d903b
-Received-SPF: none client-ip=194.25.134.80;
- envelope-from=volker.ruemelin@t-online.de; helo=mailout01.t-online.de
+References: <20230914204107.23778-1-kariem.taha2.7@gmail.com>
+ <20230914204107.23778-6-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230914204107.23778-6-kariem.taha2.7@gmail.com>
+From: Warner Losh <imp@bsdimp.com>
+Date: Sun, 17 Sep 2023 11:33:41 +0100
+Message-ID: <CANCZdfobohsagMjCWyzs3--EC5PiCbmHcnpyC+9TgxZrC=03xw@mail.gmail.com>
+Subject: Re: [PATCH v5 05/23] bsd-user: Implement shm_open2(2) system call
+To: Karim Taha <kariem.taha2.7@gmail.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Kyle Evans <kevans@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000de8a4706058b8f44"
+Received-SPF: none client-ip=2a00:1450:4864:20::22b;
+ envelope-from=wlosh@bsdimp.com; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,82 +84,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It turns out that there are drivers which assume that interrupts
-can't be lost. E.g. the AROS sb128 driver is such a driver. Add
-a lost interrupt tracepoint to debug this kind of issues.
+--000000000000de8a4706058b8f44
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
----
- hw/audio/es1370.c     | 14 ++++++++++----
- hw/audio/trace-events |  3 ++-
- 2 files changed, 12 insertions(+), 5 deletions(-)
+On Thu, Sep 14, 2023 at 9:42=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.co=
+m> wrote:
 
-diff --git a/hw/audio/es1370.c b/hw/audio/es1370.c
-index 6d2aff57f2..4966f72ae6 100644
---- a/hw/audio/es1370.c
-+++ b/hw/audio/es1370.c
-@@ -602,7 +602,7 @@ static uint64_t es1370_read(void *opaque, hwaddr addr, unsigned size)
- }
- 
- static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
--                                   int max, int *irq)
-+                                   int max, bool *irq)
- {
-     uint8_t tmpbuf[4096];
-     size_t to_transfer;
-@@ -657,10 +657,13 @@ static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
-     }
- 
-     if (csc_bytes == transferred) {
--        *irq = 1;
-+        if (*irq) {
-+            trace_es1370_lost_interrupt(index);
-+        }
-+        *irq = true;
-         d->scount = sc | (sc << 16);
-     } else {
--        *irq = 0;
-+        *irq = false;
-         d->scount = sc | (((csc_bytes - transferred - 1) >> d->shift) << 16);
-     }
- 
-@@ -688,7 +691,8 @@ static void es1370_transfer_audio (ES1370State *s, struct chan *d, int loop_sel,
- static void es1370_run_channel (ES1370State *s, size_t chan, int free_or_avail)
- {
-     uint32_t new_status = s->status;
--    int max_bytes, irq;
-+    int max_bytes;
-+    bool irq;
-     struct chan *d = &s->chan[chan];
-     const struct chan_bits *b = &es1370_chan_bits[chan];
- 
-@@ -702,6 +706,8 @@ static void es1370_run_channel (ES1370State *s, size_t chan, int free_or_avail)
-         return;
-     }
- 
-+    irq = s->sctl & b->sctl_inten && s->status & b->stat_int;
-+
-     es1370_transfer_audio (s, d, b->sctl_loopsel, max_bytes, &irq);
- 
-     if (irq) {
-diff --git a/hw/audio/trace-events b/hw/audio/trace-events
-index 00f9e45158..ccbc8dabd5 100644
---- a/hw/audio/trace-events
-+++ b/hw/audio/trace-events
-@@ -11,10 +11,11 @@ es1370_frame_address_rd(int ch, uint32_t addr) "ch=%d addr=0x%08x"
- es1370_frame_address_wr(int ch, uint32_t addr) "ch=%d addr=0x%08x"
- es1370_frame_count_rd(int ch, uint32_t curr, uint32_t size) "ch=%d CURR_CT=%u BUF_SIZE=%u"
- es1370_frame_count_wr(int ch, uint32_t curr, uint32_t size) "ch=%d CURR_CT=%u BUF_SIZE=%u"
-+es1370_lost_interrupt(int ch) "ch=%d lost interrupt"
- es1370_sample_count_rd(int ch, uint32_t curr, uint32_t num) "ch=%d CURR_SAMP_CT=%u SAMP_CT=%u"
- es1370_sample_count_wr(int ch, uint32_t curr, uint32_t num) "ch=%d CURR_SAMP_CT=%u SAMP_CT=%u"
- es1370_stream_format(int ch, uint32_t freq, const char *fmt, const char *mode, uint32_t shift) "ch=%d fmt=%u:%s:%s shift=%u"
--es1370_transfer_audio(int ch, uint32_t f_curr, uint32_t f_size, uint32_t s_curr, uint32_t s_num, uint32_t leftover, int irq) "ch=%d CURR_CT=%u BUF_SIZE=%u CURR_SAMP_CT=%u SAMP_CT=%u leftover=%u irq=%d"
-+es1370_transfer_audio(int ch, uint32_t f_curr, uint32_t f_size, uint32_t s_curr, uint32_t s_num, uint32_t leftover, bool irq) "ch=%d CURR_CT=%u BUF_SIZE=%u CURR_SAMP_CT=%u SAMP_CT=%u leftover=%u irq=%d"
- 
- # hda-codec.c
- hda_audio_running(const char *stream, int nr, bool running) "st %s, nr %d, run %d"
--- 
-2.35.3
+> Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  bsd-user/freebsd/os-misc.h    | 42 +++++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c | 10 +++++++++
+>  2 files changed, 52 insertions(+)
+>
 
+
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+
+--000000000000de8a4706058b8f44
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Sep 14, 2023 at 9:42=E2=80=AF=
+PM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
+7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">Signed-off-by: Kyle Evans &lt;kevans@FreeBSD.org&gt;<br>
+Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
+arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+---<br>
+=C2=A0bsd-user/freebsd/os-misc.h=C2=A0 =C2=A0 | 42 ++++++++++++++++++++++++=
++++++++++++<br>
+=C2=A0bsd-user/freebsd/os-syscall.c | 10 +++++++++<br>
+=C2=A02 files changed, 52 insertions(+)<br></blockquote><div><br></div><div=
+><br></div><div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.c=
+om">imp@bsdimp.com</a>&gt;</div><div><br></div></div></div>
+
+--000000000000de8a4706058b8f44--
 
