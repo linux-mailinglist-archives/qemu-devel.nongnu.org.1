@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0437A3DF6
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Sep 2023 23:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD4D7A3E81
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 00:27:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qhzUs-0004er-E2; Sun, 17 Sep 2023 17:40:06 -0400
+	id 1qi0Bb-0006SK-P5; Sun, 17 Sep 2023 18:24:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qhzUq-0004dx-GU
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:40:04 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qi0BX-0006RV-L9
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 18:24:11 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qhzUn-0004KL-J7
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 17:40:04 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40434d284f7so40367785e9.3
- for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 14:40:01 -0700 (PDT)
+ id 1qi0BV-0002tK-Ee
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 18:24:10 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-307d58b3efbso3695434f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 15:24:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694986800; x=1695591600; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=szw1D363NLaMzZ2nlSVnjBnf+JZRVRfS7yebtBMdM4M=;
- b=P8RimxH4z2uoHAy1VT75+HOpPchEgzmqb24USh4tv4UGja+txlXsIIremkKdRfPREb
- T/4ixt8+2FjXO+OlGTb0f/hu/Wmg5r3pNUBmvoJGx2N27I8nI2kJhzQnkyOFCbCbh0Pl
- KuxyIR0c/1F+srGGVncpweJhRXe0t0WFfvb3/Imfx9g+nVeJPJcEXsCjdRrAVGdzy886
- NgKSEbCAgYMaFqI2+P220Kq8RELDFK8qZRuTK6oVPDC3SWmB8Lpsd2cTQoBL4dudKnbi
- LRDfC2Klmhld6Fis7y0gjnx8mp77dm/Lwckv5z1tWlwauV8WfNOX+rfDgegitMLUkZa4
- kg3A==
+ d=gmail.com; s=20230601; t=1694989447; x=1695594247; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=o8CkTawIAHKcNROsQeg+oZvvojFPdKNuju/1K0TLyts=;
+ b=PHfYN1OjJT50hcK1fh8zvBYOT+vc+GNMyzN/akIZpXNUGH0fypDIC7Kh1f3eEKLFah
+ sN2AB4h6TY4mLlWlSm3aJVPsuvUpxc2WSrNrGI4dIgwCtFZqHHi+2BPTj7OU9xxMiktA
+ PGZ/yIAU3KZM1JJ7+SeMxTaIfN71QqiWv2+ZctY9RVe87eb6rtVRp8tS5wvrd6S7sn2m
+ yd2z2tgZhcQ7plbMHYw3mzNi5hF+NCMHIaHelTZv9DzFMULcM7PowV4W20SZT2fe0nwV
+ fJgkK0/cTK3IrOKPJzSMbs74Z3qlOQSD6Uwc7Lotpr7F9rZmD3MOtu52G5MXClSrFLPS
+ gZyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694986800; x=1695591600;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=szw1D363NLaMzZ2nlSVnjBnf+JZRVRfS7yebtBMdM4M=;
- b=S8UlmyJIxnjoQeX2gTxVZ7upjmUumAVocrPcARDQHvKjYilsN2nLnarZ2l9WCd/lrK
- My2GFUSC8yN0svx8v95rM23wjNGypFZP2cFYKaXbelMkIx6awKA8S38oiMMOKgavr+ZY
- 0OjBwm7vzY9AnydOgnx4vNQG4kMN9lzgvlPqJXbPWt12TNinK2bEA3zKoVwJ5sE1d5JN
- NqaWCjv3izE34VDtWr+UtwGo9iZq07eZ/owg+feqgDDH7nBJcsvcnrjGt5hkvfHIALgK
- YWOnmH1HNhjFWy1SF+9BWjyPZ1EzHljL482HIib2poDqS1cWj8UuUcD66CxyVdolxcV6
- V1ig==
-X-Gm-Message-State: AOJu0Yy3twSEpS9BvbSEAkFtsakse9ubmedK2E/VZvHJ4dJJViSjY26S
- UtMRrx3opPK+xisEEUSmqSIRNkZ2Bus=
-X-Google-Smtp-Source: AGHT+IEBlc6rJN//1+hAPNfBWPD8SgJWd3dW7vdgeSqMBV4ujjGkEp2ODBZW5oP9OeIE5iynVNgR0w==
-X-Received: by 2002:a05:600c:ac5:b0:402:bbe3:827c with SMTP id
- c5-20020a05600c0ac500b00402bbe3827cmr6555673wmr.31.1694986799936; 
- Sun, 17 Sep 2023 14:39:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1694989447; x=1695594247;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=o8CkTawIAHKcNROsQeg+oZvvojFPdKNuju/1K0TLyts=;
+ b=iGRdPEsjBoggnLjbWLgPgQ3e4kf+dg8GhLwkbTLjVecE5ETuliWBg2mYaipI+PqQvt
+ 0jpN8bC43trGvb0zexqRUc1/3S3L3E6oofSFbGIK0BdcVT/CuXb+/u1hyR/eweOmlEhl
+ yoL5MMk7BrXwAKgan0la5SodtcDQKNoQkoYHJ99Cw6NKwsYvdbiSHfVl4gs10FivdOv2
+ ucEtD7NX3nI6ZiouXe3lRTKRrKJvUAhaAGsxGkqE7FIvZLTYUPbJYlLY9wm+lMw25Ajz
+ pJl4PDb4eHMQwk2I2uW+1U/p9r1x4kLUshi0bi6oNavpX4R/kK0tMrKo93DyUUX1oBwq
+ Evdw==
+X-Gm-Message-State: AOJu0YwegYUExU+FpwlPjKUpD7MSuny39lCoya+bp0dKHzV4gegFo7is
+ QdUkN12oEb01tjSsepkaLBZKgZmxvTY=
+X-Google-Smtp-Source: AGHT+IE1EnpkLFn1DXDXCvXzth0jB3X2gt8yoJlA8J8T852FSBW7e1bptnRi09FC7/WLlakpz2cGnA==
+X-Received: by 2002:adf:f782:0:b0:317:e766:d5e9 with SMTP id
+ q2-20020adff782000000b00317e766d5e9mr6272048wrp.3.1694989447252; 
+ Sun, 17 Sep 2023 15:24:07 -0700 (PDT)
 Received: from karim.my.domain ([197.39.215.8])
  by smtp.gmail.com with ESMTPSA id
- n11-20020a5d484b000000b00317ddccb0d1sm10561735wrs.24.2023.09.17.14.39.59
+ f7-20020adff987000000b0031c8a43712asm10652527wrr.69.2023.09.17.15.24.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Sep 2023 14:39:59 -0700 (PDT)
+ Sun, 17 Sep 2023 15:24:06 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: imp@bsdimp.com, Richard Henderson <richard.henderson@linaro.org>,
- Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v2 28/28] bsd-user: Implement pdfork(2) system call.
-Date: Mon, 18 Sep 2023 00:38:03 +0300
-Message-ID: <20230917213803.20683-29-kariem.taha2.7@gmail.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, imp@bsdimp.com,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v3 00/28] bsd-user: Implement freebsd process related system
+ calls.
+Date: Mon, 18 Sep 2023 01:22:17 +0300
+Message-ID: <20230917222246.1921-1-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
-References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -93,72 +92,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
-Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
----
- bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  4 ++++
- 2 files changed, 36 insertions(+)
 
-diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index a406ef7db8..563bac8818 100644
---- a/bsd-user/freebsd/os-proc.h
-+++ b/bsd-user/freebsd/os-proc.h
-@@ -251,4 +251,36 @@ static inline abi_long do_freebsd_rfork(void *cpu_env, abi_long flags)
- 
- }
- 
-+/* pdfork(2) */
-+static inline abi_long do_freebsd_pdfork(void *cpu_env, abi_ulong target_fdp,
-+        abi_long flags)
-+{
-+    abi_long ret;
-+    abi_ulong child_flag;
-+    int fd;
-+
-+    fork_start();
-+    ret = pdfork(&fd, flags);
-+    if (ret == 0) {
-+        /* child */
-+        child_flag = 1;
-+        target_cpu_clone_regs(cpu_env, 0);
-+    } else {
-+        /* parent */
-+        child_flag = 0;
-+        if (put_user_s32(fd, target_fdp)) {
-+            return -TARGET_EFAULT;
-+        }
-+    }
-+
-+    /*
-+     * The fork system call sets a child flag in the second return
-+     * value: 0 for parent process, 1 for child process.
-+     */
-+    set_second_rval(cpu_env, child_flag);
-+    fork_end(child_flag);
-+
-+    return ret;
-+}
-+
- #endif /* BSD_USER_FREEBSD_OS_PROC_H */
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 4c4e773d1d..d04712f0a7 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -238,6 +238,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_freebsd_rfork(cpu_env, arg1);
-         break;
- 
-+    case TARGET_FREEBSD_NR_pdfork: /* pdfork(2) */
-+        ret = do_freebsd_pdfork(cpu_env, arg1, arg2);
-+        break;
-+
-     case TARGET_FREEBSD_NR_execve: /* execve(2) */
-         ret = do_freebsd_execve(arg1, arg2, arg3);
-         break;
+Karim Taha (3):
+  bsd-user: define TARGET_RFSPAWN for rfork to use vfork(2) semantics,
+    and fix RLIM_INFINITY
+  bsd-user: Implement get_filename_from_fd.
+  bsd-user: Implement execve(2) and fexecve(2) system calls.
+
+Kyle Evans (1):
+  bsd-user: Get number of cpus.
+
+Stacey Son (24):
+  bsd-user: Define procctl(2) related structs
+  bsd-user: Implement host_to_target_siginfo.
+  bsd-user: Add freebsd_exec_common and do_freebsd_procctl to qemu.h.
+  bsd-user: add extern declarations for bsd-proc.c conversion functions
+  bsd-user: Implement target_to_host_resource conversion function
+  bsd-user: Implement target_to_host_rlim and host_to_target_rlim
+    conversion.
+  bsd-user: Implement host_to_target_rusage and host_to_target_wrusage.
+  bsd-user: Implement host_to_target_waitstatus conversion.
+  bsd-user: Implement getgroups(2) and setgroups(2) system calls.
+  bsd-user: Implement umask(2), setlogin(2) and getlogin(2)
+  bsd-user: Implement getrusage(2).
+  bsd-user: Implement getrlimit(2) and setrlimit(2)
+  bsd-user: Implement several get/set system calls:
+  bsd-user: Implement get/set[resuid/resgid/sid] and issetugid.
+  bsd-user: Add stubs for profil(2), ktrace(2), utrace(2) and ptrace(2).
+  bsd-user: Implement getpriority(2) and setpriority(2).
+  bsd-user: Implement freebsd_exec_common, used in implementing
+    execve/fexecve.
+  bsd-user: Implement procctl(2) along with necessary conversion
+    functions.
+  bsd-user: Implement wait4(2) and wait6(2) system calls.
+  bsd-user: Implement setloginclass(2) and getloginclass(2) system
+    calls.
+  bsd-user: Implement pdgetpid(2) and the undocumented setugid.
+  bsd-user: Implement fork(2) and vfork(2) system calls.
+  bsd-user: Implement rfork(2) system call.
+  bsd-user: Implement pdfork(2) system call.
+
+ bsd-user/bsd-proc.c           | 144 ++++++++++
+ bsd-user/bsd-proc.h           | 379 +++++++++++++++++++++++++++
+ bsd-user/freebsd/meson.build  |   1 +
+ bsd-user/freebsd/os-proc.c    | 480 ++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-proc.h    | 286 ++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 206 ++++++++++++++-
+ bsd-user/main.c               |   2 +-
+ bsd-user/meson.build          |   6 +
+ bsd-user/qemu-bsd.h           |  38 +++
+ bsd-user/qemu.h               |   7 +
+ bsd-user/signal-common.h      |   1 +
+ bsd-user/signal.c             |   6 +
+ bsd-user/syscall_defs.h       |  50 +++-
+ 13 files changed, 1600 insertions(+), 6 deletions(-)
+ create mode 100644 bsd-user/bsd-proc.c
+ create mode 100644 bsd-user/freebsd/os-proc.c
+ create mode 100644 bsd-user/freebsd/os-proc.h
+ create mode 100644 bsd-user/qemu-bsd.h
+
 -- 
 2.42.0
 
