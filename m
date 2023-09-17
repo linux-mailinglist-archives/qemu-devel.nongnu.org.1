@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8B27A3E87
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 00:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C04C67A3E71
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 00:26:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi0Bd-0006SY-5p; Sun, 17 Sep 2023 18:24:17 -0400
+	id 1qi0Be-0006Td-Q2; Sun, 17 Sep 2023 18:24:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qi0BZ-0006Rr-IW
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 18:24:13 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1qi0Bb-0006SV-Q5
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 18:24:15 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qi0BX-0002tZ-EL
- for qemu-devel@nongnu.org; Sun, 17 Sep 2023 18:24:13 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-31ff2ce9d4cso2441546f8f.0
- for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 15:24:10 -0700 (PDT)
+ id 1qi0BZ-0002tl-AH
+ for qemu-devel@nongnu.org; Sun, 17 Sep 2023 18:24:15 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-32008e339adso960225f8f.2
+ for <qemu-devel@nongnu.org>; Sun, 17 Sep 2023 15:24:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694989450; x=1695594250; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1694989451; x=1695594251; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rUP8g2y0GYSaHwIi9+PE/D/jagxt1ep3Rybvm1zGJcc=;
- b=UhQYn8SMBpPcZ2QTHAL83B929cI+sM8WJt/6HATziETv0Ls8du/TUrP1mVGFidJv4C
- ZWXV/WxrHl3hlSGAN2z+uNyZzgdWk1eHHKphNvIEtCk8CJX220NCAkxwEBiZsz+IIw+Z
- RyPEbaGCVxvmFmmXWi2cGRtruuCuRK6f+vJFV0+dUaZZz0YJF++fKbGEDBeiEzkc5Sys
- YjRnkma1KKNwV1rKxq/uEsyaOXC35PjFItPdIH2Z+fBQDmbg0sxk3P/cQgBuKrNwoMsA
- 61IxSNREAkzdfG7nu39mD17hsYBD/BEn9vl+lkG0+KVKu2rG72Fr9jN2qye+cQ+rHCtX
- 33jQ==
+ bh=6AJdtgHq9fYznWnCzA7KoMOc1RO9pIOiwcxEQMuC6hk=;
+ b=EzeQ0GcQra1oGT1g2+K7L5PY3vfpkhxF4IT5FEbNYq3vBzjML6qCp0AfossWbbvlKI
+ kriPtGMT9LRE1M3fAfZbrr28/KqWaxSp1RDxAW5Dgo8jwPLeUw5XlpDqPyxFQP/DpKlB
+ stUqnNOCw2jhV/1Eh/q4A2+G2dhT9PZMyjwXRaUXpGug2N/+QJSNhTqI7VpGksxBCpvh
+ bL1aoST8DZf7/4XEmz8E61k/oNcCUjl8rjar61/f22/YIwoNyvR8AmemBaJdrlz2gc+E
+ +riUH6IHURsjmBNcPugJMTmgm17bPzit8sG814wxQFwVWvnj/YmkEn+R54v8djHqQAPl
+ tEYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694989450; x=1695594250;
+ d=1e100.net; s=20230601; t=1694989451; x=1695594251;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rUP8g2y0GYSaHwIi9+PE/D/jagxt1ep3Rybvm1zGJcc=;
- b=JbxQwMc3USUxRxhG5FB+VuaYJY32ovpkNt9Z/d4oTEsHfxfq9/opiKg/AcFhDrhQXG
- AjIsRtLs3kJ+6vGjiaG8K25QHiLC018os26YHMa0YgIBVs/3AzdDUrsA35FSHJD/Y0xp
- niaQN0wIsnHn1AwsQvblKVXm/pKXq3nxzRD9oI/Sk3XtrZPtHiqK78yP9DqGXRoZ5bPN
- QnM5VLCMJB5ZpP8fUXfjH0PwKd90P5rrcW4V56kRAFsj/pWPT2SMUMhiFdzCXlhtBTgv
- mo75SJjbAoeU05oCBHM6aVIKb2EYrHjtCHz+vhuMOudyNF7Y5XUa0haCfoK3WwZA5iHJ
- IS9w==
-X-Gm-Message-State: AOJu0YyqrhDe/0+38MmZBBDdbj6rUpOqwt8pkJ7KG6O8gQbcP15O7Yy9
- 0VgBZ2BYKmfElUnMzv+Nj4Hao0R9i1o=
-X-Google-Smtp-Source: AGHT+IEWyt+Y2elFGMsoLkSd/tKdJJ/S750XQH+UNpGzwH4hnR3N3KPS7rmn2sO2iVyEaMXW1EXcOQ==
-X-Received: by 2002:adf:9dcc:0:b0:31f:fb02:4dcd with SMTP id
- q12-20020adf9dcc000000b0031ffb024dcdmr4157230wre.4.1694989449642; 
- Sun, 17 Sep 2023 15:24:09 -0700 (PDT)
+ bh=6AJdtgHq9fYznWnCzA7KoMOc1RO9pIOiwcxEQMuC6hk=;
+ b=sBa7Cpi4rhTT4Hl8XoZJxDynKo4KU/ycGf2o64oIiQXPkbn43tAII7t0hx1w0rvzXn
+ +QKyY5QKWZJo2xGMTBeIXVGKMgryv8jCVOZqobx9SmrC5bDLZeUfd5sfW+IAyt3XpkBR
+ DJqmXcef/Ow76VLIlfR6sXKrLQv1IisNXPmvDNE7Qf1tLQ7iIQRmMlmOsYr8mFID+OWB
+ gwhkpNJbDqaNP7wTcrPXPtGehbOZDXrBSpq3kBFezAEA1pul8M5PeqVywC0CW3U+dcSQ
+ zu6nCTw/bYkvBKO+lDD5OMEckv+2DIJUlPnZIzkz2yNctElgNuv71w4Mcb5bB/vstzgC
+ fo5w==
+X-Gm-Message-State: AOJu0Yyy4IG/c9gUBEEFBPvtqNtI5bLXwiytQXC7KkrEqpjy5dM4l/XQ
+ r3v1bb4yAYgpnP4JpadTVPzwFWw5Z9g=
+X-Google-Smtp-Source: AGHT+IFl5WMymWTKkPGkRYGRoPTMTEXCMFoJiP90a26m/K0PFV2h9Q9UA6U2UGT79e9RxKnOSmVPYg==
+X-Received: by 2002:a5d:69d0:0:b0:317:f70b:3156 with SMTP id
+ s16-20020a5d69d0000000b00317f70b3156mr6469268wrw.28.1694989450821; 
+ Sun, 17 Sep 2023 15:24:10 -0700 (PDT)
 Received: from karim.my.domain ([197.39.215.8])
  by smtp.gmail.com with ESMTPSA id
- f7-20020adff987000000b0031c8a43712asm10652527wrr.69.2023.09.17.15.24.08
+ f7-20020adff987000000b0031c8a43712asm10652527wrr.69.2023.09.17.15.24.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Sep 2023 15:24:09 -0700 (PDT)
+ Sun, 17 Sep 2023 15:24:10 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>, imp@bsdimp.com,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v3 02/28] bsd-user: Define procctl(2) related structs
-Date: Mon, 18 Sep 2023 01:22:19 +0300
-Message-ID: <20230917222246.1921-3-kariem.taha2.7@gmail.com>
+Subject: [PATCH v3 03/28] bsd-user: Implement host_to_target_siginfo.
+Date: Mon, 18 Sep 2023 01:22:20 +0300
+Message-ID: <20230917222246.1921-4-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230917222246.1921-1-kariem.taha2.7@gmail.com>
 References: <20230917222246.1921-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -95,73 +95,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
-Implement procctl flags and related structs:
-struct target_procctl_reaper_status
-struct target_procctl_reaper_pidinfo
-struct target_procctl_reaper_pids
-struct target_procctl_reaper_kill
+Used in wait6 system call
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/syscall_defs.h | 42 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ bsd-user/signal-common.h | 1 +
+ bsd-user/signal.c        | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index ddd38c13e0..a3bc738ff8 100644
---- a/bsd-user/syscall_defs.h
-+++ b/bsd-user/syscall_defs.h
-@@ -390,6 +390,48 @@ struct target_freebsd_flock {
- /* user: vfork(2) semantics, clear signals */
- #define TARGET_RFSPAWN (1U << 31)
+diff --git a/bsd-user/signal-common.h b/bsd-user/signal-common.h
+index 6f90345bb2..e37e1c3f9c 100644
+--- a/bsd-user/signal-common.h
++++ b/bsd-user/signal-common.h
+@@ -35,6 +35,7 @@ int do_sigaction(int sig, const struct target_sigaction *act,
+ abi_long do_sigaltstack(abi_ulong uss_addr, abi_ulong uoss_addr, abi_ulong sp);
+ long do_sigreturn(CPUArchState *env, abi_ulong addr);
+ void force_sig_fault(int sig, int code, abi_ulong addr);
++void host_to_target_siginfo(target_siginfo_t *tinfo, const siginfo_t *info);
+ int host_to_target_signal(int sig);
+ void host_to_target_sigset(target_sigset_t *d, const sigset_t *s);
+ void process_pending_signals(CPUArchState *env);
+diff --git a/bsd-user/signal.c b/bsd-user/signal.c
+index 4db85a3485..3ee2ceb910 100644
+--- a/bsd-user/signal.c
++++ b/bsd-user/signal.c
+@@ -311,6 +311,12 @@ static void tswap_siginfo(target_siginfo_t *tinfo, const target_siginfo_t *info)
+     }
+ }
  
-+/*
-+ * from sys/procctl.h
-+ */
-+#define TARGET_PROC_SPROTECT            1
-+#define TARGET_PROC_REAP_ACQUIRE        2
-+#define TARGET_PROC_REAP_RELEASE        3
-+#define TARGET_PROC_REAP_STATUS         4
-+#define TARGET_PROC_REAP_GETPIDS        5
-+#define TARGET_PROC_REAP_KILL           6
++void host_to_target_siginfo(target_siginfo_t *tinfo, const siginfo_t *info)
++{
++    host_to_target_siginfo_noswap(tinfo, info);
++    tswap_siginfo(tinfo, tinfo);
++}
 +
-+struct target_procctl_reaper_status {
-+    uint32_t rs_flags;
-+    uint32_t rs_children;
-+    uint32_t rs_descendants;
-+    uint32_t rs_reaper;
-+    uint32_t rs_pid;
-+    uint32_t rs_pad0[15];
-+};
-+
-+struct target_procctl_reaper_pidinfo {
-+    uint32_t pi_pid;
-+    uint32_t pi_subtree;
-+    uint32_t pi_flags;
-+    uint32_t pi_pad0[15];
-+};
-+
-+struct target_procctl_reaper_pids {
-+    uint32_t rp_count;
-+    uint32_t rp_pad0[15];
-+    abi_ulong rp_pids;
-+};
-+
-+struct target_procctl_reaper_kill {
-+    int32_t  rk_sig;
-+    uint32_t rk_flags;
-+    uint32_t rk_subtree;
-+    uint32_t rk_killed;
-+    uint32_t rk_fpid;
-+    uint32_t rk_pad0[15];
-+};
-+
-+
- #define safe_syscall0(type, name) \
- type safe_##name(void) \
- { \
+ int block_signals(void)
+ {
+     TaskState *ts = (TaskState *)thread_cpu->opaque;
 -- 
 2.42.0
 
