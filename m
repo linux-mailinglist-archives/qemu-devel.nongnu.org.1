@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29437A51B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FDF7A51A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:07:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiIZ7-0006vo-R4; Mon, 18 Sep 2023 14:01:50 -0400
+	id 1qiIa4-0000QP-TO; Mon, 18 Sep 2023 14:02:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYY-0006fa-0G; Mon, 18 Sep 2023 14:01:13 -0400
+ id 1qiIa2-0000Le-6U; Mon, 18 Sep 2023 14:02:42 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYU-00038D-1g; Mon, 18 Sep 2023 14:01:09 -0400
+ id 1qiIa0-0003I9-M2; Mon, 18 Sep 2023 14:02:41 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qiIV1-008crV-1x;
+ (envelope-from <den@openvz.org>) id 1qiIV2-008crV-1X;
  Mon, 18 Sep 2023 20:00:56 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 07/22] parallels: refactor path when we need to re-check image
- in parallels_open
-Date: Mon, 18 Sep 2023 20:00:45 +0200
-Message-Id: <20230918180100.524843-9-den@openvz.org>
+Subject: [PATCH 09/22] tests: ensure that image validation will not cure the
+ corruption
+Date: Mon, 18 Sep 2023 20:00:47 +0200
+Message-Id: <20230918180100.524843-11-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230918180100.524843-1-den@openvz.org>
 References: <20230918180100.524843-1-den@openvz.org>
@@ -56,76 +56,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-More conditions follows thus the check should be more scalable.
+Since
+    commit cfce1091d55322789582480798a891cbaf66924e
+    Author: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+    Date:   Tue Jul 18 12:44:29 2023 +0200
+    parallels: Image repairing in parallels_open()
+there is a potential pit fall with calling
+    qemu-io -c "read"
+The image is opened in read-write mode and thus could be potentially
+repaired. This could ruin testing process.
+
+The patch forces read-only opening for reads. In that case repairing
+is impossible.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ tests/qemu-iotests/tests/parallels-checks | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/block/parallels.c b/block/parallels.c
-index bd26c8db63..af3b4894d7 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -1071,7 +1071,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-     int ret, size, i;
-     int64_t file_nb_sectors, sector;
-     uint32_t data_start;
--    bool data_off_is_correct;
-+    bool need_check = false;
+diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
+index a7a1b357b5..5917ee079d 100755
+--- a/tests/qemu-iotests/tests/parallels-checks
++++ b/tests/qemu-iotests/tests/parallels-checks
+@@ -91,7 +91,7 @@ file_size=`stat --printf="%s" "$TEST_IMG"`
+ echo "file size: $file_size"
  
-     ret = parallels_opts_prealloc(bs, options, errp);
-     if (ret < 0) {
-@@ -1139,11 +1139,14 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-     s->bat_bitmap = (uint32_t *)(s->header + 1);
+ echo "== check last cluster =="
+-{ $QEMU_IO -c "read -P 0x11 $LAST_CLUSTER_OFF $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -r -c "read -P 0x11 $LAST_CLUSTER_OFF $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
-     if (le32_to_cpu(ph.inuse) == HEADER_INUSE_MAGIC) {
--        s->header_unclean = true;
-+        need_check = s->header_unclean = true;
-+    }
+ # Clear image
+ _make_test_img $SIZE
+@@ -105,19 +105,20 @@ echo "== write another pattern to second cluster =="
+ { $QEMU_IO -c "write -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ 
+ echo "== check second cluster =="
+-{ $QEMU_IO -c "read -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -r -c "read -P 0x55 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 +
-+    {
-+        bool ok = parallels_test_data_off(s, file_nb_sectors, &data_start);
-+        need_check = need_check || !ok;
-     }
  
--    data_off_is_correct = parallels_test_data_off(s, file_nb_sectors,
--                                                  &data_start);
-     s->data_start = data_start;
-     s->data_end = s->data_start;
-     if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
-@@ -1200,6 +1203,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-             s->data_end = sector + s->tracks;
-         }
-     }
-+    need_check = need_check || s->data_end > file_nb_sectors;
+ echo "== corrupt image =="
+ poke_file "$TEST_IMG" "$(($BAT_OFFSET + 4))" "\x01\x00\x00\x00"
  
-     /*
-      * We don't repair the image here if it's opened for checks. Also we don't
-@@ -1209,12 +1213,8 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-         return 0;
-     }
+ echo "== check second cluster =="
+-{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
--    /*
--     * Repair the image if it's dirty or
--     * out-of-image corruption was detected.
--     */
--    if (s->data_end > file_nb_sectors || s->header_unclean
--        || !data_off_is_correct) {
-+    /* Repair the image if corruption was detected. */
-+    if (need_check) {
-         BdrvCheckResult res;
-         ret = bdrv_check(bs, &res, BDRV_FIX_ERRORS | BDRV_FIX_LEAKS);
-         if (ret < 0) {
-@@ -1223,7 +1223,6 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
-             goto fail;
-         }
-     }
--
-     return 0;
+ echo "== repair image =="
+ _check_test_img -r all
  
- fail_format:
+ echo "== check second cluster =="
+-{ $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -r -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ 
+ echo "== check first cluster on host =="
+ printf "content: 0x%02x\n" `peek_file_le $TEST_IMG $(($CLUSTER_SIZE)) 1`
 -- 
 2.34.1
 
