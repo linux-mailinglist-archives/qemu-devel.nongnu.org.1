@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288AA7A47A3
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8637A47A6
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:55:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiBtv-00052a-CG; Mon, 18 Sep 2023 06:54:47 -0400
+	id 1qiBty-00053n-HL; Mon, 18 Sep 2023 06:54:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBts-000529-BQ
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:44 -0400
+ (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBtv-00052v-SC
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:47 -0400
 Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBtq-0000E9-Mv
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:44 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.west.internal (Postfix) with ESMTP id 226E03200919;
- Mon, 18 Sep 2023 06:54:41 -0400 (EDT)
+ (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBtu-0000Hb-5e
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:47 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.west.internal (Postfix) with ESMTP id 8BA3B3200927;
+ Mon, 18 Sep 2023 06:54:44 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Mon, 18 Sep 2023 06:54:41 -0400
+ by compute2.internal (MEProxy); Mon, 18 Sep 2023 06:54:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
  :cc:content-transfer-encoding:content-type:date:date:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm1; t=1695034480; x=
- 1695120880; bh=VJ9GASl+fhQZvEW6RQqJ8ZOMhK5Q04EI7LzWsMFMn+Q=; b=e
- cxmr0z6OS9EU6pZfBvlyqO6oVD9Wktq2CCoMoX7tyYIsbzQa5cnqtKK3zdVQkoq3
- aJ5F48GqEA/9vYrnOcEy6A6qu2wFjN54CbqJQHUWc1N3BDCZmNdKqILOq1F0/vi1
- BJYUlSqcBRnzTP7z1gbIxuevFKVa2iBp0FUlRvVc0aM1B2a/pNkk8iTCJiP0Cpc8
- jO/5CfvAmRH+hmcjwCsmQ1bVnlfhneGjcrFCMjl6wzBlKV35HmNjeHEgsR5sTN1R
- YLBJG7kkv1Ra7TzH1hkR/4s/jE/sBJpKun+y+ahr+nwQqYC+iAc9IK/Pwk2g3f37
- m9Fa4ZikanrS7cGWe1Tpg==
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1695034484; x=
+ 1695120884; bh=/ReuUamhZrjRKCw+iB41h+4VD72/iNv6vEVay7pP8Oc=; b=W
+ HpCh6d3vddZEzMJUzlZ90U9MteEH/ZFGIlYfEuuF+H9/tw4/ryoM7onqRjKZ4Xy2
+ cRnWd6Wn9693fRkkviGjTsxxt9xUtw3vwmeohG9+x23y8Y5EpHSj5MS7C/GoqJJ6
+ qUOJh5dLAadn1JYWzhLUrHlngAB3dti+hSohmPCFRK+q4eAwWXDq4eXk5B+WdMT5
+ b3JozW7PBwACfz5PblWGEhCQGFS5rtApcS8yoK/XanefEiEFtNQx3oMPnKIeYoNC
+ 4n8NJ240DUXvLMzaQtr1AGXreFk482YiOMs9E5xBZkTn6u/zMi21Z2KIioGTk9Ru
+ dvuSbPQVYlXHZrv9QnnUQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
  :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1695034480; x=
- 1695120880; bh=VJ9GASl+fhQZvEW6RQqJ8ZOMhK5Q04EI7LzWsMFMn+Q=; b=A
- h7N/HsosM2TKekJ0OaDQnAhhrd2gH5domWIRR2zF9vGsGxO4cgLt9T8bKkEUc6sY
- kyhyekjI2F8h78tcTqhC9CJM6GcTj9AQXq4lAMtK2hPp+EtsvQ+fdDeRkeps+uqw
- ikqy8LTOhdvVpCiX8ZXvd20v5nr1yU0OfaMrpfbb6iWGZiniGKNmSEDBLFNStXxY
- LcI2t2tiYyLpoFnu5xbuOmXeQCcL+qX9x5E+jjE1q4/56PFkNIv1k3F7qEeCYdLd
- 6FR6RI0qMRN/TuFSVPsnEtRkjPrA9UETTZUB5/J9jwku7KkX6FfjEdczyedcH1kr
- DCjlyX8vP9v17znRDCCmA==
-X-ME-Sender: <xms:cCwIZZ5TlcljfmoID3C-LPYMbJ21NRz_1ubqLSlXRGGeoyO7t2egpQ>
- <xme:cCwIZW6qUl_ql1Qrv8iGRRIQACojZrRGOIiueGstP-xDkOhdDKxBtxt862kblXi7k
- 7sAkN8Yqry4k4HGwQ>
-X-ME-Received: <xmr:cCwIZQe9GVSx-TlGLjcNbF3aIxN8Bml1XPenZcz_2EiPk9KD1it1V2-FDLW1wM0D4FCZoOg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudejkedgfeefucetufdoteggodetrfdotf
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1695034484; x=
+ 1695120884; bh=/ReuUamhZrjRKCw+iB41h+4VD72/iNv6vEVay7pP8Oc=; b=k
+ Pb40ns2qwaC3YDTVbwqNRF3zYu9aW2BOphdxPQ/vOVPclz5UuGm0n8+F7kKRT3jq
+ CwEV2WRvZkHs6X8EZOdUE5Db3odzRSHwrlrgVpmZmpnrkmDzhAnuOnwiwD9HoEJ1
+ Bx3KiGOhpZVy3pe2wR57f4w85m8Ek1PFtRWsXKQgBGRxL4Alwbxy9R8rZLGTyBpW
+ 3bo2U5PMqctCGE/FZawXf13wg3pxJkP85ifTjZFJxk29qw+1Vl7PO9Za7NQC51Qt
+ lJ3X2N1kaivzQJktKSZaLkACi5Ouh+LZHS+TelgwtObZ+IESsqN1hgiyWFSDnOt3
+ DCq5NHKRCMo97l8V8f33A==
+X-ME-Sender: <xms:cywIZb3qHaGW9hTPPjJMiljJ-XTPqpznYmTztWFk10RUWE88AT5pSg>
+ <xme:cywIZaHc1A6kjjwdIj09h6bVCCS_KPGuaBvfbYBhbKB19ZieJ93laOYePNKcFLarg
+ mtyLbsCpqfOqfP17w>
+X-ME-Received: <xmr:cywIZb7upoiUjyhDgyBUmACMHs0PYxiQ9yRmijOnSBwZj9S_Bj1jTnWFXC6EaVWFf9sPKho>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudejkedgfedvucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedtmdenucfjughrpefhvf
  evufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffrghnihgvlhcuighuuceo
  ugiguhesugiguhhuuhdrgiihiieqnecuggftrfgrthhtvghrnhepgfefgfegjefhudeike
  dvueetffelieefuedvhfehjeeljeejkefgffeghfdttdetnecuvehluhhsthgvrhfuihii
  vgeptdenucfrrghrrghmpehmrghilhhfrhhomhepugiguhesugiguhhuuhdrgiihii
-X-ME-Proxy: <xmx:cCwIZSIyIYiNcoRwMJI0a2vYLlegXj2BvddYreUgEsE0fcmZlk-CeQ>
- <xmx:cCwIZdKoyLj6u5bwU988W9HoF0U8rNx5myqCP2l2VJ7L8c24A3TRpg>
- <xmx:cCwIZbwpmzORo_59OjcRrPf35Ber6uxr1gv82546p0qfc6lsYEgWfQ>
- <xmx:cCwIZd2KwLeECBcJzInyb0bw0lhKG7b3byGchjJTO4fhyiR_c0efdA>
+X-ME-Proxy: <xmx:cywIZQ3HnUmBt7EmbZbFyomKKWmWt6p45UQ_X5T5zR6lEDmNvVfNJg>
+ <xmx:cywIZeEyQxvDI0LO3rzZa-LIVp7xTAjQmfJIRG0C_gKpkROb_nMzjQ>
+ <xmx:cywIZR9spYEOHjpGFkefsxVJ2FvejIeBj5BfECgRQBsfGDQBW1sevA>
+ <xmx:dCwIZaCWnTtPPcY8pS9LrdGLIQcm4AcUrgYLjeC440JLcCvMWl6PuA>
 Feedback-ID: i6a694271:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Sep 2023 06:54:38 -0400 (EDT)
+ 18 Sep 2023 06:54:41 -0400 (EDT)
 From: Daniel Xu <dxu@dxuuu.xyz>
 To: kkostiuk@redhat.com,
 	michael.roth@amd.com,
 	berrange@redhat.com
 Cc: qemu-devel@nongnu.org,
 	hmodi@aviatrix.com
-Subject: [PATCH 2/3] qga: Add optional stream-output argument to guest-exec
-Date: Mon, 18 Sep 2023 04:54:22 -0600
-Message-ID: <604ef5fd5bda8acdb837b5d28ec405e9fb0332a3.1695034158.git.dxu@dxuuu.xyz>
+Subject: [PATCH 3/3] qga: test: Add test for guest-exec stream-output
+Date: Mon, 18 Sep 2023 04:54:23 -0600
+Message-ID: <ab964777763448df2e792dd3f53cd2a2a0470e92.1695034158.git.dxu@dxuuu.xyz>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <cover.1695034158.git.dxu@dxuuu.xyz>
 References: <cover.1695034158.git.dxu@dxuuu.xyz>
@@ -101,100 +101,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, commands run through guest-exec are "silent" until they
-finish running. This is fine for short lived commands. But for commands
-that take a while, this is a bad user experience.
-
-Usually long running programs know that they will run for a while. To
-improve user experience, they will typically print some kind of status
-to output at a regular interval. So that the user knows that their
-command isn't just hanging.
-
-This commit adds support for an optional stream-output parameter to
-guest-exec. This causes subsequent calls to guest-exec-status to return
-all buffered output. This allows downstream applications to be able to
-relay "status" to the end user.
-
-If stream-output is requested, it is up to the guest-exec-status caller
-to keep track of the last seen output position and slice the returned
-output appropriately. This is fairly trivial for a client to do. And it
-is a more reliable design than having QGA internally keep track of
-position -- for the cases that the caller "loses" a response.
+Add a test that simulates a long running process (by using a named pipe
+to synchronize). This test ensures that full output is returned with
+each call to guest-exec-status.
 
 Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
 ---
- qga/commands.c       | 12 ++++++++++++
- qga/qapi-schema.json |  7 ++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ tests/unit/test-qga.c | 77 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
-diff --git a/qga/commands.c b/qga/commands.c
-index ce172edd2d..8cabc2460f 100644
---- a/qga/commands.c
-+++ b/qga/commands.c
-@@ -97,6 +97,7 @@ struct GuestExecInfo {
-     int64_t pid_numeric;
-     gint status;
-     bool has_output;
-+    bool stream_output;
-     bool finished;
-     GuestExecIOData in;
-     GuestExecIOData out;
-@@ -218,6 +219,15 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
+diff --git a/tests/unit/test-qga.c b/tests/unit/test-qga.c
+index 671e83cb86..455183e60b 100644
+--- a/tests/unit/test-qga.c
++++ b/tests/unit/test-qga.c
+@@ -952,6 +952,81 @@ static void test_qga_guest_exec_merged(gconstpointer fix)
+ }
+ #endif
  
-         QTAILQ_REMOVE(&guest_exec_state.processes, gei, next);
-         g_free(gei);
-+    } else if (gei->stream_output) {
-+        if (gei->out.length > 0) {
-+            ges->out_data = g_base64_encode(gei->out.data, gei->out.length);
-+            ges->has_out_truncated = gei->out.truncated;
-+        }
-+        if (gei->err.length > 0) {
-+            ges->err_data = g_base64_encode(gei->err.data, gei->err.length);
-+            ges->has_err_truncated = gei->err.truncated;
-+        }
-     }
- 
-     return ges;
-@@ -410,6 +420,7 @@ GuestExec *qmp_guest_exec(const char *path,
-                        bool has_env, strList *env,
-                        const char *input_data,
-                        GuestExecCaptureOutput *capture_output,
-+                       bool has_stream_output, bool stream_output,
-                        Error **errp)
++#if defined(G_OS_WIN32)
++static void test_qga_guest_exec_stream(gconstpointer fix)
++{
++}
++#else
++static void test_qga_guest_exec_stream(gconstpointer fix)
++{
++    const TestFixture *fixture = fix;
++    g_autoptr(QDict) ret = NULL;
++    g_autofree char *fifo_path = NULL;
++    g_autofree char *cmd = NULL;
++    QDict *val;
++    const gchar *out;
++    g_autofree guchar *decoded = NULL;
++    int64_t pid, exitcode;
++    bool exited;
++    gsize len;
++    int fifo;
++
++    fifo_path = g_strdup_printf("%s/fifo", fixture->test_dir);
++    g_assert_cmpint(mkfifo(fifo_path, 0644), ==, 0);
++
++    /* Echo two lines with a fifo barrier in between */
++    cmd = g_strdup_printf("echo line1; cat %s; echo line2;", fifo_path);
++    ret = qmp_fd(fixture->fd, "{'execute': 'guest-exec', 'arguments': {"
++                 " 'path': '/bin/bash',"
++                 " 'arg': [ '-c', %s ],"
++                 " 'capture-output': 'stdout',"
++                 " 'stream-output': true } }",
++                 cmd);
++    g_assert_nonnull(ret);
++    qmp_assert_no_error(ret);
++    val = qdict_get_qdict(ret, "return");
++    pid = qdict_get_int(val, "pid");
++    g_assert_cmpint(pid, >, 0);
++    qobject_unref(ret);
++
++    /* Give bash some time to run */
++    usleep(G_USEC_PER_SEC / 20);
++
++    /* Check first line comes out */
++    ret = qmp_fd(fixture->fd,
++                 "{'execute': 'guest-exec-status',"
++                 " 'arguments': { 'pid': %" PRId64 " } }", pid);
++    g_assert_nonnull(ret);
++    val = qdict_get_qdict(ret, "return");
++    exited = qdict_get_bool(val, "exited");
++    g_assert_false(exited);
++    out = qdict_get_str(val, "out-data");
++    decoded = g_base64_decode(out, &len);
++    g_assert_cmpint(len, ==, 6);
++    g_assert_cmpstr((char *)decoded, ==, "line1\n");
++    g_free(decoded);
++    qobject_unref(ret);
++
++    /* Trigger second line */
++    fifo = open(fifo_path, O_WRONLY);
++    g_assert_cmpint(fifo, >=, 0);
++    close(fifo);
++    ret = wait_for_guest_exec_completion(fixture->fd, pid);
++
++    /* Check second line comes out after process exits */
++    val = qdict_get_qdict(ret, "return");
++    exited = qdict_get_bool(val, "exited");
++    g_assert_true(exited);
++    exitcode = qdict_get_int(val, "exitcode");
++    g_assert_cmpint(exitcode, ==, 0);
++    out = qdict_get_str(val, "out-data");
++    decoded = g_base64_decode(out, &len);
++    g_assert_cmpint(len, ==, 12);
++    g_assert_cmpstr((char *)decoded, ==, "line1\nline2\n");
++    g_assert_cmpint(unlink(fifo_path), ==, 0);
++}
++#endif
++
+ static void test_qga_guest_exec_invalid(gconstpointer fix)
  {
-     GPid pid;
-@@ -485,6 +496,7 @@ GuestExec *qmp_guest_exec(const char *path,
- 
-     gei = guest_exec_info_add(pid);
-     gei->has_output = has_output;
-+    gei->stream_output = has_stream_output && stream_output;
-     g_child_watch_add(pid, guest_exec_child_watch, gei);
- 
-     if (input_data) {
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index b720dd4379..0a76e35082 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -1315,13 +1315,18 @@
- # @capture-output: bool flag to enable capture of stdout/stderr of
- #     running process.  defaults to false.
- #
-+# @stream-output: causes future guest-exec-status calls to always
-+#     return current captured output rather than waiting to return
-+#     it all when the command exits. defaults to false. (since: 8.2)
-+#
- # Returns: PID on success.
- #
- # Since: 2.5
- ##
- { 'command': 'guest-exec',
-   'data':    { 'path': 'str', '*arg': ['str'], '*env': ['str'],
--               '*input-data': 'str', '*capture-output': 'GuestExecCaptureOutput' },
-+               '*input-data': 'str', '*capture-output': 'GuestExecCaptureOutput',
-+               '*stream-output': 'bool' },
-   'returns': 'GuestExec' }
- 
- 
+     const TestFixture *fixture = fix;
+@@ -1127,6 +1202,8 @@ int main(int argc, char **argv)
+                          test_qga_guest_exec_separated);
+     g_test_add_data_func("/qga/guest-exec-merged", &fix,
+                          test_qga_guest_exec_merged);
++    g_test_add_data_func("/qga/guest-exec-stream", &fix,
++                         test_qga_guest_exec_stream);
+     g_test_add_data_func("/qga/guest-exec-invalid", &fix,
+                          test_qga_guest_exec_invalid);
+     g_test_add_data_func("/qga/guest-get-osinfo", &fix,
 -- 
 2.41.0
 
