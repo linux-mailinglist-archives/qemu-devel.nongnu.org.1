@@ -2,72 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173587A527F
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 21:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 693E57A5329
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 21:36:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiJTv-0001I6-7v; Mon, 18 Sep 2023 15:00:27 -0400
+	id 1qiK1q-0001wi-PM; Mon, 18 Sep 2023 15:35:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiJTr-0001HK-Tf
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 15:00:23 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiJTq-0007fe-Df
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 15:00:23 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 05FF3200DC;
- Mon, 18 Sep 2023 19:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695063620; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XL5otRJjUf1Otyze+7C+TP+aqrsYaUOQfMNz4yCAO4U=;
- b=HbwFZvpqhNrbbyHLWy1t2sUux6fWcLUdEokhHPRg8ldOCZTmzYVctQwrnnSdZw9Mrt7uev
- OVvIvnV+Zb0IBDhlM5pSoH3iMIcLYAmuZH1ckL3ptRkg4ifqikJlcGVfdh364GQTkmpWf9
- Z12pTtqHK8K2v087lrwGm5esz3cnepA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695063620;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=XL5otRJjUf1Otyze+7C+TP+aqrsYaUOQfMNz4yCAO4U=;
- b=MOCIxOCC1MU21UA4vLqQLocKbd1Hicod/TZWbPWe1U+jSVAxa6LkDdMp6WpR8PSToFzzZl
- +6O2mclpHBtnT1Bg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8D0ED13480;
- Mon, 18 Sep 2023 19:00:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id LVz6FUOeCGWXPwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 19:00:19 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH 18/52] migration/rdma: Fix
- qemu_rdma_broken_ipv6_kernel() to set error
-In-Reply-To: <20230918144206.560120-19-armbru@redhat.com>
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-19-armbru@redhat.com>
-Date: Mon, 18 Sep 2023 16:00:17 -0300
-Message-ID: <87r0mvxq66.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qiK1l-0001ug-Dp
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 15:35:25 -0400
+Received: from relay3-d.mail.gandi.net ([2001:4b98:dc4:8::223])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qiK1j-0005c8-5i
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 15:35:25 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1184460007;
+ Mon, 18 Sep 2023 19:35:16 +0000 (UTC)
+Message-ID: <bfcf7272-c4c9-3b30-28ed-065ee374d681@ovn.org>
+Date: Mon, 18 Sep 2023 21:36:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: i.maximets@ovn.org, Jason Wang <jasowang@redhat.com>,
+ Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+References: <20230908064507.14596-1-jasowang@redhat.com>
+ <CAJSP0QVf3CFf1zuBnQev-G54SiGZ53MWBj19SyH__19bo=vfWg@mail.gmail.com>
+ <1186b0b7-7dc5-d926-e6ff-ba3da2238b9c@ovn.org> <ZPsKUDp7nVS/Z+j2@redhat.com>
+ <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org> <ZPsQcu0HYBaTScnb@redhat.com>
+ <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org> <ZPsscpzj9fNtCEOY@redhat.com>
+ <c406b8fb-a2f1-8eb2-abc5-af2474edf940@ovn.org> <ZQLAkNPdOA4ncDvF@redhat.com>
+From: Ilya Maximets <i.maximets@ovn.org>
+Subject: Re: [PULL 00/17] Net patches
+In-Reply-To: <ZQLAkNPdOA4ncDvF@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: i.maximets@ovn.org
+Received-SPF: neutral client-ip=2001:4b98:dc4:8::223;
+ envelope-from=i.maximets@ovn.org; helo=relay3-d.mail.gandi.net
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_NEUTRAL=0.779 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,19 +64,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+On 9/14/23 10:13, Daniel P. Berrangé wrote:
+> On Wed, Sep 13, 2023 at 08:46:42PM +0200, Ilya Maximets wrote:
+>> On 9/8/23 16:15, Daniel P. Berrangé wrote:
+>>> On Fri, Sep 08, 2023 at 04:06:35PM +0200, Ilya Maximets wrote:
+>>>> On 9/8/23 14:15, Daniel P. Berrangé wrote:
+>>>>> On Fri, Sep 08, 2023 at 02:00:47PM +0200, Ilya Maximets wrote:
+>>>>>> On 9/8/23 13:49, Daniel P. Berrangé wrote:
+>>>>>>> On Fri, Sep 08, 2023 at 01:34:54PM +0200, Ilya Maximets wrote:
+>>>>>>>> On 9/8/23 13:19, Stefan Hajnoczi wrote:
+>>>>>>>>> Hi Ilya and Jason,
+>>>>>>>>> There is a CI failure related to a missing Debian libxdp-dev package:
+>>>>>>>>> https://gitlab.com/qemu-project/qemu/-/jobs/5046139967
+>>>>>>>>>
+>>>>>>>>> I think the issue is that the debian-amd64 container image that QEMU
+>>>>>>>>> uses for testing is based on Debian 11 ("bullseye" aka "oldstable")
+>>>>>>>>> and libxdp is not available on that release:
+>>>>>>>>> https://packages.debian.org/search?keywords=libxdp&searchon=names&suite=oldstable&section=all
+>>>>>>>>
+>>>>>>>> Hmm.  Sorry about that.
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> If we need to support Debian 11 CI then either XDP could be disabled
+>>>>>>>>> for that distro or libxdp could be compiled from source.
+>>>>>>>>
+>>>>>>>> I'd suggest we just remove the attempt to install the package for now,
+>>>>>>>> building libxdp from sources may be a little painful to maintain.
+>>>>>>>>
+>>>>>>>> Can be re-added later once distributions with libxdp 1.4+ will be more
+>>>>>>>> widely available, i.e. when fedora dockerfile will be updated to 39,
+>>>>>>>> for example.  That should be soon-ish, right?
+>>>>>>>
+>>>>>>> If you follow the process in docs/devel/testing.rst for adding
+>>>>>>> libxdp in libvirt-ci, then lcitool will "do the right thing"
+>>>>>>> when we move the auto-generated dockerfiles to new distro versions.
+>>>>>>
+>>>>>> Thanks!  I'll prepare changes for libvirt-ci.
+>>>>>>
+>>>>>> In the meantime, none of the currently tested images will have a required
+>>>>>> version of libxdp anyway, so I'm suggesting to just drop this one dockerfile
+>>>>>> modification from the patch.  What do you think?
+>>>>>
+>>>>> Sure, if none of the distros have it, then lcitool won't emit the
+>>>>> dockerfile changes until we update the inherited distro version.
+>>>>> So it is sufficient to just update libvirt-ci.git with the mappings.yml
+>>>>> info for libxdp, and add 'libxdp' to the tests/lcitool/projects/qemu.yml
+>>>>> file in qemu.git. It will then 'just work' when someone updates the
+>>>>> distro versions later.
+>>>>
+>>>> I posted an MR for libvirt-ci adding libxdp:
+>>>>   https://gitlab.com/libvirt/libvirt-ci/-/merge_requests/429
+>>>>
+>>>> Please, take a look.
+>>>>
+>>>> The docs say that CI will try to build containers with the MR changes,
+>>>> but I don't think anything except sanity checks is actually tested on MR.
+>>>> Sorry if I missed something, never used GitLab pipelines before.
+>>>
+>>> No, that's our fault - we've broken the CI and your change alerted
+>>> me to that fact :-)
+>>>
+>>>> Note that with this update we will be installing older version of libxdp
+>>>> in many containers, even though they will not be used by QEMU, unless
+>>>> they are newer than 1.4.0.
+>>>
+>>> No problem, as it means QEMU CI will demonstrate the the meson.build
+>>> change is ignoring the outdatd libxdp.
+>>>
+>>>> tests/lcitool/projects/qemu.yml in qemu.git cannot be updated without
+>>>> updating a submodule after the MR merge.
+>>>
+>>> Yep.
+>>
+>> Since all the required changes went into libvirt-ci project, I posted an
+>> updated patch set named:
+>>
+>>   '[PATCH v4 0/2] net: add initial support for AF_XDP network backend'
+>>
+>> Please, take a look.
+>>
+>> This should fix the CI issues, though I'm not sure how to run QEMU gitlab
+>> pipelines myself, so I didn't actually test all the images.
+> 
+>   git push gitlab  -o ci.variable=QEMU_CI=2
+> 
+> will create pipeline and immediately run all jobs.
 
-> qemu_rdma_resolve_host() and qemu_rdma_dest_init() try addresses until
-> they find on that works.  If none works, they return the first Error
-> set by qemu_rdma_broken_ipv6_kernel(), or else return a generic one.
->
-> qemu_rdma_broken_ipv6_kernel() neglects to set an Error when
-> ibv_open_device() fails.  If a later address fails differently, we use
-> that Error instead, or else the generic one.  Harmless enough, but
-> needs fixing all the same.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Thanks!  That worked.  Though I wasn't able to test much anyway as
+this thing burned through all my free compute credits less than
+half way through the pipeline. :D
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+So, AFAIU, it's not something an occasional contributor like me can
+use, unless they are spending their own money.
+
+
+> 
+> Replace 'gitlab' with the name of the git remote pointing to your
+> gitlab fork of QEMU.
+> 
+> Using QEMU_CI=1 will create pipeline, but let you manually start
+> individual jobs from the web UI.
+> 
+> For further details see docs/devel/ci-jobs.rst.inc
+> 
+> 
+>>
+>> Sent as a patch set because the libvirt-ci submodule bump brings in a few
+>> unrelated changes.  So, I split that into a separate patch.
+> 
+> Yep, that's perfect thanks.
+> 
+> With regards,
+> Daniel
 
 
