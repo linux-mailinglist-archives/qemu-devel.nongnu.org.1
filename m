@@ -2,68 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1947A3F6B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 04:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C95FC7A3FA5
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 05:17:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi3id-0006Xu-FE; Sun, 17 Sep 2023 22:10:35 -0400
+	id 1qi4kW-0006fb-0I; Sun, 17 Sep 2023 23:16:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qi3iW-0006Wu-Qh; Sun, 17 Sep 2023 22:10:28 -0400
-Received: from mail-vs1-xe2b.google.com ([2607:f8b0:4864:20::e2b])
+ id 1qi4kT-0006f5-UZ; Sun, 17 Sep 2023 23:16:34 -0400
+Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qi3iV-0006BT-8l; Sun, 17 Sep 2023 22:10:28 -0400
-Received: by mail-vs1-xe2b.google.com with SMTP id
- ada2fe7eead31-450f68feee2so1399931137.1; 
- Sun, 17 Sep 2023 19:10:26 -0700 (PDT)
+ id 1qi4kQ-0008Qo-AG; Sun, 17 Sep 2023 23:16:33 -0400
+Received: by mail-vs1-xe2c.google.com with SMTP id
+ ada2fe7eead31-4526d872941so216525137.1; 
+ Sun, 17 Sep 2023 20:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695003026; x=1695607826; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695006988; x=1695611788; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8XpVup53PXb5M+AjtqYbt8ZrhesrxmoaV1xAMZY1H6c=;
- b=JIIyRG66usMvxEYSjeQk8ImOETpc4M2/njQAX9B6GITU+giWAXO6WDsAVEVTFd9Inz
- lRKKAgNRCbb4djQEqD8GmCA+SFiq/9sFeWOpF2iRo0kPJ6zAZS1Wtxlp+CABRzdv8oiv
- Z13YcmeOFwntAan8MU/z5+hr3IcE+z5cM43qfq93BDwlsv24mNQn7cvsOwwKmMZtVJZs
- BuuSpChAbfjnh2QpecZbdjI09cYS4vGiouLEXLYd+t0IR0uF6zx5sOX3jkEpv6SisJSo
- 3+3RXyKuHx0rvYFK7ojD2CQWC6KTyD1yyzlTFTCUMgAWL7kKLCu6CXw4q3SCxh7z3MvT
- 3pLg==
+ bh=wLTeAtxePfm9LYnqKOamKIC7+UbJrDYto6h39v3k/h8=;
+ b=lQ0d6RRL2QG2kYHKx5vH5Tdf2IFmA4O5lm3NEfX+QNZIis+gG80B6oUObUWrMM012h
+ 9XHzwi2SV/tGD9W/dNOAXAtvlTl19+Mk/stxnNKOnjURZd2CNcGzAQtIQgBzltD0Xfmg
+ UPL1Gxqe87Z/HzpFgZAp7N3HPZVIC5l15i+D1wMAmY1WJALr4AA5Vp4KOsf3B3FSU0jW
+ xwGyuyWVs8ENw3SSLsp+gAZYr+QTIg9+gAw0LXI8vdQo08ebEXTllA1zzOu/47/A0fRG
+ xS8XHPiwDXLW6wBqrgRUBbrpaSs74IyVa4Ecq8sFpvyi87af2e6QNTVNfyQi/MDhBBYD
+ szvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695003026; x=1695607826;
+ d=1e100.net; s=20230601; t=1695006988; x=1695611788;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8XpVup53PXb5M+AjtqYbt8ZrhesrxmoaV1xAMZY1H6c=;
- b=FiPzGMkgY6Uu+R0XvQb6+0MjnqxMVtnHbvTshhNDGTMwxUaUnac/Pck/vhB+/j5UwA
- pRXTGL9/9X6OIebt86KnoPXlQk08lGPDgw4rVk6GSBskgaJFjouAUnw1L/nNryGXHU1S
- 5ylblRxFsnbXKYAdT3AHJRrS3Rv7fFB5XCjoquPStiplOOloNUvdvnVtiJjRKtvyiTec
- RB3to+yLZwbylxybD58uc3XtBciyXOJO2Hc8qULiHCiBMJOiE8GZlBXk93IQ/cGrKCOn
- 8rSt9L76epDd1wHnErWDDbdhLoYllVhTXJkbF0w3mCRMYq9dnjNevfSfeqTTO+2e9lfZ
- DV2g==
-X-Gm-Message-State: AOJu0YzX75curNEfCeWB/GxDGN8YefKzw5afNqJmdnI0pQUTyrDqYlyx
- uZh386tpc/OWCps9UwFlh7UnrZ2AXn33X/rUUy0=
-X-Google-Smtp-Source: AGHT+IH57nLFoxzXXUmYpv7trVrK86BExCkDV1mXFn7OhcMBqqRJRDuaT8tqX74EEz/7LA5PJAszAmbz6HmXyIHzSNY=
-X-Received: by 2002:a67:eb14:0:b0:44d:476b:3bc0 with SMTP id
- a20-20020a67eb14000000b0044d476b3bc0mr6241948vso.28.1695003025760; Sun, 17
- Sep 2023 19:10:25 -0700 (PDT)
+ bh=wLTeAtxePfm9LYnqKOamKIC7+UbJrDYto6h39v3k/h8=;
+ b=CmbK8S1xlbxLHOsLjSJjesgD6IUnRN5e61zJ9FWk343JqqX9RIfVXS/OZdtGcd/ljK
+ UB7UXFhZtmDMSZd1OHCM98x/WcvoRQB/u64zLdQpOwny9slj2AYLwMq1gGz3Qb1zBxLH
+ GzFBGjb0pPHalWtHIdpfP/59DCz7AnLVrnuUPHzEbTlkDAll/hvIEPJxPa2IFJll+U39
+ oi1Sbd+6YnNUJ3dJKLICKQeI25OiK6Pcv2QYt5YJQM9VCEYYiuZj4hDicHxsprD4FACq
+ 3Op1x5PDv6lDKnxqkpQqo1FVbRF4gyLk1jqvnRE6mfdmdjogQQGglF9cFwvisjr7Z9VN
+ 3tzQ==
+X-Gm-Message-State: AOJu0YxNC3mgXZlT1OzGqWZqGdLsK8rDq7ujAVOkSHhQlLbtZ3WSpzBI
+ 8JHIWTQ3fkFCGNF9QOWmSVh8ff1/eTGjpkK2Qpg=
+X-Google-Smtp-Source: AGHT+IHlD7X2YS26RLCTqURgKd7IawFyej7YISQOXFar4lCcZH99UXsBn763Z6tuK3+l272dcwnhQvjc8udqgNAqpBw=
+X-Received: by 2002:a67:e697:0:b0:452:5912:da3c with SMTP id
+ hv23-20020a67e697000000b004525912da3cmr3241689vsb.23.1695006988434; Sun, 17
+ Sep 2023 20:16:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230907112640.292104-1-chigot@adacore.com>
- <20230907112640.292104-6-chigot@adacore.com>
-In-Reply-To: <20230907112640.292104-6-chigot@adacore.com>
+References: <20230915112723.2033330-1-alistair.francis@wdc.com>
+ <20230915112723.2033330-2-alistair.francis@wdc.com>
+ <20230915161937.00005da0@Huawei.com>
+In-Reply-To: <20230915161937.00005da0@Huawei.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Mon, 18 Sep 2023 12:09:59 +1000
-Message-ID: <CAKmqyKNAymAeCOahe8ZMY=zJT_r4O+L1d9Q6joDRthV3jnEXiw@mail.gmail.com>
-Subject: Re: [PATCH v3 5/5] gdbstub: replace exit calls with proper shutdown
- for softmmu
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org
+Date: Mon, 18 Sep 2023 13:16:01 +1000
+Message-ID: <CAKmqyKP87E2qByL48oZNcbt6=7qV6EOarhqopEF5YJ=yxby9=g@mail.gmail.com>
+Subject: Re: [PATCH 2/3] backends: Initial support for SPDM socket support
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: lukas@wunner.de, wilfred.mallawa@wdc.com, jiewen.yao@intel.com, 
+ qemu-devel@nongnu.org, kbusch@kernel.org, its@irrelevant.dk, mst@redhat.com, 
+ marcel.apfelbaum@gmail.com, hchkuo@avery-design.com.tw, 
+ cbrowy@avery-design.com, qemu-block@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2b;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2c.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -87,104 +91,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 7, 2023 at 9:26=E2=80=AFPM Cl=C3=A9ment Chigot <chigot@adacore.=
-com> wrote:
+On Sat, Sep 16, 2023 at 1:19=E2=80=AFAM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
 >
-> This replaces the exit calls by shutdown requests, ensuring a proper
-> cleanup of Qemu. Features like net/vhost-vdpa.c are expecting
-> qemu_cleanup to be called to remove their last residuals.
+> On Fri, 15 Sep 2023 21:27:22 +1000
+> Alistair Francis <alistair23@gmail.com> wrote:
 >
-> Signed-off-by: Cl=C3=A9ment Chigot <chigot@adacore.com>
+> > From: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+>
+> Great to see you taking this forwards!
+>
+>
+> >
+> > SPDM enables authentication, attestation and key exchange to assist in
+> > providing infrastructure security enablement. It's a standard published
+> > by the DMTF [1].
+> >
+> > SPDM currently supports PCIe DOE and MCTP transports, but it can be
+> > extended to support others in the future. This patch adds
+> > support to QEMU to connect to an external SPDM instance.
+>
+> It supports way more that that these days.  I'd just say 'multiple'
+> transports.
+>
+> >
+> > SPDM support can be added to any QEMU device by exposing a
+> > TCP socket to a SPDM server. The server can then implement the SPDM
+> > decoding/encoding support, generally using libspdm [2].
+> >
+> > This is similar to how the current TPM implementation works and means
+> > that the heavy lifting of setting up certificate chains, capabilities,
+> > measurements and complex crypto can be done outside QEMU by a well
+> > supported and tested library.
+>
+> Is this sufficient for usecases beyond initial attestation flows?
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+I believe so.
+
+The SPDM responder would be in charge of doing all of this. For the
+rest of the discussion the responder is the software on the other end
+of the QEMU socket.
+
+> How does measurement work for example?  We need settings from the
+
+In a basic case the responder can generate measurement data. For
+example the responder can return digests of the firmware. Now there
+won't actually be "firmware", but the responder can still return
+measurement data.
+
+if you are trying to test an existing product, you could fake it and
+return the same values as a real device. Otherwise you could return
+example data.
+
+> emulated device to squirt into the SPDM agent so that it can be
+> encrypted and signed etc.
+>
+> Measurement reports often need to include the status of various config
+> space registers + any device specific additional stuff - not sure
+> what is defined for NVME but I suspect the list will grow, particularly
+> when tdisp is included.  There are some things called out in the PCIe
+> state as must haves, like any debug features must be reported.
+
+So this is probably the hard part. How can the responder measurements
+change based on configuration values set by the host.
+
+Just for completeness, the idea would be the host would set some state
+in the NVMe controller for example. Then we would expect the
+measurement values to change.
+
+That's trickier, but we could extend the socket to communicate state
+like that. So when a measurement state changes in the QEMU model, we
+relay that to the responder. Which then changes the measurements
+
+> Also we need a way to mess with firmware revisions reported
+> as those are likely to be checked.
+
+That seems like something you can do via command line arguments or
+configuration settings to the responder. This is separate to QEMU
+
+>
+> I'm not sure that model will work with the spdm-emu approach.
+
+I don't think there is anything specifically in the socket approach
+that limits this from working. It comes down to passing information
+from the QEMU emulated device to the SPDM responder. That needs to be
+done either way. It probably is simpler to do if libspdm is included
+as part of QEMU, but that brings along other complexities.
+
+As you pointed out in my original RFC, the complexity of configuration
+a responder via the QEMU command line will be very difficult. I think
+it's simpler to keep the responder outside and QEMU and just pass any
+relevant data to the responder as required.
+
+>
+> Anyhow, I think we need to have gotten a little further figuring that
+> out before we merge a solution.  I've been carrying this on the CXL
+> staging tree for a long time because I couldn't figure out a good solutio=
+n
+> to the amount of information that needs to go between them.
+>
+> For those not familiar with the fun of libSPDM it is a pain to work with
+> which is why Huai-Cheng instead connected with the demo app.
+>
+> Any more luck getting a reliable build to work?
+
+Yes!
+
+libspdm is now packaged in buildroot:
+https://github.com/buildroot/buildroot/blob/master/package/libspdm/libspdm.=
+mk
+
+You can now build libspdm with openSSL provided by your distro as you
+don't need to access any private openSSL APIs any more.
+
+The hope is we can continue to march towards including libspdm as a
+standard library in distros, which should make the entire process
+easier.
+
+>
+> >
+> > 1: https://www.dmtf.org/standards/SPDM
+> > 2: https://github.com/DMTF/libspdm
+> >
+> > Signed-off-by: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
+> > Signed-off-by: Chris Browy <cbrowy@avery-design.com>
+> > Co-developed-by: Jonathan Cameron <Jonathan.cameron@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > [ Changes by AF:
+> >  - Convert to be more QEMU-ified
+> >  - Move to backends as it isn't PCIe specific
+> > ]
+> > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> Alistair, you sent this so I think your sign off should be last
+> + some indication of Wilfred's involvement would be good?
+> Probably another Co-developed-by
+>
+>
+>
+> > Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> > ---
+>
+> I've looked at this code too much in the past to give much
+> real review.  Still a few comments inline.
+> I'm very keen to get a solution to this upstream, though I think
+> we do need to discuss a few general points (no cover letter so I'll
+> do it here).
+
+Yeah, I should have included a cover letter. V2 will
 
 Alistair
 
-> ---
->  gdbstub/gdbstub.c          | 5 +++--
->  gdbstub/softmmu.c          | 6 ++++++
->  gdbstub/user.c             | 6 ++++++
->  include/gdbstub/syscalls.h | 9 +++++++++
->  4 files changed, 24 insertions(+), 2 deletions(-)
 >
-> diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-> index 349d348c7b..1cb6d65306 100644
-> --- a/gdbstub/gdbstub.c
-> +++ b/gdbstub/gdbstub.c
-> @@ -1327,7 +1327,7 @@ static void handle_v_kill(GArray *params, void *use=
-r_ctx)
->      gdb_put_packet("OK");
->      error_report("QEMU: Terminated via GDBstub");
->      gdb_exit(0);
-> -    exit(0);
-> +    gdb_qemu_exit(0);
->  }
 >
->  static const GdbCmdParseEntry gdb_v_commands_table[] =3D {
-> @@ -1846,7 +1846,8 @@ static int gdb_handle_packet(const char *line_buf)
->          /* Kill the target */
->          error_report("QEMU: Terminated via GDBstub");
->          gdb_exit(0);
-> -        exit(0);
-> +        gdb_qemu_exit(0);
-> +        break;
->      case 'D':
->          {
->              static const GdbCmdParseEntry detach_cmd_desc =3D {
-> diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-> index 9f0b8b5497..a5d6e04c79 100644
-> --- a/gdbstub/softmmu.c
-> +++ b/gdbstub/softmmu.c
-> @@ -435,6 +435,12 @@ void gdb_exit(int code)
->      qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
->  }
+> ...
 >
-> +void gdb_qemu_exit(int code)
-> +{
-> +    qemu_system_shutdown_request_with_code(SHUTDOWN_CAUSE_GUEST_SHUTDOWN=
-,
-> +                                           code);
-> +}
-> +
->  /*
->   * Memory access
->   */
-> diff --git a/gdbstub/user.c b/gdbstub/user.c
-> index 7ab6e5d975..dbe1d9b887 100644
-> --- a/gdbstub/user.c
-> +++ b/gdbstub/user.c
-> @@ -113,6 +113,12 @@ void gdb_exit(int code)
->          gdb_put_packet(buf);
->          gdbserver_state.allow_stop_reply =3D false;
->      }
-> +
-> +}
-> +
-> +void gdb_qemu_exit(int code)
-> +{
-> +    exit(code);
->  }
+> > diff --git a/backends/spdm-socket.c b/backends/spdm-socket.c
+> > new file mode 100644
+> > index 0000000000..2f31ba80ba
+> > --- /dev/null
+> > +++ b/backends/spdm-socket.c
+> > @@ -0,0 +1,215 @@
 >
->  int gdb_handlesig(CPUState *cpu, int sig)
-> diff --git a/include/gdbstub/syscalls.h b/include/gdbstub/syscalls.h
-> index 243eaf8ce4..54ff7245a1 100644
-> --- a/include/gdbstub/syscalls.h
-> +++ b/include/gdbstub/syscalls.h
-> @@ -110,4 +110,13 @@ int use_gdb_syscalls(void);
->   */
->  void gdb_exit(int code);
 >
-> +/**
-> + * gdb_qemu_exit: ask qemu to exit
-> + * @code: exit code reported
-> + *
-> + * This requests qemu to exit. This function is allowed to return as
-> + * the exit request might be processed asynchronously by qemu backend.
-> + */
-> +void gdb_qemu_exit(int code);
-> +
->  #endif /* _SYSCALLS_H_ */
-> --
-> 2.25.1
+> > +
+> > +int spdm_socket_connect(uint16_t port, Error **errp)
+> > +{
+> > +    int client_socket;
+> > +    struct sockaddr_in server_addr;
+> > +
+> > +    client_socket =3D socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+> > +    if (client_socket < 0) {
+> > +        error_setg(errp, "cannot create socket: %s", strerror(errno));
+> > +        return -1;
+> > +    }
+> > +
+> > +    memset((char *)&server_addr, 0, sizeof(server_addr));
+> > +    server_addr.sin_family =3D AF_INET;
+> > +    server_addr.sin_addr.s_addr =3D htonl(INADDR_LOOPBACK);
+> > +    server_addr.sin_port =3D htons(port);
+> > +
+> > +
+> > +    if (connect(client_socket, (struct sockaddr *)&server_addr, sizeof=
+(server_addr)) < 0) {
+> Wrap the line.
+>
+> > +        error_setg(errp, "cannot connect: %s", strerror(errno));
+> > +        close(client_socket);
+> > +        return -1;
+> > +    }
+> > +
+> > +    return client_socket;
+> > +}
+>
 >
 
