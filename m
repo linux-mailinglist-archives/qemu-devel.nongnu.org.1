@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC9F7A4E03
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E1A7A4E49
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:10:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiGjg-00007j-OR; Mon, 18 Sep 2023 12:04:32 -0400
+	id 1qiGji-0000Zg-UK; Mon, 18 Sep 2023 12:04:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjS-0007PC-PS
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:19 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGja-0008Bo-BD
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:26 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjQ-0004I9-U4
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:18 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-99c93638322so1017463666b.1
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:04:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjU-0004Kj-87
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:26 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9a9f139cd94so635662166b.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:04:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695053053; x=1695657853; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695053058; x=1695657858; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wbLvVhCdjkLoKVSI3XlIe8h3b/C8JwK6Lt4fUZyBeQw=;
- b=V0iqI4zgmbH3azcccW0GIBj6HlM8i22KIzHbm6K6rumEG0oY1GY87AlRETOl4XTytf
- OtiQvPsn9DhLapD6rn4emW4CQBu0fM3uc6pRvZjBoUOC0ruZsJvTH5nEGf/ovgajk1xS
- mMikm/hUbXwMWaN1G76D3zqkZd0GJOQw9R2mxRXXY93NIlpkIk0mTM8tPqAotly7HdSK
- GFeQtpnlb+ehlhJoTVRbCDPaTe2IDMyphu87WQlxwtu6+5b0zCLBUbwnqIJl9+rC2ST2
- YlBO9FvMdhUI0TTGqyJUSK+x79QQAS24DL+aN344kD7FB5t1EDPO5EJQ7yKuRCPCAcVV
- BjjA==
+ bh=NjaIM1Qc6nHbnxZLIT5jjyB717NwyoCy1EteOD4KAlE=;
+ b=t0llDNmNfv8UG/Uz7Bv6Oz3tQavpDDy9Ti61u5vtH5yvyk3IOrlWWqvH94ZYYlU7xF
+ EkwwbHMyCBq2p6TZax4+x4M56FfeV9AQA8kz3B8ZLLMYHRL32xp8LPLQ6OcFIm7XPWZQ
+ HqXImbNEWR0a1vbL9/WKqKcVZRkB+cF30o8q7POkfy9/6dYevY8FDc/Q7Q6OtPT92kPO
+ yoT3qkklnYcu70Q6TmvYboUPHlQklwyhLESAnTMgeO6oChdZJJiY/+wuj3kMZAWRZL4u
+ z+D5xF+F1Vb+hj38/xOL2NobShGA6ogToBuI6Ie5UFQMP1XhhiMo5UBpWG7KkFq+Tbde
+ 8ftg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695053053; x=1695657853;
+ d=1e100.net; s=20230601; t=1695053058; x=1695657858;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wbLvVhCdjkLoKVSI3XlIe8h3b/C8JwK6Lt4fUZyBeQw=;
- b=bxyiMwGsv7K0fAlr2g/BkZllruQD+2FfsfVwTx7zlBLL+xEF8ZI1cu+pRaiPdlgLgf
- gv4GRtNwb/1TJvwWEUTaY0ZvYcKkc3nOsv6/H+oS8rPK0zc1ZN8Vt1BbDeiwf7co0vtr
- VCysifFYoWyKxnNm1U9JAX2Iba6tebdA9Rugq758A49Fubx59mRLnk5ThKXCNjQUssa1
- tkdGbk9XrAgAqBYdkV2rVSagh7RWlWEC6S9hq9uNCyqIYIbEvhQkY5iUBL3ZkxOdx8kC
- rv9sbQ1EXsqqNmcZ6kMlNaZ5ZgKSHsc53j3U18UHfC7jyvxsEUMk2ZKAvv6AV8nY6wWW
- UAuw==
-X-Gm-Message-State: AOJu0YyPmQMgGudU099IjDxGVR1Mc0j0KDFO8Yuuo7lhnoN/C4p/yltK
- J25Upn4vgcXzMXUX01vWxdDbEITp4H8xZv96alz7COfq
-X-Google-Smtp-Source: AGHT+IGUIRL/Cj2QgpL/SWnZOOte/5aXBCe8PvtqKJ8rdHwjYW7XrtiQqR5SrkqTU7jQZeCu2Klurw==
-X-Received: by 2002:a17:906:311a:b0:9a9:f0e6:904e with SMTP id
- 26-20020a170906311a00b009a9f0e6904emr154241ejx.16.1695053053645; 
- Mon, 18 Sep 2023 09:04:13 -0700 (PDT)
+ bh=NjaIM1Qc6nHbnxZLIT5jjyB717NwyoCy1EteOD4KAlE=;
+ b=hnTs8YFehGUdk9oFiaokdOB4RA54iJIlkX9eMCP5DIakJJzoNunATJ1F93K1sbcHyP
+ /fPEVRPccOWWGyAXh2BoplEvChRjV6A2rJ1mKMsU3IxTx5Aa/TAG7qMMZIIAG6Pj2ZzH
+ KzktYXgSL9CqO66OQO4UCF93UyCZdlaNEnF9IvD8DJsOFNLuno1Yh70tOblXP6C8/Fuq
+ Kmg1hUCtyKaZNBZhZFuB9k1UsCtfcpfo5dTQLKaeUWBW9BhXo6ixeBUjnUJQoo5JQ4LX
+ l4cRG/ce0JsBfLlTi1cCIhjdV3MrSqlSVo3lZ3mgQ1weH3Pz920zErDuQ0e6nBSRoXKs
+ wUDg==
+X-Gm-Message-State: AOJu0Yzi8YCHq9L+B6a45cz8dEGYmuDl8I8gyg6XNgkh2Ozv5zpKFbki
+ Q/yH3i1/yn/KFm2x4EQW9vaVLZSLFQTKWKcWg6/T6dbE
+X-Google-Smtp-Source: AGHT+IH1BGqTiq3uZIcjIgDgFSn4hEE/bGsbSKhsdURXDBkyUNQTShuSyFgzOD2PM8QK12Z2NIlVUQ==
+X-Received: by 2002:a17:907:75f1:b0:9a1:da9a:f1c2 with SMTP id
+ jz17-20020a17090775f100b009a1da9af1c2mr7861010ejc.11.1695053058645; 
+ Mon, 18 Sep 2023 09:04:18 -0700 (PDT)
 Received: from localhost.localdomain
  (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
  by smtp.gmail.com with ESMTPSA id
- n26-20020a170906119a00b00997cce73cc7sm6586020eja.29.2023.09.18.09.04.11
+ f13-20020a170906390d00b00982a92a849asm6628019eje.91.2023.09.18.09.04.17
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Sep 2023 09:04:13 -0700 (PDT)
+ Mon, 18 Sep 2023 09:04:18 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -96,25 +96,24 @@ Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>,
  Michael Rolnik <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 14/22] target/sparc: Init CPU environment *after* accelerator
- vCPU is realized
-Date: Mon, 18 Sep 2023 18:02:47 +0200
-Message-ID: <20230918160257.30127-15-philmd@linaro.org>
+Subject: [PATCH 15/22] exec/cpu: Introduce CPUClass::verify_accel_features()
+Date: Mon, 18 Sep 2023 18:02:48 +0200
+Message-ID: <20230918160257.30127-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230918160257.30127-1-philmd@linaro.org>
 References: <20230918160257.30127-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,46 +129,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These fields from the environment don't affect how accelerators
-create their vCPU thread. We can safely reorder them *after* the
-cpu_exec_realizefn() call. Doing so allows further generic API
-simplification (in the next commit).
+Some CPUs need to check the requested features are compatible
+with the requested accelerator. This has to be done *before*
+the accelerator realizes a vCPU.
+Introduce the verify_accel_features() handler and call it
+just before accel_cpu_realizefn().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/sparc/cpu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/hw/core/cpu.h | 4 ++++
+ cpu.c                 | 5 +++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 2fdc95eda9..88157fcd33 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -756,6 +756,12 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
-     SPARCCPU *cpu = SPARC_CPU(dev);
-     CPUSPARCState *env = &cpu->env;
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index c90cf3a162..1e940f6bb5 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -103,6 +103,9 @@ struct SysemuCPUOps;
+  * @class_by_name: Callback to map -cpu command line model name to an
+  * instantiatable CPU type.
+  * @parse_features: Callback to parse command line arguments.
++ * @verify_accel_features: Callback to verify if all requested CPU are
++ *        compatible with the requested accelerator. Called before the
++ *        accelerator realize a vCPU.
+  * @reset_dump_flags: #CPUDumpFlags to use for reset logging.
+  * @has_work: Callback for checking if there is work to do.
+  * @memory_rw_debug: Callback for GDB memory access.
+@@ -183,6 +186,7 @@ struct CPUClass {
+      * class data that depends on the accelerator, see accel/accel-common.c.
+      */
+     void (*init_accel_cpu)(struct AccelCPUClass *accel_cpu, CPUClass *cc);
++    bool (*verify_accel_features)(CPUState *cs, Error **errp);
  
-+    cpu_exec_realizefn(cs, &local_err);
-+    if (local_err != NULL) {
-+        error_propagate(errp, local_err);
-+        return;
+     /*
+      * Keep non-pointer data at the end to minimize holes.
+diff --git a/cpu.c b/cpu.c
+index 0769b0b153..84b03c09ac 100644
+--- a/cpu.c
++++ b/cpu.c
+@@ -136,6 +136,11 @@ void cpu_exec_realizefn(CPUState *cpu, Error **errp)
+     /* cache the cpu class for the hotpath */
+     cpu->cc = CPU_GET_CLASS(cpu);
+ 
++    if (cpu->cc->verify_accel_features
++        && !cpu->cc->verify_accel_features(cpu, errp)) {
++        return false;
 +    }
 +
- #if defined(CONFIG_USER_ONLY)
-     if ((env->def.features & CPU_FEATURE_FLOAT)) {
-         env->def.features |= CPU_FEATURE_FLOAT128;
-@@ -776,12 +782,6 @@ static void sparc_cpu_realizefn(DeviceState *dev, Error **errp)
-     env->version |= env->def.nwindows - 1;
- #endif
- 
--    cpu_exec_realizefn(cs, &local_err);
--    if (local_err != NULL) {
--        error_propagate(errp, local_err);
--        return;
--    }
--
-     scc->parent_realize(dev, errp);
- }
- 
+     if (!accel_cpu_realizefn(cpu, errp)) {
+         return;
+     }
 -- 
 2.41.0
 
