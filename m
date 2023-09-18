@@ -2,82 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A7F7A443B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9C47A444B
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:15:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi9Mm-0004z7-S0; Mon, 18 Sep 2023 04:12:26 -0400
+	id 1qi9PO-00062G-KJ; Mon, 18 Sep 2023 04:15:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qi9Mi-0004yH-UD
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:12:20 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qi9Me-0000r2-2Y
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:12:20 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-402c46c49f4so45231275e9.1
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 01:12:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695024729; x=1695629529; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Nkd3qpwck0LDNROvE/OJkUIISIhUvWbBfAD4l2lWxj4=;
- b=s+YvdM1DfBz1qCHF1usQgxRu2+CvPEbaExP9wCoP8iS/6NBGHeqf9dIEvS+e2R9+lC
- AFDQIodbgRdolDR6/bbua7VJoHndEn/r5ympz4owjWpJdRY072SQyvvy1zpKIJRMDQ8Y
- oFntJCXP59upVrkpx/w4ebeL4OgoZcrNUtmIR2X0gbwJvBlkkpNf/t7UJLu1Q9hn/s1r
- XeyU7BxCNnbDj05ZZCljqPqZWq0TFUEeJ9ODLvoDF6yL2iR640jK6nOc0Cy5uDMrRvw6
- 3dE3hpGpmCxSL5wAe/8+pgDFD7pqi9B605BRH+3vRIXmzgEeGqxpK1AaVmho9WwVDSyg
- mrhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695024729; x=1695629529;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Nkd3qpwck0LDNROvE/OJkUIISIhUvWbBfAD4l2lWxj4=;
- b=Hpal4GuPLe9FepeaAE7TNVlInoiX6/ezm4keFnNgnDVHes7krafJff4YWdd8tnBglN
- 2D+a3B+WcytW82E4PE6WWqdHZovHPFq081pLDsfODIOjAhJhXZBksc6jeyFEUJ41f9pj
- 7ch4nJFx039nqu2Z2A49dRg6Yy81rQANJDwttr+a4kPX7DOrjz2dkcpH47CuHa2i9TF3
- ufjYfTyAwYiiKGJyTaG9VVZohZJcE4g+LBRi70BHhFLpFkMvpuA+0JcfOOyoOsAT+FLy
- yo/x3omyi3pvcNYor5jfWUz3xjmHNgF2UJmAEmZ3WUNP2/3nHdWvYf/XNKTWEUxt/bNn
- 7k0g==
-X-Gm-Message-State: AOJu0Yw+puLIonCX/GujeS3BpgEpYr8uVOvDwUFRepDFYEr5uoiKDIy/
- T3Y50sFNyMZlqeHJ91dh0W0l2Q==
-X-Google-Smtp-Source: AGHT+IGluRbaJMdYbdKK54LkR260Wk19Z7BKGkSrXB+nHNltN6IAN8GTCVbtGOaRssFdhvzaFnqw0w==
-X-Received: by 2002:a7b:cbcf:0:b0:401:cf0d:25cd with SMTP id
- n15-20020a7bcbcf000000b00401cf0d25cdmr6875694wmi.22.1695024729254; 
- Mon, 18 Sep 2023 01:12:09 -0700 (PDT)
-Received: from [192.168.152.175] (5.red-88-29-175.dynamicip.rima-tde.net.
- [88.29.175.5]) by smtp.gmail.com with ESMTPSA id
- 7-20020a05600c020700b003fe2de3f94fsm11558961wmi.12.2023.09.18.01.12.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Sep 2023 01:12:08 -0700 (PDT)
-Message-ID: <3f3434b3-a958-54f6-f698-a15461953a36@linaro.org>
-Date: Mon, 18 Sep 2023 10:12:06 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3 36/39] accel: Introduce accel_cpu_unrealize() stub
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: anjo@rev.ng
-References: <20230916214123.525796-1-richard.henderson@linaro.org>
- <20230916214123.525796-37-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qi9PM-00061o-IG; Mon, 18 Sep 2023 04:15:04 -0400
+Received: from mail-am6eur05on2072b.outbound.protection.outlook.com
+ ([2a01:111:f400:7e1b::72b]
+ helo=EUR05-AM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qi9PH-000175-7Y; Mon, 18 Sep 2023 04:15:04 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ijkgsvYnF5InlqS7XPu9n228FTI4ZX8/viZtVqdsppabBrGTL+0HV8GgSmYZTSkFDkaLDMMok83JPy6gCfCWo3vjBrgkilM7QvlUywMRcPZjoTVBoi5/uAzTnitPKr+ag21uFUc8rRV/hQtT8KGxOLyuXUDQKDicOI63djY8vpG6+TY+d6DHnAlnoPdzqGwEU0tDKB2K8OltT4CGO+VsSYO8dqxOdIiOBJojW116ENv9dOGal3W87z4NM1XfWM4jvkURthba3B17eGlyJlNQT8dw3xAfGvzYYpo8ig5dInpBwuw9Id+7m7/txo4cZ8dJ8+b06m6utUq2P8666MIYlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KHBR2zdErMLQsO19bb1NZNYBUmgXa59kfLVZGgEuY+o=;
+ b=cqr+77hG56KguQFSu2VErK5GFo3KuAt5C5yTIayTfmYJGvZMLENWlX4Kk3ZPBCksyyksxsp/BUJW1Gd4O/j11NhyP4jeSDMb2ojWg43F3aMdCrbuDixP+pRZ0X8Pah7WIkF7PbRSJRpRYw1NSOymjGtMaLLYu7tsbMKMlAzjqBMh/Ed2cLGQdvHqqXqK/ISolNYL8OUIbXqSDlPZUCus0VaaclPZHvoMvvCTiJhkWgc0LdO7FQLdPpB72odX7rr7DiRGIyi4tprrer0rBD4Pm18QsI+EonTwzmBop+Pz4IFI9m5yDCVHJAwKmD5qeB2Mqt11cgWMm2VSZWQslttsag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KHBR2zdErMLQsO19bb1NZNYBUmgXa59kfLVZGgEuY+o=;
+ b=upZ5dZ+bUGkRxkfn8h7I7ydbqj6fm4KniReHsVUdN/kdsaR34njh8lHQs0S4Naq5tmu/QUyvxxUrrMETUJ0sJxJhTfS40v+wdMQISDwj3WiD0IZhlurURLnhIZdoSmOXGkOUdiwwmv21nsg/IhrYvDG26wt/muMugzBzj/eQ1PHjG/gZBjbR67lChKGywTjxqFgYt/+4SH/WA8x+G4ebPVSiX++kc47saJfoYgTfj+cVfs1AZDukRTzZ5IwsvB65b0uKQ8ntOPbObrHx0lWQISrFgUFTb1e4QYe3JSDmD5otj4ZKcpXPLybs8cxF5R+4KWpgrTk02bdj7p2gFY0V9Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
+ by AS8PR08MB6136.eurprd08.prod.outlook.com (2603:10a6:20b:292::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26; Mon, 18 Sep
+ 2023 08:14:54 +0000
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::182f:4e2b:f999:1d9b]) by AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::182f:4e2b:f999:1d9b%6]) with mapi id 15.20.6792.026; Mon, 18 Sep 2023
+ 08:14:54 +0000
+Message-ID: <6e54ed39-bc33-887e-9585-d7fe04a1bbf2@virtuozzo.com>
+Date: Mon, 18 Sep 2023 10:14:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 04/21] parallels: return earler in fail_format branch in
+ parallels_open()
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230916214123.525796-37-richard.henderson@linaro.org>
+To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: stefanha@redhat.com, mike.maslenkin@gmail.com
+References: <20230915184130.403366-1-den@openvz.org>
+ <20230915184130.403366-6-den@openvz.org>
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+In-Reply-To: <20230915184130.403366-6-den@openvz.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1P194CA0026.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:803:3c::15) To AS8PR08MB7095.eurprd08.prod.outlook.com
+ (2603:10a6:20b:402::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|AS8PR08MB6136:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2a536f9-cac2-46d4-6932-08dbb81f56ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Xr1TvA4awzj4KxyWeQOZ5bZ2SLZAW3kVwyof4W2kTVWjwe2Ji7C9fqNR0xmLFzHERWlehyyee1d8bAIw6WHMVw3MxUugqb/M3n0kRU8XynmBXTrcW7p/PYUNPzCSuOyGKuZAqsi1k5eP61OvwHeIgCzLiwNnfTzv6HuHk+JqQmRFjRJPbW/u59fbtsqlU/8gZUCs4EAk/2pZCR5TS7jD04BBr850PGYxAy/h9USi03OMtWWflnCLpwSKAYFWbWuR129a1pjoNHv5mDiPOpg7tmGgbQ+Re8M05gfzijXx+biPpBqfXxh+kPmf9Sr1b4DplFk+Kk9SY5tk8sjHUlN1t0UqOrQNTWN/xzsS5xXeL9fY9X7/qWuJ+Sh+36aylXhJrN/Wgir/oMVnJgCXAqLXjLnWa6Q4tnzHFz1Al4jXH93psz7AhHBvfUIND7e0s9bWF75LCh53D+XFAF9wZimbIqVIfAd8ozJBBXT/zWne2wutxJqRNOw3gs6lG3/WCIInvtheES9XL+zgFsJ3E78gc7OLWSDIT0Ehpy/fpm7OwdjB9oRG+wjSBpXaC9z03/lxg/7mdG3earYb95imFjc+vhgfr35qQerXqQdZXL/viJh6RND1rlgmEp69qv3eUZXf6YWhui9IyOYodtoplsb6+vEa6q+Dhhto6Fb+PCBOm8LOcuc5oCLr5+/XLCQ5pUGb
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(396003)(376002)(39850400004)(136003)(366004)(451199024)(186009)(1800799009)(6512007)(53546011)(52116002)(66899024)(6486002)(6506007)(6666004)(83380400001)(86362001)(31696002)(38100700002)(36756003)(2616005)(38350700002)(26005)(66556008)(66946007)(66476007)(4744005)(41300700001)(316002)(2906002)(5660300002)(44832011)(4326008)(8676002)(8936002)(31686004)(478600001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHJVckFENzNBTTdVaE16Wlk0OXpOdTREaHZ4eUU5aC9kM2hIczdSUFdNblpD?=
+ =?utf-8?B?UnZHVkVyRjQ5ZjYwdmZRWDRnL1RmcmxvWXJhRmE2M0E3QWpRUnFaSHQrREpS?=
+ =?utf-8?B?bndrSWtSaVB0RkZxdmlrbWg2M3JnRDE1dGJ1RTJKK0U4TWQvTDN1OEZTTUxn?=
+ =?utf-8?B?dmUydlF3bDdnenNTT2lSZlo1S1ZwWkcwZGRVeS83NVZVS2NtNVFidUVWcFh4?=
+ =?utf-8?B?eUFyOEM4RndDVHBxT29wTGFScmZTc3ZMN21mbndHL20vSHU3STdlMktEdy84?=
+ =?utf-8?B?T1BxZ0NoK0tESTNNK0F3TjFwYUdGeVQvOHVsdnljS0Z5YVZYWmhPbm1wZkpZ?=
+ =?utf-8?B?dXNTTE5oZDFLaUU3eU1WMjdSYnY1OVlkdVNENUE4TEI4Z050Wk81dzVoMzlW?=
+ =?utf-8?B?WkxKNFpIMWcxUkZjYmpkdXhkMVg4RXdBV0FnUFZDakFlbkNaUGtpY2NsV1Z3?=
+ =?utf-8?B?UVdCRjNSVm5uMytqTTNXQ29Vb2piRmV0VFNYZmo4OFNtQmt6NC9kM0JOTVpD?=
+ =?utf-8?B?NU9ibVNQZTdxcUk5dFhsS0ptRmlxZkM5SWk0NDEwVDJqaUdFeHZEcVpLMGda?=
+ =?utf-8?B?YWhud29ObGdtdnFHRjBrUWtnWTZWMGVjNzMwYW1KUEhBY0RzbForeXdnaXlh?=
+ =?utf-8?B?K0Q5SzJ5REdaTCs4T0hVRGVqZ0hiaWpNZkZZK3dBQ0YxYXd3TW1CdjZoaDNO?=
+ =?utf-8?B?U2pyTlQxa2sxb0ZBRFVIY3VRR0MyNzltdG1jUW9xTHR1NEZrQ1hURzUraTVi?=
+ =?utf-8?B?WmI3VmlycWRrZmU2T1NUeWgzRXpZVVVrem42MzBFV2w2bnBzWXpRc0Z3ajVo?=
+ =?utf-8?B?M2NnY2JBYUtvRm9YQkxRQk45MHVTSDRVRnEyUngwUC9tWjR2aTE1QUFwOElz?=
+ =?utf-8?B?ZFc0YStOMityb3B6UmErS3FLZ0hocFlYWVprNEpYQm5NYVl5b2hQVG9HRVRz?=
+ =?utf-8?B?eW1INTliSTNoc09XOHp5QlRicmpGeHRNcVYvQ0RzMFNFQ21xQVp5NEFRMG85?=
+ =?utf-8?B?b0tFQzNQNHhUaDljbjJMV3NEeUI5SFpWV1o0U2tnSXYrdHZiZDFaV0w0Q2NT?=
+ =?utf-8?B?Ty9YUzFscWdHeW0zMk9yQXExaXE4NWNvcHNBYTQxRytYaE9iYW5pNEJ2NUwv?=
+ =?utf-8?B?YjI4MXVTcjQzL250Z0QrS2VUL2tNSWRDM1Ezam9xbGlSeWMzdlR6aldEbHN0?=
+ =?utf-8?B?ZjFaSS9IaWhFcFdVY3ZRN0hsa0syVnEzMnBZd2hpNFJOdFoxRnFwMkx0N0hE?=
+ =?utf-8?B?Q0JxYkdqeWsybml0NFhGR0JEbkpoYS9lc0F1NlBpU2FXYTI0SGh3dHNIOEhL?=
+ =?utf-8?B?cmpnaEdtcXpGak1XbGdVUE9SUlF2ZUdWYjJqM2IzUy9FVjlsdytucmE3bzZT?=
+ =?utf-8?B?TGkwVGNOMXhGbW1wUEhjK2x6SmQ5RXBqQ1dyaEE0eEUwWDJUYmFtTGFUVFds?=
+ =?utf-8?B?eFJOc2VKeFJQTzBvaDR4MXpjWjU5T2l1SHI0MytxU09IUU51TUtNUFgxbVlq?=
+ =?utf-8?B?b2pId05RK240ai94R3VYMUp1R0x6eU4rTEZYRG5JLzl4cXNoaHdiZXVoUnp2?=
+ =?utf-8?B?WDMyK2tlTHEwTnZGajVPQ0dMcWdNNUpnNEQxWDMyNWd3aFJEb0NhSSsxc0VP?=
+ =?utf-8?B?QU9maktlME1lWlFsd0hoWWpVVStkWU5lamUzVzdUQ2VWWVBpeitvRnh3MDJK?=
+ =?utf-8?B?YkpROFROQlgxSmFGVU5EOU10MXpseE4wSmRBMjhNY3lZRDNaMUNBT3JZdis4?=
+ =?utf-8?B?N3VjbEFMd1JRN1FBUW5JNnNKWHZUVXV5RlNHS2xTc05LYjZ0OHkxVEJqMy9P?=
+ =?utf-8?B?RGpVZlFkYTE4NFF6Q3cwaU14UWhuYnllTzhUc0lNWEhQV2NyR3ozQ1d0UjFy?=
+ =?utf-8?B?NUY2d3BJVDA4VVVZRHFvWmhjdm5ydk83N3N4WGZuZUx6T2M1Z1pETWgxYjVX?=
+ =?utf-8?B?NkJLZ2dkT2N1ekJUUHE5SURwOW9icncvRm8zVjJjTVN3eTdKd3M1MDJKcWtH?=
+ =?utf-8?B?bTJaQjcyRXZGU1dMQkdHQk54LzZid1ErK2oyQ1lhdll0RG44MFg2OHh3d2pX?=
+ =?utf-8?B?Uy9TcFpDbVBuVWNOa1pVVTk4VUk4NmFDam9PRUZIQi9TdGdzNzBwem5hLzV0?=
+ =?utf-8?B?cm9CK0huMHh0cVE0d0ZUSFFlemxRbzd6NWp6cm1hSUwrU0c2SkhNTkxnQ1BV?=
+ =?utf-8?Q?E7t03AmJsG4x8tw6hkw/qqo=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2a536f9-cac2-46d4-6932-08dbb81f56ec
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 08:14:54.5882 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NEE9jL/ZqV9XUkPF5uqtopie4wXJCZM1/IWYD09M4HAWeHOFl801TxfKdeICttVwKZMmSju6lOBuUv0t3FyTkhWGSbgSVKuwtPrKN+3XYpU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6136
+Received-SPF: pass client-ip=2a01:111:f400:7e1b::72b;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR05-AM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,36 +147,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/9/23 23:41, Richard Henderson wrote:
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> 
-> Prepare the stub for parity with accel_cpu_realize().
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Message-Id: <20230915190009.68404-3-philmd@linaro.org>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+This is not the case with this patch, but it seems that the 5 first 
+"goto fail;" could be
+replaced by returns. The first allocation, freeing at the "fail" label, 
+is at 1127 line.
+The next error handling and all the previous ones can make return 
+instead goto fail.
+
+On 9/15/23 20:41, Denis V. Lunev wrote:
+> We do not need to perform any deallocation/cleanup if wrong format is
+> detected.
+>
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
 > ---
->   include/qemu/accel.h | 6 ++++++
->   accel/accel-target.c | 4 ++++
->   cpu-target.c         | 3 ++-
->   3 files changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-> index cb64a07b84..7b02cb40e5 100644
-> --- a/include/qemu/accel.h
-> +++ b/include/qemu/accel.h
-> @@ -96,6 +96,12 @@ void accel_cpu_instance_init(CPUState *cpu);
->    */
->   bool accel_cpu_realize(CPUState *cpu, Error **errp);
+>   block/parallels.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/block/parallels.c b/block/parallels.c
+> index 1d5409f2ba..0f127427bf 100644
+> --- a/block/parallels.c
+> +++ b/block/parallels.c
+> @@ -1226,7 +1226,8 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
 >   
-> +/**
-> + * accel_cpu_unrealize:
-
-Thanks for fixing the typo :)
-
-> + * @cpu: The CPU that needs to call accel-specific cpu unrealization.
-> + */
-> +void accel_cpu_unrealize(CPUState *cpu);
+>   fail_format:
+>       error_setg(errp, "Image not in Parallels format");
+> -    ret = -EINVAL;
+> +    return -EINVAL;
 > +
+>   fail:
+>       /*
+>        * "s" object was allocated by g_malloc0 so we can safely
+
+-- 
+Best regards,
+Alexander Ivanov
 
 
