@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463C87A4B68
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:05:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FC77A4B69
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:05:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiFnQ-0008Io-1w; Mon, 18 Sep 2023 11:04:21 -0400
+	id 1qiFnl-00010o-1P; Mon, 18 Sep 2023 11:04:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiFnC-00084w-An
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:04:06 -0400
+ id 1qiFni-0000wO-IC
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:04:38 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiFn9-0007At-Gz
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:04:04 -0400
+ id 1qiFnd-0007Ew-V9
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:04:38 -0400
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rq7H61tcHz6J7tN;
- Mon, 18 Sep 2023 22:59:14 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rq7NF6rD3z6K6g3;
+ Mon, 18 Sep 2023 23:03:41 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 18 Sep 2023 16:04:00 +0100
+ 15.1.2507.31; Mon, 18 Sep 2023 16:04:30 +0100
 To: Michael Tokarev <mjt@tls.msk.ru>, <qemu-devel@nongnu.org>, Michael Tsirkin
  <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 CC: <linuxarm@huawei.com>, Peter Maydell <peter.maydell@linaro.org>, Yuquan
  Wang <wangyuquan1236@phytium.com.cn>
-Subject: [PATCH 2/3] hw/mem/cxl_type3: Add missing copyright and license notice
-Date: Mon, 18 Sep 2023 16:02:58 +0100
-Message-ID: <20230918150259.11165-3-Jonathan.Cameron@huawei.com>
+Subject: [PATCH 3/3] docs/cxl: Cleanout some more aarch64 examples.
+Date: Mon, 18 Sep 2023 16:02:59 +0100
+Message-ID: <20230918150259.11165-4-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
 References: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.122.247.231]
 X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -68,33 +68,36 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This has been missing from the start. Assume it should match
-with cxl/cxl-component-utils.c as both were part of early
-postings from Ben.
+These crossed with the previous fix to get rid of examples
+using aarch64 for which support is not yet upstream.
 
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- hw/mem/cxl_type3.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ docs/system/devices/cxl.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index c5855d4e7d..ad3f0f6a9d 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -1,3 +1,12 @@
-+/*
-+ * CXL Type 3 (memory expander) device
-+ *
-+ * Copyright(C) 2020 Intel Corporation.
-+ *
-+ * This work is licensed under the terms of the GNU GPL, version 2. See the
-+ * COPYING file in the top-level directory.
-+ */
-+
- #include "qemu/osdep.h"
- #include "qemu/units.h"
- #include "qemu/error-report.h"
+diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
+index b742120657..6ab5f72473 100644
+--- a/docs/system/devices/cxl.rst
++++ b/docs/system/devices/cxl.rst
+@@ -313,7 +313,7 @@ A very simple setup with just one directly attached CXL Type 3 Persistent Memory
+ 
+ A very simple setup with just one directly attached CXL Type 3 Volatile Memory device::
+ 
+-  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max \
++  qemu-system-x86_64 -M q35,cxl=on -m 4G,maxmem=8G,slots=8 -smp 4 \
+   ...
+   -object memory-backend-ram,id=vmem0,share=on,size=256M \
+   -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
+@@ -323,7 +323,7 @@ A very simple setup with just one directly attached CXL Type 3 Volatile Memory d
+ 
+ The same volatile setup may optionally include an LSA region::
+ 
+-  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max \
++  qemu-system-x86_64 -M q35,cxl=on -m 4G,maxmem=8G,slots=8 -smp 4 \
+   ...
+   -object memory-backend-ram,id=vmem0,share=on,size=256M \
+   -object memory-backend-file,id=cxl-lsa0,share=on,mem-path=/tmp/lsa.raw,size=256M \
 -- 
 2.39.2
 
