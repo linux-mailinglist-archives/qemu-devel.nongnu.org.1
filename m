@@ -2,130 +2,127 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C94E7A4F27
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C954A7A4F2D
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:35:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiHCY-0000rk-7q; Mon, 18 Sep 2023 12:34:22 -0400
+	id 1qiHD5-0001Mk-KU; Mon, 18 Sep 2023 12:34:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiHCW-0000rE-4N
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:34:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qiHD4-0001MF-4R
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:34:54 -0400
+Received: from mailout2.w2.samsung.com ([211.189.100.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiHCS-0002Ag-IZ
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:34:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695054854;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Yqit+L1v57rv4S72epM2gx/7IZWiOioPzhQAQ8pbRdo=;
- b=Ql4dCmsxUjmRiP07sSItS1BMfs9DPpoqeWHVyCUwTAMgpBgDb3yLu84Bdy5/21WICnc6e1
- XcLlVxMkNHTvODb8XV1B5+VuxqfdvcjDX6kzenCr1UGIqrFXgvt2YKz/XIvDtqEeBruJk1
- MVd7Nckg0VUNPyIEwKbg6bSXxHubfh8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-318-qgREOtDhMtGXFeT39IcTQA-1; Mon, 18 Sep 2023 12:34:13 -0400
-X-MC-Unique: qgREOtDhMtGXFeT39IcTQA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f41a04a297so36878875e9.3
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:34:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695054851; x=1695659651;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Yqit+L1v57rv4S72epM2gx/7IZWiOioPzhQAQ8pbRdo=;
- b=Z1gX0uJqryThz7Oser/DyI/00TyvSHk00CQ6EGfxC4MP14OsH4U7IKyArJKI0Xai49
- kRNkCePAu6CEPySLNJYSxgy3jxIDgiUXukFmU0yR4KoofWEO2+ljQKQJSp7fZUaPMzOR
- pOKw5i2S8rcHFYSfScwD67vNN9NYe44pJnuBrjpb3YlvpJAb/d/pt7ILxkaIK3Ey1s07
- J+7z5fJY/eq1fQRBfTGzQ+J5Yf8KcIf/89wS8mYR5ki4g+Pt1A0jyTH+QLbyUDMs9UW+
- q/udByOezWbxYOBDj+kKxPQ51+z/Cszu/Lg+ycj+m2zEGjRTDtc8YH3/3ka2SrRg21rp
- 196g==
-X-Gm-Message-State: AOJu0YyYfo5FH7vemI2OX4M6T+xxTCTRjxTw0ZNn/oyanwUcncsHPZ3n
- VvqgVQ+EjIcoTOfjmDEPRMY7S+l8NbkVQUOcI0VVNbIJyWjLjvES3Zex9q5/zufGJ2llUjN4Uv5
- sdByQu4wY8VeEdkU=
-X-Received: by 2002:a5d:5a15:0:b0:31f:f432:b541 with SMTP id
- bq21-20020a5d5a15000000b0031ff432b541mr11161282wrb.69.1695054851572; 
- Mon, 18 Sep 2023 09:34:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHR9is0Sfqkz6XHdnT9nxCW466u2UED+wVodAbdwIojm0Dvd+7wdCEx6LhGqy3I2hauHihUlw==
-X-Received: by 2002:a5d:5a15:0:b0:31f:f432:b541 with SMTP id
- bq21-20020a5d5a15000000b0031ff432b541mr11161214wrb.69.1695054851162; 
- Mon, 18 Sep 2023 09:34:11 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c702:9d00:cf36:8603:a1f5:d07?
- (p200300cbc7029d00cf368603a1f50d07.dip0.t-ipconnect.de.
- [2003:cb:c702:9d00:cf36:8603:a1f5:d07])
- by smtp.gmail.com with ESMTPSA id
- o12-20020adfeacc000000b003176c6e87b1sm4242342wrn.81.2023.09.18.09.34.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Sep 2023 09:34:10 -0700 (PDT)
-Message-ID: <7bc15c25-2147-409b-0cf7-e3f1b56d5283@redhat.com>
-Date: Mon, 18 Sep 2023 18:34:07 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 18/22] target/s390x: Call s390_cpu_realize_sysemu from
- s390_realize_cpu_model
+ (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
+ id 1qiHD2-0002FY-D9
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:34:53 -0400
+Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
+ by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
+ 20230918163450usoutp02787b3d1de508bc1988e242900d177d68~GC3E7k0W72554325543usoutp02a;
+ Mon, 18 Sep 2023 16:34:50 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
+ 20230918163450usoutp02787b3d1de508bc1988e242900d177d68~GC3E7k0W72554325543usoutp02a
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+ s=mail20170921; t=1695054890;
+ bh=njDZU/bcH9olrTlYwyIXU/OaQs/BUDTHxYQqYA+tk0c=;
+ h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+ b=Y2RvrQf1I3sAvKR0ahCqukFvst8m9vaz6dYUoI5GdFyA9hikaENuwNRZVkclX1p76
+ V/bp/WU4GZUSO97n12k7WztETMcD0auldb59dqAzaTZzp1cYTWXMy2SJuKBWfLgU1h
+ rOVxSWyOq57sF0n+4W39Dys6+HQB5+VnxdtxF79I=
+Received: from ussmges1new.samsung.com (u109.gpu85.samsung.co.kr
+ [203.254.195.109]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230918163450uscas1p179548c48dabe9a90ec2167ecfd4ef460~GC3Ew9PIr2415124151uscas1p1j;
+ Mon, 18 Sep 2023 16:34:50 +0000 (GMT)
+Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
+ ussmges1new.samsung.com (USCPEMTA) with SMTP id 8C.1D.50148.A2C78056; Mon,
+ 18 Sep 2023 12:34:50 -0400 (EDT)
+Received: from ussmgxs1new.samsung.com (u89.gpu85.samsung.co.kr
+ [203.254.195.89]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
+ 20230918163450uscas1p130158f706c1406380846be01b8654cae~GC3EagFfU2415124151uscas1p1i;
+ Mon, 18 Sep 2023 16:34:50 +0000 (GMT)
+X-AuditID: cbfec36d-7bdff7000002c3e4-e5-65087c2a7fa8
+Received: from SSI-EX2.ssi.samsung.com ( [105.128.2.146]) by
+ ussmgxs1new.samsung.com (USCPEXMTA) with SMTP id 64.B3.28590.92C78056; Mon,
+ 18 Sep 2023 12:34:50 -0400 (EDT)
+Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
+ SSI-EX2.ssi.samsung.com (105.128.2.227) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.1.2375.24; Mon, 18 Sep 2023 09:34:49 -0700
+Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
+ SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Mon,
+ 18 Sep 2023 09:34:49 -0700
+From: Fan Ni <fan.ni@samsung.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+CC: Michael Tokarev <mjt@tls.msk.ru>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>,
+ =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ "linuxarm@huawei.com" <linuxarm@huawei.com>
+Subject: Re: [PATCH v2 3/4] hw/cxl: CXLDVSECPortExtensions renamed to
+ CXLDVSECPortExt
+Thread-Topic: [PATCH v2 3/4] hw/cxl: CXLDVSECPortExtensions renamed to
+ CXLDVSECPortExt
+Thread-Index: AQHZ5/bqu65XfXRkRkynpeU1UhKRb7AhQXuA
+Date: Mon, 18 Sep 2023 16:34:49 +0000
+Message-ID: <20230918163441.GA3331103@sjcvldevvm72>
+In-Reply-To: <20230915170418.21337-4-Jonathan.Cameron@huawei.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Peter Xu <peterx@redhat.com>,
- Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
- kvm@vger.kernel.org, Marek Vasut <marex@denx.de>,
- David Gibson <david@gibson.dropbear.id.au>, Brian Cain <bcain@quicinc.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
- Claudio Fontana <cfontana@suse.de>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Marcelo Tosatti
- <mtosatti@redhat.com>, qemu-ppc@nongnu.org,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Aurelien Jarno <aurelien@aurel32.net>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Alistair Francis <alistair.francis@wdc.com>,
- Alessandro Di Federico <ale@rev.ng>, Song Gao <gaosong@loongson.cn>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Chris Wulff <crwulff@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Alistair Francis <alistair@alistair23.me>, Fabiano Rosas <farosas@suse.de>,
- qemu-s390x@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
- Luc Michel <luc@lmichel.fr>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Bin Meng <bin.meng@windriver.com>, Stafford Horne <shorne@gmail.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- "Daniel P . Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-riscv@nongnu.org,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>,
- Michael Rolnik <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-References: <20230918160257.30127-1-philmd@linaro.org>
- <20230918160257.30127-19-philmd@linaro.org>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230918160257.30127-19-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [105.128.2.176]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <0900BDC74687B64FB07FE669EDE3BD17@ssi.samsung.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRjG/c7N42JwnDbflDAtQZLNLKl1E5OiVXSxILvQZayDac5sJ7sK
+ GyMj1gU1rVxJWWY2NNO8rDLLWUtXRlZOMZdZKyqbsW5SiavtJOy/3/u8z/u9z/fx0biojAyl
+ 0zJ3s+pMRUYkJSAaLD+eSKbm0Oy0vEMTZcZSGyVrrXmMyRyjw0jm/v2JlFVWBMkeHjcRiZT8
+ 0H0nKe+zNVFyh+0GJv/S3EXJ84ouE6vIDYJ529iMtD2sOjZhq2B7i64Ey7o7b1+eXodpUXGs
+ HtE0MPHgsCTpkYAWMVcR9Lt7cb7IxcDhriXGTC/apLxehcB+zYT44iuCT59zST0K+FeUIyir
+ yPEwxURAs76R8nAwMx2Gegq8AzjzEcGPl3ZvI4hJgastZ3DetA6cHYfJsYGbp64jDxNMFLR1
+ DnlZyMyAC0ffej0BzAJ409Xs1REjhmFrJeZhnAmBXsd5LwMTCBfPNuE8i2H01gDFcwT0D3/0
+ 5/1S6CkqpHhOAP37DoLnGCgvHcT5vYHQXuwg+NkJ0FLRQ3guA8xTGjoab/5/ooXwfWAd7wmD
+ ru4inJeVYHQJeDkDzpfV/T9mLpSOVGN5aIrBJ7XBJ5HBJ5HBJ5HBJ9EFRBpRSDbHqVJZLi6T
+ 3SvlFCouOzNVqtypqkX/PtKj0VaVCZl6XVIzwmhkRkDjkcHC4jiKFQm3KfYfYNU7t6izM1jO
+ jMJoIjJEGDe/XSliUhW72R0sm8Wqx7oYHRCqxaS4qLsxYcnvR4vNmgOD+brTZZMiJInf5uS8
+ E02bLFF+KJiwa+iYM00brf9jjz6ZnqQrGnG1LYwKtZ/d2Ba42qjvfPbNmbx+4vOlm5afeR6s
+ K3CxyYalr2wp4Q/c4js9SS6tU5NtXQ2/SupmSXJXnhB+dfgPWOcu026Z7bJC6RpRYWq78Kff
+ w/6YzfVc8psgzSkyvfZgTaJlhd9r7vZgk2bj2y8JVVNKyIFOZatFEv8u9pKfrTixsXpzfl1U
+ df7PFU9Mhivi8CN2415Nw+MRt/hapTS88L6wIDqt3nJuZr05fVG3UjWyzD1/7Yb93X3496p4
+ TUPY+HEpWw82vLYq7yVFEtx2RdxUXM0p/gK2hR7etwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKIsWRmVeSWpSXmKPExsWS2cA0SVerhiPVYN9qJotVC6+xWRzeeIbJ
+ 4sm/74wW/3+9YrVYs0LY4njvDhYHNo+WI29ZPe5c28Pm8eTaZiaP9/uusnlMmLqUJYA1issm
+ JTUnsyy1SN8ugSvjYNNcpoL9NhUTupqYGhhn6ncxcnBICJhIXDmh18XIySEksJpRYss9wy5G
+ LiD7E6NE64JWFghnGaPE/4MzmECq2AQUJfZ1bWcDsUUEjCTe3ZjECFLELPCSUeLr7btgCWGB
+ cImVB2cwQxRFSGz8Np8JpmHntA2MIDaLgKrEiYvvwGxeAWOJBd2PWSG2nWaU2DzxKFiCU8BR
+ 4tHVfWA2o4CYxPdTa8AGMQuIS9x6AjFUQkBAYsme88wQtqjEy8f/WCFsRYn731+yQ9TrSdyY
+ OoUNwraT6Hp2lgXC1pZYtvA1M8QRghInZz5hgeiVlDi44gbLBEaJWUjWzUIyahaSUbOQjJqF
+ ZNQCRtZVjOKlxcW56RXFhnmp5XrFibnFpXnpesn5uZsYgTF9+t/hyB2MR2991DvEyMTBeIhR
+ goNZSYR3piFbqhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHeHVMupggJpCeWpGanphakFsFkmTg4
+ pRqYjh7J4hMNLTIQ2nz4SmSA18KyxM45rqKMMvNsX3BkXjpkMUNrluOU/wtMq6/eXpnBeSTs
+ dumvwBVmN5azrFXMKeps3n58gryd4fpi5ZyfzS2t/oHhT1b6Lor8+vHetC/Gad+Mq29Er75c
+ 0mBtfv1egP7HJZsXPsuxsxQNjDot8vPnnFU/ORWe+BpeTvqt+9XS9dN6zwL3O64qpm+nFz1T
+ +L5SJnmznPaJJvUvMoGnP9hVL1V2+Mbn8+W51JKiIyUtrmsKbjrk9l0JKPYOXXuC/5FoscOJ
+ +661/qf2PvTR3+1xLDJYTPvo3q+b+8Xjgk+pNJ49e3RhskOjtbt266bXhyfNPeqisP95lmTG
+ uQZWJZbijERDLeai4kQAVfhLYVgDAAA=
+X-CMS-MailID: 20230918163450uscas1p130158f706c1406380846be01b8654cae
+CMS-TYPE: 301P
+X-CMS-RootMailID: 20230915170556uscas1p21dc4738cb31cb867135ea6d165b0e11d
+References: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
+ <CGME20230915170556uscas1p21dc4738cb31cb867135ea6d165b0e11d@uscas1p2.samsung.com>
+ <20230915170418.21337-4-Jonathan.Cameron@huawei.com>
+Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
+ helo=mailout2.w2.samsung.com
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -141,93 +138,190 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18.09.23 18:02, Philippe Mathieu-Daudé wrote:
-> s390_cpu_realize_sysemu() runs some checks for the TCG accelerator,
-> previous to creating the vCPU. s390_realize_cpu_model() also does
-> run some checks for KVM.
-> Move the sysemu call to s390_realize_cpu_model(). Having a single
-> call before cpu_exec_realizefn() will allow us to factor a
-> verify_accel_features() handler out in a pair of commits.
-> 
-> Directly pass a S390CPU* to s390_cpu_realize_sysemu() to simplify.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Fri, Sep 15, 2023 at 06:04:17PM +0100, Jonathan Cameron wrote:
+
+> Done to reduce line lengths where this is used.
+> Ext seems sufficiently obvious that it need not be spelt out
+> fully.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
 > ---
->   target/s390x/s390x-internal.h | 2 +-
->   target/s390x/cpu-sysemu.c     | 3 +--
->   target/s390x/cpu.c            | 6 ------
->   target/s390x/cpu_models.c     | 4 ++++
->   4 files changed, 6 insertions(+), 9 deletions(-)
-> 
-> diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-> index 825252d728..781ac08458 100644
-> --- a/target/s390x/s390x-internal.h
-> +++ b/target/s390x/s390x-internal.h
-> @@ -241,7 +241,7 @@ uint32_t calc_cc(CPUS390XState *env, uint32_t cc_op, uint64_t src, uint64_t dst,
->   unsigned int s390_cpu_halt(S390CPU *cpu);
->   void s390_cpu_unhalt(S390CPU *cpu);
->   void s390_cpu_init_sysemu(Object *obj);
-> -bool s390_cpu_realize_sysemu(DeviceState *dev, Error **errp);
-> +bool s390_cpu_realize_sysemu(S390CPU *cpu, Error **errp);
->   void s390_cpu_finalize(Object *obj);
->   void s390_cpu_class_init_sysemu(CPUClass *cc);
->   void s390_cpu_machine_reset_cb(void *opaque);
-> diff --git a/target/s390x/cpu-sysemu.c b/target/s390x/cpu-sysemu.c
-> index 8112561e5e..5178736c46 100644
-> --- a/target/s390x/cpu-sysemu.c
-> +++ b/target/s390x/cpu-sysemu.c
-> @@ -122,9 +122,8 @@ void s390_cpu_init_sysemu(Object *obj)
->       s390_cpu_set_state(S390_CPU_STATE_STOPPED, cpu);
->   }
->   
-> -bool s390_cpu_realize_sysemu(DeviceState *dev, Error **errp)
-> +bool s390_cpu_realize_sysemu(S390CPU *cpu, Error **errp)
->   {
-> -    S390CPU *cpu = S390_CPU(dev);
->       MachineState *ms = MACHINE(qdev_get_machine());
->       unsigned int max_cpus = ms->smp.max_cpus;
->   
-> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-> index 416ac6c4e0..7257d4bc19 100644
-> --- a/target/s390x/cpu.c
-> +++ b/target/s390x/cpu.c
-> @@ -237,12 +237,6 @@ static void s390_cpu_realizefn(DeviceState *dev, Error **errp)
->           goto out;
->       }
->   
-> -#if !defined(CONFIG_USER_ONLY)
-> -    if (!s390_cpu_realize_sysemu(dev, &err)) {
-> -        goto out;
-> -    }
-> -#endif
-> -
->       cpu_exec_realizefn(cs, &err);
->       if (err != NULL) {
->           goto out;
-> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-> index 98f14c09c2..f030be0d55 100644
-> --- a/target/s390x/cpu_models.c
-> +++ b/target/s390x/cpu_models.c
-> @@ -612,6 +612,10 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
->           cpu->env.cpuid = deposit64(cpu->env.cpuid, CPU_PHYS_ADDR_SHIFT,
->                                      CPU_PHYS_ADDR_BITS, cpu->env.core_id);
->       }
-> +
-> +    if (!s390_cpu_realize_sysemu(cpu, &err)) {
-> +        return;
-> +    }
->   #endif
->   }
->   
 
-That has nothing to do with CPU models and is, therefore, completely 
-misplaced ... :/
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-Or what am I missing?
-
--- 
-Cheers,
-
-David / dhildenb
-
+>  include/hw/cxl/cxl_pci.h       |  6 ++---
+>  hw/cxl/cxl-component-utils.c   | 49 ++++++++++++++++++++--------------
+>  hw/pci-bridge/cxl_downstream.c |  2 +-
+>  hw/pci-bridge/cxl_root_port.c  |  2 +-
+>  hw/pci-bridge/cxl_upstream.c   |  2 +-
+>  5 files changed, 35 insertions(+), 26 deletions(-)
+>=20
+> diff --git a/include/hw/cxl/cxl_pci.h b/include/hw/cxl/cxl_pci.h
+> index 407be95b9e..ddf01a543b 100644
+> --- a/include/hw/cxl/cxl_pci.h
+> +++ b/include/hw/cxl/cxl_pci.h
+> @@ -86,7 +86,7 @@ typedef struct CXLDVSECDevice {
+>  QEMU_BUILD_BUG_ON(sizeof(CXLDVSECDevice) !=3D 0x38);
+> =20
+>  /* CXL 2.0 - 8.1.5 (ID 0003) */
+> -typedef struct CXLDVSECPortExtensions {
+> +typedef struct CXLDVSECPortExt {
+>      DVSECHeader hdr;
+>      uint16_t status;
+>      uint16_t control;
+> @@ -100,8 +100,8 @@ typedef struct CXLDVSECPortExtensions {
+>      uint32_t alt_prefetch_limit_high;
+>      uint32_t rcrb_base;
+>      uint32_t rcrb_base_high;
+> -} CXLDVSECPortExtensions;
+> -QEMU_BUILD_BUG_ON(sizeof(CXLDVSECPortExtensions) !=3D 0x28);
+> +} CXLDVSECPortExt;
+> +QEMU_BUILD_BUG_ON(sizeof(CXLDVSECPortExt) !=3D 0x28);
+> =20
+>  #define PORT_CONTROL_OFFSET          0xc
+>  #define PORT_CONTROL_UNMASK_SBR      1
+> diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> index 7ef3ef2bd6..c8d632d540 100644
+> --- a/hw/cxl/cxl-component-utils.c
+> +++ b/hw/cxl/cxl-component-utils.c
+> @@ -392,26 +392,35 @@ void cxl_component_create_dvsec(CXLComponentState *=
+cxl,
+>      case NON_CXL_FUNCTION_MAP_DVSEC:
+>          break; /* Not yet implemented */
+>      case EXTENSIONS_PORT_DVSEC:
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, control)] =3D 0x=
+0F;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, control) + 1] =
+=3D 0x40;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_bus_base)] =
+=3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_bus_limit)] =
+=3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_base)=
+] =3D 0xF0;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_base)=
+ + 1] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_limit=
+)] =3D 0xF0;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_memory_limit=
+) + 1] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_bas=
+e)] =3D 0xF0;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_bas=
+e) + 1] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_lim=
+it)] =3D 0xF0;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_lim=
+it) + 1] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_bas=
+e_high)] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_bas=
+e_high) + 1] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_bas=
+e_high) + 2] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_bas=
+e_high) + 3] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_lim=
+it_high)] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_lim=
+it_high) + 1] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_lim=
+it_high) + 2] =3D 0xFF;
+> -        wmask[offset + offsetof(CXLDVSECPortExtensions, alt_prefetch_lim=
+it_high) + 3] =3D 0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, control)] =3D 0x0F;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, control) + 1] =3D 0x40;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_bus_base)] =3D 0xFF=
+;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_bus_limit)] =3D 0xF=
+F;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_base)] =3D 0=
+xF0;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_base) + 1] =
+=3D 0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_limit)] =3D =
+0xF0;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_memory_limit) + 1] =
+=3D 0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base)] =3D=
+ 0xF0;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base) + 1]=
+ =3D 0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit)] =
+=3D 0xF0;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit) + 1=
+] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high)=
+] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high)=
+ + 1] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high)=
+ + 2] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_base_high)=
+ + 3] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high=
+)] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high=
+) + 1] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high=
+) + 2] =3D
+> +            0xFF;
+> +        wmask[offset + offsetof(CXLDVSECPortExt, alt_prefetch_limit_high=
+) + 3] =3D
+> +            0xFF;
+>          break;
+>      case GPF_PORT_DVSEC:
+>          wmask[offset + offsetof(CXLDVSECPortGPF, phase1_ctrl)] =3D 0x0F;
+> diff --git a/hw/pci-bridge/cxl_downstream.c b/hw/pci-bridge/cxl_downstrea=
+m.c
+> index 54f507318f..cdd79ea1c0 100644
+> --- a/hw/pci-bridge/cxl_downstream.c
+> +++ b/hw/pci-bridge/cxl_downstream.c
+> @@ -98,7 +98,7 @@ static void build_dvsecs(CXLComponentState *cxl)
+>  {
+>      uint8_t *dvsec;
+> =20
+> -    dvsec =3D (uint8_t *)&(CXLDVSECPortExtensions){ 0 };
+> +    dvsec =3D (uint8_t *)&(CXLDVSECPortExt){ 0 };
+>      cxl_component_create_dvsec(cxl, CXL2_DOWNSTREAM_PORT,
+>                                 EXTENSIONS_PORT_DVSEC_LENGTH,
+>                                 EXTENSIONS_PORT_DVSEC,
+> diff --git a/hw/pci-bridge/cxl_root_port.c b/hw/pci-bridge/cxl_root_port.=
+c
+> index 7dfd20aa67..8f97697631 100644
+> --- a/hw/pci-bridge/cxl_root_port.c
+> +++ b/hw/pci-bridge/cxl_root_port.c
+> @@ -107,7 +107,7 @@ static void build_dvsecs(CXLComponentState *cxl)
+>  {
+>      uint8_t *dvsec;
+> =20
+> -    dvsec =3D (uint8_t *)&(CXLDVSECPortExtensions){ 0 };
+> +    dvsec =3D (uint8_t *)&(CXLDVSECPortExt){ 0 };
+>      cxl_component_create_dvsec(cxl, CXL2_ROOT_PORT,
+>                                 EXTENSIONS_PORT_DVSEC_LENGTH,
+>                                 EXTENSIONS_PORT_DVSEC,
+> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+> index a57806fb31..b81bb5fec9 100644
+> --- a/hw/pci-bridge/cxl_upstream.c
+> +++ b/hw/pci-bridge/cxl_upstream.c
+> @@ -116,7 +116,7 @@ static void build_dvsecs(CXLComponentState *cxl)
+>  {
+>      uint8_t *dvsec;
+> =20
+> -    dvsec =3D (uint8_t *)&(CXLDVSECPortExtensions){
+> +    dvsec =3D (uint8_t *)&(CXLDVSECPortExt){
+>          .status =3D 0x1, /* Port Power Management Init Complete */
+>      };
+>      cxl_component_create_dvsec(cxl, CXL2_UPSTREAM_PORT,
+> --=20
+> 2.39.2
+> =
 
