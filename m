@@ -2,65 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8197A50CB
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:15:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1197A50CF
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:18:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiHqK-0000MI-WC; Mon, 18 Sep 2023 13:15:29 -0400
+	id 1qiHsO-0001g0-8F; Mon, 18 Sep 2023 13:17:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHq4-0000IX-VR
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:15:13 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHsH-0001fm-Dr
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:17:30 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHq3-0001t7-Gw
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:15:12 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHsF-0002Ta-UF
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:17:29 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id A6C2B21F10;
- Mon, 18 Sep 2023 17:15:09 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 798542002F;
+ Mon, 18 Sep 2023 17:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695057309; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1695057446; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=35oAZfZI+V+NltzSK1jJgah0KYKxGizjhOMcXFcW4V0=;
- b=gfL9xkMffxqNvFV8xt/Mq8deGlPSvGSSrDbNrFhkbOwK48JhlMzFDNktDwL/DLp4IgHR3c
- KKG8oQpdZ2EMcAI6g2ameyCTA7Yt9ZdNTT9nDdivaaV7r87QtGS0k6l+84AjdAvRoWOq2n
- NmERZHbOFNug2G4KyD+sPexVkLPTPmw=
+ bh=mUXIAdXwOu6ZxsYl5wNbeFAoUQ2dbkxm+hPqnSnH+S8=;
+ b=PD13d2h86gCby+8AM2O+QaCUHivUgW+1NefgZXyV/jBQSrg6oYtaqG2bORokUmzO2lKxsa
+ Yf8SLyW59uVDPdJ8wDSFMtSicJrarwRHW9JOQ5Mz2+ODIs/L7NjPhNNiipNry13jeNmdiY
+ fOItB9CsUFMGGBknROEvdKZRrnJ7m+c=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695057309;
+ s=susede2_ed25519; t=1695057446;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=35oAZfZI+V+NltzSK1jJgah0KYKxGizjhOMcXFcW4V0=;
- b=T/pyl/IUxRZhDmwiGTL9iqZIgqK96Au9xD0XejAykbuWKRxH95y0JTOIDr9hLpCtkdw04h
- wiyfAseeSz1XCiDg==
+ bh=mUXIAdXwOu6ZxsYl5wNbeFAoUQ2dbkxm+hPqnSnH+S8=;
+ b=P2XMk+xQY1MTvMOAwWxYWUgF0IKp+vSePlkJiIF079OqEilw2ZA//wWZEqWsjxtSYplYYf
+ 7RoupO2JhEQHnSBA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 301F71358A;
- Mon, 18 Sep 2023 17:15:08 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0A7FB1358A;
+ Mon, 18 Sep 2023 17:17:25 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id YZUDO5yFCGVtEgAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:15:08 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id vOLbMSWGCGVfEwAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:17:25 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH 08/52] migration/rdma: Fix qemu_rdma_accept() to return
- failure on errors
-In-Reply-To: <20230918144206.560120-9-armbru@redhat.com>
+Subject: Re: [PATCH 09/52] migration/rdma: Put @errp parameter last
+In-Reply-To: <20230918144206.560120-10-armbru@redhat.com>
 References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-9-armbru@redhat.com>
-Date: Mon, 18 Sep 2023 14:15:06 -0300
-Message-ID: <87led3z9lx.fsf@suse.de>
+ <20230918144206.560120-10-armbru@redhat.com>
+Date: Mon, 18 Sep 2023 14:17:23 -0300
+Message-ID: <87il87z9i4.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -85,11 +84,13 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Markus Armbruster <armbru@redhat.com> writes:
 
-> qemu_rdma_accept() returns 0 in some cases even when it didn't
-> complete its job due to errors.  Impact is not obvious.  I figure the
-> caller will soon fail again with a misleading error message.
+> include/qapi/error.h demands:
 >
-> Fix it to return -1 on any failure.
+>  * - Functions that use Error to report errors have an Error **errp
+>  *   parameter.  It should be the last parameter, except for functions
+>  *   taking variable arguments.
+>
+> qemu_rdma_connect() does not conform.  Clean it up.
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
