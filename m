@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FC77A4B69
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0237A4B67
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:04:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiFnl-00010o-1P; Mon, 18 Sep 2023 11:04:41 -0400
+	id 1qiFme-0006BM-Eb; Mon, 18 Sep 2023 11:03:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiFni-0000wO-IC
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:04:38 -0400
+ id 1qiFmG-0005eE-Qm; Mon, 18 Sep 2023 11:03:09 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiFnd-0007Ew-V9
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:04:38 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rq7NF6rD3z6K6g3;
- Mon, 18 Sep 2023 23:03:41 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 18 Sep 2023 16:04:30 +0100
-To: Michael Tokarev <mjt@tls.msk.ru>, <qemu-devel@nongnu.org>, Michael Tsirkin
- <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-CC: <linuxarm@huawei.com>, Peter Maydell <peter.maydell@linaro.org>, Yuquan
- Wang <wangyuquan1236@phytium.com.cn>
-Subject: [PATCH 3/3] docs/cxl: Cleanout some more aarch64 examples.
-Date: Mon, 18 Sep 2023 16:02:59 +0100
-Message-ID: <20230918150259.11165-4-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
-References: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
+ id 1qiFmE-0006ul-OZ; Mon, 18 Sep 2023 11:03:08 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rq7G123SMz6J7sv;
+ Mon, 18 Sep 2023 22:58:17 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 18 Sep
+ 2023 16:03:03 +0100
+Date: Mon, 18 Sep 2023 16:03:02 +0100
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: Gregory Price <gregory.price@memverge.com>, Yuquan Wang
+ <wangyuquan1236@phytium.com.cn>, qemu-arm <qemu-arm@nongnu.org>, qemu-devel
+ <qemu-devel@nongnu.org>
+Subject: Re: A confusion about CXL in arm virt machine
+Message-ID: <20230918160302.000059a2@Huawei.com>
+In-Reply-To: <CAFEAcA8beGka0AzEkX4SE1B+UwFpck2_0gWM9bV5WgFbWQYB1A@mail.gmail.com>
+References: <2023061615433049315231@phytium.com.cn>
+ <ZIylkIt38MXaTytx@memverge.com>
+ <20230619105809.000007b9@Huawei.com>
+ <CAFEAcA8beGka0AzEkX4SE1B+UwFpck2_0gWM9bV5WgFbWQYB1A@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -63,42 +64,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These crossed with the previous fix to get rid of examples
-using aarch64 for which support is not yet upstream.
+On Mon, 18 Sep 2023 13:41:20 +0100
+Peter Maydell <peter.maydell@linaro.org> wrote:
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- docs/system/devices/cxl.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> On Mon, 19 Jun 2023 at 10:58, Jonathan Cameron via <qemu-arm@nongnu.org> wrote:
+> >
+> > On Fri, 16 Jun 2023 14:10:24 -0400
+> > Gregory Price <gregory.price@memverge.com> wrote:  
+> > >
+> > > Last I tested cxl-2023-05-25 branch of Johnathan's fork is working on x86:
+> > >
+> > > https://gitlab.com/jic23/qemu/-/tree/cxl-2023-05-25
+> > >
+> > > I have not worked with the ARM machine, but Johnathan may be able to
+> > > comment on the state of ARM support for this code.  
+> >
+> > ARM support is not yet upstream.  There are some precursor problems we still
+> > have to solve because arm-virt should also support device tree bindings.
+> > See talk I gave at Linaro connect that includes some of them:
+> > https://resources.linaro.org/en/resource/hM986DSHfoTrZ98UjpvLg1
+> >
+> > For now, I'm carrying the arm-virt + ACPI support on the tree above.
+> > There are a lot of things we still need to provide support for in QEMU CXL
+> > world so for now figuring out the path forward for upstreaming ARM support
+> > isn't at the top of my list.  I'll get back to it at somepoint - probably
+> > next month.  
+> 
+> Is the Arm CXL support still out-of-tree? I ask because at the
+> moment docs/system/devices/cxl.rst has some aarch64 virt command
+> lines which don't work, and we've had a bug report about it:
+> https://gitlab.com/qemu-project/qemu/-/issues/1892
 
-diff --git a/docs/system/devices/cxl.rst b/docs/system/devices/cxl.rst
-index b742120657..6ab5f72473 100644
---- a/docs/system/devices/cxl.rst
-+++ b/docs/system/devices/cxl.rst
-@@ -313,7 +313,7 @@ A very simple setup with just one directly attached CXL Type 3 Persistent Memory
- 
- A very simple setup with just one directly attached CXL Type 3 Volatile Memory device::
- 
--  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max \
-+  qemu-system-x86_64 -M q35,cxl=on -m 4G,maxmem=8G,slots=8 -smp 4 \
-   ...
-   -object memory-backend-ram,id=vmem0,share=on,size=256M \
-   -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
-@@ -323,7 +323,7 @@ A very simple setup with just one directly attached CXL Type 3 Volatile Memory d
- 
- The same volatile setup may optionally include an LSA region::
- 
--  qemu-system-aarch64 -M virt,gic-version=3,cxl=on -m 4g,maxmem=8G,slots=8 -cpu max \
-+  qemu-system-x86_64 -M q35,cxl=on -m 4G,maxmem=8G,slots=8 -smp 4 \
-   ...
-   -object memory-backend-ram,id=vmem0,share=on,size=256M \
-   -object memory-backend-file,id=cxl-lsa0,share=on,mem-path=/tmp/lsa.raw,size=256M \
--- 
-2.39.2
+It's still blocked on device tree support...
+Step 1 to fixing that is working out that PXB device tree enumeration
+dance. I've not yet had time to look at whether we can do
+more of the enumeration part in the OS.
+
+> 
+> Could you submit a patch to correct the documentation, please
+> (either fixing the command line, or just deleting any claims
+> to aarch64 support if it's not upstream) ?
+
+Strange, I thought we'd long fixed the docs for this.
+Gah, I messed up a rebase of Gregory's series adding multiple
+region support and put some back in again.
+
+I'll roll this fix into a little series with some others I have queued up
+and post it in a few minutes.
+
+Jonathan
+
+
+
+
+
+> 
+> thanks
+> -- PMM
+> 
 
 
