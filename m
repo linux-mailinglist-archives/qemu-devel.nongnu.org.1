@@ -2,86 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D707A4037
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 06:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E167A4047
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 07:02:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi6F5-0005pM-Ti; Mon, 18 Sep 2023 00:52:15 -0400
+	id 1qi6O8-0001HY-Sd; Mon, 18 Sep 2023 01:01:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qi6F3-0005or-OI; Mon, 18 Sep 2023 00:52:13 -0400
-Received: from mail-pg1-x52a.google.com ([2607:f8b0:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qi6O4-0001H6-6L; Mon, 18 Sep 2023 01:01:32 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qi6F2-00042A-4w; Mon, 18 Sep 2023 00:52:13 -0400
-Received: by mail-pg1-x52a.google.com with SMTP id
- 41be03b00d2f7-5774b3de210so2950791a12.0; 
- Sun, 17 Sep 2023 21:52:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1qi6O2-0006GS-FX; Mon, 18 Sep 2023 01:01:31 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1c4586b12feso6453285ad.2; 
+ Sun, 17 Sep 2023 22:01:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695012730; x=1695617530; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2VBcZvFPFUuDp4m95guaYObwAsWYnqqHpQRw99mgtuU=;
- b=WUUC1noViXsywKn7VvSND2MNCR8Ye+rl/c5gm1oQuI+42DNvNk7HGCpjRXyoiu5SbH
- W0VIbivqIvAa7bxH51yct4v0UUPn2ll1QjTLZ905QfSiLsmspKAjRakzXIf4XR8J6SVB
- Wojq5y7fN/ySvt+OZHhsqkCNmecCJ2gOrChKohvYYbTONC69GCodCdxhjemnsa8l5IK2
- H0o3OTmFa5juYHf161iKEyWfoH3U08LTMWs6V2uRcPQUorIsPCF/l2hfwY4ElkLVUbSs
- Q5uTMyFVxnSgdpvXaJUm3Ek/dKTeQ8Z94mxGJdyqLB3ZDa39Id0tXgL3Hr70FXeayo+n
- g+lw==
+ d=gmail.com; s=20230601; t=1695013288; x=1695618088; darn=nongnu.org;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=rqk1cG0c/tqdpN3tg7ISH9Z/OZFPEi+iwb25jbJ+SMc=;
+ b=P4gYb9D6YrqbRjJvwfW25HNxDd+2K0ABdGzpLogLrFzj8EBWI89cjf6Cq6Z+oSOOMB
+ +SYRg67Jhl3s2OCeibFQT6vsq51sPB2tlYtZ+8WuYl6P85/2+HyAvlwHmjH/aZpKzlrz
+ N6vcL+PBoe0dKIPFEqnLAECcTqAqMaNBqjr0VgR9TsfgEZHKA3m5RGClZVNm+EhiXu4Z
+ 5gP/JarpSg+PuqXdPw6jhFFnPItmmeAXuzpsopk1GjYfh1B/V1ndbUhOjjbCWsDwI8TG
+ JnI2Mo8zI35D45nESkvQxNxdaz9cW7CTLkPOeBszit6dtuSJG0mEgU5jsAqidR8UGSog
+ 41FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695012730; x=1695617530;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2VBcZvFPFUuDp4m95guaYObwAsWYnqqHpQRw99mgtuU=;
- b=A5Pgmc1FyXPnqv2MFsdJeWiC0QO/We00a5vCLw6dC32G8qfDLpIHFYvmItpX4b0fJq
- jUv9iNJVTinH0mNRebu0tUEitYZl3Fdt21hH71jb/ebMNSRyTkAZfwthfPTGdAbE4UOk
- RQ8cS3AAjf2CZlT2hpENCfBh4z5EKHQeeMkSQ31HSvMAwRxtZvWfHiOXToDjx/1uW2CR
- gzs4JelurcrtUIi8GcjMd37wqEvVjEHcY8l9QxfM+Vus7e/WkhmYZPVT7ReNgfqdZhij
- 1prWuvss0+kwy2Lw7h43ukC/AcMY4dGWXjZYeokWLxiJvPPnPHHbdZjQaPXBxjtnrzK4
- p/Tg==
-X-Gm-Message-State: AOJu0Yw+0w8bJR1GCpcDtknDLZCAJiP3I99JZz+wEQME0Fw8EGUzGRs6
- TjKL6XJvXXtC2Vq4pgFV1uY=
-X-Google-Smtp-Source: AGHT+IEfr10UJFEthM78RAo1Jc+VEEghgxLAC3hwRoa8ZtopQ14f/3k/A7SJUeeZAziHUnmYMMPEbQ==
-X-Received: by 2002:a05:6a20:12ce:b0:137:2f8c:fab0 with SMTP id
- v14-20020a056a2012ce00b001372f8cfab0mr8892111pzg.49.1695012730079; 
- Sun, 17 Sep 2023 21:52:10 -0700 (PDT)
-Received: from [192.168.0.19] ([218.147.112.168])
- by smtp.gmail.com with ESMTPSA id
- a26-20020aa780da000000b0068ff267f094sm6369978pfn.158.2023.09.17.21.52.06
+ d=1e100.net; s=20230601; t=1695013288; x=1695618088;
+ h=in-reply-to:references:to:from:subject:cc:message-id:date
+ :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=rqk1cG0c/tqdpN3tg7ISH9Z/OZFPEi+iwb25jbJ+SMc=;
+ b=d+UWhWLi69/AJVOFU0CAiVL/WhGau9w8t9TiKydlhgejuSRzs7XD1PALxOLmJX6mUw
+ W4gLw+5Q/26u0nHVgWHKv9o5KQ8zmFO4nVu8yKlvl1FHuYxgdZ/TGqjlCTpb8Wcd/RtM
+ t+Y8Cx+zB9SrCJwMU1FgiH7x78biamIVPdWDVFfffyZbTq6Gh0pW1WzL8W48VCK+G04T
+ a26UhqrZZyTlljSoc3oeXmGdMUOfJTFOaBpJGGy29qTpDaQdUH/MHSRu0XYt/UfNdIXw
+ W2ofsZKOjmN4AGz817RIDDdKH86Ev1pZZFfIHUNvNxo8OIwhxmSuMs2E2ogjEbhJaqsD
+ Vdhw==
+X-Gm-Message-State: AOJu0YwrLrXdK+MVe99QAP+0nNbvM4ZTbvEhKSB4qi8tdSu3Lio7aFx2
+ C9PiEFxKrD3VApylSDQR0t1kNYZUntM3lg==
+X-Google-Smtp-Source: AGHT+IH/5K7NL+MuOQXjZjmXA68DjKkBSBQKcoJKISrT6UsyQSGJAgECub5uiPckTmdBTOZv/xmn8Q==
+X-Received: by 2002:a17:902:6806:b0:1c3:7628:fcb5 with SMTP id
+ h6-20020a170902680600b001c37628fcb5mr7108695plk.62.1695013288197; 
+ Sun, 17 Sep 2023 22:01:28 -0700 (PDT)
+Received: from localhost ([1.146.62.141]) by smtp.gmail.com with ESMTPSA id
+ e6-20020a170902d38600b001bdb167f6ebsm7460431pld.94.2023.09.17.22.01.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 17 Sep 2023 21:52:09 -0700 (PDT)
-Message-ID: <a8cef5cb-41f4-4652-a22d-bc2b2a17877e@gmail.com>
-Date: Mon, 18 Sep 2023 13:52:04 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 4/5] hw/ufs: Support for UFS logical unit
-Content-Language: ko
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi
- <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Jeuk Kim <jeuk20.kim@samsung.com>, Hanna Reitz <hreitz@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20230907181628.1594401-1-stefanha@redhat.com>
- <20230907181628.1594401-5-stefanha@redhat.com>
- <c4dc2292-4690-f16f-4b70-d6f759c16633@redhat.com>
- <160581dc-bdbc-03e8-64a5-1adb818a15b2@gmail.com>
- <86ebcc33-491c-8820-2ca0-51d46b0b7375@redhat.com>
- <3785ea83-35e4-4f6f-b8b2-72f6b8cd606b@gmail.com>
-In-Reply-To: <3785ea83-35e4-4f6f-b8b2-72f6b8cd606b@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52a;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pg1-x52a.google.com
+ Sun, 17 Sep 2023 22:01:27 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 18 Sep 2023 15:01:21 +1000
+Message-Id: <CVLS27TKE0YM.3DW0F4YAP5BFA@wheely>
+Cc: <qemu-ppc@nongnu.org>, <david@gibson.dropbear.id.au>, <groug@kaod.org>,
+ <aik@ozlabs.ru>, =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Subject: Re: [PATCH] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Daniel Henrique Barboza" <danielhb413@gmail.com>, <qemu-devel@nongnu.org>
+X-Mailer: aerc 0.15.2
+References: <20230915110507.194762-1-danielhb413@gmail.com>
+In-Reply-To: <20230915110507.194762-1-danielhb413@gmail.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,71 +90,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Daniel,
 
-On 2023-09-18 오후 1:41, Jeuk Kim wrote:
-> On 2023-09-15 16:59, Paolo Bonzini wrote:
->> On 9/15/23 00:19, Jeuk Kim wrote:
->>> First, ufs-lu has a feature called "unit descriptor". This feature 
->>> shows the status of the ufs-lu
->>>
->>> and only works with UFS-specific "query request" commands, not SCSI 
->>> commands.
->>
->> This looks like something that can be implemented in the UFS subsystem.
->>
->>> UFS also has something called a well-known lu. Unlike typical SCSI 
->>> devices, where each lu is independent,
->>> UFS can control other lu's through the well-known lu.
->>
->> This can also be implemented in UfsBus.
->>
->>> Finally, UFS-LU will have features that SCSI-HD does not have, such 
->>> as the zone block command.
->>
->> These should be implemented in scsi-hd as well.
->>
->>> In addition to this, I wanted some scsi commands to behave 
->>> differently from scsi-hd, for example,
->>> the Inquiry command should read "QEMU UFS" instead of "QEMU HARDDISK",
->>> and the mode_sense_page command should have a different result.
->>
->> Some of these don't have much justification, and others (such as the 
->> control page) could be done in scsi-hd as well.
->>
->> We should look into cleaning this up and making ufs-lu share a lot 
->> more code with scsi-hd; possibly even supporting -device scsi-hd with 
->> UFS devices.  I am not going to ask you for a revert, but if this is 
->> not done before 8.2 is out, I will ask you to disable it by default 
->> in hw/ufs/Kconfig.
->>
->> In the future, please Cc the SCSI maintainers for UFS patches.
->>
->> Paolo
->>
->
-> Thanks for the comment.
->
-> ufs-lu took most of its code from scsi-hd, so I completely agree that 
-> we should make scsi-hd code shareable to reduce code redundancy and 
-> make it better.
+Thank you for your stwardship of ppc, I might hope to do half as good a
+job with it as you have. And to Greg and David for all the work over the
+years.
 
-Sorry about it. This sentence is misleading.
+Thanks,
+Nick
 
-I meant to say "I completely agree that ufs-lu should be made to reuse 
-scsi-hd code to reduce code redundancy and improve code quality."
-
-
+On Fri Sep 15, 2023 at 9:05 PM AEST, Daniel Henrique Barboza wrote:
+> Update all relevant PowerPC entries as follows:
 >
-> I will fix it and get back to you soon.
+> - Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
+>   Nick has  been a solid contributor for the last couple of years and
+>   has the required knowledge and motivation to drive the boat.
 >
-> Thank you.
+> - Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
+>   to other areas of interest and will retire from qemu-ppc.  Thanks Mr
+>   Kurz for all the years of service.
 >
+> - David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
+>   KVM CPUs. Change done per his request.
 >
-> Sincerely,
+> - Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
+>   PPC KVM CPUs. It has been a long since I last touched those areas and
+>   it's not justified to be kept as maintainer in them.
 >
-> Jeuk
+> - Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
+>   don't have the required knowledge to justify it.
 >
-
-Thanks
+> - VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
+>   better reflects the current state of the subsystem.
+>
+> Acked-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
+> ---
+>  MAINTAINERS | 20 +++++++-------------
+>  1 file changed, 7 insertions(+), 13 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 00562f924f..c4aa1c1c9f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -298,11 +298,9 @@ F: hw/openrisc/
+>  F: tests/tcg/openrisc/
+> =20
+>  PowerPC TCG CPUs
+> +M: Nicholas Piggin <npiggin@gmail.com>
+>  M: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: C=C3=A9dric Le Goater <clg@kaod.org>
+> -R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+> -R: Nicholas Piggin <npiggin@gmail.com>
+>  L: qemu-ppc@nongnu.org
+>  S: Odd Fixes
+>  F: target/ppc/
+> @@ -438,10 +436,9 @@ F: target/mips/kvm*
+>  F: target/mips/sysemu/
+> =20
+>  PPC KVM CPUs
+> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: C=C3=A9dric Le Goater <clg@kaod.org>
+> -R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>  S: Odd Fixes
+>  F: target/ppc/kvm.c
+> =20
+> @@ -1430,10 +1427,10 @@ F: include/hw/rtc/m48t59.h
+>  F: tests/avocado/ppc_prep_40p.py
+> =20
+>  sPAPR (pseries)
+> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: C=C3=A9dric Le Goater <clg@kaod.org>
+>  R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>  R: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>  L: qemu-ppc@nongnu.org
+>  S: Odd Fixes
+> @@ -1452,8 +1449,8 @@ F: tests/avocado/ppc_pseries.py
+> =20
+>  PowerNV (Non-Virtualized)
+>  M: C=C3=A9dric Le Goater <clg@kaod.org>
+> +M: Nicholas Piggin <npiggin@gmail.com>
+>  R: Fr=C3=A9d=C3=A9ric Barrat <fbarrat@linux.ibm.com>
+> -R: Nicholas Piggin <npiggin@gmail.com>
+>  L: qemu-ppc@nongnu.org
+>  S: Odd Fixes
+>  F: docs/system/ppc/powernv.rst
+> @@ -1497,12 +1494,9 @@ F: include/hw/pci-host/mv64361.h
+> =20
+>  Virtual Open Firmware (VOF)
+>  M: Alexey Kardashevskiy <aik@ozlabs.ru>
+> -R: C=C3=A9dric Le Goater <clg@kaod.org>
+> -R: Daniel Henrique Barboza <danielhb413@gmail.com>
+>  R: David Gibson <david@gibson.dropbear.id.au>
+> -R: Greg Kurz <groug@kaod.org>
+>  L: qemu-ppc@nongnu.org
+> -S: Maintained
+> +S: Odd Fixes
+>  F: hw/ppc/spapr_vof*
+>  F: hw/ppc/vof*
+>  F: include/hw/ppc/vof*
 
 
