@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502BE7A4C53
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6727A4C93
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:36:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiGD7-0002wu-Hk; Mon, 18 Sep 2023 11:30:53 -0400
+	id 1qiGHl-0005Vc-Ld; Mon, 18 Sep 2023 11:35:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGD2-0002mo-UP
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:30:51 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGD0-000502-9V
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:30:48 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-502fdfeb1d9so3666399e87.2
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 08:30:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695051044; x=1695655844; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=eqBrWZvsFYrL6L9jg67rMHsZ5vhxS3RpB050HxrcuEc=;
- b=Ab7Wn0WAWDqgy+dAppCnpq8MU4Y4x/3HudrFgyFk/5C9ghpUAMG/7LaUCjU7m1HE/g
- ORp4yd6y6yT0Hf/i0e7I1uo178xFTVDIV16Re411DrHkMiG9IXBur01CA/NdMSCV2XiC
- k6+QLUjiSxFzichc9ijimrJ9WpuNkPMXVREVBMuJhso685phBU0tjDmIk45gFrUBHTmb
- W/7R4D7dZGwbT8oVdSiEYJAlZrJcL9h++nOVjNrDPEXHZ2Hvo01ibvG3INsvKomqJgZr
- 0Rke6l/FroifPUofXfE8qQhQ4nGF/EQX3QvraugxuAiIOmx9r5BwHtKFo65LYHfTsal9
- 61XA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qiGHj-0005VJ-Br
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:35:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qiGHh-0006OO-Uq
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:35:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695051336;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WSRDxsjxE4tcXi59aTyditc/juAJE8z5BFDuygqHd3A=;
+ b=Xyo5xhxT6eVE12LQ9a7MObTqkVTTRyUypfMRLWOTy/mEVxbqoXOd7VRWfVhTSgc54H81i9
+ nFPcYaGnqeBoXTXFmtOc4HjZINVmDnbghTDPyHinJcRtf9P5zW4bb2laSQmK15hvOl3pnb
+ 7/Nmf0NnUql09uYVodidKK+RconCpg4=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-CM2XeQ6GPXqNIiwAS-K2cg-1; Mon, 18 Sep 2023 11:35:34 -0400
+X-MC-Unique: CM2XeQ6GPXqNIiwAS-K2cg-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-414e9f38bc9so11855611cf.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 08:35:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695051044; x=1695655844;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eqBrWZvsFYrL6L9jg67rMHsZ5vhxS3RpB050HxrcuEc=;
- b=DNVfMTDup/69fIx2TQXFVy22RZFFRoARf4zfXNoRC+K5yeT8L/gsFGWROygU0bByNh
- kk96g0L1g15SQaG6Qy4As0DV7gfjoVjTeBjdrpyXQ9klKYAuAU03jX9cCRu4BihQwr60
- TON0HaKWN3diZfojpX2sD4GEwUBeQsm5O8Z1ilWbExT1DOa0yUHLf8PSoRhvMml03VPk
- UsCmx3J3rvcVQxhYI6LMlYU56EM6qv+KBDDyqGQdKuQ+kedmtFqZQXHWZOq0bxqWp+Le
- fQrVUBj9FStYGO/zAV6vOncL8pky2B9p7jtBk7Kzfyj5gBwqlPerAJxy8Ig8oauaTAt9
- OYfA==
-X-Gm-Message-State: AOJu0YxR0TFV+W+Gcm1oXkBA7e59Hu19JwBsLINDc2yJMAFhGo2MXnf6
- yH0oi9VKLkceIUZ8nRxQCrKeWQ==
-X-Google-Smtp-Source: AGHT+IF5KgMAo6Vl3vhkmc/AFCZgBlQH5j9JPkjDycc2shrMASrD+72ptZlM2hIjzrf+o+00Z7RcMg==
-X-Received: by 2002:a05:6512:32a9:b0:502:cc8d:f1fc with SMTP id
- q9-20020a05651232a900b00502cc8df1fcmr6599309lfe.37.1695051044307; 
- Mon, 18 Sep 2023 08:30:44 -0700 (PDT)
-Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
- [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- cm8-20020a0564020c8800b00530bc7cf377sm3679739edb.12.2023.09.18.08.30.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Sep 2023 08:30:41 -0700 (PDT)
-Message-ID: <e81b785e-495b-609f-12e8-f2bd973b6f24@linaro.org>
-Date: Mon, 18 Sep 2023 17:30:40 +0200
+ d=1e100.net; s=20230601; t=1695051334; x=1695656134;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WSRDxsjxE4tcXi59aTyditc/juAJE8z5BFDuygqHd3A=;
+ b=jRGr/vm9fedNgJBUuk6F0m6AMpKNjxaPvsyM1akQJCTlUSIc2Jbah2VBCcnnPpRWyb
+ q0/41WDd9zjIPGnwxduMJN84HSPr7QhdwaKvA7O0cEbbcLi+Id31iLb9E5UGZPOu9IJ0
+ Ej9cYYcr7G32R/SbBzf2K1IwnNdHM1OD4EPnyy7eW+kN2B8vzCkJw9pK1csFL8TnHJaR
+ bBZH3RfAH4VRUnKniPXEsR9MKk7O8w9pSF1vVGVNFJNkuuPeNi2Ij4z1hkR2pmIxsh3T
+ ioBH5WUwXVNMnM48WBg5k9fCZDUpTecOoaYls3hKHFp6RTEyW+qrL9lRGiK2017DgbF1
+ piLw==
+X-Gm-Message-State: AOJu0YwGvRHLoD3Xp0r/uLdpwvSyzYDKFfSRwdgheWX9DGrWOuSfkNki
+ UrxmPIiDMgi8uB1kEIjLADktxl/QBeJICsQ5WTpZe2xCYSpKu8b1QalNsVmxdsneXu+hsZTuH+O
+ jehXvtUNkSxleumQ=
+X-Received: by 2002:a05:622a:1a1f:b0:417:944a:bcd0 with SMTP id
+ f31-20020a05622a1a1f00b00417944abcd0mr9932872qtb.3.1695051334416; 
+ Mon, 18 Sep 2023 08:35:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5SYXaN8jAqkIgXRWZXrH41gy+W2EfUe73omsJ/9JccD2C4Z5KL3Qn1ROM47U6YFX3XHLDhw==
+X-Received: by 2002:a05:622a:1a1f:b0:417:944a:bcd0 with SMTP id
+ f31-20020a05622a1a1f00b00417944abcd0mr9932859qtb.3.1695051334184; 
+ Mon, 18 Sep 2023 08:35:34 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ m3-20020ac84443000000b00415184b1151sm3085616qtn.51.2023.09.18.08.35.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Sep 2023 08:35:33 -0700 (PDT)
+Date: Mon, 18 Sep 2023 11:35:31 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, qemu-devel@nongnu.org
+Subject: Re: QEMU migration-test CI intermittent failure
+Message-ID: <ZQhuQ4cJzSigZ2ll@x1n>
+References: <ZQMoUzRH1BZKs39g@x1n> <87bke4kasr.fsf@suse.de>
+ <ZQM3SV4eqSltoQSe@x1n> <87led8e9vv.fsf@suse.de>
+ <87r0n0nz6u.fsf@suse.de> <ZQOW4BS1ZcDTN7tK@x1n>
+ <87o7i4nqrc.fsf@suse.de> <ZQSGNDn2gg5if8ie@x1n>
+ <ZQSMekgtg5kIPl2H@x1n> <878r931s9u.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 8/8] spapr/drc: Clean up local variable shadowing in
- prop_get_fdt()
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230918145850.241074-1-clg@kaod.org>
- <20230918145850.241074-9-clg@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230918145850.241074-9-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <878r931s9u.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,22 +100,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/9/23 16:58, Cédric Le Goater wrote:
-> Rename 'name' variable to avoid this warning :
-> 
->    ../hw/ppc/spapr_drc.c: In function ‘prop_get_fdt’:
->    ../hw/ppc/spapr_drc.c:344:21: warning: declaration of ‘name’ shadows a parameter [-Wshadow=compatible-local]
->      344 |         const char *name = NULL;
->          |                     ^~~~
->    ../hw/ppc/spapr_drc.c:325:63: note: shadowed declaration is here
->      325 | static void prop_get_fdt(Object *obj, Visitor *v, const char *name,
->          |                                                   ~~~~~~~~~~~~^~~~
-> 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/ppc/spapr_drc.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+On Mon, Sep 18, 2023 at 11:15:57AM -0300, Fabiano Rosas wrote:
+> This fixes the issue. It looks ok to me. Do you want me to send a separate patch with it?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I've consulted Stefan on how to proceed.  I think it's wanted that we have
+these fixes in first even before Juan's back (note: Juan will be further
+away for quite some days, unfortunately..).
+
+Fabiano, would you propose a patchset containing your patches 1-8 and also
+the patch I attached that you tested (please make sure the fixup is
+squashed into the same patch), so that Stefan can merge directly before
+Juan's back?  Please mention in the cover letter that it fixes all known
+(two..) migration-test possible failures for CI so Stefan will be super
+clear on what that patchset is.
+
+Thank you!
+
+-- 
+Peter Xu
 
 
