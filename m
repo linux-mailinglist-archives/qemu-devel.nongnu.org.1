@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B0D7A4E0F
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3537A4E4E
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:10:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiGjd-0008Tm-RE; Mon, 18 Sep 2023 12:04:29 -0400
+	id 1qiGje-0008WL-Hu; Mon, 18 Sep 2023 12:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjK-00077B-D7
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:11 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjQ-0007JZ-D7
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:17 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjE-0004FT-Gb
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:07 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-52e5900cf77so5793802a12.2
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:04:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjK-0004Gd-60
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:15 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-52c4d3ff424so5805941a12.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:04:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695053043; x=1695657843; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695053048; x=1695657848; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DBZjR8eqTRO2FcjHJbn6UW72+cRDsZ12eh5J24aMJRM=;
- b=ULAfeQ4ycNHwmdNM0Zx+K1UE1/p4THoywtr1OeOMxNgw/12Wk6Wxgynq0XWCaRs5U8
- J0IXmB8tTW2i/kj/ZZBMKfE9SuivJ8bshkUrx/cfI9bWsbcPiVyPOEN6gSv1sxa5RneC
- AzM5XAmZegX5MYItdcpBu85T7l6NbYCZCoOys3l2Cmv3y+jVi1AYU+p+jAMKodl2Zo1A
- 9PmgjuJhFVBnJkBtrRTCP6m/IG457DwEFu4GC4kmpuBvV4o1T02fghZvTZU1cWNkHNjA
- BwsClz4xEwEZsbXiSz4gL/hivynqDLdK4h6gta6uKJL/1x7hF2QtaysH+rprPDCPXWOc
- vK9A==
+ bh=YpBrxdgyPGajszRQj4tnQ2gfsy466T4SLwv71ztnz3k=;
+ b=Gr++Q9e3lQr6z74NJXlK0bU56at5bUOJdk1RCVGeUUFGNElgIe7PLjNloLrsj5l6+2
+ +1qZS4pYX1KN0Kfopgms0o2yuHhP0SM2X7ilt0actOVDOqbwt8sEInO7iLbu2e7kDgBg
+ GLGdP3tflPnNCNs6GCjXdG2pcYx93ie8ofZPAnyTAd30lVgDf2Wmkf86rnrMKCc8Tl/h
+ Q8mjo0I+cpOdgARdt3nlgXU53OD2DbaH60YJMrsa6Ep8naHBcep0AKPIModWH4REYc4u
+ nz4JsT+XgUTI/zq5X08ObVBg1OyVLhPq26rPEdV6eg95pMbn9BpI86RtnmfHHViHC6lN
+ Ozlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695053043; x=1695657843;
+ d=1e100.net; s=20230601; t=1695053048; x=1695657848;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DBZjR8eqTRO2FcjHJbn6UW72+cRDsZ12eh5J24aMJRM=;
- b=aQlFm0ViQtuB4Kpy/1IiUlYOtjfhopvdM8+VQeG6xKdtcOttRHWs9w213O7Vtsf3dq
- rbWQUtvLffrTm2gIOY1aPmRroAIDUx6Fes/RInUptBM58ntU3L+RI6BzSeWKzZ1DSEzS
- NbUYxzZ8ffHM4BVDr8GtQbdwuML2MgiWSDp9mows6RWJ/NozrRxBb+6z2uaze4digZq6
- UkToCYYr0el1wxA3eKnmBirgpVzfCmfII0PKzeUP4v2TcSR678Uvd2P4TdhpFKAToVRT
- PS2EYAxtAj3EAUWuPy0lgojJ/TFpOLcSDH0elZSQytx6+rlXKz3agL644yjOY0ErgL/P
- VlVQ==
-X-Gm-Message-State: AOJu0YxXM6cWkPnynJwqmsUuskJE9bTaNX9FVWBtOrfGIaGFkx7Ibcoy
- MhfXm6y2WRrIqJ3LJc7ni1sZPJ3+WrsOoR+SNQgoeWyj
-X-Google-Smtp-Source: AGHT+IFSQh3aSy8WNfVsJ8gBPwr/UHTrTRJ5GVnUXxcFo9z61kuLhRihhFERCd0BfPS6IwLRcpPE5w==
-X-Received: by 2002:a17:906:209b:b0:9a9:fa50:1fa8 with SMTP id
- 27-20020a170906209b00b009a9fa501fa8mr8796931ejq.40.1695053042868; 
- Mon, 18 Sep 2023 09:04:02 -0700 (PDT)
+ bh=YpBrxdgyPGajszRQj4tnQ2gfsy466T4SLwv71ztnz3k=;
+ b=TYNRjTGMtRJ0dLOpX73i5s0lFQfb5cY5ThhbisvJOvfvZYqiWcc3juRMwTyCYqUms6
+ fYPAeUhKgY8zWAY4kViMTdiconDiad5zIWkwVwkPB46SAT3M65f7Fr3q3kggly83gzx3
+ bUP74tMmD7CkhsAycGPBI3HWiHn+i8AuEWVoB6+eSlUnT+shYkHOuP9W3cb6b/F+YhW/
+ zvhk91T20vybEgU1CEsXVKkBXFEpotPm6sZwebR4kcz01wMxYCD/1U023ITPd/RnAzgI
+ vcJ+wJ3zmCdLMh8uQL7FL44YyUMC4Ja2v8DJB7ZbDITGbCVgeZy2BbmuY2wMD849a/Wv
+ r/Rg==
+X-Gm-Message-State: AOJu0YywHknyJ2hDiClCT0UXTXMvVlLOrAO83f9LPn23O4zRENNWHljH
+ v/qcP14971wov2tBouDcCUm/FqymZ3N74uTmpSZHB+Gk
+X-Google-Smtp-Source: AGHT+IG6EnV1NPtLa02ojf1AOOFHw9u/ZZVKTH8rmKjYxc3URy3huazjFDCLq8lcPx0zxuOm3uW8nA==
+X-Received: by 2002:a17:907:2cd8:b0:9a5:c9a4:ba1a with SMTP id
+ hg24-20020a1709072cd800b009a5c9a4ba1amr8408544ejc.59.1695053048266; 
+ Mon, 18 Sep 2023 09:04:08 -0700 (PDT)
 Received: from localhost.localdomain
  (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a170906240f00b0099bd1ce18fesm6723198eja.10.2023.09.18.09.04.01
+ n4-20020a170906088400b009928b4e3b9fsm6613541eje.114.2023.09.18.09.04.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Sep 2023 09:04:02 -0700 (PDT)
+ Mon, 18 Sep 2023 09:04:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -96,18 +96,18 @@ Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>,
  Michael Rolnik <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 12/22] target/mips: Create clock *after* accelerator vCPU is
+Subject: [PATCH 13/22] target/xtensa: Create IRQs *after* accelerator vCPU is
  realized
-Date: Mon, 18 Sep 2023 18:02:45 +0200
-Message-ID: <20230918160257.30127-13-philmd@linaro.org>
+Date: Mon, 18 Sep 2023 18:02:46 +0200
+Message-ID: <20230918160257.30127-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230918160257.30127-1-philmd@linaro.org>
 References: <20230918160257.30127-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -137,55 +137,35 @@ generic API simplification (in few commits).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/cpu.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ target/xtensa/cpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 0aea69aaf9..7c81e6c356 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -464,20 +464,6 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
-     MIPSCPUClass *mcc = MIPS_CPU_GET_CLASS(dev);
+diff --git a/target/xtensa/cpu.c b/target/xtensa/cpu.c
+index 300d19d45c..bbfd2d42a8 100644
+--- a/target/xtensa/cpu.c
++++ b/target/xtensa/cpu.c
+@@ -162,10 +162,6 @@ static void xtensa_cpu_realizefn(DeviceState *dev, Error **errp)
+     XtensaCPUClass *xcc = XTENSA_CPU_GET_CLASS(dev);
      Error *local_err = NULL;
  
--    if (!clock_get(cpu->clock)) {
 -#ifndef CONFIG_USER_ONLY
--        if (!qtest_enabled()) {
--            g_autofree char *cpu_freq_str = freq_to_str(CPU_FREQ_HZ_DEFAULT);
--
--            warn_report("CPU input clock is not connected to any output clock, "
--                        "using default frequency of %s.", cpu_freq_str);
--        }
+-    xtensa_irq_init(&XTENSA_CPU(dev)->env);
 -#endif
--        /* Initialize the frequency in case the clock remains unconnected. */
--        clock_set_hz(cpu->clock, CPU_FREQ_HZ_DEFAULT);
--    }
--    mips_cp0_period_set(cpu);
 -
      cpu_exec_realizefn(cs, &local_err);
      if (local_err != NULL) {
          error_propagate(errp, local_err);
-@@ -492,6 +478,20 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
-     fpu_init(env, env->cpu_model);
-     mvp_init(env);
+@@ -174,6 +170,10 @@ static void xtensa_cpu_realizefn(DeviceState *dev, Error **errp)
  
-+    if (!clock_get(cpu->clock)) {
+     cs->gdb_num_regs = xcc->config->gdb_regmap.num_regs;
+ 
 +#ifndef CONFIG_USER_ONLY
-+        if (!qtest_enabled()) {
-+            g_autofree char *cpu_freq_str = freq_to_str(CPU_FREQ_HZ_DEFAULT);
-+
-+            warn_report("CPU input clock is not connected to any output clock, "
-+                        "using default frequency of %s.", cpu_freq_str);
-+        }
++    xtensa_irq_init(&XTENSA_CPU(dev)->env);
 +#endif
-+        /* Initialize the frequency in case the clock remains unconnected. */
-+        clock_set_hz(cpu->clock, CPU_FREQ_HZ_DEFAULT);
-+    }
-+    mips_cp0_period_set(cpu);
 +
-     mcc->parent_realize(dev, errp);
-     cpu_reset(cs);
+     xcc->parent_realize(dev, errp);
  }
+ 
 -- 
 2.41.0
 
