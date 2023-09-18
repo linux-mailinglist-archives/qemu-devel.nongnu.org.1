@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90727A4E2B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B0D7A4E0F
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiGjd-0008Op-5r; Mon, 18 Sep 2023 12:04:29 -0400
+	id 1qiGjd-0008Tm-RE; Mon, 18 Sep 2023 12:04:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjB-0006vN-Rb
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:03 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjK-00077B-D7
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:11 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGj9-0004Ad-5y
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:01 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-532784c8770so328939a12.1
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:03:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGjE-0004FT-Gb
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:04:07 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-52e5900cf77so5793802a12.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695053037; x=1695657837; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695053043; x=1695657843; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I+18fO8c7Dk0qCgNhOL8JkONKbHnDNHi1cgc68a1fr4=;
- b=UsYJ+7hpAjzNQaE52yIQuo+wt63KLjjf1ElQYbCF/BauBdBzwinFwcyE6ORUfS/77s
- noywBnU1i+wuY1jhLfMhBtsXH9lt21+zZzqrKzxIy1Rp/OHh0hCKjUGGffwYw4IM/Yy2
- A9HHrkTMFhBEzpaHt1Q2M8HezFiLdA9H/nJhOwZcxwo2c41CuVLuUFsEYo9B8YEtTRO+
- bUDlR/sUZ643uuULSGDF+jXh3hbGFddVcherUTzKppdOrnMEdMP5qbQ3DPk1Rnte536q
- uQ1QuheJ0BJ3Ac0CNcesRs/8kKyoKJlb0hGP7ZK4cLqMA7I/dXMHX0AleQj/tHtVkVX2
- b81g==
+ bh=DBZjR8eqTRO2FcjHJbn6UW72+cRDsZ12eh5J24aMJRM=;
+ b=ULAfeQ4ycNHwmdNM0Zx+K1UE1/p4THoywtr1OeOMxNgw/12Wk6Wxgynq0XWCaRs5U8
+ J0IXmB8tTW2i/kj/ZZBMKfE9SuivJ8bshkUrx/cfI9bWsbcPiVyPOEN6gSv1sxa5RneC
+ AzM5XAmZegX5MYItdcpBu85T7l6NbYCZCoOys3l2Cmv3y+jVi1AYU+p+jAMKodl2Zo1A
+ 9PmgjuJhFVBnJkBtrRTCP6m/IG457DwEFu4GC4kmpuBvV4o1T02fghZvTZU1cWNkHNjA
+ BwsClz4xEwEZsbXiSz4gL/hivynqDLdK4h6gta6uKJL/1x7hF2QtaysH+rprPDCPXWOc
+ vK9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695053037; x=1695657837;
+ d=1e100.net; s=20230601; t=1695053043; x=1695657843;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I+18fO8c7Dk0qCgNhOL8JkONKbHnDNHi1cgc68a1fr4=;
- b=SwAhM3LMtF0x7L2cXLXAGW0+u4j7uRiRkbzJX/hBvobuXc4fbhObp75IclQQYMHePj
- p+27BBN92ZTHf0dh1xsArimvw9vhaCnoeVgUjr5G/hN4dSHRNNdaBej/qUZj8LNUX6n3
- Dt0sDE3mEBnxHnOut0kwO/jDSUeegDqyyAsH3Ujkv7M7aNGdRHLqOthVqHQHPIdMWfN0
- kiOS99f/ArTSWiBcHjEuxbBnbGr55IJq68aa/FS1w5yr0i+Lcpf/OMkHlFFZK9kYA+Sn
- 2789UtTnpQXlMpGxlMntz4JC9RAbfZyudvHvXvG9CUsZg123rVL2i+p9QW6OoROhD00a
- F/9A==
-X-Gm-Message-State: AOJu0YwM4A37YXcV21/T8EqtIG86AZIRwZ4Dy0kt6NCp8ew9MnH7R6wB
- Ar0i6KEZ382F3mn+yaIQo5ch0p2GVpLdHsvjLx6eYa3X
-X-Google-Smtp-Source: AGHT+IGkFn7qy0jz8oacmoGjjfPL41FojFiYCtkDQb0dCjnyLoNnL5YigEsFHJXz/34UHFIkqAHEBQ==
-X-Received: by 2002:a17:906:74db:b0:9ad:e3f0:f335 with SMTP id
- z27-20020a17090674db00b009ade3f0f335mr6095624ejl.70.1695053037410; 
- Mon, 18 Sep 2023 09:03:57 -0700 (PDT)
+ bh=DBZjR8eqTRO2FcjHJbn6UW72+cRDsZ12eh5J24aMJRM=;
+ b=aQlFm0ViQtuB4Kpy/1IiUlYOtjfhopvdM8+VQeG6xKdtcOttRHWs9w213O7Vtsf3dq
+ rbWQUtvLffrTm2gIOY1aPmRroAIDUx6Fes/RInUptBM58ntU3L+RI6BzSeWKzZ1DSEzS
+ NbUYxzZ8ffHM4BVDr8GtQbdwuML2MgiWSDp9mows6RWJ/NozrRxBb+6z2uaze4digZq6
+ UkToCYYr0el1wxA3eKnmBirgpVzfCmfII0PKzeUP4v2TcSR678Uvd2P4TdhpFKAToVRT
+ PS2EYAxtAj3EAUWuPy0lgojJ/TFpOLcSDH0elZSQytx6+rlXKz3agL644yjOY0ErgL/P
+ VlVQ==
+X-Gm-Message-State: AOJu0YxXM6cWkPnynJwqmsUuskJE9bTaNX9FVWBtOrfGIaGFkx7Ibcoy
+ MhfXm6y2WRrIqJ3LJc7ni1sZPJ3+WrsOoR+SNQgoeWyj
+X-Google-Smtp-Source: AGHT+IFSQh3aSy8WNfVsJ8gBPwr/UHTrTRJ5GVnUXxcFo9z61kuLhRihhFERCd0BfPS6IwLRcpPE5w==
+X-Received: by 2002:a17:906:209b:b0:9a9:fa50:1fa8 with SMTP id
+ 27-20020a170906209b00b009a9fa501fa8mr8796931ejq.40.1695053042868; 
+ Mon, 18 Sep 2023 09:04:02 -0700 (PDT)
 Received: from localhost.localdomain
  (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
  by smtp.gmail.com with ESMTPSA id
- qt11-20020a170906eceb00b009a19fa8d2e9sm6481188ejb.206.2023.09.18.09.03.55
+ z15-20020a170906240f00b0099bd1ce18fesm6723198eja.10.2023.09.18.09.04.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Sep 2023 09:03:56 -0700 (PDT)
+ Mon, 18 Sep 2023 09:04:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -96,18 +96,18 @@ Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>,
  Michael Rolnik <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 11/22] target/nios2: Create IRQs *after* accelerator vCPU is
+Subject: [PATCH 12/22] target/mips: Create clock *after* accelerator vCPU is
  realized
-Date: Mon, 18 Sep 2023 18:02:44 +0200
-Message-ID: <20230918160257.30127-12-philmd@linaro.org>
+Date: Mon, 18 Sep 2023 18:02:45 +0200
+Message-ID: <20230918160257.30127-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230918160257.30127-1-philmd@linaro.org>
 References: <20230918160257.30127-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -137,41 +137,53 @@ generic API simplification (in few commits).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/nios2/cpu.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ target/mips/cpu.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
-index 7a92fc5f2c..f500ca7ba2 100644
---- a/target/nios2/cpu.c
-+++ b/target/nios2/cpu.c
-@@ -201,14 +201,6 @@ static void nios2_cpu_realizefn(DeviceState *dev, Error **errp)
-     Nios2CPUClass *ncc = NIOS2_CPU_GET_CLASS(dev);
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 0aea69aaf9..7c81e6c356 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -464,20 +464,6 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
+     MIPSCPUClass *mcc = MIPS_CPU_GET_CLASS(dev);
      Error *local_err = NULL;
  
+-    if (!clock_get(cpu->clock)) {
 -#ifndef CONFIG_USER_ONLY
--    if (cpu->eic_present) {
--        qdev_init_gpio_in_named(DEVICE(cpu), eic_set_irq, "EIC", 1);
--    } else {
--        qdev_init_gpio_in_named(DEVICE(cpu), iic_set_irq, "IRQ", 32);
--    }
+-        if (!qtest_enabled()) {
+-            g_autofree char *cpu_freq_str = freq_to_str(CPU_FREQ_HZ_DEFAULT);
+-
+-            warn_report("CPU input clock is not connected to any output clock, "
+-                        "using default frequency of %s.", cpu_freq_str);
+-        }
 -#endif
+-        /* Initialize the frequency in case the clock remains unconnected. */
+-        clock_set_hz(cpu->clock, CPU_FREQ_HZ_DEFAULT);
+-    }
+-    mips_cp0_period_set(cpu);
 -
      cpu_exec_realizefn(cs, &local_err);
      if (local_err != NULL) {
          error_propagate(errp, local_err);
-@@ -220,6 +212,14 @@ static void nios2_cpu_realizefn(DeviceState *dev, Error **errp)
-     /* We have reserved storage for cpuid; might as well use it. */
-     cpu->env.ctrl[CR_CPUID] = cs->cpu_index;
+@@ -492,6 +478,20 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
+     fpu_init(env, env->cpu_model);
+     mvp_init(env);
  
++    if (!clock_get(cpu->clock)) {
 +#ifndef CONFIG_USER_ONLY
-+    if (cpu->eic_present) {
-+        qdev_init_gpio_in_named(DEVICE(cpu), eic_set_irq, "EIC", 1);
-+    } else {
-+        qdev_init_gpio_in_named(DEVICE(cpu), iic_set_irq, "IRQ", 32);
-+    }
-+#endif
++        if (!qtest_enabled()) {
++            g_autofree char *cpu_freq_str = freq_to_str(CPU_FREQ_HZ_DEFAULT);
 +
-     ncc->parent_realize(dev, errp);
++            warn_report("CPU input clock is not connected to any output clock, "
++                        "using default frequency of %s.", cpu_freq_str);
++        }
++#endif
++        /* Initialize the frequency in case the clock remains unconnected. */
++        clock_set_hz(cpu->clock, CPU_FREQ_HZ_DEFAULT);
++    }
++    mips_cp0_period_set(cpu);
++
+     mcc->parent_realize(dev, errp);
      cpu_reset(cs);
  }
 -- 
