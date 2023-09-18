@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243607A4DEE
+	by mail.lfdr.de (Postfix) with ESMTPS id 419BF7A4DEF
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:04:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiGiI-00060W-3v; Mon, 18 Sep 2023 12:03:06 -0400
+	id 1qiGie-0006D0-TN; Mon, 18 Sep 2023 12:03:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGiG-0005yx-2H
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:04 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGiU-0006Bk-Kl
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:18 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGiD-0003ta-2o
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:03 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-986d8332f50so638199666b.0
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:03:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGiS-0003xJ-SQ
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:18 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2bb9a063f26so74532601fa.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695052979; x=1695657779; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=R37K2a/Smepsc2iyIaDJqnazCMcEJOOAaYAXmsK0XT0=;
- b=INxTo8EwLN4aLX9q3m3G+o7FAqm3qrBb+iJBMhwSHCc8OPPiM5RYZH+mTSxjH/fnTk
- Y2itOxsL33IxL2ye/rLFJISCZ7o3Rqq2qqpid9l7Jtrg92/U5SVMQccTUEDzWG4HA0BD
- ywK6Mp4LD+urqc5nAlJYSs5X46iC6my+91jN81mYjxk1hoaerQXH+j/CJrDW3ygkH+oI
- ht/hkx5B4iSQK5DMnO05hmaYV+QgZ9uJpEHOA3rR4aabzWqKp3cjb31P+AAweGQp4RxK
- cpZs1HXsSc6Itm1LbLWjK0s2+Te3MtTdi2TLnssBg8hx1fqGdS+aIMgPfv/hKAgP7l+W
- 0Prw==
+ d=linaro.org; s=google; t=1695052995; x=1695657795; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=MazgQXWzZA8uxNgPyG3XxGvrbp91MALAwpKlSsIULzk=;
+ b=AWcgkPnxQFXDv9XqrQamwTrogPRQfzeKQmSrrrydfp/8D4XnOfw+GuBW2gjofq9dcW
+ S2P4bTXltsjEIvjSWhAMMLj2eECFmAKuaOa3di8HIOowFOuXFC2fWwQko6v7fSpui6Tb
+ AZw7A19XwmQrvT8aEbBEpG3F3i0Xol2F8gGXZjPcENvvs6fJT2iQsoTzrieg33DUPqiM
+ 1wBMXn9QBN+afVRpMCJpxFiwkFHUJPV8n2AhWGyFm/FYLTw03wRTA3qf5YLqpnZxZkhZ
+ y9gOO4DlwOgOAPgsIrMvzy/FQh4MdMwvk/jkitj2ZM/cqf1W7RNyfr/brF/NBYMRHZDz
+ cENg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695052979; x=1695657779;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=R37K2a/Smepsc2iyIaDJqnazCMcEJOOAaYAXmsK0XT0=;
- b=wgIMwmLuSm05QCHNj3fQw8G8LK5hL5AbJur9QXIIPX6V+bF6IyVrw9162WliYV4dSR
- 0RWJ0Ks6m46e9oE2XV5JfuYZcYYmMatJjgv5kn4IKDsz85nV8q0FADJNNw7j258WIy8u
- HUwpg0J4oDsttFjFP5Oni2MxXOlAeRfyT8CysfZzOZsq0GJplymcj3D/NGlQd1e2+/YX
- bfPFEnLY0FlrC3jOq+x/lEp8CE8p3jUSofzILgVlLEn/OPZbG4u9dJuXSS1Nmj4+bex7
- jrJnQ6JOy/g/r/MGTDPtO2Tj9Km+ux7LnskXUYW2DOOqKJ9tVJmPv7nz+gEhHCuD53aB
- iqRg==
-X-Gm-Message-State: AOJu0YwmQm3aX8Tqcqa17NqOxvDJYeAh29pgXF5ryKoB/LOzShL53bTc
- So0cgLtLtWc+GvYBbOOh9+aMTDmmLQkcDP+eMOPGtRCX
-X-Google-Smtp-Source: AGHT+IHGtyYBQwLAMwFhSgR4DVjVUaGUpdsvPj2BatAS0H6me1yGIyefW0SsMEvxluQ7CDP796y45Q==
-X-Received: by 2002:a17:907:a0c6:b0:9a1:cb2c:b55c with SMTP id
- hw6-20020a170907a0c600b009a1cb2cb55cmr6526293ejc.35.1695052978973; 
- Mon, 18 Sep 2023 09:02:58 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695052995; x=1695657795;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MazgQXWzZA8uxNgPyG3XxGvrbp91MALAwpKlSsIULzk=;
+ b=b2aZnNC+WmRlXT8d0AeGvUR4XjeqrBlUwq2CIOUCSefluwzINSGaNH+Obf4ZoF7IMj
+ mcd8qFdKpsw3J5cgUnRXq++t3vYHFUOMEM8rwl2lq+RLHoNfQmIZHsnNiQQpDezmI0fL
+ 2hY6l6kdGXduBopNtYlGvoLT37zcKT7AyMDzIV4feCuULO8fNQ0fs9WBjUeOii+h5gQU
+ uD6025NQ1nNXCir2JZllFaZvkT3VOqZ7pfcqYk/jhp+vMlT5jn0pmEIXmj7Wln+8PC+M
+ sQEDKMpZtM16bNjS6i1iRBqYssscboyCx1lkWbGgiBtROTp2ppEGTuUYr82dKYLrch5i
+ 6ViA==
+X-Gm-Message-State: AOJu0YwkxSkqndIoo/Yh1GVe3i1fxZO71lF/jo6qOcRFzrPXjk9JLGfE
+ XZ42xWeEnnksZHvpjh2gspwfTdfeDWjsc48G4aWxJ1q7
+X-Google-Smtp-Source: AGHT+IG8278V/bx3bmgpaUhHZZUcMrkwCw5Xh6lMORAxCV90jlud9/Vt30zNUM+Rqe+3rVD6prsUKA==
+X-Received: by 2002:a2e:8ed0:0:b0:2c0:d06:9e65 with SMTP id
+ e16-20020a2e8ed0000000b002c00d069e65mr2857839ljl.8.1695052995061; 
+ Mon, 18 Sep 2023 09:03:15 -0700 (PDT)
 Received: from localhost.localdomain
  (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
  by smtp.gmail.com with ESMTPSA id
- rl20-20020a1709076c1400b009adc81c0c7esm5428731ejc.107.2023.09.18.09.02.57
+ r11-20020a170906350b00b009934b1eb577sm6608438eja.77.2023.09.18.09.03.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Sep 2023 09:02:58 -0700 (PDT)
+ Mon, 18 Sep 2023 09:03:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -95,16 +96,17 @@ Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>,
  Michael Rolnik <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 00/22] exec/cpu: Call cpu_exec_realizefn() once in
- cpu_common_realize()
-Date: Mon, 18 Sep 2023 18:02:33 +0200
-Message-ID: <20230918160257.30127-1-philmd@linaro.org>
+Subject: [PATCH 03/22] target/i386/kvm: Correct comment in kvm_cpu_realize()
+Date: Mon, 18 Sep 2023 18:02:36 +0200
+Message-ID: <20230918160257.30127-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230918160257.30127-1-philmd@linaro.org>
+References: <20230918160257.30127-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -127,117 +129,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/i386/kvm/kvm-cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-TL;DR: This series factor duplicated common code in CPUs
-DeviceRealize() handlers out, moving as a single call in
-cpu_common_realize().
-
-In an effort to have most of:
-- CPU core code independant of accelerators
-- CPU core code target agnostic
-- CPU target code independant of accelerators
-- and cpu_reset() called automatically without having to
-  rely on global QEMUResetHandler,
-I'm working on the core CPU code, unfortunately touching
-files in all targets.
-
-I suppose them term "exec" used in various areas of QEMU
-started from what we call today "accel[erators]" [*]. So
-cpu_exec_realizefn() can be read as cpu_accel_realize(),
-or "generic code where an accelerator realizes its internal
-fields on an abstract (target independent) CPU".
-
-This series moves a common pattern used in all target's
-cpu_realize() handlers to the common cpu_exec_realizefn().
-
-Some optional code is used to check CPU requested features
-are compatible with the accelerator possibilities. We
-extracted this code as CPUClass::verify_accel_features()
-handler. Better name welcomed :)
-
-Some targets were calling cpu_reset() *before*
-cpu_common_realizefn(), we moved it *after* (since RESET
-shouldn't happen before REALIZE). I still have to audit
-each target to confirm there are no side effects.
-Besides this cpu_reset() change, the rest should be
-relatively trivial to review, still I'd like feedback
-from the respective target maintainers for the "move HW
-creation after vCPU one" patches.
-
-Regards,
-
-Phil.
-
-Follow-up: Make cpu_reset() accel-agnostic and move it
-           to cpu_common_realize() (not trivial due to
-           KVM run_on_cpu() calls).
-
-[*] If Paolo/Richard confirm, I might post series renaming
-    various APIs s/exec/accel/, because various headers
-    meaning aren't clear to me.
-
-Philippe Mathieu-Daudé (21):
-  target/i386: Only realize existing APIC device
-  hw/intc/apic: Pass CPU using QOM link property
-  target/i386/kvm: Correct comment in kvm_cpu_realize()
-  exec/cpu: Never call cpu_reset() before cpu_realize()
-  exec/cpu: Call qemu_init_vcpu() once in cpu_common_realize()
-  exec/cpu: Call cpu_remove_sync() once in cpu_common_unrealize()
-  exec/cpu: RFC Destroy vCPU address spaces in cpu_common_unrealize()
-  target/arm: Create timers *after* accelerator vCPU is realized
-  target/hppa: Create timer *after* accelerator vCPU is realized
-  target/nios2: Create IRQs *after* accelerator vCPU is realized
-  target/mips: Create clock *after* accelerator vCPU is realized
-  target/xtensa: Create IRQs *after* accelerator vCPU is realized
-  target/sparc: Init CPU environment *after* accelerator vCPU is
-    realized
-  exec/cpu: Introduce CPUClass::verify_accel_features()
-  target/arm: Extract verify_accel_features() from cpu_realize()
-  target/i386: Extract verify_accel_features() from cpu_realize()
-  target/s390x: Call s390_cpu_realize_sysemu from s390_realize_cpu_model
-  target/s390x: Have s390_realize_cpu_model() return a boolean
-  target/s390x: Use s390_realize_cpu_model() as verify_accel_features()
-  exec/cpu: Have cpu_exec_realize() return a boolean
-  exec/cpu: Call cpu_exec_realizefn() once in cpu_common_realize()
-
-xianglai li (1):
-  exec/cpu: Introduce the CPU address space destruction function
-
- include/exec/cpu-common.h     |  8 ++++
- include/hw/core/cpu.h         |  7 +++-
- target/s390x/s390x-internal.h |  4 +-
- cpu.c                         | 11 ++++-
- hw/core/cpu-common.c          | 15 +++++++
- hw/intc/apic_common.c         |  2 +
- softmmu/physmem.c             | 24 +++++++++++
- target/alpha/cpu.c            | 10 -----
- target/arm/cpu.c              | 53 ++++++++++++------------
- target/avr/cpu.c              | 10 +----
- target/cris/cpu.c             | 11 +----
- target/hexagon/cpu.c          | 11 +----
- target/hppa/cpu.c             | 20 ++-------
- target/i386/cpu-sysemu.c      | 20 ++++-----
- target/i386/cpu.c             | 77 ++++++++++++++++++-----------------
- target/i386/kvm/kvm-cpu.c     |  3 +-
- target/loongarch/cpu.c        | 11 +----
- target/m68k/cpu.c             | 11 +----
- target/microblaze/cpu.c       |  9 ----
- target/mips/cpu.c             | 27 ++++--------
- target/nios2/cpu.c            | 20 +++------
- target/openrisc/cpu.c         | 11 +----
- target/ppc/cpu_init.c         |  8 ----
- target/riscv/cpu.c            | 10 +----
- target/rx/cpu.c               | 11 +----
- target/s390x/cpu-sysemu.c     |  3 +-
- target/s390x/cpu.c            | 21 +---------
- target/s390x/cpu_models.c     | 16 +++++---
- target/sh4/cpu.c              | 11 +----
- target/sparc/cpu.c            | 10 -----
- target/tricore/cpu.c          | 10 +----
- target/xtensa/cpu.c           | 13 +-----
- 32 files changed, 189 insertions(+), 299 deletions(-)
-
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 7237378a7d..1fe62ce176 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -37,6 +37,7 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+      *  -> cpu_exec_realizefn():
+      *            -> accel_cpu_realizefn()
+      *               kvm_cpu_realizefn() -> host_cpu_realizefn()
++     *  -> cpu_common_realizefn()
+      *  -> check/update ucode_rev, phys_bits, mwait
+      */
+     if (cpu->max_features) {
 -- 
 2.41.0
 
