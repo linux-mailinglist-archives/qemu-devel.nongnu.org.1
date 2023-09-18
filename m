@@ -2,64 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46A57A4AEB
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 15:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B897A4AF3
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 15:59:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiEhU-0006To-6d; Mon, 18 Sep 2023 09:54:09 -0400
+	id 1qiEhV-0006rQ-W6; Mon, 18 Sep 2023 09:54:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qiEgz-0006Nh-Kz
+ id 1qiEgz-0006Ni-MY
  for qemu-devel@nongnu.org; Mon, 18 Sep 2023 09:53:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qiEgv-0000ht-St
+ id 1qiEgv-0000ky-Se
  for qemu-devel@nongnu.org; Mon, 18 Sep 2023 09:53:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695045204;
+ s=mimecast20190719; t=1695045208;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D6SI9rwd/TNwOZbdFKCphFrmp83f8MLrzIddIHTVG+Q=;
- b=dYh0IuE3AD1idOiJOBTiO5bB0TvKWvNlg7UZouOYvF48w3fAO4eJln8+2KC9wngMeOn1by
- SM4rdxDjE73buPxHy8z0WqIXEc2++TlkQSMB8i9ezsJZQmBzKgB5nI/0JiGlarHdiFA+0/
- watTUEKOFb5pylcldyqOXl+cBfCi8NE=
+ bh=DAg+aBnQFOvR9IHc1iUw9PI5FSPew9yy7VkMrRS4uis=;
+ b=fD4dFMwk+5fSHihZVVqNDC/Au8bpygTSLqLoRcONan7ZS/BvPhQ/RWqE2SlD/6YihJveRj
+ ZOEej3dnLrnRaAAb/PGZhqNs9LRZiDlYXrL+ewIy/AwGTRiVocYv+RA1WBaGbUMhSjuDrq
+ wWTR74VgAqtoxobKqwxRdpK0iDKoQWU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-656-s_gdSr4RMkWcxUKMs98kqg-1; Mon, 18 Sep 2023 09:53:21 -0400
-X-MC-Unique: s_gdSr4RMkWcxUKMs98kqg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-397-9Oaj4wQvNKOPClRgRH_gyw-1; Mon, 18 Sep 2023 09:53:25 -0400
+X-MC-Unique: 9Oaj4wQvNKOPClRgRH_gyw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C52E945922;
- Mon, 18 Sep 2023 13:53:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D9A6811E7D;
+ Mon, 18 Sep 2023 13:53:25 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.30])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C9F3540C2064;
- Mon, 18 Sep 2023 13:53:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6A2481005B8E;
+ Mon, 18 Sep 2023 13:53:24 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>,
- qemu-ppc@nongnu.org (open list:sam460ex)
-Subject: [PATCH v2 16/18] hw/sm501: allow compiling without PIXMAN
-Date: Mon, 18 Sep 2023 17:52:03 +0400
-Message-ID: <20230918135206.2739222-17-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 17/18] hw/display: make ATI_VGA depend on PIXMAN
+Date: Mon, 18 Sep 2023 17:52:04 +0400
+Message-ID: <20230918135206.2739222-18-marcandre.lureau@redhat.com>
 In-Reply-To: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
 References: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -67,7 +66,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,97 +85,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Drop the "x-pixman" property and use fallback path in such case.
-
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/display/sm501.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ configs/devices/mips64el-softmmu/default.mak | 2 +-
+ hw/display/Kconfig                           | 2 +-
+ hw/display/meson.build                       | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/display/sm501.c b/hw/display/sm501.c
-index 0eecd00701..a897c82f04 100644
---- a/hw/display/sm501.c
-+++ b/hw/display/sm501.c
-@@ -730,7 +730,6 @@ static void sm501_2d_operation(SM501State *s)
-     switch (cmd) {
-     case 0: /* BitBlt */
-     {
--        static uint32_t tmp_buf[16384];
-         unsigned int src_x = (s->twoD_source >> 16) & 0x01FFF;
-         unsigned int src_y = s->twoD_source & 0xFFFF;
-         uint32_t src_base = s->twoD_source_base & 0x03FFFFFF;
-@@ -828,9 +827,11 @@ static void sm501_2d_operation(SM501State *s)
-                 de = db + (width + (height - 1) * dst_pitch) * bypp;
-                 overlap = (db < se && sb < de);
-             }
-+#ifdef CONFIG_PIXMAN
-             if (overlap && (s->use_pixman & BIT(2))) {
-                 /* pixman can't do reverse blit: copy via temporary */
-                 int tmp_stride = DIV_ROUND_UP(width * bypp, sizeof(uint32_t));
-+                static uint32_t tmp_buf[16384];
-                 uint32_t *tmp = tmp_buf;
+diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/devices/mips64el-softmmu/default.mak
+index d5188f7ea5..8d85607571 100644
+--- a/configs/devices/mips64el-softmmu/default.mak
++++ b/configs/devices/mips64el-softmmu/default.mak
+@@ -3,7 +3,7 @@
+ include ../mips-softmmu/common.mak
+ CONFIG_FULOONG=y
+ CONFIG_LOONGSON3V=y
+-CONFIG_ATI_VGA=y
++# CONFIG_ATI_VGA=n
+ CONFIG_RTL8139_PCI=y
+ CONFIG_JAZZ=y
+ CONFIG_VT82C686=y
+diff --git a/hw/display/Kconfig b/hw/display/Kconfig
+index 1aafe1923d..4d8a6c4af8 100644
+--- a/hw/display/Kconfig
++++ b/hw/display/Kconfig
+@@ -125,7 +125,7 @@ config DPCD
+ config ATI_VGA
+     bool
+     default y if PCI_DEVICES
+-    depends on PCI
++    depends on PCI && PIXMAN
+     select VGA
+     select BITBANG_I2C
+     select DDC
+diff --git a/hw/display/meson.build b/hw/display/meson.build
+index a7166b29d5..3aabf10226 100644
+--- a/hw/display/meson.build
++++ b/hw/display/meson.build
+@@ -61,7 +61,7 @@ system_ss.add(when: 'CONFIG_XLNX_DISPLAYPORT', if_true: files('xlnx_dp.c'))
  
-                 if (tmp_stride * sizeof(uint32_t) * height > sizeof(tmp_buf)) {
-@@ -860,9 +861,12 @@ static void sm501_2d_operation(SM501State *s)
-                                        dst_pitch * bypp / sizeof(uint32_t),
-                                        8 * bypp, 8 * bypp, src_x, src_y,
-                                        dst_x, dst_y, width, height);
--            } else {
-+            } else
-+#else
-+            {
-                 fallback = true;
-             }
-+#endif
-             if (fallback) {
-                 uint8_t *sp = s->local_mem + src_base;
-                 uint8_t *d = s->local_mem + dst_base;
-@@ -894,10 +898,13 @@ static void sm501_2d_operation(SM501State *s)
-             color = cpu_to_le16(color);
-         }
+ system_ss.add(when: 'CONFIG_ARTIST', if_true: files('artist.c'))
  
-+#ifdef CONFIG_PIXMAN
-         if (!(s->use_pixman & BIT(0)) || (width == 1 && height == 1) ||
-             !pixman_fill((uint32_t *)&s->local_mem[dst_base],
-                          dst_pitch * bypp / sizeof(uint32_t), 8 * bypp,
--                         dst_x, dst_y, width, height, color)) {
-+                         dst_x, dst_y, width, height, color))
-+#endif
-+        {
-             /* fallback when pixman failed or we don't want to call it */
-             uint8_t *d = s->local_mem + dst_base;
-             unsigned int x, y, i;
-@@ -2038,7 +2045,9 @@ static void sm501_realize_sysbus(DeviceState *dev, Error **errp)
+-system_ss.add(when: [pixman, 'CONFIG_ATI_VGA'], if_true: files('ati.c', 'ati_2d.c', 'ati_dbg.c'))
++system_ss.add(when: 'CONFIG_ATI_VGA', if_true: [files('ati.c', 'ati_2d.c', 'ati_dbg.c'), pixman])
  
- static Property sm501_sysbus_properties[] = {
-     DEFINE_PROP_UINT32("vram-size", SM501SysBusState, vram_size, 0),
-+#ifdef CONFIG_PIXMAN
-     DEFINE_PROP_UINT8("x-pixman", SM501SysBusState, state.use_pixman, 7),
-+#endif
-     DEFINE_PROP_END_OF_LIST(),
- };
  
-@@ -2126,7 +2135,9 @@ static void sm501_realize_pci(PCIDevice *dev, Error **errp)
- 
- static Property sm501_pci_properties[] = {
-     DEFINE_PROP_UINT32("vram-size", SM501PCIState, vram_size, 64 * MiB),
-+#ifdef CONFIG_PIXMAN
-     DEFINE_PROP_UINT8("x-pixman", SM501PCIState, state.use_pixman, 7),
-+#endif
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-@@ -2169,8 +2180,10 @@ static void sm501_pci_class_init(ObjectClass *klass, void *data)
- 
- static void sm501_pci_init(Object *o)
- {
-+#ifdef CONFIG_PIXMAN
-     object_property_set_description(o, "x-pixman", "Use pixman for: "
-                                     "1: fill, 2: blit, 4: overlap blit");
-+#endif
- }
- 
- static const TypeInfo sm501_pci_info = {
+ if config_all_devices.has_key('CONFIG_VIRTIO_GPU')
 -- 
 2.41.0
 
