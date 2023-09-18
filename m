@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493CA7A47BD
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 13:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8697A47C1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 13:03:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiC0P-0001b9-Qo; Mon, 18 Sep 2023 07:01:29 -0400
+	id 1qiC1i-000311-TO; Mon, 18 Sep 2023 07:02:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiBzn-0001Jc-IS
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:00:53 -0400
+ id 1qiC1T-0002aP-Gh
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:02:37 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiBzl-0001nk-LR
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:00:51 -0400
+ id 1qiC1K-0002Cg-QO
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:02:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695034848;
+ s=mimecast20190719; t=1695034941;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EmehkUj8qHEX9CWfYPOkemhfEwHmTusLZnjSK4FRXMs=;
- b=i+9o3WaOlN5zEgqqWbjX//dhv83wuNgMQHoU/3PRl7BHd7FrKqqfQBcKYRZH1056OTUCFk
- 8GyOlrjttoJDJgxJTXDHrmyxSHNUrqzd3Y6CzqNSETUvZpnaL3Hbfq69sClpOmbt+Gy2pQ
- EPxBdtpARcFGGYLfQpZqqDXzBIpbJhI=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fFXPTDMTTSxkGeou7Rz71qaFzQ24YcuH/j6q7aWNEiE=;
+ b=JElNsMUvsOJDF8+ygS6DBri+P8K/ToLTsDsIzQIrA3FkcJ5iPi+vxpar7BLosuxa8JQoHG
+ O5CtxhIe/BC+idHf0vLOmP7vmpipfTgtNJfoQaGb5K53wmvxrvhWX9RxDFr1FF5VaKz4Yp
+ LYQBMV7dpA8Fs9SFdOVe8q52gViSyfs=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-TjwyXr5MNfiEINNsfULcKg-1; Mon, 18 Sep 2023 07:00:47 -0400
-X-MC-Unique: TjwyXr5MNfiEINNsfULcKg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2bffe368ae3so12398451fa.2
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 04:00:46 -0700 (PDT)
+ us-mta-544-5egldhByMAGrt9FzltW_JA-1; Mon, 18 Sep 2023 07:02:19 -0400
+X-MC-Unique: 5egldhByMAGrt9FzltW_JA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-94a355c9028so307339166b.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 04:02:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695034845; x=1695639645;
+ d=1e100.net; s=20230601; t=1695034938; x=1695639738;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EmehkUj8qHEX9CWfYPOkemhfEwHmTusLZnjSK4FRXMs=;
- b=aKB/DN++7bchkxIu2fXiczTpoS7lPe4HJLcZag3eHqeggMr4s8aroD32ktRoFb1c1w
- v9FPMRzTFCi/RLFuvl4x7VJmXgeyITxEpRrzCxAXIncqMqrMYunD6dTcoPduiiXVB5LH
- c+juqC/fu5FKNfF0hImnu4GjHx/AW5bOiindUXFyp0gaQ5PqAdILPTkzQcYYYMRGDgC4
- cvyTPCi5ziF24jsfvkJlhabWFkTSz7qLyGc5hcVKTSmIROARuXnWJ9Sy8x7cXqRPWmtJ
- 9sn1H3t21NIZapEZCGzElAG5uAxlAyhSyhdTTEWP/yY8slZz6IZc3L0wdfitXjQTkGCP
- SdNA==
-X-Gm-Message-State: AOJu0YwmSaRJIPdfwiCIAmfvPB1oNz4u/MXOsW+AE051BTQ8qhCdV+X2
- wDuEe1FHsk5j8EN0JLjB8PyTDtOEFvMpZ5MEKCU4EJlmFV/c/6GoI9y5VUFV22MnrLWwdmalf1J
- i+Cj+JTpVny6BFsGnHZO3s7EK2wNn5Gg=
-X-Received: by 2002:a2e:7c19:0:b0:2bc:dd96:147c with SMTP id
- x25-20020a2e7c19000000b002bcdd96147cmr7703162ljc.34.1695034845673; 
- Mon, 18 Sep 2023 04:00:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMoZCfpQ4G6venXhv7LIuW1/7SK4WlcLxi2ueSJEG86Jd13dEAYI0Itmz1tbKT0ZfWiLv8p7lZJ4eZWfqMlS4=
-X-Received: by 2002:a2e:7c19:0:b0:2bc:dd96:147c with SMTP id
- x25-20020a2e7c19000000b002bcdd96147cmr7703126ljc.34.1695034845268; Mon, 18
- Sep 2023 04:00:45 -0700 (PDT)
+ bh=fFXPTDMTTSxkGeou7Rz71qaFzQ24YcuH/j6q7aWNEiE=;
+ b=EUbiQkENZo67uQpd00vuSDp8JU6l40jXqe7AEdVDxJOD6Io5ae+NjSDfHBMBqWaZoe
+ a6Y8quF91w+xUrxCChhG3gVbu24ZIy7GEqX8qh3JBiR5HPAm0GKv9gIIsv0OXfLGyIso
+ brn/wI4Z+So4SbzsRLeGcaJsFY5wahyIr9kLiaRVmK3FVXr0aO+tntABRqCBJulQIJ8P
+ Ru6W3TCjCwa61nCxiD5WzivihcLD1914ulKpNhv7gcMj3SxPPGvrVc68UmX0es4/5im0
+ uGlUWsygzMvm+a3RNNFP/i9/sH0YCrYqSu+YOKpfnpQDYVTkdgpeyEsZYK+7jwoxcIrb
+ V48w==
+X-Gm-Message-State: AOJu0YybipuYhW+Auqbtpm5E7DSDYEw7/ghD3JtBOD6a/fdFddcM+d/0
+ z9VvaranbKDlBT3zx4LsGMt2+gxtsa+cRY/SR5BJVOT+MQa6j9jzTZseLVYemqfh7bnuGKNNcvj
+ LmwNzqGJ1vkaO+uXO/Dm/9kefcxEM1Sw=
+X-Received: by 2002:a17:906:31c7:b0:9ad:be8a:a588 with SMTP id
+ f7-20020a17090631c700b009adbe8aa588mr7633372ejf.1.1695034938080; 
+ Mon, 18 Sep 2023 04:02:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFiSbWv5Ojw3VvFd6QR010u+6N/vpMru1lHJ3GVLdDwfCCfYorIW0AAmjmDpWMoy0mj/nya1tqePtQkuI5cU2I=
+X-Received: by 2002:a17:906:31c7:b0:9ad:be8a:a588 with SMTP id
+ f7-20020a17090631c700b009adbe8aa588mr7633347ejf.1.1695034937627; Mon, 18 Sep
+ 2023 04:02:17 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230908095024.270946-1-anisinha@redhat.com>
  <1911B17C-24F2-406B-9ED4-DCF98E794A09@redhat.com>
@@ -78,10 +78,11 @@ References: <20230908095024.270946-1-anisinha@redhat.com>
  <5b22fff5-270f-0ab5-1ee5-2e54f491aefd@redhat.com>
  <CAK3XEhMf88si5NcQbAODRC+7760ymgFOx83a_ih4jOqoaDDcyg@mail.gmail.com>
  <cce0cebd-952f-9ed9-f2fd-d84dd666d322@redhat.com>
-In-Reply-To: <cce0cebd-952f-9ed9-f2fd-d84dd666d322@redhat.com>
+ <CAK3XEhO9DAWE6SXd4Nmham3Q=MMLU6Dda1O=EHwz55iMELv3zQ@mail.gmail.com>
+In-Reply-To: <CAK3XEhO9DAWE6SXd4Nmham3Q=MMLU6Dda1O=EHwz55iMELv3zQ@mail.gmail.com>
 From: Ani Sinha <anisinha@redhat.com>
-Date: Mon, 18 Sep 2023 16:30:33 +0530
-Message-ID: <CAK3XEhO9DAWE6SXd4Nmham3Q=MMLU6Dda1O=EHwz55iMELv3zQ@mail.gmail.com>
+Date: Mon, 18 Sep 2023 16:32:06 +0530
+Message-ID: <CAK3XEhN4Apg3QBJBmUKEWgP76Xp_nO5-j6CaHpCHHxeOo-=2jA@mail.gmail.com>
 Subject: Re: [PATCH] mem/x86: add processor address space check for VM memory
 To: David Hildenbrand <david@redhat.com>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -96,13 +97,13 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,46 +119,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 4:28=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
+On Mon, Sep 18, 2023 at 4:30=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wro=
+te:
 >
-> On 18.09.23 12:54, Ani Sinha wrote:
-> > On Mon, Sep 18, 2023 at 3:49=E2=80=AFPM David Hildenbrand <david@redhat=
-.com> wrote:
-> >>
-> >> On 18.09.23 12:11, Ani Sinha wrote:
-> >>
-> >>>
-> >>>      Ok hopefully my last question. I am still confused on something.
-> >>>      Does the above mean that the hole64 will actually start from an
-> >>>      address that is beyond maxram? Like basically if you added all o=
-f
-> >>>      ram_below_4G, ram_above_4G, hot plug_mem and pci_hole64 then can=
- it
-> >>>      exceed maxram? I think it will. Does this not an issue?
-> >>
-> >> If you'd have a 2 GiB VM, the device memory region and hole64 would
-> >> always be placed >=3D 4 GiB address, yes.
-> >>
-> >> As maxram is just a size, and not a PFN, I don't think there is any
-> >> issue with that.
+> On Mon, Sep 18, 2023 at 4:28=E2=80=AFPM David Hildenbrand <david@redhat.c=
+om> wrote:
 > >
-> > So this is all just a scheme to decide what to place where with maxram
-> > amount of memory available. When the processor needs to access the
+> > On 18.09.23 12:54, Ani Sinha wrote:
+> > > On Mon, Sep 18, 2023 at 3:49=E2=80=AFPM David Hildenbrand <david@redh=
+at.com> wrote:
+> > >>
+> > >> On 18.09.23 12:11, Ani Sinha wrote:
+> > >>
+> > >>>
+> > >>>      Ok hopefully my last question. I am still confused on somethin=
+g.
+> > >>>      Does the above mean that the hole64 will actually start from a=
+n
+> > >>>      address that is beyond maxram? Like basically if you added all=
+ of
+> > >>>      ram_below_4G, ram_above_4G, hot plug_mem and pci_hole64 then c=
+an it
+> > >>>      exceed maxram? I think it will. Does this not an issue?
+> > >>
+> > >> If you'd have a 2 GiB VM, the device memory region and hole64 would
+> > >> always be placed >=3D 4 GiB address, yes.
+> > >>
+> > >> As maxram is just a size, and not a PFN, I don't think there is any
+> > >> issue with that.
+> > >
+> > > So this is all just a scheme to decide what to place where with maxra=
+m
+> > > amount of memory available. When the processor needs to access the
+> >
+> > Yes. ram_size and maxram_size are only used to create the memory layout=
+.
+> >
+> > > memory mapped PCI device, its simply dynamically mapped to the
+> > > available physical ram. Is my understanding correct here?
+> >
+> > I'm no expert on that, but from my understanding that's what the
+> > pci/pci64 hole is for -- mapping PCI BARs into these areas, such that
+> > they don't conflict with actual guest RAM. That's why we still account
+> > these "holes" as valid GFN that could be used+accessed by the VM once a
+> > PCI BAR gets mapped in there.
 >
-> Yes. ram_size and maxram_size are only used to create the memory layout.
->
-> > memory mapped PCI device, its simply dynamically mapped to the
-> > available physical ram. Is my understanding correct here?
->
-> I'm no expert on that, but from my understanding that's what the
-> pci/pci64 hole is for -- mapping PCI BARs into these areas, such that
-> they don't conflict with actual guest RAM. That's why we still account
-> these "holes" as valid GFN that could be used+accessed by the VM once a
-> PCI BAR gets mapped in there.
+> Yes that was my understanding too but since device drivers need to
+> access those BAR addresses, they need to be mapped to the actual
+> available physical ram.
 
-Yes that was my understanding too but since device drivers need to
-access those BAR addresses, they need to be mapped to the actual
-available physical ram.
+No sorry I was confused. They are just register addresses on the
+device unrelated to RAM.
 
 
