@@ -2,84 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9147A4C04
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE227A4C4F
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:30:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiG6i-00075O-Sh; Mon, 18 Sep 2023 11:24:16 -0400
+	id 1qiGCG-0001IL-7X; Mon, 18 Sep 2023 11:30:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qiG6c-00074V-Ng
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:24:10 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qiG6V-0003Uj-S0
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:24:09 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-3ff7d73a6feso52020985e9.1
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 08:24:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695050642; x=1695655442; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Mr94wfB2rFEoRKdG6qE9j+KNTqgDYMFbLDVBQkEpPZ4=;
- b=uvN6zY4IF2hvFiYVCLwvxDTt7uA9u52NEkiNaSjpsDMJraI3WasWa5P8wZCWeyQhGY
- tRD/O2FJLVtS9HGF4M7jEoThe5P52FQoggMKVmX4NMNBxMl/dxUJz4FIZTydjiyZAadU
- ennR0fCCca+m7Q32rm636231tiw3+6/vBdqHO+L0YDFvllz6EH6TgM0zEtl15yOQu/R6
- amPXH1rZ7y6NM0CoxmnJ4m+AgAEMZ6sH6nG57cDHOAI6uRp4jaJ4UmvH2HW/36YlSJsP
- LzOr0dW72ssrjBG9Vl71Qp38i34CJlAhfhv3rzyl4YcWRNupp2w7f/MPYfr7laBmrjE1
- TPGA==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiGC9-0001EQ-Sw
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:29:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiGC2-0004a0-Ph
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:29:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695050985;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JDWtT7+f+XkOJ5yehFgutjK1/U8s5BiB6a4xz0l/dTg=;
+ b=MabKwVl01n323Bigxy+GWQ+J5l8Rae6a7jCkgvq1LnDzxl8DArURLrPKA2+P5hgJLXztbB
+ dCL6i3QZUphvit5sZSevWfsbLqTU3DS5TY7Ztz0K5IDCvBxoaSF8uxZ3X+TFy9QSA6Jh3y
+ Z3qRnF1KK9o2Kxis366meQzWYulVaQk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-99-h5ckPnQ9PQuduIpdIRetJQ-1; Mon, 18 Sep 2023 11:29:43 -0400
+X-MC-Unique: h5ckPnQ9PQuduIpdIRetJQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f42bcef2acso36801425e9.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 08:29:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695050642; x=1695655442;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=Mr94wfB2rFEoRKdG6qE9j+KNTqgDYMFbLDVBQkEpPZ4=;
- b=Pm8T3lNUxEXkl7NYDeHhS2rd729unZuDsDqI80+uzCRIXf31g4WEKk6m+zdk5EObSS
- +8qEWp95hA5JSfV5BT17pqDh19UO+oXaP7Nn/ZuHRVCKHOS2kLsAeeWDutGkOcUw5lpZ
- Esic3IKxIJBcqMhRqMcbl81/JjU4lID9Ehs9JpnMTitcJdw0I+wOcMmj31a5X9zC+JfW
- knQbURyXmk+QnrkltMmTbVy2EFOHLFW71had5mQvLsZLHKuyT/KA17MSxRxJz21OSGRG
- xUznQwroFQtDDatXG4LdD70ctLrbPfKMMYMdxHNxXoZgsCGNGoOXm72UHK/yutYe6YVP
- jUHQ==
-X-Gm-Message-State: AOJu0YyY+QGCm6n+zLOX+u0zKf0hIm30kON3dK8VZ7fflkzkwN4QDvaw
- FA+D1BD/EHuynJ0OSUocJsva7g==
-X-Google-Smtp-Source: AGHT+IGrX1Yq+lFwKmlLQAXOubEFHOYgdPqfIyNd4i4G4wecgCBF43CIrWOp4rZrfQPMbW8mgNCIQg==
-X-Received: by 2002:a05:600c:114f:b0:402:f503:6d1b with SMTP id
- z15-20020a05600c114f00b00402f5036d1bmr8294499wmz.0.1695050641943; 
- Mon, 18 Sep 2023 08:24:01 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1695050982; x=1695655782;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JDWtT7+f+XkOJ5yehFgutjK1/U8s5BiB6a4xz0l/dTg=;
+ b=fecy2hONvNcrNiIuEb3zXP/DnA0vO63nbVMIhDe0QYcbxMrtyaCwnEKLRLABkxL/fU
+ PJ0NJSEb0AoaQg7Av8CTBGu8IUfyW30WaBSHiOugtKGRo8p5wN42MG/jiAr4EuooE0g+
+ xyuKhCv8jO/9JR3K2mkeZLBYgDTNoZLfC4j2Ub1Tnde3lYbw5WBDkd7zeajfrfxO2tr1
+ JaIqbHrA7bHakDa/ajRh+uL1gGIeOpeJ5v6r0zCkRzGVfVhYk59hvDdxU546tmY00uvm
+ jVqaOwxk87xw/lPYYjjR/5vq4KBtOGRqLCzUxKWYEPUyUwWzAnMCDGHps67VjXDUF89R
+ LBLA==
+X-Gm-Message-State: AOJu0Yzj//U68PBrIupbhFt2hvcU4ajtGk7ZL3I/mlKjk5pRhcff6vck
+ QOCwCQaRN92bD+eofQ/8Dl1jKQG8g6QVhEk4uqH1xm0ascEna6w3sraH/Pg4Ert2TvbHM0ZnaL0
+ KdXHRySPnm1H0fiQ=
+X-Received: by 2002:a7b:cbd1:0:b0:404:34d3:6110 with SMTP id
+ n17-20020a7bcbd1000000b0040434d36110mr8296976wmi.0.1695050982630; 
+ Mon, 18 Sep 2023 08:29:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJCet1HRFk2XATgOMQfdnMSqI9dOTxApgRR9eti69GvKri7LEdWlGvxHHtOR4T3uqJTHuSsA==
+X-Received: by 2002:a7b:cbd1:0:b0:404:34d3:6110 with SMTP id
+ n17-20020a7bcbd1000000b0040434d36110mr8296961wmi.0.1695050982242; 
+ Mon, 18 Sep 2023 08:29:42 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c702:9d00:cf36:8603:a1f5:d07?
+ (p200300cbc7029d00cf368603a1f50d07.dip0.t-ipconnect.de.
+ [2003:cb:c702:9d00:cf36:8603:a1f5:d07])
  by smtp.gmail.com with ESMTPSA id
- l18-20020a5d4112000000b0031c6581d55esm12979514wrp.91.2023.09.18.08.24.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Sep 2023 08:24:01 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 210D21FFBB;
- Mon, 18 Sep 2023 16:24:01 +0100 (BST)
-References: <20230915150849.595896-1-alex.bennee@linaro.org>
- <CAJSP0QWjNgTjhWVNgRnyE5A7HLAH3xKjOD3N+C58-G1Ue-wwDw@mail.gmail.com>
-User-agent: mu4e 1.11.20; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL 0/9] testing updates (back to green!)
-Date: Mon, 18 Sep 2023 16:23:10 +0100
-In-reply-to: <CAJSP0QWjNgTjhWVNgRnyE5A7HLAH3xKjOD3N+C58-G1Ue-wwDw@mail.gmail.com>
-Message-ID: <87fs3bwlm6.fsf@linaro.org>
+ m10-20020a7bce0a000000b003fee53feab5sm12791729wmc.10.2023.09.18.08.29.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Sep 2023 08:29:41 -0700 (PDT)
+Message-ID: <ceea0d9d-19d6-29e7-cb84-81f85936b8c2@redhat.com>
+Date: Mon, 18 Sep 2023 17:29:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] hw/i386/pc: fix max_used_gpa for 32-bit systems
+Content-Language: en-US
+To: Ani Sinha <anisinha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: philmd@linaro.org, qemu-devel@nongnu.org
+References: <20230918135448.90963-1-anisinha@redhat.com>
+ <CAK3XEhOMqdfyPBm0ZgkirrcaBhOwQt_eOZ7=bbdW8OJpz3hWHg@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <CAK3XEhOMqdfyPBm0ZgkirrcaBhOwQt_eOZ7=bbdW8OJpz3hWHg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,111 +109,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 18.09.23 17:22, Ani Sinha wrote:
+> On Mon, Sep 18, 2023 at 7:25 PM Ani Sinha <anisinha@redhat.com> wrote:
+>>
+>> 32-bit systems do not have a reserved memory for hole64 but they may have a
+>> reserved memory space for memory hotplug. Since, hole64 starts after the
+>> reserved hotplug memory, the unaligned hole64 start address gives us the
+>> end address for this memory hotplug region that the processor may use.
+>> Fix this. This ensures that the physical address space bound checking works
+>> correctly for 32-bit systems as well.
+> 
+> This patch breaks some unit tests. I am not sure why it did not catch
+> it when I tested it before sending.
+> Will have to resend after fixing the tests.
 
-Stefan Hajnoczi <stefanha@gmail.com> writes:
+Probably because they supply more memory than the system can actually 
+handle? (e.g., -m 4g on 32bit)?
 
-> On Fri, 15 Sept 2023 at 11:10, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
->>
->> The following changes since commit 005ad32358f12fe9313a4a01918a55e60d4f3=
-9e5:
->>
->>   Merge tag 'pull-tpm-2023-09-12-3' of https://github.com/stefanberger/q=
-emu-tpm into staging (2023-09-13 13:41:57 -0400)
->>
->> are available in the Git repository at:
->>
->>   https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-ominbus-15092=
-3-1
->>
->> for you to fetch changes up to 5acd4bf25dc9becd05b8772b94982722e1fa76a3:
->>
->>   tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884 (202=
-3-09-15 15:17:52 +0100)
->>
->> ----------------------------------------------------------------
->> testing updates:
->>
->>   - update most Debian to bookworm
->
-> This breaks the armel-debian-cross-container job:
-> https://gitlab.com/qemu-project/qemu/-/jobs/5111108339
->
-> I have dropped this pull request for now. Please take a look.
+Agreed with MST that we should glue this to compat machines.
 
-Hmm I think it might be a transient Debian issue as it passed when I run
-the tag before sending:
+-- 
+Cheers,
 
-  https://gitlab.com/stsquad/qemu/-/jobs/5100170183
+David / dhildenb
 
-I'll see if I can run it locally.
-
->
-> Thanks,
-> Stefan
->
->>   - fix some typos
->>   - update loongarch toolchain
->>   - fix microbit test
->>   - handle GitLab/Cirrus timeout discrepancy
->>   - improve avocado console handling
->>   - disable mips avocado images pending bugfix
->>
->> ----------------------------------------------------------------
->> Alex Benn=C3=A9e (2):
->>       tests: update Debian images to Bookworm
->>       gitlab: fix typo/spelling in comments
->>
->> Daniel P. Berrang=C3=A9 (4):
->>       microbit: add missing qtest_quit() call
->>       qtest: kill orphaned qtest QEMU processes on FreeBSD
->>       gitlab: make Cirrus CI timeout explicit
->>       gitlab: make Cirrus CI jobs gating
->>
->> Nicholas Piggin (1):
->>       tests/avocado: Fix console data loss
->>
->> Philippe Mathieu-Daud=C3=A9 (1):
->>       tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884
->>
->> Richard Henderson (1):
->>       tests/docker: Update docker-loongarch-cross toolchain
->>
->>  tests/qtest/libqtest.c                                |  7 +++++++
->>  tests/qtest/microbit-test.c                           |  2 ++
->>  .gitlab-ci.d/base.yml                                 |  2 +-
->>  .gitlab-ci.d/cirrus.yml                               |  4 +++-
->>  .gitlab-ci.d/cirrus/build.yml                         |  2 ++
->>  python/qemu/machine/machine.py                        | 19 ++++++++++++=
-+++++++
->>  tests/avocado/avocado_qemu/__init__.py                |  2 +-
->>  tests/avocado/boot_linux_console.py                   |  7 +++++++
->>  tests/avocado/machine_mips_malta.py                   |  6 ++++++
->>  tests/avocado/replay_kernel.py                        |  7 +++++++
->>  tests/avocado/tuxrun_baselines.py                     |  4 ++++
->>  tests/docker/dockerfiles/debian-amd64-cross.docker    | 10 +++-------
->>  tests/docker/dockerfiles/debian-amd64.docker          | 10 +++-------
->>  tests/docker/dockerfiles/debian-arm64-cross.docker    | 10 +++-------
->>  tests/docker/dockerfiles/debian-armel-cross.docker    | 10 +++-------
->>  tests/docker/dockerfiles/debian-armhf-cross.docker    | 10 +++-------
->>  .../docker/dockerfiles/debian-loongarch-cross.docker  |  2 +-
->>  tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 10 +++-------
->>  tests/docker/dockerfiles/debian-s390x-cross.docker    | 10 +++-------
->>  tests/docker/dockerfiles/ubuntu2004.docker            |  2 +-
->>  tests/docker/dockerfiles/ubuntu2204.docker            |  2 +-
->>  tests/lcitool/libvirt-ci                              |  2 +-
->>  tests/lcitool/refresh                                 | 18 +++++++++---=
-------
->>  23 files changed, 93 insertions(+), 65 deletions(-)
->>
->>
->> --
->> 2.39.2
->>
->>
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
