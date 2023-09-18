@@ -2,138 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC59B7A4AFA
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 16:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B047B7A4AFD
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 16:11:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiEt9-0007H9-RZ; Mon, 18 Sep 2023 10:06:11 -0400
+	id 1qiExz-000140-E7; Mon, 18 Sep 2023 10:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qiEt7-0007G9-GZ; Mon, 18 Sep 2023 10:06:09 -0400
-Received: from mail-vi1eur04on0727.outbound.protection.outlook.com
- ([2a01:111:f400:fe0e::727]
- helo=EUR04-VI1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiExx-00013l-Bh
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 10:11:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qiEt2-0003uF-7L; Mon, 18 Sep 2023 10:06:09 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iEaCx3Xg650Vh/pTPTcn8Z/3rN3pVQ4ytc6573gZW7wXqAuxNEvDnIYaZ0RY5b1bIjni1g5MjdQSUkn8RWnsKXHNJlC/ldyIjsvM6fhVt9u3Aa4jXjVNZFIvxblyuymU1sf7QyfEAtVD7s77PvXg7aA9bd2PPQdrUnNb14e3oYzyTwQ0t8DXRNCFfq1D1WnP6zcJRWSh3RUEQjhvhksISnzbVS+OdqjQ6RcFnsdV8YULIT/pXikt2sMm+8HavJB0L2/fsbocde5PliGFh4VXl5vV1HQk6UFKZfm2fXobKjHJ0kUtMKgLZAXihPXdvgvEFOvVjrEgU/0XddH6CjvkuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BO2g9VXNbJTR0FZn20qtC6NC5XNCAOXb3Jr8nCzM9ow=;
- b=EP27zRKanrZwwqDQOtCLaCzuH0DzLJAKvqj91aDR0h6ZmGHz64X3EX4WsILf2hYdQQ2Jo6a6P/IrPQEi4wrLqPrmqME0D61ZdKdEMe/vOeTltfGgEbUgpDXkVC+4lh7tKUhML9Z9RWFiY3wNKwT5Am2laglx6HSL77/tbkC2mcAEtP9K5GSz4hnhcHVP7sFvfSTiAEJzJidG0qWbh04E64S/vIrohWkn/E2IoabGXdSegNJ7FXGliUnBhFlQ3KS4mMJCMomaqW838BXlh2ynwtHejQLlexPo9eXQW8B76JBtH2kkydbLfM/sTrccncQTlMxVx73XmKq9kq+KrRp0zg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BO2g9VXNbJTR0FZn20qtC6NC5XNCAOXb3Jr8nCzM9ow=;
- b=umKb5kpzCUBoW3JCDzXswXxCsatn5/x0RuDGVgbPjfBwj/fQ3klDHPMggSZ3TdtLhj2HuvuZ9nmsamBRNtXZgCnTMwJzr2LRzVjUcfDNfLYo/f5it6pK+oBo7NQ86lq8QEF/gGxADv2ROy3LVgl+1gJjoCLWS0Bqi2e4dNE8jEriHc+ikC7QvDBfTy6LvCCVF4oGfIXceu+lY+tRwIql7Go0bnE7h+GrO9tBItub0x46DCoe/61+MXxwsXZ0Aqx1DKwct7NJIdEypymwQTAwYlLrUy9WVBVKFI0F0zazjXQcIT77BQAGnbVPOgMgmeEUcHzWFgBrnW/87ZmwZyMdtw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by GV1PR08MB7939.eurprd08.prod.outlook.com (2603:10a6:150:8c::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.24; Mon, 18 Sep
- 2023 14:05:57 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::8ba1:5878:7574:628f]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::8ba1:5878:7574:628f%4]) with mapi id 15.20.6792.026; Mon, 18 Sep 2023
- 14:05:57 +0000
-Message-ID: <43b94fde-74bb-1a99-3abb-b6cd9f6c03e3@virtuozzo.com>
-Date: Mon, 18 Sep 2023 16:05:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 18/21] parallels: naive implementation of
- parallels_co_pdiscard
-Content-Language: en-US
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
- "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, mike.maslenkin@gmail.com
-References: <20230915184130.403366-1-den@openvz.org>
- <20230915184130.403366-21-den@openvz.org>
- <d32c69b7-097a-89a8-356a-8a8eba326e65@virtuozzo.com>
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <d32c69b7-097a-89a8-356a-8a8eba326e65@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR09CA0154.eurprd09.prod.outlook.com
- (2603:10a6:803:12c::38) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiExr-00056I-Ey
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 10:11:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695046262;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ja98jl7alXy7zPYF2+Y292IOZIFEOFLNuT/5WFq65CI=;
+ b=XgsWTTSp2SpzsVGyX/Ehgdgcfji98eh91wIU/Y8tRrdqTqFGpu0f0Utfa1OJpZsrJgwfYR
+ 2bj6SDC9fP9pcjLHy+EUEY3pNJ6Gr9tPDtYr1Gl/GXaYs9fGKDQ1+EjUQ/WsfMKn2wSurv
+ Mbt6lPTvtDaAlEaVB/4v01M+jamRD5o=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-191-nGXjPV8GOjGp_P-M0Rax5Q-1; Mon, 18 Sep 2023 10:10:58 -0400
+X-MC-Unique: nGXjPV8GOjGp_P-M0Rax5Q-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-993d7ca4607so327809266b.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 07:10:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695046257; x=1695651057;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ja98jl7alXy7zPYF2+Y292IOZIFEOFLNuT/5WFq65CI=;
+ b=jEBJCjTv+ktTDmhK7p5quNY3rIdDxJg1EA89bHMcdU05/ZBUbcaGaRnCQ6xtlg6QHZ
+ 3H5318fo00NL4oOxzCuPY0/OxkHoL7eVBlonbrV1G/V2q/TNs9khVWtl3B+aI55DxtNN
+ iBu6GJU1AolMGFtWsXiD9UhKKUUrFIp5s6v9Juhb7osbNnll6PmOFTk0ZSqkI95BHywE
+ BqqrX1L5hMFo+8NZ8OI4zrXj+p1zAu6by4b3pqZKQiMslVX8o5oVqIcrpeblpoJvXtxh
+ GPwuvwThLyet0hGSslpcKxge8/vjLnzAd/T4vum1sVTL6kbEM7quUzsp0qnYUro2qRzc
+ baZw==
+X-Gm-Message-State: AOJu0YxtYeYo/zYpflqkdB7CjGCo6w14+ydu2J21YMeNWjyYbSX/xJUs
+ i6eQfnp/0F3st9sSDgRm5wXCao9zi3TbZ/Sgfuun/n6ZpnMfHlZCNonQEha4KXiXPczJ71uKVhq
+ US0HoMzNWH9MoZYwP1Hj+pX+kSfrOJLI=
+X-Received: by 2002:a17:906:535d:b0:9a1:fb4c:3b65 with SMTP id
+ j29-20020a170906535d00b009a1fb4c3b65mr7469777ejo.14.1695046257551; 
+ Mon, 18 Sep 2023 07:10:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAfAN67p1OaPovEl3fPdJY98sRpKlVWOQAE+Te2Qxrf2jXyMvug95js3pbpnonWRIpiLTFmgBERGnxjkLb5QQ=
+X-Received: by 2002:a17:906:535d:b0:9a1:fb4c:3b65 with SMTP id
+ j29-20020a170906535d00b009a1fb4c3b65mr7469767ejo.14.1695046257153; Mon, 18
+ Sep 2023 07:10:57 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|GV1PR08MB7939:EE_
-X-MS-Office365-Filtering-Correlation-Id: a955a8f9-d241-46d3-b4e7-08dbb8506165
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: scsQuReATqyK+2NbNBqW8fkkw+JUv3OI3tNwmhMbg1290VZNrFIX05j5t59eN1NJAkyIalbMps7djRekZ6RDBBYNKG6C0NtkZ//U0GSu3ZvDTFhyrRB/3AHLgAbdDJ89Fqtg924JpCSgfh8ORApG0k+6YhRfd4vlnGdGj/3SS52tJ+XgDHcJ8+LBLVJeKO9DGIAJHaHhSwCbKBVOiilX8U1PH2wS4bY+lU4IPSKDQBvtBn8TBAWnwbHEJw4kOAezFVO5avwyb/w0gh5lm7zqzpq78JpCrG9+B0zZU/xBqYVCYFrH0YJZMBQP43wC1D8Uu0PrPUUlgEefbZLAM6YI2bI9TWrAq6j5WkFBKz+Gkqa0et592JiNx9/3X3IdD2TO4sVFVI3eixU6/1OxwsIRvlP9mx6tO5kcwQyX8zN5gF8hUL43Bwp8hRS16S9NwMRMk42l2a83wRqDpCBpfC6HSssBzuZynbQ/CLxALd2rg7PIXjpA4IXU2IL558O+x3LT3PfobZG8MylX8r2mNlAQ4Bl3OnxE6bREla/xeCHBQjkiUAyApPvAscwZbZLfdbtwkrDR2lP9Q0PAuVUEHC6P0pbsNPshYoX0JgS+AJgV3GjdtbVBsNNtTFG9MmQY1OudEb2alpXh4bgcYbyVFPgTsQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(346002)(396003)(366004)(376002)(39850400004)(451199024)(186009)(1800799009)(53546011)(6486002)(6506007)(66946007)(110136005)(66476007)(66556008)(6512007)(316002)(41300700001)(31686004)(478600001)(4326008)(8936002)(8676002)(26005)(5660300002)(36756003)(38100700002)(83380400001)(2906002)(2616005)(31696002)(86362001)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OHRsakxTM1FVU1dodzJkYlZaWFZOTDhXUyswWVNKU2FaSTlDeG1vSlkzQ1lw?=
- =?utf-8?B?Y2ozb3FDSVpjRUlYQ0JzWDFzNWJ6ZnZvRmlKaDk3MThZWEloS0Q2bUJQTjRu?=
- =?utf-8?B?dithbHMwWHU3L2NZbU1BVXBYWEJTSGFIUFc5cFRFUkU3bkMzdldTR0s4UHIr?=
- =?utf-8?B?cXMrSXd3cm03eU5QY3hzOGlDRWlla2M5eC9sK3F5RVkxcnBzNklYUkF4cG4y?=
- =?utf-8?B?SXRTUFA3RUh0aXZDWm1nTlpCT3NFMEYzMTFkcGpVcUN2VEMyNGI2dFExOVRa?=
- =?utf-8?B?cHhubjFYekNqMVI4YjVTMG16N0Y0MUdPT2xUK0tKOGRYVDN1S0xsZWdtelRX?=
- =?utf-8?B?aUt1ZXIrTzRnai94VnljdUk2UGtDeStKcXNSQVpweVdIcmpHa0U1UUtKR3B3?=
- =?utf-8?B?aGRSNzI4L2tFMDBHbStoakk1OWlXZlN5VjUvSEMvZW5nMWhwMVFVOG5DVmp4?=
- =?utf-8?B?WktrcWZtTFBEYkVNbHFhOEpJdDJIWUlnTktNaXl2ckNWaWo2cy9QUkZISEdT?=
- =?utf-8?B?cG1VRHplYjc4dmZjck5IdFZUb0tqb0NCa2E4OU5lR1haaTRZYmlOSjZpaWRv?=
- =?utf-8?B?NTdDbkZjVU9oT3pTVmhCVFdQMVFOeWNWb2pKYitlbXNnMVF2WVRGZlR4SmVy?=
- =?utf-8?B?RFZFZmhNSUpaeVFsR3dlbzF1aUtmaEtCSUcxKytDRDh5QTBMVi9CRkZQNW1L?=
- =?utf-8?B?dVJBM3NBSG5yVVpaWTU5QjlKcStxZ0xZTVZVUVdpWHAwVGVWTDlkdU44REph?=
- =?utf-8?B?WFVDYlJwRmVTeU9rQzdWWTlobHV2Mit5b05pWlAyWkpaTnhKSHZVWGdFVGp0?=
- =?utf-8?B?ZzdOaU1WQ1ZPbGJ6U3ZCSkdiNE92LzMrVGR3SUxsV0I3ZUlvanFQbHE4Y1I3?=
- =?utf-8?B?MGdpTUtTcWkreUlWL2ZuNmdsa1NxdGVkenJVWnZrckZFbnBsOVdqT2hDUnJZ?=
- =?utf-8?B?ZHhXbzgzaUNoTDMzTE5MU253UGdVVU11OGg1VVd4RFlRRGlwaVhGZ2Y1UXJH?=
- =?utf-8?B?S053VWlWZzBsTWs4QktMOXBYSTdiRldtdHNOMFNrOGYxbmQzUjlvbWRMK1FQ?=
- =?utf-8?B?RXByamdnQ043V0g2eDhSb0JuTVpkSVhkaXBtTFBpdk9lNVRIcjhzL0h1dEVZ?=
- =?utf-8?B?azBUZlVLeWhGV2U2cEhoTkovWVMrYldWRlhzU0FpdFNhK3R3SnpPMkhIUmtN?=
- =?utf-8?B?eFdIRUR4UjVkcHZrS08wazkwQ1Q2cjVVZnY3NU5MVm96OHBvSFdVdUxnRExB?=
- =?utf-8?B?MWI5dU5yQ0h6aVYrUjkrcnhJNm5iYUFIZTFCMDhQSUhWaVA5K2pYQ3MyRlMy?=
- =?utf-8?B?MmF3TGdzMC8zc2E5bi9UN3NkaVNFMCtuZ2didjB3MFJPUkhZSituZmhmYXpR?=
- =?utf-8?B?WE5RQ0EreEcyVWlvRDZwM2JWbVU5WkkzZlo1RGs4UHlBNlhTdkxwcDN1VXJS?=
- =?utf-8?B?eEl3S00ySG5rdDlsWHhsMENBR2xKWUpteWEyZy91OEcxZmZkMHBjZzFGcVRo?=
- =?utf-8?B?ajhZdUhTTUFwcU1XbnpLellMZHZOUVlzMDVSMXZjVkhoSzBad1BETE5OdHZz?=
- =?utf-8?B?QUtXYkZobmpMNk1qb1c4WUJxamR4VHlJcyt2Tkw1Y0tEL2pUN0ZScldoL1Vl?=
- =?utf-8?B?a3dBUFdXSE1iTmpnbVYzdGptNXk1VkgyTzg3RjRjaGhobktlV21FNThyeFJy?=
- =?utf-8?B?VzdxMExIcCtaNFc5RGNzdGMwU0FiSm43T0hGL09aU2FOTTgxUko4Rzg2K2Np?=
- =?utf-8?B?RVY3MC9mZ0tzOU9qaC82bjBhVUtPcDIrc2NEVTlrSGo2UEVKcUNvQ1NYdmxi?=
- =?utf-8?B?MXVsWFl5QnB1WS9DL3UzSC9xTzFZOVdiVFlzUEUzQTZCWXNLaGg1SXRUWEJs?=
- =?utf-8?B?WFViNTFpR1JQYjRPSWF4Y2RJc3RyNUdyQk5NUjJWZ05nNks4Rnl2TzFUbUJ3?=
- =?utf-8?B?c3E0QlpkQ3RWUGRlRlBuZy9CY28wUnNIMlJuWFVMbXhJY3A5Y0VyYVFhd0dK?=
- =?utf-8?B?enJ0UFp2VGNMY0t0SGt4N2kySDR4MFFIZm5PQ1Nma1E1LzJwMEJpODRaeWR3?=
- =?utf-8?B?enBFR1FVZVZiUjBUQnpPUWxpNUZ6ZXZnK3gveGsrVDk4UFcrbmErR1FMN21P?=
- =?utf-8?Q?BkMsSmebFAq57+VN6ib7C66iS?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a955a8f9-d241-46d3-b4e7-08dbb8506165
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 14:05:57.4791 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X/jbK8Sv5COCuB9Mlx3RWiMJt6ePrXyY9YAbiRe+6NVJj1wZgbN6sgirxDgucuZhqyUc7OvSLC9dVcPMoyFY4A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR08MB7939
-Received-SPF: pass client-ip=2a01:111:f400:fe0e::727;
- envelope-from=den@virtuozzo.com;
- helo=EUR04-VI1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+References: <20230918135448.90963-1-anisinha@redhat.com>
+ <20230918095905-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230918095905-mutt-send-email-mst@kernel.org>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Mon, 18 Sep 2023 19:40:45 +0530
+Message-ID: <CAK3XEhOH_hpykKx7k_ak-rz5SzanP9s+tLgEUVaNk3MYkA9r-g@mail.gmail.com>
+Subject: Re: [PATCH] hw/i386/pc: fix max_used_gpa for 32-bit systems
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: david@redhat.com, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, philmd@linaro.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=1,
- NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -149,66 +97,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/23 15:57, Alexander Ivanov wrote:
-> On 9/15/23 20:41, Denis V. Lunev wrote:
->> * Discarding with backing stores is not supported by the format.
->> * There is no buffering/queueing of the discard operation.
->> * Only operations aligned to the cluster are supported.
->>
->> Signed-off-by: Denis V. Lunev <den@openvz.org>
->> ---
->>   block/parallels.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 47 insertions(+)
->>
->> diff --git a/block/parallels.c b/block/parallels.c
->> index 76aedfd7c4..83cb8d6722 100644
->> --- a/block/parallels.c
->> +++ b/block/parallels.c
->> @@ -537,6 +537,52 @@ parallels_co_readv(BlockDriverState *bs, int64_t 
->> sector_num, int nb_sectors,
->>       return ret;
->>   }
->>   +
->> +static int coroutine_fn GRAPH_RDLOCK_PTR
->> +parallels_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t 
->> bytes)
->> +{
->> +    int ret = 0;
->> +    uint32_t cluster, count;
->> +    BDRVParallelsState *s = bs->opaque;
->> +
->> +    /*
->> +     * The image does not support ZERO mark inside the BAT, which 
->> means that
->> +     * stale data could be exposed from the backing file.
->> +     */
->> +    if (bs->backing) {
->> +        return -ENOTSUP;
->> +    }
->> +
->> +    if (!QEMU_IS_ALIGNED(offset, s->cluster_size)) {
->> +        return -ENOTSUP;
->> +    } else if (!QEMU_IS_ALIGNED(bytes, s->cluster_size)) {
->> +        return -ENOTSUP;
->> +    }
->> +
->> +    cluster = offset / s->cluster_size;
->> +    count = bytes / s->cluster_size;
->> +
->> +    qemu_co_mutex_lock(&s->lock);
->> +    for (; count > 0; cluster++, count--) {
->> +        int64_t host_off = bat2sect(s, cluster) << BDRV_SECTOR_BITS;
->> +        if (host_off == 0) {
->> +            continue;
->> +        }
->> +
->> +        ret = bdrv_co_pdiscard(bs->file, cluster * s->cluster_size,
->> +                               s->cluster_size);
-> It seems, bdrv_co_pdiscard() should be called with a host offset, but 
-> there is a guest one.
+On Mon, Sep 18, 2023 at 7:31=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+>
+> On Mon, Sep 18, 2023 at 07:24:48PM +0530, Ani Sinha wrote:
+> > 32-bit systems do not have a reserved memory for hole64 but they may ha=
+ve a
+> > reserved memory space for memory hotplug. Since, hole64 starts after th=
+e
+> > reserved hotplug memory, the unaligned hole64 start address gives us th=
+e
+> > end address for this memory hotplug region that the processor may use.
+> > Fix this. This ensures that the physical address space bound checking w=
+orks
+> > correctly for 32-bit systems as well.
+> >
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>
+>
+> I doubt we can make changes like this without compat machinery. No?
 
-correct. On top of that unit test should be modified to catch
-this problem.
+Is that for not breaking migration or being backward compatible
+(something which was broken in the first place used to work but now
+its doesnt because we fixed it?)
 
-Den
+>
+> > ---
+> >  hw/i386/pc.c | 60 ++++++++++++++++++++++++++++++----------------------
+> >  1 file changed, 35 insertions(+), 25 deletions(-)
+> >
+> > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> > index 54838c0c41..c8abcabd53 100644
+> > --- a/hw/i386/pc.c
+> > +++ b/hw/i386/pc.c
+> > @@ -904,13 +904,43 @@ static uint64_t pc_get_cxl_range_end(PCMachineSta=
+te *pcms)
+> >      return start;
+> >  }
+> >
+> > +/*
+> > + * The 64bit pci hole starts after "above 4G RAM" and
+> > + * potentially the space reserved for memory hotplug.
+> > + * This function returns unaligned start address.
+> > + */
+> > +static uint64_t pc_pci_hole64_start_unaligned(void)
+> > +{
+> > +    PCMachineState *pcms =3D PC_MACHINE(qdev_get_machine());
+> > +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
+> > +    MachineState *ms =3D MACHINE(pcms);
+> > +    uint64_t hole64_start =3D 0;
+> > +    ram_addr_t size =3D 0;
+> > +
+> > +    if (pcms->cxl_devices_state.is_enabled) {
+> > +        hole64_start =3D pc_get_cxl_range_end(pcms);
+> > +    } else if (pcmc->has_reserved_memory && (ms->ram_size < ms->maxram=
+_size)) {
+> > +        pc_get_device_memory_range(pcms, &hole64_start, &size);
+> > +        if (!pcmc->broken_reserved_end) {
+> > +            hole64_start +=3D size;
+> > +        }
+> > +    } else {
+> > +        hole64_start =3D pc_above_4g_end(pcms);
+> > +    }
+> > +
+> > +    return hole64_start;
+> > +}
+> > +
+> >  static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole6=
+4_size)
+> >  {
+> >      X86CPU *cpu =3D X86_CPU(first_cpu);
+> >
+> > -    /* 32-bit systems don't have hole64 thus return max CPU address */
+> > -    if (cpu->phys_bits <=3D 32) {
+> > -        return ((hwaddr)1 << cpu->phys_bits) - 1;
+> > +    /*
+> > +     * 32-bit systems don't have hole64, but we might have a region fo=
+r
+> > +     * memory hotplug.
+> > +     */
+> > +    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
+> > +        return pc_pci_hole64_start_unaligned() - 1;
+> >      }
+> >
+>
+> I see you are changing cpu->phys_bits to a CPUID check.
+> Could you explain why in the commit log?
+
+Yeah missed that but will do in v2.
+
+>
+> >      return pc_pci_hole64_start() + pci_hole64_size - 1;
+> > @@ -1147,30 +1177,10 @@ void pc_memory_init(PCMachineState *pcms,
+> >      pcms->memhp_io_base =3D ACPI_MEMORY_HOTPLUG_BASE;
+> >  }
+> >
+> > -/*
+> > - * The 64bit pci hole starts after "above 4G RAM" and
+> > - * potentially the space reserved for memory hotplug.
+> > - */
+> > +/* returns 1 GiB aligned hole64 start address */
+> >  uint64_t pc_pci_hole64_start(void)
+> >  {
+> > -    PCMachineState *pcms =3D PC_MACHINE(qdev_get_machine());
+> > -    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
+> > -    MachineState *ms =3D MACHINE(pcms);
+> > -    uint64_t hole64_start =3D 0;
+> > -    ram_addr_t size =3D 0;
+> > -
+> > -    if (pcms->cxl_devices_state.is_enabled) {
+> > -        hole64_start =3D pc_get_cxl_range_end(pcms);
+> > -    } else if (pcmc->has_reserved_memory && (ms->ram_size < ms->maxram=
+_size)) {
+> > -        pc_get_device_memory_range(pcms, &hole64_start, &size);
+> > -        if (!pcmc->broken_reserved_end) {
+> > -            hole64_start +=3D size;
+> > -        }
+> > -    } else {
+> > -        hole64_start =3D pc_above_4g_end(pcms);
+> > -    }
+> > -
+> > -    return ROUND_UP(hole64_start, 1 * GiB);
+> > +    return ROUND_UP(pc_pci_hole64_start_unaligned(), 1 * GiB);
+> >  }
+> >
+> >  DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus)
+> > --
+> > 2.39.1
+>
+
 
