@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0A37A518D
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AA57A51C4
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:10:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiIZX-0007LW-53; Mon, 18 Sep 2023 14:02:11 -0400
+	id 1qiIZ7-0006tb-R8; Mon, 18 Sep 2023 14:01:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYW-0006fJ-Ig; Mon, 18 Sep 2023 14:01:12 -0400
+ id 1qiIYW-0006fI-JN; Mon, 18 Sep 2023 14:01:12 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYS-00037Q-NI; Mon, 18 Sep 2023 14:01:08 -0400
+ id 1qiIYS-00037X-Mj; Mon, 18 Sep 2023 14:01:08 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qiIUy-008crV-1b;
- Mon, 18 Sep 2023 20:00:52 +0200
+ (envelope-from <den@openvz.org>) id 1qiIUz-008crV-2m;
+ Mon, 18 Sep 2023 20:00:54 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 01/22] parallels: fix formatting in bdrv_parallels
- initialization
-Date: Mon, 18 Sep 2023 20:00:38 +0200
-Message-Id: <20230918180100.524843-2-den@openvz.org>
+Subject: [PATCH 3/3] tests: extend test 131 to cover availability of the
+ write-zeroes
+Date: Mon, 18 Sep 2023 20:00:41 +0200
+Message-Id: <20230918180100.524843-5-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230918180100.524843-1-den@openvz.org>
 References: <20230918180100.524843-1-den@openvz.org>
@@ -56,62 +56,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Old code is ugly and contains tabulations. There are no functional
-changes in this patch.
+This patch contains test which minimally tests write-zeroes on top of
+working discard.
+
+The following checks are added:
+* write 2 clusters, write-zero to the first allocated cluster
+* write 2 cluster, write-zero to the half the first allocated cluster
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 36 +++++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 17 deletions(-)
+ tests/qemu-iotests/131     | 20 ++++++++++++++++++++
+ tests/qemu-iotests/131.out | 20 ++++++++++++++++++++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/block/parallels.c b/block/parallels.c
-index 48c32d6821..2ebd8e1301 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -1249,23 +1249,25 @@ static void parallels_close(BlockDriverState *bs)
- }
+diff --git a/tests/qemu-iotests/131 b/tests/qemu-iotests/131
+index e50a658f22..308732d84b 100755
+--- a/tests/qemu-iotests/131
++++ b/tests/qemu-iotests/131
+@@ -105,6 +105,26 @@ _make_test_img $size
+ { $QEMU_IO -c "read -P 0 0 $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+ { $QEMU_IO -c "read -P 0 $((CLUSTER_SIZE + CLUSTER_HALF_SIZE)) $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
- static BlockDriver bdrv_parallels = {
--    .format_name	= "parallels",
--    .instance_size	= sizeof(BDRVParallelsState),
--    .bdrv_probe		= parallels_probe,
--    .bdrv_open		= parallels_open,
--    .bdrv_close		= parallels_close,
--    .bdrv_child_perm          = bdrv_default_perms,
--    .bdrv_co_block_status     = parallels_co_block_status,
--    .bdrv_has_zero_init       = bdrv_has_zero_init_1,
--    .bdrv_co_flush_to_os      = parallels_co_flush_to_os,
--    .bdrv_co_readv  = parallels_co_readv,
--    .bdrv_co_writev = parallels_co_writev,
--    .is_format      = true,
--    .supports_backing = true,
--    .bdrv_co_create      = parallels_co_create,
--    .bdrv_co_create_opts = parallels_co_create_opts,
--    .bdrv_co_check  = parallels_co_check,
--    .create_opts    = &parallels_create_opts,
-+    .format_name                = "parallels",
-+    .instance_size              = sizeof(BDRVParallelsState),
-+    .create_opts                = &parallels_create_opts,
-+    .is_format                  = true,
-+    .supports_backing           = true,
++echo "== check write-zeroes =="
 +
-+    .bdrv_has_zero_init         = bdrv_has_zero_init_1,
++# Clear image
++_make_test_img $size
 +
-+    .bdrv_probe                 = parallels_probe,
-+    .bdrv_open                  = parallels_open,
-+    .bdrv_close                 = parallels_close,
-+    .bdrv_child_perm            = bdrv_default_perms,
-+    .bdrv_co_block_status       = parallels_co_block_status,
-+    .bdrv_co_flush_to_os        = parallels_co_flush_to_os,
-+    .bdrv_co_readv              = parallels_co_readv,
-+    .bdrv_co_writev             = parallels_co_writev,
-+    .bdrv_co_create             = parallels_co_create,
-+    .bdrv_co_create_opts        = parallels_co_create_opts,
-+    .bdrv_co_check              = parallels_co_check,
- };
- 
- static void bdrv_parallels_init(void)
++{ $QEMU_IO -c "write -P 0x11 0 $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "write -z 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IMG map "$TEST_IMG"; } 2>&1 | _filter_qemu_img_map
++{ $QEMU_IO -c "read -P 0 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== check cluster-partial write-zeroes =="
++
++# Clear image
++_make_test_img $size
++
++{ $QEMU_IO -c "write -P 0x11 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "write -z 0 $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0 0 $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++{ $QEMU_IO -c "read -P 0x11 $CLUSTER_HALF_SIZE $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
+ echo "== allocate with backing =="
+ # Verify that allocating clusters works fine even when there is a backing image.
+ # Regression test for a bug where we would pass a buffer read from the backing
+diff --git a/tests/qemu-iotests/131.out b/tests/qemu-iotests/131.out
+index 9882f9df6c..8493561bab 100644
+--- a/tests/qemu-iotests/131.out
++++ b/tests/qemu-iotests/131.out
+@@ -64,6 +64,26 @@ read 524288/524288 bytes at offset 0
+ 512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ read 2097152/2097152 bytes at offset 1572864
+ 2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check write-zeroes ==
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
++wrote 2097152/2097152 bytes at offset 0
++2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Offset          Length          File
++0x100000        0x100000        TEST_DIR/t.IMGFMT
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== check cluster-partial write-zeroes ==
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++wrote 524288/524288 bytes at offset 0
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 524288/524288 bytes at offset 0
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++read 524288/524288 bytes at offset 524288
++512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ == allocate with backing ==
+ Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+ Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=67108864
 -- 
 2.34.1
 
