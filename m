@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C997D7A4B5B
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0A47A4B5A
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:01:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiFjB-0000Om-DW; Mon, 18 Sep 2023 10:59:57 -0400
+	id 1qiFjC-0000Re-Hy; Mon, 18 Sep 2023 10:59:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=KtGU=FC=kaod.org=clg@ozlabs.org>)
- id 1qiFir-0000Er-Tj; Mon, 18 Sep 2023 10:59:38 -0400
+ id 1qiFis-0000Ev-A7; Mon, 18 Sep 2023 10:59:38 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=KtGU=FC=kaod.org=clg@ozlabs.org>)
- id 1qiFiY-0005zX-Cc; Mon, 18 Sep 2023 10:59:24 -0400
+ id 1qiFid-000618-0O; Mon, 18 Sep 2023 10:59:25 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rq7H80RMJz4xM1;
- Tue, 19 Sep 2023 00:59:16 +1000 (AEST)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rq7HC0n3Fz4xM6;
+ Tue, 19 Sep 2023 00:59:19 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rq7H53WXFz4xM6;
- Tue, 19 Sep 2023 00:59:13 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rq7H841WHz4xM7;
+ Tue, 19 Sep 2023 00:59:16 +1000 (AEST)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
@@ -34,10 +34,9 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Harsh Prateek Bora <harshpb@linux.ibm.com>,
  Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH 1/8] hw/ppc: Clean up local variable shadowing in _FDT helper
- routine
-Date: Mon, 18 Sep 2023 16:58:43 +0200
-Message-ID: <20230918145850.241074-2-clg@kaod.org>
+Subject: [PATCH 2/8] pnv/psi: Clean up local variable shadowing
+Date: Mon, 18 Sep 2023 16:58:44 +0200
+Message-ID: <20230918145850.241074-3-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230918145850.241074-1-clg@kaod.org>
 References: <20230918145850.241074-1-clg@kaod.org>
@@ -67,44 +66,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-this fixes numerous warnings of this type :
+to fix :
 
-  In file included from ../hw/ppc/spapr_pci.c:43:
-  ../hw/ppc/spapr_pci.c: In function ‘spapr_dt_phb’:
-  ../include/hw/ppc/fdt.h:18:13: warning: declaration of ‘ret’ shadows a previous local [-Wshadow=compatible-local]
-     18 |         int ret = (exp);                                           \
-        |             ^~~
-  ../hw/ppc/spapr_pci.c:2355:5: note: in expansion of macro ‘_FDT’
-   2355 |     _FDT(bus_off = fdt_add_subnode(fdt, 0, phb->dtbusname));
-        |     ^~~~
-  ../hw/ppc/spapr_pci.c:2311:24: note: shadowed declaration is here
-   2311 |     int bus_off, i, j, ret;
-        |                        ^~~
+  ../hw/ppc/pnv_psi.c: In function ‘pnv_psi_p9_mmio_write’:
+  ../hw/ppc/pnv_psi.c:741:24: warning: declaration of ‘addr’ shadows a parameter [-Wshadow=compatible-local]
+    741 |                 hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+        |                        ^~~~
+  ../hw/ppc/pnv_psi.c:702:56: note: shadowed declaration is here
+    702 | static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
+        |                                                 ~~~~~~~^~~~
 
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- include/hw/ppc/fdt.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ hw/ppc/pnv_psi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/ppc/fdt.h b/include/hw/ppc/fdt.h
-index a8cd85069fe0..b56ac2a8cbb5 100644
---- a/include/hw/ppc/fdt.h
-+++ b/include/hw/ppc/fdt.h
-@@ -15,10 +15,10 @@
- 
- #define _FDT(exp)                                                  \
-     do {                                                           \
--        int ret = (exp);                                           \
--        if (ret < 0) {                                             \
--            error_report("error creating device tree: %s: %s",   \
--                    #exp, fdt_strerror(ret));                      \
-+        int _ret = (exp);                                          \
-+        if (_ret < 0) {                                            \
-+            error_report("error creating device tree: %s: %s",     \
-+                    #exp, fdt_strerror(_ret));                     \
-             exit(1);                                               \
-         }                                                          \
-     } while (0)
+diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
+index daaa2f0575fd..26460d210deb 100644
+--- a/hw/ppc/pnv_psi.c
++++ b/hw/ppc/pnv_psi.c
+@@ -738,8 +738,9 @@ static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
+             }
+         } else {
+             if (!(psi->regs[reg] & PSIHB9_ESB_CI_VALID)) {
+-                hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+-                memory_region_add_subregion(sysmem, addr,
++                hwaddr esb_addr =
++                    val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
++                memory_region_add_subregion(sysmem, esb_addr,
+                                             &psi9->source.esb_mmio);
+             }
+         }
 -- 
 2.41.0
 
