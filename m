@@ -2,74 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953DD7A4999
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 14:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34BE97A49A1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 14:30:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiDM1-0006UJ-9U; Mon, 18 Sep 2023 08:27:53 -0400
+	id 1qiDNk-0007SW-3u; Mon, 18 Sep 2023 08:29:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qiDLt-0006RV-GV
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:27:48 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qiDLn-00064Y-TE
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:27:44 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9a9d6b98845so1214001766b.0
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 05:27:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695040058; x=1695644858; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=5Cr+Ko7QspAhTvPFgBPMU4WOmRLT7hHyAdpJ94mdw28=;
- b=F8UBnPel/c+NoAzAiAUVYVIay8hfc6oOXA9dQi/WR2sJOodEzbxZ4iJohNa5rg8uJg
- QXJU9km8z9TJhQxYBHIf6bSblEARHtLqHrqyvW1HZWvYIG69Y05agq/oB88a7J+qkDJJ
- D64XcRrlWo4bBw3ylucFeXXNERxDMiPHpFgfsKlTkr//z/y0FGD5/l5l+Fw0xJGOegVY
- qOVyxMVj+2z07wpF+C0Ro5mXIBmiC3NMTY5FQgf0unjgf2ZcWwPtDrd3rkCq7lIFLkXl
- hKzDrhwxxl8zC/m34WIHp6sxES4p7QNf4h87cnTMzq0DrMuXSe1n6lsU1oAvl2Uk5N1A
- TKKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695040058; x=1695644858;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5Cr+Ko7QspAhTvPFgBPMU4WOmRLT7hHyAdpJ94mdw28=;
- b=EELycK279rePcdf6lJrj/ABjF4enTOek2F625sUaJgx1wTn835q4Vqnx2OiYmAAqeI
- 9pt2JN6BmToXAQ8HocLs7j1hBtX6yUl1ajc3GR5KNI78ieXzgHqGUmeZiuuGqB+Pv2pq
- BGlJ/u4xwGoVBjCC9jPVN6vv7TvndIr1wnrBWDOljq/hYHwEraU+VKmGhrnOl5DQFvrG
- 8Imzd8xskqr6CbOmi4YMPxd0+SL/yqi/Ke/Z7jWnOKLiHTlhDVJWExW+uDKFYtA+Hf25
- U88VZzSjNSZm1cnkW/m5pPkDbPN0gqeO0wxqK6QWwmqVLXxx/qBepUCm6mrBdG8Py0IT
- 81OQ==
-X-Gm-Message-State: AOJu0YwQUEKhnFEoatcidSD0bbp6XsvNj8ecLycD+y+dSjegEH/WbkOP
- ujJc1oPqdNzVBbJzaDHFScTxoOk0X29xQVYw9vtWNw==
-X-Google-Smtp-Source: AGHT+IHZFh+VD0PAN69qXUNT43OOPSpW/leNuyBcV0fX76t91a0ZviUeyyFEgTWVshaChJy/u4ODa0/YGpDxCUrezM0=
-X-Received: by 2002:a17:907:7b88:b0:9ad:8a96:ad55 with SMTP id
- ne8-20020a1709077b8800b009ad8a96ad55mr18402055ejc.14.1695040058250; Mon, 18
- Sep 2023 05:27:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qiDNg-0007Qa-Aa
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:29:36 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qiDNc-0006R2-0a
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:29:35 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rq3xM18sLz6K6WS;
+ Mon, 18 Sep 2023 20:28:39 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 18 Sep
+ 2023 13:29:27 +0100
+Date: Mon, 18 Sep 2023 13:29:26 +0100
+To: Michael Tokarev <mjt@tls.msk.ru>
+CC: <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, <linuxarm@huawei.com>
+Subject: Re: [PATCH 2/4] hw/cxl: Use available size parameter to index into
+ register arrays.
+Message-ID: <20230918132926.00005c97@Huawei.com>
+In-Reply-To: <d1eac212-91c4-a78d-abbd-15d24a732680@tls.msk.ru>
+References: <20230913150521.30035-1-Jonathan.Cameron@huawei.com>
+ <20230913150521.30035-3-Jonathan.Cameron@huawei.com>
+ <d1eac212-91c4-a78d-abbd-15d24a732680@tls.msk.ru>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20230914113311.379537-1-thuth@redhat.com>
-In-Reply-To: <20230914113311.379537-1-thuth@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Sep 2023 13:27:18 +0100
-Message-ID: <CAFEAcA-dret2XW4hd=PV1zvTnd5sFeH4VERkxZBWi1UPji4otw@mail.gmail.com>
-Subject: Re: [risu PATCH v3 0/7] Add support for s390x to RISU
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Ilya Leoshkevich <iii@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,26 +66,117 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Sept 2023 at 12:33, Thomas Huth <thuth@redhat.com> wrote:
->
->  Hi Peter!
->
-> Here are some patches that add basic support for s390x to RISU.
-> It's still quite limited, e.g. no support for load/store memory
-> operations yet, but the basics with simple 16-bit or 32-bit
-> instructions work *now* already fine.
->
-> (I'm also already experimenting in extending RISU to support
-> instructions with opcodes lengths > 32-bit, but the patches
-> are not quite ready yet)
+On Thu, 14 Sep 2023 15:54:54 +0300
+Michael Tokarev <mjt@tls.msk.ru> wrote:
 
-Hi; I've applied these patches to risu master, except for
-the last Travis one -- I'm not sure that makes sense for
-the upstream repo given it doesn't use Travis.
+> 13.09.2023 18:05, Jonathan Cameron via wrote:
+> > Indexing has to be done into an array with the right size elements.
+> > As such, the size parameter always matches the array element size
+> > and can be used in place of the longer sizeof(*array)
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >   hw/cxl/cxl-component-utils.c | 8 ++++----
+> >   1 file changed, 4 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+> > index f3bbf0fd13..089e10b232 100644
+> > --- a/hw/cxl/cxl-component-utils.c
+> > +++ b/hw/cxl/cxl-component-utils.c
+> > @@ -76,7 +76,7 @@ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
+> >       if (cregs->special_ops && cregs->special_ops->read) {
+> >           return cregs->special_ops->read(cxl_cstate, offset, size);
+> >       } else {
+> > -        return cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_registers)];
+> > +        return cregs->cache_mem_registers[offset / size];  
+> 
+> This is a though one, and smells wrong.
+> 
+> Though because it is not at all obvious where this "size" value comes from,
+> have to find usage(s) of this function (cache_mem_ops) and think twice about
+> the other parameters in there.  Also having in mind the previous comparison
+> with 8.  In this part of the code, size should always be =4, but it takes
+> hard time to figure this out.
+> 
+> Wrong - no, because of the above - the only 2 possible values are 4 and 8,
+> but it's difficult to see what's going on, and you're making it worse.
+> 
+> Original code was at least clear you're getting a single register from
+> an array of registers, with new code it is not clear at all.
 
-thanks
--- PMM
+Fair point.
+
+> 
+> What I'd probably use here is to add comment that size can be either 4 or 8,
+> and use a switch similar to what you've used in first patch in this series.
+> And have a static_assert(sizeof(register) == 4) or something like that
+> here in this second branch.
+
+Good idea.
+> 
+> So it is something like:
+> 
+> static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
+>                                         unsigned size)
+> {
+>      CXLComponentState *cxl_cstate = opaque;
+>      ComponentRegisters *cregs = &cxl_cstate->crb;
+> 
+>      switch (size) {
+>      case 8:
+>          qemu_log_mask(LOG_UNIMP,
+>                        "CXL 8 byte cache mem registers not implemented\n");
+>          return 0;
+> 
+>      case 4:
+>          if (cregs->special_ops && cregs->special_ops->read) {
+>              return cregs->special_ops->read(cxl_cstate, offset, 4);
+>          } else {
+>              return cregs->cache_mem_registers[offset /
+>                                                sizeof(*cregs->cache_mem_registers)];
+>          }
+> 
+>      default:
+>          /* this routine is called with size being either 4 or 8 only */
+>          g_assert_not_reached();
+>      }
+> }
+> 
+> Note: I especially left the sizeof() here, instead of using a previously
+> suggested static_assert() - because a register can be implemented using
+> larger integers on the host, it does not need to be 4 bytes, - but only
+> low 4 bytes can actually be used.
+
+I don't follow.  Here cache_mem_registers is an array of uint32_t so
+it is going to be 4 bytes on any host!  Obviously that's not true for
+registers in general.
+
+So I've added the assert as it is always valid and made it a  / 4
+
+Note I ended up with just using size in the first place because I was
+planning to add a local variable that was always the same size and that was silly.
+
+> 
+> This does not shorten the line (it does by wrapping it up), but it keep
+> code correct and more understandable.  Adding size parameter there makes
+> it much more cryptic.
+> 
+> Here and in other places.
+> 
+> This is just an example, not a suggestion.
+
+It makes sense.  Sorry - thought I'd sent this last week!
+
+
+Jonathan
+
+> 
+> /mjt
+> 
+
 
