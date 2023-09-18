@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481DC7A4DFE
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82CB37A4DFA
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:04:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiGiR-000681-OL; Mon, 18 Sep 2023 12:03:15 -0400
+	id 1qiGiw-0006OU-FV; Mon, 18 Sep 2023 12:03:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGiQ-00067O-DM
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:14 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGid-0006Hy-8v
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:28 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGiN-0003wA-Db
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:14 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9ada6b0649fso626323266b.1
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:03:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiGiZ-0003zz-6z
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:03:26 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2b974031aeaso76944031fa.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695052990; x=1695657790; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695053000; x=1695657800; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lJh8A0itxnh0qEmv9jrQE8icd48ukduXjwQKR8H2Trw=;
- b=jrhQ3GbnlilvUeYiyHkTizej73YVtm8JTqAX383OkBM7p6aW+Qu9BPzymAa1Dbkujj
- wSnHIFVuHHcp4TTWb66uOhbp4uXuyNvwp6DFoGLhXR9YLAyWPa6BupKnHgtSPG5RVUhS
- k22HBGyxie9ZnTy9bWQmR8NK2piJ4n6pYGATLxbDaAnpFd23/hLEuBySumB0iMHNGxrp
- GOkSnW9GT8gj3E7J+gOAoZ4OCqoAjxuRI1xYtSyInCX9iSGUMnPSZaHywKT9obh8+hMA
- KFbVGQg8HEAOWRCcRRRPF9blCjxlJsKoPZqDjWgT4YzvhAAyepASKt+/WpgCuPUWZ58e
- 5QQA==
+ bh=IHtTfQAIBirG1HCAZXzmunPPBo4zEHxiDOOzxMZ7AZo=;
+ b=kmxdN70O9UZcO4mkq9CEYddQO5QOshfDtLZewLGQR4168S5eww1T8ZXwV5+xkivE5J
+ brtwb+XuEF/0s6wRMFZW5GkVhpAFcRqJnvb0yF3xuhE+9iVZDtQAN0LiSYMCQyruS+lN
+ 263VUkYr5v5Iwiq1vf12MuwEqrd/ykboc2UY8aoI5mlUmb8sZJPH/r+K3SHuOkFdTfVP
+ S/AuBIpmP7FVBaaNIrtn6ENbhStAVqnwdlb/BvIyIV/056LKflfJIgZRpuEE+DHvWAi9
+ cU5duhBw81S/e4yA62+AUoEBi+RxKD9R5KQ9PMBPRyVwTbMoWUpvR3yL0n4zzwCNXn3k
+ kB0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695052990; x=1695657790;
+ d=1e100.net; s=20230601; t=1695053000; x=1695657800;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lJh8A0itxnh0qEmv9jrQE8icd48ukduXjwQKR8H2Trw=;
- b=lHbCFoeQmIUhrI3jTL3DBcIQ7Aa6K+rd0SeVt6iNO6JYeGc0vAfbn/AQdMrvFaKrHx
- 1DQa9uYgPCu2TvTcXPAWemvNTeccy6I+SE+rP7YnirruVNBEzq1hPpm8FX2ZtgICubog
- 1yevxVJd6QfFrlJta2Rv+CMlaLOemRWUjEhCGoIS6Yu4ACtojYOEcF8SWZW+YD6bb73b
- jAdeGoheq1YFt3MSlvUkIsiyCJweM8lFy3t26eaNFBTQERH0XNj9zNWGyFKHrC/T+L2e
- S+XzaBPcFZ/sUMtng+f9SWQRfRmYLNU4gEk+te731GbPFzYkcoDKmZj5jBxwdhXOf+80
- 1DnA==
-X-Gm-Message-State: AOJu0Yzvu/vWq2WFXuKErfvA/omtXe1mLYcn2gFavNi4kORbmoB3y2xe
- 7MnmRqtUKmV6P7f1V4cNjyP0e6b401mhouEVcRiN2YSk
-X-Google-Smtp-Source: AGHT+IENcyvi+doZG3AFC4PIQIYrRhEsNXfli8+UC+v7xx7kqnWdf8S7ahUZm+Cso8ML7TazVXsAxw==
-X-Received: by 2002:a17:907:7754:b0:9ae:1b64:94c0 with SMTP id
- kx20-20020a170907775400b009ae1b6494c0mr1603066ejc.55.1695052989741; 
- Mon, 18 Sep 2023 09:03:09 -0700 (PDT)
+ bh=IHtTfQAIBirG1HCAZXzmunPPBo4zEHxiDOOzxMZ7AZo=;
+ b=IaLnwfxlvGuYHfx4gJEfD1W5VyFERy+dVrgb9uouJzhAFd73jOSkRYOfvMsCLM6M7V
+ 0CSckMzzeya1etAOCu1lTzGjy2zKFJh/vkbcpBQAInMcF1ZBkuylkiNSxF5P+wU3+XEY
+ g9RipxR995swj9FoqX6T6EiQ2t91Ct2Y5BFeEDw0uTFl/nJNvVc8Dg/W2u+AObX/XUL1
+ 3hg7QVur68QAjJX1LVZmrBcfWjmVQohDmfanyK5gxYtO6a/YY9BMFxXRrIgPoNJTjaqP
+ fezMPRcxI+A9VSTEbQsrmr2hV/lNq2oSXu6BqC5B+/OJ5trn9ovmVp3dkbx1CzsUcXjj
+ QOGw==
+X-Gm-Message-State: AOJu0Yy+lo83e4HJffbRdgAP5PiQCEBfMmrhniQdGS1VzgcLgvT76r15
+ p/XAq9xtgIDUpbIyQN7txb4orRAn/xfedbvMsQkhmOyV
+X-Google-Smtp-Source: AGHT+IEWZ8OvbK8IRiy/Jhtc4eSQt1wBjNiYifGIN1NUEuxb4lugjSxo6X0cKrO69EMr+Le0e2o0NA==
+X-Received: by 2002:a2e:a178:0:b0:2ba:6519:c50f with SMTP id
+ u24-20020a2ea178000000b002ba6519c50fmr8070679ljl.52.1695053000497; 
+ Mon, 18 Sep 2023 09:03:20 -0700 (PDT)
 Received: from localhost.localdomain
  (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a170906559000b0099b7276235esm6699286ejp.93.2023.09.18.09.03.08
+ e7-20020a1709067e0700b0099bd0b5a2bcsm6658963ejr.101.2023.09.18.09.03.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Sep 2023 09:03:09 -0700 (PDT)
+ Mon, 18 Sep 2023 09:03:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -96,17 +96,18 @@ Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
  Nicholas Piggin <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>,
  Michael Rolnik <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
-Subject: [PATCH 02/22] hw/intc/apic: Pass CPU using QOM link property
-Date: Mon, 18 Sep 2023 18:02:35 +0200
-Message-ID: <20230918160257.30127-3-philmd@linaro.org>
+Subject: [RFC PATCH 04/22] exec/cpu: Never call cpu_reset() before
+ cpu_realize()
+Date: Mon, 18 Sep 2023 18:02:37 +0200
+Message-ID: <20230918160257.30127-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230918160257.30127-1-philmd@linaro.org>
 References: <20230918160257.30127-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -129,62 +130,276 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QOM objects shouldn't access each other internals fields
-except using the QOM API.
-
-Declare the 'cpu' and 'base-addr' properties, set them
-using object_property_set_link() and qdev_prop_set_uint32()
-respectively.
+QDev instance is expected to be in an unknown state until full
+object realization. Thus we shouldn't call DeviceReset() on an
+unrealized instance. Move the cpu_reset() call from *before*
+the parent realize() handler (effectively cpu_common_realizefn)
+to *after* it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/intc/apic_common.c    |  2 ++
- target/i386/cpu-sysemu.c | 11 ++++++-----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+RFC:
+I haven't audited all the call sites, but plan to do it,
+amending the result to this patch description. This used
+to be a problem on some targets, but as of today's master
+this series pass make check-{qtest,avocado}.
+---
+ target/arm/cpu.c       | 2 +-
+ target/avr/cpu.c       | 2 +-
+ target/cris/cpu.c      | 2 +-
+ target/hexagon/cpu.c   | 3 +--
+ target/i386/cpu.c      | 2 +-
+ target/loongarch/cpu.c | 2 +-
+ target/m68k/cpu.c      | 2 +-
+ target/mips/cpu.c      | 2 +-
+ target/nios2/cpu.c     | 2 +-
+ target/openrisc/cpu.c  | 2 +-
+ target/riscv/cpu.c     | 2 +-
+ target/rx/cpu.c        | 2 +-
+ target/s390x/cpu.c     | 2 +-
+ target/sh4/cpu.c       | 2 +-
+ target/tricore/cpu.c   | 2 +-
+ 15 files changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
-index 68ad30e2f5..e28f7402ab 100644
---- a/hw/intc/apic_common.c
-+++ b/hw/intc/apic_common.c
-@@ -394,6 +394,8 @@ static Property apic_properties_common[] = {
-                     true),
-     DEFINE_PROP_BOOL("legacy-instance-id", APICCommonState, legacy_instance_id,
-                      false),
-+    DEFINE_PROP_LINK("cpu", APICCommonState, cpu, TYPE_X86_CPU, X86CPU *),
-+    DEFINE_PROP_UINT32("base-addr", APICCommonState, apicbase, 0),
-     DEFINE_PROP_END_OF_LIST(),
- };
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index b9e09a702d..6aca036b85 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2278,9 +2278,9 @@ static void arm_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
  
-diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
-index 6a164d3769..6edfb7e2af 100644
---- a/target/i386/cpu-sysemu.c
-+++ b/target/i386/cpu-sysemu.c
-@@ -269,7 +269,6 @@ APICCommonClass *apic_get_class(Error **errp)
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
  
- void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
- {
--    APICCommonState *apic;
-     APICCommonClass *apic_class = apic_get_class(errp);
- 
-     assert(apic_class);
-@@ -279,11 +278,13 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
-                               OBJECT(cpu->apic_state));
-     object_unref(OBJECT(cpu->apic_state));
- 
-+    if (!object_property_set_link(OBJECT(cpu->apic_state), "cpu",
-+                                  OBJECT(cpu), errp)) {
-+        return;
-+    }
-     qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
--    /* TODO: convert to link<> */
--    apic = APIC_COMMON(cpu->apic_state);
--    apic->cpu = cpu;
--    apic->apicbase = APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
-+    qdev_prop_set_uint32(cpu->apic_state, "base-addr",
-+                         APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE);
+     acc->parent_realize(dev, errp);
++    cpu_reset(cs);
  }
  
- void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
+ static ObjectClass *arm_cpu_class_by_name(const char *cpu_model)
+diff --git a/target/avr/cpu.c b/target/avr/cpu.c
+index 8f741f258c..84d353f30e 100644
+--- a/target/avr/cpu.c
++++ b/target/avr/cpu.c
+@@ -120,9 +120,9 @@ static void avr_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
+ 
+     mcc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ static void avr_cpu_set_int(void *opaque, int irq, int level)
+diff --git a/target/cris/cpu.c b/target/cris/cpu.c
+index a6a93c2359..079872a5cc 100644
+--- a/target/cris/cpu.c
++++ b/target/cris/cpu.c
+@@ -152,10 +152,10 @@ static void cris_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    cpu_reset(cs);
+     qemu_init_vcpu(cs);
+ 
+     ccc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/hexagon/cpu.c b/target/hexagon/cpu.c
+index f155936289..7edc32701f 100644
+--- a/target/hexagon/cpu.c
++++ b/target/hexagon/cpu.c
+@@ -346,9 +346,8 @@ static void hexagon_cpu_realize(DeviceState *dev, Error **errp)
+                              "hexagon-hvx.xml", 0);
+ 
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
+-
+     mcc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ static void hexagon_cpu_init(Object *obj)
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index a23d4795e0..7faaa6915f 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7455,9 +7455,9 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         }
+     }
+ #endif /* !CONFIG_USER_ONLY */
+-    cpu_reset(cs);
+ 
+     xcc->parent_realize(dev, &local_err);
++    cpu_reset(cs);
+ 
+ out:
+     if (local_err != NULL) {
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 65f9320e34..8029e70e76 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -565,10 +565,10 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+     loongarch_cpu_register_gdb_regs_for_features(cs);
+ 
+-    cpu_reset(cs);
+     qemu_init_vcpu(cs);
+ 
+     lacc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 70d58471dc..2bc0a62f0e 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -321,10 +321,10 @@ static void m68k_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+     m68k_cpu_init_gdb(cpu);
+ 
+-    cpu_reset(cs);
+     qemu_init_vcpu(cs);
+ 
+     mcc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ static void m68k_cpu_initfn(Object *obj)
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 63da1948fd..8d6f633f72 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -492,10 +492,10 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
+     fpu_init(env, env->cpu_model);
+     mvp_init(env);
+ 
+-    cpu_reset(cs);
+     qemu_init_vcpu(cs);
+ 
+     mcc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ static void mips_cpu_initfn(Object *obj)
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index bc5cbf81c2..876a6dcad2 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -217,12 +217,12 @@ static void nios2_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+     realize_cr_status(cs);
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
+ 
+     /* We have reserved storage for cpuid; might as well use it. */
+     cpu->env.ctrl[CR_CPUID] = cs->cpu_index;
+ 
+     ncc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/openrisc/cpu.c b/target/openrisc/cpu.c
+index 61d748cfdc..cd25f1e9d5 100644
+--- a/target/openrisc/cpu.c
++++ b/target/openrisc/cpu.c
+@@ -142,9 +142,9 @@ static void openrisc_cpu_realizefn(DeviceState *dev, Error **errp)
+     }
+ 
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
+ 
+     occ->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ static void openrisc_cpu_initfn(Object *obj)
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index f227c7664e..7566757346 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1532,9 +1532,9 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+ #endif
+ 
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
+ 
+     mcc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ #ifndef CONFIG_USER_ONLY
+diff --git a/target/rx/cpu.c b/target/rx/cpu.c
+index 157e57da0f..c9c8443cbd 100644
+--- a/target/rx/cpu.c
++++ b/target/rx/cpu.c
+@@ -138,9 +138,9 @@ static void rx_cpu_realize(DeviceState *dev, Error **errp)
+     }
+ 
+     qemu_init_vcpu(cs);
+-    cpu_reset(cs);
+ 
+     rcc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ static void rx_cpu_set_irq(void *opaque, int no, int request)
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index df167493c3..0f0b11fd73 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -254,6 +254,7 @@ static void s390_cpu_realizefn(DeviceState *dev, Error **errp)
+     s390_cpu_gdb_init(cs);
+     qemu_init_vcpu(cs);
+ 
++    scc->parent_realize(dev, &err);
+     /*
+      * KVM requires the initial CPU reset ioctl to be executed on the target
+      * CPU thread. CPU hotplug under single-threaded TCG will not work with
+@@ -266,7 +267,6 @@ static void s390_cpu_realizefn(DeviceState *dev, Error **errp)
+         cpu_reset(cs);
+     }
+ 
+-    scc->parent_realize(dev, &err);
+ out:
+     error_propagate(errp, err);
+ }
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index 61769ffdfa..656d71f74a 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -228,10 +228,10 @@ static void superh_cpu_realizefn(DeviceState *dev, Error **errp)
+         return;
+     }
+ 
+-    cpu_reset(cs);
+     qemu_init_vcpu(cs);
+ 
+     scc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ static void superh_cpu_initfn(Object *obj)
+diff --git a/target/tricore/cpu.c b/target/tricore/cpu.c
+index 133a9ac70e..a3610aecca 100644
+--- a/target/tricore/cpu.c
++++ b/target/tricore/cpu.c
+@@ -118,10 +118,10 @@ static void tricore_cpu_realizefn(DeviceState *dev, Error **errp)
+     if (tricore_has_feature(env, TRICORE_FEATURE_131)) {
+         set_feature(env, TRICORE_FEATURE_13);
+     }
+-    cpu_reset(cs);
+     qemu_init_vcpu(cs);
+ 
+     tcc->parent_realize(dev, errp);
++    cpu_reset(cs);
+ }
+ 
+ 
 -- 
 2.41.0
 
