@@ -2,69 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03C97A4B48
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 16:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 756637A4B24
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 16:44:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiFTI-0003YT-N3; Mon, 18 Sep 2023 10:43:32 -0400
+	id 1qiFTF-0003Jg-Fm; Mon, 18 Sep 2023 10:43:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiFSO-00030e-9I
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 10:42:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiFSQ-00032H-1b
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 10:42:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiFS2-0002bM-Qq
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 10:42:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiFS3-0002cp-0t
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 10:42:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695048132;
+ s=mimecast20190719; t=1695048134;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D+kR7wA8Z1+2AA5LRtU9j3o2Sy/Y0eHC9q/nH7PbZOs=;
- b=Kv7xe1qR0csWGBQU1EIjXiEe1gqCq4yCYf0IoTezhDg41EDEIrxg6Y7QOldAl6yl6qHIpw
- k2YDvBlyiLOXbf9WWZtRbDMjITNzR8UNu+rWHJkXMfAFY3zjMr9Qs2tTehOHrke8YmOFYj
- vbCRXIvCSu/3CaXub0c4DNfJ3h0bMek=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-341-Y4zHFK4fP1Wea0tYiNIupw-1; Mon, 18 Sep 2023 10:42:10 -0400
-X-MC-Unique: Y4zHFK4fP1Wea0tYiNIupw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=IrNnSh8+IHIVPaW/qP+RDKnXdtNzmzzrM/G8PvBfdCw=;
+ b=hy4giUKoW3zIISlCXx3/34tUuQ5ImcT1xJ3IvENxXT1K76NJabduDwPolEMS+tjSwvGqET
+ 8q+21LXN4s9wCBhxL1FrxYG5O8TePl3hvT/mqmvmKvttfdtG7jnRerfksGgjuasrJMxv4i
+ KgGibgaaUCq6ZFcpaCJu5ApEh7sr/bU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-202-HILKO8dONXK-Ig3qmdxldQ-1; Mon, 18 Sep 2023 10:42:10 -0400
+X-MC-Unique: HILKO8dONXK-Ig3qmdxldQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6A3DC29AA3BF
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6946294592C
  for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 14:42:10 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.127])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2B72C4A9B13
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2B30E40C200A
  for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 14:42:10 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 314CF21E6887; Mon, 18 Sep 2023 16:42:07 +0200 (CEST)
+ id 342CF21E6888; Mon, 18 Sep 2023 16:42:07 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com,
 	peterx@redhat.com,
 	leobras@redhat.com
-Subject: [PATCH 25/52] migration/rdma: Dumb down remaining int error values to
- -1
-Date: Mon, 18 Sep 2023 16:41:39 +0200
-Message-ID: <20230918144206.560120-26-armbru@redhat.com>
+Subject: [PATCH 26/52] migration/rdma: Replace int error_state by bool errored
+Date: Mon, 18 Sep 2023 16:41:40 +0200
+Message-ID: <20230918144206.560120-27-armbru@redhat.com>
 In-Reply-To: <20230918144206.560120-1-armbru@redhat.com>
 References: <20230918144206.560120-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,210 +80,285 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is just to make the error value more obvious.  Callers don't
-mind.
+All we do with the value of RDMAContext member @error_state is test
+whether it's zero.  Change to bool and rename to @errored.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- migration/rdma.c | 43 ++++++++++++++++++++++---------------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ migration/rdma.c | 66 ++++++++++++++++++++++++------------------------
+ 1 file changed, 33 insertions(+), 33 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index d0af258468..ad314cc10a 100644
+index ad314cc10a..85f6b274bf 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -1418,7 +1418,7 @@ static int qemu_rdma_unregister_waiting(RDMAContext *rdma)
-         ret = qemu_rdma_exchange_send(rdma, &head, (uint8_t *) &reg,
-                                 &resp, NULL, NULL);
-         if (ret < 0) {
--            return ret;
-+            return -1;
-         }
+@@ -352,7 +352,7 @@ typedef struct RDMAContext {
+      * memory registration, then do not attempt any future work
+      * and remember the error state.
+      */
+-    int error_state;
++    int errored;
+     bool error_reported;
+     bool received_error;
  
-         trace_qemu_rdma_unregister_waiting_complete(chunk);
-@@ -1459,7 +1459,7 @@ static int qemu_rdma_poll(RDMAContext *rdma, struct ibv_cq *cq,
+@@ -439,14 +439,14 @@ typedef struct QEMU_PACKED {
+     uint64_t chunks;            /* how many sequential chunks to register */
+ } RDMARegister;
  
-     if (ret < 0) {
-         error_report("ibv_poll_cq failed");
--        return ret;
-+        return -1;
+-static int check_error_state(RDMAContext *rdma)
++static bool rdma_errored(RDMAContext *rdma)
+ {
+-    if (rdma->error_state && !rdma->error_reported) {
++    if (rdma->errored && !rdma->error_reported) {
+         error_report("RDMA is in an error state waiting migration"
+                      " to abort!");
+         rdma->error_reported = true;
      }
- 
-     wr_id = wc.wr_id & RDMA_WRID_TYPE_MASK;
-@@ -1633,7 +1633,7 @@ static int qemu_rdma_block_for_wrid(RDMAContext *rdma,
-     while (wr_id != wrid_requested) {
-         ret = qemu_rdma_poll(rdma, poll_cq, &wr_id_in, byte_len);
-         if (ret < 0) {
--            return ret;
-+            return -1;
-         }
- 
-         wr_id = wr_id_in & RDMA_WRID_TYPE_MASK;
-@@ -1702,7 +1702,7 @@ err_block_for_wrid:
-     }
- 
-     rdma->error_state = ret;
--    return ret;
-+    return -1;
+-    return rdma->error_state;
++    return rdma->errored;
  }
  
- /*
-@@ -1757,9 +1757,10 @@ static int qemu_rdma_post_send_control(RDMAContext *rdma, uint8_t *buf,
-     ret = qemu_rdma_block_for_wrid(rdma, RDMA_WRID_SEND_CONTROL, NULL);
-     if (ret < 0) {
-         error_report("rdma migration: send polling control error");
-+        return -1;
+ static void register_to_network(RDMAContext *rdma, RDMARegister *reg)
+@@ -1531,7 +1531,7 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
+          * But we need to be able to handle 'cancel' or an error
+          * without hanging forever.
+          */
+-        while (!rdma->error_state  && !rdma->received_error) {
++        while (!rdma->errored && !rdma->received_error) {
+             GPollFD pfds[2];
+             pfds[0].fd = comp_channel->fd;
+             pfds[0].events = G_IO_IN | G_IO_HUP | G_IO_ERR;
+@@ -1588,7 +1588,7 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
+     if (rdma->received_error) {
+         return -1;
      }
- 
--    return ret;
-+    return 0;
+-    return -!!rdma->error_state;
++    return -rdma->errored;
  }
  
- /*
-@@ -1801,7 +1802,7 @@ static int qemu_rdma_exchange_get_response(RDMAContext *rdma,
+ static struct ibv_comp_channel *to_channel(RDMAContext *rdma, uint64_t wrid)
+@@ -1701,7 +1701,7 @@ err_block_for_wrid:
+         ibv_ack_cq_events(cq, num_cq_events);
+     }
  
+-    rdma->error_state = ret;
++    rdma->errored = true;
+     return -1;
+ }
+ 
+@@ -2340,7 +2340,7 @@ static void qemu_rdma_cleanup(RDMAContext *rdma)
+     int idx;
+ 
+     if (rdma->cm_id && rdma->connected) {
+-        if ((rdma->error_state ||
++        if ((rdma->errored ||
+              migrate_get_current()->state == MIGRATION_STATUS_CANCELLING) &&
+             !rdma->received_error) {
+             RDMAControlHeader head = { .len = 0,
+@@ -2621,14 +2621,14 @@ static int qemu_rdma_dest_init(RDMAContext *rdma, Error **errp)
+ 
+     if (!rdma->host || !rdma->host[0]) {
+         ERROR(errp, "RDMA host is not set!");
+-        rdma->error_state = -EINVAL;
++        rdma->errored = true;
+         return -1;
+     }
+     /* create CM channel */
+     rdma->channel = rdma_create_event_channel();
+     if (!rdma->channel) {
+         ERROR(errp, "could not create rdma event channel");
+-        rdma->error_state = -EINVAL;
++        rdma->errored = true;
+         return -1;
+     }
+ 
+@@ -2686,7 +2686,7 @@ err_dest_init_bind_addr:
+ err_dest_init_create_listen_id:
+     rdma_destroy_event_channel(rdma->channel);
+     rdma->channel = NULL;
+-    rdma->error_state = ret;
++    rdma->errored = true;
+     return -1;
+ 
+ }
+@@ -2763,7 +2763,7 @@ static ssize_t qio_channel_rdma_writev(QIOChannel *ioc,
+         return -1;
+     }
+ 
+-    if (rdma->error_state) {
++    if (rdma->errored) {
+         error_setg(errp,
+                    "RDMA is in an error state waiting migration to abort!");
+         return -1;
+@@ -2775,7 +2775,7 @@ static ssize_t qio_channel_rdma_writev(QIOChannel *ioc,
+      */
+     ret = qemu_rdma_write_flush(f, rdma);
      if (ret < 0) {
-         error_report("rdma migration: recv polling control error!");
--        return ret;
-+        return -1;
+-        rdma->error_state = ret;
++        rdma->errored = true;
+         error_setg(errp, "qemu_rdma_write_flush failed");
+         return -1;
      }
+@@ -2795,7 +2795,7 @@ static ssize_t qio_channel_rdma_writev(QIOChannel *ioc,
+             ret = qemu_rdma_exchange_send(rdma, &head, data, NULL, NULL, NULL);
  
-     network_to_control((void *) rdma->wr_data[idx].control);
-@@ -1879,7 +1880,7 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-         ret = qemu_rdma_exchange_get_response(rdma,
-                                     &resp, RDMA_CONTROL_READY, RDMA_WRID_READY);
-         if (ret < 0) {
--            return ret;
-+            return -1;
-         }
-     }
- 
-@@ -1891,7 +1892,7 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-         if (ret) {
-             error_report("rdma migration: error posting"
-                     " extra control recv for anticipated result!");
--            return ret;
-+            return -1;
-         }
-     }
- 
-@@ -1901,7 +1902,7 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-     ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
-     if (ret) {
-         error_report("rdma migration: error posting first control recv!");
--        return ret;
-+        return -1;
-     }
- 
-     /*
-@@ -1911,7 +1912,7 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
- 
-     if (ret < 0) {
-         error_report("Failed to send control buffer!");
--        return ret;
-+        return -1;
-     }
- 
-     /*
-@@ -1922,7 +1923,7 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-             trace_qemu_rdma_exchange_send_issue_callback();
-             ret = callback(rdma);
              if (ret < 0) {
--                return ret;
-+                return -1;
+-                rdma->error_state = ret;
++                rdma->errored = true;
+                 error_setg(errp, "qemu_rdma_exchange_send failed");
+                 return -1;
+             }
+@@ -2853,7 +2853,7 @@ static ssize_t qio_channel_rdma_readv(QIOChannel *ioc,
+         return -1;
+     }
+ 
+-    if (rdma->error_state) {
++    if (rdma->errored) {
+         error_setg(errp,
+                    "RDMA is in an error state waiting migration to abort!");
+         return -1;
+@@ -2889,7 +2889,7 @@ static ssize_t qio_channel_rdma_readv(QIOChannel *ioc,
+         ret = qemu_rdma_exchange_recv(rdma, &head, RDMA_CONTROL_QEMU_FILE);
+ 
+         if (ret < 0) {
+-            rdma->error_state = ret;
++            rdma->errored = true;
+             error_setg(errp, "qemu_rdma_exchange_recv failed");
+             return -1;
+         }
+@@ -3162,21 +3162,21 @@ qio_channel_rdma_shutdown(QIOChannel *ioc,
+     switch (how) {
+     case QIO_CHANNEL_SHUTDOWN_READ:
+         if (rdmain) {
+-            rdmain->error_state = -1;
++            rdmain->errored = true;
+         }
+         break;
+     case QIO_CHANNEL_SHUTDOWN_WRITE:
+         if (rdmaout) {
+-            rdmaout->error_state = -1;
++            rdmaout->errored = true;
+         }
+         break;
+     case QIO_CHANNEL_SHUTDOWN_BOTH:
+     default:
+         if (rdmain) {
+-            rdmain->error_state = -1;
++            rdmain->errored = true;
+         }
+         if (rdmaout) {
+-            rdmaout->error_state = -1;
++            rdmaout->errored = true;
+         }
+         break;
+     }
+@@ -3221,7 +3221,7 @@ static size_t qemu_rdma_save_page(QEMUFile *f,
+         return -1;
+     }
+ 
+-    if (check_error_state(rdma)) {
++    if (rdma_errored(rdma)) {
+         return -1;
+     }
+ 
+@@ -3290,7 +3290,7 @@ static size_t qemu_rdma_save_page(QEMUFile *f,
+     return RAM_SAVE_CONTROL_DELAYED;
+ 
+ err:
+-    rdma->error_state = ret;
++    rdma->errored = true;
+     return -1;
+ }
+ 
+@@ -3311,13 +3311,13 @@ static void rdma_cm_poll_handler(void *opaque)
+ 
+     if (cm_event->event == RDMA_CM_EVENT_DISCONNECTED ||
+         cm_event->event == RDMA_CM_EVENT_DEVICE_REMOVAL) {
+-        if (!rdma->error_state &&
++        if (!rdma->errored &&
+             migration_incoming_get_current()->state !=
+               MIGRATION_STATUS_COMPLETED) {
+             error_report("receive cm event, cm event is %d", cm_event->event);
+-            rdma->error_state = -EPIPE;
++            rdma->errored = true;
+             if (rdma->return_path) {
+-                rdma->return_path->error_state = -EPIPE;
++                rdma->return_path->errored = true;
              }
          }
- 
-@@ -1931,7 +1932,7 @@ static int qemu_rdma_exchange_send(RDMAContext *rdma, RDMAControlHeader *head,
-                                               resp->type, RDMA_WRID_DATA);
- 
-         if (ret < 0) {
--            return ret;
-+            return -1;
-         }
- 
-         qemu_rdma_move_header(rdma, RDMA_WRID_DATA, resp);
-@@ -1967,7 +1968,7 @@ static int qemu_rdma_exchange_recv(RDMAContext *rdma, RDMAControlHeader *head,
- 
-     if (ret < 0) {
-         error_report("Failed to send control buffer!");
--        return ret;
-+        return -1;
-     }
- 
-     /*
-@@ -1977,7 +1978,7 @@ static int qemu_rdma_exchange_recv(RDMAContext *rdma, RDMAControlHeader *head,
-                                           expecting, RDMA_WRID_READY);
- 
-     if (ret < 0) {
--        return ret;
-+        return -1;
-     }
- 
-     qemu_rdma_move_header(rdma, RDMA_WRID_READY, head);
-@@ -1988,7 +1989,7 @@ static int qemu_rdma_exchange_recv(RDMAContext *rdma, RDMAControlHeader *head,
-     ret = qemu_rdma_post_recv_control(rdma, RDMA_WRID_READY);
-     if (ret) {
-         error_report("rdma migration: error posting second control recv!");
--        return ret;
-+        return -1;
-     }
- 
+         rdma_ack_cm_event(cm_event);
+@@ -3483,7 +3483,7 @@ static int qemu_rdma_accept(RDMAContext *rdma)
      return 0;
-@@ -2061,7 +2062,7 @@ retry:
-                     "block %d chunk %" PRIu64
-                     " current %" PRIu64 " len %" PRIu64 " %d",
-                     current_index, chunk, sge.addr, length, rdma->nb_sent);
--            return ret;
-+            return -1;
-         }
-     }
  
-@@ -2119,7 +2120,7 @@ retry:
-             ret = qemu_rdma_exchange_send(rdma, &head, (uint8_t *) &reg,
-                                     &resp, &reg_result_idx, NULL);
-             if (ret < 0) {
--                return ret;
-+                return -1;
-             }
- 
-             /* try to overlap this single registration with the one we sent. */
-@@ -2193,7 +2194,7 @@ retry:
-         if (ret < 0) {
-             error_report("rdma migration: failed to make "
-                          "room in full send queue!");
--            return ret;
-+            return -1;
-         }
- 
-         goto retry;
-@@ -2230,7 +2231,7 @@ static int qemu_rdma_write_flush(QEMUFile *f, RDMAContext *rdma)
-             rdma->current_index, rdma->current_addr, rdma->current_length);
- 
-     if (ret < 0) {
--        return ret;
-+        return -1;
-     }
- 
-     if (ret == 0) {
-@@ -2312,7 +2313,7 @@ static int qemu_rdma_write(QEMUFile *f, RDMAContext *rdma,
-     if (!qemu_rdma_buffer_mergable(rdma, current_addr, len)) {
-         ret = qemu_rdma_write_flush(f, rdma);
-         if (ret) {
--            return ret;
-+            return -1;
-         }
-         rdma->current_length = 0;
-         rdma->current_addr = current_addr;
-@@ -3485,7 +3486,7 @@ err_rdma_dest_wait:
-     rdma->error_state = ret;
+ err_rdma_dest_wait:
+-    rdma->error_state = ret;
++    rdma->errored = true;
      qemu_rdma_cleanup(rdma);
      g_free(rdma_return_path);
--    return ret;
-+    return -1;
+     return -1;
+@@ -3540,7 +3540,7 @@ static int qemu_rdma_registration_handle(QEMUFile *f)
+         return -1;
+     }
+ 
+-    if (check_error_state(rdma)) {
++    if (rdma_errored(rdma)) {
+         return -1;
+     }
+ 
+@@ -3779,7 +3779,7 @@ static int qemu_rdma_registration_handle(QEMUFile *f)
+     } while (1);
+ 
+ err:
+-    rdma->error_state = ret;
++    rdma->errored = true;
+     return -1;
  }
  
- static int dest_ram_sort_func(const void *a, const void *b)
+@@ -3856,7 +3856,7 @@ static int qemu_rdma_registration_start(QEMUFile *f,
+         return -1;
+     }
+ 
+-    if (check_error_state(rdma)) {
++    if (rdma_errored(rdma)) {
+         return -1;
+     }
+ 
+@@ -3889,7 +3889,7 @@ static int qemu_rdma_registration_stop(QEMUFile *f,
+         return -1;
+     }
+ 
+-    if (check_error_state(rdma)) {
++    if (rdma_errored(rdma)) {
+         return -1;
+     }
+ 
+@@ -3943,7 +3943,7 @@ static int qemu_rdma_registration_stop(QEMUFile *f,
+                     "Your QEMU command line parameters are probably "
+                     "not identical on both the source and destination.",
+                     local->nb_blocks, nb_dest_blocks);
+-            rdma->error_state = -EINVAL;
++            rdma->errored = true;
+             return -1;
+         }
+ 
+@@ -3959,7 +3959,7 @@ static int qemu_rdma_registration_stop(QEMUFile *f,
+                         "vs %" PRIu64, local->block[i].block_name, i,
+                         local->block[i].length,
+                         rdma->dest_blocks[i].length);
+-                rdma->error_state = -EINVAL;
++                rdma->errored = true;
+                 return -1;
+             }
+             local->block[i].remote_host_addr =
+@@ -3979,7 +3979,7 @@ static int qemu_rdma_registration_stop(QEMUFile *f,
+ 
+     return 0;
+ err:
+-    rdma->error_state = ret;
++    rdma->errored = true;
+     return -1;
+ }
+ 
 -- 
 2.41.0
 
