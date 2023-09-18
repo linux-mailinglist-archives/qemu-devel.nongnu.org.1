@@ -2,86 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C407A4BE6
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3070E7A4BEE
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 17:23:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiG5I-0004Na-0S; Mon, 18 Sep 2023 11:22:48 -0400
+	id 1qiG5M-0004PK-Lb; Mon, 18 Sep 2023 11:22:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiG56-0004Ll-8k
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:22:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiG53-00030N-7t
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:22:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695050550;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KhPKhEKas+a8AfY2MIZoynJjZDKWmqdGxlMEMJXe3F8=;
- b=bqo+3fNtRuTY8HdusRUseVrHs5r9Xk2V0SrTPgafar2WmCn8a3mJy6U4pU46NbVx7GbUfz
- lUs1sAKR0Uolil1s0cse8wCATaa+Q3pkdnxJLxg258aHrlfyRglwAyJe2kDHhwDzZbxKL8
- y/CFK7XTNcBlcuFYTEawh8WfWLGwOd0=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-318-6goR7hmVN_CqLxkkWaIHJA-1; Mon, 18 Sep 2023 11:22:29 -0400
-X-MC-Unique: 6goR7hmVN_CqLxkkWaIHJA-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c0212e79b3so1617961fa.2
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 08:22:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiG5I-0004O8-9R
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:22:48 -0400
+Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiG5E-00032h-Dz
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 11:22:48 -0400
+Received: by mail-lj1-x22d.google.com with SMTP id
+ 38308e7fff4ca-2c0179f9043so11926531fa.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 08:22:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695050559; x=1695655359; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yfS8iyi4+OI+d6tZLyPgliq5D4W1CU9ToYYkjTc2too=;
+ b=cYHgzaYwfzpBfoBPrtyslt0V54rhbzEjr/vmJ3A++xpEr47H1VFBPQnh3lsLZcfu8f
+ NxlY6+Vjqa2AfEWvKBaDcvfH9EkaB7GCjbYDyfsKJHWSLe11wDc56CYS673EtMVajmZ2
+ EYbuIGV5faJI5RFKOq/131Q75iqjgnqrIye20ZpJZJqKr/Md/qkqIZTJKG08gDHQsUdc
+ 2NdEtDNtRExU1/ATbVp3KTtvQUy416NR6gnR1I3s2TJVuHt1/dVuNo28sNsrAWR7XeVN
+ aiVYCwXSUq6oQQ/I2NR+aN/CLYxul8ONIhT0okuQUfIFUjP1c0m02cBPg3pYGfAwroi2
+ L9vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695050548; x=1695655348;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=KhPKhEKas+a8AfY2MIZoynJjZDKWmqdGxlMEMJXe3F8=;
- b=my9zi6z0P5rV4R5r3D8yoNieFTL3TlFxyIK8RB/dbiOWwfFl72/qizqHe4lbz1e7ii
- WqCdGjLasN3deTDCgWCqQIucmjnQkkb1GFHMrCr7nfbxh4dBtiNdYZ8Bjz9mRnekPWrW
- Ds8jnYtAAw1vCs6P4PzwXmKPAnt7CSbGD5XSWM2PUbq3hNRVlapHEulWLxCKoJD+6tue
- fL5l2JWsShiDbxD85VwGy8wphea0qLgA/2Bi5YU+hy3cmHhgzEYbLxKlVM90XiG8aDJW
- FKrMIi29DQS9yon1c1E8VaDd3YlAAitL5daGYlW+jcNaL+RFz+Sp8GmkQRoY2K9Uu1es
- UxFQ==
-X-Gm-Message-State: AOJu0YxsvkiAh7bJAF9eObGquVFzIGj9TOhCPW8neRx8AusZGzWhO3Cx
- gxmoGFqRkqPVqxO5JUsG0jZRP5IEc6VK76IV5ZhSgIBRrv5DnID/EdJM/RimAERFZY/9tiRD6X5
- iaRxpN6JTqBiGrmUUj7YD0hUx5MiE8jw=
-X-Received: by 2002:a2e:7213:0:b0:2bc:f41a:d9c6 with SMTP id
- n19-20020a2e7213000000b002bcf41ad9c6mr7471003ljc.0.1695050547848; 
- Mon, 18 Sep 2023 08:22:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHYUDyoThJTjMHx4a4Iu3v6NUFbLv3bPieXZOVJpOe9Kca0+irZHpQLMzl3Ln2Rg5yJ37hINsoy2SS+MoUUq4=
-X-Received: by 2002:a2e:7213:0:b0:2bc:f41a:d9c6 with SMTP id
- n19-20020a2e7213000000b002bcf41ad9c6mr7470986ljc.0.1695050547506; Mon, 18 Sep
- 2023 08:22:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695050559; x=1695655359;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yfS8iyi4+OI+d6tZLyPgliq5D4W1CU9ToYYkjTc2too=;
+ b=sr49w4odk7JCMceVc3L1lTSrtLgzcSHxXc5hrfe3qEglY6qen4jJ0X35/3ZYKmaeuY
+ RFzXy3LXcXueRFAoW9R76hX/yc1KwY1huavovavNJ8OJrwj1il7I1Aa+QEtM0n3ChhU7
+ EApDN2b6yn9KPGpE5zLlbMx60ob2um3zBJRBik3UvICOXcJIAyi3vOmNNTeNZSw5stZn
+ i57Cqqj927l7nVuFG3U2I2gpjKrdkSSqo/UNG0PzAL9JEGJpmloKltH91Wtyzgm16nE5
+ Nt4ObGZhMqBhwyHGrJOZhUj65LXDeseo+EC3fF7GHwzHDR+vK1FWfjD/Wb+xKYf8aPbd
+ SE+Q==
+X-Gm-Message-State: AOJu0YxV1CRxd5D1UrWHaUKryIk9+14Mqa7p4pVmqUBpHo10tCPsyvfE
+ TM97VwonXqXuH4J7FJuEVkdGwA==
+X-Google-Smtp-Source: AGHT+IGOZPMUAIKfAAn9hS6FOq8oE3lT4xRAwtOM8O1W9kN6Gi7Mx+7ihUL6TOgWoBbEg4XHbJuRiA==
+X-Received: by 2002:a2e:a98d:0:b0:2bf:ee56:f72e with SMTP id
+ x13-20020a2ea98d000000b002bfee56f72emr6971318ljq.26.1695050559245; 
+ Mon, 18 Sep 2023 08:22:39 -0700 (PDT)
+Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ mh25-20020a170906eb9900b0099297782aa9sm6567335ejb.49.2023.09.18.08.22.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Sep 2023 08:22:38 -0700 (PDT)
+Message-ID: <d1326804-2bca-3b06-250a-3ca3a8038d1c@linaro.org>
+Date: Mon, 18 Sep 2023 17:22:37 +0200
 MIME-Version: 1.0
-References: <20230918135448.90963-1-anisinha@redhat.com>
-In-Reply-To: <20230918135448.90963-1-anisinha@redhat.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Mon, 18 Sep 2023 20:52:16 +0530
-Message-ID: <CAK3XEhOMqdfyPBm0ZgkirrcaBhOwQt_eOZ7=bbdW8OJpz3hWHg@mail.gmail.com>
-Subject: Re: [PATCH] hw/i386/pc: fix max_used_gpa for 32-bit systems
-To: david@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: philmd@linaro.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/2] hw/sd/omap_mmc: Do not reset SDCard until being fully
+ realized
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ "Daniel P . Berrange" <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>,
+ Paolo Bonzini <pbonzini@redhat.com>, Anton Johansson <anjo@rev.ng>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Bernhard Beschow <shentey@gmail.com>, Alessandro Di Federico <ale@rev.ng>,
+ qemu-arm@nongnu.org, Luc Michel <luc@lmichel.fr>
+References: <20230918101736.23905-1-philmd@linaro.org>
+ <20230918101736.23905-2-philmd@linaro.org>
+ <CAFEAcA89z1vCwDzzB_GjbUBtcOCz4vU7r_zC4nMmunp5BGVWxA@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA89z1vCwDzzB_GjbUBtcOCz4vU7r_zC4nMmunp5BGVWxA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::22d;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22d.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,119 +105,270 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 7:25=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wro=
-te:
->
-> 32-bit systems do not have a reserved memory for hole64 but they may have=
- a
-> reserved memory space for memory hotplug. Since, hole64 starts after the
-> reserved hotplug memory, the unaligned hole64 start address gives us the
-> end address for this memory hotplug region that the processor may use.
-> Fix this. This ensures that the physical address space bound checking wor=
-ks
-> correctly for 32-bit systems as well.
+On 18/9/23 13:00, Peter Maydell wrote:
+> On Mon, 18 Sept 2023 at 11:17, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> We shouldn't call QDev DeviceReset() before DeviceRealize().
+>>
+>> Since the OMAP MMC model is not QDev'ified, it has to manually
+>> call the SDCard reset() handler. This breaks QDev assumptions
+>> that DeviceReset() is never called before a device is fully
+>> realized. In order to avoid that, pass a 'realized' argument
+>> to omap_mmc_reset(). All cases are explicit manual resets,
+>> except in omap_mmc_write() where we expect the sdcard to be
+>> realized.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   include/hw/arm/omap.h |  2 +-
+>>   hw/arm/omap1.c        |  2 +-
+>>   hw/arm/omap2.c        |  2 +-
+>>   hw/sd/omap_mmc.c      | 21 ++++++++++++---------
+>>   4 files changed, 15 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/include/hw/arm/omap.h b/include/hw/arm/omap.h
+>> index 067e9419f7..d331467946 100644
+>> --- a/include/hw/arm/omap.h
+>> +++ b/include/hw/arm/omap.h
+>> @@ -808,7 +808,7 @@ struct omap_mmc_s *omap_mmc_init(hwaddr base,
+>>   struct omap_mmc_s *omap2_mmc_init(struct omap_target_agent_s *ta,
+>>                   BlockBackend *blk, qemu_irq irq, qemu_irq dma[],
+>>                   omap_clk fclk, omap_clk iclk);
+>> -void omap_mmc_reset(struct omap_mmc_s *s);
+>> +void omap_mmc_reset(struct omap_mmc_s *s, bool realized);
+>>   void omap_mmc_handlers(struct omap_mmc_s *s, qemu_irq ro, qemu_irq cover);
+>>   void omap_mmc_enable(struct omap_mmc_s *s, int enable);
+>>
+>> diff --git a/hw/arm/omap1.c b/hw/arm/omap1.c
+>> index d5438156ee..3afeba6f86 100644
+>> --- a/hw/arm/omap1.c
+>> +++ b/hw/arm/omap1.c
+>> @@ -3728,7 +3728,7 @@ static void omap1_mpu_reset(void *opaque)
+>>       omap_uart_reset(mpu->uart[0]);
+>>       omap_uart_reset(mpu->uart[1]);
+>>       omap_uart_reset(mpu->uart[2]);
+>> -    omap_mmc_reset(mpu->mmc);
+>> +    omap_mmc_reset(mpu->mmc, false);
+>>       omap_mpuio_reset(mpu->mpuio);
+>>       omap_uwire_reset(mpu->microwire);
+>>       omap_pwl_reset(mpu->pwl);
+>> diff --git a/hw/arm/omap2.c b/hw/arm/omap2.c
+>> index d5a2ae7af6..ef9b0dd60a 100644
+>> --- a/hw/arm/omap2.c
+>> +++ b/hw/arm/omap2.c
+>> @@ -2253,7 +2253,7 @@ static void omap2_mpu_reset(void *opaque)
+>>       omap_uart_reset(mpu->uart[0]);
+>>       omap_uart_reset(mpu->uart[1]);
+>>       omap_uart_reset(mpu->uart[2]);
+>> -    omap_mmc_reset(mpu->mmc);
+>> +    omap_mmc_reset(mpu->mmc, false);
+>>       omap_mcspi_reset(mpu->mcspi[0]);
+>>       omap_mcspi_reset(mpu->mcspi[1]);
+>>       cpu_reset(CPU(mpu->cpu));
+> 
+> These are reset functions registered via qemu_register_reset().
+> They should be OK to assume the SD card is realized.
+> This matters, because this is the only place that the SD
+> card will get reset -- as the comment in omap_mmc_reset() notes,
+> the SD card object isn't going to be plugged into any bus, so
+> it won't get auto-reset when the simulation starts, and these
+> reset function are the place that does the manual reset.
+> 
+>> diff --git a/hw/sd/omap_mmc.c b/hw/sd/omap_mmc.c
+>> index edd3cf2a1e..3c906993eb 100644
+>> --- a/hw/sd/omap_mmc.c
+>> +++ b/hw/sd/omap_mmc.c
+>> @@ -287,7 +287,7 @@ static void omap_mmc_pseudo_reset(struct omap_mmc_s *host)
+>>       host->fifo_len = 0;
+>>   }
+>>
+>> -void omap_mmc_reset(struct omap_mmc_s *host)
+>> +void omap_mmc_reset(struct omap_mmc_s *host, bool realized)
+>>   {
+>>       host->last_cmd = 0;
+>>       memset(host->rsp, 0, sizeof(host->rsp));
+>> @@ -314,11 +314,14 @@ void omap_mmc_reset(struct omap_mmc_s *host)
+>>
+>>       omap_mmc_pseudo_reset(host);
+>>
+>> -    /* Since we're still using the legacy SD API the card is not plugged
+>> -     * into any bus, and we must reset it manually. When omap_mmc is
+>> -     * QOMified this must move into the QOM reset function.
+>> -     */
+>> -    device_cold_reset(DEVICE(host->card));
+>> +    if (realized) {
+>> +        /*
+>> +         * Since we're still using the legacy SD API the card is not plugged
+>> +         * into any bus, and we must reset it manually. When omap_mmc is
+>> +         * QOMified this must move into the QOM reset function.
+>> +         */
+>> +        device_cold_reset(DEVICE(host->card));
+>> +    }
+>>   }
+>>
+>>   static uint64_t omap_mmc_read(void *opaque, hwaddr offset, unsigned size)
+>> @@ -556,7 +559,7 @@ static void omap_mmc_write(void *opaque, hwaddr offset,
+>>           break;
+>>       case 0x64: /* MMC_SYSC */
+>>           if (value & (1 << 2))                                  /* SRTS */
+>> -            omap_mmc_reset(s);
+>> +            omap_mmc_reset(s, true);
+>>           break;
+>>       case 0x68: /* MMC_SYSS */
+>>           OMAP_RO_REG(offset);
+>> @@ -613,7 +616,7 @@ struct omap_mmc_s *omap_mmc_init(hwaddr base,
+>>           exit(1);
+>>       }
+>>
+>> -    omap_mmc_reset(s);
+>> +    omap_mmc_reset(s, false);
+>>
+>>       return s;
+>>   }
+>> @@ -643,7 +646,7 @@ struct omap_mmc_s *omap2_mmc_init(struct omap_target_agent_s *ta,
+>>       s->cdet = qemu_allocate_irq(omap_mmc_cover_cb, s, 0);
+>>       sd_set_cb(s->card, NULL, s->cdet);
+>>
+>> -    omap_mmc_reset(s);
+>> +    omap_mmc_reset(s, false);
+> 
+> These calls from omap_mmc_init() are probably safe to remove, but I
+> don't understand why they result in our resetting a non-realized
+> SD card object. In both cases, the call happens after we call
+> sd_init(). sd_init() both creates and realizes the SD card, so
+> it should be realized at the point when it gets reset.
 
-This patch breaks some unit tests. I am not sure why it did not catch
-it when I tested it before sending.
-Will have to resend after fixing the tests.
+Indeed, sd_realize() is called:
 
->
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->  hw/i386/pc.c | 60 ++++++++++++++++++++++++++++++----------------------
->  1 file changed, 35 insertions(+), 25 deletions(-)
->
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 54838c0c41..c8abcabd53 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -904,13 +904,43 @@ static uint64_t pc_get_cxl_range_end(PCMachineState=
- *pcms)
->      return start;
->  }
->
-> +/*
-> + * The 64bit pci hole starts after "above 4G RAM" and
-> + * potentially the space reserved for memory hotplug.
-> + * This function returns unaligned start address.
-> + */
-> +static uint64_t pc_pci_hole64_start_unaligned(void)
-> +{
-> +    PCMachineState *pcms =3D PC_MACHINE(qdev_get_machine());
-> +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
-> +    MachineState *ms =3D MACHINE(pcms);
-> +    uint64_t hole64_start =3D 0;
-> +    ram_addr_t size =3D 0;
-> +
-> +    if (pcms->cxl_devices_state.is_enabled) {
-> +        hole64_start =3D pc_get_cxl_range_end(pcms);
-> +    } else if (pcmc->has_reserved_memory && (ms->ram_size < ms->maxram_s=
-ize)) {
-> +        pc_get_device_memory_range(pcms, &hole64_start, &size);
-> +        if (!pcmc->broken_reserved_end) {
-> +            hole64_start +=3D size;
-> +        }
-> +    } else {
-> +        hole64_start =3D pc_above_4g_end(pcms);
-> +    }
-> +
-> +    return hole64_start;
-> +}
-> +
->  static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_=
-size)
->  {
->      X86CPU *cpu =3D X86_CPU(first_cpu);
->
-> -    /* 32-bit systems don't have hole64 thus return max CPU address */
-> -    if (cpu->phys_bits <=3D 32) {
-> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
-> +    /*
-> +     * 32-bit systems don't have hole64, but we might have a region for
-> +     * memory hotplug.
-> +     */
-> +    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
-> +        return pc_pci_hole64_start_unaligned() - 1;
->      }
->
->      return pc_pci_hole64_start() + pci_hole64_size - 1;
-> @@ -1147,30 +1177,10 @@ void pc_memory_init(PCMachineState *pcms,
->      pcms->memhp_io_base =3D ACPI_MEMORY_HOTPLUG_BASE;
->  }
->
-> -/*
-> - * The 64bit pci hole starts after "above 4G RAM" and
-> - * potentially the space reserved for memory hotplug.
-> - */
-> +/* returns 1 GiB aligned hole64 start address */
->  uint64_t pc_pci_hole64_start(void)
->  {
-> -    PCMachineState *pcms =3D PC_MACHINE(qdev_get_machine());
-> -    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
-> -    MachineState *ms =3D MACHINE(pcms);
-> -    uint64_t hole64_start =3D 0;
-> -    ram_addr_t size =3D 0;
-> -
-> -    if (pcms->cxl_devices_state.is_enabled) {
-> -        hole64_start =3D pc_get_cxl_range_end(pcms);
-> -    } else if (pcmc->has_reserved_memory && (ms->ram_size < ms->maxram_s=
-ize)) {
-> -        pc_get_device_memory_range(pcms, &hole64_start, &size);
-> -        if (!pcmc->broken_reserved_end) {
-> -            hole64_start +=3D size;
-> -        }
-> -    } else {
-> -        hole64_start =3D pc_above_4g_end(pcms);
-> -    }
-> -
-> -    return ROUND_UP(hole64_start, 1 * GiB);
-> +    return ROUND_UP(pc_pci_hole64_start_unaligned(), 1 * GiB);
->  }
->
->  DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus)
-> --
-> 2.39.1
->
+(lldb) bt
+* thread #1, queue = 'com.apple.main-thread', stop reason = breakpoint 1.1
+   * frame #0: 0x1001f047c qemu-system-arm`sd_realize [inlined] 
+SD_CARD(obj=0x103b339e0) at sd.h:94:1
+     frame #1: 0x1001f047c qemu-system-arm`sd_realize(dev=0x103b339e0, 
+errp=0x16fdfeaa0) at sd.c:2193:19
+     frame #2: 0x1001f03e8 qemu-system-arm`sd_init(blk=<unavailable>, 
+is_spi=<unavailable>) at sd.c:765:5
+     frame #3: 0x1001fa1c8 
+qemu-system-arm`omap2_mmc_init(ta=0x104838060, blk=<unavailable>, 
+irq=0x0000600001720080, dma=0x103b28c88, fclk=0x1048333f0, 
+iclk=<unavailable>) at omap_mmc.c:638:15
+     frame #4: 0x10033cf40 
+qemu-system-arm`omap2420_mpu_init(sdram=<unavailable>, 
+cpu_type=<unavailable>) at omap2.c:2487:14
+     frame #5: 0x10031fe6c 
+qemu-system-arm`n8x0_init(machine=0x103b1fc00, binfo=0x100dbf5a8, 
+model=800) at nseries.c:1317:14
+     frame #6: 0x100093d48 
+qemu-system-arm`machine_run_board_init(machine=0x103b1fc00, 
+mem_path=<unavailable>, errp=<unavailable>) at machine.c:1469:5
+     frame #7: 0x100299fe8 qemu-system-arm`qmp_x_exit_preconfig 
+[inlined] qemu_init_board at vl.c:2580:5
+     frame #8: 0x100299fb4 
+qemu-system-arm`qmp_x_exit_preconfig(errp=<unavailable>) at vl.c:2671:5
+     frame #9: 0x10029d77c qemu-system-arm`qemu_init(argc=<unavailable>, 
+argv=<unavailable>) at vl.c:3721:9
+     frame #10: 0x1004df880 qemu-system-arm`main(argc=<unavailable>, 
+argv=<unavailable>) at main.c:47:5
+     frame #11: 0x1884b7f28 dyld`start + 2236
 
+But then I'm getting:
+
+     frame #3: 0x18871ce44 libsystem_c.dylib`__assert_rtn + 272
+   * frame #4: 0x1006dbbe4 qemu-system-arm`device_cold_reset.cold.1 at 
+qdev.c:256:5
+     frame #5: 0x1004e1c44 
+qemu-system-arm`device_cold_reset(dev=0x10347dde0) at qdev.c:256:5
+     frame #6: 0x1001fa290 qemu-system-arm`omap2_mmc_init [inlined] 
+omap_mmc_reset(host=0x10347d960) at omap_mmc.c:321:5
+     frame #7: 0x1001fa1fc 
+qemu-system-arm`omap2_mmc_init(ta=0x104025860, blk=<unavailable>, 
+irq=0x000060000171d580, dma=0x103472f38, fclk=0x1040119f0, 
+iclk=<unavailable>) at omap_mmc.c:646:5
+     frame #8: 0x10033cf40 
+qemu-system-arm`omap2420_mpu_init(sdram=<unavailable>, 
+cpu_type=<unavailable>) at omap2.c:2487:14
+     frame #9: 0x10031fe6c 
+qemu-system-arm`n8x0_init(machine=0x1033dec60, binfo=0x100dbf5a8, 
+model=800) at nseries.c:1317:14
+     frame #10: 0x100093d48 
+qemu-system-arm`machine_run_board_init(machine=0x1033dec60, 
+mem_path=<unavailable>, errp=<unavailable>) at machine.c:1469:5
+     frame #11: 0x100299fe8 qemu-system-arm`qmp_x_exit_preconfig 
+[inlined] qemu_init_board at vl.c:2580:5
+     frame #12: 0x100299fb4 
+qemu-system-arm`qmp_x_exit_preconfig(errp=<unavailable>) at vl.c:2671:5
+     frame #13: 0x10029d77c 
+qemu-system-arm`qemu_init(argc=<unavailable>, argv=<unavailable>) at 
+vl.c:3721:9
+     frame #14: 0x1004df880 qemu-system-arm`main(argc=<unavailable>, 
+argv=<unavailable>) at main.c:47:5
+
+Because this isn't a full qdev_realize() call.
+
+Then when using:
+
+-- >8 --
+diff --git a/hw/sd/sd.c b/hw/sd/sd.c
+index 4823befdef..db7d644fb7 100644
+--- a/hw/sd/sd.c
++++ b/hw/sd/sd.c
+@@ -763,7 +763,7 @@ SDState *sd_init(BlockBackend *blk, bool is_spi)
+      object_ref(obj);
+      object_unparent(obj);
+      sd_realize(dev, &err);
+-    if (err) {
++    if (err || !object_property_set_bool(OBJECT(dev), "realized", true, 
+&err)) {
+          error_reportf_err(err, "sd_init failed: ");
+          return NULL;
+      }
+---
+
+I get:
+
+     frame #3: 0x18871ce44 libsystem_c.dylib`__assert_rtn + 272
+   * frame #4: 0x1006dbcac 
+qemu-system-arm`qdev_assert_realized_properly_cb.cold.2 at qdev.c:320:9
+     frame #5: 0x1004e1e04 
+qemu-system-arm`qdev_assert_realized_properly_cb(obj=0x10337e2e0, 
+opaque=0x000000000) at qdev.c:320:9
+     frame #6: 0x1004e7a8c 
+qemu-system-arm`do_object_child_foreach(obj=0x0000600000c0df50, 
+fn=(qemu-system-arm`qdev_assert_realized_properly_cb at qdev.c:313), 
+opaque=0x000000000, recurse=true) at object.c:1120:19
+     frame #7: 0x1004e7aa8 
+qemu-system-arm`do_object_child_foreach(obj=0x1039de470, 
+fn=(qemu-system-arm`qdev_assert_realized_properly_cb at qdev.c:313), 
+opaque=0x000000000, recurse=true) at object.c:1125:23
+     frame #8: 0x1004e7aa8 
+qemu-system-arm`do_object_child_foreach(obj=<unavailable>, 
+fn=(qemu-system-arm`qdev_assert_realized_properly_cb at qdev.c:313), 
+opaque=0x000000000, recurse=true) at object.c:1125:23
+     frame #9: 0x1004e7ae8 
+qemu-system-arm`object_child_foreach_recursive(obj=<unavailable>, 
+fn=<unavailable>, opaque=<unavailable>) at object.c:1145:12 [artificial]
+     frame #10: 0x1004e1d70 
+qemu-system-arm`qdev_assert_realized_properly at qdev.c:327:5 [artificial]
+     frame #11: 0x100093fd4 qemu-system-arm`qdev_machine_creation_done 
+at machine.c:1503:5
+     frame #12: 0x10029a12c qemu-system-arm`qmp_x_exit_preconfig 
+[inlined] qemu_machine_creation_done at vl.c:2644:5
+     frame #13: 0x10029a0c8 
+qemu-system-arm`qmp_x_exit_preconfig(errp=<unavailable>) at vl.c:2673:5
+     frame #14: 0x10029d77c 
+qemu-system-arm`qemu_init(argc=<unavailable>, argv=<unavailable>) at 
+vl.c:3721:9
+     frame #15: 0x1004df880 qemu-system-arm`main(argc=<unavailable>, 
+argv=<unavailable>) at main.c:47:5
+
+> In a truly ideal world we would QOMify the omap-mmc device: it
+> is the only remaining user of the legacy sd_init function...
+
+Yeah, and I remember I told you I already did it 3 years ago :)
+IIRC it was hard to just convert one device, and I wasn't sure
+it was worth it. Anyhow, I'll check my backups in a pair of weeks.
+
+Thanks for the review,
+
+Phil.
 
