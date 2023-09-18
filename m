@@ -2,32 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF3F7A5187
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC457A5183
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:02:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiIYt-0006oh-DM; Mon, 18 Sep 2023 14:01:31 -0400
+	id 1qiIZY-0007e0-82; Mon, 18 Sep 2023 14:02:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYU-0006ex-Vb; Mon, 18 Sep 2023 14:01:07 -0400
+ id 1qiIYY-0006fZ-05; Mon, 18 Sep 2023 14:01:12 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYS-00037R-M2; Mon, 18 Sep 2023 14:01:06 -0400
+ id 1qiIYT-00037x-MO; Mon, 18 Sep 2023 14:01:09 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qiIUz-008crV-16;
- Mon, 18 Sep 2023 20:00:53 +0200
+ (envelope-from <den@openvz.org>) id 1qiIV1-008crV-0a;
+ Mon, 18 Sep 2023 20:00:55 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 03/22] parallels: fix memory leak in parallels_open()
-Date: Mon, 18 Sep 2023 20:00:40 +0200
-Message-Id: <20230918180100.524843-4-den@openvz.org>
+Subject: [PATCH 06/22] parallels: return earlier from parallels_open()
+ function on error
+Date: Mon, 18 Sep 2023 20:00:44 +0200
+Message-Id: <20230918180100.524843-8-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230918180100.524843-1-den@openvz.org>
 References: <20230918180100.524843-1-den@openvz.org>
@@ -55,25 +56,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We should free opts allocated through qemu_opts_create() at the end.
+At the beginning of the function we can return immediately until we
+really allocate s->header.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
+Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/parallels.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index 428f72de1c..af7be427c9 100644
+index 12f38cf70b..bd26c8db63 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -1217,6 +1217,7 @@ fail_format:
- fail_options:
-     ret = -EINVAL;
- fail:
-+    qemu_opts_del(opts);
-     /*
-      * "s" object was allocated by g_malloc0 so we can safely
-      * try to free its fields even they were not allocated.
+@@ -1090,7 +1090,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+ 
+     ret = bdrv_pread(bs->file, 0, sizeof(ph), &ph, 0);
+     if (ret < 0) {
+-        goto fail;
++        return ret;
+     }
+ 
+     bs->total_sectors = le64_to_cpu(ph.nb_sectors);
+@@ -1110,13 +1110,11 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+     s->tracks = le32_to_cpu(ph.tracks);
+     if (s->tracks == 0) {
+         error_setg(errp, "Invalid image: Zero sectors per track");
+-        ret = -EINVAL;
+-        goto fail;
++        return -EINVAL;
+     }
+     if (s->tracks > INT32_MAX/513) {
+         error_setg(errp, "Invalid image: Too big cluster");
+-        ret = -EFBIG;
+-        goto fail;
++        return -EFBIG;
+     }
+     s->prealloc_size = MAX(s->tracks, s->prealloc_size);
+     s->cluster_size = s->tracks << BDRV_SECTOR_BITS;
+@@ -1124,16 +1122,14 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+     s->bat_size = le32_to_cpu(ph.bat_entries);
+     if (s->bat_size > INT_MAX / sizeof(uint32_t)) {
+         error_setg(errp, "Catalog too large");
+-        ret = -EFBIG;
+-        goto fail;
++        return -EFBIG;
+     }
+ 
+     size = bat_entry_off(s->bat_size);
+     s->header_size = ROUND_UP(size, bdrv_opt_mem_align(bs->file->bs));
+     s->header = qemu_try_blockalign(bs->file->bs, s->header_size);
+     if (s->header == NULL) {
+-        ret = -ENOMEM;
+-        goto fail;
++        return -ENOMEM;
+     }
+ 
+     ret = bdrv_pread(bs->file, 0, s->header_size, s->header, 0);
 -- 
 2.34.1
 
