@@ -2,59 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E727A4AE4
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 15:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50FE87A4ADD
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 15:53:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiEgE-0005hw-Gj; Mon, 18 Sep 2023 09:52:50 -0400
+	id 1qiEgD-0005iM-Jg; Mon, 18 Sep 2023 09:52:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qiEg9-0005hO-5e
+ id 1qiEg9-0005hZ-PA
  for qemu-devel@nongnu.org; Mon, 18 Sep 2023 09:52:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qiEfl-0000OM-8R
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 09:52:44 -0400
+ id 1qiEfm-0000RE-RK
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 09:52:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695045133;
+ s=mimecast20190719; t=1695045139;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=KkSrmU0cTr+pxkQKWaWC20l7ucpf3HLAncdk9C68t/A=;
- b=MCYjvww7AQ0hMUkD1W8/6NhFW5yMY54ZOhh3H2jF+nx+iHhix5TLXFaoW9RjCMMcLdCXr7
- fjNIWFrRyuV9vQ8Tkr80G1ubKux5igRe+36hottRRZCkYxRagpRfcc56WP9JkPtC/3PQ4R
- A1TivJYj/y4xK8c4LznFGE0VERZ1gDM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-155-enZQ2C7GOWSIJrOiH6Rrdg-1; Mon, 18 Sep 2023 09:52:10 -0400
-X-MC-Unique: enZQ2C7GOWSIJrOiH6Rrdg-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jCrA3e8yuydcAyBZPCyz9ojYbjub4NprIdCYgs0ND7c=;
+ b=Ef9e57mex+JFfW+L4uYkFjzTSB1HaEsU9OlOhD6Q1Od5wlEmVxzVcREwj2q9ZbwvxeSMxQ
+ VfC0LqtATwNBshNHNhBX25Bt6Lzqxk9X/xhl2h7S2O9JQIKoS0j0nyRuEmlZus+jNEqiFg
+ FMmrHAbAoEpmiKDhp5D/KGkIQFZKZA0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-650-P8a-QoH1OYetel3qGCoNhQ-1; Mon, 18 Sep 2023 09:52:15 -0400
+X-MC-Unique: P8a-QoH1OYetel3qGCoNhQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD32E1C05144;
- Mon, 18 Sep 2023 13:52:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68508801779;
+ Mon, 18 Sep 2023 13:52:14 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.30])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CD0F020268CB;
- Mon, 18 Sep 2023 13:52:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3BE4D20268CB;
+ Mon, 18 Sep 2023 13:52:12 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v2 00/18] Make Pixman an optional dependency
-Date: Mon, 18 Sep 2023 17:51:47 +0400
-Message-ID: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 01/18] build-sys: add a "pixman" feature
+Date: Mon, 18 Sep 2023 17:51:48 +0400
+Message-ID: <20230918135206.2739222-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
+References: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -62,7 +66,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,79 +85,121 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Hi,
+For now, pixman is mandatory, but we set config_host.h and Kconfig.
+Once compilation is fixed, "pixman" will become actually optional.
 
-QEMU system emulators can be made to compile and work without Pixman.
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+---
+ meson.build                   | 10 ++++++++--
+ include/ui/qemu-pixman.h      |  2 ++
+ Kconfig.host                  |  3 +++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 +++
+ 5 files changed, 18 insertions(+), 2 deletions(-)
 
-Only a few devices and options actually require it (VNC, Gtk, Spice for ex) and
-will have to be compiled out.
-
-However, most of QEMU graphics-related code is based on pixman_image_t and
-format. If we want to provide mostly compatible QEMU machines with or without
-Pixman, all we need to do is to have a small compatibility header with just the
-bare minimum for those types (see "ui: add pixman-compat.h"). There are a
-limited number of operations related to geometry that are slightly better
-implemented in QEMU (without Pixman, see "virtio-gpu: replace PIXMAN for
-region/rect test").
-
-Without this simple compatibility header approach, QEMU at runtime becomes a
-very different emulator (without graphics device/board, display etc) and full of
-"if PIXMAN" conditions in the code. This is a much worse outcome imho, compared
-to this small header maintainance and compatibility story.
-
-Fixes:
-https://gitlab.com/qemu-project/qemu/-/issues/1172
-
-Marc-André Lureau (18):
-  build-sys: add a "pixman" feature
-  ui: compile out some qemu-pixman functions when !PIXMAN
-  ui: add pixman-compat.h
-  ui/console: allow to override the default VC
-  ui/vc: console-vc requires PIXMAN
-  qmp/hmp: disable screendump if PIXMAN is missing
-  virtio-gpu: replace PIXMAN for region/rect test
-  ui/console: when PIXMAN is unavailable, don't draw placeholder msg
-  vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when !PIXMAN
-  ui/gl: opengl doesn't require PIXMAN
-  ui/vnc: VNC requires PIXMAN
-  ui/spice: SPICE/QXL requires PIXMAN
-  ui/gtk: -display gtk requires PIXMAN
-  ui/dbus: do not require PIXMAN
-  arm/kconfig: XLNX_ZYNQMP_ARM depends on PIXMAN
-  hw/sm501: allow compiling without PIXMAN
-  hw/display: make ATI_VGA depend on PIXMAN
-  build-sys: make pixman actually optional
-
- configs/devices/mips64el-softmmu/default.mak |   2 +-
- meson.build                                  |  25 ++-
- qapi/ui.json                                 |   3 +-
- include/ui/console.h                         |   2 +
- include/ui/pixman-compat.h                   | 190 +++++++++++++++++++
- include/ui/qemu-pixman.h                     |  11 +-
- include/ui/rect.h                            |  55 ++++++
- hw/display/sm501.c                           |  19 +-
- hw/display/vhost-user-gpu.c                  |   2 +
- hw/display/virtio-gpu.c                      |  30 ++-
- softmmu/vl.c                                 |  45 +++--
- ui/console-vc-stubs.c                        |  32 ++++
- ui/console.c                                 |  20 ++
- ui/dbus-listener.c                           |  88 ++++++---
- ui/qemu-pixman.c                             |   6 +
- ui/ui-hmp-cmds.c                             |   2 +
- ui/ui-qmp-cmds.c                             |   2 +
- Kconfig.host                                 |   3 +
- hmp-commands.hx                              |   2 +
- hw/arm/Kconfig                               |   3 +-
- hw/display/Kconfig                           |   9 +-
- hw/display/meson.build                       |   4 +-
- meson_options.txt                            |   2 +
- scripts/meson-buildoptions.sh                |   3 +
- ui/meson.build                               |  22 +--
- 25 files changed, 487 insertions(+), 95 deletions(-)
- create mode 100644 include/ui/pixman-compat.h
- create mode 100644 include/ui/rect.h
- create mode 100644 ui/console-vc-stubs.c
-
+diff --git a/meson.build b/meson.build
+index 5150a74831..e870b039cc 100644
+--- a/meson.build
++++ b/meson.build
+@@ -828,10 +828,14 @@ if 'ust' in get_option('trace_backends')
+                      method: 'pkg-config')
+ endif
+ pixman = not_found
+-if have_system or have_tools
+-  pixman = dependency('pixman-1', required: have_system, version:'>=0.21.8',
++if not get_option('pixman').auto() or have_system or have_tools
++  pixman = dependency('pixman-1', required: get_option('pixman'), version:'>=0.21.8',
+                       method: 'pkg-config')
+ endif
++if not pixman.found()
++  error('FIXME: pixman is currently required')
++endif
++
+ zlib = dependency('zlib', required: true)
+ 
+ libaio = not_found
+@@ -2124,6 +2128,7 @@ config_host_data.set('CONFIG_SECCOMP', seccomp.found())
+ if seccomp.found()
+   config_host_data.set('CONFIG_SECCOMP_SYSRAWRC', seccomp_has_sysrawrc)
+ endif
++config_host_data.set('CONFIG_PIXMAN', pixman.found())
+ config_host_data.set('CONFIG_SNAPPY', snappy.found())
+ config_host_data.set('CONFIG_SOLARIS', targetos == 'sunos')
+ if get_option('tcg').allowed()
+@@ -2843,6 +2848,7 @@ have_ivshmem = config_host_data.get('CONFIG_EVENTFD')
+ host_kconfig = \
+   (get_option('fuzzing') ? ['CONFIG_FUZZ=y'] : []) + \
+   (have_tpm ? ['CONFIG_TPM=y'] : []) + \
++  (pixman.found() ? ['CONFIG_PIXMAN=y'] : []) + \
+   (spice.found() ? ['CONFIG_SPICE=y'] : []) + \
+   (have_ivshmem ? ['CONFIG_IVSHMEM=y'] : []) + \
+   (opengl.found() ? ['CONFIG_OPENGL=y'] : []) + \
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index 51f8709327..b3379f6625 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -6,11 +6,13 @@
+ #ifndef QEMU_PIXMAN_H
+ #define QEMU_PIXMAN_H
+ 
++#ifdef CONFIG_PIXMAN
+ /* pixman-0.16.0 headers have a redundant declaration */
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wredundant-decls"
+ #include <pixman.h>
+ #pragma GCC diagnostic pop
++#endif
+ 
+ /*
+  * pixman image formats are defined to be native endian,
+diff --git a/Kconfig.host b/Kconfig.host
+index d763d89269..b6ac2b9316 100644
+--- a/Kconfig.host
++++ b/Kconfig.host
+@@ -11,6 +11,9 @@ config OPENGL
+ config X11
+     bool
+ 
++config PIXMAN
++    bool
++
+ config SPICE
+     bool
+ 
+diff --git a/meson_options.txt b/meson_options.txt
+index f82d88b7c6..1aaec02d68 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -218,6 +218,8 @@ option('l2tpv3', type : 'feature', value : 'auto',
+        description: 'l2tpv3 network backend support')
+ option('netmap', type : 'feature', value : 'auto',
+        description: 'netmap network backend support')
++option('pixman', type : 'feature', value : 'auto',
++       description: 'pixman support')
+ option('slirp', type: 'feature', value: 'auto',
+        description: 'libslirp user mode network backend support')
+ option('vde', type : 'feature', value : 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index e1d178370c..d016caf819 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -147,6 +147,7 @@ meson_options_help() {
+   printf "%s\n" '  pa              PulseAudio sound support'
+   printf "%s\n" '  parallels       parallels image format support'
+   printf "%s\n" '  pipewire        PipeWire sound support'
++  printf "%s\n" '  pixman          pixman support'
+   printf "%s\n" '  png             PNG support with libpng'
+   printf "%s\n" '  pvrdma          Enable PVRDMA support'
+   printf "%s\n" '  qcow1           qcow1 image format support'
+@@ -398,6 +399,8 @@ _meson_option_parse() {
+     --disable-parallels) printf "%s" -Dparallels=disabled ;;
+     --enable-pipewire) printf "%s" -Dpipewire=enabled ;;
+     --disable-pipewire) printf "%s" -Dpipewire=disabled ;;
++    --enable-pixman) printf "%s" -Dpixman=enabled ;;
++    --disable-pixman) printf "%s" -Dpixman=disabled ;;
+     --with-pkgversion=*) quote_sh "-Dpkgversion=$2" ;;
+     --enable-plugins) printf "%s" -Dplugins=true ;;
+     --disable-plugins) printf "%s" -Dplugins=false ;;
 -- 
 2.41.0
 
