@@ -2,74 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FBB7A5101
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2E37A50FC
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:28:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiI3E-000727-PF; Mon, 18 Sep 2023 13:28:48 -0400
+	id 1qiI39-0006vt-71; Mon, 18 Sep 2023 13:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiI3B-0006wq-RO
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:28:45 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiI38-0004U0-U4
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:28:45 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 87F632003E;
- Mon, 18 Sep 2023 17:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695058121; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xAMfDFMZ+ezrCTtyQ8YqIFwJmcIIhXTsp71GC2FgNq8=;
- b=h3YzGygrxm2/np0y3trSFrTtzlky3Q8/4vHR50lquUGm7J4U6e0zpJjn+UGsRhSxmkilFm
- YwlSGPFs/ZGGZf6d/0S36jeq0hWDCZXd6TtZqCtOpWWQ8p1LbO1nM+ZulS2H8MY6PBhmsv
- 9lDeOjeYsEAqbdsoURhw/NmNf8CjT6A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695058121;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xAMfDFMZ+ezrCTtyQ8YqIFwJmcIIhXTsp71GC2FgNq8=;
- b=y4cTQNhRu/7K7wX0Uq1Z8jfgwH7pCi8ZyaDcgetzNz/f+Y55F1pPp7CciKatlz4HVg3/AY
- Vf3uvc1DoQbIdOCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0B50C1358A;
- Mon, 18 Sep 2023 17:28:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 6AaPMceICGUoGAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:28:39 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: [PATCH 8/8] migration: Move return path cleanup to main migration
- thread
-Date: Mon, 18 Sep 2023 14:28:22 -0300
-Message-Id: <20230918172822.19052-9-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20230918172822.19052-1-farosas@suse.de>
-References: <20230918172822.19052-1-farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
+ id 1qiI37-0006tp-Ja; Mon, 18 Sep 2023 13:28:41 -0400
+Received: from ssh.movementarian.org ([139.162.205.133] helo=movementarian.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <movement@movementarian.org>)
+ id 1qiI35-0004TK-VQ; Mon, 18 Sep 2023 13:28:41 -0400
+Received: from movement by movementarian.org with local (Exim 4.95)
+ (envelope-from <movement@movementarian.org>) id 1qiI32-00BFVd-Aa;
+ Mon, 18 Sep 2023 18:28:36 +0100
+Date: Mon, 18 Sep 2023 18:28:36 +0100
+From: John Levon <levon@movementarian.org>
+To: Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org, qemu-devel@nongnu.org
+Subject: Deadlock with SATA CD I/O and eject
+Message-ID: <ZQiIxERjYmZb0v4l@movementarian.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Url: http://www.movementarian.org/
+Received-SPF: pass client-ip=139.162.205.133;
+ envelope-from=movement@movementarian.org; helo=movementarian.org
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,60 +50,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the return path thread is allowed to finish during a paused
-migration, we can move the cleanup of the QEMUFiles to the main
-migration thread.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/migration.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Observed with base of qemu 6.2.0, but from code inspection it looks to me like
+it's still current in upstream master. Apologies if I have missed a fix in this
+area.
 
-diff --git a/migration/migration.c b/migration/migration.c
-index af78f7ee54..e2ed85b5be 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -98,6 +98,7 @@ static int migration_maybe_pause(MigrationState *s,
-                                  int *current_active_state,
-                                  int new_state);
- static void migrate_fd_cancel(MigrationState *s);
-+static int await_return_path_close_on_source(MigrationState *s);
- 
- static bool migration_needs_multiple_sockets(void)
- {
-@@ -1178,6 +1179,12 @@ static void migrate_fd_cleanup(MigrationState *s)
-         qemu_fclose(tmp);
-     }
- 
-+    /*
-+     * We already cleaned up to_dst_file, so errors from the return
-+     * path might be due to that, ignore them.
-+     */
-+    await_return_path_close_on_source(s);
-+
-     assert(!migration_is_active(s));
- 
-     if (s->state == MIGRATION_STATUS_CANCELLING) {
-@@ -1997,7 +2004,6 @@ out:
-     }
- 
-     trace_source_return_path_thread_end();
--    migration_release_dst_files(ms);
-     rcu_unregister_thread();
-     return NULL;
- }
-@@ -2051,6 +2057,9 @@ static int await_return_path_close_on_source(MigrationState *ms)
- 
-     ret = ms->rp_state.error;
-     ms->rp_state.error = false;
-+
-+    migration_release_dst_files(ms);
-+
-     trace_migration_return_path_end_after(ret);
-     return ret;
- }
--- 
-2.35.3
+Symptom: run a UEFI-booted SATA CD Windows installer. When it hits "Loading
+files.." screen, run an eject e.g.
 
+virsh qemu-monitor-command 64c6e190-ea7f-49e2-b2d5-6ba1814b00ae '{"execute":"eject", "arguments": { "id": "sata0-0-0" } }'
+
+qemu will get stuck like so:
+
+gdb) bt
+#0  0x00007f8ba4b16036 in ppoll () from /lib64/libc.so.6
+#1  0x0000561813c48ed5 in ppoll (__ss=0x0, __timeout=0x7ffcbd981a70, __nfds=<optimized out>, __fds=<optimized out>) at /usr/include/bits/poll2.h:62
+#2  qemu_poll_ns (fds=<optimized out>, nfds=<optimized out>, timeout=timeout@entry=999896128) at ../util/qemu-timer.c:348
+#3  0x0000561813c29be9 in fdmon_poll_wait (ctx=0x56181516e070, ready_list=0x7ffcbd981af0, timeout=999896128) at ../util/fdmon-poll.c:80
+#4  0x0000561813c297e1 in aio_poll (ctx=ctx@entry=0x56181516e070, blocking=blocking@entry=true) at ../util/aio-posix.c:607
+#5  0x0000561813ae2fad in bdrv_do_drained_begin (poll=true, ignore_bds_parents=false, parent=0x0, recursive=false, bs=0x56181533fcc0) at ../block/io.c:483
+#6  bdrv_do_drained_begin (bs=0x56181533fcc0, recursive=<optimized out>, parent=0x0, ignore_bds_parents=<optimized out>, poll=<optimized out>) at ../block/io.c:446
+#7  0x0000561813ad9982 in blk_drain (blk=0x5618161c1f10) at ../block/block-backend.c:1741
+#8  0x0000561813ad9b8c in blk_remove_bs (blk=blk@entry=0x5618161c1f10) at ../block/block-backend.c:852
+#9  0x000056181382b8ab in blockdev_remove_medium (has_device=<optimized out>, device=<optimized out>, has_id=<optimized out>, id=<optimized out>, errp=0x7ffcbd981c78) at ../block/qapi-sysemu.c:232
+#10 0x000056181382bfb1 in qmp_eject (has_device=<optimized out>, device=0x0, has_id=<optimized out>, id=0x561815e6efe0 "sata0-0-0", has_force=<optimized out>, force=<optimized out>, errp=0x7ffcbd981c78) at ../block/qapi-sysemu.c:45
+
+We are stuck forever here:
+
+ 351 static void bdrv_do_drained_begin(BlockDriverState *bs, BdrvChild *parent,
+ 352                                   bool poll)
+...
+ 380     if (poll) {
+ 381         BDRV_POLL_WHILE(bs, bdrv_drain_poll_top_level(bs, parent));
+ 382     }
+
+Because the blk root's ->in_flight is 1, as tested by the condition
+blk_root_drained_poll().
+
+
+Our blk->in_flight user is stuck here:
+
+1298 static void coroutine_fn blk_wait_while_drained(BlockBackend *blk)
+...
+1310         blk_dec_in_flight(blk);
+1311         qemu_co_queue_wait(&blk->queued_requests, &blk->queued_requests_lock);
+1312         blk_inc_in_flight(blk);
+
+Note that before entering this stanza, blk->in_flight was 2. This turns out to
+be due to the ide atapi code. In particular, the guest VM is generating lots of
+read I/O. The "first IO" arrives into blk via:
+
+cd_read_sector()->ide_buffered_readv()->blk_aio_preadv()
+
+This initial IO completes:
+
+blk_aio_read_entry()->blk_aio_complete()
+
+1560 static void blk_aio_complete(BlkAioEmAIOCB *acb)
+1561 {
+1562     if (acb->has_returned) {
+1563         acb->common.cb(acb->common.opaque, acb->rwco.ret);
+1564         blk_dec_in_flight(acb->rwco.blk);
+1565         qemu_aio_unref(acb);
+1566     }
+1567 }
+
+Line 1564 is what we need to move blk->in_flight down to zero, but that is never
+reached! This is because of what happens at :1563
+
+acm->common.cb()->cd_read_sector_cb()->ide_atapi_cmd_reply_end()->cd_read_sector_sync()->blk_pread()
+
+That is, the IO callback in the atapi code itself triggers more - synchronous - IO.
+
+In the meantime, we start processing the blk_drain() code, so by the time this
+blk_pread() actually gets handled, quiesce is set, and we get stuck in the
+blk_wait_while_drained().
+
+I don't know the qemu block stack well enough to propose an actual fix.
+
+Experimentally, waiting for ->in_flight to drop to zero *before* we quiesce in
+blk_remove_bs() via an AIO_WAIT_WHILE() avoids the symptom, but I'm pretty sure
+that's just a band-aid instead of fixing the deadlock.
+
+Any suggestions/clues/thoughts?
+
+thanks
+john
 
