@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733157A453B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A42C77A453C
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:57:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiA3q-0000jy-78; Mon, 18 Sep 2023 04:56:54 -0400
+	id 1qiA4K-0001cv-H0; Mon, 18 Sep 2023 04:57:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1qiA3Z-0000cn-GS
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:56:38 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>) id 1qiA3W-0000Oj-2I
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:56:37 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1bf1935f6c2so29885225ad.1
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 01:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20230601.gappssmtp.com; s=20230601; t=1695027391; x=1695632191;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=o/xUus0kHZtxWIRjKdHNXc+0bS0/mlG1VYeQCBDR9g0=;
- b=Nd1b+2O/KHamYS/F2LzHQR1ru/5dzZWBw5XO5klOt8lr4So1DxUK4Ek0F3CY2V6dgr
- rKQZdB68ycB+3G0AfLFgIMdksRwHUpMibuWsa7izxbu1kpQSZoImpJclVJsVVt1QQrzD
- lgsZkUc4DD4y+tgQioDnbvjhj2jjoTdriQVX3JY1gXGoUQps8uMRW29TZb7l9AdGngB0
- IxRNp7Fa6sQHXwoIwP8QVSplaBnJjbcme7r+/j79v14XYsZ7muoveQV6OscAxNcbu3Kk
- j6Lh0CvrCCobCvfHuk25qJLqR5aaYhFSR+65itMqOb/PHjljg8Hdhed0hjdczv3MMIVC
- ym9Q==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qiA4A-0001SM-AS
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:57:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qiA45-0000SO-On
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:57:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695027429;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bRIRQCSacffDE9iJjSkoOgsBpJ+0SmwzBi8ymqjR58g=;
+ b=FaVzjVmybS38atc36q9uD1bN2b8wOtSd3BHtIwN3Tcu1Maunl06Qx0jyRNjGgSGm60tTjs
+ FGlwbX4SIgFOrjIUAGNDKxTs2DqsZ/f9pmC37SX8tw/M/sQ7Za+nyZaU4TJRx2+lPB9pwf
+ 2ooT1971g34fTC0nJ+c+b7u3cIzLw0Q=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-413-XnPtGL_lPmGm2_mU2yf90A-1; Mon, 18 Sep 2023 04:57:07 -0400
+X-MC-Unique: XnPtGL_lPmGm2_mU2yf90A-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-502e2bc6595so4769854e87.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 01:57:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695027391; x=1695632191;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o/xUus0kHZtxWIRjKdHNXc+0bS0/mlG1VYeQCBDR9g0=;
- b=pUvMCpb2W0tuehz8TWv6w1FF0u1oM61+q8iDayKi9Sig1fu4Z7xqTvzp+Fb/EDJusr
- SBxtL3OfBjLO6JucYcZzSS9ZlC66ofr9sUn/yt6TWJ7kBNZidtuyU/Q/CPX1yPZw1/UL
- /WbdNVgZNJiiwNRTtVjUJerqffzHDz5Nsidl5zaiVJGcb6d5uhQr+jmOgGPoPjhRjnOm
- QXOjTNWThw44R38Elb6meRS3PNrFuJ081Y4sgzNg/3aoZMRcZZnVcwJy+V+7QIdeG5Cu
- b8A2DpMwpqR6UlF+VhWiB8Cn77M7aCgK/7+UJVuqqI4wdtWvwfRxXtmPc9vad+ux17dJ
- 6Z/w==
-X-Gm-Message-State: AOJu0YyyQUwderpJRG488eFj0rB3vY2Iv2MydwdQdmALXn8c5Zf+SOtY
- qGqaWpY96+63D4iuU1DgVJypZg==
-X-Google-Smtp-Source: AGHT+IEKm60DmWSJh6GZr90CJ14LDoKx1qS81lt1EmLjeSyflSsMhTr1nBTUQ0yitZAiNxmWzXqx0w==
-X-Received: by 2002:a17:902:e550:b0:1bf:7dfd:5b05 with SMTP id
- n16-20020a170902e55000b001bf7dfd5b05mr15045453plf.27.1695027391531; 
- Mon, 18 Sep 2023 01:56:31 -0700 (PDT)
-Received: from [192.168.10.153]
- (ppp118-208-171-7.cbr-trn-nor-bras39.tpg.internode.on.net. [118.208.171.7])
- by smtp.gmail.com with ESMTPSA id
- n4-20020a170903110400b001b9da42cd7dsm7764273plh.279.2023.09.18.01.56.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Sep 2023 01:56:31 -0700 (PDT)
-Message-ID: <ecb4be3d-1a8f-4723-a842-173678fbe858@ozlabs.ru>
-Date: Mon, 18 Sep 2023 18:56:23 +1000
+ d=1e100.net; s=20230601; t=1695027425; x=1695632225;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bRIRQCSacffDE9iJjSkoOgsBpJ+0SmwzBi8ymqjR58g=;
+ b=R4Oy4haTCHGEHSYM6MaV0ghO2dabzL+u1Xw7CHB+tifYUjMuA/rY75UxH7hD7cmQ3m
+ 10mhAAHlM1yLGX67tOou4SDkEcBlVgdwEO62DTXc3BLvgE35jIcNuiOBwDHaE5b9aiBS
+ 4eXP2rJCXtotXx4yAlBU7iiweFm6F6+vc8HNBcFxsZVTEDDtlodgPT0eUzanfSWSh4QH
+ CSyY5Bn0+6OfH5UVBu9qGK27dgYy1epivYpxkMa4zxBQ3gZw3U/P6WdRLS/nUiITM6er
+ HcMOEepZg1Rzo7D95U+1Evranh3CAwKLEgpPBLeJ0YHwvrqG+xXWHWwYLb73vAZI0bH1
+ cl5Q==
+X-Gm-Message-State: AOJu0YzOr8DwiiE2OXIdW8Ayq+kv0MxGJGQz3QH++6yV2+TwHRMwvGxR
+ hvqm+Vuo1rKJJQm1+u72XQNQP4fQR1iblWYKdCiRNOygF4MAkzDz4QLMNhRhpuJEKZDDIFK/RBd
+ gtB6depLaheQ3HP5c3iPppLkIX3VtLYQMMC+B8e2MbBTO
+X-Received: by 2002:a05:6512:4003:b0:500:b63f:4db3 with SMTP id
+ br3-20020a056512400300b00500b63f4db3mr8985468lfb.35.1695027425025; 
+ Mon, 18 Sep 2023 01:57:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnvMn8bXXph9hzIxg/1ZVjQ3yJSjS3P1w79Jo7e8EkIYZehVQB21QTM+n8gwf1y5dnvjE361TDVcnnSgPfKwY=
+X-Received: by 2002:a05:6512:4003:b0:500:b63f:4db3 with SMTP id
+ br3-20020a056512400300b00500b63f4db3mr8985453lfb.35.1695027424728; Mon, 18
+ Sep 2023 01:57:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, david@gibson.dropbear.id.au, groug@kaod.org,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-References: <20230915110507.194762-1-danielhb413@gmail.com>
- <CVLU9WN6M895.27GDUJQUWD3UP@wheely>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <CVLU9WN6M895.27GDUJQUWD3UP@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=aik@ozlabs.ru; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20230915170322.3076956-1-eperezma@redhat.com>
+ <20230915170322.3076956-4-eperezma@redhat.com>
+In-Reply-To: <20230915170322.3076956-4-eperezma@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Mon, 18 Sep 2023 16:56:53 +0800
+Message-ID: <CACGkMEtorjo8CVsLP2TB7hOZT3AK69uzEN0NsTYGmE0J-=i23w@mail.gmail.com>
+Subject: Re: [PATCH 3/3] vdpa net: follow VirtIO initialization properly at
+ cvq isolation probing
+To: =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Hawkins Jiawei <yin31149@gmail.com>, si-wei.liu@oracle.com,
+ Lei Yang <leiyang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,122 +97,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 18/09/2023 16:45, Nicholas Piggin wrote:
-> On Fri Sep 15, 2023 at 9:05 PM AEST, Daniel Henrique Barboza wrote:
->> Update all relevant PowerPC entries as follows:
->>
->> - Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
->>    Nick has  been a solid contributor for the last couple of years and
->>    has the required knowledge and motivation to drive the boat.
->>
->> - Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
->>    to other areas of interest and will retire from qemu-ppc.  Thanks Mr
->>    Kurz for all the years of service.
->>
->> - David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
->>    KVM CPUs. Change done per his request.
->>
->> - Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
->>    PPC KVM CPUs. It has been a long since I last touched those areas and
->>    it's not justified to be kept as maintainer in them.
->>
->> - Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
->>    don't have the required knowledge to justify it.
->>
->> - VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
->>    better reflects the current state of the subsystem.
->>
-> 
-> Oh, I forgot:
-> 
-> Acked-by: Nicholas Piggin <npiggin@gmail.com>
+On Sat, Sep 16, 2023 at 1:03=E2=80=AFAM Eugenio P=C3=A9rez <eperezma@redhat=
+.com> wrote:
+>
+> This patch solves a few issues.  The most obvious is that the feature
+> set was done previous to ACKNOWLEDGE | DRIVER status bit set.  Current
+> vdpa devices are permissive with this, but it is better to follow the
+> standard.
+>
+> Signed-off-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> ---
+>  net/vhost-vdpa.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 51d8144070..4b30325977 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -1270,8 +1270,7 @@ static int vhost_vdpa_probe_cvq_isolation(int devic=
+e_fd, uint64_t features,
+>      uint64_t backend_features;
+>      int64_t cvq_group;
+>      uint8_t status =3D VIRTIO_CONFIG_S_ACKNOWLEDGE |
+> -                     VIRTIO_CONFIG_S_DRIVER |
+> -                     VIRTIO_CONFIG_S_FEATURES_OK;
+> +                     VIRTIO_CONFIG_S_DRIVER;
+>      int r;
+>
+>      ERRP_GUARD();
+> @@ -1286,15 +1285,22 @@ static int vhost_vdpa_probe_cvq_isolation(int dev=
+ice_fd, uint64_t features,
+>          return 0;
+>      }
+>
+> +    r =3D ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+> +    if (unlikely(r)) {
+> +        error_setg_errno(errp, -r, "Cannot set device status");
+> +        goto out;
+> +    }
+> +
+>      r =3D ioctl(device_fd, VHOST_SET_FEATURES, &features);
+>      if (unlikely(r)) {
+> -        error_setg_errno(errp, errno, "Cannot set features");
+> +        error_setg_errno(errp, -r, "Cannot set features");
+>          goto out;
+>      }
 >
 
+Spec requires a re-read ?
 
-And you also forgot to mention where on github/gitlab the ppc-next 
-branch is hosted from now on, for SLOF releases :)  Today I'll use 
-qemu/master.
+"
+Re-read device status to ensure the FEATURES_OK bit is still set:
+otherwise, the device does not support our subset of features and the
+device is unusable.
+"
 
+Thanks
 
-
->> Acked-by: Cédric Le Goater <clg@kaod.org>
->> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->> ---
->>   MAINTAINERS | 20 +++++++-------------
->>   1 file changed, 7 insertions(+), 13 deletions(-)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 00562f924f..c4aa1c1c9f 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -298,11 +298,9 @@ F: hw/openrisc/
->>   F: tests/tcg/openrisc/
->>   
->>   PowerPC TCG CPUs
->> +M: Nicholas Piggin <npiggin@gmail.com>
->>   M: Daniel Henrique Barboza <danielhb413@gmail.com>
->>   R: Cédric Le Goater <clg@kaod.org>
->> -R: David Gibson <david@gibson.dropbear.id.au>
->> -R: Greg Kurz <groug@kaod.org>
->> -R: Nicholas Piggin <npiggin@gmail.com>
->>   L: qemu-ppc@nongnu.org
->>   S: Odd Fixes
->>   F: target/ppc/
->> @@ -438,10 +436,9 @@ F: target/mips/kvm*
->>   F: target/mips/sysemu/
->>   
->>   PPC KVM CPUs
->> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
->> +M: Nicholas Piggin <npiggin@gmail.com>
->> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
->>   R: Cédric Le Goater <clg@kaod.org>
->> -R: David Gibson <david@gibson.dropbear.id.au>
->> -R: Greg Kurz <groug@kaod.org>
->>   S: Odd Fixes
->>   F: target/ppc/kvm.c
->>   
->> @@ -1430,10 +1427,10 @@ F: include/hw/rtc/m48t59.h
->>   F: tests/avocado/ppc_prep_40p.py
->>   
->>   sPAPR (pseries)
->> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
->> +M: Nicholas Piggin <npiggin@gmail.com>
->> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
->>   R: Cédric Le Goater <clg@kaod.org>
->>   R: David Gibson <david@gibson.dropbear.id.au>
->> -R: Greg Kurz <groug@kaod.org>
->>   R: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>   L: qemu-ppc@nongnu.org
->>   S: Odd Fixes
->> @@ -1452,8 +1449,8 @@ F: tests/avocado/ppc_pseries.py
->>   
->>   PowerNV (Non-Virtualized)
->>   M: Cédric Le Goater <clg@kaod.org>
->> +M: Nicholas Piggin <npiggin@gmail.com>
->>   R: Frédéric Barrat <fbarrat@linux.ibm.com>
->> -R: Nicholas Piggin <npiggin@gmail.com>
->>   L: qemu-ppc@nongnu.org
->>   S: Odd Fixes
->>   F: docs/system/ppc/powernv.rst
->> @@ -1497,12 +1494,9 @@ F: include/hw/pci-host/mv64361.h
->>   
->>   Virtual Open Firmware (VOF)
->>   M: Alexey Kardashevskiy <aik@ozlabs.ru>
->> -R: Cédric Le Goater <clg@kaod.org>
->> -R: Daniel Henrique Barboza <danielhb413@gmail.com>
->>   R: David Gibson <david@gibson.dropbear.id.au>
->> -R: Greg Kurz <groug@kaod.org>
->>   L: qemu-ppc@nongnu.org
->> -S: Maintained
->> +S: Odd Fixes
->>   F: hw/ppc/spapr_vof*
->>   F: hw/ppc/vof*
->>   F: include/hw/ppc/vof*
-> 
-
--- 
-Alexey
-
+> +    status |=3D VIRTIO_CONFIG_S_FEATURES_OK;
+>      r =3D ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+>      if (unlikely(r)) {
+> -        error_setg_errno(errp, -r, "Cannot set status");
+> +        error_setg_errno(errp, -r, "Cannot set device status");
+>          goto out;
+>      }
+>
+> --
+> 2.39.3
+>
 
 
