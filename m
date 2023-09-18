@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFFD7A44C6
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CD17A44C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:33:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi9ga-0006aB-BF; Mon, 18 Sep 2023 04:32:52 -0400
+	id 1qi9gb-0006f6-5Z; Mon, 18 Sep 2023 04:32:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qi9g5-00064t-NE
+ id 1qi9g6-00064u-49
  for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:32:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qi9g1-0004DR-0S
+ id 1qi9g1-0004Dd-BG
  for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:32:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1695025936;
@@ -24,36 +24,36 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=03wYiwxNKHwdUVh62jeqpGytwnLxIyJF9wiiRcQP/2g=;
- b=SrfEn0j22a4d1lgC00NiKxWyy0AwOqSvEs0G8w2kRBsM/+ge4z0WZFCgL5Il7UGBNHnZJ4
- bgI7fxnpeRA21hnY5b6ndZ8z6FLfuC+Nw4K9otnGkQPc0BVJp1fx4/AcFM4TJMhInyvtNS
- ACLsO1peNJwkiGxL3YrcABbRBMB13os=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-685-AIDZvYL3PWmgysr20LVwhw-1; Mon, 18 Sep 2023 04:32:10 -0400
-X-MC-Unique: AIDZvYL3PWmgysr20LVwhw-1
+ bh=M5q8HL/evuYRgt2ztBExpV/Y3A0EzOrM+4accrEPW7Y=;
+ b=FC7czxEDzyAe5VWiPOmgwoiNUA91eUvW356Lhv0ZR9kORDFd9ObnmKHHbr30furiNXRzQm
+ LlsFeHgaCDAj5vvkYZjmd6nVWUtxBpUaE2kxZKMW6+4UrOvmazIWL4Z4569k0iIqbN+Q65
+ O3amwQJgIX7Kg2+vGkoujFeXgn/qOpI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-479-EXmYoT5mNhKFnEsw6gcaJQ-1; Mon, 18 Sep 2023 04:32:12 -0400
+X-MC-Unique: EXmYoT5mNhKFnEsw6gcaJQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4C45E1C0512E;
- Mon, 18 Sep 2023 08:32:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0432D85A5BA;
+ Mon, 18 Sep 2023 08:32:12 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.113.17])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 09A372156701;
- Mon, 18 Sep 2023 08:32:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 04D3F2156701;
+ Mon, 18 Sep 2023 08:32:09 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL V2 11/17] e1000e: rename e1000e_ba_state and
- e1000e_write_hdr_to_rx_buffers
-Date: Mon, 18 Sep 2023 16:31:26 +0800
-Message-Id: <20230918083132.55423-12-jasowang@redhat.com>
+Cc: Ilya Maximets <i.maximets@ovn.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL V2 12/17] tests: bump libvirt-ci for libasan and libxdp
+Date: Mon, 18 Sep 2023 16:31:27 +0800
+Message-Id: <20230918083132.55423-13-jasowang@redhat.com>
 In-Reply-To: <20230918083132.55423-1-jasowang@redhat.com>
 References: <20230918083132.55423-1-jasowang@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
@@ -80,90 +80,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-Rename e1000e_ba_state according and e1000e_write_hdr_to_rx_buffers for
-consistency with IGB.
+This pulls in the fixes for libasan version as well as support for
+libxdp that will be used for af-xdp netdev in the next commits.
 
-Signed-off-by: Tomasz Dzieciol <t.dzieciol@partner.samsung.com>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/e1000e_core.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ tests/docker/dockerfiles/debian-amd64-cross.docker   | 2 +-
+ tests/docker/dockerfiles/debian-amd64.docker         | 2 +-
+ tests/docker/dockerfiles/debian-arm64-cross.docker   | 2 +-
+ tests/docker/dockerfiles/debian-armel-cross.docker   | 2 +-
+ tests/docker/dockerfiles/debian-armhf-cross.docker   | 2 +-
+ tests/docker/dockerfiles/debian-ppc64el-cross.docker | 2 +-
+ tests/docker/dockerfiles/debian-s390x-cross.docker   | 2 +-
+ tests/docker/dockerfiles/opensuse-leap.docker        | 2 +-
+ tests/docker/dockerfiles/ubuntu2004.docker           | 2 +-
+ tests/docker/dockerfiles/ubuntu2204.docker           | 2 +-
+ tests/lcitool/libvirt-ci                             | 2 +-
+ 11 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
-index cc243b7..e324c02 100644
---- a/hw/net/e1000e_core.c
-+++ b/hw/net/e1000e_core.c
-@@ -1397,17 +1397,17 @@ e1000e_pci_dma_write_rx_desc(E1000ECore *core, dma_addr_t addr,
-     }
- }
- 
--typedef struct e1000e_ba_state_st {
-+typedef struct E1000EBAState {
-     uint16_t written[MAX_PS_BUFFERS];
-     uint8_t cur_idx;
--} e1000e_ba_state;
-+} E1000EBAState;
- 
- static inline void
--e1000e_write_hdr_to_rx_buffers(E1000ECore *core,
--                               hwaddr ba[MAX_PS_BUFFERS],
--                               e1000e_ba_state *bastate,
--                               const char *data,
--                               dma_addr_t data_len)
-+e1000e_write_hdr_frag_to_rx_buffers(E1000ECore *core,
-+                                    hwaddr ba[MAX_PS_BUFFERS],
-+                                    E1000EBAState *bastate,
-+                                    const char *data,
-+                                    dma_addr_t data_len)
- {
-     assert(data_len <= core->rxbuf_sizes[0] - bastate->written[0]);
- 
-@@ -1420,7 +1420,7 @@ e1000e_write_hdr_to_rx_buffers(E1000ECore *core,
- static void
- e1000e_write_payload_frag_to_rx_buffers(E1000ECore *core,
-                                         hwaddr ba[MAX_PS_BUFFERS],
--                                        e1000e_ba_state *bastate,
-+                                        E1000EBAState *bastate,
-                                         const char *data,
-                                         dma_addr_t data_len)
- {
-@@ -1530,7 +1530,7 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
- 
-     do {
-         hwaddr ba[MAX_PS_BUFFERS];
--        e1000e_ba_state bastate = { { 0 } };
-+        E1000EBAState bastate = { { 0 } };
-         bool is_last = false;
- 
-         desc_size = total_size - desc_offset;
-@@ -1568,8 +1568,10 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                             iov_copy = MIN(ps_hdr_len - ps_hdr_copied,
-                                            iov->iov_len - iov_ofs);
- 
--                            e1000e_write_hdr_to_rx_buffers(core, ba, &bastate,
--                                                      iov->iov_base, iov_copy);
-+                            e1000e_write_hdr_frag_to_rx_buffers(core, ba,
-+                                                                &bastate,
-+                                                                iov->iov_base,
-+                                                                iov_copy);
- 
-                             copy_size -= iov_copy;
-                             ps_hdr_copied += iov_copy;
-@@ -1585,8 +1587,8 @@ e1000e_write_packet_to_guest(E1000ECore *core, struct NetRxPkt *pkt,
-                     } else {
-                         /* Leave buffer 0 of each descriptor except first */
-                         /* empty as per spec 7.1.5.1                      */
--                        e1000e_write_hdr_to_rx_buffers(core, ba, &bastate,
--                                                       NULL, 0);
-+                        e1000e_write_hdr_frag_to_rx_buffers(core, ba, &bastate,
-+                                                            NULL, 0);
-                     }
-                 }
- 
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index b66b9cc..0cf3ba6 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -84,7 +84,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       g++-x86-64-linux-gnu \
+                       gcc-x86-64-linux-gnu \
+                       libaio-dev:amd64 \
+-                      libasan5:amd64 \
++                      libasan6:amd64 \
+                       libasound2-dev:amd64 \
+                       libattr1-dev:amd64 \
+                       libbpf-dev:amd64 \
+diff --git a/tests/docker/dockerfiles/debian-amd64.docker b/tests/docker/dockerfiles/debian-amd64.docker
+index 02262bc..e3e1de2 100644
+--- a/tests/docker/dockerfiles/debian-amd64.docker
++++ b/tests/docker/dockerfiles/debian-amd64.docker
+@@ -32,7 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       git \
+                       hostname \
+                       libaio-dev \
+-                      libasan5 \
++                      libasan6 \
+                       libasound2-dev \
+                       libattr1-dev \
+                       libbpf-dev \
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index a0a968b..d8cd4f8 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -84,7 +84,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       g++-aarch64-linux-gnu \
+                       gcc-aarch64-linux-gnu \
+                       libaio-dev:arm64 \
+-                      libasan5:arm64 \
++                      libasan6:arm64 \
+                       libasound2-dev:arm64 \
+                       libattr1-dev:arm64 \
+                       libbpf-dev:arm64 \
+diff --git a/tests/docker/dockerfiles/debian-armel-cross.docker b/tests/docker/dockerfiles/debian-armel-cross.docker
+index f1fc34a..75342c0 100644
+--- a/tests/docker/dockerfiles/debian-armel-cross.docker
++++ b/tests/docker/dockerfiles/debian-armel-cross.docker
+@@ -84,7 +84,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       g++-arm-linux-gnueabi \
+                       gcc-arm-linux-gnueabi \
+                       libaio-dev:armel \
+-                      libasan5:armel \
++                      libasan6:armel \
+                       libasound2-dev:armel \
+                       libattr1-dev:armel \
+                       libbpf-dev:armel \
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index a278578..f45cfed 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -84,7 +84,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       g++-arm-linux-gnueabihf \
+                       gcc-arm-linux-gnueabihf \
+                       libaio-dev:armhf \
+-                      libasan5:armhf \
++                      libasan6:armhf \
+                       libasound2-dev:armhf \
+                       libattr1-dev:armhf \
+                       libbpf-dev:armhf \
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index 30e5efa..52f8c34 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -84,7 +84,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       g++-powerpc64le-linux-gnu \
+                       gcc-powerpc64le-linux-gnu \
+                       libaio-dev:ppc64el \
+-                      libasan5:ppc64el \
++                      libasan6:ppc64el \
+                       libasound2-dev:ppc64el \
+                       libattr1-dev:ppc64el \
+                       libbpf-dev:ppc64el \
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index ee6db7b..208e57b 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -84,7 +84,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       g++-s390x-linux-gnu \
+                       gcc-s390x-linux-gnu \
+                       libaio-dev:s390x \
+-                      libasan5:s390x \
++                      libasan6:s390x \
+                       libasound2-dev:s390x \
+                       libattr1-dev:s390x \
+                       libbpf-dev:s390x \
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index fef8d5a..ed04b4d 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -40,7 +40,7 @@ RUN zypper update -y && \
+            libSDL2-devel \
+            libSDL2_image-devel \
+            libaio-devel \
+-           libasan6 \
++           libasan8 \
+            libattr-devel \
+            libbpf-devel \
+            libbz2-devel \
+diff --git a/tests/docker/dockerfiles/ubuntu2004.docker b/tests/docker/dockerfiles/ubuntu2004.docker
+index 4180cd8..d3e2120 100644
+--- a/tests/docker/dockerfiles/ubuntu2004.docker
++++ b/tests/docker/dockerfiles/ubuntu2004.docker
+@@ -32,7 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       git \
+                       hostname \
+                       libaio-dev \
+-                      libasan5 \
++                      libasan6 \
+                       libasound2-dev \
+                       libattr1-dev \
+                       libbrlapi-dev \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index 88493f0..94c2c16 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -32,7 +32,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       git \
+                       hostname \
+                       libaio-dev \
+-                      libasan5 \
++                      libasan6 \
+                       libasound2-dev \
+                       libattr1-dev \
+                       libbpf-dev \
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index bbd55b4..5f84a21 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit bbd55b4d18cce8f89b5167675e434a6941315634
++Subproject commit 5f84a21881577a5fb56cc956f6fe4e2abd6fcff0
 -- 
 2.7.4
 
