@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BDF7A4765
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8C67A4769
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:43:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiBhm-0002ZV-Vv; Mon, 18 Sep 2023 06:42:16 -0400
+	id 1qiBhr-0002c9-3W; Mon, 18 Sep 2023 06:42:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBhd-0002Z9-Hz
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:42:05 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBhk-0002Zz-MP
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:42:14 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBhb-0003f0-Qv
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:42:05 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-404fbfac998so17663585e9.3
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 03:42:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBhi-0003np-Fw
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:42:12 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-50300e9e75bso2850524e87.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 03:42:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695033721; x=1695638521; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1A2I4McMyrbvruQYlutI6os3yuQBAn1zuRcOAOn6W+0=;
- b=wc4kRQ9G2QfVfkzDoRSvYF1aMQZDhOnq44s1EQs4yq+gB+Y8dogWpJVyg6czngrhhM
- 4qyz5s0mSaZHno8MHydK/fmAikXTPxqUINUwscsxx9mEpMxE5bwBFhYsOTsYe1nIiy2A
- ydmIUyEduspZe1p894zTRdvtlcDI6jJGs9FjBoSM0qzURxzWKlFjibH8cwUpMNmnEsdw
- Om49dbJYJa/a4vQOhRYAwem8zlxYI1y7tQjBPkoGEhXY4OxERgDmLWuCVGjoehB7iVEi
- nV64laLMWzZym2cFY5zFlohSDD73aM4mi5HPfM0zqVP/NZTpAbtEh9tFCS5EZgx9yP/u
- wDFQ==
+ d=linaro.org; s=google; t=1695033728; x=1695638528; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=y1v7pQRjeJMsEcoQRcYTaf7jB60FlNSE8+h962wr3Pk=;
+ b=SHbwMVNCS5RNUitpnjOJBODHzXRQyQ4CEq9WPsZlKEnFOYbfoDW2oL66xGZa0QgLc0
+ T+AIpRPIQu+yXUcQeBqgdSb0yMvuSzqiDufXOuS49/OYVU+sUOepq1yY0BLiaNiekQFJ
+ fpxlb6r5+QlOWjfP0LupkK14K2Ny1sD0k0cbYVTsw2U8vyTQBbPsHoc7a7hwjXOCiTi8
+ I7gsny4UzPnGy8zKW01TsWySxG+0mYuzpQQ3XcoXFo7lUz0SH2GtcgirGRu+bw4/l+wE
+ h5AO0TRxhPuzP4OLzTmXRihxqduCRAULjIpZrLxvs3fEaFq6N+1Xk6+CzpU7SahtykrF
+ lqnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695033721; x=1695638521;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1A2I4McMyrbvruQYlutI6os3yuQBAn1zuRcOAOn6W+0=;
- b=hMKHWpTF2aD7TQlP2pVp/aGCSsJBnIehbEa2deubCZPzC7+H9nmeii6ShmTwAm2nEu
- ZrnJxjB7b+VHlYXGzcZ+/U6IND5M9WZHq728j+mzGlSu2TrWMLUXF1rgnMpoRX9Ncm9I
- 5GVs8y5P5FzjHXkf7DQH6z2yEj+AHyEP0PsnHgjQxku19Oy1jHHY+oKSGeCzFt0mP9Et
- 5AGennRQyUXvZLBtJ16aAlwZWzTxofWjt7bj48+o/+GpURES0QWZ4WJWq82qBb3ow5iK
- JyrYe1Q0o1rrDmXOJrhivcMymEWauee0fttpBh5Vyq3KqEyuC6zuc8CvY/dUsvkEmEcv
- RCEA==
-X-Gm-Message-State: AOJu0YzKJ4KzRu/OFFqPCJ+w0B2+P9/wViINIP7j9+jOl7yM6AB5WMbr
- UhrmWGTHUlDghC33u5zltM/vf3t8q2ra6erAPMMHAw==
-X-Google-Smtp-Source: AGHT+IFlu/kVjloKMDTPRvdnQfmRTSEAOq4Mdim0ilLfSIU82vjisdBojDaLjs6b+f1oRSG1+/6M/Q==
-X-Received: by 2002:adf:e78d:0:b0:314:17cc:31d0 with SMTP id
- n13-20020adfe78d000000b0031417cc31d0mr7143318wrm.34.1695033720895; 
- Mon, 18 Sep 2023 03:42:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695033728; x=1695638528;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=y1v7pQRjeJMsEcoQRcYTaf7jB60FlNSE8+h962wr3Pk=;
+ b=bPR6RdMTdzsU3U1BaJ/8uCNVh5sBAdoRejxoQ98WOexk1Z1yf86e1ixYJuEYfx7amv
+ 0nraqgK0Kq41eI8QmseX3r/Hjbu26mmjRX+VIaa6LOCDQWJelWz4wZnom2ab22r/TVKU
+ yz/TfwJWxfvXzFa4ce9uX5/4djyWQFzlMO/HhO1J3zzQMWFXrm10w/NSXQY8alzxFmUp
+ BDdij5Ms8NqJGNX9nHVrYR2Nn3dHmbHhrptCv67JnCD2OFF6g4xmtIkiF1gU7LrB7geX
+ zZQqu6b04fC5Sop7llbeJ2oswg12iEJopWJDF2aI/Evb2y0INQb7iuvHZg0iksQXbV/6
+ CaDA==
+X-Gm-Message-State: AOJu0YwBMuR3u4GIlfwaCS6yjAvYLSjAimY52MTi1yDoIqMflTeg/8TJ
+ AbMDnl3FcmYrf5pGCAzf4zsocZ3/+c0WjTgx7awJ9Q==
+X-Google-Smtp-Source: AGHT+IF/0ITVInb3zP966Pc9cMZYKmVr/r+GDWnP6iElDu4wy7KVf56WEUcW5GE2f66cRTF9gFAQmg==
+X-Received: by 2002:a05:6512:971:b0:501:bee7:487b with SMTP id
+ v17-20020a056512097100b00501bee7487bmr6570861lft.11.1695033728282; 
+ Mon, 18 Sep 2023 03:42:08 -0700 (PDT)
 Received: from localhost.localdomain (5.red-88-29-175.dynamicip.rima-tde.net.
  [88.29.175.5]) by smtp.gmail.com with ESMTPSA id
- u8-20020a5d6ac8000000b0031416362e23sm12324622wrw.3.2023.09.18.03.41.56
+ 7-20020a05600c230700b003fefcbe7fa8sm12155307wmo.28.2023.09.18.03.42.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Sep 2023 03:42:00 -0700 (PDT)
+ Mon, 18 Sep 2023 03:42:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Anton Johansson <anjo@rev.ng>, Riku Voipio <riku.voipio@iki.fi>,
@@ -66,15 +67,18 @@ Cc: Anton Johansson <anjo@rev.ng>, Riku Voipio <riku.voipio@iki.fi>,
  Eduardo Habkost <eduardo@habkost.net>, Alexandre Iooss <erdnaxe@crans.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH 0/3] accel: Factor tcg_cpu_reset_hold() out of cpu-common.c
-Date: Mon, 18 Sep 2023 12:41:49 +0200
-Message-ID: <20230918104153.24433-1-philmd@linaro.org>
+Subject: [PATCH 1/3] accel/tcg: Declare tcg_flush_jmp_cache() in
+ 'exec/tb-flush.h'
+Date: Mon, 18 Sep 2023 12:41:50 +0200
+Message-ID: <20230918104153.24433-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230918104153.24433-1-philmd@linaro.org>
+References: <20230918104153.24433-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,34 +101,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+"exec/cpu-common.h" is meant to contain the declarations
+related to CPU usable with any accelerator / target
+combination.
 
-We want to have exec/ code agnostic to accelerators.
-still we use various call to TCG and KVM. This series
-factor the TCG code from cpu_common_reset_hold() to an
-accel-specific handler within AccelOpsClass.
+tcg_flush_jmp_cache() is specific to TCG, so restrict its
+declaration by moving it to "exec/tb-flush.h".
 
-Based-on: <20230915190009.68404-1-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/exec/cpu-common.h | 1 -
+ include/exec/tb-flush.h   | 2 ++
+ accel/tcg/cputlb.c        | 1 +
+ accel/tcg/tcg-accel-ops.c | 1 +
+ hw/core/cpu-common.c      | 1 +
+ plugins/core.c            | 1 -
+ 6 files changed, 5 insertions(+), 2 deletions(-)
 
-Philippe Mathieu-Daudé (3):
-  accel/tcg: Declare tcg_flush_jmp_cache() in 'exec/tb-flush.h'
-  accel: Introduce cpu_exec_reset_hold()
-  accel/tcg: Factor tcg_cpu_reset_hold() out
-
- include/exec/cpu-common.h  | 3 ---
- include/exec/tb-flush.h    | 2 ++
- include/hw/core/cpu.h      | 1 +
- include/sysemu/accel-ops.h | 1 +
- accel/stubs/tcg-stub.c     | 4 ----
- accel/tcg/cputlb.c         | 1 +
- accel/tcg/tcg-accel-ops.c  | 9 +++++++++
- accel/tcg/translate-all.c  | 8 --------
- accel/tcg/user-exec-stub.c | 4 ++++
- hw/core/cpu-common.c       | 5 +----
- plugins/core.c             | 1 -
- softmmu/cpus.c             | 7 +++++++
- 12 files changed, 26 insertions(+), 20 deletions(-)
-
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 41788c0bdd..1eff233565 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -39,7 +39,6 @@ void cpu_list_unlock(void);
+ unsigned int cpu_list_generation_id_get(void);
+ 
+ void tcg_flush_softmmu_tlb(CPUState *cs);
+-void tcg_flush_jmp_cache(CPUState *cs);
+ 
+ void tcg_iommu_init_notifier_list(CPUState *cpu);
+ void tcg_iommu_free_notifier_list(CPUState *cpu);
+diff --git a/include/exec/tb-flush.h b/include/exec/tb-flush.h
+index d92d06565b..142c240d94 100644
+--- a/include/exec/tb-flush.h
++++ b/include/exec/tb-flush.h
+@@ -23,4 +23,6 @@
+  */
+ void tb_flush(CPUState *cs);
+ 
++void tcg_flush_jmp_cache(CPUState *cs);
++
+ #endif /* _TB_FLUSH_H_ */
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index c643d66190..b220c4536c 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -24,6 +24,7 @@
+ #include "exec/memory.h"
+ #include "exec/cpu_ldst.h"
+ #include "exec/cputlb.h"
++#include "exec/tb-flush.h"
+ #include "exec/memory-internal.h"
+ #include "exec/ram_addr.h"
+ #include "tcg/tcg.h"
+diff --git a/accel/tcg/tcg-accel-ops.c b/accel/tcg/tcg-accel-ops.c
+index 3973591508..748539f289 100644
+--- a/accel/tcg/tcg-accel-ops.c
++++ b/accel/tcg/tcg-accel-ops.c
+@@ -34,6 +34,7 @@
+ #include "qemu/timer.h"
+ #include "exec/exec-all.h"
+ #include "exec/hwaddr.h"
++#include "exec/tb-flush.h"
+ #include "exec/gdbstub.h"
+ 
+ #include "tcg-accel-ops.h"
+diff --git a/hw/core/cpu-common.c b/hw/core/cpu-common.c
+index ced66c2b34..b3b5ce6702 100644
+--- a/hw/core/cpu-common.c
++++ b/hw/core/cpu-common.c
+@@ -27,6 +27,7 @@
+ #include "qemu/main-loop.h"
+ #include "exec/log.h"
+ #include "exec/cpu-common.h"
++#include "exec/tb-flush.h"
+ #include "qemu/error-report.h"
+ #include "qemu/qemu-print.h"
+ #include "sysemu/tcg.h"
+diff --git a/plugins/core.c b/plugins/core.c
+index 3c4e26c7ed..c95c00a830 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -21,7 +21,6 @@
+ #include "qemu/xxhash.h"
+ #include "qemu/rcu.h"
+ #include "hw/core/cpu.h"
+-#include "exec/cpu-common.h"
+ 
+ #include "exec/exec-all.h"
+ #include "exec/tb-flush.h"
 -- 
 2.41.0
 
