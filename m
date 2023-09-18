@@ -2,56 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E932F7A464E
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 11:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 124DF7A4650
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 11:46:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiAot-0005oi-Hd; Mon, 18 Sep 2023 05:45:31 -0400
+	id 1qiAou-0005os-BV; Mon, 18 Sep 2023 05:45:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qiAop-0005nt-HM
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 05:45:28 -0400
+ id 1qiAor-0005oH-AM
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 05:45:29 -0400
 Received: from mgamail.intel.com ([134.134.136.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jing2.liu@intel.com>)
- id 1qiAof-0000zF-H5
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 05:45:27 -0400
+ id 1qiAop-0000xj-Gj
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 05:45:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695030317; x=1726566317;
+ t=1695030327; x=1726566327;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sYenLO8qBFQaQjUPMfoV6cxi4vZBlBpvvEUXyjxOwYk=;
- b=HzfkbFFJtNRozrDD0jEU5hOjs+yJ41FTKBIJDUq/c/A47kLIzhNKPfQq
- bm+lMW70Qh4Rr9QPTJotVaE01jketAHFCA5zFY9xm4KFAdWssdFGo+cP2
- P5+Ci4fM2uezY+bJ9t904DLx9m8IyvAPIU153pl+UPWdJ1Jd/CfeEYb3a
- VcDaCSAfh3Lpdo78rMuFECQPS8/5M8xItsH57J9JlYaWTAxLbHlc+ZqBk
- 3v/fleea2ue7Xpq+eGI2Bq3LUSLUMZGMv92HhICFELjpE5EMdVTLAJSN4
- QABFRQPf2WeS8Un3rFW2TW9EHa5p+yUTuH8lf20tCF6jBm3qjNVsubBBQ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="446072275"
-X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; d="scan'208";a="446072275"
+ bh=K9qjTjP69wy9/oxYf5DYvTpAECxOt0osGbsO6aI872Y=;
+ b=ITf4tbG5X115TDrDbWrvBCfX5X8OPSfpms3DQ1NaPd0QADOBYkUay8bJ
+ 5zYVAuNT4yAIM8Tv/pH39nTD9CGPAB6a+wjd12oAx6IVqMtiHkRv1ngH6
+ 90uvnwe0z6ZBobqCmTh5NnrEPvL1DLOAEkHKGc+HjpkEwxjd+QrAoUJO5
+ IWySfSLdfpJAC3SIW8Wv5AESNkaxvg97K1QfAlbZe8EedBkYe2E3zUJMP
+ nd1CmRqtOPzaI6Z+kyys92eOJya8+eETrytDXwxO1EgxRLxDFlnuwueNG
+ B8VKgtP7u9HvJPSpSJW9ar7BmqjMal7Wn2fs9fgZ0gFysZ1x1NFNelZCz Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="446072279"
+X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; d="scan'208";a="446072279"
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2023 02:45:16 -0700
+ 18 Sep 2023 02:45:18 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="835955952"
-X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; d="scan'208";a="835955952"
+X-IronPort-AV: E=McAfee;i="6600,9927,10836"; a="835955956"
+X-IronPort-AV: E=Sophos;i="6.02,156,1688454000"; d="scan'208";a="835955956"
 Received: from vmmteam.bj.intel.com ([10.240.193.84])
- by FMSMGA003.fm.intel.com with ESMTP; 18 Sep 2023 02:45:13 -0700
+ by FMSMGA003.fm.intel.com with ESMTP; 18 Sep 2023 02:45:16 -0700
 From: Jing Liu <jing2.liu@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, pbonzini@redhat.com,
  kevin.tian@intel.com, reinette.chatre@intel.com, jing2.liu@intel.com,
  jing2.liu@linux.intel.com
-Subject: [PATCH v2 2/4] vfio/pci: enable vector on dynamic MSI-X allocation
-Date: Mon, 18 Sep 2023 05:45:05 -0400
-Message-Id: <20230918094507.409050-3-jing2.liu@intel.com>
+Subject: [PATCH v2 3/4] vfio/pci: use an invalid fd to enable MSI-X
+Date: Mon, 18 Sep 2023 05:45:06 -0400
+Message-Id: <20230918094507.409050-4-jing2.liu@intel.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20230918094507.409050-1-jing2.liu@intel.com>
 References: <20230918094507.409050-1-jing2.liu@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=134.134.136.100; envelope-from=jing2.liu@intel.com;
  helo=mgamail.intel.com
@@ -77,111 +78,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The vector_use callback is used to enable vector that is unmasked in
-guest. The kernel used to only support static MSI-X allocation. When
-allocating a new interrupt using "static MSI-X allocation" kernels,
-QEMU first disables all previously allocated vectors and then
-re-allocates all including the new one. The nr_vectors of VFIOPCIDevice
-indicates that all vectors from 0 to nr_vectors are allocated (and may
-be enabled), which is used to to loop all the possibly used vectors
-When, e.g., disabling MSI-X interrupts.
+Guests typically enable MSI-X with all of the vectors masked in the MSI-X
+vector table. To match the guest state of device, QEMU enables MSI-X by
+enabling vector 0 with userspace triggering and immediately release.
+However the release function actually does not release it due to already
+using userspace mode.
 
-Extend the vector_use function to support dynamic MSI-X allocation when
-host supports the capability. QEMU therefore can individually allocate
-and enable a new interrupt without affecting others or causing interrupts
-lost during runtime.
+It is no need to enable triggering on host and rely on the mask bit to
+avoid spurious interrupts. Use an invalid fd (i.e. fd = -1) is enough
+to get MSI-X enabled.
 
-Utilize nr_vectors to calculate the upper bound of enabled vectors in
-dynamic MSI-X allocation mode since looping all msix_entries_nr is not
-efficient and unnecessary.
+After dynamic MSI-X allocation is supported, the interrupt restoring
+also need use such way to enable MSI-X, therefore, create a function
+for that.
 
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Jing Liu <jing2.liu@intel.com>
-Tested-by: Reinette Chatre <reinette.chatre@intel.com>
 ---
 Changes since v1:
-- Revise Qemu to QEMU.
+- Revise Qemu to QEMU. (Cédric)
+- Use g_autofree to automatically release. (Cédric)
+- Just return 'ret' and let the caller of vfio_enable_msix_no_vec()
+  report the error. (Cédric)
 
 Changes since RFC v1:
-- Test vdev->msix->noresize to identify the allocation mode. (Alex)
-- Move defer_kvm_irq_routing test out and update nr_vectors in a
-  common place before vfio_enable_vectors(). (Alex)
-- Revise the comments. (Alex)
+- A new patch. Use an invalid fd to get MSI-X enabled instead of using
+  userspace triggering. (Alex)
 ---
- hw/vfio/pci.c | 44 +++++++++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 17 deletions(-)
+ hw/vfio/pci.c | 44 ++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 8 deletions(-)
 
 diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 60654ca28ab8..84987e46fd7a 100644
+index 84987e46fd7a..0117f230e934 100644
 --- a/hw/vfio/pci.c
 +++ b/hw/vfio/pci.c
-@@ -470,6 +470,7 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
-     VFIOMSIVector *vector;
-     int ret;
-+    int old_nr_vecs = vdev->nr_vectors;
+@@ -369,6 +369,33 @@ static void vfio_msi_interrupt(void *opaque)
+     notify(&vdev->pdev, nr);
+ }
  
-     trace_vfio_msix_vector_do_use(vdev->vbasedev.name, nr);
- 
-@@ -512,33 +513,42 @@ static int vfio_msix_vector_do_use(PCIDevice *pdev, unsigned int nr,
-     }
- 
-     /*
--     * We don't want to have the host allocate all possible MSI vectors
--     * for a device if they're not in use, so we shutdown and incrementally
--     * increase them as needed.
-+     * When dynamic allocation is not supported, we don't want to have the
-+     * host allocate all possible MSI vectors for a device if they're not
-+     * in use, so we shutdown and incrementally increase them as needed.
-+     * nr_vectors represents the total number of vectors allocated.
-+     *
-+     * When dynamic allocation is supported, let the host only allocate
-+     * and enable a vector when it is in use in guest. nr_vectors represents
-+     * the upper bound of vectors being enabled (but not all of the ranges
-+     * is allocated or enabled).
-      */
-     if (vdev->nr_vectors < nr + 1) {
-         vdev->nr_vectors = nr + 1;
--        if (!vdev->defer_kvm_irq_routing) {
-+    }
++/*
++ * Get MSI-X enabled, but no vector enabled, by setting vector 0 with an invalid
++ * fd to kernel.
++ */
++static int vfio_enable_msix_no_vec(VFIOPCIDevice *vdev)
++{
++    g_autofree struct vfio_irq_set *irq_set = NULL;
++    int ret = 0, argsz;
++    int32_t *fd;
 +
-+    if (!vdev->defer_kvm_irq_routing) {
-+        if (vdev->msix->noresize && (old_nr_vecs < nr + 1)) {
-             vfio_disable_irqindex(&vdev->vbasedev, VFIO_PCI_MSIX_IRQ_INDEX);
-             ret = vfio_enable_vectors(vdev, true);
-             if (ret) {
-                 error_report("vfio: failed to enable vectors, %d", ret);
-             }
--        }
--    } else {
--        Error *err = NULL;
--        int32_t fd;
++    argsz = sizeof(*irq_set) + sizeof(*fd);
++
++    irq_set = g_malloc0(argsz);
++    irq_set->argsz = argsz;
++    irq_set->flags = VFIO_IRQ_SET_DATA_EVENTFD |
++                     VFIO_IRQ_SET_ACTION_TRIGGER;
++    irq_set->index = VFIO_PCI_MSIX_IRQ_INDEX;
++    irq_set->start = 0;
++    irq_set->count = 1;
++    fd = (int32_t *)&irq_set->data;
++    *fd = -1;
++
++    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_SET_IRQS, irq_set);
++
++    return ret;
++}
++
+ static int vfio_enable_vectors(VFIOPCIDevice *vdev, bool msix)
+ {
+     struct vfio_irq_set *irq_set;
+@@ -618,6 +645,8 @@ static void vfio_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
+ 
+ static void vfio_msix_enable(VFIOPCIDevice *vdev)
+ {
++    int ret;
++
+     vfio_disable_interrupts(vdev);
+ 
+     vdev->msi_vectors = g_new0(VFIOMSIVector, vdev->msix->entries);
+@@ -640,8 +669,6 @@ static void vfio_msix_enable(VFIOPCIDevice *vdev)
+     vfio_commit_kvm_msi_virq_batch(vdev);
+ 
+     if (vdev->nr_vectors) {
+-        int ret;
 -
--        if (vector->virq >= 0) {
--            fd = event_notifier_get_fd(&vector->kvm_interrupt);
-         } else {
--            fd = event_notifier_get_fd(&vector->interrupt);
--        }
-+            Error *err = NULL;
-+            int32_t fd;
- 
--        if (vfio_set_irq_signaling(&vdev->vbasedev,
--                                     VFIO_PCI_MSIX_IRQ_INDEX, nr,
--                                     VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
--            error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+            if (vector->virq >= 0) {
-+                fd = event_notifier_get_fd(&vector->kvm_interrupt);
-+            } else {
-+                fd = event_notifier_get_fd(&vector->interrupt);
-+            }
-+
-+            if (vfio_set_irq_signaling(&vdev->vbasedev,
-+                                       VFIO_PCI_MSIX_IRQ_INDEX, nr,
-+                                       VFIO_IRQ_SET_ACTION_TRIGGER, fd, &err)) {
-+                error_reportf_err(err, VFIO_MSG_PREFIX, vdev->vbasedev.name);
-+            }
-         }
+         ret = vfio_enable_vectors(vdev, true);
+         if (ret) {
+             error_report("vfio: failed to enable vectors, %d", ret);
+@@ -655,13 +682,14 @@ static void vfio_msix_enable(VFIOPCIDevice *vdev)
+          * MSI-X capability, but leaves the vector table masked.  We therefore
+          * can't rely on a vector_use callback (from request_irq() in the guest)
+          * to switch the physical device into MSI-X mode because that may come a
+-         * long time after pci_enable_msix().  This code enables vector 0 with
+-         * triggering to userspace, then immediately release the vector, leaving
+-         * the physical device with no vectors enabled, but MSI-X enabled, just
+-         * like the guest view.
++         * long time after pci_enable_msix().  This code sets vector 0 with an
++         * invalid fd to make the physical device MSI-X enabled, but with no
++         * vectors enabled, just like the guest view.
+          */
+-        vfio_msix_vector_do_use(&vdev->pdev, 0, NULL, NULL);
+-        vfio_msix_vector_release(&vdev->pdev, 0);
++        ret = vfio_enable_msix_no_vec(vdev);
++        if (ret) {
++            error_report("vfio: failed to enable MSI-X, %d", ret);
++        }
      }
  
+     trace_vfio_msix_enable(vdev->vbasedev.name);
 -- 
 2.27.0
 
