@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B827A505A
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C0B7A50B6
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:12:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiHek-0000cs-3H; Mon, 18 Sep 2023 13:03:30 -0400
+	id 1qiHm9-0005Tz-IR; Mon, 18 Sep 2023 13:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHeh-0000WX-Mb
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:03:27 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHm7-0005Ry-Pi
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:11:07 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHef-0007tE-Ta
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:03:27 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHm4-0001GM-3V
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:11:07 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 664732001A;
- Mon, 18 Sep 2023 17:03:24 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id A017121F07;
+ Mon, 18 Sep 2023 17:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695056604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1695057062; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=WK+lRIqc93PRgHwhXc52SYjLQ4YfctSGGMtEQDDQ6Xw=;
- b=rVrvobZlYeFMt7qI9Ibyt6tm2taXntdnFCdVWU+w+hgoxktzDNNZCYwTLhcozfGwCx1GQK
- mb6Y6dJGZTktxoafBSxIF9uHFM2zMAhXGvsFXYSCoKsga4SVZklkMKkfVcp+mLYuM2c83V
- O0c8pJYd0BIxxMvlQhiffcQTJUPIMEI=
+ bh=fs0qpoc1oCeceWn7tAWs2FiZ2n6w4K9Hansbxs5rln4=;
+ b=FWDfWzKhkz6tgkjmJ74W6NidS5SFCLnGLM34OmA1EFg0uGaavUFymzlPHM73G6ZszDAecJ
+ rJvG219DXtAWtJhyGf3un/PcR9zDXBO9Kq/9y4+umrkOVnAaKZf8MaUatAIcMpcDpChsNO
+ 834fFitUJJIVMJ13xMG/ROCzUgMCCmQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695056604;
+ s=susede2_ed25519; t=1695057062;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=WK+lRIqc93PRgHwhXc52SYjLQ4YfctSGGMtEQDDQ6Xw=;
- b=UNwBtauIYC887Z9eIfdAEIFLaMayP9T0H7sEvwKp7bLP1AxSDZ27240uDFaiKuxLIArAe7
- U7qBpn1AJJNPHSDA==
+ bh=fs0qpoc1oCeceWn7tAWs2FiZ2n6w4K9Hansbxs5rln4=;
+ b=z2jaKNFHCs8WnHSQXvUvKhyjfrDsks5kYRtryXo113qrNc567pFyKKcXHNDjSbi4IeCjjH
+ Chons+4Vb06OLNDw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id ED9E71358A;
- Mon, 18 Sep 2023 17:03:23 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 325511358A;
+ Mon, 18 Sep 2023 17:11:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id trynLduCCGVXDQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:03:23 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id tVxFO6WECGWcEAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:11:01 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH 05/52] migration/rdma: Consistently use uint64_t for
- work request IDs
-In-Reply-To: <20230918144206.560120-6-armbru@redhat.com>
+Subject: Re: [PATCH 06/52] migration/rdma: Clean up two more harmless signed
+ vs. unsigned issues
+In-Reply-To: <20230918144206.560120-7-armbru@redhat.com>
 References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-6-armbru@redhat.com>
-Date: Mon, 18 Sep 2023 14:03:21 -0300
-Message-ID: <87ttrrza5i.fsf@suse.de>
+ <20230918144206.560120-7-armbru@redhat.com>
+Date: Mon, 18 Sep 2023 14:10:59 -0300
+Message-ID: <87r0mvz9ss.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -85,14 +85,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Markus Armbruster <armbru@redhat.com> writes:
 
-> We use int instead of uint64_t in a few places.  Change them to
-> uint64_t.
+> qemu_rdma_exchange_get_response() compares int parameter @expecting
+> with uint32_t head->type.  Actual arguments are non-negative
+> enumeration constants, RDMAControlHeader uint32_t member type, or
+> qemu_rdma_exchange_recv() int parameter expecting.  Actual arguments
+> for the latter are non-negative enumeration constants.  Change both
+> parameters to uint32_t.
 >
-> This cleans up a comparison of signed qemu_rdma_block_for_wrid()
-> parameter @wrid_requested with unsigned @wr_id.  Harmless, because the
-> actual arguments are non-negative enumeration constants.
+> In qio_channel_rdma_readv(), loop control variable @i is ssize_t, and
+> counts from 0 up to @niov, which is size_t.  Change @i to size_t.
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
+
+just a comment...
+
+>  static int qemu_rdma_exchange_recv(RDMAContext *rdma, RDMAControlHeader *head,
+> -                                int expecting)
+> +                                   uint32_t expecting)
+>  {
+>      RDMAControlHeader ready = {
+>                                  .len = 0,
+> @@ -2851,7 +2851,7 @@ static ssize_t qio_channel_rdma_readv(QIOChannel *ioc,
+>      RDMAContext *rdma;
+>      RDMAControlHeader head;
+>      int ret = 0;
+> -    ssize_t i;
+> +    size_t i;
+>      size_t done = 0;
+
+It seems the idea was for 'done' to be ssize_t like in
+qio_channel_rdma_writev()
+
 
