@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D707A51B6
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A29437A51B2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:08:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiIZV-00074v-2K; Mon, 18 Sep 2023 14:02:09 -0400
+	id 1qiIZ7-0006vo-R4; Mon, 18 Sep 2023 14:01:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYX-0006fY-Vz; Mon, 18 Sep 2023 14:01:12 -0400
+ id 1qiIYY-0006fa-0G; Mon, 18 Sep 2023 14:01:13 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYT-00037s-GB; Mon, 18 Sep 2023 14:01:09 -0400
+ id 1qiIYU-00038D-1g; Mon, 18 Sep 2023 14:01:09 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qiIV0-008crV-2K;
- Mon, 18 Sep 2023 20:00:55 +0200
+ (envelope-from <den@openvz.org>) id 1qiIV1-008crV-1x;
+ Mon, 18 Sep 2023 20:00:56 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 05/22] parallels: return earler in fail_format branch in
- parallels_open()
-Date: Mon, 18 Sep 2023 20:00:43 +0200
-Message-Id: <20230918180100.524843-7-den@openvz.org>
+Subject: [PATCH 07/22] parallels: refactor path when we need to re-check image
+ in parallels_open
+Date: Mon, 18 Sep 2023 20:00:45 +0200
+Message-Id: <20230918180100.524843-9-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230918180100.524843-1-den@openvz.org>
 References: <20230918180100.524843-1-den@openvz.org>
@@ -56,29 +56,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We do not need to perform any deallocation/cleanup if wrong format is
-detected.
+More conditions follows thus the check should be more scalable.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ block/parallels.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index ae006e7fc7..12f38cf70b 100644
+index bd26c8db63..af3b4894d7 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -1232,7 +1232,8 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+@@ -1071,7 +1071,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+     int ret, size, i;
+     int64_t file_nb_sectors, sector;
+     uint32_t data_start;
+-    bool data_off_is_correct;
++    bool need_check = false;
+ 
+     ret = parallels_opts_prealloc(bs, options, errp);
+     if (ret < 0) {
+@@ -1139,11 +1139,14 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+     s->bat_bitmap = (uint32_t *)(s->header + 1);
+ 
+     if (le32_to_cpu(ph.inuse) == HEADER_INUSE_MAGIC) {
+-        s->header_unclean = true;
++        need_check = s->header_unclean = true;
++    }
++
++    {
++        bool ok = parallels_test_data_off(s, file_nb_sectors, &data_start);
++        need_check = need_check || !ok;
+     }
+ 
+-    data_off_is_correct = parallels_test_data_off(s, file_nb_sectors,
+-                                                  &data_start);
+     s->data_start = data_start;
+     s->data_end = s->data_start;
+     if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
+@@ -1200,6 +1203,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+             s->data_end = sector + s->tracks;
+         }
+     }
++    need_check = need_check || s->data_end > file_nb_sectors;
+ 
+     /*
+      * We don't repair the image here if it's opened for checks. Also we don't
+@@ -1209,12 +1213,8 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+         return 0;
+     }
+ 
+-    /*
+-     * Repair the image if it's dirty or
+-     * out-of-image corruption was detected.
+-     */
+-    if (s->data_end > file_nb_sectors || s->header_unclean
+-        || !data_off_is_correct) {
++    /* Repair the image if corruption was detected. */
++    if (need_check) {
+         BdrvCheckResult res;
+         ret = bdrv_check(bs, &res, BDRV_FIX_ERRORS | BDRV_FIX_LEAKS);
+         if (ret < 0) {
+@@ -1223,7 +1223,6 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
+             goto fail;
+         }
+     }
+-
+     return 0;
  
  fail_format:
-     error_setg(errp, "Image not in Parallels format");
--    ret = -EINVAL;
-+    return -EINVAL;
-+
- fail:
-     /*
-      * "s" object was allocated by g_malloc0 so we can safely
 -- 
 2.34.1
 
