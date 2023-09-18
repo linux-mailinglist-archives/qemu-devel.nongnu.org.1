@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D667E7A511A
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:38:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E75E7A512E
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:45:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiICk-0002Sx-F0; Mon, 18 Sep 2023 13:38:39 -0400
+	id 1qiIHe-0006Xx-R8; Mon, 18 Sep 2023 13:43:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qiICg-0002RS-Al
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:38:34 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qiICe-0006Gb-IR
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:38:34 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-532addba879so259252a12.0
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 10:38:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695058710; x=1695663510; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=0x3x0+HyNY1ow9LmzDi5TJ3WW6he099l2ZwR/NxrN/A=;
- b=PqBlYsMrzRev+hD4MK9xovBQYQfUPlX2Mle81C5sARcGcPyOTmimr27SVDlweZMcsP
- VuIACHE2FUOpKrBQGBjBFgR7h6pYmVQCbbDTNOE5KQqM1cDDoeEMROCscwEdFddIQzP7
- DzfK2T1efykSVAub8Iw2GzU2WAvZkkpharloexOfDPnf/VLhz5khG1hwyBPzNLXk2nE5
- YsqxxOeuyYrEsHB8YNlwkN/H1yYTPTDOS04bg65c0xePkd+THkIzkxmQDxxlVOHwcc64
- b7nqF9Bm0eb+KA1w7aRssdMoL979jLNbeNfRH2Jofb8KurfFvFywbs2XWy+CUjSzjn3C
- L9Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695058710; x=1695663510;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0x3x0+HyNY1ow9LmzDi5TJ3WW6he099l2ZwR/NxrN/A=;
- b=MJrHASt2qMvmRy854T3Ar4YjcJdHThbwCXBzkjyW8G/XPcpADlRfMwYojH+wi8828B
- i/ke6dFPlr3e4kK7ntoZjFOe5aPasqBzEi5SnOqyTX1kwatZLjvfmOh4jnJ30evzQYkj
- 5EXK38hg3K4R1mQ944nWUpNUsXb59wj6WPFltvdf/LRhB2zQuirvDWZjK9ayz0Y6gU78
- c12ypBCwKuO4yI7isFoQRSLsyaKnq1LPwHOGO9dftIPiZx+/NNW21R+aSY+sI2eTFdHB
- syrM/Dr1X63N+xvQ+hxr2jEjl+ZT1p74tsqnaWI95sJQ2iTgaY9iUrqNkD8B/8GXNOLI
- JPVQ==
-X-Gm-Message-State: AOJu0YwpicRMFVnjbyUzILv2CrZcVUZstGB/4TTgYtV0P5PBpO0PvPF+
- udb+s3aFfYxpcFrHtueOZczmTyiuljK3SKIeoMROyg==
-X-Google-Smtp-Source: AGHT+IEy5FaJKBlvnbm3wtSkbySpCGftw7r9Ts0q7Uktu7xV6HT/ZACTRhxoz6I75TIZaQcU3y8qYIu/OyLXjdQfu7Q=
-X-Received: by 2002:a05:6402:28c9:b0:522:b876:9ef5 with SMTP id
- ef9-20020a05640228c900b00522b8769ef5mr403606edb.8.1695058710235; Mon, 18 Sep
- 2023 10:38:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qiIHc-0006Vs-Mh
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:43:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qiIHa-0007OW-Mq
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:43:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695059017;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fvmHyEcDh7HWxNF4TjADeM2NA9dv7A10KEKhSIbat4c=;
+ b=BDxES2T7wSJ61zV6jPp/CyM+Mrw50eTi10jyu/jT79Et/ssh+p8188k5+3mtoTLvWL1pNP
+ hrSLVesb6bDZQKi//uqNyBx6NNdpULuynUz/WvHk3WYVfxWcobnMcS+fNyiZZJvAPI4uJM
+ VO4iLJgiXdWzF5qfMdHiC68szGI+pL8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-298-Hy0rMP4dOx-2jfW3uGVDqw-1; Mon, 18 Sep 2023 13:43:34 -0400
+X-MC-Unique: Hy0rMP4dOx-2jfW3uGVDqw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13223800883;
+ Mon, 18 Sep 2023 17:43:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.114])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EA80DC15BB8;
+ Mon, 18 Sep 2023 17:43:32 +0000 (UTC)
+Date: Mon, 18 Sep 2023 18:43:30 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>,
+ Omar Sandoval <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v2 qemu 3/3] dump: Add qmp argument "reassembled"
+Message-ID: <ZQiMQioTYYWQ13Yh@redhat.com>
+References: <20230914010315.945705-1-stephen.s.brennan@oracle.com>
+ <20230914010315.945705-4-stephen.s.brennan@oracle.com>
+ <ZQg9qjdMZL4Tt6EN@redhat.com> <87msxjxu55.fsf@oracle.com>
 MIME-Version: 1.0
-References: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
- <20230918150259.11165-3-Jonathan.Cameron@huawei.com>
- <CAFEAcA_7-uq8LJO6-myGU1+qjErxZAWE+CMjqyJBph6Du9K0iA@mail.gmail.com>
- <20230918180013.000035cf@Huawei.com>
- <5083ba81-f74d-3698-6418-72d288917df5@intel.com>
-In-Reply-To: <5083ba81-f74d-3698-6418-72d288917df5@intel.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 18 Sep 2023 18:38:10 +0100
-Message-ID: <CAFEAcA_ROGZ1jDPP59NBD2td-R7e9VjJ=2mNEY01cPL8ZMYgkw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] hw/mem/cxl_type3: Add missing copyright and license
- notice
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org, 
- Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- linuxarm@huawei.com, Yuquan Wang <wangyuquan1236@phytium.com.cn>, 
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, 
- Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87msxjxu55.fsf@oracle.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,48 +82,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Sept 2023 at 18:26, Dave Jiang <dave.jiang@intel.com> wrote:
->
->
->
-> On 9/18/23 10:00, Jonathan Cameron wrote:
-> > On Mon, 18 Sep 2023 17:31:38 +0100
-> > Peter Maydell <peter.maydell@linaro.org> wrote:
-> >
-> >> On Mon, 18 Sept 2023 at 16:04, Jonathan Cameron
-> >> <Jonathan.Cameron@huawei.com> wrote:
-> >>>
-> >>> This has been missing from the start. Assume it should match
-> >>> with cxl/cxl-component-utils.c as both were part of early
-> >>> postings from Ben.
-> >>
-> >> Sounds plausible -- is there an Intel person who could give us
-> >> an acked-by for this?
-> >>
-> >> (Ideally we wouldn't have let more gpl-2-only code into the
-> >> codebase without a rationale...)
-> >>
-> >
-> > I've +CC'd the kernel CXL maintainers from Intel a few of whom
-> > have also contributed some of the QEMU CXL code.
-> > Hopefully someone can ack.
->
-> I see that nvdimm.c from Intel is under LGPL 2.1. What is the typical license this should be applied for QEMU?
+On Mon, Sep 18, 2023 at 10:34:30AM -0700, Stephen Brennan wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
+> > #
+> > # @DumpGuestMemoryFormat:
+> > #
+> > # An enumeration of guest-memory-dump's format.
+> > #
+> > # @elf: elf format
+> > #
+> > # @kdump-zlib: makedumpfile flattened, kdump-compressed format with zlib-compressed
+> > #
+> > # @kdump-lzo: makedumpfile flattened, kdump-compressed format with lzo-compressed
+> > #
+> > # @kdump-snappy: makedumpfile flattened, kdump-compressed format with snappy-compressed
+> > #
+> > # @kdump-raw-zlib: raw assembled kdump-compressed format with zlib-compressed (since 8.2)
+> > #
+> > # @kdump-raw-lzo: raw assembled kdump-compressed format with lzo-compressed (since 8.2)
+> > #
+> > # @kdump-raw-snappy: raw assembled kdump-compressed format with snappy-compressed (since 8.2)
+> > #
+> > # @win-dmp: Windows full crashdump format, can be used instead of ELF
+> > #     converting (since 2.13)
+> > #
+> > # Since: 2.0
+> > ##
+> > { 'enum': 'DumpGuestMemoryFormat',
+> >   'data': [ 'elf',
+> >             'kdump-zlib', 'kdump-lzo', 'kdump-snappy',
+> >             'kdump-raw-zlib', 'kdump-raw-lzo', 'kdump-raw-snappy',
+> >             'win-dmp' ] }
+> 
+> Hi Daniel,
+> 
+> Sure, I'll go ahead and use this approach instead. One question: I see
+> that this generates the enumeration DumpGuestMemoryFormat in
+> qapi-types-dump.h. I just wanted to double-check if there's any ABI
+> considerations for the numbering of this enum? Inserting kdump-raw-* at
+> this point would result in 'win-dmp' getting a different numbering, and
+> it seems possible that the API/ABI which libvirt uses might depend on
+> the enumeration values not changing. E.G. if libvirt is built against
+> one version of Qemu and then used with a different one.
 
-The project has a mix of licenses, for mostly historical reasons.
-The overall license is thus GPLv2 (as the most-restrictive of the set).
-Our preference (as noted in the top level LICENSE file) for new
-code is for GPL-v2-or-later; we can take other GPL-2-compatible
-licenses (preferably GPL-v2-or-later compatible) if there's a
-good rationale from the submitter. (Historically, one reason
-for the GPL-v2-only code has been "this came from the Linux
-kernel and so it's GPL-2-only"; "we copied a lot of this code
-from some other file in QEMU and that has license X" is
-the other one.)
+The QAPI integer representation of enums is a private internal impl
+detail known only to QEMU.
 
-thanks
--- PMM
+In terms of QMP, the on the wire representation is exclusively string
+format, so safe wrt re-ordering for new/old QEMU and new/old libvirt.
+
+
+In livirt's own public API, if we chose to expose these new formats,
+then we have to strictly append after the existing enums constants
+in libvirt's header file.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
