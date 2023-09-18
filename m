@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB37B7A402B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 06:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A477A402C
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 06:51:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi6DH-0003Pj-OE; Mon, 18 Sep 2023 00:50:23 -0400
+	id 1qi6DI-0003QL-Hk; Mon, 18 Sep 2023 00:50:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6DB-0003PH-KO
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:50:17 -0400
-Received: from mail-dm6nam12on2062b.outbound.protection.outlook.com
- ([2a01:111:f400:fe59::62b]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6DD-0003Pb-HE
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:50:20 -0400
+Received: from mail-mw2nam10on20609.outbound.protection.outlook.com
+ ([2a01:111:f400:7e89::609]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6D7-0003c1-KC
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:50:16 -0400
+ (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6D7-0003cE-Nh
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:50:18 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ly1lcmfbeGsBLiv4XhFVK6CJhG40DktnDOWfENM/ECkMX4scqqJPYQpXT3u7JKQ1xdh8270y6i94YGaIIbpbzExFUMabPchl6hxB6rQQwhsbjkgNpwqR+FXcUBOI4RyRgaAvsdINJykC+p3mfDikCJQdMdFSpQHA44Yoi52HvELYtPCmeGJXAKNWLLG9w6cIGcoidxORf7KBdeENS6H9N4F7hQIYAS6MjdhvVvdkUU0Ge/SqsQzj0LZe4rLROrPu5vEUu2FmfyKgVlBOG6s84B2iQ5T8WjwGU30SSmZBF5aGQG4o5QGHEKHKeCQOM9gVrLNz2akcCl5idFLSQDlOCQ==
+ b=BriSvDKjNc4l48uwtThk3RRdcEj/Lx9In4MdKS96tdlpuwV+ahZTXwqJp5PmidoqCYwRxM5A6Nxij+oS+U6AzhtYpAoKZwkL1McbBuut11++vQ6BLihe4JZTkEMjBUfz90qQECgGK/Vy38RiManOdWFjL2IKetOhuGVCo9iiTaMLi7dI+QNzhnbWiSbi74zMZ2lXvqc93ac9X3M/9RKTPcxVywro2CicmYxlq7tevMP7o/uOwkIYur88t3/IeszOTeln2hT1fvyj3tKozxlp0ZTq4v46s9FNTMDyzs6JV6QcTKKnnBgiE8A1yJb5CBPjX8NkTNZ+MAiVW43tlhyfUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9OVsXBYUmpEMa/2Lpc37mHB7y5FSC/xhOWZp2oTii8Q=;
- b=U1Kogi4unO0LzCvRaPjiCnAG7RvV+XIdPPxe5evfWVWhoNDvHJF1uWKt42AvAxOVCmVKSm2ievO2AJKsCgXGp4WznyR02ivWz0mkGILZLiEI888SSIbmuHQwjeKvUsp6a01kurgwo1jC/LFmn0uKII/ItSIucJCoL2jGsFj+oXU8BiUYJYQTkDmPIxdL/fS0TdKUSr6ZuQZoNR6Wi637D3Na1ppFaDyWpAEfXSrI9Lai2Re5dLL8befsiAdUC+l2tNmLh7U2dpsGuv1nUDlgZssxmqANVGfa+fqGF4o/TopNUBr7A5UEuDSPV8eVJ2RcUH0cTNfTElrHJCLvv+SNtw==
+ bh=HyvTH2zfw9Z+hRNhzFi1cneA5xIzTM4jiJfgb8FyEgo=;
+ b=S4qYABX+Mfts2OnDgq0hetqCv7LpYIqMtETtaNMnahlF3u8L1rkzO7zb1EeOAUDo1GU7AQCMEcejRMjutMgk6jY+KQBI88+28HJKtP+kDe4r41VU0jluVvS0FJBG+TAueawXV5H7KP5n46S9WES/nSF2XDqqX/e/kSo8Z8UaWf+53ION15e8vrPo00Pb4wWeE5DoYVFpMcE8nWhQglSArXoMsTJzriGk7ujWFemxQNz0rhkOO6TcJ/kZ1lsA0MDWn/aqhziAVHvcMviEpiJNoZxCLX22s6PtHhsQuxdDUD/WWwlJyfYVcic/mrcwAOKJ/qbA08R3b78BCuZ78lEEVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -32,18 +32,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9OVsXBYUmpEMa/2Lpc37mHB7y5FSC/xhOWZp2oTii8Q=;
- b=ghpNU7MBC9slV4ivZhIvpBsQq731VeSVbq2+j1EE2d3MLxtiYUt6bR0OCS2FBvG/WU3U4BGh2AA6wb/n6blFEZbUBbcPONbiL45RqzHa3174QvRFPGY6PCK4uFByfaM4PLO9zHbjWJo0Ew6J2/7yZ1ZNIUyGnJvD/hyhg+wgNm+uuwMt6SyyXboQQtEUEwXoZV7xNGGJtK685YJjz1u1xJUsuUAqJ9ix7m0uM7RtL3jQPH7Lv+G/jhCaaMMb/ZCoRulVAhsIegmrA3NYNeUp1+hZKEbQaF+W7GNBsV76GMrbJR3sNEvUZGx2KIRRJN78GwXS158ASE6k62VrSRgJCg==
-Received: from DM6PR02CA0102.namprd02.prod.outlook.com (2603:10b6:5:1f4::43)
- by SJ0PR12MB5609.namprd12.prod.outlook.com (2603:10b6:a03:42c::12) with
+ bh=HyvTH2zfw9Z+hRNhzFi1cneA5xIzTM4jiJfgb8FyEgo=;
+ b=bZbmUxYYYu8ob7kAV2WmyuIALYukjz5VRijiYgtlLxWY4cEZwpWh4NiyACURfavpRUe9cfVFfUZZD5FDEDncGXQyEcT2dXa+m1r6vx3DYyz4Z3vCSTclmOFBX+oM51etyH7q2TmMFkW5LeWSFmvkx5jgBPcxHR35ZhAVLAEKiBZ3shv2w3Ql4WfSB3j4zsLbhFRwfuPxzdDjxuM7KHn8yESR108+Z/Ic9EXoleuv9ZOu7VgnVGHbjRtoYdhnXD/mb2lHIgp28JJQcUR/fSZwcOfU2v3Hb1EUoiReglrKCxMrf1KVhgdJm6aqB8PPAvt3RAwCDcg6wdoFeJFbNKYchQ==
+Received: from DM6PR02CA0103.namprd02.prod.outlook.com (2603:10b6:5:1f4::44)
+ by PH7PR12MB7940.namprd12.prod.outlook.com (2603:10b6:510:275::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26; Mon, 18 Sep
- 2023 04:50:04 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.24; Mon, 18 Sep
+ 2023 04:50:06 +0000
 Received: from DS3PEPF000099D8.namprd04.prod.outlook.com
- (2603:10b6:5:1f4:cafe::bc) by DM6PR02CA0102.outlook.office365.com
- (2603:10b6:5:1f4::43) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:5:1f4:cafe::5e) by DM6PR02CA0103.outlook.office365.com
+ (2603:10b6:5:1f4::44) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26 via Frontend
- Transport; Mon, 18 Sep 2023 04:50:04 +0000
+ Transport; Mon, 18 Sep 2023 04:50:05 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -54,22 +54,25 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.161) by
  DS3PEPF000099D8.mail.protection.outlook.com (10.167.17.9) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6792.20 via Frontend Transport; Mon, 18 Sep 2023 04:50:03 +0000
+ 15.20.6792.20 via Frontend Transport; Mon, 18 Sep 2023 04:50:05 +0000
 Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 17 Sep
- 2023 21:49:51 -0700
+ 2023 21:49:54 -0700
 Received: from nvidia.com (10.126.230.35) by rnnvmail202.nvidia.com
  (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 17 Sep
- 2023 21:49:50 -0700
+ 2023 21:49:52 -0700
 From: Yajun Wu <yajunw@nvidia.com>
 To: <qemu-devel@nongnu.org>, <jasowang@redhat.com>, <mst@redhat.com>,
  <yajunw@nvidia.com>
-Subject: [RFC PATCH 0/5] virtio-net: Introduce LM early load
-Date: Mon, 18 Sep 2023 12:49:27 +0800
-Message-ID: <20230918044932.1433744-1-yajunw@nvidia.com>
+CC: Avihai Horon <avihaih@nvidia.com>, Jiri Pirko <jiri@nvidia.com>
+Subject: [RFC PATCH 1/5] vhost-user: Add presetup protocol feature and op
+Date: Mon, 18 Sep 2023 12:49:28 +0800
+Message-ID: <20230918044932.1433744-2-yajunw@nvidia.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20230918044932.1433744-1-yajunw@nvidia.com>
+References: <20230918044932.1433744-1-yajunw@nvidia.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -78,29 +81,29 @@ X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
  rnnvmail202.nvidia.com (10.129.68.7)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099D8:EE_|SJ0PR12MB5609:EE_
-X-MS-Office365-Filtering-Correlation-Id: 04d5c736-3211-47f9-b7f2-08dbb802b94a
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099D8:EE_|PH7PR12MB7940:EE_
+X-MS-Office365-Filtering-Correlation-Id: c6a22ad2-69e8-4d5c-373d-08dbb802ba2d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bkRXf7eL4tcfP/geu1PriiteWA9pNTDKxq26vU2R2A64UjMH2RCKLe1L4ErxLABwfI26n3+6bt0x4NrEswFxRebhg4vtAQF8E/SjNTCJNblWzkqtVkCEHr3P2BPZYLccWreD+z0JtYObDlviJpfo4y1z1yA539VzcSRi0dL7Wkx043T2w0kE0cOv4u19AHAlGwnSHRgfZGvDaOxU00Ypa2JmQQ7Qo76okG8b3f9mMv/8O0XTeHbwFyPQ6kDBVSH6l8hGx61cjDE2nNTDVrQJQ1wzLDhdK8cEhEUL9kHkRecaXyfHidQy3tM02mbUv49Kk6jlZ+kQE2V8timBybSyc0vAHvVjelU5uTra19OeX3uQboEXn769qzDqlpr01MhyEmTkASTqxVUJGti2+de+lhceb9hx/fKWMRzXIeA7NnTKEvmUku7nvRVzfunX/HBT3EWln2N4mVK3XefMWJXrtvue1HWa2Equ21opifagdw4Gx2R/gPxR+VNBcPHCQp9USRrH6WDIIc24tGCVhWlKJiJtL0acC6YYXk9YQAlQOw1r3uJetF2tAN0/DY8v67BdT1WLlojA95T/xLyewx3FR4YJXytxmIKm4Kn9hhCs50FUpmbqM8XyQiZlOufuESNWJtUYflW6vOjv5VQLkpQRgauxmddEexqRyMIkeku74RSB4Dhcb2pBcCJVX1Z0m1eLdL8AAZhWMUjy1QvQ16Naoz4na6IO92/aLkWcUVrYb2JUSVKJxak8mglFb/JMFeyrD+LihDTxXeQnIxsFZhljG5drH7ulmX9RtPSLyQWi/ys=
+X-Microsoft-Antispam-Message-Info: 06hPi2sebr9IWqsnKw4IiE7/LGIalVDlPFQOsBO2+2Rh1vyO7Pwd5gksQa420hP2EpXGbbg6lplPodN6guIVwc+3af1XeNbam7BK0MMHC1Tnyl93W/5aKEl+u92N1XLzd4EDxA+KL5qAfB2PbGR8a2/4HeDWvPYQCyh7HvObd3ZzhjfK6xDtZY63rxwtAEYAkizE/uL9qI4SCTUvxyLXp5SlstcaZWG3oPreRnzXUe4ayR6QhM8NABHLy3h3qsee19ojNUqwaQcEg/fSs/CO/V+X5faeFA2jlY08aNo0j14UbOJ6mUDHNwN+q2UKZedJ+gKLieIoO+gaGvBjlRQjMXPAfykow8wtWa72Omr3UpLprwbkGmldzcC2IU4rY4Lgogn4mTvheKDSX+XB+zpdYxv6Nh2ogq/CGVWyxTLH9RErWVViYvIkIfFQ3HBBuM0/Eq3q+ZrvZ9GvZO5QgRl11kclwV3hPQnd+BVKR8zLdBsTeyIxeME7TOXhN0uLWATAb88FLZHTOKSmJ4XJhWfrFPfGITTqqyyvrYyZzmqxfIl9pc1XQ1UrU9lvhzLZj/OiqSbvX3sfqCkY6zUasGs+RLM+tIXlSAPRw5cqELcdmCz4g+hH3kKYHX0gz6mWNtK0cLQRc6S3MiaOniy9IE3UWCaQvsZIAkD7T3nnFZezPw3q+Heek2kNFQygWzEP7r7a6CAPzVbtKpqWkcVIVo91vQdR3J3lG5KbWqwcIvfphGGQKm8kmh8Tv4hwUXMw5gzb
 X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(396003)(346002)(376002)(39860400002)(136003)(82310400011)(451199024)(186009)(1800799009)(40470700004)(46966006)(36840700001)(7049001)(6666004)(7696005)(966005)(478600001)(83380400001)(26005)(16526019)(1076003)(2616005)(6286002)(336012)(426003)(47076005)(2906002)(70586007)(70206006)(316002)(110136005)(8676002)(5660300002)(8936002)(41300700001)(40460700003)(36756003)(36860700001)(86362001)(40480700001)(82740400003)(55016003)(356005)(7636003)(66899024);
+ SFS:(13230031)(4636009)(136003)(396003)(376002)(39860400002)(346002)(186009)(1800799009)(82310400011)(451199024)(36840700001)(46966006)(40470700004)(7636003)(356005)(26005)(16526019)(6286002)(82740400003)(2616005)(8936002)(1076003)(40460700003)(4326008)(8676002)(107886003)(83380400001)(36860700001)(2906002)(36756003)(47076005)(426003)(336012)(40480700001)(55016003)(5660300002)(86362001)(7696005)(478600001)(6666004)(316002)(54906003)(70586007)(70206006)(110136005)(7049001)(41300700001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 04:50:03.9465 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04d5c736-3211-47f9-b7f2-08dbb802b94a
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 04:50:05.4309 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6a22ad2-69e8-4d5c-373d-08dbb802ba2d
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099D8.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5609
-Received-SPF: softfail client-ip=2a01:111:f400:fe59::62b;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7940
+Received-SPF: softfail client-ip=2a01:111:f400:7e89::609;
  envelope-from=yajunw@nvidia.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,86 +125,138 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series of patches aims to minimize the downtime during live migration of a
-virtio-net device with a vhost-user backend. In the case of hardware virtual
-Data Path Acceleration (vDPA) implementation, the hardware configuration, which
-includes tasks like VQ creation and RSS setting, may take above 200ms. This
-significantly increases the downtime of the VM, particularly in terms of
-networking.
+This patch implements VHOST_USER_PROTOCOL_F_PRESETUP protocol feature
+and VHOST_USER_PRESETUP, so that the backend can know the beginning
+and completion of the early setup phase for the virtio device.
 
-To reduce the VM downtime, the proposed approach involves capturing the basic
-device state/configuration during the VM's running stage and performing the
-initial device configuration(presetup). During the normal configuration process
-when the VM is in a stopped state, the second configuration is compared to the
-first one, and only the differences are applied to reduce downtime. Ideally,
-only the vring available index needs to be changed within VM stop.
+Unlike the regular device state load, which occurs in the VM stop
+phase, this pre-setup takes place in the live migration setup stage.
 
-This feature is disabled by default, because backend like dpdk also needs
-adding support for vhost new message. New device property "x-early-migration"
-can enable this feature.
+Signed-off-by: Yajun Wu <yajunw@nvidia.com>
+Reviewed-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+---
+ docs/interop/vhost-user.rst       | 10 ++++++++++
+ hw/virtio/vhost-user.c            | 30 ++++++++++++++++++++++++++++++
+ include/hw/virtio/vhost-backend.h |  3 +++
+ 3 files changed, 43 insertions(+)
 
-1. Register a new vmstate for virtio-net with an early_setup flag to send the
-   device state during migration setup.
-2. After device state load on destination VM, need to send device status to
-   vhost backend in a new way. Introduce new vhost-user message:
-   VHOST_USER_PRESETUP, to notify backend of presetup.
-3. Let virtio-net, vhost-net, vhost-dev support presetup. Main flow:
-   a. vhost-dev sending presetup start.
-   b. virtio-net setting mtu.
-   c. vhost-dev sending vring configuration and setting dummy call/kick fd.
-   d. vhost-net sending vring enable.
-   e. vhost-dev sending presetup end.
-
-
-TODOs:
-======
-  - No vhost-vdpa/kernel support. Need to discuss/design new kernel interface
-    if there's same requirement for vhost-vdpa.
-
-  - No vIOMMU support so far. If there is a need for vIOMMU support, it is
-    planned to be addressed in a follow-up patchset.
-
-
-Test:
-=====
-  - Live migration VM with 2 virtio-net devices, ping can recover.
-    Together with DPDK patch [1].
-  - The time consumption of DPDK function dev_conf is reduced from 191.4 ms
-    to 6.6 ms.
-
-
-References:
-===========
-
-[1] https://github.com/Mellanox/dpdk-vhost-vfe/pull/37
-
-Any comments or feedback are highly appreciated.
-
-Thanks,
-Yajun
-
-
-Yajun Wu (5):
-  vhost-user: Add presetup protocol feature and op
-  vhost: Add support for presetup
-  vhost-net: Add support for presetup
-  virtio: Add VMState for early load
-  virtio-net: Introduce LM early load
-
- docs/interop/vhost-user.rst       |  10 ++
- hw/net/trace-events               |   1 +
- hw/net/vhost_net.c                |  40 +++++++
- hw/net/virtio-net.c               | 100 ++++++++++++++++++
- hw/virtio/vhost-user.c            |  30 ++++++
- hw/virtio/vhost.c                 | 166 +++++++++++++++++++++++++-----
- hw/virtio/virtio.c                | 152 ++++++++++++++++-----------
- include/hw/virtio/vhost-backend.h |   3 +
- include/hw/virtio/vhost.h         |  12 +++
- include/hw/virtio/virtio-net.h    |   1 +
- include/hw/virtio/virtio.h        |  10 +-
- include/net/vhost_net.h           |   3 +
- 12 files changed, 443 insertions(+), 85 deletions(-)
-
+diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+index 5a070adbc1..70b8e2694c 100644
+--- a/docs/interop/vhost-user.rst
++++ b/docs/interop/vhost-user.rst
+@@ -885,6 +885,7 @@ Protocol features
+   #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
+   #define VHOST_USER_PROTOCOL_F_STATUS               16
+   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
++  #define VHOST_USER_PROTOCOL_F_PRESETUP             18
+ 
+ Front-end message types
+ -----------------------
+@@ -1440,6 +1441,15 @@ Front-end message types
+   query the back-end for its device status as defined in the Virtio
+   specification.
+ 
++``VHOST_USER_PRESETUP``
++  :id: 41
++  :equivalent ioctl: N/A
++  :request payload: ``u64``
++  :reply payload: N/A
++
++  When the ``VHOST_USER_PROTOCOL_F_PRESETUP`` protocol feature has been
++  successfully negotiated, this message is submitted by the front-end to
++  indicate start or end early setup. Value 1 means start, 2 means end.
+ 
+ Back-end message types
+ ----------------------
+diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+index 8dcf049d42..71018d06c1 100644
+--- a/hw/virtio/vhost-user.c
++++ b/hw/virtio/vhost-user.c
+@@ -74,6 +74,8 @@ enum VhostUserProtocolFeature {
+     /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
+     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
+     VHOST_USER_PROTOCOL_F_STATUS = 16,
++    /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
++    VHOST_USER_PROTOCOL_F_PRESETUP = 18,
+     VHOST_USER_PROTOCOL_F_MAX
+ };
+ 
+@@ -121,6 +123,7 @@ typedef enum VhostUserRequest {
+     VHOST_USER_REM_MEM_REG = 38,
+     VHOST_USER_SET_STATUS = 39,
+     VHOST_USER_GET_STATUS = 40,
++    VHOST_USER_PRESETUP = 41,
+     VHOST_USER_MAX
+ } VhostUserRequest;
+ 
+@@ -132,6 +135,11 @@ typedef enum VhostUserBackendRequest {
+     VHOST_USER_BACKEND_MAX
+ }  VhostUserBackendRequest;
+ 
++typedef enum VhostUserPresetupState {
++    VHOST_USER_PRESETUP_START = 1,
++    VHOST_USER_PRESETUP_END = 2,
++} VhostUserPresetupState;
++
+ typedef struct VhostUserMemoryRegion {
+     uint64_t guest_phys_addr;
+     uint64_t memory_size;
+@@ -2741,6 +2749,27 @@ static void vhost_user_reset_status(struct vhost_dev *dev)
+     }
+ }
+ 
++static int vhost_user_set_presetup_state(struct vhost_dev *dev, bool start)
++{
++    if (start) {
++        return vhost_user_set_u64(dev, VHOST_USER_PRESETUP,
++                                  VHOST_USER_PRESETUP_START, false);
++    } else {
++        return vhost_user_set_u64(dev, VHOST_USER_PRESETUP,
++                                  VHOST_USER_PRESETUP_END, false);
++    }
++}
++
++static int vhost_user_presetup(struct vhost_dev *dev, bool start)
++{
++    if (!virtio_has_feature(dev->protocol_features,
++                            VHOST_USER_PROTOCOL_F_PRESETUP)) {
++        return -ENOTSUP;
++    }
++
++    return vhost_user_set_presetup_state(dev, start);
++}
++
+ const VhostOps user_ops = {
+         .backend_type = VHOST_BACKEND_TYPE_USER,
+         .vhost_backend_init = vhost_user_backend_init,
+@@ -2777,4 +2806,5 @@ const VhostOps user_ops = {
+         .vhost_set_inflight_fd = vhost_user_set_inflight_fd,
+         .vhost_dev_start = vhost_user_dev_start,
+         .vhost_reset_status = vhost_user_reset_status,
++        .vhost_presetup = vhost_user_presetup,
+ };
+diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
+index 31a251a9f5..00dd532df9 100644
+--- a/include/hw/virtio/vhost-backend.h
++++ b/include/hw/virtio/vhost-backend.h
+@@ -133,6 +133,8 @@ typedef int (*vhost_set_config_call_op)(struct vhost_dev *dev,
+ 
+ typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
+ 
++typedef int (*vhost_presetup_op)(struct vhost_dev *dev, bool start);
++
+ typedef struct VhostOps {
+     VhostBackendType backend_type;
+     vhost_backend_init vhost_backend_init;
+@@ -181,6 +183,7 @@ typedef struct VhostOps {
+     vhost_force_iommu_op vhost_force_iommu;
+     vhost_set_config_call_op vhost_set_config_call;
+     vhost_reset_status_op vhost_reset_status;
++    vhost_presetup_op vhost_presetup;
+ } VhostOps;
+ 
+ int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
 -- 
 2.27.0
 
