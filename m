@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2B17A3F13
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 03:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D1C7A3F29
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 03:18:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi2fH-0000HP-0q; Sun, 17 Sep 2023 21:03:03 -0400
+	id 1qi2sl-0003oO-Et; Sun, 17 Sep 2023 21:16:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qi2f9-00008h-3z; Sun, 17 Sep 2023 21:02:55 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qi2sb-0003nj-Jk; Sun, 17 Sep 2023 21:16:51 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qi2f3-0003w0-O8; Sun, 17 Sep 2023 21:02:51 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c0c6d4d650so36041595ad.0; 
- Sun, 17 Sep 2023 18:02:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qi2sX-0005yT-Px; Sun, 17 Sep 2023 21:16:48 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-5031ccf004cso262296e87.2; 
+ Sun, 17 Sep 2023 18:16:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1694998967; x=1695603767; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=qfZjrz+V+vXxmF969ZA46zPhPvZBIZf13lLxUH9oy8s=;
- b=FUukY/kc8uZRZ8Tps3dIaLLtfhkMOXjZmQUfQwPkcGIbOKl34cFlNOllNx6JwAx4cR
- zgP+CyvNKH1bPlkdj6bTrAZm5vYy07evpQKvxRD00a9dqDLDJhOrWljsI66ksg5G02pJ
- DBJmjk19hNNJpdiG6tSaco1GRgYnc89/zZmoXfGjw6NNZzUrGOvryngBeBPWjThpNY21
- HogtImTeT0twmVSehQcmf6R1jt3YtWN1tZaSj6YekvgzeGSOMFFYJaX+TBYOFUoeSRFK
- s5a4QDCykw4YRcjM4OL2EQ4DbX4VwJY6csJF2jOb55+4PV1ljyVYkUXCojf69koXqDwY
- c0CQ==
+ d=gmail.com; s=20230601; t=1694999804; x=1695604604; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=pfjmkizNEHc6f4yKdvNiQXox1H6fHnTAQlyWblbNoV8=;
+ b=AjhP9IfRjGjwglEK2U6gf0ZFi3ohTyeBVa2z3oXVY3aquLA7K1mMDeJABbQB0zfAgc
+ MttVmdlDXXBlcwWKLvab2B4NTgvj4kj0SMMg6gyn+bgvv0nxkV1S0GNMfRQS0sQLANpb
+ QpskMwMYWHlc0nGu3mB6afCS+PcnrwHR0LWxC2JgToI3D+dQKh2G9tw7Mn1mstuHITKM
+ HX6Vy+AsrLQ6NBR+2ePMMbml61acbEP2IkDlWab4N8h5ITOci52oaMeA05aNlneN2Clt
+ i2xiTeR/chOsOt7SQ4tJcHj78Ld36ibyQTqF83LS/TL+8ygB196ZipeZvjwWMSKtdkYf
+ HtUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1694998967; x=1695603767;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qfZjrz+V+vXxmF969ZA46zPhPvZBIZf13lLxUH9oy8s=;
- b=AEjqAC5jLMYSgUuNWHGtMmBOXnx9hMrS+JM2j/0KBAHdquA9nHtlqgAYCydPQoj/4t
- /FzpTDloIj/MRsJthTQ5ltxKCJOWIjYY0g0mnkG9ZYj9p7K65/QVmqPh2C4/wjNPb3oD
- It5eZ357RzZ+urk0qo+AsTy/eaOMQAIhGpNN8MqdPbBdNWgjBquv0xJ842jFjwC5y86I
- c8HQdcgBIt2ixfgsNVBUBGp6ovVjJeQ6aGyxYq609EdkLHM8wiJ4ZIU2QZcMx/yrY1C2
- KitKY+/8SuBX3r2feuuoELZnTMA2lZSMrn8wbYRZh8sur+vL8U5tenWQdfr1/GNNTNPP
- 7I9A==
-X-Gm-Message-State: AOJu0YzDDuti37BvfB8w7qjwMdh6r85qClCCYqrAUrpO0WTULVj/ZKUO
- b8KieabFHiSpXHRJFUMGlpYexuGEdaqYZA==
-X-Google-Smtp-Source: AGHT+IE/iHJW0I6nMxIHHYoIO4gQpMu6xrXuwfHpgbkUaORa4XY7ENjM+scYn/yMKpaDHwDnin0zRA==
-X-Received: by 2002:a17:903:11c6:b0:1c3:9aaf:97be with SMTP id
- q6-20020a17090311c600b001c39aaf97bemr9324081plh.56.1694998967187; 
- Sun, 17 Sep 2023 18:02:47 -0700 (PDT)
-Received: from jeuk-MS-7D42.. ([218.147.112.168])
- by smtp.gmail.com with ESMTPSA id
- h7-20020a170902b94700b001bc21222e34sm7120090pls.285.2023.09.17.18.02.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Sep 2023 18:02:46 -0700 (PDT)
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: jeuk20.kim@samsung.com, lvivier@redhat.com, pbonzini@redhat.com,
- qemu-block@nongnu.org, stefanha@redhat.com, thuth@redhat.com,
- peter.maydell@linaro.org
-Subject: [PATCH] hw/ufs: Fix code coverity issues
-Date: Mon, 18 Sep 2023 10:02:36 +0900
-Message-Id: <16b78677529e4af207baaac3139aed50cc6aa7cf.1694998332.git.jeuk20.kim@gmail.com>
-X-Mailer: git-send-email 2.34.1
+ d=1e100.net; s=20230601; t=1694999804; x=1695604604;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pfjmkizNEHc6f4yKdvNiQXox1H6fHnTAQlyWblbNoV8=;
+ b=xEVwBEDheliGd21je5NGrb7OyUIJmOneKdNMRKUhanm7PyfWQjFzKYYZzR4rk4mnUA
+ AR4nRa0FUvzMCBKsESCxRvI7SnJZoQDl34iDT7i91x3n/4iqRoSx3jitaV9/b+tfjEQ+
+ UXPcRaClaZxcPdtmmH76yge5TFv/uQfT9lMnAgXw1qXTVw9K7nCNVgwDnnUhsmtOaG7t
+ 8ZLwNjInaQYbCzUTHOcaLCSfugtmNwrtMrDBvwd7uRZYMXYOKqAG1VAFdMnisGfcEru+
+ 187EXYsc0v3WyxJ+U+/mL7AnM+hGW3XOOMn5IJ78DHOanHHi/LWIBubcaQldVQPmJO1F
+ FGgg==
+X-Gm-Message-State: AOJu0Yyk9gmHmV4II8zMhZRsRBTuj3JbPP8SisUURvRrvVGHeL1P80qT
+ 5ZHI0KPO8GoJyIYH2rm4OOVASiKfcJDhyrVNGJo=
+X-Google-Smtp-Source: AGHT+IFODcD01fGwef9mSyVvhtRsaDsL1XEQsgljXIgxzNgdn0wP6qxz8aI1dkCmYrPQlUl6S+iNXJbNUUNB+ttit0s=
+X-Received: by 2002:ac2:5e2f:0:b0:4ff:83b2:42b7 with SMTP id
+ o15-20020ac25e2f000000b004ff83b242b7mr5619767lfg.42.1694999803421; Sun, 17
+ Sep 2023 18:16:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+References: <10817413.NyiUUSuA9g@pinacolada>
+ <15820654-5d7f-fd66-3d34-da1a55d2a53e@gmail.com>
+ <4344798.atdPhlSkOF@pinacolada> <6353228.kQq0lBPeGt@pinacolada>
+In-Reply-To: <6353228.kQq0lBPeGt@pinacolada>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 18 Sep 2023 11:16:15 +1000
+Message-ID: <CAKmqyKP2cSh-U8s9hJfLH1GSsEHXQaL0xjd=s19WCzLdeyOPTA@mail.gmail.com>
+Subject: Re: qemu-riscv32 usermode still broken?
+To: "Andreas K. Huettel" <dilfridge@gentoo.org>
+Cc: "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
+ "open list:RISC-V" <qemu-riscv@nongnu.org>, 
+ LIU Zhiwei <baxiantai@gmail.com>, Alistair Francis <alistair.francis@wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=alistair23@gmail.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,127 +89,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jeuk Kim <jeuk20.kim@samsung.com>
+On Sun, Sep 17, 2023 at 8:38=E2=80=AFAM Andreas K. Huettel <dilfridge@gento=
+o.org> wrote:
+>
+> Am Donnerstag, 14. September 2023, 03:22:49 CEST schrieb Andreas K. Huett=
+el:
+> > > > https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00119.html
+> > > > ^ Here I'm trying to find out more.
+> > > >
+> > > > Bash tests apparently indicate that argv[0] is overwritten, and tha=
+t
+> > > > reading through a pipe or from /dev/tty fails or loses data.
+> > > >
+> > > > Apart from the bash testsuite failing, symptoms are as follows:
+> > > >
+> > > > * Something seems wrong in the signal handling (?):
+> > >
+> > > If it is wrong for signal handling and for 32-bit, I guess it may be
+> > > fixed by this patch
+> > >
+> > > https://www.mail-archive.com/qemu-devel@nongnu.org/msg981238.html
+> > >
+> > > And this patch has been merged into master branch yesterday.
+> > >
+> > > May be you can have a try based on the master branch.
+> >
+> > I added the patch to 8.0.3 (easier for the moment), and this did
+> > unfortunately *not* lead to any improvements.
+>
+> Also with the patch on top of 8.1.0 no improvement or change.
+>
+> > However, in the meantime on the GNU Make tracker Alejandro Colomar
+> > pointed me to another detail based on my oddities [1]:
+> >
+> > > I think [make] it's failing here:
+> > >
+> > > <https://git.savannah.gnu.org/cgit/make.git/tree/src/job.c#n757>
+> > >
+> > > But it's failing with ENOENT, which is not one of the documented
+> > > errors for wait(2):
+> >
+> > So maybe another point to look at would be the origin of the return
+> > values of wait, and whether that's wired correctly for rv32...
+> >
+> > [1] https://savannah.gnu.org/bugs/?64664
+>
+> In the meantime I tried to nail down a reproducible hang in bash on this
+> frankensystem with qemu's gdb interface. This also pointed towards
+> child handling and wait [2].
 
-Fixed four ufs-related coverity issues.
+RV32 only has the time64 wait syscall, so it's possible there is a bug
+there which then wouldn't appear on other arches.
 
-The coverity issues and fixes are as follows
+You can see the glibc implementation of wait here [1] to give you an
+idea of how complex it ends up being.
 
-1. CID 1519042: Security issue with the rand() function
-Changed to use a fixed value (0xab) instead of rand() as
-the value for testing
+It would be great to get a strace of the failure to narrow down what
+it is. From there it should be not too hard to find and fix.
 
-2. CID 1519043: Dereference after null check
-Removed useless (redundant) null checks
+1: https://github.com/bminor/glibc/blob/bb5bbc20702981c287aa3e44640e7d2f2b9=
+a28cf/sysdeps/unix/sysv/linux/wait4.c#L26
 
-3. CID 1519050: Out-of-bounds access issue
-Fix to pass an array type variable to find_first_bit and
-find_next_bit using DECLARE_BITMAP()
+Alistair
 
-4. CID 1519051: Out-of-bounds read issue
-Fix incorrect range check for lun
-
-Fix coverity CID: 1519042 1519043 1519050 1519051
-
-Signed-off-by: Jeuk Kim <jeuk20.kim@samsung.com>
----
- hw/ufs/lu.c            | 16 +++++++---------
- hw/ufs/ufs.c           | 10 +++++-----
- tests/qtest/ufs-test.c |  2 +-
- 3 files changed, 13 insertions(+), 15 deletions(-)
-
-diff --git a/hw/ufs/lu.c b/hw/ufs/lu.c
-index e1c46bddb1..13b5e37b53 100644
---- a/hw/ufs/lu.c
-+++ b/hw/ufs/lu.c
-@@ -1345,13 +1345,12 @@ static void ufs_lu_realize(SCSIDevice *dev, Error **errp)
-         return;
-     }
- 
--    if (lu->qdev.conf.blk) {
--        ctx = blk_get_aio_context(lu->qdev.conf.blk);
--        aio_context_acquire(ctx);
--        if (!blkconf_blocksizes(&lu->qdev.conf, errp)) {
--            goto out;
--        }
-+    ctx = blk_get_aio_context(lu->qdev.conf.blk);
-+    aio_context_acquire(ctx);
-+    if (!blkconf_blocksizes(&lu->qdev.conf, errp)) {
-+        goto out;
-     }
-+
-     lu->qdev.blocksize = UFS_BLOCK_SIZE;
-     blk_get_geometry(lu->qdev.conf.blk, &nb_sectors);
-     nb_blocks = nb_sectors / (lu->qdev.blocksize / BDRV_SECTOR_SIZE);
-@@ -1367,10 +1366,9 @@ static void ufs_lu_realize(SCSIDevice *dev, Error **errp)
-     }
- 
-     ufs_lu_brdv_init(lu, errp);
-+
- out:
--    if (ctx) {
--        aio_context_release(ctx);
--    }
-+    aio_context_release(ctx);
- }
- 
- static void ufs_lu_unrealize(SCSIDevice *dev)
-diff --git a/hw/ufs/ufs.c b/hw/ufs/ufs.c
-index 0ecedb9aed..b73eb3deaf 100644
---- a/hw/ufs/ufs.c
-+++ b/hw/ufs/ufs.c
-@@ -258,7 +258,7 @@ static void ufs_irq_check(UfsHc *u)
- 
- static void ufs_process_db(UfsHc *u, uint32_t val)
- {
--    unsigned long doorbell;
-+    DECLARE_BITMAP(doorbell, UFS_MAX_NUTRS);
-     uint32_t slot;
-     uint32_t nutrs = u->params.nutrs;
-     UfsRequest *req;
-@@ -268,8 +268,8 @@ static void ufs_process_db(UfsHc *u, uint32_t val)
-         return;
-     }
- 
--    doorbell = val;
--    slot = find_first_bit(&doorbell, nutrs);
-+    memcpy(doorbell, &val, sizeof(val));
-+    slot = find_first_bit(doorbell, nutrs);
- 
-     while (slot < nutrs) {
-         req = &u->req_list[slot];
-@@ -285,7 +285,7 @@ static void ufs_process_db(UfsHc *u, uint32_t val)
- 
-         trace_ufs_process_db(slot);
-         req->state = UFS_REQUEST_READY;
--        slot = find_next_bit(&doorbell, nutrs, slot + 1);
-+        slot = find_next_bit(doorbell, nutrs, slot + 1);
-     }
- 
-     qemu_bh_schedule(u->doorbell_bh);
-@@ -838,7 +838,7 @@ static QueryRespCode ufs_read_unit_desc(UfsRequest *req)
-     uint8_t lun = req->req_upiu.qr.index;
- 
-     if (lun != UFS_UPIU_RPMB_WLUN &&
--        (lun > UFS_MAX_LUS || u->lus[lun] == NULL)) {
-+        (lun >= UFS_MAX_LUS || u->lus[lun] == NULL)) {
-         trace_ufs_err_query_invalid_index(req->req_upiu.qr.opcode, lun);
-         return UFS_QUERY_RESULT_INVALID_INDEX;
-     }
-diff --git a/tests/qtest/ufs-test.c b/tests/qtest/ufs-test.c
-index ed3dbca154..15d467630c 100644
---- a/tests/qtest/ufs-test.c
-+++ b/tests/qtest/ufs-test.c
-@@ -497,7 +497,7 @@ static void ufstest_read_write(void *obj, void *data, QGuestAllocator *alloc)
-     g_assert_cmpuint(block_size, ==, 4096);
- 
-     /* Write data */
--    memset(write_buf, rand() % 255 + 1, block_size);
-+    memset(write_buf, 0xab, block_size);
-     ufs_send_scsi_command(ufs, 0, 1, write_cdb, write_buf, block_size, NULL, 0,
-                           &utrd, &rsp_upiu);
-     g_assert_cmpuint(le32_to_cpu(utrd.header.dword_2), ==, UFS_OCS_SUCCESS);
--- 
-2.34.1
-
+>
+> [2] https://lists.gnu.org/archive/html/bug-bash/2023-09/msg00128.html
+>
+> Some time ago we already debugged that corner, and Alistair Francis
+> came up with a fix that improved the riscv32 situation back then [3].
+> Maybe that fix was somehow incomplete? Just speculating...
+>
+> [3] https://bugs.launchpad.net/qemu/+bug/1906193
+>
+>
+> --
+> Andreas K. H=C3=BCttel
+> dilfridge@gentoo.org
+> Gentoo Linux developer
+> (council, toolchain, base-system, perl, libreoffice)
 
