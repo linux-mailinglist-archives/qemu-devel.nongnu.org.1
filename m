@@ -2,40 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1B47A46AD
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 712117A46B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:12:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiBCe-0001gh-5z; Mon, 18 Sep 2023 06:10:04 -0400
+	id 1qiBED-0003F8-7Q; Mon, 18 Sep 2023 06:11:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <aik@ozlabs.ru>)
- id 1qiBCI-0001eD-Fg; Mon, 18 Sep 2023 06:09:43 -0400
-Received: from ozlabs.ru ([107.174.27.60])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <aik@ozlabs.ru>)
- id 1qiBCD-0005K5-Qq; Mon, 18 Sep 2023 06:09:41 -0400
-Received: from ole.2.ozlabs.ru (localhost.localdomain [127.0.0.1])
- by ozlabs.ru (Postfix) with ESMTP id B79E28026A;
- Mon, 18 Sep 2023 06:09:32 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: npiggin@gmail.com
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, clg@kaod.org, danielhb413@gmail.com,
- jniethe5@gmail.com, thuth@redhat.com, qemu-devel@nongnu.org,
- qemu-ppc@nongnu.org
-Subject: [PULL SUBSYSTEM qemu-pseries] pseries: Update SLOF firmware image
-Date: Mon, 18 Sep 2023 20:09:29 +1000
-Message-ID: <20230918100931.607341-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiBEA-0003Bp-B5
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:11:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiBE8-0005qA-LD
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:11:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695031895;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ijDE9pMOV1zg6fE1USiWHh3fu/BaK4WWIkQA6os6udI=;
+ b=VSpUADkWNrLUWtCwCRa/ZJo+/zso9urwVFAtQQXhxY2TnD15rsp4UooK4wCgRkhC6LcMv6
+ WQlf2Fdj8zeZPxy6huqKm62i0RfEhhGiya5l7r2TOfcFI8dy4dmB2qnxujsGZ595+f5fWo
+ rnSG//TfPIfXhR0IuU0NiIWcEw7X0FI=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-531-DQs-xr-eOou-A3i-7XpjNA-1; Mon, 18 Sep 2023 06:11:33 -0400
+X-MC-Unique: DQs-xr-eOou-A3i-7XpjNA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9a62adedadbso302496066b.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 03:11:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695031892; x=1695636692;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ijDE9pMOV1zg6fE1USiWHh3fu/BaK4WWIkQA6os6udI=;
+ b=O7mwCBXCqc8IE4lBcj7yBSU7Ao4XaAan3nBaMzTieTw2QNkcD/pyYToHgPi+ODNb4a
+ UtzFe2vuM6a3VJO6Hwk2faLVUsyhykvjQUSg153OrbRz8TK33Q5BPsUafMagOhofDtBM
+ LjMDFPjbG3jYcmYXW39GFRoHbaoD1cGzlBgTsXXyYn2lKZhyrcABkEg17rRwmvMviPVc
+ fKroDZ/UGuT8QidZZ45soW0+B0SUekww9rsGsO9KGmjeyB8llJM9OaFWpZvs8lOeEUrI
+ qYNjh9aGQGNtQ5sV0LgjLKl7K7K58hJetLh9BnV8/XsaC/37njK/r5K4V8rXUa6wpjem
+ 6YTA==
+X-Gm-Message-State: AOJu0Yyw3tUxmUgf7kRM8MQwYi0XQVw7JvRAYP56NRHrjLgw41n6Uepd
+ 6x6OF6856Twh3Xal1iIOXK3Ev+K3CVSOHdpEGkOvGNzFoq4fSBIDOicHBy/dBB/anHQdBT7ge/M
+ 8r8cpM3UaI4A0lTM8Qp2ph/5PmRcEOQE=
+X-Received: by 2002:a17:907:7604:b0:9ad:9225:cee1 with SMTP id
+ jx4-20020a170907760400b009ad9225cee1mr6548687ejc.62.1695031892511; 
+ Mon, 18 Sep 2023 03:11:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQOzVviDpj4I43q8Mz4w//holBxD6bnTE1FP9aB/s7BDcD8yElVWmny2GREXpA9S1OneJUxKc84gRClNyUcQE=
+X-Received: by 2002:a17:907:7604:b0:9ad:9225:cee1 with SMTP id
+ jx4-20020a170907760400b009ad9225cee1mr6548666ejc.62.1695031892214; Mon, 18
+ Sep 2023 03:11:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=107.174.27.60; envelope-from=aik@ozlabs.ru;
- helo=ozlabs.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
+References: <20230908095024.270946-1-anisinha@redhat.com>
+ <77284898-c540-31ac-d438-ebff52f6d75d@redhat.com>
+ <1911B17C-24F2-406B-9ED4-DCF98E794A09@redhat.com>
+ <730648ed-55ac-aa2c-58d2-d79224aeb586@redhat.com>
+ <1574DF3A-7E1F-4C4F-9087-6E8DEE456906@redhat.com>
+ <6cbca7b9-381b-6268-27f0-d7ea1c5ed1bd@redhat.com>
+ <3A287C52-F547-4494-B803-8CFC50CBA175@redhat.com>
+ <30f0ddfb-6eb7-84a5-04a0-e11905451733@redhat.com>
+ <A354B36D-A86E-48D9-B8B6-DC35D8976410@redhat.com>
+ <34403090-b4b3-990f-7723-1d56d8053bd5@redhat.com>
+ <08530A80-90F3-4E33-9B1A-E71A66726123@redhat.com>
+ <e052a3c4-33e9-1d75-dc9b-3c64f8ae777b@redhat.com>
+ <41A3B19D-87B7-4FD6-A5C7-17D758B2DB37@redhat.com>
+ <143a437c-be99-d6d8-732f-e9544e2d9b35@redhat.com>
+ <CAK3XEhOQCudb0VsBHFfubbcRredLMuSQCTA6fhbg99f7W9y5PA@mail.gmail.com>
+ <8af5fb9f-83dc-f997-e761-f8e69f9515ac@redhat.com>
+In-Reply-To: <8af5fb9f-83dc-f997-e761-f8e69f9515ac@redhat.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Mon, 18 Sep 2023 15:41:19 +0530
+Message-ID: <CAK3XEhMTSP7TkJgKX1_VxUVxaoU1jX8d_i-0H4t=bNktY5wo5g@mail.gmail.com>
+Subject: Re: [PATCH] mem/x86: add processor address space check for VM memory
+To: David Hildenbrand <david@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>, 
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000d199e906059f5dda"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -52,78 +114,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 005ad32358f12fe9313a4a01918a55e60d4f39e5:
+--000000000000d199e906059f5dda
+Content-Type: text/plain; charset="UTF-8"
 
-  Merge tag 'pull-tpm-2023-09-12-3' of https://github.com/stefanberger/qemu-tpm into staging (2023-09-13 13:41:57 -0400)
+On Mon, 18 Sept, 2023, 3:39 pm David Hildenbrand, <david@redhat.com> wrote:
 
-are available in the Git repository at:
+> On 18.09.23 12:07, Ani Sinha wrote:
+> >
+> >
+> > On Mon, 18 Sept, 2023, 3:03 pm David Hildenbrand, <david@redhat.com
+> > <mailto:david@redhat.com>> wrote:
+> >
+> >      >>
+> >      >>>> /*
+> >      >>>> * The 64bit pci hole starts after "above 4G RAM" and
+> >      >>>> * potentially the space reserved for memory hotplug.
+> >      >>>> */
+> >      >>>>
+> >      >>>> There is the
+> >      >>>>    ROUND_UP(hole64_start, 1 * GiB);
+> >      >>>> in there that is not really required for the !hole64 case. It
+> >      >>>> shouldn't matter much in practice I think (besides an aligned
+> >     value
+> >      >>>> showing up in the error message).
+> >      >>>>
+> >      >>>> We could factor out most of that calculation into a
+> >      >>>> separate function, skipping that alignment to make that
+> >      >>>> clearer.
+> >      >>> Yeah this whole memory segmentation is quite complicated and
+> >     might benefit from a qemu doc or a refactoring.
+> >      >>
+> >      >> Absolutely. Do you have time to work on that (including the
+> >     updated fix?).
+> >      >
+> >      > Other than the fix you proposed I am not sure if we need to fix
+> >     anything else atm. Seems physical address space bound checks are
+> >     already in place.
+> >      > Re: doc, maybe. I will add it to my TODO list.
+> >
+> >     Will you send a proper patch, ideally not using pc_pci_hole64_start()
+> >     but instead the same logic without the final alignment to 1 GiB?
+> >
+> >
+> > I'll send. No problem. Could you answer my other question please ?
+>
+> Sorry, which one did I miss
 
-  git@github.com:aik/qemu.git tags/qemu-slof-20230918
-
-for you to fetch changes up to b4f872c6bcbf71f60326988c76b240318c51bd16:
-
-  pseries: Update SLOF firmware image (2023-09-18 19:14:44 +1000)
-
-----------------------------------------------------------------
-Alexey Kardashevskiy (1):
-      pseries: Update SLOF firmware image
-
- pc-bios/README   |   2 +-
- pc-bios/slof.bin | Bin 995176 -> 995000 bytes
- roms/SLOF        |   2 +-
- 3 files changed, 2 insertions(+), 2 deletions(-)
 
 
-*** Note: this is not for master, this is for pseries
+Ok hopefully my last question. I am still confused on something. Does the
+> above mean that the hole64 will actually start from an address that is
+> beyond maxram? Like basically if you added all of ram_below_4G,
+> ram_above_4G, hot plug_mem and pci_hole64 then can it exceed maxram? I
+> think it will. Does this not an issue?
 
-It's been a while. This fixes compile warning, typos and
-a bug with virtio-serial being used after it was shutdown
-at "quiesce".
 
-The full changelog is here:
 
-Alexey Kardashevskiy (2):
-      Remove ?PICK
-      version: update to 20230918
 
-Jordan Niethe (1):
-      virtio-serial: Do not close stdout on quiesce
+> --
+> Cheers,
+>
+> David / dhildenb
+>
+>
 
-Kautuk Consul (1):
-      virtio-serial: Make read and write methods report failure
+--000000000000d199e906059f5dda
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thomas Huth (10):
-      lib/libnet/ipv6: Silence compiler warning from Clang
-      Fix typos in the board-qemu folder
-      Fix typos in the lib/libnet folder
-      Fix typos in the remaining lib folders
-      Fix typos in the slof folder
-      Fix typos in the board-js2x folder
-      Fix typos in the llfw folder
-      Fix typos in the board-js2x folder
-      Fix typos in the clients folder
-      Fix remaining typos in various folders
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Mon, 18 Sept, 2023, 3:39 pm David Hildenbrand, &lt;=
+<a href=3D"mailto:david@redhat.com">david@redhat.com</a>&gt; wrote:<br></di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
+1px #ccc solid;padding-left:1ex">On 18.09.23 12:07, Ani Sinha wrote:<br>
+&gt; <br>
+&gt; <br>
+&gt; On Mon, 18 Sept, 2023, 3:03 pm David Hildenbrand, &lt;<a href=3D"mailt=
+o:david@redhat.com" target=3D"_blank" rel=3D"noreferrer">david@redhat.com</=
+a> <br>
+&gt; &lt;mailto:<a href=3D"mailto:david@redhat.com" target=3D"_blank" rel=
+=3D"noreferrer">david@redhat.com</a>&gt;&gt; wrote:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; /*<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; * The 64bit pci hole starts after=
+ &quot;above 4G RAM&quot; and<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; * potentially the space reserved =
+for memory hotplug.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; There is the<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt;=C2=A0 =C2=A0 ROUND_UP(hole64_star=
+t, 1 * GiB);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; in there that is not really requi=
+red for the !hole64 case. It<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; shouldn&#39;t matter much in prac=
+tice I think (besides an aligned<br>
+&gt;=C2=A0 =C2=A0 =C2=A0value<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; showing up in the error message).=
+<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; We could factor out most of that =
+calculation into a<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; separate function, skipping that =
+alignment to make that<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; clearer.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt; Yeah this whole memory segmentation i=
+s quite complicated and<br>
+&gt;=C2=A0 =C2=A0 =C2=A0might benefit from a qemu doc or a refactoring.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt; Absolutely. Do you have time to work on t=
+hat (including the<br>
+&gt;=C2=A0 =C2=A0 =C2=A0updated fix?).<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Other than the fix you proposed I am not sure=
+ if we need to fix<br>
+&gt;=C2=A0 =C2=A0 =C2=A0anything else atm. Seems physical address space bou=
+nd checks are<br>
+&gt;=C2=A0 =C2=A0 =C2=A0already in place.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 &gt; Re: doc, maybe. I will add it to my TODO list=
+.<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0Will you send a proper patch, ideally not using pc_=
+pci_hole64_start()<br>
+&gt;=C2=A0 =C2=A0 =C2=A0but instead the same logic without the final alignm=
+ent to 1 GiB?<br>
+&gt; <br>
+&gt; <br>
+&gt; I&#39;ll send. No problem. Could you answer my other question please ?=
+<br>
+<br>
+Sorry, which one did I miss</blockquote></div></div><div dir=3D"auto"><br><=
+/div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quot=
+e"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
+:1px #ccc solid;padding-left:1ex"><span style=3D"font-size:12.8px">Ok hopef=
+ully my last question. I am still confused on something. Does the above mea=
+n that the hole64 will actually start from an address that is beyond maxram=
+? Like basically if you added all of ram_below_4G, ram_above_4G, hot plug_m=
+em and pci_hole64 then can it exceed maxram? I think it will. Does this not=
+ an issue?</span></blockquote></div></div><div dir=3D"auto"><br></div><div =
+dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc =
+solid;padding-left:1ex"><br>
+-- <br>
+Cheers,<br>
+<br>
+David / dhildenb<br>
+<br>
+</blockquote></div></div></div>
 
-Compiled with gcc-12.1.0-nolibc
-
-Tested with (sorry, no KVM):
-
-/home/aik/b/q-slof/qemu-system-ppc64 \
--nodefaults \
--chardev stdio,id=STDIO0,signal=off,mux=on \
--device spapr-vty,id=svty0,reg=0x71000110,chardev=STDIO0 \
--mon id=MON0,chardev=STDIO0,mode=readline \
--nographic \
--vga none \
--m 2G \
--kernel /home/aik/t/vml4150le \
--initrd /home/aik/t/le.cpio \
--machine pseries,cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken,cap-ccf-assist=off \
--bios pc-bios/slof.bin \
--trace events=/home/aik/qemu_trace_events \
--d guest_errors \
--chardev socket,id=SOCKET0,server=on,wait=off,path=qemu.mon.604650 \
--mon chardev=SOCKET0,mode=control \
--name 604650,debug-threads=on
+--000000000000d199e906059f5dda--
 
 
