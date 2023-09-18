@@ -2,32 +2,32 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E52D7A518E
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:05:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B967C7A51AF
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:07:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiIZb-0007lp-5Y; Mon, 18 Sep 2023 14:02:15 -0400
+	id 1qiIa5-0000TO-Kg; Mon, 18 Sep 2023 14:02:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYm-0006mD-KS; Mon, 18 Sep 2023 14:01:26 -0400
+ id 1qiIa3-0000Qy-QZ; Mon, 18 Sep 2023 14:02:43 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYj-0003BZ-Ow; Mon, 18 Sep 2023 14:01:22 -0400
+ id 1qiIa2-0003JC-AC; Mon, 18 Sep 2023 14:02:43 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qiIV6-008crV-16;
- Mon, 18 Sep 2023 20:01:00 +0200
+ (envelope-from <den@openvz.org>) id 1qiIV6-008crV-2T;
+ Mon, 18 Sep 2023 20:01:01 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 18/22] parallels: improve readability of allocate_clusters
-Date: Mon, 18 Sep 2023 20:00:56 +0200
-Message-Id: <20230918180100.524843-20-den@openvz.org>
+Subject: [PATCH 19/22] parallels: naive implementation of parallels_co_pdiscard
+Date: Mon, 18 Sep 2023 20:00:57 +0200
+Message-Id: <20230918180100.524843-21-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230918180100.524843-1-den@openvz.org>
 References: <20230918180100.524843-1-den@openvz.org>
@@ -55,62 +55,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace 'space' representing the amount of data to preallocate with
-'bytes'.
-
-Rationale:
-* 'space' at each place is converted to bytes
-* the unit is more close to the variable name
+* Discarding with backing stores is not supported by the format.
+* There is no buffering/queueing of the discard operation.
+* Only operations aligned to the cluster are supported.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
-Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ block/parallels.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index 6a5bff4fcb..d9d36c514b 100644
+index d9d36c514b..1ef23f6669 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -279,7 +279,8 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
-     first_free = find_first_zero_bit(s->used_bmap, s->used_bmap_size);
-     if (first_free == s->used_bmap_size) {
-         uint32_t new_usedsize;
--        int64_t space = to_allocate * s->tracks + s->prealloc_size;
-+        int64_t bytes = to_allocate * s->cluster_size;
-+        bytes += s->prealloc_size * BDRV_SECTOR_SIZE;
+@@ -537,6 +537,51 @@ parallels_co_readv(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
+     return ret;
+ }
  
-         host_off = s->data_end * BDRV_SECTOR_SIZE;
++
++static int coroutine_fn
++parallels_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
++{
++    int ret = 0;
++    uint32_t cluster, count;
++    BDRVParallelsState *s = bs->opaque;
++
++    /*
++     * The image does not support ZERO mark inside the BAT, which means that
++     * stale data could be exposed from the backing file.
++     */
++    if (bs->backing) {
++        return -ENOTSUP;
++    }
++
++    if (!QEMU_IS_ALIGNED(offset, s->cluster_size)) {
++        return -ENOTSUP;
++    } else if (!QEMU_IS_ALIGNED(bytes, s->cluster_size)) {
++        return -ENOTSUP;
++    }
++
++    cluster = offset / s->cluster_size;
++    count = bytes / s->cluster_size;
++
++    qemu_co_mutex_lock(&s->lock);
++    for (; count > 0; cluster++, count--) {
++        int64_t host_off = bat2sect(s, cluster) << BDRV_SECTOR_BITS;
++        if (host_off == 0) {
++            continue;
++        }
++
++        ret = bdrv_co_pdiscard(bs->file, host_off, s->cluster_size);
++        if (ret < 0) {
++            goto done;
++        }
++
++        parallels_set_bat_entry(s, cluster, 0);
++        bitmap_clear(s->used_bmap, host_cluster_index(s, host_off), 1);
++    }
++done:
++    qemu_co_mutex_unlock(&s->lock);
++    return ret;
++}
++
+ static void parallels_check_unclean(BlockDriverState *bs,
+                                     BdrvCheckResult *res,
+                                     BdrvCheckMode fix)
+@@ -1417,6 +1462,7 @@ static BlockDriver bdrv_parallels = {
+     .bdrv_co_create             = parallels_co_create,
+     .bdrv_co_create_opts        = parallels_co_create_opts,
+     .bdrv_co_check              = parallels_co_check,
++    .bdrv_co_pdiscard           = parallels_co_pdiscard,
+ };
  
-@@ -289,8 +290,7 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
-          * force the safer-but-slower fallocate.
-          */
-         if (s->prealloc_mode == PRL_PREALLOC_MODE_TRUNCATE) {
--            ret = bdrv_co_truncate(bs->file,
--                                   (s->data_end + space) << BDRV_SECTOR_BITS,
-+            ret = bdrv_co_truncate(bs->file, host_off + bytes,
-                                    false, PREALLOC_MODE_OFF,
-                                    BDRV_REQ_ZERO_WRITE, NULL);
-             if (ret == -ENOTSUP) {
-@@ -298,16 +298,13 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
-             }
-         }
-         if (s->prealloc_mode == PRL_PREALLOC_MODE_FALLOCATE) {
--            ret = bdrv_co_pwrite_zeroes(bs->file,
--                                        s->data_end << BDRV_SECTOR_BITS,
--                                        space << BDRV_SECTOR_BITS, 0);
-+            ret = bdrv_co_pwrite_zeroes(bs->file, host_off, bytes, 0);
-         }
-         if (ret < 0) {
-             return ret;
-         }
- 
--        new_usedsize = s->used_bmap_size +
--                       (space << BDRV_SECTOR_BITS) / s->cluster_size;
-+        new_usedsize = s->used_bmap_size + bytes / s->cluster_size;
-         s->used_bmap = bitmap_zero_extend(s->used_bmap, s->used_bmap_size,
-                                           new_usedsize);
-         s->used_bmap_size = new_usedsize;
+ static void bdrv_parallels_init(void)
 -- 
 2.34.1
 
