@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566547A4A95
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 15:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAB77A4A97
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 15:30:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiEJc-0003zv-Op; Mon, 18 Sep 2023 09:29:28 -0400
+	id 1qiEJg-00044D-Tl; Mon, 18 Sep 2023 09:29:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qiEJa-0003ze-Pl; Mon, 18 Sep 2023 09:29:26 -0400
-Received: from mail-oi1-x22d.google.com ([2607:f8b0:4864:20::22d])
+ id 1qiEJd-00040M-9V; Mon, 18 Sep 2023 09:29:29 -0400
+Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qiEJZ-0003W2-5L; Mon, 18 Sep 2023 09:29:26 -0400
-Received: by mail-oi1-x22d.google.com with SMTP id
- 5614622812f47-3a88ef953adso3177471b6e.0; 
- Mon, 18 Sep 2023 06:29:24 -0700 (PDT)
+ id 1qiEJb-0003WV-Pi; Mon, 18 Sep 2023 09:29:29 -0400
+Received: by mail-oa1-x34.google.com with SMTP id
+ 586e51a60fabf-1d6baffcac2so1266040fac.2; 
+ Mon, 18 Sep 2023 06:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695043763; x=1695648563; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695043766; x=1695648566; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fK0kuypElg49sloaLIdM1Ov8y3roW9lqXQXQ5vx4VSs=;
- b=C/9ZiOVtnZEBJKElCN4g5YUhPe7jZ2fMlvEm5ek9idkfE2nRBzdez9pRjTcKFaa/Uh
- xgdO9HZYUkE7xeSe8TTmZ4TYAEgtN1SPQKycpTDiK9pGgUK/K2T+V8O98STOBVBvin6d
- gqaOJ0m/fUmAVr4OoJrYw/iTpW1pqpjO197Upox/Z+5/P8eEMmDMrvYFTVUPW5hJoVIx
- puVlOB/vZCywu0AB9PMjYixTFFuDc91Yy4a1IEZkBDXqyxZIuNPXoaOQi96ByAG+jYEs
- +KxevSpEbd6PNvJDscosUwYDd19MyeInybMCOurlKyzu3ygrNVwLm9bkG2cAw/Hagd0K
- aV+w==
+ bh=eiOV6DybnBNyNppeeAy4r1gwQImKNgHVzbxT9X3UxGM=;
+ b=dKOA/jAG8IxNIPZyVNsDf5gn8XA95CXAC+oOJ4pqchyn5Wrc1JvLnMX4/hC+Y6PhNU
+ gmt7uuRpKrVAsddkIww+Hth136LwzFcvIdsNSjU/A7zRQ3RAZBY4VW/h/6yf8tYVciYJ
+ NucGu+2W3K4K1aIa27/Ah4pEwBAM3GREhRziZtdQo0xCn/o99aPsZSenQv/IUvelnG/O
+ If4AYzHMhE48Cca6UOEr8ZvwxKJ55526u5k2BAe1DAJINyxVQU2y8s38/uSkv4n9iUTl
+ XULkFvJQ6f5F0vALHyu8AJmpgpF7DJwL0NX0K6O9cBz3iFASfWwD4y9c5H64TrizurZe
+ 3h6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695043763; x=1695648563;
+ d=1e100.net; s=20230601; t=1695043766; x=1695648566;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fK0kuypElg49sloaLIdM1Ov8y3roW9lqXQXQ5vx4VSs=;
- b=RL4oqSRimLGsy4eRar5cAquqYivGEY9fJzRNvOF+Opc3nOgWyASqwUBwh7wnbt6jip
- m5j+mlhL6PykdFzWCdpJZBkLFjgLt/DtUR74H3V3pcJMBepa+y9lxxEKIU6tpZmNTAxi
- zhLI6/kQ4gFtbjCBhoRUr9+DslL6tPZH51/R/fnYKl7F9uY10XEgK4dxMyn4bYLqhfN+
- DHt/gPOCm+VVDIv+MbTJ64EbPeXB0kR0M6WZj9euHnt3xTUinyUZXVI+LStpSsSVOhs/
- sA3kXiSV6qvqTTkBOf7oYp9A0X2cs4xZ7NO0nGcLwEUoOjGiKH85efaFIENzdvDbIBLv
- 4wyA==
-X-Gm-Message-State: AOJu0Yx/cLVpyRkbZ9q4zFiTxUVe5TNOHMne1bbHirmnrUNovhrkPYnU
- oycrCT3YpZeE2pGof3SEvyBFlL0QXXg=
-X-Google-Smtp-Source: AGHT+IF9e30ejuU6tjoiPYt/TDuDod4U1NeED6hCN9uuU8+hU89v3gam1Kq5ZN1p8r3Ik159FUaEWg==
-X-Received: by 2002:a05:6870:a70e:b0:1c8:b715:6c81 with SMTP id
- g14-20020a056870a70e00b001c8b7156c81mr10209797oam.55.1695043763322; 
- Mon, 18 Sep 2023 06:29:23 -0700 (PDT)
+ bh=eiOV6DybnBNyNppeeAy4r1gwQImKNgHVzbxT9X3UxGM=;
+ b=cLa6C0jDxzpHV9mjaV5zvels0Ft8KHl/Zix1g4x1FkBU155GUmBhFtJtTsKTs/iD7W
+ IKqa9rcJr/DYacoIA0WRiXYr5kqW+n1N4sqR35m/DlUsJRblOm6/xRcNR55JJy/uoiKl
+ QmNQ1hbU6bTgBJG1lOjfN49BWR2qrFNA7ACM5HrJWCk92PKlq0X1luHdUXZSNxlMNSwQ
+ pDwv93U9wuUR3vWfm7FWkic1BFmhR5GnTgzMZ0h/31sLFpwZh1OwqMwAsnnqREFAPfrE
+ nBiIjeSK0X/8RTjbgYBZmrpm96mNf+EaJ1rNv+z8TBOZe4a1UO5tt9MK1cVmX1NX/UFv
+ /Wrg==
+X-Gm-Message-State: AOJu0YyjRT0r7ygxBrFohe6L3Hr/FlZVNnUn7g072dcvvw7Jsz7qlIac
+ SOjkU15ntdqWG21Z2dRwRtIMWZPrnfE=
+X-Google-Smtp-Source: AGHT+IGF5IT3UkMNsCORLzQqXzwGdf2egtrkJ/ZfVOvPyQ+xKC3SmnX+ATfd8XnlHBJUetuP4mIk7g==
+X-Received: by 2002:a05:6870:d2a0:b0:1bb:509a:824f with SMTP id
+ d32-20020a056870d2a000b001bb509a824fmr10887924oae.55.1695043766036; 
+ Mon, 18 Sep 2023 06:29:26 -0700 (PDT)
 Received: from grind.. ([152.234.127.211]) by smtp.gmail.com with ESMTPSA id
- y1-20020a056870a34100b001c8f250820esm4927161oak.48.2023.09.18.06.29.20
+ y1-20020a056870a34100b001c8f250820esm4927161oak.48.2023.09.18.06.29.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Sep 2023 06:29:23 -0700 (PDT)
+ Mon, 18 Sep 2023 06:29:25 -0700 (PDT)
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, danielhb413@gmail.com, peter.maydell@linaro.org,
- clg@kaod.org, Greg Kurz <groug@kaod.org>,
+ clg@kaod.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: [PULL 1/3] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
-Date: Mon, 18 Sep 2023 10:29:10 -0300
-Message-ID: <20230918132912.291204-2-danielhb413@gmail.com>
+ Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: [PULL 2/3] ppc/xive: Fix uint32_t overflow
+Date: Mon, 18 Sep 2023 10:29:11 -0300
+Message-ID: <20230918132912.291204-3-danielhb413@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230918132912.291204-1-danielhb413@gmail.com>
 References: <20230918132912.291204-1-danielhb413@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22d;
- envelope-from=danielhb413@gmail.com; helo=mail-oi1-x22d.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::34;
+ envelope-from=danielhb413@gmail.com; helo=mail-oa1-x34.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,109 +93,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update all relevant PowerPC entries as follows:
+From: Cédric Le Goater <clg@kaod.org>
 
-- Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
-  Nick has  been a solid contributor for the last couple of years and
-  has the required knowledge and motivation to drive the boat.
+As reported by Coverity, "idx << xive->pc_shift" is evaluated using
+32-bit arithmetic, and then used in a context expecting a "uint64_t".
+Add a uint64_t cast.
 
-- Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
-  to other areas of interest and will retire from qemu-ppc.  Thanks Mr
-  Kurz for all the years of service.
-
-- David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
-  KVM CPUs. Change done per his request.
-
-- Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
-  PPC KVM CPUs. It has been a long since I last touched those areas and
-  it's not justified to be kept as maintainer in them.
-
-- Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
-  don't have the required knowledge to justify it.
-
-- VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
-  better reflects the current state of the subsystem.
-
-Acked-by: Cédric Le Goater <clg@kaod.org>
-Acked-by: Greg Kurz <groug@kaod.org>
+Fixes: Coverity CID 1519049
+Fixes: b68147b7a5bf ("ppc/xive: Add support for the PC MMIOs")
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Acked-by: David Gibson <david@gibson.dropbear.id.au>
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-Message-ID: <20230915110507.194762-1-danielhb413@gmail.com>
+Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <20230914154650.222111-1-clg@kaod.org>
 Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 ---
- MAINTAINERS | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ hw/intc/pnv_xive.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 00562f924f..c4aa1c1c9f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -298,11 +298,9 @@ F: hw/openrisc/
- F: tests/tcg/openrisc/
+diff --git a/hw/intc/pnv_xive.c b/hw/intc/pnv_xive.c
+index 9b10e90519..bda3478b1f 100644
+--- a/hw/intc/pnv_xive.c
++++ b/hw/intc/pnv_xive.c
+@@ -210,7 +210,7 @@ static uint64_t pnv_xive_vst_addr_remote(PnvXive *xive, uint32_t type,
+         return 0;
+     }
  
- PowerPC TCG CPUs
-+M: Nicholas Piggin <npiggin@gmail.com>
- M: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: Cédric Le Goater <clg@kaod.org>
--R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
--R: Nicholas Piggin <npiggin@gmail.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: target/ppc/
-@@ -438,10 +436,9 @@ F: target/mips/kvm*
- F: target/mips/sysemu/
+-    remote_addr |= idx << xive->pc_shift;
++    remote_addr |= ((uint64_t)idx) << xive->pc_shift;
  
- PPC KVM CPUs
--M: Daniel Henrique Barboza <danielhb413@gmail.com>
-+M: Nicholas Piggin <npiggin@gmail.com>
-+R: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: Cédric Le Goater <clg@kaod.org>
--R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
- S: Odd Fixes
- F: target/ppc/kvm.c
- 
-@@ -1430,10 +1427,10 @@ F: include/hw/rtc/m48t59.h
- F: tests/avocado/ppc_prep_40p.py
- 
- sPAPR (pseries)
--M: Daniel Henrique Barboza <danielhb413@gmail.com>
-+M: Nicholas Piggin <npiggin@gmail.com>
-+R: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: Cédric Le Goater <clg@kaod.org>
- R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
- R: Harsh Prateek Bora <harshpb@linux.ibm.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
-@@ -1452,8 +1449,8 @@ F: tests/avocado/ppc_pseries.py
- 
- PowerNV (Non-Virtualized)
- M: Cédric Le Goater <clg@kaod.org>
-+M: Nicholas Piggin <npiggin@gmail.com>
- R: Frédéric Barrat <fbarrat@linux.ibm.com>
--R: Nicholas Piggin <npiggin@gmail.com>
- L: qemu-ppc@nongnu.org
- S: Odd Fixes
- F: docs/system/ppc/powernv.rst
-@@ -1497,12 +1494,9 @@ F: include/hw/pci-host/mv64361.h
- 
- Virtual Open Firmware (VOF)
- M: Alexey Kardashevskiy <aik@ozlabs.ru>
--R: Cédric Le Goater <clg@kaod.org>
--R: Daniel Henrique Barboza <danielhb413@gmail.com>
- R: David Gibson <david@gibson.dropbear.id.au>
--R: Greg Kurz <groug@kaod.org>
- L: qemu-ppc@nongnu.org
--S: Maintained
-+S: Odd Fixes
- F: hw/ppc/spapr_vof*
- F: hw/ppc/vof*
- F: include/hw/ppc/vof*
+     vst_addr = address_space_ldq_be(&address_space_memory, remote_addr,
+                                     MEMTXATTRS_UNSPECIFIED, &result);
 -- 
 2.41.0
 
