@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50167A5112
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B50A7A5113
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:37:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiI9m-0007KJ-Gc; Mon, 18 Sep 2023 13:35:34 -0400
+	id 1qiIB2-0008Nf-DL; Mon, 18 Sep 2023 13:36:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiI9k-0007Hv-1u
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:35:32 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiIAz-0008NE-51
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:36:49 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiI9i-0005p7-Fl
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:35:31 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiIAw-00060o-Gd
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:36:48 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 20DA021F5A;
- Mon, 18 Sep 2023 17:35:29 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 4B0A62004D;
+ Mon, 18 Sep 2023 17:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695058529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1695058604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=sxPjFmJB+UDCCt40nH8SUy2gAnwbGYmAmmHGwP52GEw=;
- b=h/IsehoxRPulKnsQjEvurLgWO0qkdU+lgBD/IwfxkL+0971uwORyd7D9bFxkGkz+Y3wgAb
- sqnEt7mwqUOZlO0CO6g33ANplOPyqV0MvIr/UtjCQZZo40fCBehngqV+7vVX3gV9pCv3HM
- LO72YcH1j94kMR0izGbeEjE5VxpUMjA=
+ bh=wf+nyqSwnxqBBTVkLuDx7WHZ//po+GVoPBhXDRqrbi0=;
+ b=mWn42V6/DfySsGoi8U9UmCT+LFcNnu5cBERHuliFRxolCPK1Pjz7hgV2VnfFVeFYZiryf9
+ QKJOa0n08rC/clGmVjUMrvJi5ptcKTekjT7mwsAwiIt4PreTX++mZJ5O9hk/mc5MTLLldE
+ ZcYNJ4aRUZrCOdX2J4gl9ZNehddRki4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695058529;
+ s=susede2_ed25519; t=1695058604;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=sxPjFmJB+UDCCt40nH8SUy2gAnwbGYmAmmHGwP52GEw=;
- b=poFYZihtAta5EpNShOA7Xf02OQo2Y6/Ert3YjkyVNkwArh0DoG+gFaUXInn/uvOpt6stGQ
- nFEwicn6q5qQrmAw==
+ bh=wf+nyqSwnxqBBTVkLuDx7WHZ//po+GVoPBhXDRqrbi0=;
+ b=8Lu1yJj9VxLdC9xENePrOUh70lSYcOcx1UAlwFijdZ7vYbGg77w0Kx1z0IsuFqMvXwGK8P
+ RvT8srVuP3AQCzBw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A6C591358A;
- Mon, 18 Sep 2023 17:35:28 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C7AA21358A;
+ Mon, 18 Sep 2023 17:36:43 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id tgcIHGCKCGVIGwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:35:28 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id TSp/JKuKCGW7GwAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:36:43 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH 12/52] migration/rdma: Drop qemu_rdma_search_ram_block()
- error handling
-In-Reply-To: <20230918144206.560120-13-armbru@redhat.com>
+Subject: Re: [PATCH 13/52] migration/rdma: Make qemu_rdma_buffer_mergable()
+ return bool
+In-Reply-To: <20230918144206.560120-14-armbru@redhat.com>
 References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-13-armbru@redhat.com>
-Date: Mon, 18 Sep 2023 14:35:26 -0300
-Message-ID: <87a5tjz8o1.fsf@suse.de>
+ <20230918144206.560120-14-armbru@redhat.com>
+Date: Mon, 18 Sep 2023 14:36:41 -0300
+Message-ID: <877conz8ly.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -85,62 +85,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Markus Armbruster <armbru@redhat.com> writes:
 
-> qemu_rdma_search_ram_block() can't fail.  Return void, and drop the
-> unreachable error handling.
+> qemu_rdma_buffer_mergable() is semantically a predicate.  It returns
+> int 0 or 1.  Return bool instead.
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  migration/rdma.c | 22 ++++++++--------------
->  1 file changed, 8 insertions(+), 14 deletions(-)
->
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index 2b0f9d52d8..98520a42b4 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -1234,12 +1234,12 @@ static int qemu_rdma_reg_whole_ram_blocks(RDMAContext *rdma)
->   *
->   * This search cannot fail or the migration will fail.
->   */
 
-This comment can be removed as well.
-
-> -static int qemu_rdma_search_ram_block(RDMAContext *rdma,
-> -                                      uintptr_t block_offset,
-> -                                      uint64_t offset,
-> -                                      uint64_t length,
-> -                                      uint64_t *block_index,
-> -                                      uint64_t *chunk_index)
-> +static void qemu_rdma_search_ram_block(RDMAContext *rdma,
-> +                                       uintptr_t block_offset,
-> +                                       uint64_t offset,
-> +                                       uint64_t length,
-> +                                       uint64_t *block_index,
-> +                                       uint64_t *chunk_index)
->  {
->      uint64_t current_addr = block_offset + offset;
->      RDMALocalBlock *block = g_hash_table_lookup(rdma->blockmap,
-> @@ -1251,8 +1251,6 @@ static int qemu_rdma_search_ram_block(RDMAContext *rdma,
->      *block_index = block->index;
->      *chunk_index = ram_chunk_index(block->local_host_addr,
->                  block->local_host_addr + (current_addr - block->offset));
-> -
-> -    return 0;
->  }
->  
->  /*
-> @@ -2321,12 +2319,8 @@ static int qemu_rdma_write(QEMUFile *f, RDMAContext *rdma,
->          rdma->current_length = 0;
->          rdma->current_addr = current_addr;
->  
-> -        ret = qemu_rdma_search_ram_block(rdma, block_offset,
-> -                                         offset, len, &index, &chunk);
-> -        if (ret) {
-> -            error_report("ram block search failed");
-> -            return ret;
-> -        }
-> +        qemu_rdma_search_ram_block(rdma, block_offset,
-> +                                   offset, len, &index, &chunk);
->          rdma->current_index = index;
->          rdma->current_chunk = chunk;
->      }
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
