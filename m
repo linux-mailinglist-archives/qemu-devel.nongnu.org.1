@@ -2,71 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B50A7A5113
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0B37A5116
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:37:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiIB2-0008Nf-DL; Mon, 18 Sep 2023 13:36:52 -0400
+	id 1qiIBF-0008PL-BM; Mon, 18 Sep 2023 13:37:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiIAz-0008NE-51
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:36:49 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qiIBD-0008Ow-Jw
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:37:03 -0400
+Received: from mail-yw1-x1144.google.com ([2607:f8b0:4864:20::1144])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiIAw-00060o-Gd
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:36:48 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 4B0A62004D;
- Mon, 18 Sep 2023 17:36:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695058604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wf+nyqSwnxqBBTVkLuDx7WHZ//po+GVoPBhXDRqrbi0=;
- b=mWn42V6/DfySsGoi8U9UmCT+LFcNnu5cBERHuliFRxolCPK1Pjz7hgV2VnfFVeFYZiryf9
- QKJOa0n08rC/clGmVjUMrvJi5ptcKTekjT7mwsAwiIt4PreTX++mZJ5O9hk/mc5MTLLldE
- ZcYNJ4aRUZrCOdX2J4gl9ZNehddRki4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695058604;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wf+nyqSwnxqBBTVkLuDx7WHZ//po+GVoPBhXDRqrbi0=;
- b=8Lu1yJj9VxLdC9xENePrOUh70lSYcOcx1UAlwFijdZ7vYbGg77w0Kx1z0IsuFqMvXwGK8P
- RvT8srVuP3AQCzBw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C7AA21358A;
- Mon, 18 Sep 2023 17:36:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id TSp/JKuKCGW7GwAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:36:43 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH 13/52] migration/rdma: Make qemu_rdma_buffer_mergable()
- return bool
-In-Reply-To: <20230918144206.560120-14-armbru@redhat.com>
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-14-armbru@redhat.com>
-Date: Mon, 18 Sep 2023 14:36:41 -0300
-Message-ID: <877conz8ly.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qiIBB-00062A-31
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:37:02 -0400
+Received: by mail-yw1-x1144.google.com with SMTP id
+ 00721157ae682-59bbdb435bfso47660737b3.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 10:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695058619; x=1695663419; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ElFAYYNkJRNCt2dt0TpsJRoShLKSj6k2tGqTV+c4V5M=;
+ b=fC0VebRI9lzQMrPxSa5z3UbOAqQ8iHfQz/Gdbyj+lNM7jiy36KDPUiEKiCmFGvelVe
+ K7r62t7GMn0ZQdoEmhfnGchZbiyyieklCyBA3vuM8STryvGWTePnOZe1RTv/w/fylqYM
+ GhCgnhkzrKZPtmRCEN6lki9vVbjBUBuydUqL5wXGjDQ3mbj57lUeg5sxAqf+jwjGXYPs
+ 1DVoiT65P5F0rxQuYfA5zGAK3WtlE1TpY3GdRZ0+TOqiPtlcL9hRLA2cOdBQWl/F6U3b
+ QHh9Ei5qwOL0q6sOdCZq/bS+XB9OHsOpCghUTYOg36iK1tcX56EN42KhOtwltl8sk5+3
+ av+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695058619; x=1695663419;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ElFAYYNkJRNCt2dt0TpsJRoShLKSj6k2tGqTV+c4V5M=;
+ b=w/7eSdAJMx7Z2IWR0DAo6dna7o8gWLw0Bw6mpzE+dgnlti88L38qIc0jwT8Tvhb1rS
+ If5lj2FW3pPHfHtn9kGGbIo+7bC8yUTaPuzMKk05sDnMGTsS8Zd2GebjAiYjlADGigdy
+ omFzfXeKNw+TaBluBUVMeNsDR7RM/tKz4HRo3K9mfcSat8v9Q4lqCDxbVru1kfc4bKrL
+ XglbChKiAdNzEXdwKCRbcCKYeYQ3/4fb2FJqPS66/wN6W2v+TSQv3GieqrRWsHSOhJ97
+ 17nqW0GIypIuo8Nmmy8K8E5ZkNkfswsJfAsRYRwkvg6EEyt/iSdJnFAaRM4hrZiTk6uA
+ 8qLQ==
+X-Gm-Message-State: AOJu0Yw2lb7W8FMk8go74QJEhHhSPTEVdUpmnC0HknBy7OWsjyyYynBa
+ 5bI1DmBmx9x/EWKE6rr/dLsLnDu4AwZH
+X-Google-Smtp-Source: AGHT+IHA+i8+y/c+Uh4TfqYlAHY/UorGy2DGFcez195H+rnhowSOTPtmxgj047onc5oz4SUheg8SRQ==
+X-Received: by 2002:a0d:eac7:0:b0:59c:bab:eb4f with SMTP id
+ t190-20020a0deac7000000b0059c0babeb4fmr9721891ywe.16.1695058619492; 
+ Mon, 18 Sep 2023 10:36:59 -0700 (PDT)
+Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
+ [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
+ v66-20020a818545000000b005704c4d3579sm2720306ywf.40.2023.09.18.10.36.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Sep 2023 10:36:59 -0700 (PDT)
+From: Gregory Price <gourry.memverge@gmail.com>
+X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
+To: qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org, junhee.ryu@sk.com,
+ kwangjin.ko@sk.com, Gregory Price <gregory.price@memverge.com>
+Subject: [PATCH v4 0/1] Niagara MHSLD
+Date: Mon, 18 Sep 2023 13:36:55 -0400
+Message-Id: <20230918173656.504628-1-gregory.price@memverge.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1144;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1144.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,12 +90,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+v4 update: Kconfig and meson fixes
 
-> qemu_rdma_buffer_mergable() is semantically a predicate.  It returns
-> int 0 or 1.  Return bool instead.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Since Niagara uses <shm.h>, it presently can only be built
+for linux.  Also addings missing Kconfig files and options
+to turn it off, and turns it off by default if VENDOR or
+CXL_MEM_DEVICE are turned off.
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+Gregory Price (1):
+  cxl/vendor: SK hynix Niagara Multi-Headed SLD Device
+
+ hw/cxl/Kconfig                          |   6 +
+ hw/cxl/meson.build                      |   2 +
+ hw/cxl/vendor/Kconfig                   |   1 +
+ hw/cxl/vendor/meson.build               |   1 +
+ hw/cxl/vendor/skhynix/.gitignore        |   1 +
+ hw/cxl/vendor/skhynix/Kconfig           |   4 +
+ hw/cxl/vendor/skhynix/init_niagara.c    |  99 +++++
+ hw/cxl/vendor/skhynix/meson.build       |   3 +
+ hw/cxl/vendor/skhynix/skhynix_niagara.c | 516 ++++++++++++++++++++++++
+ hw/cxl/vendor/skhynix/skhynix_niagara.h | 162 ++++++++
+ 10 files changed, 795 insertions(+)
+ create mode 100644 hw/cxl/vendor/Kconfig
+ create mode 100644 hw/cxl/vendor/meson.build
+ create mode 100644 hw/cxl/vendor/skhynix/.gitignore
+ create mode 100644 hw/cxl/vendor/skhynix/Kconfig
+ create mode 100644 hw/cxl/vendor/skhynix/init_niagara.c
+ create mode 100644 hw/cxl/vendor/skhynix/meson.build
+ create mode 100644 hw/cxl/vendor/skhynix/skhynix_niagara.c
+ create mode 100644 hw/cxl/vendor/skhynix/skhynix_niagara.h
+
+-- 
+2.39.1
+
 
