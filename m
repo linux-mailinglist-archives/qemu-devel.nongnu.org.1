@@ -2,127 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4DAA7A4F07
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:33:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C94E7A4F27
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 18:35:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiHAb-0007ge-7Q; Mon, 18 Sep 2023 12:32:21 -0400
+	id 1qiHCY-0000rk-7q; Mon, 18 Sep 2023 12:34:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qiHAY-0007g2-Hh
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:32:18 -0400
-Received: from mailout2.w2.samsung.com ([211.189.100.12])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiHCW-0000rE-4N
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:34:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qiHAT-0001oy-7r
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:32:18 -0400
-Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
- by mailout2.w2.samsung.com (KnoxPortal) with ESMTP id
- 20230918163208usoutp0254f45a150de470a301e2066743ed63af~GC0t9b8j52440324403usoutp02I;
- Mon, 18 Sep 2023 16:32:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w2.samsung.com
- 20230918163208usoutp0254f45a150de470a301e2066743ed63af~GC0t9b8j52440324403usoutp02I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1695054728;
- bh=UUmZJwAqPu2h5kk/ZM1IfxdCsWzt2WqaKEibhDzrpvo=;
- h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=twm4QUU4JhqVw8DmtjUJfM2/AiL3yHkpoXZ7cyoU3/QZww9DrNp0kEl04eCt4rwnV
- 6snZ3wn1a/sUGJ690QAdaKpLG1Gw3j5RZXBNHaYRUT7k5QrBlSSqYYZ/x/nb7BJm3D
- C1XHp8pzNL1RnPG4tQrVRII3hrn0ez48eEHvQKEU=
-Received: from ussmges1new.samsung.com (u109.gpu85.samsung.co.kr
- [203.254.195.109]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230918163208uscas1p1911dbc88539659d4e550ceb7fd4a5d19~GC0tschFS0086900869uscas1p1v;
- Mon, 18 Sep 2023 16:32:08 +0000 (GMT)
-Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
- ussmges1new.samsung.com (USCPEMTA) with SMTP id 66.6C.50148.88B78056; Mon,
- 18 Sep 2023 12:32:08 -0400 (EDT)
-Received: from ussmgxs1new.samsung.com (u89.gpu85.samsung.co.kr
- [203.254.195.89]) by uscas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20230918163208uscas1p2300cf1c3d8e84ecf6aa376861abec03b~GC0taf0wO0391503915uscas1p2-;
- Mon, 18 Sep 2023 16:32:08 +0000 (GMT)
-X-AuditID: cbfec36d-559ff7000002c3e4-6e-65087b8853d8
-Received: from SSI-EX2.ssi.samsung.com ( [105.128.2.145]) by
- ussmgxs1new.samsung.com (USCPEXMTA) with SMTP id 8B.43.28590.78B78056; Mon,
- 18 Sep 2023 12:32:07 -0400 (EDT)
-Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
- SSI-EX2.ssi.samsung.com (105.128.2.227) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2375.24; Mon, 18 Sep 2023 09:32:07 -0700
-Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
- SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Mon,
- 18 Sep 2023 09:32:07 -0700
-From: Fan Ni <fan.ni@samsung.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: Michael Tokarev <mjt@tls.msk.ru>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>,
- =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- "linuxarm@huawei.com" <linuxarm@huawei.com>
-Subject: Re: [PATCH v2 2/4] hw/cxl: Use switch statements for read and write
- of cachemem registers
-Thread-Topic: [PATCH v2 2/4] hw/cxl: Use switch statements for read and
- write of cachemem registers
-Thread-Index: AQHZ5/bTUEaJx99u4E2nO/Y74WbsurAhQLkA
-Date: Mon, 18 Sep 2023 16:32:07 +0000
-Message-ID: <20230918163201.GA3330830@sjcvldevvm72>
-In-Reply-To: <20230915170418.21337-3-Jonathan.Cameron@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [105.128.2.176]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <8B9CBABA9A39054C9F328F471C4CAB5F@ssi.samsung.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiHCS-0002Ag-IZ
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 12:34:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695054854;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Yqit+L1v57rv4S72epM2gx/7IZWiOioPzhQAQ8pbRdo=;
+ b=Ql4dCmsxUjmRiP07sSItS1BMfs9DPpoqeWHVyCUwTAMgpBgDb3yLu84Bdy5/21WICnc6e1
+ XcLlVxMkNHTvODb8XV1B5+VuxqfdvcjDX6kzenCr1UGIqrFXgvt2YKz/XIvDtqEeBruJk1
+ MVd7Nckg0VUNPyIEwKbg6bSXxHubfh8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-318-qgREOtDhMtGXFeT39IcTQA-1; Mon, 18 Sep 2023 12:34:13 -0400
+X-MC-Unique: qgREOtDhMtGXFeT39IcTQA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3f41a04a297so36878875e9.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 09:34:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695054851; x=1695659651;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Yqit+L1v57rv4S72epM2gx/7IZWiOioPzhQAQ8pbRdo=;
+ b=Z1gX0uJqryThz7Oser/DyI/00TyvSHk00CQ6EGfxC4MP14OsH4U7IKyArJKI0Xai49
+ kRNkCePAu6CEPySLNJYSxgy3jxIDgiUXukFmU0yR4KoofWEO2+ljQKQJSp7fZUaPMzOR
+ pOKw5i2S8rcHFYSfScwD67vNN9NYe44pJnuBrjpb3YlvpJAb/d/pt7ILxkaIK3Ey1s07
+ J+7z5fJY/eq1fQRBfTGzQ+J5Yf8KcIf/89wS8mYR5ki4g+Pt1A0jyTH+QLbyUDMs9UW+
+ q/udByOezWbxYOBDj+kKxPQ51+z/Cszu/Lg+ycj+m2zEGjRTDtc8YH3/3ka2SrRg21rp
+ 196g==
+X-Gm-Message-State: AOJu0YyYfo5FH7vemI2OX4M6T+xxTCTRjxTw0ZNn/oyanwUcncsHPZ3n
+ VvqgVQ+EjIcoTOfjmDEPRMY7S+l8NbkVQUOcI0VVNbIJyWjLjvES3Zex9q5/zufGJ2llUjN4Uv5
+ sdByQu4wY8VeEdkU=
+X-Received: by 2002:a5d:5a15:0:b0:31f:f432:b541 with SMTP id
+ bq21-20020a5d5a15000000b0031ff432b541mr11161282wrb.69.1695054851572; 
+ Mon, 18 Sep 2023 09:34:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHR9is0Sfqkz6XHdnT9nxCW466u2UED+wVodAbdwIojm0Dvd+7wdCEx6LhGqy3I2hauHihUlw==
+X-Received: by 2002:a5d:5a15:0:b0:31f:f432:b541 with SMTP id
+ bq21-20020a5d5a15000000b0031ff432b541mr11161214wrb.69.1695054851162; 
+ Mon, 18 Sep 2023 09:34:11 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c702:9d00:cf36:8603:a1f5:d07?
+ (p200300cbc7029d00cf368603a1f50d07.dip0.t-ipconnect.de.
+ [2003:cb:c702:9d00:cf36:8603:a1f5:d07])
+ by smtp.gmail.com with ESMTPSA id
+ o12-20020adfeacc000000b003176c6e87b1sm4242342wrn.81.2023.09.18.09.34.08
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Sep 2023 09:34:10 -0700 (PDT)
+Message-ID: <7bc15c25-2147-409b-0cf7-e3f1b56d5283@redhat.com>
+Date: Mon, 18 Sep 2023 18:34:07 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGKsWRmVeSWpSXmKPExsWy7djXc7od1RypBtM6BCxWLbzGZnF44xkm
- iyf/vjNa/P/1itVizQphi+O9O1gc2Dxajrxl9bhzbQ+bx5Nrm5k83u+7yuYxYepSlgDWKC6b
- lNSczLLUIn27BK6Mnvfr2ArWqlZcX7mGvYFxu3QXIyeHhICJxNfpX1m7GLk4hARWMko0Te5j
- hHBamSSefN7NAlP1/N9VJojEWkaJzp3XWCCcT4wSr/umMUM4yxglzq38wg7SwiagKLGvazsb
- iC0iYCTx7sYksLnMAi8ZJb7evguU4OAQFkiReDGfGaImVeLyxt2sMPX/Lx4Ci7MIqEpsenKC
- HaScV8BYovVnCkiYU8BRYsq3Q2DjGQXEJL6fWsMEYjMLiEvcejKfCeJqQYlFs/cwQ9hiEv92
- PWSDsBUl7n9/yQ5RrydxY+oUNgjbTuLXzDmMELa2xLKFr8F6eYHmnJz5BBoSkhIHV9wAe15C
- 4AKHRMflQ6wQCReJU4duQNnSElevT2UGuVlCIFli1UcuiHCOxPwlW6DmWEss/LOeaQKjyiwk
- Z89CctIsJCfNQnLSLCQnLWBkXcUoXlpcnJueWmyYl1quV5yYW1yal66XnJ+7iRGYlE7/O5y7
- g3HHrY96hxiZOBgPMUpwMCuJ8M40ZEsV4k1JrKxKLcqPLyrNSS0+xCjNwaIkzmtoezJZSCA9
- sSQ1OzW1ILUIJsvEwSnVwCQz6+ycVKvrhWcvPTCIez3Dx0Aj62Hv6f+RpS/Vbguvju6vtNTf
- kWOppRX6mG1zuDJHp9qhbPc5X9aFWfJFBzYIFBw41/Fvz+pFshIH8wOL9MUMjyzfpZcZwGwb
- e+yj9cq02Ib3a55e/rH5UYCDFvMNf82pHWlTtbtDXFhsVoZn8F9Zsz760Q6L6phNpXb6T3z9
- xCULFaMOlIsFeS6VPZd2fH+Mq8+2v6eqtv9+sLeq3sV26vsJVmX3TvecPOl73nWi7XQtnmie
- OhX2TJ/AvX62JattLENfyVic8LtdrGZx2nKTh/LN8AOVPx50fQ7/GXxl1fO/M5cpvbkyZ/Lh
- XZlz5rs7W4Z6nf+lcGDNQiWW4oxEQy3mouJEAJ6YXS25AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKIsWRmVeSWpSXmKPExsWS2cA0Ube9miPVoO2CucWqhdfYLA5vPMNk
- 8eTfd0aL/79esVqsWSFscbx3B4sDm0fLkbesHneu7WHzeHJtM5PH+31X2TwmTF3KEsAaxWWT
- kpqTWZZapG+XwJXR834dW8Fa1YrrK9ewNzBul+5i5OSQEDCReP7vKlMXIxeHkMBqRon+22vZ
- IJxPjBKzWq6wQzjLGCX2PVnGAtLCJqAosa9rOxuILSJgJPHuxiRGkCJmgZeMEl9v3wVKcHAI
- C6RIvJjPDFGTKrHhwGImmPr/Fw+BxVkEVCU2PTnBDlLOK2As0fozBWLXaUaJTRu+g9VwCjhK
- TPl2CGwXo4CYxPdTa8DmMAuIS9x6Mp8J4gUBiSV7zjND2KISLx//Y4WwFSXuf3/JDlGvJ3Fj
- 6hQ2CNtO4tfMOYwQtrbEsoWvwXp5BQQlTs58wgLRKylxcMUNlgnAMECybhaSUbOQjJqFZNQs
- JKMWMLKuYhQvLS7OTa8oNsxLLdcrTswtLs1L10vOz93ECIzp0/8OR+5gPHrro94hRiYOxkOM
- EhzMSiK8Mw3ZUoV4UxIrq1KL8uOLSnNSiw8xSnOwKInz7phyMUVIID2xJDU7NbUgtQgmy8TB
- KdXAtGie2ESHS1EHv27kbVz0JMZGOO31pMWiWw6GV264yeBgdeaJv655Z+qriCvrxJt3r372
- 4urG3wd7JC7tZNmpclBPjVVjh0XE3bLTVe2CtueLbvbIXBfUvH1l0d19ZdXcek1c1ap1Ar0m
- E5uZJa113b+ePjqvZUF26WUhhYDNU3qdV/z+cO5s5L5pL8UL8y2NPm2LVlrBkcb3UXXetC25
- uQEX40xurk4SCNVg6vBiWleoXbnXRjPxHnstd5PowRxNy2ifwk6mzP7lB54quMZdn/1O4+Yd
- nZdnhE5u359pVRB+/sAh1mtatbE8E1aot+b8MOCc+i+hVli+58KRgyue6nPVctxt4lfsifGq
- aPVWYinOSDTUYi4qTgQAdMPpZ1gDAAA=
-X-CMS-MailID: 20230918163208uscas1p2300cf1c3d8e84ecf6aa376861abec03b
-CMS-TYPE: 301P
-X-CMS-RootMailID: 20230915170525uscas1p1fd96c779b4b8da05479110c5b7fb6cc8
-References: <20230915170418.21337-1-Jonathan.Cameron@huawei.com>
- <CGME20230915170525uscas1p1fd96c779b4b8da05479110c5b7fb6cc8@uscas1p1.samsung.com>
- <20230915170418.21337-3-Jonathan.Cameron@huawei.com>
-Received-SPF: pass client-ip=211.189.100.12; envelope-from=fan.ni@samsung.com;
- helo=mailout2.w2.samsung.com
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 18/22] target/s390x: Call s390_cpu_realize_sysemu from
+ s390_realize_cpu_model
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>, Paolo Bonzini <pbonzini@redhat.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Anton Johansson <anjo@rev.ng>, Peter Maydell <peter.maydell@linaro.org>,
+ kvm@vger.kernel.org, Marek Vasut <marex@denx.de>,
+ David Gibson <david@gibson.dropbear.id.au>, Brian Cain <bcain@quicinc.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>,
+ Claudio Fontana <cfontana@suse.de>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Artyom Tarasenko <atar4qemu@gmail.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, qemu-ppc@nongnu.org,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Aurelien Jarno <aurelien@aurel32.net>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Alessandro Di Federico <ale@rev.ng>, Song Gao <gaosong@loongson.cn>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Chris Wulff <crwulff@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Alistair Francis <alistair@alistair23.me>, Fabiano Rosas <farosas@suse.de>,
+ qemu-s390x@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
+ Luc Michel <luc@lmichel.fr>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Bin Meng <bin.meng@windriver.com>, Stafford Horne <shorne@gmail.com>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ "Daniel P . Berrange" <berrange@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-arm@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-riscv@nongnu.org,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Greg Kurz <groug@kaod.org>,
+ Michael Rolnik <mrolnik@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Markus Armbruster <armbru@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>
+References: <20230918160257.30127-1-philmd@linaro.org>
+ <20230918160257.30127-19-philmd@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230918160257.30127-19-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -138,128 +141,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 15, 2023 at 06:04:16PM +0100, Jonathan Cameron wrote:
-
-> Establishing that only register accesses of size 4 and 8 can occur
-> using these functions requires looking at their callers. Make it
-> easier to see that by using switch statements.
-> Assertions are used to enforce that the register storage is of the
-> matching size, allowing fixed values to be used for divisors of
-> the array indices.
->=20
-> Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On 18.09.23 18:02, Philippe Mathieu-Daudé wrote:
+> s390_cpu_realize_sysemu() runs some checks for the TCG accelerator,
+> previous to creating the vCPU. s390_realize_cpu_model() also does
+> run some checks for KVM.
+> Move the sysemu call to s390_realize_cpu_model(). Having a single
+> call before cpu_exec_realizefn() will allow us to factor a
+> verify_accel_features() handler out in a pair of commits.
+> 
+> Directly pass a S390CPU* to s390_cpu_realize_sysemu() to simplify.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
-
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-
-> v2: Use switch statements. Note we coudl have renamed registers to make
->     the sizes visible as is true of some other cases, but that felt odd
->     as this is the only size these registers can be, so why call it out.
->     The asserts do the same job.
->  hw/cxl/cxl-component-utils.c | 65 +++++++++++++++++++++++-------------
->  1 file changed, 42 insertions(+), 23 deletions(-)
->=20
-> diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
-> index f3bbf0fd13..7ef3ef2bd6 100644
-> --- a/hw/cxl/cxl-component-utils.c
-> +++ b/hw/cxl/cxl-component-utils.c
-> @@ -67,16 +67,24 @@ static uint64_t cxl_cache_mem_read_reg(void *opaque, =
-hwaddr offset,
->      CXLComponentState *cxl_cstate =3D opaque;
->      ComponentRegisters *cregs =3D &cxl_cstate->crb;
-> =20
-> -    if (size =3D=3D 8) {
-> +    switch (size) {
-> +    case 4:
-> +        if (cregs->special_ops && cregs->special_ops->read) {
-> +            return cregs->special_ops->read(cxl_cstate, offset, 4);
-> +        } else {
-> +            static_assert(sizeof(*cregs->cache_mem_registers) =3D=3D 4);
-> +            return cregs->cache_mem_registers[offset / 4];
-> +        }
-> +    case 8:
->          qemu_log_mask(LOG_UNIMP,
->                        "CXL 8 byte cache mem registers not implemented\n"=
-);
->          return 0;
+>   target/s390x/s390x-internal.h | 2 +-
+>   target/s390x/cpu-sysemu.c     | 3 +--
+>   target/s390x/cpu.c            | 6 ------
+>   target/s390x/cpu_models.c     | 4 ++++
+>   4 files changed, 6 insertions(+), 9 deletions(-)
+> 
+> diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
+> index 825252d728..781ac08458 100644
+> --- a/target/s390x/s390x-internal.h
+> +++ b/target/s390x/s390x-internal.h
+> @@ -241,7 +241,7 @@ uint32_t calc_cc(CPUS390XState *env, uint32_t cc_op, uint64_t src, uint64_t dst,
+>   unsigned int s390_cpu_halt(S390CPU *cpu);
+>   void s390_cpu_unhalt(S390CPU *cpu);
+>   void s390_cpu_init_sysemu(Object *obj);
+> -bool s390_cpu_realize_sysemu(DeviceState *dev, Error **errp);
+> +bool s390_cpu_realize_sysemu(S390CPU *cpu, Error **errp);
+>   void s390_cpu_finalize(Object *obj);
+>   void s390_cpu_class_init_sysemu(CPUClass *cc);
+>   void s390_cpu_machine_reset_cb(void *opaque);
+> diff --git a/target/s390x/cpu-sysemu.c b/target/s390x/cpu-sysemu.c
+> index 8112561e5e..5178736c46 100644
+> --- a/target/s390x/cpu-sysemu.c
+> +++ b/target/s390x/cpu-sysemu.c
+> @@ -122,9 +122,8 @@ void s390_cpu_init_sysemu(Object *obj)
+>       s390_cpu_set_state(S390_CPU_STATE_STOPPED, cpu);
+>   }
+>   
+> -bool s390_cpu_realize_sysemu(DeviceState *dev, Error **errp)
+> +bool s390_cpu_realize_sysemu(S390CPU *cpu, Error **errp)
+>   {
+> -    S390CPU *cpu = S390_CPU(dev);
+>       MachineState *ms = MACHINE(qdev_get_machine());
+>       unsigned int max_cpus = ms->smp.max_cpus;
+>   
+> diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+> index 416ac6c4e0..7257d4bc19 100644
+> --- a/target/s390x/cpu.c
+> +++ b/target/s390x/cpu.c
+> @@ -237,12 +237,6 @@ static void s390_cpu_realizefn(DeviceState *dev, Error **errp)
+>           goto out;
+>       }
+>   
+> -#if !defined(CONFIG_USER_ONLY)
+> -    if (!s390_cpu_realize_sysemu(dev, &err)) {
+> -        goto out;
 > -    }
+> -#endif
 > -
-> -    if (cregs->special_ops && cregs->special_ops->read) {
-> -        return cregs->special_ops->read(cxl_cstate, offset, size);
-> -    } else {
-> -        return cregs->cache_mem_registers[offset / sizeof(*cregs->cache_=
-mem_registers)];
-> +    default:
-> +        /*
-> +         * In line with specifiction limitaions on access sizes, this
-> +         * routine is not called with other sizes.
-> +         */
-> +        g_assert_not_reached();
->      }
->  }
-> =20
-> @@ -117,25 +125,36 @@ static void cxl_cache_mem_write_reg(void *opaque, h=
-waddr offset, uint64_t value,
->      ComponentRegisters *cregs =3D &cxl_cstate->crb;
->      uint32_t mask;
-> =20
-> -    if (size =3D=3D 8) {
-> +    switch (size) {
-> +    case 4:
-> +        static_assert(sizeof(*cregs->cache_mem_regs_write_mask) =3D=3D 4=
-);
-> +        static_assert(sizeof(*cregs->cache_mem_registers) =3D=3D 4);
-> +        mask =3D cregs->cache_mem_regs_write_mask[offset / 4];
-> +        value &=3D mask;
-> +        /* RO bits should remain constant. Done by reading existing valu=
-e */
-> +        value |=3D ~mask & cregs->cache_mem_registers[offset / 4];
-> +        if (cregs->special_ops && cregs->special_ops->write) {
-> +            cregs->special_ops->write(cxl_cstate, offset, value, size);
-> +            return;
-> +        }
+>       cpu_exec_realizefn(cs, &err);
+>       if (err != NULL) {
+>           goto out;
+> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+> index 98f14c09c2..f030be0d55 100644
+> --- a/target/s390x/cpu_models.c
+> +++ b/target/s390x/cpu_models.c
+> @@ -612,6 +612,10 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
+>           cpu->env.cpuid = deposit64(cpu->env.cpuid, CPU_PHYS_ADDR_SHIFT,
+>                                      CPU_PHYS_ADDR_BITS, cpu->env.core_id);
+>       }
 > +
-> +        if (offset >=3D A_CXL_HDM_DECODER_CAPABILITY &&
-> +            offset <=3D A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
-> +            dumb_hdm_handler(cxl_cstate, offset, value);
-> +        } else {
-> +            cregs->cache_mem_registers[offset / 4] =3D value;
-> +        }
+> +    if (!s390_cpu_realize_sysemu(cpu, &err)) {
 > +        return;
-> +    case 8:
->          qemu_log_mask(LOG_UNIMP,
->                        "CXL 8 byte cache mem registers not implemented\n"=
-);
->          return;
-> -    }
-> -    mask =3D cregs->cache_mem_regs_write_mask[offset / sizeof(*cregs->ca=
-che_mem_regs_write_mask)];
-> -    value &=3D mask;
-> -    /* RO bits should remain constant. Done by reading existing value */
-> -    value |=3D ~mask & cregs->cache_mem_registers[offset / sizeof(*cregs=
-->cache_mem_registers)];
-> -    if (cregs->special_ops && cregs->special_ops->write) {
-> -        cregs->special_ops->write(cxl_cstate, offset, value, size);
-> -        return;
-> -    }
-> -
-> -    if (offset >=3D A_CXL_HDM_DECODER_CAPABILITY &&
-> -        offset <=3D A_CXL_HDM_DECODER3_TARGET_LIST_HI) {
-> -        dumb_hdm_handler(cxl_cstate, offset, value);
-> -    } else {
-> -        cregs->cache_mem_registers[offset / sizeof(*cregs->cache_mem_reg=
-isters)] =3D value;
-> +    default:
-> +        /*
-> +         * In line with specifiction limitaions on access sizes, this
-> +         * routine is not called with other sizes.
-> +         */
-> +        g_assert_not_reached();
->      }
->  }
-> =20
-> --=20
-> 2.39.2
-> =
+> +    }
+>   #endif
+>   }
+>   
+
+That has nothing to do with CPU models and is, therefore, completely 
+misplaced ... :/
+
+Or what am I missing?
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
