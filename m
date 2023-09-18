@@ -2,107 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573397A47C8
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 13:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4547A47FA
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 13:06:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiC3D-0004pS-6K; Mon, 18 Sep 2023 07:04:23 -0400
+	id 1qiC5D-0006Bh-4L; Mon, 18 Sep 2023 07:06:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiC39-0004oz-S6
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:04:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiC38-0002c9-Cu
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:04:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695035055;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+zB2JLqHMrzOdF4BTisM0MlLtE7hpLjY7SGtGW+piFo=;
- b=Twbbx0j8kCZgQ8s62Ma5i8FXMCyiHe0ETP267EDf8Yu4UO+sY4xdh+J+s0hZsfeToy2o9s
- PlL66GuR4jr6JT/ZO45KrG8NdxUZMA7PpVAZxeafJ9ce59pym0RJMkRd8oaHs5JjIGJEWm
- kD2LK7R82dQlqi03XxeBmmT4k4zEYBk=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-I197DV4_M2S_qDHtFRrQnQ-1; Mon, 18 Sep 2023 07:04:14 -0400
-X-MC-Unique: I197DV4_M2S_qDHtFRrQnQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9a5952a0b20so315768366b.3
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 04:04:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qiC5B-0006B5-19
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:06:25 -0400
+Received: from mail-ua1-x933.google.com ([2607:f8b0:4864:20::933])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qiC59-0003R0-Eu
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:06:24 -0400
+Received: by mail-ua1-x933.google.com with SMTP id
+ a1e0cc1a2514c-7aafa630ea2so145445241.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 04:06:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695035182; x=1695639982; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=oh46n/tcXw73HMBKueaOPmURthqJ8ugZUPM692cp5fY=;
+ b=murZTzSLBQmVc5Gn/bdwRPQKa0ILMbinyvwaG0gPE0ubeFae8aaoMfKTgiCzqm0JS+
+ uBvYeMSopjBEDuXfFvimyBg+2veG048knkc/6ak+mJBBp73L4lwghX9BGp9V+w3y/Hiz
+ 46FwZLJazc5l2xbAxQmG9PYrd7/k99GwKuwoX4aoNPAS6nTfpj528aaCyPLqYIVwGF8w
+ E++8tVvfemzUmlIsHNDsDmLhHS6zUTMD9pu1Vmt5boczrY0xHccvOJ0dl5i2MOvFIeNc
+ geeg/9mIxAi/XZ2v1/vei0BFkOiJ48Gz88TCbzmF9U7ewyNH/EWn7ksvsxAMYNvvvOsr
+ gsCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695035053; x=1695639853;
+ d=1e100.net; s=20230601; t=1695035182; x=1695639982;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+zB2JLqHMrzOdF4BTisM0MlLtE7hpLjY7SGtGW+piFo=;
- b=Sh+OoL77XMmQZ4BmCIg/x5+kDNjTaQEFA9dXdVyWcS09jb04dGeuvYqZhYhF4L/IYT
- KfZXhCxxIB2HmLx+ozS3ELTjthkT2U69Ld2ocGhjGK5Zj0DxKUANw4Y0Gw+4agCT2KRj
- UcfSPV5Dl8QeeE8FzxgviuWKitz6tBtn7f6GIui1IEsrNa1FuNXDTrI+EhcbiaikCoSW
- v7Ck84vyjpyFbyRRqpqlS3awLEbfSvWfr8Ytp7VYYlzFv2BYCOOsVp1B89OXrpOg6CPu
- hGLDjw1nPnTx+54oOflNGsp8xsjuukScGPi9W0GZHbIMRQ46UHGrd7RwY8vUVXCuTCAS
- S/Kw==
-X-Gm-Message-State: AOJu0Ywj23cv2KMYjr4qDU3IAe7OttIKkAsmonXBiIddoALjjG/D2cf+
- eAsem1Tb/nyqL6HyrpV5xfqtFKS5YvaQSg3MMMeM8Oy+bc5VC1CP39FM8ZUM8YAh7IcG5pl8kEA
- vpoZ6oGvjbLVJFzzv2P96GoqrTXK3DUM=
-X-Received: by 2002:a17:906:24b:b0:9a1:e941:6f49 with SMTP id
- 11-20020a170906024b00b009a1e9416f49mr6823609ejl.44.1695035052958; 
- Mon, 18 Sep 2023 04:04:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEPq9bPNL6sGhot/mjciziufDMJWUGloEMu7aCPIThzQZThkEWdfwsVFhuwzIKj+OTkp25C/w2FCiE4Rw8HX7E=
-X-Received: by 2002:a17:906:24b:b0:9a1:e941:6f49 with SMTP id
- 11-20020a170906024b00b009a1e9416f49mr6823586ejl.44.1695035052636; Mon, 18 Sep
- 2023 04:04:12 -0700 (PDT)
+ bh=oh46n/tcXw73HMBKueaOPmURthqJ8ugZUPM692cp5fY=;
+ b=aWMIwFIOJz0xLsbVd814FNyrH706r9G/RRV0nGIltHKhEax9dMYe/Uiy2F1F52XYn+
+ AOVOw4qB0meMyFcB9SpdYQptfV4BjHUKw6rIwASKRpXfpPuHG2GyknGlySxfYRawMLrS
+ rJ3ZCqKbgRHdeMiqmezlKqP8bG4mV+uj/hKjGadsEXbXvtEMvOYEid8aSixh+DpXMi+0
+ R5/80tCvG9epx7FlzlNsrsdlRjehJiRubwmlIqS/gtCQICtz/s2C6xRWfSoeKPBh8Lir
+ 2tDiMGM2naxly7TYlzjP4mSVOwXUvni74/ixErEpVKjcq1MU4eZdYkDTaeyJYBxqhHMy
+ PYHg==
+X-Gm-Message-State: AOJu0YzNFGkFgRnJwG2ic+Z1+FF3x35FbIAnmR4SochP/F3Bl1l61NVD
+ Fndz3APHdHEN69+vhp5mYc1Ce461j3i9cr8Py8g=
+X-Google-Smtp-Source: AGHT+IEOdSF6W7l48HjxHpxifAqLicrMud5URbRQpWi5IltRRX90++5sLSyJxoi45QBCsp3C3nM1RSlDn6g9tsTm/A0=
+X-Received: by 2002:a67:f859:0:b0:44d:5e99:74be with SMTP id
+ b25-20020a67f859000000b0044d5e9974bemr7122241vsp.21.1695035182077; Mon, 18
+ Sep 2023 04:06:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230908095024.270946-1-anisinha@redhat.com>
- <1574DF3A-7E1F-4C4F-9087-6E8DEE456906@redhat.com>
- <6cbca7b9-381b-6268-27f0-d7ea1c5ed1bd@redhat.com>
- <3A287C52-F547-4494-B803-8CFC50CBA175@redhat.com>
- <30f0ddfb-6eb7-84a5-04a0-e11905451733@redhat.com>
- <A354B36D-A86E-48D9-B8B6-DC35D8976410@redhat.com>
- <34403090-b4b3-990f-7723-1d56d8053bd5@redhat.com>
- <08530A80-90F3-4E33-9B1A-E71A66726123@redhat.com>
- <e052a3c4-33e9-1d75-dc9b-3c64f8ae777b@redhat.com>
- <41A3B19D-87B7-4FD6-A5C7-17D758B2DB37@redhat.com>
- <143a437c-be99-d6d8-732f-e9544e2d9b35@redhat.com>
- <CAK3XEhOQCudb0VsBHFfubbcRredLMuSQCTA6fhbg99f7W9y5PA@mail.gmail.com>
- <8af5fb9f-83dc-f997-e761-f8e69f9515ac@redhat.com>
- <CAK3XEhMTSP7TkJgKX1_VxUVxaoU1jX8d_i-0H4t=bNktY5wo5g@mail.gmail.com>
- <5b22fff5-270f-0ab5-1ee5-2e54f491aefd@redhat.com>
- <CAK3XEhMf88si5NcQbAODRC+7760ymgFOx83a_ih4jOqoaDDcyg@mail.gmail.com>
- <cce0cebd-952f-9ed9-f2fd-d84dd666d322@redhat.com>
- <CAK3XEhO9DAWE6SXd4Nmham3Q=MMLU6Dda1O=EHwz55iMELv3zQ@mail.gmail.com>
- <3aa2bd37-c9d3-558a-5cc1-7c5b0cb8337a@redhat.com>
-In-Reply-To: <3aa2bd37-c9d3-558a-5cc1-7c5b0cb8337a@redhat.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Mon, 18 Sep 2023 16:34:00 +0530
-Message-ID: <CAK3XEhNG0JOn6k1Y_F4A+WhK=2mcUvmtmHrjzo0gE8BTSOhA9w@mail.gmail.com>
-Subject: Re: [PATCH] mem/x86: add processor address space check for VM memory
-To: David Hildenbrand <david@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>, 
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>, qemu-devel <qemu-devel@nongnu.org>
+References: <20230915113637.2127644-1-marcandre.lureau@redhat.com>
+ <0cae6d58-1476-9b92-0b48-f593b8e92ef2@tls.msk.ru>
+In-Reply-To: <0cae6d58-1476-9b92-0b48-f593b8e92ef2@tls.msk.ru>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 18 Sep 2023 15:06:10 +0400
+Message-ID: <CAJ+F1C+hpx9z6+TxmPFqeFsAw_joZC881w0jPi8bOr=iZP-eag@mail.gmail.com>
+Subject: Re: [PATCH] ui/gtk: fix UI info precondition
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, berrange@redhat.com, kraxel@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::933;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-ua1-x933.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,62 +87,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 4:32=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
+Hi
+
+On Fri, Sep 15, 2023 at 4:46=E2=80=AFPM Michael Tokarev <mjt@tls.msk.ru> wr=
+ote:
 >
-> On 18.09.23 13:00, Ani Sinha wrote:
-> > On Mon, Sep 18, 2023 at 4:28=E2=80=AFPM David Hildenbrand <david@redhat=
-.com> wrote:
-> >>
-> >> On 18.09.23 12:54, Ani Sinha wrote:
-> >>> On Mon, Sep 18, 2023 at 3:49=E2=80=AFPM David Hildenbrand <david@redh=
-at.com> wrote:
-> >>>>
-> >>>> On 18.09.23 12:11, Ani Sinha wrote:
-> >>>>
-> >>>>>
-> >>>>>       Ok hopefully my last question. I am still confused on somethi=
-ng.
-> >>>>>       Does the above mean that the hole64 will actually start from =
-an
-> >>>>>       address that is beyond maxram? Like basically if you added al=
-l of
-> >>>>>       ram_below_4G, ram_above_4G, hot plug_mem and pci_hole64 then =
-can it
-> >>>>>       exceed maxram? I think it will. Does this not an issue?
-> >>>>
-> >>>> If you'd have a 2 GiB VM, the device memory region and hole64 would
-> >>>> always be placed >=3D 4 GiB address, yes.
-> >>>>
-> >>>> As maxram is just a size, and not a PFN, I don't think there is any
-> >>>> issue with that.
-> >>>
-> >>> So this is all just a scheme to decide what to place where with maxra=
-m
-> >>> amount of memory available. When the processor needs to access the
-> >>
-> >> Yes. ram_size and maxram_size are only used to create the memory layou=
-t.
-> >>
-> >>> memory mapped PCI device, its simply dynamically mapped to the
-> >>> available physical ram. Is my understanding correct here?
-> >>
-> >> I'm no expert on that, but from my understanding that's what the
-> >> pci/pci64 hole is for -- mapping PCI BARs into these areas, such that
-> >> they don't conflict with actual guest RAM. That's why we still account
-> >> these "holes" as valid GFN that could be used+accessed by the VM once =
-a
-> >> PCI BAR gets mapped in there.
+> 15.09.2023 14:36, marcandre.lureau@redhat.com:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 > >
-> > Yes that was my understanding too but since device drivers need to
-> > access those BAR addresses, they need to be mapped to the actual
-> > available physical ram.
+> > dpy_get_ui_info() shouldn't be called if the underlying GPU doesn't
+> > support it.
+> >
+> > Before the assert() was added and the regression introduced, GTK code
+> > used to get "zero" UI info, for ex with a simple VGA device. The assert
+> > was added to prevent from calling when there are no console too. The
+> > other display backend that calls dpy_get_ui_info() correctly checks tha=
+t
+> > pre-condition.
+> >
+> > Calling dpy_set_ui_info() is "safe" in this case, it will simply return
+> > an error that can be generally ignored.
+> >
+> > Fixes: commit a92e7bb4c ("ui: add precondition for dpy_get_ui_info()")
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >   ui/gtk.c | 8 ++++++++
+> >   1 file changed, 8 insertions(+)
+> >
+> > diff --git a/ui/gtk.c b/ui/gtk.c
+> > index e09f97a86b..7b542da0c0 100644
+> > --- a/ui/gtk.c
+> > +++ b/ui/gtk.c
+> > @@ -726,6 +726,10 @@ static void gd_set_ui_refresh_rate(VirtualConsole =
+*vc, int refresh_rate)
+> >   {
+> >       QemuUIInfo info;
+> >
+> > +    if (!dpy_ui_info_supported(vc->gfx.dcl.con)) {
+> > +        return;
+> > +    }
+> > +
+> >       info =3D *dpy_get_ui_info(vc->gfx.dcl.con);
 >
-> These devices supply their own RAM memory regions for BARs, that will
-> get mapped into the holes. They are not using any boot/hotplug memory.
-> It's confusing.
+> Current dpy_ui_info_supported():
+>
+> bool dpy_ui_info_supported(QemuConsole *con)
+> {
+>      if (con =3D=3D NULL) {
+>          con =3D active_console;
+>      }
+>      if (con =3D=3D NULL) {
+>          return false;
+>      }
+>
+>      return con->hw_ops->ui_info !=3D NULL;
+> }
+>
+> This whole thing smells a bit wrong.  I'm not saying it *is* wrong, but
+> the feeling is here.
+>
+> Where dpy_ui_info_supported() is called with a NULL con, so that an "acti=
+ve"
+> console needs to be used instead?
+>
+> Maybe we should instead use something like
+>
+>     if (!vc->gfx.dcl.con)
+>
+> here in gd_set_ui_refresh_rate() ?
+>
+> At the very least, the code is a bit, well, confusing.
 
-yeah exactly. The actual physical memory is in the device in the form
-of BAR registers.
+I agree it's a bit confusing to have dpy_*() functions accept NULL
+arguments to mean "active_console". I don't really have a good idea
+what to do else. Just having "if (!vc->gfx.dcl.con)" is not quite
+enough though, as we shouldn't get_ui_info() if it's not supported
+(there are no errors returned then, just "invalid/zero" values).
 
+--=20
+Marc-Andr=C3=A9 Lureau
 
