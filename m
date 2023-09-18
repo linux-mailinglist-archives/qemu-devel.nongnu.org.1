@@ -2,95 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B017A498B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 14:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 953DD7A4999
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 14:28:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiDIP-0005G2-Ul; Mon, 18 Sep 2023 08:24:10 -0400
+	id 1qiDM1-0006UJ-9U; Mon, 18 Sep 2023 08:27:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qiDIE-0005FL-R8
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:24:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qiDID-0005Ij-5Y
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:23:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695039834;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LPkOWd5y+dwa7xFdgbS6Xaapp4J1zzAFM/5/pE6fYGE=;
- b=ED1cPos/P3+5jYVH+u2CAJo/i+/9gTDfDSX1aMXcEXxJpHB1UGRmWhnSZ+wu8DUcdBE8sP
- rX7WHIEvMSlNVb252nPoATvqvcTdCYZxj3lKScoiOczGhJHNJZfBG4quLUl2AemuHEgkav
- SASyzbThhr/wstapvLuBVctkc01gngs=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-41EdjAmMPp6BSW_6uO3nvQ-1; Mon, 18 Sep 2023 08:23:52 -0400
-X-MC-Unique: 41EdjAmMPp6BSW_6uO3nvQ-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-412190efed6so55932901cf.2
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 05:23:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qiDLt-0006RV-GV
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:27:48 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qiDLn-00064Y-TE
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:27:44 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9a9d6b98845so1214001766b.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 05:27:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695040058; x=1695644858; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5Cr+Ko7QspAhTvPFgBPMU4WOmRLT7hHyAdpJ94mdw28=;
+ b=F8UBnPel/c+NoAzAiAUVYVIay8hfc6oOXA9dQi/WR2sJOodEzbxZ4iJohNa5rg8uJg
+ QXJU9km8z9TJhQxYBHIf6bSblEARHtLqHrqyvW1HZWvYIG69Y05agq/oB88a7J+qkDJJ
+ D64XcRrlWo4bBw3ylucFeXXNERxDMiPHpFgfsKlTkr//z/y0FGD5/l5l+Fw0xJGOegVY
+ qOVyxMVj+2z07wpF+C0Ro5mXIBmiC3NMTY5FQgf0unjgf2ZcWwPtDrd3rkCq7lIFLkXl
+ hKzDrhwxxl8zC/m34WIHp6sxES4p7QNf4h87cnTMzq0DrMuXSe1n6lsU1oAvl2Uk5N1A
+ TKKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695039832; x=1695644632;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LPkOWd5y+dwa7xFdgbS6Xaapp4J1zzAFM/5/pE6fYGE=;
- b=pQINQ6sptph+Va0xaSq1jEB5GxFNEZgyYA1Nx+Avl0vVEzuvTSzLV8DNRXUaei7xGs
- ki1PyB4SFzapQQJbkToCJ251tb3jsadfy0qJVsJEWHl6uRcqGl1+c6m8r2rrV3ntAPq9
- hz5JdvJTG4B8LRy/cNe2Eovbd75viN65nqW4HPAWsS1qjGrCzUJsoEYPUjhrQX1gjO2P
- sSNQCYH/o2LoPSlQ6uNiCIlcn3mSYAPESBYj900pr9gICasym4NIW5sc/HaJUFQozmnu
- YyCCv6gbxcvxs2nPc/12yfgnrRimYajJ9XTSV8ro7RIcyfBjPKaX8KUPIn//2MRzZslU
- oi3g==
-X-Gm-Message-State: AOJu0YzaH/QlKLffUhs1dqPTEtJt8K+v/ZTQJqWe/oYvTGJDHJv6xRMW
- IYzE7WCKU3GW4HWk1xhYIkpnmnSXZeV8D3VmOh7UrOPYX2uTaPYK5L0FbiFTGctI006MDppa+AZ
- 41FNgqbx678pJbWI=
-X-Received: by 2002:a05:622a:1aa5:b0:417:8ee1:8f6c with SMTP id
- s37-20020a05622a1aa500b004178ee18f6cmr11208673qtc.47.1695039832381; 
- Mon, 18 Sep 2023 05:23:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGke8bKgbXmW1ethejVFRSMpuraqd4uZAeaSDPxklCbot/DL2f7bEznY8+7EJgOOzG0Td3yNQ==
-X-Received: by 2002:a05:622a:1aa5:b0:417:8ee1:8f6c with SMTP id
- s37-20020a05622a1aa500b004178ee18f6cmr11208657qtc.47.1695039832179; 
- Mon, 18 Sep 2023 05:23:52 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- p16-20020ac84610000000b0041096c33d02sm2955124qtn.17.2023.09.18.05.23.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Sep 2023 05:23:51 -0700 (PDT)
-Message-ID: <23357353-2c20-e704-dc24-ccbac2c37f98@redhat.com>
-Date: Mon, 18 Sep 2023 14:23:48 +0200
+ d=1e100.net; s=20230601; t=1695040058; x=1695644858;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5Cr+Ko7QspAhTvPFgBPMU4WOmRLT7hHyAdpJ94mdw28=;
+ b=EELycK279rePcdf6lJrj/ABjF4enTOek2F625sUaJgx1wTn835q4Vqnx2OiYmAAqeI
+ 9pt2JN6BmToXAQ8HocLs7j1hBtX6yUl1ajc3GR5KNI78ieXzgHqGUmeZiuuGqB+Pv2pq
+ BGlJ/u4xwGoVBjCC9jPVN6vv7TvndIr1wnrBWDOljq/hYHwEraU+VKmGhrnOl5DQFvrG
+ 8Imzd8xskqr6CbOmi4YMPxd0+SL/yqi/Ke/Z7jWnOKLiHTlhDVJWExW+uDKFYtA+Hf25
+ U88VZzSjNSZm1cnkW/m5pPkDbPN0gqeO0wxqK6QWwmqVLXxx/qBepUCm6mrBdG8Py0IT
+ 81OQ==
+X-Gm-Message-State: AOJu0YwQUEKhnFEoatcidSD0bbp6XsvNj8ecLycD+y+dSjegEH/WbkOP
+ ujJc1oPqdNzVBbJzaDHFScTxoOk0X29xQVYw9vtWNw==
+X-Google-Smtp-Source: AGHT+IHZFh+VD0PAN69qXUNT43OOPSpW/leNuyBcV0fX76t91a0ZviUeyyFEgTWVshaChJy/u4ODa0/YGpDxCUrezM0=
+X-Received: by 2002:a17:907:7b88:b0:9ad:8a96:ad55 with SMTP id
+ ne8-20020a1709077b8800b009ad8a96ad55mr18402055ejc.14.1695040058250; Mon, 18
+ Sep 2023 05:27:38 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 00/22] vfio: Adopt iommufd
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org,
- alex.williamson@redhat.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
- eric.auger@redhat.com, peterx@redhat.com, jasowang@redhat.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, yi.y.sun@intel.com,
- chao.p.peng@intel.com
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <62367cc3-20e9-f533-5f74-2dc3cba702ce@redhat.com>
- <20230918115153.GA13733@nvidia.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230918115153.GA13733@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20230914113311.379537-1-thuth@redhat.com>
+In-Reply-To: <20230914113311.379537-1-thuth@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 18 Sep 2023 13:27:18 +0100
+Message-ID: <CAFEAcA-dret2XW4hd=PV1zvTnd5sFeH4VERkxZBWi1UPji4otw@mail.gmail.com>
+Subject: Re: [risu PATCH v3 0/7] Add support for s390x to RISU
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,34 +86,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/23 13:51, Jason Gunthorpe wrote:
-> On Fri, Sep 15, 2023 at 02:42:48PM +0200, Cédric Le Goater wrote:
->> On 8/30/23 12:37, Zhenzhong Duan wrote:
->>> Hi All,
->>>
->>> As the kernel side iommufd cdev and hot reset feature have been queued,
->>> also hwpt alloc has been added in Jason's for_next branch [1], I'd like
->>> to update a new version matching kernel side update and with rfc flag
->>> removed. Qemu code can be found at [2], look forward more comments!
->>
->> FYI, I have started cleaning up the VFIO support in QEMU PPC. First
->> is the removal of nvlink2, which was dropped from the kernel 2.5 years
->> ago. Next is probably removal of all the PPC bits in VFIO. Code is
->> bitrotting and AFAICT VFIO has been broken on these platforms since
->> 5.18 or so.
-> 
-> It was fixed since then - at least one company (not IBM) still cares
-> about vfio on ppc, though I think it is for a DPDK use case not VFIO.
+On Thu, 14 Sept 2023 at 12:33, Thomas Huth <thuth@redhat.com> wrote:
+>
+>  Hi Peter!
+>
+> Here are some patches that add basic support for s390x to RISU.
+> It's still quite limited, e.g. no support for load/store memory
+> operations yet, but the basics with simple 16-bit or 32-bit
+> instructions work *now* already fine.
+>
+> (I'm also already experimenting in extending RISU to support
+> instructions with opcodes lengths > 32-bit, but the patches
+> are not quite ready yet)
 
-Indeed.
-I just checked on a POWER9 box running a debian sid (6.4) and device
-assignment of a simple NIC (e1000e) in a ubuntu 23.04 guest worked
-correctly. Using a 6.6-rc1 on the host worked also. One improvement
-would be to reflect in the Kconfig files that CONFIG_IOMMUFD is not
-supported on PPC so that it can not be selected.
+Hi; I've applied these patches to risu master, except for
+the last Travis one -- I'm not sure that makes sense for
+the upstream repo given it doesn't use Travis.
 
-Thanks,
-
-C.
-
+thanks
+-- PMM
 
