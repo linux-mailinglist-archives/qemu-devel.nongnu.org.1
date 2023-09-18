@@ -2,33 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864847A5182
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 473F57A5184
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 20:02:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiIZW-0007KM-Au; Mon, 18 Sep 2023 14:02:10 -0400
+	id 1qiIZg-0008JF-HF; Mon, 18 Sep 2023 14:02:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYY-0006fb-1A; Mon, 18 Sep 2023 14:01:13 -0400
+ id 1qiIZb-00080T-BS; Mon, 18 Sep 2023 14:02:15 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qiIYU-00038J-Ef; Mon, 18 Sep 2023 14:01:09 -0400
+ id 1qiIZZ-0003G3-Pa; Mon, 18 Sep 2023 14:02:15 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qiIV2-008crV-07;
- Mon, 18 Sep 2023 20:00:56 +0200
+ (envelope-from <den@openvz.org>) id 1qiIV3-008crV-1C;
+ Mon, 18 Sep 2023 20:00:57 +0200
 From: "Denis V. Lunev" <den@openvz.org>
 To: qemu-block@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, alexander.ivanov@virtuozzo.com,
  mike.maslenkin@gmail.com, "Denis V. Lunev" <den@openvz.org>
-Subject: [PATCH 08/22] parallels: create mark_used() helper which sets bit in
- used bitmap
-Date: Mon, 18 Sep 2023 20:00:46 +0200
-Message-Id: <20230918180100.524843-10-den@openvz.org>
+Subject: [PATCH 11/22] parallels: add test which will validate data_off fixes
+ through repair
+Date: Mon, 18 Sep 2023 20:00:49 +0200
+Message-Id: <20230918180100.524843-13-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230918180100.524843-1-den@openvz.org>
 References: <20230918180100.524843-1-den@openvz.org>
@@ -56,82 +56,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This functionality is used twice already and next patch will add more
-code with it.
+We have only check through self-repair and that proven to be not enough.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+ tests/qemu-iotests/tests/parallels-checks     | 17 +++++++++++++++++
+ tests/qemu-iotests/tests/parallels-checks.out | 18 ++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/block/parallels.c b/block/parallels.c
-index af3b4894d7..66c86d87e3 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -178,6 +178,21 @@ static void parallels_set_bat_entry(BDRVParallelsState *s,
-     bitmap_set(s->bat_dirty_bmap, bat_entry_off(index) / s->bat_dirty_block, 1);
- }
+diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
+index 5917ee079d..f4ca50295e 100755
+--- a/tests/qemu-iotests/tests/parallels-checks
++++ b/tests/qemu-iotests/tests/parallels-checks
+@@ -140,6 +140,23 @@ poke_file "$TEST_IMG" "$DATA_OFF_OFFSET" "\xff\xff\xff\xff"
+ echo "== check first cluster =="
+ { $QEMU_IO -c "read -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
-+static int mark_used(BlockDriverState *bs,
-+                     unsigned long *bitmap, uint32_t bitmap_size, int64_t off)
-+{
-+    BDRVParallelsState *s = bs->opaque;
-+    uint32_t cluster_index = host_cluster_index(s, off);
-+    if (cluster_index >= bitmap_size) {
-+        return -E2BIG;
-+    }
-+    if (test_bit(cluster_index, bitmap)) {
-+        return -EBUSY;
-+    }
-+    bitmap_set(bitmap, cluster_index, 1);
-+    return 0;
-+}
++# Clear image
++_make_test_img $SIZE
 +
- static int64_t coroutine_fn GRAPH_RDLOCK
- allocate_clusters(BlockDriverState *bs, int64_t sector_num,
-                   int nb_sectors, int *pnum)
-@@ -621,7 +636,7 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
-     BDRVParallelsState *s = bs->opaque;
-     int64_t host_off, host_sector, guest_sector;
-     unsigned long *bitmap;
--    uint32_t i, bitmap_size, cluster_index, bat_entry;
-+    uint32_t i, bitmap_size, bat_entry;
-     int n, ret = 0;
-     uint64_t *buf = NULL;
-     bool fixed = false;
-@@ -655,10 +670,9 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
-             continue;
-         }
- 
--        cluster_index = host_cluster_index(s, host_off);
--        assert(cluster_index < bitmap_size);
--        if (!test_bit(cluster_index, bitmap)) {
--            bitmap_set(bitmap, cluster_index, 1);
-+        ret = mark_used(bs, bitmap, bitmap_size, host_off);
-+        assert(ret != -E2BIG);
-+        if (ret == 0) {
-             continue;
-         }
- 
-@@ -713,11 +727,13 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
-          * consistent for the new allocated clusters too.
-          *
-          * Note, clusters allocated outside the current image are not
--         * considered, and the bitmap size doesn't change.
-+         * considered, and the bitmap size doesn't change. This specifically
-+         * means that -E2BIG is OK.
-          */
--        cluster_index = host_cluster_index(s, host_off);
--        if (cluster_index < bitmap_size) {
--            bitmap_set(bitmap, cluster_index, 1);
-+        ret = mark_used(bs, bitmap, bitmap_size, host_off);
-+        if (ret == -EBUSY) {
-+            res->check_errors++;
-+            goto out_repair_bat;
-         }
- 
-         fixed = true;
++echo "== TEST DATA_OFF THROUGH REPAIR =="
++
++echo "== write pattern to first cluster =="
++{ $QEMU_IO -c "write -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== spoil data_off field =="
++poke_file "$TEST_IMG" "$DATA_OFF_OFFSET" "\xff\xff\xff\xff"
++
++echo "== repair image =="
++_check_test_img -r all
++
++echo "== check first cluster =="
++{ $QEMU_IO -r -c "read -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
+ # success, all done
+ echo "*** done"
+ rm -f $seq.full
+diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
+index 98a3a7f55e..74a5e29260 100644
+--- a/tests/qemu-iotests/tests/parallels-checks.out
++++ b/tests/qemu-iotests/tests/parallels-checks.out
+@@ -72,4 +72,22 @@ wrote 1048576/1048576 bytes at offset 0
+ Repairing data_off field has incorrect value
+ read 1048576/1048576 bytes at offset 0
+ 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
++== TEST DATA_OFF THROUGH REPAIR ==
++== write pattern to first cluster ==
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== spoil data_off field ==
++== repair image ==
++Repairing data_off field has incorrect value
++The following inconsistencies were found and repaired:
++
++    0 leaked clusters
++    1 corruptions
++
++Double checking the fixed image now...
++No errors were found on the image.
++== check first cluster ==
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ *** done
 -- 
 2.34.1
 
