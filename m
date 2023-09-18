@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2517A5035
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B827A505A
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 19:03:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiHd5-0007KV-3R; Mon, 18 Sep 2023 13:01:47 -0400
+	id 1qiHek-0000cs-3H; Mon, 18 Sep 2023 13:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHcz-0007GO-QD
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:01:45 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHeh-0000WX-Mb
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:03:27 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHcy-0007gJ-97
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:01:41 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qiHef-0007tE-Ta
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 13:03:27 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 15AE31FFF3;
- Mon, 18 Sep 2023 17:01:38 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 664732001A;
+ Mon, 18 Sep 2023 17:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695056498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1695056604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=30PW/R8fLotPcp3kIjDgvacMfEm4SUzFbKQhZUdeWjU=;
- b=FKtp4MvZrZu4rC/Dt4PClhgRxY+6E7ZNkGi9PhBBsp0/mpHrnz1roFnXHvOGnufAJBnh+D
- UsbVpkrJIryGB3ZCXCVBAQmJXWJ4yelQY8GEeLBmbkHQNP0MHeB9QQe+mUkSYsr31pAK+h
- 8lZCnM4D7bJ8ROBYctSk8ipglQnCtsI=
+ bh=WK+lRIqc93PRgHwhXc52SYjLQ4YfctSGGMtEQDDQ6Xw=;
+ b=rVrvobZlYeFMt7qI9Ibyt6tm2taXntdnFCdVWU+w+hgoxktzDNNZCYwTLhcozfGwCx1GQK
+ mb6Y6dJGZTktxoafBSxIF9uHFM2zMAhXGvsFXYSCoKsga4SVZklkMKkfVcp+mLYuM2c83V
+ O0c8pJYd0BIxxMvlQhiffcQTJUPIMEI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695056498;
+ s=susede2_ed25519; t=1695056604;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=30PW/R8fLotPcp3kIjDgvacMfEm4SUzFbKQhZUdeWjU=;
- b=XqcyfWypwKFNkuOcvEUiKayQAMGVW3NPmSisJXU8zKMdX/kTUycdMF7vNpDpGBCDQW3tpJ
- lW5UV8xJel/xsjAg==
+ bh=WK+lRIqc93PRgHwhXc52SYjLQ4YfctSGGMtEQDDQ6Xw=;
+ b=UNwBtauIYC887Z9eIfdAEIFLaMayP9T0H7sEvwKp7bLP1AxSDZ27240uDFaiKuxLIArAe7
+ U7qBpn1AJJNPHSDA==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9BE5E1358A;
- Mon, 18 Sep 2023 17:01:37 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id ED9E71358A;
+ Mon, 18 Sep 2023 17:03:23 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id SN/DGXGCCGWXDAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:01:37 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id trynLduCCGVXDQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 18 Sep 2023 17:03:23 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH 04/52] migration/rdma: Drop fragile wr_id formatting
-In-Reply-To: <20230918144206.560120-5-armbru@redhat.com>
+Subject: Re: [PATCH 05/52] migration/rdma: Consistently use uint64_t for
+ work request IDs
+In-Reply-To: <20230918144206.560120-6-armbru@redhat.com>
 References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-5-armbru@redhat.com>
-Date: Mon, 18 Sep 2023 14:01:35 -0300
-Message-ID: <87wmwnza8g.fsf@suse.de>
+ <20230918144206.560120-6-armbru@redhat.com>
+Date: Mon, 18 Sep 2023 14:03:21 -0300
+Message-ID: <87ttrrza5i.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -84,17 +85,12 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Markus Armbruster <armbru@redhat.com> writes:
 
-> wrid_desc[] uses 4001 pointers to map four integer values to strings.
+> We use int instead of uint64_t in a few places.  Change them to
+> uint64_t.
 >
-> print_wrid() accesses wrid_desc[] out of bounds when passed a negative
-> argument.  It returns null for values 2..1999 and 2001..3999.
->
-> qemu_rdma_poll() and qemu_rdma_block_for_wrid() print wrid_desc[wr_id]
-> and passes print_wrid(wr_id) to tracepoints.  Could conceivably crash
-> trying to format a null string.  I believe access out of bounds is not
-> possible.
->
-> Not worth cleaning up.  Dumb down to show just numeric wr_id.
+> This cleans up a comparison of signed qemu_rdma_block_for_wrid()
+> parameter @wrid_requested with unsigned @wr_id.  Harmless, because the
+> actual arguments are non-negative enumeration constants.
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
