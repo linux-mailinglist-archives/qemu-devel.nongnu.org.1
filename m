@@ -2,136 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332D47A44CA
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D42957A44CC
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:34:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi9ff-0005xu-S5; Mon, 18 Sep 2023 04:31:55 -0400
+	id 1qi9hM-0007OC-Ei; Mon, 18 Sep 2023 04:33:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qi9fb-0005wy-OF; Mon, 18 Sep 2023 04:31:52 -0400
-Received: from mail-he1eur04on0731.outbound.protection.outlook.com
- ([2a01:111:f400:fe0d::731]
- helo=EUR04-HE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qi9gH-0006E1-Cy
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:32:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qi9fU-00047w-Ok; Mon, 18 Sep 2023 04:31:51 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JCOWxw6qvJAM3rzRxXhZj6/tZIL25s2yFukM5V5gebA/zF2Q5YZMGa86/uIOhrS0TLofbnG2fzTOciTslmVUyv42QS1Uj60yBqDU93EdI3FNUMZjSXhsGeK247WWbl8Gsbe2riHxn5tYQAFZatbtUID+WPvaR7HZ41op1ktJtAgfNVGwIfvJcHj0QaXAvwMwqOiecSpSETZ2TUnem+fjQAzQgYC7wXhR3TlElrq0Ddhzt4JuKzrIUxmg5+IJkB/uoEsFccenYP+2fapjsURYuDbU+CL7uZEaORKf7iLZ0TwjvyEDfHzoeaEovg1UdlBttisJsUlHfOJ17POEuMZ+ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pmXTNwLsD424IQAaEGGTa0qbW/or4POxg1ewBM8if0w=;
- b=GgZ/SVmSiPp9ipJrIbFxqgGlQz3T66va5iEeCMRqHgZZ3uZVGrv5GkRe459ySD55x1tk51/PzPCoqorm4h6bX90m7VuPjSGBf7LQEQA8k0kYk0IDHO1WLvPiNJuRXW+YR+RuELxwY13UYVg2s/ZDnDaSCg/7iaRolTc30f86NF7NLJzwKrQMmKosOk+KE6v+iIVH4k4PYdIYgoU5gx8LlmG2Fws7ySwG0zZYjQvyLdl6qaGe+nrHSc0AOt4dMCxmuWcp7KGkDvxCcGvfFUcY/NM/hcmI9RUbGvZ4LsTeqmGeJrRRj9sVQy5SnFldpAjO7mxuqtD1KX1j4N2m347bvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pmXTNwLsD424IQAaEGGTa0qbW/or4POxg1ewBM8if0w=;
- b=ECAuUB72gOUI1HXtbCBsw+qBB6gXDQCyZswl/RymgqjTeY6fTpfSJ2z4W/vtUk6+tWJ3hSDI/7nsr4e1NQE1slLQDwTgPNDm2BQBDyM+LMH+qfQkRvPXkGwf46CpU6N+bO02I9TaPWrX7+jUNPyk5sBSJP+6JdBuY0TsVpN0L0s7Mb/0JCf+Q6sYDyUmP7x6cQB2cLWuHAqyGdP1RTGxfJ0bK7yrMNICZe3dk9TFnRj5Yi/esQzl0/UnB8jN6DKaYGIqDbutf32uKMwL2Lst4UPc/cUaoFjMTsue2aJLNXZWf8qidb5liQlLFaLOTPX1G5v4GDCZDhSHvAsCIg4KWA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
- by DB9PR08MB9826.eurprd08.prod.outlook.com (2603:10a6:10:45d::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26; Mon, 18 Sep
- 2023 08:31:39 +0000
-Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
- ([fe80::182f:4e2b:f999:1d9b]) by AS8PR08MB7095.eurprd08.prod.outlook.com
- ([fe80::182f:4e2b:f999:1d9b%6]) with mapi id 15.20.6792.026; Mon, 18 Sep 2023
- 08:31:39 +0000
-Message-ID: <6ce4817b-39d3-bf66-ed74-d85dffca6f2b@virtuozzo.com>
-Date: Mon, 18 Sep 2023 10:31:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 06/21] parallels: refactor path when we need to re-check
- image in parallels_open
-Content-Language: en-US
-To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, mike.maslenkin@gmail.com
-References: <20230915184130.403366-1-den@openvz.org>
- <20230915184130.403366-8-den@openvz.org>
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-In-Reply-To: <20230915184130.403366-8-den@openvz.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0202CA0033.eurprd02.prod.outlook.com
- (2603:10a6:803:14::46) To AS8PR08MB7095.eurprd08.prod.outlook.com
- (2603:10a6:20b:402::11)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1qi9g6-0004ED-J3
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 04:32:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695025942;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gDiFQBVydJLwoyVNF/bFgTmbnXKyDWB1TPBpXyXiHxY=;
+ b=bv06DTDtxqgC9d2zHmwmEU/iWyC13ISQ/cVMD3tac93zZo5cleD1x0yPK0d4a1115vKG1D
+ MHI2z/SnAA5Ztek5UBoDjbostFmEm7f/r5jESgzRFyQ9eUv1r7MinbOb/hbvYkFpCXSOUL
+ af+qr9lAcFke49Rp/7atMTRsuOXXUzg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-204-SYfdgV3rNrK6tluJjyLNQw-1; Mon, 18 Sep 2023 04:32:14 -0400
+X-MC-Unique: SYfdgV3rNrK6tluJjyLNQw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8332F811E7B;
+ Mon, 18 Sep 2023 08:32:14 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.113.17])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9C4692156701;
+ Mon, 18 Sep 2023 08:32:12 +0000 (UTC)
+From: Jason Wang <jasowang@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Ilya Maximets <i.maximets@ovn.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL V2 13/17] net: add initial support for AF_XDP network backend
+Date: Mon, 18 Sep 2023 16:31:28 +0800
+Message-Id: <20230918083132.55423-14-jasowang@redhat.com>
+In-Reply-To: <20230918083132.55423-1-jasowang@redhat.com>
+References: <20230918083132.55423-1-jasowang@redhat.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|DB9PR08MB9826:EE_
-X-MS-Office365-Filtering-Correlation-Id: b601bec9-573b-44de-8507-08dbb821adb4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Isqi5Zrgj2HtKjttB5cChUSdY6v/hIZGQpGEFblcCJruYOd/ajUR3aJf4Rd2SDShD5mHh9mfxLZa+aPOfsvftVvhnpqhCD3ZZmzqhY9XfzmkTtLnXgmk/R6ZrZejF+rzvcnucum3pvVl/j4JYbkbBQpyEZHRLGXe4wFi2RAPARj66qyUNw4KTUvUDVe72LBtCg4xXOTaUc3w4qLC1sksgY1SJ8RY5x8tsPYucJGyNyrCAxSNWTU2jYL2iQ+jYrmK9cRU/ug3ChET6jI1rixYQsrQz/gEwGvtP98PRaxBR5gcVbsBt5cd/syUBVA69lvd3tnu39yFAQXRGnMusGBmlbB7xBmvln99zBpasx1PJsI5ij/RAZwjZ5qDg6vCBtgTJyifRHOWVmXVByqjUZ+NVr4kAoI6c/Je29RwsrIMRR3RjEAa8Rn4h0BAKZxCmHfEpHwQUNBbwiiuXYEm/c5PKM2hFHRo5S0YbP4tRfgPi9oukiAWYn4wsYZUWQ5/47bZuZDjlNo+5Uq+nmo4HrZv0WcOpXIhQ48dmB4gfjh3nReoM7tWxa+YtacTMwo5cIeD3wz27TPiG3aiRF3vvofbdAkBJD6HYfvsnKBXbyw1VAvIzm2+w3XHp6W9y9NNgD4UPozejTMQo+KiTLXG98W2P/jT2ZocIGdBiuge6BpUWVeWgXxQCSgUr4JRU8eGP+KX
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366004)(39850400004)(376002)(136003)(396003)(346002)(451199024)(186009)(1800799009)(31686004)(36756003)(38350700002)(86362001)(38100700002)(31696002)(6486002)(6506007)(53546011)(52116002)(478600001)(2906002)(5660300002)(66556008)(66946007)(66476007)(44832011)(8936002)(6666004)(8676002)(4326008)(6512007)(83380400001)(41300700001)(316002)(26005)(2616005)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b2ZHRGJpallWUTZCVE9valNtblpRN0l1czdxbzVUNEhBMHNzNW1SY2JURE00?=
- =?utf-8?B?MzdYNTJrL0YyamlvaDBCYzFZWnR3cG9DTnNTV2hWeGpGa3VrQThnSDc3dTlD?=
- =?utf-8?B?c3ZEd25weVY5Y1FiSWVuY3ZiZ1lpT0pHMjJZeDgzbVBaVUQwanpZeSsvdUpJ?=
- =?utf-8?B?Nm52WkxpdGZOVVl2OFlPZndXNkNFRHJ5RDhSWkwya1pDWHRCcXZGSkRwVWV3?=
- =?utf-8?B?a3BIUXNRekFnZTFSZ2hPblFxRUFZdFV5Q1N3dzRuaXY1azE4RWcxa21qRVQ1?=
- =?utf-8?B?d3dKNlBhUVJNSU5aWXcxaFZlRFQzSWVPWUt3MklCNlVudXMyQTgzRm9GSTBW?=
- =?utf-8?B?UUpPZ1djZ0QvbUd1UjVZWDdEZEV1LzZ5V0Z6S2xjQWFzaFBidi8zWDU0eGhM?=
- =?utf-8?B?OGdKZFFrQ05YSDErODdGSDNKMnNzSHREN2hrTzlubE1ZbU93aEw5T3FmalU5?=
- =?utf-8?B?ZlhNWURYT3h2Qk1xMEdBNlBheEZtUzBvOXQzVWNnRWkyYVhoMVU2cnorV25J?=
- =?utf-8?B?VUd5UFlZTHh4RWtuczU5cjVzR3lxY1FXNzF3ZmFnSjFma3dNZlE2UmQyWk16?=
- =?utf-8?B?UktKRkQ2Z2tYY3R4dHJqUW53MENFQkJLUzF0UHdyZC9leEhKdUJQc3p6dGxH?=
- =?utf-8?B?aGNSaUtYMzNvNytmU1pia1VPSVRQRTFWRWt2ZGQ5bS9WWitESlV3Z0R5V2hO?=
- =?utf-8?B?QzNSSzByaDh0Wm5YK1Ridnlxaks2NU1hdlc1Y3c3aUtTSmpPL0dKemtoYmEy?=
- =?utf-8?B?WU1YdFB0WlV2MlFicUFqS1ZJQXEzWTlIQ0t5MUt1LzlGWHM0cjFyMHJXMW5X?=
- =?utf-8?B?SjZ0QUlKNSs2T2s4aldWeUJ2Z2hQbzl0YjE4NnRFQmx4UGxzOU1oUTVFNUF2?=
- =?utf-8?B?WXQ2NlRDNTNIYTdEcGNPUlV1UE5ZWmtDdmczWXVySEJYbXFmQUpmcHg2VTBD?=
- =?utf-8?B?OEZRLy84ZEpVbW5SMkl2WTRuU2dOZGVTa3hNNjRXZDB3aUk4UzZML0wrR1dZ?=
- =?utf-8?B?eUNJWlFVQ1hzWXZrSGpMNEtIZEdRSGhKWGVROFVPTkFWN01KSE1VanNsWnRq?=
- =?utf-8?B?aG92U1NmdFVlRVA3WWQ1UnA3Wk1QeHkwWDBVdzB3cGNjNUhFZjF0ZW5zdVV6?=
- =?utf-8?B?Z25BUllyT1pRMnAyVE1yM1ZVZE5xbWowVFNEaWN0MHVmYm84N0I5bGhIcHhu?=
- =?utf-8?B?emUvZ0ZuMVVLb1I3Y2ZHekxSSEVmZm1rempXUFp3em5vT1BZNmZpeWRxMkdk?=
- =?utf-8?B?YWVFalZHR2lvMnNkQjdWekszM2V2cFB4amVCWklYbWd2bndYeVNZUE1rTWtN?=
- =?utf-8?B?czMraU84NURaTzU5Ums0T3hnWEpveXFBbEU5TnZuREJUNW9oeUk1WFhFeGU2?=
- =?utf-8?B?M214UHV5QVpIMWZHUUlPaTA5RDVhbk5Obi9PWElLakhKUjZwSVpsczJkNmxm?=
- =?utf-8?B?Z2ZMSHhQeG5CZlFDUllXQmdjWUk2VGQ5UTNrdjA4U3N5azViYkdlMTRoV0VS?=
- =?utf-8?B?Y1UwNHMwRnZRc1R1VW5qNkpPd3hsWmVob2U5UU0welJjVXA0QzRnR1ZFNmIw?=
- =?utf-8?B?NmpJVDM5Z3ZWaHlmQkFmS3lZSGdDbXZCNGdkdnpoVkFuakFVMFJaUEl2MFll?=
- =?utf-8?B?aWtZNWdiZ0dJaWl1b2lXUnA1M0ZMcDFRL2NLOHN0RXZXQmRDT2h1YUxVcWF0?=
- =?utf-8?B?MmNiY2tvMWpzNUhiZmtqTC84dGZvejk1aXBZVmxSQlN5emZjSlNJTnhZMFdj?=
- =?utf-8?B?VEdsRE1WWWR6M1V4cnZTMHhGa2UxanlRQnVLaE1STlVDZUx5WEhWdE9iWUFB?=
- =?utf-8?B?OXRBbEc3c1ZzWDBDV0JuUWpaMFpUREpabTBiUDd1emwzR3JlKzIyR0FKaU9U?=
- =?utf-8?B?enhYOGo5cm5idkFQRFpLVXNUV1JmWmZBaHNRTFlqTzRpRjUvdEppSWREaWdl?=
- =?utf-8?B?Wm9XLy81M0NTUWVDTFNSRFVZTlFKMTNDcHhObE01QzhLWjAzVmErNURPNitD?=
- =?utf-8?B?SXlpN0Ura2pHZGpnVmRVYVlPTHNndzJvZzFUMzg0VkRramYzMUhLQmlueWVL?=
- =?utf-8?B?aVZGdHFrQkZLVDhPM09EU1FaOUV5ZUVWNmhITUk1a05JRFFob2tvdVN5OEcw?=
- =?utf-8?B?cm83L1oxWmpGNUhMMnpTb3RaWndaelM1eVp2dFVYakNFdlJvTEtLS0RwS25E?=
- =?utf-8?Q?qm41nU0RbPdd7DOHNxFbYZA=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b601bec9-573b-44de-8507-08dbb821adb4
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 08:31:39.1744 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2BDuvMgt55zrteXshJh/U2uEivjEc3nUv2Tje+XwXxXEiFq5d2WrShALyAgD+iw19RP2Dn+ZovYtfPYex8G0fO5nEDWK8hu0fccE87q53pE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB9826
-Received-SPF: pass client-ip=2a01:111:f400:fe0d::731;
- envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR04-HE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -147,74 +80,1105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/15/23 20:41, Denis V. Lunev wrote:
-> More conditions follows thus the check should be more scalable.
->
-> Signed-off-by: Denis V. Lunev <den@openvz.org>
-> ---
->   block/parallels.c | 19 ++++++++-----------
->   1 file changed, 8 insertions(+), 11 deletions(-)
->
-> diff --git a/block/parallels.c b/block/parallels.c
-> index 8f223bfd89..aa29df9f77 100644
-> --- a/block/parallels.c
-> +++ b/block/parallels.c
-> @@ -1065,7 +1065,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
->       int ret, size, i;
->       int64_t file_nb_sectors, sector;
->       uint32_t data_start;
-> -    bool data_off_is_correct;
-> +    bool need_check = false;
->   
->       ret = parallels_opts_prealloc(bs, options, errp);
->       if (ret < 0) {
-> @@ -1133,11 +1133,12 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
->       s->bat_bitmap = (uint32_t *)(s->header + 1);
->   
->       if (le32_to_cpu(ph.inuse) == HEADER_INUSE_MAGIC) {
-> -        s->header_unclean = true;
-> +        need_check = s->header_unclean = true;
->       }
->   
-> -    data_off_is_correct = parallels_test_data_off(s, file_nb_sectors,
-> -                                                  &data_start);
-> +    need_check = need_check ||
-> +                 !parallels_test_data_off(s, file_nb_sectors, &data_start);
-> +
->       s->data_start = data_start;
->       s->data_end = s->data_start;
->       if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
-> @@ -1194,6 +1195,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
->               s->data_end = sector + s->tracks;
->           }
->       }
-> +    need_check = need_check || s->data_end > file_nb_sectors;
->   
->       /*
->        * We don't repair the image here if it's opened for checks. Also we don't
-> @@ -1203,12 +1205,8 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
->           return 0;
->       }
->   
-> -    /*
-> -     * Repair the image if it's dirty or
-> -     * out-of-image corruption was detected.
-> -     */
-> -    if (s->data_end > file_nb_sectors || s->header_unclean
-> -        || !data_off_is_correct) {
-> +    /* Repair the image if corruption was detected. */
-> +    if (need_check) {
->           BdrvCheckResult res;
->           ret = bdrv_check(bs, &res, BDRV_FIX_ERRORS | BDRV_FIX_LEAKS);
->           if (ret < 0) {
-> @@ -1217,7 +1215,6 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
->               goto fail;
->           }
->       }
-> -
->       return 0;
->   
->   fail_format:
+From: Ilya Maximets <i.maximets@ovn.org>
 
-Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+AF_XDP is a network socket family that allows communication directly
+with the network device driver in the kernel, bypassing most or all
+of the kernel networking stack.  In the essence, the technology is
+pretty similar to netmap.  But, unlike netmap, AF_XDP is Linux-native
+and works with any network interfaces without driver modifications.
+Unlike vhost-based backends (kernel, user, vdpa), AF_XDP doesn't
+require access to character devices or unix sockets.  Only access to
+the network interface itself is necessary.
+
+This patch implements a network backend that communicates with the
+kernel by creating an AF_XDP socket.  A chunk of userspace memory
+is shared between QEMU and the host kernel.  4 ring buffers (Tx, Rx,
+Fill and Completion) are placed in that memory along with a pool of
+memory buffers for the packet data.  Data transmission is done by
+allocating one of the buffers, copying packet data into it and
+placing the pointer into Tx ring.  After transmission, device will
+return the buffer via Completion ring.  On Rx, device will take
+a buffer form a pre-populated Fill ring, write the packet data into
+it and place the buffer into Rx ring.
+
+AF_XDP network backend takes on the communication with the host
+kernel and the network interface and forwards packets to/from the
+peer device in QEMU.
+
+Usage example:
+
+  -device virtio-net-pci,netdev=guest1,mac=00:16:35:AF:AA:5C
+  -netdev af-xdp,ifname=ens6f1np1,id=guest1,mode=native,queues=1
+
+XDP program bridges the socket with a network interface.  It can be
+attached to the interface in 2 different modes:
+
+1. skb - this mode should work for any interface and doesn't require
+         driver support.  With a caveat of lower performance.
+
+2. native - this does require support from the driver and allows to
+            bypass skb allocation in the kernel and potentially use
+            zero-copy while getting packets in/out userspace.
+
+By default, QEMU will try to use native mode and fall back to skb.
+Mode can be forced via 'mode' option.  To force 'copy' even in native
+mode, use 'force-copy=on' option.  This might be useful if there is
+some issue with the driver.
+
+Option 'queues=N' allows to specify how many device queues should
+be open.  Note that all the queues that are not open are still
+functional and can receive traffic, but it will not be delivered to
+QEMU.  So, the number of device queues should generally match the
+QEMU configuration, unless the device is shared with something
+else and the traffic re-direction to appropriate queues is correctly
+configured on a device level (e.g. with ethtool -N).
+'start-queue=M' option can be used to specify from which queue id
+QEMU should start configuring 'N' queues.  It might also be necessary
+to use this option with certain NICs, e.g. MLX5 NICs.  See the docs
+for examples.
+
+In a general case QEMU will need CAP_NET_ADMIN and CAP_SYS_ADMIN
+or CAP_BPF capabilities in order to load default XSK/XDP programs to
+the network interface and configure BPF maps.  It is possible, however,
+to run with no capabilities.  For that to work, an external process
+with enough capabilities will need to pre-load default XSK program,
+create AF_XDP sockets and pass their file descriptors to QEMU process
+on startup via 'sock-fds' option.  Network backend will need to be
+configured with 'inhibit=on' to avoid loading of the program.
+QEMU will need 32 MB of locked memory (RLIMIT_MEMLOCK) per queue
+or CAP_IPC_LOCK.
+
+There are few performance challenges with the current network backends.
+
+First is that they do not support IO threads.  This means that data
+path is handled by the main thread in QEMU and may slow down other
+work or may be slowed down by some other work.  This also means that
+taking advantage of multi-queue is generally not possible today.
+
+Another thing is that data path is going through the device emulation
+code, which is not really optimized for performance.  The fastest
+"frontend" device is virtio-net.  But it's not optimized for heavy
+traffic either, because it expects such use-cases to be handled via
+some implementation of vhost (user, kernel, vdpa).  In practice, we
+have virtio notifications and rcu lock/unlock on a per-packet basis
+and not very efficient accesses to the guest memory.  Communication
+channels between backend and frontend devices do not allow passing
+more than one packet at a time as well.
+
+Some of these challenges can be avoided in the future by adding better
+batching into device emulation or by implementing vhost-af-xdp variant.
+
+There are also a few kernel limitations.  AF_XDP sockets do not
+support any kinds of checksum or segmentation offloading.  Buffers
+are limited to a page size (4K), i.e. MTU is limited.  Multi-buffer
+support implementation for AF_XDP is in progress, but not ready yet.
+Also, transmission in all non-zero-copy modes is synchronous, i.e.
+done in a syscall.  That doesn't allow high packet rates on virtual
+interfaces.
+
+However, keeping in mind all of these challenges, current implementation
+of the AF_XDP backend shows a decent performance while running on top
+of a physical NIC with zero-copy support.
+
+Test setup:
+
+2 VMs running on 2 physical hosts connected via ConnectX6-Dx card.
+Network backend is configured to open the NIC directly in native mode.
+The driver supports zero-copy.  NIC is configured to use 1 queue.
+
+Inside a VM - iperf3 for basic TCP performance testing and dpdk-testpmd
+for PPS testing.
+
+iperf3 result:
+ TCP stream      : 19.1 Gbps
+
+dpdk-testpmd (single queue, single CPU core, 64 B packets) results:
+ Tx only         : 3.4 Mpps
+ Rx only         : 2.0 Mpps
+ L2 FWD Loopback : 1.5 Mpps
+
+In skb mode the same setup shows much lower performance, similar to
+the setup where pair of physical NICs is replaced with veth pair:
+
+iperf3 result:
+  TCP stream      : 9 Gbps
+
+dpdk-testpmd (single queue, single CPU core, 64 B packets) results:
+  Tx only         : 1.2 Mpps
+  Rx only         : 1.0 Mpps
+  L2 FWD Loopback : 0.7 Mpps
+
+Results in skb mode or over the veth are close to results of a tap
+backend with vhost=on and disabled segmentation offloading bridged
+with a NIC.
+
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com> (docker/lcitool)
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+---
+ MAINTAINERS                                     |   4 +
+ hmp-commands.hx                                 |   3 +
+ meson.build                                     |   9 +
+ meson_options.txt                               |   2 +
+ net/af-xdp.c                                    | 526 ++++++++++++++++++++++++
+ net/clients.h                                   |   5 +
+ net/meson.build                                 |   3 +
+ net/net.c                                       |   6 +
+ qapi/net.json                                   |  58 +++
+ qemu-options.hx                                 |  70 +++-
+ scripts/ci/org.centos/stream/8/x86_64/configure |   1 +
+ scripts/meson-buildoptions.sh                   |   3 +
+ tests/docker/dockerfiles/alpine.docker          |   1 +
+ tests/docker/dockerfiles/centos8.docker         |   1 +
+ tests/docker/dockerfiles/fedora.docker          |   1 +
+ tests/lcitool/projects/qemu.yml                 |   1 +
+ 16 files changed, 693 insertions(+), 1 deletion(-)
+ create mode 100644 net/af-xdp.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 00562f9..67cefaa 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2957,6 +2957,10 @@ W: http://info.iet.unipi.it/~luigi/netmap/
+ S: Maintained
+ F: net/netmap.c
+ 
++AF_XDP network backend
++R: Ilya Maximets <i.maximets@ovn.org>
++F: net/af-xdp.c
++
+ Host Memory Backends
+ M: David Hildenbrand <david@redhat.com>
+ M: Igor Mammedov <imammedo@redhat.com>
+diff --git a/hmp-commands.hx b/hmp-commands.hx
+index 2cbd0f7..63eac22 100644
+--- a/hmp-commands.hx
++++ b/hmp-commands.hx
+@@ -1296,6 +1296,9 @@ ERST
+         .name       = "netdev_add",
+         .args_type  = "netdev:O",
+         .params     = "[user|tap|socket|stream|dgram|vde|bridge|hubport|netmap|vhost-user"
++#ifdef CONFIG_AF_XDP
++                      "|af-xdp"
++#endif
+ #ifdef CONFIG_VMNET
+                       "|vmnet-host|vmnet-shared|vmnet-bridged"
+ #endif
+diff --git a/meson.build b/meson.build
+index 5150a74..f426861 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1873,6 +1873,13 @@ if libbpf.found() and not cc.links('''
+   endif
+ endif
+ 
++# libxdp
++libxdp = not_found
++if not get_option('af_xdp').auto() or have_system
++    libxdp = dependency('libxdp', required: get_option('af_xdp'),
++                        version: '>=1.4.0', method: 'pkg-config')
++endif
++
+ # libdw
+ libdw = not_found
+ if not get_option('libdw').auto() or \
+@@ -2099,6 +2106,7 @@ config_host_data.set('CONFIG_HEXAGON_IDEF_PARSER', get_option('hexagon_idef_pars
+ config_host_data.set('CONFIG_LIBATTR', have_old_libattr)
+ config_host_data.set('CONFIG_LIBCAP_NG', libcap_ng.found())
+ config_host_data.set('CONFIG_EBPF', libbpf.found())
++config_host_data.set('CONFIG_AF_XDP', libxdp.found())
+ config_host_data.set('CONFIG_LIBDAXCTL', libdaxctl.found())
+ config_host_data.set('CONFIG_LIBISCSI', libiscsi.found())
+ config_host_data.set('CONFIG_LIBNFS', libnfs.found())
+@@ -4270,6 +4278,7 @@ summary_info = {}
+ if targetos == 'darwin'
+   summary_info += {'vmnet.framework support': vmnet}
+ endif
++summary_info += {'AF_XDP support':    libxdp}
+ summary_info += {'slirp support':     slirp}
+ summary_info += {'vde support':       vde}
+ summary_info += {'netmap support':    have_netmap}
+diff --git a/meson_options.txt b/meson_options.txt
+index f82d88b..2ca40f2 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -122,6 +122,8 @@ option('avx512bw', type: 'feature', value: 'auto',
+ option('keyring', type: 'feature', value: 'auto',
+        description: 'Linux keyring support')
+ 
++option('af_xdp', type : 'feature', value : 'auto',
++       description: 'AF_XDP network backend support')
+ option('attr', type : 'feature', value : 'auto',
+        description: 'attr/xattr support')
+ option('auth_pam', type : 'feature', value : 'auto',
+diff --git a/net/af-xdp.c b/net/af-xdp.c
+new file mode 100644
+index 0000000..6c65028
+--- /dev/null
++++ b/net/af-xdp.c
+@@ -0,0 +1,526 @@
++/*
++ * AF_XDP network backend.
++ *
++ * Copyright (c) 2023 Red Hat, Inc.
++ *
++ * Authors:
++ *  Ilya Maximets <i.maximets@ovn.org>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++
++#include "qemu/osdep.h"
++#include <bpf/bpf.h>
++#include <inttypes.h>
++#include <linux/if_link.h>
++#include <linux/if_xdp.h>
++#include <net/if.h>
++#include <xdp/xsk.h>
++
++#include "clients.h"
++#include "monitor/monitor.h"
++#include "net/net.h"
++#include "qapi/error.h"
++#include "qemu/cutils.h"
++#include "qemu/error-report.h"
++#include "qemu/iov.h"
++#include "qemu/main-loop.h"
++#include "qemu/memalign.h"
++
++
++typedef struct AFXDPState {
++    NetClientState       nc;
++
++    struct xsk_socket    *xsk;
++    struct xsk_ring_cons rx;
++    struct xsk_ring_prod tx;
++    struct xsk_ring_cons cq;
++    struct xsk_ring_prod fq;
++
++    char                 ifname[IFNAMSIZ];
++    int                  ifindex;
++    bool                 read_poll;
++    bool                 write_poll;
++    uint32_t             outstanding_tx;
++
++    uint64_t             *pool;
++    uint32_t             n_pool;
++    char                 *buffer;
++    struct xsk_umem      *umem;
++
++    uint32_t             n_queues;
++    uint32_t             xdp_flags;
++    bool                 inhibit;
++} AFXDPState;
++
++#define AF_XDP_BATCH_SIZE 64
++
++static void af_xdp_send(void *opaque);
++static void af_xdp_writable(void *opaque);
++
++/* Set the event-loop handlers for the af-xdp backend. */
++static void af_xdp_update_fd_handler(AFXDPState *s)
++{
++    qemu_set_fd_handler(xsk_socket__fd(s->xsk),
++                        s->read_poll ? af_xdp_send : NULL,
++                        s->write_poll ? af_xdp_writable : NULL,
++                        s);
++}
++
++/* Update the read handler. */
++static void af_xdp_read_poll(AFXDPState *s, bool enable)
++{
++    if (s->read_poll != enable) {
++        s->read_poll = enable;
++        af_xdp_update_fd_handler(s);
++    }
++}
++
++/* Update the write handler. */
++static void af_xdp_write_poll(AFXDPState *s, bool enable)
++{
++    if (s->write_poll != enable) {
++        s->write_poll = enable;
++        af_xdp_update_fd_handler(s);
++    }
++}
++
++static void af_xdp_poll(NetClientState *nc, bool enable)
++{
++    AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
++
++    if (s->read_poll != enable || s->write_poll != enable) {
++        s->write_poll = enable;
++        s->read_poll  = enable;
++        af_xdp_update_fd_handler(s);
++    }
++}
++
++static void af_xdp_complete_tx(AFXDPState *s)
++{
++    uint32_t idx = 0;
++    uint32_t done, i;
++    uint64_t *addr;
++
++    done = xsk_ring_cons__peek(&s->cq, XSK_RING_CONS__DEFAULT_NUM_DESCS, &idx);
++
++    for (i = 0; i < done; i++) {
++        addr = (void *) xsk_ring_cons__comp_addr(&s->cq, idx++);
++        s->pool[s->n_pool++] = *addr;
++        s->outstanding_tx--;
++    }
++
++    if (done) {
++        xsk_ring_cons__release(&s->cq, done);
++    }
++}
++
++/*
++ * The fd_write() callback, invoked if the fd is marked as writable
++ * after a poll.
++ */
++static void af_xdp_writable(void *opaque)
++{
++    AFXDPState *s = opaque;
++
++    /* Try to recover buffers that are already sent. */
++    af_xdp_complete_tx(s);
++
++    /*
++     * Unregister the handler, unless we still have packets to transmit
++     * and kernel needs a wake up.
++     */
++    if (!s->outstanding_tx || !xsk_ring_prod__needs_wakeup(&s->tx)) {
++        af_xdp_write_poll(s, false);
++    }
++
++    /* Flush any buffered packets. */
++    qemu_flush_queued_packets(&s->nc);
++}
++
++static ssize_t af_xdp_receive(NetClientState *nc,
++                              const uint8_t *buf, size_t size)
++{
++    AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
++    struct xdp_desc *desc;
++    uint32_t idx;
++    void *data;
++
++    /* Try to recover buffers that are already sent. */
++    af_xdp_complete_tx(s);
++
++    if (size > XSK_UMEM__DEFAULT_FRAME_SIZE) {
++        /* We can't transmit packet this size... */
++        return size;
++    }
++
++    if (!s->n_pool || !xsk_ring_prod__reserve(&s->tx, 1, &idx)) {
++        /*
++         * Out of buffers or space in tx ring.  Poll until we can write.
++         * This will also kick the Tx, if it was waiting on CQ.
++         */
++        af_xdp_write_poll(s, true);
++        return 0;
++    }
++
++    desc = xsk_ring_prod__tx_desc(&s->tx, idx);
++    desc->addr = s->pool[--s->n_pool];
++    desc->len = size;
++
++    data = xsk_umem__get_data(s->buffer, desc->addr);
++    memcpy(data, buf, size);
++
++    xsk_ring_prod__submit(&s->tx, 1);
++    s->outstanding_tx++;
++
++    if (xsk_ring_prod__needs_wakeup(&s->tx)) {
++        af_xdp_write_poll(s, true);
++    }
++
++    return size;
++}
++
++/*
++ * Complete a previous send (backend --> guest) and enable the
++ * fd_read callback.
++ */
++static void af_xdp_send_completed(NetClientState *nc, ssize_t len)
++{
++    AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
++
++    af_xdp_read_poll(s, true);
++}
++
++static void af_xdp_fq_refill(AFXDPState *s, uint32_t n)
++{
++    uint32_t i, idx = 0;
++
++    /* Leave one packet for Tx, just in case. */
++    if (s->n_pool < n + 1) {
++        n = s->n_pool;
++    }
++
++    if (!n || !xsk_ring_prod__reserve(&s->fq, n, &idx)) {
++        return;
++    }
++
++    for (i = 0; i < n; i++) {
++        *xsk_ring_prod__fill_addr(&s->fq, idx++) = s->pool[--s->n_pool];
++    }
++    xsk_ring_prod__submit(&s->fq, n);
++
++    if (xsk_ring_prod__needs_wakeup(&s->fq)) {
++        /* Receive was blocked by not having enough buffers.  Wake it up. */
++        af_xdp_read_poll(s, true);
++    }
++}
++
++static void af_xdp_send(void *opaque)
++{
++    uint32_t i, n_rx, idx = 0;
++    AFXDPState *s = opaque;
++
++    n_rx = xsk_ring_cons__peek(&s->rx, AF_XDP_BATCH_SIZE, &idx);
++    if (!n_rx) {
++        return;
++    }
++
++    for (i = 0; i < n_rx; i++) {
++        const struct xdp_desc *desc;
++        struct iovec iov;
++
++        desc = xsk_ring_cons__rx_desc(&s->rx, idx++);
++
++        iov.iov_base = xsk_umem__get_data(s->buffer, desc->addr);
++        iov.iov_len = desc->len;
++
++        s->pool[s->n_pool++] = desc->addr;
++
++        if (!qemu_sendv_packet_async(&s->nc, &iov, 1,
++                                     af_xdp_send_completed)) {
++            /*
++             * The peer does not receive anymore.  Packet is queued, stop
++             * reading from the backend until af_xdp_send_completed().
++             */
++            af_xdp_read_poll(s, false);
++
++            /* Return unused descriptors to not break the ring cache. */
++            xsk_ring_cons__cancel(&s->rx, n_rx - i - 1);
++            n_rx = i + 1;
++            break;
++        }
++    }
++
++    /* Release actually sent descriptors and try to re-fill. */
++    xsk_ring_cons__release(&s->rx, n_rx);
++    af_xdp_fq_refill(s, AF_XDP_BATCH_SIZE);
++}
++
++/* Flush and close. */
++static void af_xdp_cleanup(NetClientState *nc)
++{
++    AFXDPState *s = DO_UPCAST(AFXDPState, nc, nc);
++
++    qemu_purge_queued_packets(nc);
++
++    af_xdp_poll(nc, false);
++
++    xsk_socket__delete(s->xsk);
++    s->xsk = NULL;
++    g_free(s->pool);
++    s->pool = NULL;
++    xsk_umem__delete(s->umem);
++    s->umem = NULL;
++    qemu_vfree(s->buffer);
++    s->buffer = NULL;
++
++    /* Remove the program if it's the last open queue. */
++    if (!s->inhibit && nc->queue_index == s->n_queues - 1 && s->xdp_flags
++        && bpf_xdp_detach(s->ifindex, s->xdp_flags, NULL) != 0) {
++        fprintf(stderr,
++                "af-xdp: unable to remove XDP program from '%s', ifindex: %d\n",
++                s->ifname, s->ifindex);
++    }
++}
++
++static int af_xdp_umem_create(AFXDPState *s, int sock_fd, Error **errp)
++{
++    struct xsk_umem_config config = {
++        .fill_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
++        .comp_size = XSK_RING_CONS__DEFAULT_NUM_DESCS,
++        .frame_size = XSK_UMEM__DEFAULT_FRAME_SIZE,
++        .frame_headroom = 0,
++    };
++    uint64_t n_descs;
++    uint64_t size;
++    int64_t i;
++    int ret;
++
++    /* Number of descriptors if all 4 queues (rx, tx, cq, fq) are full. */
++    n_descs = (XSK_RING_PROD__DEFAULT_NUM_DESCS
++               + XSK_RING_CONS__DEFAULT_NUM_DESCS) * 2;
++    size = n_descs * XSK_UMEM__DEFAULT_FRAME_SIZE;
++
++    s->buffer = qemu_memalign(qemu_real_host_page_size(), size);
++    memset(s->buffer, 0, size);
++
++    if (sock_fd < 0) {
++        ret = xsk_umem__create(&s->umem, s->buffer, size,
++                               &s->fq, &s->cq, &config);
++    } else {
++        ret = xsk_umem__create_with_fd(&s->umem, sock_fd, s->buffer, size,
++                                       &s->fq, &s->cq, &config);
++    }
++
++    if (ret) {
++        qemu_vfree(s->buffer);
++        error_setg_errno(errp, errno,
++                         "failed to create umem for %s queue_index: %d",
++                         s->ifname, s->nc.queue_index);
++        return -1;
++    }
++
++    s->pool = g_new(uint64_t, n_descs);
++    /* Fill the pool in the opposite order, because it's a LIFO queue. */
++    for (i = n_descs; i >= 0; i--) {
++        s->pool[i] = i * XSK_UMEM__DEFAULT_FRAME_SIZE;
++    }
++    s->n_pool = n_descs;
++
++    af_xdp_fq_refill(s, XSK_RING_PROD__DEFAULT_NUM_DESCS);
++
++    return 0;
++}
++
++static int af_xdp_socket_create(AFXDPState *s,
++                                const NetdevAFXDPOptions *opts, Error **errp)
++{
++    struct xsk_socket_config cfg = {
++        .rx_size = XSK_RING_CONS__DEFAULT_NUM_DESCS,
++        .tx_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
++        .libxdp_flags = 0,
++        .bind_flags = XDP_USE_NEED_WAKEUP,
++        .xdp_flags = XDP_FLAGS_UPDATE_IF_NOEXIST,
++    };
++    int queue_id, error = 0;
++
++    s->inhibit = opts->has_inhibit && opts->inhibit;
++    if (s->inhibit) {
++        cfg.libxdp_flags |= XSK_LIBXDP_FLAGS__INHIBIT_PROG_LOAD;
++    }
++
++    if (opts->has_force_copy && opts->force_copy) {
++        cfg.bind_flags |= XDP_COPY;
++    }
++
++    queue_id = s->nc.queue_index;
++    if (opts->has_start_queue && opts->start_queue > 0) {
++        queue_id += opts->start_queue;
++    }
++
++    if (opts->has_mode) {
++        /* Specific mode requested. */
++        cfg.xdp_flags |= (opts->mode == AFXDP_MODE_NATIVE)
++                         ? XDP_FLAGS_DRV_MODE : XDP_FLAGS_SKB_MODE;
++        if (xsk_socket__create(&s->xsk, s->ifname, queue_id,
++                               s->umem, &s->rx, &s->tx, &cfg)) {
++            error = errno;
++        }
++    } else {
++        /* No mode requested, try native first. */
++        cfg.xdp_flags |= XDP_FLAGS_DRV_MODE;
++
++        if (xsk_socket__create(&s->xsk, s->ifname, queue_id,
++                               s->umem, &s->rx, &s->tx, &cfg)) {
++            /* Can't use native mode, try skb. */
++            cfg.xdp_flags &= ~XDP_FLAGS_DRV_MODE;
++            cfg.xdp_flags |= XDP_FLAGS_SKB_MODE;
++
++            if (xsk_socket__create(&s->xsk, s->ifname, queue_id,
++                                   s->umem, &s->rx, &s->tx, &cfg)) {
++                error = errno;
++            }
++        }
++    }
++
++    if (error) {
++        error_setg_errno(errp, error,
++                         "failed to create AF_XDP socket for %s queue_id: %d",
++                         s->ifname, queue_id);
++        return -1;
++    }
++
++    s->xdp_flags = cfg.xdp_flags;
++
++    return 0;
++}
++
++/* NetClientInfo methods. */
++static NetClientInfo net_af_xdp_info = {
++    .type = NET_CLIENT_DRIVER_AF_XDP,
++    .size = sizeof(AFXDPState),
++    .receive = af_xdp_receive,
++    .poll = af_xdp_poll,
++    .cleanup = af_xdp_cleanup,
++};
++
++static int *parse_socket_fds(const char *sock_fds_str,
++                             int64_t n_expected, Error **errp)
++{
++    gchar **substrings = g_strsplit(sock_fds_str, ":", -1);
++    int64_t i, n_sock_fds = g_strv_length(substrings);
++    int *sock_fds = NULL;
++
++    if (n_sock_fds != n_expected) {
++        error_setg(errp, "expected %"PRIi64" socket fds, got %"PRIi64,
++                   n_expected, n_sock_fds);
++        goto exit;
++    }
++
++    sock_fds = g_new(int, n_sock_fds);
++
++    for (i = 0; i < n_sock_fds; i++) {
++        sock_fds[i] = monitor_fd_param(monitor_cur(), substrings[i], errp);
++        if (sock_fds[i] < 0) {
++            g_free(sock_fds);
++            sock_fds = NULL;
++            goto exit;
++        }
++    }
++
++exit:
++    g_strfreev(substrings);
++    return sock_fds;
++}
++
++/*
++ * The exported init function.
++ *
++ * ... -netdev af-xdp,ifname="..."
++ */
++int net_init_af_xdp(const Netdev *netdev,
++                    const char *name, NetClientState *peer, Error **errp)
++{
++    const NetdevAFXDPOptions *opts = &netdev->u.af_xdp;
++    NetClientState *nc, *nc0 = NULL;
++    unsigned int ifindex;
++    uint32_t prog_id = 0;
++    int *sock_fds = NULL;
++    int64_t i, queues;
++    Error *err = NULL;
++    AFXDPState *s;
++
++    ifindex = if_nametoindex(opts->ifname);
++    if (!ifindex) {
++        error_setg_errno(errp, errno, "failed to get ifindex for '%s'",
++                         opts->ifname);
++        return -1;
++    }
++
++    queues = opts->has_queues ? opts->queues : 1;
++    if (queues < 1) {
++        error_setg(errp, "invalid number of queues (%" PRIi64 ") for '%s'",
++                   queues, opts->ifname);
++        return -1;
++    }
++
++    if ((opts->has_inhibit && opts->inhibit) != !!opts->sock_fds) {
++        error_setg(errp, "'inhibit=on' requires 'sock-fds' and vice versa");
++        return -1;
++    }
++
++    if (opts->sock_fds) {
++        sock_fds = parse_socket_fds(opts->sock_fds, queues, errp);
++        if (!sock_fds) {
++            return -1;
++        }
++    }
++
++    for (i = 0; i < queues; i++) {
++        nc = qemu_new_net_client(&net_af_xdp_info, peer, "af-xdp", name);
++        qemu_set_info_str(nc, "af-xdp%"PRIi64" to %s", i, opts->ifname);
++        nc->queue_index = i;
++
++        if (!nc0) {
++            nc0 = nc;
++        }
++
++        s = DO_UPCAST(AFXDPState, nc, nc);
++
++        pstrcpy(s->ifname, sizeof(s->ifname), opts->ifname);
++        s->ifindex = ifindex;
++        s->n_queues = queues;
++
++        if (af_xdp_umem_create(s, sock_fds ? sock_fds[i] : -1, errp)
++            || af_xdp_socket_create(s, opts, errp)) {
++            /* Make sure the XDP program will be removed. */
++            s->n_queues = i;
++            error_propagate(errp, err);
++            goto err;
++        }
++    }
++
++    if (nc0) {
++        s = DO_UPCAST(AFXDPState, nc, nc0);
++        if (bpf_xdp_query_id(s->ifindex, s->xdp_flags, &prog_id) || !prog_id) {
++            error_setg_errno(errp, errno,
++                             "no XDP program loaded on '%s', ifindex: %d",
++                             s->ifname, s->ifindex);
++            goto err;
++        }
++    }
++
++    af_xdp_read_poll(s, true); /* Initially only poll for reads. */
++
++    return 0;
++
++err:
++    g_free(sock_fds);
++    if (nc0) {
++        qemu_del_net_client(nc0);
++    }
++
++    return -1;
++}
+diff --git a/net/clients.h b/net/clients.h
+index ed8bdff..be53794 100644
+--- a/net/clients.h
++++ b/net/clients.h
+@@ -64,6 +64,11 @@ int net_init_netmap(const Netdev *netdev, const char *name,
+                     NetClientState *peer, Error **errp);
+ #endif
+ 
++#ifdef CONFIG_AF_XDP
++int net_init_af_xdp(const Netdev *netdev, const char *name,
++                    NetClientState *peer, Error **errp);
++#endif
++
+ int net_init_vhost_user(const Netdev *netdev, const char *name,
+                         NetClientState *peer, Error **errp);
+ 
+diff --git a/net/meson.build b/net/meson.build
+index 51caa42..ce99bd4 100644
+--- a/net/meson.build
++++ b/net/meson.build
+@@ -36,6 +36,9 @@ system_ss.add(when: vde, if_true: files('vde.c'))
+ if have_netmap
+   system_ss.add(files('netmap.c'))
+ endif
++
++system_ss.add(when: libxdp, if_true: files('af-xdp.c'))
++
+ if have_vhost_net_user
+   system_ss.add(when: 'CONFIG_VIRTIO_NET', if_true: files('vhost-user.c'), if_false: files('vhost-user-stub.c'))
+   system_ss.add(when: 'CONFIG_ALL', if_true: files('vhost-user-stub.c'))
+diff --git a/net/net.c b/net/net.c
+index b110e61..1c0bfda 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -1091,6 +1091,9 @@ static int (* const net_client_init_fun[NET_CLIENT_DRIVER__MAX])(
+ #ifdef CONFIG_NETMAP
+         [NET_CLIENT_DRIVER_NETMAP]    = net_init_netmap,
+ #endif
++#ifdef CONFIG_AF_XDP
++        [NET_CLIENT_DRIVER_AF_XDP]    = net_init_af_xdp,
++#endif
+ #ifdef CONFIG_NET_BRIDGE
+         [NET_CLIENT_DRIVER_BRIDGE]    = net_init_bridge,
+ #endif
+@@ -1195,6 +1198,9 @@ void show_netdevs(void)
+ #ifdef CONFIG_NETMAP
+         "netmap",
+ #endif
++#ifdef CONFIG_AF_XDP
++        "af-xdp",
++#endif
+ #ifdef CONFIG_POSIX
+         "vhost-user",
+ #endif
+diff --git a/qapi/net.json b/qapi/net.json
+index 313c8a6..8095b68 100644
+--- a/qapi/net.json
++++ b/qapi/net.json
+@@ -409,6 +409,60 @@
+     '*devname':    'str' } }
+ 
+ ##
++# @AFXDPMode:
++#
++# Attach mode for a default XDP program
++#
++# @skb: generic mode, no driver support necessary
++#
++# @native: DRV mode, program is attached to a driver, packets are passed to
++#     the socket without allocation of skb.
++#
++# Since: 8.2
++##
++{ 'enum': 'AFXDPMode',
++  'data': [ 'native', 'skb' ],
++  'if': 'CONFIG_AF_XDP' }
++
++##
++# @NetdevAFXDPOptions:
++#
++# AF_XDP network backend
++#
++# @ifname: The name of an existing network interface.
++#
++# @mode: Attach mode for a default XDP program.  If not specified, then
++#     'native' will be tried first, then 'skb'.
++#
++# @force-copy: Force XDP copy mode even if device supports zero-copy.
++#     (default: false)
++#
++# @queues: number of queues to be used for multiqueue interfaces (default: 1).
++#
++# @start-queue: Use @queues starting from this queue number (default: 0).
++#
++# @inhibit: Don't load a default XDP program, use one already loaded to
++#     the interface (default: false).  Requires @sock-fds.
++#
++# @sock-fds: A colon (:) separated list of file descriptors for already open
++#     but not bound AF_XDP sockets in the queue order.  One fd per queue.
++#     These descriptors should already be added into XDP socket map for
++#     corresponding queues.  Requires @inhibit.
++#
++# Since: 8.2
++##
++{ 'struct': 'NetdevAFXDPOptions',
++  'data': {
++    'ifname':       'str',
++    '*mode':        'AFXDPMode',
++    '*force-copy':  'bool',
++    '*queues':      'int',
++    '*start-queue': 'int',
++    '*inhibit':     'bool',
++    '*sock-fds':    'str' },
++  'if': 'CONFIG_AF_XDP' }
++
++##
+ # @NetdevVhostUserOptions:
+ #
+ # Vhost-user network backend
+@@ -642,6 +696,7 @@
+ # @vmnet-bridged: since 7.1
+ # @stream: since 7.2
+ # @dgram: since 7.2
++# @af-xdp: since 8.2
+ #
+ # Since: 2.7
+ ##
+@@ -649,6 +704,7 @@
+   'data': [ 'none', 'nic', 'user', 'tap', 'l2tpv3', 'socket', 'stream',
+             'dgram', 'vde', 'bridge', 'hubport', 'netmap', 'vhost-user',
+             'vhost-vdpa',
++            { 'name': 'af-xdp', 'if': 'CONFIG_AF_XDP' },
+             { 'name': 'vmnet-host', 'if': 'CONFIG_VMNET' },
+             { 'name': 'vmnet-shared', 'if': 'CONFIG_VMNET' },
+             { 'name': 'vmnet-bridged', 'if': 'CONFIG_VMNET' }] }
+@@ -679,6 +735,8 @@
+     'bridge':   'NetdevBridgeOptions',
+     'hubport':  'NetdevHubPortOptions',
+     'netmap':   'NetdevNetmapOptions',
++    'af-xdp':   { 'type': 'NetdevAFXDPOptions',
++                  'if': 'CONFIG_AF_XDP' },
+     'vhost-user': 'NetdevVhostUserOptions',
+     'vhost-vdpa': 'NetdevVhostVDPAOptions',
+     'vmnet-host': { 'type': 'NetdevVmnetHostOptions',
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 6be621c..2bcf7e4 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -2882,6 +2882,19 @@ DEF("netdev", HAS_ARG, QEMU_OPTION_netdev,
+     "                VALE port (created on the fly) called 'name' ('nmname' is name of the \n"
+     "                netmap device, defaults to '/dev/netmap')\n"
+ #endif
++#ifdef CONFIG_AF_XDP
++    "-netdev af-xdp,id=str,ifname=name[,mode=native|skb][,force-copy=on|off]\n"
++    "         [,queues=n][,start-queue=m][,inhibit=on|off][,sock-fds=x:y:...:z]\n"
++    "                attach to the existing network interface 'name' with AF_XDP socket\n"
++    "                use 'mode=MODE' to specify an XDP program attach mode\n"
++    "                use 'force-copy=on|off' to force XDP copy mode even if device supports zero-copy (default: off)\n"
++    "                use 'inhibit=on|off' to inhibit loading of a default XDP program (default: off)\n"
++    "                with inhibit=on,\n"
++    "                  use 'sock-fds' to provide file descriptors for already open AF_XDP sockets\n"
++    "                  added to a socket map in XDP program.  One socket per queue.\n"
++    "                use 'queues=n' to specify how many queues of a multiqueue interface should be used\n"
++    "                use 'start-queue=m' to specify the first queue that should be used\n"
++#endif
+ #ifdef CONFIG_POSIX
+     "-netdev vhost-user,id=str,chardev=dev[,vhostforce=on|off]\n"
+     "                configure a vhost-user network, backed by a chardev 'dev'\n"
+@@ -2927,6 +2940,9 @@ DEF("nic", HAS_ARG, QEMU_OPTION_nic,
+ #ifdef CONFIG_NETMAP
+     "netmap|"
+ #endif
++#ifdef CONFIG_AF_XDP
++    "af-xdp|"
++#endif
+ #ifdef CONFIG_POSIX
+     "vhost-user|"
+ #endif
+@@ -2955,6 +2971,9 @@ DEF("net", HAS_ARG, QEMU_OPTION_net,
+ #ifdef CONFIG_NETMAP
+     "netmap|"
+ #endif
++#ifdef CONFIG_AF_XDP
++    "af-xdp|"
++#endif
+ #ifdef CONFIG_VMNET
+     "vmnet-host|vmnet-shared|vmnet-bridged|"
+ #endif
+@@ -2962,7 +2981,7 @@ DEF("net", HAS_ARG, QEMU_OPTION_net,
+     "                old way to initialize a host network interface\n"
+     "                (use the -netdev option if possible instead)\n", QEMU_ARCH_ALL)
+ SRST
+-``-nic [tap|bridge|user|l2tpv3|vde|netmap|vhost-user|socket][,...][,mac=macaddr][,model=mn]``
++``-nic [tap|bridge|user|l2tpv3|vde|netmap|af-xdp|vhost-user|socket][,...][,mac=macaddr][,model=mn]``
+     This option is a shortcut for configuring both the on-board
+     (default) guest NIC hardware and the host network backend in one go.
+     The host backend options are the same as with the corresponding
+@@ -3376,6 +3395,55 @@ SRST
+         # launch QEMU instance
+         |qemu_system| linux.img -nic vde,sock=/tmp/myswitch
+ 
++``-netdev af-xdp,id=str,ifname=name[,mode=native|skb][,force-copy=on|off][,queues=n][,start-queue=m][,inhibit=on|off][,sock-fds=x:y:...:z]``
++    Configure AF_XDP backend to connect to a network interface 'name'
++    using AF_XDP socket.  A specific program attach mode for a default
++    XDP program can be forced with 'mode', defaults to best-effort,
++    where the likely most performant mode will be in use.  Number of queues
++    'n' should generally match the number or queues in the interface,
++    defaults to 1.  Traffic arriving on non-configured device queues will
++    not be delivered to the network backend.
++
++    .. parsed-literal::
++
++        # set number of queues to 4
++        ethtool -L eth0 combined 4
++        # launch QEMU instance
++        |qemu_system| linux.img -device virtio-net-pci,netdev=n1 \\
++            -netdev af-xdp,id=n1,ifname=eth0,queues=4
++
++    'start-queue' option can be specified if a particular range of queues
++    [m, m + n] should be in use.  For example, this is may be necessary in
++    order to use certain NICs in native mode.  Kernel allows the driver to
++    create a separate set of XDP queues on top of regular ones, and only
++    these queues can be used for AF_XDP sockets.  NICs that work this way
++    may also require an additional traffic redirection with ethtool to these
++    special queues.
++
++    .. parsed-literal::
++
++        # set number of queues to 1
++        ethtool -L eth0 combined 1
++        # redirect all the traffic to the second queue (id: 1)
++        # note: drivers may require non-empty key/mask pair.
++        ethtool -N eth0 flow-type ether \\
++            dst 00:00:00:00:00:00 m FF:FF:FF:FF:FF:FE action 1
++        ethtool -N eth0 flow-type ether \\
++            dst 00:00:00:00:00:01 m FF:FF:FF:FF:FF:FE action 1
++        # launch QEMU instance
++        |qemu_system| linux.img -device virtio-net-pci,netdev=n1 \\
++            -netdev af-xdp,id=n1,ifname=eth0,queues=1,start-queue=1
++
++    XDP program can also be loaded externally.  In this case 'inhibit' option
++    should be set to 'on' and 'sock-fds' provided with file descriptors for
++    already open but not bound XDP sockets already added to a socket map for
++    corresponding queues.  One socket per queue.
++
++    .. parsed-literal::
++
++        |qemu_system| linux.img -device virtio-net-pci,netdev=n1 \\
++            -netdev af-xdp,id=n1,ifname=eth0,queues=3,inhibit=on,sock-fds=15:16:17
++
+ ``-netdev vhost-user,chardev=id[,vhostforce=on|off][,queues=n]``
+     Establish a vhost-user netdev, backed by a chardev id. The chardev
+     should be a unix domain socket backed one. The vhost-user uses a
+diff --git a/scripts/ci/org.centos/stream/8/x86_64/configure b/scripts/ci/org.centos/stream/8/x86_64/configure
+index 131f8ee..76781f1 100755
+--- a/scripts/ci/org.centos/stream/8/x86_64/configure
++++ b/scripts/ci/org.centos/stream/8/x86_64/configure
+@@ -35,6 +35,7 @@
+ --block-drv-ro-whitelist="vmdk,vhdx,vpc,https,ssh" \
+ --with-coroutine=ucontext \
+ --tls-priority=@QEMU,SYSTEM \
++--disable-af-xdp \
+ --disable-attr \
+ --disable-auth-pam \
+ --disable-avx2 \
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index e1d1783..2301193 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -76,6 +76,7 @@ meson_options_help() {
+   printf "%s\n" 'disabled with --disable-FEATURE, default is enabled if available'
+   printf "%s\n" '(unless built with --without-default-features):'
+   printf "%s\n" ''
++  printf "%s\n" '  af-xdp          AF_XDP network backend support'
+   printf "%s\n" '  alsa            ALSA sound support'
+   printf "%s\n" '  attr            attr/xattr support'
+   printf "%s\n" '  auth-pam        PAM access control'
+@@ -208,6 +209,8 @@ meson_options_help() {
+ }
+ _meson_option_parse() {
+   case $1 in
++    --enable-af-xdp) printf "%s" -Daf_xdp=enabled ;;
++    --disable-af-xdp) printf "%s" -Daf_xdp=disabled ;;
+     --enable-alsa) printf "%s" -Dalsa=enabled ;;
+     --disable-alsa) printf "%s" -Dalsa=disabled ;;
+     --enable-attr) printf "%s" -Dattr=enabled ;;
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index fa455f1..d25649c 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -59,6 +59,7 @@ RUN apk update && \
+         libtasn1-dev \
+         liburing-dev \
+         libusb-dev \
++        libxdp-dev \
+         linux-pam-dev \
+         llvm \
+         lttng-ust-dev \
+diff --git a/tests/docker/dockerfiles/centos8.docker b/tests/docker/dockerfiles/centos8.docker
+index fc18309..68bfe60 100644
+--- a/tests/docker/dockerfiles/centos8.docker
++++ b/tests/docker/dockerfiles/centos8.docker
+@@ -75,6 +75,7 @@ RUN dnf distro-sync -y && \
+         libubsan \
+         liburing-devel \
+         libusbx-devel \
++        libxdp-devel \
+         libzstd-devel \
+         llvm \
+         lttng-ust-devel \
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index c5b6c96..f00e9e2 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -82,6 +82,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                libubsan \
+                liburing-devel \
+                libusbx-devel \
++               libxdp-devel \
+                libzstd-devel \
+                llvm \
+                lttng-ust-devel \
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 584f78c..6f08851 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -69,6 +69,7 @@ packages:
+  - liburing
+  - libusbx
+  - libvdeplug
++ - libxdp
+  - libzstd
+  - llvm
+  - lttng-ust
+-- 
+2.7.4
+
 
