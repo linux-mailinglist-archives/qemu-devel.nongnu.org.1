@@ -2,57 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E7E7A4893
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 13:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB33E7A48AF
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 13:44:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiCat-0004JH-SS; Mon, 18 Sep 2023 07:39:11 -0400
+	id 1qiCew-0006oU-1w; Mon, 18 Sep 2023 07:43:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=KtGU=FC=kaod.org=clg@ozlabs.org>)
- id 1qiCas-0004Hs-3v; Mon, 18 Sep 2023 07:39:10 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qiCet-0006oM-Na
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:43:19 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=KtGU=FC=kaod.org=clg@ozlabs.org>)
- id 1qiCap-0002ve-LM; Mon, 18 Sep 2023 07:39:09 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rq2r65jPcz4x5m;
- Mon, 18 Sep 2023 21:39:02 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rq2r40vPnz4x5h;
- Mon, 18 Sep 2023 21:38:59 +1000 (AEST)
-Message-ID: <ed55c276-7950-efa2-b7c8-5280726a3d66@kaod.org>
-Date: Mon, 18 Sep 2023 13:38:56 +0200
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qiCes-0003uR-4w
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 07:43:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=N8IKWBQzhJRHdd49QR5PaT8k9yu/jiGJnK1WkDw/YSI=; b=lXe0VxgtwqJRYuljcWy7KlwxU+
+ Qn0jABqkhexEU1TJVQmpz3qNiIpxnX9OOP3WGmpSGG/xjj91TCRwvUDhBNS+0xD4h7E50ruvn1BRc
+ arAROX/qyiWDHxHq666pLGzlxRITYFeIToWR7ziaLHhs8Mw7Y+cPEr+d5ft5NL1A+big=;
+Date: Mon, 18 Sep 2023 13:42:58 +0200
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Riku Voipio <riku.voipio@iki.fi>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Claudio Fontana <cfontana@suse.de>, 
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Alessandro Di Federico <ale@rev.ng>, Fabiano Rosas <farosas@suse.de>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, 
+ Mahmoud Mandour <ma.mandourr@gmail.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: [PATCH 0/3] accel: Factor tcg_cpu_reset_hold() out of cpu-common.c
+Message-ID: <4lkqm7kzbcn7z3cfytxjpxdmtbrj7k7joy7jagosq7eq5qq4td@2io2gdb4zxxs>
+References: <20230918104153.24433-1-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] MAINTAINERS: Nick Piggin PPC maintainer, other PPC changes
-Content-Language: en-US
-To: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, david@gibson.dropbear.id.au, groug@kaod.org,
- aik@ozlabs.ru
-References: <20230915110507.194762-1-danielhb413@gmail.com>
- <CVLS27TKE0YM.3DW0F4YAP5BFA@wheely>
- <b86077f1-7078-722d-50e2-d1f97951ba83@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <b86077f1-7078-722d-50e2-d1f97951ba83@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=KtGU=FC=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+In-Reply-To: <20230918104153.24433-1-philmd@linaro.org>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,129 +64,43 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/23 12:31, Daniel Henrique Barboza wrote:
+On 18/09/23, Philippe Mathieu-Daudé wrote:
+> Hi,
 > 
+> We want to have exec/ code agnostic to accelerators.
+> still we use various call to TCG and KVM. This series
+> factor the TCG code from cpu_common_reset_hold() to an
+> accel-specific handler within AccelOpsClass.
 > 
-> On 9/18/23 02:01, Nicholas Piggin wrote:
->> Hi Daniel,
->>
->> Thank you for your stwardship of ppc, I might hope to do half as good a
->> job with it as you have. And to Greg and David for all the work over the
->> years.
+> Based-on: <20230915190009.68404-1-philmd@linaro.org>
 > 
-> I'm pretty sure you'll be great :D and both Cedric and I will be around if
-> you need assistance.
-
-Yes, consider us as backups for the QEMU PPC project.
-
-Cheers,
-
-C.
-
+> Philippe Mathieu-Daudé (3):
+>   accel/tcg: Declare tcg_flush_jmp_cache() in 'exec/tb-flush.h'
+>   accel: Introduce cpu_exec_reset_hold()
+>   accel/tcg: Factor tcg_cpu_reset_hold() out
 > 
+>  include/exec/cpu-common.h  | 3 ---
+>  include/exec/tb-flush.h    | 2 ++
+>  include/hw/core/cpu.h      | 1 +
+>  include/sysemu/accel-ops.h | 1 +
+>  accel/stubs/tcg-stub.c     | 4 ----
+>  accel/tcg/cputlb.c         | 1 +
+>  accel/tcg/tcg-accel-ops.c  | 9 +++++++++
+>  accel/tcg/translate-all.c  | 8 --------
+>  accel/tcg/user-exec-stub.c | 4 ++++
+>  hw/core/cpu-common.c       | 5 +----
+>  plugins/core.c             | 1 -
+>  softmmu/cpus.c             | 7 +++++++
+>  12 files changed, 26 insertions(+), 20 deletions(-)
 > 
-> Thanks,
+> -- 
+> 2.41.0
 > 
-> Daniel
-> 
->>
->> Thanks,
->> Nick
->>
->> On Fri Sep 15, 2023 at 9:05 PM AEST, Daniel Henrique Barboza wrote:
->>> Update all relevant PowerPC entries as follows:
->>>
->>> - Nick Piggin is promoted to Maintainer in all qemu-ppc subsystems.
->>>    Nick has  been a solid contributor for the last couple of years and
->>>    has the required knowledge and motivation to drive the boat.
->>>
->>> - Greg Kurz is being removed from all qemu-ppc entries. Greg has moved
->>>    to other areas of interest and will retire from qemu-ppc.  Thanks Mr
->>>    Kurz for all the years of service.
->>>
->>> - David Gibson was removed as 'Reviewer' from PowerPC TCG CPUs and PPC
->>>    KVM CPUs. Change done per his request.
->>>
->>> - Daniel Barboza downgraded from 'Maintainer' to 'Reviewer' in sPAPR and
->>>    PPC KVM CPUs. It has been a long since I last touched those areas and
->>>    it's not justified to be kept as maintainer in them.
->>>
->>> - Cedric Le Goater and Daniel Barboza removed as 'Reviewer' in VOF. We
->>>    don't have the required knowledge to justify it.
->>>
->>> - VOF support downgraded from 'Maintained' to 'Odd Fixes' since it
->>>    better reflects the current state of the subsystem.
->>>
->>> Acked-by: Cédric Le Goater <clg@kaod.org>
->>> Signed-off-by: Daniel Henrique Barboza <danielhb413@gmail.com>
->>> ---
->>>   MAINTAINERS | 20 +++++++-------------
->>>   1 file changed, 7 insertions(+), 13 deletions(-)
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index 00562f924f..c4aa1c1c9f 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -298,11 +298,9 @@ F: hw/openrisc/
->>>   F: tests/tcg/openrisc/
->>>   PowerPC TCG CPUs
->>> +M: Nicholas Piggin <npiggin@gmail.com>
->>>   M: Daniel Henrique Barboza <danielhb413@gmail.com>
->>>   R: Cédric Le Goater <clg@kaod.org>
->>> -R: David Gibson <david@gibson.dropbear.id.au>
->>> -R: Greg Kurz <groug@kaod.org>
->>> -R: Nicholas Piggin <npiggin@gmail.com>
->>>   L: qemu-ppc@nongnu.org
->>>   S: Odd Fixes
->>>   F: target/ppc/
->>> @@ -438,10 +436,9 @@ F: target/mips/kvm*
->>>   F: target/mips/sysemu/
->>>   PPC KVM CPUs
->>> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
->>> +M: Nicholas Piggin <npiggin@gmail.com>
->>> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
->>>   R: Cédric Le Goater <clg@kaod.org>
->>> -R: David Gibson <david@gibson.dropbear.id.au>
->>> -R: Greg Kurz <groug@kaod.org>
->>>   S: Odd Fixes
->>>   F: target/ppc/kvm.c
->>> @@ -1430,10 +1427,10 @@ F: include/hw/rtc/m48t59.h
->>>   F: tests/avocado/ppc_prep_40p.py
->>>   sPAPR (pseries)
->>> -M: Daniel Henrique Barboza <danielhb413@gmail.com>
->>> +M: Nicholas Piggin <npiggin@gmail.com>
->>> +R: Daniel Henrique Barboza <danielhb413@gmail.com>
->>>   R: Cédric Le Goater <clg@kaod.org>
->>>   R: David Gibson <david@gibson.dropbear.id.au>
->>> -R: Greg Kurz <groug@kaod.org>
->>>   R: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>>   L: qemu-ppc@nongnu.org
->>>   S: Odd Fixes
->>> @@ -1452,8 +1449,8 @@ F: tests/avocado/ppc_pseries.py
->>>   PowerNV (Non-Virtualized)
->>>   M: Cédric Le Goater <clg@kaod.org>
->>> +M: Nicholas Piggin <npiggin@gmail.com>
->>>   R: Frédéric Barrat <fbarrat@linux.ibm.com>
->>> -R: Nicholas Piggin <npiggin@gmail.com>
->>>   L: qemu-ppc@nongnu.org
->>>   S: Odd Fixes
->>>   F: docs/system/ppc/powernv.rst
->>> @@ -1497,12 +1494,9 @@ F: include/hw/pci-host/mv64361.h
->>>   Virtual Open Firmware (VOF)
->>>   M: Alexey Kardashevskiy <aik@ozlabs.ru>
->>> -R: Cédric Le Goater <clg@kaod.org>
->>> -R: Daniel Henrique Barboza <danielhb413@gmail.com>
->>>   R: David Gibson <david@gibson.dropbear.id.au>
->>> -R: Greg Kurz <groug@kaod.org>
->>>   L: qemu-ppc@nongnu.org
->>> -S: Maintained
->>> +S: Odd Fixes
->>>   F: hw/ppc/spapr_vof*
->>>   F: hw/ppc/vof*
->>>   F: include/hw/ppc/vof*
->>
-
+Series:
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
