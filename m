@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712117A46B5
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02657A46B9
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:15:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiBED-0003F8-7Q; Mon, 18 Sep 2023 06:11:41 -0400
+	id 1qiBHh-00056H-SW; Mon, 18 Sep 2023 06:15:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiBEA-0003Bp-B5
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:11:38 -0400
+ id 1qiBHf-000564-DJ
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:15:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiBE8-0005qA-LD
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:11:38 -0400
+ id 1qiBHd-0006JQ-FZ
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:15:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695031895;
+ s=mimecast20190719; t=1695032112;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ijDE9pMOV1zg6fE1USiWHh3fu/BaK4WWIkQA6os6udI=;
- b=VSpUADkWNrLUWtCwCRa/ZJo+/zso9urwVFAtQQXhxY2TnD15rsp4UooK4wCgRkhC6LcMv6
- WQlf2Fdj8zeZPxy6huqKm62i0RfEhhGiya5l7r2TOfcFI8dy4dmB2qnxujsGZ595+f5fWo
- rnSG//TfPIfXhR0IuU0NiIWcEw7X0FI=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MOZ/d0YXZkCelbbP2Z5YUGAkCpfz1Poa+kHnlkX3yU4=;
+ b=KVHB0hLNzJqBufMxAOCm5qdqwQVaBA/xq/brRpp0kQ0DnvQGJb2wLMDrqiFPYQ6bgbfTDk
+ XCjnJ9Nf12V37txICyC8RH4c/1m8j7XVv0dcQwbSw4EpSsm9I9CmKnPkGZuI6c1E66kFj3
+ DwuMsqjtrn4v89H/x4vxvRGeMRYlaNE=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-531-DQs-xr-eOou-A3i-7XpjNA-1; Mon, 18 Sep 2023 06:11:33 -0400
-X-MC-Unique: DQs-xr-eOou-A3i-7XpjNA-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9a62adedadbso302496066b.1
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 03:11:33 -0700 (PDT)
+ us-mta-577-aqe5jctdPMWdsVTkbbm9wQ-1; Mon, 18 Sep 2023 06:15:11 -0400
+X-MC-Unique: aqe5jctdPMWdsVTkbbm9wQ-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2bff6dcbccaso16367691fa.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 03:15:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695031892; x=1695636692;
+ d=1e100.net; s=20230601; t=1695032109; x=1695636909;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ijDE9pMOV1zg6fE1USiWHh3fu/BaK4WWIkQA6os6udI=;
- b=O7mwCBXCqc8IE4lBcj7yBSU7Ao4XaAan3nBaMzTieTw2QNkcD/pyYToHgPi+ODNb4a
- UtzFe2vuM6a3VJO6Hwk2faLVUsyhykvjQUSg153OrbRz8TK33Q5BPsUafMagOhofDtBM
- LjMDFPjbG3jYcmYXW39GFRoHbaoD1cGzlBgTsXXyYn2lKZhyrcABkEg17rRwmvMviPVc
- fKroDZ/UGuT8QidZZ45soW0+B0SUekww9rsGsO9KGmjeyB8llJM9OaFWpZvs8lOeEUrI
- qYNjh9aGQGNtQ5sV0LgjLKl7K7K58hJetLh9BnV8/XsaC/37njK/r5K4V8rXUa6wpjem
- 6YTA==
-X-Gm-Message-State: AOJu0Yyw3tUxmUgf7kRM8MQwYi0XQVw7JvRAYP56NRHrjLgw41n6Uepd
- 6x6OF6856Twh3Xal1iIOXK3Ev+K3CVSOHdpEGkOvGNzFoq4fSBIDOicHBy/dBB/anHQdBT7ge/M
- 8r8cpM3UaI4A0lTM8Qp2ph/5PmRcEOQE=
-X-Received: by 2002:a17:907:7604:b0:9ad:9225:cee1 with SMTP id
- jx4-20020a170907760400b009ad9225cee1mr6548687ejc.62.1695031892511; 
- Mon, 18 Sep 2023 03:11:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQOzVviDpj4I43q8Mz4w//holBxD6bnTE1FP9aB/s7BDcD8yElVWmny2GREXpA9S1OneJUxKc84gRClNyUcQE=
-X-Received: by 2002:a17:907:7604:b0:9ad:9225:cee1 with SMTP id
- jx4-20020a170907760400b009ad9225cee1mr6548666ejc.62.1695031892214; Mon, 18
- Sep 2023 03:11:32 -0700 (PDT)
+ bh=MOZ/d0YXZkCelbbP2Z5YUGAkCpfz1Poa+kHnlkX3yU4=;
+ b=X4RDVAub49OEBsLQ2ypL1PwspAmGGZlrrcZdkV2GihqzhcyLOgJWvsjkGNwD6RSQpD
+ gLOLQzfUidn3rYpqnzzE1l6vHI225jG897SRE6bbQCcty9ee+gd2uauTU7jj5CPSMgsj
+ 7k0g5BYduV9bwjb9RKa18R2gos6b609AUfOuJJ2VZIcvhAR7xzGA1IMMY1EwB43lfmAt
+ 6xITizPpdpqSA52JTA3H8gKUluiQBPpkt1W563bIxCZGXIH4EuuFyoap5pHSgKo3f4yK
+ lfZDeRXXdiGOX0qN55LFlZtViJ/OdzqCsKU1w7pUDBAk41nZNZ0TSM1dAm3fVqdpkI78
+ XIXg==
+X-Gm-Message-State: AOJu0YwR3Sarl2Z7DJBDiUkowmVSYbqUTscpUZIYyJjAyfnm8ggT3Uij
+ IIZ2t/nuDrx1cY3hJykgtL/zjSiQxnX+lj/DRAp+mFOXlx3n29mGzkfUJj+aQDMpOFagD5rX0qs
+ DEHHOya6+Rg2xfi7zvF8slFQ9Z+xLnRQ=
+X-Received: by 2002:a2e:9846:0:b0:2bc:bf29:18d3 with SMTP id
+ e6-20020a2e9846000000b002bcbf2918d3mr7055300ljj.31.1695032109475; 
+ Mon, 18 Sep 2023 03:15:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXfGNKxHJticfYjF5f3OBLIzgaFRtS0mDOeTMJErVwrf3njvVKNbLEc3XS5B1p/FB1CWVSFXVhNulup4KBGcM=
+X-Received: by 2002:a2e:9846:0:b0:2bc:bf29:18d3 with SMTP id
+ e6-20020a2e9846000000b002bcbf2918d3mr7055283ljj.31.1695032109174; Mon, 18 Sep
+ 2023 03:15:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230908095024.270946-1-anisinha@redhat.com>
  <77284898-c540-31ac-d438-ebff52f6d75d@redhat.com>
@@ -74,10 +74,11 @@ References: <20230908095024.270946-1-anisinha@redhat.com>
  <143a437c-be99-d6d8-732f-e9544e2d9b35@redhat.com>
  <CAK3XEhOQCudb0VsBHFfubbcRredLMuSQCTA6fhbg99f7W9y5PA@mail.gmail.com>
  <8af5fb9f-83dc-f997-e761-f8e69f9515ac@redhat.com>
-In-Reply-To: <8af5fb9f-83dc-f997-e761-f8e69f9515ac@redhat.com>
+ <CAK3XEhMTSP7TkJgKX1_VxUVxaoU1jX8d_i-0H4t=bNktY5wo5g@mail.gmail.com>
+In-Reply-To: <CAK3XEhMTSP7TkJgKX1_VxUVxaoU1jX8d_i-0H4t=bNktY5wo5g@mail.gmail.com>
 From: Ani Sinha <anisinha@redhat.com>
-Date: Mon, 18 Sep 2023 15:41:19 +0530
-Message-ID: <CAK3XEhMTSP7TkJgKX1_VxUVxaoU1jX8d_i-0H4t=bNktY5wo5g@mail.gmail.com>
+Date: Mon, 18 Sep 2023 15:44:56 +0530
+Message-ID: <CAK3XEhPK_x4ujK8whQF45f5xg6wFtMS=Y5=q5oWj9aHJ=mxnfQ@mail.gmail.com>
 Subject: Re: [PATCH] mem/x86: add processor address space check for VM memory
 To: David Hildenbrand <david@redhat.com>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>,
@@ -88,7 +89,7 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>,
  Xiao Guangrong <xiaoguangrong.eric@gmail.com>, 
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Yanan Wang <wangyanan55@huawei.com>, qemu-devel <qemu-devel@nongnu.org>
-Content-Type: multipart/alternative; boundary="000000000000d199e906059f5dda"
+Content-Type: multipart/alternative; boundary="000000000000c02cf106059f6a41"
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -114,86 +115,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000d199e906059f5dda
+--000000000000c02cf106059f6a41
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 18 Sept, 2023, 3:39 pm David Hildenbrand, <david@redhat.com> wrote:
+On Mon, 18 Sept, 2023, 3:41 pm Ani Sinha, <anisinha@redhat.com> wrote:
 
-> On 18.09.23 12:07, Ani Sinha wrote:
-> >
-> >
-> > On Mon, 18 Sept, 2023, 3:03 pm David Hildenbrand, <david@redhat.com
-> > <mailto:david@redhat.com>> wrote:
-> >
-> >      >>
-> >      >>>> /*
-> >      >>>> * The 64bit pci hole starts after "above 4G RAM" and
-> >      >>>> * potentially the space reserved for memory hotplug.
-> >      >>>> */
-> >      >>>>
-> >      >>>> There is the
-> >      >>>>    ROUND_UP(hole64_start, 1 * GiB);
-> >      >>>> in there that is not really required for the !hole64 case. It
-> >      >>>> shouldn't matter much in practice I think (besides an aligned
-> >     value
-> >      >>>> showing up in the error message).
-> >      >>>>
-> >      >>>> We could factor out most of that calculation into a
-> >      >>>> separate function, skipping that alignment to make that
-> >      >>>> clearer.
-> >      >>> Yeah this whole memory segmentation is quite complicated and
-> >     might benefit from a qemu doc or a refactoring.
-> >      >>
-> >      >> Absolutely. Do you have time to work on that (including the
-> >     updated fix?).
-> >      >
-> >      > Other than the fix you proposed I am not sure if we need to fix
-> >     anything else atm. Seems physical address space bound checks are
-> >     already in place.
-> >      > Re: doc, maybe. I will add it to my TODO list.
-> >
-> >     Will you send a proper patch, ideally not using pc_pci_hole64_start()
-> >     but instead the same logic without the final alignment to 1 GiB?
-> >
-> >
-> > I'll send. No problem. Could you answer my other question please ?
 >
-> Sorry, which one did I miss
-
-
+>
+> On Mon, 18 Sept, 2023, 3:39 pm David Hildenbrand, <david@redhat.com>
+> wrote:
+>
+>> On 18.09.23 12:07, Ani Sinha wrote:
+>> >
+>> >
+>> > On Mon, 18 Sept, 2023, 3:03 pm David Hildenbrand, <david@redhat.com
+>> > <mailto:david@redhat.com>> wrote:
+>> >
+>> >      >>
+>> >      >>>> /*
+>> >      >>>> * The 64bit pci hole starts after "above 4G RAM" and
+>> >      >>>> * potentially the space reserved for memory hotplug.
+>> >      >>>> */
+>> >      >>>>
+>> >      >>>> There is the
+>> >      >>>>    ROUND_UP(hole64_start, 1 * GiB);
+>> >      >>>> in there that is not really required for the !hole64 case. It
+>> >      >>>> shouldn't matter much in practice I think (besides an aligned
+>> >     value
+>> >      >>>> showing up in the error message).
+>> >      >>>>
+>> >      >>>> We could factor out most of that calculation into a
+>> >      >>>> separate function, skipping that alignment to make that
+>> >      >>>> clearer.
+>> >      >>> Yeah this whole memory segmentation is quite complicated and
+>> >     might benefit from a qemu doc or a refactoring.
+>> >      >>
+>> >      >> Absolutely. Do you have time to work on that (including the
+>> >     updated fix?).
+>> >      >
+>> >      > Other than the fix you proposed I am not sure if we need to fix
+>> >     anything else atm. Seems physical address space bound checks are
+>> >     already in place.
+>> >      > Re: doc, maybe. I will add it to my TODO list.
+>> >
+>> >     Will you send a proper patch, ideally not using
+>> pc_pci_hole64_start()
+>> >     but instead the same logic without the final alignment to 1 GiB?
+>> >
+>> >
+>> > I'll send. No problem. Could you answer my other question please ?
+>>
+>> Sorry, which one did I miss
+>
+>
 
 Ok hopefully my last question. I am still confused on something. Does the
-> above mean that the hole64 will actually start from an address that is
-> beyond maxram? Like basically if you added all of ram_below_4G,
-> ram_above_4G, hot plug_mem and pci_hole64 then can it exceed maxram? I
-> think it will. Does this not an issue?
+above mean that the hole64 will actually start from an address that is
+beyond maxram? Like basically if you added all of ram_below_4G,
+ram_above_4G, hot plug_mem and pci_hole64 then can it exceed maxram? I
+think it will. Does this not an issue?
 
 
 
+>>
 
-> --
-> Cheers,
->
-> David / dhildenb
->
->
-
---000000000000d199e906059f5dda
+--000000000000c02cf106059f6a41
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Mon, 18 Sept, 2023, 3:39 pm David Hildenbrand, &lt;=
-<a href=3D"mailto:david@redhat.com">david@redhat.com</a>&gt; wrote:<br></di=
-v><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
-1px #ccc solid;padding-left:1ex">On 18.09.23 12:07, Ani Sinha wrote:<br>
+<div dir=3D"auto"><br><br><div class=3D"gmail_quote" dir=3D"auto"><div dir=
+=3D"ltr" class=3D"gmail_attr">On Mon, 18 Sept, 2023, 3:41 pm Ani Sinha, &lt=
+;<a href=3D"mailto:anisinha@redhat.com">anisinha@redhat.com</a>&gt; wrote:<=
+br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;borde=
+r-left:1px #ccc solid;padding-left:1ex"><div dir=3D"auto"><div><br><br><div=
+ class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, 18 Sep=
+t, 2023, 3:39 pm David Hildenbrand, &lt;<a href=3D"mailto:david@redhat.com"=
+ target=3D"_blank" rel=3D"noreferrer">david@redhat.com</a>&gt; wrote:<br></=
+div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-lef=
+t:1px #ccc solid;padding-left:1ex">On 18.09.23 12:07, Ani Sinha wrote:<br>
 &gt; <br>
 &gt; <br>
 &gt; On Mon, 18 Sept, 2023, 3:03 pm David Hildenbrand, &lt;<a href=3D"mailt=
-o:david@redhat.com" target=3D"_blank" rel=3D"noreferrer">david@redhat.com</=
-a> <br>
-&gt; &lt;mailto:<a href=3D"mailto:david@redhat.com" target=3D"_blank" rel=
-=3D"noreferrer">david@redhat.com</a>&gt;&gt; wrote:<br>
+o:david@redhat.com" rel=3D"noreferrer noreferrer" target=3D"_blank">david@r=
+edhat.com</a> <br>
+&gt; &lt;mailto:<a href=3D"mailto:david@redhat.com" rel=3D"noreferrer noref=
+errer" target=3D"_blank">david@redhat.com</a>&gt;&gt; wrote:<br>
 &gt; <br>
 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;<br>
 &gt;=C2=A0 =C2=A0 =C2=A0 &gt;&gt;&gt;&gt; /*<br>
@@ -244,25 +250,22 @@ ent to 1 GiB?<br>
 &gt; I&#39;ll send. No problem. Could you answer my other question please ?=
 <br>
 <br>
-Sorry, which one did I miss</blockquote></div></div><div dir=3D"auto"><br><=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quot=
-e"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
-:1px #ccc solid;padding-left:1ex"><span style=3D"font-size:12.8px">Ok hopef=
-ully my last question. I am still confused on something. Does the above mea=
-n that the hole64 will actually start from an address that is beyond maxram=
-? Like basically if you added all of ram_below_4G, ram_above_4G, hot plug_m=
-em and pci_hole64 then can it exceed maxram? I think it will. Does this not=
- an issue?</span></blockquote></div></div><div dir=3D"auto"><br></div><div =
-dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockq=
-uote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc =
-solid;padding-left:1ex"><br>
--- <br>
-Cheers,<br>
-<br>
-David / dhildenb<br>
-<br>
-</blockquote></div></div></div>
+Sorry, which one did I miss</blockquote></div></div></div></blockquote></di=
+v><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"auto"=
+><span style=3D"font-size:12.8px">Ok hopefully my last question. I am still=
+ confused on something. Does the above mean that the hole64 will actually s=
+tart from an address that is beyond maxram? Like basically if you added all=
+ of ram_below_4G, ram_above_4G, hot plug_mem and pci_hole64 then can it exc=
+eed maxram? I think it will. Does this not an issue?</span><br></div><div d=
+ir=3D"auto"><span style=3D"font-size:12.8px"><br></span></div><div dir=3D"a=
+uto"><span style=3D"font-size:12.8px"><br></span></div><div class=3D"gmail_=
+quote" dir=3D"auto"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0=
+ .8ex;border-left:1px #ccc solid;padding-left:1ex"><div dir=3D"auto"><div><=
+div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin=
+:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><br></blockquote><=
+/div></div></div>
+</blockquote></div></div>
 
---000000000000d199e906059f5dda--
+--000000000000c02cf106059f6a41--
 
 
