@@ -2,79 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A01C7A4767
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B737A476B
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:44:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiBhq-0002be-7b; Mon, 18 Sep 2023 06:42:18 -0400
+	id 1qiBjH-0005qb-IJ; Mon, 18 Sep 2023 06:43:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBhg-0002ZZ-LN
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:42:08 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBjF-0005qK-8u
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:43:45 -0400
+Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBhf-0003iw-1e
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:42:08 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3214de9cd8bso849568f8f.2
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 03:42:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiBjD-0005DB-L0
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:43:44 -0400
+Received: by mail-wm1-x331.google.com with SMTP id
+ 5b1f17b1804b1-4050bd2e33aso7346925e9.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 03:43:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695033725; x=1695638525; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=linaro.org; s=google; t=1695033821; x=1695638621; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=5ZoC+zlZKKLD3vKwwKU93CJxLjsPwxjC+q3MBAawDhw=;
- b=OGicP7DHVJL++m6SXsOGePvCv3FcL25koISuSpD35ZAeripIbVB6Ci8T+VjvnWuCp3
- V7NGf1xd5Il+Os9Qo+/T9jZh5iCSfnI056UxQUZTdNBbPt5Exv2nyZc6CNzrX5wk7SM8
- 1RkjNxLULVFVwrl1zegXT0c37dI1UqjbW1czM64zwaEgzxwe3ywbFUI8Rh55l1k5/h/Q
- Mw1X10AIupwxYJoy5AxiEzWJExvkM0+W6Go+oe+EMdMxTR23MrnOYLDF5vsjyiAaOxMi
- g3hXF5+vQe2M56s9tXPNAo28ECBr4Dv2ox2JO67cZHEgQJo9FZTfnM6UaqKP3wzOjvAe
- Wvxw==
+ bh=pFVcv3At1tpqy5ocuGKbqeWT7U4d/ULHbRYO9tOGfr4=;
+ b=QYnTTTY90j0puY/kCyxlCyS+WSYSqngtuUi9eeZnqi3l7lEDDgDsn4sBvEBBJy1aWq
+ rZWXgaV3rA13lPsjimQssCgzwp1KsO7jL8Ga6m1SIpojM5/XaRTKGBnoWd6DyCAbQy84
+ 3O17rx8EjT8WGyH2pdy7JivspvaBImLG/sFvsuCdz413jHBoYuSYlynrTyz/RxxB5FxH
+ nRi6uXQP7qMiSoFobCmI2Vewfgd8PyixiKX7C/RyqO9FuH/zOEvu+zDNhjYQ56xPm8Yg
+ tlApzo3ts1CjfdjzJeL0eYU+KzL94AYAs8GrAPH010EM+gndP9xKaDdGUAmvJp3p69tL
+ tbKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695033725; x=1695638525;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ d=1e100.net; s=20230601; t=1695033821; x=1695638621;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5ZoC+zlZKKLD3vKwwKU93CJxLjsPwxjC+q3MBAawDhw=;
- b=wwxAn1dmn2WXdm7eMkTmdmCAa5/VMGB9BcQTSsXDRZxCcqbdvF+6U6D2Um4rADMA3H
- T7dNOYxk7UzupANUqIaaB+rPVOPED9AYwq92aZyL59K7dv2BVr8HY3fhkPT7atZMxhch
- opdvHQy+fBOlEIRFH/B19LF0O5ncvg49UhMdcaqC0BRJNAuKzue1ars0QcJzyMHaD2et
- bw5fw0Pw4mQFY+/KZ5Wzr/oa0wEzOIAKtcwap7JVGi9zEZxsYj8JY2sjENRVC4gL+gns
- JMxJRD3muawcYJ6kLoB2ktK+xAGGk45YRiRTffQ0O/kryrU6capN+pq8TKrFVdMD/5pJ
- /fPQ==
-X-Gm-Message-State: AOJu0Ywd9HA95gyR2d6yZQf5ahuqa/AuLmEb4+2/GCaUFsxZ2/NgouMY
- gPA36dLHGZ8QMgcezyIx+DwG87wnpVqSuewxBMkinQ==
-X-Google-Smtp-Source: AGHT+IFpQ+QMnhhiviU+6px8tSW2lc/+Cz4Kj4jqDKTEYAa3mTV3GWmCzpzls5laNZdLtiiSpJmSDw==
-X-Received: by 2002:adf:de90:0:b0:31f:a4fa:130a with SMTP id
- w16-20020adfde90000000b0031fa4fa130amr8902198wrl.14.1695033724901; 
- Mon, 18 Sep 2023 03:42:04 -0700 (PDT)
+ bh=pFVcv3At1tpqy5ocuGKbqeWT7U4d/ULHbRYO9tOGfr4=;
+ b=q6Nj+YztrI/a+TBp512nnkg3mFeuy6B6euln5sjdXfi8mad8SfsAeVwlzJ0l0SZ8sL
+ wOlj3rtkXwBtyK70wtkZNwsFqnxnbdn2IuCCd7MSbi8YdrMaD2nZUGt8aLFWv56j3qSI
+ xkADw6k2GOXN9+9OEzjBedsYjXoZ6vT0xw1OPYFhdTp9N3E6nihEAlZj4jTXVEni4Wxh
+ icKlbSlLw+8dO8rdR3y32fMkPkQtrEo9et7b9pPXV7XtNJgrm3rYpVxCdAUVjPckrTqK
+ 87NmtmTbUPKM0mTQZ20ojnRwrYNpGCH7pKn1GTC0adDdjZU6fLMuBKIG3gLPlD2QzSlk
+ UNqw==
+X-Gm-Message-State: AOJu0YyQC4u8Exr6hlRZIJYfhPvyNOLeqEYf+7KMtFpP4ca4cjjys8H7
+ megUO5MGez2oN8xzoW22obXYlw==
+X-Google-Smtp-Source: AGHT+IE7hhz3iPDwI6FDuXDU4qXtOjA4ejlZKkwYLhcDXxiV9UDrtoZntwSGOHBudOW2ifOvcmvpqA==
+X-Received: by 2002:adf:f34f:0:b0:31f:f1f4:ca8e with SMTP id
+ e15-20020adff34f000000b0031ff1f4ca8emr7676524wrp.36.1695033821457; 
+ Mon, 18 Sep 2023 03:43:41 -0700 (PDT)
 Received: from [192.168.95.175] (5.red-88-29-175.dynamicip.rima-tde.net.
  [88.29.175.5]) by smtp.gmail.com with ESMTPSA id
- e1-20020a5d65c1000000b00315af025098sm12263948wrw.46.2023.09.18.03.42.03
+ n7-20020a5d6b87000000b0031ae8d86af4sm12213084wrx.103.2023.09.18.03.43.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Sep 2023 03:42:04 -0700 (PDT)
-Message-ID: <c55cf435-c8ce-c1ff-d639-905ecf721ba3@linaro.org>
-Date: Mon, 18 Sep 2023 12:42:02 +0200
+ Mon, 18 Sep 2023 03:43:41 -0700 (PDT)
+Message-ID: <15ee52cd-54eb-8629-328c-0e2d6b4e6950@linaro.org>
+Date: Mon, 18 Sep 2023 12:43:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3 0/6] hw/virtio: Build vhost-vdpa.o once for all targets
+Subject: Re: [PATCH] tests/qtest/netdev-socket: Do not test multicast on Darwin
 Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>
+References: <20230918062549.2363-1-philmd@linaro.org>
+ <4e43c72f-823f-7267-baa8-9a2fac4ed47e@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, =?UTF-8?Q?Eugenio_P=c3=a9rez?=
- <eperezma@redhat.com>
-References: <20230710094931.84402-1-philmd@linaro.org>
- <ad508b5a-6cff-7138-1350-62a5bc513299@linaro.org>
- <1d971e7a-f6b6-3647-7cb7-5620d4f1532a@linaro.org>
-In-Reply-To: <1d971e7a-f6b6-3647-7cb7-5620d4f1532a@linaro.org>
+In-Reply-To: <4e43c72f-823f-7267-baa8-9a2fac4ed47e@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::331;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,37 +94,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+On 18/9/23 08:35, Thomas Huth wrote:
+> On 18/09/2023 08.25, Philippe Mathieu-Daudé wrote:
+>> Do not run this test on Darwin, otherwise we get:
+>>
+>>    qemu-system-arm: -netdev 
+>> dgram,id=st0,remote.type=inet,remote.host=230.0.0.1,remote.port=1234: 
+>> can't add socket to multicast group 230.0.0.1: Can't assign requested 
+>> address
+>>    Broken pipe
+>>    ../../tests/qtest/libqtest.c:191: kill_qemu() tried to terminate 
+>> QEMU process but encountered exit status 1 (expected 0)
+>>    Abort trap: 6
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   tests/qtest/netdev-socket.c | 6 ++++--
+>>   1 file changed, 4 insertions(+), 2 deletions(-)
 
-On 6/9/23 08:31, Philippe Mathieu-Daudé wrote:
-> On 30/8/23 15:35, Philippe Mathieu-Daudé wrote:
->>
->> This series is now fully reviewed.
->>
->> On 10/7/23 11:49, Philippe Mathieu-Daudé wrote:
->>> Missing review: patch #4
->>>
->>> Since v2:
->>> - Added R-b tags
->>> - Addressed Richard's review comment: page_mask = -page_size
->>>
->>> Philippe Mathieu-Daudé (6):
->>>    hw/virtio: Propagate page_mask to
->>>      vhost_vdpa_listener_skipped_section()
->>>    hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
->>>    hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
->>>    hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
->>>    hw/virtio: Build vhost-vdpa.o once
->>>    hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
+
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 > 
-> Michael, I have another series unifying virtio endianness blocked
-> by this one. I can merge it if you provide your Ack-by.
+> I'll queue this for my next pull request.
 
-Unless you object, I'll merge this series. Since we are early enough
-in the development window, if something breaks, we'll catch it in
-time and fix or revert.
+Great, thank you Thomas!
 
-Regards,
-
-Phil.
 
