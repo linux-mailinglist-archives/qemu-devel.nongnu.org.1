@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEB47A4948
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 14:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070A07A494D
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 14:11:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiD3F-0005oR-Po; Mon, 18 Sep 2023 08:08:29 -0400
+	id 1qiD5O-0007ME-NA; Mon, 18 Sep 2023 08:10:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qiD3A-0005oE-OW
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:08:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qiD5L-0007M0-W5
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:10:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qiD37-0001A3-JL
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:08:24 -0400
+ id 1qiD5K-0001iK-Dc
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 08:10:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695038899;
+ s=mimecast20190719; t=1695039037;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=GcjX/yqa0XsH/V2A0bXbw5v8EYCuR0cJVt9GrD+omTw=;
- b=GJGCvDAojvqcKmCUmjrD0PwFFZScnWhgbv2maWk/gluai7K3t3TylANjUm/+ZtfDJ21i5Y
- 5AfHz5/36QLsmO65FcezxQZ7wfhl+oMDrU/C8HXMDIKqca1MFEifFvyi9xOPC7if45E1uo
- DjWMI2rUp5wFZrfpmuT+1RjezHDxy6A=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-540-70VGz_asMWK7KFLCNAXW0g-1; Mon, 18 Sep 2023 08:08:14 -0400
-X-MC-Unique: 70VGz_asMWK7KFLCNAXW0g-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=Di1DbymDlRuVr74aSXrGgFG7BrXnrGaVV92M3e3e9qg=;
+ b=EFuaw+OMKMfSbtE1D6Pbevr1PnAJ9BynTj60zXr4qGSpO+6lrVeFSWzpvXoTk+DFuRlbup
+ gqhb+sAyq6JoXqoptqu+HvsfDvwTfIrytngeXWpfP67QWL5AJmtj14D2sPmuqdF6ystIU7
+ dy1cJ77IUAJPUcn+p1UsxQ0wvzWMkQ4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-563--Q7N5OjAMgWciZst-nBeig-1; Mon, 18 Sep 2023 08:10:36 -0400
+X-MC-Unique: -Q7N5OjAMgWciZst-nBeig-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B13DE85A5BD;
- Mon, 18 Sep 2023 12:08:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5B05229AA3B0;
+ Mon, 18 Sep 2023 12:10:35 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.114])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B4AEE492B05;
- Mon, 18 Sep 2023 12:08:12 +0000 (UTC)
-Date: Mon, 18 Sep 2023 13:08:10 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7A1D110D14C7;
+ Mon, 18 Sep 2023 12:10:34 +0000 (UTC)
+Date: Mon, 18 Sep 2023 13:10:31 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Stephen Brennan <stephen.s.brennan@oracle.com>
 Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org,
  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>,
  Omar Sandoval <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH v2 qemu 3/3] dump: Add qmp argument "reassembled"
-Message-ID: <ZQg9qjdMZL4Tt6EN@redhat.com>
+Subject: Re: [PATCH v2 qemu 0/3] Allow dump-guest-memory to output standard
+ kdump format
+Message-ID: <ZQg+NzzKrigE0rG0@redhat.com>
 References: <20230914010315.945705-1-stephen.s.brennan@oracle.com>
- <20230914010315.945705-4-stephen.s.brennan@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230914010315.945705-4-stephen.s.brennan@oracle.com>
+In-Reply-To: <20230914010315.945705-1-stephen.s.brennan@oracle.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,85 +82,38 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 13, 2023 at 06:03:15PM -0700, Stephen Brennan wrote:
-> This can be used from QMP command line as "-R" to mirror the
-> corresponding flag for makedumpfile. This enables the kdump_reassembled
-> flag introduced in the previous patch.
+On Wed, Sep 13, 2023 at 06:03:12PM -0700, Stephen Brennan wrote:
+> Hello all,
 > 
-> Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-> ---
->  dump/dump-hmp-cmds.c |  8 +++++++-
->  dump/dump.c          | 12 +++++++++++-
->  hmp-commands.hx      |  7 +++++--
->  qapi/dump.json       | 14 +++++++++++++-
->  4 files changed, 36 insertions(+), 5 deletions(-)
+> This is the second version of my patch series about the kdump format,
+> you can see the first version here [1].
+> 
+> The current output format for dump-guest-memory's kdump compressed
+> format is actually the "makedumpfile flattened" format. It was done
+> intentionally to allow the flexibility to write to non-seekable file
+> descriptors, like pipes [2], without using temporary files. Currently
+> libvirt uses this ability when VIR_DUMP_BYPASS_CACHE flag is set, to
+> avoid the dump process using page cache. The standard kdump output
+> format needs the page cache so that it can seek back and forth as part
+> of writing the dump file.
+> 
+> So the default kdump dump format cannot be changed to the standard
+> format. This patch series adds the ability to use the standard format,
+> and adds a QMP / HMP argument to enable it.
+> 
+> An open question for Daniel et al.:
+> 
+> Would it be possible to make flattened the default only for libvirt? I
+> totally agree that this would be a bad backward incompatible change
+> there. But for QMP / HMP commands, I think using the standard, broadly
+> compatible format as the default is important for user friendliness. If
+> a user needs to know the difference between flavors of kdump formats
+> like the flattened format, in order to set the correct option, then
+> we've already lost.
 
-> diff --git a/qapi/dump.json b/qapi/dump.json
-> index 4ae1f722a9..9cc7c3ea93 100644
-> --- a/qapi/dump.json
-> +++ b/qapi/dump.json
-> @@ -69,6 +69,18 @@
->  #     to dump all guest's memory, please specify the start @begin and
->  #     @length
->  #
-> +# @reassembled: if false (the default), the kdump output formats will use the
-> +#     "makedumpfile flattened" variant of the format, which is less broadly
-> +#     compatible with analysis tools. The flattened dump can be reassembled
-> +#     after the fact using the command "makedumpfile -R". If true, Qemu
-> +#     attempts to generate the standard kdump format. This requires a
-> +#     seekable file as output -- if the output file is not seekable, then
-> +#     the flattened format is still generated. The standard format is more
-> +#     broadly compatible with debugging tools, but generating it requires a
-> +#     seekable output file descriptor, and could use more system memory due
-> +#     to page cache utilization. This should be left unspecified for non-kdump
-> +#     output formats.
-> +#
->  # @format: if specified, the format of guest memory dump.  But non-elf
->  #     format is conflict with paging and filter, ie.  @paging, @begin
->  #     and @length is not allowed to be specified with non-elf @format
-> @@ -89,7 +101,7 @@
->  { 'command': 'dump-guest-memory',
->    'data': { 'paging': 'bool', 'protocol': 'str', '*detach': 'bool',
->              '*begin': 'int', '*length': 'int',
-> -            '*format': 'DumpGuestMemoryFormat'} }
-> +            '*reassembled': 'bool', '*format': 'DumpGuestMemoryFormat'} }
-
-The 'reassembled' flag is changing the meaning of 3 out of the 5
-'format' enum values. IMHO, we should just be adding new formats
-instead of changing the meaning of existing formats. It is a shame
-we have the current 'kdump' naming prefix, but we're stuck with
-that for backwards compat, we need a new prefix. I'd suggest
-'kdump-raw'. eg
-
-#
-# @DumpGuestMemoryFormat:
-#
-# An enumeration of guest-memory-dump's format.
-#
-# @elf: elf format
-#
-# @kdump-zlib: makedumpfile flattened, kdump-compressed format with zlib-compressed
-#
-# @kdump-lzo: makedumpfile flattened, kdump-compressed format with lzo-compressed
-#
-# @kdump-snappy: makedumpfile flattened, kdump-compressed format with snappy-compressed
-#
-# @kdump-raw-zlib: raw assembled kdump-compressed format with zlib-compressed (since 8.2)
-#
-# @kdump-raw-lzo: raw assembled kdump-compressed format with lzo-compressed (since 8.2)
-#
-# @kdump-raw-snappy: raw assembled kdump-compressed format with snappy-compressed (since 8.2)
-#
-# @win-dmp: Windows full crashdump format, can be used instead of ELF
-#     converting (since 2.13)
-#
-# Since: 2.0
-##
-{ 'enum': 'DumpGuestMemoryFormat',
-  'data': [ 'elf',
-            'kdump-zlib', 'kdump-lzo', 'kdump-snappy',
-            'kdump-raw-zlib', 'kdump-raw-lzo', 'kdump-raw-snappy',
-            'win-dmp' ] }
+The default is 'elf' - any use of kdump formats is already an opt-in,
+and with the new kdump variants represented as enums, the user can
+just specify which they want explicitly.
 
 
 With regards,
