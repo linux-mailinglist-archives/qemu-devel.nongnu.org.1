@@ -2,73 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C10E7A47A4
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327747A47AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 12:55:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiBtq-00051B-Hd; Mon, 18 Sep 2023 06:54:42 -0400
+	id 1qiBtr-00051z-R1; Mon, 18 Sep 2023 06:54:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBto-00050x-Jk
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:40 -0400
+ (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBtp-00051C-Oq
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:41 -0400
 Received: from wout1-smtp.messagingengine.com ([64.147.123.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBtm-0000Ar-RS
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:40 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.west.internal (Postfix) with ESMTP id 9B0F03200564;
- Mon, 18 Sep 2023 06:54:34 -0400 (EDT)
+ (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qiBtn-0000Cf-IM
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 06:54:41 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.west.internal (Postfix) with ESMTP id 0782F3200392;
+ Mon, 18 Sep 2023 06:54:37 -0400 (EDT)
 Received: from mailfrontend2 ([10.202.2.163])
- by compute3.internal (MEProxy); Mon, 18 Sep 2023 06:54:34 -0400
+ by compute5.internal (MEProxy); Mon, 18 Sep 2023 06:54:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
  :cc:content-transfer-encoding:content-type:date:date:from:from
- :in-reply-to:message-id:mime-version:reply-to:sender:subject
- :subject:to:to; s=fm1; t=1695034474; x=1695120874; bh=6HCr3S0i0x
- CJSyP8asVJZ843rG5WmihZHN7F3mbDiD0=; b=SoQ0BhUAr/f6H838qCMytd6VF2
- Vt5biaro991czBY8EpM4TIWKuscjTByqE3ju6hR8l8C3tP6GKstc0MremiuOtf0e
- ySzDeUOP2xM7tyxS4fDVR75d2mG06pcxmmCyNlvLTyFCmPzgg99yRL1IUGN2VUHS
- 3OdTc8i9G79vZq257o0KbzBKcYqMRIY/bPahCvwB5oTEYpDFdVdFZSKbt+AL9Nqv
- ldJ2WFpx7qVlpaTtoq0iYS/CP3obhY2moQA01jTmTc+L8lQKh/assjsrpGuIcDEi
- YkCheqn8JGTWJ1suVaT1nJTfIrFszEg+QbDZuZXGI7jCJZzXIo+yWJo/oOQw==
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1695034477; x=
+ 1695120877; bh=lrwfeWhM9YciqVz2gysFObhZcZA9e3eJTJ8tXVBkz2A=; b=k
+ uAXFcSuV47Y3owCSgE7afevoaGt8MXYRUpm+RgMqW9k0NOflP+759vcGSw5hyUZ7
+ 6wqFm8duKiiKp9I4w+4EQQXUi2UGkHdsd8BncT9bXpfzt5MWpeh59NXhAyyAX3L3
+ F2OGvJkH4E93A4Ly/ttJQ+xvYENHZB7F6u1LXtbShN+wwY0yKoDaby7i+qURNCe0
+ J5z6MvxvkycmRNnATIebaywPPbILN2xhfdli6wYApGIceZytlVWGCtrpbLOi3j+N
+ oUxP+LmsMPPfrud6FjKNSjkLO0wxmWFGmO4n9U33yymtd6PZS6V5uduEoBaSR/5m
+ Mp+0QvaDOnR+RTzm+hmMA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding
  :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:message-id:mime-version:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; t=1695034474; x=1695120874; bh=6HCr3S0i0xCJS
- yP8asVJZ843rG5WmihZHN7F3mbDiD0=; b=Odl1wdkCtb2lgaQb2HyjxJll22v2W
- GE8wAb2bYalIOFffrMTUElzh6h3ld/lMNVxEtHkvUTtk237w76uK7DGyG2SMU4Io
- TDtoK61KoFNO+C06xjBO5HZ6HZL37Ihy2bOR/ndQENVNe8YfwDqfdJ4cDGekjg9Q
- aT7zwiyRx17RANMrLIy0q+uFHjpgUyvmGP1wm3pMtaUI8oOpfBpJwyrqTApD0jDe
- UzHuepfmEcQVIWqjNUQo2Ub700ucdhm6v119/yPUvZQYpOFWQZQ2yqz/oJCBYlPO
- pj2Xvn/TY3jer7repTpkzyl9m/Wfc3XQ5i7Y95GKbuGUDFepzkg4e6s/Q==
-X-ME-Sender: <xms:aSwIZeXK4M2MONxvaj3MhM6aCHQhm4cV7HD2A7rrwGB8CBOwMFSujA>
- <xme:aSwIZak9EojbwJH3Igb9kKNA4amEHRsDuzxr5jvIydKf7PBqmdGMuofgUORzeoxrF
- v9b_aIVsAnzbajlhg>
-X-ME-Received: <xmr:aSwIZSZvVrDexeQg5OTbbQGlpU42UWCNn2yjPtu_ST4bFkMYlJJnNpwOMa5v3FWAXkF1Gyk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudejkedgfedvucetufdoteggodetrfdotf
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1695034477; x=
+ 1695120877; bh=lrwfeWhM9YciqVz2gysFObhZcZA9e3eJTJ8tXVBkz2A=; b=d
+ 1NdIEv0NL5HxJbpCSGOfBMpcLQuJvrhftA6G/c8z5rr5vN8sTW0V2/FGI2tbdOyO
+ NR8y//ILIHiFLFVD5hjQA9dwEGemkGLwqqBFC1A2GinVhPU49wYEioqwt1gGOKlA
+ iryn8RRj6UdDtf+h9/FeLbEq+FghzaCLxNPe7ptPEJsnlTq6kpYnqLaxG6/MXGwF
+ i1yEnya9cNYjNqogjM6DNA7wY1d7IdJZTUhls3HP7NwH9//V6I6ZSPK8uhXzUZFz
+ yMSIoI+Cvs7rxY0MHkYQRBPXNkUxYG8JaIbAEkpdQswqajoX4xH5eHoWwKnbHJjN
+ FgLAnVJULMHoP1KaytivA==
+X-ME-Sender: <xms:bSwIZcYZU5OHe0idLXejupnzbH7NzrJsw4dIZcWbsDm4WcxfmDILPg>
+ <xme:bSwIZXb5ByLifrPcOLtXbP90ojjE16McYqsD5zSdKSii3IfrEQyLdSuhCVVlxtSUF
+ 7JNXLaVrFG_HkN9uA>
+X-ME-Received: <xmr:bSwIZW-Trev8BNU9rCH73jPV5WS1OXaaat0rxz26XgNp1jyvedlsoPRLUdGwbL47SOBiJGY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudejkedgfeefucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdljedtmdenucfjughrpefhvf
- evufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeffrghnihgvlhcuighuuceougig
- uhesugiguhhuuhdrgiihiieqnecuggftrfgrthhtvghrnhepvdeggfetgfelhefhueefke
- duvdfguedvhfegleejudduffffgfetueduieeikeejnecuvehluhhsthgvrhfuihiivgep
- tdenucfrrghrrghmpehmrghilhhfrhhomhepugiguhesugiguhhuuhdrgiihii
-X-ME-Proxy: <xmx:aSwIZVXjlGyqWPl_l9vbGXnykK2GkW7w5qEdX81JRlWzXFwCqRC7lA>
- <xmx:aSwIZYntQoT_AdX9Sy3OoBH6M9uGucqmlpgZX1F0811ukfHkK0yFNg>
- <xmx:aSwIZafVGrsSSY_6D2SbHRhtaOEK2EdWiiR9o_f9ua1fkcyEwnW_Tg>
- <xmx:aiwIZUskAzqzQbRuqqaZ0jC84qn5Vw2CRzxCNg4GLtwgXYyimCtgRA>
+ evufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffrghnihgvlhcuighuuceo
+ ugiguhesugiguhhuuhdrgiihiieqnecuggftrfgrthhtvghrnhepgfefgfegjefhudeike
+ dvueetffelieefuedvhfehjeeljeejkefgffeghfdttdetnecuvehluhhsthgvrhfuihii
+ vgeptdenucfrrghrrghmpehmrghilhhfrhhomhepugiguhesugiguhhuuhdrgiihii
+X-ME-Proxy: <xmx:bSwIZWrslLzml-B4kDS0l_IEwzA-szvq_IAyIyVEp0pRXCZC9d6t-g>
+ <xmx:bSwIZXqpyzF0vluEx-89kGT_SLvQ9B6b6KJtHTG4yNVzpwde9sXYcQ>
+ <xmx:bSwIZURhWbeJzfgGIW7CBMK7XE-Yf_feTMvy5qjPUA11mK6izzPBMA>
+ <xmx:bSwIZWUra1b8mkrtOOyF0S3FXwMwmRLIFhjuTzrDbZ122ExzZBYMJg>
 Feedback-ID: i6a694271:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Sep 2023 06:54:32 -0400 (EDT)
+ 18 Sep 2023 06:54:35 -0400 (EDT)
 From: Daniel Xu <dxu@dxuuu.xyz>
-To: qemu-devel@nongnu.org,
+To: kkostiuk@redhat.com,
+	michael.roth@amd.com,
 	berrange@redhat.com
-Cc: hmodi@aviatrix.com
-Subject: [PATCH 0/3] qga: Add optional stream-output argument to guest-exec
-Date: Mon, 18 Sep 2023 04:54:20 -0600
-Message-ID: <cover.1695034158.git.dxu@dxuuu.xyz>
+Cc: qemu-devel@nongnu.org,
+	hmodi@aviatrix.com
+Subject: [PATCH 1/3] qga: Fix memory leak when output stream is unused
+Date: Mon, 18 Sep 2023 04:54:21 -0600
+Message-ID: <ae16e9ec85a25e6ed679ca1360c57b3f2cafd138.1695034158.git.dxu@dxuuu.xyz>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <cover.1695034158.git.dxu@dxuuu.xyz>
+References: <cover.1695034158.git.dxu@dxuuu.xyz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=64.147.123.24; envelope-from=dxu@dxuuu.xyz;
@@ -95,34 +101,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently, commands run through guest-exec are "silent" until they
-finish running. This is fine for short lived commands. But for commands
-that take a while, this is a bad user experience.
+If capture-output is requested but one of the channels goes unused (eg.
+we attempt to capture stderr but the command never writes to stderr), we
+can leak memory.
 
-Usually long running programs know that they will run for a while. To
-improve user experience, they will typically print some kind of status
-to output at a regular interval. So that the user knows that their
-command isn't just hanging.
+guest_exec_output_watch() is (from what I understand) unconditionally
+called for both streams if output capture is requested. The first call
+will always pass the `p->size == p->length` check b/c both values are
+0. Then GUEST_EXEC_IO_SIZE bytes will be allocated for the stream.
 
-This patchset adds support for an optional stream-output parameter to
-guest-exec. This causes subsequent calls to guest-exec-status to return
-all buffered output. This allows downstream applications to be able to
-relay "status" to the end user.
+But when we reap the exited process there's a `gei->err.length > 0`
+check to actually free the buffer. Which does not get run if the command
+doesn't write to the stream.
 
-I also uncovered a latent memory leak bug with the added unit test. The
-fix is in commit 1.
+Fix by making free() unconditional.
 
+Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+---
+ qga/commands.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Daniel Xu (3):
-  qga: Fix memory leak when output stream is unused
-  qga: Add optional stream-output argument to guest-exec
-  qga: test: Add test for guest-exec stream-output
-
- qga/commands.c        | 16 +++++++--
- qga/qapi-schema.json  |  7 +++-
- tests/unit/test-qga.c | 77 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 97 insertions(+), 3 deletions(-)
-
+diff --git a/qga/commands.c b/qga/commands.c
+index 09c683e263..ce172edd2d 100644
+--- a/qga/commands.c
++++ b/qga/commands.c
+@@ -206,15 +206,15 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
+ #endif
+         if (gei->out.length > 0) {
+             ges->out_data = g_base64_encode(gei->out.data, gei->out.length);
+-            g_free(gei->out.data);
+             ges->has_out_truncated = gei->out.truncated;
+         }
++        g_free(gei->out.data);
+ 
+         if (gei->err.length > 0) {
+             ges->err_data = g_base64_encode(gei->err.data, gei->err.length);
+-            g_free(gei->err.data);
+             ges->has_err_truncated = gei->err.truncated;
+         }
++        g_free(gei->err.data);
+ 
+         QTAILQ_REMOVE(&guest_exec_state.processes, gei, next);
+         g_free(gei);
 -- 
 2.41.0
 
