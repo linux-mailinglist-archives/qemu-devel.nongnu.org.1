@@ -2,137 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D60C7A4465
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C23CD7A4490
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 10:25:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi9SL-0000Sn-4R; Mon, 18 Sep 2023 04:18:09 -0400
+	id 1qi9Yx-0003Fi-OX; Mon, 18 Sep 2023 04:24:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qi9SH-0000OY-Ux; Mon, 18 Sep 2023 04:18:06 -0400
-Received: from mail-am7eur03on20721.outbound.protection.outlook.com
- ([2a01:111:f400:7eaf::721]
- helo=EUR03-AM7-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <den@virtuozzo.com>)
- id 1qi9SG-0001eJ-Du; Mon, 18 Sep 2023 04:18:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XtEEcLXeNFY0NY1PSA4uHmfnBVAWIgHts0pPsBwr5Bp8CGCGaxuWMi2w6188HnSIvhO8jmMHVCkfHZsvogqy/4IuRcgBmPF5oejgYZHMLrPWduczsSCWQ95WNUmVGYgb1fQ5HG/s39oZAcjYbPV/0W6fRMunidcORtNTnZcWlg9U+IZplaG3oyvfbw1AAJpTvC0NHuPmUpZZ3QEDvPxnuuCOdiUL3mAnvfTECr0fdvJcYee6P5xQMRt/4ewE+YbZRvyHkzt2tEBNPXWkGAHZVTbiwjHEx2LmBzOG+Q0Tf9ORDW6R+TtRpmI0+fCR9NDSZlXtJa52wlcIWU6p6/d8Dg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GzFjpFNM1O2PQGUpiB/RmKDZ4UYDlDqaVLcfk//SeuI=;
- b=Pi956Djk6DArEnqkWoiHjQXwSFAOd4eNMyIcnt2o//PZKmuQQp9aUpoWt2WfZz6iY0C5R5a8xKGpE5++u+Wp39eS5MvRWJ3yBQGj3SZqgjEokENinicAeXmGTI9Pw40GmUn4zZb6jHIJHsPwyPW1tk+FJhRmDvk8nYjO80KkvVG3Os6PIgKR3f40HEKmKdB36mhholRzD8dIR2fSlseloNVs+aCdariAt9Tbeld9Z2Ec7euFcYkpmkMp+88vr92TvIyMnSecdN2lLPeyVumzCMDY0Q+oJuHMdRkxnPw8ueEtVWT5HH4uPmmLsbCaUPRhLryBS9CnhH5e4WWka2Eq2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GzFjpFNM1O2PQGUpiB/RmKDZ4UYDlDqaVLcfk//SeuI=;
- b=yedjheFapq0QTzUYPXX5lyzpcjmEF4Z2ddignyT6Jgy/QgrGOOM9XF3wmuupNnjiySZiyYq6RTc8rQOvsMb2tfqzclaRj/H7sV9uPkU8FRRdRjPO6xWa9gVL2X2hcwT2Wd3QLzEBbEWZzKq2FfJvSlyAIiig0z97w9pIU5wsPn0BTYFcrL5apjVI484gOMnBN1bPIXU5DFaqqwj3BkQNBnUX9e+lvLRia6YhTU/w8aUBynM0OU51yMzBkjM4tqmv/NNE9I67IeFz9peuWmxygWBIMFxNRmBpnpt0hVku91GhStjZ/fci6OcQYSgiBGE8aswztuS0xDrYKxHuIRstdA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com (2603:10a6:102:1db::9)
- by AS8PR08MB9454.eurprd08.prod.outlook.com (2603:10a6:20b:5ee::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21; Mon, 18 Sep
- 2023 08:17:59 +0000
-Received: from PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::8ba1:5878:7574:628f]) by PAXPR08MB6956.eurprd08.prod.outlook.com
- ([fe80::8ba1:5878:7574:628f%4]) with mapi id 15.20.6792.026; Mon, 18 Sep 2023
- 08:17:59 +0000
-Message-ID: <ddbd9721-58a1-038d-0465-148f8ad54112@virtuozzo.com>
-Date: Mon, 18 Sep 2023 10:17:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 04/21] parallels: return earler in fail_format branch in
- parallels_open()
-Content-Language: en-US
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>,
- "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, mike.maslenkin@gmail.com
-References: <20230915184130.403366-1-den@openvz.org>
- <20230915184130.403366-6-den@openvz.org>
- <6e54ed39-bc33-887e-9585-d7fe04a1bbf2@virtuozzo.com>
-From: "Denis V. Lunev" <den@virtuozzo.com>
-In-Reply-To: <6e54ed39-bc33-887e-9585-d7fe04a1bbf2@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VE1PR03CA0025.eurprd03.prod.outlook.com
- (2603:10a6:803:118::14) To PAXPR08MB6956.eurprd08.prod.outlook.com
- (2603:10a6:102:1db::9)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qi9Yv-0003F4-HC; Mon, 18 Sep 2023 04:24:57 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qi9Yt-00032i-TJ; Mon, 18 Sep 2023 04:24:57 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9a9d6b98845so1162767266b.0; 
+ Mon, 18 Sep 2023 01:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695025494; x=1695630294; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=A0iYT1x7+4uw7wMmK627alEe2xu2ednRdOQ9XUvARb4=;
+ b=b4LV6LBduN9PdtH+2vPasPOawGyjtGkqwnV4uJV7RNqN2DRMz9tsgJTyrKypypg5Oh
+ kwb3gjmBC6sVr+5ElXqaf+n9BlAiJcEceTJh8EhvnTGEOoNVbMJ5kLJLRZXWCMvMyJpJ
+ PYvjed8CHZimE6epeMRcEYMOScptndC03Iu6wYDlI39g0vVrZyTQJcF0C1mGllUJXBxE
+ EK4IaEWYqunLKYbHVV/qZG9cnPGuxikB7Ju4wIqMtrvfu0uvma1aAkpJWXz+NWj9JDSP
+ lCFk+VBJat77ozp0g6xAoEnORFNb1xFTFWCMp7Rficrslf3k8XtV32/kxY9sg7snVkuz
+ ODIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695025494; x=1695630294;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=A0iYT1x7+4uw7wMmK627alEe2xu2ednRdOQ9XUvARb4=;
+ b=WCTCHH9wtqyc6LFpTSbEKf1CoWAdgB0IFgfRuSMOpZQFB1ExD/TXmp4aypOpY6LK5e
+ rNt8g40J66FL3GfaFmb8fv32cEh4wHfYriLVZZh0dFEeeriTc1FhFfKjGSZpvJuax5ql
+ RdSjCWZIMZ/ZBVbuWp6rjuzWpML3cNfgk7ME30SXgmfksBNsh/I2ur5MTh4RfO0SGNwn
+ rstQnuCdyQ9FfE9KU6+/1T/1MkQlC4N+P6Sm3LUTzyUyZ9fOZa9MpiDxeHuSY13OhmGZ
+ MwiuQFeYxmAJGFAZsrGX7osKNmT6Bacvz1+vn6QR4MmfKmen/EEzIJehuD+Ij3YcL7K8
+ WT5Q==
+X-Gm-Message-State: AOJu0YwgSV0zMeqMcyay6itPwarTpg8gGmQ23DSiBT5qaKTkadjwsMXf
+ gRMMVMcHFfadeoEAgT4P5lXUUDK3rc3HPfNI0iA=
+X-Google-Smtp-Source: AGHT+IHOqqut0PACrpNOwZLCAhaLAemFqWyIf07tHC2Z1nLqiBsYFSSCuNiB+4stIxivYe6UukZnI0LioO7k9nHHJ30=
+X-Received: by 2002:a17:906:4fc9:b0:9a5:dc2b:6a5 with SMTP id
+ i9-20020a1709064fc900b009a5dc2b06a5mr14319584ejw.35.1695025493174; Mon, 18
+ Sep 2023 01:24:53 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR08MB6956:EE_|AS8PR08MB9454:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9b0d9be-f6b7-48b5-fd83-08dbb81fc549
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wG3aZMZ7owYV+SNpxxZxrdpSBWwzAztmoXSP53TWMqR7U9mg743bArIwLZPZn4BZlIguU59cYpS72+Irirxl+J4PLMb9YdRoaXSZ8KmQ2IETSPtst8ayl6BSOnFmF3TSSxlR5d/rELqsGa41CVx3aRBjQmKcQOfPtiM/pWVqpKuwVIWHQvq7C9Qmz7jrVmuin7c+pvgeuKicIoUVXuqaMlTGhU/2l6ECHQFw4wUv/KhuV3M7YUunvvZBzkD+gcWxL5TdMLRZh2dl7vGt80LNi6gZx2JBqilw33n1Fj5M2AJmRxK8wbYj77CcNzvv8EU4PD5qkW/Hb2mF2eD6soWEpPK/uY2HwiGufX3h0EhD6dfbNlpdKKkk4ZxokvWZk9yRBisUEgitHXG6WWI60+rZV+SITbsEyfGiuSucYOp2dLHrvDGSHVLUjQEUWkdueF/IKvI2Dl29z11te7jEN6nweBrKAkkZ38m2/1yrW8EVbRG300uXIpDeil3Ss+1hrXvYstY9H/zdDom9nGc0B9LBY352fyKu/mNX12w0MdFBHFl7J0mJJeqy9aSMpCP88kUfVMUQ1+Cgb5FBEF4zROPrnuRxu7puXM1oO880M/Bl/LMafARZAC5+au3F7R1uOE1xVr52OimvgLzMmQNm93AfrQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PAXPR08MB6956.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(366004)(396003)(39850400004)(376002)(136003)(186009)(451199024)(1800799009)(478600001)(66899024)(4326008)(8676002)(8936002)(316002)(66476007)(110136005)(66946007)(66556008)(36756003)(5660300002)(31686004)(41300700001)(86362001)(31696002)(26005)(2616005)(38100700002)(2906002)(53546011)(6512007)(6506007)(6486002)(83380400001)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d3JoemN3RUpRYWh4K2lZVmpPekZQZU5DSzZiWGNOQ1c0U0E4ZXFIUkNnSlo2?=
- =?utf-8?B?V0RVa3EwOHNZejNWOEwxQ01KYTRaZkczV0UvcHFuTVhNRlBVdEJzVmdJVm1W?=
- =?utf-8?B?akFwY3VvdytzNnlrQVNTZU85ZG8wWTFYZVhEY3dGaW1nVzVPVXZHMFhIeUFU?=
- =?utf-8?B?Lzl1VVVmUFhPMHh0Y2NNbGFmR2krc3hhcmFXNHlkaUJ0K2hoMW1tRHM0amNN?=
- =?utf-8?B?Y0RPSlNvWEpHOTgwUzNXRDdKUExCdllBVFVLOTBoVGxxS1FMSURKb3oyMllX?=
- =?utf-8?B?d2RKZGR3N0tNeGtueE9IY2lSYjZyTHdyeTQwKzR6aFRiK0Jud2prdGtaT0tx?=
- =?utf-8?B?V3hwYUR0LzVURy9UR0E2N3hrZXhYU04wR3gyWFZTRHRNV1JoV3hmdWVpVHNE?=
- =?utf-8?B?MmRua1dHT004Ykt1YmQ1TkxqKy9VRlNLMXdHVi9tT3FvMGd6NjlQNXhBREtV?=
- =?utf-8?B?aldSL0tCZzlUUVNMdXhpR2JsUGRXTnRIb2dKeGhWMHRNOFBjeFZsblBaVmxn?=
- =?utf-8?B?NXRCdlRZVlhrV2g2RTBkclBETnhTQXJmTUdRcERmZ1dhcjNqbEVEeDBsOHZ2?=
- =?utf-8?B?d290MkZsU2h2ckdKNlJoZWs3WnppQ1dGZGRwejA4cktSaGRSZFpFb3B0ZG45?=
- =?utf-8?B?T05HOHJmZUUrWk9YV1FGK09OcEEySjZvSnFINHd2MU13aThkMDZ2SU1DUmtp?=
- =?utf-8?B?SXNGYnU3ZkRjcTdYZDAzZDFtVnRiNXBRVHFPYS85cEhkRmNZUy9UNGpscUFz?=
- =?utf-8?B?aWNJQjFNMHc1eGUvQVJRWTZHUUhIMGRPOEZTQ0tXaGw2Tnd4SWhuVEJQU3hI?=
- =?utf-8?B?THZqVnRPUTBpS1J2dmZNL3F1WVNUOVF2dVRMRkJRclBIY21CbTF3K09jRVgx?=
- =?utf-8?B?T3FxeUwyUVVvbWxoZDNhdzNHUG5lWXdnTWppMFllb1MxN2tlL1lmNndTeDBx?=
- =?utf-8?B?dDI2T0UvQXI1SHNUd3BaSC9DVVZNVUNyZE5WMlBRZG9lN2NwalFOMzFkMjht?=
- =?utf-8?B?ZDgwalN5b2tGbWVOWWh6U0lGR2N0OVM3bEhGOEZkR0ZsVE9PTGszd0dFNm5G?=
- =?utf-8?B?bmpvM0FrTTRucGFOdi9CWkVxbzFnS1E2VDd4RFlib2g2QXA5TWtnSFFLUk1m?=
- =?utf-8?B?YVQ3bFljTHJVbWJma0ZHTkk4NUhHNnBubWVnTjQyMWt0dC9kK1JjNjJLdWl6?=
- =?utf-8?B?OHdtSlpCamV1S09ZOHJQQXNTYzlENjlhZjZxTHgxMUo5MFhPZFM5TUIrUmxZ?=
- =?utf-8?B?YjVTWG5yL0p2QlVDVjRDSzVSNmRTdXc1VkVLcTE4ZHRTS0xJekZtZnd1a0h3?=
- =?utf-8?B?N2xCQW9YL3BpTGtyLzdMR2JXRll5QlYxaWtrNTg1V2ZVSGJVdGVFWWNYazh1?=
- =?utf-8?B?dUxKcXNYcXVtWkk2MTR4Y3d3SytpQU5aYldQdmkzSGs3ZFZnZVhoSGJmVkxs?=
- =?utf-8?B?OXlOVXlQdmN3TTBoNWJHYmRGUGh3VnA2ZSsxMUo3RjZraVFEWTNVcEJrbEZ6?=
- =?utf-8?B?NjdxRDQ4RWtKNEkzVzlZdTJyVVMxUWo2UlhZQjM5dFNRbGRKSWF2UjAzM3RX?=
- =?utf-8?B?RVNnS1h0SWE2WTJ3Vnh3aWc3WUVIaHlLblg4ak80VkxsRTdnN216akFRMkZU?=
- =?utf-8?B?b200d2g3MGZrUHYzT1pKMXlhU25UWVlXd085eThVL3U3TXMwenFnYlU4UWF2?=
- =?utf-8?B?YzR0R1c2aXRiSUxXWFdSb3VFaDdsWkM4SjJJYzYwU0M2MzdSQ1hXTlBTaytw?=
- =?utf-8?B?Q0VHV2FmK2RrY2M4MGxLdG02Mkl6bmdnMTlVY3BpWHpKSXFrc2RhZWd0OS93?=
- =?utf-8?B?K2ZlVVMrNmlkZ0VkRCtQTkdFMUxReE5XNjQ4VUlrK3NITDczYVJBRnVqYnV1?=
- =?utf-8?B?S0pQTlh2eFRoTTdhZ2Yxc1M2cXJwZFpoeGJFblRuaW5nOUNkek1pU1o1dFBt?=
- =?utf-8?B?NHBqanpNWkYvbERtaUNiL0h2RkhXUlJQaG8yVXBjZnhkTlV3ZEVGYlllTmkz?=
- =?utf-8?B?dmZoQ0t2MHdoNERKdUNLOC9NdDR6QmJ2Wi9TaUplSnFFMmp5cGdBT3E4QXFj?=
- =?utf-8?B?MnVCWUJOSURtOUFtME85a0pidy9JdW10eTFSZHIxTFdEMnl4N3ZEYjkxamNx?=
- =?utf-8?Q?SdCHlgvrMemM7bMIpA19GBUpA?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9b0d9be-f6b7-48b5-fd83-08dbb81fc549
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR08MB6956.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 08:17:59.7472 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ILKnhBU/MMApQwGNVlpOgUHwJqghgO7YgQZdL9Ggn4FzPIhsM4zS5J0a17grsp66P9+fGyEim0xHBon+NZy71g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB9454
-Received-SPF: pass client-ip=2a01:111:f400:7eaf::721;
- envelope-from=den@virtuozzo.com;
- helo=EUR03-AM7-obe.outbound.protection.outlook.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230828150955.3481-1-faithilikerun@gmail.com>
+ <20230828150955.3481-3-faithilikerun@gmail.com> <875y4ugnhs.fsf@pond.sub.org>
+In-Reply-To: <875y4ugnhs.fsf@pond.sub.org>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Mon, 18 Sep 2023 16:24:26 +0800
+Message-ID: <CAAAx-8Lf1FrJ52+=8=t4qKwA2HevYq0PToSQuXtQ9HBsbxbUzA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] qcow2: add configurations for zoned format
+ extension
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ dmitry.fomichev@wdc.com, 
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>, hare@suse.de, 
+ qemu-block@nongnu.org, stefanha@redhat.com, dlemoal@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -148,37 +89,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/23 10:14, Alexander Ivanov wrote:
-> This is not the case with this patch, but it seems that the 5 first 
-> "goto fail;" could be
-> replaced by returns. The first allocation, freeing at the "fail" 
-> label, is at 1127 line.
-> The next error handling and all the previous ones can make return 
-> instead goto fail.
+Markus Armbruster <armbru@redhat.com> =E4=BA=8E2023=E5=B9=B49=E6=9C=881=E6=
+=97=A5=E5=91=A8=E4=BA=94 19:08=E5=86=99=E9=81=93=EF=BC=9A
 >
-> On 9/15/23 20:41, Denis V. Lunev wrote:
->> We do not need to perform any deallocation/cleanup if wrong format is
->> detected.
->>
->> Signed-off-by: Denis V. Lunev <den@openvz.org>
->> ---
->>   block/parallels.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/block/parallels.c b/block/parallels.c
->> index 1d5409f2ba..0f127427bf 100644
->> --- a/block/parallels.c
->> +++ b/block/parallels.c
->> @@ -1226,7 +1226,8 @@ static int parallels_open(BlockDriverState *bs, 
->> QDict *options, int flags,
->>     fail_format:
->>       error_setg(errp, "Image not in Parallels format");
->> -    ret = -EINVAL;
->> +    return -EINVAL;
->> +
->>   fail:
->>       /*
->>        * "s" object was allocated by g_malloc0 so we can safely
+> Sam Li <faithilikerun@gmail.com> writes:
 >
-see next patch :-)
+> > To configure the zoned format feature on the qcow2 driver, it
+> > requires following arguments: the device size, zoned profile,
+>
+> "Zoned profile" is gone in v3.
+>
+> > zone model, zone size, zone capacity, number of conventional
+> > zones, limits on zone resources (max append sectors, max open
+> > zones, and max_active_zones).
+> >
+> > To create a qcow2 file with zoned format, use command like this:
+> > $ qemu-img create -f qcow2 test.qcow2 -o size=3D768M -o
+> > zone_size=3D64M -o zone_capacity=3D64M -o nr_conv_zones=3D0 -o
+> > max_append_sectors=3D512 -o max_open_zones=3D0 -o max_active_zones=3D0
+> > -o zone_model=3D1
+> >
+> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
+>
+> [...]
+>
+> > diff --git a/qapi/block-core.json b/qapi/block-core.json
+> > index 2b1d493d6e..0d8f9e0a88 100644
+> > --- a/qapi/block-core.json
+> > +++ b/qapi/block-core.json
+> > @@ -5021,6 +5021,27 @@
+> >  # @compression-type: The image cluster compression method
+> >  #     (default: zlib, since 5.1)
+> >  #
+> > +# @zone-model: Zoned device model, 1 for host-managed and 0 for
+>
+> Why is this encoded as a number?
+>
+> If it's fundamentally a flag, use bool.
+>
+> If more models could appear in the future, make it an enum.
+>
+
+Yes, it is an enum.
+
+typedef enum BlockZoneModel {
+    BLK_Z_NONE =3D 0x0, /* Regular block device */
+    BLK_Z_HM =3D 0x1, /* Host-managed zoned block device */
+    BLK_Z_HA =3D 0x2, /* Host-aware zoned block device */
+} BlockZoneModel;
+
+> > +#     non-zoned devices (default: 0, since 8.0)
+>
+> Since 8.2.  More of the same below.
+>
+> > +#
+> > +# @zone-size: Total number of logical blocks within zones in bytes
+> > +#     (since 8.0)
+> > +#
+> > +# @zone-capacity: The number of usable logical blocks within zones
+> > +#     in bytes. A zone capacity is always smaller or equal to the
+> > +#     zone size. (since 8.0)
+>
+> Two spaces between sentences for consistency, please.
+>
+> > +#
+> > +# @nr-conv-zones: The number of conventional zones of the zoned device
+> > +#     (since 8.0)
+>
+> I think @conventional-zones would be more obvious.
+>
+> > +#
+> > +# @max-open-zones: The maximal allowed open zones (since 8.0)
+>
+> Maybe "The maximum number of open zones".
+>
+> > +#
+> > +# @max-active-zones: The limit of the zones that have the implicit
+> > +#     open, explicit open or closed state (since 8.0)
+>
+> Maybe "The maximum number of zones in the implicit open, explicit open
+> or closed state".
+>
+> > +#
+> > +# @max-append-sectors: The maximal data size in sectors of a zone
+> > +#     append request that can be issued to the device. (since 8.0)
+>
+> What's the sector size, and how can the user determine it?  Why can't we
+> use bytes here?
+
+The sector size is 512 bytes. It's more for conventional use.
+
+>
+> > +#
+> >  # Since: 2.12
+> >  ##
+> >  { 'struct': 'BlockdevCreateOptionsQcow2',
+> > @@ -5037,7 +5058,14 @@
+> >              '*preallocation':   'PreallocMode',
+> >              '*lazy-refcounts':  'bool',
+> >              '*refcount-bits':   'int',
+> > -            '*compression-type':'Qcow2CompressionType' } }
+> > +            '*compression-type':'Qcow2CompressionType',
+> > +            '*zone-model':         'uint8',
+> > +            '*zone-size':          'size',
+> > +            '*zone-capacity':      'size',
+> > +            '*nr-conv-zones':      'uint32',
+> > +            '*max-open-zones':     'uint32',
+> > +            '*max-active-zones':   'uint32',
+> > +            '*max-append-sectors': 'uint32' } }
+> >
+> >  ##
+> >  # @BlockdevCreateOptionsQed:
+>
 
