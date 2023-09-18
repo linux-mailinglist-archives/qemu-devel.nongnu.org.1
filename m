@@ -2,29 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A477A402C
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 06:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC6E7A4039
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Sep 2023 06:55:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qi6DI-0003QL-Hk; Mon, 18 Sep 2023 00:50:24 -0400
+	id 1qi6I5-00076J-Rw; Mon, 18 Sep 2023 00:55:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6DD-0003Pb-HE
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:50:20 -0400
-Received: from mail-mw2nam10on20609.outbound.protection.outlook.com
- ([2a01:111:f400:7e89::609]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6Hy-00075r-3I
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:55:14 -0400
+Received: from mail-mw2nam12on2047.outbound.protection.outlook.com
+ ([40.107.244.47] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6D7-0003cE-Nh
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:50:18 -0400
+ (Exim 4.90_1) (envelope-from <yajunw@nvidia.com>) id 1qi6Hv-0004dp-Qt
+ for qemu-devel@nongnu.org; Mon, 18 Sep 2023 00:55:13 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BriSvDKjNc4l48uwtThk3RRdcEj/Lx9In4MdKS96tdlpuwV+ahZTXwqJp5PmidoqCYwRxM5A6Nxij+oS+U6AzhtYpAoKZwkL1McbBuut11++vQ6BLihe4JZTkEMjBUfz90qQECgGK/Vy38RiManOdWFjL2IKetOhuGVCo9iiTaMLi7dI+QNzhnbWiSbi74zMZ2lXvqc93ac9X3M/9RKTPcxVywro2CicmYxlq7tevMP7o/uOwkIYur88t3/IeszOTeln2hT1fvyj3tKozxlp0ZTq4v46s9FNTMDyzs6JV6QcTKKnnBgiE8A1yJb5CBPjX8NkTNZ+MAiVW43tlhyfUQ==
+ b=LI2nSRbfAXo7zgbPTpAT3WYf6zfMFcwhIcTlHDpy3wl9f6vof98h+aGltlyO0twv0nkaSEik6B0+u9gQxhMO6Fb1xWfkYrFznEWkFN8m7m8rMDRmDsLzKIsIe4GpfuurPqACGBuToYboAwQPRjJKWrSZ8XLn78Q/9MqZE/qEYciq8XREo9scUl3+A6Wfrcm0J5TbjVQHNSlzbRSlyXMb0ndGoCInw0EBhwvCKnyHu3+dFjLYXcwV4Z8wTcZoAtSIZ+BRLuNicqKKUKqOLCaKMBKOft6soTMwpOWMWxaeK7eDRfdHOqK2sbvVZh4AdNARCbq/IAJEQO9shwUCpl9Wrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HyvTH2zfw9Z+hRNhzFi1cneA5xIzTM4jiJfgb8FyEgo=;
- b=S4qYABX+Mfts2OnDgq0hetqCv7LpYIqMtETtaNMnahlF3u8L1rkzO7zb1EeOAUDo1GU7AQCMEcejRMjutMgk6jY+KQBI88+28HJKtP+kDe4r41VU0jluVvS0FJBG+TAueawXV5H7KP5n46S9WES/nSF2XDqqX/e/kSo8Z8UaWf+53ION15e8vrPo00Pb4wWeE5DoYVFpMcE8nWhQglSArXoMsTJzriGk7ujWFemxQNz0rhkOO6TcJ/kZ1lsA0MDWn/aqhziAVHvcMviEpiJNoZxCLX22s6PtHhsQuxdDUD/WWwlJyfYVcic/mrcwAOKJ/qbA08R3b78BCuZ78lEEVw==
+ bh=MUyrIQETz3SMEhrkoA5qJfRqTgbj1DJqmlBH5eju3gQ=;
+ b=BOrQRYreIJV06Xq06+V6FukMJffGuou/Y+IJDs+Y00UZroP3vbMdiyoDPGT4r4ZwOiX75A/9bFVSsxJDAG1X3lOtOo8WCw+UpgmybrJPQ3+b6vi/73q4WhmLX7x6SU1AFYbTLH0dsvij2t7u9PgL5780klPTIwlKwyWCq7xwF5Q4da/zE/OKX3A1RMpvIiDrtfdXRWf9BCDewfEVpBBctf7TJkMVI9AQ2k28X1FCJPky2q1LdLcb9XYFJQjEUPtcOSWpQstCOMvAXmEwUiReoaVyytdNxm+KxWh6hv8CDp7cL479K+X9m8sLEE6TvUwMQibdiQ8e2MC3qArLEFuQvA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -32,18 +31,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HyvTH2zfw9Z+hRNhzFi1cneA5xIzTM4jiJfgb8FyEgo=;
- b=bZbmUxYYYu8ob7kAV2WmyuIALYukjz5VRijiYgtlLxWY4cEZwpWh4NiyACURfavpRUe9cfVFfUZZD5FDEDncGXQyEcT2dXa+m1r6vx3DYyz4Z3vCSTclmOFBX+oM51etyH7q2TmMFkW5LeWSFmvkx5jgBPcxHR35ZhAVLAEKiBZ3shv2w3Ql4WfSB3j4zsLbhFRwfuPxzdDjxuM7KHn8yESR108+Z/Ic9EXoleuv9ZOu7VgnVGHbjRtoYdhnXD/mb2lHIgp28JJQcUR/fSZwcOfU2v3Hb1EUoiReglrKCxMrf1KVhgdJm6aqB8PPAvt3RAwCDcg6wdoFeJFbNKYchQ==
-Received: from DM6PR02CA0103.namprd02.prod.outlook.com (2603:10b6:5:1f4::44)
- by PH7PR12MB7940.namprd12.prod.outlook.com (2603:10b6:510:275::18) with
+ bh=MUyrIQETz3SMEhrkoA5qJfRqTgbj1DJqmlBH5eju3gQ=;
+ b=NEKnSo/63BjMdKTYolfNypSKKgDWfrhqymG6ng8UnMUypotyJFKXG70rziNz5fj8Vkd8ewvKQG8bpGb5KXepuX2SswZXsfvbRmkYmNsy1B/fBRri3DoIzlQ3HEyAg27lNcTiDyYYrwPJk2GECjB7eqQUePkWYrdVd03GFYMK1rHqXc7/sC+XqlRPQp47mhQZs1DCOxUo6RFMfGOj9+bcFITDg/yB12m0Nf50W1CXgslzSJ0sut9YVW+vZD9yta0Dcd5N6joTFKtxRQKqi6Sdt/dhMo6/2B1AUMQfTMe9gv2naQzX/+40f9uCxz8WZlE5wtte48YGEVMDlWqygIdFHQ==
+Received: from DM6PR02CA0083.namprd02.prod.outlook.com (2603:10b6:5:1f4::24)
+ by MN2PR12MB4270.namprd12.prod.outlook.com (2603:10b6:208:1d9::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.24; Mon, 18 Sep
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26; Mon, 18 Sep
  2023 04:50:06 +0000
 Received: from DS3PEPF000099D8.namprd04.prod.outlook.com
- (2603:10b6:5:1f4:cafe::5e) by DM6PR02CA0103.outlook.office365.com
- (2603:10b6:5:1f4::44) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:5:1f4:cafe::df) by DM6PR02CA0083.outlook.office365.com
+ (2603:10b6:5:1f4::24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26 via Frontend
- Transport; Mon, 18 Sep 2023 04:50:05 +0000
+ Transport; Mon, 18 Sep 2023 04:50:06 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com;
  dkim=none (message not signed)
@@ -54,22 +53,22 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
 Received: from mail.nvidia.com (216.228.117.161) by
  DS3PEPF000099D8.mail.protection.outlook.com (10.167.17.9) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6792.20 via Frontend Transport; Mon, 18 Sep 2023 04:50:05 +0000
+ 15.20.6792.20 via Frontend Transport; Mon, 18 Sep 2023 04:50:06 +0000
 Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 17 Sep
- 2023 21:49:54 -0700
+ 2023 21:49:56 -0700
 Received: from nvidia.com (10.126.230.35) by rnnvmail202.nvidia.com
  (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sun, 17 Sep
- 2023 21:49:52 -0700
+ 2023 21:49:54 -0700
 From: Yajun Wu <yajunw@nvidia.com>
 To: <qemu-devel@nongnu.org>, <jasowang@redhat.com>, <mst@redhat.com>,
  <yajunw@nvidia.com>
 CC: Avihai Horon <avihaih@nvidia.com>, Jiri Pirko <jiri@nvidia.com>
-Subject: [RFC PATCH 1/5] vhost-user: Add presetup protocol feature and op
-Date: Mon, 18 Sep 2023 12:49:28 +0800
-Message-ID: <20230918044932.1433744-2-yajunw@nvidia.com>
+Subject: [RFC PATCH 2/5] vhost: Add support for presetup
+Date: Mon, 18 Sep 2023 12:49:29 +0800
+Message-ID: <20230918044932.1433744-3-yajunw@nvidia.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20230918044932.1433744-1-yajunw@nvidia.com>
 References: <20230918044932.1433744-1-yajunw@nvidia.com>
@@ -81,35 +80,35 @@ X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
  rnnvmail202.nvidia.com (10.129.68.7)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099D8:EE_|PH7PR12MB7940:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6a22ad2-69e8-4d5c-373d-08dbb802ba2d
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099D8:EE_|MN2PR12MB4270:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4652660a-82b0-467f-1d03-08dbb802bab5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 06hPi2sebr9IWqsnKw4IiE7/LGIalVDlPFQOsBO2+2Rh1vyO7Pwd5gksQa420hP2EpXGbbg6lplPodN6guIVwc+3af1XeNbam7BK0MMHC1Tnyl93W/5aKEl+u92N1XLzd4EDxA+KL5qAfB2PbGR8a2/4HeDWvPYQCyh7HvObd3ZzhjfK6xDtZY63rxwtAEYAkizE/uL9qI4SCTUvxyLXp5SlstcaZWG3oPreRnzXUe4ayR6QhM8NABHLy3h3qsee19ojNUqwaQcEg/fSs/CO/V+X5faeFA2jlY08aNo0j14UbOJ6mUDHNwN+q2UKZedJ+gKLieIoO+gaGvBjlRQjMXPAfykow8wtWa72Omr3UpLprwbkGmldzcC2IU4rY4Lgogn4mTvheKDSX+XB+zpdYxv6Nh2ogq/CGVWyxTLH9RErWVViYvIkIfFQ3HBBuM0/Eq3q+ZrvZ9GvZO5QgRl11kclwV3hPQnd+BVKR8zLdBsTeyIxeME7TOXhN0uLWATAb88FLZHTOKSmJ4XJhWfrFPfGITTqqyyvrYyZzmqxfIl9pc1XQ1UrU9lvhzLZj/OiqSbvX3sfqCkY6zUasGs+RLM+tIXlSAPRw5cqELcdmCz4g+hH3kKYHX0gz6mWNtK0cLQRc6S3MiaOniy9IE3UWCaQvsZIAkD7T3nnFZezPw3q+Heek2kNFQygWzEP7r7a6CAPzVbtKpqWkcVIVo91vQdR3J3lG5KbWqwcIvfphGGQKm8kmh8Tv4hwUXMw5gzb
+X-Microsoft-Antispam-Message-Info: Vh/dW8NqUYiW3IuhyMi9TBkJBIKzRyckejWS6w2fXBDORAs/JD6DzbrN58WpCE9B5BibQCwagjijOZnvVDi9ddkMwvbvO7x7jiV9btO0LV4JBs8Epo8woLGtexJKTucHZz/ZLiypJ63jZ7uj1t2nWjB7X/EoCeRx4JDTzErrsztMvtkPkgrzVxXhh/0jB9jcCmNzHrBhgslrZvoPx7lul4WHJrIq2PQcD0stTbxR5tMU97kfZuql0Jbayv6KWvskPpGVLSq2tkBhA32DdT6bCfKFj3j3/Ze471ht+qG6XnUyDtS8PuVf6O3eijddQ5anPvIB1OY4qhDdL2QDsoPO64Ows/2MaqwYUqumq07q0XlqwdnC949tvOYa06fkuvN/vDVAtAuPiT7CQwSoWra1vVu1U6gPiubBgJ7oK44Z6vVaOjGSB7Ty4OU9wAX1iUZ9SpLd0W1rq2CNk1I1kddBn5cLVHr4GMRaEk8JtXabXvsn/RoMvTx0aEcdwW7bjKy+EqXzcmLrx3IAR2MgHVd4zOlX7z+eBLs5cah2Zl+djyK7an236+RPJivpJxqmfiWnzXxUR1XH3qiRfUtVNx3AKVUFYHF1Kk3naGP1fZ9KRlQkLYnp8/jQ+eHg7RVByzKPOmxgCB0opPs3fwTpN5C40QdaUkruXx39zD1dQKvqZyVkYgaXx32XDVhHQ5z5kI5E8GyM/oa4d7BUF1MIdq7/BKsbV+ULvy+RIu8VURjelZPyEh53oZDT49SGrKAgcCEs
 X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(396003)(376002)(39860400002)(346002)(186009)(1800799009)(82310400011)(451199024)(36840700001)(46966006)(40470700004)(7636003)(356005)(26005)(16526019)(6286002)(82740400003)(2616005)(8936002)(1076003)(40460700003)(4326008)(8676002)(107886003)(83380400001)(36860700001)(2906002)(36756003)(47076005)(426003)(336012)(40480700001)(55016003)(5660300002)(86362001)(7696005)(478600001)(6666004)(316002)(54906003)(70586007)(70206006)(110136005)(7049001)(41300700001);
+ SFS:(13230031)(4636009)(136003)(396003)(346002)(376002)(39860400002)(451199024)(82310400011)(1800799009)(186009)(46966006)(36840700001)(40470700004)(40480700001)(7636003)(36756003)(356005)(82740400003)(86362001)(55016003)(7049001)(40460700003)(7696005)(478600001)(5660300002)(54906003)(70206006)(70586007)(2906002)(6666004)(8676002)(8936002)(4326008)(426003)(336012)(83380400001)(47076005)(41300700001)(110136005)(36860700001)(316002)(107886003)(6286002)(26005)(16526019)(2616005)(1076003);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 04:50:05.4309 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6a22ad2-69e8-4d5c-373d-08dbb802ba2d
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2023 04:50:06.3371 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4652660a-82b0-467f-1d03-08dbb802bab5
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
  Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099D8.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7940
-Received-SPF: softfail client-ip=2a01:111:f400:7e89::609;
- envelope-from=yajunw@nvidia.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4270
+Received-SPF: softfail client-ip=40.107.244.47; envelope-from=yajunw@nvidia.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,138 +124,275 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch implements VHOST_USER_PROTOCOL_F_PRESETUP protocol feature
-and VHOST_USER_PRESETUP, so that the backend can know the beginning
-and completion of the early setup phase for the virtio device.
+Add New API vhost_dev_start_presetup to notify backend the start
+and end of presetup.
 
-Unlike the regular device state load, which occurs in the VM stop
-phase, this pre-setup takes place in the live migration setup stage.
+API vhost_dev_presetup to send out the device configurations:
+1. acked_features
+2. memory table
+3. vring information
+4. disable host/guest notifier.
 
 Signed-off-by: Yajun Wu <yajunw@nvidia.com>
 Reviewed-by: Avihai Horon <avihaih@nvidia.com>
 Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 ---
- docs/interop/vhost-user.rst       | 10 ++++++++++
- hw/virtio/vhost-user.c            | 30 ++++++++++++++++++++++++++++++
- include/hw/virtio/vhost-backend.h |  3 +++
- 3 files changed, 43 insertions(+)
+ hw/virtio/vhost.c         | 166 ++++++++++++++++++++++++++++++++------
+ include/hw/virtio/vhost.h |  12 +++
+ 2 files changed, 152 insertions(+), 26 deletions(-)
 
-diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-index 5a070adbc1..70b8e2694c 100644
---- a/docs/interop/vhost-user.rst
-+++ b/docs/interop/vhost-user.rst
-@@ -885,6 +885,7 @@ Protocol features
-   #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
-   #define VHOST_USER_PROTOCOL_F_STATUS               16
-   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
-+  #define VHOST_USER_PROTOCOL_F_PRESETUP             18
- 
- Front-end message types
- -----------------------
-@@ -1440,6 +1441,15 @@ Front-end message types
-   query the back-end for its device status as defined in the Virtio
-   specification.
- 
-+``VHOST_USER_PRESETUP``
-+  :id: 41
-+  :equivalent ioctl: N/A
-+  :request payload: ``u64``
-+  :reply payload: N/A
-+
-+  When the ``VHOST_USER_PROTOCOL_F_PRESETUP`` protocol feature has been
-+  successfully negotiated, this message is submitted by the front-end to
-+  indicate start or end early setup. Value 1 means start, 2 means end.
- 
- Back-end message types
- ----------------------
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..71018d06c1 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -74,6 +74,8 @@ enum VhostUserProtocolFeature {
-     /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
-     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
-     VHOST_USER_PROTOCOL_F_STATUS = 16,
-+    /* Feature 17 reserved for VHOST_USER_PROTOCOL_F_XEN_MMAP. */
-+    VHOST_USER_PROTOCOL_F_PRESETUP = 18,
-     VHOST_USER_PROTOCOL_F_MAX
- };
- 
-@@ -121,6 +123,7 @@ typedef enum VhostUserRequest {
-     VHOST_USER_REM_MEM_REG = 38,
-     VHOST_USER_SET_STATUS = 39,
-     VHOST_USER_GET_STATUS = 40,
-+    VHOST_USER_PRESETUP = 41,
-     VHOST_USER_MAX
- } VhostUserRequest;
- 
-@@ -132,6 +135,11 @@ typedef enum VhostUserBackendRequest {
-     VHOST_USER_BACKEND_MAX
- }  VhostUserBackendRequest;
- 
-+typedef enum VhostUserPresetupState {
-+    VHOST_USER_PRESETUP_START = 1,
-+    VHOST_USER_PRESETUP_END = 2,
-+} VhostUserPresetupState;
-+
- typedef struct VhostUserMemoryRegion {
-     uint64_t guest_phys_addr;
-     uint64_t memory_size;
-@@ -2741,6 +2749,27 @@ static void vhost_user_reset_status(struct vhost_dev *dev)
-     }
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index e2f6ffb446..5b162590fb 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1138,24 +1138,71 @@ out:
+     return ret;
  }
  
-+static int vhost_user_set_presetup_state(struct vhost_dev *dev, bool start)
+-int vhost_virtqueue_start(struct vhost_dev *dev,
+-                          struct VirtIODevice *vdev,
+-                          struct vhost_virtqueue *vq,
+-                          unsigned idx)
++static void vhost_virtqueue_memory_unmap(struct vhost_dev *dev,
++                                         struct VirtIODevice *vdev,
++                                         struct vhost_virtqueue *vq,
++                                         unsigned idx)
 +{
-+    if (start) {
-+        return vhost_user_set_u64(dev, VHOST_USER_PRESETUP,
-+                                  VHOST_USER_PRESETUP_START, false);
-+    } else {
-+        return vhost_user_set_u64(dev, VHOST_USER_PRESETUP,
-+                                  VHOST_USER_PRESETUP_END, false);
++    if (vq->used) {
++        vhost_memory_unmap(dev, vq->used,
++                           virtio_queue_get_used_size(vdev, idx),
++                           1, virtio_queue_get_used_size(vdev, idx));
++        vq->used = NULL;
++    }
++
++    if (vq->avail) {
++        vhost_memory_unmap(dev, vq->avail,
++                           virtio_queue_get_avail_size(vdev, idx),
++                           0, virtio_queue_get_avail_size(vdev, idx));
++        vq->avail = NULL;
++    }
++
++    if (vq->desc) {
++        vhost_memory_unmap(dev, vq->desc,
++                           virtio_queue_get_desc_size(vdev, idx),
++                           0, virtio_queue_get_desc_size(vdev, idx));
++        vq->desc = NULL;
 +    }
 +}
 +
-+static int vhost_user_presetup(struct vhost_dev *dev, bool start)
++static int vhost_virtqueue_disable_notify(struct vhost_dev *dev,
++                                          struct VirtIODevice *vdev,
++                                          struct vhost_virtqueue *vq,
++                                          unsigned idx)
+ {
+-    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
+-    VirtioBusState *vbus = VIRTIO_BUS(qbus);
+-    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(vbus);
+-    hwaddr s, l, a;
+-    int r;
+     int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, idx);
+     struct vhost_vring_file file = {
+         .index = vhost_vq_index
+     };
++    int r;
++
++    file.fd = -1;
++    r = dev->vhost_ops->vhost_set_vring_kick(dev, &file);
++    if (r) {
++        VHOST_OPS_DEBUG(r, "vhost_set_vring_kick failed");
++        return r;
++    }
++
++    r = dev->vhost_ops->vhost_set_vring_call(dev, &file);
++    if (r) {
++        VHOST_OPS_DEBUG(r, "vhost_set_vring_call failed");
++        return r;
++    }
++
++    return 0;
++}
++
++static int vhost_virtqueue_vring_setup(struct vhost_dev *dev,
++                                       struct VirtIODevice *vdev,
++                                       struct vhost_virtqueue *vq,
++                                       unsigned idx)
 +{
-+    if (!virtio_has_feature(dev->protocol_features,
-+                            VHOST_USER_PROTOCOL_F_PRESETUP)) {
++    hwaddr s, l, a;
++    int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, idx);
+     struct vhost_vring_state state = {
+         .index = vhost_vq_index
+     };
+-    struct VirtQueue *vvq = virtio_get_queue(vdev, idx);
++    int r;
+ 
+     a = virtio_queue_get_desc_addr(vdev, idx);
+     if (a == 0) {
+@@ -1186,6 +1233,10 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+         }
+     }
+ 
++    if (vq->desc) {
++        vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
++    }
++
+     vq->desc_size = s = l = virtio_queue_get_desc_size(vdev, idx);
+     vq->desc_phys = a;
+     vq->desc = vhost_memory_map(dev, a, &l, false);
+@@ -1212,6 +1263,36 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+     if (r < 0) {
+         goto fail_alloc;
+     }
++    return 0;
++
++fail_alloc:
++fail_alloc_used:
++fail_alloc_avail:
++    vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
++fail_alloc_desc:
++    return r;
++}
++
++int vhost_virtqueue_start(struct vhost_dev *dev,
++                          struct VirtIODevice *vdev,
++                          struct vhost_virtqueue *vq,
++                          unsigned idx)
++{
++    BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
++    VirtioBusState *vbus = VIRTIO_BUS(qbus);
++    VirtioBusClass *k = VIRTIO_BUS_GET_CLASS(vbus);
++    int r;
++    int vhost_vq_index = dev->vhost_ops->vhost_get_vq_index(dev, idx);
++    struct vhost_vring_file file = {
++        .index = vhost_vq_index
++    };
++    struct VirtQueue *vvq = virtio_get_queue(vdev, idx);
++
++    r = vhost_virtqueue_vring_setup(dev, vdev, vq, idx);
++    if (r) {
++        VHOST_OPS_DEBUG(r, "vhost_virtqueue_vring_setup failed");
++        goto fail_vring_setup;
++    }
+ 
+     file.fd = event_notifier_get_fd(virtio_queue_get_host_notifier(vvq));
+     r = dev->vhost_ops->vhost_set_vring_kick(dev, &file);
+@@ -1245,16 +1326,8 @@ int vhost_virtqueue_start(struct vhost_dev *dev,
+ 
+ fail_vector:
+ fail_kick:
+-fail_alloc:
+-    vhost_memory_unmap(dev, vq->used, virtio_queue_get_used_size(vdev, idx),
+-                       0, 0);
+-fail_alloc_used:
+-    vhost_memory_unmap(dev, vq->avail, virtio_queue_get_avail_size(vdev, idx),
+-                       0, 0);
+-fail_alloc_avail:
+-    vhost_memory_unmap(dev, vq->desc, virtio_queue_get_desc_size(vdev, idx),
+-                       0, 0);
+-fail_alloc_desc:
++    vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
++fail_vring_setup:
+     return r;
+ }
+ 
+@@ -1296,12 +1369,7 @@ void vhost_virtqueue_stop(struct vhost_dev *dev,
+                                                 vhost_vq_index);
+     }
+ 
+-    vhost_memory_unmap(dev, vq->used, virtio_queue_get_used_size(vdev, idx),
+-                       1, virtio_queue_get_used_size(vdev, idx));
+-    vhost_memory_unmap(dev, vq->avail, virtio_queue_get_avail_size(vdev, idx),
+-                       0, virtio_queue_get_avail_size(vdev, idx));
+-    vhost_memory_unmap(dev, vq->desc, virtio_queue_get_desc_size(vdev, idx),
+-                       0, virtio_queue_get_desc_size(vdev, idx));
++    vhost_virtqueue_memory_unmap(dev, vdev, vq, idx);
+ }
+ 
+ static int vhost_virtqueue_set_busyloop_timeout(struct vhost_dev *dev,
+@@ -1921,6 +1989,43 @@ static int vhost_dev_set_vring_enable(struct vhost_dev *hdev, int enable)
+     return hdev->vhost_ops->vhost_set_vring_enable(hdev, enable);
+ }
+ 
++int vhost_dev_presetup(struct vhost_dev *hdev, VirtIODevice *vdev)
++{
++    int i, r;
++
++    /* should only be called after backend is connected */
++    assert(hdev->vhost_ops);
++
++    r = vhost_dev_set_features(hdev, hdev->log_enabled);
++    if (r < 0) {
++        return r;
++    }
++
++    r = hdev->vhost_ops->vhost_set_mem_table(hdev, hdev->mem);
++    if (r < 0) {
++        VHOST_OPS_DEBUG(r, "vhost_set_mem_table failed");
++        return r;
++    }
++
++    for (i = 0; i < hdev->nvqs; ++i) {
++        r = vhost_virtqueue_vring_setup(hdev, vdev,
++                                        hdev->vqs + i,
++                                        hdev->vq_index + i);
++        if (r < 0) {
++            VHOST_OPS_DEBUG(r, "vhost_virtqueue_setup failed");
++            return r;
++        }
++        r = vhost_virtqueue_disable_notify(hdev, vdev,
++                                           hdev->vqs + i,
++                                           hdev->vq_index + i);
++        if (r < 0) {
++            return r;
++        }
++    }
++
++    return 0;
++}
++
+ /* Host notifiers must be enabled at this point. */
+ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+ {
+@@ -2087,3 +2192,12 @@ int vhost_net_set_backend(struct vhost_dev *hdev,
+ 
+     return -ENOSYS;
+ }
++
++int vhost_dev_set_presetup_state(struct vhost_dev *hdev, bool start)
++{
++    if (!hdev->vhost_ops->vhost_presetup) {
 +        return -ENOTSUP;
 +    }
 +
-+    return vhost_user_set_presetup_state(dev, start);
++    return hdev->vhost_ops->vhost_presetup(hdev, start);
 +}
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 6a173cb9fa..95a8031d12 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -192,6 +192,17 @@ void vhost_dev_disable_notifiers(struct vhost_dev *hdev, VirtIODevice *vdev);
+ bool vhost_config_pending(struct vhost_dev *hdev);
+ void vhost_config_mask(struct vhost_dev *hdev, VirtIODevice *vdev, bool mask);
+ 
++/**
++ * vhost_dev_presetup() - pre-setup the vhost device in LM
++ * @hdev: common vhost_dev structure
++ * @vdev: the VirtIODevice structure
++ *
++ * During live migration, send out device information to backend in early
++ * running state. Backend can have enough time to prepare HW.
++ * Return: 0 on success, < 0 on error.
++ */
++int vhost_dev_presetup(struct vhost_dev *hdev, VirtIODevice *vdev);
 +
- const VhostOps user_ops = {
-         .backend_type = VHOST_BACKEND_TYPE_USER,
-         .vhost_backend_init = vhost_user_backend_init,
-@@ -2777,4 +2806,5 @@ const VhostOps user_ops = {
-         .vhost_set_inflight_fd = vhost_user_set_inflight_fd,
-         .vhost_dev_start = vhost_user_dev_start,
-         .vhost_reset_status = vhost_user_reset_status,
-+        .vhost_presetup = vhost_user_presetup,
- };
-diff --git a/include/hw/virtio/vhost-backend.h b/include/hw/virtio/vhost-backend.h
-index 31a251a9f5..00dd532df9 100644
---- a/include/hw/virtio/vhost-backend.h
-+++ b/include/hw/virtio/vhost-backend.h
-@@ -133,6 +133,8 @@ typedef int (*vhost_set_config_call_op)(struct vhost_dev *dev,
- 
- typedef void (*vhost_reset_status_op)(struct vhost_dev *dev);
- 
-+typedef int (*vhost_presetup_op)(struct vhost_dev *dev, bool start);
-+
- typedef struct VhostOps {
-     VhostBackendType backend_type;
-     vhost_backend_init vhost_backend_init;
-@@ -181,6 +183,7 @@ typedef struct VhostOps {
-     vhost_force_iommu_op vhost_force_iommu;
-     vhost_set_config_call_op vhost_set_config_call;
-     vhost_reset_status_op vhost_reset_status;
-+    vhost_presetup_op vhost_presetup;
- } VhostOps;
- 
- int vhost_backend_update_device_iotlb(struct vhost_dev *dev,
+ /**
+  * vhost_dev_is_started() - report status of vhost device
+  * @hdev: common vhost_dev structure
+@@ -338,4 +349,5 @@ int vhost_dev_set_inflight(struct vhost_dev *dev,
+ int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
+                            struct vhost_inflight *inflight);
+ bool vhost_dev_has_iommu(struct vhost_dev *dev);
++int vhost_dev_set_presetup_state(struct vhost_dev *hdev, bool start);
+ #endif
 -- 
 2.27.0
 
