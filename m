@@ -2,65 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7CF7A64BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 15:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA75D7A653E
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 15:34:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiaeM-0002Bo-Lh; Tue, 19 Sep 2023 09:20:22 -0400
+	id 1qiaqo-0005vL-57; Tue, 19 Sep 2023 09:33:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qiae5-0002Aq-U4
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 09:20:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
+ id 1qiaqi-0005u0-NP; Tue, 19 Sep 2023 09:33:08 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qiae2-00037i-Hl
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 09:20:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695129601;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=qETdIitbhf/BthXK2sakRD0VMASLyjOh0xXZhbeiKns=;
- b=ZyEy0FboSpQYweQZz3ME6S7BXk1ypOj4Wh5z0kcz/NQuBXE0prG//29r1ws+88H8nkJTw1
- Y4hLg4g1BMTURARKcl2z2acoe9nVMZXsWBzH2RE8hb3MFv13vBB8DOrPNAVTkOqZUmT/x5
- jvE5UgJTpEJB0vNKX7atiYRu3bcgvi0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-103-8hiz4OS1MZqck4r63jICIQ-1; Tue, 19 Sep 2023 09:19:58 -0400
-X-MC-Unique: 8hiz4OS1MZqck4r63jICIQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>)
+ id 1qiaqe-0006D0-Ni; Tue, 19 Sep 2023 09:33:08 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 41AC196742C;
- Tue, 19 Sep 2023 13:19:58 +0000 (UTC)
-Received: from lacos-laptop-9.usersys.redhat.com (unknown [10.39.192.5])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5B1BA2156A27;
- Tue, 19 Sep 2023 13:19:57 +0000 (UTC)
-From: Laszlo Ersek <lersek@redhat.com>
-To: qemu-devel@nongnu.org,
-	lersek@redhat.com
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
-	qemu-stable@nongnu.org
-Subject: [PATCH] hw/display/ramfb: plug slight guest-triggerable leak on mode
- setting
-Date: Tue, 19 Sep 2023 15:19:55 +0200
-Message-Id: <20230919131955.27223-1-lersek@redhat.com>
+ by sin.source.kernel.org (Postfix) with ESMTPS id 7373DCE11DF;
+ Tue, 19 Sep 2023 13:32:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A018AC433C8;
+ Tue, 19 Sep 2023 13:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1695130375;
+ bh=+9WBwKO4/WRAwh3EviZ9SjRM+d1/lBTPriTxhSBbZOc=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=c/vOU4p6RyDMNggHnfBDZJxHdogehr+iJoXtREerBGQAxunlpVMvHW3K+0+jEZlBm
+ g2W7y5sWzignspnbBFdzmdmDBGrK4ZFJk9BoKZikc8tYZCRuveaQAZn/nDDN+bc0NB
+ Uyc1p674hEBhHSsv0OHYeUNOyBOoKALIWHvO4teP0Uh2/edp2ulqHU9sHFdCVGey5W
+ vC6uwnbFr/FIkQaTOCeaczs3thwwematevn3wkDbps51BIFFpDofedqLd1R3RUnT3R
+ GE0D/RzH4757snGFUx1SudDZJSxmBtayzZwdbaf+41R2vZvNYPWJ4oXtA8wgpmhffW
+ dl0ufzLKQT/Sg==
+Received: by mail-lj1-f176.google.com with SMTP id
+ 38308e7fff4ca-2bf5bf33bcdso94867481fa.0; 
+ Tue, 19 Sep 2023 06:32:55 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyL/WDSTq2KcZszPDRuQ12sVakOL95hWNHucrX7XCJxyJk5xaGT
+ 9ox+QkYb3IqD3allTFNbGMqKTZkH4bHhlpw6KT0=
+X-Google-Smtp-Source: AGHT+IF5mUT7ztVgyKGN3JLdZ9PpfkbdGh0+LqPr0gKSAtzC0VvMm1a029BDMf6NiT+xHFA9cldMGCI0ssOfTCiFIMQ=
+X-Received: by 2002:a05:651c:2c2:b0:2c0:10ed:431b with SMTP id
+ f2-20020a05651c02c200b002c010ed431bmr4201647ljo.23.1695130373701; Tue, 19 Sep
+ 2023 06:32:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -3
-X-Spam_score: -0.4
-X-Spam_bar: /
-X-Spam_report: (-0.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20230919101240.2569334-1-peter.maydell@linaro.org>
+ <20230919101240.2569334-3-peter.maydell@linaro.org>
+In-Reply-To: <20230919101240.2569334-3-peter.maydell@linaro.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 19 Sep 2023 15:32:41 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXF30=hokB8kBNeWYXhr=gCoq7fHuNz6q8sKYuWK+X8stw@mail.gmail.com>
+Message-ID: <CAMj1kXF30=hokB8kBNeWYXhr=gCoq7fHuNz6q8sKYuWK+X8stw@mail.gmail.com>
+Subject: Re: [RFC 2/3] hw/arm/virt: Wire up non-secure EL2 virtual timer IRQ
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Shannon Zhao <shannon.zhaosl@gmail.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=ardb@kernel.org; helo=sin.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- MIME_BASE64_TEXT=1.741, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,90 +84,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VGhlIGZ3X2NmZyBETUEgd3JpdGUgY2FsbGJhY2sgaW4gcmFtZmIgcHJlcGFyZXMgYSBuZXcgZGlz
-cGxheSBzdXJmYWNlIGluClFFTVU7IHRoaXMgbmV3IHN1cmZhY2UgaXMgcHV0IHRvIHVzZSAoInN3
-YXBwZWQgaW4iKSB1cG9uIHRoZSBuZXh0IGRpc3BsYXkKdXBkYXRlLiBBdCB0aGF0IHRpbWUsIHRo
-ZSBvbGQgc3VyZmFjZSAoaWYgYW55KSBpcyByZWxlYXNlZC4KCklmIHRoZSBndWVzdCB0cmlnZ2Vy
-cyB0aGUgZndfY2ZnIERNQSB3cml0ZSBjYWxsYmFjayBhdCBsZWFzdCB0d2ljZSBiZXR3ZWVuCnR3
-byBhZGphY2VudCBkaXNwbGF5IHVwZGF0ZXMsIHRoZW4gdGhlIHNlY29uZCBjYWxsYmFjayAoYW5k
-IGZ1cnRoZXIgc3VjaApjYWxsYmFja3MpIHdpbGwgbGVhayB0aGUgcHJldmlvdXNseSBwcmVwYXJl
-ZCAoYnV0IG5vdCB5ZXQgc3dhcHBlZCBpbikKZGlzcGxheSBzdXJmYWNlLgoKVGhlIGlzc3VlIGNh
-biBiZSBzaG93biBieToKCigxKSBzdGFydGluZyBRRU1VIHdpdGggIi10cmFjZSBkaXNwbGF5c3Vy
-ZmFjZV9mcmVlIiwgYW5kCgooMikgcnVubmluZyB0aGUgZm9sbG93aW5nIHByb2dyYW0gaW4gdGhl
-IGd1ZXN0IFVFRkkgc2hlbGw6Cgo+ICNpbmNsdWRlIDxMaWJyYXJ5L1NoZWxsQ0VudHJ5TGliLmg+
-ICAgICAgICAgICAvLyBTaGVsbEFwcE1haW4oKQo+ICNpbmNsdWRlIDxMaWJyYXJ5L1VlZmlCb290
-U2VydmljZXNUYWJsZUxpYi5oPiAvLyBnQlMKPiAjaW5jbHVkZSA8UHJvdG9jb2wvR3JhcGhpY3NP
-dXRwdXQuaD4gICAgICAgICAgLy8gRUZJX0dSQVBISUNTX09VVFBVVF9QUk9UT0NPTAo+Cj4gSU5U
-Tgo+IEVGSUFQSQo+IFNoZWxsQXBwTWFpbiAoCj4gICBJTiBVSU5UTiAgIEFyZ2MsCj4gICBJTiBD
-SEFSMTYgICoqQXJndgo+ICAgKQo+IHsKPiAgIEVGSV9TVEFUVVMgICAgICAgICAgICAgICAgICAg
-IFN0YXR1czsKPiAgIFZPSUQgICAgICAgICAgICAgICAgICAgICAgICAgICpJbnRlcmZhY2U7Cj4g
-ICBFRklfR1JBUEhJQ1NfT1VUUFVUX1BST1RPQ09MICAqR29wOwo+ICAgVUlOVDMyICAgICAgICAg
-ICAgICAgICAgICAgICAgTW9kZTsKPgo+ICAgU3RhdHVzID0gZ0JTLT5Mb2NhdGVQcm90b2NvbCAo
-Cj4gICAgICAgICAgICAgICAgICAgJmdFZmlHcmFwaGljc091dHB1dFByb3RvY29sR3VpZCwKPiAg
-ICAgICAgICAgICAgICAgICBOVUxMLAo+ICAgICAgICAgICAgICAgICAgICZJbnRlcmZhY2UKPiAg
-ICAgICAgICAgICAgICAgICApOwo+ICAgaWYgKEVGSV9FUlJPUiAoU3RhdHVzKSkgewo+ICAgICBy
-ZXR1cm4gMTsKPiAgIH0KPgo+ICAgR29wID0gSW50ZXJmYWNlOwo+Cj4gICBNb2RlID0gMTsKPiAg
-IGZvciAoIDsgOykgewo+ICAgICBTdGF0dXMgPSBHb3AtPlNldE1vZGUgKEdvcCwgTW9kZSk7Cj4g
-ICAgIGlmIChFRklfRVJST1IgKFN0YXR1cykpIHsKPiAgICAgICBicmVhazsKPiAgICAgfQo+Cj4g
-ICAgIE1vZGUgPSAxIC0gTW9kZTsKPiAgIH0KPgo+ICAgcmV0dXJuIDE7Cj4gfQoKVGhlIHN5bXB0
-b20gaXMgdGhlbiB0aGF0OgoKLSBvbmx5IG9uZSB0cmFjZSBtZXNzYWdlIGFwcGVhcnMgcGVyaW9k
-aWNhbGx5LAoKLSB0aGUgdGltZSBiZXR3ZWVuIGFkamFjZW50IG1lc3NhZ2VzIGtlZXBzIGluY3Jl
-YXNpbmcgLS0gaW1wbHlpbmcgdGhhdAogIHNvbWUgbGlzdCBzdHJ1Y3R1cmUgKGNvbnRhaW5pbmcg
-dGhlIGxlYWtlZCByZXNvdXJjZXMpIGtlZXBzIGdyb3dpbmcsCgotIHRoZSAic3VyZmFjZSIgcG9p
-bnRlciBpcyBldmVyIGRpZmZlcmVudC4KCj4gMTg1NjZAMTY5NTEyNzQ3MS40NDk1ODY6ZGlzcGxh
-eXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjMDlhN2MwCj4gMTg1NjZAMTY5NTEyNzQ3MS41
-Mjk1NTk6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjOWRhYzEwCj4gMTg1NjZA
-MTY5NTEyNzQ3MS42NTk4MTI6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjNDQx
-ZGQwCj4gMTg1NjZAMTY5NTEyNzQ3MS44Mzk2Njk6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNl
-PTB4N2YyZmNjMDM2M2QwCj4gMTg1NjZAMTY5NTEyNzQ3Mi4wNjk2NzQ6ZGlzcGxheXN1cmZhY2Vf
-ZnJlZSBzdXJmYWNlPTB4N2YyZmNjNDEzYTgwCj4gMTg1NjZAMTY5NTEyNzQ3Mi4zNDk1ODA6ZGlz
-cGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjMDljZDAwCj4gMTg1NjZAMTY5NTEyNzQ3
-Mi42Nzk3ODM6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjMTM5NWYwCj4gMTg1
-NjZAMTY5NTEyNzQ3My4wNTk4NDg6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNj
-MWNhZTUwCj4gMTg1NjZAMTY5NTEyNzQ3My40ODk3MjQ6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJm
-YWNlPTB4N2YyZmNjNDJmYzUwCj4gMTg1NjZAMTY5NTEyNzQ3My45Njk3OTE6ZGlzcGxheXN1cmZh
-Y2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjNDVkY2MwCj4gMTg1NjZAMTY5NTEyNzQ3NC40OTk3MDg6
-ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjNzBiOWQwCj4gMTg1NjZAMTY5NTEy
-NzQ3NS4wNzk3Njk6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjODJhY2MwCj4g
-MTg1NjZAMTY5NTEyNzQ3NS43MDk5NDE6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2Yy
-ZmNjMzY5YzAwCj4gMTg1NjZAMTY5NTEyNzQ3Ni4zODk2MTk6ZGlzcGxheXN1cmZhY2VfZnJlZSBz
-dXJmYWNlPTB4N2YyZmNjMzJiOTEwCj4gMTg1NjZAMTY5NTEyNzQ3Ny4xMTk3NzI6ZGlzcGxheXN1
-cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjMGQ1YTIwCj4gMTg1NjZAMTY5NTEyNzQ3Ny44OTk1
-MTc6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjMDg2YzQwCj4gMTg1NjZAMTY5
-NTEyNzQ3OC43Mjk5NjI6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjYzcyMDIw
-Cj4gMTg1NjZAMTY5NTEyNzQ3OS42MDk4Mzk6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4
-N2YyZmNjMTg1MTYwCj4gMTg1NjZAMTY5NTEyNzQ4MC41Mzk2ODg6ZGlzcGxheXN1cmZhY2VfZnJl
-ZSBzdXJmYWNlPTB4N2YyZmNjMjNhN2UwCj4gMTg1NjZAMTY5NTEyNzQ4MS41MTk3NTk6ZGlzcGxh
-eXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjM2VjODcwCj4gMTg1NjZAMTY5NTEyNzQ4Mi41
-NDk5MzA6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjNjM0OTYwCj4gMTg1NjZA
-MTY5NTEyNzQ4My42Mjk2NjE6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNlPTB4N2YyZmNjMjZi
-MTQwCj4gMTg1NjZAMTY5NTEyNzQ4NC43NTk5ODc6ZGlzcGxheXN1cmZhY2VfZnJlZSBzdXJmYWNl
-PTB4N2YyZmNjMzIxNzAwCj4gMTg1NjZAMTY5NTEyNzQ4NS45NDAyODk6ZGlzcGxheXN1cmZhY2Vf
-ZnJlZSBzdXJmYWNlPTB4N2YyZmNjYWFkMTAwCgpXZSBmaWd1cmVkIHRoaXMgd2Fzbid0IGEgQ1ZF
-LXdvcnRoeSBwcm9ibGVtLCBhcyBvbmx5IHNtYWxsIGFtb3VudHMgb2YKbWVtb3J5IHdlcmUgbGVh
-a2VkICh0aGUgZnJhbWVidWZmZXIgaXRzZWxmIGlzIG1hcHBlZCBmcm9tIGd1ZXN0IFJBTSwgUUVN
-VQpvbmx5IGFsbG9jYXRlcyBhZG1pbmlzdHJhdGl2ZSBzdHJ1Y3R1cmVzKSwgcGx1cyBsaWJ2aXJ0
-IHJlc3RyaWN0cyBRRU1VCm1lbW9yeSBmb290cHJpbnQgYW55d2F5LCB0aHVzIHRoZSBndWVzdCBj
-YW4gb25seSBEb1MgaXRzZWxmLgoKUGx1ZyB0aGUgbGVhaywgYnkgcmVsZWFzaW5nIHRoZSBsYXN0
-IHByZXBhcmVkIChub3QgeWV0IHN3YXBwZWQgaW4pIGRpc3BsYXkKc3VyZmFjZSwgaWYgYW55LCBp
-biB0aGUgZndfY2ZnIERNQSB3cml0ZSBjYWxsYmFjay4KClJlZ2FyZGluZyB0aGUgInJlcHJvZHVj
-ZXIiLCB3aXRoIHRoZSBmaXggaW4gcGxhY2UsIHRoZSBsb2cgaXMgZmxvb2RlZCB3aXRoCnRyYWNl
-IG1lc3NhZ2VzIChvbmUgcGVyIGZ3X2NmZyB3cml0ZSksICphbmQqIHRoZSB0cmFjZSBtZXNzYWdl
-IGFsdGVybmF0ZXMKYmV0d2VlbiBqdXN0IHR3byAic3VyZmFjZSIgcG9pbnRlciB2YWx1ZXMgKGku
-ZS4sIG5vdGhpbmcgaXMgbGVha2VkLCB0aGUKYWxsb2NhdG9yIGZsaXAtZmxvcHMgYmV0d2VlbiB0
-d28gb2JqZWN0cyBpbiBlZmZlY3QpLgoKVGhpcyBpc3N1ZSBhcHBlYXJzIHRvIGRhdGUgYmFjayB0
-byB0aGUgaW50cm9kdWNpb24gb2YgcmFtZmIgKDk5NWIzMDE3OWJkYywKImh3L2Rpc3BsYXk6IGFk
-ZCByYW1mYiwgYSBzaW1wbGUgYm9vdCBmcmFtZWJ1ZmZlciBsaXZpbmcgaW4gZ3Vlc3QgcmFtIiwK
-MjAxOC0wNi0xOCkuCgpDYzogR2VyZCBIb2ZmbWFubiA8a3JheGVsQHJlZGhhdC5jb20+IChtYWlu
-dGFpbmVyOnJhbWZiKQpDYzogcWVtdS1zdGFibGVAbm9uZ251Lm9yZwpGaXhlczogOTk1YjMwMTc5
-YmRjClNpZ25lZC1vZmYtYnk6IExhc3psbyBFcnNlayA8bGVyc2VrQHJlZGhhdC5jb20+Ci0tLQog
-aHcvZGlzcGxheS9yYW1mYi5jIHwgMSArCiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKykK
-CmRpZmYgLS1naXQgYS9ody9kaXNwbGF5L3JhbWZiLmMgYi9ody9kaXNwbGF5L3JhbWZiLmMKaW5k
-ZXggNzliOTc1NGE1ODIwLi5jMmIwMDJkNTM0ODAgMTAwNjQ0Ci0tLSBhL2h3L2Rpc3BsYXkvcmFt
-ZmIuYworKysgYi9ody9kaXNwbGF5L3JhbWZiLmMKQEAgLTk3LDYgKzk3LDcgQEAgc3RhdGljIHZv
-aWQgcmFtZmJfZndfY2ZnX3dyaXRlKHZvaWQgKmRldiwgb2ZmX3Qgb2Zmc2V0LCBzaXplX3QgbGVu
-KQogCiAgICAgcy0+d2lkdGggPSB3aWR0aDsKICAgICBzLT5oZWlnaHQgPSBoZWlnaHQ7CisgICAg
-cWVtdV9mcmVlX2Rpc3BsYXlzdXJmYWNlKHMtPmRzKTsKICAgICBzLT5kcyA9IHN1cmZhY2U7CiB9
-CiAK
+On Tue, 19 Sept 2023 at 12:12, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> Armv8.1+ CPUs have the Virtual Host Extension (VHE) which adds
+> a non-secure EL2 virtual timer. We implemented the timer itself
+> in the CPU model, but never wired up its IRQ line to the GIC.
+>
+> Wire up the IRQ line (this is always safe whether the CPU has the
+> interrupt or not, since it always creates the outbound IRQ line).
+> Report it to the guest via dtb and ACPI if the CPU has the feature.
+>
+> The DTB binding is documented in the kernel's
+> Documentation/devicetree/bindings/timer/arm\,arch_timer.yaml
+> and the ACPI table entries are documented in the ACPI
+> specification version 6.3 or later.
+>
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
+As mentioned in reply to the cover letter, this needs the hunk below
+to avoid using ACPI 6.3 features while claiming compatibility with
+ACPI 6.0
+
+With that added,
+
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+
+
+--- a/hw/arm/virt-acpi-build.c
++++ b/hw/arm/virt-acpi-build.c
+@@ -811,10 +811,10 @@ build_madt(GArray *table_data, BIOSLinker
+*linker, VirtMachineState *vms)
+ static void build_fadt_rev6(GArray *table_data, BIOSLinker *linker,
+                             VirtMachineState *vms, unsigned dsdt_tbl_offset)
+ {
+-    /* ACPI v6.0 */
++    /* ACPI v6.3 */
+     AcpiFadtData fadt = {
+         .rev = 6,
+-        .minor_ver = 0,
++        .minor_ver = 3,
+         .flags = 1 << ACPI_FADT_F_HW_REDUCED_ACPI,
+         .xdsdt_tbl_offset = &dsdt_tbl_offset,
+     };
+
+
+> ---
+>  include/hw/arm/virt.h    |  2 ++
+>  hw/arm/virt-acpi-build.c | 16 ++++++++++++----
+>  hw/arm/virt.c            | 29 ++++++++++++++++++++++++++++-
+>  3 files changed, 42 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index e1ddbea96be..79b1f9b737d 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -49,6 +49,7 @@
+>  #define ARCH_TIMER_S_EL1_IRQ  13
+>  #define ARCH_TIMER_NS_EL1_IRQ 14
+>  #define ARCH_TIMER_NS_EL2_IRQ 10
+> +#define ARCH_TIMER_NS_EL2_VIRT_IRQ 12
+>
+>  #define VIRTUAL_PMU_IRQ 7
+>
+> @@ -183,6 +184,7 @@ struct VirtMachineState {
+>      PCIBus *bus;
+>      char *oem_id;
+>      char *oem_table_id;
+> +    bool ns_el2_virt_timer_present;
+>  };
+>
+>  #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index 6b674231c27..7bc120a0f13 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -573,8 +573,8 @@ build_srat(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>  }
+>
+>  /*
+> - * ACPI spec, Revision 5.1
+> - * 5.2.24 Generic Timer Description Table (GTDT)
+> + * ACPI spec, Revision 6.5
+> + * 5.2.25 Generic Timer Description Table (GTDT)
+>   */
+>  static void
+>  build_gtdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+> @@ -588,7 +588,7 @@ build_gtdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>      uint32_t irqflags = vmc->claim_edge_triggered_timers ?
+>          1 : /* Interrupt is Edge triggered */
+>          0;  /* Interrupt is Level triggered  */
+> -    AcpiTable table = { .sig = "GTDT", .rev = 2, .oem_id = vms->oem_id,
+> +    AcpiTable table = { .sig = "GTDT", .rev = 3, .oem_id = vms->oem_id,
+>                          .oem_table_id = vms->oem_table_id };
+>
+>      acpi_table_begin(&table, table_data);
+> @@ -624,7 +624,15 @@ build_gtdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>      build_append_int_noprefix(table_data, 0, 4);
+>      /* Platform Timer Offset */
+>      build_append_int_noprefix(table_data, 0, 4);
+> -
+> +    if (vms->ns_el2_virt_timer_present) {
+> +        /* Virtual EL2 Timer GSIV */
+> +        build_append_int_noprefix(table_data, ARCH_TIMER_NS_EL2_VIRT_IRQ + 16, 4);
+> +        /* Virtual EL2 Timer Flags */
+> +        build_append_int_noprefix(table_data, irqflags, 4);
+> +    } else {
+> +        build_append_int_noprefix(table_data, 0, 4);
+> +        build_append_int_noprefix(table_data, 0, 4);
+> +    }
+>      acpi_table_end(linker, &table);
+>  }
+>
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 8ad78b23c24..4df7cd0a366 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -248,6 +248,19 @@ static void create_randomness(MachineState *ms, const char *node)
+>      qemu_fdt_setprop(ms->fdt, node, "rng-seed", seed.rng, sizeof(seed.rng));
+>  }
+>
+> +/*
+> + * The CPU object always exposes the NS EL2 virt timer IRQ line,
+> + * but we don't want to advertise it to the guest in the dtb or ACPI
+> + * table unless it's really going to do something.
+> + */
+> +static bool ns_el2_virt_timer_present(void)
+> +{
+> +    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
+> +    CPUARMState *env = &cpu->env;
+> +
+> +    return arm_feature(env, ARM_FEATURE_EL2) && cpu_isar_feature(aa64_vh, cpu);
+> +}
+> +
+>  static void create_fdt(VirtMachineState *vms)
+>  {
+>      MachineState *ms = MACHINE(vms);
+> @@ -365,11 +378,20 @@ static void fdt_add_timer_nodes(const VirtMachineState *vms)
+>                                  "arm,armv7-timer");
+>      }
+>      qemu_fdt_setprop(ms->fdt, "/timer", "always-on", NULL, 0);
+> -    qemu_fdt_setprop_cells(ms->fdt, "/timer", "interrupts",
+> +    if (vms->ns_el2_virt_timer_present) {
+> +        qemu_fdt_setprop_cells(ms->fdt, "/timer", "interrupts",
+> +                       GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_S_EL1_IRQ, irqflags,
+> +                       GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_NS_EL1_IRQ, irqflags,
+> +                       GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_VIRT_IRQ, irqflags,
+> +                       GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_NS_EL2_IRQ, irqflags,
+> +                       GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_NS_EL2_VIRT_IRQ, irqflags);
+> +    } else {
+> +        qemu_fdt_setprop_cells(ms->fdt, "/timer", "interrupts",
+>                         GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_S_EL1_IRQ, irqflags,
+>                         GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_NS_EL1_IRQ, irqflags,
+>                         GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_VIRT_IRQ, irqflags,
+>                         GIC_FDT_IRQ_TYPE_PPI, ARCH_TIMER_NS_EL2_IRQ, irqflags);
+> +    }
+>  }
+>
+>  static void fdt_add_cpu_nodes(const VirtMachineState *vms)
+> @@ -810,6 +832,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>              [GTIMER_VIRT] = ARCH_TIMER_VIRT_IRQ,
+>              [GTIMER_HYP]  = ARCH_TIMER_NS_EL2_IRQ,
+>              [GTIMER_SEC]  = ARCH_TIMER_S_EL1_IRQ,
+> +            [GTIMER_HYPVIRT] = ARCH_TIMER_NS_EL2_VIRT_IRQ,
+>          };
+>
+>          for (irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
+> @@ -2249,6 +2272,10 @@ static void machvirt_init(MachineState *machine)
+>          qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
+>          object_unref(cpuobj);
+>      }
+> +
+> +    /* Now we've created the CPUs we can see if they have the hypvirt timer */
+> +    vms->ns_el2_virt_timer_present = ns_el2_virt_timer_present();
+> +
+>      fdt_add_timer_nodes(vms);
+>      fdt_add_cpu_nodes(vms);
+>
+> --
+> 2.34.1
+>
 
