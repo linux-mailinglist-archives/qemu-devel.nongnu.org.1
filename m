@@ -2,110 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165117A6EE4
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 01:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA877A6F61
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 01:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qijij-0005At-ET; Tue, 19 Sep 2023 19:01:29 -0400
+	id 1qik4t-00028u-VQ; Tue, 19 Sep 2023 19:24:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qijig-0005AX-UY; Tue, 19 Sep 2023 19:01:26 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qik4r-00028e-Qw
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 19:24:21 -0400
+Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qijif-0003N4-7t; Tue, 19 Sep 2023 19:01:26 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38JMb7F4010505; Tue, 19 Sep 2023 23:00:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Sf6y0NMsrhXGwj848huaJWakvsIgIFJHrg9cthj5n3w=;
- b=SEY2DW/R2DhIS5/x5s7y09Cvf8NQDUxu1F6MKKUt1TySBrr5vkiaL5BViY8ORUnFbBQQ
- QheZBD50tyzrVoQwgrYt8NABmQ7HsbJSRLTbV9L4hflaJkMWTeIEpZhUAD4bY2hSM1tj
- fYKvGr3rwOcFTSllZ9PMHP2YiTJjC7agzqgAT7pRFgbG6nvvDS6KZO3zpe+lf1TFY5kY
- 7y2c5gGenljghQuQybYQ98rkle9otwH3D2abZCZjbLT3xJJtNtaFoyw7Vn8QjlP/12d/
- khHP56XYnBz6Uo6o0xdjMY7wlzePo4jz6dZvmiAP4OVZFxneqn1/chOKc7DCdW34FSgM cA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7mcdrj9g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 23:00:55 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38JMbfXT012773;
- Tue, 19 Sep 2023 23:00:55 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7mcdrj70-4
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 23:00:55 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38JLKpxX010124; Tue, 19 Sep 2023 22:31:21 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5rwk84uf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 22:31:21 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38JMVKxg58065290
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Sep 2023 22:31:20 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 664F958059;
- Tue, 19 Sep 2023 22:31:20 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5607C58058;
- Tue, 19 Sep 2023 22:31:20 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Tue, 19 Sep 2023 22:31:20 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
- by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id C693D16A05D9;
- Tue, 19 Sep 2023 17:31:19 -0500 (CDT)
-Received: (from mglenn@localhost)
- by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38JMVJKA3443306;
- Tue, 19 Sep 2023 17:31:19 -0500
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-ppc@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
-Subject: [PATCH v2 4/4] target/ppc: Add migration support for BHRB
-Date: Tue, 19 Sep 2023 17:30:05 -0500
-Message-Id: <20230919223005.3441713-5-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230919223005.3441713-1-milesg@linux.vnet.ibm.com>
-References: <20230919223005.3441713-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qik4p-0007xk-1K
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 19:24:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1695165859; x=1726701859;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=SLa3CFPM9YFPKuRCsC8h0wcrJYMqW+0P11yOKPVS3Zk=;
+ b=m/e097dq8gCfixsD59ZYRuSh3o5MHO7JRxdPRMd94F41GPNC/tLcClNC
+ E22o8qaMw8wGA6c/BHk5ecXhTAK5IOFl37dmc1Ndlv9vUrVnJvRJowbw/
+ gJsK7GzAbgGHm7yEsNihhwkeFXLR8+BCMKpy23iy/TkNjfEJysb3B6Tuj
+ 1GwKX4QXIV6IcF0u2Q0O4WbjZn+n88WHDrolTiBKauoW30ng8b69j/hT3
+ 8QwTObQLiYTU3xonXkZSzNl67qMrf2LJgNYVHiuFJP8AJhG0++fijazwj
+ 88mqphdkaGQJPjCMtpLl8bckE50mZ0HbE+U3czKdwgSwW27vrVdYKUMnN w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="383919136"
+X-IronPort-AV: E=Sophos;i="6.02,160,1688454000"; d="scan'208";a="383919136"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2023 16:24:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="696092486"
+X-IronPort-AV: E=Sophos;i="6.02,160,1688454000"; d="scan'208";a="696092486"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.19.128])
+ ([10.93.19.128])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2023 16:24:08 -0700
+Message-ID: <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
+Date: Wed, 20 Sep 2023 07:24:06 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cdegJ6uoplRTvClwYOs6gqGkHAsi593V
-X-Proofpoint-GUID: suCA4OikVST0fnSMoC4XLrZStDS3Jnmo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-19_12,2023-09-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 phishscore=0 mlxlogscore=784 impostorscore=0 bulkscore=0
- suspectscore=0 mlxscore=0 malwarescore=0 clxscore=1015 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309190193
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and associate
+ it with RAM_KVM_GMEM
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-4-xiaoyao.li@intel.com> <8734zazeag.fsf@pond.sub.org>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <8734zazeag.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.65; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,54 +94,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds migration support for Branch History Rolling
-Buffer (BHRB) internal state.
+On 9/19/2023 5:46 PM, Markus Armbruster wrote:
+> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+> 
+>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>
+>> Add a new property "private" to memory backends. When it's set to true,
+>> it indicates the RAMblock of the backend also requires kvm gmem.
+> 
+> Can you add a brief explanation why you need the property?
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
- target/ppc/machine.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+It provides a mechanism for user to specify whether the memory can serve 
+as private memory (need request kvm gmem).
 
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index d42e475bfb..ba328ad5e2 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -711,6 +711,26 @@ static const VMStateDescription vmstate_reservation = {
-     }
- };
- 
-+#ifdef TARGET_PPC64
-+static bool bhrb_needed(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
-+    return (cpu->env.flags & POWERPC_FLAG_BHRB) != 0;
-+}
-+
-+static const VMStateDescription vmstate_bhrb = {
-+    .name = "cpu/bhrb",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = bhrb_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-+        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+#endif
-+
- const VMStateDescription vmstate_ppc_cpu = {
-     .name = "cpu",
-     .version_id = 5,
-@@ -756,6 +776,7 @@ const VMStateDescription vmstate_ppc_cpu = {
- #ifdef TARGET_PPC64
-         &vmstate_tm,
-         &vmstate_slb,
-+        &vmstate_bhrb,
- #endif /* TARGET_PPC64 */
-         &vmstate_tlb6xx,
-         &vmstate_tlbemb,
--- 
-2.31.1
+>> Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> 
+> [...]
+> 
+>> diff --git a/qapi/qom.json b/qapi/qom.json
+>> index fa3e88c8e6ab..d28c5403bc0f 100644
+>> --- a/qapi/qom.json
+>> +++ b/qapi/qom.json
+>> @@ -605,6 +605,9 @@
+>>   # @reserve: if true, reserve swap space (or huge pages) if applicable
+>>   #     (default: true) (since 6.1)
+>>   #
+>> +# @private: if true, use KVM gmem private memory (default: false)
+>> +#     (since 8.2)
+>> +#
+>>   # @size: size of the memory region in bytes
+>>   #
+>>   # @x-use-canonical-path-for-ramblock-id: if true, the canonical path
+>> @@ -631,6 +634,7 @@
+>>               '*prealloc-context': 'str',
+>>               '*share': 'bool',
+>>               '*reserve': 'bool',
+>> +            '*private': 'bool',
+>>               'size': 'size',
+>>               '*x-use-canonical-path-for-ramblock-id': 'bool' } }
+> 
 
 
