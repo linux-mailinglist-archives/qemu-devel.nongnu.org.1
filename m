@@ -2,96 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CCB7A5D56
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2E47A5D53
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:04:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiWdL-0002ru-0m; Tue, 19 Sep 2023 05:03:03 -0400
+	id 1qiWdu-0003K0-Ml; Tue, 19 Sep 2023 05:03:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qiWd9-0002qL-55
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:02:52 -0400
-Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qiWd6-0003eU-8c
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:02:50 -0400
-Received: by mail-qt1-x831.google.com with SMTP id
- d75a77b69052e-4136bfb3220so33838911cf.1
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:02:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695114167; x=1695718967; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ND+2Cd2f8q8DTCVTY8iiypxhEp8aFLppxW2F9VQBRQ4=;
- b=SBED2toWqV9+yYr80rYw3R/n5y6BBc/L70lyz9EEG1/nNEXdmC4ihQZne+NRu+R+wf
- CAoZ/fnx6baCysNSl5TLmK7oUcQ/l/WKoh9lS49Iho4SkTp6gcfqUkYwfedmut5qfLxR
- LkU8T9hOE2P4yVqea3KaNS+TVhaAAMtOaIz2V+YSErNhVZ1+moUxXao0XnAvzJjoa6nF
- OsHo98RNP2hKZEmKzXaiKCux8guVzLblydZiRDetAFRGlLai9ypfPBDxMqD0IiBH83DF
- 5zAsP21g07sT2u47NEYC3dEvP7OfTSeDE6K2JLkAVWx4ni2RORGf5wiyw4QHWk5A+ubG
- yuaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695114167; x=1695718967;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ND+2Cd2f8q8DTCVTY8iiypxhEp8aFLppxW2F9VQBRQ4=;
- b=wG1jx/3zaDq+cmo8YPuNI61wn2kK0kfyLtRx249a4KVXTFH6+ptnGYIrvzlC/Hs0th
- AI/V9j3cbC6wJpk3laag1moIVm8w8oVJLfAevLL0bW5V6/THzOLZJTojD1QB1QA+rSVY
- B2Fz0yf5oUx294Di98Jipxeq16rD079ih8T7e0cGz7XxOE/PcAxONr//IChtiGsDS4Rm
- 3XNo69usH3UqTJoV6uwZAbL8Sb2qEkyYuwsQLv4vdr2H2dEkql9mmhErRCmzXnoMMZaS
- iVDnwP8uaxvKi6PK7L90S+ZkCF83KMmTWa2YQkk6XAvbox8etmvySiL8dz3+DJhcgSmC
- H5kg==
-X-Gm-Message-State: AOJu0YxsFxwFEISV8xPtlKOSvJFdaA7d1psxBKsUUERFAORQ710G7YsW
- hnQRH8qSWWVd91aC5CDTvo+yMrd1Kyyfjy1WSro=
-X-Google-Smtp-Source: AGHT+IGChCz4TECfH811U/m/F4mFC9MdWzVWs4DMJgpjYjtS/oH22r6seHdiRpej/iz1PIscZ6RnbPplDdc39F2tjEA=
-X-Received: by 2002:a05:622a:1ba4:b0:412:6f:9ead with SMTP id
- bp36-20020a05622a1ba400b00412006f9eadmr12961809qtb.14.1695114167189; Tue, 19
- Sep 2023 02:02:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=UaPf=FD=kaod.org=clg@ozlabs.org>)
+ id 1qiWdq-0003DI-Ah; Tue, 19 Sep 2023 05:03:35 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=UaPf=FD=kaod.org=clg@ozlabs.org>)
+ id 1qiWdo-0003l5-7C; Tue, 19 Sep 2023 05:03:34 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4RqbKy3V28z4xQM;
+ Tue, 19 Sep 2023 19:03:18 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RqbKw0Jgvz4xQT;
+ Tue, 19 Sep 2023 19:03:15 +1000 (AEST)
+Message-ID: <752e55c4-0a81-3f7e-905e-53f89674dfdd@kaod.org>
+Date: Tue, 19 Sep 2023 11:03:11 +0200
 MIME-Version: 1.0
-References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-12-ray.huang@amd.com>
-In-Reply-To: <20230915111130.24064-12-ray.huang@amd.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 19 Sep 2023 13:02:36 +0400
-Message-ID: <CAJ+F1CJ8R7j_1k3yC2GsdN_v8CsOQ7R+=n_0CCzFW98tWrSLhA@mail.gmail.com>
-Subject: Re: [QEMU PATCH v5 11/13] virtio-gpu: Support Venus capset
-To: Huang Rui <ray.huang@amd.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>, 
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- qemu-devel@nongnu.org, xen-devel@lists.xenproject.org, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, 
- Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>, 
- Antonio Caggiano <antonio.caggiano@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 2/8] pnv/psi: Clean up local variable shadowing
+Content-Language: en-US
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230918145850.241074-1-clg@kaod.org>
+ <20230918145850.241074-3-clg@kaod.org>
+ <01ba6d06-79ae-18a3-5835-a364cadbb9fd@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <01ba6d06-79ae-18a3-5835-a364cadbb9fd@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=UaPf=FD=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,81 +70,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+On 9/19/23 08:57, Harsh Prateek Bora wrote:
+> 
+> 
+> On 9/18/23 20:28, Cédric Le Goater wrote:
+>> to fix :
+>>
+>>    ../hw/ppc/pnv_psi.c: In function ‘pnv_psi_p9_mmio_write’:
+>>    ../hw/ppc/pnv_psi.c:741:24: warning: declaration of ‘addr’ shadows a parameter [-Wshadow=compatible-local]
+>>      741 |                 hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+>>          |                        ^~~~
+>>    ../hw/ppc/pnv_psi.c:702:56: note: shadowed declaration is here
+>>      702 | static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
+>>          |                                                 ~~~~~~~^~~~
+>>
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   hw/ppc/pnv_psi.c | 5 +++--
+>>   1 file changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
+>> index daaa2f0575fd..26460d210deb 100644
+>> --- a/hw/ppc/pnv_psi.c
+>> +++ b/hw/ppc/pnv_psi.c
+>> @@ -738,8 +738,9 @@ static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
+>>               }
+>>           } else {
+>>               if (!(psi->regs[reg] & PSIHB9_ESB_CI_VALID)) {
+>> -                hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+>> -                memory_region_add_subregion(sysmem, addr,
+>> +                hwaddr esb_addr =
+> 
+> While at it, we may want to move the declaration to the beginning of the function. 
 
-On Fri, Sep 15, 2023 at 3:14=E2=80=AFPM Huang Rui <ray.huang@amd.com> wrote=
-:
->
-> From: Antonio Caggiano <antonio.caggiano@collabora.com>
->
-> Add support for the Venus capset, which enables Vulkan support through
-> the Venus Vulkan driver for virtio-gpu.
->
-> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> ---
->
-> V4 -> V5:
->     - Send kernel patch to define VIRTIO_GPU_CAPSET_VENUS and will use
->       another patch to sync up linux headers. (Akihiko)
->     - https://lore.kernel.org/lkml/20230915105918.3763061-1-ray.huang@amd=
-.com/
+I am more in favor of declaring the variables where they are needed.
+I think it is better pratice since it identifies a functional block
+which could be move in a external routine at some point if it becomes
+too complex.
 
-Ok but in the meantime, you should have that header update patch in
-the series too, otherwise we can't compile it :)
-
-thanks
-
->
->  hw/display/virtio-gpu-virgl.c | 21 +++++++++++++++++----
->  1 file changed, 17 insertions(+), 4 deletions(-)
->
-> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.=
-c
-> index 8a017dbeb4..7f95490e90 100644
-> --- a/hw/display/virtio-gpu-virgl.c
-> +++ b/hw/display/virtio-gpu-virgl.c
-> @@ -437,6 +437,11 @@ static void virgl_cmd_get_capset_info(VirtIOGPU *g,
->          virgl_renderer_get_cap_set(resp.capset_id,
->                                     &resp.capset_max_version,
->                                     &resp.capset_max_size);
-> +    } else if (info.capset_index =3D=3D 2) {
-> +        resp.capset_id =3D VIRTIO_GPU_CAPSET_VENUS;
-> +        virgl_renderer_get_cap_set(resp.capset_id,
-> +                                   &resp.capset_max_version,
-> +                                   &resp.capset_max_size);
->      } else {
->          resp.capset_max_version =3D 0;
->          resp.capset_max_size =3D 0;
-> @@ -901,10 +906,18 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
->
->  int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
->  {
-> -    uint32_t capset2_max_ver, capset2_max_size;
-> +    uint32_t capset2_max_ver, capset2_max_size, num_capsets;
-> +    num_capsets =3D 1;
-> +
->      virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
-> -                              &capset2_max_ver,
-> -                              &capset2_max_size);
-> +                               &capset2_max_ver,
-> +                               &capset2_max_size);
-> +    num_capsets +=3D capset2_max_ver ? 1 : 0;
-> +
-> +    virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-> +                               &capset2_max_ver,
-> +                               &capset2_max_size);
-> +    num_capsets +=3D capset2_max_size ? 1 : 0;
->
-> -    return capset2_max_ver ? 2 : 1;
-> +    return num_capsets;
->  }
-> --
-> 2.34.1
->
->
+> Anyways,
+> 
+> Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+Thanks,
+
+C.
+
+
+> 
+>> +                    val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+>> +                memory_region_add_subregion(sysmem, esb_addr,
+>>                                               &psi9->source.esb_mmio);
+>>               }
+>>           }
+
 
