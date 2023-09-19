@@ -2,55 +2,120 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629367A6084
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 13:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8617A608A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 13:04:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiYU5-0001LG-Aj; Tue, 19 Sep 2023 07:01:37 -0400
+	id 1qiYW1-0002NB-FS; Tue, 19 Sep 2023 07:03:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qiYTc-0001Ib-7k; Tue, 19 Sep 2023 07:01:11 -0400
-Received: from out30-110.freemail.mail.aliyun.com ([115.124.30.110])
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1qiYVN-0002Cr-07
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:02:57 -0400
+Received: from mail-bn8nam11on20601.outbound.protection.outlook.com
+ ([2a01:111:f400:7eae::601]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qiYTG-0001CX-40; Tue, 19 Sep 2023 07:00:50 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R151e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045176;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
- TI=SMTPD_---0VsRJbA7_1695121234; 
-Received: from 30.221.108.237(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VsRJbA7_1695121234) by smtp.aliyun-inc.com;
- Tue, 19 Sep 2023 19:00:35 +0800
-Message-ID: <ee978c59-1973-80e9-60fd-1ff6046eb4da@linux.alibaba.com>
-Date: Tue, 19 Sep 2023 18:59:45 +0800
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1qiYVJ-0001hD-JC
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:02:56 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=juSfX+c1ZULHoRR6SU6/x7kXfReQ/DwTo86K84GZ4qsE7BOt8HjP8vHj43lluu5vtRn2YbAJGaTNeFs3HwJAYDHCF2XPDvEy3KaKJL9EuoAceatd8ZfFsDzmhosGpH5LuaUXNxNx5P2fjivkkb2kKFZWP6kveIhHjytygbUUq7kHeyHRRt71muGxkqSx7SlbChSL25nnbDIBSa+/3WNU7W3h8oSmMx0IVbInOsFB456xhEgeapv8SHY0ovgM+qB8EoLR1Lg7/AguDFxnaNS085J6p9nvOAs2xqdGE73tA3CFGRrKT+ylXl+eXSVzi7QJC/kahcEKD2ZRAv2CDOHLBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e/Zsd+jyqGF+pCVofqpJHSWhT4mE3So0GY+NEgTTrns=;
+ b=CA1hGQ1dtvBO2X7+J3oCA0iW393scOQjne/WtKTluHubKlT2Ln3prr9dOQdmJLw3kWq4yzWXYfIW98RQgcKMhH56pv7gI9RkCILoTtlo5JCi3TsyIl3X20R1XI1c75elJ63RYprbGG2gTAQZAwCgXp7Q4oXM169j8OC3n03mGWRnHlTXBga+VebL1zohKqKxN5B5SEbpLsMoj/8IOsoxNl371/RXZ1OBMUd9yXNEHCyYSEgWFPMukzO0aV7vRK+j4WyvXp9xpvqq7wqMP8/iiVtJNXDwYlnLtpcPHUNlN/2MkyMuRpEODbjxX8+4I9fKol1vWf4TZFODNtFrNZh0Hw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e/Zsd+jyqGF+pCVofqpJHSWhT4mE3So0GY+NEgTTrns=;
+ b=od+CrD5Dk5eO141urMhmLvzVF36nc1j9Gb+u5nn8yQClil2bXFtTjiWpjcihF7nU7Md63r1YkWo64kbQ1dafdW7A2S0R45KMB9EIY1c9rzeAg9ocuVeLhG65kH8T5Wmh0fpcazznNG1GrkKoCZJ9J9wsD29P3UeWFS+ufEr7bTw=
+Received: from MW4PR04CA0328.namprd04.prod.outlook.com (2603:10b6:303:82::33)
+ by LV8PR12MB9360.namprd12.prod.outlook.com (2603:10b6:408:205::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Tue, 19 Sep
+ 2023 11:02:48 +0000
+Received: from CO1PEPF000044F9.namprd21.prod.outlook.com
+ (2603:10b6:303:82:cafe::80) by MW4PR04CA0328.outlook.office365.com
+ (2603:10b6:303:82::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27 via Frontend
+ Transport; Tue, 19 Sep 2023 11:02:48 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F9.mail.protection.outlook.com (10.167.241.199) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6838.0 via Frontend Transport; Tue, 19 Sep 2023 11:02:48 +0000
+Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 19 Sep
+ 2023 06:02:41 -0500
+From: Jiqian Chen <Jiqian.Chen@amd.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>, "Gurchetan
+ Singh" <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>, "Robert
+ Beckett" <bob.beckett@collabora.com>, <qemu-devel@nongnu.org>
+CC: <linux-kernel@vger.kernel.org>, Stefano Stabellini
+ <sstabellini@kernel.org>, Anthony PERARD <anthony.perard@citrix.com>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>, "Dr . David Alan
+ Gilbert" <dgilbert@redhat.com>, Alex Deucher <Alexander.Deucher@amd.com>,
+ Christian Koenig <Christian.Koenig@amd.com>, Stewart Hildebrand
+ <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
+ Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
+Subject: [QEMU PATCH v5 0/1] add freeze_mode for virtio-pci and support S3 for
+ virtgpu
+Date: Tue, 19 Sep 2023 19:02:23 +0800
+Message-ID: <20230919110225.2282914-1-Jiqian.Chen@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 03/19] target/riscv: move
- riscv_cpu_validate_set_extensions() to tcg-cpu.c
-Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, palmer@rivosinc.com, ajones@ventanamicro.com,
- philmd@linaro.org
-References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
- <20230906091647.1667171-4-dbarboza@ventanamicro.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20230906091647.1667171-4-dbarboza@ventanamicro.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.110;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-110.freemail.mail.aliyun.com
-X-Spam_score_int: -113
-X-Spam_score: -11.4
-X-Spam_bar: -----------
-X-Spam_report: (-11.4 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F9:EE_|LV8PR12MB9360:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2eb9a496-d6f2-4a8f-3f1c-08dbb8fff5f5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: CaNwgHHlfb3/y/LgmfU4qVQaPChDDTxN7sWlWTHyAEsVpq9e3kK5j6OYWTyxQ4lzLxQEsW1HFfHdjj61sgOXtXmoA6R8Z2syomitcrs4QS9qiYLOEgO7a4wOrUZSwFMPTnhgLjGBbUBbVmGNDu18jtiod88mcr/ZNqozeb6bKJpTKJNN8Z+N8ca5WKTspTDSU+f7LxHPsS4kGRz+q10h8Xi9XbTs/Ts49P60bVhVz2lzg6jbeehzmKZIAgOm+0Yu/JyMVSZCq40nxTfqzArOYqx4/XUmN9vRK74kaFOo0nV+ojUjSvRs88HkVXA3tUZjf8OE1/hIWJ9pKUqIHVglfA44mh4Ez65birgJp0N+8/VTV6fzwI9MHsHsUG6Qf+9+Hy03jz5s6ioHvLZN0c4IMWTTnuQDXnjEsrhHtsEUkp3Y1VXVzkDuYenSrkeFRBwN4Qgs5+FMRBed79CJs4lRwydiv9d72mE7kHS4hwORJHaFaWhbhHMMNM/ML8i3YGuNBOkdz//QX00NaTC7XPt6H2gXIO/HgVyrDqfAUNHcC0Te7CoV+vMjBqP6wYFti32U12jzlr4cRD5VCHh9DdXdWem3+ozNKv9JjI6YhqpckNjFp1hbm5l17YpXiqot/eqWihkBXSP2FcpLs3VPZqmc9kMZNaamvYCxoeDOiDbtJtPvvp/v6znaajHJ8qrhqqX8u+jRDj74R3/G9HSYAgRsb4LZ34CzFRbyKH4p+tIBC9c9cUYBilTHErRuG89p8Bqidq/ij1IzDcQR+g6pIxQLDcT+av+Z94DUNFPzSl5n51SKlfUfEjEFGOkouoiFkKR4ziawO7llpZtlI9F0RYHqrPklXbUJ5v6wgT4EntxpeE5rinnS2OGg3VoZFea1uon6
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(396003)(376002)(39860400002)(136003)(346002)(1800799009)(186009)(451199024)(82310400011)(36840700001)(46966006)(40470700004)(478600001)(7696005)(6666004)(40460700003)(86362001)(36756003)(81166007)(921005)(356005)(82740400003)(40480700001)(36860700001)(2616005)(1076003)(16526019)(26005)(2906002)(47076005)(336012)(426003)(966005)(83380400001)(8676002)(5660300002)(110136005)(8936002)(4326008)(41300700001)(7416002)(70586007)(70206006)(54906003)(316002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 11:02:48.4156 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2eb9a496-d6f2-4a8f-3f1c-08dbb8fff5f5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F9.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9360
+Received-SPF: softfail client-ip=2a01:111:f400:7eae::601;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,897 +131,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all,
+This is the v5 of Qemu patches and v5 makes below changes:
+* Since this series patches add a new mechanism that let virtgpu and Qemu can negotiate
+  their reset behavior, and other guys hope me can improve this mechanism to virtio pci
+  level, so that other virtio devices can also benefit from it. So instead of adding
+  new feature flag VIRTIO_GPU_F_FREEZE_S3 only serves for virtgpu, v5 add a new parameter
+  named freeze_mode to struct VirtIODevice, when guest begin suspending, set freeze_mode
+  to VIRTIO_PCI_FREEZE_MODE_FREEZE_S3, and then all virtio devices can get this status,
+  and notice that guest is suspending, then they can change their reset behavior . See
+  the new commit "virtio-pci: Add freeze_mode case for virtio pci"
+* The second commit is just for virtgpu, when freeze_mode is VIRTIO_PCI_FREEZE_MODE_FREEZE_S3,
+  prevent Qemu destroying render resources, so that the display can come back after resuming.
 
-On 2023/9/6 17:16, Daniel Henrique Barboza wrote:
-> This function is the core of the RISC-V validations for TCG CPUs, and it
-> has a lot going on.
->
-> Functions in cpu.c were made public to allow them to be used by the KVM
-> accelerator class later on. 'cpu_cfg_ext_get_min_version()' is notably
-> hard to move it to another file due to its dependency with isa_edata_arr[]
-> array, thus make it public and use it as is for now.
->
-> riscv_cpu_validate_set_extensions() is kept public because it's used by
-> csr.c in write_misa().
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+V5 of kernel patch:
+https://lore.kernel.org/lkml/20230919104607.2282248-1-Jiqian.Chen@amd.com/T/#t
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+The link to trace this issue:
+https://gitlab.com/qemu-project/qemu/-/issues/1860
 
-Zhiwei
+Best regards,
+Jiqian Chen
 
-> ---
->   target/riscv/cpu.c         | 361 +------------------------------------
->   target/riscv/cpu.h         |   8 +-
->   target/riscv/csr.c         |   1 +
->   target/riscv/tcg/tcg-cpu.c | 356 ++++++++++++++++++++++++++++++++++++
->   target/riscv/tcg/tcg-cpu.h |  28 +++
->   5 files changed, 397 insertions(+), 357 deletions(-)
->   create mode 100644 target/riscv/tcg/tcg-cpu.h
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 59785f5d9a..e186c026c9 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -163,22 +163,21 @@ static const struct isa_ext_data isa_edata_arr[] = {
->   /* Hash that stores user set extensions */
->   static GHashTable *multi_ext_user_opts;
->   
-> -static bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset)
-> +bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset)
->   {
->       bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
->   
->       return *ext_enabled;
->   }
->   
-> -static void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset,
-> -                                   bool en)
-> +void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en)
->   {
->       bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
->   
->       *ext_enabled = en;
->   }
->   
-> -static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
-> +int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
->   {
->       int i;
->   
-> @@ -193,38 +192,12 @@ static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
->       g_assert_not_reached();
->   }
->   
-> -static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
-> +bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
->   {
->       return g_hash_table_contains(multi_ext_user_opts,
->                                    GUINT_TO_POINTER(ext_offset));
->   }
->   
-> -static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
-> -                                    bool value)
-> -{
-> -    CPURISCVState *env = &cpu->env;
-> -    bool prev_val = isa_ext_is_enabled(cpu, ext_offset);
-> -    int min_version;
-> -
-> -    if (prev_val == value) {
-> -        return;
-> -    }
-> -
-> -    if (cpu_cfg_ext_is_user_set(ext_offset)) {
-> -        return;
-> -    }
-> -
-> -    if (value && env->priv_ver != PRIV_VERSION_LATEST) {
-> -        /* Do not enable it if priv_ver is older than min_version */
-> -        min_version = cpu_cfg_ext_get_min_version(ext_offset);
-> -        if (env->priv_ver < min_version) {
-> -            return;
-> -        }
-> -    }
-> -
-> -    isa_ext_update_enabled(cpu, ext_offset, value);
-> -}
-> -
->   const char * const riscv_int_regnames[] = {
->       "x0/zero", "x1/ra",  "x2/sp",  "x3/gp",  "x4/tp",  "x5/t0",   "x6/t1",
->       "x7/t2",   "x8/s0",  "x9/s1",  "x10/a0", "x11/a1", "x12/a2",  "x13/a3",
-> @@ -1023,46 +996,7 @@ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
->       }
->   }
->   
-> -static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-> -                                 Error **errp)
-> -{
-> -    if (!is_power_of_2(cfg->vlen)) {
-> -        error_setg(errp, "Vector extension VLEN must be power of 2");
-> -        return;
-> -    }
-> -    if (cfg->vlen > RV_VLEN_MAX || cfg->vlen < 128) {
-> -        error_setg(errp,
-> -                   "Vector extension implementation only supports VLEN "
-> -                   "in the range [128, %d]", RV_VLEN_MAX);
-> -        return;
-> -    }
-> -    if (!is_power_of_2(cfg->elen)) {
-> -        error_setg(errp, "Vector extension ELEN must be power of 2");
-> -        return;
-> -    }
-> -    if (cfg->elen > 64 || cfg->elen < 8) {
-> -        error_setg(errp,
-> -                   "Vector extension implementation only supports ELEN "
-> -                   "in the range [8, 64]");
-> -        return;
-> -    }
-> -    if (cfg->vext_spec) {
-> -        if (!g_strcmp0(cfg->vext_spec, "v1.0")) {
-> -            env->vext_ver = VEXT_VERSION_1_00_0;
-> -        } else {
-> -            error_setg(errp, "Unsupported vector spec version '%s'",
-> -                       cfg->vext_spec);
-> -            return;
-> -        }
-> -    } else if (env->vext_ver == 0) {
-> -        qemu_log("vector version is not specified, "
-> -                 "use the default value v1.0\n");
-> -
-> -        env->vext_ver = VEXT_VERSION_1_00_0;
-> -    }
-> -}
-> -
-> -static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
-> +void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->   {
->       CPURISCVState *env = &cpu->env;
->       int i;
-> @@ -1086,291 +1020,6 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->       }
->   }
->   
-> -/*
-> - * Check consistency between chosen extensions while setting
-> - * cpu->cfg accordingly.
-> - */
-> -void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-> -{
-> -    CPURISCVState *env = &cpu->env;
-> -    Error *local_err = NULL;
-> -
-> -    /* Do some ISA extension error checking */
-> -    if (riscv_has_ext(env, RVG) &&
-> -        !(riscv_has_ext(env, RVI) && riscv_has_ext(env, RVM) &&
-> -          riscv_has_ext(env, RVA) && riscv_has_ext(env, RVF) &&
-> -          riscv_has_ext(env, RVD) &&
-> -          cpu->cfg.ext_icsr && cpu->cfg.ext_ifencei)) {
-> -
-> -        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_icsr)) &&
-> -            !cpu->cfg.ext_icsr) {
-> -            error_setg(errp, "RVG requires Zicsr but user set Zicsr to false");
-> -            return;
-> -        }
-> -
-> -        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_ifencei)) &&
-> -            !cpu->cfg.ext_ifencei) {
-> -            error_setg(errp, "RVG requires Zifencei but user set "
-> -                       "Zifencei to false");
-> -            return;
-> -        }
-> -
-> -        warn_report("Setting G will also set IMAFD_Zicsr_Zifencei");
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_icsr), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_ifencei), true);
-> -
-> -        env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
-> -        env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
-> -    }
-> -
-> -    if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
-> -        error_setg(errp,
-> -                   "I and E extensions are incompatible");
-> -        return;
-> -    }
-> -
-> -    if (!riscv_has_ext(env, RVI) && !riscv_has_ext(env, RVE)) {
-> -        error_setg(errp,
-> -                   "Either I or E extension must be set");
-> -        return;
-> -    }
-> -
-> -    if (riscv_has_ext(env, RVS) && !riscv_has_ext(env, RVU)) {
-> -        error_setg(errp,
-> -                   "Setting S extension without U extension is illegal");
-> -        return;
-> -    }
-> -
-> -    if (riscv_has_ext(env, RVH) && !riscv_has_ext(env, RVI)) {
-> -        error_setg(errp,
-> -                   "H depends on an I base integer ISA with 32 x registers");
-> -        return;
-> -    }
-> -
-> -    if (riscv_has_ext(env, RVH) && !riscv_has_ext(env, RVS)) {
-> -        error_setg(errp, "H extension implicitly requires S-mode");
-> -        return;
-> -    }
-> -
-> -    if (riscv_has_ext(env, RVF) && !cpu->cfg.ext_icsr) {
-> -        error_setg(errp, "F extension requires Zicsr");
-> -        return;
-> -    }
-> -
-> -    if ((cpu->cfg.ext_zawrs) && !riscv_has_ext(env, RVA)) {
-> -        error_setg(errp, "Zawrs extension requires A extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zfa && !riscv_has_ext(env, RVF)) {
-> -        error_setg(errp, "Zfa extension requires F extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zfh) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zfhmin), true);
-> -    }
-> -
-> -    if (cpu->cfg.ext_zfhmin && !riscv_has_ext(env, RVF)) {
-> -        error_setg(errp, "Zfh/Zfhmin extensions require F extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zfbfmin && !riscv_has_ext(env, RVF)) {
-> -        error_setg(errp, "Zfbfmin extension depends on F extension");
-> -        return;
-> -    }
-> -
-> -    if (riscv_has_ext(env, RVD) && !riscv_has_ext(env, RVF)) {
-> -        error_setg(errp, "D extension requires F extension");
-> -        return;
-> -    }
-> -
-> -    if (riscv_has_ext(env, RVV)) {
-> -        riscv_cpu_validate_v(env, &cpu->cfg, &local_err);
-> -        if (local_err != NULL) {
-> -            error_propagate(errp, local_err);
-> -            return;
-> -        }
-> -
-> -        /* The V vector extension depends on the Zve64d extension */
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64d), true);
-> -    }
-> -
-> -    /* The Zve64d extension depends on the Zve64f extension */
-> -    if (cpu->cfg.ext_zve64d) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64f), true);
-> -    }
-> -
-> -    /* The Zve64f extension depends on the Zve32f extension */
-> -    if (cpu->cfg.ext_zve64f) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve32f), true);
-> -    }
-> -
-> -    if (cpu->cfg.ext_zve64d && !riscv_has_ext(env, RVD)) {
-> -        error_setg(errp, "Zve64d/V extensions require D extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zve32f && !riscv_has_ext(env, RVF)) {
-> -        error_setg(errp, "Zve32f/Zve64f extensions require F extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zvfh) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvfhmin), true);
-> -    }
-> -
-> -    if (cpu->cfg.ext_zvfhmin && !cpu->cfg.ext_zve32f) {
-> -        error_setg(errp, "Zvfh/Zvfhmin extensions require Zve32f extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zvfh && !cpu->cfg.ext_zfhmin) {
-> -        error_setg(errp, "Zvfh extensions requires Zfhmin extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zfbfmin) {
-> -        error_setg(errp, "Zvfbfmin extension depends on Zfbfmin extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zve32f) {
-> -        error_setg(errp, "Zvfbfmin extension depends on Zve32f extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zvfbfwma && !cpu->cfg.ext_zvfbfmin) {
-> -        error_setg(errp, "Zvfbfwma extension depends on Zvfbfmin extension");
-> -        return;
-> -    }
-> -
-> -    /* Set the ISA extensions, checks should have happened above */
-> -    if (cpu->cfg.ext_zhinx) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-> -    }
-> -
-> -    if ((cpu->cfg.ext_zdinx || cpu->cfg.ext_zhinxmin) && !cpu->cfg.ext_zfinx) {
-> -        error_setg(errp, "Zdinx/Zhinx/Zhinxmin extensions require Zfinx");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zfinx) {
-> -        if (!cpu->cfg.ext_icsr) {
-> -            error_setg(errp, "Zfinx extension requires Zicsr");
-> -            return;
-> -        }
-> -        if (riscv_has_ext(env, RVF)) {
-> -            error_setg(errp,
-> -                       "Zfinx cannot be supported together with F extension");
-> -            return;
-> -        }
-> -    }
-> -
-> -    if (cpu->cfg.ext_zce) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcb), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmp), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmt), true);
-> -        if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
-> -            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
-> -        }
-> -    }
-> -
-> -    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
-> -    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-> -        if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
-> -            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
-> -        }
-> -        if (riscv_has_ext(env, RVD)) {
-> -            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcd), true);
-> -        }
-> -    }
-> -
-> -    if (env->misa_mxl_max != MXL_RV32 && cpu->cfg.ext_zcf) {
-> -        error_setg(errp, "Zcf extension is only relevant to RV32");
-> -        return;
-> -    }
-> -
-> -    if (!riscv_has_ext(env, RVF) && cpu->cfg.ext_zcf) {
-> -        error_setg(errp, "Zcf extension requires F extension");
-> -        return;
-> -    }
-> -
-> -    if (!riscv_has_ext(env, RVD) && cpu->cfg.ext_zcd) {
-> -        error_setg(errp, "Zcd extension requires D extension");
-> -        return;
-> -    }
-> -
-> -    if ((cpu->cfg.ext_zcf || cpu->cfg.ext_zcd || cpu->cfg.ext_zcb ||
-> -         cpu->cfg.ext_zcmp || cpu->cfg.ext_zcmt) && !cpu->cfg.ext_zca) {
-> -        error_setg(errp, "Zcf/Zcd/Zcb/Zcmp/Zcmt extensions require Zca "
-> -                         "extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zcd && (cpu->cfg.ext_zcmp || cpu->cfg.ext_zcmt)) {
-> -        error_setg(errp, "Zcmp/Zcmt extensions are incompatible with "
-> -                         "Zcd extension");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zcmt && !cpu->cfg.ext_icsr) {
-> -        error_setg(errp, "Zcmt extension requires Zicsr extension");
-> -        return;
-> -    }
-> -
-> -    /*
-> -     * In principle Zve*x would also suffice here, were they supported
-> -     * in qemu
-> -     */
-> -    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkg || cpu->cfg.ext_zvkned ||
-> -         cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksed || cpu->cfg.ext_zvksh) &&
-> -        !cpu->cfg.ext_zve32f) {
-> -        error_setg(errp,
-> -                   "Vector crypto extensions require V or Zve* extensions");
-> -        return;
-> -    }
-> -
-> -    if ((cpu->cfg.ext_zvbc || cpu->cfg.ext_zvknhb) && !cpu->cfg.ext_zve64f) {
-> -        error_setg(
-> -            errp,
-> -            "Zvbc and Zvknhb extensions require V or Zve64{f,d} extensions");
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.ext_zk) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkn), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkr), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkt), true);
-> -    }
-> -
-> -    if (cpu->cfg.ext_zkn) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkne), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknd), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknh), true);
-> -    }
-> -
-> -    if (cpu->cfg.ext_zks) {
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksed), true);
-> -        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksh), true);
-> -    }
-> -
-> -    /*
-> -     * Disable isa extensions based on priv spec after we
-> -     * validated and set everything we need.
-> -     */
-> -    riscv_cpu_disable_priv_spec_isa_exts(cpu);
-> -}
-> -
->   #ifndef CONFIG_USER_ONLY
->   static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
->   {
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index b84b62f84e..721bd0b119 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -445,7 +445,6 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->                           bool probe, uintptr_t retaddr);
->   char *riscv_isa_string(RISCVCPU *cpu);
->   void riscv_cpu_list(void);
-> -void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
->   
->   #define cpu_list riscv_cpu_list
->   #define cpu_mmu_index riscv_cpu_mmu_index
-> @@ -711,6 +710,13 @@ enum riscv_pmu_event_idx {
->   #include "hw/core/tcg-cpu-ops.h"
->   extern const struct TCGCPUOps riscv_tcg_ops;
->   
-> +/* used by tcg/tcg-cpu.c*/
-> +void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en);
-> +bool cpu_cfg_ext_is_user_set(uint32_t ext_offset);
-> +bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset);
-> +int cpu_cfg_ext_get_min_version(uint32_t ext_offset);
-> +void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu);
-> +
->   /* CSR function table */
->   extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
->   
-> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-> index 6145039832..65473b257f 100644
-> --- a/target/riscv/csr.c
-> +++ b/target/riscv/csr.c
-> @@ -21,6 +21,7 @@
->   #include "qemu/log.h"
->   #include "qemu/timer.h"
->   #include "cpu.h"
-> +#include "tcg/tcg-cpu.h"
->   #include "pmu.h"
->   #include "time_helper.h"
->   #include "qemu/main-loop.h"
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 84ad6f1daf..da18851ed4 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -18,14 +18,42 @@
->    */
->   
->   #include "qemu/osdep.h"
-> +#include "tcg-cpu.h"
->   #include "cpu.h"
->   #include "pmu.h"
->   #include "time_helper.h"
->   #include "qapi/error.h"
->   #include "qemu/accel.h"
-> +#include "qemu/error-report.h"
->   #include "hw/core/accel-cpu.h"
->   
->   
-> +static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
-> +                                    bool value)
-> +{
-> +    CPURISCVState *env = &cpu->env;
-> +    bool prev_val = isa_ext_is_enabled(cpu, ext_offset);
-> +    int min_version;
-> +
-> +    if (prev_val == value) {
-> +        return;
-> +    }
-> +
-> +    if (cpu_cfg_ext_is_user_set(ext_offset)) {
-> +        return;
-> +    }
-> +
-> +    if (value && env->priv_ver != PRIV_VERSION_LATEST) {
-> +        /* Do not enable it if priv_ver is older than min_version */
-> +        min_version = cpu_cfg_ext_get_min_version(ext_offset);
-> +        if (env->priv_ver < min_version) {
-> +            return;
-> +        }
-> +    }
-> +
-> +    isa_ext_update_enabled(cpu, ext_offset, value);
-> +}
-> +
->   static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
->   {
->       if (riscv_has_ext(env, RVH) && env->priv_ver < PRIV_VERSION_1_12_0) {
-> @@ -84,6 +112,334 @@ static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
->       }
->   }
->   
-> +static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-> +                                 Error **errp)
-> +{
-> +    if (!is_power_of_2(cfg->vlen)) {
-> +        error_setg(errp, "Vector extension VLEN must be power of 2");
-> +        return;
-> +    }
-> +
-> +    if (cfg->vlen > RV_VLEN_MAX || cfg->vlen < 128) {
-> +        error_setg(errp,
-> +                   "Vector extension implementation only supports VLEN "
-> +                   "in the range [128, %d]", RV_VLEN_MAX);
-> +        return;
-> +    }
-> +
-> +    if (!is_power_of_2(cfg->elen)) {
-> +        error_setg(errp, "Vector extension ELEN must be power of 2");
-> +        return;
-> +    }
-> +
-> +    if (cfg->elen > 64 || cfg->elen < 8) {
-> +        error_setg(errp,
-> +                   "Vector extension implementation only supports ELEN "
-> +                   "in the range [8, 64]");
-> +        return;
-> +    }
-> +
-> +    if (cfg->vext_spec) {
-> +        if (!g_strcmp0(cfg->vext_spec, "v1.0")) {
-> +            env->vext_ver = VEXT_VERSION_1_00_0;
-> +        } else {
-> +            error_setg(errp, "Unsupported vector spec version '%s'",
-> +                       cfg->vext_spec);
-> +            return;
-> +        }
-> +    } else if (env->vext_ver == 0) {
-> +        qemu_log("vector version is not specified, "
-> +                 "use the default value v1.0\n");
-> +
-> +        env->vext_ver = VEXT_VERSION_1_00_0;
-> +    }
-> +}
-> +
-> +/*
-> + * Check consistency between chosen extensions while setting
-> + * cpu->cfg accordingly.
-> + */
-> +void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-> +{
-> +    CPURISCVState *env = &cpu->env;
-> +    Error *local_err = NULL;
-> +
-> +    /* Do some ISA extension error checking */
-> +    if (riscv_has_ext(env, RVG) &&
-> +        !(riscv_has_ext(env, RVI) && riscv_has_ext(env, RVM) &&
-> +          riscv_has_ext(env, RVA) && riscv_has_ext(env, RVF) &&
-> +          riscv_has_ext(env, RVD) &&
-> +          cpu->cfg.ext_icsr && cpu->cfg.ext_ifencei)) {
-> +
-> +        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_icsr)) &&
-> +            !cpu->cfg.ext_icsr) {
-> +            error_setg(errp, "RVG requires Zicsr but user set Zicsr to false");
-> +            return;
-> +        }
-> +
-> +        if (cpu_cfg_ext_is_user_set(CPU_CFG_OFFSET(ext_ifencei)) &&
-> +            !cpu->cfg.ext_ifencei) {
-> +            error_setg(errp, "RVG requires Zifencei but user set "
-> +                       "Zifencei to false");
-> +            return;
-> +        }
-> +
-> +        warn_report("Setting G will also set IMAFD_Zicsr_Zifencei");
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_icsr), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_ifencei), true);
-> +
-> +        env->misa_ext |= RVI | RVM | RVA | RVF | RVD;
-> +        env->misa_ext_mask |= RVI | RVM | RVA | RVF | RVD;
-> +    }
-> +
-> +    if (riscv_has_ext(env, RVI) && riscv_has_ext(env, RVE)) {
-> +        error_setg(errp,
-> +                   "I and E extensions are incompatible");
-> +        return;
-> +    }
-> +
-> +    if (!riscv_has_ext(env, RVI) && !riscv_has_ext(env, RVE)) {
-> +        error_setg(errp,
-> +                   "Either I or E extension must be set");
-> +        return;
-> +    }
-> +
-> +    if (riscv_has_ext(env, RVS) && !riscv_has_ext(env, RVU)) {
-> +        error_setg(errp,
-> +                   "Setting S extension without U extension is illegal");
-> +        return;
-> +    }
-> +
-> +    if (riscv_has_ext(env, RVH) && !riscv_has_ext(env, RVI)) {
-> +        error_setg(errp,
-> +                   "H depends on an I base integer ISA with 32 x registers");
-> +        return;
-> +    }
-> +
-> +    if (riscv_has_ext(env, RVH) && !riscv_has_ext(env, RVS)) {
-> +        error_setg(errp, "H extension implicitly requires S-mode");
-> +        return;
-> +    }
-> +
-> +    if (riscv_has_ext(env, RVF) && !cpu->cfg.ext_icsr) {
-> +        error_setg(errp, "F extension requires Zicsr");
-> +        return;
-> +    }
-> +
-> +    if ((cpu->cfg.ext_zawrs) && !riscv_has_ext(env, RVA)) {
-> +        error_setg(errp, "Zawrs extension requires A extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zfa && !riscv_has_ext(env, RVF)) {
-> +        error_setg(errp, "Zfa extension requires F extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zfh) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zfhmin), true);
-> +    }
-> +
-> +    if (cpu->cfg.ext_zfhmin && !riscv_has_ext(env, RVF)) {
-> +        error_setg(errp, "Zfh/Zfhmin extensions require F extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zfbfmin && !riscv_has_ext(env, RVF)) {
-> +        error_setg(errp, "Zfbfmin extension depends on F extension");
-> +        return;
-> +    }
-> +
-> +    if (riscv_has_ext(env, RVD) && !riscv_has_ext(env, RVF)) {
-> +        error_setg(errp, "D extension requires F extension");
-> +        return;
-> +    }
-> +
-> +    if (riscv_has_ext(env, RVV)) {
-> +        riscv_cpu_validate_v(env, &cpu->cfg, &local_err);
-> +        if (local_err != NULL) {
-> +            error_propagate(errp, local_err);
-> +            return;
-> +        }
-> +
-> +        /* The V vector extension depends on the Zve64d extension */
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64d), true);
-> +    }
-> +
-> +    /* The Zve64d extension depends on the Zve64f extension */
-> +    if (cpu->cfg.ext_zve64d) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve64f), true);
-> +    }
-> +
-> +    /* The Zve64f extension depends on the Zve32f extension */
-> +    if (cpu->cfg.ext_zve64f) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zve32f), true);
-> +    }
-> +
-> +    if (cpu->cfg.ext_zve64d && !riscv_has_ext(env, RVD)) {
-> +        error_setg(errp, "Zve64d/V extensions require D extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zve32f && !riscv_has_ext(env, RVF)) {
-> +        error_setg(errp, "Zve32f/Zve64f extensions require F extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zvfh) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zvfhmin), true);
-> +    }
-> +
-> +    if (cpu->cfg.ext_zvfhmin && !cpu->cfg.ext_zve32f) {
-> +        error_setg(errp, "Zvfh/Zvfhmin extensions require Zve32f extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zvfh && !cpu->cfg.ext_zfhmin) {
-> +        error_setg(errp, "Zvfh extensions requires Zfhmin extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zfbfmin) {
-> +        error_setg(errp, "Zvfbfmin extension depends on Zfbfmin extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zve32f) {
-> +        error_setg(errp, "Zvfbfmin extension depends on Zve32f extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zvfbfwma && !cpu->cfg.ext_zvfbfmin) {
-> +        error_setg(errp, "Zvfbfwma extension depends on Zvfbfmin extension");
-> +        return;
-> +    }
-> +
-> +    /* Set the ISA extensions, checks should have happened above */
-> +    if (cpu->cfg.ext_zhinx) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-> +    }
-> +
-> +    if ((cpu->cfg.ext_zdinx || cpu->cfg.ext_zhinxmin) && !cpu->cfg.ext_zfinx) {
-> +        error_setg(errp, "Zdinx/Zhinx/Zhinxmin extensions require Zfinx");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zfinx) {
-> +        if (!cpu->cfg.ext_icsr) {
-> +            error_setg(errp, "Zfinx extension requires Zicsr");
-> +            return;
-> +        }
-> +        if (riscv_has_ext(env, RVF)) {
-> +            error_setg(errp,
-> +                       "Zfinx cannot be supported together with F extension");
-> +            return;
-> +        }
-> +    }
-> +
-> +    if (cpu->cfg.ext_zce) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcb), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmp), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcmt), true);
-> +        if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
-> +            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
-> +        }
-> +    }
-> +
-> +    /* zca, zcd and zcf has a PRIV 1.12.0 restriction */
-> +    if (riscv_has_ext(env, RVC) && env->priv_ver >= PRIV_VERSION_1_12_0) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zca), true);
-> +        if (riscv_has_ext(env, RVF) && env->misa_mxl_max == MXL_RV32) {
-> +            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcf), true);
-> +        }
-> +        if (riscv_has_ext(env, RVD)) {
-> +            cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zcd), true);
-> +        }
-> +    }
-> +
-> +    if (env->misa_mxl_max != MXL_RV32 && cpu->cfg.ext_zcf) {
-> +        error_setg(errp, "Zcf extension is only relevant to RV32");
-> +        return;
-> +    }
-> +
-> +    if (!riscv_has_ext(env, RVF) && cpu->cfg.ext_zcf) {
-> +        error_setg(errp, "Zcf extension requires F extension");
-> +        return;
-> +    }
-> +
-> +    if (!riscv_has_ext(env, RVD) && cpu->cfg.ext_zcd) {
-> +        error_setg(errp, "Zcd extension requires D extension");
-> +        return;
-> +    }
-> +
-> +    if ((cpu->cfg.ext_zcf || cpu->cfg.ext_zcd || cpu->cfg.ext_zcb ||
-> +         cpu->cfg.ext_zcmp || cpu->cfg.ext_zcmt) && !cpu->cfg.ext_zca) {
-> +        error_setg(errp, "Zcf/Zcd/Zcb/Zcmp/Zcmt extensions require Zca "
-> +                         "extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zcd && (cpu->cfg.ext_zcmp || cpu->cfg.ext_zcmt)) {
-> +        error_setg(errp, "Zcmp/Zcmt extensions are incompatible with "
-> +                         "Zcd extension");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zcmt && !cpu->cfg.ext_icsr) {
-> +        error_setg(errp, "Zcmt extension requires Zicsr extension");
-> +        return;
-> +    }
-> +
-> +    /*
-> +     * In principle Zve*x would also suffice here, were they supported
-> +     * in qemu
-> +     */
-> +    if ((cpu->cfg.ext_zvbb || cpu->cfg.ext_zvkg || cpu->cfg.ext_zvkned ||
-> +         cpu->cfg.ext_zvknha || cpu->cfg.ext_zvksed || cpu->cfg.ext_zvksh) &&
-> +        !cpu->cfg.ext_zve32f) {
-> +        error_setg(errp,
-> +                   "Vector crypto extensions require V or Zve* extensions");
-> +        return;
-> +    }
-> +
-> +    if ((cpu->cfg.ext_zvbc || cpu->cfg.ext_zvknhb) && !cpu->cfg.ext_zve64f) {
-> +        error_setg(
-> +            errp,
-> +            "Zvbc and Zvknhb extensions require V or Zve64{f,d} extensions");
-> +        return;
-> +    }
-> +
-> +    if (cpu->cfg.ext_zk) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkn), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkr), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkt), true);
-> +    }
-> +
-> +    if (cpu->cfg.ext_zkn) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zkne), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknd), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zknh), true);
-> +    }
-> +
-> +    if (cpu->cfg.ext_zks) {
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkb), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkc), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zbkx), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksed), true);
-> +        cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_zksh), true);
-> +    }
-> +
-> +    /*
-> +     * Disable isa extensions based on priv spec after we
-> +     * validated and set everything we need.
-> +     */
-> +    riscv_cpu_disable_priv_spec_isa_exts(cpu);
-> +}
-> +
->   /*
->    * We'll get here via the following path:
->    *
-> diff --git a/target/riscv/tcg/tcg-cpu.h b/target/riscv/tcg/tcg-cpu.h
-> new file mode 100644
-> index 0000000000..4cf35a8015
-> --- /dev/null
-> +++ b/target/riscv/tcg/tcg-cpu.h
-> @@ -0,0 +1,28 @@
-> +/*
-> + * riscv TCG cpu class initialization
-> + *
-> + * Copyright (c) 2023 Ventana Micro Systems Inc.
-> + *
-> + * This library is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU Lesser General Public
-> + * License as published by the Free Software Foundation; either
-> + * version 2 of the License, or (at your option) any later version.
-> + *
-> + * This library is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-> + * Lesser General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU Lesser General Public
-> + * License along with this library; if not, see <http://www.gnu.org/licenses/>.
-> + */
-> +
-> +#ifndef RISCV_TCG_CPU_H
-> +#define RISCV_TCG_CPU_H
-> +
-> +#include "cpu.h"
-> +
-> +void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
-> +
-> +#endif
-> +
+v4:
+Hi all,
+Thanks for Gerd Hoffmann's advice. V4 makes below changes:
+* Use enum for freeze mode, so this can be extended with more
+  modes in the future.
+* Rename functions and paratemers with "_S3" postfix.
+And no functional changes.
+Link:
+https://lore.kernel.org/qemu-devel/20230720120816.8751-1-Jiqian.Chen@amd.com/
+No v4 patch on kernel side.
+
+
+v3:
+Hi all,
+Thanks for Michael S. Tsirkin's advice. V3 makes below changes:
+* Remove changes in file include/standard-headers/linux/virtio_gpu.h
+  I am not supposed to edit this file and it will be imported after
+  the patches of linux kernel was merged.
+Link:
+https://lore.kernel.org/qemu-devel/20230719074726.1613088-1-Jiqian.Chen@amd.com/T/#t
+V3 of kernel patch:
+https://lore.kernel.org/lkml/20230720115805.8206-1-Jiqian.Chen@amd.com/T/#t
+
+
+v2:
+makes below changes:
+* Change VIRTIO_CPU_CMD_STATUS_FREEZING to 0x0400 (<0x1000)
+* Add virtio_gpu_device_unrealize to destroy resources to solve
+  potential memory leak problem. This also needs hot-plug support.
+* Add a new feature flag VIRTIO_GPU_F_FREEZING, so that guest and
+  host can negotiate whenever freezing is supported or not.
+Link:
+https://lore.kernel.org/qemu-devel/20230630070016.841459-1-Jiqian.Chen@amd.com/T/#t
+V2 of kernel patch:
+https://lore.kernel.org/lkml/20230630073448.842767-1-Jiqian.Chen@amd.com/T/#t
+
+
+v1:
+Hi all,
+I am working to implement virtgpu S3 function on Xen.
+
+Currently on Xen, if we start a guest who enables virtgpu, and then run "echo mem > 
+/sys/power/state" to suspend guest. And run "sudo xl trigger <guest id> s3resume" to
+resume guest. We can find that the guest kernel comes back, but the display doesn't.
+It just shown a black screen.
+
+Through reading codes, I founded that when guest was during suspending, it called
+into Qemu to call virtio_gpu_gl_reset. In virtio_gpu_gl_reset, it destroyed all
+resources and reset renderer. This made the display gone after guest resumed.
+
+I think we should keep resources or prevent they being destroyed when guest is
+suspending. So, I add a new status named freezing to virtgpu, and add a new ctrl
+message VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from guest. If freezing
+is set to true, and then Qemu will realize that guest is suspending, it will not
+destroy resources and will not reset renderer. If freezing is set to false, Qemu
+will do its origin actions, and has no other impaction.
+
+And now, display can come back and applications can continue their status after guest
+resumes.
+Link:
+https://lore.kernel.org/qemu-devel/20230608025655.1674357-1-Jiqian.Chen@amd.com/
+V1 of kernel patch:
+https://lore.kernel.org/lkml/20230608063857.1677973-1-Jiqian.Chen@amd.com/
+
+
+Jiqian Chen (2):
+  virtio-pci: Add freeze_mode case for virtio pci
+  virtgpu: do not destroy resources when guest does S3
+
+ hw/display/virtio-gpu-gl.c |  9 ++++++++-
+ hw/display/virtio-gpu.c    | 12 ++++++++++--
+ hw/virtio/virtio-pci.c     |  5 +++++
+ hw/virtio/virtio.c         |  1 +
+ include/hw/virtio/virtio.h |  2 ++
+ 5 files changed, 26 insertions(+), 3 deletions(-)
+
+-- 
+2.34.1
+
 
