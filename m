@@ -2,86 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8DF7A5C8E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456A37A5C9C
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:33:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiW7H-0005yv-2T; Tue, 19 Sep 2023 04:29:55 -0400
+	id 1qiW9z-0007PX-TY; Tue, 19 Sep 2023 04:32:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qiW7F-0005xs-Nd
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:29:53 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qiW78-0002we-T3
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:29:52 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2b962535808so85818711fa.0
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 01:29:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695112185; x=1695716985; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=qDL+liQ3QeFZaTTmMVv3KTxwC9/C/AGZC/nYSnEDiyc=;
- b=e/imZOPa188gMGhxmTunLNNjRZh4WuImYFNkxzh43A7/gJ2V/99dkT7gJA8OfpxqTq
- 2hYxebUGj4kdeO3moButsBXEVFAd6Kw07P9bMSFEttZe9Vty9jAW5Kth17i3k03ySnag
- GTJMnaHqu3V6PZ34e8kURwyE3XGDrPGWjIttER9NA8MG/HZ3GKOH+Ue19HZMOgJxBNaq
- Ri4yQcTI3UDLQFFhibfl63n0lQT5dQadtdAtlBZXntWh2jmCEp/0MAdn1JI6x1Yaz3vN
- xsLREQeS9vPONB/M1Wm3pGJ6tuoXKL3DTObKzrQFY5x57D13DLg1ooJjFaUkB0/kosg3
- dynA==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiW9y-0007NY-3u
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:32:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiW9w-0003uH-LJ
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:32:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695112360;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=63ZczgcaSGCgUP2wEYQgRDSu3izo/TIE6nir/nxLkcI=;
+ b=gFUc811J24JP3UQvSI+OMZYXYYJw7cb7f4IfTynWt2EU2MHuJoJ6IMvU22lfXXcoZEVPSe
+ PBuGmnKZQLUJs4Do4Vj2jnx1QDDQcLw2tjmzBKgiFb4/GJMSmTFJFqFiHXlN/36gWLiTcp
+ Xkw+b/3b0s31WgakdRy07T8ei3dHKN4=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-612-CkkVSVUSNQyeaeB19dnbLQ-1; Tue, 19 Sep 2023 04:32:38 -0400
+X-MC-Unique: CkkVSVUSNQyeaeB19dnbLQ-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2bcb0f9fe3bso67223281fa.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 01:32:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695112185; x=1695716985;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1695112356; x=1695717156;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qDL+liQ3QeFZaTTmMVv3KTxwC9/C/AGZC/nYSnEDiyc=;
- b=hWEY2/2Wt1up/0Xy1ktOKmxpwToLu6/m9vD9KkERKURg1xNP95M3QouAKk4VDsPWuA
- WDvK/kCEI8G2x/UsCaFCsbHxSBdC8c/ORjUmF9z3hz/nhVrFWsLseW1m9kIQGchp7O60
- ZsDTCvPDEqwrjffJDzKkJkdcX35iOloXjd+vkp7X8PfKRIqTddmKCdMnzuc2z3y0B4J+
- cVnYAjmwh4T5NlHZDzff3GHeY4Ltb60YOGGVBzTV7iUgdBlglkPy4o4zIYSS0ALZVr4q
- 40+YV70URyxmUhFb3Gb8AntcaRQfjhMK2o9/TWVqDSD9Efpz9Pef1/jlVly2MhAeOhvX
- EZlw==
-X-Gm-Message-State: AOJu0YxFjKLEr4YOVDY4QkHwTWVcRSVUtqxlq0jj/deUftfFHpYT3MQ0
- o1BJ93rpVFiLXAveFPU/8Ly5CQ==
-X-Google-Smtp-Source: AGHT+IFu3Br71mwn65MfBLhw23QjNh+3wTCJa+zfHnYS/5yMvLXY1QKuL7u7Z4pdBMtxF+Pe1f0HYA==
-X-Received: by 2002:a2e:868a:0:b0:2bc:c830:4cbb with SMTP id
- l10-20020a2e868a000000b002bcc8304cbbmr9248131lji.45.1695112184724; 
- Tue, 19 Sep 2023 01:29:44 -0700 (PDT)
-Received: from [172.20.66.192] (static-212-193-78-212.thenetworkfactory.nl.
- [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- oq8-20020a170906cc8800b0099bc08862b6sm7645532ejb.171.2023.09.19.01.29.44
+ bh=63ZczgcaSGCgUP2wEYQgRDSu3izo/TIE6nir/nxLkcI=;
+ b=c1ffPJ1xaFIdcartVO9SwvlWdZ+XmxtT/5x5jC9m2tJxsJ3aeiXCAzkmeI7qAWrLRm
+ DM4iJatudgkuZ6tnj07fOa9FVIGab+Yuy6ahJFB6SpblKpptjlIPDmeoGnjsMT4LbhW+
+ vhGTUqpaXGplYS2DOtxF1lPJBf45jmbgA9kP8wxn8rFKUV7F7R1Qv/vlJu/dmjMlwmbh
+ hmxS/XpzbjlAjZdmpbbqjEKUFuyS0H4FNoIsVxRMVxP/gjFqm/gnuYSX8eqYxvt2eB/b
+ m5LRvBD7Q5XlrQuOborWPCI/JDVSVJmyOt9XNU8LzhPI8HAvoBO7rptHgaWDOrHcZAd3
+ nrAg==
+X-Gm-Message-State: AOJu0YwsyBoi4P9R1JZu3A/aSH/CsHaIXOcs48AmvLMxiyLeTitC5D6H
+ x7+TssyYbH6oO0h8N10naDA2uoDBirg2FOFIVPcBmmtCNgskiYWytwvqLM4UbSYhs90eMYEVRNc
+ YfaeBeX0kuRfmkU0suTwQPEc=
+X-Received: by 2002:a2e:b0c4:0:b0:2bc:c2cb:cd3f with SMTP id
+ g4-20020a2eb0c4000000b002bcc2cbcd3fmr9694642ljl.32.1695112356482; 
+ Tue, 19 Sep 2023 01:32:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnjkJE/03yTczosAyy29WLF3oj268PQp6mCRVzzOmvL2LM8uR2DRMm4Qz+EVtBTog7tT0KUQ==
+X-Received: by 2002:a2e:b0c4:0:b0:2bc:c2cb:cd3f with SMTP id
+ g4-20020a2eb0c4000000b002bcc2cbcd3fmr9694626ljl.32.1695112356107; 
+ Tue, 19 Sep 2023 01:32:36 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
+ (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
+ [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ by smtp.gmail.com with ESMTPSA id
+ q21-20020a1709066b1500b0098921e1b064sm7409445ejr.181.2023.09.19.01.32.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 01:29:44 -0700 (PDT)
-Message-ID: <27e2b697-55be-af45-d350-01a85866249f@linaro.org>
-Date: Tue, 19 Sep 2023 10:29:43 +0200
+ Tue, 19 Sep 2023 01:32:35 -0700 (PDT)
+Message-ID: <e6492eda-e09d-13ea-93b5-c824b3b3e9cd@redhat.com>
+Date: Tue, 19 Sep 2023 10:32:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 00/10] linux-user: Detect and report host crashes
-To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>
-References: <20230823051615.1297706-1-richard.henderson@linaro.org>
- <d2e3266e-dbb8-07a6-07d7-008e788c3862@linaro.org>
- <329a2c4b-9fa9-5e73-aa95-57512d60c1ec@gmx.de>
- <36562fcb-77f2-2a18-acec-47f155decf71@tls.msk.ru>
- <51b980aa-1a80-7565-44d6-8dcba3ead422@gmx.de>
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 4/8] qemu-img: add chunk size parameter to
+ compare_buffers()
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <51b980aa-1a80-7565-44d6-8dcba3ead422@gmx.de>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
+ den@virtuozzo.com
+References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
+ <20230915162016.141771-5-andrey.drobyshev@virtuozzo.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230915162016.141771-5-andrey.drobyshev@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x233.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,48 +105,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/23 16:05, Helge Deller wrote:
-> On 9/12/23 12:34, Michael Tokarev wrote:
->> 12.09.2023 12:45, Helge Deller:
->>
->>> /usr/bin/ld: /usr/lib/gcc/x86_64-redhat-linux/13/../../../../lib64/libc.a(abort.o): in 
->>> function `abort':
->>> (.text.unlikely+0x0): multiple definition of `abort'; 
->>> libqemu-aarch64-linux-user.fa.p/linux-user_signal.c.o:/srv/_build/../../home/cvs/qemu/qemu/linux-user/signal.c:723: first defined here
->>
->> [PATCH v4 03/10] linux-user: Use die_with_signal with abort
->>
->> Sigh.
->>
->> I'd be double-cautious when overriding system functions like this, - it's
->> almost always a bad idea.
-> 
-> Richard, I'm not sure, but with that change:
-> 
-> -void abort(void)
-> +void  __attribute__((weak)) abort(void)
-> 
-> it will at least successfully link the binary. Not sure which effects it has,
-> but probably not worse than before your patch series...
+On 15.09.23 18:20, Andrey Drobyshev wrote:
+> Add @chsize param to the function which, if non-zero, would represent
+> the chunk size to be used for comparison.  If it's zero, then
+> BDRV_SECTOR_SIZE is used as default chunk size, which is the previous
+> behaviour.
+>
+> In particular, we're going to use this param in img_rebase() to make the
+> write requests aligned to a predefined alignment value.
+>
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>   qemu-img.c | 22 ++++++++++++++--------
+>   1 file changed, 14 insertions(+), 8 deletions(-)
 
-This won't work, in that it will have no effect, and we continue to have the weird longjmp 
-assertion message after stack corruption.
+With the comment fix Eric has suggested:
 
-Probably we will have to replace all of the apis that can raise abort at the source level, 
-e.g.
+Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 
-void qemu_abort(void) __attribute__((noreturn));
-void qemu_abort_msg(const char *) __attribute__((noreturn));
-
-#undef  abort
-#define abort       qemu_abort
-#undef  assert
-#define assert(X)   ...
-#undef  g_assert
-#define g_assert(X) assert(X)
-
-etc.
-
-
-r~
 
