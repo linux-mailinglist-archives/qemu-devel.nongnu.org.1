@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B417A5994
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 07:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C59357A59E2
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 08:20:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiTar-0001b1-PT; Tue, 19 Sep 2023 01:48:17 -0400
+	id 1qiU4e-00087x-Om; Tue, 19 Sep 2023 02:19:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiTap-0001aL-7B
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 01:48:15 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiU4d-00087F-A0
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 02:19:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiTan-00018K-N3
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 01:48:14 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiU4b-0007Az-NH
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 02:19:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695102493;
+ s=mimecast20190719; t=1695104340;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b/fZBqgWohIXDyoS//C2CQBh2i20NsRptRtuC2Sy1CY=;
- b=UuyALlnJEi82JZ+3NVyCSU1D47gfyFQha906sERqwkf9OWkDpDcZfUOktXmw7XEui73i9+
- WwpBQ7ttF8ynS2OH03yy/RPkXSXsAHK5q+xrrHqPB747QfGLlqKbVaORtMjVY7LtmKfEzu
- wnjT2m2w2WTOI3z/xcGzbjZmwi289EQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-683-xHw6_rRWPtevVZjCFt_5Cw-1; Tue, 19 Sep 2023 01:48:07 -0400
-X-MC-Unique: xHw6_rRWPtevVZjCFt_5Cw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 98501811E7B;
- Tue, 19 Sep 2023 05:48:06 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 69AFDC15BB8;
- Tue, 19 Sep 2023 05:48:06 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5EA2321E6900; Tue, 19 Sep 2023 07:48:05 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org,  hreitz@redhat.com,  eblake@redhat.com,
- vsementsov@yandex-team.ru,  jsnow@redhat.com,  idryomov@gmail.com,
- pl@kamp.de,  sw@weilnetz.de,  sstabellini@kernel.org,
- anthony.perard@citrix.com,  paul@xen.org,  pbonzini@redhat.com,
- marcandre.lureau@redhat.com,  berrange@redhat.com,  thuth@redhat.com,
- philmd@linaro.org,  stefanha@redhat.com,  fam@euphon.net,
- quintela@redhat.com,  peterx@redhat.com,  leobras@redhat.com,
- kraxel@redhat.com,  qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org,  alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH 4/7] block/dirty-bitmap: Clean up local variable shadowing
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-5-armbru@redhat.com>
- <ZQQNUjN4Laf+k1Nk@redhat.com>
-Date: Tue, 19 Sep 2023 07:48:05 +0200
-In-Reply-To: <ZQQNUjN4Laf+k1Nk@redhat.com> (Kevin Wolf's message of "Fri, 15
- Sep 2023 09:52:50 +0200")
-Message-ID: <8734za4stm.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=1geUhetgdoBhDve7uyHbUVznjOi4Dhwj4aSeYWMYJFI=;
+ b=f7MA5pWuz7c8BCP+1cXwlgb3VQTzuXMVzTtLZJVbo9RG8UjCTTQeG0i8HJ4Cd/dvgGhIpx
+ BFjxAybtzGv4EXmm+xnFLEc1J+uLxCd458H2P2A6SVAslSzkhX9EoBNSAvywlbafG9Z+TX
+ U3fi1AIwEFchIqDNsRYKb2NN1huY2VI=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-27-ZQEyDn64MpqxQliwdXB7ew-1; Tue, 19 Sep 2023 02:18:58 -0400
+X-MC-Unique: ZQEyDn64MpqxQliwdXB7ew-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2bfb9db0397so65920951fa.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 23:18:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695104337; x=1695709137;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1geUhetgdoBhDve7uyHbUVznjOi4Dhwj4aSeYWMYJFI=;
+ b=FYiBICse5mUGHgztYzLVl8PYNZXgrPjg0uA9omi2yoFqtaWjX0Xa4CkjdUyeFlUiS4
+ m7HjgKIF9CHu9sZEMAA5uJLYDBaQ9G7J5IkLZaua5vPo6Of8NXoeSQ8Oh4uZuYXrYpZG
+ 7gximf641IVlK2Z6c0VajIh8adS77YbIAmXxJrQYBKrjId3eHVA3S5QJoNON1ePkaftR
+ OD0koiG4O2OZ5KPYYsRxjeaQeU1eor2TjtFnZF9ycl2N7ookPM1Mlm4ibl5XTgLlU/iI
+ O6BvIGZqudDqHpza5+hCd6Mtz+5YGLx7nDmBFwDHRf+0l/HCBovjLa4tT0Dez/GGNSFa
+ /5LA==
+X-Gm-Message-State: AOJu0Yzjc9luVHME1LwPIzju5XXBR3zOR832fvWbU8MSRGzro/PAmroc
+ uq73BqeL+DAa0sQp9bodGbogvUrI7HrdBG+w210DuFKAUxLbfGLrPsWJUNarR/DDPYnNcrsjDCu
+ USbRLQ2sJT+TC1L/9BwaCyXMjwedYvew=
+X-Received: by 2002:a05:651c:1207:b0:2bf:aba1:d951 with SMTP id
+ i7-20020a05651c120700b002bfaba1d951mr9932004lja.10.1695104337475; 
+ Mon, 18 Sep 2023 23:18:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGk5NVD+sTpKiZav9RqNkHTWRN2PkDNKpK4DiNov1enz6qEBr0v7MIWj4Yt8/hnZZvK3e2qtZHJfkAv/V33YYI=
+X-Received: by 2002:a05:651c:1207:b0:2bf:aba1:d951 with SMTP id
+ i7-20020a05651c120700b002bfaba1d951mr9931987lja.10.1695104337012; Mon, 18 Sep
+ 2023 23:18:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+References: <20230918135448.90963-1-anisinha@redhat.com>
+ <CAK3XEhOMqdfyPBm0ZgkirrcaBhOwQt_eOZ7=bbdW8OJpz3hWHg@mail.gmail.com>
+ <ceea0d9d-19d6-29e7-cb84-81f85936b8c2@redhat.com>
+ <CAK3XEhNETZBGtzpv2vBzygQtYuzTrsihzQNRdK8kp3+_u590Rg@mail.gmail.com>
+ <3a3b5c4a-afad-8362-088c-a531d6998c23@redhat.com>
+ <CAK3XEhPYPaJfeK5hcq+EktSn9iFVrv05H=TJ4VJNARddK1jYOA@mail.gmail.com>
+ <CAK3XEhP5dyn5bORreJSt7U_QANh2oWG2Tn9UKttbAxEKTSmEfg@mail.gmail.com>
+In-Reply-To: <CAK3XEhP5dyn5bORreJSt7U_QANh2oWG2Tn9UKttbAxEKTSmEfg@mail.gmail.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Tue, 19 Sep 2023 11:48:44 +0530
+Message-ID: <CAK3XEhN-x3NdPBknpM=7ORMOdKMzRX6dMn=dY5x=ajf9+tZkSg@mail.gmail.com>
+Subject: Re: [PATCH] hw/i386/pc: fix max_used_gpa for 32-bit systems
+To: David Hildenbrand <david@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, philmd@linaro.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -73,7 +87,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,77 +103,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kevin Wolf <kwolf@redhat.com> writes:
-
-> Am 31.08.2023 um 15:25 hat Markus Armbruster geschrieben:
->> Local variables shadowing other local variables or parameters make the
->> code needlessly hard to understand.  Tracked down with -Wshadow=local.
->> Clean up: delete inner declarations when they are actually redundant,
->> else rename variables.
->> 
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>  block/monitor/bitmap-qmp-cmds.c | 2 +-
->>  block/qcow2-bitmap.c            | 3 +--
->>  2 files changed, 2 insertions(+), 3 deletions(-)
->> 
->> diff --git a/block/monitor/bitmap-qmp-cmds.c b/block/monitor/bitmap-qmp-cmds.c
->> index 55f778f5af..4d018423d8 100644
->> --- a/block/monitor/bitmap-qmp-cmds.c
->> +++ b/block/monitor/bitmap-qmp-cmds.c
->> @@ -276,7 +276,7 @@ BdrvDirtyBitmap *block_dirty_bitmap_merge(const char *node, const char *target,
->>  
->>      for (lst = bms; lst; lst = lst->next) {
->>          switch (lst->value->type) {
->> -            const char *name, *node;
->> +            const char *name;
->>          case QTYPE_QSTRING:
->>              name = lst->value->u.local;
->>              src = bdrv_find_dirty_bitmap(bs, name);
+On Tue, Sep 19, 2023 at 9:53=E2=80=AFAM Ani Sinha <anisinha@redhat.com> wro=
+te:
 >
-> The names in this function are all over the place... A more ambitious
-> patch could rename the parameters to dst_node/dst_bitmap and these
-> variables to src_node/src_bitmap to get some more consistency (both with
-> each other and with the existing src/dst variables).
-
-What exactly would you like me to consider?  Perhaps:
-
-* Rename parameter @node to @dst_node
-
-* Rename which parameter to @dst_bitmap?
-
-* Rename nested local @node to @src_node
-
-* Rename which local variable to @src_bitmap?
-
-* Move nested locals to function scope
-
-> Preexisting, so I'm not insisting that you should do this.
+> On Tue, Sep 19, 2023 at 9:20=E2=80=AFAM Ani Sinha <anisinha@redhat.com> w=
+rote:
+> >
+> > On Mon, Sep 18, 2023 at 9:28=E2=80=AFPM David Hildenbrand <david@redhat=
+.com> wrote:
+> > >
+> > > On 18.09.23 17:56, Ani Sinha wrote:
+> > > > On Mon, Sep 18, 2023 at 8:59=E2=80=AFPM David Hildenbrand <david@re=
+dhat.com> wrote:
+> > > >>
+> > > >> On 18.09.23 17:22, Ani Sinha wrote:
+> > > >>> On Mon, Sep 18, 2023 at 7:25=E2=80=AFPM Ani Sinha <anisinha@redha=
+t.com> wrote:
+> > > >>>>
+> > > >>>> 32-bit systems do not have a reserved memory for hole64 but they=
+ may have a
+> > > >>>> reserved memory space for memory hotplug. Since, hole64 starts a=
+fter the
+> > > >>>> reserved hotplug memory, the unaligned hole64 start address give=
+s us the
+> > > >>>> end address for this memory hotplug region that the processor ma=
+y use.
+> > > >>>> Fix this. This ensures that the physical address space bound che=
+cking works
+> > > >>>> correctly for 32-bit systems as well.
+> > > >>>
+> > > >>> This patch breaks some unit tests. I am not sure why it did not c=
+atch
+> > > >>> it when I tested it before sending.
+> > > >>> Will have to resend after fixing the tests.
+> > > >>
+> > > >> Probably because they supply more memory than the system can actua=
+lly
+> > > >> handle? (e.g., -m 4g on 32bit)?
+> > > >
+> > > > cxl tests are failing for example.
+> > > >
+> > > > $ ./qemu-system-i386 -display none -machine q35,cxl=3Don
+> > > > qemu-system-i386: Address space limit 0xffffffff < 0x1000fffff
+> > > > phys-bits too low (32)
+> >
+> > also another thing is:
+> >
+> > ./qemu-system-i386 -machine pc -m 128
+> > works but ...
+> >
+> > $ ./qemu-system-i386 -machine pc -m 128,slots=3D3,maxmem=3D1G
+> > qemu-system-i386: Address space limit 0xffffffff < 0x1f7ffffff
+> > phys-bits too low (32)
+> >
+> > or
+> >
+> > $ ./qemu-system-i386 -machine pc-i440fx-8.2 -accel kvm -m 128,slots=3D3=
+,maxmem=3D1G
+> > qemu-system-i386: Address space limit 0xffffffff < 0x1f7ffffff
+> > phys-bits too low (32)
+> >
+> > but of course after the compat knob older pc machines work fine using
+> > the old logic :
+> >
+> > $ ./qemu-system-i386 -machine pc-i440fx-8.1 -accel kvm -m 128,slots=3D3=
+,maxmem=3D1G
+> > VNC server running on ::1:5900
+> > ^Cqemu-system-i386: terminating on signal 2
 >
->> diff --git a/block/qcow2-bitmap.c b/block/qcow2-bitmap.c
->> index 037fa2d435..ffd5cd3b23 100644
->> --- a/block/qcow2-bitmap.c
->> +++ b/block/qcow2-bitmap.c
->> @@ -1555,7 +1555,6 @@ bool qcow2_store_persistent_dirty_bitmaps(BlockDriverState *bs,
->>      FOR_EACH_DIRTY_BITMAP(bs, bitmap) {
->>          const char *name = bdrv_dirty_bitmap_name(bitmap);
->>          uint32_t granularity = bdrv_dirty_bitmap_granularity(bitmap);
->> -        Qcow2Bitmap *bm;
->>  
->>          if (!bdrv_dirty_bitmap_get_persistence(bitmap) ||
->>              bdrv_dirty_bitmap_inconsistent(bitmap)) {
->> @@ -1625,7 +1624,7 @@ bool qcow2_store_persistent_dirty_bitmaps(BlockDriverState *bs,
->>  
->>      /* allocate clusters and store bitmaps */
->>      QSIMPLEQ_FOREACH(bm, bm_list, entry) {
->> -        BdrvDirtyBitmap *bitmap = bm->dirty_bitmap;
->> +        bitmap = bm->dirty_bitmap;
->>  
->>          if (bitmap == NULL || bdrv_dirty_bitmap_readonly(bitmap)) {
->>              continue;
+> I dpn't know if we always need to do this but this code adds 1 GiB per
+> slot for device memory :
 >
-> Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+>     if (pcmc->enforce_aligned_dimm) {
+>          /* size device region assuming 1G page max alignment per slot */
+>          size +=3D (1 * GiB) * machine->ram_slots;
+>      }
+>
+> For a 32-bit machine that is a lot of memory consumed in just alignment.
 
-Thanks!
+Let's look at an example when we get rid of all alignment stuff.
+
+$ ./qemu-system-i386 -machine pc-i440fx-8.2 -m 512M,slots=3D1,maxmem=3D1G
+above 4G start: 0x100000000,above 4G size: 0x0
+qemu-system-i386: Address space limit 0xffffffff < 0x11ffffffe
+phys-bits too low (32)
+
+So basically, above_4g_start =3D 4GiB. size =3D 0.
+Then it is adding the device memory which is 1GiB - 0.5 GiB =3D 0.5 GiB.
+So the  0x11ffffffe is exactly 4.5 GiB.
+
+Anything above 4 GiB is beyond 32 bits.
 
 
