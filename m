@@ -2,107 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE4A7A5A38
+	by mail.lfdr.de (Postfix) with ESMTPS id B23E37A5A39
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 08:54:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiUbg-0000tL-Bq; Tue, 19 Sep 2023 02:53:12 -0400
+	id 1qiUbs-0000uk-TN; Tue, 19 Sep 2023 02:53:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiUbc-0000su-3P; Tue, 19 Sep 2023 02:53:08 -0400
+ id 1qiUbr-0000uS-2h; Tue, 19 Sep 2023 02:53:23 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiUba-0005ok-EK; Tue, 19 Sep 2023 02:53:07 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ id 1qiUbp-0005qA-JS; Tue, 19 Sep 2023 02:53:22 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J6cZ2S021880; Tue, 19 Sep 2023 06:52:29 GMT
+ 38J6bdIO027431; Tue, 19 Sep 2023 06:53:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=sYWs+KdwrvjEoSMKeKRws5ZBlx5TFEIiwVfFzgqTixo=;
- b=NScmcXiQV/6FTBrR2xHZHHAwsW8JNfTlLqiOjNwL42NoJrUhyd2TobZjeCENqXIOdPQ3
- jE+Xbk1H+tNVDwHb2cRWiBFKcAy9YjFGfmGRkov4bCg0xz0b9fprUDlG+fgN7aejKngf
- TrJ797OQT4FIIHVo2+My0AsBVcH6blU5VS6GphYmDDDmWTwS1lobnexv0+vk2E6O8ysU
- RjGn4VO011WHuJwc6x2S3yN42JXln9mEio4rN52NlLxe+0ck6E90Omv+JwV69GVVI6ae
- 2JW9tQYrMroe1QKvyXgkWXPMOQzJkfhxOgXinT9ss62s6vfV87B+v1cRQ9F785oC6OWh hg== 
+ bh=MFrvARBeTU1tgfROBtjbYRrIQ0EfL2oNa7yNBhaYB3U=;
+ b=abSuOe+f8aIYsslC+7E4p1NtWviicbKilLYhXt2U2/ujKSDP1rL/Fqd/rOXumvIw86qJ
+ 0EKUatfNRtDxkvFsLO3drivk0qrUUzDpFhWyhqTERtHBHMevXNDWrmLwfcHa/P6sTgTE
+ mnbhBeEiRqV+yM61QBdds0c1rgT8gpdH9GAevU75xinCB2LUtzntMpkznkbQiMapyzy1
+ HpyOqwM10tYJknLA/XJEo2o3ZsKqUQGhqahjvATMP7d73eqDTG8uHsUkMGGmVUw48Yvy
+ FuPkMt3CsOpX8iHh8ggtgJsr2o9TQC5ZNrJZOW93yyNw5z/9ZWburdvVWB1C8EOhKsAU CQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t76bw8fke-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t75hs1dbf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 06:52:28 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J6qBB2001842;
- Tue, 19 Sep 2023 06:52:28 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t76bw8fkb-1
+ Tue, 19 Sep 2023 06:53:09 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J6bsLC029883;
+ Tue, 19 Sep 2023 06:53:09 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t75hs1db3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 06:52:28 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J4sk7Z010122; Tue, 19 Sep 2023 06:52:27 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5rwk1cc6-1
+ Tue, 19 Sep 2023 06:53:09 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J5jBLK016463; Tue, 19 Sep 2023 06:53:08 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5sd1s62n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 06:52:27 +0000
+ Tue, 19 Sep 2023 06:53:08 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38J6qQDB32375490
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38J6r83I66322870
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Sep 2023 06:52:26 GMT
+ Tue, 19 Sep 2023 06:53:08 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5A9FD5805D;
- Tue, 19 Sep 2023 06:52:26 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3CA4C58043;
+ Tue, 19 Sep 2023 06:53:08 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA70058055;
- Tue, 19 Sep 2023 06:52:21 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id F33A458055;
+ Tue, 19 Sep 2023 06:53:05 +0000 (GMT)
 Received: from [9.109.242.129] (unknown [9.109.242.129])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 19 Sep 2023 06:52:21 +0000 (GMT)
-Message-ID: <308aed77-2c35-7e68-65ae-6b1246dbc8d8@linux.ibm.com>
-Date: Tue, 19 Sep 2023 12:22:20 +0530
+ Tue, 19 Sep 2023 06:53:05 +0000 (GMT)
+Message-ID: <cf9297ae-38c2-0954-006d-62ae44b3883c@linux.ibm.com>
+Date: Tue, 19 Sep 2023 12:23:04 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [RFC PATCH 3/4] accel/tcg: Guard tb_flush() with tcg_enabled()
- and remove the stub
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+Subject: Re: [PATCH 1/8] hw/ppc: Clean up local variable shadowing in _FDT
+ helper routine
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Cc: Greg Kurz <groug@kaod.org>, Anton Johansson <anjo@rev.ng>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-ppc@nongnu.org
-References: <20230914195229.78244-1-philmd@linaro.org>
- <20230914195229.78244-4-philmd@linaro.org>
- <ce35def0-318f-91ac-592f-517bb5bce09b@linux.ibm.com>
- <c0d4266f-b11d-8ac2-f23a-5609f08a0678@linaro.org>
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230918145850.241074-1-clg@kaod.org>
+ <20230918145850.241074-2-clg@kaod.org>
+Content-Language: en-US
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <c0d4266f-b11d-8ac2-f23a-5609f08a0678@linaro.org>
+In-Reply-To: <20230918145850.241074-2-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qo1ocZzReYCB8_pzwtbqB4WqqiWXvSn-
-X-Proofpoint-GUID: PfCBnadyvrHcC0ZlT0J3lo_r4xefKRC2
+X-Proofpoint-GUID: ki9icIOjEDoZo6QXkzVFeDZg7mFJemUS
+X-Proofpoint-ORIG-GUID: tLUWWTCRjIUyDJDpeP8tdFe057P00S-s
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
  definitions=2023-09-18_11,2023-09-18_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- mlxlogscore=883 bulkscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 phishscore=0 mlxscore=0 spamscore=0 suspectscore=0
- malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2308100000 definitions=main-2309190054
+ adultscore=0 impostorscore=0
+ clxscore=1015 spamscore=0 mlxlogscore=664 lowpriorityscore=0 mlxscore=0
+ priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309190054
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -34
@@ -129,37 +120,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 9/15/23 21:12, Philippe Mathieu-Daudé wrote:
-> On 15/9/23 17:25, Harsh Prateek Bora wrote:
->>
->>
->> On 9/15/23 01:22, Philippe Mathieu-Daudé wrote:
->>> The check on tcg_enabled() make it clearer we want
->>> this call under TCG.
->>>
->>
->> tb_flush already has a check for tcg_enabled() in its definition.
->> Do we really need to check for same before calling it?
+On 9/18/23 20:28, Cédric Le Goater wrote:
+> this fixes numerous warnings of this type :
 > 
-> Good point, I didn't notice. I'll replace the call in
-> tb_flush() by an assertion.
+>    In file included from ../hw/ppc/spapr_pci.c:43:
+>    ../hw/ppc/spapr_pci.c: In function ‘spapr_dt_phb’:
+>    ../include/hw/ppc/fdt.h:18:13: warning: declaration of ‘ret’ shadows a previous local [-Wshadow=compatible-local]
+>       18 |         int ret = (exp);                                           \
+>          |             ^~~
+>    ../hw/ppc/spapr_pci.c:2355:5: note: in expansion of macro ‘_FDT’
+>     2355 |     _FDT(bus_off = fdt_add_subnode(fdt, 0, phb->dtbusname));
+>          |     ^~~~
+>    ../hw/ppc/spapr_pci.c:2311:24: note: shadowed declaration is here
+>     2311 |     int bus_off, i, j, ret;
+>          |                        ^~~
+> 
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
 
-I guess you meant asserting in else case of the check inside ?
-We may want to have the check internally only than having every caller 
-to do that.
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
+> ---
+>   include/hw/ppc/fdt.h | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
 > 
->>
->> Thanks
->> Harsh
->>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   accel/stubs/tcg-stub.c |  4 ----
->>>   cpu.c                  | 15 +++++++++------
->>>   gdbstub/softmmu.c      |  5 ++++-
->>>   hw/ppc/spapr_hcall.c   |  2 +-
->>>   4 files changed, 14 insertions(+), 12 deletions(-)
-> 
-> 
+> diff --git a/include/hw/ppc/fdt.h b/include/hw/ppc/fdt.h
+> index a8cd85069fe0..b56ac2a8cbb5 100644
+> --- a/include/hw/ppc/fdt.h
+> +++ b/include/hw/ppc/fdt.h
+> @@ -15,10 +15,10 @@
+>   
+>   #define _FDT(exp)                                                  \
+>       do {                                                           \
+> -        int ret = (exp);                                           \
+> -        if (ret < 0) {                                             \
+> -            error_report("error creating device tree: %s: %s",   \
+> -                    #exp, fdt_strerror(ret));                      \
+> +        int _ret = (exp);                                          \
+> +        if (_ret < 0) {                                            \
+> +            error_report("error creating device tree: %s: %s",     \
+> +                    #exp, fdt_strerror(_ret));                     \
+>               exit(1);                                               \
+>           }                                                          \
+>       } while (0)
 
