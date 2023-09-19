@@ -2,82 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B938A7A5E52
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:40:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8D37A5E61
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:43:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXDn-0001vw-J3; Tue, 19 Sep 2023 05:40:43 -0400
+	id 1qiXGA-0003sf-HW; Tue, 19 Sep 2023 05:43:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiXDe-0001p3-Ec
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:40:34 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiXDc-00068Y-Vg
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:40:34 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-532c66a105bso364029a12.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:40:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695116431; x=1695721231; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=DJoKyKte8CTOgWqDtK5N0/FL7H85FT62yijw6mj3qfU=;
- b=tZy3EPEXkvVl10wHzHPVkQaci+3MwUySiYEZgZbf6kQRG/sWGEkU6xlErpPvMbc9lb
- J6KdntPS0GNlN/5FJLYkwYmpGEnVBCujyJ6dCCN4vZhxej0qmnNFkALruSgCnxnU+3Dh
- DornF7JNx6UrBtYkmcYfDd1gcPnA8UT2jTLmbisS+TQrU2PlVEXSPBcFay9tNWOn5K1n
- OtwO6meB5tE3kMKhLTcIPS4JplJLMDr8gqdd15UTLFwJvx+oAodwCEtynsy1JpjbVKhi
- Nni0efKDTY5WhThQVJCVL33NX/3LJlJQHM4x68QReGGmC5EU9SemhNd3reu2wk0T3A91
- Z5dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695116431; x=1695721231;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=DJoKyKte8CTOgWqDtK5N0/FL7H85FT62yijw6mj3qfU=;
- b=Awo5mOjgeaFHuj7maaBOMPJy5wkEWdHg07dJWGi1XeRFvy4PGdLCTIqYCzyZcAXldp
- Bwjv1R+1Bxgb1w9sx5bg588wiosrmm+knM8XqIGGoHN7F+3foFZ88+P8uZ7cg+Z0H403
- BSekdKI0a/zTy1Iz8Kp2W2b3NY68Jvsuy85P0qT6ZapVA+vjZiyOJkfs5Chr217VMekb
- 6tgBuJXRc/up5ePKKjZEi1r5hxbyF8TvCOMFrg3RAIEJNlIF6l5nxqCADwJl9OwoL4lt
- kGaJHnmAzVWH5UTzAs7tyOzXTtxwZbdao0Yck72uwTfCp3mkJHlCKmAT7QVp2iJC1KgM
- lP4g==
-X-Gm-Message-State: AOJu0YzQw3HStIPlL8LcoDFEny6nBFtuQ8i+Q1pQ2iipVIT6lUUkr/ch
- /O860svto4BYh8O4USjct5mzIA==
-X-Google-Smtp-Source: AGHT+IFZ82zX8taEmqMUkdMcW5Cn56ZhenQUliuu472uvZ6U5PNVegX9pSELzmrzvICbdnB8bo6PfA==
-X-Received: by 2002:a50:ee0d:0:b0:52a:6497:d02b with SMTP id
- g13-20020a50ee0d000000b0052a6497d02bmr10332548eds.16.1695116431344; 
- Tue, 19 Sep 2023 02:40:31 -0700 (PDT)
-Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
- [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- u22-20020aa7db96000000b0052348d74865sm7059270edt.61.2023.09.19.02.40.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 02:40:31 -0700 (PDT)
-Message-ID: <f542cb77-8f05-6fa1-745b-813156440fd4@linaro.org>
-Date: Tue, 19 Sep 2023 11:40:28 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3 14/39] accel/tcg: Remove env_neg()
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qiXG6-0003s3-Q3; Tue, 19 Sep 2023 05:43:07 -0400
+Received: from mail-vi1eur02on2071d.outbound.protection.outlook.com
+ ([2a01:111:f400:fe16::71d]
+ helo=EUR02-VI1-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qiXG0-0006yn-BT; Tue, 19 Sep 2023 05:43:06 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gpUtOpyiozb9boNybxkdjtInw+EdE6lSJ8xEw2Vwcelv701W4mb62nGPEdxRX+yGjorkldinSjJboE6cIshaQuwoS1HBQBWbWcd+QqdVnQb8XO3LNw7BYhqhYpayb6/fTy9LKE01d+F7tZCR3O8VU0ZxQoZ+xOCxFB9yG4BkojQS0AsyFkN9ujJ86zzzleK8mcBT5Cw8K03VUV0DUci8tIHcQZaXWnPmtBxWsMj3gza3hU4S+c8xs/rnRuxy6agfHYCaJNNvMMSENq2TSKLgcjbyCGKpxp7aRoEtjZnrbDx9ilmRtwgfJHA0QTjKulrM4BnG34kUKtQdFxA8QeuuLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OYGc+gq1n6DgICn2kI46Mx2AJE4qXqUDBh6yH2vViMg=;
+ b=JaVQXcjb37HGbUefbUoNb4whWgAWtZi79mpb/lpxNLBfBm/4SctXFvgeMpEoUikjjionaDkE9pdWDJqQs50/bcrSc8HsJ+9IK5t4HiebXP9/cYHqhVfn9h2FM2h7uvXYTuhVKoA9sskCyuNWQlR1jiyXQhbKv4kyRq53BUfDLUahW9BqAcNoGqejXxT2I/NpFH1hOqKSoHEW2W5+Pz/qsRKkwgF9T9ShPEnmlULIl27Ysro0+GbrInktHhM74ZPpJO/7HjVA9AAQ93CzsFXtUPxF5ZBlZNV401tRn0A3xtpMxJjf0gz7kaiK5V3CXbmAM1Kuy9vPuS0XHkyf5H0WZw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OYGc+gq1n6DgICn2kI46Mx2AJE4qXqUDBh6yH2vViMg=;
+ b=ETtBNbJC4pmrwN+c6WHrwxq/hUTl7uRWqfjcZhlhjnRNlbys4OzrzoSh5be5XLCo6a+wid2ngMxL1GVT21RkqT9IilCOZED/wv6XyRC7kisajCXKlbUS4egiJerHBJA+jmoAiL7JDYuLNTGWAN6R/iI5dHFl0vio37pJDvGf5rTccbW2PVTrT7ht/4dmVePgOps8E7OM/Ayr6TYTdvfhQYgCj7me9R+12CJB+81r3W/Ro952kjU77Zh3bVmMViOylY2ALgPEhlUKbF2MjJ+47AeaueDsbWBjI5y4PrxcVn2VZ9kYaqNVLpQnL+MPEpSYXQkTgts9z9Nw4KoeWhZibA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
+ by PAWPR08MB10209.eurprd08.prod.outlook.com (2603:10a6:102:365::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Tue, 19 Sep
+ 2023 09:42:54 +0000
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::182f:4e2b:f999:1d9b]) by AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::182f:4e2b:f999:1d9b%6]) with mapi id 15.20.6792.026; Tue, 19 Sep 2023
+ 09:42:54 +0000
+Message-ID: <dc237ec1-7d13-7c71-875d-2bf9a4df96b6@virtuozzo.com>
+Date: Tue, 19 Sep 2023 11:42:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 19/22] parallels: naive implementation of
+ parallels_co_pdiscard
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: anjo@rev.ng
-References: <20230916214123.525796-1-richard.henderson@linaro.org>
- <20230916214123.525796-15-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230916214123.525796-15-richard.henderson@linaro.org>
+To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: stefanha@redhat.com, mike.maslenkin@gmail.com
+References: <20230918180100.524843-1-den@openvz.org>
+ <20230918180100.524843-21-den@openvz.org>
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+In-Reply-To: <20230918180100.524843-21-den@openvz.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR06CA0173.eurprd06.prod.outlook.com
+ (2603:10a6:803:c8::30) To AS8PR08MB7095.eurprd08.prod.outlook.com
+ (2603:10a6:20b:402::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|PAWPR08MB10209:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8aa314fd-8025-4933-a910-08dbb8f4cc78
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ewjMNi1gJHAjFEOQry89THlRTI8EKpm3CVBcdZI9DMHFeJCK/bbmUMKfdo8ej0286shssu7R8olfToD15eXt2cBSGsGoKjifQgkPIV6pcfNvtpyUhN7jXSx9CVC9T+QbaM9yvaf4W5efDO2CDiJCJFDqA5h2AatRAhvfxz/5Xhb6e6ETt6tWgFUzZ7QC48/SIIbSAj3b0MI0HVct3bv8TcLsh4OidnWhE9IXHMJOYDCdHHxjtCtw4oo09RKQrPcfdBpGdm7EBH1idyfkZuBnBJa2aMYUiOrG9XU1T0lePsSbuB+0nGDFZAZmGFfNyDaOHRs+lM+LQX08mTBl4KlmEJ2Bjn9oUinfvRWYrC7qL8fGurNac9nnC2wEDnhepgx9jAz3CB3bkHvNz0l+2m0WnQA4MbvcHJs7LcTJUOpx8/z+UilEWkEmWj5WVmzShAJ7yBXi/FGLHgP8QDpdx3LF4298d/gfaBMNHOSh7unCsAU4EjP3fFZUGAttZxK/VuLq7jKuY9UBeUkNUpskXDVe4mMqoZDTv1LgvTe6qcnO5s2Vq/cCwr+rmsuZKhej/U8L8fbZ9JHT/jYJXAyUBWBiLBUPwtO5A828DzUsssw1r60GuoaiMwQt5k7+8FoFJrnRQextyINmdbJBi9JuqOuTvwG2uXhwTGendWhAZG1dz5HXzvjYR9qRoeeVLjzih95o
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(396003)(136003)(366004)(346002)(376002)(39850400004)(451199024)(1800799009)(186009)(31686004)(6506007)(6486002)(6666004)(53546011)(52116002)(38100700002)(38350700002)(36756003)(86362001)(31696002)(2616005)(26005)(2906002)(6512007)(83380400001)(478600001)(41300700001)(4326008)(5660300002)(8676002)(8936002)(44832011)(316002)(66476007)(66556008)(66946007)(45980500001)(43740500002);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q1FCeWE2dUpoc0Q5UDAvL3ltTEtrTnZMTjdsVVg1UEl4d1RHSmovcXE0WXRC?=
+ =?utf-8?B?bUFjVFJBSEdxUXQyVDF0dkQxaG05Ti9BRHMxbkFRSi9DRVFsdEcxSmpTK1JB?=
+ =?utf-8?B?bDQ2YXFwYjBRNUxoRjlXQ3dJR0U2NmV6K2RVSCtOeThaY3pWTENUSkNGVG5y?=
+ =?utf-8?B?czFySzV0dnkrOERDalY3Y2pSVW9BMlNpWUF0eGs0QzFaa1hWRlFsMmRiTmJl?=
+ =?utf-8?B?RndscXhCOU5NYVhoVGphL0FaUlVaVGJIeStqSHQ3THZHSVgvV1R0dm1HblVJ?=
+ =?utf-8?B?NWRJdUk4WlRtRko4aTBOVXZnV1hoMkpuVkVkUWxOMTVtc0taSkRUK2lDWVJK?=
+ =?utf-8?B?OERLUnRuNHdTZGViTTBnVUZXcnM4Y3krVDgxdHRZK24zcXF0b2NBaVZYSDFW?=
+ =?utf-8?B?VStlaWdXbE1WUC9oV3RpRG1oSkFpemNBYktiMEdHYWRMSjJPQzYvbWt1UzJp?=
+ =?utf-8?B?cnBWb0FLR2J3a2QvbWF6U2hDNC9OSnlzSTRLNHRxUW5mYmZBS3orektRZ1gv?=
+ =?utf-8?B?WUZNYVN5aEhPNFFXVHl2aEMwenVWUW1vSWlxc0lPV2dTLzJpT2E3dGJpazh2?=
+ =?utf-8?B?VVJrRTlzbWhieEhodjkwakZNMjNBN0RlMkRwOVZZT016RUtSRVN4dDBZVTZv?=
+ =?utf-8?B?MkNwTEovWEtGaHlFQWpWdjVPbmcwZEtocmc1R1pZc2kwSGtLdm5jZmkrZ2M0?=
+ =?utf-8?B?MGhpcUwrem9CYmdTdm13RVk2SGlZR1l3UEIyK1NjODk2S1NrR3kvRTM2UGdK?=
+ =?utf-8?B?SXNEaWJuTjljOTRXSDRJaTNsYmZOUXFqdDhOY1EyK250WWVjajJZWWtrNThp?=
+ =?utf-8?B?S0VGYzJmKzdjNWoyZGRLU2JLT3hENzArd05xREk3ZXhiZHZmc1k0R09BQTBQ?=
+ =?utf-8?B?Zk5aaS92Q2wzTDBHOEgrUVRwaEFPdjFXRThhWWF4TVYxMGZTZXRvdFRLWG5s?=
+ =?utf-8?B?cDIxSFlnbzc4eEwwSHRiMERyK3pDdGNNQThnWHU2RVpzcmtUd2xDMTJXTmFm?=
+ =?utf-8?B?S1NxNTFpcFRwOHM5Q2E5S3pscVdIcUJPWGlxb2F1bjRyYkk1K2lUc0lrQ3o0?=
+ =?utf-8?B?U2tuVWxjdDA4N2xHTHRUWmo4VW1rU0l0MVg3NEErcEpKNm9PTHJVSzNweG1S?=
+ =?utf-8?B?c3JNTU9Bd2t5OHZ6NEVqd0piMjR2cXlEUGNHVndXM1VKMGFScDNiaFJxdytI?=
+ =?utf-8?B?NHBaU09UZjZxZ3BPbFYwMENPZnpIYzV2RlpsZ3F4ODkvOUxmM2crZVNDOThU?=
+ =?utf-8?B?WkdCLzROa2tCbXhoSS9kQVJ6TGdZbS80Z01qV0VOSGoxOVczdmpadzYyL05X?=
+ =?utf-8?B?K3h3bTB6TnZNQUFXWFdsUFNESmlUR1FLUFZCRXN5VXo1UWQ2QmlpNmF0M2FX?=
+ =?utf-8?B?WHN3bU00VlRSdUV0ZlgvbSswMWI2TjRnWlJjZkp1RHV2Qml5a3EwcVpTaGZr?=
+ =?utf-8?B?NFBCWmxqQ3gzRXM1WEpwSmpNQzF5U1RVUTJHRDhERlVBelFreU93VS90aUM2?=
+ =?utf-8?B?SzNhYjhJZmkzaVg1RldGb2MyOENYc2JjRnNJKzdBVUNPSC9FSTU1RzQ1cUxu?=
+ =?utf-8?B?U0VnRzRXcGVMSlA4MVA3VjlHYkQvZE9IYmVkUzVmYkduMXM3SWxCSFBEVDNl?=
+ =?utf-8?B?NmN6dDBkbHJKZ1NmZndaZCszUVlsZzdmWHVHc3lpenNycGxDby8zYTJvdVUw?=
+ =?utf-8?B?SXk1UG5MeVZaRXFlUGpXL1VVN3psczZBcWhKUWY2TUdxRXNlSDhvMzgzYWl3?=
+ =?utf-8?B?K3RhR0R2OHVsMFNKVFdPdG41aXg0RmdWOFRuLzlyMWdLNzlkcUhvRVlzWVNB?=
+ =?utf-8?B?RmwzNXdGeUhhSjByaUF1VjFFVWlSVFZsZEREVm1jT1JxZHRHN0dQNHkwNzBh?=
+ =?utf-8?B?SVJKb3RQc0FaTWc3YnFvZGhmV3F2M0FRZmhLQ1g0a3dFV2pjcUtrK0ZhMExW?=
+ =?utf-8?B?bGs4Mm9KRTJkUGZLSVpoNjg0aUJtTnR2VU9EL2J5RW1ndjlOcFJ1ZmFKY1Jk?=
+ =?utf-8?B?aEtVdWwxZnZicWtEbHpZOWhpU2tUNENGblZ4ZTFrK0NKQ2JSNzRBczBmbWR6?=
+ =?utf-8?B?UUlxMUdVcXViNXZzSVB5TUkrRW4vNWVoYUo5RnAreDdzcmVWODZXbDBkNHln?=
+ =?utf-8?B?cWN3ZFNoWlg1WmFNSGx2UDNWU291RWV0SXFpS1JGN0Vwek42bGpWNEQ3Y0tu?=
+ =?utf-8?Q?xZ4/JdHwIkFK61oJegYxNMY=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8aa314fd-8025-4933-a910-08dbb8f4cc78
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 09:42:54.6053 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7aAQdeKtCtFFracGJOs7g68MzAk6y3S66gAMATLsLZiVWYe9DaqkvBopXzxSBMIHWjhEW0lhfwrlswGqsB8WY/LNSv1QksjDvAjyqz0BJtE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB10209
+Received-SPF: pass client-ip=2a01:111:f400:fe16::71d;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR02-VI1-obe.outbound.protection.outlook.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,15 +147,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 16/9/23 23:40, Richard Henderson wrote:
-> Replace the single use within env_tlb() and remove.
-> 
-> Reviewed-by: Anton Johansson <anjo@rev.ng>
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+On 9/18/23 20:00, Denis V. Lunev wrote:
+> * Discarding with backing stores is not supported by the format.
+> * There is no buffering/queueing of the discard operation.
+> * Only operations aligned to the cluster are supported.
+>
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
 > ---
->   include/exec/cpu-all.h | 13 +------------
->   1 file changed, 1 insertion(+), 12 deletions(-)
+>   block/parallels.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 46 insertions(+)
+>
+> diff --git a/block/parallels.c b/block/parallels.c
+> index d9d36c514b..1ef23f6669 100644
+> --- a/block/parallels.c
+> +++ b/block/parallels.c
+> @@ -537,6 +537,51 @@ parallels_co_readv(BlockDriverState *bs, int64_t sector_num, int nb_sectors,
+>       return ret;
+>   }
+>   
+> +
+> +static int coroutine_fn
+> +parallels_co_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
+> +{
+> +    int ret = 0;
+> +    uint32_t cluster, count;
+> +    BDRVParallelsState *s = bs->opaque;
+> +
+> +    /*
+> +     * The image does not support ZERO mark inside the BAT, which means that
+> +     * stale data could be exposed from the backing file.
+> +     */
+> +    if (bs->backing) {
+> +        return -ENOTSUP;
+> +    }
+> +
+> +    if (!QEMU_IS_ALIGNED(offset, s->cluster_size)) {
+> +        return -ENOTSUP;
+> +    } else if (!QEMU_IS_ALIGNED(bytes, s->cluster_size)) {
+> +        return -ENOTSUP;
+> +    }
+> +
+> +    cluster = offset / s->cluster_size;
+> +    count = bytes / s->cluster_size;
+> +
+> +    qemu_co_mutex_lock(&s->lock);
+> +    for (; count > 0; cluster++, count--) {
+> +        int64_t host_off = bat2sect(s, cluster) << BDRV_SECTOR_BITS;
+> +        if (host_off == 0) {
+> +            continue;
+> +        }
+> +
+> +        ret = bdrv_co_pdiscard(bs->file, host_off, s->cluster_size);
+> +        if (ret < 0) {
+> +            goto done;
+> +        }
+> +
+> +        parallels_set_bat_entry(s, cluster, 0);
+> +        bitmap_clear(s->used_bmap, host_cluster_index(s, host_off), 1);
+> +    }
+> +done:
+> +    qemu_co_mutex_unlock(&s->lock);
+> +    return ret;
+> +}
+> +
+>   static void parallels_check_unclean(BlockDriverState *bs,
+>                                       BdrvCheckResult *res,
+>                                       BdrvCheckMode fix)
+> @@ -1417,6 +1462,7 @@ static BlockDriver bdrv_parallels = {
+>       .bdrv_co_create             = parallels_co_create,
+>       .bdrv_co_create_opts        = parallels_co_create_opts,
+>       .bdrv_co_check              = parallels_co_check,
+> +    .bdrv_co_pdiscard           = parallels_co_pdiscard,
+>   };
+>   
+>   static void bdrv_parallels_init(void)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+
+-- 
+Best regards,
+Alexander Ivanov
 
 
