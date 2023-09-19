@@ -2,125 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058907A6008
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4246E7A5FFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:47:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiYFy-0008SI-To; Tue, 19 Sep 2023 06:47:02 -0400
+	id 1qiYFp-0008Od-37; Tue, 19 Sep 2023 06:46:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qiYFu-0008Qb-UT
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:46:59 -0400
-Received: from mail-dm3nam02on20620.outbound.protection.outlook.com
- ([2a01:111:f400:7e83::620]
- helo=NAM02-DM3-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiYFh-0008Nr-V5
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:46:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qiYFk-0005uh-9o
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:46:58 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EqyqgadTfy3+UT3N6heakvn1nlnOQatzaJyJG2/Exm8/cosrdSVu6Ahw/WywvS3akbeQ09MQNZVno5BX3YEMa2g2Th8s7XVIiZlr5KQEWC3CPH6DD89G0eKe27QrZGLb1NHrY4Ys2jFV7T9uc0/QqZnle/PY4NhN89PK17cProhJK98i6TkgK5UGKsxzqUzh9t2yY0fpeZFh5n4oxfnK/oL+XWPHOeBi6iiNhLGuxLmljkGEMiC8GM74swII3FXyom2traGCutKzfJoTcaALDZ74+aIy8KxN9dqFEjR9znRXHcV23JDbn9/jNKLbg5gvk03x/iGPZ3L0IfnF0NmlEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pSQWkK0PcI0rD/QERaWodfqwMMw0fl35aoPyxDH1Ghc=;
- b=T8bm4zWyi6GLTXGbw0JmvkwCHIJI8sLj15LuTzzNlCP+0CONjBNdWo3mlVRCQs6qJCZoKazsYcIQ7PyhZHJW6xwtev4k6NXTMq4Je2bm62FG8KPVidOuv9dxL0vg9ZmC7yyCAxURQjGt2P4fZkMRUthuzn/l0Wv5F+dlQl6NOl30u9dIKJxRJF8nRgoOIK0mQDCX9X/ivJvWWPJzvjGggcN8t5urLe6QCtu1V+1/bY6X/DFZDSjAZakPPyoYtj2nebAdA9du4U+3ZX2upOrvnEzauFtno7u4Txn5U2fYkuwQeVEmyl6Sok/uqwS+i/w9dF4lwC+ziXBo38nNlCdyFw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pSQWkK0PcI0rD/QERaWodfqwMMw0fl35aoPyxDH1Ghc=;
- b=UWHYQ48GlHRm1QLk4lip84NufDFL4iCutQssulSkqi1JKlYDcyTFmm2c4wBZQ0Iq/JTUs/SnQ8JhZmZQx2JZesinhJUA+kt1CvmlB5qIrpgaS0Uq0Jj55TTST+ts2K9yYG+7ZiMKWyHsY6ExBOuTI+DmmutNqOLKuYm3Br7pCts=
-Received: from BLAPR03CA0168.namprd03.prod.outlook.com (2603:10b6:208:32f::6)
- by IA1PR12MB7637.namprd12.prod.outlook.com (2603:10b6:208:427::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.35; Tue, 19 Sep
- 2023 10:46:43 +0000
-Received: from BL02EPF0001A0FC.namprd03.prod.outlook.com
- (2603:10b6:208:32f:cafe::85) by BLAPR03CA0168.outlook.office365.com
- (2603:10b6:208:32f::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27 via Frontend
- Transport; Tue, 19 Sep 2023 10:46:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0001A0FC.mail.protection.outlook.com (10.167.242.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.20 via Frontend Transport; Tue, 19 Sep 2023 10:46:42 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 19 Sep
- 2023 05:46:36 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>, "Gurchetan
- Singh" <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>, "Robert
- Beckett" <bob.beckett@collabora.com>,
- <virtualization@lists.linux-foundation.org>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>
-CC: <qemu-devel@nongnu.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Juergen Gross <jgross@suse.com>, "Boris
- Ostrovsky" <boris.ostrovsky@oracle.com>, Stefano Stabellini
- <sstabellini@kernel.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <Alexander.Deucher@amd.com>, "Christian
- Koenig" <Christian.Koenig@amd.com>, Stewart Hildebrand
- <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
- Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
-Subject: [LINUX KERNEL PATCH v5 2/2] virtgpu: Add freeze and restore func to
- reinit vqs
-Date: Tue, 19 Sep 2023 18:46:07 +0800
-Message-ID: <20230919104607.2282248-3-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230919104607.2282248-1-Jiqian.Chen@amd.com>
-References: <20230919104607.2282248-1-Jiqian.Chen@amd.com>
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiYFf-0005sa-4t
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:46:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695120402;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ab9bLQH0Tx3APO9rCPNTfvxvFdTE+ptFH/kSz5VNmRI=;
+ b=AzLOGD0TljOGhaEkCami9yXROVS9ZDuY9vlE9mkA8upvQPqLt4SqJ5PAmkaQ2TH+H4CiUC
+ IpsZh6hQDdpnQyhSUqf3tVZqc/4NoVjBldw6dXVpXy1qtqJgwhUX+lCkXGgFqHs2485Z41
+ +0PuEdCpY2KJDULhJxeZbb6tRH0JgR8=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-586-LFhUkJa8PkezmAyp0Oc3Fw-1; Tue, 19 Sep 2023 06:46:41 -0400
+X-MC-Unique: LFhUkJa8PkezmAyp0Oc3Fw-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-9a9f282713fso394917266b.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 03:46:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695120400; x=1695725200;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ab9bLQH0Tx3APO9rCPNTfvxvFdTE+ptFH/kSz5VNmRI=;
+ b=O6hdiMosOAZcLTO9i8jwp1N60rrvZIvi93j896FWfEdO1hZG7gugzT4bB2TMYqxQV3
+ F3C/6PwH4/QAFxIayl0RWmb+hUoYNhkjSWZXxejboJi/nqCQ+OEwKRUHl+B8EMQE/Z3F
+ 2a7VU77kzyGWh2UufMQlH605BUYBvEHz1OZ9xpH4hS3fhujdUwCYtyRSTDgJmB8n78Zb
+ JkERs4CAehURbo1yrAvkTvLB98E97nuWb3sMM6Zg0TgAoKZQ8aqF8wEPApcmKUhherYk
+ ldMmnoqD7W2yi2eqsJj45fMNFiPSmLXaXbpGNFFRMl6eyWYKn2Dngbj1488ZfqIfQXhk
+ +SvA==
+X-Gm-Message-State: AOJu0YyeDjqV/nBFZqRwtrbZi05l+u0PAGxXXpYUI/CTh9wxZj4cpJ5J
+ vFFZDb5ryNNOxKuFm0R3bTYZn3k2t4APKOzymDydHoiljuLgKGoSaVM8nEBMI8JBhF0h6x2tuaA
+ 373luucfrYarkIEc=
+X-Received: by 2002:a17:906:74d5:b0:9a1:8ee9:cc0b with SMTP id
+ z21-20020a17090674d500b009a18ee9cc0bmr10741946ejl.21.1695120399862; 
+ Tue, 19 Sep 2023 03:46:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHa1FnjSRqBXh928ZaKf3n8RQVtcMdKvHdfBZb/kd/83nUmb4Mjt9dA29wmhblqJ3uGn7w4NA==
+X-Received: by 2002:a17:906:74d5:b0:9a1:8ee9:cc0b with SMTP id
+ z21-20020a17090674d500b009a18ee9cc0bmr10741922ejl.21.1695120399501; 
+ Tue, 19 Sep 2023 03:46:39 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
+ (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
+ [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ by smtp.gmail.com with ESMTPSA id
+ j19-20020a170906411300b009930308425csm7583389ejk.31.2023.09.19.03.46.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 03:46:38 -0700 (PDT)
+Message-ID: <2ec20eaa-2d56-a5b2-67c2-3798d1910f4b@redhat.com>
+Date: Tue, 19 Sep 2023 12:46:37 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 5/8] qemu-img: rebase: avoid unnecessary COW operations
+Content-Language: en-US
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
+ den@virtuozzo.com
+References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
+ <20230915162016.141771-6-andrey.drobyshev@virtuozzo.com>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230915162016.141771-6-andrey.drobyshev@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FC:EE_|IA1PR12MB7637:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07f5be26-03a4-41df-dc9a-08dbb8fdb664
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: cDOB4mkMnYPWCwmhoiwQ7HvT3AXROf9eYiss1w3edq9a3yvowRoRhUZFd9UWpvr+5DwvsEsCAwBZcpp9WL9Y7oHXCkAgMVk925HAazvb35nL8UVPijb8xOb6i/iTz7d0FhHqQxf4XzEr86tqy3R4ip0+KqCfE6OyMxB8rVCyrKNV4Iw4RcklGl+NnVq677/14aXsjFCzRNAFR9pwTHqAELJskHNoYOjlT/6R/MD35mwO5OA91kRZJDPqe/bUcHLSb+EiEA6JY+s/SZkVkGSiMv+tdPZ4OwE2Sm1qQg48e57xGLxc0ii0V4FZOXjGPkuLx2q1JY1LKf8hs9PeHx+nypur76Y43jJrqrWXOiWCr6QDuoA+RrGewKwQ9i3yaCFEr9PEyEOebhCpBlHjK4RyCAH18Hj7de3fTWys2Lw2zQPxyBxidwYgPYbCNH22NfeyJjEJ5pxjpg7AhdNwFcs86bBeECcQXwuPuip4aP3DPqixDCuVs7m4H8MzHTVnN5R8JcapctvFS8CTKtel2QznGsXkD7RHl994hzUIGql2R6pfndN4A7Y9k+4A+JulYU2T62eC8OnGi5riV+K9uWvdC6nqlvTZKQ2AN5Lqay2qIGvNyd4YfijoDf0GSWWsB6+KeAUP7xaFnYuMCgm3VUVftNtbsuBLLGy9ZPFr1ax8YYAPCcOeLeP1aPfkLL3kQonRrCq7MxsZt7XhgQmEQQX4MKNOHbs8cmJlr/JuFNbSH+Q3J6SZGB7dAXzT6Hf1WXyb23S+9ZxJODZW2ptQ/0xJDxjB0YMCfiOEaeCX0U5xdZc=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(376002)(39860400002)(396003)(346002)(186009)(82310400011)(1800799009)(451199024)(46966006)(36840700001)(40470700004)(86362001)(2906002)(81166007)(921005)(82740400003)(356005)(36756003)(41300700001)(47076005)(40460700003)(16526019)(26005)(336012)(426003)(83380400001)(8676002)(2616005)(5660300002)(7696005)(6666004)(478600001)(36860700001)(1076003)(70586007)(8936002)(70206006)(316002)(110136005)(40480700001)(7416002)(4326008)(54906003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 10:46:42.8888 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07f5be26-03a4-41df-dc9a-08dbb8fdb664
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A0FC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7637
-Received-SPF: softfail client-ip=2a01:111:f400:7e83::620;
- envelope-from=Jiqian.Chen@amd.com;
- helo=NAM02-DM3-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -136,144 +104,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we suspended guest VM, it called into Qemu to call
-virtio_reset->__virtio_queue_reset, this cleared all virtqueue information
-of virtgpu on Qemu end, but guest kernel still keep the virtqueus. As a
-result, after guest resumed, if guest sent ctrl/cursor requests to Qemu
-through virtqueue, but now Qemu can't get requests from the virtqueue.
-(Failed in function virtio_queue_notify, vq->vring.desc is NULL)
+On 15.09.23 18:20, Andrey Drobyshev wrote:
+> When rebasing an image from one backing file to another, we need to
+> compare data from old and new backings.  If the diff between that data
+> happens to be unaligned to the target cluster size, we might end up
+> doing partial writes, which would lead to copy-on-write and additional IO.
+>
+> Consider the following simple case (virtual_size == cluster_size == 64K):
+>
+> base <-- inc1 <-- inc2
+>
+> qemu-io -c "write -P 0xaa 0 32K" base.qcow2
+> qemu-io -c "write -P 0xcc 32K 32K" base.qcow2
+> qemu-io -c "write -P 0xbb 0 32K" inc1.qcow2
+> qemu-io -c "write -P 0xcc 32K 32K" inc1.qcow2
+> qemu-img rebase -f qcow2 -b base.qcow2 -F qcow2 inc2.qcow2
+>
+> While doing rebase, we'll write a half of the cluster to inc2, and block
+> layer will have to read the 2nd half of the same cluster from the base image
+> inc1 while doing this write operation, although the whole cluster is already
+> read earlier to perform data comparison.
+>
+> In order to avoid these unnecessary IO cycles, let's make sure every
+> write request is aligned to the overlay subcluster boundaries.  Using
+> subcluster size is universal as for the images which don't have them
+> this size equals to the cluster size, so in any case we end up aligning
+> to the smallest unit of allocation.
+>
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> ---
+>   qemu-img.c | 76 ++++++++++++++++++++++++++++++++++++++++--------------
+>   1 file changed, 56 insertions(+), 20 deletions(-)
 
-So, this patch add freeze and restore function for virtgpu driver. In
-freeze function, it flushes all virtqueue works and deletes virtqueues. In
-restore function, it re-initializes virtqueues. And then, Qemu and guest
-can communicate normally.
+Looks good, I like the changes from v1!  Two minor things:
 
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
- drivers/gpu/drm/virtio/virtgpu_drv.c | 23 +++++++++++++++++++++
- drivers/gpu/drm/virtio/virtgpu_drv.h |  1 +
- drivers/gpu/drm/virtio/virtgpu_kms.c | 30 +++++++++++++++++++---------
- 3 files changed, 45 insertions(+), 9 deletions(-)
+> diff --git a/qemu-img.c b/qemu-img.c
+> index fcd31d7b5b..83950af42b 100644
+> --- a/qemu-img.c
+> +++ b/qemu-img.c
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
-index 644b8ee51009..8e751db129e4 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
-@@ -130,6 +130,25 @@ static void virtio_gpu_config_changed(struct virtio_device *vdev)
- 	schedule_work(&vgdev->config_changed_work);
- }
- 
-+#ifdef CONFIG_PM
-+static int virtio_gpu_freeze(struct virtio_device *dev)
-+{
-+	struct drm_device *ddev = dev->priv;
-+	struct virtio_gpu_device *vgdev = ddev->dev_private;
-+
-+	flush_work(&vgdev->ctrlq.dequeue_work);
-+	flush_work(&vgdev->cursorq.dequeue_work);
-+	vgdev->vdev->config->del_vqs(vgdev->vdev);
-+
-+	return 0;
-+}
-+
-+static int virtio_gpu_restore(struct virtio_device *dev)
-+{
-+	return virtio_gpu_init_vqs(dev);
-+}
-+#endif
-+
- static struct virtio_device_id id_table[] = {
- 	{ VIRTIO_ID_GPU, VIRTIO_DEV_ANY_ID },
- 	{ 0 },
-@@ -156,6 +175,10 @@ static struct virtio_driver virtio_gpu_driver = {
- 	.driver.owner = THIS_MODULE,
- 	.id_table = id_table,
- 	.probe = virtio_gpu_probe,
-+#ifdef CONFIG_PM
-+	.freeze = virtio_gpu_freeze,
-+	.restore = virtio_gpu_restore,
-+#endif
- 	.remove = virtio_gpu_remove,
- 	.config_changed = virtio_gpu_config_changed
- };
-diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.h b/drivers/gpu/drm/virtio/virtgpu_drv.h
-index 4126c384286b..d93dd53a947d 100644
---- a/drivers/gpu/drm/virtio/virtgpu_drv.h
-+++ b/drivers/gpu/drm/virtio/virtgpu_drv.h
-@@ -282,6 +282,7 @@ extern struct drm_ioctl_desc virtio_gpu_ioctls[DRM_VIRTIO_NUM_IOCTLS];
- void virtio_gpu_create_context(struct drm_device *dev, struct drm_file *file);
- 
- /* virtgpu_kms.c */
-+int virtio_gpu_init_vqs(struct virtio_device *vdev);
- int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev);
- void virtio_gpu_deinit(struct drm_device *dev);
- void virtio_gpu_release(struct drm_device *dev);
-diff --git a/drivers/gpu/drm/virtio/virtgpu_kms.c b/drivers/gpu/drm/virtio/virtgpu_kms.c
-index 5a3b5aaed1f3..871b7ba98257 100644
---- a/drivers/gpu/drm/virtio/virtgpu_kms.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_kms.c
-@@ -114,16 +114,33 @@ static void virtio_gpu_get_capsets(struct virtio_gpu_device *vgdev,
- 	vgdev->num_capsets = num_capsets;
- }
- 
--int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
-+int virtio_gpu_init_vqs(struct virtio_device *vdev)
- {
- 	static vq_callback_t *callbacks[] = {
- 		virtio_gpu_ctrl_ack, virtio_gpu_cursor_ack
- 	};
- 	static const char * const names[] = { "control", "cursor" };
-+	struct drm_device *dev = vdev->priv;
-+	struct virtio_gpu_device *vgdev = dev->dev_private;
-+	struct virtqueue *vqs[2];
-+	int ret;
-+
-+	virtio_gpu_init_vq(&vgdev->ctrlq, virtio_gpu_dequeue_ctrl_func);
-+	virtio_gpu_init_vq(&vgdev->cursorq, virtio_gpu_dequeue_cursor_func);
-+
-+	ret = virtio_find_vqs(vgdev->vdev, 2, vqs, callbacks, names, NULL);
-+	if (ret) {
-+		DRM_ERROR("failed to find virt queues\n");
-+		return ret;
-+	}
-+	vgdev->ctrlq.vq = vqs[0];
-+	vgdev->cursorq.vq = vqs[1];
-+	return 0;
-+}
- 
-+int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
-+{
- 	struct virtio_gpu_device *vgdev;
--	/* this will expand later */
--	struct virtqueue *vqs[2];
- 	u32 num_scanouts, num_capsets;
- 	int ret = 0;
- 
-@@ -144,8 +161,6 @@ int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
- 	ida_init(&vgdev->ctx_id_ida);
- 	ida_init(&vgdev->resource_ida);
- 	init_waitqueue_head(&vgdev->resp_wq);
--	virtio_gpu_init_vq(&vgdev->ctrlq, virtio_gpu_dequeue_ctrl_func);
--	virtio_gpu_init_vq(&vgdev->cursorq, virtio_gpu_dequeue_cursor_func);
- 
- 	vgdev->fence_drv.context = dma_fence_context_alloc(1);
- 	spin_lock_init(&vgdev->fence_drv.lock);
-@@ -207,13 +222,10 @@ int virtio_gpu_init(struct virtio_device *vdev, struct drm_device *dev)
- 	DRM_INFO("features: %ccontext_init\n",
- 		 vgdev->has_context_init ? '+' : '-');
- 
--	ret = virtio_find_vqs(vgdev->vdev, 2, vqs, callbacks, names, NULL);
-+	ret = virtio_gpu_init_vqs(vdev);
- 	if (ret) {
--		DRM_ERROR("failed to find virt queues\n");
- 		goto err_vqs;
- 	}
--	vgdev->ctrlq.vq = vqs[0];
--	vgdev->cursorq.vq = vqs[1];
- 	ret = virtio_gpu_alloc_vbufs(vgdev);
- 	if (ret) {
- 		DRM_ERROR("failed to alloc vbufs\n");
--- 
-2.34.1
+[...]
+
+> @@ -3844,33 +3861,48 @@ static int img_rebase(int argc, char **argv)
+>                   }
+>               }
+>   
+> +            /*
+> +             * At this point we know that the region [offset; offset + n)
+> +             * is unallocated within the target image.  This region might be
+> +             * unaligned to the target image's (sub)cluster boundaries, as
+> +             * old backing may have smaller clusters (or have subclusters).
+> +             * We extend it to the aligned boundaries to avoid CoW on
+> +             * partial writes in blk_pwrite(),
+> +             */
+> +            n += offset - QEMU_ALIGN_DOWN(offset, write_align);
+> +            offset = QEMU_ALIGN_DOWN(offset, write_align);
+> +            n += QEMU_ALIGN_UP(offset + n, write_align) - (offset + n);
+> +            n = MIN(n, size - offset);
+> +            assert(!bdrv_is_allocated(unfiltered_bs, offset, n, &n_alloc) &&
+> +                   n_alloc == n);
+> +
+> +            /*
+> +             * Much like the with the target image, we'll try to read as much
+
+s/the with the/with the/
+
+> +             * of the old and new backings as we can.
+> +             */
+> +            n_old = MIN(n, MAX(0, old_backing_size - (int64_t) offset));
+> +            if (blk_new_backing) {
+> +                n_new = MIN(n, MAX(0, new_backing_size - (int64_t) offset));
+> +            }
+
+If we don’t have a check for blk_old_backing (old_backing_size is 0 if 
+blk_old_backing is NULL), why do we have a check for blk_new_backing 
+(new_backing_size is 0 if blk_new_backing is NULL)?
+
+(Perhaps because the previous check was `offset >= new_backing_size || 
+!blk_new_backing`, i.e. included exactly such a check – but I don’t 
+think it’s necessary, new_backing_size will be 0 if blk_new_backing is 
+NULL.)
+
+> +
+>               /*
+>                * Read old and new backing file and take into consideration that
+>                * backing files may be smaller than the COW image.
+>                */
+> -            if (offset >= old_backing_size) {
+> -                memset(buf_old, 0, n);
+> -                buf_old_is_zero = true;
+> +            memset(buf_old + n_old, 0, n - n_old);
+> +            if (!n_old) {
+> +                old_backing_eof = true;
+>               } else {
+> -                if (offset + n > old_backing_size) {
+> -                    n = old_backing_size - offset;
+> -                }
+> -
+> -                ret = blk_pread(blk_old_backing, offset, n, buf_old, 0);
+> +                ret = blk_pread(blk_old_backing, offset, n_old, buf_old, 0);
+>                   if (ret < 0) {
+>                       error_report("error while reading from old backing file");
+>                       goto out;
+>                   }
+>               }
+>   
+> -            if (offset >= new_backing_size || !blk_new_backing) {
+> -                memset(buf_new, 0, n);
+> -            } else {
+> -                if (offset + n > new_backing_size) {
+> -                    n = new_backing_size - offset;
+> -                }
+> -
+> -                ret = blk_pread(blk_new_backing, offset, n, buf_new, 0);
+> +            memset(buf_new + n_new, 0, n - n_new);
+> +            if (blk_new_backing && n_new) {
+
+Same as above, I think we can drop the blk_new_backing check, just so 
+that both blocks (for old and new) look the same.
+
+(Also, the memset() already has to trust that n_new is 0 if 
+blk_new_backing is NULL, so the check doesn’t make much sense from that 
+perspective either, and makes the memset() look wrong.)
+
+> +                ret = blk_pread(blk_new_backing, offset, n_new, buf_new, 0);
+>                   if (ret < 0) {
+>                       error_report("error while reading from new backing file");
+>                       goto out;
 
 
