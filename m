@@ -2,84 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC4277A6884
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 18:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3430A7A688F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 18:04:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qid9x-0002H1-25; Tue, 19 Sep 2023 12:01:09 -0400
+	id 1qidAQ-0002Yz-S0; Tue, 19 Sep 2023 12:01:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qid9j-0002BM-IY
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:00:55 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qid9g-0001nT-Mg
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:00:55 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-403004a96eeso62144225e9.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 09:00:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695139250; x=1695744050; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=FUgl8qbgPkE0Y3xcruXztkrW8DQ+8tu5AZMIltrCMTc=;
- b=WTBm5yIKEQF9J+5X94w4TiD/lIEAbwhtjPCpkbzx63UO3sXKJipHNi/8+njD3eVbSK
- 6R3Rcq+TsTlumqmtBVTCH3iME6pXUaMKInnUNNX5KwMrcsAr3vDzSbW85CEoHqoJjRrm
- XA5Rpy5DKp1xDI+ebLv2lTPDNhhrgzepgG1+cGweKFY+XwEHkHPyPI/oevXgNp4U+e5f
- Uobj1PPKYDaajDA+s5ugCHeLbPgPYCIwq4ZucVpybyzyw5g8dreUATwUotIrQUeXMvKZ
- C39KamnCH7ieWuYEjvcJdB7jjWzZfa2Tbgs+vSwW1f8BDw5FSxw4AeITOO9d3qxPF07U
- cuNw==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qidAN-0002WJ-4E
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:01:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qidAL-00025N-C9
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:01:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695139292;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9WJ8C3KLxKHnWRQS4tww0mm1JKkwcqJtyeAWwsBUgVg=;
+ b=ZMpLn764qoyscN1UGLVe9JdFQ1qFZpGpCxhlaV1Zmr/UyIulYE3b0gUyoS8NULkYGoMEAn
+ c8Lp4RwJy13jT+1K8jLJrwVFsEwydwfS2xEjGYIVkrkw7PSNc503ye892xp8CRbdaWNkf8
+ 1nLaBK0MjiEBGmwu7z0DbhgDh+5NRIw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-684-Yl5Lnr8SPeCbQaYxIguM1w-1; Tue, 19 Sep 2023 12:01:30 -0400
+X-MC-Unique: Yl5Lnr8SPeCbQaYxIguM1w-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-404fa5c1d99so23427935e9.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 09:01:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695139250; x=1695744050;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=FUgl8qbgPkE0Y3xcruXztkrW8DQ+8tu5AZMIltrCMTc=;
- b=aTOE8f9AhYy5jmvzyJ94/9J2jent5ic3tNDTUralG09YAMXGA5g7rXRONk/IJxGfr1
- DV4FCQLYV48Hs0qAApbm+H2lZB9gVDjNQubpCClFg4/RXKkOSQopM6VvOki7BHKV9l7U
- RQHmIza9qkh7liX7IcWRlSaPPbpY2fn8CQ2NeGInw+hes2UHN6XtqmzrOGskHYed3wkj
- 9gGws+pel02pWHZSzscxzTU8PzA8HW2asBOeU+1xHoNOTNWYq6lpPd3P2FgLICut9fFB
- ijqZGujpC5TMTpOsS6QnWD/luJqiJcoqSeaTe9jZjpAC2a/26lVhEkoP00ElwKlI876q
- uQ+A==
-X-Gm-Message-State: AOJu0YxErp6gOb5wNsyF24vPLogvbaGiSJlIGo0z+44By34xAMTR0Seq
- AZzLasq3BjqxRRg6LVQRxo+e7w==
-X-Google-Smtp-Source: AGHT+IEYENQvx9wMa2JS1WUI8iLYnjpDG93qCxq4QeH8ldoYczePJ7eReMSWizpfAZBUzbOKGmWASg==
-X-Received: by 2002:a7b:c7cb:0:b0:402:ee71:29 with SMTP id
- z11-20020a7bc7cb000000b00402ee710029mr195787wmk.10.1695139249751; 
- Tue, 19 Sep 2023 09:00:49 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1695139289; x=1695744089;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9WJ8C3KLxKHnWRQS4tww0mm1JKkwcqJtyeAWwsBUgVg=;
+ b=nIlyMzmtQqAAuTq4Yn1dNdZUz8ok3Vdrc+Eg6f5Xi+jhV4XX0vbzip5px6cDgSAujP
+ xHlpryu9XKkiuRQ76OozC5e+4nMdL23ua3yk1FHJamtxi7tQDkj0fv0iAd131KALSMcw
+ Ene3akrS2x98VoTe4luPUV9yJ1tiUTQg7YmlE1Kmgp1IO1IJFt9NMOl/JHsaxpYbfXD/
+ /gwgXZnk4kAelJZSYVgDLT5ntQZHKo20FiN5RLwbrqhjmCPKmUJhI5MBHOJermA49DKy
+ PUAckztDM3oPtCCNw8g98N8NXZnuNIXrrSjSP293hPpghbKUGNNUTEBKczsnCffkk1vJ
+ f3hA==
+X-Gm-Message-State: AOJu0Yy+pzdkwkRofmq5shqqyJa7DHN38OYUCxegbat48SOTOZoQE47O
+ kJGC6XMvF+jzq7pI9rdfI1iAsF41E5yGEaH3btVWzPjPgPpOi5FsTj+J4d6kQYLi6wk3MWqkvEk
+ sfzkzrfqxB/vjaUw=
+X-Received: by 2002:a05:600c:2110:b0:401:b6f6:d90c with SMTP id
+ u16-20020a05600c211000b00401b6f6d90cmr147122wml.35.1695139289790; 
+ Tue, 19 Sep 2023 09:01:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVqjLhqsHmt0f19gIXzRJyMoesCBpnekaoZT48SbLZbO1jHI1o4IoS/WkmRrAjhGoTRs+xxA==
+X-Received: by 2002:a05:600c:2110:b0:401:b6f6:d90c with SMTP id
+ u16-20020a05600c211000b00401b6f6d90cmr147097wml.35.1695139289443; 
+ Tue, 19 Sep 2023 09:01:29 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
  by smtp.gmail.com with ESMTPSA id
- w11-20020a05600c014b00b00400268671c6sm15693627wmm.13.2023.09.19.09.00.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Sep 2023 09:00:49 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D2EBB1FFBB;
- Tue, 19 Sep 2023 17:00:48 +0100 (BST)
-References: <20230919065754.1091394-1-alex.bennee@linaro.org>
- <CAJSP0QUy2e9niaA3uhbyBZm3cw0QW8Wg5u9Cd749VtpZVfXotQ@mail.gmail.com>
-User-agent: mu4e 1.11.20; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PULL v2 0/9] testing updates (back to green!)
-Date: Tue, 19 Sep 2023 17:00:09 +0100
-In-reply-to: <CAJSP0QUy2e9niaA3uhbyBZm3cw0QW8Wg5u9Cd749VtpZVfXotQ@mail.gmail.com>
-Message-ID: <8734zaw3tb.fsf@linaro.org>
+ l20-20020a05600c1d1400b004051d5b2cf1sm842786wms.12.2023.09.19.09.01.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 09:01:28 -0700 (PDT)
+Message-ID: <3dec9822-a884-af13-d8ce-1facbbaf6886@redhat.com>
+Date: Tue, 19 Sep 2023 18:01:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 14/22] vfio/common: Simplify vfio_viommu_preset()
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-15-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230830103754.36461-15-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,129 +105,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 8/30/23 12:37, Zhenzhong Duan wrote:
+> Commit "vfio/container-base: Introduce [attach/detach]_device container callbacks"
+> add support to link to address space, we can utilize it to simplify
+> vfio_viommu_preset().
+> 
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Stefan Hajnoczi <stefanha@gmail.com> writes:
+This looks like a revert of patch 07. Can it be avoided in v2 ?
 
-> There is some funny business with tests/lcitool/libvirt-ci. Please
-> rebase on master and send a v3. Sorry for the trouble, I am afraid I
-> would mess something up with the submodule if I attempted to resolve
-> it myself.
->
-> (If you don't see a conflict when rebasing, please wait until the end
-> of the day when the other pull requests queued on the staging branch
-> are pushed to master.)
+Thanks,
 
-That's weird, was their another PR in flight which touched libvirt-ci?
+C.
 
->
-> Thanks!
->
-> Auto-merging tests/docker/dockerfiles/debian-amd64-cross.docker
-> Auto-merging tests/docker/dockerfiles/debian-amd64.docker
-> Auto-merging tests/docker/dockerfiles/debian-arm64-cross.docker
-> Auto-merging tests/docker/dockerfiles/debian-armhf-cross.docker
-> Auto-merging tests/docker/dockerfiles/debian-ppc64el-cross.docker
-> Auto-merging tests/docker/dockerfiles/debian-s390x-cross.docker
-> Failed to merge submodule tests/lcitool/libvirt-ci (not checked out)
-> CONFLICT (submodule): Merge conflict in tests/lcitool/libvirt-ci
-> Recursive merging with submodules currently only supports trivial cases.
-> Please manually handle the merging of each conflicted submodule.
-> This can be accomplished with the following steps:
->  - come back to superproject and run:
->
->       git add tests/lcitool/libvirt-ci
->
->    to record the above merge or update
->  - resolve any other conflicts in the superproject
->  - commit the resulting index in the superproject
-> Automatic merge failed; fix conflicts and then commit the result.
->
-> Stefan
->
-> On Tue, 19 Sept 2023 at 02:59, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
-wrote:
->>
->> The following changes since commit 13d6b1608160de40ec65ae4c32419e56714bb=
-adf:
->>
->>   Merge tag 'pull-crypto-20230915' of https://gitlab.com/rth7680/qemu in=
-to staging (2023-09-18 11:04:21 -0400)
->>
->> are available in the Git repository at:
->>
->>   https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-ominbus-19092=
-3-1
->>
->> for you to fetch changes up to bb3c01212b54595f5bbdbe235cb353b220f94943:
->>
->>   tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884 (202=
-3-09-19 07:46:02 +0100)
->>
->> ----------------------------------------------------------------
->> testing updates:
->>
->>   - update most Debian to bookworm
->>   - fix some typos
->>   - update loongarch toolchain
->>   - fix microbit test
->>   - handle GitLab/Cirrus timeout discrepancy
->>   - improve avocado console handling
->>   - disable mips avocado images pending bugfix
->>
->> ----------------------------------------------------------------
->> Alex Benn=C3=A9e (2):
->>       tests: update most Debian images to Bookworm
->>       gitlab: fix typo/spelling in comments
->>
->> Daniel P. Berrang=C3=A9 (4):
->>       microbit: add missing qtest_quit() call
->>       qtest: kill orphaned qtest QEMU processes on FreeBSD
->>       gitlab: make Cirrus CI timeout explicit
->>       gitlab: make Cirrus CI jobs gating
->>
->> Nicholas Piggin (1):
->>       tests/avocado: Fix console data loss
->>
->> Philippe Mathieu-Daud=C3=A9 (1):
->>       tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884
->>
->> Richard Henderson (1):
->>       tests/docker: Update docker-loongarch-cross toolchain
->>
->>  tests/qtest/libqtest.c                                |  7 +++++++
->>  tests/qtest/microbit-test.c                           |  2 ++
->>  .gitlab-ci.d/base.yml                                 |  2 +-
->>  .gitlab-ci.d/cirrus.yml                               |  4 +++-
->>  .gitlab-ci.d/cirrus/build.yml                         |  2 ++
->>  python/qemu/machine/machine.py                        | 19 ++++++++++++=
-+++++++
->>  tests/avocado/avocado_qemu/__init__.py                |  2 +-
->>  tests/avocado/boot_linux_console.py                   |  7 +++++++
->>  tests/avocado/machine_mips_malta.py                   |  6 ++++++
->>  tests/avocado/replay_kernel.py                        |  7 +++++++
->>  tests/avocado/tuxrun_baselines.py                     |  4 ++++
->>  tests/docker/dockerfiles/debian-amd64-cross.docker    | 10 +++-------
->>  tests/docker/dockerfiles/debian-amd64.docker          | 10 +++-------
->>  tests/docker/dockerfiles/debian-arm64-cross.docker    | 10 +++-------
->>  tests/docker/dockerfiles/debian-armel-cross.docker    |  2 +-
->>  tests/docker/dockerfiles/debian-armhf-cross.docker    | 10 +++-------
->>  .../docker/dockerfiles/debian-loongarch-cross.docker  |  2 +-
->>  tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 10 +++-------
->>  tests/docker/dockerfiles/debian-s390x-cross.docker    | 10 +++-------
->>  tests/docker/dockerfiles/ubuntu2004.docker            |  2 +-
->>  tests/docker/dockerfiles/ubuntu2204.docker            |  2 +-
->>  tests/lcitool/libvirt-ci                              |  2 +-
->>  tests/lcitool/refresh                                 | 17 +++++++++---=
------
->>  23 files changed, 91 insertions(+), 58 deletions(-)
->>
->> --
->> 2.39.2
->>
->>
+> ---
+>   hw/vfio/common.c | 17 +----------------
+>   1 file changed, 1 insertion(+), 16 deletions(-)
+> 
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 86b6af5740..6c3e98d5fd 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -165,22 +165,7 @@ void vfio_unblock_multiple_devices_migration(void)
+>   
+>   bool vfio_viommu_preset(VFIODevice *vbasedev)
+>   {
+> -    VFIOAddressSpace *space;
+> -    VFIOContainer *container;
+> -    VFIODevice *tmp_dev;
+> -
+> -    QLIST_FOREACH(space, &vfio_address_spaces, list) {
+> -        QLIST_FOREACH(container, &space->containers, next) {
+> -            tmp_dev = NULL;
+> -            while ((tmp_dev = vfio_container_dev_iter_next(container,
+> -                                                           tmp_dev))) {
+> -                if (vbasedev == tmp_dev) {
+> -                    return space->as != &address_space_memory;
+> -                }
+> -            }
+> -        }
+> -    }
+> -    g_assert_not_reached();
+> +    return vbasedev->container->space->as != &address_space_memory;
+>   }
+>   
+>   static void vfio_set_migration_error(int err)
 
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
