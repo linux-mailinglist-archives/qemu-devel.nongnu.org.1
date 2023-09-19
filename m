@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917CF7A6A5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 20:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A57F7A6A85
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 20:16:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qif07-0005Ln-K7; Tue, 19 Sep 2023 13:59:07 -0400
+	id 1qifFB-0008M0-2Q; Tue, 19 Sep 2023 14:14:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
- id 1qif01-0005KI-3S
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:59:01 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qifF9-0008LW-6Z
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 14:14:39 -0400
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
- id 1qiezO-00017l-Ii
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:59:00 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4009fdc224dso9165e9.1
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 10:58:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qifF7-0004uX-EQ
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 14:14:38 -0400
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-1c26bb27feeso3906438fac.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 11:14:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1695146294; x=1695751094; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=sh5xh2e7bs6SumT4MbG/jJKUyxEtpyvDJseve3g3Xqk=;
- b=gy9UBLZRxTw80YhG7VIKHncUSHqtq5VZ490qklsyCi5NqmObjRsmcMHIyh9nFhw98l
- zbUctGJB58bLEyag6GiHO0ld8qIe5FLHMiMdwUy+FwZkL+tcI4z10h6orIB/6lx0Yex+
- VxMDE8xL9mejOOEhVPp8zewTilWkWCOAUJy8+PcgZIOaJc30cF+rhdOGr7Eqf+G7XVeV
- nFgdh0Lbi8sWoOWYb7uNn1n+YSayZAGN5uxEMlW2oe7kF4UD2e7ltSCakBlF+l8rBTLo
- sCHBeyHhZZ7z+hQDbN6bHXiMSmoasagfLWDMu8V96EF7VEic6HhIs+4Y+KLL359WVz1j
- QeJQ==
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1695147276; x=1695752076;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=NlOLEND61qWDNjDGFFl3Vk783imTAJfXqIBakX0/Qeg=;
+ b=sln7IuU97qUswnSTPDi+0JsBGzZjatI7OTSarAAgy21JJXCd5E3cGLyG86/GWEeNJD
+ T8C1VjD77DBaXyU+swLS6vI35r0sOYOrJxf+FxdtWf0uNxvC+l8vgXYzZVBCq1ur8JmL
+ gIj4iZuCDzXM4BvmUDAcVfEgkYRIO5opsmQR/Az+IDm/gmPw4z+t73DzK91qXPRaRqut
+ xvLGRVYr8TkuHCAJsHGiwvWAjMBTfNlVqIbAejtxgiBU+21axvyTEndKGKwszhiIB5cT
+ FkE7O1vhCz/UGt12UuTgTb+QhwJNd6vZc9Wae3aVgTzaTYIVXJvQEcvcF5sFnQqQrxtP
+ a4Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695146294; x=1695751094;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=sh5xh2e7bs6SumT4MbG/jJKUyxEtpyvDJseve3g3Xqk=;
- b=BWKGNFS26Ppr9zIxLbsX64Cf9BlleRnZZ0ZMGzcSUS+gYT3KK1WiwsnBm+tdmk3f1I
- +sSdVYTT/kNAMYXJUo9HWGTJEr2vslkeL6Nr+nug0uDMFJ239GrB9v+HjUxQLgpZXYC5
- kt5DoHcQoby0ZjRe6qqqtF5mLXKx38fCYg690tW6W1ETpSamUvGc5AvdfI17XslPIvrR
- /gS4LidoWcs9zUMGVpcjctL41xoeJGccpC17fM9BFhVsg3oegcslPWiN1adDSsEUyvXg
- A8zx/wCWNZvUDk2yv4m6goAfz07MlE+weGLAkmJvyM1kmaMEVFATMgfX2XvKcnmyjeoI
- nwew==
-X-Gm-Message-State: AOJu0Yxf3N6bopvYcaJB/vAKd2iwEcX5Fs1YTHdzQhO3UPSWGz3GtlDL
- N1Sv1tUNUJHxXCQ++9NNldrUrJmjl2ZyszyI5bQtrg==
-X-Google-Smtp-Source: AGHT+IHG6cUN9K1FZa/Oh6T+oNJL/Ofl7F+k/tNOaV08hGSpfXwCOqHYUwOddLVkT9/uKosltCD4qiPXOMlQY/ZGV80=
-X-Received: by 2002:a05:600c:1d09:b0:3fe:f32f:c57f with SMTP id
- l9-20020a05600c1d0900b003fef32fc57fmr9280wms.0.1695146294094; Tue, 19 Sep
- 2023 10:58:14 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695147276; x=1695752076;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NlOLEND61qWDNjDGFFl3Vk783imTAJfXqIBakX0/Qeg=;
+ b=MMFyYQGYJjUSZBwv8PAs6up6GI5AlH2eZN8XHuzgB4od/w+uQUx1S+xd5yCkml3Mbx
+ WN8rrFG6qI1tlk6HQvU1vem0xnWKy/r4/NVHv2Re+PlY4H5I2Hvm6XwUQYbOGWo6nzWa
+ xc+CTpXVtlZgAWIG2mZZSSwIaI/Ep+UsaE0amoC7Om8GnBXHXN/bgg61+p+/+qBmMsL6
+ paG+EwrdYvwPzjQp79ocR7McunRb1c0kyFJ3vdKR4cQbYd2hsngueVe/N/zZ35yn8l1N
+ 642/yXS/rAnE2XK6DktKaQf2ax/HhrFVkwmTdUctXUhtmAj1X+TwSTfetN4Nm38iklO1
+ rAsA==
+X-Gm-Message-State: AOJu0YyfxJDaKpmSnjsBhaDdFESJFE0OVBAJqxZ0gTIrY36a5nzHoyS7
+ qtwCt/4iuWOjdJd30ibSsZ1jfo/Z5YqqcNoOCVf0+A==
+X-Google-Smtp-Source: AGHT+IHUFfMUJOyMkSNOsbL39PCXN9Y3f87Da+sVYWD5pOuUdOMQnpSRlr72k/HBKbchptkCziZI6rTxz+EoPeB8pb4=
+X-Received: by 2002:a05:6870:970f:b0:1d5:cdf7:bd95 with SMTP id
+ n15-20020a056870970f00b001d5cdf7bd95mr286526oaq.16.1695147276018; Tue, 19 Sep
+ 2023 11:14:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230919174200.GA1542425@fedora>
-In-Reply-To: <20230919174200.GA1542425@fedora>
-From: Hao Wu <wuhaotsh@google.com>
-Date: Tue, 19 Sep 2023 10:58:03 -0700
-Message-ID: <CAGcCb129WnfjYqP-mi2j0wo2LT76ATj4yVS3rw+WMEek3R-aeg@mail.gmail.com>
-Subject: Re: npcm7xx_timer-test.c is unreliable
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Tyrone Ting <kfting@nuvoton.com>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000b3f9f50605ba00ac"
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=wuhaotsh@google.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+References: <20230919160814.3343727-1-mnissler@rivosinc.com>
+ <20230919160814.3343727-3-mnissler@rivosinc.com> <ZQnW4e1wordu4UbM@x1n>
+In-Reply-To: <ZQnW4e1wordu4UbM@x1n>
+From: Mattias Nissler <mnissler@rivosinc.com>
+Date: Tue, 19 Sep 2023 20:14:25 +0200
+Message-ID: <CAGNS4Tan24b2Yb1BvKC4ycjq6MO+_qYqYQy_KrOw6MWDPB3dJg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] softmmu: Support concurrent bounce buffers
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, stefanha@redhat.com, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Jagannathan Raman <jag.raman@oracle.com>, David Hildenbrand <david@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=mnissler@rivosinc.com; helo=mail-oa1-x2f.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,21 +93,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b3f9f50605ba00ac
-Content-Type: text/plain; charset="UTF-8"
+On Tue, Sep 19, 2023 at 7:14=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+>
+> On Tue, Sep 19, 2023 at 09:08:10AM -0700, Mattias Nissler wrote:
+> > @@ -3119,31 +3143,35 @@ void *address_space_map(AddressSpace *as,
+> >  void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
+> >                           bool is_write, hwaddr access_len)
+> >  {
+> > -    if (buffer !=3D as->bounce.buffer) {
+> > -        MemoryRegion *mr;
+> > -        ram_addr_t addr1;
+> > +    MemoryRegion *mr;
+> > +    ram_addr_t addr1;
+> > +
+> > +    mr =3D memory_region_from_host(buffer, &addr1);
+> > +    if (mr =3D=3D NULL) {
+> > +        BounceBuffer *bounce =3D container_of(buffer, BounceBuffer, bu=
+ffer);
+> > +        assert(bounce->magic =3D=3D BOUNCE_BUFFER_MAGIC);
+> >
+> > -        mr =3D memory_region_from_host(buffer, &addr1);
+> > -        assert(mr !=3D NULL);
+> >          if (is_write) {
+> > -            invalidate_and_set_dirty(mr, addr1, access_len);
+> > -        }
+> > -        if (xen_enabled()) {
+> > -            xen_invalidate_map_cache_entry(buffer);
+> > +            address_space_write(as, bounce->addr, MEMTXATTRS_UNSPECIFI=
+ED,
+> > +                                bounce->buffer, access_len);
+> >          }
+> > -        memory_region_unref(mr);
+> > +
+> > +        memory_region_unref(bounce->mr);
+> > +        qatomic_sub(&as->bounce_buffer_size, bounce->len);
+> > +        /* Write bounce_buffer_size before reading map_client_list. */
+> > +        smp_mb();
+> > +        address_space_notify_map_clients(as);
+> > +        bounce->magic =3D ~BOUNCE_BUFFER_MAGIC;
+> > +        g_free(bounce);
+> >          return;
+> >      }
+> > +
+> > +    if (xen_enabled()) {
+> > +        xen_invalidate_map_cache_entry(buffer);
+> > +    }
+> >      if (is_write) {
+> > -        address_space_write(as, as->bounce.addr, MEMTXATTRS_UNSPECIFIE=
+D,
+> > -                            as->bounce.buffer, access_len);
+> > -    }
+> > -    qemu_vfree(as->bounce.buffer);
+> > -    as->bounce.buffer =3D NULL;
+> > -    memory_region_unref(as->bounce.mr);
+>
+> This line needs to be kept?
+
+Yes, good catch. Thanks!
 
 >
-> Let me take a look at that. I suspect the timer is off by 1 tick due to
-> some rounding errors.
-
---000000000000b3f9f50605ba00ac
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quot=
-e" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204)=
-;padding-left:1ex">Let me take a look at that. I suspect the timer is off b=
-y 1 tick due to some rounding errors.</blockquote></div></div>
-
---000000000000b3f9f50605ba00ac--
+> > -    /* Clear in_use before reading map_client_list.  */
+> > -    qatomic_set_mb(&as->bounce.in_use, false);
+> > -    address_space_notify_map_clients(as);
+> > +        invalidate_and_set_dirty(mr, addr1, access_len);
+> > +    }
+> >  }
+>
+> --
+> Peter Xu
+>
 
