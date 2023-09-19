@@ -2,81 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2D07A644B
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 15:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D82357A6454
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 15:05:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiaNf-0005HS-OB; Tue, 19 Sep 2023 09:03:07 -0400
+	id 1qiaPj-0006bk-F9; Tue, 19 Sep 2023 09:05:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qiaNd-0005Fd-Ne
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 09:03:05 -0400
-Received: from mail-qt1-x836.google.com ([2607:f8b0:4864:20::836])
+ (Exim 4.90_1) (envelope-from <harsh.prateek.bora@gmail.com>)
+ id 1qiaPd-0006bU-5D; Tue, 19 Sep 2023 09:05:09 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qiaNc-00082C-Bv
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 09:03:05 -0400
-Received: by mail-qt1-x836.google.com with SMTP id
- d75a77b69052e-4135f3d1213so32825061cf.1
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 06:03:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <harsh.prateek.bora@gmail.com>)
+ id 1qiaPa-0008Rk-Qi; Tue, 19 Sep 2023 09:05:08 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-403012f27e1so60602315e9.1; 
+ Tue, 19 Sep 2023 06:05:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695128582; x=1695733382; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bNAoqv0s7JsYLPBq0H5zDCBs2v4vAA9sU5i6RcGU4bg=;
- b=h14LYQsAr34ZaDHY9CP1xnCi+yYpgj+LSNdz3G7hKSkVPHw8IY0sgPXjtEja09l20l
- 620FddOqgwwWNIkBUaKpZOVmm4GYmnDCXDphfhibBgxgXqRohuyIT3xDO9rsVNxsS+6e
- W7eibXDXtCk+l9Ljqq5dPOMstwPmeXKRjAPjezsDj6KY7oCtQsmkxwnZTw08vFfew+9R
- +uP9piR8Z+2s1mP4xD42ck9lwSj+34aRVgck3q+USNnuXIv6WPVpk9RCapl0UGDreMdx
- ri1Lngn2DVM4q0Ws1C9DV0FQCzfDmdUqh7cJMdC/MSulQoU7yAma1oxpiwlA4GrC+2N/
- j7Wg==
+ d=gmail.com; s=20230601; t=1695128704; x=1695733504; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=5FNpT8a17HyTowFvp8ZkWyk6714Rk8+xc+pn3QCXBM0=;
+ b=Ug5ZTfxvno9fYBBlIxUhZI6/TO7bmQANJNaunZ8kmuGfN0A2oBnvWQjh5mWhAn4aRE
+ LvxhmiI9UQnwDZxirqp1yrB/Awb9FKaFiLDITxjhHIy4LYRG1CLGdlCfCFiUdJaidh+/
+ 2L7x8MKxI38ZeaXa7s6kpYgGYxUvQd5Hd5HB7aIpNo5imhD3hWLjthUzfDt8hYVphRg2
+ NGDz5LHrDdJ5eEspWstTI7khfqEHYjsWnQYWCBmGyaZWc8k/r4TtWOG4eEU95cFi42Mc
+ onScQEoDW4DJ80GdV/MT8LogT6biCtHwge2oXZMNWaDF8eRiVcgZTPjmd+FNeY6rpckc
+ pauA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695128582; x=1695733382;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bNAoqv0s7JsYLPBq0H5zDCBs2v4vAA9sU5i6RcGU4bg=;
- b=O0a/XzUd5pkbrXhDfLagMpagPvOCuQesf3ZXBGors1/5ICPCyEXJN+Z2NeqVdyzArD
- 3X+coF5Peo4Hst1PRJ/EAnT6UBhfrtGljJ+wBfOhNOUuZnwmuR76A3VElvtBrp4JdoAu
- 0DsWBKqWGTnqxzzQQeC4jhtS8XRiXYDuu05n2TSvVAEHfPnnUdva/4TLFiOi29+24Z2H
- 8Iewmcq6Rx3XwaL8jTIGp1ZFDMf1kz/h9ABJi3ICz+PUjNq6wIqFmvOwXZ/nBH1oQhi3
- BGyjF1ypm0tJ0pwW+dUf5a5COxNtfVYTkDKArUdpbkRQ/r4oaeQghnOv4KNQkk8Pj1my
- m4qg==
-X-Gm-Message-State: AOJu0YyRqKKNS1NhyOLsCStq3QzVJqZ97rukJGReFIZzJGNY+2NN9Qst
- YXxnQ2/qAyNPPjlTBCWkK9n2pBCLoxyRXt63tLc=
-X-Google-Smtp-Source: AGHT+IEsopPLkpM9jlTC8uIW5wdAZMgj+hPX6NeAq1HbU+gFqOf3v6QEzXbZI4GiTeXC2fqCl9sZRf+m6SHHF/ZtVSM=
-X-Received: by 2002:a05:622a:148f:b0:412:43a5:e5a4 with SMTP id
- t15-20020a05622a148f00b0041243a5e5a4mr13150963qtx.65.1695128582535; Tue, 19
- Sep 2023 06:03:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695128704; x=1695733504;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5FNpT8a17HyTowFvp8ZkWyk6714Rk8+xc+pn3QCXBM0=;
+ b=WbkycqtCgLVbKK1t0ZcXTcrJ6iZL3WNCfArsPzOb9rJo6JwJ5T0CPS59kUhCuagBBx
+ fjGssqiHAUYLJtfJv60tEOZF0S0ay1ORRTaHfF/Ponhv6R+QSOVYKhT80YuQ7H2BC3Md
+ s7Qhx4GPy6kVvNC8h494DYuvHpWQQ9qARWSzjjBXBD34S0FhvgX/q+MQ3Hf4iI9Tllw/
+ Q9T3azP5u4gBnj17EIb5Ls89viLqkeE32t6au5ejAYV57Si6kcikuIeQ1IACp7/UFeiW
+ Dk77CDF32ITo8RooY5/CwGF6ahxnHgxcXXyHlhJUtbnJYTNLDExny6hmntGnUmrYMBBA
+ JNPg==
+X-Gm-Message-State: AOJu0YwDFKZfLo/Penx4YvnL9SGuqz97qvM1ylD1WnUgp9pj7A7OuZfs
+ j/WR/SU3QH+CPV7QKdpo1LRBAdLet6t61hzJD+8=
+X-Google-Smtp-Source: AGHT+IFqi6ZVx2wIzOBWiqTOTMFWQzfyMKUrAI0DG3pZpm+qAvrsKi9IhZ9P3veKUJbCEC9pvUUj1i8celjUJsuVo1k=
+X-Received: by 2002:a5d:4c4a:0:b0:31f:8999:c409 with SMTP id
+ n10-20020a5d4c4a000000b0031f8999c409mr10208866wrt.66.1695128703786; Tue, 19
+ Sep 2023 06:05:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230918135206.2739222-1-marcandre.lureau@redhat.com>
- <20230918135206.2739222-10-marcandre.lureau@redhat.com>
- <298c446c-d165-0cca-aa03-f0d13cfa9c9e@redhat.com>
-In-Reply-To: <298c446c-d165-0cca-aa03-f0d13cfa9c9e@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 19 Sep 2023 17:02:51 +0400
-Message-ID: <CAJ+F1C+83O2NNqBu6pCP4OjMkA9pSgA1tviDtUiaox1eGjXt2Q@mail.gmail.com>
-Subject: Re: [PATCH v2 09/18] vhost-user-gpu: skip VHOST_USER_GPU_UPDATE when
- !PIXMAN
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Thomas Huth <thuth@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::836;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x836.google.com
+References: <20230918145850.241074-1-clg@kaod.org>
+ <20230918145850.241074-4-clg@kaod.org>
+ <56a18122-ed29-ddc5-03f7-6e539a9f46f2@linux.ibm.com>
+ <78e09b46-cf41-91d7-d518-519c12ca4b43@kaod.org>
+In-Reply-To: <78e09b46-cf41-91d7-d518-519c12ca4b43@kaod.org>
+From: Harsh Prateek Bora <harsh.prateek.bora@gmail.com>
+Date: Tue, 19 Sep 2023 18:34:52 +0530
+Message-ID: <CAEuJdmpsG_SEpBcb33-NJKtYr2WNqNaKrKMsfAOQtiRg8NxFJA@mail.gmail.com>
+Subject: Re: [PATCH 3/8] spapr: Clean up local variable shadowing in
+ spapr_dt_cpus()
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+Content-Type: multipart/alternative; boundary="0000000000003ce40e0605b5e82c"
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=harsh.prateek.bora@gmail.com; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,31 +89,269 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+--0000000000003ce40e0605b5e82c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 19, 2023 at 4:56=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> On 9/18/23 15:51, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+On Tue, 19 Sept, 2023, 4:37 pm C=C3=A9dric Le Goater, <clg@kaod.org> wrote:
+
+> On 9/19/23 09:28, Harsh Prateek Bora wrote:
 > >
-> > This simply means that 2d drawing updates won't be handled, but 3d
-> > should work.
 > >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > On 9/18/23 20:28, C=C3=A9dric Le Goater wrote:
+> >> Introduce a helper routine defining one CPU device node to fix this
+> >> warning :
+> >>
+> >>    ../hw/ppc/spapr.c: In function =E2=80=98spapr_dt_cpus=E2=80=99:
+> >>    ../hw/ppc/spapr.c:812:19: warning: declaration of =E2=80=98cs=E2=80=
+=99 shadows a
+> previous local [-Wshadow=3Dcompatible-local]
+> >>      812 |         CPUState *cs =3D rev[i];
+> >>          |                   ^~
+> >>    ../hw/ppc/spapr.c:786:15: note: shadowed declaration is here
+> >>      786 |     CPUState *cs;
+> >>          |               ^~
+> >>
+> >> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> >> ---
+> >>   hw/ppc/spapr.c | 36 +++++++++++++++++++++---------------
+> >>   1 file changed, 21 insertions(+), 15 deletions(-)
+> >>
+> >> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> >> index de3c616b4637..d89f0fd496b6 100644
+> >> --- a/hw/ppc/spapr.c
+> >> +++ b/hw/ppc/spapr.c
+> >> @@ -780,6 +780,26 @@ static void spapr_dt_cpu(CPUState *cs, void *fdt,
+> int offset,
+> >>                                 pcc->lrg_decr_bits)));
+> >>   }
+> >> +static void spapr_dt_one_cpu(void *fdt, SpaprMachineState *spapr,
+> CPUState *cs,
+> >> +                             int cpus_offset)
+> >> +{
+> >> +    PowerPCCPU *cpu =3D POWERPC_CPU(cs);
+> >> +    int index =3D spapr_get_vcpu_id(cpu);
+> >> +    DeviceClass *dc =3D DEVICE_GET_CLASS(cs);
+> >> +    g_autofree char *nodename =3D NULL;
+> >> +    int offset;
+> >> +
+> >> +    if (!spapr_is_thread0_in_vcore(spapr, cpu)) {
+> >> +        return;
+> >> +    }
+> >> +
+> >> +    nodename =3D g_strdup_printf("%s@%x", dc->fw_name, index);
+> >> +    offset =3D fdt_add_subnode(fdt, cpus_offset, nodename);
+> >> +    _FDT(offset);
+> >> +    spapr_dt_cpu(cs, fdt, offset, spapr);
+> >> +}
+> >> +
+> >> +
+> >>   static void spapr_dt_cpus(void *fdt, SpaprMachineState *spapr)
+> >>   {
+> >>       CPUState **rev;
+> >> @@ -809,21 +829,7 @@ static void spapr_dt_cpus(void *fdt,
+> SpaprMachineState *spapr)
+> >>       }
+> >>       for (i =3D n_cpus - 1; i >=3D 0; i--) {
+> >> -        CPUState *cs =3D rev[i];
+> >> -        PowerPCCPU *cpu =3D POWERPC_CPU(cs);
+> >> -        int index =3D spapr_get_vcpu_id(cpu);
+> >> -        DeviceClass *dc =3D DEVICE_GET_CLASS(cs);
+> >> -        g_autofree char *nodename =3D NULL;
+> >> -        int offset;
+> >> -
+> >> -        if (!spapr_is_thread0_in_vcore(spapr, cpu)) {
+> >> -            continue;
+> >> -        }
+> >> -
+> >> -        nodename =3D g_strdup_printf("%s@%x", dc->fw_name, index);
+> >> -        offset =3D fdt_add_subnode(fdt, cpus_offset, nodename);
+> >> -        _FDT(offset);
+> >> -        spapr_dt_cpu(cs, fdt, offset, spapr);
+> >> +        spapr_dt_one_cpu(fdt, spapr, rev[i], cpus_offset);
+> >
+> > Do we want to replace the call to spapr_dt_cpu in
+> > spapr_core_dt_populate() with the _one_ as well?
+> > Not sure about the implication of additional instructions there.
 >
-> How bad is this?  Is it worth making the device dependent on pixman
-> altogether?
+> yeah may be we could rework spapr_dt_one_cpu() and spapr_core_dt_populate=
+()
+> in a single routine. They are similar. It can come later.
+>
+> > Also, could this code insider wrapper become part of spapr_dt_cpu()
+> itself?
+> > If can't, do we want a better renaming of wrapper here?
+>
+> I am open to proposal :)
 >
 
-It will issue warnings for 2d commands, and display a blank output.
-But 3d / dmabuf will be displayed.
+How about spapr_dt_cpu_prepare() ?
 
-(ideally, some day when QEMU won't do any graphics/ui, the
-GPU/renderer process will issue the draw commands to a client
-directly, without going through the QEMU process - using
-org.qemu.Display1.Listener DBus interface)
 
---=20
-Marc-Andr=C3=A9 Lureau
+> Thanks
+>
+> C.
+>
+>
+> >
+> > Otherwise,
+> > Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> >
+> >>       }
+> >>       g_free(rev);
+>
+>
+>
+
+--0000000000003ce40e0605b5e82c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Tue, 19 Sept, 2023, 4:37 pm C=C3=A9dric Le Goater, =
+&lt;<a href=3D"mailto:clg@kaod.org">clg@kaod.org</a>&gt; wrote:<br></div><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px =
+#ccc solid;padding-left:1ex">On 9/19/23 09:28, Harsh Prateek Bora wrote:<br=
+>
+&gt; <br>
+&gt; <br>
+&gt; On 9/18/23 20:28, C=C3=A9dric Le Goater wrote:<br>
+&gt;&gt; Introduce a helper routine defining one CPU device node to fix thi=
+s<br>
+&gt;&gt; warning :<br>
+&gt;&gt;<br>
+&gt;&gt; =C2=A0=C2=A0 ../hw/ppc/spapr.c: In function =E2=80=98spapr_dt_cpus=
+=E2=80=99:<br>
+&gt;&gt; =C2=A0=C2=A0 ../hw/ppc/spapr.c:812:19: warning: declaration of =E2=
+=80=98cs=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]<br=
+>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 812 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 CPUState *cs =3D rev[i];<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 ^~<br>
+&gt;&gt; =C2=A0=C2=A0 ../hw/ppc/spapr.c:786:15: note: shadowed declaration =
+is here<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 786 |=C2=A0=C2=A0=C2=A0=C2=A0 CPUState *c=
+s;<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^~<br=
+>
+&gt;&gt;<br>
+&gt;&gt; Signed-off-by: C=C3=A9dric Le Goater &lt;<a href=3D"mailto:clg@kao=
+d.org" target=3D"_blank" rel=3D"noreferrer">clg@kaod.org</a>&gt;<br>
+&gt;&gt; ---<br>
+&gt;&gt; =C2=A0 hw/ppc/spapr.c | 36 +++++++++++++++++++++---------------<br=
+>
+&gt;&gt; =C2=A0 1 file changed, 21 insertions(+), 15 deletions(-)<br>
+&gt;&gt;<br>
+&gt;&gt; diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c<br>
+&gt;&gt; index de3c616b4637..d89f0fd496b6 100644<br>
+&gt;&gt; --- a/hw/ppc/spapr.c<br>
+&gt;&gt; +++ b/hw/ppc/spapr.c<br>
+&gt;&gt; @@ -780,6 +780,26 @@ static void spapr_dt_cpu(CPUState *cs, void *=
+fdt, int offset,<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pcc-&gt;lrg_decr_bits)));<br>
+&gt;&gt; =C2=A0 }<br>
+&gt;&gt; +static void spapr_dt_one_cpu(void *fdt, SpaprMachineState *spapr,=
+ CPUState *cs,<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int cpus_offset)<br>
+&gt;&gt; +{<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 PowerPCCPU *cpu =3D POWERPC_CPU(cs);<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 int index =3D spapr_get_vcpu_id(cpu);<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 DeviceClass *dc =3D DEVICE_GET_CLASS(cs);<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 g_autofree char *nodename =3D NULL;<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 int offset;<br>
+&gt;&gt; +<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 if (!spapr_is_thread0_in_vcore(spapr, cpu)) {<=
+br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 }<br>
+&gt;&gt; +<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 nodename =3D g_strdup_printf(&quot;%s@%x&quot;=
+, dc-&gt;fw_name, index);<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 offset =3D fdt_add_subnode(fdt, cpus_offset, n=
+odename);<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 _FDT(offset);<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0 spapr_dt_cpu(cs, fdt, offset, spapr);<br>
+&gt;&gt; +}<br>
+&gt;&gt; +<br>
+&gt;&gt; +<br>
+&gt;&gt; =C2=A0 static void spapr_dt_cpus(void *fdt, SpaprMachineState *spa=
+pr)<br>
+&gt;&gt; =C2=A0 {<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 CPUState **rev;<br>
+&gt;&gt; @@ -809,21 +829,7 @@ static void spapr_dt_cpus(void *fdt, SpaprMac=
+hineState *spapr)<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D n_cpus - 1; i &gt;=3D 0;=
+ i--) {<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 CPUState *cs =3D rev[i=
+];<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PowerPCCPU *cpu =3D PO=
+WERPC_CPU(cs);<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int index =3D spapr_ge=
+t_vcpu_id(cpu);<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 DeviceClass *dc =3D DE=
+VICE_GET_CLASS(cs);<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_autofree char *noden=
+ame =3D NULL;<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int offset;<br>
+&gt;&gt; -<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!spapr_is_thread0_=
+in_vcore(spapr, cpu)) {<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 continue;<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }<br>
+&gt;&gt; -<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 nodename =3D g_strdup_=
+printf(&quot;%s@%x&quot;, dc-&gt;fw_name, index);<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 offset =3D fdt_add_sub=
+node(fdt, cpus_offset, nodename);<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 _FDT(offset);<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spapr_dt_cpu(cs, fdt, =
+offset, spapr);<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spapr_dt_one_cpu(fdt, =
+spapr, rev[i], cpus_offset);<br>
+&gt; <br>
+&gt; Do we want to replace the call to spapr_dt_cpu in<br>
+&gt; spapr_core_dt_populate() with the _one_ as well?<br>
+&gt; Not sure about the implication of additional instructions there.<br>
+<br>
+yeah may be we could rework spapr_dt_one_cpu() and spapr_core_dt_populate()=
+<br>
+in a single routine. They are similar. It can come later.<br>
+<br>
+&gt; Also, could this code insider wrapper become part of spapr_dt_cpu() it=
+self?<br>
+&gt; If can&#39;t, do we want a better renaming of wrapper here?<br>
+<br>
+I am open to proposal :)<br></blockquote></div></div><div dir=3D"auto"><br>=
+</div><div dir=3D"auto">How about spapr_dt_cpu_prepare() ?=C2=A0</div><div =
+dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockq=
+uote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc =
+solid;padding-left:1ex">
+<br>
+Thanks<br>
+<br>
+C.<br>
+<br>
+<br>
+&gt; <br>
+&gt; Otherwise,<br>
+&gt; Reviewed-by: Harsh Prateek Bora &lt;<a href=3D"mailto:harshpb@linux.ib=
+m.com" target=3D"_blank" rel=3D"noreferrer">harshpb@linux.ibm.com</a>&gt;<b=
+r>
+&gt; <br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 g_free(rev);<br>
+<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000003ce40e0605b5e82c--
 
