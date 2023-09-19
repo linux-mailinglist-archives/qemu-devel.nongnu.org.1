@@ -2,63 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2597A5E31
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB4E7A5E39
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:38:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiX9e-0005QX-SK; Tue, 19 Sep 2023 05:36:26 -0400
+	id 1qiXB6-0007e2-Gb; Tue, 19 Sep 2023 05:37:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiX9V-0005Jw-OC
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:36:19 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiX9F-0004hd-7j
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:36:17 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rqc2g2LFjz6K5WY;
- Tue, 19 Sep 2023 17:35:07 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 19 Sep
- 2023 10:35:58 +0100
-Date: Tue, 19 Sep 2023 10:35:57 +0100
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: Dave Jiang <dave.jiang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
- <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
- <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, <linuxarm@huawei.com>, Yuquan Wang
- <wangyuquan1236@phytium.com.cn>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 2/3] hw/mem/cxl_type3: Add missing copyright and license
- notice
-Message-ID: <20230919103557.00000bf3@Huawei.com>
-In-Reply-To: <CAFEAcA_ROGZ1jDPP59NBD2td-R7e9VjJ=2mNEY01cPL8ZMYgkw@mail.gmail.com>
-References: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
- <20230918150259.11165-3-Jonathan.Cameron@huawei.com>
- <CAFEAcA_7-uq8LJO6-myGU1+qjErxZAWE+CMjqyJBph6Du9K0iA@mail.gmail.com>
- <20230918180013.000035cf@Huawei.com>
- <5083ba81-f74d-3698-6418-72d288917df5@intel.com>
- <CAFEAcA_ROGZ1jDPP59NBD2td-R7e9VjJ=2mNEY01cPL8ZMYgkw@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiXB3-0007dU-3Y
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:37:54 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiXB0-00058N-DJ
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:37:52 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2b974031aeaso89300611fa.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:37:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695116267; x=1695721067; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fNuKcrCa7CjC9RiahdhY9e/FWz9s48bP0kp+MPU30YA=;
+ b=C26W54UhZocX0Uuaorcz12RRsEH2R4Qihdtwtl5ClvMnBQX/HtDY8Fkmb2TrixXBHi
+ +UwGtHxtDadaOqzZjuV22gbEjUA3+fIxRqrIvbdVRSyOnbap3UINLYQF0wzOzWFxkJSl
+ sznpOJ814OUY/4qHhaMcpvzPv0gylRz2Y6Fbioui9boZTsuPZm3oakrecmdDEkJJoqww
+ ZfSxXUbSIkOYd3qBNyHmbs5ug4k5OcYkGBKz+jecxJ27mdq3FwxRD2Zf86URD8T3SvKU
+ 91YggrZ2NLdqhz/7p8qq+ncjzLiiob+1U8ytqhxFqy59NyGfkVyxqTJ/ecIPweuLDmr7
+ 2eQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695116267; x=1695721067;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fNuKcrCa7CjC9RiahdhY9e/FWz9s48bP0kp+MPU30YA=;
+ b=d04FGNq1IwX2A9yopmrK6Ze4UkoAS6LdFNzd4M6NpGZntwhq+43MAxRzGYGJBnL4Rj
+ tKKSC/g1r9pi8kFe5Ml4V3zq/NggNmUtPREdl8e+547kbHe/anvzEItVONj7At4JRunT
+ QLA8sCPmSHbBg3ppM6ysb6YrdE3HjDN67nyADAYvj4tj8Da8FUzqDsQ5/vqL7k+ocT2x
+ PjPoBZcsAfl6GOm7/OieDaxohJsoFnLUY/2XfPJT/hd9ZbUfiiAUT8mZLZdDzaOwN1Kf
+ S//mQ4f+F86K8mJFlZ3tUcz1gyWbFoCVqesyeFA/qsfNEZAh5luU2q0oPb63Ypd6LbxX
+ X7kw==
+X-Gm-Message-State: AOJu0YwDb8C0fLMqaznKoEqluliZYBB/InMIzoLqlkrWDyEEgAK2A4s6
+ QjJh8k4MUydL/aKRV4Uh3yJ53g==
+X-Google-Smtp-Source: AGHT+IHriN2U+VUSmViLz+d86TADQZeQ3aOcrbjAQ9Ic783UK1aEXgt+i2fVosZOeNVoydoxKYsl9Q==
+X-Received: by 2002:a2e:be28:0:b0:2bf:eccb:548 with SMTP id
+ z40-20020a2ebe28000000b002bfeccb0548mr7886461ljq.0.1695116266982; 
+ Tue, 19 Sep 2023 02:37:46 -0700 (PDT)
+Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ u17-20020a17090657d100b009a5c98fd82asm7571801ejr.81.2023.09.19.02.37.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 02:37:46 -0700 (PDT)
+Message-ID: <4beba72a-968a-d32e-1fcb-ba09a7bf6fce@linaro.org>
+Date: Tue, 19 Sep 2023 11:37:43 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 6/6] accel/tcg: Always require can_do_io
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20230914174436.1597356-1-richard.henderson@linaro.org>
+ <20230914174436.1597356-7-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230914174436.1597356-7-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,64 +89,21 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Sep 2023 18:38:10 +0100
-Peter Maydell <peter.maydell@linaro.org> wrote:
-
-> On Mon, 18 Sept 2023 at 18:26, Dave Jiang <dave.jiang@intel.com> wrote:
-> >
-> >
-> >
-> > On 9/18/23 10:00, Jonathan Cameron wrote:  
-> > > On Mon, 18 Sep 2023 17:31:38 +0100
-> > > Peter Maydell <peter.maydell@linaro.org> wrote:
-> > >  
-> > >> On Mon, 18 Sept 2023 at 16:04, Jonathan Cameron
-> > >> <Jonathan.Cameron@huawei.com> wrote:  
-> > >>>
-> > >>> This has been missing from the start. Assume it should match
-> > >>> with cxl/cxl-component-utils.c as both were part of early
-> > >>> postings from Ben.  
-> > >>
-> > >> Sounds plausible -- is there an Intel person who could give us
-> > >> an acked-by for this?
-> > >>
-> > >> (Ideally we wouldn't have let more gpl-2-only code into the
-> > >> codebase without a rationale...)
-> > >>  
-> > >
-> > > I've +CC'd the kernel CXL maintainers from Intel a few of whom
-> > > have also contributed some of the QEMU CXL code.
-> > > Hopefully someone can ack.  
-> >
-> > I see that nvdimm.c from Intel is under LGPL 2.1. What is the typical license this should be applied for QEMU?  
+On 14/9/23 19:44, Richard Henderson wrote:
+> Require i/o as the last insn of a TranslationBlock always,
+> not only with icount.  This is required for i/o that alters
+> the address space, such as a pci config space write.
 > 
-> The project has a mix of licenses, for mostly historical reasons.
-> The overall license is thus GPLv2 (as the most-restrictive of the set).
-> Our preference (as noted in the top level LICENSE file) for new
-> code is for GPL-v2-or-later; we can take other GPL-2-compatible
-> licenses (preferably GPL-v2-or-later compatible) if there's a
-> good rationale from the submitter. (Historically, one reason
-> for the GPL-v2-only code has been "this came from the Linux
-> kernel and so it's GPL-2-only"; "we copied a lot of this code
-> from some other file in QEMU and that has license X" is
-> the other one.)
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1866
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   accel/tcg/translator.c      | 20 +++++++-------------
+>   target/mips/tcg/translate.c |  1 -
+>   2 files changed, 7 insertions(+), 14 deletions(-)
 
-As this one is now 'historical' code I'll stick to the v2 only
-but make sure anything new goes in with v2 or later unless there is
-a good reason for another choice.
-
-Thanks for the info,
-
-Jonathan
-
-> 
-> thanks
-> -- PMM
-> 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
