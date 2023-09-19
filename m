@@ -2,89 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A865D7A6397
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 14:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822B07A639D
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 14:48:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qia7z-0005kS-6k; Tue, 19 Sep 2023 08:46:55 -0400
+	id 1qia8e-0006L0-K4; Tue, 19 Sep 2023 08:47:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qia7u-0005k5-BR
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 08:46:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qia8W-0006Ge-Ou
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 08:47:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qia7s-0003Ye-K6
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 08:46:50 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qia8U-0003g4-2d
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 08:47:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695127607;
+ s=mimecast20190719; t=1695127645;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=u2v+vXlSq95ZgkF13KcJ6vVR52coEcPm2Fm8xNjMAt8=;
- b=BamN2ovGB/xoVvW6h2NWBd5Wj+NTyhsWJWYThkHiIoP0CT85mq8kIks6RHpEtmbW3YyTIB
- l5iW50roML2UCDGeYPAJeUPg5xzXCjBSLpbg/NOxa8heUsGQX2rCsyrjU/K+WnW781oV5L
- +ih1ZOlE9IzXNoX3GyF3pSr8ZA62MjQ=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-C_NRNtbTMO66FQuVrpV_OQ-1; Tue, 19 Sep 2023 08:46:36 -0400
-X-MC-Unique: C_NRNtbTMO66FQuVrpV_OQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9ad73eb9668so991879966b.0
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 05:46:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695127594; x=1695732394;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=u2v+vXlSq95ZgkF13KcJ6vVR52coEcPm2Fm8xNjMAt8=;
- b=i3OLefDt56lxRRrrnxrPmdm6CJUt93K69crVZAvynlFTIxUqwQrVUnFOQdq4Hvyxf9
- Gzn15IiLLkQbnz7nj01ZlUfTc6YRqfhY6p+4rsMHSatVosIAicD6gbyR7R9RpLI909wO
- ZWAFcdv32OfA+iXeT/bz8h4GqXkliCS5/eRYHTPGzAWBEP1QyNo04jUWl0YphsJc311L
- EF+WfRy826bqgS6UFzRyuJoV5Wpu6uoS268lhlmLTXp2iR2mbSFwEbk7rr27nU/vPp+t
- IMKioMc7eI1/kUl71Y68Ag0BYLPyQLp559C4tdMYGwY70kG1mmMk7BOX0A2G8rg3dD+W
- m/iA==
-X-Gm-Message-State: AOJu0Yya6L0wNCDRAXDXS2AkrSjnIfTARZs/vgTPpI6ndY6etaAEPffi
- RCYFFwFvTfGzVYNG7tw4y9iEQJvcT0xpTTaGNM3JsKQQ6dZVxyfUkCvDBJLuXaBJy0aXRFSIML6
- 2b+MJT5GVrlOSwICzXgKjg3gRPyqiWF/keEO7YaM=
-X-Received: by 2002:a17:907:7e90:b0:9ad:87df:4126 with SMTP id
- qb16-20020a1709077e9000b009ad87df4126mr3353823ejc.1.1695127594704; 
- Tue, 19 Sep 2023 05:46:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFyGI7H38I7He/mlmjjowDm4Tl0ffBZ/6cPhytp6X+wVTuu47uDW2gf3l8B3vz0iLY3mbmmqUfG6iHxd19JZI=
-X-Received: by 2002:a17:907:7e90:b0:9ad:87df:4126 with SMTP id
- qb16-20020a1709077e9000b009ad87df4126mr3353802ejc.1.1695127594393; Tue, 19
- Sep 2023 05:46:34 -0700 (PDT)
+ bh=X06RByraQIvFTGqn7XZkIYlw1MEvKCP0Sd/rnRqXDhY=;
+ b=VveQ6xa40woItrcSOpLrw1hkL6jeglWlYns3mPFTAjZPrv0AfJlGgHTEwIZzgxcf+JVBwm
+ RJg+b2obOrpeXPbfB9zbisEseS994vrvZvpe01zCeeuO3K7yBW5+wb2hyuWpcXqhbPQAkJ
+ WvKOrS7D+tp0/DNMvu4/VWOmCCi+G+c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-42-q-jh00pnPQez2Z9sZaFm5A-1; Tue, 19 Sep 2023 08:47:21 -0400
+X-MC-Unique: q-jh00pnPQez2Z9sZaFm5A-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E01A811E86;
+ Tue, 19 Sep 2023 12:47:20 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7FB0E401025;
+ Tue, 19 Sep 2023 12:47:19 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 882E021E6900; Tue, 19 Sep 2023 14:47:18 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,  Thomas
+ Huth <thuth@redhat.com>,  Eric Blake <eblake@redhat.com>,  Michael Roth
+ <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Cleber Rosa
+ <crosa@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,  Pierre Morel <pmorel@linux.ibm.com>
+Subject: Re: [PATCH v23 01/20] CPU topology: extend with s390 specifics
+References: <20230914120650.1318932-1-nsg@linux.ibm.com>
+ <20230914120650.1318932-2-nsg@linux.ibm.com>
+Date: Tue, 19 Sep 2023 14:47:18 +0200
+In-Reply-To: <20230914120650.1318932-2-nsg@linux.ibm.com> (Nina
+ Schoetterl-Glausch's message of "Thu, 14 Sep 2023 14:06:31 +0200")
+Message-ID: <87ediuwcrt.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230919103838.249317-1-anisinha@redhat.com>
- <CAK3XEhPqRTjSCuvsUHkdfH+1Yi=5TPREB3VWA0Chr+c_jdTiKQ@mail.gmail.com>
- <ba34ed0a-96a1-2563-425c-1642b031459f@redhat.com>
-In-Reply-To: <ba34ed0a-96a1-2563-425c-1642b031459f@redhat.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Tue, 19 Sep 2023 18:16:22 +0530
-Message-ID: <CAK3XEhNH_g4tXg+VS-BaxOumtg9ig-59eKzhn_xLiY9ZCFSzJQ@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/i386/pc: improve physical address space bound check
- for 32-bit systems
-To: David Hildenbrand <david@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, philmd@linaro.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,106 +91,284 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 19, 2023 at 6:10=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> On 19.09.23 13:52, Ani Sinha wrote:
-> > On Tue, Sep 19, 2023 at 4:08=E2=80=AFPM Ani Sinha <anisinha@redhat.com>=
- wrote:
-> >>
-> >> 32-bit systems do not have a reserved memory for hole64 and memory hot=
-plug is
-> >> not supported on those systems. Therefore, the maximum limit of the gu=
-est
-> >> physical address coincides with the end of "above 4G memory space" reg=
-ion.
-> >> Make sure that the end of "above 4G memory" is still addressible by th=
-e
-> >> guest processor with its available address bits. For example, previous=
-ly this
-> >> was allowed:
-> >>
-> >> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
-> >>
-> >> Now it is no longer allowed:
-> >>
-> >> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
-> >> qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff phys-=
-bits too low (32)
-> >>
-> >> After calling CPUID with EAX=3D0x80000001, all AMD64 compliant process=
-ors
-> >> have the longmode-capable-bit turned on in the extended feature flags =
-(bit 29)
-> >> in EDX. The absence of CPUID longmode can be used to differentiate bet=
-ween
-> >> 32-bit and 64-bit processors and is the recommended approach. QEMU tak=
-es this
-> >> approach elsewhere (for example, please see x86_cpu_realizefn()) and w=
-ith
-> >> this change, pc_max_used_gpa() also takes the same approach to detect =
-32-bit
-> >> processors.
-> >>
-> >> Finally, a new compatibility flag is introduced to retain the old beha=
-vior
-> >> for pc_max_used_gpa() for macines 8.1 and older.
-> > typo - will fix in v3                   ^^^^^^^^
-> >
-> > btw, does this patch break it for processors < 32-bit? For them clearly
-> >
-> > x86ms->above_4g_mem_start =3D 4 * GiB;
-> >
-> > does not work.
-> >
-> >
-> >>
-> >> Suggested-by: David Hildenbrand <david@redhat.com>
-> >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> >> ---
-> >>   hw/i386/pc.c         | 17 ++++++++++++++---
-> >>   hw/i386/pc_piix.c    |  4 ++++
-> >>   include/hw/i386/pc.h |  3 +++
-> >>   3 files changed, 21 insertions(+), 3 deletions(-)
-> >>
-> >> changelog:
-> >> v2: removed memory hotplug region from max_gpa. added compat knobs.
-> >>
-> >> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> >> index 54838c0c41..fea97ee258 100644
-> >> --- a/hw/i386/pc.c
-> >> +++ b/hw/i386/pc.c
-> >> @@ -907,10 +907,20 @@ static uint64_t pc_get_cxl_range_end(PCMachineSt=
-ate *pcms)
-> >>   static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hol=
-e64_size)
-> >>   {
-> >>       X86CPU *cpu =3D X86_CPU(first_cpu);
-> >> +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
-> >>
-> >> -    /* 32-bit systems don't have hole64 thus return max CPU address *=
-/
-> >> -    if (cpu->phys_bits <=3D 32) {
-> >> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
-> >> +    /*
-> >> +     * 32-bit systems don't have hole64 and does not support
-> >> +     * memory hotplug.
-> >> +     */
-> >> +    if (pcmc->fixed_32bit_mem_addr_check) {
-> >> +        if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM))=
- {
-> >> +            return pc_above_4g_end(pcms) - 1;
-> >> +        }
->
-> I think you should use the logic from v1.
->
-> My comment regarding memory hotplug was primarily about (Linux) guest
-> support.
->
-> We should not optimize for 32bit processors (e.g., try placing the
-> device memory region below 4g), but you can still consider the region
-> and properly account it.
+Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
 
-I am confused. So maybe you can send a patch.
+> From: Pierre Morel <pmorel@linux.ibm.com>
+>
+> S390 adds two new SMP levels, drawers and books to the CPU
+> topology.
+> S390 CPUs have specific topology features like dedication and
+> entitlement. These indicate to the guest information on host
+> vCPU scheduling and help the guest make better scheduling decisions.
+>
+> Let us provide the SMP properties with books and drawers levels
+> and S390 CPU with dedication and entitlement,
+>
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> ---
+>  qapi/machine-common.json            | 21 +++++++++++++
+>  qapi/machine.json                   | 19 ++++++++++--
+>  include/hw/boards.h                 | 10 +++++-
+>  include/hw/qdev-properties-system.h |  4 +++
+>  target/s390x/cpu.h                  |  6 ++++
+>  hw/core/machine-smp.c               | 48 ++++++++++++++++++++++++-----
+>  hw/core/machine.c                   |  4 +++
+>  hw/core/qdev-properties-system.c    | 13 ++++++++
+>  hw/s390x/s390-virtio-ccw.c          |  4 +++
+>  softmmu/vl.c                        |  6 ++++
+>  target/s390x/cpu.c                  |  7 +++++
+>  qapi/meson.build                    |  1 +
+>  qemu-options.hx                     |  7 +++--
+>  13 files changed, 137 insertions(+), 13 deletions(-)
+>  create mode 100644 qapi/machine-common.json
+>
+> diff --git a/qapi/machine-common.json b/qapi/machine-common.json
+> new file mode 100644
+> index 0000000000..e40421bb37
+> --- /dev/null
+> +++ b/qapi/machine-common.json
+
+Why do you need a separate QAPI sub-module?
+
+> @@ -0,0 +1,21 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
+> +# See the COPYING file in the top-level directory.
+> +
+> +##
+> +# = Machines S390 data types
+> +##
+> +
+> +##
+> +# @CpuS390Entitlement:
+> +#
+> +# An enumeration of cpu entitlements that can be assumed by a virtual
+> +# S390 CPU
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'enum': 'CpuS390Entitlement',
+> +  'prefix': 'S390_CPU_ENTITLEMENT',
+> +  'data': [ 'auto', 'low', 'medium', 'high' ] }
+> diff --git a/qapi/machine.json b/qapi/machine.json
+> index a08b6576ca..a63cb951d2 100644
+> --- a/qapi/machine.json
+> +++ b/qapi/machine.json
+> @@ -9,6 +9,7 @@
+   ##
+   # = Machines
+>  ##
+>  
+>  { 'include': 'common.json' }
+> +{ 'include': 'machine-common.json' }
+
+Section structure is borked :)
+
+Existing section "Machine" now ends at the new "Machines S390 data
+types" you pull in here.  The contents of below moves from "Machines" to
+"Machines S390 data types".
+
+Before I explain how to avoid this, I'd like to understand why we need a
+new sub-module.
+
+>  
+>  ##
+>  # @SysEmuTarget:
+> @@ -71,7 +72,7 @@
+   ##
+   # @CpuInfoFast:
+   #
+   # Information about a virtual CPU
+   #
+   # @cpu-index: index of the virtual CPU
+   #
+   # @qom-path: path to the CPU object in the QOM tree
+>  #
+>  # @thread-id: ID of the underlying host thread
+>  #
+> -# @props: properties describing to which node/socket/core/thread
+> +# @props: properties describing to which node/drawer/book/socket/core/thread
+>  #     virtual CPU belongs to, provided if supported by board
+
+Is this description accurate?
+
+@props is of type CpuInstanceProperties, shown below.  Its documentation
+describes it as "properties to be used for hotplugging a CPU instance,
+it should be passed by management with device_add command when a CPU is
+being hotplugged."  Hmm.
+
+I figure details ("node/drawer/book/socket/core/thread") are better left
+to CpuInstanceProperties.
+
+The "provided if supported by board" part makes no sense to me.  If
+@props is there, it lists the properties we need to provide with
+device_add.  What if it's not there?  Same as empty list, i.e. we don't
+need to provide properties with device_add?
+
+Not your patch's fault, but let's get this in shape if we can.
+
+>  #
+>  # @target: the QEMU system emulation target, which determines which
+> @@ -901,7 +902,11 @@
+>  #
+>  # @node-id: NUMA node ID the CPU belongs to
+>  #
+> -# @socket-id: socket number within node/board the CPU belongs to
+> +# @drawer-id: drawer number within node/board the CPU belongs to (since 8.2)
+> +#
+> +# @book-id: book number within drawer/node/board the CPU belongs to (since 8.2)
+
+Long lines, please wrap:
+
+   # @drawer-id: drawer number within node/board the CPU belongs to
+   #     (since 8.2)
+   #
+   # @book-id: book number within drawer/node/board the CPU belongs to
+   #     (since 8.2)
+
+> +#
+> +# @socket-id: socket number within book/node/board the CPU belongs to
+>  #
+>  # @die-id: die number within socket the CPU belongs to (since 4.1)
+>  #
+> @@ -912,7 +917,7 @@
+   ##
+   # @CpuInstanceProperties:
+   #
+   # List of properties to be used for hotplugging a CPU instance, it
+   # should be passed by management with device_add command when a CPU is
+   # being hotplugged.
+   #
+   # @node-id: NUMA node ID the CPU belongs to
+   #
+   # @socket-id: socket number within node/board the CPU belongs to
+   #
+   # @die-id: die number within socket the CPU belongs to (since 4.1)
+   #
+   # @cluster-id: cluster number within die the CPU belongs to (since
+   #     7.1)
+   #
+   # @core-id: core number within cluster the CPU belongs to
+>  #
+>  # @thread-id: thread number within core the CPU belongs to
+>  #
+> -# Note: currently there are 6 properties that could be present but
+> +# Note: currently there are 8 properties that could be present but
+>  #     management should be prepared to pass through other properties
+>  #     with device_add command to allow for future interface extension.
+>  #     This also requires the filed names to be kept in sync with the
+   #     properties passed to -device/device_add.
+
+The last sentence is for developers, not for users, which means it
+doesn't belong here.  Suggest to move it to a non-doc comment, and
+rephrase the note like
+
+   # Note: management should be prepared to pass through additional
+   # properties with device_add.
+
+> @@ -922,6 +927,8 @@
+>  ##
+>  { 'struct': 'CpuInstanceProperties',
+
+Non-doc comment could go here:
+
+     # Keep these in sync with the properties device_add accepts
+
+Again, not your patch's fault, but your help improving this stuff would
+be appreciated.
+
+>    'data': { '*node-id': 'int',
+> +            '*drawer-id': 'int',
+> +            '*book-id': 'int',
+>              '*socket-id': 'int',
+>              '*die-id': 'int',
+>              '*cluster-id': 'int',
+               '*core-id': 'int',
+               '*thread-id': 'int'
+     }
+   }
+> @@ -1480,6 +1487,10 @@
+>  #
+>  # @cpus: number of virtual CPUs in the virtual machine
+>  #
+> +# @drawers: number of drawers in the CPU topology (since 8.2)
+> +#
+> +# @books: number of books in the CPU topology (since 8.2)
+> +#
+>  # @sockets: number of sockets in the CPU topology
+>  #
+>  # @dies: number of dies per socket in the CPU topology
+> @@ -1498,6 +1509,8 @@
+>  ##
+>  { 'struct': 'SMPConfiguration', 'data': {
+>       '*cpus': 'int',
+> +     '*drawers': 'int',
+> +     '*books': 'int',
+>       '*sockets': 'int',
+>       '*dies': 'int',
+>       '*clusters': 'int',
+> diff --git a/include/hw/boards.h b/include/hw/boards.h
+> index 6c67af196a..6dcfc879eb 100644
+> --- a/include/hw/boards.h
+> +++ b/include/hw/boards.h
+> @@ -134,12 +134,16 @@ typedef struct {
+>   * @clusters_supported - whether clusters are supported by the machine
+>   * @has_clusters - whether clusters are explicitly specified in the user
+>   *                 provided SMP configuration
+> + * @books_supported - whether books are supported by the machine
+> + * @drawers_supported - whether drawers are supported by the machine
+>   */
+>  typedef struct {
+>      bool prefer_sockets;
+>      bool dies_supported;
+>      bool clusters_supported;
+>      bool has_clusters;
+> +    bool books_supported;
+> +    bool drawers_supported;
+>  } SMPCompatProps;
+>  
+>  /**
+> @@ -310,7 +314,9 @@ typedef struct DeviceMemoryState {
+>  /**
+>   * CpuTopology:
+>   * @cpus: the number of present logical processors on the machine
+> - * @sockets: the number of sockets on the machine
+> + * @drawers: the number of drawers on the machine
+> + * @books: the number of books in one drawer
+> + * @sockets: the number of sockets in one book
+>   * @dies: the number of dies in one socket
+>   * @clusters: the number of clusters in one die
+>   * @cores: the number of cores in one cluster
+> @@ -319,6 +325,8 @@ typedef struct DeviceMemoryState {
+>   */
+>  typedef struct CpuTopology {
+>      unsigned int cpus;
+> +    unsigned int drawers;
+> +    unsigned int books;
+>      unsigned int sockets;
+>      unsigned int dies;
+>      unsigned int clusters;
+
+[...]
+
+> diff --git a/qapi/meson.build b/qapi/meson.build
+> index 60a668b343..f81a37565c 100644
+> --- a/qapi/meson.build
+> +++ b/qapi/meson.build
+> @@ -36,6 +36,7 @@ qapi_all_modules = [
+>    'error',
+>    'introspect',
+>    'job',
+> +  'machine-common',
+>    'machine',
+>    'machine-target',
+>    'migration',
+
+[...]
 
 
