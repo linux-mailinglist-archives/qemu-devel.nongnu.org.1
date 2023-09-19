@@ -2,76 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1227A585A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 06:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9351C7A585F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 06:24:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiSDA-0001FD-BC; Tue, 19 Sep 2023 00:19:44 -0400
+	id 1qiSH7-0002LL-UE; Tue, 19 Sep 2023 00:23:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qiSD8-0001Ef-JG; Tue, 19 Sep 2023 00:19:42 -0400
-Received: from mail-vs1-xe35.google.com ([2607:f8b0:4864:20::e35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qiSD7-0008AF-3L; Tue, 19 Sep 2023 00:19:42 -0400
-Received: by mail-vs1-xe35.google.com with SMTP id
- ada2fe7eead31-45271a44cc4so676747137.2; 
- Mon, 18 Sep 2023 21:19:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695097179; x=1695701979; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0HLQfUwNLgOdIY8dJ0tSs+pkC6U8FMWL4ExhcNv25DQ=;
- b=jm0OaHZbiVMEV6n8gcPWxzlDcKM6nKnHDoOsUOR29QI5h75osNU387cj81hKAH4lJI
- Uljz4+BaWlOq+TBJfPxIVBGH080ExMdYE5Jca7sZCgFuYYbf2HhiqzGsNhd78mztbBUA
- 6ijQpmcbyOZ0yoNqxu0/038s+aQv8ZBn48SyFsTvTGP8JU4DVU8TZbYY22lDEtOjgNKZ
- /5Sd6EBZf1BZfMx54WTBoT+GakcJ5xMyWqprQ4G4nuhj5Uu+SBKKWQXHkAHyrpw4fvyK
- MKZ76sPHnVmAXqwr1CZ8cUp+2Xs7RAoiNbxdRu4+jkiRxBowa7SEvJFxDy8IBYi2mkoO
- iDAw==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiSH5-0002L4-FI
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:23:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiSH3-0000xb-Qb
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:23:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695097424;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gvyQB98cflYgKfEhhjEFrNiYlzbUGK4ZImS30vG3Wzo=;
+ b=CFpi1AEZI3Qmc98bys1CtBSksxN5Xryd3HZG5mAVEA3bIbvHd/JoTd54cs4Zin/zvn9FQv
+ n8KNKh4YpUguj9ubts70uM0w/NgODw64QyQnXqiFzSvj1Yvo2jw59hg7pUJRYTefOeWbO1
+ /9JPtywfZsLOiM3e870mlUSKJLIKgwE=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-156-EdAx4ho7MQKgDt_SJIRXtQ-1; Tue, 19 Sep 2023 00:23:42 -0400
+X-MC-Unique: EdAx4ho7MQKgDt_SJIRXtQ-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-53087cba7ecso2740687a12.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 21:23:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695097179; x=1695701979;
+ d=1e100.net; s=20230601; t=1695097421; x=1695702221;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0HLQfUwNLgOdIY8dJ0tSs+pkC6U8FMWL4ExhcNv25DQ=;
- b=mkm4TvxA93sYxJD0Oj4yHESGX8g7C9oKJWRJZNX44//etUPqEbGMjuN4GFssYcCR7b
- dFxR3is4+2Wt6YzdAxwktGQDuZxb4C+wZJkTJ5CNwJtjRi8DvYGUyJB/lAvTPVpf8sPy
- 4Npjl+0JAzNSGLJLWViDCASE18h67cbHZSR3V27x0sIkk+74U3ABdwRlg06oJmxBuSX8
- xqO/eiH/l5hClLtlBKZkp/iReb37HcAXhTdls5jLEI7/gurT7mEZnxNZaJ967PnMCT7C
- FQTxj4AhqaJb7bR/B+wg7zhhJGXpq5fA/sg7C2mmljCKR6QvbIo6X/fRcCshe+zS0qQf
- MvqA==
-X-Gm-Message-State: AOJu0YyJHTYrgcLCC8oLaP90nOHN3rEpU8LMHM1sLg/DQjdDQvsvqKcH
- BSNziX4kuBcP4dmnnzv2vNlxcw9bK2Ah8+wMq08=
-X-Google-Smtp-Source: AGHT+IGzGtbjeYd5i5ZBdEK4/vg+YPAQDwK+loTwqRi6xpWtqj1nsBYwekKn2QzRh2k5BCh2rZB3h0f+y/9UeIfpbfE=
-X-Received: by 2002:a67:e983:0:b0:44d:5f69:3a9b with SMTP id
- b3-20020a67e983000000b0044d5f693a9bmr8492541vso.8.1695097179612; Mon, 18 Sep
- 2023 21:19:39 -0700 (PDT)
+ bh=gvyQB98cflYgKfEhhjEFrNiYlzbUGK4ZImS30vG3Wzo=;
+ b=cpvD6eHWVF26tWPZ5xNY1mysbNMoyqYxbVxz6nABuKAXLkCD04JWF4RUqQZ/JvwrPQ
+ sLKlD9BEH2QQIJWmaDRwTT92bKE4EDwU9lp4L+R3uzd3ku2syh01WEMLWqNDSHSrhTnR
+ 2rF9JatVg8keKXJqfSU+taXgVhtYYccgNurMpdK8nEzcZnHniCbafD/2reX7uHhgPQ4T
+ xO8wMWti6139pAL4FcEdidEYdi/vDNhzPyNhQg4zCN3ehhrBeIb0H5qS9N+4oG2u0mWV
+ ZWDdvKlENXWDQOmeMVxi0uBFC6i7cPA6Mc+Dt9TVNrjNr+vNBt2DAzqhAqZIFxPc9yAv
+ Z8fA==
+X-Gm-Message-State: AOJu0YyNNV7jLtOK4OPsMmv4d9FZ28VNvtlQooYv2X9+t/AfQI6eBeK2
+ DAr8c2AOCO6etcC01UPC5xCGDIexHUoRMJZBL4kIutm/SQKDBhEJslDev3FOB8C465BDAy43ac+
+ QJK6yUv5W3ExEgiK9Pizey0Zf/AjrVE4=
+X-Received: by 2002:a17:906:3149:b0:9a1:e011:1a62 with SMTP id
+ e9-20020a170906314900b009a1e0111a62mr9586797eje.38.1695097421055; 
+ Mon, 18 Sep 2023 21:23:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFgzp2gL7AUX19lNOrYuqwca4f0KXhoURSW2B3TWVTIafuSJfSlr6qURVv7d18hGAaj4k4xMcewo5jfOyu9WM8=
+X-Received: by 2002:a17:906:3149:b0:9a1:e011:1a62 with SMTP id
+ e9-20020a170906314900b009a1e0111a62mr9586788eje.38.1695097420755; Mon, 18 Sep
+ 2023 21:23:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230907084500.328-1-alvinga@andestech.com>
-In-Reply-To: <20230907084500.328-1-alvinga@andestech.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 19 Sep 2023 14:19:12 +1000
-Message-ID: <CAKmqyKNpeA97zgJWy1fMtetj-HjX=B0MzOcr0eAUQ0mBxfZHzA@mail.gmail.com>
-Subject: Re: [PATCH] disas/riscv: Fix the typo of inverted order of pmpaddr13
- and pmpaddr14
-To: Alvin Chang <vivahavey@gmail.com>
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, alistair.francis@wdc.com, 
- Alvin Chang <alvinga@andestech.com>
+References: <20230918135448.90963-1-anisinha@redhat.com>
+ <CAK3XEhOMqdfyPBm0ZgkirrcaBhOwQt_eOZ7=bbdW8OJpz3hWHg@mail.gmail.com>
+ <ceea0d9d-19d6-29e7-cb84-81f85936b8c2@redhat.com>
+ <CAK3XEhNETZBGtzpv2vBzygQtYuzTrsihzQNRdK8kp3+_u590Rg@mail.gmail.com>
+ <3a3b5c4a-afad-8362-088c-a531d6998c23@redhat.com>
+ <CAK3XEhPYPaJfeK5hcq+EktSn9iFVrv05H=TJ4VJNARddK1jYOA@mail.gmail.com>
+In-Reply-To: <CAK3XEhPYPaJfeK5hcq+EktSn9iFVrv05H=TJ4VJNARddK1jYOA@mail.gmail.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Tue, 19 Sep 2023 09:53:28 +0530
+Message-ID: <CAK3XEhP5dyn5bORreJSt7U_QANh2oWG2Tn9UKttbAxEKTSmEfg@mail.gmail.com>
+Subject: Re: [PATCH] hw/i386/pc: fix max_used_gpa for 32-bit systems
+To: David Hildenbrand <david@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Eduardo Habkost <eduardo@habkost.net>, philmd@linaro.org, qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e35;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe35.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,38 +102,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 7, 2023 at 6:47=E2=80=AFPM Alvin Chang <vivahavey@gmail.com> wr=
-ote:
+On Tue, Sep 19, 2023 at 9:20=E2=80=AFAM Ani Sinha <anisinha@redhat.com> wro=
+te:
 >
-> Fix the inverted order of pmpaddr13 and pmpaddr14 in csr_name().
+> On Mon, Sep 18, 2023 at 9:28=E2=80=AFPM David Hildenbrand <david@redhat.c=
+om> wrote:
+> >
+> > On 18.09.23 17:56, Ani Sinha wrote:
+> > > On Mon, Sep 18, 2023 at 8:59=E2=80=AFPM David Hildenbrand <david@redh=
+at.com> wrote:
+> > >>
+> > >> On 18.09.23 17:22, Ani Sinha wrote:
+> > >>> On Mon, Sep 18, 2023 at 7:25=E2=80=AFPM Ani Sinha <anisinha@redhat.=
+com> wrote:
+> > >>>>
+> > >>>> 32-bit systems do not have a reserved memory for hole64 but they m=
+ay have a
+> > >>>> reserved memory space for memory hotplug. Since, hole64 starts aft=
+er the
+> > >>>> reserved hotplug memory, the unaligned hole64 start address gives =
+us the
+> > >>>> end address for this memory hotplug region that the processor may =
+use.
+> > >>>> Fix this. This ensures that the physical address space bound check=
+ing works
+> > >>>> correctly for 32-bit systems as well.
+> > >>>
+> > >>> This patch breaks some unit tests. I am not sure why it did not cat=
+ch
+> > >>> it when I tested it before sending.
+> > >>> Will have to resend after fixing the tests.
+> > >>
+> > >> Probably because they supply more memory than the system can actuall=
+y
+> > >> handle? (e.g., -m 4g on 32bit)?
+> > >
+> > > cxl tests are failing for example.
+> > >
+> > > $ ./qemu-system-i386 -display none -machine q35,cxl=3Don
+> > > qemu-system-i386: Address space limit 0xffffffff < 0x1000fffff
+> > > phys-bits too low (32)
 >
-> Signed-off-by: Alvin Chang <alvinga@andestech.com>
+> also another thing is:
+>
+> ./qemu-system-i386 -machine pc -m 128
+> works but ...
+>
+> $ ./qemu-system-i386 -machine pc -m 128,slots=3D3,maxmem=3D1G
+> qemu-system-i386: Address space limit 0xffffffff < 0x1f7ffffff
+> phys-bits too low (32)
+>
+> or
+>
+> $ ./qemu-system-i386 -machine pc-i440fx-8.2 -accel kvm -m 128,slots=3D3,m=
+axmem=3D1G
+> qemu-system-i386: Address space limit 0xffffffff < 0x1f7ffffff
+> phys-bits too low (32)
+>
+> but of course after the compat knob older pc machines work fine using
+> the old logic :
+>
+> $ ./qemu-system-i386 -machine pc-i440fx-8.1 -accel kvm -m 128,slots=3D3,m=
+axmem=3D1G
+> VNC server running on ::1:5900
+> ^Cqemu-system-i386: terminating on signal 2
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+I dpn't know if we always need to do this but this code adds 1 GiB per
+slot for device memory :
 
-Alistair
+    if (pcmc->enforce_aligned_dimm) {
+         /* size device region assuming 1G page max alignment per slot */
+         size +=3D (1 * GiB) * machine->ram_slots;
+     }
 
-> ---
->  disas/riscv.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/disas/riscv.c b/disas/riscv.c
-> index 3873a69157..8e89e1d115 100644
-> --- a/disas/riscv.c
-> +++ b/disas/riscv.c
-> @@ -2116,8 +2116,8 @@ static const char *csr_name(int csrno)
->      case 0x03ba: return "pmpaddr10";
->      case 0x03bb: return "pmpaddr11";
->      case 0x03bc: return "pmpaddr12";
-> -    case 0x03bd: return "pmpaddr14";
-> -    case 0x03be: return "pmpaddr13";
-> +    case 0x03bd: return "pmpaddr13";
-> +    case 0x03be: return "pmpaddr14";
->      case 0x03bf: return "pmpaddr15";
->      case 0x0780: return "mtohost";
->      case 0x0781: return "mfromhost";
-> --
-> 2.34.1
->
->
+For a 32-bit machine that is a lot of memory consumed in just alignment.
+
 
