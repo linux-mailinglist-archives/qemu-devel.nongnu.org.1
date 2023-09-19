@@ -2,74 +2,168 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0427A69B0
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 19:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 034407A69B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 19:40:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiedQ-0005Dz-VN; Tue, 19 Sep 2023 13:35:41 -0400
+	id 1qiehF-0006k1-Ki; Tue, 19 Sep 2023 13:39:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qiedH-0005Bi-3a; Tue, 19 Sep 2023 13:35:32 -0400
-Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qiedE-00045j-E4; Tue, 19 Sep 2023 13:35:30 -0400
-Received: by mail-oo1-xc35.google.com with SMTP id
- 006d021491bc7-57358a689d2so3831747eaf.2; 
- Tue, 19 Sep 2023 10:35:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
+ id 1qiehC-0006jb-S2
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:39:34 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
+ id 1qiehA-00050V-J1
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:39:34 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38JHODgN028512; Tue, 19 Sep 2023 17:39:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=corp-2023-03-30;
+ bh=cnjrYDQLbLqz06gZngnofSHBPL1TO3eR69CYzMR5WY0=;
+ b=gyXVPzYjyVtEzJeMwKjzc3mX+AnuoJycM1H4ngul/y2Bj0XhqIauTdX+SVp+baVH8fsT
+ bqJmICwoG3/xjRuYkODdBbiPETriZSZ6ExGyRFQ9Yk5mAVxUoYDXhj2UrQw2sj5Wejel
+ 3Y+jaabqHskjulbZlLWyLWnjszDEnJ9KfWo49CdS+JYQK9IlPLw4Ih2Q9nwj1QT4ZQzR
+ LgvnPRqD+K121cY/LjI3vggyjl7mh9EDWk2nW2IehthQrsz7EXdTbigBM5Ke9Y3EILnG
+ OzGjBP1lfaJYvIW+LPw6J595U/7wOqc+1lEtmeB2KNDOHvs/CKc9ShAsFtRu59/zteTW Lw== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t53yu5fst-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Sep 2023 17:39:28 +0000
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 38JHUY7O030176; Tue, 19 Sep 2023 17:39:28 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12lp2172.outbound.protection.outlook.com [104.47.55.172])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3t52t5yubp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Sep 2023 17:39:28 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=claGp0mx3JgOrq6BApvLh7J2LZucoUvzzX9qeVRhAESTdBB/6OJo+Z5dYhF4g+vdNg8OfZGi7bHYPhq6FzHRbeiB172XQ4mihn0JVFN1dGxgyLSIjAMsZNB6Cadu/zxSVYOFpdQipulpYh6RQH+ukWdORH0bI/0QvWHu0Mqg6i3nE+WfqbhP2YASW+X8a5nG4V0pFZ55Y7htbwiAKluFoFBZluhVn7XaqMSsJq6a3pAVaZoX6BhwR3K1YPXgUL5F6jvHFOWMvT/dN5hoY8O4hFWZCFZmWfARKuH7Mq39dSnkyMt7RbDI4/urI/rZA7OYRSYb1n5ZgfDbpazs4ayBXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cnjrYDQLbLqz06gZngnofSHBPL1TO3eR69CYzMR5WY0=;
+ b=A7L3m3W2h6crHI2zXJVGRb9rNVvQk15rmyQEzgq0fYHaYIOMX0fU+ti6u2EevzT+687jNLJUJbUekYMyhb0rWvohCf/qZBEVdGpGHnFVf6/bPTGfNRTCnluWO8WbclZxXGzup7EnZcNvrdpTuBUvi/XCyvysnlos+Zp10ph515YMnCJkzdX+cB4L6quPXeN3pBo5fN9t6RLHAWSoEym2nVhBWJs5g5CK54Q1pQrb3lDNvfpVfSgmNIZedNtd4Jfk/V/HXhSYKimtkzeajLD5cDnRUYhiLuDK6E/5XgBlHZpmfBFA9vtFF1gJ5fAxGb6P6tRpeeiAAOxFXfnzAi1Pug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695144926; x=1695749726; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=rucgXbJbkhUA2ebS2PU0K21/cOmbBHZ+SO9mg3ET6Ng=;
- b=a3oOM6bC1y3053ZaF2L2VhzcOE5pQvWUkoEB3g5elxIdcySI2Sjf4RuUd2m/ZBwBUY
- m45X2ZgLIO0e0DjWqhMMfDQ2WUdUS9fyMYRczj6AoX4QlvjV6xOvd13ETXFAPECqqxb5
- LmHMWyerCm5S1NKDUZx9TCdFeOkm2M9LpBaC2VRgz/6hwbNzMo0Xiv37suENPIcjSbMr
- BM1LM7mljtiJiz1ccww/hzK1uma6lWAVqwUXoYPhHhds19qugxxopMfidkulIxH9L9gH
- mgfc9U3HqQfA0JtMzGKX3jeZj/o3Ldzun7RNSBc8+9N8IBBud6SNBQIdtoJ0fgJzn0Dl
- flrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695144926; x=1695749726;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rucgXbJbkhUA2ebS2PU0K21/cOmbBHZ+SO9mg3ET6Ng=;
- b=X2GrbAXWL73ZSAZbsfrH1L3pjNsWXZA4YycRGZ+I0VGJKoDJdO7Yg3rj0WnmHm/0e2
- juQSAKBvjS/1AQjh0iadUwE/hkvGCwLIRsgo4cs/eoIBdvsNO5LQoobKwTeygVir8UEx
- 4w+WcxbAdFjFiVliQwZ/X/pAcDkAokCNem4PTzb+cf24DQy21HgwBkcjITdVn3QkblPZ
- 241zoSqD0CMAj+GLP+DT4KRh8SOROsyzDMXGapeDQcKDIRQkKBRx4FFVrN+TQTB1tFeH
- AUt+TTyOXAJnRqGcrQdnJZWky+4LkbW7rCuAMS+2nstUnbv3hfUpa/Ywjjcz4oOmyCBw
- XYHQ==
-X-Gm-Message-State: AOJu0YwQlNFfKvv5UB4h1qz26pJc3NjKXQvmCc1CNUFlt0WW071IHvLs
- doM/Gnj6foRCHyTaEGyy4aiYSYkz/MI6F9aNHmQ=
-X-Google-Smtp-Source: AGHT+IHi1lJjREgdNhhOIG6McqUAgjVVS3bqlaHRHSrqezuV3W7NF1PsRF+uKZfIVQqR7aAVAij4cDtIZgAWRqWQxiQ=
-X-Received: by 2002:a4a:3c17:0:b0:571:28d5:2c72 with SMTP id
- d23-20020a4a3c17000000b0057128d52c72mr231444ooa.7.1695144926662; Tue, 19 Sep
- 2023 10:35:26 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cnjrYDQLbLqz06gZngnofSHBPL1TO3eR69CYzMR5WY0=;
+ b=CEjZlKzd22SjP/w530L+V7xWp6t3O1rijTKy3rbPBYzAo7hbz1QgKAwOHUl69SKPAY4xwfUh0cbDg8evywpAulcalz1O3+hYhK6R2aZz993wJpyLgqpan3WFEaB6lBBUNPcdtNW/78Isp1z4tw4g0IguCOfhzW3eU4ASNrCjD6o=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by PH7PR10MB7056.namprd10.prod.outlook.com (2603:10b6:510:275::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26; Tue, 19 Sep
+ 2023 17:39:24 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::35e3:7e4c:72b2:cf74]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::35e3:7e4c:72b2:cf74%7]) with mapi id 15.20.6792.026; Tue, 19 Sep 2023
+ 17:39:24 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: linux-debuggers@vger.kernel.org, Jon Doron <arilou@gmail.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, Laszlo
+ Ersek <lersek@redhat.com>
+Subject: Concerns regarding e17bebd049 ("dump: Set correct vaddr for ELF dump")
+Date: Tue, 19 Sep 2023 10:39:22 -0700
+Message-ID: <87h6nqxdth.fsf@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: PH0PR07CA0089.namprd07.prod.outlook.com
+ (2603:10b6:510:f::34) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 MIME-Version: 1.0
-References: <20230915144344.238596-1-kwolf@redhat.com>
- <CAJSP0QUPOVq5v+7W8E-ruV-Wbg1HYZn2kFWaDzULxSO-3SdEZg@mail.gmail.com>
- <CAJSP0QUYa2+RHeFwztjBrkNs28vqnUVV3rPkNo0+Jx=5ZBfANg@mail.gmail.com>
- <ZQl3Tp7uWPyn/gYa@redhat.com>
-In-Reply-To: <ZQl3Tp7uWPyn/gYa@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 19 Sep 2023 13:35:14 -0400
-Message-ID: <CAJSP0QUZ86Un9bDL5J7akK+4A6FUb5hqSMxNQkygquA1ya12CA@mail.gmail.com>
-Subject: Re: [PULL 00/28] Block layer patches
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc35.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|PH7PR10MB7056:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f8d7b30-53f3-456f-a3c8-08dbb9375d77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: GiCBJab6X/ZzFHMPbHUDajoqSx/RYnhvF0o1AOC53TAM7bIUPH+ylKKz5IWmHOFb3Z5Bt8GLlNmH33ufebNiR9IvcXNp5G2bnArAg/8Ulp6eru0i0TCKLtQgd6UynArG0GuzKvIadH7TRG0DXoN69G66bZrMH9JDiqgIjxNR6j6dxy7YDlRwXXmewy5PBmjUNelASlnUTmKH20kBCr8EgzfaFSkN/XEqJWkJGjJABEexzHbLktxX25aSIkeX9w/zpoTBclaS7+QgWzeMkDE3LI/j+E9njdKdCg6uvzlRUN1fJ0lDdNhVXGGlJ+G4iktjBXXJlGJtbSp+RbZ6ADa8eCelC+gykzzs+ZKPQvmLyDTFS2x5KpL7lDpM/hnBQY2F8fRPAWCdkOOrxxWbsYAG123JopJFNYEZhjb3+ugRUTk9iaaNaJkmNou4xDKiQ8O21yvshYRmVaN8yczmOWFpDIFBw8Pn3HKpRBGx1/msTJXL7QPm/5k96PIdvI6TosVECsBcN20TrBRqPClUTRE3EuXkEySDBxZ9oNdrAR/WBuykmuBeDow/npJRO8TQOqJwQPvFVh+dUZtmpuU+B3AqUg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR10MB6597.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(136003)(396003)(39860400002)(376002)(346002)(1800799009)(186009)(451199024)(2616005)(8936002)(8676002)(4326008)(83380400001)(2906002)(36756003)(86362001)(6506007)(6486002)(966005)(478600001)(5660300002)(6916009)(316002)(54906003)(6512007)(66946007)(66556008)(38100700002)(66476007)(41300700001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eWQrZS9lMlRkTXYzR0hWbWc5c0orb253ZzRPb3hGcEdrMzRXNk5ZWUkreEZm?=
+ =?utf-8?B?cWRTcml3WmFGOW5OYllkYnFDQ05ucGRCSXp0Tnl3bTlkbzBVZDZ5VXFFZ2ha?=
+ =?utf-8?B?UWpMdjUxc3k0ZDVnVnkxQnVlNDZoeU9pYlJkVjJDaGdGb05McTh1ckoveW5x?=
+ =?utf-8?B?cnl2dGxBZHFYdG55SFE2eHhnZXZPOVJVWm5Uc3lJV3lFV1ozV0NKNkZObzhw?=
+ =?utf-8?B?ZGZSaSt3NEEzOEVTYlJuYUdrQVoyNXV4bXlrTjBTa2JpaFFaU041b3BkWXpH?=
+ =?utf-8?B?a0ExYlVSQzFOU3pWWWluaTYxSFVyK29KVmZJQmo4TE0yazE5M1dzQVp1UjBa?=
+ =?utf-8?B?bW05c1JoYkNTVjNwMDBjd2Z1b2Q4ZmhKSFd3eWZXRkYyQWQwM2Q1bDlHTkRH?=
+ =?utf-8?B?NVM3WlVrcGt2WForbkFUd01XVk5LcUpJTkg2VkZ1dVlld2lsdFlyVC9KMitF?=
+ =?utf-8?B?bDlUYm9mZnFBTHdUdi9hVWN5MzAyMHJiTmczcFF3RXBuRm4wWW5uNHN5SEFh?=
+ =?utf-8?B?amNZdyt1Si8wNHB3QXYzYkJNdzJ1OXlveEdmZ0ZwZ2xScENnVjk0ajdONWRV?=
+ =?utf-8?B?M0hsWTU3aWMraHA2cVJuV09ySlh0S3Fhejd3dGh5NG1WQ0tnQTNuTWk1N2ds?=
+ =?utf-8?B?TVBCUEVERTZMQS9NUER0TkVwSVc5N1FZaWgzK1ZNT3VDVlpPTU9xbVRpVEc5?=
+ =?utf-8?B?SGRPNW1MSzltc3ZQSzYwQ1NRa0lheUVHMUFNeW43SmNjM2dVVWVHK0hIOHVY?=
+ =?utf-8?B?bU9GUGRpSHpxaFRySjFHOWU0cE9XMDUrdkZiVjV5UjBxSDFlZEpWSDNJT3pa?=
+ =?utf-8?B?TytDWUZVYzZqUzJFc1JEWVhCeWVLc01LSzkvTTRpSmFuRjhwYzI5clVhVWxQ?=
+ =?utf-8?B?NDZaVjJqSUFYOHducG5ka1R0ZEVOSzlWSTNsZWFsTXZZVTlKSHkvU1c1Nks2?=
+ =?utf-8?B?K0VlamhtYlAzZzIvaEJadUhDOXNwR3JuR1NzSmFZcTdjZit4L3JBbkJvUEdE?=
+ =?utf-8?B?MzlEMURIRTlTeENKR1M5cFlic2NRM1NMVFNXVk44N0psdnhwckY4cnhSbjQw?=
+ =?utf-8?B?LzNhZGxTSUR4Y1FGQkpObE15ai9zdXpaWi9wc0VwRkRjcytPZVRXbnY4OXc4?=
+ =?utf-8?B?SmRpT09aamVDenRRYlBMbU9UdlBKRHV6RzJKSzk5cFlWdXk2ZkU3dTVCTHZr?=
+ =?utf-8?B?SWlQTUVmTEdtRXFmbDF4VXNtVWtoYnpNZmhmSlV3UFRtL2lyQVVTeHBPV0Fo?=
+ =?utf-8?B?NTVwTk1HMTJTaGlzTTBFSnVHZk9FRUxTSDQyZU90MU9xYTNYdThXcmJJekF4?=
+ =?utf-8?B?UGZ1R2pCWDQwd2ZQK0JlQ1R0RDZTY0pmSUVINTNHcC9ONVBDbGM1bFJGMTRs?=
+ =?utf-8?B?bFlZNExmODVqRUxHQms2d1RjTnhaTkZnUmVqWlEyVDdjNlhxYXF0Y3dxNEQ1?=
+ =?utf-8?B?MWNwSEplYlJnUHRkRlg1dGJkSTI0YW9PZTErRHZ3MUMycHJOeWtIeTJQTlJu?=
+ =?utf-8?B?TVdYWHROaWl6WjZ4bWNwelRzVXJna0RseEYwUkFNcWhFemxDMksxT2czZ3Np?=
+ =?utf-8?B?Wk54cDVjOHQvRktzUUFoMVhPNCtDSVFTalZZVVh1TFU2YnlTNjVudWdSNSs2?=
+ =?utf-8?B?MEE5T2VPWHgwdCtFMWVCaDJDd3ZsazQ3blRXamFtdVRFMmprM0pkeVAvYzJ0?=
+ =?utf-8?B?REM5TXZNWmpQNXNvM2ZlZG9weG1HWGtFckNxc1cwOElBS040VzhpY20yZ1ZZ?=
+ =?utf-8?B?djJLUm5YSzM0eXdYSjZHdHJXODZPTlRlb2I2TmNYdnU4c3A5RmVkQlRtWjdh?=
+ =?utf-8?B?WWF4OXhXVkRQdmRGZ29ES3RHK2NueWNFOW54dEYxTGFkaDRGT0NRVFAva3A2?=
+ =?utf-8?B?ZzAwbFRyM1RUakN2czRyU0dweXVDS0Q2dWJ6bENLbFVTY3ZVZ0p3eFlQb3Nr?=
+ =?utf-8?B?VUVrSXBOZFF0Uko2NG5scDRSRDJzQkxMS01zc3FvZTdvRy9DeDhpSVVSR3JI?=
+ =?utf-8?B?STZIWmJsRmpJajVjOElBK1dqVmZiTk84b2hPT2V0bm5mdGlUeU4rcmVEbVNy?=
+ =?utf-8?B?M3BJUk10dG1NN1F6UlVGTVl0bU5DYXhQdmhhaTJVd1FBN1BVMWdER0FUdWd2?=
+ =?utf-8?B?Nmp0VHdZaVhLZS91TVM0eEhrT2FZTUVSWXZZdUsxWWIzTjl4RCsyblJ0Ums0?=
+ =?utf-8?Q?UtcjtPImj13dK1Ke9i/cTrKnZOsCZnFaG8DGbt4KrjHA?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: hM+JhAtSjcoMOnrvN0HGlFTgpbBdVxVHclalrRlyEPKStrua3zA1nVVt2s0DLgA2NBkytOyCvmHJsdf5STmCLIAtZRENEPR5DZy0gJtrus2rK2pwapjsx7qGAibXycXZe+JXLhGs31v1HQX1VmaIGsfaXuNLdnAzLnx1yj56sRQvESwtF4Ff5fdNSuzpEcUXUrvLME9jQLwjv9C9uz+GbkK8mU3OEmEbpQWqRdYea1MDlmDlO+3XFq0/nEPUJdM5xtYEvYCIk7KKlLebBDbSACkCb9DBEWaD6w9mvSYVfs481kH5DZlob7RlDuVb+M63z4M0ixvbEaG78x4tp8raMfQL70gydNZ+wGre2FMAgHWXt/Ks6iSQsjud9ASglv+sZiS7elHofV58SRuplWqWAy1ERNDd4PDAEea/MvJeoSw1W0ZBQ8/ojdQOogzr/lsQciw8GIXDWZKjCtRnvOlhT+2e5cijsjdeXNIx42xyoqwkXownm/f0stLd1buL5zXr2qJp1bWmFn8VOZ2VyjsQ8cQ6mlUGye3Kew/Sqxw8bm870uIaJ+gDhYq+GmbzGt/PPgU/esdYOWp9WvAC4b6FKOOgzbTvqSSNJ++ueWtGoGc4T3xsTTpUVZfCs/S/WuzIB3VliX3RJLhCRjYDeqHtn09zprPmUNWp6qtlkhjUVYCuKNb3/f/LJMe7zHUW3/FIDbiKCNLjgDjjj7KselTWO1oWIh+fa9QAgN/c4bc/XVq2uqx38ig13mxPyeZjKb9UcPNmHjwYsy+qz3OPxIXwTS4HAARi+3RliDpxzenuOOEE0YCmfRVm6S8YrE+tx7p8XpHSxsJPYkS5b46feTnmXlAtvFVtIqBZO4m1x2Wsy4w=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f8d7b30-53f3-456f-a3c8-08dbb9375d77
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 17:39:24.6618 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6YAD4yrfBqViJJvaSPm/Q7wORlQcnqCVou2QEoN1S5nBCWYQrR7tMNbSGWn4TjUAKjgFxujkez+AOx3OJwowhKtYPbjbFrPsBDPDOYPshkE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB7056
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_09,2023-09-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ adultscore=0
+ phishscore=0 malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190152
+X-Proofpoint-GUID: LixLNSG4O0qR7ZpQJ-yIUt2lMKHqX8Cp
+X-Proofpoint-ORIG-GUID: LixLNSG4O0qR7ZpQJ-yIUt2lMKHqX8Cp
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=stephen.s.brennan@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,100 +179,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Sept 2023 at 06:26, Kevin Wolf <kwolf@redhat.com> wrote:
->
-> Am 18.09.2023 um 20:56 hat Stefan Hajnoczi geschrieben:
-> > Hi Kevin,
-> > I believe that my own commit "block-coroutine-wrapper: use
-> > qemu_get_current_aio_context()" breaks this test. The failure is
-> > non-deterministic (happens about 1 out of 4 runs).
-> >
-> > It seems the job hangs and the test times out in vm.run_job('job1', wait=5.0).
-> >
-> > I haven't debugged it yet but wanted to share this information to save
-> > some time. Tomorrow I'll investigate further.
->
-> Yes, it's relatively easily reproducible if I run the test in a loop,
-> and I can't seem to reproduce it without the last patch. Should I
-> unstage the full series again, or do you think that the last patch is
-> really optional this time?
+Hello all,
 
-Please drop the last patch. I'm not aware of dependencies on the last patch.
+I've started working on better support and documentation around
+hypervisor vmcores in the Drgn debugger[1]. Of course there's quite a
+lot of different implementations out there, but recently I'm looking at
+Qemu kdump and ELF vmcores generated via dump-guest-memory, and one
+thing caught my eye. I generated a ELF vmcore without the paging option
+enabled, and without the guest note loaded, and the resulting core
+dump's program header looked like this:
 
-> However, I'm unsure how the stack traces I'm seeing are related to your
-> patch. Maybe it just made an existing bug more likely to be triggered?
+$ eu-readelf -l dumpfile2
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  Me=
+mSiz   Flg Align
+  NOTE           0x000168 0x0000000000000000 0x0000000000000000 0x001980 0x=
+001980     0x0
+  LOAD           0x001ae8 0x0000000000000000 0x0000000000000000 0x80000000 =
+0x80000000     0x0
+  LOAD           0x80001ae8 0x00000000fffc0000 0x00000000fffc0000 0x040000 =
+0x040000     0x0
 
-I'll share my thoughts once I've looked at the crash today.
+In particular, the "VirtAddr" field for the loadable segment shows a
+confusing address - it appears to reuse the segment's physical address,
+despite the fact that there's no actual corresponding mapping.
 
-Regarding AioContext lock removal: I'll work on that and see what
-still depends on the lock.
+By comparison, the /proc/kcore and /proc/vmcore ELF vmcores use the
+VirtAddr in the program header to represent the real virtual memory
+mappings in use by the kernel. Debuggers can directly use these without
+needing to walk page tables. If there is no virtual memory mapping
+information available, I would have expected a placeholder value such as
+0000... or FFFF... to take the place of VirtAddr here so a debugger can
+detect the lack of virtual mappings and know that it needs to use
+architecture-specific details (and the vmcoreinfo) to find the page
+tables and accurately determine memory mappings. As it is, this program
+header seems to advertise to a debugger, "yes, we have the virtual
+memory mappings" when in fact, that's not the case.
 
-Stefan
+It seems that this behavior was introduced in e17bebd049 ("dump: Set
+correct vaddr for ELF dump")[2], a small commit I'll reproduce below.
+The justification seems to be that it fixes an issue reading the vmcore
+with GDB, but I wonder if that's not a GDB bug which should have been
+fixed with them? If GDB aims to support ELF kernel core dumps,
+presumably it should be handling physical addresses separately from
+virtual addresses. And if GDB doesn't aim for this, but you'd like to
+con it into reading your core dump, presumably the onus is on you to
+edit the ELF VirtAddr field to suit your needs? It should be QEMU's
+primary goal to produce a *correct* vmcore, not work around limitations
+or bugs in GDB.
 
-> What I'm seeing is that the reader lock is held by an iothread that is
-> waiting for its AioContext lock to make progress:
->
-> Thread 3 (Thread 0x7f811e9346c0 (LWP 26390) "qemu-system-x86"):
-> #0  0x00007f81250aaf80 in __lll_lock_wait () at /lib64/libc.so.6
-> #1  0x00007f81250b149a in pthread_mutex_lock@@GLIBC_2.2.5 () at /lib64/libc.so.6
-> #2  0x000055b7b170967e in qemu_mutex_lock_impl (mutex=0x55b7b34e3080, file=0x55b7b199e1f7 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:94
-> #3  0x000055b7b1709953 in qemu_rec_mutex_lock_impl (mutex=0x55b7b34e3080, file=0x55b7b199e1f7 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:149
-> #4  0x000055b7b1728318 in aio_context_acquire (ctx=0x55b7b34e3020) at ../util/async.c:728
-> #5  0x000055b7b1727c49 in co_schedule_bh_cb (opaque=0x55b7b34e3020) at ../util/async.c:565
-> #6  0x000055b7b1726f1c in aio_bh_call (bh=0x55b7b34e2e70) at ../util/async.c:169
-> #7  0x000055b7b17270ee in aio_bh_poll (ctx=0x55b7b34e3020) at ../util/async.c:216
-> #8  0x000055b7b170351d in aio_poll (ctx=0x55b7b34e3020, blocking=true) at ../util/aio-posix.c:722
-> #9  0x000055b7b1518604 in iothread_run (opaque=0x55b7b2904460) at ../iothread.c:63
-> #10 0x000055b7b170a955 in qemu_thread_start (args=0x55b7b34e36b0) at ../util/qemu-thread-posix.c:541
-> #11 0x00007f81250ae15d in start_thread () at /lib64/libc.so.6
-> #12 0x00007f812512fc00 in clone3 () at /lib64/libc.so.6
->
-> On the other hand, the main thread wants to acquire the writer lock,
-> but it holds the AioContext lock of the iothread (it takes it in
-> job_prepare_locked()):
->
-> Thread 1 (Thread 0x7f811f4b7b00 (LWP 26388) "qemu-system-x86"):
-> #0  0x00007f8125122356 in ppoll () at /lib64/libc.so.6
-> #1  0x000055b7b172eae0 in qemu_poll_ns (fds=0x55b7b34ec910, nfds=1, timeout=-1) at ../util/qemu-timer.c:339
-> #2  0x000055b7b1704ebd in fdmon_poll_wait (ctx=0x55b7b3269210, ready_list=0x7ffc90b05680, timeout=-1) at ../util/fdmon-poll.c:79
-> #3  0x000055b7b1703284 in aio_poll (ctx=0x55b7b3269210, blocking=true) at ../util/aio-posix.c:670
-> #4  0x000055b7b1567c3b in bdrv_graph_wrlock (bs=0x0) at ../block/graph-lock.c:145
-> #5  0x000055b7b1554c1c in blk_remove_bs (blk=0x55b7b4425800) at ../block/block-backend.c:916
-> #6  0x000055b7b1554779 in blk_delete (blk=0x55b7b4425800) at ../block/block-backend.c:497
-> #7  0x000055b7b1554133 in blk_unref (blk=0x55b7b4425800) at ../block/block-backend.c:557
-> #8  0x000055b7b157a149 in mirror_exit_common (job=0x55b7b4419000) at ../block/mirror.c:696
-> #9  0x000055b7b1577015 in mirror_prepare (job=0x55b7b4419000) at ../block/mirror.c:807
-> #10 0x000055b7b153a1a7 in job_prepare_locked (job=0x55b7b4419000) at ../job.c:988
-> #11 0x000055b7b153a0d9 in job_txn_apply_locked (job=0x55b7b4419000, fn=0x55b7b153a110 <job_prepare_locked>) at ../job.c:191
-> #12 0x000055b7b1538b6d in job_do_finalize_locked (job=0x55b7b4419000) at ../job.c:1011
-> #13 0x000055b7b153a886 in job_completed_txn_success_locked (job=0x55b7b4419000) at ../job.c:1068
-> #14 0x000055b7b1539372 in job_completed_locked (job=0x55b7b4419000) at ../job.c:1082
-> #15 0x000055b7b153a71b in job_exit (opaque=0x55b7b4419000) at ../job.c:1103
-> #16 0x000055b7b1726f1c in aio_bh_call (bh=0x7f8110005470) at ../util/async.c:169
-> #17 0x000055b7b17270ee in aio_bh_poll (ctx=0x55b7b3269210) at ../util/async.c:216
-> #18 0x000055b7b1702c05 in aio_dispatch (ctx=0x55b7b3269210) at ../util/aio-posix.c:423
-> #19 0x000055b7b1728a14 in aio_ctx_dispatch (source=0x55b7b3269210, callback=0x0, user_data=0x0) at ../util/async.c:358
-> #20 0x00007f8126c31c7f in g_main_dispatch (context=0x55b7b3269720) at ../glib/gmain.c:3454
-> #21 g_main_context_dispatch (context=0x55b7b3269720) at ../glib/gmain.c:4172
-> #22 0x000055b7b1729c98 in glib_pollfds_poll () at ../util/main-loop.c:290
-> #23 0x000055b7b1729572 in os_host_main_loop_wait (timeout=27462700) at ../util/main-loop.c:313
-> #24 0x000055b7b1729452 in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
-> #25 0x000055b7b119a1eb in qemu_main_loop () at ../softmmu/runstate.c:772
-> #26 0x000055b7b14c102d in qemu_default_main () at ../softmmu/main.c:37
-> #27 0x000055b7b14c1068 in main (argc=44, argv=0x7ffc90b05d58) at ../softmmu/main.c:48
->
-> At first I thought we just need to look into the AioContext locking in
-> job completion and drop it in the right places.
->
-> But in fact, first of all, blk_remove_bs() needs to make up its mind if
-> it wants the caller to hold the AioContext or not and document that.
-> Because it calls both bdrv_drained_begin() (which requires holding the
-> AioContext lock) and bdrv_graph_wrlock(NULL) (which forbids it).
->
-> If we could fully get rid of the AioContext lock (as we originally
-> stated as a goal), that would automatically solve this kind of
-> deadlocks.
->
-> Kevin
->
+I'd like to propose reverting this, since it makes it impossible to
+interpret QEMU ELF vmcores, unless you discard all the virtual addresses
+in the program headers, and unconditionally do all the page table walks
+yourself. But I wanted to see if there was some justification for this
+behavior that I missed.
+
+Thanks,
+Stephen
+
+[1]: https://github.com/osandov/drgn
+[2]: https://lore.kernel.org/qemu-devel/20181225125344.4482-1-arilou@gmail.=
+com/
+
+---
+
+commit e17bebd049d78f489c2cff755e2b66a0536a156e
+Author: Jon Doron <arilou@gmail.com>
+Date:   Wed Jan 9 10:22:03 2019 +0200
+
+    dump: Set correct vaddr for ELF dump
+   =20
+    vaddr needs to be equal to the paddr since the dump file represents the
+    physical memory image.
+   =20
+    Without setting vaddr correctly, GDB would load all the different memor=
+y
+    regions on top of each other to vaddr 0, thus making GDB showing the wr=
+ong
+    memory data for a given address.
+   =20
+    Signed-off-by: Jon Doron <arilou@gmail.com>
+    Message-Id: <20190109082203.27142-1-arilou@gmail.com>
+    Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+    Tested-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+    Acked-by: Laszlo Ersek <lersek@redhat.com>
+
+diff --git a/dump.c b/dump.c
+index ef1d8025c9..107a67165a 100644
+--- a/dump.c
++++ b/dump.c
+@@ -192,7 +192,7 @@ static void write_elf64_load(DumpState *s, MemoryMappin=
+g *memory_mapping,
+     phdr.p_paddr =3D cpu_to_dump64(s, memory_mapping->phys_addr);
+     phdr.p_filesz =3D cpu_to_dump64(s, filesz);
+     phdr.p_memsz =3D cpu_to_dump64(s, memory_mapping->length);
+-    phdr.p_vaddr =3D cpu_to_dump64(s, memory_mapping->virt_addr);
++    phdr.p_vaddr =3D cpu_to_dump64(s, memory_mapping->virt_addr) ?: phdr.p=
+_paddr;
+=20
+     assert(memory_mapping->length >=3D filesz);
+=20
+@@ -216,7 +216,8 @@ static void write_elf32_load(DumpState *s, MemoryMappin=
+g *memory_mapping,
+     phdr.p_paddr =3D cpu_to_dump32(s, memory_mapping->phys_addr);
+     phdr.p_filesz =3D cpu_to_dump32(s, filesz);
+     phdr.p_memsz =3D cpu_to_dump32(s, memory_mapping->length);
+-    phdr.p_vaddr =3D cpu_to_dump32(s, memory_mapping->virt_addr);
++    phdr.p_vaddr =3D
++        cpu_to_dump32(s, memory_mapping->virt_addr) ?: phdr.p_paddr;
+=20
+     assert(memory_mapping->length >=3D filesz);
+=20
+diff --git a/scripts/dump-guest-memory.py b/scripts/dump-guest-memory.py
+index 198cd0fe40..2c587cbefc 100644
+--- a/scripts/dump-guest-memory.py
++++ b/scripts/dump-guest-memory.py
+@@ -163,6 +163,7 @@ def add_segment(self, p_type, p_paddr, p_size):
+         phdr =3D get_arch_phdr(self.endianness, self.elfclass)
+         phdr.p_type =3D p_type
+         phdr.p_paddr =3D p_paddr
++        phdr.p_vaddr =3D p_paddr
+         phdr.p_filesz =3D p_size
+         phdr.p_memsz =3D p_size
+         self.segments.append(phdr)
 
