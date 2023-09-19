@@ -2,57 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9A17A5FAA
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CE27A5F9F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:32:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiY17-0003oZ-RM; Tue, 19 Sep 2023 06:31:42 -0400
+	id 1qiY1l-0004r2-Ud; Tue, 19 Sep 2023 06:32:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiY0D-00036d-K6
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:30:47 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiY0H-00037T-Hx
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:30:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiY0B-0001vG-TW
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:30:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiY0F-0001xg-7Q
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:30:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695119443;
+ s=mimecast20190719; t=1695119446;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8VhS/fzD7JOGnA1954033G5f6f9WT8hvs3vLVrgbYy0=;
- b=MVA/rGCWS5bLrd98y5w3DCUQgXpFxn2JRudKvfBxM9TJTOAnELY9V/49pNlYR57f2Lp7oP
- F/lYpdW0/kUzF+BeVBBCyMGhrO/hdYp3O3/913332u14lCqBH0obyYffPUGcEvOXPqymG6
- qUaWdB5Ti5ge/qo3XO2TJqGK8fN3Moc=
+ bh=tNEhNaDV6xvJCqwzhjc+fWixEBd8DMV8k/lJMTAm+HE=;
+ b=MU2wKcEcdnK+jMQdyjLB/Z8cP5qgkI2UXyZr/BnQ9M2MGcukO4FMYCLljtrNUa71SeJ3By
+ KA1OfBqBVn0CuSqdmHU4+JxczAQQy7dkHOt+3n73DfOpKxxOkt67SQA4JNqUAYuV5qoArw
+ iITkjb6oVuGClLJrbcKdvLQ/HBzysWA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-619-UKg5nhTSNsm6dc4eADOQ2w-1; Tue, 19 Sep 2023 06:30:41 -0400
-X-MC-Unique: UKg5nhTSNsm6dc4eADOQ2w-1
+ us-mta-551-nxVTzubYNJuPyTXC1_1-kA-1; Tue, 19 Sep 2023 06:30:42 -0400
+X-MC-Unique: nxVTzubYNJuPyTXC1_1-kA-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4D1E9811E7D;
- Tue, 19 Sep 2023 10:30:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C93485A5A8;
+ Tue, 19 Sep 2023 10:30:42 +0000 (UTC)
 Received: from t14s.redhat.com (unknown [10.39.194.89])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4AF3240C6EBF;
- Tue, 19 Sep 2023 10:30:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8482540C6EC0;
+ Tue, 19 Sep 2023 10:30:41 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, ThinerLogoer <logoerthiner1@163.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mario Casquero <mcasquer@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [GIT PULL 11/12] machine: Improve error message when using default
- RAM backend id
-Date: Tue, 19 Sep 2023 12:30:28 +0200
-Message-ID: <20230919103029.235736-12-david@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>,
+ hongmianquan <hongmianquan@bytedance.com>, Peter Xu <peterx@redhat.com>
+Subject: [GIT PULL 12/12] memory: avoid updating ioeventfds for some
+ address_space
+Date: Tue, 19 Sep 2023 12:30:29 +0200
+Message-ID: <20230919103029.235736-13-david@redhat.com>
 In-Reply-To: <20230919103029.235736-1-david@redhat.com>
 References: <20230919103029.235736-1-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
@@ -79,56 +77,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For migration purposes, users might want to reuse the default RAM
-backend id, but specify a different memory backend.
+From: hongmianquan <hongmianquan@bytedance.com>
 
-For example, to reuse "pc.ram" on q35, one has to set
-    -machine q35,memory-backend=pc.ram
-Only then, can a memory backend with the id "pc.ram" be created
-manually.
+When updating ioeventfds, we need to iterate all address spaces,
+but some address spaces do not register eventfd_add|del call when
+memory_listener_register() and they do nothing when updating ioeventfds.
+So we can skip these AS in address_space_update_ioeventfds().
 
-Let's improve the error message by improving the hint. Use
-error_append_hint() -- which in turn requires ERRP_GUARD().
+The overhead of memory_region_transaction_commit() can be significantly
+reduced. For example, a VM with 8 vhost net devices and each one has
+64 vectors, can reduce the time spent on memory_region_transaction_commit by 20%.
 
-Message-ID: <20230906120503.359863-12-david@redhat.com>
-Suggested-by: ThinerLogoer <logoerthiner1@163.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20230830032906.12488-1-hongmianquan@bytedance.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Signed-off-by: hongmianquan <hongmianquan@bytedance.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- hw/core/machine.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ include/exec/memory.h |  1 +
+ softmmu/memory.c      | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index da699cf4e1..db0c263ff6 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -1355,6 +1355,7 @@ out:
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index cc68249eda..ef23d65afc 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -1095,6 +1095,7 @@ struct AddressSpace {
+     struct FlatView *current_map;
  
- void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp)
- {
-+    ERRP_GUARD();
-     MachineClass *machine_class = MACHINE_GET_CLASS(machine);
-     ObjectClass *oc = object_class_by_name(machine->cpu_type);
-     CPUClass *cc;
-@@ -1383,9 +1384,13 @@ void machine_run_board_init(MachineState *machine, const char *mem_path, Error *
-                numa_uses_legacy_mem()) {
-         if (object_property_find(object_get_objects_root(),
-                                  machine_class->default_ram_id)) {
--            error_setg(errp, "object name '%s' is reserved for the default"
--                " RAM backend, it can't be used for any other purposes."
--                " Change the object's 'id' to something else",
-+            error_setg(errp, "object's id '%s' is reserved for the default"
-+                " RAM backend, it can't be used for any other purposes",
-+                machine_class->default_ram_id);
-+            error_append_hint(errp,
-+                "Change the object's 'id' to something else or disable"
-+                " automatic creation of the default RAM backend by setting"
-+                " 'memory-backend=%s' with '-machine'.\n",
-                 machine_class->default_ram_id);
-             return;
-         }
+     int ioeventfd_nb;
++    int ioeventfd_notifiers;
+     struct MemoryRegionIoeventfd *ioeventfds;
+     QTAILQ_HEAD(, MemoryListener) listeners;
+     QTAILQ_ENTRY(AddressSpace) address_spaces_link;
+diff --git a/softmmu/memory.c b/softmmu/memory.c
+index 2cb60ec9b8..c0383a163d 100644
+--- a/softmmu/memory.c
++++ b/softmmu/memory.c
+@@ -842,6 +842,10 @@ static void address_space_update_ioeventfds(AddressSpace *as)
+     AddrRange tmp;
+     unsigned i;
+ 
++    if (!as->ioeventfd_notifiers) {
++        return;
++    }
++
+     /*
+      * It is likely that the number of ioeventfds hasn't changed much, so use
+      * the previous size as the starting value, with some headroom to avoid
+@@ -3075,6 +3079,10 @@ void memory_listener_register(MemoryListener *listener, AddressSpace *as)
+     }
+ 
+     listener_add_address_space(listener, as);
++
++    if (listener->eventfd_add || listener->eventfd_del) {
++        as->ioeventfd_notifiers++;
++    }
+ }
+ 
+ void memory_listener_unregister(MemoryListener *listener)
+@@ -3083,6 +3091,10 @@ void memory_listener_unregister(MemoryListener *listener)
+         return;
+     }
+ 
++    if (listener->eventfd_add || listener->eventfd_del) {
++        listener->address_space->ioeventfd_notifiers--;
++    }
++
+     listener_del_address_space(listener, listener->address_space);
+     QTAILQ_REMOVE(&memory_listeners, listener, link);
+     QTAILQ_REMOVE(&listener->address_space->listeners, listener, link_as);
 -- 
 2.41.0
 
