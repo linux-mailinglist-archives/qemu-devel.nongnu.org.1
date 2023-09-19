@@ -2,89 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6677A5FD4
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDB67A5FF0
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiY8Q-0005v0-RJ; Tue, 19 Sep 2023 06:39:14 -0400
+	id 1qiYDx-0007hb-Ad; Tue, 19 Sep 2023 06:44:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiY8I-0005ru-Nj
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:39:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiY8B-0003lE-1I
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:39:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695119930;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=K0ccfBsWZGIYWgJW4XRIihbZeeQTvcYtm71mF04eyDA=;
- b=BYkv3bz14ZrwVAwY8yQb/Q0WE2m+TeKvylDB1pitKHtTulZBc78XqMgesEH1Ng6qWoXCbC
- WGZ1uf6FW8UXrcH5HAJMMmf34DLOl5t90AyHTscazK8hzOdR0v3T9nKZp/OsUrSAdnkcgx
- Ob0viziB9YN3qxVUN5SYRE8ANTdIV+A=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-1ncEgCdXMfqB82fVKXZAgA-1; Tue, 19 Sep 2023 06:38:48 -0400
-X-MC-Unique: 1ncEgCdXMfqB82fVKXZAgA-1
-Received: by mail-pg1-f197.google.com with SMTP id
- 41be03b00d2f7-573fdb618eeso5333556a12.0
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 03:38:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qiYDu-0007hM-Tr
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:44:55 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qiYDs-0005ME-VB
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:44:54 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c3cbfa40d6so49362045ad.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 03:44:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695120291; x=1695725091;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=smljqgzosS5OJqCedcK9N/6xUm9qe80j7oWlUug+4Jw=;
+ b=yAqZz4iUFjOZvoys1t5YMPE0RGGCU3twkpUNuw053l+4sSLmmji4Q9bImH5vFqeooi
+ aTUuL+glB8m9XeMy+35A3Ca7YYvM89TquLOZSMLBzwuzriQEBn9iWq6aa3ACizWJ147y
+ FRaay2R9TUNss45JxdP5hSsonfA78Lk6fIm/4I2L3+NrjbkaT5VOKZKKf3oxnzFl0kRO
+ tjzc310p1gZM6ZYUD0VePiZET+8zkVvEzdWAPJxTht6Zn8ZrLOrXFwl3ey7GtT1BwpC1
+ lIwmzTprVfXj8AN5biwR/lhBp+N9Iqov1MtLFbXtZ1eDkqndmsww0TbsFEckscsBBsgP
+ l7KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695119928; x=1695724728;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=K0ccfBsWZGIYWgJW4XRIihbZeeQTvcYtm71mF04eyDA=;
- b=UphEtArbM2joMQNSaQHTsBZJENcDG+9QVDuHVgHn1Zo4YBZBgu1INZW22b3tp9QaX/
- 8XRNOi7NVcum4HSElS72BecnEoGaeWJvL8b83LqpZ4Q3YF5o+dH+8m7JZDUKxhMIbuKZ
- enaLrvU2EwkutI5G+8CJlMGAP+/9ux629axUCW+O3eTBp4UPLK71R66CeQSqFi0Z62vZ
- 9S6GRhoUmQNi0WzmKxY0HAKL4QGUD4R0IDdTecvXHef5EUFvHvtdShkfYX2rtIPyscLk
- HiQPbaFlsoZudOf7BSit92GwRdWb6B4iSSuuX0D2dH3ildLVJLmyMkXHo7rAx46d8MIV
- h7EA==
-X-Gm-Message-State: AOJu0YxxiquiM/nGD9PIuCuYuL4LT1GuJX4z4zWVLaOXB2slf4sZyNz3
- YPuidHhvi48daPypR5vbVvaqh0mNh8v9lelebsH6mp765jxeg08blmQallHLJsWbssHozqThwJY
- hJZ/rCCEaHtc/qf8=
-X-Received: by 2002:a17:903:124c:b0:1bf:13fa:e75 with SMTP id
- u12-20020a170903124c00b001bf13fa0e75mr14349640plh.51.1695119927822; 
- Tue, 19 Sep 2023 03:38:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEFx3VCYLnj03rsuA6xCQytS5avNW6mWbeuFRLzxewr3IrP5ZfPLRARADlzokpMubN0ESFT3A==
-X-Received: by 2002:a17:903:124c:b0:1bf:13fa:e75 with SMTP id
- u12-20020a170903124c00b001bf13fa0e75mr14349620plh.51.1695119927518; 
- Tue, 19 Sep 2023 03:38:47 -0700 (PDT)
-Received: from localhost.localdomain ([115.96.131.182])
- by smtp.googlemail.com with ESMTPSA id
- l20-20020a170903005400b001c420afa03bsm8675496pla.109.2023.09.19.03.38.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Sep 2023 03:38:47 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: david@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Cc: philmd@linaro.org, Ani Sinha <anisinha@redhat.com>, qemu-devel@nongnu.org
-Subject: [PATCH v2] hw/i386/pc: improve physical address space bound check for
- 32-bit systems
-Date: Tue, 19 Sep 2023 16:08:37 +0530
-Message-Id: <20230919103838.249317-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.39.1
+ d=1e100.net; s=20230601; t=1695120291; x=1695725091;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=smljqgzosS5OJqCedcK9N/6xUm9qe80j7oWlUug+4Jw=;
+ b=UlGGqBGW6sqt+n0jWmTSrb8Pjdn070b1OmPRwI93YIVCCksVEZZPht/CgH8lkMt39e
+ nUPjtEA9zE1hkb4zFsQm0eucpJiKm1Ysi1vICxi7+LPkThPvVaVxKy0bvIICOp0GkyUM
+ +4hcIV6xndO4kX6vxH0R14zw2hJjN/QSqlXehb7STBZMC9QgbXsCo0ROtBh6yiGBk8Jh
+ zdDNmAMBynYsVcKdfUzUvgtQXcwonOFDZEPW3mBJipFfWh8Xn5XeXDrD8snrSVDz69YT
+ ZP2jHTb/6G7f1Q3Go6urbpanA6laHzzB+tE+rpQMtt6xWYX1EHirwzwLDwA1CGTFJp93
+ EBNg==
+X-Gm-Message-State: AOJu0Yw5QH9m/dCTzd2E6uG4SvQrpxumLkiLvGRGuXYIOnLjNWYdaWj0
+ KH1MRsxWgArbKULJY0H4xfQmJQ==
+X-Google-Smtp-Source: AGHT+IE1rvQgqf2KfT7I++lA0G6ulx4YIhz3L5ez9EyE2wjGmry5CNVl3i/34lsTkQNO0gf+B6/CXg==
+X-Received: by 2002:a17:903:507:b0:1b8:4f93:b210 with SMTP id
+ jn7-20020a170903050700b001b84f93b210mr9965606plb.45.1695120291167; 
+ Tue, 19 Sep 2023 03:44:51 -0700 (PDT)
+Received: from [157.82.206.151] ([157.82.206.151])
+ by smtp.gmail.com with ESMTPSA id
+ 17-20020a170902ee5100b001bb7a736b4csm3409972plo.77.2023.09.19.03.44.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 03:44:50 -0700 (PDT)
+Message-ID: <75698621-d210-40eb-872d-f3cfc6e4dbff@daynix.com>
+Date: Tue, 19 Sep 2023 19:44:45 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v5 07/13] softmmu/memory: enable automatic
+ deallocation of memory regions
+To: Xenia Ragiadakou <xenia.ragiadakou@amd.com>, Huang Rui
+ <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-8-ray.huang@amd.com>
+ <99fb4575-9f8d-4ab6-bc22-911bbaa7ca55@daynix.com>
+ <c0370b6e-c17e-2400-ef8a-7a759d2fc2d7@amd.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <c0370b6e-c17e-2400-ef8a-7a759d2fc2d7@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62e.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,111 +115,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-32-bit systems do not have a reserved memory for hole64 and memory hotplug is
-not supported on those systems. Therefore, the maximum limit of the guest
-physical address coincides with the end of "above 4G memory space" region.
-Make sure that the end of "above 4G memory" is still addressible by the
-guest processor with its available address bits. For example, previously this
-was allowed:
+On 2023/09/19 19:28, Xenia Ragiadakou wrote:
+> 
+> On 15/9/23 18:11, Akihiko Odaki wrote:
+>> On 2023/09/15 20:11, Huang Rui wrote:
+>>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>>
+>>> When the memory region has a different life-cycle from that of her 
+>>> parent,
+>>> could be automatically released, once has been unparent and once all 
+>>> of her
+>>> references have gone away, via the object's free callback.
+>>>
+>>> However, currently, references to the memory region are held by its 
+>>> owner
+>>> without first incrementing the memory region object's reference count.
+>>> As a result, the automatic deallocation of the object, not taking into
+>>> account those references, results in use-after-free memory corruption.
+>>>
+>>> This patch increases the reference count of an owned memory region 
+>>> object
+>>> on each memory_region_ref() and decreases it on each 
+>>> memory_region_unref().
+>>>
+>>> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
+>>> ---
+>>>
+>>> V4 -> V5:
+>>>      - ref/unref only owned memory regions (Akihiko)
+>>>
+>>>   softmmu/memory.c | 5 +++++
+>>>   1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/softmmu/memory.c b/softmmu/memory.c
+>>> index 7d9494ce70..15e1699750 100644
+>>> --- a/softmmu/memory.c
+>>> +++ b/softmmu/memory.c
+>>> @@ -1800,6 +1800,9 @@ void memory_region_ref(MemoryRegion *mr)
+>>>       /* MMIO callbacks most likely will access data that belongs
+>>>        * to the owner, hence the need to ref/unref the owner whenever
+>>>        * the memory region is in use.
+>>> +     * Likewise, the owner keeps references to the memory region,
+>>> +     * hence the need to ref/unref the memory region object to prevent
+>>> +     * its automatic deallocation while still referenced by its owner.
+>>
+>> This comment does not make sense. Traditionally no such automatic 
+>> deallocation happens so the owner has been always required to free the 
+>> memory region when it gets finalized.
+>>
+>> "[QEMU PATCH v5 09/13] virtio-gpu: Handle resource blob commands" 
+>> introduces a different kind of memory region, which can be freed 
+>> anytime before the device gets finalized. Even in this case, the owner 
+>> removes the reference to the memory owner by doing res->region = NULL;
+> 
+> Hi Akihiko,
+> 
+> You are right, the word "owner" is not correct. The issue observed was 
+> due to the references kept in flatview ranges and the fact that 
+> flatview_destroy() is asynchronous and was called after memory region's 
+> destruction.
+> 
+> If I replace the word "owner" with "memory subsystem" in the commit 
+> message and drop the comment, would that be ok with you? or do want to 
+> suggest something else?
 
-$ ./qemu-system-x86_64 -cpu pentium -m size=10G
+This will extend the lifetime of the memory region, but the underlying 
+memory is still synchronously freed. Can you show that the flatview 
+range will not be used to read the freed memory?
 
-Now it is no longer allowed:
-
-$ ./qemu-system-x86_64 -cpu pentium -m size=10G
-qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff phys-bits too low (32)
-
-After calling CPUID with EAX=0x80000001, all AMD64 compliant processors
-have the longmode-capable-bit turned on in the extended feature flags (bit 29)
-in EDX. The absence of CPUID longmode can be used to differentiate between
-32-bit and 64-bit processors and is the recommended approach. QEMU takes this
-approach elsewhere (for example, please see x86_cpu_realizefn()) and with
-this change, pc_max_used_gpa() also takes the same approach to detect 32-bit
-processors.
-
-Finally, a new compatibility flag is introduced to retain the old behavior
-for pc_max_used_gpa() for macines 8.1 and older.
-
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
----
- hw/i386/pc.c         | 17 ++++++++++++++---
- hw/i386/pc_piix.c    |  4 ++++
- include/hw/i386/pc.h |  3 +++
- 3 files changed, 21 insertions(+), 3 deletions(-)
-
-changelog:
-v2: removed memory hotplug region from max_gpa. added compat knobs.
-
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 54838c0c41..fea97ee258 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -907,10 +907,20 @@ static uint64_t pc_get_cxl_range_end(PCMachineState *pcms)
- static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_size)
- {
-     X86CPU *cpu = X86_CPU(first_cpu);
-+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
- 
--    /* 32-bit systems don't have hole64 thus return max CPU address */
--    if (cpu->phys_bits <= 32) {
--        return ((hwaddr)1 << cpu->phys_bits) - 1;
-+    /*
-+     * 32-bit systems don't have hole64 and does not support
-+     * memory hotplug.
-+     */
-+    if (pcmc->fixed_32bit_mem_addr_check) {
-+        if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
-+            return pc_above_4g_end(pcms) - 1;
-+        }
-+    } else {
-+        if (cpu->phys_bits <= 32) {
-+            return ((hwaddr)1 << cpu->phys_bits) - 1;
-+        }
-     }
- 
-     return pc_pci_hole64_start() + pci_hole64_size - 1;
-@@ -1867,6 +1877,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     pcmc->pvh_enabled = true;
-     pcmc->kvmclock_create_always = true;
-     pcmc->resizable_acpi_blob = true;
-+    pcmc->fixed_32bit_mem_addr_check = true;
-     assert(!mc->get_hotplug_handler);
-     mc->get_hotplug_handler = pc_get_hotplug_handler;
-     mc->hotplug_allowed = pc_hotplug_allowed;
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 8321f36f97..f100a5de8b 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -517,9 +517,13 @@ DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
- 
- static void pc_i440fx_8_1_machine_options(MachineClass *m)
- {
-+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+
-     pc_i440fx_8_2_machine_options(m);
-     m->alias = NULL;
-     m->is_default = false;
-+    pcmc->fixed_32bit_mem_addr_check = false;
-+
-     compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
-     compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
- }
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 0fabece236..5a70d163d0 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -129,6 +129,9 @@ struct PCMachineClass {
- 
-     /* resizable acpi blob compat */
-     bool resizable_acpi_blob;
-+
-+    /* fixed 32-bit processor address space bound check for memory */
-+    bool fixed_32bit_mem_addr_check;
- };
- 
- #define TYPE_PC_MACHINE "generic-pc-machine"
--- 
-2.39.1
-
+Regards,
+Akihiko Odaki
 
