@@ -2,85 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D96D7A5C5A
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:19:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C2C7A5C63
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:20:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiVwq-0002ZP-Bk; Tue, 19 Sep 2023 04:19:08 -0400
+	id 1qiVyC-0003J8-64; Tue, 19 Sep 2023 04:20:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiVwi-0002YS-K6
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:19:00 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiVy8-0003Iz-Bd
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:20:28 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiVwf-00007V-Co
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:18:58 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiVy6-0000aH-Cg
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:20:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695111536;
+ s=mimecast20190719; t=1695111625;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NMdVI4dzQfawyhkk7jP1fznrE0nHhNEz2SquzMeSk48=;
- b=Tbwajek2+THhEmLJQXoIvJF6pNwKEcWO5IsZW5OXb99CZ/lBL1PxJK8jHm4X3n0lKEXfCe
- GJAKtKSV5956/KEGd2CT2xiXVeedGUrWEXAncnVnoYJ6KgryYHb0MEwJi5aBiUpwGTWXXU
- 7jZCZ60n1hPJohffUgxPBbAVYa0CQsw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=GRJyxaNCdh5UcI/31P9hieAgHH3op5LoYI7ipTFtsHE=;
+ b=N/0sc+/YqGA+ZRHtRNvTQpeIFjuLFuIGzmO+Cz5Hcp70fNUjZv+inKSVNFX8qtTLUgcMvr
+ PPqmhXTnoe4sL56BmjlFjZ0BG0p8jPKSWpUxJWycsNTNwrRz+aJlCMu07eiTsX+BMi4Dqt
+ BAabopYF2ZhpG7k+eFkgfUbOJus2VZ0=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-3C4ld2KaNMaWdMSdInabLQ-1; Tue, 19 Sep 2023 04:18:55 -0400
-X-MC-Unique: 3C4ld2KaNMaWdMSdInabLQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9ae2b98729dso33633266b.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 01:18:54 -0700 (PDT)
+ us-mta-561-cgpppe2COOSiEPmFctmMtQ-1; Tue, 19 Sep 2023 04:20:24 -0400
+X-MC-Unique: cgpppe2COOSiEPmFctmMtQ-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-502f46691b4so4744324e87.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 01:20:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695111533; x=1695716333;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NMdVI4dzQfawyhkk7jP1fznrE0nHhNEz2SquzMeSk48=;
- b=nW3BxbEO42I+g8KgmsaRGOSV5lN79f61EGW0+ptJGWvNuj+/UghZb5LzfoHIVmYihy
- 8b0d9Vc6Vwa9ggi4JH3indEXZJH1fBkRO/GpFBzRNWLZ5T1qNOW8dBjyDgPEenNG5CwJ
- P5R1eNfUAt4i308Lgd1G9C828ioOf1yAAfsukRDs6imBmGCMTQQAOmI+RoOjwfyB2iN/
- XKVVRGjBqRN0aQla/0ttgSeeAPmJo6XRCglmyp+yss9vx0dEnx7KPmA+VkAS2kZEA+et
- Gp8xVXNxIHXcpKH0fzmG5LLPzpuzp9wCBt9IMkdrZRKaQ71rVKHwahwJpiZjoBAuc2OM
- mziA==
-X-Gm-Message-State: AOJu0Yzjh0yWPvk2ndn5fA0jtiQU1RGis7oz61ZEQaRAELClS+8Q9QZm
- oy1Sm/iMXl3XZS8DeDYNDXhBJeaD/eijWEShRZYgxcWlu5VHk4O1Ka6zrQnORYIiRw8m6qNn688
- j6xGV4e1LeFLL/g+0v7MI8f8=
-X-Received: by 2002:a17:907:a0c6:b0:9a2:28dc:4166 with SMTP id
- hw6-20020a170907a0c600b009a228dc4166mr8579120ejc.75.1695111533700; 
- Tue, 19 Sep 2023 01:18:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+Sl3aV026Blxwu4FPOnSYCFzAeLVBgbzdINse6qPCxUsL6Jq99gRpa7d8gaXGPu9jX1RbXA==
-X-Received: by 2002:a17:907:a0c6:b0:9a2:28dc:4166 with SMTP id
- hw6-20020a170907a0c600b009a228dc4166mr8579106ejc.75.1695111533420; 
- Tue, 19 Sep 2023 01:18:53 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ d=1e100.net; s=20230601; t=1695111623; x=1695716423;
+ h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+ :from:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=GRJyxaNCdh5UcI/31P9hieAgHH3op5LoYI7ipTFtsHE=;
+ b=biggtcO8n9HXfdwkiFS54bffFUH6E6T3Kqxw4N/UrwmubeO+TfoF4jheM6v/qHJu1a
+ aCQDtFRV0gu4vMxf246GjCzbc2b0EHxxVh39wgyqSfR/E0La6hzuu4FAt+dubRMEr6nt
+ wQHSzOkPR2XlEYopiBgCUEcgTXNEwmiVw5lco4HgX4Dwm8NQR6Rj2VEfJNxhUvVn8Jpg
+ Xounyjv4cbUDxqFPPnCGTTg6xZIOw28KjV4mAJ979ipF7tO248hMaxPu7Td+6GtW6DDi
+ un/sJdUtwnLiWT1IT79MnqkFD/YrZosINL9UNT0+9eCz1wNyKU4vvJGgm9+33rcnvonl
+ vT3A==
+X-Gm-Message-State: AOJu0YypWrOe43O9niJSCrh6m2Pg+LXErMoMndG4WuhqNLYMTQibMRve
+ TtooCASpxbRXbd7Mk5RCXwfNzRg7xG/Tdsq8EAuPdyLd2WCnAkTvRZ2XEudGVdTNJ/EApJix+Nd
+ WMsCdMT1by7AGk9ryhmRlvaqHrCgjILrnwpOIbXDN/i3MGJ2YT08JuQIkEB1XlQZGnLRyg8M=
+X-Received: by 2002:a05:6512:2390:b0:502:f740:220 with SMTP id
+ c16-20020a056512239000b00502f7400220mr11862971lfv.58.1695111622996; 
+ Tue, 19 Sep 2023 01:20:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEc41Tb6Foy5g1JTtZ7U0/DfIQOTmfhMsfTw2RpRAm0LCUxd+feKVGStpln1KWC8TLvLpMUhw==
+X-Received: by 2002:a05:6512:2390:b0:502:f740:220 with SMTP id
+ c16-20020a056512239000b00502f7400220mr11862926lfv.58.1695111622493; 
+ Tue, 19 Sep 2023 01:20:22 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c702:1300:c409:8b33:c793:108e?
+ (p200300cbc7021300c4098b33c793108e.dip0.t-ipconnect.de.
+ [2003:cb:c702:1300:c409:8b33:c793:108e])
  by smtp.gmail.com with ESMTPSA id
- f13-20020a170906390d00b00982a92a849asm7446974eje.91.2023.09.19.01.18.52
+ n4-20020a1c7204000000b00402f713c56esm14476201wmc.2.2023.09.19.01.20.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 01:18:52 -0700 (PDT)
-Message-ID: <a4836464-22c3-2a49-0128-2dc4a98b5092@redhat.com>
-Date: Tue, 19 Sep 2023 10:18:51 +0200
+ Tue, 19 Sep 2023 01:20:21 -0700 (PDT)
+Message-ID: <90303827-7879-7b9e-836d-5026b2be73dd@redhat.com>
+Date: Tue, 19 Sep 2023 10:20:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 3/8] qemu-img: rebase: use backing files' BlockBackend
- for buffer alignment
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
- den@virtuozzo.com
-References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
- <20230915162016.141771-4-andrey.drobyshev@virtuozzo.com>
+Subject: Re: [PATCH v3 00/16] virtio-mem: Expose device memory through
+ multiple memslots
 Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230915162016.141771-4-andrey.drobyshev@virtuozzo.com>
+From: David Hildenbrand <david@redhat.com>
+To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
+References: <20230908142136.403541-1-david@redhat.com>
+ <87e38689-c99b-0c92-3567-589cd9a2bc4c@redhat.com>
+Organization: Red Hat
+In-Reply-To: <87e38689-c99b-0c92-3567-589cd9a2bc4c@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -105,46 +115,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.09.23 18:20, Andrey Drobyshev wrote:
-> Since commit bb1c05973cf ("qemu-img: Use qemu_blockalign"), buffers for
-> the data read from the old and new backing files are aligned using
-> BlockDriverState (or BlockBackend later on) referring to the target image.
-> However, this isn't quite right, because buf_new is only being used for
-> reading from the new backing, while buf_old is being used for both reading
-> from the old backing and writing to the target.  Let's take that into account
-> and use more appropriate values as alignments.
->
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   qemu-img.c | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/qemu-img.c b/qemu-img.c
-> index 50660ba920..d12e4a4753 100644
-> --- a/qemu-img.c
-> +++ b/qemu-img.c
-> @@ -3750,8 +3750,13 @@ static int img_rebase(int argc, char **argv)
->           int64_t n;
->           float local_progress = 0;
->   
-> -        buf_old = blk_blockalign(blk, IO_BUF_SIZE);
-> -        buf_new = blk_blockalign(blk, IO_BUF_SIZE);
-> +        if (blk_old_backing && bdrv_opt_mem_align(blk_bs(blk)) >
-> +            bdrv_opt_mem_align(blk_bs(blk_old_backing))) {
-> +            buf_old = blk_blockalign(blk, IO_BUF_SIZE);
-> +        } else {
-> +            buf_old = blk_blockalign(blk_old_backing, IO_BUF_SIZE);
-> +        }
+On 11.09.23 09:45, David Hildenbrand wrote:
+> @MST, any comment on the vhost bits (mostly uncontroversial and only in
+> the memslot domain)?
+> 
+> I'm planning on queuing this myself (but will wait a bit more), unless
+> you want to take it.
 
-As I read this, if blk_old_backing is NULL, we will go to the 
-blk_blockalign(blk_old_backing, IO_BUF_SIZE) path.  I think if it is 
-NULL, we should align on blk instead.
+I'm queuing this to
 
-Hanna
+https://github.com/davidhildenbrand/qemu.git mem-next
 
-> +        buf_new = blk_blockalign(blk_new_backing, IO_BUF_SIZE);
->   
->           size = blk_getlength(blk);
->           if (size < 0) {
+and plan on sending a PULL request on Friday.
+
+So if anybody has objections, please let me know ASAP :)
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
