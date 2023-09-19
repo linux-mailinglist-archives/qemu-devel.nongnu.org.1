@@ -2,44 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF63A7A6C68
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 22:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC807A6CE2
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 23:20:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qihVd-0003VP-PP; Tue, 19 Sep 2023 16:39:50 -0400
+	id 1qii87-0003PQ-4h; Tue, 19 Sep 2023 17:19:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qihVK-0003V9-9x; Tue, 19 Sep 2023 16:39:30 -0400
-Received: from woodpecker.gentoo.org ([2001:470:ea4a:1:5054:ff:fec7:86e4]
- helo=smtp.gentoo.org)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_CHACHA20_POLY1305:256)
- (Exim 4.90_1) (envelope-from <dilfridge@gentoo.org>)
- id 1qihVE-0008IS-Rh; Tue, 19 Sep 2023 16:39:29 -0400
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-To: qemu-devel@nongnu.org
-Cc: "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>,
- "open list:RISC-V" <qemu-riscv@nongnu.org>, LIU Zhiwei <baxiantai@gmail.com>, 
- Alistair Francis <alistair.francis@wdc.com>,
- Alistair Francis <alistair23@gmail.com>
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Tue, 19 Sep 2023 22:39:06 +0200
-Message-ID: <5239676.BddDVKsqQX@pinacolada>
-Organization: Gentoo Linux
-In-Reply-To: <CAKmqyKP2cSh-U8s9hJfLH1GSsEHXQaL0xjd=s19WCzLdeyOPTA@mail.gmail.com>
-References: <10817413.NyiUUSuA9g@pinacolada> <6353228.kQq0lBPeGt@pinacolada>
- <CAKmqyKP2cSh-U8s9hJfLH1GSsEHXQaL0xjd=s19WCzLdeyOPTA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qii84-0003P3-TE; Tue, 19 Sep 2023 17:19:32 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
+ id 1qii82-0000a6-JJ; Tue, 19 Sep 2023 17:19:32 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38JL6XSf028687; Tue, 19 Sep 2023 21:19:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=mime-version : date :
+ from : to : cc : subject : in-reply-to : references : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=8e5p+WbDyUNTbdLaewIujEEGFwWHhiBcCpY5H1L2xV8=;
+ b=WSgAjezyFB+0ZXkxRUW2hi12POJ+J6Pq1YC2XZrJ8sd9sFVK6ek3hRTMhXQEWZSKYHfx
+ W8sniLvnudn0cRVrfOBpqcKdeZVlP9UO4tTxl/Ni/8LPXkRzTcO109StgN9R6JviZWEl
+ I9Zt4zl8bQFoKHdt4Az3SqyGcAOuGoWkCt2EYSVgK9V7OvvoamPmy/62U2hNs7zqwKTr
+ dMCq073037CME9Pc2Wqdj51AAXUif7szYh7vdKXQrwIbvmB0jUMODpzhw+AnSML6HM7o
+ pw4+yYMPd+GCjRxGHLpNfb6kZFFfsbPCl6MTxTF95XzFRoDjcY8a7EtrFVtKCcPa51XI Yg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7hrjad8c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 21:19:15 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38JL7Iiq002398;
+ Tue, 19 Sep 2023 21:19:15 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7hrjad80-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 21:19:15 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38JJliFe005538; Tue, 19 Sep 2023 21:19:13 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t5q2yrafe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 21:19:13 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38JLJDF966060584
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Sep 2023 21:19:13 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 78AD35805B;
+ Tue, 19 Sep 2023 21:19:13 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DB18D58058;
+ Tue, 19 Sep 2023 21:19:12 +0000 (GMT)
+Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Sep 2023 21:19:12 +0000 (GMT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4381381.TLkxdtWsSY";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-Received-SPF: pass client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4;
- envelope-from=dilfridge@gentoo.org; helo=smtp.gentoo.org
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Date: Tue, 19 Sep 2023 16:19:12 -0500
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, David Gibson
+ <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>, "open
+ list:PowerPC TCG CPUs" <qemu-ppc@nongnu.org>
+Subject: Re: [PATCH 1/4] target/ppc: Add new hflags to support BHRB
+In-Reply-To: <CVJ2M9HZE734.1G62AT05YOJTP@wheely>
+References: <20230912192144.3330174-1-milesg@linux.vnet.ibm.com>
+ <20230912202347.3381298-1-milesg@linux.vnet.ibm.com>
+ <CVJ2M9HZE734.1G62AT05YOJTP@wheely>
+Message-ID: <61e8d5bb7aa50c3fc16caf29a8ff7dce@linux.vnet.ibm.com>
+X-Sender: milesg@linux.vnet.ibm.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BuVNm2bmTihRzJLdx6TDp_WtFPPYOAnj
+X-Proofpoint-ORIG-GUID: _1_POkQcyY_78wD7coYMuse_L7pC1Wc3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_11,2023-09-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 impostorscore=0 adultscore=0
+ mlxlogscore=665 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190181
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -55,542 +117,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---nextPart4381381.TLkxdtWsSY
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: "Andreas K. Huettel" <dilfridge@gentoo.org>
-To: qemu-devel@nongnu.org
-Subject: Re: qemu-riscv32 usermode still broken?
-Date: Tue, 19 Sep 2023 22:39:06 +0200
-Message-ID: <5239676.BddDVKsqQX@pinacolada>
-Organization: Gentoo Linux
-MIME-Version: 1.0
+On 2023-09-14 19:39, Nicholas Piggin wrote:
+> On Wed Sep 13, 2023 at 6:23 AM AEST, Glenn Miles wrote:
+>> This commit is preparatory to the addition of Branch History
+>> Rolling Buffer (BHRB) functionality, which is being provided
+>> today starting with the P8 processor.
+>> 
+>> BHRB uses several SPR register fields to control whether or not
+>> a branch instruction's address (and sometimes target address)
+>> should be recorded.  Checking each of these fields with each
+>> branch instruction using jitted code would lead to a significant
+>> decrease in performance.
+>> 
+>> Therefore, it was decided that BHRB configuration bits that are
+>> not expected to change frequently should have their state stored in
+>> hflags so that the amount of checking done by jitted code can
+>> be reduced.
+>> 
+>> This commit contains the changes for storing the state of the
+>> following register fields as hflags:
+>> 
+>> 	MMCR0[FCP] - Determines if BHRB recording is frozen in the
+>>                      problem state
+>> 
+>> 	MMCR0[FCPC] - A modifier for MMCR0[FCP]
+>> 
+>> 	MMCRA[BHRBRD] - Disables all BHRB recording for a thread
+>> 
+>> Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+>> ---
+>>  target/ppc/cpu.h                 |  9 +++++++++
+>>  target/ppc/cpu_init.c            |  4 ++--
+>>  target/ppc/helper.h              |  1 +
+>>  target/ppc/helper_regs.c         | 12 ++++++++++++
+>>  target/ppc/machine.c             |  2 +-
+>>  target/ppc/power8-pmu-regs.c.inc |  5 +++++
+>>  target/ppc/power8-pmu.c          | 15 +++++++++++----
+>>  target/ppc/power8-pmu.h          |  4 ++--
+>>  target/ppc/spr_common.h          |  1 +
+>>  target/ppc/translate.c           |  6 ++++++
+>>  10 files changed, 50 insertions(+), 9 deletions(-)
+>> 
+>> diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+>> index 25fac9577a..20ae1466a5 100644
+>> --- a/target/ppc/cpu.h
+>> +++ b/target/ppc/cpu.h
+>> @@ -439,6 +439,9 @@ FIELD(MSR, LE, MSR_LE, 1)
+>>  #define MMCR0_FC56   PPC_BIT(59)         /* PMC Freeze Counters 5-6 
+>> bit */
+>>  #define MMCR0_PMC1CE PPC_BIT(48)         /* MMCR0 PMC1 Condition 
+>> Enabled */
+>>  #define MMCR0_PMCjCE PPC_BIT(49)         /* MMCR0 PMCj Condition 
+>> Enabled */
+>> +#define MMCR0_BHRBA  PPC_BIT_NR(42)      /* BHRB Available */
+> 
+> It's confusing to use NR for this. Either call it MMCR0_BHRBA_NR or 
+> have
+> the facility check in patch 3 take the bit value. I'd move it to patch 
+> 3
+> too.
+> 
 
-Hi Alistair,=20
+Ok, adding NR suffix.
 
-> It would be great to get a strace of the failure to narrow down what
-> it is. From there it should be not too hard to find and fix.
+>> +#define MMCR0_FCP    PPC_BIT(34)         /* Freeze Counters/BHRB if 
+>> PR=1 */
+>> +#define MMCR0_FCPC   PPC_BIT(51)         /* Condition for FCP bit */
+>>  /* MMCR0 userspace r/w mask */
+>>  #define MMCR0_UREG_MASK (MMCR0_FC | MMCR0_PMAO | MMCR0_PMAE)
+>>  /* MMCR2 userspace r/w mask */
+>> @@ -451,6 +454,9 @@ FIELD(MSR, LE, MSR_LE, 1)
+>>  #define MMCR2_UREG_MASK (MMCR2_FC1P0 | MMCR2_FC2P0 | MMCR2_FC3P0 | \
+>>                           MMCR2_FC4P0 | MMCR2_FC5P0 | MMCR2_FC6P0)
+>> 
+>> +#define MMCRA_BHRBRD    PPC_BIT(26)            /* BHRB Recording 
+>> Disable */
+>> +
+>> +
+>>  #define MMCR1_EVT_SIZE 8
+>>  /* extract64() does a right shift before extracting */
+>>  #define MMCR1_PMC1SEL_START 32
+>> @@ -703,6 +709,9 @@ enum {
+>>      HFLAGS_PMCJCE = 17, /* MMCR0 PMCjCE bit */
+>>      HFLAGS_PMC_OTHER = 18, /* PMC other than PMC5-6 is enabled */
+>>      HFLAGS_INSN_CNT = 19, /* PMU instruction count enabled */
+>> +    HFLAGS_FCPC = 20,   /* MMCR0 FCPC bit */
+>> +    HFLAGS_FCP = 21,    /* MMCR0 FCP bit */
+>> +    HFLAGS_BHRBRD = 22, /* MMCRA BHRBRD bit */
+>>      HFLAGS_VSX = 23, /* MSR_VSX if cpu has VSX */
+>>      HFLAGS_VR = 25,  /* MSR_VR if cpu has VRE */
+> 
+> hflags are an interesting tradeoff. You can specialise some code but
+> at the cost of duplicating your jit footprint, which is often the
+> most costly thing. The ideal hflag is one where code is not shared
+> between flag set/clear like PR and HV. Rarely used features is another
+> good one, that BHRB falls into.
+> 
+> But, we do want flags that carry stronger or more direct semantics
+> wrt code generation because you want to avoid redundant hflags values
+> that result in the same code generation. I might have missed something
+> but AFAIKS BHRB_ENABLED could be a combination of this logic (from
+> later patch):
+> 
+> +    /* ISA 3.1 adds the PMCRA[BRHBRD] and problem state checks */
+> +    if ((ctx->insns_flags2 & PPC2_ISA310) && (ctx->mmcra_bhrbrd || 
+> !ctx->pr)) {
+> +        return;
+> +    }
+> +
+> +    /* Check for BHRB "frozen" conditions */
+> +    if (ctx->mmcr0_fcpc) {
+> +        if (ctx->mmcr0_fcp) {
+> +            if ((ctx->hv) && (ctx->pr)) {
+> +                return;
+> +            }
+> +        } else if (!(ctx->hv) && (ctx->pr)) {
+> +            return;
+> +        }
+> +    } else if ((ctx->mmcr0_fcp) && (ctx->pr)) {
+> +        return;
+> +    }
+> 
 
-thanks a lot. Here's as much info as I could get with strace mechanisms.
+Ok, Combining above logic into a single hflag.
 
-1) What I did, without any tracing
-
-pinacolada ~ # qemu-riscv32 -L /var/lib/machines/riscv32 /var/lib/machines/=
-riscv32/bin/bash
-pinacolada ~ # python
-Python 3.11.5 (main, Aug 27 2023, 18:39:05) [GCC 12.3.1 20230623] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>>
-[1]+  Stopped                 python
-^C^C
-pinacolada ~ # ^C
-pinacolada ~ # fg
-python
-
-pinacolada ~ #
-exit
-
-* When I type Ctrl-Z at the python prompt, the terminal hangs.
-* With several Ctrl-C I can get back to the riscv32 bash, and then python i=
-s suspended in the background.
-
-* Now I did this again, first with qemu tracing system calls, then with str=
-ace tracing qemu
-* In both cases, the log starts when I type "python", and ends (with quickl=
-y repeated output lines)=20
-  after pressing Ctrl-Z
-
-2)=20
-pinacolada ~ # QEMU_STRACE=3D1 qemu-riscv32 -L /var/lib/machines/riscv32 /v=
-ar/lib/machines/riscv32/bin/bash
-(QEMU_STRACE is getting unset in my bashrc, so no subprocesses are traced)
-
-(...)
-2472050 write(2,0xe56c0,58)pinacolada ~ #  =3D 58
-2472050 Unknown syscall 413
-2472050 read(0,0x2b2aa29b,1) =3D 1
-2472050 Unknown syscall 413
-2472050 write(2,0xe56c0,1)p =3D 1
-2472050 Unknown syscall 413
-2472050 read(0,0x2b2aa29b,1) =3D 1
-2472050 Unknown syscall 413
-2472050 write(2,0xe56c0,1)y =3D 1
-2472050 Unknown syscall 413
-2472050 read(0,0x2b2aa29b,1) =3D 1
-2472050 Unknown syscall 413
-2472050 write(2,0xe56c0,1)t =3D 1
-2472050 Unknown syscall 413
-2472050 read(0,0x2b2aa29b,1) =3D 1
-2472050 Unknown syscall 413
-2472050 write(2,0xe56c0,1)h =3D 1
-2472050 Unknown syscall 413
-2472050 read(0,0x2b2aa29b,1) =3D 1
-2472050 Unknown syscall 413
-2472050 write(2,0xe56c0,1)o =3D 1
-2472050 Unknown syscall 413
-2472050 read(0,0x2b2aa29b,1) =3D 1
-2472050 Unknown syscall 413
-2472050 write(2,0xe56c0,1)n =3D 1
-2472050 Unknown syscall 413
-2472050 read(0,0x2b2aa29b,1) =3D 1
-2472050 write(2,0xe56c0,1)
- =3D 1
- =3D 9050 write(2,0xe56c0,9)
-2472050 ioctl(0,TCSETSW,{c_iflag =3D ICRNL|IXON|IXOFF|IUTF8,c_oflag =3D OPO=
-ST|ONLCR,c_cflag =3D B38400,CS8,CREAD,c_lflag =3D ISIG|ICANON|ECHO|ECHOE|EC=
-HOK|ECHOCTL|ECHOKE|IEXTEN,c_cc =3D "",c_line =3D ''}) =3D 0
-2472050 rt_sigaction(SIGINT,0x2b2aa1bc,0x2b2aa244) =3D 0
-2472050 rt_sigaction(SIGHUP,0x2b2aa1bc,0x2b2aa244) =3D 0
-2472050 rt_sigaction(SIGALRM,0x2b2aa1bc,0x2b2aa244) =3D 0
-2472050 rt_sigaction(SIGWINCH,0x2b2aa1bc,0x2b2aa244) =3D 0
-2472050 rt_sigaction(SIGINT,0x2b2aa14c,0x2b2aa1d4) =3D 0
-2472050 clock_gettime64(CLOCK_REALTIME_COARSE,0x2b2aa268) =3D 0 ({tv_sec=3D=
-1695154794,tv_nsec=3D760883171})
-2472050 statx(AT_FDCWD,".",AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_STAT,STATX_BASI=
-C_STATS,0x2b2aaa78) =3D 0
-2472050 statx(AT_FDCWD,"/usr/local/sbin/python",AT_NO_AUTOMOUNT|AT_STATX_SY=
-NC_AS_STAT,STATX_BASIC_STATS,0x2b2aa998) =3D -1 errno=3D2 (No such file or =
-directory)
-2472050 statx(AT_FDCWD,"/usr/local/bin/python",AT_NO_AUTOMOUNT|AT_STATX_SYN=
-C_AS_STAT,STATX_BASIC_STATS,0x2b2aa998) =3D -1 errno=3D2 (No such file or d=
-irectory)
-2472050 statx(AT_FDCWD,"/usr/sbin/python",AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_=
-STAT,STATX_BASIC_STATS,0x2b2aa998) =3D -1 errno=3D2 (No such file or direct=
-ory)
-2472050 statx(AT_FDCWD,"/usr/bin/python",AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_S=
-TAT,STATX_BASIC_STATS,0x2b2aa998) =3D 0
-2472050 statx(AT_FDCWD,"/usr/bin/python",AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_S=
-TAT,STATX_BASIC_STATS,0x2b2aa8e8) =3D 0
-2472050 geteuid() =3D 0
-2472050 getegid() =3D 0
-2472050 getuid() =3D 0
-2472050 getgid() =3D 0
-2472050 faccessat(AT_FDCWD,"/usr/bin/python",X_OK,AT_SYMLINK_NOFOLLOW|0x1da=
-42089) =3D 0
-2472050 statx(AT_FDCWD,"/usr/bin/python",AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_S=
-TAT,STATX_BASIC_STATS,0x2b2aa8e8) =3D 0
-2472050 geteuid() =3D 0
-2472050 getegid() =3D 0
-2472050 getuid() =3D 0
-2472050 getgid() =3D 0
-2472050 faccessat(AT_FDCWD,"/usr/bin/python",R_OK,AT_SYMLINK_NOFOLLOW|0x1da=
-42089) =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,NULL,0x2b2aabec,8) =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,0x2b2aaaec,0x2b2aab6c,8) =3D 0
-2472050 rt_sigaction(SIGTERM,0x2b2aa85c,0x2b2aa8e4) =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,0x2b2aa98c,0x2b2aaa0c,8) =3D 0
-2472050 rt_sigprocmask(SIG_SETMASK,0x2b2aaa0c,NULL,8) =3D 0
-2472050 pipe2(0x5560d3f4,0) =3D 0
-2472050 clone(CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|0x11,child_stack=3D0x=
-00000000,parent_tidptr=3D0x00000000,tls=3D0x00000000,child_tidptr=3D0x2b2d2=
-0c8) =3D 2472055
-2472050 rt_sigaction(SIGTERM,0x2b2aa85c,0x2b2aa8e4) =3D 0
- =3D 0
-2472050 setpgid(2472055,2472055) =3D 0
-2472055 set_robust_list(0x2b2d20cc,12) =3D 2472050 rt_sigprocmask(SIG_SETMA=
-SK,0x2b2aab6c,-1 errno=3D38 (Function not implemented)NULL,
-8) =3D 0
-2472055 getpid() =3D 2472055
-2472055 rt_sigprocmask(SIG_SETMASK,0x55616e24,NULL,8) =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,0x2b2aaaac,0x2b2aab2c,8) =3D 0
-2472050 close(3) =3D 0
-2472050 close(4) =3D 0
-2472055 rt_sigaction(SIGTSTP,0x2b2aa84c,0x2b2aa8d4) =3D 0
-2472055 rt_sigaction(SIGTTIN,0x2b2aa84c,0x2b2aa8d4) =3D 0
-2472055 rt_sigaction(SIGTTOU,0x2b2aa85c,0x2b2aa8e4) =3D 0
-2472055 setpgid(2472055,2472055) =3D 0
-2472055 rt_sigprocmask(SIG_BLOCK,0x2b2aa99c,0x2b2aaa1c,8) =3D 0
-2472055 ioctl(255,TIOCSPGRP,2472055) =3D 0
-2472055 rt_sigprocmask(SIG_SETMASK,0x2b2aaa1c,NULL,8) =3D 0
-2472050 ioctl(255,TIOCGPGRP,0x2b2aaa78) =3D 0 (2472055)2472055
-close(4) =3D 0
-2472050 rt_sigprocmask(SIG_SETMASK,0x2b2aab2c,NULL,2472055 8)read(3,0x2b2aa=
-aeb,1) =3D 0 =3D
-0
-2472055 close(3) =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,0x2b2aabac,0x2b2aac2c,8) =3D 0
-2472055 rt_sigaction(SIGHUP,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGILL,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGTRAP,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGIOT,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGFPE,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGBUS,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGSEGV,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGSYS,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGPIPE,0x2b2aaacc,NULL) =3D 0
-2472050 2472055 waitid(0,-1,0x2b2aaa7c,0xe)rt_sigaction(SIGALRM,0x2b2aaacc,=
-NULL) =3D 0
-2472055 rt_sigaction(SIGXCPU,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGXFSZ,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGVTALRM,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGUSR1,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGUSR2,0x2b2aaacc,NULL) =3D 0
-2472055 rt_sigaction(SIGINT,0x2b2aaa0c,0x2b2aaa94) =3D 0
-2472055 rt_sigaction(SIGQUIT,0x2b2aaa0c,0x2b2aaa94) =3D 0
-2472055 rt_sigaction(SIGTERM,0x2b2aaa0c,0x2b2aaa94) =3D 0
-2472055 rt_sigaction(SIGCHLD,0x2b2aaa0c,0x2b2aaa94) =3D 0
-2472055 execve("/usr/bin/python",{"python",NULL})Python 3.11.5 (main, Aug 2=
-7 2023, 18:39:05) [GCC 12.3.1 20230623] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>>  =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,0x2b2aa9ec,0x2b2aaa6c,8) =3D 0
-2472050 rt_sigprocmask(SIG_SETMASK,0x2b2aaa6c,NULL,8) =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,0x2b2aa9ec,0x2b2aaa6c,8) =3D 0
-2472050 rt_sigprocmask(SIG_SETMASK,0x2b2aaa6c,NULL,8) =3D 0
-2472050 rt_sigprocmask(SIG_BLOCK,0x2b2aaa6c,0x2b2aaaec,8) =3D 0
-2472050 ioctl(255,TIOCSPGRP,2472050) =3D 0
-2472050 rt_sigprocmask(SIG_SETMASK,0x2b2aaaec,NULL,8) =3D 0
-2472050 ioctl(255,TCSETSW,{c_iflag =3D ICRNL|IXON|IXOFF|IUTF8,c_oflag =3D O=
-POST|ONLCR,c_cflag =3D B38400,CS8,CREAD,c_lflag =3D ISIG|ICANON|ECHO|ECHOE|=
-ECHOK|ECHOCTL|ECHOKE|IEXTEN,c_cc =3D "",c_line =3D ''}) =3D 0
-2472050 ioctl(255,TIOCGWINSZ,0x2b2aab74) =3D 0 ({49,194,1749,896})
-2472050 write(2,0xe56c0,1)
- =3D 1
-2472050 openat(AT_FDCWD,"/usr/share/locale/locale.alias",O_RDONLY|O_LARGEFI=
-LE|O_CLOEXEC) =3D 3
-2472050 statx(3,"",AT_EMPTY_PATH|AT_NO_AUTOMOUNT|AT_STATX_SYNC_AS_STAT,STAT=
-X_BASIC_STATS,0x2b2aa3b8) =3D 0
-2472050 read(3,0xf4d00,4096) =3D 2998
-2472050 read(3,0xf4d00,4096) =3D 0
-2472050 close(3) =3D 0
-2472050 openat(AT_FDCWD,"/usr/share/locale/en_US.utf8/LC_MESSAGES/bash.mo",=
-O_RDONLY|O_LARGEFILE) =3D -1 errno=3D2 (No such file or directory)
-2472050 openat(AT_FDCWD,"/usr/share/locale/en_US/LC_MESSAGES/bash.mo",O_RDO=
-NLY|O_LARGEFILE) =3D -1 errno=3D2 (No such file or directory)
-2472050 openat(AT_FDCWD,"/usr/share/locale/en.utf8/LC_MESSAGES/bash.mo",O_R=
-DONLY|O_LARGEFILE) =3D -1 errno=3D2 (No such file or directory)
-2472050 openat(AT_FDCWD,"/usr/share/locale/en/LC_MESSAGES/bash.mo",O_RDONLY=
-|O_LARGEFILE) =3D -1 errno=3D2 (No such file or directory)
-2472050 write(2,0xe56c0,37)[1]+  Stopped                 python
- =3D 37
-2472050 rt_sigprocmask(SIG_SETMASK,0x2b2aac2c,NULL,8) =3D 0
-=2D-- SIGCHLD {si_signo=3DSIGCHLD, si_code=3D5, si_pid=3D2472055, si_uid=3D=
-0, si_status=3D20, si_utime=3D2, si_stime=3D0} ---
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-2472050 waitid(0,-1,0x2b2aa70c,0xf) =3D 0
-(...)
-
-3)
-pinacolada ~ # strace qemu-riscv32 -L /var/lib/machines/riscv32 /var/lib/ma=
-chines/riscv32/bin/bash
-
-(...)
-write(2, "\33]0;root@pinacolada:~\7\33[01;31mpi"..., 58pinacolada ~ # ) =3D=
- 58
-pselect6(1, [0], NULL, NULL, NULL, {sigmask=3D[], sigsetsize=3D8}) =3D 1 (i=
-n [0])
-read(0, "p", 1)                         =3D 1
-pselect6(1, [0], NULL, [0], {tv_sec=3D0, tv_nsec=3D0}, NULL) =3D 0 (Timeout)
-write(2, "p", 1p)                        =3D 1
-pselect6(1, [0], NULL, NULL, NULL, {sigmask=3D[], sigsetsize=3D8}) =3D 1 (i=
-n [0])
-read(0, "y", 1)                         =3D 1
-pselect6(1, [0], NULL, [0], {tv_sec=3D0, tv_nsec=3D0}, NULL) =3D 0 (Timeout)
-write(2, "y", 1y)                        =3D 1
-pselect6(1, [0], NULL, NULL, NULL, {sigmask=3D[], sigsetsize=3D8}) =3D 1 (i=
-n [0])
-read(0, "t", 1)                         =3D 1
-pselect6(1, [0], NULL, [0], {tv_sec=3D0, tv_nsec=3D0}, NULL) =3D 0 (Timeout)
-write(2, "t", 1t)                        =3D 1
-pselect6(1, [0], NULL, NULL, NULL, {sigmask=3D[], sigsetsize=3D8}) =3D 1 (i=
-n [0])
-read(0, "h", 1)                         =3D 1
-pselect6(1, [0], NULL, [0], {tv_sec=3D0, tv_nsec=3D0}, NULL) =3D 0 (Timeout)
-write(2, "h", 1h)                        =3D 1
-pselect6(1, [0], NULL, NULL, NULL, {sigmask=3D[], sigsetsize=3D8}) =3D 1 (i=
-n [0])
-read(0, "o", 1)                         =3D 1
-pselect6(1, [0], NULL, [0], {tv_sec=3D0, tv_nsec=3D0}, NULL) =3D 0 (Timeout)
-write(2, "o", 1o)                        =3D 1
-pselect6(1, [0], NULL, NULL, NULL, {sigmask=3D[], sigsetsize=3D8}) =3D 1 (i=
-n [0])
-read(0, "n", 1)                         =3D 1
-pselect6(1, [0], NULL, [0], {tv_sec=3D0, tv_nsec=3D0}, NULL) =3D 0 (Timeout)
-write(2, "n", 1n)                        =3D 1
-pselect6(1, [0], NULL, NULL, NULL, {sigmask=3D[], sigsetsize=3D8}) =3D 1 (i=
-n [0])
-read(0, "\r", 1)                        =3D 1
-write(2, "\n", 1
-)                       =3D 1
-)             =3D 904l\r", 9
-ioctl(0, TCSETSW, {c_iflag=3DICRNL|IXON|IXOFF|IUTF8, c_oflag=3DNL0|CR0|TAB0=
-|BS0|VT0|FF0|OPOST|ONLCR, c_cflag=3DB38400|CS8|CREAD, c_lflag=3DISIG|ICANON=
-|ECHO|ECHOE|ECHOK|IEXTEN|ECHOCTL|ECHOKE, ...}) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigaction(SIGINT, {sa_handler=3D0x4c2160, sa_mask=3D~[RTMIN RT_1], sa_fl=
-ags=3DSA_RESTORER|SA_SIGINFO, sa_restorer=3D0x5cdb50}, NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigaction(SIGHUP, {sa_handler=3D0x4c2160, sa_mask=3D~[RTMIN RT_1], sa_fl=
-ags=3DSA_RESTORER|SA_SIGINFO, sa_restorer=3D0x5cdb50}, NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigaction(SIGALRM, {sa_handler=3D0x4c2160, sa_mask=3D~[RTMIN RT_1], sa_f=
-lags=3DSA_RESTORER|SA_SIGINFO, sa_restorer=3D0x5cdb50}, NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigaction(SIGWINCH, {sa_handler=3D0x4c2160, sa_mask=3D~[RTMIN RT_1], sa_=
-flags=3DSA_RESTORER|SA_RESTART|SA_SIGINFO, sa_restorer=3D0x5cdb50}, NULL, 8=
-) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigaction(SIGINT, {sa_handler=3D0x4c2160, sa_mask=3D~[RTMIN RT_1], sa_fl=
-ags=3DSA_RESTORER|SA_SIGINFO, sa_restorer=3D0x5cdb50}, NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-statx(AT_FDCWD, ".", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, STATX_BASIC_STA=
-TS, {stx_mask=3DSTATX_BASIC_STATS|STATX_MNT_ID, stx_attributes=3D0, stx_mod=
-e=3DS_IFDIR|0700, stx_size=3D16384, ...}) =3D 0
-statx(AT_FDCWD, "/usr/local/sbin/python", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOM=
-OUNT, STATX_BASIC_STATS, 0x7fff3f875900) =3D -1 ENOENT (No such file or dir=
-ectory)
-statx(AT_FDCWD, "/usr/local/bin/python", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMO=
-UNT, STATX_BASIC_STATS, 0x7fff3f875900) =3D -1 ENOENT (No such file or dire=
-ctory)
-statx(AT_FDCWD, "/usr/sbin/python", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, =
-STATX_BASIC_STATS, 0x7fff3f875900) =3D -1 ENOENT (No such file or directory)
-statx(AT_FDCWD, "/usr/bin/python", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, S=
-TATX_BASIC_STATS, {stx_mask=3DSTATX_BASIC_STATS|STATX_MNT_ID, stx_attribute=
-s=3D0, stx_mode=3DS_IFREG|0755, stx_size=3D18808, ...}) =3D 0
-statx(AT_FDCWD, "/usr/bin/python", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, S=
-TATX_BASIC_STATS, {stx_mask=3DSTATX_BASIC_STATS|STATX_MNT_ID, stx_attribute=
-s=3D0, stx_mode=3DS_IFREG|0755, stx_size=3D18808, ...}) =3D 0
-geteuid()                               =3D 0
-getegid()                               =3D 0
-getuid()                                =3D 0
-getgid()                                =3D 0
-faccessat2(AT_FDCWD, "/usr/bin/python", X_OK, 0) =3D 0
-statx(AT_FDCWD, "/usr/bin/python", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT, S=
-TATX_BASIC_STATS, {stx_mask=3DSTATX_BASIC_STATS|STATX_MNT_ID, stx_attribute=
-s=3D0, stx_mode=3DS_IFREG|0755, stx_size=3D18808, ...}) =3D 0
-geteuid()                               =3D 0
-getegid()                               =3D 0
-getuid()                                =3D 0
-getgid()                                =3D 0
-faccessat2(AT_FDCWD, "/usr/bin/python", R_OK, 0) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigaction(SIGTERM, {sa_handler=3D0x4c2160, sa_mask=3D~[RTMIN RT_1], sa_f=
-lags=3DSA_RESTORER|SA_SIGINFO, sa_restorer=3D0x5cdb50}, NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) =3D 0
-pipe2([3, 4], 0)                        =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-clone(child_stack=3DNULL, flags=3DCLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|S=
-IGCHLD, child_tidptr=3D0x228b790) =3D 2472081
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigaction(SIGTERM, {sa_handler=3DSIG_IGN, sa_mask=3D~[RTMIN RT_1], sa_fl=
-ags=3DSA_RESTORER|SA_SIGINFO, sa_restorer=3D0x5cdb50}, NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [INT TERM CHLD], NULL, 8) =3D 0
-setpgid(2472081, 2472081)               =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-close(3)                                =3D 0
-close(4)                                =3D 0
-ioctl(255, TIOCGPGRP, [2472081])        =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-waitid(P_ALL, -1, Python 3.11.5 (main, Aug 27 2023, 18:39:05) [GCC 12.3.1 2=
-0230623] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> {si_signo=3DSIGCHLD, si_code=3DCLD_STOPPED, si_pid=3D2472081, si_uid=3D=
-0, si_status=3DSIGTSTP, si_utime=3D140734259223024 /* 1407342592230.24 s */=
-, si_stime=3D4923637 /* 49236.37 s */}, WEXITED|WSTOPPED|WCONTINUED, NULL) =
-=3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD TSTP TTIN TTOU], NULL, 8) =3D 0
-ioctl(255, TIOCSPGRP, [2472076])        =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-ioctl(255, TCSETSW, {c_iflag=3DICRNL|IXON|IXOFF|IUTF8, c_oflag=3DNL0|CR0|TA=
-B0|BS0|VT0|FF0|OPOST|ONLCR, c_cflag=3DB38400|CS8|CREAD, c_lflag=3DISIG|ICAN=
-ON|ECHO|ECHOE|ECHOK|IEXTEN|ECHOCTL|ECHOKE, ...}) =3D 0
-ioctl(255, TIOCGWINSZ, {ws_row=3D49, ws_col=3D194, ws_xpixel=3D1749, ws_ypi=
-xel=3D896}) =3D 0
-write(2, "\n", 1
-)                       =3D 1
-futex(0x8800f8, FUTEX_WAKE_PRIVATE, 2147483647) =3D 0
-readlink("/usr", 0x7fff3f8742a0, 1023)  =3D -1 EINVAL (Invalid argument)
-readlink("/usr/share", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid argumen=
-t)
-readlink("/usr/share/locale", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid =
-argument)
-readlink("/usr/share/locale/locale.alias", 0x7fff3f8742a0, 1023) =3D -1 EIN=
-VAL (Invalid argument)
-access("/var/lib/machines/riscv32/usr/share/locale/locale.alias", F_OK) =3D=
- 0
-openat(AT_FDCWD, "/var/lib/machines/riscv32/usr/share/locale/locale.alias",=
- O_RDONLY|O_CLOEXEC) =3D 3
-statx(3, "", AT_STATX_SYNC_AS_STAT|AT_NO_AUTOMOUNT|AT_EMPTY_PATH, STATX_BAS=
-IC_STATS, {stx_mask=3DSTATX_ALL|STATX_MNT_ID, stx_attributes=3D0, stx_mode=
-=3DS_IFREG|0644, stx_size=3D2998, ...}) =3D 0
-read(3, "# Locale name alias data base.\n#"..., 4096) =3D 2998
-read(3, "", 4096)                       =3D 0
-close(3)                                =3D 0
-readlink("/usr", 0x7fff3f8742a0, 1023)  =3D -1 EINVAL (Invalid argument)
-readlink("/usr/share", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid argumen=
-t)
-readlink("/usr/share/locale", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid =
-argument)
-readlink("/usr/share/locale/en_US.utf8", 0x7fff3f8742a0, 1023) =3D -1 ENOEN=
-T (No such file or directory)
-access("/var/lib/machines/riscv32/usr/share/locale/en_US.utf8/LC_MESSAGES/b=
-ash.mo", F_OK) =3D -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, "/usr/share/locale/en_US.utf8/LC_MESSAGES/bash.mo", O_RDON=
-LY) =3D -1 ENOENT (No such file or directory)
-readlink("/usr", 0x7fff3f8742a0, 1023)  =3D -1 EINVAL (Invalid argument)
-readlink("/usr/share", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid argumen=
-t)
-readlink("/usr/share/locale", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid =
-argument)
-readlink("/usr/share/locale/en_US", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (In=
-valid argument)
-readlink("/usr/share/locale/en_US/LC_MESSAGES", 0x7fff3f8742a0, 1023) =3D -=
-1 EINVAL (Invalid argument)
-readlink("/usr/share/locale/en_US/LC_MESSAGES/bash.mo", 0x7fff3f8742a0, 102=
-3) =3D -1 ENOENT (No such file or directory)
-access("/var/lib/machines/riscv32/usr/share/locale/en_US/LC_MESSAGES/bash.m=
-o", F_OK) =3D -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, "/usr/share/locale/en_US/LC_MESSAGES/bash.mo", O_RDONLY) =
-=3D -1 ENOENT (No such file or directory)
-readlink("/usr", 0x7fff3f8742a0, 1023)  =3D -1 EINVAL (Invalid argument)
-readlink("/usr/share", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid argumen=
-t)
-readlink("/usr/share/locale", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid =
-argument)
-readlink("/usr/share/locale/en.utf8", 0x7fff3f8742a0, 1023) =3D -1 ENOENT (=
-No such file or directory)
-access("/var/lib/machines/riscv32/usr/share/locale/en.utf8/LC_MESSAGES/bash=
-=2Emo", F_OK) =3D -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, "/usr/share/locale/en.utf8/LC_MESSAGES/bash.mo", O_RDONLY)=
- =3D -1 ENOENT (No such file or directory)
-readlink("/usr", 0x7fff3f8742a0, 1023)  =3D -1 EINVAL (Invalid argument)
-readlink("/usr/share", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid argumen=
-t)
-readlink("/usr/share/locale", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Invalid =
-argument)
-readlink("/usr/share/locale/en", 0x7fff3f8742a0, 1023) =3D -1 EINVAL (Inval=
-id argument)
-readlink("/usr/share/locale/en/LC_MESSAGES", 0x7fff3f8742a0, 1023) =3D -1 E=
-INVAL (Invalid argument)
-readlink("/usr/share/locale/en/LC_MESSAGES/bash.mo", 0x7fff3f8742a0, 1023) =
-=3D -1 ENOENT (No such file or directory)
-access("/var/lib/machines/riscv32/usr/share/locale/en/LC_MESSAGES/bash.mo",=
- F_OK) =3D -1 ENOENT (No such file or directory)
-openat(AT_FDCWD, "/usr/share/locale/en/LC_MESSAGES/bash.mo", O_RDONLY) =3D =
-=2D1 ENOENT (No such file or directory)
-write(2, "[1]+  Stopped                 py"..., 37[1]+  Stopped            =
-     python
-) =3D 37
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [], NULL, 8) =3D 0
-=2D-- SIGCHLD {si_signo=3DSIGCHLD, si_code=3DCLD_STOPPED, si_pid=3D2472081,=
- si_uid=3D0, si_status=3DSIGTSTP, si_utime=3D2 /* 0.02 s */, si_stime=3D0} =
-=2D--
-rt_sigreturn({mask=3D~[BUS SEGV]})        =3D 0
-rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], NULL, 8) =3D 0
-rt_sigprocmask(SIG_SETMASK, [CHLD], NULL, 8) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-waitid(P_ALL, -1, {}, WNOHANG|WEXITED|WSTOPPED|WCONTINUED, NULL) =3D 0
-(...)
-
-
-
-=2D-=20
-Andreas K. H=FCttel
-dilfridge@gentoo.org
-Gentoo Linux developer
-(council, toolchain, base-system, perl, libreoffice)
---nextPart4381381.TLkxdtWsSY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQKSBAABCgB9FiEE/Rnm0xsZLuTcY+rT3CsWIV7VQSoFAmUKBupfFIAAAAAALgAo
-aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldEZE
-MTlFNkQzMUIxOTJFRTREQzYzRUFEM0RDMkIxNjIxNUVENTQxMkEACgkQ3CsWIV7V
-QSqnqA/4qSeIWdKXZ1TIYV+1epmbG2ITbLiOHOhhkRZGiSqkQQPO3a2gC1t9ykdI
-7rGD5gAw7RD3qn1CC52xXa62NnNPlyFacAgfv/zXtk63TUyuTSrNYicKgOQpkpk6
-2dWg5Zfh/YnZ92TUHa5XYEabxi7BQSTt54Xl8ZjNHEdpIGFTEpObjkpmjFL/BZnJ
-kvi1dj2cHD0fcSxNGfraLgHrwoc/tWsw4ifDKGDrjKBsNLt7v5CxoZesUdVEamra
-7LMAr5g9A+luNB3+mqaDdZrv+Mc5TtYL6sKhMl3xG1EO3LY2+Py7EIHIiPcnvkry
-tUpQkdLzkcIUPOIvVMBZ3aONklHaApYhgg0aADLDP6gDxb6e+L8FdU4kUC/u4Mzj
-FojDU3oByryBqOcySsl3y3mQnUrmVpJqzWT+A8d9K+fyqSgKYz0gxPIb//tsYdUQ
-ihZFI5/SI/xJzJekl6sQ5yw9SKdKcAPWj62LwyHrKwj6PgxW3yPCrcGESc+Pj6ia
-6YPw+1B9052CqG00akyYdIyWEStlR3TecwnZRC4fP41zzPuO0gfN6I1HxzeW9Qfo
-TA/qRZagc+WYrq6YOOfOz2WOHrtyhdm2ohPployPWpiGS6/Us+t5sLbXMNi1mZi0
-i42Xs4bmCxSz/wE0Hd7Ng0/XfU+8toOl9/IEMcIpQVsp+xCBbA==
-=FLde
------END PGP SIGNATURE-----
-
---nextPart4381381.TLkxdtWsSY--
-
-
-
+> Otherwise the patch looks good to me.
+> 
+> Thanks,
+> Nick
 
