@@ -2,90 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27FB67A6796
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 17:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9AD7A67A8
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 17:10:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qicKo-0000st-Km; Tue, 19 Sep 2023 11:08:18 -0400
+	id 1qicMU-0001y1-QZ; Tue, 19 Sep 2023 11:10:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qicKm-0000s2-6P; Tue, 19 Sep 2023 11:08:16 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qicMI-0001xV-QP
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:09:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qicKj-0000RX-L7; Tue, 19 Sep 2023 11:08:15 -0400
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38JAlOMK009476; Tue, 19 Sep 2023 15:07:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=r97l5vwZS5XFaxpRvXTKnunfsGMbtSmMIzYbzbl6vSI=;
- b=j3BP849dZqsJdiU9H2NpT2lSOGYIUz13gzHc+41VmHLq2lvFZSVud1BHAhLLdsE8OB3/
- /uKmgC9G2fS3l0Tt148nMzOpd7iXa8fUpSCb0kX7LXkdO+yee5qXTLA0HLNFwfyFMk/R
- 0J95AMXg3tnzBieEk9bC+Z4B7NcuNUdHv2zA2uCpAM/5urJSp9xJSzgfxc+SKNWedJq2
- U0bviaR0I6xtNzukLSEFZQJQ2k1i8qPdeThV1M4XZOTc1eA1BdfNYy2EsjS/28sX7Kg/
- MiZtvWJ6Dvb1Hdm3A2j0gZNRhrnsrLuNOvSxSxd5wuQMqrhgp2LaNrBrRF9eHNKcWozz xQ== 
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6pmq2vrj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 15:07:55 +0000
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
- [10.45.79.139])
- by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38JF7sM3006424
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 15:07:54 GMT
-Received: from [10.111.128.147] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 19 Sep
- 2023 08:07:52 -0700
-Message-ID: <e4223f6d-fe0c-411a-a345-a79c019d1bee@quicinc.com>
-Date: Tue, 19 Sep 2023 16:07:49 +0100
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qicMH-0000uQ-6v
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:09:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695136187;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XiI0oVoC86MXyPnF06YjpOTR5Sr70SSf6CwkFNC0JJE=;
+ b=MmAwQBvuXXFydVkQ9tNdfJfQUaBoRYmMU9ri5/olYtiay0RL5BLtKm4+W765oYm5akhhxb
+ C+N64vFGNjYKDTgPy/AB9oVCaZ7GD2PhQ/WtqprUygfXBsdeRBahbijLhJxelHFgwCPBla
+ SiBoBlKArOyj80Y19WAXLeCSAvN46uk=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-44-JoIHY2hcNW2qEQehl5fqgw-1; Tue, 19 Sep 2023 11:09:45 -0400
+X-MC-Unique: JoIHY2hcNW2qEQehl5fqgw-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-65825f6d790so2920836d6.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 08:09:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695136185; x=1695740985;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XiI0oVoC86MXyPnF06YjpOTR5Sr70SSf6CwkFNC0JJE=;
+ b=iBSUnR14pWHBnICvibzUzgVIaGmsv/f1ZGDi9OseZbB17ifsXYvyR21EC2N3YtLml9
+ 8EuaHYPD/xHsR/OdznY0hIsTg3xkjNRV0TmF5Eh4DiDiSyIc7KRawYf98lcUF2wHfzbL
+ 9Otg6idbd60ynilMhcAymxBgoHFtRT/FUkbSEnMAvhpK8xpaaPLddos9Q5to6Qw381e/
+ T7ACI5nHn7zOn1e+AjCnu26BIMONVRLHOgtQTkfRXhOBcig0qXNmlf9hvc5Fwjp52TpV
+ rtFJ+K+sSS4WBlT1fkeA2sCV02Mq1XcvPS9gIzaZDyWvN8RN7yi7OrM8JgtBY9lzQgit
+ YqUg==
+X-Gm-Message-State: AOJu0YzBaSH1VPQ0RMitRVzVxB3JDN21HbtulRkf3jzkxwqM5DevcaFN
+ UPociXfwxkaEINH8qw9L+pMJnIC8nS/Qb14KBdvY6tHHkgYiQHCJ8AqeSbpWgJVjm6KggjB5Xpe
+ T5LfPuNxUzjmlP/E=
+X-Received: by 2002:ad4:5aa2:0:b0:653:576d:1e8 with SMTP id
+ u2-20020ad45aa2000000b00653576d01e8mr14798610qvg.1.1695136185386; 
+ Tue, 19 Sep 2023 08:09:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEO5y8JuYYyXz1MHnM/kXFuIPQHv6WxpumvytYHqskT275F4xzskq5wyef6ZLEERkCc9lUH8A==
+X-Received: by 2002:ad4:5aa2:0:b0:653:576d:1e8 with SMTP id
+ u2-20020ad45aa2000000b00653576d01e8mr14798598qvg.1.1695136185008; 
+ Tue, 19 Sep 2023 08:09:45 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ v27-20020a05620a123b00b00767cd764ecfsm4036028qkj.33.2023.09.19.08.09.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Sep 2023 08:09:44 -0700 (PDT)
+Date: Tue, 19 Sep 2023 11:09:37 -0400
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ kraxel@redhat.com, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras Soares Passos <lsoaresp@redhat.com>
+Subject: Re: [PATCH v2 0/5] virtio-gpu: add blob migration support
+Message-ID: <ZQm5sWdhN8S7s95x@x1n>
+References: <20230907130936.767722-1-marcandre.lureau@redhat.com>
+ <CAJ+F1CLUM+XRZppN2P6Z_c107HEKOGNE3r_ivfMqcOz2oOO6ag@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 0/3] virt: wire up NS EL2 virtual timer IRQ
-Content-Language: en-GB
-To: Peter Maydell <peter.maydell@linaro.org>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-CC: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Ard Biesheuvel
- <ardb@kernel.org>, Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
- <anisinha@redhat.com>
-References: <20230919101240.2569334-1-peter.maydell@linaro.org>
-From: Leif Lindholm <quic_llindhol@quicinc.com>
-In-Reply-To: <20230919101240.2569334-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: MLNbrbXCcFuaKNZXI49Xl980BczZg0T_
-X-Proofpoint-ORIG-GUID: MLNbrbXCcFuaKNZXI49Xl980BczZg0T_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-19_06,2023-09-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=643 mlxscore=0 phishscore=0
- clxscore=1011 lowpriorityscore=0 adultscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309190130
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_llindhol@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ+F1CLUM+XRZppN2P6Z_c107HEKOGNE3r_ivfMqcOz2oOO6ag@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,76 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023-09-19 11:12, Peter Maydell wrote:
-> This patchset is an RFC that wires up the NS EL2 virtual timer IRQ on
-> the virt board, similarly to what
-> https://patchew.org/QEMU/20230913140610.214893-1-marcin.juszkiewicz@linaro.org/
-> does for the sbsa-ref board.
+On Tue, Sep 19, 2023 at 04:51:21PM +0400, Marc-André Lureau wrote:
+> Hi
 > 
-> Patches 1 and 3 are the usual dance to keep the ACPI unit tests happy
-> with the change to the ACPI table contents; patch 2 is the meat.
-> 
-> This is an RFC for two reasons:
-> 
-> (1) I'm not very familiar with ACPI, and patch 2 needs to update the
-> ACPI GTDT table to report the interrupt number.  In particular, this
-> means we need the rev 3 of this table (present in ACPI spec 6.3 and
-> later), not the rev 2 we currently report.  I'm not sure if it's
-> permitted to rev just this table, or if we would need to upgrade all
-> our ACPI tables to the newer spec first.
+> On Thu, Sep 7, 2023 at 5:15 PM <marcandre.lureau@redhat.com> wrote:
+> >
+> > From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> >
+> > Hi,
+> >
+> > This is a follow-up of the previous patch "[PATCH] virtio-gpu: block migration
+> > of VMs with blob=true". Now that migration support is implemented, we can decide
+> > to drop the migration blocker patch, or apply and revert it, so that
+> > backporting of a quick fix is made easier.
+> >
+> > Fixes:
+> > https://bugzilla.redhat.com/show_bug.cgi?id=2236353
+> >
+> > Marc-André Lureau (5):
+> >   virtio-gpu: block migration of VMs with blob=true
+> >   virtio-gpu: factor out restore mapping
+> >   virtio-gpu: move scanout restoration to post_load
+> >   virtio-gpu: add virtio-gpu/blob vmstate subsection
+> >   Revert "virtio-gpu: block migration of VMs with blob=true"
+> >
+> >  hw/display/virtio-gpu.c | 174 +++++++++++++++++++++++++++++++++-------
+> >  1 file changed, 146 insertions(+), 28 deletions(-)
 
-Ard already provided the answer for this.
+For migration:
 
-> (2) The change causes EDK2 (UEFI) to assert on startup:
-> ASSERT [ArmTimerDxe] /home/kraxel/projects/qemu/roms/edk2/ArmVirtPkg/Library/ArmVirtTimerFdtClientLib/ArmVirtTimerFdtClientLib.c(72): PropSize == 36 || PropSize == 48
-> This is because the EDK2 code that consumes the QEMU generated device
-> tree blob is incorrectly insisting that the architectural-timer
-> interrupts property has only 3 or 4 entries, so it falls over if
-> given a dtb with the 5th entry for the EL2 virtual timer irq.  In
-> particular this breaks the avocado test:
-> machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
-> I'm not entirely sure what to do about this -- we can get EDK2 fixed
-> and update our own test case, but there's a lot of binaries out there
-> in the wild that won't run if we just update the virt board the way
-> this patchset does.  We could perhaps make the virt board change be
-> dependent on machine type version, as a way to let users fall back to
-> the old behaviour.
+Acked-by: Peter Xu <peterx@redhat.com>
 
-And kind of this one too. Although I might expand somewhat:
-As I understand it, this only breaks an existing setup where someone is
-- Running a DEBUG build of edk2
-- With virtualization=on
-I don't see that (currently) happening outside development/ci, and the 
-RELEASE builds should save anyone not actually working on edk2 but only 
-running it to test other things.
-
-Ard has given me an r-b on the fix, so that can be merged today.
-It will then land in edk2-stable202311 around the end of November, but 
-will be on the main branch as soon as it passes ci.
-
-I have one comment on my own, which is this clearly has a merge conflict 
-with my PPI rework patches.
-
-Regards,
-
-Leif
-
-> I'm putting this patchset out on the list to get opinions and
-> review on those two points.
-> 
-> thanks
-> -- PMM
-> 
-> Peter Maydell (3):
->    tests/qtest/bios-tables-test: Allow changes to virt GTDT
->    hw/arm/virt: Wire up non-secure EL2 virtual timer IRQ
->    tests/qtest/bios-tables-test: Update virt/GTDT golden reference
-> 
->   include/hw/arm/virt.h     |   2 ++
->   hw/arm/virt-acpi-build.c  |  16 ++++++++++++----
->   hw/arm/virt.c             |  29 ++++++++++++++++++++++++++++-
->   tests/data/acpi/virt/GTDT | Bin 96 -> 104 bytes
->   4 files changed, 42 insertions(+), 5 deletions(-)
-> 
+-- 
+Peter Xu
 
 
