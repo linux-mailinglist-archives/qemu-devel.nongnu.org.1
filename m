@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0656D7A5DE0
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7875A7A5DE6
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:28:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiX0W-0007d7-MT; Tue, 19 Sep 2023 05:27:00 -0400
+	id 1qiX1a-0008Eu-3e; Tue, 19 Sep 2023 05:28:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiX0U-0007cu-Ui
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:26:59 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qiX1T-0008C8-A9; Tue, 19 Sep 2023 05:28:00 -0400
+Received: from mail-ua1-x92f.google.com ([2607:f8b0:4864:20::92f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiX0T-00023y-CX
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:26:58 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9a64619d8fbso719143066b.0
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:26:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qiX1Q-0002Ee-7c; Tue, 19 Sep 2023 05:27:59 -0400
+Received: by mail-ua1-x92f.google.com with SMTP id
+ a1e0cc1a2514c-7a8b522ae46so1226040241.0; 
+ Tue, 19 Sep 2023 02:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695115614; x=1695720414; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=CvRkateWKGghAZIfopB4iDeP8dh02ZUSRDMgLXzAsSw=;
- b=DwVJuphq3KuW1ySB5tscZ0k06kaagLtp9qYtuYd1oGWOVG2qgOGd8G8QUYQi5e5gz8
- wxZd163Zgob4EC5BYf4WV4Hp6XdfVwIBVOXJvjwlUbV5mrJcLrwxmZV62XR1QGRJ3hr5
- fdZiXG7qrIXjCHTSZ7QRwehKOZEyDakwfOu9luEI1bWJnH057qFxpaVeO2WPwbVdv4Xg
- sD6BimKOczCkxBKxg9NB6/iCGLyjf3wzClcBkvIKy5fZjh6hEHI66+fBrZNXQgWAJz95
- zR95lWm5F/AxCV+DG9ZvhQjDuKyiCf7yaZsh44KoS8QqeNpLhjE1XE/AlQLWlGVKwXWa
- amqg==
+ d=gmail.com; s=20230601; t=1695115674; x=1695720474; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=br1J3mPTdbG34BBHAfaxhhTXM5M8+Wwfb2Sv6AF0UkQ=;
+ b=cHbFzBPYiNOxptYW99T0kObCIZ11jOOdpYge5f8P6vppsglT3vJnoMNKIlBDXsONf+
+ bEtZ6qF/pYVKcGw88Zdj48LxvF0BMM1IQiIY0mA9Yomj/FDhd6E7qXHkItzaJ9Ode+ak
+ sEXE8JLYIE7tTLcAytCoFbOzUGuapQh+ZQ4OupuXRpenvVjj1lbXYXzl0pMsoS+JyjLv
+ fTx3HDXOjHsCgDU2g4Rr0Rc81lgLKJtsy1xX0RTV83uytbE6lnuxsG2dGaZKyMvLdas6
+ YPpSMCbV1WdFQ66kHPkGENXBsULZaxAWzWqlwgrtZxRlRNucPDYFb5wwT58oLFFNMLLx
+ 3Ahg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695115614; x=1695720414;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CvRkateWKGghAZIfopB4iDeP8dh02ZUSRDMgLXzAsSw=;
- b=clnJC2x4+m1fH5Q6vdFme0luDinDyNkZ0Cq9xW6+vSK8NH1k4U7m3c1J9jTU+GxO2R
- c3AMOiLlVes5s/Y95a5v1gGjF4r6Vx1Bopiqv5Oe7InVysDnKlS1mlD2KzMUjgvAr3Pn
- xZd9kT9/A1WTdJeLIUrUqTxNwaPCxKuzBRhBg8lyF5c1Mf4FfLvP6GTOnmqfPgneXK8d
- YdKwOypQ9VFe3xgZOcl0lHuTT2VWAqgacF1CBpUXINWrLytQuUfatdEVyfSgJ1mVZPaf
- K2Cq7d31D5BuPoKeQr+yuK8GQxCYSSdGsLMI9Uk8jpJomZwAyHfzViaLOnqUo/xaKVp6
- YDmA==
-X-Gm-Message-State: AOJu0YzVvwQC6KuhcFNFPyp9dbPI4Kosej2+pPaaO2ITfaBjSQbupf1c
- MwabrKL31+BhwZNauuQ86dIeEZ2nhHNtQ0C/fzQ5Lkoj
-X-Google-Smtp-Source: AGHT+IEqprqbHQlEfxOVIfz7cJt5xzAuSwhwyQVgFGRQMpaO1vkbOgTHWl7+f+385Fsn0luiyYqq8w==
-X-Received: by 2002:a17:906:538d:b0:9aa:338:4a0f with SMTP id
- g13-20020a170906538d00b009aa03384a0fmr10741037ejo.72.1695115614139; 
- Tue, 19 Sep 2023 02:26:54 -0700 (PDT)
-Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
- [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- n26-20020a170906119a00b00997cce73cc7sm7464752eja.29.2023.09.19.02.26.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 02:26:53 -0700 (PDT)
-Message-ID: <dc531dfb-38e8-d4f7-4e52-0d7f02db9d26@linaro.org>
-Date: Tue, 19 Sep 2023 11:26:51 +0200
+ d=1e100.net; s=20230601; t=1695115674; x=1695720474;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=br1J3mPTdbG34BBHAfaxhhTXM5M8+Wwfb2Sv6AF0UkQ=;
+ b=Q0lZpPPqH0S6Akv3JiH1i0yrE6Xp2ybs1wIg+PocbCvfqVKf4UJuNfvdJ8jl6l7cZp
+ zLbs1+cI9C/8H6SxCOfoqPpwdk6NVz6B2F9OlpVn013+Y+9xq3XRPPS7fGhlt4cbtqK+
+ boXq8oOBR1S7Vytjr42EGA4FfDRhHvzf+f+5HOkTN+cwjMZTL7lck9I0iyr4M22ZowcY
+ I40cuD1W/Q7jpAIFPs7ywMUAqyqhzOA+PWIWlolCdUmoyqH+TL0E4/1H1cPHbb+a533u
+ iSicbPM16cO2fE10USN7U8/9ufh2cIGoKc1Dc0P7CLDutbYsCtQelArTd7J0qasbgQbC
+ A4/Q==
+X-Gm-Message-State: AOJu0YxDEKnmFdtqMKUQr37gDBZCIv+Y46zsnfuKIqnFLjVEJ+wizNQL
+ MRnIccOcmHNVqJmb6niW5wP8+gDaTAHahzI9j5c=
+X-Google-Smtp-Source: AGHT+IFhK1Lgg3RCaMCndKgFEmqx+zcyXXyUC6ngSX7O4lA0OVT7cn/cPyUmMHTdPxoTk+3OBtktcv/DCsJC/hQaL44=
+X-Received: by 2002:a1f:4a41:0:b0:493:7c76:bbac with SMTP id
+ x62-20020a1f4a41000000b004937c76bbacmr9660584vka.2.1695115674571; Tue, 19 Sep
+ 2023 02:27:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 5/6] accel/tcg: Always set CF_LAST_IO with CF_NOIRQ
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230914174436.1597356-1-richard.henderson@linaro.org>
- <20230914174436.1597356-6-richard.henderson@linaro.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230914174436.1597356-6-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+References: <CAEV2DRqFS+UvqvgrW=6R=ahj+akKcmvH3MtAarJ70RphARMNdQ@mail.gmail.com>
+ <CAKmqyKN_z7Q=mmsp41ycFbgW+N4PRmv4UB4sUrs=i6ziuHywmg@mail.gmail.com>
+ <D9FFB2CE-0F2D-4CFA-B4F8-CCBE33D44339@ventanamicro.com>
+In-Reply-To: <D9FFB2CE-0F2D-4CFA-B4F8-CCBE33D44339@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 19 Sep 2023 19:27:27 +1000
+Message-ID: <CAKmqyKP5cHzYXO5kBTK9qQYOjdWxRqZeRhVrxRWJBLFDFzgoxA@mail.gmail.com>
+Subject: Re: [PATCH v3] target/riscv: update checks on writing pmpcfg for
+ Smepmp
+To: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Cc: Chang Alvin <vivahavey@gmail.com>, qemu-riscv@nongnu.org,
+ qemu-devel@nongnu.org, 
+ alistair.francis@wdc.com, Andrew Jones <ajones@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92f;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -92,16 +90,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14/9/23 19:44, Richard Henderson wrote:
-> Without this we can get see loops through cpu_io_recompile,
-> in which the cpu makes no progress.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   accel/tcg/cpu-exec.c | 2 +-
->   accel/tcg/tb-maint.c | 6 ++++--
->   2 files changed, 5 insertions(+), 3 deletions(-)
+On Tue, Sep 19, 2023 at 3:43=E2=80=AFPM Himanshu Chauhan
+<hchauhan@ventanamicro.com> wrote:
+>
+>
+>
+> > On 19-Sep-2023, at 10:51 AM, Alistair Francis <alistair23@gmail.com> wr=
+ote:
+> >
+> > On Tue, Sep 19, 2023 at 3:08=E2=80=AFPM Chang Alvin <vivahavey@gmail.co=
+m> wrote:
+> >>
+> >>> -----Original Message-----
+> >>
+> >>> From: Alistair Francis <alistair23@gmail.com>
+> >>
+> >>> Sent: Tuesday, September 19, 2023 12:42 PM
+> >>
+> >>> To: Alvin Che-Chia Chang(=E5=BC=B5=E5=93=B2=E5=98=89) <alvinga@andest=
+ech.com>
+> >>
+> >>> Cc: qemu-riscv@nongnu.org; qemu-devel@nongnu.org;
+> >>
+> >>> alistair.francis@wdc.com; ajones@ventanamicro.com
+> >>
+> >>> Subject: Re: [PATCH v3] target/riscv: update checks on writing pmpcfg=
+ for
+> >>
+> >>> Smepmp to version 1.0
+> >>
+> >>>
+> >>
+> >>> On Fri, Sep 15, 2023 at 6:32=E2=80=AFPM Alvin Chang <alvinga@andestec=
+h.com> wrote:
+> >>
+> >>>>
+> >>
+> >>>> Current checks on writing pmpcfg for Smepmp follows Smepmp version
+> >>
+> >>>> 0.9.1. However, Smepmp specification has already been ratified, and
+> >>
+> >>>> there are some differences between version 0.9.1 and 1.0. In this
+> >>
+> >>>> commit we update the checks of writing pmpcfg to follow Smepmp versi=
+on
+> >>
+> >>>> 1.0.
+> >>
+> >>>>
+> >>
+> >>>> When mseccfg.MML is set, the constraints to modify PMP rules are:
+> >>
+> >>>> 1. Locked rules cannot be removed or modified until a PMP reset, unl=
+ess
+> >>
+> >>>>   mseccfg.RLB is set.
+> >>
+> >>>> 2. From Smepmp specification version 1.0, chapter 2 section 4b:
+> >>
+> >>>>   Adding a rule with executable privileges that either is M-mode-onl=
+y
+> >>
+> >>>>   or a locked Shared-Region is not possible and such pmpcfg writes a=
+re
+> >>
+> >>>>   ignored, leaving pmpcfg unchanged.
+> >>
+> >>>>
+> >>
+> >>>> The commit transfers the value of pmpcfg into the index of the Smepm=
+p
+> >>
+> >>>> truth table, and checks the rules by aforementioned specification
+> >>
+> >>>> changes.
+> >>
+> >>>>
+> >>
+> >>>> Signed-off-by: Alvin Chang <alvinga@andestech.com>
+> >>
+> >>>> ---
+> >>
+> >>>> Changes from v2: Adopt switch case ranges and numerical order.
+> >>
+> >>>>
+> >>
+> >>>> Changes from v1: Convert ePMP over to Smepmp.
+> >>
+> >>>
+> >>
+> >>> Did this part get lost?
+> >>
+> >>>
+> >>
+> >>> Alistair
+> >>
+> >>>
+> >>
+> >>
+> >> Sorry, do you mean that the term "ePMP" should be changed to "Smepmp" =
+in source code?
+> >
+> > We still call it epmp to users and it's still marked as experimental.
+> >
+> > See this line in the QEMU source:
+> >
+> > MULTI_EXT_CFG_BOOL("x-epmp", epmp, false),
+> >
+> > Alistair
+>
+> I had sent a patch to rename epmp to Smepmp
+> https://www.mail-archive.com/qemu-devel@nongnu.org/msg967676.html
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Thanks! That patch has some comments that need a v2. Do you mind sending a =
+v2?
 
+Alistair
+
+>
+>
+> Regards
+> Himanshu
+>
+>
 
