@@ -2,69 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EFF37A6B3F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 21:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3ADC7A6B5D
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 21:19:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qigAM-0002Pb-JZ; Tue, 19 Sep 2023 15:13:46 -0400
+	id 1qigEa-0005wG-LN; Tue, 19 Sep 2023 15:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qigAF-0002JN-Da
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 15:13:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qigEY-0005vd-E0
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 15:18:06 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qigAE-0007M7-2B
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 15:13:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695150817;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=fWulAHWOBLRhq2ViZgmjssADNaqeK2xF4AZzkuUa8mI=;
- b=TlzH5e6V1w9a8Pf/zJ3/43OGTfEfVU7s9h/jolAgeegCziQ/tIvT2I5rzn+FH3vmR4sTJ7
- 2gRjX68LPZ4Q0ieOGVHRfuBwASROojCYhdx4nmW8DZ4AtVtbDU8iJY5VPxTqQ0+J3Rz4cq
- vk40BDg0MFPAmUrTYu0hViTDq8ubl50=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-191-rKo2UMMqOW-HK7otuvF-sw-1; Tue, 19 Sep 2023 15:13:35 -0400
-X-MC-Unique: rKo2UMMqOW-HK7otuvF-sw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qigEW-00081l-2z
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 15:18:06 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C1621C06347
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 19:13:35 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.87])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B3D17492B16;
- Tue, 19 Sep 2023 19:13:34 +0000 (UTC)
-Date: Tue, 19 Sep 2023 15:13:33 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>
-Subject: Re: [GIT PULL 00/12] Host Memory Backends and Memory devices queue
- 2023-09-19
-Message-ID: <20230919191333.GA1843393@fedora>
-References: <20230919103029.235736-1-david@redhat.com>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 0AE6061691;
+ Tue, 19 Sep 2023 19:18:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550C8C433C7;
+ Tue, 19 Sep 2023 19:17:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1695151080;
+ bh=JfNEErCZhzMjCz1V22BRScasGGjCNulRuZ4SYeyHFbk=;
+ h=From:To:Cc:Subject:Date:From;
+ b=lH3LVoAGkG2Ub/VznkS04TpiBtwvlV3cVEINYTY24L+/Mm5psj6Wyp/jStdF1U/vA
+ bHa5+ZVFUii/xVD45lsJwlDGimmfPazOcnGN2DKLpWRza8ZjXVPAOXhbDXtp02Uzbc
+ Hsrs1ZKTYqZyUq5bs+M398EqrlBrtMuqWSX88oz8SjvKU385tCmN5+yHcwMFp6ZmXV
+ NxqZvlmwf/k8u5Kq2Zh0qzT6HvSZccfn/bvpaMLveUjSLnBNzUAzJ0wzyWIDdYwJpv
+ ThFA9YXLYlkByojkZBsJ17JlrWO51/yrGrgn7yNerrux0DsCW+OpDkQ+63lDrnB0jm
+ p+DwhlGVHwPdw==
+From: deller@kernel.org
+To: qemu-devel@nongnu.org
+Cc: Helge Deller <deller@gmx.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL v2 0/8] Hppa btlb patches
+Date: Tue, 19 Sep 2023 21:17:48 +0200
+Message-ID: <20230919191757.98889-1-deller@kernel.org>
+X-Mailer: git-send-email 2.41.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="K449nZ0atFr+k4UI"
-Content-Disposition: inline
-In-Reply-To: <20230919103029.235736-1-david@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=deller@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -70
+X-Spam_score: -7.1
+X-Spam_bar: -------
+X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,30 +70,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Helge Deller <deller@gmx.de>
 
---K449nZ0atFr+k4UI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The following changes since commit 9ef497755afc252fb8e060c9ea6b0987abfd20b6:
 
-Applied, thanks.
+  Merge tag 'pull-vfio-20230911' of https://github.com/legoater/qemu into staging (2023-09-11 09:13:08 -0400)
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+are available in the Git repository at:
 
---K449nZ0atFr+k4UI
-Content-Type: application/pgp-signature; name="signature.asc"
+  https://github.com/hdeller/qemu-hppa.git tags/hppa-btlb-pull-request
 
------BEGIN PGP SIGNATURE-----
+for you to fetch changes up to 5b1270ef1477bb7f240c3bfe2cd8b0fe4721fd51:
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUJ8t0ACgkQnKSrs4Gr
-c8hz5Qf/RvBfvAmTda3x/l9d/zqGBMs8WAjlIeSMHj4ccCwVgWy30Co5ipBCcRYd
-yqAJY1E1VCOix4ZJ2kv8ttFIe+0OtrrHJbPNRFE7zrR339NNpoGFtMjbMuoG4sTY
-KAemoWF8LBcOTTCwiZpMLn5hNCczTkYFha0F/HHH9JsXWlq8IsrJdr44kblHpdzU
-zoojPXOtBD87ZFMCT/sqtWb648D8Ygfr/fsmOQeCy06ZWmnM0oO7HlLChb122tM8
-CqZmaOMXr8X3jcGcgB9qGYa8+70ARF8pzGqk2wY9OsRdKCpBPueHMSQHhwYrYLXA
-D4c9+ebj4yJJAU+hWih25KbQJKVNHg==
-=Rul5
------END PGP SIGNATURE-----
+  linux-user/hppa: lock both words of function descriptor (2023-09-19 21:12:18 +0200)
 
---K449nZ0atFr+k4UI--
+----------------------------------------------------------------
+Block-TLB support and linux-user fixes for hppa target
+
+All 32-bit hppa CPUs allow a fixed number of TLB entries to have a
+different page size than the default 4k.
+Those are called "Block-TLBs" and are created at startup by the
+operating system and managed by the firmware of hppa machines
+through the firmware PDC_BLOCK_TLB call.
+
+This patchset adds the necessary glue to SeaBIOS-hppa and
+qemu to allow up to 16 BTLB entries in the emulation.
+
+Two patches from Mikulas Patocka fix signal delivery issues
+in linux-user on hppa.
+
+----------------------------------------------------------------
+
+Helge Deller (6):
+  target/hppa: Update to SeaBIOS-hppa version 9
+  target/hppa: Allow up to 16 BTLB entries
+  target/hppa: Report and clear BTLBs via fw_cfg at startup
+  target/hppa: Add BTLB support to hppa TLB functions
+  target/hppa: Extract diagnose immediate value
+  target/hppa: Wire up diag instruction to support BTLB
+
+Mikulas Patocka (2):
+  linux-user/hppa: clear the PSW 'N' bit when delivering signals
+  linux-user/hppa: lock both words of function descriptor
+
+ hw/hppa/machine.c         |  10 +--
+ linux-user/hppa/signal.c  |   6 +-
+ pc-bios/hppa-firmware.img | Bin 720216 -> 732376 bytes
+ roms/seabios-hppa         |   2 +-
+ target/hppa/cpu.h         |  11 ++-
+ target/hppa/helper.h      |   1 +
+ target/hppa/insns.decode  |   2 +-
+ target/hppa/int_helper.c  |   2 +-
+ target/hppa/mem_helper.c  | 179 ++++++++++++++++++++++++++++++++------
+ target/hppa/op_helper.c   |   3 +-
+ target/hppa/translate.c   |  15 +++-
+ 11 files changed, 188 insertions(+), 43 deletions(-)
+
+-- 
+2.41.0
 
 
