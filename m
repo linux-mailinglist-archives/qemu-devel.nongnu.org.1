@@ -2,81 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1F437A5CE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B99A7A5CE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:49:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiWO9-0006EF-QE; Tue, 19 Sep 2023 04:47:21 -0400
+	id 1qiWP9-0006zq-Qa; Tue, 19 Sep 2023 04:48:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qiWO7-0006Dp-FE
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:47:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiWP3-0006jw-Kr; Tue, 19 Sep 2023 04:48:21 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qiWO5-00081O-Qq
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:47:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695113237;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=qHgsfH1VHbtVafP62HO+qf7njlJj3lMjfIwvlLizxqc=;
- b=hr0RjdkkmjlRqhj83x2EzWuNl+gYVlRol0V29zBxFJKJ6AVcjzEmaO+4zUxRqaPAv0JoDx
- KIdnRWebumSB2GgCXnu7q1s+R139eUknGRSxoqcitDy6h4j8+YECDPrG6L+mVmvSFQM8Jn
- N8S76aBTIYebY62d4i9m0N+YNt1DjW0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-194-_SBCyGXhMHWXSjtViLSFjQ-1; Tue, 19 Sep 2023 04:47:13 -0400
-X-MC-Unique: _SBCyGXhMHWXSjtViLSFjQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C293E802D35;
- Tue, 19 Sep 2023 08:47:12 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.48])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 91C941C65E;
- Tue, 19 Sep 2023 08:47:09 +0000 (UTC)
-Date: Tue, 19 Sep 2023 09:47:06 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org,
- Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- linuxarm@huawei.com, Yuquan Wang <wangyuquan1236@phytium.com.cn>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 2/3] hw/mem/cxl_type3: Add missing copyright and license
- notice
-Message-ID: <ZQlgCgC1gHF9i7Ad@redhat.com>
-References: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
- <20230918150259.11165-3-Jonathan.Cameron@huawei.com>
- <CAFEAcA_7-uq8LJO6-myGU1+qjErxZAWE+CMjqyJBph6Du9K0iA@mail.gmail.com>
- <20230918180013.000035cf@Huawei.com>
- <6508bdc0befbc_3947ba294b2@iweiny-mobl.notmuch>
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiWP1-0008GE-3y; Tue, 19 Sep 2023 04:48:17 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J8jPxK025306; Tue, 19 Sep 2023 08:48:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=THuKjfx8nW0qHyMrtzpzOu3WW3OpOJuHqzJQboIHuXQ=;
+ b=PFhrZ138VsC0U+QwTupQsYuTcm4gesnNfrgw3GOHj67D8kPLMZUSevhmiVjgKTN+IrE+
+ /UtO8ekCpLbTNUwnDuGuSsjf6NSWJy3rb4pna0Rf5xV6/Ftxqd1vURmrArS8++CERSms
+ 1tF+ixBmgpZj2pBiyDdQqu3c7fQtO4xEHLWBNXTtv8gU7XTKcDuWWNBaPW5mP8mbD8tH
+ nbtzREF6XjK4XCsqULxhqKVNTsJ8GB5KLJ6C5o3V7i7uoLbQz4Ovv93Ft7Eo2NZNfURF
+ wFbho6v/DIk3G9rARUH7hV+0lHgaAUrlUSlwqwyT39orvc94apdWc+NbdCQTrV/9Ucxc XQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t71wnrdbn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 08:48:08 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J8aeZd014419;
+ Tue, 19 Sep 2023 08:48:07 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t71wnrdaw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 08:48:07 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J8QLnc011677; Tue, 19 Sep 2023 08:48:06 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t5qpnam5p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 08:48:06 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38J8m5Kw38928778
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Sep 2023 08:48:05 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9D4275805D;
+ Tue, 19 Sep 2023 08:48:05 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3026B58043;
+ Tue, 19 Sep 2023 08:48:03 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Sep 2023 08:48:02 +0000 (GMT)
+Message-ID: <660b5c89-d219-1e20-9fa5-1b7c390a2f1b@linux.ibm.com>
+Date: Tue, 19 Sep 2023 14:18:01 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6508bdc0befbc_3947ba294b2@iweiny-mobl.notmuch>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 8/8] spapr/drc: Clean up local variable shadowing in
+ prop_get_fdt()
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230918145850.241074-1-clg@kaod.org>
+ <20230918145850.241074-9-clg@kaod.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230918145850.241074-9-clg@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vFxio3EmDT7bhYACjwphjnD3Lo5uhQvN
+X-Proofpoint-ORIG-GUID: mR9381VzNqnMFj-EpTJX_mh445-REYwd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_03,2023-09-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 spamscore=0
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ impostorscore=0 bulkscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ mlxlogscore=907 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190071
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,62 +115,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 02:14:40PM -0700, Ira Weiny wrote:
-> Jonathan Cameron wrote:
-> > On Mon, 18 Sep 2023 17:31:38 +0100
-> > Peter Maydell <peter.maydell@linaro.org> wrote:
-> > 
-> > > On Mon, 18 Sept 2023 at 16:04, Jonathan Cameron
-> > > <Jonathan.Cameron@huawei.com> wrote:
-> > > >
-> > > > This has been missing from the start. Assume it should match
-> > > > with cxl/cxl-component-utils.c as both were part of early
-> > > > postings from Ben.  
-> > > 
-> > > Sounds plausible -- is there an Intel person who could give us
-> > > an acked-by for this?
+
+
+On 9/18/23 20:28, Cédric Le Goater wrote:
+> Rename 'name' variable to avoid this warning :
 > 
-> While we are at it; what about .../hw/mem/cxl_type3_stubs.c?
+>    ../hw/ppc/spapr_drc.c: In function ‘prop_get_fdt’:
+>    ../hw/ppc/spapr_drc.c:344:21: warning: declaration of ‘name’ shadows a parameter [-Wshadow=compatible-local]
+>      344 |         const char *name = NULL;
+>          |                     ^~~~
+>    ../hw/ppc/spapr_drc.c:325:63: note: shadowed declaration is here
+>      325 | static void prop_get_fdt(Object *obj, Visitor *v, const char *name,
+>          |                                                   ~~~~~~~~~~~~^~~~
 > 
-> > > 
-> > > (Ideally we wouldn't have let more gpl-2-only code into the
-> > > codebase without a rationale...)
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>   hw/ppc/spapr_drc.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> I'm curious about this statement.  Does the qemu project not want gpl v2
-> only code?
+> diff --git a/hw/ppc/spapr_drc.c b/hw/ppc/spapr_drc.c
+> index 843e318312d3..2b99d3b4b1a6 100644
+> --- a/hw/ppc/spapr_drc.c
+> +++ b/hw/ppc/spapr_drc.c
+> @@ -341,7 +341,7 @@ static void prop_get_fdt(Object *obj, Visitor *v, const char *name,
+>       fdt_depth = 0;
+>   
+>       do {
+> -        const char *name = NULL;
+> +        const char *dt_name = NULL;
 
-Correct, this is explicitly stated in the LICENSE file:
+I guess you wanted to use the input arg "name" here without 
+re-declaration. I do not see "name" being used elsewhere in this routine.
 
-[quote]
-As of July 2013, contributions under version 2 of the GNU General Public
-License (and no later version) are only accepted for the following files
-or directories: bsd-user/, linux-user/, hw/vfio/, hw/xen/xen_pt*.
-[/quote]
-
->             I agree with Jonathan that this is the intention of Ben's
-> initial submission; so from that PoV.
-
-Ideally we would get all QEMU CXL contributors to agree to re-license
-to the GPL-2.0-or-later, unless the code has been copied from another
-project which was GPL-2.0-only thus forcing our code.
-
-> 
-> Acked-by: Ira Weiny <ira.weiny@intel.com>
-> 
-> Going forward I'd like to better understand the qemu communities view.
-
-Please follow the LICENSE file which is explicit about QEMU's views
-per the quoted text above.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+regards,
+Harsh
+>           const struct fdt_property *prop = NULL;
+>           int prop_len = 0, name_len = 0;
+>           uint32_t tag;
+> @@ -351,8 +351,8 @@ static void prop_get_fdt(Object *obj, Visitor *v, const char *name,
+>           switch (tag) {
+>           case FDT_BEGIN_NODE:
+>               fdt_depth++;
+> -            name = fdt_get_name(fdt, fdt_offset, &name_len);
+> -            if (!visit_start_struct(v, name, NULL, 0, errp)) {
+> +            dt_name = fdt_get_name(fdt, fdt_offset, &name_len);
+> +            if (!visit_start_struct(v, dt_name, NULL, 0, errp)) {
+>                   return;
+>               }
+>               break;
+> @@ -369,8 +369,8 @@ static void prop_get_fdt(Object *obj, Visitor *v, const char *name,
+>           case FDT_PROP: {
+>               int i;
+>               prop = fdt_get_property_by_offset(fdt, fdt_offset, &prop_len);
+> -            name = fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
+> -            if (!visit_start_list(v, name, NULL, 0, errp)) {
+> +            dt_name = fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
+> +            if (!visit_start_list(v, dt_name, NULL, 0, errp)) {
+>                   return;
+>               }
+>               for (i = 0; i < prop_len; i++) {
 
