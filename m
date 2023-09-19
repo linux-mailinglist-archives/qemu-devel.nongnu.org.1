@@ -2,92 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4246E7A5FFA
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5937A601A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:49:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiYFp-0008Od-37; Tue, 19 Sep 2023 06:46:53 -0400
+	id 1qiYHv-0002Gm-HW; Tue, 19 Sep 2023 06:49:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiYFh-0008Nr-V5
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:46:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiYHC-0001v7-1o; Tue, 19 Sep 2023 06:48:23 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiYFf-0005sa-4t
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:46:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695120402;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Ab9bLQH0Tx3APO9rCPNTfvxvFdTE+ptFH/kSz5VNmRI=;
- b=AzLOGD0TljOGhaEkCami9yXROVS9ZDuY9vlE9mkA8upvQPqLt4SqJ5PAmkaQ2TH+H4CiUC
- IpsZh6hQDdpnQyhSUqf3tVZqc/4NoVjBldw6dXVpXy1qtqJgwhUX+lCkXGgFqHs2485Z41
- +0PuEdCpY2KJDULhJxeZbb6tRH0JgR8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-LFhUkJa8PkezmAyp0Oc3Fw-1; Tue, 19 Sep 2023 06:46:41 -0400
-X-MC-Unique: LFhUkJa8PkezmAyp0Oc3Fw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9a9f282713fso394917266b.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 03:46:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695120400; x=1695725200;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Ab9bLQH0Tx3APO9rCPNTfvxvFdTE+ptFH/kSz5VNmRI=;
- b=O6hdiMosOAZcLTO9i8jwp1N60rrvZIvi93j896FWfEdO1hZG7gugzT4bB2TMYqxQV3
- F3C/6PwH4/QAFxIayl0RWmb+hUoYNhkjSWZXxejboJi/nqCQ+OEwKRUHl+B8EMQE/Z3F
- 2a7VU77kzyGWh2UufMQlH605BUYBvEHz1OZ9xpH4hS3fhujdUwCYtyRSTDgJmB8n78Zb
- JkERs4CAehURbo1yrAvkTvLB98E97nuWb3sMM6Zg0TgAoKZQ8aqF8wEPApcmKUhherYk
- ldMmnoqD7W2yi2eqsJj45fMNFiPSmLXaXbpGNFFRMl6eyWYKn2Dngbj1488ZfqIfQXhk
- +SvA==
-X-Gm-Message-State: AOJu0YyeDjqV/nBFZqRwtrbZi05l+u0PAGxXXpYUI/CTh9wxZj4cpJ5J
- vFFZDb5ryNNOxKuFm0R3bTYZn3k2t4APKOzymDydHoiljuLgKGoSaVM8nEBMI8JBhF0h6x2tuaA
- 373luucfrYarkIEc=
-X-Received: by 2002:a17:906:74d5:b0:9a1:8ee9:cc0b with SMTP id
- z21-20020a17090674d500b009a18ee9cc0bmr10741946ejl.21.1695120399862; 
- Tue, 19 Sep 2023 03:46:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHa1FnjSRqBXh928ZaKf3n8RQVtcMdKvHdfBZb/kd/83nUmb4Mjt9dA29wmhblqJ3uGn7w4NA==
-X-Received: by 2002:a17:906:74d5:b0:9a1:8ee9:cc0b with SMTP id
- z21-20020a17090674d500b009a18ee9cc0bmr10741922ejl.21.1695120399501; 
- Tue, 19 Sep 2023 03:46:39 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
- by smtp.gmail.com with ESMTPSA id
- j19-20020a170906411300b009930308425csm7583389ejk.31.2023.09.19.03.46.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 03:46:38 -0700 (PDT)
-Message-ID: <2ec20eaa-2d56-a5b2-67c2-3798d1910f4b@redhat.com>
-Date: Tue, 19 Sep 2023 12:46:37 +0200
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiYH9-0006Ay-1h; Tue, 19 Sep 2023 06:48:17 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38JAcmVY008333; Tue, 19 Sep 2023 10:48:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=tsWNd0QQfqUWDWwDzmsYb7xVHFkyKE200GPxTDVF5zU=;
+ b=sknbNpog5fFUIMuwW7t51iqvAaY2LvvpzwOu3UrK6Mr/oWYpTdbTACNuoJYZ5L+2clM2
+ CUgFqGcA6vJ4IYFZiWLKW42fdq3f5KLVwAlvYqriabIMgvxeehyMv3aHPhDHtqfia83m
+ hQRQ167WTUpMzINXoL/LonuRXDJvZ12TQAG16+U1KWNGCj/B7x4RP4sHf1thmFqXHrwD
+ QQr0tLxQXYCm80iLL9ay++bR3fOgsQmuNsQl1ZZKqbBgrj+BWqHBer4/O1WVQD3g1umj
+ qfvrlloMpl9xv4PNQXTenF78jwCSSo6syUK1F5SWEfgQH7GofaV7X5OY/EKjzmDm5BWm QA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t79sq0faj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 10:48:09 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38JAdlf3010660;
+ Tue, 19 Sep 2023 10:48:08 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t79sq0fac-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 10:48:08 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J9ODN4010018; Tue, 19 Sep 2023 10:48:07 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5rwk32fx-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 10:48:07 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38JAm7Gv26149470
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Sep 2023 10:48:07 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E8CE258043;
+ Tue, 19 Sep 2023 10:48:06 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E2A115805D;
+ Tue, 19 Sep 2023 10:48:03 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Sep 2023 10:48:03 +0000 (GMT)
+Message-ID: <c0c8e550-82c5-c55d-a916-707454069e55@linux.ibm.com>
+Date: Tue, 19 Sep 2023 16:18:02 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 5/8] qemu-img: rebase: avoid unnecessary COW operations
+ Thunderbird/102.14.0
+Subject: Re: [PATCH RESEND 06/15] ppc: spapr: Implement nested PAPR hcall -
+ H_GUEST_GET_CAPABILITIES
 Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
- den@virtuozzo.com
-References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
- <20230915162016.141771-6-andrey.drobyshev@virtuozzo.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230915162016.141771-6-andrey.drobyshev@virtuozzo.com>
+To: Nicholas Piggin <npiggin@gmail.com>, danielhb413@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, mikey@neuling.org, vaibhav@linux.ibm.com,
+ jniethe5@gmail.com, sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com
+References: <20230906043333.448244-1-harshpb@linux.ibm.com>
+ <20230906043333.448244-7-harshpb@linux.ibm.com>
+ <CVCBD2TBTMXJ.LYNCAVMT7LYB@wheely>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CVCBD2TBTMXJ.LYNCAVMT7LYB@wheely>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Jhh8YxT38Os5iC9NqJ6RERyP0wYpKVtY
+X-Proofpoint-ORIG-GUID: sFydd6KietiAl5WnDWhYX1fMnpKqOsUl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_05,2023-09-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ impostorscore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
+ spamscore=0 mlxscore=0 malwarescore=0 clxscore=1015 suspectscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190089
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,132 +118,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.09.23 18:20, Andrey Drobyshev wrote:
-> When rebasing an image from one backing file to another, we need to
-> compare data from old and new backings.  If the diff between that data
-> happens to be unaligned to the target cluster size, we might end up
-> doing partial writes, which would lead to copy-on-write and additional IO.
->
-> Consider the following simple case (virtual_size == cluster_size == 64K):
->
-> base <-- inc1 <-- inc2
->
-> qemu-io -c "write -P 0xaa 0 32K" base.qcow2
-> qemu-io -c "write -P 0xcc 32K 32K" base.qcow2
-> qemu-io -c "write -P 0xbb 0 32K" inc1.qcow2
-> qemu-io -c "write -P 0xcc 32K 32K" inc1.qcow2
-> qemu-img rebase -f qcow2 -b base.qcow2 -F qcow2 inc2.qcow2
->
-> While doing rebase, we'll write a half of the cluster to inc2, and block
-> layer will have to read the 2nd half of the same cluster from the base image
-> inc1 while doing this write operation, although the whole cluster is already
-> read earlier to perform data comparison.
->
-> In order to avoid these unnecessary IO cycles, let's make sure every
-> write request is aligned to the overlay subcluster boundaries.  Using
-> subcluster size is universal as for the images which don't have them
-> this size equals to the cluster size, so in any case we end up aligning
-> to the smallest unit of allocation.
->
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   qemu-img.c | 76 ++++++++++++++++++++++++++++++++++++++++--------------
->   1 file changed, 56 insertions(+), 20 deletions(-)
 
-Looks good, I like the changes from v1!  Two minor things:
 
-> diff --git a/qemu-img.c b/qemu-img.c
-> index fcd31d7b5b..83950af42b 100644
-> --- a/qemu-img.c
-> +++ b/qemu-img.c
+On 9/7/23 07:32, Nicholas Piggin wrote:
+> On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
+>> This patch implements nested PAPR hcall H_GUEST_GET_CAPABILITIES and
+>> also enables registration of nested PAPR hcalls whenever an L0 is
+>> launched with cap-nested-papr=true. The common registration routine
+>> shall be used by future patches for registration of related hcall
+>> support
+>> being added. This hcall is used by L1 kernel to get the set of guest
+>> capabilities that are supported by L0 (Qemu TCG).
+> 
+> Changelog can drop "This patch". Probably don't have to be so
+> detailed here either -- we already established that PAPR hcalls can
+> be used with cap-nested-papr in the last patch, we know that L1
+> kernels make the hcalls to the vhyp, etc.
+> 
+> "Introduce the nested PAPR hcall H_GUEST_GET_CAPABILITIES which
+> is used to query the capabilities of the API and the L2 guests
+> it provides."
+> 
+> I would squash this with set.
+> 
 
-[...]
+Sure, will update the commit log and squash with set.
 
-> @@ -3844,33 +3861,48 @@ static int img_rebase(int argc, char **argv)
->                   }
->               }
->   
-> +            /*
-> +             * At this point we know that the region [offset; offset + n)
-> +             * is unallocated within the target image.  This region might be
-> +             * unaligned to the target image's (sub)cluster boundaries, as
-> +             * old backing may have smaller clusters (or have subclusters).
-> +             * We extend it to the aligned boundaries to avoid CoW on
-> +             * partial writes in blk_pwrite(),
-> +             */
-> +            n += offset - QEMU_ALIGN_DOWN(offset, write_align);
-> +            offset = QEMU_ALIGN_DOWN(offset, write_align);
-> +            n += QEMU_ALIGN_UP(offset + n, write_align) - (offset + n);
-> +            n = MIN(n, size - offset);
-> +            assert(!bdrv_is_allocated(unfiltered_bs, offset, n, &n_alloc) &&
-> +                   n_alloc == n);
-> +
-> +            /*
-> +             * Much like the with the target image, we'll try to read as much
+>>
+>> Signed-off-by: Michael Neuling <mikey@neuling.org>
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> ---
+>>   hw/ppc/spapr_caps.c           |  1 +
+>>   hw/ppc/spapr_nested.c         | 35 +++++++++++++++++++++++++++++++++++
+>>   include/hw/ppc/spapr_nested.h |  6 ++++++
+>>   3 files changed, 42 insertions(+)
+>>
+>> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
+>> index d3b9f107aa..cbe53a79ec 100644
+>> --- a/hw/ppc/spapr_caps.c
+>> +++ b/hw/ppc/spapr_caps.c
+>> @@ -511,6 +511,7 @@ static void cap_nested_papr_apply(SpaprMachineState *spapr,
+>>               return;
+>>           }
+>>           spapr->nested.api = NESTED_API_PAPR;
+>> +        spapr_register_nested_phyp();
+>>       } else if (kvm_enabled()) {
+>>           /*
+>>            * this gets executed in L1 qemu when L2 is launched,
+> 
+> Hmm, this doesn't match nested HV registration. If you want to register
+> the hcalls in the cap apply, can you move spapr_register_nested()
+> there first? It may make more sense to go in as a dummy function with
+> the cap patch first, since you don't introduce all hcalls together.
+> 
+> Also phyp->papr. Scrub for phyp please.
 
-s/the with the/with the/
+Sure, will do.
 
-> +             * of the old and new backings as we can.
-> +             */
-> +            n_old = MIN(n, MAX(0, old_backing_size - (int64_t) offset));
-> +            if (blk_new_backing) {
-> +                n_new = MIN(n, MAX(0, new_backing_size - (int64_t) offset));
-> +            }
+> 
+>> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+>> index a669470f1a..37f3a49be2 100644
+>> --- a/hw/ppc/spapr_nested.c
+>> +++ b/hw/ppc/spapr_nested.c
+>> @@ -6,6 +6,7 @@
+>>   #include "hw/ppc/spapr.h"
+>>   #include "hw/ppc/spapr_cpu_core.h"
+>>   #include "hw/ppc/spapr_nested.h"
+>> +#include "cpu-models.h"
+>>   
+>>   #ifdef CONFIG_TCG
+>>   #define PRTS_MASK      0x1f
+>> @@ -375,6 +376,29 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+>>       address_space_unmap(CPU(cpu)->as, regs, len, len, true);
+>>   }
+>>   
+>> +static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
+>> +                                             SpaprMachineState *spapr,
+>> +                                             target_ulong opcode,
+>> +                                             target_ulong *args)
+>> +{
+>> +    CPUPPCState *env = &cpu->env;
+>> +    target_ulong flags = args[0];
+>> +
+>> +    if (flags) { /* don't handle any flags capabilities for now */
+>> +        return H_PARAMETER;
+>> +    }
+>> +
+>> +    if ((env->spr[SPR_PVR] & CPU_POWERPC_POWER_SERVER_MASK) ==
+>> +        (CPU_POWERPC_POWER9_BASE))
+>> +        env->gpr[4] = H_GUEST_CAPABILITIES_P9_MODE;
+>> +
+>> +    if ((env->spr[SPR_PVR] & CPU_POWERPC_POWER_SERVER_MASK) ==
+>> +        (CPU_POWERPC_POWER10_BASE))
+>> +        env->gpr[4] = H_GUEST_CAPABILITIES_P10_MODE;
+>> +
+>> +    return H_SUCCESS;
+>> +}
+>> +
+>>   void spapr_register_nested(void)
+>>   {
+>>       spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
+>> @@ -382,6 +406,12 @@ void spapr_register_nested(void)
+>>       spapr_register_hypercall(KVMPPC_H_TLB_INVALIDATE, h_tlb_invalidate);
+>>       spapr_register_hypercall(KVMPPC_H_COPY_TOFROM_GUEST, h_copy_tofrom_guest);
+>>   }
+>> +
+>> +void spapr_register_nested_phyp(void)
+>> +{
+>> +    spapr_register_hypercall(H_GUEST_GET_CAPABILITIES, h_guest_get_capabilities);
+>> +}
+>> +
+>>   #else
+>>   void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+>>   {
+>> @@ -392,4 +422,9 @@ void spapr_register_nested(void)
+>>   {
+>>       /* DO NOTHING */
+>>   }
+>> +
+>> +void spapr_register_nested_phyp(void)
+>> +{
+>> +    /* DO NOTHING */
+>> +}
+>>   #endif
+>> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+>> index f8db31075b..ce198e9f70 100644
+>> --- a/include/hw/ppc/spapr_nested.h
+>> +++ b/include/hw/ppc/spapr_nested.h
+>> @@ -189,6 +189,11 @@
+>>   /* End of list of Guest State Buffer Element IDs */
+>>   #define GSB_LAST                GSB_VCPU_SPR_ASDR
+>>   
+>> +/* Bit masks to be used in nested PAPR API */
+>> +#define H_GUEST_CAPABILITIES_COPY_MEM 0x8000000000000000
+>> +#define H_GUEST_CAPABILITIES_P9_MODE  0x4000000000000000
+>> +#define H_GUEST_CAPABILITIES_P10_MODE 0x2000000000000000
+> 
+> See introducing these defines with the patch that uses them isn't so
+> bad :)
+> 
 
-If we don’t have a check for blk_old_backing (old_backing_size is 0 if 
-blk_old_backing is NULL), why do we have a check for blk_new_backing 
-(new_backing_size is 0 if blk_new_backing is NULL)?
+It's better indeed:)
 
-(Perhaps because the previous check was `offset >= new_backing_size || 
-!blk_new_backing`, i.e. included exactly such a check – but I don’t 
-think it’s necessary, new_backing_size will be 0 if blk_new_backing is 
-NULL.)
+regards,
+Harsh
 
-> +
->               /*
->                * Read old and new backing file and take into consideration that
->                * backing files may be smaller than the COW image.
->                */
-> -            if (offset >= old_backing_size) {
-> -                memset(buf_old, 0, n);
-> -                buf_old_is_zero = true;
-> +            memset(buf_old + n_old, 0, n - n_old);
-> +            if (!n_old) {
-> +                old_backing_eof = true;
->               } else {
-> -                if (offset + n > old_backing_size) {
-> -                    n = old_backing_size - offset;
-> -                }
-> -
-> -                ret = blk_pread(blk_old_backing, offset, n, buf_old, 0);
-> +                ret = blk_pread(blk_old_backing, offset, n_old, buf_old, 0);
->                   if (ret < 0) {
->                       error_report("error while reading from old backing file");
->                       goto out;
->                   }
->               }
->   
-> -            if (offset >= new_backing_size || !blk_new_backing) {
-> -                memset(buf_new, 0, n);
-> -            } else {
-> -                if (offset + n > new_backing_size) {
-> -                    n = new_backing_size - offset;
-> -                }
-> -
-> -                ret = blk_pread(blk_new_backing, offset, n, buf_new, 0);
-> +            memset(buf_new + n_new, 0, n - n_new);
-> +            if (blk_new_backing && n_new) {
-
-Same as above, I think we can drop the blk_new_backing check, just so 
-that both blocks (for old and new) look the same.
-
-(Also, the memset() already has to trust that n_new is 0 if 
-blk_new_backing is NULL, so the check doesn’t make much sense from that 
-perspective either, and makes the memset() look wrong.)
-
-> +                ret = blk_pread(blk_new_backing, offset, n_new, buf_new, 0);
->                   if (ret < 0) {
->                       error_report("error while reading from new backing file");
->                       goto out;
-
+> Thanks,
+> Nick
+> 
+>> +
+>>   typedef struct SpaprMachineStateNestedGuest {
+>>       unsigned long vcpus;
+>>       struct SpaprMachineStateNestedGuestVcpu *vcpu;
+>> @@ -331,6 +336,7 @@ struct nested_ppc_state {
+>>   };
+>>   
+>>   void spapr_register_nested(void);
+>> +void spapr_register_nested_phyp(void);
+>>   void spapr_exit_nested(PowerPCCPU *cpu, int excp);
+>>   
+>>   #endif /* HW_SPAPR_NESTED_H */
+> 
 
