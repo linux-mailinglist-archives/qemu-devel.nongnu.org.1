@@ -2,87 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F597A5D52
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CCB7A5D56
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:04:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiWdM-0002sH-Hm; Tue, 19 Sep 2023 05:03:04 -0400
+	id 1qiWdL-0002ru-0m; Tue, 19 Sep 2023 05:03:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qiWdC-0002r1-Tk; Tue, 19 Sep 2023 05:02:56 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
- id 1qiWd8-0003fC-Ju; Tue, 19 Sep 2023 05:02:54 -0400
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J4mVYl030811; Tue, 19 Sep 2023 09:02:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=X358Qci7eBUp0d3GGAIEVUXJ8V/d9JnpxNWbFzx7jh8=;
- b=poJZ8uZE0uwIhFzMjkwQ5ex4HE058nJNhPZUZXhDgNi0J5Igcj9RFon4k73P00rS0Qii
- VmjFzUcQTsyRHgfhIIQmbSBCs84dxzsuFIZpIINcm1nzEQXkLSY71aRBO0e9wNSquehg
- ioZDavHRQMIBKpxRVDbovN1kHD2YbCp1yElBt3sVc/9jRsp0BnmR1ytTA9uxK4MXPcD+
- zjqxA3YsOeCN9LGc8TjK/eY1TzBh2o36xuqLs2czZVrq2DV0Ui7AsQ9FlQWKvI9icBqQ
- WWUXIyQftlM+FmkD84lTASmJgbIwRmf4MC/WFLP36ZvivVyJ53Xo5wo+Q3tZBBAgqnwr jA== 
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com
- [199.106.103.254])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6qf6j3dc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 09:02:45 +0000
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
- [10.45.79.139])
- by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38J92iA5031275
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 09:02:44 GMT
-Received: from qc-i7.qualcomm.com (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 19 Sep
- 2023 02:02:42 -0700
-From: Leif Lindholm <quic_llindhol@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: <qemu-arm@nongnu.org>, Radoslaw Biernacki <rad@semihalf.com>, Peter
- Maydell <peter.maydell@linaro.org>, Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>, =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: [PATCH v2 3/3] hw/arm/sbsa-ref: use bsa.h for PPI definitions
-Date: Tue, 19 Sep 2023 10:02:29 +0100
-Message-ID: <20230919090229.188092-4-quic_llindhol@quicinc.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230919090229.188092-1-quic_llindhol@quicinc.com>
-References: <20230919090229.188092-1-quic_llindhol@quicinc.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qiWd9-0002qL-55
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:02:52 -0400
+Received: from mail-qt1-x831.google.com ([2607:f8b0:4864:20::831])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qiWd6-0003eU-8c
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:02:50 -0400
+Received: by mail-qt1-x831.google.com with SMTP id
+ d75a77b69052e-4136bfb3220so33838911cf.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:02:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695114167; x=1695718967; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ND+2Cd2f8q8DTCVTY8iiypxhEp8aFLppxW2F9VQBRQ4=;
+ b=SBED2toWqV9+yYr80rYw3R/n5y6BBc/L70lyz9EEG1/nNEXdmC4ihQZne+NRu+R+wf
+ CAoZ/fnx6baCysNSl5TLmK7oUcQ/l/WKoh9lS49Iho4SkTp6gcfqUkYwfedmut5qfLxR
+ LkU8T9hOE2P4yVqea3KaNS+TVhaAAMtOaIz2V+YSErNhVZ1+moUxXao0XnAvzJjoa6nF
+ OsHo98RNP2hKZEmKzXaiKCux8guVzLblydZiRDetAFRGlLai9ypfPBDxMqD0IiBH83DF
+ 5zAsP21g07sT2u47NEYC3dEvP7OfTSeDE6K2JLkAVWx4ni2RORGf5wiyw4QHWk5A+ubG
+ yuaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695114167; x=1695718967;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ND+2Cd2f8q8DTCVTY8iiypxhEp8aFLppxW2F9VQBRQ4=;
+ b=wG1jx/3zaDq+cmo8YPuNI61wn2kK0kfyLtRx249a4KVXTFH6+ptnGYIrvzlC/Hs0th
+ AI/V9j3cbC6wJpk3laag1moIVm8w8oVJLfAevLL0bW5V6/THzOLZJTojD1QB1QA+rSVY
+ B2Fz0yf5oUx294Di98Jipxeq16rD079ih8T7e0cGz7XxOE/PcAxONr//IChtiGsDS4Rm
+ 3XNo69usH3UqTJoV6uwZAbL8Sb2qEkyYuwsQLv4vdr2H2dEkql9mmhErRCmzXnoMMZaS
+ iVDnwP8uaxvKi6PK7L90S+ZkCF83KMmTWa2YQkk6XAvbox8etmvySiL8dz3+DJhcgSmC
+ H5kg==
+X-Gm-Message-State: AOJu0YxsFxwFEISV8xPtlKOSvJFdaA7d1psxBKsUUERFAORQ710G7YsW
+ hnQRH8qSWWVd91aC5CDTvo+yMrd1Kyyfjy1WSro=
+X-Google-Smtp-Source: AGHT+IGChCz4TECfH811U/m/F4mFC9MdWzVWs4DMJgpjYjtS/oH22r6seHdiRpej/iz1PIscZ6RnbPplDdc39F2tjEA=
+X-Received: by 2002:a05:622a:1ba4:b0:412:6f:9ead with SMTP id
+ bp36-20020a05622a1ba400b00412006f9eadmr12961809qtb.14.1695114167189; Tue, 19
+ Sep 2023 02:02:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: O6Kdu7CfXDnsRZKrlVQvt-YkvM7ylS_D
-X-Proofpoint-ORIG-GUID: O6Kdu7CfXDnsRZKrlVQvt-YkvM7ylS_D
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-19_03,2023-09-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 malwarescore=0 mlxlogscore=435 mlxscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309190075
-Received-SPF: pass client-ip=205.220.168.131;
- envelope-from=quic_llindhol@quicinc.com; helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-12-ray.huang@amd.com>
+In-Reply-To: <20230915111130.24064-12-ray.huang@amd.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 19 Sep 2023 13:02:36 +0400
+Message-ID: <CAJ+F1CJ8R7j_1k3yC2GsdN_v8CsOQ7R+=n_0CCzFW98tWrSLhA@mail.gmail.com>
+Subject: Re: [QEMU PATCH v5 11/13] virtio-gpu: Support Venus capset
+To: Huang Rui <ray.huang@amd.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, 
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>, 
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>, 
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ qemu-devel@nongnu.org, xen-devel@lists.xenproject.org, 
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>, 
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, 
+ Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>, 
+ Antonio Caggiano <antonio.caggiano@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::831;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x831.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,80 +108,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the private peripheral interrupt definitions from bsa.h instead of
-defining them locally. Refactor to use the INTIDs defined there instead
-of the PPI# used previously.
+Hi
 
-Signed-off-by: Leif Lindholm <quic_llindhol@quicinc.com>
----
- hw/arm/sbsa-ref.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+On Fri, Sep 15, 2023 at 3:14=E2=80=AFPM Huang Rui <ray.huang@amd.com> wrote=
+:
+>
+> From: Antonio Caggiano <antonio.caggiano@collabora.com>
+>
+> Add support for the Venus capset, which enables Vulkan support through
+> the Venus Vulkan driver for virtio-gpu.
+>
+> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> Signed-off-by: Huang Rui <ray.huang@amd.com>
+> ---
+>
+> V4 -> V5:
+>     - Send kernel patch to define VIRTIO_GPU_CAPSET_VENUS and will use
+>       another patch to sync up linux headers. (Akihiko)
+>     - https://lore.kernel.org/lkml/20230915105918.3763061-1-ray.huang@amd=
+.com/
 
-diff --git a/hw/arm/sbsa-ref.c b/hw/arm/sbsa-ref.c
-index bc89eb4806..1ef23ae442 100644
---- a/hw/arm/sbsa-ref.c
-+++ b/hw/arm/sbsa-ref.c
-@@ -2,6 +2,7 @@
-  * ARM SBSA Reference Platform emulation
-  *
-  * Copyright (c) 2018 Linaro Limited
-+ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  * Written by Hongbo Zhang <hongbo.zhang@linaro.org>
-  *
-  * This program is free software; you can redistribute it and/or modify it
-@@ -30,6 +31,7 @@
- #include "exec/hwaddr.h"
- #include "kvm_arm.h"
- #include "hw/arm/boot.h"
-+#include "hw/arm/bsa.h"
- #include "hw/arm/fdt.h"
- #include "hw/arm/smmuv3.h"
- #include "hw/block/flash.h"
-@@ -55,13 +57,6 @@
- #define NUM_SMMU_IRQS   4
- #define NUM_SATA_PORTS  6
- 
--#define VIRTUAL_PMU_IRQ        7
--#define ARCH_GIC_MAINT_IRQ     9
--#define ARCH_TIMER_VIRT_IRQ    11
--#define ARCH_TIMER_S_EL1_IRQ   13
--#define ARCH_TIMER_NS_EL1_IRQ  14
--#define ARCH_TIMER_NS_EL2_IRQ  10
--
- enum {
-     SBSA_FLASH,
-     SBSA_MEM,
-@@ -478,7 +473,7 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
-      */
-     for (i = 0; i < smp_cpus; i++) {
-         DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
--        int ppibase = NUM_IRQS + i * GIC_INTERNAL + GIC_NR_SGIS;
-+        int intidbase = NUM_IRQS + i * GIC_INTERNAL;
-         int irq;
-         /*
-          * Mapping from the output timer irq lines from the CPU to the
-@@ -494,14 +489,17 @@ static void create_gic(SBSAMachineState *sms, MemoryRegion *mem)
-         for (irq = 0; irq < ARRAY_SIZE(timer_irq); irq++) {
-             qdev_connect_gpio_out(cpudev, irq,
-                                   qdev_get_gpio_in(sms->gic,
--                                                   ppibase + timer_irq[irq]));
-+                                                   intidbase + timer_irq[irq]));
-         }
- 
-         qdev_connect_gpio_out_named(cpudev, "gicv3-maintenance-interrupt", 0,
--                                    qdev_get_gpio_in(sms->gic, ppibase
-+                                    qdev_get_gpio_in(sms->gic,
-+                                                     intidbase
-                                                      + ARCH_GIC_MAINT_IRQ));
-+
-         qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0,
--                                    qdev_get_gpio_in(sms->gic, ppibase
-+                                    qdev_get_gpio_in(sms->gic,
-+                                                     intidbase
-                                                      + VIRTUAL_PMU_IRQ));
- 
-         sysbus_connect_irq(gicbusdev, i, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
--- 
-2.30.2
+Ok but in the meantime, you should have that header update patch in
+the series too, otherwise we can't compile it :)
 
+thanks
+
+>
+>  hw/display/virtio-gpu-virgl.c | 21 +++++++++++++++++----
+>  1 file changed, 17 insertions(+), 4 deletions(-)
+>
+> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.=
+c
+> index 8a017dbeb4..7f95490e90 100644
+> --- a/hw/display/virtio-gpu-virgl.c
+> +++ b/hw/display/virtio-gpu-virgl.c
+> @@ -437,6 +437,11 @@ static void virgl_cmd_get_capset_info(VirtIOGPU *g,
+>          virgl_renderer_get_cap_set(resp.capset_id,
+>                                     &resp.capset_max_version,
+>                                     &resp.capset_max_size);
+> +    } else if (info.capset_index =3D=3D 2) {
+> +        resp.capset_id =3D VIRTIO_GPU_CAPSET_VENUS;
+> +        virgl_renderer_get_cap_set(resp.capset_id,
+> +                                   &resp.capset_max_version,
+> +                                   &resp.capset_max_size);
+>      } else {
+>          resp.capset_max_version =3D 0;
+>          resp.capset_max_size =3D 0;
+> @@ -901,10 +906,18 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+>
+>  int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
+>  {
+> -    uint32_t capset2_max_ver, capset2_max_size;
+> +    uint32_t capset2_max_ver, capset2_max_size, num_capsets;
+> +    num_capsets =3D 1;
+> +
+>      virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
+> -                              &capset2_max_ver,
+> -                              &capset2_max_size);
+> +                               &capset2_max_ver,
+> +                               &capset2_max_size);
+> +    num_capsets +=3D capset2_max_ver ? 1 : 0;
+> +
+> +    virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
+> +                               &capset2_max_ver,
+> +                               &capset2_max_size);
+> +    num_capsets +=3D capset2_max_size ? 1 : 0;
+>
+> -    return capset2_max_ver ? 2 : 1;
+> +    return num_capsets;
+>  }
+> --
+> 2.34.1
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
