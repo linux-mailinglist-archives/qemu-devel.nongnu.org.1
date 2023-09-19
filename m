@@ -2,113 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22ED27A661E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 16:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B1D7A6621
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 16:05:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qibJY-0001FQ-PD; Tue, 19 Sep 2023 10:02:56 -0400
+	id 1qibLE-0001t7-1R; Tue, 19 Sep 2023 10:04:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qibJO-0001D7-Nb; Tue, 19 Sep 2023 10:02:53 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qibLB-0001s9-Ob
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 10:04:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qibJH-0005Vu-1U; Tue, 19 Sep 2023 10:02:40 -0400
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38JDdBhQ025489; Tue, 19 Sep 2023 14:01:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Wo2K35n9b9Q3lKdDTiJYhrSie2Q45fnrsJkuESj5AII=;
- b=PE0OladCzi5qPk3Cir+W22ECmYbSgr7yXcK+pERRKmK1eKcRbVOXw2WaGlNnP6XG6s6R
- 381isHpYhxLhAACWh+27t5cwDHsAKuHSPnxa6dNjmKfsiQd3ptxTewV+cmwZYc9j7ime
- Ph1gaKwawbrSIr9qEg8/fjQatvdUwm0XPjtQpLi0yCjn8ZfEtyF9X/58woAU34l9+jCs
- pTtfQMbG7vUOJ38dyQFB3gQTG9Kd3PYAYUFyr9ADCoZsdI9C1M8DreBygwBI6iaGM9fy
- eNf2/pr/GQxQNFKfUEaCvEYhv7Dy5oO0IjrngO1Mm/A0nRTDmDCnNVVOfnACm1LI7vtQ Vw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7c26a4p8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 14:01:25 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38JDfMO5001083;
- Tue, 19 Sep 2023 14:01:24 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7c26a4m8-2
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 14:01:24 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38JBn2fa016451; Tue, 19 Sep 2023 13:37:16 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5sd1v56h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 13:37:16 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com
- [10.20.54.102])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38JDbDpZ59900164
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Sep 2023 13:37:13 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 588EA20040;
- Tue, 19 Sep 2023 13:37:13 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D768720043;
- Tue, 19 Sep 2023 13:37:12 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.152.224.238])
- by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 19 Sep 2023 13:37:12 +0000 (GMT)
-Message-ID: <74aa61ac496f9d078aa81c692822d2f27da4ddcf.camel@linux.ibm.com>
-Subject: Re: [PATCH v23 03/20] target/s390x/cpu topology: handle STSI(15)
- and build the SYSIB
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org, Eduardo Habkost
- <eduardo@habkost.net>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Halil
- Pasic <pasic@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Thomas
- Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
-Cc: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Yanan
- Wang <wangyanan55@huawei.com>, "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa
- <crosa@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Date: Tue, 19 Sep 2023 15:37:11 +0200
-In-Reply-To: <20230914120650.1318932-4-nsg@linux.ibm.com>
-References: <20230914120650.1318932-1-nsg@linux.ibm.com>
- <20230914120650.1318932-4-nsg@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qibL8-0006N2-9a
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 10:04:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695132273;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Q8rmvzHj8Lw0uXCBeLEqMDjG5qM/lc5pg8MjNMDfZng=;
+ b=QKylFW3G3GVFaf5oo8ReEjgHJYLikHFu2ayxg6DLSdtoIy3tI6anxenq58iURX2GN/2m/Z
+ R3MSvQMizcVYvSmn6jRnZRFtmC157MufgDAfQeL+g8mh1B9XoCdCXf6XHueGj52urPCDaD
+ I5gRuR6/muvAAZoblZ7B54XWfwaRJyg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-8-2tunZRQaOeq31PfmoB6FVg-1; Tue, 19 Sep 2023 10:04:21 -0400
+X-MC-Unique: 2tunZRQaOeq31PfmoB6FVg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8455803522;
+ Tue, 19 Sep 2023 14:03:59 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.90])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9F32E40C2064;
+ Tue, 19 Sep 2023 14:03:58 +0000 (UTC)
+Date: Tue, 19 Sep 2023 16:03:57 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: John Levon <levon@movementarian.org>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ Hanna Czenczek <hreitz@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>, John Snow <jsnow@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: Deadlock with SATA CD I/O and eject
+Message-ID: <ZQmqTefqVHTBb3y+@redhat.com>
+References: <ZQiIxERjYmZb0v4l@movementarian.org> <ZQl+A0nys2v7UzeN@redhat.com>
+ <ZQmaqorH9YqNG1+g@movementarian.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ziqgiWxmVlHlEbr32Seppr1wPtpAc4tQ
-X-Proofpoint-GUID: dqJVfPWjyusR-5TK-KHDs5y7Ze2DHoPs
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-19_06,2023-09-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- bulkscore=0 phishscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309190116
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZQmaqorH9YqNG1+g@movementarian.org>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,81 +79,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-09-14 at 14:06 +0200, Nina Schoetterl-Glausch wrote:
-> From: Pierre Morel <pmorel@linux.ibm.com>
->=20
-> On interception of STSI(15.1.x) the System Information Block
-> (SYSIB) is built from the list of pre-ordered topology entries.
->=20
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> ---
->  MAINTAINERS                      |   1 +
->  qapi/machine-target.json         |  14 ++
->  include/hw/s390x/cpu-topology.h  |  23 +++
->  include/hw/s390x/sclp.h          |   1 +
->  target/s390x/cpu.h               |  75 +++++++
->  hw/s390x/cpu-topology.c          |   2 +
->  target/s390x/kvm/kvm.c           |   5 +-
->  target/s390x/kvm/stsi-topology.c | 338 +++++++++++++++++++++++++++++++
->  target/s390x/kvm/meson.build     |   3 +-
->  9 files changed, 460 insertions(+), 2 deletions(-)
->  create mode 100644 target/s390x/kvm/stsi-topology.c
+Am 19.09.2023 um 14:57 hat John Levon geschrieben:
+> On Tue, Sep 19, 2023 at 12:54:59PM +0200, Kevin Wolf wrote:
+> 
+> > > In the meantime, we start processing the blk_drain() code, so by the time this
+> > > blk_pread() actually gets handled, quiesce is set, and we get stuck in the
+> > > blk_wait_while_drained().
+> > > 
+> > > I don't know the qemu block stack well enough to propose an actual fix.
+> > > 
+> > > Experimentally, waiting for ->in_flight to drop to zero *before* we quiesce in
+> > > blk_remove_bs() via an AIO_WAIT_WHILE() avoids the symptom, but I'm pretty sure
+> > > that's just a band-aid instead of fixing the deadlock.
+> > 
+> > Related discussion: https://lists.gnu.org/archive/html/qemu-block/2023-03/msg00284.html
+> > 
+> > Actually, it seems we never fixed that problem either?
+> > 
+> > Back then I suggested that blk_drain*() should disable request queuing
+> > because its callers don't want to quiesce the BlockBackend, but rather
+> > get their own requests completed. I think this approach would solve this
+> > one as well.
+> 
+> In this case though, it's not their own requests right? We have incoming I/O
+> from the guest and the eject is a separate operation.
 
-[...]
+It's not the same code path, but we're operating in the context of the
+IDE device (or more specifically, its BlockBackend), so in that sense it
+is "its own requests".
 
-> diff --git a/target/s390x/kvm/stsi-topology.c b/target/s390x/kvm/stsi-top=
-ology.c
-> new file mode 100644
-> index 0000000000..22bac2b834
-> --- /dev/null
-> +++ b/target/s390x/kvm/stsi-topology.c
+The main difference is anyway between just stopping activity (even if
+it's in the middle of a higher level operation of the device) and
+getting requests fully completed. We want the latter here.
 
-[...]
+> So why it would be OK to disable queuing and have ongoing I/Os (i.e.
+> blk->in_flight > 0) racing against the block remove?
 
-> +/**
-> + * s390_topology_id_cmp:
-> + * @l: first s390_topology_id
-> + * @r: second s390_topology_id
-> + *
-> + * Compare two topology ids according to the sorting order specified by =
-the PoP.
-> + *
-> + * Returns a negative number if the first id is less than, 0 if it is eq=
-ual to
-> + *     and positive if it is larger than the second id.
-> + */
-> +static int s390_topology_id_cmp(const s390_topology_id *l,
-> +                                const s390_topology_id *r)
-> +{
-> +    /*
-> +     * lexical order, compare less significant values only if more signi=
-ficant
-> +     * ones are equal
-> +     */
-> +    return l->sentinel - r->sentinel ?:
-> +           l->drawer - r->drawer ?:
-> +           l->book - r->book ?:
-> +           l->socket - r->socket ?:
-> +           l->type - r->type ?:
-> +           -1 * (l->vertical - r->vertical) ?:
-> +           -1 * (l->entitlement - r->entitlement) ?:
-> +           -1 * (l->dedicated - r->dedicated) ?:
+With eject, the case is simple for IDE: We hold the BQL, so the guest
+won't be able to submit new requests anyway.
 
-I'll switch around those expressions manually, since gcc complains:
+In more complicated cases like virtio-blk, bdrv_drained_begin() and
+friends take care to stop new requests from coming in from the guest by
+not running notifiers while the device is drained.
 
-error: =E2=80=98*=E2=80=99 in boolean context, suggest =E2=80=98&&=E2=80=99=
- instead [-Werror=3Dint-in-bool-context]
-  222 |            -1 * (l->vertical - r->vertical) ?:
-      |            ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+We just need to take care of the requests that have already started.
 
-I'll add a comment also, since the inverted logic is not as obvious as befo=
-re.
+> > Your experiment with moving the queuing later is basically what Paolo
+> 
+> I think it's much more flaky than that, isn't it? It's just clearing out the
+> *current* pending queue, but nothing would stop new I/Os from being started
+> before we dropped into the poll for blk->in_flight to be zero again. In my case,
+> this just happens to work because the prior tray open notification has stopped
+> new I/O being filed, right?
 
-> +           l->origin - r->origin;
-> +}
+I think it's the same as above, holding the BQL and calling drain would
+already take care of that.
 
-[...]
+Kevin
+
 
