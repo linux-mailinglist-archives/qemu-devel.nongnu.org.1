@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70BD57A6B5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 21:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D19877A6B61
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 21:19:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qigEr-00061Y-T5; Tue, 19 Sep 2023 15:18:26 -0400
+	id 1qigEt-00064b-4s; Tue, 19 Sep 2023 15:18:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qigEi-0005xW-GL
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 15:18:16 -0400
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>)
+ id 1qigEm-000613-Hl; Tue, 19 Sep 2023 15:18:20 -0400
+Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@kernel.org>) id 1qigEg-00088x-6F
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 15:18:15 -0400
+ (Exim 4.90_1) (envelope-from <deller@kernel.org>)
+ id 1qigEk-0008A7-OU; Tue, 19 Sep 2023 15:18:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id E2D496176E;
+ by sin.source.kernel.org (Postfix) with ESMTPS id 0A87ECE1302;
+ Tue, 19 Sep 2023 19:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E8EC433C9;
  Tue, 19 Sep 2023 19:18:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C4EC433C7;
- Tue, 19 Sep 2023 19:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1695151091;
- bh=/H5WrOm9NmWrjgzLH7fGS4ghoO2YKyjvHFdIzwk4AJA=;
+ s=k20201202; t=1695151093;
+ bh=XmuE9aZ81k3K7jMFdg2gxPS8pizbwALL2hfdIcy4sdY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OvmcGmTG9vgUR525Bq+2wDmbiX2uk9lhNwwOanrBcSrP/t/+Wn3pyZpFJeI/NdIdk
- PNF/VFNM8w+VQDunHXqjmY49m2S2AxMoNKwL+ZEzCiIJm/hqhfdH45BbuEalLTKEQ6
- A2alYXRvw4NiDRCLIF+HmlbCRcWATHTD02sOmGCmgiLKO9Paexw7AIj0Bwd8gxyOCY
- OfJRjuZueTslvegNuNjKvJBFAcnoXf/BHfiMDlWsX7ELd3DYm3/2kr6JGJH5KRNRUi
- NZcOOfBpa9uI81dlm9g27mlStqgVU9yIW3MNLV1+SHmuK75cafwGQu9r6EPkIjZz0G
- dEOo7jCjGgGYQ==
+ b=TeGT28BJSAeZ7+IFXjnwrLRflgG1ytedG5/QvsiDAg86unC3C+dHX0k8KYlJS0a8b
+ M+t8ekUWSMeiBd1zNYRODUdxdxWTp2Hv+3DPtquK+SCrGJeaBG1n+gY165KbVYJfKJ
+ +YZO9RCYyL+qV2jBpQEl57MC14+4yNKeO9SjcdpecFJPwrw07Ejlfti9GNqPBIyT05
+ KA1T9geYmvTRdTEAjhx5ZmspN4mUpEQngbTWBdK0kJbGw1GTPrfkSSgzodjTgsDi1+
+ OALyRZ2PMarNTzlPJ73TlOIl0HwRA/v4JMvedSKMrtHNu6TFlJHK2D3JF4tL8m2tmB
+ XNK8etrpz+RQQ==
 From: deller@kernel.org
 To: qemu-devel@nongnu.org
 Cc: Helge Deller <deller@gmx.de>,
  Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL v2 6/8] target/hppa: Wire up diag instruction to support BTLB
-Date: Tue, 19 Sep 2023 21:17:54 +0200
-Message-ID: <20230919191757.98889-7-deller@kernel.org>
+ Laurent Vivier <laurent@vivier.eu>, Mikulas Patocka <mpatocka@redhat.com>,
+ qemu-stable@nongnu.org
+Subject: [PULL v2 7/8] linux-user/hppa: clear the PSW 'N' bit when delivering
+ signals
+Date: Tue, 19 Sep 2023 21:17:55 +0200
+Message-ID: <20230919191757.98889-8-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230919191757.98889-1-deller@kernel.org>
 References: <20230919191757.98889-1-deller@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:4641:c500::1;
- envelope-from=deller@kernel.org; helo=dfw.source.kernel.org
+Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
+ envelope-from=deller@kernel.org; helo=sin.source.kernel.org
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -71,159 +73,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Helge Deller <deller@gmx.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-Wire up the hppa diag instruction to support Block-TLBs
-when called with the 0x100 value.
+qemu-hppa may crash when delivering a signal. It can be demonstrated with
+this program. Compile the program with "hppa-linux-gnu-gcc -O2 signal.c"
+and run it with "qemu-hppa -one-insn-per-tb a.out". It reports that the
+address of the flag is 0xb4 and it crashes when attempting to touch it.
 
-The diag_btlb() helper function does all necessary steps
-to emulate the PDC BTLB firmware function, which includes
-providing BTLB info, adding a new BTLB, deleting a BTLB
-and removing all BTLBs.
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <signal.h>
 
+sig_atomic_t flag;
+
+void sig(int n)
+{
+	printf("&flag: %p\n", &flag);
+	flag = 1;
+}
+
+int main(void)
+{
+	struct sigaction sa;
+	struct itimerval it;
+
+	sa.sa_handler = sig;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	if (sigaction(SIGALRM, &sa, NULL)) perror("sigaction"), exit(1);
+
+	it.it_interval.tv_sec = 0;
+	it.it_interval.tv_usec = 100;
+	it.it_value.tv_sec = it.it_interval.tv_sec;
+	it.it_value.tv_usec = it.it_interval.tv_usec;
+
+	if (setitimer(ITIMER_REAL, &it, NULL)) perror("setitimer"), exit(1);
+
+	while (1) {
+	}
+}
+
+The reason for the crash is that the signal handling routine doesn't clear
+the 'N' flag in the PSW. If the signal interrupts a thread when the 'N'
+flag is set, the flag remains set at the beginning of the signal handler
+and the first instruction of the signal handler is skipped.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Helge Deller <deller@gmx.de>
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/helper.h     |  1 +
- target/hppa/mem_helper.c | 92 ++++++++++++++++++++++++++++++++++++++++
- target/hppa/translate.c  | 15 +++++--
- 3 files changed, 105 insertions(+), 3 deletions(-)
+ linux-user/hppa/signal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/hppa/helper.h b/target/hppa/helper.h
-index c7e35ce8c7..647f043c85 100644
---- a/target/hppa/helper.h
-+++ b/target/hppa/helper.h
-@@ -95,4 +95,5 @@ DEF_HELPER_FLAGS_2(ptlb, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_1(ptlbe, TCG_CALL_NO_RWG, void, env)
- DEF_HELPER_FLAGS_2(lpa, TCG_CALL_NO_WG, tr, env, tl)
- DEF_HELPER_FLAGS_1(change_prot_id, TCG_CALL_NO_RWG, void, env)
-+DEF_HELPER_1(diag_btlb, void, env)
- #endif
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index ea33b58ddd..520fd311f8 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -412,3 +412,95 @@ int hppa_artype_for_page(CPUHPPAState *env, target_ulong vaddr)
-     hppa_tlb_entry *ent = hppa_find_tlb(env, vaddr);
-     return ent ? ent->ar_type : -1;
- }
-+
-+/*
-+ * diag_btlb() emulates the PDC PDC_BLOCK_TLB firmware call to
-+ * allow operating systems to modify the Block TLB (BTLB) entries.
-+ * For implementation details see page 1-13 in
-+ * https://parisc.wiki.kernel.org/images-parisc/e/ef/Pdc11-v0.96-Ch1-procs.pdf
-+ */
-+void HELPER(diag_btlb)(CPUHPPAState *env)
-+{
-+    unsigned int phys_page, len, slot;
-+    int mmu_idx = cpu_mmu_index(env, 0);
-+    uintptr_t ra = GETPC();
-+    hppa_tlb_entry *btlb;
-+    uint64_t virt_page;
-+    uint32_t *vaddr;
-+
-+#ifdef TARGET_HPPA64
-+    /* BTLBs are not supported on 64-bit CPUs */
-+    env->gr[28] = -1; /* nonexistent procedure */
-+    return;
-+#endif
-+    env->gr[28] = 0; /* PDC_OK */
-+
-+    switch (env->gr[25]) {
-+    case 0:
-+        /* return BTLB parameters */
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INFO\n");
-+        vaddr = probe_access(env, env->gr[24], 4 * sizeof(target_ulong),
-+                             MMU_DATA_STORE, mmu_idx, ra);
-+        if (vaddr == NULL) {
-+            env->gr[28] = -10; /* invalid argument */
-+        } else {
-+            vaddr[0] = cpu_to_be32(1);
-+            vaddr[1] = cpu_to_be32(16 * 1024);
-+            vaddr[2] = cpu_to_be32(HPPA_BTLB_FIXED);
-+            vaddr[3] = cpu_to_be32(HPPA_BTLB_VARIABLE);
-+        }
-+        break;
-+    case 1:
-+        /* insert BTLB entry */
-+        virt_page = env->gr[24];        /* upper 32 bits */
-+        virt_page <<= 32;
-+        virt_page |= env->gr[23];       /* lower 32 bits */
-+        phys_page = env->gr[22];
-+        len = env->gr[21];
-+        slot = env->gr[19];
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INSERT "
-+                    "0x%08llx-0x%08llx: vpage 0x%llx for phys page 0x%04x len %d "
-+                    "into slot %d\n",
-+                    (long long) virt_page << TARGET_PAGE_BITS,
-+                    (long long) (virt_page + len) << TARGET_PAGE_BITS,
-+                    (long long) virt_page, phys_page, len, slot);
-+        if (slot < HPPA_BTLB_ENTRIES) {
-+            btlb = &env->tlb[slot];
-+            /* force flush of possibly existing BTLB entry */
-+            hppa_flush_tlb_ent(env, btlb, true);
-+            /* create new BTLB entry */
-+            btlb->va_b = virt_page << TARGET_PAGE_BITS;
-+            btlb->va_e = btlb->va_b + len * TARGET_PAGE_SIZE - 1;
-+            btlb->pa = phys_page << TARGET_PAGE_BITS;
-+            set_access_bits(env, btlb, env->gr[20]);
-+            btlb->t = 0;
-+            btlb->d = 1;
-+        } else {
-+            env->gr[28] = -10; /* invalid argument */
-+        }
-+        break;
-+    case 2:
-+        /* Purge BTLB entry */
-+        slot = env->gr[22];
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_PURGE slot %d\n",
-+                                    slot);
-+        if (slot < HPPA_BTLB_ENTRIES) {
-+            btlb = &env->tlb[slot];
-+            hppa_flush_tlb_ent(env, btlb, true);
-+        } else {
-+            env->gr[28] = -10; /* invalid argument */
-+        }
-+        break;
-+    case 3:
-+        /* Purge all BTLB entries */
-+        qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_PURGE_ALL\n");
-+        for (slot = 0; slot < HPPA_BTLB_ENTRIES; slot++) {
-+            btlb = &env->tlb[slot];
-+            hppa_flush_tlb_ent(env, btlb, true);
-+        }
-+        break;
-+    default:
-+        env->gr[28] = -2; /* nonexistent option */
-+        break;
-+    }
-+}
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index c04dc15228..650bbcfe95 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -4042,9 +4042,18 @@ static bool trans_fmpyfadd_d(DisasContext *ctx, arg_fmpyfadd_d *a)
+diff --git a/linux-user/hppa/signal.c b/linux-user/hppa/signal.c
+index f253a15864..3a976ac693 100644
+--- a/linux-user/hppa/signal.c
++++ b/linux-user/hppa/signal.c
+@@ -159,6 +159,7 @@ void setup_rt_frame(int sig, struct target_sigaction *ka,
+     }
+     env->iaoq_f = haddr;
+     env->iaoq_b = haddr + 4;
++    env->psw_n = 0;
+     return;
  
- static bool trans_diag(DisasContext *ctx, arg_diag *a)
- {
--    qemu_log_mask(LOG_UNIMP, "DIAG opcode ignored\n");
--    cond_free(&ctx->null_cond);
--    return true;
-+    nullify_over(ctx);
-+    CHECK_MOST_PRIVILEGED(EXCP_PRIV_OPR);
-+#ifndef CONFIG_USER_ONLY
-+    if (a->i == 0x100) {
-+        /* emulate PDC BTLB, called by SeaBIOS-hppa */
-+        gen_helper_diag_btlb(cpu_env);
-+    } else
-+#endif
-+    {
-+        qemu_log_mask(LOG_UNIMP, "DIAG opcode 0x%04x ignored\n", a->i);
-+    }
-+    return nullify_end(ctx);
- }
- 
- static void hppa_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+  give_sigsegv:
 -- 
 2.41.0
 
