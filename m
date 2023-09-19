@@ -2,29 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D067F7A5F5A
+	by mail.lfdr.de (Postfix) with ESMTPS id 757807A5F59
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:21:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXpu-0000ct-Rn; Tue, 19 Sep 2023 06:20:06 -0400
+	id 1qiXqL-0001HS-SK; Tue, 19 Sep 2023 06:20:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiXpr-0000Y4-NU
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:20:04 -0400
+ id 1qiXqK-0001Gf-HD
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:20:32 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qiXpp-0007NH-P4
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:20:03 -0400
+ id 1qiXqI-0007lB-Sr
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:20:32 -0400
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rqd1Q5T6Pz6K6XK;
- Tue, 19 Sep 2023 18:19:06 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rqd2138TYz6K6Wb;
+ Tue, 19 Sep 2023 18:19:37 +0800 (CST)
 Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
  lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 19 Sep 2023 11:19:57 +0100
+ 15.1.2507.31; Tue, 19 Sep 2023 11:20:28 +0100
 To: Michael Tokarev <mjt@tls.msk.ru>, <qemu-devel@nongnu.org>, Michael Tsirkin
  <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
@@ -32,15 +32,16 @@ CC: <linuxarm@huawei.com>, Peter Maydell <peter.maydell@linaro.org>, Yuquan
  Wang <wangyuquan1236@phytium.com.cn>, Dave Jiang <dave.jiang@intel.com>, Ira
  Weiny <ira.weiny@intel.com>, =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?=
  <berrange@redhat.com>, Warner Losh <imp@bsdimp.com>
-Subject: [PATCH v2 1/3] hw/cxl: Fix out of bound array access
-Date: Tue, 19 Sep 2023 11:19:25 +0100
-Message-ID: <20230919101927.1470-2-Jonathan.Cameron@huawei.com>
+Subject: [PATCH v2 2/3] hw/mem/cxl_type3: Add missing copyright and license
+ notice
+Date: Tue, 19 Sep 2023 11:19:26 +0100
+Message-ID: <20230919101927.1470-3-Jonathan.Cameron@huawei.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230919101927.1470-1-Jonathan.Cameron@huawei.com>
 References: <20230919101927.1470-1-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Originating-IP: [10.122.247.231]
 X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -70,39 +71,63 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dmitry Frolov <frolov@swemel.ru>
+This has been missing from the start. Assume it should match
+with cxl/cxl-component-utils.c as both were part of early
+postings from Ben.
 
-According to cxl_interleave_ways_enc(), fw->num_targets is allowed to be up
-to 16. This also corresponds to CXL r3.0 spec. So, the fw->target_hbs[]
-array is iterated from 0 to 15. But it is statically declared of length 8.
-Thus, out of bound array access may occur.
-
-Fixes: c28db9e000 ("hw/pci-bridge: Make PCIe and CXL PXB Devices inherit from TYPE_PXB_DEV")
-Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Link: https://lore.kernel.org/r/20230913101055.754709-1-frolov@swemel.ru
-Cc: qemu-stable@nongnu.org
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 ---
-V2: Typo fix in description.
+v2:
+- Add similar to cxl_type3_stubs.c
+- Add SPDX tags whilst here.
+- Gathered tags.
 ---
- include/hw/cxl/cxl.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/mem/cxl_type3.c       | 11 +++++++++++
+ hw/mem/cxl_type3_stubs.c | 10 ++++++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
-index 56c9e7676e..4944725849 100644
---- a/include/hw/cxl/cxl.h
-+++ b/include/hw/cxl/cxl.h
-@@ -29,7 +29,7 @@ typedef struct PXBCXLDev PXBCXLDev;
- typedef struct CXLFixedWindow {
-     uint64_t size;
-     char **targets;
--    PXBCXLDev *target_hbs[8];
-+    PXBCXLDev *target_hbs[16];
-     uint8_t num_targets;
-     uint8_t enc_int_ways;
-     uint8_t enc_int_gran;
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index c5855d4e7d..8eb009c628 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1,3 +1,14 @@
++/*
++ * CXL Type 3 (memory expander) device
++ *
++ * Copyright(C) 2020 Intel Corporation.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2. See the
++ * COPYING file in the top-level directory.
++ *
++ * SPDX-License-Identifier: GPL-v2-only
++ */
++
+ #include "qemu/osdep.h"
+ #include "qemu/units.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/mem/cxl_type3_stubs.c b/hw/mem/cxl_type3_stubs.c
+index 56d60b4fd8..3e1851e32b 100644
+--- a/hw/mem/cxl_type3_stubs.c
++++ b/hw/mem/cxl_type3_stubs.c
+@@ -1,3 +1,13 @@
++/*
++ * CXL Type 3 (memory expander) device QMP stubs
++ *
++ * Copyright(C) 2020 Intel Corporation.
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2. See the
++ * COPYING file in the top-level directory.
++ *
++ * SPDX-License-Identifier: GPL-v2-only
++ */
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
 -- 
 2.39.2
 
