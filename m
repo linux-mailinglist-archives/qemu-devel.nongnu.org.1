@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA977A5F3B
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF7D7A5F39
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:14:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXix-0003I5-7A; Tue, 19 Sep 2023 06:12:55 -0400
+	id 1qiXix-0003IQ-GJ; Tue, 19 Sep 2023 06:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qiXip-0003DN-41
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:12:48 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1qiXiq-0003Ej-Vb
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:12:50 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qiXin-0005La-0L
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:12:46 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-32155a45957so1724875f8f.0
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 03:12:43 -0700 (PDT)
+ id 1qiXin-0005Lp-Kq
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:12:47 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-3216ba1b01eso217008f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 03:12:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695118362; x=1695723162; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=0zbZPsaTAWLU8NhXe0AqmzBHuQOLcBVRNpjcnRGPRoc=;
- b=JsxOPD5Cpt6W+Qigq1/vR1yRMIvIK49iS5n77RNKAV5Dtdd6EAhxqIqAzgj+ZTj+2q
- gomyVgvmZlV4PweIwylz7My7TrjF1gW5DnQVIVLQg4TQ5KWlxQ5TOo01hyKFa+8hxTGf
- 3ismyHWYXQauxX/RrwrMubbEuWqb7eWZ+U8kPTSmaP6aliJ+rSA8pxbqPMyTdlA9+oky
- iMbK1K93ulghAqmBxyiBbjcTxSlNC5+MQOR+0OremI7bXZWNoVfx1wd5cDubDfUpFwsa
- pnp4L53Z09CaLwqN7mqGnFu7H5YkRPfhOYTDe+v+x767NPRgMSebQ2DUp0TOdSCbnobv
- rUTg==
+ d=linaro.org; s=google; t=1695118363; x=1695723163; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Qr6Clrpkq6ESZV/UlTcHGYlZcIctctlsSFi4SWetSSw=;
+ b=v0xR1bP749p2pcUKZwyFb3EWhFGtTSoMvTqLj34LgjbjOc3w8MkCdGKnrcrci0nSke
+ H1VD68xYLe50Wxwi9U/7jjyTmd8mU+BHpXFsfs0qtVpxXd2yF17UCokCI0Uwtr/0LRXa
+ 2kl6i0cm8qtfNFWNLjnAeYMkDftO6UEWwKZfIWZViqRk0Q4Dx4xw/Fob6KAVBv1Q8DMj
+ BTWeIqfm3Ymftz5fRwNi4q/tAiVvghhnBf0jyqGAGavbIMUKl6WfcHgId9r3WHKr+wB4
+ XZnqUvwZ3JRnokBEKTHXrhzFdHcroiTkwchIH/tDxj1W7isqLNLhk0VK0gSte791qLTk
+ PHiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695118362; x=1695723162;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0zbZPsaTAWLU8NhXe0AqmzBHuQOLcBVRNpjcnRGPRoc=;
- b=sjLvc7DZ2omOS9LTndQVCS/xsSxMy609e9qKMdIvUgu8LlOjQiyUSqsVO4OiKhsYge
- Wb94EknM4kCjErdh30Ijqrj3ZpyDndMGVLg0b6PQEeDYz71kjmGVnJeW9NT1ZBN60+34
- wotN3XFwL4Z82qnvme1NyWDmEcuft7QEonyLHWU37hhMiJLVx3HFUPw+nDsJuKuO+U6M
- NLYmL4Bf/sPz7rezQbJLvIjWRFt0O2Kcg11UbJksr4WtnrhUkotu2m1lABjAMibrMe1R
- +tFfklyAdB+4rGRvQ5ikFngA8m/c/LX9kJ8llPd3JM3ikDaglR3g+rD92xLBOnAS853p
- /LzQ==
-X-Gm-Message-State: AOJu0YzMTQwwkMsG3HuWelRmBTgKBW3uwA1DGERW5MN5G3aWXcXVQG8o
- jhdd52zCMIu/W9fPDbb0A/R9Yg==
-X-Google-Smtp-Source: AGHT+IFRUKr7PUln6JEhtxC+eLVACIsDb7OmPRCfLOSUm319bFlxNZcY3CQ06IUrZC3zeJBiPImFVg==
-X-Received: by 2002:a05:6000:1e91:b0:321:67f4:8bd7 with SMTP id
- dd17-20020a0560001e9100b0032167f48bd7mr911936wrb.32.1695118361967; 
- Tue, 19 Sep 2023 03:12:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695118363; x=1695723163;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Qr6Clrpkq6ESZV/UlTcHGYlZcIctctlsSFi4SWetSSw=;
+ b=pKjNgSA1TN+b9WLyyBcKdrNabUwuVspz+vac/3UnzJHQmV+/iOLy04B7v/bT+JtWGx
+ 3anfPI8xOmCfZL/P9GHR6rl2f/nRgJs1WByZTQLdcn/9MZV7QTmFs998RgiiPAK5um8W
+ lklkRGY5ABWbjsNZmt3+KT88WknoGvmG2eDuNM4anWF7fAwtaObM0Dsi6YALob2jUdEy
+ CNoskSZxaQOeocHrAvgywj1ifeFjti84KB5sCz79ZWu/8z3unRXMD8g1SI44LzajON7O
+ n7E3pNUlg4XmoyrXSCrDXNScLnpZQRXKRPbIiFIT9m5Vjd0Dxfv1MIer2b5b24sTuvyf
+ g0tA==
+X-Gm-Message-State: AOJu0Yw3DIxj9v1MpACnSwQXXtFbJMyBReD9YDySfO6ev9Of/50fEJw4
+ En34M+pkFFABnDNXRKe+dwslVA==
+X-Google-Smtp-Source: AGHT+IEiWYHow24aeTj0o97A2Mz7GJID0yEo8nrdjwu0F5OFhaop+9GNxFu8yHVbd1Q4ofNdm3HqIw==
+X-Received: by 2002:a5d:6851:0:b0:31f:e5b8:4693 with SMTP id
+ o17-20020a5d6851000000b0031fe5b84693mr9285336wrw.25.1695118363207; 
+ Tue, 19 Sep 2023 03:12:43 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- ba13-20020a0560001c0d00b0031ddf6cc89csm12290136wrb.98.2023.09.19.03.12.41
+ ba13-20020a0560001c0d00b0031ddf6cc89csm12290136wrb.98.2023.09.19.03.12.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Sep 2023 03:12:41 -0700 (PDT)
+ Tue, 19 Sep 2023 03:12:42 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-arm@nongnu.org,
 	qemu-devel@nongnu.org
@@ -63,21 +64,23 @@ Cc: Leif Lindholm <quic_llindhol@quicinc.com>,
  Ard Biesheuvel <ardb@kernel.org>, Shannon Zhao <shannon.zhaosl@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>
-Subject: [RFC 0/3] virt: wire up NS EL2 virtual timer IRQ
-Date: Tue, 19 Sep 2023 11:12:37 +0100
-Message-Id: <20230919101240.2569334-1-peter.maydell@linaro.org>
+Subject: [RFC 1/3] tests/qtest/bios-tables-test: Allow changes to virt GTDT
+Date: Tue, 19 Sep 2023 11:12:38 +0100
+Message-Id: <20230919101240.2569334-2-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230919101240.2569334-1-peter.maydell@linaro.org>
+References: <20230919101240.2569334-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,55 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patchset is an RFC that wires up the NS EL2 virtual timer IRQ on
-the virt board, similarly to what
-https://patchew.org/QEMU/20230913140610.214893-1-marcin.juszkiewicz@linaro.org/
-does for the sbsa-ref board.
+Allow changes to the virt GTDT -- we are going to add the IRQ
+entry for a new timer to it.
 
-Patches 1 and 3 are the usual dance to keep the ACPI unit tests happy
-with the change to the ACPI table contents; patch 2 is the meat.
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ tests/qtest/bios-tables-test-allowed-diff.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-This is an RFC for two reasons:
-
-(1) I'm not very familiar with ACPI, and patch 2 needs to update the
-ACPI GTDT table to report the interrupt number.  In particular, this
-means we need the rev 3 of this table (present in ACPI spec 6.3 and
-later), not the rev 2 we currently report.  I'm not sure if it's
-permitted to rev just this table, or if we would need to upgrade all
-our ACPI tables to the newer spec first.
-
-(2) The change causes EDK2 (UEFI) to assert on startup:
-ASSERT [ArmTimerDxe] /home/kraxel/projects/qemu/roms/edk2/ArmVirtPkg/Library/ArmVirtTimerFdtClientLib/ArmVirtTimerFdtClientLib.c(72): PropSize == 36 || PropSize == 48
-This is because the EDK2 code that consumes the QEMU generated device
-tree blob is incorrectly insisting that the architectural-timer
-interrupts property has only 3 or 4 entries, so it falls over if
-given a dtb with the 5th entry for the EL2 virtual timer irq.  In
-particular this breaks the avocado test:
-machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
-I'm not entirely sure what to do about this -- we can get EDK2 fixed
-and update our own test case, but there's a lot of binaries out there
-in the wild that won't run if we just update the virt board the way
-this patchset does.  We could perhaps make the virt board change be
-dependent on machine type version, as a way to let users fall back to
-the old behaviour.
-
-I'm putting this patchset out on the list to get opinions and
-review on those two points.
-
-thanks
--- PMM
-
-Peter Maydell (3):
-  tests/qtest/bios-tables-test: Allow changes to virt GTDT
-  hw/arm/virt: Wire up non-secure EL2 virtual timer IRQ
-  tests/qtest/bios-tables-test: Update virt/GTDT golden reference
-
- include/hw/arm/virt.h     |   2 ++
- hw/arm/virt-acpi-build.c  |  16 ++++++++++++----
- hw/arm/virt.c             |  29 ++++++++++++++++++++++++++++-
- tests/data/acpi/virt/GTDT | Bin 96 -> 104 bytes
- 4 files changed, 42 insertions(+), 5 deletions(-)
-
+diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
+index dfb8523c8bf..bcf131fc160 100644
+--- a/tests/qtest/bios-tables-test-allowed-diff.h
++++ b/tests/qtest/bios-tables-test-allowed-diff.h
+@@ -1 +1,2 @@
+ /* List of comma-separated changed AML files to ignore */
++"tests/data/acpi/virt/GTDT",
 -- 
 2.34.1
 
