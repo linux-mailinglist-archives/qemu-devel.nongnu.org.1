@@ -2,60 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C44F7A6790
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 17:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FB67A6796
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 17:09:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qicIL-0007Yv-LD; Tue, 19 Sep 2023 11:05:45 -0400
+	id 1qicKo-0000st-Km; Tue, 19 Sep 2023 11:08:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UaPf=FD=kaod.org=clg@ozlabs.org>)
- id 1qicHs-0007Vv-08; Tue, 19 Sep 2023 11:05:16 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qicKm-0000s2-6P; Tue, 19 Sep 2023 11:08:16 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=UaPf=FD=kaod.org=clg@ozlabs.org>)
- id 1qicHo-000846-A5; Tue, 19 Sep 2023 11:05:15 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RqlMR0mfJz4x2r;
- Wed, 20 Sep 2023 01:05:07 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RqlMN4BVgz4xG4;
- Wed, 20 Sep 2023 01:05:04 +1000 (AEST)
-Message-ID: <a9e0f6f8-d7c1-c817-2e42-be9c8cccfd6c@kaod.org>
-Date: Tue, 19 Sep 2023 17:05:01 +0200
+ (Exim 4.90_1) (envelope-from <quic_llindhol@quicinc.com>)
+ id 1qicKj-0000RX-L7; Tue, 19 Sep 2023 11:08:15 -0400
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38JAlOMK009476; Tue, 19 Sep 2023 15:07:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=r97l5vwZS5XFaxpRvXTKnunfsGMbtSmMIzYbzbl6vSI=;
+ b=j3BP849dZqsJdiU9H2NpT2lSOGYIUz13gzHc+41VmHLq2lvFZSVud1BHAhLLdsE8OB3/
+ /uKmgC9G2fS3l0Tt148nMzOpd7iXa8fUpSCb0kX7LXkdO+yee5qXTLA0HLNFwfyFMk/R
+ 0J95AMXg3tnzBieEk9bC+Z4B7NcuNUdHv2zA2uCpAM/5urJSp9xJSzgfxc+SKNWedJq2
+ U0bviaR0I6xtNzukLSEFZQJQ2k1i8qPdeThV1M4XZOTc1eA1BdfNYy2EsjS/28sX7Kg/
+ MiZtvWJ6Dvb1Hdm3A2j0gZNRhrnsrLuNOvSxSxd5wuQMqrhgp2LaNrBrRF9eHNKcWozz xQ== 
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t6pmq2vrj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 15:07:55 +0000
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com
+ [10.45.79.139])
+ by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38JF7sM3006424
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 15:07:54 GMT
+Received: from [10.111.128.147] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Tue, 19 Sep
+ 2023 08:07:52 -0700
+Message-ID: <e4223f6d-fe0c-411a-a345-a79c019d1bee@quicinc.com>
+Date: Tue, 19 Sep 2023 16:07:49 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 3/8] spapr: Clean up local variable shadowing in
- spapr_dt_cpus()
-Content-Language: en-US
-To: Harsh Prateek Bora <harsh.prateek.bora@gmail.com>
-Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230918145850.241074-1-clg@kaod.org>
- <20230918145850.241074-4-clg@kaod.org>
- <56a18122-ed29-ddc5-03f7-6e539a9f46f2@linux.ibm.com>
- <78e09b46-cf41-91d7-d518-519c12ca4b43@kaod.org>
- <CAEuJdmpsG_SEpBcb33-NJKtYr2WNqNaKrKMsfAOQtiRg8NxFJA@mail.gmail.com>
- <CAEuJdmrbS2Jh6_zOQX=3EtN0xjHFQt3wGtHHnsh7CfvBt-1RCQ@mail.gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <CAEuJdmrbS2Jh6_zOQX=3EtN0xjHFQt3wGtHHnsh7CfvBt-1RCQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=UaPf=FD=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 0/3] virt: wire up NS EL2 virtual timer IRQ
+Content-Language: en-GB
+To: Peter Maydell <peter.maydell@linaro.org>, <qemu-arm@nongnu.org>,
+ <qemu-devel@nongnu.org>
+CC: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, Ard Biesheuvel
+ <ardb@kernel.org>, Shannon Zhao <shannon.zhaosl@gmail.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>
+References: <20230919101240.2569334-1-peter.maydell@linaro.org>
+From: Leif Lindholm <quic_llindhol@quicinc.com>
+In-Reply-To: <20230919101240.2569334-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: MLNbrbXCcFuaKNZXI49Xl980BczZg0T_
+X-Proofpoint-ORIG-GUID: MLNbrbXCcFuaKNZXI49Xl980BczZg0T_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_06,2023-09-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=643 mlxscore=0 phishscore=0
+ clxscore=1011 lowpriorityscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
+ definitions=main-2309190130
+Received-SPF: pass client-ip=205.220.168.131;
+ envelope-from=quic_llindhol@quicinc.com; helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,122 +101,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/19/23 16:59, Harsh Prateek Bora wrote:
+On 2023-09-19 11:12, Peter Maydell wrote:
+> This patchset is an RFC that wires up the NS EL2 virtual timer IRQ on
+> the virt board, similarly to what
+> https://patchew.org/QEMU/20230913140610.214893-1-marcin.juszkiewicz@linaro.org/
+> does for the sbsa-ref board.
 > 
+> Patches 1 and 3 are the usual dance to keep the ACPI unit tests happy
+> with the change to the ACPI table contents; patch 2 is the meat.
 > 
-> On Tue, 19 Sept, 2023, 6:34 pm Harsh Prateek Bora, <harsh.prateek.bora@gmail.com <mailto:harsh.prateek.bora@gmail.com>> wrote:
+> This is an RFC for two reasons:
 > 
-> 
-> 
->     On Tue, 19 Sept, 2023, 4:37 pm Cédric Le Goater, <clg@kaod.org <mailto:clg@kaod.org>> wrote:
-> 
->         On 9/19/23 09:28, Harsh Prateek Bora wrote:
->          >
->          >
->          > On 9/18/23 20:28, Cédric Le Goater wrote:
->          >> Introduce a helper routine defining one CPU device node to fix this
->          >> warning :
->          >>
->          >>    ../hw/ppc/spapr.c: In function ‘spapr_dt_cpus’:
->          >>    ../hw/ppc/spapr.c:812:19: warning: declaration of ‘cs’ shadows a previous local [-Wshadow=compatible-local]
->          >>      812 |         CPUState *cs = rev[i];
->          >>          |                   ^~
->          >>    ../hw/ppc/spapr.c:786:15: note: shadowed declaration is here
->          >>      786 |     CPUState *cs;
->          >>          |               ^~
->          >>
->          >> Signed-off-by: Cédric Le Goater <clg@kaod.org <mailto:clg@kaod.org>>
->          >> ---
->          >>   hw/ppc/spapr.c | 36 +++++++++++++++++++++---------------
->          >>   1 file changed, 21 insertions(+), 15 deletions(-)
->          >>
->          >> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
->          >> index de3c616b4637..d89f0fd496b6 100644
->          >> --- a/hw/ppc/spapr.c
->          >> +++ b/hw/ppc/spapr.c
->          >> @@ -780,6 +780,26 @@ static void spapr_dt_cpu(CPUState *cs, void *fdt, int offset,
->          >>                                 pcc->lrg_decr_bits)));
->          >>   }
->          >> +static void spapr_dt_one_cpu(void *fdt, SpaprMachineState *spapr, CPUState *cs,
->          >> +                             int cpus_offset)
->          >> +{
->          >> +    PowerPCCPU *cpu = POWERPC_CPU(cs);
->          >> +    int index = spapr_get_vcpu_id(cpu);
->          >> +    DeviceClass *dc = DEVICE_GET_CLASS(cs);
->          >> +    g_autofree char *nodename = NULL;
->          >> +    int offset;
->          >> +
->          >> +    if (!spapr_is_thread0_in_vcore(spapr, cpu)) {
->          >> +        return;
->          >> +    }
->          >> +
->          >> +    nodename = g_strdup_printf("%s@%x", dc->fw_name, index);
->          >> +    offset = fdt_add_subnode(fdt, cpus_offset, nodename);
->          >> +    _FDT(offset);
->          >> +    spapr_dt_cpu(cs, fdt, offset, spapr);
->          >> +}
->          >> +
->          >> +
->          >>   static void spapr_dt_cpus(void *fdt, SpaprMachineState *spapr)
->          >>   {
->          >>       CPUState **rev;
->          >> @@ -809,21 +829,7 @@ static void spapr_dt_cpus(void *fdt, SpaprMachineState *spapr)
->          >>       }
->          >>       for (i = n_cpus - 1; i >= 0; i--) {
->          >> -        CPUState *cs = rev[i];
->          >> -        PowerPCCPU *cpu = POWERPC_CPU(cs);
->          >> -        int index = spapr_get_vcpu_id(cpu);
->          >> -        DeviceClass *dc = DEVICE_GET_CLASS(cs);
->          >> -        g_autofree char *nodename = NULL;
->          >> -        int offset;
->          >> -
->          >> -        if (!spapr_is_thread0_in_vcore(spapr, cpu)) {
->          >> -            continue;
->          >> -        }
->          >> -
->          >> -        nodename = g_strdup_printf("%s@%x", dc->fw_name, index);
->          >> -        offset = fdt_add_subnode(fdt, cpus_offset, nodename);
->          >> -        _FDT(offset);
->          >> -        spapr_dt_cpu(cs, fdt, offset, spapr);
->          >> +        spapr_dt_one_cpu(fdt, spapr, rev[i], cpus_offset);
->          >
->          > Do we want to replace the call to spapr_dt_cpu in
->          > spapr_core_dt_populate() with the _one_ as well?
->          > Not sure about the implication of additional instructions there.
-> 
->         yeah may be we could rework spapr_dt_one_cpu() and spapr_core_dt_populate()
->         in a single routine. They are similar. It can come later.
-> 
->          > Also, could this code insider wrapper become part of spapr_dt_cpu() itself?
->          > If can't, do we want a better renaming of wrapper here?
-> 
->         I am open to proposal :)
-> 
-> 
->     How about spapr_dt_cpu_prepare() ?
-> 
-> 
-> I guess spapr_dt_cpu_process() may be more apt since it calls the spapr_dt_cpu internally.
+> (1) I'm not very familiar with ACPI, and patch 2 needs to update the
+> ACPI GTDT table to report the interrupt number.  In particular, this
+> means we need the rev 3 of this table (present in ACPI spec 6.3 and
+> later), not the rev 2 we currently report.  I'm not sure if it's
+> permitted to rev just this table, or if we would need to upgrade all
+> our ACPI tables to the newer spec first.
 
-*_one_* is a common qualifier in QEMU and Linux routine names.
+Ard already provided the answer for this.
 
-C.
+> (2) The change causes EDK2 (UEFI) to assert on startup:
+> ASSERT [ArmTimerDxe] /home/kraxel/projects/qemu/roms/edk2/ArmVirtPkg/Library/ArmVirtTimerFdtClientLib/ArmVirtTimerFdtClientLib.c(72): PropSize == 36 || PropSize == 48
+> This is because the EDK2 code that consumes the QEMU generated device
+> tree blob is incorrectly insisting that the architectural-timer
+> interrupts property has only 3 or 4 entries, so it falls over if
+> given a dtb with the 5th entry for the EL2 virtual timer irq.  In
+> particular this breaks the avocado test:
+> machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
+> I'm not entirely sure what to do about this -- we can get EDK2 fixed
+> and update our own test case, but there's a lot of binaries out there
+> in the wild that won't run if we just update the virt board the way
+> this patchset does.  We could perhaps make the virt board change be
+> dependent on machine type version, as a way to let users fall back to
+> the old behaviour.
 
+And kind of this one too. Although I might expand somewhat:
+As I understand it, this only breaks an existing setup where someone is
+- Running a DEBUG build of edk2
+- With virtualization=on
+I don't see that (currently) happening outside development/ci, and the 
+RELEASE builds should save anyone not actually working on edk2 but only 
+running it to test other things.
+
+Ard has given me an r-b on the fix, so that can be merged today.
+It will then land in edk2-stable202311 around the end of November, but 
+will be on the main branch as soon as it passes ci.
+
+I have one comment on my own, which is this clearly has a merge conflict 
+with my PPI rework patches.
+
+Regards,
+
+Leif
+
+> I'm putting this patchset out on the list to get opinions and
+> review on those two points.
 > 
+> thanks
+> -- PMM
 > 
+> Peter Maydell (3):
+>    tests/qtest/bios-tables-test: Allow changes to virt GTDT
+>    hw/arm/virt: Wire up non-secure EL2 virtual timer IRQ
+>    tests/qtest/bios-tables-test: Update virt/GTDT golden reference
 > 
->         Thanks
-> 
->         C.
-> 
-> 
->          >
->          > Otherwise,
->          > Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com <mailto:harshpb@linux.ibm.com>>
->          >
->          >>       }
->          >>       g_free(rev);
-> 
+>   include/hw/arm/virt.h     |   2 ++
+>   hw/arm/virt-acpi-build.c  |  16 ++++++++++++----
+>   hw/arm/virt.c             |  29 ++++++++++++++++++++++++++++-
+>   tests/data/acpi/virt/GTDT | Bin 96 -> 104 bytes
+>   4 files changed, 42 insertions(+), 5 deletions(-)
 > 
 
 
