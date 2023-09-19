@@ -2,88 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE177A6BFD
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 22:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C630A7A6C18
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 22:09:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qigvZ-0004e7-3X; Tue, 19 Sep 2023 16:02:33 -0400
+	id 1qih1d-0005Go-WD; Tue, 19 Sep 2023 16:08:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qigvW-0004cY-KQ
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 16:02:30 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qih1a-00056E-D3; Tue, 19 Sep 2023 16:08:46 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qigvU-0000UG-Rm
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 16:02:30 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-3214de9cd8bso2449924f8f.2
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 13:02:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qih1Y-0001Wi-Tz; Tue, 19 Sep 2023 16:08:46 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-5733aa10291so3917229eaf.3; 
+ Tue, 19 Sep 2023 13:08:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695153746; x=1695758546; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=O4MvxlwOAuFe9rdoF6HBbC/2fx9cp5v+GhJrBkfXYUs=;
- b=K7wNTsObdVB2ag8StjrO8T7o9av5aTw+J9ulwdYf59lKxMLm1WTUz82GOw5N4Gm/Iu
- A+dSNhP8YBPuDPQHOqofcCE/oDpgSsCOCGgg0nqRRDRMfT2yjPzi4l7zk87wa/rO3Kdt
- /XEBYSAVFKFTaK8+JbgeGPvSQzpu45+2ffbshEARmgoF5Ou1Rh+UL4ncs1/QsQploPzl
- 490OLbIlx8C8DVnf4/PWgAjQr/CcJJE+t3EzA1x4KeDiv5msJp8aKVu8mXWf8kcX+oP9
- j8ter9Hg+lIGDTtoTeITlm7JqVTFq9Y6W11dGZBB9lUq+GGnKTkbqkeLQnzZHZzIiHER
- uJog==
+ d=gmail.com; s=20230601; t=1695154122; x=1695758922; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=H7ktvVJq8TVq/ajIT5F0q/TVpX5NQ0x0mq9YbkndJ4s=;
+ b=Dg9jxiaU2Pxav6FcMVTWAyDSiC1sxPrGR5WCFziNx7FjSZRkryGybk3TwGhOL+XxMM
+ CNht5rXZJ9gb9fN5j0YgmC3YuwA9U44eO3YvaulN5qqE5KtS3DlxY3h6HDqHI/X17Iw1
+ fbLUVyS1D3aE7fa7hU+esU7W9ZKNJWv4fDKPWeA0y7RfnkRZXb8J9aj86xSkfNBdyUfV
+ 4RqtiFYAcezaHACt4YeSDKU0peV5U6zNP0TdUqrbnLx18Lx/+33uRtaYdvivvsmGwNCA
+ vX/LzqQH75yo6e/PM4fKftBh8LWRiYdIoYhNa0lJSP8Z/JBGj2hSAIoXbydu1ao3xK/0
+ HvUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695153746; x=1695758546;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=O4MvxlwOAuFe9rdoF6HBbC/2fx9cp5v+GhJrBkfXYUs=;
- b=Bu+SufYbNM3+JrRU3N/mHowmFC5EYzcQ8Cgz2wS5BFvt8kKIj1pSzofKLxbWs4YVPU
- BFttuY7KT+eSoABi/Tb5zt0IluPX4fd6PejpniXoB+z6g9JqkfC9/E4/ypk8X2/t1NtJ
- 565MfN5EVPb4jh+VdziByiTLzkLjq6hoF9jR+KpOtxaTmsiA+rv9R8jTdsFs3v+Fr7BX
- WWVnjkooWr2iHv3YQBQ6i7jR5FUB55FsCFxPD2hGx3mYWoQxjMm2baOe4hNsFIZYents
- 7b4ZNMfHnsWXemz5N0GPUrzDqEGBg/MG4/Vc5mThC8rtbHj1xxBTewmTZorXUAHV1gKq
- 5hmw==
-X-Gm-Message-State: AOJu0YwZNf7IsdN7+5J2frfwVA4AJLYmMKo2f8L26LpTmGq+wsPtxOEY
- YoRu2sJfL70pQHcrnrBEy5s=
-X-Google-Smtp-Source: AGHT+IHA3Rcz/q54UukTkrot0NmdG02c+UqNugRafaiM1sEG/EUtJ2udAeBzQyZALWCxc0HNDpODHQ==
-X-Received: by 2002:a5d:6a8c:0:b0:31f:f72c:dfa3 with SMTP id
- s12-20020a5d6a8c000000b0031ff72cdfa3mr512869wru.68.1695153746122; 
- Tue, 19 Sep 2023 13:02:26 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-077-183-084-126.77.183.pool.telefonica.de.
- [77.183.84.126]) by smtp.gmail.com with ESMTPSA id
- r2-20020adfe682000000b0031fe0576460sm6771659wrm.11.2023.09.19.13.02.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 13:02:25 -0700 (PDT)
-Date: Tue, 19 Sep 2023 20:02:19 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: Jason Andryuk <jandryuk@gmail.com>,
- Anthony PERARD <anthony.perard@citrix.com>
-CC: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>,
- =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
- Aurelien Jarno <aurelien@aurel32.net>, Eduardo Habkost <eduardo@habkost.net>, 
- Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Chuck Zmudzinski <brchuckz@aol.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_2/6=5D_hw/isa/piix3=3A_Reuse?=
- =?US-ASCII?Q?_piix3=5Frealize=28=29_in_piix3=5Fxen=5Frealize=28=29?=
-In-Reply-To: <CAKf6xpvxf=F52etJ8o3eLQV4JVD5WM57znGoP3ctONRf7uPisA@mail.gmail.com>
-References: <20230312120221.99183-1-shentey@gmail.com>
- <20230312120221.99183-3-shentey@gmail.com>
- <f52c41f7-e662-4afd-8ac9-ce2c0da2b1be@perard>
- <7F45B51F-F1E3-4F04-A46F-4C80509C7195@gmail.com>
- <622b9674-fffd-4634-ac30-d0db3230478e@perard>
- <CAKf6xpvxf=F52etJ8o3eLQV4JVD5WM57znGoP3ctONRf7uPisA@mail.gmail.com>
-Message-ID: <B0FF78F4-1193-495B-919C-84A1FF8ADF12@gmail.com>
+ d=1e100.net; s=20230601; t=1695154122; x=1695758922;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=H7ktvVJq8TVq/ajIT5F0q/TVpX5NQ0x0mq9YbkndJ4s=;
+ b=I+/qyzaRuA5MCjwBdG/TvJJow6qp8de923DLTg9/lgUUlYewBe5YEuqHxSss1xDkC+
+ q1AdwNsmlXVA6Z+4ujrbbZ1K9imG+4gs6XsDlvRbxc29c2iLIABnYQ3T2fG+mNP80L5r
+ WkFEOCcU6T49xFEi4EMXhsebTG/4tCX8hYrX5g3NEKJI+lKwpvnijkHlmbGQjkEx1gqH
+ JWWt0bAjCys4fCDv80kcSgIMKTH23Q7I6tuPY7UjmnW3/VkbCgY9+NsxcSHnRHaRYibE
+ PUwKQccMrSmLUbNcDM44v9OszfoNUnLQ1AFc2GQUYQBmosgYHLS+XROTdZgeLBIB5fUJ
+ 0qYA==
+X-Gm-Message-State: AOJu0YwcLm+0Yy7V9HpkN6GDtOyFfZA2liomLOQyZwq0sZv80EHXifJc
+ 2xb40aHx9amkAG7CEaRn21XhGKet6bGErVNnegQ=
+X-Google-Smtp-Source: AGHT+IEP2OiN1yhbzUfAnzDN7OuITiipVHJzHVmNBMoO7YQr71opjxYR9YuLvVuWk3KUDF3dYphRKaf0pl5H4/oNm1I=
+X-Received: by 2002:a4a:3550:0:b0:576:8c2c:c865 with SMTP id
+ w16-20020a4a3550000000b005768c2cc865mr620415oog.8.1695154122270; Tue, 19 Sep
+ 2023 13:08:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=shentey@gmail.com; helo=mail-wr1-x433.google.com
+References: <20230915144344.238596-1-kwolf@redhat.com>
+ <CAJSP0QUPOVq5v+7W8E-ruV-Wbg1HYZn2kFWaDzULxSO-3SdEZg@mail.gmail.com>
+ <CAJSP0QUYa2+RHeFwztjBrkNs28vqnUVV3rPkNo0+Jx=5ZBfANg@mail.gmail.com>
+ <ZQl3Tp7uWPyn/gYa@redhat.com>
+In-Reply-To: <ZQl3Tp7uWPyn/gYa@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 19 Sep 2023 16:08:27 -0400
+Message-ID: <CAJSP0QW6LOmbEb1u3th3=_8d-V0C_-4bS+4zjGRQ92bmpjn+mw@mail.gmail.com>
+Subject: Re: [PULL 00/28] Block layer patches
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,70 +85,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, 19 Sept 2023 at 06:26, Kevin Wolf <kwolf@redhat.com> wrote:
+> Am 18.09.2023 um 20:56 hat Stefan Hajnoczi geschrieben:
+> If we could fully get rid of the AioContext lock (as we originally
+> stated as a goal), that would automatically solve this kind of
+> deadlocks.
 
+Grepping for "ctx locked", "context acquired", etc does not bring up a
+lot of comments describing variables that are protected by the
+AioContext lock.
 
-Am 3=2E April 2023 12:27:14 UTC schrieb Jason Andryuk <jandryuk@gmail=2Eco=
-m>:
->On Mon, Apr 3, 2023 at 5:33=E2=80=AFAM Anthony PERARD <anthony=2Eperard@c=
-itrix=2Ecom> wrote:
->>
->> On Sat, Apr 01, 2023 at 10:36:45PM +0000, Bernhard Beschow wrote:
->> >
->> >
->> > Am 30=2E M=C3=A4rz 2023 13:00:25 UTC schrieb Anthony PERARD <anthony=
-=2Eperard@citrix=2Ecom>:
->> > >On Sun, Mar 12, 2023 at 01:02:17PM +0100, Bernhard Beschow wrote:
->> > >> This is a preparational patch for the next one to make the followi=
-ng
->> > >> more obvious:
->> > >>
->> > >> First, pci_bus_irqs() is now called twice in case of Xen where the
->> > >> second call overrides the pci_set_irq_fn with the Xen variant=2E
->> > >
->> > >pci_bus_irqs() does allocates pci_bus->irq_count, so the second call=
- in
->> > >piix3_xen_realize() will leak `pci_bus->irq_count`=2E Could you look=
- if
->> > >pci_bus_irqs_cleanup() can be called before the second pci_bus_irqs(=
-)
->> > >call, or maybe some other way to avoid the leak?
->> >
->> > Thanks for catching this! I'll post a v4=2E
->> >
->> > I think the most fool-proof way to fix this is to free irq_count just=
- before the assignment=2E pci_bus_irqs_cleanup() would then have to NULL th=
-e attribute such that pci_bus_irqs() can be called afterwards=2E
->> >
->> > BTW: I tried running qemu-system-x86_64 with PIIX4 rather than PIIX3 =
-as Xen guest with my pc-piix4 branch without success=2E This branch essenti=
-ally just provides slightly different PCI IDs for PIIX=2E Does xl or someth=
-ing else in Xen check these? If not then this means I'm still missing somet=
-hing=2E Under KVM this branch works just fine=2E Any idea?
->>
->> Maybe the ACPI tables provided by libxl needs to be updated=2E
->> Or maybe something in the firmware (SeaBIOS or OVMF/OvmfXen) check the
->> id (I know that the PCI id of the root bus is checked, but I don't know
->> if that's the one that's been changed)=2E
->
->Xen also has hvmloader, which runs before SeaBIOS/OVMF=2E  Looking at
->tools/firmware/hvmloader/pci=2Ec, it has
->        ASSERT((devfn !=3D PCI_ISA_DEVFN) ||
->               ((vendor_id =3D=3D 0x8086) && (device_id =3D=3D 0x7000)));
->
->From QEMU, it looks like 0x7000 is PCI_DEVICE_ID_INTEL_82371SB_0, but
->PIIX4 uses 0x7110 (PCI_DEVICE_ID_INTEL_82371AB_0)=2E  Maybe try removing
->that check?
+However, there are at least hundreds of functions that assume they are
+called with the AioContext lock held.
 
-I was finally able to build Xen successfully (without my distribution prov=
-iding too recent dependencies that prevent compilation)=2E With 0x7110 adde=
-d in the line above I could indeed run a Xen guest with PIIX4=2E Yay!
+There are a few strategies:
 
-Now I just need to respin my PIIX consolidation series=2E=2E=2E
+Top-down
+--------
+Shorten AioContext lock critical sections to cover only APIs that need them.
+Then push the lock down into the API and repeat the next lower level until
+aio_context_acquire() + AIO_WAIT_WHILE() + aio_context_release() can be
+replaced with AIO_WAIT_UNLOCKED().
 
-Best regards,
-Bernhard
+Bottom-up
+---------
+Switch AIO_WAIT_WHILE() to aio_context_release() + AIO_WAIT_WHILE_UNLOCKED() +
+aio_context_acquire(). Then move the lock up into callers and repeat at the
+next higher level until aio_context_acquire() + aio_context_release() cancel
+each other out.
 
->
->Regards,
->Jason
+Big bang
+--------
+Remove aio_context_acquire/release() and fix tests until they pass.
+
+I think top-down is safer than bottom-up, because bottom-up is more
+likely to cause issues with callers that do not tolerate temporarily
+dropping the lock.
+
+The big bang approach is only reasonable if the AioContext lock is no
+longer used to protect variables (which we don't know for sure because
+that requires auditing every line of code).
+
+My concern with the top-down approach is that so much code needs to be
+audited and the conversions are temporary steps (it's almost a waste
+of time for maintainers to review them).
+
+I'm tempted to go for the big bang approach but also don't want to
+introduce a slew of new race conditions. :/
+
+Stefan
 
