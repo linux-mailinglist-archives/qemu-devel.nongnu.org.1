@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5757A6892
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 18:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 425AF7A6896
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 18:09:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qidBY-0003DE-Dh; Tue, 19 Sep 2023 12:02:49 -0400
+	id 1qidGQ-0000rj-51; Tue, 19 Sep 2023 12:07:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qidBC-00033J-VW
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:02:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qidB9-0002Kw-2E
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:02:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695139341;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=KBQe3PLAWwnhHX8S7+9YPCF/lR9EYqU6vwixiSDKLEY=;
- b=IrnIzcIIkayWKNOtqWlPLPuPbGNDFz7GeNgWmClaa+0DEvP6PmG1mG+fu+Y0CDeJhs5BBv
- iCXdIP86rMq97HJ+yyNNv39RZUMLhrcKQERo3/H+u0x4ATMKnbe6uBd51VGz1CI6z9GleM
- aXvefwv6gaTAbUtRPLFt0zlfk4mWH5Y=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-mjMViMWSNfe7AE7GoSg76g-1; Tue, 19 Sep 2023 12:02:19 -0400
-X-MC-Unique: mjMViMWSNfe7AE7GoSg76g-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-64726969c8bso15586506d6.0
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 09:02:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qidGL-0000p4-Hf
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:07:45 -0400
+Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qidGJ-0004TK-6n
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:07:44 -0400
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-1d544a4a315so3747304fac.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 09:07:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1695139661; x=1695744461; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=HXnQ6/p/nxNTua78VvOJyRiQR6VP+aEWL2S1FI6hmF0=;
+ b=JkP1oSE1sv8woR4ENKnnVonzkl4bUT6GiLq1jz+aWRXnxRpUW4tUKkpQZ9khrK0YLt
+ CrLiilYLxQ2WelpIr7wuo7bpIcSmOLc1y3dkAHty2eGgg/88WMAORFp28QHuhr6zsCQS
+ CBJCWuIONTBX1vVUCLr/VRMVAimW524tlqMjz2oEEQrOBthWqVG0iebYa67LNksUrIxR
+ gVPc5GjGKdat01QCRpj5sGYLEgoU2siSSdQOFKDzBvS/ChyTtCbjqJ/lFSgWfEHgUBjD
+ BnHtbhTAs3sphl64f5RpC3ND86E9j2V5/FGw/beN8v+LRZkbR1OuV12iXoQgrD7aVBUr
+ cyFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695139339; x=1695744139;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KBQe3PLAWwnhHX8S7+9YPCF/lR9EYqU6vwixiSDKLEY=;
- b=g+0+xwZiiIDZtsaEgQ5f8eEFMx5XYraFQYzOdvf9Q73YEo7xhY270fp/VQL/lWE7iR
- Ithr55BJZdAU26MayQW/UOF1q8TUGKkpshCvkW/PRzbI3H7OIo9iJRghBy4A6W8BEBxL
- 3TbYg8HVhmMgd4sb6/FR+pbrvm6qejrycoJ7tRut3Y6+PUhF9Vnu52DmQy02/6+g96jk
- OEv4VrtFveRUvEyQvzCKuu8iLCVJbEWkexAHYtxOjOB7qhoqBzIFVBZnwaof+ekZOeJJ
- 2iTWjA3BoizRnLACl5On/DG6sC4XKxddZrTD/sMgugInJ5Nh0hxo6H1rQNt/Asj78mbN
- FlVw==
-X-Gm-Message-State: AOJu0YxHD0jriO5NLIGUiU6gXqvdrG3sC7FVHI3xkQ4hAFEaUjtY7Hu+
- ZXxzpmNaS1603oCCclYVHEtpFLNs4P+kyoXEev6P3zxr9iRiTlrXvpN54R2rrcH7zNe7YKs0zT6
- 7zKtGywMJYllZM+k=
-X-Received: by 2002:ad4:5f4f:0:b0:656:32c1:b043 with SMTP id
- p15-20020ad45f4f000000b0065632c1b043mr14893846qvg.3.1695139339264; 
- Tue, 19 Sep 2023 09:02:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGzQbLYPT9E6wN//+51/pAOBxeOeQYXm3A9LKaJ8AIKp3QqjRGvhvlMfBYwKL72BCkzbapEEA==
-X-Received: by 2002:ad4:5f4f:0:b0:656:32c1:b043 with SMTP id
- p15-20020ad45f4f000000b0065632c1b043mr14893829qvg.3.1695139338960; 
- Tue, 19 Sep 2023 09:02:18 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- h20-20020a0cf414000000b0065647f59c4esm2914713qvl.51.2023.09.19.09.02.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Sep 2023 09:02:18 -0700 (PDT)
-Date: Tue, 19 Sep 2023 12:02:16 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, quintela@redhat.com, leobras@redhat.com
-Subject: Re: [PATCH 20/52] migration/rdma: Drop dead qemu_rdma_data_init()
- code for !@host_port
-Message-ID: <ZQnGCOlrmFUL7+aB@x1n>
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-21-armbru@redhat.com>
+ d=1e100.net; s=20230601; t=1695139661; x=1695744461;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HXnQ6/p/nxNTua78VvOJyRiQR6VP+aEWL2S1FI6hmF0=;
+ b=ru8iBID40gQU+kOGnU0oVyqeKK0vNCc3c4ts5sjOzUgOPgBC557Iy6ymWtTL4rSAyL
+ +ru8JiJs3fHDjZx++C6XvR6UvxEA/pjxPZnmWPrYku5m+pSRY2M6t0ABYO2ddVAXtOf6
+ +1mMHs7hWlMA7orR2OGMk+OJT9Ap6Z0HrOLZn1CLlLlrSGIK2qVmS2OKAvKs2d2Pzxa5
+ uvjLrj0HX8CFpv2ImgoYBJBPeiBE68dlhDTmo+g9CkmgqXaJFJjX8TlY/OUb79VZiauc
+ DNBjjw4wSvtTbodFAzo2C7ZVz1TvJMVstYDOzc6AXvZZ0md4rlE7YSsUgsWnf3VJ/fB/
+ Q8NQ==
+X-Gm-Message-State: AOJu0YxOMwOkZeDVLCjUm1rC9664i29e3UJCwSQrfvycpKyFUZ53W4D4
+ dABtWey+g+z3Jbs6BRw5BVcN+g==
+X-Google-Smtp-Source: AGHT+IExCDgBOzYAioAtrJ3K4WXLhMtCinFg1Re8uCKt2nGv8i9uKcvTBzNDbEwLbtOV/Z4b86lmUw==
+X-Received: by 2002:a05:6870:c683:b0:1bf:16f7:c901 with SMTP id
+ cv3-20020a056870c68300b001bf16f7c901mr15069016oab.49.1695139661231; 
+ Tue, 19 Sep 2023 09:07:41 -0700 (PDT)
+Received: from [192.168.68.107] ([152.234.127.211])
+ by smtp.gmail.com with ESMTPSA id
+ ec1-20020a0568708c0100b001d4d8efa7f9sm6224946oab.4.2023.09.19.09.07.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 09:07:40 -0700 (PDT)
+Message-ID: <d19ae0d4-c2eb-aba4-0287-b0e5d943b7d3@ventanamicro.com>
+Date: Tue, 19 Sep 2023 13:07:37 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230918144206.560120-21-armbru@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 05/19] target/riscv/cpu.c: add .instance_post_init()
+Content-Language: en-US
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, palmer@rivosinc.com, ajones@ventanamicro.com,
+ philmd@linaro.org
+References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
+ <20230906091647.1667171-6-dbarboza@ventanamicro.com>
+ <65e9cd16-da47-05b4-d056-f8f17f109e6f@linux.alibaba.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <65e9cd16-da47-05b4-d056-f8f17f109e6f@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:4860:4864:20::32;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x32.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,77 +98,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 04:41:34PM +0200, Markus Armbruster wrote:
-> qemu_rdma_data_init() neglects to set an Error when it fails because
-> @host_port is null.  Fortunately, no caller passes null, so this is
 
-Indeed they all seem to be non-null.
 
-Before this patch, qemu_rdma_data_init() can still tolerant NULL, not
-setting errp but still returning NULL showing an error.
-
-After this patch, qemu_rdma_data_init() should crash at inet_parse() if
-it's null.
-
-Would it be simpler and clearer if we just set ERROR() for !host_port?
-
-Thanks,
-
-> merely a latent bug.  Drop the flawed code handling null argument.
+On 9/19/23 06:16, LIU Zhiwei wrote:
 > 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  migration/rdma.c | 29 +++++++++++++----------------
->  1 file changed, 13 insertions(+), 16 deletions(-)
-> 
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index d3dc162363..cc59155a50 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -2716,25 +2716,22 @@ static RDMAContext *qemu_rdma_data_init(const char *host_port, Error **errp)
->      RDMAContext *rdma = NULL;
->      InetSocketAddress *addr;
->  
-> -    if (host_port) {
-> -        rdma = g_new0(RDMAContext, 1);
-> -        rdma->current_index = -1;
-> -        rdma->current_chunk = -1;
-> +    rdma = g_new0(RDMAContext, 1);
-> +    rdma->current_index = -1;
-> +    rdma->current_chunk = -1;
->  
-> -        addr = g_new(InetSocketAddress, 1);
-> -        if (!inet_parse(addr, host_port, NULL)) {
-> -            rdma->port = atoi(addr->port);
-> -            rdma->host = g_strdup(addr->host);
-> -            rdma->host_port = g_strdup(host_port);
-> -        } else {
-> -            ERROR(errp, "bad RDMA migration address '%s'", host_port);
-> -            g_free(rdma);
-> -            rdma = NULL;
-> -        }
-> -
-> -        qapi_free_InetSocketAddress(addr);
-> +    addr = g_new(InetSocketAddress, 1);
-> +    if (!inet_parse(addr, host_port, NULL)) {
-> +        rdma->port = atoi(addr->port);
-> +        rdma->host = g_strdup(addr->host);
-> +        rdma->host_port = g_strdup(host_port);
-> +    } else {
-> +        ERROR(errp, "bad RDMA migration address '%s'", host_port);
-> +        g_free(rdma);
-> +        rdma = NULL;
->      }
->  
-> +    qapi_free_InetSocketAddress(addr);
->      return rdma;
->  }
->  
-> -- 
-> 2.41.0
-> 
+> On 2023/9/6 17:16, Daniel Henrique Barboza wrote:
+>> All generic CPUs call riscv_cpu_add_user_properties(). The 'max' CPU
+>> calls riscv_init_max_cpu_extensions(). Both can be moved to a common
+>> instance_post_init() callback, implemented in riscv_cpu_post_init(),
+>> called by all CPUs. The call order then becomes:
+>>
+>> riscv_cpu_init() -> cpu_init() of each CPU -> .instance_post_init()
+>>
+>> In the near future riscv_cpu_post_init() will call the init() function
+>> of the current accelerator, providing a hook for KVM and TCG accel
+>> classes to change the init() process of the CPU.
+>>
+>> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> ---
+>>   target/riscv/cpu.c | 42 ++++++++++++++++++++++++++++++++----------
+>>   1 file changed, 32 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>> index 7569955c7e..4c6d595067 100644
+>> --- a/target/riscv/cpu.c
+>> +++ b/target/riscv/cpu.c
+>> @@ -427,8 +427,6 @@ static void riscv_max_cpu_init(Object *obj)
+>>       mlx = MXL_RV32;
+>>   #endif
+>>       set_misa(env, mlx, 0);
+>> -    riscv_cpu_add_user_properties(obj);
+>> -    riscv_init_max_cpu_extensions(obj);
+>>       env->priv_ver = PRIV_VERSION_LATEST;
+>>   #ifndef CONFIG_USER_ONLY
+>>       set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
+>> @@ -442,7 +440,6 @@ static void rv64_base_cpu_init(Object *obj)
+>>       CPURISCVState *env = &RISCV_CPU(obj)->env;
+>>       /* We set this in the realise function */
+>>       set_misa(env, MXL_RV64, 0);
+>> -    riscv_cpu_add_user_properties(obj);
+>>       /* Set latest version of privileged specification */
+>>       env->priv_ver = PRIV_VERSION_LATEST;
+>>   #ifndef CONFIG_USER_ONLY
+>> @@ -566,7 +563,6 @@ static void rv128_base_cpu_init(Object *obj)
+>>       CPURISCVState *env = &RISCV_CPU(obj)->env;
+>>       /* We set this in the realise function */
+>>       set_misa(env, MXL_RV128, 0);
+>> -    riscv_cpu_add_user_properties(obj);
+>>       /* Set latest version of privileged specification */
+>>       env->priv_ver = PRIV_VERSION_LATEST;
+>>   #ifndef CONFIG_USER_ONLY
+>> @@ -579,7 +575,6 @@ static void rv32_base_cpu_init(Object *obj)
+>>       CPURISCVState *env = &RISCV_CPU(obj)->env;
+>>       /* We set this in the realise function */
+>>       set_misa(env, MXL_RV32, 0);
+>> -    riscv_cpu_add_user_properties(obj);
+>>       /* Set latest version of privileged specification */
+>>       env->priv_ver = PRIV_VERSION_LATEST;
+>>   #ifndef CONFIG_USER_ONLY
+> I think we should also remove riscv_cpu_add_user_properties from host cpu init.
 
--- 
-Peter Xu
+Line removed in v3. Thanks,
 
+Daniel
+
+>> @@ -1215,6 +1210,37 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+>>   }
+>>   #endif /* CONFIG_USER_ONLY */
+>> +static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+>> +{
+>> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+>> +}
+>> +
+>> +static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
+>> +{
+>> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
+>> +}
+>> +
+>> +static bool riscv_cpu_has_user_properties(Object *cpu_obj)
+>> +{
+>> +    if (kvm_enabled() &&
+>> +        object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_HOST) != NULL) {
+>> +        return true;
+>> +    }
+>> +
+>> +    return riscv_cpu_is_dynamic(cpu_obj);
+>> +}
+>> +
+>> +static void riscv_cpu_post_init(Object *obj)
+>> +{
+>> +    if (riscv_cpu_has_user_properties(obj)) {
+>> +        riscv_cpu_add_user_properties(obj);
+> 
+> Otherwise, we will enter here for host cpu.
+> 
+> Thanks,
+> Zhiwei
+> 
+>> +    }
+>> +
+>> +    if (riscv_cpu_has_max_extensions(obj)) {
+>> +        riscv_init_max_cpu_extensions(obj);
+>> +    }
+>> +}
+>> +
+>>   static void riscv_cpu_init(Object *obj)
+>>   {
+>>       RISCVCPU *cpu = RISCV_CPU(obj);
+>> @@ -1770,11 +1796,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
+>>   };
+>>   #endif
+>> -static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+>> -{
+>> -    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+>> -}
+>> -
+>>   static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
+>>                                 void *opaque, Error **errp)
+>>   {
+>> @@ -2011,6 +2032,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+>>           .instance_size = sizeof(RISCVCPU),
+>>           .instance_align = __alignof__(RISCVCPU),
+>>           .instance_init = riscv_cpu_init,
+>> +        .instance_post_init = riscv_cpu_post_init,
+>>           .abstract = true,
+>>           .class_size = sizeof(RISCVCPUClass),
+>>           .class_init = riscv_cpu_class_init,
 
