@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131377A60F8
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 13:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA52F7A610E
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 13:19:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiYgG-0002an-Oz; Tue, 19 Sep 2023 07:14:12 -0400
+	id 1qiYkl-0004yJ-6Y; Tue, 19 Sep 2023 07:18:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiYgC-0002RN-Jc
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:14:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiYgA-0005Ga-MG
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:14:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695122045;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P4n5aA1sHukdr2V7qnHPEVjSQo3hDz/PNP9LJnFyyRc=;
- b=Pdpw5SvUzUtm7G5kDJ3WzJx9hTbJo5AVNiYvvGQkzI8i3vL9DK5S4jVWCl30oT++wxQHXK
- 8v1Ey/zcBlkhGaSU0AesFfo11Vu0Q3WDqUmJ5SPe7rObutZtN5D4m5cCtP/wxJRrsmZVJU
- LloUUVGpQNdiTptWQsqmK+L6Euj1J5Y=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-55jF2UzONfirewQn6_THxg-1; Tue, 19 Sep 2023 07:14:04 -0400
-X-MC-Unique: 55jF2UzONfirewQn6_THxg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9aa05c1934aso977241866b.1
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 04:14:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qiYkZ-0004vr-5E
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:18:44 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1qiYkX-0006Qo-C4
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:18:38 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-404314388ceso58791805e9.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 04:18:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1695122313; x=1695727113; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=qHMdr9Hl7ljAtr1rL/7pB/eJ0cwmgEbSRu5B7jd4s4A=;
+ b=Q1fiXDGfZ7664R6Pu9qZIeocbcyFCtHxMZ0YOnqfv9vMFZF2A1kfNb9huPazGtNjU2
+ 2y6wU3+DJzt2/OcMYArifqMpUzEeUDAxQEgtCvwZc2sLZRq7vc5k3BKNmOhmsgAZbs9M
+ h29gNOoVfzIDUh6D0cXRVCb48kNjwKILSh0Ja0cHLbRZ1vY6rwYaaAfdZUfQ96jAA1su
+ OipJai1AzqHmsFnKQtygfCw71co1dMB+c/zb916QtMeKYL+sWV7p4HjFG1iYp6vWRGY8
+ KJ67esvOdT+Q57zvrN76iZbkxzu6kCi2L9FPSvIWCdEubI6BGH/JqrKY5oyQbnEeGcNk
+ FanA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695122043; x=1695726843;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P4n5aA1sHukdr2V7qnHPEVjSQo3hDz/PNP9LJnFyyRc=;
- b=XJBu9HYp0yFL3xxvGyUQ2L1DYZOK0Sn8MEQGX9WZBlPVR1ZqtyNm1bKRXvf+84HBFB
- pEvtn69p46LbLedjRdPb/x1oM7MzJlRtbbWKh6F668DxgEB6UAQS8aycz5i4vvVSSsbz
- e/3m0BDLP6y7nJfQjgMFMFwwn/YNdGtG7VT/DlSR84vmhyVSU7cKa4rZKj4/J/VNJ29Y
- wOn78SjBnkauBShg3gM+v6HVwmJBLF6JrR7Bn+mbzVYoNqSanKOsanO84KbWUdMNEF4p
- 5HT4e6D6NwlOUdsD9Z6jFpqd57pViEpKCYlMA9IgvgU2Vjrxesa9veqyEuLVtX+4kMsm
- r6dQ==
-X-Gm-Message-State: AOJu0YzBS5fDDvlTcJTxbAWaQ47SFJvOYRAumZyg64TdICUijQdPWsQw
- kUZFiybE+ANFnfxYezf6YFq/hv4rQ6zeyKbfW1Z2l0Z01PzKn3l8IYS8bgaEILX92vEWIFgIngK
- i11W0Gle869jyjyM=
-X-Received: by 2002:a17:907:72d1:b0:9a9:9d19:b250 with SMTP id
- du17-20020a17090772d100b009a99d19b250mr3231525ejc.17.1695122043597; 
- Tue, 19 Sep 2023 04:14:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFpSEVPtRFIMFq5ursjTmS3izd8YVLbSJwSKdOaga/tHD9W4N0IUrYmR1DzT/HGTqP9plxnMA==
-X-Received: by 2002:a17:907:72d1:b0:9a9:9d19:b250 with SMTP id
- du17-20020a17090772d100b009a99d19b250mr3231506ejc.17.1695122043247; 
- Tue, 19 Sep 2023 04:14:03 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ d=1e100.net; s=20230601; t=1695122313; x=1695727113;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qHMdr9Hl7ljAtr1rL/7pB/eJ0cwmgEbSRu5B7jd4s4A=;
+ b=ax2sdkIQGQS+DUMJAXjvO91jUcvhAEPaEVKIyKdyGZFkKcNPjC/TI8jEZKsQZBptiL
+ alHDxhfSKwJwd0QjrQ2zzQLnux/VMJiom/eLySTuoBddBueRJ4QcLRT9Z/L5WlWyHlgJ
+ lj99UiDzI9jqV9SBsm/TviNONlTkJlwKhC+dQggmDF8GIjNKy8YgI/Exvm0hVCb1TAeT
+ 27bLPlqK4FIBVW+R0AaqHPB8caFXK+3oqbdS8QWCnMlrFxVsGIfF1ZjxhqqgvJ6MS0ay
+ nZARzigMROaC/jZdBVpPGxIDXLZSlxbKJaQQgG6PZHyksf+iHgQBF7WoQjD6zYo1Kw6/
+ ix+Q==
+X-Gm-Message-State: AOJu0YziCkm4Xzh/ABY/oV8sVqlkttSa+ZheD6klcD+0IRydP6ZaPJKr
+ gmZI0IUuc45mXbnIrNz2p3KLQQ==
+X-Google-Smtp-Source: AGHT+IH37qSyvzaak/lGNfer9FWAEWTAyMs9BKviXpoRMsI9Q4Ol9imvB1/d0KGaU0uZnA+2cCQAjg==
+X-Received: by 2002:adf:f110:0:b0:319:7c7d:8d1 with SMTP id
+ r16-20020adff110000000b003197c7d08d1mr9809809wro.44.1695122312956; 
+ Tue, 19 Sep 2023 04:18:32 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
  by smtp.gmail.com with ESMTPSA id
- ks21-20020a170906f85500b0099b6becb107sm7769957ejb.95.2023.09.19.04.14.02
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 04:14:02 -0700 (PDT)
-Message-ID: <0e0923bd-01f0-e19a-c183-e6b7951fe550@redhat.com>
-Date: Tue, 19 Sep 2023 13:14:01 +0200
+ h16-20020a5d5490000000b0031773a8e5c4sm15062182wrv.37.2023.09.19.04.18.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Sep 2023 04:18:32 -0700 (PDT)
+Date: Tue, 19 Sep 2023 13:18:31 +0200
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Andreas Schwab <schwab@suse.de>
+Cc: qemu-devel@nongnu.org, Alexandre Ghiti <alexghiti@rivosinc.com>, 
+ Bin Meng <bmeng@tinylab.org>, Frank Chang <frank.chang@sifive.com>, 
+ Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@rivosinc.com>
+Subject: Re: [PATCH] riscv: Call set_satp_mode_max_supported in
+ riscv_host_cpu_init
+Message-ID: <20230919-853624bc6079021587741eb4@orel>
+References: <mvm34zavbmb.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 8/8] iotests: add tests for "qemu-img rebase" with
- compression
-Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
- den@virtuozzo.com
-References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
- <20230915162016.141771-9-andrey.drobyshev@virtuozzo.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230915162016.141771-9-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <mvm34zavbmb.fsf@suse.de>
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,40 +94,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.09.23 18:20, Andrey Drobyshev wrote:
-> The test cases considered so far:
->
-> 314 (new test suite):
->
-> 1. Check that compression mode isn't compatible with "-f raw" (raw
->     format doesn't support compression).
-> 2. Check that rebasing an image onto no backing file preserves the data
->     and writes the copied clusters actually compressed.
-> 3. Same as 2, but with a raw backing file (i.e. the clusters copied from the
->     backing are originally uncompressed -- we check they end up compressed
->     after being merged).
-> 4. Remove a single delta from a backing chain, perform the same checks
->     as in 2.
-> 5. Check that even when backing and overlay are initially uncompressed,
->     copied clusters end up compressed when rebase with compression is
->     performed.
->
-> 271:
->
-> 1. Check that when target image has subclusters, rebase with compression
->     will make an entire cluster containing the written subcluster
->     compressed.
->
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+On Tue, Sep 19, 2023 at 09:57:32AM +0200, Andreas Schwab wrote:
+> When running in KVM mode with -cpu host, cfg.satp_mode.supported is not
+> initialized, causing an infinite loop in riscv_cpu_satp_mode_finalize.
+> 
+> Fixes: 6df3747a27 ("riscv: Introduce satp mode hw capabilities")
+> Signed-off-by: Andreas Schwab <schwab@suse.de>
 > ---
->   tests/qemu-iotests/271     |  65 +++++++++++++++
->   tests/qemu-iotests/271.out |  40 +++++++++
->   tests/qemu-iotests/314     | 165 +++++++++++++++++++++++++++++++++++++
->   tests/qemu-iotests/314.out |  75 +++++++++++++++++
->   4 files changed, 345 insertions(+)
->   create mode 100755 tests/qemu-iotests/314
->   create mode 100644 tests/qemu-iotests/314.out
+>  target/riscv/cpu.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index f227c7664e..bb8dc3bb40 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -623,8 +623,10 @@ static void riscv_host_cpu_init(Object *obj)
+>      CPURISCVState *env = &RISCV_CPU(obj)->env;
+>  #if defined(TARGET_RISCV32)
+>      set_misa(env, MXL_RV32, 0);
+> +    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
+>  #elif defined(TARGET_RISCV64)
+>      set_misa(env, MXL_RV64, 0);
+> +    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+>  #endif
+>      riscv_cpu_add_user_properties(obj);
+>  }
+> -- 
+> 2.42.0
+>
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+This should be fixed by
 
+https://lore.kernel.org/all/20230911064320.939791-37-alistair.francis@wdc.com/
+
+Thanks,
+drew
 
