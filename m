@@ -2,76 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FFA7A5E80
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:46:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CF27A5E7B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:45:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXId-0005d0-1e; Tue, 19 Sep 2023 05:45:43 -0400
+	id 1qiXIf-0005gw-P9; Tue, 19 Sep 2023 05:45:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qiXIE-0005R5-J0
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:45:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qiXIC-0007iw-CA
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:45:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695116715;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=V1mP29WFUX97+g1j0GENZgYcEtjWxZ7dHu7PUEU0WXI=;
- b=MzDyViMLTSP0X2QNOMG7wVHScyyO8ZMa7qaDb2YSFRJsYTE4cR0Wp4PiUyj0QXFYzcJFzF
- 2gpm2JirvWlfeRUVQSLVREnx8lAUUMlxrLZI+F+ZBdmgYDyrnBFk0JjVBQhlGSUllGSlSQ
- LMF5+vH7iVWMbEOptdK/wvMUVFj8nKc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-134-1ckR902UOiaT0vEMdhORnA-1; Tue, 19 Sep 2023 05:45:10 -0400
-X-MC-Unique: 1ckR902UOiaT0vEMdhORnA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF7523C0C480;
- Tue, 19 Sep 2023 09:45:09 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.90])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 47482140E950;
- Tue, 19 Sep 2023 09:45:06 +0000 (UTC)
-Date: Tue, 19 Sep 2023 11:45:05 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
- vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com,
- pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
- anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, stefanha@redhat.com, fam@euphon.net,
- quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- kraxel@redhat.com, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH 4/7] block/dirty-bitmap: Clean up local variable shadowing
-Message-ID: <ZQltoZWlnIW/wDi3@redhat.com>
-References: <20230831132546.3525721-1-armbru@redhat.com>
- <20230831132546.3525721-5-armbru@redhat.com>
- <ZQQNUjN4Laf+k1Nk@redhat.com> <8734za4stm.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiXIK-0005TL-Ul
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:45:29 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qiXII-0007jz-JX
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:45:24 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9a21b6d105cso684436966b.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:45:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695116720; x=1695721520; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=bYEPH9H522raezzc3AZZVPfHqXxjixe1n2JjIc16jdo=;
+ b=DJz3cIGij4dSRg2G01/izA0xKxuc+RTygFlwtx33UFgixnn/TLB/Lw1Mvy+3zVVAwi
+ QW0ebHLMC0DITDexL0A/HG3PkkAF40UhM+KGcVacbrhY32akRffLlnCfvFMVjisRoMa1
+ E0rQFUR4gySaKcN3TVd2XNXScbnlgw8XBmDA3UiwSp5VOhgBPoPbFTYAVe/XedcygKSR
+ MGBUL+ggV8eajHIkcfFFb8tZlYuVGe/xn+F+luuwF5BTl2Vdp+i+hE0aNv0GShmbfUtx
+ qnqu+n2wFJ0gYeyD/LadNWugW+8ZEK7H0auoZHmdIWPF0II4aoDCjZZe2tUqba6DKTuy
+ D6Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695116720; x=1695721520;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=bYEPH9H522raezzc3AZZVPfHqXxjixe1n2JjIc16jdo=;
+ b=dabWqKptbJCkPuY8GtwDgeSsRxPQdVXLbZMGr/YeRPQO3T1CGz/MPxU3Q6qMs+bkj9
+ V8Gie/rDA/6dBII+g+SkG0U0vwvHgRh+D/sWcZTanQrxm5kPKfQj5Px5JaQ6welrszWe
+ 0DCAUblMqx3RSLfWcqivW/j/NPuUeFgJ9BJ0KIF1ttqENM675dklDS+hqyo4aFRD5szi
+ qNpPqEY9Rw2pCdNQVhhQo2kGoNS7reQEOxvbr/Mk3k/+zLRN5WP1UaD/Y27Q3OmTnuD2
+ ksRUVv2Jc1I5LJafCnpLFqDFPeABbNdjCH/9juM5mSZwR5kbKJ3c5MmFmEuUmcxnDmyq
+ sJLA==
+X-Gm-Message-State: AOJu0Ywah3IvnbDfW/T+hzCql6xF6E71z4xt3BKbPcptvQPgF7PYS8zV
+ fvMGZ5AcUIFTKZ/mQY4sRcZXnw==
+X-Google-Smtp-Source: AGHT+IFxYmvtST17YOIwX0h2FEIAlWNZNWrK82yfj8JlQuv+BhVLoeGISj1I7hHAjdEntQN2AYLk8g==
+X-Received: by 2002:a17:906:8a6b:b0:9ae:3a68:93e8 with SMTP id
+ hy11-20020a1709068a6b00b009ae3a6893e8mr311736ejc.14.1695116719877; 
+ Tue, 19 Sep 2023 02:45:19 -0700 (PDT)
+Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ kg28-20020a17090776fc00b00992d122af63sm7532845ejc.89.2023.09.19.02.45.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 02:45:19 -0700 (PDT)
+Message-ID: <ae9aea50-5ed7-9a59-2183-435d5a5ba31d@linaro.org>
+Date: Tue, 19 Sep 2023 11:45:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8734za4stm.fsf@pond.sub.org>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v3 21/39] accel/tcg: Remove env_tlb()
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: anjo@rev.ng
+References: <20230916214123.525796-1-richard.henderson@linaro.org>
+ <20230916214123.525796-22-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230916214123.525796-22-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,64 +93,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 19.09.2023 um 07:48 hat Markus Armbruster geschrieben:
-> Kevin Wolf <kwolf@redhat.com> writes:
+On 16/9/23 23:41, Richard Henderson wrote:
+> From: Anton Johansson <anjo@rev.ng>
 > 
-> > Am 31.08.2023 um 15:25 hat Markus Armbruster geschrieben:
-> >> Local variables shadowing other local variables or parameters make the
-> >> code needlessly hard to understand.  Tracked down with -Wshadow=local.
-> >> Clean up: delete inner declarations when they are actually redundant,
-> >> else rename variables.
-> >> 
-> >> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> >> ---
-> >>  block/monitor/bitmap-qmp-cmds.c | 2 +-
-> >>  block/qcow2-bitmap.c            | 3 +--
-> >>  2 files changed, 2 insertions(+), 3 deletions(-)
-> >> 
-> >> diff --git a/block/monitor/bitmap-qmp-cmds.c b/block/monitor/bitmap-qmp-cmds.c
-> >> index 55f778f5af..4d018423d8 100644
-> >> --- a/block/monitor/bitmap-qmp-cmds.c
-> >> +++ b/block/monitor/bitmap-qmp-cmds.c
-> >> @@ -276,7 +276,7 @@ BdrvDirtyBitmap *block_dirty_bitmap_merge(const char *node, const char *target,
-> >>  
-> >>      for (lst = bms; lst; lst = lst->next) {
-> >>          switch (lst->value->type) {
-> >> -            const char *name, *node;
-> >> +            const char *name;
-> >>          case QTYPE_QSTRING:
-> >>              name = lst->value->u.local;
-> >>              src = bdrv_find_dirty_bitmap(bs, name);
-> >
-> > The names in this function are all over the place... A more ambitious
-> > patch could rename the parameters to dst_node/dst_bitmap and these
-> > variables to src_node/src_bitmap to get some more consistency (both with
-> > each other and with the existing src/dst variables).
+> The function is no longer used to access the TLB,
+> and has been replaced by cpu->neg.tlb.
 > 
-> What exactly would you like me to consider?  Perhaps:
-> 
-> * Rename parameter @node to @dst_node
-> 
-> * Rename which parameter to @dst_bitmap?
+> Signed-off-by: Anton Johansson <anjo@rev.ng>
+> Message-Id: <20230912153428.17816-9-anjo@rev.ng>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> [rth: Merge comment update patch]
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/exec/cpu-all.h       | 11 -----------
+>   tcg/aarch64/tcg-target.c.inc |  2 +-
+>   tcg/arm/tcg-target.c.inc     |  2 +-
+>   3 files changed, 2 insertions(+), 13 deletions(-)
 
-Parameter @target to @dst_bitmap (it's the name of a bitmap in
-@node/@dst_node)
-
-> * Rename nested local @node to @src_node
-> 
-> * Rename which local variable to @src_bitmap?
-
-@name to @src_bitmap (it's the name of a bitmap in the local
-@node/@src_node)
-
-> * Move nested locals to function scope
-
-I don't really mind either way, but yes, maybe that would be more
-conventional.
-
-That you couldn't tell for two of the variables what they actually are
-probably supports the argument that they should be renamed. :-)
-
-Kevin
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
