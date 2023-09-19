@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3A57A5AE7
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 09:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFA47A5BD1
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:01:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiVAP-0004XP-O8; Tue, 19 Sep 2023 03:29:05 -0400
+	id 1qiVfa-0004ad-Nt; Tue, 19 Sep 2023 04:01:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiVAM-0004Ww-VN; Tue, 19 Sep 2023 03:29:02 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1qiVfY-0004Zm-1V; Tue, 19 Sep 2023 04:01:16 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiVAK-0004ob-V5; Tue, 19 Sep 2023 03:29:02 -0400
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ id 1qiVfV-0003Ke-QD; Tue, 19 Sep 2023 04:01:15 -0400
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J6gMGX020219; Tue, 19 Sep 2023 07:28:48 GMT
+ 38J7aWFm024704; Tue, 19 Sep 2023 08:01:00 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=SnB4gnDjTRb9Z/MRXzN3Bt/s3mWoxhQqRUgwJ1+hT2Q=;
- b=HXrg0uV8v/NWBjURuKUSGnZN67C7K8DVjZjkolpvy3ou7qe//4KV8ojWSPMgD+ZPCyhO
- VznndsDnjqcu0LdY0eMLux3U0zez+ZLtMZVnpCzoXf4o4pQfkLLkWyW9iC3dk5BYTRGQ
- EOJRbzwo7fiRNj2b8/RK7AlStRRmRLTeOqIO0s3SnVC1noo0Egb8KHWGoSxvVpXdGt+O
- 9nAIpHlLxrB16uHhcqEHdpmPfo7jZTwkXGsacamNre72kQPCRZy7YHHjgXEqw6aSc5cx
- pNuVqJnQDydFUax+mtW3Aa7YXmC9AjlnAm+hnfe0DoFpf/QEi8XNrAIPX//JsVB0Saw3 1A== 
+ bh=UhqpX2ON6FgWpFobSCYhxhwvQ3DY53oGM9cA3DhBO1I=;
+ b=lHuffbvIqZzxGXf2oABUHSPD963ui2p8F0xNtEqeA16TZyhC2Hkx2UmM+37dOQ0hUTZX
+ rJX4DIMQVsPx8Ry/YSt7/vJb+4UCbLO7KetC2TfFfV+9nRtvgZ0+Bj2QH0+BWwd2/tlg
+ 8C2AYl4qV0qHU1JbkWovRuHCzxrbafl77DyeWAIl41f1D8JIjIl0VLeqrTpHiiNbcap0
+ dPkxFKNCKxMDVrNczKazO6X5FNBfilgtR7rU1CKIgCDhOnFxb1REUfqf6TGar6BU7VEq
+ HO3fRfV9FcENrWBqbYIL9SvwoXOrj1BzX7ae0/jr7k9tbVivu23wkTashWjGX/yrbTxP NA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t76kws3uc-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t76bwaarw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 07:28:47 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J79Vre003630;
- Tue, 19 Sep 2023 07:28:47 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t76kws3u6-1
+ Tue, 19 Sep 2023 08:01:00 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J7aeMg025270;
+ Tue, 19 Sep 2023 08:01:00 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t76bwaanj-4
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 07:28:47 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J5Vclp016436; Tue, 19 Sep 2023 07:28:46 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3t5sd1sdxu-1
+ Tue, 19 Sep 2023 08:01:00 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J6cJdG031203; Tue, 19 Sep 2023 07:31:00 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t5r6khuc3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 07:28:46 +0000
+ Tue, 19 Sep 2023 07:31:00 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
  [10.241.53.105])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38J7SjLw3080832
+ by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38J7UxDd40829464
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Sep 2023 07:28:45 GMT
+ Tue, 19 Sep 2023 07:30:59 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2C0DB58059;
- Tue, 19 Sep 2023 07:28:45 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2EBBC58043;
+ Tue, 19 Sep 2023 07:30:59 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A34D158043;
- Tue, 19 Sep 2023 07:28:42 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id C9BEB58059;
+ Tue, 19 Sep 2023 07:30:56 +0000 (GMT)
 Received: from [9.109.242.129] (unknown [9.109.242.129])
  by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 19 Sep 2023 07:28:42 +0000 (GMT)
-Message-ID: <56a18122-ed29-ddc5-03f7-6e539a9f46f2@linux.ibm.com>
-Date: Tue, 19 Sep 2023 12:58:41 +0530
+ Tue, 19 Sep 2023 07:30:56 +0000 (GMT)
+Message-ID: <f7027884-9f5b-42a1-9adf-415c1f8311d2@linux.ibm.com>
+Date: Tue, 19 Sep 2023 13:00:55 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH 3/8] spapr: Clean up local variable shadowing in
- spapr_dt_cpus()
+Subject: Re: [PATCH 4/8] spapr: Clean up local variable shadowing in
+ spapr_init_cpus()
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
@@ -77,25 +77,25 @@ Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
 References: <20230918145850.241074-1-clg@kaod.org>
- <20230918145850.241074-4-clg@kaod.org>
+ <20230918145850.241074-5-clg@kaod.org>
 From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230918145850.241074-4-clg@kaod.org>
+In-Reply-To: <20230918145850.241074-5-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1eZJFaQEiENxRH1JFKZ454joAY9yi3vD
-X-Proofpoint-ORIG-GUID: vaJij-elbWp7sB5GWnJJH-oBGg2QvBcD
+X-Proofpoint-ORIG-GUID: BAlCEh9xHTWbesHX8nG9eyiNotGL1R1R
+X-Proofpoint-GUID: UaYOcxT5mBhQweIjzY9oD1yR1vz4-569
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-19_01,2023-09-18_01,2023-05-22_02
+ definitions=2023-09-19_02,2023-09-18_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- spamscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- clxscore=1015 priorityscore=1501 mlxlogscore=934 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309190059
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ impostorscore=0
+ mlxlogscore=757 bulkscore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ malwarescore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2308100000 definitions=main-2309190062
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -34
 X-Spam_score: -3.5
 X-Spam_bar: ---
@@ -121,85 +121,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 9/18/23 20:28, Cédric Le Goater wrote:
-> Introduce a helper routine defining one CPU device node to fix this
-> warning :
+> Remove extra 'i' variable to fix this warning :
 > 
->    ../hw/ppc/spapr.c: In function ‘spapr_dt_cpus’:
->    ../hw/ppc/spapr.c:812:19: warning: declaration of ‘cs’ shadows a previous local [-Wshadow=compatible-local]
->      812 |         CPUState *cs = rev[i];
->          |                   ^~
->    ../hw/ppc/spapr.c:786:15: note: shadowed declaration is here
->      786 |     CPUState *cs;
->          |               ^~
+>    ../hw/ppc/spapr.c: In function ‘spapr_init_cpus’:
+>    ../hw/ppc/spapr.c:2668:13: warning: declaration of ‘i’ shadows a previous local [-Wshadow=compatible-local]
+>     2668 |         int i;
+>          |             ^
+>    ../hw/ppc/spapr.c:2645:9: note: shadowed declaration is here
+>     2645 |     int i;
+>          |         ^
 > 
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/ppc/spapr.c | 36 +++++++++++++++++++++---------------
->   1 file changed, 21 insertions(+), 15 deletions(-)
-> 
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index de3c616b4637..d89f0fd496b6 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -780,6 +780,26 @@ static void spapr_dt_cpu(CPUState *cs, void *fdt, int offset,
->                                 pcc->lrg_decr_bits)));
->   }
->   
-> +static void spapr_dt_one_cpu(void *fdt, SpaprMachineState *spapr, CPUState *cs,
-> +                             int cpus_offset)
-> +{
-> +    PowerPCCPU *cpu = POWERPC_CPU(cs);
-> +    int index = spapr_get_vcpu_id(cpu);
-> +    DeviceClass *dc = DEVICE_GET_CLASS(cs);
-> +    g_autofree char *nodename = NULL;
-> +    int offset;
-> +
-> +    if (!spapr_is_thread0_in_vcore(spapr, cpu)) {
-> +        return;
-> +    }
-> +
-> +    nodename = g_strdup_printf("%s@%x", dc->fw_name, index);
-> +    offset = fdt_add_subnode(fdt, cpus_offset, nodename);
-> +    _FDT(offset);
-> +    spapr_dt_cpu(cs, fdt, offset, spapr);
-> +}
-> +
-> +
->   static void spapr_dt_cpus(void *fdt, SpaprMachineState *spapr)
->   {
->       CPUState **rev;
-> @@ -809,21 +829,7 @@ static void spapr_dt_cpus(void *fdt, SpaprMachineState *spapr)
->       }
->   
->       for (i = n_cpus - 1; i >= 0; i--) {
-> -        CPUState *cs = rev[i];
-> -        PowerPCCPU *cpu = POWERPC_CPU(cs);
-> -        int index = spapr_get_vcpu_id(cpu);
-> -        DeviceClass *dc = DEVICE_GET_CLASS(cs);
-> -        g_autofree char *nodename = NULL;
-> -        int offset;
-> -
-> -        if (!spapr_is_thread0_in_vcore(spapr, cpu)) {
-> -            continue;
-> -        }
-> -
-> -        nodename = g_strdup_printf("%s@%x", dc->fw_name, index);
-> -        offset = fdt_add_subnode(fdt, cpus_offset, nodename);
-> -        _FDT(offset);
-> -        spapr_dt_cpu(cs, fdt, offset, spapr);
-> +        spapr_dt_one_cpu(fdt, spapr, rev[i], cpus_offset);
 
-Do we want to replace the call to spapr_dt_cpu in
-spapr_core_dt_populate() with the _one_ as well?
-Not sure about the implication of additional instructions there.
-
-Also, could this code insider wrapper become part of spapr_dt_cpu() itself?
-If can't, do we want a better renaming of wrapper here?
-
-Otherwise,
 Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
+> ---
+>   hw/ppc/spapr.c | 2 --
+>   1 file changed, 2 deletions(-)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index d89f0fd496b6..41ce7de77c14 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -2665,8 +2665,6 @@ static void spapr_init_cpus(SpaprMachineState *spapr)
 >       }
 >   
->       g_free(rev);
+>       if (smc->pre_2_10_has_unused_icps) {
+> -        int i;
+> -
+>           for (i = 0; i < spapr_max_server_number(spapr); i++) {
+>               /* Dummy entries get deregistered when real ICPState objects
+>                * are registered during CPU core hotplug.
 
