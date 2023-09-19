@@ -2,135 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94F87A5DE9
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C07947A5E00
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:33:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiX1v-0008NY-EE; Tue, 19 Sep 2023 05:28:27 -0400
+	id 1qiX69-00024k-9P; Tue, 19 Sep 2023 05:32:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qiX1r-0008MZ-VT; Tue, 19 Sep 2023 05:28:23 -0400
-Received: from mail-dbaeur03on2070b.outbound.protection.outlook.com
- ([2a01:111:f400:fe1a::70b]
- helo=EUR03-DBA-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qiX1n-0002IP-Sz; Tue, 19 Sep 2023 05:28:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JWwx3Fuu//jQ1UvcX12e3/txCnC5xazEQ17Mg637lKaXtQgmbB9Wv6bbaNFwRvPOVYi/0/LO7lUzw3iuoQDWu44uisaJGTDpdW9w8DetknBze1X0HU+ZfvyldnV+44YQKDJgHKt1jfLohklrTV/A3wyIqzYdpJrB8ZgAJvAJSUUlj2w3igVOC13mSFEtrio9MEc+JrOrTtvlh4z29P8glYeeELqKSMjtNBcwVyG9uXUQNQlHAB2ZMTow/3rMaBq7Dh+meKOEeRITZ+CTXjOGSz7kk1Q1nnU7WptH8MxGp7uakfZQw90dx3WiY/UO0Gn/Omh8FQ+mD6Eci2ftRyv0KA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+5kqy7jmA3PjgtR6mJjTiSPiboMCJ4kHCjDu7ulnVo8=;
- b=iDIL++aATfeGt22CblLLZR8n85yrh1c2e2rm5yvTl7B4enzwEKMjYba+l8GTwNzJ5SNcfoSgYdyDdzwXnwz5ItXG0C1iiGALTbkO3IlBModU0xCNWKzjjtJ5ghj1xJN+UMTAYzIVlKszh61rJSWdfe0sqQlP5nKH7yOLqO9h2tKWC9do0SBPT6ComAsZyIHrPestVELaM9Q3tz10kLN/cqIpOKl1NSEplxTckXieQ8mS3TyaKi4ICMabwBLycVuYoQ97/ghgkBAfRO7REcIkN0/UnsFXyhoajADeZJlKD8ci/RUHePKWLAw3c9kPQ+NeNtEBGoOWQo4PKpYj3AVBKA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+5kqy7jmA3PjgtR6mJjTiSPiboMCJ4kHCjDu7ulnVo8=;
- b=DmarEY6u1hd9loYk2IjoGKRDScQNHNKvryVwPMuAAAB7h1FJ8QAcfCL/BCGtZuAefhuAxmQFfR1GJjCj4CmwL0WCG2Hiaq7Y2VeQUVXGOtPxjN34RTuj0ClANV3fsilrJrPnDrCHg2lM4Ykat4ROpWdVG5NPlNWfzJf0gNoXtn1gnOuyCwJZxhEX7lnsNyKLGL36XUC733iJjw0ihA2Kl0BNMafAMN1iKXmzRal/d0w7umHDhWQ8Usx2MGYfhnT4d8iO+2mr0mAwX+y9WE5yVDyDTFxBmRllEQJniJOGj1XQBpFPFw6b01dCreBxhke0ZaLSPh+iF09FYb3NzRnldA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
- by AS4PR08MB7854.eurprd08.prod.outlook.com (2603:10a6:20b:51d::5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.26; Tue, 19 Sep
- 2023 09:28:14 +0000
-Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
- ([fe80::182f:4e2b:f999:1d9b]) by AS8PR08MB7095.eurprd08.prod.outlook.com
- ([fe80::182f:4e2b:f999:1d9b%6]) with mapi id 15.20.6792.026; Tue, 19 Sep 2023
- 09:28:14 +0000
-Message-ID: <bd85dfee-68c1-eb2e-1455-2e01282b0771@virtuozzo.com>
-Date: Tue, 19 Sep 2023 11:28:06 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qiX5w-00022q-RA
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:32:37 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qiX5v-0003e5-Ae
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:32:36 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-99c3d3c3db9so741557766b.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:32:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695115953; x=1695720753; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=R4sNG1NHIKjSfKysubHkR5QNe2PHYsgczQsxCB5WQGc=;
+ b=wOXa2l7ImeaRon3WSKkNoz2xECmhhEucoBMZgIHaZv068mwDmmHqU31nTrBjYJTDOD
+ WyTyDSQ43WlNGYxp5a/rYSGTPMQba8HjF2fxrQM3N9DGAP7f02qiNMbRrBNmgvjZRYnC
+ 3LJIBn5PLgaqWguc2kviBThDXyAnMTFiabe0LMrsoMNjoFih+WBAoYD4iZH2y2pvrfF5
+ xi2U0vNBZE/hDi2/yciD5eA+pIpizDCP4y5KlV7V1N4g4IiasLvIA9e1OV0y0Zc09buU
+ /UJZMduiq3/VF5O07zZohkxt84a2Y6KYqXyxinC7pugP9QJjbQmMCd6S9sL9kxIiItn/
+ NSpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695115953; x=1695720753;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=R4sNG1NHIKjSfKysubHkR5QNe2PHYsgczQsxCB5WQGc=;
+ b=Sf4pg+/iIyVFdOC/0HEy6SMu6ptpvBKO/G0qAfYyAm6L4N5VoVI4ZYUgOEJpYq58zc
+ dVHNDIUExCuw36a+WeStHO34j1U/eQYBkyMsPppFqyL9l4tkLx18Qu702rwh0xnWguPS
+ 4PNd5EGmQLGUZCsHvNeDPUB4gKyOFDdf70+t3al3oF+gxUDQqSmpcT91xAmkeQOHcRhm
+ B59rjbZNEb8wHEtFxQy2mcKW3aRvcE1sS9fTbVbMCxsBd+biYK59Gtlj5tWfDbEDkHm2
+ hJOHk7EmJxS0bI0Isher+EqvSMV2hlSeMdJ+9eN8pxjUst+isY6DAB6UgLXg4MChp0PD
+ cI5g==
+X-Gm-Message-State: AOJu0Yz5G341SmjU+yyYm9XPqbOkdnDIDAzBsOcHKHZiEbHbSwuOkoYm
+ 3oQDBYMsqvtsk/PXeQzI2PKWNSv5KZJBh1a1lbFRUY7E
+X-Google-Smtp-Source: AGHT+IEaeac144n73wk75ZxHBxKiFR6LuMYhWbIHB6aLxvzqmImgYbSiqWOFZoKtNAjFNJ74fI9p/A==
+X-Received: by 2002:a17:906:7385:b0:9a6:6011:2c09 with SMTP id
+ f5-20020a170906738500b009a660112c09mr9227216ejl.68.1695115953243; 
+ Tue, 19 Sep 2023 02:32:33 -0700 (PDT)
+Received: from [172.20.66.192] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ u22-20020a170906409600b0099d9dee8108sm7679695ejj.149.2023.09.19.02.32.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 02:32:32 -0700 (PDT)
+Message-ID: <b400a0fc-cfef-66fb-824d-c245de82a33c@linaro.org>
+Date: Tue, 19 Sep 2023 11:32:31 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 03/22] parallels: fix memory leak in parallels_open()
-To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, mike.maslenkin@gmail.com
-References: <20230918180100.524843-1-den@openvz.org>
- <20230918180100.524843-4-den@openvz.org>
+Subject: Re: target/sparc: What is CPU_FEATURE_FLOAT128 for?
 Content-Language: en-US
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-In-Reply-To: <20230918180100.524843-4-den@openvz.org>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, Laurent Vivier <laurent@vivier.eu>
+References: <59e5fc47-cd15-f7b5-a0f7-c0620de33576@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <59e5fc47-cd15-f7b5-a0f7-c0620de33576@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR09CA0127.eurprd09.prod.outlook.com
- (2603:10a6:803:12c::11) To AS8PR08MB7095.eurprd08.prod.outlook.com
- (2603:10a6:20b:402::11)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|AS4PR08MB7854:EE_
-X-MS-Office365-Filtering-Correlation-Id: 861a5b84-ee03-4c1b-d36d-08dbb8f2bfdd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 4QzXwM8OC6RlMkUOfXgpOFZ91hWYD0Y369+z/LIv5aUiqzC27gEdWuuqzcqePCX0tbVH8DDCfLY0YLM/m/9i7Dnz0fERGqeEWOhf7fyTE08EYHS4ugX6AfehWH1m2g17UD/9fr0/OQauh0YG/iERKPuGbDqA0g0RovjuYUSA00BPZucYzkQtVBNwBLA5IdUc4aIWPBjgOqplRHrdDeKpJgCjciZDfpR7tPNLNew3NFGgh9wkCCtdQYGADHL137IsTimRWPXUY6FkIz177tbRbwtZJvDqJF7um2L5x38/NML6/ZIzujl7vv7+w+DBw1LTXsvlkj5MDCMFyFXDKDat3boLCdMeqkrHYNnxyspW2p0VssuQN3C3TndqPcuyGH95DREdjLJ5PZMtEifboLwpM1+6lZEW1fIoiKGxHOLFcXtCO5QRvdYIbUyKqqDDReLX0UDN/IONDVw88YTJqOgAyEYr0xI/NTc/NgtUze0ij2QDib8QgovJE2gWiBuFXT/4b6uZ8xezVA1J+02D4TL2Bamg5tp0DxEvyGwh8/iqHAe8/fw+AfBA2QUR/+nPYB3XE7QV55Uw53oXOo2cWCfCAZYk4EA9lfC4XeqeQAuFsCLoAZ48JTFk2Ld810aiA+798n26sDtX3EQ/v4dX9gBwWsHWH8rVpPd45I+p7FHY5fc/NZV+7qflsAv31BW0q78T
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39850400004)(366004)(136003)(376002)(396003)(451199024)(186009)(1800799009)(41300700001)(31686004)(8676002)(8936002)(4326008)(2616005)(38100700002)(38350700002)(66946007)(66556008)(66476007)(316002)(6512007)(83380400001)(478600001)(44832011)(5660300002)(26005)(52116002)(53546011)(6486002)(6506007)(6666004)(2906002)(86362001)(31696002)(4744005)(36756003)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Smc1UllvZncxSlY5eVc2LzRIeUFEOEp3QldzYVRQemFGZHpTWDBkeERXTnNt?=
- =?utf-8?B?RVRMMmhSS3BOQlcwRDBKRFh4UEY5WEEvZXRLY0tVVEh4LytydEJzRGVVb1Fw?=
- =?utf-8?B?dEdVZFBHL05xYkJlWmtzY2luUHZyVzZXZVFhNEVtRG04aVNMTzU2Nm9CZ0Q2?=
- =?utf-8?B?bWJQaUV5Y1UydDZsQVJNYWtDMWFWUVQ4Mk1oWXVOUUtmb21sRm5VYzNTTEwz?=
- =?utf-8?B?V29LTzhqSDBhV2tMSS9tbElMazNRTEdmMUdmcGhIWlp2bTBLbmhMcmMyZXk0?=
- =?utf-8?B?SUZmR1lCVitiQlQxZ01jeWpEc0dyTzZTYVFmTlZ5MDNCUjkwb2d5TW90SHdV?=
- =?utf-8?B?QS9WUlZNNHJScHR2Nkp6ckFPL1FPNkplbEh2b2xENmwvR2VNK1NGVXVuVVBz?=
- =?utf-8?B?dzI1NU1jb01wVEtkUHRkUUZlanBiTFQxKyszYk40RzNwMU5aKzRsN3ZhK1ox?=
- =?utf-8?B?eVFCNW00bC9mRlZmK1NuSlN0YnpxM1lDY1BDMXdUaFFCMXFmWTErYXFqb0JP?=
- =?utf-8?B?b0lSb1RRcXJuSkVOZmd4VXkvaWVFejJ1akNidXdXdU9HNHVmN0JzWmE1NFNx?=
- =?utf-8?B?NFlad0ZUQ2ozL3NqQXhsaEdIekQ4V2ZHNzk5N1NIeThXRVNkdHpKWW9VVEMr?=
- =?utf-8?B?WXY4VSs1bGhpUnpvbHhXRlFhYU1ZbXRJYk0yWE5FVDk5VjFwUDVib3Q1dzA1?=
- =?utf-8?B?aTI3YmlTbWVFWElyYXNQVEpjMG0rM015SGJ0K0tXa1JNbVlaTEx5T0UzMUtS?=
- =?utf-8?B?cGpVbE4vWjU0eWVVTkZPQzk3VlcxY2tzRktyVVBzS09KR2d0NzJzeGRxVUg4?=
- =?utf-8?B?MWI4cmpuT1NJRlFDK2VuSWlWbGdrZTc3cjN3UmFwVjlKeFlUZ0Z3NGNCMjll?=
- =?utf-8?B?WXprN1FlVjh4TjlrZ0JjTjQzR3Z5SDlOM1ZNR08xdXQwQkZ4OGhJN20vRTRx?=
- =?utf-8?B?UVY3VFNHWktDUHAzK2lQanRDL1FZUEQwUDV0elNDR01iKzRBTlNVVFJQd0xk?=
- =?utf-8?B?M2RZbmlnbmMraTBtVzNzTWp3V3dYVE12V1JTQUh4U044YVJ4RWtCMDUwS1po?=
- =?utf-8?B?eFRiMkRJc2RXZzkrdG1MekdMUHp4SDErbkJodUpuNE92ZWNWOXluWjZsL0hz?=
- =?utf-8?B?RE1HdWI1WlkxNGxESTJkdjd1UlIrOGpWUXFMOU16VE5Xem9LL29GRnY5dW5R?=
- =?utf-8?B?bWlGUG9xdHpWZ0Y0dmc3RUFRcHhIUTNsUzJ3WFFJc1g2dzZWd1ZTZU14WHZl?=
- =?utf-8?B?TmRnaWdDeG1iK2Uzb1Mva2ZNY0RFMEZCWWVZd0tuSU5aNlJiVEpLNUhld3Zv?=
- =?utf-8?B?MFBtTmpkTm1lZDN0UEp3a2U4N3VvbWZVNEpkd1lvUVNzWGUrcVBXVWpEWVVT?=
- =?utf-8?B?d0FZNDVua3FMcjlpb1l2TytZaHRMTG1UVjVtT2E5eHc4SFB3QzZPS01Jb0xq?=
- =?utf-8?B?Y2gwRlRoZ1hVT2J5ajBJYUNWMmdEbWhyRVFIM0p1T0hRNDYzOERHM2NUTmpL?=
- =?utf-8?B?bGJEdHM0Wi9CYUFTNWtJVUdVdkhKNGVWUkpFS2w4WTdpUjF4OEgyb0ZJWkUx?=
- =?utf-8?B?c2UxMXVZOWZwVkVWbzV2TnJ1QVZFNloxOFhJYmlqa1RqRitCMTkyV3JiYVVE?=
- =?utf-8?B?Mm1sU0xwMFJhb1NHRFozeDREYlBKZjR0MENKaXpuU3pyaHhYN3psUXlNV0k0?=
- =?utf-8?B?VEtNTmJES2JISXk3eCtBSkpkZm1yRnlmeXVIak1yakVNM21uN0tqZVZTaER6?=
- =?utf-8?B?SkU1YzZ0WXMrblhaU3VnZHBOd0VCNE52VVhrQmpFS2loV1BVRGpXVzFjMEZz?=
- =?utf-8?B?bnlXdnhJM2g0ODlRZGlsalZwWVdRV1VUTTNCV2pKcEtUb0dZYmxLVEN3WWIw?=
- =?utf-8?B?NUZFVUoxY2h6TW5rV0ViYzQ4Um9FZXdVa0w2WlAzYnJ2SEg3S24zSXVITVE0?=
- =?utf-8?B?NlpYaVhyaCsxL1Q5bitTdnBJM2RPMDJoSEtuYXMzVUxYN0ZzTTMxTzVNRjZq?=
- =?utf-8?B?b09FUnFZeEZLSzVNQWRaSVRzR1lzOERpVmNBUWk1SXpjVEVRa0s3Z3M3akI5?=
- =?utf-8?B?eWdOMnRxWXNkaE9PU0ZodG92eE1DaW5CaEg2aE1jazlObWJaNlRTYmsySlcw?=
- =?utf-8?B?RFd1QlZpOXlXdVJaeXlpcVE3YWo3cVdPc3M5UlVEMFQ2Y0FibjZ4UEhRVCtx?=
- =?utf-8?Q?td5FCK/uV9QZHRtINVZl7AQ=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 861a5b84-ee03-4c1b-d36d-08dbb8f2bfdd
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 09:28:14.4977 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e8B7heGZkv6WbyJujVNjHAAJKDr0f6swk85i2ryZCiXSkMDy9sgiWJ2JtBntFSoBu9ld6VNCZNoAfhSzIE5v2Dy57BsCx9XhdKfqwpU0VXo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7854
-Received-SPF: pass client-ip=2a01:111:f400:fe1a::70b;
- envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR03-DBA-obe.outbound.protection.outlook.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,31 +96,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/18/23 20:00, Denis V. Lunev wrote:
-> We should free opts allocated through qemu_opts_create() at the end.
->
-> Signed-off-by: Denis V. Lunev <den@openvz.org>
-> ---
->   block/parallels.c | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/block/parallels.c b/block/parallels.c
-> index 428f72de1c..af7be427c9 100644
-> --- a/block/parallels.c
-> +++ b/block/parallels.c
-> @@ -1217,6 +1217,7 @@ fail_format:
->   fail_options:
->       ret = -EINVAL;
->   fail:
-> +    qemu_opts_del(opts);
->       /*
->        * "s" object was allocated by g_malloc0 so we can safely
->        * try to free its fields even they were not allocated.
+On 9/18/23 14:31, Philippe Mathieu-Daudé wrote:
+> Hi Mark, Artyom,
+> 
+> I'm looking at the CPU_FEATURE_FLOAT128 definition introduced
+> in commit 64a88d5d3a ("CPU feature selection support"). Any
+> clue how it was supposed to be used?
 
-Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+This should have a comment like
 
--- 
-Best regards,
-Alexander Ivanov
+/*
+  * Qemu is emulating the linux kernel, which will
+  * trap and emulate float128 instructions.
+  */
+
+
+r~
 
 
