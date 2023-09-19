@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176B17A5F74
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 842C87A5F70
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:24:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXu0-0006KL-I7; Tue, 19 Sep 2023 06:24:20 -0400
+	id 1qiXu1-0006M3-2q; Tue, 19 Sep 2023 06:24:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1qiXti-0006IY-UQ; Tue, 19 Sep 2023 06:24:03 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ id 1qiXtl-0006Ia-Ay; Tue, 19 Sep 2023 06:24:05 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1qiXtg-0000Ct-2s; Tue, 19 Sep 2023 06:24:02 -0400
+ id 1qiXti-0000DN-Ji; Tue, 19 Sep 2023 06:24:04 -0400
 Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
  [IPv6:2a02:6b8:c0c:7d8a:0:640:8fc3:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 9FC5B5F8F6;
- Tue, 19 Sep 2023 13:23:53 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id AAECD626C6;
+ Tue, 19 Sep 2023 13:23:58 +0300 (MSK)
 Received: from d-tatianin-nix.yandex-team.ru (unknown
  [2a02:6b8:b081:b64e::1:27])
  by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id lNiu865OdGk0-L18B0c2q; Tue, 19 Sep 2023 13:23:52 +0300
+ ESMTPSA id lNiu865OdGk0-rdKfvk6A; Tue, 19 Sep 2023 13:23:58 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695119033;
- bh=5XboSyHgRD4tfs7rklk0U8lsyjTVCw2opXhn42H1+1M=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=R0cBExrz+WnzLIbUURCZZNrLyo6THooEyNUYBLI46YmmWM0R7JmbnIfTr6ZlDTuOY
- j9bgeVO0iGrIgtsufg3gixnM7vLaDuWRWixJODdgfH8M1hReOG9s0gvPlqIimLYqIA
- mMYbgmfl51x4US4M5TC/2sbm0YQdA2wr/uBb+/WQ=
+ s=default; t=1695119038;
+ bh=GwylRd2M3d50oa41BEyw6INLBiCyyVslBAVIsNkUHis=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=Qrl1P8FATrfI1ChLvKWggyR6w5fIKmyiou7XSLuIX5UQlf5PLDfyTT9gXl/ztKiZy
+ sx5/0+l4V7198q0YWo9Ovz8GtxT7MW2xw9A7J75R6cQLz3RqV0OnaaUdML/0McT2dn
+ B0VVCPHUNvXdO8E3sNvSCAAr6yjTkwzPTgSkcreU=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
@@ -40,15 +40,17 @@ To: Juan Quintela <quintela@redhat.com>
 Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Daniil Tatianin <d-tatianin@yandex-team.ru>
-Subject: [PATCH v2 0/3] migration-qtest: zero the first byte of each page on
- start
-Date: Tue, 19 Sep 2023 13:23:43 +0300
-Message-Id: <20230919102346.2117963-1-d-tatianin@yandex-team.ru>
+Subject: [PATCH v2 1/3] i386/a-b-bootblock: factor test memory addresses out
+ into constants
+Date: Tue, 19 Sep 2023 13:23:44 +0300
+Message-Id: <20230919102346.2117963-2-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230919102346.2117963-1-d-tatianin@yandex-team.ru>
+References: <20230919102346.2117963-1-d-tatianin@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -71,27 +73,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series fixes an issue where the outcome of the migration qtest
-relies on the initial memory contents all being the same across the
-first 100MiB of RAM, which is a very fragile invariant.
+So that we have less magic numbers to deal with. This also allows us to
+reuse these in the following commits.
+
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+---
+ tests/migration/i386/a-b-bootblock.S | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/tests/migration/i386/a-b-bootblock.S b/tests/migration/i386/a-b-bootblock.S
+index 3d464c7568..036216e4a7 100644
+--- a/tests/migration/i386/a-b-bootblock.S
++++ b/tests/migration/i386/a-b-bootblock.S
+@@ -34,6 +34,10 @@ start:             # at 0x7c00 ?
+         mov $16,%eax
+         mov %eax,%ds
  
-We fix this by making sure we zero the first byte of every testable page
-in range beforehand.
-
-Changes since v1:
-- Add a fix for the s390x test binary as well as suggested by Peter Xu
-
-Daniil Tatianin (3):
-  i386/a-b-bootblock: factor test memory addresses out into constants
-  i386/a-b-bootblock: zero the first byte of each page on start
-  s390x/a-b-bios: zero the first byte of each page on start
-
- tests/migration/i386/a-b-bootblock.S |  18 +-
- tests/migration/i386/a-b-bootblock.h |  16 +-
- tests/migration/s390x/a-b-bios.c     |   8 +
- tests/migration/s390x/a-b-bios.h     | 380 ++++++++++++++-------------
- 4 files changed, 234 insertions(+), 188 deletions(-)
-
++# Start from 1MB
++.set TEST_MEM_START, (1024*1024)
++.set TEST_MEM_END, (100*1024*1024)
++
+         mov $65,%ax
+         mov $0x3f8,%dx
+         outb %al,%dx
+@@ -41,12 +45,11 @@ start:             # at 0x7c00 ?
+         # bl keeps a counter so we limit the output speed
+         mov $0, %bl
+ mainloop:
+-        # Start from 1MB
+-        mov $(1024*1024),%eax
++        mov $TEST_MEM_START,%eax
+ innerloop:
+         incb (%eax)
+         add $4096,%eax
+-        cmp $(100*1024*1024),%eax
++        cmp $TEST_MEM_END,%eax
+         jl innerloop
+ 
+         inc %bl
 -- 
 2.34.1
 
