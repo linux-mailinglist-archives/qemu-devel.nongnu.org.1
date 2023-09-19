@@ -2,94 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456A37A5C9C
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBD77A5CB8
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:36:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiW9z-0007PX-TY; Tue, 19 Sep 2023 04:32:43 -0400
+	id 1qiWD9-0008NF-R2; Tue, 19 Sep 2023 04:35:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiW9y-0007NY-3u
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:32:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiWD5-0008Me-Bi
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:35:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qiW9w-0003uH-LJ
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:32:41 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiWD3-00057n-QG
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:35:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695112360;
+ s=mimecast20190719; t=1695112552;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=63ZczgcaSGCgUP2wEYQgRDSu3izo/TIE6nir/nxLkcI=;
- b=gFUc811J24JP3UQvSI+OMZYXYYJw7cb7f4IfTynWt2EU2MHuJoJ6IMvU22lfXXcoZEVPSe
- PBuGmnKZQLUJs4Do4Vj2jnx1QDDQcLw2tjmzBKgiFb4/GJMSmTFJFqFiHXlN/36gWLiTcp
- Xkw+b/3b0s31WgakdRy07T8ei3dHKN4=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-CkkVSVUSNQyeaeB19dnbLQ-1; Tue, 19 Sep 2023 04:32:38 -0400
-X-MC-Unique: CkkVSVUSNQyeaeB19dnbLQ-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2bcb0f9fe3bso67223281fa.2
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 01:32:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695112356; x=1695717156;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=63ZczgcaSGCgUP2wEYQgRDSu3izo/TIE6nir/nxLkcI=;
- b=c1ffPJ1xaFIdcartVO9SwvlWdZ+XmxtT/5x5jC9m2tJxsJ3aeiXCAzkmeI7qAWrLRm
- DM4iJatudgkuZ6tnj07fOa9FVIGab+Yuy6ahJFB6SpblKpptjlIPDmeoGnjsMT4LbhW+
- vhGTUqpaXGplYS2DOtxF1lPJBf45jmbgA9kP8wxn8rFKUV7F7R1Qv/vlJu/dmjMlwmbh
- hmxS/XpzbjlAjZdmpbbqjEKUFuyS0H4FNoIsVxRMVxP/gjFqm/gnuYSX8eqYxvt2eB/b
- m5LRvBD7Q5XlrQuOborWPCI/JDVSVJmyOt9XNU8LzhPI8HAvoBO7rptHgaWDOrHcZAd3
- nrAg==
-X-Gm-Message-State: AOJu0YwsyBoi4P9R1JZu3A/aSH/CsHaIXOcs48AmvLMxiyLeTitC5D6H
- x7+TssyYbH6oO0h8N10naDA2uoDBirg2FOFIVPcBmmtCNgskiYWytwvqLM4UbSYhs90eMYEVRNc
- YfaeBeX0kuRfmkU0suTwQPEc=
-X-Received: by 2002:a2e:b0c4:0:b0:2bc:c2cb:cd3f with SMTP id
- g4-20020a2eb0c4000000b002bcc2cbcd3fmr9694642ljl.32.1695112356482; 
- Tue, 19 Sep 2023 01:32:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGnjkJE/03yTczosAyy29WLF3oj268PQp6mCRVzzOmvL2LM8uR2DRMm4Qz+EVtBTog7tT0KUQ==
-X-Received: by 2002:a2e:b0c4:0:b0:2bc:c2cb:cd3f with SMTP id
- g4-20020a2eb0c4000000b002bcc2cbcd3fmr9694626ljl.32.1695112356107; 
- Tue, 19 Sep 2023 01:32:36 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
- by smtp.gmail.com with ESMTPSA id
- q21-20020a1709066b1500b0098921e1b064sm7409445ejr.181.2023.09.19.01.32.34
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 01:32:35 -0700 (PDT)
-Message-ID: <e6492eda-e09d-13ea-93b5-c824b3b3e9cd@redhat.com>
-Date: Tue, 19 Sep 2023 10:32:34 +0200
+ bh=rQqVXZKnhzjpQ6w/ua5rD8nqLJWYpdqbVL99x7KpzHs=;
+ b=UhBBnef959QaXjpXzCH6v7pi6vc2haqVkhVgEcxDJT1/RSqOjnx6M6uc37kRGxj2EZbY96
+ iwnYqEbCN/P+O44BRXLkXEWFRxj9CYPooPBw7qVkAEMCiTuRD9AsG9SmZad17AE/QspuUe
+ gQ9ujweISrc/F/sf9gQdu5mlp5YqfsU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-223-WvkFg1goPVO9EkR3wiV4dw-1; Tue, 19 Sep 2023 04:35:50 -0400
+X-MC-Unique: WvkFg1goPVO9EkR3wiV4dw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 80ADE803498;
+ Tue, 19 Sep 2023 08:35:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5E5D22156701;
+ Tue, 19 Sep 2023 08:35:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 23C2C21E6900; Tue, 19 Sep 2023 10:35:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Kevin Wolf <kwolf@redhat.com>,  qemu-devel@nongnu.org,
+ berrange@redhat.com,  pbonzini@redhat.com
+Subject: Re: [PATCH 02/11] hw/i386/pc: Use qdev_prop_set_array()
+References: <20230908143703.172758-1-kwolf@redhat.com>
+ <20230908143703.172758-3-kwolf@redhat.com>
+ <CAFEAcA9a15bhpG1Yj-b+3TC=UxDFdGJA4f1VrxnZsgVUR9O1dQ@mail.gmail.com>
+ <ZP9DWucJaGt+hcQ1@redhat.com>
+ <CAFEAcA8zxRwivwv2xSQUFUdJgZv80a5_87pqHvcKj0XkRiuDPA@mail.gmail.com>
+Date: Tue, 19 Sep 2023 10:35:49 +0200
+In-Reply-To: <CAFEAcA8zxRwivwv2xSQUFUdJgZv80a5_87pqHvcKj0XkRiuDPA@mail.gmail.com>
+ (Peter Maydell's message of "Tue, 12 Sep 2023 10:17:53 +0100")
+Message-ID: <87fs3a1rx6.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 4/8] qemu-img: add chunk size parameter to
- compare_buffers()
-Content-Language: en-US
-To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>, qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, kwolf@redhat.com, eblake@redhat.com,
- den@virtuozzo.com
-References: <20230915162016.141771-1-andrey.drobyshev@virtuozzo.com>
- <20230915162016.141771-5-andrey.drobyshev@virtuozzo.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230915162016.141771-5-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,22 +83,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15.09.23 18:20, Andrey Drobyshev wrote:
-> Add @chsize param to the function which, if non-zero, would represent
-> the chunk size to be used for comparison.  If it's zero, then
-> BDRV_SECTOR_SIZE is used as default chunk size, which is the previous
-> behaviour.
->
-> In particular, we're going to use this param in img_rebase() to make the
-> write requests aligned to a predefined alignment value.
->
-> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> ---
->   qemu-img.c | 22 ++++++++++++++--------
->   1 file changed, 14 insertions(+), 8 deletions(-)
+Peter Maydell <peter.maydell@linaro.org> writes:
 
-With the comment fix Eric has suggested:
+> On Mon, 11 Sept 2023 at 17:42, Kevin Wolf <kwolf@redhat.com> wrote:
+>>
+>> Am 11.09.2023 um 17:42 hat Peter Maydell geschrieben:
+>> > On Fri, 8 Sept 2023 at 15:37, Kevin Wolf <kwolf@redhat.com> wrote:
+>> > >
+>> > > Instead of manually setting "foo-len" and "foo[i]" properties, build a
+>> > > QList and use the new qdev_prop_set_array() helper to set the whole
+>> > > array property with a single call.
+>> > >
+>> > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+>> > > ---
+>> > >  hw/i386/pc.c | 8 +++++---
+>> > >  1 file changed, 5 insertions(+), 3 deletions(-)
+>> > >
+>> > > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>> > > index 54838c0c41..0e84e454cb 100644
+>> > > --- a/hw/i386/pc.c
+>> > > +++ b/hw/i386/pc.c
+>> > > @@ -81,6 +81,7 @@
+>> > >  #include "qapi/error.h"
+>> > >  #include "qapi/qapi-visit-common.h"
+>> > >  #include "qapi/qapi-visit-machine.h"
+>> > > +#include "qapi/qmp/qlist.h"
+>> > >  #include "qapi/visitor.h"
+>> > >  #include "hw/core/cpu.h"
+>> > >  #include "hw/usb.h"
+>> > > @@ -1508,9 +1509,10 @@ static void pc_machine_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+>> > >          char *resv_prop_str = g_strdup_printf("0xfee00000:0xfeefffff:%d",
+>> > >                                                VIRTIO_IOMMU_RESV_MEM_T_MSI);
+>> > >
+>> > > -        object_property_set_uint(OBJECT(dev), "len-reserved-regions", 1, errp);
+>> > > -        object_property_set_str(OBJECT(dev), "reserved-regions[0]",
+>> > > -                                resv_prop_str, errp);
+>> > > +        QList *reserved_regions = qlist_new();
+>> > > +        qlist_append_str(reserved_regions, resv_prop_str);
+>> > > +        qdev_prop_set_array(dev, "reserved-regions", reserved_regions);
+>> > > +
+>> >
+>> > The variable declaration should be at the top of the block;
+>>
+>> It is at the top of the block, the only thing before it is another
+>> variable declaration. Would you prefer to have the empty line removed or
+>> after the declaration to make this visually clearer?
+>
+> Sorry, I think I just misread the diff somehow. I guess that having
+> the blank line after the variable declarations would be more usual,
+> but it doesn't really matter.
 
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
+I really like to have a blank line between declarations and statements,
+because declaration vs. statement can be difficult to decide at a
+glance, and the blank line convention helps.
 
 
