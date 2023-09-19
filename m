@@ -2,103 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C2C7A5C63
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:20:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F297A5C6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:24:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiVyC-0003J8-64; Tue, 19 Sep 2023 04:20:32 -0400
+	id 1qiW1F-0004Bx-8H; Tue, 19 Sep 2023 04:23:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiVy8-0003Iz-Bd
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:20:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiW19-0004BA-LS; Tue, 19 Sep 2023 04:23:35 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiVy6-0000aH-Cg
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:20:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695111625;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=GRJyxaNCdh5UcI/31P9hieAgHH3op5LoYI7ipTFtsHE=;
- b=N/0sc+/YqGA+ZRHtRNvTQpeIFjuLFuIGzmO+Cz5Hcp70fNUjZv+inKSVNFX8qtTLUgcMvr
- PPqmhXTnoe4sL56BmjlFjZ0BG0p8jPKSWpUxJWycsNTNwrRz+aJlCMu07eiTsX+BMi4Dqt
- BAabopYF2ZhpG7k+eFkgfUbOJus2VZ0=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-cgpppe2COOSiEPmFctmMtQ-1; Tue, 19 Sep 2023 04:20:24 -0400
-X-MC-Unique: cgpppe2COOSiEPmFctmMtQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-502f46691b4so4744324e87.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 01:20:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695111623; x=1695716423;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GRJyxaNCdh5UcI/31P9hieAgHH3op5LoYI7ipTFtsHE=;
- b=biggtcO8n9HXfdwkiFS54bffFUH6E6T3Kqxw4N/UrwmubeO+TfoF4jheM6v/qHJu1a
- aCQDtFRV0gu4vMxf246GjCzbc2b0EHxxVh39wgyqSfR/E0La6hzuu4FAt+dubRMEr6nt
- wQHSzOkPR2XlEYopiBgCUEcgTXNEwmiVw5lco4HgX4Dwm8NQR6Rj2VEfJNxhUvVn8Jpg
- Xounyjv4cbUDxqFPPnCGTTg6xZIOw28KjV4mAJ979ipF7tO248hMaxPu7Td+6GtW6DDi
- un/sJdUtwnLiWT1IT79MnqkFD/YrZosINL9UNT0+9eCz1wNyKU4vvJGgm9+33rcnvonl
- vT3A==
-X-Gm-Message-State: AOJu0YypWrOe43O9niJSCrh6m2Pg+LXErMoMndG4WuhqNLYMTQibMRve
- TtooCASpxbRXbd7Mk5RCXwfNzRg7xG/Tdsq8EAuPdyLd2WCnAkTvRZ2XEudGVdTNJ/EApJix+Nd
- WMsCdMT1by7AGk9ryhmRlvaqHrCgjILrnwpOIbXDN/i3MGJ2YT08JuQIkEB1XlQZGnLRyg8M=
-X-Received: by 2002:a05:6512:2390:b0:502:f740:220 with SMTP id
- c16-20020a056512239000b00502f7400220mr11862971lfv.58.1695111622996; 
- Tue, 19 Sep 2023 01:20:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEc41Tb6Foy5g1JTtZ7U0/DfIQOTmfhMsfTw2RpRAm0LCUxd+feKVGStpln1KWC8TLvLpMUhw==
-X-Received: by 2002:a05:6512:2390:b0:502:f740:220 with SMTP id
- c16-20020a056512239000b00502f7400220mr11862926lfv.58.1695111622493; 
- Tue, 19 Sep 2023 01:20:22 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c702:1300:c409:8b33:c793:108e?
- (p200300cbc7021300c4098b33c793108e.dip0.t-ipconnect.de.
- [2003:cb:c702:1300:c409:8b33:c793:108e])
- by smtp.gmail.com with ESMTPSA id
- n4-20020a1c7204000000b00402f713c56esm14476201wmc.2.2023.09.19.01.20.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 01:20:21 -0700 (PDT)
-Message-ID: <90303827-7879-7b9e-836d-5026b2be73dd@redhat.com>
-Date: Tue, 19 Sep 2023 10:20:20 +0200
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiW17-0001NZ-NB; Tue, 19 Sep 2023 04:23:35 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J88mnu021105; Tue, 19 Sep 2023 08:23:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=PNXPSkPbaCfwm8dByflCu5sky/b4W/hvE8H09K37Awg=;
+ b=sGVGicKPRWZtF5IxEPaY3YNubCabSqZWCSR5mOkvU+QDEYJrO4fq7rPPOV3dLYxIKMpg
+ +zNy9AarDj4jqXsCTkjYkDko29MockmHHfC/JmAjbbOwe6zDl1fDIRFpChAdUA2AeLRf
+ 9Bmse8u+kc/5yL3ZIcJEOXH5n3YkBUnethBbiC8CsaxMDRM7dz5l5WdB6xwpgP5WyPue
+ EoCM0UCcK1jl6sgAcpFRxTZBxkmR4tPxzLrzEXA+UeNzUr/Cft/YzEZIUiCtSIQOXIxK
+ CnnJglsUfuMbPZyVJaNq5wIg2GAC0Lxro/gd7x6th/slA2RmQaPLIoV3MiWQO8lRE4dO Aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t6tywr1rw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 08:23:18 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J8K6ed031757;
+ Tue, 19 Sep 2023 08:23:18 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t6tywr1rg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 08:23:18 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J6NJv2011722; Tue, 19 Sep 2023 08:23:16 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t5qpnad18-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 08:23:16 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38J8NG1t63963484
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Sep 2023 08:23:16 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0502858043;
+ Tue, 19 Sep 2023 08:23:16 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8877D5805D;
+ Tue, 19 Sep 2023 08:23:13 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Sep 2023 08:23:13 +0000 (GMT)
+Message-ID: <16ec9b62-9c83-68db-344b-050c9299bec1@linux.ibm.com>
+Date: Tue, 19 Sep 2023 13:53:11 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 00/16] virtio-mem: Expose device memory through
- multiple memslots
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 5/8] spapr: Clean up local variable shadowing in
+ spapr_get_fw_dev_path()
 Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
-References: <20230908142136.403541-1-david@redhat.com>
- <87e38689-c99b-0c92-3567-589cd9a2bc4c@redhat.com>
-Organization: Red Hat
-In-Reply-To: <87e38689-c99b-0c92-3567-589cd9a2bc4c@redhat.com>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230918145850.241074-1-clg@kaod.org>
+ <20230918145850.241074-6-clg@kaod.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230918145850.241074-6-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AiAZCw8WLwwq97jAdAokxNCAqS_-BI6M
+X-Proofpoint-ORIG-GUID: TnKCUL6hb89ezhTJtMrMuhuol5bH3zuu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-19_02,2023-09-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=644 mlxscore=0
+ priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0
+ clxscore=1015 spamscore=0 malwarescore=0 impostorscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190067
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,24 +118,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11.09.23 09:45, David Hildenbrand wrote:
-> @MST, any comment on the vhost bits (mostly uncontroversial and only in
-> the memslot domain)?
+
+
+On 9/18/23 20:28, Cédric Le Goater wrote:
+> Rename PCIDevice variable to avoid this warning :
 > 
-> I'm planning on queuing this myself (but will wait a bit more), unless
-> you want to take it.
+>    ../hw/ppc/spapr.c: In function ‘spapr_get_fw_dev_path’:
+>    ../hw/ppc/spapr.c:3217:20: warning: declaration of ‘pcidev’ shadows a previous local [-Wshadow=compatible-local]
+>     3217 |         PCIDevice *pcidev = CAST(PCIDevice, dev, TYPE_PCI_DEVICE);
+>          |                    ^~~~~~
+>    ../hw/ppc/spapr.c:3147:16: note: shadowed declaration is here
+>     3147 |     PCIDevice *pcidev = CAST(PCIDevice, dev, TYPE_PCI_DEVICE);
+>          |                ^~~~~~
+> 
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>   hw/ppc/spapr.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+> index 41ce7de77c14..8090fb0302df 100644
+> --- a/hw/ppc/spapr.c
+> +++ b/hw/ppc/spapr.c
+> @@ -3214,8 +3214,8 @@ static char *spapr_get_fw_dev_path(FWPathProvider *p, BusState *bus,
+>   
+>       if (g_str_equal("pci-bridge", qdev_fw_name(dev))) {
+>           /* SLOF uses "pci" instead of "pci-bridge" for PCI bridges */
+> -        PCIDevice *pcidev = CAST(PCIDevice, dev, TYPE_PCI_DEVICE);
+> -        return g_strdup_printf("pci@%x", PCI_SLOT(pcidev->devfn));
+> +        PCIDevice *pdev = CAST(PCIDevice, dev, TYPE_PCI_DEVICE);
+> +        return g_strdup_printf("pci@%x", PCI_SLOT(pdev->devfn));
 
-I'm queuing this to
+Instead of renaming, can't we use pcidev itself without re-declaring ?
 
-https://github.com/davidhildenbrand/qemu.git mem-next
-
-and plan on sending a PULL request on Friday.
-
-So if anybody has objections, please let me know ASAP :)
-
--- 
-Cheers,
-
-David / dhildenb
-
+>       }
+>   
+>       if (pcidev) {
 
