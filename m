@@ -2,80 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8977A67E3
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 17:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680E87A67EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 17:22:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qicV0-0004cD-3w; Tue, 19 Sep 2023 11:18:50 -0400
+	id 1qicXQ-0006E3-3Z; Tue, 19 Sep 2023 11:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qicUx-0004bk-6w
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:18:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qicXN-0006DV-G2
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:21:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qicUv-0003dc-Gc
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:18:46 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qicXL-0004Sz-RQ
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:21:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695136724;
+ s=mimecast20190719; t=1695136874;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bnFotR2mYg4DXQ7snKnBH/OAblQgb4TWjLBZYhHylWQ=;
- b=D9oYZ5OTJktrXunmzFy6ZH3YyHXCPYaA7R9UGVlN1Bop6ueN8iDypTv4Fs3wO8IAWBxJvK
- kX8CdOHfueihn6KysOKxEBVeDcTfitpQnuFlWbuENIzTnU+xI2NFkoMc0FLnFUvwVbvhFE
- a1u5VRQeX7qY50kDus4CQF0kTYSrJn4=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/7CO/lb7KilwnXJPE+0AB114X6X5LX606QVNzF6aWrI=;
+ b=eR5X72l9Efigvp/V75IRZ7rqUmAKrEJd+X5p/zU8Plev3AsJxNoYWbHrzaZ9QtBuSyZHm1
+ Ro9zn96Y2wrwVsPw0kq0HohaSBQQuntSB8Ub1LTxlZFXJqyClDFJIPoaFoFizvQpl47DDI
+ PE/ZzutKCr43x0enwwA0xonwwV6xAZY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-440-IHjWnVuLMQCoBuzJiKm18Q-1; Tue, 19 Sep 2023 11:18:42 -0400
-X-MC-Unique: IHjWnVuLMQCoBuzJiKm18Q-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-773aeb22094so533172085a.1
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 08:18:42 -0700 (PDT)
+ us-mta-182-mt8nQYHUMAu3mW9QKynEnw-1; Tue, 19 Sep 2023 11:21:13 -0400
+X-MC-Unique: mt8nQYHUMAu3mW9QKynEnw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4051d5b2d87so2310625e9.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 08:21:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695136721; x=1695741521;
+ d=1e100.net; s=20230601; t=1695136872; x=1695741672;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bnFotR2mYg4DXQ7snKnBH/OAblQgb4TWjLBZYhHylWQ=;
- b=TaGg3VBeJo5J92s2JZ6usT4bgLV0bpQH7M5j81Lhd1WVH8bu58QRkbdsE68eYZRZ5l
- +ruItwqaMe7rdsfXci2rBxynK2+4P4Pj8R3RjycTUdBww+lS/LmVFImDoy/mWAlJ8Uk7
- bryEmNgSGeMf6Vvm4p+BTvcwpiCoYvEDtgnCOPS81ZMDhlbqwmOGvLcJYMCh6E7FMGtx
- suujzdpQ2xBQ7w+S/UnFKrx8EV+j+MuBIvzJM4+sZqbLabfX15/A5LBCVwwMv3MeQd2x
- bO5Bc+VKMkQOo8kTTbb9qw/zS+Z2dWlsFm9ZlkpR1UHKPnJGV3OLyeq+0GLFzzPEldQO
- 0TzQ==
-X-Gm-Message-State: AOJu0Yw6gOH6CsG9nZp62P0deMj+0A3rGO0kCObucFFA/Q//uOBl1pNr
- dFsPtG/wOv9/Gkp+M+O2QJPJPgT9stsvuBy2FTTYKdMLU0+JJxHIywl/8Y458jt7zl8DyxM9U3y
- orgamq3V/Ja2Wyw8=
-X-Received: by 2002:a05:620a:4309:b0:765:aa35:f03f with SMTP id
- u9-20020a05620a430900b00765aa35f03fmr13019849qko.37.1695136721751; 
- Tue, 19 Sep 2023 08:18:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFqZn/EaoMcYwI54ADUv7vGrVM72mEC3aSlJVLsMC+XOrUFDC/Jl6zJYnknHIxtw4+07RkfHQ==
-X-Received: by 2002:a05:620a:4309:b0:765:aa35:f03f with SMTP id
- u9-20020a05620a430900b00765aa35f03fmr13019819qko.37.1695136721427; 
- Tue, 19 Sep 2023 08:18:41 -0700 (PDT)
+ bh=/7CO/lb7KilwnXJPE+0AB114X6X5LX606QVNzF6aWrI=;
+ b=aP/1vqcY7hdjoIwes4KH2zDxKjCzzvBz0jNZWFVQi1XGGpuFRtfV5b969qNMUCzm1L
+ QX4tQHlsT3qpsHgNNzq21tB/BM2ExcEM1BBEyXaljhHcfnDx92rErWepXCrF7xs1t82Q
+ 6G2f8zs2nFsU28hlfj8uO4qXL7jealgHLVFBqZLWP26AysErCySJUpscTrsz3cQGMU90
+ fM2PyGBWFaCRgVSAKU4wNwWWggjtwLJeLQkuf82CQO/ausizX6il7uYbD1/ZcnNenDRL
+ 1TvbiY6oSylIA6smrwqn5uuWcyLq24FMGFtpGEs5bYqWhkW1YFMRlpx8dXUQoFFIEpjp
+ b6Gw==
+X-Gm-Message-State: AOJu0YzBOttcf3sD4A0rU1qjI1ioSgmJphtsz/STkNtcUkRw4rmkQuWs
+ CiJaBeMSbffgN5a2AMPAWS0T0SgC6FvKUpMj7MCTkx6kHplTjHtfcOvqXNuJJt/+KDXAhJE4Xkn
+ jrsVcZ4wEfpgsa70=
+X-Received: by 2002:a05:600c:21ce:b0:401:519:d2 with SMTP id
+ x14-20020a05600c21ce00b00401051900d2mr97451wmj.23.1695136872322; 
+ Tue, 19 Sep 2023 08:21:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/QpktyHSkVGXQaQWLJXKprxaw8J/WpinvrIhr0d9xuQgAD1Zk1Sev5BxFDfpcoHNgGD7eHw==
+X-Received: by 2002:a05:600c:21ce:b0:401:519:d2 with SMTP id
+ x14-20020a05600c21ce00b00401051900d2mr97428wmj.23.1695136871938; 
+ Tue, 19 Sep 2023 08:21:11 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
  ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
  by smtp.gmail.com with ESMTPSA id
- i20-20020a05620a145400b0076f18be9a64sm4054637qkl.81.2023.09.19.08.18.40
+ w11-20020a05600c014b00b00400268671c6sm15597979wmm.13.2023.09.19.08.21.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 08:18:41 -0700 (PDT)
-Message-ID: <4ffebb9f-8453-169b-f617-05414fc717b4@redhat.com>
-Date: Tue, 19 Sep 2023 17:18:33 +0200
+ Tue, 19 Sep 2023 08:21:10 -0700 (PDT)
+Message-ID: <51e23d99-3077-3884-b79e-fce5605d1ca2@redhat.com>
+Date: Tue, 19 Sep 2023 17:21:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 3/4] vfio/pci: use an invalid fd to enable MSI-X
+Subject: Re: [PATCH v2 4/4] vfio/pci: enable MSI-X in interrupt restoring on
+ dynamic allocation
 Content-Language: en-US
 To: Jing Liu <jing2.liu@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, pbonzini@redhat.com, kevin.tian@intel.com,
  reinette.chatre@intel.com, jing2.liu@linux.intel.com
 References: <20230918094507.409050-1-jing2.liu@intel.com>
- <20230918094507.409050-4-jing2.liu@intel.com>
+ <20230918094507.409050-5-jing2.liu@intel.com>
 From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230918094507.409050-4-jing2.liu@intel.com>
+In-Reply-To: <20230918094507.409050-5-jing2.liu@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
@@ -104,21 +105,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/18/23 11:45, Jing Liu wrote:
-> Guests typically enable MSI-X with all of the vectors masked in the MSI-X
-> vector table. To match the guest state of device, QEMU enables MSI-X by
-> enabling vector 0 with userspace triggering and immediately release.
-> However the release function actually does not release it due to already
-> using userspace mode.
+> During migration restoring, vfio_enable_vectors() is called to restore
+> enabling MSI-X interrupts for assigned devices. It sets the range from
+> 0 to nr_vectors to kernel to enable MSI-X and the vectors unmasked in
+> guest. During the MSI-X enabling, all the vectors within the range are
+> allocated according to the VFIO_DEVICE_SET_IRQS ioctl.
 > 
-> It is no need to enable triggering on host and rely on the mask bit to
-> avoid spurious interrupts. Use an invalid fd (i.e. fd = -1) is enough
-> to get MSI-X enabled.
+> When dynamic MSI-X allocation is supported, we only want the guest
+> unmasked vectors being allocated and enabled. Use vector 0 with an
+> invalid fd to get MSI-X enabled, after that, all the vectors can be
+> allocated in need.
 > 
-> After dynamic MSI-X allocation is supported, the interrupt restoring
-> also need use such way to enable MSI-X, therefore, create a function
-> for that.
-> 
-> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
 > Signed-off-by: Jing Liu <jing2.liu@intel.com>
 
 
@@ -131,94 +128,42 @@ C.
 
 > ---
 > Changes since v1:
-> - Revise Qemu to QEMU. (Cédric)
-> - Use g_autofree to automatically release. (Cédric)
-> - Just return 'ret' and let the caller of vfio_enable_msix_no_vec()
->    report the error. (Cédric)
+> - No change.
 > 
 > Changes since RFC v1:
-> - A new patch. Use an invalid fd to get MSI-X enabled instead of using
->    userspace triggering. (Alex)
+> - Revise the comments. (Alex)
+> - Call the new helper function in previous patch to enable MSI-X. (Alex)
 > ---
->   hw/vfio/pci.c | 44 ++++++++++++++++++++++++++++++++++++--------
->   1 file changed, 36 insertions(+), 8 deletions(-)
+>   hw/vfio/pci.c | 17 +++++++++++++++++
+>   1 file changed, 17 insertions(+)
 > 
 > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 84987e46fd7a..0117f230e934 100644
+> index 0117f230e934..f5f891dc0792 100644
 > --- a/hw/vfio/pci.c
 > +++ b/hw/vfio/pci.c
-> @@ -369,6 +369,33 @@ static void vfio_msi_interrupt(void *opaque)
->       notify(&vdev->pdev, nr);
->   }
+> @@ -402,6 +402,23 @@ static int vfio_enable_vectors(VFIOPCIDevice *vdev, bool msix)
+>       int ret = 0, i, argsz;
+>       int32_t *fds;
 >   
-> +/*
-> + * Get MSI-X enabled, but no vector enabled, by setting vector 0 with an invalid
-> + * fd to kernel.
-> + */
-> +static int vfio_enable_msix_no_vec(VFIOPCIDevice *vdev)
-> +{
-> +    g_autofree struct vfio_irq_set *irq_set = NULL;
-> +    int ret = 0, argsz;
-> +    int32_t *fd;
-> +
-> +    argsz = sizeof(*irq_set) + sizeof(*fd);
-> +
-> +    irq_set = g_malloc0(argsz);
-> +    irq_set->argsz = argsz;
-> +    irq_set->flags = VFIO_IRQ_SET_DATA_EVENTFD |
-> +                     VFIO_IRQ_SET_ACTION_TRIGGER;
-> +    irq_set->index = VFIO_PCI_MSIX_IRQ_INDEX;
-> +    irq_set->start = 0;
-> +    irq_set->count = 1;
-> +    fd = (int32_t *)&irq_set->data;
-> +    *fd = -1;
-> +
-> +    ret = ioctl(vdev->vbasedev.fd, VFIO_DEVICE_SET_IRQS, irq_set);
-> +
-> +    return ret;
-> +}
-> +
->   static int vfio_enable_vectors(VFIOPCIDevice *vdev, bool msix)
->   {
->       struct vfio_irq_set *irq_set;
-> @@ -618,6 +645,8 @@ static void vfio_commit_kvm_msi_virq_batch(VFIOPCIDevice *vdev)
->   
->   static void vfio_msix_enable(VFIOPCIDevice *vdev)
->   {
-> +    int ret;
-> +
->       vfio_disable_interrupts(vdev);
->   
->       vdev->msi_vectors = g_new0(VFIOMSIVector, vdev->msix->entries);
-> @@ -640,8 +669,6 @@ static void vfio_msix_enable(VFIOPCIDevice *vdev)
->       vfio_commit_kvm_msi_virq_batch(vdev);
->   
->       if (vdev->nr_vectors) {
-> -        int ret;
-> -
->           ret = vfio_enable_vectors(vdev, true);
->           if (ret) {
->               error_report("vfio: failed to enable vectors, %d", ret);
-> @@ -655,13 +682,14 @@ static void vfio_msix_enable(VFIOPCIDevice *vdev)
->            * MSI-X capability, but leaves the vector table masked.  We therefore
->            * can't rely on a vector_use callback (from request_irq() in the guest)
->            * to switch the physical device into MSI-X mode because that may come a
-> -         * long time after pci_enable_msix().  This code enables vector 0 with
-> -         * triggering to userspace, then immediately release the vector, leaving
-> -         * the physical device with no vectors enabled, but MSI-X enabled, just
-> -         * like the guest view.
-> +         * long time after pci_enable_msix().  This code sets vector 0 with an
-> +         * invalid fd to make the physical device MSI-X enabled, but with no
-> +         * vectors enabled, just like the guest view.
->            */
-> -        vfio_msix_vector_do_use(&vdev->pdev, 0, NULL, NULL);
-> -        vfio_msix_vector_release(&vdev->pdev, 0);
+> +    /*
+> +     * If dynamic MSI-X allocation is supported, the vectors to be allocated
+> +     * and enabled can be scattered. Before kernel enabling MSI-X, setting
+> +     * nr_vectors causes all these vectors to be allocated on host.
+> +     *
+> +     * To keep allocation as needed, use vector 0 with an invalid fd to get
+> +     * MSI-X enabled first, then set vectors with a potentially sparse set of
+> +     * eventfds to enable interrupts only when enabled in guest.
+> +     */
+> +    if (msix && !vdev->msix->noresize) {
 > +        ret = vfio_enable_msix_no_vec(vdev);
+> +
 > +        if (ret) {
-> +            error_report("vfio: failed to enable MSI-X, %d", ret);
+> +            return ret;
 > +        }
->       }
+> +    }
+> +
+>       argsz = sizeof(*irq_set) + (vdev->nr_vectors * sizeof(*fds));
 >   
->       trace_vfio_msix_enable(vdev->vbasedev.name);
+>       irq_set = g_malloc0(argsz);
 
 
