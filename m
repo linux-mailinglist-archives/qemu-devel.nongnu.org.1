@@ -2,66 +2,129 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BDF7A5F7E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE8D7A5FB1
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:34:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXwI-0000d1-4R; Tue, 19 Sep 2023 06:26:42 -0400
+	id 1qiY3K-0001A6-1c; Tue, 19 Sep 2023 06:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qiXwA-0000OL-1l
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:26:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Xenia.Ragiadakou@amd.com>)
+ id 1qiY3G-00010A-48
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:33:55 -0400
+Received: from mail-bn1nam02on2059.outbound.protection.outlook.com
+ ([40.107.212.59] helo=NAM02-BN1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qiXw7-0000zX-DE
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:26:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695119190;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=76pJHubmg3ub9LtQO3tuY9Z2WsU5xRB+EplDbOjTgNA=;
- b=dPrTqhLE3BTTATGPwPPZGG5BhLw8JEr7vCUK3hgwmpyhlEbHrRHLbetp45l/mm0yjNhNYU
- RlkoA6aZ4nh9TEsbAGl+qwea6hGllawX3cNsDoZJ/+xgL0cHOPI+lE+vXUtvLjZfcGTqPM
- ElDutO1YKyP1BbIQssJBVriJhCJBGnw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-63-p-xFxS1JM4KkVg_sE_3tYw-1; Tue, 19 Sep 2023 06:26:24 -0400
-X-MC-Unique: p-xFxS1JM4KkVg_sE_3tYw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43A2C85A5A8;
- Tue, 19 Sep 2023 10:26:24 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.90])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A151D28FB;
- Tue, 19 Sep 2023 10:26:23 +0000 (UTC)
-Date: Tue, 19 Sep 2023 12:26:22 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org
-Subject: Re: [PULL 00/28] Block layer patches
-Message-ID: <ZQl3Tp7uWPyn/gYa@redhat.com>
-References: <20230915144344.238596-1-kwolf@redhat.com>
- <CAJSP0QUPOVq5v+7W8E-ruV-Wbg1HYZn2kFWaDzULxSO-3SdEZg@mail.gmail.com>
- <CAJSP0QUYa2+RHeFwztjBrkNs28vqnUVV3rPkNo0+Jx=5ZBfANg@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <Xenia.Ragiadakou@amd.com>)
+ id 1qiY3B-0002Xo-RT
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:33:53 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GdB9w//K7Bw3QQjxbomV+zw+VDSsVTzE/qGcCQB6kxiQToUhXMxWTMnK5NiFFRP1T3fUaTISbOaCwP5p07nmZ7UBNWSJoSYEgpc1i1z8TCdlpkmVDgOtVxM7ui8Ocj7sJC98kPP88xbd5XuX4ScHu6NgJB9C/ECTt/mH8LfiHtUloFyk/JB6k+KfySV8bBxoZC4o7ENHH9BNj+4e5dJw08XqvbncHx9IFE1jDQ24a6BwdIFzGRdS7fKQ/cyGzopViCvqrkC0Nh/aVYKqq2p36pTwc+gZu8HnOng9qShd4cP85Sxk9RHH2VaTrrYzmHNTyNlEUWoihyoJFseojSI8dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S9uf1xrb9kzJVicQ/7BW/Jp6m5fiVAxzzaxgZLSncVI=;
+ b=HAkihXKJKH3wustd8d9BIDe7bE3iScpwiteAmwgBex4EbAQ4OHkO9FTTQXxqRmq5bloUUl8ibCQ9aw1DK8WNJ75jJYP3uED8nctOXei4hni5jCvmDOoaKn9/nR2J2kOuP30VFeto2xqC2WucQL27G6bu6bq1M1ezNpwiMksMVrpE/ZJA0C/Gb7lVMCD2z8dGcm4uQePm6RVaXv19uyjHnATH1r99sLH8HzVJRhdatWcYYGnYiPuEsMAvg7jxxa8oNbD0Yc9FI2miw6RV9oTsrpA/V3cfCtFZJTAWrktafK5ZNJole7ZN49kSfK8D4Q8+OMLoP6co3aHLy4NHspfSPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=daynix.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S9uf1xrb9kzJVicQ/7BW/Jp6m5fiVAxzzaxgZLSncVI=;
+ b=dxqDD0IMNfV5mQ8grgwlCY1uHA+bp1ZhU9j68zFSXZwAxhfZd/sxwk4M9aCfQIkVmGjb/dexZ9wW2P53flynwnJKnYRMPypGEwEHBndORaSKiqtfXy98RDu5VNcm4MoZywRO8heSzhG2v/Cb+diGjMklN3OM6OIJF5K+H1rWRa8=
+Received: from DM6PR13CA0060.namprd13.prod.outlook.com (2603:10b6:5:134::37)
+ by IA0PR12MB8280.namprd12.prod.outlook.com (2603:10b6:208:3df::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Tue, 19 Sep
+ 2023 10:28:40 +0000
+Received: from DS3PEPF000099E0.namprd04.prod.outlook.com
+ (2603:10b6:5:134:cafe::65) by DM6PR13CA0060.outlook.office365.com
+ (2603:10b6:5:134::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28 via Frontend
+ Transport; Tue, 19 Sep 2023 10:28:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF000099E0.mail.protection.outlook.com (10.167.17.203) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6792.19 via Frontend Transport; Tue, 19 Sep 2023 10:28:40 +0000
+Received: from [10.0.2.15] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 19 Sep
+ 2023 05:28:33 -0500
+Message-ID: <c0370b6e-c17e-2400-ef8a-7a759d2fc2d7@amd.com>
+Date: Tue, 19 Sep 2023 13:28:24 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJSP0QUYa2+RHeFwztjBrkNs28vqnUVV3rPkNo0+Jx=5ZBfANg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [QEMU PATCH v5 07/13] softmmu/memory: enable automatic
+ deallocation of memory regions
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>, Anthony PERARD
+ <anthony.perard@citrix.com>, Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>, Robert Beckett
+ <bob.beckett@collabora.com>, Dmitry Osipenko <dmitry.osipenko@collabora.com>, 
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ <qemu-devel@nongnu.org>
+CC: <xen-devel@lists.xenproject.org>, Gurchetan Singh
+ <gurchetansingh@chromium.org>, Albert Esteve <aesteve@redhat.com>,
+ <ernunes@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>, Alex Deucher
+ <alexander.deucher@amd.com>, =?UTF-8?Q?Christian_K=c3=b6nig?=
+ <christian.koenig@amd.com>, Pierre-Eric Pelloux-Prayer
+ <pierre-eric.pelloux-prayer@amd.com>, Honglei Huang <honglei1.huang@amd.com>, 
+ Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-8-ray.huang@amd.com>
+ <99fb4575-9f8d-4ab6-bc22-911bbaa7ca55@daynix.com>
+From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+In-Reply-To: <99fb4575-9f8d-4ab6-bc22-911bbaa7ca55@daynix.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099E0:EE_|IA0PR12MB8280:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97093709-8413-4283-e0e6-08dbb8fb3148
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: NpBwepw1UrZo3jXYTCr/GFwsKvTOLXh556CrFSJrIyu+LT5BZajL2c99a9s0bQ/yhlCSuYu3TjgE4JylMAxq/EhjLNvGEUt76b1MBGR100vSSmMfqIw6eDP47cvzBFnFoo6Jd9LE4oCjyUgaguHjWxEO8EGVjsJnMgThUrqIvLAK4RkMwh+9vQDTydN0jJquIUWy0U4L1uhZxtjYB4Nv8Dbb2ztct9oG0jvuq8TxhN8y06FaporBcCpckaMhdFZ/y/MbnqQXV5r2JABf8huUa3LZ9BczwS0fYZzEghRf/3I5u6YJhdiD/Y/5dhwLcqpSLe2gwY/nZShLihLBFvQBCeQAbHD/Ek42pXRoHZBXuZcBsiFoPbQxtLXDkuLwE0l9BUhMkVvxvgVttTf05U8VhfhO5asWjQGGlHEai3VUZvQeVoPv7YX5uJ3/b+V+fHZGCY+z5J9dAO97/PZIvmKbRiDY9UpHTIZjrjLU2o95+Y1j2JftTcLXTlLcAV8C5VhaaLhWDr8+/fOG0FBSaNsWlFkUiyoyrxbp1vxbVjPcEn/KuEeqGcYaiODcl/CA/DK82nzTvZgBn8paK/hkT0j8803iriIYcfGsSTpeZhQRwLh62g9irHMVgsAB+MtwoArgN7q6pRcz4Kk6bluTnoLF54vPZliksBwgNHCO0Fgv3CtDbYAfV2+b8CUuUZHKpKQ8S0uHFmWSKTEAqYAZIaybph7Dw6qM+bvIQwoX0TbCdbEuNhEJuFpqRZ656rm3gLWRqjs1m05WOFhY7Zuv7sSewTg4u0IS52b+aJv8jwmpkpfGTyjUm4AcboZpJkUcnSuHT9dN6MuhZAl49jJuwTszQw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(39860400002)(396003)(376002)(346002)(136003)(451199024)(82310400011)(1800799009)(186009)(40470700004)(46966006)(36840700001)(70206006)(70586007)(54906003)(53546011)(110136005)(40480700001)(16576012)(316002)(41300700001)(31686004)(478600001)(44832011)(6666004)(66899024)(8936002)(4326008)(8676002)(40460700003)(82740400003)(26005)(5660300002)(16526019)(47076005)(36860700001)(356005)(81166007)(921005)(336012)(83380400001)(426003)(2906002)(2616005)(86362001)(31696002)(7416002)(36756003)(43740500002)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 10:28:40.5437 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97093709-8413-4283-e0e6-08dbb8fb3148
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099E0.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8280
+Received-SPF: softfail client-ip=40.107.212.59;
+ envelope-from=Xenia.Ragiadakou@amd.com;
+ helo=NAM02-BN1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,89 +140,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 18.09.2023 um 20:56 hat Stefan Hajnoczi geschrieben:
-> Hi Kevin,
-> I believe that my own commit "block-coroutine-wrapper: use
-> qemu_get_current_aio_context()" breaks this test. The failure is
-> non-deterministic (happens about 1 out of 4 runs).
-> 
-> It seems the job hangs and the test times out in vm.run_job('job1', wait=5.0).
-> 
-> I haven't debugged it yet but wanted to share this information to save
-> some time. Tomorrow I'll investigate further.
 
-Yes, it's relatively easily reproducible if I run the test in a loop,
-and I can't seem to reproduce it without the last patch. Should I
-unstage the full series again, or do you think that the last patch is
-really optional this time?
+On 15/9/23 18:11, Akihiko Odaki wrote:
+> On 2023/09/15 20:11, Huang Rui wrote:
+>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>
+>> When the memory region has a different life-cycle from that of her 
+>> parent,
+>> could be automatically released, once has been unparent and once all 
+>> of her
+>> references have gone away, via the object's free callback.
+>>
+>> However, currently, references to the memory region are held by its 
+>> owner
+>> without first incrementing the memory region object's reference count.
+>> As a result, the automatic deallocation of the object, not taking into
+>> account those references, results in use-after-free memory corruption.
+>>
+>> This patch increases the reference count of an owned memory region 
+>> object
+>> on each memory_region_ref() and decreases it on each 
+>> memory_region_unref().
+>>
+>> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>> Signed-off-by: Huang Rui <ray.huang@amd.com>
+>> ---
+>>
+>> V4 -> V5:
+>>      - ref/unref only owned memory regions (Akihiko)
+>>
+>>   softmmu/memory.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/softmmu/memory.c b/softmmu/memory.c
+>> index 7d9494ce70..15e1699750 100644
+>> --- a/softmmu/memory.c
+>> +++ b/softmmu/memory.c
+>> @@ -1800,6 +1800,9 @@ void memory_region_ref(MemoryRegion *mr)
+>>       /* MMIO callbacks most likely will access data that belongs
+>>        * to the owner, hence the need to ref/unref the owner whenever
+>>        * the memory region is in use.
+>> +     * Likewise, the owner keeps references to the memory region,
+>> +     * hence the need to ref/unref the memory region object to prevent
+>> +     * its automatic deallocation while still referenced by its owner.
+>
+> This comment does not make sense. Traditionally no such automatic 
+> deallocation happens so the owner has been always required to free the 
+> memory region when it gets finalized.
+>
+> "[QEMU PATCH v5 09/13] virtio-gpu: Handle resource blob commands" 
+> introduces a different kind of memory region, which can be freed 
+> anytime before the device gets finalized. Even in this case, the owner 
+> removes the reference to the memory owner by doing res->region = NULL;
 
-However, I'm unsure how the stack traces I'm seeing are related to your
-patch. Maybe it just made an existing bug more likely to be triggered?
+Hi Akihiko,
 
-What I'm seeing is that the reader lock is held by an iothread that is
-waiting for its AioContext lock to make progress:
+You are right, the word "owner" is not correct. The issue observed was 
+due to the references kept in flatview ranges and the fact that 
+flatview_destroy() is asynchronous and was called after memory region's 
+destruction.
 
-Thread 3 (Thread 0x7f811e9346c0 (LWP 26390) "qemu-system-x86"):
-#0  0x00007f81250aaf80 in __lll_lock_wait () at /lib64/libc.so.6
-#1  0x00007f81250b149a in pthread_mutex_lock@@GLIBC_2.2.5 () at /lib64/libc.so.6
-#2  0x000055b7b170967e in qemu_mutex_lock_impl (mutex=0x55b7b34e3080, file=0x55b7b199e1f7 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:94
-#3  0x000055b7b1709953 in qemu_rec_mutex_lock_impl (mutex=0x55b7b34e3080, file=0x55b7b199e1f7 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:149
-#4  0x000055b7b1728318 in aio_context_acquire (ctx=0x55b7b34e3020) at ../util/async.c:728
-#5  0x000055b7b1727c49 in co_schedule_bh_cb (opaque=0x55b7b34e3020) at ../util/async.c:565
-#6  0x000055b7b1726f1c in aio_bh_call (bh=0x55b7b34e2e70) at ../util/async.c:169
-#7  0x000055b7b17270ee in aio_bh_poll (ctx=0x55b7b34e3020) at ../util/async.c:216
-#8  0x000055b7b170351d in aio_poll (ctx=0x55b7b34e3020, blocking=true) at ../util/aio-posix.c:722
-#9  0x000055b7b1518604 in iothread_run (opaque=0x55b7b2904460) at ../iothread.c:63
-#10 0x000055b7b170a955 in qemu_thread_start (args=0x55b7b34e36b0) at ../util/qemu-thread-posix.c:541
-#11 0x00007f81250ae15d in start_thread () at /lib64/libc.so.6
-#12 0x00007f812512fc00 in clone3 () at /lib64/libc.so.6
+If I replace the word "owner" with "memory subsystem" in the commit 
+message and drop the comment, would that be ok with you? or do want to 
+suggest something else?
 
-On the other hand, the main thread wants to acquire the writer lock,
-but it holds the AioContext lock of the iothread (it takes it in
-job_prepare_locked()):
+Xenia
 
-Thread 1 (Thread 0x7f811f4b7b00 (LWP 26388) "qemu-system-x86"):
-#0  0x00007f8125122356 in ppoll () at /lib64/libc.so.6
-#1  0x000055b7b172eae0 in qemu_poll_ns (fds=0x55b7b34ec910, nfds=1, timeout=-1) at ../util/qemu-timer.c:339
-#2  0x000055b7b1704ebd in fdmon_poll_wait (ctx=0x55b7b3269210, ready_list=0x7ffc90b05680, timeout=-1) at ../util/fdmon-poll.c:79
-#3  0x000055b7b1703284 in aio_poll (ctx=0x55b7b3269210, blocking=true) at ../util/aio-posix.c:670
-#4  0x000055b7b1567c3b in bdrv_graph_wrlock (bs=0x0) at ../block/graph-lock.c:145
-#5  0x000055b7b1554c1c in blk_remove_bs (blk=0x55b7b4425800) at ../block/block-backend.c:916
-#6  0x000055b7b1554779 in blk_delete (blk=0x55b7b4425800) at ../block/block-backend.c:497
-#7  0x000055b7b1554133 in blk_unref (blk=0x55b7b4425800) at ../block/block-backend.c:557
-#8  0x000055b7b157a149 in mirror_exit_common (job=0x55b7b4419000) at ../block/mirror.c:696
-#9  0x000055b7b1577015 in mirror_prepare (job=0x55b7b4419000) at ../block/mirror.c:807
-#10 0x000055b7b153a1a7 in job_prepare_locked (job=0x55b7b4419000) at ../job.c:988
-#11 0x000055b7b153a0d9 in job_txn_apply_locked (job=0x55b7b4419000, fn=0x55b7b153a110 <job_prepare_locked>) at ../job.c:191
-#12 0x000055b7b1538b6d in job_do_finalize_locked (job=0x55b7b4419000) at ../job.c:1011
-#13 0x000055b7b153a886 in job_completed_txn_success_locked (job=0x55b7b4419000) at ../job.c:1068
-#14 0x000055b7b1539372 in job_completed_locked (job=0x55b7b4419000) at ../job.c:1082
-#15 0x000055b7b153a71b in job_exit (opaque=0x55b7b4419000) at ../job.c:1103
-#16 0x000055b7b1726f1c in aio_bh_call (bh=0x7f8110005470) at ../util/async.c:169
-#17 0x000055b7b17270ee in aio_bh_poll (ctx=0x55b7b3269210) at ../util/async.c:216
-#18 0x000055b7b1702c05 in aio_dispatch (ctx=0x55b7b3269210) at ../util/aio-posix.c:423
-#19 0x000055b7b1728a14 in aio_ctx_dispatch (source=0x55b7b3269210, callback=0x0, user_data=0x0) at ../util/async.c:358
-#20 0x00007f8126c31c7f in g_main_dispatch (context=0x55b7b3269720) at ../glib/gmain.c:3454
-#21 g_main_context_dispatch (context=0x55b7b3269720) at ../glib/gmain.c:4172
-#22 0x000055b7b1729c98 in glib_pollfds_poll () at ../util/main-loop.c:290
-#23 0x000055b7b1729572 in os_host_main_loop_wait (timeout=27462700) at ../util/main-loop.c:313
-#24 0x000055b7b1729452 in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
-#25 0x000055b7b119a1eb in qemu_main_loop () at ../softmmu/runstate.c:772
-#26 0x000055b7b14c102d in qemu_default_main () at ../softmmu/main.c:37
-#27 0x000055b7b14c1068 in main (argc=44, argv=0x7ffc90b05d58) at ../softmmu/main.c:48
-
-At first I thought we just need to look into the AioContext locking in
-job completion and drop it in the right places.
-
-But in fact, first of all, blk_remove_bs() needs to make up its mind if
-it wants the caller to hold the AioContext or not and document that.
-Because it calls both bdrv_drained_begin() (which requires holding the
-AioContext lock) and bdrv_graph_wrlock(NULL) (which forbids it).
-
-If we could fully get rid of the AioContext lock (as we originally
-stated as a goal), that would automatically solve this kind of
-deadlocks.
-
-Kevin
-
+>
+>
+> Regards,
+> Akihiko Odaki
 
