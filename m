@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CCE7A5A91
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 09:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 832DA7A5A92
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 09:11:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiUs3-0008V9-Jd; Tue, 19 Sep 2023 03:10:07 -0400
+	id 1qiUsg-0000kh-Ku; Tue, 19 Sep 2023 03:10:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qiUs1-0008UK-Gb
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:10:05 -0400
-Received: from mgamail.intel.com ([192.55.52.115])
+ id 1qiUse-0000cq-EZ
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:10:44 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qiUrz-0000vC-Pq
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:10:05 -0400
+ id 1qiUsc-0001FG-Ia
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:10:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695107403; x=1726643403;
+ t=1695107442; x=1726643442;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=tTh1kLJMGqzSI/Gj5+5//5o7gE6qvLTX/rxyfLFOo5Y=;
- b=iKWqtFNlNsq0JGTYpzE+e5UtiAsuteO1JwmaZOQHVZXiB92gUkSLx4mF
- v5PbzuJWPToWn9vfxvIF87EDlrbXQjXOpr+sQPZzT9OZWRxJgrvJhzAkk
- cuAf8hhx/Fy+aP5K5MQYALzgvNCCf5UEMyoVilJRXs/ubdBtXnx6uO85g
- p0qG4BLKwMQBL5lsyZwheElDmtC/RvUPj4ggGYFRtz1K3WhK12eUWHNH7
- cQurvVBS2E2+MoMUbmb8En/zMwtSv2PHFjvwkekcVrjx2e1dvfvHwfmxv
- Hm2nCvijbAk1wPsrugu/V6PH6axQ36WYuP5U8mqMIcSQKcPsNI1srUmfR g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="379772818"
-X-IronPort-AV: E=Sophos;i="6.02,158,1688454000"; d="scan'208";a="379772818"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2023 00:09:24 -0700
+ bh=KeYq5AD76jOUIkgeV5EFUnARP8Uoss95X+qn8uwuH2Q=;
+ b=lwPZPYVV5OdHlHoBvTEsoQh6s8tny1QdibRyRofkFylYOLa6hwBd0D/d
+ o+LIz58JkvD7WA6OvzEMspyu0CDq8UkoFrSGfBTQsCLXq0JfPhlUZHXD6
+ rHB7/wQGbWywjxxQZaSfdHe8Q4GVxWeo/Du24Un+BLgH4Cfx6GQN9Btcz
+ QwAG5xlURlJePZs0JXzhX7PJA+ukmB2EE1Ysdpktf+UX9/G/9vWyA9hov
+ h2utb4D0R34nNskl3cMB2SZi9OOQawyZMG4o2iSeBLzV6dmvzP8TkNEoy
+ 53ldKmpsHGEDLlsIOrfiiecg6iFOmHgzeDxtAZcOAoDDhYA/v06LHW56i Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="359271301"
+X-IronPort-AV: E=Sophos;i="6.02,158,1688454000"; d="scan'208";a="359271301"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2023 00:10:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="869870808"
-X-IronPort-AV: E=Sophos;i="6.02,158,1688454000"; d="scan'208";a="869870808"
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="889392329"
+X-IronPort-AV: E=Sophos;i="6.02,158,1688454000"; d="scan'208";a="889392329"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orsmga004.jf.intel.com with ESMTP; 19 Sep 2023 00:09:21 -0700
-Date: Tue, 19 Sep 2023 15:20:25 +0800
+ by fmsmga001.fm.intel.com with ESMTP; 19 Sep 2023 00:09:51 -0700
+Date: Tue, 19 Sep 2023 15:21:40 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Igor Mammedov <imammedo@redhat.com>
 Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -51,17 +51,17 @@ Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
  Michael Tokarev <mjt@tls.msk.ru>, Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH 03/16] tests: bios-tables-test: Add test for smbios type4
- count
-Message-ID: <ZQlLuQuwYR4SPAtv@liuzhao-OptiPlex-7080>
+Subject: Re: [PATCH 06/16] tests: bios-tables-test: Add test for smbios type4
+ core count
+Message-ID: <ZQlMBEI2svx2UOV+@liuzhao-OptiPlex-7080>
 References: <20230825033619.2075837-1-zhao1.liu@linux.intel.com>
- <20230825033619.2075837-4-zhao1.liu@linux.intel.com>
- <20230915145432.79d27d83@imammedo.users.ipa.redhat.com>
+ <20230825033619.2075837-7-zhao1.liu@linux.intel.com>
+ <20230915150307.2934b0d4@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230915145432.79d27d83@imammedo.users.ipa.redhat.com>
-Received-SPF: none client-ip=192.55.52.115;
+In-Reply-To: <20230915150307.2934b0d4@imammedo.users.ipa.redhat.com>
+Received-SPF: none client-ip=192.55.52.136;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -42
 X-Spam_score: -4.3
@@ -84,120 +84,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 15, 2023 at 02:54:32PM +0200, Igor Mammedov wrote:
-> Date: Fri, 15 Sep 2023 14:54:32 +0200
+On Fri, Sep 15, 2023 at 03:03:07PM +0200, Igor Mammedov wrote:
+> Date: Fri, 15 Sep 2023 15:03:07 +0200
 > From: Igor Mammedov <imammedo@redhat.com>
-> Subject: Re: [PATCH 03/16] tests: bios-tables-test: Add test for smbios
->  type4 count
+> Subject: Re: [PATCH 06/16] tests: bios-tables-test: Add test for smbios
+>  type4 core count
 > X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 > 
-> On Fri, 25 Aug 2023 11:36:06 +0800
+> On Fri, 25 Aug 2023 11:36:09 +0800
 > Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 > 
 > > From: Zhao Liu <zhao1.liu@intel.com>
 > > 
-> > This tests the commit d79a284a44bb7 ("hw/smbios: Fix smbios_smp_sockets
-> > calculation").
+> > This tests the commit 196ea60a734c3 ("hw/smbios: Fix core count in
+> > type4").
 > > 
-> > Test the count of type4 tables for multiple sockets case.
+> > Test the core count field of type4 table for multiple sockets/dies case.
 > > 
 > > Suggested-by: Igor Mammedov <imammedo@redhat.com>
 > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 > > ---
-> >  tests/qtest/bios-tables-test.c | 33 ++++++++++++++++++++++++++++++++-
-> >  1 file changed, 32 insertions(+), 1 deletion(-)
+> >  tests/qtest/bios-tables-test.c | 19 +++++++++++++++++++
+> >  1 file changed, 19 insertions(+)
 > > 
 > > diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-> > index 47ba20b9579b..8679255449cf 100644
+> > index 8679255449cf..a35c753a3a00 100644
 > > --- a/tests/qtest/bios-tables-test.c
 > > +++ b/tests/qtest/bios-tables-test.c
-> > @@ -97,6 +97,7 @@ typedef struct {
-> >      uint16_t smbios_core_count2;
-> >      uint8_t *required_struct_types;
-> >      int required_struct_types_len;
-> > +    int type4_count;
-> >      QTestState *qts;
-> >  } test_data;
-> >  
-> > @@ -673,12 +674,21 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
-> >      }
-> >  }
-> >  
-> > +static void smbios_type4_count_test(test_data *data, int type4_count)
-> > +{
-> > +    int expected_type4_count = data->type4_count;
-> > +
-> > +    if (expected_type4_count) {
-> > +        g_assert_cmpuint(type4_count, ==, expected_type4_count);
-> > +    }
-> > +}
-> > +
-> >  static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
-> >  {
-> >      DECLARE_BITMAP(struct_bitmap, SMBIOS_MAX_TYPE+1) = { 0 };
-> >  
-> >      SmbiosEntryPoint *ep_table = &data->smbios_ep_table;
-> > -    int i = 0, len, max_len = 0;
-> > +    int i = 0, len, max_len = 0, type4_count = 0;
-> >      uint8_t type, prv, crt;
-> >      uint64_t addr;
-> >  
-> > @@ -704,6 +714,7 @@ static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
-> >  
-> >          if (type == 4) {
-> >              smbios_cpu_test(data, addr, ep_type);
-> > +            type4_count++;
-> >          }
-> >  
-> >          /* seek to end of unformatted string area of this struct ("\0\0") */
-> > @@ -747,6 +758,8 @@ static void test_smbios_structs(test_data *data, SmbiosEntryPointType ep_type)
-> >      for (i = 0; i < data->required_struct_types_len; i++) {
-> >          g_assert(test_bit(data->required_struct_types[i], struct_bitmap));
-> >      }
-> > +
-> > +    smbios_type4_count_test(data, type4_count);
-> >  }
-> >  
-> >  static void test_acpi_load_tables(test_data *data)
-> > @@ -970,6 +983,22 @@ static void test_acpi_q35_tcg(void)
+> > @@ -999,6 +999,23 @@ static void test_acpi_q35_tcg_type4_count(void)
 > >      free_test_data(&data);
 > >  }
 > >  
-> > +static void test_acpi_q35_tcg_type4_count(void)
+> > +static void test_acpi_q35_tcg_core_count(void)
 > > +{
 > > +    test_data data = {
 > > +        .machine = MACHINE_Q35,
-> > +        .variant = ".type4-count",
+> > +        .variant = ".core-count",
 > > +        .required_struct_types = base_required_struct_types,
 > > +        .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
-> > +        .type4_count = 5,
+> > +        .smbios_core_count = 9,
+> > +        .smbios_core_count2 = 9,
 > > +    };
 > > +
 > > +    test_acpi_one("-machine smbios-entry-point-type=64 "
-> > +                  "-smp cpus=100,maxcpus=120,sockets=5,"
-> > +                  "dies=2,cores=4,threads=3", &data);
+> > +                  "-smp 54,sockets=2,dies=3,cores=3,threads=3",
 > 
-> I'd add to commit message an explanation why above topology was picked up
+> ditto as for 3/16
+> It's not obvious why this topology is used and how it correlates to  smbios_core_*
+> so describe setup in commit message
 
-Ok. I'll. Because it defines mutiple sockets and smbios build type4 per
-socket.
+Ok. I'll.
 
 Thanks,
 Zhao
 
 > 
+> > +                  &data);
 > > +    free_test_data(&data);
 > > +}
 > > +
 > >  static void test_acpi_q35_tcg_core_count2(void)
 > >  {
 > >      test_data data = {
-> > @@ -2135,6 +2164,8 @@ int main(int argc, char *argv[])
-> >              if (has_kvm) {
-> >                  qtest_add_func("acpi/q35/kvm/xapic", test_acpi_q35_kvm_xapic);
+> > @@ -2166,6 +2183,8 @@ int main(int argc, char *argv[])
 > >                  qtest_add_func("acpi/q35/kvm/dmar", test_acpi_q35_kvm_dmar);
-> > +                qtest_add_func("acpi/q35/type4-count",
-> > +                               test_acpi_q35_tcg_type4_count);
+> >                  qtest_add_func("acpi/q35/type4-count",
+> >                                 test_acpi_q35_tcg_type4_count);
+> > +                qtest_add_func("acpi/q35/core-count",
+> > +                               test_acpi_q35_tcg_core_count);
 > >                  qtest_add_func("acpi/q35/core-count2",
 > >                                 test_acpi_q35_tcg_core_count2);
 > >              }
