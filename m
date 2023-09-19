@@ -2,106 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1487A5C8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8DF7A5C8E
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 10:30:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiW6m-0005pa-Pf; Tue, 19 Sep 2023 04:29:24 -0400
+	id 1qiW7H-0005yv-2T; Tue, 19 Sep 2023 04:29:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiW6l-0005p4-0V; Tue, 19 Sep 2023 04:29:23 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiW6j-0002sX-I0; Tue, 19 Sep 2023 04:29:22 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J899MC032499; Tue, 19 Sep 2023 08:29:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=TUXw/rl+EIhvLCOProNVcfjFxFrO7w08qpZsgBgV6g0=;
- b=WiAEz0nP4CNq2TNWe4eKvdHfkJgl6nMk9HCquBQQ7oD0hqgrIc/AtazKRzR397d2l9DB
- WnOU0jSGnB+9RZLuE/Qn2eWL2DL3EBKBqZYPF0HhEp+ue8W5KAu9lEOQqtTxltdnjCY3
- tZkLBtNAU8vU42t/QvAWUgsrbAlZb1ufnlIyG70fGNmoE0ui3Bti6g57Ystk4hq2m7T9
- sISR3v5tW89mdZJrX2agD636jnSs02akeHMjJQ8Xokh83QkZAUHqz25ngNrxvqZh1XSR
- Tcu7Zv6eCMiZQzslFD83qJYNeUbdf/aTQkftBUDmGzCQKqGdlZ9+TlsNSQsJp5OF0kNr Ww== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7454nsc1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 08:29:09 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J89i6F001990;
- Tue, 19 Sep 2023 08:29:09 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7454nsbs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 08:29:09 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J8BBhs005540; Tue, 19 Sep 2023 08:29:08 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t5q2yjnda-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 08:29:08 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38J8T81u3605048
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Sep 2023 08:29:08 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EEDA458059;
- Tue, 19 Sep 2023 08:29:07 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4BFDD58061;
- Tue, 19 Sep 2023 08:29:05 +0000 (GMT)
-Received: from [9.109.242.129] (unknown [9.109.242.129])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 19 Sep 2023 08:29:04 +0000 (GMT)
-Message-ID: <9e061471-931c-daf8-ab8f-567ce99f5057@linux.ibm.com>
-Date: Tue, 19 Sep 2023 13:59:03 +0530
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qiW7F-0005xs-Nd
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:29:53 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qiW78-0002we-T3
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 04:29:52 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2b962535808so85818711fa.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 01:29:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695112185; x=1695716985; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=qDL+liQ3QeFZaTTmMVv3KTxwC9/C/AGZC/nYSnEDiyc=;
+ b=e/imZOPa188gMGhxmTunLNNjRZh4WuImYFNkxzh43A7/gJ2V/99dkT7gJA8OfpxqTq
+ 2hYxebUGj4kdeO3moButsBXEVFAd6Kw07P9bMSFEttZe9Vty9jAW5Kth17i3k03ySnag
+ GTJMnaHqu3V6PZ34e8kURwyE3XGDrPGWjIttER9NA8MG/HZ3GKOH+Ue19HZMOgJxBNaq
+ Ri4yQcTI3UDLQFFhibfl63n0lQT5dQadtdAtlBZXntWh2jmCEp/0MAdn1JI6x1Yaz3vN
+ xsLREQeS9vPONB/M1Wm3pGJ6tuoXKL3DTObKzrQFY5x57D13DLg1ooJjFaUkB0/kosg3
+ dynA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695112185; x=1695716985;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qDL+liQ3QeFZaTTmMVv3KTxwC9/C/AGZC/nYSnEDiyc=;
+ b=hWEY2/2Wt1up/0Xy1ktOKmxpwToLu6/m9vD9KkERKURg1xNP95M3QouAKk4VDsPWuA
+ WDvK/kCEI8G2x/UsCaFCsbHxSBdC8c/ORjUmF9z3hz/nhVrFWsLseW1m9kIQGchp7O60
+ ZsDTCvPDEqwrjffJDzKkJkdcX35iOloXjd+vkp7X8PfKRIqTddmKCdMnzuc2z3y0B4J+
+ cVnYAjmwh4T5NlHZDzff3GHeY4Ltb60YOGGVBzTV7iUgdBlglkPy4o4zIYSS0ALZVr4q
+ 40+YV70URyxmUhFb3Gb8AntcaRQfjhMK2o9/TWVqDSD9Efpz9Pef1/jlVly2MhAeOhvX
+ EZlw==
+X-Gm-Message-State: AOJu0YxFjKLEr4YOVDY4QkHwTWVcRSVUtqxlq0jj/deUftfFHpYT3MQ0
+ o1BJ93rpVFiLXAveFPU/8Ly5CQ==
+X-Google-Smtp-Source: AGHT+IFu3Br71mwn65MfBLhw23QjNh+3wTCJa+zfHnYS/5yMvLXY1QKuL7u7Z4pdBMtxF+Pe1f0HYA==
+X-Received: by 2002:a2e:868a:0:b0:2bc:c830:4cbb with SMTP id
+ l10-20020a2e868a000000b002bcc8304cbbmr9248131lji.45.1695112184724; 
+ Tue, 19 Sep 2023 01:29:44 -0700 (PDT)
+Received: from [172.20.66.192] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ oq8-20020a170906cc8800b0099bc08862b6sm7645532ejb.171.2023.09.19.01.29.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Sep 2023 01:29:44 -0700 (PDT)
+Message-ID: <27e2b697-55be-af45-d350-01a85866249f@linaro.org>
+Date: Tue, 19 Sep 2023 10:29:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 6/8] spapr/drc: Clean up local variable shadowing in
- rtas_ibm_configure_connector()
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 00/10] linux-user: Detect and report host crashes
+To: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+References: <20230823051615.1297706-1-richard.henderson@linaro.org>
+ <d2e3266e-dbb8-07a6-07d7-008e788c3862@linaro.org>
+ <329a2c4b-9fa9-5e73-aa95-57512d60c1ec@gmx.de>
+ <36562fcb-77f2-2a18-acec-47f155decf71@tls.msk.ru>
+ <51b980aa-1a80-7565-44d6-8dcba3ead422@gmx.de>
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230918145850.241074-1-clg@kaod.org>
- <20230918145850.241074-7-clg@kaod.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230918145850.241074-7-clg@kaod.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <51b980aa-1a80-7565-44d6-8dcba3ead422@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: gBY7wuCG4FY231UnCjACL4EahHEisi17
-X-Proofpoint-ORIG-GUID: FGiYzTM1xMTKfDIOkWKfJIiuz4wHGZ5Z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-19_02,2023-09-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0
- mlxscore=0 phishscore=0 malwarescore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 mlxlogscore=875
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309190067
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=richard.henderson@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,38 +98,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 9/18/23 16:05, Helge Deller wrote:
+> On 9/12/23 12:34, Michael Tokarev wrote:
+>> 12.09.2023 12:45, Helge Deller:
+>>
+>>> /usr/bin/ld: /usr/lib/gcc/x86_64-redhat-linux/13/../../../../lib64/libc.a(abort.o): in 
+>>> function `abort':
+>>> (.text.unlikely+0x0): multiple definition of `abort'; 
+>>> libqemu-aarch64-linux-user.fa.p/linux-user_signal.c.o:/srv/_build/../../home/cvs/qemu/qemu/linux-user/signal.c:723: first defined here
+>>
+>> [PATCH v4 03/10] linux-user: Use die_with_signal with abort
+>>
+>> Sigh.
+>>
+>> I'd be double-cautious when overriding system functions like this, - it's
+>> almost always a bad idea.
+> 
+> Richard, I'm not sure, but with that change:
+> 
+> -void abort(void)
+> +void  __attribute__((weak)) abort(void)
+> 
+> it will at least successfully link the binary. Not sure which effects it has,
+> but probably not worse than before your patch series...
+
+This won't work, in that it will have no effect, and we continue to have the weird longjmp 
+assertion message after stack corruption.
+
+Probably we will have to replace all of the apis that can raise abort at the source level, 
+e.g.
+
+void qemu_abort(void) __attribute__((noreturn));
+void qemu_abort_msg(const char *) __attribute__((noreturn));
+
+#undef  abort
+#define abort       qemu_abort
+#undef  assert
+#define assert(X)   ...
+#undef  g_assert
+#define g_assert(X) assert(X)
+
+etc.
 
 
-On 9/18/23 20:28, Cédric Le Goater wrote:
-> Remove extra 'drc_index' variable to avoid this warning :
-> 
->    ../hw/ppc/spapr_drc.c: In function ‘rtas_ibm_configure_connector’:
->    ../hw/ppc/spapr_drc.c:1240:26: warning: declaration of ‘drc_index’ shadows a previous local [-Wshadow=compatible-local]
->     1240 |                 uint32_t drc_index = spapr_drc_index(drc);
->          |                          ^~~~~~~~~
->    ../hw/ppc/spapr_drc.c:1155:14: note: shadowed declaration is here
->     1155 |     uint32_t drc_index;
->          |              ^~~~~~~~~
-> 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/ppc/spapr_drc.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/hw/ppc/spapr_drc.c b/hw/ppc/spapr_drc.c
-> index b5c400a94d1c..843e318312d3 100644
-> --- a/hw/ppc/spapr_drc.c
-> +++ b/hw/ppc/spapr_drc.c
-> @@ -1237,8 +1237,6 @@ static void rtas_ibm_configure_connector(PowerPCCPU *cpu,
->           case FDT_END_NODE:
->               drc->ccs_depth--;
->               if (drc->ccs_depth == 0) {
-> -                uint32_t drc_index = spapr_drc_index(drc);
-> -
-I guess you only wanted to remove re-declaration part. Assigning the 
-value returned by this function doesnt seem to happen before.
-
->                   /* done sending the device tree, move to configured state */
->                   trace_spapr_drc_set_configured(drc_index);
->                   drc->state = drck->ready_state;
+r~
 
