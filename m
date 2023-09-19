@@ -2,104 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A2A7A5E12
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2597A5E31
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:36:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiX8c-0002uL-M1; Tue, 19 Sep 2023 05:35:22 -0400
+	id 1qiX9e-0005QX-SK; Tue, 19 Sep 2023 05:36:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiX8K-0002pd-EB
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:35:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qiX9V-0005Jw-OC
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:36:19 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiX8I-0004GI-IU
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:35:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695116099;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KPR96Ino/qT336oazWqMngmq6HsgDYc3ttnsN9zP/FQ=;
- b=OGvZyO21UA14rQHhXsw1s45gP34jYSuhFUSZjHaIa70aSlrQ88cL3XmYKm2GSZKv25x9lh
- v2jN42SESegdrAh5FiTLYEN0KOdp7uLMMu/2WiHnHYZsjJRX64kHmEYVeHGGXcSULPRgR0
- zTNQdAzerqhAv2/PPNBPvbXTjatkR2k=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-557-ByKVrV3lOJ2GCBL6jdF0QA-1; Tue, 19 Sep 2023 05:34:56 -0400
-X-MC-Unique: ByKVrV3lOJ2GCBL6jdF0QA-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40469bcd1eeso37491415e9.2
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 02:34:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695116096; x=1695720896;
- h=content-transfer-encoding:in-reply-to:organization:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KPR96Ino/qT336oazWqMngmq6HsgDYc3ttnsN9zP/FQ=;
- b=Wv354KYqokXzqnXvm68WWX3iJCtIWyUYuqdQRBRegawdLnAgehx7s3QH9Yin2lBeda
- hWt+JDq/kc93sPbwBBPJ6//U7TdSf4vwdbbmgi2Rh6mTkyB6l1R2tEIl3mPD3i+uKnn9
- YV76rr0ewZHUVAmnaAwLBZ7S6kZ1YFeg1B6UqSVQv7rd35N2Y845+PCF1sLXsmlGLISa
- xrwWq5LBjEIaeVgNAfyldv2Lrw3zxr5I42Fg2ejcCgHqrvi2pHKW9DelpmueQmyjt546
- MTEvp0cmAzS3JOTI3HB7jDx0xKArBA3OhyR0+Lv7kTDYO7XtxsJ5wt6dqtu0AxNpKaCl
- FwKw==
-X-Gm-Message-State: AOJu0YytDjN1VR+WG4p0NwZdXO4G9ogEn81Fzp6FcLyMWedjeZT0hrMS
- hpEWeWuVjBCnVsTHt2wAfc8/AdZYrOe2nLG/945KnRcWCbjDMOQjda2UiN5lTvj3eosxidjzYfw
- mmPrQM+wjTK2ic79hQDZQwUtNorHZK8z416gE570aacwa6T25kw1iH+GcWKvQLaL2Eqtv0oM=
-X-Received: by 2002:a7b:c4cb:0:b0:401:b53e:6c56 with SMTP id
- g11-20020a7bc4cb000000b00401b53e6c56mr11412930wmk.3.1695116095838; 
- Tue, 19 Sep 2023 02:34:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHh1b95ySDTxVNVqccpxTqPuEHUzr58Fl6Hb7D0bbeRcDlZIBfNAdbbcqTsXYpZs//RQv6EMQ==
-X-Received: by 2002:a7b:c4cb:0:b0:401:b53e:6c56 with SMTP id
- g11-20020a7bc4cb000000b00401b53e6c56mr11412888wmk.3.1695116095291; 
- Tue, 19 Sep 2023 02:34:55 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c702:1300:c409:8b33:c793:108e?
- (p200300cbc7021300c4098b33c793108e.dip0.t-ipconnect.de.
- [2003:cb:c702:1300:c409:8b33:c793:108e])
- by smtp.gmail.com with ESMTPSA id
- c22-20020a7bc856000000b00402f7e473b7sm14562093wml.15.2023.09.19.02.34.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 02:34:54 -0700 (PDT)
-Message-ID: <b6b088fa-621b-1017-9d71-5757f81bf1ec@redhat.com>
-Date: Tue, 19 Sep 2023 11:34:53 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qiX9F-0004hd-7j
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 05:36:17 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rqc2g2LFjz6K5WY;
+ Tue, 19 Sep 2023 17:35:07 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 19 Sep
+ 2023 10:35:58 +0100
+Date: Tue, 19 Sep 2023 10:35:57 +0100
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: Dave Jiang <dave.jiang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ <qemu-devel@nongnu.org>, Michael Tsirkin <mst@redhat.com>, Fan Ni
+ <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, <linuxarm@huawei.com>, Yuquan Wang
+ <wangyuquan1236@phytium.com.cn>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Ira
+ Weiny" <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 2/3] hw/mem/cxl_type3: Add missing copyright and license
+ notice
+Message-ID: <20230919103557.00000bf3@Huawei.com>
+In-Reply-To: <CAFEAcA_ROGZ1jDPP59NBD2td-R7e9VjJ=2mNEY01cPL8ZMYgkw@mail.gmail.com>
+References: <20230918150259.11165-1-Jonathan.Cameron@huawei.com>
+ <20230918150259.11165-3-Jonathan.Cameron@huawei.com>
+ <CAFEAcA_7-uq8LJO6-myGU1+qjErxZAWE+CMjqyJBph6Du9K0iA@mail.gmail.com>
+ <20230918180013.000035cf@Huawei.com>
+ <5083ba81-f74d-3698-6418-72d288917df5@intel.com>
+ <CAFEAcA_ROGZ1jDPP59NBD2td-R7e9VjJ=2mNEY01cPL8ZMYgkw@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 00/16] virtio-mem: Expose device memory through
- multiple memslots
-Content-Language: en-US
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
-References: <20230908142136.403541-1-david@redhat.com>
- <87e38689-c99b-0c92-3567-589cd9a2bc4c@redhat.com>
- <90303827-7879-7b9e-836d-5026b2be73dd@redhat.com>
-Organization: Red Hat
-In-Reply-To: <90303827-7879-7b9e-836d-5026b2be73dd@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -113,33 +72,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19.09.23 10:20, David Hildenbrand wrote:
-> On 11.09.23 09:45, David Hildenbrand wrote:
->> @MST, any comment on the vhost bits (mostly uncontroversial and only in
->> the memslot domain)?
->>
->> I'm planning on queuing this myself (but will wait a bit more), unless
->> you want to take it.
-> 
-> I'm queuing this to
-> 
-> https://github.com/davidhildenbrand/qemu.git mem-next
-> 
-> and plan on sending a PULL request on Friday.
-> 
-> So if anybody has objections, please let me know ASAP :)
-> 
+On Mon, 18 Sep 2023 18:38:10 +0100
+Peter Maydell <peter.maydell@linaro.org> wrote:
 
-.... and I dropped it again after realizing that migration needs care 
-(activate memslots on migrationd estination). I'll look into that and 
-resend once that is fixed.
+> On Mon, 18 Sept 2023 at 18:26, Dave Jiang <dave.jiang@intel.com> wrote:
+> >
+> >
+> >
+> > On 9/18/23 10:00, Jonathan Cameron wrote:  
+> > > On Mon, 18 Sep 2023 17:31:38 +0100
+> > > Peter Maydell <peter.maydell@linaro.org> wrote:
+> > >  
+> > >> On Mon, 18 Sept 2023 at 16:04, Jonathan Cameron
+> > >> <Jonathan.Cameron@huawei.com> wrote:  
+> > >>>
+> > >>> This has been missing from the start. Assume it should match
+> > >>> with cxl/cxl-component-utils.c as both were part of early
+> > >>> postings from Ben.  
+> > >>
+> > >> Sounds plausible -- is there an Intel person who could give us
+> > >> an acked-by for this?
+> > >>
+> > >> (Ideally we wouldn't have let more gpl-2-only code into the
+> > >> codebase without a rationale...)
+> > >>  
+> > >
+> > > I've +CC'd the kernel CXL maintainers from Intel a few of whom
+> > > have also contributed some of the QEMU CXL code.
+> > > Hopefully someone can ack.  
+> >
+> > I see that nvdimm.c from Intel is under LGPL 2.1. What is the typical license this should be applied for QEMU?  
+> 
+> The project has a mix of licenses, for mostly historical reasons.
+> The overall license is thus GPLv2 (as the most-restrictive of the set).
+> Our preference (as noted in the top level LICENSE file) for new
+> code is for GPL-v2-or-later; we can take other GPL-2-compatible
+> licenses (preferably GPL-v2-or-later compatible) if there's a
+> good rationale from the submitter. (Historically, one reason
+> for the GPL-v2-only code has been "this came from the Linux
+> kernel and so it's GPL-2-only"; "we copied a lot of this code
+> from some other file in QEMU and that has license X" is
+> the other one.)
 
--- 
-Cheers,
+As this one is now 'historical' code I'll stick to the v2 only
+but make sure anything new goes in with v2 or later unless there is
+a good reason for another choice.
 
-David / dhildenb
+Thanks for the info,
+
+Jonathan
+
+> 
+> thanks
+> -- PMM
+> 
 
 
