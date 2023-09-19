@@ -2,77 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C147A5BB6
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 09:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 061127A5BC9
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 09:58:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiVYd-0001kw-6P; Tue, 19 Sep 2023 03:54:07 -0400
+	id 1qiVc5-0002gO-4B; Tue, 19 Sep 2023 03:57:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qiVYZ-0001kW-Jd
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:54:03 -0400
-Received: from mail-qk1-x72d.google.com ([2607:f8b0:4864:20::72d])
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1qiVc0-0002g3-DM
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:57:36 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qiVYY-0001Ql-1y
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:54:03 -0400
-Received: by mail-qk1-x72d.google.com with SMTP id
- af79cd13be357-773bd514996so191549085a.1
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 00:54:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695110041; x=1695714841; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UQXgsU4RZ5I1NRE5t7sRu1JVh0G05gyB1Ad+fK3odLA=;
- b=KJB0UIILwZ86h80V2aMRbIp36reYzccaYtiitANkUJOVXUNiDik2ZnX6ijeV53+YOE
- Y9JIUIv0iAZYiqE56pCtt019j4fef/bNMP8ElSIcBtYE21cnjMF8BBNEM8pf9M2EoPTB
- YF9oEVdMdwb8yySPjEs+qDlc54Q/1izSYKIOW2lb3WiD95i/wBWHVyD3yZwXf3TA1AgR
- rWB31oo2r0S//DhEcUJUyOJCldkDmATq0wAXM+JV/0NSABYSpqT53AkaItm7vgvrKjH9
- 6EBbNQ886szk9utNi/YtzjbyDjnjz2AIb+EXgrLg5hVIin600UYhKbFCTlr4jq7QdQiY
- a1VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695110041; x=1695714841;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UQXgsU4RZ5I1NRE5t7sRu1JVh0G05gyB1Ad+fK3odLA=;
- b=SmkBF1g+OtscxWjNmXResxLI9HL0HCzwqPfXUk9W/Xp3cZrbrq7f7HOpGoIQEmSLrW
- PbarG2DlYdRBzf52A1QP5v/2JRJggs+rsai3Rb9cQr6Io+LNWDyM3Wz176EtVobNj0+g
- 7Fz4+Q+2CXsxQgIFChWTYhJQkyA/m5r+3emMKRDthpahUrTr4enScht8jXUis7GU6e+C
- aWQEW0DfA6xXI6VQcnpobICflzoI9k2dm3xjywrTcDqnMd9jwOZ1+d6fpC5N+wLpFKD5
- Bg7nRQXhxdakms+G7TOKbF6/LwpOgVa5qiFg6Xxjy8ENG6tjmzXjQNIt1ImmvClNs9+L
- wGXg==
-X-Gm-Message-State: AOJu0YzO6/3uEpbhFLenGtL1FUcXFbFcWY4OQQp9DHUm5XmCTCsHKyIR
- DyqWYabKg87gQ51rcwthiEaZ0BtZ/q6O6CCmC9U=
-X-Google-Smtp-Source: AGHT+IHklbOAD1AVVEnNry7IGaqM4zFleJ07wtPLX/VPsVMSoptSSqBifjm52FrTpnLbsyRZTWRZv1MvggCClyY0mls=
-X-Received: by 2002:a05:622a:4a16:b0:412:2284:cb33 with SMTP id
- fv22-20020a05622a4a1600b004122284cb33mr13432757qtb.48.1695110040960; Tue, 19
- Sep 2023 00:54:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <schwab@suse.de>) id 1qiVby-0002Fz-R7
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:57:36 -0400
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 0E2391FDBE;
+ Tue, 19 Sep 2023 07:57:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1695110253; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type;
+ bh=nf0avUnGSC5BcZUmOBAJmr8/Eh+83mVxJG5jY2CK/5w=;
+ b=EKzoLDtLnd3445faygbVDIpmhBq8ID8bh2SyIOhrUcIfEjXA1/2lvBO3VS9hdl3dJE+qPE
+ /Xu4wpjH1G93OLTpU63K9b8k4OK6yKlTehsp4Dp6QiNshHRC0wEqYzUewQjt/FbFAkewZi
+ QNm34FoK/l1YZ2HVfnPy3twJhTSJJaY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1695110253;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type;
+ bh=nf0avUnGSC5BcZUmOBAJmr8/Eh+83mVxJG5jY2CK/5w=;
+ b=/PTtOP/CZlYFAGA7wSJBbmWz0oU5UR70mJi+ow5bzm6UqSHdvDNez7Jql681yV9ANJzyE3
+ wrF34DUrdFLZPlAA==
+Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
+ by relay2.suse.de (Postfix) with ESMTP id 84CB72C142;
+ Tue, 19 Sep 2023 07:57:32 +0000 (UTC)
+Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
+ id 872DA4AAC2C; Tue, 19 Sep 2023 09:57:32 +0200 (CEST)
+From: Andreas Schwab <schwab@suse.de>
+To: qemu-devel@nongnu.org
+Subject: [PATCH] riscv: Call set_satp_mode_max_supported in riscv_host_cpu_init
+CC: Alexandre Ghiti <alexghiti@rivosinc.com>, Andrew Jones
+ <ajones@ventanamicro.com>, Bin Meng <bmeng@tinylab.org>, Frank Chang
+ <frank.chang@sifive.com>, Alistair Francis <alistair.francis@wdc.com>,
+ Palmer Dabbelt <palmer@rivosinc.com>
+X-Yow: Is this TERMINAL fun?
+Date: Tue, 19 Sep 2023 09:57:32 +0200
+Message-ID: <mvm34zavbmb.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20230918233233.1431858-1-stephen.s.brennan@oracle.com>
-In-Reply-To: <20230918233233.1431858-1-stephen.s.brennan@oracle.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 19 Sep 2023 11:53:49 +0400
-Message-ID: <CAJ+F1CLLgb=mYxf69gb+DpNQHrdOFY24Ax0eYfkVS4NxQ=NEgg@mail.gmail.com>
-Subject: Re: [PATCH v3 qemu 0/3] Allow dump-guest-memory to output standard
- kdump format
-To: Stephen Brennan <stephen.s.brennan@oracle.com>
-Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org, 
- Omar Sandoval <osandov@osandov.com>, Thomas Huth <thuth@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=schwab@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,56 +75,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+When running in KVM mode with -cpu host, cfg.satp_mode.supported is not
+initialized, causing an infinite loop in riscv_cpu_satp_mode_finalize.
 
-On Tue, Sep 19, 2023 at 3:32=E2=80=AFAM Stephen Brennan
-<stephen.s.brennan@oracle.com> wrote:
->
-> Hello all,
->
-> This is the third version of the kdump patch series, the first and
-> second revisions being visible at [1] and [2] respectively. You can see
-> the history and motivation for the patch series described in the cover
-> letter of [2].
->
-> Thank you for your continued feedback and review.
-> Stephen
->
-> Changes from v2 to v3:
-> - Rather than use "reassembled" flag in QMP API, represent each kdump
->   format "kdump-X" with a new enumerator "kdump-raw-X". (The HMP
->   interface retains the -R option)
-> - Return an error if the file descriptor passed in is not seekable, yet
->   the requested dump format is kdump-raw-*
->
-> Changes from v1 to v2:
-> - Keep the default as the flattened format
-> - Add QMP / HMP arguments for "reassembled"
->
-> [1]: https://lore.kernel.org/qemu-devel/20230717163855.7383-1-stephen.s.b=
-rennan@oracle.com/
-> [2]: https://lore.kernel.org/qemu-devel/20230914010315.945705-1-stephen.s=
-.brennan@oracle.com/
->
-> Stephen Brennan (3):
->   dump: Pass DumpState to write_ functions
->   dump: Allow directly outputting raw kdump format
->   dump: Add command interface for kdump-raw formats
->
->  dump/dump-hmp-cmds.c  | 21 +++++++--
->  dump/dump.c           | 99 +++++++++++++++++++++++++++++++------------
->  hmp-commands.hx       |  9 +++-
->  include/sysemu/dump.h |  3 +-
->  qapi/dump.json        | 24 +++++++++--
->  5 files changed, 119 insertions(+), 37 deletions(-)
->
-> --
-> 2.39.3
->
+Fixes: 6df3747a27 ("riscv: Introduce satp mode hw capabilities")
+Signed-off-by: Andreas Schwab <schwab@suse.de>
+---
+ target/riscv/cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-For the series:
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index f227c7664e..bb8dc3bb40 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -623,8 +623,10 @@ static void riscv_host_cpu_init(Object *obj)
+     CPURISCVState *env = &RISCV_CPU(obj)->env;
+ #if defined(TARGET_RISCV32)
+     set_misa(env, MXL_RV32, 0);
++    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
+ #elif defined(TARGET_RISCV64)
+     set_misa(env, MXL_RV64, 0);
++    set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV57);
+ #endif
+     riscv_cpu_add_user_properties(obj);
+ }
+-- 
+2.42.0
 
---=20
-Marc-Andr=C3=A9 Lureau
+
+-- 
+Andreas Schwab, SUSE Labs, schwab@suse.de
+GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
+"And now for something completely different."
 
