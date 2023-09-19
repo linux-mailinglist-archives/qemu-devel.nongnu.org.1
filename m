@@ -2,106 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CF87A5A41
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 08:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E783F7A5A68
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 09:01:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiUga-0002b2-J7; Tue, 19 Sep 2023 02:58:16 -0400
+	id 1qiUja-0004LJ-CD; Tue, 19 Sep 2023 03:01:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiUgW-0002aA-U5; Tue, 19 Sep 2023 02:58:12 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qiUjX-0004L0-WF
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:01:20 -0400
+Received: from mgamail.intel.com ([192.55.52.43])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qiUgT-00072b-OQ; Tue, 19 Sep 2023 02:58:11 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J6ca2a025901; Tue, 19 Sep 2023 06:58:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=fcDcvNwjndrFop/7dDcfq7ABA3Lg+2PW0lHwdSjpeYE=;
- b=IiUx+hrT+uROoxzTwruSDfEmdCHfyHHO9mIljFCHM6tbeAFC2Or1ukpKVeUr41mSctpr
- RCwH+/og6x2TmIEiJiQooZyw4uij6vK5WF4weBP/uTFKFp9Yl359Fmg0VSQa2iY0c77U
- jhnfKrK0WH45jJg8OkS8LR2Nlew3vvTebuRgJNzYVRDTxJ9ox8OmYcUz0DemRdEBrxbv
- mU34DbqUI35oKcAjIn/1YFXcB9Re+ulR599oE9PpODSF2ySkAU6YFOMLFWYsKEYMxIxH
- HIMIC4rI6H5s8umgoxslbb1Z289VL+Ibsl+t6X6ylo6uYfHLA4+FUMuBWDixnAuHtm5H +w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7504b2da-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 06:58:02 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J6sWjv013289;
- Tue, 19 Sep 2023 06:58:01 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7504b2cq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 06:58:01 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38J6mrJG031189; Tue, 19 Sep 2023 06:58:00 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t5r6khku9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Sep 2023 06:58:00 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38J6vxgX63177036
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Sep 2023 06:58:00 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A689058055;
- Tue, 19 Sep 2023 06:57:59 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6756D58043;
- Tue, 19 Sep 2023 06:57:57 +0000 (GMT)
-Received: from [9.109.242.129] (unknown [9.109.242.129])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 19 Sep 2023 06:57:57 +0000 (GMT)
-Message-ID: <01ba6d06-79ae-18a3-5835-a364cadbb9fd@linux.ibm.com>
-Date: Tue, 19 Sep 2023 12:27:56 +0530
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qiUjT-0007pw-JG
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 03:01:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1695106875; x=1726642875;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=sFfrX5EoXvwq3F37tidW5fx/H1YC9j3BQ9L0/O8ERPo=;
+ b=XhLI/EQuLTv41Jub2jO2gA/uRopf4eAIKAs6rKMO6bEOx5FnkFQPQPs0
+ u3ft+0tN7l6aXIC8AsWVsdtL9HlU/KzYs3NZ3jmgt+AysfFYziR/O+zeW
+ +vL8/V39Rc9D9KDoJGB0s8LjhJ2galA6kM3ZABPKIW4pUXzUh7Ipt7fBI
+ 59Vndu1ZIOX35zaHcgwmQxrlGNEO3qrgHWdZAxD8MNnrHBLg0v2vlAfa+
+ 6Hfr9jGDWDL5Q5mJXFlDmmISJkCt9oQU21ppTQ0sTGevPAriA+2H5uvhd
+ TRXrYsio3OjCdrT8vPpqaW9Slg9jLW6y7hv8rHvUPaGyuAGMbpvTHYqFH w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="466199311"
+X-IronPort-AV: E=Sophos;i="6.02,158,1688454000"; d="scan'208";a="466199311"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2023 00:01:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10837"; a="993052472"
+X-IronPort-AV: E=Sophos;i="6.02,158,1688454000"; d="scan'208";a="993052472"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmsmga006.fm.intel.com with ESMTP; 19 Sep 2023 00:01:09 -0700
+Date: Tue, 19 Sep 2023 15:12:13 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, qemu-devel@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 15/16] tests: bios-tables-test: Add test for smbios type4
+ thread count2
+Message-ID: <ZQlJzc5n+1V6YEDf@liuzhao-OptiPlex-7080>
+References: <20230825033619.2075837-1-zhao1.liu@linux.intel.com>
+ <20230825033619.2075837-16-zhao1.liu@linux.intel.com>
+ <20230915152907.4b6e63bc@imammedo.users.ipa.redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 2/8] pnv/psi: Clean up local variable shadowing
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
-References: <20230918145850.241074-1-clg@kaod.org>
- <20230918145850.241074-3-clg@kaod.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20230918145850.241074-3-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0uKmKRMeJeX9mXTzrrouRmzhK243nLFQ
-X-Proofpoint-ORIG-GUID: y64cxzstlI3JqUsGCJad5uDYGM29rDGL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-18_11,2023-09-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0
- mlxscore=0 suspectscore=0 mlxlogscore=684 impostorscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 bulkscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309190054
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230915152907.4b6e63bc@imammedo.users.ipa.redhat.com>
+Received-SPF: none client-ip=192.55.52.43;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,44 +84,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Igor,
 
-
-On 9/18/23 20:28, Cédric Le Goater wrote:
-> to fix :
+On Fri, Sep 15, 2023 at 03:29:07PM +0200, Igor Mammedov wrote:
+> Date: Fri, 15 Sep 2023 15:29:07 +0200
+> From: Igor Mammedov <imammedo@redhat.com>
+> Subject: Re: [PATCH 15/16] tests: bios-tables-test: Add test for smbios
+>  type4 thread count2
+> X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 > 
->    ../hw/ppc/pnv_psi.c: In function ‘pnv_psi_p9_mmio_write’:
->    ../hw/ppc/pnv_psi.c:741:24: warning: declaration of ‘addr’ shadows a parameter [-Wshadow=compatible-local]
->      741 |                 hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
->          |                        ^~~~
->    ../hw/ppc/pnv_psi.c:702:56: note: shadowed declaration is here
->      702 | static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
->          |                                                 ~~~~~~~^~~~
+> On Fri, 25 Aug 2023 11:36:18 +0800
+> Zhao Liu <zhao1.liu@linux.intel.com> wrote:
 > 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/ppc/pnv_psi.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+> > From: Zhao Liu <zhao1.liu@intel.com>
+> > 
+> > This tests the commit 7298fd7de5551 ("hw/smbios: Fix thread count in
+> > type4").
+> > 
+> > Add this test to cover 2 cases:
+> > 1. Test thread count2 field with multiple sockets and multiple dies to
+> >    confirm this field could correctly calculate threads per sockets.
+> > 
+> > 2. Confirm that field calculation could correctly recognize the
+> >    difference between "-smp maxcpus" and "-smp cpus".
+> > 
+> > Suggested-by: Igor Mammedov <imammedo@redhat.com>
+> > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > ---
+> >  tests/qtest/bios-tables-test.c | 33 +++++++++++++++++++++++++++++++++
+> >  1 file changed, 33 insertions(+)
+> > 
+> > diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+> > index 26474d376633..1b0c27e95d26 100644
+> > --- a/tests/qtest/bios-tables-test.c
+> > +++ b/tests/qtest/bios-tables-test.c
+> > @@ -96,6 +96,7 @@ typedef struct {
+> >      uint8_t smbios_core_count;
+> >      uint16_t smbios_core_count2;
+> >      uint8_t smbios_thread_count;
+> > +    uint16_t smbios_thread_count2;
+> >      uint8_t *required_struct_types;
+> >      int required_struct_types_len;
+> >      int type4_count;
+> > @@ -644,6 +645,7 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+> >      uint8_t thread_count, expected_thread_count = data->smbios_thread_count;
+> >      uint16_t speed, expected_speed[2];
+> >      uint16_t core_count2, expected_core_count2 = data->smbios_core_count2;
+> > +    uint16_t thread_count2, expected_thread_count2 = data->smbios_thread_count2;
+> >      int offset[2];
+> >      int i;
+> >  
+> > @@ -673,6 +675,8 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+> >      }
+> >  
+> >      if (ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+> > +        uint64_t thread_count2_addr;
+> > +
+> >          core_count2 = qtest_readw(data->qts,
+> >                            addr + offsetof(struct smbios_type_4, core_count2));
+> >  
+> > @@ -680,6 +684,15 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+> >          if (expected_core_count == 0xFF && expected_core_count2) {
+> >              g_assert_cmpuint(core_count2, ==, expected_core_count2);
+> >          }
+> > +
+> > +        thread_count2_addr = addr +
+> > +                             offsetof(struct smbios_type_4, thread_count2);
+> > +        thread_count2 = qtest_readw(data->qts, thread_count2_addr);
 > 
-> diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
-> index daaa2f0575fd..26460d210deb 100644
-> --- a/hw/ppc/pnv_psi.c
-> +++ b/hw/ppc/pnv_psi.c
-> @@ -738,8 +738,9 @@ static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
->               }
->           } else {
->               if (!(psi->regs[reg] & PSIHB9_ESB_CI_VALID)) {
-> -                hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
-> -                memory_region_add_subregion(sysmem, addr,
-> +                hwaddr esb_addr =
+> I'd mimic the same code style as used for core_count2 and avoid introducing an extra variable
 
-While at it, we may want to move the declaration to the beginning of the 
-function. Anyways,
+I'm not sure about the style of this case, since the code line is still
+too long, so which style should I pick? ;-)
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+thread_count2 = qtest_readw(data->qts,
+                    addr + offsetof(struct smbios_type_4,
+		                    thread_count2));
 
-> +                    val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
-> +                memory_region_add_subregion(sysmem, esb_addr,
->                                               &psi9->source.esb_mmio);
->               }
->           }
+or,
+
+thread_count2 = qtest_readw(data->qts,
+                    addr + offsetof(struct smbios_type_4,
+                    thread_count2));
+
+
+> 
+> > +
+> > +        /* Thread Count has reached its limit, checking Thread Count 2 */
+> > +        if (expected_thread_count == 0xFF && expected_thread_count2) {
+> > +            g_assert_cmpuint(thread_count2, ==, expected_thread_count2);
+> > +        }
+> >      }
+> >  }
+> >  
+> > @@ -1050,6 +1063,7 @@ static void test_acpi_q35_tcg_thread_count(void)
+> >          .required_struct_types = base_required_struct_types,
+> >          .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+> >          .smbios_thread_count = 27,
+> > +        .smbios_thread_count2 = 27,
+> >      };
+> >  
+> >      test_acpi_one("-machine smbios-entry-point-type=64 "
+> > @@ -1058,6 +1072,23 @@ static void test_acpi_q35_tcg_thread_count(void)
+> >      free_test_data(&data);
+> >  }
+> >  
+> > +static void test_acpi_q35_tcg_thread_count2(void)
+> > +{
+> > +    test_data data = {
+> > +        .machine = MACHINE_Q35,
+> > +        .variant = ".thread-count2",
+> > +        .required_struct_types = base_required_struct_types,
+> > +        .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
+> > +        .smbios_thread_count = 0xFF,
+> > +        .smbios_thread_count2 = 260,
+> > +    };
+> > +
+> > +    test_acpi_one("-machine smbios-entry-point-type=64 "
+> > +                  "-smp cpus=210,maxcpus=520,sockets=2,dies=2,cores=65,threads=2",
+> > +                  &data);
+> 
+> explain in commit message why abive -smp == 
+
+Ok, this is used to test if we could correctly distinguish smp.cpus and smp.maxcpus.
+
+Thanks,
+Zhao
+
+>   > +        .smbios_thread_count = 0xFF,
+>   > +        .smbios_thread_count2 = 260,
+> 
+> 
+> > +    free_test_data(&data);
+> > +}
+> > +
+> >  static void test_acpi_q35_tcg_bridge(void)
+> >  {
+> >      test_data data = {};
+> > @@ -2216,6 +2247,8 @@ int main(int argc, char *argv[])
+> >                                 test_acpi_q35_tcg_core_count2);
+> >                  qtest_add_func("acpi/q35/thread-count",
+> >                                 test_acpi_q35_tcg_thread_count);
+> > +                qtest_add_func("acpi/q35/thread-count2",
+> > +                               test_acpi_q35_tcg_thread_count2);
+> >              }
+> >              qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
+> >  #ifdef CONFIG_POSIX
+> 
 
