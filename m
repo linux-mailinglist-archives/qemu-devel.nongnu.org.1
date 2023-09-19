@@ -2,123 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455217A6191
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 13:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55CCB7A61BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 13:54:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiZ8T-0007qQ-SP; Tue, 19 Sep 2023 07:43:21 -0400
+	id 1qiZHg-0006Rx-QM; Tue, 19 Sep 2023 07:52:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qiZ8Q-0007pZ-Hc
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:43:18 -0400
-Received: from mail-dm6nam10on20605.outbound.protection.outlook.com
- ([2a01:111:f400:7e88::605]
- helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiZHZ-0006Rb-RE
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:52:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qiZ8N-0004fK-Mi
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:43:18 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NkTF3WSyCn2crS3b+1NPcpw9fYR2CiPuZ7PKegZ/1iVq2Nn+ioRGpvgyWcnuF96KtDVFjwsi0VZWyYr51FaFm5v8utjoGV9TjekSfgM11lYfJYENsMMZ0OG43R7yybAexSifppxXwz+4Vi2gl3uBOAt5WDRYa43Ei+SSpsd1jY6jXWZYgyxcd4y/WLuGBqFaAohV6+HSl/zQDYZRXseb2LOWLUhTetgKduW1et10JPxGw9QlLA6KJoGwE3EY6xuWc/zHrvAgXiPLbQcVHi1pNJXVJiXayETzFGZ5hLuw+mmXrLShYgrJ7T6E2rT89Pnjfjov07uDgum9/ameCzJ+CA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bAoFkhY5oJpBx+yo7Mt0oeKdn/WSd1Ii7Z/MVzUD6c4=;
- b=Tsaf0iXg80DxaxxyIsTbKB2xIVRKf8jfo41hPbXM4XEi/nPJHdB9D+5xZ1glLSJB9Fck0mFfFbM4e9eips6d7gmPaFDLvQ/u/KG4PA6eE/zQi0wlf4qT15nhqDDOOHhKDu7Az9PpHLi76zMKk6A+n9vKw2j1+aJQEfjxEUaInmIehywm13VhmysHZ5pDRfUrdlzLTxYFF+8j8CTpJBhXqMm7dTakOSPFnfMLEKoydQ7fHJDl71wFI5JsUkxvwRYNb2B4PNhpncyRATg34vh6/0BA2HX3KjK99LGkENvSg0NFfH6+KpEmER0fDsZ3IW3HiKm6DPilESeWabq+UlJiaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bAoFkhY5oJpBx+yo7Mt0oeKdn/WSd1Ii7Z/MVzUD6c4=;
- b=txfSppbHT0roKNsRaUo5OzIkJstFs+xG94YH4pNkT/by1wkfJaWqo/3A0SeFjoupHCMdxyImwzREm7YDOTLaA01t8lt3T7P+K7+StnEbmKHk0fETh2XqiS0W6Tud6PHvpFxTZPv6ATB4nJmbBz7/CLtqllkOqPfLqie3Z3F3f2o=
-Received: from CH2PR14CA0015.namprd14.prod.outlook.com (2603:10b6:610:60::25)
- by SA3PR12MB7903.namprd12.prod.outlook.com (2603:10b6:806:307::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Tue, 19 Sep
- 2023 11:43:09 +0000
-Received: from DS2PEPF00003439.namprd02.prod.outlook.com
- (2603:10b6:610:60:cafe::6) by CH2PR14CA0015.outlook.office365.com
- (2603:10b6:610:60::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28 via Frontend
- Transport; Tue, 19 Sep 2023 11:43:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF00003439.mail.protection.outlook.com (10.167.18.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6792.11 via Frontend Transport; Tue, 19 Sep 2023 11:43:09 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 19 Sep
- 2023 06:43:03 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>, "Gurchetan
- Singh" <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>, "Robert
- Beckett" <bob.beckett@collabora.com>, Mikhail Golubev-Ciuchea
- <Mikhail.Golubev-Ciuchea@opensynergy.com>, Parav Pandit <parav@nvidia.com>,
- <virtio-comment@lists.oasis-open.org>, <virtio-dev@lists.oasis-open.org>
-CC: <qemu-devel@nongnu.org>, <linux-kernel@vger.kernel.org>, "Stefano
- Stabellini" <sstabellini@kernel.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <Alexander.Deucher@amd.com>, "Christian
- Koenig" <Christian.Koenig@amd.com>, Stewart Hildebrand
- <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
- Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
-Subject: [VIRTIO PCI PATCH v5 1/1] transport-pci: Add freeze_mode to
- virtio_pci_common_cfg
-Date: Tue, 19 Sep 2023 19:42:42 +0800
-Message-ID: <20230919114242.2283646-2-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
-References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qiZHY-0006dv-2b
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 07:52:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695124362;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VGpwzm7WblMPIQD4RW4ViuVqDccUCcv9k+f6C2RKHps=;
+ b=R2lpEljTn8sCFxxg6hygcTwu9REqmj/iJStSO+tS/4fd+fhU57ymbUgRC3XZwu/RyuhpIy
+ zoaVU9pp91Wsbt+SUCQTYCd+90PTnXvTkKX8SR3jU1/WlZJ4JsJAqMvyLSwJ343qhbW/4g
+ DwqcgBRd8XtOxHXmcY1nPGiB7FN370s=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-110-__xrihZQNkKSdrd-2sgxJA-1; Tue, 19 Sep 2023 07:52:41 -0400
+X-MC-Unique: __xrihZQNkKSdrd-2sgxJA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-993c2d9e496so410574466b.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 04:52:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695124360; x=1695729160;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VGpwzm7WblMPIQD4RW4ViuVqDccUCcv9k+f6C2RKHps=;
+ b=hf3dPvlUQiPof5UlFAIiGvOaATyqh5yBsa8b+ad1I1b6pxpWY6CpdautpIRWZOMHNR
+ VS5x0Lo9Zi3zvtMd/nb6ftfiCRhxOU3Rlo6deqULc2P93wa15/VRFN6iprfhLTwlY6XJ
+ 5nO4SibV57G7lnmgnkRY/GqtDxu8WACRySr92bLVrcLHOVGZBDkitcXSYX6TOgMe0cJM
+ XUbPXeMIf7Is3O6GGXr4KKb+JLRx+nwWGaUO9u2nt1egpPYauX42lF3PGlXZihZ+Kj0Q
+ mN5JWx8tIBDJe/w43FsdjCZdxWT2Owo0f4naLJ6pVpUGDyO0D56z93lL7FMs0kcdgwSA
+ SQKg==
+X-Gm-Message-State: AOJu0Yw4jG01UG2KEOEq9mq45FpCflfSxseEJYB8OA6uPNDY5bK0yrx2
+ Fpjdk6iAcXt6dTlDzTNBTJGsYTjJmbJNlXJiYjYeL3VAvmx5a671ouu2D90ajUVMEFxwGwnUKcy
+ 0sSTY64i0+wAkC44b4PccqimHerkhWYE=
+X-Received: by 2002:a17:907:2724:b0:9a9:e4ba:2da7 with SMTP id
+ d4-20020a170907272400b009a9e4ba2da7mr9626858ejl.49.1695124360163; 
+ Tue, 19 Sep 2023 04:52:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEH+iWbC6g1O9Uy0ZjYVnhxSPiITPRWFdHJ8mrnftODsC/dSqa2pSf+bkxiQxCMLlzuH+kmQtDretfZa8xHZIQ=
+X-Received: by 2002:a17:907:2724:b0:9a9:e4ba:2da7 with SMTP id
+ d4-20020a170907272400b009a9e4ba2da7mr9626839ejl.49.1695124359748; Tue, 19 Sep
+ 2023 04:52:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003439:EE_|SA3PR12MB7903:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6b12617c-c774-427f-62af-08dbb90598d6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KCKuvHBhVj6cqPB6s23uZHyR4PywbTe8iUO0cllczWSmAc800XCHAy7oXwP3DpPfrckPUqdiGrjNbW+ogvSO1oUkai1feKm1NVUoRrgIMXmMmY3WOG/UHm7vM3FvdXwuLRZLvTRyO0sJH4qw6e10KpgrYfkNzBHRPN1xps/TFTDojVOak5RGa8b3IYrba8oPARjaLyBL9m4LPuWKVAnJ3DsMdn9D3VL0xEg+ruPY4m3fEjchvS6d/De85YqvG9IaxXfI7nGbIvEhA4gbmoMtjNSQHy63j6tzBVTiOiBV51xZ4KQJQT2CJnzzPhQYLotsBWTeU7yJKZsEq9gySulbNFR9BeEuoaoeL+dAlDpud2DWwkVEUFNUqJNhyxkGhNLmRJjdqTCLhX6CmplsnkHZUGZVtH8ZP3pVyatpT8D6QoYjlImutypOzxM8YwJTciy7+x49wiMS05yYM2+fZVGfxhEGLclW9BzSY87evoPswOH2qpimEXKutQihyGG1JnLKiq8Vp63cot0e6qIksdSV14Pu3wgOSH7fIMC/AVAjvThffdSZR2XxdDT3tyUC5f3VDT74wFBtWn3lZn0jhIFbOWnT6nxMlf30zvo+tPOzB94dCXtovb8YYE+2negjYAvSytg+1cdrF0D3gBk4dP01f+Axk7EtzopFqKiDhyS2VdkkKX746lHa06VegFG3aRqViOYPIsgqtOF1VXZ1XwSXECicvh6HnHDVyXDhIx5TamAGWmnUxjYb08ilT8tqhMvT5C+X5FNkgDOju/4pX3nHq9165a4Aj+1n8ooW+mKUpVc=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(39860400002)(396003)(376002)(346002)(136003)(451199024)(82310400011)(1800799009)(186009)(40470700004)(46966006)(36840700001)(70206006)(70586007)(54906003)(7696005)(110136005)(40480700001)(316002)(41300700001)(478600001)(6666004)(8936002)(4326008)(8676002)(40460700003)(82740400003)(1076003)(26005)(5660300002)(16526019)(47076005)(36860700001)(356005)(81166007)(921005)(336012)(83380400001)(426003)(2906002)(2616005)(86362001)(7416002)(36756003)(36900700001);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 11:43:09.2437 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b12617c-c774-427f-62af-08dbb90598d6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF00003439.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7903
-Received-SPF: softfail client-ip=2a01:111:f400:7e88::605;
- envelope-from=Jiqian.Chen@amd.com;
- helo=NAM10-DM6-obe.outbound.protection.outlook.com
+References: <20230919103838.249317-1-anisinha@redhat.com>
+In-Reply-To: <20230919103838.249317-1-anisinha@redhat.com>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Tue, 19 Sep 2023 17:22:28 +0530
+Message-ID: <CAK3XEhPqRTjSCuvsUHkdfH+1Yi=5TPREB3VWA0Chr+c_jdTiKQ@mail.gmail.com>
+Subject: Re: [PATCH v2] hw/i386/pc: improve physical address space bound check
+ for 32-bit systems
+To: david@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: philmd@linaro.org, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -134,53 +98,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When guest vm does S3, Qemu will reset and clear some things of virtio
-devices, but guest can't aware that, so that may cause some problems.
-For excample, Qemu calls virtio_reset->virtio_gpu_gl_reset when guest
-resume, that function will destroy render resources of virtio-gpu. As
-a result, after guest resume, the display can't come back and we only
-saw a black screen. Due to guest can't re-create all the resources, so
-we need to let Qemu not to destroy them when S3.
+On Tue, Sep 19, 2023 at 4:08=E2=80=AFPM Ani Sinha <anisinha@redhat.com> wro=
+te:
+>
+> 32-bit systems do not have a reserved memory for hole64 and memory hotplu=
+g is
+> not supported on those systems. Therefore, the maximum limit of the guest
+> physical address coincides with the end of "above 4G memory space" region=
+.
+> Make sure that the end of "above 4G memory" is still addressible by the
+> guest processor with its available address bits. For example, previously =
+this
+> was allowed:
+>
+> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
+>
+> Now it is no longer allowed:
+>
+> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
+> qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff phys-bit=
+s too low (32)
+>
+> After calling CPUID with EAX=3D0x80000001, all AMD64 compliant processors
+> have the longmode-capable-bit turned on in the extended feature flags (bi=
+t 29)
+> in EDX. The absence of CPUID longmode can be used to differentiate betwee=
+n
+> 32-bit and 64-bit processors and is the recommended approach. QEMU takes =
+this
+> approach elsewhere (for example, please see x86_cpu_realizefn()) and with
+> this change, pc_max_used_gpa() also takes the same approach to detect 32-=
+bit
+> processors.
+>
+> Finally, a new compatibility flag is introduced to retain the old behavio=
+r
+> for pc_max_used_gpa() for macines 8.1 and older.
+typo - will fix in v3                   ^^^^^^^^
 
-For above purpose, we need a mechanism that allows guests and QEMU to
-negotiate their reset behavior. So this patch add a new parameter
-named freeze_mode to struct virtio_pci_common_cfg. And when guest
-suspends, it can write freeze_mode to be FREEZE_S3, and then virtio
-devices can change their reset behavior on Qemu side according to
-freeze_mode. What's more, freeze_mode can be used for all virtio
-devices to affect the behavior of Qemu, not just virtio gpu device.
+btw, does this patch break it for processors < 32-bit? For them clearly
 
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
- transport-pci.tex | 7 +++++++
- 1 file changed, 7 insertions(+)
+x86ms->above_4g_mem_start =3D 4 * GiB;
 
-diff --git a/transport-pci.tex b/transport-pci.tex
-index a5c6719..2543536 100644
---- a/transport-pci.tex
-+++ b/transport-pci.tex
-@@ -319,6 +319,7 @@ \subsubsection{Common configuration structure layout}\label{sec:Virtio Transport
-         le64 queue_desc;                /* read-write */
-         le64 queue_driver;              /* read-write */
-         le64 queue_device;              /* read-write */
-+        le16 freeze_mode;               /* read-write */
-         le16 queue_notif_config_data;   /* read-only for driver */
-         le16 queue_reset;               /* read-write */
- 
-@@ -393,6 +394,12 @@ \subsubsection{Common configuration structure layout}\label{sec:Virtio Transport
- \item[\field{queue_device}]
-         The driver writes the physical address of Device Area here.  See section \ref{sec:Basic Facilities of a Virtio Device / Virtqueues}.
- 
-+\item[\field{freeze_mode}]
-+        The driver writes this to set the freeze mode of virtio pci.
-+        VIRTIO_PCI_FREEZE_MODE_UNFREEZE - virtio-pci is running;
-+        VIRTIO_PCI_FREEZE_MODE_FREEZE_S3 - guest vm is doing S3, and virtio-pci enters S3 suspension;
-+        Other values are reserved for future use, like S4, etc.
-+
- \item[\field{queue_notif_config_data}]
-         This field exists only if VIRTIO_F_NOTIF_CONFIG_DATA has been negotiated.
-         The driver will use this value when driver sends available buffer
--- 
-2.34.1
+does not work.
+
+
+>
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> ---
+>  hw/i386/pc.c         | 17 ++++++++++++++---
+>  hw/i386/pc_piix.c    |  4 ++++
+>  include/hw/i386/pc.h |  3 +++
+>  3 files changed, 21 insertions(+), 3 deletions(-)
+>
+> changelog:
+> v2: removed memory hotplug region from max_gpa. added compat knobs.
+>
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 54838c0c41..fea97ee258 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -907,10 +907,20 @@ static uint64_t pc_get_cxl_range_end(PCMachineState=
+ *pcms)
+>  static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_=
+size)
+>  {
+>      X86CPU *cpu =3D X86_CPU(first_cpu);
+> +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
+>
+> -    /* 32-bit systems don't have hole64 thus return max CPU address */
+> -    if (cpu->phys_bits <=3D 32) {
+> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
+> +    /*
+> +     * 32-bit systems don't have hole64 and does not support
+> +     * memory hotplug.
+> +     */
+> +    if (pcmc->fixed_32bit_mem_addr_check) {
+> +        if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
+> +            return pc_above_4g_end(pcms) - 1;
+> +        }
+> +    } else {
+> +        if (cpu->phys_bits <=3D 32) {
+> +            return ((hwaddr)1 << cpu->phys_bits) - 1;
+> +        }
+>      }
+>
+>      return pc_pci_hole64_start() + pci_hole64_size - 1;
+> @@ -1867,6 +1877,7 @@ static void pc_machine_class_init(ObjectClass *oc, =
+void *data)
+>      pcmc->pvh_enabled =3D true;
+>      pcmc->kvmclock_create_always =3D true;
+>      pcmc->resizable_acpi_blob =3D true;
+> +    pcmc->fixed_32bit_mem_addr_check =3D true;
+>      assert(!mc->get_hotplug_handler);
+>      mc->get_hotplug_handler =3D pc_get_hotplug_handler;
+>      mc->hotplug_allowed =3D pc_hotplug_allowed;
+> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+> index 8321f36f97..f100a5de8b 100644
+> --- a/hw/i386/pc_piix.c
+> +++ b/hw/i386/pc_piix.c
+> @@ -517,9 +517,13 @@ DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
+>
+>  static void pc_i440fx_8_1_machine_options(MachineClass *m)
+>  {
+> +    PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
+> +
+>      pc_i440fx_8_2_machine_options(m);
+>      m->alias =3D NULL;
+>      m->is_default =3D false;
+> +    pcmc->fixed_32bit_mem_addr_check =3D false;
+> +
+>      compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
+>      compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
+>  }
+> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+> index 0fabece236..5a70d163d0 100644
+> --- a/include/hw/i386/pc.h
+> +++ b/include/hw/i386/pc.h
+> @@ -129,6 +129,9 @@ struct PCMachineClass {
+>
+>      /* resizable acpi blob compat */
+>      bool resizable_acpi_blob;
+> +
+> +    /* fixed 32-bit processor address space bound check for memory */
+> +    bool fixed_32bit_mem_addr_check;
+>  };
+>
+>  #define TYPE_PC_MACHINE "generic-pc-machine"
+> --
+> 2.39.1
+>
 
 
