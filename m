@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F38D7A5804
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 05:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F256D7A584F
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 06:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiRlf-0002gH-2I; Mon, 18 Sep 2023 23:51:19 -0400
+	id 1qiS00-00060W-Ec; Tue, 19 Sep 2023 00:06:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiRld-0002g9-F3
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 23:51:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qiRlO-0002Mm-Ej
- for qemu-devel@nongnu.org; Mon, 18 Sep 2023 23:51:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695095461;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Eq3y0WSmlP2oHQb22HjpMVnCQGt7S09qg1iubYNX+fg=;
- b=PJIkGRrgqPSVe4waEE+Ny4HUWxbslVCzqINalIoG5xPGVtGO5Ka5oBllSBvl0YKGsaKjqi
- 5gjWOawjmryEHL95ap2pC6YKFKCA9n5ek4xi2fop9V8bCA+omZhJXSHnI+PK2+hkbgmWoL
- p/YQFZAwpuRmjPmMhcSoqfYC1xSyBY4=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-aIaIQ6BjMHmepEj2HoN4AQ-1; Mon, 18 Sep 2023 23:50:58 -0400
-X-MC-Unique: aIaIQ6BjMHmepEj2HoN4AQ-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9ae0bf9c0b4so116950566b.0
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 20:50:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qiRzy-000609-Iz
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:06:06 -0400
+Received: from mail-vs1-xe29.google.com ([2607:f8b0:4864:20::e29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qiRzw-0005fE-SN
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:06:06 -0400
+Received: by mail-vs1-xe29.google.com with SMTP id
+ ada2fe7eead31-44ee3a547adso2571540137.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 21:06:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695096363; x=1695701163; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Q5bcNr3nZsSSYj/9hs+pxXcWdz5vbZ7VNRI98Jd296o=;
+ b=lo1/bjdGbIhHvZ1sFihLoTQ0s2JDwymdfXaoJuKBx0WYJp1hxtwj6U7Ebz0WCeDlyh
+ d/AZYl7kvolIjCPJp7nNM/k72v/70UkcQLHVr1pEByEtj8AHy50noZ1Rajnhe6Qn9vTL
+ OzUTVF66STmk9m6L43V/nwcA+QjMHQUukTZNQMpRbFxvXTO4A4gl4ZBcLId7bVJ7X6to
+ scgWJe4fKpU8oZLQhZpqnsS4yIL06L/VaC/nyecLxsOEAgZja9IduhMMFasLR6ixJCid
+ zjktHuN9Tu+3MjBFV1pdorGLRvMd6sp0mkVr4UyZKwrazctiPPLSPKNcvq5mmf9shkGG
+ RIzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695095457; x=1695700257;
+ d=1e100.net; s=20230601; t=1695096363; x=1695701163;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Eq3y0WSmlP2oHQb22HjpMVnCQGt7S09qg1iubYNX+fg=;
- b=QxLNoWpejwmWR6CEdrtbEKyvazEfgmU/ZlJ41EEdKpak2ySyQwzFMzCXcSURm4GSth
- 0+HsLPa5LZswhJ0lvBzAoHk6b3IzZc3SaanW2cHJ1E04k3nYitIEbPm9ByIR2wRk1Yhn
- 60Tur8dKYYEkiK5bFeBxsu62DqaBtiu1XVPgekP5w/H7PUoUc/dsTrh4JHLPwVZFUCQf
- /wXFrU1kjMgQ5+UiTWBARdFwfqnbA9kf8AO6UkkHjGM6CA7umCWIfuesbvYq+57ni6pA
- mtcGGlDXzirORJ7pqIWeGQwg8vOOYO+sKzBUefOCa0p+n+mNdAXlebRT6jl5HyI8X8q1
- kgXw==
-X-Gm-Message-State: AOJu0Yxf6NUEtR/OGbn4FvY45zpyBaSxWYZ9u3tcUs4QB2LdE+DPq37x
- kmitx4c7NuU715HcIjx64i56Cj4OKuZzMGDgYZdUkeatn9RoeWYwPAyIwvOK6i0H42pRiKXUtiJ
- faV/KSGOl0Z6rO91XY8okzAPpnjSMK2g=
-X-Received: by 2002:a17:907:77c2:b0:9a9:eef6:434a with SMTP id
- kz2-20020a17090777c200b009a9eef6434amr9487429ejc.36.1695095456890; 
- Mon, 18 Sep 2023 20:50:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEj1U/UNpiYO2EjnYIr6NRKumSMGpIR6hHQWacUxuucRt50dQfa+Jo5ZAo69tK67H5hx8wfljE6LSKRmGy6bak=
-X-Received: by 2002:a17:907:77c2:b0:9a9:eef6:434a with SMTP id
- kz2-20020a17090777c200b009a9eef6434amr9487423ejc.36.1695095456613; Mon, 18
- Sep 2023 20:50:56 -0700 (PDT)
+ bh=Q5bcNr3nZsSSYj/9hs+pxXcWdz5vbZ7VNRI98Jd296o=;
+ b=SvM5dxF7zezs6W7Mr7vJVSnPaoet0rsd6UQOU5A02m2MXtrDeaesoioiMMvD6nbl1m
+ E9a1osb8WXoZqMySXrkHrPN+oTYOBjClZK9bKPENPQHTNzU7MxWa9kBHMUyDgVubVLYt
+ 4u8DC6mCqcXeRm4Qie/AO/I5oU5RTBhsyGZS7z6v1bCKFBRZBl/DnRhPwF49mZB0TCwF
+ JAUNsPwWJV6X+FQhV9bHlYalxS9Gj2MbyxzZ+tkrR5u/JSi86DCObEEcPbcPTGzHJXiQ
+ okMgnhKpMlI1RmzBMzHCxJgVYeBJ7A4E321y0EDNlkF5ZXlsrm8zSas2whzplIa/jiKg
+ h/3Q==
+X-Gm-Message-State: AOJu0Yx9oR6sOBxjDGkVjZ+Ax7ekfvu4+oVdZqg58Dya7IjI93UnKcGi
+ jJ3l2eIUiGW0+ep8LTe5wMS/8eXkppsc932ERks=
+X-Google-Smtp-Source: AGHT+IEJ9ZthpZV+AGHPFL3p5arjCQOPlCFiEWL17zwJIahEw410m2VzxXhkyfCV9ae/t00nToK6hTEb40wiIiZG/to=
+X-Received: by 2002:a67:eb98:0:b0:44d:e70d:8a4b with SMTP id
+ e24-20020a67eb98000000b0044de70d8a4bmr8512670vso.8.1695096363488; Mon, 18 Sep
+ 2023 21:06:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230918135448.90963-1-anisinha@redhat.com>
- <CAK3XEhOMqdfyPBm0ZgkirrcaBhOwQt_eOZ7=bbdW8OJpz3hWHg@mail.gmail.com>
- <ceea0d9d-19d6-29e7-cb84-81f85936b8c2@redhat.com>
- <CAK3XEhNETZBGtzpv2vBzygQtYuzTrsihzQNRdK8kp3+_u590Rg@mail.gmail.com>
- <3a3b5c4a-afad-8362-088c-a531d6998c23@redhat.com>
-In-Reply-To: <3a3b5c4a-afad-8362-088c-a531d6998c23@redhat.com>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Tue, 19 Sep 2023 09:20:45 +0530
-Message-ID: <CAK3XEhPYPaJfeK5hcq+EktSn9iFVrv05H=TJ4VJNARddK1jYOA@mail.gmail.com>
-Subject: Re: [PATCH] hw/i386/pc: fix max_used_gpa for 32-bit systems
-To: David Hildenbrand <david@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Eduardo Habkost <eduardo@habkost.net>, philmd@linaro.org, qemu-devel@nongnu.org
+References: <20230913083728.16935-1-18622748025@163.com>
+ <20230913091332.17355-1-18622748025@163.com>
+In-Reply-To: <20230913091332.17355-1-18622748025@163.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Tue, 19 Sep 2023 14:05:36 +1000
+Message-ID: <CAKmqyKN13W7UR5QP=3SMvB7_V5KArWZBnNg1tKO=9jS=ZfhvkQ@mail.gmail.com>
+Subject: Re: [PATCH v4] target/riscv: Clearing the CSR values at reset and
+ syncing the MPSTATE with the host
+To: "liguang.zhang" <18622748025@163.com>
+Cc: qemu-devel@nongnu.org, "liguang.zhang" <liguang.zhang@hexintek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e29;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe29.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,77 +89,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 9:28=E2=80=AFPM David Hildenbrand <david@redhat.com=
-> wrote:
+On Wed, Sep 13, 2023 at 7:14=E2=80=AFPM liguang.zhang <18622748025@163.com>=
+ wrote:
 >
-> On 18.09.23 17:56, Ani Sinha wrote:
-> > On Mon, Sep 18, 2023 at 8:59=E2=80=AFPM David Hildenbrand <david@redhat=
-.com> wrote:
-> >>
-> >> On 18.09.23 17:22, Ani Sinha wrote:
-> >>> On Mon, Sep 18, 2023 at 7:25=E2=80=AFPM Ani Sinha <anisinha@redhat.co=
-m> wrote:
-> >>>>
-> >>>> 32-bit systems do not have a reserved memory for hole64 but they may=
- have a
-> >>>> reserved memory space for memory hotplug. Since, hole64 starts after=
- the
-> >>>> reserved hotplug memory, the unaligned hole64 start address gives us=
- the
-> >>>> end address for this memory hotplug region that the processor may us=
-e.
-> >>>> Fix this. This ensures that the physical address space bound checkin=
-g works
-> >>>> correctly for 32-bit systems as well.
-> >>>
-> >>> This patch breaks some unit tests. I am not sure why it did not catch
-> >>> it when I tested it before sending.
-> >>> Will have to resend after fixing the tests.
-> >>
-> >> Probably because they supply more memory than the system can actually
-> >> handle? (e.g., -m 4g on 32bit)?
-> >
-> > cxl tests are failing for example.
-> >
-> > $ ./qemu-system-i386 -display none -machine q35,cxl=3Don
-> > qemu-system-i386: Address space limit 0xffffffff < 0x1000fffff
-> > phys-bits too low (32)
+> From: "liguang.zhang" <liguang.zhang@hexintek.com>
+>
+> Fix the guest reboot error when using KVM
+> There are two issues when rebooting a guest using KVM
+> 1. When the guest initiates a reboot the host is unable to stop the vcpu
+> 2. When running a SMP guest the qemu monitor system_reset causes a vcpu c=
+rash
+>
+> This can be fixed by clearing the CSR values at reset and syncing the
+> MPSTATE with the host.
+>
+> v4 update:
+> rebase on riscv-to-apply
 
-also another thing is:
-
-./qemu-system-i386 -machine pc -m 128
-works but ...
-
-$ ./qemu-system-i386 -machine pc -m 128,slots=3D3,maxmem=3D1G
-qemu-system-i386: Address space limit 0xffffffff < 0x1f7ffffff
-phys-bits too low (32)
-
-or
-
-$ ./qemu-system-i386 -machine pc-i440fx-8.2 -accel kvm -m 128,slots=3D3,max=
-mem=3D1G
-qemu-system-i386: Address space limit 0xffffffff < 0x1f7ffffff
-phys-bits too low (32)
-
-but of course after the compat knob older pc machines work fine using
-the old logic :
-
-$ ./qemu-system-i386 -machine pc-i440fx-8.1 -accel kvm -m 128,slots=3D3,max=
-mem=3D1G
-VNC server running on ::1:5900
-^Cqemu-system-i386: terminating on signal 2
-
-
-
+This should be below the line
 
 >
-> CXL with 32bit CPUs ... it might be reasonably to just disable such
-> tests. Certainly does not exist in real HW ... :)
+> Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
+> ---
+>  target/riscv/kvm.c       | 42 ++++++++++++++++++++++++++++++++++++++++
+>  target/riscv/kvm_riscv.h |  1 +
+>  2 files changed, 43 insertions(+)
 >
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index c01cfb03f4..8ee410b9b1 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -51,6 +51,8 @@ void riscv_kvm_aplic_request(void *opaque, int irq, int=
+ level)
+>      kvm_set_irq(kvm_state, irq, !!level);
+>  }
+>
+> +static bool cap_has_mp_state;
+> +
+>  static uint64_t kvm_riscv_reg_id(CPURISCVState *env, uint64_t type,
+>                                   uint64_t idx)
+>  {
+> @@ -797,6 +799,24 @@ int kvm_arch_get_registers(CPUState *cs)
+>      return ret;
+>  }
+>
+> +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state)
+> +{
+> +    if (cap_has_mp_state) {
+> +        struct kvm_mp_state mp_state =3D {
+> +            .mp_state =3D state
+> +        };
+> +
+> +        int ret =3D kvm_vcpu_ioctl(CPU(cpu), KVM_SET_MP_STATE, &mp_state=
+);
+> +        if (ret) {
+> +            fprintf(stderr, "%s: failed to sync MP_STATE %d/%s\n",
+> +                    __func__, ret, strerror(-ret));
+> +            return -1;
+> +        }
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+>  int kvm_arch_put_registers(CPUState *cs, int level)
+>  {
+>      int ret =3D 0;
+> @@ -816,6 +836,18 @@ int kvm_arch_put_registers(CPUState *cs, int level)
+>          return ret;
+>      }
+>
+> +    if (KVM_PUT_RESET_STATE =3D=3D level) {
+> +        RISCVCPU *cpu =3D RISCV_CPU(cs);
+> +        if (cs->cpu_index =3D=3D 0) {
+> +            ret =3D kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_RUNN=
+ABLE);
+> +        } else {
+> +            ret =3D kvm_riscv_sync_mpstate_to_kvm(cpu, KVM_MP_STATE_STOP=
+PED);
+> +        }
+> +        if (ret) {
+> +            return ret;
+> +        }
+> +    }
+> +
+>      return ret;
+>  }
+>
+> @@ -928,6 +960,7 @@ int kvm_arch_get_default_type(MachineState *ms)
+>
+>  int kvm_arch_init(MachineState *ms, KVMState *s)
+>  {
+> +    cap_has_mp_state =3D kvm_check_extension(s, KVM_CAP_MP_STATE);
+>      return 0;
+>  }
+>
+> @@ -1014,10 +1047,19 @@ void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
+>      if (!kvm_enabled()) {
+>          return;
+>      }
+> +    for (int i=3D0; i<32; i++)
+> +        env->gpr[i] =3D 0;
+>      env->pc =3D cpu->env.kernel_addr;
+>      env->gpr[10] =3D kvm_arch_vcpu_id(CPU(cpu)); /* a0 */
+>      env->gpr[11] =3D cpu->env.fdt_addr;          /* a1 */
+>      env->satp =3D 0;
+> +    env->mie =3D 0;
+> +    env->stvec =3D 0;
+> +    env->sscratch =3D 0;
+> +    env->sepc =3D 0;
+> +    env->scause =3D 0;
+> +    env->stval =3D 0;
+> +    env->mip =3D 0;
+>  }
+>
+>  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
+> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+> index de8c209ebc..8f8c1f969a 100644
+> --- a/target/riscv/kvm_riscv.h
+> +++ b/target/riscv/kvm_riscv.h
+> @@ -27,5 +27,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64=
+_t group_shift,
+>                            uint64_t aplic_base, uint64_t imsic_base,
+>                            uint64_t guest_num);
+>  void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+> +int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+>
+>  #endif
 > --
-> Cheers,
+> 2.41.0
 >
-> David / dhildenb
->
-
 
