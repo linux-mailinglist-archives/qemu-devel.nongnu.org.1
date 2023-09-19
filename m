@@ -2,77 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75067A697D
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 19:18:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22D87A698B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 19:23:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qieMd-00005A-KW; Tue, 19 Sep 2023 13:18:19 -0400
+	id 1qieQq-0001jC-TB; Tue, 19 Sep 2023 13:22:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qieMc-000052-0D
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:18:18 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qieMa-0007kE-5U
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:18:17 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-57359e85e9bso3139057eaf.2
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 10:18:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695143895; x=1695748695; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=L78bHgSwZDTuPNDYVZ/KQqWykhlBpnETgNyzdUqvX8A=;
- b=QkCSju1HpNRZ3ZjUMSu3CA6ExJ1zmYyzo7CJfbHO/0YxMZyera8YL6m/BUVeT1xBA2
- gqVf+dXa4GM3lHDqMHjBodEdOQc+QBLi2Er5AvT5xwlGOPQYrHDRR/8X97Hc9BjAoiEe
- 1lDMRT1pCQmWvyQp7FeGLPwjAcJ9wS8GaNZEIdyqPUanlgNVL99HeC0DixU5xV7usb6f
- WkYJmtxNTlitQe7nwfjiFbmbJaYBKGJPDNQp2xIu7Ux+OEpTktS3v7lb32JWLeeYbJjc
- 0zR3O/7Y8sPYDYumLtSE3Vu9hNdvVWmmnXr+z0T1Tfl0HiSJOFNr+rijtTbkGB3omcQk
- q6EA==
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qieQo-0001iA-F4
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:22:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qieQm-0000Ug-Tm
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 13:22:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695144155;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=oMGyB3R4K6ih3BVDoZ9abP8pvxM14IpOrRfJzzUzO6U=;
+ b=i6YqXUGQuTZ+EHhGKSVkXF0LOq+ncLRYUMKzaIZ5VboZQf9SzghCae7v8XW0C9jT5hPLZU
+ 7l2Z/J9D8Woy+MtXHHtAodFcshTFFha32WBefwU57l4J9OXcTy0adXalvCtBb9ozI9bZYa
+ naZCU+r08itTAIAq3ck5Q+YyMqynTDg=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-QHEfC0AfM8yhRMb9rXuEHQ-1; Tue, 19 Sep 2023 13:22:34 -0400
+X-MC-Unique: QHEfC0AfM8yhRMb9rXuEHQ-1
+Received: by mail-il1-f198.google.com with SMTP id
+ e9e14a558f8ab-34fc277401cso34915155ab.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 10:22:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695143895; x=1695748695;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1695144153; x=1695748953;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=L78bHgSwZDTuPNDYVZ/KQqWykhlBpnETgNyzdUqvX8A=;
- b=gBxPPuJ4rVaQR6MvH6+uU+TKbeP99Zruu+ibIy7kcPrDmbH3T6weQ5hYkUBovivSxJ
- nrc74/+YNCkqKJUPeze+ggJy96AmyrE2Suvv83lfejRYE6joxI/Fo2sG1RqY21x25Gmo
- xRx4mRWtB2RCArRNv+Ib7UcFA72CS+E/JAbe6Uc5Vi/rPiMyS7smREaj1iz4WHiiTsOM
- zFE4NPzcqgbcJSd+FUhve7u8dSyMmyP85SMHXm1vzeFr9N0iOJhnD10ANvc82pSoyBon
- doC0dY18H3oyvbiz+K3XuHbIT/cXdL1rdKap2lMoDLlDzktIwZh4/m8xgswR1J0lxeQY
- tI5A==
-X-Gm-Message-State: AOJu0Yx7RLAJ4s3HtDby3K++poQ4HkXQspZZxlPXnwc2mRZ2ztO6FhHX
- DCkCkaMuEUU15VV8ufwxDZr90Ruu6qadF7aDaUY=
-X-Google-Smtp-Source: AGHT+IGLDRSENCk5pjW9HE6QN26O9x1q2ymSjxE2f/pie3TMnJnHnS0/u/mi8W8zM64hTxHvQ6GyfbYqhaPzesvX3Wk=
-X-Received: by 2002:a4a:3102:0:b0:571:1fad:ebd7 with SMTP id
- k2-20020a4a3102000000b005711fadebd7mr166405ooa.7.1695143894755; Tue, 19 Sep
- 2023 10:18:14 -0700 (PDT)
+ bh=oMGyB3R4K6ih3BVDoZ9abP8pvxM14IpOrRfJzzUzO6U=;
+ b=nfmXxY+9bCQBm2Hc4zx21d6zy434/KkLV1IwzrvjeMXAB5zmT4niRfCtmhh4e1dKNX
+ 4UQcJr14WqIsHji9WKCVLlv4M0e3nEmwkDjrEJAOaaaOvrpweKpqikFjSrEC3wino0C1
+ APHx505ChSuJkndhqzc5VO4ZYk2xEKsKWYNRmkMkT0uAKezTrBiNFdv6/M8yvJp6lm77
+ a6a/4/QrT+Ztilzuds9MZdyuikqyiHFGlse8l6Xry6Jyrn8UxvxCig0q0w37guSXZ76h
+ 7xaOYqCd6yCnTin+Y62IDhzKywzoAhe9R4ryzLZFu9ouHAe1w9DPPf2TnAV0qFWbYym8
+ J72g==
+X-Gm-Message-State: AOJu0YwRBqODIu8nwDFsq6DXO0TO+bDPxPiTqbvPm/3IpIr8xa/5Osfs
+ QcWQmQJQOygOL7oheGVPa9ZwvjL0ry0+ogoHwnX1c4FqJi4M6bjPukXBWhQDDbYi1X2Mmb33uVU
+ /WiYA/v5KxcQl4Zg=
+X-Received: by 2002:a05:6e02:20c2:b0:34f:cff6:5e2f with SMTP id
+ 2-20020a056e0220c200b0034fcff65e2fmr529492ilq.30.1695144153256; 
+ Tue, 19 Sep 2023 10:22:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFw2AfRoXE0NVplLSr16K2PAceWImHrYL5alcXYGmqjlTTXqscRyAi1nOf0dPmNqxYQFIBizw==
+X-Received: by 2002:a05:6e02:20c2:b0:34f:cff6:5e2f with SMTP id
+ 2-20020a056e0220c200b0034fcff65e2fmr529481ilq.30.1695144153020; 
+ Tue, 19 Sep 2023 10:22:33 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ ga7-20020a0566381f0700b0043193e32c78sm3483137jab.152.2023.09.19.10.22.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Sep 2023 10:22:32 -0700 (PDT)
+Date: Tue, 19 Sep 2023 11:22:30 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ clg@redhat.com, jean-philippe@linaro.org, mst@redhat.com,
+ pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
+ david@redhat.com, philmd@linaro.org
+Subject: Re: [PATCH v2 12/12] vfio: Remove 64-bit IOVA address space assumption
+Message-ID: <20230919112230.5dfe14fa.alex.williamson@redhat.com>
+In-Reply-To: <20230913080423.523953-13-eric.auger@redhat.com>
+References: <20230913080423.523953-1-eric.auger@redhat.com>
+ <20230913080423.523953-13-eric.auger@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230916193235.169988-1-deller@kernel.org>
-In-Reply-To: <20230916193235.169988-1-deller@kernel.org>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 19 Sep 2023 13:18:02 -0400
-Message-ID: <CAJSP0QVykDpDoH8UVWR+ONv04AFcc91Tx5S5z9VCRXaoRW2paw@mail.gmail.com>
-Subject: Re: [PULL 0/8] Hppa btlb patches
-To: deller@kernel.org
-Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2a.google.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,125 +103,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Please take a look at the following CI failure and resend when you
-have fixed the error:
+On Wed, 13 Sep 2023 10:01:47 +0200
+Eric Auger <eric.auger@redhat.com> wrote:
 
-mipsel-linux-gnu-gcc -Ilibqemu-hppa-softmmu.fa.p -I. -I..
--Itarget/hppa -I../target/hppa -Iqapi -Itrace -Iui -Iui/shader
--I/usr/include/pixman-1 -I/usr/include/capstone
--I/usr/include/spice-server -I/usr/include/spice-1
--I/usr/include/glib-2.0 -I/usr/lib/mipsel-linux-gnu/glib-2.0/include
--fdiagnostics-color=3Dauto -Wall -Winvalid-pch -Werror -std=3Dgnu11 -O2 -g
--fstack-protector-strong -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3D2 -Wundef
--Wwrite-strings -Wmissing-prototypes -Wstrict-prototypes
--Wredundant-decls -Wold-style-declaration -Wold-style-definition
--Wtype-limits -Wformat-security -Wformat-y2k -Winit-self
--Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels
--Wexpansion-to-defined -Wimplicit-fallthrough=3D2
--Wmissing-format-attribute -Wno-missing-include-dirs
--Wno-shift-negative-value -Wno-psabi -isystem
-/builds/qemu-project/qemu/linux-headers -isystem linux-headers -iquote
-. -iquote /builds/qemu-project/qemu -iquote
-/builds/qemu-project/qemu/include -iquote
-/builds/qemu-project/qemu/host/include/generic -iquote
-/builds/qemu-project/qemu/tcg/mips -pthread -D_GNU_SOURCE
--D_FILE_OFFSET_BITS=3D64 -D_LARGEFILE_SOURCE -fno-strict-aliasing
--fno-common -fwrapv -fPIE -isystem../linux-headers
--isystemlinux-headers -DNEED_CPU_H
-'-DCONFIG_TARGET=3D"hppa-softmmu-config-target.h"'
-'-DCONFIG_DEVICES=3D"hppa-softmmu-config-devices.h"' -MD -MQ
-libqemu-hppa-softmmu.fa.p/target_hppa_mem_helper.c.o -MF
-libqemu-hppa-softmmu.fa.p/target_hppa_mem_helper.c.o.d -o
-libqemu-hppa-softmmu.fa.p/target_hppa_mem_helper.c.o -c
-../target/hppa/mem_helper.c
-In file included from ../target/hppa/mem_helper.c:21:
-../target/hppa/mem_helper.c: In function =E2=80=98helper_diag_btlb=E2=80=99=
-:
-../target/hppa/mem_helper.c:461:36: error: format =E2=80=98%lx=E2=80=99 exp=
-ects
-argument of type =E2=80=98long unsigned int=E2=80=99, but argument 4 has ty=
-pe
-=E2=80=98uint64_t=E2=80=99 {aka =E2=80=98long long unsigned int=E2=80=99} [=
--Werror=3Dformat=3D]
-461 | qemu_log_mask(CPU_LOG_MMU, "PDC_BLOCK_TLB: PDC_BTLB_INSERT "
-| ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-......
-466 | virt_page, phys_page, len, slot);
-| ~~~~~~~~~
-| |
-| uint64_t {aka long long unsigned int}
-../include/qemu/log.h:55:22: note: in definition of macro =E2=80=98qemu_log=
-_mask=E2=80=99
-55 | qemu_log(FMT, ## __VA_ARGS__); \
-| ^~~
-cc1: all warnings being treated as errors
+> Now we retrieve the usable IOVA ranges from the host,
+> we now the physical IOMMU aperture and we can remove
+> the assumption of 64b IOVA space when calling
+> vfio_host_win_add().
+> 
+> This works fine in general but in case of an IOMMU memory
+> region this becomes more tricky. For instance the virtio-iommu
+> MR has a 64b aperture by default. If the physical IOMMU has a
+> smaller aperture (typically the case for VTD), this means we
+> would need to resize the IOMMU MR when this latter is linked
+> to a container. However this happens on vfio_listener_region_add()
+> when calling the IOMMU MR set_iova_ranges() callback and this
+> would mean we would have a recursive call the
+> vfio_listener_region_add(). This looks like a wrong usage of
+> the memory API causing duplicate IOMMU MR notifier registration
+> for instance.
+> 
+> Until we find a better solution, make sure the vfio_find_hostwin()
+> is not called anymore for IOMMU region.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> 
+> ---
+> 
+> I have not found any working solution to the IOMMU MR resizing.
+> So I can remove this patch or remove the check for IOMMU MR. Maybe
+> this is an issue which can be handled separately?
+> ---
+>  hw/vfio/common.c | 25 ++++++++++++-------------
+>  1 file changed, 12 insertions(+), 13 deletions(-)
+> 
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 26da38de05..40cac1ca91 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1112,13 +1112,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>  #endif
+>      }
+>  
+> -    hostwin = vfio_find_hostwin(container, iova, end);
+> -    if (!hostwin) {
+> -        error_setg(&err, "Container %p can't map guest IOVA region"
+> -                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+> -        goto fail;
+> -    }
+> -
+>      memory_region_ref(section->mr);
+>  
+>      if (memory_region_is_iommu(section->mr)) {
+> @@ -1177,6 +1170,14 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>          return;
+>      }
+>  
+> +    hostwin = vfio_find_hostwin(container, iova, end);
+> +    if (!hostwin) {
+> +        error_setg(&err, "Container %p can't map guest IOVA region"
+> +                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+> +        goto fail;
+> +    }
+> +
+> +
+>      /* Here we assume that memory_region_is_ram(section->mr)==true */
+>  
+>      /*
+> @@ -2594,12 +2595,10 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>          vfio_get_iommu_info_migration(container, info);
+>          g_free(info);
+>  
+> -        /*
+> -         * FIXME: We should parse VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
+> -         * information to get the actual window extent rather than assume
+> -         * a 64-bit IOVA address space.
+> -         */
+> -        vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
+> +        g_assert(container->nr_iovas);
 
-Thanks,
-Stefan
+This assert is a problem for older kernels.
 
-On Sat, 16 Sept 2023 at 15:33, <deller@kernel.org> wrote:
->
-> From: Helge Deller <deller@gmx.de>
->
-> The following changes since commit 9ef497755afc252fb8e060c9ea6b0987abfd20=
-b6:
->
->   Merge tag 'pull-vfio-20230911' of https://github.com/legoater/qemu into=
- staging (2023-09-11 09:13:08 -0400)
->
-> are available in the Git repository at:
->
->   https://github.com/hdeller/qemu-hppa.git tags/hppa-btlb-pull-request
->
-> for you to fetch changes up to 303b1febe3dcd519314d6ed80d97a706cdd21f64:
->
->   linux-user/hppa: lock both words of function descriptor (2023-09-16 21:=
-13:08 +0200)
->
-> ----------------------------------------------------------------
-> Block-TLB support and linux-user fixes for hppa target
->
-> All 32-bit hppa CPUs allow a fixed number of TLB entries to have a
-> different page size than the default 4k.
-> Those are called "Block-TLBs" and are created at startup by the
-> operating system and managed by the firmware of hppa machines
-> through the firmware PDC_BLOCK_TLB call.
->
-> This patchset adds the necessary glue to SeaBIOS-hppa and
-> qemu to allow up to 16 BTLB entries in the emulation.
->
-> Two patches from Mikulas Patocka fix signal delivery issues
-> in linux-user on hppa.
->
-> ----------------------------------------------------------------
->
-> Helge Deller (6):
->   target/hppa: Update to SeaBIOS-hppa version 9
->   target/hppa: Allow up to 16 BTLB entries
->   target/hppa: Report and clear BTLBs via fw_cfg at startup
->   target/hppa: Add BTLB support to hppa TLB functions
->   target/hppa: Extract diagnose immediate value
->   target/hppa: Wire up diag instruction to support BTLB
->
-> Mikulas Patocka (2):
->   linux-user/hppa: clear the PSW 'N' bit when delivering signals
->   linux-user/hppa: lock both words of function descriptor
->
->  hw/hppa/machine.c         |  10 +--
->  linux-user/hppa/signal.c  |   6 +-
->  pc-bios/hppa-firmware.img | Bin 720216 -> 732376 bytes
->  roms/seabios-hppa         |   2 +-
->  target/hppa/cpu.h         |  11 ++-
->  target/hppa/helper.h      |   1 +
->  target/hppa/insns.decode  |   2 +-
->  target/hppa/int_helper.c  |   2 +-
->  target/hppa/mem_helper.c  | 179 ++++++++++++++++++++++++++++++++------
->  target/hppa/op_helper.c   |   3 +-
->  target/hppa/translate.c   |  15 +++-
->  11 files changed, 188 insertions(+), 43 deletions(-)
->
-> --
-> 2.41.0
->
->
+> +        vfio_host_win_add(container, 0,
+> +                          container->iova_ranges[container->nr_iovas - 1].end,
+> +                          container->pgsizes);
+
+This doesn't address the assumption about the min_iova and adds an
+assumption that the kernel provided list is sorted.  Thanks,
+
+Alex
+
 
