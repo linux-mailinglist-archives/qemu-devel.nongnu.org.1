@@ -2,55 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6467A5EDD
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F31DB7A5EE7
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 11:57:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXRt-0003g9-Kv; Tue, 19 Sep 2023 05:55:17 -0400
+	id 1qiXT9-0004L3-O8; Tue, 19 Sep 2023 05:56:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qiXRp-0003fe-M3; Tue, 19 Sep 2023 05:55:13 -0400
-Received: from out30-111.freemail.mail.aliyun.com ([115.124.30.111])
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qiXT4-0004Hr-HJ; Tue, 19 Sep 2023 05:56:31 -0400
+Received: from mail-vi1eur02on2070c.outbound.protection.outlook.com
+ ([2a01:111:f400:fe16::70c]
+ helo=EUR02-VI1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qiXRm-0001kU-1t; Tue, 19 Sep 2023 05:55:13 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R861e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045192;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
- TI=SMTPD_---0VsR1k6F_1695117301; 
-Received: from 30.221.108.237(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0VsR1k6F_1695117301) by smtp.aliyun-inc.com;
- Tue, 19 Sep 2023 17:55:02 +0800
-Message-ID: <fae56dea-55e2-eaae-3be2-d73138895ec3@linux.alibaba.com>
-Date: Tue, 19 Sep 2023 17:54:12 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
+ id 1qiXT1-00025y-K9; Tue, 19 Sep 2023 05:56:30 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MYzuAi8M05pDsivZk5kL9BkMt8jMRp+MoO0FLMb/KBb2d8B8tIvKUywglWiWigldmoY/Pw7DE2WMKisIhRBDe/2wVDJRwl6Aak8i6JPiRAZtc4mNsNBBnVoqSF1mvEnV9yFGO++vhcRnVTFQIzvLHRF/R+bL8uY1axCOajYJLhd827lGZb9Xae206qRWvXmmiHhViLcI0z92x30LGGtM17Cckc8MJ1/tOAZpB2sn5OWOwmG3+8Urgo9WJkrf5+aiZfVu6WIfOcDs8eh1j7N/5vTOF+5T4S5thlndqZt334BD41YXxxfAcG2eW/A/B+odhLcoQCcNRlwxzCazGHRlAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KsI3Z8+jrve4Jf13Yf+ysCDOD1pAbXDDgd2gNywtvTo=;
+ b=crXAQ9hyUPzO0Yq1jGreEmiK4XPmQ0F5byQJvJk+iENghAKaUq2dKfcFGZvKsWZJQxidA6rdW/uDCyBVESUsWJmkCxcxBtcvX34/Wd/Iaih1vuHJfDG0xmnaxLCFwSlzpIAli2usC91X3PDIGSi6lEJjSGosqIg6XcHvk9WkXI0+4Zie7yn+0YCmKXUDqe5UfYoyJvHoUrw7HoYSBRUkmVltG6sgPgLxtHgUsWDdpI/wAVZzqK6YC8Ebt8F2zVulnuKIoL39gKFYhCuaBLBmy2Ag2aiNPmfSdUMMe0LqXHqbNzXfq2POZDcRwZBQ5alJ+ycgxRu5R6wSLLo8d4Wy0g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KsI3Z8+jrve4Jf13Yf+ysCDOD1pAbXDDgd2gNywtvTo=;
+ b=0A/tSPRG9HgJmBHUKWdUcPl817lbDTozqAoLFsva9sYsch0g34h2dhriIY/hPmWpy/LJCBDg7ngFnB/FtOFUxPnu6/XEaZjZ1cY3Nk9T33lYI0bEtwSBQPgXGa19PucZeqa55rk4TA/g/9SaCk/KWg9mu8/QXp6jX7E6crb4BTGXeOb498kcoO/DM7Ws2mXjBQANmx2EEzeHTQEeLH39tpAVcX8AvHKGP7UoaoyN8ZWFogZ9+ft1ksCDc+vv5O4w4y077QZkX10sIlYKj+ZVAN0EeJ9TwK++pwVKZtXJSoofTMo3+jfVZ1fmCinPRU8la1eKDnOGY+aDAYv3FlzC6w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com (2603:10a6:20b:402::11)
+ by PAXPR08MB6383.eurprd08.prod.outlook.com (2603:10a6:102:155::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Tue, 19 Sep
+ 2023 09:56:20 +0000
+Received: from AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::182f:4e2b:f999:1d9b]) by AS8PR08MB7095.eurprd08.prod.outlook.com
+ ([fe80::182f:4e2b:f999:1d9b%6]) with mapi id 15.20.6792.026; Tue, 19 Sep 2023
+ 09:56:20 +0000
+Message-ID: <0824275a-9081-194a-1241-120481c91e92@virtuozzo.com>
+Date: Tue, 19 Sep 2023 11:56:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v2 02/19] target/riscv: move riscv_cpu_realize_tcg() to
- TCG::cpu_realizefn()
+Subject: Re: [PATCH 20/22] tests: extend test 131 to cover availability of the
+ discard operation
 Content-Language: en-US
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, palmer@rivosinc.com, ajones@ventanamicro.com,
- philmd@linaro.org
-References: <20230906091647.1667171-1-dbarboza@ventanamicro.com>
- <20230906091647.1667171-3-dbarboza@ventanamicro.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20230906091647.1667171-3-dbarboza@ventanamicro.com>
+To: "Denis V. Lunev" <den@openvz.org>, qemu-block@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: stefanha@redhat.com, mike.maslenkin@gmail.com
+References: <20230918180100.524843-1-den@openvz.org>
+ <20230918180100.524843-22-den@openvz.org>
+From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+In-Reply-To: <20230918180100.524843-22-den@openvz.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.111;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-111.freemail.mail.aliyun.com
-X-Spam_score_int: -113
-X-Spam_score: -11.4
-X-Spam_bar: -----------
-X-Spam_report: (-11.4 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+X-ClientProxiedBy: VI1PR07CA0262.eurprd07.prod.outlook.com
+ (2603:10a6:803:b4::29) To AS8PR08MB7095.eurprd08.prod.outlook.com
+ (2603:10a6:20b:402::11)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR08MB7095:EE_|PAXPR08MB6383:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0ca272f8-198f-4389-7138-08dbb8f6ace4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: gWC3uePvF4ebdhZOUVTbc+g8ZWVvlcdkwH2VABwoz27J6RHXkmWjz87XgtJwdULGNHVndHmBFB1LikgI/Yv8yG7Z9G0RQOElj8T2KB9PxKv5Pq5fxFIIET99Fr2ctCpHpk1DqdoU+T6TofaHMrPK3ifXmNIVF/H4Mp14+DSfwaHSW4dDpF28fSEyEyk+JfzRbXXcVrgZwXbqnBE/46grHFVTJ2QPPoEzQdbqWxLDLC7WvGVn6wBeMLtG8yka8pew6Tb8iCZSG2zPmxkrz6PXwnGRzLPA5WsiNDtVrIaVPTlcYhBlbIzbrQrXKYgPN7/wAra0VujhTMd1ha4Kiwi0aY/awoNkW9UmU9pBbCywsxj7sJpH0Vb4VA+YZpjd9lHfd0hOOFcnYCbUi5O9SJD5oTQvUmwDdIBpFOBQrxSxRJnwbZ3+Bv0+6/hghZ5uT4yr+WbSJdcXshCwPkDQjArb+9Q6qKbrf7fr7oZiwZjB9Z1HWwQlJhXbV4lm5UIxiH74a6OsPPvOLHham5j4Tboe8xRJDFeOJSQfkDah1Xfq+Hf9+V6GiblcFuu6U7IXvbRSUfMos/zMTouaZdMKaWT6t3oAnwotQr25pTICXz4B9hn+ikNfVUULFkvV2blzY4j73vF7JnVrA5Hvou5mr0z8sAGm0/EBGhtuRM+jHvGmMNuwKWThhjyJRorKJQbTRaBqAUYRe27Qs1b1W0p12kayMw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR08MB7095.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39850400004)(396003)(376002)(136003)(346002)(366004)(451199024)(1800799009)(186009)(83380400001)(6666004)(44832011)(478600001)(86362001)(31686004)(31696002)(26005)(2906002)(2616005)(52116002)(53546011)(6486002)(6506007)(6512007)(8676002)(316002)(66946007)(66556008)(41300700001)(66476007)(4326008)(36756003)(5660300002)(38100700002)(38350700002)(8936002)(21314003)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SVdsZTFaUzNKeFlMclF1YWdPaFZNZVluRWl6dnJtRUFpZWFBZzRJbWlFRG5E?=
+ =?utf-8?B?WS9QMkQ4d0JTeE5rM3JGQVlZcXdnMy9kc0FzY3pVb2thSTdETUVRR2VwMEpV?=
+ =?utf-8?B?aEJxZHJ4OUJ4dGhMUjE3OFlScisyR1lOeFMzSXMrdnpwVVNlWEQvSUlMN3Fl?=
+ =?utf-8?B?NC92NUJDbzVFeWhLWkNxVUdoU1JxQm9Fd3hkb1A5c2JMcGMwYTArN0VHUEdB?=
+ =?utf-8?B?ZGJyODNWQWJ5RWhtTDRXTkRlZkxlTk9kSmRJblF4dzJKR0JISGU0VWVjMCtY?=
+ =?utf-8?B?SW9iRFhPdFdScW1VRGRCb1VaQUIzYlE3QzArZ3FYYTZQK3VSbVlCYVdDY2VH?=
+ =?utf-8?B?eWRFNElQUDVuS1BDMzlMbllCY1FBTTQvM3drV2kxSzRxbm5YYWdOTkc3VUhl?=
+ =?utf-8?B?emtTZjNwTWJHcHE1OHo3S01LRUxlUFZ3eVRNWE5RV0xMMkxtRnBHZFlNL1ZH?=
+ =?utf-8?B?OTEvOFZSdHpnL2YyUjdBTnFlOW52dXhQOXYrNHNuMkwwTS9lc0Vzb1pHQkdk?=
+ =?utf-8?B?bzlEZkhrcFl6M1M3K0FZaXBZWWVPSHlmTGsweGVzSENaTTVodVFKUGF2Ykty?=
+ =?utf-8?B?ZkF5U0NmSkpmb1luelNXWW9odEtsY01UZEN4YXQzK05BNDJjMlA1ZGpjWHFJ?=
+ =?utf-8?B?RDhXemxnV093ZjBrMmRPMm5PNEM5aFhMYUFBSnZ3d2ZOb0pUNlZ0Y1FBSk5D?=
+ =?utf-8?B?Q3Iwa2Y5Z0lYbFRtZi94bVI0WEc2bVVuWEZMTy9MQm1maVIrS1NCdmt5L0JM?=
+ =?utf-8?B?SnZQenFUZm5oNUFyNm11ckFmclFiZkwzQURDZFN2UTFPRFZvc1grME94SjE2?=
+ =?utf-8?B?U1BsdFJaRUgrRmZKQThKMnVDaFFnR0c0Tld3VVZ5UTZsQWxaQUVhaUJDS2VL?=
+ =?utf-8?B?Z0NoYjY4SEtCbzFwZWE0dGRLMDl1cHBDNE8rWmFlcjhLckNZTUsvbWt4RXBG?=
+ =?utf-8?B?TFpuY0dvblJoS1JCNDN6NUVTUmRGVG5zSUlCcWw5Z3NVUzJlblhwTzhHY2E4?=
+ =?utf-8?B?VFVRcld6dnNEVkx6ZnRZRWdZeU16Nk91eUJrU2RqRkplQVdjMDNHSFBneUpn?=
+ =?utf-8?B?WDMyZGNUUGhMK1F1STJMS0x0bVlCM3RVOC9NcUJ4cC8weW5tSGFhQ3F6WW1R?=
+ =?utf-8?B?M3B3SERGYkY4bXhYZFJzTk5QUnlCSUNXcjQ3dEovVDRZWE50bXJRWHNobkdx?=
+ =?utf-8?B?d3VaYTY3YThSZXV6YVptbW12MzNZVTlBS0ZsR1FDenE5cjd2ZlZYMlRCQzlC?=
+ =?utf-8?B?VUgrend6UnFaTExmQ0RoelE5SVJ5Y3pSbFpNM3RsVGlRTlZUK2NEYlZlamIy?=
+ =?utf-8?B?Szh6dytMOWtLOURzWVhIdTRtekttNTlLaXB2R3d1amRzSDQzYVJ2N25NWHJP?=
+ =?utf-8?B?WW1odERRTDFoZC8zRVh4cmNrZTBJVFR5MmF4MXpXTE0xNlJpdVlOS2xtSnZr?=
+ =?utf-8?B?anhLNXgvWnV6RXVoM2d1MUdJTDc5L3lxd2MzOFBGT2lMSDdzWFVMSk5XeWF2?=
+ =?utf-8?B?Wlc1WEVNMFRPZkYwVFhZVExJOWRScHdWSy9lbHNuc3F5QUlLc3J5N0V3Y3d4?=
+ =?utf-8?B?R1lLL1JNdXE5dkMvc2x4TFdRSVFUWklpU3Rxd2wyZnBrWlQ2N0s4TDQwb1V3?=
+ =?utf-8?B?ZmVBeU52TjMzMVdKUEYzbHk4ZTRPbTBicm5pYThQMHpUWnhGQyt6OHhvUTlY?=
+ =?utf-8?B?RjU5dTloR0NrMWNORW0raEZNa1JHVU1jZHJuaUw5ejJ6SngzTXFUaEU1Sk9R?=
+ =?utf-8?B?bUR6T3A5Z2ViK0RRaHNjeUNHa3Z1Tys2NGVGMzdFU1A0RXAwMjBuYjdsTGRO?=
+ =?utf-8?B?c2cyUnBCc1NMd2RhMlBBVEtaVWtvREVCTURFUGpIVkw3RjJWVDlJbzhYTHZ2?=
+ =?utf-8?B?dWFHTmI3ZCtZQ3RuVDJKTlYzVnlSTFREdFNjaVhmWTJMaENXeHI4MlVodUlP?=
+ =?utf-8?B?N25Jb05lQ2E1NkpTbEU2MmFmQzJEYmkzUGNuREsreGFaRXprK3VxR3lhU3hO?=
+ =?utf-8?B?ai9FK1lKV0VTbnd0N004a05XLzBYMDBoN0Zhd3JjemswNDJ2VFdRNS8xWVNZ?=
+ =?utf-8?B?MEQwdTg0M1ZFVk9FK09FUVFRd0NaR2V6QnFkbUdnS3d2UFk4dkNrbXNPY3Vl?=
+ =?utf-8?B?aEFCOGlLQnBxYnFiSFFBSjlRcHNYSmh6Vit6MkJZL1B2NHZ1cEdTV0xOZU9n?=
+ =?utf-8?Q?Zp8Au8dlzvB0W4ZUoEKVo1I=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0ca272f8-198f-4389-7138-08dbb8f6ace4
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR08MB7095.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2023 09:56:20.6207 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +wPNlu0UL2l5vs6mcuGbYZMbCHhKKyuKBZN72tWXfxhYVmG07n+1tMvlXqRKZ5FvOiuLao2MlGzPP1e1r3wWu+U2MJ/jZ4W0TmqBwT9Ppx4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6383
+Received-SPF: pass client-ip=2a01:111:f400:fe16::70c;
+ envelope-from=alexander.ivanov@virtuozzo.com;
+ helo=EUR02-VI1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,351 +147,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-On 2023/9/6 17:16, Daniel Henrique Barboza wrote:
-> riscv_cpu_realize_tcg() was added to allow TCG cpus to have a different
-> realize() path during the common riscv_cpu_realize(), making it a good
-> choice to start moving TCG exclusive code to tcg-cpu.c.
+On 9/18/23 20:00, Denis V. Lunev wrote:
+> This patch contains test which minimally tests discard and new cluster
+> allocation logic.
 >
-> Rename it to tcg_cpu_realizefn() and assign it as a implementation of
-> accel::cpu_realizefn(). tcg_cpu_realizefn() will then be called during
-> riscv_cpu_realize() via cpu_exec_realizefn(). We'll use a similar
-> approach with KVM in the near future.
+> The following checks are added:
+> * write 2 clusters, discard the first allocated
+> * write another cluster, check that the hole is filled
+> * write 2 clusters, discard the first allocated, write 1 cluster at
+>    non-aligned to cluster offset (2 new clusters should be allocated)
 >
-> riscv_cpu_validate_set_extensions() is too big and with too many
-> dependencies to be moved in this same patch. We'll do that next.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-
-Zhiwei
-
+> Signed-off-by: Denis V. Lunev <den@openvz.org>
 > ---
->   target/riscv/cpu.c         | 128 -----------------------------------
->   target/riscv/tcg/tcg-cpu.c | 132 +++++++++++++++++++++++++++++++++++++
->   2 files changed, 132 insertions(+), 128 deletions(-)
+>   tests/qemu-iotests/131     | 31 +++++++++++++++++++++++++++++++
+>   tests/qemu-iotests/131.out | 38 ++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 69 insertions(+)
 >
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 2c6972fa0d..59785f5d9a 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -23,9 +23,7 @@
->   #include "qemu/log.h"
->   #include "cpu.h"
->   #include "cpu_vendorid.h"
-> -#include "pmu.h"
->   #include "internals.h"
-> -#include "time_helper.h"
->   #include "exec/exec-all.h"
->   #include "qapi/error.h"
->   #include "qapi/visitor.h"
-> @@ -1064,29 +1062,6 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
->       }
->   }
+> diff --git a/tests/qemu-iotests/131 b/tests/qemu-iotests/131
+> index 304bbb3f61..324008b3f6 100755
+> --- a/tests/qemu-iotests/131
+> +++ b/tests/qemu-iotests/131
+> @@ -74,6 +74,37 @@ poke_file "$TEST_IMG" "$inuse_offset" "\x59\x6e\x6f\x74"
+>   echo "== read corrupted image with repairing =="
+>   { $QEMU_IO -c "read -P 0x11 $CLUSTER_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 >   
-> -static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
-> -{
-> -    CPURISCVState *env = &cpu->env;
-> -    int priv_version = -1;
-> -
-> -    if (cpu->cfg.priv_spec) {
-> -        if (!g_strcmp0(cpu->cfg.priv_spec, "v1.12.0")) {
-> -            priv_version = PRIV_VERSION_1_12_0;
-> -        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.11.0")) {
-> -            priv_version = PRIV_VERSION_1_11_0;
-> -        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.10.0")) {
-> -            priv_version = PRIV_VERSION_1_10_0;
-> -        } else {
-> -            error_setg(errp,
-> -                       "Unsupported privilege spec version '%s'",
-> -                       cpu->cfg.priv_spec);
-> -            return;
-> -        }
-> -
-> -        env->priv_ver = priv_version;
-> -    }
-> -}
-> -
->   static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->   {
->       CPURISCVState *env = &cpu->env;
-> @@ -1111,33 +1086,6 @@ static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
->       }
->   }
->   
-> -static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
-> -{
-> -    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
-> -    CPUClass *cc = CPU_CLASS(mcc);
-> -    CPURISCVState *env = &cpu->env;
-> -
-> -    /* Validate that MISA_MXL is set properly. */
-> -    switch (env->misa_mxl_max) {
-> -#ifdef TARGET_RISCV64
-> -    case MXL_RV64:
-> -    case MXL_RV128:
-> -        cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
-> -        break;
-> -#endif
-> -    case MXL_RV32:
-> -        cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
-> -        break;
-> -    default:
-> -        g_assert_not_reached();
-> -    }
-> -
-> -    if (env->misa_mxl_max != env->misa_mxl) {
-> -        error_setg(errp, "misa_mxl_max must be equal to misa_mxl");
-> -        return;
-> -    }
-> -}
-> -
->   /*
->    * Check consistency between chosen extensions while setting
->    * cpu->cfg accordingly.
-> @@ -1511,74 +1459,6 @@ static void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
->   #endif
->   }
->   
-> -static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
-> -{
-> -    if (riscv_has_ext(env, RVH) && env->priv_ver < PRIV_VERSION_1_12_0) {
-> -        error_setg(errp, "H extension requires priv spec 1.12.0");
-> -        return;
-> -    }
-> -}
-> -
-> -static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
-> -{
-> -    RISCVCPU *cpu = RISCV_CPU(dev);
-> -    CPURISCVState *env = &cpu->env;
-> -    Error *local_err = NULL;
-> -
-> -    if (object_dynamic_cast(OBJECT(dev), TYPE_RISCV_CPU_HOST)) {
-> -        error_setg(errp, "'host' CPU is not compatible with TCG acceleration");
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_misa_mxl(cpu, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_priv_spec(cpu, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_misa_priv(env, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
-> -        /*
-> -         * Enhanced PMP should only be available
-> -         * on harts with PMP support
-> -         */
-> -        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
-> -        return;
-> -    }
-> -
-> -    riscv_cpu_validate_set_extensions(cpu, &local_err);
-> -    if (local_err != NULL) {
-> -        error_propagate(errp, local_err);
-> -        return;
-> -    }
-> -
-> -#ifndef CONFIG_USER_ONLY
-> -    CPU(dev)->tcg_cflags |= CF_PCREL;
-> -
-> -    if (cpu->cfg.ext_sstc) {
-> -        riscv_timer_init(cpu);
-> -    }
-> -
-> -    if (cpu->cfg.pmu_num) {
-> -        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
-> -            cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-> -                                          riscv_pmu_timer_cb, cpu);
-> -        }
-> -     }
-> -#endif
-> -}
-> -
->   static void riscv_cpu_realize(DeviceState *dev, Error **errp)
->   {
->       CPUState *cs = CPU(dev);
-> @@ -1597,14 +1477,6 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
->           return;
->       }
->   
-> -    if (tcg_enabled()) {
-> -        riscv_cpu_realize_tcg(dev, &local_err);
-> -        if (local_err != NULL) {
-> -            error_propagate(errp, local_err);
-> -            return;
-> -        }
-> -    }
-> -
->       riscv_cpu_finalize_features(cpu, &local_err);
->       if (local_err != NULL) {
->           error_propagate(errp, local_err);
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 0326cead0d..84ad6f1daf 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -19,9 +19,140 @@
->   
->   #include "qemu/osdep.h"
->   #include "cpu.h"
-> +#include "pmu.h"
-> +#include "time_helper.h"
-> +#include "qapi/error.h"
->   #include "qemu/accel.h"
->   #include "hw/core/accel-cpu.h"
->   
+> +echo "== check discard =="
 > +
-> +static void riscv_cpu_validate_misa_priv(CPURISCVState *env, Error **errp)
-> +{
-> +    if (riscv_has_ext(env, RVH) && env->priv_ver < PRIV_VERSION_1_12_0) {
-> +        error_setg(errp, "H extension requires priv spec 1.12.0");
-> +        return;
-> +    }
-> +}
+> +# Clear image
+> +_make_test_img $size
 > +
-> +static void riscv_cpu_validate_misa_mxl(RISCVCPU *cpu, Error **errp)
-> +{
-> +    RISCVCPUClass *mcc = RISCV_CPU_GET_CLASS(cpu);
-> +    CPUClass *cc = CPU_CLASS(mcc);
-> +    CPURISCVState *env = &cpu->env;
+> +{ $QEMU_IO -c "write -P 0x11 0 $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +{ $QEMU_IMG map "$TEST_IMG"; } 2>&1 | _filter_qemu_img_map
+> +{ $QEMU_IO -c "discard 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +{ $QEMU_IMG map "$TEST_IMG"; } 2>&1 | _filter_qemu_img_map
+> +{ $QEMU_IO -c "read -P 0 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 > +
-> +    /* Validate that MISA_MXL is set properly. */
-> +    switch (env->misa_mxl_max) {
-> +#ifdef TARGET_RISCV64
-> +    case MXL_RV64:
-> +    case MXL_RV128:
-> +        cc->gdb_core_xml_file = "riscv-64bit-cpu.xml";
-> +        break;
-> +#endif
-> +    case MXL_RV32:
-> +        cc->gdb_core_xml_file = "riscv-32bit-cpu.xml";
-> +        break;
-> +    default:
-> +        g_assert_not_reached();
-> +    }
+> +echo "== check simple allocation over the discarded hole =="
 > +
-> +    if (env->misa_mxl_max != env->misa_mxl) {
-> +        error_setg(errp, "misa_mxl_max must be equal to misa_mxl");
-> +        return;
-> +    }
-> +}
+> +{ $QEMU_IO -c "write -P 0x11 $CLUSTER_DBL_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +{ $QEMU_IMG map "$TEST_IMG"; } 2>&1 | _filter_qemu_img_map
+> +{ $QEMU_IO -c "read -P 0x11 $CLUSTER_DBL_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 > +
-> +static void riscv_cpu_validate_priv_spec(RISCVCPU *cpu, Error **errp)
-> +{
-> +    CPURISCVState *env = &cpu->env;
-> +    int priv_version = -1;
+> +echo "== check more complex allocation over the discard hole =="
 > +
-> +    if (cpu->cfg.priv_spec) {
-> +        if (!g_strcmp0(cpu->cfg.priv_spec, "v1.12.0")) {
-> +            priv_version = PRIV_VERSION_1_12_0;
-> +        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.11.0")) {
-> +            priv_version = PRIV_VERSION_1_11_0;
-> +        } else if (!g_strcmp0(cpu->cfg.priv_spec, "v1.10.0")) {
-> +            priv_version = PRIV_VERSION_1_10_0;
-> +        } else {
-> +            error_setg(errp,
-> +                       "Unsupported privilege spec version '%s'",
-> +                       cpu->cfg.priv_spec);
-> +            return;
-> +        }
+> +# Clear image
+> +_make_test_img $size
 > +
-> +        env->priv_ver = priv_version;
-> +    }
-> +}
+> +{ $QEMU_IO -c "write -P 0x11 $CLUSTER_DBL_SIZE $CLUSTER_DBL_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +{ $QEMU_IO -c "discard $CLUSTER_DBL_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +# There is 1 cluster hole. Fill it fully and allocate 1 cluster at the end
+> +{ $QEMU_IO -c "write -P 0x12 $CLUSTER_HALF_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +{ $QEMU_IMG map "$TEST_IMG"; } 2>&1 | _filter_qemu_img_map
+> +{ $QEMU_IO -c "read -P 0x12 $CLUSTER_HALF_SIZE $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +{ $QEMU_IO -c "read -P 0 0 $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
+> +{ $QEMU_IO -c "read -P 0 $((CLUSTER_SIZE + CLUSTER_HALF_SIZE)) $CLUSTER_HALF_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
 > +
-> +/*
-> + * We'll get here via the following path:
-> + *
-> + * riscv_cpu_realize()
-> + *   -> cpu_exec_realizefn()
-> + *      -> tcg_cpu_realizefn() (via accel_cpu_realizefn())
-> + */
-> +static bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
-> +{
-> +    RISCVCPU *cpu = RISCV_CPU(cs);
-> +    CPURISCVState *env = &cpu->env;
-> +    Error *local_err = NULL;
-> +
-> +    if (object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST)) {
-> +        error_setg(errp, "'host' CPU is not compatible with TCG acceleration");
-> +        return false;
-> +    }
-> +
-> +    riscv_cpu_validate_misa_mxl(cpu, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
-> +    }
-> +
-> +    riscv_cpu_validate_priv_spec(cpu, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
-> +    }
-> +
-> +    riscv_cpu_validate_misa_priv(env, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
-> +    }
-> +
-> +    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
-> +        /*
-> +         * Enhanced PMP should only be available
-> +         * on harts with PMP support
-> +         */
-> +        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
-> +        return false;
-> +    }
-> +
-> +    riscv_cpu_validate_set_extensions(cpu, &local_err);
-> +    if (local_err != NULL) {
-> +        error_propagate(errp, local_err);
-> +        return false;
-> +    }
-> +
-> +#ifndef CONFIG_USER_ONLY
-> +    CPU(cs)->tcg_cflags |= CF_PCREL;
-> +
-> +    if (cpu->cfg.ext_sstc) {
-> +        riscv_timer_init(cpu);
-> +    }
-> +
-> +    if (cpu->cfg.pmu_num) {
-> +        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
-> +            cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-> +                                          riscv_pmu_timer_cb, cpu);
-> +        }
-> +     }
-> +#endif
-> +
-> +    return true;
-> +}
-> +
->   static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
->   {
->       /*
-> @@ -41,6 +172,7 @@ static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
->       AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
->   
->       acc->cpu_class_init = tcg_cpu_class_init;
-> +    acc->cpu_realizefn = tcg_cpu_realizefn;
->   }
->   
->   static const TypeInfo tcg_cpu_accel_type_info = {
+>   echo "== allocate with backing =="
+>   # Verify that allocating clusters works fine even when there is a backing image.
+>   # Regression test for a bug where we would pass a buffer read from the backing
+> diff --git a/tests/qemu-iotests/131.out b/tests/qemu-iotests/131.out
+> index d2904578df..27df91ca97 100644
+> --- a/tests/qemu-iotests/131.out
+> +++ b/tests/qemu-iotests/131.out
+> @@ -26,6 +26,44 @@ read 524288/524288 bytes at offset 0
+>   Repairing image was not closed correctly
+>   read 1048576/1048576 bytes at offset 1048576
+>   1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +== check discard ==
+> +Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+> +wrote 2097152/2097152 bytes at offset 0
+> +2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +Offset          Length          File
+> +0               0x200000        TEST_DIR/t.IMGFMT
+> +discard 1048576/1048576 bytes at offset 0
+> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +Offset          Length          File
+> +0x100000        0x100000        TEST_DIR/t.IMGFMT
+> +read 1048576/1048576 bytes at offset 0
+> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +== check simple allocation over the discarded hole ==
+> +wrote 1048576/1048576 bytes at offset 2097152
+> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +Offset          Length          File
+> +0x100000        0x100000        TEST_DIR/t.IMGFMT
+> +0x200000        0x100000        TEST_DIR/t.IMGFMT
+> +read 1048576/1048576 bytes at offset 2097152
+> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +== check more complex allocation over the discard hole ==
+> +Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+> +wrote 2097152/2097152 bytes at offset 2097152
+> +2 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +discard 1048576/1048576 bytes at offset 2097152
+> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +wrote 1048576/1048576 bytes at offset 524288
+> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +Offset          Length          File
+> +0               0x100000        TEST_DIR/t.IMGFMT
+> +0x100000        0x100000        TEST_DIR/t.IMGFMT
+> +0x300000        0x100000        TEST_DIR/t.IMGFMT
+> +read 1048576/1048576 bytes at offset 524288
+> +1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +read 524288/524288 bytes at offset 0
+> +512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+> +read 524288/524288 bytes at offset 1572864
+> +512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+>   == allocate with backing ==
+>   Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=67108864
+>   Formatting 'TEST_DIR/t.IMGFMT.base', fmt=IMGFMT size=67108864
+
+Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+
+-- 
+Best regards,
+Alexander Ivanov
+
 
