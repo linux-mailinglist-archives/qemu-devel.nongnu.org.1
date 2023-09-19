@@ -2,82 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A57F7A6A85
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 20:16:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A303D7A6AB8
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 20:31:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qifFB-0008M0-2Q; Tue, 19 Sep 2023 14:14:41 -0400
+	id 1qifTm-0003FL-By; Tue, 19 Sep 2023 14:29:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qifF9-0008LW-6Z
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 14:14:39 -0400
-Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qifF7-0004uX-EQ
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 14:14:38 -0400
-Received: by mail-oa1-x2f.google.com with SMTP id
- 586e51a60fabf-1c26bb27feeso3906438fac.0
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 11:14:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1695147276; x=1695752076;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=NlOLEND61qWDNjDGFFl3Vk783imTAJfXqIBakX0/Qeg=;
- b=sln7IuU97qUswnSTPDi+0JsBGzZjatI7OTSarAAgy21JJXCd5E3cGLyG86/GWEeNJD
- T8C1VjD77DBaXyU+swLS6vI35r0sOYOrJxf+FxdtWf0uNxvC+l8vgXYzZVBCq1ur8JmL
- gIj4iZuCDzXM4BvmUDAcVfEgkYRIO5opsmQR/Az+IDm/gmPw4z+t73DzK91qXPRaRqut
- xvLGRVYr8TkuHCAJsHGiwvWAjMBTfNlVqIbAejtxgiBU+21axvyTEndKGKwszhiIB5cT
- FkE7O1vhCz/UGt12UuTgTb+QhwJNd6vZc9Wae3aVgTzaTYIVXJvQEcvcF5sFnQqQrxtP
- a4Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695147276; x=1695752076;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=NlOLEND61qWDNjDGFFl3Vk783imTAJfXqIBakX0/Qeg=;
- b=MMFyYQGYJjUSZBwv8PAs6up6GI5AlH2eZN8XHuzgB4od/w+uQUx1S+xd5yCkml3Mbx
- WN8rrFG6qI1tlk6HQvU1vem0xnWKy/r4/NVHv2Re+PlY4H5I2Hvm6XwUQYbOGWo6nzWa
- xc+CTpXVtlZgAWIG2mZZSSwIaI/Ep+UsaE0amoC7Om8GnBXHXN/bgg61+p+/+qBmMsL6
- paG+EwrdYvwPzjQp79ocR7McunRb1c0kyFJ3vdKR4cQbYd2hsngueVe/N/zZ35yn8l1N
- 642/yXS/rAnE2XK6DktKaQf2ax/HhrFVkwmTdUctXUhtmAj1X+TwSTfetN4Nm38iklO1
- rAsA==
-X-Gm-Message-State: AOJu0YyfxJDaKpmSnjsBhaDdFESJFE0OVBAJqxZ0gTIrY36a5nzHoyS7
- qtwCt/4iuWOjdJd30ibSsZ1jfo/Z5YqqcNoOCVf0+A==
-X-Google-Smtp-Source: AGHT+IHUFfMUJOyMkSNOsbL39PCXN9Y3f87Da+sVYWD5pOuUdOMQnpSRlr72k/HBKbchptkCziZI6rTxz+EoPeB8pb4=
-X-Received: by 2002:a05:6870:970f:b0:1d5:cdf7:bd95 with SMTP id
- n15-20020a056870970f00b001d5cdf7bd95mr286526oaq.16.1695147276018; Tue, 19 Sep
- 2023 11:14:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230919160814.3343727-1-mnissler@rivosinc.com>
- <20230919160814.3343727-3-mnissler@rivosinc.com> <ZQnW4e1wordu4UbM@x1n>
-In-Reply-To: <ZQnW4e1wordu4UbM@x1n>
-From: Mattias Nissler <mnissler@rivosinc.com>
-Date: Tue, 19 Sep 2023 20:14:25 +0200
-Message-ID: <CAGNS4Tan24b2Yb1BvKC4ycjq6MO+_qYqYQy_KrOw6MWDPB3dJg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/5] softmmu: Support concurrent bounce buffers
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qifTk-0003FD-2i
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 14:29:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qifTi-0007ht-7Z
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 14:29:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695148180;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=GggkcVBCZ5+WzZpMaEE5t39NgkXbQxPAJgZSZuClyFI=;
+ b=h7N45hYQ38Vqj5v7mF0zvmo7XyEUXmgfcxOWJFDRL0/LYzr06cDLeEBAB+k6f++wJC6j46
+ Q3/xM6i53KrhFDyljhTSciBSGwib3X7v35CXD8r9HrIyljXwVVzcku1Qizdub2ynKxVgIM
+ TiJB3hMDivLXD0giwiw6r/I/db30yB8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-102-pbzyg92zOMuba2wxXiC4Fw-1; Tue, 19 Sep 2023 14:29:39 -0400
+X-MC-Unique: pbzyg92zOMuba2wxXiC4Fw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2079B1E441DB;
+ Tue, 19 Sep 2023 18:29:39 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.48])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C209711282;
+ Tue, 19 Sep 2023 18:29:36 +0000 (UTC)
+Date: Tue, 19 Sep 2023 19:29:32 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, stefanha@redhat.com, 
- Richard Henderson <richard.henderson@linaro.org>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Jagannathan Raman <jag.raman@oracle.com>, David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::2f;
- envelope-from=mnissler@rivosinc.com; helo=mail-oa1-x2f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ quintela@redhat.com, leobras@redhat.com, Li Zhijian <lizhijian@fujitsu.com>
+Subject: Re: [PATCH 00/52] migration/rdma: Error handling fixes
+Message-ID: <ZQnojJOqoFu73995@redhat.com>
+References: <20230918144206.560120-1-armbru@redhat.com> <ZQnRKjo0M50BRbZh@x1n>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZQnRKjo0M50BRbZh@x1n>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,76 +77,67 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 19, 2023 at 7:14=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
->
-> On Tue, Sep 19, 2023 at 09:08:10AM -0700, Mattias Nissler wrote:
-> > @@ -3119,31 +3143,35 @@ void *address_space_map(AddressSpace *as,
-> >  void address_space_unmap(AddressSpace *as, void *buffer, hwaddr len,
-> >                           bool is_write, hwaddr access_len)
-> >  {
-> > -    if (buffer !=3D as->bounce.buffer) {
-> > -        MemoryRegion *mr;
-> > -        ram_addr_t addr1;
-> > +    MemoryRegion *mr;
-> > +    ram_addr_t addr1;
-> > +
-> > +    mr =3D memory_region_from_host(buffer, &addr1);
-> > +    if (mr =3D=3D NULL) {
-> > +        BounceBuffer *bounce =3D container_of(buffer, BounceBuffer, bu=
-ffer);
-> > +        assert(bounce->magic =3D=3D BOUNCE_BUFFER_MAGIC);
-> >
-> > -        mr =3D memory_region_from_host(buffer, &addr1);
-> > -        assert(mr !=3D NULL);
-> >          if (is_write) {
-> > -            invalidate_and_set_dirty(mr, addr1, access_len);
-> > -        }
-> > -        if (xen_enabled()) {
-> > -            xen_invalidate_map_cache_entry(buffer);
-> > +            address_space_write(as, bounce->addr, MEMTXATTRS_UNSPECIFI=
-ED,
-> > +                                bounce->buffer, access_len);
-> >          }
-> > -        memory_region_unref(mr);
-> > +
-> > +        memory_region_unref(bounce->mr);
-> > +        qatomic_sub(&as->bounce_buffer_size, bounce->len);
-> > +        /* Write bounce_buffer_size before reading map_client_list. */
-> > +        smp_mb();
-> > +        address_space_notify_map_clients(as);
-> > +        bounce->magic =3D ~BOUNCE_BUFFER_MAGIC;
-> > +        g_free(bounce);
-> >          return;
-> >      }
-> > +
-> > +    if (xen_enabled()) {
-> > +        xen_invalidate_map_cache_entry(buffer);
-> > +    }
-> >      if (is_write) {
-> > -        address_space_write(as, as->bounce.addr, MEMTXATTRS_UNSPECIFIE=
-D,
-> > -                            as->bounce.buffer, access_len);
-> > -    }
-> > -    qemu_vfree(as->bounce.buffer);
-> > -    as->bounce.buffer =3D NULL;
-> > -    memory_region_unref(as->bounce.mr);
->
-> This line needs to be kept?
+On Tue, Sep 19, 2023 at 12:49:46PM -0400, Peter Xu wrote:
+> On Mon, Sep 18, 2023 at 04:41:14PM +0200, Markus Armbruster wrote:
+> > Oh dear, where to start.  There's so much wrong, and in pretty obvious
+> > ways.  This code should never have passed review.  I'm refraining from
+> > saying more; see the commit messages instead.
+> > 
+> > Issues remaining after this series include:
+> > 
+> > * Terrible error messages
+> > 
+> > * Some error message cascades remain
+> > 
+> > * There is no written contract for QEMUFileHooks, and the
+> >   responsibility for reporting errors is unclear
+> 
+> Even being removed.. because no one is really extending that..
+> 
+> https://lore.kernel.org/all/20230509120700.78359-1-quintela@redhat.com/#t
 
-Yes, good catch. Thanks!
+One day (in another 5-10 years) I still hope we'll get to
+the point where QEMUFile itself is obsolete :-) Getting
+rid of QEMUFileHooks is a great step in that direction.
+Me finishing a old PoC to bring buffering to QIOChannel
+would be another big step.
 
->
-> > -    /* Clear in_use before reading map_client_list.  */
-> > -    qatomic_set_mb(&as->bounce.in_use, false);
-> > -    address_space_notify_map_clients(as);
-> > +        invalidate_and_set_dirty(mr, addr1, access_len);
-> > +    }
-> >  }
->
-> --
-> Peter Xu
->
+The data rate limiting would be the biggest missing piece
+to enable migration/vmstate logic to directly consume
+a QIOChannel.
+
+Eliminating QEMUFile would help to bring Error **errp
+to all the vmstate codepaths.
+
+> > * There seem to be no tests whatsoever
+> 
+> I always see rdma as "odd fixes" stage.. for a long time.  But maybe I was
+> wrong.
+
+In the MAINTAINERS file RDMA still get classified as formally
+supported under the migration maintainers.  I'm not convinced
+that is an accurate description of its status.  I tend to agree
+with you that it is 'odd fixes' at the very best.
+
+Dave Gilbert had previously speculated about whether we should
+even consider deprecating it on the basis that latest non-RDMA
+migration is too much better than in the past, with multifd
+and zerocopy, that RDMA might not even offer a significant
+enough peformance win to justify.
+
+> Copying Zhijian for status of rdma; Zhijian, I saw that you just replied to
+> the hwpoison issue.  Maybe we should have one entry for rdma too, just like
+> colo?
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
