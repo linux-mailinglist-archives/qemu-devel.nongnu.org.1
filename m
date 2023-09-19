@@ -2,80 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776957A5A40
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CF87A5A41
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 08:58:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiUgd-0002d3-Vs; Tue, 19 Sep 2023 02:58:20 -0400
+	id 1qiUga-0002b2-J7; Tue, 19 Sep 2023 02:58:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qiUgY-0002aP-5I
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 02:58:15 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qiUgH-00071Y-GN
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 02:58:12 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-403012f276dso57299765e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 23:57:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695106675; x=1695711475; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=JQUGCkvOcWKzXPT1T/Olz5X/Z9WjqXtsa/S6qktBprg=;
- b=zqYClQFlBsQNZ1+HvKlSRE/gDFVJCPYMvJZQU2YusX5vKGeqKvQpIyQYWMEjpTU9/O
- 7tR2b3bznhhRtEBxllOzKDImX9v37nNSXMVc8VDbrtUkGEfzZ4qBW+pPZ9+dyOEojN3B
- bXmWJ15IASfWzqXVL9QueQhv+leqktY8oUiozp9C9FEwiPm0itEj3+BrdSE8ExmzZRl+
- +7LaTBD/bt/W1O5W8aXYY9njVaIZrAPUdulpLNywap07MnKc5I86jvsUdsqTGJnL7RBt
- tHb2pUGpXM66osf8zVRQlrtw8Rp4+88HzrL+EJuiBVLSrWaYKnq+t41749gqrbcg7qCI
- 85HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695106675; x=1695711475;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=JQUGCkvOcWKzXPT1T/Olz5X/Z9WjqXtsa/S6qktBprg=;
- b=xMIIlrS0hf8Xcd2OmNHb7AVhARYC/VSpDErh2hX7ZTstwDLdQB+UYfsYHIMNPDJ6XV
- iz/lWTqmRizGovbT4BZYvxLC8RDsI1TgmxI/UNgRynIQ0J0GkzqZHDpVOvm2P70p5OAX
- gD/S9jJFNqXjDwrWZFjkOGR7hncr2I8p5YkrjdTRgjEnv533xb/489xNZPH2vBLXy0NE
- g2v+G8JT0nM2Fj9UkHhbOMuDqubxgkeRQHhi8WdBsmj7XoqTmiV3dcsjzIiPOk7s1uDQ
- qns5Kzh3S06wfnCHTPOTznZVVybWANnJuIkSe8MPlm4jZQa4XR0yCiTc0An58iTwmWo8
- /22w==
-X-Gm-Message-State: AOJu0YyKrVNdztEOfkqeAkCtYoe60o+9ScBiSfJH2uhX2uvbcV6gl0mQ
- 99GGG0rxY5rb6or5d7C41wR99w==
-X-Google-Smtp-Source: AGHT+IFRqW635l2O5omS0ZEpmoH9MZLVoY9YxTE3QN7ybGRSKXo4Nbe76gBpo4fFdjkJ6R8XV1iQzw==
-X-Received: by 2002:a05:600c:2055:b0:3fb:efe2:34a2 with SMTP id
- p21-20020a05600c205500b003fbefe234a2mr9191291wmg.5.1695106675250; 
- Mon, 18 Sep 2023 23:57:55 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- b14-20020a05600c11ce00b003fee8502999sm17095787wmi.18.2023.09.18.23.57.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Sep 2023 23:57:54 -0700 (PDT)
-Received: from zen.lan (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 5CECD1FFBB;
- Tue, 19 Sep 2023 07:57:54 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL v2 0/9] testing updates (back to green!)
-Date: Tue, 19 Sep 2023 07:57:54 +0100
-Message-Id: <20230919065754.1091394-1-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiUgW-0002aA-U5; Tue, 19 Sep 2023 02:58:12 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qiUgT-00072b-OQ; Tue, 19 Sep 2023 02:58:11 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J6ca2a025901; Tue, 19 Sep 2023 06:58:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=fcDcvNwjndrFop/7dDcfq7ABA3Lg+2PW0lHwdSjpeYE=;
+ b=IiUx+hrT+uROoxzTwruSDfEmdCHfyHHO9mIljFCHM6tbeAFC2Or1ukpKVeUr41mSctpr
+ RCwH+/og6x2TmIEiJiQooZyw4uij6vK5WF4weBP/uTFKFp9Yl359Fmg0VSQa2iY0c77U
+ jhnfKrK0WH45jJg8OkS8LR2Nlew3vvTebuRgJNzYVRDTxJ9ox8OmYcUz0DemRdEBrxbv
+ mU34DbqUI35oKcAjIn/1YFXcB9Re+ulR599oE9PpODSF2ySkAU6YFOMLFWYsKEYMxIxH
+ HIMIC4rI6H5s8umgoxslbb1Z289VL+Ibsl+t6X6ylo6uYfHLA4+FUMuBWDixnAuHtm5H +w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7504b2da-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 06:58:02 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38J6sWjv013289;
+ Tue, 19 Sep 2023 06:58:01 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t7504b2cq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 06:58:01 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38J6mrJG031189; Tue, 19 Sep 2023 06:58:00 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t5r6khku9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Sep 2023 06:58:00 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
+ [10.241.53.105])
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38J6vxgX63177036
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 Sep 2023 06:58:00 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A689058055;
+ Tue, 19 Sep 2023 06:57:59 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6756D58043;
+ Tue, 19 Sep 2023 06:57:57 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue, 19 Sep 2023 06:57:57 +0000 (GMT)
+Message-ID: <01ba6d06-79ae-18a3-5835-a364cadbb9fd@linux.ibm.com>
+Date: Tue, 19 Sep 2023 12:27:56 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 2/8] pnv/psi: Clean up local variable shadowing
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+References: <20230918145850.241074-1-clg@kaod.org>
+ <20230918145850.241074-3-clg@kaod.org>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20230918145850.241074-3-clg@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0uKmKRMeJeX9mXTzrrouRmzhK243nLFQ
+X-Proofpoint-ORIG-GUID: y64cxzstlI3JqUsGCJad5uDYGM29rDGL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-18_11,2023-09-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0
+ mlxscore=0 suspectscore=0 mlxlogscore=684 impostorscore=0 adultscore=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309190054
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,75 +117,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 13d6b1608160de40ec65ae4c32419e56714bbadf:
 
-  Merge tag 'pull-crypto-20230915' of https://gitlab.com/rth7680/qemu into staging (2023-09-18 11:04:21 -0400)
 
-are available in the Git repository at:
+On 9/18/23 20:28, Cédric Le Goater wrote:
+> to fix :
+> 
+>    ../hw/ppc/pnv_psi.c: In function ‘pnv_psi_p9_mmio_write’:
+>    ../hw/ppc/pnv_psi.c:741:24: warning: declaration of ‘addr’ shadows a parameter [-Wshadow=compatible-local]
+>      741 |                 hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+>          |                        ^~~~
+>    ../hw/ppc/pnv_psi.c:702:56: note: shadowed declaration is here
+>      702 | static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
+>          |                                                 ~~~~~~~^~~~
+> 
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>   hw/ppc/pnv_psi.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/ppc/pnv_psi.c b/hw/ppc/pnv_psi.c
+> index daaa2f0575fd..26460d210deb 100644
+> --- a/hw/ppc/pnv_psi.c
+> +++ b/hw/ppc/pnv_psi.c
+> @@ -738,8 +738,9 @@ static void pnv_psi_p9_mmio_write(void *opaque, hwaddr addr,
+>               }
+>           } else {
+>               if (!(psi->regs[reg] & PSIHB9_ESB_CI_VALID)) {
+> -                hwaddr addr = val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+> -                memory_region_add_subregion(sysmem, addr,
+> +                hwaddr esb_addr =
 
-  https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-ominbus-190923-1
+While at it, we may want to move the declaration to the beginning of the 
+function. Anyways,
 
-for you to fetch changes up to bb3c01212b54595f5bbdbe235cb353b220f94943:
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-  tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884 (2023-09-19 07:46:02 +0100)
-
-----------------------------------------------------------------
-testing updates:
-
-  - update most Debian to bookworm
-  - fix some typos
-  - update loongarch toolchain
-  - fix microbit test
-  - handle GitLab/Cirrus timeout discrepancy
-  - improve avocado console handling
-  - disable mips avocado images pending bugfix
-
-----------------------------------------------------------------
-Alex Bennée (2):
-      tests: update most Debian images to Bookworm
-      gitlab: fix typo/spelling in comments
-
-Daniel P. Berrangé (4):
-      microbit: add missing qtest_quit() call
-      qtest: kill orphaned qtest QEMU processes on FreeBSD
-      gitlab: make Cirrus CI timeout explicit
-      gitlab: make Cirrus CI jobs gating
-
-Nicholas Piggin (1):
-      tests/avocado: Fix console data loss
-
-Philippe Mathieu-Daudé (1):
-      tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884
-
-Richard Henderson (1):
-      tests/docker: Update docker-loongarch-cross toolchain
-
- tests/qtest/libqtest.c                                |  7 +++++++
- tests/qtest/microbit-test.c                           |  2 ++
- .gitlab-ci.d/base.yml                                 |  2 +-
- .gitlab-ci.d/cirrus.yml                               |  4 +++-
- .gitlab-ci.d/cirrus/build.yml                         |  2 ++
- python/qemu/machine/machine.py                        | 19 +++++++++++++++++++
- tests/avocado/avocado_qemu/__init__.py                |  2 +-
- tests/avocado/boot_linux_console.py                   |  7 +++++++
- tests/avocado/machine_mips_malta.py                   |  6 ++++++
- tests/avocado/replay_kernel.py                        |  7 +++++++
- tests/avocado/tuxrun_baselines.py                     |  4 ++++
- tests/docker/dockerfiles/debian-amd64-cross.docker    | 10 +++-------
- tests/docker/dockerfiles/debian-amd64.docker          | 10 +++-------
- tests/docker/dockerfiles/debian-arm64-cross.docker    | 10 +++-------
- tests/docker/dockerfiles/debian-armel-cross.docker    |  2 +-
- tests/docker/dockerfiles/debian-armhf-cross.docker    | 10 +++-------
- .../docker/dockerfiles/debian-loongarch-cross.docker  |  2 +-
- tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 10 +++-------
- tests/docker/dockerfiles/debian-s390x-cross.docker    | 10 +++-------
- tests/docker/dockerfiles/ubuntu2004.docker            |  2 +-
- tests/docker/dockerfiles/ubuntu2204.docker            |  2 +-
- tests/lcitool/libvirt-ci                              |  2 +-
- tests/lcitool/refresh                                 | 17 +++++++++--------
- 23 files changed, 91 insertions(+), 58 deletions(-)
-
--- 
-2.39.2
-
+> +                    val & ~(PSIHB9_ESB_CI_VALID | PSIHB10_ESB_CI_64K);
+> +                memory_region_add_subregion(sysmem, esb_addr,
+>                                               &psi9->source.esb_mmio);
+>               }
+>           }
 
