@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F23C7A5EFF
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA977A5F3B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 12:14:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiXa4-0006nt-VY; Tue, 19 Sep 2023 06:03:44 -0400
+	id 1qiXix-0003I5-7A; Tue, 19 Sep 2023 06:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qiXa0-0006kG-Se
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:03:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qiXZz-0003TU-03
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:03:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695117818;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Jhgm9ZzJGTvRCNArC+zoaS3n0jJFVu4Z7S/YFKDQFMM=;
- b=LkkjpsjaPxMFdxnJSJzcChYxi0Qs4gI9NcA4nkTIxjskWwJqH21ORivWZk+B+xPr/Q1yfc
- ekk7Xszk1P4m3VmpD7aRzTWKABfZi2xRM8caRc0a/ZW966mxFf4SaGhAfl7/Bj6IFlmfJI
- o9N0ieb4H9dzK8i2ikY6kSoZ+IpnLkU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-231-R9GkBU-kObik8hT4WUl5Kg-1; Tue, 19 Sep 2023 06:03:32 -0400
-X-MC-Unique: R9GkBU-kObik8hT4WUl5Kg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B0EF29AB407;
- Tue, 19 Sep 2023 10:03:32 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.48])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A531110F1BE7;
- Tue, 19 Sep 2023 10:03:31 +0000 (UTC)
-Date: Tue, 19 Sep 2023 11:03:29 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jason Wang <jasowang@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PULL 00/17] Net patches
-Message-ID: <ZQlx8UGoLzW0iKpw@redhat.com>
-References: <ZPsKUDp7nVS/Z+j2@redhat.com>
- <4508010f-12e8-8565-d091-e8c68ae0493e@ovn.org>
- <ZPsQcu0HYBaTScnb@redhat.com>
- <755f9eb1-d97f-a359-3050-f3289374655b@ovn.org>
- <ZPsscpzj9fNtCEOY@redhat.com>
- <c406b8fb-a2f1-8eb2-abc5-af2474edf940@ovn.org>
- <ZQLAkNPdOA4ncDvF@redhat.com>
- <bfcf7272-c4c9-3b30-28ed-065ee374d681@ovn.org>
- <ZQlebHldXOFZATSo@redhat.com>
- <93d3a6fa-6bad-8765-c78d-3df4a993d202@ovn.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qiXip-0003DN-41
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:12:48 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qiXin-0005La-0L
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 06:12:46 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-32155a45957so1724875f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 03:12:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695118362; x=1695723162; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0zbZPsaTAWLU8NhXe0AqmzBHuQOLcBVRNpjcnRGPRoc=;
+ b=JsxOPD5Cpt6W+Qigq1/vR1yRMIvIK49iS5n77RNKAV5Dtdd6EAhxqIqAzgj+ZTj+2q
+ gomyVgvmZlV4PweIwylz7My7TrjF1gW5DnQVIVLQg4TQ5KWlxQ5TOo01hyKFa+8hxTGf
+ 3ismyHWYXQauxX/RrwrMubbEuWqb7eWZ+U8kPTSmaP6aliJ+rSA8pxbqPMyTdlA9+oky
+ iMbK1K93ulghAqmBxyiBbjcTxSlNC5+MQOR+0OremI7bXZWNoVfx1wd5cDubDfUpFwsa
+ pnp4L53Z09CaLwqN7mqGnFu7H5YkRPfhOYTDe+v+x767NPRgMSebQ2DUp0TOdSCbnobv
+ rUTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695118362; x=1695723162;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0zbZPsaTAWLU8NhXe0AqmzBHuQOLcBVRNpjcnRGPRoc=;
+ b=sjLvc7DZ2omOS9LTndQVCS/xsSxMy609e9qKMdIvUgu8LlOjQiyUSqsVO4OiKhsYge
+ Wb94EknM4kCjErdh30Ijqrj3ZpyDndMGVLg0b6PQEeDYz71kjmGVnJeW9NT1ZBN60+34
+ wotN3XFwL4Z82qnvme1NyWDmEcuft7QEonyLHWU37hhMiJLVx3HFUPw+nDsJuKuO+U6M
+ NLYmL4Bf/sPz7rezQbJLvIjWRFt0O2Kcg11UbJksr4WtnrhUkotu2m1lABjAMibrMe1R
+ +tFfklyAdB+4rGRvQ5ikFngA8m/c/LX9kJ8llPd3JM3ikDaglR3g+rD92xLBOnAS853p
+ /LzQ==
+X-Gm-Message-State: AOJu0YzMTQwwkMsG3HuWelRmBTgKBW3uwA1DGERW5MN5G3aWXcXVQG8o
+ jhdd52zCMIu/W9fPDbb0A/R9Yg==
+X-Google-Smtp-Source: AGHT+IFRUKr7PUln6JEhtxC+eLVACIsDb7OmPRCfLOSUm319bFlxNZcY3CQ06IUrZC3zeJBiPImFVg==
+X-Received: by 2002:a05:6000:1e91:b0:321:67f4:8bd7 with SMTP id
+ dd17-20020a0560001e9100b0032167f48bd7mr911936wrb.32.1695118361967; 
+ Tue, 19 Sep 2023 03:12:41 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ ba13-20020a0560001c0d00b0031ddf6cc89csm12290136wrb.98.2023.09.19.03.12.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Sep 2023 03:12:41 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Leif Lindholm <quic_llindhol@quicinc.com>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Shannon Zhao <shannon.zhaosl@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [RFC 0/3] virt: wire up NS EL2 virtual timer IRQ
+Date: Tue, 19 Sep 2023 11:12:37 +0100
+Message-Id: <20230919101240.2569334-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <93d3a6fa-6bad-8765-c78d-3df4a993d202@ovn.org>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,56 +90,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 19, 2023 at 11:39:31AM +0200, Ilya Maximets wrote:
-> On 9/19/23 10:40, Daniel P. Berrangé wrote:
-> > On Mon, Sep 18, 2023 at 09:36:10PM +0200, Ilya Maximets wrote:
-> >> Thanks!  That worked.  Though I wasn't able to test much anyway as
-> >> this thing burned through all my free compute credits less than
-> >> half way through the pipeline. :D
-> >>
-> >> So, AFAIU, it's not something an occasional contributor like me can
-> >> use, unless they are spending their own money.
-> > 
-> > That is not the expected behaviour.
-> > 
-> > If your repo is a fork of https://gitlab.com/qemu-project/qemu it
-> > should benefit from a *massive* x125 reduction on CI costs.
-> > 
-> > The critical thing is that it *MUST* have been created with the
-> > 'Fork' button on qemu-project/qemu.
-> 
-> Yeah, it might be that the problem is caused by me accidentally
-> forking the gitlab.com/qemu/qemu repo instead of qemu-project.
-> 
-> It is fairly confusing that qemu/qemu is not the main repository
-> of QEMU project.  It seems to be some sort of automated account
-> and it closely follows updates of the main repository.  It also
-> has a better name, and it is *not a fork* of the qemu-project.
-> There practically no indication that qemu/qemu is not a main
-> repository, except for an icon and a lower star/fork count.
-> It's easy to fork the wrong one.
-> 
-> Do you folks have control over this account?  Could you maybe add
-> a description that it is not the official QEMU repository and add
-> a link to qemu-project?  Right now qemu-project/qemu states that
-> it is a "QEMU main repository", but qemu/qemu doesn't say anything.
+This patchset is an RFC that wires up the NS EL2 virtual timer IRQ on
+the virt board, similarly to what
+https://patchew.org/QEMU/20230913140610.214893-1-marcin.juszkiewicz@linaro.org/
+does for the sbsa-ref board.
 
-The https://gitlab.com/qemu account is a user profile who has
-been squatting on that name for a while. I vaguely recall we
-tried to claim it with gitlab but because it regularly pushes
-code it isn't considered inactive and thus there's nothing we
-can do about it :-(
+Patches 1 and 3 are the usual dance to keep the ACPI unit tests happy
+with the change to the ACPI table contents; patch 2 is the meat.
 
+This is an RFC for two reasons:
 
-With regards,
-Daniel
+(1) I'm not very familiar with ACPI, and patch 2 needs to update the
+ACPI GTDT table to report the interrupt number.  In particular, this
+means we need the rev 3 of this table (present in ACPI spec 6.3 and
+later), not the rev 2 we currently report.  I'm not sure if it's
+permitted to rev just this table, or if we would need to upgrade all
+our ACPI tables to the newer spec first.
+
+(2) The change causes EDK2 (UEFI) to assert on startup:
+ASSERT [ArmTimerDxe] /home/kraxel/projects/qemu/roms/edk2/ArmVirtPkg/Library/ArmVirtTimerFdtClientLib/ArmVirtTimerFdtClientLib.c(72): PropSize == 36 || PropSize == 48
+This is because the EDK2 code that consumes the QEMU generated device
+tree blob is incorrectly insisting that the architectural-timer
+interrupts property has only 3 or 4 entries, so it falls over if
+given a dtb with the 5th entry for the EL2 virtual timer irq.  In
+particular this breaks the avocado test:
+machine_aarch64_virt.py:Aarch64VirtMachine.test_alpine_virt_tcg_gic_max
+I'm not entirely sure what to do about this -- we can get EDK2 fixed
+and update our own test case, but there's a lot of binaries out there
+in the wild that won't run if we just update the virt board the way
+this patchset does.  We could perhaps make the virt board change be
+dependent on machine type version, as a way to let users fall back to
+the old behaviour.
+
+I'm putting this patchset out on the list to get opinions and
+review on those two points.
+
+thanks
+-- PMM
+
+Peter Maydell (3):
+  tests/qtest/bios-tables-test: Allow changes to virt GTDT
+  hw/arm/virt: Wire up non-secure EL2 virtual timer IRQ
+  tests/qtest/bios-tables-test: Update virt/GTDT golden reference
+
+ include/hw/arm/virt.h     |   2 ++
+ hw/arm/virt-acpi-build.c  |  16 ++++++++++++----
+ hw/arm/virt.c             |  29 ++++++++++++++++++++++++++++-
+ tests/data/acpi/virt/GTDT | Bin 96 -> 104 bytes
+ 4 files changed, 42 insertions(+), 5 deletions(-)
+
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.34.1
 
 
