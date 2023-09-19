@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685B27A5857
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 06:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F3FC7A5859
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 06:17:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiS6z-0007pI-9D; Tue, 19 Sep 2023 00:13:21 -0400
+	id 1qiSAI-0000Nz-3s; Tue, 19 Sep 2023 00:16:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qiS6w-0007n8-ID
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:13:18 -0400
-Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
+ id 1qiSAG-0000Nc-HD
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:16:44 -0400
+Received: from mail-ua1-x932.google.com ([2607:f8b0:4864:20::932])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qiS6u-000746-62
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:13:17 -0400
-Received: by mail-vs1-xe2a.google.com with SMTP id
- ada2fe7eead31-45289a987ddso106333137.0
- for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 21:13:13 -0700 (PDT)
+ id 1qiSAC-0007gM-S8
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 00:16:44 -0400
+Received: by mail-ua1-x932.google.com with SMTP id
+ a1e0cc1a2514c-7ab2270dfbcso86455241.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Sep 2023 21:16:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695096792; x=1695701592; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695096999; x=1695701799; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zp/d13QLhpM/ahLvWAh5SIoqJpD/VRPyluxt1kpQXFw=;
- b=PmwT44AwJnAE2c40guyIF7d9LQVjHrlwCZiXnxA0u1Ra3zoHgPYKOXacG1CyqlpIKT
- p9D6h4NwQN5tdXX14C57rX5q6ReXpa3YehxhjNn7ldIUMZUSgUtvjxNmYTd9n3YMGg8O
- KXQkn4Xx59MgxUfqOWedCwtTbc2XEphatlU2ytfVqqc9RtP/Ao27khXrRrZoLiS/v8PD
- OzW5Xwj6EoBIIfBinm1VwvI33ZKePQv78HLkCcaFZmBvZmUXWLMLU/fjiT9iSIoJCEib
- V3JobKLX/EOLeMv8ul/QClUV8yGjQnGcramb7E+MtovP/4d7EI0EPb2ohx5WI6B5On7s
- m6EQ==
+ bh=BGq4VgHB/ezj8okN9+iy59JyjDur6hvpfnk9Fey4+bM=;
+ b=FWIbFHc7/T+R/iuS3AsHK0YoGp5Sh0DExSS9YZl9Af4yuWUkEFgiZJyK/apyHGiTcB
+ tkYC/n+F7BWLg6iQqRHYOlAKe8niPMuvM2YLT3NV/a8AxeW0PaVAx95yX/mxNJ79xqkR
+ JKWHD5XZj1eRiVEZccrdo9/7LZq2OB+3/mULhhzpO9q5vUNK3ZKXSqDi4c+KntPXHNX8
+ XLXd/kAs0Zzjc+yKk+h6doBsC2hg+/MCvNfFeB6f9h5VD8QZZugoOrbvh7VW1EvjrZna
+ pBA3RD7ofAn+iHzU0f2fCIGtewLrkDfuomCZjYPdtHQCJ+JQUFiFs15B7fSNLaX/z9SB
+ +wfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695096792; x=1695701592;
+ d=1e100.net; s=20230601; t=1695096999; x=1695701799;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zp/d13QLhpM/ahLvWAh5SIoqJpD/VRPyluxt1kpQXFw=;
- b=Gka8rdPYefQSMYdRj7iAzjMgPK2szoP/c9FxVt18Fi14URiaL0AOBJ/b9Mxqx5oHGN
- 9dNbDVPivaIK2/CIjE9LRp1jseFWB4tqaBfgyVoNSc13j7NFOBYk/roxXaUPCLlxhJkF
- LHpt6zt15iwarwi1xDwS60ap/CM2TzQobgpOIBHqkV0RuJaFzXfX1yxIpAlCtHZNHQ1M
- EbK/YKIuPpV4H/0/cz+TkoLiLIQR++2b8dND919417iSF4/iq1aLJbBMgfImrcfdyDeD
- Lw/kafyVivVUfbwgn8XG9pnBQlOWFx8zGQiTrTgZ62dHt8HJGxiYZqUNbwkq/pO0eLVU
- C08A==
-X-Gm-Message-State: AOJu0Yz4yH2S3ENx+OSHMTNjSqrvW5M6B9a5k+GnZFcmyQpjUDJCHlSH
- QMAsG8S8jDOdJ6+GjSlzSlGnyqxe+Z+Pm9N0gJo=
-X-Google-Smtp-Source: AGHT+IEdQcaT9eWzJQ0cqK1bO634s9DKMt5yZjD08EVdKJR05FFV6EVaoI3BCT6ct+S+D1DaNjq4Sn5stHdV8fJXy20=
-X-Received: by 2002:a05:6102:2832:b0:44e:93f4:3c85 with SMTP id
- ba18-20020a056102283200b0044e93f43c85mr6890281vsb.12.1695096792428; Mon, 18
- Sep 2023 21:13:12 -0700 (PDT)
+ bh=BGq4VgHB/ezj8okN9+iy59JyjDur6hvpfnk9Fey4+bM=;
+ b=mJlQmEEFKfTKZ5gArHaRyNmV/gity2Y97F0J0k6kr8EsyUp1cB7kIf+i2RCL2M02XV
+ MuavxfrOsHTjGSZbhMkDQL+4pxWHvm84VQuTnXWpHU1IBdUVZsnENny0EPKAfMgkWP2X
+ mhoxtOLrxFdiEbKH4Vtql6jQa5l4+Oa17Fh91TBSmxZTxGIJkiiTQoDgOjjkzuxb5tuV
+ 1TezWjTpnlq/P0e2qYUR8ycyM7LTkQvv1Ixn8ZnWJL1yUekQJP4USnr20vfqxpMuIyEE
+ 9fnTg8B6boC3PZlqQWFg0HptNJYapbwesmINHN3p3PlX90m02ARnCDcg7bOZvqUfmHVM
+ /gBg==
+X-Gm-Message-State: AOJu0YxJhQ0VN7lZVs0PXa++hXcOYJKvsXXu2BllOWqbUwgZWxiJi3My
+ VSYsy6PnbjQxx1BTGQ1iGpD1cqZmQ0C2xNUqtdjGo+1sOP29Qg==
+X-Google-Smtp-Source: AGHT+IHJyYD/yYykSjeYkZ5QD9eejpl5KK6khR/3HsLbXkSWsSu8Ygg6rPleddphnoh0EzATUGNZnK99dN0nNCDM6dg=
+X-Received: by 2002:a67:ec98:0:b0:44d:4fc0:3340 with SMTP id
+ h24-20020a67ec98000000b0044d4fc03340mr8526594vsp.7.1695096999087; Mon, 18 Sep
+ 2023 21:16:39 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230913083728.16935-1-18622748025@163.com>
  <20230913091332.17355-1-18622748025@163.com>
 In-Reply-To: <20230913091332.17355-1-18622748025@163.com>
 From: Alistair Francis <alistair23@gmail.com>
-Date: Tue, 19 Sep 2023 14:12:45 +1000
-Message-ID: <CAKmqyKPWhRC30Jp4HAh+ioF13iYBOYBxFmbKocUYEx=oX6a_HA@mail.gmail.com>
+Date: Tue, 19 Sep 2023 14:16:12 +1000
+Message-ID: <CAKmqyKMzmQQc9zmjs1KzDDomRt1a+=RwmKwtMnW-bSxtwDnY_Q@mail.gmail.com>
 Subject: Re: [PATCH v4] target/riscv: Clearing the CSR values at reset and
  syncing the MPSTATE with the host
 To: "liguang.zhang" <18622748025@163.com>
 Cc: qemu-devel@nongnu.org, "liguang.zhang" <liguang.zhang@hexintek.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2a;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::932;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x932.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -108,10 +108,11 @@ rash
 >
 > Signed-off-by: liguang.zhang <liguang.zhang@hexintek.com>
 
-This patch fails checkpatch. You should run checkpatch on all patches
-before submitting them
+I have fixed up some of the issues and applied this
 
-    git show | ./scripts/checkpatch.pl -
+Thanks!
+
+Applied to riscv-to-apply.next
 
 Alistair
 
