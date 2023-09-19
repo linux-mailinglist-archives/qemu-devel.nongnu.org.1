@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2797A6866
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 17:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4277A6884
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 18:02:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qid47-0000Q9-NK; Tue, 19 Sep 2023 11:55:07 -0400
+	id 1qid9x-0002H1-25; Tue, 19 Sep 2023 12:01:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qid42-0000Po-Hh
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:55:02 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qid9j-0002BM-IY
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:00:55 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qid40-0007h8-Iw
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 11:55:02 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5731fe1d2bfso3084927eaf.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 08:54:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qid9g-0001nT-Mg
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:00:55 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-403004a96eeso62144225e9.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 09:00:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1695138897; x=1695743697;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1695139250; x=1695744050; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=neNhIJRIq7NDpCcB1VHri0O6K+ddFKUJNmDvwkLac4I=;
- b=Pt/ohk8okvYeddsyEbGQ1obKhiFDYeJ6udOY2dIL4mwjVnQmzmuHQ48chEuE45Of15
- AvuL/VnUectFD+J3WElH4KXLeF/+XRZxDOmGncw+sd4c0IzFAUHly/CQZp49a0VmB8eu
- /iNd/5SoaFZpVGgcUr5i2ROTCQYPnCohBvwjUZGskIoo6SkAITDcDoIDfQhRlJcGCZnZ
- 4EO3QmORJyCwerChq837cdODBHhwAoDF2jzdH/TUZPn1kTlm7fTjc2XpnB8wpBGLqxGQ
- TSc/ITBh989qZo+gF8s0UItLU11OXBuXQjO1wis3FHokwqcqvp/OUlju769WGrIffjrr
- v3LQ==
+ bh=FUgl8qbgPkE0Y3xcruXztkrW8DQ+8tu5AZMIltrCMTc=;
+ b=WTBm5yIKEQF9J+5X94w4TiD/lIEAbwhtjPCpkbzx63UO3sXKJipHNi/8+njD3eVbSK
+ 6R3Rcq+TsTlumqmtBVTCH3iME6pXUaMKInnUNNX5KwMrcsAr3vDzSbW85CEoHqoJjRrm
+ XA5Rpy5DKp1xDI+ebLv2lTPDNhhrgzepgG1+cGweKFY+XwEHkHPyPI/oevXgNp4U+e5f
+ Uobj1PPKYDaajDA+s5ugCHeLbPgPYCIwq4ZucVpybyzyw5g8dreUATwUotIrQUeXMvKZ
+ C39KamnCH7ieWuYEjvcJdB7jjWzZfa2Tbgs+vSwW1f8BDw5FSxw4AeITOO9d3qxPF07U
+ cuNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695138897; x=1695743697;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=neNhIJRIq7NDpCcB1VHri0O6K+ddFKUJNmDvwkLac4I=;
- b=X78S+bKGEy+8LzuDYJvlfVL2Rq+kCt83LgQuRtMd+TTrbpGXxeac4hEtxtJmfVKk69
- Qpf9bP8R8wCiZ0lA5A+TQpdeU55mSXOxQhV4pvmIwFjNL66b+bJyxtep5WmJGqmxQKDH
- skCsw17A6/vs1ydBvmcsmZxLMnh/NwclFUkAcHvV4qYoXanBxXF9R+oIZ+rGXZgICLGt
- znkLNaRX8Li8pKD/2qSxnEwzdjAA7r8s9ZViPCkSNrJNoTi30L89+CbDs7xd1iTpwOVM
- BafxIaxrkLTjmJ4n6650ASOY8O8ZJCz/u61ca9IFwfg9ds2eQKUqi+d5tL5YUB0Lbs5R
- RXug==
-X-Gm-Message-State: AOJu0YwqpU/F36a5oGFJMvZBn/5Mu/ULMgvnhThZ8EYe69B0rUM5y7J+
- UX0r4LqiNTzqtzHoOATgVXzO6mlmVT50kdZ/zWLnYA==
-X-Google-Smtp-Source: AGHT+IFHUoAdtDiMM+3zhjlZsvJYB+9IBKYkLpUlH9/LhxjDOwv6AEuMkiRszcePgDdapkd4InU2+FNXXdgQqruiXT4=
-X-Received: by 2002:a05:6820:1c44:b0:57b:2703:3060 with SMTP id
- cm4-20020a0568201c4400b0057b27033060mr877267oob.1.1695138897355; Tue, 19 Sep
- 2023 08:54:57 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695139250; x=1695744050;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=FUgl8qbgPkE0Y3xcruXztkrW8DQ+8tu5AZMIltrCMTc=;
+ b=aTOE8f9AhYy5jmvzyJ94/9J2jent5ic3tNDTUralG09YAMXGA5g7rXRONk/IJxGfr1
+ DV4FCQLYV48Hs0qAApbm+H2lZB9gVDjNQubpCClFg4/RXKkOSQopM6VvOki7BHKV9l7U
+ RQHmIza9qkh7liX7IcWRlSaPPbpY2fn8CQ2NeGInw+hes2UHN6XtqmzrOGskHYed3wkj
+ 9gGws+pel02pWHZSzscxzTU8PzA8HW2asBOeU+1xHoNOTNWYq6lpPd3P2FgLICut9fFB
+ ijqZGujpC5TMTpOsS6QnWD/luJqiJcoqSeaTe9jZjpAC2a/26lVhEkoP00ElwKlI876q
+ uQ+A==
+X-Gm-Message-State: AOJu0YxErp6gOb5wNsyF24vPLogvbaGiSJlIGo0z+44By34xAMTR0Seq
+ AZzLasq3BjqxRRg6LVQRxo+e7w==
+X-Google-Smtp-Source: AGHT+IEYENQvx9wMa2JS1WUI8iLYnjpDG93qCxq4QeH8ldoYczePJ7eReMSWizpfAZBUzbOKGmWASg==
+X-Received: by 2002:a7b:c7cb:0:b0:402:ee71:29 with SMTP id
+ z11-20020a7bc7cb000000b00402ee710029mr195787wmk.10.1695139249751; 
+ Tue, 19 Sep 2023 09:00:49 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ w11-20020a05600c014b00b00400268671c6sm15693627wmm.13.2023.09.19.09.00.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Sep 2023 09:00:49 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id D2EBB1FFBB;
+ Tue, 19 Sep 2023 17:00:48 +0100 (BST)
+References: <20230919065754.1091394-1-alex.bennee@linaro.org>
+ <CAJSP0QUy2e9niaA3uhbyBZm3cw0QW8Wg5u9Cd749VtpZVfXotQ@mail.gmail.com>
+User-agent: mu4e 1.11.20; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PULL v2 0/9] testing updates (back to green!)
+Date: Tue, 19 Sep 2023 17:00:09 +0100
+In-reply-to: <CAJSP0QUy2e9niaA3uhbyBZm3cw0QW8Wg5u9Cd749VtpZVfXotQ@mail.gmail.com>
+Message-ID: <8734zaw3tb.fsf@linaro.org>
 MIME-Version: 1.0
-References: <20230907130410.498935-1-mnissler@rivosinc.com>
- <20230907130410.498935-2-mnissler@rivosinc.com> <ZQH/1pRzHhaXbl+E@x1n>
- <CAGNS4TYLqUogVTAxR1eBzbukp5YLDHzVJDqEwvp0sxg9dFWogw@mail.gmail.com>
-In-Reply-To: <CAGNS4TYLqUogVTAxR1eBzbukp5YLDHzVJDqEwvp0sxg9dFWogw@mail.gmail.com>
-From: Mattias Nissler <mnissler@rivosinc.com>
-Date: Tue, 19 Sep 2023 17:54:46 +0200
-Message-ID: <CAGNS4Tb457NXTXRAzne2FdXH-xatMoDVSFYD8CEoxCDZpvFNNQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/5] softmmu: Per-AddressSpace bounce buffering
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, john.levon@nutanix.com, 
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Jagannathan Raman <jag.raman@oracle.com>, stefanha@redhat.com, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=mnissler@rivosinc.com; helo=mail-oo1-xc2a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,53 +96,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 15, 2023 at 10:37=E2=80=AFAM Mattias Nissler <mnissler@rivosinc=
-.com> wrote:
->
-> On Wed, Sep 13, 2023 at 8:30=E2=80=AFPM Peter Xu <peterx@redhat.com> wrot=
-e:
-> >
-> > On Thu, Sep 07, 2023 at 06:04:06AM -0700, Mattias Nissler wrote:
-> > > @@ -3105,6 +3105,9 @@ void address_space_init(AddressSpace *as, Memor=
-yRegion *root, const char *name)
-> > >      as->ioeventfds =3D NULL;
-> > >      QTAILQ_INIT(&as->listeners);
-> > >      QTAILQ_INSERT_TAIL(&address_spaces, as, address_spaces_link);
-> > > +    as->bounce.in_use =3D false;
-> > > +    qemu_mutex_init(&as->map_client_list_lock);
-> > > +    QLIST_INIT(&as->map_client_list);
-> > >      as->name =3D g_strdup(name ? name : "anonymous");
-> > >      address_space_update_topology(as);
-> > >      address_space_update_ioeventfds(as);
-> >
-> > Missing the counterpart in do_address_space_destroy()?
->
-> Of course, thanks for pointing this out.
->
-> >
-> > Perhaps we should assert on having no one using the buffer, or on the
-> > client list too.
->
-> I agree it makes sense to put these assertions, but let me dig a bit
-> and do some experiments to see whether these hold true in practice.
 
-To close the loop here: I've experimented a bit to try whether I can
-get the shutdown path to trigger the assertions by terminating the
-qemu process with mappings present. I tried xhci (for usb_packet_map),
-e1000e (for net_tx_pkt_add_raw_fragment_pci), and nvme (for
-dma-helpers), and some of them with hacked Linux kernels in attempts
-to create problematic situations. I found that cleanup of mappings
-seems to work correctly already, I wasn't able to trigger the
-assertions I added in do_address_space_destroy. That doesn't prove
-absence of a code path that would trigger them, but then that would
-just indicate a bug in device model cleanup code that should be fixed
-anyways.
+Stefan Hajnoczi <stefanha@gmail.com> writes:
+
+> There is some funny business with tests/lcitool/libvirt-ci. Please
+> rebase on master and send a v3. Sorry for the trouble, I am afraid I
+> would mess something up with the submodule if I attempted to resolve
+> it myself.
+>
+> (If you don't see a conflict when rebasing, please wait until the end
+> of the day when the other pull requests queued on the staging branch
+> are pushed to master.)
+
+That's weird, was their another PR in flight which touched libvirt-ci?
 
 >
-> >
-> > Thanks,
-> >
-> > --
-> > Peter Xu
-> >
+> Thanks!
+>
+> Auto-merging tests/docker/dockerfiles/debian-amd64-cross.docker
+> Auto-merging tests/docker/dockerfiles/debian-amd64.docker
+> Auto-merging tests/docker/dockerfiles/debian-arm64-cross.docker
+> Auto-merging tests/docker/dockerfiles/debian-armhf-cross.docker
+> Auto-merging tests/docker/dockerfiles/debian-ppc64el-cross.docker
+> Auto-merging tests/docker/dockerfiles/debian-s390x-cross.docker
+> Failed to merge submodule tests/lcitool/libvirt-ci (not checked out)
+> CONFLICT (submodule): Merge conflict in tests/lcitool/libvirt-ci
+> Recursive merging with submodules currently only supports trivial cases.
+> Please manually handle the merging of each conflicted submodule.
+> This can be accomplished with the following steps:
+>  - come back to superproject and run:
+>
+>       git add tests/lcitool/libvirt-ci
+>
+>    to record the above merge or update
+>  - resolve any other conflicts in the superproject
+>  - commit the resulting index in the superproject
+> Automatic merge failed; fix conflicts and then commit the result.
+>
+> Stefan
+>
+> On Tue, 19 Sept 2023 at 02:59, Alex Benn=C3=A9e <alex.bennee@linaro.org> =
+wrote:
+>>
+>> The following changes since commit 13d6b1608160de40ec65ae4c32419e56714bb=
+adf:
+>>
+>>   Merge tag 'pull-crypto-20230915' of https://gitlab.com/rth7680/qemu in=
+to staging (2023-09-18 11:04:21 -0400)
+>>
+>> are available in the Git repository at:
+>>
+>>   https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-ominbus-19092=
+3-1
+>>
+>> for you to fetch changes up to bb3c01212b54595f5bbdbe235cb353b220f94943:
+>>
+>>   tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884 (202=
+3-09-19 07:46:02 +0100)
+>>
+>> ----------------------------------------------------------------
+>> testing updates:
+>>
+>>   - update most Debian to bookworm
+>>   - fix some typos
+>>   - update loongarch toolchain
+>>   - fix microbit test
+>>   - handle GitLab/Cirrus timeout discrepancy
+>>   - improve avocado console handling
+>>   - disable mips avocado images pending bugfix
+>>
+>> ----------------------------------------------------------------
+>> Alex Benn=C3=A9e (2):
+>>       tests: update most Debian images to Bookworm
+>>       gitlab: fix typo/spelling in comments
+>>
+>> Daniel P. Berrang=C3=A9 (4):
+>>       microbit: add missing qtest_quit() call
+>>       qtest: kill orphaned qtest QEMU processes on FreeBSD
+>>       gitlab: make Cirrus CI timeout explicit
+>>       gitlab: make Cirrus CI jobs gating
+>>
+>> Nicholas Piggin (1):
+>>       tests/avocado: Fix console data loss
+>>
+>> Philippe Mathieu-Daud=C3=A9 (1):
+>>       tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884
+>>
+>> Richard Henderson (1):
+>>       tests/docker: Update docker-loongarch-cross toolchain
+>>
+>>  tests/qtest/libqtest.c                                |  7 +++++++
+>>  tests/qtest/microbit-test.c                           |  2 ++
+>>  .gitlab-ci.d/base.yml                                 |  2 +-
+>>  .gitlab-ci.d/cirrus.yml                               |  4 +++-
+>>  .gitlab-ci.d/cirrus/build.yml                         |  2 ++
+>>  python/qemu/machine/machine.py                        | 19 ++++++++++++=
++++++++
+>>  tests/avocado/avocado_qemu/__init__.py                |  2 +-
+>>  tests/avocado/boot_linux_console.py                   |  7 +++++++
+>>  tests/avocado/machine_mips_malta.py                   |  6 ++++++
+>>  tests/avocado/replay_kernel.py                        |  7 +++++++
+>>  tests/avocado/tuxrun_baselines.py                     |  4 ++++
+>>  tests/docker/dockerfiles/debian-amd64-cross.docker    | 10 +++-------
+>>  tests/docker/dockerfiles/debian-amd64.docker          | 10 +++-------
+>>  tests/docker/dockerfiles/debian-arm64-cross.docker    | 10 +++-------
+>>  tests/docker/dockerfiles/debian-armel-cross.docker    |  2 +-
+>>  tests/docker/dockerfiles/debian-armhf-cross.docker    | 10 +++-------
+>>  .../docker/dockerfiles/debian-loongarch-cross.docker  |  2 +-
+>>  tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 10 +++-------
+>>  tests/docker/dockerfiles/debian-s390x-cross.docker    | 10 +++-------
+>>  tests/docker/dockerfiles/ubuntu2004.docker            |  2 +-
+>>  tests/docker/dockerfiles/ubuntu2204.docker            |  2 +-
+>>  tests/lcitool/libvirt-ci                              |  2 +-
+>>  tests/lcitool/refresh                                 | 17 +++++++++---=
+-----
+>>  23 files changed, 91 insertions(+), 58 deletions(-)
+>>
+>> --
+>> 2.39.2
+>>
+>>
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
