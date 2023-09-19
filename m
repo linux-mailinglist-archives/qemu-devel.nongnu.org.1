@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0487A689B
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 18:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2347F7A68B6
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Sep 2023 18:16:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qidHT-0001p6-G1; Tue, 19 Sep 2023 12:08:55 -0400
+	id 1qidNZ-0006Yv-0Z; Tue, 19 Sep 2023 12:15:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qidHO-0001nY-My
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:08:51 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qidNV-0006YJ-PE
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:15:09 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qidHM-0004hf-V9
- for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:08:50 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1c1e3a4a06fso46170715ad.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 09:08:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qidNT-0006Sp-7L
+ for qemu-devel@nongnu.org; Tue, 19 Sep 2023 12:15:09 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3ab3aa9ae33so4045960b6e.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 09:15:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1695139726; x=1695744526;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1695140104; x=1695744904; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VRT2ifSiyxkep05tvhCKGJzMwggYcgdJ7ZMgq7QI+ZE=;
- b=PF7sQjctIrynWSKWCdfg4m+CvXMQNf356/WYCqEPgqrtQcnqdrIWe/oPQRuqwOmxZ8
- aB83BuxULfrSWlKE+ZuE5t8RUOz12aH1ZEi1J0AK1bx/SadQf5BlGAgu+yxU3CHK8JZU
- bGkC8VKGT9V+qb1QfmUWr6iBLEKbADXkAYz+LUIXOUv2WDHscbcwumeQJw7Dt/KN4aHT
- HomNMGMqSQiKjXo99VaXM8IIK5cnVSGI+cNN+0v1lsokOBi+ksbeu5MGEd6d/Ft0qYyo
- fhUNZAw9WWHaIR4KM5XTUTNHy44jzVPajavfdFcC4CQ2mYTCxU0wzXRw7TzLnqf0aF4p
- tHUQ==
+ bh=3lDtI98BQsNNKHjTtmhtufSytEVvJB7vHiNmswIfFT8=;
+ b=Hso1IzkGRXFzC1ajFj81ucnFd6iqdc/WbfKhQ/A8KCA/Bpq6t/igCgQxe2QWIm4z1F
+ XCgh2BfA/XUj3+igwUVHmLsMnqW8PSJIRfXm8F6FVfqsKgz9TMtTL3qjftX2hgPbuwtF
+ D7KEBOClye+USJeNBQGS9xaVoNzrT2Slh1OuLNKVp7ByJUef9bAvXdN9NoGSzDh+YfcR
+ 3zsYfrsnGFUQWfMxVXU/AM8w83ktJJUn+UrXIglreDXTGHapSIm3d8khyFMVB7UI8G2N
+ +nV8dyHnpbzg3ySD/aGrf6GXvYfYo52sPjn98vpMyaSLCdMGU9IExyVrfqjZ68Z3hwfv
+ cjcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695139726; x=1695744526;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1695140104; x=1695744904;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VRT2ifSiyxkep05tvhCKGJzMwggYcgdJ7ZMgq7QI+ZE=;
- b=qsfAzsmrudlDT5FF6+HjytEsGIlttxowqsDFM+77ukFV11qtx+wRTpaU1hTthl8qOQ
- JK0mXHPk3kbk2+kcxxisFlZ6GZ2cRUZnILQGDfJ/MzrudiiJJucFyLLDwC4HSu6ENgK/
- V+2ymttFEa+6b46HRXPrygZEw4LqIjzGsj9Oj4wH8J2hBTeCFbQpR+a6kmuBGXLN8RRe
- t2vUHaOJhSWReOGcs1YRvz5m9OuctpR1Wt7v7UKyVyAfediY+sMrQq9B80doT+rWFOVF
- V2Y8PMxlafnCoq31GyIEI6xf/rbMg37dIQlBbuwVlPpNibZYH3vrf9dDKL0GqiyF+K0g
- 1f5g==
-X-Gm-Message-State: AOJu0YxJZI04Gnsa/CJXa0prB44vuJRdomG9fVdh6GxTezXcxZuIl1pi
- E6MmP11kHCgpzX0SHo0kp2uosTH0+K/HMeIY24xZGg==
-X-Google-Smtp-Source: AGHT+IHYawBtyKq1aclH6J9xdKjkxTX+VN46y8E93SDILIVSj6fwGO3pG9CSG0Lu6qZc/yaEgM6YjA==
-X-Received: by 2002:a17:902:ea09:b0:1c3:29c4:c4e4 with SMTP id
- s9-20020a170902ea0900b001c329c4c4e4mr13423483plg.36.1695139726555; 
- Tue, 19 Sep 2023 09:08:46 -0700 (PDT)
-Received: from mnissler.ba.rivosinc.com ([66.220.2.162])
- by smtp.gmail.com with ESMTPSA id
- l9-20020a170902d34900b001b8a1a25e6asm8086308plk.128.2023.09.19.09.08.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Sep 2023 09:08:46 -0700 (PDT)
-From: Mattias Nissler <mnissler@rivosinc.com>
-To: qemu-devel@nongnu.org
-Cc: john.levon@nutanix.com, stefanha@redhat.com,
- Richard Henderson <richard.henderson@linaro.org>,
- Elena Ufimtseva <elena.ufimtseva@oracle.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Jagannathan Raman <jag.raman@oracle.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Mattias Nissler <mnissler@rivosinc.com>
-Subject: [PATCH v4 5/5] vfio-user: Fix config space access byte order
-Date: Tue, 19 Sep 2023 09:08:13 -0700
-Message-Id: <20230919160814.3343727-6-mnissler@rivosinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230919160814.3343727-1-mnissler@rivosinc.com>
-References: <20230919160814.3343727-1-mnissler@rivosinc.com>
+ bh=3lDtI98BQsNNKHjTtmhtufSytEVvJB7vHiNmswIfFT8=;
+ b=IZIGhKEt/40g80DefCrWKyRmOMQM28bMSMLAouYeLPblXNeic8aXGpUytN7L21LIs4
+ z1vbvId1VdUhOP/nOHBe5sQKOjYrH0FSNygoGR+wtKLf/Naln4YQFIIPA1Rh0xhUG2IY
+ Y7VAOl1siZUZ7fI3nPZf4BOg8LRLIomstkgTNvR7sMgCMxT0q/hdgnVdXcJ69yKlrYVR
+ OEu8paxWvHobFDTn911HH1K1fKQiExhdASt6wKDfzItD6PTj46KUFizjVjRmp3zVgEgH
+ /swaKAqd6WXDBeD9BLLEYS4S9tvMwOjP2VRX1sn+41LRl16QEjX1y+1LSp/+aiWlv1CD
+ 4SZA==
+X-Gm-Message-State: AOJu0Yxcxz22+5mLTA3BuIMmD8yLBSfbzYq2ewo0IIvWlecULNm5s6rB
+ J3wC+tw8jAFNHZjno+3g/yiVoieem9t89xa1qOrlUeYJnEQ=
+X-Google-Smtp-Source: AGHT+IFo3lzprgdbfZJgXa4gQ4TqIcJwTf6shKSIWJoFoC+p9X5YQ0ByRYlnbwGUn682G5lwLULLmw3zciipGtC1aFs=
+X-Received: by 2002:a05:6808:18f:b0:3a0:3144:dd3a with SMTP id
+ w15-20020a056808018f00b003a03144dd3amr13321740oic.37.1695140104622; Tue, 19
+ Sep 2023 09:15:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=mnissler@rivosinc.com; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+References: <20230919065754.1091394-1-alex.bennee@linaro.org>
+ <CAJSP0QUy2e9niaA3uhbyBZm3cw0QW8Wg5u9Cd749VtpZVfXotQ@mail.gmail.com>
+ <8734zaw3tb.fsf@linaro.org>
+In-Reply-To: <8734zaw3tb.fsf@linaro.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 19 Sep 2023 12:14:52 -0400
+Message-ID: <CAJSP0QU3ojRW52mu4HcqPd3eH_xQ-xd5GVBz=jy78=rchi3mVw@mail.gmail.com>
+Subject: Re: [PULL v2 0/9] testing updates (back to green!)
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=stefanha@gmail.com; helo=mail-oi1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,38 +88,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCI config space is little-endian, so on a big-endian host we need to
-perform byte swaps for values as they are passed to and received from
-the generic PCI config space access machinery.
+On Tue, 19 Sept 2023 at 12:00, Alex Benn=C3=A9e <alex.bennee@linaro.org> wr=
+ote:
+>
+>
+> Stefan Hajnoczi <stefanha@gmail.com> writes:
+>
+> > There is some funny business with tests/lcitool/libvirt-ci. Please
+> > rebase on master and send a v3. Sorry for the trouble, I am afraid I
+> > would mess something up with the submodule if I attempted to resolve
+> > it myself.
+> >
+> > (If you don't see a conflict when rebasing, please wait until the end
+> > of the day when the other pull requests queued on the staging branch
+> > are pushed to master.)
+>
+> That's weird, was their another PR in flight which touched libvirt-ci?
 
-Signed-off-by: Mattias Nissler <mnissler@rivosinc.com>
----
- hw/remote/vfio-user-obj.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+It's probably a conflict with Ilya Maximets' patches in Jason Wang's
+net pull request:
 
-diff --git a/hw/remote/vfio-user-obj.c b/hw/remote/vfio-user-obj.c
-index 6a561f7969..6043a91b11 100644
---- a/hw/remote/vfio-user-obj.c
-+++ b/hw/remote/vfio-user-obj.c
-@@ -281,7 +281,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
-     while (bytes > 0) {
-         len = (bytes > pci_access_width) ? pci_access_width : bytes;
-         if (is_write) {
--            memcpy(&val, ptr, len);
-+            val = ldn_le_p(ptr, len);
-             pci_host_config_write_common(o->pci_dev, offset,
-                                          pci_config_size(o->pci_dev),
-                                          val, len);
-@@ -289,7 +289,7 @@ static ssize_t vfu_object_cfg_access(vfu_ctx_t *vfu_ctx, char * const buf,
-         } else {
-             val = pci_host_config_read_common(o->pci_dev, offset,
-                                               pci_config_size(o->pci_dev), len);
--            memcpy(ptr, &val, len);
-+            stn_le_p(ptr, len, val);
-             trace_vfu_cfg_read(offset, val);
-         }
-         offset += len;
--- 
-2.34.1
+https://lore.kernel.org/qemu-devel/20230918083132.55423-1-jasowang@redhat.c=
+om/
 
+>
+> >
+> > Thanks!
+> >
+> > Auto-merging tests/docker/dockerfiles/debian-amd64-cross.docker
+> > Auto-merging tests/docker/dockerfiles/debian-amd64.docker
+> > Auto-merging tests/docker/dockerfiles/debian-arm64-cross.docker
+> > Auto-merging tests/docker/dockerfiles/debian-armhf-cross.docker
+> > Auto-merging tests/docker/dockerfiles/debian-ppc64el-cross.docker
+> > Auto-merging tests/docker/dockerfiles/debian-s390x-cross.docker
+> > Failed to merge submodule tests/lcitool/libvirt-ci (not checked out)
+> > CONFLICT (submodule): Merge conflict in tests/lcitool/libvirt-ci
+> > Recursive merging with submodules currently only supports trivial cases=
+.
+> > Please manually handle the merging of each conflicted submodule.
+> > This can be accomplished with the following steps:
+> >  - come back to superproject and run:
+> >
+> >       git add tests/lcitool/libvirt-ci
+> >
+> >    to record the above merge or update
+> >  - resolve any other conflicts in the superproject
+> >  - commit the resulting index in the superproject
+> > Automatic merge failed; fix conflicts and then commit the result.
+> >
+> > Stefan
+> >
+> > On Tue, 19 Sept 2023 at 02:59, Alex Benn=C3=A9e <alex.bennee@linaro.org=
+> wrote:
+> >>
+> >> The following changes since commit 13d6b1608160de40ec65ae4c32419e56714=
+bbadf:
+> >>
+> >>   Merge tag 'pull-crypto-20230915' of https://gitlab.com/rth7680/qemu =
+into staging (2023-09-18 11:04:21 -0400)
+> >>
+> >> are available in the Git repository at:
+> >>
+> >>   https://gitlab.com/stsquad/qemu.git tags/pull-maintainer-ominbus-190=
+923-1
+> >>
+> >> for you to fetch changes up to bb3c01212b54595f5bbdbe235cb353b220f9494=
+3:
+> >>
+> >>   tests/avocado: Disable MIPS Malta tests due to GitLab issue #1884 (2=
+023-09-19 07:46:02 +0100)
+> >>
+> >> ----------------------------------------------------------------
+> >> testing updates:
+> >>
+> >>   - update most Debian to bookworm
+> >>   - fix some typos
+> >>   - update loongarch toolchain
+> >>   - fix microbit test
+> >>   - handle GitLab/Cirrus timeout discrepancy
+> >>   - improve avocado console handling
+> >>   - disable mips avocado images pending bugfix
+> >>
+> >> ----------------------------------------------------------------
+> >> Alex Benn=C3=A9e (2):
+> >>       tests: update most Debian images to Bookworm
+> >>       gitlab: fix typo/spelling in comments
+> >>
+> >> Daniel P. Berrang=C3=A9 (4):
+> >>       microbit: add missing qtest_quit() call
+> >>       qtest: kill orphaned qtest QEMU processes on FreeBSD
+> >>       gitlab: make Cirrus CI timeout explicit
+> >>       gitlab: make Cirrus CI jobs gating
+> >>
+> >> Nicholas Piggin (1):
+> >>       tests/avocado: Fix console data loss
+> >>
+> >> Philippe Mathieu-Daud=C3=A9 (1):
+> >>       tests/avocado: Disable MIPS Malta tests due to GitLab issue #188=
+4
+> >>
+> >> Richard Henderson (1):
+> >>       tests/docker: Update docker-loongarch-cross toolchain
+> >>
+> >>  tests/qtest/libqtest.c                                |  7 +++++++
+> >>  tests/qtest/microbit-test.c                           |  2 ++
+> >>  .gitlab-ci.d/base.yml                                 |  2 +-
+> >>  .gitlab-ci.d/cirrus.yml                               |  4 +++-
+> >>  .gitlab-ci.d/cirrus/build.yml                         |  2 ++
+> >>  python/qemu/machine/machine.py                        | 19 ++++++++++=
++++++++++
+> >>  tests/avocado/avocado_qemu/__init__.py                |  2 +-
+> >>  tests/avocado/boot_linux_console.py                   |  7 +++++++
+> >>  tests/avocado/machine_mips_malta.py                   |  6 ++++++
+> >>  tests/avocado/replay_kernel.py                        |  7 +++++++
+> >>  tests/avocado/tuxrun_baselines.py                     |  4 ++++
+> >>  tests/docker/dockerfiles/debian-amd64-cross.docker    | 10 +++-------
+> >>  tests/docker/dockerfiles/debian-amd64.docker          | 10 +++-------
+> >>  tests/docker/dockerfiles/debian-arm64-cross.docker    | 10 +++-------
+> >>  tests/docker/dockerfiles/debian-armel-cross.docker    |  2 +-
+> >>  tests/docker/dockerfiles/debian-armhf-cross.docker    | 10 +++-------
+> >>  .../docker/dockerfiles/debian-loongarch-cross.docker  |  2 +-
+> >>  tests/docker/dockerfiles/debian-ppc64el-cross.docker  | 10 +++-------
+> >>  tests/docker/dockerfiles/debian-s390x-cross.docker    | 10 +++-------
+> >>  tests/docker/dockerfiles/ubuntu2004.docker            |  2 +-
+> >>  tests/docker/dockerfiles/ubuntu2204.docker            |  2 +-
+> >>  tests/lcitool/libvirt-ci                              |  2 +-
+> >>  tests/lcitool/refresh                                 | 17 +++++++++-=
+-------
+> >>  23 files changed, 91 insertions(+), 58 deletions(-)
+> >>
+> >> --
+> >> 2.39.2
+> >>
+> >>
+>
+>
+> --
+> Alex Benn=C3=A9e
+> Virtualisation Tech Lead @ Linaro
 
