@@ -2,96 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503A47A7410
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5597A7412
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:28:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qirch-0002gx-2y; Wed, 20 Sep 2023 03:27:47 -0400
+	id 1qirdY-0003fh-0d; Wed, 20 Sep 2023 03:28:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
- id 1qircf-0002gm-2H
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:27:45 -0400
-Received: from mgamail.intel.com ([192.55.52.88])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qirdV-0003fB-7X
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:28:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
- id 1qircc-00039C-6r
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:27:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695194862; x=1726730862;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=c//2mqr4QCDnboufqfxvs3v0ljEejNOYFoTJbE1+at8=;
- b=cQ4TJQ0CCzhJYRIhsk80b+qu+Tn9zyFQ2PO4m5Cipqx3k4QFO9lJeTZJ
- R1GN8zrt/qpeRGoAEdELoLONcumixrzpEpd3Wt6LD3tfAaVvDrgcNwbNi
- ovWRNnnsnralKmttxIH2xiiYq/GkmeTRngjKGWApP0YXj0z0z5GKAzOc2
- a70usXQrDRAbKaeONqyQgpsbVZhx4ZBVkqCR2GhUOaYnPUfHYo4Yqt1aG
- n5rMUq8y4Jnlx2KsESOh4fXrWvq0BOht0FCy+4n/M1eMFiQdeu/0lDXCW
- 9vF2RmYMFWBHKO+8URPsLgPJFyrXmiQILjyquWSn15mw3vOXUHzrretI6 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="411088300"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="411088300"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2023 00:27:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="781592828"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="781592828"
-Received: from lingshan-mobl.ccr.corp.intel.com (HELO [10.93.14.5])
- ([10.93.14.5])
- by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2023 00:27:32 -0700
-Message-ID: <91c3e7ec-d702-ee61-c420-59ddc8dac6dc@intel.com>
-Date: Wed, 20 Sep 2023 15:27:30 +0800
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qirdT-0003Lt-No
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:28:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695194914;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JD50fnqSCdxa4RI+t75NkjYqRbcfb8PPD6gAydx4Ynw=;
+ b=IlcmLBh9ZOcsO6oTG/exdq2lgz1qnBgUqq0fj+urd4hzipozEnKsmCrjWNvx+8K+Sr8g/A
+ qOeQrV3Nw0hsxXzLhm+mnG3yRI7kFo/Bmaz8i+etWSIktwTy73Ll/9RLhK8ppj639nI2L5
+ aJqE/Jzsvjfd2r0LtYZSr+6womxGkbg=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-600-zzfklG9wN9GK20QQgsKWnQ-1; Wed, 20 Sep 2023 03:28:32 -0400
+X-MC-Unique: zzfklG9wN9GK20QQgsKWnQ-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-76e015eb1c9so806212285a.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 00:28:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695194912; x=1695799712;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JD50fnqSCdxa4RI+t75NkjYqRbcfb8PPD6gAydx4Ynw=;
+ b=LzAMS+VskYbinSGK+ZQexCcrIvNQx1t8o2NoHDtbms/hrNfJI9yIGA0EWWMUfPYIvh
+ kNk0kuUgrcOaxan0uQNpy6GzNLsO4k00FV2/sj+hBWN4Yr4m1yl2UWZlOATD8pP31V04
+ 1dGfDwt5uq4asKPEckZ4nnNUHehX4rPW4CFikaZIBnaqrqlig2jgKx0dokjou/0L+D7H
+ dgTd6GW+zwguMo0kQCOTTBsRi/xTSRj+WyjSBesx0ANTMmkc86RMPiI+akqzL2u475D/
+ 0Hd8uT5/c9UfCqVcKCg1KDJhi3/92VEZxP7XOYHjgx6utN/NFgfquwjJhmsJvE4ZGKWj
+ +Bvg==
+X-Gm-Message-State: AOJu0YxsdFK0C4rPIZakbtvzCf89OQDLNM0Bypw/YYwP4McyVUYGp+w1
+ 7rookprbwoMt6G+ZZLT5X0JxJFxKnCwFyN0tlKmGu/ozJrbjX4zCppvnNajuJs1smknUUjGeDpY
+ ocYJczpK199RJo9E=
+X-Received: by 2002:a05:620a:46a4:b0:770:f29f:d1d9 with SMTP id
+ bq36-20020a05620a46a400b00770f29fd1d9mr2305536qkb.2.1695194911750; 
+ Wed, 20 Sep 2023 00:28:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYL+iWWnvQWIN8r3jxMNCi4P5ru5m+oLbVo8k3CXvVUHMkTHO8+0NlZ0XttjUMHWuVoH32Lw==
+X-Received: by 2002:a05:620a:46a4:b0:770:f29f:d1d9 with SMTP id
+ bq36-20020a05620a46a400b00770f29fd1d9mr2305511qkb.2.1695194911417; 
+ Wed, 20 Sep 2023 00:28:31 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ g6-20020ae9e106000000b007726002d69esm4594017qkm.10.2023.09.20.00.28.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Sep 2023 00:28:30 -0700 (PDT)
+Message-ID: <bc5bf537-8456-c0d2-c4f0-5cf5f64a9674@redhat.com>
+Date: Wed, 20 Sep 2023 09:28:27 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [virtio-dev] Re: [virtio-comment] Re: [VIRTIO PCI PATCH v5 1/1]
- transport-pci: Add freeze_mode to virtio_pci_common_cfg
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 12/12] vfio: Remove 64-bit IOVA address space assumption
 Content-Language: en-US
-To: Parav Pandit <parav@nvidia.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>,
- Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
- <olvaffe@gmail.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@gmail.com>, Robert Beckett <bob.beckett@collabora.com>,
- Mikhail Golubev-Ciuchea <Mikhail.Golubev-Ciuchea@opensynergy.com>,
- "virtio-comment@lists.oasis-open.org" <virtio-comment@lists.oasis-open.org>,
- "virtio-dev@lists.oasis-open.org" <virtio-dev@lists.oasis-open.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>,
- Xenia Ragiadakou <burzalodowa@gmail.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
- <20230919114242.2283646-2-Jiqian.Chen@amd.com>
- <20230919082802-mutt-send-email-mst@kernel.org>
- <cd8d306b-6acc-34be-516c-b89c23ac108d@intel.com>
- <BL1PR12MB5849E32A76165F1307492185E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
- <PH0PR12MB5481D2CBCFBF7BCBF427EE1EDCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
- <701bb67c-c52d-4eb3-a6ed-f73bd5d0ff33@intel.com>
- <PH0PR12MB5481891053E37A79920991F6DCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
-From: "Zhu, Lingshan" <lingshan.zhu@intel.com>
-In-Reply-To: <PH0PR12MB5481891053E37A79920991F6DCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ clg@redhat.com, jean-philippe@linaro.org, mst@redhat.com,
+ pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
+ david@redhat.com, philmd@linaro.org
+References: <20230913080423.523953-1-eric.auger@redhat.com>
+ <20230913080423.523953-13-eric.auger@redhat.com>
+ <20230919112230.5dfe14fa.alex.williamson@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20230919112230.5dfe14fa.alex.williamson@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.55.52.88; envelope-from=lingshan.zhu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,42 +107,106 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Alex,
 
-
-On 9/20/2023 3:10 PM, Parav Pandit wrote:
->> From: Zhu, Lingshan <lingshan.zhu@intel.com>
->> Sent: Wednesday, September 20, 2023 12:37 PM
->>> The problem to overcome in [1] is, resume operation needs to be synchronous
->> as it involves large part of context to resume back, and hence just
->> asynchronously setting DRIVER_OK is not enough.
->>> The sw must verify back that device has resumed the operation and ready to
->> answer requests.
->> this is not live migration, all device status and other information still stay in the
->> device, no need to "resume" context, just resume running.
->>
-> I am aware that it is not live migration. :)
+On 9/19/23 19:22, Alex Williamson wrote:
+> On Wed, 13 Sep 2023 10:01:47 +0200
+> Eric Auger <eric.auger@redhat.com> wrote:
 >
-> "Just resuming" involves lot of device setup task. The device implementation does not know for how long a device is suspended.
-> So for example, a VM is suspended for 6 hours, hence the device context could be saved in a slow disk.
-> Hence, when the resume is done, it needs to setup things again and driver got to verify before accessing more from the device.
-The restore procedures should perform by the hypervisor and done before 
-set DRIVER_OK and wake up the guest.
-And the hypervisor/driver needs to check the device status by re-reading.
->   
->> Like resume from a failed LM.
->>> This is slightly different flow than setting the DRIVER_OK for the first time
->> device initialization sequence as it does not involve large restoration.
->>> So, to merge two ideas, instead of doing DRIVER_OK to resume, the driver
->> should clear the SUSPEND bit and verify that it is out of SUSPEND.
->>> Because driver is still in _OK_ driving the device flipping the SUSPEND bit.
->> Please read the spec, it says:
->> The driver MUST NOT clear a device status bit
+>> Now we retrieve the usable IOVA ranges from the host,
+>> we now the physical IOMMU aperture and we can remove
+>> the assumption of 64b IOVA space when calling
+>> vfio_host_win_add().
 >>
-> Yes, this is why either DRIER_OK validation by the driver is needed or Jiqian's synchronous new register..
-so re-read
+>> This works fine in general but in case of an IOMMU memory
+>> region this becomes more tricky. For instance the virtio-iommu
+>> MR has a 64b aperture by default. If the physical IOMMU has a
+>> smaller aperture (typically the case for VTD), this means we
+>> would need to resize the IOMMU MR when this latter is linked
+>> to a container. However this happens on vfio_listener_region_add()
+>> when calling the IOMMU MR set_iova_ranges() callback and this
+>> would mean we would have a recursive call the
+>> vfio_listener_region_add(). This looks like a wrong usage of
+>> the memory API causing duplicate IOMMU MR notifier registration
+>> for instance.
+>>
+>> Until we find a better solution, make sure the vfio_find_hostwin()
+>> is not called anymore for IOMMU region.
+>>
+>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>>
+>> ---
+>>
+>> I have not found any working solution to the IOMMU MR resizing.
+>> So I can remove this patch or remove the check for IOMMU MR. Maybe
+>> this is an issue which can be handled separately?
+>> ---
+>>  hw/vfio/common.c | 25 ++++++++++++-------------
+>>  1 file changed, 12 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index 26da38de05..40cac1ca91 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -1112,13 +1112,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>>  #endif
+>>      }
+>>  
+>> -    hostwin = vfio_find_hostwin(container, iova, end);
+>> -    if (!hostwin) {
+>> -        error_setg(&err, "Container %p can't map guest IOVA region"
+>> -                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+>> -        goto fail;
+>> -    }
+>> -
+>>      memory_region_ref(section->mr);
+>>  
+>>      if (memory_region_is_iommu(section->mr)) {
+>> @@ -1177,6 +1170,14 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>>          return;
+>>      }
+>>  
+>> +    hostwin = vfio_find_hostwin(container, iova, end);
+>> +    if (!hostwin) {
+>> +        error_setg(&err, "Container %p can't map guest IOVA region"
+>> +                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+>> +        goto fail;
+>> +    }
+>> +
+>> +
+>>      /* Here we assume that memory_region_is_ram(section->mr)==true */
+>>  
+>>      /*
+>> @@ -2594,12 +2595,10 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>>          vfio_get_iommu_info_migration(container, info);
+>>          g_free(info);
+>>  
+>> -        /*
+>> -         * FIXME: We should parse VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
+>> -         * information to get the actual window extent rather than assume
+>> -         * a 64-bit IOVA address space.
+>> -         */
+>> -        vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
+>> +        g_assert(container->nr_iovas);
+> This assert is a problem for older kernels.
+yes I will fix this.
+>
+>> +        vfio_host_win_add(container, 0,
+>> +                          container->iova_ranges[container->nr_iovas - 1].end,
+>> +                          container->pgsizes);
+> This doesn't address the assumption about the min_iova and adds an
+> assumption that the kernel provided list is sorted.  Thanks,
+yup.
+
+Thanks!
+
+Eric
+>
+> Alex
 >
 
 
