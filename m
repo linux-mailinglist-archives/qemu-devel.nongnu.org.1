@@ -2,107 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1023C7A8B85
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC517A8B90
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:20:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj1lc-0000mo-7Q; Wed, 20 Sep 2023 14:17:40 -0400
+	id 1qj1nv-0001w7-1f; Wed, 20 Sep 2023 14:20:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qj1la-0000mf-RJ
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:17:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qj1lZ-0000VE-BH
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:17:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695233856;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kr9xJYUwF1FmFYXRjfFyl/NnnvqQ2lW3YXykRgV2hKQ=;
- b=RncyPWfQ6tzWmjA06g3rTGwSY37qmIL4zGZSSJh5td8Vo743zuSoRhO6k6cI6tUFnGIrZy
- OTUBEZugLmVlkdvO3mN16ez/fsBpnAxVICO9lAgX2C/74ClaEEJhw4NHUefMjFh4+01zw1
- u8xMs4A1i3JhzeBWGxHEb5hYa3Q/sc4=
-Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
- [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-572-rN1pCwbtPj2oVZa7hZq2pQ-1; Wed, 20 Sep 2023 14:17:33 -0400
-X-MC-Unique: rN1pCwbtPj2oVZa7hZq2pQ-1
-Received: by mail-il1-f199.google.com with SMTP id
- e9e14a558f8ab-34fc2428821so488215ab.1
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:17:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1nq-0001vK-Io
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:19:59 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1nk-0000na-WD
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:19:58 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-52bcb8b199aso15261a12.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:19:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695233990; x=1695838790;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=xJfCHF3mX1d04EdoY4hw5FTD2GvX/sXGPEgbq4lGkxg=;
+ b=l8fuNphmhfZtdetWrXfEongqbq/wSMVzIib4FOeVZOMWDrzCRQPf9B0zANfDuwOKex
+ 4tfGqRchvDwpaRhO+Km6pFDvomJxqBgBhIR+Iaw6WpQtdL4sHsjw1RizsdsH8LP9bzdl
+ NcWxInR+MrV957NM8Kb+vecMGtBBVhe4eYhiGzXaVC6GCO39GKW6KtrN1zpk7G96qJr2
+ fhixdbBcyGx25cliMiHbi9Jbh+8VHppD/CDwQe4HfWiRsbseIZ8QgZbXVMg6fHDP+8ss
+ Qna1TWeZBiYct9EzZwJq7i8zeaDuGpxiXyylTV/UJB7bXyFGmhqzC/iNazDqugU71r4z
+ QODw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695233846; x=1695838646;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kr9xJYUwF1FmFYXRjfFyl/NnnvqQ2lW3YXykRgV2hKQ=;
- b=codi/ppMHj6Ircht6ycQoXQH84w/Z/caQkx1yOnxnI4hGb6wT0ZakdASPOXSvAUq1Y
- IyFQVHLaJ/FDPuejDwdawiOYwnnIxj3X7g7i3tvidZa0XVnItqfW6l/WHwrmpXDgDp2X
- 1E9K3fZtf4cQN488H3EBkRfQ4NNw3UkelmUKrU2bb7i5mrJPOEx4RIynfcQo4iITBRv/
- LFka5PUepDIM++O2/tBDrQMCyiPwfa7iwncCG43HbA0cssPk4fcEC8LkV285h1bPPgVa
- Xk+HXX+s8SDnQAI2z3t/yxDOHFHp7sDJ733dFl9WkixQuWMcowny0D9GiNCh0inQlnVV
- Yklg==
-X-Gm-Message-State: AOJu0YxujIBtbj7676o9rlPe6klKHS3jiRYd5eyt650IisCUrJo6SBuE
- Am8JV+mnkynA9rlNzFJmhp/bhMPb4DvKuwoWAP/cziq6xhOy1pwuzpzMDBKRPOFxu5JYgr6CPoP
- 0YmhCLI/yWZGkEpI=
-X-Received: by 2002:a05:6e02:1c07:b0:34f:f077:24d9 with SMTP id
- l7-20020a056e021c0700b0034ff07724d9mr4398443ilh.31.1695233846123; 
- Wed, 20 Sep 2023 11:17:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECTM92HCYzKgESI2OyY4Z+DL9a9XLx+TEyXVySxEKaTbGEonnJ7heYHSfmovvZxG9PxnG1iw==
-X-Received: by 2002:a05:6e02:1c07:b0:34f:f077:24d9 with SMTP id
- l7-20020a056e021c0700b0034ff07724d9mr4398420ilh.31.1695233845903; 
- Wed, 20 Sep 2023 11:17:25 -0700 (PDT)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- u1-20020a02c041000000b00430996b3604sm4321380jam.125.2023.09.20.11.17.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Sep 2023 11:17:25 -0700 (PDT)
-Date: Wed, 20 Sep 2023 12:17:24 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Eric Auger <eric.auger@redhat.com>, =?UTF-8?B?Q8OpZHJpYw==?= Le Goater
- <clg@redhat.com>, "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
- "peterx@redhat.com" <peterx@redhat.com>, "jasowang@redhat.com"
- <jasowang@redhat.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L"
- <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P"
- <chao.p.peng@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau <marcandre.lureau@redhat.com>, "Daniel
- P. =?UTF-8?B?QmVycmFuZ8Op?=" <berrange@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Philippe =?UTF-8?B?TWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>
-Subject: Re: [PATCH v1 15/22] Add iommufd configure option
-Message-ID: <20230920121724.381716d4.alex.williamson@redhat.com>
-In-Reply-To: <20230920174919.GF13733@nvidia.com>
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <20230830103754.36461-16-zhenzhong.duan@intel.com>
- <75c9c56e-f2da-f2a3-32b6-c9228678b05a@redhat.com>
- <SJ0PR11MB6744E56158500CC3A0A34BDC92F9A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <664d3338-c280-6d16-b03e-bb235931ce99@redhat.com>
- <20230920125103.GS13733@nvidia.com>
- <20e40fb8-0ce3-eb79-7255-2fefd7a2f657@redhat.com>
- <a0f3fab2-069e-f286-aae8-25d5269e6e0c@redhat.com>
- <20230920174919.GF13733@nvidia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
+ d=1e100.net; s=20230601; t=1695233990; x=1695838790;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xJfCHF3mX1d04EdoY4hw5FTD2GvX/sXGPEgbq4lGkxg=;
+ b=QD+YsIqzU0HlWAK3yenMufSkpgPsrASlMXMmSaCo7zk+fS+eypgTiL9jWlk1nd5DrO
+ u8alH7cWbXmO70RqOcWLCKAs+GHDBEoBppI+7Y/gsxJ6JbivCi3KPA6HmKpo7CBhB5S1
+ xACvnUhUHE8PanWdZhdzdCIvaCs6Rw/MeBIeEmhlTNNafSsZiGQIrOhYQw6tKfrmoayu
+ wFdihzwHdV142Z8Yc0DOuQNphAbRioRjvZfX1ICEtBZUYTqQ8Yd2ksmycTuL49iqpAV8
+ p91YC4ugiI/OGO7orsDwv1ugqogwm897AcG6vSF2KnImSXle1K+puU7MTGKGpqmjoDh1
+ PjHg==
+X-Gm-Message-State: AOJu0YwqeNyemULW1WEj3OFWAWXmWsk1yExXmd8smhSzjrjKAWdGgUud
+ cTsgP96Mxe5Pv4PMiQ14Xw7VdvdQoSWqz/F2r8FdXg==
+X-Google-Smtp-Source: AGHT+IHy+cPyMWilOcKi57doedcINgOWZKQ9VzZxzknsPswEfYNnYP9RVlUr8cRNva6ZuCI+EluG5VqGvnKjZUMVybA=
+X-Received: by 2002:aa7:c0c6:0:b0:530:c717:b8f2 with SMTP id
+ j6-20020aa7c0c6000000b00530c717b8f2mr2810865edp.38.1695233989963; Wed, 20 Sep
+ 2023 11:19:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
+ <20230917213803.20683-11-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230917213803.20683-11-kariem.taha2.7@gmail.com>
+From: Warner Losh <imp@bsdimp.com>
+Date: Wed, 20 Sep 2023 19:19:38 +0100
+Message-ID: <CANCZdfoKUZtYQX2EwgXXYXndZth+awA-1XV0+0wpOFHhqy-Q4g@mail.gmail.com>
+Subject: Re: [PATCH v2 10/28] bsd-user: Get number of cpus.
+To: Karim Taha <kariem.taha2.7@gmail.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Kyle Evans <kevans@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000c895810605ce6b2c"
+Received-SPF: none client-ip=2a00:1450:4864:20::52c;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,42 +84,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 20 Sep 2023 14:49:19 -0300
-Jason Gunthorpe <jgg@nvidia.com> wrote:
+--000000000000c895810605ce6b2c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On Wed, Sep 20, 2023 at 07:37:53PM +0200, Eric Auger wrote:
-> 
-> > >> qemu will typically not be able to
-> > >> self-open /dev/iommufd as it is root-only.  
-> > >
-> > > I don't understand, we open multiple fds to KVM devices. This is the
-> > > same.  
-> > Actually qemu opens the /dev/iommu in case no fd is passed along with
-> > the iommufd object. This is done in
-> > [PATCH v1 16/22] backends/iommufd: Introduce the iommufd object, in
-> > 
-> > iommufd_backend_connect(). I don't understand either.  
-> 
-> The char dev node is root only so this automatic behvaior is fine
-> but not useful if qmeu is running in a sandbox.
-> 
-> I'm not sure what "multiple fds to KVM devices" means, I don't know
-> anything about kvm devices..
+This one is almost right... one tweak is needed I think...
 
-Looking at a local VM, the only kvm related open file is /dev/kvm,
-which kvm_init() does directly open.  The other tun/tap/vhost files are
-all passed by fd.  We have a bunch of anon_inodes representing eventfds
-and vcpu source from /dev/kvm, but the only other direct files are disk
-images and the created pid file.
- 
-> The iommufd design requires one open of the /dev/iommu to be shared
-> across all the vfios.
+On Sun, Sep 17, 2023 at 10:39=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
+om>
+wrote:
 
-"requires"?  It's certainly of limited value to have multiple iommufd
-instances rather than create multiple address spaces within a single
-iommufd, but what exactly precludes an iommufd per device if QEMU, or
-any other userspace so desired?  Thanks,
+> From: Kyle Evans <kevans@FreeBSD.org>
+>
+> Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> ---
+>  bsd-user/bsd-proc.c | 23 +++++++++++++++++++++++
+>  bsd-user/bsd-proc.h |  2 ++
+>  2 files changed, 25 insertions(+)
+>
+> diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c
+> index 19f6efe1f7..78f5b172d7 100644
+> --- a/bsd-user/bsd-proc.c
+> +++ b/bsd-user/bsd-proc.c
+> @@ -119,3 +119,26 @@ int host_to_target_waitstatus(int status)
+>      return status;
+>  }
+>
+> +int bsd_get_ncpu(void)
+> +{
+> +    int ncpu =3D -1;
+> +    cpuset_t mask;
+> +
+> +    CPU_ZERO(&mask);
+> +
+> +    if (cpuset_getaffinity(CPU_LEVEL_WHICH, CPU_WHICH_TID, -1,
+> sizeof(mask),
+> +                           &mask) =3D=3D 0) {
+> +        ncpu =3D CPU_COUNT(&mask);
+> +    }
+> +#ifdef _SC_NPROCESSORS_ONLN
+> +    if (ncpu =3D=3D -1) {
+> +        ncpu =3D sysconf(_SC_NPROCESSORS_ONLN);
+> +    }
+> +#endif
+>
 
-Alex
+I think that the #ifdef and #endif lines can be removed. These are defined
+on all version of FreeBSD, NetBSD and OpenBSD (I think also DragonFly)
+in the unlikely event that it gets bsd-user support.
 
+With that fixed,
+
+Reviewed by: Warner Losh <imp@bsdimp.com>
+
+--000000000000c895810605ce6b2c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr">This one is almost right... one tweak is =
+needed I think...</div><br><div class=3D"gmail_quote"><div dir=3D"ltr" clas=
+s=3D"gmail_attr">On Sun, Sep 17, 2023 at 10:39=E2=80=AFPM Karim Taha &lt;<a=
+ href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.7@gmail.com</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">From: Kyl=
+e Evans &lt;kevans@FreeBSD.org&gt;<br>
+<br>
+Signed-off-by: Kyle Evans &lt;kevans@FreeBSD.org&gt;<br>
+Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
+arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
+---<br>
+=C2=A0bsd-user/bsd-proc.c | 23 +++++++++++++++++++++++<br>
+=C2=A0bsd-user/bsd-proc.h |=C2=A0 2 ++<br>
+=C2=A02 files changed, 25 insertions(+)<br>
+<br>
+diff --git a/bsd-user/bsd-proc.c b/bsd-user/bsd-proc.c<br>
+index 19f6efe1f7..78f5b172d7 100644<br>
+--- a/bsd-user/bsd-proc.c<br>
++++ b/bsd-user/bsd-proc.c<br>
+@@ -119,3 +119,26 @@ int host_to_target_waitstatus(int status)<br>
+=C2=A0 =C2=A0 =C2=A0return status;<br>
+=C2=A0}<br>
+<br>
++int bsd_get_ncpu(void)<br>
++{<br>
++=C2=A0 =C2=A0 int ncpu =3D -1;<br>
++=C2=A0 =C2=A0 cpuset_t mask;<br>
++<br>
++=C2=A0 =C2=A0 CPU_ZERO(&amp;mask);<br>
++<br>
++=C2=A0 =C2=A0 if (cpuset_getaffinity(CPU_LEVEL_WHICH, CPU_WHICH_TID, -1, s=
+izeof(mask),<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0&amp;mask) =3D=3D 0) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 ncpu =3D CPU_COUNT(&amp;mask);<br>
++=C2=A0 =C2=A0 }<br>
++#ifdef _SC_NPROCESSORS_ONLN<br>
++=C2=A0 =C2=A0 if (ncpu =3D=3D -1) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 ncpu =3D sysconf(_SC_NPROCESSORS_ONLN);<br>
++=C2=A0 =C2=A0 }<br>
++#endif<br></blockquote><div><br></div><div>I think that the #ifdef and #en=
+dif lines can be removed. These are defined</div><div>on all version of Fre=
+eBSD, NetBSD and OpenBSD (I think also DragonFly)</div><div>in the unlikely=
+ event that it gets bsd-user support.</div><div><br></div><div>With that fi=
+xed,</div><div><br></div><div>Reviewed by: Warner Losh &lt;<a href=3D"mailt=
+o:imp@bsdimp.com">imp@bsdimp.com</a>&gt;=C2=A0</div></div></div>
+
+--000000000000c895810605ce6b2c--
 
