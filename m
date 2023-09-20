@@ -2,155 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5F77A7551
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 10:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E55FB7A7559
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 10:07:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qisDA-0004ox-Ax; Wed, 20 Sep 2023 04:05:28 -0400
+	id 1qisES-0005bw-Nd; Wed, 20 Sep 2023 04:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qisD4-0004mC-Mf
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 04:05:23 -0400
-Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
- ([2a01:111:f400:7e89::601]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qisD2-0002ST-4l
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 04:05:22 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dVcOyn0YPOsg9O097dxS/TXYKb0HCvJRRTiCAzTNblL9P4JBjE8JL+XYslU7VRXgDdM9kJvIZW7b2QcrksDhZXKcPnqZWRswm8AUjLwScmuTjf+2Q+vFW4WBK1Vj5IAUY1cfPuIzJ7AqUIrWLZ8wA5OsdPBcAs3xJI22vLb8n97pvxX8OqDWHX4Sfh5aXHq4xs9nurrBUJlF+xmk0szICJwxGcr8lwa2NK1yVIDMgy7RC7xhoD8ub1iRZetym8tBuJhGojkqdvSU0Ksf87WenoeQ4ay+BddcTdCHhoGojjlMFZeKSekYkuvqkWL1jliGj+E5L8oKQJw5u8z5cLNfjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lc1mPKgHSrEnW8uCDILbkS1PUINl6k97rGjvS0guXbI=;
- b=HQ3ZWoa6LX5S8ynxBIxT2hFg8VVdPgVu0EgoYFzOYEq7IgCxGZriK11MAoOpGvF7qyJB4ZeugSCy9XR8LTFLZqEWtOZinSJAQBrQtrajH6dEzJYrzpau4WLhFwoe3Ylp+AXGrKBZwH7NO1z9SyfkUbvsDYWrGoRV6PsMzfupJSiJJ9nPcNaMfDTO928KjmTcmeUB+lqJ5MSR2XiSknOVJ6kGGfywveG5Su30IgbtZH3vPwKBpuWFn2jimCZYDtFrbw4kz3gGgX81gcVQ9b+jloW3N91QY6HxD0XKmj9qOh/wQryd8nMCRw7eGIqVOaNoBrvpQF85WLIACjCtmBUERg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lc1mPKgHSrEnW8uCDILbkS1PUINl6k97rGjvS0guXbI=;
- b=zN1XCg7SFQ8uAEiBhfByHjC8+J09ebne6VqxMj2X+CaUsRhOj3siGl+UTz6AF+C1JnMq8yLnS4RycFDn4Y2EKRjsXqFy4c9SycTAGSyc45sftaOgpO65Yuwq1Yv02SmKgngMYJviCbSzn5I5fhFdx7gGFUEbtf/MEFJWJcFLDuw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by MN0PR12MB5857.namprd12.prod.outlook.com (2603:10b6:208:378::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Wed, 20 Sep
- 2023 08:05:14 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::c3b:811:fd1d:c33e]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::c3b:811:fd1d:c33e%6]) with mapi id 15.20.6792.021; Wed, 20 Sep 2023
- 08:05:13 +0000
-Date: Wed, 20 Sep 2023 16:04:39 +0800
-From: Huang Rui <ray.huang@amd.com>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-Subject: Re: [QEMU PATCH v5 05/13] virtio-gpu: Configure context init for
- virglrenderer
-Message-ID: <ZQqnl7tXDWaGcOcf@amd.com>
-References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-6-ray.huang@amd.com>
- <CAJ+F1CK6_vDhh_=2kvHXkba8HYTvTuCP9ov-xW9EJ76SB4toWQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1CK6_vDhh_=2kvHXkba8HYTvTuCP9ov-xW9EJ76SB4toWQ@mail.gmail.com>
-X-ClientProxiedBy: SG2PR04CA0191.apcprd04.prod.outlook.com
- (2603:1096:4:14::29) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qisEP-0005Xt-0I
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 04:06:45 -0400
+Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qisEM-0002nZ-Kv
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 04:06:44 -0400
+Received: by mail-yw1-x1136.google.com with SMTP id
+ 00721157ae682-59c2ca01f27so41965577b3.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 01:06:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1695197201; x=1695802001;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RD1CZB2w6f2iZVC4JDHZL/cwSTTDRoZLn1mXm+34v5c=;
+ b=hFarsga+q7DcDWbFLeNR7iZZcQyQ7w4CgdEuSyEKHzTOCpKcRjZYV1CUjRTL1EKkPY
+ NCbPQmwpNU+OskOj7M7WwulY1tB2MTFCgnWmwhq6QdCZXxkrvjXxnhqdY4Ll+N4VxR71
+ Nw3XvDPCpJmVW6eYSfbLsF1FsNDUXZ3WJMBQO9PtZuLoWOHe2+Ypz15/FjX59eoECv7L
+ UR34YTFbGP0Bx2TY1xNtc7gbG36+1jU9g7IJcy4RCpG5VU8LKecRI7oVtZ10mVHH5Lrx
+ s0otQIaUpTuBPEk+LNd/0xYo+LR4NRenFMxD1H3A+ssORXHHAMA5gF+CVqNoI+ndyl9X
+ N6og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695197201; x=1695802001;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RD1CZB2w6f2iZVC4JDHZL/cwSTTDRoZLn1mXm+34v5c=;
+ b=f6r5qFE7cK/G4VLbXVoiZ1CurxgmK0erZ/VTULzZC1AK8NVgEWkBklKKUOD9ErMyiQ
+ wvnINjZG6Xe8FcE/41mcc1cNJapCTa78fx+ZFfF5jOuokQuPOlNSMTG3hW2qmYr9Ri7/
+ YuZAx+tAFU4Rb1R9IAsRM3hWt6Pn7V7AAqm0C7NfKo+/B9qdAne3yhsOQmpAtVFtkgcO
+ fSTaNPxNZMh/hua05kr/ECayKnYiqTwXtJeSgeov3MaMKNs4piDlpEfinMcw/CkU7FJE
+ LTEtAhIilnFHflWAz27+LAtHzgYML5V95Jm9FO2L3LtS84Ss0YKOxgW6v6Jmyyg5Ak0i
+ rpdQ==
+X-Gm-Message-State: AOJu0YzhNDPZQ+lpRQnIhuW+CkCVdqtgddC4OESfH1qLVymRJjCs3q0U
+ 2+Yz4rziLIeG9z5QqCwGnLXAUWu0OT2hVpx6qv/GtA==
+X-Google-Smtp-Source: AGHT+IHnqz0OTZ8ogbaxjbOvW/4oGXZ9Qh7FtD5gpXQpU6taomoKroYyMy1Yf0/fiZotXnHzGzcmsQ==
+X-Received: by 2002:a0d:e852:0:b0:59b:d872:5ca8 with SMTP id
+ r79-20020a0de852000000b0059bd8725ca8mr2013421ywe.22.1695197200835; 
+ Wed, 20 Sep 2023 01:06:40 -0700 (PDT)
+Received: from mnissler.ba.rivosinc.com ([66.220.2.162])
+ by smtp.gmail.com with ESMTPSA id
+ a16-20020aa78650000000b006862b2a6b0dsm2378596pfo.15.2023.09.20.01.06.39
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Sep 2023 01:06:40 -0700 (PDT)
+From: Mattias Nissler <mnissler@rivosinc.com>
+To: qemu-devel@nongnu.org
+Cc: Elena Ufimtseva <elena.ufimtseva@oracle.com>,
+ David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ john.levon@nutanix.com, peterx@redhat.com,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, stefanha@redhat.com,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Mattias Nissler <mnissler@rivosinc.com>
+Subject: [PATCH v5 0/5] Support message-based DMA in vfio-user server
+Date: Wed, 20 Sep 2023 01:06:17 -0700
+Message-Id: <20230920080622.3600226-1-mnissler@rivosinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|MN0PR12MB5857:EE_
-X-MS-Office365-Filtering-Correlation-Id: c0301cf2-d471-4416-c45e-08dbb9b05192
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: C3uLZLW5MihmSblvNoWLd8uSxjYUdJKMNnt6HyForEpF58vz1r2Jvl+YBZsJbwiY29gcUS9VgMMbvHW4tU+Y3RFUB/QPLEu+4qrCRz4KveOPiMjvKbWE18wm0EJrPDmCNmA0/WgZti/Q+N6rAG/QTfKRxs3UDPjeiy9PHRy/vA4ud/I+XtTil/0ms3whftzUcz+wnuX5L/e41EQ+2DJf1cT7hDuFCZPbsv12IMnP7/IrJYRv3e0g6vOV27doSDpsF+Xj0zqbJP2sQPXOc9+hF4rXwKpa/WNxS3IFRIiMWfx5pUBws96SzHK/rBEjZV/R92SH+dkA2nf8Rzkc9GTNL817GEamW/XpXKPg7JTIC3cIsN/w6em332o/dNXs02HcWIYzfPEJ/sQ0CVJkkEosAIkPxq0YVDxC/uPoH/gmlYBYBa0sdGJ+t1hOhbScpSizJmk6KTXBOTDh4Tu7MhJyDvOcm9gbFEVqhllqwkt/8WoU8u36rdnErgrUhf42VRcNxnUuoeVontA9z5pQQiBx8/jdt4kUoxFmsT2QrZbBtCJgrlb3hx3H8GijxIrMcvjO
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(396003)(136003)(346002)(39860400002)(366004)(1800799009)(186009)(451199024)(6506007)(53546011)(6486002)(6666004)(6512007)(478600001)(83380400001)(26005)(4326008)(2616005)(2906002)(6916009)(66476007)(66556008)(54906003)(316002)(66946007)(5660300002)(8676002)(8936002)(41300700001)(7416002)(38100700002)(36756003)(86362001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MmNzTWNtRnNlOWZDR0dZYjZ5cmhxSkN1ME5uZ0JHUU9lUWJCeEVyUTl4b21F?=
- =?utf-8?B?SzA1WVJKbHdjK2N0b2ZZSU0wcWFyMDhIV1VRUzNKbnF2aFR1K25BRytacUhF?=
- =?utf-8?B?cHgxL1Nnelk3K3h3ejBxUnNWcVpXQTY2aWRTb3ZJbjNIWVkxbUhFV2p4aUFx?=
- =?utf-8?B?bVN0NkVKazRMLzlYeFBuNEVDa3B1bkpXSVlpTjlGbTUxdCtESWpMV2tKNGtk?=
- =?utf-8?B?NmlsNVBrQlhPdUJTbUE4bktkdzJPOTRxdnpleFZlOXV0aC9OSGVCTGhsY3Rr?=
- =?utf-8?B?OVJnNHREaHNPdXYxSE5pSkFyN0kwbExQdU1icWprTksyVklsN2FtV2ZYTkhw?=
- =?utf-8?B?eGlaSVNFQ0JPK3ZPU2pJTUJzQysyZGQrMjhraEUyVnkxZyt2WmZrdmlVTEY1?=
- =?utf-8?B?UUpkNHhieit0ekQ0cHpadTN5UEN0alVaNGEwL2gyMlVMRmNpY3lGYUtobXBY?=
- =?utf-8?B?QUlWdkZlRXBXSFZHQld5eWZHTnlORTR2M0N3clcvK1JITjRpUFp2ZmpIaTZJ?=
- =?utf-8?B?andLOGIrQmRCU044UU1yM0ZZaWxxUkxDU3ZvK2xkanExdVM2Q1ptbmZGVzVq?=
- =?utf-8?B?QmRPYlE2VUsvNUV5WXNZNUZnWXBwTllabnI3amNuUytVNFVzSjdrRXRhQWVm?=
- =?utf-8?B?OTJoSlFXM25tTmFmUGxsY21ObXZ3UWJCVTUyRm9hVWh0SGZUZThwY2R2TVR6?=
- =?utf-8?B?SmVHVk0xRUg2YTVkWHBVNVFCNE9Td3JQT0RsZ1lrSlEvQmhrYlRJRElpMEMv?=
- =?utf-8?B?bkd3dDA3Y2JWQzBEUml0US9qSkdwTUl1R2lxS3kzSHF3eEswN056bmFpc0tI?=
- =?utf-8?B?YUhBeGhwTW9OMVgzMllMaGc0Nnp4b3RWVy9sRjBkeXhWZitIbUNLSEZ6MFdh?=
- =?utf-8?B?Y1kySEppaUJVekNjcjRRQ2NWM3diRW1oYXRFeHRncFA4bHcxbXlObitSbXdV?=
- =?utf-8?B?a3oxRDUyZlNqanROejJmSStjRlZpOVdXV3AxcEMvbkZwUWQ2UDQ4SFhGNEla?=
- =?utf-8?B?N3BxNytLdFA3b2p3L1BjNUJoWitzcWVQdDdDc1FLdm1wZTBnVDJReXpPNm5V?=
- =?utf-8?B?SGhua3BSRXpwYmFLRmRwLzVmTDE4MUErWWFkeks2c3Aza1dVQnUvdmpqU0Vi?=
- =?utf-8?B?aE9wZHN4dFNRT29pMGtZOVpUc3N6cjlNa1l0YThPa1dwb2FpZWZwZW9qS1Nh?=
- =?utf-8?B?TzNtZDlpSUZkb3AvanJYSi9BcFpUYndmdzBmbEtpTXV1U3hLSUxNZDMrMHpE?=
- =?utf-8?B?M25OVnV2Y3IrN05HRFhTcGNKM1hYWTF1QWxIRU9GV3lsOXRDb0lhSUlYaWFr?=
- =?utf-8?B?UFJ0dGNDUVRVRjZZR09UaTJhWktWUi9sNW83RUQvWFAvYVk1TU44dnNqQkpy?=
- =?utf-8?B?Y1RONmlzNGxFdm0weVdISmxxRFQxbWs1enJJdjhxOWUwbzQ4SzFLK0ttMi9j?=
- =?utf-8?B?bWl5QlcvUkZsc1BqaTBUWEkvS1RPdU5DMGN0NDFOamwxYktjaVFpcHBCbHRE?=
- =?utf-8?B?eTlrQU5tdHNySXV6dWFYc3NpTzBtSGVZVlovSzNIWkY1ZGNoMXc0VHBjUXBE?=
- =?utf-8?B?TTBGemNnem1hNWhYa21WNldSQThZRFBVbG5GZnBqTGlkM20rMTlQWlBjV3p1?=
- =?utf-8?B?cFZETDBMWGs5blJ6YnRGQks5bUU5c0phcXNPL2lXZlI0bEx1TTZOTU9ZZ2xE?=
- =?utf-8?B?d3JqQ0VDOHA5bldKa0owczdzZ0wwOXIvajJFUUJhSnlnbnhldVM3ODQzcVJv?=
- =?utf-8?B?YzVHblcwZzgrSTRJdTkwTksyYVI4NkxHcmhvK2tEMUxaYm9PWGJYdkdKejVz?=
- =?utf-8?B?RzczeVRlSkxZYWVxMEE2cG8ybGlYWTdSNHp4dHU1UGpUUWdsc1FkR2hoajFv?=
- =?utf-8?B?S3orY1Y5TkVGbE1hUTZ3S0wzOVFJV0o5a3BZUzVJZWZCR1pMRXo0aFByK3d4?=
- =?utf-8?B?QmY0b3FTbXhRNnAyZUloazdMQVJadXdLTTNKam9RcEZEMGZvZEJwdjgvZXY5?=
- =?utf-8?B?NFVOejc4dGRNdjRadHpsUjV4UTYyZEZ6OHBCazZ1YjVGbDdkMlN4RGhERHJY?=
- =?utf-8?B?TWo2UHM3ZnRjOFpPUzNva1NQRnd2VXl3N1VxR21xMHQ2K0JiN3Z3ZTRFdW9K?=
- =?utf-8?Q?9AJLqq7BTPbmydKF0A1xPM5ko?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c0301cf2-d471-4416-c45e-08dbb9b05192
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 08:05:13.8376 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mGnIB0yUL8N1lAg1iIEg2wPLbkfgcCwa/Xrm/CXAAkKQiPq51UZqN087i3w00RFQzBmD0mxc6KZccU43nIxxMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5857
-Received-SPF: softfail client-ip=2a01:111:f400:7e89::601;
- envelope-from=Ray.Huang@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
+ envelope-from=mnissler@rivosinc.com; helo=mail-yw1-x1136.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,57 +96,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 19, 2023 at 04:17:43PM +0800, Marc-André Lureau wrote:
-> Hi
-> 
-> On Fri, Sep 15, 2023 at 6:16 PM Huang Rui <ray.huang@amd.com> wrote:
-> >
-> > Configure context init feature flag for virglrenderer.
-> >
-> > Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> > Signed-off-by: Huang Rui <ray.huang@amd.com>
-> > ---
-> >
-> > V4 -> V5:
-> >     - Inverted patch 5 and 6 because we should configure
-> >       HAVE_VIRGL_CONTEXT_INIT firstly. (Philippe)
-> >
-> >  meson.build | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/meson.build b/meson.build
-> > index 98e68ef0b1..ff20d3c249 100644
-> > --- a/meson.build
-> > +++ b/meson.build
-> > @@ -1068,6 +1068,10 @@ if not get_option('virglrenderer').auto() or have_system or have_vhost_user_gpu
-> >                                         prefix: '#include <virglrenderer.h>',
-> >                                         dependencies: virgl))
-> >    endif
-> > +  config_host_data.set('HAVE_VIRGL_CONTEXT_INIT',
-> > +                       cc.has_function('virgl_renderer_context_create_with_flags',
-> > +                                       prefix: '#include <virglrenderer.h>',
-> > +                                       dependencies: virgl))
-> 
-> Move it under the "if virgl.found()" block above.
-> 
-> I suggest to name it after what is actually checked:
-> HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS for ex
-> 
+This series adds basic support for message-based DMA in qemu's vfio-user
+server. This is useful for cases where the client does not provide file
+descriptors for accessing system memory via memory mappings. My motivating use
+case is to hook up device models as PCIe endpoints to a hardware design. This
+works by bridging the PCIe transaction layer to vfio-user, and the endpoint
+does not access memory directly, but sends memory requests TLPs to the hardware
+design in order to perform DMA.
 
-OK, will update it in V6.
+Note that more work is needed to make message-based DMA work well: qemu
+currently breaks down DMA accesses into chunks of size 8 bytes at maximum, each
+of which will be handled in a separate vfio-user DMA request message. This is
+quite terrible for large DMA accesses, such as when nvme reads and writes
+page-sized blocks for example. Thus, I would like to improve qemu to be able to
+perform larger accesses, at least for indirect memory regions. I have something
+working locally, but since this will likely result in more involved surgery and
+discussion, I am leaving this to be addressed in a separate patch.
 
-Thanks,
-Ray
+Changes from v1:
 
-> >  endif
-> >  blkio = not_found
-> >  if not get_option('blkio').auto() or have_block
-> > --
-> > 2.34.1
-> >
-> >
-> 
-> 
-> -- 
-> Marc-André Lureau
+* Address Stefan's review comments. In particular, enforce an allocation limit
+  and don't drop the map client callbacks given that map requests can fail when
+  hitting size limits.
+
+* libvfio-user version bump now included in the series.
+
+* Tested as well on big-endian s390x. This uncovered another byte order issue
+  in vfio-user server code that I've included a fix for.
+
+Changes from v2:
+
+* Add a preparatory patch to make bounce buffering an AddressSpace-specific
+  concept.
+
+* The total buffer size limit parameter is now per AdressSpace and can be
+  configured for PCIDevice via a property.
+
+* Store a magic value in first bytes of bounce buffer struct as a best effort
+  measure to detect invalid pointers in address_space_unmap.
+
+Changes from v3:
+
+* libvfio-user now supports twin-socket mode which uses separate sockets for
+  client->server and server->client commands, respectively. This addresses the
+  concurrent command bug triggered by server->client DMA access commands. See
+  https://github.com/nutanix/libvfio-user/issues/279 for details.
+
+* Add missing teardown code in do_address_space_destroy.
+
+* Fix bounce buffer size bookkeeping race condition.
+
+* Generate unmap notification callbacks unconditionally.
+
+* Some cosmetic fixes.
+
+Changes from v4:
+
+* Fix accidentally dropped memory_region_unref, control flow restored to match
+  previous code to simplify review.
+
+* Some cosmetic fixes.
+
+Mattias Nissler (5):
+  softmmu: Per-AddressSpace bounce buffering
+  softmmu: Support concurrent bounce buffers
+  Update subprojects/libvfio-user
+  vfio-user: Message-based DMA support
+  vfio-user: Fix config space access byte order
+
+ hw/pci/pci.c                  |   8 ++
+ hw/remote/trace-events        |   2 +
+ hw/remote/vfio-user-obj.c     |  88 ++++++++++++++++++---
+ include/exec/cpu-common.h     |   2 -
+ include/exec/memory.h         |  41 +++++++++-
+ include/hw/pci/pci_device.h   |   3 +
+ softmmu/dma-helpers.c         |   4 +-
+ softmmu/memory.c              |   8 ++
+ softmmu/physmem.c             | 141 ++++++++++++++++++----------------
+ subprojects/libvfio-user.wrap |   2 +-
+ 10 files changed, 218 insertions(+), 81 deletions(-)
+
+-- 
+2.34.1
+
 
