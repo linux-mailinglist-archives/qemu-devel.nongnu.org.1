@@ -2,143 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5395E7A8ADF
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 19:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6CCC7A8AFA
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 19:56:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj1KR-00078t-C7; Wed, 20 Sep 2023 13:49:35 -0400
+	id 1qj1QM-0008M9-BE; Wed, 20 Sep 2023 13:55:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qj1KP-00078l-1p
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 13:49:33 -0400
-Received: from mail-dm6nam12on2061f.outbound.protection.outlook.com
- ([2a01:111:f400:fe59::61f]
- helo=NAM12-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qj1KH-0003rw-RX
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 13:49:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NnKiOk/jNJJWPbY9rOqGquINw9my+9CY/5gj/C+SJFeOZggNjfkg3HONCaKr+p/LnP2oqusA6yS2YxBMiW/UiCPeJlvupbmvjY3SYJVfyCl5lKCGfzelfy9/1R6RsG3XEkV/XFPUvTYycIIYWcNe6ql83wNGmNaFWjfbNInwQJskIKkLQSPBScWWc2UE6juuRQWL5kGKupUHuU6ngCNpPtEJ1KNNSokaECWXq1yVV+7magZxvUCaH/mbSuJpPlYEtl5IxkiKrRDZFqfEeA+5jpce2TLMHU94JH5SvC7p4ZCcq6YPppHJAHykFAkPQ7q3bCywLrhRORO9VfafRdC+VQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qz88lOqlRdPGol2mC8836nNVANMnB8KB05KmB7N7ugU=;
- b=fSKlD0+NRtA/5fKyb7E+vZSVhTxfGXJOecfgPEl30xU1CKLjqwP1MZ4IiJHrGAO/TmSh0vG9RfYm/w8JSCK//3hey85h4JKHfasKsDAFafIFSl4nByzO9r1soYCfq3ILvDbvzhJbOfrNhihcOhtEcyoKkpWCfnAmbV3+2i69gTckfop9rHBcYnuPrKQKvD9PFwrNS0d8p9T582jSbPBT1wsx2VcLGd2ThOYuXLeeS8lLRB+WwxJUP7bBzjtxf/4KR0pWdwsN2EpYLQSND0UYnr2AGK9k3dWGdAQ6AaIDTRxZyG8TLKqHu60H+t3OPkguc8HureiyGqdFRNVy+CKRMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qz88lOqlRdPGol2mC8836nNVANMnB8KB05KmB7N7ugU=;
- b=LKtwLD67AE3DKNUM95FeEtu9bjeySPSUqgBFNLfRkc3k7ZWhHwj7whvcDmrfMnrjhfdvmpr+fPkhiQWRxh/IiE4JCN5YUWCC7Te9VUoRT47j+EbTdVRum/VC1gozGW9+odm3y4hLpMRkLSf9UcPr4rux/BuZjv98/QCVAfaOxoCCAVgaalnYeY/o8WUnF4GMF0IC4dsKlUG/V8bLDEVVrEoEZnSCiqwln+sgGAPGwwgxdKcnScH4FWsh6J8ba5Sznrp+8WmsHl39wCww+3pdCdFxJ0REZP5bihLs/AL47lZxWpQPnPZyvvfrgCcjZn3m9ZtuOaOFiIAqpHV5UEy43Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
- by DM6PR12MB4220.namprd12.prod.outlook.com (2603:10b6:5:21d::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Wed, 20 Sep
- 2023 17:49:21 +0000
-Received: from LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::faf:4cd0:ae27:1073]) by LV2PR12MB5869.namprd12.prod.outlook.com
- ([fe80::faf:4cd0:ae27:1073%6]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
- 17:49:21 +0000
-Date: Wed, 20 Sep 2023 14:49:19 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "Martins, Joao" <joao.m.martins@oracle.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>,
- "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>,
- "Peng, Chao P" <chao.p.peng@intel.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v1 15/22] Add iommufd configure option
-Message-ID: <20230920174919.GF13733@nvidia.com>
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <20230830103754.36461-16-zhenzhong.duan@intel.com>
- <75c9c56e-f2da-f2a3-32b6-c9228678b05a@redhat.com>
- <SJ0PR11MB6744E56158500CC3A0A34BDC92F9A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <664d3338-c280-6d16-b03e-bb235931ce99@redhat.com>
- <20230920125103.GS13733@nvidia.com>
- <20e40fb8-0ce3-eb79-7255-2fefd7a2f657@redhat.com>
- <a0f3fab2-069e-f286-aae8-25d5269e6e0c@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a0f3fab2-069e-f286-aae8-25d5269e6e0c@redhat.com>
-X-ClientProxiedBy: CH2PR18CA0013.namprd18.prod.outlook.com
- (2603:10b6:610:4f::23) To LV2PR12MB5869.namprd12.prod.outlook.com
- (2603:10b6:408:176::16)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qj1QI-0008LP-M8; Wed, 20 Sep 2023 13:55:39 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qj1QG-00052A-PF; Wed, 20 Sep 2023 13:55:38 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-57b41950b4eso77555eaf.2; 
+ Wed, 20 Sep 2023 10:55:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695232534; x=1695837334; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=oCK+iZwDxCa2iC15R/7mlsFyjshczXwX+bxoKIrGI+4=;
+ b=Oeg3OrBATWieo+jtLfToU26ZzK+yglrTbWk6dpt93RGde65aR1/yW4fyaP1+1MXtJC
+ ch7z9dfLVOUgfrB8XO1VWn1qtLUq5+zCZk/u9OZhDgSznQC4IVnkGsPGz63528axiYmY
+ 6nY5fkuGIjKXVgBvD6kIhUJM0rlR90r5+K65IWTglLwEGcwleafWzE6r83idcJuChmCL
+ R9NRl5nHHecRGBUDSIKe/dO7onNqKwUS0q8oPXWFsG1532aMMi5Vr2rBZU8xR5dnnqgf
+ 3MVp0o1oJt/UjK9sHHYvllrOuYsKPdLRm9NhUh6QDFvLil+YNLVgZ9nufIeRRvLyRs/E
+ JA1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695232534; x=1695837334;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oCK+iZwDxCa2iC15R/7mlsFyjshczXwX+bxoKIrGI+4=;
+ b=FhrrY3rUW52s3uUNHPSHGyIUF8529a/OmSnepUMHFtPKWF4q/yQS0jkY/u2+5qU0Nz
+ D8s+5zEnWjyJk6Vso7ZvowXcEAgXlvEAauyYbdGgNQ/BzF6Kl9GKz+TAnq1lyE0OTwDO
+ 9lnSu6yzKdpi6S8NOOyEHn3TvCWNaD8Xu41U/tUrKvQr24GvkSTf0Uiy0TJ1JR7EFIrA
+ 60oXcBgmbtako7KrJkF7GuPaiqlXhBXZvdNvWv2HkugRSFA2VTVYdK6g/olPP2zlFurJ
+ f/aPt+LM+m5ow7HRJ4C4p93jIrtTEMIFemiAF/iMa6TkFdNADzCf6VqIkf49oTVPtU6G
+ 205w==
+X-Gm-Message-State: AOJu0Yxp51sYn34itvqRhuRRzbcTuD1fkVBa5OOZ15Amhl2Ysv3MqNPg
+ P6/UZlzLg99UYY/A/CPA10m++x1maxJHRC3j/yks+aRTUNo=
+X-Google-Smtp-Source: AGHT+IGREXuouBPo4OkvPIxLakl11Xi7C1qlcygYR3pA8KGtoo2ObT/k571VdcDgxl8RXD/HnA89fpmOuKelyNd7MkM=
+X-Received: by 2002:a4a:624d:0:b0:573:61a5:5f71 with SMTP id
+ y13-20020a4a624d000000b0057361a55f71mr3539694oog.5.1695232533735; Wed, 20 Sep
+ 2023 10:55:33 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM6PR12MB4220:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1076614a-88df-4768-956b-08dbba01eba2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: g6D5/Oq6B4ohfF2uhDhLkX8X0d1REIE1UhE+w7FJv9+ZBEcsxPyVb3dgT6zfwujLdfC1b2kA5wUSzA6Wu42pMlthhscUo4dqy9PP50R9ZyJ8n/pr05Sh/4kXguE+06RCwWRiFrF4v7O0GE9Ob8pk7aNA7Mxu7OnH8/nvxDMxCMS/fi26mwKxQE10pr6/NNo3f35KVcM8zN/pkd26ZiS44zYmyetNJpJbSU5MLYbI1w11JJ0MCPPG/nN25Vo0W8jABojt2+a0W2q3FpFJXDa12LgM30VZbbJGMOe0/xe9+LTzdrqwoLgT4bLBAdGUWRR+Y1+e5Fls295ZOBk2BnPEycdfiEoRZuJNPXgV+RVvMZWZ9aK3oiL/BrXKvXkTWiYQkAQTw94va2Zoo2cojjwPHBBC7S8V28rda8VD4uB7YBQPdw53ZMA0Pg6wJryAwmF70y/8KLuUpo+ZJcP9Ltyb5D/8Zego06In9R9ufWuQc6MzBPJA635Gd1X/8HbtxxjoXDhTRmT7kA71jhZtXFIocPEcCQCZi5woi0l0qOBCxvAsq5ajJp3dC6tdCKukMKuS
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(366004)(39860400002)(396003)(136003)(376002)(451199024)(1800799009)(186009)(8936002)(2906002)(6916009)(41300700001)(316002)(7416002)(26005)(1076003)(66476007)(8676002)(4326008)(4744005)(478600001)(66556008)(66946007)(54906003)(5660300002)(6486002)(6512007)(6506007)(2616005)(36756003)(86362001)(33656002)(38100700002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RG3iCC//DfZWh2uO7YbPjqBQkvIRDNT3MDZj3JMe3YEvUVHXXySnDbgWCgHE?=
- =?us-ascii?Q?d4Aor7Vo5zkm1B4aur9Tz+1gUc3KM3qINtln8WNKyiRYv7T1YqqY8i7vkGEB?=
- =?us-ascii?Q?uBYsFR4WDtj0fbPZQHBg8rQYEuEjsNwIi7QQeXJA7CJzeZa0BfCTzkjWkYf8?=
- =?us-ascii?Q?Jh3RMfBaNcSnUktYPOx6j591jTXKMidJCWMhACBF+tzOQNjb2EMOmZ6B27E7?=
- =?us-ascii?Q?qmxSrbQkDLfSmKiLXhHXHA7Rn8Hh/IsGg/ADFz+rRrfETtmmaZgSGSm9xktF?=
- =?us-ascii?Q?COOqHIBPXjjcQn4s+OX6RkIShBXIloLTJ3+XXO1hJPEpoDZx5G/OkHc738e/?=
- =?us-ascii?Q?vWoJaIppU1TO4qHVrl3rP3CtFzWh6Fsjnx/1tAuE4hE/uv89wk+SMrR90Tb6?=
- =?us-ascii?Q?T8SnN3P9CxW8hiw5d9NSYLQa98aIZBi1Zbv6NvoXU+dIe3AHGgIMAbGlVf1w?=
- =?us-ascii?Q?VBOD2AfkOncD1DSaxGxQ4S8zG5q63qI8rFngFbzo1OkJHcgoXUQy79ZTB91e?=
- =?us-ascii?Q?z83tcX721u7kpM+p+fQuHSr37SWBM2/QYwgYqAgNrxt2aSYt8k2lxUzbaDt+?=
- =?us-ascii?Q?zNlxmJxj/KvGtOQEwhNrTsdjO1vr30D+Lorrtu7I0NcEFDdoEAW4B1lNZBj/?=
- =?us-ascii?Q?Wyscrj6Wzz4i487Vd9rnh+4OkqiXjb2Nkt1lAT0+/orlGTAzvfwz11N6HjDb?=
- =?us-ascii?Q?sn/ebh9Y+lUEgJ8Jh3ZNF5LnPNj/X2BfJY9CMttocuIWeV5gCivdZukPUd5i?=
- =?us-ascii?Q?x+YPeBVsbTuDDi/h5vOw4oIhtY8JEXhRpAb5Mj9Hf3np5M8/4KBwgL30LBEI?=
- =?us-ascii?Q?rDTerZqpUn43o9GBi0mf0PHZj7v8zpX0/SvyM+p7/W2FN7FAeW9IjrN2M3pq?=
- =?us-ascii?Q?+Lsdsm51eerd7ErNqLChciogp+xEVjAg7LmOHHHxuzTnd5wNux8estUL3okB?=
- =?us-ascii?Q?K5gYQJe2TeyK3KC0wEvDWw+9P4oeNTQ5wjilA2mQtLqwBy+DpuIwEv1mTijM?=
- =?us-ascii?Q?6F4hfGY1BOJT6eXTPtUJetw3upbECPxJq3HfVvLo7yXUFgD9iAXtJdMBGrFF?=
- =?us-ascii?Q?KTIjTWrJu17lwlQY6tkeLvnxJPfvJ2Is7mD4IM1VoDTBeAIxe+PCJAALnmWw?=
- =?us-ascii?Q?9KXxVaSoljUTNsB/Uehj0w/5HysOJcXRfnfxDI9HTMtnzqmOqyZqApTuKoer?=
- =?us-ascii?Q?GRGJCX75aBNBS83/IScOVx3TSunEI+l86lWWS1y3kAXJGqDwyyJ7gEf5mlhg?=
- =?us-ascii?Q?UsmcCZe0nhsej8i/LC64vhXYETRYsxOs8nopwkJ2rIPB6zf/xkkrjgEKTF2z?=
- =?us-ascii?Q?gaMv1RD1OgZzgA7OVDtL3unQhMPnu17cFUONDh/2DknwFiMzhyLsDtv3uN5/?=
- =?us-ascii?Q?8d0/GuM1AlH/jPxwI44Up5GFBfRIC3QXc3yyavaRXiYs02v+MMD89QdO6mxD?=
- =?us-ascii?Q?2SOCpLeCjL24DkkjTN1OrI38FeIv7MHENneXJ9zVfguEPZlHCcpBX2BNZjoS?=
- =?us-ascii?Q?cwKdqqIyiDRzZWEGENNaj8KSMf7Bt0uXt9WElxwiWMT0xnV6JhRlRD3LY87w?=
- =?us-ascii?Q?afiud8PuB75OeNQw2m8YkGNYxwX3NqU07/WPrhCq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1076614a-88df-4768-956b-08dbba01eba2
-X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 17:49:21.5549 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 60f7Zv7Peqganu8t0TgGSymrdrDa+Arp8dNEdDEJgld958fMJtSuWyYaOEk+IAVe
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4220
-Received-SPF: softfail client-ip=2a01:111:f400:fe59::61f;
- envelope-from=jgg@nvidia.com;
- helo=NAM12-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+References: <20230920092108.258898-1-den@openvz.org>
+In-Reply-To: <20230920092108.258898-1-den@openvz.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 20 Sep 2023 13:55:21 -0400
+Message-ID: <CAJSP0QWXi0pGy7NKq42u3-=3GPP6kFnz6TA7HaBs8ZBXjKLidg@mail.gmail.com>
+Subject: Re: [PULL 00/22] implement discard operation for Parallels images
+To: "Denis V. Lunev" <den@openvz.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc2a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -154,27 +82,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 20, 2023 at 07:37:53PM +0200, Eric Auger wrote:
+On Wed, 20 Sept 2023 at 05:22, Denis V. Lunev <den@openvz.org> wrote:
+>
+> The following changes since commit 4907644841e3200aea6475c0f72d3d987e9f3d93:
+>
+>   Merge tag 'mem-2023-09-19' of https://github.com/davidhildenbrand/qemu into staging (2023-09-19 13:22:19 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://src.openvz.org/scm/~den/qemu.git tags/pull-parallels-2023-09-20
 
-> >> qemu will typically not be able to
-> >> self-open /dev/iommufd as it is root-only.
-> >
-> > I don't understand, we open multiple fds to KVM devices. This is the
-> > same.
-> Actually qemu opens the /dev/iommu in case no fd is passed along with
-> the iommufd object. This is done in
-> [PATCH v1 16/22] backends/iommufd: Introduce the iommufd object, in
-> 
-> iommufd_backend_connect(). I don't understand either.
+Hi Denis,
+Please take a look at the following CI failure. I have dropped this
+series for now.
 
-The char dev node is root only so this automatic behvaior is fine
-but not useful if qmeu is running in a sandbox.
+clang -m64 -mcx16 -Ilibblock.fa.p -I. -I.. -Iqapi -Itrace -Iui
+-Iui/shader -Iblock -I/usr/include/p11-kit-1 -I/usr/include/uuid
+-I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+-I/usr/include/sysprof-4 -flto -fcolor-diagnostics -Wall -Winvalid-pch
+-Werror -std=gnu11 -O2 -g -fstack-protector-strong
+-fsanitize=safe-stack -Wundef -Wwrite-strings -Wmissing-prototypes
+-Wstrict-prototypes -Wredundant-decls -Wold-style-definition
+-Wtype-limits -Wformat-security -Wformat-y2k -Winit-self
+-Wignored-qualifiers -Wempty-body -Wnested-externs -Wendif-labels
+-Wexpansion-to-defined -Wmissing-format-attribute
+-Wno-initializer-overrides -Wno-missing-include-dirs
+-Wno-shift-negative-value -Wno-string-plus-int
+-Wno-typedef-redefinition -Wno-tautological-type-limit-compare
+-Wno-psabi -Wno-gnu-variable-sized-type-not-at-end -Wthread-safety
+-isystem /builds/qemu-project/qemu/linux-headers -isystem
+linux-headers -iquote . -iquote /builds/qemu-project/qemu -iquote
+/builds/qemu-project/qemu/include -iquote
+/builds/qemu-project/qemu/host/include/x86_64 -iquote
+/builds/qemu-project/qemu/host/include/generic -iquote
+/builds/qemu-project/qemu/tcg/i386 -pthread -D_GNU_SOURCE
+-D_LARGEFILE_SOURCE -fno-strict-aliasing -fno-common -fwrapv
+-fsanitize=cfi-icall -fsanitize-cfi-icall-generalize-pointers
+-fno-sanitize-trap=cfi-icall -fPIE -D_FILE_OFFSET_BITS=64
+-D__USE_FILE_OFFSET64 -D__USE_LARGEFILE64 -DUSE_POSIX_ACLS=1 -MD -MQ
+libblock.fa.p/block_parallels.c.o -MF
+libblock.fa.p/block_parallels.c.o.d -o
+libblock.fa.p/block_parallels.c.o -c ../block/parallels.c
+../block/parallels.c:210:21: error: calling function
+'bdrv_co_getlength' requires holding mutex 'graph_lock'
+[-Werror,-Wthread-safety-analysis]
+payload_bytes = bdrv_co_getlength(bs->file->bs);
+^
+../block/parallels.c:572:15: error: calling function
+'bdrv_co_pdiscard' requires holding mutex 'graph_lock'
+[-Werror,-Wthread-safety-analysis]
+ret = bdrv_co_pdiscard(bs->file, host_off, s->cluster_size);
+^
+2 errors generated.
 
-I'm not sure what "multiple fds to KVM devices" means, I don't know
-anything about kvm devices..
+https://gitlab.com/qemu-project/qemu/-/jobs/5131277794
 
-The iommufd design requires one open of the /dev/iommu to be shared
-across all the vfios.
+Stefan
 
-Jason
+>
+> for you to fetch changes up to ead1064587ba6534aa2c3da6383713a009dafcb1:
+>
+>   tests: extend test 131 to cover availability of the write-zeroes (2023-09-20 10:14:15 +0200)
+>
+> ----------------------------------------------------------------
+> Parallels format driver:
+> * regular calculation of cluster used bitmap of the image file
+> * cluster allocation on the base of that bitmap (effectively allocation of
+>   new clusters could be done inside the image if that offset space is unused)
+> * support of DISCARD and WRITE_ZEROES operations
+> * image check bugfixes
+> * unit tests fixes
+> * unit tests covering new functionality
+>
+> ----------------------------------------------------------------
+> Denis V. Lunev (22):
+>       parallels: fix formatting in bdrv_parallels initialization
+>       parallels: mark driver as supporting CBT
+>       parallels: fix memory leak in parallels_open()
+>       parallels: invent parallels_opts_prealloc() helper to parse prealloc opts
+>       parallels: return earler in fail_format branch in parallels_open()
+>       parallels: return earlier from parallels_open() function on error
+>       parallels: refactor path when we need to re-check image in parallels_open
+>       parallels: create mark_used() helper which sets bit in used bitmap
+>       tests: ensure that image validation will not cure the corruption
+>       parallels: fix broken parallels_check_data_off()
+>       parallels: add test which will validate data_off fixes through repair
+>       parallels: collect bitmap of used clusters at open
+>       tests: fix broken deduplication check in parallels format test
+>       tests: test self-cure of parallels image with duplicated clusters
+>       parallels: accept multiple clusters in mark_used()
+>       parallels: update used bitmap in allocate_cluster
+>       parallels: naive implementation of allocate_clusters with used bitmap
+>       parallels: improve readability of allocate_clusters
+>       parallels: naive implementation of parallels_co_pdiscard
+>       tests: extend test 131 to cover availability of the discard operation
+>       parallels: naive implementation of parallels_co_pwrite_zeroes
+>       tests: extend test 131 to cover availability of the write-zeroes
+>
+>  block/parallels.c                             | 389 ++++++++++++++++++++------
+>  block/parallels.h                             |   3 +
+>  tests/qemu-iotests/131                        |  52 ++++
+>  tests/qemu-iotests/131.out                    |  60 ++++
+>  tests/qemu-iotests/tests/parallels-checks     |  76 ++++-
+>  tests/qemu-iotests/tests/parallels-checks.out |  65 ++++-
+>  6 files changed, 544 insertions(+), 101 deletions(-)
+>
+> --
+> 2.34.1
+>
+>
 
