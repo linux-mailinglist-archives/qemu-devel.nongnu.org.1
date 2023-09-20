@@ -2,153 +2,160 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 134E07A7884
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 12:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE197A7887
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 12:04:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiu23-0008Iw-8j; Wed, 20 Sep 2023 06:02:07 -0400
+	id 1qiu4H-00026o-8g; Wed, 20 Sep 2023 06:04:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qiu1n-0008I2-9Z
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:01:59 -0400
-Received: from mail-dm6nam04on20607.outbound.protection.outlook.com
- ([2a01:111:f400:7e8b::607]
- helo=NAM04-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qiu4A-00026Z-NS
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:04:19 -0400
+Received: from esa14.fujitsucc.c3s2.iphmx.com ([68.232.156.101])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qiu1Z-0003LD-Lu
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:01:51 -0400
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qiu46-0003gp-Qp
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:04:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+ t=1695204255; x=1726740255;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=ozeWbjhDFTIPa4INO0WsU824bgbLfy+AHmxKKryuTkU=;
+ b=nIEar7QAM9HeuCdDNy3Fp6PnXZCezvJv2bKS0A7IBUxn/D77Z1CvwqgC
+ 5OeQmhzjw73vJoerC2NjXaOHtte0jMGfZ03W/EZV6vkbJpDdj7XGP5ZL/
+ Hqt9+Kfe+vAOVFv636kiJF2lNNXXeYSxdyCEyp8LQgsVdRCrluW5b3OtR
+ tg36f/n5BVXVkaiuqWTIVM/DCuP6z3qGzJVcCiY4dpgkdDGG265+4bFnJ
+ F/iiXo0Iv/aTVpB+KgA51AimyJb/RYZm93XaJd/wn4kyQR0d7Zpe3IOPg
+ 5cPpG71TzwEQh+/VUBRfeGRrbGkOOd6aJFt4te8p/Al4nNTpWdqFqASqI A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="95557733"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688396400"; d="scan'208";a="95557733"
+Received: from mail-os0jpn01lp2111.outbound.protection.outlook.com (HELO
+ JPN01-OS0-obe.outbound.protection.outlook.com) ([104.47.23.111])
+ by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2023 19:04:09 +0900
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=adih42crd0Dy8b377n+dSqi3tnHJcwvQmUkTGvpF4yso/hMQOSb/5/NEuhSzf0BrH89kTDUK1mrwmvOgtu0QSPBxoVJpTnRei0relqr0xPLIA0SOlV2cDUtIn2ui47wzz0XzoLBp4k5JfLDrRAvaxBVAI/329evIKtkUZfIzjezz7Fy4SiKzKxnkCNPn1ans9W/eklpdG/wO+CvF1b2RPOUH+XQi91x04PaDgvcVlG6ZzmOZKGJAdBbDLZc2R1l3F3QCGmiOl+85ud0jkI64bDooW+Qgc+4YAKhBgWm5VrZ0xqNCz8cLuWpDhuff1ln6057TLbzCJHCWO7jiZUgMZQ==
+ b=Xks6RGydkNOM0xUTck675c769IdqZkMh0twnhjgOJ41Lhgl1aEHBCcABlHWQd9/k21cPuNMMGD22z1gv16oGaZo0tg73dYaxH/b1pC8Eakr/hLnw9di0H3AfjOqpTjbNgPEJsSEEjLWclpjoBG6/3zh5LXdP6DUaM1hW3+/K/F8QjRJnKIvgKhdr7iy4ZetQuaATd77RlsyjBp1LfRky6lCBFyjYVWKMNNe1Q3ckNlax/DspflbR4lzX/Io0ud285PU1KUbp2B2RD/5zpdIkoNV7yvWLEOk3iEqmNGDSB26ybx1Wx1rxHUQjvX7kE3uWnlbZIXHCZLQOhcn+x2rSoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=imc0rNTMZq86xYdsy4fjYXqwQVAR4XrkSY8MU8QvQO4=;
- b=JuVAfWd89qH7fcNKfQFl1k7OoWgIJavdk6i+c+ID6dTpS7+dAdmak+HiV/ikCCxj5ACJ9sv8f6OWRgxzWIzidOyHr+Br7OAsx7uZcnAlxX9G9YP/U9IeduHskIi80o4zdV4/2/nnqQOqajDlzg2bjHpYEkVPGe3vb2Lmsw6/Y8m0yQErfFAS1i8nRPiKxltVFTS2f5UPxhxWOIN9K2HrpGoWB8L9SNWSKfE54CWoPlzZN/VXvltrHOGvphxmQj6XZnUBzmkNRLHsgi7A697b1gTPb7MPvIp6rU9bYqSjewKdB8cpvN9e9UTqtMsWBMAQpcwz5NDp/3NaOeqnU/+SVA==
+ bh=ozeWbjhDFTIPa4INO0WsU824bgbLfy+AHmxKKryuTkU=;
+ b=FwdfcCOwBFdqnZJsNNisAutffrjXN/97qoVr+08pdejBvbNBd9LWxyIW9DQOMrkKxaplohIn9xvr5gfWFUHswSDBFT/o4M+MJzyvD2gefLrjOWLqXoVq8Vl4I1rkYNPitPTQHOlG8X0dCG6XT7AVzIctfDOYkMI0XQIHqIgEXphHFII43r5bnkSjBEuOpD4e6YpXeGMqvRqfSAuN4C0DjJQsoAenzSwK46zF1Xc89hRVVxKoGwXqIqXncNTmXkF+uqkrCkcnlSpUI0Aw0Hx0foF5IQbXJCQlpZq3rfglMmfnvwHPEaWO4CJnDmMtV/aGeQ+wDbHqrd3/sFayD41aWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=imc0rNTMZq86xYdsy4fjYXqwQVAR4XrkSY8MU8QvQO4=;
- b=nmHTxJIJo+Wqu6n+Z+QeE81tz/0NJ8TmqNAzYJuJBMjqws98oG8Yg8BGKtBwymvZ30MdPqudOlajXdzXIs5iteDJf/NwYZXcUAHgwRwrVF+SucgGdOrZnClEvVCnphnigdqt8C9fw7HqZTxwewfUSmcVSsIqaFFB1hbTv+5keY4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by DS0PR12MB7995.namprd12.prod.outlook.com (2603:10b6:8:14e::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Wed, 20 Sep
- 2023 10:01:26 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::c3b:811:fd1d:c33e]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::c3b:811:fd1d:c33e%6]) with mapi id 15.20.6792.021; Wed, 20 Sep 2023
- 10:01:26 +0000
-Date: Wed, 20 Sep 2023 18:00:55 +0800
-From: Huang Rui <ray.huang@amd.com>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-Subject: Re: [QEMU PATCH v5 10/13] virtio-gpu: Resource UUID
-Message-ID: <ZQrC1xzMIUOqRhm3@amd.com>
-References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-11-ray.huang@amd.com>
- <CAJ+F1C+aWM+TeoLxEqYqsMUow53rEBGc_qJwNS2pU2T5D2J+xQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1C+aWM+TeoLxEqYqsMUow53rEBGc_qJwNS2pU2T5D2J+xQ@mail.gmail.com>
-X-ClientProxiedBy: SG3P274CA0005.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::17)
- To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|DS0PR12MB7995:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e114393-d2c7-4848-84ad-08dbb9c08d20
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 183tc36QTM167KIMTKrvJbwQxWI8kpAo5HJ8E2sP97k5YRWI8p29vQcv6wikG/nEVAZj+8b33D/0/UQ/nMq+WHmbLQUpSCUb3+z30WIPe3fxUoYu15XTtyYrGPP+ovzAxKRbWDUz5RSmV5/+jLnwp1nwyxkcSX8L1G+LoqAovwU8P0hN5d9unbPFoyci4qyC7lqXWR4fTf8SDqS89JPsUTPaybmG0fmwV6Iu2lIsrLoCyZ8V7tBfYoCVpXQoTIkQOLIkK0ptkfRlCr3VpwJbl+SyUahj2lEVI7136PWyinX0ufP2oUZX9o2v7jvLN0YAYh9nvShNjMuIX+uZ9J40GalcdPpvLTJwjs/o4eF8uTEgDODWpV+qeZbRpWmBBTxB7bPNeSBGc/pEWEnFQrogLEzfh6puiyRXzfqCAO/wVXGoyAxsaHawVcaHco9wj795hbNt5IG+xc1vA+jXKDKtpYvWTKxMYCvaf16Oj+LGndSrbwsMZzOyLrJNWOufb2ecduE7cemkPLt3+jTWpv9B7dON8potXoeLPvIJv/ARlNZ5eEEKDf5AOioOG5xzjYJ9
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(366004)(136003)(376002)(346002)(396003)(1800799009)(186009)(451199024)(478600001)(6506007)(6486002)(53546011)(6666004)(86362001)(36756003)(38100700002)(8676002)(26005)(2906002)(30864003)(6512007)(83380400001)(8936002)(5660300002)(2616005)(4326008)(41300700001)(66556008)(54906003)(7416002)(316002)(66946007)(66476007)(6916009);
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com (2603:1096:604:247::6)
+ by OS3PR01MB10059.jpnprd01.prod.outlook.com (2603:1096:604:1e6::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.29; Wed, 20 Sep
+ 2023 10:04:04 +0000
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::1a61:2227:a0de:2c53]) by OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::1a61:2227:a0de:2c53%4]) with mapi id 15.20.6813.018; Wed, 20 Sep 2023
+ 10:04:04 +0000
+From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+To: William Roche <william.roche@oracle.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "peterx@redhat.com" <peterx@redhat.com>
+CC: "pbonzini@redhat.com" <pbonzini@redhat.com>, "quintela@redhat.com"
+ <quintela@redhat.com>, "leobras@redhat.com" <leobras@redhat.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "lidongchen@tencent.com" <lidongchen@tencent.com>
+Subject: Re: [PATCH v2 1/1] migration: skip poisoned memory pages on "ram
+ saving" phase
+Thread-Topic: [PATCH v2 1/1] migration: skip poisoned memory pages on "ram
+ saving" phase
+Thread-Index: AQHZ50kkGtrj55L5RUGhi5iQm46XLbAbNpUAgACLToCAB8MZgA==
+Date: Wed, 20 Sep 2023 10:04:03 +0000
+Message-ID: <128792ce-e3aa-a357-5e96-a4d8211193d6@fujitsu.com>
+References: <ZQCxg+M2IpecRT8w@x1n>
+ <20230914202054.3551250-1-william.roche@oracle.com>
+ <20230914202054.3551250-2-william.roche@oracle.com>
+ <60d3efa1-d2eb-8e11-8909-eb1ef33204c5@fujitsu.com>
+ <e8b7b4d2-7185-9ba6-6122-4fa780a08427@oracle.com>
+In-Reply-To: <e8b7b4d2-7185-9ba6-6122-4fa780a08427@oracle.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS7PR01MB11664:EE_|OS3PR01MB10059:EE_
+x-ms-office365-filtering-correlation-id: 73d765a9-83aa-4456-7319-08dbb9c0eb55
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: lWYUkzLWS/y/l64gqQDcTwW4Xaz6ko9uGBrI/qpgKLIU1C5jmPO54pr2k6Cs/k9cZQH+QLSM0ZKOd2F1L8lW0b9+dYlxriXRubWzXV41yIEhPyLGAmXnrEr0I6FL5O1zjJMdOq6HXKfTVodInBmOWqdGJuyInMTbzwXlZm4seHZmxOYxneQiGOxLRJZWgSC7V1rq22uesqDjuSLEcqMEEgY18jeEDFmUE7Jn+HSun6JHFCgLs+zoIdvbWNxjMFYfuL5tjJDSXWvugfJok4pqrsDOWprsHCp6e2boAaUa4wLZHWnvf/22viSCNBvZGDli/RDXKXbuK3ruWtcUWOvzvHkEBWUF5SsgrAmCpxSswUeT6Y91B6iMtyl2Pcw8wxcaRAzyXeVGVEgy7uwaoq4jiRI+43sguf/V93PSQhNvbxmYJyiWnFAOLM04nwDyMRdDJBeSulrJy5CTze+/poUQnL4Wy1N3Vo8/qLmo58WbCStJiq9rkUuX5roSpTIC/DTh01BjprUKSxti8ofaXfq6iSzN1XLKD8qlYLwWSw3AOYYZVN6CKDJk5i6UJffKa18kVLH5zp/gBxESJsfiNZK5jLpdORuHQbNZNKSaTZgNbcU8yUe30Q56ITCtB3HYSl+E8/0KaOAyFHHHBEBkxt5JYCCGAVGKPyP8OgJvLrC+y5FEXXUU6Xs3XkDmDpD5PAJEbgYQ04AjV+jzrvDE0y6ZNQ==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:OS7PR01MB11664.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(366004)(396003)(376002)(346002)(136003)(186009)(1800799009)(451199024)(1590799021)(6486002)(53546011)(6506007)(6512007)(478600001)(71200400001)(83380400001)(2906002)(66946007)(76116006)(26005)(66476007)(66446008)(64756008)(316002)(54906003)(4326008)(110136005)(91956017)(5660300002)(8936002)(8676002)(41300700001)(66556008)(2616005)(86362001)(36756003)(85182001)(31696002)(82960400001)(122000001)(38100700002)(1580799018)(38070700005)(31686004)(43740500002)(45980500001);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SEJrT0cyR0tNUG44TFNNQ2VhWlUyUXFRQ2JUazlqWUR1SEFieGp4bzlWSkI4?=
- =?utf-8?B?SmpCRUExN09IZ3Qza2lCT1Z5WmZqNjRpV1czcUFaczh3TWZlYWkrcXRBRSt5?=
- =?utf-8?B?UDVva0NFZWZ0RCtiMHE2b2cwdDFXUnNjSDdHZUlsQVNtVDUwbDVTN3VVUzlj?=
- =?utf-8?B?NXNzVEFEcVU2dVZZTjBTTHBaTzBHRHgrdXlVcU1lOWpIWER5NklraGllcWdw?=
- =?utf-8?B?OWE1SGg5aC9sZGM1bjNJWFJjemJEVmI1aFVLV1hra1FycU5ocGZ0Qzc1RjN1?=
- =?utf-8?B?eWtoZDJDdDQyZFg0NHdVZVpwZzNBcFV3K2E3ZlBWUitKMk1HWkVLak5XUkNR?=
- =?utf-8?B?Yk41U043bENHdlJmVW1UT2IwWWpycHdKUWtFWjdXNmx2S2NiNnRDOHh1U0N2?=
- =?utf-8?B?cXJPcndoOEFHQlJCamlESjU5cHV6RUI5d2t6bk1XdGl6WEZNWnUrV1B6cVdj?=
- =?utf-8?B?TFJTd0hrQ2pIdHhpVXVRb0ZVaTlOTDN3OVd2cTZ6TGZoWWlsZGkvV0FOVEs4?=
- =?utf-8?B?ZUd0RGFjMU95enVYNFJlbzVtNldFUDZRVlBibVY1ZVVFOTJ0MnFsVVZuTU82?=
- =?utf-8?B?MUV2SGd1d0dsMmVsRzNuU3YrdGEyZ1djM0RWZlVDakJ0dGxicG14bEh1RTky?=
- =?utf-8?B?cFJ5VnJRT3NETUlmc1FrWjBtSUI1YWpKVWRQYS96MlBGZEdnd0doZzFkNnJs?=
- =?utf-8?B?QlZHZUFEYVR1VWhmVTJpR252UDVrRTRrMkYveFFWT2tIUnRIbno2eHVXZjJt?=
- =?utf-8?B?VzlvcHN3UmdhTnhxWnZiRHVYRThsblJtVXlIWFJ0NEtyMllHUXpHdEg1SVFT?=
- =?utf-8?B?aVlnUlYySGxDTnl3cDExZkVoajZSODJpSjYzSTNNVytxWFdkcGMwWWFobmhI?=
- =?utf-8?B?bnF6VjJIK3hIWHZsRThabzQxVVZQTlF5OGZYaHd1VEY2WkR0WG85aE92V042?=
- =?utf-8?B?U1owWmFnRkNsQjVoL3Nxbk5acS9aL1pzNml2NVhQc1RlbUtKSmhFWE1Rckdh?=
- =?utf-8?B?czZiSytZS2RPVmhHMVlKcmtjUjhwak1TN1hrV0NOWkkwY0JoRlVHNWhuTmtx?=
- =?utf-8?B?RHl0dVNXRHdTVktMdUdaTjYxTGxIRzd1OWFRbzlIbkI1bUYyMnFnWjZraGxQ?=
- =?utf-8?B?QnNSVENGU0p6eFlzN3dkRDJGQjVJWDN1R1RZMDJlZURSanpncU5Ra3Z5eFEx?=
- =?utf-8?B?MldmeGk2dGZFS3dsNXpLd1J1VHB2R2lxQlh3WWVOQVE4TlVSekM5T3FnbmMv?=
- =?utf-8?B?MkVzUG9JRHpGRHJxUmdrWHpzTitNZHNpQ3lzWk94aVVKTytJelhSYnptVW5T?=
- =?utf-8?B?YXJ1NVVtbndFV0F3bjhINUJua1ZyeHV5NDJaa0wzaUFPMk1iUVlKbjFocERB?=
- =?utf-8?B?RjltRVI4UUVKSTlDUlUreVFYRHhVT2hyM09WaGw0SHE4d0RHR05pWk5rUGkr?=
- =?utf-8?B?RFZ1S3hlTlYwTU9najZtclo0YStidHBxWENzMkFHNmRHaEVjY291aHBidDE1?=
- =?utf-8?B?dGU1OW0wUVdGVjV5Sm96ZVhjc0hkQkREeC8wYjNZVDVOTUZMamE5aTAxU01K?=
- =?utf-8?B?bjJYMk0rTVJiYUVkYm8wM0lYckN2bHdOSUt6b3BTcTR4RjVYWjJQTmkwOGsz?=
- =?utf-8?B?WFN1Q202a05tYk41S3NUWE4waWRuZkF6dnpQbkswcmdIRC8xZmV6R2QvU3pG?=
- =?utf-8?B?enlNYmdUaFc2SjFuRG10dzVsSEg2dGk2VWRHYVl0TWZ3MUdqaEJEZkQxaEUx?=
- =?utf-8?B?K2JXaXZOT284Y2hGcUVES0lRUE5xL1NIUDJocWlxeWRzOG5sRlNIWGh5L04w?=
- =?utf-8?B?b3J0RDZWT2x6MjgrMTFaT3gybTBESjhKRjBJZFlMTnh6UStZcGE0RzVyNStG?=
- =?utf-8?B?SEwwaDB2MTlIKzF3bndPRWtqOCtYRk5UMm4wNWxUZUl1NURhRUY4TGpYYmVz?=
- =?utf-8?B?dEJNWTNLUHRoYkpVK2RFV2FoTnkxcUxVZ29wcUNWVEUyT0d4amhabTVBb29U?=
- =?utf-8?B?eENaRGhDWkd2WDBlczRlRytnYkFWakZwaDVPZzI3N3Erc3JGcGJpMTZmQ2hx?=
- =?utf-8?B?enJTTkczcFF4Y2l3cDhjSGdMY3FuOUsyNXdHSTRjaUwwOG81NVc5RW02SFBE?=
- =?utf-8?Q?85NBFvat1jUMcrGFFGA8B4cuU?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e114393-d2c7-4848-84ad-08dbb9c08d20
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OFc3T1hNaVdUbDlRbjViMnpFbVc4SFRaa2ZtR2hsWXlvMXgwdTlSeDU0bnlC?=
+ =?utf-8?B?d1dMTmlmd3RoSjlCdnRMSW1BSzQyZFh5eEEzKzZsVG95S1BYbVRWb2ZpN05W?=
+ =?utf-8?B?cm5mVCt4d0s1ZkZPVGl2RFBXd0tSSVJ3Uk5tL0RBV3crVHRyM1VISXVVeTlZ?=
+ =?utf-8?B?MXZOK0FWWm9vTVo5YmFPZDYzYng4ek1TTVJBd2JKL2I5ay9qamUxM2RaL1kv?=
+ =?utf-8?B?eUo1TWJNeUhTL0M5VnJIYWN3bWpWSEpOVDQvL0R6dEY0TnJmZ3lhSUpOY2Nv?=
+ =?utf-8?B?RVVPSVNCcm94OWR6OFZmSzFxZlUxK2V4Q1A2a0ZvMWtTZlpDQWx3cFVxZUVU?=
+ =?utf-8?B?ZXBpUmN6K0phbEtzWC9DeU1VdEhadWhQMU15UDlIc1czdC9qcmNrWkRpVmYx?=
+ =?utf-8?B?L0RlWFEwUjNIK3BKeFlmbXJmb2N5eWpCYlIwakN3emw3KytBRFBnRFAwU3Bt?=
+ =?utf-8?B?UXVJYkh2OHZVcjNsQVY3cG01ZURCUGlidlJVY0RxWko2RjIzRVpvSkRZa3Yv?=
+ =?utf-8?B?WjBYa1VYS0w2dmJHeFBPR2V2MDMxNUdvaTJnQXZ3aG9nMFlsa3RYVmxEQnQr?=
+ =?utf-8?B?eW0vOFQxWGl3NzdWbEpuSWlLc1NrSmhPejlTTHRNZTl1SWh4WFV4Tk1aVlR5?=
+ =?utf-8?B?RGVtN3pXcGlveVVqbDdISUd5d05HaWpVUW5Ub2o3MlpTR2NscE92K3pjUDEv?=
+ =?utf-8?B?Q1VGOHE4a2FtYkV2UWhobU8vSXMwMy9PcGNQVHUxN0JvVW90blBOS1lwRzgz?=
+ =?utf-8?B?RWltMVV5YkZWNTdpN1FZVVhSNVRPN3R6bU9BdnpUVjhKUjFMTlR6YzZtMlFJ?=
+ =?utf-8?B?WE1sYTExcHB5UWlnZHZEcFJGTnlzTXhaTUgzajVabmViUW5OanFrRDgrMU9H?=
+ =?utf-8?B?bjVNMGJIQmZNbjR1U2V1SnNTRTJZeXB0QXRjbG16U2pvTWVzNFpyZnNaM3ZH?=
+ =?utf-8?B?Smpwc2taaVhqKzNlNkdSUU91ZjRiU0pxRlZ4NE5uMDZNRWxPeC8rZHo4QjlN?=
+ =?utf-8?B?Mk9Wd0hCanRMdWkvRkV5Ym5CMFY0dFRJS3NWRXU2SDNjSVI4SmJTOEFva0xR?=
+ =?utf-8?B?UVhncmxXRmFCdmorNFh1bjVTMzRPSzJPV3djQ29SQmNuWkVjSVRNS2x1WDN2?=
+ =?utf-8?B?b3V0YmN0Y3NYckZaWVhiYlVBK3oxMDQ3R0VRNnRmaEp1di9QdW1LQjFFNDAw?=
+ =?utf-8?B?NXFQWWdRMTA3V2dSTFljeUhvTGlKU2V1bkZ6RTZJcUg5Y1VTMlhFWFRvTnpm?=
+ =?utf-8?B?ZzlDREZsYnJPdFFqUzcxUEVOTkxMeGVtMnFLWkZhZm1ML3YrcDJ0ZGZ3cUJk?=
+ =?utf-8?B?UkFGYW0zTXV5dGhtZXJxTUJLei94MkxDL2dkUHEySmRqQmtZa084dk5uTUZ6?=
+ =?utf-8?B?UXRzQkptVEpTRFRvZ0l1dmhXdW1vNW02bXcxRytXU1F6UGhxYklWQTlTOW55?=
+ =?utf-8?B?aWNUQmd3UHdoQkJpZml6SWhneTdaMk1YT2Q1OHhDR1ZuQXd6OS90TFlyOVR0?=
+ =?utf-8?B?QVJOcEVZdFNuNmVEOWJNaWZhUm5UVTFRTTJJU0g3T05UandJY0grYlI3ZVhJ?=
+ =?utf-8?B?dnBRQ21VWEZ0U2ZlVmx5VGZ6VzYxM2xBOGJiRkl2c3dPaTd0Y1BqUHhpVEVz?=
+ =?utf-8?B?V09udHhBY1Era1BMVkVxckRSRXpMS0w4eXRnV2x1ZFB6eDV6UWtzSmxiSlF0?=
+ =?utf-8?B?bURrS2kvbnNtalRXUksrR2cxa0g4bEhCTEFBYWRQR0xSaE53aEdCYXFmTkQ5?=
+ =?utf-8?B?ZFZqNGRPaTM3SUxSaTdyUUFFbjQyMzh6OWtBRURQbW1oM2NqbXprRThUNUtH?=
+ =?utf-8?B?N3dkMGh6Yms3NFdZczdvVWk0bEdoZ0poQzR1NDNBSFdkQWY2alh5Qk9naFhn?=
+ =?utf-8?B?YTFVK2s2Y3FWbkhwdVNkYUVrY2oxeW5IY3gzM2E4dGFCc0hjY2FtMDk4ejMr?=
+ =?utf-8?B?S0N0MHFmY2tyT1BDeGlXZGU4bHlaODVhU2xWMFprbjdSQzdJUUg4bi9TZDJC?=
+ =?utf-8?B?V2w2VnlrcFV6VlRBaUtxejRJVGhINlpXYkFjOVhqSUs2VXBoc081Zm9KenZK?=
+ =?utf-8?B?aElVQi9HN1kyM1BMTnJ1Y1RJeUY1bU1jSFovY1RIMXF3aThUTmUvM2QrMS81?=
+ =?utf-8?B?TXNGanowYzFpK2duR05iRWhEZm01b01pNHRmSnVOWDN2OExpdDFIeklLc0FY?=
+ =?utf-8?B?VlE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0085232836572240BF472E85D9DB8336@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: FXkxSerU2TgJNPBpoRqj1Kz6LLA8SauVBGtRvXO7G1e1oiPFSBQwog/pmS6+5yZUIxvSDmVV0ooZdWqr0GYok3ZKU2phGyykXL6/zuWieZkv6ofbcGoNxBZKB0OTKYMjy/B7PY3jJNb/ru/F9i+LtQNJRniPw0ous0J4CJDCmqjNH/yzaCZT3WLOQITKIfRZqBMN17jBghhacD3EtXiZDbTrFTNsgMJG0jDbq6luAzN7RBQu5WOwhATPNnRWFLmML4FmD3tu9eyG+yvtEx/yAz1eo8EBHIqkqcNc5b+V/t9c+Vrjd6gEqZeGNHXDiwmBhnfPI8LkofROX1V6tS+Mh0m5rHk5PkJ09Ec3NsJMpHzvMIh5FaTkLO2W6mCvsnv+jOUIPVfZqtKQfBSp4KA34Ep1HX0ah+FTFLfNmhD5A5f2pVmBLOamVDhmgtgGJuqO3qvrS2QIQFKXlFYvZi0cq8ctLBe2IZXgWKem7tZEYzzfpq4S58jaZBj/lnjaMjY5MPsIljs/FKkxKDLzC9p6dSITsb+1GHroKK3/VAuJreEM+W+0SvZ71ToPesvfEEUVMDTdBQu6x2VEtQgOutQQ/Qk38Qx2t8xAJpqmf9OR1GSKaU5fEDl/vytMl6PvIpDhIk8/jwx4F1bURWrm0ZwNcUcYQPAUvGYGvs+1c8+UlTgrf74SEgoWqbHsINfupW6DVBkWvS6UngOjXmRgobZobV0wIwIVXcwAj11XiloeWR8V4+6a7J4W01k5+oXYZVv1HhnZ33rmJ+LKb6atC8nNhJ4e5qBvK8n8e95MPuA7yHBwxdx597w0vKqqTCdeaqcWO7u1I9wUIpmc4Gq3TUbDgL1xopEN1bIkpl4oNw7O7VQ=
+X-OriginatorOrg: fujitsu.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 10:01:25.8791 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6TXq9l/O/hMlLZhlRAQxuUGaSjsT+56UXLuEAyqB33lkUVGMAK1ZuSaBbksc983u58YSen3GSt6uBaE3VyaROg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7995
-Received-SPF: softfail client-ip=2a01:111:f400:7e8b::607;
- envelope-from=Ray.Huang@amd.com;
- helo=NAM04-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB11664.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73d765a9-83aa-4456-7319-08dbb9c0eb55
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2023 10:04:03.5991 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: wFc79NM6qpjDRptXhowt5da14H36smklyLPryTpoiCS/Umqw95HvYExzPZmFUBSgXspO+pvo2EK4YdAm5G+fMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB10059
+Received-SPF: pass client-ip=68.232.156.101;
+ envelope-from=lizhijian@fujitsu.com; helo=esa14.fujitsucc.c3s2.iphmx.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -165,317 +172,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 19, 2023 at 05:00:05PM +0800, Marc-André Lureau wrote:
-> Hi
-> 
-> On Fri, Sep 15, 2023 at 3:14 PM Huang Rui <ray.huang@amd.com> wrote:
-> >
-> > From: Antonio Caggiano <antonio.caggiano@collabora.com>
-> >
-> > Enable resource UUID feature and implement command resource assign UUID.
-> > This is done by introducing a hash table to map resource IDs to their
-> > UUIDs.
-> >
-> > Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> > Signed-off-by: Huang Rui <ray.huang@amd.com>
-> > ---
-> >
-> > V4 -> V5:
-> >     - Add virtio migration handling for uuid (Akihiko)
-> >     - Adjust sequence to allocate gpu resource before virglrender resource
-> >       creation (Akihiko)
-> >     - Clean up (Akihiko)
-> >
-> >  hw/display/trace-events        |  1 +
-> >  hw/display/virtio-gpu-base.c   |  2 ++
-> >  hw/display/virtio-gpu-virgl.c  | 21 ++++++++++++
-> >  hw/display/virtio-gpu.c        | 58 ++++++++++++++++++++++++++++++++++
-> >  include/hw/virtio/virtio-gpu.h |  6 ++++
-> >  5 files changed, 88 insertions(+)
-> >
-> > diff --git a/hw/display/trace-events b/hw/display/trace-events
-> > index 2336a0ca15..54d6894c59 100644
-> > --- a/hw/display/trace-events
-> > +++ b/hw/display/trace-events
-> > @@ -41,6 +41,7 @@ virtio_gpu_cmd_res_create_blob(uint32_t res, uint64_t size) "res 0x%x, size %" P
-> >  virtio_gpu_cmd_res_unref(uint32_t res) "res 0x%x"
-> >  virtio_gpu_cmd_res_back_attach(uint32_t res) "res 0x%x"
-> >  virtio_gpu_cmd_res_back_detach(uint32_t res) "res 0x%x"
-> > +virtio_gpu_cmd_res_assign_uuid(uint32_t res) "res 0x%x"
-> >  virtio_gpu_cmd_res_xfer_toh_2d(uint32_t res) "res 0x%x"
-> >  virtio_gpu_cmd_res_xfer_toh_3d(uint32_t res) "res 0x%x"
-> >  virtio_gpu_cmd_res_xfer_fromh_3d(uint32_t res) "res 0x%x"
-> > diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-> > index 4f2b0ba1f3..f44388715c 100644
-> > --- a/hw/display/virtio-gpu-base.c
-> > +++ b/hw/display/virtio-gpu-base.c
-> > @@ -236,6 +236,8 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
-> >          features |= (1 << VIRTIO_GPU_F_CONTEXT_INIT);
-> >      }
-> >
-> > +    features |= (1 << VIRTIO_GPU_F_RESOURCE_UUID);
-> 
-> This changes what is exposed to the guest. We should have an option
-> for it, and set it to false on older machine types (similar to what is
-> done for edid).
-> 
-
-Did you mean we can add "resource_uuid" in virtio_gpu_properties[] like
-below, user can set it to false on older types with the param?
-
-DEFINE_PROP_BIT("resource_uuid", VirtIOGPU, parent_obj.conf.flags,
-                VIRTIO_GPU_FLAG_RESOURCE_UUID, true);
-
-> > +
-> >      return features;
-> >  }
-> >
-> > diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> > index 563a6f2f58..8a017dbeb4 100644
-> > --- a/hw/display/virtio-gpu-virgl.c
-> > +++ b/hw/display/virtio-gpu-virgl.c
-> > @@ -36,11 +36,20 @@ static void virgl_cmd_create_resource_2d(VirtIOGPU *g,
-> >  {
-> >      struct virtio_gpu_resource_create_2d c2d;
-> >      struct virgl_renderer_resource_create_args args;
-> > +    struct virtio_gpu_simple_resource *res;
-> >
-> >      VIRTIO_GPU_FILL_CMD(c2d);
-> >      trace_virtio_gpu_cmd_res_create_2d(c2d.resource_id, c2d.format,
-> >                                         c2d.width, c2d.height);
-> >
-> > +    res = g_new0(struct virtio_gpu_simple_resource, 1);
-> > +    if (!res) {
-> 
-> needless OOM here too
-> 
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
-> > +        return;
-> > +    }
-> > +    res->resource_id = c2d.resource_id;
-> > +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
-> > +
-> >      args.handle = c2d.resource_id;
-> >      args.target = 2;
-> >      args.format = c2d.format;
-> > @@ -60,11 +69,20 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
-> >  {
-> >      struct virtio_gpu_resource_create_3d c3d;
-> >      struct virgl_renderer_resource_create_args args;
-> > +    struct virtio_gpu_simple_resource *res;
-> >
-> >      VIRTIO_GPU_FILL_CMD(c3d);
-> >      trace_virtio_gpu_cmd_res_create_3d(c3d.resource_id, c3d.format,
-> >                                         c3d.width, c3d.height, c3d.depth);
-> >
-> > +    res = g_new0(struct virtio_gpu_simple_resource, 1);
-> > +    if (!res) {
-> 
-> same
-> 
-> > +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
-> > +        return;
-> > +    }
-> > +    res->resource_id = c3d.resource_id;
-> > +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
-> > +
-> >      args.handle = c3d.resource_id;
-> >      args.target = c3d.target;
-> >      args.format = c3d.format;
-> > @@ -682,6 +700,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
-> >          /* TODO add security */
-> >          virgl_cmd_ctx_detach_resource(g, cmd);
-> >          break;
-> > +    case VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID:
-> > +        virtio_gpu_resource_assign_uuid(g, cmd);
-> > +        break;
-> >      case VIRTIO_GPU_CMD_GET_CAPSET_INFO:
-> >          virgl_cmd_get_capset_info(g, cmd);
-> >          break;
-> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-> > index cc4c1f81bb..44414c1c5e 100644
-> > --- a/hw/display/virtio-gpu.c
-> > +++ b/hw/display/virtio-gpu.c
-> > @@ -966,6 +966,38 @@ virtio_gpu_resource_detach_backing(VirtIOGPU *g,
-> >      virtio_gpu_cleanup_mapping(g, res);
-> >  }
-> >
-> > +void virtio_gpu_resource_assign_uuid(VirtIOGPU *g,
-> > +                                     struct virtio_gpu_ctrl_command *cmd)
-> > +{
-> > +    struct virtio_gpu_simple_resource *res;
-> > +    struct virtio_gpu_resource_assign_uuid assign;
-> > +    struct virtio_gpu_resp_resource_uuid resp;
-> > +    QemuUUID *uuid;
-> > +
-> > +    VIRTIO_GPU_FILL_CMD(assign);
-> > +    virtio_gpu_bswap_32(&assign, sizeof(assign));
-> > +    trace_virtio_gpu_cmd_res_assign_uuid(assign.resource_id);
-> > +
-> > +    res = virtio_gpu_find_check_resource(g, assign.resource_id, false, __func__, &cmd->error);
-> > +    if (!res) {
-> > +        return;
-> > +    }
-> > +
-> > +    memset(&resp, 0, sizeof(resp));
-> > +    resp.hdr.type = VIRTIO_GPU_RESP_OK_RESOURCE_UUID;
-> > +
-> > +    uuid = g_hash_table_lookup(g->resource_uuids, GUINT_TO_POINTER(assign.resource_id));
-> > +    if (!uuid) {
-> > +        uuid = g_new(QemuUUID, 1);
-> > +        qemu_uuid_generate(uuid);
-> > +        g_hash_table_insert(g->resource_uuids, GUINT_TO_POINTER(assign.resource_id), uuid);
-> > +        res->has_uuid = true;
-> > +    }
-> > +
-> > +    memcpy(resp.uuid, uuid, sizeof(QemuUUID));
-> > +    virtio_gpu_ctrl_response(g, cmd, &resp.hdr, sizeof(resp));
-> > +}
-> > +
-> >  void virtio_gpu_simple_process_cmd(VirtIOGPU *g,
-> >                                     struct virtio_gpu_ctrl_command *cmd)
-> >  {
-> > @@ -1014,6 +1046,9 @@ void virtio_gpu_simple_process_cmd(VirtIOGPU *g,
-> >      case VIRTIO_GPU_CMD_RESOURCE_DETACH_BACKING:
-> >          virtio_gpu_resource_detach_backing(g, cmd);
-> >          break;
-> > +    case VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID:
-> > +        virtio_gpu_resource_assign_uuid(g, cmd);
-> > +        break;
-> >      default:
-> >          cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
-> >          break;
-> > @@ -1208,6 +1243,7 @@ static int virtio_gpu_save(QEMUFile *f, void *opaque, size_t size,
-> >      VirtIOGPU *g = opaque;
-> >      struct virtio_gpu_simple_resource *res;
-> >      int i;
-> > +    QemuUUID *uuid;
-> >
-> >      /* in 2d mode we should never find unprocessed commands here */
-> >      assert(QTAILQ_EMPTY(&g->cmdq));
-> > @@ -1224,9 +1260,17 @@ static int virtio_gpu_save(QEMUFile *f, void *opaque, size_t size,
-> >          }
-> >          qemu_put_buffer(f, (void *)pixman_image_get_data(res->image),
-> >                          pixman_image_get_stride(res->image) * res->height);
-> > +
-> > +        qemu_put_byte(f, res->has_uuid);
-> > +        if (res->has_uuid) {
-> > +            uuid = g_hash_table_lookup(g->resource_uuids, GUINT_TO_POINTER(res->resource_id));
-> > +            qemu_put_buffer(f, (void *)uuid, sizeof(QemuUUID));
-> > +        }
-> 
-> This is breaking the migration format. It will need to be handled with
-> an optional subsection instead.
-
-I am using one byte to store res->has_uuid after pixman data, if check this
-field is true, then have UUID data.
-
-Would you mind to elaborate the optional subsection?
-
-> 
-> >      }
-> >      qemu_put_be32(f, 0); /* end of list */
-> >
-> > +    g_hash_table_destroy(g->resource_uuids);
-> > +
-> >      return vmstate_save_state(f, &vmstate_virtio_gpu_scanouts, g, NULL);
-> >  }
-> >
-> > @@ -1239,9 +1283,12 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
-> >      uint32_t resource_id, pformat;
-> >      void *bits = NULL;
-> >      int i;
-> > +    QemuUUID *uuid = NULL;
-> >
-> >      g->hostmem = 0;
-> >
-> > +    g->resource_uuids = g_hash_table_new_full(NULL, NULL, NULL, g_free);
-> 
-> Since it maps int -> uuid, it should probably use g_int_hash() /
-> g_int_qual() instead of the default (g_direct_hash()).
-> 
-
-Thanks to reminder, will update it in V6.
-
-> > +
-> >      resource_id = qemu_get_be32(f);
-> >      while (resource_id != 0) {
-> >          res = virtio_gpu_find_resource(g, resource_id);
-> > @@ -1292,6 +1339,12 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
-> >          qemu_get_buffer(f, (void *)pixman_image_get_data(res->image),
-> >                          pixman_image_get_stride(res->image) * res->height);
-> >
-> > +        res->has_uuid = qemu_get_byte(f);
-> > +        if (res->has_uuid) {
-> > +            qemu_get_buffer(f, (void *)uuid, sizeof(QemuUUID));
-> > +            g_hash_table_insert(g->resource_uuids, GUINT_TO_POINTER(res->resource_id), uuid);
-> > +        }
-> > +
-> >          /* restore mapping */
-> >          for (i = 0; i < res->iov_cnt; i++) {
-> >              hwaddr len = res->iov[i].iov_len;
-> > @@ -1393,12 +1446,15 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
-> >      QTAILQ_INIT(&g->reslist);
-> >      QTAILQ_INIT(&g->cmdq);
-> >      QTAILQ_INIT(&g->fenceq);
-> > +
-> > +    g->resource_uuids = g_hash_table_new_full(NULL, NULL, NULL, g_free);
-> >  }
-> >
-> >  static void virtio_gpu_device_unrealize(DeviceState *qdev)
-> >  {
-> >      VirtIOGPU *g = VIRTIO_GPU(qdev);
-> >
-> > +    g_hash_table_destroy(g->resource_uuids);
-> >      g_clear_pointer(&g->ctrl_bh, qemu_bh_delete);
-> >      g_clear_pointer(&g->cursor_bh, qemu_bh_delete);
-> >      g_clear_pointer(&g->reset_bh, qemu_bh_delete);
-> > @@ -1452,6 +1508,8 @@ void virtio_gpu_reset(VirtIODevice *vdev)
-> >          g_free(cmd);
-> >      }
-> >
-> > +    g_hash_table_remove_all(g->resource_uuids);
-> > +
-> >      virtio_gpu_base_reset(VIRTIO_GPU_BASE(vdev));
-> >  }
-> >
-> > diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-> > index b9adc28071..67b39fccec 100644
-> > --- a/include/hw/virtio/virtio-gpu.h
-> > +++ b/include/hw/virtio/virtio-gpu.h
-> > @@ -63,6 +63,8 @@ struct virtio_gpu_simple_resource {
-> >      MemoryRegion *region;
-> >  #endif
-> >
-> > +    bool has_uuid;
-> > +
-> >      QTAILQ_ENTRY(virtio_gpu_simple_resource) next;
-> >  };
-> >
-> > @@ -208,6 +210,8 @@ struct VirtIOGPU {
-> >          QTAILQ_HEAD(, VGPUDMABuf) bufs;
-> >          VGPUDMABuf *primary[VIRTIO_GPU_MAX_SCANOUTS];
-> >      } dmabuf;
-> > +
-> > +    GHashTable *resource_uuids;
-> >  };
-> >
-> >  struct VirtIOGPUClass {
-> > @@ -285,6 +289,8 @@ void virtio_gpu_cleanup_mapping_iov(VirtIOGPU *g,
-> >                                      struct iovec *iov, uint32_t count);
-> >  void virtio_gpu_cleanup_mapping(VirtIOGPU *g,
-> >                                  struct virtio_gpu_simple_resource *res);
-> > +void virtio_gpu_resource_assign_uuid(VirtIOGPU *g,
-> > +                                     struct virtio_gpu_ctrl_command *cmd);
-> >  void virtio_gpu_process_cmdq(VirtIOGPU *g);
-> >  void virtio_gpu_device_realize(DeviceState *qdev, Error **errp);
-> >  void virtio_gpu_reset(VirtIODevice *vdev);
-> > --
-> > 2.34.1
-> >
-> >
-> 
-> 
-> -- 
-> Marc-André Lureau
+DQoNCk9uIDE1LzA5LzIwMjMgMTk6MzEsIFdpbGxpYW0gUm9jaGUgd3JvdGU6DQo+IE9uIDkvMTUv
+MjMgMDU6MTMsIFpoaWppYW4gTGkgKEZ1aml0c3UpIHdyb3RlOg0KPj4NCj4+DQo+PiBJJ20gb2th
+eSB3aXRoICJSRE1BIGlzbid0IHRvdWNoZWQiLg0KPj4gQlRXLCBjb3VsZCB5b3Ugc2hhcmUgeW91
+ciByZXByb2R1Y2luZyBwcm9ncmFtL2hhY2tpbmcgdG8gcG9pc29uIHRoZSBwYWdlLCBzbyB0aGF0
+DQo+PiBpIGFtIGFibGUgdG8gdGFrZSBhIGxvb2sgdGhlIFJETUEgcGFydCBsYXRlciB3aGVuIGkn
+bSBmcmVlLg0KPj4NCj4+IE5vdCBzdXJlIGl0J3Mgc3VpdGFibGUgdG8gYWNrbm93bGVkZ2UgYSBu
+b3QgdG91Y2hlZCBwYXJ0LiBBbnl3YXkNCj4+IEFja2VkLWJ5OiBMaSBaaGlqaWFuIDxsaXpoaWpp
+YW5AZnVqaXRzdS5jb20+ICMgUkRNQQ0KPj4NCj4gDQo+IFRoYW5rcy4NCj4gQXMgeW91IGFza2Vk
+IGZvciBhIHByb2NlZHVyZSB0byBpbmplY3QgbWVtb3J5IGVycm9ycyBpbnRvIGEgcnVubmluZyBW
+TSwNCj4gSSd2ZSBhdHRhY2hlZCB0byB0aGlzIGVtYWlsIHRoZSBzb3VyY2UgY29kZSAobWNlX3By
+b2Nlc3NfcmVhY3QuYykgb2YgYQ0KPiBwcm9ncmFtIHRoYXQgd2lsbCBoZWxwIHRvIHRhcmdldCB0
+aGUgZXJyb3IgaW5qZWN0aW9uIGluIHRoZSBWTS4NCg0KDQpJIGp1c3QgdHJpZWQgeW91IGh3cG9p
+c29uIHByb2dyYW0gYW5kIGRvIFJETUEgbWlncmF0aW9uLiBNaWdyYXRpb24gZmFpbGVkLCBidXQg
+Zm9ydHVuYXRlbHkNCnRoZSBzb3VyY2Ugc2lkZSBpcyBzdGlsbCBhbGl2ZSA6KS4NCg0KKHFlbXUp
+IEZhaWxlZCB0byByZWdpc3RlciBjaHVuayE6IEJhZCBhZGRyZXNzDQpDaHVuayBkZXRhaWxzOiBi
+bG9jazogMCBjaHVuayBpbmRleCA2NzEgc3RhcnQgMTM5OTU1MDk2NTE4NjU2IGVuZCAxMzk5NTUw
+OTc1NjcyMzIgaG9zdCAxMzk5NTUwOTY1MTg2NTYgbG9jYWwgMTM5OTU0MzkyOTI0MTYwIHJlZ2lz
+dHJhdGlvbnM6IDYzNg0KcWVtdS1zeXN0ZW0teDg2XzY0OiBjYW5ub3QgZ2V0IGxrZXkNCnFlbXUt
+c3lzdGVtLXg4Nl82NDogcmRtYSBtaWdyYXRpb246IHdyaXRlIGVycm9yISAtMjINCnFlbXUtc3lz
+dGVtLXg4Nl82NDogUkRNQSBpcyBpbiBhbiBlcnJvciBzdGF0ZSB3YWl0aW5nIG1pZ3JhdGlvbiB0
+byBhYm9ydCENCnFlbXUtc3lzdGVtLXg4Nl82NDogZmFpbGVkIHRvIHNhdmUgU2F2ZVN0YXRlRW50
+cnkgd2l0aCBpZChuYW1lKTogMihyYW0pOiAtMjINCnFlbXUtc3lzdGVtLXg4Nl82NDogRWFybHkg
+ZXJyb3IuIFNlbmRpbmcgZXJyb3IuDQoNCg0KU2luY2UgY3VycmVudCBSRE1BIG1pZ3JhdGlvbiB0
+cmFuc2ZlcnMgZ3Vlc3QgbWVtb3J5IGluIGEgY2h1bmsgc2l6ZSgxTSkgYnkgZGVmYXVsdCwgd2Ug
+bWF5IG5lZWQgdG8NCg0Kb3B0aW9uIDE6IHJlZHVjZSBhbGwgY2h1bmsgc2l6ZSB0byAxIHBhZ2UN
+Cm9wdGlvbiAyOiBoYW5kbGUgdGhlIGh3cG9pc29uIGNodW5rIHNwZWNpYWxseQ0KDQpIb3dldmVy
+LCBiZWNhdXNlIHRoZXJlIG1heSBiZSBhIGNoYW5jZSB0byB1c2UgYW5vdGhlciBwcm90b2NvbCwg
+aXQncyBhbHNvIHBvc3NpYmxlIHRvIHRlbXBvcmFyaWx5IG5vdCBmaXggdGhlIGlzc3VlLg0KDQpU
+ZXN0ZWQtYnk6IExpIFpoaWppYW4gPGxpemhpamlhbkBmdWppdHN1LmNvbT4NCg0KVGhhbmtzDQpa
+aGlqaWFuDQoNCg0KDQoNCj4gDQo+IChCZSBjYXJlZnVsIHRoYXQgZXJyb3IgaW5qZWN0aW9uIGlz
+IGN1cnJlbnRseSBub3Igd29ya2luZyBvbiBBTUQNCj4gcGxhdGZvcm1zIC0tIHRoaXMgaXMgYSB3
+b3JrIGluIHByb2dyZXNzIGlzIGEgc2VwYXJhdGUgcWVtdSB0aHJlYWQpDQo+IA0KPiANCj4gVGhl
+IGdlbmVyYWwgaWRlYToNCj4gV2UgYXJlIGdvaW5nIHRvIHRhcmdldCBhIHByb2Nlc3MgbWVtb3J5
+IHBhZ2UgcnVubmluZyBpbnNpZGUgYSBWTSB0byBzZWUNCj4gd2hhdCBoYXBwZW5zIHdoZW4gd2Ug
+aW5qZWN0IGFuIGVycm9yIG9uIHRoZSB1bmRlcmx5aW5nIHBoeXNpY2FsIHBhZ2UgYXQNCj4gdGhl
+IHBsYXRmb3JtIChoeXBlcnZpc29yKSBsZXZlbC4NCj4gVG8gaGF2ZSBhIGJldHRlciB2aWV3IG9m
+IHdoYXQncyBnb2luZyBvbiwgd2UnbGwgdXNlIGEgcHJvY2VzcyBtYWRlIGZvcg0KPiB0aGlzOiBJ
+dCdzIGdvYWwgaXMgdG8gYWxsb2NhdGUgYSBtZW1vcnkgcGFnZSwgYW5kIGNyZWF0ZSBhIFNJR0JV
+Uw0KPiBoYW5kbGVyIHRvIGluZm9ybSB3aGVuIGl0IHJlY2VpdmVzIHRoaXMgc2lnbmFsLiBJdCB3
+aWxsIGFsc28gd2FpdCBiZWZvcmUNCj4gdG91Y2hpbmcgdGhpcyBwYWdlIHRvIHNlZSB3aGF0IGhh
+cHBlbnMgbmV4dC4NCj4gDQo+ICDCoMKgwqAgQ29tcGlsaW5nIHRoaXMgdG9vbDoNCj4gIMKgwqDC
+oCAkIGdjYyAtbyBtY2VfcHJvY2Vzc19yZWFjdF94ODYgbWNlX3Byb2Nlc3NfcmVhY3QuYw0KPiAN
+Cj4gDQo+IExldCdzIHRyeSB0aGF0Og0KPiBUaGlzIHByb2NlZHVyZSBzaG93cyB0aGUgYmVzdCBj
+YXNlIHNjZW5hcmlvLCB3aGVyZSBhbiBlcnJvciBpbmplY3RlZCBhdA0KPiB0aGUgcGxhdGZvcm0g
+bGV2ZWwgaXMgcmVwb3J0ZWQgdXAgdG8gdGhlIGd1ZXN0IHByb2Nlc3MgdXNpbmcgaXQuDQo+IE5v
+dGUgdGhhdCBxZW11IHNob3VsZCBiZSBzdGFydGVkIHdpdGggcm9vdCBwcml2aWxlZ2UuDQo+IA0K
+PiAgwqDCoMKgIDEuIENob29zZSBhIHByb2Nlc3MgcnVubmluZyBpbiB0aGUgVk0gKGFuZCBpZGVu
+dGlmeSBhIG1lbW9yeSBwYWdlDQo+IHlvdSB3YW50IHRvIHRhcmdldCwgYW5kIGdldCBpdHMgcGh5
+c2ljYWwgYWRkcmVzcyDigJMgY3Jhc2goOCkgdnRvcCBjYW4NCj4gaGVscCB3aXRoIHRoYXQpIG9y
+IHJ1biB0aGUgYXR0YWNoZWQgbWNlX3Byb2Nlc3NfcmVhY3QgZXhhbXBsZSAoY29tcGlsZWQNCj4g
+Zm9yIHlvdXIgcGxhdGZvcm0gbWNlX3Byb2Nlc3NfcmVhY3RfW3g4Nnxhcm1dKSB3aXRoIGFuIG9w
+dGlvbiB0byBiZQ0KPiBlYXJseSBpbmZvcm1lZCBvZiBfQU8gZXJyb3IgKC1lKSBhbmQgd2FpdCBF
+TlRFUiB0byBjb250aW51ZSB3aXRoIHJlYWRpbmcNCj4gdGhlIGFsbG9jYXRlZCBwYWdlICgtdyAw
+KToNCj4gDQo+IFtyb290QFZNIF0jIC4vbWNlX3Byb2Nlc3NfcmVhY3RfeDg2IC1lIC13IDANCj4g
+U2V0dGluZyBFYXJseSBraWxsLi4uIE9rDQo+IA0KPiBEYXRhIHBhZ2VzIGF0IDB4N2ZhMGY5YjI1
+MDAwwqAgcGh5c2ljYWxseSAweDIwMGYyZmEwMDANCj4gDQo+IFByZXNzIEVOVEVSIHRvIGNvbnRp
+bnVlIHdpdGggcGFnZSByZWFkaW5nDQo+IA0KPiANCj4gIMKgwqDCoCAyLiBHbyBpbnRvIHRoZSBW
+TSBtb25pdG9yIHRvIGdldCB0aGUgdHJhbnNsYXRpb24gZnJvbSAiR3Vlc3QNCj4gUGh5c2ljYWwg
+QWRkcmVzcyB0byBIb3N0IFBoeXNpY2FsIEFkZHJlc3MiIG9yICJIb3N0IFZpcnR1YWwgQWRkcmVz
+cyI6DQo+IA0KPiAgwqAocWVtdSkgZ3BhMmhwYSAweDIwMGYyZmEwMDAnDQo+IEhvc3QgcGh5c2lj
+YWwgYWRkcmVzcyBmb3IgMHgyMDBmMmZhMDAwIChyYW0tbm9kZTEpIGlzIDB4NDZmMTJmYTAwMA0K
+PiANCj4gDQo+ICDCoMKgwqAgMy4gQmVmb3JlIHdlIGluamVjdCB0aGUgZXJyb3IsIHdlIHdhbnQg
+dG8ga2VlcCB0cmFjayBvZiB0aGUgVk0NCj4gY29uc29sZSBvdXRwdXQgKGluIGEgc2VwYXJhdGUg
+d2luZG93KS4NCj4gSWYgeW91IGFyZSB1c2luZyBsaWJ2aXJ0OiAjIHZpcnNoIGNvbnNvbGUgbXl2
+bQ0KPiANCj4gDQo+ICDCoMKgwqAgNC4gV2Ugbm93IHByZXBhcmUgZm9yIHRoZSBlcnJvciBpbmpl
+Y3Rpb24gYXQgdGhlIHBsYXRmb3JtIGxldmVsIHRvDQo+IHRoZSBhZGRyZXNzIHdlIGZvdW5kLsKg
+IFRvIGRvIHNvLCB3ZSdsbCBuZWVkIHRvIHVzZSB0aGUgaHdwb2lzb24taW5qZWN0DQo+IG1vZHVs
+ZSAoeDg2KQ0KPiBCZSBjYXJlZnVsLCBhcyBod3BvaXNvbiB0YWtlcyBQYWdlIEZyYW1lIE51bWJl
+cnMgYW5kIHRoaXMgUEZOIGlzIG5vdCB0aGUNCj4gcGh5c2ljYWwgYWRkcmVzcyDigJMgeW91IG5l
+ZWQgdG8gcmVtb3ZlIHRoZSBsYXN0IDEyIGJpdHMgKHRoZSBsYXN0IDMgemVyb3MNCj4gb2YgdGhl
+IGFib3ZlIGFkZHJlc3MpICENCj4gDQo+IFtyb290QGh2IF0jIG1vZHByb2JlIGh3cG9pc29uLWlu
+amVjdA0KPiBbcm9vdEBodiBdIyBlY2hvIDB4NDZmMTJmYSA+IC9zeXMva2VybmVsL2RlYnVnL2h3
+cG9pc29uL2NvcnJ1cHQtcGZuDQo+IA0KPiAgwqDCoMKgwqDCoMKgIElmIHlvdSBzZWUgIk9wZXJh
+dGlvbiBub3QgcGVybWl0dGVkIiBlcnJvciB3aGVuIHdyaXRpbmcgYXMgcm9vdA0KPiBvbiBjb3Jy
+dXB0LXBmbiwgeW91IG1heSBiZSBmYWNpbmcgYSAia2VybmVsX2xvY2tkb3duKDcpIiB3aGljaCBp
+cw0KPiBlbmFibGVkIG9uIFNlY3VyZUJvb3Qgc3lzdGVtcyAoY2FuIGJlIHZlcmlmaWVkIHdpdGgN
+Cj4gIm1va3V0aWwgLS1zYi1zdGF0ZSIpLiBJbiB0aGlzIGNhc2UsIHR1cm4gU2VjdXJlQm9vdCBv
+ZmbCoCAoYXQgdGhlIFVFRkkNCj4gbGV2ZWwgZm9yIGV4YW1wbGUpDQo+IA0KPiAgwqDCoMKgIDUu
+IExvb2sgYXQgdGhlIHFlbXUgb3V0cHV0IChlaXRoZXIgb24gdGhlIHRlcm1pbmFsIHdoZXJlIHFl
+bXUgd2FzDQo+IHN0YXJ0ZWQgb3LCoCBpZiB5b3UgYXJlIHVzaW5nIGxpYnZpcnQ6wqAgdGFpbCAv
+dmFyL2xvZy9saWJ2aXJ0L3FlbXUvbXl2bQ0KPiANCj4gMjAyMi0wOC0zMVQxMzo1MjoyNS42NDUz
+OThaIHFlbXUtc3lzdGVtLXg4Nl82NDogd2FybmluZzogR3Vlc3QgTUNFIE1lbW9yeSBFcnJvciBh
+dCBRRU1VIGFkZHIgMHg3ZWVlYWNlMDAwMDAgYW5kIEdVRVNUIGFkZHIgMHgyMDBmMjAwIG9mIHR5
+cGUgQlVTX01DRUVSUl9BTyBpbmplY3RlZA0KPiANCj4gIMKgwqDCoCA2LiBPbiB0aGUgZ3Vlc3Qg
+Y29uc29sZToNCj4gV2UnbGwgc2VlIHRoZSBWTSByZWFjdGlvbiB0byB0aGUgaW5qZWN0ZWQgZXJy
+b3I6DQo+IA0KPiBbwqAgMTU1LjgwNTE0OV0gRGlzYWJsaW5nIGxvY2sgZGVidWdnaW5nIGR1ZSB0
+byBrZXJuZWwgdGFpbnQNCj4gW8KgIDE1NS44MDYxNzRdIG1jZTogW0hhcmR3YXJlIEVycm9yXTog
+TWFjaGluZSBjaGVjayBldmVudHMgbG9nZ2VkDQo+IFvCoCAxNTUuODA3MTIwXSBNZW1vcnkgZmFp
+bHVyZTogMHgyMDBmMjAwOiBLaWxsaW5nIG1jZV9wcm9jZXNzX3JlYTozNTQ4IGR1ZSB0byBoYXJk
+d2FyZSBtZW1vcnkgY29ycnVwdGlvbg0KPiBbwqAgMTU1LjgwODg3N10gTWVtb3J5IGZhaWx1cmU6
+IDB4MjAwZjIwMDogcmVjb3ZlcnkgYWN0aW9uIGZvciBkaXJ0eSBMUlUgcGFnZTogUmVjb3ZlcmVk
+DQo+IA0KPiAgwqDCoMKgIDcuIFRoZSBHdWVzdCBwcm9jZXNzIHRoYXQgd2Ugc3RhcnRlZCBhdCB0
+aGUgZmlyc3Qgc3RlcCBnaXZlczoNCj4gDQo+IFNpZ25hbCA3IHJlY2VpdmVkDQo+IEJVU19NQ0VF
+UlJfQU8gb24gdmFkZHI6IDB4N2ZhMGY5YjI1MDAwDQo+IA0KPiBBdCB0aGlzIHN0YWdlLCB0aGUg
+Vk0gaGFzIGEgcG9pc29uZWQgcGFnZSwgYW5kIGEgbWlncmF0aW9uIG9mIHRoaXMgVk0NCj4gbmVl
+ZHMgdG8gYmUgZml4ZWQgaW4gb3JkZXIgdG8gYXZvaWQgYWNjZXNzaW5nIHRoZSBwb2lzb25lZCBw
+YWdlLg0KPiANCj4gIMKgwqDCoCA4LiBUaGUgcHJvY2VzcyBjb250aW51ZXMgdG8gcnVuIChhcyBp
+dCBoYW5kbGVkIHRoZSBTSUdCVVMpLg0KPiBOb3cgaWYgeW91IHByZXNzIEVOVEVSIG9uIHRoaXMg
+cHJvY2VzcyB0ZXJtaW5hbCwgaXQgd2lsbCB0cnkgdG8gcmVhZCB0aGUNCj4gcGFnZSB3aGljaCB3
+aWxsIGdlbmVyYXRlIGEgbmV3IE1DRSAoYSBzeW5jaHJvbm91cyBvbmUpIGF0IFZNIGxldmVsIHdo
+aWNoDQo+IHdpbGwgYmUgc2VudCB0byB0aGlzIHByb2Nlc3M6DQo+IA0KPiBTaWduYWwgNyByZWNl
+aXZlZA0KPiBCVVNfTUNFRVJSX0FSIG9uIHZhZGRyOiAweDdmYTBmOWIyNTAwMA0KPiBFeGl0IGZy
+b20gdGhlIHNpZ25hbCBoYW5kbGVyIG9uIEJVU19NQ0VFUlJfQVINCj4gDQo+ICDCoMKgwqAgOS4g
+VGhlIFZNIGNvbnNvbGUgc2hvd3M6DQo+IFsgMjUyMC44OTUyNjNdIE1DRTogS2lsbGluZyBtY2Vf
+cHJvY2Vzc19yZWE6MzU0OCBkdWUgdG8gaGFyZHdhcmUgbWVtb3J5IGNvcnJ1cHRpb24gZmF1bHQg
+YXQgN2Y0NWU1MjY1MDAwDQo+IA0KPiAgwqDCoMKgIDEwLiBUaGUgVk0gY29udGludWVzIHRvIHJ1
+bi4uLg0KPiBXaXRoIGEgcG9pc29uZWQgcGFnZSBpbiBpdHMgYWRkcmVzcyBzcGFjZQ0KPiANCj4g
+SFRILA0KPiBXaWxsaWFtLg==
 
