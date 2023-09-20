@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1FA7A7372
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 08:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CACE7A736E
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 08:57:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qir57-0008Vo-Nv; Wed, 20 Sep 2023 02:53:05 -0400
+	id 1qir55-0008NP-Uc; Wed, 20 Sep 2023 02:53:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qir4t-00082t-Rr
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:53 -0400
+ id 1qir4z-0008Ai-6N
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:57 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qir4m-0004AT-53
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:51 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qir4m-0004AN-53
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:56 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxTeurlgpl7S8qAA--.9972S3;
+ by gateway (Coremail) with SMTP id _____8AxTeurlgpl8C8qAA--.9975S3;
  Wed, 20 Sep 2023 14:52:27 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxzdx7lgplhVYMAA--.24315S57; 
- Wed, 20 Sep 2023 14:52:26 +0800 (CST)
+ AQAAf8Dxzdx7lgplhVYMAA--.24315S58; 
+ Wed, 20 Sep 2023 14:52:27 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 55/57] target/loongarch: Implement xvld xvst
-Date: Wed, 20 Sep 2023 14:51:37 +0800
-Message-Id: <20230920065139.1403868-56-gaosong@loongson.cn>
+Subject: [PULL 56/57] target/loongarch: Move simply DO_XX marcos togther
+Date: Wed, 20 Sep 2023 14:51:38 +0800
+Message-Id: <20230920065139.1403868-57-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230920065139.1403868-1-gaosong@loongson.cn>
 References: <20230920065139.1403868-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dxzdx7lgplhVYMAA--.24315S57
+X-CM-TRANSID: AQAAf8Dxzdx7lgplhVYMAA--.24315S58
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -62,312 +62,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch includes:
-- XVLD[X], XVST[X];
-- XVLDREPL.{B/H/W/D};
-- XVSTELM.{B/H/W/D}.
-
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230914022645.1151356-56-gaosong@loongson.cn>
+Message-Id: <20230914022645.1151356-57-gaosong@loongson.cn>
 ---
- target/loongarch/insns.decode               |  18 ++
- target/loongarch/disas.c                    |  24 +++
- target/loongarch/insn_trans/trans_vec.c.inc | 212 ++++++++++++++------
- 3 files changed, 194 insertions(+), 60 deletions(-)
+ target/loongarch/vec.h        | 42 ++++++++++++++++++++++++++++++
+ target/loongarch/vec_helper.c | 48 -----------------------------------
+ 2 files changed, 42 insertions(+), 48 deletions(-)
 
-diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 64b67ee9ac..64b308f9fb 100644
---- a/target/loongarch/insns.decode
-+++ b/target/loongarch/insns.decode
-@@ -550,6 +550,10 @@ dbcl             0000 00000010 10101 ...............      @i15
- @vr_i8i2      .... ........ imm2:2 ........ rj:5 vd:5    &vr_ii imm=%i8s2
- @vr_i8i3       .... ....... imm2:3 ........ rj:5 vd:5    &vr_ii imm=%i8s1
- @vr_i8i4          .... ...... imm2:4 imm:s8 rj:5 vd:5    &vr_ii
-+@vr_i8i2x     .... ........ imm2:2 ........ rj:5 vd:5    &vr_ii imm=%i8s3
-+@vr_i8i3x      .... ....... imm2:3 ........ rj:5 vd:5    &vr_ii imm=%i8s2
-+@vr_i8i4x       .... ...... imm2:4 ........ rj:5 vd:5    &vr_ii imm=%i8s1
-+@vr_i8i5x          .... ..... imm2:5 imm:s8 rj:5 vd:5    &vr_ii
- @vrr               .... ........ ..... rk:5 rj:5 vd:5    &vrr
- @v_i13                   .... ........ .. imm:13 vd:5    &v_i
+diff --git a/target/loongarch/vec.h b/target/loongarch/vec.h
+index 2f23cae7d7..3c9adf8427 100644
+--- a/target/loongarch/vec.h
++++ b/target/loongarch/vec.h
+@@ -30,4 +30,46 @@
+ #define Q(x)  Q[x]
+ #endif /* HOST_BIG_ENDIAN */
  
-@@ -2060,3 +2064,17 @@ xvextrins_d      0111 01111000 00 ........ ..... .....    @vv_ui8
- xvextrins_w      0111 01111000 01 ........ ..... .....    @vv_ui8
- xvextrins_h      0111 01111000 10 ........ ..... .....    @vv_ui8
- xvextrins_b      0111 01111000 11 ........ ..... .....    @vv_ui8
++#define DO_ADD(a, b)  (a + b)
++#define DO_SUB(a, b)  (a - b)
++#define DO_VAVG(a, b)  ((a >> 1) + (b >> 1) + (a & b & 1))
++#define DO_VAVGR(a, b) ((a >> 1) + (b >> 1) + ((a | b) & 1))
++#define DO_VABSD(a, b)  ((a > b) ? (a -b) : (b-a))
++#define DO_VABS(a)  ((a < 0) ? (-a) : (a))
++#define DO_MIN(a, b) (a < b ? a : b)
++#define DO_MAX(a, b) (a > b ? a : b)
++#define DO_MUL(a, b) (a * b)
++#define DO_MADD(a, b, c)  (a + b * c)
++#define DO_MSUB(a, b, c)  (a - b * c)
 +
-+xvld             0010 110010 ............ ..... .....     @vr_i12
-+xvst             0010 110011 ............ ..... .....     @vr_i12
-+xvldx            0011 10000100 10000 ..... ..... .....    @vrr
-+xvstx            0011 10000100 11000 ..... ..... .....    @vrr
++#define DO_DIVU(N, M) (unlikely(M == 0) ? 0 : N / M)
++#define DO_REMU(N, M) (unlikely(M == 0) ? 0 : N % M)
++#define DO_DIV(N, M)  (unlikely(M == 0) ? 0 :\
++        unlikely((N == -N) && (M == (__typeof(N))(-1))) ? N : N / M)
++#define DO_REM(N, M)  (unlikely(M == 0) ? 0 :\
++        unlikely((N == -N) && (M == (__typeof(N))(-1))) ? 0 : N % M)
 +
-+xvldrepl_d       0011 00100001 0 ......... ..... .....    @vr_i9
-+xvldrepl_w       0011 00100010 .......... ..... .....     @vr_i10
-+xvldrepl_h       0011 0010010 ........... ..... .....     @vr_i11
-+xvldrepl_b       0011 001010 ............ ..... .....     @vr_i12
-+xvstelm_d        0011 00110001 .. ........ ..... .....    @vr_i8i2x
-+xvstelm_w        0011 0011001 ... ........ ..... .....    @vr_i8i3x
-+xvstelm_h        0011 001101 .... ........ ..... .....    @vr_i8i4x
-+xvstelm_b        0011 00111 ..... ........ ..... .....    @vr_i8i5x
-diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 1ec8e21e01..c8a29eac2b 100644
---- a/target/loongarch/disas.c
-+++ b/target/loongarch/disas.c
-@@ -1753,6 +1753,16 @@ static void output_vvr_x(DisasContext *ctx, arg_vvr *a, const char *mnemonic)
-     output(ctx, mnemonic, "x%d, x%d, r%d", a->vd, a->vj, a->rk);
++#define DO_SIGNCOV(a, b)  (a == 0 ? 0 : a < 0 ? -b : b)
++
++#define R_SHIFT(a, b) (a >> b)
++
++#define DO_CLO_B(N)  (clz32(~N & 0xff) - 24)
++#define DO_CLO_H(N)  (clz32(~N & 0xffff) - 16)
++#define DO_CLO_W(N)  (clz32(~N))
++#define DO_CLO_D(N)  (clz64(~N))
++#define DO_CLZ_B(N)  (clz32(N) - 24)
++#define DO_CLZ_H(N)  (clz32(N) - 16)
++#define DO_CLZ_W(N)  (clz32(N))
++#define DO_CLZ_D(N)  (clz64(N))
++
++#define DO_BITCLR(a, bit) (a & ~(1ull << bit))
++#define DO_BITSET(a, bit) (a | 1ull << bit)
++#define DO_BITREV(a, bit) (a ^ (1ull << bit))
++
++#define VSEQ(a, b) (a == b ? -1 : 0)
++#define VSLE(a, b) (a <= b ? -1 : 0)
++#define VSLT(a, b) (a < b ? -1 : 0)
++
++#define SHF_POS(i, imm) (((i) & 0xfc) + (((imm) >> (2 * ((i) & 0x03))) & 0x03))
++
+ #endif /* LOONGARCH_VEC_H */
+diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
+index 6b61a5c447..3faf52cbc4 100644
+--- a/target/loongarch/vec_helper.c
++++ b/target/loongarch/vec_helper.c
+@@ -15,9 +15,6 @@
+ #include "vec.h"
+ #include "tcg/tcg-gvec-desc.h"
+ 
+-#define DO_ADD(a, b)  (a + b)
+-#define DO_SUB(a, b)  (a - b)
+-
+ #define DO_ODD_EVEN(NAME, BIT, E1, E2, DO_OP)                        \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)       \
+ {                                                                    \
+@@ -347,9 +344,6 @@ DO_ODD_U_S(vaddwod_h_bu_b, 16, H, UH, B, UB, DO_ADD)
+ DO_ODD_U_S(vaddwod_w_hu_h, 32, W, UW, H, UH, DO_ADD)
+ DO_ODD_U_S(vaddwod_d_wu_w, 64, D, UD, W, UW, DO_ADD)
+ 
+-#define DO_VAVG(a, b)  ((a >> 1) + (b >> 1) + (a & b & 1))
+-#define DO_VAVGR(a, b) ((a >> 1) + (b >> 1) + ((a | b) & 1))
+-
+ #define DO_3OP(NAME, BIT, E, DO_OP)                            \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
+ {                                                              \
+@@ -381,8 +375,6 @@ DO_3OP(vavgr_hu, 16, UH, DO_VAVGR)
+ DO_3OP(vavgr_wu, 32, UW, DO_VAVGR)
+ DO_3OP(vavgr_du, 64, UD, DO_VAVGR)
+ 
+-#define DO_VABSD(a, b)  ((a > b) ? (a -b) : (b-a))
+-
+ DO_3OP(vabsd_b, 8, B, DO_VABSD)
+ DO_3OP(vabsd_h, 16, H, DO_VABSD)
+ DO_3OP(vabsd_w, 32, W, DO_VABSD)
+@@ -392,8 +384,6 @@ DO_3OP(vabsd_hu, 16, UH, DO_VABSD)
+ DO_3OP(vabsd_wu, 32, UW, DO_VABSD)
+ DO_3OP(vabsd_du, 64, UD, DO_VABSD)
+ 
+-#define DO_VABS(a)  ((a < 0) ? (-a) : (a))
+-
+ #define DO_VADDA(NAME, BIT, E)                                 \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
+ {                                                              \
+@@ -413,9 +403,6 @@ DO_VADDA(vadda_h, 16, H)
+ DO_VADDA(vadda_w, 32, W)
+ DO_VADDA(vadda_d, 64, D)
+ 
+-#define DO_MIN(a, b) (a < b ? a : b)
+-#define DO_MAX(a, b) (a > b ? a : b)
+-
+ #define VMINMAXI(NAME, BIT, E, DO_OP)                              \
+ void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+ {                                                                  \
+@@ -500,8 +487,6 @@ DO_VMUH(vmuh_bu, 8, UH, UB, DO_MUH)
+ DO_VMUH(vmuh_hu, 16, UW, UH, DO_MUH)
+ DO_VMUH(vmuh_wu, 32, UD, UW, DO_MUH)
+ 
+-#define DO_MUL(a, b) (a * b)
+-
+ DO_EVEN(vmulwev_h_b, 16, H, B, DO_MUL)
+ DO_EVEN(vmulwev_w_h, 32, W, H, DO_MUL)
+ DO_EVEN(vmulwev_d_w, 64, D, W, DO_MUL)
+@@ -526,9 +511,6 @@ DO_ODD_U_S(vmulwod_h_bu_b, 16, H, UH, B, UB, DO_MUL)
+ DO_ODD_U_S(vmulwod_w_hu_h, 32, W, UW, H, UH, DO_MUL)
+ DO_ODD_U_S(vmulwod_d_wu_w, 64, D, UD, W, UW, DO_MUL)
+ 
+-#define DO_MADD(a, b, c)  (a + b * c)
+-#define DO_MSUB(a, b, c)  (a - b * c)
+-
+ #define VMADDSUB(NAME, BIT, E, DO_OP)                          \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
+ {                                                              \
+@@ -639,13 +621,6 @@ VMADDWOD_U_S(vmaddwod_h_bu_b, 16, H, UH, B, UB, DO_MUL)
+ VMADDWOD_U_S(vmaddwod_w_hu_h, 32, W, UW, H, UH, DO_MUL)
+ VMADDWOD_U_S(vmaddwod_d_wu_w, 64, D, UD, W, UW, DO_MUL)
+ 
+-#define DO_DIVU(N, M) (unlikely(M == 0) ? 0 : N / M)
+-#define DO_REMU(N, M) (unlikely(M == 0) ? 0 : N % M)
+-#define DO_DIV(N, M)  (unlikely(M == 0) ? 0 :\
+-        unlikely((N == -N) && (M == (__typeof(N))(-1))) ? N : N / M)
+-#define DO_REM(N, M)  (unlikely(M == 0) ? 0 :\
+-        unlikely((N == -N) && (M == (__typeof(N))(-1))) ? 0 : N % M)
+-
+ #define VDIV(NAME, BIT, E, DO_OP)                              \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
+ {                                                              \
+@@ -791,8 +766,6 @@ VEXT2XV(vext2xv_wu_hu, 32, UW, UH)
+ VEXT2XV(vext2xv_du_hu, 64, UD, UH)
+ VEXT2XV(vext2xv_du_wu, 64, UD, UW)
+ 
+-#define DO_SIGNCOV(a, b)  (a == 0 ? 0 : a < 0 ? -b : b)
+-
+ DO_3OP(vsigncov_b, 8, B, DO_SIGNCOV)
+ DO_3OP(vsigncov_h, 16, H, DO_SIGNCOV)
+ DO_3OP(vsigncov_w, 32, W, DO_SIGNCOV)
+@@ -1107,8 +1080,6 @@ VSRARI(vsrari_h, 16, H)
+ VSRARI(vsrari_w, 32, W)
+ VSRARI(vsrari_d, 64, D)
+ 
+-#define R_SHIFT(a, b) (a >> b)
+-
+ #define VSRLN(NAME, BIT, E1, E2)                                          \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)            \
+ {                                                                         \
+@@ -2272,15 +2243,6 @@ void HELPER(NAME)(void *vd, void *vj, uint32_t desc) \
+     }                                                \
  }
  
-+static void output_vrr_x(DisasContext *ctx, arg_vrr *a, const char *mnemonic)
-+{
-+    output(ctx, mnemonic, "x%d, r%d, r%d", a->vd, a->rj, a->rk);
-+}
-+
-+static void output_vr_ii_x(DisasContext *ctx, arg_vr_ii *a, const char *mnemonic)
-+{
-+    output(ctx, mnemonic, "x%d, r%d, 0x%x, 0x%x", a->vd, a->rj, a->imm, a->imm2);
-+}
-+
- INSN_LASX(xvadd_b,           vvv)
- INSN_LASX(xvadd_h,           vvv)
- INSN_LASX(xvadd_w,           vvv)
-@@ -2595,3 +2605,17 @@ INSN_LASX(xvextrins_d,       vv_i)
- INSN_LASX(xvextrins_w,       vv_i)
- INSN_LASX(xvextrins_h,       vv_i)
- INSN_LASX(xvextrins_b,       vv_i)
-+
-+INSN_LASX(xvld,              vr_i)
-+INSN_LASX(xvst,              vr_i)
-+INSN_LASX(xvldx,             vrr)
-+INSN_LASX(xvstx,             vrr)
-+
-+INSN_LASX(xvldrepl_d,        vr_i)
-+INSN_LASX(xvldrepl_w,        vr_i)
-+INSN_LASX(xvldrepl_h,        vr_i)
-+INSN_LASX(xvldrepl_b,        vr_i)
-+INSN_LASX(xvstelm_d,         vr_ii)
-+INSN_LASX(xvstelm_w,         vr_ii)
-+INSN_LASX(xvstelm_h,         vr_ii)
-+INSN_LASX(xvstelm_b,         vr_ii)
-diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 8b9e579970..c647137372 100644
---- a/target/loongarch/insn_trans/trans_vec.c.inc
-+++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -5368,63 +5368,155 @@ static bool trans_vstx(DisasContext *ctx, arg_vrr *a)
-     return true;
+-#define DO_CLO_B(N)  (clz32(~N & 0xff) - 24)
+-#define DO_CLO_H(N)  (clz32(~N & 0xffff) - 16)
+-#define DO_CLO_W(N)  (clz32(~N))
+-#define DO_CLO_D(N)  (clz64(~N))
+-#define DO_CLZ_B(N)  (clz32(N) - 24)
+-#define DO_CLZ_H(N)  (clz32(N) - 16)
+-#define DO_CLZ_W(N)  (clz32(N))
+-#define DO_CLZ_D(N)  (clz64(N))
+-
+ DO_2OP(vclo_b, 8, UB, DO_CLO_B)
+ DO_2OP(vclo_h, 16, UH, DO_CLO_H)
+ DO_2OP(vclo_w, 32, UW, DO_CLO_W)
+@@ -2309,10 +2271,6 @@ VPCNT(vpcnt_h, 16, UH, ctpop16)
+ VPCNT(vpcnt_w, 32, UW, ctpop32)
+ VPCNT(vpcnt_d, 64, UD, ctpop64)
+ 
+-#define DO_BITCLR(a, bit) (a & ~(1ull << bit))
+-#define DO_BITSET(a, bit) (a | 1ull << bit)
+-#define DO_BITREV(a, bit) (a ^ (1ull << bit))
+-
+ #define DO_BIT(NAME, BIT, E, DO_OP)                            \
+ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc) \
+ {                                                              \
+@@ -3053,10 +3011,6 @@ void HELPER(vffint_s_l)(void *vd, void *vj, void *vk,
+     *Vd = temp;
  }
  
--#define VLDREPL(NAME, MO)                                                 \
--static bool trans_## NAME (DisasContext *ctx, arg_vr_i *a)                \
--{                                                                         \
--    TCGv addr;                                                            \
--    TCGv_i64 val;                                                         \
--                                                                          \
--    if (!avail_LSX(ctx)) {                                                \
--        return false;                                                     \
--    }                                                                     \
--                                                                          \
--    if (!check_vec(ctx, 16)) {                                            \
--        return true;                                                      \
--    }                                                                     \
--                                                                          \
--    addr = gpr_src(ctx, a->rj, EXT_NONE);                                 \
--    val = tcg_temp_new_i64();                                             \
--                                                                          \
--    addr = make_address_i(ctx, addr, a->imm);                             \
--                                                                          \
--    tcg_gen_qemu_ld_i64(val, addr, ctx->mem_idx, MO);                     \
--    tcg_gen_gvec_dup_i64(MO, vec_full_offset(a->vd), 16, ctx->vl/8, val); \
--                                                                          \
--    return true;                                                          \
--}
+-#define VSEQ(a, b) (a == b ? -1 : 0)
+-#define VSLE(a, b) (a <= b ? -1 : 0)
+-#define VSLT(a, b) (a < b ? -1 : 0)
 -
--VLDREPL(vldrepl_b, MO_8)
--VLDREPL(vldrepl_h, MO_16)
--VLDREPL(vldrepl_w, MO_32)
--VLDREPL(vldrepl_d, MO_64)
+ #define VCMPI(NAME, BIT, E, DO_OP)                                 \
+ void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
+ {                                                                  \
+@@ -3381,8 +3335,6 @@ VILVH(vilvh_h, 32, H)
+ VILVH(vilvh_w, 64, W)
+ VILVH(vilvh_d, 128, D)
+ 
+-#define SHF_POS(i, imm) (((i) & 0xfc) + (((imm) >> (2 * ((i) & 0x03))) & 0x03))
 -
--#define VSTELM(NAME, MO, E)                                                  \
--static bool trans_## NAME (DisasContext *ctx, arg_vr_ii *a)                  \
--{                                                                            \
--    TCGv addr;                                                               \
--    TCGv_i64 val;                                                            \
--                                                                             \
--    if (!avail_LSX(ctx)) {                                                   \
--        return false;                                                        \
--    }                                                                        \
--                                                                             \
--    if (!check_vec(ctx, 16)) {                                               \
--        return true;                                                         \
--    }                                                                        \
--                                                                             \
--    addr = gpr_src(ctx, a->rj, EXT_NONE);                                    \
--    val = tcg_temp_new_i64();                                                \
--                                                                             \
--    addr = make_address_i(ctx, addr, a->imm);                                \
--                                                                             \
--    tcg_gen_ld_i64(val, cpu_env,                                             \
--                   offsetof(CPULoongArchState, fpr[a->vd].vreg.E(a->imm2))); \
--    tcg_gen_qemu_st_i64(val, addr, ctx->mem_idx, MO);                        \
--                                                                             \
--    return true;                                                             \
--}
--
--VSTELM(vstelm_b, MO_8, B)
--VSTELM(vstelm_h, MO_16, H)
--VSTELM(vstelm_w, MO_32, W)
--VSTELM(vstelm_d, MO_64, D)
-+static bool do_vldrepl_vl(DisasContext *ctx, arg_vr_i *a,
-+                          uint32_t oprsz, MemOp mop)
-+{
-+    TCGv addr;
-+    TCGv_i64 val;
-+
-+    if (!check_vec(ctx, oprsz)) {
-+        return true;
-+    }
-+
-+    addr = gpr_src(ctx, a->rj, EXT_NONE);
-+    val = tcg_temp_new_i64();
-+
-+    addr = make_address_i(ctx, addr, a->imm);
-+
-+    tcg_gen_qemu_ld_i64(val, addr, ctx->mem_idx, mop);
-+    tcg_gen_gvec_dup_i64(mop, vec_full_offset(a->vd), oprsz, ctx->vl / 8, val);
-+
-+    return true;
-+}
-+
-+static bool do_vldrepl(DisasContext *ctx, arg_vr_i *a, MemOp mop)
-+{
-+    return do_vldrepl_vl(ctx, a, 16, mop);
-+}
-+
-+static bool do_xvldrepl(DisasContext *ctx, arg_vr_i *a, MemOp mop)
-+{
-+    return do_vldrepl_vl(ctx, a, 32, mop);
-+}
-+
-+TRANS(vldrepl_b, LSX, do_vldrepl, MO_8)
-+TRANS(vldrepl_h, LSX, do_vldrepl, MO_16)
-+TRANS(vldrepl_w, LSX, do_vldrepl, MO_32)
-+TRANS(vldrepl_d, LSX, do_vldrepl, MO_64)
-+TRANS(xvldrepl_b, LASX, do_xvldrepl, MO_8)
-+TRANS(xvldrepl_h, LASX, do_xvldrepl, MO_16)
-+TRANS(xvldrepl_w, LASX, do_xvldrepl, MO_32)
-+TRANS(xvldrepl_d, LASX, do_xvldrepl, MO_64)
-+
-+static bool do_vstelm_vl(DisasContext *ctx,
-+                         arg_vr_ii *a, uint32_t oprsz, MemOp mop)
-+{
-+    TCGv addr;
-+    TCGv_i64 val;
-+
-+    if (!check_vec(ctx, oprsz)) {
-+        return true;
-+    }
-+
-+    addr = gpr_src(ctx, a->rj, EXT_NONE);
-+    val = tcg_temp_new_i64();
-+
-+    addr = make_address_i(ctx, addr, a->imm);
-+    tcg_gen_ld_i64(val, cpu_env, vec_reg_offset(a->vd, a->imm2, mop));
-+    tcg_gen_qemu_st_i64(val, addr, ctx->mem_idx, mop);
-+    return true;
-+}
-+
-+static bool do_vstelm(DisasContext *ctx, arg_vr_ii *a, MemOp mop)
-+{
-+    return do_vstelm_vl(ctx, a, 16, mop);
-+}
-+
-+static bool do_xvstelm(DisasContext *ctx, arg_vr_ii *a, MemOp mop)
-+{
-+    return do_vstelm_vl(ctx, a, 32, mop);
-+}
-+
-+TRANS(vstelm_b, LSX, do_vstelm, MO_8)
-+TRANS(vstelm_h, LSX, do_vstelm, MO_16)
-+TRANS(vstelm_w, LSX, do_vstelm, MO_32)
-+TRANS(vstelm_d, LSX, do_vstelm, MO_64)
-+TRANS(xvstelm_b, LASX, do_xvstelm, MO_8)
-+TRANS(xvstelm_h, LASX, do_xvstelm, MO_16)
-+TRANS(xvstelm_w, LASX, do_xvstelm, MO_32)
-+TRANS(xvstelm_d, LASX, do_xvstelm, MO_64)
-+
-+static bool gen_lasx_memory(DisasContext *ctx, arg_vr_i *a,
-+                            void (*func)(DisasContext *, int, TCGv))
-+{
-+    TCGv addr = gpr_src(ctx, a->rj, EXT_NONE);
-+    TCGv temp = NULL;
-+
-+    if (!check_vec(ctx, 32)) {
-+        return true;
-+    }
-+
-+    if (a->imm) {
-+        temp = tcg_temp_new();
-+        tcg_gen_addi_tl(temp, addr, a->imm);
-+        addr = temp;
-+    }
-+
-+    func(ctx, a->vd, addr);
-+    return true;
-+}
-+
-+static void gen_xvld(DisasContext *ctx, int vreg, TCGv addr)
-+{
-+    int i;
-+    TCGv temp = tcg_temp_new();
-+    TCGv dest = tcg_temp_new();
-+
-+    tcg_gen_qemu_ld_i64(dest, addr, ctx->mem_idx, MO_TEUQ);
-+    set_vreg64(dest, vreg, 0);
-+
-+    for (i = 1; i < 4; i++) {
-+        tcg_gen_addi_tl(temp, addr, 8 * i);
-+        tcg_gen_qemu_ld_i64(dest, temp, ctx->mem_idx, MO_TEUQ);
-+        set_vreg64(dest, vreg, i);
-+    }
-+}
-+
-+static void gen_xvst(DisasContext * ctx, int vreg, TCGv addr)
-+{
-+    int i;
-+    TCGv temp = tcg_temp_new();
-+    TCGv dest = tcg_temp_new();
-+
-+    get_vreg64(dest, vreg, 0);
-+    tcg_gen_qemu_st_i64(dest, addr, ctx->mem_idx, MO_TEUQ);
-+
-+    for (i = 1; i < 4; i++) {
-+        tcg_gen_addi_tl(temp, addr, 8 * i);
-+        get_vreg64(dest, vreg, i);
-+        tcg_gen_qemu_st_i64(dest, temp, ctx->mem_idx, MO_TEUQ);
-+    }
-+}
-+
-+TRANS(xvld, LASX, gen_lasx_memory, gen_xvld)
-+TRANS(xvst, LASX, gen_lasx_memory, gen_xvst)
-+
-+static bool gen_lasx_memoryx(DisasContext *ctx, arg_vrr *a,
-+                             void (*func)(DisasContext*, int, TCGv))
-+{
-+    TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
-+    TCGv src2 = gpr_src(ctx, a->rk, EXT_NONE);
-+    TCGv addr = tcg_temp_new();
-+
-+    if (!check_vec(ctx, 32)) {
-+        return true;
-+    }
-+
-+    tcg_gen_add_tl(addr, src1, src2);
-+    func(ctx, a->vd, addr);
-+
-+    return true;
-+}
-+
-+TRANS(xvldx, LASX, gen_lasx_memoryx, gen_xvld)
-+TRANS(xvstx, LASX, gen_lasx_memoryx, gen_xvst)
+ void HELPER(vshuf_b)(void *vd, void *vj, void *vk, void *va, uint32_t desc)
+ {
+     int i, j, m;
 -- 
 2.39.1
 
