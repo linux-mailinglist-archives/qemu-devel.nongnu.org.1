@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944187A7359
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 08:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967147A7389
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 08:59:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qir56-0008OD-Os; Wed, 20 Sep 2023 02:53:04 -0400
+	id 1qir65-0005Ap-Go; Wed, 20 Sep 2023 02:54:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qir4r-00081i-QW
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:52 -0400
+ id 1qir61-00053C-Ra
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:54:01 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qir4c-00048s-H4
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:49 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qir5l-0004QG-1n
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:54:01 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cx2eqllgpl4C8qAA--.10469S3;
- Wed, 20 Sep 2023 14:52:21 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Cx2eqmlgpl4i8qAA--.10471S3;
+ Wed, 20 Sep 2023 14:52:22 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxzdx7lgplhVYMAA--.24315S50; 
- Wed, 20 Sep 2023 14:52:20 +0800 (CST)
+ AQAAf8Dxzdx7lgplhVYMAA--.24315S51; 
+ Wed, 20 Sep 2023 14:52:21 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 48/57] target/loongarch: Implement xvseq xvsle xvslt
-Date: Wed, 20 Sep 2023 14:51:30 +0800
-Message-Id: <20230920065139.1403868-49-gaosong@loongson.cn>
+Subject: [PULL 49/57] target/loongarch: Implement xvfcmp
+Date: Wed, 20 Sep 2023 14:51:31 +0800
+Message-Id: <20230920065139.1403868-50-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230920065139.1403868-1-gaosong@loongson.cn>
 References: <20230920065139.1403868-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dxzdx7lgplhVYMAA--.24315S50
+X-CM-TRANSID: AQAAf8Dxzdx7lgplhVYMAA--.24315S51
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,466 +63,250 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVSEQ[I].{B/H/W/D};
-- XVSLE[I].{B/H/W/D}[U];
-- XVSLT[I].{B/H/W/D/}[U].
+- XVFCMP.cond.{S/D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230914022645.1151356-49-gaosong@loongson.cn>
+Message-Id: <20230914022645.1151356-50-gaosong@loongson.cn>
 ---
- target/loongarch/insns.decode               |  43 ++++
- target/loongarch/disas.c                    |  43 ++++
- target/loongarch/vec_helper.c               |  23 +-
- target/loongarch/insn_trans/trans_vec.c.inc | 257 ++++++++------------
- 4 files changed, 201 insertions(+), 165 deletions(-)
+ target/loongarch/helper.h                   |  8 +-
+ target/loongarch/insns.decode               |  3 +
+ target/loongarch/disas.c                    | 93 +++++++++++++++++++++
+ target/loongarch/vec_helper.c               |  4 +-
+ target/loongarch/insn_trans/trans_vec.c.inc | 31 ++++---
+ 5 files changed, 117 insertions(+), 22 deletions(-)
 
+diff --git a/target/loongarch/helper.h b/target/loongarch/helper.h
+index e9c5412267..b54ce68077 100644
+--- a/target/loongarch/helper.h
++++ b/target/loongarch/helper.h
+@@ -652,10 +652,10 @@ DEF_HELPER_FLAGS_4(vslti_hu, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ DEF_HELPER_FLAGS_4(vslti_wu, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ DEF_HELPER_FLAGS_4(vslti_du, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ 
+-DEF_HELPER_5(vfcmp_c_s, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfcmp_s_s, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfcmp_c_d, void, env, i32, i32, i32, i32)
+-DEF_HELPER_5(vfcmp_s_d, void, env, i32, i32, i32, i32)
++DEF_HELPER_6(vfcmp_c_s, void, env, i32, i32, i32, i32, i32)
++DEF_HELPER_6(vfcmp_s_s, void, env, i32, i32, i32, i32, i32)
++DEF_HELPER_6(vfcmp_c_d, void, env, i32, i32, i32, i32, i32)
++DEF_HELPER_6(vfcmp_s_d, void, env, i32, i32, i32, i32, i32)
+ 
+ DEF_HELPER_FLAGS_4(vbitseli_b, TCG_CALL_NO_RWG, void, ptr, ptr, i64, i32)
+ 
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index ed4f82e7fe..82c26a318b 100644
+index 82c26a318b..0d46bd5e5e 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1915,6 +1915,49 @@ xvffintl_d_w     0111 01101001 11100 00100 ..... .....    @vv
- xvffinth_d_w     0111 01101001 11100 00101 ..... .....    @vv
- xvffint_s_l      0111 01010100 10000 ..... ..... .....    @vvv
+@@ -1958,6 +1958,9 @@ xvslti_hu        0111 01101000 10001 ..... ..... .....    @vv_ui5
+ xvslti_wu        0111 01101000 10010 ..... ..... .....    @vv_ui5
+ xvslti_du        0111 01101000 10011 ..... ..... .....    @vv_ui5
  
-+xvseq_b          0111 01000000 00000 ..... ..... .....    @vvv
-+xvseq_h          0111 01000000 00001 ..... ..... .....    @vvv
-+xvseq_w          0111 01000000 00010 ..... ..... .....    @vvv
-+xvseq_d          0111 01000000 00011 ..... ..... .....    @vvv
-+xvseqi_b         0111 01101000 00000 ..... ..... .....    @vv_i5
-+xvseqi_h         0111 01101000 00001 ..... ..... .....    @vv_i5
-+xvseqi_w         0111 01101000 00010 ..... ..... .....    @vv_i5
-+xvseqi_d         0111 01101000 00011 ..... ..... .....    @vv_i5
-+
-+xvsle_b          0111 01000000 00100 ..... ..... .....    @vvv
-+xvsle_h          0111 01000000 00101 ..... ..... .....    @vvv
-+xvsle_w          0111 01000000 00110 ..... ..... .....    @vvv
-+xvsle_d          0111 01000000 00111 ..... ..... .....    @vvv
-+xvslei_b         0111 01101000 00100 ..... ..... .....    @vv_i5
-+xvslei_h         0111 01101000 00101 ..... ..... .....    @vv_i5
-+xvslei_w         0111 01101000 00110 ..... ..... .....    @vv_i5
-+xvslei_d         0111 01101000 00111 ..... ..... .....    @vv_i5
-+xvsle_bu         0111 01000000 01000 ..... ..... .....    @vvv
-+xvsle_hu         0111 01000000 01001 ..... ..... .....    @vvv
-+xvsle_wu         0111 01000000 01010 ..... ..... .....    @vvv
-+xvsle_du         0111 01000000 01011 ..... ..... .....    @vvv
-+xvslei_bu        0111 01101000 01000 ..... ..... .....    @vv_ui5
-+xvslei_hu        0111 01101000 01001 ..... ..... .....    @vv_ui5
-+xvslei_wu        0111 01101000 01010 ..... ..... .....    @vv_ui5
-+xvslei_du        0111 01101000 01011 ..... ..... .....    @vv_ui5
-+
-+xvslt_b          0111 01000000 01100 ..... ..... .....    @vvv
-+xvslt_h          0111 01000000 01101 ..... ..... .....    @vvv
-+xvslt_w          0111 01000000 01110 ..... ..... .....    @vvv
-+xvslt_d          0111 01000000 01111 ..... ..... .....    @vvv
-+xvslti_b         0111 01101000 01100 ..... ..... .....    @vv_i5
-+xvslti_h         0111 01101000 01101 ..... ..... .....    @vv_i5
-+xvslti_w         0111 01101000 01110 ..... ..... .....    @vv_i5
-+xvslti_d         0111 01101000 01111 ..... ..... .....    @vv_i5
-+xvslt_bu         0111 01000000 10000 ..... ..... .....    @vvv
-+xvslt_hu         0111 01000000 10001 ..... ..... .....    @vvv
-+xvslt_wu         0111 01000000 10010 ..... ..... .....    @vvv
-+xvslt_du         0111 01000000 10011 ..... ..... .....    @vvv
-+xvslti_bu        0111 01101000 10000 ..... ..... .....    @vv_ui5
-+xvslti_hu        0111 01101000 10001 ..... ..... .....    @vv_ui5
-+xvslti_wu        0111 01101000 10010 ..... ..... .....    @vv_ui5
-+xvslti_du        0111 01101000 10011 ..... ..... .....    @vv_ui5
++xvfcmp_cond_s    0000 11001001 ..... ..... ..... .....    @vvv_fcond
++xvfcmp_cond_d    0000 11001010 ..... ..... ..... .....    @vvv_fcond
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index f1a1321d0d..48e0b559f2 100644
+index 48e0b559f2..4ab51b712e 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -2342,6 +2342,49 @@ INSN_LASX(xvffintl_d_w,      vv)
- INSN_LASX(xvffinth_d_w,      vv)
- INSN_LASX(xvffint_s_l,       vvv)
+@@ -2385,6 +2385,99 @@ INSN_LASX(xvslti_hu,         vv_i)
+ INSN_LASX(xvslti_wu,         vv_i)
+ INSN_LASX(xvslti_du,         vv_i)
  
-+INSN_LASX(xvseq_b,           vvv)
-+INSN_LASX(xvseq_h,           vvv)
-+INSN_LASX(xvseq_w,           vvv)
-+INSN_LASX(xvseq_d,           vvv)
-+INSN_LASX(xvseqi_b,          vv_i)
-+INSN_LASX(xvseqi_h,          vv_i)
-+INSN_LASX(xvseqi_w,          vv_i)
-+INSN_LASX(xvseqi_d,          vv_i)
++#define output_xvfcmp(C, PREFIX, SUFFIX)                                    \
++{                                                                           \
++    (C)->info->fprintf_func((C)->info->stream, "%08x  %s%s\tx%d, x%d, x%d", \
++                            (C)->insn, PREFIX, SUFFIX, a->vd,               \
++                            a->vj, a->vk);                                  \
++}
++static bool output_xxx_fcond(DisasContext *ctx, arg_vvv_fcond * a,
++                             const char *suffix)
++{
++    bool ret = true;
++    switch (a->fcond) {
++    case 0x0:
++        output_xvfcmp(ctx, "xvfcmp_caf_", suffix);
++        break;
++    case 0x1:
++        output_xvfcmp(ctx, "xvfcmp_saf_", suffix);
++        break;
++    case 0x2:
++        output_xvfcmp(ctx, "xvfcmp_clt_", suffix);
++        break;
++    case 0x3:
++        output_xvfcmp(ctx, "xvfcmp_slt_", suffix);
++        break;
++    case 0x4:
++        output_xvfcmp(ctx, "xvfcmp_ceq_", suffix);
++        break;
++    case 0x5:
++        output_xvfcmp(ctx, "xvfcmp_seq_", suffix);
++        break;
++    case 0x6:
++        output_xvfcmp(ctx, "xvfcmp_cle_", suffix);
++        break;
++    case 0x7:
++        output_xvfcmp(ctx, "xvfcmp_sle_", suffix);
++        break;
++    case 0x8:
++        output_xvfcmp(ctx, "xvfcmp_cun_", suffix);
++        break;
++    case 0x9:
++        output_xvfcmp(ctx, "xvfcmp_sun_", suffix);
++        break;
++    case 0xA:
++        output_xvfcmp(ctx, "xvfcmp_cult_", suffix);
++        break;
++    case 0xB:
++        output_xvfcmp(ctx, "xvfcmp_sult_", suffix);
++        break;
++    case 0xC:
++        output_xvfcmp(ctx, "xvfcmp_cueq_", suffix);
++        break;
++    case 0xD:
++        output_xvfcmp(ctx, "xvfcmp_sueq_", suffix);
++        break;
++    case 0xE:
++        output_xvfcmp(ctx, "xvfcmp_cule_", suffix);
++        break;
++    case 0xF:
++        output_xvfcmp(ctx, "xvfcmp_sule_", suffix);
++        break;
++    case 0x10:
++        output_xvfcmp(ctx, "xvfcmp_cne_", suffix);
++        break;
++    case 0x11:
++        output_xvfcmp(ctx, "xvfcmp_sne_", suffix);
++        break;
++    case 0x14:
++        output_xvfcmp(ctx, "xvfcmp_cor_", suffix);
++        break;
++    case 0x15:
++        output_xvfcmp(ctx, "xvfcmp_sor_", suffix);
++        break;
++    case 0x18:
++        output_xvfcmp(ctx, "xvfcmp_cune_", suffix);
++        break;
++    case 0x19:
++        output_xvfcmp(ctx, "xvfcmp_sune_", suffix);
++        break;
++    default:
++        ret = false;
++    }
++    return ret;
++}
 +
-+INSN_LASX(xvsle_b,           vvv)
-+INSN_LASX(xvsle_h,           vvv)
-+INSN_LASX(xvsle_w,           vvv)
-+INSN_LASX(xvsle_d,           vvv)
-+INSN_LASX(xvslei_b,          vv_i)
-+INSN_LASX(xvslei_h,          vv_i)
-+INSN_LASX(xvslei_w,          vv_i)
-+INSN_LASX(xvslei_d,          vv_i)
-+INSN_LASX(xvsle_bu,          vvv)
-+INSN_LASX(xvsle_hu,          vvv)
-+INSN_LASX(xvsle_wu,          vvv)
-+INSN_LASX(xvsle_du,          vvv)
-+INSN_LASX(xvslei_bu,         vv_i)
-+INSN_LASX(xvslei_hu,         vv_i)
-+INSN_LASX(xvslei_wu,         vv_i)
-+INSN_LASX(xvslei_du,         vv_i)
++#define LASX_FCMP_INSN(suffix)                            \
++static bool trans_xvfcmp_cond_##suffix(DisasContext *ctx, \
++                                       arg_vvv_fcond * a) \
++{                                                         \
++    return output_xxx_fcond(ctx, a, #suffix);             \
++}
 +
-+INSN_LASX(xvslt_b,           vvv)
-+INSN_LASX(xvslt_h,           vvv)
-+INSN_LASX(xvslt_w,           vvv)
-+INSN_LASX(xvslt_d,           vvv)
-+INSN_LASX(xvslti_b,          vv_i)
-+INSN_LASX(xvslti_h,          vv_i)
-+INSN_LASX(xvslti_w,          vv_i)
-+INSN_LASX(xvslti_d,          vv_i)
-+INSN_LASX(xvslt_bu,          vvv)
-+INSN_LASX(xvslt_hu,          vvv)
-+INSN_LASX(xvslt_wu,          vvv)
-+INSN_LASX(xvslt_du,          vvv)
-+INSN_LASX(xvslti_bu,         vv_i)
-+INSN_LASX(xvslti_hu,         vv_i)
-+INSN_LASX(xvslti_wu,         vv_i)
-+INSN_LASX(xvslti_du,         vv_i)
++LASX_FCMP_INSN(s)
++LASX_FCMP_INSN(d)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index 20d7675256..960b3d19ec 100644
+index 960b3d19ec..5188b7f72d 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -3057,17 +3057,18 @@ void HELPER(vffint_s_l)(void *vd, void *vj, void *vk,
- #define VSLE(a, b) (a <= b ? -1 : 0)
- #define VSLT(a, b) (a < b ? -1 : 0)
- 
--#define VCMPI(NAME, BIT, E, DO_OP)                              \
--void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t v) \
--{                                                               \
--    int i;                                                      \
--    VReg *Vd = (VReg *)vd;                                      \
--    VReg *Vj = (VReg *)vj;                                      \
--    typedef __typeof(Vd->E(0)) TD;                              \
--                                                                \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                         \
--        Vd->E(i) = DO_OP(Vj->E(i), (TD)imm);                    \
--    }                                                           \
-+#define VCMPI(NAME, BIT, E, DO_OP)                                 \
-+void HELPER(NAME)(void *vd, void *vj, uint64_t imm, uint32_t desc) \
-+{                                                                  \
-+    int i;                                                         \
-+    VReg *Vd = (VReg *)vd;                                         \
-+    VReg *Vj = (VReg *)vj;                                         \
-+    typedef __typeof(Vd->E(0)) TD;                                 \
-+    int oprsz = simd_oprsz(desc);                                  \
-+                                                                   \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                      \
-+        Vd->E(i) = DO_OP(Vj->E(i), (TD)imm);                       \
-+    }                                                              \
+@@ -3122,7 +3122,7 @@ static uint64_t vfcmp_common(CPULoongArchState *env,
  }
  
- VCMPI(vseqi_b, 8, B, VSEQ)
+ #define VFCMP(NAME, BIT, E, FN)                                          \
+-void HELPER(NAME)(CPULoongArchState *env,                                \
++void HELPER(NAME)(CPULoongArchState *env, uint32_t oprsz,                \
+                   uint32_t vd, uint32_t vj, uint32_t vk, uint32_t flags) \
+ {                                                                        \
+     int i;                                                               \
+@@ -3132,7 +3132,7 @@ void HELPER(NAME)(CPULoongArchState *env,                                \
+     VReg *Vk = &(env->fpr[vk].vreg);                                     \
+                                                                          \
+     vec_clear_cause(env);                                                \
+-    for (i = 0; i < LSX_LEN/BIT ; i++) {                                 \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                            \
+         FloatRelation cmp;                                               \
+         cmp = FN(Vj->E(i), Vk->E(i), &env->fp_status);                   \
+         t.E(i) = vfcmp_common(env, cmp, flags);                          \
 diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 9ee3e613fc..63d71e2332 100644
+index 63d71e2332..9b89b81cfb 100644
 --- a/target/loongarch/insn_trans/trans_vec.c.inc
 +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -4505,11 +4505,12 @@ TRANS(xvffintl_d_w, LASX, gen_xx_ptr, gen_helper_vffintl_d_w)
- TRANS(xvffinth_d_w, LASX, gen_xx_ptr, gen_helper_vffinth_d_w)
- TRANS(xvffint_s_l, LASX, gen_xxx_ptr, gen_helper_vffint_s_l)
+@@ -4645,52 +4645,51 @@ TRANS(xvslti_hu, LASX, do_xcmpi, MO_16, TCG_COND_LTU)
+ TRANS(xvslti_wu, LASX, do_xcmpi, MO_32, TCG_COND_LTU)
+ TRANS(xvslti_du, LASX, do_xcmpi, MO_64, TCG_COND_LTU)
  
--static bool do_cmp(DisasContext *ctx, arg_vvv *a, MemOp mop, TCGCond cond)
-+static bool do_cmp_vl(DisasContext *ctx, arg_vvv *a,
-+                      uint32_t oprsz, MemOp mop, TCGCond cond)
+-static bool trans_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a)
++static bool do_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
  {
-     uint32_t vd_ofs, vj_ofs, vk_ofs;
+     uint32_t flags;
+-    void (*fn)(TCGv_env, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32);
++    void (*fn)(TCGv_env, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32);
+     TCGv_i32 vd = tcg_constant_i32(a->vd);
+     TCGv_i32 vj = tcg_constant_i32(a->vj);
+     TCGv_i32 vk = tcg_constant_i32(a->vk);
++    TCGv_i32 oprsz = tcg_constant_i32(sz);
  
+-    if (!avail_LSX(ctx)) {
+-        return false;
+-    }
+-
 -    if (!check_vec(ctx, 16)) {
-+    if (!check_vec(ctx, oprsz)) {
++    if (!check_vec(ctx, sz)) {
          return true;
      }
  
-@@ -4517,184 +4518,132 @@ static bool do_cmp(DisasContext *ctx, arg_vvv *a, MemOp mop, TCGCond cond)
-     vj_ofs = vec_full_offset(a->vj);
-     vk_ofs = vec_full_offset(a->vk);
+     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_s : gen_helper_vfcmp_c_s);
+     flags = get_fcmp_flags(a->fcond >> 1);
+-    fn(cpu_env, vd, vj, vk,  tcg_constant_i32(flags));
++    fn(cpu_env, oprsz, vd, vj, vk, tcg_constant_i32(flags));
  
--    tcg_gen_gvec_cmp(cond, mop, vd_ofs, vj_ofs, vk_ofs, 16, ctx->vl/8);
-+    tcg_gen_gvec_cmp(cond, mop, vd_ofs, vj_ofs, vk_ofs, oprsz, ctx->vl / 8);
      return true;
  }
  
--static void do_cmpi_vec(TCGCond cond,
--                        unsigned vece, TCGv_vec t, TCGv_vec a, int64_t imm)
--{
--    tcg_gen_cmp_vec(cond, vece, t, a, tcg_constant_vec_matching(t, vece, imm));
--}
--
--static void gen_vseqi_s_vec(unsigned vece, TCGv_vec t, TCGv_vec a, int64_t imm)
--{
--    do_cmpi_vec(TCG_COND_EQ, vece, t, a, imm);
--}
--
--static void gen_vslei_s_vec(unsigned vece, TCGv_vec t, TCGv_vec a, int64_t imm)
--{
--    do_cmpi_vec(TCG_COND_LE, vece, t, a, imm);
--}
--
--static void gen_vslti_s_vec(unsigned vece, TCGv_vec t, TCGv_vec a, int64_t imm)
--{
--    do_cmpi_vec(TCG_COND_LT, vece, t, a, imm);
--}
--
--static void gen_vslei_u_vec(unsigned vece, TCGv_vec t, TCGv_vec a, int64_t imm)
--{
--    do_cmpi_vec(TCG_COND_LEU, vece, t, a, imm);
--}
--
--static void gen_vslti_u_vec(unsigned vece, TCGv_vec t, TCGv_vec a, int64_t imm)
--{
--    do_cmpi_vec(TCG_COND_LTU, vece, t, a, imm);
--}
--
--#define DO_CMPI_S(NAME)                                                \
--static bool do_## NAME ##_s(DisasContext *ctx, arg_vv_i *a, MemOp mop) \
--{                                                                      \
--    uint32_t vd_ofs, vj_ofs;                                           \
--                                                                       \
--    if (!check_vec(ctx, 16)) {                                         \
--        return true;                                                   \
--    }                                                                  \
--                                                                       \
--    static const TCGOpcode vecop_list[] = {                            \
--        INDEX_op_cmp_vec, 0                                            \
--    };                                                                 \
--    static const GVecGen2i op[4] = {                                   \
--        {                                                              \
--            .fniv = gen_## NAME ##_s_vec,                              \
--            .fnoi = gen_helper_## NAME ##_b,                           \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_8                                               \
--        },                                                             \
--        {                                                              \
--            .fniv = gen_## NAME ##_s_vec,                              \
--            .fnoi = gen_helper_## NAME ##_h,                           \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_16                                              \
--        },                                                             \
--        {                                                              \
--            .fniv = gen_## NAME ##_s_vec,                              \
--            .fnoi = gen_helper_## NAME ##_w,                           \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_32                                              \
--        },                                                             \
--        {                                                              \
--            .fniv = gen_## NAME ##_s_vec,                              \
--            .fnoi = gen_helper_## NAME ##_d,                           \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_64                                              \
--        }                                                              \
--    };                                                                 \
--                                                                       \
--    vd_ofs = vec_full_offset(a->vd);                                   \
--    vj_ofs = vec_full_offset(a->vj);                                   \
--                                                                       \
--    tcg_gen_gvec_2i(vd_ofs, vj_ofs, 16, ctx->vl/8, a->imm, &op[mop]);  \
--                                                                       \
--    return true;                                                       \
--}
--
--DO_CMPI_S(vseqi)
--DO_CMPI_S(vslei)
--DO_CMPI_S(vslti)
--
--#define DO_CMPI_U(NAME)                                                \
--static bool do_## NAME ##_u(DisasContext *ctx, arg_vv_i *a, MemOp mop) \
--{                                                                      \
--    uint32_t vd_ofs, vj_ofs;                                           \
--                                                                       \
--    if (!check_vec(ctx, 16)) {                                         \
--        return true;                                                   \
--    }                                                                  \
--                                                                       \
--    static const TCGOpcode vecop_list[] = {                            \
--        INDEX_op_cmp_vec, 0                                            \
--    };                                                                 \
--    static const GVecGen2i op[4] = {                                   \
--        {                                                              \
--            .fniv = gen_## NAME ##_u_vec,                              \
--            .fnoi = gen_helper_## NAME ##_bu,                          \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_8                                               \
--        },                                                             \
--        {                                                              \
--            .fniv = gen_## NAME ##_u_vec,                              \
--            .fnoi = gen_helper_## NAME ##_hu,                          \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_16                                              \
--        },                                                             \
--        {                                                              \
--            .fniv = gen_## NAME ##_u_vec,                              \
--            .fnoi = gen_helper_## NAME ##_wu,                          \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_32                                              \
--        },                                                             \
--        {                                                              \
--            .fniv = gen_## NAME ##_u_vec,                              \
--            .fnoi = gen_helper_## NAME ##_du,                          \
--            .opt_opc = vecop_list,                                     \
--            .vece = MO_64                                              \
--        }                                                              \
--    };                                                                 \
--                                                                       \
--    vd_ofs = vec_full_offset(a->vd);                                   \
--    vj_ofs = vec_full_offset(a->vj);                                   \
--                                                                       \
--    tcg_gen_gvec_2i(vd_ofs, vj_ofs, 16, ctx->vl/8, a->imm, &op[mop]);  \
--                                                                       \
--    return true;                                                       \
--}
--
--DO_CMPI_U(vslei)
--DO_CMPI_U(vslti)
-+static bool do_cmp(DisasContext *ctx, arg_vvv *a,
-+                   MemOp mop, TCGCond cond)
-+{
-+    return do_cmp_vl(ctx, a, 16, mop, cond);
-+}
-+
-+static bool do_xcmp(DisasContext *ctx, arg_vvv *a,
-+                    MemOp mop, TCGCond cond)
-+{
-+    return do_cmp_vl(ctx, a, 32, mop, cond);
-+}
-+
-+static bool do_cmpi_vl(DisasContext *ctx, arg_vv_i *a,
-+                       uint32_t oprsz, MemOp mop, TCGCond cond)
-+{
-+    uint32_t vd_ofs, vj_ofs;
-+
-+    if (!check_vec(ctx, oprsz)) {
-+        return true;
-+    }
-+
-+    vd_ofs = vec_full_offset(a->vd);
-+    vj_ofs = vec_full_offset(a->vj);
-+
-+    tcg_gen_gvec_cmpi(cond, mop, vd_ofs, vj_ofs, a->imm, oprsz, ctx->vl / 8);
-+    return true;
-+}
-+
-+static bool do_cmpi(DisasContext *ctx, arg_vv_i *a,
-+                    MemOp mop, TCGCond cond)
-+{
-+    return do_cmpi_vl(ctx, a, 16, mop, cond);
-+}
-+
-+static bool do_xcmpi(DisasContext *ctx, arg_vv_i *a,
-+                     MemOp mop, TCGCond cond)
-+{
-+    return do_cmpi_vl(ctx, a, 32, mop, cond);
-+}
- 
- TRANS(vseq_b, LSX, do_cmp, MO_8, TCG_COND_EQ)
- TRANS(vseq_h, LSX, do_cmp, MO_16, TCG_COND_EQ)
- TRANS(vseq_w, LSX, do_cmp, MO_32, TCG_COND_EQ)
- TRANS(vseq_d, LSX, do_cmp, MO_64, TCG_COND_EQ)
--TRANS(vseqi_b, LSX, do_vseqi_s, MO_8)
--TRANS(vseqi_h, LSX, do_vseqi_s, MO_16)
--TRANS(vseqi_w, LSX, do_vseqi_s, MO_32)
--TRANS(vseqi_d, LSX, do_vseqi_s, MO_64)
-+TRANS(vseqi_b, LSX, do_cmpi, MO_8, TCG_COND_EQ)
-+TRANS(vseqi_h, LSX, do_cmpi, MO_16, TCG_COND_EQ)
-+TRANS(vseqi_w, LSX, do_cmpi, MO_32, TCG_COND_EQ)
-+TRANS(vseqi_d, LSX, do_cmpi, MO_64, TCG_COND_EQ)
-+TRANS(xvseq_b, LASX, do_xcmp, MO_8, TCG_COND_EQ)
-+TRANS(xvseq_h, LASX, do_xcmp, MO_16, TCG_COND_EQ)
-+TRANS(xvseq_w, LASX, do_xcmp, MO_32, TCG_COND_EQ)
-+TRANS(xvseq_d, LASX, do_xcmp, MO_64, TCG_COND_EQ)
-+TRANS(xvseqi_b, LASX, do_xcmpi, MO_8, TCG_COND_EQ)
-+TRANS(xvseqi_h, LASX, do_xcmpi, MO_16, TCG_COND_EQ)
-+TRANS(xvseqi_w, LASX, do_xcmpi, MO_32, TCG_COND_EQ)
-+TRANS(xvseqi_d, LASX, do_xcmpi, MO_64, TCG_COND_EQ)
- 
- TRANS(vsle_b, LSX, do_cmp, MO_8, TCG_COND_LE)
- TRANS(vsle_h, LSX, do_cmp, MO_16, TCG_COND_LE)
- TRANS(vsle_w, LSX, do_cmp, MO_32, TCG_COND_LE)
- TRANS(vsle_d, LSX, do_cmp, MO_64, TCG_COND_LE)
--TRANS(vslei_b, LSX, do_vslei_s, MO_8)
--TRANS(vslei_h, LSX, do_vslei_s, MO_16)
--TRANS(vslei_w, LSX, do_vslei_s, MO_32)
--TRANS(vslei_d, LSX, do_vslei_s, MO_64)
-+TRANS(vslei_b, LSX, do_cmpi, MO_8, TCG_COND_LE)
-+TRANS(vslei_h, LSX, do_cmpi, MO_16, TCG_COND_LE)
-+TRANS(vslei_w, LSX, do_cmpi, MO_32, TCG_COND_LE)
-+TRANS(vslei_d, LSX, do_cmpi, MO_64, TCG_COND_LE)
- TRANS(vsle_bu, LSX, do_cmp, MO_8, TCG_COND_LEU)
- TRANS(vsle_hu, LSX, do_cmp, MO_16, TCG_COND_LEU)
- TRANS(vsle_wu, LSX, do_cmp, MO_32, TCG_COND_LEU)
- TRANS(vsle_du, LSX, do_cmp, MO_64, TCG_COND_LEU)
--TRANS(vslei_bu, LSX, do_vslei_u, MO_8)
--TRANS(vslei_hu, LSX, do_vslei_u, MO_16)
--TRANS(vslei_wu, LSX, do_vslei_u, MO_32)
--TRANS(vslei_du, LSX, do_vslei_u, MO_64)
-+TRANS(vslei_bu, LSX, do_cmpi, MO_8, TCG_COND_LEU)
-+TRANS(vslei_hu, LSX, do_cmpi, MO_16, TCG_COND_LEU)
-+TRANS(vslei_wu, LSX, do_cmpi, MO_32, TCG_COND_LEU)
-+TRANS(vslei_du, LSX, do_cmpi, MO_64, TCG_COND_LEU)
-+TRANS(xvsle_b, LASX, do_xcmp, MO_8, TCG_COND_LE)
-+TRANS(xvsle_h, LASX, do_xcmp, MO_16, TCG_COND_LE)
-+TRANS(xvsle_w, LASX, do_xcmp, MO_32, TCG_COND_LE)
-+TRANS(xvsle_d, LASX, do_xcmp, MO_64, TCG_COND_LE)
-+TRANS(xvslei_b, LASX, do_xcmpi, MO_8, TCG_COND_LE)
-+TRANS(xvslei_h, LASX, do_xcmpi, MO_16, TCG_COND_LE)
-+TRANS(xvslei_w, LASX, do_xcmpi, MO_32, TCG_COND_LE)
-+TRANS(xvslei_d, LASX, do_xcmpi, MO_64, TCG_COND_LE)
-+TRANS(xvsle_bu, LASX, do_xcmp, MO_8, TCG_COND_LEU)
-+TRANS(xvsle_hu, LASX, do_xcmp, MO_16, TCG_COND_LEU)
-+TRANS(xvsle_wu, LASX, do_xcmp, MO_32, TCG_COND_LEU)
-+TRANS(xvsle_du, LASX, do_xcmp, MO_64, TCG_COND_LEU)
-+TRANS(xvslei_bu, LASX, do_xcmpi, MO_8, TCG_COND_LEU)
-+TRANS(xvslei_hu, LASX, do_xcmpi, MO_16, TCG_COND_LEU)
-+TRANS(xvslei_wu, LASX, do_xcmpi, MO_32, TCG_COND_LEU)
-+TRANS(xvslei_du, LASX, do_xcmpi, MO_64, TCG_COND_LEU)
- 
- TRANS(vslt_b, LSX, do_cmp, MO_8, TCG_COND_LT)
- TRANS(vslt_h, LSX, do_cmp, MO_16, TCG_COND_LT)
- TRANS(vslt_w, LSX, do_cmp, MO_32, TCG_COND_LT)
- TRANS(vslt_d, LSX, do_cmp, MO_64, TCG_COND_LT)
--TRANS(vslti_b, LSX, do_vslti_s, MO_8)
--TRANS(vslti_h, LSX, do_vslti_s, MO_16)
--TRANS(vslti_w, LSX, do_vslti_s, MO_32)
--TRANS(vslti_d, LSX, do_vslti_s, MO_64)
-+TRANS(vslti_b, LSX, do_cmpi, MO_8, TCG_COND_LT)
-+TRANS(vslti_h, LSX, do_cmpi, MO_16, TCG_COND_LT)
-+TRANS(vslti_w, LSX, do_cmpi, MO_32, TCG_COND_LT)
-+TRANS(vslti_d, LSX, do_cmpi, MO_64, TCG_COND_LT)
- TRANS(vslt_bu, LSX, do_cmp, MO_8, TCG_COND_LTU)
- TRANS(vslt_hu, LSX, do_cmp, MO_16, TCG_COND_LTU)
- TRANS(vslt_wu, LSX, do_cmp, MO_32, TCG_COND_LTU)
- TRANS(vslt_du, LSX, do_cmp, MO_64, TCG_COND_LTU)
--TRANS(vslti_bu, LSX, do_vslti_u, MO_8)
--TRANS(vslti_hu, LSX, do_vslti_u, MO_16)
--TRANS(vslti_wu, LSX, do_vslti_u, MO_32)
--TRANS(vslti_du, LSX, do_vslti_u, MO_64)
-+TRANS(vslti_bu, LSX, do_cmpi, MO_8, TCG_COND_LTU)
-+TRANS(vslti_hu, LSX, do_cmpi, MO_16, TCG_COND_LTU)
-+TRANS(vslti_wu, LSX, do_cmpi, MO_32, TCG_COND_LTU)
-+TRANS(vslti_du, LSX, do_cmpi, MO_64, TCG_COND_LTU)
-+TRANS(xvslt_b, LASX, do_xcmp, MO_8, TCG_COND_LT)
-+TRANS(xvslt_h, LASX, do_xcmp, MO_16, TCG_COND_LT)
-+TRANS(xvslt_w, LASX, do_xcmp, MO_32, TCG_COND_LT)
-+TRANS(xvslt_d, LASX, do_xcmp, MO_64, TCG_COND_LT)
-+TRANS(xvslti_b, LASX, do_xcmpi, MO_8, TCG_COND_LT)
-+TRANS(xvslti_h, LASX, do_xcmpi, MO_16, TCG_COND_LT)
-+TRANS(xvslti_w, LASX, do_xcmpi, MO_32, TCG_COND_LT)
-+TRANS(xvslti_d, LASX, do_xcmpi, MO_64, TCG_COND_LT)
-+TRANS(xvslt_bu, LASX, do_xcmp, MO_8, TCG_COND_LTU)
-+TRANS(xvslt_hu, LASX, do_xcmp, MO_16, TCG_COND_LTU)
-+TRANS(xvslt_wu, LASX, do_xcmp, MO_32, TCG_COND_LTU)
-+TRANS(xvslt_du, LASX, do_xcmp, MO_64, TCG_COND_LTU)
-+TRANS(xvslti_bu, LASX, do_xcmpi, MO_8, TCG_COND_LTU)
-+TRANS(xvslti_hu, LASX, do_xcmpi, MO_16, TCG_COND_LTU)
-+TRANS(xvslti_wu, LASX, do_xcmpi, MO_32, TCG_COND_LTU)
-+TRANS(xvslti_du, LASX, do_xcmpi, MO_64, TCG_COND_LTU)
- 
- static bool trans_vfcmp_cond_s(DisasContext *ctx, arg_vvv_fcond *a)
+-static bool trans_vfcmp_cond_d(DisasContext *ctx, arg_vvv_fcond *a)
++static bool do_vfcmp_cond_d(DisasContext *ctx, arg_vvv_fcond *a, uint32_t sz)
  {
+     uint32_t flags;
+-    void (*fn)(TCGv_env, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32);
++    void (*fn)(TCGv_env, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32, TCGv_i32);
+     TCGv_i32 vd = tcg_constant_i32(a->vd);
+     TCGv_i32 vj = tcg_constant_i32(a->vj);
+     TCGv_i32 vk = tcg_constant_i32(a->vk);
++    TCGv_i32 oprsz = tcg_constant_i32(sz);
+ 
+-    if (!avail_LSX(ctx)) {
+-        return false;
+-    }
+-
+-    if (!check_vec(ctx, 16)) {
++    if (!check_vec(ctx, sz)) {
+         return true;
+     }
+ 
+     fn = (a->fcond & 1 ? gen_helper_vfcmp_s_d : gen_helper_vfcmp_c_d);
+     flags = get_fcmp_flags(a->fcond >> 1);
+-    fn(cpu_env, vd, vj, vk, tcg_constant_i32(flags));
++    fn(cpu_env, oprsz, vd, vj, vk, tcg_constant_i32(flags));
+ 
+     return true;
+ }
+ 
++TRANS(vfcmp_cond_s, LSX, do_vfcmp_cond_s, 16)
++TRANS(vfcmp_cond_d, LSX, do_vfcmp_cond_d, 16)
++TRANS(xvfcmp_cond_s, LASX, do_vfcmp_cond_s, 32)
++TRANS(xvfcmp_cond_d, LASX, do_vfcmp_cond_d, 32)
++
+ static bool trans_vbitsel_v(DisasContext *ctx, arg_vvvv *a)
+ {
+     if (!avail_LSX(ctx)) {
 -- 
 2.39.1
 
