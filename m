@@ -2,69 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109957A8D1A
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 21:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7002D7A8D72
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 22:03:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj3Cs-0000V0-NQ; Wed, 20 Sep 2023 15:49:54 -0400
+	id 1qj3Ow-0002f2-Nu; Wed, 20 Sep 2023 16:02:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qj3Cr-0000Um-5X
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:49:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qj3Oq-0002em-Nj
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 16:02:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qj3Cp-0007rB-Px
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:49:52 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qj3Om-0002PB-Lj
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 16:02:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695239391;
+ s=mimecast20190719; t=1695240131;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jByhE9WRYO0hH7CuHgmdPaNfWJpmyUR6F1c9hbVprsc=;
- b=SVaySg70lIt6F1a1a+eQbHJBk3Ub6zgTi0ez7cR/tDF+HyhQ7oElaZk/97jlxLhyTW8ZMs
- ikOPbtWwvBTeo4pszZrri6frYCJj9BVG0xqszvQkJncDOX2bclrUQFNj7Q1ttyDrJinP7N
- EZj5wVcB8ly+e52yrl/rEDAWLSOCNAE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-595-xG3gifwaNUi-FLT2YKeQcA-1; Wed, 20 Sep 2023 15:49:47 -0400
-X-MC-Unique: xG3gifwaNUi-FLT2YKeQcA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F23DF801FA9;
- Wed, 20 Sep 2023 19:49:46 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.174])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8928F492C37;
- Wed, 20 Sep 2023 19:49:46 +0000 (UTC)
-Date: Wed, 20 Sep 2023 15:49:45 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Mads Ynddal <mads@ynddal.dk>
-Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Mads Ynddal <m.ynddal@samsung.com>
-Subject: Re: [PATCH v4 06/14] simpletrace: improved error handling on struct
- unpack
-Message-ID: <20230920194945.GE1094271@fedora>
-References: <20230823085429.20519-1-mads@ynddal.dk>
- <20230823085429.20519-7-mads@ynddal.dk>
+ bh=HdkPKDMQnIDj/BimLpBdN6Wa9HtIgeClHrRjuXDYx6s=;
+ b=flzvWLTSGoUWLkekcqm5l5l9sa6vwfRgRO9QZw+PplyR8fX3jKkV2ckct1LM3BBBLC36nX
+ A0KH02cJevmBHlRadAawAqEhelaUixwg8HXw3RcY0WarwjxH9VUXqWk2zVfB2q4ma0efFd
+ 81ZPxb6HWOPVlLmYsTJ4F7MQOe8pZgk=
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
+ [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-166-Q2BhPKjAMv-DEwnMJvr_Hg-1; Wed, 20 Sep 2023 16:02:10 -0400
+X-MC-Unique: Q2BhPKjAMv-DEwnMJvr_Hg-1
+Received: by mail-io1-f70.google.com with SMTP id
+ ca18e2360f4ac-79f69da2877so17165739f.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 13:02:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695240129; x=1695844929;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=HdkPKDMQnIDj/BimLpBdN6Wa9HtIgeClHrRjuXDYx6s=;
+ b=wJf4j4o3zlbkxnPGYCzBk8Kry367yza4A7C1zey2QfK9EMskeb5mM0RF4kJurS0AH3
+ tf5cMBbWj9dnfqQ3X9dGFovdatHQG9GUMS57O9N4Aar9qiG7uqwEoKeQq0MTP7g5sENV
+ 3eNaI+x6pyjTe8f1b5zL9HMi6juBsetYMIbpQWJZFju71U31TRZ/awmPo1Nf6J+VlpiL
+ 7ASHZrTEd6mSMglHJRqkGg7uod5V9bRBGMuzjnh6o4q0H6XenvRE1yfoUSxdYSABbk/X
+ hbQaaHzNhHkqqVsdyhHGBcCU1i8vv6ZF8UhfxChBgodPz9tR2u14HlMbP+aeFWmvn5gx
+ ObVw==
+X-Gm-Message-State: AOJu0YyUHTwmuuZV5XPvUpJR9+F4mfiI+SVQ0P6EWksFORkO7dDhiJ7v
+ tJ02PboBC2+ah27Fs4YZcNF7FEBjs1iEToegrG7wQCtw1QeSUw4zq3tO54gm4dvRS5nHeFni2eh
+ IZo3JZsuiNbFR/Pc=
+X-Received: by 2002:a5e:d510:0:b0:794:d7e8:d239 with SMTP id
+ e16-20020a5ed510000000b00794d7e8d239mr4184652iom.17.1695240129335; 
+ Wed, 20 Sep 2023 13:02:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUYqBQf2E1HAB3vBnlqDoq6bcYW2jYE3zqxwuZe90ZBVy+smnJ6kd0pW3slaurqFkFoGWc9g==
+X-Received: by 2002:a5e:d510:0:b0:794:d7e8:d239 with SMTP id
+ e16-20020a5ed510000000b00794d7e8d239mr4184617iom.17.1695240129037; 
+ Wed, 20 Sep 2023 13:02:09 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ c22-20020a02c9d6000000b0042b255d46c1sm4342563jap.11.2023.09.20.13.02.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Sep 2023 13:02:08 -0700 (PDT)
+Date: Wed, 20 Sep 2023 14:02:06 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ clg@redhat.com, jean-philippe@linaro.org, mst@redhat.com,
+ pbonzini@redhat.com, peter.maydell@linaro.org, peterx@redhat.com,
+ david@redhat.com, philmd@linaro.org
+Subject: Re: [PATCH v2 12/12] vfio: Remove 64-bit IOVA address space assumption
+Message-ID: <20230920140206.6de4964c.alex.williamson@redhat.com>
+In-Reply-To: <20230913080423.523953-13-eric.auger@redhat.com>
+References: <20230913080423.523953-1-eric.auger@redhat.com>
+ <20230913080423.523953-13-eric.auger@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="xR9/QFUbTH6yltvh"
-Content-Disposition: inline
-In-Reply-To: <20230823085429.20519-7-mads@ynddal.dk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,42 +103,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, 13 Sep 2023 10:01:47 +0200
+Eric Auger <eric.auger@redhat.com> wrote:
 
---xR9/QFUbTH6yltvh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Now we retrieve the usable IOVA ranges from the host,
+> we now the physical IOMMU aperture and we can remove
+> the assumption of 64b IOVA space when calling
+> vfio_host_win_add().
+> 
+> This works fine in general but in case of an IOMMU memory
+> region this becomes more tricky. For instance the virtio-iommu
+> MR has a 64b aperture by default. If the physical IOMMU has a
+> smaller aperture (typically the case for VTD), this means we
+> would need to resize the IOMMU MR when this latter is linked
+> to a container. However this happens on vfio_listener_region_add()
+> when calling the IOMMU MR set_iova_ranges() callback and this
+> would mean we would have a recursive call the
+> vfio_listener_region_add(). This looks like a wrong usage of
+> the memory API causing duplicate IOMMU MR notifier registration
+> for instance.
+> 
+> Until we find a better solution, make sure the vfio_find_hostwin()
+> is not called anymore for IOMMU region.
 
-On Wed, Aug 23, 2023 at 10:54:21AM +0200, Mads Ynddal wrote:
-> From: Mads Ynddal <m.ynddal@samsung.com>
->=20
-> A failed call to `read_header` wouldn't be handled the same for the two
-> different code paths (one path would try to use `None` as a list).
-> Changed to raise exception to be handled centrally. This also allows for
-> easier unpacking, as errors has been filtered out.
->=20
-> Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
+Thanks for your encouragement to double check this, it does seem like
+there are some gaps in the host window support.  First I guess I don't
+understand why the last chunk here assumes a contiguous range.
+Shouldn't we call vfio_host_win_add() for each IOVA range?
+
+But then we have a problem that we don't necessarily get positive
+feedback from memory_region_iommu_set_iova_ranges().  Did the vIOMMU
+accept the ranges or not?  Only one vIOMMU implements the callback.
+Should we only call memory_region_iommu_set_iova_ranges() if the range
+doesn't align to a host window and should the wrapper return -ENOTSUP
+if there is no vIOMMU support to poke holes in the range?  Thanks,
+
+Alex
+
+ 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> 
 > ---
->  scripts/simpletrace.py | 41 ++++++++++++++++-------------------------
->  1 file changed, 16 insertions(+), 25 deletions(-)
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-
---xR9/QFUbTH6yltvh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmULTNgACgkQnKSrs4Gr
-c8gBbwf/WYvInA1TuuyaaLC7S+7bqlfhwZqydVodRt9JAgY+DMGE9G2aZews4WCo
-if1hm6KQAiS5+kyXKHj4+klo0+7jVgNtUbO+fHREiWm7mj8nQq8a9ztfnVQXJaKJ
-Jj+Pi01gWhGAwk7HjonhxL3JZZEBOGa5W72Cc8188qwBTYKpYGT6lYTgvQMIkb6/
-w7IR9h206jVSGoAl0P6VEw5iurrY9SANU2qVsk6OfPVBQKYREqUDvCMX74Xv+fD3
-T1wqa79CArZ0e+TWzs1rE01AnfeUzQxpphjZiLZnZyiVIDnKiy1Fbdk7weFPDdVO
-Cv3vHdrsUvHOgb6xx2F40ZL82EfSsw==
-=VwC4
------END PGP SIGNATURE-----
-
---xR9/QFUbTH6yltvh--
+> 
+> I have not found any working solution to the IOMMU MR resizing.
+> So I can remove this patch or remove the check for IOMMU MR. Maybe
+> this is an issue which can be handled separately?
+> ---
+>  hw/vfio/common.c | 25 ++++++++++++-------------
+>  1 file changed, 12 insertions(+), 13 deletions(-)
+> 
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 26da38de05..40cac1ca91 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1112,13 +1112,6 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>  #endif
+>      }
+>  
+> -    hostwin = vfio_find_hostwin(container, iova, end);
+> -    if (!hostwin) {
+> -        error_setg(&err, "Container %p can't map guest IOVA region"
+> -                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+> -        goto fail;
+> -    }
+> -
+>      memory_region_ref(section->mr);
+>  
+>      if (memory_region_is_iommu(section->mr)) {
+> @@ -1177,6 +1170,14 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>          return;
+>      }
+>  
+> +    hostwin = vfio_find_hostwin(container, iova, end);
+> +    if (!hostwin) {
+> +        error_setg(&err, "Container %p can't map guest IOVA region"
+> +                   " 0x%"HWADDR_PRIx"..0x%"HWADDR_PRIx, container, iova, end);
+> +        goto fail;
+> +    }
+> +
+> +
+>      /* Here we assume that memory_region_is_ram(section->mr)==true */
+>  
+>      /*
+> @@ -2594,12 +2595,10 @@ static int vfio_connect_container(VFIOGroup *group, AddressSpace *as,
+>          vfio_get_iommu_info_migration(container, info);
+>          g_free(info);
+>  
+> -        /*
+> -         * FIXME: We should parse VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE
+> -         * information to get the actual window extent rather than assume
+> -         * a 64-bit IOVA address space.
+> -         */
+> -        vfio_host_win_add(container, 0, (hwaddr)-1, container->pgsizes);
+> +        g_assert(container->nr_iovas);
+> +        vfio_host_win_add(container, 0,
+> +                          container->iova_ranges[container->nr_iovas - 1].end,
+> +                          container->pgsizes);
+>  
+>          break;
+>      }
 
 
