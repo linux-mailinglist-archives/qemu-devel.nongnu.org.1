@@ -2,107 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4275A7A8770
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 16:45:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D127A889F
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 17:41:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiyRW-0000B6-MT; Wed, 20 Sep 2023 10:44:42 -0400
+	id 1qizIp-0002gM-TZ; Wed, 20 Sep 2023 11:39:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <brchuckz@aim.com>) id 1qiyRU-0000Ay-DF
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:44:40 -0400
-Received: from sonic310-21.consmr.mail.gq1.yahoo.com ([98.137.69.147])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <brchuckz@aim.com>) id 1qiyRP-0003kO-Bh
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:44:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048;
- t=1695221070; bh=XijLq0YSqnbK496MfIb79/fWIh7B6yNruOyf40BE6qc=;
- h=Date:From:Subject:To:Cc:References:In-Reply-To:From:Subject:Reply-To;
- b=T6Nuia+7IYdO/N2oL/i18bxl8UOwMZVVLrgCCjw9cbNSwqVvGU3phLdUVT6lvZkxGJm90IXjaAFSRMB+/of4Y/tVLajBvwFJmWZ8wQm45ZlKAIeUb2clwB4B6YBFpfDoUNjvF0rcKHAAUZ3ja0l5dMUH8jIwvWGddOOQiNMQoeFfkc356yvb9GUwbBC6ic0tL8vjUkupUpes/RnPgiV6BoFz6ZtelK6bVNtOCQhUi3PdGvrXmz/Q1heajgF+KyB3qmcF8ZOVRTvUFAv30/q08Gs/BLhgbZ9dE1G0xs4R0oB3J1oFFWlpUWg5J6K5aW6U/z86jfpNunIgcl9/clhzWg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
- t=1695221070; bh=4c4lC1v68u+I+Wt7Cuj9L2lAfhigVlQETv6LsH3QlSV=;
- h=X-Sonic-MF:Date:From:Subject:To:From:Subject;
- b=gS2jmeS/FgPGusT0zwC/Dh59Ardkfg0Kr5uEfU499BFGo30ntSNSZQW8p3uW0ZYGyawxpEUSq9oucjbABdOgh0jFhPsGDA3sDeMlXP3o/ser+yIgaxxHmpxC3UClhdigcyZjTRfrHpsm71GHX7B1WbKB7p2pC6w349Y9fp/Mj6mC1Brj6tldJhOP9+pTPrewO9D9E6CDeYLMOBXvduH0YuqbTrx8iZ8ukuEZ6Eil9CKzk5er3EcwXulUqfGQ7UpEISgjujAv9Deh/nkAEBFZhkaXr7JGX1ghtSKDbAtGv76AaCCPPBb2seUltnVhZ1lPLLkPJuFxhrTpfgNUm/kLyA==
-X-YMail-OSG: AU922YAVM1l6OB7xoRirelMQZYVALkclBUK8gX196Cec0Q38m1glfY1uYRZkP5d
- tiX2sCjVl5Urp9n1B8ivdvzgaIHXXKfAioBUayzEb6nwUPtZ4v0MfouDVkBf0NXCJoMf0tUnE7Zb
- BgtynytOsY.qaGo6b1Nw4NX.mmaI1bJ1K7UbMIOWADV5mUGl75RWk0uyIfO1EU.5OfMB5ZQOEL5l
- oQaMbBJ8oCuioBZKuPJV4SR5rt9JWK7hNRhug7qPQ0ngQKM5XiJhzE7DNjNXLmwG7e0Oy.2A8h1a
- .5_N5bMoEVWPry5YyxaPFjfnNo6h.KCeI7gcV9i0imZYO665VJnXVuMjYoRTPbcgfNGQyPkFCPzu
- 1X3Q2bbG0d1weTzmUkPcYmevT3ddq2Cx6usKwLmS.sKrfxZ4UyWPUWFp1kw7FdRadGkZqMmxe_Vv
- u_q2hVtle4K2Yo03Bv7B.AKYGxluBXtgDhn_pKTD6VBhKKCL4hCFZ_BLhrMvkTjvCrHODGZK3d0A
- OcYQRIHSlw2gSc1u7o0TTLFIpW7bSvc6vPj5N_m9KxvGwNgub_e065rTMPcaimGlVJrb.Oh0pqym
- rnUWM51NUq0H_..q4GpeHix69zJKphNXgLzr1TefFVGjBj7IebJ6vs4qnsRfPGr0UMPTyjMHx1Eh
- e570YyuXmn2uMa0OrlJFu9_PC6TCGY5_fI.3JzY4MoPI8EIaJvdJBGm6Gxnnq5vbRSDdAl6Y4vvg
- yQxUorQCUECCOt8UpzC6fFU893o7eE_wxHx2Jj0P3qx8KdoBh9gkUxQLL90z8Mdg.DA.tf8pUwdY
- QnfYOrIS3odmgiuwkOSe9b83n6S.MhiDKr4E1Biqihv_0.yuWen4LIhVkKZEpLMMHJcM1OJvQwUO
- kYktyQma_FmrPPhoTaWaw9ziWl7sSYvO6aIGfHwekwV2mpItaRauy8LwQHn2H0jPd3QwLZug1BiV
- RGIAj7xDvOrxRKZD7tCTUOEw5dm1Cb.R3doZMKkHsNF91Z8w0Efu27o2ZYwQ6hWXc7OwQ6_L4PIU
- QL7cLjWsJs6aO9wDyxWWRwjXFlJf1V1eQwAm_4AtjVJuRW9kCQdJRLYsWeGNCHrbMnI4pOF8T1Ul
- 50Z3BzUxjjDkmVs8ibPZ1A56B6YUPHwnS0HgRAMeN4NtkjZ67KiGNbDA12rxXnLzdVeBoCrxzHu9
- l_Faq_J.cD6F12t_gbn5GlTpgWKvgywf7JpRDKPIbMF9g3o9iFEiO5RlcZkcVkuv4pbbNX9dA3nD
- 0MskXloyNnvVyJUR3VqJh4d1XRWMg4qIXIDFX2v8NWwqiohN4mUodQj8dFETXJRsBBVuemryqiCv
- F5UqEr8BUDySfnYfXwe8iFWVIKr8Oe4i1n5FwJ2AT_g.JTtvEYvpKc0fdLvpFcXxYoeBH1lHBe7v
- mxSA.HlLxDvQSF7Us46syvM9yVHVbHvQw8jqRM_eVvSLEdX5ebW9wiQsSmri5rqN1A.V5YHbodag
- hXV5Bpk6o9nZ5dOxuLa.2rc7qMsCvKrksu2PXHE.zLnEL4HZFac9kAIfFeTBhIaRiHp2SladMhXL
- S5CHi9t.6m44Yf7QpR5gb6JHYeFOYZtAhzRdSk5HuOkV2X0VJBEL0QaZB0IsTCnoUDdgeDbjpd5h
- hd0JeM95i7yZs1mwV2CM.8W6VoLEK43f4mbwl1CQZ6Se5B5KyycBq3cnmZI_UcO.7dsrgYY_j4VV
- FScynXEM.qxg2dACE.rVUO1UUWRLxbzKpPeJziXiHih3OQgyf_FEEk1_oN9CyfpAsO7ChVaDE1aI
- rW7Ykh8GoCR_3r5kuvgtNUOOtqCNaSMnjpWI2IGlGNdL3Tc3A3a3x7lLjjWAh7u71ZpM9uqTucJo
- BUUB6qG29KgzGRggMIpPfJrwSCxYsejUDU3IWIn6nXdiU8Dw2QDWEVHyLbaLpFgqNVislDcZgSkE
- OYR16XddgLtfTuZq9Wh7tLwgZBBYn4Zaa3IxSIjmCwlLrzTX7NVcdW1PN6aitwPIp.N3HpVfDG8E
- GMXgql6CszcOaw2LKrw3KrsXdqIcwkpFStL.xTxIshFvW5Z198kV6ODOlDZjPM61c20rJkIBhXrG
- 8XMTNbQo76t3.G8oJiRaXkq7DQt1_mi37Yt0NuBBRMxsGDidLLbC_RSmSeipvtnl3qQaYPJylwJ.
- WUpqRa0jgNrN0DBn6tiM5uS3xcQ6nmWJFWKAF7UwZTvWNXjodKOUOQsFyM_FCnhNyA1iwV6ozAf5
- mdVw1Ibs3lT2Th24UC55DcLWKo4PTa8Y-
-X-Sonic-MF: <brchuckz@aim.com>
-X-Sonic-ID: e5e70465-c2df-41c0-81bf-a8fcd2dc0a37
-Received: from sonic.gate.mail.ne1.yahoo.com by
- sonic310.consmr.mail.gq1.yahoo.com with HTTP; Wed, 20 Sep 2023 14:44:30 +0000
-Received: by hermes--production-ne1-6cbd549489-84thk (Yahoo Inc. Hermes SMTP
- Server) with ESMTPA ID 25f55bca556ea028f0a42f54df88281a; 
- Wed, 20 Sep 2023 14:44:25 +0000 (UTC)
-Message-ID: <6cd8d49f-2b69-471c-84b7-890f31f585b5@aol.com>
-Date: Wed, 20 Sep 2023 10:44:23 -0400
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qizIn-0002g7-8v
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:39:45 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qizIl-0006DX-KN
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:39:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=rZZzNl7HwOSwGjXrxfgiP4H/n6w8+5+7ZX3jH7+Qo2Q=; b=vOOEVOx+64aCWOPmR8VvTU0nm0
+ 1arfLmC47KeAU64Bokf+uQsX1U3RsV/CwgeLMbgD3hXZU5qphedCcg2aCzDcUoiQDBkp9puHMEfPk
+ Xj3RMPWQJL4DNAgzjON/PqUvjW6k1jdKUS6bkqTbFOajDAMEy3StZMEqKUkNSScjW8FteR1VKykpx
+ dKBQOGAkROKIxANSZAmUwbwVXXzK/qkgnj40ZUKvBEs1iN7EUqe8MA9218D7d3fCijS7SxrV/Xtlt
+ fGo9MDntKQ2va9AqmHEY+oftW+0RII3CHwXC+6/h+kYv67RgPAGV52NhVc9vjQbsisMplM+LXDlsa
+ pUGlQ76qbJmtRWq6yba6uFfe4q57KDtSszeKN5FpIUeF9Pp+qtCxv9MhVjksOt4eYQGvRd9iLyJSh
+ 7cHuE9/YLO0kFqOOcAV8YbeEj1X0kdW09nkJ0y41PHv287xr1OSOJSbm3b6Lsmtd6GZQmo2y+fRnX
+ zt6lLaOHkHfDz0T51qDHC4vl9zGP9UoXc4CNAxml2jihhNSCN+adJLS50KkHyw8qX7L8OyVZxLrYj
+ NQA5Sq+5fHZa2mspNe6TlBAe3pkuAtFLQi08kWiJyDoCWt4cazB33MC02J3YzPrKlVAiglaHWtZEF
+ Ts0P4l1VTTmUkjYGrdWaft127QuTxsKQD6yPOyp3k=;
+Received: from [2a00:23c4:8baf:5f00:4f7d:f5b:6c8a:d0af]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qizIZ-0004m1-Df; Wed, 20 Sep 2023 16:39:35 +0100
+Message-ID: <f3e9aa48-d450-c11d-9639-a7a852719a64@ilande.co.uk>
+Date: Wed, 20 Sep 2023 16:39:33 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Chuck Zmudzinski <brchuckz@aol.com>
-Subject: Re: [PATCH v3 2/6] hw/isa/piix3: Reuse piix3_realize() in
- piix3_xen_realize()
-To: Bernhard Beschow <shentey@gmail.com>, Jason Andryuk <jandryuk@gmail.com>, 
- Anthony PERARD <anthony.perard@citrix.com>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>,
- =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
- Aurelien Jarno <aurelien@aurel32.net>, Eduardo Habkost
- <eduardo@habkost.net>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-References: <20230312120221.99183-1-shentey@gmail.com>
- <20230312120221.99183-3-shentey@gmail.com>
- <f52c41f7-e662-4afd-8ac9-ce2c0da2b1be@perard>
- <7F45B51F-F1E3-4F04-A46F-4C80509C7195@gmail.com>
- <622b9674-fffd-4634-ac30-d0db3230478e@perard>
- <CAKf6xpvxf=F52etJ8o3eLQV4JVD5WM57znGoP3ctONRf7uPisA@mail.gmail.com>
- <B0FF78F4-1193-495B-919C-84A1FF8ADF12@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+To: =?UTF-8?Q?Volker_R=c3=bcmelin?= <vr_qemu@t-online.de>, laurent@vivier.eu
+Cc: qemu-devel@nongnu.org
+References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
+ <20230909094827.33871-8-mark.cave-ayland@ilande.co.uk>
+ <373b3abd-a726-e795-eaee-0389a25c662f@t-online.de>
 Content-Language: en-US
-In-Reply-To: <B0FF78F4-1193-495B-919C-84A1FF8ADF12@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <373b3abd-a726-e795-eaee-0389a25c662f@t-online.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.21797
- mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
-Received-SPF: pass client-ip=98.137.69.147; envelope-from=brchuckz@aim.com;
- helo=sonic310-21.consmr.mail.gq1.yahoo.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:4f7d:f5b:6c8a:d0af
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v2 07/20] audio: add Apple Sound Chip (ASC) emulation
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,64 +81,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/19/2023 4:02 PM, Bernhard Beschow wrote:
-> 
-> 
-> Am 3. April 2023 12:27:14 UTC schrieb Jason Andryuk <jandryuk@gmail.com>:
->>On Mon, Apr 3, 2023 at 5:33 AM Anthony PERARD <anthony.perard@citrix.com> wrote:
->>>
->>> On Sat, Apr 01, 2023 at 10:36:45PM +0000, Bernhard Beschow wrote:
->>> >
->>> >
->>> > Am 30. März 2023 13:00:25 UTC schrieb Anthony PERARD <anthony.perard@citrix.com>:
->>> > >On Sun, Mar 12, 2023 at 01:02:17PM +0100, Bernhard Beschow wrote:
->>> > >> This is a preparational patch for the next one to make the following
->>> > >> more obvious:
->>> > >>
->>> > >> First, pci_bus_irqs() is now called twice in case of Xen where the
->>> > >> second call overrides the pci_set_irq_fn with the Xen variant.
->>> > >
->>> > >pci_bus_irqs() does allocates pci_bus->irq_count, so the second call in
->>> > >piix3_xen_realize() will leak `pci_bus->irq_count`. Could you look if
->>> > >pci_bus_irqs_cleanup() can be called before the second pci_bus_irqs()
->>> > >call, or maybe some other way to avoid the leak?
->>> >
->>> > Thanks for catching this! I'll post a v4.
->>> >
->>> > I think the most fool-proof way to fix this is to free irq_count just before the assignment. pci_bus_irqs_cleanup() would then have to NULL the attribute such that pci_bus_irqs() can be called afterwards.
->>> >
->>> > BTW: I tried running qemu-system-x86_64 with PIIX4 rather than PIIX3 as Xen guest with my pc-piix4 branch without success. This branch essentially just provides slightly different PCI IDs for PIIX. Does xl or something else in Xen check these? If not then this means I'm still missing something. Under KVM this branch works just fine. Any idea?
->>>
->>> Maybe the ACPI tables provided by libxl needs to be updated.
->>> Or maybe something in the firmware (SeaBIOS or OVMF/OvmfXen) check the
->>> id (I know that the PCI id of the root bus is checked, but I don't know
->>> if that's the one that's been changed).
+On 14/09/2023 08:06, Volker Rümelin wrote:
+
+> Am 09.09.23 um 11:48 schrieb Mark Cave-Ayland:
+>> The Apple Sound Chip was primarily used by the Macintosh II to generate sound
+>> in hardware which was previously handled by the toolbox ROM with software
+>> interrupts.
 >>
->>Xen also has hvmloader, which runs before SeaBIOS/OVMF.  Looking at
->>tools/firmware/hvmloader/pci.c, it has
->>        ASSERT((devfn != PCI_ISA_DEVFN) ||
->>               ((vendor_id == 0x8086) && (device_id == 0x7000)));
+>> Implement both the standard ASC and also the enhanced ASC (EASC) functionality
+>> which is used in the Quadra 800.
 >>
->>From QEMU, it looks like 0x7000 is PCI_DEVICE_ID_INTEL_82371SB_0, but
->>PIIX4 uses 0x7110 (PCI_DEVICE_ID_INTEL_82371AB_0).  Maybe try removing
->>that check?
-> 
-> I was finally able to build Xen successfully (without my distribution providing too recent dependencies that prevent compilation). With 0x7110 added in the line above I could indeed run a Xen guest with PIIX4. Yay!
-> 
-> Now I just need to respin my PIIX consolidation series...
-
-Welcome to the world of running guests on Xen! I am the one who tested your earlier patches with Xen guests, and I just wanted to say thanks for keeping me in the loop. Please Cc me when you post your respin of the PIIX consolidation series since I would like to also test it in my Xen environment. I understand I will also need to patch hvmloader.c on the Xen side to set the correct device id.
-
-Kind regards,
-
-Chuck
-
-> 
-> Best regards,
-> Bernhard
-> 
+>> Note that whilst real ASC hardware uses AUDIO_FORMAT_S8, this implementation uses
+>> AUDIO_FORMAT_U8 instead because AUDIO_FORMAT_S8 is rarely used and not supported
+>> by some audio backends like PulseAudio and DirectSound when played directly with
+>> -audiodev out.mixing-engine=off.
 >>
->>Regards,
->>Jason
+>> Co-developed-by: Laurent Vivier <laurent@vivier.eu>
+>> Co-developed-by: Volker Rümelin <vr_qemu@t-online.de>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+>> ---
+>>   MAINTAINERS            |   2 +
+>>   hw/audio/Kconfig       |   3 +
+>>   hw/audio/asc.c         | 699 +++++++++++++++++++++++++++++++++++++++++
+>>   hw/audio/meson.build   |   1 +
+>>   hw/audio/trace-events  |  10 +
+>>   hw/m68k/Kconfig        |   1 +
+>>   include/hw/audio/asc.h |  84 +++++
+>>   7 files changed, 800 insertions(+)
+>>   create mode 100644 hw/audio/asc.c
+>>   create mode 100644 include/hw/audio/asc.h
+> 
+> Hi Mark,
+> 
+> the function generate_fifo() has four issues. Only the first one
+> is noticeable.
+> 
+> 1. The calculation of the variable limit assumes generate_fifo()
+> generates one output sample from every input byte. This is correct
+> for the raw mode, but not for the CD-XA BRR mode. This mode
+> generates 28 output samples from 15 input bytes. This is the
+> reason for the stuttering end of a CD-XA BRR mode sound. Every
+> generate_fifo() call generates approximately only half of the
+> possible samples when the fifo bytes are running low.
+> 
+> 2. generate_fifo() doesn't generate the last output sample from
+> a CD-XA BRR mode sound. The last sample is generated from internal
+> state and the code will not be called without at least one byte
+> in the fifo.
+> 
+> 3. It's not necessary to wait for a complete 15 byte packet in
+> CD-XA BRR mode. Audio playback devices should write all
+> requested samples immediately if possible.
+> 
+> 4. The saturation function in CD-XA BRR mode works with 16 bit
+> integers. It should saturate at +32767 and -32768.
+> 
+> Since I think a few lines of code explain the issues better
+> than my words, I've attached a patch below.
+> 
+> With best regards,
+> Volker
+
+Hi Volker,
+
+Thanks for detailed explanation above - everything makes sense based upon previous 
+discussions. My only question is in comment 3 where you say "Audio playback devices 
+should write all requested samples immediately if possible": can you clarify does 
+this mean that the supplied length to the audio callback represents a *required* 
+rather than a *maximum* number of samples?
+
+Regardless of this I've had some time to test on Windows this afternoon, and I can 
+confirm that your changes fix the outstanding audio issues. I've squashed your 
+changes locally and I'll included them in the next revision of the series, although 
+I'll likely wait a bit first to see if any more reviews are forthcoming.
+
+
+Many thanks,
+
+Mark.
 
 
