@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1297A7A4A
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD7E7A7A54
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:24:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qivGB-0005YB-91; Wed, 20 Sep 2023 07:20:47 -0400
+	id 1qivGD-0005ZZ-CJ; Wed, 20 Sep 2023 07:20:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qivG7-0005WT-GG
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:20:43 -0400
-Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
+ id 1qivG9-0005XY-V1
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:20:45 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qivG5-00028j-BC
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:20:42 -0400
-Received: by mail-ot1-x32c.google.com with SMTP id
- 46e09a7af769-6befdb1f545so4627076a34.3
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 04:20:40 -0700 (PDT)
+ id 1qivG8-0002AT-AH
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:20:45 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6c09d760cb9so4186862a34.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 04:20:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695208840; x=1695813640; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1695208843; x=1695813643; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wXv2+rM6xv0lgenn9DSNpamz4f2qyYAqYB7MzAGEA5k=;
- b=BmKKpqwmKApgXfW7cVO+oSsOje9zin2HRqXnEAVh3iMtytFf5h0oFWe6QWE/8dizAf
- iYiymFay3zm9NuPRSSr8pNg4vgkydcXJ4L1Nn9Wy/bl2xAChaD/Ui5bytdnnr6oGy5Rh
- oWSF/LokimeJfqDILRrSrWVtAkJ32FwQphIvkTIt7ihwAApLl0Z6IwsEDdPc/JUQIWia
- jxE9k8NBuszZBD27lypJmr68YR3ugL3YPtnNHyOVuFTZb/ZtKz+/0tp4BtVMXXRwPTwy
- HuPpMvFOKnhGNz8U3E6LgMz7hP1oFK7iQcREqkVM72SOI6TeafgARfymiDqHt1xW+syL
- RlLg==
+ bh=VYZpogAnNMvf9lHAyK1WoXxa37bMCFKb0Dk4AIyTLEU=;
+ b=QpqUn9w53NbzNxB3SYEgVX/sVb64uW2UxBAg4FgZXSjyn6Li4CYhntjA87d7jNc3DY
+ DDfZGZ7PF09III6nnOBnegg3GVV2c0iBQil/UAq6ype4HMgiYegW61qFkt2rPl6V1SHF
+ y8djLTm2LiT2E8+pFGEZsBD8sphsWp6BVkOV6WC4BiD04aV/5htKu5kSOM/DRmBuLZN/
+ 9lGBzO3wvw1iPsMoEoDpUrAx3o3dMn1oZctBnTg16izq3hO6SqTU+ldEdcDgR+morrif
+ VUd6BXY0pYAI+X1iyaazUeYZDd5EQOBG4I41dg5Dhyq1IRNaOaDQPrkGbCbwvRBoTRC1
+ lubA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695208840; x=1695813640;
+ d=1e100.net; s=20230601; t=1695208843; x=1695813643;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wXv2+rM6xv0lgenn9DSNpamz4f2qyYAqYB7MzAGEA5k=;
- b=VuLdpPLFvz7i1s7wvYecu9jkc4oh7gRgT9Pab+cNqmxoy9yiLcjsISpNuT6fg5CGRy
- ubivdUBA3MY/YIqcuwasE13ECT2f3Ndk1Kh3GNBi0B9hGS2datvI2UK+/k0JDx0htwRr
- OiUnUW2vt8/RRfedpolpakzpzEdGE803upTZhoU4sVnaQhICwBXRYgrajD2/RDv9R70+
- EJrW607YoTaBgSGGBy7HJVkzXMUnxaQCeOKaEvwE6+aXbSZg78F7s94xKBAFg9+7YsCg
- jFDBdnxV+I7FfM2AabT9dw10IRDyl0CyNnmxgxS9sZvM/hdrdiRhmRvEdEKhlB2Xr9Ri
- yHmg==
-X-Gm-Message-State: AOJu0YxQtHufuAEH6gJrH7G52V7PyYtFjxuKjyDV+mzYaFNHy9+DiDIa
- +28du0ON19cAJCOxIkdvlFMo4APjhsYd+c9Rkkg=
-X-Google-Smtp-Source: AGHT+IHn76HtS4SIGI2N95inf18MHqYuxbHBBSvDAwbaupp5vMOg/y5fiokNg5dFw2cW9D1UZQ+DdA==
-X-Received: by 2002:a9d:6396:0:b0:6bd:749:f5cc with SMTP id
- w22-20020a9d6396000000b006bd0749f5ccmr2256536otk.26.1695208839813; 
- Wed, 20 Sep 2023 04:20:39 -0700 (PDT)
+ bh=VYZpogAnNMvf9lHAyK1WoXxa37bMCFKb0Dk4AIyTLEU=;
+ b=F+vxhXFL1rNcA03Phc1713y9RX+UjNiygoSLGQB9AvEqNL0X7LinfDWawEiXOryaHK
+ gJgKe6M4k1cCNJglyD5Ztw0H5OLnD8ppeQQOiAC9mxgA+9U/NR4ybiaREVrPiPU5IGbI
+ SVTRVSUTze1yq118P5exQPRsOJmE4pvjj1FP978wJAC5Q4UHs1bDdVKeeQfhBjYJY6v3
+ X4B4vcyQ40dESzUwpXikA1LESQDKJpn8mXa52x6wrWtr4zAnaEuivQFKMybNfVjG2LT6
+ Iu0lDhfdnfL8MUrMIRyofE7ycBnkrKbqeyDlCPxgTFX0v0nXfbs4vs37PwBx8b2HXP55
+ XR6g==
+X-Gm-Message-State: AOJu0Yz48gOOVph8pGhP5d+gJcz35fUGiiHUgYiHN/jl3ajMrj+G4VD0
+ i8zttEO2o3iC/tfPua3Nk2vZJt5wHFNs7KAIlHE=
+X-Google-Smtp-Source: AGHT+IEe0/oLvsl9Z8OEZQmqAZ1Qt6gJXlIvMAf+hoVTQpL+lj3HqXPheTPLySaQvg48hI6x8dR5qw==
+X-Received: by 2002:a05:6830:11c7:b0:6b9:414e:dc7d with SMTP id
+ v7-20020a05683011c700b006b9414edc7dmr2029366otq.35.1695208842986; 
+ Wed, 20 Sep 2023 04:20:42 -0700 (PDT)
 Received: from grind.. ([2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59])
  by smtp.gmail.com with ESMTPSA id
- q4-20020a9d7c84000000b006b45be2fdc2sm5863955otn.65.2023.09.20.04.20.36
+ q4-20020a9d7c84000000b006b45be2fdc2sm5863955otn.65.2023.09.20.04.20.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Sep 2023 04:20:39 -0700 (PDT)
+ Wed, 20 Sep 2023 04:20:42 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  philmd@linaro.org, ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 04/19] target/riscv: move riscv_tcg_ops to tcg-cpu.c
-Date: Wed, 20 Sep 2023 08:20:05 -0300
-Message-ID: <20230920112020.651006-5-dbarboza@ventanamicro.com>
+Subject: [PATCH v3 05/19] target/riscv/cpu.c: add .instance_post_init()
+Date: Wed, 20 Sep 2023 08:20:06 -0300
+Message-ID: <20230920112020.651006-6-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230920112020.651006-1-dbarboza@ventanamicro.com>
 References: <20230920112020.651006-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,196 +94,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the remaining of riscv_tcg_ops now that we have a working realize()
-implementation.
+All generic CPUs call riscv_cpu_add_user_properties(). The 'max' CPU
+calls riscv_init_max_cpu_extensions(). Both can be moved to a common
+instance_post_init() callback, implemented in riscv_cpu_post_init(),
+called by all CPUs. The call order then becomes:
+
+riscv_cpu_init() -> cpu_init() of each CPU -> .instance_post_init()
+
+In the near future riscv_cpu_post_init() will call the init() function
+of the current accelerator, providing a hook for KVM and TCG accel
+classes to change the init() process of the CPU.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 ---
- target/riscv/cpu.c         | 58 ------------------------------------
- target/riscv/cpu.h         |  4 ---
- target/riscv/tcg/tcg-cpu.c | 60 +++++++++++++++++++++++++++++++++++++-
- 3 files changed, 59 insertions(+), 63 deletions(-)
+ target/riscv/cpu.c | 43 ++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 32 insertions(+), 11 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 7215a29324..9426b3b9d6 100644
+index 9426b3b9d6..848b58e7c4 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -838,24 +838,6 @@ static vaddr riscv_cpu_get_pc(CPUState *cs)
-     return env->pc;
- }
- 
--static void riscv_cpu_synchronize_from_tb(CPUState *cs,
--                                          const TranslationBlock *tb)
--{
--    if (!(tb_cflags(tb) & CF_PCREL)) {
--        RISCVCPU *cpu = RISCV_CPU(cs);
--        CPURISCVState *env = &cpu->env;
--        RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
--
--        tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
--
--        if (xl == MXL_RV32) {
--            env->pc = (int32_t) tb->pc;
--        } else {
--            env->pc = tb->pc;
--        }
--    }
--}
--
- static bool riscv_cpu_has_work(CPUState *cs)
- {
- #ifndef CONFIG_USER_ONLY
-@@ -871,29 +853,6 @@ static bool riscv_cpu_has_work(CPUState *cs)
+@@ -427,8 +427,6 @@ static void riscv_max_cpu_init(Object *obj)
+     mlx = MXL_RV32;
  #endif
- }
- 
--static void riscv_restore_state_to_opc(CPUState *cs,
--                                       const TranslationBlock *tb,
--                                       const uint64_t *data)
--{
--    RISCVCPU *cpu = RISCV_CPU(cs);
--    CPURISCVState *env = &cpu->env;
--    RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
--    target_ulong pc;
--
--    if (tb_cflags(tb) & CF_PCREL) {
--        pc = (env->pc & TARGET_PAGE_MASK) | data[0];
--    } else {
--        pc = data[0];
--    }
--
--    if (xl == MXL_RV32) {
--        env->pc = (int32_t)pc;
--    } else {
--        env->pc = pc;
--    }
--    env->bins = data[1];
--}
--
- static void riscv_cpu_reset_hold(Object *obj)
- {
+     set_misa(env, mlx, 0);
+-    riscv_cpu_add_user_properties(obj);
+-    riscv_init_max_cpu_extensions(obj);
+     env->priv_ver = PRIV_VERSION_LATEST;
  #ifndef CONFIG_USER_ONLY
-@@ -1809,23 +1768,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
- };
+     set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
+@@ -442,7 +440,6 @@ static void rv64_base_cpu_init(Object *obj)
+     CPURISCVState *env = &RISCV_CPU(obj)->env;
+     /* We set this in the realise function */
+     set_misa(env, MXL_RV64, 0);
+-    riscv_cpu_add_user_properties(obj);
+     /* Set latest version of privileged specification */
+     env->priv_ver = PRIV_VERSION_LATEST;
+ #ifndef CONFIG_USER_ONLY
+@@ -566,7 +563,6 @@ static void rv128_base_cpu_init(Object *obj)
+     CPURISCVState *env = &RISCV_CPU(obj)->env;
+     /* We set this in the realise function */
+     set_misa(env, MXL_RV128, 0);
+-    riscv_cpu_add_user_properties(obj);
+     /* Set latest version of privileged specification */
+     env->priv_ver = PRIV_VERSION_LATEST;
+ #ifndef CONFIG_USER_ONLY
+@@ -579,7 +575,6 @@ static void rv32_base_cpu_init(Object *obj)
+     CPURISCVState *env = &RISCV_CPU(obj)->env;
+     /* We set this in the realise function */
+     set_misa(env, MXL_RV32, 0);
+-    riscv_cpu_add_user_properties(obj);
+     /* Set latest version of privileged specification */
+     env->priv_ver = PRIV_VERSION_LATEST;
+ #ifndef CONFIG_USER_ONLY
+@@ -666,7 +661,6 @@ static void riscv_host_cpu_init(Object *obj)
+ #elif defined(TARGET_RISCV64)
+     set_misa(env, MXL_RV64, 0);
  #endif
+-    riscv_cpu_add_user_properties(obj);
+ }
+ #endif /* CONFIG_KVM */
  
--const struct TCGCPUOps riscv_tcg_ops = {
--    .initialize = riscv_translate_init,
--    .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
--    .restore_state_to_opc = riscv_restore_state_to_opc,
--
--#ifndef CONFIG_USER_ONLY
--    .tlb_fill = riscv_cpu_tlb_fill,
--    .cpu_exec_interrupt = riscv_cpu_exec_interrupt,
--    .do_interrupt = riscv_cpu_do_interrupt,
--    .do_transaction_failed = riscv_cpu_do_transaction_failed,
--    .do_unaligned_access = riscv_cpu_do_unaligned_access,
--    .debug_excp_handler = riscv_cpu_debug_excp_handler,
--    .debug_check_breakpoint = riscv_cpu_debug_check_breakpoint,
--    .debug_check_watchpoint = riscv_cpu_debug_check_watchpoint,
--#endif /* !CONFIG_USER_ONLY */
--};
--
- static bool riscv_cpu_is_dynamic(Object *cpu_obj)
- {
-     return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 409d198635..b2e558f730 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -706,10 +706,6 @@ enum riscv_pmu_event_idx {
-     RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS = 0x10021,
- };
+@@ -1215,6 +1209,37 @@ static void riscv_cpu_set_irq(void *opaque, int irq, int level)
+ }
+ #endif /* CONFIG_USER_ONLY */
  
--/* Export tcg_ops until we move everything to tcg/tcg-cpu.c */
--#include "hw/core/tcg-cpu-ops.h"
--extern const struct TCGCPUOps riscv_tcg_ops;
--
- /* used by tcg/tcg-cpu.c*/
- void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en);
- bool cpu_cfg_ext_is_user_set(uint32_t ext_offset);
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index d86172f725..e480b9f726 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -28,7 +28,66 @@
- #include "qemu/error-report.h"
- #include "qemu/log.h"
- #include "hw/core/accel-cpu.h"
-+#include "hw/core/tcg-cpu-ops.h"
-+#include "tcg/tcg.h"
- 
-+static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-+                                          const TranslationBlock *tb)
++static bool riscv_cpu_is_dynamic(Object *cpu_obj)
 +{
-+    if (!(tb_cflags(tb) & CF_PCREL)) {
-+        RISCVCPU *cpu = RISCV_CPU(cs);
-+        CPURISCVState *env = &cpu->env;
-+        RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
++    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
++}
 +
-+        tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
++static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
++{
++    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
++}
 +
-+        if (xl == MXL_RV32) {
-+            env->pc = (int32_t) tb->pc;
-+        } else {
-+            env->pc = tb->pc;
-+        }
++static bool riscv_cpu_has_user_properties(Object *cpu_obj)
++{
++    if (kvm_enabled() &&
++        object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_HOST) != NULL) {
++        return true;
++    }
++
++    return riscv_cpu_is_dynamic(cpu_obj);
++}
++
++static void riscv_cpu_post_init(Object *obj)
++{
++    if (riscv_cpu_has_user_properties(obj)) {
++        riscv_cpu_add_user_properties(obj);
++    }
++
++    if (riscv_cpu_has_max_extensions(obj)) {
++        riscv_init_max_cpu_extensions(obj);
 +    }
 +}
 +
-+static void riscv_restore_state_to_opc(CPUState *cs,
-+                                       const TranslationBlock *tb,
-+                                       const uint64_t *data)
-+{
-+    RISCVCPU *cpu = RISCV_CPU(cs);
-+    CPURISCVState *env = &cpu->env;
-+    RISCVMXL xl = FIELD_EX32(tb->flags, TB_FLAGS, XL);
-+    target_ulong pc;
-+
-+    if (tb_cflags(tb) & CF_PCREL) {
-+        pc = (env->pc & TARGET_PAGE_MASK) | data[0];
-+    } else {
-+        pc = data[0];
-+    }
-+
-+    if (xl == MXL_RV32) {
-+        env->pc = (int32_t)pc;
-+    } else {
-+        env->pc = pc;
-+    }
-+    env->bins = data[1];
-+}
-+
-+static const struct TCGCPUOps riscv_tcg_ops = {
-+    .initialize = riscv_translate_init,
-+    .synchronize_from_tb = riscv_cpu_synchronize_from_tb,
-+    .restore_state_to_opc = riscv_restore_state_to_opc,
-+
-+#ifndef CONFIG_USER_ONLY
-+    .tlb_fill = riscv_cpu_tlb_fill,
-+    .cpu_exec_interrupt = riscv_cpu_exec_interrupt,
-+    .do_interrupt = riscv_cpu_do_interrupt,
-+    .do_transaction_failed = riscv_cpu_do_transaction_failed,
-+    .do_unaligned_access = riscv_cpu_do_unaligned_access,
-+    .debug_excp_handler = riscv_cpu_debug_excp_handler,
-+    .debug_check_breakpoint = riscv_cpu_debug_check_breakpoint,
-+    .debug_check_watchpoint = riscv_cpu_debug_check_watchpoint,
-+#endif /* !CONFIG_USER_ONLY */
-+};
- 
- static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
-                                     bool value)
-@@ -515,7 +574,6 @@ static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+ static void riscv_cpu_init(Object *obj)
  {
-     /*
-      * All cpus use the same set of operations.
--     * riscv_tcg_ops is being imported from cpu.c for now.
-      */
-     cc->tcg_ops = &riscv_tcg_ops;
- }
+     RISCVCPU *cpu = RISCV_CPU(obj);
+@@ -1768,11 +1793,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops = {
+ };
+ #endif
+ 
+-static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+-{
+-    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+-}
+-
+ static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
+                               void *opaque, Error **errp)
+ {
+@@ -2009,6 +2029,7 @@ static const TypeInfo riscv_cpu_type_infos[] = {
+         .instance_size = sizeof(RISCVCPU),
+         .instance_align = __alignof__(RISCVCPU),
+         .instance_init = riscv_cpu_init,
++        .instance_post_init = riscv_cpu_post_init,
+         .abstract = true,
+         .class_size = sizeof(RISCVCPUClass),
+         .class_init = riscv_cpu_class_init,
 -- 
 2.41.0
 
