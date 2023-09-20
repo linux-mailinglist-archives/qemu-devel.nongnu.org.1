@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44D27A88B1
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 17:43:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22DC7A88F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 17:51:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qizLv-0004hK-DI; Wed, 20 Sep 2023 11:43:00 -0400
+	id 1qizTM-00061E-U8; Wed, 20 Sep 2023 11:50:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qizLs-0004hA-M5
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:42:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qizLr-0006sN-9R
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:42:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695224574;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rtMdpkSRnWKJX3g+S2Yk7CLE8CxidI6NFqnp4cvM8tU=;
- b=L4p23PP1gPGU78ittTVlqWLQJ/REzv6ehH2r9Ra/Aqg9xn2kilI7nnK4UvHAEIXKloIXIR
- J1ueAO1AhpunBA6e4OBR9lQayQqQKIsVNrv0KjmUGtvDwq/LUc0ycM/EHUKJlnrsma6Rkq
- kK7eOOWbNPq68CCp8wCVNkZ6xLQqOFQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-568-Y0O3N6D6N3OkRdvH90cUrw-1; Wed, 20 Sep 2023 11:42:51 -0400
-X-MC-Unique: Y0O3N6D6N3OkRdvH90cUrw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 920FA8039C8;
- Wed, 20 Sep 2023 15:42:50 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5DA5B492B16;
- Wed, 20 Sep 2023 15:42:50 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3A89F21E6900; Wed, 20 Sep 2023 17:42:49 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>,  Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,  "Michael S. Tsirkin"
- <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Richard
- Henderson <richard.henderson@linaro.org>,  Peter Xu <peterx@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Cornelia Huck
- <cohuck@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Eric
- Blake <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-devel@nongnu.org,  kvm@vger.kernel.org,  Michael Roth
- <michael.roth@amd.com>,  isaku.yamahata@gmail.com,  Sean Christopherson
- <seanjc@google.com>,  Claudio Fontana <cfontana@suse.de>
-Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and
- associate it with RAM_KVM_GMEM
-References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <20230914035117.3285885-4-xiaoyao.li@intel.com>
- <8734zazeag.fsf@pond.sub.org>
- <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
- <878r91nvy4.fsf@pond.sub.org>
- <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
- <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com>
-Date: Wed, 20 Sep 2023 17:42:49 +0200
-In-Reply-To: <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com> (David
- Hildenbrand's message of "Wed, 20 Sep 2023 16:37:37 +0200")
-Message-ID: <87msxgdf5y.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qizTH-00060g-Jd
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:50:37 -0400
+Received: from mail-yw1-x1142.google.com ([2607:f8b0:4864:20::1142])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qizTG-0008Mq-4k
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:50:35 -0400
+Received: by mail-yw1-x1142.google.com with SMTP id
+ 00721157ae682-59be8a2099bso71257267b3.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 08:50:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695225031; x=1695829831; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=0yU656d1t/TjZmcxFzpoR2akTkNkjre8EsuhC9IRXfk=;
+ b=I+5QOGKW8vZM4lHq9oSqlyfJivQyiwM02MkXvyyhIAUAjqPcdQBLrYyob4zMHGFH+V
+ lxUrz2PtYgnrdfmmmg5FRw0n/5KkJ+bAn4i0I4BgLQKkB0AFG/VIrMY5Qx5SjygxpE4C
+ a20ZKILGNLPxTzd3rnBZjs80qxaNXcDKAilU0TMT9FPKNV7i4xMXFyiTlzoPfQSNryx1
+ 0Qh4R4AXpFiVG4n1e1hKLC8G4ZS4TXMZIlZuEZykmreBf610aalysrSOLVoAT8+6lsdq
+ DB7gJVR/2NlxEk3Uhrvo2RsfB5uguEUhFucGYxqa/B/LwmGTPVEdqA9Am1OF/pl6ERrr
+ m6yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695225031; x=1695829831;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0yU656d1t/TjZmcxFzpoR2akTkNkjre8EsuhC9IRXfk=;
+ b=iuDbWrgKfD9q1dxTPNgu0XTQQuP1Qt5+TkPvgMAFPgeRkYLQz8O6f4ClxkDx56AnNG
+ LIiWVxrbAdGOT8lGT7WZX/gkklUTPzeSGsXDNKTf7Tu63BZAIR54NEOXFHxO6Y62X87R
+ MdeQAfgPSExsP/mbYsm8/8zJZoA7VDYcEtThscqv1fVSWHE2Sid4npjyZfUZpl5c5X8E
+ sf5jD6iIV0mpmpoh2MzejwOevQWDXZ5zf99owrO6b3B+eJZyueXpXxEEoTIonZ64L/y0
+ P1bNOiNmk2FcZiooEkw4uzXs71Chhs6FQ5AVZEy8F5brGRXHp/ChFpVggly1Zwm7Sjxs
+ cR4A==
+X-Gm-Message-State: AOJu0YwQ8zlcvb9JpVXCln0uRAzEI5BovWm+bEMS+ab8BJaizipSDYrC
+ sry5wg6hihWZX233GH21t0qIuCBsN3N+/AA=
+X-Google-Smtp-Source: AGHT+IFIPb+1AxCwDMQ89xjXqhUbk85X53zDka8do1dS/5B+V1T/ag0zst8Y6q58ESZbkMqQAn/Nwg==
+X-Received: by 2002:a0d:e3c3:0:b0:599:da80:e1e6 with SMTP id
+ m186-20020a0de3c3000000b00599da80e1e6mr2668510ywe.34.1695225031262; 
+ Wed, 20 Sep 2023 08:50:31 -0700 (PDT)
+Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
+ [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
+ l6-20020a819406000000b0057085b18cddsm3861323ywg.54.2023.09.20.08.50.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Sep 2023 08:50:30 -0700 (PDT)
+From: Gregory Price <gourry.memverge@gmail.com>
+X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
+To: qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ Gregory Price <gregory.price@memverge.com>
+Subject: [PATCH] cxl/vendor: update niagara to only build on linux,
+ add KConfig options
+Date: Wed, 20 Sep 2023 11:50:21 -0400
+Message-Id: <20230920155020.550112-1-gregory.price@memverge.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1142;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1142.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,37 +91,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-David Hildenbrand <david@redhat.com> writes:
+Niagara uses <sys/shm.h> which presently limits its compatibility to
+linux hosts.  Change build to only build it on linux.
 
-> On 20.09.23 16:35, Xiaoyao Li wrote:
->> On 9/20/2023 3:30 PM, Markus Armbruster wrote:
->>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>>
->>>> On 9/19/2023 5:46 PM, Markus Armbruster wrote:
->>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>>>>
->>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
->>>>>>
->>>>>> Add a new property "private" to memory backends. When it's set to true,
->>>>>> it indicates the RAMblock of the backend also requires kvm gmem.
->>>>> Can you add a brief explanation why you need the property?
->>>>
->>>> It provides a mechanism for user to specify whether the memory can serve as private memory (need request kvm gmem).
->>>
->>> Yes, but why would a user want such memory?
->>>
->> Because KVM demands it for confidential guest, e.g., TDX guest. KVM
->> demands that the mem slot needs to have KVM_MEM_PRIVATE set and has
->> valid gmem associated if the guest accesses it as private memory.
+Add Kconfig file for skhynix directory, and make niagara depend on
+CXL_MEM_DEVICE.  Add an explicit flag for niagara.
 
-Commit messages should explain why we want the patch.  Documenting "why"
-is at least as important as "what".  If "what" is missing, I can read
-the patch to find out.  If "why" is missing, I'm reduced to guesswork.
+Signed-off-by: Gregory Price <gregory.price@memverge.com>
+---
+ hw/cxl/Kconfig                    | 2 ++
+ hw/cxl/vendor/Kconfig             | 1 +
+ hw/cxl/vendor/skhynix/Kconfig     | 4 ++++
+ hw/cxl/vendor/skhynix/meson.build | 4 +++-
+ 4 files changed, 10 insertions(+), 1 deletion(-)
+ create mode 100644 hw/cxl/vendor/Kconfig
+ create mode 100644 hw/cxl/vendor/skhynix/Kconfig
 
-> I think as long as there is no demand to have a TDX guest with this property be set to "off", then just don't add it.
->
-> With a TDX VM, it will can be implicitly active. If we ever have to disable it for selective memory backends, we can add the property and have something like on/off/auto. For now it would be "auto".
-
-Makes sense to me.
+diff --git a/hw/cxl/Kconfig b/hw/cxl/Kconfig
+index dd6c54b54d..88022008c7 100644
+--- a/hw/cxl/Kconfig
++++ b/hw/cxl/Kconfig
+@@ -1,3 +1,5 @@
++source vendor/Kconfig
++
+ config CXL
+     bool
+     default y if PCI_EXPRESS
+diff --git a/hw/cxl/vendor/Kconfig b/hw/cxl/vendor/Kconfig
+new file mode 100644
+index 0000000000..aa23bb051b
+--- /dev/null
++++ b/hw/cxl/vendor/Kconfig
+@@ -0,0 +1 @@
++source skhynix/Kconfig
+diff --git a/hw/cxl/vendor/skhynix/Kconfig b/hw/cxl/vendor/skhynix/Kconfig
+new file mode 100644
+index 0000000000..382fa0cd6c
+--- /dev/null
++++ b/hw/cxl/vendor/skhynix/Kconfig
+@@ -0,0 +1,4 @@
++config CXL_SKHYNIX_NIAGARA
++    bool
++    depends on CXL_MEM_DEVICE
++    default y if CXL_VENDOR
+diff --git a/hw/cxl/vendor/skhynix/meson.build b/hw/cxl/vendor/skhynix/meson.build
+index 4e57db65f1..6f194aa517 100644
+--- a/hw/cxl/vendor/skhynix/meson.build
++++ b/hw/cxl/vendor/skhynix/meson.build
+@@ -1 +1,3 @@
+-system_ss.add(when: 'CONFIG_CXL_VENDOR', if_true: files('skhynix_niagara.c',))
++if targetos == 'linux'
++    system_ss.add(when: 'CONFIG_CXL_SKHYNIX_NIAGARA', if_true: files('skhynix_niagara.c',))
++endif
+-- 
+2.39.1
 
 
