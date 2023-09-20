@@ -2,162 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD887A8AC3
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 19:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5395E7A8ADF
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 19:50:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj1Eb-0005jp-ET; Wed, 20 Sep 2023 13:43:33 -0400
+	id 1qj1KR-00078t-C7; Wed, 20 Sep 2023 13:49:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qj1EY-0005iR-N2
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 13:43:30 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qj1KP-00078l-1p
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 13:49:33 -0400
+Received: from mail-dm6nam12on2061f.outbound.protection.outlook.com
+ ([2a01:111:f400:fe59::61f]
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stephen.s.brennan@oracle.com>)
- id 1qj1EV-0002lN-Dr
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 13:43:30 -0400
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38KGiJXw030528; Wed, 20 Sep 2023 17:43:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : in-reply-to : references : date : message-id : content-type :
- mime-version; s=corp-2023-03-30;
- bh=Mv/g2U9ex7f5ef2dpDnoX7wEOAk8grV7dQ9KuXQ81Fg=;
- b=NOLhw66iqE36oJJUSHbfX66tZG01kl4DLm13yM6ahzvdJSmrBEDzFaTZspuHQs2x+LNg
- WLrpODF8I0/xF5hdslBDat7QbwPmX/LyLPhFiMknDD6Zz2D4HZLjwOnkk0ZjnRUOxvby
- OCfDlavysvRmpzD0ycmeRoEwHvheG1CCL0C8OUwmgBcTbdAKKUHDfEORXDtVr825n2BG
- +LM6VuD1NYy7GfepuOdZdDqyNnJStP5z/Lf/RlAtQ54d03ZXkSHU9KM34/1emm7fOsX3
- Euxji0WLHu7xDmWPWhf+wZdEPSA6dwLjd+JAAQcfL4Krde0KmywMC+22d9YdjjtAwa+6 sg== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t53yu7y2h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 Sep 2023 17:43:22 +0000
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 38KGZ6sI030918; Wed, 20 Sep 2023 17:43:22 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam10lp2104.outbound.protection.outlook.com [104.47.55.104])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3t52t7e24r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 Sep 2023 17:43:21 +0000
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qj1KH-0003rw-RX
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 13:49:31 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R0L99A7eum5wNig91Bd+8LH98wlBFFIRV/9+3VfnVLRa74YyopAS3RgYn0+AXl5/oyt2X3kf4JFRUzvcmhjPhmCCr2XLpl/FFihIESGy3Hu3+S2Xqvwkyd3ZFZckBp46wCrQnrRcqFOoHRraPZcUAIE4wmcDWB21rWOCM0yw+31TaQ2ku0n3IfeNFnEmcGUcY5GrY5C1S3asAoybyCBYiT1QhRZ74rXaEJoMjkR6fZEw7Sb2IRTyoSkuxsVPuYYRR8GUU7tPxyXd4UZFYsXiOsCB+T6kvkD0gpT1wiNudXl8hpSuvZOB/ury6DVcU5c2Fgl2DuB3jgZq7YEeKA/wfQ==
+ b=NnKiOk/jNJJWPbY9rOqGquINw9my+9CY/5gj/C+SJFeOZggNjfkg3HONCaKr+p/LnP2oqusA6yS2YxBMiW/UiCPeJlvupbmvjY3SYJVfyCl5lKCGfzelfy9/1R6RsG3XEkV/XFPUvTYycIIYWcNe6ql83wNGmNaFWjfbNInwQJskIKkLQSPBScWWc2UE6juuRQWL5kGKupUHuU6ngCNpPtEJ1KNNSokaECWXq1yVV+7magZxvUCaH/mbSuJpPlYEtl5IxkiKrRDZFqfEeA+5jpce2TLMHU94JH5SvC7p4ZCcq6YPppHJAHykFAkPQ7q3bCywLrhRORO9VfafRdC+VQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mv/g2U9ex7f5ef2dpDnoX7wEOAk8grV7dQ9KuXQ81Fg=;
- b=S7PdACfCwaZX/O9ayGfk1nzmjPpg6ZpnZI09wvTJ2jv+Hy6vZrSf1yoIufcqubjGxazIN9BwfrsPvwoNBX87DR6wzH+IAmwhOY9BvOdwhwRW/oijzb9kwhkFHqCa3GRGaaj8nwpzVkz4XWPmtY4iUHFMOpIG0ORM33O9BBrC3UW8ZjndZ4TYKMuaE3+mswKFeJTWG6NmS+UrMtFtQCkfPjUwSchJhnQloXoZJVKeDpiWWz7YUB5vGQ6DdeXTlj9bjmt60AnUo94scB+EBpf04K87Y6yeGkGIw4T48D2/6Gx0gOBUD6DREEM9IQm9gUsn1xI7aV+7wZ/MECgy2A0uUg==
+ bh=qz88lOqlRdPGol2mC8836nNVANMnB8KB05KmB7N7ugU=;
+ b=fSKlD0+NRtA/5fKyb7E+vZSVhTxfGXJOecfgPEl30xU1CKLjqwP1MZ4IiJHrGAO/TmSh0vG9RfYm/w8JSCK//3hey85h4JKHfasKsDAFafIFSl4nByzO9r1soYCfq3ILvDbvzhJbOfrNhihcOhtEcyoKkpWCfnAmbV3+2i69gTckfop9rHBcYnuPrKQKvD9PFwrNS0d8p9T582jSbPBT1wsx2VcLGd2ThOYuXLeeS8lLRB+WwxJUP7bBzjtxf/4KR0pWdwsN2EpYLQSND0UYnr2AGK9k3dWGdAQ6AaIDTRxZyG8TLKqHu60H+t3OPkguc8HureiyGqdFRNVy+CKRMw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mv/g2U9ex7f5ef2dpDnoX7wEOAk8grV7dQ9KuXQ81Fg=;
- b=hz8zcyGVMSRVMwsA2gvi4cRNnWEKO47vqwG/HQz/hYg0AB9gvSVH85trRTVQF16Ohe+kW3qp+40KEPskt+0hxPjqUbyfXlWh2UH4G37/9r77rEkIOswAV9xNrw9xiQB7q/H+CmEptCw4zAhrCgU07+dTFO5zDr+NlP1auITdZIU=
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
- by SA3PR10MB7000.namprd10.prod.outlook.com (2603:10b6:806:316::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.21; Wed, 20 Sep
- 2023 17:43:19 +0000
-Received: from PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::35e3:7e4c:72b2:cf74]) by PH8PR10MB6597.namprd10.prod.outlook.com
- ([fe80::35e3:7e4c:72b2:cf74%7]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
- 17:43:19 +0000
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
-To: Jon Doron <arilou@gmail.com>
-Cc: qemu-devel@nongnu.org, linux-debuggers@vger.kernel.org, =?utf-8?Q?Marc?=
- =?utf-8?Q?-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Laszlo Ersek <lersek@redhat.com>
-Subject: Re: Concerns regarding e17bebd049 ("dump: Set correct vaddr for ELF
- dump")
-In-Reply-To: <87edisycgu.fsf@oracle.com>
-References: <87h6nqxdth.fsf@oracle.com> <ZQqj9tFS7cLMTkHv@jondnuc>
- <87edisycgu.fsf@oracle.com>
-Date: Wed, 20 Sep 2023 10:43:16 -0700
-Message-ID: <87bkdwyc3v.fsf@oracle.com>
-Content-Type: multipart/mixed; boundary="=-=-="
-X-ClientProxiedBy: DS7PR03CA0266.namprd03.prod.outlook.com
- (2603:10b6:5:3b3::31) To PH8PR10MB6597.namprd10.prod.outlook.com
- (2603:10b6:510:226::20)
+ bh=qz88lOqlRdPGol2mC8836nNVANMnB8KB05KmB7N7ugU=;
+ b=LKtwLD67AE3DKNUM95FeEtu9bjeySPSUqgBFNLfRkc3k7ZWhHwj7whvcDmrfMnrjhfdvmpr+fPkhiQWRxh/IiE4JCN5YUWCC7Te9VUoRT47j+EbTdVRum/VC1gozGW9+odm3y4hLpMRkLSf9UcPr4rux/BuZjv98/QCVAfaOxoCCAVgaalnYeY/o8WUnF4GMF0IC4dsKlUG/V8bLDEVVrEoEZnSCiqwln+sgGAPGwwgxdKcnScH4FWsh6J8ba5Sznrp+8WmsHl39wCww+3pdCdFxJ0REZP5bihLs/AL47lZxWpQPnPZyvvfrgCcjZn3m9ZtuOaOFiIAqpHV5UEy43Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DM6PR12MB4220.namprd12.prod.outlook.com (2603:10b6:5:21d::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.27; Wed, 20 Sep
+ 2023 17:49:21 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::faf:4cd0:ae27:1073]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::faf:4cd0:ae27:1073%6]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
+ 17:49:21 +0000
+Date: Wed, 20 Sep 2023 14:49:19 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "Martins, Joao" <joao.m.martins@oracle.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH v1 15/22] Add iommufd configure option
+Message-ID: <20230920174919.GF13733@nvidia.com>
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-16-zhenzhong.duan@intel.com>
+ <75c9c56e-f2da-f2a3-32b6-c9228678b05a@redhat.com>
+ <SJ0PR11MB6744E56158500CC3A0A34BDC92F9A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <664d3338-c280-6d16-b03e-bb235931ce99@redhat.com>
+ <20230920125103.GS13733@nvidia.com>
+ <20e40fb8-0ce3-eb79-7255-2fefd7a2f657@redhat.com>
+ <a0f3fab2-069e-f286-aae8-25d5269e6e0c@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0f3fab2-069e-f286-aae8-25d5269e6e0c@redhat.com>
+X-ClientProxiedBy: CH2PR18CA0013.namprd18.prod.outlook.com
+ (2603:10b6:610:4f::23) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|SA3PR10MB7000:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7cc7f0ef-cc64-4e15-686a-08dbba0113c2
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM6PR12MB4220:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1076614a-88df-4768-956b-08dbba01eba2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 2YPePqCdQOOcjoczdNwbmRdbe7EElzmj4VS6vAcATDu07C8k7WQLZ7h2cK8MQFIifciDuZ2fqtIPaWzQfT3q7q0u+HzMhMFlp7wjqYo2kUmFXpGqV254Q3XO2miD4k+wX0s2vLjfTTDOJCPtdW7hX7EU79V6mS+FkbEECCERIwS0/RJJOB/w1qYTHY/nz1XUTjY99xgj6KNu78h933MIJZFTBu94MZHXKtCOwyP1q9jh7MNggVMLJeBCVPNvipnSctmRcUjj3mS0Sh09TjNXjkch3yz8Nx6aI4IXv1sekf3rlDKyGn4DHYvpG+KucBLaSz1/2i/6Ia2QXQhRUvX5XsBm+njiqUAiBrAQElYC1LBhtNRc+6WpEqB80+/wNmIFWQXGYglq2Jxti78z4J6UAAoHAHYBZRp4gTd4Jm+DHcU1QAqISna9LTDUZ7rZ6KIrrs3skocueEMChJYH3++SC+BWbaemdvZZN3kqq5k/dkKlGV/OTbsaoC+5XRHrV23YPxjDSJNPwZF1nsieehwzwwg7cNkOzoFUmRXkeAqfOdvlMBBE9iWSB+syLp/VJERnitbMnl29yqVxMMxYro/cNDMQV8VCygMtUD8XUwzIXjg=
+X-Microsoft-Antispam-Message-Info: g6D5/Oq6B4ohfF2uhDhLkX8X0d1REIE1UhE+w7FJv9+ZBEcsxPyVb3dgT6zfwujLdfC1b2kA5wUSzA6Wu42pMlthhscUo4dqy9PP50R9ZyJ8n/pr05Sh/4kXguE+06RCwWRiFrF4v7O0GE9Ob8pk7aNA7Mxu7OnH8/nvxDMxCMS/fi26mwKxQE10pr6/NNo3f35KVcM8zN/pkd26ZiS44zYmyetNJpJbSU5MLYbI1w11JJ0MCPPG/nN25Vo0W8jABojt2+a0W2q3FpFJXDa12LgM30VZbbJGMOe0/xe9+LTzdrqwoLgT4bLBAdGUWRR+Y1+e5Fls295ZOBk2BnPEycdfiEoRZuJNPXgV+RVvMZWZ9aK3oiL/BrXKvXkTWiYQkAQTw94va2Zoo2cojjwPHBBC7S8V28rda8VD4uB7YBQPdw53ZMA0Pg6wJryAwmF70y/8KLuUpo+ZJcP9Ltyb5D/8Zego06In9R9ufWuQc6MzBPJA635Gd1X/8HbtxxjoXDhTRmT7kA71jhZtXFIocPEcCQCZi5woi0l0qOBCxvAsq5ajJp3dC6tdCKukMKuS
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH8PR10MB6597.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(396003)(366004)(346002)(39860400002)(186009)(451199024)(1800799009)(83380400001)(6506007)(6512007)(4326008)(5660300002)(36756003)(2906002)(54906003)(41300700001)(316002)(235185007)(8676002)(6916009)(8936002)(478600001)(6666004)(2616005)(6486002)(66946007)(38100700002)(86362001)(66476007)(66556008)(2004002);
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(366004)(39860400002)(396003)(136003)(376002)(451199024)(1800799009)(186009)(8936002)(2906002)(6916009)(41300700001)(316002)(7416002)(26005)(1076003)(66476007)(8676002)(4326008)(4744005)(478600001)(66556008)(66946007)(54906003)(5660300002)(6486002)(6512007)(6506007)(2616005)(36756003)(86362001)(33656002)(38100700002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8AdU0nl9OmsXClPpJf+FT6sRsk3cH6T2HlxcEIeLLpYfoudPZEjTzkMwinAF?=
- =?us-ascii?Q?bFyC5Fztq8PShx+YP4h4WfFScaujaeBK3Lih/HtDJVHFYUNafTSh/Nqd19GO?=
- =?us-ascii?Q?xUAPPsyYdeJPuY3UhVBgnXEIyTEsxEY3y2ag1VHYTsEDu/24YpWQzzP4q8gZ?=
- =?us-ascii?Q?tG/MwaUJ+OPkLsdZRvaZ4iotQG3qUGmU8B5diSBNqo9eoNF0w8sNLy596kC0?=
- =?us-ascii?Q?Qsb2rlyIXtM06cgJY4CVwNT//7kCyIcjHh5OFQJorFydnpTltJZa+Dy9eGzp?=
- =?us-ascii?Q?h9HSZGNEyyLMzLDO6u//bqXm/xO+1BHzP47Ejgv9p39vNZxbReboTwZK+QqY?=
- =?us-ascii?Q?vojnJ3tBhpDGGLoug//wDJIX7iyaiHsT5XHaJKuW2oDb8i+wDAo0O9HLEo8p?=
- =?us-ascii?Q?7KGL0G3T1JOM+Y2+9Q5LMSujJelOY1H75TtcC1ztzk9ibRLINy76F6bBvnME?=
- =?us-ascii?Q?9VAWlDF0/GJ7Ogq/jZVWU8heAA70EsNqimwypTYQZLPhHseU3tzGQwCvoEVz?=
- =?us-ascii?Q?PWD6BXHXZ0hRuU3oI6To/DkvJaT2RCrymebIgNUtjgMUYpUU0tHcANOerzOb?=
- =?us-ascii?Q?SxXqy96nBn6FwAK3F7KkMQZUS0Oy2PhhBP3M5vVMlddEogEZByXFo/LL1PJ1?=
- =?us-ascii?Q?ZCb++jW7J0RHhWuTae38oOPaB+Z67CBsded6JVaIyVfn5kOMI6mpGeKsePyn?=
- =?us-ascii?Q?VZz0eRnnSv2Rxxq+p+rm4Rk28gUeDHcMgKNSX6FMUPWW9X7aQyNBrWOmrjpv?=
- =?us-ascii?Q?I/EM63Jkj3G1TM5ZsnIhYfPt3Etag1czlpb9ePWw5sybCGzGr/q8zv6ctgL0?=
- =?us-ascii?Q?AMTRVVAv3cQ/TqIiXyWS8AsrkFv7VBw+Hbj8DHQx2Es+6qCiRVpoZqpjK+2S?=
- =?us-ascii?Q?uurqvlfr5Nv+BtQG0vpa15abuPSJMDQ9GWITfXWZwJvLYzRglBSThyGflzTU?=
- =?us-ascii?Q?Bj8V0bIx4TuswRIjStFYTdUl00XQW5IA9heXfLD5r3038V8wbYjLLbaQqxDW?=
- =?us-ascii?Q?RzcbcbUepk/TC5EeSMgPw2G6KqdONPqeuoUZ8Bfp8q2WXxWktr0qr2R7qcTI?=
- =?us-ascii?Q?sHXytiZNPH6mE7sU/9ILuLzhQNvLKOQuEcwZT/kea5BJ7G22errn06R98gBK?=
- =?us-ascii?Q?IwCpbsHM/dGLaS4ZHK+W+usSfeboXqGXn1QrAlHc5do/jufyeyaDD0eSz51m?=
- =?us-ascii?Q?vje2SVeMVtGp1HAoDhYltRUchwEICROXK6wyhLCc9DdBdI/RveYgNsG1d6xH?=
- =?us-ascii?Q?KdBvf+ZlxBFjoUEPBi8Cz3Gwy1xjqrIj4vyxPyFntPuIBDncng9SbTMFX506?=
- =?us-ascii?Q?Q8iuXG3UG2bkKo+0wRCNqDainw0VMkEd8bxfPArVJnOF7UskV0pXMoRpvu97?=
- =?us-ascii?Q?vqzRltLXxco553iPzvzpmZxaQ3rx8O8//Q3RHYcBAnIvxTAO8g9xoh0pBV1u?=
- =?us-ascii?Q?OIqVdcuXI2hP0u18ovajAUOjt/nFxILkN0hEbrtVYicHO7klzKAJ2ZItU/cD?=
- =?us-ascii?Q?9j2XfGdrgDah5xySQff1XreVTWLzUp5f3OHIJ9arUSDl7jH0UVhxggAS4bRX?=
- =?us-ascii?Q?LCxZXd0Geja7CuSDAwyQjIU4i7/X3V4H679PXt5BzwVH9qnjYSZUW9vWESSx?=
- =?us-ascii?Q?Y8z7X989MTg8etBNLMdHd9wCF8rWdlT5yDZBpd6Tx2Cx?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: NnBDzyXS3ykHiVxc0cR1i0hr6euCATewGnEOjY+Xq7S6qTe6R6RBPlhm6AospBsJbJiPRoZtCCIW+9lIruBWPx3OtnhI3AcpCVvxua2cu5lgv7B6T97hSrkZ2hnT8leQMGBV6VGgYgn0BzHIgKA8XclgK8OkAPIJyiPeMhvfaF0bOXinEJQNJNVtCEAJC9vlySVp2ttrXpQT3j47HZMK33pqs2lcgf2WndIFqC+PWFaBmSWQUFMaXireSnzhAx9ezM5j7gP54JodpRIs3XtNi73S8ivnBVlbt8Bm9R9UvZ+lpO2olhy+ptI0px7HtTzKQ7Vr3tj+2BuFkm3BLAyeFrss8plZ1luv9OidysEusaHX0303m5xYSm++jlada5ziy6VX+LgjhK5+B2DnMfxSHdoMd0pmQKGc4hQqxzmYYHqSOxQTeVnyQLh4kLe274YEhT5clEOrB5V/Jp6Dfr1FhUWjOaxbt6VI03Fz2uvrM6jKHTRJKapsVUBJYBWyg7UMFi9ApWxh2PAwqH/D1/rzpo0ExVGqzj8VKON6hOTLzdjQcfk4U9NDv13uy9goNMPDLRhMhU6Y3CVDRs9p0tMRSpJX3nVHKnIIxWk7e6bJjLslfuvQz5QEwErHjHmKSuHT4F1zCb0Wc9V6N3L1+OGOWeY0C8P9M5zG6CG+skM2lHFKUj/CynAdXF4MEH9JsDP+7FBOliLlsu/fowABVjXgBGXhtvRn1P/ZbNTUDGh+cZbnwWr1r3K5r/loasaPrwCL1l827OgTV721wc0zYXeJjxaQTWRbs5KvxPOi3dbVJAQ/+St6D0JqDhND1GmbmOHTi+bU/yy3gDhKDfyrr2E3sed4/uaC5tp3dadAgp5EINA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7cc7f0ef-cc64-4e15-686a-08dbba0113c2
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RG3iCC//DfZWh2uO7YbPjqBQkvIRDNT3MDZj3JMe3YEvUVHXXySnDbgWCgHE?=
+ =?us-ascii?Q?d4Aor7Vo5zkm1B4aur9Tz+1gUc3KM3qINtln8WNKyiRYv7T1YqqY8i7vkGEB?=
+ =?us-ascii?Q?uBYsFR4WDtj0fbPZQHBg8rQYEuEjsNwIi7QQeXJA7CJzeZa0BfCTzkjWkYf8?=
+ =?us-ascii?Q?Jh3RMfBaNcSnUktYPOx6j591jTXKMidJCWMhACBF+tzOQNjb2EMOmZ6B27E7?=
+ =?us-ascii?Q?qmxSrbQkDLfSmKiLXhHXHA7Rn8Hh/IsGg/ADFz+rRrfETtmmaZgSGSm9xktF?=
+ =?us-ascii?Q?COOqHIBPXjjcQn4s+OX6RkIShBXIloLTJ3+XXO1hJPEpoDZx5G/OkHc738e/?=
+ =?us-ascii?Q?vWoJaIppU1TO4qHVrl3rP3CtFzWh6Fsjnx/1tAuE4hE/uv89wk+SMrR90Tb6?=
+ =?us-ascii?Q?T8SnN3P9CxW8hiw5d9NSYLQa98aIZBi1Zbv6NvoXU+dIe3AHGgIMAbGlVf1w?=
+ =?us-ascii?Q?VBOD2AfkOncD1DSaxGxQ4S8zG5q63qI8rFngFbzo1OkJHcgoXUQy79ZTB91e?=
+ =?us-ascii?Q?z83tcX721u7kpM+p+fQuHSr37SWBM2/QYwgYqAgNrxt2aSYt8k2lxUzbaDt+?=
+ =?us-ascii?Q?zNlxmJxj/KvGtOQEwhNrTsdjO1vr30D+Lorrtu7I0NcEFDdoEAW4B1lNZBj/?=
+ =?us-ascii?Q?Wyscrj6Wzz4i487Vd9rnh+4OkqiXjb2Nkt1lAT0+/orlGTAzvfwz11N6HjDb?=
+ =?us-ascii?Q?sn/ebh9Y+lUEgJ8Jh3ZNF5LnPNj/X2BfJY9CMttocuIWeV5gCivdZukPUd5i?=
+ =?us-ascii?Q?x+YPeBVsbTuDDi/h5vOw4oIhtY8JEXhRpAb5Mj9Hf3np5M8/4KBwgL30LBEI?=
+ =?us-ascii?Q?rDTerZqpUn43o9GBi0mf0PHZj7v8zpX0/SvyM+p7/W2FN7FAeW9IjrN2M3pq?=
+ =?us-ascii?Q?+Lsdsm51eerd7ErNqLChciogp+xEVjAg7LmOHHHxuzTnd5wNux8estUL3okB?=
+ =?us-ascii?Q?K5gYQJe2TeyK3KC0wEvDWw+9P4oeNTQ5wjilA2mQtLqwBy+DpuIwEv1mTijM?=
+ =?us-ascii?Q?6F4hfGY1BOJT6eXTPtUJetw3upbECPxJq3HfVvLo7yXUFgD9iAXtJdMBGrFF?=
+ =?us-ascii?Q?KTIjTWrJu17lwlQY6tkeLvnxJPfvJ2Is7mD4IM1VoDTBeAIxe+PCJAALnmWw?=
+ =?us-ascii?Q?9KXxVaSoljUTNsB/Uehj0w/5HysOJcXRfnfxDI9HTMtnzqmOqyZqApTuKoer?=
+ =?us-ascii?Q?GRGJCX75aBNBS83/IScOVx3TSunEI+l86lWWS1y3kAXJGqDwyyJ7gEf5mlhg?=
+ =?us-ascii?Q?UsmcCZe0nhsej8i/LC64vhXYETRYsxOs8nopwkJ2rIPB6zf/xkkrjgEKTF2z?=
+ =?us-ascii?Q?gaMv1RD1OgZzgA7OVDtL3unQhMPnu17cFUONDh/2DknwFiMzhyLsDtv3uN5/?=
+ =?us-ascii?Q?8d0/GuM1AlH/jPxwI44Up5GFBfRIC3QXc3yyavaRXiYs02v+MMD89QdO6mxD?=
+ =?us-ascii?Q?2SOCpLeCjL24DkkjTN1OrI38FeIv7MHENneXJ9zVfguEPZlHCcpBX2BNZjoS?=
+ =?us-ascii?Q?cwKdqqIyiDRzZWEGENNaj8KSMf7Bt0uXt9WElxwiWMT0xnV6JhRlRD3LY87w?=
+ =?us-ascii?Q?afiud8PuB75OeNQw2m8YkGNYxwX3NqU07/WPrhCq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1076614a-88df-4768-956b-08dbba01eba2
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 17:43:19.3323 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 17:49:21.5549 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9AM5MRKcNzlB8DKjNZYkLahhdIVYKhIHcmbfFZ95p5wnoQc8d101/5+ooG5F0RExQPvbuqvMM5Ea8LhRbPVdDyFdcOD1bN54AertQvfoaLc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR10MB7000
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-20_08,2023-09-20_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- phishscore=0 mlxscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2308100000
- definitions=main-2309200146
-X-Proofpoint-GUID: hM9Rl48J93-9XVe2gtUa_dyMZACnszpE
-X-Proofpoint-ORIG-GUID: hM9Rl48J93-9XVe2gtUa_dyMZACnszpE
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=stephen.s.brennan@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-MS-Exchange-CrossTenant-UserPrincipalName: 60f7Zv7Peqganu8t0TgGSymrdrDa+Arp8dNEdDEJgld958fMJtSuWyYaOEk+IAVe
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4220
+Received-SPF: softfail client-ip=2a01:111:f400:fe59::61f;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM12-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FORGED_SPF_HELO=1, SPF_HELO_PASS=-0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -173,181 +154,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---=-=-=
-Content-Type: text/plain
+On Wed, Sep 20, 2023 at 07:37:53PM +0200, Eric Auger wrote:
 
-Stephen Brennan <stephen.s.brennan@oracle.com> writes:
-> Hi Jon,
->
-> Jon Doron <arilou@gmail.com> writes:
->> Hi Stephen,
->> Like you have said the reason is as I wrote in the commit message, 
->> without "fixing" the vaddr GDB is messing up mapping and working with 
->> the generated core file.
->
-> For the record I totally love this workaround :)
->
-> It's clever and gets the job done and I would have done it in a
-> heartbeat. It's just that it does end up making vmcores that have
-> incorrect data, which is a pain for debuggers that are actually designed
-> to look at kernel core dumps.
->
->> This patch is almost 4 years old, perhaps some changes to GDB has been 
->> introduced to resolve this, I have not checked since then.
->
-> Program Headers:
->   Type           Offset             VirtAddr           PhysAddr
->                  FileSiz            MemSiz              Flags  Align
->   NOTE           0x0000000000000168 0x0000000000000000 0x0000000000000000
->                  0x0000000000001980 0x0000000000001980         0x0
->   LOAD           0x0000000000001ae8 0x0000000000000000 0x0000000000000000
->                  0x0000000080000000 0x0000000080000000         0x0
->   LOAD           0x0000000080001ae8 0x0000000000000000 0x00000000fffc0000
->                  0x0000000000040000 0x0000000000040000         0x0
->
-> (gdb) info files
-> Local core dump file:
->         `/home/stepbren/repos/test_code/elf/dumpfile', file type elf64-x86-64.
->         0x0000000000000000 - 0x0000000080000000 is load1
->         0x0000000000000000 - 0x0000000000040000 is load2
->
-> $ gdb --version 
-> GNU gdb (GDB) Red Hat Enterprise Linux 10.2-10.0.2.el9
-> Copyright (C) 2021 Free Software Foundation, Inc.
-> License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-> This is free software: you are free to change and redistribute it.
-> There is NO WARRANTY, to the extent permitted by law.
->
->
-> It doesn't *look like* anything has changed in this version of GDB. But
-> I'm not really certain that GDB is expected to use the physical
-> addresses in the load segments: it's not a kernel debugger.
->
-> I think hacking the p_vaddr field _is_ the way to get GDB to behave in
-> the way you want: allow you to read physical memory addresses.
->
->> As I'm no longer using this feature and have not worked and tested it 
->> in a long while, so I have no obligations to this change, but perhaps
->> someone else might be using it...
->
-> I definitely think it's valuable for people to continue being able to
-> use QEMU vmcores generated with paging=off in GDB, even if GDB isn't
-> desgined for it. It seems like a useful hack that appeals to the lowest
-> common denominator: most people have GDB and not a purpose-built kernel
-> debugger. But maybe we could point to a program like the below that will
-> tweak the p_paddr field after the fact, in order to appeal to GDB's
-> sensibilities?
+> >> qemu will typically not be able to
+> >> self-open /dev/iommufd as it is root-only.
+> >
+> > I don't understand, we open multiple fds to KVM devices. This is the
+> > same.
+> Actually qemu opens the /dev/iommu in case no fd is passed along with
+> the iommufd object. This is done in
+> [PATCH v1 16/22] backends/iommufd: Introduce the iommufd object, in
+> 
+> iommufd_backend_connect(). I don't understand either.
 
-And of course I sent the wrong copy of the file. Attached is the program
-I intended to send (which properly handles endianness and sets the vaddr
-as expected).
+The char dev node is root only so this automatic behvaior is fine
+but not useful if qmeu is running in a sandbox.
 
+I'm not sure what "multiple fds to KVM devices" means, I don't know
+anything about kvm devices..
 
---=-=-=
-Content-Type: text/x-c
-Content-Disposition: attachment; filename=phys2virt.c
-Content-Description: phys2virt.c
+The iommufd design requires one open of the /dev/iommu to be shared
+across all the vfios.
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <byteswap.h>
-
-#include <elf.h>
-
-static void fail(const char *msg)
-{
-	fprintf(stderr, "%s\n", msg);
-	exit(EXIT_FAILURE);
-}
-
-static void perror_fail(const char *pfx)
-{
-	perror(pfx);
-	exit(EXIT_FAILURE);
-}
-
-static void usage(void)
-{
-	puts("usage: phys2virt COREFILE");
-	puts("Modifies the ELF COREFILE so that load segments have their virtual");
-	puts("address value copied from the physical address field.");
-	exit(EXIT_SUCCESS);
-}
-
-static int endian(void)
-{
-	union {
-		uint32_t ival;
-		char     cval[4];
-	} data;
-	data.ival = 1;
-	if (data.cval[0])
-		return ELFDATA2LSB;
-	else
-		return ELFDATA2MSB;
-}
-
-int main(int argc, char **argv)
-{
-	char *filename;
-	FILE *f;
-	Elf64_Ehdr hdr;
-	Elf64_Phdr *phdrs;
-	off_t phoff;
-	int phnum, phentsize;
-
-	if (argc != 2 || strcmp(argv[1], "-h") == 0)
-		usage();
-
-	filename = argv[1];
-	f = fopen(filename,  "r+");
-	if (!f)
-		perror_fail("open");
-
-	if (fread(&hdr, sizeof(hdr), 1, f) != 1)
-		perror_fail("read elf header");
-
-	if (memcmp(hdr.e_ident, ELFMAG, 4) != 0)
-		fail("not an ELF file");
-
-	if (hdr.e_ident[EI_CLASS] != ELFCLASS64)
-		fail("file is not 64-bits: unsupported");
-
-	if (endian() != hdr.e_ident[EI_DATA]) {
-		phoff = bswap_64(hdr.e_phoff);
-		phnum = bswap_16(hdr.e_phnum);
-		phentsize = bswap_16(hdr.e_phentsize);
-	} else {
-		phoff = hdr.e_phoff;
-		phnum = hdr.e_phnum;
-		phentsize = hdr.e_phentsize;
-	}
-	if (phentsize != sizeof(Elf64_Phdr))
-		fail("error: mismatch between phentsize and sizeof(Elf64_Phdr)");
-
-	if (fseek(f, phoff, SEEK_SET) < 0)
-		perror_fail("fseek");
-
-	phdrs = calloc(phnum, phentsize);
-	if (!phdrs)
-		fail("error: allocation error");
-
-	if (fread(phdrs, phentsize, phnum, f) != phnum)
-		perror_fail("fread phdrs");
-
-	for (int i = 0; i < phnum; i++)
-		phdrs[i].p_vaddr = phdrs[i].p_paddr;
-
-	if (fseek(f, phoff, SEEK_SET) < 0)
-		perror_fail("fseek");
-	if (fwrite(phdrs, phentsize, phnum, f) != phnum)
-		perror_fail("fwrite phdrs");
-
-	fclose(f);
-	return EXIT_SUCCESS;
-}
-
---=-=-=--
+Jason
 
