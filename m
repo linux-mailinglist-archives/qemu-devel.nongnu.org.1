@@ -2,106 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C9D7A7264
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 07:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAB17A7272
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 08:00:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiqAM-0003ss-CW; Wed, 20 Sep 2023 01:54:26 -0400
+	id 1qiqFO-0005Y0-Kd; Wed, 20 Sep 2023 01:59:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qiqAB-0003qS-75
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 01:54:16 -0400
-Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qiqA6-0000Bd-W3
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 01:54:13 -0400
-Received: by mail-ot1-x331.google.com with SMTP id
- 46e09a7af769-6bd04558784so4073474a34.3
- for <qemu-devel@nongnu.org>; Tue, 19 Sep 2023 22:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695189249; x=1695794049;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xMWeF2HhGZEWc0W+5GSi6sL68pIB2U4XVLduYOYAG9A=;
- b=Y4EhR2ycjyBxxJ7o+BJB8PxU+CVmWttCG5/e2wkLXgVIUQ3YDhSNLmhFtASAlbiz1b
- U4fVmY3Iur4mON2o94jIf5/V10p/MgO3vrZfv19hgTMmIDliBMXV7/FRxo/UU5ZMKUjv
- Yo5GbY8wFLnM70KVQCjRbiE8nIZCPg69EYiMkUGaPVt/EuKoYgaU4+OdVw06k8qiujfb
- flkjdydG3/u8T3rRnRdKLblP+RtolgIqT2CRbVrdUzwsjsSZXzHJj9On7GZRDnwesVyv
- yebPUPxIYNGlKum9XQGknDI+Cv5DlaOdgdIlJZdM7gfw+CXN5enlN5fpMiIF8mxIPYIP
- e6lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695189249; x=1695794049;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xMWeF2HhGZEWc0W+5GSi6sL68pIB2U4XVLduYOYAG9A=;
- b=jT3C/vZmRdfoHPXqLG4XjFjjWq2FYN6UxrcLJP/Q17qBsx3Nz7QVEmlmJekhjmKZAl
- oHu0likcolxjk6SQppOCZ25W1u+YgVV1FwvFVaZA/i8huIMXeVnOoEye1UZdI/UQYipc
- BWDnOuO3Q4fc+Ar/rcLOQkyqX9xvgE454iwp541aPl6wjdI2B6lR4q1tMKX6yxBArXu/
- 9h5fUIHQCK7h6JWlNYf0JiwUIixGYxAyirWDG0zy4ZvSzYGnE4ObKQDUCX4+DoPIkgXj
- N2enk5CEvOvH2gbOy13e5VX9qepAhW9fPv7skuWpHiARkmSSBMnWpVUeKzw9Jt2cQzYg
- SO/Q==
-X-Gm-Message-State: AOJu0YzRBXgCmBdgI8Cv2+g0gEBaryzPejS/JxaPT8HTznDwZ81oC3d9
- C/uzoUT4imkOudNC1qAJXi+8LQ==
-X-Google-Smtp-Source: AGHT+IHSnmwNDAcIECGG0e9lrMrXi65An+rcs2Anr48VT3xg5CLb1z5c35tqPfVv2JWWozOjj1lmWA==
-X-Received: by 2002:a05:6358:2490:b0:135:57d0:d173 with SMTP id
- m16-20020a056358249000b0013557d0d173mr1915328rwc.20.1695189249348; 
- Tue, 19 Sep 2023 22:54:09 -0700 (PDT)
-Received: from [157.82.207.45] ([157.82.207.45])
- by smtp.gmail.com with ESMTPSA id
- 14-20020a17090a004e00b002609cadc56esm594933pjb.11.2023.09.19.22.54.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Sep 2023 22:54:09 -0700 (PDT)
-Message-ID: <8d1f6b30-795e-418e-aeb5-3823680ea70a@daynix.com>
-Date: Wed, 20 Sep 2023 14:54:03 +0900
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qiqFI-0005XZ-Tl
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 01:59:36 -0400
+Received: from mgamail.intel.com ([134.134.136.31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qiqFF-0001Me-Eh
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 01:59:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1695189569; x=1726725569;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=1AFS0qlu86X69HdRueO8Qt7qnBiopMrULvB4gkTp+4M=;
+ b=MVjgHwq0kVNy/dMjk+bIS8zlbydv2wZtqicwqpNxahsAz/TH1x4M82Rf
+ pdc7+gGqJXSWQINyQ89gXcCccCGgFMqIcXVmZxeKdowJ3lK/Vmo8ljvWf
+ gpbNY80DxhVcrIN/EiQjfUtLJOOdsPvYcE3TDD0ubWAjClxvbN1HdX9lG
+ XX5tJ3xmORml+edLtbh6oYug3kYOHXAo67i+2bmW5PRpU/p0DYmiQof2/
+ AowumyOPGczOphbLRpBANb9NsLDuMFlCex+4z6w1J1f/w68G30STv2UQD
+ dRJkc2NCjxl7Uv1IF4AcYyjBePnVPGlRNNcSVLdi/Z0SgA6G3HvYsV7QI A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="444226200"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="444226200"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2023 22:59:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="812013672"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="812013672"
+Received: from lingshan-mobl.ccr.corp.intel.com (HELO [10.93.14.5])
+ ([10.93.14.5])
+ by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2023 22:59:18 -0700
+Message-ID: <cd8d306b-6acc-34be-516c-b89c23ac108d@intel.com>
+Date: Wed, 20 Sep 2023 13:59:16 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [QEMU PATCH v5 09/13] virtio-gpu: Handle resource blob commands
-To: Huang Rui <ray.huang@amd.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>, "ernunes@redhat.com"
- <ernunes@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-10-ray.huang@amd.com>
- <a14b26dc-c804-4be8-83d5-088e71d37a7b@daynix.com>
- <9700c2ed-93c5-4bf6-bc6b-d5d33359d9a7@daynix.com> <ZQqIFvasHD+Y8TSa@amd.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [virtio-comment] Re: [VIRTIO PCI PATCH v5 1/1] transport-pci: Add
+ freeze_mode to virtio_pci_common_cfg
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <ZQqIFvasHD+Y8TSa@amd.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Jiqian Chen <Jiqian.Chen@amd.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@gmail.com>, Robert Beckett <bob.beckett@collabora.com>,
+ Mikhail Golubev-Ciuchea <Mikhail.Golubev-Ciuchea@opensynergy.com>,
+ Parav Pandit <parav@nvidia.com>, virtio-comment@lists.oasis-open.org,
+ virtio-dev@lists.oasis-open.org, qemu-devel@nongnu.org,
+ linux-kernel@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+ =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>,
+ Alex Deucher <Alexander.Deucher@amd.com>,
+ Christian Koenig <Christian.Koenig@amd.com>,
+ Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
+ Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>,
+ Huang Rui <Ray.Huang@amd.com>
+References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
+ <20230919114242.2283646-2-Jiqian.Chen@amd.com>
+ <20230919082802-mutt-send-email-mst@kernel.org>
+From: "Zhu, Lingshan" <lingshan.zhu@intel.com>
+In-Reply-To: <20230919082802-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::331;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x331.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.31;
+ envelope-from=lingshan.zhu@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,98 +98,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2023/09/20 14:50, Huang Rui wrote:
-> On Sat, Sep 16, 2023 at 12:37:29AM +0800, Akihiko Odaki wrote:
->> On 2023/09/16 1:04, Akihiko Odaki wrote:
->>> On 2023/09/15 20:11, Huang Rui wrote:
->>>> From: Antonio Caggiano <antonio.caggiano@collabora.com>
->>>>
->>>> Support BLOB resources creation, mapping and unmapping by calling the
->>>> new stable virglrenderer 0.10 interface. Only enabled when available and
->>>> via the blob config. E.g. -device virtio-vga-gl,blob=true
->>>>
->>>> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
->>>> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->>>> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
->>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
->>>> ---
->>>>
->>>> V4 -> V5:
->>>>       - Use memory_region_init_ram_ptr() instead of
->>>>         memory_region_init_ram_device_ptr() (Akihiko)
->>>>
->>>>    hw/display/virtio-gpu-virgl.c  | 213 +++++++++++++++++++++++++++++++++
->>>>    hw/display/virtio-gpu.c        |   4 +-
->>>>    include/hw/virtio/virtio-gpu.h |   5 +
->>>>    meson.build                    |   4 +
->>>>    4 files changed, 225 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/hw/display/virtio-gpu-virgl.c
->>>> b/hw/display/virtio-gpu-virgl.c
->>>> index 312953ec16..563a6f2f58 100644
->>>> --- a/hw/display/virtio-gpu-virgl.c
->>>> +++ b/hw/display/virtio-gpu-virgl.c
->>>> @@ -17,6 +17,7 @@
->>>>    #include "trace.h"
->>>>    #include "hw/virtio/virtio.h"
->>>>    #include "hw/virtio/virtio-gpu.h"
->>>> +#include "hw/virtio/virtio-gpu-bswap.h"
->>>>    #include "ui/egl-helpers.h"
->>>> @@ -78,9 +79,24 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
->>>>        virgl_renderer_resource_create(&args, NULL, 0);
->>>>    }
->>>> +static void virgl_resource_destroy(VirtIOGPU *g,
->>>> +                                   struct virtio_gpu_simple_resource
->>>> *res)
->>>> +{
->>>> +    if (!res)
->>>> +        return;
->>>> +
->>>> +    QTAILQ_REMOVE(&g->reslist, res, next);
->>>> +
->>>> +    virtio_gpu_cleanup_mapping_iov(g, res->iov, res->iov_cnt);
->>>> +    g_free(res->addrs);
->>>> +
->>>> +    g_free(res);
->>>> +}
->>>> +
->>>>    static void virgl_cmd_resource_unref(VirtIOGPU *g,
->>>>                                         struct virtio_gpu_ctrl_command
->>>> *cmd)
->>>>    {
->>>> +    struct virtio_gpu_simple_resource *res;
->>>>        struct virtio_gpu_resource_unref unref;
->>>>        struct iovec *res_iovs = NULL;
->>>>        int num_iovs = 0;
->>>> @@ -88,13 +104,22 @@ static void virgl_cmd_resource_unref(VirtIOGPU *g,
->>>>        VIRTIO_GPU_FILL_CMD(unref);
->>>>        trace_virtio_gpu_cmd_res_unref(unref.resource_id);
->>>> +    res = virtio_gpu_find_resource(g, unref.resource_id);
->>>> +
->>>>        virgl_renderer_resource_detach_iov(unref.resource_id,
->>>>                                           &res_iovs,
->>>>                                           &num_iovs);
->>>>        if (res_iovs != NULL && num_iovs != 0) {
->>>>            virtio_gpu_cleanup_mapping_iov(g, res_iovs, num_iovs);
->>>> +        if (res) {
->>>> +            res->iov = NULL;
->>>> +            res->iov_cnt = 0;
->>>> +        }
->>>>        }
->>>> +
->>>>        virgl_renderer_resource_unref(unref.resource_id);
->>>> +
->>>> +    virgl_resource_destroy(g, res);
->>
->> This may leak memory region.
-> 
-> The memory region should be freed under virgl_cmd_resource_unmap_blob()
-> which is calling memory_region_del_subregion(&b->hostmem, res->region).
-> Because this region is created by map_blob(). Do we have the case to call
-> virgl_cmd_resource_unref() without calling virgl_cmd_resource_unmap_blob()
-> for blob memory?
 
-Calling virgl_cmd_resource_unmap_blob() and virgl_cmd_resource_unref() 
-in order is a guest's responsibility, and we are required to prepare for 
-broken guests.
+
+On 9/19/2023 8:31 PM, Michael S. Tsirkin wrote:
+> On Tue, Sep 19, 2023 at 07:42:42PM +0800, Jiqian Chen wrote:
+>> When guest vm does S3, Qemu will reset and clear some things of virtio
+>> devices, but guest can't aware that, so that may cause some problems.
+>> For excample, Qemu calls virtio_reset->virtio_gpu_gl_reset when guest
+>> resume, that function will destroy render resources of virtio-gpu. As
+>> a result, after guest resume, the display can't come back and we only
+>> saw a black screen. Due to guest can't re-create all the resources, so
+>> we need to let Qemu not to destroy them when S3.
+>>
+>> For above purpose, we need a mechanism that allows guests and QEMU to
+>> negotiate their reset behavior. So this patch add a new parameter
+>> named freeze_mode to struct virtio_pci_common_cfg. And when guest
+>> suspends, it can write freeze_mode to be FREEZE_S3, and then virtio
+>> devices can change their reset behavior on Qemu side according to
+>> freeze_mode. What's more, freeze_mode can be used for all virtio
+>> devices to affect the behavior of Qemu, not just virtio gpu device.
+Hi Jiqian,
+
+Have you seen this series: [PATCH 0/5] virtio: introduce SUSPEND bit and 
+vq state
+https://lore.kernel.org/all/3f4cbf84-010c-cffa-0b70-33c449b5561b@intel.com/T/
+
+We introduced a bit in the device status SUSPEND, when VIRTIO_F_SUSPEND is
+negotiated, the driver can set SUSPEND in the device status to suspend the
+device.
+
+When SUSPEND, the device should pause its operations and preserve its 
+configurations
+in its configuration space.
+
+The driver re-write DRIVER_OK to clear SUSPEND, so the device resumes 
+running.
+
+This is originally to serve live migration, but I think it can also meet 
+your needs.
+
+Thanks,
+Zhu Lingshan
+>>
+>> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+>> ---
+>>   transport-pci.tex | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/transport-pci.tex b/transport-pci.tex
+>> index a5c6719..2543536 100644
+>> --- a/transport-pci.tex
+>> +++ b/transport-pci.tex
+>> @@ -319,6 +319,7 @@ \subsubsection{Common configuration structure layout}\label{sec:Virtio Transport
+>>           le64 queue_desc;                /* read-write */
+>>           le64 queue_driver;              /* read-write */
+>>           le64 queue_device;              /* read-write */
+>> +        le16 freeze_mode;               /* read-write */
+>>           le16 queue_notif_config_data;   /* read-only for driver */
+>>           le16 queue_reset;               /* read-write */
+>>
+> we can't add fields in the middle of the structure like this -
+> offset of queue_notif_config_data and queue_reset changes.
+>
+>    
+>> @@ -393,6 +394,12 @@ \subsubsection{Common configuration structure layout}\label{sec:Virtio Transport
+>>   \item[\field{queue_device}]
+>>           The driver writes the physical address of Device Area here.  See section \ref{sec:Basic Facilities of a Virtio Device / Virtqueues}.
+>>   
+>> +\item[\field{freeze_mode}]
+>> +        The driver writes this to set the freeze mode of virtio pci.
+>> +        VIRTIO_PCI_FREEZE_MODE_UNFREEZE - virtio-pci is running;
+>> +        VIRTIO_PCI_FREEZE_MODE_FREEZE_S3 - guest vm is doing S3, and virtio-pci enters S3 suspension;
+>> +        Other values are reserved for future use, like S4, etc.
+>> +
+> we need to specify these values then.
+>
+> we also need
+> - feature bit to detect support for S3
+> - conformance statements documenting behavious under S3
+>
+>
+>>   \item[\field{queue_notif_config_data}]
+>>           This field exists only if VIRTIO_F_NOTIF_CONFIG_DATA has been negotiated.
+>>           The driver will use this value when driver sends available buffer
+>> -- 
+>> 2.34.1
+>
+> This publicly archived list offers a means to provide input to the
+> OASIS Virtual I/O Device (VIRTIO) TC.
+>
+> In order to verify user consent to the Feedback License terms and
+> to minimize spam in the list archive, subscription is required
+> before posting.
+>
+> Subscribe: virtio-comment-subscribe@lists.oasis-open.org
+> Unsubscribe: virtio-comment-unsubscribe@lists.oasis-open.org
+> List help: virtio-comment-help@lists.oasis-open.org
+> List archive: https://lists.oasis-open.org/archives/virtio-comment/
+> Feedback License: https://www.oasis-open.org/who/ipr/feedback_license.pdf
+> List Guidelines: https://www.oasis-open.org/policies-guidelines/mailing-lists
+> Committee: https://www.oasis-open.org/committees/virtio/
+> Join OASIS: https://www.oasis-open.org/join/
+>
+
 
