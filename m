@@ -2,182 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6781B7A7A3B
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E036C7A7A67
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:26:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qivB5-00034m-VT; Wed, 20 Sep 2023 07:15:32 -0400
+	id 1qivFx-0005UI-He; Wed, 20 Sep 2023 07:20:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qivAz-00034F-GJ
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:15:25 -0400
-Received: from mgamail.intel.com ([134.134.136.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qivAw-0000gF-Jp
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:15:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695208522; x=1726744522;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=+EzN2fbMxUt2FgqJTRah8ztF/3SIyTfEKHtS3GHB7No=;
- b=RASeG4bExSLGk+ZLBtatKxXBzO8LSa3kiSx8F0jxqXTcisk+LTfTLlaW
- V8rJQNE9usODnnx0A39ULCM0xGdWkpcIxOZIuOY7t3AGOhljNi2/MWC27
- rxm99lRqUrdxVfQOgN56WfUdCTA1CFtmgJD5ti/lXvr2f4TXhxv+GXZV0
- Fw2UZNhT6a1WRnOjt6qY+c9o7ROm0fgNgIo3joAyZSfAKch+nFFM2VfWo
- niBMgSnyqS7M9LeWY4X1rslWQm6n2sbrU44RLpbmEJA6V4dbOjkrmBrTm
- ks4wJFDugQ9cVqwP7uTPPn583tIPpagqQMz3gQ5AW4Wjj+GSMUfMaExTv Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="446662055"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="446662055"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2023 04:15:14 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="816867505"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="816867505"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmsmga004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Sep 2023 04:15:11 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Wed, 20 Sep 2023 04:15:11 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Wed, 20 Sep 2023 04:15:10 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Wed, 20 Sep 2023 04:15:10 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.49) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Wed, 20 Sep 2023 04:15:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KyZPl2WeJBO6BXBEv/6iZLY21uwQesW/ZAf6jjfaEI+3jOnIj3oNewlM19brI7DKGfmkTBwpcIglVwPrl8oZd5j0gX3oRQVEGVyygTkV7EPjY05dAa+fL7pcOl+WBuVmm9nCfcFo5QSGclOUz46KCOshKl65JtglUhSVISqzIjHEXl6HUDnGVQ84ccwNErKqpxCpg2DY43eZqUtzlaQ6Z8YJSfCkvJXQ73jxAk/7wiDTaN+XvESXjfJ5MiTc4365LeW1f/5PLkEbxq26q3ibAsudJVZrMJVtkT4xDiqwD8kY1sIcGpdzsgPIDYtLNqOb/qobzWucwwzDYjCfKTvW6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+EzN2fbMxUt2FgqJTRah8ztF/3SIyTfEKHtS3GHB7No=;
- b=b0NWTY1SodNRTGvWDRUmNn1eYMgzpwmt7SjEicCxv65Il10mKqc5DK31hu0P9RHNlD9nPmZkdfPjwlqVBYdc6iEMvk5kHxRt1a08QGUAr/rjE86YRkSPypp8OC4XAcFntoHI33Cui5mOt1Cdf8+oziYZXd3Q5J9J2/bOV4vAQbP8E/4w/e+I64KWkDR1buhYpPwd4G72QXmVizCLiIdJ0lSmU6jCxP+VD0PC5BhEoevfbs7JuPDCKiQOf4naa0qWZ3N3QYm/spc5mNfqz7oA/XLOeihcfSVSRWesOETzFsvxSaSsV/bgVCMRl0130qg0z2mtlz3PNK4f/4c/ongoHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by CH3PR11MB7844.namprd11.prod.outlook.com (2603:10b6:610:12a::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.20; Wed, 20 Sep
- 2023 11:15:06 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::30d5:1067:980d:b8aa]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::30d5:1067:980d:b8aa%6]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
- 11:15:06 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "Martins, Joao"
- <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>, "Tian, Kevin"
- <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
- <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, "open list:Overall KVM CPUs" <kvm@vger.kernel.org>
-Subject: RE: [PATCH v1 02/22] Update linux-header to support iommufd cdev and
- hwpt alloc
-Thread-Topic: [PATCH v1 02/22] Update linux-header to support iommufd cdev and
- hwpt alloc
-Thread-Index: AQHZ2zAiRSEfZNgVY0KFJh4NW0O0irAafg0AgADLkaCACGSKgIAAAo1A
-Date: Wed, 20 Sep 2023 11:15:06 +0000
-Message-ID: <SJ0PR11MB674416AF0DD0BA4F901608F292F9A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <20230830103754.36461-3-zhenzhong.duan@intel.com>
- <c2fb72a1-2e83-d266-c428-72dcfcd95a75@redhat.com>
- <SJ0PR11MB6744FE3F0DBD0E5A69EC37FF92F6A@SJ0PR11MB6744.namprd11.prod.outlook.com>
- <d191634a-1734-f446-8b7e-affe4ec195f4@redhat.com>
-In-Reply-To: <d191634a-1734-f446-8b7e-affe4ec195f4@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|CH3PR11MB7844:EE_
-x-ms-office365-filtering-correlation-id: 2430986f-b050-4dc3-0c07-08dbb9cad843
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: PQfEfFOyel8Qxv5wOVCpCP/z05cyY+4udWU4pTyHNq1MEemukPYC9pJbsAa8BBMjPr1cL92U3iWNKSox11iT+gYRjhsUUUevFfI/oTxnRWnK5eihqGgbd3JRCa08q7NjbZFV9BK97A+wrSSsK0Kn8mlR1chKrTrYa64+XNSrjCnTS3ycZblFDVIvmB4g2PaUTme+GXh6Zb34U9kWxG5mMsQMiQgUmxMnVShAKJKHEG51NoBEnlwAYqGaksLhXbT79RbMNX4RcI/bd00AU65YeOPcUYXtLemBByDBvbhjn5n6J45JM83kJQ6znqLM1/kIlncB0pn94rRP1D9nWuDBLUQo5IpVE5mRxlEipxuT7lWAnwi+z0a3Wrbi9qv1LZO8aoDcvMhXNDtbVDTkvdilzUsBdawUACSDMYtlFAyxMG6FlIG1gV/OvEPg8OWrt2ReQGAEnCulEQP6KZC8unlmwuw+na1aeUhw3NKS/w/iKkij9TPz3CkvZQ+5pwo/I/cR0sDQsXRBtzhY2j+JaXiFwvhU6Q2gq2OiNuXdeYIPyvi2vkdYUKDKW2qoEBd6qyoYH37+DwMIi++i2nmsTwF5oPVl07Dp4VcN5YgK3E/tJnk=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(136003)(346002)(396003)(376002)(366004)(186009)(451199024)(1800799009)(4326008)(15650500001)(2906002)(7416002)(5660300002)(52536014)(8936002)(8676002)(55016003)(41300700001)(316002)(76116006)(66556008)(66476007)(110136005)(66946007)(54906003)(66446008)(64756008)(966005)(478600001)(53546011)(7696005)(83380400001)(9686003)(38100700002)(38070700005)(82960400001)(33656002)(6506007)(71200400001)(86362001)(122000001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MnZMWFluNURpRXk2S1JOVjRuS0QxTmtiT1kwT25qdGVzUmpndlJ4N2RyRWZy?=
- =?utf-8?B?K1Yxejk1NDRuTGZPMGsrUDF0MTFPMkprdzVkTWl0ODBMbjJkbXk1NFBqaFJp?=
- =?utf-8?B?SlVjamluM3oxYTBOTlhsY2RCUko2OGVSbGpOZWpGSm1TeFdaa2lEYUlObzVu?=
- =?utf-8?B?ckdjbzJDQWhiU1J5bnNqMm9PcnhveDJXQkJzc05JQUN1U2kvclExckc1T2Ez?=
- =?utf-8?B?RTlXL0JkN2VGM1lkeWRuOEhTaDQrL2gxTXZ6WE56SDRndUxzLy8zV2tGNFVo?=
- =?utf-8?B?YXhlcWNDNmthS1dSYSsrRFZlaS9LUGtqNDVkU01jK0xIQkFnSTJNTDY2aGky?=
- =?utf-8?B?RkZyWWxHWHJ2bER1ZDNLRG8reWZhRHZxNUFUUnhya25HM1UyanRMbVFxQ1Zn?=
- =?utf-8?B?R0RaSHpTTUY4cHdnTGpnaUJoM01TbmVYSFF6Y2s0SVhzSTgvNjZ6RWk2d0di?=
- =?utf-8?B?M0xIWjNKdWhuMkpFT1JoWlp1UDN2ZUxJNUN5ZzRjdFk2UHNSdWtydFhYTlBl?=
- =?utf-8?B?WEpLWU1NTEJKRkJrd29PWmR0WDVhUE9iRG9JaXI2dVVHUDFBdktBYmJPU1M2?=
- =?utf-8?B?YTEvUmdVb0lpd3F5U0d3NmV0MjB0SmhhMm9aM2I2RVlMWmV0cTVQWnlHYmdD?=
- =?utf-8?B?NUhyRlFObFZCSm5JMjVuOVJnM1ZpY0pPMGRvdFlJY3AzK0hPekFpQTNHcnEr?=
- =?utf-8?B?YVY5bTlzWG1RSVVBVGhSd0NTRCtDWkVLQU9mV21peXZGNFJDZC9FQ0g3NU44?=
- =?utf-8?B?L0dDdkZ6VGxXT2lYNkZGakF1TE5oZGhyUnRrTElWMWFnOVBSRUQ0NDlFM0Nl?=
- =?utf-8?B?cmFqTFNYS29LanRQcis4L2ZPYzBNRXZudyt6Zmw4dnlrWS9YcUw3eGVMaG5Q?=
- =?utf-8?B?djJ3b3czeUVRMjdZSnNQdlV0dThNN3hxTThyR2UwY3dkWUF2TWZ3YTNvZ1l2?=
- =?utf-8?B?WEFtU0ZKWHhsUEJJbDZrNmRaVzNJOW5vbDJCMEgzLyt0ajNQMExEMUZqMmFN?=
- =?utf-8?B?WnVRZGl0SEQyUUcyaU1DWHFsZTZRQmxEZEhSZkVQaXZyK0pHdTFENk5oeXo2?=
- =?utf-8?B?V0hya2lmL1FJN21jNTViTExFMFNrM2RBaFYxVzBSeWZRcDhqU0YvVHBKeWp4?=
- =?utf-8?B?TVpLZ0h4SUhuTGoyOTB4T016V2I2Yk1Fc3RpWjVURnlEblVxaFE0NWRqOVEw?=
- =?utf-8?B?aEl2Mm9od21HNEFLUkFTaUl0NzdneHFsT3l4MUxOMjZ6ZXcxbFVGTjNRTERI?=
- =?utf-8?B?V1JzQ0lQMTNHaU5JQ0h3SFMwS2paYkVyOHREYkZpQ25mdXQwQ0xPcktjOGNX?=
- =?utf-8?B?akFINGVlaFdkdXI0b05NTU1BblJveHFkUnM0S1lWSmNTa3pPTy93RjNRbXBK?=
- =?utf-8?B?bXpOTXJVRHhpZ3pwN3FaOThjKzBXK0lzMVBTdEM2QUdRWHZXWUVWV1RLa0JL?=
- =?utf-8?B?eUcyZXVZa3ZXQ1VlbEVoZWxKd1J1d1BVRnRYQWdUVDEyZFdLN2tVRU9vREI5?=
- =?utf-8?B?ckxOYU12WitRVlNWQ051ZUphQ0JObGdzQVZvVmZpanVYVHp5RWkzMWg4VHdD?=
- =?utf-8?B?NVhLdDRDV2c4UWNuVVF0bGVYTC9ZMnVITHJEazFwY1JGM1dLc3hCTmhkbEkr?=
- =?utf-8?B?RWJUaFMwR0lTdFRkNVdJUzc1b1Z2dUh3RGQ5VVgxdnhINzYrMEVoSk9LLzlu?=
- =?utf-8?B?akEzN2l2YkdRZzlFSEVMYTgwY0wxd05kbmJldXNBTnJjK29aZjgxVEwvOEpB?=
- =?utf-8?B?aktDRjhtR2pMMVlSYnhFQ21NNEl3YXVNNjRRd2wzckxobXRKZ0pyRU5xbDI3?=
- =?utf-8?B?UXhOUWd5SlBHSkJEWmM2QXlXVFRZLzg4amVkdE91UmhmRlhaMTBTSy9JcHE0?=
- =?utf-8?B?QU9iT3F6bWlxanBCV24zalRUd2JiWkZrbGFEMnpzQ0tZbXc4SVVobTVGM29m?=
- =?utf-8?B?QlNyVk92ZFpWUk04MVhBY0QrQm5NU2VGV0t3TGRsdVJXTUxJRS9SbHVMYXR6?=
- =?utf-8?B?dWR2QUxWM2tWRnQ0RjFOeGdIWmJ5SG5nRDZRdGJ0c3ljWGxoLzV1YlRTakVP?=
- =?utf-8?B?eDhQcmVMMGhCalZnNTlKVDhDTTVCeUUyYVVqcDIyY0JxYWpIVVR0L29hTS9u?=
- =?utf-8?Q?XYEY=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qivFu-0005TP-9L
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:20:30 -0400
+Received: from mail-ot1-x331.google.com ([2607:f8b0:4864:20::331])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qivFs-00022K-IV
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:20:30 -0400
+Received: by mail-ot1-x331.google.com with SMTP id
+ 46e09a7af769-6c21b2c6868so3873835a34.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 04:20:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1695208827; x=1695813627; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cD4Yh3yYi1/+2MPcY5wY2Z55yifTh4XeSglHuN/8j9Q=;
+ b=nEViZ/rBXU8VdGUqvZ0we4rlY0dtL7JNmNY21ifDEPGS1IVWdnAfohqmvBYrt8g6Yd
+ epDZ9zgI8LK4yMz9qzrrLc+gSRKzVID5LgdNZ+5yxunGmMVzABTEuN2CXN2FeoZ8FpI/
+ 6vclE4a5tKwPxatYTee2HSJcYGOGZP67TGFTpWmVvmO58EnZF4or9o9aU74ThMSrN/5L
+ jLWR+JF2P+yv81Y59+k2u5lv81M2GQ34lX+xerG/PJUVfiboNgE5Wt6vKsIE55wLiUJc
+ oohfXLBJ/auIgGtwKGdT4pQelp8NQAjcQxB0FYseHkXGIK/gjGw3m57+azQANf9uTyqw
+ ue/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695208827; x=1695813627;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cD4Yh3yYi1/+2MPcY5wY2Z55yifTh4XeSglHuN/8j9Q=;
+ b=OOldyhUr0jpfcSlZUQyvOwsQxtKDS2/Qb5yKC0HP4E9d9x7Mr900q1OIZo0D2waNRw
+ 6aBAzc7Uqpdg6hLWNCLv0JccDG1ril/vY5OtqtHEUSv45PNb8lGAkhMUJsz6w4UyMimY
+ 1KHCGlf/NGcwAVfDq3lCUPEcAuzLgoSSCcHFXMn9lqWrVjLWgo0mkKsk0/s1UvgjJQ3o
+ ryPCguYpwUwQNjY2NpTlTCXEBIgrPzoc95B8Y1tZGfSdYGOyvsGg1x2VVo1UttjvGmuU
+ 8v7gS855wTtC/pB4MJWfGDXml/PWgcyRkAZ7NqK7Fsu9UgmDSOeB3FHLDAzk+STFM8xa
+ 7WMA==
+X-Gm-Message-State: AOJu0YwlK+BMmjqODWRo7Lzk1uAovzhzSUMw8nlEpUOTjn4Vg8MOHdLY
+ ymU8YhFk9JJUeStHAKqX/eEkNlcsBozyeDZHtWU=
+X-Google-Smtp-Source: AGHT+IEw0jN/lGWXaEThxMOSGiwufg9NVUw3XLI4Cvsr6rynjCX7e8sNdem072L1XyG0z4uOPL2UzA==
+X-Received: by 2002:a05:6830:22d1:b0:6b8:7d12:423d with SMTP id
+ q17-20020a05683022d100b006b87d12423dmr2164677otc.18.1695208826737; 
+ Wed, 20 Sep 2023 04:20:26 -0700 (PDT)
+Received: from grind.. ([2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59])
+ by smtp.gmail.com with ESMTPSA id
+ q4-20020a9d7c84000000b006b45be2fdc2sm5863955otn.65.2023.09.20.04.20.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Sep 2023 04:20:26 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ philmd@linaro.org, ajones@ventanamicro.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v3 00/19] riscv: split TCG/KVM accelerators from cpu.c
+Date: Wed, 20 Sep 2023 08:20:01 -0300
+Message-ID: <20230920112020.651006-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2430986f-b050-4dc3-0c07-08dbb9cad843
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2023 11:15:06.5507 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qvAB1ScrhnzX9O0LmrP3ZLfxFRRzeRAS8Nyt2gfBla7zy189bojCrsT3EdyCXhiDMho8GCq6nq1e9h5ZmYqs7mmj5k9j2wWXqh2CSuKju48=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7844
-X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.100;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::331;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x331.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -193,35 +92,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPkZyb206IEVyaWMgQXVnZXIgPGVyaWMu
-YXVnZXJAcmVkaGF0LmNvbT4NCj5TZW50OiBXZWRuZXNkYXksIFNlcHRlbWJlciAyMCwgMjAyMyA3
-OjA1IFBNDQo+U3ViamVjdDogUmU6IFtQQVRDSCB2MSAwMi8yMl0gVXBkYXRlIGxpbnV4LWhlYWRl
-ciB0byBzdXBwb3J0IGlvbW11ZmQgY2RldiBhbmQNCj5od3B0IGFsbG9jDQo+DQo+DQo+DQo+T24g
-OS8xNS8yMyAwNTowMiwgRHVhbiwgWmhlbnpob25nIHdyb3RlOg0KPj4gSGkgRXJpYywNCj4+DQo+
-Pj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4+PiBGcm9tOiBFcmljIEF1Z2VyIDxlcmlj
-LmF1Z2VyQHJlZGhhdC5jb20+DQo+Pj4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJlciAxNCwgMjAy
-MyAxMDo0NiBQTQ0KPj4+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggdjEgMDIvMjJdIFVwZGF0ZSBsaW51
-eC1oZWFkZXIgdG8gc3VwcG9ydCBpb21tdWZkIGNkZXYNCj5hbmQNCj4+PiBod3B0IGFsbG9jDQo+
-Pj4NCj4+PiBIaSBaaGVuemhvbmcsDQo+Pj4NCj4+PiBPbiA4LzMwLzIzIDEyOjM3LCBaaGVuemhv
-bmcgRHVhbiB3cm90ZToNCj4+Pj4gRnJvbSBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20v
-bGludXgva2VybmVsL2dpdC9qZ2cvaW9tbXVmZC5naXQNCj4+Pj4gYnJhbmNoOiBmb3JfbmV4dA0K
-Pj4+PiBjb21taXQgaWQ6IGViNTAxYzJkOTZjZmNlNmI0MjUyOGU4MzIxZWEwODVlYzYwNWU3OTAN
-Cj4+PiBJIHNlZSB0aGF0IGluIHlvdXIgYnJhbmNoIHlvdSBoYXZlIG5vdyB1cGRhdGVkIGFnYWlu
-c3QgdjYuNi1yYzEuIEhvd2V2ZXINCj4+PiB5b3Ugc2hvdWxkIHJ1biBhIGZ1bGwgLi9zY3JpcHRz
-L3VwZGF0ZS1saW51eC1oZWFkZXJzLnNoLA0KPj4+IGllLiBub3Qgb25seSBpbXBvcnRpbmcgdGhl
-IGNoYW5nZXMgaW4gbGludXgtaGVhZGVycy9saW51eC9pb21tdWZkLmggYXMNCj4+PiBpdCBzZWVt
-cyB0byBkbyBidXQgYWxzbyBpbXBvcnQgYWxsIGNoYW5nZXMgYnJvdWdodCB3aXRoIHRoaXMgbGlu
-dXggdmVyc2lvbi4NCj4+IEZvdW5kIHJlYXNvbi4gVGhlIGJhc2UgaXMgYWxyZWFkeSBhZ2FpbnN0
-IHY2LjYtcmMxLCBbUEFUQ0ggdjEgMDEvMjJdIGFkZGVkDQo+PiBJb21tdWZkLmggaW50byBzY3Jp
-cHQgYW5kIHRoaXMgcGF0Y2ggYWRkZWQgaXQuDQo+PiBJIGFncmVlIHRoZSBzdWJqZWN0IGlzIGNv
-bmZ1c2luZywgbmVlZCB0byBiZSBsaWtlICJVcGRhdGUgaW9tbXVmZC5oIHRvIGxpbnV4LQ0KPmhl
-YWRlciINCj4+IEknbGwgZml4IHRoZSBzdWJqZWN0IGluIG5leHQgdmVyc2lvbiwgdGhhbmtzIGZv
-ciBwb2ludCBvdXQuDQo+DQo+T0sgSSBzZWUNCj5kYTNjMjJjNzRhM2PCoCBsaW51eC1oZWFkZXJz
-OiBVcGRhdGUgdG8gTGludXggdjYuNi1yYzEgKDggZGF5cyBhZ28pDQo+PFRob21hcyBIdXRoPg0K
-Pm5vdy4gU28geW91IG5lZWQgdG8gYWRkIHRoZSBzaGExIGFnYWluc3Qgd2hpY2ggeW91IHJhbg0K
-Pi4vc2NyaXB0cy91cGRhdGUtbGludXgtaGVhZGVycy5zaCBhbmQgaW4gdGhhdCBjYXNlIHlvdSBj
-YW4gcHJlY2lzZSB0aGF0DQo+Z2l2ZW4gW1BBVENIIHYxIDAxLzIyXSBzY3JpcHRzL3VwZGF0ZS1s
-aW51eC1oZWFkZXJzOiBBZGQgaW9tbXVmZC5oIGFkZGVkDQo+aW9tbXVmZCBleHBvcnQgYW5kIGdp
-dmVuIFRob21hcycgcGF0Y2gsIG9ubHkNCj5pb21tdWZkLmggaXMgYWRkZWQuDQoNClN1cmUsIHdp
-bGwgbWFrZSBpdCBjbGVhciBpbiB2Mi4NCg0KVGhhbmtzDQpaaGVuemhvbmcNCg==
+Hi,
+
+In this version we changed patch 10 (remove kvm-stub.c) as suggested by
+Phil to not include non-KVM stubs in kvm_riscv.h. A change in patch 05
+requested by Zhiwei was also made.
+
+Patches based on Alistair's riscv-to-apply.next.
+
+Patches missing acks: patch 10
+
+Changes from v2:
+- patch 05:
+  - remove riscv_cpu_add_user_properties() from riscv_host_cpu_init()
+- patch 10:
+  - do not add non-KVM stubs in kvm_riscv.h
+- v2 link: https://lore.kernel.org/qemu-riscv/20230906091647.1667171-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (19):
+  target/riscv: introduce TCG AccelCPUClass
+  target/riscv: move riscv_cpu_realize_tcg() to TCG::cpu_realizefn()
+  target/riscv: move riscv_cpu_validate_set_extensions() to tcg-cpu.c
+  target/riscv: move riscv_tcg_ops to tcg-cpu.c
+  target/riscv/cpu.c: add .instance_post_init()
+  target/riscv: move 'host' CPU declaration to kvm.c
+  target/riscv/cpu.c: mark extensions arrays as 'const'
+  target/riscv: move riscv_cpu_add_kvm_properties() to kvm.c
+  target/riscv: make riscv_add_satp_mode_properties() public
+  target/riscv: remove kvm-stub.c
+  target/riscv: introduce KVM AccelCPUClass
+  target/riscv: move KVM only files to kvm subdir
+  target/riscv/kvm: do not use riscv_cpu_add_misa_properties()
+  target/riscv/cpu.c: export set_misa()
+  target/riscv/tcg: introduce tcg_cpu_instance_init()
+  target/riscv/cpu.c: make misa_ext_cfgs[] 'const'
+  target/riscv/tcg: move riscv_cpu_add_misa_properties() to tcg-cpu.c
+  target/riscv/cpu.c: export isa_edata_arr[]
+  target/riscv/cpu: move priv spec functions to tcg-cpu.c
+
+ hw/intc/riscv_aplic.c                 |   2 +-
+ hw/riscv/virt.c                       |   2 +-
+ target/riscv/cpu.c                    | 988 ++------------------------
+ target/riscv/cpu.h                    |  30 +-
+ target/riscv/csr.c                    |   1 +
+ target/riscv/kvm-stub.c               |  30 -
+ target/riscv/{kvm.c => kvm/kvm-cpu.c} | 120 +++-
+ target/riscv/{ => kvm}/kvm_riscv.h    |   4 -
+ target/riscv/kvm/meson.build          |   1 +
+ target/riscv/meson.build              |   4 +-
+ target/riscv/tcg/meson.build          |   2 +
+ target/riscv/tcg/tcg-cpu.c            | 883 +++++++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.h            |  27 +
+ 13 files changed, 1113 insertions(+), 981 deletions(-)
+ delete mode 100644 target/riscv/kvm-stub.c
+ rename target/riscv/{kvm.c => kvm/kvm-cpu.c} (91%)
+ rename target/riscv/{ => kvm}/kvm_riscv.h (89%)
+ create mode 100644 target/riscv/kvm/meson.build
+ create mode 100644 target/riscv/tcg/meson.build
+ create mode 100644 target/riscv/tcg/tcg-cpu.c
+ create mode 100644 target/riscv/tcg/tcg-cpu.h
+
+-- 
+2.41.0
+
 
