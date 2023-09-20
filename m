@@ -2,74 +2,150 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67B37A8B4E
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AD67A8B5A
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:13:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj1gW-0006zH-Lo; Wed, 20 Sep 2023 14:12:24 -0400
+	id 1qj1hH-0007QQ-7R; Wed, 20 Sep 2023 14:13:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1gL-0006yx-6x
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:12:14 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1gJ-0008Dk-N4
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:12:12 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-52f3ba561d9so69680a12.1
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:12:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695233530; x=1695838330;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Bs4k3QkUuMwPUUh0q14VaXYYFakAOpr+mKwXVo1q3XA=;
- b=QRf9k1GuE9WaYBRZflMoVIkvDRYROYZmtdTefZFDGqxqNROABJLJAM+iAMOoJXKek8
- o7zlaEvXtuS2Q9SvESRookBwsyHyKNoDbJ9lZAkzVRU+ttBk+tnT9q01PYjEXMFxUKId
- UpRX6U2TH747qo1yEZ5aCsgVoOZlab0ylzeGQOFuescSLn2OdIp0rE3UZk5IapVzsftO
- Bs9ahKheT7LcrG0NaTCinWHJIHRPpMNql6x8EMkaeph2z6pmwH6xm52o5yxpMlB04lrr
- eCQL3VDAuhwDSg1yJQbkNdEMwjYOepORj8r80a/t+ejWkaadNBk2xkdFnRZTG7gAYYNM
- 2ahg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695233530; x=1695838330;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Bs4k3QkUuMwPUUh0q14VaXYYFakAOpr+mKwXVo1q3XA=;
- b=f4U1HzSAG6hbPG5CJ7dEE/IltnC5iovTPOATnDfCKiHMYqHgPNaJBfjG7dr1OE+FO0
- cw2/Bu4BJ9YV/U3EfqQSY3hXDvD1BFuS4mmkxtRCbj+tr8Un2p3PS/VuPLKRNGzXyy3n
- IsmFZoG50W4Qh/tdzGLlOH9Gho9L+P+rd1op/+H7h8XujIj/+Sr2ZqLnZv9YY+Iv4twH
- WSijL/GGO0CnbmlAAbt8MkL6IX4FUK92t8NRIiQmcZ0uxQMyfZccl+loHOyXPpxDOZab
- TWR5s0phGXiZJJc1KGNaDAxZBzUrHFnn18PJfGfG9wMxHQ+cIQ0vnMoy9v3KT8dEfAtA
- gMiA==
-X-Gm-Message-State: AOJu0Yw5hHc1RKYDOKEnS0M7WZEu+9tUHNkWgoElPcjb+XeX3xmm9zon
- /8qCLuq1YOk6xYqEOOorTyPTPHrLxkvkHsP76aMIXQ==
-X-Google-Smtp-Source: AGHT+IER1kKr53Z3GkZrRfukd2+AvAlmPSOD7js21IpRBLkp0Oz0Rwu+Cfe/6guSbHe3MyjpYB55e0lD1PVq5J1cxlE=
-X-Received: by 2002:aa7:d6c1:0:b0:52f:8ca7:f267 with SMTP id
- x1-20020aa7d6c1000000b0052f8ca7f267mr4925863edr.1.1695233529727; Wed, 20 Sep
- 2023 11:12:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qj1hF-0007QF-1j
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:13:09 -0400
+Received: from mail-mw2nam10on20627.outbound.protection.outlook.com
+ ([2a01:111:f400:7e89::627]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jgg@nvidia.com>) id 1qj1hC-0008OG-IT
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:13:08 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A99gOmbJTXQz9e8D4CYm03culidLQFrTC4IztGuXxXSsGUq7fED9mzglXx8xwUDn8uegueXVKEk8C71CXk0nkdfLahfDrEWH2PJdRjaqUscEFy1VgVWrn3+LmuFV29ynirwk9Yx++3S3wesS2ItXXLVN1GaCz+jMdM+6TD2KA8Bh9dMtutbkjaaQdATCh3uFavwFeq0sthogWAwFYZ6AqbXfLBiw5d9giw2XEU5wk6Q1pB9OKGWDjzBT+XYiXwX//okVgwU+MC4sBLbBdHw1hcNTRYoNGvEDxrWJ1r7vRva61kG7ai5wCjCougwS/JhTg25IM0ZBBM6pscM9LBmPEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h1vEoUnyjOOZIT4NzrYOBRyhC3twEHmQbPrpwHhbFdU=;
+ b=K0X0EjzuxtjU+3JqgVIVXFpxbBA3fCXTh+B19piYqVxOyld3OPIXHQQvuez5EMEXefGMETD0p+WHgn3YPt+pnpnMXmn3uBLHRVemjdt6wUAdEg/3j1jlB2X+vHReRFUnCJ7Ct4y30rr8pW/5aF+D7LoACho426zBqNKVm9jp4JGgrdOt+CJ015NPQGk7blKBAPaVa+/f7lUCzr0BoC/Pmi7Kk8p2RbpxyHpOnTrbTrlkjjQejApoMi3kwYlmb3ZvsOlKXGnK+Ff/vGmc6QuYCwEA2zsiD1M0VMkyTuAEzlykQUuEYGVefulCc5jaeWLjE8JNKX0M3i0cFqA6ZUoHiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h1vEoUnyjOOZIT4NzrYOBRyhC3twEHmQbPrpwHhbFdU=;
+ b=uHy2kBT1TPDLLjJ+DLuVsSoEl4rck2nhVznCbu3fLZDBYnCzE1TLvyKWH8gMeJzXcy8rjo4ENvxWKsoP47FZpcrqLM9ZUbeqHbDwwDFD2AnFBdsmTsESydQIJSFXtuJxYAYNYVMxPYvN1+0r774swd6VecAwTqlA9nEFWACvaNU6Wf/MnO/kj0zCuCZ7YsjlC09/4XLsXlQcVxX/CZ9aJKhKH3YhsBqlqrfSZ89CbEOrIajz8g6KjEW870zi/KhHeBfezYrd8EE4QFzlzq/uHlRFZaiptWqVZYFw4Q6qjNfTMfW/f5Dbum0yDDlenDWQW8etmzOcLcDMz0aDIDJNxw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com (2603:10b6:408:176::16)
+ by DM8PR12MB5414.namprd12.prod.outlook.com (2603:10b6:8:3e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Wed, 20 Sep
+ 2023 18:13:01 +0000
+Received: from LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::faf:4cd0:ae27:1073]) by LV2PR12MB5869.namprd12.prod.outlook.com
+ ([fe80::faf:4cd0:ae27:1073%6]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
+ 18:13:01 +0000
+Date: Wed, 20 Sep 2023 15:12:59 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "Martins, Joao" <joao.m.martins@oracle.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>,
+ "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y" <yi.y.sun@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Laine Stump <laine@redhat.com>
+Subject: Re: [PATCH v1 15/22] Add iommufd configure option
+Message-ID: <20230920181259.GH13733@nvidia.com>
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-16-zhenzhong.duan@intel.com>
+ <75c9c56e-f2da-f2a3-32b6-c9228678b05a@redhat.com>
+ <SJ0PR11MB6744E56158500CC3A0A34BDC92F9A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <20230920120142.1a517d0c.alex.williamson@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230920120142.1a517d0c.alex.williamson@redhat.com>
+X-ClientProxiedBy: YT4PR01CA0339.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:fc::22) To LV2PR12MB5869.namprd12.prod.outlook.com
+ (2603:10b6:408:176::16)
 MIME-Version: 1.0
-References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
- <20230917213803.20683-9-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230917213803.20683-9-kariem.taha2.7@gmail.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 20 Sep 2023 19:11:58 +0100
-Message-ID: <CANCZdfoOsY05i0qMwKTHD0UtTDbbbSCUZwUMO5uVe0+LLkYEoQ@mail.gmail.com>
-Subject: Re: [PATCH v2 08/28] bsd-user: Implement host_to_target_rusage and
- host_to_target_wrusage.
-To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="00000000000059ec7a0605ce50c9"
-Received-SPF: none client-ip=2a00:1450:4864:20::536;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5869:EE_|DM8PR12MB5414:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9a443a8d-51d1-4f04-33a1-08dbba0539a3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UZH/iXRV9h7pdmdnXGO34bkYJVH1+R9qJhLY392ncaDbXknu8wcWq4HccJnpGc7c6n6BVa+Roa2Y8A+c+xy/DgDGCEL77tZPt/PApP9lw/jkDF6U/RR/lvS08GYcQZzrNwrFG53IL8JwhhLVe2aaHJaDH6tOciD+O23zlNPnh57nihUqd+MwaDjlKEU21xCZyizYUzn5XlFW2TcrokhlQ3gNV53AdtPZ/ZhKq5k7hIoM2kzAIMPunEfFkCXcrpuTu0HNAyxYCgl+hpj8TZuEMYN/mmA47KfGz9ss/hRrLv+nMlKiYVq7DJ3HCTQ+a4tpKsvMST0uIlP0IC2TWqRIqemfsRNpmJOjp/uFh99NpV7JeqzCO5kOUPHOmnn3CHxYxBo2yQXxWuUiu8ZdXAgamLANuq4efeMGHrYuPCLQp9uVgja1g8RWUKWBPFvO9eRT80gZokfghfSL+EXjYVHnVqkFV1NHA22YDMFH4Ewy18fgSPnf0guyOs9z+YQxxevgIO8IaUNnMoiz1hge6mSpKXjlfFoXk84gaGEeT/dYk5tvppojK6awkkIx6fCqclW7
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:LV2PR12MB5869.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(376002)(396003)(366004)(39860400002)(136003)(186009)(451199024)(1800799009)(83380400001)(66899024)(66946007)(38100700002)(66476007)(316002)(66556008)(54906003)(6916009)(478600001)(2906002)(8936002)(4326008)(8676002)(5660300002)(41300700001)(86362001)(66574015)(6512007)(2616005)(7416002)(26005)(6506007)(6486002)(1076003)(36756003)(33656002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eG9jbGtBZktwU2xBZW1hYlM5OVBqSXo5V2J5dUU5VFRlK1psV3RLZkxwSUZY?=
+ =?utf-8?B?V2FzdGowdGUyc2FOVmZQSm12RTgwZUlLV1JmaUZYaGVVaHI3MENsNlhpS3NZ?=
+ =?utf-8?B?aDZ2ekNNUzVhMTZYd1RoWEplSi85VjhCMFpPaVdWMk1XT1V0VEdINXh0MWlY?=
+ =?utf-8?B?RGNvd0FIalAyeG5HRzB3WUF5bWpKN0NxQW1YZVlUWnV0akRzRFB3S3VqYloy?=
+ =?utf-8?B?ZWZUcmJIUU4rS21lNktEc1UxRGZsNWsrN0Nzb2dWSFhlTmppZ2lHVnpTdnhC?=
+ =?utf-8?B?Y2tSNnpTdUhIeUpHZ3VOOGRRN1FhWXpDQ2JDZDFpeElIek8zQmpTYW41NWVy?=
+ =?utf-8?B?N0NMTW9haTZadytCVXdvejJWdDhObzE0VWltM1RpZmpiQ3JiL21CTGt4Q1VE?=
+ =?utf-8?B?NEVvUzQwUjJrd0RURXQ0SEQ3bE00blNwZ3NTdll4S2dIMGpkSjBENXFhM1la?=
+ =?utf-8?B?Z05ZMms4OFJOL0RmUHVGc3EzVjVteWhlSldxaCtqYm5VcXlZZmtlemU0dERw?=
+ =?utf-8?B?eHFlM1VhWXZCcUp0RTVXaGM3bm44MTJuKzg1anRtYzFmQkc0V2xsSzBXR3lE?=
+ =?utf-8?B?akRWNURoZlRaVVJZcU5Mc1cyYmRpNGU2K1NvTE5xQjc3Qk1pK3NBbExLcHlF?=
+ =?utf-8?B?UFRXQlBFNStrOEFpbmc3emZKcWpsUjkxMEhJbVZlUGZPQ1JzTGhQWDQ4dkdo?=
+ =?utf-8?B?QXUxbURaZlRtQU5kOVpmTzUwbmlrSWZkZHErZW1xeHFBWDhENGNUaEV3WGhV?=
+ =?utf-8?B?eGlQcklQNnlnQ2RnaE5JY2c3emV1ZXlIV0tjUTljdVNaVE9ocVZFeG1UdjZI?=
+ =?utf-8?B?N08wRWxxdkVNZDZySS9oaVoyOTZQVnBPWmdBYTQxeTlPaC9aQUVBQW9Yb1VW?=
+ =?utf-8?B?eWxsbjFRNXA2czRTZlNHd3laZ2FHOVBqRzZuWmJvaEVFNGkvRTcySlMvOFM3?=
+ =?utf-8?B?MkRxcVl4MVRkZGkxdUpzOHFNUWFISTZua3BOYzVrbGhDZFIrbWo4V2piWlho?=
+ =?utf-8?B?TzlURmhIc0JMOWhoL3JwNkVzeU5wemdLNFBQZGdKL3oydDRuSWgyTFROZyt6?=
+ =?utf-8?B?WSs5dk4zRkx6ck5XdFVJMFM3TWRlWWJ3R0ppdHIvak10Z2lRejFyb0thMnI3?=
+ =?utf-8?B?TkZpeVhiZzRCOUE3MUEzamRxWHU5aG9NTkQ1UzBjT1pQaFRyeHdGNFJib29n?=
+ =?utf-8?B?WDlmYmR5S0Jpa1JRTHllQ0FuS01USFZnS3UzUU8zRG9ETHo4Sm9ZS2dqNzJw?=
+ =?utf-8?B?VWhyOGk5cUJ4T0NkYTFsa0NrcndVSHdvM2s1cENQNDcyeDc1UStuQ3dUWkpU?=
+ =?utf-8?B?Q09aZy9EZEdSSVEyQnpUSnQvN2tZV0I2WjhiV0NMUkl3RXB2WUlyQ1VydXRY?=
+ =?utf-8?B?WWRRSXRtTk02SUh6OWFhVVZrenBqaDhMczhuSVBSN1hud1pWVC9nMjNUcnZ5?=
+ =?utf-8?B?aGQ4VzZhMDVUa1g5UmYwL09ocXpzd0s1bm1PM3FiL3lvZitHbXZmR21OOTJR?=
+ =?utf-8?B?L2tnTFhNMERGL2ZHOWhqN1kzR2p3WjF4a2JpZ0RkOUVlTUhGZ1FzWnd6UEtU?=
+ =?utf-8?B?bENDRTFscmUrakIvTDBwVHgwTFpkN016emxKN1lRMEpPeGI4aUEvUW5aRFRm?=
+ =?utf-8?B?aTJ5V0tLTmYvK0FDWlR6SGR4ZUp4Y3NoSHB1OE5IcmxSQnQxUHpEVy91eEQ1?=
+ =?utf-8?B?OWhWVlZySUEzR3pXcUZIMUdFRzJCT0ZrbDAxeVc4UFIyZ1lMVEZUNjI4YWVS?=
+ =?utf-8?B?U2hLYzE5Um9iNG9wMHpnNE1ZVlJCdEYzSzFlVEJsUFYwaDBodUVGYWcwRWNo?=
+ =?utf-8?B?UHVTYlpIMjFNZkxYdFQ3TGhIMGZKa1J3bkJkcVROY1NGM25QMG9QREpjWE9Z?=
+ =?utf-8?B?eGsvMUtvVmd0dHZJNHplL0dPTzhCUGtTb1k3T1IybHVDMnBuUnlsNDcyRDQy?=
+ =?utf-8?B?MVY1citJRW5GZyttTW9BazRHaGlqZHV4aHZhbWhFcEluanR1dnhRdWx6OGd0?=
+ =?utf-8?B?L0R0YzBDeVNOMjZIMy9jUW9UMTM3WkFmcGNIMmFyTzFzSWN4Q2pzNitma2tk?=
+ =?utf-8?B?SXhOOWMxNDNJdHJZRmwzY0ExeDh2dVpBS1U0b1M5YVBHeHMvOFh6ZFkxYjBh?=
+ =?utf-8?Q?tVXNBoZ5jfU2G6IC0q8vc5xPc?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a443a8d-51d1-4f04-33a1-08dbba0539a3
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5869.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 18:13:01.1642 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ePz8ual9N7kGajPkEQiMX3elAyYyCuylWgIwum+blNOqINDKLbqqPrh63Pe++p0x
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5414
+Received-SPF: softfail client-ip=2a01:111:f400:7e89::627;
+ envelope-from=jgg@nvidia.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,50 +161,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000059ec7a0605ce50c9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Sep 20, 2023 at 12:01:42PM -0600, Alex Williamson wrote:
+> On Wed, 20 Sep 2023 03:42:20 +0000
+> "Duan, Zhenzhong" <zhenzhong.duan@intel.com> wrote:
+> 
+> > >-----Original Message-----
+> > >From: Cédric Le Goater <clg@redhat.com>
+> > >Sent: Wednesday, September 20, 2023 1:08 AM
+> > >Subject: Re: [PATCH v1 15/22] Add iommufd configure option
+> > >
+> > >On 8/30/23 12:37, Zhenzhong Duan wrote:  
+> > >> This adds "--enable-iommufd/--disable-iommufd" to enable or disable
+> > >> iommufd support, enabled by default.  
+> > >
+> > >Why would someone want to disable support at compile time ? It might  
+> > 
+> > For those users who only want to support legacy container feature?
+> > Let me know if you still prefer to drop this patch, I'm fine with that.
+> > 
+> > >have been useful for dev but now QEMU should self-adjust at runtime
+> > >depending only on the host capabilities AFAIUI. Am I missing something ?  
+> > 
+> > IOMMUFD doesn't support all features of legacy container, so QEMU
+> > doesn't self-adjust at runtime by checking if host supports IOMMUFD.
+> > We need to specify it explicitly to use IOMMUFD as below:
+> > 
+> >     -object iommufd,id=iommufd0
+> >     -device vfio-pci,host=0000:02:00.0,iommufd=iommufd0
+> 
+> There's an important point here that maybe we've let slip for too long.
+> Laine had asked in an internal forum whether the switch to IOMMUFD was
+> visible to the guest.  I replied that it wasn't, but this note about
+> IOMMUFD vs container features jogged my memory that I think we still
+> lack p2p support with IOMMUFD, ie. IOMMU mapping of device MMIO.  It
+> seemed like there was something else too, but I don't recall without
+> some research.
 
-On Sun, Sep 17, 2023 at 10:39=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
-om>
-wrote:
+I think p2p is the only guest visible one.
 
-> From: Stacey Son <sson@FreeBSD.org>
->
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
->
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  bsd-user/bsd-proc.c | 54 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 54 insertions(+)
->
+I still expect to solve it :\
 
-Reviewed-by: Warner Losh <imp@bsdimp.com>
+> Ideally we'd have feature parity and libvirt could simply use the
+> native IOMMUFD interface whenever both the kernel and QEMU support it.
+> 
+> Without that parity, when does libvirt decide to use IOMMUFD?
+> 
+> How would libvirt know if some future IOMMUFD does have parity?
 
---00000000000059ec7a0605ce50c9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+At this point I think it is reasonable that iommufd is explicitly
+opted into.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sun, Sep 17, 2023 at 10:39=E2=80=
-=AFPM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.tah=
-a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-<br>
-Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
-arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
-<br>
-Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
-ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
----<br>
-=C2=A0bsd-user/bsd-proc.c | 54 ++++++++++++++++++++++++++++++++++++++++++++=
-+<br>
-=C2=A01 file changed, 54 insertions(+)<br></blockquote><div><br></div><div>=
-Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.c=
-om</a>&gt;=C2=A0<br></div><div>=C2=A0</div></div></div>
+The next step would be automatic for single PCI device VMs (p2p is not
+relavent)
 
---00000000000059ec7a0605ce50c9--
+The final step would be automatic if kernel supports P2P. I expect
+libvirt will be able to detect this from an open'd /dev/iommu.
+
+Jason
 
