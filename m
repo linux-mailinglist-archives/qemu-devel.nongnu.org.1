@@ -2,52 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8331F7A8DF8
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 22:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7997A8E99
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 23:39:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj45O-0003PX-3a; Wed, 20 Sep 2023 16:46:14 -0400
+	id 1qj4tQ-0004x4-6N; Wed, 20 Sep 2023 17:37:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qj45H-0003PD-IJ
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 16:46:07 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qj45C-0003rj-KQ
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 16:46:07 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B174123BC6;
- Wed, 20 Sep 2023 23:46:19 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D53CB29850;
- Wed, 20 Sep 2023 23:45:57 +0300 (MSK)
-Message-ID: <688aae83-b8fb-5867-2451-dc0c67fe9319@tls.msk.ru>
-Date: Wed, 20 Sep 2023 23:45:57 +0300
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qj4tO-0004wj-2d
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 17:37:54 -0400
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qj4tM-0006Sl-C2
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 17:37:53 -0400
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-6c0a3a2cc20so217120a34.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 14:37:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1695245870; x=1695850670; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=PrbVKF2ZzMXknOTG5z2ypC+xhOlDu7nrAAmZFumz1q4=;
+ b=nZJGiWlvNds3q3o7B/2ySp8Tm7UGZypWfYS+D4xS7wQklI8uD9ubqAOZJErnmqgZZ0
+ JyV1oxMKwowuyVcniGUbHIxQAwe8fE+UwjnUMr9jIVaGBXmAA/AD6u0IUEvmOrh6MBfF
+ tQkIx5YINOo1PbHBLzJ/VpyFkkp4Mdz2RohNpsShTrh/3t6gphWXu3IKT8KLPC1lUD+N
+ GpiFaIJsEsjQ6ZVk/41g7hVYchZduSboHuTEUX26nR01RGeV1aVziXt0xJTfqb7XLqc4
+ U7E2TP3bc5CKlGzCL4yWaEoGNpklbbdR3B2/3PJ96IRTZrox/TNneI+/g0VPSOl+cnVs
+ ReGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695245870; x=1695850670;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=PrbVKF2ZzMXknOTG5z2ypC+xhOlDu7nrAAmZFumz1q4=;
+ b=LGINpSJZzLUTgZvQx7MlVe9iwg1xQpzt4X8b9n3gm1/vycJKwXe5cxN03xvP2k7reG
+ nvuIrtYVoR3lUsNppLMNE2B/dEO8fV78Af3mzU7xIjz99Kmlfm/3aTNARK5ruBs7tEzD
+ fYz+yAbnmFErUAPx8DqBuvU4YtBDgwg31Rs/SlYysPU8y2vXFWnmuVvTx8kNMrMylMFW
+ LD3Xvhga3d7RhdKkl5htb1aFgXCqKqBHDH3URsdCdzjRkg6hK1Pr3fKFWo+QHXd17ncI
+ 84M3N4r0GEWleT5u4phUuPJGIjSBK+czKbQGeJv5yEONcdPKFuSBlgBlfpi34llwm+yV
+ /sAQ==
+X-Gm-Message-State: AOJu0YzdPTAHu4nIw2RWzvF3J5kwNYT7uyNswsu/lfvYUYDErOz5Fo7w
+ 2TO+dKRVpi+umqthpabwibxZVPxj5xdZ/pfeNGI=
+X-Google-Smtp-Source: AGHT+IFZA6gxPRRaut1dmGKmXoyGmVVHgzaO+7Wk0y6WX2O2aC+k3URH/O7/M7dH3AdLCLlxHW1GVg==
+X-Received: by 2002:a9d:7ac7:0:b0:6bf:178f:aade with SMTP id
+ m7-20020a9d7ac7000000b006bf178faademr4132639otn.11.1695245870507; 
+ Wed, 20 Sep 2023 14:37:50 -0700 (PDT)
+Received: from grind.. ([177.94.42.59]) by smtp.gmail.com with ESMTPSA id
+ e1-20020a9d7301000000b006b83a36c08bsm64415otk.53.2023.09.20.14.37.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Sep 2023 14:37:50 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH 0/8] riscv: query-cpu-model-expansion API
+Date: Wed, 20 Sep 2023 18:37:35 -0300
+Message-ID: <20230920213743.716265-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: stable-8.1.1: which bug do we keep?
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Paul Menzel <pmenzel@molgen.mpg.de>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <84f08f14-7911-4cdc-04e6-548287349d00@tls.msk.ru>
- <ZQq4kMVHNtxeVH6o@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <ZQq4kMVHNtxeVH6o@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,79 +89,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-20.09.2023 12:17, Daniel P. Berrangé wrote:
-> On Wed, Sep 20, 2023 at 07:46:36AM +0300, Michael Tokarev wrote:
->> Hi!
->>
->> I'm in somewhat doubt what to do with 8.1.1 release.
->>
->> There are 2 compelling issues, fixing one discovers the other.
->>
->> https://gitlab.com/qemu-project/qemu/-/issues/1864
->> "x86 VM with TCG and SMP fails to start on 8.1.0"
->> is fixed by 0d58c660689f "softmmu: Use async_run_on_cpu in tcg_commit"
->>
->> But this brings up
->>
->> https://gitlab.com/qemu-project/qemu/-/issues/1866
->> "mips/mip64 virtio broken on master (and 8.1.0 with tcg fix)"
->> (which is actually more than mips, as I've shown down the line,
->> https://gitlab.com/qemu-project/qemu/-/issues/1866#note_1558221926 )
-...
+Based-on: 20230920112020.651006-1-dbarboza@ventanamicro.com
+("[PATCH v3 00/19] riscv: split TCG/KVM accelerators from cpu.c")
 
-> In the cover letter for the 2nd proposed series Richard says
-> 
-> [quote]
-> I've done a tiny bit of performance testing between the two
-> solutions and it seems to be a wash.  So now it's simply a
-> matter of cleanliness.
-> [/quote]
-> 
-> Since the 2nd series is shown to still be broken in some cases
-> and 1st is thought to solve them all, IMHO it feels like we
-> should just press ahead with applying the the 1st series to
-> git master, and then stable.
-> 
-> If we still want a cleaner solution, it can be reverted/replaced
-> later once someone figures out an option that addresses all the
-> problems. We shouldn't leave such a big regression in TCG unfixed
-> for so long while we figure out a cleaner option.
+Hi,
 
-Daniel, you have a very good point here.
+The parent series is in a more stable state so I decided to go ahead
+and post this work.
 
-I just collected the first version of Richard's fixes (with Phil's
-changes and tags), added them to qemu debian package and pushed that
-one out, - debian has much wider CI than qemu has, hopefully it will
-clear things out.
+This series implements query-cpu-model-expansion for RISC-V. The
+implementation was based on the ARM version of the same API in
+target/arm/arm-qmp-cmds.c.
 
-Also I pushed them to staging-8.1 branch for qemu ci run.  This obviously
-should not go to current stable-8.1 since these fixes aren't in master.
+A couple of changes were made in the first 3 patches. The most impactful
+is in patch 2, where we're now exposing extension properties for vendor
+CPUs. This was done to allow the API to retrieve the extension state for
+those CPUs, which were otherwise hidden inside cpu->cfg. The result is
+that users will have a little more power because we're now allowing
+vendor CPU extensions to be disabled. Enabling extensions for those CPUs
+is still forbidden. Patch 2 commit msg gives more details on what is now
+possible to do.
 
-The only thing I regret is that his simple thing didn't occur to me
-much earlier (and actually didn't occur to me at all).
+The first 3 patches can be pushed/merged separately from the API since
+they can stand on their own.
 
-Let's see..
+A small tweak in the extension validation in the TCG driver was also
+needed. We're now centralizing all extension validation in
+finalize_features(), and exporting finalize_features() to be usable by
+the new API. This will allow us to validate model properties and report
+back if the desired model is valid or not.
 
->> To mee, it *feels* like 0d58c660689f should be there.
->> Note: the scheduled deadline for staging-8.1.1 is gone yesterday.
->> But this stuff seems to be important enough to delay 8.1.1 further.
-> 
-> On the one hand breaking x86 is a big deal because it is a mainstream
-> architecture, on the other hand people have real x86 hardware, so
-> using TCG emulation for x86 is less compelling. I agree we need to
-> fully address this in 8.1.1.
+This series can be tested directly using this branch:
 
-As it turns out, quite a lot of various CI stuff uses qemu in tcg
-mode behind the scenes.
+https://gitlab.com/danielhb/qemu/-/tree/qmp-cpu-expansion_v1
 
-> I guess the other unmentioned option is to revert whatever TCG changes
-> went into 8.1 that caused the regression in the first place. I've no
-> idea if that is at all practical though.
 
-This does not seem to be practical.  I did find commit which broke (some)
-things, but it isn't easy to revert it now.  IIRC anyway.
+Here's an usage example. Launch QEMU with "-S" to be able to issue QMP
+query commands before the machine starts:
 
-Thank you for the excellent hint!
+$ ./build/qemu-system-riscv64 -S -M virt -display none -qmp  tcp:localhost:=
+1234,server,wait=3Doff
 
-/mjt
+Then use QMP to access the API:
+
+$ ./scripts/qmp/qmp-shell localhost:1234
+Welcome to the QMP low-level shell!
+Connected to QEMU 8.1.50
+
+(QEMU)  query-cpu-model-expansion type=3Dfull model=3D{"name":"rv64"}
+{"return": {"model": {"name": "rv64", "props": {"zicond": false, "x-zvfh": =
+false, "mmu": true, "x-zvfbfwma": false, "x-zvfbfmin": false, "xtheadbs": f=
+alse, "xtheadbb": false, "xtheadba": false, "xtheadmemidx": false, "smstate=
+en": false, "zfinx": false, "Zve64f": false, "Zve32f": false, "x-zvfhmin": =
+false, "xventanacondops": false, "xtheadcondmov": false, "svpbmt": false, "=
+zbs": true, "zbc": true, "zbb": true, "zba": true, "zicboz": true, "xtheadm=
+ac": false, "Zfh": false, "Zfa": true, "zbkx": false, "zbkc": false, "zbkb"=
+: false, "Zve64d": false, "x-zfbfmin": false, "zk": false, "x-epmp": false,=
+ "xtheadmempair": false, "zkt": false, "zks": false, "zkr": false, "zkn": f=
+alse, "Zfhmin": false, "zksh": false, "zknh": false, "zkne": false, "zknd":=
+ false, "zhinx": false, "Zicsr": true, "sscofpmf": false, "Zihintntl": true=
+, "sstc": true, "xtheadcmo": false, "x-zvbb": false, "zksed": false, "x-zvk=
+ned": false, "xtheadsync": false, "x-zvkg": false, "zhinxmin": false, "svad=
+u": true, "xtheadfmv": false, "x-zvksed": false, "svnapot": false, "pmp": t=
+rue, "x-zvknhb": false, "x-zvknha": false, "xtheadfmemidx": false, "x-zvksh=
+": false, "zdinx": false, "zicbom": true, "Zihintpause": true, "svinval": f=
+alse, "zcf": false, "zce": false, "zcd": false, "zcb": false, "zca": false,=
+ "x-ssaia": false, "x-smaia": false, "zmmul": false, "x-zvbc": false, "Zife=
+ncei": true, "zcmt": false, "zcmp": false, "Zawrs": true}}}}
+
+
+
+Daniel Henrique Barboza (8):
+  target/riscv: add riscv_cpu_get_name()
+  target/riscv/tcg-cpu.c: add extension properties for all cpus
+  target/riscv/kvm/kvm-cpu.c: add missing property getters()
+  qapi,risc-v: add query-cpu-model-expansion
+  target/riscv/tcg: add tcg_cpu_finalize_features()
+  target/riscv: handle custom props in qmp_query_cpu_model_expansion
+  target/riscv: add riscv_cpu_accelerator_compatible()
+  target/riscv/riscv-qmp-cmds.c: check CPU accel in
+    query-cpu-model-expansion
+
+ qapi/machine-target.json      |   6 +-
+ target/riscv/cpu.c            |  38 +++++++-
+ target/riscv/cpu.h            |   3 +
+ target/riscv/kvm/kvm-cpu.c    |  40 ++++++++-
+ target/riscv/riscv-qmp-cmds.c | 160 ++++++++++++++++++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.c    | 122 ++++++++++++++++++--------
+ target/riscv/tcg/tcg-cpu.h    |   2 +
+ 7 files changed, 327 insertions(+), 44 deletions(-)
+
+--=20
+2.41.0
+
 
