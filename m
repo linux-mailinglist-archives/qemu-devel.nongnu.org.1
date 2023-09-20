@@ -2,159 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304B67A74EB
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF51A7A74F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:56:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qis1k-0000Cc-6d; Wed, 20 Sep 2023 03:53:40 -0400
+	id 1qis3j-0001Fd-9u; Wed, 20 Sep 2023 03:55:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qis1h-0000C1-Th
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:53:37 -0400
-Received: from mail-sn1nam02on2060a.outbound.protection.outlook.com
- ([2a01:111:f400:7ea9::60a]
- helo=NAM02-SN1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qis3f-0001FV-A5
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:55:40 -0400
+Received: from mail-dm6nam10on2060b.outbound.protection.outlook.com
+ ([2a01:111:f400:7e88::60b]
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1qis1f-00004y-Ml
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:53:37 -0400
+ (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qis3c-0000rH-JQ
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:55:38 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D2crZD6Q6PRKjM6cT7nwhYHSQWeZoWrFSvTDaoWgMSEAeWvNeitUQeGDrwsU8gA53Kl+S8WqQeAjul0op3j278I0HjpCGJIe4XezOkJ061WW7gMPnV8+Ck/BBm/AVWYkY6W55DpoNr7KyGFyaWxSdZa54+X0aM7thhShWsbKbZOS6bdhk3I/rie++ShBsW6f8+wUXXwXybFiP+myT6zQC7Aqqgm6o8BE9++eUEZdpaf36DVhYOfJ5st2Z+ZNa5QuLf18rcc9u3uJUhFky3Wd+MM46UCyuRTNquVZMT3KDzrCskUu4ByucYLn6G7wiW/E3SSusH9OLJxG7cR9vSjXBw==
+ b=LgNEdvu7O0YLwfIG6dK8mdpvQh2isfGdZY5CUoTW9RIoKBZ8yXPyIL5SPPL2Pdp8KhRBDjVH53kwgxFMLkoWgnQh5v2lIdLSIm6pAtxM8MCSl1CorPCIloO8DmadHxdWPmg40nizWvjJ7NlQcnUl6BcAp1REsFclfNumE07TL9pFljjJSlMxRERw8eJuEQ/NnNTXgdY4UefifTi1moxEKP9XJ4Gj4C8fu4e05nrHRf9V6KGkQVNBzbTQT5E/JBFbLdrjksCrPY5mqVtg6VWnz8r0ImCqDSaaB7xOM8w3cs6QJ0FyOrUh9NqulDWILCiuR2Y+QJq31jTFPy0LkainIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UIZJt7YRu4ktYJwARBxgBEIDM0SbsBS3HWZ4jCtrqYc=;
- b=HD52hsAWpKMHCHsiYTRHTqZeeDQ7sXmo2/PqzJlNSI9hl5xtsx7CQ47/PvlibYXRLC8ncsju+ILjqPIbd99V9ICBc6bfBrrqo5BweT7w+pDLdhMH4IdY/tENhyMCfSo7miUZLiRdkX/VZK79SvBoICh9qS0kFLQvNhTKDxhr/QH12PcViupm/by+UfWN2qP2q0gBM++K0c0DWlEaqE///hniCAwLTz22FNag6Hi/XsFPLeUTlPl5+9NcOw747z/QletSo762D0uJVUp3KbesEN3XDgi4rG5S6gF3uuUhTBxgtzngur0sAKxj70QUUO7gCP5eeXirQWKzK4q6xjwu2A==
+ bh=EZC9e/00KCrbeZtSyy5KNo8IzsuMGsxSe1NO2WXh7t8=;
+ b=hfdGdMUcsflEQt+qjnICCv2JV/AZCYkgokGLr+a8PFiNUm1TbpK4xHOxRVRbJjPKdWNldALxDtg+/Ph4F2DNr1uPE9nWV/MJkNrFfgFPYV4rV+VcuA1PM+zbDa1niaXS+a3dGxJNvC1TZMTEab/DHLKhvTdiAqgvEeqlrvaeLsdiE91tKv7y8e3EYZpZIragsDAuwtFrvXId5MmbuYg1hyuY7PZ5SaWHQfKERiU5McCTBiUgLuA3Rti80VvLS3wysvQh0bLjfscrGJs3BHm52xrBXDs7t1RYodx+MXKxkjvrVUsEkn6jMTfpmSwfJJBkT2PY/RlGlnR8+qxPQ6wBTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UIZJt7YRu4ktYJwARBxgBEIDM0SbsBS3HWZ4jCtrqYc=;
- b=ThRhpR7eQLub8NdeOdgkGkYuIl9hatJx8RwzNL4PkTrKn91ClIYpQKtPfwx5pIug+eVjr9eAUI3LwxIJL8I5/0ZvR2sm1jnopVk+wVfHT9xV8tmyhGm4cY7D3yDPTauZbuSSlYBM3wkixbNXlTqAy/l1yLxJ8RKMPJ1ZcC7fzl0=
-Received: from BL1PR12MB5849.namprd12.prod.outlook.com (2603:10b6:208:384::18)
- by MW4PR12MB6802.namprd12.prod.outlook.com (2603:10b6:303:20f::19)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.19; Wed, 20 Sep
- 2023 07:53:31 +0000
-Received: from BL1PR12MB5849.namprd12.prod.outlook.com
- ([fe80::242f:c454:9ff8:3e98]) by BL1PR12MB5849.namprd12.prod.outlook.com
- ([fe80::242f:c454:9ff8:3e98%4]) with mapi id 15.20.6792.026; Wed, 20 Sep 2023
- 07:53:31 +0000
-From: "Chen, Jiqian" <Jiqian.Chen@amd.com>
-To: "Zhu, Lingshan" <lingshan.zhu@intel.com>, Parav Pandit <parav@nvidia.com>, 
- "Chen, Jiqian" <Jiqian.Chen@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>
-CC: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan
- Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>,
- Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, 
- =?utf-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, Robert
- Beckett <bob.beckett@collabora.com>, Mikhail Golubev-Ciuchea
- <Mikhail.Golubev-Ciuchea@opensynergy.com>,
- "virtio-comment@lists.oasis-open.org" <virtio-comment@lists.oasis-open.org>,
- "virtio-dev@lists.oasis-open.org" <virtio-dev@lists.oasis-open.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Stefano
- Stabellini <sstabellini@kernel.org>, =?utf-8?B?Um9nZXIgUGF1IE1vbm7DqQ==?=
- <roger.pau@citrix.com>, "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>, "Hildebrand, Stewart"
- <Stewart.Hildebrand@amd.com>, Xenia Ragiadakou <burzalodowa@gmail.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang, Julia"
- <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-Subject: Re: [virtio-dev] Re: [virtio-comment] Re: [VIRTIO PCI PATCH v5 1/1]
- transport-pci: Add freeze_mode to virtio_pci_common_cfg
-Thread-Topic: [virtio-dev] Re: [virtio-comment] Re: [VIRTIO PCI PATCH v5 1/1]
- transport-pci: Add freeze_mode to virtio_pci_common_cfg
-Thread-Index: AQHZ6u53lm7slkvYHEmC01qhzu9Vn7AiFHuAgAEk1ACAAI2IgP//hVyKgACKb4D//3wYAIAABOgvgACGl4A=
-Date: Wed, 20 Sep 2023 07:53:31 +0000
-Message-ID: <BL1PR12MB5849B98B7D8498F02598691AE7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
-References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
- <20230919114242.2283646-2-Jiqian.Chen@amd.com>
- <20230919082802-mutt-send-email-mst@kernel.org>
- <cd8d306b-6acc-34be-516c-b89c23ac108d@intel.com>
- <BL1PR12MB5849E32A76165F1307492185E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
- <PH0PR12MB5481D2CBCFBF7BCBF427EE1EDCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
- <701bb67c-c52d-4eb3-a6ed-f73bd5d0ff33@intel.com>
- <BL1PR12MB5849A542AA93F6ED9FEEAAF0E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
- <a636b841-1bfc-925a-406e-6c4469e7e4c6@intel.com>
- <PH0PR12MB54817E116B756914B3FC1860DCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
- <40765650-ba6e-357a-cf73-ff6a0288c0e8@intel.com>
-In-Reply-To: <40765650-ba6e-357a-cf73-ff6a0288c0e8@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-imapappendstamp: BL1PR12MB5849.namprd12.prod.outlook.com
- (15.20.6792.025)
-authentication-results: dkim=none (message not signed)
+ bh=EZC9e/00KCrbeZtSyy5KNo8IzsuMGsxSe1NO2WXh7t8=;
+ b=3Rv5WGWa3Thr3ST5Ix2r5XvG7J4xPGx28C1qpSzyipjU1WRzXwqLzU7ppZ/S4Ymx9WZJSsRliMZW8WnWFGfF8asVBxCHHUeFPV9SJW8/EHV5bhl0WsjaVrq5InNBVMdnJeUPDV0iZven+ZXkgwXFVDt2nLw3oTFuKZLlV73zUEk=
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PR12MB5849:EE_|MW4PR12MB6802:EE_
-x-ms-office365-filtering-correlation-id: b1426128-3b5e-4768-2322-08dbb9aeaedc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: cs6rmKgPuT+F4F7h0QtOeJvyHMTRyAHGuRd0sBZhK/WtyHvZRCYWEkTN1ot8At6VbPSBcZE2aEnPIhVAB9nn8F18YmoID/YvkfjxCq8K8Bmnn1G9QXN0zuDLk0s/hUqcMwAEB8gFwxtF8Og255rbfDZCUB3yMBjrPp3ODatLpw6PWTybC8dK/XzeUYd7jTVzRy4enFVAKbFF4G0fP1H1sYD/tSBIAjE5NHSEyCuQIGAr+n+D/uggIu2R8xIaQhRfk7X8VkhGG8M/g4DBNMywQ6sNA84EQvy45wrClgU/HvF+zN+ntmW3Ql4yrKdz/gcQSs/jiKp2E0dv4Awta9oZn8eeNe4xE7+aQ07y+Dcj2XyE69MckaAouw7JXXl2LOV/d6ugBFq4/AsQhrGRxWZyIl0zUBYmSEKsyeIUtVs8/1M2Q8HxQ5GGQImSEEd0wSjcnAJjvSqx8NT1uEc2jx1MWLIwTdEFb7X731AdIK1uIP4X06A9jCRAMW1UO3zVoaQfyZNYiaPf3JfhITIcQg+rzUe4aZgy5PxTayblBMVXgV4uJ2rUT5PC8IRNkoA9rd4qjek07B3/aI1EfL2p5NkH6NiIvKLb0YoMHla4yfg/3hygXTirETuqnqqhFE4ga2Jo
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BL1PR12MB5849.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(376002)(39860400002)(396003)(136003)(366004)(186009)(451199024)(1800799009)(55016003)(5660300002)(41300700001)(26005)(7416002)(2906002)(122000001)(33656002)(38100700002)(38070700005)(4326008)(8936002)(52536014)(8676002)(83380400001)(7696005)(6506007)(9686003)(478600001)(53546011)(110136005)(316002)(54906003)(66946007)(76116006)(64756008)(66556008)(66446008)(66476007)(71200400001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Y2k1Q3N6YnY4Tk1QY0tsaFJsTm5tWkNlVnRuVmpHeTBLQU1aaUk1cTY5SDVL?=
- =?utf-8?B?RTFZdEdNZmdZYjFpRkJhemRIVDBMQkV2bFlRS1haOEtobEo4MlpyU2hvTlpU?=
- =?utf-8?B?NjlQMGpKaXpvcURBWDZ6Q0N3cE1VRjRrUW52Q2xLb0ZvVXRYeDczcnlzVTBm?=
- =?utf-8?B?aHZlWmxQdGtEdElFbjZVU0NXYVg0UjBlRHI2c0dlcmlmNFVzVVcyNkcvcll5?=
- =?utf-8?B?YzhGTzR2ZXljWllKZ1h0bTJ0bzZSWHpRNzZBWWFqVWZUOHRxYWVFcVZDRG5C?=
- =?utf-8?B?bk0xc0FONWthT2FHRDladExIV3JZaXoxdXVkMDRwM2I0Ylh4SHlBUnBFVEty?=
- =?utf-8?B?aW9OQ1RGMnZHdjQ3d0FVakJTZzQwdkU3L1Z0N3piSm5WVEc1b28ybFVzbFJr?=
- =?utf-8?B?b2FhUWNJZkROcE9HbGFxN3N5RjJqY3IzS1NFcVduR1VsNzJOSDR5azQwUlhx?=
- =?utf-8?B?ZGZKZmczZzJub3BRTVljb3dwSUNjdG91Rjd5dTB2N0NHd21ZVE5DSWpoWlhG?=
- =?utf-8?B?UlhQbjluMkVlcWZzMFpJa3ZWUXJScXhnRTg1UW44ZVpFU3BmQUdFbkQ2ZTlM?=
- =?utf-8?B?SUpOcElxMXhEcytRT2dUcHgzYmRiejZpM2tPK1Q0dG5WVzJnT21xTjhUNzMv?=
- =?utf-8?B?UCtYU2JPZllGKzdpcnkvR3gwWlNMYVN1VXlLVGZtSnJ4TmlZSHppVG1vNnZ5?=
- =?utf-8?B?aStnbXZRSThiOWdnWlRlK3FRdHBna2QrZjUzb2dpVm02czBVR2FxOTkzMzh2?=
- =?utf-8?B?WmtTZ0tkOFRWUUJlc2FsaER4cUJBZDBCR1pVSDRMRExmZ2lnZVFwNGxDcFpQ?=
- =?utf-8?B?OFJRemZMODAvRlZZQTJ4aFhBNGx2OEVMQzJxb05SczV4QkJTcG9ZQ2JKMVB1?=
- =?utf-8?B?L0xPcFA0Nkd5c3lmaW1zSjNrTW9yL0hhSkhiVUlrZDZTYkp3VVVyT29oNlFC?=
- =?utf-8?B?YWFOTllCY0VYcS9reW1zQkZ3ZWVtZ2RPSzhjaXhVK2RzOE1xdlhCQzc3dlJT?=
- =?utf-8?B?TU1VY0x6QW54bFZENmIxdzkydjNpM0MyZ3E3c1Nkb283VW9PZkNlQ2tsWHJT?=
- =?utf-8?B?SlREVGhVeDJVeDU2QzdnRFJxakM0TmZCWlRHSy9FMy9ST2FiK1hTRmYrVzV3?=
- =?utf-8?B?di9LRURHMzUydGdnSnpiajNrQzF3MkNZMUViK0RyNHVyaTNLMFRlbVZDQ0oz?=
- =?utf-8?B?WW5XU3FmdzkvOWpyN09iRFM0QkJlMzRvLzArT0U4NG5PVS9MdTZ1SHpxL3VP?=
- =?utf-8?B?QmJQZmtFY2czSWdOMlp5QzM1cGwrN3pDRzFoR1BmU3lLRTN3bWxmRG4zbzNU?=
- =?utf-8?B?UG11bzM2NGtxanNFNXozeFVyVFZCTUdraWIwVGtHK29IY0lvcE92ZHVlNWsr?=
- =?utf-8?B?dEFMNGJkak5UNEFwSUhkY2xXNFAwOVd5aTl5RENPQXRablFhaTB4YW5Gc3d4?=
- =?utf-8?B?bnNlQkRDeGdsbUQ5Ly82OVJVMjNlR2J4RzJkTnNEdXVlTXpmWEV1UnVPbEsx?=
- =?utf-8?B?eTBRNkw2cnUrclg1K1ZSRk1yTHNTZTdtdDFoWDArTHhhYmhscXBDcDdrQmp3?=
- =?utf-8?B?SWN1Ylp3anBUeWNJblFXMGhKbGNSRVMyVGVHTW83SGt6bXpoM2o0ZXZra3Zr?=
- =?utf-8?B?Z2QzVjZoTXMyRmZnRXZzbm1UcjR3VW95MEoxVlkwUHdIRGNBTUJxV1ZlTkMr?=
- =?utf-8?B?N0Y3NnYwa094YUkvSkJZd2xSZlRBTjNSNEdZb0plNlpJRlJaL08zM0lZL3ZJ?=
- =?utf-8?B?RDd3Wi9CYkxUakhjRGVOaEVwUEt3cjdxNCtBNHhLb0RlTWRaa2RGUHh0Q1FB?=
- =?utf-8?B?ZzM0V0piaHlFUFlZaXN5dG1BVFhWWlNQRVR3QmY3RWp6cUFtM0VIVFVRbDlG?=
- =?utf-8?B?d3h0cVVVM29RdTlmVGEyQzN4NEhtRUQyU2ExT01rUG12R20zcFZZL1Jzbndu?=
- =?utf-8?B?eDBHZTAyN2Jqc1hUbE1maER6WUdQSzExOHowSXJCTndNeDlQK1dvMGZBQ2RE?=
- =?utf-8?B?WTBwZ1ZDc2hGYm43djdUbU85UlFlY0tVallwTjUzVEl4Y0NIWlFTRkhFV0lC?=
- =?utf-8?B?NnhDU2VsT1QvVUhvK21QcGlhSCtoVWJmcDRjYUtZUHNQbnNqS1JnL0FoamtQ?=
- =?utf-8?Q?bz4Y=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4198393AEC57314D8C895F11185D8B3F@amdcloud.onmicrosoft.com>
-Content-Transfer-Encoding: base64
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
+ by SA0PR12MB4509.namprd12.prod.outlook.com (2603:10b6:806:9e::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Wed, 20 Sep
+ 2023 07:55:30 +0000
+Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::c3b:811:fd1d:c33e]) by SJ2PR12MB8690.namprd12.prod.outlook.com
+ ([fe80::c3b:811:fd1d:c33e%6]) with mapi id 15.20.6792.021; Wed, 20 Sep 2023
+ 07:55:30 +0000
+Date: Wed, 20 Sep 2023 15:55:01 +0800
+From: Huang Rui <ray.huang@amd.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Albert Esteve <aesteve@redhat.com>,
+ "ernunes@redhat.com" <ernunes@redhat.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
+ "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+ Antonio Caggiano <antonio.caggiano@collabora.com>
+Subject: Re: [QEMU PATCH v5 10/13] virtio-gpu: Resource UUID
+Message-ID: <ZQqlVb2PkRMjMaKF@amd.com>
+References: <20230915111130.24064-1-ray.huang@amd.com>
+ <20230915111130.24064-11-ray.huang@amd.com>
+ <a3a46b78-9feb-47f3-bd3e-519ebe899737@daynix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a3a46b78-9feb-47f3-bd3e-519ebe899737@daynix.com>
+X-ClientProxiedBy: SI2PR01CA0027.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::7) To SJ2PR12MB8690.namprd12.prod.outlook.com
+ (2603:10b6:a03:540::10)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|SA0PR12MB4509:EE_
+X-MS-Office365-Filtering-Correlation-Id: 699ec20f-3535-4111-04c9-08dbb9aef57f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: l5xgTjxY70F9McTm16eFNxnlRlVDwtRqz+xhClO8DW1PseXNgJrNasuI374VPif1CzF5BjnD8kS2Vw++Wt2zcWN7W85XvtT9TI3ua+4Lo58JK2ukN0/FvKRpkcYs/siSpNAp9teXmPbZ6Vg9Sae05QyRO8nA/QLBzy8mgXnJtLwKdZgdzKVc3r3kaY9e3orwxJuOZWgtAo4FF2W+xFRcFjzejUOMZ6Enk4G19rfmT0NQGMi8OeMPFWPrftkYz04o/EGc+mPnSjqn7/+BbsSVplMQKF8js18f9N4cYCjPyfjVz8rTNmihQU7J9w6d4gpNVvrKr4mjvVWufXZN+yaxWweweN3Nr9osICjFxSw3iCqI2y02VzDFzzaPCGHcZkinqKMxa21BUUqSsve6WCK1z3SFJQOW1KIXRbST03LgKtd2nDhseKQM5O1pPJkYbwo+rhetg9Frc2JfV+EO2kTv/vjO6hhrUsO5kvjx1JBlWZsr+SUsX98e321MCSuQpgUAcqzKV72B9DXxxiVKaBgD45sjQJe5tJzROiQ2/U8yEvH8tK7g1BQyeBrjlpB5gdwZWr0bREl/LN8TQRzeEl514Uue5yP3neuYAlFgIas1nMw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(346002)(396003)(366004)(39860400002)(376002)(186009)(1800799009)(451199024)(6506007)(53546011)(6666004)(6486002)(6512007)(478600001)(83380400001)(26005)(2616005)(2906002)(7416002)(66476007)(54906003)(66556008)(66946007)(316002)(4326008)(8676002)(5660300002)(8936002)(41300700001)(6916009)(86362001)(36756003)(38100700002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?i9RqqPUYszmjlm8yH5TITR/4/CDLQkcv1z3b7wJpYf2OOWWVZzHMrDp+b1cE?=
+ =?us-ascii?Q?JTzmUvHXZQclrisZXRdIa4DCjff8eyunGmCHbZOjN0Ne29lOEoYOil3mmwvx?=
+ =?us-ascii?Q?JdwqBkBm6bVb8F7iUOhQtWiNn0UxAmcEgEFdsETHD7JUXoql/BG5yKQycQOz?=
+ =?us-ascii?Q?2/sPwqlrmAYgtPGzNFA/HPd0Kken91/477m00QnDNJf/plvks8XDnpAeaENm?=
+ =?us-ascii?Q?qCpHR/CoyQekTmzf/Wn2YeZR3tHnHRo5XYxXBqv/7x4IeAeUPz9XQPQdTGkt?=
+ =?us-ascii?Q?vlvIsD3VjV2vXJDB9HiJpYjtIi/KTNIkjfOYV3tvosrXfuGWTxjIa5Nkhrsr?=
+ =?us-ascii?Q?diI38Mv16cPdZxnXFnR4ZNvE9XPnOo/+QIJL8YF2Wt0Y00Ry3FIS6qfHCX8z?=
+ =?us-ascii?Q?HZyb1erQwy9+UZc6RwvjtkgWcG/iFGy6Bh8XRGyjKuTq5hfl4cj3xFEqRg5J?=
+ =?us-ascii?Q?VzcDRx9uBzu/sZbGs5/WDtso9zCrJVwgs5azFYzCk1VXsQIuqHUjbZC5icrz?=
+ =?us-ascii?Q?QPvGaLiG+SAltuWsEr6b19m1ppLTz8VHMHIr0odylqs+/aICu/U93jIZHQvH?=
+ =?us-ascii?Q?4Dh4cy5lj00NximOlxEWgU/LjSSymuJG0L4dDQ7seyICXkXErvSb4U0OyWfu?=
+ =?us-ascii?Q?5sSMLoeRx8+cD0D6JNG+wDb8G2IZRnjskSPz6HpZ9e7SvsJna49fafWUxvVN?=
+ =?us-ascii?Q?ehkKSJM0+5lp48i/sxxyd6C5hNDBhS4jP8riY6XeKgtxCyQd68lUoISS7u58?=
+ =?us-ascii?Q?uZN7GEHmSFb+pKtgJuegoQOiEUG6NOHqwdfE32X4L/Q12JalBsqOORzHr5gK?=
+ =?us-ascii?Q?1Eyd5cg6f2COkMKPAizOxIEsPcs5FgSGEfNgkzwdKpWVVMuq26a6W3JdBQD4?=
+ =?us-ascii?Q?LG/udHfZnYWQEKA67XoQvRLAzW42eNGdxwSeb4zuL0JyjJuO4DY8hybW0Vlq?=
+ =?us-ascii?Q?arDaTFbrjISbBAWMUHF8b+AE3DlEAhaptjdYiHqeDFxu8WGqXWHCuwOiTX0X?=
+ =?us-ascii?Q?2iBG9Jd7lT4C4WAVkM6mq6mET6XOx+QxmKWlqOND4qWtRuCNxtsmakcV+XiT?=
+ =?us-ascii?Q?LKDIWu1PGXyRnuhUUCRXLKrvGx8T4vrx/E+CV3FV4L8nqVZvLAxocDfzjExX?=
+ =?us-ascii?Q?yQoVHgQ3sd+xFbZWw0ORvx1O8wqdZ4RzmJVHNHFEo/BlyAatKWNj6EJb+7uL?=
+ =?us-ascii?Q?Wc47SypSYa1OMksRzyolZmKx9piSJN4Oqd+JaxYrQRUttbSNQ6fdB+LhoCh/?=
+ =?us-ascii?Q?fi8QosVchl89aoZFPOya8QTi6Cv3atDROjc0hSsFe8MotTkd/98JnU/Ugk1G?=
+ =?us-ascii?Q?5ZHYaqeZhx0XFSJ417bEplmkkYOD2iwwSvraKVZCH8nMCenGSS/MJoYODATK?=
+ =?us-ascii?Q?NL+y6AUbJ2K8TQX/P/+hx5WcQRCG6lKb9sNo45Jx4fI0ag9xBMZlT1FdrzHa?=
+ =?us-ascii?Q?dF3euV+Bds3lyBlB+tqvbyNoa+UPSzULEYJ12jBMusbymLvA7vnmyOPjMbU/?=
+ =?us-ascii?Q?Raiwn3RpF6bwAT1eLyvqhh6ggibPUEIrh9F3BYnr6zZhoNLG6U5GRjmB7UTG?=
+ =?us-ascii?Q?5ZXeXS8shhjSixDpjpArDxIRdlrQofRsuB/+UXrM?=
 X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 699ec20f-3535-4111-04c9-08dbb9aef57f
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b1426128-3b5e-4768-2322-08dbb9aeaedc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Sep 2023 07:53:31.1948 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WISfRby61lHKHvN6fyxxBFrOH9Rh/VgURRMSCsXvLxQ8d+TV4KfIZaABJPNjiFalI0vF/ktYJbhVMAvvy65vCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6802
-Received-SPF: softfail client-ip=2a01:111:f400:7ea9::60a;
- envelope-from=Jiqian.Chen@amd.com;
- helo=NAM02-SN1-obe.outbound.protection.outlook.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 07:55:29.9335 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b1ouNsWGxpPsVYasmyotbcHsd2AIe32gMUh6ThBh1/WIQERYq9bT0KIECBd852y1qvT9ZxYME7T0Ygnvu+1AMQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4509
+Received-SPF: softfail client-ip=2a01:111:f400:7e88::60b;
+ envelope-from=Ray.Huang@amd.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -176,26 +154,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SGkgTGluZ3NoYW4sDQpQbGVhc2UgcmVwbHkgdG8geW91ciBvd24gZW1haWwgdGhyZWFkLCBiZWxv
-dyBhcmUgbm90IHJlbGF0ZWQgdG8gbXkgcGF0Y2hlcy4gVGhhbmtzIGEgbG90Lg0KDQpPbiAyMDIz
-LzkvMjAgMTU6NDcsIFpodSwgTGluZ3NoYW4gd3JvdGU6DQo+IA0KPiANCj4gT24gOS8yMC8yMDIz
-IDM6MzUgUE0sIFBhcmF2IFBhbmRpdCB3cm90ZToNCj4+PiBGcm9tOiBaaHUsIExpbmdzaGFuIDxs
-aW5nc2hhbi56aHVAaW50ZWwuY29tPg0KPj4+IFNlbnQ6IFdlZG5lc2RheSwgU2VwdGVtYmVyIDIw
-LCAyMDIzIDE6MDAgUE0NCj4+Pg0KPj4+IE9uIDkvMjAvMjAyMyAzOjI0IFBNLCBDaGVuLCBKaXFp
-YW4gd3JvdGU6DQo+Pj4+IEhpIExpbmdzaGFuLA0KPj4+PiBJdCBzZWVtcyB5b3UgcmVwbHkgdG8g
-dGhlIHdyb25nIGVtYWlsIHRocmVhZC4gVGhleSBhcmUgbm90IHJlbGF0ZWQgdG8gbXkNCj4+PiBw
-YXRjaC4NCj4+PiBUaGVzZSByZXBseSB0byBQYXJ2YSdzIGNvbW1lbnRzLg0KPj4+IEBQYXJ2YSwg
-aWYgeW91IHdhbnQgdG8gZGlzY3VzcyBtb3JlIGFib3V0IGxpdmUgbWlncmF0aW9uLCBwbGVhc2Ug
-cmVwbHkgaW4gbXkNCj4+PiB0aHJlYWQsIGxldHMgZG9uJ3QgZmxvb2QgaGVyZS4NCj4+IFlvdSBt
-YWRlIHRoZSBwb2ludCB0aGF0ICJ0aGlzIGlzIG5vdCBsaXZlIG1pZ3JhdGlvbiIuDQo+PiBJIGFt
-IG5vdCBkaXNjdXNzaW5nIGxpdmUgbWlncmF0aW9uIGluIHRoaXMgdGhyZWFkLg0KPj4NCj4+IEkg
-cmVwbGllZCBmb3IgdGhlIHBvaW50IHRoYXQgZGV2aWNlIHJlc3RvcmF0aW9uIGZyb20gc3VzcGVu
-ZCBmb3IgcGh5c2ljYWwgYW5kIGh5cGV2aXNvciBiYXNlZCBkZXZpY2UgaXMgbm90IGEgNDBuc2Vj
-IHdvcnRoIG9mIHdvcmsgdG8gcmVzdG9yZSBieSBqdXN0IGRvaW5nIGEgcmVnaXN0ZXIgd3JpdGUu
-DQo+PiBUaGlzIGlzIG5vdCBsaXZlIG9yIGRldmljZSBtaWdyYXRpb24uIFRoaXMgaXMgcmVzdG9y
-aW5nIHRoZSBkZXZpY2UgY29udGV4dCBpbml0aWF0ZWQgYnkgdGhlIGRyaXZlciBvd25pbmcgdGhl
-IGRldmljZS4NCj4gcmVzdG9yZSB0aGUgZGV2aWNlIGNvbnRleHQgc2hvdWxkIGJlIGRvbmUgYnkg
-dGhlIGh5cGVydmlzb3IgYmVmb3JlIHNldHRpbmcgRFJJVkVSX09LIGFuZCB3YWtpbmcgdXAgdGhl
-IGd1ZXN0LCBub3QgYSBjb25jZXJuIGhlcmUsIG91dCBvZiBzcGVjDQo+IA0KDQotLSANCkJlc3Qg
-cmVnYXJkcywNCkppcWlhbiBDaGVuLg0K
+On Sat, Sep 16, 2023 at 12:48:14AM +0800, Akihiko Odaki wrote:
+> On 2023/09/15 20:11, Huang Rui wrote:
+> > From: Antonio Caggiano <antonio.caggiano@collabora.com>
+> > 
+> > Enable resource UUID feature and implement command resource assign UUID.
+> > This is done by introducing a hash table to map resource IDs to their
+> > UUIDs.
+> > 
+> > Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+> > Signed-off-by: Huang Rui <ray.huang@amd.com>
+> > ---
+> > 
+> > V4 -> V5:
+> >      - Add virtio migration handling for uuid (Akihiko)
+> >      - Adjust sequence to allocate gpu resource before virglrender resource
+> >        creation (Akihiko)
+> >      - Clean up (Akihiko)
+> > 
+> >   hw/display/trace-events        |  1 +
+> >   hw/display/virtio-gpu-base.c   |  2 ++
+> >   hw/display/virtio-gpu-virgl.c  | 21 ++++++++++++
+> >   hw/display/virtio-gpu.c        | 58 ++++++++++++++++++++++++++++++++++
+> >   include/hw/virtio/virtio-gpu.h |  6 ++++
+> >   5 files changed, 88 insertions(+)
+> > 
+> > diff --git a/hw/display/trace-events b/hw/display/trace-events
+> > index 2336a0ca15..54d6894c59 100644
+> > --- a/hw/display/trace-events
+> > +++ b/hw/display/trace-events
+> > @@ -41,6 +41,7 @@ virtio_gpu_cmd_res_create_blob(uint32_t res, uint64_t size) "res 0x%x, size %" P
+> >   virtio_gpu_cmd_res_unref(uint32_t res) "res 0x%x"
+> >   virtio_gpu_cmd_res_back_attach(uint32_t res) "res 0x%x"
+> >   virtio_gpu_cmd_res_back_detach(uint32_t res) "res 0x%x"
+> > +virtio_gpu_cmd_res_assign_uuid(uint32_t res) "res 0x%x"
+> >   virtio_gpu_cmd_res_xfer_toh_2d(uint32_t res) "res 0x%x"
+> >   virtio_gpu_cmd_res_xfer_toh_3d(uint32_t res) "res 0x%x"
+> >   virtio_gpu_cmd_res_xfer_fromh_3d(uint32_t res) "res 0x%x"
+> > diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
+> > index 4f2b0ba1f3..f44388715c 100644
+> > --- a/hw/display/virtio-gpu-base.c
+> > +++ b/hw/display/virtio-gpu-base.c
+> > @@ -236,6 +236,8 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
+> >           features |= (1 << VIRTIO_GPU_F_CONTEXT_INIT);
+> >       }
+> >   
+> > +    features |= (1 << VIRTIO_GPU_F_RESOURCE_UUID);
+> > +
+> >       return features;
+> >   }
+> >   
+> > diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+> > index 563a6f2f58..8a017dbeb4 100644
+> > --- a/hw/display/virtio-gpu-virgl.c
+> > +++ b/hw/display/virtio-gpu-virgl.c
+> > @@ -36,11 +36,20 @@ static void virgl_cmd_create_resource_2d(VirtIOGPU *g,
+> >   {
+> >       struct virtio_gpu_resource_create_2d c2d;
+> >       struct virgl_renderer_resource_create_args args;
+> > +    struct virtio_gpu_simple_resource *res;
+> >   
+> >       VIRTIO_GPU_FILL_CMD(c2d);
+> >       trace_virtio_gpu_cmd_res_create_2d(c2d.resource_id, c2d.format,
+> >                                          c2d.width, c2d.height);
+> >   
+> > +    res = g_new0(struct virtio_gpu_simple_resource, 1);
+> > +    if (!res) {
+> > +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
+> > +        return;
+> > +    }
+> > +    res->resource_id = c2d.resource_id;
+> > +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+> > +
+> 
+> The struct virtio_gpu_simple_resource for a resource created with 
+> virgl_cmd_create_resource_2d() and virgl_resource_attach_backing() will 
+> not have iov and iov_cnt set, which is inconsistent with 
+> virgl_cmd_resource_create_blob().
+> 
+
+OK, so we should find out the resource in virgl_resource_attach_backing(),
+and set the related iov and iov_cnt for this resource to align with blob
+memory.
+
+> >       args.handle = c2d.resource_id;
+> >       args.target = 2;
+> >       args.format = c2d.format;
+> > @@ -60,11 +69,20 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
+> >   {
+> >       struct virtio_gpu_resource_create_3d c3d;
+> >       struct virgl_renderer_resource_create_args args;
+> > +    struct virtio_gpu_simple_resource *res;
+> >   
+> >       VIRTIO_GPU_FILL_CMD(c3d);
+> >       trace_virtio_gpu_cmd_res_create_3d(c3d.resource_id, c3d.format,
+> >                                          c3d.width, c3d.height, c3d.depth);
+> >   
+> > +    res = g_new0(struct virtio_gpu_simple_resource, 1);
+> > +    if (!res) {
+> > +        cmd->error = VIRTIO_GPU_RESP_ERR_OUT_OF_MEMORY;
+> > +        return;
+> > +    }
+> > +    res->resource_id = c3d.resource_id;
+> > +    QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+> > +
+> >       args.handle = c3d.resource_id;
+> >       args.target = c3d.target;
+> >       args.format = c3d.format;
+> > @@ -682,6 +700,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
+> >           /* TODO add security */
+> >           virgl_cmd_ctx_detach_resource(g, cmd);
+> >           break;
+> > +    case VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID:
+> > +        virtio_gpu_resource_assign_uuid(g, cmd);
+> > +        break;
+> >       case VIRTIO_GPU_CMD_GET_CAPSET_INFO:
+> >           virgl_cmd_get_capset_info(g, cmd);
+> >           break;
+> > diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+> > index cc4c1f81bb..44414c1c5e 100644
+> > --- a/hw/display/virtio-gpu.c
+> > +++ b/hw/display/virtio-gpu.c
+> > @@ -966,6 +966,38 @@ virtio_gpu_resource_detach_backing(VirtIOGPU *g,
+> >       virtio_gpu_cleanup_mapping(g, res);
+> >   }
+> >   
+> > +void virtio_gpu_resource_assign_uuid(VirtIOGPU *g,
+> > +                                     struct virtio_gpu_ctrl_command *cmd)
+> > +{
+> > +    struct virtio_gpu_simple_resource *res;
+> > +    struct virtio_gpu_resource_assign_uuid assign;
+> > +    struct virtio_gpu_resp_resource_uuid resp;
+> > +    QemuUUID *uuid;
+> > +
+> > +    VIRTIO_GPU_FILL_CMD(assign);
+> > +    virtio_gpu_bswap_32(&assign, sizeof(assign));
+> > +    trace_virtio_gpu_cmd_res_assign_uuid(assign.resource_id);
+> > +
+> > +    res = virtio_gpu_find_check_resource(g, assign.resource_id, false, __func__, &cmd->error);
+> > +    if (!res) {
+> > +        return;
+> > +    }
+> > +
+> > +    memset(&resp, 0, sizeof(resp));
+> > +    resp.hdr.type = VIRTIO_GPU_RESP_OK_RESOURCE_UUID;
+> > +
+> > +    uuid = g_hash_table_lookup(g->resource_uuids, GUINT_TO_POINTER(assign.resource_id));
+> > +    if (!uuid) {
+> > +        uuid = g_new(QemuUUID, 1);
+> > +        qemu_uuid_generate(uuid);
+> > +        g_hash_table_insert(g->resource_uuids, GUINT_TO_POINTER(assign.resource_id), uuid);
+> > +        res->has_uuid = true;
+> > +    }
+> 
+> What about embedding uuid into struct virtio_gpu_simple_resource? You 
+> will not need to maintain another table in this way.
+
+Yes, agree. Will update it in V6.
+
+Thanks,
+Ray
 
