@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DE67A8B96
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C75797A8BE0
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:33:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj1qE-0003FG-1G; Wed, 20 Sep 2023 14:22:26 -0400
+	id 1qj202-0005O6-MQ; Wed, 20 Sep 2023 14:32:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1qA-0003Cu-1O
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:22:22 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1q8-0001Hn-Jp
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:22:21 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-50307759b65so300060e87.0
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:22:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695234139; x=1695838939;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TGiV6mgm48lK0yVo7XXVODBbRpVDNWK2mdb/C7wHX7U=;
- b=D/lEysTBVj2XEZvn+OFTPaLyKtGW4YYhKVx5Gxar3RDFxonWjMK8tpESC6KG5/6alN
- YNb7dr83r11bG+49rVGetIOt2F/8ffIpcsEC3qgrfn6t1QtYV5gvtkfkXHQrleSf1ZFp
- KKyboWaPQ/tlCCCFHtY9RMoEino0SRqF/XjdFZO2/EOSY9XjSI63x35dQUqqmjmLhrCI
- Os69sb3kWTHSGhOUQNeAvrAs+BPR2GalNAe0VjCobt8bWenC1QofAkuFwL/tBZ0vj3/J
- 76kRakbUM56th4z26M6jpKymboCT8AzoV3vTohHbxM/kzUX3BOgXzVZUFSJzbz8B8861
- WUqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695234139; x=1695838939;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TGiV6mgm48lK0yVo7XXVODBbRpVDNWK2mdb/C7wHX7U=;
- b=B0IWbWFLxT35CdR4HUUfgOl4Lb5Jeu7ABQ0QMoXGetEZdN+4BXKBSZPuFtitsV1gaw
- loRYChPdxahXPnEzK+5wu+/sF++r7bKRpfcSyZVpIOq0HV5/Cf2//aTURd7tHzvRJ8AG
- ElcHg+QtmbyCvj4K4ciqMvb9cNaDctdDvYzSpyJYVp2n/lU/kwOE/JCS5ALx/GYhBeJg
- oJidgnW+HSjcwczlJ4i1EiGmcOP5iflEnfHI+9ZTobjWMoAmEP4Dup60Owo0Z9sZPUAn
- DGuV1D8WY9OdEhxG0Ea5r+F3crK4hfDPofGKqk9OuBm5ffOQ1gYdiDK6pBx9Vogz1NJj
- 25Jg==
-X-Gm-Message-State: AOJu0Yx22dPUhab4lshfcBke2vsXJQAuaWAB7TWwzVbBiJu4O7QDigax
- pXaxeqKCANo4k2ezZScBTgy9e+SNjCW8x6Tgl/sUg3yrxEFAyd+w81sgobey
-X-Google-Smtp-Source: AGHT+IExEtDf71sTHQrwtoyxepgzVJtbdBDGiEvhCNLoInr8gP1nkZ1YFYohDaEMW2c2ieUDpR+kXbVdh98mIJrd4SY=
-X-Received: by 2002:ac2:4d93:0:b0:500:a7c8:1847 with SMTP id
- g19-20020ac24d93000000b00500a7c81847mr2604209lfe.66.1695234138690; Wed, 20
- Sep 2023 11:22:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qj1za-0005KL-1r
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:32:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qj1zW-0002vd-4U
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:32:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695234718;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=xM3wAYFzQP3gxuYWUEVSWgPQWfxSd8/nVZzQqU4x75o=;
+ b=Y3E7aIrilx7q/ERZDgYhSbJzPs3VvpL+k0op4VGuS2d5hDsSe/8gvghyuJzKe3lyk4MjaM
+ w2p/ujbhV8y24dG+0GVb/dbAIGTdgvMUnLdt/8lPYQjYfWMFJMTlnZUJu1tzjmHR+XLBzQ
+ RbVgi+WihKrjOTZJnuPLhHZDlGoeXho=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-588-xMfiEogbMbSUk9DdrqY6Qw-1; Wed, 20 Sep 2023 14:31:52 -0400
+X-MC-Unique: xMfiEogbMbSUk9DdrqY6Qw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 54CE91C09A47;
+ Wed, 20 Sep 2023 18:31:51 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5ECE2711282;
+ Wed, 20 Sep 2023 18:31:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3207221E6900; Wed, 20 Sep 2023 20:31:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, eblake@redhat.com,
+ vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com,
+ pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
+ anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, stefanha@redhat.com, fam@euphon.net,
+ quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
+ kraxel@redhat.com, qemu-block@nongnu.org, xen-devel@lists.xenproject.org,
+ alex.bennee@linaro.org, peter.maydell@linaro.org
+Subject: [PATCH v2 0/7] Steps towards enabling -Wshadow=local
+Date: Wed, 20 Sep 2023 20:31:42 +0200
+Message-ID: <20230920183149.1105333-1-armbru@redhat.com>
 MIME-Version: 1.0
-References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
- <20230917213803.20683-12-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230917213803.20683-12-kariem.taha2.7@gmail.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 20 Sep 2023 19:22:07 +0100
-Message-ID: <CANCZdfrROBcsYfxH2RG_TyCrrgX--V+4+viQ=NY04vBtLNJ=fw@mail.gmail.com>
-Subject: Re: [PATCH v2 11/28] bsd-user: Implement getgroups(2) and
- setgroups(2) system calls.
-To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000a5f0fa0605ce749f"
-Received-SPF: none client-ip=2a00:1450:4864:20::133;
- envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x133.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,47 +84,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a5f0fa0605ce749f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Local variables shadowing other local variables or parameters make the
+code needlessly hard to understand.  Bugs love to hide in such code.
+Evidence: PATCH 1.
 
-On Sun, Sep 17, 2023 at 10:39=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
-om>
-wrote:
+Enabling -Wshadow would prevent bugs like this one.  But we'd have to
+clean up all the offenders first.  We got a lot of them.
 
-> From: Stacey Son <sson@FreeBSD.org>
->
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-> ---
->  bsd-user/bsd-proc.h           | 44 +++++++++++++++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |  9 +++++++
->  2 files changed, 53 insertions(+)
->
+Enabling -Wshadow=local should be less work for almost as much gain.
+I took a stab at it.  There's a small, exciting part, and a large,
+boring part.
 
-Reviewed by: Warner Losh <imp@bsdimp.com>
+The exciting part is dark preprocessor sorcery to let us nest macro
+calls without shadowing: PATCH 7.
 
---000000000000a5f0fa0605ce749f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The boring part is cleaning up all the other warnings.  I did some
+[PATCH 2-6], but ran out of steam long before finishing the job.  Some
+160 unique warnings remain.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sun, Sep 17, 2023 at 10:39=E2=80=
-=AFPM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.tah=
-a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-<br>
-Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
-arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
----<br>
-=C2=A0bsd-user/bsd-proc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 44 ++++=
-+++++++++++++++++++++++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 9 +++++++<br>
-=C2=A02 files changed, 53 insertions(+)<br></blockquote><div><br></div><div=
->Reviewed by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
-com</a>&gt;</div></div></div>
+To see them, enable -Wshadow=local like so:
 
---000000000000a5f0fa0605ce749f--
+diff --git a/meson.build b/meson.build
+index 98e68ef0b1..9fc4c7ac9d 100644
+--- a/meson.build
++++ b/meson.build
+@@ -466,6 +466,9 @@ warn_flags = [
+   '-Wno-tautological-type-limit-compare',
+   '-Wno-psabi',
+   '-Wno-gnu-variable-sized-type-not-at-end',
++  '-Wshadow=local',
++  '-Wno-error=shadow=local',
++  '-Wno-error=shadow=compatible-local',
+ ]
+ 
+ if targetos != 'darwin'
+
+You may want to drop the -Wno-error lines.
+
+v2:
+* PATCH 3+6: Mollify checkpatch
+* PATCH 4: Redo for clearer code, R-bys dropped [Kevin]
+* PATCH 5: Rename tweaked [Kevin]
+* PATCH 6: Rename local @tran instead of the parameter [Kevin]
+* PATCH 7: Drop PASTE(), use glue() instead [Richard]; pass
+  identifiers instead of __COUNTER__ for readability [Eric]; add
+  comments
+
+Markus Armbruster (7):
+  migration/rdma: Fix save_page method to fail on polling error
+  migration: Clean up local variable shadowing
+  ui: Clean up local variable shadowing
+  block/dirty-bitmap: Clean up local variable shadowing
+  block/vdi: Clean up local variable shadowing
+  block: Clean up local variable shadowing
+  qobject atomics osdep: Make a few macros more hygienic
+
+ include/qapi/qmp/qobject.h      | 11 +++++++++--
+ include/qemu/atomic.h           | 17 +++++++++++-----
+ include/qemu/compiler.h         |  3 +++
+ include/qemu/osdep.h            | 31 +++++++++++++++++++++--------
+ block.c                         |  9 +++++----
+ block/monitor/bitmap-qmp-cmds.c | 19 +++++++++---------
+ block/qcow2-bitmap.c            |  3 +--
+ block/rbd.c                     |  2 +-
+ block/stream.c                  |  1 -
+ block/vdi.c                     |  7 +++----
+ block/vvfat.c                   | 35 +++++++++++++++++----------------
+ hw/block/xen-block.c            |  6 +++---
+ migration/block.c               |  4 ++--
+ migration/ram.c                 |  8 +++-----
+ migration/rdma.c                | 14 ++++++++-----
+ migration/vmstate.c             |  2 +-
+ ui/gtk.c                        | 14 ++++++-------
+ ui/spice-display.c              |  9 +++++----
+ ui/vnc-palette.c                |  2 --
+ ui/vnc.c                        | 12 +++++------
+ ui/vnc-enc-zrle.c.inc           |  9 ++++-----
+ 21 files changed, 125 insertions(+), 93 deletions(-)
+
+-- 
+2.41.0
+
 
