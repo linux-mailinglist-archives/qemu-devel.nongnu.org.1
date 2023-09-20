@@ -2,108 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605527A8739
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 16:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4275A7A8770
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 16:45:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiyLH-0006D9-8Z; Wed, 20 Sep 2023 10:38:15 -0400
+	id 1qiyRW-0000B6-MT; Wed, 20 Sep 2023 10:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiyKn-00060y-TG
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:37:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiyKl-00028e-OT
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:37:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695220662;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zlq3VkBDAxx+UjHYCFzjOoTvzQT81SMPJV0LfgL/qPA=;
- b=Q0jzNGOiVU3NtukRcaVV+dBV+RtNPCs6CbpSc5HALH7HrbAktis7bGfiKPjIkTx+2uRU02
- snNWcr/SFB1XomVb2TEkrwt41bbY8zm8uefEnBOKwblK9ZrAqampc8mWjH/sHBpbRNX+gS
- j/dgc9K09ztEdQSPjsLT5+Q6oSwMSOI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-vDuJi5VXOjCBjvxc93oNuA-1; Wed, 20 Sep 2023 10:37:40 -0400
-X-MC-Unique: vDuJi5VXOjCBjvxc93oNuA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-321677c0c89so1327118f8f.0
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 07:37:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695220659; x=1695825459;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zlq3VkBDAxx+UjHYCFzjOoTvzQT81SMPJV0LfgL/qPA=;
- b=UWCk5HaXjUVDHkrBsvJaQalwbxjBjP9RC2YUAEpvnWE0HU+4l4qkRBwOrm2CD9i4zc
- vapM+MlGWFBMqQ++HAdCA3VYFEcy0/UHKWc1Nf69BXY/5onkpfFqCrwttQnf1fSDh4TR
- QZkkbr6AXbBUpFrVy7QSn5YlTPz08qLt02IboR9c/jmH1gNXgXtH4DColMz+ktxZMAS2
- xdThcG77mdJzkH6dXGc2bUnx3Xj9IpoqdDSXuwraqXBRHf0shRY1h8tgazBycSIduQkg
- hR5YTDKo1/fiqLT3Ptoa4ACmnUKZT4Yo78ejKXEHjOxN4HMeOCdpw3uNauq03wkGMPWd
- sIHg==
-X-Gm-Message-State: AOJu0YxByqj/lfhvuImOe1kA509xAWyvyaJ9XYsAjgIMUwn31pQ9gbtg
- DhAhYSVMWX3SJChPsV33wuSJEScSxSb0wqLTaVzfTgUeLaxhoYdExahZNx+pju5FNZdQGwNiK4F
- VK/u/ivdurTDEXl4=
-X-Received: by 2002:adf:d0ca:0:b0:317:5d3d:c9df with SMTP id
- z10-20020adfd0ca000000b003175d3dc9dfmr2502556wrh.18.1695220659489; 
- Wed, 20 Sep 2023 07:37:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFf+51aOLzrkPF34PeABVEpjaMEBK7fHn4+QjePH2TZCT8NykDAtUFDJp9i3G5so9YKLNfbEA==
-X-Received: by 2002:adf:d0ca:0:b0:317:5d3d:c9df with SMTP id
- z10-20020adfd0ca000000b003175d3dc9dfmr2502535wrh.18.1695220659038; 
- Wed, 20 Sep 2023 07:37:39 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70b:8600:dad5:13bb:38a9:3010?
- (p200300cbc70b8600dad513bb38a93010.dip0.t-ipconnect.de.
- [2003:cb:c70b:8600:dad5:13bb:38a9:3010])
- by smtp.gmail.com with ESMTPSA id
- v7-20020a5d6b07000000b0031f3780ce60sm18555247wrw.7.2023.09.20.07.37.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Sep 2023 07:37:38 -0700 (PDT)
-Message-ID: <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com>
-Date: Wed, 20 Sep 2023 16:37:37 +0200
+ (Exim 4.90_1) (envelope-from <brchuckz@aim.com>) id 1qiyRU-0000Ay-DF
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:44:40 -0400
+Received: from sonic310-21.consmr.mail.gq1.yahoo.com ([98.137.69.147])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <brchuckz@aim.com>) id 1qiyRP-0003kO-Bh
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:44:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048;
+ t=1695221070; bh=XijLq0YSqnbK496MfIb79/fWIh7B6yNruOyf40BE6qc=;
+ h=Date:From:Subject:To:Cc:References:In-Reply-To:From:Subject:Reply-To;
+ b=T6Nuia+7IYdO/N2oL/i18bxl8UOwMZVVLrgCCjw9cbNSwqVvGU3phLdUVT6lvZkxGJm90IXjaAFSRMB+/of4Y/tVLajBvwFJmWZ8wQm45ZlKAIeUb2clwB4B6YBFpfDoUNjvF0rcKHAAUZ3ja0l5dMUH8jIwvWGddOOQiNMQoeFfkc356yvb9GUwbBC6ic0tL8vjUkupUpes/RnPgiV6BoFz6ZtelK6bVNtOCQhUi3PdGvrXmz/Q1heajgF+KyB3qmcF8ZOVRTvUFAv30/q08Gs/BLhgbZ9dE1G0xs4R0oB3J1oFFWlpUWg5J6K5aW6U/z86jfpNunIgcl9/clhzWg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
+ t=1695221070; bh=4c4lC1v68u+I+Wt7Cuj9L2lAfhigVlQETv6LsH3QlSV=;
+ h=X-Sonic-MF:Date:From:Subject:To:From:Subject;
+ b=gS2jmeS/FgPGusT0zwC/Dh59Ardkfg0Kr5uEfU499BFGo30ntSNSZQW8p3uW0ZYGyawxpEUSq9oucjbABdOgh0jFhPsGDA3sDeMlXP3o/ser+yIgaxxHmpxC3UClhdigcyZjTRfrHpsm71GHX7B1WbKB7p2pC6w349Y9fp/Mj6mC1Brj6tldJhOP9+pTPrewO9D9E6CDeYLMOBXvduH0YuqbTrx8iZ8ukuEZ6Eil9CKzk5er3EcwXulUqfGQ7UpEISgjujAv9Deh/nkAEBFZhkaXr7JGX1ghtSKDbAtGv76AaCCPPBb2seUltnVhZ1lPLLkPJuFxhrTpfgNUm/kLyA==
+X-YMail-OSG: AU922YAVM1l6OB7xoRirelMQZYVALkclBUK8gX196Cec0Q38m1glfY1uYRZkP5d
+ tiX2sCjVl5Urp9n1B8ivdvzgaIHXXKfAioBUayzEb6nwUPtZ4v0MfouDVkBf0NXCJoMf0tUnE7Zb
+ BgtynytOsY.qaGo6b1Nw4NX.mmaI1bJ1K7UbMIOWADV5mUGl75RWk0uyIfO1EU.5OfMB5ZQOEL5l
+ oQaMbBJ8oCuioBZKuPJV4SR5rt9JWK7hNRhug7qPQ0ngQKM5XiJhzE7DNjNXLmwG7e0Oy.2A8h1a
+ .5_N5bMoEVWPry5YyxaPFjfnNo6h.KCeI7gcV9i0imZYO665VJnXVuMjYoRTPbcgfNGQyPkFCPzu
+ 1X3Q2bbG0d1weTzmUkPcYmevT3ddq2Cx6usKwLmS.sKrfxZ4UyWPUWFp1kw7FdRadGkZqMmxe_Vv
+ u_q2hVtle4K2Yo03Bv7B.AKYGxluBXtgDhn_pKTD6VBhKKCL4hCFZ_BLhrMvkTjvCrHODGZK3d0A
+ OcYQRIHSlw2gSc1u7o0TTLFIpW7bSvc6vPj5N_m9KxvGwNgub_e065rTMPcaimGlVJrb.Oh0pqym
+ rnUWM51NUq0H_..q4GpeHix69zJKphNXgLzr1TefFVGjBj7IebJ6vs4qnsRfPGr0UMPTyjMHx1Eh
+ e570YyuXmn2uMa0OrlJFu9_PC6TCGY5_fI.3JzY4MoPI8EIaJvdJBGm6Gxnnq5vbRSDdAl6Y4vvg
+ yQxUorQCUECCOt8UpzC6fFU893o7eE_wxHx2Jj0P3qx8KdoBh9gkUxQLL90z8Mdg.DA.tf8pUwdY
+ QnfYOrIS3odmgiuwkOSe9b83n6S.MhiDKr4E1Biqihv_0.yuWen4LIhVkKZEpLMMHJcM1OJvQwUO
+ kYktyQma_FmrPPhoTaWaw9ziWl7sSYvO6aIGfHwekwV2mpItaRauy8LwQHn2H0jPd3QwLZug1BiV
+ RGIAj7xDvOrxRKZD7tCTUOEw5dm1Cb.R3doZMKkHsNF91Z8w0Efu27o2ZYwQ6hWXc7OwQ6_L4PIU
+ QL7cLjWsJs6aO9wDyxWWRwjXFlJf1V1eQwAm_4AtjVJuRW9kCQdJRLYsWeGNCHrbMnI4pOF8T1Ul
+ 50Z3BzUxjjDkmVs8ibPZ1A56B6YUPHwnS0HgRAMeN4NtkjZ67KiGNbDA12rxXnLzdVeBoCrxzHu9
+ l_Faq_J.cD6F12t_gbn5GlTpgWKvgywf7JpRDKPIbMF9g3o9iFEiO5RlcZkcVkuv4pbbNX9dA3nD
+ 0MskXloyNnvVyJUR3VqJh4d1XRWMg4qIXIDFX2v8NWwqiohN4mUodQj8dFETXJRsBBVuemryqiCv
+ F5UqEr8BUDySfnYfXwe8iFWVIKr8Oe4i1n5FwJ2AT_g.JTtvEYvpKc0fdLvpFcXxYoeBH1lHBe7v
+ mxSA.HlLxDvQSF7Us46syvM9yVHVbHvQw8jqRM_eVvSLEdX5ebW9wiQsSmri5rqN1A.V5YHbodag
+ hXV5Bpk6o9nZ5dOxuLa.2rc7qMsCvKrksu2PXHE.zLnEL4HZFac9kAIfFeTBhIaRiHp2SladMhXL
+ S5CHi9t.6m44Yf7QpR5gb6JHYeFOYZtAhzRdSk5HuOkV2X0VJBEL0QaZB0IsTCnoUDdgeDbjpd5h
+ hd0JeM95i7yZs1mwV2CM.8W6VoLEK43f4mbwl1CQZ6Se5B5KyycBq3cnmZI_UcO.7dsrgYY_j4VV
+ FScynXEM.qxg2dACE.rVUO1UUWRLxbzKpPeJziXiHih3OQgyf_FEEk1_oN9CyfpAsO7ChVaDE1aI
+ rW7Ykh8GoCR_3r5kuvgtNUOOtqCNaSMnjpWI2IGlGNdL3Tc3A3a3x7lLjjWAh7u71ZpM9uqTucJo
+ BUUB6qG29KgzGRggMIpPfJrwSCxYsejUDU3IWIn6nXdiU8Dw2QDWEVHyLbaLpFgqNVislDcZgSkE
+ OYR16XddgLtfTuZq9Wh7tLwgZBBYn4Zaa3IxSIjmCwlLrzTX7NVcdW1PN6aitwPIp.N3HpVfDG8E
+ GMXgql6CszcOaw2LKrw3KrsXdqIcwkpFStL.xTxIshFvW5Z198kV6ODOlDZjPM61c20rJkIBhXrG
+ 8XMTNbQo76t3.G8oJiRaXkq7DQt1_mi37Yt0NuBBRMxsGDidLLbC_RSmSeipvtnl3qQaYPJylwJ.
+ WUpqRa0jgNrN0DBn6tiM5uS3xcQ6nmWJFWKAF7UwZTvWNXjodKOUOQsFyM_FCnhNyA1iwV6ozAf5
+ mdVw1Ibs3lT2Th24UC55DcLWKo4PTa8Y-
+X-Sonic-MF: <brchuckz@aim.com>
+X-Sonic-ID: e5e70465-c2df-41c0-81bf-a8fcd2dc0a37
+Received: from sonic.gate.mail.ne1.yahoo.com by
+ sonic310.consmr.mail.gq1.yahoo.com with HTTP; Wed, 20 Sep 2023 14:44:30 +0000
+Received: by hermes--production-ne1-6cbd549489-84thk (Yahoo Inc. Hermes SMTP
+ Server) with ESMTPA ID 25f55bca556ea028f0a42f54df88281a; 
+ Wed, 20 Sep 2023 14:44:25 +0000 (UTC)
+Message-ID: <6cd8d49f-2b69-471c-84b7-890f31f585b5@aol.com>
+Date: Wed, 20 Sep 2023 10:44:23 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and associate
- it with RAM_KVM_GMEM
-Content-Language: en-US
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+User-Agent: Mozilla Thunderbird
+From: Chuck Zmudzinski <brchuckz@aol.com>
+Subject: Re: [PATCH v3 2/6] hw/isa/piix3: Reuse piix3_realize() in
+ piix3_xen_realize()
+To: Bernhard Beschow <shentey@gmail.com>, Jason Andryuk <jandryuk@gmail.com>, 
+ Anthony PERARD <anthony.perard@citrix.com>
+Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>,
+ =?UTF-8?Q?Herv=C3=A9_Poussineau?= <hpoussin@reactos.org>,
+ Aurelien Jarno <aurelien@aurel32.net>, Eduardo Habkost
+ <eduardo@habkost.net>, Paul Durrant <paul@xen.org>,
+ xen-devel@lists.xenproject.org, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <20230914035117.3285885-4-xiaoyao.li@intel.com> <8734zazeag.fsf@pond.sub.org>
- <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
- <878r91nvy4.fsf@pond.sub.org>
- <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20230312120221.99183-1-shentey@gmail.com>
+ <20230312120221.99183-3-shentey@gmail.com>
+ <f52c41f7-e662-4afd-8ac9-ce2c0da2b1be@perard>
+ <7F45B51F-F1E3-4F04-A46F-4C80509C7195@gmail.com>
+ <622b9674-fffd-4634-ac30-d0db3230478e@perard>
+ <CAKf6xpvxf=F52etJ8o3eLQV4JVD5WM57znGoP3ctONRf7uPisA@mail.gmail.com>
+ <B0FF78F4-1193-495B-919C-84A1FF8ADF12@gmail.com>
+Content-Language: en-US
+In-Reply-To: <B0FF78F4-1193-495B-919C-84A1FF8ADF12@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.21797
+ mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
+Received-SPF: pass client-ip=98.137.69.147; envelope-from=brchuckz@aim.com;
+ helo=sonic310-21.consmr.mail.gq1.yahoo.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,38 +118,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20.09.23 16:35, Xiaoyao Li wrote:
-> On 9/20/2023 3:30 PM, Markus Armbruster wrote:
->> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>
->>> On 9/19/2023 5:46 PM, Markus Armbruster wrote:
->>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->>>>
->>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
->>>>>
->>>>> Add a new property "private" to memory backends. When it's set to true,
->>>>> it indicates the RAMblock of the backend also requires kvm gmem.
->>>> Can you add a brief explanation why you need the property?
->>>
->>> It provides a mechanism for user to specify whether the memory can serve as private memory (need request kvm gmem).
->>
->> Yes, but why would a user want such memory?
->>
+On 9/19/2023 4:02 PM, Bernhard Beschow wrote:
 > 
-> Because KVM demands it for confidential guest, e.g., TDX guest. KVM
-> demands that the mem slot needs to have KVM_MEM_PRIVATE set and has
-> valid gmem associated if the guest accesses it as private memory.
+> 
+> Am 3. April 2023 12:27:14 UTC schrieb Jason Andryuk <jandryuk@gmail.com>:
+>>On Mon, Apr 3, 2023 at 5:33 AM Anthony PERARD <anthony.perard@citrix.com> wrote:
+>>>
+>>> On Sat, Apr 01, 2023 at 10:36:45PM +0000, Bernhard Beschow wrote:
+>>> >
+>>> >
+>>> > Am 30. März 2023 13:00:25 UTC schrieb Anthony PERARD <anthony.perard@citrix.com>:
+>>> > >On Sun, Mar 12, 2023 at 01:02:17PM +0100, Bernhard Beschow wrote:
+>>> > >> This is a preparational patch for the next one to make the following
+>>> > >> more obvious:
+>>> > >>
+>>> > >> First, pci_bus_irqs() is now called twice in case of Xen where the
+>>> > >> second call overrides the pci_set_irq_fn with the Xen variant.
+>>> > >
+>>> > >pci_bus_irqs() does allocates pci_bus->irq_count, so the second call in
+>>> > >piix3_xen_realize() will leak `pci_bus->irq_count`. Could you look if
+>>> > >pci_bus_irqs_cleanup() can be called before the second pci_bus_irqs()
+>>> > >call, or maybe some other way to avoid the leak?
+>>> >
+>>> > Thanks for catching this! I'll post a v4.
+>>> >
+>>> > I think the most fool-proof way to fix this is to free irq_count just before the assignment. pci_bus_irqs_cleanup() would then have to NULL the attribute such that pci_bus_irqs() can be called afterwards.
+>>> >
+>>> > BTW: I tried running qemu-system-x86_64 with PIIX4 rather than PIIX3 as Xen guest with my pc-piix4 branch without success. This branch essentially just provides slightly different PCI IDs for PIIX. Does xl or something else in Xen check these? If not then this means I'm still missing something. Under KVM this branch works just fine. Any idea?
+>>>
+>>> Maybe the ACPI tables provided by libxl needs to be updated.
+>>> Or maybe something in the firmware (SeaBIOS or OVMF/OvmfXen) check the
+>>> id (I know that the PCI id of the root bus is checked, but I don't know
+>>> if that's the one that's been changed).
+>>
+>>Xen also has hvmloader, which runs before SeaBIOS/OVMF.  Looking at
+>>tools/firmware/hvmloader/pci.c, it has
+>>        ASSERT((devfn != PCI_ISA_DEVFN) ||
+>>               ((vendor_id == 0x8086) && (device_id == 0x7000)));
+>>
+>>From QEMU, it looks like 0x7000 is PCI_DEVICE_ID_INTEL_82371SB_0, but
+>>PIIX4 uses 0x7110 (PCI_DEVICE_ID_INTEL_82371AB_0).  Maybe try removing
+>>that check?
+> 
+> I was finally able to build Xen successfully (without my distribution providing too recent dependencies that prevent compilation). With 0x7110 added in the line above I could indeed run a Xen guest with PIIX4. Yay!
+> 
+> Now I just need to respin my PIIX consolidation series...
 
-I think as long as there is no demand to have a TDX guest with this 
-property be set to "off", then just don't add it.
+Welcome to the world of running guests on Xen! I am the one who tested your earlier patches with Xen guests, and I just wanted to say thanks for keeping me in the loop. Please Cc me when you post your respin of the PIIX consolidation series since I would like to also test it in my Xen environment. I understand I will also need to patch hvmloader.c on the Xen side to set the correct device id.
 
-With a TDX VM, it will can be implicitly active. If we ever have to 
-disable it for selective memory backends, we can add the property and 
-have something like on/off/auto. For now it would be "auto".
+Kind regards,
 
--- 
-Cheers,
+Chuck
 
-David / dhildenb
+> 
+> Best regards,
+> Bernhard
+> 
+>>
+>>Regards,
+>>Jason
 
 
