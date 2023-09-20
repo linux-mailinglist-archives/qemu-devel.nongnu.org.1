@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFEA07A8BEB
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 361BF7A8BF0
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:39:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj21G-0007x6-0c; Wed, 20 Sep 2023 14:33:50 -0400
+	id 1qj25N-00056P-Dt; Wed, 20 Sep 2023 14:38:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj21C-0007mc-Tn
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:33:46 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj25K-00053T-Gy
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:38:02 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj21A-0003PI-Kg
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:33:46 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-502b1bbe5c3so284074e87.1
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:33:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj25I-0004Af-Ms
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:38:02 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-532bf1943ebso65770a12.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:37:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695234822; x=1695839622;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695235078; x=1695839878;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=xvMAiCeLPu9VmKIVZRO1ut0GkwbP0ZFH6V0jvz7gBfY=;
- b=PG50RboOPJ069OG/Fa/5hDbhPF+SWBagVtWM+qNg3Y/IWQLIfsCvyixMXmUAFcMqjg
- VPxHoMWjXCRs5zeyZ4qg4PQF9VZLZK0WVk9SzbKap+ATtf5yH8XAa2q/yWXLcZkmsN4c
- bMzSn4yhTIcU0RcOG6Mq2dztrafNCWjM9gxEJ/F0eF6rA8TBveEYu31N3gONNT3py++g
- z1o7KX9Nio8359i5KHEln+1yj4LJ+vBzOMPxkLnzMPJ/3q89IBEfsRyIy1bysnT0PJjY
- bvgmfaHECSeDQYYwRqBj6AjEY5ZVY+FTOiVpRnCJfSXH4mb62TfA8avk3x/mBsQwIDuZ
- sSjg==
+ bh=+BC1lks7auCQPAOJGu31Lfa4f6/+J16WMBHcPQ5n4+g=;
+ b=jWPPJL9UKykdUtTpaVMbjOkcrLnUMz7JErHzphEC7PVbKGKDQmjijBInfreQLuE8H0
+ yyZnPM2DlIfJxkWpxHX+sk29q7eckNtQUBKWPycQIjMODi7AGXoxD9zX0vZ3emUsxI6Y
+ qQnz0z9sRpUa2vIj3I0B9xVuQAZ6gmb8NpXf17gPxFOpVxpSzc4ZyxN3H+3jD5R5ziqR
+ +CPiNJ/NcuHlicGhhHn+SNtsh3cb5FDPDcCSRKEe01c2u9kn2Zp4I0CyfXpbvmDWiVnA
+ D4gOXB5wRVDAFjxdTGnFlw6qXVJRuzXVYKfctIWHJJ5iDXZxx4uA9FlXYdKTzH+aN0GJ
+ aOIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695234822; x=1695839622;
+ d=1e100.net; s=20230601; t=1695235078; x=1695839878;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=xvMAiCeLPu9VmKIVZRO1ut0GkwbP0ZFH6V0jvz7gBfY=;
- b=dg7prV8mtlh65ERwoAH5W+IwS+WcCFAFxHYkQcdvtXJOU8EivE4QxXIHZ5Vpie7uzJ
- /whE3W04ifYIheIek3FMPTycDMQMQYLG7mdVY9FAOVJCIcrZeW//V9cjTXvh7SMqyPiE
- MT9mUEqgVMNicbcQeFqqYOuUgu06ClTgeXoAjUxgX76HTzZG6cQ5nca1L7s4IJRT/RGS
- dsvBVNbkfsVOcIY2U0XWodhdX+F3DGe7L3sYNWQZhj9eP3aTBfIohBxDvtfUKg+ctvG1
- HzeFiSWCyqiH+FC7kN+/SattoQReDoqjWX7aPI/5wtlWAAb+FK/nKU5DktgY2SXLtDKy
- CvgQ==
-X-Gm-Message-State: AOJu0YxcH9WS3Yze/jSa34uXQCdXIAjzyIV3HV8Abm3+S2eoNma1vrSR
- UyeYZrvukiqiR0ZoLNKSza1Ux1DtLDi1eE7V91rXag==
-X-Google-Smtp-Source: AGHT+IHWyyN8G2F6ai6li/MsR43MBnTIl+Q8PFKpnljoJc9ELtFpNvPdcqjjmHDqsurAxZTSHFx0SXoVblcjvGPDALU=
-X-Received: by 2002:a05:6512:234d:b0:500:b9f3:1dc4 with SMTP id
- p13-20020a056512234d00b00500b9f31dc4mr3941580lfu.68.1695234822417; Wed, 20
- Sep 2023 11:33:42 -0700 (PDT)
+ bh=+BC1lks7auCQPAOJGu31Lfa4f6/+J16WMBHcPQ5n4+g=;
+ b=EgfBcwkRlv4DEL38HRtMAMu/dShAk4gE6KChv/9uBaysb7TeEEhbIpfbAPBgmQwb8P
+ fVYoGQScM+XOQvO6aHlmN00LT5z0bUnSu86jyNzBaccKGSwTlKwCFEHgZPYwLsmMgstX
+ hadeuqCWuor9GUITQRVkeYNAauEn4kUFeBGQ1dWbHwiiB3FxPpVupuhbycu5RnqPxRfO
+ UKfC+1ApimRfKzqkaedG0AsHU8cUCc6Y0PJGjfM3IxPZmpnzv4sq7gDgPMrigMU+Pfbl
+ kKMY8/35e7S6O3Kkh/gwl6xdtdb6pnePil3+77QH8v1Ghm94Yolzaa6u0+C1w94nUh3r
+ oa6g==
+X-Gm-Message-State: AOJu0YyQsdIBxJGlbtBq4bleREeHIafmV0+0voqx+oth5v2WaqNpCRGi
+ Z/uViHeU9MP1dGRJPOlOSWbQudQsa87pirrznzmxwA==
+X-Google-Smtp-Source: AGHT+IERrO7xb2CJx3d8SOPf42NUgeRYZSrQ2+3mu48qnBjT0bqwzx1wau+8bQp6WI7KJywtJsP/Bz8hKb4VoVOnZHE=
+X-Received: by 2002:aa7:cf03:0:b0:51d:95f2:ee76 with SMTP id
+ a3-20020aa7cf03000000b0051d95f2ee76mr3201287edy.27.1695235078497; Wed, 20 Sep
+ 2023 11:37:58 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
- <20230917213803.20683-13-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230917213803.20683-13-kariem.taha2.7@gmail.com>
+ <20230917213803.20683-14-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230917213803.20683-14-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 20 Sep 2023 19:33:31 +0100
-Message-ID: <CANCZdfqiJ2nTxZ-V4UmtkK4u4OJGp5X_d87egB9DYtmsR6cdCg@mail.gmail.com>
-Subject: Re: [PATCH v2 12/28] bsd-user: Implement umask(2),
- setlogin(2) and getlogin(2)
+Date: Wed, 20 Sep 2023 19:37:47 +0100
+Message-ID: <CANCZdfpWxDkdJ5GJsxhnEGGhhp2z-M1n+8zEyasx8vhVJeQTOA@mail.gmail.com>
+Subject: Re: [PATCH v2 13/28] bsd-user: Implement getrusage(2).
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
  Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="00000000000066c7d50605ce9dad"
-Received-SPF: none client-ip=2a00:1450:4864:20::12e;
- envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x12e.google.com
+Content-Type: multipart/alternative; boundary="000000000000aa44ae0605ceacfe"
+Received-SPF: none client-ip=2a00:1450:4864:20::529;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -85,7 +84,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000066c7d50605ce9dad
+--000000000000aa44ae0605ceacfe
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -99,75 +98,14 @@ wrote:
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  bsd-user/bsd-proc.h           | 39 +++++++++++++++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c | 12 +++++++++++
->  2 files changed, 51 insertions(+)
->
-> diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-> index 7b25aa1982..fd05422d9a 100644
-> --- a/bsd-user/bsd-proc.h
-> +++ b/bsd-user/bsd-proc.h
-> @@ -26,6 +26,7 @@
->  #include "gdbstub/syscalls.h"
->  #include "qemu/plugin.h"
->
-> +extern int _getlogin(char*, int);
->  int bsd_get_ncpu(void);
->
->  /* exit(2) */
-> @@ -85,4 +86,42 @@ static inline abi_long do_bsd_setgroups(abi_long
-> gidsetsize, abi_long arg2)
->      return get_errno(setgroups(gidsetsize, grouplist));
->  }
->
-> +/* umask(2) */
-> +static inline abi_long do_bsd_umask(abi_long arg1)
-> +{
-> +    return get_errno(umask(arg1));
-> +}
-> +
-> +/* setlogin(2) */
-> +static inline abi_long do_bsd_setlogin(abi_long arg1)
-> +{
-> +    abi_long ret;
-> +    void *p;
-> +
-> +    p =3D lock_user_string(arg1);
-> +    if (p =3D=3D NULL) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    ret =3D get_errno(setlogin(p));
-> +    unlock_user(p, arg1, 0);
-> +
-> +    return ret;
-> +}
-> +
-> +/* getlogin(2) */
-> +static inline abi_long do_bsd_getlogin(abi_long arg1, abi_long arg2)
-> +{
-> +    abi_long ret;
-> +    void *p;
-> +
-> +    p =3D lock_user_string(arg1);
-> +    if (p =3D=3D NULL) {
-> +        return -TARGET_EFAULT;
-> +    }
+>  bsd-user/bsd-proc.h           | 13 +++++++++++++
+>  bsd-user/freebsd/os-syscall.c |  4 ++++
+>  2 files changed, 17 insertions(+)
 >
 
-This looks backwards. We're calling the kernel to get this string, so the
-target_strlen() tht lock_user_string() does is on the receiving buffer, not
-the length of the string that we'd like to write.
+Reviewed by: Warner Losh <imp@bsdimp.com>
 
- I think we want
-    p =3D lock_user(VERIFY_READ, arg1, arg2, 0);
-
-for this. sys_getlogin in sys/kern/kern_prot.c does a copyout. This is
-clearly
-broken in the 'blitz' branch.
-
-Warner
-
---00000000000066c7d50605ce9dad
+--000000000000aa44ae0605ceacfe
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -184,68 +122,12 @@ arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
 ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/bsd-proc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 39 ++++=
-+++++++++++++++++++++++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c | 12 +++++++++++<br>
-=C2=A02 files changed, 51 insertions(+)<br>
-<br>
-diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h<br>
-index 7b25aa1982..fd05422d9a 100644<br>
---- a/bsd-user/bsd-proc.h<br>
-+++ b/bsd-user/bsd-proc.h<br>
-@@ -26,6 +26,7 @@<br>
-=C2=A0#include &quot;gdbstub/syscalls.h&quot;<br>
-=C2=A0#include &quot;qemu/plugin.h&quot;<br>
-<br>
-+extern int _getlogin(char*, int);<br>
-=C2=A0int bsd_get_ncpu(void);<br>
-<br>
-=C2=A0/* exit(2) */<br>
-@@ -85,4 +86,42 @@ static inline abi_long do_bsd_setgroups(abi_long gidsets=
-ize, abi_long arg2)<br>
-=C2=A0 =C2=A0 =C2=A0return get_errno(setgroups(gidsetsize, grouplist));<br>
-=C2=A0}<br>
-<br>
-+/* umask(2) */<br>
-+static inline abi_long do_bsd_umask(abi_long arg1)<br>
-+{<br>
-+=C2=A0 =C2=A0 return get_errno(umask(arg1));<br>
-+}<br>
-+<br>
-+/* setlogin(2) */<br>
-+static inline abi_long do_bsd_setlogin(abi_long arg1)<br>
-+{<br>
-+=C2=A0 =C2=A0 abi_long ret;<br>
-+=C2=A0 =C2=A0 void *p;<br>
-+<br>
-+=C2=A0 =C2=A0 p =3D lock_user_string(arg1);<br>
-+=C2=A0 =C2=A0 if (p =3D=3D NULL) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 ret =3D get_errno(setlogin(p));<br>
-+=C2=A0 =C2=A0 unlock_user(p, arg1, 0);<br>
-+<br>
-+=C2=A0 =C2=A0 return ret;<br>
-+}<br>
-+<br>
-+/* getlogin(2) */<br>
-+static inline abi_long do_bsd_getlogin(abi_long arg1, abi_long arg2)<br>
-+{<br>
-+=C2=A0 =C2=A0 abi_long ret;<br>
-+=C2=A0 =C2=A0 void *p;<br>
-+<br>
-+=C2=A0 =C2=A0 p =3D lock_user_string(arg1);<br>
-+=C2=A0 =C2=A0 if (p =3D=3D NULL) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br></blockquote><div><br></div><div>This looks backwards. =
-We&#39;re calling the kernel to get this string, so the</div><div>target_st=
-rlen() tht lock_user_string() does is on the receiving buffer, not</div><di=
-v>the length of the string that we&#39;d like to write.</div><div><br></div=
-><div>=C2=A0I think we want</div><div>=C2=A0 =C2=A0 p =3D lock_user(VERIFY_=
-READ, arg1, arg2, 0);<br></div><div><br></div><div>for this. sys_getlogin i=
-n sys/kern/kern_prot.c does a copyout. This is clearly</div><div>broken in =
-the &#39;blitz&#39; branch.</div><div><br></div><div>Warner</div></div></di=
-v>
+=C2=A0bsd-user/bsd-proc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 13 ++++=
++++++++++<br>
+=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 4 ++++<br>
+=C2=A02 files changed, 17 insertions(+)<br></blockquote><div><br></div><div=
+>Reviewed by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
+com</a>&gt;</div></div></div>
 
---00000000000066c7d50605ce9dad--
+--000000000000aa44ae0605ceacfe--
 
