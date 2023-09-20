@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E71C37A7E96
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 14:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3327A7E93
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 14:18:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiw8L-0002SJ-Qt; Wed, 20 Sep 2023 08:16:46 -0400
+	id 1qiw8o-0002km-PN; Wed, 20 Sep 2023 08:17:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw86-0002E1-Fv; Wed, 20 Sep 2023 08:16:31 -0400
+ id 1qiw8T-0002XA-46; Wed, 20 Sep 2023 08:16:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw84-0005OC-Bo; Wed, 20 Sep 2023 08:16:30 -0400
+ id 1qiw8P-0005Oa-Vr; Wed, 20 Sep 2023 08:16:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7884223A04;
+ by isrv.corpit.ru (Postfix) with ESMTP id 98DB623A05;
  Wed, 20 Sep 2023 15:16:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D1460296FB;
- Wed, 20 Sep 2023 15:15:55 +0300 (MSK)
-Received: (nullmailer pid 105904 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 096F0296FC;
+ Wed, 20 Sep 2023 15:15:56 +0300 (MSK)
+Received: (nullmailer pid 105907 invoked by uid 1000);
  Wed, 20 Sep 2023 12:15:53 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Janosch Frank <frankja@linux.ibm.com>,
- "Jason J . Herne" <jjherne@linux.ibm.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 62/63] s390x/ap: fix missing subsystem reset
- registration
-Date: Wed, 20 Sep 2023 15:15:47 +0300
-Message-Id: <20230920121553.105832-11-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, Stefan Berger <stefanb@linux.ibm.com>
+Subject: [Stable-7.2.6 63/63] tpm: fix crash when FD >= 1024 and unnecessary
+ errors due to EINTR
+Date: Wed, 20 Sep 2023 15:15:48 +0300
+Message-Id: <20230920121553.105832-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,33 +61,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Janosch Frank <frankja@linux.ibm.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-A subsystem reset contains a reset of AP resources which has been
-missing.  Adding the AP bridge to the list of device types that need
-reset fixes this issue.
+Replace select() with poll() to fix a crash when QEMU has a large number
+of FDs. Also use RETRY_ON_EINTR to avoid unnecessary errors due to EINTR.
 
-Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
-Reviewed-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Fixes: a51b3153 ("s390x/ap: base Adjunct Processor (AP) object model")
-Message-ID: <20230823142219.1046522-2-seiden@linux.ibm.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-(cherry picked from commit 297ec01f0b9864ea8209ca0ddc6643b4c0574bdb)
+Cc: qemu-stable@nongnu.org
+Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=2020133
+Fixes: 56a3c24ffc ("tpm: Probe for connected TPM 1.2 or TPM 2")
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+(cherry picked from commit 8e32ddff69b6b4547cc00592ad816484e160817a)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: use TFR() instead of RETRY_ON_EINTR() before v7.2.0-538-g8b6aa69365)
 
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index 2e64ffab45..16899a1814 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -108,6 +108,7 @@ static const char *const reset_dev_types[] = {
-     "s390-flic",
-     "diag288",
-     TYPE_S390_PCI_HOST_BRIDGE,
-+    TYPE_AP_BRIDGE,
- };
+diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
+index a6e6d3e72f..a9d6f7a1c4 100644
+--- a/backends/tpm/tpm_util.c
++++ b/backends/tpm/tpm_util.c
+@@ -112,12 +112,8 @@ static int tpm_util_request(int fd,
+                             void *response,
+                             size_t responselen)
+ {
+-    fd_set readfds;
++    GPollFD fds[1] = { {.fd = fd, .events = G_IO_IN } };
+     int n;
+-    struct timeval tv = {
+-        .tv_sec = 1,
+-        .tv_usec = 0,
+-    };
  
- static void subsystem_reset(void)
+     n = write(fd, request, requestlen);
+     if (n < 0) {
+@@ -127,11 +123,8 @@ static int tpm_util_request(int fd,
+         return -EFAULT;
+     }
+ 
+-    FD_ZERO(&readfds);
+-    FD_SET(fd, &readfds);
+-
+     /* wait for a second */
+-    n = select(fd + 1, &readfds, NULL, NULL, &tv);
++    TFR(n = g_poll(fds, 1, 1000));
+     if (n != 1) {
+         return -errno;
+     }
 -- 
 2.39.2
 
