@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739B97A738D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AA27A73B2
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:07:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qirBO-0005DI-DG; Wed, 20 Sep 2023 02:59:34 -0400
+	id 1qirIT-0002Yh-Ua; Wed, 20 Sep 2023 03:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
- id 1qirB7-0004uH-Aw
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:59:19 -0400
-Received: from mgamail.intel.com ([192.55.52.88])
+ id 1qirIQ-0002Y1-83
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:06:50 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
- id 1qirAu-0005ao-Hi
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:59:17 -0400
+ id 1qirIN-0007RA-IA
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:06:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695193144; x=1726729144;
+ t=1695193607; x=1726729607;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=ffnKPVyNxy55r7abNlxMw5Gbvsj5jCv6UNFrWk2dtDA=;
- b=nccCNlAZ4MXTWaM55HSifs2+zJnbHiDlWwDfEmKwaOBASOyEJAWVkYBs
- WWz2fzD/TBww8YrU9IhzTRJcGGU0Xbj0owt/JTYHrR6D72vaFEiaiL89F
- DT7JAhFxe58ZY4dr16CkpXkK+EPxRF6lNtHSynUo3grEn39NAIyVzFTOX
- Oh2mkqvD0/ObFmBUbuqCDAFNKdlwmX4JPPcPf4bWuzJ2bIc7VJHgloOvg
- jn0X65Zyktr/hwy7U4rwMIPUKKHmExsq2jE6b5MzYGxaD49M9zEB8gILw
- ZKVGn3EdaJoZKGa+BDl+x+H7mk5kGnm2LGjzXB0hLtay6XuhxJfRpbDoj A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="411079659"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="411079659"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2023 23:59:01 -0700
+ bh=wZTukaWgYQtoMGWXkRGQVIiyv0OYLx0f+YV06SI2gq0=;
+ b=MLhjxY9oT3NjS8e3cKSAY3QPDIZWxhyp5YnYdNMwfuAvXgmiTK/r9ToZ
+ 9AlW1XCvnD0RqDGHrG9uLugGNnIY3NL/L3z4WvUjWeA1Rq9ZKCmJhMLKL
+ WsowIY31n59hhQtbRHAvXHayYFr4lr/U6i0BV9uiT548+lny57YRxcTyX
+ RJ+qewEZfHKDDeRoRMUGo9nhfxPjey0krFC4FcM2g1WtW++82hSmJI/h4
+ 9zt14upXPq+ZoEy6AzViphDGVVewuHlUuw9xKCjsW/SGPe1XYstITpd9+
+ 5W2GfGYtu95fvopt5ICsUpGFPyocYlBUNHbQkfIR1JhA8GaZ3Pnhnspg2 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="359533476"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="359533476"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2023 00:06:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="696197650"
-X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="696197650"
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="812032857"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="812032857"
 Received: from lingshan-mobl.ccr.corp.intel.com (HELO [10.93.14.5])
  ([10.93.14.5])
- by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2023 23:58:55 -0700
-Message-ID: <badb53e0-513c-f88c-67b9-ecd59d1cf051@intel.com>
-Date: Wed, 20 Sep 2023 14:58:52 +0800
+ by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2023 00:06:35 -0700
+Message-ID: <701bb67c-c52d-4eb3-a6ed-f73bd5d0ff33@intel.com>
+Date: Wed, 20 Sep 2023 15:06:33 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.15.1
 Subject: Re: [virtio-dev] Re: [virtio-comment] Re: [VIRTIO PCI PATCH v5 1/1]
  transport-pci: Add freeze_mode to virtio_pci_common_cfg
 Content-Language: en-US
-To: "Chen, Jiqian" <Jiqian.Chen@amd.com>, "Michael S. Tsirkin" <mst@redhat.com>
+To: Parav Pandit <parav@nvidia.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
  Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>,
  Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
  <olvaffe@gmail.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
  <marcandre.lureau@gmail.com>, Robert Beckett <bob.beckett@collabora.com>,
  Mikhail Golubev-Ciuchea <Mikhail.Golubev-Ciuchea@opensynergy.com>,
- Parav Pandit <parav@nvidia.com>,
  "virtio-comment@lists.oasis-open.org" <virtio-comment@lists.oasis-open.org>,
  "virtio-dev@lists.oasis-open.org" <virtio-dev@lists.oasis-open.org>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
@@ -75,18 +75,19 @@ References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
  <20230919082802-mutt-send-email-mst@kernel.org>
  <cd8d306b-6acc-34be-516c-b89c23ac108d@intel.com>
  <BL1PR12MB5849E32A76165F1307492185E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
+ <PH0PR12MB5481D2CBCFBF7BCBF427EE1EDCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
 From: "Zhu, Lingshan" <lingshan.zhu@intel.com>
-In-Reply-To: <BL1PR12MB5849E32A76165F1307492185E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
+In-Reply-To: <PH0PR12MB5481D2CBCFBF7BCBF427EE1EDCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.88; envelope-from=lingshan.zhu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.55.52.136;
+ envelope-from=lingshan.zhu@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, SPF_HELO_NONE=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,120 +106,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 9/20/2023 2:33 PM, Chen, Jiqian wrote:
-> Hi Lingshan,
+On 9/20/2023 2:58 PM, Parav Pandit wrote:
+>> From: Chen, Jiqian <Jiqian.Chen@amd.com>
+>> Sent: Wednesday, September 20, 2023 12:03 PM
+>> If driver write 0 to reset device, can the SUSPEND bit be cleared?
+> It must as reset operation, resets everything else and so the suspend too.
 >
-> On 2023/9/20 13:59, Zhu, Lingshan wrote:
->>
->> On 9/19/2023 8:31 PM, Michael S. Tsirkin wrote:
->>> On Tue, Sep 19, 2023 at 07:42:42PM +0800, Jiqian Chen wrote:
->>>> When guest vm does S3, Qemu will reset and clear some things of virtio
->>>> devices, but guest can't aware that, so that may cause some problems.
->>>> For excample, Qemu calls virtio_reset->virtio_gpu_gl_reset when guest
->>>> resume, that function will destroy render resources of virtio-gpu. As
->>>> a result, after guest resume, the display can't come back and we only
->>>> saw a black screen. Due to guest can't re-create all the resources, so
->>>> we need to let Qemu not to destroy them when S3.
->>>>
->>>> For above purpose, we need a mechanism that allows guests and QEMU to
->>>> negotiate their reset behavior. So this patch add a new parameter
->>>> named freeze_mode to struct virtio_pci_common_cfg. And when guest
->>>> suspends, it can write freeze_mode to be FREEZE_S3, and then virtio
->>>> devices can change their reset behavior on Qemu side according to
->>>> freeze_mode. What's more, freeze_mode can be used for all virtio
->>>> devices to affect the behavior of Qemu, not just virtio gpu device.
->> Hi Jiqian,
->>
->> Have you seen this series: [PATCH 0/5] virtio: introduce SUSPEND bit and vq state
->> https://lore.kernel.org/all/3f4cbf84-010c-cffa-0b70-33c449b5561b@intel.com/T/
->>
->> We introduced a bit in the device status SUSPEND, when VIRTIO_F_SUSPEND is
->> negotiated, the driver can set SUSPEND in the device status to suspend the
->> device.
->>
->> When SUSPEND, the device should pause its operations and preserve its configurations
->> in its configuration space.
->>
->> The driver re-write DRIVER_OK to clear SUSPEND, so the device resumes running.
->>
->> This is originally to serve live migration, but I think it can also meet your needs.
-> I noticed your series, but I am not sure they are also meet my needs.
-> If driver write 0 to reset device, can the SUSPEND bit be cleared? (pci_pm_resume->virtio_pci_restore->virtio_device_restore->virtio_reset_device)
-if the driver writes 0, it resets all virtio functionalities. So SUSPEND 
-is cleared.
-device reset can also be used to recover the device from fatal errors, 
-so it should reset everything in virtio.
-> If SUSPEND is cleared, then during the reset process in Qemu, I can't judge if the reset request is from guest restore process or not, and then I can't change the reset behavior.
-I think when enter S3, the hypervisor/driver should set SUSPEND to the 
-device. And when resume from S3, the hypervisor/driver should
-re-write DRIVER_OK to clear SUSPEND, then the device resume running.
-> Can you send me your patch link on kernel and qemu side? I will take a deep look.
-There are no patches for qemu/kernel yet, spec first.
+>> (pci_pm_resume->virtio_pci_restore->virtio_device_restore-
+>>> virtio_reset_device)
+>> If SUSPEND is cleared, then during the reset process in Qemu, I can't judge if
+>> the reset request is from guest restore process or not, and then I can't change
+>> the reset behavior.
+> Reset should not be influenced by suspend.
+> Suspend should do the work of suspend and reset to do the reset.
 >
->> Thanks,
->> Zhu Lingshan
->>>> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
->>>> ---
->>>>    transport-pci.tex | 7 +++++++
->>>>    1 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/transport-pci.tex b/transport-pci.tex
->>>> index a5c6719..2543536 100644
->>>> --- a/transport-pci.tex
->>>> +++ b/transport-pci.tex
->>>> @@ -319,6 +319,7 @@ \subsubsection{Common configuration structure layout}\label{sec:Virtio Transport
->>>>            le64 queue_desc;                /* read-write */
->>>>            le64 queue_driver;              /* read-write */
->>>>            le64 queue_device;              /* read-write */
->>>> +        le16 freeze_mode;               /* read-write */
->>>>            le16 queue_notif_config_data;   /* read-only for driver */
->>>>            le16 queue_reset;               /* read-write */
->>>>
->>> we can't add fields in the middle of the structure like this -
->>> offset of queue_notif_config_data and queue_reset changes.
->>>
->>>    
->>>> @@ -393,6 +394,12 @@ \subsubsection{Common configuration structure layout}\label{sec:Virtio Transport
->>>>    \item[\field{queue_device}]
->>>>            The driver writes the physical address of Device Area here.  See section \ref{sec:Basic Facilities of a Virtio Device / Virtqueues}.
->>>>    +\item[\field{freeze_mode}]
->>>> +        The driver writes this to set the freeze mode of virtio pci.
->>>> +        VIRTIO_PCI_FREEZE_MODE_UNFREEZE - virtio-pci is running;
->>>> +        VIRTIO_PCI_FREEZE_MODE_FREEZE_S3 - guest vm is doing S3, and virtio-pci enters S3 suspension;
->>>> +        Other values are reserved for future use, like S4, etc.
->>>> +
->>> we need to specify these values then.
->>>
->>> we also need
->>> - feature bit to detect support for S3
->>> - conformance statements documenting behavious under S3
->>>
->>>
->>>>    \item[\field{queue_notif_config_data}]
->>>>            This field exists only if VIRTIO_F_NOTIF_CONFIG_DATA has been negotiated.
->>>>            The driver will use this value when driver sends available buffer
->>>> -- 
->>>> 2.34.1
->>> This publicly archived list offers a means to provide input to the
->>> OASIS Virtual I/O Device (VIRTIO) TC.
->>>
->>> In order to verify user consent to the Feedback License terms and
->>> to minimize spam in the list archive, subscription is required
->>> before posting.
->>>
->>> Subscribe: virtio-comment-subscribe@lists.oasis-open.org
->>> Unsubscribe: virtio-comment-unsubscribe@lists.oasis-open.org
->>> List help: virtio-comment-help@lists.oasis-open.org
->>> List archive: https://lists.oasis-open.org/archives/virtio-comment/
->>> Feedback License: https://www.oasis-open.org/who/ipr/feedback_license.pdf
->>> List Guidelines: https://www.oasis-open.org/policies-guidelines/mailing-lists
->>> Committee: https://www.oasis-open.org/committees/virtio/
->>> Join OASIS: https://www.oasis-open.org/join/
->>>
->>
->> ---------------------------------------------------------------------
->> To unsubscribe, e-mail: virtio-dev-unsubscribe@lists.oasis-open.org
->> For additional commands, e-mail: virtio-dev-help@lists.oasis-open.org
->>
+> The problem to overcome in [1] is, resume operation needs to be synchronous as it involves large part of context to resume back, and hence just asynchronously setting DRIVER_OK is not enough.
+> The sw must verify back that device has resumed the operation and ready to answer requests.
+this is not live migration, all device status and other information 
+still stay in the device, no need to "resume" context, just resume running.
+
+Like resume from a failed LM.
+>
+> This is slightly different flow than setting the DRIVER_OK for the first time device initialization sequence as it does not involve large restoration.
+>
+> So, to merge two ideas, instead of doing DRIVER_OK to resume, the driver should clear the SUSPEND bit and verify that it is out of SUSPEND.
+>
+> Because driver is still in _OK_ driving the device flipping the SUSPEND bit.
+Please read the spec, it says:
+The driver MUST NOT clear a device status bit
+
 
 
