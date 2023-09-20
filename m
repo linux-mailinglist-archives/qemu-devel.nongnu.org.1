@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FEC7A8B10
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:04:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403427A8B15
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:04:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj1Xz-000224-D1; Wed, 20 Sep 2023 14:03:35 -0400
+	id 1qj1Yj-0002cc-1l; Wed, 20 Sep 2023 14:04:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1Xx-00021t-4M
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:03:33 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1Ye-0002bz-9f
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:04:16 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1Xv-0006H4-8z
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:03:32 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-50308217223so228302e87.3
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:03:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj1YY-0006QQ-7G
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:04:16 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9a21b6d105cso1489766b.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:04:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695233008; x=1695837808;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695233042; x=1695837842;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ahFkf4ITStHBpaGbO8vMVxK0oJx9W9dbPHrvSwcO8bk=;
- b=eEPKD8qOaVxCeKcdL3EdmpiPBE1Wvvpv3Wal/IJie6DXLiqoThNnbZXWz8P6JEdhBs
- CwmfY8ROWhjGGAil6lFs1xSkzV5Df4jdx9AmKh9fFAHpDECb7/sCN2jvxc6iUDy3m6Am
- 8FmDC6Ast4NTpzGxvh0QQJmi+QneLKRP3yxfem1uIkrak7cR19TqarXD4SpDBPQFx+j7
- v5a1r9cq/l7rwjrXf7c6hNVV+jjb2qZM0zzND15aGMvF9HyZc7MRjOWNfmEeHWnGe+Pj
- ElsbqYsCxwcr73PX/e3NHHUR0VaUeu4Y2cX4NKjCaUqk7CsIoY4c3GQAoKxkAeE/vzvs
- 17AA==
+ bh=ZRJHYrNWduWBda1NCCT63Vk/Vg//Gv64R4hzlcOI9jo=;
+ b=nuqm1R88jxinDM8Oy5AFL8okEc24IQdD+jwegbMGuzHtmbrb/T9DnYwIF2GOfB2u7V
+ ov4NvqljGgdnodv0TjCmpyfLbc2vxq3mM3WtuFn0v0tsQNJ9xEvolSJDY8xsgqC2D4gE
+ qWTfMrj4zC9RP1xwK3RHjyywVaEpv2iwZ8sMvOELCq3lbVYtAU1OSH6FfBr+N9rUHWPZ
+ kYkj1EM8SxQ/Wdvm2zs9ABeUacaRC7DPC63LOg/LWzYACyTzf2kM9DsxnxCVGEia1nUX
+ UziYzQv1cwFigsGoyCWVa84HrmTbG54pgNWIRqhgXiHQdiasvOAmgYmZZT/k1QOlTbD4
+ 8H7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695233008; x=1695837808;
+ d=1e100.net; s=20230601; t=1695233042; x=1695837842;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ahFkf4ITStHBpaGbO8vMVxK0oJx9W9dbPHrvSwcO8bk=;
- b=gwMtcCiFIcJSQo1W/520wQCoVKb8fIuy4F5VfU1z4hNEDGiCjqjMv24DcLppo+dwEL
- MATRl7tnIJJfuY2KKqTlphhdlizDTsRIKcHo+onMNJWbqW/OGB/G7CQxJ/2rttz6Wbpl
- G9q4v+AaLFDqCglIjaUFRcbXO0tU0DALhWMPHbwtj8871y1iyo218s9kP15SBjqHEJmM
- uqRJqbzLun5N/3G+ipdo67bGmHMLxpiVKw7/CFxcH64hppJd2Szkgarc54UHRneEaydD
- Y4BnD9TjNLqyBg47v+4T4ocC1Wowbr7ydfPW75uVDIGKKHm2LTXIvvqEQdklAwLgLix5
- ITyw==
-X-Gm-Message-State: AOJu0YxAPPbBM0i5kQZh5a0OfihjmCt0fOoCVAAJ74N8xVPR1/1HMePY
- x6qIx1pj3jsXAyWOmnvAfz4f3rcoPFtClhnVUWXq2Q==
-X-Google-Smtp-Source: AGHT+IE74KBIBzfP3V+PqOBN/3A4NmIFBAnw44dcpEBn5k1yd5I7Rgpe7HHVEQeUGlP8WUZsxJ2lRro8QkPY+f3TP4M=
-X-Received: by 2002:a19:6556:0:b0:500:7efe:313c with SMTP id
- c22-20020a196556000000b005007efe313cmr2668429lfj.24.1695233007861; Wed, 20
- Sep 2023 11:03:27 -0700 (PDT)
+ bh=ZRJHYrNWduWBda1NCCT63Vk/Vg//Gv64R4hzlcOI9jo=;
+ b=AV3svPAO3dvM2TGalzlUMzQHmgP4FbXThfhIvVzpV/7T8BobNe8rrIHA+tLvVIlhDi
+ Mhs+tZfQRsXseYBWd2pwdaRAKdpYw9ZTynliAZv+R7oS6ebQ69U4Ct3auGzplcNxrY2N
+ PSQkpKrDOKkEvvk6ZSC5MVQ7TbtJMGiNBDZtefU13asW37eOPusbYZ3hNdi+X8/vdPug
+ CTdW2XW7dk+yBefYE2R1nK5A/NpErNzXSkn0lSqb8GOc3LSnEg7yhm20oPAD9YH7U5Pq
+ U9xKtpK8HbCceQ11LFyWIcYAr1lCYNR3YLTLidnmSOFtVxk9nUz6WDR0pBDi/tAR/3Qc
+ UHxg==
+X-Gm-Message-State: AOJu0YzVJmz+VTZY40qZT6G9ZjxrRGRxfPm2TE2H20sTmGLI2Eyz0Fsl
+ uYyg8nlfnu3YvoxJXBugtylYg7brHSHZaSCqrp/cuw==
+X-Google-Smtp-Source: AGHT+IFYIVIdA+aYHrfngTs9C1NojWHs4WtoKDKFJ59n+rM4+Ce6J2G0qtqdutGmLnFR5durzBKNNKpEXR3HDJuDdA4=
+X-Received: by 2002:a05:6402:1b1b:b0:52b:db31:3c5c with SMTP id
+ by27-20020a0564021b1b00b0052bdb313c5cmr2949929edb.0.1695233042157; Wed, 20
+ Sep 2023 11:04:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
- <20230917213803.20683-2-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230917213803.20683-2-kariem.taha2.7@gmail.com>
+ <20230917213803.20683-3-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230917213803.20683-3-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 20 Sep 2023 19:03:16 +0100
-Message-ID: <CANCZdfqDf_ZvMQYW-t0_Ep3GS_UH5a2tVgL7B367jVbVQ8q5xg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/28] bsd-user: define TARGET_RFSPAWN for rfork to use
- vfork(2) semantics, and fix RLIM_INFINITY
+Date: Wed, 20 Sep 2023 19:03:51 +0100
+Message-ID: <CANCZdfpXkoASdbcwoV6UXkk+CZrBFXBrB0m4Qt0B61eFdnsXwg@mail.gmail.com>
+Subject: Re: [PATCH v2 02/28] bsd-user: Define procctl(2) related structs
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Kyle Evans <kevans@freebsd.org>
-Content-Type: multipart/alternative; boundary="0000000000003edb180605ce31e7"
-Received-SPF: none client-ip=2a00:1450:4864:20::129;
- envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x129.google.com
+ Stacey Son <sson@freebsd.org>
+Content-Type: multipart/alternative; boundary="0000000000004a264f0605ce3355"
+Received-SPF: none client-ip=2a00:1450:4864:20::62f;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -85,7 +84,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000003edb180605ce31e7
+--0000000000004a264f0605ce3355
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -93,22 +92,26 @@ On Sun, Sep 17, 2023 at 10:39=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
 om>
 wrote:
 
-> RLIM_INFINITY on FreeBSD, OpenBSD and NetBSD has value of ~(1<<63),
-> caculated
-> one way or another.
+> From: Stacey Son <sson@FreeBSD.org>
 >
-> Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
+> Implement procctl flags and related structs:
+> struct target_procctl_reaper_status
+> struct target_procctl_reaper_pidinfo
+> struct target_procctl_reaper_pids
+> struct target_procctl_reaper_kill
+>
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 >
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>.
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  bsd-user/syscall_defs.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  bsd-user/syscall_defs.h | 42 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 42 insertions(+)
 >
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
---0000000000003edb180605ce31e7
+--0000000000004a264f0605ce3355
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -117,21 +120,26 @@ Content-Transfer-Encoding: quoted-printable
 =AFPM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.tah=
 a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
 yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">RLIM_INFINITY on FreeBSD, OpenBSD and NetBSD has value of ~(1=
-&lt;&lt;63), caculated<br>
-one way or another.<br>
+ing-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 <br>
-Signed-off-by: Kyle Evans &lt;kevans@FreeBSD.org&gt;<br>
+Implement procctl flags and related structs:<br>
+struct target_procctl_reaper_status<br>
+struct target_procctl_reaper_pidinfo<br>
+struct target_procctl_reaper_pids<br>
+struct target_procctl_reaper_kill<br>
+<br>
+Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 <br>
 Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
-ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;.<br>
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/syscall_defs.h | 8 ++++----<br>
-=C2=A01 file changed, 4 insertions(+), 4 deletions(-)<br></blockquote><div>=
-<br></div><div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.co=
-m">imp@bsdimp.com</a>&gt;=C2=A0</div></div></div>
+=C2=A0bsd-user/syscall_defs.h | 42 ++++++++++++++++++++++++++++++++++++++++=
++<br>
+=C2=A01 file changed, 42 insertions(+)<br></blockquote><div><br></div><div>=
+Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.c=
+om</a>&gt;=C2=A0=C2=A0</div></div></div>
 
---0000000000003edb180605ce31e7--
+--0000000000004a264f0605ce3355--
 
