@@ -2,84 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EC07A8BF1
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:39:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 432467A8BF2
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:43:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj25c-0005FY-T7; Wed, 20 Sep 2023 14:38:20 -0400
+	id 1qj29z-0007J8-PB; Wed, 20 Sep 2023 14:42:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qj25a-0005EA-MZ
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:38:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qj25Y-0004Ci-MM
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:38:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695235095;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vxEGOomhqeD2FENw5ngprh+gOOO1TwTmrMgyNhueWdc=;
- b=QIT1NiF2dbzSg7TZ8imdUsLATkpp7TNnxQ3VRik1OEwfOi8xYWlTBv0PcDXDeA4l/dFah8
- VnzLEg8+/ZUzPFIgh6S+h4q0NpmHPryD9DyozTTn6SWj2gQxo8Fw2ikpJvsMF9br0eBdDf
- SI4RKzEvq50QN7vSqtJzuTLGLgdjVI4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-205-Cvh_KjQYPDypz5oj_Dlmow-1; Wed, 20 Sep 2023 14:38:10 -0400
-X-MC-Unique: Cvh_KjQYPDypz5oj_Dlmow-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C88B1C06369;
- Wed, 20 Sep 2023 18:38:09 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D8BBA20268CF;
- Wed, 20 Sep 2023 18:38:08 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7ACFF21E6900; Wed, 20 Sep 2023 20:38:07 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- laurent@vivier.eu,
- qemu-devel@nongnu.org,  Eduardo Habkost <eduardo@habkost.net>,  Peter
- Maydell <peter.maydell@linaro.org>,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>,
- Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Paolo Bonzini
- <pbonzini@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 10/21] q800: add easc bool machine class property to
- switch between ASC and EASC
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-11-mark.cave-ayland@ilande.co.uk>
- <e3fe143f-2c07-2d59-3dca-4534a767391d@linaro.org>
- <f639b4b1-965a-fe9d-a988-2dbd2c1c0e68@ilande.co.uk>
- <44e50cdb-37f0-c18d-4d64-0f34777a193d@linaro.org>
- <87ledd1eaz.fsf@pond.sub.org>
- <ae8d9cc8-d633-0ea0-3714-352e87bddede@ilande.co.uk>
-Date: Wed, 20 Sep 2023 20:38:07 +0200
-In-Reply-To: <ae8d9cc8-d633-0ea0-3714-352e87bddede@ilande.co.uk> (Mark
- Cave-Ayland's message of "Wed, 20 Sep 2023 16:41:33 +0100")
-Message-ID: <87r0msbshc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj29y-0007J0-RY
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:42:50 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj29x-00056s-9r
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:42:50 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-530e721f077so44407a12.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:42:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695235367; x=1695840167;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=aWDNGj+JL/Xb1F+Pblp46IOXIt8PdD+++6b2Huj7yeY=;
+ b=QNySJKMMfTcOxFqItmBzAYryYCOWQg9UvVRL0KGq98FLN2a1zXKXeZ6edGxtcYOchJ
+ YGUbOVFfWGUGXS61RStvx/afKHs/Yyk00t/gt4PUWVWLM3UknBt+/5wMGjNoxWYpI/TH
+ 7TL5Q8GBLBpJtCRfITeNHLO+Y1MsEKlSC2Ze0Q3uARB20W7JnihG12GBak3lNOjlaBqw
+ lmnUwzBFYIuR2pH51LX5gC7J+hlVmbbUCPtdFjo795Zrzj5WWrG91NAt7Yctc8zhbyVH
+ LVGZ+rq9APuLM1K2kMCZzfXH6Bpv15IlbvucmXBLu1xHNJknPagMawHhlifTQre5G2ah
+ pwgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695235367; x=1695840167;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=aWDNGj+JL/Xb1F+Pblp46IOXIt8PdD+++6b2Huj7yeY=;
+ b=K+yCDyU4f1/fHM/n7sgjzD+/BsKkNkN3vpFC3UBfynLF0f/pXjZViAFYG2zwExxAkw
+ MuxbhviltHjCxuddpD2GVH+UAPXXvfSbz0fCIMUDHwjzE+js7rmMUe0dd3gAsx5T8AUY
+ 6IZDn+o9y8bXtYEi7/iWtGFMFf/utORgkN2lNDIXV5opzIJnXna5c2r6ie7tmql8W6zV
+ jn0d/ZRsCJNBXySESqwrLtbXLH2eRH/KkqYKFjE350Cnk0B3sI/P5LXdBLsi7UL1QFzG
+ 1+z9Dhts/vSWHSzGPxQUoy8EIn4XgnIWvVIu9ysX67EoMuZlhP8Sdf65p8fvJZwRjSVo
+ AfRw==
+X-Gm-Message-State: AOJu0Ywz04eAZfxVgc6J2stO52g0ju3IFfwg9zUtjD/Ca5rMH7tAw2tt
+ jsnej82xPx3cVdpB4hyuvYC6e1XP+7Mjwts9Nke2xQ==
+X-Google-Smtp-Source: AGHT+IEHBk//NnyijnNhpdTvuLnGb8fSEXMDTiuc81/VmZer89CZxBDGlox2j/q8P6eL29LIZuORacCggh2jOOy9sdo=
+X-Received: by 2002:a05:6402:31f4:b0:530:d6e5:9229 with SMTP id
+ dy20-20020a05640231f400b00530d6e59229mr3065384edb.10.1695235367621; Wed, 20
+ Sep 2023 11:42:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
+ <20230917213803.20683-15-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230917213803.20683-15-kariem.taha2.7@gmail.com>
+From: Warner Losh <imp@bsdimp.com>
+Date: Wed, 20 Sep 2023 19:42:36 +0100
+Message-ID: <CANCZdfoEF4R+4-0T005QdTOL5Jz8VZ0HKtBBcDgn=ZkN5Dhm3A@mail.gmail.com>
+Subject: Re: [PATCH v2 14/28] bsd-user: Implement getrlimit(2) and setrlimit(2)
+To: Karim Taha <kariem.taha2.7@gmail.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
+ Stacey Son <sson@freebsd.org>
+Content-Type: multipart/alternative; boundary="000000000000e5eac00605cebdd3"
+Received-SPF: none client-ip=2a00:1450:4864:20::529;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,24 +84,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk> writes:
+--000000000000e5eac00605cebdd3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> On 11/09/2023 06:15, Markus Armbruster wrote:
+On Sun, Sep 17, 2023 at 10:39=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
+om>
+wrote:
+
+> From: Stacey Son <sson@FreeBSD.org>
 >
->> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
-
-[...]
-
->>> I'm not sure when we want a write-only QOM boolean property, so I
->>> genuinely ask, since I agree introspecting QOM object fields from
->>> the monitor is helpful.
->>
->> I suspect write-only properties came out of QOM's generality curse.  Do
->> we have even one?  QOM's design makes this somewhat to tell.
+> Signed-off-by: Stacey Son <sson@FreeBSD.org>
+> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>  bsd-user/bsd-proc.h           | 59 +++++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c |  8 +++++
+>  2 files changed, 67 insertions(+)
 >
-> Good question. Given that it's towards the beginning of the next dev cycl=
-e, perhaps it is worth sending a patch to find out? ;)
 
-Getting rid of unused generality / unnecessary complexity is good.
+Reviewed-by: Warner Losh <imp@bsdimp.com>
 
+--000000000000e5eac00605cebdd3
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Sun, Sep 17, 2023 at 10:39=E2=80=
+=AFPM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.tah=
+a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
+<br>
+Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
+Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
+arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
+---<br>
+=C2=A0bsd-user/bsd-proc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 59 ++++=
++++++++++++++++++++++++++++++++<br>
+=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 8 +++++<br>
+=C2=A02 files changed, 67 insertions(+)<br></blockquote><div><br></div><div=
+>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
+com</a>&gt;</div></div></div>
+
+--000000000000e5eac00605cebdd3--
 
