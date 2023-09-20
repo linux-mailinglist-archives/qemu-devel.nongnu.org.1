@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111DD7A8C3D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 21:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 542E57A8C3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 21:06:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj2Ta-00013R-TQ; Wed, 20 Sep 2023 15:03:06 -0400
+	id 1qj2WF-0001sQ-O1; Wed, 20 Sep 2023 15:05:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2TY-00013G-Oo
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:03:04 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2WC-0001qb-EQ
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:05:48 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2TV-0008F1-P5
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:03:04 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-501eec0a373so366655e87.3
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 12:02:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2W7-0000K9-7F
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:05:46 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-530ce262ab2so74647a12.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 12:05:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695236578; x=1695841378;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695236740; x=1695841540;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=m0zw9tPmIcPIt4I9pc1WGi4QXbbIUUIb7LnkkGvqIKY=;
- b=nU65hqf5Rd3JJPh8vfgu/Q10CHCvZ9tUFKJ0J3WmSWi6EB20G+L8uUNTigQUzkAixr
- DlVse371Blx2C9TKlR7PesIpLcUOatnkbu0BWFxEBu1v70xfHVOKN+aY6aHNOOU33ENY
- 70XdlPqAh4fS0REiIFo2Beqe2LK7C/tDJYYMUB89vxa4hAEzh04jyflLSkmVhq2DpWZj
- 8zWSvuZsvxSKr0KbQVCs1A3uO6ZNrSUBE5GhEm8gDLEndyZJGaLdTfjLNUGhJEx9Avct
- Url6zx4nwX3dviyb6Spa4Ri47ZWnQ74DH7D9QDZgmKAe/fEuGqEskJYa5ueFHx/Fw5/v
- GJUg==
+ bh=fAx+qiagUvqMJjrh07FFLUBHvv3Z17w8OOrqxqu86Tg=;
+ b=mfhGoC65a1P7YSOymIOPPyBctbDaPbfex73RS3bhMa3rxjIDjtVw6Rn9cnQ/Zju+QO
+ RP5GxxZ7Gcvr0dY2xKBJJZoiDJpr28Pu6JzYkfGcWGu+1zOHp3HISWZqML3CUCBgY9/x
+ S5imwEZTBfk/3CiSa+phL+eJm0vP+51sISO1r3LnH614ETQrfIf7sZUxp47iCxk8qmjA
+ 3+pkfmWAIpkoSfuUEh41PrE+1MVnY6OJh2J6Rue+kFNo39RlJ8a5pQRnkL8ofPZvU+4L
+ KInWQMdL7v/lFUT8fp314/SZM9VAp8M1SVq4FiISJ+ibvo4+rio+uCrrFQKy8G+hbSxC
+ gn/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695236578; x=1695841378;
+ d=1e100.net; s=20230601; t=1695236740; x=1695841540;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=m0zw9tPmIcPIt4I9pc1WGi4QXbbIUUIb7LnkkGvqIKY=;
- b=HVNeKq/m3ZLbPto8JuypV2dVQxFxr+GJLgQiOkkKhugxJnybdOZ8hFWiN1w4nkY6qg
- 0MPJHSzkwrfpKtN1q0sj/j3lihw74H9tKVPaQZ0UfFizKQ+32/6u0CQ3aqu9tAU1Lym6
- HpRy5Btc8AlFjSOg20vnVBk76L0wIYkm/z17yA5aBJjVp9jEXUtAhGcXIRci3Jm8bmRb
- knSCDrvAWl/3qqAJdy1impQYGYGF5y3Fcp4a2cIXmMvwgDNothqKtHkNKcFzdQ8pHhH0
- W1vCYMcmQfa2QUsXVg7HT9tznHOQXBwNbDHm7U6ef61VDy/eSZ061EvESmn3Ja1/fJ6B
- PRpQ==
-X-Gm-Message-State: AOJu0YzpK7Cx9sufCn2uBWutxFXvrilY2EmXU200+9WoTMM/tTIOcjOj
- rqw8SKf8bpWsqQtuVymjCUL4yBpGk6qE3eUJOBjodQ==
-X-Google-Smtp-Source: AGHT+IFKNq+UEPoHPBNeyYgTL3QbUUTu8RCi0OJUIIOFE+NTHW/79toUK+dC8lM2GZ1SZ6Ravjkkyka0GgNxIrWWfGQ=
-X-Received: by 2002:a19:6746:0:b0:500:c348:7efb with SMTP id
- e6-20020a196746000000b00500c3487efbmr3050936lfj.48.1695236577775; Wed, 20 Sep
- 2023 12:02:57 -0700 (PDT)
+ bh=fAx+qiagUvqMJjrh07FFLUBHvv3Z17w8OOrqxqu86Tg=;
+ b=pdXdMXJqTNw4X/jjgpf0wYRLHOajVmAUXYIKHPTeu4aQbBnX7G2R9QdoClJ/Bqy6Ot
+ iY4L8qsK7HlTBtzLWdQOvp368sKHXNsF1xBypURSKrOe/XD5OZlYPoSRImrVRi3E0NkT
+ htmfRwTUompvis2kz9mqZmi+q/4JqqwLpZzRASL1WyNEQcLxkr3fzfm084JRoUlFmB6U
+ sBE2g2lP1gw97my4+addEnD1h2LhvP7ZMs8SGiYI7ZX3aiJfZOWbHEzL+yvWfYJt778A
+ cAjOJFUwG6bVH6LK4Ng8g5oh9JPVsUvzwq57C4nq/sjgg1UJcu6gmg7ZajUNXE3U/kaB
+ 1mtw==
+X-Gm-Message-State: AOJu0Yy9d/0d0Ohkku6yZCzw/FM3TcRDkBnDwhkBvH3q1sp2nSwTrYHs
+ cgPkR8rMQ1i3WdWLf18jw4hL4Fq15s2Y/4bQW5RoD7Dv1QFzS1WAd7SSGKHB
+X-Google-Smtp-Source: AGHT+IEWWOIXDjY5EDlMi9IB2BpAgpggzSnx0+8sGEuoxFFFOOv9LvLfbG4Hv118VdlgPd5GSExcKn+9vH0ncN45AmY=
+X-Received: by 2002:aa7:c547:0:b0:522:31d5:ee8e with SMTP id
+ s7-20020aa7c547000000b0052231d5ee8emr3102071edr.8.1695236740243; Wed, 20 Sep
+ 2023 12:05:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
- <20230917213803.20683-22-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230917213803.20683-22-kariem.taha2.7@gmail.com>
+ <20230917213803.20683-23-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230917213803.20683-23-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 20 Sep 2023 20:02:46 +0100
-Message-ID: <CANCZdfpQHJpRxNritJAQe0Dc8tC4_w4yK15gLcE7RSjto0btCw@mail.gmail.com>
-Subject: Re: [PATCH v2 21/28] bsd-user: Implement procctl(2) along with
- necessary conversion functions.
+Date: Wed, 20 Sep 2023 20:05:29 +0100
+Message-ID: <CANCZdfoLQASRaEppi2+k1ZeeNv6tF9r4_dCh96YR7hEXUS+M0Q@mail.gmail.com>
+Subject: Re: [PATCH v2 22/28] bsd-user: Implement execve(2) and fexecve(2)
+ system calls.
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
  Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="0000000000000776600605cf0687"
-Received-SPF: none client-ip=2a00:1450:4864:20::12b;
- envelope-from=wlosh@bsdimp.com; helo=mail-lf1-x12b.google.com
+Content-Type: multipart/alternative; boundary="000000000000b67ea80605cf0fcc"
+Received-SPF: none client-ip=2a00:1450:4864:20::530;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x530.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -85,7 +85,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000000776600605cf0687
+--000000000000b67ea80605cf0fcc
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -93,289 +93,119 @@ On Sun, Sep 17, 2023 at 10:39=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
 om>
 wrote:
 
-> From: Stacey Son <sson@FreeBSD.org>
->
-> Implement t2h_procctl_cmd, h2t_reaper_status, h2t_reaper_pidinfo and
-> h2t/t2h reaper_kill conversion functions.
->
 > Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  bsd-user/freebsd/os-proc.c    | 223 ++++++++++++++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |   3 +
->  2 files changed, 226 insertions(+)
+>  bsd-user/freebsd/os-proc.h    | 49 +++++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c | 11 +++++++-
+>  2 files changed, 59 insertions(+), 1 deletion(-)
+>  create mode 100644 bsd-user/freebsd/os-proc.h
 >
-> diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c
-> index 12d78b7fc9..6b8753f8e5 100644
-> --- a/bsd-user/freebsd/os-proc.c
-> +++ b/bsd-user/freebsd/os-proc.c
-> @@ -255,3 +255,226 @@ execve_end:
->      return ret;
->  }
->
+
+Reviewed-by: Warner Losh <imp@bsdimp.com>
+
+But make sure that the guard variable name is correct, I think with scripts=
+/
+clean-header-guards.pl
+
+
+> diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
+> new file mode 100644
+> index 0000000000..75ed39f8dd
+> --- /dev/null
+> +++ b/bsd-user/freebsd/os-proc.h
+> @@ -0,0 +1,49 @@
+> +/*
+> + *  process related system call shims and definitions
+> + *
+> + *  Copyright (c) 2013-14 Stacey D. Son
+> + *
+> + *  This program is free software; you can redistribute it and/or modify
+> + *  it under the terms of the GNU General Public License as published by
+> + *  the Free Software Foundation; either version 2 of the License, or
+> + *  (at your option) any later version.
+> + *
+> + *  This program is distributed in the hope that it will be useful,
+> + *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+> + *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> + *  GNU General Public License for more details.
+> + *
+> + *  You should have received a copy of the GNU General Public License
+> + *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+> + */
+> +
+> +#ifndef BSD_USER_FREEBSD_OS_PROC_H
+> +#define BSD_USER_FREEBSD_OS_PROC_H
+> +
+> +#include <sys/param.h>
 > +#include <sys/procctl.h>
+> +#include <sys/signal.h>
+> +#include <sys/types.h>
+> +#include <sys/procdesc.h>
+> +#include <sys/wait.h>
+> +#include <unistd.h>
 > +
-> +static abi_long
-> +t2h_procctl_cmd(int target_cmd, int *host_cmd)
+> +#include "target_arch_cpu.h"
+> +
+> +/* execve(2) */
+> +static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong
+> argp,
+> +        abi_ulong envp)
 > +{
-> +    switch (target_cmd) {
-> +    case TARGET_PROC_SPROTECT:
-> +        *host_cmd =3D PROC_SPROTECT;
-> +        break;
 > +
-> +    case TARGET_PROC_REAP_ACQUIRE:
-> +        *host_cmd =3D PROC_REAP_ACQUIRE;
-> +        break;
-> +
-> +    case TARGET_PROC_REAP_RELEASE:
-> +        *host_cmd =3D PROC_REAP_RELEASE;
-> +        break;
-> +
-> +    case TARGET_PROC_REAP_STATUS:
-> +        *host_cmd =3D PROC_REAP_STATUS;
-> +        break;
-> +
-> +    case TARGET_PROC_REAP_KILL:
-> +        *host_cmd =3D PROC_REAP_KILL;
-> +        break;
-> +
-> +    default:
-> +        return -TARGET_EINVAL;
-> +    }
-> +
-> +    return 0;
+> +    return freebsd_exec_common(path_or_fd, argp, envp, 0);
 > +}
 > +
-> +static abi_long
-> +h2t_reaper_status(struct procctl_reaper_status *host_rs,
-> +        abi_ulong target_rs_addr)
+> +/* fexecve(2) */
+> +static inline abi_long do_freebsd_fexecve(abi_ulong path_or_fd, abi_ulon=
+g
+> argp,
+> +        abi_ulong envp)
 > +{
-> +    struct target_procctl_reaper_status *target_rs;
 > +
-> +    if (!lock_user_struct(VERIFY_WRITE, target_rs, target_rs_addr, 0)) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    __put_user(host_rs->rs_flags, &target_rs->rs_flags);
-> +    __put_user(host_rs->rs_children, &target_rs->rs_children);
-> +    __put_user(host_rs->rs_descendants, &target_rs->rs_descendants);
-> +    __put_user(host_rs->rs_reaper, &target_rs->rs_reaper);
-> +    __put_user(host_rs->rs_pid, &target_rs->rs_pid);
-> +    unlock_user_struct(target_rs, target_rs_addr, 1);
-> +
-> +    return 0;
+> +    return freebsd_exec_common(path_or_fd, argp, envp, 1);
 > +}
 > +
-> +static abi_long
-> +t2h_reaper_kill(abi_ulong target_rk_addr, struct procctl_reaper_kill
-> *host_rk)
-> +{
-> +    struct target_procctl_reaper_kill *target_rk;
-> +
-> +    if (!lock_user_struct(VERIFY_READ, target_rk, target_rk_addr, 1)) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    __get_user(host_rk->rk_sig, &target_rk->rk_sig);
-> +    __get_user(host_rk->rk_flags, &target_rk->rk_flags);
-> +    __get_user(host_rk->rk_subtree, &target_rk->rk_subtree);
-> +    __get_user(host_rk->rk_killed, &target_rk->rk_killed);
-> +    __get_user(host_rk->rk_fpid, &target_rk->rk_fpid);
-> +    unlock_user_struct(target_rk, target_rk_addr, 0);
-> +
-> +    return 0;
-> +}
-> +
-> +static abi_long
-> +h2t_reaper_kill(struct procctl_reaper_kill *host_rk, abi_ulong
-> target_rk_addr)
-> +{
-> +    struct target_procctl_reaper_kill *target_rk;
-> +
-> +    if (!lock_user_struct(VERIFY_WRITE, target_rk, target_rk_addr, 0)) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    __put_user(host_rk->rk_sig, &target_rk->rk_sig);
-> +    __put_user(host_rk->rk_flags, &target_rk->rk_flags);
-> +    __put_user(host_rk->rk_subtree, &target_rk->rk_subtree);
-> +    __put_user(host_rk->rk_killed, &target_rk->rk_killed);
-> +    __put_user(host_rk->rk_fpid, &target_rk->rk_fpid);
-> +    unlock_user_struct(target_rk, target_rk_addr, 1);
-> +
-> +    return 0;
-> +}
-> +
-> +static abi_long
-> +h2t_procctl_reaper_pidinfo(struct procctl_reaper_pidinfo *host_pi,
-> +        abi_ulong target_pi_addr)
-> +{
-> +    struct target_procctl_reaper_pidinfo *target_pi;
-> +
-> +    if (!lock_user_struct(VERIFY_WRITE, target_pi, target_pi_addr, 0)) {
-> +        return -TARGET_EFAULT;
-> +    }
-> +    __put_user(host_pi->pi_pid, &target_pi->pi_pid);
-> +    __put_user(host_pi->pi_subtree, &target_pi->pi_subtree);
-> +    __put_user(host_pi->pi_flags, &target_pi->pi_flags);
-> +    unlock_user_struct(target_pi, target_pi_addr, 1);
-> +
-> +    return 0;
-> +}
-> +
-> +abi_long
-> +do_freebsd_procctl(void *cpu_env, int idtype, abi_ulong arg2, abi_ulong
-> arg3,
-> +       abi_ulong arg4, abi_ulong arg5, abi_ulong arg6)
-> +{
-> +    abi_long error =3D 0, target_rp_pids;
-> +    void *data;
-> +    int host_cmd, flags;
-> +    uint32_t u, target_rp_count;
-> +    union {
-> +        struct procctl_reaper_status rs;
-> +        struct procctl_reaper_pids rp;
-> +        struct procctl_reaper_kill rk;
-> +    } host;
-> +    struct target_procctl_reaper_pids *target_rp;
-> +    id_t id; /* 64-bit */
-> +    int target_cmd;
-> +    abi_ulong target_arg;
-> +
-> +#if TARGET_ABI_BITS =3D=3D 32
-> +    /* See if we need to align the register pairs. */
-> +    if (regpairs_aligned(cpu_env)) {
-> +        id =3D (id_t)target_arg64(arg3, arg4);
-> +        target_cmd =3D (int)arg5;
-> +        target_arg =3D arg6;
-> +    } else {
-> +        id =3D (id_t)target_arg64(arg2, arg3);
-> +        target_cmd =3D (int)arg4;
-> +        target_arg =3D arg5;
-> +    }
-> +#else
-> +    id =3D (id_t)arg2;
-> +    target_cmd =3D (int)arg3;
-> +    target_arg =3D arg4;
-> +#endif
-> +
-> +    error =3D t2h_procctl_cmd(target_cmd, &host_cmd);
-> +    if (error) {
-> +        return error;
-> +    }
-> +    switch (host_cmd) {
-> +    case PROC_SPROTECT:
-> +        data =3D &flags;
-> +        break;
-> +
-> +    case PROC_REAP_ACQUIRE:
-> +    case PROC_REAP_RELEASE:
-> +        if (target_arg =3D=3D 0) {
-> +            data =3D NULL;
-> +        } else {
-> +            error =3D -TARGET_EINVAL;
-> +        }
-> +        break;
-> +
-> +    case PROC_REAP_STATUS:
-> +        data =3D &host.rs;
-> +        break;
-> +
-> +    case PROC_REAP_GETPIDS:
-> +        if (!lock_user_struct(VERIFY_READ, target_rp, target_arg, 1)) {
-> +            return -TARGET_EFAULT;
-> +        }
-> +        __get_user(target_rp_count, &target_rp->rp_count);
-> +        __get_user(target_rp_pids, &target_rp->rp_pids);
-> +        unlock_user_struct(target_rp, target_arg, 0);
-> +        host.rp.rp_count =3D target_rp_count;
-> +        /* XXX we should check target_rc_count to see if it is
-> reasonable. */
-> +        host.rp.rp_pids =3D alloca(target_rp_count *
-> +                sizeof(struct procctl_reaper_pidinfo));
->
-
-I think that there's been a general move to using the 'smart pointer'
-version of
-this that you've done for other patches. I think that target_rc_count
-likely is going to be small enough, but that doing the conversion will
-ensure that
-it is (so we can eliminate the comment too).
-
-Warner
-
-
-> +        if (host.rp.rp_pids =3D=3D NULL) {
-> +            error =3D -TARGET_ENOMEM;
-> +        } else {
-> +            data =3D &host.rp;
-> +        }
-> +        break;
-> +
-> +    case PROC_REAP_KILL:
-> +        error =3D t2h_reaper_kill(target_arg, &host.rk);
-> +        break;
-> +    }
-> +
-> +    if (error) {
-> +        return error;
-> +    }
-> +    error =3D get_errno(procctl(idtype, id, host_cmd, data));
-> +
-> +    if (error) {
-> +        return error;
-> +    }
-> +    switch (host_cmd) {
-> +    case PROC_SPROTECT:
-> +        if (put_user_s32(flags, target_arg)) {
-> +            return -TARGET_EFAULT;
-> +        }
-> +        break;
-> +
-> +    case PROC_REAP_STATUS:
-> +        error =3D h2t_reaper_status(&host.rs, target_arg);
-> +        break;
-> +
-> +    case PROC_REAP_GETPIDS:
-> +        /* copyout reaper pidinfo */
-> +        for (u =3D 0; u < target_rp_count; u++) {
-> +            error =3D h2t_procctl_reaper_pidinfo(&host.rp.rp_pids[u],
-> +                    target_rp_pids +
-> +                    (u * sizeof(struct target_procctl_reaper_pidinfo)));
-> +            if (error) {
-> +                break;
-> +            }
-> +        }
-> +        break;
-> +
-> +    case PROC_REAP_KILL:
-> +        error =3D h2t_reaper_kill(&host.rk, target_arg);
-> +        break;
-> +    }
-> +
-> +    return error;
-> +}
+> +#endif /* BSD_USER_FREEBSD_OS_PROC_H */
 > diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.=
 c
-> index 71a2657dd0..b7bd0b92a6 100644
+> index b7bd0b92a6..515eaaf31f 100644
 > --- a/bsd-user/freebsd/os-syscall.c
 > +++ b/bsd-user/freebsd/os-syscall.c
-> @@ -367,6 +367,9 @@ static abi_long freebsd_syscall(void *cpu_env, int
+> @@ -36,8 +36,9 @@
+>  #include "bsd-file.h"
+>  #include "bsd-proc.h"
+>
+> -/* *BSD dependent syscall shims */
+> +/* BSD dependent syscall shims */
+>  #include "os-stat.h"
+> +#include "os-proc.h"
+>
+>  /* I/O */
+>  safe_syscall3(int, open, const char *, path, int, flags, mode_t, mode);
+> @@ -219,6 +220,14 @@ static abi_long freebsd_syscall(void *cpu_env, int
 > num, abi_long arg1,
->          ret =3D do_bsd_setpriority(arg1, arg2, arg3);
->          break;
->
-> +    case TARGET_FREEBSD_NR_procctl: /* procctl(2) */
-> +        ret =3D do_freebsd_procctl(cpu_env, arg1, arg2, arg3, arg4, arg5=
-,
-> arg6);
-> +        break;
->
 >          /*
->           * File system calls.
+>           * process system calls
+>           */
+> +    case TARGET_FREEBSD_NR_execve: /* execve(2) */
+> +        ret =3D do_freebsd_execve(arg1, arg2, arg3);
+> +        break;
+> +
+> +    case TARGET_FREEBSD_NR_fexecve: /* fexecve(2) */
+> +        ret =3D do_freebsd_fexecve(arg1, arg2, arg3);
+> +        break;
+> +
+>      case TARGET_FREEBSD_NR_exit: /* exit(2) */
+>          ret =3D do_bsd_exit(cpu_env, arg1);
+>          break;
 > --
 > 2.42.0
 >
 >
 
---0000000000000776600605cf0687
+--000000000000b67ea80605cf0fcc
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -384,323 +214,128 @@ Content-Transfer-Encoding: quoted-printable
 =AFPM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.tah=
 a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
 yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-<br>
-Implement t2h_procctl_cmd, h2t_reaper_status, h2t_reaper_pidinfo and h2t/t2=
-h reaper_kill conversion functions.<br>
-<br>
-Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
+ing-left:1ex">Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/freebsd/os-proc.c=C2=A0 =C2=A0 | 223 +++++++++++++++++++++++=
+=C2=A0bsd-user/freebsd/os-proc.h=C2=A0 =C2=A0 | 49 ++++++++++++++++++++++++=
 +++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 =C2=A03 +<br>
-=C2=A02 files changed, 226 insertions(+)<br>
+=C2=A0bsd-user/freebsd/os-syscall.c | 11 +++++++-<br>
+=C2=A02 files changed, 59 insertions(+), 1 deletion(-)<br>
+=C2=A0create mode 100644 bsd-user/freebsd/os-proc.h<br></blockquote><div><b=
+r></div><div>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com"=
+>imp@bsdimp.com</a>&gt;<br></div><div><br></div><div>But make sure that the=
+ guard variable name is correct, I think with scripts/<a href=3D"http://cle=
+an-header-guards.pl">clean-header-guards.pl</a></div><div>=C2=A0</div><bloc=
+kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
+1px solid rgb(204,204,204);padding-left:1ex">
+diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h<br>
+new file mode 100644<br>
+index 0000000000..75ed39f8dd<br>
+--- /dev/null<br>
++++ b/bsd-user/freebsd/os-proc.h<br>
+@@ -0,0 +1,49 @@<br>
++/*<br>
++ *=C2=A0 process related system call shims and definitions<br>
++ *<br>
++ *=C2=A0 Copyright (c) 2013-14 Stacey D. Son<br>
++ *<br>
++ *=C2=A0 This program is free software; you can redistribute it and/or mod=
+ify<br>
++ *=C2=A0 it under the terms of the GNU General Public License as published=
+ by<br>
++ *=C2=A0 the Free Software Foundation; either version 2 of the License, or=
 <br>
-diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c<br>
-index 12d78b7fc9..6b8753f8e5 100644<br>
---- a/bsd-user/freebsd/os-proc.c<br>
-+++ b/bsd-user/freebsd/os-proc.c<br>
-@@ -255,3 +255,226 @@ execve_end:<br>
-=C2=A0 =C2=A0 =C2=A0return ret;<br>
-=C2=A0}<br>
-<br>
-+#include &lt;sys/procctl.h&gt;<br>
-+<br>
-+static abi_long<br>
-+t2h_procctl_cmd(int target_cmd, int *host_cmd)<br>
-+{<br>
-+=C2=A0 =C2=A0 switch (target_cmd) {<br>
-+=C2=A0 =C2=A0 case TARGET_PROC_SPROTECT:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 *host_cmd =3D PROC_SPROTECT;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case TARGET_PROC_REAP_ACQUIRE:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 *host_cmd =3D PROC_REAP_ACQUIRE;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case TARGET_PROC_REAP_RELEASE:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 *host_cmd =3D PROC_REAP_RELEASE;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case TARGET_PROC_REAP_STATUS:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 *host_cmd =3D PROC_REAP_STATUS;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case TARGET_PROC_REAP_KILL:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 *host_cmd =3D PROC_REAP_KILL;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 default:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EINVAL;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+<br>
-+static abi_long<br>
-+h2t_reaper_status(struct procctl_reaper_status *host_rs,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong target_rs_addr)<br>
-+{<br>
-+=C2=A0 =C2=A0 struct target_procctl_reaper_status *target_rs;<br>
-+<br>
-+=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_WRITE, target_rs, target_rs_add=
-r, 0)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 __put_user(host_rs-&gt;rs_flags, &amp;target_rs-&gt;rs_flags=
-);<br>
-+=C2=A0 =C2=A0 __put_user(host_rs-&gt;rs_children, &amp;target_rs-&gt;rs_ch=
-ildren);<br>
-+=C2=A0 =C2=A0 __put_user(host_rs-&gt;rs_descendants, &amp;target_rs-&gt;rs=
-_descendants);<br>
-+=C2=A0 =C2=A0 __put_user(host_rs-&gt;rs_reaper, &amp;target_rs-&gt;rs_reap=
-er);<br>
-+=C2=A0 =C2=A0 __put_user(host_rs-&gt;rs_pid, &amp;target_rs-&gt;rs_pid);<b=
++ *=C2=A0 (at your option) any later version.<br>
++ *<br>
++ *=C2=A0 This program is distributed in the hope that it will be useful,<b=
 r>
-+=C2=A0 =C2=A0 unlock_user_struct(target_rs, target_rs_addr, 1);<br>
-+<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+<br>
-+static abi_long<br>
-+t2h_reaper_kill(abi_ulong target_rk_addr, struct procctl_reaper_kill *host=
-_rk)<br>
-+{<br>
-+=C2=A0 =C2=A0 struct target_procctl_reaper_kill *target_rk;<br>
-+<br>
-+=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_READ, target_rk, target_rk_addr=
-, 1)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 __get_user(host_rk-&gt;rk_sig, &amp;target_rk-&gt;rk_sig);<b=
-r>
-+=C2=A0 =C2=A0 __get_user(host_rk-&gt;rk_flags, &amp;target_rk-&gt;rk_flags=
-);<br>
-+=C2=A0 =C2=A0 __get_user(host_rk-&gt;rk_subtree, &amp;target_rk-&gt;rk_sub=
-tree);<br>
-+=C2=A0 =C2=A0 __get_user(host_rk-&gt;rk_killed, &amp;target_rk-&gt;rk_kill=
-ed);<br>
-+=C2=A0 =C2=A0 __get_user(host_rk-&gt;rk_fpid, &amp;target_rk-&gt;rk_fpid);=
-<br>
-+=C2=A0 =C2=A0 unlock_user_struct(target_rk, target_rk_addr, 0);<br>
-+<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+<br>
-+static abi_long<br>
-+h2t_reaper_kill(struct procctl_reaper_kill *host_rk, abi_ulong target_rk_a=
-ddr)<br>
-+{<br>
-+=C2=A0 =C2=A0 struct target_procctl_reaper_kill *target_rk;<br>
-+<br>
-+=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_WRITE, target_rk, target_rk_add=
-r, 0)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 __put_user(host_rk-&gt;rk_sig, &amp;target_rk-&gt;rk_sig);<b=
-r>
-+=C2=A0 =C2=A0 __put_user(host_rk-&gt;rk_flags, &amp;target_rk-&gt;rk_flags=
-);<br>
-+=C2=A0 =C2=A0 __put_user(host_rk-&gt;rk_subtree, &amp;target_rk-&gt;rk_sub=
-tree);<br>
-+=C2=A0 =C2=A0 __put_user(host_rk-&gt;rk_killed, &amp;target_rk-&gt;rk_kill=
-ed);<br>
-+=C2=A0 =C2=A0 __put_user(host_rk-&gt;rk_fpid, &amp;target_rk-&gt;rk_fpid);=
-<br>
-+=C2=A0 =C2=A0 unlock_user_struct(target_rk, target_rk_addr, 1);<br>
-+<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+<br>
-+static abi_long<br>
-+h2t_procctl_reaper_pidinfo(struct procctl_reaper_pidinfo *host_pi,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong target_pi_addr)<br>
-+{<br>
-+=C2=A0 =C2=A0 struct target_procctl_reaper_pidinfo *target_pi;<br>
-+<br>
-+=C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_WRITE, target_pi, target_pi_add=
-r, 0)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 __put_user(host_pi-&gt;pi_pid, &amp;target_pi-&gt;pi_pid);<b=
-r>
-+=C2=A0 =C2=A0 __put_user(host_pi-&gt;pi_subtree, &amp;target_pi-&gt;pi_sub=
-tree);<br>
-+=C2=A0 =C2=A0 __put_user(host_pi-&gt;pi_flags, &amp;target_pi-&gt;pi_flags=
-);<br>
-+=C2=A0 =C2=A0 unlock_user_struct(target_pi, target_pi_addr, 1);<br>
-+<br>
-+=C2=A0 =C2=A0 return 0;<br>
-+}<br>
-+<br>
-+abi_long<br>
-+do_freebsd_procctl(void *cpu_env, int idtype, abi_ulong arg2, abi_ulong ar=
-g3,<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0abi_ulong arg4, abi_ulong arg5, abi_ulong arg6)=
-<br>
-+{<br>
-+=C2=A0 =C2=A0 abi_long error =3D 0, target_rp_pids;<br>
-+=C2=A0 =C2=A0 void *data;<br>
-+=C2=A0 =C2=A0 int host_cmd, flags;<br>
-+=C2=A0 =C2=A0 uint32_t u, target_rp_count;<br>
-+=C2=A0 =C2=A0 union {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct procctl_reaper_status rs;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct procctl_reaper_pids rp;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct procctl_reaper_kill rk;<br>
-+=C2=A0 =C2=A0 } host;<br>
-+=C2=A0 =C2=A0 struct target_procctl_reaper_pids *target_rp;<br>
-+=C2=A0 =C2=A0 id_t id; /* 64-bit */<br>
-+=C2=A0 =C2=A0 int target_cmd;<br>
-+=C2=A0 =C2=A0 abi_ulong target_arg;<br>
-+<br>
-+#if TARGET_ABI_BITS =3D=3D 32<br>
-+=C2=A0 =C2=A0 /* See if we need to align the register pairs. */<br>
-+=C2=A0 =C2=A0 if (regpairs_aligned(cpu_env)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 id =3D (id_t)target_arg64(arg3, arg4);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 target_cmd =3D (int)arg5;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 target_arg =3D arg6;<br>
-+=C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 id =3D (id_t)target_arg64(arg2, arg3);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 target_cmd =3D (int)arg4;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 target_arg =3D arg5;<br>
-+=C2=A0 =C2=A0 }<br>
-+#else<br>
-+=C2=A0 =C2=A0 id =3D (id_t)arg2;<br>
-+=C2=A0 =C2=A0 target_cmd =3D (int)arg3;<br>
-+=C2=A0 =C2=A0 target_arg =3D arg4;<br>
-+#endif<br>
-+<br>
-+=C2=A0 =C2=A0 error =3D t2h_procctl_cmd(target_cmd, &amp;host_cmd);<br>
-+=C2=A0 =C2=A0 if (error) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return error;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 switch (host_cmd) {<br>
-+=C2=A0 =C2=A0 case PROC_SPROTECT:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 data =3D &amp;flags;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case PROC_REAP_ACQUIRE:<br>
-+=C2=A0 =C2=A0 case PROC_REAP_RELEASE:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (target_arg =3D=3D 0) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 data =3D NULL;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D -TARGET_EINVAL;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case PROC_REAP_STATUS:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 data =3D &amp;<a href=3D"http://host.rs" rel=
-=3D"noreferrer" target=3D"_blank">host.rs</a>;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case PROC_REAP_GETPIDS:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!lock_user_struct(VERIFY_READ, target_rp, =
-target_arg, 1)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 __get_user(target_rp_count, &amp;target_rp-&gt=
-;rp_count);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 __get_user(target_rp_pids, &amp;target_rp-&gt;=
-rp_pids);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 unlock_user_struct(target_rp, target_arg, 0);<=
-br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 host.rp.rp_count =3D target_rp_count;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* XXX we should check target_rc_count to see =
-if it is reasonable. */<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 host.rp.rp_pids =3D alloca(target_rp_count *<b=
-r>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sizeof(struct proc=
-ctl_reaper_pidinfo));<br></blockquote><div><br></div><div>I think that ther=
-e&#39;s been a general move to using the &#39;smart pointer&#39; version of=
-</div><div>this that you&#39;ve done for other patches. I think that target=
-_rc_count</div><div>likely is going to be small enough, but that doing the =
-conversion will ensure that</div><div>it is (so we can eliminate the commen=
-t too).</div><div><br></div><div>Warner</div><div>=C2=A0</div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (host.rp.rp_pids =3D=3D NULL) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D -TARGET_ENOMEM;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 data =3D &amp;host.rp;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+<br>
-+=C2=A0 =C2=A0 case PROC_REAP_KILL:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D t2h_reaper_kill(target_arg, &amp;hos=
-t.rk);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+=C2=A0 =C2=A0 }<br>
-+<br>
-+=C2=A0 =C2=A0 if (error) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return error;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 error =3D get_errno(procctl(idtype, id, host_cmd, data));<br=
++ *=C2=A0 but WITHOUT ANY WARRANTY; without even the implied warranty of<br=
 >
++ *=C2=A0 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.=C2=A0 See th=
+e<br>
++ *=C2=A0 GNU General Public License for more details.<br>
++ *<br>
++ *=C2=A0 You should have received a copy of the GNU General Public License=
+<br>
++ *=C2=A0 along with this program; if not, see &lt;<a href=3D"http://www.gn=
+u.org/licenses/" rel=3D"noreferrer" target=3D"_blank">http://www.gnu.org/li=
+censes/</a>&gt;.<br>
++ */<br>
 +<br>
-+=C2=A0 =C2=A0 if (error) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return error;<br>
-+=C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 switch (host_cmd) {<br>
-+=C2=A0 =C2=A0 case PROC_SPROTECT:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (put_user_s32(flags, target_arg)) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return -TARGET_EFAULT;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++#ifndef BSD_USER_FREEBSD_OS_PROC_H<br>
++#define BSD_USER_FREEBSD_OS_PROC_H<br>
 +<br>
-+=C2=A0 =C2=A0 case PROC_REAP_STATUS:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D h2t_reaper_status(&amp;<a href=3D"ht=
-tp://host.rs" rel=3D"noreferrer" target=3D"_blank">host.rs</a>, target_arg)=
-;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++#include &lt;sys/param.h&gt;<br>
++#include &lt;sys/procctl.h&gt;<br>
++#include &lt;sys/signal.h&gt;<br>
++#include &lt;sys/types.h&gt;<br>
++#include &lt;sys/procdesc.h&gt;<br>
++#include &lt;sys/wait.h&gt;<br>
++#include &lt;unistd.h&gt;<br>
 +<br>
-+=C2=A0 =C2=A0 case PROC_REAP_GETPIDS:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* copyout reaper pidinfo */<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 for (u =3D 0; u &lt; target_rp_count; u++) {<b=
-r>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D h2t_procctl_reaper_pid=
-info(&amp;host.rp.rp_pids[u],<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 targ=
-et_rp_pids +<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 (u *=
- sizeof(struct target_procctl_reaper_pidinfo)));<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (error) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++#include &quot;target_arch_cpu.h&quot;<br>
 +<br>
-+=C2=A0 =C2=A0 case PROC_REAP_KILL:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 error =3D h2t_reaper_kill(&amp;host.rk, target=
-_arg);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
-+=C2=A0 =C2=A0 }<br>
++/* execve(2) */<br>
++static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong a=
+rgp,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong envp)<br>
++{<br>
 +<br>
-+=C2=A0 =C2=A0 return error;<br>
++=C2=A0 =C2=A0 return freebsd_exec_common(path_or_fd, argp, envp, 0);<br>
 +}<br>
++<br>
++/* fexecve(2) */<br>
++static inline abi_long do_freebsd_fexecve(abi_ulong path_or_fd, abi_ulong =
+argp,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 abi_ulong envp)<br>
++{<br>
++<br>
++=C2=A0 =C2=A0 return freebsd_exec_common(path_or_fd, argp, envp, 1);<br>
++}<br>
++<br>
++#endif /* BSD_USER_FREEBSD_OS_PROC_H */<br>
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c<=
 br>
-index 71a2657dd0..b7bd0b92a6 100644<br>
+index b7bd0b92a6..515eaaf31f 100644<br>
 --- a/bsd-user/freebsd/os-syscall.c<br>
 +++ b/bsd-user/freebsd/os-syscall.c<br>
-@@ -367,6 +367,9 @@ static abi_long freebsd_syscall(void *cpu_env, int num,=
- abi_long arg1,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D do_bsd_setpriority(arg1, arg2, ar=
-g3);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
+@@ -36,8 +36,9 @@<br>
+=C2=A0#include &quot;bsd-file.h&quot;<br>
+=C2=A0#include &quot;bsd-proc.h&quot;<br>
 <br>
-+=C2=A0 =C2=A0 case TARGET_FREEBSD_NR_procctl: /* procctl(2) */<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D do_freebsd_procctl(cpu_env, arg1, arg2=
-, arg3, arg4, arg5, arg6);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
+-/* *BSD dependent syscall shims */<br>
++/* BSD dependent syscall shims */<br>
+=C2=A0#include &quot;os-stat.h&quot;<br>
++#include &quot;os-proc.h&quot;<br>
 <br>
+=C2=A0/* I/O */<br>
+=C2=A0safe_syscall3(int, open, const char *, path, int, flags, mode_t, mode=
+);<br>
+@@ -219,6 +220,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num=
+, abi_long arg1,<br>
 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/*<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * File system calls.<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * process system calls<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
++=C2=A0 =C2=A0 case TARGET_FREEBSD_NR_execve: /* execve(2) */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D do_freebsd_execve(arg1, arg2, arg3);<b=
+r>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++<br>
++=C2=A0 =C2=A0 case TARGET_FREEBSD_NR_fexecve: /* fexecve(2) */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D do_freebsd_fexecve(arg1, arg2, arg3);<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 break;<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0case TARGET_FREEBSD_NR_exit: /* exit(2) */<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D do_bsd_exit(cpu_env, arg1);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0break;<br>
 -- <br>
 2.42.0<br>
 <br>
 </blockquote></div></div>
 
---0000000000000776600605cf0687--
+--000000000000b67ea80605cf0fcc--
 
