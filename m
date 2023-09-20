@@ -2,95 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C3A7A8712
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 16:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 605527A8739
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 16:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiyJw-0004kQ-9a; Wed, 20 Sep 2023 10:36:52 -0400
+	id 1qiyLH-0006D9-8Z; Wed, 20 Sep 2023 10:38:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
- id 1qiyJo-0004UZ-P4; Wed, 20 Sep 2023 10:36:45 -0400
-Received: from mail-oo1-xc33.google.com ([2607:f8b0:4864:20::c33])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
- id 1qiyJj-0001z6-Eb; Wed, 20 Sep 2023 10:36:41 -0400
-Received: by mail-oo1-xc33.google.com with SMTP id
- 006d021491bc7-5717f7b932aso4372967eaf.0; 
- Wed, 20 Sep 2023 07:36:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695220597; x=1695825397; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6tsMZWef5DNnUlUhJEtp0wEaK+tiZcAN1lRlJlCbjY8=;
- b=IW3uU8CeNMJ7b9pcSrAjiY0j0+xZHuVrpqUH9ojSaxm4p10AQ4L2I1A5oBHcyXxsZ+
- 0Nn/+zqzLTuhznfftJZiArkV81dGHCSFrWmDT0bcQCCpMFYC4DJixzu39Sj+hMPjCxv7
- NBvXe+W7snXKYuSTeCO2ZQGSupkKsjropaUkMbKDpqVEWqcWagTgIDgkNisn40dNa6L3
- l6eVFjeqHYNmTvhT4JlGQIYsWVaBZwJi75ejM5wD0VIo83eUJLRuzCerifvP5hQGSwdu
- StyYgA8E4qud0Rti/v1KNtNrfVI8OBtE86e01bV1ReKCFTSLdcrMS8/+cGUabCi7i2W0
- GpGg==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiyKn-00060y-TG
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:37:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qiyKl-00028e-OT
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 10:37:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695220662;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zlq3VkBDAxx+UjHYCFzjOoTvzQT81SMPJV0LfgL/qPA=;
+ b=Q0jzNGOiVU3NtukRcaVV+dBV+RtNPCs6CbpSc5HALH7HrbAktis7bGfiKPjIkTx+2uRU02
+ snNWcr/SFB1XomVb2TEkrwt41bbY8zm8uefEnBOKwblK9ZrAqampc8mWjH/sHBpbRNX+gS
+ j/dgc9K09ztEdQSPjsLT5+Q6oSwMSOI=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-464-vDuJi5VXOjCBjvxc93oNuA-1; Wed, 20 Sep 2023 10:37:40 -0400
+X-MC-Unique: vDuJi5VXOjCBjvxc93oNuA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-321677c0c89so1327118f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 07:37:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695220597; x=1695825397;
- h=in-reply-to:content-disposition:mime-version:references:reply-to
- :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=6tsMZWef5DNnUlUhJEtp0wEaK+tiZcAN1lRlJlCbjY8=;
- b=mbeb8Xb4RG6cDDaPf1UDzbJIDhCoq8+kMvExMw0BcEgAvQR3udg4EKAYhiZ5CeBMuw
- doj1bgtrgcYlzUDuy4YitRC+0wM3AT8YNfPMLV8nI/YEzi0+NdQsI4RZEo50E4WwdEZJ
- pmEZkIOL9gwSgRGqHQWhyub0xW5WnmtQtin33DxeeZO6aSAKo450ZrHnIJRcS0DyIdOM
- OTaCiVPZ6+9ptFKX8H3EaXrEyPrOtang0PQ4Vop4DDGehPZHdo6ChRmrY/NpBxXE2dGb
- umNfrQgEtayQeZszJ/FyHH7GlGRpkAlQWu6s/YwjwCZnbShlMLxaqbElaVIWEMoC+3SY
- D4fQ==
-X-Gm-Message-State: AOJu0YxXwzodx1t3oz1DZKeeesYKDWnJTfnCwx/QtSPOv+EthLhwpj/I
- peGelDYkIXVdCrV0nb+sOQ==
-X-Google-Smtp-Source: AGHT+IEwGelVBN2V1nrZgiY0qlR+4g+FG/hu7oZAah4qVKfYpqKYleh0IncPm14ipDCP7EG3f+ksYQ==
-X-Received: by 2002:a05:6870:c088:b0:1be:dfdf:cb1 with SMTP id
- c8-20020a056870c08800b001bedfdf0cb1mr3049150oad.46.1695220597140; 
- Wed, 20 Sep 2023 07:36:37 -0700 (PDT)
-Received: from serve.minyard.net ([47.189.89.62])
+ d=1e100.net; s=20230601; t=1695220659; x=1695825459;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zlq3VkBDAxx+UjHYCFzjOoTvzQT81SMPJV0LfgL/qPA=;
+ b=UWCk5HaXjUVDHkrBsvJaQalwbxjBjP9RC2YUAEpvnWE0HU+4l4qkRBwOrm2CD9i4zc
+ vapM+MlGWFBMqQ++HAdCA3VYFEcy0/UHKWc1Nf69BXY/5onkpfFqCrwttQnf1fSDh4TR
+ QZkkbr6AXbBUpFrVy7QSn5YlTPz08qLt02IboR9c/jmH1gNXgXtH4DColMz+ktxZMAS2
+ xdThcG77mdJzkH6dXGc2bUnx3Xj9IpoqdDSXuwraqXBRHf0shRY1h8tgazBycSIduQkg
+ hR5YTDKo1/fiqLT3Ptoa4ACmnUKZT4Yo78ejKXEHjOxN4HMeOCdpw3uNauq03wkGMPWd
+ sIHg==
+X-Gm-Message-State: AOJu0YxByqj/lfhvuImOe1kA509xAWyvyaJ9XYsAjgIMUwn31pQ9gbtg
+ DhAhYSVMWX3SJChPsV33wuSJEScSxSb0wqLTaVzfTgUeLaxhoYdExahZNx+pju5FNZdQGwNiK4F
+ VK/u/ivdurTDEXl4=
+X-Received: by 2002:adf:d0ca:0:b0:317:5d3d:c9df with SMTP id
+ z10-20020adfd0ca000000b003175d3dc9dfmr2502556wrh.18.1695220659489; 
+ Wed, 20 Sep 2023 07:37:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFf+51aOLzrkPF34PeABVEpjaMEBK7fHn4+QjePH2TZCT8NykDAtUFDJp9i3G5so9YKLNfbEA==
+X-Received: by 2002:adf:d0ca:0:b0:317:5d3d:c9df with SMTP id
+ z10-20020adfd0ca000000b003175d3dc9dfmr2502535wrh.18.1695220659038; 
+ Wed, 20 Sep 2023 07:37:39 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70b:8600:dad5:13bb:38a9:3010?
+ (p200300cbc70b8600dad513bb38a93010.dip0.t-ipconnect.de.
+ [2003:cb:c70b:8600:dad5:13bb:38a9:3010])
  by smtp.gmail.com with ESMTPSA id
- ec1-20020a0568708c0100b001d4d8efa7f9sm7264835oab.4.2023.09.20.07.36.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Sep 2023 07:36:36 -0700 (PDT)
-Received: from mail.minyard.net (unknown [IPv6:2001:470:b8f6:1d::35])
- by serve.minyard.net (Postfix) with ESMTPSA id 94BC81800BD;
- Wed, 20 Sep 2023 14:36:35 +0000 (UTC)
-Date: Wed, 20 Sep 2023 09:36:34 -0500
-From: Corey Minyard <minyard@acm.org>
-To: Klaus Jensen <its@irrelevant.dk>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Jason Wang <jasowang@redhat.com>, Keith Busch <kbusch@kernel.org>,
- Lior Weintraub <liorw@pliops.com>, Jeremy Kerr <jk@codeconstruct.com.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>,
- Matt Johnston <matt@codeconstruct.com.au>,
- Peter Delevoryas <peter@pjd.dev>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH v6 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management
- interface model
-Message-ID: <ZQsDcmkZYCk0eVhA@mail.minyard.net>
-References: <20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com>
- <20230920124803.00005ae9@Huawei.com>
- <ZQrrgxHrfzmGyhZU@mail.minyard.net>
- <ZQr0LXsSRXGqJ4EL@cormorant.local>
+ v7-20020a5d6b07000000b0031f3780ce60sm18555247wrw.7.2023.09.20.07.37.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Sep 2023 07:37:38 -0700 (PDT)
+Message-ID: <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com>
+Date: Wed, 20 Sep 2023 16:37:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZQr0LXsSRXGqJ4EL@cormorant.local>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c33;
- envelope-from=tcminyard@gmail.com; helo=mail-oo1-xc33.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and associate
+ it with RAM_KVM_GMEM
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-4-xiaoyao.li@intel.com> <8734zazeag.fsf@pond.sub.org>
+ <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
+ <878r91nvy4.fsf@pond.sub.org>
+ <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,91 +116,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: minyard@acm.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 20, 2023 at 06:31:25AM -0700, Klaus Jensen wrote:
-> On Sep 20 07:54, Corey Minyard wrote:
-> > On Wed, Sep 20, 2023 at 12:48:03PM +0100, Jonathan Cameron via wrote:
-> > > On Thu, 14 Sep 2023 11:53:40 +0200
-> > > Klaus Jensen <its@irrelevant.dk> wrote:
-> > > 
-> > > > This adds a generic MCTP endpoint model that other devices may derive
-> > > > from.
-> > > > 
-> > > > Also included is a very basic implementation of an NVMe-MI device,
-> > > > supporting only a small subset of the required commands.
-> > > > 
-> > > > Since this all relies on i2c target mode, this can currently only be
-> > > > used with an SoC that includes the Aspeed I2C controller.
-> > > > 
-> > > > The easiest way to get up and running with this, is to grab my buildroot
-> > > > overlay[1] (aspeed_ast2600evb_nmi_defconfig). It includes modified a
-> > > > modified dts as well as a couple of required packages.
-> > > > 
-> > > > QEMU can then be launched along these lines:
-> > > > 
-> > > >   qemu-system-arm \
-> > > >     -nographic \
-> > > >     -M ast2600-evb \
-> > > >     -kernel output/images/zImage \
-> > > >     -initrd output/images/rootfs.cpio \
-> > > >     -dtb output/images/aspeed-ast2600-evb-nmi.dtb \
-> > > >     -nic user,hostfwd=tcp::2222-:22 \
-> > > >     -device nmi-i2c,address=0x3a \
-> > > >     -serial mon:stdio
-> > > > 
-> > > > From within the booted system,
-> > > > 
-> > > >   mctp addr add 8 dev mctpi2c15
-> > > >   mctp link set mctpi2c15 up
-> > > >   mctp route add 9 via mctpi2c15
-> > > >   mctp neigh add 9 dev mctpi2c15 lladdr 0x3a
-> > > >   mi-mctp 1 9 info
-> > > > 
-> > > > Comments are very welcome!
-> > > > 
-> > > >   [1]: https://github.com/birkelund/hwtests/tree/main/br2-external
-> > > > 
-> > > > Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-> > > 
-> > > Hi Klaus,
-> > > 
-> > > Silly question, but who is likely to pick this up? + likely to be soon?
-> > > 
-> > > I'm going to post the CXL stuff that makes use of the core support shortly
-> > > and whilst I can point at this patch set on list, I'd keen to see it upstream
-> > > to reduce the dependencies (it's got 2 sets ahead of it of CXL stuff
-> > > anyway but that will all hopefully go through Michael Tsirkin's tree
-> > > for PCI stuff in one go).
-> > 
-> > I can pick it up, but he can just request a merge, too.
-> > 
-> > I did have a question I asked earlier about tests.  It would be unusual
-> > at this point to add something like this without having some tests,
-> > especially injecting invalid data.
-> > 
+On 20.09.23 16:35, Xiaoyao Li wrote:
+> On 9/20/2023 3:30 PM, Markus Armbruster wrote:
+>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>
+>>> On 9/19/2023 5:46 PM, Markus Armbruster wrote:
+>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>
+>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>
+>>>>> Add a new property "private" to memory backends. When it's set to true,
+>>>>> it indicates the RAMblock of the backend also requires kvm gmem.
+>>>> Can you add a brief explanation why you need the property?
+>>>
+>>> It provides a mechanism for user to specify whether the memory can serve as private memory (need request kvm gmem).
+>>
+>> Yes, but why would a user want such memory?
+>>
 > 
-> Hi all,
-> 
-> Sorry for the late reply. I'm currently at SDC, but I will write up some
-> tests when I get back to in the office on Monday.
-> 
-> Corey, what kinds of tests would be best here? Avocado "acceptance"
-> tests or would you like to see something lower level?
+> Because KVM demands it for confidential guest, e.g., TDX guest. KVM
+> demands that the mem slot needs to have KVM_MEM_PRIVATE set and has
+> valid gmem associated if the guest accesses it as private memory.
 
-My main concern is testing what happens when bad data gets injected, to
-avoid people coming up with clever names for exploits in qemu.  It's not
-so much for this code, it's for the changes that comes in the future.
+I think as long as there is no demand to have a TDX guest with this 
+property be set to "off", then just don't add it.
 
-And, of course, normal functional tests to make sure it works.  What a
-friend of mine calls "dead chicken" tests.  You wave a dead chicken at
-it, and if the chicken is still dead everything is ok :).
+With a TDX VM, it will can be implicitly active. If we ever have to 
+disable it for selective memory backends, we can add the property and 
+have something like on/off/auto. For now it would be "auto".
 
-I'm fine with either type of tests, but I'm not sure you can do this
-with avocado.  It's probably about the same amount of work either path
-you choose.
+-- 
+Cheers,
 
--corey
+David / dhildenb
+
 
