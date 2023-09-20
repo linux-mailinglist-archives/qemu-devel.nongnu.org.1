@@ -2,81 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542897A7424
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EE47A7425
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 09:31:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qirfQ-00059C-GD; Wed, 20 Sep 2023 03:30:36 -0400
+	id 1qirfR-0005Ak-K2; Wed, 20 Sep 2023 03:30:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qirfB-00054j-TO
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:30:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qirfM-00059B-Ox
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:30:33 -0400
+Received: from mgamail.intel.com ([134.134.136.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qirfA-0003cL-9H
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:30:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695195018;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=i2WgtYybkbUsFYRJOW6P1Ah19uLIKqMGatOtx6TDY7A=;
- b=CZH6YNNnlLKF3zyP7+QoAWV3tQCnHilc2fVBPX2cqLAGU9h/TxeEjaDGhFIpoU51MPqd5z
- hKcBDR30bKG2OqxJQhiFHdrXzJCpnqkf71+lC98WxiApknSwnXcJ0m/Xv9AdQFsqc+KJWl
- m++YEQuADV7ojONMztTRUH5Z7NMaUrw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-380-T5PUNI4cOF6P-f6nkHOiTg-1; Wed, 20 Sep 2023 03:30:13 -0400
-X-MC-Unique: T5PUNI4cOF6P-f6nkHOiTg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2BFD1185A797;
- Wed, 20 Sep 2023 07:30:13 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 04D25C15BB8;
- Wed, 20 Sep 2023 07:30:13 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id F35FE21E6900; Wed, 20 Sep 2023 09:30:11 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  David Hildenbrand
- <david@redhat.com>,  Igor Mammedov <imammedo@redhat.com>,  "Michael S.
- Tsirkin" <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,  Peter Xu
- <peterx@redhat.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>,
- Cornelia Huck <cohuck@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Eric Blake <eblake@redhat.com>,  Marcelo Tosatti
- <mtosatti@redhat.com>,  qemu-devel@nongnu.org,  kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>,  isaku.yamahata@gmail.com,  Sean
- Christopherson <seanjc@google.com>,  Claudio Fontana <cfontana@suse.de>
-Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and
- associate it with RAM_KVM_GMEM
-References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <20230914035117.3285885-4-xiaoyao.li@intel.com>
- <8734zazeag.fsf@pond.sub.org>
- <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
-Date: Wed, 20 Sep 2023 09:30:11 +0200
-In-Reply-To: <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com> (Xiaoyao Li's
- message of "Wed, 20 Sep 2023 07:24:06 +0800")
-Message-ID: <878r91nvy4.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <lingshan.zhu@intel.com>)
+ id 1qirfI-0003eI-Sm
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 03:30:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1695195028; x=1726731028;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=+f/SlsffWN3dCi/VtuiZU8f+moZRzVKgS6ofi5xty3Q=;
+ b=ZKQNH4hHDAcRJZAyDtyh1SSz+STCGz0aJbGCggCoazFvce02h4XXvk2o
+ 89T+9MoASNfcgmYiUN9C/84GY7FcR1qNlrQWMVcLMIH4/AbNsPcGzOtTD
+ a+nPvUY1JG5CE75/yfsiROTAwpTxWaSyYhBWIJSk1+9/odglTbJX0Xu7F
+ y7oRqeCrpUAILbvQYfk2rnoNf92YyomYW8mjRHXflxFJL3ApkN+hM2/0e
+ ZVCfR4tWdGY9jTWUKlIdnUI7ZgIFnkrH6QEAgKJxPTrSebPuiz4YywVRj
+ CfVEK+agoGDIeSbM1EcGlhHGY/cSIwJsNFsWLYDTuX+jw0FBK2dpilvGW A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="383995577"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="383995577"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2023 00:30:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10838"; a="870266763"
+X-IronPort-AV: E=Sophos;i="6.02,161,1688454000"; d="scan'208";a="870266763"
+Received: from lingshan-mobl.ccr.corp.intel.com (HELO [10.93.14.5])
+ ([10.93.14.5])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2023 00:30:17 -0700
+Message-ID: <a636b841-1bfc-925a-406e-6c4469e7e4c6@intel.com>
+Date: Wed, 20 Sep 2023 15:30:14 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [virtio-dev] Re: [virtio-comment] Re: [VIRTIO PCI PATCH v5 1/1]
+ transport-pci: Add freeze_mode to virtio_pci_common_cfg
+Content-Language: en-US
+To: "Chen, Jiqian" <Jiqian.Chen@amd.com>, Parav Pandit <parav@nvidia.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu
+ <olvaffe@gmail.com>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@gmail.com>, Robert Beckett <bob.beckett@collabora.com>,
+ Mikhail Golubev-Ciuchea <Mikhail.Golubev-Ciuchea@opensynergy.com>,
+ "virtio-comment@lists.oasis-open.org" <virtio-comment@lists.oasis-open.org>,
+ "virtio-dev@lists.oasis-open.org" <virtio-dev@lists.oasis-open.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "Koenig, Christian" <Christian.Koenig@amd.com>,
+ "Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>,
+ Xenia Ragiadakou <burzalodowa@gmail.com>,
+ "Huang, Honglei1" <Honglei1.Huang@amd.com>,
+ "Zhang, Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
+References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
+ <20230919114242.2283646-2-Jiqian.Chen@amd.com>
+ <20230919082802-mutt-send-email-mst@kernel.org>
+ <cd8d306b-6acc-34be-516c-b89c23ac108d@intel.com>
+ <BL1PR12MB5849E32A76165F1307492185E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
+ <PH0PR12MB5481D2CBCFBF7BCBF427EE1EDCF9A@PH0PR12MB5481.namprd12.prod.outlook.com>
+ <701bb67c-c52d-4eb3-a6ed-f73bd5d0ff33@intel.com>
+ <BL1PR12MB5849A542AA93F6ED9FEEAAF0E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
+From: "Zhu, Lingshan" <lingshan.zhu@intel.com>
+In-Reply-To: <BL1PR12MB5849A542AA93F6ED9FEEAAF0E7F9A@BL1PR12MB5849.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=134.134.136.65;
+ envelope-from=lingshan.zhu@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,19 +106,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
 
-> On 9/19/2023 5:46 PM, Markus Armbruster wrote:
->> Xiaoyao Li <xiaoyao.li@intel.com> writes:
->> 
->>> From: Isaku Yamahata <isaku.yamahata@intel.com>
->>>
->>> Add a new property "private" to memory backends. When it's set to true,
->>> it indicates the RAMblock of the backend also requires kvm gmem.
->> Can you add a brief explanation why you need the property?
+
+On 9/20/2023 3:24 PM, Chen, Jiqian wrote:
+> Hi Lingshan,
+> It seems you reply to the wrong email thread. They are not related to my patch.
+These reply to Parva's comments.
+@Parva, if you want to discuss more about live migration, please reply 
+in my thread, lets don't flood here.
 >
-> It provides a mechanism for user to specify whether the memory can serve as private memory (need request kvm gmem).
-
-Yes, but why would a user want such memory?
+> On 2023/9/20 15:06, Zhu, Lingshan wrote:
+>>
+>> On 9/20/2023 2:58 PM, Parav Pandit wrote:
+>>>> From: Chen, Jiqian <Jiqian.Chen@amd.com>
+>>>> Sent: Wednesday, September 20, 2023 12:03 PM
+>>>> If driver write 0 to reset device, can the SUSPEND bit be cleared?
+>>> It must as reset operation, resets everything else and so the suspend too.
+>>>
+>>>> (pci_pm_resume->virtio_pci_restore->virtio_device_restore-
+>>>>> virtio_reset_device)
+>>>> If SUSPEND is cleared, then during the reset process in Qemu, I can't judge if
+>>>> the reset request is from guest restore process or not, and then I can't change
+>>>> the reset behavior.
+>>> Reset should not be influenced by suspend.
+>>> Suspend should do the work of suspend and reset to do the reset.
+>>>
+>>> The problem to overcome in [1] is, resume operation needs to be synchronous as it involves large part of context to resume back, and hence just asynchronously setting DRIVER_OK is not enough.
+>>> The sw must verify back that device has resumed the operation and ready to answer requests.
+>> this is not live migration, all device status and other information still stay in the device, no need to "resume" context, just resume running.
+>>
+>> Like resume from a failed LM.
+>>> This is slightly different flow than setting the DRIVER_OK for the first time device initialization sequence as it does not involve large restoration.
+>>>
+>>> So, to merge two ideas, instead of doing DRIVER_OK to resume, the driver should clear the SUSPEND bit and verify that it is out of SUSPEND.
+>>>
+>>> Because driver is still in _OK_ driving the device flipping the SUSPEND bit.
+>> Please read the spec, it says:
+>> The driver MUST NOT clear a device status bit
+>>
+>>
 
 
