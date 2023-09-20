@@ -2,38 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2407A7E50
+	by mail.lfdr.de (Postfix) with ESMTPS id A85A17A7E51
 	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 14:17:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiw7l-00026r-K8; Wed, 20 Sep 2023 08:16:09 -0400
+	id 1qiw7j-000234-Jn; Wed, 20 Sep 2023 08:16:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw7i-00023K-DU; Wed, 20 Sep 2023 08:16:06 -0400
+ id 1qiw7e-0001wN-7J; Wed, 20 Sep 2023 08:16:04 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw7b-0005Ei-4i; Wed, 20 Sep 2023 08:16:06 -0400
+ id 1qiw7b-0005Ej-4m; Wed, 20 Sep 2023 08:16:01 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E3FB239F9;
+ by isrv.corpit.ru (Postfix) with ESMTP id 88CC6239FA;
  Wed, 20 Sep 2023 15:16:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C0EB5296F0;
+ by tsrv.corpit.ru (Postfix) with SMTP id DD0BA296F1;
  Wed, 20 Sep 2023 15:15:53 +0300 (MSK)
-Received: (nullmailer pid 105869 invoked by uid 1000);
+Received: (nullmailer pid 105874 invoked by uid 1000);
  Wed, 20 Sep 2023 12:15:53 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 00/63] v3 Patch Round-up for stable 7.2.6,
- freeze on 2023-09-19
-Date: Wed, 20 Sep 2023 15:15:36 +0300
-Message-Id: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 52/63] virtio: Drop out of coroutine context in
+ virtio_load()
+Date: Wed, 20 Sep 2023 15:15:37 +0300
+Message-Id: <20230920121553.105832-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
+References: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -57,183 +59,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v7.2.6:
+From: Kevin Wolf <kwolf@redhat.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
+virtio_load() as a whole should run in coroutine context because it
+reads from the migration stream and we don't want this to block.
 
-Patch freeze is 2023-09-19 (frozen), and the release is planned for 2023-09-21:
+However, it calls virtio_set_features_nocheck() and devices don't
+expect their .set_features callback to run in a coroutine and therefore
+call functions that may not be called in coroutine context. To fix this,
+drop out of coroutine context for calling virtio_set_features_nocheck().
 
-  https://wiki.qemu.org/Planning/7.2
+Without this fix, the following crash was reported:
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+  #0  __pthread_kill_implementation (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
+  #1  0x00007efc738c05d3 in __pthread_kill_internal (signo=6, threadid=<optimized out>) at pthread_kill.c:78
+  #2  0x00007efc73873d26 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
+  #3  0x00007efc738477f3 in __GI_abort () at abort.c:79
+  #4  0x00007efc7384771b in __assert_fail_base (fmt=0x7efc739dbcb8 "", assertion=assertion@entry=0x560aebfbf5cf "!qemu_in_coroutine()",
+     file=file@entry=0x560aebfcd2d4 "../block/graph-lock.c", line=line@entry=275, function=function@entry=0x560aebfcd34d "void bdrv_graph_rdlock_main_loop(void)") at assert.c:92
+  #5  0x00007efc7386ccc6 in __assert_fail (assertion=0x560aebfbf5cf "!qemu_in_coroutine()", file=0x560aebfcd2d4 "../block/graph-lock.c", line=275,
+     function=0x560aebfcd34d "void bdrv_graph_rdlock_main_loop(void)") at assert.c:101
+  #6  0x0000560aebcd8dd6 in bdrv_register_buf ()
+  #7  0x0000560aeb97ed97 in ram_block_added.llvm ()
+  #8  0x0000560aebb8303f in ram_block_add.llvm ()
+  #9  0x0000560aebb834fa in qemu_ram_alloc_internal.llvm ()
+  #10 0x0000560aebb2ac98 in vfio_region_mmap ()
+  #11 0x0000560aebb3ea0f in vfio_bars_register ()
+  #12 0x0000560aebb3c628 in vfio_realize ()
+  #13 0x0000560aeb90f0c2 in pci_qdev_realize ()
+  #14 0x0000560aebc40305 in device_set_realized ()
+  #15 0x0000560aebc48e07 in property_set_bool.llvm ()
+  #16 0x0000560aebc46582 in object_property_set ()
+  #17 0x0000560aebc4cd58 in object_property_set_qobject ()
+  #18 0x0000560aebc46ba7 in object_property_set_bool ()
+  #19 0x0000560aeb98b3ca in qdev_device_add_from_qdict ()
+  #20 0x0000560aebb1fbaf in virtio_net_set_features ()
+  #21 0x0000560aebb46b51 in virtio_set_features_nocheck ()
+  #22 0x0000560aebb47107 in virtio_load ()
+  #23 0x0000560aeb9ae7ce in vmstate_load_state ()
+  #24 0x0000560aeb9d2ee9 in qemu_loadvm_state_main ()
+  #25 0x0000560aeb9d45e1 in qemu_loadvm_state ()
+  #26 0x0000560aeb9bc32c in process_incoming_migration_co.llvm ()
+  #27 0x0000560aebeace56 in coroutine_trampoline.llvm ()
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+Cc: qemu-stable@nongnu.org
+Buglink: https://issues.redhat.com/browse/RHEL-832
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20230905145002.46391-3-kwolf@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+(cherry picked from commit 92e2e6a867334a990f8d29f07ca34e3162fdd6ec)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: remove coroutine_mixed_fn markings introduced in v7.2.0-909-g0f3de970fe)
 
-v3:
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 384c8f0f08..b7da7f074d 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3451,6 +3451,39 @@ static int virtio_set_features_nocheck(VirtIODevice *vdev, uint64_t val)
+     return bad ? -1 : 0;
+ }
+ 
++typedef struct VirtioSetFeaturesNocheckData {
++    Coroutine *co;
++    VirtIODevice *vdev;
++    uint64_t val;
++    int ret;
++} VirtioSetFeaturesNocheckData;
++
++static void virtio_set_features_nocheck_bh(void *opaque)
++{
++    VirtioSetFeaturesNocheckData *data = opaque;
++
++    data->ret = virtio_set_features_nocheck(data->vdev, data->val);
++    aio_co_wake(data->co);
++}
++
++static int
++virtio_set_features_nocheck_maybe_co(VirtIODevice *vdev, uint64_t val)
++{
++    if (qemu_in_coroutine()) {
++        VirtioSetFeaturesNocheckData data = {
++            .co = qemu_coroutine_self(),
++            .vdev = vdev,
++            .val = val,
++        };
++        aio_bh_schedule_oneshot(qemu_get_current_aio_context(),
++                                virtio_set_features_nocheck_bh, &data);
++        qemu_coroutine_yield();
++        return data.ret;
++    } else {
++        return virtio_set_features_nocheck(vdev, val);
++    }
++}
++
+ int virtio_set_features(VirtIODevice *vdev, uint64_t val)
+ {
+     int ret;
+@@ -3621,14 +3654,14 @@ int virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
+          * host_features.
+          */
+         uint64_t features64 = vdev->guest_features;
+-        if (virtio_set_features_nocheck(vdev, features64) < 0) {
++        if (virtio_set_features_nocheck_maybe_co(vdev, features64) < 0) {
+             error_report("Features 0x%" PRIx64 " unsupported. "
+                          "Allowed features: 0x%" PRIx64,
+                          features64, vdev->host_features);
+             return -1;
+         }
+     } else {
+-        if (virtio_set_features_nocheck(vdev, features) < 0) {
++        if (virtio_set_features_nocheck_maybe_co(vdev, features) < 0) {
+             error_report("Features 0x%x unsupported. "
+                          "Allowed features: 0x%" PRIx64,
+                          features, vdev->host_features);
+-- 
+2.39.2
 
--  pick up more fixes from master
-
-v2:
-
-- I decided to pick up dma/mmio reentrancy fixes from 8.1 now once
-  (hopefully) all issues has been addressed.  This is
-
-  commit a2e1753b8054344f32cf94f31c6399a58794a380
-  Author: Alexander Bulekov <alxndr@bu.edu>
-  Date:   Thu Apr 27 17:10:06 2023 -0400
-
-    memory: prevent dma-reentracy issues
-
-  with all subsequent changes, up to
-  76f9ebffcd41 pnv_lpc: disable reentrancy detection for lpc-hc
-
-  I haven't picked this series sooner (while had it backported
-  and tested for quite some time) because with time, some more
-  places were found where reentrancy detection has to be disabled
-  too (like this pnv_lpc change).
-
-  What prompted me to look at this series again: one of the ide/ahci
-  change had to be context-edited to apply to 7.2, and the context
-  was the one from this reentrancy patch series.  So instead of
-  editing context, I decided to pick the reentrancy series and
-  apply subsequent changed cleanly.
-
-- I've added 2 patches (one cherry-pick and one specific to stable-7.2)
-  just to fix gitlab-CI failed jobs, so CI status will not be "failed"
-
-Thanks!
-
-/mjt
-
---------------------------------------
-01* b8d1fc55b5 Michael Tokarev:
-   gitlab-ci: check-dco.py: switch from master to stable-7.2 branch
-02* 6832189fd791 John Snow:
-   python: drop pipenv
-03* a2e1753b8054 Alexander Bulekov:
-   memory: prevent dma-reentracy issues
-04* 9c86c97f12c0 Alexander Bulekov:
-   async: Add an optional reentrancy guard to the BH API
-05* 7915bd06f25e Alexander Bulekov:
-   async: avoid use-after-free on re-entrancy guard
-06* ef56ffbdd6b0 Alexander Bulekov:
-   checkpatch: add qemu_bh_new/aio_bh_new checks
-07* f63192b0544a Alexander Bulekov:
-   hw: replace most qemu_bh_new calls with qemu_bh_new_guarded
-08* bfd6e7ae6a72 Alexander Bulekov:
-   lsi53c895a: disable reentrancy detection for script RAM
-09* d139fe9ad8a2 Thomas Huth:
-   lsi53c895a: disable reentrancy detection for MMIO region, too
-10* 985c4a4e547a Alexander Bulekov:
-   bcm2835_property: disable reentrancy detection for iomem
-11* 6dad5a6810d9 Alexander Bulekov:
-   raven: disable reentrancy detection for iomem
-12* 50795ee051a3 Alexander Bulekov:
-   apic: disable reentrancy detection for apic-msi
-13* 6d0589e0e6c6 Alexander Bulekov:
-   loongarch: mark loongarch_ipi_iocsr re-entrnacy safe
-14* 76f9ebffcd41 Alexander Bulekov:
-   pnv_lpc: disable reentrancy detection for lpc-hc
-15* a1d027be95bc Zhao Liu:
-   machine: Add helpers to get cores/threads per socket
-16* d79a284a44bb Zhao Liu:
-   hw/smbios: Fix smbios_smp_sockets caculation
-17* 7298fd7de555 Zhao Liu:
-   hw/smbios: Fix thread count in type4
-18* 196ea60a734c Zhao Liu:
-   hw/smbios: Fix core count in type4
-19* 8a64609eea8c Dongli Zhang:
-   dump: kdump-zlib data pages not dumped with pvtime/aarch64
-20* dbdb13f931d7 Ankit Kumar:
-   hw/nvme: fix CRC64 for guard tag
-21* 4333f0924c2f Nathan Egge:
-   linux-user/elfload: Set V in ELF_HWCAP for RISC-V
-22* e73f27003e77 Richard Henderson:
-   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for microblaze
-23* ea9812d93f9c Richard Henderson:
-   include/exec/user: Set ABI_LLONG_ALIGNMENT to 4 for nios2
-24* 6ee960823da8 Luca Bonissi:
-   Fixed incorrect LLONG alignment for openrisc and cris
-25* 791b2b6a9302 Ilya Leoshkevich:
-   target/s390x: Fix the "ignored match" case in VSTRS
-26* 23e87d419f34 Ilya Leoshkevich:
-   target/s390x: Use a 16-bit immediate in VREP
-27* 6db3518ba4fc Ilya Leoshkevich:
-   target/s390x: Fix VSTL with a large length
-28* 6a2ea6151835 Ilya Leoshkevich:
-   target/s390x: Check reserved bits of VFMIN/VFMAX's M5
-29* d19436291013 Thomas Huth:
-   include/hw/virtio/virtio-gpu: Fix virtio-gpu with blob on big endian hosts
-30* 5e0d65909c6f Akihiko Odaki:
-   kvm: Introduce kvm_arch_get_default_type hook
-31* 1ab445af8cd9 Akihiko Odaki:
-   accel/kvm: Specify default IPA size for arm64
-32* 4b3520fd93cd Richard Henderson:
-   target/arm: Fix SME ST1Q
-33* cd1e4db73646 Richard Henderson:
-   target/arm: Fix 64-bit SSRA
-34* 09a3fffae00b Philippe Mathieu-Daudé:
-   docs/about/license: Update LICENSE URL
-35* f187609f27b2 Fabiano Rosas:
-   block-migration: Ensure we don't crash during migration cleanup
-36* 6ec65b69ba17 Maksim Kostin:
-   hw/ppc/e500: fix broken snapshot replay
-37* 7b8589d7ce7e Nicholas Piggin:
-   ppc/vof: Fix missed fields in VOF cleanup
-38* af03aeb631ee Richard Henderson:
-   target/ppc: Flush inputs to zero with NJ in ppc_store_vscr
-39* c3461c6264a7 Niklas Cassel:
-   hw/ide/core: set ERR_STAT in unsupported command completion
-40* 2967dc8209dd Niklas Cassel:
-   hw/ide/ahci: write D2H FIS when processing NCQ command
-41* e2a5d9b3d9c3 Niklas Cassel:
-   hw/ide/ahci: simplify and document PxCI handling
-42* d73b84d0b664 Niklas Cassel:
-   hw/ide/ahci: PxSACT and PxCI is cleared when PxCMD.ST is cleared
-43* 1a16ce64fda1 Niklas Cassel:
-   hw/ide/ahci: PxCI should not get cleared when ERR_STAT is set
-44* 7e85cb0db4c6 Niklas Cassel:
-   hw/ide/ahci: fix ahci_write_fis_sdb()
-45* 9f8942353765 Niklas Cassel:
-   hw/ide/ahci: fix broken SError handling
-46* 97b8aa5ae9ff Hang Yu:
-   hw/i2c/aspeed: Fix Tx count and Rx size error in buffer pool mode
-47* 961faf3ddbd8 Hang Yu:
-   hw/i2c/aspeed: Fix TXBUF transmission start position error
-48* bcd8e243083c Thomas Huth:
-   qemu-options.hx: Rephrase the descriptions of the -hd* and -cdrom options
-49* b21a6e31a182 Markus Armbruster:
-   docs tests: Fix use of migrate_set_parameter
-50* 90a0778421ac Thomas Huth:
-   hw/net/vmxnet3: Fix guest-triggerable assert()
-51* 95bef686e490 Marc-André Lureau:
-   qxl: don't assert() if device isn't yet initialized
-52 92e2e6a86733 Kevin Wolf:
-   virtio: Drop out of coroutine context in virtio_load()
-53 682814e2a3c8 Colton Lewis:
-   arm64: Restore trapless ptimer access
-54 c255946e3df4 Thomas Huth:
-   hw/char/riscv_htif: Fix printing of console characters on big endian hosts
-55 e0922b73baf0 Jason Chien:
-   hw/intc: Fix upper/lower mtime write calculation
-56 9382a9eafcca Jason Chien:
-   hw/intc: Make rtc variable names consistent
-57 ae7d4d625cab LIU Zhiwei:
-   linux-user/riscv: Use abi type for target_ucontext
-58 9ff314063125 Conor Dooley:
-   hw/riscv: virt: Fix riscv,pmu DT node path
-59 4e3adce1244e Leon Schuermann:
-   target/riscv/pmp.c: respect mseccfg.RLB for pmpaddrX changes
-60 4c46fe2ed492 Stefan Berger:
-   hw/tpm: TIS on sysbus: Remove unsupport ppi command line option
-61 48a35e12faf9 Marc-André Lureau:
-   ui: fix crash when there are no active_console
-62 297ec01f0b98 Janosch Frank:
-   s390x/ap: fix missing subsystem reset registration
-63 8e32ddff69b6 Marc-André Lureau:
-   tpm: fix crash when FD >= 1024 and unnecessary errors due to EINTR
-
-(commit(s) marked with * were in previous series and are not resent)
 
