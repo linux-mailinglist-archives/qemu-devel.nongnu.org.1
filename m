@@ -2,84 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EBF7A7A66
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F33197A7A57
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:25:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qivH1-0006nj-6O; Wed, 20 Sep 2023 07:21:42 -0400
+	id 1qivIi-0002pc-3x; Wed, 20 Sep 2023 07:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qivGu-0006ml-9t
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:21:33 -0400
-Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qivGs-0002Je-Oi
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:21:32 -0400
-Received: by mail-oa1-x36.google.com with SMTP id
- 586e51a60fabf-1d544a4a315so4274639fac.3
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 04:21:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695208889; x=1695813689; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2sZfZHqt2jnUylehekGfpy+3Is34Ky+f68MpC7nUPlE=;
- b=nVBYR1suCo40nUHlyvQbmrv5NPxxoUzOUtvIWJWMW+UYdeX7wm0xVsNa7gFGgDXhXJ
- bAxfk4wu/WwKwK3ixbov+lUb2EYA+eh49dpCk7tiSmY0SF+ypwlgqtPuge5aHQ/bDV/Y
- hYYcu947ZfGGCeKMd2vTCIKweRhQpPC/i3Ca3gHm97YjOC9q4hYz3TvpXfDLTPGJaVLv
- 933PhLBswchH0sz5A6hApUEN98Dll3HDsERTa3CSJufIyEcM9nNTMLFcMWU9R/bNklDO
- 1JpZP1NrQw9zJJDBnNgMWUgfpbzCuPTYRIFaMTVp1QGeMmApdKv2SeoGi1T59tPG8sIj
- DijA==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qivIf-0002eF-Ai
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:23:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qivId-0002YZ-Cn
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:23:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695208998;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hm4PKuUnZFuFOsXHgLlZrH2Zcv657Fo1thmLv17/2+k=;
+ b=dcvzsnGm5T5M4Mt/4vLcvFa9QEugM3r0BWvhItk6FHA8YtM6u+qCf6ls/g72SYQruyGUD5
+ +lw/lRYPDzXkVIU2MmMkqY01x8uYOJW5dn6y00lzv7xBdt+Q+rzzB2bkjK5Mg4vsoEKyir
+ Fbd3ASPOYpQX3QMmh3JfS+3HTFKuC7k=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-pSu4XKXAOHKtJYf425GOuA-1; Wed, 20 Sep 2023 07:23:17 -0400
+X-MC-Unique: pSu4XKXAOHKtJYf425GOuA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fe1521678fso51463335e9.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 04:23:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695208889; x=1695813689;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2sZfZHqt2jnUylehekGfpy+3Is34Ky+f68MpC7nUPlE=;
- b=Rorg1/SdlEzuejS33RPD2p2pRxyKsVPxJwrVmpR8uPNAIp5mk+onWaAWMpxFu7YOQN
- 9mzcPl4qhuy456xUym6WTO/Y36MAyMld0Jmnp86gCHO+2AEE6/X0LypZ7rXSCwAGoyha
- 4nnl/uygQsYIDOa9Mw4VVILcwkYApVsQQKofHaxLxnQll8G4/WlLJYhmrrT+ogKiz94e
- lM3NiqkBmSio5ox4d8//FzmbEKDypj4u7xSO06bhJEqGSizKzV0Tcc/ON8hgEmlTJSkI
- X3DKMMqFxse/lGzJ14kC2gemjtSYZN8trtuUIltzf+CzNMiGjyhf0uggvT3RJI/E4rhK
- M4aw==
-X-Gm-Message-State: AOJu0Yz8v0T8oQlRJHZ/8zglEyb+dgiMlMLyCUTc4svmoX9qV1149wZJ
- mLRppq3T1ZQIFLn3fjr7o9T5BgPAl/jL7Aw6WYQ=
-X-Google-Smtp-Source: AGHT+IFSU3C1ewkYbQO7Jb9I++mfmHjae7FRnEHtkjjXwJw0ZDFVrCXnzupXoraRmqqGmP4BYDqbww==
-X-Received: by 2002:a05:6870:4189:b0:1db:71b9:419c with SMTP id
- y9-20020a056870418900b001db71b9419cmr2423712oac.58.1695208889332; 
- Wed, 20 Sep 2023 04:21:29 -0700 (PDT)
-Received: from grind.. ([2804:7f0:bcc0:bdf2:b7ba:a476:c0e3:fb59])
+ d=1e100.net; s=20230601; t=1695208996; x=1695813796;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hm4PKuUnZFuFOsXHgLlZrH2Zcv657Fo1thmLv17/2+k=;
+ b=MGUUGxv78HjVDnUnotTQS71VJh0HcGS6x4S1xFTbTguKcPvu/DtOWpyv+5F8kfvHZk
+ 1BcPPZ3LI3edg8TQFINtidVM3SCzC3UDZBDBU9cGD3zddcTzFoJiSIbjHkfTrMaOmYza
+ FB6zFCbsVPFI4pS2eiQxqYYvbzT0B04ceqhj/CaFay2w4FHkYCZrVbmSv5DXYMvo9ZbI
+ it+Cs8xG33ootgjsAmLBkNSyXd1lXtjWHMFIVXlz553tl3eP/HIxSRqnRj9VBw3X+tBu
+ 0VpxxL1xDpFjfkfS2DOAiuJj8WKIiI67vUIKGG1K6Po+qHQoOCx3AdaqrKPX27BIMltF
+ BnYw==
+X-Gm-Message-State: AOJu0YzuVcM3aAgFRAjZIm8g9vmcUDwMytbyZzdSzg4KQLesgzcFmAmw
+ jzN50cV1fBKrI6y0U32c7Y/D0vHUQJWTCWoKlh8cRTXYiGTtYAmDyky9WKWi0yakrwmR0TA/KiB
+ mM8ABDc4VMJYSS9w=
+X-Received: by 2002:a05:600c:2613:b0:400:57d1:4913 with SMTP id
+ h19-20020a05600c261300b0040057d14913mr2348688wma.9.1695208995951; 
+ Wed, 20 Sep 2023 04:23:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHDdl5FHC+lQOd0sUUvFlCuNqh8HdjFlnWQlV9ldDAYbJV1T0jmDEuqJHZMFiwEIkA6afcIfA==
+X-Received: by 2002:a05:600c:2613:b0:400:57d1:4913 with SMTP id
+ h19-20020a05600c261300b0040057d14913mr2348671wma.9.1695208995521; 
+ Wed, 20 Sep 2023 04:23:15 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- q4-20020a9d7c84000000b006b45be2fdc2sm5863955otn.65.2023.09.20.04.21.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Sep 2023 04:21:29 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- philmd@linaro.org, ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v3 19/19] target/riscv/cpu: move priv spec functions to
- tcg-cpu.c
-Date: Wed, 20 Sep 2023 08:20:20 -0300
-Message-ID: <20230920112020.651006-20-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230920112020.651006-1-dbarboza@ventanamicro.com>
-References: <20230920112020.651006-1-dbarboza@ventanamicro.com>
+ d18-20020a05600c251200b003fed7fa6c00sm1699579wma.7.2023.09.20.04.23.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Sep 2023 04:23:14 -0700 (PDT)
+Message-ID: <9c12db4c-439f-463c-76d6-fddc131e1f5a@redhat.com>
+Date: Wed, 20 Sep 2023 13:23:12 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::36;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oa1-x36.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 04/22] vfio/common: Introduce
+ vfio_container_add|del_section_window()
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-5-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20230830103754.36461-5-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,146 +107,214 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Priv spec validation is TCG specific. Move it to the TCG accel class.
+Hi Zhenzhong,
+On 8/30/23 12:37, Zhenzhong Duan wrote:
+> From: Eric Auger <eric.auger@redhat.com>
+>
+> Introduce helper functions that isolate the code used for
+> VFIO_SPAPR_TCE_v2_IOMMU. This code reliance is IOMMU backend
+> specific whereas the rest of the code in the callers, ie.
+this last sentence should be rephrased into something like
+Those helpers hide implementation details beneath the container object
+and make the vfio_listener_region_add/del() implementations more
+readable ( I think). No code change intended.
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
----
- target/riscv/cpu.c         | 38 --------------------------------------
- target/riscv/cpu.h         |  2 --
- target/riscv/tcg/tcg-cpu.c | 38 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 38 insertions(+), 40 deletions(-)
+Thanks
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index e97ba3df93..eeeb08a35a 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -172,21 +172,6 @@ void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en)
-     *ext_enabled = en;
- }
- 
--int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
--{
--    const RISCVIsaExtData *edata;
--
--    for (edata = isa_edata_arr; edata && edata->name; edata++) {
--        if (edata->ext_enable_offset != ext_offset) {
--            continue;
--        }
--
--        return edata->min_version;
--    }
--
--    g_assert_not_reached();
--}
--
- const char * const riscv_int_regnames[] = {
-     "x0/zero", "x1/ra",  "x2/sp",  "x3/gp",  "x4/tp",  "x5/t0",   "x6/t1",
-     "x7/t2",   "x8/s0",  "x9/s1",  "x10/a0", "x11/a1", "x12/a2",  "x13/a3",
-@@ -925,29 +910,6 @@ static void riscv_cpu_disas_set_info(CPUState *s, disassemble_info *info)
-     }
- }
- 
--void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
--{
--    CPURISCVState *env = &cpu->env;
--    const RISCVIsaExtData *edata;
--
--    /* Force disable extensions if priv spec version does not match */
--    for (edata = isa_edata_arr; edata && edata->name; edata++) {
--        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset) &&
--            (env->priv_ver < edata->min_version)) {
--            isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
--#ifndef CONFIG_USER_ONLY
--            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
--                        " because privilege spec version does not match",
--                        edata->name, env->mhartid);
--#else
--            warn_report("disabling %s extension because "
--                        "privilege spec version does not match",
--                        edata->name);
--#endif
--        }
--    }
--}
--
- #ifndef CONFIG_USER_ONLY
- static void riscv_cpu_satp_mode_finalize(RISCVCPU *cpu, Error **errp)
- {
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 3dfcd0732f..219fe2e9b5 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -711,9 +711,7 @@ enum riscv_pmu_event_idx {
- /* used by tcg/tcg-cpu.c*/
- void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en);
- bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset);
--int cpu_cfg_ext_get_min_version(uint32_t ext_offset);
- void riscv_cpu_set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext);
--void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu);
- 
- typedef struct RISCVCPUMultiExtConfig {
-     const char *name;
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index c326ab37a2..8c052d6fcd 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -99,6 +99,21 @@ static const struct TCGCPUOps riscv_tcg_ops = {
- #endif /* !CONFIG_USER_ONLY */
- };
- 
-+static int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
-+{
-+    const RISCVIsaExtData *edata;
-+
-+    for (edata = isa_edata_arr; edata && edata->name; edata++) {
-+        if (edata->ext_enable_offset != ext_offset) {
-+            continue;
-+        }
-+
-+        return edata->min_version;
-+    }
-+
-+    g_assert_not_reached();
-+}
-+
- static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
-                                     bool value)
- {
-@@ -226,6 +241,29 @@ static void riscv_cpu_validate_v(CPURISCVState *env, RISCVCPUConfig *cfg,
-     }
- }
- 
-+static void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu)
-+{
-+    CPURISCVState *env = &cpu->env;
-+    const RISCVIsaExtData *edata;
-+
-+    /* Force disable extensions if priv spec version does not match */
-+    for (edata = isa_edata_arr; edata && edata->name; edata++) {
-+        if (isa_ext_is_enabled(cpu, edata->ext_enable_offset) &&
-+            (env->priv_ver < edata->min_version)) {
-+            isa_ext_update_enabled(cpu, edata->ext_enable_offset, false);
-+#ifndef CONFIG_USER_ONLY
-+            warn_report("disabling %s extension for hart 0x" TARGET_FMT_lx
-+                        " because privilege spec version does not match",
-+                        edata->name, env->mhartid);
-+#else
-+            warn_report("disabling %s extension because "
-+                        "privilege spec version does not match",
-+                        edata->name);
-+#endif
-+        }
-+    }
-+}
-+
- /*
-  * Check consistency between chosen extensions while setting
-  * cpu->cfg accordingly.
--- 
-2.41.0
+Eric
+> vfio_listener_region_add|del is not.
+>
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>  hw/vfio/common.c | 156 +++++++++++++++++++++++++++--------------------
+>  1 file changed, 89 insertions(+), 67 deletions(-)
+>
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 9ca695837f..67150e4575 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -796,6 +796,92 @@ static bool vfio_get_section_iova_range(VFIOContainer *container,
+>      return true;
+>  }
+>  
+> +static int vfio_container_add_section_window(VFIOContainer *container,
+> +                                             MemoryRegionSection *section,
+> +                                             Error **errp)
+> +{
+> +    VFIOHostDMAWindow *hostwin;
+> +    hwaddr pgsize = 0;
+> +    int ret;
+> +
+> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+> +        return 0;
+> +    }
+> +
+> +    /* For now intersections are not allowed, we may relax this later */
+> +    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> +        if (ranges_overlap(hostwin->min_iova,
+> +                           hostwin->max_iova - hostwin->min_iova + 1,
+> +                           section->offset_within_address_space,
+> +                           int128_get64(section->size))) {
+> +            error_setg(errp,
+> +                "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
+> +                "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
+> +                section->offset_within_address_space,
+> +                section->offset_within_address_space +
+> +                    int128_get64(section->size) - 1,
+> +                hostwin->min_iova, hostwin->max_iova);
+> +            return -EINVAL;
+> +        }
+> +    }
+> +
+> +    ret = vfio_spapr_create_window(container, section, &pgsize);
+> +    if (ret) {
+> +        error_setg_errno(errp, -ret, "Failed to create SPAPR window");
+> +        return ret;
+> +    }
+> +
+> +    vfio_host_win_add(container, section->offset_within_address_space,
+> +                      section->offset_within_address_space +
+> +                      int128_get64(section->size) - 1, pgsize);
+> +#ifdef CONFIG_KVM
+> +    if (kvm_enabled()) {
+> +        VFIOGroup *group;
+> +        IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
+> +        struct kvm_vfio_spapr_tce param;
+> +        struct kvm_device_attr attr = {
+> +            .group = KVM_DEV_VFIO_GROUP,
+> +            .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
+> +            .addr = (uint64_t)(unsigned long)&param,
+> +        };
+> +
+> +        if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
+> +                                          &param.tablefd)) {
+> +            QLIST_FOREACH(group, &container->group_list, container_next) {
+> +                param.groupfd = group->fd;
+> +                if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+> +                    error_report("vfio: failed to setup fd %d "
+> +                                 "for a group with fd %d: %s",
+> +                                 param.tablefd, param.groupfd,
+> +                                 strerror(errno));
+> +                    return 0;
+> +                }
+> +                trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
+> +            }
+> +        }
+> +    }
+> +#endif
+> +    return 0;
+> +}
+> +
+> +static void vfio_container_del_section_window(VFIOContainer *container,
+> +                                              MemoryRegionSection *section)
+> +{
+> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+> +        return;
+> +    }
+> +
+> +    vfio_spapr_remove_window(container,
+> +                             section->offset_within_address_space);
+> +    if (vfio_host_win_del(container,
+> +                          section->offset_within_address_space,
+> +                          section->offset_within_address_space +
+> +                          int128_get64(section->size) - 1) < 0) {
+> +        hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
+> +                 __func__, section->offset_within_address_space);
+> +    }
+> +}
+> +
+>  static void vfio_listener_region_add(MemoryListener *listener,
+>                                       MemoryRegionSection *section)
+>  {
+> @@ -822,62 +908,8 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>          return;
+>      }
+>  
+> -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+> -        hwaddr pgsize = 0;
+> -
+> -        /* For now intersections are not allowed, we may relax this later */
+> -        QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> -            if (ranges_overlap(hostwin->min_iova,
+> -                               hostwin->max_iova - hostwin->min_iova + 1,
+> -                               section->offset_within_address_space,
+> -                               int128_get64(section->size))) {
+> -                error_setg(&err,
+> -                    "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
+> -                    "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
+> -                    section->offset_within_address_space,
+> -                    section->offset_within_address_space +
+> -                        int128_get64(section->size) - 1,
+> -                    hostwin->min_iova, hostwin->max_iova);
+> -                goto fail;
+> -            }
+> -        }
+> -
+> -        ret = vfio_spapr_create_window(container, section, &pgsize);
+> -        if (ret) {
+> -            error_setg_errno(&err, -ret, "Failed to create SPAPR window");
+> -            goto fail;
+> -        }
+> -
+> -        vfio_host_win_add(container, section->offset_within_address_space,
+> -                          section->offset_within_address_space +
+> -                          int128_get64(section->size) - 1, pgsize);
+> -#ifdef CONFIG_KVM
+> -        if (kvm_enabled()) {
+> -            VFIOGroup *group;
+> -            IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
+> -            struct kvm_vfio_spapr_tce param;
+> -            struct kvm_device_attr attr = {
+> -                .group = KVM_DEV_VFIO_GROUP,
+> -                .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
+> -                .addr = (uint64_t)(unsigned long)&param,
+> -            };
+> -
+> -            if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
+> -                                              &param.tablefd)) {
+> -                QLIST_FOREACH(group, &container->group_list, container_next) {
+> -                    param.groupfd = group->fd;
+> -                    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+> -                        error_report("vfio: failed to setup fd %d "
+> -                                     "for a group with fd %d: %s",
+> -                                     param.tablefd, param.groupfd,
+> -                                     strerror(errno));
+> -                        return;
+> -                    }
+> -                    trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
+> -                }
+> -            }
+> -        }
+> -#endif
+> +    if (vfio_container_add_section_window(container, section, &err)) {
+> +        goto fail;
+>      }
+>  
+>      hostwin = vfio_find_hostwin(container, iova, end);
+> @@ -1094,17 +1126,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+>  
+>      memory_region_unref(section->mr);
+>  
+> -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+> -        vfio_spapr_remove_window(container,
+> -                                 section->offset_within_address_space);
+> -        if (vfio_host_win_del(container,
+> -                              section->offset_within_address_space,
+> -                              section->offset_within_address_space +
+> -                              int128_get64(section->size) - 1) < 0) {
+> -            hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
+> -                     __func__, section->offset_within_address_space);
+> -        }
+> -    }
+> +    vfio_container_del_section_window(container, section);
+>  }
+>  
+>  static int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
 
 
