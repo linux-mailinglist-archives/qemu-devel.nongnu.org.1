@@ -2,80 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4587A88AB
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 17:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D087A88AA
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 17:42:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qizKn-0003Y8-7s; Wed, 20 Sep 2023 11:41:49 -0400
+	id 1qizKo-0003YG-5W; Wed, 20 Sep 2023 11:41:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qizKi-0003Xe-3d
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:41:44 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qizKj-0003Xn-T4
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:41:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qizKg-0006f1-KK
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:41:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=AIAib1BJS3rjfr+TssE4CXiZE1sI6ppa1cSS9AqQkEk=; b=vROyzy+Y9qXVlT2fW4oVlimOG7
- HA6nRDWa+fQfSoxEBjqlTFTnBXXRYkQrSB2SazTJ1jSqvr4DG1MCxPjlAl2i6ndJnw9M8t29VENCI
- cwyWACPsR/JiMGnf8BUmeHxvUzZe+Lv+q+8IEwKCQdBn9tYlcRV+H2LQWplqWlIwYq4sE7bp+USZf
- S/hq/y3FcXO3z1YlA0bY5pWeIKTkitIpQHDnEnNovFGwrce1Q8BDtleD5XCXaVEGn47q4HkyW7DNe
- 1QDnWNOKeZJnpiTQs6gYaiLD9jFgQYAA5rQ7PmMbrfnuITHSeQfhkuQwj7WaGHw7pfJ+H44O2+Bus
- f/EWeRi2JLzbjxY/f7Lor0JE67IFxK4/MQpEutwPzC+uu+QiiYOoiL/KmRtMIAIl2q3R5/8kI8/wG
- pOKnKrV37+NxNfXKkMKRkmEPQPG5EKhnK4HuodQnYYGUMMyTnYnT6btj+cyT7+V+d8z0kdZN+MAQd
- YozizLeprVq09gtJ59S+bp3GmKnuD/7SP+Ke4Cr46h/MD/IrzoJMm0/USP9q3cm+efVx1RLq/e0r+
- pl5hGLcZz0nFsU4lUi+bHqcnyXIOCc+zF2T5mP10pHrhkBzT2XvqqcOcCN58ab3sOcFRvKXGfzHWE
- 1qt0u79rZSaKFEjwMKrCqNsrKgr5vxUhfMgXcnZ48=;
-Received: from [2a00:23c4:8baf:5f00:4f7d:f5b:6c8a:d0af]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qizKT-0004mY-IA; Wed, 20 Sep 2023 16:41:33 +0100
-Message-ID: <ae8d9cc8-d633-0ea0-3714-352e87bddede@ilande.co.uk>
-Date: Wed, 20 Sep 2023 16:41:33 +0100
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qizKh-0006f6-Ez
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:41:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695224502;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ImKsrOm22l0Cjly0XJLu90aEyOOxO+NlelGomc6l0Dg=;
+ b=KaT4bsQD3sTKYuJmW/crhdGFDwwGt200a8YOVmFA6EmXtsgJSywzCOE5pahER0uc6l37Xd
+ DsdWA8d/alhSzyElBGHO9igcR4WRcD7XpFkaPnOcJVi/2P8RCpftGBNXmW0YQKuGTHut/O
+ Latqx8igPnw9pWUuisWwXGnLs+3X9Lw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-587-QhocAhsZNcKafrdWpoGe3w-1; Wed, 20 Sep 2023 11:41:40 -0400
+X-MC-Unique: QhocAhsZNcKafrdWpoGe3w-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-31ff9e40977so3416562f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 08:41:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695224499; x=1695829299;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ImKsrOm22l0Cjly0XJLu90aEyOOxO+NlelGomc6l0Dg=;
+ b=EFIRQzZeIDnTkTY2Exwrtj8wfZ7cq4/T79hfjqo6f+J7O54sTOY/ZGznKXMLQam8yG
+ N+GqV+G15FYYdtmRlRR3PNSdUtX5NqUSK3YRa2zjOXjbAGg58iUG4HV1g6Yg8vqC2971
+ 39l113CE258HTSgon3s7Z9+b+kXK+NL45UAM1f0Kv3wp5XmKbKsvUFkiFb9pPM6IQHf3
+ luC3joitwsVXSYdJF8XBMU8/Tfgs0On5tL4peF/AzEs8afOcQSchJU9RZ8R7MEDX+1VL
+ FEq6Wi6P8jIASmaZGRbZkSxJVfBogL48d4huL2U97qdDvEHDeE+FpHJzV+OBbUWjmDJR
+ CzEQ==
+X-Gm-Message-State: AOJu0YxWC2ev1p8S4PnjwuxBckmEiLZOx8kYe4UVm+HcuSh1SrEVGOK8
+ r2K5uxWD3ja7fnerADqzZYCGOyNDtd3Ko5pzW6WM9yapWOWre7SMK6boh8NAteI23d2f2BC4Exu
+ mL+BcnXDBqFnzE1Z7Dj531fztSGFNBAi18FGgbi/doBmzQ6/o+1irNLI9q+Cd1JFHTjrd0eoOp7
+ c=
+X-Received: by 2002:a5d:5005:0:b0:31f:e883:2ffc with SMTP id
+ e5-20020a5d5005000000b0031fe8832ffcmr2602400wrt.43.1695224498762; 
+ Wed, 20 Sep 2023 08:41:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+hIQwZg6rjGQC9/oHztGu14w5u5oP4TJQPmR7PyjgHhUGFDJkJh/RAB9KXPqzPSTI77wr/w==
+X-Received: by 2002:a5d:5005:0:b0:31f:e883:2ffc with SMTP id
+ e5-20020a5d5005000000b0031fe8832ffcmr2602384wrt.43.1695224498340; 
+ Wed, 20 Sep 2023 08:41:38 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ a12-20020a056000100c00b0031ae2a7adb5sm18728557wrx.85.2023.09.20.08.41.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Sep 2023 08:41:37 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: weijiang.yang@intel.com
+Subject: [PATCH] target/i386: enumerate bit 56 of MSR_IA32_VMX_BASIC
+Date: Wed, 20 Sep 2023 17:41:36 +0200
+Message-ID: <20230920154136.33171-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: laurent@vivier.eu, qemu-devel@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20230702154838.722809-1-mark.cave-ayland@ilande.co.uk>
- <20230702154838.722809-11-mark.cave-ayland@ilande.co.uk>
- <e3fe143f-2c07-2d59-3dca-4534a767391d@linaro.org>
- <f639b4b1-965a-fe9d-a988-2dbd2c1c0e68@ilande.co.uk>
- <44e50cdb-37f0-c18d-4d64-0f34777a193d@linaro.org>
- <87ledd1eaz.fsf@pond.sub.org>
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <87ledd1eaz.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:4f7d:f5b:6c8a:d0af
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 10/21] q800: add easc bool machine class property to
- switch between ASC and EASC
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,60 +97,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/09/2023 06:15, Markus Armbruster wrote:
+On parts that enumerate IA32_VMX_BASIC MSR bit as 1, any exception vector
+can be delivered with or without an error code if the other consistency
+checks are satisfied.
 
-> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
-> 
->> On 8/9/23 08:54, Mark Cave-Ayland wrote:
->>> On 07/07/2023 09:29, Philippe Mathieu-Daudé wrote:
->>>
->>>> On 2/7/23 17:48, Mark Cave-Ayland wrote:
->>>>> This determines whether the Apple Sound Chip (ASC) is set to enhanced mode
->>>>> (default) or to original mode. The real Q800 hardware used an EASC chip however
->>>>> a lot of older software only works with the older ASC chip.
->>>>>
->>>>> Adding this as a machine parameter allows QEMU to be used as an developer aid
->>>>> for testing and migrating code from ASC to EASC.
->>>>>
->>>>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>>>> ---
->>>>>    hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
->>>>>    include/hw/m68k/q800.h |  1 +
->>>>>    2 files changed, 30 insertions(+), 1 deletion(-)
->>>>
->>>>
->>>>> +static bool q800_get_easc(Object *obj, Error **errp)
->>>>> +{
->>>>> +    Q800MachineState *ms = Q800_MACHINE(obj);
->>>>> +
->>>>> +    return ms->easc;
->>>>> +}
->>>>
->>>> Is the getter useful? Otherwise:
->>> Isn't it a requirement? Otherwise I can see that if we decide to enumerate machine properties (similar as to how device properties appear in "info qtree") then it would be impossible to display its value. Certainly at the moment we consider that adding an object property to an underlying struct effectively makes it "public".
->>
->> Just FYI this is not a requirement, per "qom/object.h":
->>
->>    /**
->>     * object_property_add_bool:
->>     * @obj: the object to add a property to
->>     * @name: the name of the property
->>     * @get: the getter or NULL if the property is write-only.
->>     * @set: the setter or NULL if the property is read-only
->>
->> I'm not sure when we want a write-only QOM boolean property, so I
->> genuinely ask, since I agree introspecting QOM object fields from
->> the monitor is helpful.
-> 
-> I suspect write-only properties came out of QOM's generality curse.  Do
-> we have even one?  QOM's design makes this somewhat to tell.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ target/i386/cpu.c | 1 +
+ target/i386/cpu.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-Good question. Given that it's towards the beginning of the next dev cycle, perhaps 
-it is worth sending a patch to find out? ;)
-
-
-ATB,
-
-Mark.
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 6e52c7be1e1..8f334dbbcc2 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -1347,6 +1347,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
+         .feat_names = {
+             [54] = "vmx-ins-outs",
+             [55] = "vmx-true-ctls",
++            [56] = "vmx-any-errcode",
+         },
+         .msr = {
+             .index = MSR_IA32_VMX_BASIC,
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index eab610e5cd5..2e09c588f0b 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -1039,6 +1039,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
+ #define MSR_VMX_BASIC_DUAL_MONITOR                   (1ULL << 49)
+ #define MSR_VMX_BASIC_INS_OUTS                       (1ULL << 54)
+ #define MSR_VMX_BASIC_TRUE_CTLS                      (1ULL << 55)
++#define MSR_VMX_BASIC_ANY_ERRCODE                    (1ULL << 56)
+ 
+ #define MSR_VMX_MISC_PREEMPTION_TIMER_SHIFT_MASK     0x1Full
+ #define MSR_VMX_MISC_STORE_LMA                       (1ULL << 5)
+-- 
+2.41.0
 
 
