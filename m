@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4934B7A8CB6
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 21:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3CA7A8D12
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 21:48:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj2nT-0000vA-SL; Wed, 20 Sep 2023 15:23:39 -0400
+	id 1qj3AL-00085W-N7; Wed, 20 Sep 2023 15:47:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2nR-0000uc-0y
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:23:37 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2nP-0003Gi-Fr
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:23:36 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-532addba879so264497a12.0
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 12:23:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695237814; x=1695842614;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=x7yO0pJ2ed9VDGXd8LqFRDnc//8eMnRVgfWmvJXUBeU=;
- b=mBa6DV/s1HcJNtlDkMKT6V3jpUKh5mTnUMEf9yQxxyfjBPIuzpQfWzSTZsjdlgJthR
- 0LQkea63tBFn/fMpYe3Caec/ZtiPO8yTm/11pKbPGwuY+iGuyB/9kbxWB37gsmh/wuCJ
- Yk0s4nfVcarBDFlMd4p4qNgHuap2aAtDC/0r9+wMkuZFIg/uYsSs54igMhukbm5YnflG
- 9oT+vYQ5bNx51hHzdCoC5yH/j9XJIihMdopoq6GTPxFw2wKEdCEY4zUWV97KA2TwxHXz
- WpAYilKMvCtCZiXyfWZog0h50sobG72cRdYS71UDFHfyKJlYK7fQLS4Mi4A8VQrvAIxM
- q7yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695237814; x=1695842614;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=x7yO0pJ2ed9VDGXd8LqFRDnc//8eMnRVgfWmvJXUBeU=;
- b=tj5KlBsRuXB+rulrAe4HGznOkxpY7XvC2/f2BQHIMYXPKrKO8dst5GvmKJjIpFIojw
- cmyLpF9LioJsDf3UAJIE61PdudUDJHe/mJtr4YVl1Pji7UYciij01C8poGlgsmGkCSil
- fCdmDOKhkzvYulFu6WPulAzPDYtL+cL8KK6HGKRB4ejn+g7XmzMj5fIfmj2PeJ2zS24P
- Sww4P3jNLdkuo29c2P0QyTh6c2nQBDXaJ1Ql36oETjKLn5O8GXl5DLWh/lPUxrK9UFdh
- OaIEAvrQ9BKUGhTmIrEGlsVbLoEf7rbcwKSsPqETAkAeA2uLxmXCS0F2TuRYkBvvQWTD
- MS+Q==
-X-Gm-Message-State: AOJu0YzJKizQ6jdB8rUwMguAEbJ7/j0SBRVDDu+7UdtPBpdAaBzGiRL9
- MNj/SN4ehom8sEq1bnmSTn9O+/u5UvXNwj4oCpWAug==
-X-Google-Smtp-Source: AGHT+IF3GfYdWEoMq+k6+tz9ZkYIs/D7bqD+f8idWMDfED8+jKTPkPsGN4xHAaicQDIUlVvtzzqA4hZvjcbc4CuIXpg=
-X-Received: by 2002:aa7:c411:0:b0:521:d2ab:e4df with SMTP id
- j17-20020aa7c411000000b00521d2abe4dfmr4943089edq.19.1695237813763; Wed, 20
- Sep 2023 12:23:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qj3AH-000859-A5
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:47:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qj3AF-0007X7-Qb
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 15:47:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695239230;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RbgSNO2fHUbDAWhEe7iwwQykES6X51yzlNyeu4uwjz8=;
+ b=Lx1PQBKidCG+mRuTRNXTsBaEmi1IpyOgqYaOmd4lmkXkv3G2uVJSuQ9uVhotkLcc00r1aH
+ jNIwRLkOCneP2SjUZK7VyEAoCm0ao7bxoP7iaNqo9vtrMZ7bqJYAu5N35PNJmmt8dO5ZLM
+ hVJNkatyKwxdIHppnzTSxd3w2s89tC4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-361-EW_4-155MVCDYc8Ow7KBQA-1; Wed, 20 Sep 2023 15:47:05 -0400
+X-MC-Unique: EW_4-155MVCDYc8Ow7KBQA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7F4B428EC101;
+ Wed, 20 Sep 2023 19:47:00 +0000 (UTC)
+Received: from localhost (unknown [10.39.193.174])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F3B012026D37;
+ Wed, 20 Sep 2023 19:46:59 +0000 (UTC)
+Date: Wed, 20 Sep 2023 15:46:57 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Mads Ynddal <mads@ynddal.dk>
+Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Mads Ynddal <m.ynddal@samsung.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v4 04/14] simpletrace: changed naming of edict and
+ idtoname to improve readability
+Message-ID: <20230920194657.GD1094271@fedora>
+References: <20230823085429.20519-1-mads@ynddal.dk>
+ <20230823085429.20519-5-mads@ynddal.dk>
 MIME-Version: 1.0
-References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
- <20230917213803.20683-29-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230917213803.20683-29-kariem.taha2.7@gmail.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 20 Sep 2023 20:23:22 +0100
-Message-ID: <CANCZdfqaKOdqP0uxFJ=TedfuFYsrMshyN6Ln57Y_=W3OZ_oxAQ@mail.gmail.com>
-Subject: Re: [PATCH v2 28/28] bsd-user: Implement pdfork(2) system call.
-To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000b32e800605cf4f34"
-Received-SPF: none client-ip=2a00:1450:4864:20::530;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="hgA+k3XJyjtqk4uN"
+Content-Disposition: inline
+In-Reply-To: <20230823085429.20519-5-mads@ynddal.dk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,57 +83,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b32e800605cf4f34
-Content-Type: text/plain; charset="UTF-8"
+
+--hgA+k3XJyjtqk4uN
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 17, 2023 at 10:40=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
-om>
-wrote:
-
-> From: Stacey Son <sson@FreeBSD.org>
->
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-> Acked-by: Richard Henderson <richard.henderson@linaro.org>
+On Wed, Aug 23, 2023 at 10:54:19AM +0200, Mads Ynddal wrote:
+> From: Mads Ynddal <m.ynddal@samsung.com>
+>=20
+> Readability is subjective, but I've expanded the naming of the variables
+> and arguments, to help with understanding for new eyes on the code.
+>=20
+> Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
+> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 > ---
->  bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |  4 ++++
->  2 files changed, 36 insertions(+)
->
+>  scripts/simpletrace.py | 34 +++++++++++++++++-----------------
+>  1 file changed, 17 insertions(+), 17 deletions(-)
 
-Reviewed-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-I chased down pdfork recently for other reasons, and I'm pretty sure this
-is good.
+--hgA+k3XJyjtqk4uN
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Warner
+-----BEGIN PGP SIGNATURE-----
 
---000000000000b32e800605cf4f34
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmULTDAACgkQnKSrs4Gr
+c8jN0ggAl8WKc7sFi5WtXpLCZOX3m2mwCSAvVUvJbwPCYRANJcZea5sKF0Uv+Hqy
+IV+qkM923Fi0aaTj2kVgXYRcNubjG1ghSMHUo81r/7APGdogfzsDmjBh4R17IbFK
+Y1Qay3/O52LwCTIFsGa8krfQ+jnM/tL4yJ++I9IzOS0Ml5g+ZSyPzAKzopyLZ6Vf
+qiCZPlqb+ho/npzE8Ktym8qI2J7mFniQjw8FUj0fUt5sIVpH4o1Ku4X7wzgek8mk
+vUAAXfCKUL70ym7QOyoaxLGrNt+tR733RkK6UmasSyH/YY7Wp3BzscwmnJhJDAnT
+v1K29z97jFDj07fHvWd6zBjpyJpjOQ==
+=1ln/
+-----END PGP SIGNATURE-----
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sun, Sep 17, 2023 at 10:40=E2=80=
-=AFPM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.tah=
-a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-<br>
-Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
-arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
-Acked-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@linaro.=
-org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
----<br>
-=C2=A0bsd-user/freebsd/os-proc.h=C2=A0 =C2=A0 | 32 ++++++++++++++++++++++++=
-++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 4 ++++<br>
-=C2=A02 files changed, 36 insertions(+)<br></blockquote><div><br></div><div=
->Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
-com</a>&gt;</div><div><br></div><div>I chased down pdfork recently for othe=
-r reasons, and I&#39;m pretty sure this is good.</div><div><br></div><div>W=
-arner</div><div>=C2=A0</div></div></div>
+--hgA+k3XJyjtqk4uN--
 
---000000000000b32e800605cf4f34--
 
