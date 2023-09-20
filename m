@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432467A8BF2
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9857A8BF7
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 20:45:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj29z-0007J8-PB; Wed, 20 Sep 2023 14:42:51 -0400
+	id 1qj2Bx-0007y9-HJ; Wed, 20 Sep 2023 14:44:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj29y-0007J0-RY
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:42:50 -0400
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2Bv-0007xw-Rw
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:44:51 -0400
 Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj29x-00056s-9r
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:42:50 -0400
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qj2Bu-0005Ji-0W
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 14:44:51 -0400
 Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-530e721f077so44407a12.2
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:42:48 -0700 (PDT)
+ 4fb4d7f45d1cf-5310aec4121so42088a12.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 11:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695235367; x=1695840167;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695235488; x=1695840288;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=aWDNGj+JL/Xb1F+Pblp46IOXIt8PdD+++6b2Huj7yeY=;
- b=QNySJKMMfTcOxFqItmBzAYryYCOWQg9UvVRL0KGq98FLN2a1zXKXeZ6edGxtcYOchJ
- YGUbOVFfWGUGXS61RStvx/afKHs/Yyk00t/gt4PUWVWLM3UknBt+/5wMGjNoxWYpI/TH
- 7TL5Q8GBLBpJtCRfITeNHLO+Y1MsEKlSC2Ze0Q3uARB20W7JnihG12GBak3lNOjlaBqw
- lmnUwzBFYIuR2pH51LX5gC7J+hlVmbbUCPtdFjo795Zrzj5WWrG91NAt7Yctc8zhbyVH
- LVGZ+rq9APuLM1K2kMCZzfXH6Bpv15IlbvucmXBLu1xHNJknPagMawHhlifTQre5G2ah
- pwgw==
+ bh=sDn0UmupLzS8JVs85rxD7Zb1zynXA9xdUhSUBoVrk3Q=;
+ b=BCpOsfpRVSHVEtS78+PMeLIRtarxidTodkEjRarZkjKV7aOM3JXSWrmCtFV7A2C7jJ
+ ryuNQF5RRMpPYjbspJjNrpCTKdr/YsYvyAit6QUlCtcRcFsOO53ZjU4Ja6hIcd4l5dFf
+ ZKd2+rpNC6HNh8MMHGHN6IQmbJfeMj6KvFFuvMjyYp7wQecaRruey92wdlA8ujMKr0Ad
+ hDHxUBxoQoV3XYdXbO5GXR2xOfwt9prJwwZcgGhu1MyVJTBAT0CeFI6ucz+h91CpVaFE
+ /3PvRuqbgTlyBFuM107J3YT2U6lassjpnckq7rVcu/GlUJ4q7FZsUsjoHPBYdaxgOZV/
+ PAtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695235367; x=1695840167;
+ d=1e100.net; s=20230601; t=1695235488; x=1695840288;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=aWDNGj+JL/Xb1F+Pblp46IOXIt8PdD+++6b2Huj7yeY=;
- b=K+yCDyU4f1/fHM/n7sgjzD+/BsKkNkN3vpFC3UBfynLF0f/pXjZViAFYG2zwExxAkw
- MuxbhviltHjCxuddpD2GVH+UAPXXvfSbz0fCIMUDHwjzE+js7rmMUe0dd3gAsx5T8AUY
- 6IZDn+o9y8bXtYEi7/iWtGFMFf/utORgkN2lNDIXV5opzIJnXna5c2r6ie7tmql8W6zV
- jn0d/ZRsCJNBXySESqwrLtbXLH2eRH/KkqYKFjE350Cnk0B3sI/P5LXdBLsi7UL1QFzG
- 1+z9Dhts/vSWHSzGPxQUoy8EIn4XgnIWvVIu9ysX67EoMuZlhP8Sdf65p8fvJZwRjSVo
- AfRw==
-X-Gm-Message-State: AOJu0Ywz04eAZfxVgc6J2stO52g0ju3IFfwg9zUtjD/Ca5rMH7tAw2tt
- jsnej82xPx3cVdpB4hyuvYC6e1XP+7Mjwts9Nke2xQ==
-X-Google-Smtp-Source: AGHT+IEHBk//NnyijnNhpdTvuLnGb8fSEXMDTiuc81/VmZer89CZxBDGlox2j/q8P6eL29LIZuORacCggh2jOOy9sdo=
-X-Received: by 2002:a05:6402:31f4:b0:530:d6e5:9229 with SMTP id
- dy20-20020a05640231f400b00530d6e59229mr3065384edb.10.1695235367621; Wed, 20
- Sep 2023 11:42:47 -0700 (PDT)
+ bh=sDn0UmupLzS8JVs85rxD7Zb1zynXA9xdUhSUBoVrk3Q=;
+ b=NMnmDw66suv9QV5ZgqYVf9HIh6q+mAJ8osLAouwiBUeNp9fbV027wsRjsA1uAiPZJl
+ TrQv7Kk6eVslFcSv7g+oZfWeTSivi3+qYYGtefyILjKfScg/gGE+yKwtxByVGRcejBRP
+ MobhsRIO4vOd0FrpfxsNBTkZ7iQ5mBvFqTQf1NuVKNzglVcTkV3GdIvmdWeF8VPO07ko
+ K2W6TenNSR1HgrvVCFNUjj5Y2h7gJtNn3HoCjUxiSNe3acQxlwTQA9bp7+jH04+S3E+k
+ 3yy0UEGKLDCegeqrRtRYkXwh65JzBsr5rIukGQS3l8gzswrtOuGziKmPR7MEAT0XEuAT
+ uJRA==
+X-Gm-Message-State: AOJu0YwMe96TEDycmuwkziSBCakFSyreEnX30ePgH3D7nl+1GQbUqkmn
+ vP+uiU2zGTUam6dYH9aPsoT+VA+9pD2oEWkz6qJZ8Q==
+X-Google-Smtp-Source: AGHT+IEoUnG5gdnsHVD+GCN1/S9v+GBnZrOyA7hOsb8QDvhKx+nwXstBd3x3OH32am/X/Cqm2+77IisPTVeaxq9Mk6Q=
+X-Received: by 2002:aa7:ca46:0:b0:523:2e30:aaee with SMTP id
+ j6-20020aa7ca46000000b005232e30aaeemr2682402edt.32.1695235488542; Wed, 20 Sep
+ 2023 11:44:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230917213803.20683-1-kariem.taha2.7@gmail.com>
- <20230917213803.20683-15-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230917213803.20683-15-kariem.taha2.7@gmail.com>
+ <20230917213803.20683-16-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230917213803.20683-16-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 20 Sep 2023 19:42:36 +0100
-Message-ID: <CANCZdfoEF4R+4-0T005QdTOL5Jz8VZ0HKtBBcDgn=ZkN5Dhm3A@mail.gmail.com>
-Subject: Re: [PATCH v2 14/28] bsd-user: Implement getrlimit(2) and setrlimit(2)
+Date: Wed, 20 Sep 2023 19:44:37 +0100
+Message-ID: <CANCZdfqr0Ftr3TkXHrJSsdmm=0KOm1OwXELVXZHwD7dPqf5ogQ@mail.gmail.com>
+Subject: Re: [PATCH v2 15/28] bsd-user: Implement several get/set system calls:
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
  Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000e5eac00605cebdd3"
+Content-Type: multipart/alternative; boundary="0000000000001b07930605cec5bc"
 Received-SPF: none client-ip=2a00:1450:4864:20::529;
  envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -18
@@ -84,7 +84,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e5eac00605cebdd3
+--0000000000001b07930605cec5bc
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -94,18 +94,23 @@ wrote:
 
 > From: Stacey Son <sson@FreeBSD.org>
 >
+> getpid(2), getppid(2), getpgrp(2)
+> setreuid(2), setregid(2)
+> getuid(2), geteuid(2), getgid(2), getegid(2), getpgid(2)
+> setuid(2), seteuid(2), setgid(2), setegid(2), setpgid(2)
+>
 > Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  bsd-user/bsd-proc.h           | 59 +++++++++++++++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |  8 +++++
->  2 files changed, 67 insertions(+)
+>  bsd-user/bsd-proc.h           | 90 +++++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c | 60 +++++++++++++++++++++++
+>  2 files changed, 150 insertions(+)
 >
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
---000000000000e5eac00605cebdd3
+--0000000000001b07930605cec5bc
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -116,18 +121,23 @@ a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
 yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
 ing-left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 <br>
+getpid(2), getppid(2), getpgrp(2)<br>
+setreuid(2), setregid(2)<br>
+getuid(2), geteuid(2), getgid(2), getegid(2), getpgid(2)<br>
+setuid(2), seteuid(2), setgid(2), setegid(2), setpgid(2)<br>
+<br>
 Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
 Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
 ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/bsd-proc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 59 ++++=
+=C2=A0bsd-user/bsd-proc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 90 ++++=
 +++++++++++++++++++++++++++++++<br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 8 +++++<br>
-=C2=A02 files changed, 67 insertions(+)<br></blockquote><div><br></div><div=
->Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
-com</a>&gt;</div></div></div>
+=C2=A0bsd-user/freebsd/os-syscall.c | 60 +++++++++++++++++++++++<br>
+=C2=A02 files changed, 150 insertions(+)<br></blockquote><div><br></div><di=
+v>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp=
+.com</a>&gt;<br></div><div><br></div></div></div>
 
---000000000000e5eac00605cebdd3--
+--0000000000001b07930605cec5bc--
 
