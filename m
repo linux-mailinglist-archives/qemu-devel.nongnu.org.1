@@ -2,154 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA0E7A788D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 12:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 198837A7902
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 12:20:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiu6w-00034i-Lf; Wed, 20 Sep 2023 06:07:10 -0400
+	id 1qiuI8-0004gi-0B; Wed, 20 Sep 2023 06:18:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qiu6v-00034P-4W
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:07:09 -0400
-Received: from mail-mw2nam12on20618.outbound.protection.outlook.com
- ([2a01:111:f400:fe5a::618]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Ray.Huang@amd.com>) id 1qiu6s-0004Wh-QY
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:07:08 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dRQMGj0V2TaYhz/z8q6W/UQKt8arS9T3fP5peGE3oq1KLcwaE0b408nFOH2HV4u9nHtjCJKqE77jl9ZZhk76yuIAsmz30n54hITAFg4x8B8ET/ag3QrByHvYITdDjnDXiMD3k36xojSh1C2tZuxe4mT7y8WWb/kCJJEbRaQbMRZjyDk6Fvce/1oPgIB5gflwhkTF9LlnK4IXW6Zybks3qpnSo1/OIqe1BV+Xf6d98V/8Qzif0KHjQr+NM6VP8vAsn1nLrRVKsCcn4Pvy6qV1cxW7HJLEXqvIx8iBuK+3LS3MECydSAKL1G//dHbB+nc7uY+rVYZuyWDcOBVG6RJcYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WG2ShA0TW/uvDFg8Ah3SXBYvGLpB9OARGazeOn9BBik=;
- b=Z7KJkisQYpuXpcq6y2Zp20BIMeZZchlgrlvJ4uk/pDMCLhEyR63RmaettxWHBr/CFBC0jdTFXK9nDWy+CYSIQaHeiDY3tbr8ku7xdxDD/gn6CWh1CTdpi2ppiEbQHLJhBfdKXqfg3Onw7CfTn5lg7Dxs+a6+czxFxEn00I7YTJ3fGe2MQcyhuERa4K2lETxB+yLo6PPBxvxiazcOT/+EJUOC2nMAHSQ1fkKWoQhJNlEL85Lo58HKZbgDPEm2b+ajQDnuGReuxKVz0cqVpRA5NVkV4be9ZNkxGgPsOFJmN5lQMgiunwPQRlj6ds+Pc5YlWBr0sw8oUwmh1gf6Rsxv8Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WG2ShA0TW/uvDFg8Ah3SXBYvGLpB9OARGazeOn9BBik=;
- b=JlvoJIYzNTdsAa0oz/hJ9z7nqWi19X5Sc2L9KtwrnGE4DQzluRP50R0MvqDaR+FL4m8X7586zu+/qv4eTDDN+IPrt51dEhK3bKqnPcCU+BuvWXaK5ZrKdZ3Gy4CGpL2jlZNrhmCxGkXJJoC6uMsdhNl4CXgX6pxf6CBSzV+zgS4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com (2603:10b6:a03:540::10)
- by DS0PR12MB7995.namprd12.prod.outlook.com (2603:10b6:8:14e::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.28; Wed, 20 Sep
- 2023 10:07:00 +0000
-Received: from SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::c3b:811:fd1d:c33e]) by SJ2PR12MB8690.namprd12.prod.outlook.com
- ([fe80::c3b:811:fd1d:c33e%6]) with mapi id 15.20.6792.021; Wed, 20 Sep 2023
- 10:06:59 +0000
-Date: Wed, 20 Sep 2023 18:06:32 +0800
-From: Huang Rui <ray.huang@amd.com>
-To: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qiuI1-0004gX-HD
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:18:37 -0400
+Received: from mail-oa1-x33.google.com ([2001:4860:4864:20::33])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qiuHz-00070G-CQ
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 06:18:37 -0400
+Received: by mail-oa1-x33.google.com with SMTP id
+ 586e51a60fabf-1c50438636fso3931295fac.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 03:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695205114; x=1695809914;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=wGNXVPxGii/1OrruCGR9o+G35rIoyKM+zE3Q4kluY2o=;
+ b=fu+QSJYmjBcAyhrAH+K+e115dbslnYzDsAdLiCOpR4EIHiWM8OkYxbAXxj5yrDTG7+
+ 4OtfjQMsSy0pGEJvlb15DuXAV/GJ6Pw6/CK0xZJSoILM2UiyqjvhXlDTtPfz3SpfBwDX
+ Yh31ZduHlxV7L4BkWnl1M1OAtxSI21mUN+i9hX2/lDszInjtLm7C7E6C9Z7viv4tBnEC
+ MJdrHnN9qo/OnCLCWg/6UO/H/xYooG+MXuHHcsx8+o7TTV5s6PHTsJRGTQoy8tZcQRC8
+ 2DPnU8nf94UXpUfF3STwJ589CPhKlXdwdeBV5m+eWmhgJOeivcGasbTr10U08PCv/FJL
+ +71w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695205114; x=1695809914;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wGNXVPxGii/1OrruCGR9o+G35rIoyKM+zE3Q4kluY2o=;
+ b=b4r/qQGrStwXObMGn/sVAYYqnlsYiMOwR04gqVHTiFyifWvuiypKjXoGYYeJHwP6og
+ nlxcUQJYsnQ3lwIR6F+XpUGdts3W8J/uZuln7oHf7Kggi2XDpKqlS0a5etSCo0uwkMKw
+ wyzieYPxSV7TboGJd+zt3xX+rpd2hATb+TGEq2xgWIS4RPU/WBTalr1ORIKN1XIvzLkH
+ IWEYobCKMWsbPZUnov1+vRQbf0HN6iuagc8FSmh8CEahIr1YAcBCqyn6uKZgkgRro9MG
+ yiEBlADtcftEjpoIWt6kk5lO+Dq5Qbwu+bqVcyIYI9rE3r+dGL6WsEzHjWvB6/WIveKy
+ qUrg==
+X-Gm-Message-State: AOJu0YzBnq70pmQKnwtBy0+VcbGW1OK+Na8ji+o0Pv/LV9Kxf5c0pGLr
+ 7LBjWXY1SkubNLHLRAmZzSYBLQ==
+X-Google-Smtp-Source: AGHT+IETjZDCEEs66uqF++esmIHFfY2g6LKNY3dRSbU1y5F6WeIuUIjbS0tRfk5rD7INdlVSaQGKgg==
+X-Received: by 2002:a05:6870:8a29:b0:1bb:753d:e6db with SMTP id
+ p41-20020a0568708a2900b001bb753de6dbmr2230286oaq.3.1695205114050; 
+ Wed, 20 Sep 2023 03:18:34 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ v17-20020aa78091000000b00687fcb1e609sm9900008pff.116.2023.09.20.03.18.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Sep 2023 03:18:33 -0700 (PDT)
+Message-ID: <610ae949-89e7-4722-951d-ba0e8427919d@daynix.com>
+Date: Wed, 20 Sep 2023 19:18:27 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU PATCH v5 07/13] softmmu/memory: enable automatic
+ deallocation of memory regions
+To: Xenia Ragiadakou <xenia.ragiadakou@amd.com>, Huang Rui
+ <ray.huang@amd.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  Stefano Stabellini <sstabellini@kernel.org>,
  Anthony PERARD <anthony.perard@citrix.com>,
  Antonio Caggiano <quic_acaggian@quicinc.com>,
  "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
  Robert Beckett <bob.beckett@collabora.com>,
  Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, qemu-devel@nongnu.org
+Cc: xen-devel@lists.xenproject.org,
  Gurchetan Singh <gurchetansingh@chromium.org>,
- Albert Esteve <aesteve@redhat.com>,
- "ernunes@redhat.com" <ernunes@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Alyssa Ross <hi@alyssa.is>,
- Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-Subject: Re: [QEMU PATCH v5 11/13] virtio-gpu: Support Venus capset
-Message-ID: <ZQrEKKHYVMXWFRQj@amd.com>
+ Albert Esteve <aesteve@redhat.com>, ernunes@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>
 References: <20230915111130.24064-1-ray.huang@amd.com>
- <20230915111130.24064-12-ray.huang@amd.com>
- <CAJ+F1CJ8R7j_1k3yC2GsdN_v8CsOQ7R+=n_0CCzFW98tWrSLhA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ <20230915111130.24064-8-ray.huang@amd.com>
+ <99fb4575-9f8d-4ab6-bc22-911bbaa7ca55@daynix.com>
+ <c0370b6e-c17e-2400-ef8a-7a759d2fc2d7@amd.com>
+ <75698621-d210-40eb-872d-f3cfc6e4dbff@daynix.com>
+ <32a68715-201b-9923-9600-fe5ae49e4b7b@amd.com>
+ <73a35fbb-c9a4-41dc-a6c7-26037b0e412f@daynix.com>
+ <1f8863da-fad1-f983-8ed0-d6bf8d9544b8@amd.com>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <1f8863da-fad1-f983-8ed0-d6bf8d9544b8@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ+F1CJ8R7j_1k3yC2GsdN_v8CsOQ7R+=n_0CCzFW98tWrSLhA@mail.gmail.com>
-X-ClientProxiedBy: SI2PR01CA0054.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::22) To SJ2PR12MB8690.namprd12.prod.outlook.com
- (2603:10b6:a03:540::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8690:EE_|DS0PR12MB7995:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f8c7598-6538-4762-fd13-08dbb9c1544d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7TFHxc4i7HwA/u/MySC00IIHV6nl1trKRusjt6ixVGrwSGth/jFBR+ropYSXT17RuHZxJmUIhuBvOMA0zLsbGdtuJ83u6jxLjiNtuZu3kkfRT/rn/Gj2Eyk9TjLqz3BxWZkmuXeUrcP763DW6XsWP9CNQDzJxaMcEcqdPDM+o55PLW9vgVzxa6MfxpG9tVT3lx/PyPpedOhGC2Bp7Wq4lsgd1+LyZGRF8ASxoWon7koY7gbrRyxbQZAZOhaRh9uieX/z8idJZGF91sVcelhEOZmJ8chscUPTsotFmIg5avE5KysKnKCWXL30uCMw2MVag+7Yji2XBCZo3N1uZbOfveaYNSn4/4CR/FHmLwyOdHTOZBcaD6EqS7i/uA8Mc9pl3K4bkmu7+uZ4xQFoxVm497geXf5nB0qUv6ip2U0AUvP1280BcZFpooLd90dYc3R+Jt2VEripTNhE1DYv4RsvGyVJmM+8QP/FTt5gQCcapMWoDIpF29GQp7ViprN43nFzWbDSBlg4Zre6AAMGtC5duby4tYH1z8NAa6aMiuKt1jOvjys5ccfBxOydyOgdIXmHROKR2o/cyPgznn0Ap2UHuw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR12MB8690.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(366004)(136003)(376002)(346002)(396003)(1800799009)(186009)(451199024)(478600001)(6506007)(6486002)(53546011)(6666004)(86362001)(36756003)(38100700002)(8676002)(26005)(2906002)(6512007)(83380400001)(8936002)(5660300002)(2616005)(4326008)(966005)(41300700001)(66556008)(54906003)(7416002)(316002)(66946007)(66476007)(6916009);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YisvMDJqUTBOYTQ5ZnlxNkRxSG1OWE1KbDFSVlN1VmFOeWZDc3Z6dEhaSmtJ?=
- =?utf-8?B?cTFwNUF0ZVV6cDJ0Q1Z4UDQ1dGI5dzRDYWg0TUdPNTJZRnF4YzFtLy9VOE9p?=
- =?utf-8?B?ZkhJZ2VDWVRvdjdHL0l3dkpaOXR6akhjY2xtYUdpdVQrd0tIRVhRZk1CUlQy?=
- =?utf-8?B?M1BGekJOVGpoWVRVUUsycDdpYlAzN29ZQUtjaEQvMkc3eUdhYXprNHVMZ2FK?=
- =?utf-8?B?bmpxN2lTdElBMUZhM3JsaTc5bk9LbWxtSnlzbVRvWldDSFovSTlyenFxditH?=
- =?utf-8?B?OE00Ukg0SGtGbGVsejFOc0JsOXIvRlZ2TklERVBqQVBMS21mNStZZ3FPb0Vi?=
- =?utf-8?B?SXZPd3FOSHdGNnErT1RyUFZRdVIzdTBHTjhQdStmTjJUTzI4R1FvWXdBQkdp?=
- =?utf-8?B?QW1EWEorMFJqNXNMWFp3d2FHYzZ4cUh2eGl1RmIyR0ovK3hZbDJkcWlJV08y?=
- =?utf-8?B?V0FUa3ZXeUJKRUdhMjhaeHlmRThOb0NibVlVbzhxeVlhbDYyWTVqQWRQV3Ey?=
- =?utf-8?B?R1dVRVVqY2x0eUhML0tXODNUWkp6UE1ha1o0OXUxeFp1Skw4VWo4Q29KSU5V?=
- =?utf-8?B?V2FvZ2JsUkdHQmNoZUpPMk0yM0Zhbnljd1ZFZnFuVzNnM0xIZkhpcU5BT3E2?=
- =?utf-8?B?Z1lETEsreUNEVk1LZ2xVY1NiZDU3QnBrMlNBZXQvYnZGU3hjSk5pcmFxbS9C?=
- =?utf-8?B?Y09Cd0tybVlmZkhpU0VJTThQaHpVZU1ESjZqRkU4bFJpYWx2YWtyUTVoRWpi?=
- =?utf-8?B?SjNZSnFCK0pLaDRmb1pYS0dwaDJaN1dwZGJqajE1bXRyay90UkFCUkhTWUpw?=
- =?utf-8?B?NDJ0bFR6T0hScWR5VFU3QlpZU2VTQnhucitMTVB5TnlvZ29MOTlWL2ZGZ25z?=
- =?utf-8?B?Mk1nd2pjd0JTQmJjckh1MXByWXcrcjkvUUxDVENiNE5LZ2hKWHh5WHkyWHJO?=
- =?utf-8?B?bCszenBJTVdDbFRIRGFmQVREZmg1QWRibmZkTHlKVjFYNG1aUWxnZFg2dWIx?=
- =?utf-8?B?akU3d3pHK0dKUzlybTdIN1hVanV6c0xqZUY0S3A2ZHVaLzFSbkpSNVlacEth?=
- =?utf-8?B?cXN0UVg4TnZDZ0Y3Z1ZuRHhSTlNqczY2R0J6ZG5wQ3FRQk5oTGhCcW95UEVC?=
- =?utf-8?B?NDh6KzhRenhXV0pvM1Q3UVFzQlhwUWg4OGcxSTlxTVRUbmJwUDhaaUZnc0RE?=
- =?utf-8?B?RHE4azJ6NGNTM1h3dG9vSXVma1ZacTdndTY1UWNpYzBTbFAzckJDOU1vR0Np?=
- =?utf-8?B?NklvUEFUNjRyelc5bklsQW9LeEJqMjdXS0hHN2RMZURhR0V2aFJmRWdWbmNp?=
- =?utf-8?B?aTR5VDY4c25FcFBFcytyeFlqMnBOc29sbHVPYnllbEV6SUhGcExJR0Q2cGlF?=
- =?utf-8?B?Vmd4eGY2L2xLd0kxNzRYamR6eDV3NkUyT1lVZFg5RVJYbzYwUlBJMThLK25J?=
- =?utf-8?B?Zk1NakhWVU0rbW9xcnVjTitqTzF0UEc4cjdDZ1JZOTBXRktqdG83M0NDLzUz?=
- =?utf-8?B?cTk2RndTeGt2MEdxRkFNOUJyN3N0NGNyNG4vR0F6dkNqbWhLUzJVR1hYUk4z?=
- =?utf-8?B?WmdsMi9EcjhwK3NMaGFWTmhzaTRhRk1rSHNuMmE0NXJoZ0JDdU9SRG5kajk2?=
- =?utf-8?B?YlhxL21kbUZSZy81MjlWRzNHR2JvcTRYbDlRZENaZkJJd2p0SlQyY1hTVWpU?=
- =?utf-8?B?NWdFd1lwVDJNQU9kMVZrNTRxRGthM2Z6VWp4T210dnJIdGxjd2NPOGUxZHF1?=
- =?utf-8?B?TGpFRy9rQ1B2S2pEVm9XeVpwY25vUU01cWMvSk5vR25URExjZEVTRTVBN3R2?=
- =?utf-8?B?S25wN0psRmgvNG9iMS9NMithdlhCUVRXNjgyOVYyUnpiOU5PWUpIOFJGQ2xL?=
- =?utf-8?B?cUZEMVlGeUtIU0N6c1ZqZVhpajB5bWFGNHowaFIya3JDTjRjZ3RWZnRHaGs1?=
- =?utf-8?B?blZQM0EzcnhLRDJnK0tCbXU3dklRU3p5elBpNjVDcjM3dXFzRkNVcUg1ZFlu?=
- =?utf-8?B?K2pla21zRkp0V3NYK1pGWGZqK1VnV28wTGZ2YWpQSWIzUys4bEZjODZucDhJ?=
- =?utf-8?B?a0dGcnJtN2RrZStnKzNQVVZXVDhnb3ZtUGd4ZXlvTHhtc2RDZWNXcFZPYkVJ?=
- =?utf-8?Q?PuLAWOTH1VON7AgERPAD4fpAF?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f8c7598-6538-4762-fd13-08dbb9c1544d
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8690.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Sep 2023 10:06:59.8907 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ajXqokqYqYoAjlQ5zeXn7Lq+2qmePy3fFUqmK2ohcFE7vnNrK7R+5LovX8StBaR2poGKLSTgnG7gbvvtKoC5Yg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7995
-Received-SPF: softfail client-ip=2a01:111:f400:fe5a::618;
- envelope-from=Ray.Huang@amd.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2001:4860:4864:20::33;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-oa1-x33.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -165,91 +120,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 19, 2023 at 05:02:36PM +0800, Marc-André Lureau wrote:
-> Hi
+On 2023/09/20 17:57, Xenia Ragiadakou wrote:
 > 
-> On Fri, Sep 15, 2023 at 3:14 PM Huang Rui <ray.huang@amd.com> wrote:
-> >
-> > From: Antonio Caggiano <antonio.caggiano@collabora.com>
-> >
-> > Add support for the Venus capset, which enables Vulkan support through
-> > the Venus Vulkan driver for virtio-gpu.
-> >
-> > Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-> > Signed-off-by: Huang Rui <ray.huang@amd.com>
-> > ---
-> >
-> > V4 -> V5:
-> >     - Send kernel patch to define VIRTIO_GPU_CAPSET_VENUS and will use
-> >       another patch to sync up linux headers. (Akihiko)
-> >     - https://lore.kernel.org/lkml/20230915105918.3763061-1-ray.huang@amd.com/
+> On 20/9/23 01:18, Akihiko Odaki wrote:
+>> On 2023/09/19 23:21, Xenia Ragiadakou wrote:
+>>>
+>>> On 19/9/23 13:44, Akihiko Odaki wrote:
+>>>> On 2023/09/19 19:28, Xenia Ragiadakou wrote:
+>>>>>
+>>>>> On 15/9/23 18:11, Akihiko Odaki wrote:
+>>>>>> On 2023/09/15 20:11, Huang Rui wrote:
+>>>>>>> From: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>>>>>>
+>>>>>>> When the memory region has a different life-cycle from that of 
+>>>>>>> her parent,
+>>>>>>> could be automatically released, once has been unparent and once 
+>>>>>>> all of her
+>>>>>>> references have gone away, via the object's free callback.
+>>>>>>>
+>>>>>>> However, currently, references to the memory region are held by 
+>>>>>>> its owner
+>>>>>>> without first incrementing the memory region object's reference 
+>>>>>>> count.
+>>>>>>> As a result, the automatic deallocation of the object, not taking 
+>>>>>>> into
+>>>>>>> account those references, results in use-after-free memory 
+>>>>>>> corruption.
+>>>>>>>
+>>>>>>> This patch increases the reference count of an owned memory 
+>>>>>>> region object
+>>>>>>> on each memory_region_ref() and decreases it on each 
+>>>>>>> memory_region_unref().
+>>>>>>>
+>>>>>>> Signed-off-by: Xenia Ragiadakou <xenia.ragiadakou@amd.com>
+>>>>>>> Signed-off-by: Huang Rui <ray.huang@amd.com>
+>>>>>>> ---
+>>>>>>>
+>>>>>>> V4 -> V5:
+>>>>>>>      - ref/unref only owned memory regions (Akihiko)
+>>>>>>>
+>>>>>>>   softmmu/memory.c | 5 +++++
+>>>>>>>   1 file changed, 5 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/softmmu/memory.c b/softmmu/memory.c
+>>>>>>> index 7d9494ce70..15e1699750 100644
+>>>>>>> --- a/softmmu/memory.c
+>>>>>>> +++ b/softmmu/memory.c
+>>>>>>> @@ -1800,6 +1800,9 @@ void memory_region_ref(MemoryRegion *mr)
+>>>>>>>       /* MMIO callbacks most likely will access data that belongs
+>>>>>>>        * to the owner, hence the need to ref/unref the owner 
+>>>>>>> whenever
+>>>>>>>        * the memory region is in use.
+>>>>>>> +     * Likewise, the owner keeps references to the memory region,
+>>>>>>> +     * hence the need to ref/unref the memory region object to 
+>>>>>>> prevent
+>>>>>>> +     * its automatic deallocation while still referenced by its 
+>>>>>>> owner.
+>>>>>>
+>>>>>> This comment does not make sense. Traditionally no such automatic 
+>>>>>> deallocation happens so the owner has been always required to free 
+>>>>>> the memory region when it gets finalized.
+>>>>>>
+>>>>>> "[QEMU PATCH v5 09/13] virtio-gpu: Handle resource blob commands" 
+>>>>>> introduces a different kind of memory region, which can be freed 
+>>>>>> anytime before the device gets finalized. Even in this case, the 
+>>>>>> owner removes the reference to the memory owner by doing 
+>>>>>> res->region = NULL;
+>>>>>
+>>>>> Hi Akihiko,
+>>>>>
+>>>>> You are right, the word "owner" is not correct. The issue observed 
+>>>>> was due to the references kept in flatview ranges and the fact that 
+>>>>> flatview_destroy() is asynchronous and was called after memory 
+>>>>> region's destruction.
+>>>>>
+>>>>> If I replace the word "owner" with "memory subsystem" in the commit 
+>>>>> message and drop the comment, would that be ok with you? or do want 
+>>>>> to suggest something else?
+>>>>
+>>>> This will extend the lifetime of the memory region, but the 
+>>>> underlying memory is still synchronously freed. Can you show that 
+>>>> the flatview range will not be used to read the freed memory?
+>>>
+>>> Yes, the intention of this patch is to delay the mr object 
+>>> finalization until all memory_region_unref() on this mr have been 
+>>> taken place.
+>>>
+>>> What do you mean by "the underlying memory is still synchronously 
+>>> freed"?
+>>>
+>>
+>> A pointer is passed to memory_region_init_ram_ptr() with the ptr 
+>> parameter when initializing the memory region and the memory region 
+>> keeps the pointer.
+>>
+>> In virtio_gpu_virgl_resource_unmap(), the memory pointed with the 
+>> pointer is unmapped with virgl_renderer_resource_unmap() and makes the 
+>> pointer kept by the memory region dangling though the lifetime of the 
+>> memory region is extended with this patch. Can you show that the 
+>> dangling pointer the memory region has will never be referenced?
 > 
-> Ok but in the meantime, you should have that header update patch in
-> the series too, otherwise we can't compile it :)
-> 
+> I see your point but I think it is not directly related to this patch. 
+> IMHO, it is related to the implementation of 
+> virtio_gpu_virgl_resource_unmap(). Maybe the unmapping should be done in 
+> the free callback. However, I would expect the pointer to a disabled 
+> memory region to not be used, not sure though.
 
-In fact, it's in my repo. :-)
-I am waiting for it to be merged into kernel mainline and then update the
-commit id.
-
-https://gitlab.freedesktop.org/rui/qemu-xen/-/commit/4ae9d078f9242890769c98162caf32f95df42529
-
-I will include it in next series.
-
-Thanks,
-Ray
-
-> thanks
-> 
-> >
-> >  hw/display/virtio-gpu-virgl.c | 21 +++++++++++++++++----
-> >  1 file changed, 17 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-> > index 8a017dbeb4..7f95490e90 100644
-> > --- a/hw/display/virtio-gpu-virgl.c
-> > +++ b/hw/display/virtio-gpu-virgl.c
-> > @@ -437,6 +437,11 @@ static void virgl_cmd_get_capset_info(VirtIOGPU *g,
-> >          virgl_renderer_get_cap_set(resp.capset_id,
-> >                                     &resp.capset_max_version,
-> >                                     &resp.capset_max_size);
-> > +    } else if (info.capset_index == 2) {
-> > +        resp.capset_id = VIRTIO_GPU_CAPSET_VENUS;
-> > +        virgl_renderer_get_cap_set(resp.capset_id,
-> > +                                   &resp.capset_max_version,
-> > +                                   &resp.capset_max_size);
-> >      } else {
-> >          resp.capset_max_version = 0;
-> >          resp.capset_max_size = 0;
-> > @@ -901,10 +906,18 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-> >
-> >  int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
-> >  {
-> > -    uint32_t capset2_max_ver, capset2_max_size;
-> > +    uint32_t capset2_max_ver, capset2_max_size, num_capsets;
-> > +    num_capsets = 1;
-> > +
-> >      virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
-> > -                              &capset2_max_ver,
-> > -                              &capset2_max_size);
-> > +                               &capset2_max_ver,
-> > +                               &capset2_max_size);
-> > +    num_capsets += capset2_max_ver ? 1 : 0;
-> > +
-> > +    virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-> > +                               &capset2_max_ver,
-> > +                               &capset2_max_size);
-> > +    num_capsets += capset2_max_size ? 1 : 0;
-> >
-> > -    return capset2_max_ver ? 2 : 1;
-> > +    return num_capsets;
-> >  }
-> > --
-> > 2.34.1
-> >
-> >
-> 
-> 
-> -- 
-> Marc-André Lureau
+Unmapping in the free callback sounds good.
 
