@@ -2,62 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EDE839DC8
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 01:58:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97460839ECC
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Jan 2024 03:24:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rSRZZ-0001dv-Co; Tue, 23 Jan 2024 19:56:57 -0500
+	id 1rSSun-0001jS-P3; Tue, 23 Jan 2024 21:22:57 -0500
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rSRZW-0001dW-Rt
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 19:56:54 -0500
-Received: from sin.source.kernel.org ([145.40.73.55])
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rSSuk-0001jJ-Ue
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 21:22:55 -0500
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sstabellini@kernel.org>)
- id 1rSRZU-0007YB-10
- for qemu-devel@nongnu.org; Tue, 23 Jan 2024 19:56:54 -0500
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id 48267CE3030;
- Wed, 24 Jan 2024 00:56:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77849C433C7;
- Wed, 24 Jan 2024 00:56:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1706057803;
- bh=bHReAgxWlYCDbjV6niWqJhCLRMaShBkmb4HS9kUp5Gg=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=CbdZZq4tbZxdNxHG/2VEkTWhNg2zqnw0yHHTwJsmqVT3CQS4xQXWDAk6fqt73AqVU
- h1nLInAovIlLCRGnx7M0ljo/HAzWry706kYVWtVOGthvVecVhN0DTgiuj5Z98hAixl
- zvstEvwSSpKyrQfxSWjK9E4wej31OAQ0HZ/EbS5sQufeRyt0CjiiuuXhQ2tXzdHN2B
- uXhJvXgRHRWJXLR/GCrF6wqPM/5tCZK0NAp1EX6U2ok5NcRngLBjab/ZuZf726pOYg
- PRn+jWP0PKuI5KLwocSktsTEaJVJhUCGvMZRpnGeYPFhsbbRphfC3t+HEn1PpIaVb4
- Z/9R2QGxPe5mg==
-Date: Tue, 23 Jan 2024 16:56:41 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-cc: sstabellini@kernel.org, anthony.perard@citrix.com, paul@xen.org, 
- vikram.garhwal@amd.com, viresh.kumar@linaro.org, 
- xen-devel@lists.xenproject.org, qemu-devel@nongnu.org, 
- Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH] xen: Drop out of coroutine context
- xen_invalidate_map_cache_entry
-In-Reply-To: <20240116143622.6641-1-peng.fan@oss.nxp.com>
-Message-ID: <alpine.DEB.2.22.394.2401231655530.2287888@ubuntu-linux-20-04-desktop>
-References: <20240116143622.6641-1-peng.fan@oss.nxp.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rSSui-00033H-O8
+ for qemu-devel@nongnu.org; Tue, 23 Jan 2024 21:22:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1706062973; x=1737598973;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=qAvw6hTolCzx2sHTXWzuyxxYR6MONniX9EjUwRMKQ1w=;
+ b=biip+8dmX1Fg8p7PxnCYTkQu8GM2nHGWakuhRTbsO15GaoeeRzi5jeNA
+ v6fR+rDEGG/9m+9sJHOEqKi+9LgexCVAhkdbmD3drjMaWfb/Z9FW3a+xV
+ DLDceQMIodYt9RdmN8j/PPsjWQ13OAPWYxQkZEXl2K8kqrgu6LnVHzMwn
+ ZnGEmTj6geAg4HUyRRaABAzASLOolSP18uiiWmWHn7QeHlxdPNWRITamo
+ L81423auK+/xuF33BVgNR+9gNOYXUgqoTzEqVSU0lru8Lcdq5W/fg0o1S
+ s48S6GkPXVxtyHlocuRzLDwzlfCi9bGqh/ZAX97nR6xd0V/mLwRmfInmt g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="1603205"
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; 
+   d="scan'208";a="1603205"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jan 2024 18:22:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,215,1701158400"; d="scan'208";a="28234906"
+Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
+ by fmviesa001.fm.intel.com with ESMTP; 23 Jan 2024 18:22:47 -0800
+From: dongwon.kim@intel.com
+To: qemu-devel@nongnu.org
+Subject: [PATCH v3 1/2] ui/gtk: flush display pipeline before saving vmstate
+ when blob=true
+Date: Wed, 20 Sep 2023 16:24:26 -0700
+Message-Id: <20230920232426.5950-1-dongwon.kim@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231204183718.16777-1-dongwon.kim@intel.com>
+References: <20231204183718.16777-1-dongwon.kim@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Received-SPF: pass client-ip=145.40.73.55; envelope-from=sstabellini@kernel.org;
- helo=sin.source.kernel.org
-X-Spam_score_int: -56
-X-Spam_score: -5.7
-X-Spam_bar: -----
-X-Spam_report: (-5.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.327,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=dongwon.kim@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: 0
+X-Spam_score: -0.0
+X-Spam_bar: /
+X-Spam_report: (-0.0 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ DKIMWL_WL_HIGH=-1.327, DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
+ DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,119 +76,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 16 Jan 2024, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> xen_invalidate_map_cache_entry is not expected to run in a
-> coroutine. Without this, there is crash:
-> 
->     signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
->     threadid=<optimized out>) at pthread_kill.c:78
->     at /usr/src/debug/glibc/2.38+git-r0/sysdeps/posix/raise.c:26
->     fmt=0xffff9e1ca8a8 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n",
->     assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
->     file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
->     function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:92
->     assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
->     file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
->     function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:101
->     at ../qemu-xen-dir-remote/block/graph-lock.c:260
->     at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/block/graph-lock.h:259
->     host=host@entry=0xffff742c8000, size=size@entry=2097152)
->     at ../qemu-xen-dir-remote/block/io.c:3362
->     host=0xffff742c8000, size=2097152)
->     at ../qemu-xen-dir-remote/block/block-backend.c:2859
->     host=<optimized out>, size=<optimized out>, max_size=<optimized out>)
->     at ../qemu-xen-dir-remote/block/block-ram-registrar.c:33
->     size=2097152, max_size=2097152)
->     at ../qemu-xen-dir-remote/hw/core/numa.c:883
->     buffer=buffer@entry=0xffff743c5000 "")
->     at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:475
->     buffer=buffer@entry=0xffff743c5000 "")
->     at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:487
->     as=as@entry=0xaaaae1ca3ae8 <address_space_memory>, buffer=0xffff743c5000,
->     len=<optimized out>, is_write=is_write@entry=true,
->     access_len=access_len@entry=32768)
->     at ../qemu-xen-dir-remote/system/physmem.c:3199
->     dir=DMA_DIRECTION_FROM_DEVICE, len=<optimized out>,
->     buffer=<optimized out>, as=0xaaaae1ca3ae8 <address_space_memory>)
->     at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/sysemu/dma.h:236
->     elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769)
->     at ../qemu-xen-dir-remote/hw/virtio/virtio.c:758
->     elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769, idx=idx@entry=0)
->     at ../qemu-xen-dir-remote/hw/virtio/virtio.c:919
->     elem=elem@entry=0xaaaaf620aa30, len=32769)
->     at ../qemu-xen-dir-remote/hw/virtio/virtio.c:994
->     req=req@entry=0xaaaaf620aa30, status=status@entry=0 '\000')
->     at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:67
->     ret=0) at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:136
->     at ../qemu-xen-dir-remote/block/block-backend.c:1559
-> --Type <RET> for more, q to quit, c to continue without paging--
->     at ../qemu-xen-dir-remote/block/block-backend.c:1614
->     i1=<optimized out>) at ../qemu-xen-dir-remote/util/coroutine-ucontext.c:177
->     at ../sysdeps/unix/sysv/linux/aarch64/setcontext.S:123
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-Hi Peng! Many thanks for the patch and for the investigation!
+If the guest state is paused before it gets a response for the current
+scanout frame submission (resource-flush), it won't flush new frames
+after being restored as it still waits for the old response, which is
+accepted as a scanout render done signal. So it's needed to unblock
+the current scanout render pipeline before the run state is changed
+to make sure the guest receives the response for the current frame
+submission.
 
-Only one minor question below
+v2: Giving some time for the fence to be signaled before flushing
+    the pipeline
 
+v3: Prevent redundant call of gd_hw_gl_flushed by checking dmabuf
+    and fence_fd >= 0 in it (e.g. during and after eglClientWaitSync
+    in gd_change_runstate).
 
-> ---
->  hw/xen/xen-mapcache.c | 31 +++++++++++++++++++++++++++++--
->  1 file changed, 29 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-> index f7d974677d..4e1bb665ee 100644
-> --- a/hw/xen/xen-mapcache.c
-> +++ b/hw/xen/xen-mapcache.c
-> @@ -481,11 +481,38 @@ static void xen_invalidate_map_cache_entry_unlocked(uint8_t *buffer)
->      g_free(entry);
->  }
->  
-> -void xen_invalidate_map_cache_entry(uint8_t *buffer)
-> +typedef struct XenMapCacheData {
-> +    Coroutine *co;
-> +    uint8_t *buffer;
-> +    int ret;
+    Destroy sync object later in gd_hw_fl_flushed since it is needed
+    by eglClientWaitSync.
 
-Do we need int ret? It doesn't look like we are using it.
+Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+---
+ ui/egl-helpers.c |  2 --
+ ui/gtk.c         | 31 +++++++++++++++++++++++++++----
+ 2 files changed, 27 insertions(+), 6 deletions(-)
 
+diff --git a/ui/egl-helpers.c b/ui/egl-helpers.c
+index 3d19dbe382..a77f9e57d9 100644
+--- a/ui/egl-helpers.c
++++ b/ui/egl-helpers.c
+@@ -385,8 +385,6 @@ void egl_dmabuf_create_fence(QemuDmaBuf *dmabuf)
+     if (dmabuf->sync) {
+         dmabuf->fence_fd = eglDupNativeFenceFDANDROID(qemu_egl_display,
+                                                       dmabuf->sync);
+-        eglDestroySyncKHR(qemu_egl_display, dmabuf->sync);
+-        dmabuf->sync = NULL;
+     }
+ }
+ 
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 810d7fc796..eaca890cba 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -597,10 +597,14 @@ void gd_hw_gl_flushed(void *vcon)
+     VirtualConsole *vc = vcon;
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
+ 
+-    qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+-    close(dmabuf->fence_fd);
+-    dmabuf->fence_fd = -1;
+-    graphic_hw_gl_block(vc->gfx.dcl.con, false);
++    if (dmabuf && dmabuf->fence_fd >= 0) {
++        qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
++        close(dmabuf->fence_fd);
++        dmabuf->fence_fd = -1;
++        eglDestroySyncKHR(qemu_egl_display, dmabuf->sync);
++        dmabuf->sync = NULL;
++        graphic_hw_gl_block(vc->gfx.dcl.con, false);
++    }
+ }
+ 
+ /** DisplayState Callbacks (opengl version) **/
+@@ -678,6 +682,25 @@ static const DisplayGLCtxOps egl_ctx_ops = {
+ static void gd_change_runstate(void *opaque, bool running, RunState state)
+ {
+     GtkDisplayState *s = opaque;
++    int i;
++
++    if (state == RUN_STATE_SAVE_VM) {
++        for (i = 0; i < s->nb_vcs; i++) {
++            VirtualConsole *vc = &s->vc[i];
++
++            if (vc->gfx.guest_fb.dmabuf &&
++                vc->gfx.guest_fb.dmabuf->fence_fd >= 0) {
++                eglClientWaitSync(qemu_egl_display,
++                                  vc->gfx.guest_fb.dmabuf->sync,
++                                  EGL_SYNC_FLUSH_COMMANDS_BIT_KHR,
++                                  100000000);
++
++                /* force flushing current scanout blob rendering process
++                 * just in case the fence is still not signaled */
++                gd_hw_gl_flushed(vc);
++            }
++        }
++    }
+ 
+     gd_update_caption(s);
+ }
+-- 
+2.34.1
 
-> +} XenMapCacheData;
-> +
-> +static void xen_invalidate_map_cache_entry_bh(void *opaque)
->  {
-> +    XenMapCacheData *data = opaque;
-> +
->      mapcache_lock();
-> -    xen_invalidate_map_cache_entry_unlocked(buffer);
-> +    xen_invalidate_map_cache_entry_unlocked(data->buffer);
->      mapcache_unlock();
-> +
-> +    aio_co_wake(data->co);
-> +}
-> +
-> +void coroutine_mixed_fn xen_invalidate_map_cache_entry(uint8_t *buffer)
-> +{
-> +    if (qemu_in_coroutine()) {
-> +        XenMapCacheData data = {
-> +            .co = qemu_coroutine_self(),
-> +            .buffer = buffer,
-> +        };
-> +        aio_bh_schedule_oneshot(qemu_get_current_aio_context(),
-> +                                xen_invalidate_map_cache_entry_bh, &data);
-> +        qemu_coroutine_yield();
-> +    } else {
-> +        mapcache_lock();
-> +        xen_invalidate_map_cache_entry_unlocked(buffer);
-> +        mapcache_unlock();
-> +    }
->  }
->  
->  void xen_invalidate_map_cache(void)
-> -- 
-> 2.35.3
-> 
 
