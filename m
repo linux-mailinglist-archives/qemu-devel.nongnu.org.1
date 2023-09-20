@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6358E7A7E8F
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 14:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B157A7E7F
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 14:18:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiw8E-0002O0-UR; Wed, 20 Sep 2023 08:16:39 -0400
+	id 1qiw8G-0002QN-Fs; Wed, 20 Sep 2023 08:16:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw7w-0002BP-H2; Wed, 20 Sep 2023 08:16:23 -0400
+ id 1qiw80-0002CC-AG; Wed, 20 Sep 2023 08:16:29 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw7t-0005K5-84; Wed, 20 Sep 2023 08:16:20 -0400
+ id 1qiw7y-0005LV-Ei; Wed, 20 Sep 2023 08:16:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C4B6A23A00;
+ by isrv.corpit.ru (Postfix) with ESMTP id F2F1923A01;
  Wed, 20 Sep 2023 15:16:14 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 24929296F7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5509D296F8;
  Wed, 20 Sep 2023 15:15:55 +0300 (MSK)
-Received: (nullmailer pid 105892 invoked by uid 1000);
+Received: (nullmailer pid 105895 invoked by uid 1000);
  Wed, 20 Sep 2023 12:15:53 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Conor Dooley <conor.dooley@microchip.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 58/63] hw/riscv: virt: Fix riscv,pmu DT node path
-Date: Wed, 20 Sep 2023 15:15:43 +0300
-Message-Id: <20230920121553.105832-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Leon Schuermann <leons@opentitan.org>,
+ Mayuresh Chitale <mchitale@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 59/63] target/riscv/pmp.c: respect mseccfg.RLB for
+ pmpaddrX changes
+Date: Wed, 20 Sep 2023 15:15:44 +0300
+Message-Id: <20230920121553.105832-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
@@ -60,39 +60,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Leon Schuermann <leons@opentitan.org>
 
-On a dtb dumped from the virt machine, dt-validate complains:
-soc: pmu: {'riscv,event-to-mhpmcounters': [[1, 1, 524281], [2, 2, 524284], [65561, 65561, 524280], [65563, 65563, 524280], [65569, 65569, 524280]], 'compatible': ['riscv,pmu']} should not be valid under {'type': 'object'}
-        from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
-That's pretty cryptic, but running the dtb back through dtc produces
-something a lot more reasonable:
-Warning (simple_bus_reg): /soc/pmu: missing or empty reg/ranges property
+When the rule-lock bypass (RLB) bit is set in the mseccfg CSR, the PMP
+configuration lock bits must not apply. While this behavior is
+implemented for the pmpcfgX CSRs, this bit is not respected for
+changes to the pmpaddrX CSRs. This patch ensures that pmpaddrX CSR
+writes work even on locked regions when the global rule-lock bypass is
+enabled.
 
-Moving the riscv,pmu node out of the soc bus solves the problem.
-
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20230727-groom-decline-2c57ce42841c@spud>
+Signed-off-by: Leon Schuermann <leons@opentitan.org>
+Reviewed-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Message-ID: <20230829215046.1430463-1-leon@is.currently.online>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 9ff31406312500053ecb5f92df01dd9ce52e635d)
+(cherry picked from commit 4e3adce1244e1ca30ec05874c3eca14911dc0825)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context adjustment due to 568e0614d09 "hw/riscv/virt.c: rename MachineState 'mc' pointers to 'ms'")
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index a5bc7353b4..3a99b4b801 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -715,7 +715,7 @@ static void create_fdt_pmu(RISCVVirtState *s)
-     MachineState *mc = MACHINE(s);
-     RISCVCPU hart = s->soc[0].harts[0];
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 2b43e399b8..575cea1b28 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -45,6 +45,10 @@ static inline uint8_t pmp_get_a_field(uint8_t cfg)
+  */
+ static inline int pmp_is_locked(CPURISCVState *env, uint32_t pmp_index)
+ {
++    /* mseccfg.RLB is set */
++    if (MSECCFG_RLB_ISSET(env)) {
++        return 0;
++    }
  
--    pmu_name = g_strdup_printf("/soc/pmu");
-+    pmu_name = g_strdup_printf("/pmu");
-     qemu_fdt_add_subnode(mc->fdt, pmu_name);
-     qemu_fdt_setprop_string(mc->fdt, pmu_name, "compatible", "riscv,pmu");
-     riscv_pmu_generate_fdt_node(mc->fdt, hart.cfg.pmu_num, pmu_name);
+     if (env->pmp_state.pmp[pmp_index].cfg_reg & PMP_LOCK) {
+         return 1;
 -- 
 2.39.2
 
