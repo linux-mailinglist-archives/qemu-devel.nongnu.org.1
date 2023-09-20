@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85A17A7E51
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 14:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4A77A7E71
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 14:17:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiw7j-000234-Jn; Wed, 20 Sep 2023 08:16:07 -0400
+	id 1qiw7p-00029S-2f; Wed, 20 Sep 2023 08:16:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw7e-0001wN-7J; Wed, 20 Sep 2023 08:16:04 -0400
+ id 1qiw7n-00028c-0y; Wed, 20 Sep 2023 08:16:11 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qiw7b-0005Ej-4m; Wed, 20 Sep 2023 08:16:01 -0400
+ id 1qiw7f-0005Fp-TM; Wed, 20 Sep 2023 08:16:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 88CC6239FA;
+ by isrv.corpit.ru (Postfix) with ESMTP id B9D2B239FB;
  Wed, 20 Sep 2023 15:16:13 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DD0BA296F1;
- Wed, 20 Sep 2023 15:15:53 +0300 (MSK)
-Received: (nullmailer pid 105874 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 11C0B296F2;
+ Wed, 20 Sep 2023 15:15:54 +0300 (MSK)
+Received: (nullmailer pid 105877 invoked by uid 1000);
  Wed, 20 Sep 2023 12:15:53 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.6 52/63] virtio: Drop out of coroutine context in
- virtio_load()
-Date: Wed, 20 Sep 2023 15:15:37 +0300
-Message-Id: <20230920121553.105832-1-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Colton Lewis <coltonlewis@google.com>,
+ Andrew Jones <andrew.jones@linux.dev>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.6 53/63] arm64: Restore trapless ptimer access
+Date: Wed, 20 Sep 2023 15:15:38 +0300
+Message-Id: <20230920121553.105832-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
 References: <qemu-stable-7.2.6-20230920151401@cover.tls.msk.ru>
@@ -59,120 +60,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Colton Lewis <coltonlewis@google.com>
 
-virtio_load() as a whole should run in coroutine context because it
-reads from the migration stream and we don't want this to block.
+Due to recent KVM changes, QEMU is setting a ptimer offset resulting
+in unintended trap and emulate access and a consequent performance
+hit. Filter out the PTIMER_CNT register to restore trapless ptimer
+access.
 
-However, it calls virtio_set_features_nocheck() and devices don't
-expect their .set_features callback to run in a coroutine and therefore
-call functions that may not be called in coroutine context. To fix this,
-drop out of coroutine context for calling virtio_set_features_nocheck().
+Quoting Andrew Jones:
 
-Without this fix, the following crash was reported:
+Simply reading the CNT register and writing back the same value is
+enough to set an offset, since the timer will have certainly moved
+past whatever value was read by the time it's written.  QEMU
+frequently saves and restores all registers in the get-reg-list array,
+unless they've been explicitly filtered out (with Linux commit
+680232a94c12, KVM_REG_ARM_PTIMER_CNT is now in the array). So, to
+restore trapless ptimer accesses, we need a QEMU patch to filter out
+the register.
 
-  #0  __pthread_kill_implementation (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
-  #1  0x00007efc738c05d3 in __pthread_kill_internal (signo=6, threadid=<optimized out>) at pthread_kill.c:78
-  #2  0x00007efc73873d26 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
-  #3  0x00007efc738477f3 in __GI_abort () at abort.c:79
-  #4  0x00007efc7384771b in __assert_fail_base (fmt=0x7efc739dbcb8 "", assertion=assertion@entry=0x560aebfbf5cf "!qemu_in_coroutine()",
-     file=file@entry=0x560aebfcd2d4 "../block/graph-lock.c", line=line@entry=275, function=function@entry=0x560aebfcd34d "void bdrv_graph_rdlock_main_loop(void)") at assert.c:92
-  #5  0x00007efc7386ccc6 in __assert_fail (assertion=0x560aebfbf5cf "!qemu_in_coroutine()", file=0x560aebfcd2d4 "../block/graph-lock.c", line=275,
-     function=0x560aebfcd34d "void bdrv_graph_rdlock_main_loop(void)") at assert.c:101
-  #6  0x0000560aebcd8dd6 in bdrv_register_buf ()
-  #7  0x0000560aeb97ed97 in ram_block_added.llvm ()
-  #8  0x0000560aebb8303f in ram_block_add.llvm ()
-  #9  0x0000560aebb834fa in qemu_ram_alloc_internal.llvm ()
-  #10 0x0000560aebb2ac98 in vfio_region_mmap ()
-  #11 0x0000560aebb3ea0f in vfio_bars_register ()
-  #12 0x0000560aebb3c628 in vfio_realize ()
-  #13 0x0000560aeb90f0c2 in pci_qdev_realize ()
-  #14 0x0000560aebc40305 in device_set_realized ()
-  #15 0x0000560aebc48e07 in property_set_bool.llvm ()
-  #16 0x0000560aebc46582 in object_property_set ()
-  #17 0x0000560aebc4cd58 in object_property_set_qobject ()
-  #18 0x0000560aebc46ba7 in object_property_set_bool ()
-  #19 0x0000560aeb98b3ca in qdev_device_add_from_qdict ()
-  #20 0x0000560aebb1fbaf in virtio_net_set_features ()
-  #21 0x0000560aebb46b51 in virtio_set_features_nocheck ()
-  #22 0x0000560aebb47107 in virtio_load ()
-  #23 0x0000560aeb9ae7ce in vmstate_load_state ()
-  #24 0x0000560aeb9d2ee9 in qemu_loadvm_state_main ()
-  #25 0x0000560aeb9d45e1 in qemu_loadvm_state ()
-  #26 0x0000560aeb9bc32c in process_incoming_migration_co.llvm ()
-  #27 0x0000560aebeace56 in coroutine_trampoline.llvm ()
+See
+https://lore.kernel.org/kvmarm/gsntttsonus5.fsf@coltonlewis-kvm.c.googlers.com/T/#m0770023762a821db2a3f0dd0a7dc6aa54e0d0da9
+for additional context.
 
 Cc: qemu-stable@nongnu.org
-Buglink: https://issues.redhat.com/browse/RHEL-832
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20230905145002.46391-3-kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 92e2e6a867334a990f8d29f07ca34e3162fdd6ec)
+Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+Signed-off-by: Colton Lewis <coltonlewis@google.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Tested-by: Colton Lewis <coltonlewis@google.com>
+Message-id: 20230831190052.129045-1-coltonlewis@google.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 682814e2a3c883b27f24b9e7cab47313c49acbd4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: remove coroutine_mixed_fn markings introduced in v7.2.0-909-g0f3de970fe)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 384c8f0f08..b7da7f074d 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -3451,6 +3451,39 @@ static int virtio_set_features_nocheck(VirtIODevice *vdev, uint64_t val)
-     return bad ? -1 : 0;
- }
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 810db33ccb..ed85bcfb5c 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -950,6 +950,7 @@ typedef struct CPRegStateLevel {
+  */
+ static const CPRegStateLevel non_runtime_cpregs[] = {
+     { KVM_REG_ARM_TIMER_CNT, KVM_PUT_FULL_STATE },
++    { KVM_REG_ARM_PTIMER_CNT, KVM_PUT_FULL_STATE },
+ };
  
-+typedef struct VirtioSetFeaturesNocheckData {
-+    Coroutine *co;
-+    VirtIODevice *vdev;
-+    uint64_t val;
-+    int ret;
-+} VirtioSetFeaturesNocheckData;
-+
-+static void virtio_set_features_nocheck_bh(void *opaque)
-+{
-+    VirtioSetFeaturesNocheckData *data = opaque;
-+
-+    data->ret = virtio_set_features_nocheck(data->vdev, data->val);
-+    aio_co_wake(data->co);
-+}
-+
-+static int
-+virtio_set_features_nocheck_maybe_co(VirtIODevice *vdev, uint64_t val)
-+{
-+    if (qemu_in_coroutine()) {
-+        VirtioSetFeaturesNocheckData data = {
-+            .co = qemu_coroutine_self(),
-+            .vdev = vdev,
-+            .val = val,
-+        };
-+        aio_bh_schedule_oneshot(qemu_get_current_aio_context(),
-+                                virtio_set_features_nocheck_bh, &data);
-+        qemu_coroutine_yield();
-+        return data.ret;
-+    } else {
-+        return virtio_set_features_nocheck(vdev, val);
-+    }
-+}
-+
- int virtio_set_features(VirtIODevice *vdev, uint64_t val)
- {
-     int ret;
-@@ -3621,14 +3654,14 @@ int virtio_load(VirtIODevice *vdev, QEMUFile *f, int version_id)
-          * host_features.
-          */
-         uint64_t features64 = vdev->guest_features;
--        if (virtio_set_features_nocheck(vdev, features64) < 0) {
-+        if (virtio_set_features_nocheck_maybe_co(vdev, features64) < 0) {
-             error_report("Features 0x%" PRIx64 " unsupported. "
-                          "Allowed features: 0x%" PRIx64,
-                          features64, vdev->host_features);
-             return -1;
-         }
-     } else {
--        if (virtio_set_features_nocheck(vdev, features) < 0) {
-+        if (virtio_set_features_nocheck_maybe_co(vdev, features) < 0) {
-             error_report("Features 0x%x unsupported. "
-                          "Allowed features: 0x%" PRIx64,
-                          features, vdev->host_features);
+ int kvm_arm_cpreg_level(uint64_t regidx)
 -- 
 2.39.2
 
