@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54437A8E93
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 23:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005087A8E91
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 23:39:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj4tl-0005Hq-T6; Wed, 20 Sep 2023 17:38:17 -0400
+	id 1qj4tm-0005Hx-Ov; Wed, 20 Sep 2023 17:38:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qj4tj-0005EI-3I
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 17:38:15 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ id 1qj4tk-0005HQ-In
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 17:38:16 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qj4tg-0006YF-DK
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 17:38:14 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-570e63f5224so797956eaf.0
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 14:38:12 -0700 (PDT)
+ id 1qj4ti-0006Yp-Sn
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 17:38:16 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6c21b2c6868so208755a34.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 14:38:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695245891; x=1695850691; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1695245893; x=1695850693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JPhfOSWnkLU5mAYkYDZTdFs/AmMh6zDJgUbX9Hh0aqI=;
- b=h6MaQUBjTm8hoPjvqAu/3SRTjcSdr2VeXtOD84I2ZPL1LF+8l2XG1d0t67MHhZp9Zv
- bgrPOYdASzfNF/xi3wy8TG5ULzGaeX5iTh1hr+WbllrGQde7i2B+yXjQ6rOpJ5/kzneA
- WFNmuW/prEY8344uV2OaoqxOCRGhnkoTiEYE8nVYX7DP9IIaYMMVOFD6H6lueSWrkjyN
- rzCcdlpHEkt2bQvwq07/eCVAz+CrfK9pRrJ9n1KvqLjfEAwEnPV0tCik0cZ/dQ1pkkbw
- BQyCIxtEY0clXzYCVmJRplw0/aARmI993tkZnDamN++QTOQvVUGkUuyvnn2bUPMs2IBI
- oQSg==
+ bh=Hx2unC6bkbnK4o1a4tu1Rh/59GQGOMC47WGlP68Q50I=;
+ b=Ld6q3iKVJPTOKUR9U4tViy3UA2xGMMcOFSiteNVZ6+C9MfN9Cq1YARuR/qI+q5gO2I
+ gLf4S736QQh271VgSHb9W17wjuretX3ULNMuZ+TWOMTdGdNJexG1UuRuKxkmtwXgRgyB
+ bplwfw6PmT6poPSQoo0cfr28X9QvFdnR3OxiXYQt8lZlQGencWzXyRPxyG0oPL/s1o4y
+ S2vpscDNiqLq9eZOHKxOsKlfJyTWdX3rpDBXcz7vvCyJhJLJ59e7e6YM7z8i8UqQQszD
+ 3ASOp9D2Sn+BhZNaZH5pvdZzrz+hi32I1h+tQmfMDBUw2T5bMGkEsehf4On2mO3ceuTP
+ 0J9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695245891; x=1695850691;
+ d=1e100.net; s=20230601; t=1695245893; x=1695850693;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JPhfOSWnkLU5mAYkYDZTdFs/AmMh6zDJgUbX9Hh0aqI=;
- b=JD7C+TXMbhaCxcbbFoh/t9PtPC0WqDnJx817FDKXKserGu1vDlO+BTSVOoAhUfav0x
- o3faSDkNmtt047y9s6Rlyvf3ECQhtjPBgraOzO4HHjupmPws55M7GPXvfB/JQHnxGIIp
- x8W+muNKR4wTlwyGya2MQNFoEPZM8ZdDVhXGzeszGxp0X5vs/J1uTnc4eP2qNl5AyAi9
- 5ROHo+aRaBeVL9hv9Le+kM5iVqnEDzJUI3A3PSYwnYn/cJKuClEHn2o3ZmVuOYXkclSo
- gn3l6ggsTnnPpbcJLvOKDoMDVtPbnQgvT5F9aKGB2MWs/i3hN8a5o9Vzx6v20oRbtlte
- zG6A==
-X-Gm-Message-State: AOJu0Ywupshc8CphMi7rRTf+T5KM9jCsH0umrBTf9TsrlVHTXyQpumOp
- Qa7unSky5CUXPZY9IBWwy0ZPLYpI45S0nvUSQEg=
-X-Google-Smtp-Source: AGHT+IFIE5fmxWsb3FJMWCSjJDrf9x7l4DmQoTjen455wyMSUD5aj5/uM/IOAaqPGiKYP5sz+JKL5Q==
-X-Received: by 2002:a05:6870:170a:b0:1d5:a377:f389 with SMTP id
- h10-20020a056870170a00b001d5a377f389mr2589488oae.22.1695245890893; 
- Wed, 20 Sep 2023 14:38:10 -0700 (PDT)
+ bh=Hx2unC6bkbnK4o1a4tu1Rh/59GQGOMC47WGlP68Q50I=;
+ b=goIaHcqLY52QidfPCmDOfEsaIAUKvwJzHig1WDB9AzNtlF09GEWBmQriR/W1vgw1vc
+ gRwlbZMksEbaduynBryz86gJdDIFc0SOjBqBiLzOEeiohqf0Dp+saqgi51cwuPJ4LOvB
+ fpqtHbJXpgSniKZsmSbSo036pejcHpvNrMDM/i9NWlqCmRm5kJEj9Uj1iiXlAN5bDDX3
+ 0KOYuv0GFn0aP/Y7kf02mbhvh5HRSj2o4s9AidpCLCxs2U0USznM/IS/XyY4lJuNBL2b
+ CxH2xVS33MJecb91ytJQTRJA10DXBUa6WFQYQ3uqtEIEZb68P3HbVoNesT+Mh7YSZzgr
+ g49A==
+X-Gm-Message-State: AOJu0Yyiif+qBtqFJb95yNtGEbOOO8GEDAqUv9kjwSpPGTWbwyw/Cif1
+ IgiOlumQWRuxbaghH7Uo0WJyAlT6BP3dRMgzjwU=
+X-Google-Smtp-Source: AGHT+IHAbdJgwxcLYI9WO80PBIBUO00fg5Y2K1CMkoAkcd20AZdC32o/eNuFePPqEzKUlKFzZrpQ4g==
+X-Received: by 2002:a05:6830:2059:b0:6bc:bd1a:26d with SMTP id
+ f25-20020a056830205900b006bcbd1a026dmr3670368otp.15.1695245893673; 
+ Wed, 20 Sep 2023 14:38:13 -0700 (PDT)
 Received: from grind.. ([177.94.42.59]) by smtp.gmail.com with ESMTPSA id
- e1-20020a9d7301000000b006b83a36c08bsm64415otk.53.2023.09.20.14.38.08
+ e1-20020a9d7301000000b006b83a36c08bsm64415otk.53.2023.09.20.14.38.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Sep 2023 14:38:10 -0700 (PDT)
+ Wed, 20 Sep 2023 14:38:13 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 7/8] target/riscv: add riscv_cpu_accelerator_compatible()
-Date: Wed, 20 Sep 2023 18:37:42 -0300
-Message-ID: <20230920213743.716265-8-dbarboza@ventanamicro.com>
+Subject: [PATCH 8/8] target/riscv/riscv-qmp-cmds.c: check CPU accel in
+ query-cpu-model-expansion
+Date: Wed, 20 Sep 2023 18:37:43 -0300
+Message-ID: <20230920213743.716265-9-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230920213743.716265-1-dbarboza@ventanamicro.com>
 References: <20230920213743.716265-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,94 +93,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add an API to check if a given CPU is compatible with the current
-accelerator.
+Use the recently added API to filter unavailable CPUs for a given
+accelerator. At this moment this is the case for a QEMU built with KVM
+and TCG support querying a binary running with TCG:
 
-This will allow query-cpu-model-expansion to work properly in conditions
-where QEMU supports both accelerators (TCG and KVM), QEMU is then
-launched using TCG, and the API requests information about a KVM only
-CPU (e.g. 'host' CPU).
+qemu-system-riscv64 -S -M virt,accel=tcg -display none
+    -qmp tcp:localhost:1234,server,wait=off
 
-KVM doesn't have such restrictions and, at least in theory, all CPUs
-models should work with KVM. We will revisit this API in case we decide
-to restrict the amount of KVM CPUs we support.
+./qemu/scripts/qmp/qmp-shell localhost:1234
+
+(QEMU) query-cpu-model-expansion type=full model={"name":"host"}
+{"error": {"class": "GenericError", "desc": "'host' CPU not available with tcg"}}
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu.c         | 9 +++++++++
- target/riscv/cpu.h         | 1 +
- target/riscv/tcg/tcg-cpu.c | 7 ++++++-
- target/riscv/tcg/tcg-cpu.h | 1 +
- 4 files changed, 17 insertions(+), 1 deletion(-)
+ target/riscv/riscv-qmp-cmds.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 272baaf6c7..8bdf6dbd5d 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1061,6 +1061,15 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
-     mcc->parent_realize(dev, errp);
+diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
+index 5b2d186c83..2f2dbae7c8 100644
+--- a/target/riscv/riscv-qmp-cmds.c
++++ b/target/riscv/riscv-qmp-cmds.c
+@@ -31,6 +31,8 @@
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/visitor.h"
+ #include "qom/qom-qobject.h"
++#include "sysemu/kvm.h"
++#include "sysemu/tcg.h"
+ #include "cpu-qom.h"
+ #include "cpu.h"
+ 
+@@ -63,6 +65,17 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+     return cpu_list;
  }
  
-+bool riscv_cpu_accelerator_compatible(RISCVCPU *cpu)
++static void riscv_check_if_cpu_available(RISCVCPU *cpu, Error **errp)
 +{
-+    if (tcg_enabled()) {
-+        return riscv_cpu_tcg_compatible(cpu);
++    if (!riscv_cpu_accelerator_compatible(cpu)) {
++        g_autofree char *name = riscv_cpu_get_name(cpu);
++        const char *accel = kvm_enabled() ? "kvm" : "tcg";
++
++        error_setg(errp, "'%s' CPU not available with %s", name, accel);
++        return;
++    }
++}
++
+ static void riscv_obj_add_qdict_prop(Object *obj, QDict *qdict_out,
+                                      const char *name)
+ {
+@@ -161,6 +174,13 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+ 
+     obj = object_new(object_class_get_name(oc));
+ 
++    riscv_check_if_cpu_available(RISCV_CPU(obj), &local_err);
++    if (local_err != NULL) {
++        error_propagate(errp, local_err);
++        object_unref(obj);
++        return NULL;
 +    }
 +
-+    return true;
-+}
-+
- #ifndef CONFIG_USER_ONLY
- static void cpu_riscv_get_satp(Object *obj, Visitor *v, const char *name,
-                                void *opaque, Error **errp)
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 1bfa3da55b..00b0507b17 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -734,6 +734,7 @@ char *riscv_cpu_get_name(RISCVCPU *cpu);
- 
- void riscv_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
- void riscv_add_satp_mode_properties(Object *obj);
-+bool riscv_cpu_accelerator_compatible(RISCVCPU *cpu);
- 
- /* CSR function table */
- extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 52cd87db0c..071a744a43 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -582,6 +582,11 @@ void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp)
-     }
- }
- 
-+bool riscv_cpu_tcg_compatible(RISCVCPU *cpu)
-+{
-+    return object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST) == NULL;
-+}
-+
- static bool riscv_cpu_is_generic(Object *cpu_obj)
- {
-     return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
-@@ -599,7 +604,7 @@ static bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
-     RISCVCPU *cpu = RISCV_CPU(cs);
-     Error *local_err = NULL;
- 
--    if (object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST)) {
-+    if (!riscv_cpu_tcg_compatible(cpu)) {
-         g_autofree char *name = riscv_cpu_get_name(cpu);
-         error_setg(errp, "'%s' CPU is not compatible with TCG acceleration",
-                    name);
-diff --git a/target/riscv/tcg/tcg-cpu.h b/target/riscv/tcg/tcg-cpu.h
-index aa00fbc253..f7b32417f8 100644
---- a/target/riscv/tcg/tcg-cpu.h
-+++ b/target/riscv/tcg/tcg-cpu.h
-@@ -24,5 +24,6 @@
- 
- void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp);
- void riscv_tcg_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
-+bool riscv_cpu_tcg_compatible(RISCVCPU *cpu);
- 
- #endif
+     if (qdict_in) {
+         riscv_cpuobj_validate_qdict_in(obj, model->props, qdict_in,
+                                        &local_err);
 -- 
 2.41.0
 
