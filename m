@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D087A88AA
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 17:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B44D27A88B1
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 17:43:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qizKo-0003YG-5W; Wed, 20 Sep 2023 11:41:50 -0400
+	id 1qizLv-0004hK-DI; Wed, 20 Sep 2023 11:43:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qizKj-0003Xn-T4
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:41:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qizLs-0004hA-M5
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:42:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qizKh-0006f6-Ez
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:41:45 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qizLr-0006sN-9R
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 11:42:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695224502;
+ s=mimecast20190719; t=1695224574;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=ImKsrOm22l0Cjly0XJLu90aEyOOxO+NlelGomc6l0Dg=;
- b=KaT4bsQD3sTKYuJmW/crhdGFDwwGt200a8YOVmFA6EmXtsgJSywzCOE5pahER0uc6l37Xd
- DsdWA8d/alhSzyElBGHO9igcR4WRcD7XpFkaPnOcJVi/2P8RCpftGBNXmW0YQKuGTHut/O
- Latqx8igPnw9pWUuisWwXGnLs+3X9Lw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-QhocAhsZNcKafrdWpoGe3w-1; Wed, 20 Sep 2023 11:41:40 -0400
-X-MC-Unique: QhocAhsZNcKafrdWpoGe3w-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-31ff9e40977so3416562f8f.3
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 08:41:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695224499; x=1695829299;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ImKsrOm22l0Cjly0XJLu90aEyOOxO+NlelGomc6l0Dg=;
- b=EFIRQzZeIDnTkTY2Exwrtj8wfZ7cq4/T79hfjqo6f+J7O54sTOY/ZGznKXMLQam8yG
- N+GqV+G15FYYdtmRlRR3PNSdUtX5NqUSK3YRa2zjOXjbAGg58iUG4HV1g6Yg8vqC2971
- 39l113CE258HTSgon3s7Z9+b+kXK+NL45UAM1f0Kv3wp5XmKbKsvUFkiFb9pPM6IQHf3
- luC3joitwsVXSYdJF8XBMU8/Tfgs0On5tL4peF/AzEs8afOcQSchJU9RZ8R7MEDX+1VL
- FEq6Wi6P8jIASmaZGRbZkSxJVfBogL48d4huL2U97qdDvEHDeE+FpHJzV+OBbUWjmDJR
- CzEQ==
-X-Gm-Message-State: AOJu0YxWC2ev1p8S4PnjwuxBckmEiLZOx8kYe4UVm+HcuSh1SrEVGOK8
- r2K5uxWD3ja7fnerADqzZYCGOyNDtd3Ko5pzW6WM9yapWOWre7SMK6boh8NAteI23d2f2BC4Exu
- mL+BcnXDBqFnzE1Z7Dj531fztSGFNBAi18FGgbi/doBmzQ6/o+1irNLI9q+Cd1JFHTjrd0eoOp7
- c=
-X-Received: by 2002:a5d:5005:0:b0:31f:e883:2ffc with SMTP id
- e5-20020a5d5005000000b0031fe8832ffcmr2602400wrt.43.1695224498762; 
- Wed, 20 Sep 2023 08:41:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+hIQwZg6rjGQC9/oHztGu14w5u5oP4TJQPmR7PyjgHhUGFDJkJh/RAB9KXPqzPSTI77wr/w==
-X-Received: by 2002:a5d:5005:0:b0:31f:e883:2ffc with SMTP id
- e5-20020a5d5005000000b0031fe8832ffcmr2602384wrt.43.1695224498340; 
- Wed, 20 Sep 2023 08:41:38 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- a12-20020a056000100c00b0031ae2a7adb5sm18728557wrx.85.2023.09.20.08.41.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Sep 2023 08:41:37 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: weijiang.yang@intel.com
-Subject: [PATCH] target/i386: enumerate bit 56 of MSR_IA32_VMX_BASIC
-Date: Wed, 20 Sep 2023 17:41:36 +0200
-Message-ID: <20230920154136.33171-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ in-reply-to:in-reply-to:references:references;
+ bh=rtMdpkSRnWKJX3g+S2Yk7CLE8CxidI6NFqnp4cvM8tU=;
+ b=L4p23PP1gPGU78ittTVlqWLQJ/REzv6ehH2r9Ra/Aqg9xn2kilI7nnK4UvHAEIXKloIXIR
+ J1ueAO1AhpunBA6e4OBR9lQayQqQKIsVNrv0KjmUGtvDwq/LUc0ycM/EHUKJlnrsma6Rkq
+ kK7eOOWbNPq68CCp8wCVNkZ6xLQqOFQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-568-Y0O3N6D6N3OkRdvH90cUrw-1; Wed, 20 Sep 2023 11:42:51 -0400
+X-MC-Unique: Y0O3N6D6N3OkRdvH90cUrw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 920FA8039C8;
+ Wed, 20 Sep 2023 15:42:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5DA5B492B16;
+ Wed, 20 Sep 2023 15:42:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3A89F21E6900; Wed, 20 Sep 2023 17:42:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>,  Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,  Richard
+ Henderson <richard.henderson@linaro.org>,  Peter Xu <peterx@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Cornelia Huck
+ <cohuck@redhat.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Eric
+ Blake <eblake@redhat.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org,  kvm@vger.kernel.org,  Michael Roth
+ <michael.roth@amd.com>,  isaku.yamahata@gmail.com,  Sean Christopherson
+ <seanjc@google.com>,  Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and
+ associate it with RAM_KVM_GMEM
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-4-xiaoyao.li@intel.com>
+ <8734zazeag.fsf@pond.sub.org>
+ <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
+ <878r91nvy4.fsf@pond.sub.org>
+ <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
+ <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com>
+Date: Wed, 20 Sep 2023 17:42:49 +0200
+In-Reply-To: <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com> (David
+ Hildenbrand's message of "Wed, 20 Sep 2023 16:37:37 +0200")
+Message-ID: <87msxgdf5y.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,41 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On parts that enumerate IA32_VMX_BASIC MSR bit as 1, any exception vector
-can be delivered with or without an error code if the other consistency
-checks are satisfied.
+David Hildenbrand <david@redhat.com> writes:
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/cpu.c | 1 +
- target/i386/cpu.h | 1 +
- 2 files changed, 2 insertions(+)
+> On 20.09.23 16:35, Xiaoyao Li wrote:
+>> On 9/20/2023 3:30 PM, Markus Armbruster wrote:
+>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>
+>>>> On 9/19/2023 5:46 PM, Markus Armbruster wrote:
+>>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>>
+>>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>>
+>>>>>> Add a new property "private" to memory backends. When it's set to true,
+>>>>>> it indicates the RAMblock of the backend also requires kvm gmem.
+>>>>> Can you add a brief explanation why you need the property?
+>>>>
+>>>> It provides a mechanism for user to specify whether the memory can serve as private memory (need request kvm gmem).
+>>>
+>>> Yes, but why would a user want such memory?
+>>>
+>> Because KVM demands it for confidential guest, e.g., TDX guest. KVM
+>> demands that the mem slot needs to have KVM_MEM_PRIVATE set and has
+>> valid gmem associated if the guest accesses it as private memory.
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 6e52c7be1e1..8f334dbbcc2 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1347,6 +1347,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-         .feat_names = {
-             [54] = "vmx-ins-outs",
-             [55] = "vmx-true-ctls",
-+            [56] = "vmx-any-errcode",
-         },
-         .msr = {
-             .index = MSR_IA32_VMX_BASIC,
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index eab610e5cd5..2e09c588f0b 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -1039,6 +1039,7 @@ uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
- #define MSR_VMX_BASIC_DUAL_MONITOR                   (1ULL << 49)
- #define MSR_VMX_BASIC_INS_OUTS                       (1ULL << 54)
- #define MSR_VMX_BASIC_TRUE_CTLS                      (1ULL << 55)
-+#define MSR_VMX_BASIC_ANY_ERRCODE                    (1ULL << 56)
- 
- #define MSR_VMX_MISC_PREEMPTION_TIMER_SHIFT_MASK     0x1Full
- #define MSR_VMX_MISC_STORE_LMA                       (1ULL << 5)
--- 
-2.41.0
+Commit messages should explain why we want the patch.  Documenting "why"
+is at least as important as "what".  If "what" is missing, I can read
+the patch to find out.  If "why" is missing, I'm reduced to guesswork.
+
+> I think as long as there is no demand to have a TDX guest with this property be set to "off", then just don't add it.
+>
+> With a TDX VM, it will can be implicitly active. If we ever have to disable it for selective memory backends, we can add the property and have something like on/off/auto. For now it would be "auto".
+
+Makes sense to me.
 
 
