@@ -2,109 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F74F7A79FD
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F24997A7A29
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:12:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qiv12-00071o-U7; Wed, 20 Sep 2023 07:05:08 -0400
+	id 1qiv7l-0000RJ-Mc; Wed, 20 Sep 2023 07:12:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qiv0x-00071A-JQ
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:05:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiv7g-0000Qj-Vd
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:12:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qiv0u-0006jk-S4
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:05:02 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qiv7e-0008Tf-QR
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:12:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695207892;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1695208318;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ahtJkwToX+gB0wPcAKOa7MVDuR+PCwMr7nVDiRruhNI=;
- b=NUn+t1jSQST3GaeG/06BNKrf0JgGh5MTut5+FhlU/ewmG23Oa3gBAm7uSXvrTwlsmcI0qn
- NrdHnIIE0mytIDg+u82mAFzdQmDkA48TuVnDWcTx66UhDW7EuSTs5/sDOeBtwGlsvtcvJ6
- Ly0yCwhFMk48ZouF10veEK2YnpFJ4Aw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-265-JObz5Y_UNmquqeicT3wVlA-1; Wed, 20 Sep 2023 07:04:51 -0400
-X-MC-Unique: JObz5Y_UNmquqeicT3wVlA-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-31fe836e5d8so3917906f8f.0
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 04:04:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695207890; x=1695812690;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ahtJkwToX+gB0wPcAKOa7MVDuR+PCwMr7nVDiRruhNI=;
- b=oCjetvpw4jDjt+kC1XH5UXNheBKnyLTOzVcCNBrnWhSEyMOEnAi2kpy88C1P8tKXGq
- Q/E2jtfHC/sJnVm5tWdefk9qDJ/B6x/lLqAke5Te+j/wPU0Xm+gghqdDWzf5EMATj/ym
- nQcdl+/in7+t0fjTqzOfpuRwLQWRitBVETRNfMkCgmtJZMWfpapBBbdrX/bIX/EHsVSx
- 5qjGcwv/4wF/Y9HENhmmFBxb3BhMtcPWbRdfK600TIdtIALyvF6ZXEUUyGRQ9Haa1C3Z
- GHcGrHulz1lVU7FUGQgifM3LsTt3G2wxMEqoiVUGfhi/m2k40avLlEdkxGveh1ycsHkT
- Rq7w==
-X-Gm-Message-State: AOJu0Yx4DMRJQsJZ6LpiK+8Vyotms6dLwWhO6PWJrLM/X9k3o8wDMBVQ
- Yjz8QT2tUmH4QITNSC9mij+4zJFhJ6EwG2QDeFmOJsovpy/2i8KRHCkdmFq2S5uxogK3/AArGqn
- 2geHersRXP9xBjF4=
-X-Received: by 2002:a5d:60c5:0:b0:31f:a16a:aecd with SMTP id
- x5-20020a5d60c5000000b0031fa16aaecdmr1850221wrt.68.1695207890189; 
- Wed, 20 Sep 2023 04:04:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmr6nhjKgmEx0i5kOODCEXzANRvBEgJrn3HC07NT0/VXCXCr35gI8CixJIPA297KRi7x86Xg==
-X-Received: by 2002:a5d:60c5:0:b0:31f:a16a:aecd with SMTP id
- x5-20020a5d60c5000000b0031fa16aaecdmr1850186wrt.68.1695207889833; 
- Wed, 20 Sep 2023 04:04:49 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- t8-20020a5d42c8000000b00317a04131c5sm11313590wrr.57.2023.09.20.04.04.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Sep 2023 04:04:48 -0700 (PDT)
-Message-ID: <d191634a-1734-f446-8b7e-affe4ec195f4@redhat.com>
-Date: Wed, 20 Sep 2023 13:04:47 +0200
+ bh=VGXGSTwHTUU8MdvNuFXblTgbk9SZq2neHOO07QN9qzc=;
+ b=UwdZdh+okh2XK3P1Na2cz/2qAdQy97rwq+Z7b311ebyF/tMuBZMUgED6uKIN9CKhOGWPFH
+ 6TBe95lz12HSsHTiEYUjF0Wxq2U2/B7NMT6bhuof5d0xeyplIk7hWZuhPHZCnhrsv1+ahK
+ xOmWIuoUSurzVsNtTInGFJE7TBMprFI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-586-5HdaeUEEODm147Ow0mNKZQ-1; Wed, 20 Sep 2023 07:11:54 -0400
+X-MC-Unique: 5HdaeUEEODm147Ow0mNKZQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 85F87185A797;
+ Wed, 20 Sep 2023 11:11:53 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 143D720268CB;
+ Wed, 20 Sep 2023 11:11:53 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 07BA721E6900; Wed, 20 Sep 2023 13:11:52 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,  Thomas
+ Huth <thuth@redhat.com>,  Eric Blake <eblake@redhat.com>,  Michael Roth
+ <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,  Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Cleber Rosa
+ <crosa@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,  Pierre Morel <pmorel@linux.ibm.com>
+Subject: Re: [PATCH v23 01/20] CPU topology: extend with s390 specifics
+References: <20230914120650.1318932-1-nsg@linux.ibm.com>
+ <20230914120650.1318932-2-nsg@linux.ibm.com>
+Date: Wed, 20 Sep 2023 13:11:51 +0200
+In-Reply-To: <20230914120650.1318932-2-nsg@linux.ibm.com> (Nina
+ Schoetterl-Glausch's message of "Thu, 14 Sep 2023 14:06:31 +0200")
+Message-ID: <87jzsljdzc.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 02/22] Update linux-header to support iommufd cdev and
- hwpt alloc
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "clg@redhat.com" <clg@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
- "Martins, Joao" <joao.m.martins@oracle.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- "open list:Overall KVM CPUs" <kvm@vger.kernel.org>
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <20230830103754.36461-3-zhenzhong.duan@intel.com>
- <c2fb72a1-2e83-d266-c428-72dcfcd95a75@redhat.com>
- <SJ0PR11MB6744FE3F0DBD0E5A69EC37FF92F6A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <SJ0PR11MB6744FE3F0DBD0E5A69EC37FF92F6A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -117,51 +88,61 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
 
-
-On 9/15/23 05:02, Duan, Zhenzhong wrote:
-> Hi Eric,
+> From: Pierre Morel <pmorel@linux.ibm.com>
 >
->> -----Original Message-----
->> From: Eric Auger <eric.auger@redhat.com>
->> Sent: Thursday, September 14, 2023 10:46 PM
->> Subject: Re: [PATCH v1 02/22] Update linux-header to support iommufd cdev and
->> hwpt alloc
->>
->> Hi Zhenzhong,
->>
->> On 8/30/23 12:37, Zhenzhong Duan wrote:
->>> From https://git.kernel.org/pub/scm/linux/kernel/git/jgg/iommufd.git
->>> branch: for_next
->>> commit id: eb501c2d96cfce6b42528e8321ea085ec605e790
->> I see that in your branch you have now updated against v6.6-rc1. However
->> you should run a full ./scripts/update-linux-headers.sh,
->> ie. not only importing the changes in linux-headers/linux/iommufd.h as
->> it seems to do but also import all changes brought with this linux version.
-> Found reason. The base is already against v6.6-rc1, [PATCH v1 01/22] added
-> Iommufd.h into script and this patch added it.
-> I agree the subject is confusing, need to be like "Update iommufd.h to linux-header"
-> I'll fix the subject in next version, thanks for point out.
-
-OK I see
-da3c22c74a3c  linux-headers: Update to Linux v6.6-rc1 (8 days ago)
-<Thomas Huth>
-now. So you need to add the sha1 against which you ran
-./scripts/update-linux-headers.sh and in that case you can precise that
-given [PATCH v1 01/22] scripts/update-linux-headers: Add iommufd.h added
-iommufd export and given Thomas' patch, only
-iommufd.h is added.
-
-Thanks
-
-Eric
+> S390 adds two new SMP levels, drawers and books to the CPU
+> topology.
+> S390 CPUs have specific topology features like dedication and
+> entitlement. These indicate to the guest information on host
+> vCPU scheduling and help the guest make better scheduling decisions.
 >
-> BR.
-> Zhenzhong
+> Let us provide the SMP properties with books and drawers levels
+> and S390 CPU with dedication and entitlement,
 >
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> diff --git a/qapi/machine-common.json b/qapi/machine-common.json
+> new file mode 100644
+> index 0000000000..e40421bb37
+> --- /dev/null
+> +++ b/qapi/machine-common.json
+> @@ -0,0 +1,21 @@
+> +# -*- Mode: Python -*-
+> +# vim: filetype=python
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2 or later.
+> +# See the COPYING file in the top-level directory.
+> +
+> +##
+> +# = Machines S390 data types
+> +##
+> +
+> +##
+> +# @CpuS390Entitlement:
+> +#
+> +# An enumeration of cpu entitlements that can be assumed by a virtual
+> +# S390 CPU
+
+CPU entitlements
+
+Would someone reasonably familiar with S390 understand this?  Because
+I'm not and I don't; I wonder what "a virtual CPU assuming an
+entitlement" means.
+
+> +#
+> +# Since: 8.2
+> +##
+> +{ 'enum': 'CpuS390Entitlement',
+> +  'prefix': 'S390_CPU_ENTITLEMENT',
+> +  'data': [ 'auto', 'low', 'medium', 'high' ] }
+
+[...]
 
 
