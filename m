@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8687A7378
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 08:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B160C7A7335
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 08:53:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qir4H-0007nb-V4; Wed, 20 Sep 2023 02:52:13 -0400
+	id 1qir4Q-0007oU-ER; Wed, 20 Sep 2023 02:52:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qir4F-0007mv-4c
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:11 -0400
+ id 1qir4H-0007nt-Pf
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:13 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qir4C-000426-R6
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:10 -0400
+ (envelope-from <gaosong@loongson.cn>) id 1qir4D-00042Y-QL
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 02:52:12 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8CxNvGLlgploy8qAA--.15179S3;
- Wed, 20 Sep 2023 14:51:55 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Dxl+iMlgplpC8qAA--.45085S3;
+ Wed, 20 Sep 2023 14:51:56 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxzdx7lgplhVYMAA--.24315S21; 
- Wed, 20 Sep 2023 14:51:54 +0800 (CST)
+ AQAAf8Dxzdx7lgplhVYMAA--.24315S22; 
+ Wed, 20 Sep 2023 14:51:55 +0800 (CST)
 From: Song Gao <gaosong@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 19/57] target/loongarch: Implement xvhaddw/xvhsubw
-Date: Wed, 20 Sep 2023 14:51:01 +0800
-Message-Id: <20230920065139.1403868-20-gaosong@loongson.cn>
+Subject: [PULL 20/57] target/loongarch: Implement xvaddw/xvsubw
+Date: Wed, 20 Sep 2023 14:51:02 +0800
+Message-Id: <20230920065139.1403868-21-gaosong@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20230920065139.1403868-1-gaosong@loongson.cn>
 References: <20230920065139.1403868-1-gaosong@loongson.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dxzdx7lgplhVYMAA--.24315S21
+X-CM-TRANSID: AQAAf8Dxzdx7lgplhVYMAA--.24315S22
 X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -63,102 +63,173 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This patch includes:
-- XVHADDW.{H.B/W.H/D.W/Q.D/HU.BU/WU.HU/DU.WU/QU.DU};
-- XVHSUBW.{H.B/W.H/D.W/Q.D/HU.BU/WU.HU/DU.WU/QU.DU}.
+- XVADDW{EV/OD}.{H.B/W.H/D.W/Q.D}[U];
+- XVSUBW{EV/OD}.{H.B/W.H/D.W/Q.D}[U];
+- XVADDW{EV/OD}.{H.BU.B/W.HU.H/D.WU.W/Q.DU.D}.
 
 Signed-off-by: Song Gao <gaosong@loongson.cn>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230914022645.1151356-20-gaosong@loongson.cn>
+Message-Id: <20230914022645.1151356-21-gaosong@loongson.cn>
 ---
- target/loongarch/insns.decode               | 18 +++++++++++
- target/loongarch/disas.c                    | 17 +++++++++++
- target/loongarch/vec_helper.c               | 34 ++++++++++++++++-----
- target/loongarch/insn_trans/trans_vec.c.inc | 30 +++++++++++++++---
- 4 files changed, 88 insertions(+), 11 deletions(-)
+ target/loongarch/insns.decode               |  45 ++++++++
+ target/loongarch/disas.c                    |  43 +++++++
+ target/loongarch/vec_helper.c               | 120 ++++++++++++++------
+ target/loongarch/insn_trans/trans_vec.c.inc |  41 +++++++
+ 4 files changed, 215 insertions(+), 34 deletions(-)
 
 diff --git a/target/loongarch/insns.decode b/target/loongarch/insns.decode
-index 32f857ff7c..ba0b36f4a7 100644
+index ba0b36f4a7..e1d8b30179 100644
 --- a/target/loongarch/insns.decode
 +++ b/target/loongarch/insns.decode
-@@ -1343,6 +1343,24 @@ xvssub_hu        0111 01000100 11001 ..... ..... .....    @vvv
- xvssub_wu        0111 01000100 11010 ..... ..... .....    @vvv
- xvssub_du        0111 01000100 11011 ..... ..... .....    @vvv
+@@ -1361,6 +1361,51 @@ xvhsubw_wu_hu    0111 01000101 10101 ..... ..... .....    @vvv
+ xvhsubw_du_wu    0111 01000101 10110 ..... ..... .....    @vvv
+ xvhsubw_qu_du    0111 01000101 10111 ..... ..... .....    @vvv
  
-+xvhaddw_h_b      0111 01000101 01000 ..... ..... .....    @vvv
-+xvhaddw_w_h      0111 01000101 01001 ..... ..... .....    @vvv
-+xvhaddw_d_w      0111 01000101 01010 ..... ..... .....    @vvv
-+xvhaddw_q_d      0111 01000101 01011 ..... ..... .....    @vvv
-+xvhaddw_hu_bu    0111 01000101 10000 ..... ..... .....    @vvv
-+xvhaddw_wu_hu    0111 01000101 10001 ..... ..... .....    @vvv
-+xvhaddw_du_wu    0111 01000101 10010 ..... ..... .....    @vvv
-+xvhaddw_qu_du    0111 01000101 10011 ..... ..... .....    @vvv
++xvaddwev_h_b     0111 01000001 11100 ..... ..... .....    @vvv
++xvaddwev_w_h     0111 01000001 11101 ..... ..... .....    @vvv
++xvaddwev_d_w     0111 01000001 11110 ..... ..... .....    @vvv
++xvaddwev_q_d     0111 01000001 11111 ..... ..... .....    @vvv
++xvaddwod_h_b     0111 01000010 00100 ..... ..... .....    @vvv
++xvaddwod_w_h     0111 01000010 00101 ..... ..... .....    @vvv
++xvaddwod_d_w     0111 01000010 00110 ..... ..... .....    @vvv
++xvaddwod_q_d     0111 01000010 00111 ..... ..... .....    @vvv
 +
-+xvhsubw_h_b      0111 01000101 01100 ..... ..... .....    @vvv
-+xvhsubw_w_h      0111 01000101 01101 ..... ..... .....    @vvv
-+xvhsubw_d_w      0111 01000101 01110 ..... ..... .....    @vvv
-+xvhsubw_q_d      0111 01000101 01111 ..... ..... .....    @vvv
-+xvhsubw_hu_bu    0111 01000101 10100 ..... ..... .....    @vvv
-+xvhsubw_wu_hu    0111 01000101 10101 ..... ..... .....    @vvv
-+xvhsubw_du_wu    0111 01000101 10110 ..... ..... .....    @vvv
-+xvhsubw_qu_du    0111 01000101 10111 ..... ..... .....    @vvv
++xvsubwev_h_b     0111 01000010 00000 ..... ..... .....    @vvv
++xvsubwev_w_h     0111 01000010 00001 ..... ..... .....    @vvv
++xvsubwev_d_w     0111 01000010 00010 ..... ..... .....    @vvv
++xvsubwev_q_d     0111 01000010 00011 ..... ..... .....    @vvv
++xvsubwod_h_b     0111 01000010 01000 ..... ..... .....    @vvv
++xvsubwod_w_h     0111 01000010 01001 ..... ..... .....    @vvv
++xvsubwod_d_w     0111 01000010 01010 ..... ..... .....    @vvv
++xvsubwod_q_d     0111 01000010 01011 ..... ..... .....    @vvv
++
++xvaddwev_h_bu    0111 01000010 11100 ..... ..... .....    @vvv
++xvaddwev_w_hu    0111 01000010 11101 ..... ..... .....    @vvv
++xvaddwev_d_wu    0111 01000010 11110 ..... ..... .....    @vvv
++xvaddwev_q_du    0111 01000010 11111 ..... ..... .....    @vvv
++xvaddwod_h_bu    0111 01000011 00100 ..... ..... .....    @vvv
++xvaddwod_w_hu    0111 01000011 00101 ..... ..... .....    @vvv
++xvaddwod_d_wu    0111 01000011 00110 ..... ..... .....    @vvv
++xvaddwod_q_du    0111 01000011 00111 ..... ..... .....    @vvv
++
++xvsubwev_h_bu    0111 01000011 00000 ..... ..... .....    @vvv
++xvsubwev_w_hu    0111 01000011 00001 ..... ..... .....    @vvv
++xvsubwev_d_wu    0111 01000011 00010 ..... ..... .....    @vvv
++xvsubwev_q_du    0111 01000011 00011 ..... ..... .....    @vvv
++xvsubwod_h_bu    0111 01000011 01000 ..... ..... .....    @vvv
++xvsubwod_w_hu    0111 01000011 01001 ..... ..... .....    @vvv
++xvsubwod_d_wu    0111 01000011 01010 ..... ..... .....    @vvv
++xvsubwod_q_du    0111 01000011 01011 ..... ..... .....    @vvv
++
++xvaddwev_h_bu_b  0111 01000011 11100 ..... ..... .....    @vvv
++xvaddwev_w_hu_h  0111 01000011 11101 ..... ..... .....    @vvv
++xvaddwev_d_wu_w  0111 01000011 11110 ..... ..... .....    @vvv
++xvaddwev_q_du_d  0111 01000011 11111 ..... ..... .....    @vvv
++xvaddwod_h_bu_b  0111 01000100 00000 ..... ..... .....    @vvv
++xvaddwod_w_hu_h  0111 01000100 00001 ..... ..... .....    @vvv
++xvaddwod_d_wu_w  0111 01000100 00010 ..... ..... .....    @vvv
++xvaddwod_q_du_d  0111 01000100 00011 ..... ..... .....    @vvv
 +
  xvreplgr2vr_b    0111 01101001 11110 00000 ..... .....    @vr
  xvreplgr2vr_h    0111 01101001 11110 00001 ..... .....    @vr
  xvreplgr2vr_w    0111 01101001 11110 00010 ..... .....    @vr
 diff --git a/target/loongarch/disas.c b/target/loongarch/disas.c
-index 4ba4fbfc64..c810a52f0d 100644
+index c810a52f0d..e3e57e1d05 100644
 --- a/target/loongarch/disas.c
 +++ b/target/loongarch/disas.c
-@@ -1765,6 +1765,23 @@ INSN_LASX(xvssub_hu,         vvv)
- INSN_LASX(xvssub_wu,         vvv)
- INSN_LASX(xvssub_du,         vvv)
+@@ -1782,6 +1782,49 @@ INSN_LASX(xvhsubw_wu_hu,     vvv)
+ INSN_LASX(xvhsubw_du_wu,     vvv)
+ INSN_LASX(xvhsubw_qu_du,     vvv)
  
-+INSN_LASX(xvhaddw_h_b,       vvv)
-+INSN_LASX(xvhaddw_w_h,       vvv)
-+INSN_LASX(xvhaddw_d_w,       vvv)
-+INSN_LASX(xvhaddw_q_d,       vvv)
-+INSN_LASX(xvhaddw_hu_bu,     vvv)
-+INSN_LASX(xvhaddw_wu_hu,     vvv)
-+INSN_LASX(xvhaddw_du_wu,     vvv)
-+INSN_LASX(xvhaddw_qu_du,     vvv)
-+INSN_LASX(xvhsubw_h_b,       vvv)
-+INSN_LASX(xvhsubw_w_h,       vvv)
-+INSN_LASX(xvhsubw_d_w,       vvv)
-+INSN_LASX(xvhsubw_q_d,       vvv)
-+INSN_LASX(xvhsubw_hu_bu,     vvv)
-+INSN_LASX(xvhsubw_wu_hu,     vvv)
-+INSN_LASX(xvhsubw_du_wu,     vvv)
-+INSN_LASX(xvhsubw_qu_du,     vvv)
++INSN_LASX(xvaddwev_h_b,      vvv)
++INSN_LASX(xvaddwev_w_h,      vvv)
++INSN_LASX(xvaddwev_d_w,      vvv)
++INSN_LASX(xvaddwev_q_d,      vvv)
++INSN_LASX(xvaddwod_h_b,      vvv)
++INSN_LASX(xvaddwod_w_h,      vvv)
++INSN_LASX(xvaddwod_d_w,      vvv)
++INSN_LASX(xvaddwod_q_d,      vvv)
++INSN_LASX(xvsubwev_h_b,      vvv)
++INSN_LASX(xvsubwev_w_h,      vvv)
++INSN_LASX(xvsubwev_d_w,      vvv)
++INSN_LASX(xvsubwev_q_d,      vvv)
++INSN_LASX(xvsubwod_h_b,      vvv)
++INSN_LASX(xvsubwod_w_h,      vvv)
++INSN_LASX(xvsubwod_d_w,      vvv)
++INSN_LASX(xvsubwod_q_d,      vvv)
++
++INSN_LASX(xvaddwev_h_bu,     vvv)
++INSN_LASX(xvaddwev_w_hu,     vvv)
++INSN_LASX(xvaddwev_d_wu,     vvv)
++INSN_LASX(xvaddwev_q_du,     vvv)
++INSN_LASX(xvaddwod_h_bu,     vvv)
++INSN_LASX(xvaddwod_w_hu,     vvv)
++INSN_LASX(xvaddwod_d_wu,     vvv)
++INSN_LASX(xvaddwod_q_du,     vvv)
++INSN_LASX(xvsubwev_h_bu,     vvv)
++INSN_LASX(xvsubwev_w_hu,     vvv)
++INSN_LASX(xvsubwev_d_wu,     vvv)
++INSN_LASX(xvsubwev_q_du,     vvv)
++INSN_LASX(xvsubwod_h_bu,     vvv)
++INSN_LASX(xvsubwod_w_hu,     vvv)
++INSN_LASX(xvsubwod_d_wu,     vvv)
++INSN_LASX(xvsubwod_q_du,     vvv)
++
++INSN_LASX(xvaddwev_h_bu_b,   vvv)
++INSN_LASX(xvaddwev_w_hu_h,   vvv)
++INSN_LASX(xvaddwev_d_wu_w,   vvv)
++INSN_LASX(xvaddwev_q_du_d,   vvv)
++INSN_LASX(xvaddwod_h_bu_b,   vvv)
++INSN_LASX(xvaddwod_w_hu_h,   vvv)
++INSN_LASX(xvaddwod_d_wu_w,   vvv)
++INSN_LASX(xvaddwod_q_du_d,   vvv)
 +
  INSN_LASX(xvreplgr2vr_b,     vr)
  INSN_LASX(xvreplgr2vr_h,     vr)
  INSN_LASX(xvreplgr2vr_w,     vr)
 diff --git a/target/loongarch/vec_helper.c b/target/loongarch/vec_helper.c
-index c784f98ab2..2ce0ca41a7 100644
+index 2ce0ca41a7..fc3b07e8d2 100644
 --- a/target/loongarch/vec_helper.c
 +++ b/target/loongarch/vec_helper.c
-@@ -13,6 +13,7 @@
- #include "internals.h"
- #include "tcg/tcg.h"
- #include "vec.h"
-+#include "tcg/tcg-gvec-desc.h"
- 
- #define DO_ADD(a, b)  (a + b)
- #define DO_SUB(a, b)  (a - b)
-@@ -25,8 +26,9 @@ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)       \
-     VReg *Vj = (VReg *)vj;                                           \
-     VReg *Vk = (VReg *)vk;                                           \
-     typedef __typeof(Vd->E1(0)) TD;                                  \
-+    int oprsz = simd_oprsz(desc);                                    \
-                                                                      \
--    for (i = 0; i < LSX_LEN/BIT; i++) {                              \
-+    for (i = 0; i < oprsz / (BIT / 8); i++) {                        \
-         Vd->E1(i) = DO_OP((TD)Vj->E2(2 * i + 1), (TD)Vk->E2(2 * i)); \
-     }                                                                \
+@@ -106,133 +106,173 @@ void HELPER(vhsubw_qu_du)(void *vd, void *vj, void *vk, uint32_t desc)
  }
-@@ -37,11 +39,16 @@ DO_ODD_EVEN(vhaddw_d_w, 64, D, W, DO_ADD)
  
- void HELPER(vhaddw_q_d)(void *vd, void *vj, void *vk, uint32_t desc)
+ #define DO_EVEN(NAME, BIT, E1, E2, DO_OP)                        \
+-void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v)      \
++void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)   \
+ {                                                                \
+     int i;                                                       \
+     VReg *Vd = (VReg *)vd;                                       \
+     VReg *Vj = (VReg *)vj;                                       \
+     VReg *Vk = (VReg *)vk;                                       \
+     typedef __typeof(Vd->E1(0)) TD;                              \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                          \
++    int oprsz = simd_oprsz(desc);                                \
++                                                                 \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                    \
+         Vd->E1(i) = DO_OP((TD)Vj->E2(2 * i) ,(TD)Vk->E2(2 * i)); \
+     }                                                            \
+ }
+ 
+ #define DO_ODD(NAME, BIT, E1, E2, DO_OP)                                 \
+-void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v)              \
++void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)           \
+ {                                                                        \
+     int i;                                                               \
+     VReg *Vd = (VReg *)vd;                                               \
+     VReg *Vj = (VReg *)vj;                                               \
+     VReg *Vk = (VReg *)vk;                                               \
+     typedef __typeof(Vd->E1(0)) TD;                                      \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                                  \
++    int oprsz = simd_oprsz(desc);                                        \
++                                                                         \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                            \
+         Vd->E1(i) = DO_OP((TD)Vj->E2(2 * i + 1), (TD)Vk->E2(2 * i + 1)); \
+     }                                                                    \
+ }
+ 
+-void HELPER(vaddwev_q_d)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vaddwev_q_d)(void *vd, void *vj, void *vk, uint32_t desc)
  {
 +    int i;
      VReg *Vd = (VReg *)vd;
@@ -166,17 +237,19 @@ index c784f98ab2..2ce0ca41a7 100644
      VReg *Vk = (VReg *)vk;
 +    int oprsz = simd_oprsz(desc);
  
--    Vd->Q(0) = int128_add(int128_makes64(Vj->D(1)), int128_makes64(Vk->D(0)));
-+    for (i = 0; i < oprsz / 16 ; i++) {
-+        Vd->Q(i) = int128_add(int128_makes64(Vj->D(2 * i + 1)),
+-    Vd->Q(0) = int128_add(int128_makes64(Vj->D(0)), int128_makes64(Vk->D(0)));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_add(int128_makes64(Vj->D(2 * i)),
 +                              int128_makes64(Vk->D(2 * i)));
 +    }
  }
  
- DO_ODD_EVEN(vhsubw_h_b, 16, H, B, DO_SUB)
-@@ -50,11 +57,16 @@ DO_ODD_EVEN(vhsubw_d_w, 64, D, W, DO_SUB)
+ DO_EVEN(vaddwev_h_b, 16, H, B, DO_ADD)
+ DO_EVEN(vaddwev_w_h, 32, W, H, DO_ADD)
+ DO_EVEN(vaddwev_d_w, 64, D, W, DO_ADD)
  
- void HELPER(vhsubw_q_d)(void *vd, void *vj, void *vk, uint32_t desc)
+-void HELPER(vaddwod_q_d)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vaddwod_q_d)(void *vd, void *vj, void *vk, uint32_t desc)
  {
 +    int i;
      VReg *Vd = (VReg *)vd;
@@ -184,17 +257,80 @@ index c784f98ab2..2ce0ca41a7 100644
      VReg *Vk = (VReg *)vk;
 +    int oprsz = simd_oprsz(desc);
  
--    Vd->Q(0) = int128_sub(int128_makes64(Vj->D(1)), int128_makes64(Vk->D(0)));
+-    Vd->Q(0) = int128_add(int128_makes64(Vj->D(1)), int128_makes64(Vk->D(1)));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_add(int128_makes64(Vj->D(2 * i +1)),
++                              int128_makes64(Vk->D(2 * i +1)));
++    }
+ }
+ 
+ DO_ODD(vaddwod_h_b, 16, H, B, DO_ADD)
+ DO_ODD(vaddwod_w_h, 32, W, H, DO_ADD)
+ DO_ODD(vaddwod_d_w, 64, D, W, DO_ADD)
+ 
+-void HELPER(vsubwev_q_d)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vsubwev_q_d)(void *vd, void *vj, void *vk, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+     VReg *Vk = (VReg *)vk;
++    int oprsz = simd_oprsz(desc);
+ 
+-    Vd->Q(0) = int128_sub(int128_makes64(Vj->D(0)), int128_makes64(Vk->D(0)));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_sub(int128_makes64(Vj->D(2 * i)),
++                              int128_makes64(Vk->D(2 * i)));
++    }
+ }
+ 
+ DO_EVEN(vsubwev_h_b, 16, H, B, DO_SUB)
+ DO_EVEN(vsubwev_w_h, 32, W, H, DO_SUB)
+ DO_EVEN(vsubwev_d_w, 64, D, W, DO_SUB)
+ 
+-void HELPER(vsubwod_q_d)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vsubwod_q_d)(void *vd, void *vj, void *vk, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+     VReg *Vk = (VReg *)vk;
++    int oprsz = simd_oprsz(desc);
+ 
+-    Vd->Q(0) = int128_sub(int128_makes64(Vj->D(1)), int128_makes64(Vk->D(1)));
 +    for (i = 0; i < oprsz / 16; i++) {
 +        Vd->Q(i) = int128_sub(int128_makes64(Vj->D(2 * i + 1)),
-+                              int128_makes64(Vk->D(2 * i)));
++                              int128_makes64(Vk->D(2 * i + 1)));
 +    }
  }
  
- DO_ODD_EVEN(vhaddw_hu_bu, 16, UH, UB, DO_ADD)
-@@ -63,12 +75,16 @@ DO_ODD_EVEN(vhaddw_du_wu, 64, UD, UW, DO_ADD)
+ DO_ODD(vsubwod_h_b, 16, H, B, DO_SUB)
+ DO_ODD(vsubwod_w_h, 32, W, H, DO_SUB)
+ DO_ODD(vsubwod_d_w, 64, D, W, DO_SUB)
  
- void HELPER(vhaddw_qu_du)(void *vd, void *vj, void *vk, uint32_t desc)
+-void HELPER(vaddwev_q_du)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vaddwev_q_du)(void *vd, void *vj, void *vk, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+     VReg *Vk = (VReg *)vk;
++    int oprsz = simd_oprsz(desc);
+ 
+-    Vd->Q(0) = int128_add(int128_make64((uint64_t)Vj->D(0)),
+-                          int128_make64((uint64_t)Vk->D(0)));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_add(int128_make64(Vj->UD(2 * i)),
++                              int128_make64(Vk->UD(2 * i)));
++    }
+ }
+ 
+ DO_EVEN(vaddwev_h_bu, 16, UH, UB, DO_ADD)
+ DO_EVEN(vaddwev_w_hu, 32, UW, UH, DO_ADD)
+ DO_EVEN(vaddwev_d_wu, 64, UD, UW, DO_ADD)
+ 
+-void HELPER(vaddwod_q_du)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vaddwod_q_du)(void *vd, void *vj, void *vk, uint32_t desc)
  {
 +    int i;
      VReg *Vd = (VReg *)vd;
@@ -203,17 +339,40 @@ index c784f98ab2..2ce0ca41a7 100644
 +    int oprsz = simd_oprsz(desc);
  
 -    Vd->Q(0) = int128_add(int128_make64((uint64_t)Vj->D(1)),
--                          int128_make64((uint64_t)Vk->D(0)));
-+    for (i = 0; i < oprsz / 16; i ++) {
+-                          int128_make64((uint64_t)Vk->D(1)));
++    for (i = 0; i < oprsz / 16; i++) {
 +        Vd->Q(i) = int128_add(int128_make64(Vj->UD(2 * i + 1)),
++                              int128_make64(Vk->UD(2 * i + 1)));
++    }
+ }
+ 
+ DO_ODD(vaddwod_h_bu, 16, UH, UB, DO_ADD)
+ DO_ODD(vaddwod_w_hu, 32, UW, UH, DO_ADD)
+ DO_ODD(vaddwod_d_wu, 64, UD, UW, DO_ADD)
+ 
+-void HELPER(vsubwev_q_du)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vsubwev_q_du)(void *vd, void *vj, void *vk, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+     VReg *Vk = (VReg *)vk;
++    int oprsz = simd_oprsz(desc);
+ 
+-    Vd->Q(0) = int128_sub(int128_make64((uint64_t)Vj->D(0)),
+-                          int128_make64((uint64_t)Vk->D(0)));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_sub(int128_make64(Vj->UD(2 * i)),
 +                              int128_make64(Vk->UD(2 * i)));
 +    }
  }
  
- DO_ODD_EVEN(vhsubw_hu_bu, 16, UH, UB, DO_SUB)
-@@ -77,12 +93,16 @@ DO_ODD_EVEN(vhsubw_du_wu, 64, UD, UW, DO_SUB)
+ DO_EVEN(vsubwev_h_bu, 16, UH, UB, DO_SUB)
+ DO_EVEN(vsubwev_w_hu, 32, UW, UH, DO_SUB)
+ DO_EVEN(vsubwev_d_wu, 64, UD, UW, DO_SUB)
  
- void HELPER(vhsubw_qu_du)(void *vd, void *vj, void *vk, uint32_t desc)
+-void HELPER(vsubwod_q_du)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vsubwod_q_du)(void *vd, void *vj, void *vk, uint32_t desc)
  {
 +    int i;
      VReg *Vd = (VReg *)vd;
@@ -222,72 +381,207 @@ index c784f98ab2..2ce0ca41a7 100644
 +    int oprsz = simd_oprsz(desc);
  
 -    Vd->Q(0) = int128_sub(int128_make64((uint64_t)Vj->D(1)),
--                          int128_make64((uint64_t)Vk->D(0)));
+-                          int128_make64((uint64_t)Vk->D(1)));
 +    for (i = 0; i < oprsz / 16; i++) {
 +        Vd->Q(i) = int128_sub(int128_make64(Vj->UD(2 * i + 1)),
-+                              int128_make64(Vk->UD(2 * i)));
++                              int128_make64(Vk->UD(2 * i + 1)));
 +    }
  }
  
- #define DO_EVEN(NAME, BIT, E1, E2, DO_OP)                        \
+ DO_ODD(vsubwod_h_bu, 16, UH, UB, DO_SUB)
+@@ -240,7 +280,7 @@ DO_ODD(vsubwod_w_hu, 32, UW, UH, DO_SUB)
+ DO_ODD(vsubwod_d_wu, 64, UD, UW, DO_SUB)
+ 
+ #define DO_EVEN_U_S(NAME, BIT, ES1, EU1, ES2, EU2, DO_OP)             \
+-void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v)           \
++void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)        \
+ {                                                                     \
+     int i;                                                            \
+     VReg *Vd = (VReg *)vd;                                            \
+@@ -248,13 +288,15 @@ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v)           \
+     VReg *Vk = (VReg *)vk;                                            \
+     typedef __typeof(Vd->ES1(0)) TDS;                                 \
+     typedef __typeof(Vd->EU1(0)) TDU;                                 \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                               \
++    int oprsz = simd_oprsz(desc);                                     \
++                                                                      \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                         \
+         Vd->ES1(i) = DO_OP((TDU)Vj->EU2(2 * i) ,(TDS)Vk->ES2(2 * i)); \
+     }                                                                 \
+ }
+ 
+ #define DO_ODD_U_S(NAME, BIT, ES1, EU1, ES2, EU2, DO_OP)                      \
+-void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v)                   \
++void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t desc)                \
+ {                                                                             \
+     int i;                                                                    \
+     VReg *Vd = (VReg *)vd;                                                    \
+@@ -262,33 +304,43 @@ void HELPER(NAME)(void *vd, void *vj, void *vk, uint32_t v)                   \
+     VReg *Vk = (VReg *)vk;                                                    \
+     typedef __typeof(Vd->ES1(0)) TDS;                                         \
+     typedef __typeof(Vd->EU1(0)) TDU;                                         \
+-    for (i = 0; i < LSX_LEN/BIT; i++) {                                       \
++    int oprsz = simd_oprsz(desc);                                             \
++                                                                              \
++    for (i = 0; i < oprsz / (BIT / 8); i++) {                                 \
+         Vd->ES1(i) = DO_OP((TDU)Vj->EU2(2 * i + 1), (TDS)Vk->ES2(2 * i + 1)); \
+     }                                                                         \
+ }
+ 
+-void HELPER(vaddwev_q_du_d)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vaddwev_q_du_d)(void *vd, void *vj, void *vk, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+     VReg *Vk = (VReg *)vk;
++    int oprsz = simd_oprsz(desc);
+ 
+-    Vd->Q(0) = int128_add(int128_make64((uint64_t)Vj->D(0)),
+-                          int128_makes64(Vk->D(0)));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_add(int128_make64(Vj->UD(2 * i)),
++                              int128_makes64(Vk->D(2 * i)));
++    }
+ }
+ 
+ DO_EVEN_U_S(vaddwev_h_bu_b, 16, H, UH, B, UB, DO_ADD)
+ DO_EVEN_U_S(vaddwev_w_hu_h, 32, W, UW, H, UH, DO_ADD)
+ DO_EVEN_U_S(vaddwev_d_wu_w, 64, D, UD, W, UW, DO_ADD)
+ 
+-void HELPER(vaddwod_q_du_d)(void *vd, void *vj, void *vk, uint32_t v)
++void HELPER(vaddwod_q_du_d)(void *vd, void *vj, void *vk, uint32_t desc)
+ {
++    int i;
+     VReg *Vd = (VReg *)vd;
+     VReg *Vj = (VReg *)vj;
+     VReg *Vk = (VReg *)vk;
++    int oprsz = simd_oprsz(desc);
+ 
+-    Vd->Q(0) = int128_add(int128_make64((uint64_t)Vj->D(1)),
+-                          int128_makes64(Vk->D(1)));
++    for (i = 0; i < oprsz / 16; i++) {
++        Vd->Q(i) = int128_add(int128_make64(Vj->UD(2 * i + 1)),
++                              int128_makes64(Vk->D(2 * i + 1)));
++    }
+ }
+ 
+ DO_ODD_U_S(vaddwod_h_bu_b, 16, H, UH, B, UB, DO_ADD)
 diff --git a/target/loongarch/insn_trans/trans_vec.c.inc b/target/loongarch/insn_trans/trans_vec.c.inc
-index 0f9a85bbb2..7786f21022 100644
+index 7786f21022..322d43d50c 100644
 --- a/target/loongarch/insn_trans/trans_vec.c.inc
 +++ b/target/loongarch/insn_trans/trans_vec.c.inc
-@@ -97,6 +97,10 @@ static bool gen_vvv_ptr(DisasContext *ctx, arg_vvv *a,
- static bool gen_vvv_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
-                        gen_helper_gvec_3 *fn)
- {
-+    if (!check_vec(ctx, oprsz)) {
-+        return true;
-+    }
-+
-     tcg_gen_gvec_3_ool(vec_full_offset(a->vd),
-                        vec_full_offset(a->vj),
-                        vec_full_offset(a->vk),
-@@ -106,13 +110,14 @@ static bool gen_vvv_vl(DisasContext *ctx, arg_vvv *a, uint32_t oprsz,
+@@ -550,6 +550,10 @@ TRANS(vaddwev_h_b, LSX, gvec_vvv, MO_8, do_vaddwev_s)
+ TRANS(vaddwev_w_h, LSX, gvec_vvv, MO_16, do_vaddwev_s)
+ TRANS(vaddwev_d_w, LSX, gvec_vvv, MO_32, do_vaddwev_s)
+ TRANS(vaddwev_q_d, LSX, gvec_vvv, MO_64, do_vaddwev_s)
++TRANS(xvaddwev_h_b, LASX, gvec_xxx, MO_8, do_vaddwev_s)
++TRANS(xvaddwev_w_h, LASX, gvec_xxx, MO_16, do_vaddwev_s)
++TRANS(xvaddwev_d_w, LASX, gvec_xxx, MO_32, do_vaddwev_s)
++TRANS(xvaddwev_q_d, LASX, gvec_xxx, MO_64, do_vaddwev_s)
  
- static bool gen_vvv(DisasContext *ctx, arg_vvv *a, gen_helper_gvec_3 *fn)
+ static void gen_vaddwod_w_h(TCGv_i32 t, TCGv_i32 a, TCGv_i32 b)
  {
--    if (!check_vec(ctx, 16)) {
--        return true;
--    }
--
-     return gen_vvv_vl(ctx, a, 16, fn);
- }
- 
-+static bool gen_xxx(DisasContext *ctx, arg_vvv *a, gen_helper_gvec_3 *fn)
-+{
-+    return gen_vvv_vl(ctx, a, 32, fn);
-+}
+@@ -629,6 +633,11 @@ TRANS(vaddwod_h_b, LSX, gvec_vvv, MO_8, do_vaddwod_s)
+ TRANS(vaddwod_w_h, LSX, gvec_vvv, MO_16, do_vaddwod_s)
+ TRANS(vaddwod_d_w, LSX, gvec_vvv, MO_32, do_vaddwod_s)
+ TRANS(vaddwod_q_d, LSX, gvec_vvv, MO_64, do_vaddwod_s)
++TRANS(xvaddwod_h_b, LASX, gvec_xxx, MO_8, do_vaddwod_s)
++TRANS(xvaddwod_w_h, LASX, gvec_xxx, MO_16, do_vaddwod_s)
++TRANS(xvaddwod_d_w, LASX, gvec_xxx, MO_32, do_vaddwod_s)
++TRANS(xvaddwod_q_d, LASX, gvec_xxx, MO_64, do_vaddwod_s)
 +
- static bool gen_vv_ptr_vl(DisasContext *ctx, arg_vv *a, uint32_t oprsz,
-                           gen_helper_gvec_2_ptr *fn)
- {
-@@ -446,6 +451,23 @@ TRANS(vhsubw_wu_hu, LSX, gen_vvv, gen_helper_vhsubw_wu_hu)
- TRANS(vhsubw_du_wu, LSX, gen_vvv, gen_helper_vhsubw_du_wu)
- TRANS(vhsubw_qu_du, LSX, gen_vvv, gen_helper_vhsubw_qu_du)
  
-+TRANS(xvhaddw_h_b, LASX, gen_xxx, gen_helper_vhaddw_h_b)
-+TRANS(xvhaddw_w_h, LASX, gen_xxx, gen_helper_vhaddw_w_h)
-+TRANS(xvhaddw_d_w, LASX, gen_xxx, gen_helper_vhaddw_d_w)
-+TRANS(xvhaddw_q_d, LASX, gen_xxx, gen_helper_vhaddw_q_d)
-+TRANS(xvhaddw_hu_bu, LASX, gen_xxx, gen_helper_vhaddw_hu_bu)
-+TRANS(xvhaddw_wu_hu, LASX, gen_xxx, gen_helper_vhaddw_wu_hu)
-+TRANS(xvhaddw_du_wu, LASX, gen_xxx, gen_helper_vhaddw_du_wu)
-+TRANS(xvhaddw_qu_du, LASX, gen_xxx, gen_helper_vhaddw_qu_du)
-+TRANS(xvhsubw_h_b, LASX, gen_xxx, gen_helper_vhsubw_h_b)
-+TRANS(xvhsubw_w_h, LASX, gen_xxx, gen_helper_vhsubw_w_h)
-+TRANS(xvhsubw_d_w, LASX, gen_xxx, gen_helper_vhsubw_d_w)
-+TRANS(xvhsubw_q_d, LASX, gen_xxx, gen_helper_vhsubw_q_d)
-+TRANS(xvhsubw_hu_bu, LASX, gen_xxx, gen_helper_vhsubw_hu_bu)
-+TRANS(xvhsubw_wu_hu, LASX, gen_xxx, gen_helper_vhsubw_wu_hu)
-+TRANS(xvhsubw_du_wu, LASX, gen_xxx, gen_helper_vhsubw_du_wu)
-+TRANS(xvhsubw_qu_du, LASX, gen_xxx, gen_helper_vhsubw_qu_du)
-+
- static void gen_vaddwev_s(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ static void gen_vsubwev_s(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
  {
-     TCGv_vec t1, t2;
+@@ -712,6 +721,10 @@ TRANS(vsubwev_h_b, LSX, gvec_vvv, MO_8, do_vsubwev_s)
+ TRANS(vsubwev_w_h, LSX, gvec_vvv, MO_16, do_vsubwev_s)
+ TRANS(vsubwev_d_w, LSX, gvec_vvv, MO_32, do_vsubwev_s)
+ TRANS(vsubwev_q_d, LSX, gvec_vvv, MO_64, do_vsubwev_s)
++TRANS(xvsubwev_h_b, LASX, gvec_xxx, MO_8, do_vsubwev_s)
++TRANS(xvsubwev_w_h, LASX, gvec_xxx, MO_16, do_vsubwev_s)
++TRANS(xvsubwev_d_w, LASX, gvec_xxx, MO_32, do_vsubwev_s)
++TRANS(xvsubwev_q_d, LASX, gvec_xxx, MO_64, do_vsubwev_s)
+ 
+ static void gen_vsubwod_s(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ {
+@@ -791,6 +804,10 @@ TRANS(vsubwod_h_b, LSX, gvec_vvv, MO_8, do_vsubwod_s)
+ TRANS(vsubwod_w_h, LSX, gvec_vvv, MO_16, do_vsubwod_s)
+ TRANS(vsubwod_d_w, LSX, gvec_vvv, MO_32, do_vsubwod_s)
+ TRANS(vsubwod_q_d, LSX, gvec_vvv, MO_64, do_vsubwod_s)
++TRANS(xvsubwod_h_b, LASX, gvec_xxx, MO_8, do_vsubwod_s)
++TRANS(xvsubwod_w_h, LASX, gvec_xxx, MO_16, do_vsubwod_s)
++TRANS(xvsubwod_d_w, LASX, gvec_xxx, MO_32, do_vsubwod_s)
++TRANS(xvsubwod_q_d, LASX, gvec_xxx, MO_64, do_vsubwod_s)
+ 
+ static void gen_vaddwev_u(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ {
+@@ -866,6 +883,10 @@ TRANS(vaddwev_h_bu, LSX, gvec_vvv, MO_8, do_vaddwev_u)
+ TRANS(vaddwev_w_hu, LSX, gvec_vvv, MO_16, do_vaddwev_u)
+ TRANS(vaddwev_d_wu, LSX, gvec_vvv, MO_32, do_vaddwev_u)
+ TRANS(vaddwev_q_du, LSX, gvec_vvv, MO_64, do_vaddwev_u)
++TRANS(xvaddwev_h_bu, LASX, gvec_xxx, MO_8, do_vaddwev_u)
++TRANS(xvaddwev_w_hu, LASX, gvec_xxx, MO_16, do_vaddwev_u)
++TRANS(xvaddwev_d_wu, LASX, gvec_xxx, MO_32, do_vaddwev_u)
++TRANS(xvaddwev_q_du, LASX, gvec_xxx, MO_64, do_vaddwev_u)
+ 
+ static void gen_vaddwod_u(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ {
+@@ -945,6 +966,10 @@ TRANS(vaddwod_h_bu, LSX, gvec_vvv, MO_8, do_vaddwod_u)
+ TRANS(vaddwod_w_hu, LSX, gvec_vvv, MO_16, do_vaddwod_u)
+ TRANS(vaddwod_d_wu, LSX, gvec_vvv, MO_32, do_vaddwod_u)
+ TRANS(vaddwod_q_du, LSX, gvec_vvv, MO_64, do_vaddwod_u)
++TRANS(xvaddwod_h_bu, LASX, gvec_xxx, MO_8, do_vaddwod_u)
++TRANS(xvaddwod_w_hu, LASX, gvec_xxx, MO_16, do_vaddwod_u)
++TRANS(xvaddwod_d_wu, LASX, gvec_xxx, MO_32, do_vaddwod_u)
++TRANS(xvaddwod_q_du, LASX, gvec_xxx, MO_64, do_vaddwod_u)
+ 
+ static void gen_vsubwev_u(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ {
+@@ -1020,6 +1045,10 @@ TRANS(vsubwev_h_bu, LSX, gvec_vvv, MO_8, do_vsubwev_u)
+ TRANS(vsubwev_w_hu, LSX, gvec_vvv, MO_16, do_vsubwev_u)
+ TRANS(vsubwev_d_wu, LSX, gvec_vvv, MO_32, do_vsubwev_u)
+ TRANS(vsubwev_q_du, LSX, gvec_vvv, MO_64, do_vsubwev_u)
++TRANS(xvsubwev_h_bu, LASX, gvec_xxx, MO_8, do_vsubwev_u)
++TRANS(xvsubwev_w_hu, LASX, gvec_xxx, MO_16, do_vsubwev_u)
++TRANS(xvsubwev_d_wu, LASX, gvec_xxx, MO_32, do_vsubwev_u)
++TRANS(xvsubwev_q_du, LASX, gvec_xxx, MO_64, do_vsubwev_u)
+ 
+ static void gen_vsubwod_u(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ {
+@@ -1099,6 +1128,10 @@ TRANS(vsubwod_h_bu, LSX, gvec_vvv, MO_8, do_vsubwod_u)
+ TRANS(vsubwod_w_hu, LSX, gvec_vvv, MO_16, do_vsubwod_u)
+ TRANS(vsubwod_d_wu, LSX, gvec_vvv, MO_32, do_vsubwod_u)
+ TRANS(vsubwod_q_du, LSX, gvec_vvv, MO_64, do_vsubwod_u)
++TRANS(xvsubwod_h_bu, LASX, gvec_xxx, MO_8, do_vsubwod_u)
++TRANS(xvsubwod_w_hu, LASX, gvec_xxx, MO_16, do_vsubwod_u)
++TRANS(xvsubwod_d_wu, LASX, gvec_xxx, MO_32, do_vsubwod_u)
++TRANS(xvsubwod_q_du, LASX, gvec_xxx, MO_64, do_vsubwod_u)
+ 
+ static void gen_vaddwev_u_s(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ {
+@@ -1182,6 +1215,10 @@ TRANS(vaddwev_h_bu_b, LSX, gvec_vvv, MO_8, do_vaddwev_u_s)
+ TRANS(vaddwev_w_hu_h, LSX, gvec_vvv, MO_16, do_vaddwev_u_s)
+ TRANS(vaddwev_d_wu_w, LSX, gvec_vvv, MO_32, do_vaddwev_u_s)
+ TRANS(vaddwev_q_du_d, LSX, gvec_vvv, MO_64, do_vaddwev_u_s)
++TRANS(xvaddwev_h_bu_b, LASX, gvec_xxx, MO_8, do_vaddwev_u_s)
++TRANS(xvaddwev_w_hu_h, LASX, gvec_xxx, MO_16, do_vaddwev_u_s)
++TRANS(xvaddwev_d_wu_w, LASX, gvec_xxx, MO_32, do_vaddwev_u_s)
++TRANS(xvaddwev_q_du_d, LASX, gvec_xxx, MO_64, do_vaddwev_u_s)
+ 
+ static void gen_vaddwod_u_s(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b)
+ {
+@@ -1262,6 +1299,10 @@ TRANS(vaddwod_h_bu_b, LSX, gvec_vvv, MO_8, do_vaddwod_u_s)
+ TRANS(vaddwod_w_hu_h, LSX, gvec_vvv, MO_16, do_vaddwod_u_s)
+ TRANS(vaddwod_d_wu_w, LSX, gvec_vvv, MO_32, do_vaddwod_u_s)
+ TRANS(vaddwod_q_du_d, LSX, gvec_vvv, MO_64, do_vaddwod_u_s)
++TRANS(xvaddwod_h_bu_b, LSX, gvec_xxx, MO_8, do_vaddwod_u_s)
++TRANS(xvaddwod_w_hu_h, LSX, gvec_xxx, MO_16, do_vaddwod_u_s)
++TRANS(xvaddwod_d_wu_w, LSX, gvec_xxx, MO_32, do_vaddwod_u_s)
++TRANS(xvaddwod_q_du_d, LSX, gvec_xxx, MO_64, do_vaddwod_u_s)
+ 
+ static void do_vavg(unsigned vece, TCGv_vec t, TCGv_vec a, TCGv_vec b,
+                     void (*gen_shr_vec)(unsigned, TCGv_vec,
 -- 
 2.39.1
 
