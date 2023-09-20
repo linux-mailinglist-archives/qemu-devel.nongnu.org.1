@@ -2,45 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873A07A71BB
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 07:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 541497A71C6
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 07:09:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qipKA-0004rs-0k; Wed, 20 Sep 2023 01:00:30 -0400
+	id 1qipSB-0006Xl-Q9; Wed, 20 Sep 2023 01:08:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qipJw-0004ou-1K; Wed, 20 Sep 2023 01:00:25 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qipS8-0006XU-6Q
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 01:08:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qipJt-00062W-LX; Wed, 20 Sep 2023 01:00:15 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qipS6-0008BT-7v
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 01:08:43 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 403A9236C8;
- Wed, 20 Sep 2023 08:00:29 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id CCCBE236CE;
+ Wed, 20 Sep 2023 08:08:58 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 245F4293D4;
- Wed, 20 Sep 2023 08:00:10 +0300 (MSK)
-Message-ID: <b14670cf-2926-a1e0-33a6-861730ef0467@tls.msk.ru>
-Date: Wed, 20 Sep 2023 08:00:10 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id C36A0293D8;
+ Wed, 20 Sep 2023 08:08:39 +0300 (MSK)
+Message-ID: <37cba7c1-5614-0269-40bf-5addd6c777fe@tls.msk.ru>
+Date: Wed, 20 Sep 2023 08:08:39 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v2 0/3] hw/cxl: Misc small fixes
+Subject: Re: [PATCH v3 2/4] hw/cxl: Use switch statements for read and write
+ of cachemem registers
 Content-Language: en-US
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
  Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- QEMU Trivial <qemu-trivial@nongnu.org>
-Cc: linuxarm@huawei.com, Peter Maydell <peter.maydell@linaro.org>,
- Yuquan Wang <wangyuquan1236@phytium.com.cn>,
- Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Warner Losh <imp@bsdimp.com>
-References: <20230919101927.1470-1-Jonathan.Cameron@huawei.com>
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+Cc: linuxarm@huawei.com
+References: <20230919093434.1194-1-Jonathan.Cameron@huawei.com>
+ <20230919093434.1194-3-Jonathan.Cameron@huawei.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230919101927.1470-1-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20230919093434.1194-3-Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -66,21 +63,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-19.09.2023 13:19, Jonathan Cameron via wrote:
-> v2:
->   - Tag collection.
->   - Patch 2 discussion on appropriate license concluded that this should
->     have originally only been accepted on GPL-v2 and later. However, I've
->     left it as GPL-v2-only as that is what was used for other CXL files and
->     for the license to be usefully relaxed we need to do them all - which
->     is a job for another day.
->   - Added SPDX
->   - Added similar header to cxl_type3_stubs.c
->   
-> Misc set of trivial fixes.  No conflicts with other sets outstanding
-> so can go with main CXL patches or perhaps via the trivial tree.
+19.09.2023 12:34, Jonathan Cameron via wrote:
+> Establishing that only register accesses of size 4 and 8 can occur
+> using these functions requires looking at their callers. Make it
+> easier to see that by using switch statements.
+> Assertions are used to enforce that the register storage is of the
+> matching size, allowing fixed values to be used for divisors of
+> the array indices.
+> 
+> Suggested-by: Michael Tokarev <mjt@tls.msk.ru>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-Appied to my trivial-patches tree.  Thank you!
+> @@ -117,25 +125,36 @@ static void cxl_cache_mem_write_reg(void *opaque, hwaddr offset, uint64_t value,
+>       ComponentRegisters *cregs = &cxl_cstate->crb;
+>       uint32_t mask;
+..
+This hunk does not apply to qemu/master.  Is it based on some other
+change missing in this area?
+
+I thought about collecting all this and pushing trivial-patches but
+stumbled upon this one.
+
+Thanks,
 
 /mjt
 
