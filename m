@@ -2,57 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483E07A7B1C
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D84E7A7B36
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Sep 2023 13:50:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qivh0-0001sW-7D; Wed, 20 Sep 2023 07:48:30 -0400
+	id 1qiviI-0002YA-E0; Wed, 20 Sep 2023 07:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qivgx-0001rW-GK; Wed, 20 Sep 2023 07:48:27 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qivi1-0002UP-Gb
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:49:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qivgv-0007GL-9o; Wed, 20 Sep 2023 07:48:27 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RrGvZ0qnnz6HJc5;
- Wed, 20 Sep 2023 19:46:18 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 20 Sep
- 2023 12:48:04 +0100
-Date: Wed, 20 Sep 2023 12:48:03 +0100
-To: Klaus Jensen <its@irrelevant.dk>
-CC: Corey Minyard <cminyard@mvista.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
- Keith Busch <kbusch@kernel.org>, Lior Weintraub <liorw@pliops.com>, Jeremy
- Kerr <jk@codeconstruct.com.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Matt Johnston <matt@codeconstruct.com.au>, Peter Delevoryas <peter@pjd.dev>,
- <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <qemu-block@nongnu.org>,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH v6 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management
- interface model
-Message-ID: <20230920124803.00005ae9@Huawei.com>
-In-Reply-To: <20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com>
-References: <20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qivhy-0007OE-P0
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 07:49:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695210562;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=z7jayTL4GBmJdF3YpFhuIscnWAfBg48DHJ//bz0xIY8=;
+ b=FhX/XmGxgM6MMQ8FIsKpqtarHe/96BPyeAJR5+Nahp8dQK/mWxCh7EIXnOlPe0/WxekEOU
+ h276Lhn1bE7KPslju+Hf895FeLhce/HfLfPQmtDcOA5pTGgqAPoJ1B6oz1no/xhdlq96l1
+ JGaGFmNu6J1A6IW6Poe6lq0lrP4X++8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-422-il_IIVs3N3qfCNrjabQmCw-1; Wed, 20 Sep 2023 07:49:18 -0400
+X-MC-Unique: il_IIVs3N3qfCNrjabQmCw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-31fd49d8f2aso4352117f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 04:49:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695210557; x=1695815357;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=z7jayTL4GBmJdF3YpFhuIscnWAfBg48DHJ//bz0xIY8=;
+ b=g4RJ2fdKHmt/H/tKxwMMtOuRBid355wx5pfZs7doXPhPGMmOJzG9bPUMmV3yqpIh3D
+ xLMx77fqMuvPepCHhOF5oou2IjtkUY2uFCHa5apGsVX9Hg5yEiV0ygUgVQbm+OpS0Vub
+ +grPm6lo8fyz49iEf0LkoE64+UxS6/vGLTLJrz8qRmSiV2yFGUT7V8poYsz/gWG3uxEe
+ ArSzO4DAfpfh2AzJuVBMJpt+bbVSHQkiHxvkW0rJxXKLrY0uNx+PMlT/oJ8HllfXd1lH
+ eiP6ut4Nj0hc4AnTEhs1dTuiIt0vBlcEX6rv5x7YL6eaBWIa3GNIbs1aVmdpRMi6aXt/
+ jhBg==
+X-Gm-Message-State: AOJu0YxcBKJtVahgl+VWzvYsjaQqSssSkm13v/kNhgVPB+h6fVtkIcDD
+ sUScaldhDlp7190thcRDk6erM0VmrRUNcYAY9Ho0IfkOPeaOEuX3fd0Uhc1oyVEmcyNtOqy3kep
+ OASNHoVa29UlBb1Q=
+X-Received: by 2002:a5d:494f:0:b0:31c:84e9:20fd with SMTP id
+ r15-20020a5d494f000000b0031c84e920fdmr2489020wrs.13.1695210557722; 
+ Wed, 20 Sep 2023 04:49:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1gEJHX6WNlgEhFdiWlCaEAHT2NJQgld0aXoxYuMiCDcIMwgvGOIFOvrP5AT1r1VsQPMG+Gw==
+X-Received: by 2002:a5d:494f:0:b0:31c:84e9:20fd with SMTP id
+ r15-20020a5d494f000000b0031c84e920fdmr2488993wrs.13.1695210557331; 
+ Wed, 20 Sep 2023 04:49:17 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ w7-20020adfec47000000b0031fba0a746bsm11196235wrn.9.2023.09.20.04.49.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Sep 2023 04:49:16 -0700 (PDT)
+Message-ID: <127c3104-44e0-f19f-6339-43182fbf6db1@redhat.com>
+Date: Wed, 20 Sep 2023 13:49:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 05/22] vfio/common: Extract out
+ vfio_kvm_device_[add/del]_fd
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-6-zhenzhong.duan@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20230830103754.36461-6-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,103 +107,147 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 14 Sep 2023 11:53:40 +0200
-Klaus Jensen <its@irrelevant.dk> wrote:
+Hi Zhenzhong,
 
-> This adds a generic MCTP endpoint model that other devices may derive
-> from.
-> 
-> Also included is a very basic implementation of an NVMe-MI device,
-> supporting only a small subset of the required commands.
-> 
-> Since this all relies on i2c target mode, this can currently only be
-> used with an SoC that includes the Aspeed I2C controller.
-> 
-> The easiest way to get up and running with this, is to grab my buildroot
-> overlay[1] (aspeed_ast2600evb_nmi_defconfig). It includes modified a
-> modified dts as well as a couple of required packages.
-> 
-> QEMU can then be launched along these lines:
-> 
->   qemu-system-arm \
->     -nographic \
->     -M ast2600-evb \
->     -kernel output/images/zImage \
->     -initrd output/images/rootfs.cpio \
->     -dtb output/images/aspeed-ast2600-evb-nmi.dtb \
->     -nic user,hostfwd=tcp::2222-:22 \
->     -device nmi-i2c,address=0x3a \
->     -serial mon:stdio
-> 
-> From within the booted system,
-> 
->   mctp addr add 8 dev mctpi2c15
->   mctp link set mctpi2c15 up
->   mctp route add 9 via mctpi2c15
->   mctp neigh add 9 dev mctpi2c15 lladdr 0x3a
->   mi-mctp 1 9 info
-> 
-> Comments are very welcome!
-> 
->   [1]: https://github.com/birkelund/hwtests/tree/main/br2-external
-> 
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+On 8/30/23 12:37, Zhenzhong Duan wrote:
+> ...which will be used by both legacy and iommufd backend.
+I prefer genuine sentences in the commit msg. Also you explain what you
+do but not why.
 
-Hi Klaus,
+suggestion: Introduce two new helpers, vfio_kvm_device_[add/del]_fd
+which take as input a file descriptor which can be either a group fd or
+a cdev fd. This uses the new KVM_DEV_VFIO_FILE VFIO KVM device group,
+which aliases to the legacy KVM_DEV_VFIO_GROUP.
 
-Silly question, but who is likely to pick this up? + likely to be soon?
+vfio_kvm_device_add/del_group then call those new helpers.
 
-I'm going to post the CXL stuff that makes use of the core support shortly
-and whilst I can point at this patch set on list, I'd keen to see it upstream
-to reduce the dependencies (it's got 2 sets ahead of it of CXL stuff
-anyway but that will all hopefully go through Michael Tsirkin's tree
-for PCI stuff in one go).
 
-Jonathan
 
+>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
-> Changes in v6:
-> - Use nmi_scratch_append() directly where it makes sense. Fixes bug
->   observed by Andrew.
-> - Link to v5: https://lore.kernel.org/r/20230905-nmi-i2c-v5-0-0001d372a728@samsung.com
-> 
-> Changes in v5:
-> - Added a nmi_scratch_append() that asserts available space in the
->   scratch buffer. This is a similar defensive strategy as used in
->   hw/i2c/mctp.c
-> - Various small fixups in response to review (Jonathan)
-> - Link to v4: https://lore.kernel.org/r/20230823-nmi-i2c-v4-0-2b0f86e5be25@samsung.com
-> 
-> ---
-> Klaus Jensen (3):
->       hw/i2c: add smbus pec utility function
->       hw/i2c: add mctp core
->       hw/nvme: add nvme management interface model
-> 
->  MAINTAINERS                   |   7 +
->  hw/arm/Kconfig                |   1 +
->  hw/i2c/Kconfig                |   4 +
->  hw/i2c/mctp.c                 | 432 ++++++++++++++++++++++++++++++++++++++++++
->  hw/i2c/meson.build            |   1 +
->  hw/i2c/smbus_master.c         |  26 +++
->  hw/i2c/trace-events           |  13 ++
->  hw/nvme/Kconfig               |   4 +
->  hw/nvme/meson.build           |   1 +
->  hw/nvme/nmi-i2c.c             | 407 +++++++++++++++++++++++++++++++++++++++
->  hw/nvme/trace-events          |   6 +
->  include/hw/i2c/mctp.h         | 125 ++++++++++++
->  include/hw/i2c/smbus_master.h |   2 +
->  include/net/mctp.h            |  35 ++++
->  14 files changed, 1064 insertions(+)
-> ---
-> base-commit: 005ad32358f12fe9313a4a01918a55e60d4f39e5
-> change-id: 20230822-nmi-i2c-d804ed5be7e6
-> 
-> Best regards,
+>  hw/vfio/common.c              | 44 +++++++++++++++++++++++------------
+>  include/hw/vfio/vfio-common.h |  3 +++
+>  2 files changed, 32 insertions(+), 15 deletions(-)
+>
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 67150e4575..949ad6714a 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -1759,17 +1759,17 @@ void vfio_reset_handler(void *opaque)
+>      }
+>  }
+>  
+> -static void vfio_kvm_device_add_group(VFIOGroup *group)
+> +int vfio_kvm_device_add_fd(int fd)
+>  {
+>  #ifdef CONFIG_KVM
+>      struct kvm_device_attr attr = {
+> -        .group = KVM_DEV_VFIO_GROUP,
+> -        .attr = KVM_DEV_VFIO_GROUP_ADD,
+> -        .addr = (uint64_t)(unsigned long)&group->fd,
+> +        .group = KVM_DEV_VFIO_FILE,
+> +        .attr = KVM_DEV_VFIO_FILE_ADD,
+> +        .addr = (uint64_t)(unsigned long)&fd,
+>      };
+>  
+>      if (!kvm_enabled()) {
+> -        return;
+> +        return 0;
+>      }
+>  
+>      if (vfio_kvm_device_fd < 0) {
+> @@ -1779,37 +1779,51 @@ static void vfio_kvm_device_add_group(VFIOGroup *group)
+>  
+>          if (kvm_vm_ioctl(kvm_state, KVM_CREATE_DEVICE, &cd)) {
+>              error_report("Failed to create KVM VFIO device: %m");
+> -            return;
+> +            return -ENODEV;
+can't you return -errno?
+>          }
+>  
+>          vfio_kvm_device_fd = cd.fd;
+>      }
+>  
+>      if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+> -        error_report("Failed to add group %d to KVM VFIO device: %m",
+> -                     group->groupid);
+> +        error_report("Failed to add fd %d to KVM VFIO device: %m",
+> +                     fd);
+> +        return -errno;
+>      }
+>  #endif
+> +    return 0;
+>  }
+>  
+> -static void vfio_kvm_device_del_group(VFIOGroup *group)
+> +static void vfio_kvm_device_add_group(VFIOGroup *group)
+> +{
+> +    vfio_kvm_device_add_fd(group->fd);
+Since vfio_kvm_device_add_fd now returns an error value, it's a pity not
+to use it and propagate it. Also you could fill an errp with the error
+msg and use it in vfio_connect_container(). But this is a new error
+handling there.
+> +}
+> +
+> +int vfio_kvm_device_del_fd(int fd)
+not sure we want this to return an error. But if we do, I think it would
+be nicer to propagate the error up.
+>  {
+>  #ifdef CONFIG_KVM
+>      struct kvm_device_attr attr = {
+> -        .group = KVM_DEV_VFIO_GROUP,
+> -        .attr = KVM_DEV_VFIO_GROUP_DEL,
+> -        .addr = (uint64_t)(unsigned long)&group->fd,
+> +        .group = KVM_DEV_VFIO_FILE,
+> +        .attr = KVM_DEV_VFIO_FILE_DEL,
+> +        .addr = (uint64_t)(unsigned long)&fd,
+>      };
+>  
+>      if (vfio_kvm_device_fd < 0) {
+> -        return;
+> +        return -EINVAL;
+>      }
+>  
+>      if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+> -        error_report("Failed to remove group %d from KVM VFIO device: %m",
+> -                     group->groupid);
+> +        error_report("Failed to remove fd %d from KVM VFIO device: %m",
+> +                     fd);
+> +        return -EBADF;
+-errno?
+>      }
+>  #endif
+> +    return 0;
+> +}
+> +
+> +static void vfio_kvm_device_del_group(VFIOGroup *group)
+> +{
+> +    vfio_kvm_device_del_fd(group->fd);
+>  }
+>  
+>  static VFIOAddressSpace *vfio_get_address_space(AddressSpace *as)
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 5e376c436e..598c3ce079 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -220,6 +220,9 @@ struct vfio_device_info *vfio_get_device_info(int fd);
+>  int vfio_get_device(VFIOGroup *group, const char *name,
+>                      VFIODevice *vbasedev, Error **errp);
+>  
+> +int vfio_kvm_device_add_fd(int fd);
+> +int vfio_kvm_device_del_fd(int fd);
+> +
+>  extern const MemoryRegionOps vfio_region_ops;
+>  typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
+>  extern VFIOGroupList vfio_group_list;
+Thanks
+
+Eric
 
 
