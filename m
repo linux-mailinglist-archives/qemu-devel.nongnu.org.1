@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFBF7A9849
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF71F7A984D
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjNci-0002D4-Mv; Thu, 21 Sep 2023 13:37:56 -0400
+	id 1qjNcd-0002BP-DW; Thu, 21 Sep 2023 13:37:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcg-0002C9-Uf
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:54 -0400
+ id 1qjNcb-0002Ab-Uj
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:49 -0400
 Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcN-0007iG-Vx
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:54 -0400
+ id 1qjNcO-0007iM-5G
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:49 -0400
 Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-313e742a787so820267f8f.1
+ ffacd0b85a97d-32172a50356so1255138f8f.0
  for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695317854; x=1695922654; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695317855; x=1695922655; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vZDpPDL7VYx+NDtQ2pIz8KgGd+MM5dll5CqhqvtnfHo=;
- b=p4oBAAb5WRhVfPXj838iDyoLzqwu9lsAqLPZcEsgnblA/vMp2UyQcdAisqpLAmi7Iv
- l/BL1eggAnjgTBvEnPKkpK99VeWCPtZgAhR2T5nNdLAHdi2kFYPPVTq1VTqFnwuR+yVh
- zGi7Y2qLMxy1k4IDvCaHC6Uv3a/JgUKs5wwerCcyZ218H8R2xIeMe5J4OEIXU5kZaTvw
- H08seop1nSNuFjxieL6oq0w3euUt7/XyzsK6vO+YoOOzCdEVDTrmsF0BUXxbyNhWD+Es
- jdItVcNUMt0SOb0ox1bWbMKM2dMJQfyKq4dd/RONSowBSsJDFRLPaMVCYlnJEwinjL9m
- dEAA==
+ :reply-to; bh=tpP7WvKkmw1P1SqkcMNN7UBPT2euBBFe5uh9vcxXSwE=;
+ b=c1BQo2gYW29AceuPVkr6eld4+Cja0HwMR8XMKithGZp/VjFwpDaNG1TWVfccGIEUCd
+ pDe5Rt9zqL6hW74xIBnE0iwrSde7Ob+cwUpooV40zuoBsoBHLBnZajMS15lGO1sd1gCK
+ KU0zXWwjxpj07LvizmqOzlVivYIGjNIKOoubU1JaVzcD6egB8XzHzRXpPCc73BOZM4ZJ
+ e6RdqQC5ns0GCELud1FQ8Mfag5VDp4AOG5cvkq3BeDHXr6uLoYJDiNSM++2EB6KUQXWT
+ +y7pE1jqd2+IBksUiwAdk3/5lJvlPp66ewnNPC1SpFVC1hVXji6bWsNxzeO7uvt+flp7
+ yjxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695317854; x=1695922654;
+ d=1e100.net; s=20230601; t=1695317855; x=1695922655;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vZDpPDL7VYx+NDtQ2pIz8KgGd+MM5dll5CqhqvtnfHo=;
- b=rkQnjIGlKDAjvMZPIvZCj8VI3o2cn0EOgCVKWBDZPa3gZMNFL3ntqrGwJv5oGP5ZzY
- LZPzwNF0g3c0Zq97llYgl3KHZnsFJleB+CncqyUbfVqWj6lB/oBKXK25gCevgnCEdVwt
- 1CyFswwtSS2BG38db/73dxxSZ/Wde+oQHCOf2MhpN0l0vq2AKbaq6ux7rDrXKZ26a+qQ
- aQP+bq9IizJh3XePCrO2odbQiaewmkgcqgtRw8fI3WxrwBBrFwYjPm9K07jivA+DVgMv
- C3fU329h3y2XyAVHioBVulNZOgLA/UF9yLtBddSEobe/kymYiNG7XjQVQ3MRJkxJC0SJ
- YX5w==
-X-Gm-Message-State: AOJu0YyrOnHi0QAayei9gd3gm8LPxFQ+iAnZ8OGnwUcVcVc7wjZEqERR
- liBMhRQB7YnZvWwUcQCUljHjJo0yELYr/2YVllI=
-X-Google-Smtp-Source: AGHT+IGfGhlJ71UO5PON7FYd2p1+Q2BMpYQhtY0fpYVm4q+u3Mif34p61SgrFnwD/1EJz3Vj7JfO9Q==
-X-Received: by 2002:adf:cc8c:0:b0:320:2b29:7041 with SMTP id
- p12-20020adfcc8c000000b003202b297041mr199934wrj.24.1695317854416; 
+ bh=tpP7WvKkmw1P1SqkcMNN7UBPT2euBBFe5uh9vcxXSwE=;
+ b=aXkBRDa9SD9H9w9KMq/z43uSCyoUL2KaqN3epMc8zAhrLcO2wPjaQGrcyOoDfZq1kj
+ 7CwCpovvsLEFZEdT4JqcVwCgpFw8oQ0/4AHnCr8XSde+8bkadqx8pzMc6ExT464K3+uy
+ rTTi1PsEKI4KU90tbzNe6X0DmKklRKZf8jPa8KoFRpJQ5+cFkG7BvI3SQcAetYLMtaxR
+ 57k2Ojdr5uRMCVKZNNzoL6ApeYdMBaULxxO7CbgDlY8MHcqyP/FVZR+3Qszf+zczUENu
+ LcElyo8vwgBOSdmcREbNFdEorSDYPwogl+zwkyIiCI/8Dh/cBwwle4GPpmVC8EsxAWF1
+ fGWg==
+X-Gm-Message-State: AOJu0YwHVh0CllltO+4lsZBFnPVmniQifM7Lvs5KbNZRviiMiCEkB5cb
+ R2qnCfeKk9BsKpiZxsiFlaYKTmcHDYYR1UyNmcw=
+X-Google-Smtp-Source: AGHT+IH7r4ugyOxzVjNWfgYNl6YlesOHsq999nDG4SUbzTexgs0pDk0yeWUToTZIhsKArMqCqhPMKw==
+X-Received: by 2002:a5d:6346:0:b0:31f:e5cf:6724 with SMTP id
+ b6-20020a5d6346000000b0031fe5cf6724mr6508426wrw.46.1695317854816; 
  Thu, 21 Sep 2023 10:37:34 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -58,9 +58,9 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 21 Sep 2023 10:37:34 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/30] elf2dmp: replace PE export name check with PDB name check
-Date: Thu, 21 Sep 2023 18:37:16 +0100
-Message-Id: <20230921173720.3250581-27-peter.maydell@linaro.org>
+Subject: [PULL 27/30] elf2dmp: introduce physical block alignment
+Date: Thu, 21 Sep 2023 18:37:17 +0100
+Message-Id: <20230921173720.3250581-28-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921173720.3250581-1-peter.maydell@linaro.org>
 References: <20230921173720.3250581-1-peter.maydell@linaro.org>
@@ -72,7 +72,8 @@ X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,176 +92,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Viktor Prutyanov <viktor@daynix.com>
 
-PE export name check introduced in d399d6b179 isn't reliable enough,
-because a page with the export directory may be not present for some
-reason. On the other hand, elf2dmp retrieves the PDB name in any case.
-It can be also used to check that a PE image is the kernel image. So,
-check PDB name when searching for Windows kernel image.
-
-Buglink: https://bugzilla.redhat.com/show_bug.cgi?id=2165917
+Physical memory ranges may not be aligned to page size in QEMU ELF, but
+DMP can only contain page-aligned runs. So, align them.
 
 Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20230915170153.10959-2-viktor@daynix.com
+Message-id: 20230915170153.10959-3-viktor@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/main.c | 93 +++++++++++++++---------------------------
- 1 file changed, 33 insertions(+), 60 deletions(-)
+ contrib/elf2dmp/addrspace.h |  1 +
+ contrib/elf2dmp/addrspace.c | 31 +++++++++++++++++++++++++++++--
+ contrib/elf2dmp/main.c      |  5 +++--
+ 3 files changed, 33 insertions(+), 4 deletions(-)
 
+diff --git a/contrib/elf2dmp/addrspace.h b/contrib/elf2dmp/addrspace.h
+index 00b44c12180..039c70c5b07 100644
+--- a/contrib/elf2dmp/addrspace.h
++++ b/contrib/elf2dmp/addrspace.h
+@@ -12,6 +12,7 @@
+ 
+ #define ELF2DMP_PAGE_BITS 12
+ #define ELF2DMP_PAGE_SIZE (1ULL << ELF2DMP_PAGE_BITS)
++#define ELF2DMP_PAGE_MASK (ELF2DMP_PAGE_SIZE - 1)
+ #define ELF2DMP_PFN_MASK (~(ELF2DMP_PAGE_SIZE - 1))
+ 
+ #define INVALID_PA  UINT64_MAX
+diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
+index 0b04cba00e5..64b5d680adc 100644
+--- a/contrib/elf2dmp/addrspace.c
++++ b/contrib/elf2dmp/addrspace.c
+@@ -14,7 +14,7 @@ static struct pa_block *pa_space_find_block(struct pa_space *ps, uint64_t pa)
+ 
+     for (i = 0; i < ps->block_nr; i++) {
+         if (ps->block[i].paddr <= pa &&
+-                pa <= ps->block[i].paddr + ps->block[i].size) {
++                pa < ps->block[i].paddr + ps->block[i].size) {
+             return ps->block + i;
+         }
+     }
+@@ -33,6 +33,30 @@ static uint8_t *pa_space_resolve(struct pa_space *ps, uint64_t pa)
+     return block->addr + (pa - block->paddr);
+ }
+ 
++static void pa_block_align(struct pa_block *b)
++{
++    uint64_t low_align = ((b->paddr - 1) | ELF2DMP_PAGE_MASK) + 1 - b->paddr;
++    uint64_t high_align = (b->paddr + b->size) & ELF2DMP_PAGE_MASK;
++
++    if (low_align == 0 && high_align == 0) {
++        return;
++    }
++
++    if (low_align + high_align < b->size) {
++        printf("Block 0x%"PRIx64"+:0x%"PRIx64" will be aligned to "
++                "0x%"PRIx64"+:0x%"PRIx64"\n", b->paddr, b->size,
++                b->paddr + low_align, b->size - low_align - high_align);
++        b->size -= low_align + high_align;
++    } else {
++        printf("Block 0x%"PRIx64"+:0x%"PRIx64" is too small to align\n",
++                b->paddr, b->size);
++        b->size = 0;
++    }
++
++    b->addr += low_align;
++    b->paddr += low_align;
++}
++
+ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+ {
+     Elf64_Half phdr_nr = elf_getphdrnum(qemu_elf->map);
+@@ -60,10 +84,13 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+                 .paddr = phdr[i].p_paddr,
+                 .size = phdr[i].p_filesz,
+             };
+-            block_i++;
++            pa_block_align(&ps->block[block_i]);
++            block_i = ps->block[block_i].size ? (block_i + 1) : block_i;
+         }
+     }
+ 
++    ps->block_nr = block_i;
++
+     return 0;
+ }
+ 
 diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 6d4d18501a3..bb6744c0cd6 100644
+index bb6744c0cd6..b7e39301641 100644
 --- a/contrib/elf2dmp/main.c
 +++ b/contrib/elf2dmp/main.c
-@@ -411,89 +411,64 @@ static int write_dump(struct pa_space *ps,
-     return fclose(dmp_file);
- }
+@@ -400,9 +400,10 @@ static int write_dump(struct pa_space *ps,
+     for (i = 0; i < ps->block_nr; i++) {
+         struct pa_block *b = &ps->block[i];
  
--static bool pe_check_export_name(uint64_t base, void *start_addr,
--        struct va_space *vs)
--{
--    IMAGE_EXPORT_DIRECTORY export_dir;
--    const char *pe_name;
--
--    if (pe_get_data_dir_entry(base, start_addr, IMAGE_FILE_EXPORT_DIRECTORY,
--                &export_dir, sizeof(export_dir), vs)) {
--        return false;
--    }
--
--    pe_name = va_space_resolve(vs, base + export_dir.Name);
--    if (!pe_name) {
--        return false;
--    }
--
--    return !strcmp(pe_name, PE_NAME);
--}
--
--static int pe_get_pdb_symstore_hash(uint64_t base, void *start_addr,
--        char *hash, struct va_space *vs)
-+static bool pe_check_pdb_name(uint64_t base, void *start_addr,
-+        struct va_space *vs, OMFSignatureRSDS *rsds)
- {
-     const char sign_rsds[4] = "RSDS";
-     IMAGE_DEBUG_DIRECTORY debug_dir;
--    OMFSignatureRSDS rsds;
--    char *pdb_name;
--    size_t pdb_name_sz;
--    size_t i;
-+    char pdb_name[sizeof(PDB_NAME)];
- 
-     if (pe_get_data_dir_entry(base, start_addr, IMAGE_FILE_DEBUG_DIRECTORY,
-                 &debug_dir, sizeof(debug_dir), vs)) {
-         eprintf("Failed to get Debug Directory\n");
--        return 1;
-+        return false;
-     }
- 
-     if (debug_dir.Type != IMAGE_DEBUG_TYPE_CODEVIEW) {
--        return 1;
-+        eprintf("Debug Directory type is not CodeView\n");
-+        return false;
-     }
- 
-     if (va_space_rw(vs,
-                 base + debug_dir.AddressOfRawData,
--                &rsds, sizeof(rsds), 0)) {
--        return 1;
-+                rsds, sizeof(*rsds), 0)) {
-+        eprintf("Failed to resolve OMFSignatureRSDS\n");
-+        return false;
-     }
- 
--    printf("CodeView signature is \'%.4s\'\n", rsds.Signature);
--
--    if (memcmp(&rsds.Signature, sign_rsds, sizeof(sign_rsds))) {
--        return 1;
-+    if (memcmp(&rsds->Signature, sign_rsds, sizeof(sign_rsds))) {
-+        eprintf("CodeView signature is \'%.4s\', \'%s\' expected\n",
-+                rsds->Signature, sign_rsds);
-+        return false;
-     }
- 
--    pdb_name_sz = debug_dir.SizeOfData - sizeof(rsds);
--    pdb_name = malloc(pdb_name_sz);
--    if (!pdb_name) {
--        return 1;
-+    if (debug_dir.SizeOfData - sizeof(*rsds) != sizeof(PDB_NAME)) {
-+        eprintf("PDB name size doesn't match\n");
-+        return false;
-     }
- 
-     if (va_space_rw(vs, base + debug_dir.AddressOfRawData +
--                offsetof(OMFSignatureRSDS, name), pdb_name, pdb_name_sz, 0)) {
--        free(pdb_name);
--        return 1;
-+                offsetof(OMFSignatureRSDS, name), pdb_name, sizeof(PDB_NAME),
-+                0)) {
-+        eprintf("Failed to resolve PDB name\n");
-+        return false;
-     }
- 
-     printf("PDB name is \'%s\', \'%s\' expected\n", pdb_name, PDB_NAME);
- 
--    if (strcmp(pdb_name, PDB_NAME)) {
--        eprintf("Unexpected PDB name, it seems the kernel isn't found\n");
--        free(pdb_name);
--        return 1;
--    }
-+    return !strcmp(pdb_name, PDB_NAME);
-+}
- 
--    free(pdb_name);
--
--    sprintf(hash, "%.08x%.04x%.04x%.02x%.02x", rsds.guid.a, rsds.guid.b,
--            rsds.guid.c, rsds.guid.d[0], rsds.guid.d[1]);
-+static void pe_get_pdb_symstore_hash(OMFSignatureRSDS *rsds, char *hash)
-+{
-+    sprintf(hash, "%.08x%.04x%.04x%.02x%.02x", rsds->guid.a, rsds->guid.b,
-+            rsds->guid.c, rsds->guid.d[0], rsds->guid.d[1]);
-     hash += 20;
--    for (i = 0; i < 6; i++, hash += 2) {
--        sprintf(hash, "%.02x", rsds.guid.e[i]);
-+    for (unsigned int i = 0; i < 6; i++, hash += 2) {
-+        sprintf(hash, "%.02x", rsds->guid.e[i]);
-     }
- 
--    sprintf(hash, "%.01x", rsds.age);
--
--    return 0;
-+    sprintf(hash, "%.01x", rsds->age);
- }
- 
- int main(int argc, char *argv[])
-@@ -515,6 +490,7 @@ int main(int argc, char *argv[])
-     KDDEBUGGER_DATA64 *kdbg;
-     uint64_t KdVersionBlock;
-     bool kernel_found = false;
-+    OMFSignatureRSDS rsds;
- 
-     if (argc != 3) {
-         eprintf("usage:\n\t%s elf_file dmp_file\n", argv[0]);
-@@ -562,7 +538,8 @@ int main(int argc, char *argv[])
+-        printf("Writing block #%zu/%zu to file...\n", i, ps->block_nr);
++        printf("Writing block #%zu/%zu of %"PRIu64" bytes to file...\n", i,
++                ps->block_nr, b->size);
+         if (fwrite(b->addr, b->size, 1, dmp_file) != 1) {
+-            eprintf("Failed to write dump header\n");
++            eprintf("Failed to write block\n");
+             fclose(dmp_file);
+             return 1;
          }
- 
-         if (*(uint16_t *)nt_start_addr == 0x5a4d) { /* MZ */
--            if (pe_check_export_name(KernBase, nt_start_addr, &vs)) {
-+            printf("Checking candidate KernBase = 0x%016"PRIx64"\n", KernBase);
-+            if (pe_check_pdb_name(KernBase, nt_start_addr, &vs, &rsds)) {
-                 kernel_found = true;
-                 break;
-             }
-@@ -578,11 +555,7 @@ int main(int argc, char *argv[])
-     printf("KernBase = 0x%016"PRIx64", signature is \'%.2s\'\n", KernBase,
-             (char *)nt_start_addr);
- 
--    if (pe_get_pdb_symstore_hash(KernBase, nt_start_addr, pdb_hash, &vs)) {
--        eprintf("Failed to get PDB symbol store hash\n");
--        err = 1;
--        goto out_ps;
--    }
-+    pe_get_pdb_symstore_hash(&rsds, pdb_hash);
- 
-     sprintf(pdb_url, "%s%s/%s/%s", SYM_URL_BASE, PDB_NAME, pdb_hash, PDB_NAME);
-     printf("PDB URL is %s\n", pdb_url);
 -- 
 2.34.1
 
