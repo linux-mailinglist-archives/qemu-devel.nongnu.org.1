@@ -2,101 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF7D7A9171
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 06:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8727A9188
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 07:16:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjBDf-0004FR-1m; Thu, 21 Sep 2023 00:23:15 -0400
+	id 1qjC1m-0003KJ-8h; Thu, 21 Sep 2023 01:15:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qjBDc-0004F4-Oe
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 00:23:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjC1k-0003Je-22
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 01:15:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qjBDa-0005ZY-UY
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 00:23:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjC1i-0005ml-2c
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 01:14:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695270189;
+ s=mimecast20190719; t=1695273295;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=a/TUqywb80X2AZJMzYZES4VoyIivqwNd2hjQ6BBMthY=;
- b=NgE/Pq3HmvXWIEibosUoMKqitTpWWzEX6uCtwzN+ydDtSX7B/KC0x7XZXnB+WT/jdRm3+e
- 21Rm0fqmrr/Mt/lCjKErLwZlL3Kcb4wd7DFtPj0+pNTjhWoc2LUWzFSc+52kkERYH2MsH8
- vYOWXM7bFE+ETVkqWgxES9e2qKL+Eso=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-JtoPYH40PhquC1iP2cKHOA-1; Thu, 21 Sep 2023 00:23:07 -0400
-X-MC-Unique: JtoPYH40PhquC1iP2cKHOA-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-5041bddcedaso692403e87.3
- for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 21:23:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695270186; x=1695874986;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=a/TUqywb80X2AZJMzYZES4VoyIivqwNd2hjQ6BBMthY=;
- b=gkNM2UWQ7P15XjuhdFZDbJ2bIahdPtfoYOXR6A6zF51fIdNGh0PuSCWRnALGvzePrb
- iochVs2QPPmFvCaLXi2pqRgMj7DEkp0BZYDcKxXtwVDl24hMTczKhENZGZ+SymyE6GOA
- A7Rbc/4zHB7EovazGsx2RmS2VZJFoK1CWz3TNBB4pAECBET9AKZP85s0yTMx1WglNVhG
- JixY2n5BtM6/HV3JkmQjy6evqmYe2zyL+JeAs42tgxNl97XIkYe+5UN9G26yIM6mwZ2q
- rwyWppRZJMUzZ7ehu9PThpzcdEsg5a6cavdI9fWYeUU99HH3puvZP1F9TFZqp70f/aFH
- GGJA==
-X-Gm-Message-State: AOJu0YxS+0d6YH0evSnAnQeo9erT5fjNUtab8uExm34iHFrshd5/NYEM
- x1alJ3yZ7BMVAc3rsPXkxiDQUyiUIAQcFL53ph8kZj31FPF42iu2+sVCeHOx4aVl+uL/jqp0/U5
- i0A2kmrYYaxj1Oe9Cw5u1NKFPkiPBzuA=
-X-Received: by 2002:a05:6512:20c7:b0:500:7696:200 with SMTP id
- u7-20020a05651220c700b0050076960200mr3691372lfr.59.1695270185948; 
- Wed, 20 Sep 2023 21:23:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBGVyyX13pZa+3Ktq9xbUVd38RjeljW6H0syjIQrHGw1bASMEAYrUUNaIJURxjwOkNsl2CINr8g7Gw+zy70OM=
-X-Received: by 2002:a05:6512:20c7:b0:500:7696:200 with SMTP id
- u7-20020a05651220c700b0050076960200mr3691353lfr.59.1695270185578; Wed, 20 Sep
- 2023 21:23:05 -0700 (PDT)
+ bh=hx9+KIwAjLK1jnKVdQOUCTEgU0GYm+uRgFTbQHY6/Js=;
+ b=COMur2ldJQ9khXf93CDr9IAK2suh27dg+/d1WkBDKiSkwMA6wQmLWLpo3AhgnIA4Xvuh0I
+ 48jSbcC7fkT5YPg93E0N6kmTlHIzXAs5/SkxzUsyj/sUustO/n7Cc0uJ4gNesqx9DaJRvM
+ uF8HGPGI3Z+kY2f+hog97M0M94P30x0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-649-f9bjcqYzMn-wyOCa4wcWbg-1; Thu, 21 Sep 2023 01:14:51 -0400
+X-MC-Unique: f9bjcqYzMn-wyOCa4wcWbg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A93261C01E96;
+ Thu, 21 Sep 2023 05:14:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7BFE8711282;
+ Thu, 21 Sep 2023 05:14:49 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5408221E6900; Thu, 21 Sep 2023 07:14:48 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org,  kwolf@redhat.com,  hreitz@redhat.com,
+ vsementsov@yandex-team.ru,  jsnow@redhat.com,  idryomov@gmail.com,
+ pl@kamp.de,  sw@weilnetz.de,  sstabellini@kernel.org,
+ anthony.perard@citrix.com,  paul@xen.org,  pbonzini@redhat.com,
+ marcandre.lureau@redhat.com,  berrange@redhat.com,  thuth@redhat.com,
+ philmd@linaro.org,  stefanha@redhat.com,  fam@euphon.net,
+ quintela@redhat.com,  peterx@redhat.com,  leobras@redhat.com,
+ kraxel@redhat.com,  qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org,  alex.bennee@linaro.org,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH v2 7/7] qobject atomics osdep: Make a few macros more
+ hygienic
+References: <20230920183149.1105333-1-armbru@redhat.com>
+ <20230920183149.1105333-8-armbru@redhat.com>
+ <3gjitlytxqobntg4fluip365s5ijwt3h2zvf3tjbmtiifikv53@xxrl7slw5tjt>
+Date: Thu, 21 Sep 2023 07:14:48 +0200
+In-Reply-To: <3gjitlytxqobntg4fluip365s5ijwt3h2zvf3tjbmtiifikv53@xxrl7slw5tjt>
+ (Eric Blake's message of "Wed, 20 Sep 2023 15:10:58 -0500")
+Message-ID: <87zg1g9kfr.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
- <20230919114242.2283646-2-Jiqian.Chen@amd.com>
-In-Reply-To: <20230919114242.2283646-2-Jiqian.Chen@amd.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 21 Sep 2023 12:22:54 +0800
-Message-ID: <CACGkMEuEXk2UzXU7sFUk-nHEeE7QoB3kbjnHgktY7KWuK71Xrg@mail.gmail.com>
-Subject: Re: [VIRTIO PCI PATCH v5 1/1] transport-pci: Add freeze_mode to
- virtio_pci_common_cfg
-To: Jiqian Chen <Jiqian.Chen@amd.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Chia-I Wu <olvaffe@gmail.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, 
- Robert Beckett <bob.beckett@collabora.com>, 
- Mikhail Golubev-Ciuchea <Mikhail.Golubev-Ciuchea@opensynergy.com>,
- Parav Pandit <parav@nvidia.com>, 
- virtio-comment@lists.oasis-open.org, virtio-dev@lists.oasis-open.org, 
- qemu-devel@nongnu.org, linux-kernel@vger.kernel.org, 
- Stefano Stabellini <sstabellini@kernel.org>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- Alex Deucher <Alexander.Deucher@amd.com>,
- Christian Koenig <Christian.Koenig@amd.com>, 
- Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
- Xenia Ragiadakou <burzalodowa@gmail.com>, 
- Honglei Huang <Honglei1.Huang@amd.com>, Julia Zhang <Julia.Zhang@amd.com>, 
- Huang Rui <Ray.Huang@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,69 +91,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 19, 2023 at 7:43=E2=80=AFPM Jiqian Chen <Jiqian.Chen@amd.com> w=
-rote:
->
-> When guest vm does S3, Qemu will reset and clear some things of virtio
-> devices, but guest can't aware that, so that may cause some problems.
-> For excample, Qemu calls virtio_reset->virtio_gpu_gl_reset when guest
-> resume, that function will destroy render resources of virtio-gpu. As
-> a result, after guest resume, the display can't come back and we only
-> saw a black screen. Due to guest can't re-create all the resources, so
-> we need to let Qemu not to destroy them when S3.
->
-> For above purpose, we need a mechanism that allows guests and QEMU to
-> negotiate their reset behavior. So this patch add a new parameter
-> named freeze_mode to struct virtio_pci_common_cfg. And when guest
-> suspends, it can write freeze_mode to be FREEZE_S3, and then virtio
-> devices can change their reset behavior on Qemu side according to
-> freeze_mode. What's more, freeze_mode can be used for all virtio
-> devices to affect the behavior of Qemu, not just virtio gpu device.
+Eric Blake <eblake@redhat.com> writes:
 
-A simple question, why is this issue specific to pci?
+> On Wed, Sep 20, 2023 at 08:31:49PM +0200, Markus Armbruster wrote:
+> ...
+>> The only reliable way to prevent unintended variable name capture is
+>> -Wshadow.
+>> 
+>> One blocker for enabling it is shadowing hiding in function-like
+>> macros like
+>> 
+>>      qdict_put(dict, "name", qobject_ref(...))
+>> 
+>> qdict_put() wraps its last argument in QOBJECT(), and the last
+>> argument here contains another QOBJECT().
+>> 
+>> Use dark preprocessor sorcery to make the macros that give us this
+>> problem use different variable names on every call.
+>> 
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> Reviewed-by: Eric Blake <eblake@redhat.com>
+>
+> It's changed (for the better) since v1, so I'm re-reviewing.
+>
+>> ---
+>>  include/qapi/qmp/qobject.h | 11 +++++++++--
+>>  include/qemu/atomic.h      | 17 ++++++++++++-----
+>>  include/qemu/compiler.h    |  3 +++
+>>  include/qemu/osdep.h       | 31 +++++++++++++++++++++++--------
+>>  4 files changed, 47 insertions(+), 15 deletions(-)
+>> 
+>> diff --git a/include/qapi/qmp/qobject.h b/include/qapi/qmp/qobject.h
+>> index 9003b71fd3..d36cc97805 100644
+>> --- a/include/qapi/qmp/qobject.h
+>> +++ b/include/qapi/qmp/qobject.h
+>> @@ -45,10 +45,17 @@ struct QObject {
+>>      struct QObjectBase_ base;
+>>  };
+>>  
+>> -#define QOBJECT(obj) ({                                         \
+>> +/*
+>> + * Preprocessory sorcery ahead: use a different identifier for the
+>
+> s/Preprocessory/Preprocessor/ (multiple times in the patch)
 
-Thanks
+Dang!  Will fix.
 
+>> + * local variable in each expansion, so we can nest macro calls
+>> + * without shadowing variables.
+>> + */
+>> +#define QOBJECT_INTERNAL(obj, _obj) ({                          \
+>>      typeof(obj) _obj = (obj);                                   \
+>> -    _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
+>> +    _obj                                                        \
+>> +        ? container_of(&(_obj)->base, QObject, base) : NULL;    \
+>
+> As pointed out before, you can write &_obj->base instead of
+> &(_obj)->base, now that we know _obj is a single identifier rather
+> than an arbitrary expression.  Not strictly necessary since the extra
+> () doesn't change semantics...
 
+Makes sense, I just forgot here.
+
+>>  })
+>> +#define QOBJECT(obj) QOBJECT_INTERNAL((obj), MAKE_IDENTFIER(_obj))
+>>  
+>>  /* Required for qobject_to() */
+>>  #define QTYPE_CAST_TO_QNull     QTYPE_QNULL
+>> diff --git a/include/qemu/atomic.h b/include/qemu/atomic.h
+>> index d95612f7a0..d4cbd01909 100644
+>> --- a/include/qemu/atomic.h
+>> +++ b/include/qemu/atomic.h
+>> @@ -157,13 +157,20 @@
+>>      smp_read_barrier_depends();
+>>  #endif
+>>  
+>> -#define qatomic_rcu_read(ptr)                          \
+>> -    ({                                                 \
+>> +/*
+>> + * Preprocessory sorcery ahead: use a different identifier for the
+>> + * local variable in each expansion, so we can nest macro calls
+>> + * without shadowing variables.
+>> + */
+>> +#define qatomic_rcu_read_internal(ptr, _val)            \
+>> +    ({                                                  \
+>>      qemu_build_assert(sizeof(*ptr) <= ATOMIC_REG_SIZE); \
+>> -    typeof_strip_qual(*ptr) _val;                      \
+>> -    qatomic_rcu_read__nocheck(ptr, &_val);             \
+>> -    _val;                                              \
+>> +    typeof_strip_qual(*ptr) _val;                       \
+>> +    qatomic_rcu_read__nocheck(ptr, &_val);              \
 >
-> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-> ---
->  transport-pci.tex | 7 +++++++
->  1 file changed, 7 insertions(+)
+> ...but it looks odd for the patch to not be consistent on that front.
 >
-> diff --git a/transport-pci.tex b/transport-pci.tex
-> index a5c6719..2543536 100644
-> --- a/transport-pci.tex
-> +++ b/transport-pci.tex
-> @@ -319,6 +319,7 @@ \subsubsection{Common configuration structure layout}=
-\label{sec:Virtio Transport
->          le64 queue_desc;                /* read-write */
->          le64 queue_driver;              /* read-write */
->          le64 queue_device;              /* read-write */
-> +        le16 freeze_mode;               /* read-write */
->          le16 queue_notif_config_data;   /* read-only for driver */
->          le16 queue_reset;               /* read-write */
+>> +    _val;                                               \
+>>      })
+>> +#define qatomic_rcu_read(ptr) \
+>> +    qatomic_rcu_read_internal((ptr), MAKE_IDENTFIER(_val))
+>>  
+>>  #define qatomic_rcu_set(ptr, i) do {                   \
+>>      qemu_build_assert(sizeof(*ptr) <= ATOMIC_REG_SIZE); \
+>> diff --git a/include/qemu/compiler.h b/include/qemu/compiler.h
+>> index a309f90c76..03236d830c 100644
+>> --- a/include/qemu/compiler.h
+>> +++ b/include/qemu/compiler.h
+>> @@ -37,6 +37,9 @@
+>>  #define tostring(s) #s
+>>  #endif
+>>  
+>> +/* Expands into an identifier stemN, where N is another number each time */
+>> +#define MAKE_IDENTFIER(stem) glue(stem, __COUNTER__)
 >
-> @@ -393,6 +394,12 @@ \subsubsection{Common configuration structure layout=
-}\label{sec:Virtio Transport
->  \item[\field{queue_device}]
->          The driver writes the physical address of Device Area here.  See=
- section \ref{sec:Basic Facilities of a Virtio Device / Virtqueues}.
+> I like how this turned out.
 >
-> +\item[\field{freeze_mode}]
-> +        The driver writes this to set the freeze mode of virtio pci.
-> +        VIRTIO_PCI_FREEZE_MODE_UNFREEZE - virtio-pci is running;
-> +        VIRTIO_PCI_FREEZE_MODE_FREEZE_S3 - guest vm is doing S3, and vir=
-tio-pci enters S3 suspension;
-> +        Other values are reserved for future use, like S4, etc.
-> +
->  \item[\field{queue_notif_config_data}]
->          This field exists only if VIRTIO_F_NOTIF_CONFIG_DATA has been ne=
-gotiated.
->          The driver will use this value when driver sends available buffe=
-r
-> --
-> 2.34.1
->
+> With the spelling fix, and optionally with the redundant () dropped,
+> you can keep my R-b.
+
+Thanks!
 
 
