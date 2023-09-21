@@ -2,37 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8568A7A92A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B79C17A92A0
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:36:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjFAf-00079b-Db; Thu, 21 Sep 2023 04:36:26 -0400
+	id 1qjFA9-0006W1-Bk; Thu, 21 Sep 2023 04:35:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qjF9t-00067B-QF; Thu, 21 Sep 2023 04:35:38 -0400
+ id 1qjF9x-00069Z-9G; Thu, 21 Sep 2023 04:35:41 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qjF9r-0001Jm-SG; Thu, 21 Sep 2023 04:35:37 -0400
+ id 1qjF9v-0001KL-IT; Thu, 21 Sep 2023 04:35:41 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CD79B23DAB;
- Thu, 21 Sep 2023 11:35:34 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 124CC23DAC;
+ Thu, 21 Sep 2023 11:35:35 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7D31A29A05;
+ by tsrv.corpit.ru (Postfix) with SMTP id B3D9B29A06;
  Thu, 21 Sep 2023 11:35:13 +0300 (MSK)
-Received: (nullmailer pid 509106 invoked by uid 1000);
+Received: (nullmailer pid 509109 invoked by uid 1000);
  Thu, 21 Sep 2023 08:35:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, qemu-trivial@nongnu.org,
- Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/17] subprojects: Use the correct .git suffix in the
- repository URLs
-Date: Thu, 21 Sep 2023 11:34:57 +0300
-Message-Id: <20230921083506.509032-9-mjt@tls.msk.ru>
+Cc: Laszlo Ersek <lersek@redhat.com>, qemu-trivial@nongnu.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 09/17] hw/i386/pc: fix code comment on cumulative flash size
+Date: Thu, 21 Sep 2023 11:34:58 +0300
+Message-Id: <20230921083506.509032-10-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230921083506.509032-1-mjt@tls.msk.ru>
 References: <20230921083506.509032-1-mjt@tls.msk.ru>
@@ -61,54 +65,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Laszlo Ersek <lersek@redhat.com>
 
-This avoids the warnings à la:
-"warning: redirecting to https://gitlab.com/qemu-project/xyz.git/"
+- The comment is incorrectly indented / formatted.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+- The comment states a 8MB limit, even though the code enforces a 16MB
+  limit.
+
+Both of these warts come from commit 0657c657eb37 ("hw/i386/pc: add max
+combined fw size as machine configuration option", 2020-12-09); clean them
+up.
+
+Arguably, it's also better to be consistent with the binary units (such as
+"MiB") that QEMU uses nowadays.
+
+Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:PC)
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com> (supporter:PC)
+Cc: Paolo Bonzini <pbonzini@redhat.com> (maintainer:X86 TCG CPUs)
+Cc: Richard Henderson <richard.henderson@linaro.org> (maintainer:X86 TCG CPUs)
+Cc: Eduardo Habkost <eduardo@habkost.net> (maintainer:X86 TCG CPUs)
+Cc: qemu-trivial@nongnu.org
+Fixes: 0657c657eb37
+Signed-off-by: Laszlo Ersek <lersek@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 ---
- subprojects/berkeley-softfloat-3.wrap | 2 +-
- subprojects/berkeley-testfloat-3.wrap | 2 +-
- subprojects/slirp.wrap                | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ hw/i386/pc.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/subprojects/berkeley-softfloat-3.wrap b/subprojects/berkeley-softfloat-3.wrap
-index a8fd87740b..c3e356d42f 100644
---- a/subprojects/berkeley-softfloat-3.wrap
-+++ b/subprojects/berkeley-softfloat-3.wrap
-@@ -1,5 +1,5 @@
- [wrap-git]
--url = https://gitlab.com/qemu-project/berkeley-softfloat-3
-+url = https://gitlab.com/qemu-project/berkeley-softfloat-3.git
- revision = b64af41c3276f97f0e181920400ee056b9c88037
- patch_directory = berkeley-softfloat-3
- depth = 1
-diff --git a/subprojects/berkeley-testfloat-3.wrap b/subprojects/berkeley-testfloat-3.wrap
-index c86dc078a8..b8b12e7629 100644
---- a/subprojects/berkeley-testfloat-3.wrap
-+++ b/subprojects/berkeley-testfloat-3.wrap
-@@ -1,5 +1,5 @@
- [wrap-git]
--url = https://gitlab.com/qemu-project/berkeley-testfloat-3
-+url = https://gitlab.com/qemu-project/berkeley-testfloat-3.git
- revision = e7af9751d9f9fd3b47911f51a5cfd08af256a9ab
- patch_directory = berkeley-testfloat-3
- depth = 1
-diff --git a/subprojects/slirp.wrap b/subprojects/slirp.wrap
-index 08291a4cf9..a93b048962 100644
---- a/subprojects/slirp.wrap
-+++ b/subprojects/slirp.wrap
-@@ -1,5 +1,5 @@
- [wrap-git]
--url = https://gitlab.freedesktop.org/slirp/libslirp
-+url = https://gitlab.freedesktop.org/slirp/libslirp.git
- revision = 26be815b86e8d49add8c9a8b320239b9594ff03d
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 2872f60cdf..3db0743f31 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1746,12 +1746,12 @@ static void pc_machine_set_max_fw_size(Object *obj, Visitor *v,
+     }
  
- [provide]
+     /*
+-    * We don't have a theoretically justifiable exact lower bound on the base
+-    * address of any flash mapping. In practice, the IO-APIC MMIO range is
+-    * [0xFEE00000..0xFEE01000] -- see IO_APIC_DEFAULT_ADDRESS --, leaving free
+-    * only 18MB-4KB below 4G. For now, restrict the cumulative mapping to 8MB in
+-    * size.
+-    */
++     * We don't have a theoretically justifiable exact lower bound on the base
++     * address of any flash mapping. In practice, the IO-APIC MMIO range is
++     * [0xFEE00000..0xFEE01000] -- see IO_APIC_DEFAULT_ADDRESS --, leaving free
++     * only 18MiB-4KiB below 4GiB. For now, restrict the cumulative mapping to
++     * 16MiB in size.
++     */
+     if (value > 16 * MiB) {
+         error_setg(errp,
+                    "User specified max allowed firmware size %" PRIu64 " is "
 -- 
 2.39.2
 
