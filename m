@@ -2,63 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4457A91EA
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 291297A91EC
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:12:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjDpd-0002on-4p; Thu, 21 Sep 2023 03:10:37 -0400
+	id 1qjDqm-0003oU-Qi; Thu, 21 Sep 2023 03:11:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1qjDpM-0002mM-Ri; Thu, 21 Sep 2023 03:10:20 -0400
-Received: from pi.codeconstruct.com.au ([203.29.241.158]
- helo=codeconstruct.com.au)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@codeconstruct.com.au>)
- id 1qjDpI-0000y7-DL; Thu, 21 Sep 2023 03:10:18 -0400
-Received: from [192.168.68.112]
- (ppp14-2-88-115.adl-apt-pir-bras31.tpg.internode.on.net [14.2.88.115])
- by mail.codeconstruct.com.au (Postfix) with ESMTPSA id CD4F620034;
- Thu, 21 Sep 2023 15:10:11 +0800 (AWST)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qjDqh-0003ng-Vr
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:11:43 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qjDqg-0001QB-DX
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:11:43 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1c1e3a4a06fso4876555ad.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:11:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=codeconstruct.com.au; s=2022a; t=1695280212;
- bh=zNhPAkS3+ZKQtWljj/FcdgEAeiV9fyUjTcloCkaC4Ws=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References;
- b=RJAOPtLAS+eLMEjfqrByDU9BExM1OB22GC0g8nARIawVZL2Ev2drbOHwglsXFjfKn
- cG1v+aEZwUaF/bSZuazz1Xz/7X6qkOV1SnhKA8DNXXEpEYL88CZ3KkbxKnZpfZnXIr
- jiYdpegYB6GrVpRnmwzQpZI9veVDb4isBpTBapl6LoceoQLw7DXgox6FT2H2iTp+c3
- 9lg5V4IVl6cUfP0sZ1mLN3V9bFjABtRcykUROj8FZdaZCjhTvsI4ncIfjqlJ0joB9a
- NtDWrSEJkxx7RniKes+lxTfIm4wosFrbFOiDcMc7LwMd6SsLJv8laSLyyIuzps8MWP
- I3PJOEOB2Qq+Q==
-Message-ID: <f4d33159a0b002624571b6a6ce81e08df772eada.camel@codeconstruct.com.au>
-Subject: Re: [PATCH v6 2/3] hw/i2c: add mctp core
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
-To: Klaus Jensen <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,  Keith Busch
- <kbusch@kernel.org>
-Cc: Lior Weintraub <liorw@pliops.com>, Jeremy Kerr
- <jk@codeconstruct.com.au>,  Matt Johnston <matt@codeconstruct.com.au>,
- Peter Delevoryas <peter@pjd.dev>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- qemu-block@nongnu.org, Klaus Jensen <k.jensen@samsung.com>
-Date: Thu, 21 Sep 2023 16:40:11 +0930
-In-Reply-To: <20230914-nmi-i2c-v6-2-11bbb4f74d18@samsung.com>
-References: <20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com>
- <20230914-nmi-i2c-v6-2-11bbb4f74d18@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695280300; x=1695885100;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:to:references:cc
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=q4nAW9BNn0JX6DAgHhlQ/tHPs+P4qY3LOcUWvUC9Yxk=;
+ b=1wn+lJXV/b/RQebCzgNWUGlFlkwc1XUjKCWkotVf91kej8E1RfKeBf1dw0Wj8pGHQk
+ VjyKkb5ca+h/L7G4hGpoNLMK/7owyDsjSxG9GR5SQ6jyFMGq+JccQGMdRrzfLkbjQciB
+ S+UjWhVsM+bBQ/fE0dYCb5HzD7VBP/EKpjvkOIM7c6FtOFvoUihxOIfzChFqKfdH9zsr
+ LmwVsTn/hjA49jtKzRWvILjo52rrfrKl7pbPJq0KtL0fPVuu0F+FcLhdqwbE8R3/aSBC
+ CPNPmroJ7ZPWf3nzSHglMvVGpBYTQmQvWPpY/2Ly56A4UpIrAEC3DdFTGKNkYJQF4A1E
+ NzCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695280300; x=1695885100;
+ h=content-transfer-encoding:in-reply-to:from:to:references:cc
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=q4nAW9BNn0JX6DAgHhlQ/tHPs+P4qY3LOcUWvUC9Yxk=;
+ b=DrSDiaGDatI+UvVOLvjKqSS6G9vO8caiJT9RT7bmuJelRAh1uKvab7KPpoerhu1VWZ
+ VgD3i0dfnW7Ml3YmsiHSUbGkxN9HI+uaZttqf1lbrHFvtw1m/AhlfrtVbM58LjwCbijm
+ IR0Gop10X2oKp94xP1r8NuSxYzYMnt9k9Zl5nXTNRSdbmthnIkCp3qoN8HCZOYjLWyyL
+ d1UIbOKlgYRzDpMLiMeHEuVWIp4PtZMbqj2yaiyI4ui5AkoIe3WJ0MSQXZzjQkWvE+8K
+ WSLTKQI2LHFYL2+g51ojcmR2ENd6OR50ah8aKoG1JJEa3zXWkxZ+zOQ51s+5d6cICsmy
+ z94w==
+X-Gm-Message-State: AOJu0YxkhiuxPGs9v1vPy0sFJIEQaFEbYguvVS0QxU5Z5gR5ev+Ku4g0
+ EjB5j5K8YTwu5pTY6x7ctN70u2uP0V5VWR2hiDg=
+X-Google-Smtp-Source: AGHT+IG0wXX0DbKaIf4pq43apsOLCq0eKyb8QGszisbD8Kso9dsEYZwWLz50np1K9famQgWSXiE5Aw==
+X-Received: by 2002:a17:903:2445:b0:1bb:a7bc:37a4 with SMTP id
+ l5-20020a170903244500b001bba7bc37a4mr5031595pls.24.1695280300558; 
+ Thu, 21 Sep 2023 00:11:40 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ y24-20020a1709027c9800b001c3267ae31bsm664985pll.301.2023.09.21.00.11.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 00:11:40 -0700 (PDT)
+Message-ID: <2d8c2e40-52cb-4d21-aa0b-4a87e9898b3b@daynix.com>
+Date: Thu, 21 Sep 2023 16:11:38 +0900
 MIME-Version: 1.0
-Received-SPF: pass client-ip=203.29.241.158;
- envelope-from=andrew@codeconstruct.com.au; helo=codeconstruct.com.au
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vl: Free machine list
+Content-Language: en-US
+Cc: qemu-devel@nongnu.org
+References: <20230722062641.18505-1-akihiko.odaki@daynix.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230722062641.18505-1-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62a.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,31 +94,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 2023-09-14 at 11:53 +0200, Klaus Jensen wrote:
-> From: Klaus Jensen <k.jensen@samsung.com>
->=20
-> Add an abstract MCTP over I2C endpoint model. This implements MCTP
-> control message handling as well as handling the actual I2C transport
-> (packetization).
->=20
-> Devices are intended to derive from this and implement the class
-> methods.
->=20
-> Parts of this implementation is inspired by code[1] previously posted by
-> Jonathan Cameron.
->=20
-> Squashed a fix[2] from Matt Johnston.
->=20
->   [1]: https://lore.kernel.org/qemu-devel/20220520170128.4436-1-Jonathan.=
-Cameron@huawei.com/
->   [2]: https://lore.kernel.org/qemu-devel/20221121080445.GA29062@codecons=
-truct.com.au/
->=20
-> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+On 2023/07/22 15:26, Akihiko Odaki wrote:
+> Free machine list and make LeakSanitizer happy.
+> 
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   softmmu/vl.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> index b0b96f67fa..802f728298 100644
+> --- a/softmmu/vl.c
+> +++ b/softmmu/vl.c
+> @@ -1484,7 +1484,8 @@ static gint machine_class_cmp(gconstpointer a, gconstpointer b)
+>   
+>   static void machine_help_func(const QDict *qdict)
+>   {
+> -    GSList *machines, *el;
+> +    g_autoptr(GSList) machines = NULL;
+> +    GSList *el;
+>       const char *type = qdict_get_try_str(qdict, "type");
+>   
+>       machines = object_class_get_list(TYPE_MACHINE, false);
 
-Nice!
+Hi Paolo,
 
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Can you have a look at this patch?
+
+Regards,
+Akihiko Odaki
 
