@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDAD7A9257
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE43E7A9252
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:55:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEWk-0004mS-9C; Thu, 21 Sep 2023 03:55:10 -0400
+	id 1qjEWk-0004ml-Mf; Thu, 21 Sep 2023 03:55:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEWh-0004j1-2Z; Thu, 21 Sep 2023 03:55:07 -0400
+ id 1qjEWh-0004jB-7J; Thu, 21 Sep 2023 03:55:07 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEWe-0001T6-Fw; Thu, 21 Sep 2023 03:55:06 -0400
+ id 1qjEWe-0001TA-Le; Thu, 21 Sep 2023 03:55:06 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qjEWO-00BsUn-2l;
- Thu, 21 Sep 2023 09:55:01 +0200
+ (envelope-from <den@openvz.org>) id 1qjEWP-00BsUn-0g;
+ Thu, 21 Sep 2023 09:55:02 +0200
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Subject: [PULL v2 02/22] parallels: mark driver as supporting CBT
-Date: Thu, 21 Sep 2023 09:54:40 +0200
-Message-Id: <20230921075500.694585-3-den@openvz.org>
+Subject: [PULL v2 03/22] parallels: fix memory leak in parallels_open()
+Date: Thu, 21 Sep 2023 09:54:41 +0200
+Message-Id: <20230921075500.694585-4-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921075500.694585-1-den@openvz.org>
 References: <20230921075500.694585-1-den@openvz.org>
@@ -55,45 +55,26 @@ From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Parallels driver indeed support Parallels Dirty Bitmap Feature in
-read-only mode. The patch adds bdrv_supports_persistent_dirty_bitmap()
-callback which always return 1 to indicate that.
-
-This will allow to copy CBT from Parallels image with qemu-img.
-
-Note: read-write support is signalled through
-bdrv_co_can_store_new_dirty_bitmap() and is different.
+We should free opts allocated through qemu_opts_create() at the end.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ block/parallels.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index 2ebd8e1301..428f72de1c 100644
+index 428f72de1c..af7be427c9 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -1248,6 +1248,11 @@ static void parallels_close(BlockDriverState *bs)
-     error_free(s->migration_blocker);
- }
- 
-+static bool parallels_is_support_dirty_bitmaps(BlockDriverState *bs)
-+{
-+    return 1;
-+}
-+
- static BlockDriver bdrv_parallels = {
-     .format_name                = "parallels",
-     .instance_size              = sizeof(BDRVParallelsState),
-@@ -1256,6 +1261,7 @@ static BlockDriver bdrv_parallels = {
-     .supports_backing           = true,
- 
-     .bdrv_has_zero_init         = bdrv_has_zero_init_1,
-+    .bdrv_supports_persistent_dirty_bitmap = parallels_is_support_dirty_bitmaps,
- 
-     .bdrv_probe                 = parallels_probe,
-     .bdrv_open                  = parallels_open,
+@@ -1217,6 +1217,7 @@ fail_format:
+ fail_options:
+     ret = -EINVAL;
+ fail:
++    qemu_opts_del(opts);
+     /*
+      * "s" object was allocated by g_malloc0 so we can safely
+      * try to free its fields even they were not allocated.
 -- 
 2.34.1
 
