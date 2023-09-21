@@ -2,79 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508857A94D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2357A94FB
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:58:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjJos-0002Iv-AO; Thu, 21 Sep 2023 09:34:14 -0400
+	id 1qjKAj-0006Q3-Si; Thu, 21 Sep 2023 09:56:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjJoq-0002I1-HV
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:34:12 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qjKAi-0006PI-4v
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:56:48 -0400
+Received: from mail-ot1-x332.google.com ([2607:f8b0:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjJoo-00086s-IL
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:34:12 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-532e6f8125cso1095523a12.3
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 06:34:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qjKAf-0006HS-J6
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:56:47 -0400
+Received: by mail-ot1-x332.google.com with SMTP id
+ 46e09a7af769-6c0f4ad9eb1so617513a34.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 06:56:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695303249; x=1695908049; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=SLFyIa4pNfHrRrFVoK4W/7yOB5ezN6IY3vzVujeQWwk=;
- b=VxTFarMb8zozoEY4fcGzUGLO1+5v+z83GZuPgBQGw0fDKmrAJXbiIe5aD6Sk3CKrLf
- yHHRYpGEGOGQz+GyM1s6HfmadE0Q43dYNsQ+J6OVBRv87DejfxMKnTFlgP7ihIt20dGi
- xpYNWXhbr4fL9luJvPZsgZ/2Mb8k/dVWRWvA9UR97VDvTrZ4d0AAkPpAUtLecGyDUgoL
- T9/9++A4mu5DE34VsOBEjaFvKwdRh22Ild8S5THEuHl/u2zAwjbBsxRjDyG7QNfaX4bp
- CX5j92+EQeO2rtHMhobS4fMEdKOe0x/9W56kP4yW/5pdUpCJLp1tcxALw2DpP6Tg9OPB
- MEUg==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695304604; x=1695909404;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=aLlclXdwLtN4CPnz5WCduKG/f/78DAzPIWKjXDxK/qc=;
+ b=SQU777sXxu5XBRbdpScFpg9MFnfNc/dAHYWOClcDw1jEjH9JxrmLFwUHGYk0CqfJSF
+ Zpr974COz796Ai7uXLuLq41DmqBr7cU/SLKmj9OFNL3L/ca+1dlSxplN+du3dmQuSHX5
+ S3nATFMka/18Ly1yQ7FQ+9tsWGEk8etWxv5Ns/EPnR1h98J1crQbo+gmbnR5ozwt+yGO
+ TExbAyR9Smu4KaMmkbFaaFej8CiIKjubm4wzuZeNZrG7ZgQ6qvstcUI1jcTH1OUD+ei9
+ KDjjOtNBmKEXzHbMkYUUT7hx90G7zeq2JEm1JdoQf2QZCsJD3zXUFqT7zVflj+tOWOfk
+ UmGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695303249; x=1695908049;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SLFyIa4pNfHrRrFVoK4W/7yOB5ezN6IY3vzVujeQWwk=;
- b=lDJ3ZC2th2CSWp9oHLEy/PSWkYquQHud1IIZ5XQJdP5wbaMrKx3ydrWI+B10NoWY0m
- c3CObrIf2V/dX5qWq9qnZgWGidnOBJXaL0pehcnT44VBf0TzQRIHHdzVQ58v9osi+XO8
- 7KMkyIebydL9EjldwMtebWEj18ZThU287WrTdrwqw2cQ8pbLG0YzateveUB0rSsrvTmJ
- pxAX1IIQiLJwuf/gykZLL4ty4tWLnXTcHBCWBwvyY7OveOrP+qJDP4+CCnCqst/QsRnQ
- JzkDXRMT303g0R23kBKve617vT2IACSK5RuHP/nnSoCBVx6h3qPl4Sp/KLPQ1d5WaDy+
- Gjww==
-X-Gm-Message-State: AOJu0YzS1VjzdJoK2s5+NAFhgvuuNECa0IVfU7pZc1R/eDa1nWbkDSN+
- /yHwwUi4PteQ9Dz5ADRLE0lzngPaMjEQfJHoegQo9ri9ZvssMlZwCJQ=
-X-Google-Smtp-Source: AGHT+IHSkQ8f8dAM1bbBde2nHASKpT8QXWY5hcVmzsVUDmW/7AlposkLeqWQB5YEfDT9yRQHRvNIKem8/RqCHbNikX8=
-X-Received: by 2002:a05:6402:3d7:b0:52c:9f89:4447 with SMTP id
- t23-20020a05640203d700b0052c9f894447mr4590180edw.4.1695303248906; Thu, 21 Sep
- 2023 06:34:08 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695304604; x=1695909404;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aLlclXdwLtN4CPnz5WCduKG/f/78DAzPIWKjXDxK/qc=;
+ b=cbxUqg7jOu2SeIKk5kp4kfDE9izfXtVSDfWPxCV0TGvDnU7n/UDHta9O/bH8GwBxN1
+ AKu3H4kqP+GIftWOwtTou33XjeijUAtO7/A/cFQkYzorngP+kO8zTmP0vi6y98aE90X2
+ ei71hwR0iFy91qCPRqdJ2Vidiwb/8HjE3vKTgQfv1k5v5aKIYOc+5fzH9cGjvTN1t/oS
+ ER0nFASe+eQ+VU+aBO7tOJWF5dCxHt8gIIG8DjVGlrNBC152+GviUA6xPwCQd4ijQkND
+ gy5PdA+ClDVpv8HS3l5KTWqyTVI15zCseeuWxT8k8dPZSMt0Ho/UVOoZ/nrMatPNvwLd
+ jdXg==
+X-Gm-Message-State: AOJu0Yz1la/v8FYxqvYvYSHqzhr0eXyo4ID8uAA8lXKNq9HbtD9edUjD
+ G4WhB+cKTYTkjoQTyXCpzbqbaw==
+X-Google-Smtp-Source: AGHT+IHGzFqlUJGylT0m8qpDaff1kWngIfKdas0mqHoQKHB+wr3DE7CpJH8ubb1Xl46dFid+sA7TnQ==
+X-Received: by 2002:a05:6870:4411:b0:1c8:c128:c38e with SMTP id
+ u17-20020a056870441100b001c8c128c38emr5947505oah.15.1695304603731; 
+ Thu, 21 Sep 2023 06:56:43 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
+ ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ f9-20020a639c09000000b005781e026905sm1333675pge.56.2023.09.21.06.56.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 06:56:42 -0700 (PDT)
+Message-ID: <32d74d08-f6f1-4958-aab7-03144efcbc82@daynix.com>
+Date: Thu, 21 Sep 2023 22:56:38 +0900
 MIME-Version: 1.0
-References: <20221201102728.69751-1-akihiko.odaki@daynix.com>
- <CAFEAcA_ORM9CpDCvPMs1XcZVhh_4fKE2wnaS_tp1s4DzZCHsXQ@mail.gmail.com>
- <a3cc1116-272d-a8e5-a131-7becf98115e0@daynix.com>
- <ed62645a-ec48-14ff-4b7e-15314a0da30e@daynix.com>
- <CAFEAcA-pOKf1r+1BzURpv5FnFS79D2V=SSeY_a2Wene1wf+P1A@mail.gmail.com>
- <a5cd5a46-7f33-42b6-99eb-b09159af42d7@daynix.com>
-In-Reply-To: <a5cd5a46-7f33-42b6-99eb-b09159af42d7@daynix.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 21 Sep 2023 14:33:49 +0100
-Message-ID: <CAFEAcA9cfrS4bqUX6G9qL8jNhJw0z2nMbqiHxYOutnqVOyb2yQ@mail.gmail.com>
-Subject: Re: [PATCH] accel/kvm/kvm-all: Handle register access errors
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/10] virtiofsd: Use qemu_get_runtime_dir()
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Yan Vugenfirer <yan@daynix.com>
+References: <20221110100629.61496-1-akihiko.odaki@daynix.com>
+ <20221110100629.61496-8-akihiko.odaki@daynix.com>
+ <20230921125828.GA3860191@fedora>
+Content-Language: en-US
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <20230921125828.GA3860191@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::332;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x332.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,41 +103,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 21 Sept 2023 at 08:25, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-> On 2023/06/19 21:19, Peter Maydell wrote:
-> > On Sat, 10 Jun 2023 at 04:51, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
-> >> On 2022/12/01 20:00, Akihiko Odaki wrote:
-> >>> On 2022/12/01 19:40, Peter Maydell wrote:
-> >>>> On Thu, 1 Dec 2022 at 10:27, Akihiko Odaki <akihiko.odaki@daynix.com>
-> >>>> wrote:
-> >>>>> A register access error typically means something seriously wrong
-> >>>>> happened so that anything bad can happen after that and recovery is
-> >>>>> impossible.
-> >>>>> Even failing one register access is catastorophic as
-> >>>>> architecture-specific code are not written so that it torelates such
-> >>>>> failures.
-> >>>>>
-> >>>>> Make sure the VM stop and nothing worse happens if such an error occurs.
-> >>>>>
-> >>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+On 2023/09/21 21:58, Stefan Hajnoczi wrote:
+> On Thu, Nov 10, 2022 at 07:06:26PM +0900, Akihiko Odaki wrote:
+>> qemu_get_runtime_dir() is used to construct the path to a lock file.
+>>
+>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>> ---
+>>   tools/virtiofsd/fuse_virtio.c | 6 +++---
+>>   1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/tools/virtiofsd/fuse_virtio.c b/tools/virtiofsd/fuse_virtio.c
+>> index 9368e292e4..b9eeed85e6 100644
+>> --- a/tools/virtiofsd/fuse_virtio.c
+>> +++ b/tools/virtiofsd/fuse_virtio.c
+>> @@ -901,12 +901,12 @@ static bool fv_socket_lock(struct fuse_session *se)
+>>   {
+>>       g_autofree gchar *sk_name = NULL;
+>>       g_autofree gchar *pidfile = NULL;
+>> -    g_autofree gchar *state = NULL;
+>> +    g_autofree gchar *run = NULL;
+>>       g_autofree gchar *dir = NULL;
+>>       Error *local_err = NULL;
+>>   
+>> -    state = qemu_get_local_state_dir();
+>> -    dir = g_build_filename(state, "run", "virtiofsd", NULL);
+>> +    run = qemu_get_runtime_dir();
+>> +    dir = g_build_filename(run, "virtiofsd", NULL);
+>>   
+>>       if (g_mkdir_with_parents(dir, S_IRWXU) < 0) {
+>>           fuse_log(FUSE_LOG_ERR, "%s: Failed to create directory %s: %s\n",
+> 
+> tools/virtiofsd/ no longer exists. Which version of QEMU did you develop against?
+> 
+> commit e0dc2631ec4ac718ebe22ddea0ab25524eb37b0e
+> Author: Dr. David Alan Gilbert <dgilbert@redhat.com>
+> Date:   Wed Jan 18 12:11:51 2023 +0000
+> 
+>      virtiofsd: Remove source
+> 
+> Stefan
 
-> >> QEMU 8.0 is already released so I think it's time to revisit this.
-> >
-> > Two months ago would have been a better time :-) We're heading up
-> > towards softfreeze for 8.1 in about three weeks from now.
+It is an old version of the series. You can find the latest version at:
+https://patchew.org/QEMU/20230921075425.16738-1-akihiko.odaki@daynix.com/
 
-> Hi Peter,
->
-> Please apply this.
-
-Looking again at the patch I see it hasn't been reviewed by
-anybody on the KVM side of things. Paolo, does this seem like
-the right way to handle errors from kvm_arch_get_registers()
-and kvm_arch_put_registers() ?
-
-The original patch is at:
-https://patchew.org/QEMU/20221201102728.69751-1-akihiko.odaki@daynix.com/
-
-thanks
--- PMM
+Regards,
+Akihiko Odaki
 
