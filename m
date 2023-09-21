@@ -2,91 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F167A92B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 177B97A92B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:39:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjFDA-0002Vo-2L; Thu, 21 Sep 2023 04:39:00 -0400
+	id 1qjFDl-0003XI-L0; Thu, 21 Sep 2023 04:39:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qjFD4-0002R0-K7; Thu, 21 Sep 2023 04:38:55 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
- id 1qjFD2-0001pc-DD; Thu, 21 Sep 2023 04:38:54 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-690bc3f8326so602930b3a.0; 
- Thu, 21 Sep 2023 01:38:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695285529; x=1695890329; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=VIKkwGUok/SeWJukNlJTlrusZJS75Jrvs11LYCpMKWg=;
- b=m6FURzhhBwxmJPX+GLxDNACYDnWiuAqxYv108P4FHZ82nvGIf3mux60CViDrCg9vLL
- S975YoUJF6GcY69wY7WojvDbRhOqGnmGXUzjcqLFXmfF7JJ2bSKmAz2Q84K3b/6PrF+n
- ko4Fnvc47DryjnCow7x04oPEvrLmfIvC0kCe4N6N5U8FKR5g4q7p+fkD1LuhLodEg0iB
- gpcl/xsXdgCb3X0UdVvrvJzDN1WNbNMcpvhPAH8blwXuJiDE6+ccBkoWorIZqX9rZk+M
- sdrFe1uPB233qBjmQlfL9PjIwl3O0AJT3rjVob2dM41put39Je89QrH6sKsYpAYdEZnH
- z99w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695285529; x=1695890329;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=VIKkwGUok/SeWJukNlJTlrusZJS75Jrvs11LYCpMKWg=;
- b=IFbBqv6LGcLnFEeZ3yWtcysOIzYHhngPT1jnoBrUnlvxaaMVaqpRlCSUDrEtojcmoM
- S4+dKQJIHT7T+Mmtpjvi3nhJqGJ3Z6H8L5eShTYQczfpjxAjepfp38XKrewz62iv3IE5
- wg98QLZOOcmORu6I59paFTtYYtJCVQjiajfrRNX8OdNtVAhlCPI/U2GHgwzVf0GgKCNQ
- 3907lyjY4VjSR7wQStN0fIbN/N8os7DbiEugIuRKYTyRAyD2wgCQ6Fqw0CGVejzYKAfG
- /Wxp9UVMKtXgVGJcWe5Qrejxl2gwHunPDFe66cuYvmaS+/NqrDYEgY5kQyHXGAM6uN95
- 3SSA==
-X-Gm-Message-State: AOJu0YyJEOBARNHdNUkFr1llRNAPMxIuX8WO+OWB5BEi7vXTFXEsTh+3
- UY0KSEoe+BpFYWQcPbMPnn0=
-X-Google-Smtp-Source: AGHT+IE5StdHi+Szsxv6K0tLOpDIh1Sy0VISh9AoP7W9E5+csd6dmCYJg1bwjnxH3Lx6NLa8Zi5GVg==
-X-Received: by 2002:a05:6a20:1602:b0:14c:5dc3:f1fe with SMTP id
- l2-20020a056a20160200b0014c5dc3f1femr5846192pzj.41.1695285528652; 
- Thu, 21 Sep 2023 01:38:48 -0700 (PDT)
-Received: from [192.168.0.19] ([218.147.112.168])
- by smtp.gmail.com with ESMTPSA id
- l19-20020a17090aec1300b0027475ac5bcasm2522073pjy.30.2023.09.21.01.38.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 01:38:48 -0700 (PDT)
-Message-ID: <9a8f1e6e-edcf-416d-9508-8af666db4263@gmail.com>
-Date: Thu, 21 Sep 2023 17:38:43 +0900
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qjFDg-0003Qm-EU
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:39:32 -0400
+Received: from mgamail.intel.com ([192.55.52.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1qjFDc-0001tX-6L
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:39:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1695285568; x=1726821568;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=XjjSoZ7Kjr8a+VD5sxsSA7OrugdElOS9X7CAZMZJKFg=;
+ b=B0Q2fZGYAnGFtYOrANHos6ENLKhkJdi2/lQttf+qpUTehOdjSyNaIv8u
+ c4TYp2ybpn/tjcmaaACmuCF7cioXZlnkxePM+8VGVZ1dJ9h9pf3jcskDm
+ mXLrzdpM2vlWpMG9bNrYUdyh05roZPgwVNwFYAunXecpRbU0ui/Dh/CJR
+ rFUIuBLsBjyN1xyQvTSebnuWPvScqu07OmCMo2vEkGtPCnwDjg8srxgoE
+ uisNPTHzbGaClv7JCm021ermYFPWPOu6tOSP1Mwq57uUQHYZk4ceCHK11
+ ik4cwjkFRGAdVgetL28IDpGiRRwy6XeMlP7OaaBVZKd9YfWf8soGlkLKc g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="360707407"
+X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; d="scan'208";a="360707407"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2023 01:39:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="696653200"
+X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; d="scan'208";a="696653200"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.29.154])
+ ([10.93.29.154])
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2023 01:38:58 -0700
+Message-ID: <cfa3ac58-fb1f-b255-772a-ab369a68be68@intel.com>
+Date: Thu, 21 Sep 2023 16:38:55 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 4/5] hw/ufs: Support for UFS logical unit
-Content-Language: ko
-To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi
- <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: Jeuk Kim <jeuk20.kim@samsung.com>, Hanna Reitz <hreitz@redhat.com>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.1
+Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and associate
+ it with RAM_KVM_GMEM
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>, David Hildenbrand <david@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20230907181628.1594401-1-stefanha@redhat.com>
- <20230907181628.1594401-5-stefanha@redhat.com>
- <c4dc2292-4690-f16f-4b70-d6f759c16633@redhat.com>
- <160581dc-bdbc-03e8-64a5-1adb818a15b2@gmail.com>
- <86ebcc33-491c-8820-2ca0-51d46b0b7375@redhat.com>
-From: Jeuk Kim <jeuk20.kim@gmail.com>
-In-Reply-To: <86ebcc33-491c-8820-2ca0-51d46b0b7375@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-4-xiaoyao.li@intel.com> <8734zazeag.fsf@pond.sub.org>
+ <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
+ <878r91nvy4.fsf@pond.sub.org>
+ <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
+ <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com>
+ <87msxgdf5y.fsf@pond.sub.org>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <87msxgdf5y.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.55.52.151; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.001, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,75 +98,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 9/20/2023 11:42 PM, Markus Armbruster wrote:
+> David Hildenbrand <david@redhat.com> writes:
+> 
+>> On 20.09.23 16:35, Xiaoyao Li wrote:
+>>> On 9/20/2023 3:30 PM, Markus Armbruster wrote:
+>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>
+>>>>> On 9/19/2023 5:46 PM, Markus Armbruster wrote:
+>>>>>> Xiaoyao Li <xiaoyao.li@intel.com> writes:
+>>>>>>
+>>>>>>> From: Isaku Yamahata <isaku.yamahata@intel.com>
+>>>>>>>
+>>>>>>> Add a new property "private" to memory backends. When it's set to true,
+>>>>>>> it indicates the RAMblock of the backend also requires kvm gmem.
+>>>>>> Can you add a brief explanation why you need the property?
+>>>>>
+>>>>> It provides a mechanism for user to specify whether the memory can serve as private memory (need request kvm gmem).
+>>>>
+>>>> Yes, but why would a user want such memory?
+>>>>
+>>> Because KVM demands it for confidential guest, e.g., TDX guest. KVM
+>>> demands that the mem slot needs to have KVM_MEM_PRIVATE set and has
+>>> valid gmem associated if the guest accesses it as private memory.
+> 
+> Commit messages should explain why we want the patch.  Documenting "why"
+> is at least as important as "what".  If "what" is missing, I can read
+> the patch to find out.  If "why" is missing, I'm reduced to guesswork.
 
-On 2023-09-15 4:59 PM, Paolo Bonzini wrote:
-> On 9/15/23 00:19, Jeuk Kim wrote:
->> First, ufs-lu has a feature called "unit descriptor". This feature 
->> shows the status of the ufs-lu
+I'll try best to improve the commit message of this patch, and all other 
+patches.
+
+>> I think as long as there is no demand to have a TDX guest with this property be set to "off", then just don't add it.
 >>
->> and only works with UFS-specific "query request" commands, not SCSI 
->> commands.
->
-> This looks like something that can be implemented in the UFS subsystem.
->
->> UFS also has something called a well-known lu. Unlike typical SCSI 
->> devices, where each lu is independent,
->> UFS can control other lu's through the well-known lu.
->
-> This can also be implemented in UfsBus.
->
->> Finally, UFS-LU will have features that SCSI-HD does not have, such 
->> as the zone block command.
->
-> These should be implemented in scsi-hd as well.
->
->> In addition to this, I wanted some scsi commands to behave 
->> differently from scsi-hd, for example,
->> the Inquiry command should read "QEMU UFS" instead of "QEMU HARDDISK",
->> and the mode_sense_page command should have a different result.
->
-> Some of these don't have much justification, and others (such as the 
-> control page) could be done in scsi-hd as well.
->
-> We should look into cleaning this up and making ufs-lu share a lot 
-> more code with scsi-hd; possibly even supporting -device scsi-hd with 
-> UFS devices.  I am not going to ask you for a revert, but if this is 
-> not done before 8.2 is out, I will ask you to disable it by default in 
-> hw/ufs/Kconfig.
->
-> In the future, please Cc the SCSI maintainers for UFS patches.
->
-> Paolo
->
-Dear Paolo
+>> With a TDX VM, it will can be implicitly active. If we ever have to disable it for selective memory backends, we can add the property and have something like on/off/auto. For now it would be "auto".
+> 
+> Makes sense to me.
 
-Hi. I've been looking into how ufs-lu can share code with scsi-hd.
+OK. I think I get the answer of open #1 in cover letter.
 
-I have verified that ufs-lu can use scsi-hd's code, and I would like to modify it to do so.
+If no other voice, I'll drop this patch and allocate gmem RAM when 
+vm_type is TDX.
 
-I've validated two possible fixes.
-I'd like to hear your thoughts.
-
-Option1.
-As you mentioned, using ufsbus, which inherits from scsibus, removes the ufs-lu device type and use scsi-hd. (like -device ufs,id=ufs0 -device scsi-hd,bus=ufs0)
-I've verified that this method is implementable, except for one problem.
-Because we are using the scsi-hd type instead of the ufs-lu type, the ufs has to manage all the ufs-lu specific data (such as the unit descriptor).
-However, since there is no ufs_lu_realize() function, we need a way to notify the ufs when a new scsi-hd device is added.
-Would there be a way to let the ufs know that a new scsi-hd has been added at scsi_hd_realize() time?
-
-Option 2.
-Use qdev_new() & qdev_realize() to make ufs-lu have a virtual scsi bus and scsi-hd.
-The ufs-lu can pass through SCSI commands to the virtual scsi-hd.
-This is similar to the method used by the device "usb-storage".
-
-With this method, I can keep the ufs-lu device type (ufs_lu_realize() makes it convenient to manage ufs-lu related data) and avoid duplicating code with scsi-hd.
-So I prefer this approach, but the annotation for "usb-storage" is marked with a "Hack alert", so I'm not sure if this is the right way.
-The code can be found in usb_msd_storage_realize() (hw/usb/dev-storage-classic.c:51).
-
-I am wondering if you could give me some advice on this and your preferred direction for fixing it.
-
-Thank you so much.
-
-Jeuk
 
 
