@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5F57A924F
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B016F7A924E
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:55:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEWK-0004UJ-0f; Thu, 21 Sep 2023 03:54:44 -0400
+	id 1qjEWP-0004V1-DF; Thu, 21 Sep 2023 03:54:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEWI-0004Tv-IK
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:42 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1qjEWO-0004Ut-Al
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:48 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEWG-0001LO-3S
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:42 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c5c91bec75so5058305ad.3
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:54:39 -0700 (PDT)
+ id 1qjEWL-0001MR-JH
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:48 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1c5dd017b30so179655ad.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:54:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695282878; x=1695887678;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695282884; x=1695887684;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BOo7b3FJ14Y9XII2qqVrV2x7lRNTy3o3AMA2DumSWUY=;
- b=3LOAxqZ3WdslmfVya4kfZTES4d/iN5XpunNJBfQNkx1xe7Wruv6J7HTaaF+YoOamqB
- CZM/JrZP1Bnh0MtQXFx0xmpeg+5G2iNGRpRLIyEydd2yLxB7O7uLkJsJUwFtKCF1kWFP
- tJLSRk0f6bGpgCkOI4/MGV+KTwD7PTlfWQe79lkgQtsTJLLQ1NGRC24z/DPwGd6Fd8g5
- EvFiPmcN4Z0D5hGBlhXzxmYML0C31q/+dFEti9OPXb29A3+CYAmOzJUIlil2Y7kjILFc
- rs8ntt6BHI+X+OLFFfae/fQHyOb2XE6Wdf4gD+PyGErtYWU8eed0oxMhT5e/CsPZ3evE
- /vGg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uI/Kp4K+XtqHxtYAeT48aX1q/ar4g9aCgFPx0CsLxbY=;
+ b=cW9KHB8SyXNfc5DwuMgqjEaCxWtM8lB6Fw2CBy6f0d4EkXVA7UxDrNY44H2xflonKi
+ QLbnEnPqxVV1cdejdTo+IV3E1bxcbcWqsw3cYu8KJq+egoqpTrdEoA8TBaZz0G14JuwW
+ Idw4duARI2qnbhZGSHZ46xYPqrzXVA2I3PQn6G+I99bamMGavlaATCbD3/2coweRCLGa
+ Io4YjpZyu9leTA6cEJEh++N4jPuKZ12FaOGPQYL/9VKtiaDTgCRKBt8xtFS3QdXZSMA6
+ BbRmTYVfd785B/Op1QljtcLnHKJWX9DWkkGuLuafG4rxikJQc4uMNbmb8c3Gg6v9NYdQ
+ 1S1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695282878; x=1695887678;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=BOo7b3FJ14Y9XII2qqVrV2x7lRNTy3o3AMA2DumSWUY=;
- b=Xs3N3Xu30+WtVGWe1ErlcTuQptpHv8ZYSjvFjPS46GK6v40Tbhs/meNMyeGBe5hCSO
- XrREA/j6aHKoBvI67RgmZDL4Eduw2mmuUpTOoX3HNW/LG5Wk3B2DJ4JDvEBN4kOn676Q
- DQP76BFd7/1WI6R1x3UdxjCVEmckpkvCYu/E+94YnZd5x8Ht6esuoGoAiJlNZOcgXR7x
- CTm9f7FrfeAhO2qq82WeDyKt93jQxrSRkeAgw+ncyIXtiypd3jPJUofjXzZbG6vAWurq
- U0j0fkAA+TGAP3qYhFCj1XST4Og1beTMt1RobHTZk8oY285+yVFUGWzzXU88wrO287qO
- 8+Bg==
-X-Gm-Message-State: AOJu0YyT+Xxm6sd42h035YqhoDFPi9oQWAYmJM7j6v6j0akYLZ0vrn9u
- dh1SpC67ugWcHiTW2xmfsNjeejvBvOAMkmWJCew=
-X-Google-Smtp-Source: AGHT+IFNd3uNlYrMPUWFVmvjhR9pLZWZKNMDaAqv63rUsSpuINKA+mDt58BlAOWZFTEe+2nvrqqL9Q==
-X-Received: by 2002:a17:902:db0b:b0:1c3:749f:6a5d with SMTP id
- m11-20020a170902db0b00b001c3749f6a5dmr5767763plx.4.1695282878140; 
- Thu, 21 Sep 2023 00:54:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695282884; x=1695887684;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uI/Kp4K+XtqHxtYAeT48aX1q/ar4g9aCgFPx0CsLxbY=;
+ b=V5k8a9RGoSwDU9YhI76SxmIYA38+DEIv0fAC1+8Ml66reT9apIu0PsqWULQUbNck9D
+ 48VKuqYl8UgfOhC9pVlGdlzWlWqOAJpFB6hHn8x2l0/UHOZ7YDb/0WPLqpC53JMc+C1V
+ auxoCy257EmgY2P8SveUttQ5LxzGB/lj8Y9s2MRAgUmUCwV3PUFsPYNRZr/uakGKjgio
+ DdlaxnvINBqphKtILfXzdbgvlFsWk5JENdr3wNbamQKz66es18NEPpzv/fbT5ABaTVbE
+ j0gpia8oZGAbdgqcurs7SDgDjFncJTw1fq3jf3h0QPpePfO4FyK0i2LOAIRkC6R8PJTU
+ f+uA==
+X-Gm-Message-State: AOJu0YwzgmTHY4HMxvDczre9xemw9aL8nvhLjma1sYmHr55XaZG7Fmb6
+ FNoc+Rqbp5L9n/YXiNtmFBe2iGyymfLkx6QaBE4=
+X-Google-Smtp-Source: AGHT+IFGVzmlIcIC0WnjXKBiPerXJcLp7Gw8+wBpSNQ9MyxqF6awYw7mKVrGAe8wGqEtAPk+tIpgSw==
+X-Received: by 2002:a17:902:ecc5:b0:1c5:9d00:be84 with SMTP id
+ a5-20020a170902ecc500b001c59d00be84mr9678037plh.33.1695282884183; 
+ Thu, 21 Sep 2023 00:54:44 -0700 (PDT)
 Received: from fedora.flets-east.jp ([2400:4050:a840:1e00:d54:e521:8bac:7bed])
  by smtp.gmail.com with ESMTPSA id
- p22-20020a170902a41600b001ae0152d280sm761928plq.193.2023.09.21.00.54.32
+ p22-20020a170902a41600b001ae0152d280sm761928plq.193.2023.09.21.00.54.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Sep 2023 00:54:37 -0700 (PDT)
+ Thu, 21 Sep 2023 00:54:43 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
@@ -68,14 +69,16 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Stefan Weil <sw@weilnetz.de>, Yan Vugenfirer <yan@daynix.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 0/8] util: Introduce qemu_get_runtime_dir()
-Date: Thu, 21 Sep 2023 16:54:14 +0900
-Message-ID: <20230921075425.16738-1-akihiko.odaki@daynix.com>
+Subject: [PATCH v3 1/8] util: Introduce qemu_get_runtime_dir()
+Date: Thu, 21 Sep 2023 16:54:15 +0900
+Message-ID: <20230921075425.16738-2-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230921075425.16738-1-akihiko.odaki@daynix.com>
+References: <20230921075425.16738-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62f;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62f.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -130,36 +133,102 @@ falls back to g_get_user_cache_dir() when $XDG_DATA_DIRS is not
 available. In the case, we rather use:
 get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run")
 
-V2 -> V3:
-  Rebase to the current master.
-  Dropped patch "qga: Remove platform GUID definitions" since it is
-  irrelevant.
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ include/qemu/osdep.h | 12 ++++++++++++
+ util/oslib-posix.c   | 11 +++++++++++
+ util/oslib-win32.c   | 26 ++++++++++++++++++++++++++
+ 3 files changed, 49 insertions(+)
 
-V1 -> V2:
-  Rebased to the current master since Patchew complains.
-
-Akihiko Odaki (8):
-  util: Introduce qemu_get_runtime_dir()
-  ivshmem-server: Use qemu_get_runtime_dir()
-  contrib/rdmacm-mux: Use qemu_get_runtime_dir()
-  qga: Use qemu_get_runtime_dir()
-  scsi: Use qemu_get_runtime_dir()
-  module: Use qemu_get_runtime_dir()
-  util: Remove qemu_get_local_state_dir()
-  spice-app: Use qemu_get_runtime_dir()
-
- include/qemu/osdep.h           | 10 +++++++---
- contrib/ivshmem-server/main.c  | 20 ++++++++++++++++----
- contrib/rdmacm-mux/main.c      | 22 ++++++++++++++--------
- qga/main.c                     |  9 ++++-----
- scsi/qemu-pr-helper.c          |  6 +++---
- ui/spice-app.c                 |  4 ++--
- util/module.c                  |  3 ++-
- util/oslib-posix.c             |  9 +++++++--
- util/oslib-win32.c             | 24 ++++++++++++++++++++----
- contrib/rdmacm-mux/meson.build |  2 +-
- 10 files changed, 76 insertions(+), 33 deletions(-)
-
+diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
+index 2897720fac..bb857c910f 100644
+--- a/include/qemu/osdep.h
++++ b/include/qemu/osdep.h
+@@ -636,6 +636,18 @@ void qemu_set_cloexec(int fd);
+  */
+ char *qemu_get_local_state_dir(void);
+ 
++/**
++ * qemu_get_runtime_dir:
++ *
++ * Return a dynamically allocated directory path that is appropriate for storing
++ * runtime files. It corresponds to "run" directory in Unix, and uses
++ * $XDG_RUNTIME_DIR if available.
++ *
++ * The caller is responsible for releasing the value returned with g_free()
++ * after use.
++ */
++char *qemu_get_runtime_dir(void);
++
+ /**
+  * qemu_getauxval:
+  * @type: the auxiliary vector key to lookup
+diff --git a/util/oslib-posix.c b/util/oslib-posix.c
+index e86fd64e09..0c82717be5 100644
+--- a/util/oslib-posix.c
++++ b/util/oslib-posix.c
+@@ -273,6 +273,17 @@ qemu_get_local_state_dir(void)
+     return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR);
+ }
+ 
++char *
++qemu_get_runtime_dir(void)
++{
++    char *env = getenv("XDG_RUNTIME_DIR");
++    if (env) {
++        return g_strdup(env);
++    }
++
++    return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run");
++}
++
+ void qemu_set_tty_echo(int fd, bool echo)
+ {
+     struct termios tty;
+diff --git a/util/oslib-win32.c b/util/oslib-win32.c
+index 19a0ea7fbe..38df7b57b5 100644
+--- a/util/oslib-win32.c
++++ b/util/oslib-win32.c
+@@ -27,6 +27,8 @@
+  */
+ 
+ #include "qemu/osdep.h"
++#include <shlobj.h>
++#include <wchar.h>
+ #include <windows.h>
+ #include "qapi/error.h"
+ #include "qemu/main-loop.h"
+@@ -237,6 +239,30 @@ qemu_get_local_state_dir(void)
+     return g_strdup(data_dirs[0]);
+ }
+ 
++char *
++qemu_get_runtime_dir(void)
++{
++    size_t size = GetEnvironmentVariableA("XDG_RUNTIME_DIR", NULL, 0);
++    if (size) {
++        char *env = g_malloc(size);
++        GetEnvironmentVariableA("XDG_RUNTIME_DIR", env, size);
++        return env;
++    }
++
++    PWSTR wpath;
++    const wchar_t *cwpath;
++    if (!SHGetKnownFolderPath(&FOLDERID_LocalAppData, KF_FLAG_DEFAULT, NULL, &wpath)) {
++        cwpath = wpath;
++        size = wcsrtombs(NULL, &cwpath, 0, &(mbstate_t){0}) + 1;
++        char *path = g_malloc(size);
++        wcsrtombs(path, &cwpath, size, &(mbstate_t){0});
++        CoTaskMemFree(wpath);
++        return path;
++    }
++
++    return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run");
++}
++
+ void qemu_set_tty_echo(int fd, bool echo)
+ {
+     HANDLE handle = (HANDLE)_get_osfhandle(fd);
 -- 
 2.41.0
 
