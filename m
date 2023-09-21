@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF71F7A984D
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EF97A984A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:39:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjNcd-0002BP-DW; Thu, 21 Sep 2023 13:37:51 -0400
+	id 1qjNca-00028w-58; Thu, 21 Sep 2023 13:37:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcb-0002Ab-Uj
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:49 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1qjNcX-00027V-Bi
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:45 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcO-0007iM-5G
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:49 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-32172a50356so1255138f8f.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
+ id 1qjNcO-0007iW-Jp
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:45 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4051fea48a8so14402235e9.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1695317855; x=1695922655; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=tpP7WvKkmw1P1SqkcMNN7UBPT2euBBFe5uh9vcxXSwE=;
- b=c1BQo2gYW29AceuPVkr6eld4+Cja0HwMR8XMKithGZp/VjFwpDaNG1TWVfccGIEUCd
- pDe5Rt9zqL6hW74xIBnE0iwrSde7Ob+cwUpooV40zuoBsoBHLBnZajMS15lGO1sd1gCK
- KU0zXWwjxpj07LvizmqOzlVivYIGjNIKOoubU1JaVzcD6egB8XzHzRXpPCc73BOZM4ZJ
- e6RdqQC5ns0GCELud1FQ8Mfag5VDp4AOG5cvkq3BeDHXr6uLoYJDiNSM++2EB6KUQXWT
- +y7pE1jqd2+IBksUiwAdk3/5lJvlPp66ewnNPC1SpFVC1hVXji6bWsNxzeO7uvt+flp7
- yjxA==
+ :reply-to; bh=hhll5MSt7inD7Gvy+K2LRa4bhUXToZUa0sCF87IjAjw=;
+ b=fkzi59TXjCgC2g4vlEfg0AarpdcBxTo30RnCBiKybc4fAhfUM+gDEmu4RDvA979piJ
+ HLj58faS8eT6MY1FVEgPVkTBhjA+L9kDHjz2M1Qi8VClq/xZL1xXklpNZp8ky4J5ica2
+ kVNaURyKkmtkFy+EEPFsI7fQmv+cirO9W8nQZoh6A+EMv1NzhttzzBsxKQNtGV83oUZ2
+ sKngUDUhuNne3iqhPGP8zji3QvggftWWFh9sR7ZsgwS9OhUJUuXJ8P3nmWE28Dv4nfub
+ TPISiMXzB6zmm/Ctc1M7yI8FJ5UGR7/z7S7IrbgJLkIg9WsMMLYUiD1qXWfzhJFsbfXr
+ AW+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1695317855; x=1695922655;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tpP7WvKkmw1P1SqkcMNN7UBPT2euBBFe5uh9vcxXSwE=;
- b=aXkBRDa9SD9H9w9KMq/z43uSCyoUL2KaqN3epMc8zAhrLcO2wPjaQGrcyOoDfZq1kj
- 7CwCpovvsLEFZEdT4JqcVwCgpFw8oQ0/4AHnCr8XSde+8bkadqx8pzMc6ExT464K3+uy
- rTTi1PsEKI4KU90tbzNe6X0DmKklRKZf8jPa8KoFRpJQ5+cFkG7BvI3SQcAetYLMtaxR
- 57k2Ojdr5uRMCVKZNNzoL6ApeYdMBaULxxO7CbgDlY8MHcqyP/FVZR+3Qszf+zczUENu
- LcElyo8vwgBOSdmcREbNFdEorSDYPwogl+zwkyIiCI/8Dh/cBwwle4GPpmVC8EsxAWF1
- fGWg==
-X-Gm-Message-State: AOJu0YwHVh0CllltO+4lsZBFnPVmniQifM7Lvs5KbNZRviiMiCEkB5cb
- R2qnCfeKk9BsKpiZxsiFlaYKTmcHDYYR1UyNmcw=
-X-Google-Smtp-Source: AGHT+IH7r4ugyOxzVjNWfgYNl6YlesOHsq999nDG4SUbzTexgs0pDk0yeWUToTZIhsKArMqCqhPMKw==
-X-Received: by 2002:a5d:6346:0:b0:31f:e5cf:6724 with SMTP id
- b6-20020a5d6346000000b0031fe5cf6724mr6508426wrw.46.1695317854816; 
- Thu, 21 Sep 2023 10:37:34 -0700 (PDT)
+ bh=hhll5MSt7inD7Gvy+K2LRa4bhUXToZUa0sCF87IjAjw=;
+ b=Utwcz4brG8cX2fyZxhNJYuG3VQ+qJUhMysABLZUUXoNcYkY5BavBuTuU3WHyCW7wlD
+ 0FV1+OYuk8+pNBCIwwtnPsXPpDsNWYyrffOIhChiL3PlIBxk4UGJoLA74byLdHJHJAjB
+ VJWldHJnjex2XZ7iTnDhgOuLCLuJlZVjj3L8Rnj/Q1T0opX7gEkaOPYE8B1VVtCJffiU
+ 51KqFmJzjZ9n78QGR7pSCE7hS2eDVRfW8fDcS1cY4B10ualzopN10ApLlj9FrCY1xCd/
+ Pjhh/y5Oq0p3DOvoLKoVFCYDkI0FJe01h9MgS6H1coZRmxImSfgYsa0KK7yPH1MW6G11
+ b2jg==
+X-Gm-Message-State: AOJu0Yyuk0UvOLhC3xrid8YVO9cGd2g2I9Ijo7QupSV+R4IeEBcnmigN
+ 1e+NJG7G2CHMOlWXzRNVY64UgqvvZYauB0ikXAw=
+X-Google-Smtp-Source: AGHT+IFnYHgGyKgFIg662xzfX53i7vf3uGvxlcchKJug6mi57gD6A55LqmS7srmV98cEAcQAHHOILQ==
+X-Received: by 2002:a05:600c:364a:b0:401:dc7c:2488 with SMTP id
+ y10-20020a05600c364a00b00401dc7c2488mr5366494wmq.11.1695317855215; 
+ Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.34
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Sep 2023 10:37:34 -0700 (PDT)
+ Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 27/30] elf2dmp: introduce physical block alignment
-Date: Thu, 21 Sep 2023 18:37:17 +0100
-Message-Id: <20230921173720.3250581-28-peter.maydell@linaro.org>
+Subject: [PULL 28/30] elf2dmp: introduce merging of physical memory runs
+Date: Thu, 21 Sep 2023 18:37:18 +0100
+Message-Id: <20230921173720.3250581-29-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921173720.3250581-1-peter.maydell@linaro.org>
 References: <20230921173720.3250581-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,107 +92,107 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Viktor Prutyanov <viktor@daynix.com>
 
-Physical memory ranges may not be aligned to page size in QEMU ELF, but
-DMP can only contain page-aligned runs. So, align them.
+DMP supports 42 physical memory runs at most. So, merge adjacent
+physical memory ranges from QEMU ELF when possible to minimize total
+number of runs.
 
 Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20230915170153.10959-3-viktor@daynix.com
+Message-id: 20230915170153.10959-4-viktor@daynix.com
+[PMM: fixed format string for printing size_t values]
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/addrspace.h |  1 +
- contrib/elf2dmp/addrspace.c | 31 +++++++++++++++++++++++++++++--
- contrib/elf2dmp/main.c      |  5 +++--
- 3 files changed, 33 insertions(+), 4 deletions(-)
+ contrib/elf2dmp/main.c | 56 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 48 insertions(+), 8 deletions(-)
 
-diff --git a/contrib/elf2dmp/addrspace.h b/contrib/elf2dmp/addrspace.h
-index 00b44c12180..039c70c5b07 100644
---- a/contrib/elf2dmp/addrspace.h
-+++ b/contrib/elf2dmp/addrspace.h
-@@ -12,6 +12,7 @@
- 
- #define ELF2DMP_PAGE_BITS 12
- #define ELF2DMP_PAGE_SIZE (1ULL << ELF2DMP_PAGE_BITS)
-+#define ELF2DMP_PAGE_MASK (ELF2DMP_PAGE_SIZE - 1)
- #define ELF2DMP_PFN_MASK (~(ELF2DMP_PAGE_SIZE - 1))
- 
- #define INVALID_PA  UINT64_MAX
-diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-index 0b04cba00e5..64b5d680adc 100644
---- a/contrib/elf2dmp/addrspace.c
-+++ b/contrib/elf2dmp/addrspace.c
-@@ -14,7 +14,7 @@ static struct pa_block *pa_space_find_block(struct pa_space *ps, uint64_t pa)
- 
-     for (i = 0; i < ps->block_nr; i++) {
-         if (ps->block[i].paddr <= pa &&
--                pa <= ps->block[i].paddr + ps->block[i].size) {
-+                pa < ps->block[i].paddr + ps->block[i].size) {
-             return ps->block + i;
-         }
-     }
-@@ -33,6 +33,30 @@ static uint8_t *pa_space_resolve(struct pa_space *ps, uint64_t pa)
-     return block->addr + (pa - block->paddr);
- }
- 
-+static void pa_block_align(struct pa_block *b)
-+{
-+    uint64_t low_align = ((b->paddr - 1) | ELF2DMP_PAGE_MASK) + 1 - b->paddr;
-+    uint64_t high_align = (b->paddr + b->size) & ELF2DMP_PAGE_MASK;
-+
-+    if (low_align == 0 && high_align == 0) {
-+        return;
-+    }
-+
-+    if (low_align + high_align < b->size) {
-+        printf("Block 0x%"PRIx64"+:0x%"PRIx64" will be aligned to "
-+                "0x%"PRIx64"+:0x%"PRIx64"\n", b->paddr, b->size,
-+                b->paddr + low_align, b->size - low_align - high_align);
-+        b->size -= low_align + high_align;
-+    } else {
-+        printf("Block 0x%"PRIx64"+:0x%"PRIx64" is too small to align\n",
-+                b->paddr, b->size);
-+        b->size = 0;
-+    }
-+
-+    b->addr += low_align;
-+    b->paddr += low_align;
-+}
-+
- int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
- {
-     Elf64_Half phdr_nr = elf_getphdrnum(qemu_elf->map);
-@@ -60,10 +84,13 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
-                 .paddr = phdr[i].p_paddr,
-                 .size = phdr[i].p_filesz,
-             };
--            block_i++;
-+            pa_block_align(&ps->block[block_i]);
-+            block_i = ps->block[block_i].size ? (block_i + 1) : block_i;
-         }
-     }
- 
-+    ps->block_nr = block_i;
-+
-     return 0;
- }
- 
 diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index bb6744c0cd6..b7e39301641 100644
+index b7e39301641..5db163bdbe8 100644
 --- a/contrib/elf2dmp/main.c
 +++ b/contrib/elf2dmp/main.c
-@@ -400,9 +400,10 @@ static int write_dump(struct pa_space *ps,
-     for (i = 0; i < ps->block_nr; i++) {
-         struct pa_block *b = &ps->block[i];
+@@ -20,6 +20,7 @@
+ #define PE_NAME     "ntoskrnl.exe"
  
--        printf("Writing block #%zu/%zu to file...\n", i, ps->block_nr);
-+        printf("Writing block #%zu/%zu of %"PRIu64" bytes to file...\n", i,
-+                ps->block_nr, b->size);
-         if (fwrite(b->addr, b->size, 1, dmp_file) != 1) {
--            eprintf("Failed to write dump header\n");
-+            eprintf("Failed to write block\n");
-             fclose(dmp_file);
-             return 1;
-         }
+ #define INITIAL_MXCSR   0x1f80
++#define MAX_NUMBER_OF_RUNS  42
+ 
+ typedef struct idt_desc {
+     uint16_t offset1;   /* offset bits 0..15 */
+@@ -234,6 +235,42 @@ static int fix_dtb(struct va_space *vs, QEMU_Elf *qe)
+     return 1;
+ }
+ 
++static void try_merge_runs(struct pa_space *ps,
++        WinDumpPhyMemDesc64 *PhysicalMemoryBlock)
++{
++    unsigned int merge_cnt = 0, run_idx = 0;
++
++    PhysicalMemoryBlock->NumberOfRuns = 0;
++
++    for (size_t idx = 0; idx < ps->block_nr; idx++) {
++        struct pa_block *blk = ps->block + idx;
++        struct pa_block *next = blk + 1;
++
++        PhysicalMemoryBlock->NumberOfPages += blk->size / ELF2DMP_PAGE_SIZE;
++
++        if (idx + 1 != ps->block_nr && blk->paddr + blk->size == next->paddr) {
++            printf("Block #%zu 0x%"PRIx64"+:0x%"PRIx64" and %u previous will be"
++                    " merged\n", idx, blk->paddr, blk->size, merge_cnt);
++            merge_cnt++;
++        } else {
++            struct pa_block *first_merged = blk - merge_cnt;
++
++            printf("Block #%zu 0x%"PRIx64"+:0x%"PRIx64" and %u previous will be"
++                    " merged to 0x%"PRIx64"+:0x%"PRIx64" (run #%u)\n",
++                    idx, blk->paddr, blk->size, merge_cnt, first_merged->paddr,
++                    blk->paddr + blk->size - first_merged->paddr, run_idx);
++            PhysicalMemoryBlock->Run[run_idx] = (WinDumpPhyMemRun64) {
++                .BasePage = first_merged->paddr / ELF2DMP_PAGE_SIZE,
++                .PageCount = (blk->paddr + blk->size - first_merged->paddr) /
++                        ELF2DMP_PAGE_SIZE,
++            };
++            PhysicalMemoryBlock->NumberOfRuns++;
++            run_idx++;
++            merge_cnt = 0;
++        }
++    }
++}
++
+ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
+         struct va_space *vs, uint64_t KdDebuggerDataBlock,
+         KDDEBUGGER_DATA64 *kdbg, uint64_t KdVersionBlock, int nr_cpus)
+@@ -244,7 +281,6 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
+             KUSD_OFFSET_PRODUCT_TYPE);
+     DBGKD_GET_VERSION64 kvb;
+     WinDumpHeader64 h;
+-    size_t i;
+ 
+     QEMU_BUILD_BUG_ON(KUSD_OFFSET_SUITE_MASK >= ELF2DMP_PAGE_SIZE);
+     QEMU_BUILD_BUG_ON(KUSD_OFFSET_PRODUCT_TYPE >= ELF2DMP_PAGE_SIZE);
+@@ -282,13 +318,17 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
+         .RequiredDumpSpace = sizeof(h),
+     };
+ 
+-    for (i = 0; i < ps->block_nr; i++) {
+-        h.PhysicalMemoryBlock.NumberOfPages +=
+-                ps->block[i].size / ELF2DMP_PAGE_SIZE;
+-        h.PhysicalMemoryBlock.Run[i] = (WinDumpPhyMemRun64) {
+-            .BasePage = ps->block[i].paddr / ELF2DMP_PAGE_SIZE,
+-            .PageCount = ps->block[i].size / ELF2DMP_PAGE_SIZE,
+-        };
++    if (h.PhysicalMemoryBlock.NumberOfRuns <= MAX_NUMBER_OF_RUNS) {
++        for (size_t idx = 0; idx < ps->block_nr; idx++) {
++            h.PhysicalMemoryBlock.NumberOfPages +=
++                    ps->block[idx].size / ELF2DMP_PAGE_SIZE;
++            h.PhysicalMemoryBlock.Run[idx] = (WinDumpPhyMemRun64) {
++                .BasePage = ps->block[idx].paddr / ELF2DMP_PAGE_SIZE,
++                .PageCount = ps->block[idx].size / ELF2DMP_PAGE_SIZE,
++            };
++        }
++    } else {
++        try_merge_runs(ps, &h.PhysicalMemoryBlock);
+     }
+ 
+     h.RequiredDumpSpace +=
 -- 
 2.34.1
 
