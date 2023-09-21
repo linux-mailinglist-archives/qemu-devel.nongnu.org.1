@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D177A92DF
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C11B57A92E0
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:56:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjFTn-0006ZB-W6; Thu, 21 Sep 2023 04:56:12 -0400
+	id 1qjFUA-00074l-7D; Thu, 21 Sep 2023 04:56:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFTc-0006YJ-P9
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:56:00 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFU8-0006zh-HY
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:56:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFTa-0005eQ-Nb
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:56:00 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFU6-0005jK-09
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:56:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695286557;
+ s=mimecast20190719; t=1695286589;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CXzfBnb6s0TokTe/yNIjNnut/xFJqsbkbtECAXTqWzs=;
- b=aio0qCSws6gVSHi4gXkUqy+VN82irM12V1nrj7sWqyxfERP3Heem7Oigm+ZoHRNQ6Jd5lk
- 8tNCYuWdF3AMO5NQNdYYKNrwJQhY6nFqQBuQK+/4LJuMVHakdRLs4QGzAaCuxtlc+SCkMD
- pMUFVt+902fqXKTpqtxGdwPB2L0KOE4=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PQo3cP8ubnIFxn8GyzNBkh6mW/MSQ9HqXpxlK6ZJiTA=;
+ b=KH6gcGqj+yEFbUZVktaQ47LvxK+GVeFvKBAn1Ei2VaZTkj4HxxQWEuRm/1L1p0b49MTyW7
+ 7sWPhkIQpasc2ZUd90JETaeN0NkFdBooXjKAmSbr0N6vWfjw1BjbLlh/YX+FTKCjUIEiOf
+ JAWigOwXOZITixLzc0+J91/uL+nZ3m4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-339-OlIl11qhNhKEfukrzLInsw-1; Thu, 21 Sep 2023 04:55:55 -0400
-X-MC-Unique: OlIl11qhNhKEfukrzLInsw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-404f81fe7cfso7784965e9.1
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 01:55:55 -0700 (PDT)
+ us-mta-343-Yoz01GlQPpqRaOKTh8QsBQ-1; Thu, 21 Sep 2023 04:56:27 -0400
+X-MC-Unique: Yoz01GlQPpqRaOKTh8QsBQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-321f75cf2bdso195558f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 01:56:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695286555; x=1695891355;
+ d=1e100.net; s=20230601; t=1695286586; x=1695891386;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=CXzfBnb6s0TokTe/yNIjNnut/xFJqsbkbtECAXTqWzs=;
- b=LtgdZJoJBMkKdJ5MgwPYQ6/2R5Wygea9SnORjs8KQ0yoCVT3llwMJD+98T+4dK8Qt2
- 9P6gqMMYFm0CKuysry0gOkzeWP23uLpjeOaXqdI4lL4zoPewKiSZiybgwqdxKPRmMBLL
- YE0qQFMSPh7yChCGJs4l0HBwnnwn0z7xQmT6ESuTOjtZBGFmAq9UcXyO3Gc5CnpR95Ty
- fI/PO0BwmCgjnORP4J91Arw37jJTlQum1XSg4/ma5H1ZMsFOAuwjbZ6g3XUKOCSaU6zq
- 62cbBbRzQY0H6wGotkDRyZrwHcIv94r62CQY9WL0+J5MhDcKKQAfDr2gUgCGV0Our3za
- kQ9w==
-X-Gm-Message-State: AOJu0YyhxGes5AwB5HcD/W5z6H1f9LkaE0GEPmzWba3CM6yV8ZFsx4Y7
- jcLvulRssfmkRGIOWRrGdNpGG//bgjAwMIVxxLt1ATBirrfvtnE1vXMf5/14BYSs8s29/vAeXHe
- roUm9cZC2Qebq6Vs=
-X-Received: by 2002:adf:f24d:0:b0:314:c6b:b9a2 with SMTP id
- b13-20020adff24d000000b003140c6bb9a2mr4283831wrp.13.1695286554887; 
- Thu, 21 Sep 2023 01:55:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFr1B68OlonHq+x2Ayf/NCpEV9vQxh6aDgWzz7JLCnpauVUgrdLv8UXHvYUV8oS8X50orAakw==
-X-Received: by 2002:adf:f24d:0:b0:314:c6b:b9a2 with SMTP id
- b13-20020adff24d000000b003140c6bb9a2mr4283803wrp.13.1695286554511; 
- Thu, 21 Sep 2023 01:55:54 -0700 (PDT)
+ bh=PQo3cP8ubnIFxn8GyzNBkh6mW/MSQ9HqXpxlK6ZJiTA=;
+ b=mexdJ5yB2NYr920qk0jm08qPy31zJJdtrigWWEu9H/8pr8h35jaE3kChm302I2oyM/
+ rEETbbGRf3ldChKZJ57VzKESd1AFsZlsBVc/crrc4kK5qBfDTfwgNx6tS5Y5CaNM+ao0
+ ZWYfNBi+qftaHuoHTdxt0sr3LKjnO6LtzSrVkuFZ/q9IOAX4DO+sWf9HJ6zMDlYWOsjM
+ 1f5tm+Ej/7EPUvbhnQIOAxeRWq/dPcUEUfzykG/7XuTkbThFCwL9AB4muVC2VScBG7Mc
+ xiGg1LkqX5JusFcyrMEzDpGKQyyMnpPWiuVoWic22HFa7mzfMgAqInO+U1wsweziTR9T
+ 5eZQ==
+X-Gm-Message-State: AOJu0YyT7mpeSF913BDIjRhH4wgq5IiWM8CgXCmfHPpKwU7H1Yg/Caf5
+ bcOchy4w1mGLyVN0cEL3f1DFT1toOXrKTrR3fTdu/Rk3MsK7eBYx98eS2rf+adgnO3triMVs8oP
+ yzbf6kNAxmlYC0B4=
+X-Received: by 2002:adf:e253:0:b0:31a:dd55:e69c with SMTP id
+ bl19-20020adfe253000000b0031add55e69cmr4279916wrb.60.1695286586213; 
+ Thu, 21 Sep 2023 01:56:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4a6zpCosFq3hmujQ4zTcT38YOWqiaKd28jQERYVCmRpaHM+ECvPdd2GHEzhC9vCufTHkxJg==
+X-Received: by 2002:adf:e253:0:b0:31a:dd55:e69c with SMTP id
+ bl19-20020adfe253000000b0031add55e69cmr4279904wrb.60.1695286585929; 
+ Thu, 21 Sep 2023 01:56:25 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c70d:3c00:9eab:fce5:e6f3:e626?
  (p200300cbc70d3c009eabfce5e6f3e626.dip0.t-ipconnect.de.
  [2003:cb:c70d:3c00:9eab:fce5:e6f3:e626])
  by smtp.gmail.com with ESMTPSA id
- x5-20020adfdcc5000000b0031c6581d55esm1150709wrm.91.2023.09.21.01.55.53
+ z16-20020a056000111000b003176eab8868sm1131747wrw.82.2023.09.21.01.56.24
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 01:55:54 -0700 (PDT)
-Message-ID: <678bf0bf-57e7-a596-1ddf-6d0b47cd8677@redhat.com>
-Date: Thu, 21 Sep 2023 10:55:52 +0200
+ Thu, 21 Sep 2023 01:56:25 -0700 (PDT)
+Message-ID: <3f8955f6-c261-d3f3-08a2-54f0bd9caf8e@redhat.com>
+Date: Thu, 21 Sep 2023 10:56:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v2 02/21] RAMBlock: Add support of KVM private gmem
+Subject: Re: [RFC PATCH v2 05/21] kvm: Enable KVM_SET_USER_MEMORY_REGION2 for
+ memslot
 Content-Language: en-US
 To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -84,10 +85,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
 References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <20230914035117.3285885-3-xiaoyao.li@intel.com>
+ <20230914035117.3285885-6-xiaoyao.li@intel.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20230914035117.3285885-3-xiaoyao.li@intel.com>
+In-Reply-To: <20230914035117.3285885-6-xiaoyao.li@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
@@ -115,19 +116,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 14.09.23 05:50, Xiaoyao Li wrote:
+On 14.09.23 05:51, Xiaoyao Li wrote:
 > From: Chao Peng <chao.p.peng@linux.intel.com>
 > 
-> Add KVM gmem support to RAMBlock so both normal hva based memory
-> and kvm gmem fd based private memory can be associated in one RAMBlock.
+> Switch to KVM_SET_USER_MEMORY_REGION2 when supported by KVM.
 > 
-> Introduce new flag RAM_KVM_GMEM. It calls KVM ioctl to create private
-> gmem for the RAMBlock when it's set.
+> With KVM_SET_USER_MEMORY_REGION2, QEMU can set up memory region that
+> backend'ed both by hva-based shared memory and gmem fd based private
+> memory.
+> 
+> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-
-But who sets RAM_KVM_GMEM and when? Don't we simply allocate it for all 
-RAMBlocks under such special VMs? What's the downside of doing that?
-
+"Co-developed-by".
 
 -- 
 Cheers,
