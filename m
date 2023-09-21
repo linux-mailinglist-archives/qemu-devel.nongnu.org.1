@@ -2,30 +2,31 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90297A925C
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C92A17A926D
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:00:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEXz-00083S-6Y; Thu, 21 Sep 2023 03:56:27 -0400
+	id 1qjEZf-0003t3-1A; Thu, 21 Sep 2023 03:58:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEXn-0007c5-A8; Thu, 21 Sep 2023 03:56:18 -0400
+ id 1qjEYh-00034Q-DP; Thu, 21 Sep 2023 03:57:12 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEXj-0002Eg-HW; Thu, 21 Sep 2023 03:56:13 -0400
+ id 1qjEYV-0002LS-Aq; Thu, 21 Sep 2023 03:57:10 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qjEWR-00BsUn-2t;
- Thu, 21 Sep 2023 09:55:04 +0200
+ (envelope-from <den@openvz.org>) id 1qjEWS-00BsUn-0t;
+ Thu, 21 Sep 2023 09:55:05 +0200
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Subject: [PULL v2 10/22] parallels: fix broken parallels_check_data_off()
-Date: Thu, 21 Sep 2023 09:54:48 +0200
-Message-Id: <20230921075500.694585-11-den@openvz.org>
+Subject: [PULL v2 11/22] parallels: add test which will validate data_off
+ fixes through repair
+Date: Thu, 21 Sep 2023 09:54:49 +0200
+Message-Id: <20230921075500.694585-12-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921075500.694585-1-den@openvz.org>
 References: <20230921075500.694585-1-den@openvz.org>
@@ -55,27 +56,70 @@ From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Once we have repaired data_off field in the header we should update
-s->data_start which is calculated on the base of it.
+We have only check through self-repair and that proven to be not enough.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/qemu-iotests/tests/parallels-checks     | 17 +++++++++++++++++
+ tests/qemu-iotests/tests/parallels-checks.out | 18 ++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
-diff --git a/block/parallels.c b/block/parallels.c
-index 66c86d87e3..2b5f2b54a0 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -531,6 +531,7 @@ parallels_check_data_off(BlockDriverState *bs, BdrvCheckResult *res,
-     res->corruptions++;
-     if (fix & BDRV_FIX_ERRORS) {
-         s->header->data_off = cpu_to_le32(data_off);
-+        s->data_start = data_off;
-         res->corruptions_fixed++;
-     }
+diff --git a/tests/qemu-iotests/tests/parallels-checks b/tests/qemu-iotests/tests/parallels-checks
+index 5917ee079d..f4ca50295e 100755
+--- a/tests/qemu-iotests/tests/parallels-checks
++++ b/tests/qemu-iotests/tests/parallels-checks
+@@ -140,6 +140,23 @@ poke_file "$TEST_IMG" "$DATA_OFF_OFFSET" "\xff\xff\xff\xff"
+ echo "== check first cluster =="
+ { $QEMU_IO -c "read -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
  
++# Clear image
++_make_test_img $SIZE
++
++echo "== TEST DATA_OFF THROUGH REPAIR =="
++
++echo "== write pattern to first cluster =="
++{ $QEMU_IO -c "write -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
++echo "== spoil data_off field =="
++poke_file "$TEST_IMG" "$DATA_OFF_OFFSET" "\xff\xff\xff\xff"
++
++echo "== repair image =="
++_check_test_img -r all
++
++echo "== check first cluster =="
++{ $QEMU_IO -r -c "read -P 0x55 0 $CLUSTER_SIZE" "$TEST_IMG"; } 2>&1 | _filter_qemu_io | _filter_testdir
++
+ # success, all done
+ echo "*** done"
+ rm -f $seq.full
+diff --git a/tests/qemu-iotests/tests/parallels-checks.out b/tests/qemu-iotests/tests/parallels-checks.out
+index 98a3a7f55e..74a5e29260 100644
+--- a/tests/qemu-iotests/tests/parallels-checks.out
++++ b/tests/qemu-iotests/tests/parallels-checks.out
+@@ -72,4 +72,22 @@ wrote 1048576/1048576 bytes at offset 0
+ Repairing data_off field has incorrect value
+ read 1048576/1048576 bytes at offset 0
+ 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++Formatting 'TEST_DIR/t.IMGFMT', fmt=IMGFMT size=4194304
++== TEST DATA_OFF THROUGH REPAIR ==
++== write pattern to first cluster ==
++wrote 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
++== spoil data_off field ==
++== repair image ==
++Repairing data_off field has incorrect value
++The following inconsistencies were found and repaired:
++
++    0 leaked clusters
++    1 corruptions
++
++Double checking the fixed image now...
++No errors were found on the image.
++== check first cluster ==
++read 1048576/1048576 bytes at offset 0
++1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
+ *** done
 -- 
 2.34.1
 
