@@ -2,30 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE347A9262
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698717A9275
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:01:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEY0-0008A0-7p; Thu, 21 Sep 2023 03:56:29 -0400
+	id 1qjEY3-0000K5-OX; Thu, 21 Sep 2023 03:56:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEXu-0007l4-4B; Thu, 21 Sep 2023 03:56:25 -0400
+ id 1qjEXz-0008Ar-0H; Thu, 21 Sep 2023 03:56:27 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEXp-0002FF-9b; Thu, 21 Sep 2023 03:56:20 -0400
+ id 1qjEXx-0002Fg-Fk; Thu, 21 Sep 2023 03:56:26 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qjEWT-00BsUn-2B;
+ (envelope-from <den@openvz.org>) id 1qjEWU-00BsUn-04;
  Thu, 21 Sep 2023 09:55:06 +0200
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Subject: [PULL v2 15/22] parallels: accept multiple clusters in mark_used()
-Date: Thu, 21 Sep 2023 09:54:53 +0200
-Message-Id: <20230921075500.694585-16-den@openvz.org>
+Subject: [PULL v2 16/22] parallels: update used bitmap in allocate_cluster
+Date: Thu, 21 Sep 2023 09:54:54 +0200
+Message-Id: <20230921075500.694585-17-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921075500.694585-1-den@openvz.org>
 References: <20230921075500.694585-1-den@openvz.org>
@@ -55,73 +55,55 @@ From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This would be useful in the next patch in allocate_clusters(). This
-change would not imply serious performance drawbacks as usually image
-is full of data or are at the end of the bitmap.
+We should extend the bitmap if the file is extended and set the bit in
+the image used bitmap once the cluster is allocated. Sanity check at
+that moment also looks like a good idea.
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ block/parallels.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index a997880c34..3df73aa8a0 100644
+index 3df73aa8a0..ec35237119 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -178,18 +178,20 @@ static void parallels_set_bat_entry(BDRVParallelsState *s,
-     bitmap_set(s->bat_dirty_bmap, bat_entry_off(index) / s->bat_dirty_block, 1);
- }
- 
--static int mark_used(BlockDriverState *bs,
--                     unsigned long *bitmap, uint32_t bitmap_size, int64_t off)
-+static int mark_used(BlockDriverState *bs, unsigned long *bitmap,
-+                     uint32_t bitmap_size, int64_t off, uint32_t count)
- {
-     BDRVParallelsState *s = bs->opaque;
-     uint32_t cluster_index = host_cluster_index(s, off);
--    if (cluster_index >= bitmap_size) {
-+    unsigned long next_used;
-+    if (cluster_index + count > bitmap_size) {
-         return -E2BIG;
+@@ -282,6 +282,8 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+         return len;
      }
--    if (test_bit(cluster_index, bitmap)) {
-+    next_used = find_next_bit(bitmap, bitmap_size, cluster_index);
-+    if (next_used < cluster_index + count) {
-         return -EBUSY;
+     if (s->data_end + space > (len >> BDRV_SECTOR_BITS)) {
++        uint32_t new_usedsize;
++
+         space += s->prealloc_size;
+         /*
+          * We require the expanded size to read back as zero. If the
+@@ -305,6 +307,12 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+         if (ret < 0) {
+             return ret;
+         }
++
++        new_usedsize = s->used_bmap_size +
++                       (space << BDRV_SECTOR_BITS) / s->cluster_size;
++        s->used_bmap = bitmap_zero_extend(s->used_bmap, s->used_bmap_size,
++                                          new_usedsize);
++        s->used_bmap_size = new_usedsize;
      }
--    bitmap_set(bitmap, cluster_index, 1);
-+    bitmap_set(bitmap, cluster_index, count);
-     return 0;
- }
  
-@@ -230,7 +232,7 @@ static int parallels_fill_used_bitmap(BlockDriverState *bs)
-             continue;
+     /*
+@@ -336,6 +344,12 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
          }
+     }
  
--        err2 = mark_used(bs, s->used_bmap, s->used_bmap_size, host_off);
-+        err2 = mark_used(bs, s->used_bmap, s->used_bmap_size, host_off, 1);
-         if (err2 < 0 && err == 0) {
-             err = err2;
-         }
-@@ -732,7 +734,7 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
-             continue;
-         }
- 
--        ret = mark_used(bs, bitmap, bitmap_size, host_off);
-+        ret = mark_used(bs, bitmap, bitmap_size, host_off, 1);
-         assert(ret != -E2BIG);
-         if (ret == 0) {
-             continue;
-@@ -792,7 +794,7 @@ parallels_check_duplicate(BlockDriverState *bs, BdrvCheckResult *res,
-          * considered, and the bitmap size doesn't change. This specifically
-          * means that -E2BIG is OK.
-          */
--        ret = mark_used(bs, bitmap, bitmap_size, host_off);
-+        ret = mark_used(bs, bitmap, bitmap_size, host_off, 1);
-         if (ret == -EBUSY) {
-             res->check_errors++;
-             goto out_repair_bat;
++    ret = mark_used(bs, s->used_bmap, s->used_bmap_size,
++                    s->data_end << BDRV_SECTOR_BITS, to_allocate);
++    if (ret < 0) {
++        /* Image consistency is broken. Alarm! */
++        return ret;
++    }
+     for (i = 0; i < to_allocate; i++) {
+         parallels_set_bat_entry(s, idx + i, s->data_end / s->off_multiplier);
+         s->data_end += s->tracks;
 -- 
 2.34.1
 
