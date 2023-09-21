@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890177A985A
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD1A7A9863
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjNcc-0002At-NH; Thu, 21 Sep 2023 13:37:50 -0400
+	id 1qjNcc-0002Av-Qo; Thu, 21 Sep 2023 13:37:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcZ-00029H-Vy
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:48 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qjNcb-0002A8-8z
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:49 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcP-0007ie-Au
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:47 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4053cb57f02so44065e9.1
+ id 1qjNcP-0007ik-DN
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:49 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-403004a96eeso12870695e9.3
  for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695317855; x=1695922655; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695317856; x=1695922656; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=okurW1rZE+ASazRHBXqN9Qp4RNXWE3FoF9D8aOYfxp8=;
- b=KIfK6ZaK4vvv9jkyufJprjry8lKeuE8V/6xcMxIKwag4zKFl2Ylr+npNF1Je01+egB
- G8VBGV3SHoY1ZsdGt+er5RA/HodDA/wo+5m7caNS+nsQRNb4lTg4JmrVFvJnmCREsqiK
- wq+IzfmatE6RONHylMVg18Nu72m3PIg/Gni32xk4RDuBnkQ/y7wIiKTP2mFTeWNG3f7D
- 6GRUmKjz91nuMXadFu6xI1OG7ewBRhievm+mQb4AdFxt/SArkEybzi+LUABO7tofCBVW
- S7+KNfavzPQ7wh3ME855DZ/96EjVVJIxmfQCVt2J4p+33qfPm175LHd83l66HPDKy4HO
- UioA==
+ :reply-to; bh=yrJfngMZeFXFPS0lgWoyofdpWugV34Omj7KHLp5edtM=;
+ b=ORVtK0PQKqXj5RLBh/INzryz6oC+3tRiF2rHB0koayxEp4tqXWmNLB/KF9SY4qDdeq
+ 3jHN0etGTZ5IeLydzCCyg5174+v1cOBaPvQa9Dkd84YOR/5TPK6FKL6xH9NgtZ2I9EFT
+ 9e8i7jyjYzqw8b2a1ifHQGgQPdfkHBRaxWgY5nFKjhv//dtR0JM7wvDNfiPsjcVWqyD+
+ re0bfS/FAjFs/2yT0Bh2pFc7ndEn5rm5daaQlwYDZg6JCPzynWJfJBiq/igWSyuEXT5t
+ nBJo0BTDVQAoDEuxaA3jEMUBuFOBTgD38PD+7cRt3nWOk1YaJImUeCB14e9T4q1/N++N
+ zpAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695317855; x=1695922655;
+ d=1e100.net; s=20230601; t=1695317856; x=1695922656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=okurW1rZE+ASazRHBXqN9Qp4RNXWE3FoF9D8aOYfxp8=;
- b=FoMbSjGdVE6BqjtA0X8nrVV/x2oVcJvkktopnE9YqnlGGEZnSaildfIqx7AP+qcEd1
- tGQb5ZuQLHJu89kNYFMI+j1+BfILRq07+kfCV38ys90IXVbo+BhHmlwUG5O8UYRV+KOl
- ubjq8pHArQG2UjR8JMmxP8iCHE+9VSCEc4h82+CEby017IaGXOgqV6lv4a+XBLOCk/WD
- ZM5FyEPtM7H8SqL3nNwhtJw2DSP1mf320bDY5wEywrUarGM+7m6QYeL8FbM73P8dbZcT
- ZEwVINDkIMgSq11ZRu5wjiYy8Gy76fE1wJ4UCJAT1oWH8fguYConGg7OolbVPayxlInc
- 90UQ==
-X-Gm-Message-State: AOJu0YwqHg0rl6FqyOzh6Mnd98QIMLknxJhOnQ6voF3dEk7SpemYPbQh
- b7qSclfuRWf+dP1uPOE611FBoBoME+WziU0SqGg=
-X-Google-Smtp-Source: AGHT+IEKI7llB3o9ft/iD+y0ASIv4CdIIrJBdNBgkWaAbSC+yiI2nQR/aPj9zVywcUjq92BPGiXWwQ==
-X-Received: by 2002:a1c:771a:0:b0:401:bf56:8ba0 with SMTP id
- t26-20020a1c771a000000b00401bf568ba0mr5368012wmi.28.1695317855655; 
- Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
+ bh=yrJfngMZeFXFPS0lgWoyofdpWugV34Omj7KHLp5edtM=;
+ b=u8jR6ynZlr/k0izne8KIcsDv0cVCYE/q4xor7f9gLm0+MW26v71t/AFK7msCNgFOW3
+ wap1F6MxOH/q2NviFGzrrb4OMUcFWjMbRQmg+XWBJVwPbFyVs6UZOD/pGtw999ax7GmE
+ Y9toC3amwf8RlIlRofe80zGFlCOMSyLfMfK4NChkIhVZt7QVig2F2pAjZH8paxTrrCaB
+ M0h5bPJIXqecQz4nBqz/G/OJsDFBAqQbobB/CqHP79fexh/EGbeIfM0m0aHI7wu8xet0
+ G9JIbjgRd0C63eJ+ztpnHyoOtD4LgmjORKV+IaRUtvSe30mfEFhts6CQT8M/iVPdIoUY
+ DSpw==
+X-Gm-Message-State: AOJu0YxHuH+FIMwcGVK7U0SvJ1HodpJ0axMbh8Zxr1tDXFn6Q9L4GQcL
+ aAcYYToe60Y5xUyex/wvCnAN4g5daLHb0evwWrQ=
+X-Google-Smtp-Source: AGHT+IErwpX7FoyOBKahkSrQqA9bj/JJ2v/g5JaSJ0Wf3616m3YoB6mNUVePR5UEddwUsOaG/INPgQ==
+X-Received: by 2002:a05:600c:a381:b0:3fb:a0fc:1ba1 with SMTP id
+ hn1-20020a05600ca38100b003fba0fc1ba1mr5546438wmb.35.1695317856170; 
+ Thu, 21 Sep 2023 10:37:36 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.35
@@ -58,16 +58,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 29/30] elf2dmp: use Linux mmap with MAP_NORESERVE when possible
-Date: Thu, 21 Sep 2023 18:37:19 +0100
-Message-Id: <20230921173720.3250581-30-peter.maydell@linaro.org>
+Subject: [PULL 30/30] elf2dmp: rework PDB_STREAM_INDEXES::segments obtaining
+Date: Thu, 21 Sep 2023 18:37:20 +0100
+Message-Id: <20230921173720.3250581-31-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921173720.3250581-1-peter.maydell@linaro.org>
 References: <20230921173720.3250581-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,135 +92,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Viktor Prutyanov <viktor@daynix.com>
 
-Glib's g_mapped_file_new maps file with PROT_READ|PROT_WRITE and
-MAP_PRIVATE. This leads to premature physical memory allocation of dump
-file size on Linux hosts and may fail. On Linux, mapping the file with
-MAP_NORESERVE limits the allocation by available memory.
+PDB for Windows 11 kernel has slightly different structure compared to
+previous versions. Since elf2dmp don't use the other fields, copy only
+'segments' field from PDB_STREAM_INDEXES.
 
 Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20230915170153.10959-5-viktor@daynix.com
+Message-id: 20230915170153.10959-6-viktor@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/qemu_elf.h |  2 ++
- contrib/elf2dmp/qemu_elf.c | 68 +++++++++++++++++++++++++++++++-------
- 2 files changed, 58 insertions(+), 12 deletions(-)
+ contrib/elf2dmp/pdb.h |  2 +-
+ contrib/elf2dmp/pdb.c | 15 ++++-----------
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/contrib/elf2dmp/qemu_elf.h b/contrib/elf2dmp/qemu_elf.h
-index b2f0d9cbc9b..afa75f10b2d 100644
---- a/contrib/elf2dmp/qemu_elf.h
-+++ b/contrib/elf2dmp/qemu_elf.h
-@@ -32,7 +32,9 @@ typedef struct QEMUCPUState {
- int is_system(QEMUCPUState *s);
- 
- typedef struct QEMU_Elf {
-+#ifndef CONFIG_LINUX
-     GMappedFile *gmf;
-+#endif
-     size_t size;
-     void *map;
-     QEMUCPUState **state;
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index ebda60dcb8a..de6ad744c6d 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -165,10 +165,40 @@ static bool check_ehdr(QEMU_Elf *qe)
-     return true;
- }
- 
--int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
-+static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
+diff --git a/contrib/elf2dmp/pdb.h b/contrib/elf2dmp/pdb.h
+index 4ea8925ee82..2a50da56ac9 100644
+--- a/contrib/elf2dmp/pdb.h
++++ b/contrib/elf2dmp/pdb.h
+@@ -227,7 +227,7 @@ struct pdb_reader {
+     } ds;
+     uint32_t file_used[1024];
+     PDB_SYMBOLS *symbols;
+-    PDB_STREAM_INDEXES sidx;
++    uint16_t segments;
+     uint8_t *modimage;
+     char *segs;
+     size_t segs_size;
+diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
+index adcfa7e154c..6ca5086f02e 100644
+--- a/contrib/elf2dmp/pdb.c
++++ b/contrib/elf2dmp/pdb.c
+@@ -160,7 +160,7 @@ static void *pdb_ds_read_file(struct pdb_reader* r, uint32_t file_number)
+ static int pdb_init_segments(struct pdb_reader *r)
  {
-+#ifdef CONFIG_LINUX
-+    struct stat st;
-+    int fd;
-+
-+    printf("Using Linux mmap\n");
-+
-+    fd = open(filename, O_RDONLY, 0);
-+    if (fd == -1) {
-+        eprintf("Failed to open ELF dump file \'%s\'\n", filename);
-+        return 1;
-+    }
-+
-+    if (fstat(fd, &st)) {
-+        eprintf("Failed to get size of ELF dump file\n");
-+        close(fd);
-+        return 1;
-+    }
-+    qe->size = st.st_size;
-+
-+    qe->map = mmap(NULL, qe->size, PROT_READ | PROT_WRITE,
-+            MAP_PRIVATE | MAP_NORESERVE, fd, 0);
-+    if (qe->map == MAP_FAILED) {
-+        eprintf("Failed to map ELF file\n");
-+        close(fd);
-+        return 1;
-+    }
-+
-+    close(fd);
-+#else
-     GError *gerr = NULL;
--    int err = 0;
-+
-+    printf("Using GLib mmap\n");
+     char *segs;
+-    unsigned stream_idx = r->sidx.segments;
++    unsigned stream_idx = r->segments;
  
-     qe->gmf = g_mapped_file_new(filename, TRUE, &gerr);
-     if (gerr) {
-@@ -179,29 +209,43 @@ int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
- 
-     qe->map = g_mapped_file_get_contents(qe->gmf);
-     qe->size = g_mapped_file_get_length(qe->gmf);
-+#endif
-+
-+    return 0;
-+}
-+
-+static void QEMU_Elf_unmap(QEMU_Elf *qe)
-+{
-+#ifdef CONFIG_LINUX
-+    munmap(qe->map, qe->size);
-+#else
-+    g_mapped_file_unref(qe->gmf);
-+#endif
-+}
-+
-+int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
-+{
-+    if (QEMU_Elf_map(qe, filename)) {
-+        return 1;
-+    }
- 
-     if (!check_ehdr(qe)) {
-         eprintf("Input file has the wrong format\n");
--        err = 1;
--        goto out_unmap;
-+        QEMU_Elf_unmap(qe);
-+        return 1;
-     }
- 
-     if (init_states(qe)) {
-         eprintf("Failed to extract QEMU CPU states\n");
--        err = 1;
--        goto out_unmap;
-+        QEMU_Elf_unmap(qe);
-+        return 1;
-     }
- 
-     return 0;
--
--out_unmap:
--    g_mapped_file_unref(qe->gmf);
--
--    return err;
- }
- 
- void QEMU_Elf_exit(QEMU_Elf *qe)
+     segs = pdb_ds_read_file(r, stream_idx);
+     if (!segs) {
+@@ -177,9 +177,6 @@ static int pdb_init_symbols(struct pdb_reader *r)
  {
-     exit_states(qe);
--    g_mapped_file_unref(qe->gmf);
-+    QEMU_Elf_unmap(qe);
- }
+     int err = 0;
+     PDB_SYMBOLS *symbols;
+-    PDB_STREAM_INDEXES *sidx = &r->sidx;
+-
+-    memset(sidx, -1, sizeof(*sidx));
+ 
+     symbols = pdb_ds_read_file(r, 3);
+     if (!symbols) {
+@@ -188,15 +185,11 @@ static int pdb_init_symbols(struct pdb_reader *r)
+ 
+     r->symbols = symbols;
+ 
+-    if (symbols->stream_index_size != sizeof(PDB_STREAM_INDEXES)) {
+-        err = 1;
+-        goto out_symbols;
+-    }
+-
+-    memcpy(sidx, (const char *)symbols + sizeof(PDB_SYMBOLS) +
++    r->segments = *(uint16_t *)((const char *)symbols + sizeof(PDB_SYMBOLS) +
+             symbols->module_size + symbols->offset_size +
+             symbols->hash_size + symbols->srcmodule_size +
+-            symbols->pdbimport_size + symbols->unknown2_size, sizeof(*sidx));
++            symbols->pdbimport_size + symbols->unknown2_size +
++            offsetof(PDB_STREAM_INDEXES, segments));
+ 
+     /* Read global symbol table */
+     r->modimage = pdb_ds_read_file(r, symbols->gsym_file);
 -- 
 2.34.1
 
