@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6BF07A9359
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD167A937A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 12:12:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjGPM-0000Tu-6x; Thu, 21 Sep 2023 05:55:40 -0400
+	id 1qjGeT-0007Tu-El; Thu, 21 Sep 2023 06:11:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qjGPK-0000TT-2M
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:55:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qjGPI-0000nk-6Z
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:55:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695290135;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=dri3RsH3g8lndNa43NZRaqbHtPvOO5pz32k35v82aAo=;
- b=RYEL6kyyvrJj507eABp1uEQmc99F1QTfwe5kmzqdIGHL7NYqPfC121DyND0dAw+j174Ynw
- B+OWCpCw/p30x9n2sCsHLBu69K+NcCnAkQvQlHQpyI877OhqG+dENxSLbSb3Pf75cSAoD1
- ClFr9Ei0AJD05y0aHEF/DADfcNGBVug=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-aEqpiZWgMLiUaVwhpOo28g-1; Thu, 21 Sep 2023 05:55:33 -0400
-X-MC-Unique: aEqpiZWgMLiUaVwhpOo28g-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-504319087d9so321127e87.1
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 02:55:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGeR-0007Tk-AV
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 06:11:15 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGeM-0004N0-01
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 06:11:14 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5041335fb9cso1379424e87.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 03:11:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695291061; x=1695895861; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=WdBNLwoZvReC9Wr5bWYLwE3r6NJ5QVT0NSNAoaqxZpQ=;
+ b=yXq8pTCxgrqVNq+ZYRVDrlC807uHc8wC3Oa3v9CoLYAAAfWAG2C6vvsw14qCOizi6X
+ vfB4iEQqdVics1+JpwY8RXXevx6cR8e+YP2Yj9HfNPfZ0qkEpykDE0s74NgudZVrqMvK
+ xbc0EGaYSjgq5lgUgadxoBTqRUoCX4dAPn9cgSM3rGtM+HspqWkgg3TBcHD4E26c9wYt
+ Wni+pV4ae9yuBp6cKz2q9ZLOqbGlb94kEd4YUnhldrEolaseIlWPrxkMqRDpyT/EHQCK
+ PtWPDKxeXXynzBprKx5mqqHty0qGlS15gZQ7VcP2EHNpMmA5Kdq7GRNBtKk0omBlxnJ/
+ vIdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695290132; x=1695894932;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dri3RsH3g8lndNa43NZRaqbHtPvOO5pz32k35v82aAo=;
- b=EbgRBmrfQALN1ucyl6rjBCBWqRUVkyUaeseaw70SRYfVuMo67oyCyVxOCJZi+KDRoH
- SOStjVdZw9JU/TQfcxX6he48itb+QRmFAe/AZzGYJLmeht3qVV+y32kSfR3p+XCZ33GB
- HB5y/DLVSwgJYSHHz9L59hYwt8CMVvaUR2tHI/ZxCVDS52fo+WqkK71d69Cu+uj9dRd/
- Z3ZJ6aOt7gMx7HKC3qGXJ1a5shkxLSz4QmTrdhoJg/uq/hvht7b6Mj/pQrgL9unngWSx
- JKvDD4BMRHf+PaOYU4kTHzHL5bvBvvIUIqniJ/eTmbjLfYW65cvkUJp1tuRud6bIiNJ9
- SaTQ==
-X-Gm-Message-State: AOJu0YwZtIOvEb1XAC1eIN73jH24OYU79ZB/HC2il6xWK8OPaKtkCGxb
- K4kZFMFPwU0qNI/JtG/tiyc2eSeVDeja9uNtBVIv/ufEExJXZPP94/Ih6+vrPLBMhGXTXoW2Xdm
- CJhCapTb/c2wKydLAj1s1NZx5Rakzvas=
-X-Received: by 2002:a05:6512:524:b0:503:95b:db02 with SMTP id
- o4-20020a056512052400b00503095bdb02mr4281152lfc.18.1695290132412; 
- Thu, 21 Sep 2023 02:55:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIgZ1SUvQ3U7xGiITrsg7alOXTzXL8i6eQBn9LT708ZhTY9j6S3JAQKxIrukYg9Xsp/NOZpKBEIoXLzfAJaZo=
-X-Received: by 2002:a05:6512:524:b0:503:95b:db02 with SMTP id
- o4-20020a056512052400b00503095bdb02mr4281141lfc.18.1695290132051; Thu, 21 Sep
- 2023 02:55:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695291061; x=1695895861;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WdBNLwoZvReC9Wr5bWYLwE3r6NJ5QVT0NSNAoaqxZpQ=;
+ b=PO4iBrRJKPK8l5ebhGMUTEsDqJAQG4DEl37gHibLjoDBnNeBXxBdn7TcvunDsGyJOw
+ qSw2REjiM2pVzCsAxu3LXFw5EchIAM8Ob4j92BsVu7GK5cCZAQw7LzNiHI9EjGzZa+iE
+ dJQdfemKmvz2TY4E34DWshxDs1WOo5ZPqJ09n+YmAiWDhssagN+enHYpjsqbPW3PJERF
+ Xus6bIxYCf6Wx+e770Cbmfb0aSX38pTaB6mFibsbtz3JlttY8E7Hsz+KYyYu/i/euDwD
+ epgZ7iVap6SYQLflMEpsNK02BpJey9zXjFBbavhfdXF+Udge3260pqc5Y/H+oIxFFXac
+ Y7BA==
+X-Gm-Message-State: AOJu0YwC+eZvoorBO37ShPibF4AncXcSkYFV8PWFuGhCm+IcuUkw8ao8
+ 94GEogkXR2rhHjuak0M99Ub+aw==
+X-Google-Smtp-Source: AGHT+IHgvPijKAUGO4/owTWR9HkQ1usXCc0BY9UUId4efCUqtR/vr8GYCoztr9Rnx5s9zpEldN5yUg==
+X-Received: by 2002:a19:651e:0:b0:500:903f:6084 with SMTP id
+ z30-20020a19651e000000b00500903f6084mr3897195lfb.63.1695291061518; 
+ Thu, 21 Sep 2023 03:11:01 -0700 (PDT)
+Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ w10-20020aa7dcca000000b005309eb7544fsm619392edu.45.2023.09.21.03.11.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 03:11:01 -0700 (PDT)
+Message-ID: <0a4b2ef4-8184-b887-af8a-542315e671fb@linaro.org>
+Date: Thu, 21 Sep 2023 12:10:58 +0200
 MIME-Version: 1.0
-References: <cover.1695034158.git.dxu@dxuuu.xyz>
- <ae16e9ec85a25e6ed679ca1360c57b3f2cafd138.1695034158.git.dxu@dxuuu.xyz>
-In-Reply-To: <ae16e9ec85a25e6ed679ca1360c57b3f2cafd138.1695034158.git.dxu@dxuuu.xyz>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Thu, 21 Sep 2023 12:55:20 +0300
-Message-ID: <CAPMcbCogd+n0E3sngsOP+fO2cp3A1uQE0wBqCBJpj05EPg4B_Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] qga: Fix memory leak when output stream is unused
-To: Daniel Xu <dxu@dxuuu.xyz>
-Cc: michael.roth@amd.com, berrange@redhat.com, qemu-devel@nongnu.org, 
- hmodi@aviatrix.com
-Content-Type: multipart/alternative; boundary="0000000000001cf6940605db7e04"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] amd_iommu: Fix APIC address check
+Content-Language: en-US
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
+References: <20230909162355.384982-1-akihiko.odaki@daynix.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230909162355.384982-1-akihiko.odaki@daynix.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,133 +95,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000001cf6940605db7e04
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Akihiko,
 
- Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
+Adding Peter.
 
-On Mon, Sep 18, 2023 at 2:00=E2=80=AFPM Daniel Xu <dxu@dxuuu.xyz> wrote:
-
-> If capture-output is requested but one of the channels goes unused (eg.
-> we attempt to capture stderr but the command never writes to stderr), we
-> can leak memory.
->
-> guest_exec_output_watch() is (from what I understand) unconditionally
-> called for both streams if output capture is requested. The first call
-> will always pass the `p->size =3D=3D p->length` check b/c both values are
-> 0. Then GUEST_EXEC_IO_SIZE bytes will be allocated for the stream.
->
-> But when we reap the exited process there's a `gei->err.length > 0`
-> check to actually free the buffer. Which does not get run if the command
-> doesn't write to the stream.
->
-> Fix by making free() unconditional.
->
-> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+On 9/9/23 18:23, Akihiko Odaki wrote:
+> An MSI from I/O APIC may not exactly equal to APIC_DEFAULT_ADDRESS. In
+> fact, Windows 17763.3650 configures I/O APIC to set the dest_mode bit.
+> Check only the 12 bits that are known to be fixed for I/O APIC-generated
+> MSIs.
+> 
+> Fixes: 577c470f43 ("x86_iommu/amd: Prepare for interrupt remap support")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->  qga/commands.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/qga/commands.c b/qga/commands.c
-> index 09c683e263..ce172edd2d 100644
-> --- a/qga/commands.c
-> +++ b/qga/commands.c
-> @@ -206,15 +206,15 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid,
-> Error **errp)
->  #endif
->          if (gei->out.length > 0) {
->              ges->out_data =3D g_base64_encode(gei->out.data,
-> gei->out.length);
-> -            g_free(gei->out.data);
->              ges->has_out_truncated =3D gei->out.truncated;
->          }
-> +        g_free(gei->out.data);
->
->          if (gei->err.length > 0) {
->              ges->err_data =3D g_base64_encode(gei->err.data,
-> gei->err.length);
-> -            g_free(gei->err.data);
->              ges->has_err_truncated =3D gei->err.truncated;
->          }
-> +        g_free(gei->err.data);
->
->          QTAILQ_REMOVE(&guest_exec_state.processes, gei, next);
->          g_free(gei);
-> --
-> 2.41.0
->
->
+>   hw/i386/amd_iommu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+> index 4655cd801f..3ac0d0098d 100644
+> --- a/hw/i386/amd_iommu.c
+> +++ b/hw/i386/amd_iommu.c
+> @@ -1268,7 +1268,7 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
+>           return -AMDVI_IR_ERR;
+>       }
+>   
+> -    if ((origin->address & AMDVI_MSI_ADDR_LO_MASK) != APIC_DEFAULT_ADDRESS) {
+> +    if ((origin->address & 0xfff00000) != APIC_DEFAULT_ADDRESS) {
+>           trace_amdvi_err("MSI is not from IOAPIC.");
+>           return -AMDVI_IR_ERR;
+>       }
 
---0000000000001cf6940605db7e04
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Could you add a definition? Maybe:
 
-<div dir=3D"ltr">
-Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redhat.com" =
-target=3D"_blank">kkostiuk@redhat.com</a>&gt;<br></div><br><div class=3D"gm=
-ail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 18, 2023 at 2:=
-00=E2=80=AFPM Daniel Xu &lt;<a href=3D"mailto:dxu@dxuuu.xyz">dxu@dxuuu.xyz<=
-/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
-px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">I=
-f capture-output is requested but one of the channels goes unused (eg.<br>
-we attempt to capture stderr but the command never writes to stderr), we<br=
->
-can leak memory.<br>
-<br>
-guest_exec_output_watch() is (from what I understand) unconditionally<br>
-called for both streams if output capture is requested. The first call<br>
-will always pass the `p-&gt;size =3D=3D p-&gt;length` check b/c both values=
- are<br>
-0. Then GUEST_EXEC_IO_SIZE bytes will be allocated for the stream.<br>
-<br>
-But when we reap the exited process there&#39;s a `gei-&gt;err.length &gt; =
-0`<br>
-check to actually free the buffer. Which does not get run if the command<br=
->
-doesn&#39;t write to the stream.<br>
-<br>
-Fix by making free() unconditional.<br>
-<br>
-Signed-off-by: Daniel Xu &lt;<a href=3D"mailto:dxu@dxuuu.xyz" target=3D"_bl=
-ank">dxu@dxuuu.xyz</a>&gt;<br>
----<br>
-=C2=A0qga/commands.c | 4 ++--<br>
-=C2=A01 file changed, 2 insertions(+), 2 deletions(-)<br>
-<br>
-diff --git a/qga/commands.c b/qga/commands.c<br>
-index 09c683e263..ce172edd2d 100644<br>
---- a/qga/commands.c<br>
-+++ b/qga/commands.c<br>
-@@ -206,15 +206,15 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, E=
-rror **errp)<br>
-=C2=A0#endif<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (gei-&gt;out.length &gt; 0) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ges-&gt;out_data =3D g_base=
-64_encode(gei-&gt;out.data, gei-&gt;out.length);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 g_free(gei-&gt;out.data);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ges-&gt;has_out_truncated =
-=3D gei-&gt;out.truncated;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_free(gei-&gt;out.data);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (gei-&gt;err.length &gt; 0) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ges-&gt;err_data =3D g_base=
-64_encode(gei-&gt;err.data, gei-&gt;err.length);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 g_free(gei-&gt;err.data);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0ges-&gt;has_err_truncated =
-=3D gei-&gt;err.truncated;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_free(gei-&gt;err.data);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0QTAILQ_REMOVE(&amp;guest_exec_state.proce=
-sses, gei, next);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0g_free(gei);<br>
--- <br>
-2.41.0<br>
-<br>
-</blockquote></div>
+  -- >8 --
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 6da893ee57..85d491e585 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -210,6 +210,7 @@
+  #define AMDVI_INT_ADDR_FIRST    0xfee00000
+  #define AMDVI_INT_ADDR_LAST     0xfeefffff
+  #define AMDVI_INT_ADDR_SIZE     (AMDVI_INT_ADDR_LAST - 
+AMDVI_INT_ADDR_FIRST + 1)
++#define AMDVI_INT_ADDR_MASK     ~(AMDVI_INT_ADDR_SIZE - 1)
+  #define AMDVI_MSI_ADDR_HI_MASK  (0xffffffff00000000ULL)
+  #define AMDVI_MSI_ADDR_LO_MASK  (0x00000000ffffffffULL)
 
---0000000000001cf6940605db7e04--
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index 9c77304438..093b4fb18f 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1252,7 +1252,7 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
+          return -AMDVI_IR_ERR;
+      }
 
+-    if ((origin->address & AMDVI_MSI_ADDR_LO_MASK) != 
+APIC_DEFAULT_ADDRESS) {
++    if ((origin->address & AMDVI_INT_ADDR_MASK) != APIC_DEFAULT_ADDRESS) {
+          trace_amdvi_err("MSI is not from IOAPIC.");
+          return -AMDVI_IR_ERR;
+      }
+---
+
+?
 
