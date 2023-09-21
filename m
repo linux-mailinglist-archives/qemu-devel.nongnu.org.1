@@ -2,31 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E2B7A926F
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B307A926E
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:00:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEZL-00035C-9F; Thu, 21 Sep 2023 03:57:51 -0400
+	id 1qjEZc-0003pC-5N; Thu, 21 Sep 2023 03:58:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEYS-0002hM-No; Thu, 21 Sep 2023 03:56:58 -0400
+ id 1qjEYo-00037x-CW; Thu, 21 Sep 2023 03:57:23 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <den@openvz.org>)
- id 1qjEYQ-0002KG-6C; Thu, 21 Sep 2023 03:56:56 -0400
+ id 1qjEYm-0002O7-Vl; Thu, 21 Sep 2023 03:57:18 -0400
 Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=iris.sw.ru)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <den@openvz.org>) id 1qjEWU-00BsUn-1C;
+ (envelope-from <den@openvz.org>) id 1qjEWU-00BsUn-2J;
  Thu, 21 Sep 2023 09:55:07 +0200
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, "Denis V. Lunev" <den@openvz.org>,
  Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Subject: [PULL v2 17/22] parallels: naive implementation of allocate_clusters
- with used bitmap
-Date: Thu, 21 Sep 2023 09:54:55 +0200
-Message-Id: <20230921075500.694585-18-den@openvz.org>
+Subject: [PULL v2 18/22] parallels: improve readability of allocate_clusters
+Date: Thu, 21 Sep 2023 09:54:56 +0200
+Message-Id: <20230921075500.694585-19-den@openvz.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921075500.694585-1-den@openvz.org>
 References: <20230921075500.694585-1-den@openvz.org>
@@ -56,104 +55,62 @@ From:  "Denis V. Lunev" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The access to the bitmap is not optimized completely.
+Replace 'space' representing the amount of data to preallocate with
+'bytes'.
+
+Rationale:
+* 'space' at each place is converted to bytes
+* the unit is more close to the variable name
 
 Signed-off-by: Denis V. Lunev <den@openvz.org>
 Reviewed-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 51 ++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 39 insertions(+), 12 deletions(-)
+ block/parallels.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/block/parallels.c b/block/parallels.c
-index ec35237119..ebcdff8736 100644
+index ebcdff8736..a97fb8b506 100644
 --- a/block/parallels.c
 +++ b/block/parallels.c
-@@ -253,7 +253,7 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
- {
-     int ret = 0;
-     BDRVParallelsState *s = bs->opaque;
--    int64_t pos, space, idx, to_allocate, i, len;
-+    int64_t i, pos, idx, to_allocate, first_free, host_off;
- 
-     pos = block_status(s, sector_num, nb_sectors, pnum);
-     if (pos > 0) {
-@@ -276,15 +276,13 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
-      */
-     assert(idx < s->bat_size && idx + to_allocate <= s->bat_size);
- 
--    space = to_allocate * s->tracks;
--    len = bdrv_co_getlength(bs->file->bs);
--    if (len < 0) {
--        return len;
--    }
--    if (s->data_end + space > (len >> BDRV_SECTOR_BITS)) {
-+    first_free = find_first_zero_bit(s->used_bmap, s->used_bmap_size);
-+    if (first_free == s->used_bmap_size) {
+@@ -279,7 +279,8 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+     first_free = find_first_zero_bit(s->used_bmap, s->used_bmap_size);
+     if (first_free == s->used_bmap_size) {
          uint32_t new_usedsize;
-+        int64_t space = to_allocate * s->tracks + s->prealloc_size;
-+
-+        host_off = s->data_end * BDRV_SECTOR_SIZE;
+-        int64_t space = to_allocate * s->tracks + s->prealloc_size;
++        int64_t bytes = to_allocate * s->cluster_size;
++        bytes += s->prealloc_size * BDRV_SECTOR_SIZE;
  
--        space += s->prealloc_size;
-         /*
-          * We require the expanded size to read back as zero. If the
-          * user permitted truncation, we try that; but if it fails, we
-@@ -313,6 +311,32 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+         host_off = s->data_end * BDRV_SECTOR_SIZE;
+ 
+@@ -289,8 +290,7 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+          * force the safer-but-slower fallocate.
+          */
+         if (s->prealloc_mode == PRL_PREALLOC_MODE_TRUNCATE) {
+-            ret = bdrv_co_truncate(bs->file,
+-                                   (s->data_end + space) << BDRV_SECTOR_BITS,
++            ret = bdrv_co_truncate(bs->file, host_off + bytes,
+                                    false, PREALLOC_MODE_OFF,
+                                    BDRV_REQ_ZERO_WRITE, NULL);
+             if (ret == -ENOTSUP) {
+@@ -298,16 +298,13 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
+             }
+         }
+         if (s->prealloc_mode == PRL_PREALLOC_MODE_FALLOCATE) {
+-            ret = bdrv_co_pwrite_zeroes(bs->file,
+-                                        s->data_end << BDRV_SECTOR_BITS,
+-                                        space << BDRV_SECTOR_BITS, 0);
++            ret = bdrv_co_pwrite_zeroes(bs->file, host_off, bytes, 0);
+         }
+         if (ret < 0) {
+             return ret;
+         }
+ 
+-        new_usedsize = s->used_bmap_size +
+-                       (space << BDRV_SECTOR_BITS) / s->cluster_size;
++        new_usedsize = s->used_bmap_size + bytes / s->cluster_size;
          s->used_bmap = bitmap_zero_extend(s->used_bmap, s->used_bmap_size,
                                            new_usedsize);
          s->used_bmap_size = new_usedsize;
-+    } else {
-+        int64_t next_used;
-+        next_used = find_next_bit(s->used_bmap, s->used_bmap_size, first_free);
-+
-+        /* Not enough continuous clusters in the middle, adjust the size */
-+        if (next_used - first_free < to_allocate) {
-+            to_allocate = next_used - first_free;
-+            *pnum = (idx + to_allocate) * s->tracks - sector_num;
-+        }
-+
-+        host_off = s->data_start * BDRV_SECTOR_SIZE;
-+        host_off += first_free * s->cluster_size;
-+
-+        /*
-+         * No need to preallocate if we are using tail area from the above
-+         * branch. In the other case we are likely re-using hole. Preallocate
-+         * the space if required by the prealloc_mode.
-+         */
-+        if (s->prealloc_mode == PRL_PREALLOC_MODE_FALLOCATE &&
-+                host_off < s->data_end * BDRV_SECTOR_SIZE) {
-+            ret = bdrv_co_pwrite_zeroes(bs->file, host_off,
-+                                        s->cluster_size * to_allocate, 0);
-+            if (ret < 0) {
-+                return ret;
-+            }
-+        }
-     }
- 
-     /*
-@@ -344,15 +368,18 @@ allocate_clusters(BlockDriverState *bs, int64_t sector_num,
-         }
-     }
- 
--    ret = mark_used(bs, s->used_bmap, s->used_bmap_size,
--                    s->data_end << BDRV_SECTOR_BITS, to_allocate);
-+    ret = mark_used(bs, s->used_bmap, s->used_bmap_size, host_off, to_allocate);
-     if (ret < 0) {
-         /* Image consistency is broken. Alarm! */
-         return ret;
-     }
-     for (i = 0; i < to_allocate; i++) {
--        parallels_set_bat_entry(s, idx + i, s->data_end / s->off_multiplier);
--        s->data_end += s->tracks;
-+        parallels_set_bat_entry(s, idx + i,
-+                host_off / BDRV_SECTOR_SIZE / s->off_multiplier);
-+        host_off += s->cluster_size;
-+    }
-+    if (host_off > s->data_end * BDRV_SECTOR_SIZE) {
-+        s->data_end = host_off / BDRV_SECTOR_SIZE;
-     }
- 
-     return bat2sect(s, idx) + sector_num % s->tracks;
 -- 
 2.34.1
 
