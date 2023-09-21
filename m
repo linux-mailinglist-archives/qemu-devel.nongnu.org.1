@@ -2,65 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BB17A956D
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 17:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CCE7A9577
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 17:16:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjLE6-0007y9-Ka; Thu, 21 Sep 2023 11:04:22 -0400
+	id 1qjLO3-0002nq-LA; Thu, 21 Sep 2023 11:14:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjLE4-0007xN-S5
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:04:20 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ id 1qjLO1-0002ln-1U
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:14:37 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjLE3-0003zH-1M
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:04:20 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-530fa34ab80so4787524a12.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 08:04:18 -0700 (PDT)
+ id 1qjLNz-0005Xq-6R
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:14:36 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2bff7d81b5eso18515641fa.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 08:14:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695308657; x=1695913457; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=ZTK1H1bUdqQ7gWN7sjQJRsSILWGa8uEA2Dtkliuxyqg=;
- b=AllDDRR6ddhcBohdHcgPSKF3sJKNFvyle9HXZg9cQjFLftcJ675OedPyRdWtB+FwC6
- qq2QMXD0fsNb4UPtvYPxpaN+d6O9E7TsVvf3g+M3OsBhA4yYtXp64frOK3zFOtGwaweQ
- SovpJlgHUgS+c8fuqZQ8aRzlf+lq4nvwK9ZjgGqQYdG95iyVS6KZEGwhq7hDx52qxLac
- 2ci0kYUjhT94UvjlOkCMNtfKislk4OKwySfZgf7iSjhUV5JT31eedy+lJa7kFG3TaMoS
- 154HzJ44IiMLDgUKJy+MgH90NJVs2uUUxH41+q8iRoR49ncxFRsvP7qC7BX7K64NWF6y
- 7g+A==
+ d=linaro.org; s=google; t=1695309273; x=1695914073; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=LTkT6MJgSe8XK1jxPttFg6x9XlObEk+2fLAgBAsEyCo=;
+ b=CBFUDIDaUQ/li2mTh+4pbiL+B6CFEYxbE62KlyfI67Oe7x+0/wsrX/vXZVCJxZor92
+ /HdrLzjFaxsv4/cHuZtcZhKBYPkj7Sk0i1BuSxcBXzrgEEdFVB1mp4ZKxjFZDbT3CRX+
+ Bmyt/p9iYc5Ubum6MNNcuLYrUL3Fhl9rYj7PAkArlyMJmk0o9q4OMZ1RRB29XVw5ZgoQ
+ gX5R3JvGhi4wjU5xmcDpheFHXd7gqKsXnlC7TAYuf4EkNz5LxBddA9qJHBquv2f/yzaI
+ ql1DB8AmwYtCeYngH8mZAezWqTMjHT4UloaVJLl10tofKXyzllXp6geZY65MyWCyt9HU
+ xIPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695308657; x=1695913457;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZTK1H1bUdqQ7gWN7sjQJRsSILWGa8uEA2Dtkliuxyqg=;
- b=lYZ1HjKF/fDV/zyIhZ171HkqPcgXRta/Nu8vlg1kxm5VXtPy4/tBYzUNZCa0Q9tiDu
- AdOToi16H91vNzfoBNFysmsGzNYux62WXMaQ4w3KwgviBMEx5KoK+6s72VxZ4XYoBsa2
- ki2N5FFMn9ihL2ZIo7F7qSv8SmxQrsfIB6aabPg/h7okotJsfNLh7GImFeir1sjsJ4XR
- uLw9yFBP/HaHVe1wrOcvm99YuTdicPGDM2Q2O4/zLMH9qi+TNMgzHAXO12IQBrHnkt+x
- J5skucT7+D+HSlCwHi+B9IBkHYSx+xxuTJrz2jZitLuQ+JfWQxp2SGe5j35og6V/+Ydo
- 9arw==
-X-Gm-Message-State: AOJu0YyfScPNWCE2YTUwf3itpL+dy/+pWlQO0D2nheWXp36TSg4/x136
- FvFVXV9YX0bhgqIFIvUR0sd2JEg6fOnVqzIrriU4n+nv7f+XcRb6vuU=
-X-Google-Smtp-Source: AGHT+IGvMAh75ZDa8k16vVZwvUdfkB1Z/8kK9F90v78CKVpn5oWiMEQeSHrkF5vFeHuBk450n2n1uLTHgGtgFJAZg9U=
-X-Received: by 2002:aa7:cb42:0:b0:522:4764:8baa with SMTP id
- w2-20020aa7cb42000000b0052247648baamr8545972edt.12.1695308657276; Thu, 21 Sep
- 2023 08:04:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695309273; x=1695914073;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LTkT6MJgSe8XK1jxPttFg6x9XlObEk+2fLAgBAsEyCo=;
+ b=n61TiBWfzq7tAyI0M9XX3uZ4njMChFpgJz2Z10HGyBN9a2YHq4iG54im8yYurxIbqt
+ NFGxHFXeIFCZv8rOFwKuiXzG89w1xAuSFPdno0asGvqaHU2En6+yxuP1rNFBTDla/JKw
+ v5wStzPJNUTiy/x3J/Nmz0eD1N7JCUYUe5mkHpPCcNxKZwJPGyocyQpcu+kOBzdJyUID
+ /iEqKvne1pdSLnNqoOCfaZ2i/63Wu2e3eB0rPkKjSJDDmhYiEs0JM12BYM5pmcBXiz3L
+ BEPWZTAJAQJcFkB82CVY5E+IKXGtbMtTWbk0AX8NP3OVYdOo+BYoOQRA86DONrbWjWck
+ b3jw==
+X-Gm-Message-State: AOJu0Yzbbr2W3kk49xCf6PYJLmWJD2Ahh4BhYILorgG6ihKRBLoq8+lB
+ 1cIKy4HsdUSOjkiaY7MrFlfKVS2aV9Z/aS595BSNwQ==
+X-Google-Smtp-Source: AGHT+IHx4e4SGIGDn6QFAM6Ohl1Zju1Hy1Hp6vJv/sLb/nk+4VohoU1X4bgPFT1aAsx4kurzI513wChbj8u2nouS9So=
+X-Received: by 2002:a19:6745:0:b0:500:98ff:4162 with SMTP id
+ e5-20020a196745000000b0050098ff4162mr5089887lfj.40.1695309272908; Thu, 21 Sep
+ 2023 08:14:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230911135340.1139553-1-peter.maydell@linaro.org>
- <20230911135340.1139553-7-peter.maydell@linaro.org>
-In-Reply-To: <20230911135340.1139553-7-peter.maydell@linaro.org>
+References: <20230915170153.10959-1-viktor@daynix.com>
+ <20230915170153.10959-4-viktor@daynix.com>
+In-Reply-To: <20230915170153.10959-4-viktor@daynix.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 21 Sep 2023 16:03:58 +0100
-Message-ID: <CAFEAcA9FjmE4QTnnGpzjaV3bVPO8U4yr-527RahAZA9tXbGXEA@mail.gmail.com>
-Subject: Re: [PATCH 6/7] target/arm: Update user-mode ID reg mask values
-To: qemu-arm@nongnu.org, qemu-devel@nongnu.org
+Date: Thu, 21 Sep 2023 16:14:14 +0100
+Message-ID: <CAFEAcA9mGj4xRj_pC9qDUPofnfZah8ejt7zZtLaMyYR+kytpJA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] elf2dmp: introduce merging of physical memory runs
+To: Viktor Prutyanov <viktor@daynix.com>
+Cc: annie.li@oracle.com, akihiko.odaki@daynix.com, kkostiuk@redhat.com, 
+ qemu-devel@nongnu.org, yan@daynix.com, viktor.prutyanov@phystech.edu
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -83,51 +86,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 11 Sept 2023 at 14:53, Peter Maydell <peter.maydell@linaro.org> wrote:
+On Fri, 15 Sept 2023 at 18:02, Viktor Prutyanov <viktor@daynix.com> wrote:
 >
-> For user-only mode we reveal a subset of the AArch64 ID registers
-> to the guest, to emulate the kernel's trap-and-emulate-ID-regs
-> handling. Update the feature bit masks to match upstream kernel
-> commit a48fa7efaf1161c1c.
+> DMP supports 42 physical memory runs at most. So, merge adjacent
+> physical memory ranges from QEMU ELF when possible to minimize total
+> number of runs.
 >
-> None of these features are yet implemented by QEMU, so this
-> doesn't yet have a behavioural change, but implementation of
-> FEAT_MOPS and FEAT_HBC is imminent.
->
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+> Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
 > ---
->  target/arm/helper.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+>  contrib/elf2dmp/main.c | 56 ++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 48 insertions(+), 8 deletions(-)
+>
+> diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+> index b7e3930164..b4683575fd 100644
+> --- a/contrib/elf2dmp/main.c
+> +++ b/contrib/elf2dmp/main.c
+> @@ -20,6 +20,7 @@
+>  #define PE_NAME     "ntoskrnl.exe"
+>
+>  #define INITIAL_MXCSR   0x1f80
+> +#define MAX_NUMBER_OF_RUNS  42
+>
+>  typedef struct idt_desc {
+>      uint16_t offset1;   /* offset bits 0..15 */
+> @@ -234,6 +235,42 @@ static int fix_dtb(struct va_space *vs, QEMU_Elf *qe)
+>      return 1;
+>  }
+>
+> +static void try_merge_runs(struct pa_space *ps,
+> +        WinDumpPhyMemDesc64 *PhysicalMemoryBlock)
+> +{
+> +    unsigned int merge_cnt = 0, run_idx = 0;
+> +
+> +    PhysicalMemoryBlock->NumberOfRuns = 0;
+> +
+> +    for (size_t idx = 0; idx < ps->block_nr; idx++) {
+> +        struct pa_block *blk = ps->block + idx;
+> +        struct pa_block *next = blk + 1;
+> +
+> +        PhysicalMemoryBlock->NumberOfPages += blk->size / ELF2DMP_PAGE_SIZE;
+> +
+> +        if (idx + 1 != ps->block_nr && blk->paddr + blk->size == next->paddr) {
+> +            printf("Block #%lu 0x%"PRIx64"+:0x%"PRIx64" and %u previous will be"
+> +                    " merged\n", idx, blk->paddr, blk->size, merge_cnt);
+> +            merge_cnt++;
+> +        } else {
+> +            struct pa_block *first_merged = blk - merge_cnt;
+> +
+> +            printf("Block #%lu 0x%"PRIx64"+:0x%"PRIx64" and %u previous will be"
+> +                    " merged to 0x%"PRIx64"+:0x%"PRIx64" (run #%u)\n",
+> +                    idx, blk->paddr, blk->size, merge_cnt, first_merged->paddr,
+> +                    blk->paddr + blk->size - first_merged->paddr, run_idx);
+> +            PhysicalMemoryBlock->Run[run_idx] = (WinDumpPhyMemRun64) {
+> +                .BasePage = first_merged->paddr / ELF2DMP_PAGE_SIZE,
+> +                .PageCount = (blk->paddr + blk->size - first_merged->paddr) /
+> +                        ELF2DMP_PAGE_SIZE,
+> +            };
 
-I forgot to update tests/tcg/aarch64/sysregs.c to indicate
-that the new fields are permitted to be visible to userspace.
-This patch needs the following squashed in:
+Hi; this fails to build on 32-bit hosts because in both these printf()
+statements the format string uses "%lu" to print a size_t. This
+doesn't work if size_t is not a 'long'. The right format operator is "%zu".
 
-diff --git a/tests/tcg/aarch64/sysregs.c b/tests/tcg/aarch64/sysregs.c
-index d8eb06abcf2..f7a055f1d5f 100644
---- a/tests/tcg/aarch64/sysregs.c
-+++ b/tests/tcg/aarch64/sysregs.c
-@@ -126,7 +126,7 @@ int main(void)
-      */
-     get_cpu_reg_check_mask(id_aa64isar0_el1, _m(f0ff,ffff,f0ff,fff0));
-     get_cpu_reg_check_mask(id_aa64isar1_el1, _m(00ff,f0ff,ffff,ffff));
--    get_cpu_reg_check_mask(SYS_ID_AA64ISAR2_EL1, _m(0000,0000,0000,ffff));
-+    get_cpu_reg_check_mask(SYS_ID_AA64ISAR2_EL1, _m(00ff,0000,00ff,ffff));
-     /* TGran4 & TGran64 as pegged to -1 */
-     get_cpu_reg_check_mask(id_aa64mmfr0_el1, _m(f000,0000,ff00,0000));
-     get_cpu_reg_check_mask(id_aa64mmfr1_el1, _m(0000,f000,0000,0000));
-@@ -138,7 +138,7 @@ int main(void)
-     get_cpu_reg_check_mask(id_aa64dfr0_el1,  _m(0000,0000,0000,0006));
-     get_cpu_reg_check_zero(id_aa64dfr1_el1);
-     get_cpu_reg_check_mask(SYS_ID_AA64ZFR0_EL1,  _m(0ff0,ff0f,00ff,00ff));
--    get_cpu_reg_check_mask(SYS_ID_AA64SMFR0_EL1, _m(80f1,00fd,0000,0000));
-+    get_cpu_reg_check_mask(SYS_ID_AA64SMFR0_EL1, _m(8ff1,fcff,0000,0000));
+I have squashed in the relevant change to this patch in target-arm.next.
 
-     get_cpu_reg_check_zero(id_aa64afr0_el1);
-     get_cpu_reg_check_zero(id_aa64afr1_el1);
-
-to avoid check-tcg failing when the new features like FEAT_MOPS
-or FEAT_HBC are present in 'max'.
-
+thanks
 -- PMM
 
