@@ -2,153 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CB47A9292
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1420B7A9293
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjF2G-0001zy-E7; Thu, 21 Sep 2023 04:27:44 -0400
+	id 1qjF3S-0002ZI-Pk; Thu, 21 Sep 2023 04:28:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qjF2A-0001zU-VN
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:27:40 -0400
-Received: from esa1.fujitsucc.c3s2.iphmx.com ([68.232.152.245])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjF3Q-0002St-Ge
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:28:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1qjF25-0007vN-I4
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:27:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
- t=1695284853; x=1726820853;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-id:content-transfer-encoding: mime-version;
- bh=cxswWGeGJQLaleFFU5H9ZcIIHEC5g6Eu8CvtdvdWDAY=;
- b=hhVseMkdcg/XF4NiAEbTMHlhFA+l2O5qNUkuNh7tneqd3ECSRZmVfiMe
- qqJc+WzC1TBPfTrf06DAyJlTyj0yWtC8zGFjWOnFWahnGLk9u08DkzfVh
- miWbF//YxT4zAVO80gKnCEB21wwiq+Uq8+a+Lzt1cuGHX6u+ZPJJTZNeK
- VvXpgAmlXE+352FZin56PfNLsf+TdAyzhIqNoMFW+3YsyJufkXn0fnXrZ
- KYLyS3k6TydKWauRKIooj365UTMsJ18nG21IvRkPwmYFR/ey1M8Ucb6U4
- 30AOe8zjc/J6ijEMLdFMyNaX11adRkdHtWf8SQTuCyA81fZxzSZo+Cpzy A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="7124525"
-X-IronPort-AV: E=Sophos;i="6.03,164,1694703600"; 
-   d="scan'208";a="7124525"
-Received: from mail-os0jpn01lp2108.outbound.protection.outlook.com (HELO
- JPN01-OS0-obe.outbound.protection.outlook.com) ([104.47.23.108])
- by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2023 17:27:27 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kYznetcp4C4fKziYqW9+PuOV9Hw+dQbww8VND6GnhHVPCg2Pnbo7WmXLI5q9WneuADS1HmsR2LFDUYWiVWayBXahVXu3j/QJtOdPKkHwpAKmusr6mDCdwlKrmXTANKFlS/QLVeD5J8sl+ZHLu4638I0DNiJrEIRF5V/TPCMTdvd8IX6jXUmEcJ2m55R6XxCutcnynXkcAPtyKjYjH8+OU/iWHPacjWzDWnDteRUxi2srZnkOD+jZ5lXiXTHuMIjDlSmYWVD25vjCaFLYA+53Ay54cwHqVcEgkWeLL3l4uuRB9u4Da3JUR9VFYiugsvxecWw9U5x37tQ4b7daznFsrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cxswWGeGJQLaleFFU5H9ZcIIHEC5g6Eu8CvtdvdWDAY=;
- b=VJpkL8V8SXpvvC6aMpsCdcvWf/9vtHAbwUnJmifBkL/ft1YUPEbyysnGaHV2O+/ZkPYtqz7OmfAwMjlu1OCj8xlJFyDmioCivcsvaU71er6JoyIpfyNxfwx8LP1Fg1gB0f4jAhs26NMyCAwPlZvlGvUU2QAUEdl9EBMTsBbXVVPuTgCdk3aRbLJ2cLsrUdrqOx0uZapoXJ+UzM33YWzcDYcK4ONhpqhvlOU3sIqg9GjgrDzKFckJkwe5nisUh9F7K3H7rzksgOKtgVHDaYD8EDmaQkXewlVK28C7RARBWkfiMsGB0bgSGd01685RMsC6D86BhoDnT34bjOlx5YmlmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com (2603:1096:604:247::6)
- by TYCPR01MB10309.jpnprd01.prod.outlook.com (2603:1096:400:1eb::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Thu, 21 Sep
- 2023 08:27:24 +0000
-Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com
- ([fe80::1a61:2227:a0de:2c53]) by OS7PR01MB11664.jpnprd01.prod.outlook.com
- ([fe80::1a61:2227:a0de:2c53%4]) with mapi id 15.20.6813.018; Thu, 21 Sep 2023
- 08:27:24 +0000
-From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-To: Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "quintela@redhat.com"
- <quintela@redhat.com>, "leobras@redhat.com" <leobras@redhat.com>
-Subject: Re: [PATCH 00/52] migration/rdma: Error handling fixes
-Thread-Topic: [PATCH 00/52] migration/rdma: Error handling fixes
-Thread-Index: AQHZ6j6LFBwwrEIGtUePddDiST4w/rAiXhoAgAKYSwA=
-Date: Thu, 21 Sep 2023 08:27:24 +0000
-Message-ID: <9224534e-2f95-4c7f-a082-725dd5eb9cab@fujitsu.com>
-References: <20230918144206.560120-1-armbru@redhat.com> <ZQnRKjo0M50BRbZh@x1n>
-In-Reply-To: <ZQnRKjo0M50BRbZh@x1n>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS7PR01MB11664:EE_|TYCPR01MB10309:EE_
-x-ms-office365-filtering-correlation-id: eaf3abd2-ee83-48a1-df47-08dbba7c9511
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hDub8JDivASd4aJslE16Wmwy0HCMRcOwv80vkZ+lqxPFzhdtRgY4sryyrKcHbtJhOIKFce3IfQk2yprN3jwXt8jiWp8A3gGueWf2/br/t9lkAWWnXoGYxXjo7N8I6mzwlky13XjVsmcKDZGEP36WFM7dNd/XVLiowYp+liEBqqsA4OogLtasC/mezsY7tCGp20TjtCTe+gJoicmLnvFhSM9THaGDKP+KMKlPKTMOrkv4xnpN0YQtsMi5rp7KBCRWT5+AIWue9rxZJD5LmsSoIr87/FU5ofHVHRNuTFj9dQ/1zUtA0HOpo0JzwNO7+UunM1b8BYvI9MN257n2gPksu2+LzEQHQQ6/GOYYWEJZJgh6oXg1K5XaFoFEYS31j3lerY6RTgmsZXAn1XP5z9rf8p021RXP+IcGhYGWU1HCH6J1uVd6mRP0KQFjWhSpo9wKDAVmmRMysN2O/+IiKi9TLPOCJnyB5y0XQTPlZMLbc0S1//3bYFJ09EoKWnh938oTpp1f/z81TBWtIKYfVWq01gLK8d7t1MVrboiPd3Db4Ij9S5EACxpN8C0oQQKUV/Fq+KV2JiAY62Z18FvTvVHTsSfHo57UXZqnh8H8fXAed/QsavIzS6E5oB9KSRbih7yvWiDq1KCnugrAuSnBgJ+hBJIhR8hzFz+Zhs5oEDOAabgRSpGYfV/GyPYw3r1Ilf9PxVrDTbuqYJWEdUseh1UFLg==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:OS7PR01MB11664.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(136003)(366004)(376002)(396003)(39860400002)(1800799009)(1590799021)(186009)(451199024)(6512007)(1580799018)(53546011)(6486002)(6506007)(71200400001)(82960400001)(83380400001)(38070700005)(38100700002)(31696002)(86362001)(122000001)(2616005)(36756003)(85182001)(26005)(110136005)(91956017)(76116006)(66446008)(66476007)(54906003)(66556008)(316002)(64756008)(66946007)(41300700001)(2906002)(5660300002)(8676002)(8936002)(4326008)(31686004)(478600001)(966005)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?L3EvMVIyREJkcTgyQ1lETVdneHZ5djgvOFhTZ3dMb0U2UFdsTTVSRlM1L0lw?=
- =?utf-8?B?NUorTzhWck5qNFMzZ2x1N0ZBM3BQRkl0K1cvTzBOdmVMaFdDSFQ2WHA3YTZr?=
- =?utf-8?B?azhYcUFvT0cwbXUyNURpcWQxQ0IveUZNT0JUdERxY3c1b0drNXBXc0Rka1lu?=
- =?utf-8?B?U0hoOVYvM3dBRmhtbm8zUHRzcFZoTnNMbG50V1lJZDBUdGkxM254alN2TkM2?=
- =?utf-8?B?cmNsOW9GUXNDMTRrUkxlVyt5NjJKVWFrMDNmNXJpbGxmUUdTSWZTZ3ZsQ25t?=
- =?utf-8?B?WFExOURHVmJCUDlhS0M5RG1QZzZSR3ZrM2ZySkZ1Z0d2QVFVdDBMQVY4TCtW?=
- =?utf-8?B?bXRRWjJ4cWFhMFJQcFFzQzNoVFoyekR1c0d1WmNhYlZaV2dLMnlxQkpsQmp1?=
- =?utf-8?B?MFZqY2Y4cnN5azZUN1NrK2VUWUYxRHYzcDcreXJ6VFdQYmdLcThQTlZVamE2?=
- =?utf-8?B?d2xpcExMdENVL0NUV0plQi80UzdDMkxXdnVKcStLQTJmODVHSWxXSHlrWHcv?=
- =?utf-8?B?K1hoTU5WeDZSNXJrNmxEYkxsTTFlQnEvcGc1OEdqTlVEeG5od0NoWC9oVkhp?=
- =?utf-8?B?L1R1clI0elE1YmVQSms1NlBTVGlSOTk1dFdvK0w5bEZuVmtYZ3lVbkFNVHhC?=
- =?utf-8?B?RzJpS0NIUkJZZVhMem5ESEh6RnUzbWRCTVN6dm1UL1QwdTZsR0VrTGNyajNM?=
- =?utf-8?B?UDl2eFZiOVdRb2ZVRWQrcWh2N3JZbmV0RzNTTXdEc20reXhXRVdJK01MRkh3?=
- =?utf-8?B?TDVxVlEyY01sU0JvNitMWlJJWnRaYXlZZDJiSS9rWlBxY05QeUh2bnc2ZWxR?=
- =?utf-8?B?NVlBblRTc3VlWVUxcVlmWXprRnMrVGRDS1lIQ21Sb2ppQTZrZHdqazIwbVhq?=
- =?utf-8?B?eGc1d0c4MzFDOVprY1ZheWZMZ0RiTkU5ZERVdHRLODMvZVdVYkNRNnhSb1A5?=
- =?utf-8?B?eTBBKyt1ZEpFK2dvWVJhUzBJZUhGVmZRZEl1N1FKbmdIRlEzV1NtNDBBdlRN?=
- =?utf-8?B?QXF2RlRiT3lSWU82STRNanpqMTNqbC9ObVVjRkVmVHhVbklUMGcwbmZjRUJh?=
- =?utf-8?B?ZUltd2ZwSkU1L1JhOEFtZzlMb1pjc2llYUVWMzQyOVVhTS9neHB1WmxIM1ln?=
- =?utf-8?B?NHRacTY3SDlEaXo5VEllWW9PL0pzak4zdU9WSWt5bW85eUpFdUUxWmdzc2RF?=
- =?utf-8?B?ZkJ2MmIya0tzQ0QzUDg0V1lrajN0cmpJZVhaTHQ3T1I5Y0lWODB6aENuY29V?=
- =?utf-8?B?bHBsdHMzK0JaWHhiNU1ZYWhhSEFpUlRmU0FzQytpa0xmU2prNVU2UmJZbzlS?=
- =?utf-8?B?Q3c3YnBvSmpLTkVDaThwUDNhV01SREdJNDk2bDNEL0JPdnUyWndTK0d6Y0Iy?=
- =?utf-8?B?WnNhN0p6K2U3ZVFjR054REVOYU1LRU5LQ2M0ejVVL2FoVHkzTXYvWWhGNXp0?=
- =?utf-8?B?L05aczl1clpLK0lHK1BzNEpNUEVubGxrVnhUV1RhN2lLQTU3VkhKUW5BcDJV?=
- =?utf-8?B?aDVTWTJVRUk3ZXBReHNKL1hiMHdxUXJXYTVlbDl2ZkZCMDdoVkxuSWZhVkEy?=
- =?utf-8?B?bnBIWDh4aGhOWDJvMzZ2ajdsdzJxc2pqamJhdDV5S0k5VEhXdnRtZlVnMWJa?=
- =?utf-8?B?blJ0WllYc3lNdkd3Q0Q2cTZLN0Z4YVltSHRLTmN5WVlPdGJnSXd5TytMVDhE?=
- =?utf-8?B?TnNGYUNjWU4wNk1KaVlYbmthaGVRdmtIdWVQbXFmd2d5cFhZSnV5QnQ4WW44?=
- =?utf-8?B?Z2tJUWRQNUFNUG9OQ0VlT1Zpa05zeTFEdENUT0dLNFNxaXl2SnY2NENrZVZa?=
- =?utf-8?B?eWN0TmFSd3hBbkFEVEROeGkvdkVuYlZLQ0lmMGcxYzdZQkNaQjVnSWo5aVdk?=
- =?utf-8?B?Z2FrejRLOGtBZkliL3FwSGNUeUpwRUhSRDZiRVpkVEFYdGoyN0d5ZGZnNE5V?=
- =?utf-8?B?c3cweE1CNlYrUDI2bVhFQkVqY09USFd3RE85aGRmMWZoZzFudk54Z25HSnVB?=
- =?utf-8?B?bnNKZGlqZzZDZE5pMmlpbG9TK3FQY2hKMFpmSVp1eFJWTE1QRVAzazRwYnAv?=
- =?utf-8?B?TnhtK1dlTWxWUW5JckppQXdNRlBiWFI5TE1GMXlVNVNmQXZ1SWxXMkU4QXNy?=
- =?utf-8?B?NUlFNkJqakR4Rm5OajNlakZVYnJ2QzZyY3dpeit1eFdsQmNwcFFXYzF1OTdN?=
- =?utf-8?B?TFE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <207832817F459A4C8BA58937FC561DD7@jpnprd01.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjF3H-00087A-HI
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:28:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695284925;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T9JYBbiQ8eLGV1JjB0XuW1jXghpOTFoS30O5AbizPJo=;
+ b=PtdBSpclzrLAB7COjjnyiWjwugiciMK9aQs2CH3sWI9bv5wZafwgV6zWWDd0VZLID9xwRc
+ yoeaJf+wccJtD95YWqHXJ5oudSCZXueEjoQUIQOJWe+69r+oToazJw2mc9xEJtG/9mkHln
+ 7RSr/gPtssyzr52vUdsocxkPptbUc3c=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-5bKI1Hl1MFWdkOQfHa7_Xg-1; Thu, 21 Sep 2023 04:28:44 -0400
+X-MC-Unique: 5bKI1Hl1MFWdkOQfHa7_Xg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-320004980a2so455427f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 01:28:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695284923; x=1695889723;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=T9JYBbiQ8eLGV1JjB0XuW1jXghpOTFoS30O5AbizPJo=;
+ b=aToZKWo4KGW8C/l+Wahb+GVYyjMDHQrblI2qLceMQdB+46u0rVUtDcqvppkcT0InI/
+ Gj/i1lVgBQUz91m1NtR9tpyy5q+Bx9cxWQlghpahJ9qUsC4RjGGVO4MWwr3vgJmaA28C
+ V2kxIT+trST6QkHIEWWW3xhL1TzmR/Fc2+8DdiOvCPCe0tz5Ovs0Wl2Lr7uiHCrodVx3
+ Wd405xkGzeEstUI/PSfbXOdsdo0nv72jbya5ENdsZZmXqxuTa3llmWU6Xsn9HP8cDP7/
+ VVEpm5OXmeLUGK+d9LO3uXA1Td7JmEUhvBiB6a/1y4piX3XInxy34fJKPd8hIImpJM/l
+ Uwrw==
+X-Gm-Message-State: AOJu0YzsrSvtvaZ0jtgs33qpQHOQeMw6uomhku3sTHPpNN6D/zEuNZED
+ vxNevjk9PQ1rOKWMcIEJQ8HGDZ+ROStbN9p1s+vkNPUEHLCSIxXn5Jl1BWNaaY9/05O7NWfjr3r
+ 12puMTFkQzAytkfo=
+X-Received: by 2002:a5d:5b1f:0:b0:321:f74d:ade6 with SMTP id
+ bx31-20020a5d5b1f000000b00321f74dade6mr834523wrb.40.1695284923315; 
+ Thu, 21 Sep 2023 01:28:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKkcDzW9GhlP+CyGhBMO0OJ7jmQsWSmyN6yx2W44joEc3RDPjiv7unTg2A59IGoWLBOvIAyA==
+X-Received: by 2002:a5d:5b1f:0:b0:321:f74d:ade6 with SMTP id
+ bx31-20020a5d5b1f000000b00321f74dade6mr834490wrb.40.1695284922901; 
+ Thu, 21 Sep 2023 01:28:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ a4-20020adff7c4000000b0031fc9402b47sm1103662wrq.4.2023.09.21.01.28.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 01:28:42 -0700 (PDT)
+Message-ID: <facf584a-e8bf-5386-8660-ac7dd3e6dde8@redhat.com>
+Date: Thu, 21 Sep 2023 10:28:41 +0200
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: E/8uxibb8KK15eOMGyi/2C3+Gw8p/BxghRoY/cC/XIJlm8QM6WvhCXvjs09hni/X+Ki1lcfn9QYqWF5ua4jA4ML7LTZDoof3MzhYDA0bnu69raHul2Ztw/vWSnYhEi06Ns2KpLlBYu+JQJ6h7kJER1OjE+LjjtjaLsZqRV+A0tTYx750pe1ODQ2UDSgaUJ8EXx1rOmBM5/rAyS6NlA/mNv5IyEmj/5PTqqVVMCOcKhK1m3F8p3tSltMmQp5dBKEKN/nf/UIO+u2lFSXAG5SPwqO0eAwbfbOhSxaSYG9STSGT+jgnGKyGNXU32KaDQMcQwPZ7DSuf+tT9uEbHAbgWAwjhQhk1WdfKvZG6pyW7nheYyF5fcMIlM+DkWBnw5e8Yp5SNz0B5cdAXSBLDWFu7CzNV7MWAt9oKvmVxTmA1F1kHpkD/QbNR41IH4vzYUKcpDalJPRxTLYURyGKm0vHv4B3KxYpN9G7v3byJJA/DDJpFPXd8ujBXiMGC40s1/USMPucx2geabf6aflIDdjtUVFRWJpilgLQDNlvgH92wEABIP5CihsxB2Ayb8EKdTWqXztX6CtFWs7/miG11GqtA4r35AdnY8DbWCKaAhYiuJ8mHQV2mCzd59jhXSem+yAqWFMyEHGXng6sjKERoG/KIpJtmKN2n/VXTwO6575E7rdGQTymHDWnnANuInEYQB8eEjBCN/pqUjz/o85NSQz1TL5/1YnxDdxh6dXnu8aims5VmVB34Hy0Xy6rVFfrnQmZt7d2UwKJjAfB30zemochp7Oog+2PPnf+eQLWiC1I9Cd8=
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB11664.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eaf3abd2-ee83-48a1-df47-08dbba7c9511
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2023 08:27:24.2409 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 7YvnL0mAmNzwaNNwP2YDzO7KzMjihv6qZzOCm9wsADFtUO4TTiZhC1x4cyj1c80Fb5iwjllhdvtauW0hAeD2VA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10309
-Received-SPF: pass client-ip=68.232.152.245;
- envelope-from=lizhijian@fujitsu.com; helo=esa1.fujitsucc.c3s2.iphmx.com
-X-Spam_score_int: -58
-X-Spam_score: -5.9
-X-Spam_bar: -----
-X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 04/22] vfio/common: Introduce
+ vfio_container_add|del_section_window()
+Content-Language: en-US
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-5-zhenzhong.duan@intel.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230830103754.36461-5-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -164,30 +105,233 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-UGVydGVyLA0KDQoNCk9uIDIwLzA5LzIwMjMgMDA6NDksIFBldGVyIFh1IHdyb3RlOg0KPiBPbiBN
-b24sIFNlcCAxOCwgMjAyMyBhdCAwNDo0MToxNFBNICswMjAwLCBNYXJrdXMgQXJtYnJ1c3RlciB3
-cm90ZToNCj4+IE9oIGRlYXIsIHdoZXJlIHRvIHN0YXJ0LiAgVGhlcmUncyBzbyBtdWNoIHdyb25n
-LCBhbmQgaW4gcHJldHR5IG9idmlvdXMNCj4+IHdheXMuICBUaGlzIGNvZGUgc2hvdWxkIG5ldmVy
-IGhhdmUgcGFzc2VkIHJldmlldy4gIEknbSByZWZyYWluaW5nIGZyb20NCj4+IHNheWluZyBtb3Jl
-OyBzZWUgdGhlIGNvbW1pdCBtZXNzYWdlcyBpbnN0ZWFkLg0KPj4NCj4+IElzc3VlcyByZW1haW5p
-bmcgYWZ0ZXIgdGhpcyBzZXJpZXMgaW5jbHVkZToNCj4+DQo+PiAqIFRlcnJpYmxlIGVycm9yIG1l
-c3NhZ2VzDQo+Pg0KPj4gKiBTb21lIGVycm9yIG1lc3NhZ2UgY2FzY2FkZXMgcmVtYWluDQo+Pg0K
-Pj4gKiBUaGVyZSBpcyBubyB3cml0dGVuIGNvbnRyYWN0IGZvciBRRU1VRmlsZUhvb2tzLCBhbmQg
-dGhlDQo+PiAgICByZXNwb25zaWJpbGl0eSBmb3IgcmVwb3J0aW5nIGVycm9ycyBpcyB1bmNsZWFy
-DQo+IA0KPiBFdmVuIGJlaW5nIHJlbW92ZWQuLiBiZWNhdXNlIG5vIG9uZSBpcyByZWFsbHkgZXh0
-ZW5kaW5nIHRoYXQuLg0KPiANCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjMwNTA5
-MTIwNzAwLjc4MzU5LTEtcXVpbnRlbGFAcmVkaGF0LmNvbS8jdA0KPiANCj4+DQo+PiAqIFRoZXJl
-IHNlZW0gdG8gYmUgbm8gdGVzdHMgd2hhdHNvZXZlcg0KPiANCj4gSSBhbHdheXMgc2VlIHJkbWEg
-YXMgIm9kZCBmaXhlcyIgc3RhZ2UuLiBmb3IgYSBsb25nIHRpbWUuICBCdXQgbWF5YmUgSSB3YXMN
-Cj4gd3JvbmcuDQo+IA0KPiBDb3B5aW5nIFpoaWppYW4gZm9yIHN0YXR1cyBvZiByZG1hOyANCg0K
-VGhhbmtzLA0KDQpZZWFoLCBzb21ldGltZXMgSSB3aWxsIHBheSBhdHRlbnRpb24gdG8gbWlncmF0
-aW9uLCBlc3BlY2lhbGx5IHBhdGNoZXMgcmVsYXRlZA0KdG8gUkRNQSBhbmQgQ09MTy4gSSBqdXN0
-IGtuZXcgaSBoYXZlIG1pc3NlZCBzbyBtdWNoIHBhdGNoZXMgdG8gUkRNQSwgbW9zdCBvZg0KdGhl
-bSBoYWQgZ290IFJWQiwgYnV0IGRyb3BwZWQgYXQgUFVMTCBwaGFzZSBhdCBsYXN0LiBXaGF0IGEg
-cGl0eS4NCg0KDQpaaGlqaWFuLCBJIHNhdyB0aGF0IHlvdSBqdXN0IHJlcGxpZWQgdG8NCj4gdGhl
-IGh3cG9pc29uIGlzc3VlLiAgTWF5YmUgd2Ugc2hvdWxkIGhhdmUgb25lIGVudHJ5IGZvciByZG1h
-IHRvbywganVzdCBsaWtlDQo+IGNvbG8/DQoNCkknbSB3b3JyaWVkIHRoYXQgSSBtYXkgbm90IGhh
-dmUgZW5vdWdoIHRpbWUsIGFiaWxpdHksIG9yIGVudmlyb25tZW50IHRvIHJldmlldy90ZXN0DQp0
-aGUgUkRNQSBwYXRjaGVzLiBidXQgZm9yIHRoaXMgcGF0Y2ggc2V0LCBpIHdpbGwgdGFrZSBhIGxv
-b2sgbGF0ZXIuDQoNCg0KVGhhbmtzDQpaaGlqaWFuDQoNCj4gPiBUaGFua3MsDQo+IA==
+Hello Zhenzhong,
+
+On 8/30/23 12:37, Zhenzhong Duan wrote:
+> From: Eric Auger <eric.auger@redhat.com>
+> 
+> Introduce helper functions that isolate the code used for
+> VFIO_SPAPR_TCE_v2_IOMMU. This code reliance is IOMMU backend
+> specific whereas the rest of the code in the callers, ie.
+> vfio_listener_region_add|del is not.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> ---
+>   hw/vfio/common.c | 156 +++++++++++++++++++++++++++--------------------
+>   1 file changed, 89 insertions(+), 67 deletions(-)
+> 
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index 9ca695837f..67150e4575 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -796,6 +796,92 @@ static bool vfio_get_section_iova_range(VFIOContainer *container,
+>       return true;
+>   }
+>   
+> +static int vfio_container_add_section_window(VFIOContainer *container,
+> +                                             MemoryRegionSection *section,
+> +                                             Error **errp)
+> +{
+> +    VFIOHostDMAWindow *hostwin;
+> +    hwaddr pgsize = 0;
+> +    int ret;
+> +
+> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+> +        return 0;
+> +    }
+
+This test makes me think that we should register a specific backend
+for the pseries machines, implementing the add/del_window handler,
+since others do not need it. Correct ?
+
+It would avoid this ugly test. Let's keep that in mind when the
+backends are introduced.
+
+> +
+> +    /* For now intersections are not allowed, we may relax this later */
+> +    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> +        if (ranges_overlap(hostwin->min_iova,
+> +                           hostwin->max_iova - hostwin->min_iova + 1,
+> +                           section->offset_within_address_space,
+> +                           int128_get64(section->size))) {
+> +            error_setg(errp,
+> +                "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
+> +                "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
+> +                section->offset_within_address_space,
+> +                section->offset_within_address_space +
+> +                    int128_get64(section->size) - 1,
+> +                hostwin->min_iova, hostwin->max_iova);
+> +            return -EINVAL;
+> +        }
+> +    }
+> +
+> +    ret = vfio_spapr_create_window(container, section, &pgsize);
+> +    if (ret) {
+> +        error_setg_errno(errp, -ret, "Failed to create SPAPR window");
+> +        return ret;
+> +    }
+> +
+> +    vfio_host_win_add(container, section->offset_within_address_space,
+> +                      section->offset_within_address_space +
+> +                      int128_get64(section->size) - 1, pgsize);
+> +#ifdef CONFIG_KVM
+
+the ifdef test doesn't seem useful because the compiler should compile
+out the section below since, in that case, kvm_enabled() is defined as :
+
+   #define kvm_enabled()           (0)
+
+> +    if (kvm_enabled()) {
+> +        VFIOGroup *group;
+> +        IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
+> +        struct kvm_vfio_spapr_tce param;
+> +        struct kvm_device_attr attr = {
+> +            .group = KVM_DEV_VFIO_GROUP,
+> +            .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
+> +            .addr = (uint64_t)(unsigned long)&param,
+> +        };
+> +
+> +        if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
+> +                                          &param.tablefd)) {
+> +            QLIST_FOREACH(group, &container->group_list, container_next) {
+> +                param.groupfd = group->fd;
+> +                if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+> +                    error_report("vfio: failed to setup fd %d "
+> +                                 "for a group with fd %d: %s",
+> +                                 param.tablefd, param.groupfd,
+> +                                 strerror(errno));
+> +                    return 0;
+
+hmm, the code bails out directly without undoing previous actions. we should
+return some error at least.
+
+> +                }
+> +                trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
+> +            }
+> +        }
+> +    }
+> +#endif
+> +    return 0;
+> +}
+> +
+> +static void vfio_container_del_section_window(VFIOContainer *container,
+> +                                              MemoryRegionSection *section)
+> +{
+> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
+> +        return;
+> +    }
+> +
+> +    vfio_spapr_remove_window(container,
+> +                             section->offset_within_address_space);
+> +    if (vfio_host_win_del(container,
+> +                          section->offset_within_address_space,
+> +                          section->offset_within_address_space +
+> +                          int128_get64(section->size) - 1) < 0) {
+> +        hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
+> +                 __func__, section->offset_within_address_space);
+> +    }
+> +}
+> +
+>   static void vfio_listener_region_add(MemoryListener *listener,
+>                                        MemoryRegionSection *section)
+>   {
+> @@ -822,62 +908,8 @@ static void vfio_listener_region_add(MemoryListener *listener,
+>           return;
+>       }
+>   
+> -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+> -        hwaddr pgsize = 0;
+> -
+> -        /* For now intersections are not allowed, we may relax this later */
+> -        QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
+> -            if (ranges_overlap(hostwin->min_iova,
+> -                               hostwin->max_iova - hostwin->min_iova + 1,
+> -                               section->offset_within_address_space,
+> -                               int128_get64(section->size))) {
+> -                error_setg(&err,
+> -                    "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
+> -                    "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
+> -                    section->offset_within_address_space,
+> -                    section->offset_within_address_space +
+> -                        int128_get64(section->size) - 1,
+> -                    hostwin->min_iova, hostwin->max_iova);
+> -                goto fail;
+> -            }
+> -        }
+> -
+> -        ret = vfio_spapr_create_window(container, section, &pgsize);
+> -        if (ret) {
+> -            error_setg_errno(&err, -ret, "Failed to create SPAPR window");
+> -            goto fail;
+> -        }
+> -
+> -        vfio_host_win_add(container, section->offset_within_address_space,
+> -                          section->offset_within_address_space +
+> -                          int128_get64(section->size) - 1, pgsize);
+> -#ifdef CONFIG_KVM
+> -        if (kvm_enabled()) {
+> -            VFIOGroup *group;
+> -            IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
+> -            struct kvm_vfio_spapr_tce param;
+> -            struct kvm_device_attr attr = {
+> -                .group = KVM_DEV_VFIO_GROUP,
+> -                .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
+> -                .addr = (uint64_t)(unsigned long)&param,
+> -            };
+> -
+> -            if (!memory_region_iommu_get_attr(iommu_mr, IOMMU_ATTR_SPAPR_TCE_FD,
+> -                                              &param.tablefd)) {
+> -                QLIST_FOREACH(group, &container->group_list, container_next) {
+> -                    param.groupfd = group->fd;
+> -                    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
+> -                        error_report("vfio: failed to setup fd %d "
+> -                                     "for a group with fd %d: %s",
+> -                                     param.tablefd, param.groupfd,
+> -                                     strerror(errno));
+> -                        return;
+> -                    }
+> -                    trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
+> -                }
+> -            }
+> -        }
+> -#endif
+> +    if (vfio_container_add_section_window(container, section, &err)) {
+> +        goto fail;
+
+That's not exactly the same as the return above when the ioctl call
+fails. there doesn't seem to be much consequences though. Let's keep
+it that way.
+
+>       }
+>   
+>       hostwin = vfio_find_hostwin(container, iova, end);
+> @@ -1094,17 +1126,7 @@ static void vfio_listener_region_del(MemoryListener *listener,
+>   
+>       memory_region_unref(section->mr);
+>   
+> -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
+> -        vfio_spapr_remove_window(container,
+> -                                 section->offset_within_address_space);
+> -        if (vfio_host_win_del(container,
+> -                              section->offset_within_address_space,
+> -                              section->offset_within_address_space +
+> -                              int128_get64(section->size) - 1) < 0) {
+> -            hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
+> -                     __func__, section->offset_within_address_space);
+> -        }
+> -    }
+> +    vfio_container_del_section_window(container, section);
+>   }
+>   
+>   static int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
+
+PPC is in the way. May be we could move these two routines in pseries to
+help a little. I will look into it.
+
+Thanks,
+
+C.
+
 
