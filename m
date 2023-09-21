@@ -2,84 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0727A95C9
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 18:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE27A95D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 18:53:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjMh5-0005qS-Bv; Thu, 21 Sep 2023 12:38:23 -0400
+	id 1qjMu5-00037n-Qy; Thu, 21 Sep 2023 12:51:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qjMh1-0005pA-V4
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 12:38:20 -0400
-Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
- id 1qjMgz-0004iw-SE
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 12:38:19 -0400
-Received: from juju-98d295-prod-launchpad-16.localdomain (unknown
- [10.131.215.246])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id D651642333
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 16:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
- s=20210803; t=1695314289;
- bh=cX5FsTSdhUywsG48ZqvcSAGDfL/iwxXClFskkceGsvk=;
- h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
- Message-Id:Subject;
- b=Q5HlFtz2T/Jf+4A12VvpSy5iTEuo1Uzx5QtZhr0djx5capOImIVOY2jgKbONatQ4I
- sf53PiiIYJME7iizgXcR1OjcSoX+8Xne9U3siBVo5AsLA/1YDz7tkS8RrvMcT7LfJH
- /eOo0TrwYE5pH3654oxli5McKK5EaD9GyxvuLw7T2JI313LMF6cbLh1uwmtzvUw1u3
- MRhe6/2B3wWXYxIVB6Rfk2eNwSAuJW6hLx2Piz4zBlkNbwOiWqaDmorQXaClu2S3DZ
- GQPdbXs+9lmR5+xobhmh5+wQcSU7IqDQ72bxUn1mAzPUCWzheYBOPpKLlmgFY6lnrj
- krgaLB55w4NZw==
-Received: from [10.131.215.246] (localhost [127.0.0.1])
- by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
- 9096C7E31B
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 16:38:03 +0000 (UTC)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjMu2-000371-WD
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 12:51:47 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjMu1-0007Ns-9o
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 12:51:46 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-99c3c8adb27so148297766b.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 09:51:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695315102; x=1695919902; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=pVXBC0L9QfvtW86GfaQjLjNtgSEazJ9DYEgnylnW4do=;
+ b=rpx1fTJ8XEY+9JUeqJzN2AiXq/OttStmmmjQDNUqa6aJmdl0bYzrS8TH6v19dnZKcn
+ zSOSGSf14H3JYMvBPwZXVdrKx4mCSiO9AJ6lgZMOXupf4BclsC4a30UrKkWNpcRyeZAr
+ yx7Zp1Bn4k2C0V89kdNpmzNmjOsWKj+EkJqnYQ9X59OosrAafcAxfyy5LNA0+43nnfTh
+ qKRSBQtdewfHK4oegpeLaWiSoc39XEsEeoTZecMAr3C+oEdfvLox9cTq0ClkMaDJJ4TJ
+ EoWtZ0EGvRsFMTpLr1q/ot77dT+ywpCHg/Tu+//fugdun83z27Wb1Bpqfa4oF1V3D9rq
+ dKiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695315102; x=1695919902;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=pVXBC0L9QfvtW86GfaQjLjNtgSEazJ9DYEgnylnW4do=;
+ b=mKos4a44wZximtCXzomUg/ffiEyKIR8x7Se+nWwdIbqS7JMzq6D6XMrzvC31Q+uQcr
+ 1k9nVJhjIT8sW5z8PFBFkM7KdFnr5CDJnfBL3jdhk/b7oKy3QCZBGRtCr6XzBYxU30fz
+ O39O4PA8J0rlK6k9xs6gmnzUTx4tWo4UKQ/pGzY9cDXG+byIxDzOl5I76D7iiqDJrPUe
+ T62ZlqVsZgRPWLZX0RRtL474UW6AfKKVDfjJYXMI3m5yY6f0/i+d8cj4kUSkJEjTH65Z
+ p/jNIdrxUfXRsP4tSQK+8OhYNzhwCz1W5cruTTPAJk2Ut4lPc0u3acAerlOn7WZBIe1c
+ 4/pw==
+X-Gm-Message-State: AOJu0YyfGNu1WHJyDY7WNJMSHQFD94wHm5DDHLDo2UPlVWBhg00N8GSz
+ +jrgmiMHJgvvY+Vrtnrw6JBlLA==
+X-Google-Smtp-Source: AGHT+IGwSOiidFwbgp3IC84p5+upDFUUEtCu+fAZZW0gdqfKUfpyGKXHHz8FOh4HcCngbonqnmvfkw==
+X-Received: by 2002:a17:906:845c:b0:9ae:5765:c134 with SMTP id
+ e28-20020a170906845c00b009ae5765c134mr2677399ejy.15.1695315101877; 
+ Thu, 21 Sep 2023 09:51:41 -0700 (PDT)
+Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ a19-20020a170906275300b0099290e2c163sm1278132ejd.204.2023.09.21.09.51.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 09:51:41 -0700 (PDT)
+Message-ID: <d47f9e78-cbac-83d1-e29d-373e4c45ceb0@linaro.org>
+Date: Thu, 21 Sep 2023 18:51:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 Sep 2023 16:26:00 -0000
-From: John M <1819289@bugs.launchpad.net>
-To: qemu-devel@nongnu.org
-X-Launchpad-Notification-Type: bug
-X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Undecided;
- assignee=None; 
-X-Launchpad-Bug-Tags: mttcg
-X-Launchpad-Bug-Information-Type: Public
-X-Launchpad-Bug-Private: no
-X-Launchpad-Bug-Security-Vulnerability: no
-X-Launchpad-Bug-Commenters: cbparker curryrice71 dgilbert-h philmd pmaydell
- th-huth
-X-Launchpad-Bug-Reporter: John M (curryrice71)
-X-Launchpad-Bug-Modifier: John M (curryrice71)
-References: <155216177409.9624.16357609956497374456.malonedeb@gac.canonical.com>
- <163031397124.5151.7828028292289278229.malone@gac.canonical.com>
-Message-Id: <CA+Ay21K_JS4c0oDfJhhNr8N-bHVhvKxfrBr+dhRYF8CRiH1QoA@mail.gmail.com>
-Subject: Re: [Bug 1819289] Re: Windows 95 and Windows 98 will not install or
- run
-X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
-X-Launchpad-Message-For: qemu-devel-ml
-Precedence: bulk
-X-Generated-By: Launchpad (canonical.com);
- Revision="d47b73632f1fccdd9fdd4e6145a4784874303779";
- Instance="launchpad-scripts"
-X-Launchpad-Hash: 9eb8fd85eb07c8a0fa6ea5a7ec188e87cacdb3b7
-Received-SPF: pass client-ip=185.125.188.250;
- envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2] linux-user: Fixes for zero_bss
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: thuth@redhat.com, qemu-stable@nongnu.org,
+ Laurent Vivier <laurent@vivier.eu>
+References: <20230909184559.36504-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230909184559.36504-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -88,64 +90,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Bug 1819289 <1819289@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is happening again in 8.1. I used Windows 95 for a while in 6.1 and it
-was fine, but when I tried to upgrade to 8.1, it started happening again. I
-tried reducing the memory and it still happens. Not an urgent issue though.
+On 9/9/23 20:45, Richard Henderson wrote:
+> The previous change, 2d385be6152, assumed !PAGE_VALID meant that
+> the page would be unmapped by the elf image.  However, since we
+> reserved the entire image space via mmap, PAGE_VALID will always
+> be set.  Instead, assume PROT_NONE for the same condition.
+> 
+> Furthermore, assume bss is only ever present for writable segments,
+> and that there is no page overlap between PT_LOAD segments.
+> Instead of an assert, return false to indicate failure.
+> 
+> Cc: qemu-stable@nongnu.org
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
+> Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> v2: Pass errp to zero_bss, so we can give a reasonable error message.
+> ---
+>   linux-user/elfload.c | 53 +++++++++++++++++++++++++++++++++-----------
+>   1 file changed, 40 insertions(+), 13 deletions(-)
 
-On Mon, Aug 30, 2021 at 2:05=E2=80=AFAM Philippe Mathieu-Daud=C3=A9 <
-1819289@bugs.launchpad.net> wrote:
+To the best of my knowledge,
 
-> Brad said later after testing v6.1 it was fixed so please disregard
-> previous comment =C2=AF\_(=E3=83=84)_/=C2=AF
->
-> --
-> You received this bug notification because you are subscribed to the bug
-> report.
-> https://bugs.launchpad.net/bugs/1819289
->
-> Title:
->   Windows 95 and Windows 98 will not install or run
->
-> Status in QEMU:
->   Fix Released
->
-> Bug description:
->   The last version of QEMU I have been able to run Windows 95 or Windows
->   98 on was 2.7 or 2.8. Recent versions since then even up to 3.1 will
->   either not install or will not run 95 or 98 at all. I have tried every
->   combination of options like isapc or no isapc, cpu pentium  or cpu as
->   486. Tried different memory configurations, but they just don't work
->   anymore.
->
-> To manage notifications about this bug go to:
-> https://bugs.launchpad.net/qemu/+bug/1819289/+subscriptions
->
->
-
---=20
-You received this bug notification because you are a member of qemu-
-devel-ml, which is subscribed to QEMU.
-https://bugs.launchpad.net/bugs/1819289
-
-Title:
-  Windows 95 and Windows 98 will not install or run
-
-Status in QEMU:
-  Fix Released
-
-Bug description:
-  The last version of QEMU I have been able to run Windows 95 or Windows
-  98 on was 2.7 or 2.8. Recent versions since then even up to 3.1 will
-  either not install or will not run 95 or 98 at all. I have tried every
-  combination of options like isapc or no isapc, cpu pentium  or cpu as
-  486. Tried different memory configurations, but they just don't work
-  anymore.
-
-To manage notifications about this bug go to:
-https://bugs.launchpad.net/qemu/+bug/1819289/+subscriptions
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
