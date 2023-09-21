@@ -2,70 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B993B7A947F
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C45777A9484
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:08:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjJL5-0006mx-9g; Thu, 21 Sep 2023 09:03:28 -0400
+	id 1qjJOx-000174-7Q; Thu, 21 Sep 2023 09:07:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjJIV-0001tk-8R
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:00:50 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjJIO-0002ss-Fp
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:00:43 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-52f9a45b4bdso1081664a12.3
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 06:00:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695301236; x=1695906036; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=AHXQ+0yyjte4yHlMFoZZh8nVjC453f8xgRENeTmv8Ck=;
- b=pUNz3zOMjVMSnA5+oEOPB6Hk2pjtvxWU1bBtyslVaSlm566WUYzd08fsA+f1W+ljs+
- ou1UffkSN1QAvdTc8cFxpgVO+5KcXOLcX3GuzD8Bf/o8wTAYpbx7TNImRha7/zfOo0PE
- 4IFmooYK8i1sxCyycLlvInUUtQNY4UvO06ib98c+C+kEtaNFN0VEcpBeinSmvN7QlA3x
- 3tjmqVNBIf+pMnLtjJZvjQhsejWtbS+iMnnjCFVUebhRBOtuPZeDOvg2EMTvxbu+/h93
- L86mHy9kDaGKh3MKgaDqBCGvzgmeTn9vgJY2dc0t0dExBFENrbFjTNOErc1+fzltQj7r
- bB7w==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjJOo-0000XW-Ip
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:07:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjJOi-0005So-UG
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:07:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695301629;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nWzMB2T3IOLytLd/Iu4RJxDn+Mb4TRIyCIkRSPVbRZw=;
+ b=IHa5ZYciNq1QMZr9bO/7o4iBhAFIWgM7hymXXNgejhUTksdW7lqwTToqsAILE8oe2wE/mg
+ CH/UeSkZXXpesnL0CbJx6vcSQCJrKIjU14DvKYvDY8pbeIQ7yQKaI+nv8gEtgwFiKxCzyZ
+ Tassot/GXoBHGVRihT4K2n/pdAXSTY0=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-73-EzkhPn4hOSSDGim-LdN9XQ-1; Thu, 21 Sep 2023 06:53:52 -0400
+X-MC-Unique: EzkhPn4hOSSDGim-LdN9XQ-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6563d523671so14317306d6.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 03:53:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695301236; x=1695906036;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=AHXQ+0yyjte4yHlMFoZZh8nVjC453f8xgRENeTmv8Ck=;
- b=eNNkXTp/tep23OAWcdVgb1HHBRcry/uk3LOGHJJPa2sE5tMq3IHGF0oAIBAHsed5J9
- zou08kxtSu3pcp22tPKllKgvPOjAt0k65Y0/s3mXnAMQ6UWTRVGoQPXNycqm0uKlgwqO
- zQ0H8kqJi0RIKsAghzxC1XpiQX7ZpS5A42ag9Pcixu6j0P+xdwWJIMoToxX2DIi3dLUn
- pZxmmlm7A2yfEOX1aRpc3bjeBThb1Sishn0uJ0zX16NKW+W8FmUi/DYb0AhyxmmPFfSS
- Uedf+uGXa9DFaPWqPwksQUgSkYOrkTB2o1qx7pC5C0TGEsMk8O6+YUhxy0yf6WVkxQ9I
- kmwQ==
-X-Gm-Message-State: AOJu0YyCWUuvoopvO1ctVX4URdt6BK2vv5f1r4KfFgPLACCT474Y3TWy
- dC1pzJQ7K6O0BjX09mxHY/J+E/6kFHcLMXD7exzUIBsgSRcY0zpTRDI=
-X-Google-Smtp-Source: AGHT+IEL5QaN7pY3ypXxZdIA4Tn2VAmkV+jeWUuiGj114EC8xkS6M+CabmBEDnVPVsEvCHcHVa1IU11PmvZWq3MgZvY=
-X-Received: by 2002:a05:6402:515c:b0:532:bc4d:906f with SMTP id
- n28-20020a056402515c00b00532bc4d906fmr4455128edd.5.1695293439440; Thu, 21 Sep
- 2023 03:50:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695293632; x=1695898432;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nWzMB2T3IOLytLd/Iu4RJxDn+Mb4TRIyCIkRSPVbRZw=;
+ b=vo6UIuP+NlY2cS2HXQirN7jn4I93Wj+ylv2ty2T3d1qddMB2Glb0FEg+Gzz5J9WMxW
+ GdjxyBbfZxjza8KTsKroeKw0X51rq2L8KrZjmx9WKoBR9BxM3M/vIql6xxkCHgBk8dSz
+ pECfZwBSkh/0xs2CggTTC/LD2B5BQpTcOI1gjz2gCiDshoTClFtt+LAYchYz2+GE0n03
+ zhVrQ46nLAJHp4my5pOnSEKvCbt8Chd+IVkuWn2VtT9qdWiAG19uts3JiskGT5qWdBo0
+ CH6Ekiamh/TEFQjILa0Sk3p47WBwcj1MhmR67XikH0EIHX0FcZ7sRK+YFUXACsxXThd/
+ JQ1A==
+X-Gm-Message-State: AOJu0Yx0dg4Aj2CvWYLX21ceh8gNnvAfMA/y7T3BSKUs/S84iUcbjc7M
+ Rtq8HKskTbgTc32msswiEu7YIEa0PqIu4dvnhAH2t7rmsxdUflkHqwN7z6sCaC822lYZfj9d4iB
+ OnRlAqyznfL5cdOQ=
+X-Received: by 2002:a0c:b445:0:b0:656:46ed:8a46 with SMTP id
+ e5-20020a0cb445000000b0065646ed8a46mr6328262qvf.31.1695293632049; 
+ Thu, 21 Sep 2023 03:53:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHeGiQ22Mux9rcwgA9Owmy4g7h1yo7l9DHuV22gddWe0q28C44DIo2MhhVeVOlJHrlDxPw6lw==
+X-Received: by 2002:a0c:b445:0:b0:656:46ed:8a46 with SMTP id
+ e5-20020a0cb445000000b0065646ed8a46mr6328250qvf.31.1695293631821; 
+ Thu, 21 Sep 2023 03:53:51 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
+ ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
+ by smtp.gmail.com with ESMTPSA id
+ z15-20020a0cf24f000000b0064f72988fecsm460309qvl.127.2023.09.21.03.53.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 03:53:51 -0700 (PDT)
+Message-ID: <95ab51c2-be14-3272-11b3-48ee3e65b9a4@redhat.com>
+Date: Thu, 21 Sep 2023 12:53:48 +0200
 MIME-Version: 1.0
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 21 Sep 2023 11:50:20 +0100
-Message-ID: <CAFEAcA_P5aOTQnM2ARYgR5WvKouvndMbX95XNmDsS0KTxMkMMw@mail.gmail.com>
-Subject: EDK2 ArmVirtQemu behaviour with multiple UARTs
-To: QEMU Developers <qemu-devel@nongnu.org>
-Cc: devel@edk2.groups.io, Leif Lindholm <quic_llindhol@quicinc.com>, 
- Ard Biesheuvel <ardb+tianocore@kernel.org>, Sami Mujawar <sami.mujawar@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 05/22] vfio/common: Extract out
+ vfio_kvm_device_[add/del]_fd
+Content-Language: en-US
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-6-zhenzhong.duan@intel.com>
+ <127c3104-44e0-f19f-6339-43182fbf6db1@redhat.com>
+ <95befe1b-efb4-82f9-3cf8-fe703378617f@redhat.com>
+ <SJ0PR11MB674493761CD31BBE53753DC192F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <SJ0PR11MB674493761CD31BBE53753DC192F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,153 +114,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi; I've been looking again at a very long standing missing feature in
-the QEMU virt board, which is that we only have one UART. One of the
-things that has stalled this in the past has been the odd behaviour of
-EDK2 if the DTB that QEMU passes it describes two UARTs.
+On 9/21/23 12:22, Duan, Zhenzhong wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Sent: Thursday, September 21, 2023 4:42 PM
+>> Subject: Re: [PATCH v1 05/22] vfio/common: Extract out
+>> vfio_kvm_device_[add/del]_fd
+>>
+>> On 9/20/23 13:49, Eric Auger wrote:
+>>> Hi Zhenzhong,
+>>>
+>>> On 8/30/23 12:37, Zhenzhong Duan wrote:
+>>>> ...which will be used by both legacy and iommufd backend.
+>>> I prefer genuine sentences in the commit msg. Also you explain what you
+>>> do but not why.
+>>>
+>>> suggestion: Introduce two new helpers, vfio_kvm_device_[add/del]_fd
+>>> which take as input a file descriptor which can be either a group fd or
+>>> a cdev fd. This uses the new KVM_DEV_VFIO_FILE VFIO KVM device group,
+>>> which aliases to the legacy KVM_DEV_VFIO_GROUP.
+>>
+>> Ah yes. I didn't understand why the 's/GROUP/FILE/' change in the
+>> VFIO KVM device ioctls. Thanks for clarifying.
+>>
+>> What about pre-6.6 kernels without KVM_DEV_VFIO_FILE support ?
+> They are purely alias. See below commit:
 
-I'm going to describe the behaviour I see in more detail below, but to
-put the summary up front:
- * EDK2 puts some debug output on one UART and some on the other
-   (the exact arrangement depends on ordering of the dtb nodes)
- * EDK2 doesn't look at either stdout-path or the serial* aliases,
-   so its choices about how to use the UARTs differ from those
-   made by the guest kernel it is booting (and it also seems to be
-   iterating through the dtb in the opposite order to the kernel)
+Ah. I missed that. thanks again.
 
-The current proposal for adding a second UART is that it only happens
-if you explicitly add one on the command line (with a second "-serial
-something" option), so whatever we do won't break existing user
-setups. So we have scope for saying "if you want to use a second UART,
-you're going to want a newer EDK2 which handles it better". Exactly
-what "better" means here is up for grabs, but honouring stdout-path
-and the serial aliases would be the ideal I think. It would also be
-possible to select a particular ordering for the DTB nodes to produce
-"least-worst" behaviour from an existing EDK2 binary, but I'm not
-sure if that's worth doing.
+C.
 
-What do the EDK2 folks think about what the correct behaviour
-should be for a 2-UART setup?
-
-Anyway, on to the details about the setup and what I see from EDK2:
-
-This is all with a debug ArmVirtQemu build, running at EL2 (i.e.
-entirely non-secure), with some patches I've been working on to add
-the extra UART to the board and the DTB. The DTB has the two UARTs:
-
-        pl011@9000000 {
-                clock-names = "uartclk\0apb_pclk";
-                clocks = <0x8000 0x8000>;
-                interrupts = <0x00 0x01 0x04>;
-                reg = <0x00 0x9000000 0x00 0x1000>;
-                compatible = "arm,pl011\0arm,primecell";
-        };
-
-        pl011@9040000 {
-                clock-names = "uartclk\0apb_pclk";
-                clocks = <0x8000 0x8000>;
-                interrupts = <0x00 0x08 0x04>;
-                reg = <0x00 0x9040000 0x00 0x1000>;
-                compatible = "arm,pl011\0arm,primecell";
-        };
-
-and aliases:
-
-        aliases {
-                serial0 = "/pl011@9000000";
-                serial1 = "/pl011@9040000";
-        };
-
-and in the /chosen node:
-                stdout-path = "/pl011@9000000";
-
-The ACPI table fragments generated by QEMU have entries for both
-UARTs, as COM0 and COM1.
-
-Given all this, EDK2 outputs:
-
-uart0:
- * some UEFI output including debug output, starting:
-UEFI firmware (version  built at 15:19:20 on Sep 19 2023)
-add-symbol-file
-/home/petmay01/linaro/edk2/Build/ArmVirtQemu-AARCH64/DEBUG_GCC5/AARCH64/ArmPlatformPkg/PrePeiCore/PrePeiCoreUniCore/DEBUG/ArmPlatformPrePeiCore.dll
-0x2000
-add-symbol-file
-/home/petmay01/linaro/edk2/Build/ArmVirtQemu-AARCH64/DEBUG_GCC5/AARCH64/MdeModulePkg/Core/Pei/PeiMain/DEBUG/PeiCore.dll
-0xD240
-Register PPI Notify: DCD0BE23-9586-40F4-B643-06522CED4EDE
-Install PPI: 8C8CE578-8A3D-4F1C-9935-896185C32DD3
-Install PPI: 5473C07A-3DCB-4DCA-BD6F-1E9689E7349A
-The 0th FV start address is 0x00000001000, size is 0x001FF000, handle is 0x1000
-
- * the guest Linux kernel output (on what Linux says is ttyAMA0)
-
-uart1:
- * a lot of UEFI output including debug output, starting:
-DxeMain: MemoryBaseAddress=0x48000000 MemoryLength=0x38000000
-add-symbol-file
-/home/petmay01/linaro/edk2/Build/ArmVirtQemu-AARCH64/DEBUG_GCC5/AARCH64/MdeModulePkg/Core/Dxe/DxeMain/DEBUG/DxeCore.dll
-0x47860000
-HOBLIST address in DXE = 0x7FA35018
-Memory Allocation 0x00000004 0x47FFF000 - 0x47FFFFFF
-Memory Allocation 0x00000004 0x47FFE000 - 0x47FFEFFF
-
- * the GNU GRUB OS select screen and other GRUB output
-
-The full output dumps can be seen at:
-https://people.linaro.org/~peter.maydell/uart0.txt
-https://people.linaro.org/~peter.maydell/uart1.txt
-
-With only 1 UART, all the above appears on the single UART:
-https://people.linaro.org/~peter.maydell/uart-single.txt
-
-If I change QEMU to reverse the order of the nodes in the DTB (so the
-pl011@9040000 nodes is listed first in the dtc output, and
-pl011@900000 is listed second), then EDK2's output changes: the debug
-output previously on uart0 is now on uart1, and vice-versa. The GRUB
-output also switches to uart0. The Linux kernel output remains on
-uart0 (this makes sense, because Linux is looking at the ACPI tables,
-which are generated independently from the dtb). Output for this
-setup is here:
-
-https://people.linaro.org/~peter.maydell/uart0-rev.txt
-https://people.linaro.org/~peter.maydell/uart1-rev.txt
-
-A direct boot of Linux doesn't care about the dtb node ordering -- it
-honours the aliases node and the chosen stdout-path string.
-(Without the 'aliases' node, only the "pl011@9000000 first" dtb
-order works, because it assigns ttyAMA0 and ttyAMA1 in the same
-order as dtc prints them in the dtb disassembly.)
-
-I would be happier if I understood why putting the nodes in reverse
-order works, given that the code in EDK2 seems to be iterating through
-the dtb forwards. I know there is at least one place in QEMU where the
-node ordering gets reversed in the process of writing out the dtb, so
-maybe there are more depending on how exactly the dtb is read. That
-would I suppose explain why some EDK2 debug output goes to one UART
-and some to the other, if the dtb read process differs during different
-phases of EDK2 boot.
-
-If you want to play around with this, I have some WIP patches at
-https://git.linaro.org/people/pmaydell/qemu-arm.git uart-edk-investigation
-(content wise they should be fine, but I haven't cleaned them up into
-a coherent set of distinct patches yet, so they're a bit messy.)
-A run of QEMU with both UARTs which sends all output to files looks like:
-
-./build/arm-clang/qemu-system-aarch64 -display none -vga none \
-  -machine virt,acpi=on,virtualization=on,mte=on,gic-version=max,iommu=smmuv3 \
-  -smp 2 -m 1024 -cpu max,pauth-impdef=on \
-  -bios ~/linaro/edk2/QEMU_EFI_DEBUG.fd \
-  -drive file=/home/petmay01/avocado/data/cache/by_location/0154b7cd3a4f5e135299060c8cabbeec10b70b6d/alpine-standard-3.17.2-aarch64.iso,format=raw
-\
-  -device virtio-rng-pci,rng=rng0 \
-  -object rng-random,id=rng0,filename=/dev/urandom \
-  -chardev file,id=chr0,path=/tmp/uart0-rev.txt \
-  -chardev file,id=chr1,path=/tmp/uart1-rev.txt \
-  -serial chardev:chr0 -serial chardev:chr1
-
-(adjust -serial options to taste)
-
-thanks
--- PMM
 
