@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A777A921B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C927A9232
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:40:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjECK-00040T-QR; Thu, 21 Sep 2023 03:34:04 -0400
+	id 1qjEH4-0005qL-HG; Thu, 21 Sep 2023 03:38:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEC9-000408-6e
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:33:54 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjEH0-0005q6-KD
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:38:55 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEC7-0005qS-IM
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:33:52 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c5dd017b30so76725ad.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:33:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjEGq-0006di-VQ
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:38:46 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-52f9a45b4bdso642726a12.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:38:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695281630; x=1695886430;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc
+ d=linaro.org; s=google; t=1695281923; x=1695886723; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=po8tqcPrY8BsJxbEF/9ZVNAkMiP5QDpgNrVdXFPTpnA=;
- b=AKEoAkaL//TLqx4ZF5Rn4HtvItlBu2pqN4Q5taF2gw8xZH9GMxSAMy/xkxpsC8FtTJ
- L6a/k23uzG69oKVmM80747UbJLAcX9rpsUnnnrst8v3ha/GTu867vxNvkB6Xyl786edI
- jsF+lv6hY6AxGx48T5RRqQKyR5LlzSyfnd32vFlAvV5gZrABwY6AkafKlQM4iBKC1gSe
- jSCNzT1Fh9u30bKehjx8J9zbaAjYbfU6dDPmr3g6V81E5enVWyU2dcYHb4TR2e1PXCt4
- W3vaQbaCVCQ2PJwz3JQOP1MrrC8r0BarmTgTRta+dueJ/afocGbsgd1gdhXNfjPbJ6pB
- CpOA==
+ bh=7RUltoTfDjrQftN2//7LR1fl2JSswr2zk7qtR0CySFE=;
+ b=nM0vbhyIsCUai9ddb1YFvNrUmKX/kYJ0I9YzVgtj1stwYcGCW0WxzdgC7ElufIPD85
+ mkVWq6g41aR91o1YOR32z5aNbaL5ZTcgMjGqr4k8edAhPhBO3Wa0uKH6wKGYfKaZwRE3
+ tfMJSPXe2JUsm6cpSRM5NTta9F4hzyMWBhx76Y0BSk4XEOlrDQ4SFZkx+YJjpoxJ8lTK
+ obl3Khhd98Irjv+d8n9AqXEhE7xGXSyiJxfdSoq+W1kddORBQAAhF5d7upKsl4W+btUb
+ hrC+DzfvSdNUN8AtOam1Iu6RRqgKofDko3aGzwkDwIb3PZhGjkS3Mjo+uujHxhH7delA
+ xMPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695281630; x=1695886430;
- h=content-transfer-encoding:in-reply-to:from:references:cc
+ d=1e100.net; s=20230601; t=1695281923; x=1695886723;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=po8tqcPrY8BsJxbEF/9ZVNAkMiP5QDpgNrVdXFPTpnA=;
- b=tEHOfeix8NG2jtELobngiSNiwRGugffSuF50vjK9wA3obQEpU/IX2PWF1iQD+OfARJ
- Xm8d8vBJUdJ9Od8GNiRFWvpNFAmr12ExzEIcf2xl7XgEtFu/2Zum067JKiyQ4FAv2Lup
- H2j4c5g3p4WIzeNx6FAcP9SohyWobwwq+cAFOhlaYmD31U50JH6zXY7Quiohp3QWnN1D
- EpPavVf1WSIxVydyyKnvSkInzqt0uKbSZriQ8YI0dqPXBsUXhOLUWCPPeO68uf3tcksy
- /6JG3B94G7SCNMdtnZ39IyTCpowuUbdYZimG5xrDOW0XYdyMtWu1Fj6QddAqwaZIA8FS
- iRUQ==
-X-Gm-Message-State: AOJu0YzuEE1OZhLaD+ZyjckhP1CZImtewAMMMFaHI1PqEqUxUZ+xboiI
- BchwouM4jmTJpGPwVrfVsfZ0I1hnusTz2vpEkj8=
-X-Google-Smtp-Source: AGHT+IG1AXfwKdE6XactmTd9NDzvouy4iPS+wqI/cxonFtgYhQNhRl3KVTg7cHxJ5DJE3D+H9/koZw==
-X-Received: by 2002:a17:902:c3d1:b0:1b5:674d:2aa5 with SMTP id
- j17-20020a170902c3d100b001b5674d2aa5mr5474958plj.13.1695281629856; 
- Thu, 21 Sep 2023 00:33:49 -0700 (PDT)
-Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
- ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- e15-20020a17090301cf00b001b9d95945afsm719184plh.155.2023.09.21.00.33.48
+ bh=7RUltoTfDjrQftN2//7LR1fl2JSswr2zk7qtR0CySFE=;
+ b=uESJX3NG18nXsiDF2rEPrDk/NTi3PT147IZ/4h8ueViOy9o09DXptb6AvTdb0VY3sU
+ qEtEuZM8PtK+oxetVYBux2hwCCRExqSNFuDxCt/56UYM24RmKg6kC7oC2Lux0Kw3Q2T9
+ 8SwA/ZOTbHYr/Uhg+/aVL0JoxgPtCVVQkCo7AGtwDz/O9nScsQXEjAaqVbtFPxtu7/NF
+ J3/86QG0+l1NGIGUETELGlhoBDZSbFU8l/Ht+Xi9kXOivltUE9X1+NHz42WY6NZ+VGJO
+ 2qD3BN6zldXyVy5QWSVVJONhZ5/N+/zNxexteM9i9d6wmrIucDx8qvg6uNfkA31NoLsi
+ k17A==
+X-Gm-Message-State: AOJu0YysoPHc+xNt3/FMuPio6+JShd3706jbL8W/jTzt1Mqb9iCP2PPK
+ lnHGZYyytyDbOiOdrSp3i4oO8A==
+X-Google-Smtp-Source: AGHT+IH59wn5uEzST6n5V9ZIofZNYKYQg1mEUsPdRcxlEeLrC/mYKHD8sj4Kr5yZng4CBFyG8qFeWQ==
+X-Received: by 2002:aa7:c786:0:b0:52f:a162:f4c4 with SMTP id
+ n6-20020aa7c786000000b0052fa162f4c4mr4041155eds.18.1695281922944; 
+ Thu, 21 Sep 2023 00:38:42 -0700 (PDT)
+Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
+ [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
+ n12-20020aa7db4c000000b005312b68cb37sm443798edt.28.2023.09.21.00.38.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 00:33:49 -0700 (PDT)
-Message-ID: <e57c927a-9cab-4cb4-9127-702a74cb8bd9@daynix.com>
-Date: Thu, 21 Sep 2023 16:33:47 +0900
+ Thu, 21 Sep 2023 00:38:42 -0700 (PDT)
+Message-ID: <3f9ebfe7-47f8-4aaf-d241-0d6576993bd4@linaro.org>
+Date: Thu, 21 Sep 2023 09:38:37 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs/devel/reset.rst: Correct function names
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] cxl/vendor: update niagara to only build on linux, add
+ KConfig options
 Content-Language: en-US
-Cc: qemu-devel@nongnu.org, Damien Hedde <damien.hedde@greensocs.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20221125140645.56490-1-akihiko.odaki@daynix.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <20221125140645.56490-1-akihiko.odaki@daynix.com>
+To: Gregory Price <gourry.memverge@gmail.com>, qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ Gregory Price <gregory.price@memverge.com>
+References: <20230920155020.550112-1-gregory.price@memverge.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230920155020.550112-1-gregory.price@memverge.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::633;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,54 +94,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2022/11/25 23:06, Akihiko Odaki wrote:
-> resettable_class_set_parent_phases() was mistakenly called
-> resettable_class_set_parent_reset_phases() in some places.
+Hi Gregory,
+
+On 20/9/23 17:50, Gregory Price wrote:
+> Niagara uses <sys/shm.h> which presently limits its compatibility to
+> linux hosts.  Change build to only build it on linux.
 > 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Add Kconfig file for skhynix directory, and make niagara depend on
+> CXL_MEM_DEVICE.  Add an explicit flag for niagara.
+> 
+> Signed-off-by: Gregory Price <gregory.price@memverge.com>
 > ---
->   docs/devel/reset.rst | 17 ++++++++---------
->   1 file changed, 8 insertions(+), 9 deletions(-)
-> 
-> diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
-> index 7cc6a6b314..38ed1790f7 100644
-> --- a/docs/devel/reset.rst
-> +++ b/docs/devel/reset.rst
-> @@ -184,21 +184,20 @@ in reset.
->       {
->           MyDevClass *myclass = MYDEV_CLASS(class);
->           ResettableClass *rc = RESETTABLE_CLASS(class);
-> -        resettable_class_set_parent_reset_phases(rc,
-> -                                                 mydev_reset_enter,
-> -                                                 mydev_reset_hold,
-> -                                                 mydev_reset_exit,
-> -                                                 &myclass->parent_phases);
-> +        resettable_class_set_parent_phases(rc,
-> +                                           mydev_reset_enter,
-> +                                           mydev_reset_hold,
-> +                                           mydev_reset_exit,
-> +                                           &myclass->parent_phases);
->       }
->   
->   In the above example, we override all three phases. It is possible to override
->   only some of them by passing NULL instead of a function pointer to
-> -``resettable_class_set_parent_reset_phases()``. For example, the following will
-> +``resettable_class_set_parent_phases()``. For example, the following will
->   only override the *enter* phase and leave *hold* and *exit* untouched::
->   
-> -    resettable_class_set_parent_reset_phases(rc, mydev_reset_enter,
-> -                                             NULL, NULL,
-> -                                             &myclass->parent_phases);
-> +    resettable_class_set_parent_phases(rc, mydev_reset_enter, NULL, NULL,
-> +                                       &myclass->parent_phases);
->   
->   This is equivalent to providing a trivial implementation of the hold and exit
->   phases which does nothing but call the parent class's implementation of the
+>   hw/cxl/Kconfig                    | 2 ++
+>   hw/cxl/vendor/Kconfig             | 1 +
+>   hw/cxl/vendor/skhynix/Kconfig     | 4 ++++
+>   hw/cxl/vendor/skhynix/meson.build | 4 +++-
+>   4 files changed, 10 insertions(+), 1 deletion(-)
+>   create mode 100644 hw/cxl/vendor/Kconfig
+>   create mode 100644 hw/cxl/vendor/skhynix/Kconfig
 
-Hi,
 
-This patch seems to have been forgotten. Can anyone pull this?
+> diff --git a/hw/cxl/vendor/skhynix/Kconfig b/hw/cxl/vendor/skhynix/Kconfig
+> new file mode 100644
+> index 0000000000..382fa0cd6c
+> --- /dev/null
+> +++ b/hw/cxl/vendor/skhynix/Kconfig
+> @@ -0,0 +1,4 @@
+> +config CXL_SKHYNIX_NIAGARA
+> +    bool
+> +    depends on CXL_MEM_DEVICE
 
-Regards,
-Akihiko Odaki
+You want:
+
+        depends on CXL_MEM_DEVICE && LINUX
+
+> +    default y if CXL_VENDOR
+> diff --git a/hw/cxl/vendor/skhynix/meson.build b/hw/cxl/vendor/skhynix/meson.build
+> index 4e57db65f1..6f194aa517 100644
+> --- a/hw/cxl/vendor/skhynix/meson.build
+> +++ b/hw/cxl/vendor/skhynix/meson.build
+> @@ -1 +1,3 @@
+> -system_ss.add(when: 'CONFIG_CXL_VENDOR', if_true: files('skhynix_niagara.c',))
+> +if targetos == 'linux'
+
+(Then this check is not necessary).
+
+> +    system_ss.add(when: 'CONFIG_CXL_SKHYNIX_NIAGARA', if_true: files('skhynix_niagara.c',))
+> +endif
+
 
