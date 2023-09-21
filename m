@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2BB7A9866
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:42:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A49727A9862
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:42:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjNcW-00026c-VA; Thu, 21 Sep 2023 13:37:44 -0400
+	id 1qjNcQ-00022q-7Z; Thu, 21 Sep 2023 13:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcO-00022K-Kv
+ id 1qjNcO-00021h-L1
  for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:36 -0400
 Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcH-0007fo-Ln
+ id 1qjNcI-0007fw-Es
  for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:34 -0400
 Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-404314388ceso13929315e9.2
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:29 -0700 (PDT)
+ 5b1f17b1804b1-40528376459so12853815e9.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695317848; x=1695922648; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695317849; x=1695922649; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=a5oDc+Yq+g+grY1ZGCS7U6eCrdf7ur5IfU4giqXKmlM=;
- b=Yj7B0IBqU/fuDMrrItQnpSdDgfbjDAI9x0CH7wG0OF7/PdF5K2mmwcTFWnXj+7tJro
- +psMwSUsOqK4utOExVAmzpdxMGH0FqOG7Xv3+UpC+JaZwastTmP+o8gxFa83e7u2YW8D
- Dh4KOAI+ckP5DCU0RebXSutTQLax3IrHskhNvh+A5kTHPL3+vQSJXgv+bhMZ/P3fh/s4
- VVm9pXmtR/Cg24piSwW2bT3uhJJPtUNHsiXkzT8qA69HqXJsYDQfmzhADU4bruT3xtwl
- JtyOkD9mK8h0hkCGmkEVzF+F8EWCzj598f0HT+FzMIS/pvPz50P23jv2VTZeZzCwGROM
- 3gsQ==
+ :reply-to; bh=qQViptMVSdrRp9VfBJYI4Acm+qff4tHoiCsPi2XOdW4=;
+ b=sOtS7RUwDcekYN4b2FEkx7Hyj0TbMkHcFTWhNAL0K1KUXiTNVBEBLAZZSWASajiMPj
+ 0DqP+PdhsLdEiaeTqke/OElkln3DgEMXLMDFY/j2mcw4JiqKc0fvXqmdtp4D0k5KH4yC
+ RkafU5r17D1ktwVhrMQ7SIA6FqKsyWhL0SdqeQvkR65tq1p4i2K6moXttcFbeS5dLIoJ
+ y+ur2HcEPkeT2wmuzWhz9I2TRZPi0j2SJObRBFkQAE46fd19L309LICO1CjiKNFSyQyH
+ jQB9JBcQqrXOtMMOJw+eOcmNW9wF7KeiSkl9HzMmmKpomwItwJMWxKrAhP9EtQq43crk
+ t7UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695317848; x=1695922648;
+ d=1e100.net; s=20230601; t=1695317849; x=1695922649;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a5oDc+Yq+g+grY1ZGCS7U6eCrdf7ur5IfU4giqXKmlM=;
- b=G7fPpny1ss3LRs/JHKAHYENajRLFeE9TfKSBNhxMe55bQEUgdJTFX6Z38/rT72tjTU
- s/8rXV5BJKOi7iSPJpwO1kjgXx5m9FSdLKRqqsWWhFd5C/Hq+U0wafOQYpz6mCVtIvfa
- BVjzDkIDHMU/PtWVRRsrSV5ZgLhIjot07Del4AlUnqOkWSCGvXyhTVim9xBJKV3pOCcQ
- 6P4hkZWLpb+SUELF5rg1v5bDgcu8T/7/gEy18WABkvdEGcpjUz8kH7ErviLX1HS4bZrj
- lhCLpg4g6LRd1ydO2zAdwqtmVX5poo+OgQ+A0nzco+/nRNdRGj9qUCyE0MiuT5uPaKAh
- zdyQ==
-X-Gm-Message-State: AOJu0Yw1COrr7spnCAzeLuG1Me5653OcpPD3u7dlzg3Sv14ynw4Zz8up
- +g1DSIYf44TS9TWnfmtTLgv3OcWoBbeQ9Orchho=
-X-Google-Smtp-Source: AGHT+IEAvb4qQt8t4vYEl/kUpjbakwZp/JdIpYdmk3Ey4fti+HY9IW6QDBDs8X/ESHGbFjgyYi5ptg==
-X-Received: by 2002:a05:600c:21c2:b0:405:1ba9:e862 with SMTP id
- x2-20020a05600c21c200b004051ba9e862mr5734560wmj.10.1695317848178; 
- Thu, 21 Sep 2023 10:37:28 -0700 (PDT)
+ bh=qQViptMVSdrRp9VfBJYI4Acm+qff4tHoiCsPi2XOdW4=;
+ b=RDXykLfgiwmDC6qFWvYpqO7zEcIKzMdqK2nWX9vO+psFnxUMXvWw98R30+nYSXe4D4
+ oaur64xIcGiWhDpzNVfs0whRLA4dGeTBH3+mdhEVlQE7mrCrnxITbYnkBB2MQ5NZusFk
+ 06mMGZtySUypdlc2ThrGBOVU8HU9y1w+zPio09cIatcj2So8bcR2Tb7NOF7wUJs0RUFa
+ KQU0kc8ea9AETFB9QLvLZE1gCWUyroNjftmJvshFZnB3brKGlW4YDNwyrMLmxoheJUa8
+ hgZZnRRBxtIAJAmPVMUL5nyyG/UwpQ2fnH8qZ99KQTMqfcKLiCGMK3unMvdkr0lSY7yl
+ 89Cg==
+X-Gm-Message-State: AOJu0YwD4xzXDqlczLk1z7UFe7k/dyq7Uxbqy+eBp7sP2r3cRAGOhZjh
+ N0m80dARHvgwjxmfsjAu75LNPTlsWm/y2moc48Y=
+X-Google-Smtp-Source: AGHT+IEfd5bttzi0oyS3PZSghi65H8s3hH+Vpli+ry8RYk8WrnYd3zXif+BVVBlm0Pn6nBlqbnsS2A==
+X-Received: by 2002:a05:600c:3b1d:b0:405:36d7:4581 with SMTP id
+ m29-20020a05600c3b1d00b0040536d74581mr1738731wms.9.1695317849141; 
+ Thu, 21 Sep 2023 10:37:29 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.27
+ m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Sep 2023 10:37:28 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/30] target/arm: Pass unpriv bool to get_a64_user_mem_index()
-Date: Thu, 21 Sep 2023 18:37:03 +0100
-Message-Id: <20230921173720.3250581-14-peter.maydell@linaro.org>
+Subject: [PULL 14/30] target/arm: Define syndrome function for MOPS exceptions
+Date: Thu, 21 Sep 2023 18:37:04 +0100
+Message-Id: <20230921173720.3250581-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921173720.3250581-1-peter.maydell@linaro.org>
 References: <20230921173720.3250581-1-peter.maydell@linaro.org>
@@ -90,79 +90,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In every place that we call the get_a64_user_mem_index() function
-we do it like this:
- memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
-Refactor so the caller passes in the bool that says whether they
-want the 'unpriv' or 'normal' mem_index rather than having to
-do the ?: themselves.
+The FEAT_MOPS memory operations can raise a Memory Copy or Memory Set
+exception if a copy or set instruction is executed when the CPU
+register state is not correct for that instruction. Define the
+usual syn_* function that constructs the syndrome register value
+for these exceptions.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20230912140434.1333369-4-peter.maydell@linaro.org
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20230912140434.1333369-5-peter.maydell@linaro.org
 ---
- target/arm/tcg/translate-a64.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ target/arm/syndrome.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 1dd86edae13..24afd929144 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -105,9 +105,17 @@ void a64_translate_init(void)
+diff --git a/target/arm/syndrome.h b/target/arm/syndrome.h
+index 8a6b8f8162a..5d34755508d 100644
+--- a/target/arm/syndrome.h
++++ b/target/arm/syndrome.h
+@@ -58,6 +58,7 @@ enum arm_exception_class {
+     EC_DATAABORT              = 0x24,
+     EC_DATAABORT_SAME_EL      = 0x25,
+     EC_SPALIGNMENT            = 0x26,
++    EC_MOP                    = 0x27,
+     EC_AA32_FPTRAP            = 0x28,
+     EC_AA64_FPTRAP            = 0x2c,
+     EC_SERROR                 = 0x2f,
+@@ -334,4 +335,15 @@ static inline uint32_t syn_serror(uint32_t extra)
+     return (EC_SERROR << ARM_EL_EC_SHIFT) | ARM_EL_IL | extra;
  }
  
- /*
-- * Return the core mmu_idx to use for A64 "unprivileged load/store" insns
-+ * Return the core mmu_idx to use for A64 load/store insns which
-+ * have a "unprivileged load/store" variant. Those insns access
-+ * EL0 if executed from an EL which has control over EL0 (usually
-+ * EL1) but behave like normal loads and stores if executed from
-+ * elsewhere (eg EL3).
-+ *
-+ * @unpriv : true for the unprivileged encoding; false for the
-+ *           normal encoding (in which case we will return the same
-+ *           thing as get_mem_index().
-  */
--static int get_a64_user_mem_index(DisasContext *s)
-+static int get_a64_user_mem_index(DisasContext *s, bool unpriv)
- {
-     /*
-      * If AccType_UNPRIV is not used, the insn uses AccType_NORMAL,
-@@ -115,7 +123,7 @@ static int get_a64_user_mem_index(DisasContext *s)
-      */
-     ARMMMUIdx useridx = s->mmu_idx;
- 
--    if (s->unpriv) {
-+    if (unpriv && s->unpriv) {
-         /*
-          * We have pre-computed the condition for AccType_UNPRIV.
-          * Therefore we should never get here with a mmu_idx for
-@@ -3088,7 +3096,7 @@ static void op_addr_ldst_imm_pre(DisasContext *s, arg_ldst_imm *a,
-     if (!a->p) {
-         tcg_gen_addi_i64(*dirty_addr, *dirty_addr, offset);
-     }
--    memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
-+    memidx = get_a64_user_mem_index(s, a->unpriv);
-     *clean_addr = gen_mte_check1_mmuidx(s, *dirty_addr, is_store,
-                                         a->w || a->rn != 31,
-                                         mop, a->unpriv, memidx);
-@@ -3109,7 +3117,7 @@ static bool trans_STR_i(DisasContext *s, arg_ldst_imm *a)
- {
-     bool iss_sf, iss_valid = !a->w;
-     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
--    int memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
-+    int memidx = get_a64_user_mem_index(s, a->unpriv);
-     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
- 
-     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, true, mop);
-@@ -3127,7 +3135,7 @@ static bool trans_LDR_i(DisasContext *s, arg_ldst_imm *a)
- {
-     bool iss_sf, iss_valid = !a->w;
-     TCGv_i64 clean_addr, dirty_addr, tcg_rt;
--    int memidx = a->unpriv ? get_a64_user_mem_index(s) : get_mem_index(s);
-+    int memidx = get_a64_user_mem_index(s, a->unpriv);
-     MemOp mop = finalize_memop(s, a->sz + a->sign * MO_SIGN);
- 
-     op_addr_ldst_imm_pre(s, a, &clean_addr, &dirty_addr, a->imm, false, mop);
++static inline uint32_t syn_mop(bool is_set, bool is_setg, int options,
++                               bool epilogue, bool wrong_option, bool option_a,
++                               int destreg, int srcreg, int sizereg)
++{
++    return (EC_MOP << ARM_EL_EC_SHIFT) | ARM_EL_IL |
++        (is_set << 24) | (is_setg << 23) | (options << 19) |
++        (epilogue << 18) | (wrong_option << 17) | (option_a << 16) |
++        (destreg << 10) | (srcreg << 5) | sizereg;
++}
++
++
+ #endif /* TARGET_ARM_SYNDROME_H */
 -- 
 2.34.1
 
