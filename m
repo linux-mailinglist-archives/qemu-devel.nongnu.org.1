@@ -2,94 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDED87A90D7
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 04:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCDB7A90E5
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 04:28:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qj9Ff-0006KG-Q8; Wed, 20 Sep 2023 22:17:11 -0400
+	id 1qj9PY-0008OQ-E9; Wed, 20 Sep 2023 22:27:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qj9Fe-0006K8-4Y
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 22:17:10 -0400
-Received: from mgamail.intel.com ([134.134.136.24])
+ id 1qj9PR-0008OD-UO
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 22:27:20 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1qj9Fb-0004B3-Oj
- for qemu-devel@nongnu.org; Wed, 20 Sep 2023 22:17:09 -0400
+ id 1qj9PO-0006Yu-04
+ for qemu-devel@nongnu.org; Wed, 20 Sep 2023 22:27:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695262627; x=1726798627;
+ t=1695263234; x=1726799234;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=zbnNV5L4m7WkqecyLAcDeGR37pqLW4uVAjqSvaRM8KM=;
- b=kNS5HLgzXXnGUGvdXZeVJyLqc8DPflnUiiy2EKBjuATcoveBPtzztLtI
- d59Ldzl9WnH2v+Dkvp1GAYKy+f3X3y1ImHnIfxgh448f2Ri0S6x74DHY0
- FG5/O9OW3Sx7FydBjxhc44mlmcJn3Uk2p0z0n5hqKXA5MdLiNVENEupTb
- Z1R9jLeqSG6pSA4zQgrAIp5lN8MqCjhuf3yMuybV1UN9b6yCUhAdBAeea
- zcD0bq2QxdigNK5Ikrcbg7UXVKtCDf1AZM9inrp59uYKOdZODQJ2TmNbR
- IGrUWfDWtwkb34v06FjVf6RamtsVnWPwSuF1BBYRYG/bmjWlHCVbrtSac g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="383141447"
-X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; d="scan'208";a="383141447"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2023 19:17:05 -0700
+ bh=gb+PQlQN8CmEhNOi12SdXoCaMtJ60Sb6zz6fn+JlK0Q=;
+ b=RxEUmsCX7VmfiNjuj9qz8PFXRtX07L4ZnEAVvPn67zEf+Y0fAsjz/NeX
+ 76vhs/DQF9EC6HcVLHeck7zJ7wzdUAzkIm1YCZ1YMyE7NXNImLds7Lpgq
+ e9UR7MOMsgqVYehwiwmS1NOJgHYrAuM5n+F9G6HTRtJwK+VF96Q1lhmaM
+ z1/zPg+A6btbmiYtuy1RaONPwwdjVpHF3B9tzVUVSlYPfxQV1tL73cYNx
+ eeWJi2hsWQmqN7JMyzrIf6EAHUekmYeJnpGkNNWpMzcKoN32Xc5XpWOa2
+ 0i+766IAfwjfg4TTgKwKgTGTZw7CvL24UGHniesXddzaTW5VA4nHYOd0g g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="359785708"
+X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; d="scan'208";a="359785708"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2023 19:27:10 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="993889805"
-X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; d="scan'208";a="993889805"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by fmsmga006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Sep 2023 19:17:04 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="920549058"
+X-IronPort-AV: E=Sophos;i="6.03,164,1694761200"; d="scan'208";a="920549058"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 20 Sep 2023 19:27:10 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Wed, 20 Sep 2023 19:17:04 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.1.2507.32; Wed, 20 Sep 2023 19:27:10 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Wed, 20 Sep 2023 19:17:04 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.40) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ 15.1.2507.32 via Frontend Transport; Wed, 20 Sep 2023 19:27:10 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.44) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Wed, 20 Sep 2023 19:17:03 -0700
+ 15.1.2507.32; Wed, 20 Sep 2023 19:27:09 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gdpiIdVoUnA7t/G1nGzsY9wpC/O/UJwc2iJI+d7mkYgVSsX0eZtA2+kRgPMSqKb4Jlfltb93g1q1RCW9cEwOoIICdUp9OcMj0np9AD/DuVCgnm0l9ksPfw93N0AJsOmr9YUNpLJKl+GtRhDeO2fs0d/2wJ2VmYcSDa/Y1Pgc3M+dxrvmovu0tVOzJgAeTCQdyshEUGVObgzF/8oG3egZzCJAS9Mj3fOo0Tj4Ps8MTDos56uGU4EbfOfKES25qpPkMVhtZnKDg7TVqS4fRxo9r1H8lICAT888s5MttmraY1a/i/7OmXau56x204eK+A/aQoxNc//+PkI4flukzRpaXw==
+ b=ekxqrxvum+dpCxNlKhLBvdomL+N7WRCotdEtiUDJHjOob9KUMI11Ab4YwfGMJc1Vl0DJgqXbWSrmVeHBifhAhdRRFWeyPd3SI9g0yx6rdwebM+tt0EK3NNfewCvBAFmmlW/pSRLspMuZ/1KO9byHQ1zkg2dOyLiheU6Kod8niDMJOQdIIxfFVNF6LIVD+5Wcc8lo/8MRdfyvcMwSTuKHFQBqtqs/XJtKxDWwkILJUgZ6wAxutRMaulxcS7CuG8ARpj/5nI6pNCtdwAAdzrQTJYcmvCOBtt+h/4BzVSfeXClUo/LznmLr3SNY4Pj7kUWKy9pbhX3fLzGLB8UokaQjfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3XI/SmQtZNzlCNZIRnWg8RYaGu9K6DAxeVp9Iye2Xno=;
- b=fOO7pcVL/7DXqMeeLLP7wrW1PZ/BPbVGwb7FXhN7X9RqD4fy6I86dkqvHkxdRP3nFmqO3yamGcpBSfnR78s/8vhRomKozn23/AfDauMEld8b8chsRYH1XFiuGIQUmJyUDNAsr0ZMh4mtypZbr6kjc2yuvixg7fnvnODG+o8I+j/OU1c9Tm3cgnTF3cqoLQh1ozneNpGxhQPw/nuKl3NtWCrWn2cOmV1vatuQ8mlNtp5vyyYGUCgOL146MNSofNieSCsiYAaAeRPuNg2di4fwSi6XV3btQfx2srv7r/DdRhzWsQrKrAr0rJWt2Np2n/VeXEygC22L8agbafReRnpwMw==
+ bh=gb+PQlQN8CmEhNOi12SdXoCaMtJ60Sb6zz6fn+JlK0Q=;
+ b=IEpVOj6BCm+bKYVPxlE/tjE4ITQaMWxPOfgxDl8PIDndAw+iRanFbvo4+QxCLJkeM8SjvqpkKWaw1UaU2BqlRHmYOhxcvZ42+2/qIBTg/UQK7AqQRCSWIDb9wggZ1RE8v/nqyLp2UCk6uyF0g4l0umZFDQx+Q/9P/LfzyT9K/w9xQU7uL5JJLS+6vgw2qAM+DpFPkyhPZw8nzMXYA/eQVTYeoIuCmkOqi18ET/Vu0oN7s4u1KAQOEYVxlk2RgPTGeGrLMmSmdHHbwaORYh8cXs8G4VKsjz9uOPYRt8/KsCZcVLmqN5G6zNOuBWD3iKfsU1R6+ISYDfWCwjobpUaqgw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by MW5PR11MB5931.namprd11.prod.outlook.com (2603:10b6:303:198::9)
+ by MN0PR11MB6133.namprd11.prod.outlook.com (2603:10b6:208:3cb::15)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.22; Thu, 21 Sep
- 2023 02:16:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6792.30; Thu, 21 Sep
+ 2023 02:27:05 +0000
 Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
  ([fe80::30d5:1067:980d:b8aa]) by SJ0PR11MB6744.namprd11.prod.outlook.com
  ([fe80::30d5:1067:980d:b8aa%6]) with mapi id 15.20.6792.026; Thu, 21 Sep 2023
- 02:16:58 +0000
+ 02:27:05 +0000
 From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: Alex Williamson <alex.williamson@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "clg@redhat.com"
- <clg@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "peterx@redhat.com"
- <peterx@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>, "Tian,
- Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "clg@redhat.com" <clg@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "Martins, Joao"
+ <joao.m.martins@oracle.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
  <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
 Subject: RE: [PATCH v1 06/22] vfio/common: Add a vfio device iterator
 Thread-Topic: [PATCH v1 06/22] vfio/common: Add a vfio device iterator
-Thread-Index: AQHZ2zAmb8M8reSSS0+IP/LBpi8W2LAkacIAgABCjIA=
-Date: Thu, 21 Sep 2023 02:16:58 +0000
-Message-ID: <SJ0PR11MB6744DD3D97968F6FB47EA66192F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Thread-Index: AQHZ2zAmb8M8reSSS0+IP/LBpi8W2LAjxMqAgADmyOA=
+Date: Thu, 21 Sep 2023 02:27:05 +0000
+Message-ID: <SJ0PR11MB67446FD836EA0AA5376B658192F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
 References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
  <20230830103754.36461-7-zhenzhong.duan@intel.com>
- <20230920161614.3d9e4e5b.alex.williamson@redhat.com>
-In-Reply-To: <20230920161614.3d9e4e5b.alex.williamson@redhat.com>
+ <7a8611de-eef9-9e11-766e-77c20d6973b7@redhat.com>
+In-Reply-To: <7a8611de-eef9-9e11-766e-77c20d6973b7@redhat.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -97,67 +98,76 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|MW5PR11MB5931:EE_
-x-ms-office365-filtering-correlation-id: d47f0ff8-5dbc-48b3-71bc-08dbba48d555
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|MN0PR11MB6133:EE_
+x-ms-office365-filtering-correlation-id: 3b36baa8-f0a2-486b-f731-08dbba4a3f1f
 x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: wBym9GkelhtaI33zaH0jNGAQ99dDYSlV4J/h+GxMRkw/l4YcLXIeNDe2KOKYGiIsOLTkIRoePBV8Nz51ywY13rPF8/RgqOzGTL0sF5FcujWzE9zgg7mAp2AViwvwPDgtMwne+picS2ZBYQ8a7xybmynfonGYeFnfaTQdq318eYaI9urFkweLsm9Pfkh+vzJIARt+2lJ8PQ4R54iAZjAVOlDE9fKFTpYZID8xXs/hyQuAyOqatMMiudmL1qpSnd5l+SrSgDfXd/TuFR5PyMlaxxQ4pW4p6ic/CWFBMAt8gWyWPdh46TWHo4OYlnXmGeUs9bJcRp1JPiZeMjTV2PICVjIAYMrFNtmHHI+Hn2Cnb8u/zpOEUzab4GhI6ubLiNJCKk3dpTxyMuhU7wYVSR7Mv0oDtYZKpApnzzMICZmHnSHoHbtGnH0Ys4TNi+MD0EXjM9y3lX9QMbkqYo0bmG/sHwOCuODbjKafK/nTrOdFSdKdIHrZP1xOEAumemT/ho8vloTsKsqw6rzmew4nm9MRJ258ICSJBwNcDf6V2cmVNARQk9/g8encJss9ph854P9kbP/fQxD+zn3ueZr0R+ADazyVAjZahSkd38Nht9/rF4FfyzgPAi9gLJoXi+T2c9FN
+x-microsoft-antispam-message-info: 0ru4/1GWKFd/FTo/+Bk+0bcng8vLuDvExE6YM/9Eqg8d2o7jq+OTHgSl2zGFtDtkUyyuf4DT8eB9KA4FQ0C/WkpGioVcBw8P32mk8uJlamMOVnuPABaEodrgPceRpOz1hazIuXpBct17Zd0SWzYR6e7mH8QKO+ZUPBqHWz2+PEsWEj5eGWf/vX4QuG98qYRuG9dwJLjfz4Ui1K/nqzI3/DMI42OrQ5qR0ULTvX3Zgl6dzCRyw5eM0OHPo+jGRd6XlSCJcJOfwvaVZzIl88zyiCnMFBRLtAPzcXCz9oGRPJ7QS1k7AK6VmqCKaYuqlE2pRvfuK6+P5tnIMZfiBSETp/AF1bGby69eSpFfPZ0/dvO7iMZaK5htCkbhAmXkDQrlKKb+2xRz/rYteqrxkpsD1LJ4Si5lnJXc6pDgimURe0/fYXcXw2nGyHSSwfkQVLNblUpoD/DGZX9NxVzY0bAvQL2FOYiLz1Wp5V7iaItGl3XPkmxjmN064SYpc2EUEgiic2VvOyyQSsvgn/zyuE9XGDMUpTI6uRxDvUGqWvNq+gRIPFGDATTcrHw25iI8WqwrCXCSGOrNb1jXKl/16t97+mz3gZgAbCzF8pMbajDXZCiToFvQL7qfx8n6TROy45Dh
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(396003)(136003)(366004)(376002)(39860400002)(186009)(1800799009)(451199024)(30864003)(71200400001)(26005)(83380400001)(2906002)(107886003)(66556008)(64756008)(66946007)(4326008)(54906003)(76116006)(66446008)(9686003)(8936002)(66476007)(316002)(6506007)(6916009)(41300700001)(7696005)(5660300002)(8676002)(38100700002)(478600001)(38070700005)(52536014)(82960400001)(122000001)(86362001)(55016003)(33656002);
+ SFS:(13230031)(346002)(376002)(396003)(366004)(136003)(39860400002)(451199024)(186009)(1800799009)(6506007)(7696005)(33656002)(122000001)(38070700005)(38100700002)(55016003)(82960400001)(86362001)(26005)(2906002)(9686003)(478600001)(83380400001)(5660300002)(52536014)(8676002)(110136005)(4326008)(76116006)(8936002)(66556008)(66446008)(316002)(64756008)(66476007)(41300700001)(54906003)(107886003)(71200400001)(66946007);
  DIR:OUT; SFP:1102; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?KJBx5GudvGuS8C/FbgdYZo3WRa+CazvAzo1h3kdZ9LQMatjgZqglmiSG0Gop?=
- =?us-ascii?Q?GCqs1eNeW0boHyJ8qF4YpK4dcd4FR3dStc9Lmjusb95BlZ1KVE42PpKwMDFj?=
- =?us-ascii?Q?Je+9Crm/+vfChhvRR6P9zFVLmm6uk6WNTKrPafABPtEnH76bXasYQsEwr09d?=
- =?us-ascii?Q?a1B2o+jl9SOoK+GWGjCHtMZjxrxONk0muOFknb1XgmFV37AZy7yywWLmcHVM?=
- =?us-ascii?Q?ePz3qga2jbi7YtqHk/zi2cH64l7Eqj1q9i77hgXxmRgs6n2BOzpzq6t9jSB1?=
- =?us-ascii?Q?93qN3E6SJcYmNvxL3MsI/rsqBqR8Z4xcLBuGmh2qVyI40F3EGGuJ6SEddEXM?=
- =?us-ascii?Q?vp64gGI3zqdpwOcKSN+72Ip8IdDG2J0oNQuLfFZywQPOUHfnPolfmx9j5sGi?=
- =?us-ascii?Q?oRDppiYxPFSReiDuGJHvgWYaB8U6bg/UTPPdubds08D5WV4ekMDdkcMRNXmN?=
- =?us-ascii?Q?TLPKJk2oLsj0CBV+IEGnu/I92oszoJJokLIFYDi4MeQEV7BEEEqSzSR43f1K?=
- =?us-ascii?Q?HkTH8cv1D6ZnM1pBhmvH/BR9t97DZ4fuLmfj/ZIVZIyPoTSM2uzBTBxLt3XW?=
- =?us-ascii?Q?IUlUWeHsCKpb7PyvYxVuZ4lxx472ArkB72TojyGJ3pTl8kK2InFK34w+1CaL?=
- =?us-ascii?Q?zhYJyf6+8LKrwxKWSiQjSCkZwA4hYXMvurqSQ2J8uBokvtPYWLhwNd/7E+h6?=
- =?us-ascii?Q?q/5xUCmUMGWdgTOZwJEBcRZYqg4b+MDLJ5jI2dODLtqCYnwaIe0HmlACmQTB?=
- =?us-ascii?Q?RqXYyoPUFFtrPDP9V2UoaTuRGJ+d5DewbVhxP/KPs7Nj1PhBHm32nh2LhIzU?=
- =?us-ascii?Q?mguDQvtiQFDRNm5Fqci8IsjVBXhiqSNjyyQnRtv3aoZ8/RjRr6zm6apUJO+1?=
- =?us-ascii?Q?OM9Tn8oxJxbwuulWVSggpHcMQyW5IKnubMNLYD0KBpFKNx9FmYKYhYcF3nRU?=
- =?us-ascii?Q?OezG2otmJuImdVwbqodVbVSkAxaHmxJKyAJpZwGkaa5FbYMUBYhm/VXv6+bJ?=
- =?us-ascii?Q?/TBejI3XwtHcQC8sDWLtXRWADgAucvljW1vxtsXO8/J1VAiRXYq4dbL3c8p2?=
- =?us-ascii?Q?JDowjun+1MnR6pb003JbtKi+sqSZ4uyGJYYBTYXUnLOATXVFoe/zVyzYnKqQ?=
- =?us-ascii?Q?nlsNLftbfx6sThG6h4VgVfvYU6kDPpzSn3NAmcNkQR8y0+l7904hTJLcygu5?=
- =?us-ascii?Q?QFOc3a/wLHIHXQJzXVMbplcuqJFVlTLOXVLftgZXVnvp2m0JRjkdpTqi3gBG?=
- =?us-ascii?Q?IeW4b7DkqAPNLOz9Z7sruagGRTtQLpsswJNvRi5yhRu4oaQAiR5enwBziNly?=
- =?us-ascii?Q?SBhcuRLTtuGzzf1oFNE0RiykRi7OuDq1IpRWwMHnwZ4tqLyoUYHiG03gIiB2?=
- =?us-ascii?Q?XKHEVPkbE2vKXmvAsXcc8sOEAjAIcox4MXJUVkCcoaJ/eWSvTV8lK/kNwq/P?=
- =?us-ascii?Q?er+7wSkJnS6yjbvGUuMZYdDQqsLu4Qdh66omlBWhQubTJwb4r/ZbVjA6fSJw?=
- =?us-ascii?Q?Z6SjlZIRQhYkCTaH+3DhtxMjSvOo38HesZXxmJgNvnyFOKkWaVkHkEuGiogf?=
- =?us-ascii?Q?JMWqnZqK97T87Hch3Vs73IUpIZxbdXXOZPTkI7Ih?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bFVMOVNwK25SME9FUEVkMjh6alB6UHVKWlhhNjBnU2ZlR1ZHVE5lSTRCK0xv?=
+ =?utf-8?B?My8vVzRNZzIrNFhiblJDdVhkKzZtdlZic2hpNWlHMEx1c0tQZmxtZ3F3ditD?=
+ =?utf-8?B?VW5QVGg4YmlXczUxaGNjMVVCQzdvMWYreFUxUVFDUXZ5VnZKYlg3eWhwYmRV?=
+ =?utf-8?B?Z0hpZFZ0NWo4M0x5QTgrRzJUdG5FYlVKOVlvcDNRUVNxa2sycUpUK1JGckd6?=
+ =?utf-8?B?c3hTejRwOEMxVTRvR2xUdTdtWXQwSFFRQVowcGp0WGNvemFyc2wxSkdqdUJE?=
+ =?utf-8?B?UktqaVdDaTY5WWhNTDlNYTNWTkR1QlFwZGN0UEdEM0NpM21EaHVUajBBMUVD?=
+ =?utf-8?B?dmlxSE5CeitOQ1daMGdQQVY3VWhWcGgvWG9GOEpsc3NFMFlSQk42ZDhsd0Vu?=
+ =?utf-8?B?dEtHSGxKNVB1M3kxMXVRZW4vWUpBTzBjV0FqbSszYXBsQ212dDVyb3l0T1Nr?=
+ =?utf-8?B?bHVhcis0eEQvWWZ6R1JuRU9BSWxLOU1TaVhkL3Z0WWdEWjdYSmYreWRVOGR3?=
+ =?utf-8?B?T3ByaVB1K2xab2tuQWxSRWNla0NmVnhBNDhJUGcxNndwa0REWks1Q2haRnFo?=
+ =?utf-8?B?eHVYZXZuSStmZjZ6Sk81WlhCaFM4R04vc2RiTC91KzFiR2Q3Tlg3dkNYaCs5?=
+ =?utf-8?B?bWNiSXZIL2h4V2VqVUI1VTZJc2ZOcyt2NU1MMGFBNXpwNmdndmVxRWJoMDNs?=
+ =?utf-8?B?ajgzOHVlMnJ3cjYrSXZaVVBSMXBldml3QnlVK1kzWVFaRkx0ZGRiK05nVUpH?=
+ =?utf-8?B?TFdwMFFENXdQNCtNeXorWmU5Tkt0eEZlbmV0TlZNaEs2RXFSOUVOMlh3cE5H?=
+ =?utf-8?B?ZGRXQ0hRN2NVYW1tZXozWm9UUHJrdnJhNFQzSEpFMHJjcXl2TzJZcDJ4RGh3?=
+ =?utf-8?B?dnJmSkJ5ZUtjVkFUMUlnUkl1eU5yUnVYTUdEVG5rSURsOHpxbUNwVDRteWpH?=
+ =?utf-8?B?K0s2NWtpdHRibFkwdU0zekVBcXFSVmNaVVRYOFdhSXRCclBqcGhTM28zQTNZ?=
+ =?utf-8?B?dGZKWUVGbGcxZTJBQlVoVEd0d3JqdTY0MWVHZTMxV1JZSjM5RHUwUTFaOTNv?=
+ =?utf-8?B?dzloTWtYTlF4M05OOE5nTEUrczVLUmFGWFV3bUxLWjlIelVKdVRvVWcrUG9K?=
+ =?utf-8?B?aUFDdkNOaEgyMHoxL0FRTHdYd09IRksyRXRtV2tpbVlCdGVrOXI2Y3FqVnpi?=
+ =?utf-8?B?V2NaZXYzdXVUUHpUc3ZPajBrS0U1RlhFdGZnODRtdEZCdG5kdVQxQ3NCZUQr?=
+ =?utf-8?B?U0YyRi9BdFBJY09PR2xLS01KTUgvQ1lZYkx6STYwVzk3Yjd1TDNKajJtdEpP?=
+ =?utf-8?B?eFUwN1EzTkVMVExtVXRMRk1jdUNPVU45WnNDSTZqNGF3WWxabFpNd0VWVkRz?=
+ =?utf-8?B?T0JFR1pxSnIvaHpVYlhneXAwSG1yd0dhMVYzaEI1RWlvaUJ2Q25YMXlYcUY5?=
+ =?utf-8?B?OWZCZWlUNTB4ZzdLRmR2RmZhcHZRR095TExIQ2RNK2o5RDFOTi9aVUdDYnRO?=
+ =?utf-8?B?WlJvd0l3L2N5a0VNRnhZNkRscnIrTE5iWE53NkszNWJJNzZJRGF6YTQrNVA5?=
+ =?utf-8?B?OWlYWGFvbnRzQnkyeXVnMldMRTJISk4vR1Zpa3FFb2ovWDJGMmJUMzRPekhz?=
+ =?utf-8?B?Y3RQdFh1Q202SytqQWlnWHJ4VHNqUVZpZkxZK2ErTW9jcTFTWUs2eHYwenFH?=
+ =?utf-8?B?bWlMY2N0YWl2ZElLRHkwWlJxRnV3dmV4QnJBVG5TeVdncFVscFhiKy96NXNr?=
+ =?utf-8?B?SUxBZmdBT1lPWGdzRXhjY3ZhcVdFR2ZZZnJDeTdyYXFVZi9tcEFEcFFVOGpp?=
+ =?utf-8?B?UCt0VWxMRnN6ZjJxMDlSV1BKaC9XK1pvTFlGSzBPdEo3cXVnbm9PK2o4NFBj?=
+ =?utf-8?B?NWR3VXNZY1BuZzRPUW9pa0FoOS9acC9mSlo5RWFzMHBIUTFtM1R1NVVSWVlH?=
+ =?utf-8?B?eTRVaG1uU3pscEN1MXV4QTFyM3F3RlJJMHJsd3F0YkR6OXdVMVVsMDBsbnVk?=
+ =?utf-8?B?OUpvaDFvbWRuUEtxd2EzdzNWL0VrYjY5dVpLRU56Q0pSejBoNVhkeFpBWkV1?=
+ =?utf-8?B?OGI4NE9ZWjR1TXZ6UC92L2xWK1pnNS9jazFkUFVVYTVhdER4VWk0VTl1YmZp?=
+ =?utf-8?Q?GqQ1eLC+uIQKNGJD6rapS9llC?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d47f0ff8-5dbc-48b3-71bc-08dbba48d555
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2023 02:16:58.2161 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b36baa8-f0a2-486b-f731-08dbba4a3f1f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2023 02:27:05.2061 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: prZNmFl9VnwaW9rrVZSiAgyqEp1oyC3x3IZqzEwtEoZUaWjBstWu/vKCf6b99Z2w7a5F/eOLl2yPhCrhyQQaVkljWlc195vTeTr7sISXeAo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5931
+X-MS-Exchange-CrossTenant-userprincipalname: dSXUvcx53h5asInIsm+r1rTRpRNVUMuyXsDH3thIK+hY8NXpZi+8xR8A+c/agsJCAfiJ01XGPEP75lfDYNft8wd5j8Q8VEjI1g5KpPUGbSQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6133
 X-OriginatorOrg: intel.com
-Received-SPF: pass client-ip=134.134.136.24;
+Received-SPF: pass client-ip=192.55.52.136;
  envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -173,470 +183,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
->-----Original Message-----
->From: Alex Williamson <alex.williamson@redhat.com>
->Subject: Re: [PATCH v1 06/22] vfio/common: Add a vfio device iterator
->
->On Wed, 30 Aug 2023 18:37:38 +0800
->Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
->
->> With a vfio device iterator added, we can make some migration and reset
->> related functions group agnostic.
->> E.x:
->> vfio_mig_active
->> vfio_migratable_device_num
->> vfio_devices_all_dirty_tracking
->> vfio_devices_all_device_dirty_tracking
->> vfio_devices_all_running_and_mig_active
->> vfio_devices_dma_logging_stop
->> vfio_devices_dma_logging_start
->> vfio_devices_query_dirty_bitmap
->> vfio_reset_handler
->>
->> Or else we need to add container specific callback variants for above
->> functions just because they iterate devices based on group.
->>
->> Move the reset handler registration/unregistration to a place that is no=
-t
->> group specific, saying first vfio address space created instead of the
->> first group.
->>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>  hw/vfio/common.c | 224 ++++++++++++++++++++++++++---------------------
->>  1 file changed, 122 insertions(+), 102 deletions(-)
->>
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 949ad6714a..51c6e7598e 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -84,6 +84,26 @@ static int vfio_ram_block_discard_disable(VFIOContain=
-er
->*container, bool state)
->>      }
->>  }
->>
->> +static VFIODevice *vfio_container_dev_iter_next(VFIOContainer *containe=
-r,
->> +                                                VFIODevice *curr)
->> +{
->> +    VFIOGroup *group;
->> +
->> +    if (!curr) {
->> +        group =3D QLIST_FIRST(&container->group_list);
->> +    } else {
->> +        if (curr->next.le_next) {
->> +            return curr->next.le_next;
->> +        }
->
->
->VFIODevice *device =3D QLIST_NEXT(curr, next);
->
->if (device) {
->    return device;
->}
->
->> +        group =3D curr->group->container_next.le_next;
->
->
->group =3D QLIST_NEXT(curr->group, container_next);
->
->> +    }
->> +
->> +    if (!group) {
->> +        return NULL;
->> +    }
->> +    return QLIST_FIRST(&group->device_list);
->> +}
->> +
->>  /*
->>   * Device state interfaces
->>   */
->> @@ -112,17 +132,22 @@ static int vfio_get_dirty_bitmap(VFIOContainer
->*container, uint64_t iova,
->>
->>  bool vfio_mig_active(void)
->>  {
->> -    VFIOGroup *group;
->> +    VFIOAddressSpace *space;
->> +    VFIOContainer *container;
->>      VFIODevice *vbasedev;
->>
->> -    if (QLIST_EMPTY(&vfio_group_list)) {
->> +    if (QLIST_EMPTY(&vfio_address_spaces)) {
->>          return false;
->>      }
->>
->> -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->migration_blocker) {
->> -                return false;
->> +    QLIST_FOREACH(space, &vfio_address_spaces, list) {
->> +        QLIST_FOREACH(container, &space->containers, next) {
->> +            vbasedev =3D NULL;
->> +            while ((vbasedev =3D vfio_container_dev_iter_next(container=
-,
->> +                                                            vbasedev)))=
- {
->> +                if (vbasedev->migration_blocker) {
->> +                    return false;
->> +                }
->
->Appears easy to avoid setting vbasedev in the loop iterator and
->improving the scope of vbasedev:
->
->VFIODevice *vbasedev =3D vfio_container_dev_iter_next(container, NULL);
->
->while (vbasedev) {
->    if (vbasedev->migration_blocker) {
->        return false;
->    }
->
->    vbasedev =3D vfio_container_dev_iter_next(container, vbasedev);
->}
->
->>              }
->>          }
->>      }
->> @@ -133,14 +158,19 @@ static Error *multiple_devices_migration_blocker;
->>
->>  static unsigned int vfio_migratable_device_num(void)
->>  {
->> -    VFIOGroup *group;
->> +    VFIOAddressSpace *space;
->> +    VFIOContainer *container;
->>      VFIODevice *vbasedev;
->>      unsigned int device_num =3D 0;
->>
->> -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->migration) {
->> -                device_num++;
->> +    QLIST_FOREACH(space, &vfio_address_spaces, list) {
->> +        QLIST_FOREACH(container, &space->containers, next) {
->> +            vbasedev =3D NULL;
->> +            while ((vbasedev =3D vfio_container_dev_iter_next(container=
-,
->> +                                                            vbasedev)))=
- {
->> +                if (vbasedev->migration) {
->> +                    device_num++;
->> +                }
->
->Same as above.
->
->>              }
->>          }
->>      }
->> @@ -207,8 +237,7 @@ static void vfio_set_migration_error(int err)
->>
->>  static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
->>  {
->> -    VFIOGroup *group;
->> -    VFIODevice *vbasedev;
->> +    VFIODevice *vbasedev =3D NULL;
->>      MigrationState *ms =3D migrate_get_current();
->>
->>      if (ms->state !=3D MIGRATION_STATUS_ACTIVE &&
->> @@ -216,19 +245,17 @@ static bool
->vfio_devices_all_dirty_tracking(VFIOContainer *container)
->>          return false;
->>      }
->>
->> -    QLIST_FOREACH(group, &container->group_list, container_next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            VFIOMigration *migration =3D vbasedev->migration;
->> +    while ((vbasedev =3D vfio_container_dev_iter_next(container, vbased=
-ev))) {
->> +        VFIOMigration *migration =3D vbasedev->migration;
->
->Similar, and all the other loops below.
->
->>
->> -            if (!migration) {
->> -                return false;
->> -            }
->> +        if (!migration) {
->> +            return false;
->> +        }
->>
->> -            if (vbasedev->pre_copy_dirty_page_tracking =3D=3D ON_OFF_AU=
-TO_OFF &&
->> -                (migration->device_state =3D=3D VFIO_DEVICE_STATE_RUNNI=
-NG ||
->> -                 migration->device_state =3D=3D VFIO_DEVICE_STATE_PRE_C=
-OPY)) {
->> -                return false;
->> -            }
->> +        if (vbasedev->pre_copy_dirty_page_tracking =3D=3D ON_OFF_AUTO_O=
-FF &&
->> +            (migration->device_state =3D=3D VFIO_DEVICE_STATE_RUNNING |=
-|
->> +             migration->device_state =3D=3D VFIO_DEVICE_STATE_PRE_COPY)=
-) {
->> +            return false;
->>          }
->>      }
->>      return true;
->> @@ -236,14 +263,11 @@ static bool
->vfio_devices_all_dirty_tracking(VFIOContainer *container)
->>
->>  static bool vfio_devices_all_device_dirty_tracking(VFIOContainer *conta=
-iner)
->>  {
->> -    VFIOGroup *group;
->> -    VFIODevice *vbasedev;
->> +    VFIODevice *vbasedev =3D NULL;
->>
->> -    QLIST_FOREACH(group, &container->group_list, container_next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (!vbasedev->dirty_pages_supported) {
->> -                return false;
->> -            }
->> +    while ((vbasedev =3D vfio_container_dev_iter_next(container, vbased=
-ev))) {
->> +        if (!vbasedev->dirty_pages_supported) {
->> +            return false;
->>          }
->>      }
->>
->> @@ -256,27 +280,24 @@ static bool
->vfio_devices_all_device_dirty_tracking(VFIOContainer *container)
->>   */
->>  static bool vfio_devices_all_running_and_mig_active(VFIOContainer
->*container)
->>  {
->> -    VFIOGroup *group;
->> -    VFIODevice *vbasedev;
->> +    VFIODevice *vbasedev =3D NULL;
->>
->>      if (!migration_is_active(migrate_get_current())) {
->>          return false;
->>      }
->>
->> -    QLIST_FOREACH(group, &container->group_list, container_next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            VFIOMigration *migration =3D vbasedev->migration;
->> +    while ((vbasedev =3D vfio_container_dev_iter_next(container, vbased=
-ev))) {
->> +        VFIOMigration *migration =3D vbasedev->migration;
->>
->> -            if (!migration) {
->> -                return false;
->> -            }
->> +        if (!migration) {
->> +            return false;
->> +        }
->>
->> -            if (migration->device_state =3D=3D VFIO_DEVICE_STATE_RUNNIN=
-G ||
->> -                migration->device_state =3D=3D VFIO_DEVICE_STATE_PRE_CO=
-PY) {
->> -                continue;
->> -            } else {
->> -                return false;
->> -            }
->> +        if (migration->device_state =3D=3D VFIO_DEVICE_STATE_RUNNING ||
->> +            migration->device_state =3D=3D VFIO_DEVICE_STATE_PRE_COPY) =
-{
->> +            continue;
->> +        } else {
->> +            return false;
->>          }
->>      }
->>      return true;
->> @@ -1243,25 +1264,22 @@ static void
->vfio_devices_dma_logging_stop(VFIOContainer *container)
->>      uint64_t buf[DIV_ROUND_UP(sizeof(struct vfio_device_feature),
->>                                sizeof(uint64_t))] =3D {};
->>      struct vfio_device_feature *feature =3D (struct vfio_device_feature=
- *)buf;
->> -    VFIODevice *vbasedev;
->> -    VFIOGroup *group;
->> +    VFIODevice *vbasedev =3D NULL;
->>
->>      feature->argsz =3D sizeof(buf);
->>      feature->flags =3D VFIO_DEVICE_FEATURE_SET |
->>                       VFIO_DEVICE_FEATURE_DMA_LOGGING_STOP;
->>
->> -    QLIST_FOREACH(group, &container->group_list, container_next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (!vbasedev->dirty_tracking) {
->> -                continue;
->> -            }
->> +    while ((vbasedev =3D vfio_container_dev_iter_next(container, vbased=
-ev))) {
->> +        if (!vbasedev->dirty_tracking) {
->> +            continue;
->> +        }
->>
->> -            if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
->> -                warn_report("%s: Failed to stop DMA logging, err %d (%s=
-)",
->> -                             vbasedev->name, -errno, strerror(errno));
->> -            }
->> -            vbasedev->dirty_tracking =3D false;
->> +        if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
->> +            warn_report("%s: Failed to stop DMA logging, err %d (%s)",
->> +                        vbasedev->name, -errno, strerror(errno));
->>          }
->> +        vbasedev->dirty_tracking =3D false;
->>      }
->>  }
->>
->> @@ -1336,8 +1354,7 @@ static int
->vfio_devices_dma_logging_start(VFIOContainer *container)
->>  {
->>      struct vfio_device_feature *feature;
->>      VFIODirtyRanges ranges;
->> -    VFIODevice *vbasedev;
->> -    VFIOGroup *group;
->> +    VFIODevice *vbasedev =3D NULL;
->>      int ret =3D 0;
->>
->>      vfio_dirty_tracking_init(container, &ranges);
->> @@ -1347,21 +1364,19 @@ static int
->vfio_devices_dma_logging_start(VFIOContainer *container)
->>          return -errno;
->>      }
->>
->> -    QLIST_FOREACH(group, &container->group_list, container_next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->dirty_tracking) {
->> -                continue;
->> -            }
->> +    while ((vbasedev =3D vfio_container_dev_iter_next(container, vbased=
-ev))) {
->> +        if (vbasedev->dirty_tracking) {
->> +            continue;
->> +        }
->>
->> -            ret =3D ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature);
->> -            if (ret) {
->> -                ret =3D -errno;
->> -                error_report("%s: Failed to start DMA logging, err %d (=
-%s)",
->> -                             vbasedev->name, ret, strerror(errno));
->> -                goto out;
->> -            }
->> -            vbasedev->dirty_tracking =3D true;
->> +        ret =3D ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature);
->> +        if (ret) {
->> +            ret =3D -errno;
->> +            error_report("%s: Failed to start DMA logging, err %d (%s)"=
-,
->> +                         vbasedev->name, ret, strerror(errno));
->> +            goto out;
->>          }
->> +        vbasedev->dirty_tracking =3D true;
->>      }
->>
->>  out:
->> @@ -1440,22 +1455,19 @@ static int
->vfio_devices_query_dirty_bitmap(VFIOContainer *container,
->>                                             VFIOBitmap *vbmap, hwaddr io=
-va,
->>                                             hwaddr size)
->>  {
->> -    VFIODevice *vbasedev;
->> -    VFIOGroup *group;
->> +    VFIODevice *vbasedev =3D NULL;
->>      int ret;
->>
->> -    QLIST_FOREACH(group, &container->group_list, container_next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            ret =3D vfio_device_dma_logging_report(vbasedev, iova, size=
-,
->> -                                                 vbmap->bitmap);
->> -            if (ret) {
->> -                error_report("%s: Failed to get DMA logging report, iov=
-a: "
->> -                             "0x%" HWADDR_PRIx ", size: 0x%" HWADDR_PRI=
-x
->> -                             ", err: %d (%s)",
->> -                             vbasedev->name, iova, size, ret, strerror(=
--ret));
->> +    while ((vbasedev =3D vfio_container_dev_iter_next(container, vbased=
-ev))) {
->> +        ret =3D vfio_device_dma_logging_report(vbasedev, iova, size,
->> +                                             vbmap->bitmap);
->> +        if (ret) {
->> +            error_report("%s: Failed to get DMA logging report, iova: "
->> +                         "0x%" HWADDR_PRIx ", size: 0x%" HWADDR_PRIx
->> +                         ", err: %d (%s)",
->> +                         vbasedev->name, iova, size, ret, strerror(-ret=
-));
->>
->> -                return ret;
->> -            }
->> +            return ret;
->>          }
->>      }
->>
->> @@ -1739,21 +1751,30 @@ bool vfio_get_info_dma_avail(struct
->vfio_iommu_type1_info *info,
->>
->>  void vfio_reset_handler(void *opaque)
->>  {
->> -    VFIOGroup *group;
->> +    VFIOAddressSpace *space;
->> +    VFIOContainer *container;
->>      VFIODevice *vbasedev;
->>
->> -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->dev->realized) {
->> -                vbasedev->ops->vfio_compute_needs_reset(vbasedev);
->> +    QLIST_FOREACH(space, &vfio_address_spaces, list) {
->> +        QLIST_FOREACH(container, &space->containers, next) {
->> +            vbasedev =3D NULL;
->> +            while ((vbasedev =3D vfio_container_dev_iter_next(container=
-,
->> +                                                            vbasedev)))=
- {
->> +                if (vbasedev->dev->realized) {
->> +                    vbasedev->ops->vfio_compute_needs_reset(vbasedev);
->> +                }
->>              }
->>          }
->>      }
->>
->> -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->dev->realized && vbasedev->needs_reset) {
->> -                vbasedev->ops->vfio_hot_reset_multi(vbasedev);
->> +    QLIST_FOREACH(space, &vfio_address_spaces, list) {
->> +        QLIST_FOREACH(container, &space->containers, next) {
->> +            vbasedev =3D NULL;
->> +            while ((vbasedev =3D vfio_container_dev_iter_next(container=
-,
->> +                                                            vbasedev)))=
- {
->> +                if (vbasedev->dev->realized && vbasedev->needs_reset) {
->> +                    vbasedev->ops->vfio_hot_reset_multi(vbasedev);
->> +                    }
->>              }
->>          }
->>      }
->> @@ -1841,6 +1862,10 @@ static VFIOAddressSpace
->*vfio_get_address_space(AddressSpace *as)
->>      space->as =3D as;
->>      QLIST_INIT(&space->containers);
->>
->> +    if (QLIST_EMPTY(&vfio_address_spaces)) {
->> +        qemu_register_reset(vfio_reset_handler, NULL);
->> +    }
->> +
->
->We could just have a vfio_device_list to avoid iterating either
->containers and group or address spaces.  Thanks,
-
-Good idea! Will do.
-A vfio_device_list can be used by both BEs and I can have this
-patch dropped.
-
-Thanks
-Zhenzhong
+SGkgRXJpYywNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogRXJpYyBBdWdl
+ciA8ZXJpYy5hdWdlckByZWRoYXQuY29tPg0KPlNlbnQ6IFdlZG5lc2RheSwgU2VwdGVtYmVyIDIw
+LCAyMDIzIDg6MjYgUE0NCj5TdWJqZWN0OiBSZTogW1BBVENIIHYxIDA2LzIyXSB2ZmlvL2NvbW1v
+bjogQWRkIGEgdmZpbyBkZXZpY2UgaXRlcmF0b3INCj4NCj5IaSBaaGVuemhvbmcsDQo+DQo+T24g
+OC8zMC8yMyAxMjozNywgWmhlbnpob25nIER1YW4gd3JvdGU6DQo+PiBXaXRoIGEgdmZpbyBkZXZp
+Y2UgaXRlcmF0b3IgYWRkZWQsIHdlIGNhbiBtYWtlIHNvbWUgbWlncmF0aW9uIGFuZCByZXNldA0K
+Pj4gcmVsYXRlZCBmdW5jdGlvbnMgZ3JvdXAgYWdub3N0aWMuDQo+PiBFLng6DQo+PiB2ZmlvX21p
+Z19hY3RpdmUNCj4+IHZmaW9fbWlncmF0YWJsZV9kZXZpY2VfbnVtDQo+PiB2ZmlvX2RldmljZXNf
+YWxsX2RpcnR5X3RyYWNraW5nDQo+PiB2ZmlvX2RldmljZXNfYWxsX2RldmljZV9kaXJ0eV90cmFj
+a2luZw0KPj4gdmZpb19kZXZpY2VzX2FsbF9ydW5uaW5nX2FuZF9taWdfYWN0aXZlDQo+PiB2Zmlv
+X2RldmljZXNfZG1hX2xvZ2dpbmdfc3RvcA0KPj4gdmZpb19kZXZpY2VzX2RtYV9sb2dnaW5nX3N0
+YXJ0DQo+PiB2ZmlvX2RldmljZXNfcXVlcnlfZGlydHlfYml0bWFwDQo+PiB2ZmlvX3Jlc2V0X2hh
+bmRsZXINCj4+DQo+PiBPciBlbHNlIHdlIG5lZWQgdG8gYWRkIGNvbnRhaW5lciBzcGVjaWZpYyBj
+YWxsYmFjayB2YXJpYW50cyBmb3IgYWJvdmUNCj4+IGZ1bmN0aW9ucyBqdXN0IGJlY2F1c2UgdGhl
+eSBpdGVyYXRlIGRldmljZXMgYmFzZWQgb24gZ3JvdXAuDQo+Pg0KPj4gTW92ZSB0aGUgcmVzZXQg
+aGFuZGxlciByZWdpc3RyYXRpb24vdW5yZWdpc3RyYXRpb24gdG8gYSBwbGFjZSB0aGF0IGlzIG5v
+dA0KPj4gZ3JvdXAgc3BlY2lmaWMsIHNheWluZyBmaXJzdCB2ZmlvIGFkZHJlc3Mgc3BhY2UgY3Jl
+YXRlZCBpbnN0ZWFkIG9mIHRoZQ0KPj4gZmlyc3QgZ3JvdXAuDQo+SSB3b3VsZCBtb3ZlIHRoZSBy
+ZXNldCBoYW5kbGVyIHJlZ2lzdHJhdGlvbi91bnJlZ2lzdHJhdGlvbiBjaGFuZ2VzIGluIGENCj5z
+ZXBhcmF0ZSBwYXRjaC4NCg0KR290IGl0Lg0KDQo+YmVzaWRlcyzCoCBJIGRvbid0IGNhdGNoIHdo
+YXQgeW91IG1lYW4gYnkNCj4ic2F5aW5nIGZpcnN0IHZmaW8gYWRkcmVzcyBzcGFjZSBjcmVhdGVk
+IGluc3RlYWQgb2YgdGhlIGZpcnN0IGdyb3VwLiINCg0KQmVmb3JlIHBhdGNoLCByZXNldCBoYW5k
+ZXIgaXMgcmVnaXN0ZXJlZCBpbiBmaXJzdCBncm91cCBjcmVhdGlvbiwNCmFmdGVyIHBhdGNoLCBp
+dCdzIHJlZ2lzdGVyZWQgaW4gZmlyc3QgYWRkcmVzcyBzcGFjZSBjcmVhdGlvbi4NClRoZSBtYWlu
+IHB1cnBvc2UgaXMgdG8gbWFrZSB0aGlzIGNvZGUgZ3JvdXAgYWdub3N0aWMuDQoNCkZvciB0aGUg
+ZGV2aWNlIGl0ZXJhdGlvbiBwYXJ0IG9mIHRoaXMgcGF0Y2gsIEkgcGxhbiB0byBmb2xsb3cgQWxl
+eCdzDQpzdWdnZXN0aW9uIHRvIHVzZSB2ZmlvX2RldmljZV9saXN0IGZvciBib3RoIEJFcy4gVGhh
+bmtzIGZvciB5b3VyDQp0aW1lIG9uIHRoaXMgcGF0Y2guDQoNCkJScy4NClpoZW56aG9uZw0K
 
