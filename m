@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C457A9869
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA047A9864
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:42:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjNcQ-00022z-F5; Thu, 21 Sep 2023 13:37:38 -0400
+	id 1qjNcO-00021x-Bk; Thu, 21 Sep 2023 13:37:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcL-00020z-F5
+ id 1qjNcL-00020y-E1
  for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:34 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcG-0007fL-Ck
+ id 1qjNcG-0007fW-Lk
  for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:32 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40475103519so13072045e9.0
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-31dd10c2b8bso1236103f8f.3
  for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1695317847; x=1695922647; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=bwOul3+f13BVG4rdOd+Q2KpVCyeubelgJwfI2HbCULQ=;
- b=wxlVe8+hv0iSVqNO9LS53eBXjKLG8xFPOzQiPa+C+J+Vt/5xHWTzVokOblRTuRkgiW
- pekyFDIgi8YvPoFrEC9wfLtAWveFxaumFSyJCetcuUElLT/7brg1fRaoj22xMd5QSkbx
- XAogY5dOJen3AZCMLCYkw1WOwvHAdh3L87rEpWyD2hBHo0z/Ta3y469MFLu9ukaubl0f
- tCoIP2ha8oBJtKDwv0zVQrYRvSeIHkl3LKknjfhXTxj22XPIn6NRMgg7RG7pnZkke76a
- 0E3U75qRnQzctaeQrMPe/8fa1ji40Ma1qsmAaSTFZNZMF3gFZmReidJdc+LV4hZZdHuk
- j4BQ==
+ :reply-to; bh=xqicFx4SLmYdVA1B6BSjmTvNZt1hFvhyCtMsK7qBhx4=;
+ b=f84o5UM0KDIGekTb8zd0rZbbXkmjKDbfOmXY418EdLidBqvt+pB3foiV8H3OkDg3mr
+ Pl/VCIVMAGGhE1CKh9xXOTUaGaItLj9gcnBaIl4Gm1Xcm3EXXp9ftPXWAO2rqfRw7pbh
+ ofwgeSnyC+k0VatK07X9UIwdyB+1DyDh6oQzQSdE6JtnAUsevsqEQopHfZsGRxTY3/SI
+ 6DuSe67A0RLyYC05lYCHeLZqXuSGq/FqVt8QfsAmODHMWBBvXqM9vsMjDrs9KCOA0j7P
+ Tt0KtRowUgT63fsMkOGPoqdOePFtdhc3qe1YjnNb0RFJd/o0hehr7A1rjd4dyaGDlQBa
+ tv8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1695317847; x=1695922647;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bwOul3+f13BVG4rdOd+Q2KpVCyeubelgJwfI2HbCULQ=;
- b=VfGj9Zn/QJOaTAAeVWrNDWYKlIov6xMqtgTRRpJMo9cQkOa53XG9JEQPPyhsC9itri
- iibUkPuOHwdavuaqP5KKrEcf4lrbB9pXElvFiVdKDVStFnFnCfKh/fjO37k6HJlrE9dc
- VJGMr1jQgJgXWk4YHiEWyq7kSEg2UOVriZh1R2q7CVNF3zS13RbpI85jifymX1n56nkS
- nQf2aI0VW9p99XeOkY8kIBrp4NBcHfGfoYcTpj9Y9ZSx+OkAaxDKI9GI8wbDN4hPfn1s
- r5ndnii5avyLyNwiisRk+MRXAoZchcyxb87kIi0A2K8B4CTqS8BlZP9mMTr2g9tAunu/
- WVsA==
-X-Gm-Message-State: AOJu0YyfyGqLXBf4bfXabiz3h5ixQAc9gV8AUnHt+LiU+JNwX3WGbc9J
- 4JNk93WkKMDckpVE1nPiuKZ16/mzwYih0H6JlWg=
-X-Google-Smtp-Source: AGHT+IEL+vU/YWSmmctjFRpGnS2mqPzNGK8+ZpwTN2cyNKpq6R5hRSNTtjDSDskY3u6T1jSqo1urUA==
-X-Received: by 2002:a7b:cb86:0:b0:402:f07c:4b48 with SMTP id
- m6-20020a7bcb86000000b00402f07c4b48mr5164727wmi.28.1695317846996; 
- Thu, 21 Sep 2023 10:37:26 -0700 (PDT)
+ bh=xqicFx4SLmYdVA1B6BSjmTvNZt1hFvhyCtMsK7qBhx4=;
+ b=r/f/QC7ussEIg5bFcG3hnPG09hemXkjPzBLcrRZ54JLCTxmG2xWyYLA/+un2qaajeR
+ htbLI1PplP+aWvopnMrxUP8r/lCswvQ8pQ/rwZrvK6+qX1poUypPHmn9OEev4fdRYeqb
+ JBSag1AmkQ9DHgzGPh9JOQDg/h3mKGGsEuTbr1UgpgwuRCG4haiBmy5cxzYLQnlywKh2
+ BumsQANStywY/k7TYqiuFRVF1zedL0FhJZmiqKrSUhtxsCYr4dNwkprvVODAB3I7THrb
+ LRhrdXLO9I+Bi/PKaMF69lSvzVVYh0kEZU/RtHjfdu/Dd8vVQGZGsHcK8VWgUuQu94Ro
+ XyQg==
+X-Gm-Message-State: AOJu0YwDYbV3mTB5lUjps1at+z9E3dctYl+PByLY145pkT75F/a7sOTw
+ oUkehUgXZI0HG8RdgCdXps7iwUiuUsZ7QtALb1E=
+X-Google-Smtp-Source: AGHT+IGyNOTYNGM5G07ub1jpnJ7ggRyr+xIhIfbk+eBr3ZIYnhfuWg07JOm+mmjHBhyl9I9jncZm0g==
+X-Received: by 2002:a5d:56c4:0:b0:31f:a277:4cde with SMTP id
+ m4-20020a5d56c4000000b0031fa2774cdemr5786934wrw.43.1695317847365; 
+ Thu, 21 Sep 2023 10:37:27 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.26
+ m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.27
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Sep 2023 10:37:26 -0700 (PDT)
+ Thu, 21 Sep 2023 10:37:27 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/30] target/arm: Remove unused allocation_tag_mem() argument
-Date: Thu, 21 Sep 2023 18:37:00 +0100
-Message-Id: <20230921173720.3250581-11-peter.maydell@linaro.org>
+Subject: [PULL 11/30] target/arm: Don't skip MTE checks for LDRT/STRT at EL0
+Date: Thu, 21 Sep 2023 18:37:01 +0100
+Message-Id: <20230921173720.3250581-12-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921173720.3250581-1-peter.maydell@linaro.org>
 References: <20230921173720.3250581-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,173 +90,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The allocation_tag_mem() function takes an argument tag_size,
-but it never uses it. Remove the argument. In mte_probe_int()
-in particular this also lets us delete the code computing
-the value we were passing in.
+The LDRT/STRT "unprivileged load/store" instructions behave like
+normal ones if executed at EL0. We handle this correctly for
+the load/store semantics, but get the MTE checking wrong.
 
+We always look at s->mte_active[is_unpriv] to see whether we should
+be doing MTE checks, but in hflags.c when we set the TB flags that
+will be used to fill the mte_active[] array we only set the
+MTE0_ACTIVE bit if UNPRIV is true (i.e.  we are not at EL0).
+
+This means that a LDRT at EL0 will see s->mte_active[1] as 0,
+and will not do MTE checks even when MTE is enabled.
+
+To avoid the translate-time code having to do an explicit check on
+s->unpriv to see if it is OK to index into the mte_active[] array,
+duplicate MTE_ACTIVE into MTE0_ACTIVE when UNPRIV is false.
+
+(This isn't a very serious bug because generally nobody executes
+LDRT/STRT at EL0, because they have no use there.)
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20230912140434.1333369-2-peter.maydell@linaro.org
 ---
- target/arm/tcg/mte_helper.c | 42 +++++++++++++------------------------
- 1 file changed, 14 insertions(+), 28 deletions(-)
+ target/arm/tcg/hflags.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/target/arm/tcg/mte_helper.c b/target/arm/tcg/mte_helper.c
-index b23d11563ab..e2494f73cf3 100644
---- a/target/arm/tcg/mte_helper.c
-+++ b/target/arm/tcg/mte_helper.c
-@@ -57,7 +57,6 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
-  * @ptr_access: the access to use for the virtual address
-  * @ptr_size: the number of bytes in the normal memory access
-  * @tag_access: the access to use for the tag memory
-- * @tag_size: the number of bytes in the tag memory access
-  * @ra: the return address for exception handling
-  *
-  * Our tag memory is formatted as a sequence of little-endian nibbles.
-@@ -69,15 +68,12 @@ static int choose_nonexcluded_tag(int tag, int offset, uint16_t exclude)
-  * a pointer to the corresponding tag byte.  Exit with exception if the
-  * virtual address is not accessible for @ptr_access.
-  *
-- * The @ptr_size and @tag_size values may not have an obvious relation
-- * due to the alignment of @ptr, and the number of tag checks required.
-- *
-  * If there is no tag storage corresponding to @ptr, return NULL.
-  */
- static uint8_t *allocation_tag_mem(CPUARMState *env, int ptr_mmu_idx,
-                                    uint64_t ptr, MMUAccessType ptr_access,
-                                    int ptr_size, MMUAccessType tag_access,
--                                   int tag_size, uintptr_t ra)
-+                                   uintptr_t ra)
- {
- #ifdef CONFIG_USER_ONLY
-     uint64_t clean_ptr = useronly_clean_ptr(ptr);
-@@ -275,7 +271,7 @@ uint64_t HELPER(ldg)(CPUARMState *env, uint64_t ptr, uint64_t xt)
- 
-     /* Trap if accessing an invalid page.  */
-     mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_LOAD, 1,
--                             MMU_DATA_LOAD, 1, GETPC());
-+                             MMU_DATA_LOAD, GETPC());
- 
-     /* Load if page supports tags. */
-     if (mem) {
-@@ -329,7 +325,7 @@ static inline void do_stg(CPUARMState *env, uint64_t ptr, uint64_t xt,
- 
-     /* Trap if accessing an invalid page.  */
-     mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_STORE, TAG_GRANULE,
--                             MMU_DATA_STORE, 1, ra);
-+                             MMU_DATA_STORE, ra);
- 
-     /* Store if page supports tags. */
-     if (mem) {
-@@ -372,10 +368,10 @@ static inline void do_st2g(CPUARMState *env, uint64_t ptr, uint64_t xt,
-     if (ptr & TAG_GRANULE) {
-         /* Two stores unaligned mod TAG_GRANULE*2 -- modify two bytes. */
-         mem1 = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_STORE,
--                                  TAG_GRANULE, MMU_DATA_STORE, 1, ra);
-+                                  TAG_GRANULE, MMU_DATA_STORE, ra);
-         mem2 = allocation_tag_mem(env, mmu_idx, ptr + TAG_GRANULE,
-                                   MMU_DATA_STORE, TAG_GRANULE,
--                                  MMU_DATA_STORE, 1, ra);
-+                                  MMU_DATA_STORE, ra);
- 
-         /* Store if page(s) support tags. */
-         if (mem1) {
-@@ -387,7 +383,7 @@ static inline void do_st2g(CPUARMState *env, uint64_t ptr, uint64_t xt,
-     } else {
-         /* Two stores aligned mod TAG_GRANULE*2 -- modify one byte. */
-         mem1 = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_STORE,
--                                  2 * TAG_GRANULE, MMU_DATA_STORE, 1, ra);
-+                                  2 * TAG_GRANULE, MMU_DATA_STORE, ra);
-         if (mem1) {
-             tag |= tag << 4;
-             qatomic_set(mem1, tag);
-@@ -435,8 +431,7 @@ uint64_t HELPER(ldgm)(CPUARMState *env, uint64_t ptr)
- 
-     /* Trap if accessing an invalid page.  */
-     tag_mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_LOAD,
--                                 gm_bs_bytes, MMU_DATA_LOAD,
--                                 gm_bs_bytes / (2 * TAG_GRANULE), ra);
-+                                 gm_bs_bytes, MMU_DATA_LOAD, ra);
- 
-     /* The tag is squashed to zero if the page does not support tags.  */
-     if (!tag_mem) {
-@@ -495,8 +490,7 @@ void HELPER(stgm)(CPUARMState *env, uint64_t ptr, uint64_t val)
- 
-     /* Trap if accessing an invalid page.  */
-     tag_mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_STORE,
--                                 gm_bs_bytes, MMU_DATA_LOAD,
--                                 gm_bs_bytes / (2 * TAG_GRANULE), ra);
-+                                 gm_bs_bytes, MMU_DATA_LOAD, ra);
- 
-     /*
-      * Tag store only happens if the page support tags,
-@@ -552,7 +546,7 @@ void HELPER(stzgm_tags)(CPUARMState *env, uint64_t ptr, uint64_t val)
-     ptr &= -dcz_bytes;
- 
-     mem = allocation_tag_mem(env, mmu_idx, ptr, MMU_DATA_STORE, dcz_bytes,
--                             MMU_DATA_STORE, tag_bytes, ra);
-+                             MMU_DATA_STORE, ra);
-     if (mem) {
-         int tag_pair = (val & 0xf) * 0x11;
-         memset(mem, tag_pair, tag_bytes);
-@@ -732,8 +726,7 @@ static int mte_probe_int(CPUARMState *env, uint32_t desc, uint64_t ptr,
-     int mmu_idx, ptr_tag, bit55;
-     uint64_t ptr_last, prev_page, next_page;
-     uint64_t tag_first, tag_last;
--    uint64_t tag_byte_first, tag_byte_last;
--    uint32_t sizem1, tag_count, tag_size, n, c;
-+    uint32_t sizem1, tag_count, n, c;
-     uint8_t *mem1, *mem2;
-     MMUAccessType type;
- 
-@@ -763,19 +756,14 @@ static int mte_probe_int(CPUARMState *env, uint32_t desc, uint64_t ptr,
-     tag_last = QEMU_ALIGN_DOWN(ptr_last, TAG_GRANULE);
-     tag_count = ((tag_last - tag_first) / TAG_GRANULE) + 1;
- 
--    /* Round the bounds to twice the tag granule, and compute the bytes. */
--    tag_byte_first = QEMU_ALIGN_DOWN(ptr, 2 * TAG_GRANULE);
--    tag_byte_last = QEMU_ALIGN_DOWN(ptr_last, 2 * TAG_GRANULE);
--
-     /* Locate the page boundaries. */
-     prev_page = ptr & TARGET_PAGE_MASK;
-     next_page = prev_page + TARGET_PAGE_SIZE;
- 
-     if (likely(tag_last - prev_page < TARGET_PAGE_SIZE)) {
-         /* Memory access stays on one page. */
--        tag_size = ((tag_byte_last - tag_byte_first) / (2 * TAG_GRANULE)) + 1;
-         mem1 = allocation_tag_mem(env, mmu_idx, ptr, type, sizem1 + 1,
--                                  MMU_DATA_LOAD, tag_size, ra);
-+                                  MMU_DATA_LOAD, ra);
-         if (!mem1) {
-             return 1;
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index 616c5fa7237..ea642384f5a 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -306,6 +306,15 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
+                 && !(env->pstate & PSTATE_TCO)
+                 && (sctlr & (el == 0 ? SCTLR_TCF0 : SCTLR_TCF))) {
+                 DP_TBFLAG_A64(flags, MTE_ACTIVE, 1);
++                if (!EX_TBFLAG_A64(flags, UNPRIV)) {
++                    /*
++                     * In non-unpriv contexts (eg EL0), unpriv load/stores
++                     * act like normal ones; duplicate the MTE info to
++                     * avoid translate-a64.c having to check UNPRIV to see
++                     * whether it is OK to index into MTE_ACTIVE[].
++                     */
++                    DP_TBFLAG_A64(flags, MTE0_ACTIVE, 1);
++                }
+             }
          }
-@@ -783,14 +771,12 @@ static int mte_probe_int(CPUARMState *env, uint32_t desc, uint64_t ptr,
-         n = checkN(mem1, ptr & TAG_GRANULE, ptr_tag, tag_count);
-     } else {
-         /* Memory access crosses to next page. */
--        tag_size = (next_page - tag_byte_first) / (2 * TAG_GRANULE);
-         mem1 = allocation_tag_mem(env, mmu_idx, ptr, type, next_page - ptr,
--                                  MMU_DATA_LOAD, tag_size, ra);
-+                                  MMU_DATA_LOAD, ra);
- 
--        tag_size = ((tag_byte_last - next_page) / (2 * TAG_GRANULE)) + 1;
-         mem2 = allocation_tag_mem(env, mmu_idx, next_page, type,
-                                   ptr_last - next_page + 1,
--                                  MMU_DATA_LOAD, tag_size, ra);
-+                                  MMU_DATA_LOAD, ra);
- 
-         /*
-          * Perform all of the comparisons.
-@@ -918,7 +904,7 @@ uint64_t HELPER(mte_check_zva)(CPUARMState *env, uint32_t desc, uint64_t ptr)
-     mmu_idx = FIELD_EX32(desc, MTEDESC, MIDX);
-     (void) probe_write(env, ptr, 1, mmu_idx, ra);
-     mem = allocation_tag_mem(env, mmu_idx, align_ptr, MMU_DATA_STORE,
--                             dcz_bytes, MMU_DATA_LOAD, tag_bytes, ra);
-+                             dcz_bytes, MMU_DATA_LOAD, ra);
-     if (!mem) {
-         goto done;
-     }
+         /* And again for unprivileged accesses, if required.  */
 -- 
 2.34.1
 
