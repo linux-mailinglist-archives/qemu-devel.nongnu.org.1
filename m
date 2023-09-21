@@ -2,75 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F5E7A92BD
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C02A97A92C3
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:45:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjFHB-0005ZA-Ce; Thu, 21 Sep 2023 04:43:09 -0400
+	id 1qjFJH-0007QO-MH; Thu, 21 Sep 2023 04:45:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qjFH9-0005Yf-Fr
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:43:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFJC-0007PL-B1
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:45:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qjFH7-0002c6-U9
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:43:07 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFJA-0003Ho-Q9
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:45:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695285785;
+ s=mimecast20190719; t=1695285912;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZWLMZ+X5Hd+F/5mLyFftJEP9/PMaQw/y62tEWzEwLSU=;
- b=dH3zotxIyGrSQtZ6MMBRrd/ZUlvJv8R54/8LIisnP93fdrThLjxicbTGfDAuMe2kptueR1
- UD9H5RhJlZBvYNlIIhQUdPxJmTp8WumIYYcVnK5ANscKSxmL48IIUxYubAjhAcPq51zCF4
- c0RWzuVM6DblU184prUYdEnos+Ul1Jw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-287-y9yC9AFJMomrr9msxjQjNg-1; Thu, 21 Sep 2023 04:43:02 -0400
-X-MC-Unique: y9yC9AFJMomrr9msxjQjNg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB882803497;
- Thu, 21 Sep 2023 08:43:01 +0000 (UTC)
-Received: from redhat.com (dhcp-192-199.str.redhat.com [10.33.192.199])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7471020268D5;
- Thu, 21 Sep 2023 08:42:58 +0000 (UTC)
-Date: Thu, 21 Sep 2023 10:42:57 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
- vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com,
- pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
- anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, stefanha@redhat.com, fam@euphon.net,
- quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- kraxel@redhat.com, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH v2 7/7] qobject atomics osdep: Make a few macros more
- hygienic
-Message-ID: <ZQwCEW4SBpI9f1Yx@redhat.com>
-References: <20230920183149.1105333-1-armbru@redhat.com>
- <20230920183149.1105333-8-armbru@redhat.com>
+ bh=gnC0b6lnMLSijKr/atWkBSroYyOyTuQCBV6iB+70E5U=;
+ b=OZPVvOJnqiLqyAznjmGmG/WkJAaB1UMvMHTyW9KNrZ6AO22OhBOhUySdmk7VAd+DGwjce9
+ C+IMEcCl+m0I5KLaKNdSO/SV8e4cwUkWXjEgYR6p5n7x0oIgidmi2daFhjMjB4tjDIC9zN
+ 82SSSCEWyFlbQFLzpDsAK6tywRBuqB8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-26-z-8dJzc_PQS4CqhbD1zavA-1; Thu, 21 Sep 2023 04:45:10 -0400
+X-MC-Unique: z-8dJzc_PQS4CqhbD1zavA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4052d1b19f8so4791325e9.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 01:45:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695285909; x=1695890709;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=gnC0b6lnMLSijKr/atWkBSroYyOyTuQCBV6iB+70E5U=;
+ b=n2xHKVg2ZHuGkLl0puaMxkmWDMpGTIkBF56ocwskfO56pEFyLPDZ7U+zZ24Uhmxkog
+ W90LrLKHyNNc2+PUjoo/a/G2UJbEgifAjKDnBl3ZJoOyE35NIzhGWGbcb7v030J/KzAW
+ 3/uHFg95O5ZOSO2k1C/iZZYZS8n9tMjxze+LiuEozTsfzzAcbhZ7dILWb6QUaSrQFC3W
+ 2+R+e/hX8EAsYqYdiLL2CRg96VIIC0rleIhnbw8JiW4ZyqshwPvPtiF0bdNauJi+/Cqy
+ iy21J5pVfaxkOuggaxc2QNtCSCymU3w9uEdQoKvj08AndaYLyACXeaX2YMpuIMCUV1FO
+ pWWA==
+X-Gm-Message-State: AOJu0Yx8UJp+7kWVb6s9uu7jxmFjDTUAcNcKJoMJS0XwvUOiwwofGY5T
+ BBj+cPxf2/eBQe6sR6MvT3aA3kgtMLFmeUCNVGNHiDcI4yS8SI1hmR9nOIwSzaakvR7Fd5UJfrm
+ 5aZCSDXG9rMsjPIA=
+X-Received: by 2002:a05:600c:218b:b0:403:cc79:44f3 with SMTP id
+ e11-20020a05600c218b00b00403cc7944f3mr5121916wme.19.1695285909193; 
+ Thu, 21 Sep 2023 01:45:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGzwcPETrm4TKLsoChY5Abm1s7seZpAUSF3G1TlEcLkchunVKE8bc2ry5zu6jntFooMTj++w==
+X-Received: by 2002:a05:600c:218b:b0:403:cc79:44f3 with SMTP id
+ e11-20020a05600c218b00b00403cc7944f3mr5121885wme.19.1695285908840; 
+ Thu, 21 Sep 2023 01:45:08 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70d:3c00:9eab:fce5:e6f3:e626?
+ (p200300cbc70d3c009eabfce5e6f3e626.dip0.t-ipconnect.de.
+ [2003:cb:c70d:3c00:9eab:fce5:e6f3:e626])
+ by smtp.gmail.com with ESMTPSA id
+ x10-20020a05600c21ca00b004051b994014sm4134912wmj.19.2023.09.21.01.45.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 01:45:08 -0700 (PDT)
+Message-ID: <a1e34896-c46d-c87c-0fda-971bbf3dcfbd@redhat.com>
+Date: Thu, 21 Sep 2023 10:45:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230920183149.1105333-8-armbru@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC PATCH v2 03/21] HostMem: Add private property and associate
+ it with RAM_KVM_GMEM
+Content-Language: en-US
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Markus Armbruster <armbru@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
+ <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
+ Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-4-xiaoyao.li@intel.com> <8734zazeag.fsf@pond.sub.org>
+ <d0e7e2f8-581d-e708-5ddd-947f2fe9676a@intel.com>
+ <878r91nvy4.fsf@pond.sub.org>
+ <da598ffc-fa47-3c25-64ea-27ea90d712aa@intel.com>
+ <091a40cb-ec26-dd79-aa26-191dc59c03e6@redhat.com>
+ <87msxgdf5y.fsf@pond.sub.org>
+ <cfa3ac58-fb1f-b255-772a-ab369a68be68@intel.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <cfa3ac58-fb1f-b255-772a-ab369a68be68@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,133 +122,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.09.2023 um 20:31 hat Markus Armbruster geschrieben:
-> Variables declared in macros can shadow other variables.  Much of the
-> time, this is harmless, e.g.:
+>>> I think as long as there is no demand to have a TDX guest with this property be set to "off", then just don't add it.
+>>>
+>>> With a TDX VM, it will can be implicitly active. If we ever have to disable it for selective memory backends, we can add the property and have something like on/off/auto. For now it would be "auto".
+>>
+>> Makes sense to me.
 > 
->     #define _FDT(exp)                                                  \
->         do {                                                           \
->             int ret = (exp);                                           \
->             if (ret < 0) {                                             \
->                 error_report("error creating device tree: %s: %s",   \
->                         #exp, fdt_strerror(ret));                      \
->                 exit(1);                                               \
->             }                                                          \
->         } while (0)
+> OK. I think I get the answer of open #1 in cover letter.
 > 
-> Harmless shadowing in h_client_architecture_support():
-> 
->         target_ulong ret;
-> 
->         [...]
-> 
->         ret = do_client_architecture_support(cpu, spapr, vec, fdt_bufsize);
->         if (ret == H_SUCCESS) {
->             _FDT((fdt_pack(spapr->fdt_blob)));
->             [...]
->         }
-> 
->         return ret;
-> 
-> However, we can get in trouble when the shadowed variable is used in a
-> macro argument:
-> 
->     #define QOBJECT(obj) ({                                 \
->         typeof(obj) o = (obj);                              \
->         o ? container_of(&(o)->base, QObject, base) : NULL; \
->      })
-> 
-> QOBJECT(o) expands into
-> 
->     ({
-> --->    typeof(o) o = (o);
->         o ? container_of(&(o)->base, QObject, base) : NULL;
->     })
-> 
-> Unintended variable name capture at --->.  We'd be saved by
-> -Winit-self.  But I could certainly construct more elaborate death
-> traps that don't trigger it.
-> 
-> To reduce the risk of trapping ourselves, we use variable names in
-> macros that no sane person would use elsewhere.  Here's our actual
-> definition of QOBJECT():
-> 
->     #define QOBJECT(obj) ({                                         \
->         typeof(obj) _obj = (obj);                                   \
->         _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
->     })
-> 
-> Works well enough until we nest macro calls.  For instance, with
-> 
->     #define qobject_ref(obj) ({                     \
->         typeof(obj) _obj = (obj);                   \
->         qobject_ref_impl(QOBJECT(_obj));            \
->         _obj;                                       \
->     })
-> 
-> the expression qobject_ref(obj) expands into
-> 
->     ({
->         typeof(obj) _obj = (obj);
->         qobject_ref_impl(
->             ({
-> --->            typeof(_obj) _obj = (_obj);
->                 _obj ? container_of(&(_obj)->base, QObject, base) : NULL;
->             }));
->         _obj;
->     })
-> 
-> Unintended variable name capture at --->.
-> 
-> The only reliable way to prevent unintended variable name capture is
-> -Wshadow.
-> 
-> One blocker for enabling it is shadowing hiding in function-like
-> macros like
-> 
->      qdict_put(dict, "name", qobject_ref(...))
-> 
-> qdict_put() wraps its last argument in QOBJECT(), and the last
-> argument here contains another QOBJECT().
-> 
-> Use dark preprocessor sorcery to make the macros that give us this
-> problem use different variable names on every call.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Eric Blake <eblake@redhat.com>
-> ---
->  include/qapi/qmp/qobject.h | 11 +++++++++--
->  include/qemu/atomic.h      | 17 ++++++++++++-----
->  include/qemu/compiler.h    |  3 +++
->  include/qemu/osdep.h       | 31 +++++++++++++++++++++++--------
->  4 files changed, 47 insertions(+), 15 deletions(-)
-> 
-> diff --git a/include/qapi/qmp/qobject.h b/include/qapi/qmp/qobject.h
-> index 9003b71fd3..d36cc97805 100644
-> --- a/include/qapi/qmp/qobject.h
-> +++ b/include/qapi/qmp/qobject.h
-> @@ -45,10 +45,17 @@ struct QObject {
->      struct QObjectBase_ base;
->  };
->  
-> -#define QOBJECT(obj) ({                                         \
-> +/*
-> + * Preprocessory sorcery ahead: use a different identifier for the
-> + * local variable in each expansion, so we can nest macro calls
-> + * without shadowing variables.
-> + */
-> +#define QOBJECT_INTERNAL(obj, _obj) ({                          \
->      typeof(obj) _obj = (obj);                                   \
-> -    _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
-> +    _obj                                                        \
-> +        ? container_of(&(_obj)->base, QObject, base) : NULL;    \
 
-What happened here? The code in this line (or now two lines) seems to be
-unchanged apart from a strange looking newline.
+Yes.
 
->  })
-> +#define QOBJECT(obj) QOBJECT_INTERNAL((obj), MAKE_IDENTFIER(_obj))
+> If no other voice, I'll drop this patch and allocate gmem RAM when
+> vm_type is TDX.
 
-Kevin
+Good!
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
