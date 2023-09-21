@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F385D7A9259
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD77C7A925A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:57:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEWU-0004Vz-9L; Thu, 21 Sep 2023 03:54:54 -0400
+	id 1qjEWZ-0004XF-QX; Thu, 21 Sep 2023 03:54:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEWR-0004Vg-Ky
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:51 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1qjEWY-0004Ws-7B
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:58 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEWQ-0001Ni-1K
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:51 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1c39f2b4f5aso5045935ad.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:54:49 -0700 (PDT)
+ id 1qjEWW-0001Pb-NF
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:57 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1c4194f769fso5025735ad.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:54:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695282888; x=1695887688;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695282895; x=1695887695;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6ELYyiOadw0MQ3+N22lCN+444YhBa1c0nKVoGiIJnpU=;
- b=tJy3f2f+HwgSv3pYpZh/716lNAcGevCYI1kj7IcVIVnmPNFBwlSYBgF4eOpwR6EhDM
- 6zgX/d89IFrkAf1mLQbVehbfJ7bBOa1IHAmx4intNnSukEz2sLkPiB4YlwFxmK04ryik
- 20kisWmWXbr17EfpSwupjcFr73s418vr8BlZ0Hh2z0YqRMHqfZB3ON8Tfpay6SXtEeaZ
- uT9C1bDhI4Ve3mvi2hR5v6hvWrkc3feghSe8/EGQEJz5U3VbbwcO4F4hoUWtYRtHPyBg
- RVxe7B7F+3FE5iThgD6AHMamKJ9YyylnA8Wr1sXLwFtNKZRMA/CLGw1qUcNnurxacedj
- V1Lw==
+ bh=jlU7vc1UjVKlw3Dv2jSmgf2SIHJeXqpTwAZU3tpQIrQ=;
+ b=cZm/hPQgdO1OIaOcaXzj9wX8oxv6WfIo1vhIIzcbU7oveF8c1VPCO5C50TjHwBf5cP
+ p9Nb9/r3F7sOBDlPGvkHnUDBKvbGlm+g8wosAHzd4Z92m6V14gJlf1aR/5ADAqP1tHdI
+ aISpF3n0o0B04VK0KjsagGc3W6Sg5/RbivNrF+PYzeinw8aAz40OkG+2ajCPKSBLER25
+ 3iefgGI8M8taREMddwUmPi9aTlWblDOqTOcPcTALRCsHIkV2Toindbr7DX72S7UXJT3p
+ Fv8iH9gwhDhg9/cNnazGGML9iRvS2ariq/Rgc90CynsZx/eVZMeifWT4lzVw1ZzHN5p6
+ sySA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695282888; x=1695887688;
+ d=1e100.net; s=20230601; t=1695282895; x=1695887695;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6ELYyiOadw0MQ3+N22lCN+444YhBa1c0nKVoGiIJnpU=;
- b=B0mLi4jN7UrxgvsvMmpt/H1X89NB6aZ+MTqIXAP38ez8KLD0Mrf6P8iITMtDNnsVSq
- KkcdSkLKVxVzDvSZkfTH6uWqrsLI73X3ZF3KZdvyE+0M869g+hKV8FoS6+weFtwcjfzu
- nim/C9mdegZrti8ON/V/5hoshD9OL2wk6XOlf+CfXGLGsuLqo3Ho2vzlqpJMoM27qoqE
- wn+MG34jjWK0EoensHFxv4tVI+NkXxVHBUjnCPS6Qk+OHTbm8bQaclLip8ZSBsGSkpkR
- LTfRD0M9/zMn6G4tZ44hW9+1sIKcjBtGiBhHwEcxgkdstmMFwXc085DjH3BXJ61MuM2o
- 5ifA==
-X-Gm-Message-State: AOJu0YzVqjdjZRlhcUjl0Xm6liMyo4T8K6wUMlAI/Tm3TPOCmTa7BT/C
- WA5gr23oYEvXwztcSp5I5PW8J6Z2vUw/UNWlXpY=
-X-Google-Smtp-Source: AGHT+IGUTIlFvWmMSLFsSDmuu01IkvmY+u8LNnGxK5z2/qiip8tHgDkKnj5nChA9qxXbsLo34s6GxQ==
-X-Received: by 2002:a17:902:c40a:b0:1c5:ad14:9095 with SMTP id
- k10-20020a170902c40a00b001c5ad149095mr5394853plk.64.1695282888558; 
- Thu, 21 Sep 2023 00:54:48 -0700 (PDT)
+ bh=jlU7vc1UjVKlw3Dv2jSmgf2SIHJeXqpTwAZU3tpQIrQ=;
+ b=WgvKI01fEo0VpDfbERyewpzzaNTdHPsQfaNjhBlnhIEwhVhBs3YdOZyF44IPQzMZqi
+ /ZMZw5bQ8Eyzs84eWFP+rhUe6ZfZSvzIK8MMwa3/M+x6pMaIZu8LHGDbwmvPu/lhWUjJ
+ LsYLcU32YGCDEBy46v1Z39AWaj71ME0JrvY4Gxb52G/1DUIQsZbCSWE1soifOsXOPVSk
+ Y+CohUrqphlxQDdaZC+eeQ/sX1uZXdZSKoDjeuwt0QrnHuIn75H9Q4Sem3Hbme1JfyJn
+ fJ8sgHhHz3JIUTOeFgrWeA7I+lXsBY9ujFHtO3gaJdpATS5IqMouggOEP3j4lIGPwuNN
+ 4wRA==
+X-Gm-Message-State: AOJu0Yz1YIUqKuuaqmmewoY3mC/S57NaYbIuFGljekxhcM+lSHVNgrgU
+ Dsgyhk1FgZ+cD4/gXTK9C6O3FFSPyRglx9EQWOs=
+X-Google-Smtp-Source: AGHT+IG2h8BG2Z51cqBiO+32XQNTcrt8y2Ij0FCZ1sFQfZyO86MeyubAKt+3Hm5xn+8l6fwhjdyg1w==
+X-Received: by 2002:a17:902:b901:b0:1bf:c59:c944 with SMTP id
+ bf1-20020a170902b90100b001bf0c59c944mr4039169plb.22.1695282895097; 
+ Thu, 21 Sep 2023 00:54:55 -0700 (PDT)
 Received: from fedora.flets-east.jp ([2400:4050:a840:1e00:d54:e521:8bac:7bed])
  by smtp.gmail.com with ESMTPSA id
- p22-20020a170902a41600b001ae0152d280sm761928plq.193.2023.09.21.00.54.44
+ p22-20020a170902a41600b001ae0152d280sm761928plq.193.2023.09.21.00.54.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Sep 2023 00:54:48 -0700 (PDT)
+ Thu, 21 Sep 2023 00:54:54 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
@@ -69,16 +69,16 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Stefan Weil <sw@weilnetz.de>, Yan Vugenfirer <yan@daynix.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 2/8] ivshmem-server: Use qemu_get_runtime_dir()
-Date: Thu, 21 Sep 2023 16:54:16 +0900
-Message-ID: <20230921075425.16738-3-akihiko.odaki@daynix.com>
+Subject: [PATCH v3 3/8] contrib/rdmacm-mux: Use qemu_get_runtime_dir()
+Date: Thu, 21 Sep 2023 16:54:17 +0900
+Message-ID: <20230921075425.16738-4-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230921075425.16738-1-akihiko.odaki@daynix.com>
 References: <20230921075425.16738-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,83 +100,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_get_runtime_dir() is used to construct the default PID file path.
+qemu_get_runtime_dir() is used to construct the default Unix socket
+path.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- contrib/ivshmem-server/main.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ contrib/rdmacm-mux/main.c      | 22 ++++++++++++++--------
+ contrib/rdmacm-mux/meson.build |  2 +-
+ 2 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/contrib/ivshmem-server/main.c b/contrib/ivshmem-server/main.c
-index 5901f17707..313124dd45 100644
---- a/contrib/ivshmem-server/main.c
-+++ b/contrib/ivshmem-server/main.c
-@@ -14,7 +14,6 @@
+diff --git a/contrib/rdmacm-mux/main.c b/contrib/rdmacm-mux/main.c
+index 771ca01e03..00c14031ca 100644
+--- a/contrib/rdmacm-mux/main.c
++++ b/contrib/rdmacm-mux/main.c
+@@ -14,6 +14,7 @@
+  */
  
- #define IVSHMEM_SERVER_DEFAULT_VERBOSE        0
- #define IVSHMEM_SERVER_DEFAULT_FOREGROUND     0
--#define IVSHMEM_SERVER_DEFAULT_PID_FILE       "/var/run/ivshmem-server.pid"
- #define IVSHMEM_SERVER_DEFAULT_UNIX_SOCK_PATH "/tmp/ivshmem_socket"
- #define IVSHMEM_SERVER_DEFAULT_SHM_PATH       "ivshmem"
- #define IVSHMEM_SERVER_DEFAULT_SHM_SIZE       (4 * 1024 * 1024)
-@@ -35,15 +34,23 @@ typedef struct IvshmemServerArgs {
-     unsigned n_vectors;
- } IvshmemServerArgs;
+ #include "qemu/osdep.h"
++#include "qemu/cutils.h"
+ #include <sys/poll.h>
+ #include <sys/ioctl.h>
+ #include <pthread.h>
+@@ -40,8 +41,6 @@
+ #define CM_REQ_DGID_POS      80
+ #define CM_SIDR_REQ_DGID_POS 44
  
-+static char *ivshmem_server_get_default_pid_file(void)
+-/* The below can be override by command line parameter */
+-#define UNIX_SOCKET_PATH "/var/run/rdmacm-mux"
+ /* Has format %s-%s-%d" <path>-<rdma-dev--name>-<port> */
+ #define SOCKET_PATH_MAX (PATH_MAX - NAME_MAX - sizeof(int) - 2)
+ #define RDMA_PORT_NUM 1
+@@ -77,7 +76,13 @@ typedef struct RdmaCmServer {
+ 
+ static RdmaCMServer server = {0};
+ 
+-static void usage(const char *progname)
++static char *get_default_unix_socket_path(void)
 +{
 +    g_autofree char *run = qemu_get_runtime_dir();
-+    return g_build_filename(run, "ivshmem-server.pid", NULL);
++    return g_build_filename(run, "rdmacm-mux", NULL);
 +}
 +
- static void
- ivshmem_server_usage(const char *progname)
++static void usage(const char *progname, const char *default_unix_socket_path)
  {
-+    g_autofree char *pid_file = ivshmem_server_get_default_pid_file();
-+
      printf("Usage: %s [OPTION]...\n"
-            "  -h: show this help\n"
-            "  -v: verbose mode\n"
-            "  -F: foreground mode (default is to daemonize)\n"
-            "  -p <pid-file>: path to the PID file (used in daemon mode only)\n"
--           "     default " IVSHMEM_SERVER_DEFAULT_PID_FILE "\n"
-+           "     default %s\n"
-            "  -S <unix-socket-path>: path to the unix socket to listen to\n"
-            "     default " IVSHMEM_SERVER_DEFAULT_UNIX_SOCK_PATH "\n"
-            "  -M <shm-name>: POSIX shared memory object to use\n"
-@@ -54,7 +61,7 @@ ivshmem_server_usage(const char *progname)
-            "     default %u\n"
-            "  -n <nvectors>: number of vectors\n"
-            "     default %u\n",
--           progname, IVSHMEM_SERVER_DEFAULT_SHM_SIZE,
-+           progname, pid_file, IVSHMEM_SERVER_DEFAULT_SHM_SIZE,
-            IVSHMEM_SERVER_DEFAULT_N_VECTORS);
+            "Start a RDMA-CM multiplexer\n"
+@@ -86,7 +91,7 @@ static void usage(const char *progname)
+            "\t-d rdma-device-name   Name of RDMA device to register with\n"
+            "\t-s unix-socket-path   Path to unix socket to listen on (default %s)\n"
+            "\t-p rdma-device-port   Port number of RDMA device to register with (default %d)\n",
+-           progname, UNIX_SOCKET_PATH, RDMA_PORT_NUM);
++           progname, default_unix_socket_path, RDMA_PORT_NUM);
  }
  
-@@ -189,10 +196,10 @@ main(int argc, char *argv[])
+ static void help(const char *progname)
+@@ -97,16 +102,16 @@ static void help(const char *progname)
+ static void parse_args(int argc, char *argv[])
  {
-     IvshmemServer server;
-     struct sigaction sa, sa_quit;
-+    g_autofree char *default_pid_file = NULL;
-     IvshmemServerArgs args = {
-         .verbose = IVSHMEM_SERVER_DEFAULT_VERBOSE,
-         .foreground = IVSHMEM_SERVER_DEFAULT_FOREGROUND,
--        .pid_file = IVSHMEM_SERVER_DEFAULT_PID_FILE,
-         .unix_socket_path = IVSHMEM_SERVER_DEFAULT_UNIX_SOCK_PATH,
-         .shm_path = IVSHMEM_SERVER_DEFAULT_SHM_PATH,
-         .use_shm_open = true,
-@@ -207,6 +214,11 @@ main(int argc, char *argv[])
-      */
-     printf("*** Example code, do not use in production ***\n");
+     int c;
+-    char unix_socket_path[SOCKET_PATH_MAX];
++    g_autofree char *default_unix_socket_path = get_default_unix_socket_path();
++    char *unix_socket_path = default_unix_socket_path;
+ 
+     strcpy(server.args.rdma_dev_name, "");
+-    strcpy(unix_socket_path, UNIX_SOCKET_PATH);
+     server.args.rdma_port_num = RDMA_PORT_NUM;
+ 
+     while ((c = getopt(argc, argv, "hs:d:p:")) != -1) {
+         switch (c) {
+         case 'h':
+-            usage(argv[0]);
++            usage(argv[0], default_unix_socket_path);
+             exit(0);
+ 
+         case 'd':
+@@ -115,7 +120,7 @@ static void parse_args(int argc, char *argv[])
+ 
+         case 's':
+             /* This is temporary, final name will build below */
+-            strncpy(unix_socket_path, optarg, SOCKET_PATH_MAX - 1);
++            unix_socket_path = optarg;
+             break;
+ 
+         case 'p':
+@@ -811,6 +816,7 @@ int main(int argc, char *argv[])
+ {
+     int rc;
  
 +    qemu_init_exec_dir(argv[0]);
-+
-+    default_pid_file = ivshmem_server_get_default_pid_file();
-+    args.pid_file = default_pid_file;
-+
-     /* parse arguments, will exit on error */
-     ivshmem_server_parse_args(&args, argc, argv);
+     memset(&server, 0, sizeof(server));
  
+     parse_args(argc, argv);
+diff --git a/contrib/rdmacm-mux/meson.build b/contrib/rdmacm-mux/meson.build
+index 36c9c89630..59f60f9cac 100644
+--- a/contrib/rdmacm-mux/meson.build
++++ b/contrib/rdmacm-mux/meson.build
+@@ -1,7 +1,7 @@
+ if have_pvrdma
+   # FIXME: broken on big endian architectures
+   executable('rdmacm-mux', files('main.c'), genh,
+-             dependencies: [glib, libumad],
++             dependencies: [glib, libumad, qemuutil],
+              build_by_default: false,
+              install: false)
+ endif
 -- 
 2.41.0
 
