@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD167A937A
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 12:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02AF37A937B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 12:14:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjGeT-0007Tu-El; Thu, 21 Sep 2023 06:11:17 -0400
+	id 1qjGh2-0000u4-4j; Thu, 21 Sep 2023 06:13:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGeR-0007Tk-AV
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 06:11:15 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGgt-0000qE-P3
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 06:13:50 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGeM-0004N0-01
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 06:11:14 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-5041335fb9cso1379424e87.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 03:11:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGgr-0004jb-A5
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 06:13:46 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-532bf1943ebso907400a12.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 03:13:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695291061; x=1695895861; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695291223; x=1695896023; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WdBNLwoZvReC9Wr5bWYLwE3r6NJ5QVT0NSNAoaqxZpQ=;
- b=yXq8pTCxgrqVNq+ZYRVDrlC807uHc8wC3Oa3v9CoLYAAAfWAG2C6vvsw14qCOizi6X
- vfB4iEQqdVics1+JpwY8RXXevx6cR8e+YP2Yj9HfNPfZ0qkEpykDE0s74NgudZVrqMvK
- xbc0EGaYSjgq5lgUgadxoBTqRUoCX4dAPn9cgSM3rGtM+HspqWkgg3TBcHD4E26c9wYt
- Wni+pV4ae9yuBp6cKz2q9ZLOqbGlb94kEd4YUnhldrEolaseIlWPrxkMqRDpyT/EHQCK
- PtWPDKxeXXynzBprKx5mqqHty0qGlS15gZQ7VcP2EHNpMmA5Kdq7GRNBtKk0omBlxnJ/
- vIdg==
+ bh=JVk6liT2e5o5msU4AJSAaszsi8TWq4Fo43OiSTrLXMM=;
+ b=jVmHkvUqynOkVJpROya97olEpDAhIYD536mxvGm7PfFxpYmL97UbOt2n8CbhCDmUtM
+ WiVBgqxvDhOGvC0Fa9fFrls0cdLPOvuzZgv/7qqmVk7y40JxsIoN4rslaeIm9wk5C0DO
+ BnDur9AhggsVz5FK6AKbdRzDOv2cVA43MoldfamyLIMnHk3zKKu2KJf6GG0tyX9utTka
+ HHE4GYJLxygdw4pT37Hqq56k5CWL/+2eGf+nN+TEEnvmaEG9/ZNqh4m1e/3/cxRh+6JV
+ wN2zYOIVKBXQ1RTv2489+iHA0BRg11dLx7V6QYU1rRlALB1am7oG+MzJuw4Kl51pRZji
+ kApQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695291061; x=1695895861;
+ d=1e100.net; s=20230601; t=1695291223; x=1695896023;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WdBNLwoZvReC9Wr5bWYLwE3r6NJ5QVT0NSNAoaqxZpQ=;
- b=PO4iBrRJKPK8l5ebhGMUTEsDqJAQG4DEl37gHibLjoDBnNeBXxBdn7TcvunDsGyJOw
- qSw2REjiM2pVzCsAxu3LXFw5EchIAM8Ob4j92BsVu7GK5cCZAQw7LzNiHI9EjGzZa+iE
- dJQdfemKmvz2TY4E34DWshxDs1WOo5ZPqJ09n+YmAiWDhssagN+enHYpjsqbPW3PJERF
- Xus6bIxYCf6Wx+e770Cbmfb0aSX38pTaB6mFibsbtz3JlttY8E7Hsz+KYyYu/i/euDwD
- epgZ7iVap6SYQLflMEpsNK02BpJey9zXjFBbavhfdXF+Udge3260pqc5Y/H+oIxFFXac
- Y7BA==
-X-Gm-Message-State: AOJu0YwC+eZvoorBO37ShPibF4AncXcSkYFV8PWFuGhCm+IcuUkw8ao8
- 94GEogkXR2rhHjuak0M99Ub+aw==
-X-Google-Smtp-Source: AGHT+IHgvPijKAUGO4/owTWR9HkQ1usXCc0BY9UUId4efCUqtR/vr8GYCoztr9Rnx5s9zpEldN5yUg==
-X-Received: by 2002:a19:651e:0:b0:500:903f:6084 with SMTP id
- z30-20020a19651e000000b00500903f6084mr3897195lfb.63.1695291061518; 
- Thu, 21 Sep 2023 03:11:01 -0700 (PDT)
+ bh=JVk6liT2e5o5msU4AJSAaszsi8TWq4Fo43OiSTrLXMM=;
+ b=DthPm5J0WSzOwZg2csrAHhL5TvLv9nxV9IaGRD8QsMsCt766xTU6JPPt+J8i0uMOuP
+ HPuh+7Q4wTwbH3DIAOo7bJGhBalwV5q6qnbjxOdOM8k7cFXNa4xHm1b4CYSq4+0IVPFv
+ h55PwoPSam52KKt66VRdRb8ylwv+8kUqlsCaAOH7EJEmoZNp0Gf4OPHc/lZQtjQA5vw7
+ m5KDRSbwo5p3PImC5LSrpFcg9J7RueToKW8pDMBw7VBBUEmFDpL5zipKRtlp6D1/IW8F
+ w/gdXWU31zNPzphjfApb6dlw8N72mk+XdeXkb7r+UyzEEp/a/n1J8mm86dybcPll28XB
+ T9Wg==
+X-Gm-Message-State: AOJu0YyLx3teqXjKkKAt8GwJJHqFncHwDKFWYlMZY/vYlY467+LDITm2
+ WhUDSKk3B5mdSlrlpOVlDARiQQ==
+X-Google-Smtp-Source: AGHT+IHemFT05Lsyt1bPCI7dAYN7sADw+ssaGPNBsPCuMF5tPCwixS6QQS4v1QyGGe91VtcRi/aWEQ==
+X-Received: by 2002:aa7:d954:0:b0:530:c34b:8277 with SMTP id
+ l20-20020aa7d954000000b00530c34b8277mr3704814eds.6.1695291223359; 
+ Thu, 21 Sep 2023 03:13:43 -0700 (PDT)
 Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
  [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- w10-20020aa7dcca000000b005309eb7544fsm619392edu.45.2023.09.21.03.11.00
+ b22-20020aa7cd16000000b0052ffc2e82f1sm625907edw.4.2023.09.21.03.13.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 03:11:01 -0700 (PDT)
-Message-ID: <0a4b2ef4-8184-b887-af8a-542315e671fb@linaro.org>
-Date: Thu, 21 Sep 2023 12:10:58 +0200
+ Thu, 21 Sep 2023 03:13:42 -0700 (PDT)
+Message-ID: <76731e36-4379-ea64-d97b-5afcb21d1fb0@linaro.org>
+Date: Thu, 21 Sep 2023 12:13:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] amd_iommu: Fix APIC address check
+Subject: Re: [PATCH] vl: Free machine list
 Content-Language: en-US
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost
- <eduardo@habkost.net>, Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>
-References: <20230909162355.384982-1-akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20230722062641.18505-1-akihiko.odaki@daynix.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230909162355.384982-1-akihiko.odaki@daynix.com>
+In-Reply-To: <20230722062641.18505-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,67 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Akihiko,
-
-Adding Peter.
-
-On 9/9/23 18:23, Akihiko Odaki wrote:
-> An MSI from I/O APIC may not exactly equal to APIC_DEFAULT_ADDRESS. In
-> fact, Windows 17763.3650 configures I/O APIC to set the dest_mode bit.
-> Check only the 12 bits that are known to be fixed for I/O APIC-generated
-> MSIs.
+On 22/7/23 08:26, Akihiko Odaki wrote:
+> Free machine list and make LeakSanitizer happy.
 > 
-> Fixes: 577c470f43 ("x86_iommu/amd: Prepare for interrupt remap support")
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 > ---
->   hw/i386/amd_iommu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   softmmu/vl.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-> index 4655cd801f..3ac0d0098d 100644
-> --- a/hw/i386/amd_iommu.c
-> +++ b/hw/i386/amd_iommu.c
-> @@ -1268,7 +1268,7 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
->           return -AMDVI_IR_ERR;
->       }
+> diff --git a/softmmu/vl.c b/softmmu/vl.c
+> index b0b96f67fa..802f728298 100644
+> --- a/softmmu/vl.c
+> +++ b/softmmu/vl.c
+> @@ -1484,7 +1484,8 @@ static gint machine_class_cmp(gconstpointer a, gconstpointer b)
 >   
-> -    if ((origin->address & AMDVI_MSI_ADDR_LO_MASK) != APIC_DEFAULT_ADDRESS) {
-> +    if ((origin->address & 0xfff00000) != APIC_DEFAULT_ADDRESS) {
->           trace_amdvi_err("MSI is not from IOAPIC.");
->           return -AMDVI_IR_ERR;
->       }
+>   static void machine_help_func(const QDict *qdict)
+>   {
+> -    GSList *machines, *el;
+> +    g_autoptr(GSList) machines = NULL;
+> +    GSList *el;
+>       const char *type = qdict_get_try_str(qdict, "type");
+>   
+>       machines = object_class_get_list(TYPE_MACHINE, false);
 
-Could you add a definition? Maybe:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-  -- >8 --
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 6da893ee57..85d491e585 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -210,6 +210,7 @@
-  #define AMDVI_INT_ADDR_FIRST    0xfee00000
-  #define AMDVI_INT_ADDR_LAST     0xfeefffff
-  #define AMDVI_INT_ADDR_SIZE     (AMDVI_INT_ADDR_LAST - 
-AMDVI_INT_ADDR_FIRST + 1)
-+#define AMDVI_INT_ADDR_MASK     ~(AMDVI_INT_ADDR_SIZE - 1)
-  #define AMDVI_MSI_ADDR_HI_MASK  (0xffffffff00000000ULL)
-  #define AMDVI_MSI_ADDR_LO_MASK  (0x00000000ffffffffULL)
-
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 9c77304438..093b4fb18f 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1252,7 +1252,7 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
-          return -AMDVI_IR_ERR;
-      }
-
--    if ((origin->address & AMDVI_MSI_ADDR_LO_MASK) != 
-APIC_DEFAULT_ADDRESS) {
-+    if ((origin->address & AMDVI_INT_ADDR_MASK) != APIC_DEFAULT_ADDRESS) {
-          trace_amdvi_err("MSI is not from IOAPIC.");
-          return -AMDVI_IR_ERR;
-      }
----
-
-?
 
