@@ -2,82 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE27A95D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 18:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DCF37A9642
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:08:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjMu5-00037n-Qy; Thu, 21 Sep 2023 12:51:49 -0400
+	id 1qjN8i-0008Fb-Rb; Thu, 21 Sep 2023 13:06:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjMu2-000371-WD
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 12:51:47 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjMu1-0007Ns-9o
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 12:51:46 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-99c3c8adb27so148297766b.1
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 09:51:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695315102; x=1695919902; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=pVXBC0L9QfvtW86GfaQjLjNtgSEazJ9DYEgnylnW4do=;
- b=rpx1fTJ8XEY+9JUeqJzN2AiXq/OttStmmmjQDNUqa6aJmdl0bYzrS8TH6v19dnZKcn
- zSOSGSf14H3JYMvBPwZXVdrKx4mCSiO9AJ6lgZMOXupf4BclsC4a30UrKkWNpcRyeZAr
- yx7Zp1Bn4k2C0V89kdNpmzNmjOsWKj+EkJqnYQ9X59OosrAafcAxfyy5LNA0+43nnfTh
- qKRSBQtdewfHK4oegpeLaWiSoc39XEsEeoTZecMAr3C+oEdfvLox9cTq0ClkMaDJJ4TJ
- EoWtZ0EGvRsFMTpLr1q/ot77dT+ywpCHg/Tu+//fugdun83z27Wb1Bpqfa4oF1V3D9rq
- dKiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695315102; x=1695919902;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pVXBC0L9QfvtW86GfaQjLjNtgSEazJ9DYEgnylnW4do=;
- b=mKos4a44wZximtCXzomUg/ffiEyKIR8x7Se+nWwdIbqS7JMzq6D6XMrzvC31Q+uQcr
- 1k9nVJhjIT8sW5z8PFBFkM7KdFnr5CDJnfBL3jdhk/b7oKy3QCZBGRtCr6XzBYxU30fz
- O39O4PA8J0rlK6k9xs6gmnzUTx4tWo4UKQ/pGzY9cDXG+byIxDzOl5I76D7iiqDJrPUe
- T62ZlqVsZgRPWLZX0RRtL474UW6AfKKVDfjJYXMI3m5yY6f0/i+d8cj4kUSkJEjTH65Z
- p/jNIdrxUfXRsP4tSQK+8OhYNzhwCz1W5cruTTPAJk2Ut4lPc0u3acAerlOn7WZBIe1c
- 4/pw==
-X-Gm-Message-State: AOJu0YyfGNu1WHJyDY7WNJMSHQFD94wHm5DDHLDo2UPlVWBhg00N8GSz
- +jrgmiMHJgvvY+Vrtnrw6JBlLA==
-X-Google-Smtp-Source: AGHT+IGwSOiidFwbgp3IC84p5+upDFUUEtCu+fAZZW0gdqfKUfpyGKXHHz8FOh4HcCngbonqnmvfkw==
-X-Received: by 2002:a17:906:845c:b0:9ae:5765:c134 with SMTP id
- e28-20020a170906845c00b009ae5765c134mr2677399ejy.15.1695315101877; 
- Thu, 21 Sep 2023 09:51:41 -0700 (PDT)
-Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
- [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- a19-20020a170906275300b0099290e2c163sm1278132ejd.204.2023.09.21.09.51.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 09:51:41 -0700 (PDT)
-Message-ID: <d47f9e78-cbac-83d1-e29d-373e4c45ceb0@linaro.org>
-Date: Thu, 21 Sep 2023 18:51:40 +0200
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qjN8g-0008Cl-0J
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:06:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qjN8e-0001uk-Ak
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:06:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695316011;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=vuewaxkneoMvmnITYc+3CWIJP8tGf6MQIW+T+ugcSIg=;
+ b=ckEGlu0r9P9CkKBY4KVU4Y2fDOeJKNN6xaXvZoHa+fz+Wrg9kLuCfWARjeTpPa/XdWoY3+
+ 0mBZuvM6bhCGnt4aMBSJ3OULabtEp1/zYpav1fDjJR1effvf732i4p8JhB+T3Vwrox2pJz
+ gi4xd641FzHFNTkpFvPug3u64dxQ8AY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-549-h9uQZoElO96vzicoUlhcZg-1; Thu, 21 Sep 2023 13:06:47 -0400
+X-MC-Unique: h9uQZoElO96vzicoUlhcZg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 908303C0F370;
+ Thu, 21 Sep 2023 17:06:46 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.193.95])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 58F4820268D6;
+ Thu, 21 Sep 2023 17:06:46 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 2345D18007AA; Thu, 21 Sep 2023 19:06:45 +0200 (CEST)
+Date: Thu, 21 Sep 2023 19:06:45 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, devel@edk2.groups.io, 
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Ard Biesheuvel <ardb+tianocore@kernel.org>, 
+ Sami Mujawar <sami.mujawar@arm.com>
+Subject: Re: EDK2 ArmVirtQemu behaviour with multiple UARTs
+Message-ID: <qd54ldsiclno5gzl2heyefx3bso6leq7v3tjsjipszxkeqdlvb@yjzar5rrmlov>
+References: <CAFEAcA_P5aOTQnM2ARYgR5WvKouvndMbX95XNmDsS0KTxMkMMw@mail.gmail.com>
+ <b7wuvs5qtdvjzb5getkggsi772gqvmb4xnuhq4ssxdu5lgiyi7@nprpol5z2t5u>
+ <CAFEAcA8LMmWTEJB3jsUEn_pPnUDanWgdUurFu=vRRFxn4X8S2Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2] linux-user: Fixes for zero_bss
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: thuth@redhat.com, qemu-stable@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>
-References: <20230909184559.36504-1-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230909184559.36504-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA8LMmWTEJB3jsUEn_pPnUDanWgdUurFu=vRRFxn4X8S2Q@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,28 +83,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/9/23 20:45, Richard Henderson wrote:
-> The previous change, 2d385be6152, assumed !PAGE_VALID meant that
-> the page would be unmapped by the elf image.  However, since we
-> reserved the entire image space via mmap, PAGE_VALID will always
-> be set.  Instead, assume PROT_NONE for the same condition.
+On Thu, Sep 21, 2023 at 04:34:27PM +0100, Peter Maydell wrote:
+> As long as EDK2 does something sensible when the DTB says "two
+> UARTs here and here" and it also finds a virtio-serial PCI
+> device, I don't mind what exactly it does. The problem here is
+> more that EDK2 currently does strange things when told that
+> the hardware is present, rather than that anybody specifically wants
+> EDK2 to use multiple serial outputs.
 > 
-> Furthermore, assume bss is only ever present for writable segments,
-> and that there is no page overlap between PT_LOAD segments.
-> Instead of an assert, return false to indicate failure.
-> 
-> Cc: qemu-stable@nongnu.org
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1854
-> Fixes: 2d385be6152 ("linux-user: Do not adjust zero_bss for host page size")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
-> v2: Pass errp to zero_bss, so we can give a reasonable error message.
-> ---
->   linux-user/elfload.c | 53 +++++++++++++++++++++++++++++++++-----------
->   1 file changed, 40 insertions(+), 13 deletions(-)
+> Though given there's no way to say in the DTB "use a PCI card
+> for your console" I think the virtio-serial approach is likely
+> to be awkward for users in practice.
 
-To the best of my knowledge,
+edk2 adds a virtio console to the edk2 console multiplexer if
+present (for both pci and mmio virtio transports), and systemd
+spawns also spawns a getty on /dev/hvc0 if present.  So this
+works mostly automatic.  Only if you also want the linux boot
+messages show up there too you need to add 'console=hvc0' to
+your kernel command line.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+take care,
+  Gerd
 
 
