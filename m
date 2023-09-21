@@ -2,70 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88ED7A9584
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 17:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B43387A9593
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 17:36:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjLZH-0008Fo-Bf; Thu, 21 Sep 2023 11:26:15 -0400
+	id 1qjLhc-0001yF-V6; Thu, 21 Sep 2023 11:34:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qjLZD-0008Fb-18
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:26:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1qjLZ8-00084l-M3
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:26:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695309964;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=lEVCAjk9PCZb4ufnP17EEPGzqHexmR/+y4/bxTQbhHI=;
- b=dQsZKiXsJAjg49crAvQZvXy47yx5a+lyUSaJoycAUAmGzEsbXYDjBpJU7JCnZ1gDZ/9PuC
- 0tKzuNg8H/ejzSbqnY2VdCcgPI2+bqsr68d5OklKpmL+xL+N+Aq9Z9Lqbr7KyRGb8QW6GX
- TedvyFn6yfwlIuHaz4NwYtpamNrnFBk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-394-5HN0fiLiN2uesp1yL5iARw-1; Thu, 21 Sep 2023 11:26:01 -0400
-X-MC-Unique: 5HN0fiLiN2uesp1yL5iARw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 465FE3C0DF90;
- Thu, 21 Sep 2023 15:26:00 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.193.95])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 014A010F1BE7;
- Thu, 21 Sep 2023 15:25:59 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 6952818007AA; Thu, 21 Sep 2023 17:25:58 +0200 (CEST)
-Date: Thu, 21 Sep 2023 17:25:58 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qjLha-0001y5-G5
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:34:50 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qjLhY-0000xa-Su
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 11:34:50 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-530ce262ab2so1220498a12.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 08:34:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695310487; x=1695915287; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vrnpursJUmK4b5ucv9p1aLhIFHikMQ4PmzLXpkRJ7mQ=;
+ b=MBlnIZluKL2aaArMMVFu33YnL5UwO1heLvmx2jSPqqUnse3G1Doi/JWWQGKMq3dbyl
+ CAalrvdjXITGyQL/9WvjRURRfxOiqesghEgigwHIZF+V/igKeJ3+xWwuy0ZOxRU513lX
+ OXwK3uXSji1NsqR5NuFh9rxfFsZTCLFYS0lZCXLKyBs/p6/pmENhWW6bvQY7oTJIGDo4
+ rs0aRQxY53y+7a3y+YlZ1IafJq5nQhiagrhEkZtTzOGc3oK9DPL0hHRMjqYp3ptmWDeD
+ CFe694TBO+YSbvAEIcd8GMTJ9zA4rpXpEyj1cdJRbP/s6RFIxJlE1CJBq5Tgu/zxlYuM
+ Cn8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695310487; x=1695915287;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vrnpursJUmK4b5ucv9p1aLhIFHikMQ4PmzLXpkRJ7mQ=;
+ b=hMHxuBNkyUYzviwY8zpRhtaZaZRnmOMTpw7Zw1Tc9G50wE0+SwlRSdpZ0Atc9QW53z
+ P/q8tZ9oKzvq1X1bR12HuL+sQbWFoo9gymdGTkGl92xT93yrH/45uvPa4kbn1P6N1y62
+ BZDlcv8dQUu7+q+0aDIe2iPMbAq7Urg+X9GaJNzH9G8uCVRC+yRRIkqLrCTmJVfDN5kt
+ 6jzhc4g/aIZc9CFXkCwBIIX58MvVGcERpU3f9aTjPMUsmGR4XIF4MKKEtpmEqSFKgIL1
+ OYdMnRr6ay/GhOceNIfronfqq4H68kEzbuEl/v2djVEF6usoTfaU5LyVGpnpxvi6Vlsg
+ RG3g==
+X-Gm-Message-State: AOJu0YynNWeWPObf0rGnWW+t9jkA/yzibn89DJdmfc5mSSeobEcNXCAk
+ vpYUXSQ9dkaEqV7ozxihacPoROq8x/57/5j9gobAOA==
+X-Google-Smtp-Source: AGHT+IEwhSs3RR1HnAlbDw/MAxwRgMgT87bR+FVZT6N32waSAp/z7gudW7kART65XX6xJVAQ7R/ZhtT5cH3ZeBD3ut8=
+X-Received: by 2002:aa7:ca46:0:b0:523:2e30:aaee with SMTP id
+ j6-20020aa7ca46000000b005232e30aaeemr4755630edt.32.1695310486673; Thu, 21 Sep
+ 2023 08:34:46 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAFEAcA_P5aOTQnM2ARYgR5WvKouvndMbX95XNmDsS0KTxMkMMw@mail.gmail.com>
+ <b7wuvs5qtdvjzb5getkggsi772gqvmb4xnuhq4ssxdu5lgiyi7@nprpol5z2t5u>
+In-Reply-To: <b7wuvs5qtdvjzb5getkggsi772gqvmb4xnuhq4ssxdu5lgiyi7@nprpol5z2t5u>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 21 Sep 2023 16:34:27 +0100
+Message-ID: <CAFEAcA8LMmWTEJB3jsUEn_pPnUDanWgdUurFu=vRRFxn4X8S2Q@mail.gmail.com>
+Subject: Re: EDK2 ArmVirtQemu behaviour with multiple UARTs
+To: Gerd Hoffmann <kraxel@redhat.com>
 Cc: QEMU Developers <qemu-devel@nongnu.org>, devel@edk2.groups.io, 
  Leif Lindholm <quic_llindhol@quicinc.com>,
  Ard Biesheuvel <ardb+tianocore@kernel.org>, 
  Sami Mujawar <sami.mujawar@arm.com>
-Subject: Re: EDK2 ArmVirtQemu behaviour with multiple UARTs
-Message-ID: <b7wuvs5qtdvjzb5getkggsi772gqvmb4xnuhq4ssxdu5lgiyi7@nprpol5z2t5u>
-References: <CAFEAcA_P5aOTQnM2ARYgR5WvKouvndMbX95XNmDsS0KTxMkMMw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA_P5aOTQnM2ARYgR5WvKouvndMbX95XNmDsS0KTxMkMMw@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,18 +88,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 21, 2023 at 11:50:20AM +0100, Peter Maydell wrote:
-> Hi; I've been looking again at a very long standing missing feature in
-> the QEMU virt board, which is that we only have one UART. One of the
-> things that has stalled this in the past has been the odd behaviour of
-> EDK2 if the DTB that QEMU passes it describes two UARTs.
+On Thu, 21 Sept 2023 at 16:26, Gerd Hoffmann <kraxel@redhat.com> wrote:
+>
+> On Thu, Sep 21, 2023 at 11:50:20AM +0100, Peter Maydell wrote:
+> > Hi; I've been looking again at a very long standing missing feature in
+> > the QEMU virt board, which is that we only have one UART. One of the
+> > things that has stalled this in the past has been the odd behaviour of
+> > EDK2 if the DTB that QEMU passes it describes two UARTs.
+>
+> Note that edk2 recently got support for virtio-serial, so you can use
+> that for the console and leave the uart for debug logging.  The prebuild
+> edk2 binaries in qemu have been updated days ago and these already
+> support for virtio-serial..
 
-Note that edk2 recently got support for virtio-serial, so you can use
-that for the console and leave the uart for debug logging.  The prebuild
-edk2 binaries in qemu have been updated days ago and these already
-support for virtio-serial..
+As long as EDK2 does something sensible when the DTB says "two
+UARTs here and here" and it also finds a virtio-serial PCI
+device, I don't mind what exactly it does. The problem here is
+more that EDK2 currently does strange things when told that
+the hardware is present, rather than that anybody specifically wants
+EDK2 to use multiple serial outputs.
 
-take care,
-  Gerd
+Though given there's no way to say in the DTB "use a PCI card
+for your console" I think the virtio-serial approach is likely
+to be awkward for users in practice.
 
+-- PMM
 
