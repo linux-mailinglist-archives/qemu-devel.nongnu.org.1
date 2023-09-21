@@ -2,82 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDDA7A91C9
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F927A91C8
 	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 08:29:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjDAv-00081J-K5; Thu, 21 Sep 2023 02:28:33 -0400
+	id 1qjDB9-00087U-En; Thu, 21 Sep 2023 02:28:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qjDAt-00080p-Re; Thu, 21 Sep 2023 02:28:31 -0400
-Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qjDAr-0001gg-JG; Thu, 21 Sep 2023 02:28:31 -0400
-Received: by mail-vs1-xe2c.google.com with SMTP id
- ada2fe7eead31-452749f6c47so305603137.1; 
- Wed, 20 Sep 2023 23:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695277708; x=1695882508; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Z2GHiOFmgK0sbJOX0zD/Xwh3liM7qcIa1JTlcPvtnHk=;
- b=BaEPoNzPu2sRyHAqCLKB+Ccs1VR2xDODOj394AqwsRuz/jqAU6WYLcZ3nvvxHeyb+w
- mpNkJnOyWy7nAWF/3kScQMOOuw53aFcq8/koUNnlGpWZReuVxhU/dw8CdVV3o19Xrp7p
- 1tL75GwadQqa397/uBVVJeAfvTK08WauOhJ3ATA07WmSG3i+uow25gWqEa1CvYg2iGkl
- 1CftBs2W0V8v/ZMXZCUiwGeXVfhEhlo75T0Us8GKNTcmKLA5AUF19Jj1c7K/0XCSH4dx
- S2A52NdapsS6mEl2Z5HRKx8DS93uel9ax8dIcj/kKs+oB6y+bobsFhFd9q+g8m/i+3rb
- O+nA==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qjDB3-000855-U6
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 02:28:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qjDAz-0001hz-QF
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 02:28:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695277716;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qBo8TfYPacOI6MRRTA9hmy+3EfGZH0rZkSTPlpLZqx0=;
+ b=Oa6VIXplymn10z/bqHV+DAi0S8VBHhN3hDch+t4C243TvUt80ma9C4Dgvp99l/y85o9tFy
+ 2T60N4Yse6gOimPHnKFW8f8kDhPZuyWerCWxjBepKZyOzuLd6a4JFRHFadKtx10UKgIbMn
+ ZNiGlCvU7XG+SAmP2p2ZMSX1kYH5bp0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-148-h8j7YMc4NXmOG2pkJI_39Q-1; Thu, 21 Sep 2023 02:28:34 -0400
+X-MC-Unique: h8j7YMc4NXmOG2pkJI_39Q-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-404f81fe7cfso7156945e9.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Sep 2023 23:28:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695277708; x=1695882508;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Z2GHiOFmgK0sbJOX0zD/Xwh3liM7qcIa1JTlcPvtnHk=;
- b=EQi9Hbp2eOwcr4BjWzktWNQk5xWpWXlb4Fm+H4zcTim4L8Qp/pNSrA/h3fCbMWYf+v
- VdHj6o+UMIQ2ejyOQ0ISfZ0mHuUdonmEYo+ksCyIjt8YB0bjcmAKGaF3beY0DJb1qoWK
- UeKyvX1H7W7LxX5bitzhMsumlgRwTFnwCSWMKcx7AHRRwVrbAwY547GP5zOPgQswP8BT
- LJzg67OyY5xAZTJRROdKgaJ48g8Sj7CRk14VCtnx5J3wgxkXePDSroMVeccekjumAVG3
- oX9ZYIg9/XW37nXbYJDegBv9tvNJzRcXU5ngAmK7FZglNoKFx2qvhQf1k7HQb6/Dd7Ax
- fxpg==
-X-Gm-Message-State: AOJu0Ywbg9raURCerxlji1pWzUZgQYO0vJnwkfY0iAGMmMg3uupq5GbZ
- t/R4VKon0vrOu9tILTadelayljevJl5vU9B3g3w=
-X-Google-Smtp-Source: AGHT+IHsvtdr4KzydwqKp8oGIZuvgBHq7ZvcnLBQ/A9LT1Cf/BvNSk18ijkZzdB+KMQ4lu1yZDwzxFr5sE/+6M7MpSY=
-X-Received: by 2002:a05:6102:151e:b0:452:bfe3:8941 with SMTP id
- f30-20020a056102151e00b00452bfe38941mr221010vsv.21.1695277707672; Wed, 20 Sep
- 2023 23:28:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695277713; x=1695882513;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qBo8TfYPacOI6MRRTA9hmy+3EfGZH0rZkSTPlpLZqx0=;
+ b=s2F0WFlyYZ3zantpusSo4/raDVDx24rMQ6Qv9nxOkS1clNM4LesYPfer+sooCcMfF+
+ O2pcIOCbDQpeAAS1dxq4Hb4rFiGRz9jmV13jJWp69tr9KqfaBrpbG3TR0Q8CucCwusUI
+ UOPeeckdylmk8BqMyXaceFvvi09nyRy0Gxl9/fGpjUcPyDWqRJMswnShi3ACVcbeGCdl
+ gLd9cOgwbH3wIhZRgIOZAANAJAHue7iCxGkPPnH2Uko9a7qVisNcH14HL8gjlHr7eJm4
+ KN9y8TJCo4mJvrJx9iczbqfgOBeHEnoAg27TcLvG18Ubb0A8V2WONE5Zt5PMKMiKXuJi
+ oJTg==
+X-Gm-Message-State: AOJu0YwTelf5M3JIW7aRt27lVo1xAH1hy8JT3899AzNAFOVfFneTunFw
+ NKBC77B2F5JV5o/GggAunDo+f0s8W7F/0Di9AyyS9BFm06kdgmB2MVFr7w/S4I4LJ06mGadfVL1
+ DKWtBjBlTeKos27U=
+X-Received: by 2002:adf:fc10:0:b0:31f:fc9a:a03 with SMTP id
+ i16-20020adffc10000000b0031ffc9a0a03mr6225818wrr.20.1695277713710; 
+ Wed, 20 Sep 2023 23:28:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHdwE2+ndNQQp51pEn6s2jScRP1lZHdmrJ1ImPkbBgabWt2WmgrJHmDRxZXJe75Pwm7vHFRJA==
+X-Received: by 2002:adf:fc10:0:b0:31f:fc9a:a03 with SMTP id
+ i16-20020adffc10000000b0031ffc9a0a03mr6225795wrr.20.1695277713394; 
+ Wed, 20 Sep 2023 23:28:33 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ p5-20020a056000018500b0031980783d78sm799118wrx.54.2023.09.20.23.28.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Sep 2023 23:28:31 -0700 (PDT)
+Message-ID: <7308f588-a1e9-15af-6152-e776e1cfc583@redhat.com>
+Date: Thu, 21 Sep 2023 08:28:28 +0200
 MIME-Version: 1.0
-References: <20230915112723.2033330-1-alistair.francis@wdc.com>
- <20230915112723.2033330-2-alistair.francis@wdc.com>
- <20230915161937.00005da0@Huawei.com>
- <CAKmqyKP87E2qByL48oZNcbt6=7qV6EOarhqopEF5YJ=yxby9=g@mail.gmail.com>
- <20230918112846.00002d71@Huawei.com>
-In-Reply-To: <20230918112846.00002d71@Huawei.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 21 Sep 2023 16:28:00 +1000
-Message-ID: <CAKmqyKM_EGsxTLHDniAPov8w=D7eGeQVmDNwe_aHy1kmgLgqTw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] backends: Initial support for SPDM socket support
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: lukas@wunner.de, wilfred.mallawa@wdc.com, jiewen.yao@intel.com, 
- qemu-devel@nongnu.org, kbusch@kernel.org, its@irrelevant.dk, mst@redhat.com, 
- marcel.apfelbaum@gmail.com, hchkuo@avery-design.com.tw, 
- cbrowy@avery-design.com, qemu-block@nongnu.org, 
- Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2c.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 13/22] vfio: Add base container
+Content-Language: en-US
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
+ Yi Sun <yi.y.sun@linux.intel.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ "open list:sPAPR (pseries)" <qemu-ppc@nongnu.org>
+References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
+ <20230830103754.36461-14-zhenzhong.duan@intel.com>
+ <eb3c51e0-d1ba-1452-6f85-786f7c36411a@redhat.com>
+ <14853056-3742-8cfe-f8b7-cdb8ea05a846@redhat.com>
+ <SJ0PR11MB6744CFAAC37534C158BE484192F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <SJ0PR11MB6744CFAAC37534C158BE484192F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,283 +119,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 8:28=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Mon, 18 Sep 2023 13:16:01 +1000
-> Alistair Francis <alistair23@gmail.com> wrote:
->
-> > On Sat, Sep 16, 2023 at 1:19=E2=80=AFAM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> > >
-> > > On Fri, 15 Sep 2023 21:27:22 +1000
-> > > Alistair Francis <alistair23@gmail.com> wrote:
-> > >
-> > > > From: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
-> > >
-> > > Great to see you taking this forwards!
-> > >
-> > >
-> > > >
-> > > > SPDM enables authentication, attestation and key exchange to assist=
- in
-> > > > providing infrastructure security enablement. It's a standard publi=
-shed
-> > > > by the DMTF [1].
-> > > >
-> > > > SPDM currently supports PCIe DOE and MCTP transports, but it can be
-> > > > extended to support others in the future. This patch adds
-> > > > support to QEMU to connect to an external SPDM instance.
-> > >
-> > > It supports way more that that these days.  I'd just say 'multiple'
-> > > transports.
-> > >
-> > > >
-> > > > SPDM support can be added to any QEMU device by exposing a
-> > > > TCP socket to a SPDM server. The server can then implement the SPDM
-> > > > decoding/encoding support, generally using libspdm [2].
-> > > >
-> > > > This is similar to how the current TPM implementation works and mea=
-ns
-> > > > that the heavy lifting of setting up certificate chains, capabiliti=
-es,
-> > > > measurements and complex crypto can be done outside QEMU by a well
-> > > > supported and tested library.
-> > >
-> > > Is this sufficient for usecases beyond initial attestation flows?
-> >
-> > I believe so.
-> >
-> > The SPDM responder would be in charge of doing all of this. For the
-> > rest of the discussion the responder is the software on the other end
-> > of the QEMU socket.
-> >
-> > > How does measurement work for example?  We need settings from the
-> >
-> > In a basic case the responder can generate measurement data. For
-> > example the responder can return digests of the firmware. Now there
-> > won't actually be "firmware", but the responder can still return
-> > measurement data.
-> >
-> > if you are trying to test an existing product, you could fake it and
-> > return the same values as a real device. Otherwise you could return
-> > example data.
-> >
-> > > emulated device to squirt into the SPDM agent so that it can be
-> > > encrypted and signed etc.
-> > >
-> > > Measurement reports often need to include the status of various confi=
-g
-> > > space registers + any device specific additional stuff - not sure
-> > > what is defined for NVME but I suspect the list will grow, particular=
-ly
-> > > when tdisp is included.  There are some things called out in the PCIe
-> > > state as must haves, like any debug features must be reported.
-> >
-> > So this is probably the hard part. How can the responder measurements
-> > change based on configuration values set by the host.
-> >
-> > Just for completeness, the idea would be the host would set some state
-> > in the NVMe controller for example. Then we would expect the
-> > measurement values to change.
-> >
-> > That's trickier, but we could extend the socket to communicate state
-> > like that. So when a measurement state changes in the QEMU model, we
-> > relay that to the responder. Which then changes the measurements
-> >
-> > > Also we need a way to mess with firmware revisions reported
-> > > as those are likely to be checked.
-> >
-> > That seems like something you can do via command line arguments or
-> > configuration settings to the responder. This is separate to QEMU
-> I'm not convinced it is because QEMU is emulating the firmware behavior
-> and that may well change with version.  Still it's just more metadata
-> to push out from QEMU to the SPDM instance.
->
-> My gut feeling is you'd just add an interface for the whole measurement
-> record coming from QEMU.  No need to be clever with sending only small
-> subsets of info and building the measurement.
 
-That also works. libspdm delegates the measurement work anyway, so
-it's easy to handle either in the external socket wrapper or in QEMU.
+Hi,
+On 9/21/23 05:35, Duan, Zhenzhong wrote:
+> Hi Eric,
+>
+>> -----Original Message-----
+>> From: Eric Auger <eric.auger@redhat.com>
+>> Sent: Thursday, September 21, 2023 1:31 AM
+>> Subject: Re: [PATCH v1 13/22] vfio: Add base container
+>>
+>> Hi Zhenzhong,
+>>
+>> On 9/19/23 19:23, Cédric Le Goater wrote:
+>>> On 8/30/23 12:37, Zhenzhong Duan wrote:
+>>>> From: Yi Liu <yi.l.liu@intel.com>
+>>>>
+>>>> Abstract the VFIOContainer to be a base object. It is supposed to be
+>>>> embedded by legacy VFIO container and later on, into the new iommufd
+>>>> based container.
+>>>>
+>>>> The base container implements generic code such as code related to
+>>>> memory_listener and address space management. The VFIOContainerOps
+>>>> implements callbacks that depend on the kernel user space being used.
+>>>>
+>>>> 'common.c' and vfio device code only manipulates the base container with
+>>>> wrapper functions that calls the functions defined in
+>>>> VFIOContainerOpsClass.
+>>>> Existing 'container.c' code is converted to implement the legacy
+>>>> container
+>>>> ops functions.
+>>>>
+>>>> Below is the base container. It's named as VFIOContainer, old
+>>>> VFIOContainer
+>>>> is replaced with VFIOLegacyContainer.
+>>> Usualy, we introduce the new interface solely, port the current models
+>>> on top of the new interface, wire the new models in the current
+>>> implementation and remove the old implementation. Then, we can start
+>>> adding extensions to support other implementations.
+>>>
+>>> spapr should be taken care of separatly following the principle above.
+>>> With my PPC hat, I would not even read such a massive change, too risky
+>>> for the subsystem. This path will need (much) further splitting to be
+>>> understandable and acceptable.
+>> We might split this patch by
+>> 1) introducing VFIOLegacyContainer encapsulating the base VFIOContainer,
+>> without using the ops in a first place:
+>>  common.c would call vfio_container_* with harcoded legacy
+>> implementation, ie. retrieving the legacy container with container_of.
+>> 2) we would introduce the BE interface without using it.
+>> 3) we would use the new BE interface
+>>
+>> Obviously this needs to be further tried out. If you wish I can try to
+>> split it that way ... Please let me know
+> Sure, thanks for your help, glad that I can cooperate with you to move
+> this series forward.
+> I just updated the branch which rebased to newest upstream for you to pick at https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_cdev_v1_rebased 
 
->
-> >
-> > >
-> > > I'm not sure that model will work with the spdm-emu approach.
-> >
-> > I don't think there is anything specifically in the socket approach
-> > that limits this from working. It comes down to passing information
-> > from the QEMU emulated device to the SPDM responder. That needs to be
-> > done either way. It probably is simpler to do if libspdm is included
-> > as part of QEMU, but that brings along other complexities.
->
-> Agreed that we can do this with an external agent.  So do you think
-> we can persuade dmtf tools lot to allow interfaces for this purpose
-> or are we looking at a fork of the spdm-emu examples?
+OK thanks. Let me do the exercise.
 
-I think that depends on them. We can either convince them to add
-support, which doesn't seem impossible. Or we can just fork it.
+Eric
+>
+> Thanks
+> Zhenzhong
 
-It's worth pointing out that other tools besides spdm-emu can be used
-here. It's a pretty simple transport protocol.
-
->
-> >
-> > As you pointed out in my original RFC, the complexity of configuration
-> > a responder via the QEMU command line will be very difficult. I think
-> > it's simpler to keep the responder outside and QEMU and just pass any
-> > relevant data to the responder as required.
->
-> I'm not sure how bad the interface would actually be.
-> My expectation is that we aren't going to need to emulate the
-> full flexibility of SPDM - for example we can keep to only the
-> required protocols etc.  As such, what do we need to pass in
-> beyond the cert chains?  We might provide options to do the more fun
-> stuff, but mostly defaults shoudl work.
-
-There are a range of configurations:
- - The supported capabilities
- - The asym algorithms
- - The hash algorithms
- - DHE, AED cipher suits
- - Measurement specs
- - Certificate chains
-
-We could go down the route of saying "this is what the device
-supports" and not letting users customise it. That is more like
-modelling a real world device. That's handy for users attaching a
-device, but not as useful for testing guest software (like the LInux
-implementation).
-
-If we keep this external (as in this series) we can allow very
-customised implementations to be used, which will help test guest
-software. That will allow software like EDK2 and Linux to be
-thoroughly tested and even allow fuzzing or automated unit tests.
-
-That doesn't preclude us from integrating libspdm directly in the
-future though, if we want to just hard code the setup for specific
-devices though. Which might end up happening when we start seeing real
-world hardware that we want to emulate that includes SPDM support.
-
-Alistair
-
->
-> >
-> > >
-> > > Anyhow, I think we need to have gotten a little further figuring that
-> > > out before we merge a solution.  I've been carrying this on the CXL
-> > > staging tree for a long time because I couldn't figure out a good sol=
-ution
-> > > to the amount of information that needs to go between them.
-> > >
-> > > For those not familiar with the fun of libSPDM it is a pain to work w=
-ith
-> > > which is why Huai-Cheng instead connected with the demo app.
-> > >
-> > > Any more luck getting a reliable build to work?
-> >
-> > Yes!
-> >
-> > libspdm is now packaged in buildroot:
-> > https://github.com/buildroot/buildroot/blob/master/package/libspdm/libs=
-pdm.mk
-> >
-> > You can now build libspdm with openSSL provided by your distro as you
-> > don't need to access any private openSSL APIs any more.
->
-> Great.
->
-> >
-> > The hope is we can continue to march towards including libspdm as a
-> > standard library in distros, which should make the entire process
-> > easier.
->
-> That is indeed good either way.
->
-> Jonathan
->
-> >
-> > >
-> > > >
-> > > > 1: https://www.dmtf.org/standards/SPDM
-> > > > 2: https://github.com/DMTF/libspdm
-> > > >
-> > > > Signed-off-by: Huai-Cheng Kuo <hchkuo@avery-design.com.tw>
-> > > > Signed-off-by: Chris Browy <cbrowy@avery-design.com>
-> > > > Co-developed-by: Jonathan Cameron <Jonathan.cameron@huawei.com>
-> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > [ Changes by AF:
-> > > >  - Convert to be more QEMU-ified
-> > > >  - Move to backends as it isn't PCIe specific
-> > > > ]
-> > > > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> > > Alistair, you sent this so I think your sign off should be last
-> > > + some indication of Wilfred's involvement would be good?
-> > > Probably another Co-developed-by
-> > >
-> > >
-> > >
-> > > > Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> > > > ---
-> > >
-> > > I've looked at this code too much in the past to give much
-> > > real review.  Still a few comments inline.
-> > > I'm very keen to get a solution to this upstream, though I think
-> > > we do need to discuss a few general points (no cover letter so I'll
-> > > do it here).
-> >
-> > Yeah, I should have included a cover letter. V2 will
-> >
-> > Alistair
-> >
-> > >
-> > >
-> > > ...
-> > >
-> > > > diff --git a/backends/spdm-socket.c b/backends/spdm-socket.c
-> > > > new file mode 100644
-> > > > index 0000000000..2f31ba80ba
-> > > > --- /dev/null
-> > > > +++ b/backends/spdm-socket.c
-> > > > @@ -0,0 +1,215 @@
-> > >
-> > >
-> > > > +
-> > > > +int spdm_socket_connect(uint16_t port, Error **errp)
-> > > > +{
-> > > > +    int client_socket;
-> > > > +    struct sockaddr_in server_addr;
-> > > > +
-> > > > +    client_socket =3D socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-> > > > +    if (client_socket < 0) {
-> > > > +        error_setg(errp, "cannot create socket: %s", strerror(errn=
-o));
-> > > > +        return -1;
-> > > > +    }
-> > > > +
-> > > > +    memset((char *)&server_addr, 0, sizeof(server_addr));
-> > > > +    server_addr.sin_family =3D AF_INET;
-> > > > +    server_addr.sin_addr.s_addr =3D htonl(INADDR_LOOPBACK);
-> > > > +    server_addr.sin_port =3D htons(port);
-> > > > +
-> > > > +
-> > > > +    if (connect(client_socket, (struct sockaddr *)&server_addr, si=
-zeof(server_addr)) < 0) {
-> > > Wrap the line.
-> > >
-> > > > +        error_setg(errp, "cannot connect: %s", strerror(errno));
-> > > > +        close(client_socket);
-> > > > +        return -1;
-> > > > +    }
-> > > > +
-> > > > +    return client_socket;
-> > > > +}
-> > >
-> > >
-> >
->
 
