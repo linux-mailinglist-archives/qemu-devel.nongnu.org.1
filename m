@@ -2,80 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4767A934B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5427A9353
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjGIu-0006J5-AP; Thu, 21 Sep 2023 05:49:00 -0400
+	id 1qjGN5-00088Y-FU; Thu, 21 Sep 2023 05:53:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjGIs-0006HG-Ad
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:48:58 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjGIq-0007vZ-CF
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:48:58 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-274c05edb69so437409a91.2
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 02:48:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695289735; x=1695894535;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Tn8H0vVmPUbEDqXNIBkZym5IGh9o5sFw2NwUy0uYhGA=;
- b=BONPqY1mjUC2KefGzwPUVBICcOmqBQoFZ/Avn6MakIiBAPFzQFBDM8UjCAS2UiaPD4
- h6mUenzzzNDPEKn52+82My+6JNyW0Dybree6RDsdVbYDlwyqykA48c7d22PIPsSstIKc
- +KzudHLccM3l/MMiXldfvP+np1joGs9SxNxoTZEuhQ/B5Txb9OH+EgTHxIA6o+sdVwIO
- zNKzxcGm5Ni6WQbKBtbqc4fsAb8N4BYTPRHVi+RXMg61AaS722j/5EieQaZk0dzux2cY
- LKyHouG5bbAthQnd651j3yr+G0PDSwB84itLQssL1ec6EQmwsj7EQUwDTXWAWnWTDwhr
- HL1g==
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qjGN2-00088J-1p
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:53:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qjGN0-0000BI-DQ
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:53:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695289993;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=G5+2UU5LrQ45N8KWKO6Q1ugzccgGM6aDNb3v1U5pJII=;
+ b=AsKEvhNRNXcr0oH4FPWtFUIj/pOUS7FnnN1zoqt1UzmQAfZlC4jEKuP4vYx2dd8fkEFcF1
+ GAW/CCz1lc+q/BuZo4cR2o5yt98oHMBR5CrB37TPrOg15TtWQUPTlp+vud4xD/keDz1NPK
+ tY0ddfgULBIykw5J/3dMY8EgQTJBR5I=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-641-ehzkyGoRMRi5HDXDRam0OQ-1; Thu, 21 Sep 2023 05:53:11 -0400
+X-MC-Unique: ehzkyGoRMRi5HDXDRam0OQ-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-5041ea5abb6so1037049e87.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 02:53:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695289735; x=1695894535;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1695289990; x=1695894790;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Tn8H0vVmPUbEDqXNIBkZym5IGh9o5sFw2NwUy0uYhGA=;
- b=qNpt/w9+quzQ90IwGz0TSUbk5X9kwbmrB/DH3ZQvq0rthmFukgYdGVKWyu5LGHz/4L
- RYSLRRjYxfKGMuxZI+S3DaG7fsXx4UbNYEu4LocNEINnmlQgaDqtON0uW4qc2ebN+xdo
- F1DKAmcsKYHRX1igwYf/mgPwc0ddcGLo7HBpjrXWv7qMTRO3h1VSQC+hyebL5LU24wYD
- swYLqYjKollxGsGjRNzkbZwCBB0LuQaZoulJpnMBcf1zPxdyClyoVKw6vdfV2AYlGba5
- GKfCRMZpd2EVIVFzH13ZJUsGIkejlt948u6csrQSZJBKWsR1qbRpsi9EqngSGriDe8vb
- TsqA==
-X-Gm-Message-State: AOJu0Yzr5NAtVAJFfycM3XmnqRrp+fPubT/l0jk/6QnOKNLEH9uODygk
- Q1LX001Mi9L4KPReMlsATVWevQ==
-X-Google-Smtp-Source: AGHT+IH48wj4AEiEW1IhNekVEAfhw2eWrEZ0Or30DnMSh//+LLWk2XTqXBOREmM7/OZcvV0gFE4LyQ==
-X-Received: by 2002:a17:90b:1f88:b0:276:b37f:84e5 with SMTP id
- so8-20020a17090b1f8800b00276b37f84e5mr4782992pjb.21.1695289734906; 
- Thu, 21 Sep 2023 02:48:54 -0700 (PDT)
-Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with ESMTPSA id
- e12-20020a170902d38c00b001c32fd9e412sm1026138pld.58.2023.09.21.02.48.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Sep 2023 02:48:54 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: Konstantin Kostiuk <konstantin@daynix.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
- qemu-devel@nongnu.org (open list:All patches CC here)
-Subject: [PATCH v2] Revert "tap: setting error appropriately when calling
- net_init_tap_one()"
-Date: Thu, 21 Sep 2023 18:48:49 +0900
-Message-ID: <20230921094851.36295-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
+ bh=G5+2UU5LrQ45N8KWKO6Q1ugzccgGM6aDNb3v1U5pJII=;
+ b=JDR2HXVGULixz2tjkoB4Uxov5YFj0Cqvoazxydl2LwFVJ4IGURFZM1R2u6gXFNXJts
+ t0EYu1lBnP+tt/udyCDGriooculNqXsaXlpiR/H/1vM1LuqPY646mKlNWBNkntSk16XL
+ jmLVd/OA8hMvpxZ5RlNltHro7GgDJFefbX+0Z7ffM8i8vJpy+ClpVLbsedQVwJQOZnRF
+ k6uG00VMSF99vR8Dpd/M9Hgf1SIp3uh6bNdZzIjFHepliMe3oFOsRQiUvDPBhYxeN3J/
+ F67n4lgLpz5+dh2Wv0a9D7HNw9TUt0OqGRXe14FBS5OtgslPv1Bh7nELomuCUIyDKTd6
+ tuJA==
+X-Gm-Message-State: AOJu0YwX6BgdbbmjNCLP60u6BlrrF/4aY7wr3386H6zxLXTU5tgnm2v6
+ uz1OOTgrgxVFJLUOCNZdCQzC83b5cR/S+JgrWQjKEoxzkqRtkJs9p4ol9Zlbr5eWuXglV3yofJm
+ erkU/5EGsfmj23kmGDF4w/dKl8tZJ9ik=
+X-Received: by 2002:a19:9147:0:b0:503:26bd:7f58 with SMTP id
+ y7-20020a199147000000b0050326bd7f58mr4254810lfj.41.1695289990130; 
+ Thu, 21 Sep 2023 02:53:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/BwAJULIMzosaENVD8DyM1KyL3tNIiH5eh4BemTphdHqlGr84zmfzV9YrGChWy8biFBxQP5K2IbidUp/dTVE=
+X-Received: by 2002:a19:9147:0:b0:503:26bd:7f58 with SMTP id
+ y7-20020a199147000000b0050326bd7f58mr4254800lfj.41.1695289989825; Thu, 21 Sep
+ 2023 02:53:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20221110100629.61496-1-akihiko.odaki@daynix.com>
+ <20221110100629.61496-2-akihiko.odaki@daynix.com>
+ <CAPMcbCrGkXzeZex_veDYV8HSMMzH8d=zy1jkf21t4qFekGmDpg@mail.gmail.com>
+ <f3895076-5ccc-4542-8cc5-635a99cff182@daynix.com>
+In-Reply-To: <f3895076-5ccc-4542-8cc5-635a99cff182@daynix.com>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Thu, 21 Sep 2023 12:52:58 +0300
+Message-ID: <CAPMcbCpwJb+uE0U_d+NYScVest1QGB3extUZ9xM10YeGM0-tVQ@mail.gmail.com>
+Subject: Re: [PATCH v2 01/10] qga: Remove platform GUID definitions
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com, 
+ Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Fam Zheng <fam@euphon.net>, 
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Yan Vugenfirer <yan@daynix.com>
+Content-Type: multipart/alternative; boundary="000000000000a29d5b0605db7524"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,104 +103,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit 46d4d36d0bf2b24b205f2f604f0905db80264eef.
+--000000000000a29d5b0605db7524
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The reverted commit changed to emit warnings instead of errors when
-vhost is requested but vhost initialization fails if vhostforce option
-is not set.
+Hi Akihiko,
 
-However, vhostforce is not meant to change the error handling. It was
-once introduced as an option to commit 5430a28fe4 ("vhost: force vhost
-off for non-MSI guests") to force enabling vhost for non-MSI guests,
-which will have worse performance with vhost. It was deprecated with
-commit 1e7398a140 ("vhost: enable vhost without without MSI-X") and
-changed to behave identical with the vhost option for compatibility.
+Thanks for ping.
+I will merge this commit with other qga fixes.
 
-Worse, commit bf769f742c ("virtio: del net client if net_init_tap_one
-failed") changed to delete the client when vhost fails even when the
-failure only results in a warning. The leads to an assertion failure
-for the -netdev command line option.
+Best Regards,
+Konstantin Kostiuk.
 
-The reverted commit was intended to ensure that the vhost initialization
-failure won't result in a corrupted netdev. This problem should have
-been fixed by deleting netdev when the initialization fails instead of
-ignoring the failure by converting it into a warning. Fortunately,
-commit bf769f742c ("virtio: del net client if net_init_tap_one failed"),
-mentioned earlier, implements this behavior.
 
-Restore the correct semantics and fix the assertion failure for the
--netdev command line option by reverting the problematic commit.
+On Thu, Sep 21, 2023 at 10:58=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
+x.com>
+wrote:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
-V1 -> V2: Corrected the message.
+> On 2022/11/17 18:45, Konstantin Kostiuk wrote:
+> > Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com
+> > <mailto:kkostiuk@redhat.com>>
+> >
+> > Will merge this patch in QGA series
+> >
+> > On Thu, Nov 10, 2022 at 12:06 PM Akihiko Odaki <akihiko.odaki@daynix.co=
+m
+> > <mailto:akihiko.odaki@daynix.com>> wrote:
+> >
+> >     GUID_DEVINTERFACE_DISK and GUID_DEVINTERFACE_STORAGEPORT are alread=
+y
+> >     defined by MinGW-w64. They are not only unnecessary, but can lead t=
+o
+> >     duplicate definition errors at link time with some unknown conditio=
+n.
+> >
+> >     Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com
+> >     <mailto:akihiko.odaki@daynix.com>>
+> >     ---
+> >       qga/commands-win32.c | 7 -------
+> >       1 file changed, 7 deletions(-)
+> >
+> >     diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+> >     index ec9f55b453..dde5d401bb 100644
+> >     --- a/qga/commands-win32.c
+> >     +++ b/qga/commands-win32.c
+> >     @@ -506,13 +506,6 @@ static GuestDiskBusType
+> >     find_bus_type(STORAGE_BUS_TYPE bus)
+> >           return win2qemu[(int)bus];
+> >       }
+> >
+> >     -DEFINE_GUID(GUID_DEVINTERFACE_DISK,
+> >     -        0x53f56307L, 0xb6bf, 0x11d0, 0x94, 0xf2,
+> >     -        0x00, 0xa0, 0xc9, 0x1e, 0xfb, 0x8b);
+> >     -DEFINE_GUID(GUID_DEVINTERFACE_STORAGEPORT,
+> >     -        0x2accfe60L, 0xc130, 0x11d2, 0xb0, 0x82,
+> >     -        0x00, 0xa0, 0xc9, 0x1e, 0xfb, 0x8b);
+> >     -
+> >       static void get_pci_address_for_device(GuestPCIAddress *pci,
+> >                                              HDEVINFO dev_info)
+> >       {
+> >     --
+> >     2.38.1
+> >
+>
+> Hi Konstantin,
+>
+> This patch seems missed since then. Can you merge it?
+>
+> Regards,
+> Akihiko Odaki
+>
+>
 
- include/net/vhost_net.h |  3 ---
- net/tap.c               | 22 +++++-----------------
- 2 files changed, 5 insertions(+), 20 deletions(-)
+--000000000000a29d5b0605db7524
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/include/net/vhost_net.h b/include/net/vhost_net.h
-index c37aba35e6..c6a5361a2a 100644
---- a/include/net/vhost_net.h
-+++ b/include/net/vhost_net.h
-@@ -4,9 +4,6 @@
- #include "net/net.h"
- #include "hw/virtio/vhost-backend.h"
- 
--#define VHOST_NET_INIT_FAILED \
--    "vhost-net requested but could not be initialized"
--
- struct vhost_net;
- typedef struct vhost_net VHostNetState;
- 
-diff --git a/net/tap.c b/net/tap.c
-index 1bf085d422..c6639d9f20 100644
---- a/net/tap.c
-+++ b/net/tap.c
-@@ -730,11 +730,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         if (vhostfdname) {
-             vhostfd = monitor_fd_param(monitor_cur(), vhostfdname, &err);
-             if (vhostfd == -1) {
--                if (tap->has_vhostforce && tap->vhostforce) {
--                    error_propagate(errp, err);
--                } else {
--                    warn_report_err(err);
--                }
-+                error_propagate(errp, err);
-                 goto failed;
-             }
-             if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
-@@ -745,13 +741,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
-         } else {
-             vhostfd = open("/dev/vhost-net", O_RDWR);
-             if (vhostfd < 0) {
--                if (tap->has_vhostforce && tap->vhostforce) {
--                    error_setg_errno(errp, errno,
--                                     "tap: open vhost char device failed");
--                } else {
--                    warn_report("tap: open vhost char device failed: %s",
--                                strerror(errno));
--                }
-+                error_setg_errno(errp, errno,
-+                                 "tap: open vhost char device failed");
-                 goto failed;
-             }
-             if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
-@@ -764,11 +755,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
- 
-         s->vhost_net = vhost_net_init(&options);
-         if (!s->vhost_net) {
--            if (tap->has_vhostforce && tap->vhostforce) {
--                error_setg(errp, VHOST_NET_INIT_FAILED);
--            } else {
--                warn_report(VHOST_NET_INIT_FAILED);
--            }
-+            error_setg(errp,
-+                       "vhost-net requested but could not be initialized");
-             goto failed;
-         }
-     } else if (vhostfdname) {
--- 
-2.42.0
+<div dir=3D"ltr"><div>Hi Akihiko,</div><div><br></div><div>Thanks for ping.=
+ <br></div><div>I will merge this commit with other qga fixes.<br></div><di=
+v><br></div><div><div><div><div dir=3D"ltr" class=3D"gmail_signature" data-=
+smartmail=3D"gmail_signature"><div dir=3D"ltr"><div>Best Regards,</div><div=
+>Konstantin Kostiuk.</div></div></div></div><br></div></div></div><br><div =
+class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Sep 21,=
+ 2023 at 10:58=E2=80=AFAM Akihiko Odaki &lt;<a href=3D"mailto:akihiko.odaki=
+@daynix.com">akihiko.odaki@daynix.com</a>&gt; wrote:<br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">On 2022/11/17 18:45, Konstantin Kostiu=
+k wrote:<br>
+&gt; Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkostiuk@redhat.=
+com" target=3D"_blank">kkostiuk@redhat.com</a> <br>
+&gt; &lt;mailto:<a href=3D"mailto:kkostiuk@redhat.com" target=3D"_blank">kk=
+ostiuk@redhat.com</a>&gt;&gt;<br>
+&gt; <br>
+&gt; Will merge this patch in QGA series<br>
+&gt; <br>
+&gt; On Thu, Nov 10, 2022 at 12:06 PM Akihiko Odaki &lt;<a href=3D"mailto:a=
+kihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a> <br=
+>
+&gt; &lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.com" target=3D"_blan=
+k">akihiko.odaki@daynix.com</a>&gt;&gt; wrote:<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0GUID_DEVINTERFACE_DISK and GUID_DEVINTERFACE_STORAG=
+EPORT are already<br>
+&gt;=C2=A0 =C2=A0 =C2=A0defined by MinGW-w64. They are not only unnecessary=
+, but can lead to<br>
+&gt;=C2=A0 =C2=A0 =C2=A0duplicate definition errors at link time with some =
+unknown condition.<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0Signed-off-by: Akihiko Odaki &lt;<a href=3D"mailto:=
+akihiko.odaki@daynix.com" target=3D"_blank">akihiko.odaki@daynix.com</a><br=
+>
+&gt;=C2=A0 =C2=A0 =C2=A0&lt;mailto:<a href=3D"mailto:akihiko.odaki@daynix.c=
+om" target=3D"_blank">akihiko.odaki@daynix.com</a>&gt;&gt;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0---<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0qga/commands-win32.c | 7 -------<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A01 file changed, 7 deletions(-)<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0diff --git a/qga/commands-win32.c b/qga/commands-wi=
+n32.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0index ec9f55b453..dde5d401bb 100644<br>
+&gt;=C2=A0 =C2=A0 =C2=A0--- a/qga/commands-win32.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0+++ b/qga/commands-win32.c<br>
+&gt;=C2=A0 =C2=A0 =C2=A0@@ -506,13 +506,6 @@ static GuestDiskBusType<br>
+&gt;=C2=A0 =C2=A0 =C2=A0find_bus_type(STORAGE_BUS_TYPE bus)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return win2qemu[(int)bus];<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0-DEFINE_GUID(GUID_DEVINTERFACE_DISK,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x53f56307L, 0xb6bf, 0=
+x11d0, 0x94, 0xf2,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x00, 0xa0, 0xc9, 0x1e=
+, 0xfb, 0x8b);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-DEFINE_GUID(GUID_DEVINTERFACE_STORAGEPORT,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x2accfe60L, 0xc130, 0=
+x11d2, 0xb0, 0x82,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 =C2=A0 =C2=A0 =C2=A0 0x00, 0xa0, 0xc9, 0x1e=
+, 0xfb, 0x8b);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0static void get_pci_address_for_device(Guest=
+PCIAddress *pci,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 HDEVINFO dev_info)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0{<br>
+&gt;=C2=A0 =C2=A0 =C2=A0-- <br>
+&gt;=C2=A0 =C2=A0 =C2=A02.38.1<br>
+&gt; <br>
+<br>
+Hi Konstantin,<br>
+<br>
+This patch seems missed since then. Can you merge it?<br>
+<br>
+Regards,<br>
+Akihiko Odaki<br>
+<br>
+</blockquote></div>
+
+--000000000000a29d5b0605db7524--
 
 
