@@ -2,97 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094907A92BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F5E7A92BD
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:43:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjFGZ-0005IB-7z; Thu, 21 Sep 2023 04:42:31 -0400
+	id 1qjFHB-0005ZA-Ce; Thu, 21 Sep 2023 04:43:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjFGX-0005Hx-45
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:42:29 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qjFH9-0005Yf-Fr
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:43:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjFGV-0002Rt-Dt
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:42:28 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qjFH7-0002c6-U9
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:43:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695285746;
+ s=mimecast20190719; t=1695285785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zK6eTUGXN0Lx13xkY5YAmRsfOS+pIyX7W+j4pzgroFI=;
- b=LUkdf75ii1NyUQUzUpNjly9N2YArJvdmEiYN2fiRcojkPDeBYkfxpjQ39VSbk4MQtVvx6M
- UBc5SRxWlfcR2CdMp9Gqvss06lbyx6LDylfV2wau4jO8bvp6mGwckQybpDjSQVjyLeTUqV
- pyYUtxXTjxKOCvE76esCl6B8OwXlFpM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-659-7KiQDQVJMUK9AsuXNN2S0Q-1; Thu, 21 Sep 2023 04:42:24 -0400
-X-MC-Unique: 7KiQDQVJMUK9AsuXNN2S0Q-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3f42bcef2acso5401755e9.2
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 01:42:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695285743; x=1695890543;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zK6eTUGXN0Lx13xkY5YAmRsfOS+pIyX7W+j4pzgroFI=;
- b=WZQiaEQsY9khJ6RvohagneOJzfEo2HVNzBiOGjLmZfF4uXaDX5nsyaT+l3uS9TTYFj
- SeA+XPTGzSKV0TIRIVE0CvFaoqyFH1x7XeIFu40Epm6UFvF89OLZ5jHu+Ae974crpr6+
- 0w540O9ESOjng/lOH4epq1h+GuTPWQdc2IOoTgIvXEsbJdZFWa8lu+1TNFz6D7rjlmtb
- 8uc3dZmpXBfFvGRyhZs3oe1lnnksfXxcj8yjHuJRL+e/lVACOvl73SrMsSqBcWP/PBzg
- O3p1kl71iR/i3kWXU9gGIsOT5jMu2DFXynEA1lTXpnO1WzKtyz5EyTnIPn4le/SxnLyr
- ZwXA==
-X-Gm-Message-State: AOJu0Yx4zLk4D53WK5cdKyACBK1iICc3yKHE76rWNQUv76IInbAKg06L
- 3KGpkqrUe83PmJOd49jdnhKB2X40F3p+71n/owXa4eWXfryPmw6jX1E/vVGmM5kjZ8NpzmiVC1U
- lG1ygNUNlqtJOuLY=
-X-Received: by 2002:a05:600c:6021:b0:405:32e2:f8bb with SMTP id
- az33-20020a05600c602100b0040532e2f8bbmr901761wmb.31.1695285743221; 
- Thu, 21 Sep 2023 01:42:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvBeUBEQkWCe05H92Emm+4BJeeOuZ5s9EdzoRLK5gRwYsdexKq/TH2jxbw2XoOsvqtNJyuug==
-X-Received: by 2002:a05:600c:6021:b0:405:32e2:f8bb with SMTP id
- az33-20020a05600c602100b0040532e2f8bbmr901747wmb.31.1695285742861; 
- Thu, 21 Sep 2023 01:42:22 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- s17-20020a1cf211000000b003fe2a40d287sm1295199wmc.1.2023.09.21.01.42.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 01:42:22 -0700 (PDT)
-Message-ID: <95befe1b-efb4-82f9-3cf8-fe703378617f@redhat.com>
-Date: Thu, 21 Sep 2023 10:42:21 +0200
+ bh=ZWLMZ+X5Hd+F/5mLyFftJEP9/PMaQw/y62tEWzEwLSU=;
+ b=dH3zotxIyGrSQtZ6MMBRrd/ZUlvJv8R54/8LIisnP93fdrThLjxicbTGfDAuMe2kptueR1
+ UD9H5RhJlZBvYNlIIhQUdPxJmTp8WumIYYcVnK5ANscKSxmL48IIUxYubAjhAcPq51zCF4
+ c0RWzuVM6DblU184prUYdEnos+Ul1Jw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-287-y9yC9AFJMomrr9msxjQjNg-1; Thu, 21 Sep 2023 04:43:02 -0400
+X-MC-Unique: y9yC9AFJMomrr9msxjQjNg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB882803497;
+ Thu, 21 Sep 2023 08:43:01 +0000 (UTC)
+Received: from redhat.com (dhcp-192-199.str.redhat.com [10.33.192.199])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7471020268D5;
+ Thu, 21 Sep 2023 08:42:58 +0000 (UTC)
+Date: Thu, 21 Sep 2023 10:42:57 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
+ vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com,
+ pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
+ anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
+ marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
+ philmd@linaro.org, stefanha@redhat.com, fam@euphon.net,
+ quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
+ kraxel@redhat.com, qemu-block@nongnu.org,
+ xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
+ peter.maydell@linaro.org
+Subject: Re: [PATCH v2 7/7] qobject atomics osdep: Make a few macros more
+ hygienic
+Message-ID: <ZQwCEW4SBpI9f1Yx@redhat.com>
+References: <20230920183149.1105333-1-armbru@redhat.com>
+ <20230920183149.1105333-8-armbru@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 05/22] vfio/common: Extract out
- vfio_kvm_device_[add/del]_fd
-Content-Language: en-US
-To: eric.auger@redhat.com, Zhenzhong Duan <zhenzhong.duan@intel.com>,
- qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, jasowang@redhat.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, yi.y.sun@intel.com,
- chao.p.peng@intel.com
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <20230830103754.36461-6-zhenzhong.duan@intel.com>
- <127c3104-44e0-f19f-6339-43182fbf6db1@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <127c3104-44e0-f19f-6339-43182fbf6db1@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230920183149.1105333-8-armbru@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,154 +86,133 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/20/23 13:49, Eric Auger wrote:
-> Hi Zhenzhong,
+Am 20.09.2023 um 20:31 hat Markus Armbruster geschrieben:
+> Variables declared in macros can shadow other variables.  Much of the
+> time, this is harmless, e.g.:
 > 
-> On 8/30/23 12:37, Zhenzhong Duan wrote:
->> ...which will be used by both legacy and iommufd backend.
-> I prefer genuine sentences in the commit msg. Also you explain what you
-> do but not why.
+>     #define _FDT(exp)                                                  \
+>         do {                                                           \
+>             int ret = (exp);                                           \
+>             if (ret < 0) {                                             \
+>                 error_report("error creating device tree: %s: %s",   \
+>                         #exp, fdt_strerror(ret));                      \
+>                 exit(1);                                               \
+>             }                                                          \
+>         } while (0)
 > 
-> suggestion: Introduce two new helpers, vfio_kvm_device_[add/del]_fd
-> which take as input a file descriptor which can be either a group fd or
-> a cdev fd. This uses the new KVM_DEV_VFIO_FILE VFIO KVM device group,
-> which aliases to the legacy KVM_DEV_VFIO_GROUP.
+> Harmless shadowing in h_client_architecture_support():
+> 
+>         target_ulong ret;
+> 
+>         [...]
+> 
+>         ret = do_client_architecture_support(cpu, spapr, vec, fdt_bufsize);
+>         if (ret == H_SUCCESS) {
+>             _FDT((fdt_pack(spapr->fdt_blob)));
+>             [...]
+>         }
+> 
+>         return ret;
+> 
+> However, we can get in trouble when the shadowed variable is used in a
+> macro argument:
+> 
+>     #define QOBJECT(obj) ({                                 \
+>         typeof(obj) o = (obj);                              \
+>         o ? container_of(&(o)->base, QObject, base) : NULL; \
+>      })
+> 
+> QOBJECT(o) expands into
+> 
+>     ({
+> --->    typeof(o) o = (o);
+>         o ? container_of(&(o)->base, QObject, base) : NULL;
+>     })
+> 
+> Unintended variable name capture at --->.  We'd be saved by
+> -Winit-self.  But I could certainly construct more elaborate death
+> traps that don't trigger it.
+> 
+> To reduce the risk of trapping ourselves, we use variable names in
+> macros that no sane person would use elsewhere.  Here's our actual
+> definition of QOBJECT():
+> 
+>     #define QOBJECT(obj) ({                                         \
+>         typeof(obj) _obj = (obj);                                   \
+>         _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
+>     })
+> 
+> Works well enough until we nest macro calls.  For instance, with
+> 
+>     #define qobject_ref(obj) ({                     \
+>         typeof(obj) _obj = (obj);                   \
+>         qobject_ref_impl(QOBJECT(_obj));            \
+>         _obj;                                       \
+>     })
+> 
+> the expression qobject_ref(obj) expands into
+> 
+>     ({
+>         typeof(obj) _obj = (obj);
+>         qobject_ref_impl(
+>             ({
+> --->            typeof(_obj) _obj = (_obj);
+>                 _obj ? container_of(&(_obj)->base, QObject, base) : NULL;
+>             }));
+>         _obj;
+>     })
+> 
+> Unintended variable name capture at --->.
+> 
+> The only reliable way to prevent unintended variable name capture is
+> -Wshadow.
+> 
+> One blocker for enabling it is shadowing hiding in function-like
+> macros like
+> 
+>      qdict_put(dict, "name", qobject_ref(...))
+> 
+> qdict_put() wraps its last argument in QOBJECT(), and the last
+> argument here contains another QOBJECT().
+> 
+> Use dark preprocessor sorcery to make the macros that give us this
+> problem use different variable names on every call.
+> 
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Eric Blake <eblake@redhat.com>
+> ---
+>  include/qapi/qmp/qobject.h | 11 +++++++++--
+>  include/qemu/atomic.h      | 17 ++++++++++++-----
+>  include/qemu/compiler.h    |  3 +++
+>  include/qemu/osdep.h       | 31 +++++++++++++++++++++++--------
+>  4 files changed, 47 insertions(+), 15 deletions(-)
+> 
+> diff --git a/include/qapi/qmp/qobject.h b/include/qapi/qmp/qobject.h
+> index 9003b71fd3..d36cc97805 100644
+> --- a/include/qapi/qmp/qobject.h
+> +++ b/include/qapi/qmp/qobject.h
+> @@ -45,10 +45,17 @@ struct QObject {
+>      struct QObjectBase_ base;
+>  };
+>  
+> -#define QOBJECT(obj) ({                                         \
+> +/*
+> + * Preprocessory sorcery ahead: use a different identifier for the
+> + * local variable in each expansion, so we can nest macro calls
+> + * without shadowing variables.
+> + */
+> +#define QOBJECT_INTERNAL(obj, _obj) ({                          \
+>      typeof(obj) _obj = (obj);                                   \
+> -    _obj ? container_of(&(_obj)->base, QObject, base) : NULL;   \
+> +    _obj                                                        \
+> +        ? container_of(&(_obj)->base, QObject, base) : NULL;    \
 
-Ah yes. I didn't understand why the 's/GROUP/FILE/' change in the
-VFIO KVM device ioctls. Thanks for clarifying.
+What happened here? The code in this line (or now two lines) seems to be
+unchanged apart from a strange looking newline.
 
-What about pre-6.6 kernels without KVM_DEV_VFIO_FILE support ?
+>  })
+> +#define QOBJECT(obj) QOBJECT_INTERNAL((obj), MAKE_IDENTFIER(_obj))
 
-C.
-
-
-> 
-> vfio_kvm_device_add/del_group then call those new helpers.
-> 
-> 
-> 
->>
->> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>   hw/vfio/common.c              | 44 +++++++++++++++++++++++------------
->>   include/hw/vfio/vfio-common.h |  3 +++
->>   2 files changed, 32 insertions(+), 15 deletions(-)
->>
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 67150e4575..949ad6714a 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -1759,17 +1759,17 @@ void vfio_reset_handler(void *opaque)
->>       }
->>   }
->>   
->> -static void vfio_kvm_device_add_group(VFIOGroup *group)
->> +int vfio_kvm_device_add_fd(int fd)
->>   {
->>   #ifdef CONFIG_KVM
->>       struct kvm_device_attr attr = {
->> -        .group = KVM_DEV_VFIO_GROUP,
->> -        .attr = KVM_DEV_VFIO_GROUP_ADD,
->> -        .addr = (uint64_t)(unsigned long)&group->fd,
->> +        .group = KVM_DEV_VFIO_FILE,
->> +        .attr = KVM_DEV_VFIO_FILE_ADD,
->> +        .addr = (uint64_t)(unsigned long)&fd,
->>       };
->>   
->>       if (!kvm_enabled()) {
->> -        return;
->> +        return 0;
->>       }
->>   
->>       if (vfio_kvm_device_fd < 0) {
->> @@ -1779,37 +1779,51 @@ static void vfio_kvm_device_add_group(VFIOGroup *group)
->>   
->>           if (kvm_vm_ioctl(kvm_state, KVM_CREATE_DEVICE, &cd)) {
->>               error_report("Failed to create KVM VFIO device: %m");
->> -            return;
->> +            return -ENODEV;
-> can't you return -errno?
->>           }
->>   
->>           vfio_kvm_device_fd = cd.fd;
->>       }
->>   
->>       if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
->> -        error_report("Failed to add group %d to KVM VFIO device: %m",
->> -                     group->groupid);
->> +        error_report("Failed to add fd %d to KVM VFIO device: %m",
->> +                     fd);
->> +        return -errno;
->>       }
->>   #endif
->> +    return 0;
->>   }
->>   
->> -static void vfio_kvm_device_del_group(VFIOGroup *group)
->> +static void vfio_kvm_device_add_group(VFIOGroup *group)
->> +{
->> +    vfio_kvm_device_add_fd(group->fd);
-> Since vfio_kvm_device_add_fd now returns an error value, it's a pity not
-> to use it and propagate it. Also you could fill an errp with the error
-> msg and use it in vfio_connect_container(). But this is a new error
-> handling there.
->> +}
->> +
->> +int vfio_kvm_device_del_fd(int fd)
-> not sure we want this to return an error. But if we do, I think it would
-> be nicer to propagate the error up.
->>   {
->>   #ifdef CONFIG_KVM
->>       struct kvm_device_attr attr = {
->> -        .group = KVM_DEV_VFIO_GROUP,
->> -        .attr = KVM_DEV_VFIO_GROUP_DEL,
->> -        .addr = (uint64_t)(unsigned long)&group->fd,
->> +        .group = KVM_DEV_VFIO_FILE,
->> +        .attr = KVM_DEV_VFIO_FILE_DEL,
->> +        .addr = (uint64_t)(unsigned long)&fd,
->>       };
->>   
->>       if (vfio_kvm_device_fd < 0) {
->> -        return;
->> +        return -EINVAL;
->>       }
->>   
->>       if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
->> -        error_report("Failed to remove group %d from KVM VFIO device: %m",
->> -                     group->groupid);
->> +        error_report("Failed to remove fd %d from KVM VFIO device: %m",
->> +                     fd);
->> +        return -EBADF;
-> -errno?
->>       }
->>   #endif
->> +    return 0;
->> +}
->> +
->> +static void vfio_kvm_device_del_group(VFIOGroup *group)
->> +{
->> +    vfio_kvm_device_del_fd(group->fd);
->>   }
->>   
->>   static VFIOAddressSpace *vfio_get_address_space(AddressSpace *as)
->> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
->> index 5e376c436e..598c3ce079 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -220,6 +220,9 @@ struct vfio_device_info *vfio_get_device_info(int fd);
->>   int vfio_get_device(VFIOGroup *group, const char *name,
->>                       VFIODevice *vbasedev, Error **errp);
->>   
->> +int vfio_kvm_device_add_fd(int fd);
->> +int vfio_kvm_device_del_fd(int fd);
->> +
->>   extern const MemoryRegionOps vfio_region_ops;
->>   typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
->>   extern VFIOGroupList vfio_group_list;
-> Thanks
-> 
-> Eric
-> 
+Kevin
 
 
