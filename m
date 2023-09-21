@@ -2,102 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78807A9487
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1901F7A949E
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:21:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjJRC-0004TN-Fz; Thu, 21 Sep 2023 09:09:46 -0400
+	id 1qjJbQ-00041j-Je; Thu, 21 Sep 2023 09:20:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjJQy-00049c-T2
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:09:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjJb2-0003yf-Nb
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:20:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjJQu-0006NG-Kn
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:09:32 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjJax-0002ah-Pd
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:19:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695301767;
+ s=mimecast20190719; t=1695302389;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=13vvfQKiALPXnWulUQ4FjXCVS+jk6RnCwNFI5srYqDw=;
- b=DiriKbWoAddsDKC0EGIm1qAv60tsvP3igR2yb8W5fOUapfp7Rxox92xjx+y93Wum+AMdPm
- Tlr6g6JM3/cJFMKQLHYWL7ZHb/OWRYDSdjXxPOkxmQ0IEC0oUbgV0Un3woSEiHSfG1KiXe
- V57IFxoguvyBe6sa9LW0znFS/XPF1yg=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-_-cPKhG3P36-ELRZlMhPhA-1; Thu, 21 Sep 2023 06:55:59 -0400
-X-MC-Unique: _-cPKhG3P36-ELRZlMhPhA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7740a95a29aso51567085a.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 03:55:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695293759; x=1695898559;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=13vvfQKiALPXnWulUQ4FjXCVS+jk6RnCwNFI5srYqDw=;
- b=Ujmvtz93ugKyDnpsjHlxpcj1J4lVdlnj36oLE69E7TNoL/TX7r6p9Bj1OuHFt90sIv
- qaVRKjCIvZIiuCSdaB/XinorSeic81Im4xru0yfwltD1ecO+Rpfi/SLtT0uM21MxeZXJ
- TIsdU4MIxZKmaTFoU4jpWtm4ctPz8V01FKEyDlBUJN5NUltpAghi/QHaOAyQ1QQXOtbS
- S4nl7mL1D7TN+1G9uIc4ATeR/Sc3iCI1LWfJprYXVpp6RlF39JlNxWNuWbzaV179gM7x
- huF0gUAYJrh9Sz8Ythmt+lkuWgescpX90SnU2n0zR+Ko1zXzDkVhElXU7wHniaLvAolh
- B3iQ==
-X-Gm-Message-State: AOJu0YwWEgMYfwTe8k24PQbPZ4xZ5FkrNgq2en47lGrzOG76APcfcsq7
- WpWMrjqB3TbHV/N4IFSfbWVxyAZUytrR9t4/o4TYpzVl27M3QMRyv9Q8dRLwHZn7Zxf29ZvNXuP
- BPb/jzSWfQc7/Bk4=
-X-Received: by 2002:a05:620a:2a08:b0:767:eb51:ac27 with SMTP id
- o8-20020a05620a2a0800b00767eb51ac27mr5603295qkp.5.1695293759345; 
- Thu, 21 Sep 2023 03:55:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHe1EIKJLxsiLv7UDOJW68izwzL85K7MlS5cPX/39jnb8QRN2ylWmKO8h71qOmXS01MTN+Ofg==
-X-Received: by 2002:a05:620a:2a08:b0:767:eb51:ac27 with SMTP id
- o8-20020a05620a2a0800b00767eb51ac27mr5603286qkp.5.1695293759076; 
- Thu, 21 Sep 2023 03:55:59 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- z13-20020a05620a100d00b00754b7ee6922sm493521qkj.9.2023.09.21.03.55.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 03:55:58 -0700 (PDT)
-Message-ID: <c46f7736-9073-b6eb-e52d-e4988423f5d0@redhat.com>
-Date: Thu, 21 Sep 2023 12:55:55 +0200
+ bh=lQw2YXXyrOihkrf7usTxJv+mSCyiHcorqeGLgRXgA50=;
+ b=K6vftflRkpgK+JJjdmU+dSXRxlEr/utMgjZoPF5fo3jqv8zWF/oJTGTvRrFtO3cEKePjC4
+ 3WjfS4DmxjulXkrZUHYL6tQ1MIMaboTe5RN0V+bLUMZ5kyd92YzwuXxAqO15woZ15JVirQ
+ 3VqM1XzUIIxsmOVFxNJF/QNiNls9XoY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-553-k078qofeOW6bAypJohfM_g-1; Thu, 21 Sep 2023 07:06:03 -0400
+X-MC-Unique: k078qofeOW6bAypJohfM_g-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E88C3822568
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 11:06:03 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C7C591005B96
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 11:06:02 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B373621E6900; Thu, 21 Sep 2023 13:06:01 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org,  John Snow <jsnow@redhat.com>,  Daniel P .
+ =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH v3 10/10] qapi: scripts: add a generator for qapi's
+ examples
+References: <20230919201857.675913-1-victortoso@redhat.com>
+ <20230919201857.675913-11-victortoso@redhat.com>
+Date: Thu, 21 Sep 2023 13:06:01 +0200
+In-Reply-To: <20230919201857.675913-11-victortoso@redhat.com> (Victor Toso's
+ message of "Tue, 19 Sep 2023 22:18:57 +0200")
+Message-ID: <87o7hv7ply.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 04/22] vfio/common: Introduce
- vfio_container_add|del_section_window()
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <20230830103754.36461-5-zhenzhong.duan@intel.com>
- <facf584a-e8bf-5386-8660-ac7dd3e6dde8@redhat.com>
- <SJ0PR11MB6744CFE4E7D6AB400FD8BE6D92F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB6744CFE4E7D6AB400FD8BE6D92F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,274 +82,488 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/21/23 12:14, Duan, Zhenzhong wrote:
-> Hi Cédric,
-> 
->> -----Original Message-----
->> From: Cédric Le Goater <clg@redhat.com>
->> Sent: Thursday, September 21, 2023 4:29 PM
->> Subject: Re: [PATCH v1 04/22] vfio/common: Introduce
->> vfio_container_add|del_section_window()
->>
->> Hello Zhenzhong,
->>
->> On 8/30/23 12:37, Zhenzhong Duan wrote:
->>> From: Eric Auger <eric.auger@redhat.com>
->>>
->>> Introduce helper functions that isolate the code used for
->>> VFIO_SPAPR_TCE_v2_IOMMU. This code reliance is IOMMU backend
->>> specific whereas the rest of the code in the callers, ie.
->>> vfio_listener_region_add|del is not.
->>>
->>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>> ---
->>>    hw/vfio/common.c | 156 +++++++++++++++++++++++++++--------------------
->>>    1 file changed, 89 insertions(+), 67 deletions(-)
->>>
->>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->>> index 9ca695837f..67150e4575 100644
->>> --- a/hw/vfio/common.c
->>> +++ b/hw/vfio/common.c
->>> @@ -796,6 +796,92 @@ static bool
->> vfio_get_section_iova_range(VFIOContainer *container,
->>>        return true;
->>>    }
->>>
->>> +static int vfio_container_add_section_window(VFIOContainer *container,
->>> +                                             MemoryRegionSection *section,
->>> +                                             Error **errp)
->>> +{
->>> +    VFIOHostDMAWindow *hostwin;
->>> +    hwaddr pgsize = 0;
->>> +    int ret;
->>> +
->>> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
->>> +        return 0;
->>> +    }
->>
->> This test makes me think that we should register a specific backend
->> for the pseries machines, implementing the add/del_window handler,
->> since others do not need it. Correct ?
-> 
-> Yes, introducing a specific backend could help removing above check.
-> But each backend has a VFIOIOMMUBackendOps, we need same check
-> as above to select Ops.
-> 
->>
->> It would avoid this ugly test. Let's keep that in mind when the
->> backends are introduced.
->>
->>> +
->>> +    /* For now intersections are not allowed, we may relax this later */
->>> +    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
->>> +        if (ranges_overlap(hostwin->min_iova,
->>> +                           hostwin->max_iova - hostwin->min_iova + 1,
->>> +                           section->offset_within_address_space,
->>> +                           int128_get64(section->size))) {
->>> +            error_setg(errp,
->>> +                "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
->>> +                "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
->>> +                section->offset_within_address_space,
->>> +                section->offset_within_address_space +
->>> +                    int128_get64(section->size) - 1,
->>> +                hostwin->min_iova, hostwin->max_iova);
->>> +            return -EINVAL;
->>> +        }
->>> +    }
->>> +
->>> +    ret = vfio_spapr_create_window(container, section, &pgsize);
->>> +    if (ret) {
->>> +        error_setg_errno(errp, -ret, "Failed to create SPAPR window");
->>> +        return ret;
->>> +    }
->>> +
->>> +    vfio_host_win_add(container, section->offset_within_address_space,
->>> +                      section->offset_within_address_space +
->>> +                      int128_get64(section->size) - 1, pgsize);
->>> +#ifdef CONFIG_KVM
->>
->> the ifdef test doesn't seem useful because the compiler should compile
->> out the section below since, in that case, kvm_enabled() is defined as :
->>
->>    #define kvm_enabled()           (0)
-> 
-> Looks so, I'll remove it in v2.
-> 
->>
->>> +    if (kvm_enabled()) {
->>> +        VFIOGroup *group;
->>> +        IOMMUMemoryRegion *iommu_mr =
->> IOMMU_MEMORY_REGION(section->mr);
->>> +        struct kvm_vfio_spapr_tce param;
->>> +        struct kvm_device_attr attr = {
->>> +            .group = KVM_DEV_VFIO_GROUP,
->>> +            .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
->>> +            .addr = (uint64_t)(unsigned long)&param,
->>> +        };
->>> +
->>> +        if (!memory_region_iommu_get_attr(iommu_mr,
->> IOMMU_ATTR_SPAPR_TCE_FD,
->>> +                                          &param.tablefd)) {
->>> +            QLIST_FOREACH(group, &container->group_list, container_next) {
->>> +                param.groupfd = group->fd;
->>> +                if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
->>> +                    error_report("vfio: failed to setup fd %d "
->>> +                                 "for a group with fd %d: %s",
->>> +                                 param.tablefd, param.groupfd,
->>> +                                 strerror(errno));
->>> +                    return 0;
->>
->> hmm, the code bails out directly without undoing previous actions. we should
->> return some error at least.
-> 
-> I think Eric doesn't intend any functional change in this patch, just refactor these
-> code into two wrapper functions. In fact the original code just return void,
-> if ioctl() fails. Not clear if that's intentional or a bug.
-> 
->>
->>> +                }
->>> +                trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
->>> +            }
->>> +        }
->>> +    }
->>> +#endif
->>> +    return 0;
->>> +}
->>> +
->>> +static void vfio_container_del_section_window(VFIOContainer *container,
->>> +                                              MemoryRegionSection *section)
->>> +{
->>> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
->>> +        return;
->>> +    }
->>> +
->>> +    vfio_spapr_remove_window(container,
->>> +                             section->offset_within_address_space);
->>> +    if (vfio_host_win_del(container,
->>> +                          section->offset_within_address_space,
->>> +                          section->offset_within_address_space +
->>> +                          int128_get64(section->size) - 1) < 0) {
->>> +        hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
->>> +                 __func__, section->offset_within_address_space);
->>> +    }
->>> +}
->>> +
->>>    static void vfio_listener_region_add(MemoryListener *listener,
->>>                                         MemoryRegionSection *section)
->>>    {
->>> @@ -822,62 +908,8 @@ static void vfio_listener_region_add(MemoryListener
->> *listener,
->>>            return;
->>>        }
->>>
->>> -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
->>> -        hwaddr pgsize = 0;
->>> -
->>> -        /* For now intersections are not allowed, we may relax this later */
->>> -        QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
->>> -            if (ranges_overlap(hostwin->min_iova,
->>> -                               hostwin->max_iova - hostwin->min_iova + 1,
->>> -                               section->offset_within_address_space,
->>> -                               int128_get64(section->size))) {
->>> -                error_setg(&err,
->>> -                    "region [0x%"PRIx64",0x%"PRIx64"] overlaps with existing"
->>> -                    "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
->>> -                    section->offset_within_address_space,
->>> -                    section->offset_within_address_space +
->>> -                        int128_get64(section->size) - 1,
->>> -                    hostwin->min_iova, hostwin->max_iova);
->>> -                goto fail;
->>> -            }
->>> -        }
->>> -
->>> -        ret = vfio_spapr_create_window(container, section, &pgsize);
->>> -        if (ret) {
->>> -            error_setg_errno(&err, -ret, "Failed to create SPAPR window");
->>> -            goto fail;
->>> -        }
->>> -
->>> -        vfio_host_win_add(container, section->offset_within_address_space,
->>> -                          section->offset_within_address_space +
->>> -                          int128_get64(section->size) - 1, pgsize);
->>> -#ifdef CONFIG_KVM
->>> -        if (kvm_enabled()) {
->>> -            VFIOGroup *group;
->>> -            IOMMUMemoryRegion *iommu_mr =
->> IOMMU_MEMORY_REGION(section->mr);
->>> -            struct kvm_vfio_spapr_tce param;
->>> -            struct kvm_device_attr attr = {
->>> -                .group = KVM_DEV_VFIO_GROUP,
->>> -                .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
->>> -                .addr = (uint64_t)(unsigned long)&param,
->>> -            };
->>> -
->>> -            if (!memory_region_iommu_get_attr(iommu_mr,
->> IOMMU_ATTR_SPAPR_TCE_FD,
->>> -                                              &param.tablefd)) {
->>> -                QLIST_FOREACH(group, &container->group_list, container_next) {
->>> -                    param.groupfd = group->fd;
->>> -                    if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
->>> -                        error_report("vfio: failed to setup fd %d "
->>> -                                     "for a group with fd %d: %s",
->>> -                                     param.tablefd, param.groupfd,
->>> -                                     strerror(errno));
->>> -                        return;
->>> -                    }
->>> -                    trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
->>> -                }
->>> -            }
->>> -        }
->>> -#endif
->>> +    if (vfio_container_add_section_window(container, section, &err)) {
->>> +        goto fail;
->>
->> That's not exactly the same as the return above when the ioctl call
->> fails. there doesn't seem to be much consequences though. Let's keep
->> it that way.
-> OK.
-> 
->>
->>>        }
->>>
->>>        hostwin = vfio_find_hostwin(container, iova, end);
->>> @@ -1094,17 +1126,7 @@ static void
->> vfio_listener_region_del(MemoryListener *listener,
->>>
->>>        memory_region_unref(section->mr);
->>>
->>> -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
->>> -        vfio_spapr_remove_window(container,
->>> -                                 section->offset_within_address_space);
->>> -        if (vfio_host_win_del(container,
->>> -                              section->offset_within_address_space,
->>> -                              section->offset_within_address_space +
->>> -                              int128_get64(section->size) - 1) < 0) {
->>> -            hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
->>> -                     __func__, section->offset_within_address_space);
->>> -        }
->>> -    }
->>> +    vfio_container_del_section_window(container, section);
->>>    }
->>>
->>>    static int vfio_set_dirty_page_tracking(VFIOContainer *container, bool start)
->>
->> PPC is in the way. May be we could move these two routines in pseries to
->> help a little. I will look into it.
-> Do you mean PPC cleanup?
+Victor Toso <victortoso@redhat.com> writes:
 
-I will see if we can move out of VFIO the implementation of the spapr routines.
-Don't wait for me. It can be addressed in parallel.
+> This generator has two goals:
+>  1. Mechanical validation of QAPI examples
+>  2. Generate the examples in a JSON format to be consumed for extra
+>     validation.
+>
+> The generator iterates over every Example section, parsing both server
+> and client messages. The generator prints any inconsistency found, for
+> example:
+>
+>  |  Error: Extra data: line 1 column 39 (char 38)
+>  |  Location: cancel-vcpu-dirty-limit at qapi/migration.json:2017
+>  |  Data: {"execute": "cancel-vcpu-dirty-limit"},
+>  |      "arguments": { "cpu-index": 1 } }
 
-Thanks,
+What language does it parse?
 
-C.
+Can you give a grammar?
+
+Should the parser be integrated into the doc parser, i.e. class QAPIDoc?
+
+> The generator will output other JSON file with all the examples in the
+
+Another JSON file, or other JSON files?
+
+> QAPI module that they came from. This can be used to validate the
+> introspection between QAPI/QMP to language bindings, for example:
+>
+>  | { "examples": [
+>  |   {
+>  |     "id": "ksuxwzfayw",
+>  |     "client": [
+>  |     {
+>  |       "sequence-order": 1
+
+Missing comma
+
+>  |       "message-type": "command",
+>  |       "message":
+>  |       { "arguments":
+>  |         { "device": "scratch", "size": 1073741824 },
+>  |         "execute": "block_resize"
+>  |       },
+>  |    } ],
+>  |    "server": [
+>  |    {
+>  |      "sequence-order": 2
+
+Another one.
+
+>  |      "message-type": "return",
+>  |      "message": { "return": {} },
+
+Extra comma.
+
+>  |    } ]
+>  |    }
+>  |  ] }
+
+Indentation is kind of weird.
+
+The JSON's Valid structure and semantics are not documented.  We've
+developed a way specify that, you might've heard of it, it's called
+"QAPI schema" ;-P
+
+Kidding aside, we've done this before.  E.g. docs/interop/firmware.json
+specifies firmware descriptors.  We have some in pc-bios/descriptors/.
+
+> Note that the order matters, as read by the Example section and
+> translated into "sequence-order". A language binding project can then
+> consume this files to Marshal and Unmarshal, comparing if the results
+> are what is to be expected.
+>
+> RFC discussion:
+>     https://lists.gnu.org/archive/html/qemu-devel/2022-08/msg04641.html
+>
+> Signed-off-by: Victor Toso <victortoso@redhat.com>
+> ---
+>  scripts/qapi/dumpexamples.py | 208 +++++++++++++++++++++++++++++++++++
+>  scripts/qapi/main.py         |   3 +-
+>  2 files changed, 210 insertions(+), 1 deletion(-)
+>  create mode 100644 scripts/qapi/dumpexamples.py
+>
+> diff --git a/scripts/qapi/dumpexamples.py b/scripts/qapi/dumpexamples.py
+> new file mode 100644
+> index 0000000000..55d9f13ab7
+> --- /dev/null
+> +++ b/scripts/qapi/dumpexamples.py
+
+Let's name this examples.py.  It already does a bit more than dump
+(namely validate), and any future code dealing with examples will likely
+go into this file.
+
+> @@ -0,0 +1,208 @@
+> +"""
+> +Dump examples for Developers
+> +"""
+> +# Copyright (c) 2023 Red Hat Inc.
+> +#
+> +# Authors:
+> +#  Victor Toso <victortoso@redhat.com>
+> +#
+> +# This work is licensed under the terms of the GNU GPL, version 2.
+
+We should've insisted on v2+ for the QAPI generator back when we had a
+chance.  *Sigh*
+
+> +# See the COPYING file in the top-level directory.
+> +
+> +# Just for type hint on self
+> +from __future__ import annotations
+> +
+> +import os
+> +import json
+> +import random
+> +import string
+> +
+> +from typing import Dict, List, Optional
+> +
+> +from .schema import (
+> +    QAPISchema,
+> +    QAPISchemaType,
+> +    QAPISchemaVisitor,
+> +    QAPISchemaEnumMember,
+> +    QAPISchemaFeature,
+> +    QAPISchemaIfCond,
+> +    QAPISchemaObjectType,
+> +    QAPISchemaObjectTypeMember,
+> +    QAPISchemaVariants,
+
+pylint warns
+
+    scripts/qapi/dumpexamples.py:22:0: W0611: Unused QAPISchemaEnumMember imported from schema (unused-import)
+    scripts/qapi/dumpexamples.py:22:0: W0611: Unused QAPISchemaObjectTypeMember imported from schema (unused-import)
+    scripts/qapi/dumpexamples.py:22:0: W0611: Unused QAPISchemaVariants imported from schema (unused-import)
+
+> +)
+> +from .source import QAPISourceInfo
+> +
+> +
+> +def gen_examples(schema: QAPISchema,
+> +                 output_dir: str,
+> +                 prefix: str) -> None:
+> +    vis = QAPISchemaGenExamplesVisitor(prefix)
+> +    schema.visit(vis)
+> +    vis.write(output_dir)
+
+The other backends have this at the end of the file.  Either order
+works, but consistency is nice.
+
+> +
+> +
+> +def get_id(random, size: int) -> str:
+
+pylint warns
+
+    scripts/qapi/dumpexamples.py:44:11: W0621: Redefining name 'random' from outer scope (line 17) (redefined-outer-name)
+
+> +    letters = string.ascii_lowercase
+> +    return ''.join(random.choice(letters) for i in range(size))
+> +
+> +
+> +def next_object(text, start, end, context) -> (Dict, bool):
+> +    # Start of json object
+> +    start = text.find("{", start)
+> +    end = text.rfind("}", start, end+1)
+
+Single quotes, please, for consistency with quote use elsewhere.
+
+Rules of thumb:
+
+* Double quotes for english text (e.g. error messages), so we don't have
+  to escape apostrophes.
+
+* Double quotes when they reduce the escaping
+
+* Else single quotes
+
+More elsewhere, not flagged.
+
+> +
+> +    # try catch, pretty print issues
+
+Is this comment useful?
+
+> +    try:
+> +        ret = json.loads(text[start:end+1])
+> +    except Exception as e:
+
+pylint warns
+
+    scripts/qapi/dumpexamples.py:57:11: W0703: Catching too general exception Exception (broad-except)
+
+Catch JSONDecodeError?
+
+> +        print("Error: {}\nLocation: {}\nData: {}\n".format(
+> +              str(e), context, text[start:end+1]))
+
+Errors need to go to stderr.
+
+Have you considered using QAPIError to report these errors?
+
+> +        return {}, True
+> +    else:
+> +        return ret, False
+> +
+> +
+> +def parse_text_to_dicts(text: str, context: str) -> (List[Dict], bool):
+
+Before I review the parser, I'd like to know the (intended) language
+being parsed.
+
+> +    examples, clients, servers = [], [], []
+> +    failed = False
+> +
+> +    count = 1
+> +    c, s = text.find("->"), text.find("<-")
+> +    while c != -1 or s != -1:
+> +        if c == -1 or (s != -1 and s < c):
+> +            start, target = s, servers
+> +        else:
+> +            start, target = c, clients
+> +
+> +        # Find the client and server, if any
+> +        if c != -1:
+> +            c = text.find("->", start + 1)
+> +        if s != -1:
+> +            s = text.find("<-", start + 1)
+> +
+> +        # Find the limit of current's object.
+> +        # We first look for the next message, either client or server. If none
+> +        # is avaible, we set the end of the text as limit.
+> +        if c == -1 and s != -1:
+> +            end = s
+> +        elif c != -1 and s == -1:
+> +            end = c
+> +        elif c != -1 and s != -1:
+> +            end = (c < s) and c or s
+
+pylint advises
+
+    scripts/qapi/dumpexamples.py:91:12: R1706: Consider using ternary (c if c < s else s) (consider-using-ternary)
+
+> +        else:
+> +            end = len(text) - 1
+> +
+> +        message, error = next_object(text, start, end, context)
+> +        if error:
+> +            failed = True
+> +
+> +        if len(message) > 0:
+> +            message_type = "return"
+> +            if "execute" in message:
+> +                message_type = "command"
+> +            elif "event" in message:
+> +                message_type = "event"
+> +
+> +            target.append({
+> +                "sequence-order": count,
+> +                "message-type": message_type,
+> +                "message": message
+> +            })
+> +            count += 1
+> +
+> +    examples.append({"client": clients, "server": servers})
+> +    return examples, failed
+> +
+> +
+> +def parse_examples_of(self: QAPISchemaGenExamplesVisitor,
+
+Uh, shouldn't this be a method of QAPISchemaGenExamplesVisitor?
+
+> +                      name: str):
+> +
+> +    assert(name in self.schema._entity_dict)
+
+Makes both pycodestyle and pylint unhappy.  Better:
+
+       assert name in self.schema._entity_dict
+
+pylint warns
+
+    scripts/qapi/dumpexamples.py:120:19: W0212: Access to a protected member _entity_dict of a client class (protected-access)
+
+here and two more times below.
+
+> +    obj = self.schema._entity_dict[name]
+> +
+> +    if not obj.info.pragma.doc_required:
+> +        return
+> +
+> +    assert((obj.doc is not None))
+
+Better:
+
+       assert obj.doc is not None
+
+> +    module_name = obj._module.name
+> +
+> +    # We initialize random with the name so that we get consistent example
+> +    # ids over different generations. The ids of a given example might
+> +    # change when adding/removing examples, but that's acceptable as the
+> +    # goal is just to grep $id to find what example failed at a given test
+> +    # with minimum chorn over regenerating.
+
+churn from?
+
+> +    random.seed(name, version=2)
+
+You're reinitializing the global PRNG.  Feels unclean.  Create your own
+here?
+
+> +
+> +    for s in obj.doc.sections:
+> +        if s.name != "Example":
+
+docs/devel/qapi-code-gen.rst section "Definition documentation":
+
+    A tagged section starts with one of the following words:
+    "Note:"/"Notes:", "Since:", "Example"/"Examples", "Returns:", "TODO:".
+    The section ends with the start of a new section.
+
+You're missing "Examples".
+
+docs/sphinx/qapidoc.py uses s.name.startswith('Example').
+
+> +            continue
+> +
+> +        if module_name not in self.target:
+> +            self.target[module_name] = []
+> +
+> +        context = f'''{name} at {obj.info.fname}:{obj.info.line}'''
+> +        examples, failed = parse_text_to_dicts(s.text, context)
+> +        if failed:
+> +            # To warn user that docs needs fixing
+> +            self.failed = True
+> +
+> +        for example in examples:
+> +            self.target[module_name].append({
+> +                    "id": get_id(random, 10),
+> +                    "client": example["client"],
+> +                    "server": example["server"]
+> +            })
+> +
+> +
+> +class QAPISchemaGenExamplesVisitor(QAPISchemaVisitor):
+> +
+> +    def __init__(self, prefix: str):
+> +        super().__init__()
+> +        self.target = {}
+
+@target maps what to what?
+
+> +        self.schema = None
+> +        self.failed = False
+> +
+> +    def visit_begin(self, schema):
+> +        self.schema = schema
+> +
+> +    def visit_end(self):
+> +        self.schema = None
+> +        assert not self.failed, "Should fix the docs"
+
+Unless I'm misreading the code, this asserts "all the examples parse
+fine."  Misuse of assert for reporting errors.
+
+> +
+> +    def write(self: QAPISchemaGenExamplesVisitor,
+> +              output_dir: str) -> None:
+> +        for filename, content in self.target.items():
+> +            pathname = os.path.join(output_dir, "examples", filename)
+> +            odir = os.path.dirname(pathname)
+> +            os.makedirs(odir, exist_ok=True)
+> +            result = {"examples": content}
+> +
+> +            with open(pathname, "w") as outfile:
+
+pylint warns
+
+    scripts/qapi/dumpexamples.py:180:17: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+
+Recommend to pass encoding='utf=8'.
+
+> +                outfile.write(json.dumps(result, indent=2, sort_keys=True))
+> +
+> +    def visit_command(self: QAPISchemaGenExamplesVisitor,
+> +                      name: str,
+> +                      info: Optional[QAPISourceInfo],
+> +                      ifcond: QAPISchemaIfCond,
+> +                      features: List[QAPISchemaFeature],
+> +                      arg_type: Optional[QAPISchemaObjectType],
+> +                      ret_type: Optional[QAPISchemaType],
+> +                      gen: bool,
+> +                      success_response: bool,
+> +                      boxed: bool,
+> +                      allow_oob: bool,
+> +                      allow_preconfig: bool,
+> +                      coroutine: bool) -> None:
+> +
+> +        if gen:
+> +            parse_examples_of(self, name)
+
+Why only if gen?
+
+> +
+> +    def visit_event(self: QAPISchemaGenExamplesVisitor,
+> +                    name: str,
+> +                    info: Optional[QAPISourceInfo],
+> +                    ifcond: QAPISchemaIfCond,
+> +                    features: List[QAPISchemaFeature],
+> +                    arg_type: Optional[QAPISchemaObjectType],
+> +                    boxed: bool):
+> +
+> +        parse_examples_of(self, name)
+
+Examples in definition comments for types are silently ignored.  Should
+we do something with them?
+
+> diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+> index 316736b6a2..9482439fa9 100644
+> --- a/scripts/qapi/main.py
+> +++ b/scripts/qapi/main.py
+> @@ -13,6 +13,7 @@
+>  
+>  from .commands import gen_commands
+>  from .common import must_match
+> +from .dumpexamples import gen_examples
+>  from .error import QAPIError
+>  from .events import gen_events
+>  from .introspect import gen_introspect
+> @@ -53,7 +54,7 @@ def generate(schema_file: str,
+>      gen_commands(schema, output_dir, prefix, gen_tracing)
+>      gen_events(schema, output_dir, prefix)
+>      gen_introspect(schema, output_dir, prefix, unmask)
+> -
+> +    gen_examples(schema, output_dir, prefix)
+>  
+>  def main() -> int:
+>      """
+
+You provide some type annotations, but mypy isn't happy:
+
+    $ mypy --config-file scripts/qapi/mypy.ini scripts/qapi/dumpexamples.py 
+    scripts/qapi/parser.py:566: error: Function is missing a return type annotation
+    scripts/qapi/parser.py:570: error: Function is missing a return type annotation
+    scripts/qapi/dumpexamples.py:44: error: Function is missing a type annotation for one or more arguments
+    scripts/qapi/dumpexamples.py:49: error: Function is missing a type annotation for one or more arguments
+    scripts/qapi/dumpexamples.py:49: error: Syntax error in type annotation
+    scripts/qapi/dumpexamples.py:49: note: Suggestion: Use Tuple[T1, ..., Tn] instead of (T1, ..., Tn)
+    scripts/qapi/dumpexamples.py:65: error: Syntax error in type annotation
+    scripts/qapi/dumpexamples.py:65: note: Suggestion: Use Tuple[T1, ..., Tn] instead of (T1, ..., Tn)
+    scripts/qapi/dumpexamples.py:66: error: Need type annotation for "clients" (hint: "clients: List[<type>] = ...")
+    scripts/qapi/dumpexamples.py:66: error: Need type annotation for "servers" (hint: "servers: List[<type>] = ...")
+    scripts/qapi/dumpexamples.py:117: error: Function is missing a return type annotation
+    scripts/qapi/dumpexamples.py:120: error: "None" has no attribute "_entity_dict"
+    scripts/qapi/dumpexamples.py:121: error: "None" has no attribute "_entity_dict"
+    scripts/qapi/dumpexamples.py:161: error: Need type annotation for "target" (hint: "target: Dict[<type>, <type>] = ...")
+    scripts/qapi/dumpexamples.py:165: error: Function is missing a type annotation
+    scripts/qapi/dumpexamples.py:168: error: Function is missing a return type annotation
+    scripts/qapi/dumpexamples.py:168: note: Use "-> None" if function does not return a value
+    scripts/qapi/dumpexamples.py:200: error: Function is missing a return type annotation
+    Found 15 errors in 2 files (checked 1 source file)
+
+I think before I dig deeper, we should discuss my findings so far.
 
 
-> 
-> Thanks
-> Zhenzhong
-> 
+Here's my .pylintrc, in case you want to run pylint yourself:
+
+disable=
+    consider-using-f-string,
+    fixme,
+    invalid-name,
+    missing-docstring,
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-branches,
+    too-many-instance-attributes,
+    too-many-lines,
+    too-many-locals,
+    too-many-statements,
+    unused-argument,
+    unused-wildcard-import,
 
 
