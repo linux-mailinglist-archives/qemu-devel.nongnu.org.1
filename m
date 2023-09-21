@@ -2,102 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E777A94B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 508857A94D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:34:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjJfD-0001ND-H7; Thu, 21 Sep 2023 09:24:15 -0400
+	id 1qjJos-0002Iv-AO; Thu, 21 Sep 2023 09:34:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjJf9-0001FS-0D
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:24:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjJf3-0004dN-TT
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:24:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695302644;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=upHgUiLHR/8zmMg0nGfbeD7YyehW5V3oCC5pXFSpqR0=;
- b=PLZzVyR28E08eadM8CPquCkT+ynqiOT899ZE0kLZCw+4Yz1ZyFSYk7W8r8N3IgMYqx8Fm3
- xcu6lPfeHGu7oZYRXlFHCwBMDTajCkpfqi9kmF/w5ufwNGnEBIaMC/mFMTtchGhWE0kgRj
- uMMHvJtBYqSKOtjcJ021fq+lp3vxBFs=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-9jqLhdm5N2iM1h7mDld3_Q-1; Thu, 21 Sep 2023 09:24:03 -0400
-X-MC-Unique: 9jqLhdm5N2iM1h7mDld3_Q-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fe1521678fso7427645e9.1
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 06:24:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qjJoq-0002I1-HV
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:34:12 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qjJoo-00086s-IL
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:34:12 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-532e6f8125cso1095523a12.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 06:34:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695303249; x=1695908049; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=SLFyIa4pNfHrRrFVoK4W/7yOB5ezN6IY3vzVujeQWwk=;
+ b=VxTFarMb8zozoEY4fcGzUGLO1+5v+z83GZuPgBQGw0fDKmrAJXbiIe5aD6Sk3CKrLf
+ yHHRYpGEGOGQz+GyM1s6HfmadE0Q43dYNsQ+J6OVBRv87DejfxMKnTFlgP7ihIt20dGi
+ xpYNWXhbr4fL9luJvPZsgZ/2Mb8k/dVWRWvA9UR97VDvTrZ4d0AAkPpAUtLecGyDUgoL
+ T9/9++A4mu5DE34VsOBEjaFvKwdRh22Ild8S5THEuHl/u2zAwjbBsxRjDyG7QNfaX4bp
+ CX5j92+EQeO2rtHMhobS4fMEdKOe0x/9W56kP4yW/5pdUpCJLp1tcxALw2DpP6Tg9OPB
+ MEUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695302642; x=1695907442;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=upHgUiLHR/8zmMg0nGfbeD7YyehW5V3oCC5pXFSpqR0=;
- b=sd+rHpJzmqn9aC5m0g20ExEMPunnFm3iv/m5ZHHj6OLmUqAJ1e0On308ialEksB2CR
- 4f0dX5X0/Dly9C/xjza4LDUTcCMyK194sGojNYdHl77gOSg8SGU3+MsF7uV0ZimrHQqc
- cS1g79peHUUsWfaI2DTw2Ylsdf2AQocRVhO4ekiNsZMCwNXnP9rl837sR0+0N5kKqwmc
- jOpIQH3en5NFZ0uPmLTMnnd/IDwY0EYndz8SB5mYROcnwyYq4xJyGMCIVGYWRJxTsNrA
- 6U52agRTa9VyN2UvQzyZF8dt+cYh1ev6QIGypoxJG7F4YIKNQ+gn/ukMz/vTJHVGb283
- JpQg==
-X-Gm-Message-State: AOJu0YyzW51oaurfG6UQ2d8jtMHdH/oXjp61r+hyW5byPPINIDZRkGI8
- BK/UvwmjPHR0IObcEgz9A9uh2X8P2tBMzQY4UPXQwMcgLz7KzilTHS7yZ4drP9xP8AZuqAwa39B
- PgKXBzVdRBmU8c8o=
-X-Received: by 2002:a5d:62c5:0:b0:314:15a8:7879 with SMTP id
- o5-20020a5d62c5000000b0031415a87879mr5090042wrv.34.1695302642148; 
- Thu, 21 Sep 2023 06:24:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGeOkHIS2gUjScTVBm57FFUkLrIOBJ21THx3Nj/7H/0bwuCJPAcemvJgIGZID3cAknBYzycOA==
-X-Received: by 2002:a5d:62c5:0:b0:314:15a8:7879 with SMTP id
- o5-20020a5d62c5000000b0031415a87879mr5090012wrv.34.1695302641800; 
- Thu, 21 Sep 2023 06:24:01 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- t16-20020a5d49d0000000b0031c5b380291sm1771703wrs.110.2023.09.21.06.24.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 06:24:01 -0700 (PDT)
-Message-ID: <d3a705a2-ad15-4a7f-4c78-2473b6be4e1e@redhat.com>
-Date: Thu, 21 Sep 2023 15:24:00 +0200
+ d=1e100.net; s=20230601; t=1695303249; x=1695908049;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=SLFyIa4pNfHrRrFVoK4W/7yOB5ezN6IY3vzVujeQWwk=;
+ b=lDJ3ZC2th2CSWp9oHLEy/PSWkYquQHud1IIZ5XQJdP5wbaMrKx3ydrWI+B10NoWY0m
+ c3CObrIf2V/dX5qWq9qnZgWGidnOBJXaL0pehcnT44VBf0TzQRIHHdzVQ58v9osi+XO8
+ 7KMkyIebydL9EjldwMtebWEj18ZThU287WrTdrwqw2cQ8pbLG0YzateveUB0rSsrvTmJ
+ pxAX1IIQiLJwuf/gykZLL4ty4tWLnXTcHBCWBwvyY7OveOrP+qJDP4+CCnCqst/QsRnQ
+ JzkDXRMT303g0R23kBKve617vT2IACSK5RuHP/nnSoCBVx6h3qPl4Sp/KLPQ1d5WaDy+
+ Gjww==
+X-Gm-Message-State: AOJu0YzS1VjzdJoK2s5+NAFhgvuuNECa0IVfU7pZc1R/eDa1nWbkDSN+
+ /yHwwUi4PteQ9Dz5ADRLE0lzngPaMjEQfJHoegQo9ri9ZvssMlZwCJQ=
+X-Google-Smtp-Source: AGHT+IHSkQ8f8dAM1bbBde2nHASKpT8QXWY5hcVmzsVUDmW/7AlposkLeqWQB5YEfDT9yRQHRvNIKem8/RqCHbNikX8=
+X-Received: by 2002:a05:6402:3d7:b0:52c:9f89:4447 with SMTP id
+ t23-20020a05640203d700b0052c9f894447mr4590180edw.4.1695303248906; Thu, 21 Sep
+ 2023 06:34:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v1 12/22] vfio/ccw: Use vfio_[attach/detach]_device
-Content-Language: en-US
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
- <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "jasowang@redhat.com" <jasowang@redhat.com>,
- "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- Eric Farman <farman@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>,
- Thomas Huth <thuth@redhat.com>, "open list:vfio-ccw" <qemu-s390x@nongnu.org>
-References: <20230830103754.36461-1-zhenzhong.duan@intel.com>
- <20230830103754.36461-13-zhenzhong.duan@intel.com>
- <ff418562-245e-2c7a-01a8-060ee970f195@redhat.com>
- <SJ0PR11MB67444F764D47D887D7FA8D6A92F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <SJ0PR11MB67444F764D47D887D7FA8D6A92F8A@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20221201102728.69751-1-akihiko.odaki@daynix.com>
+ <CAFEAcA_ORM9CpDCvPMs1XcZVhh_4fKE2wnaS_tp1s4DzZCHsXQ@mail.gmail.com>
+ <a3cc1116-272d-a8e5-a131-7becf98115e0@daynix.com>
+ <ed62645a-ec48-14ff-4b7e-15314a0da30e@daynix.com>
+ <CAFEAcA-pOKf1r+1BzURpv5FnFS79D2V=SSeY_a2Wene1wf+P1A@mail.gmail.com>
+ <a5cd5a46-7f33-42b6-99eb-b09159af42d7@daynix.com>
+In-Reply-To: <a5cd5a46-7f33-42b6-99eb-b09159af42d7@daynix.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 21 Sep 2023 14:33:49 +0100
+Message-ID: <CAFEAcA9cfrS4bqUX6G9qL8jNhJw0z2nMbqiHxYOutnqVOyb2yQ@mail.gmail.com>
+Subject: Re: [PATCH] accel/kvm/kvm-all: Handle register access errors
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,43 +90,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/21/23 15:00, Duan, Zhenzhong wrote:
-> 
-> 
->> -----Original Message-----
->> From: Cédric Le Goater <clg@redhat.com>
->> Sent: Thursday, September 21, 2023 8:20 PM
->> Subject: Re: [PATCH v1 12/22] vfio/ccw: Use vfio_[attach/detach]_device
->>
->> On 8/30/23 12:37, Zhenzhong Duan wrote:
->>> From: Eric Auger <eric.auger@redhat.com>
->>>
->>> Let the vfio-ccw device use vfio_attach_device() and
->>> vfio_detach_device(), hence hiding the details of the used
->>> IOMMU backend.
->>>
->>> Also now all the devices have been migrated to use the new
->>> vfio_attach_device/vfio_detach_device API, let's turn the
->>> legacy functions into static functions, local to container.c.
->>>
->>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>
->> Zhenzhong,
->>
->> Could you please resend 1-12 independantly as a prereq series for iommufd
->> support ? I think there wouldn't be much to say and they could be merged
->> pretty quickly.
-> 
-> Got it, will do.
-> Note I want to replace "[PATCH v1 06/22] vfio/common: Add a vfio device iterator"
-> with vfio_device_list which will be used by both BEs, that may need some time.
+On Thu, 21 Sept 2023 at 08:25, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> On 2023/06/19 21:19, Peter Maydell wrote:
+> > On Sat, 10 Jun 2023 at 04:51, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+> >> On 2022/12/01 20:00, Akihiko Odaki wrote:
+> >>> On 2022/12/01 19:40, Peter Maydell wrote:
+> >>>> On Thu, 1 Dec 2022 at 10:27, Akihiko Odaki <akihiko.odaki@daynix.com>
+> >>>> wrote:
+> >>>>> A register access error typically means something seriously wrong
+> >>>>> happened so that anything bad can happen after that and recovery is
+> >>>>> impossible.
+> >>>>> Even failing one register access is catastorophic as
+> >>>>> architecture-specific code are not written so that it torelates such
+> >>>>> failures.
+> >>>>>
+> >>>>> Make sure the VM stop and nothing worse happens if such an error occurs.
+> >>>>>
+> >>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Sure. Not today :) When you can.
+> >> QEMU 8.0 is already released so I think it's time to revisit this.
+> >
+> > Two months ago would have been a better time :-) We're heading up
+> > towards softfreeze for 8.1 in about three weeks from now.
 
-Thanks,
+> Hi Peter,
+>
+> Please apply this.
 
-C.
+Looking again at the patch I see it hasn't been reviewed by
+anybody on the KVM side of things. Paolo, does this seem like
+the right way to handle errors from kvm_arch_get_registers()
+and kvm_arch_put_registers() ?
 
+The original patch is at:
+https://patchew.org/QEMU/20221201102728.69751-1-akihiko.odaki@daynix.com/
+
+thanks
+-- PMM
 
