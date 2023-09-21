@@ -2,35 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378057A929F
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 642D97A92AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:37:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjF9t-0005wD-I3; Thu, 21 Sep 2023 04:35:39 -0400
+	id 1qjF9x-0005y9-Et; Thu, 21 Sep 2023 04:35:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qjF9a-0005rq-Sl; Thu, 21 Sep 2023 04:35:20 -0400
+ id 1qjF9a-0005rr-TM; Thu, 21 Sep 2023 04:35:20 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qjF9X-0001B2-Q5; Thu, 21 Sep 2023 04:35:18 -0400
+ id 1qjF9X-0001B4-Qg; Thu, 21 Sep 2023 04:35:18 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0C28B23DA3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 471FD23DA4;
  Thu, 21 Sep 2023 11:35:33 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C4F3C299FD;
+ by tsrv.corpit.ru (Postfix) with SMTP id E68B4299FE;
  Thu, 21 Sep 2023 11:35:11 +0300 (MSK)
-Received: (nullmailer pid 509081 invoked by uid 1000);
+Received: (nullmailer pid 509085 invoked by uid 1000);
  Thu, 21 Sep 2023 08:35:11 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 00/17] Trivial patches for 2023-09-21
-Date: Thu, 21 Sep 2023 11:34:49 +0300
-Message-Id: <20230921083506.509032-1-mjt@tls.msk.ru>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PULL 01/17] ppc: spelling fixes
+Date: Thu, 21 Sep 2023 11:34:50 +0300
+Message-Id: <20230921083506.509032-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230921083506.509032-1-mjt@tls.msk.ru>
+References: <20230921083506.509032-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,188 +59,356 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 4907644841e3200aea6475c0f72d3d987e9f3d93:
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+---
+ host/include/ppc/host/cpuinfo.h     |  2 +-
+ hw/ppc/ppc.c                        |  2 +-
+ hw/ppc/prep_systemio.c              |  2 +-
+ hw/ppc/spapr.c                      |  8 ++++----
+ hw/ppc/spapr_hcall.c                |  2 +-
+ hw/ppc/spapr_nvdimm.c               |  4 ++--
+ hw/ppc/spapr_pci_vfio.c             |  2 +-
+ include/hw/ppc/openpic.h            |  2 +-
+ include/hw/ppc/spapr.h              |  2 +-
+ target/ppc/cpu-models.h             |  4 ++--
+ target/ppc/cpu.h                    |  2 +-
+ target/ppc/cpu_init.c               |  4 ++--
+ target/ppc/excp_helper.c            | 14 +++++++-------
+ target/ppc/power8-pmu-regs.c.inc    |  4 ++--
+ target/ppc/translate/vmx-impl.c.inc |  6 +++---
+ 15 files changed, 30 insertions(+), 30 deletions(-)
 
-  Merge tag 'mem-2023-09-19' of https://github.com/davidhildenbrand/qemu into staging (2023-09-19 13:22:19 -0400)
+diff --git a/host/include/ppc/host/cpuinfo.h b/host/include/ppc/host/cpuinfo.h
+index 29ee7f9ef8..38b8eabe2a 100644
+--- a/host/include/ppc/host/cpuinfo.h
++++ b/host/include/ppc/host/cpuinfo.h
+@@ -1,6 +1,6 @@
+ /*
+  * SPDX-License-Identifier: GPL-2.0-or-later
+- * Host specific cpu indentification for ppc.
++ * Host specific cpu identification for ppc.
+  */
+ 
+ #ifndef HOST_CPUINFO_H
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index aeb116d919..be167710a3 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -738,7 +738,7 @@ static target_ulong _cpu_ppc_load_decr(CPUPPCState *env, int64_t now)
+     decr = __cpu_ppc_load_decr(env, now, tb_env->decr_next);
+ 
+     /*
+-     * If large decrementer is enabled then the decrementer is signed extened
++     * If large decrementer is enabled then the decrementer is signed extended
+      * to 64 bits, otherwise it is a 32 bit value.
+      */
+     if (env->spr[SPR_LPCR] & LPCR_LD) {
+diff --git a/hw/ppc/prep_systemio.c b/hw/ppc/prep_systemio.c
+index 5a56f155f5..c96cefb13d 100644
+--- a/hw/ppc/prep_systemio.c
++++ b/hw/ppc/prep_systemio.c
+@@ -39,7 +39,7 @@
+ #define TYPE_PREP_SYSTEMIO "prep-systemio"
+ OBJECT_DECLARE_SIMPLE_TYPE(PrepSystemIoState, PREP_SYSTEMIO)
+ 
+-/* Bit as defined in PowerPC Reference Plaform v1.1, sect. 6.1.5, p. 132 */
++/* Bit as defined in PowerPC Reference Platform v1.1, sect. 6.1.5, p. 132 */
+ #define PREP_BIT(n) (1 << (7 - (n)))
+ 
+ struct PrepSystemIoState {
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index de3c616b46..1f1aa2a6d4 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -2573,7 +2573,7 @@ static void spapr_set_vsmt_mode(SpaprMachineState *spapr, Error **errp)
+         return;
+     }
+ 
+-    /* Detemine the VSMT mode to use: */
++    /* Determine the VSMT mode to use: */
+     if (vsmt_user) {
+         if (spapr->vsmt < smp_threads) {
+             error_setg(errp, "Cannot support VSMT mode %d"
+@@ -3107,7 +3107,7 @@ static int spapr_kvm_type(MachineState *machine, const char *vm_type)
+ {
+     /*
+      * The use of g_ascii_strcasecmp() for 'hv' and 'pr' is to
+-     * accomodate the 'HV' and 'PV' formats that exists in the
++     * accommodate the 'HV' and 'PV' formats that exists in the
+      * wild. The 'auto' mode is being introduced already as
+      * lower-case, thus we don't need to bother checking for
+      * "AUTO".
+@@ -4340,7 +4340,7 @@ spapr_cpu_index_to_props(MachineState *machine, unsigned cpu_index)
+     CPUArchId *core_slot;
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+ 
+-    /* make sure possible_cpu are intialized */
++    /* make sure possible_cpu are initialized */
+     mc->possible_cpu_arch_ids(machine);
+     /* get CPU core slot containing thread that matches cpu_index */
+     core_slot = spapr_find_cpu_slot(machine, cpu_index, NULL);
+@@ -5034,7 +5034,7 @@ static void spapr_machine_2_12_class_options(MachineClass *mc)
+ 
+     /* We depend on kvm_enabled() to choose a default value for the
+      * hpt-max-page-size capability. Of course we can't do it here
+-     * because this is too early and the HW accelerator isn't initialzed
++     * because this is too early and the HW accelerator isn't initialized
+      * yet. Postpone this to machine init (see default_caps_with_cpu()).
+      */
+     smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 0;
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index b7dc388f2f..522a2396c7 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -1615,7 +1615,7 @@ static void hypercall_register_types(void)
+     spapr_register_hypercall(H_GET_CPU_CHARACTERISTICS,
+                              h_get_cpu_characteristics);
+ 
+-    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differenciate
++    /* "debugger" hcalls (also used by SLOF). Note: We do -not- differentiate
+      * here between the "CI" and the "CACHE" variants, they will use whatever
+      * mapping attributes qemu is using. When using KVM, the kernel will
+      * enforce the attributes more strongly
+diff --git a/hw/ppc/spapr_nvdimm.c b/hw/ppc/spapr_nvdimm.c
+index 60d6d0acc0..b2f009c816 100644
+--- a/hw/ppc/spapr_nvdimm.c
++++ b/hw/ppc/spapr_nvdimm.c
+@@ -378,7 +378,7 @@ static target_ulong h_scm_bind_mem(PowerPCCPU *cpu, SpaprMachineState *spapr,
+ 
+     /*
+      * Currently continue token should be zero qemu has already bound
+-     * everything and this hcall doesnt return H_BUSY.
++     * everything and this hcall doesn't return H_BUSY.
+      */
+     if (continue_token > 0) {
+         return H_P5;
+@@ -589,7 +589,7 @@ void spapr_nvdimm_finish_flushes(void)
+      * Called on reset path, the main loop thread which calls
+      * the pending BHs has gotten out running in the reset path,
+      * finally reaching here. Other code path being guest
+-     * h_client_architecture_support, thats early boot up.
++     * h_client_architecture_support, that's early boot up.
+      */
+     nvdimms = nvdimm_get_device_list();
+     for (list = nvdimms; list; list = list->next) {
+diff --git a/hw/ppc/spapr_pci_vfio.c b/hw/ppc/spapr_pci_vfio.c
+index d8aeee0b7e..9016720547 100644
+--- a/hw/ppc/spapr_pci_vfio.c
++++ b/hw/ppc/spapr_pci_vfio.c
+@@ -78,7 +78,7 @@ int spapr_phb_vfio_eeh_set_option(SpaprPhbState *sphb,
+          * call. Now we just need to check the validity of the PCI
+          * pass-through devices (vfio-pci) under this sphb bus.
+          * We have already validated that all the devices under this sphb
+-         * are from same iommu group (within same PE) before comming here.
++         * are from same iommu group (within same PE) before coming here.
+          *
+          * Prior to linux commit 98ba956f6a389 ("powerpc/pseries/eeh:
+          * Rework device EEH PE determination") kernel would call
+diff --git a/include/hw/ppc/openpic.h b/include/hw/ppc/openpic.h
+index bae8dafe16..9c6af8e207 100644
+--- a/include/hw/ppc/openpic.h
++++ b/include/hw/ppc/openpic.h
+@@ -14,7 +14,7 @@ enum {
+     OPENPIC_OUTPUT_INT = 0, /* IRQ                       */
+     OPENPIC_OUTPUT_CINT,    /* critical IRQ              */
+     OPENPIC_OUTPUT_MCK,     /* Machine check event       */
+-    OPENPIC_OUTPUT_DEBUG,   /* Inconditional debug event */
++    OPENPIC_OUTPUT_DEBUG,   /* Unconditional debug event */
+     OPENPIC_OUTPUT_RESET,   /* Core reset event          */
+     OPENPIC_OUTPUT_NB,
+ };
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index fca60b4031..e91791a1a9 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -193,7 +193,7 @@ struct SpaprMachineState {
+     SpaprResizeHpt resize_hpt;
+     void *htab;
+     uint32_t htab_shift;
+-    uint64_t patb_entry; /* Process tbl registed in H_REGISTER_PROC_TBL */
++    uint64_t patb_entry; /* Process tbl registered in H_REGISTER_PROC_TBL */
+     SpaprPendingHpt *pending_hpt; /* in-progress resize */
+ 
+     hwaddr rma_size;
+diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+index 572b5e553a..0229ef3a9a 100644
+--- a/target/ppc/cpu-models.h
++++ b/target/ppc/cpu-models.h
+@@ -44,7 +44,7 @@ enum {
+     /* PowerPC 405 cores */
+     CPU_POWERPC_405D2              = 0x20010000,
+     CPU_POWERPC_405D4              = 0x41810000,
+-    /* PowerPC 405 microcontrolers */
++    /* PowerPC 405 microcontrollers */
+     /* XXX: missing 0x200108a0 */
+     CPU_POWERPC_405CRa             = 0x40110041,
+     CPU_POWERPC_405CRb             = 0x401100C5,
+@@ -74,7 +74,7 @@ enum {
+ #define CPU_POWERPC_440              CPU_POWERPC_440GXf
+     /* PowerPC 440 cores */
+     CPU_POWERPC_440_XILINX         = 0x7ff21910,
+-    /* PowerPC 440 microcontrolers */
++    /* PowerPC 440 microcontrollers */
+     CPU_POWERPC_440EPa             = 0x42221850,
+     CPU_POWERPC_440EPb             = 0x422218D3,
+     CPU_POWERPC_440GPb             = 0x40120440,
+diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
+index 173e4c351a..d703a5f3c6 100644
+--- a/target/ppc/cpu.h
++++ b/target/ppc/cpu.h
+@@ -428,7 +428,7 @@ FIELD(MSR, LE, MSR_LE, 1)
+ 
+ /* PMU bits */
+ #define MMCR0_FC     PPC_BIT(32)         /* Freeze Counters  */
+-#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Ocurred */
++#define MMCR0_PMAO   PPC_BIT(56)         /* Perf Monitor Alert Occurred */
+ #define MMCR0_PMAE   PPC_BIT(37)         /* Perf Monitor Alert Enable */
+ #define MMCR0_EBE    PPC_BIT(43)         /* Perf Monitor EBB Enable */
+ #define MMCR0_FCECE  PPC_BIT(38)         /* FC on Enabled Cond or Event */
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 7ab5ee92d9..c62bf0e437 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5347,7 +5347,7 @@ static void register_970_lpar_sprs(CPUPPCState *env)
+ static void register_power5p_lpar_sprs(CPUPPCState *env)
+ {
+ #if !defined(CONFIG_USER_ONLY)
+-    /* Logical partitionning */
++    /* Logical partitioning */
+     spr_register_kvm_hv(env, SPR_LPCR, "LPCR",
+                         SPR_NOACCESS, SPR_NOACCESS,
+                         SPR_NOACCESS, SPR_NOACCESS,
+@@ -5760,7 +5760,7 @@ static void register_power9_mmu_sprs(CPUPPCState *env)
+ static void register_power10_hash_sprs(CPUPPCState *env)
+ {
+     /*
+-     * it's the OS responsability to generate a random value for the registers
++     * it's the OS responsibility to generate a random value for the registers
+      * in each process' context. So, initialize it with 0 here.
+      */
+     uint64_t hashkeyr_initial_value = 0, hashpkeyr_initial_value = 0;
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 72ec2be92e..99099cb1f6 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -455,7 +455,7 @@ static void powerpc_excp_40x(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden.
++     * explicitly overridden.
+      */
+     new_msr = env->msr & (((target_ulong)1 << MSR_ME));
+ 
+@@ -578,7 +578,7 @@ static void powerpc_excp_6xx(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -739,7 +739,7 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -911,7 +911,7 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -1075,7 +1075,7 @@ static void powerpc_excp_booke(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & ((target_ulong)1 << MSR_ME);
+ 
+@@ -1288,7 +1288,7 @@ static bool books_vhyp_handles_hcall(PowerPCCPU *cpu)
+ /*
+  * When running a nested KVM HV guest under vhyp, HV exceptions are not
+  * delivered to the guest (because there is no concept of HV support), but
+- * rather they are sent tothe vhyp to exit from the L2 back to the L1 and
++ * rather they are sent to the vhyp to exit from the L2 back to the L1 and
+  * return from the H_ENTER_NESTED hypercall.
+  */
+ static bool books_vhyp_handles_hv_excp(PowerPCCPU *cpu)
+@@ -1377,7 +1377,7 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+ 
+     /*
+      * new interrupt handler msr preserves existing HV and ME unless
+-     * explicitly overriden
++     * explicitly overridden
+      */
+     new_msr = env->msr & (((target_ulong)1 << MSR_ME) | MSR_HVB);
+ 
+diff --git a/target/ppc/power8-pmu-regs.c.inc b/target/ppc/power8-pmu-regs.c.inc
+index c82feedaff..75513db894 100644
+--- a/target/ppc/power8-pmu-regs.c.inc
++++ b/target/ppc/power8-pmu-regs.c.inc
+@@ -16,7 +16,7 @@
+  * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
+  * PMCs) has problem state read access.
+  *
+- * Read acccess is granted for all PMCC values but 0b01, where a
++ * Read access is granted for all PMCC values but 0b01, where a
+  * Facility Unavailable Interrupt will occur.
+  */
+ static bool spr_groupA_read_allowed(DisasContext *ctx)
+@@ -33,7 +33,7 @@ static bool spr_groupA_read_allowed(DisasContext *ctx)
+  * Checks whether the Group A SPR (MMCR0, MMCR2, MMCRA, and the
+  * PMCs) has problem state write access.
+  *
+- * Write acccess is granted for PMCC values 0b10 and 0b11. Userspace
++ * Write access is granted for PMCC values 0b10 and 0b11. Userspace
+  * writing with PMCC 0b00 will generate a Hypervisor Emulation
+  * Assistance Interrupt. Userspace writing with PMCC 0b01 will
+  * generate a Facility Unavailable Interrupt.
+diff --git a/target/ppc/translate/vmx-impl.c.inc b/target/ppc/translate/vmx-impl.c.inc
+index 6d7669aabd..5cdf53a9df 100644
+--- a/target/ppc/translate/vmx-impl.c.inc
++++ b/target/ppc/translate/vmx-impl.c.inc
+@@ -119,7 +119,7 @@ static void gen_stve##name(DisasContext *ctx)                           \
+     }
+ 
+ GEN_VR_LDX(lvx, 0x07, 0x03);
+-/* As we don't emulate the cache, lvxl is stricly equivalent to lvx */
++/* As we don't emulate the cache, lvxl is strictly equivalent to lvx */
+ GEN_VR_LDX(lvxl, 0x07, 0x0B);
+ 
+ GEN_VR_LVE(bx, 0x07, 0x00, 1);
+@@ -127,7 +127,7 @@ GEN_VR_LVE(hx, 0x07, 0x01, 2);
+ GEN_VR_LVE(wx, 0x07, 0x02, 4);
+ 
+ GEN_VR_STX(svx, 0x07, 0x07);
+-/* As we don't emulate the cache, stvxl is stricly equivalent to stvx */
++/* As we don't emulate the cache, stvxl is strictly equivalent to stvx */
+ GEN_VR_STX(svxl, 0x07, 0x0F);
+ 
+ GEN_VR_STVE(bx, 0x07, 0x04, 1);
+@@ -1526,7 +1526,7 @@ static void gen_vprtyb_vec(unsigned vece, TCGv_vec t, TCGv_vec b)
+ {
+     int i;
+     TCGv_vec tmp = tcg_temp_new_vec_matching(b);
+-    /* MO_32 is 2, so 2 iteractions for MO_32 and 3 for MO_64 */
++    /* MO_32 is 2, so 2 iterations for MO_32 and 3 for MO_64 */
+     for (i = 0; i < vece; i++) {
+         tcg_gen_shri_vec(vece, tmp, b, (4 << (vece - i)));
+         tcg_gen_xor_vec(vece, b, tmp, b);
+-- 
+2.39.2
 
-are available in the Git repository at:
-
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
-
-for you to fetch changes up to fa365d05b7050163a53d16aa2d8efb96834e8725:
-
-  docs/devel/reset.rst: Correct function names (2023-09-21 11:31:18 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2023-09-21
-
-The remainder of spelling fixes, cxl trivial fixes, and a few other
-docs and comments fixes.
-
-----------------------------------------------------------------
-Akihiko Odaki (1):
-      docs/devel/reset.rst: Correct function names
-
-Dave Jiang (1):
-      hw/pci-bridge/cxl_upstream: Fix bandwidth entry base unit for SSLBIS
-
-Dmitry Frolov (1):
-      hw/cxl: Fix out of bound array access
-
-Fan Ni (1):
-      hw/cxl/cxl_device: Replace magic number in CXLError definition
-
-Jonathan Cameron (2):
-      hw/mem/cxl_type3: Add missing copyright and license notice
-      docs/cxl: Cleanout some more aarch64 examples.
-
-Laszlo Ersek (1):
-      hw/i386/pc: fix code comment on cumulative flash size
-
-Li Zhijian (2):
-      hw/cxl: Fix CFMW config memory leak
-      docs/cxl: Change to lowercase as others
-
-Michael Tokarev (7):
-      ppc: spelling fixes
-      bsd-user: spelling fixes
-      i386: spelling fixes
-      hw/net: spelling fixes
-      hw/pci: spelling fixes
-      hw/tpm: spelling fixes
-      hw/other: spelling fixes
-
-Thomas Huth (1):
-      subprojects: Use the correct .git suffix in the repository URLs
-
- bsd-user/errno_defs.h                 |  2 +-
- bsd-user/freebsd/target_os_siginfo.h  |  2 +-
- bsd-user/freebsd/target_os_stack.h    |  4 ++--
- bsd-user/freebsd/target_os_user.h     |  2 +-
- bsd-user/qemu.h                       |  2 +-
- bsd-user/signal-common.h              |  4 ++--
- bsd-user/signal.c                     |  6 +++---
- docs/devel/reset.rst                  | 17 ++++++++---------
- docs/system/devices/cxl.rst           | 12 ++++++------
- host/include/i386/host/cpuinfo.h      |  2 +-
- host/include/ppc/host/cpuinfo.h       |  2 +-
- hw/acpi/aml-build.c                   |  6 +++---
- hw/acpi/hmat.c                        |  2 +-
- hw/acpi/nvdimm.c                      |  2 +-
- hw/block/hd-geometry.c                |  4 ++--
- hw/block/pflash_cfi01.c               |  2 +-
- hw/char/cadence_uart.c                |  2 +-
- hw/char/imx_serial.c                  |  2 +-
- hw/char/serial.c                      |  2 +-
- hw/core/generic-loader.c              |  4 ++--
- hw/core/machine.c                     |  2 +-
- hw/core/qdev-properties-system.c      |  2 +-
- hw/cpu/a15mpcore.c                    |  2 +-
- hw/cxl/cxl-events.c                   |  2 +-
- hw/cxl/cxl-host.c                     | 12 ++++++------
- hw/cxl/cxl-mailbox-utils.c            |  4 ++--
- hw/dma/omap_dma.c                     |  4 ++--
- hw/i386/acpi-build.c                  |  4 ++--
- hw/i386/amd_iommu.c                   |  4 ++--
- hw/i386/intel_iommu.c                 |  4 ++--
- hw/i386/kvm/xen_xenstore.c            |  2 +-
- hw/i386/kvm/xenstore_impl.c           |  2 +-
- hw/i386/pc.c                          | 16 ++++++++--------
- hw/input/hid.c                        |  2 +-
- hw/input/tsc2005.c                    | 16 ++++++++--------
- hw/intc/loongarch_extioi.c            |  2 +-
- hw/intc/loongson_liointc.c            |  2 +-
- hw/intc/omap_intc.c                   |  2 +-
- hw/intc/pnv_xive.c                    |  2 +-
- hw/intc/spapr_xive.c                  |  2 +-
- hw/intc/spapr_xive_kvm.c              |  6 +++---
- hw/intc/xive.c                        |  2 +-
- hw/intc/xive2.c                       |  6 +++---
- hw/ipmi/ipmi_bmc_extern.c             |  2 +-
- hw/mem/cxl_type3.c                    | 17 ++++++++++++++---
- hw/mem/cxl_type3_stubs.c              | 10 ++++++++++
- hw/misc/imx7_ccm.c                    |  2 +-
- hw/misc/mac_via.c                     |  2 +-
- hw/misc/stm32f2xx_syscfg.c            |  4 ++--
- hw/misc/trace-events                  |  2 +-
- hw/misc/zynq_slcr.c                   |  2 +-
- hw/net/cadence_gem.c                  | 10 +++++-----
- hw/net/dp8393x.c                      |  2 +-
- hw/net/e1000_regs.h                   |  2 +-
- hw/net/e1000x_regs.h                  |  2 +-
- hw/net/fsl_etsec/rings.c              |  2 +-
- hw/net/igb_regs.h                     |  4 ++--
- hw/net/mcf_fec.c                      |  2 +-
- hw/net/rocker/rocker_fp.c             |  2 +-
- hw/net/rtl8139.c                      |  2 +-
- hw/net/smc91c111.c                    |  2 +-
- hw/net/sungem.c                       |  2 +-
- hw/net/sunhme.c                       |  2 +-
- hw/net/virtio-net.c                   |  6 +++---
- hw/net/vmxnet3.c                      |  2 +-
- hw/net/vmxnet3.h                      |  2 +-
- hw/nvme/ctrl.c                        |  6 +++---
- hw/nvram/eeprom_at24c.c               |  2 +-
- hw/nvram/fw_cfg.c                     |  2 +-
- hw/pci-bridge/cxl_downstream.c        |  2 +-
- hw/pci-bridge/cxl_upstream.c          |  2 +-
- hw/pci-bridge/pci_expander_bridge.c   |  2 +-
- hw/pci-host/bonito.c                  |  2 +-
- hw/pci-host/designware.c              |  4 ++--
- hw/pci-host/dino.c                    |  2 +-
- hw/pci-host/gpex-acpi.c               |  2 +-
- hw/pci-host/gt64120.c                 |  4 ++--
- hw/pci-host/pnv_phb.c                 |  2 +-
- hw/pci-host/pnv_phb3.c                |  2 +-
- hw/pci-host/pnv_phb3_msi.c            |  2 +-
- hw/pci-host/pnv_phb4.c                |  6 +++---
- hw/pci/pcie_aer.c                     |  2 +-
- hw/pci/shpc.c                         |  2 +-
- hw/ppc/ppc.c                          |  2 +-
- hw/ppc/prep_systemio.c                |  2 +-
- hw/ppc/spapr.c                        |  8 ++++----
- hw/ppc/spapr_hcall.c                  |  2 +-
- hw/ppc/spapr_nvdimm.c                 |  4 ++--
- hw/ppc/spapr_pci_vfio.c               |  2 +-
- hw/rtc/exynos4210_rtc.c               |  2 +-
- hw/rx/rx62n.c                         |  2 +-
- hw/scsi/lsi53c895a.c                  |  2 +-
- hw/scsi/mfi.h                         |  2 +-
- hw/sh4/sh7750_regs.h                  | 26 +++++++++++++-------------
- hw/smbios/smbios.c                    |  2 +-
- hw/ssi/xilinx_spips.c                 |  6 +++---
- hw/ssi/xlnx-versal-ospi.c             |  2 +-
- hw/timer/etraxfs_timer.c              |  2 +-
- hw/timer/renesas_tmr.c                |  2 +-
- hw/tpm/tpm_tis.h                      |  2 +-
- hw/tpm/tpm_tis_common.c               |  2 +-
- hw/tpm/tpm_tis_i2c.c                  |  4 ++--
- hw/tpm/tpm_tis_isa.c                  |  2 +-
- hw/tpm/tpm_tis_sysbus.c               |  2 +-
- hw/virtio/virtio-crypto.c             |  4 ++--
- hw/virtio/virtio-mem.c                |  2 +-
- hw/virtio/virtio.c                    |  2 +-
- include/hw/cxl/cxl.h                  |  2 +-
- include/hw/cxl/cxl_device.h           |  2 +-
- include/hw/i386/topology.h            |  2 +-
- include/hw/ppc/openpic.h              |  2 +-
- include/hw/ppc/spapr.h                |  2 +-
- subprojects/berkeley-softfloat-3.wrap |  2 +-
- subprojects/berkeley-testfloat-3.wrap |  2 +-
- subprojects/slirp.wrap                |  2 +-
- target/i386/cpu.c                     |  4 ++--
- target/i386/cpu.h                     |  4 ++--
- target/i386/kvm/kvm.c                 |  4 ++--
- target/i386/kvm/xen-emu.c             |  2 +-
- target/i386/machine.c                 |  4 ++--
- target/i386/tcg/translate.c           |  8 ++++----
- target/ppc/cpu-models.h               |  4 ++--
- target/ppc/cpu.h                      |  2 +-
- target/ppc/cpu_init.c                 |  4 ++--
- target/ppc/excp_helper.c              | 14 +++++++-------
- target/ppc/power8-pmu-regs.c.inc      |  4 ++--
- target/ppc/translate/vmx-impl.c.inc   |  6 +++---
- tests/tcg/i386/system/boot.S          |  2 +-
- tests/tcg/i386/x86.csv                |  2 +-
- 129 files changed, 251 insertions(+), 231 deletions(-)
 
