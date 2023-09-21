@@ -2,97 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 520567A9330
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F80D7A9332
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:40:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjGA6-00029m-0b; Thu, 21 Sep 2023 05:39:54 -0400
+	id 1qjGAG-0002B8-Ad; Thu, 21 Sep 2023 05:40:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qjGA4-000295-L5
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:39:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qjGAD-0002AH-Pq
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:40:01 -0400
+Received: from esa20.fujitsucc.c3s2.iphmx.com ([216.71.158.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qjG9s-0005yf-1S
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:39:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695289178;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qOiO6hm49BIvkhBDthTWG2wvPbob4Puwgyie/1iUXxg=;
- b=athzk3UMbyx+Z9DQbGe0BbxILlLhVdNo+Qw9htD5R8jtLD8dnth5CyUECtiHBdG8TOsMO4
- fEb4Zur0xrqpDNvJcFeUxNG/DcWCoKj832XUenGFSqSYG0vQKut5b13KjXgiwbxuYOCbfT
- vkz2Ryd+qXM+it8SPECLnTEFzeqwRqQ=
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
- [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-116-BbFGm2hPOOeMY68jxjm4LQ-1; Thu, 21 Sep 2023 05:39:36 -0400
-X-MC-Unique: BbFGm2hPOOeMY68jxjm4LQ-1
-Received: by mail-pf1-f197.google.com with SMTP id
- d2e1a72fcca58-690bfae9b7eso689859b3a.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 02:39:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695289175; x=1695893975;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=qOiO6hm49BIvkhBDthTWG2wvPbob4Puwgyie/1iUXxg=;
- b=EWs9BE3qalVJAVii9BSqum0t0djVzJnLiMELmkxqV1rtrUEHKgUaf3FACrRo2VJP0X
- oEvCbwtCPrK/FqVH2Nt7T3nqCBbuj01UleF5181fM+YgQ+XqRT9k0Ro5O8aMzbBIoORx
- pE0QNWnj/ifzxK31rVZHs9VDPvcpYyBqcaQJGXWcO3HFjbXuwENWn+uLnDLTsYeDhQVR
- soqR411WVX3tev7xdmjXmp7QmhrffQr3CCC8UNeAbV3M2xV6zWxYQ65uGjBuPS7v1BiJ
- t4iyO5ypLdP3940/EU6LtWWQeqsM+QruWwwTAB5UkEIvbae3skdHsWPM6fct9q2Tz1GZ
- Fm4A==
-X-Gm-Message-State: AOJu0YzAjITvNzq2g1mEm/6py3LQpS0R0XqCssRMFhpe5ESuOryyUX0h
- uD1hwYvPb+HCpbzkIQ6LEGlyBoPubzYWs/H50X8KMyCqqMvYIwgl5orGq4pNte1UvnYDd386Rvv
- fHwCfFurJfcXw1IM=
-X-Received: by 2002:a05:6a20:8402:b0:153:78c1:c40f with SMTP id
- c2-20020a056a20840200b0015378c1c40fmr5817314pzd.15.1695289174910; 
- Thu, 21 Sep 2023 02:39:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFxTKE6wJ00TBjU0Az5Ug62Us7F6PlnZEkaHaXhYsLzo6/s7/tVqFKzfGRNvidoTZcnKuB+sg==
-X-Received: by 2002:a05:6a20:8402:b0:153:78c1:c40f with SMTP id
- c2-20020a056a20840200b0015378c1c40fmr5817289pzd.15.1695289174483; 
- Thu, 21 Sep 2023 02:39:34 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.26.17])
- by smtp.gmail.com with ESMTPSA id
- i6-20020a17090adc0600b00273744e6eccsm965771pjv.12.2023.09.21.02.39.30
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 21 Sep 2023 02:39:33 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH v3] hw/i386/pc: improve physical address space bound check
- for 32-bit systems
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20230921071755.61081-1-anisinha@redhat.com>
-Date: Thu, 21 Sep 2023 15:09:28 +0530
-Cc: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DDF6944F-46E0-4217-886A-4CDC00D577C4@redhat.com>
-References: <20230921071755.61081-1-anisinha@redhat.com>
-To: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qjGAB-000601-E5
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:40:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+ t=1695289199; x=1726825199;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=GvD76EC0paoQOhhC4QhOPoE0ddnv5dsbzlysj8No49s=;
+ b=Ovb16RK92jjy2kI1TjTQdSLubdci6F5QzXN1xKhj1X7ydjKp7VOn6dU0
+ xCeMK7FlB9wa6vmIGINYYX89MKTjG2WkGk5EO/ABTdWxm9p6IOqdRkfjg
+ yR5FJABXnVURh6AHMNLqCbf0/23WuMGDOJ5PSAFuApgqf59XXNbMpiIHW
+ UOdUzmUXI6QTGSUhp3uMfMsbdQcm5T94e2xJ+lED4wITxy28j3Vf7FswC
+ r3JQOBmAv7QM7UP4aJSonHBP2tgRAkCi3prbJnxN6PsLcoNrI/IcTihce
+ uL1eNr+VVfiJ79CLWnnFVuJkp/+VScNCeNsFERo7mKkMdYli1in29zhtR A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="95939917"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694703600"; d="scan'208";a="95939917"
+Received: from mail-os0jpn01lp2113.outbound.protection.outlook.com (HELO
+ JPN01-OS0-obe.outbound.protection.outlook.com) ([104.47.23.113])
+ by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2023 18:39:55 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=R0kdU/KuQPonsyfJU3/BhqjsAW1T+iqeLls8qUxlBH02KwSuBzHAfhY8y1bS+zXpEjog9jG5DYViXkGi9LGVfRgE59N3DP1TWGK65+vHcAFLy4gRPNONR/QghTydhPd2oV7BAbOJA8Q9x6jxc2TJFQjUfH5Ai/u5CD4swGBWGTML4N0MRmZqKBggIWPEpU/V0kAYlhfxqUP9szUDhiWg0RsgeGtzJcY2iajPVuZD4F8jpCmy6JXLH93i+WE3BtoLQvyARsq9AzilE3Uuu3QUHndVRrwmGR9+4uhHEJtyQZloC0zvAIu18EpZ5u1FG9H0hRepQgMKlQnLEzT11BE9QA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GvD76EC0paoQOhhC4QhOPoE0ddnv5dsbzlysj8No49s=;
+ b=T57ew+kW94o+RTXtv2rQ7InhfJycqnF9Tf3jKIAZxX9yEaB1n2Mw/Nb4BfXQd+ZO0LsmHiH5eM5RCMbGfpwa6WFQL6rYc7SYDNTr5iw087q0UW3cK8pyQHvYqzd5h235OkTUE1B8/hq6SDNjc9frGSVR8H3F0lSq9d90CgGi8igSupvkZNrl4//RTtX8lpk0YuVJcZ/V4HvD+sIlGCO3VcrnBPF/qCRl0omrNl7HQcFUwtG7REOvYMVlI4vYWkc++0r4DpmZlZFiLKir1jhkuNPZ+NEMlMBgOnKZuPBofy3hxssip7WRnZf8xO2nZL47UruxKWk0XkQa2sQ0TfzPlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com (2603:1096:604:247::6)
+ by TY3PR01MB11513.jpnprd01.prod.outlook.com (2603:1096:400:374::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.19; Thu, 21 Sep
+ 2023 09:39:51 +0000
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::1a61:2227:a0de:2c53]) by OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::1a61:2227:a0de:2c53%4]) with mapi id 15.20.6813.018; Thu, 21 Sep 2023
+ 09:39:51 +0000
+From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+To: Markus Armbruster <armbru@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "quintela@redhat.com" <quintela@redhat.com>, "peterx@redhat.com"
+ <peterx@redhat.com>, "leobras@redhat.com" <leobras@redhat.com>
+Subject: Re: [PATCH 11/52] migration/rdma: Drop rdma_add_block() error handling
+Thread-Topic: [PATCH 11/52] migration/rdma: Drop rdma_add_block() error
+ handling
+Thread-Index: AQHZ6j+Z0j4Zu2AGtU+Fxw11xPoyWbAlCqGA
+Date: Thu, 21 Sep 2023 09:39:51 +0000
+Message-ID: <94601877-3170-8d7d-d161-3b72041d9551@fujitsu.com>
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-12-armbru@redhat.com>
+In-Reply-To: <20230918144206.560120-12-armbru@redhat.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS7PR01MB11664:EE_|TY3PR01MB11513:EE_
+x-ms-office365-filtering-correlation-id: 0246cc3c-ef09-4892-221d-08dbba86b459
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: dIY0fIwGBn7B4I09dv0+8kAGdyyWHj79YWBNm1CMZdUeOfXVbWS5+rUJP2JNKWD1YJKIreomi9AFXlWdLOfWatzpgGWlt6uEyrKpyipB/LuBhQiRsK5qyE+LHrfrqMifLzNN3B0AKVXXSHcaq0HBVwlcUIQIUHrNxebmOclo1ZjzE8vtV8GZbfRcy8jnThujyWGZiHiNSWsuuydjWIkhITevtgHXsWMC70pzlGPtzAi/zJdlbLxJ70Rh6IpTdmWvmpPJPRCmTMNhrovF4TmzeNDmRkjBmbFcOd6mSuD91K35xCoABocsf/z+6UvXJ6vVkgImT3GDIkDs4tlggceYmViL6Kg3s+IJ4bX/p5luXagRPWzju90Ajb6d/M4O3A+vRCoiDdzUdMVHWsXfbB9vFAW56jpIWheNumpg9Z3vhJuIfjEieEdpx4veJJJg+I54oc3ZylF37MmZGN8l+HWFX+bQH2Ip+sbVTrNySlCqp1M2itnbuT612o4M2oyOeY7WcUwmkcOGUQWzB71kT1ShQoZNOx9PWBYE3BCt4PeAdGMOSK0UX6Nbt65p5eJpnTC43t/DRo7KezpT017I14u4ZSgCy5CRqVwsWefREyIpG1Gnnp9RkD/MzBQJJtYPyyFPN7Rx1sCREGI7ePxPJWwIj/g2YDwkmcHyqV0uSbRXKKigCkSWTUiHpVgCbH4v1okpjFbq0wu0s4aRu/AP3gQPGA==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:OS7PR01MB11664.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(376002)(39860400002)(346002)(366004)(396003)(186009)(451199024)(1800799009)(1590799021)(41300700001)(2616005)(85182001)(1580799018)(5660300002)(26005)(2906002)(122000001)(38070700005)(82960400001)(86362001)(31696002)(36756003)(4326008)(38100700002)(8936002)(8676002)(83380400001)(478600001)(53546011)(6486002)(6506007)(6512007)(76116006)(110136005)(91956017)(316002)(66556008)(31686004)(66476007)(66946007)(64756008)(66446008)(54906003)(71200400001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VjkvcEpybXkwVmladlJBWURRd3RwU1ltbVhUbHd3Z0c4dWsvZFpoZUluNnNO?=
+ =?utf-8?B?L0xndXBzNUx3Z3JwLzVkaEl3ejVBS0dZMDFYYXhUd0ZTZGZHMnVaMDFFOWVM?=
+ =?utf-8?B?c0Z1a2JpVW83RUZCS240WTRsSWcrdGpoUXcrLzdKUU42QjFtS3g2ZEkvYkdv?=
+ =?utf-8?B?WWdDZElFcy9oMTZHanNzTG9tY3lHbTZTb09pUXNQR0JaZTZna2QxZ1gzZm96?=
+ =?utf-8?B?aXEzcEYwa05DVFY3aXdRVjR4TnZOS3RGS3RNNU9GcDA1QnN3QVpIZmdJM0Rn?=
+ =?utf-8?B?U2tPK2UyblZEeW05b3dsUXR2QWsyZVhIMlk0aFlSOHFxbzZuRWUxVjRGdU45?=
+ =?utf-8?B?TlRzc3FOMC9abjRDazBmRmZYeTRleGZnOWlIYmdxNENCK3E3QUpHYUpwUWpO?=
+ =?utf-8?B?UUExNFE4cHljUGY2eUpEUEJyMTZwb2JZcjNNQmxkVXNmN3hBTlZuU3kzRy9p?=
+ =?utf-8?B?RWRWdnhveWR4UWFtdTBNMWpiQk5hRFRldVBwOGo5Sm5YQlFHbDlDZERSUVVw?=
+ =?utf-8?B?cFdvU0RHSUZPQTVTRVo3dWFHUFErWHByaGpBYkIvZjRiNHlreGtqVzlWTUor?=
+ =?utf-8?B?bDl6REVYTEFlS0R6ZkhFbEwvbjJ6WWpmOWxUQ2piQWxYVWF6YkRSV2pJdzgy?=
+ =?utf-8?B?U28yMmYzMW9tRTBBS0RBM2tPSUdTelp6QU44OUVBYkJwc1JNaWRvU2t2OC92?=
+ =?utf-8?B?QkVyVU9mZkh4T1Yxc1g2Ny9sOEdhS050djFvT0V3WVk5QXdRamlFcVdyK05u?=
+ =?utf-8?B?ZEF6WTFFL1JuWk8xVzBRVzY4MGdsQjZXMTQ4U3A3NHdnRlN1Q0NvVk9IQ1kx?=
+ =?utf-8?B?bUlqR3ZDUDNnbURObExnTVJiVjR6eWZ6R3pyNGpMRHdqUFUzbG0za3hqZFhi?=
+ =?utf-8?B?bUVCRFBYeDhtenpiRExGa3IwV1o3RjhMTnpVT0pGVGJSTU8xKzExcjF4WTlM?=
+ =?utf-8?B?b2d1UWJ6a0ZKZmJSZk0yeURXTktyd2wvMU92bkFQSkszQWdBRExUWlZSRWV6?=
+ =?utf-8?B?YXMwOGsxRklCQlhzQ3M2cjlCMDY3RldHRnpza3RFOWpkZWh4cFpPNHFmNlF3?=
+ =?utf-8?B?L29QdDcveGEyWlFEVVVTcGZxbllCeFU1OE5VMkE0SjV0WDlMQjdSSUpMSit2?=
+ =?utf-8?B?VFRucTU3aXBUb0ZpZklZd0dOdXdiTDFISGRRMkt1ZTBFeTdEWXRuL254R3NK?=
+ =?utf-8?B?OU5WNlA5WWZxdGc3Zi9VWld2TlhsUjE3ck9ZUmlNZnR2NTF1T1h1WWxrMlRY?=
+ =?utf-8?B?QWVGZUZqZVVOUGxGUDU3MEd3dm9GMm10dXFBK1k0dFdyVUJUcUJJbkdnVHY4?=
+ =?utf-8?B?QnQrakZhWWJUQTExTVdlZFdRRmlsZTlubk5QMVJPVW5yTERnWGFBUUJueEZE?=
+ =?utf-8?B?eDF3TlBjMzFONXpMWWc2Yzdoam4vajI0akhwbUZvbnFWbDF2MEM5V05hN1FI?=
+ =?utf-8?B?aFZQUlo3STFMWllwdzZnVi9BeXJKcU43eXROWThrYzIzcmtVWDVHRitxOW5y?=
+ =?utf-8?B?REgremh2S1NjRWdzemU4U3V4YkhKZXdQb3BidkwzejhGaHBrazM1UmgyTXph?=
+ =?utf-8?B?Ri9TaXFYcjBGTVZEYm1NOUNzaEFoUERIRnN2eEdYYUdIdUNNVmZ5SGROZU0v?=
+ =?utf-8?B?eXIveUxKQUhQMGVqVlFvR3F3dXNhcWwwRks3S1FmaXNBRU5vd3pmYUtiU0l0?=
+ =?utf-8?B?UUFTSlRleURTTXV3SFdOVWVFSkFHS2ltanNwSldnVnlCTnQ0ckxnTWdtUzdu?=
+ =?utf-8?B?U3FxM01OSHkzWEpncHdIaW1wczNGOHNyMFZtb25aVmlnTzd3OXlGU21wMTVr?=
+ =?utf-8?B?QWwwUkZ6eEFxNUpvQzVvMFNkcWs3QytwTXN4MmZ5RG90SUNScGUzYjNwY3E4?=
+ =?utf-8?B?a2RzN1c2MVRRTzQxb251VmRQOFo2Q0VPSm5LWVlmOWRrRHpVTmJPQlJtbGtT?=
+ =?utf-8?B?Z2h2Q0dUaHpsUnpZdlpoVVlEUytpd2JNVFBvTVRUbjBia3pNcW1ZcStjSjZz?=
+ =?utf-8?B?aHRkelFjVStHY1ZXZ09pSjlOMHBINTNqREVGQmx2SlA4TXhOQ3hESzFoM0kz?=
+ =?utf-8?B?WEE4RkpmVFNvVVhHYnRLc2ZheVpyWVVwN2VENnRacW1pQkdsejlKU092aWo1?=
+ =?utf-8?B?dzlISkJURUlpTEJ4Ukw3c2hvODNTWk53ZEhSRlNJYlZNOThTVG51MEc1WldH?=
+ =?utf-8?B?SFE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6AE9EBD5D7D77344BE1E8A354AF1A746@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: cod1f65PcABpLdeRWAHW6Ka8/KiJI4txrsXd76HGeoA/vYx9fw1Lnhib9xZDxCu3QdUZjK6BOfrMwrMNqxZYUAncxCabGz/cdyy2jBsPsetAqMZEVAuKG93DIrHP3AV3zzwBzOWLhXh4VgycsfF1JLjUg1r9CskPIaIJwbcYcJPSbmVcnEdF9FXttlBj4pkJXbbFkxHjJmi7hb6Du500id967a6CmQK6I4ZSULL/PLvAdwKygzUt3IfThTsF5rJfO1MQEdwrh+gq3tO4Zh921awO9ec+N9JjKXcJEnhbvJV6nN2+a8nOIi/CFgVMv8SbriZKNT/qjn98+doRqyCh9iazyvIo3+okO1RwelLWMUGUrHHBf7NdemBI2WhgdqzVrfrVyg+ff9ZHU8XGW8oTmGW3jqAQsskGIWPL4uRbfi1pjMAiXpFm6PjNLKrh8Cyf1rcKsMrCv7IlBlaRqs81hM6k62opjlI5O7fN11iwd+BDD5LD3jpt9L9V9eStbX8EFUcX1eNQ6eEB8L8kEbWHQr+uZUBIVVK3v5Ee0hp9+DtZwnN3ZV9dVcgb04br1uKElUPNTMVpgIaoj1HfR4bRg+Q1cS3viIy6cJcp/Nb7OOF0w2+zm5Dgrz01q/R3482nbfqGDXggzRtv2GxyVcsflRNH/Gm15ZuG/b/2mrBxBBb4iKoi0NlztUvurWcBxmO3KyPxaktmLVoxdQpeswlACdGLysZfYDnsw8RqdQnKdOGl0sN//Z94OmmdtEWEI4S2QAECCCeSFAt0Xs/jIOnfX5DEiv7Z08xww3ockOtGoxw=
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB11664.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0246cc3c-ef09-4892-221d-08dbba86b459
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2023 09:39:51.7091 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: vFJV3tVGmNMz88F4SdDZ8eA+XXNiVFceQJKmU86lH8Ch7BKMIndva6ssrKrSkKShSna/otb+aZKp+B+6Hb45gg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB11513
+Received-SPF: pass client-ip=216.71.158.65; envelope-from=lizhijian@fujitsu.com;
+ helo=esa20.fujitsucc.c3s2.iphmx.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,310 +166,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-> On 21-Sep-2023, at 12:47 PM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
-> 32-bit systems do not have a reserved memory for hole64 and =
-hotplugging memory
-> devices are not supported on those systems. Therefore, the maximum =
-limit of the
-> guest physical address in the absence of additional memory devices =
-effectively
-> coincides with the end of "above 4G memory space" region. When users =
-configure
-> additional memory devices, we need to properly account for the =
-additional device
-> memory region so as to find the maximum value of the guest physical =
-address
-> and enforce that it is within the physical address space of the =
-processor. For
-> 32-bit, this maximum PA will be outside the range of the processor's =
-address
-> space.
->=20
-> With this change, for example, previously this was allowed:
->=20
-> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
->=20
-> Now it is no longer allowed:
->=20
-> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
-> qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff =
-phys-bits too low (32)
->=20
-> For 32-bit, hotplugging additional memory is no longer allowed.
->=20
-> $ ./qemu-system-i386 -m size=3D1G,maxmem=3D3G,slots=3D2
-> qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff =
-phys-bits too low (32)
->=20
-> The above is still allowed for older machine types in order to support
-> compatibility. Therefore, this still works:
->=20
-> $ ./qemu-system-i386 -machine pc-i440fx-8.1 -m =
-size=3D1G,maxmem=3D3G,slots=3D2
->=20
-> After calling CPUID with EAX=3D0x80000001, all AMD64 compliant =
-processors
-> have the longmode-capable-bit turned on in the extended feature flags =
-(bit 29)
-> in EDX. The absence of CPUID longmode can be used to differentiate =
-between
-> 32-bit and 64-bit processors and is the recommended approach. QEMU =
-takes this
-> approach elsewhere (for example, please see x86_cpu_realizefn()) and =
-with
-> this change, pc_max_used_gpa() also takes the same approach to detect =
-32-bit
-> processors.
->=20
-> Unit tests are modified to not run those tests that use memory hotplug
-> on 32-bit x86 architecture.
->=20
-> Finally, a new compatibility flag is introduced to retain the old =
-behavior
-> for pc_max_used_gpa() for machines 8.1 and older.
-
-This patch has a bug. I forgot to add the knob for older q35 machines. =
-Will fix in next version.
-
->=20
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
-> hw/i386/pc.c                   | 34 +++++++++++++++++++++++++++++++---
-> hw/i386/pc_piix.c              |  4 ++++
-> include/hw/i386/pc.h           |  3 +++
-> tests/qtest/bios-tables-test.c | 26 ++++++++++++++++++--------
-> tests/qtest/numa-test.c        |  7 ++++++-
-> 5 files changed, 62 insertions(+), 12 deletions(-)
->=20
-> changelog:
-> v3: still accounting for additional memory device region above 4G.
-> unit tests fixed (not running for 32-bit where mem hotplug is used).
->=20
-> v2: removed memory hotplug region from max_gpa. added compat knobs.
->=20
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 54838c0c41..0aa2f6b6c0 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -907,12 +907,39 @@ static uint64_t =
-pc_get_cxl_range_end(PCMachineState *pcms)
-> static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t =
-pci_hole64_size)
-> {
->     X86CPU *cpu =3D X86_CPU(first_cpu);
-> +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
-> +    MachineState *ms =3D MACHINE(pcms);
-> +    uint64_t devmem_start =3D 0;
-> +    ram_addr_t devmem_size =3D 0;
->=20
-> -    /* 32-bit systems don't have hole64 thus return max CPU address =
-*/
-> -    if (cpu->phys_bits <=3D 32) {
-> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
-> +    /*
-> +     * 32-bit systems don't have hole64 but they might have a region =
-for
-> +     * memory devices. Even if additional hotplugged memory devices =
-might
-> +     * not be usable by most guest OSes, we need to still consider =
-them for
-> +     * calculating the highest possible GPA so that we can properly =
-report
-> +     * if someone configures them on a CPU that cannot possibly =
-address them.
-> +     */
-> +    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
-> +        /* 32-bit systems */
-> +        if (pcmc->fixed_32bit_mem_addr_check) {
-> +            if (pcmc->has_reserved_memory &&
-> +                (ms->ram_size < ms->maxram_size)) {
-> +                pc_get_device_memory_range(pcms, &devmem_start,
-> +                                           &devmem_size);
-> +                if (!pcmc->broken_reserved_end) {
-> +                    devmem_start +=3D devmem_size;
-> +                }
-> +                return devmem_start - 1;
-> +            } else {
-> +                return pc_above_4g_end(pcms) - 1;
-> +            }
-> +        } else {
-> +            /* old value for compatibility reasons */
-> +            return ((hwaddr)1 << cpu->phys_bits) - 1;
-> +        }
->     }
->=20
-> +    /* 64-bit systems */
->     return pc_pci_hole64_start() + pci_hole64_size - 1;
-> }
->=20
-> @@ -1867,6 +1894,7 @@ static void pc_machine_class_init(ObjectClass =
-*oc, void *data)
->     pcmc->pvh_enabled =3D true;
->     pcmc->kvmclock_create_always =3D true;
->     pcmc->resizable_acpi_blob =3D true;
-> +    pcmc->fixed_32bit_mem_addr_check =3D true;
->     assert(!mc->get_hotplug_handler);
->     mc->get_hotplug_handler =3D pc_get_hotplug_handler;
->     mc->hotplug_allowed =3D pc_hotplug_allowed;
-> diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-> index 8321f36f97..f100a5de8b 100644
-> --- a/hw/i386/pc_piix.c
-> +++ b/hw/i386/pc_piix.c
-> @@ -517,9 +517,13 @@ DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", =
-NULL,
->=20
-> static void pc_i440fx_8_1_machine_options(MachineClass *m)
-> {
-> +    PCMachineClass *pcmc =3D PC_MACHINE_CLASS(m);
-> +
->     pc_i440fx_8_2_machine_options(m);
->     m->alias =3D NULL;
->     m->is_default =3D false;
-> +    pcmc->fixed_32bit_mem_addr_check =3D false;
-> +
->     compat_props_add(m->compat_props, hw_compat_8_1, =
-hw_compat_8_1_len);
->     compat_props_add(m->compat_props, pc_compat_8_1, =
-pc_compat_8_1_len);
-> }
-> diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-> index 0fabece236..5a70d163d0 100644
-> --- a/include/hw/i386/pc.h
-> +++ b/include/hw/i386/pc.h
-> @@ -129,6 +129,9 @@ struct PCMachineClass {
->=20
->     /* resizable acpi blob compat */
->     bool resizable_acpi_blob;
-> +
-> +    /* fixed 32-bit processor address space bound check for memory */
-> +    bool fixed_32bit_mem_addr_check;
-> };
->=20
-> #define TYPE_PC_MACHINE "generic-pc-machine"
-> diff --git a/tests/qtest/bios-tables-test.c =
-b/tests/qtest/bios-tables-test.c
-> index d1b80149f2..f8e03dfd46 100644
-> --- a/tests/qtest/bios-tables-test.c
-> +++ b/tests/qtest/bios-tables-test.c
-> @@ -2080,7 +2080,6 @@ int main(int argc, char *argv[])
->                            test_acpi_piix4_no_acpi_pci_hotplug);
->             qtest_add_func("acpi/piix4/ipmi", =
-test_acpi_piix4_tcg_ipmi);
->             qtest_add_func("acpi/piix4/cpuhp", =
-test_acpi_piix4_tcg_cphp);
-> -            qtest_add_func("acpi/piix4/memhp", =
-test_acpi_piix4_tcg_memhp);
->             qtest_add_func("acpi/piix4/numamem", =
-test_acpi_piix4_tcg_numamem);
->             qtest_add_func("acpi/piix4/nosmm", =
-test_acpi_piix4_tcg_nosmm);
->             qtest_add_func("acpi/piix4/smm-compat",
-> @@ -2088,9 +2087,15 @@ int main(int argc, char *argv[])
->             qtest_add_func("acpi/piix4/smm-compat-nosmm",
->                            test_acpi_piix4_tcg_smm_compat_nosmm);
->             qtest_add_func("acpi/piix4/nohpet", =
-test_acpi_piix4_tcg_nohpet);
-> -            qtest_add_func("acpi/piix4/dimmpxm", =
-test_acpi_piix4_tcg_dimm_pxm);
-> -            qtest_add_func("acpi/piix4/acpihmat",
-> -                           test_acpi_piix4_tcg_acpi_hmat);
-> +
-> +            /* i386 does not support memory hotplug */
-> +            if (strcmp(arch, "i386")) {
-> +                qtest_add_func("acpi/piix4/memhp", =
-test_acpi_piix4_tcg_memhp);
-> +                qtest_add_func("acpi/piix4/dimmpxm",
-> +                               test_acpi_piix4_tcg_dimm_pxm);
-> +                qtest_add_func("acpi/piix4/acpihmat",
-> +                               test_acpi_piix4_tcg_acpi_hmat);
-> +            }
-> #ifdef CONFIG_POSIX
->             qtest_add_func("acpi/piix4/acpierst", =
-test_acpi_piix4_acpi_erst);
-> #endif
-> @@ -2108,11 +2113,9 @@ int main(int argc, char *argv[])
->                            test_acpi_q35_tcg_no_acpi_hotplug);
->             qtest_add_func("acpi/q35/multif-bridge",
->                            test_acpi_q35_multif_bridge);
-> -            qtest_add_func("acpi/q35/mmio64", =
-test_acpi_q35_tcg_mmio64);
->             qtest_add_func("acpi/q35/ipmi", test_acpi_q35_tcg_ipmi);
->             qtest_add_func("acpi/q35/smbus/ipmi", =
-test_acpi_q35_tcg_smbus_ipmi);
->             qtest_add_func("acpi/q35/cpuhp", test_acpi_q35_tcg_cphp);
-> -            qtest_add_func("acpi/q35/memhp", =
-test_acpi_q35_tcg_memhp);
->             qtest_add_func("acpi/q35/numamem", =
-test_acpi_q35_tcg_numamem);
->             qtest_add_func("acpi/q35/nosmm", test_acpi_q35_tcg_nosmm);
->             qtest_add_func("acpi/q35/smm-compat",
-> @@ -2120,10 +2123,17 @@ int main(int argc, char *argv[])
->             qtest_add_func("acpi/q35/smm-compat-nosmm",
->                            test_acpi_q35_tcg_smm_compat_nosmm);
->             qtest_add_func("acpi/q35/nohpet", =
-test_acpi_q35_tcg_nohpet);
-> -            qtest_add_func("acpi/q35/dimmpxm", =
-test_acpi_q35_tcg_dimm_pxm);
-> -            qtest_add_func("acpi/q35/acpihmat", =
-test_acpi_q35_tcg_acpi_hmat);
->             qtest_add_func("acpi/q35/acpihmat-noinitiator",
->                            test_acpi_q35_tcg_acpi_hmat_noinitiator);
-> +
-> +            /* i386 does not support memory hotplug */
-> +            if (strcmp(arch, "i386")) {
-> +                qtest_add_func("acpi/q35/memhp", =
-test_acpi_q35_tcg_memhp);
-> +                qtest_add_func("acpi/q35/dimmpxm", =
-test_acpi_q35_tcg_dimm_pxm);
-> +                qtest_add_func("acpi/q35/acpihmat",
-> +                               test_acpi_q35_tcg_acpi_hmat);
-> +                qtest_add_func("acpi/q35/mmio64", =
-test_acpi_q35_tcg_mmio64);
-> +            }
-> #ifdef CONFIG_POSIX
->             qtest_add_func("acpi/q35/acpierst", =
-test_acpi_q35_acpi_erst);
-> #endif
-> diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
-> index c5eb13f349..4f4404a4b1 100644
-> --- a/tests/qtest/numa-test.c
-> +++ b/tests/qtest/numa-test.c
-> @@ -568,7 +568,7 @@ int main(int argc, char **argv)
->     qtest_add_data_func("/numa/mon/cpus/partial", args, =
-test_mon_partial);
->     qtest_add_data_func("/numa/qmp/cpus/query-cpus", args, =
-test_query_cpus);
->=20
-> -    if (!strcmp(arch, "i386") || !strcmp(arch, "x86_64")) {
-> +    if (!strcmp(arch, "x86_64")) {
->         qtest_add_data_func("/numa/pc/cpu/explicit", args, =
-pc_numa_cpu);
->         qtest_add_data_func("/numa/pc/dynamic/cpu", args, =
-pc_dynamic_cpu_cfg);
->         qtest_add_data_func("/numa/pc/hmat/build", args, =
-pc_hmat_build_cfg);
-> @@ -576,6 +576,11 @@ int main(int argc, char **argv)
->         qtest_add_data_func("/numa/pc/hmat/erange", args, =
-pc_hmat_erange_cfg);
->     }
->=20
-> +    if (!strcmp(arch, "i386")) {
-> +        qtest_add_data_func("/numa/pc/cpu/explicit", args, =
-pc_numa_cpu);
-> +        qtest_add_data_func("/numa/pc/dynamic/cpu", args, =
-pc_dynamic_cpu_cfg);
-> +    }
-> +
->     if (!strcmp(arch, "ppc64")) {
->         qtest_add_data_func("/numa/spapr/cpu/explicit", args, =
-spapr_numa_cpu);
->     }
-> --=20
-> 2.39.1
->=20
-
+DQoNCk9uIDE4LzA5LzIwMjMgMjI6NDEsIE1hcmt1cyBBcm1icnVzdGVyIHdyb3RlOg0KPiByZG1h
+X2FkZF9ibG9jaygpIGNhbid0IGZhaWwuICBSZXR1cm4gdm9pZCwgYW5kIGRyb3AgdGhlIHVucmVh
+Y2hhYmxlDQo+IGVycm9yIGhhbmRsaW5nLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogTWFya3VzIEFy
+bWJydXN0ZXI8YXJtYnJ1QHJlZGhhdC5jb20+DQo+IC0tLQ0KPiAgIG1pZ3JhdGlvbi9yZG1hLmMg
+fCAzMCArKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gICAxIGZpbGUgY2hhbmdlZCwg
+OSBpbnNlcnRpb25zKCspLCAyMSBkZWxldGlvbnMoLSkNCj4gDQoNClsuLi5dDQoNCj4gICAgKiBk
+dXJpbmcgZHluYW1pYyBwYWdlIHJlZ2lzdHJhdGlvbi4NCj4gICAgKi8NCj4gLXN0YXRpYyBpbnQg
+cWVtdV9yZG1hX2luaXRfcmFtX2Jsb2NrcyhSRE1BQ29udGV4dCAqcmRtYSkNCj4gK3N0YXRpYyB2
+b2lkIHFlbXVfcmRtYV9pbml0X3JhbV9ibG9ja3MoUkRNQUNvbnRleHQgKnJkbWEpDQo+ICAgew0K
+PiAgICAgICBSRE1BTG9jYWxCbG9ja3MgKmxvY2FsID0gJnJkbWEtPmxvY2FsX3JhbV9ibG9ja3M7
+DQo+ICAgICAgIGludCByZXQ7DQo+IEBAIC02NDYsMTQgKzY0NSwxMSBAQCBzdGF0aWMgaW50IHFl
+bXVfcmRtYV9pbml0X3JhbV9ibG9ja3MoUkRNQUNvbnRleHQgKnJkbWEpDQo+ICAgICAgIGFzc2Vy
+dChyZG1hLT5ibG9ja21hcCA9PSBOVUxMKTsNCj4gICAgICAgbWVtc2V0KGxvY2FsLCAwLCBzaXpl
+b2YgKmxvY2FsKTsNCj4gICAgICAgcmV0ID0gZm9yZWFjaF9ub3RfaWdub3JlZF9ibG9jayhxZW11
+X3JkbWFfaW5pdF9vbmVfYmxvY2ssIHJkbWEpOw0KPiAtICAgIGlmIChyZXQpIHsNCj4gLSAgICAg
+ICAgcmV0dXJuIHJldDsNCj4gLSAgICB9DQo+ICsgICAgYXNzZXJ0KCFyZXQpOw0KDQpXaHkgd2Ug
+c3RpbGwgbmVlZCBhIG5ldyBhc3NlcnQoKSwgY2FuIHdlIHJlbW92ZSB0aGUgcmV0IHRvZ2V0aGVy
+Lg0KDQogICAgIGZvcmVhY2hfbm90X2lnbm9yZWRfYmxvY2socWVtdV9yZG1hX2luaXRfb25lX2Js
+b2NrLCByZG1hKTsNCiAgICAgdHJhY2VfcWVtdV9yZG1hX2luaXRfcmFtX2Jsb2Nrcyhsb2NhbC0+
+bmJfYmxvY2tzKTsNCg0KDQpUaGFua3MNClpoaWppYW4NCg0KPiAgICAgICB0cmFjZV9xZW11X3Jk
+bWFfaW5pdF9yYW1fYmxvY2tzKGxvY2FsLT5uYl9ibG9ja3MpOw==
 
