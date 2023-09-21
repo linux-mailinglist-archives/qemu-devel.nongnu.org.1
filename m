@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9376D7A9340
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4767A934B
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:49:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjGGl-0005H6-IB; Thu, 21 Sep 2023 05:46:47 -0400
+	id 1qjGIu-0006J5-AP; Thu, 21 Sep 2023 05:49:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGGj-0005Gj-Fa
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:46:45 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qjGIs-0006HG-Ad
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:48:58 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjGGh-0007aE-Ma
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:46:45 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-50336768615so1401735e87.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 02:46:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qjGIq-0007vZ-CF
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:48:58 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-274c05edb69so437409a91.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 02:48:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695289600; x=1695894400; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=e9ndBrkf1M5l9uj4WypwDRcgd8aCPYv0maL1J5cZhCc=;
- b=PoRQmxXR5LxdpsD2PWtGvWyCwPR6ENrUmcyiWDHK5XCt2FTRz7cLVRaUIA3s2AsYe+
- gn1SBCbXuR0OYtwYowwGiKgMBJz8LfFjGJ9aEBwDjzfCL5jqIdqRF+Rbq1CFz44ow21h
- h2XA00VFFw1lgBexMdZv2OEgQBzhiFY+GyklmZQLgPx722Q9kmGxjKGZ2LD43NS6X+RY
- ssp43nGxqWnjh6PpLLmx9Xkeo3iuDC+TxPJanj4VVGRXnRxTbmWqE7ArevUIXEpX6jC6
- hnNu0/IOt3/huDjEcPbQ4gpNZCZ5HYh6J1p8atjmma3jyAv9QAT5gdUnwgfiZcOdskP5
- 5lvw==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695289735; x=1695894535;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Tn8H0vVmPUbEDqXNIBkZym5IGh9o5sFw2NwUy0uYhGA=;
+ b=BONPqY1mjUC2KefGzwPUVBICcOmqBQoFZ/Avn6MakIiBAPFzQFBDM8UjCAS2UiaPD4
+ h6mUenzzzNDPEKn52+82My+6JNyW0Dybree6RDsdVbYDlwyqykA48c7d22PIPsSstIKc
+ +KzudHLccM3l/MMiXldfvP+np1joGs9SxNxoTZEuhQ/B5Txb9OH+EgTHxIA6o+sdVwIO
+ zNKzxcGm5Ni6WQbKBtbqc4fsAb8N4BYTPRHVi+RXMg61AaS722j/5EieQaZk0dzux2cY
+ LKyHouG5bbAthQnd651j3yr+G0PDSwB84itLQssL1ec6EQmwsj7EQUwDTXWAWnWTDwhr
+ HL1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695289600; x=1695894400;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=e9ndBrkf1M5l9uj4WypwDRcgd8aCPYv0maL1J5cZhCc=;
- b=ArbkygFM++WB3u9g19OMTgojzUwtyioQB/o+AUF8nfw/9PYxxtEVTBOXn4mKLaxn/U
- Ju4/U/BFFUN1mU16/onT0n/GD3T12idNpRJTU0ngYSg8wcYoWgG9GmnaqMGOMO4CLzet
- Vxakv32Lkvs5w6GVlF0+pEoPzblGlgoLrK5bKFPvOlsbkvHFCDz7NcexMeWG1EZaiu2z
- IGwXrq+G8DHQJaLYIJwQQ0K820mr4EZSp7KzuNwsjL41IM/nmtv9j2kC1+IGtg0ua9/S
- LUCGAK/5vWoT7VSMYD9xD1hE4D+7KVk1ezEsxdymfHBxkQi629F9wu4CJ4MylLMlumJ7
- vgNQ==
-X-Gm-Message-State: AOJu0YwJ47E3qsVKUVpAz+Uvfxzd/Q2/q026XwZb8I7SyAzqiXLnBIgp
- 9aK9Soc+pZaoX+Nd8WBj55ecMQ==
-X-Google-Smtp-Source: AGHT+IHl0TILgZmFAqsZ5gaQd9V3vhvPQ3TXM7eorRW9WnQOw/57oLsgAAH3SZ38ZKHM+vwD/HBE3A==
-X-Received: by 2002:a19:9102:0:b0:503:28ed:143b with SMTP id
- t2-20020a199102000000b0050328ed143bmr4571692lfd.18.1695289600229; 
- Thu, 21 Sep 2023 02:46:40 -0700 (PDT)
-Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
- [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- w25-20020aa7d299000000b005329f1aa071sm590359edq.10.2023.09.21.02.46.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 02:46:39 -0700 (PDT)
-Message-ID: <f1077e85-964a-14c5-eead-c6d3ef2c15ad@linaro.org>
-Date: Thu, 21 Sep 2023 11:46:36 +0200
+ d=1e100.net; s=20230601; t=1695289735; x=1695894535;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Tn8H0vVmPUbEDqXNIBkZym5IGh9o5sFw2NwUy0uYhGA=;
+ b=qNpt/w9+quzQ90IwGz0TSUbk5X9kwbmrB/DH3ZQvq0rthmFukgYdGVKWyu5LGHz/4L
+ RYSLRRjYxfKGMuxZI+S3DaG7fsXx4UbNYEu4LocNEINnmlQgaDqtON0uW4qc2ebN+xdo
+ F1DKAmcsKYHRX1igwYf/mgPwc0ddcGLo7HBpjrXWv7qMTRO3h1VSQC+hyebL5LU24wYD
+ swYLqYjKollxGsGjRNzkbZwCBB0LuQaZoulJpnMBcf1zPxdyClyoVKw6vdfV2AYlGba5
+ GKfCRMZpd2EVIVFzH13ZJUsGIkejlt948u6csrQSZJBKWsR1qbRpsi9EqngSGriDe8vb
+ TsqA==
+X-Gm-Message-State: AOJu0Yzr5NAtVAJFfycM3XmnqRrp+fPubT/l0jk/6QnOKNLEH9uODygk
+ Q1LX001Mi9L4KPReMlsATVWevQ==
+X-Google-Smtp-Source: AGHT+IH48wj4AEiEW1IhNekVEAfhw2eWrEZ0Or30DnMSh//+LLWk2XTqXBOREmM7/OZcvV0gFE4LyQ==
+X-Received: by 2002:a17:90b:1f88:b0:276:b37f:84e5 with SMTP id
+ so8-20020a17090b1f8800b00276b37f84e5mr4782992pjb.21.1695289734906; 
+ Thu, 21 Sep 2023 02:48:54 -0700 (PDT)
+Received: from alarm.flets-east.jp ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with ESMTPSA id
+ e12-20020a170902d38c00b001c32fd9e412sm1026138pld.58.2023.09.21.02.48.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Sep 2023 02:48:54 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: Konstantin Kostiuk <konstantin@daynix.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Subject: [PATCH v2] Revert "tap: setting error appropriately when calling
+ net_init_tap_one()"
+Date: Thu, 21 Sep 2023 18:48:49 +0900
+Message-ID: <20230921094851.36295-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3] input: Allow to choose console with
- qemu_input_is_absolute
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-References: <20230921082936.28100-1-akihiko.odaki@daynix.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230921082936.28100-1-akihiko.odaki@daynix.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,93 +91,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 21/9/23 10:29, Akihiko Odaki wrote:
-> Although an input is routed depending on the console,
-> qemu_input_is_absolute() had no mechanism to specify the console.
-> 
-> Accept QemuConsole as an argument for qemu_input_is_absolute, and let
-> the display know the absolute/relative state for a particular console.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
-> V2 -> V3: Rebased to commit 55394dcbec8f0c29c30e792c102a0edd50a52bf4
-> V1 -> V2: Rebased to commit 79b677d658d3d35e1e776826ac4abb28cdce69b8
-> 
->   include/ui/input.h |  2 +-
->   ui/dbus-console.c  |  6 +++---
->   ui/gtk.c           | 12 ++++++------
->   ui/input.c         | 29 +++++++----------------------
->   ui/sdl2.c          | 26 +++++++++++++-------------
->   ui/spice-input.c   |  2 +-
->   ui/vnc.c           |  2 +-
->   ui/cocoa.m         |  2 +-
->   ui/trace-events    |  1 -
->   9 files changed, 33 insertions(+), 49 deletions(-)
+This reverts commit 46d4d36d0bf2b24b205f2f604f0905db80264eef.
 
+The reverted commit changed to emit warnings instead of errors when
+vhost is requested but vhost initialization fails if vhostforce option
+is not set.
 
-> diff --git a/ui/gtk.c b/ui/gtk.c
-> index e09f97a86b..40b8d27da5 100644
-> --- a/ui/gtk.c
-> +++ b/ui/gtk.c
-> @@ -204,7 +204,7 @@ static void gd_update_cursor(VirtualConsole *vc)
->       }
->   
->       window = gtk_widget_get_window(GTK_WIDGET(vc->gfx.drawing_area));
-> -    if (s->full_screen || qemu_input_is_absolute() || s->ptr_owner == vc) {
-> +    if (s->full_screen || qemu_input_is_absolute(vc->gfx.dcl.con) || s->ptr_owner == vc) {
->           gdk_window_set_cursor(window, s->null_cursor);
->       } else {
->           gdk_window_set_cursor(window, NULL);
-> @@ -453,7 +453,7 @@ static void gd_mouse_set(DisplayChangeListener *dcl,
->       gint x_root, y_root;
->   
->       if (!gtk_widget_get_realized(vc->gfx.drawing_area) ||
-> -        qemu_input_is_absolute()) {
-> +        qemu_input_is_absolute(dcl->con)) {
+However, vhostforce is not meant to change the error handling. It was
+once introduced as an option to commit 5430a28fe4 ("vhost: force vhost
+off for non-MSI guests") to force enabling vhost for non-MSI guests,
+which will have worse performance with vhost. It was deprecated with
+commit 1e7398a140 ("vhost: enable vhost without without MSI-X") and
+changed to behave identical with the vhost option for compatibility.
 
-Maybe vc->gfx.dcl.con instead to match with the other uses in this
-file? Anyhow,
+Worse, commit bf769f742c ("virtio: del net client if net_init_tap_one
+failed") changed to delete the client when vhost fails even when the
+failure only results in a warning. The leads to an assertion failure
+for the -netdev command line option.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+The reverted commit was intended to ensure that the vhost initialization
+failure won't result in a corrupted netdev. This problem should have
+been fixed by deleting netdev when the initialization fails instead of
+ignoring the failure by converting it into a warning. Fortunately,
+commit bf769f742c ("virtio: del net client if net_init_tap_one failed"),
+mentioned earlier, implements this behavior.
 
->           return;
->       }
->   
-> @@ -689,7 +689,7 @@ static void gd_mouse_mode_change(Notifier *notify, void *data)
->   
->       s = container_of(notify, GtkDisplayState, mouse_mode_notifier);
->       /* release the grab at switching to absolute mode */
-> -    if (qemu_input_is_absolute() && s->ptr_owner) {
-> +    if (s->ptr_owner && qemu_input_is_absolute(s->ptr_owner->gfx.dcl.con)) {
->           if (!s->ptr_owner->window) {
->               gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s->grab_item),
->                                              FALSE);
-> @@ -903,7 +903,7 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
->       x = (motion->x - mx) / vc->gfx.scale_x * ws;
->       y = (motion->y - my) / vc->gfx.scale_y * ws;
->   
-> -    if (qemu_input_is_absolute()) {
-> +    if (qemu_input_is_absolute(vc->gfx.dcl.con)) {
->           if (x < 0 || y < 0 ||
->               x >= surface_width(vc->gfx.ds) ||
->               y >= surface_height(vc->gfx.ds)) {
-> @@ -923,7 +923,7 @@ static gboolean gd_motion_event(GtkWidget *widget, GdkEventMotion *motion,
->       s->last_y = y;
->       s->last_set = TRUE;
->   
-> -    if (!qemu_input_is_absolute() && s->ptr_owner == vc) {
-> +    if (!qemu_input_is_absolute(vc->gfx.dcl.con) && s->ptr_owner == vc) {
->           GdkScreen *screen = gtk_widget_get_screen(vc->gfx.drawing_area);
->           GdkDisplay *dpy = gtk_widget_get_display(widget);
->           GdkWindow *win = gtk_widget_get_window(widget);
-> @@ -965,7 +965,7 @@ static gboolean gd_button_event(GtkWidget *widget, GdkEventButton *button,
->   
->       /* implicitly grab the input at the first click in the relative mode */
->       if (button->button == 1 && button->type == GDK_BUTTON_PRESS &&
-> -        !qemu_input_is_absolute() && s->ptr_owner != vc) {
-> +        !qemu_input_is_absolute(vc->gfx.dcl.con) && s->ptr_owner != vc) {
->           if (!vc->window) {
->               gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(s->grab_item),
->                                              TRUE);
+Restore the correct semantics and fix the assertion failure for the
+-netdev command line option by reverting the problematic commit.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+V1 -> V2: Corrected the message.
+
+ include/net/vhost_net.h |  3 ---
+ net/tap.c               | 22 +++++-----------------
+ 2 files changed, 5 insertions(+), 20 deletions(-)
+
+diff --git a/include/net/vhost_net.h b/include/net/vhost_net.h
+index c37aba35e6..c6a5361a2a 100644
+--- a/include/net/vhost_net.h
++++ b/include/net/vhost_net.h
+@@ -4,9 +4,6 @@
+ #include "net/net.h"
+ #include "hw/virtio/vhost-backend.h"
+ 
+-#define VHOST_NET_INIT_FAILED \
+-    "vhost-net requested but could not be initialized"
+-
+ struct vhost_net;
+ typedef struct vhost_net VHostNetState;
+ 
+diff --git a/net/tap.c b/net/tap.c
+index 1bf085d422..c6639d9f20 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -730,11 +730,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+         if (vhostfdname) {
+             vhostfd = monitor_fd_param(monitor_cur(), vhostfdname, &err);
+             if (vhostfd == -1) {
+-                if (tap->has_vhostforce && tap->vhostforce) {
+-                    error_propagate(errp, err);
+-                } else {
+-                    warn_report_err(err);
+-                }
++                error_propagate(errp, err);
+                 goto failed;
+             }
+             if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
+@@ -745,13 +741,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+         } else {
+             vhostfd = open("/dev/vhost-net", O_RDWR);
+             if (vhostfd < 0) {
+-                if (tap->has_vhostforce && tap->vhostforce) {
+-                    error_setg_errno(errp, errno,
+-                                     "tap: open vhost char device failed");
+-                } else {
+-                    warn_report("tap: open vhost char device failed: %s",
+-                                strerror(errno));
+-                }
++                error_setg_errno(errp, errno,
++                                 "tap: open vhost char device failed");
+                 goto failed;
+             }
+             if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
+@@ -764,11 +755,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+ 
+         s->vhost_net = vhost_net_init(&options);
+         if (!s->vhost_net) {
+-            if (tap->has_vhostforce && tap->vhostforce) {
+-                error_setg(errp, VHOST_NET_INIT_FAILED);
+-            } else {
+-                warn_report(VHOST_NET_INIT_FAILED);
+-            }
++            error_setg(errp,
++                       "vhost-net requested but could not be initialized");
+             goto failed;
+         }
+     } else if (vhostfdname) {
+-- 
+2.42.0
 
 
