@@ -2,104 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F5C7A92E8
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB87A7A92E9
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 11:01:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjFXS-000154-MW; Thu, 21 Sep 2023 04:59:59 -0400
+	id 1qjFYD-0001ZA-Lf; Thu, 21 Sep 2023 05:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFXJ-0000zt-6m
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:59:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qjFY4-0001TP-Ei
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:00:39 -0400
+Received: from esa16.fujitsucc.c3s2.iphmx.com ([216.71.158.33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qjFXH-00068d-Dm
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:59:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695286784;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OwNdHTnGAsOSkRghTMU2fettnfW7luTA9H+gP/0MCjk=;
- b=XLW4FkeZ6lohQCFTDA0utpEbFJv2mg5zeHyJ8ZtPwVUC3AEReoMltbSUDYCdG33jj1ZtwA
- ckYV4j59SHY/UspEPE3vXTVUhoKGJuCbko/35IrIB1b3kvh6cwJMU4Qt6iPrKyYj9Co2Zp
- cTGofwIgk0ParcXi9tPFwnv8ZQZHCxo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-324-aQy-BZQhNXmen8HhvaDTog-1; Thu, 21 Sep 2023 04:59:42 -0400
-X-MC-Unique: aQy-BZQhNXmen8HhvaDTog-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32172e3679bso469395f8f.2
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 01:59:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695286781; x=1695891581;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OwNdHTnGAsOSkRghTMU2fettnfW7luTA9H+gP/0MCjk=;
- b=GF8U6I2ruiWEV10wSCpI9XkUrZwSvNzjWuoIC+iytm8sajwrdtZei1gEQrcoyFkGBy
- roq1O9ez6RB9fh8eLO97/s4Fdno3CeTP9od5w33PXLrH1rpOOdmrwIHWvpJw5Jzsi6ah
- fGKl4SP/2d/fQtAlQWDe6JlJbvEkJuLbfbTMzJHnxeVZn3A9e9z9m0cdh1PLdZ00eXKE
- nt6SzRJ7gkNn0Dop7u5v+tTOYOy09PzE+7plI9ZYxAx6hbhl4KeCnm/0yd360qAYodq1
- 3IH1Kg2tXWXhUOm4Y7UVTG/JXZUIklY8vJSQxCvbNX8zCoHBwLVpATObl0QFjaaSB5OD
- ZxDQ==
-X-Gm-Message-State: AOJu0Yx8BDeDKKPGgP1d8rKQ55vwtZu+PCX/GYfaoCQsUXGbdd+wf1Sx
- Y4NmKp9aPw2v94g5c4uHLEnG5YI51E9N0TwgVrXUjIp0U4ygIdU/2bIwnjLxhpVW83oyVZyXnkU
- EXHFd0JMuFbCv0os=
-X-Received: by 2002:adf:fe8e:0:b0:319:f9d6:a769 with SMTP id
- l14-20020adffe8e000000b00319f9d6a769mr4482684wrr.45.1695286780863; 
- Thu, 21 Sep 2023 01:59:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEziUe1J4+dVh5+sqL7Z79Q8p6L47JpR6xiZOAY7lmymJAZ32eWWEWvamD4E+nv0Lei4fu7pA==
-X-Received: by 2002:adf:fe8e:0:b0:319:f9d6:a769 with SMTP id
- l14-20020adffe8e000000b00319f9d6a769mr4482661wrr.45.1695286780389; 
- Thu, 21 Sep 2023 01:59:40 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70d:3c00:9eab:fce5:e6f3:e626?
- (p200300cbc70d3c009eabfce5e6f3e626.dip0.t-ipconnect.de.
- [2003:cb:c70d:3c00:9eab:fce5:e6f3:e626])
- by smtp.gmail.com with ESMTPSA id
- m12-20020a056000008c00b0031f3b04e7cdsm1143623wrx.109.2023.09.21.01.59.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 01:59:39 -0700 (PDT)
-Message-ID: <822f80df-9bde-3d98-8fd2-44895cee08aa@redhat.com>
-Date: Thu, 21 Sep 2023 10:59:38 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [RFC PATCH v2 00/21] QEMU gmem implemention
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qjFXw-0006cG-Lm
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 05:00:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+ t=1695286829; x=1726822829;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=E22Xp9+0heb8XaTuQsu1TXVi24zNOUUbfZZAlk61RNo=;
+ b=r6tULAjI9bJ3SZrkw8b+od4A6u0AQJaAMRiOGkP/LAtmO6UzIPs13DlT
+ euMPU3pCewU3rGTtnanYXQd1OkNQSLfkyYUxnJVR83YXLIhaSGDDCo61S
+ uoF65KknoY3d1X3FdnQXkCriDlQIzAh2kwUxlZ3Ay7mdTE1JLv+1e7FIG
+ lE2xyMbKzDq8AoVRdN2oF9yuLBYpMP34/5KLwRkPyMLEhW0Ra04aZKnih
+ 8aL0OVa5VTI/wsnKD+snk7Ix92LtonjWomF9qBE835Kl3+7NsXJ2FZuNX
+ UCpANdEwHaqZlxDi82GVAeTP54RRTDH8qg2v+Q8QkjNE/bupmSaGRlWpy w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10839"; a="95981088"
+X-IronPort-AV: E=Sophos;i="6.03,165,1694703600"; d="scan'208";a="95981088"
+Received: from mail-os0jpn01lp2105.outbound.protection.outlook.com (HELO
+ JPN01-OS0-obe.outbound.protection.outlook.com) ([104.47.23.105])
+ by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2023 18:00:25 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BkpNuZ1bhP0uBLKa0sFjofmoXK/wgwMMzu/02FPstegp2uo8RW1DzaFV6VAVQFxSUav8EwSMqk2NJZzuVAGsO52T9w/t7aSIJtLsnLUfe8xLsyFergOv53SZfFSHA6j5txXlhHLOiprg3uioT/8zwA5t7wQblmxMIL4qDLtqXaR5GRDMkAecV7sxYxIselQtc7Mj756pf6BTt3BOz1O0/RLd9NVnqI4ty4AXtXm1dBABJzuHS+SmlFNz9rmZrFHx8i8UNd2uPJzuyTYnfM/rf6cLVHhoygQx3iw787bd/A/jWYYY7WY0njSaYofIKxsIOp2Gg0qq+bw25Du2oCFukA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E22Xp9+0heb8XaTuQsu1TXVi24zNOUUbfZZAlk61RNo=;
+ b=A/TxH/oOXFEt6LCy+CqefkAP15zBy4Q2BmHyFk1Iv2WhqDrdN1o49RA1HsLVZEzffA9DmrOy8/1mS7PyBm8Pzg/vxq9Sx5krNiwRd9CmbR/77GcL6uj8BnPlDc/e/A6fFg+m70On1GZrgY3MsTOaibgq6H8HUWiI1gMyByvLuxOVWJQ8KQuKvt+zOzlXfsjElLszwxyk/pHfhG2WsOdXqHmvP8ICieMYcKYyA9i8k8lGiw0aWkSUo7VlV5fMOnkBW8U67WGOCrwIUVM6VJSs8LOkAZmNbs/XtDB4fTBowvUUBplZ4Kld9a5jw9L5C6yhRcmfOvTGN9dpmxE8+/fLgw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com (2603:1096:604:247::6)
+ by OSZPR01MB8864.jpnprd01.prod.outlook.com (2603:1096:604:15d::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.19; Thu, 21 Sep
+ 2023 09:00:21 +0000
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::1a61:2227:a0de:2c53]) by OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::1a61:2227:a0de:2c53%4]) with mapi id 15.20.6813.018; Thu, 21 Sep 2023
+ 09:00:21 +0000
+From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+To: Markus Armbruster <armbru@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "quintela@redhat.com" <quintela@redhat.com>, "peterx@redhat.com"
+ <peterx@redhat.com>, "leobras@redhat.com" <leobras@redhat.com>
+Subject: Re: [PATCH 07/52] migration/rdma: Give qio_channel_rdma_source_funcs
+ internal linkage
+Thread-Topic: [PATCH 07/52] migration/rdma: Give qio_channel_rdma_source_funcs
+ internal linkage
+Thread-Index: AQHZ6j9GOZzWjTTgYE2VLzwZbVXXuLAk/5iA
+Date: Thu, 21 Sep 2023 09:00:21 +0000
+Message-ID: <9d45e30d-9e28-aac5-bfb9-79790d8fec83@fujitsu.com>
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-8-armbru@redhat.com>
+In-Reply-To: <20230918144206.560120-8-armbru@redhat.com>
+Accept-Language: en-US, zh-CN
 Content-Language: en-US
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <fe9f3d19-df01-01e6-a253-f7fe5bdea41f@redhat.com>
- <a8cf6824-4228-8de5-0727-96ea6c5bad36@intel.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <a8cf6824-4228-8de5-0727-96ea6c5bad36@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS7PR01MB11664:EE_|OSZPR01MB8864:EE_
+x-ms-office365-filtering-correlation-id: 806179b2-0bc2-428b-2fed-08dbba812f7e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: g45KnWrN4PjYh7s+B9DtqpJE6vuAyRjQFuOsIDWsA10QKFDO09QlF70wPnYZ7IWf7CTXf58npnMl8gdGGzL46zJgq4iCUU2NDVAP1Z+WjASZsHfSr7TSaGkeWALGMbbK8zdL9Ot7zf7gY7gRxzlY7KqrUDJEtWXStXnwGeUz0U5DV5DCOeMw2IHjhvURzFz8lxipYjqZwSeRb8ydtQhLFLsSXpXXpPPMHFHv1EyB6/tjympJ0SPG6G79+btbWp4c2Pa7NQlEFe2f7b2lS4SdQzZ84mWv+xf8vad9ab75DqC7WYLXOx6xH0Aswxt7zU8VH2tkf/4zEsmuIXEUmoX10nGaryOt40ISaYtLkVxiIWBQmRzTFPr/G96Pv0c02Jo/R0C1MqFUiox7NENNoA+PWAbZMyzjnGM/o8F5LbyCd8Usso6v2GrtRwgWCj67lQ4U1+mFtqsW1UwnTFX/7akG0OiHjO148VMlugpFrvffXbH12wO2ugVRbaBsjwXYuOZ9uWqdnVUkD+md9XECs0XRmf5Gl4rKPohyCblBVT+zojVv8MqrpJZUh7zovK47xunsdlypQtgQgBeygPkzhIKqJHHX25d/boom005mFBRwKSH1MQBn5gnj7092+niIDmi4eU8QnWyJQ5hjnIKI39adfG0+qy7xIWAAM5hl/d+laU++vN7eWD5kf3Bq1xMfwnIrEKYq3TzOWGsg3qGlbZD9Sw==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:OS7PR01MB11664.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(396003)(346002)(136003)(376002)(39860400002)(1590799021)(451199024)(186009)(1800799009)(1580799018)(6506007)(6486002)(53546011)(71200400001)(478600001)(26005)(2906002)(66556008)(8676002)(66446008)(66476007)(64756008)(54906003)(76116006)(66946007)(2616005)(316002)(41300700001)(91956017)(8936002)(4326008)(5660300002)(110136005)(85182001)(36756003)(558084003)(38070700005)(38100700002)(86362001)(82960400001)(31696002)(122000001)(6512007)(31686004)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UER3bUNEVDI3Y29ZYnVUdTl6OXErYWRsSUZKNnozR1J4RnZwMFRXYW91SDZo?=
+ =?utf-8?B?NjhmQ0lMY01tQnN4d1A1UXhNODEzMVpEekczbjRGNzMxckxtVUplajRPNjFV?=
+ =?utf-8?B?UFlJbnZsZDBIaVo0ODlMZVpUMVhjWE9WdkVMejFwc2Zjd014cmxRUVR1anVm?=
+ =?utf-8?B?eTBDMDArUmljZC85NmRHdDVKWGlXRWIzL2JMRWYvYzlnK0YxWHJuSmdPZ29J?=
+ =?utf-8?B?T2ZhTVNjRDYyQW1MV3NiWUhXMVI0b05WelhTMGtBY04rd3NNamlOMmtzTC9N?=
+ =?utf-8?B?em5VK0RsYXk1aUgwaGhoNVJxYm9QbFlKWjF2cGF0R1BQOGc4alJ3UlBWTmVC?=
+ =?utf-8?B?a01SME0vMHVmUm40WEUyeUtTZGJXOG9IejFIbGIvSHJDSnNETjFSZ2Nra3Y1?=
+ =?utf-8?B?Nm5YdFRvYnZYclJHY1dNRjh2RjVsMm8wL3NZbVE1YzhPSzE0VEU3dWg4R201?=
+ =?utf-8?B?ODUrWThEN0dXcGREU01Ed2dZWHY5ZkxqVk0rM0ZrVElVaVpjTDk3endpQi9E?=
+ =?utf-8?B?ajh0WlVYYUZjQ1lidEVOMGdUTldXUDVEVnR1QTM3NElxVjg3R29KLytMNllS?=
+ =?utf-8?B?Sng1TGIwUDJpS1FXWG5YK2RBY1VxUkZ3WkFiNVpTUDB6TDJyVEkzUzNVdWpu?=
+ =?utf-8?B?Y0pTdk9WYzhSVFVkTDA5cGVpS0ZvcmEyU1ppM3U2VVNmZFZnWHpKQ2pRSVM1?=
+ =?utf-8?B?S1d3dXE5MG4xdGkwMnZZTGVwckhxcy9SZExKVS9EVTBIaHNqaFM1a2NBUXl5?=
+ =?utf-8?B?VzFWQVhxeHF1T0JQNXBBdllrelZwbGtLZUhXTytPcFFWTEZvTVZQUUhBQlhh?=
+ =?utf-8?B?M3laUVFONUpRTWROelk0cEFBV0lhL1ZaZnRueHhZN1JPMWxMdWxkRmxrYzAr?=
+ =?utf-8?B?QzJyYjdlVklsQ1dQRTBpNzV6QnFDUTFIWW41cDk5c1VRekwyZlFyeWkrV3lW?=
+ =?utf-8?B?RnpsN3ZmZ3dDRzNWTkxRcG1WcTBKNjYydGZtNW5Vc0pDRkRLdUhXWmtUT0xB?=
+ =?utf-8?B?bEZHbTJqK0NJL1FmK0VONVNyVGhOSlFCU3pBYlBBS3VVSUtkMHkxd2J2Wk4z?=
+ =?utf-8?B?ek84TlZGWHM5c0tvNi80T1k0dFBaSGpBZEg3eWFhTkp2dTczZkoxc2g5SE4y?=
+ =?utf-8?B?S0NsLzNDK2xoQjVxUG0zNnZpOE16ME9RWTUrWGE5UUUvQmJvbTI3SnVFTkpG?=
+ =?utf-8?B?OElJcER6cHFwYXhhajJIYjdteGVBVVNlOUlkMTlDVW9HMndSNFIrS0NnRzVp?=
+ =?utf-8?B?NlY4a2pMeVNmc0dvRmJPZEp4cXJQSkJTN0pyLzkxclZSdlliUDhPNlJZQncz?=
+ =?utf-8?B?NDU5Qm5HUEIwZTZNV0RNV1RmU2FpTks5WUhMR2VFT2FWeFB2UzdkcFQvTnRt?=
+ =?utf-8?B?dXNGYUZOVUsvYXJlRmdXOVdMZ3ltYUJTSHdKQk1qTEs0NnArUGdwbFNtcjJp?=
+ =?utf-8?B?N1NZRitmQ2FwN3J5eURjK0IzdDJCNkZMN1YxTUlwa250WWVrM1pJRnMwc0da?=
+ =?utf-8?B?S3NPZmg4ZUlEcHpKSW04OTRDR1N1ZUNFNERBN09DT0EreW5IV0RIRkF0ak1x?=
+ =?utf-8?B?THZralo1cmxvcG45YjNEMHczRHUwWmRmSGVmS2xaMjBHOGxqN3hTYjB5dXNN?=
+ =?utf-8?B?OFdXU3BVNlh4bVpuZURtclhzeFJ4ZUErbEEzWURPZHpnMkc5UmJrUkZFdE1V?=
+ =?utf-8?B?ZFNGRm81UDlvS0kvVEl3emppV3R0Z3c4bFhORlVQWDFPVHcxWWVocExObFRj?=
+ =?utf-8?B?Ti9kd0F0WVdmUHFoWUJsVlA0c2xrMzJvY0RzTEM1QjFadXR3RFN6U2E5OGtz?=
+ =?utf-8?B?TThORThxcWI2OEYweDhYajlUL0QyOFZ2T0hKNCt2bnBBZnpscWl2RVIrOG1Q?=
+ =?utf-8?B?b3FEb2JnMGdKNzZ4aUdneCtDamduL2J6WVJPQ3FtUkpKTUNROFFCamVEWGQ4?=
+ =?utf-8?B?VUxFa0E4WHpPMjgxZG13VXZmcEJZM3lnbTFvd1IwQXpMME9FUTBHRjRZbS91?=
+ =?utf-8?B?dFUzeHJHZE9FZjc2bm5KV3BKZm9tSjhuQ2kxcUlmNEgvNTV6ODAreEoyZXpL?=
+ =?utf-8?B?K2RnOVV4WHlMTUxFcWZOMjhZMTQrcFErQUZTeS82UmpaQmwvVEVzaFZxWFgv?=
+ =?utf-8?B?aFBTbVRLTmFWbGI5cmlMeElPR0E0YkxncGxndWs3Tk5ZTGR6aGNlTFZ0b2xO?=
+ =?utf-8?B?TkE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6060502EF44DEA4A94A2E8423A491DED@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 18nS6fgkYKs4MTS6qqjr/UVcnzLz6aCRX+v0OQ+wz3ASqtLZvE9Bzy/0FJfZIfuArZL2AhhJ0VMzSv//EiyTQa8VaBaFewvzaFwtFsddxkFVXgMMmkiHf5QfjGlackuIgGQXNDyZbWR54QWK2xzfdr5GmsEZGZKyMqHauhgsqAJaRm3lqb4Es4/fuT1Z6fTvZm4PhXBCZaJIcNY5xE+NAbm9Woha/rszwAd+LKRQLhBJ4RLczHL8B8BiFTVHm/gebzJcyrBaaSmHPnohEOAmRZKMs/CiYXUivI142Z/4UU3uTDuhXTJpG7Ds8fIRtWXdcEfPCwnETAnwaSIRdQBJcv8firwc6jVfADHGAe0pmYwXb8t4hfXlu/6OJzebJWMApl5x/3DIK/Xjycee+OZbSdr4V+3aycQX3o0doMhrGdOguQmw2/gN+3gJwI4DSsDCirxEC0x0S+tyAOwBz3tnWgM5Fh7ASaxwM2kzJjkdAAxH0Knbf+oYUS6rB/o7kxvrT1RRdYlM4txLVaH/SOQ8eGyLAZYqJUFZJlZ15+QIQ4A215D0nQ8lUfCbI96R/nqiV5brZ6f9suVvnpraF/Mu8uMiwgsip9f2s/KRyu+Sa5O6hmxyCct/hmNJzfo+74Ohbn2ELhMZD670bzipgS7pQygc/pNWC0MTdhO8FU032eQzy8bHkDz7mWnsBVjgZlA+babtXqXtbtfBpdbyHvjuzd892+L9V/UBwjamEP1nJ7GvZoK1qYo24lUXsle6erDEG4rAs/dtfk5QkLmCW826oTXUdnFAGq7wV405EUnp2UU=
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB11664.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 806179b2-0bc2-428b-2fed-08dbba812f7e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2023 09:00:21.2947 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mXc9MgsGS6lF5pyoPCzmls9LAqBdv3cIUM2kqlsHbA51lq6TKjYoDpshacOLrmo//PA03JSjmDp/1e9fuASS1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB8864
+Received-SPF: pass client-ip=216.71.158.33; envelope-from=lizhijian@fujitsu.com;
+ helo=esa16.fujitsucc.c3s2.iphmx.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,60 +167,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
->>>
->>> This version still leave some opens to be discussed:
->>> 1. whether we need "private" propery to be user-settable?
->>>
->>>      It seems unnecessary because vm-type is determined. If the VM is
->>>      confidential-guest, then the RAM of the guest must be able to be
->>>      mapped as private, i.e., have kvm gmem backend. So QEMU can
->>>      determine the value of "private" property automatiacally based on vm
->>>      type.
->>>
->>>      This also aligns with the board internal MemoryRegion that needs to
->>>      have kvm gmem backend, e.g., TDX requires OVMF to act as private
->>>      memory so bios memory region needs to have kvm gmem fd associated.
->>>      QEMU no doubt will do it internally automatically.
->>
->> Would it make sense to have some regions without "pivate" semantics?
->> Like NVDIMMs?
-> 
-> Of course it can have regions without "private" semantics.
-
-I meant "RAM memory regions on such a special VM". Does it make sense to 
-have !private there? I assume "for now, not".
-
->>>
->>> 2. hugepage support.
->>>
->>>      KVM gmem can be allocated from hugetlbfs. How does QEMU determine
->>>      when to allocate KVM gmem with KVM_GUEST_MEMFD_ALLOW_HUGEPAGE. The
->>>      easiest solution is create KVM gmem with
->>> KVM_GUEST_MEMFD_ALLOW_HUGEPAGE
->>>      only when memory backend is HostMemoryBackendFile of hugetlbfs.
->>
->> Good question.
->>
->> Probably "if the memory backend uses huge pages, also use huge pages for
->> the private gmem" makes sense.
->>
->> ... but it becomes a mess with preallocation ... which is what people
->> should actually be using with hugetlb. Andeventual double
->> memory-consumption ... but maybe that's all been taken care of already?
->>
->> Probably it's best to leave hugetlb support as future work and start
->> with something minimal.
->>
-> 
-> As Sean replied, I had some misunderstanding of
-> KVM_GUEST_MEMFD_ALLOW_HUGEPAGE. If it's for THP, I think we can allow it
-> for every gmem.
-
-Right, just like we do a MADV_HUGEPAGE rather blindly on all memory.
-
--- 
-Cheers,
-
-David / dhildenb
-
+DQoNCk9uIDE4LzA5LzIwMjMgMjI6NDEsIE1hcmt1cyBBcm1icnVzdGVyIHdyb3RlOg0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBNYXJrdXMgQXJtYnJ1c3RlciA8YXJtYnJ1QHJlZGhhdC5jb20+DQoNClJldmll
+d2VkLWJ5OiBMaSBaaGlqaWFuIDxsaXpoaWppYW5AZnVqaXRzdS5jb20+
 
