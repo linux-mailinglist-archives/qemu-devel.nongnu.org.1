@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EF97A984A
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:39:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 890177A985A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 19:41:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjNca-00028w-58; Thu, 21 Sep 2023 13:37:48 -0400
+	id 1qjNcc-0002At-NH; Thu, 21 Sep 2023 13:37:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcX-00027V-Bi
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:45 -0400
+ id 1qjNcZ-00029H-Vy
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:48 -0400
 Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qjNcO-0007iW-Jp
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:45 -0400
+ id 1qjNcP-0007ie-Au
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 13:37:47 -0400
 Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4051fea48a8so14402235e9.2
+ 5b1f17b1804b1-4053cb57f02so44065e9.1
  for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 10:37:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1695317855; x=1695922655; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hhll5MSt7inD7Gvy+K2LRa4bhUXToZUa0sCF87IjAjw=;
- b=fkzi59TXjCgC2g4vlEfg0AarpdcBxTo30RnCBiKybc4fAhfUM+gDEmu4RDvA979piJ
- HLj58faS8eT6MY1FVEgPVkTBhjA+L9kDHjz2M1Qi8VClq/xZL1xXklpNZp8ky4J5ica2
- kVNaURyKkmtkFy+EEPFsI7fQmv+cirO9W8nQZoh6A+EMv1NzhttzzBsxKQNtGV83oUZ2
- sKngUDUhuNne3iqhPGP8zji3QvggftWWFh9sR7ZsgwS9OhUJUuXJ8P3nmWE28Dv4nfub
- TPISiMXzB6zmm/Ctc1M7yI8FJ5UGR7/z7S7IrbgJLkIg9WsMMLYUiD1qXWfzhJFsbfXr
- AW+g==
+ :reply-to; bh=okurW1rZE+ASazRHBXqN9Qp4RNXWE3FoF9D8aOYfxp8=;
+ b=KIfK6ZaK4vvv9jkyufJprjry8lKeuE8V/6xcMxIKwag4zKFl2Ylr+npNF1Je01+egB
+ G8VBGV3SHoY1ZsdGt+er5RA/HodDA/wo+5m7caNS+nsQRNb4lTg4JmrVFvJnmCREsqiK
+ wq+IzfmatE6RONHylMVg18Nu72m3PIg/Gni32xk4RDuBnkQ/y7wIiKTP2mFTeWNG3f7D
+ 6GRUmKjz91nuMXadFu6xI1OG7ewBRhievm+mQb4AdFxt/SArkEybzi+LUABO7tofCBVW
+ S7+KNfavzPQ7wh3ME855DZ/96EjVVJIxmfQCVt2J4p+33qfPm175LHd83l66HPDKy4HO
+ UioA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1695317855; x=1695922655;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hhll5MSt7inD7Gvy+K2LRa4bhUXToZUa0sCF87IjAjw=;
- b=Utwcz4brG8cX2fyZxhNJYuG3VQ+qJUhMysABLZUUXoNcYkY5BavBuTuU3WHyCW7wlD
- 0FV1+OYuk8+pNBCIwwtnPsXPpDsNWYyrffOIhChiL3PlIBxk4UGJoLA74byLdHJHJAjB
- VJWldHJnjex2XZ7iTnDhgOuLCLuJlZVjj3L8Rnj/Q1T0opX7gEkaOPYE8B1VVtCJffiU
- 51KqFmJzjZ9n78QGR7pSCE7hS2eDVRfW8fDcS1cY4B10ualzopN10ApLlj9FrCY1xCd/
- Pjhh/y5Oq0p3DOvoLKoVFCYDkI0FJe01h9MgS6H1coZRmxImSfgYsa0KK7yPH1MW6G11
- b2jg==
-X-Gm-Message-State: AOJu0Yyuk0UvOLhC3xrid8YVO9cGd2g2I9Ijo7QupSV+R4IeEBcnmigN
- 1e+NJG7G2CHMOlWXzRNVY64UgqvvZYauB0ikXAw=
-X-Google-Smtp-Source: AGHT+IFnYHgGyKgFIg662xzfX53i7vf3uGvxlcchKJug6mi57gD6A55LqmS7srmV98cEAcQAHHOILQ==
-X-Received: by 2002:a05:600c:364a:b0:401:dc7c:2488 with SMTP id
- y10-20020a05600c364a00b00401dc7c2488mr5366494wmq.11.1695317855215; 
+ bh=okurW1rZE+ASazRHBXqN9Qp4RNXWE3FoF9D8aOYfxp8=;
+ b=FoMbSjGdVE6BqjtA0X8nrVV/x2oVcJvkktopnE9YqnlGGEZnSaildfIqx7AP+qcEd1
+ tGQb5ZuQLHJu89kNYFMI+j1+BfILRq07+kfCV38ys90IXVbo+BhHmlwUG5O8UYRV+KOl
+ ubjq8pHArQG2UjR8JMmxP8iCHE+9VSCEc4h82+CEby017IaGXOgqV6lv4a+XBLOCk/WD
+ ZM5FyEPtM7H8SqL3nNwhtJw2DSP1mf320bDY5wEywrUarGM+7m6QYeL8FbM73P8dbZcT
+ ZEwVINDkIMgSq11ZRu5wjiYy8Gy76fE1wJ4UCJAT1oWH8fguYConGg7OolbVPayxlInc
+ 90UQ==
+X-Gm-Message-State: AOJu0YwqHg0rl6FqyOzh6Mnd98QIMLknxJhOnQ6voF3dEk7SpemYPbQh
+ b7qSclfuRWf+dP1uPOE611FBoBoME+WziU0SqGg=
+X-Google-Smtp-Source: AGHT+IEKI7llB3o9ft/iD+y0ASIv4CdIIrJBdNBgkWaAbSC+yiI2nQR/aPj9zVywcUjq92BPGiXWwQ==
+X-Received: by 2002:a1c:771a:0:b0:401:bf56:8ba0 with SMTP id
+ t26-20020a1c771a000000b00401bf568ba0mr5368012wmi.28.1695317855655; 
  Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.34
+ m14-20020a7bce0e000000b003feff926fc5sm2464122wmc.17.2023.09.21.10.37.35
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 21 Sep 2023 10:37:35 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 28/30] elf2dmp: introduce merging of physical memory runs
-Date: Thu, 21 Sep 2023 18:37:18 +0100
-Message-Id: <20230921173720.3250581-29-peter.maydell@linaro.org>
+Subject: [PULL 29/30] elf2dmp: use Linux mmap with MAP_NORESERVE when possible
+Date: Thu, 21 Sep 2023 18:37:19 +0100
+Message-Id: <20230921173720.3250581-30-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230921173720.3250581-1-peter.maydell@linaro.org>
 References: <20230921173720.3250581-1-peter.maydell@linaro.org>
@@ -92,107 +92,135 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Viktor Prutyanov <viktor@daynix.com>
 
-DMP supports 42 physical memory runs at most. So, merge adjacent
-physical memory ranges from QEMU ELF when possible to minimize total
-number of runs.
+Glib's g_mapped_file_new maps file with PROT_READ|PROT_WRITE and
+MAP_PRIVATE. This leads to premature physical memory allocation of dump
+file size on Linux hosts and may fail. On Linux, mapping the file with
+MAP_NORESERVE limits the allocation by available memory.
 
 Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-id: 20230915170153.10959-4-viktor@daynix.com
-[PMM: fixed format string for printing size_t values]
+Message-id: 20230915170153.10959-5-viktor@daynix.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- contrib/elf2dmp/main.c | 56 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 48 insertions(+), 8 deletions(-)
+ contrib/elf2dmp/qemu_elf.h |  2 ++
+ contrib/elf2dmp/qemu_elf.c | 68 +++++++++++++++++++++++++++++++-------
+ 2 files changed, 58 insertions(+), 12 deletions(-)
 
-diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index b7e39301641..5db163bdbe8 100644
---- a/contrib/elf2dmp/main.c
-+++ b/contrib/elf2dmp/main.c
-@@ -20,6 +20,7 @@
- #define PE_NAME     "ntoskrnl.exe"
+diff --git a/contrib/elf2dmp/qemu_elf.h b/contrib/elf2dmp/qemu_elf.h
+index b2f0d9cbc9b..afa75f10b2d 100644
+--- a/contrib/elf2dmp/qemu_elf.h
++++ b/contrib/elf2dmp/qemu_elf.h
+@@ -32,7 +32,9 @@ typedef struct QEMUCPUState {
+ int is_system(QEMUCPUState *s);
  
- #define INITIAL_MXCSR   0x1f80
-+#define MAX_NUMBER_OF_RUNS  42
- 
- typedef struct idt_desc {
-     uint16_t offset1;   /* offset bits 0..15 */
-@@ -234,6 +235,42 @@ static int fix_dtb(struct va_space *vs, QEMU_Elf *qe)
-     return 1;
+ typedef struct QEMU_Elf {
++#ifndef CONFIG_LINUX
+     GMappedFile *gmf;
++#endif
+     size_t size;
+     void *map;
+     QEMUCPUState **state;
+diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
+index ebda60dcb8a..de6ad744c6d 100644
+--- a/contrib/elf2dmp/qemu_elf.c
++++ b/contrib/elf2dmp/qemu_elf.c
+@@ -165,10 +165,40 @@ static bool check_ehdr(QEMU_Elf *qe)
+     return true;
  }
  
-+static void try_merge_runs(struct pa_space *ps,
-+        WinDumpPhyMemDesc64 *PhysicalMemoryBlock)
-+{
-+    unsigned int merge_cnt = 0, run_idx = 0;
+-int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
++static int QEMU_Elf_map(QEMU_Elf *qe, const char *filename)
+ {
++#ifdef CONFIG_LINUX
++    struct stat st;
++    int fd;
 +
-+    PhysicalMemoryBlock->NumberOfRuns = 0;
++    printf("Using Linux mmap\n");
 +
-+    for (size_t idx = 0; idx < ps->block_nr; idx++) {
-+        struct pa_block *blk = ps->block + idx;
-+        struct pa_block *next = blk + 1;
-+
-+        PhysicalMemoryBlock->NumberOfPages += blk->size / ELF2DMP_PAGE_SIZE;
-+
-+        if (idx + 1 != ps->block_nr && blk->paddr + blk->size == next->paddr) {
-+            printf("Block #%zu 0x%"PRIx64"+:0x%"PRIx64" and %u previous will be"
-+                    " merged\n", idx, blk->paddr, blk->size, merge_cnt);
-+            merge_cnt++;
-+        } else {
-+            struct pa_block *first_merged = blk - merge_cnt;
-+
-+            printf("Block #%zu 0x%"PRIx64"+:0x%"PRIx64" and %u previous will be"
-+                    " merged to 0x%"PRIx64"+:0x%"PRIx64" (run #%u)\n",
-+                    idx, blk->paddr, blk->size, merge_cnt, first_merged->paddr,
-+                    blk->paddr + blk->size - first_merged->paddr, run_idx);
-+            PhysicalMemoryBlock->Run[run_idx] = (WinDumpPhyMemRun64) {
-+                .BasePage = first_merged->paddr / ELF2DMP_PAGE_SIZE,
-+                .PageCount = (blk->paddr + blk->size - first_merged->paddr) /
-+                        ELF2DMP_PAGE_SIZE,
-+            };
-+            PhysicalMemoryBlock->NumberOfRuns++;
-+            run_idx++;
-+            merge_cnt = 0;
-+        }
++    fd = open(filename, O_RDONLY, 0);
++    if (fd == -1) {
++        eprintf("Failed to open ELF dump file \'%s\'\n", filename);
++        return 1;
 +    }
++
++    if (fstat(fd, &st)) {
++        eprintf("Failed to get size of ELF dump file\n");
++        close(fd);
++        return 1;
++    }
++    qe->size = st.st_size;
++
++    qe->map = mmap(NULL, qe->size, PROT_READ | PROT_WRITE,
++            MAP_PRIVATE | MAP_NORESERVE, fd, 0);
++    if (qe->map == MAP_FAILED) {
++        eprintf("Failed to map ELF file\n");
++        close(fd);
++        return 1;
++    }
++
++    close(fd);
++#else
+     GError *gerr = NULL;
+-    int err = 0;
++
++    printf("Using GLib mmap\n");
+ 
+     qe->gmf = g_mapped_file_new(filename, TRUE, &gerr);
+     if (gerr) {
+@@ -179,29 +209,43 @@ int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
+ 
+     qe->map = g_mapped_file_get_contents(qe->gmf);
+     qe->size = g_mapped_file_get_length(qe->gmf);
++#endif
++
++    return 0;
 +}
 +
- static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
-         struct va_space *vs, uint64_t KdDebuggerDataBlock,
-         KDDEBUGGER_DATA64 *kdbg, uint64_t KdVersionBlock, int nr_cpus)
-@@ -244,7 +281,6 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
-             KUSD_OFFSET_PRODUCT_TYPE);
-     DBGKD_GET_VERSION64 kvb;
-     WinDumpHeader64 h;
--    size_t i;
++static void QEMU_Elf_unmap(QEMU_Elf *qe)
++{
++#ifdef CONFIG_LINUX
++    munmap(qe->map, qe->size);
++#else
++    g_mapped_file_unref(qe->gmf);
++#endif
++}
++
++int QEMU_Elf_init(QEMU_Elf *qe, const char *filename)
++{
++    if (QEMU_Elf_map(qe, filename)) {
++        return 1;
++    }
  
-     QEMU_BUILD_BUG_ON(KUSD_OFFSET_SUITE_MASK >= ELF2DMP_PAGE_SIZE);
-     QEMU_BUILD_BUG_ON(KUSD_OFFSET_PRODUCT_TYPE >= ELF2DMP_PAGE_SIZE);
-@@ -282,13 +318,17 @@ static int fill_header(WinDumpHeader64 *hdr, struct pa_space *ps,
-         .RequiredDumpSpace = sizeof(h),
-     };
- 
--    for (i = 0; i < ps->block_nr; i++) {
--        h.PhysicalMemoryBlock.NumberOfPages +=
--                ps->block[i].size / ELF2DMP_PAGE_SIZE;
--        h.PhysicalMemoryBlock.Run[i] = (WinDumpPhyMemRun64) {
--            .BasePage = ps->block[i].paddr / ELF2DMP_PAGE_SIZE,
--            .PageCount = ps->block[i].size / ELF2DMP_PAGE_SIZE,
--        };
-+    if (h.PhysicalMemoryBlock.NumberOfRuns <= MAX_NUMBER_OF_RUNS) {
-+        for (size_t idx = 0; idx < ps->block_nr; idx++) {
-+            h.PhysicalMemoryBlock.NumberOfPages +=
-+                    ps->block[idx].size / ELF2DMP_PAGE_SIZE;
-+            h.PhysicalMemoryBlock.Run[idx] = (WinDumpPhyMemRun64) {
-+                .BasePage = ps->block[idx].paddr / ELF2DMP_PAGE_SIZE,
-+                .PageCount = ps->block[idx].size / ELF2DMP_PAGE_SIZE,
-+            };
-+        }
-+    } else {
-+        try_merge_runs(ps, &h.PhysicalMemoryBlock);
+     if (!check_ehdr(qe)) {
+         eprintf("Input file has the wrong format\n");
+-        err = 1;
+-        goto out_unmap;
++        QEMU_Elf_unmap(qe);
++        return 1;
      }
  
-     h.RequiredDumpSpace +=
+     if (init_states(qe)) {
+         eprintf("Failed to extract QEMU CPU states\n");
+-        err = 1;
+-        goto out_unmap;
++        QEMU_Elf_unmap(qe);
++        return 1;
+     }
+ 
+     return 0;
+-
+-out_unmap:
+-    g_mapped_file_unref(qe->gmf);
+-
+-    return err;
+ }
+ 
+ void QEMU_Elf_exit(QEMU_Elf *qe)
+ {
+     exit_states(qe);
+-    g_mapped_file_unref(qe->gmf);
++    QEMU_Elf_unmap(qe);
+ }
 -- 
 2.34.1
 
