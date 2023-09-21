@@ -2,91 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B3E7A926B
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E357A9284
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:12:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEao-0005pV-Jm; Thu, 21 Sep 2023 03:59:22 -0400
+	id 1qjElr-0003ZQ-WE; Thu, 21 Sep 2023 04:10:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEa3-0004aD-BC
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:58:36 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qjEll-0003X9-S5
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:10:43 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEa1-0002UB-NX
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:58:35 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-68fdd6011f2so487994b3a.3
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:58:33 -0700 (PDT)
+ id 1qjElk-0004cp-3W
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:10:41 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-690bfd4f3ebso522069b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 01:10:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695283112; x=1695887912;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695283838; x=1695888638;
  darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ h=content-transfer-encoding:in-reply-to:from:references:cc
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=3DrpI+ZHGjv2FRmLG9rSaZtdD/DlF4umIrUK5n93qbQ=;
- b=aSTxmYH0YsIHn+ickX7Jf5eLe76RjfpQuQtePhKabLFuX64L/dTpotUdtzi8ErfM9v
- D1G/8Hh3muZiCJ2yGczzQnNGo6O8zFmLUviUD62aRq6MeMTnA7qJRpF4myp5b8sHKe7I
- KGXjzglBs8d0X6f6BqZewNO6SbSgpxBjK7yVLOs4r1rZ/yiYqHqIIiUp+ozVCal0KY2G
- 57IErcBDBoC6ot/eaCfoza1OLDMX5zlZtMPcxVTFMX9mpXZTYbcGiHJAeBSlRazeRJTE
- SOFhAdvvusYqxmvpzTmdXZO2gFxrRD32sNh3h+HZB7ms7kh/nTToi9Gg/b9OIoJCMQVU
- t9Ig==
+ bh=8e65L93qkbtY1qk0JNfRwLRDJPlhtTbjlBgXKAt3sbo=;
+ b=jqppYsuXPUJ01u6nzo0wUJu/IZTz7d/wOvinuTpte1INmBks7WLIR3pa1ew594ciDO
+ 5BU9eoR4f3q+Cp/hYV6gfjwRBS+RncmRjMM/a5n/oP9WgN8tp8FlcPRD2HThNI8/yy68
+ EFlLq74K9zArrBDo5CrKtNSRw/xbsDw7++vLphGaQn35g0lBxN9D9EM4ldiDPMlQ1plp
+ mqAYWrM8A2zrfjmVxS3JLGB5gJl/HJwqJYrJdqdVY3sa1dz5PVp77gT18xONkeMsSWbI
+ VxAa/rTAnfQIUOlRXPK6DXv//cGIzK/tZU2ZSJp242nvdLumYaPprBmvW4Ow6iC7ClQt
+ n/pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695283112; x=1695887912;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1695283838; x=1695888638;
+ h=content-transfer-encoding:in-reply-to:from:references:cc
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3DrpI+ZHGjv2FRmLG9rSaZtdD/DlF4umIrUK5n93qbQ=;
- b=QCQ4uy8iFGMnC9FTVZV+3fIbqBO26dZchdmxZfCRgWTz7GEUZ4agDaeFJF4WNNXy6I
- 0vkSt0OngKz0WvYD++zOyNDBXfH4uODAA7lsz0ZZNO+P7/VO85CJXOtRojzaBPBRqzqT
- GIdPRX4WH12QV0/z5cFHot9g2+hp2TeXE7WR19xo3f3XqlGvkgFTJqUd1VQX2Tcx/QuF
- uXy2xyGo++Ensb32yTH5FyizxHOvayB8xIgcO5/xTaf1a0AiZjBqNv0ZYj+mZMmGu6/7
- eHFkIZhhbV7MBDSqijP5ACekYkfIn3TFfe9ciRIoSV1nU5c2BymN9BcM2C4LTQvcf0EV
- GPgw==
-X-Gm-Message-State: AOJu0Yx7sG2rJIvbz8mqtK6IuN3kKwh0065JLQwUGMrVxqX35FeYaPHp
- RKbWnSqt/5zz6VaD4VP4qd9DpQ==
-X-Google-Smtp-Source: AGHT+IE6XeFeECvjXbFKujkrYJ8jWg5fXQdecijPB3uoidUlINGvVMXVZWnV/LlR5MCJMlQlgVGNiQ==
-X-Received: by 2002:a05:6a00:4783:b0:690:cd33:a582 with SMTP id
- dh3-20020a056a00478300b00690cd33a582mr3537390pfb.7.1695283112574; 
- Thu, 21 Sep 2023 00:58:32 -0700 (PDT)
+ bh=8e65L93qkbtY1qk0JNfRwLRDJPlhtTbjlBgXKAt3sbo=;
+ b=gXEAdE0GvepaCJSrVa/IQdTbZaJfrpx7n075pkCT+MNItRyY6su/dpdZFn8lEANmjC
+ u5b/TKXQvOP0cnjLs0Jid0umKEihGwHTCVgrbFWZFAYP1JVFidezQxVUdO2RfkTDLbrg
+ VgviVc3TTRjkY8ubcbbWMgvIlqsQvzXbdTUIlOqChUpFLJdhmI9P5eUx/jLXDU8djm6F
+ FC097n6nvC9y0Y/7mZymkz/BOmdBYmmST9FSfa1R3jAIM5KROxSRnm+uf1BuOQtk7LPH
+ OfO37552Gya8LEDzMPiSXAzq/wQiSXrJFEbJ9jsDG/5i5PdBF8Sab61tnamX8eNFIxDE
+ 6UnQ==
+X-Gm-Message-State: AOJu0YyaAv9gtHFk2Gicv+ylD3ny+Y3k59Xop00DlKQZXGtqgQGe76OX
+ YsZnYLDKGAybI0HyyriVpGr1WA==
+X-Google-Smtp-Source: AGHT+IHN2yCtyFPVA3z4Zpmy2MOJheoDzpaXDiIKjlBZB80yQaAeoJt4AafaM7xoRzUZx0j/CgRzAw==
+X-Received: by 2002:a05:6a20:d417:b0:15d:3a20:d87d with SMTP id
+ il23-20020a056a20d41700b0015d3a20d87dmr996256pzb.61.1695283838545; 
+ Thu, 21 Sep 2023 01:10:38 -0700 (PDT)
 Received: from ?IPV6:2400:4050:a840:1e00:78d2:b862:10a7:d486?
  ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
  by smtp.gmail.com with ESMTPSA id
- fe18-20020a056a002f1200b0069102aa1918sm726832pfb.48.2023.09.21.00.58.29
+ z1-20020a170902708100b001bb0eebd90asm791244plk.245.2023.09.21.01.10.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 00:58:32 -0700 (PDT)
-Message-ID: <f3895076-5ccc-4542-8cc5-635a99cff182@daynix.com>
-Date: Thu, 21 Sep 2023 16:58:28 +0900
+ Thu, 21 Sep 2023 01:10:38 -0700 (PDT)
+Message-ID: <4dc445cd-20e5-4763-9415-5ee941f65720@daynix.com>
+Date: Thu, 21 Sep 2023 17:10:34 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/10] qga: Remove platform GUID definitions
+Subject: Re: [PATCH] cutils: Fix get_relocated_path on Windows
 Content-Language: en-US
-To: Konstantin Kostiuk <kkostiuk@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
- Yuval Shaia <yuval.shaia.ml@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- Stefan Weil <sw@weilnetz.de>, Yan Vugenfirer <yan@daynix.com>
-References: <20221110100629.61496-1-akihiko.odaki@daynix.com>
- <20221110100629.61496-2-akihiko.odaki@daynix.com>
- <CAPMcbCrGkXzeZex_veDYV8HSMMzH8d=zy1jkf21t4qFekGmDpg@mail.gmail.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Jason Wang
+ <jasowang@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
+ Programmingkid <programmingkidx@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>
+References: <20221031005908.3393-1-akihiko.odaki@daynix.com>
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAPMcbCrGkXzeZex_veDYV8HSMMzH8d=zy1jkf21t4qFekGmDpg@mail.gmail.com>
+In-Reply-To: <20221031005908.3393-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::436;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x436.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,51 +101,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2022/11/17 18:45, Konstantin Kostiuk wrote:
-> Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com 
-> <mailto:kkostiuk@redhat.com>>
+On 2022/10/31 9:59, Akihiko Odaki wrote:
+> get_relocated_path() did not have error handling for PathCchSkipRoot()
+> because a path given to get_relocated_path() was expected to be a valid
+> path containing a drive letter or UNC server/share path elements on
+> Windows, but sometimes it turned out otherwise.
 > 
-> Will merge this patch in QGA series
+> The paths passed to get_relocated_path() are defined by macros generated
+> by Meson. Meson in turn uses a prefix given by the configure script to
+> generate them. For Windows, the script passes /qemu as a prefix to
+> Meson by default.
 > 
-> On Thu, Nov 10, 2022 at 12:06 PM Akihiko Odaki <akihiko.odaki@daynix.com 
-> <mailto:akihiko.odaki@daynix.com>> wrote:
+> As documented in docs/about/build-platforms.rst, typically MSYS2 is used
+> for the build system, but it is also possible to use Linux as well. When
+> MSYS2 is used, its Bash variant recognizes /qemu as a MSYS2 path, and
+> converts it to a Windows path, adding the MSYS2 prefix including a drive
+> letter or UNC server/share path elements. Such a conversion does not
+> happen on a shell on Linux however, and /qemu will be passed as is in
+> the case.
 > 
->     GUID_DEVINTERFACE_DISK and GUID_DEVINTERFACE_STORAGEPORT are already
->     defined by MinGW-w64. They are not only unnecessary, but can lead to
->     duplicate definition errors at link time with some unknown condition.
+> Implement a proper error handling of PathCchSkipRoot() in
+> get_relocated_path() so that it can handle a path without a drive letter
+> or UNC server/share path elements.
 > 
->     Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com
->     <mailto:akihiko.odaki@daynix.com>>
->     ---
->       qga/commands-win32.c | 7 -------
->       1 file changed, 7 deletions(-)
+> Reported-by: Stefan Weil <sw@weilnetz.de>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>   util/cutils.c | 18 +++++++++++-------
+>   1 file changed, 11 insertions(+), 7 deletions(-)
 > 
->     diff --git a/qga/commands-win32.c b/qga/commands-win32.c
->     index ec9f55b453..dde5d401bb 100644
->     --- a/qga/commands-win32.c
->     +++ b/qga/commands-win32.c
->     @@ -506,13 +506,6 @@ static GuestDiskBusType
->     find_bus_type(STORAGE_BUS_TYPE bus)
->           return win2qemu[(int)bus];
->       }
-> 
->     -DEFINE_GUID(GUID_DEVINTERFACE_DISK,
->     -        0x53f56307L, 0xb6bf, 0x11d0, 0x94, 0xf2,
->     -        0x00, 0xa0, 0xc9, 0x1e, 0xfb, 0x8b);
->     -DEFINE_GUID(GUID_DEVINTERFACE_STORAGEPORT,
->     -        0x2accfe60L, 0xc130, 0x11d2, 0xb0, 0x82,
->     -        0x00, 0xa0, 0xc9, 0x1e, 0xfb, 0x8b);
->     -
->       static void get_pci_address_for_device(GuestPCIAddress *pci,
->                                              HDEVINFO dev_info)
->       {
->     -- 
->     2.38.1
-> 
+> diff --git a/util/cutils.c b/util/cutils.c
+> index cb43dda213..932c741d2b 100644
+> --- a/util/cutils.c
+> +++ b/util/cutils.c
+> @@ -1088,17 +1088,21 @@ char *get_relocated_path(const char *dir)
+>       g_string_append(result, "/qemu-bundle");
+>       if (access(result->str, R_OK) == 0) {
+>   #ifdef G_OS_WIN32
+> -        size_t size = mbsrtowcs(NULL, &dir, 0, &(mbstate_t){0}) + 1;
+> +        const char *src = dir;
+> +        size_t size = mbsrtowcs(NULL, &src, 0, &(mbstate_t){0}) + 1;
+>           PWSTR wdir = g_new(WCHAR, size);
+> -        mbsrtowcs(wdir, &dir, size, &(mbstate_t){0});
+> +        mbsrtowcs(wdir, &src, size, &(mbstate_t){0});
+>   
+>           PCWSTR wdir_skipped_root;
+> -        PathCchSkipRoot(wdir, &wdir_skipped_root);
+> +        if (PathCchSkipRoot(wdir, &wdir_skipped_root)) {
+> +            g_string_append(result, dir);
+> +        } else {
+> +            size = wcsrtombs(NULL, &wdir_skipped_root, 0, &(mbstate_t){0});
+> +            char *cursor = result->str + result->len;
+> +            g_string_set_size(result, result->len + size);
+> +            wcsrtombs(cursor, &wdir_skipped_root, size + 1, &(mbstate_t){0});
+> +        }
+>   
+> -        size = wcsrtombs(NULL, &wdir_skipped_root, 0, &(mbstate_t){0});
+> -        char *cursor = result->str + result->len;
+> -        g_string_set_size(result, result->len + size);
+> -        wcsrtombs(cursor, &wdir_skipped_root, size + 1, &(mbstate_t){0});
+>           g_free(wdir);
+>   #else
+>           g_string_append(result, dir);
 
-Hi Konstantin,
+Hi,
 
-This patch seems missed since then. Can you merge it?
+Can anyone have a look at this patch?
 
 Regards,
 Akihiko Odaki
