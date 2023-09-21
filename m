@@ -2,76 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD43A7A92AF
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F167A92B3
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 10:39:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjFBa-0004QR-Ub; Thu, 21 Sep 2023 04:37:22 -0400
+	id 1qjFDA-0002Vo-2L; Thu, 21 Sep 2023 04:39:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qjFBW-0004C1-Ht
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:37:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qjFBU-0001Yi-SC
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 04:37:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695285434;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EA0RJ+IxzSvsZ2thl58X6wMjKC0Rx0Zni7KaXfz8A7U=;
- b=gyRCkA6GuKWfPp32jPQwOlGJNhjaUn4kxzyvQRjbnV1lQudqtP5Xt6SGyZLCARgzPneNKT
- ymujrvAs6JRiIeBKjwDLGiAMJw0mFHbezH8B1O+gQyry3zOldzvTqKR+YughFzZ7pTJ2lp
- +9JK1PRbj10qFAB39N849JNtzjGJOr4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-678-OdemBF2yPLKauHOI-1M1KA-1; Thu, 21 Sep 2023 04:37:11 -0400
-X-MC-Unique: OdemBF2yPLKauHOI-1M1KA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 530DE3C0F66F;
- Thu, 21 Sep 2023 08:37:10 +0000 (UTC)
-Received: from redhat.com (dhcp-192-199.str.redhat.com [10.33.192.199])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2CE6551E3;
- Thu, 21 Sep 2023 08:37:07 +0000 (UTC)
-Date: Thu, 21 Sep 2023 10:37:06 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, eblake@redhat.com,
- vsementsov@yandex-team.ru, jsnow@redhat.com, idryomov@gmail.com,
- pl@kamp.de, sw@weilnetz.de, sstabellini@kernel.org,
- anthony.perard@citrix.com, paul@xen.org, pbonzini@redhat.com,
- marcandre.lureau@redhat.com, berrange@redhat.com, thuth@redhat.com,
- philmd@linaro.org, stefanha@redhat.com, fam@euphon.net,
- quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- kraxel@redhat.com, qemu-block@nongnu.org,
- xen-devel@lists.xenproject.org, alex.bennee@linaro.org,
- peter.maydell@linaro.org
-Subject: Re: [PATCH v2 4/7] block/dirty-bitmap: Clean up local variable
- shadowing
-Message-ID: <ZQwAsh/vBb1mlzMm@redhat.com>
-References: <20230920183149.1105333-1-armbru@redhat.com>
- <20230920183149.1105333-5-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qjFD4-0002R0-K7; Thu, 21 Sep 2023 04:38:55 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jeuk20.kim@gmail.com>)
+ id 1qjFD2-0001pc-DD; Thu, 21 Sep 2023 04:38:54 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-690bc3f8326so602930b3a.0; 
+ Thu, 21 Sep 2023 01:38:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695285529; x=1695890329; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=VIKkwGUok/SeWJukNlJTlrusZJS75Jrvs11LYCpMKWg=;
+ b=m6FURzhhBwxmJPX+GLxDNACYDnWiuAqxYv108P4FHZ82nvGIf3mux60CViDrCg9vLL
+ S975YoUJF6GcY69wY7WojvDbRhOqGnmGXUzjcqLFXmfF7JJ2bSKmAz2Q84K3b/6PrF+n
+ ko4Fnvc47DryjnCow7x04oPEvrLmfIvC0kCe4N6N5U8FKR5g4q7p+fkD1LuhLodEg0iB
+ gpcl/xsXdgCb3X0UdVvrvJzDN1WNbNMcpvhPAH8blwXuJiDE6+ccBkoWorIZqX9rZk+M
+ sdrFe1uPB233qBjmQlfL9PjIwl3O0AJT3rjVob2dM41put39Je89QrH6sKsYpAYdEZnH
+ z99w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695285529; x=1695890329;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VIKkwGUok/SeWJukNlJTlrusZJS75Jrvs11LYCpMKWg=;
+ b=IFbBqv6LGcLnFEeZ3yWtcysOIzYHhngPT1jnoBrUnlvxaaMVaqpRlCSUDrEtojcmoM
+ S4+dKQJIHT7T+Mmtpjvi3nhJqGJ3Z6H8L5eShTYQczfpjxAjepfp38XKrewz62iv3IE5
+ wg98QLZOOcmORu6I59paFTtYYtJCVQjiajfrRNX8OdNtVAhlCPI/U2GHgwzVf0GgKCNQ
+ 3907lyjY4VjSR7wQStN0fIbN/N8os7DbiEugIuRKYTyRAyD2wgCQ6Fqw0CGVejzYKAfG
+ /Wxp9UVMKtXgVGJcWe5Qrejxl2gwHunPDFe66cuYvmaS+/NqrDYEgY5kQyHXGAM6uN95
+ 3SSA==
+X-Gm-Message-State: AOJu0YyJEOBARNHdNUkFr1llRNAPMxIuX8WO+OWB5BEi7vXTFXEsTh+3
+ UY0KSEoe+BpFYWQcPbMPnn0=
+X-Google-Smtp-Source: AGHT+IE5StdHi+Szsxv6K0tLOpDIh1Sy0VISh9AoP7W9E5+csd6dmCYJg1bwjnxH3Lx6NLa8Zi5GVg==
+X-Received: by 2002:a05:6a20:1602:b0:14c:5dc3:f1fe with SMTP id
+ l2-20020a056a20160200b0014c5dc3f1femr5846192pzj.41.1695285528652; 
+ Thu, 21 Sep 2023 01:38:48 -0700 (PDT)
+Received: from [192.168.0.19] ([218.147.112.168])
+ by smtp.gmail.com with ESMTPSA id
+ l19-20020a17090aec1300b0027475ac5bcasm2522073pjy.30.2023.09.21.01.38.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 Sep 2023 01:38:48 -0700 (PDT)
+Message-ID: <9a8f1e6e-edcf-416d-9508-8af666db4263@gmail.com>
+Date: Thu, 21 Sep 2023 17:38:43 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230920183149.1105333-5-armbru@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 4/5] hw/ufs: Support for UFS logical unit
+Content-Language: ko
+To: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi
+ <stefanha@redhat.com>, qemu-devel@nongnu.org
+Cc: Jeuk Kim <jeuk20.kim@samsung.com>, Hanna Reitz <hreitz@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+References: <20230907181628.1594401-1-stefanha@redhat.com>
+ <20230907181628.1594401-5-stefanha@redhat.com>
+ <c4dc2292-4690-f16f-4b70-d6f759c16633@redhat.com>
+ <160581dc-bdbc-03e8-64a5-1adb818a15b2@gmail.com>
+ <86ebcc33-491c-8820-2ca0-51d46b0b7375@redhat.com>
+From: Jeuk Kim <jeuk20.kim@gmail.com>
+In-Reply-To: <86ebcc33-491c-8820-2ca0-51d46b0b7375@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=jeuk20.kim@gmail.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,15 +103,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.09.2023 um 20:31 hat Markus Armbruster geschrieben:
-> Local variables shadowing other local variables or parameters make the
-> code needlessly hard to understand.  Tracked down with -Wshadow=local.
-> Clean up: rename both the pair of parameters and the pair of local
-> variables.  While there, move the local variables to function scope.
-> 
-> Suggested-by: Kevin Wolf <kwolf@redhat.com>
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+On 2023-09-15 4:59 PM, Paolo Bonzini wrote:
+> On 9/15/23 00:19, Jeuk Kim wrote:
+>> First, ufs-lu has a feature called "unit descriptor". This feature 
+>> shows the status of the ufs-lu
+>>
+>> and only works with UFS-specific "query request" commands, not SCSI 
+>> commands.
+>
+> This looks like something that can be implemented in the UFS subsystem.
+>
+>> UFS also has something called a well-known lu. Unlike typical SCSI 
+>> devices, where each lu is independent,
+>> UFS can control other lu's through the well-known lu.
+>
+> This can also be implemented in UfsBus.
+>
+>> Finally, UFS-LU will have features that SCSI-HD does not have, such 
+>> as the zone block command.
+>
+> These should be implemented in scsi-hd as well.
+>
+>> In addition to this, I wanted some scsi commands to behave 
+>> differently from scsi-hd, for example,
+>> the Inquiry command should read "QEMU UFS" instead of "QEMU HARDDISK",
+>> and the mode_sense_page command should have a different result.
+>
+> Some of these don't have much justification, and others (such as the 
+> control page) could be done in scsi-hd as well.
+>
+> We should look into cleaning this up and making ufs-lu share a lot 
+> more code with scsi-hd; possibly even supporting -device scsi-hd with 
+> UFS devices.  I am not going to ask you for a revert, but if this is 
+> not done before 8.2 is out, I will ask you to disable it by default in 
+> hw/ufs/Kconfig.
+>
+> In the future, please Cc the SCSI maintainers for UFS patches.
+>
+> Paolo
+>
+Dear Paolo
+
+Hi. I've been looking into how ufs-lu can share code with scsi-hd.
+
+I have verified that ufs-lu can use scsi-hd's code, and I would like to modify it to do so.
+
+I've validated two possible fixes.
+I'd like to hear your thoughts.
+
+Option1.
+As you mentioned, using ufsbus, which inherits from scsibus, removes the ufs-lu device type and use scsi-hd. (like -device ufs,id=ufs0 -device scsi-hd,bus=ufs0)
+I've verified that this method is implementable, except for one problem.
+Because we are using the scsi-hd type instead of the ufs-lu type, the ufs has to manage all the ufs-lu specific data (such as the unit descriptor).
+However, since there is no ufs_lu_realize() function, we need a way to notify the ufs when a new scsi-hd device is added.
+Would there be a way to let the ufs know that a new scsi-hd has been added at scsi_hd_realize() time?
+
+Option 2.
+Use qdev_new() & qdev_realize() to make ufs-lu have a virtual scsi bus and scsi-hd.
+The ufs-lu can pass through SCSI commands to the virtual scsi-hd.
+This is similar to the method used by the device "usb-storage".
+
+With this method, I can keep the ufs-lu device type (ufs_lu_realize() makes it convenient to manage ufs-lu related data) and avoid duplicating code with scsi-hd.
+So I prefer this approach, but the annotation for "usb-storage" is marked with a "Hack alert", so I'm not sure if this is the right way.
+The code can be found in usb_msd_storage_realize() (hw/usb/dev-storage-classic.c:51).
+
+I am wondering if you could give me some advice on this and your preferred direction for fixing it.
+
+Thank you so much.
+
+Jeuk
 
 
