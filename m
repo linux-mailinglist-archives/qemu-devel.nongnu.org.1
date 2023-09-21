@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DE97A94D4
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C6E7A94D6
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:33:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjJmt-0000UM-L4; Thu, 21 Sep 2023 09:32:12 -0400
+	id 1qjJnk-00012F-CV; Thu, 21 Sep 2023 09:33:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjJmg-0000SQ-DL
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:32:02 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjJnZ-0000x3-QS
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:32:54 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjJma-0007jT-A1
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:31:57 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9ada609bb62so111735166b.2
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 06:31:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjJnY-0007r1-4u
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 09:32:53 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b9d07a8d84so16275191fa.3
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 06:32:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695303110; x=1695907910; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695303170; x=1695907970; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=wzWDotbU0ZwuVuav5VK4bZxyKfn7MSCaxzI1K7F4hKQ=;
- b=mfwSoRrBDKmblC5NCY/OiT51E0GqeKtmQA1XQxO0PYB1Rf3ZtFb5Uw0Hpv5ImXVnaj
- 0ern+C5hshGvhwjn7st080FOfl/xx86mlk742VP5JBFlT0Z09OwUhxU6zIuEsAKy3JEC
- wjzs9cm5hg7Tgat7Vbj7/Myr+UAHRlApO49rKgbgfNnTwCSlq16G+leHeck8HDXmtAMy
- 0IhgyV9OTMqbYmPGQXc1946jZ7aSlpZO6KxBX/evdhmpxioA+yC44COKi0+tRpjPuQAV
- DtPNI5Y4kSEO+HSlx52yPeFe3XX1VIjeK/P7s3KLSHXYa2IkFj8T9K5RGn0n0cZKx+fd
- UFOw==
+ bh=jtT5GaZOD7AcfkRvvyaceyXG4ZZEy/F3mni/84VA1Q0=;
+ b=VBDn98Lwk6aCmwfSc6NQdO9wEXsI1zF9gD8BREvtIUoCCU6/bxaRYJo7dJaNhvyc5d
+ A20kl8N7BA/heJNh1zisuRakgO4Vg7ZiON1efuDQVuD4aCsdL0D94uIQW1kBAyzs/CNi
+ IdP71J4HeYvwYvVyMLIInIFO2yPet2Z6ajXJfgKvnlEiaM4jN953r+GTb+BaZ+eZKkM1
+ x3h2dYSNOhhuPm+iEaGrVSNMnWlK8AiTWgkpZIOiZdIAku1Wc9Jm5bMD+9fXoTmLVyJp
+ vM4MSdA75/hs/ZkNOCk8GOHsext8k1tDOR7nF2QyCImZt2I0GbS2Ou8OJxIiJwFIQA3u
+ /IdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695303110; x=1695907910;
+ d=1e100.net; s=20230601; t=1695303170; x=1695907970;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wzWDotbU0ZwuVuav5VK4bZxyKfn7MSCaxzI1K7F4hKQ=;
- b=U4ROB0Kqe/KxGq/rMyk/aiOpiO5IH5T4PYrxlPRmfCiqO+icYOuIhwidYBlMoYbrF5
- KLcKUcK0qCaTQaa3pwUqNZIqFA+pBBRf07rqwvrWjJ5spPed3aITyk9cvCyeRQAeLdWs
- 0NCVRzB50nMp9gVbH3g1NnpQ0J+oUuYT5ZOYGFuQrztAsMPk4QTRX5qpYmoTpIxaSEdb
- y6pkKWA1SBwqWj5czCPU0TL2IjW+LktUGVw5a4BzPtG48RiUSVur2pxsRKro6ZusdmDc
- Njtolisl5qQiECctG7DymUg2prAyWD3SXx3IlKFzWjfv2hIvVzE2qucMU9Wcewe9SZnW
- fcVA==
-X-Gm-Message-State: AOJu0Yzuw2NRIA28/v3ExaHYUYbd10vfkZnFOohCZJ3n2KfW9mClom51
- lWI7vOONohGE5hCmQGMQ/fDJBdE0iBJ8Nyxc6rI=
-X-Google-Smtp-Source: AGHT+IE59XyzsroEFShjZk5XYol1xyI0nUbp+5H7euqu7a89yESgROwDSCF9jb2x4aAPMQgS9SlAVg==
-X-Received: by 2002:a17:907:77d0:b0:9ae:690d:4284 with SMTP id
- kz16-20020a17090777d000b009ae690d4284mr719240ejc.75.1695291783607; 
- Thu, 21 Sep 2023 03:23:03 -0700 (PDT)
+ bh=jtT5GaZOD7AcfkRvvyaceyXG4ZZEy/F3mni/84VA1Q0=;
+ b=YHwM7oe9H9J6GL9IMO9QnGhhgrbna83u03aa/ZT5uPDtMtDDkSTtYJo+RyYjHLL5us
+ g4RNHMFWOZC3azQDN+1PySSlNtUN+GO9XuqvMixfSU1kINJ2oksUIpjxFV8H2gfBOnei
+ LrOXb7wPJl5LcVevchDs7peC0MQb7SH8CuP1f5hd2PN1rV3Dv9P0Z58D32pdFkHBJT5i
+ jNUiMDBzB8h0hV5QfbKcrXKhewsQKlYmER53n+CopOrguEAku6tE4fIj/hgrP3wEmCLn
+ hhCvptXBzBA8ovMc4UScpwZlVHGddXylDdoJjmoaTr9HX6VxAMBTlSkA07iJoWQuCtSP
+ ZHvA==
+X-Gm-Message-State: AOJu0Ywo/8tEC7Urx2B1tQoyt3OPFyU/dn+JH2TcMxNKxSfClEO5gMAG
+ cjKI4mI3Zy9XKqYrtgYaCEVQZVCVndI4DfQnRxo=
+X-Google-Smtp-Source: AGHT+IFP/E0ZsOgF4lPhbvNM4rwgezP/TVi5N3/xySG+wOsYV3Qv8lanExqQDGRf+0Rxz5csqWRn0w==
+X-Received: by 2002:a17:906:31c1:b0:9ae:65a5:b6fa with SMTP id
+ f1-20020a17090631c100b009ae65a5b6famr943615ejf.32.1695291844364; 
+ Thu, 21 Sep 2023 03:24:04 -0700 (PDT)
 Received: from [172.20.41.70] (static-212-193-78-212.thenetworkfactory.nl.
  [212.78.193.212]) by smtp.gmail.com with ESMTPSA id
- i18-20020a17090639d200b00982a352f078sm813480eje.124.2023.09.21.03.23.03
+ x18-20020a170906b09200b0099c53c44083sm838179ejy.79.2023.09.21.03.24.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Sep 2023 03:23:03 -0700 (PDT)
-Message-ID: <8d1b94a6-9301-a317-6a13-2901310429fd@linaro.org>
-Date: Thu, 21 Sep 2023 12:23:00 +0200
+ Thu, 21 Sep 2023 03:24:04 -0700 (PDT)
+Message-ID: <7b134840-7829-e85a-defa-d7e859ae5fe1@linaro.org>
+Date: Thu, 21 Sep 2023 12:24:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: target/sparc: What is CPU_FEATURE_FLOAT128 for?
+Subject: Re: [PATCH v2] plugins/hotblocks: Fix potential deadlock in
+ plugin_exit() function
 Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, Laurent Vivier <laurent@vivier.eu>
-References: <59e5fc47-cd15-f7b5-a0f7-c0620de33576@linaro.org>
- <b400a0fc-cfef-66fb-824d-c245de82a33c@linaro.org>
+To: Cong Liu <liucong2@kylinos.cn>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Cc: qemu-devel@nongnu.org
+References: <8c11bc64-e22f-6ad9-af3e-e7a690536539@linaro.org>
+ <20230921092311.15578-1-liucong2@kylinos.cn>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <b400a0fc-cfef-66fb-824d-c245de82a33c@linaro.org>
+In-Reply-To: <20230921092311.15578-1-liucong2@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,21 +96,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/9/23 11:32, Richard Henderson wrote:
-> On 9/18/23 14:31, Philippe Mathieu-Daudé wrote:
->> Hi Mark, Artyom,
->>
->> I'm looking at the CPU_FEATURE_FLOAT128 definition introduced
->> in commit 64a88d5d3a ("CPU feature selection support"). Any
->> clue how it was supposed to be used?
+On 21/9/23 11:23, Cong Liu wrote:
+> This patch fixes a potential deadlock in the plugin_exit() function of QEMU.
+> The original code does not release the lock mutex if it is NULL. This patch
+> adds a check for it being NULL and releases the mutex in that case.
 > 
-> This should have a comment like
-> 
-> /*
->   * Qemu is emulating the linux kernel, which will
->   * trap and emulate float128 instructions.
->   */
+> Signed-off-by: Cong Liu <liucong2@kylinos.cn>
+> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Thank you. I'll send a patch later to clarify.
+Not really suggested, just reviewed ;)
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> ---
+>   contrib/plugins/hotblocks.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
+> index 6b74d25fead6..b99b93ad8dc7 100644
+> --- a/contrib/plugins/hotblocks.c
+> +++ b/contrib/plugins/hotblocks.c
+> @@ -69,9 +69,9 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+>           }
+>   
+>           g_list_free(it);
+> -        g_mutex_unlock(&lock);
+>       }
+>   
+> +    g_mutex_unlock(&lock);
+>       qemu_plugin_outs(report->str);
+>   }
+>   
 
 
