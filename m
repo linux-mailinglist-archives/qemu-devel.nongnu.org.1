@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B016F7A924E
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F385D7A9259
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 09:56:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjEWP-0004V1-DF; Thu, 21 Sep 2023 03:54:49 -0400
+	id 1qjEWU-0004Vz-9L; Thu, 21 Sep 2023 03:54:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEWO-0004Ut-Al
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:48 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1qjEWR-0004Vg-Ky
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:51 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjEWL-0001MR-JH
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:48 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1c5dd017b30so179655ad.0
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:54:45 -0700 (PDT)
+ id 1qjEWQ-0001Ni-1K
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 03:54:51 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1c39f2b4f5aso5045935ad.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 00:54:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695282884; x=1695887684;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695282888; x=1695887688;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uI/Kp4K+XtqHxtYAeT48aX1q/ar4g9aCgFPx0CsLxbY=;
- b=cW9KHB8SyXNfc5DwuMgqjEaCxWtM8lB6Fw2CBy6f0d4EkXVA7UxDrNY44H2xflonKi
- QLbnEnPqxVV1cdejdTo+IV3E1bxcbcWqsw3cYu8KJq+egoqpTrdEoA8TBaZz0G14JuwW
- Idw4duARI2qnbhZGSHZ46xYPqrzXVA2I3PQn6G+I99bamMGavlaATCbD3/2coweRCLGa
- Io4YjpZyu9leTA6cEJEh++N4jPuKZ12FaOGPQYL/9VKtiaDTgCRKBt8xtFS3QdXZSMA6
- BbRmTYVfd785B/Op1QljtcLnHKJWX9DWkkGuLuafG4rxikJQc4uMNbmb8c3Gg6v9NYdQ
- 1S1g==
+ bh=6ELYyiOadw0MQ3+N22lCN+444YhBa1c0nKVoGiIJnpU=;
+ b=tJy3f2f+HwgSv3pYpZh/716lNAcGevCYI1kj7IcVIVnmPNFBwlSYBgF4eOpwR6EhDM
+ 6zgX/d89IFrkAf1mLQbVehbfJ7bBOa1IHAmx4intNnSukEz2sLkPiB4YlwFxmK04ryik
+ 20kisWmWXbr17EfpSwupjcFr73s418vr8BlZ0Hh2z0YqRMHqfZB3ON8Tfpay6SXtEeaZ
+ uT9C1bDhI4Ve3mvi2hR5v6hvWrkc3feghSe8/EGQEJz5U3VbbwcO4F4hoUWtYRtHPyBg
+ RVxe7B7F+3FE5iThgD6AHMamKJ9YyylnA8Wr1sXLwFtNKZRMA/CLGw1qUcNnurxacedj
+ V1Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695282884; x=1695887684;
+ d=1e100.net; s=20230601; t=1695282888; x=1695887688;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uI/Kp4K+XtqHxtYAeT48aX1q/ar4g9aCgFPx0CsLxbY=;
- b=V5k8a9RGoSwDU9YhI76SxmIYA38+DEIv0fAC1+8Ml66reT9apIu0PsqWULQUbNck9D
- 48VKuqYl8UgfOhC9pVlGdlzWlWqOAJpFB6hHn8x2l0/UHOZ7YDb/0WPLqpC53JMc+C1V
- auxoCy257EmgY2P8SveUttQ5LxzGB/lj8Y9s2MRAgUmUCwV3PUFsPYNRZr/uakGKjgio
- DdlaxnvINBqphKtILfXzdbgvlFsWk5JENdr3wNbamQKz66es18NEPpzv/fbT5ABaTVbE
- j0gpia8oZGAbdgqcurs7SDgDjFncJTw1fq3jf3h0QPpePfO4FyK0i2LOAIRkC6R8PJTU
- f+uA==
-X-Gm-Message-State: AOJu0YwzgmTHY4HMxvDczre9xemw9aL8nvhLjma1sYmHr55XaZG7Fmb6
- FNoc+Rqbp5L9n/YXiNtmFBe2iGyymfLkx6QaBE4=
-X-Google-Smtp-Source: AGHT+IFGVzmlIcIC0WnjXKBiPerXJcLp7Gw8+wBpSNQ9MyxqF6awYw7mKVrGAe8wGqEtAPk+tIpgSw==
-X-Received: by 2002:a17:902:ecc5:b0:1c5:9d00:be84 with SMTP id
- a5-20020a170902ecc500b001c59d00be84mr9678037plh.33.1695282884183; 
- Thu, 21 Sep 2023 00:54:44 -0700 (PDT)
+ bh=6ELYyiOadw0MQ3+N22lCN+444YhBa1c0nKVoGiIJnpU=;
+ b=B0mLi4jN7UrxgvsvMmpt/H1X89NB6aZ+MTqIXAP38ez8KLD0Mrf6P8iITMtDNnsVSq
+ KkcdSkLKVxVzDvSZkfTH6uWqrsLI73X3ZF3KZdvyE+0M869g+hKV8FoS6+weFtwcjfzu
+ nim/C9mdegZrti8ON/V/5hoshD9OL2wk6XOlf+CfXGLGsuLqo3Ho2vzlqpJMoM27qoqE
+ wn+MG34jjWK0EoensHFxv4tVI+NkXxVHBUjnCPS6Qk+OHTbm8bQaclLip8ZSBsGSkpkR
+ LTfRD0M9/zMn6G4tZ44hW9+1sIKcjBtGiBhHwEcxgkdstmMFwXc085DjH3BXJ61MuM2o
+ 5ifA==
+X-Gm-Message-State: AOJu0YzVqjdjZRlhcUjl0Xm6liMyo4T8K6wUMlAI/Tm3TPOCmTa7BT/C
+ WA5gr23oYEvXwztcSp5I5PW8J6Z2vUw/UNWlXpY=
+X-Google-Smtp-Source: AGHT+IGUTIlFvWmMSLFsSDmuu01IkvmY+u8LNnGxK5z2/qiip8tHgDkKnj5nChA9qxXbsLo34s6GxQ==
+X-Received: by 2002:a17:902:c40a:b0:1c5:ad14:9095 with SMTP id
+ k10-20020a170902c40a00b001c5ad149095mr5394853plk.64.1695282888558; 
+ Thu, 21 Sep 2023 00:54:48 -0700 (PDT)
 Received: from fedora.flets-east.jp ([2400:4050:a840:1e00:d54:e521:8bac:7bed])
  by smtp.gmail.com with ESMTPSA id
- p22-20020a170902a41600b001ae0152d280sm761928plq.193.2023.09.21.00.54.38
+ p22-20020a170902a41600b001ae0152d280sm761928plq.193.2023.09.21.00.54.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Sep 2023 00:54:43 -0700 (PDT)
+ Thu, 21 Sep 2023 00:54:48 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 To: 
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
@@ -69,16 +69,16 @@ Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, virtio-fs@redhat.com,
  Stefan Hajnoczi <stefanha@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  Stefan Weil <sw@weilnetz.de>, Yan Vugenfirer <yan@daynix.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v3 1/8] util: Introduce qemu_get_runtime_dir()
-Date: Thu, 21 Sep 2023 16:54:15 +0900
-Message-ID: <20230921075425.16738-2-akihiko.odaki@daynix.com>
+Subject: [PATCH v3 2/8] ivshmem-server: Use qemu_get_runtime_dir()
+Date: Thu, 21 Sep 2023 16:54:16 +0900
+Message-ID: <20230921075425.16738-3-akihiko.odaki@daynix.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230921075425.16738-1-akihiko.odaki@daynix.com>
 References: <20230921075425.16738-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -100,135 +100,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_get_runtime_dir() returns a dynamically allocated directory path
-that is appropriate for storing runtime files. It corresponds to "run"
-directory in Unix.
-
-With a tree-wide search, it was found that there are several cases
-where such a functionality is implemented so let's have one as a common
-utlity function.
-
-A notable feature of qemu_get_runtime_dir() is that it uses
-$XDG_RUNTIME_DIR if available. While the function is often called by
-executables which requires root privileges, it is still possible that
-they are called from a user without privilege to write the system
-runtime directory. In fact, I decided to write this patch when I ran
-virtiofsd in a Linux namespace created by a normal user and realized
-it tries to write the system runtime directory, not writable in this
-case. $XDG_RUNTIME_DIR should provide a writable directory in such
-cases.
-
-This function does not use qemu_get_local_state_dir() or its logic
-for Windows. Actually the implementation of qemu_get_local_state_dir()
-for Windows seems not right as it calls g_get_system_data_dirs(),
-which refers to $XDG_DATA_DIRS. In Unix terminology, it is basically
-"/usr/share", not "/var", which qemu_get_local_state_dir() is intended
-to provide. Instead, this function try to use the following in order:
-- $XDG_RUNTIME_DIR
-- LocalAppData folder
-- get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run")
-
-This function does not use g_get_user_runtime_dir() either as it
-falls back to g_get_user_cache_dir() when $XDG_DATA_DIRS is not
-available. In the case, we rather use:
-get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run")
+qemu_get_runtime_dir() is used to construct the default PID file path.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/qemu/osdep.h | 12 ++++++++++++
- util/oslib-posix.c   | 11 +++++++++++
- util/oslib-win32.c   | 26 ++++++++++++++++++++++++++
- 3 files changed, 49 insertions(+)
+ contrib/ivshmem-server/main.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 2897720fac..bb857c910f 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -636,6 +636,18 @@ void qemu_set_cloexec(int fd);
-  */
- char *qemu_get_local_state_dir(void);
+diff --git a/contrib/ivshmem-server/main.c b/contrib/ivshmem-server/main.c
+index 5901f17707..313124dd45 100644
+--- a/contrib/ivshmem-server/main.c
++++ b/contrib/ivshmem-server/main.c
+@@ -14,7 +14,6 @@
  
-+/**
-+ * qemu_get_runtime_dir:
-+ *
-+ * Return a dynamically allocated directory path that is appropriate for storing
-+ * runtime files. It corresponds to "run" directory in Unix, and uses
-+ * $XDG_RUNTIME_DIR if available.
-+ *
-+ * The caller is responsible for releasing the value returned with g_free()
-+ * after use.
-+ */
-+char *qemu_get_runtime_dir(void);
-+
- /**
-  * qemu_getauxval:
-  * @type: the auxiliary vector key to lookup
-diff --git a/util/oslib-posix.c b/util/oslib-posix.c
-index e86fd64e09..0c82717be5 100644
---- a/util/oslib-posix.c
-+++ b/util/oslib-posix.c
-@@ -273,6 +273,17 @@ qemu_get_local_state_dir(void)
-     return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR);
- }
+ #define IVSHMEM_SERVER_DEFAULT_VERBOSE        0
+ #define IVSHMEM_SERVER_DEFAULT_FOREGROUND     0
+-#define IVSHMEM_SERVER_DEFAULT_PID_FILE       "/var/run/ivshmem-server.pid"
+ #define IVSHMEM_SERVER_DEFAULT_UNIX_SOCK_PATH "/tmp/ivshmem_socket"
+ #define IVSHMEM_SERVER_DEFAULT_SHM_PATH       "ivshmem"
+ #define IVSHMEM_SERVER_DEFAULT_SHM_SIZE       (4 * 1024 * 1024)
+@@ -35,15 +34,23 @@ typedef struct IvshmemServerArgs {
+     unsigned n_vectors;
+ } IvshmemServerArgs;
  
-+char *
-+qemu_get_runtime_dir(void)
++static char *ivshmem_server_get_default_pid_file(void)
 +{
-+    char *env = getenv("XDG_RUNTIME_DIR");
-+    if (env) {
-+        return g_strdup(env);
-+    }
-+
-+    return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run");
++    g_autofree char *run = qemu_get_runtime_dir();
++    return g_build_filename(run, "ivshmem-server.pid", NULL);
 +}
 +
- void qemu_set_tty_echo(int fd, bool echo)
+ static void
+ ivshmem_server_usage(const char *progname)
  {
-     struct termios tty;
-diff --git a/util/oslib-win32.c b/util/oslib-win32.c
-index 19a0ea7fbe..38df7b57b5 100644
---- a/util/oslib-win32.c
-+++ b/util/oslib-win32.c
-@@ -27,6 +27,8 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include <shlobj.h>
-+#include <wchar.h>
- #include <windows.h>
- #include "qapi/error.h"
- #include "qemu/main-loop.h"
-@@ -237,6 +239,30 @@ qemu_get_local_state_dir(void)
-     return g_strdup(data_dirs[0]);
++    g_autofree char *pid_file = ivshmem_server_get_default_pid_file();
++
+     printf("Usage: %s [OPTION]...\n"
+            "  -h: show this help\n"
+            "  -v: verbose mode\n"
+            "  -F: foreground mode (default is to daemonize)\n"
+            "  -p <pid-file>: path to the PID file (used in daemon mode only)\n"
+-           "     default " IVSHMEM_SERVER_DEFAULT_PID_FILE "\n"
++           "     default %s\n"
+            "  -S <unix-socket-path>: path to the unix socket to listen to\n"
+            "     default " IVSHMEM_SERVER_DEFAULT_UNIX_SOCK_PATH "\n"
+            "  -M <shm-name>: POSIX shared memory object to use\n"
+@@ -54,7 +61,7 @@ ivshmem_server_usage(const char *progname)
+            "     default %u\n"
+            "  -n <nvectors>: number of vectors\n"
+            "     default %u\n",
+-           progname, IVSHMEM_SERVER_DEFAULT_SHM_SIZE,
++           progname, pid_file, IVSHMEM_SERVER_DEFAULT_SHM_SIZE,
+            IVSHMEM_SERVER_DEFAULT_N_VECTORS);
  }
  
-+char *
-+qemu_get_runtime_dir(void)
-+{
-+    size_t size = GetEnvironmentVariableA("XDG_RUNTIME_DIR", NULL, 0);
-+    if (size) {
-+        char *env = g_malloc(size);
-+        GetEnvironmentVariableA("XDG_RUNTIME_DIR", env, size);
-+        return env;
-+    }
-+
-+    PWSTR wpath;
-+    const wchar_t *cwpath;
-+    if (!SHGetKnownFolderPath(&FOLDERID_LocalAppData, KF_FLAG_DEFAULT, NULL, &wpath)) {
-+        cwpath = wpath;
-+        size = wcsrtombs(NULL, &cwpath, 0, &(mbstate_t){0}) + 1;
-+        char *path = g_malloc(size);
-+        wcsrtombs(path, &cwpath, size, &(mbstate_t){0});
-+        CoTaskMemFree(wpath);
-+        return path;
-+    }
-+
-+    return get_relocated_path(CONFIG_QEMU_LOCALSTATEDIR "/run");
-+}
-+
- void qemu_set_tty_echo(int fd, bool echo)
+@@ -189,10 +196,10 @@ main(int argc, char *argv[])
  {
-     HANDLE handle = (HANDLE)_get_osfhandle(fd);
+     IvshmemServer server;
+     struct sigaction sa, sa_quit;
++    g_autofree char *default_pid_file = NULL;
+     IvshmemServerArgs args = {
+         .verbose = IVSHMEM_SERVER_DEFAULT_VERBOSE,
+         .foreground = IVSHMEM_SERVER_DEFAULT_FOREGROUND,
+-        .pid_file = IVSHMEM_SERVER_DEFAULT_PID_FILE,
+         .unix_socket_path = IVSHMEM_SERVER_DEFAULT_UNIX_SOCK_PATH,
+         .shm_path = IVSHMEM_SERVER_DEFAULT_SHM_PATH,
+         .use_shm_open = true,
+@@ -207,6 +214,11 @@ main(int argc, char *argv[])
+      */
+     printf("*** Example code, do not use in production ***\n");
+ 
++    qemu_init_exec_dir(argv[0]);
++
++    default_pid_file = ivshmem_server_get_default_pid_file();
++    args.pid_file = default_pid_file;
++
+     /* parse arguments, will exit on error */
+     ivshmem_server_parse_args(&args, argc, argv);
+ 
 -- 
 2.41.0
 
