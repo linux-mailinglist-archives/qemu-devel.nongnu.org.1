@@ -2,83 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4E37A9478
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:02:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9967A9479
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Sep 2023 15:03:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjJJ8-0001WJ-0l; Thu, 21 Sep 2023 09:01:28 -0400
+	id 1qjJJV-0002Oy-Hq; Thu, 21 Sep 2023 09:01:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjJCG-00024I-Fi
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 08:54:28 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qjJBg-0000JS-SR
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 08:54:14 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c364fb8a4cso7916325ad.1
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 05:53:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1695300823; x=1695905623;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=M73QSY1PwikCSPSN92JeTu5YMo9ZU9R2zii9F7rQopk=;
- b=WO9z4DQYWrqt53KA9DQoG8S67AhxSHjuBlUzLA5fkCfMguyoBrcyHuSHpKmQWHtWh2
- P8CGgLY3Hsh/075K4uaWsjCAcpX2IX5AYplHPYMOBvEm98wUpGhRhp7BmY/cHeBqk3+o
- rzRSMO5+QOM4jji1xEB3BXnyrNdo0h6RAbhy3U1k0mhdxsSOqW7cRfkkypjQhozljKjg
- DVjNwAsSDFr5uz+pyzWAqSLKBg2AccoeYM3uW90Ixmz4CtCQ5jhI1pt1Yo5h2K5hj5fz
- he66pBlURVD6ki4wpVrYL7dTE6FqNR9SPNmvV8KouyMVpVPLpgMuSFoBixTC73h1zKfi
- Raow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695300823; x=1695905623;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=M73QSY1PwikCSPSN92JeTu5YMo9ZU9R2zii9F7rQopk=;
- b=C7ExoJsHAAInf0+x/zq89B62ymX6eQb/dbVHL3GzU6eaXceX7E8+XD6SoQmsJhx5jv
- uKMca+l8GS2I1AbweD4rfp/+kXAfITEnoCkeUS/EDzJ+jIjbh5ID1bbYQdR4xNTGzjcp
- zN+yp29u5/HrHL4CDKgaOXq7e+KjCrgjYqcwgBxSyJbMfm+4PI2P2dfxUcwsQi0HAzfJ
- y6wL/URI19dXYfANaCtGr74TX1emJHSX1STqQKvW71ya4RK30KJL5tN07KuqMr9IzFRK
- lkfQShXqoupOxppnTQdrOsLRxiqzS9szNS5EAjefeQOc/5426cHgBG/M5IyjAXQ5nd1S
- nj4A==
-X-Gm-Message-State: AOJu0YwQEzFS/Vj2G+/u9ygESVtdSTzlG2oVrwLGHRaQ1nVfVfNydnvC
- G1TZDBTQoJQBcSykivdqjc+dudfypcAt9n0uZPI=
-X-Google-Smtp-Source: AGHT+IEZaRn6WpKG0UzHflIwTO2bblGFBs1goXpQU2FHIiVhUiZDcgCx13HWOhvi1JtGUaHy4KuwDQ==
-X-Received: by 2002:a17:902:c94b:b0:1c5:db4e:bb2c with SMTP id
- i11-20020a170902c94b00b001c5db4ebb2cmr690620pla.64.1695296811764; 
- Thu, 21 Sep 2023 04:46:51 -0700 (PDT)
-Received: from fedora.flets-east.jp ([2400:4050:a840:1e00:d54:e521:8bac:7bed])
- by smtp.gmail.com with ESMTPSA id
- g5-20020a170902740500b001c55d591f07sm1257392pll.260.2023.09.21.04.46.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 21 Sep 2023 04:46:51 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2] amd_iommu: Fix APIC address check
-Date: Thu, 21 Sep 2023 20:46:11 +0900
-Message-ID: <20230921114612.40671-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qjJEP-0003k6-Sm
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 08:56:35 -0400
+Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ardb@kernel.org>) id 1qjJEN-0001Ex-KX
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 08:56:33 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 9C80D61E5B
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 12:02:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF49C4E661
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 12:02:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1695297777;
+ bh=if8V2JMGlxpLYmWhHfCzwOJbS+f+69rhI3/WPpNRtTI=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=vONtci/u3cZfwXwdmRdb0Iug/aFB3MDpTbi5oy3RX7WUTCdx17evOQejzcoY8esaJ
+ TNPyf5FCRfCT4veaBhv8l2P45wAk6Ju94a30n1yuun/6PSZv3Op5nARAsH30J5tJZD
+ oDJvt2GjuCvrhTMp5JdthZWKk97TgXEiMLulkBC/eODjQ2lpSGo48kr9v6SInn0SJd
+ ZUCGMn1TSQTaEy0YTKgyhXVcghQHWlqz4srDjuqje+gXfO92jL5bAmzYWtEuXTtzul
+ 2xZ/GWFO0IkPE9LNTAuyuB489GyQz1dHvoZKcvEGRjgUoRlKW1X4AAtva8Uh5bYo4d
+ HlHXef7ltWD+A==
+Received: by mail-lj1-f173.google.com with SMTP id
+ 38308e7fff4ca-2c135cf2459so2122331fa.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 05:02:56 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yz1IzFIFoD3zfKjnLBp5cJI+H68ZFiihWSnSWdB5V68r8MvN6gZ
+ 0w6V/DHoMk69/k4ooO5vEId2eLPOGitPYuvKb4w=
+X-Google-Smtp-Source: AGHT+IGJphnsDO/V4bxyK7pG7FfcOYufXP7FFVUmC6pS7esnWfGUsjR8Wy0u3MoXi8utAw5zAsbjZGHYkNWN9FadFlY=
+X-Received: by 2002:a2e:7a0d:0:b0:2bf:f84e:c1ec with SMTP id
+ v13-20020a2e7a0d000000b002bff84ec1ecmr4959712ljc.13.1695297775232; Thu, 21
+ Sep 2023 05:02:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <CAFEAcA_P5aOTQnM2ARYgR5WvKouvndMbX95XNmDsS0KTxMkMMw@mail.gmail.com>
+In-Reply-To: <CAFEAcA_P5aOTQnM2ARYgR5WvKouvndMbX95XNmDsS0KTxMkMMw@mail.gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Thu, 21 Sep 2023 12:02:43 +0000
+X-Gmail-Original-Message-ID: <CAMj1kXETcFPr_rkuNizUxSxNTvhPDBa_3ZTjeHwYxbgjRY4NpQ@mail.gmail.com>
+Message-ID: <CAMj1kXETcFPr_rkuNizUxSxNTvhPDBa_3ZTjeHwYxbgjRY4NpQ@mail.gmail.com>
+Subject: Re: EDK2 ArmVirtQemu behaviour with multiple UARTs
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: QEMU Developers <qemu-devel@nongnu.org>, devel@edk2.groups.io, 
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Ard Biesheuvel <ardb+tianocore@kernel.org>, 
+ Sami Mujawar <sami.mujawar@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2604:1380:4641:c500::1;
+ envelope-from=ardb@kernel.org; helo=dfw.source.kernel.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,55 +81,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An MSI from I/O APIC may not exactly equal to APIC_DEFAULT_ADDRESS. In
-fact, Windows 17763.3650 configures I/O APIC to set the dest_mode bit.
-Cover the range assigned to APIC.
+On Thu, 21 Sept 2023 at 10:50, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> Hi; I've been looking again at a very long standing missing feature in
+> the QEMU virt board, which is that we only have one UART. One of the
+> things that has stalled this in the past has been the odd behaviour of
+> EDK2 if the DTB that QEMU passes it describes two UARTs.
+>
+> I'm going to describe the behaviour I see in more detail below, but to
+> put the summary up front:
+>  * EDK2 puts some debug output on one UART and some on the other
+>    (the exact arrangement depends on ordering of the dtb nodes)
+>  * EDK2 doesn't look at either stdout-path or the serial* aliases,
+>    so its choices about how to use the UARTs differ from those
+>    made by the guest kernel it is booting (and it also seems to be
+>    iterating through the dtb in the opposite order to the kernel)
+>
+> The current proposal for adding a second UART is that it only happens
+> if you explicitly add one on the command line (with a second "-serial
+> something" option), so whatever we do won't break existing user
+> setups. So we have scope for saying "if you want to use a second UART,
+> you're going to want a newer EDK2 which handles it better". Exactly
+> what "better" means here is up for grabs, but honouring stdout-path
+> and the serial aliases would be the ideal I think. It would also be
+> possible to select a particular ordering for the DTB nodes to produce
+> "least-worst" behaviour from an existing EDK2 binary, but I'm not
+> sure if that's worth doing.
+>
+> What do the EDK2 folks think about what the correct behaviour
+> should be for a 2-UART setup?
+>
 
-Fixes: 577c470f43 ("x86_iommu/amd: Prepare for interrupt remap support")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
-V1 -> V2:
-  Changed to check the whole access is contained in the range.
-  Removed obsolete definitions.
+Hi Peter,
 
- hw/i386/amd_iommu.h | 2 --
- hw/i386/amd_iommu.c | 9 ++-------
- 2 files changed, 2 insertions(+), 9 deletions(-)
+Thanks for the elaborate analysis.
 
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 3d430434fe..73619fe9ea 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -212,8 +212,6 @@
- #define AMDVI_INT_ADDR_FIRST    0xfee00000
- #define AMDVI_INT_ADDR_LAST     0xfeefffff
- #define AMDVI_INT_ADDR_SIZE     (AMDVI_INT_ADDR_LAST - AMDVI_INT_ADDR_FIRST + 1)
--#define AMDVI_MSI_ADDR_HI_MASK  (0xffffffff00000000ULL)
--#define AMDVI_MSI_ADDR_LO_MASK  (0x00000000ffffffffULL)
- 
- /* SB IOAPIC is always on this device in AMD systems */
- #define AMDVI_IOAPIC_SB_DEVID   PCI_BUILD_BDF(0, PCI_DEVFN(0x14, 0))
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 4655cd801f..598223dc65 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1262,13 +1262,8 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
-         return -AMDVI_IR_ERR;
-     }
- 
--    if (origin->address & AMDVI_MSI_ADDR_HI_MASK) {
--        trace_amdvi_err("MSI address high 32 bits non-zero when "
--                        "Interrupt Remapping enabled.");
--        return -AMDVI_IR_ERR;
--    }
--
--    if ((origin->address & AMDVI_MSI_ADDR_LO_MASK) != APIC_DEFAULT_ADDRESS) {
-+    if (origin->address < AMDVI_INT_ADDR_FIRST ||
-+        origin->address + sizeof(origin->data) > AMDVI_INT_ADDR_LAST + 1) {
-         trace_amdvi_err("MSI is not from IOAPIC.");
-         return -AMDVI_IR_ERR;
-     }
+EDK2's DEBUG output is extremely noisy, so being able to redirect this
+output to a different UART would be very useful.
+
+The stdout-path is the intended console, and so we should honour that.
+This also means that we should parse aliases. But the console is
+actually configurable [persistenly] via the UEFI menu, and so it would
+be nice if we could take advantage of this flexibility. This means in
+principle that the UARTs should be represented via different device
+paths (which would include the base address so they are
+distinguishable) with perhaps a magical alias which is the default and
+is tied to whatever stdout-path points to. This way, all the logic we
+introduce is spec compliant and reusable on physical platforms with
+multiple UARTs.
+
+The DEBUG output is a different matter. On physical hardware, this is
+typically configured at build time, as the info is needed extremely
+early and on a physical platform, the debug port generally doesn't
+change. Currently, we just grab the first UART that we encounter in
+the DT, but the logic used by the DEBUG code and the ordinary console
+driver are mostly separate.
+
+What we might do is use stdout-path as well, unless a certain DT alias
+exist perhaps? We should probably align here with other projects,
+although this a distinction of the same nature may not exist there.
+
 -- 
-2.41.0
-
+Ard.
 
