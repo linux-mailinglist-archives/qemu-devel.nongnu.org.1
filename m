@@ -2,46 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DB837ABA65
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 22:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF447ABA79
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 22:23:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjmSW-0004ye-D8; Fri, 22 Sep 2023 16:09:04 -0400
+	id 1qjmf5-0006sQ-8K; Fri, 22 Sep 2023 16:22:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qjmST-0004yD-KU
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 16:09:01 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qjmez-0006s5-0E; Fri, 22 Sep 2023 16:21:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qjmSR-00047a-NW
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 16:09:01 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qjmex-0006xR-0J; Fri, 22 Sep 2023 16:21:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 8F0A72463F;
- Fri, 22 Sep 2023 23:09:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id C07172464B;
+ Fri, 22 Sep 2023 23:22:14 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 5F0132A220;
- Fri, 22 Sep 2023 23:08:53 +0300 (MSK)
-Message-ID: <f92187e6-c7a3-3826-f980-b95533e18643@tls.msk.ru>
-Date: Fri, 22 Sep 2023 23:08:53 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 99AC12A227;
+ Fri, 22 Sep 2023 23:21:50 +0300 (MSK)
+Message-ID: <87066678-b978-17dd-d65e-39de162fc4a4@tls.msk.ru>
+Date: Fri, 22 Sep 2023 23:21:49 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 2/4] hw/pci-bridge/cxl_upstream: Fix bandwidth entry base
- unit for SSLBIS
+Subject: Re: [Stable-8.1.1 11/34] softmmu: Assert data in bounds in
+ iotlb_to_section
 Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, qemu-devel@nongnu.org,
- Michael Tsirkin <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>,
- linux-cxl@vger.kernel.org
-Cc: Li Zhijian <lizhijian@cn.fujitsu.com>, Dave Jiang <dave.jiang@intel.com>, 
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- linuxarm@huawei.com
-References: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
- <20230904132806.6094-3-Jonathan.Cameron@huawei.com>
+To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <qemu-stable-8.1.1-20230909131531@cover.tls.msk.ru>
+ <20230909102747.346522-11-mjt@tls.msk.ru>
+ <5a617673-efe0-18b9-e3db-88277b09ba52@tls.msk.ru> <87y1h1ur1y.fsf@linaro.org>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230904132806.6094-3-Jonathan.Cameron@huawei.com>
+In-Reply-To: <87y1h1ur1y.fsf@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -83
@@ -65,41 +63,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-04.09.2023 16:28, Jonathan Cameron:
-> From: Dave Jiang <dave.jiang@intel.com>
+20.09.2023 12:23, Alex Bennée:
+..
+>> I wonder if I should keep 0d58c6606 for 8.1.1 (the deadline is
+>> tomorrow)..
 > 
-> According to ACPI spec 6.5 5.2.28.4 System Locality Latency and Bandwidth
-> Information Structure, if the "Entry Base Unit" is 1024 for BW and the
-> matrix entry has the value of 100, the BW is 100 GB/s. So the
-> entry_base_unit should be changed from 1000 to 1024 given the comment notes
-> it's 16GB/s for .latency_bandwidth.
+> Unfortunately 0d58c is not the full fix, it papered over one crack but
+> revealed others. It might be leading to a false sense of security. So I
+> would argue:
 > 
-> Fixes: 882877fc359d ("hw/pci-bridge/cxl-upstream: Add a CDAT table access DOE")
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->   hw/pci-bridge/cxl_upstream.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-> index 9159f48a8c..2b9cf0cc97 100644
-> --- a/hw/pci-bridge/cxl_upstream.c
-> +++ b/hw/pci-bridge/cxl_upstream.c
-> @@ -262,7 +262,7 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
->                   .length = sslbis_size,
->               },
->               .data_type = HMATLB_DATA_TYPE_ACCESS_BANDWIDTH,
-> -            .entry_base_unit = 1000,
-> +            .entry_base_unit = 1024,
->           },
->       };
+>    - keep the assert - better to fail early than to fail later in a hard
+>      to understand way
+>    - toss a coin for the 0d58c66 fix, if we include it we may end up
+>      reverting later once we have the "complete" fix but at least its
+>      slightly better for x86 while definitely breaking MIPS
 
-BTW, is this one stable-worthly?  How it's been found, - due to some real
-issue or just by code review?
+Heh. I've read this email just now, way after 8.1.1 has been tagged and
+the announcement sent.
 
-Thanks,
+I haven't included 0d58c66 for now, without tossing coins - just to be
+on-par with 8.1.0, or else it is confusing at best (which stable releases
+brings with new issues).
+
+This whole thing is definitely worth a 8.1.2 once the fix is in.
+
+Meanwhile I pushed qemu with 0d58c66 and the "always require can_do_io"
+patchset to debian, - this one fixed all regressions so far.
+https://salsa.debian.org/qemu-team/qemu/-/tree/debian/1%258.1.0+ds-6/debian/patches/always-can-do-io-1866
+https://gitlab.com/mjt0k/qemu/-/commits/staging-8.1-always-require-can_do_io/
+
+Thank you for the thoughts, much apprecated!
 
 /mjt
-
-
 
