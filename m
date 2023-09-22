@@ -2,92 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97F07AAF5C
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF987AAF64
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:23:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjdIF-0002Ql-18; Fri, 22 Sep 2023 06:21:51 -0400
+	id 1qjdJs-0003bL-1e; Fri, 22 Sep 2023 06:23:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qjdID-0002Ph-1L
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:21:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjdJp-0003aq-UO
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:23:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qjdIB-00067Z-Gd
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:21:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjdJm-0006Go-J7
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:23:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695378105;
+ s=mimecast20190719; t=1695378205;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HuSfO03bL729B1NoYjfCBKlx0a+Y9oZ3bIRSwCKqsxw=;
- b=AyePlNCmenh5rTlx+wmNbrEuV31AIrkFELH2qauvSgvWVthdyrhsmHkyvrC+dYAqSDj2RR
- Uc77S5AJfwx7bHnK3X6wHU6zEYfWy+UlULK1OfZ5EBCgj/9OUUF5Q+OZ1SMZNqljY2YUJr
- oh/3wcN7j+i0FIGxNBR5AlZzgPD+egc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MOpPYxL42GKs0jJm+ztk/5+3c6vMTjxmqEKKWtoWqqE=;
+ b=Pjos0H91EkPOtEOPzcUJuK3CUMfaBnJnIbh7ScATfAz9C7gunNNOdh7X6CguF7e8bhXH/k
+ dTY3kYRrt+WViqm2FS+DzFatJMIDuUSnNCFTSX9epoyoai4RGhmS/CGi5fKGi8ltS9ji4X
+ fVF76NmypZZKu9kyYv/MwBBX9o/xMr8=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-rfsmd6BRM_i1sglLsXIueA-1; Fri, 22 Sep 2023 06:21:43 -0400
-X-MC-Unique: rfsmd6BRM_i1sglLsXIueA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-40478e6abd0so14387025e9.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 03:21:43 -0700 (PDT)
+ us-mta-689-Wo56DK6hNUCsRN5HdWKJdg-1; Fri, 22 Sep 2023 06:23:24 -0400
+X-MC-Unique: Wo56DK6hNUCsRN5HdWKJdg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9ae12311183so156469366b.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 03:23:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695378102; x=1695982902;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1695378203; x=1695983003;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=HuSfO03bL729B1NoYjfCBKlx0a+Y9oZ3bIRSwCKqsxw=;
- b=AjEkkvBZ/RcPB8XzLkFLk5bGs80xACFeUjQ6f5DcfCQMg0A3GZklbGBAvifuHfKlA8
- Zk9qLlqCz6oGs2L+Raj/pvje9kCqlXXt+x4VH1lngwrNzB+nc6dl4GFY3UymPgvxPly4
- PVhdie/dSHcLAy7rHJ/LPOpqnfKXXYZXWbOqnu8aCdqcyhyUR5PwIB49JcYCsacK16Hi
- 7yGdkglDaFn18W2gR75h+eLVm5LacZBlg7LeryXVGlUeV7eDfLmXi0RY+/QT5HZOLAzb
- 6+2N89JDGDUWn2DS/iul/r92O9qFzLC/3uHhVeJHHyIOPDQvsNYDsjBRvD/x260rWuJf
- jrtQ==
-X-Gm-Message-State: AOJu0YzmtpgBgfak6yaG03HRiANpKd0fAOnmlvLQ7Yy1ylVmYgUsnLJE
- LsPo4tdpksQ6AZsD/0Xmd0O+l/O8ITmRADdfagxH8osEOrsM/R0sqp7BZou0kHL7l16HkpgZGBN
- ae53U0eOLqgVsr4Y=
-X-Received: by 2002:adf:f104:0:b0:320:77f:a97c with SMTP id
- r4-20020adff104000000b00320077fa97cmr6588603wro.63.1695378102029; 
- Fri, 22 Sep 2023 03:21:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE5LOLDWapg8ZnLulxbdLgGvfdLHmK9pO13GHCkdyUogu1jJ2aFfMtfYhywj9RBXqNp2O723w==
-X-Received: by 2002:adf:f104:0:b0:320:77f:a97c with SMTP id
- r4-20020adff104000000b00320077fa97cmr6588595wro.63.1695378101665; 
- Fri, 22 Sep 2023 03:21:41 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-48.web.vodafone.de.
- [109.43.176.48]) by smtp.gmail.com with ESMTPSA id
- j3-20020a5d5643000000b0032167e49619sm4089625wrw.5.2023.09.22.03.21.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Sep 2023 03:21:41 -0700 (PDT)
-Message-ID: <d2af7bf6-3079-366b-1ee4-280e2ca38659@redhat.com>
-Date: Fri, 22 Sep 2023 12:21:40 +0200
+ bh=MOpPYxL42GKs0jJm+ztk/5+3c6vMTjxmqEKKWtoWqqE=;
+ b=xRw9Ie2HGTrurO7HfECpp+W7gsojlxKrdADSbOSf7WEFjeXrfzmQS5CA8F/PZQBUwg
+ O0Gski9T80+L8Vg6+VWNplaO7tcZwPBXM35+EGE36RMUGjAxNGdqqKdZ2s3X+6SqGsn5
+ 06civtVbL+AtGd4mFC3GBcVU9NCaq08YSb41sIoui+Y+ZB2BELGs7Qk5erhn4TpMDue8
+ ZPXyEESE3on4G7bC2+ft1xvqdd4idin/zMHGrlPlMdiKcv20kcURBIl6+evSXQNfdyjD
+ nKqtw8bbLpfnt0vpEnOzsRgQVzI/flQ/5cdamR31ckTQN/nTDLattTKCK0eJz7DRkio3
+ oAmw==
+X-Gm-Message-State: AOJu0YwvQVj50m3y7j+1cuiTqBS+rVMBZunlDcyr3gFfbHkS6T7Q8pVn
+ BtXEwY3lcHPW9vd/mbJKv+uWR1N0DGVVfEo5MmDJdFvHcFSzLLG9CM1ADQ/6KZfmrD88H6XGAo/
+ jy3HgG/RdBLR6KPw=
+X-Received: by 2002:a17:906:159:b0:9a1:f21e:cdff with SMTP id
+ 25-20020a170906015900b009a1f21ecdffmr8216736ejh.23.1695378202676; 
+ Fri, 22 Sep 2023 03:23:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0Na5qYZdgcyXXYnEbBJZ8Xsqj172ijeEG71mN3id7uiA6+RyRP76+T6DGqqJzns6tlKXy+g==
+X-Received: by 2002:a17:906:159:b0:9a1:f21e:cdff with SMTP id
+ 25-20020a170906015900b009a1f21ecdffmr8216717ejh.23.1695378202381; 
+ Fri, 22 Sep 2023 03:23:22 -0700 (PDT)
+Received: from redhat.com ([2.52.150.187]) by smtp.gmail.com with ESMTPSA id
+ lv23-20020a170906bc9700b0099d798a6bb5sm2494904ejb.67.2023.09.22.03.23.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Sep 2023 03:23:21 -0700 (PDT)
+Date: Fri, 22 Sep 2023 06:23:17 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org, Coiby Xu <Coiby.Xu@gmail.com>
+Subject: Re: [PATCH v2 17/22] util/vhost-user-server: Clean up local variable
+ shadowing
+Message-ID: <20230922062306-mutt-send-email-mst@kernel.org>
+References: <20230904161235.84651-1-philmd@linaro.org>
+ <20230904161235.84651-18-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] pc_piix: remove pc-i440fx-1.4 up to pc-i440fx-1.7
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, "Hoffmann, Gerd" <kraxel@redhat.com>
-References: <20230921121051.192355-1-pbonzini@redhat.com>
- <20230921121051.192355-2-pbonzini@redhat.com>
- <052e2425-f2fa-76ee-dd40-639d88210b4c@redhat.com>
- <CABgObfYgc2iF-89rPGL1siqvwXCGWPgP9Zs-2uOjj0j6jXVEfA@mail.gmail.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <CABgObfYgc2iF-89rPGL1siqvwXCGWPgP9Zs-2uOjj0j6jXVEfA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230904161235.84651-18-philmd@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,35 +99,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/09/2023 11.19, Paolo Bonzini wrote:
+On Mon, Sep 04, 2023 at 06:12:29PM +0200, Philippe Mathieu-Daudé wrote:
+> Fix:
 > 
+>   util/vhost-user-server.c: In function ‘set_watch’:
+>   util/vhost-user-server.c:274:20: warning: declaration of ‘vu_fd_watch’ shadows a previous local [-Wshadow=compatible-local]
+>     274 |         VuFdWatch *vu_fd_watch = g_new0(VuFdWatch, 1);
+>         |                    ^~~~~~~~~~~
+>   util/vhost-user-server.c:271:16: note: shadowed declaration is here
+>     271 |     VuFdWatch *vu_fd_watch = find_vu_fd_watch(server, fd);
+>         |                ^~~~~~~~~~~
 > 
-> Il ven 22 set 2023, 08:43 Thomas Huth <thuth@redhat.com 
-> <mailto:thuth@redhat.com>> ha scritto:
-> 
-> 
->     While you're at it ... do we maybe want to start deprecating the next batch
->     of machine types already? (Say pc-i440fx-2.0 up to pc-i440fx-2.2 maybe?)
-> 
-> 
-> It depends on the benefit. We would have to check the compat options that 
-> are not needed anymore, and whether they'd be something that is useful 
-> anyway for debugging.
-> 
-> Also it would be useful to check if isapc can drop some of the compat code 
-> and realign itself to the 2.0 i440fx machine in terms of QEMU-specific features.
-> 
-> Because of all this todo, I decided not to proceed further with 
-> deprecations. The 128k ROM on the other hand does provide immediate benefit.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-FWIW, when I was working on deprecating the old pc machine types, I 
-originally wanted to stop with pc-1.3 (since I was most bugged by the 
-different naming between "pc" and "pc-i44fx" in the help output). I then 
-only put the 1.4 to 1.7 machine types on the deprecation list without 
-anything in mind. Now this became useful for the 128k bios rework... so 
-maybe we should continue deprecating older machine types for other future 
-reworks that we don't envision yet.
 
-  Thomas
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+
+feel free to merge.
+
+> ---
+>  util/vhost-user-server.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
+> index cd17fb5326..5073f775ed 100644
+> --- a/util/vhost-user-server.c
+> +++ b/util/vhost-user-server.c
+> @@ -271,7 +271,7 @@ set_watch(VuDev *vu_dev, int fd, int vu_evt,
+>      VuFdWatch *vu_fd_watch = find_vu_fd_watch(server, fd);
+>  
+>      if (!vu_fd_watch) {
+> -        VuFdWatch *vu_fd_watch = g_new0(VuFdWatch, 1);
+> +        vu_fd_watch = g_new0(VuFdWatch, 1);
+>  
+>          QTAILQ_INSERT_TAIL(&server->vu_fd_watches, vu_fd_watch, next);
+>  
+> -- 
+> 2.41.0
+> 
+> 
 
 
