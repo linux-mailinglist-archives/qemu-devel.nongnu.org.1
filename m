@@ -2,108 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B967AB258
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 14:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6097AB259
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 14:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjfTP-00048n-Fw; Fri, 22 Sep 2023 08:41:31 -0400
+	id 1qjfUO-0004gB-LQ; Fri, 22 Sep 2023 08:42:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qjfTM-00048T-M4
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:41:28 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjfUN-0004c6-3g
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:42:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
- id 1qjfTK-0004WC-2Q
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:41:28 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38MCcSPY015922
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 12:41:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=J1YEduTOEczH9J2VCayI1pgLSyqYeO+bCOosjKqbx5k=;
- b=UTAXM+XE+1iwR/i1rKPZtrut+WX+Y16lJL5KYAySv0Yf+92HAV2kjD3iNvu9+nsUuM5e
- Xt/PN7BMo9f0jbG4L9PoK+hyhELwq2dggqyRi2n5uNv2TWYpOAQs2u3PgQ7ceAkGt8cx
- MC6PypLoiwZGlA4NAMb9d6z29NDINXst76uE2NJCyWlG9czp//5/zbs8odEmyPiijcTN
- epVnrNCHeI+76ztUvfSaThQAr8JnxssEgg3drqV6Qv6/mCx3gSoq3ERDOIKM4zFghP6+
- O5j6hXjhoxPjNBbfa1NRPvFDPp5CQOpuwGPHKNr6Pa8HhLERZafftzn61JXFTGFBy0qd Uw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t990s3bvr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 12:41:22 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38MCcwWB016429
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 12:41:22 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t990s3bvc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 22 Sep 2023 12:41:21 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38MCacHQ018810; Fri, 22 Sep 2023 12:41:21 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t8tsp1mu3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 22 Sep 2023 12:41:21 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38MCfKUp2491038
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 22 Sep 2023 12:41:20 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A2EA358061;
- Fri, 22 Sep 2023 12:41:20 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5502058056;
- Fri, 22 Sep 2023 12:41:20 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Fri, 22 Sep 2023 12:41:20 +0000 (GMT)
-Message-ID: <2629ce63-e4dd-67f3-6341-d477c39b29f7@linux.ibm.com>
-Date: Fri, 22 Sep 2023 08:41:19 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v6 2/2] tpm: add backend for mssim
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, James Bottomley <jejb@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?=
- <berrange@redhat.com>
-References: <20230109161532.6892-1-jejb@linux.ibm.com>
- <20230109161532.6892-3-jejb@linux.ibm.com> <87bkduwxv7.fsf@pond.sub.org>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <87bkduwxv7.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Rq565-hH-hWEtIu9HCRBWnlzDfcYMwkD
-X-Proofpoint-GUID: Ni-jc7TVhT01NT50M2j5281Id1hq7k8z
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjfUL-0004iK-4j
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:42:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695386547;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=N6qvq20emJ/vyU3LcSDJAvb82OkJblmapsSRkg3WMfQ=;
+ b=NS//ibYp73WY4T+DcYGpJl77kFLmQxd45ryfxxnTjvV9VpNxSn81SKH0kmgVDgtLXcgSh4
+ JsIio5g3YsKLnA0Vu9wglpf7doCylSV78s78QVRKXN+agdwvbXdOoV4m8BhcodBpo2aSdj
+ kT4YhotZ6ncbkxA+Pla/nyoaXF/hqeg=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-102-QmWVZ84hMaalP7uvHW6Qaw-1; Fri, 22 Sep 2023 08:42:25 -0400
+X-MC-Unique: QmWVZ84hMaalP7uvHW6Qaw-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-55afcc54d55so2984182a12.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 05:42:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695386544; x=1695991344;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=N6qvq20emJ/vyU3LcSDJAvb82OkJblmapsSRkg3WMfQ=;
+ b=VT1wWf5aN4LnJ3+hIrdimKkbO8Q1KRZoDbU/gzFwSwAFqVymBHbGLpTfaVi4P26M5X
+ FopCpcK9lyGn/vEXs2pBqBCacTYW1f5Xv/Vc/ukr4VhYbIF0DEx3RYOYIE/EO5ylXicK
+ jhV7K5Cn7gm+YBJw0pyy2BK3dudo2LMeP7hEF7C5TZwgwPpP1gQdgnfX+V//zBX1x5GF
+ pgSRaCIvb36nldoebkqc9X7mOHdegVPy03L9L+cHKlwSmVGOf2RCbRaig8xgKAigLW7H
+ b72/FmLOEmt993JSDj8stnJ5Lw1iNl5Ht9c6n1Af8KkRJVugm5e/AvEDhF2alsNH7opy
+ FvwA==
+X-Gm-Message-State: AOJu0YyL+kuGInTPNY0RD4AiafY8dO//qeHmtnYh9uDfT10yaTtHmNDb
+ +TkuCwqtAKa2HOiRZ26ITn0RgYbby6Bv9ojQrC7uTFldjzUR8ncApIWbDRzx+R1FmKXuWTTttMC
+ wGtBIAWuYJ+lSOpU=
+X-Received: by 2002:a17:90a:ec06:b0:276:78f2:5d31 with SMTP id
+ l6-20020a17090aec0600b0027678f25d31mr3801193pjy.21.1695386543763; 
+ Fri, 22 Sep 2023 05:42:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTFSKRW7Kb1Mv+OzsGbGN4fAXcbM8RYQvkcu7NwEkanRO3uk0H82ipRhBcJPnxLEfDrt0tPg==
+X-Received: by 2002:a17:90a:ec06:b0:276:78f2:5d31 with SMTP id
+ l6-20020a17090aec0600b0027678f25d31mr3801173pjy.21.1695386543434; 
+ Fri, 22 Sep 2023 05:42:23 -0700 (PDT)
+Received: from localhost.localdomain ([116.73.132.49])
+ by smtp.googlemail.com with ESMTPSA id
+ o17-20020a639211000000b00578d0d6e8desm3102704pgd.9.2023.09.22.05.42.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Sep 2023 05:42:22 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>, qemu-devel@nongnu.org
+Subject: [PATCH] hw/acpi: changes towards enabling -Wshadow=local
+Date: Fri, 22 Sep 2023 18:12:02 +0530
+Message-Id: <20230922124203.127110-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-22_10,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- mlxscore=0 spamscore=0 impostorscore=0 suspectscore=0 bulkscore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309220107
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -34
-X-Spam_score: -3.5
-X-Spam_bar: ---
-X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -119,261 +101,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Code changes in acpi that addresses all compiler complaints coming from enabling
+-Wshadow flags. Enabling -Wshadow catches cases of local variables shadowing
+other local variables or parameters. These makes the code confusing and/or adds
+bugs that are difficult to catch.
 
-On 9/22/23 02:00, Markus Armbruster wrote:
-> Found this cleaning out old mail, sorry for missing it until now!
->
-> I think we owe James a quick decision wether we're willing to take the
-> feature.  Stefan, thoughts?
+The code is tested to build with and without the flag turned on.
 
-I thought we discusses it back then. Does it handle snapshotting and 
-migration correctly?
+CC: Markus Armbruster <armbru@redhat.com>
+CC: Philippe Mathieu-Daude <philmd@linaro.org>
+CC: mst@redhat.com
+CC: imammedo@redhat.com
+Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ hw/acpi/cpu_hotplug.c | 25 +++++++++++++------------
+ hw/i386/acpi-build.c  | 24 ++++++++++++------------
+ hw/smbios/smbios.c    | 37 +++++++++++++++++++------------------
+ 3 files changed, 44 insertions(+), 42 deletions(-)
 
-   Stefan
+diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
+index ff14c3f410..634bbecb31 100644
+--- a/hw/acpi/cpu_hotplug.c
++++ b/hw/acpi/cpu_hotplug.c
+@@ -265,26 +265,27 @@ void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
+ 
+     /* build Processor object for each processor */
+     for (i = 0; i < apic_ids->len; i++) {
+-        int apic_id = apic_ids->cpus[i].arch_id;
++        int cpu_apic_id = apic_ids->cpus[i].arch_id;
+ 
+-        assert(apic_id < ACPI_CPU_HOTPLUG_ID_LIMIT);
++        assert(cpu_apic_id < ACPI_CPU_HOTPLUG_ID_LIMIT);
+ 
+-        dev = aml_processor(i, 0, 0, "CP%.02X", apic_id);
++        dev = aml_processor(i, 0, 0, "CP%.02X", cpu_apic_id);
+ 
+         method = aml_method("_MAT", 0, AML_NOTSERIALIZED);
+         aml_append(method,
+-            aml_return(aml_call2(CPU_MAT_METHOD, aml_int(apic_id), aml_int(i))
++            aml_return(aml_call2(CPU_MAT_METHOD,
++                                 aml_int(cpu_apic_id), aml_int(i))
+         ));
+         aml_append(dev, method);
+ 
+         method = aml_method("_STA", 0, AML_NOTSERIALIZED);
+         aml_append(method,
+-            aml_return(aml_call1(CPU_STATUS_METHOD, aml_int(apic_id))));
++            aml_return(aml_call1(CPU_STATUS_METHOD, aml_int(cpu_apic_id))));
+         aml_append(dev, method);
+ 
+         method = aml_method("_EJ0", 1, AML_NOTSERIALIZED);
+         aml_append(method,
+-            aml_return(aml_call2(CPU_EJECT_METHOD, aml_int(apic_id),
++            aml_return(aml_call2(CPU_EJECT_METHOD, aml_int(cpu_apic_id),
+                 aml_arg(0)))
+         );
+         aml_append(dev, method);
+@@ -298,11 +299,11 @@ void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
+     /* Arg0 = APIC ID */
+     method = aml_method(AML_NOTIFY_METHOD, 2, AML_NOTSERIALIZED);
+     for (i = 0; i < apic_ids->len; i++) {
+-        int apic_id = apic_ids->cpus[i].arch_id;
++        int cpu_apic_id = apic_ids->cpus[i].arch_id;
+ 
+-        if_ctx = aml_if(aml_equal(aml_arg(0), aml_int(apic_id)));
++        if_ctx = aml_if(aml_equal(aml_arg(0), aml_int(cpu_apic_id)));
+         aml_append(if_ctx,
+-            aml_notify(aml_name("CP%.02X", apic_id), aml_arg(1))
++            aml_notify(aml_name("CP%.02X", cpu_apic_id), aml_arg(1))
+         );
+         aml_append(method, if_ctx);
+     }
+@@ -319,13 +320,13 @@ void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
+                                         aml_varpackage(x86ms->apic_id_limit);
+ 
+     for (i = 0, apic_idx = 0; i < apic_ids->len; i++) {
+-        int apic_id = apic_ids->cpus[i].arch_id;
++        int cpu_apic_id = apic_ids->cpus[i].arch_id;
+ 
+-        for (; apic_idx < apic_id; apic_idx++) {
++        for (; apic_idx < cpu_apic_id; apic_idx++) {
+             aml_append(pkg, aml_int(0));
+         }
+         aml_append(pkg, aml_int(apic_ids->cpus[i].cpu ? 1 : 0));
+-        apic_idx = apic_id + 1;
++        apic_idx = cpu_apic_id + 1;
+     }
+     aml_append(sb_scope, aml_name_decl(CPU_ON_BITMAP, pkg));
+     aml_append(ctx, sb_scope);
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 4d2d40bab5..95199c8900 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -1585,12 +1585,12 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+             aml_append(dev, aml_name_decl("_UID", aml_int(bus_num)));
+             aml_append(dev, aml_name_decl("_BBN", aml_int(bus_num)));
+             if (pci_bus_is_cxl(bus)) {
+-                struct Aml *pkg = aml_package(2);
++                struct Aml *aml_pkg = aml_package(2);
+ 
+                 aml_append(dev, aml_name_decl("_HID", aml_string("ACPI0016")));
+-                aml_append(pkg, aml_eisaid("PNP0A08"));
+-                aml_append(pkg, aml_eisaid("PNP0A03"));
+-                aml_append(dev, aml_name_decl("_CID", pkg));
++                aml_append(aml_pkg, aml_eisaid("PNP0A08"));
++                aml_append(aml_pkg, aml_eisaid("PNP0A03"));
++                aml_append(dev, aml_name_decl("_CID", aml_pkg));
+                 build_cxl_osc_method(dev);
+             } else if (pci_bus_is_express(bus)) {
+                 aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A08")));
+@@ -1783,14 +1783,14 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         Object *pci_host = acpi_get_i386_pci_host();
+ 
+         if (pci_host) {
+-            PCIBus *bus = PCI_HOST_BRIDGE(pci_host)->bus;
+-            Aml *scope = aml_scope("PCI0");
++            PCIBus *pbus = PCI_HOST_BRIDGE(pci_host)->bus;
++            Aml *ascope = aml_scope("PCI0");
+             /* Scan all PCI buses. Generate tables to support hotplug. */
+-            build_append_pci_bus_devices(scope, bus);
+-            if (object_property_find(OBJECT(bus), ACPI_PCIHP_PROP_BSEL)) {
+-                build_append_pcihp_slots(scope, bus);
++            build_append_pci_bus_devices(ascope, pbus);
++            if (object_property_find(OBJECT(pbus), ACPI_PCIHP_PROP_BSEL)) {
++                build_append_pcihp_slots(ascope, pbus);
+             }
+-            aml_append(sb_scope, scope);
++            aml_append(sb_scope, ascope);
+         }
+     }
+ 
+@@ -1842,10 +1842,10 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
+         bool has_pcnt;
+ 
+         Object *pci_host = acpi_get_i386_pci_host();
+-        PCIBus *bus = PCI_HOST_BRIDGE(pci_host)->bus;
++        PCIBus *b = PCI_HOST_BRIDGE(pci_host)->bus;
+ 
+         scope = aml_scope("\\_SB.PCI0");
+-        has_pcnt = build_append_notfication_callback(scope, bus);
++        has_pcnt = build_append_notfication_callback(scope, b);
+         if (has_pcnt) {
+             aml_append(dsdt, scope);
+         }
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index b753705856..2a90601ac5 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -1423,13 +1423,14 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
+             if (!qemu_opts_validate(opts, qemu_smbios_type8_opts, errp)) {
+                 return;
+             }
+-            struct type8_instance *t;
+-            t = g_new0(struct type8_instance, 1);
+-            save_opt(&t->internal_reference, opts, "internal_reference");
+-            save_opt(&t->external_reference, opts, "external_reference");
+-            t->connector_type = qemu_opt_get_number(opts, "connector_type", 0);
+-            t->port_type = qemu_opt_get_number(opts, "port_type", 0);
+-            QTAILQ_INSERT_TAIL(&type8, t, next);
++            struct type8_instance *t8_i;
++            t8_i = g_new0(struct type8_instance, 1);
++            save_opt(&t8_i->internal_reference, opts, "internal_reference");
++            save_opt(&t8_i->external_reference, opts, "external_reference");
++            t8_i->connector_type = qemu_opt_get_number(opts,
++                                                       "connector_type", 0);
++            t8_i->port_type = qemu_opt_get_number(opts, "port_type", 0);
++            QTAILQ_INSERT_TAIL(&type8, t8_i, next);
+             return;
+         case 11:
+             if (!qemu_opts_validate(opts, qemu_smbios_type11_opts, errp)) {
+@@ -1452,27 +1453,27 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
+             type17.speed = qemu_opt_get_number(opts, "speed", 0);
+             return;
+         case 41: {
+-            struct type41_instance *t;
++            struct type41_instance *t41_i;
+             Error *local_err = NULL;
+ 
+             if (!qemu_opts_validate(opts, qemu_smbios_type41_opts, errp)) {
+                 return;
+             }
+-            t = g_new0(struct type41_instance, 1);
+-            save_opt(&t->designation, opts, "designation");
+-            t->kind = qapi_enum_parse(&type41_kind_lookup,
+-                                      qemu_opt_get(opts, "kind"),
+-                                      0, &local_err) + 1;
+-            t->kind |= 0x80;     /* enabled */
++            t41_i = g_new0(struct type41_instance, 1);
++            save_opt(&t41_i->designation, opts, "designation");
++            t41_i->kind = qapi_enum_parse(&type41_kind_lookup,
++                                          qemu_opt_get(opts, "kind"),
++                                          0, &local_err) + 1;
++            t41_i->kind |= 0x80;     /* enabled */
+             if (local_err != NULL) {
+                 error_propagate(errp, local_err);
+-                g_free(t);
++                g_free(t41_i);
+                 return;
+             }
+-            t->instance = qemu_opt_get_number(opts, "instance", 1);
+-            save_opt(&t->pcidev, opts, "pcidev");
++            t41_i->instance = qemu_opt_get_number(opts, "instance", 1);
++            save_opt(&t41_i->pcidev, opts, "pcidev");
+ 
+-            QTAILQ_INSERT_TAIL(&type41, t, next);
++            QTAILQ_INSERT_TAIL(&type41, t41_i, next);
+             return;
+         }
+         default:
+-- 
+2.39.1
 
->
-> James Bottomley <jejb@linux.ibm.com> writes:
->
->> From: James Bottomley <James.Bottomley@HansenPartnership.com>
->>
->> The Microsoft Simulator (mssim) is the reference emulation platform
->> for the TCG TPM 2.0 specification.
->>
->> https://github.com/Microsoft/ms-tpm-20-ref.git
->>
->> It exports a fairly simple network socket based protocol on two
->> sockets, one for command (default 2321) and one for control (default
->> 2322).  This patch adds a simple backend that can speak the mssim
->> protocol over the network.  It also allows the two sockets to be
->> specified on the command line.  The benefits are twofold: firstly it
->> gives us a backend that actually speaks a standard TPM emulation
->> protocol instead of the linux specific TPM driver format of the
->> current emulated TPM backend and secondly, using the microsoft
->> protocol, the end point of the emulator can be anywhere on the
->> network, facilitating the cloud use case where a central TPM service
->> can be used over a control network.
->>
->> The implementation does basic control commands like power off/on, but
->> doesn't implement cancellation or startup.  The former because
->> cancellation is pretty much useless on a fast operating TPM emulator
->> and the latter because this emulator is designed to be used with OVMF
->> which itself does TPM startup and I wanted to validate that.
->>
->> To run this, simply download an emulator based on the MS specification
->> (package ibmswtpm2 on openSUSE) and run it, then add these two lines
->> to the qemu command and it will use the emulator.
->>
->>      -tpmdev mssim,id=tpm0 \
->>      -device tpm-crb,tpmdev=tpm0 \
->>
->> to use a remote emulator replace the first line with
->>
->>      -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':inet,'host':'remote','port':'2321'}}"
->>
->> tpm-tis also works as the backend.
->>
->> Signed-off-by: James Bottomley <jejb@linux.ibm.com>
-> [...]
->
->> diff --git a/docs/specs/tpm.rst b/docs/specs/tpm.rst
->> index 535912a92b..1398735956 100644
->> --- a/docs/specs/tpm.rst
->> +++ b/docs/specs/tpm.rst
->> @@ -270,6 +270,38 @@ available as a module (assuming a TPM 2 is passed through):
->>     /sys/devices/LNXSYSTEM:00/LNXSYBUS:00/MSFT0101:00/tpm/tpm0/pcr-sha256/9
->>     ...
->>   
->> +The QEMU TPM Microsoft Simulator Device
->> +---------------------------------------
->> +
->> +The TCG provides a reference implementation for TPM 2.0 written by
->
-> Suggest to copy the cover letter's nice introductory paragraph here:
->
->    The Microsoft Simulator (mssim) is the reference emulation platform
->    for the TCG TPM 2.0 specification.
->
->    It provides a reference implementation for TPM 2.0 written by
->
->> +Microsoft (See `ms-tpm-20-ref`_ on github).  The reference implementation
->> +starts a network server and listens for TPM commands on port 2321 and
->> +TPM Platform control commands on port 2322, although these can be
->> +altered.  The QEMU mssim TPM backend talks to this implementation.  By
->> +default it connects to the default ports on localhost:
->> +
->> +.. code-block:: console
->> +
->> +  qemu-system-x86_64 <qemu-options> \
->> +    -tpmdev mssim,id=tpm0 \
->> +    -device tpm-crb,tpmdev=tpm0
->> +
->> +
->> +Although it can also communicate with a remote host, which must be
->> +specified as a SocketAddress via json on the command line for each of
-> Is the "via JSON" part in "must be specified ... on the command line"
-> correct?  I'd expect to be able to use dotted keys as well, like
->
->      -tpmdev type=mssim,id=tpm0,command.type=inet,command.host=remote,command.port=2321',control.type=inet,control.host=remote,control.port=2322
->
-> Aside: I do recommend management applications stick to JSON.
->
->> +the command and control ports:
->> +
->> +.. code-block:: console
->> +
->> +  qemu-system-x86_64 <qemu-options> \
->> +    -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':'inet','host':'remote','port':'2321'},'control':{'type':'inet','host':'remote','port':'2322'}}" \
->> +    -device tpm-crb,tpmdev=tpm0
->> +
->> +
->> +The mssim backend supports snapshotting and migration, but the state
->> +of the Microsoft Simulator server must be preserved (or the server
->> +kept running) outside of QEMU for restore to be successful.
->> +
->>   The QEMU TPM emulator device
->>   ----------------------------
->>   
->> @@ -526,3 +558,6 @@ the following:
->>   
->>   .. _SWTPM protocol:
->>      https://github.com/stefanberger/swtpm/blob/master/man/man3/swtpm_ioctls.pod
->> +
->> +.. _ms-tpm-20-ref:
->> +   https://github.com/microsoft/ms-tpm-20-ref
->> diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
->> index ed78a87ddd..12482368d0 100644
->> --- a/monitor/hmp-cmds.c
->> +++ b/monitor/hmp-cmds.c
->> @@ -731,6 +731,7 @@ void hmp_info_tpm(Monitor *mon, const QDict *qdict)
->>       unsigned int c = 0;
->>       TPMPassthroughOptions *tpo;
->>       TPMEmulatorOptions *teo;
->> +    TPMmssimOptions *tmo;
->>   
->>       info_list = qmp_query_tpm(&err);
->>       if (err) {
->> @@ -764,6 +765,14 @@ void hmp_info_tpm(Monitor *mon, const QDict *qdict)
->>               teo = ti->options->u.emulator.data;
->>               monitor_printf(mon, ",chardev=%s", teo->chardev);
->>               break;
->> +        case TPM_TYPE_MSSIM:
->> +            tmo = &ti->options->u.mssim;
->> +            monitor_printf(mon, ",command=%s:%s,control=%s:%s",
->> +                           tmo->command->u.inet.host,
->> +                           tmo->command->u.inet.port,
->> +                           tmo->control->u.inet.host,
->> +                           tmo->control->u.inet.port);
->> +            break;
->>           case TPM_TYPE__MAX:
->>               break;
->>           }
->> diff --git a/qapi/tpm.json b/qapi/tpm.json
->> index 2b491c28b4..f9dde35377 100644
->> --- a/qapi/tpm.json
->> +++ b/qapi/tpm.json
->> @@ -5,6 +5,7 @@
->>   ##
->>   # = TPM (trusted platform module) devices
->>   ##
-> Blank line, please.
->
->> +{ 'include': 'sockets.json' }
->>   
->>   ##
->>   # @TpmModel:
->> @@ -49,7 +50,7 @@
->     #
->     # @passthrough: TPM passthrough type
->     #
->     # @emulator: Software Emulator TPM type (since 2.11)
->>   #
-> Missing member documentation:
->
->     # @mssim: <brief description here> (since 8.2)
->
->>   # Since: 1.5
->>   ##
->> -{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator' ],
->> +{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator', 'mssim' ],
->>     'if': 'CONFIG_TPM' }
->>   
->>   ##
->> @@ -64,7 +65,7 @@
->>   # Example:
->>   #
->>   # -> { "execute": "query-tpm-types" }
->> -# <- { "return": [ "passthrough", "emulator" ] }
->> +# <- { "return": [ "passthrough", "emulator", "mssim" ] }
-> Thanks for updating the example.
->
->>   #
->>   ##
->>   { 'command': 'query-tpm-types', 'returns': ['TpmType'],
->> @@ -117,6 +118,22 @@
->>     'data': { 'data': 'TPMEmulatorOptions' },
->>     'if': 'CONFIG_TPM' }
->>   
->> +##
->> +# @TPMmssimOptions:
-> Please capitalize similar to TPMPassthroughOptions and
-> TPMEmulatorOptions: TPMMssimOptions.
->
->> +#
->> +# Information for the mssim emulator connection
->> +#
->> +# @command: command socket for the TPM emulator
-> Blank line, please.
->
->> +# @control: control socket for the TPM emulator
->> +#
->> +# Since: 7.2.0
-> Since 8.2
->
->> +##
->> +{ 'struct': 'TPMmssimOptions',
->> +  'data': {
->> +      '*command': 'SocketAddress',
->> +      '*control': 'SocketAddress' },
-> Locally consistent indentation is
->
->       'data': { '*command': 'SocketAddress',
->                 '*control': 'SocketAddress' },
->
->> +  'if': 'CONFIG_TPM' }
->> +
->>   ##
->>   # @TpmTypeOptions:
->>   #
->> @@ -124,6 +141,7 @@
->>   #
->>   # @type: - 'passthrough' The configuration options for the TPM passthrough type
->>   #        - 'emulator' The configuration options for TPM emulator backend type
->> +#        - 'mssim' The configuration options for TPM emulator mssim type
->>   #
->>   # Since: 1.5
->>   ##
->> @@ -131,7 +149,8 @@
->>     'base': { 'type': 'TpmType' },
->>     'discriminator': 'type',
->>     'data': { 'passthrough' : 'TPMPassthroughOptionsWrapper',
->> -            'emulator': 'TPMEmulatorOptionsWrapper' },
->> +            'emulator': 'TPMEmulatorOptionsWrapper',
->> +            'mssim' : 'TPMmssimOptions' },
->>     'if': 'CONFIG_TPM' }
->>   
->>   ##
->> @@ -150,7 +169,8 @@
->>               'id' : 'str' },
->>     'discriminator': 'type',
->>     'data': { 'passthrough' : 'TPMPassthroughOptions',
->> -            'emulator': 'TPMEmulatorOptions' },
->> +            'emulator': 'TPMEmulatorOptions',
->> +            'mssim': 'TPMmssimOptions' },
->>     'if': 'CONFIG_TPM' }
->>   
->>   ##
-> Address my nitpicking, and you may add
->
-> Acked-by: Markus Armbruster <armbru@redhat.com>
->
 
