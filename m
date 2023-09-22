@@ -2,89 +2,174 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EC87ABAB8
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 22:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0217ABACA
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 23:01:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjnCc-0005Np-1Y; Fri, 22 Sep 2023 16:56:42 -0400
+	id 1qjnGE-0006Mw-A8; Fri, 22 Sep 2023 17:00:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qjnCZ-0005Ng-PR
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 16:56:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
+ id 1qjnGB-0006Ml-Ub
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:00:24 -0400
+Received: from mgamail.intel.com ([134.134.136.24])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
- id 1qjnCY-00051B-3i
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 16:56:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695416197;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MWAOP3CbJ/07K4yiik6OFmQrO/zwE7mV2TLrJCQE//Y=;
- b=WSnsra5KwfAHPkxoWFUW955wypVWPfbwBmobBBB9kqiU1RzUNJqU1NwVJ50pnNQUdS7aw2
- eEGZPE2rBBVXoJyuC22UM8T+LMuxpmK9LM1hwb4Ur1zHs5dgurbGYI20fchuskCjBHH25z
- r62McXMUzwudeP2WlD5KTWLoGjEDdxI=
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com
- [209.85.166.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-_OZECsOQMwqNjWhOS99hAA-1; Fri, 22 Sep 2023 16:56:35 -0400
-X-MC-Unique: _OZECsOQMwqNjWhOS99hAA-1
-Received: by mail-io1-f70.google.com with SMTP id
- ca18e2360f4ac-7983537d6c1so206657739f.3
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 13:56:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695416194; x=1696020994;
- h=content-transfer-encoding:mime-version:organization:references
- :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MWAOP3CbJ/07K4yiik6OFmQrO/zwE7mV2TLrJCQE//Y=;
- b=tjneSXqzznu6i3ACO9ENU0AdjfHeMY8WACNgMiT+o1XewSO9C/mPZ5W2F0BENNWrJr
- b830JukvvZ1vMsd8DxBwr2Li2YrtfKKg67Fbr15ZNcky7mV0nJhT6IjqVcVu+0ePvala
- EZENqchNoRj/JqMfz81pzoePz2U5F10vmFhnGnH4vPm4RKvIed2ACiXVv3MSRhUjNqzo
- dtz5MHbNB3irn5JaBuTC2oB2dPZiRf/VGjvikOLjW6zdx4i3yQ2kUgO9pfs5jzMiYFph
- kjG30KxjuE9h1XsU4ktQHOq7F2DAyejvE8viOF9rDL3xWGbMTE9WmpQzRkjkw38QERjh
- VdDA==
-X-Gm-Message-State: AOJu0YwLQ89zjHymGHnZdlAEeYJj3s/creg7A1gEJymyg7ykMfSrzzw3
- JWEY9+jp0lXBLT+gXtJzMyGLfUK9LV51Kh3tLAkghnKNkk5VljQpcwyG95gCycYNjfc5GsS0hf1
- iy8AZb4S1JXX5D3A=
-X-Received: by 2002:a6b:7515:0:b0:79f:99b8:336 with SMTP id
- l21-20020a6b7515000000b0079f99b80336mr468307ioh.18.1695416194264; 
- Fri, 22 Sep 2023 13:56:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtWDlB4u84NFrynDTRnE/bJ2b82vXo+yFSP3Uhp8N/OFdj0qFqlmFcXPyO5QLbifaSg8rUZA==
-X-Received: by 2002:a6b:7515:0:b0:79f:99b8:336 with SMTP id
- l21-20020a6b7515000000b0079f99b80336mr468293ioh.18.1695416193962; 
- Fri, 22 Sep 2023 13:56:33 -0700 (PDT)
-Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
- g21-20020a6b6b15000000b007836c7e8dccsm1146242ioc.17.2023.09.22.13.56.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 13:56:33 -0700 (PDT)
-Date: Fri, 22 Sep 2023 14:56:31 -0600
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Jing Liu <jing2.liu@intel.com>
-Cc: qemu-devel@nongnu.org, clg@redhat.com, pbonzini@redhat.com,
- kevin.tian@intel.com, reinette.chatre@intel.com, jing2.liu@linux.intel.com
-Subject: Re: [PATCH v2 0/4] Support dynamic MSI-X allocation
-Message-ID: <20230922145631.2bdc67dd.alex.williamson@redhat.com>
-In-Reply-To: <20230918094507.409050-1-jing2.liu@intel.com>
-References: <20230918094507.409050-1-jing2.liu@intel.com>
-Organization: Red Hat
+ (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
+ id 1qjnFu-0005Fy-Sa
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:00:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1695416406; x=1726952406;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=XF+PkmfKmmfKJPlVIAk53mJIBHivSF2TIyi3B5FZvHo=;
+ b=Y0O9pe88YPd80ji4mU5Ku3l479UzNsJBzAVCBbYHm4UOB34h1CJMoAsa
+ bA0PAaTuueGnxM2UDfjaZ2EsBstjEKxnR9ooQKQvAvjVUOP5mboZQ0OVW
+ UYk7scWvzkErIlwAc+cGL4jxvl1gfR/q+rv96xxekHqANjMxl9kMc9BkF
+ QlJz61ZccMXgB3iAerYIqAhu8pbiugGYvj6ul9zyFXG99RatcHx/8MN9Z
+ 1dgoP4PnJHAGEB4+YyjcB+y4xzZIWpRrvFSul1eaYixdSKSIRUlhM35LD
+ jtZQEYv3TTm3VDfu3MgAip3NWsL1fjGhaMcyd6nsK4aXl8sa36fUQmwTL Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="383691842"
+X-IronPort-AV: E=Sophos;i="6.03,169,1694761200"; d="scan'208";a="383691842"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2023 13:59:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="750965572"
+X-IronPort-AV: E=Sophos;i="6.03,169,1694761200"; d="scan'208";a="750965572"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmsmga007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 22 Sep 2023 13:59:50 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Fri, 22 Sep 2023 13:59:50 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Fri, 22 Sep 2023 13:59:49 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Fri, 22 Sep 2023 13:59:49 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.177)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Fri, 22 Sep 2023 13:59:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UcgxcYAfzr6XhE4Ioj3aS98GZu0IOwxXMWYsl67iPNcjXsoctdnoIVo2MA86xvQ+52MosH1Cc05y6MsfF0WKi8aZPbh3RuG8qvBbzfPdz40hotM9RlV8zinsTrp7COB6fNuq4D1H+IItbAZj0NCEOo06yTecsKyCYxtGfnSM4kDtG3wuzQld897ALe5SGIHlQVkj7n/hnIjv7H/1bFwlZGaOvbzBIeRhdPTER3xoaaOJmB6rVz/GuEIFjVOGTJqLZHdnQpKVHZ0D2T3gLQiL6pw06AClArTQntNwW09Qrg7zw3a9UAfvPiVu1VBcUq3tNLvv4RVct9v+jDhNvpsRdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vWqJXVz+LCvKESXXHYCBblwVKoRST2pHGMj6sDcYJ9k=;
+ b=Km+xEtCm76acVGTczSguYfPJE+vELh2nqK0eLEv/5zYTZsuOes3mdm+36+r4wps9/e6Km+1xuU5cpcihkHyjhDDSz3O4CCn9k60iNrCqMZ3uNkcmR5wA/Z/JUAxusQoK5LEBzrC9/nhmOWyhFf6gU5NIrST4QYRc6JF6qyI5wW28HFdOq2dqzXm7EbcgxJjwgtkvFy3RM9HrYTbgYuwJvjT0kxJikcJGyNn0URgGwTuWQ2ruVDti2TQJqZhn7bNnKwpj6rN477pyHBzzLiP4qCqNduD0UsO/46Fx/XveY6wkLCvAIHa1u5KxP2sGRuVpXZVM1D/9JKasCUJNT68QPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com (2603:10b6:510:1e3::15)
+ by SA1PR11MB8426.namprd11.prod.outlook.com (2603:10b6:806:38d::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.23; Fri, 22 Sep
+ 2023 20:59:47 +0000
+Received: from PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::e9ca:a5a7:ada1:6ee8]) by PH7PR11MB5984.namprd11.prod.outlook.com
+ ([fe80::e9ca:a5a7:ada1:6ee8%5]) with mapi id 15.20.6813.017; Fri, 22 Sep 2023
+ 20:59:47 +0000
+Message-ID: <d0681b65-0141-68a8-08ed-a227df3c12b2@intel.com>
+Date: Fri, 22 Sep 2023 13:59:42 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Betterbird/102.13.0
+Subject: Re: [PATCH 2/4] hw/pci-bridge/cxl_upstream: Fix bandwidth entry base
+ unit for SSLBIS
+To: Michael Tokarev <mjt@tls.msk.ru>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, <qemu-devel@nongnu.org>, Michael Tsirkin
+ <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, <linux-cxl@vger.kernel.org>
+CC: Li Zhijian <lizhijian@cn.fujitsu.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ <linuxarm@huawei.com>
+References: <20230904132806.6094-1-Jonathan.Cameron@huawei.com>
+ <20230904132806.6094-3-Jonathan.Cameron@huawei.com>
+ <f92187e6-c7a3-3826-f980-b95533e18643@tls.msk.ru>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <f92187e6-c7a3-3826-f980-b95533e18643@tls.msk.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BYAPR05CA0038.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::15) To PH7PR11MB5984.namprd11.prod.outlook.com
+ (2603:10b6:510:1e3::15)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=alex.williamson@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB5984:EE_|SA1PR11MB8426:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e2961ac-663a-4d9b-1f48-08dbbbaeda54
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qIemGZE80/51rdXy7Vkro5tCTelDD61/ROAPr2rX1k+Q265Zg13hZQrbifXGoqX+zzCwax6M6Hv3gTTH/A8F9+1kJl55PaDpwjemcTDqTqUBcSq8zR3Cc9E4MDJdchnbeH3EXIf8JO9ZXkNwytp4RAnc3VdRTACSvF1YCWY0yb3ucnSj3MRqx2nPSrEhlcVPkj8tr0OH0Rwj4B4QRNfq4p5v1WCU1ToXx8sOKaVeA7GMOxpYhQqIayLNN8m+27hCHtcXKW7wLXT24tb6e65OyDqCI5jZo6imQvL48OZxKIMUxmFMtrcS95thC+YnekW7w/Dq8ZvxAunTpDutiV5G3laVA1HH6qWcMZCGgUuGMl2f2rDXQHuPkOEkVLa4pM1+FoAa0cdolSychMv2onIafUTKfW1vhawxSWygkLbex27FDOGYF7oCWJJeNXAz5RyOMdKDE+Qdjjja00jeFvKUaZ8WumalJ9+M5tplM3gK8aqRiDNRTrt/foQ9jnZqeITRDV25p6Z2wO+F2mlh3KWiLeZWAAt7eykOdvzy6/MyO/H1IejF4k4mwiCtKX0q8F7Xvj/3RMzaq3pnFO3PWmqd7yZyovJzSgjj4zMnDvgZ8+69E3CuR7g5ijNDL8O/SGNcrxz0OQW3K3ktQZHXcoOOQg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB5984.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(39860400002)(376002)(346002)(396003)(366004)(186009)(1800799009)(451199024)(41300700001)(38100700002)(82960400001)(6666004)(36756003)(478600001)(2906002)(6486002)(2616005)(31696002)(86362001)(53546011)(26005)(6512007)(6506007)(83380400001)(316002)(66946007)(54906003)(66556008)(66476007)(4326008)(31686004)(110136005)(8676002)(8936002)(44832011)(5660300002)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UGdra2dNR1pqWDlrUWF6Ym5NdTJJaHo0Y0s1WkRpYkNHNGpOekJ2aG5TVm44?=
+ =?utf-8?B?cmFlYmU4WkJEc1JHSDNuNXp3R0lzRmpDdGpkTmdpVzBHSkxLQUdXVW5OL2tI?=
+ =?utf-8?B?dWp2YjJpWW1sQUNCN2hhMmgwWERnRHRYKzc5eE5FRWE2UXpNS0htbERpUFpU?=
+ =?utf-8?B?VTBBRlNXVUxzYWl1dnJLeFRzRlhHeDhMOEdJbTVkd2ZmMHB5R09MUXBVem1M?=
+ =?utf-8?B?ZWo3WHdTc2kvdTJPSHJadUxtVVR3Uzc1OU9QdVlJWTUvM2VacWNNcjhQaDJW?=
+ =?utf-8?B?amQycVZiZmp5eGU3QjBRZjIyd0R6NG9HU1oyYlpoUHZRNWJKUHlmTXNLUG43?=
+ =?utf-8?B?VktheVdDL0xvYzlDYmd4NlVpVGxHR25BOTcrU2VpdTJMOW94OWJpODZ5Y3Nw?=
+ =?utf-8?B?ODJnTy9wdzhJcHB2cWlOeDdmVkM5OWdXVFBib1l1MGI0N1M4RUVhOU12bnRw?=
+ =?utf-8?B?cEpZWmUyemJObUNFV1BGK1BZb0diRmlreUhqYVE2cmV2ZUVkdUJ0cFpBczFw?=
+ =?utf-8?B?YzU2TnRobkp3Vm4vWnJvMzR2ZjFCOVd2QkNkek0xclhKajNYeHQzM3M1ajhx?=
+ =?utf-8?B?eU01YU1uRXlBWU82c2N0b1Q0MVdSSTJhUDhxZlFuQXNtbDZRY2kxTGRQR1FM?=
+ =?utf-8?B?TTBlTnNEL2JQanVIZnpuYXFkd252ODlrcGphb3NFUU5Vanp4d0E3MHpmVjRO?=
+ =?utf-8?B?dE13SnRNaHBNVXptcmtLbjlxdkRJMWNpWDFEaXdUZllrNWx6R1N3VDJpYm1k?=
+ =?utf-8?B?TzJ3b2hpQVdoN0ZPTG4zM2FhME5WQU40ZVpNZDZZdjIyVUlaM2hlbzZadG13?=
+ =?utf-8?B?Q1dvckRyME5UN295L3JveFJ2dExzWjRTY3V2TEZ6WU9DcjRhMEtLZkxkb29Z?=
+ =?utf-8?B?RW1GVGhIR3NwTEUwUjBXbG0vRWRNb1hWNFZCeHlnYUllNEN1L0R4c3UzY2xV?=
+ =?utf-8?B?NlJHSEZMQ3VIaWdJaTMvakN6U2cyZWJ6Y1pDRkZ1Ykg5dW5RbTRyRFZ5N1RB?=
+ =?utf-8?B?aS92bkl5VGV3K2VvZXkremR5WFIvQXFRaWVCTUN4Nk5BTDc5ZXdkVVo5TXoy?=
+ =?utf-8?B?VU8vODFGV3MwSXNWN0t3bllMdEVtcmF0N2NCOWFQME1rRnRPd1ZYTWhmZHRa?=
+ =?utf-8?B?NXlvZ2FwaUViMHpBSThaNDhsZ1V5YnBFQytWQXRvSDJOZFBmMVNwU2hrQmhz?=
+ =?utf-8?B?R0lFYnhIN0prN2R0dHdCaDFxNENocldqVFExaGM0V0Q2TldKRUV4QVk1eUZJ?=
+ =?utf-8?B?WTRXSTZlb0V4TnJLZEE1ZlFSY0tzaVZFSSsyVUllcFpjSFlBc0xjWi9QTnl0?=
+ =?utf-8?B?V2VJdmxHK0s2UVUyNzFaYkRtdHJUUkU2WTduMkxEWmpnVGh2bC82NnlBcmRZ?=
+ =?utf-8?B?cHJjUm9EZ2JPaE9nc0hKMng3Tk80SzN5WWVmV3dwZ2FwdE45dEtmUDhRMkNR?=
+ =?utf-8?B?bmV1a2V2MjVqc0RsZ3h3OWYvUHpCTkxHR2IzUFNCYmRIQ3J5d005eVZiSWow?=
+ =?utf-8?B?bDZTWUFiS3J1VGlEOGt1dTQrd1dib3piM3VBRlRtRDJZL2UwRjUyeEsvM1FM?=
+ =?utf-8?B?QUVrTldGcDdONUFQS2lvUHZZWWZSWXFNUld6VG81U3duNkl6eGdnM3A4TEN2?=
+ =?utf-8?B?ZHNMMnZWcCtEZlRLRm9sZ1lZdnQ5c0JjODZmS3U0eDlkNDVQODdhKzRqRWhB?=
+ =?utf-8?B?azJYL3NsOU9MbGZtMnZabjFWVGVIRDlWdmJVRnROeFhsbXhmeSszeFoxTUFN?=
+ =?utf-8?B?Q2pJTHhURENNVDVQM29TbVBacGFSV1l5K1dEMXExeGF5V1NIZ0RmSktDOXVU?=
+ =?utf-8?B?dEh0aGxJWEtka241Q2w5L3kxQVhUZm9iVnNxUFdubWlrSkZNK2hEZVBmdXk5?=
+ =?utf-8?B?OEZwS244NXl0VmwxOTM2NnBKUnBpRVBKcis0MWo4Mm90TlVHWVlYTzFCT1pv?=
+ =?utf-8?B?SXVCSGV2ckxGOWdkSURUUWZPdXJiQXhMVmU5Y3ZZNkVLeU94WkdMWk9ZSzR1?=
+ =?utf-8?B?T1M3NUxzS1dWdTVUUG1hVHdHU2pzeEkvdWxxMUQ3THVWQmd2M21OVVJSRW16?=
+ =?utf-8?B?RiszTVFUNkNoV0pXS0lIYXhob2xMRHlzZDVWclZneHJVN1Y5RkVtbHdSWFFH?=
+ =?utf-8?Q?b6L+/YXPXmW3g99uc6rZbcWl9?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e2961ac-663a-4d9b-1f48-08dbbbaeda54
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB5984.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2023 20:59:46.7058 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1oIbOVkpjrlpw0+ZshhPKb0IhIUd3jIjCW/fQO6OGqGfg8P7C70RtrIM9XLhFYiGPqZahWRXFqRFHlVFZf9wOw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8426
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=134.134.136.24; envelope-from=dave.jiang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,77 +185,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Sep 2023 05:45:03 -0400
-Jing Liu <jing2.liu@intel.com> wrote:
 
-> Changes since v1:
-> - v1: https://www.mail-archive.com/qemu-devel@nongnu.org/msg982842.html
-> - Revise Qemu to QEMU. (C=C3=A9dric)
-> - Add g_free when failure of getting MSI-X irq info. (C=C3=A9dric)
-> - Apply C=C3=A9dric's Reviewed-by. (C=C3=A9dric)
-> - Use g_autofree to automatically release. (C=C3=A9dric)
-> - Remove the failure message in vfio_enable_msix_no_vec(). (C=C3=A9dric)
->=20
-> Changes since RFC v1:
-> - RFC v1: https://www.mail-archive.com/qemu-devel@nongnu.org/msg978637.ht=
-ml
-> - Revise the comments. (Alex)
-> - Report error of getting irq info and remove the trace of failure
->   case. (Alex, C=C3=A9dric)
-> - Only store dynamic allocation flag as a bool type and test
->   accordingly. (Alex)
-> - Move dynamic allocation detection to vfio_msix_early_setup(). (Alex)
-> - Change the condition logic in vfio_msix_vector_do_use() that moving
->   the defer_kvm_irq_routing test out and create a common place to update
->   nr_vectors. (Alex)
-> - Consolidate the way of MSI-X enabling during device initialization and
->   interrupt restoring that uses fd =3D -1 trick. Create a function doing
->   that. (Alex)
->=20
-> Before kernel v6.5, dynamic allocation of MSI-X interrupts was not
-> supported. QEMU therefore when allocating a new interrupt, should first
-> release all previously allocated interrupts (including disable of MSI-X)
-> and re-allocate all interrupts that includes the new one.
->=20
-> The kernel series [1] adds the support of dynamic MSI-X allocation to
-> vfio-pci and uses the existing flag VFIO_IRQ_INFO_NORESIZE to guide user
-> space, that when dynamic MSI-X is supported the flag is cleared.
->=20
-> This series makes the behavior for VFIO PCI devices when dynamic MSI-X
-> allocation is supported. When guest unmasks an interrupt, QEMU can
-> directly allocate an interrupt on host for this and has nothing to do
-> with the previously allocated ones. Therefore, host only allocates
-> interrupts for those unmasked (enabled) interrupts inside guest when
-> dynamic MSI-X allocation is supported by device.
->=20
-> When guests enable MSI-X with all of the vectors masked, QEMU need match
-> the state to enable MSI-X with no vector enabled. During migration
-> restore, QEMU also need enable MSI-X first in dynamic allocation mode,
-> to avoid the guest unused vectors being allocated on host. To
-> consolidate them, we use vector 0 with an invalid fd to get MSI-X
-> enabled and create a common function for this. This is cleaner than
-> setting userspace triggering and immediately release.
->=20
-> Any feedback is appreciated.
->=20
-> Jing
->=20
-> [1] https://lwn.net/Articles/931679/
->=20
-> Jing Liu (4):
->   vfio/pci: detect the support of dynamic MSI-X allocation
->   vfio/pci: enable vector on dynamic MSI-X allocation
->   vfio/pci: use an invalid fd to enable MSI-X
->   vfio/pci: enable MSI-X in interrupt restoring on dynamic allocation
->=20
->  hw/vfio/pci.c        | 121 +++++++++++++++++++++++++++++++++----------
->  hw/vfio/pci.h        |   1 +
->  hw/vfio/trace-events |   2 +-
->  3 files changed, 96 insertions(+), 28 deletions(-)
->=20
 
-Some minor comments on 2/ but otherwise:
+On 9/22/23 13:08, Michael Tokarev wrote:
+> 04.09.2023 16:28, Jonathan Cameron:
+>> From: Dave Jiang <dave.jiang@intel.com>
+>>
+>> According to ACPI spec 6.5 5.2.28.4 System Locality Latency and Bandwidth
+>> Information Structure, if the "Entry Base Unit" is 1024 for BW and the
+>> matrix entry has the value of 100, the BW is 100 GB/s. So the
+>> entry_base_unit should be changed from 1000 to 1024 given the comment notes
+>> it's 16GB/s for .latency_bandwidth.
+>>
+>> Fixes: 882877fc359d ("hw/pci-bridge/cxl-upstream: Add a CDAT table access DOE")
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> ---
+>>   hw/pci-bridge/cxl_upstream.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+>> index 9159f48a8c..2b9cf0cc97 100644
+>> --- a/hw/pci-bridge/cxl_upstream.c
+>> +++ b/hw/pci-bridge/cxl_upstream.c
+>> @@ -262,7 +262,7 @@ static int build_cdat_table(CDATSubHeader ***cdat_table, void *priv)
+>>                   .length = sslbis_size,
+>>               },
+>>               .data_type = HMATLB_DATA_TYPE_ACCESS_BANDWIDTH,
+>> -            .entry_base_unit = 1000,
+>> +            .entry_base_unit = 1024,
+>>           },
+>>       };
+> 
+> BTW, is this one stable-worthly?  How it's been found, - due to some real
+> issue or just by code review?
 
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-
+Code review. I was doing CXL CDAT parsing. So I guess I'm the first user. It's small enough that it won't make much of a difference for the resulting computed data. Mostly just correctness fixing. 
+> 
+> Thanks,
+> 
+> /mjt
+> 
+> 
 
