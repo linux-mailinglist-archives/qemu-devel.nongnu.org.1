@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286547AB91D
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 20:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEA37AB923
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 20:25:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjkoY-0005ID-H6; Fri, 22 Sep 2023 14:23:42 -0400
+	id 1qjkpQ-0005yz-23; Fri, 22 Sep 2023 14:24:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjkoW-0005Hx-LU
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:23:40 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
+ id 1qjkpN-0005yj-FP
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:24:33 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjkoV-00015m-7k
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:23:40 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-307d58b3efbso2336075f8f.0
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 11:23:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
+ id 1qjkpL-0001A6-MH
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:24:33 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4053f24c900so12465e9.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 11:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695407017; x=1696011817; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=IaVutyAwfwZZbfy1I7/I3UWY7YNzk9NYg8AD4SguaAg=;
- b=wF58YHUCatIVm+Y5pWZFxcsIV6ZY7hwAsu6Yd+u20M+dDWqBg0Ogv6hgEkWDNwmqY0
- sAbQkzFc1uHon2cXOJJm2RIvoO1cPGILGymjriwn9caeiK07NlWTXzhmGXrSnLqyF5Xu
- Gq7lKcfUPg4TQboU4crhAFwPF7XZPGH4F1p1EFF3uZzzPx+nPGZd6xNbiobwp+azXsNb
- lmtp5bBSVRg4SBhPKBGqDQuAJfKaicGu5WjZpYLAbKkDVT/z1Tx0Afcjvle4AYwbEQsa
- wSCwQvmdR3czcvXRbGmtnRLqRsS8XCKVb7L96uEh6hO7KDmLIUS8BI452Lx7XKsmxaxi
- GTXg==
+ d=google.com; s=20230601; t=1695407063; x=1696011863; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q9YX3XP+SjP8dNIsi+AfDLWEbL7erHHKGk6ZhuChOIU=;
+ b=PmpXsWVVgfFeqQHHmzAYr039XwMjMFPNwmbtnbq0EJa7WhGUtqSVwovsGV33y1eCB/
+ I43/P3jF/Zn2LZvAa+MdmgLWxg2F0TwK5gPI6AAjU8c9Ssoe6YlTgtXj6haR/htiBRmn
+ tVB5Vk774t9t2zG6tc2rh8sCU4d7PnlEyeJYtuwZcjGvgZ5vAdQVMeMAg48xXm5POL5F
+ uWGxdokEpG00xR46YlND7BYKUSMuJ5AJTg1vxoHahgNdF7zNo/XRCNqdNQPblQqkIw+n
+ j+3JgSY8N/T4RP+VuBeXAWadLU2kW88RVw99iE8aN1VrKqjnvgVPaJVEsxFaQlkuz1BL
+ 6rUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695407017; x=1696011817;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=IaVutyAwfwZZbfy1I7/I3UWY7YNzk9NYg8AD4SguaAg=;
- b=YkRy04UpfKQMSpNnN/E6EwEo6X9z2tih/S/0RO8nDerF9ARh91N0TC03iEapNXS/6+
- HqQDBPLp9oSikOr6FAfKyVdY6nRIMca9TLGGBOrSFImyCws3BzAex4hLwdz+TCA9SPIM
- W9RvTiv0CmtF0ClOG/xjimLbmPwP7WsfxHbsFeqvZzQOOSRSyIjlXA+yWDAUy9BNSMwQ
- P6iyBKZ0288EM4SKyiq3X/8jDjneKYl18ulIw1IdMzyTHdq4lvXRTXv8JmLr//Ve8kfw
- UgwNOCHQGdVVwETsiq94OzwqF24vHtbOGHknRAtWcXuVxEJlW1Q7eGmjBoCCFJzoyjPx
- 0r5w==
-X-Gm-Message-State: AOJu0YweOOr+rIrKI+jEB+VMwYIQBfd5EDIsz1vwR5A48lKr9EWbQ6hr
- fV1piwIJBhY4hjTPxNLdaIv36g==
-X-Google-Smtp-Source: AGHT+IEhE2ghZ8oQB0VrAWJ1J2sIvJnSz8ElqYFGdE2fwVs/N3YCAYdWYbivq/QAZ+lqR18KlhsuGw==
-X-Received: by 2002:adf:f58a:0:b0:313:f463:9d40 with SMTP id
- f10-20020adff58a000000b00313f4639d40mr351218wro.65.1695407017460; 
- Fri, 22 Sep 2023 11:23:37 -0700 (PDT)
-Received: from [192.168.192.175] (181.red-88-28-23.dynamicip.rima-tde.net.
- [88.28.23.181]) by smtp.gmail.com with ESMTPSA id
- e10-20020a5d594a000000b003180fdf5589sm5107382wri.6.2023.09.22.11.23.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Sep 2023 11:23:37 -0700 (PDT)
-Message-ID: <bbea6e2c-d6a9-7b7e-13fc-a76ad31775b6@linaro.org>
-Date: Fri, 22 Sep 2023 20:23:33 +0200
+ d=1e100.net; s=20230601; t=1695407063; x=1696011863;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q9YX3XP+SjP8dNIsi+AfDLWEbL7erHHKGk6ZhuChOIU=;
+ b=YKHhZMrSHxiLPeqdQNxEptw93BiXWJoEQJrNDCpNHtKngZt7K9tQiVD9aDFXvuo2P6
+ vmoXgW31JXh25J3upPJdPazUubtVui5hkZmxZI4/QgYi/XCCD/fh1MZ3M4byGtiZCHXN
+ SDGijskjlRq7LnbbHapb42l4HqYGw6w5HnY3OP8xCxIN47t9XAhLBLWPYaOn6e8i0yek
+ HPUU2RMn079aBb2ATY6SKML0YE7aiIqvGRVqJVoDlcrfYpzj/yJ68t+O73PzNQgNKpN6
+ p0TPnqXvLNxmD9qYc2g2Xl4s6/wbIPZDMv4P7LGYCh7TzSZ58rm1ajbT3s2eZKjwLnSK
+ CCqg==
+X-Gm-Message-State: AOJu0Yw+eT4ZItuLIoRFf3V11nXoLzvatqiimDkyKkmCEJMbfwcBJbDO
+ AdCvIVJntL9S54y9Zrfly7NR4HIhpGgpCwGnI2KQ3A==
+X-Google-Smtp-Source: AGHT+IFr3piyhDo/QvErXVqM/QMeUOis/IDjgEebalJyoBGe3M424STL+KgRfu9abYEDlUNNTOE7kBHpDDjYPfoYUF8=
+X-Received: by 2002:a05:600c:2146:b0:400:c6de:6a20 with SMTP id
+ v6-20020a05600c214600b00400c6de6a20mr7919wml.3.1695407062652; Fri, 22 Sep
+ 2023 11:24:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 2/4] aspeed: Clean up local variable shadowing
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org,
+References: <20230922181411.2697135-1-crauer@google.com>
+In-Reply-To: <20230922181411.2697135-1-crauer@google.com>
+From: Hao Wu <wuhaotsh@google.com>
+Date: Fri, 22 Sep 2023 11:24:12 -0700
+Message-ID: <CAGcCb128kdfZTTBB808iGONtdM9cnJF5CGxXhd+aS+eg2U=3Gg@mail.gmail.com>
+Subject: Re: [PATCH] hw/timer/npcm7xx_timer: Prevent timer from counting down
+ past zero
+To: Chris Rauer <crauer@google.com>
+Cc: peter.maydell@linaro.org, kfting@nuvoton.com, qemu-arm@nongnu.org, 
  qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- Markus Armbruster <armbru@redhat.com>
-References: <20230922155924.1172019-1-clg@kaod.org>
- <20230922155924.1172019-3-clg@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230922155924.1172019-3-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: multipart/alternative; boundary="000000000000b8dff90605f6b785"
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=wuhaotsh@google.com; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,24 +87,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/9/23 17:59, Cédric Le Goater wrote:
-> Remove superfluous local 'irq' variables and use the one define at the
-> top of the routine. This fixes warnings in aspeed_soc_ast2600_realize()
-> such as :
-> 
->    ../hw/arm/aspeed_ast2600.c: In function ‘aspeed_soc_ast2600_realize’:
->    ../hw/arm/aspeed_ast2600.c:420:18: warning: declaration of ‘irq’ shadows a previous local [-Wshadow=compatible-local]
->      420 |         qemu_irq irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
->          |                  ^~~
->    ../hw/arm/aspeed_ast2600.c:312:14: note: shadowed declaration is here
->      312 |     qemu_irq irq;
->          |              ^~~
-> 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+--000000000000b8dff90605f6b785
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Is this related to this error?
+
+https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html
+
+On Fri, Sep 22, 2023 at 11:14=E2=80=AFAM Chris Rauer <crauer@google.com> wr=
+ote:
+
+> The counter register is only 24-bits and counts down.  If the timer is
+> running but the qtimer to reset it hasn't fired off yet, there is a chanc=
+e
+> the regster read can return an invalid result.
+>
+> Signed-off-by: Chris Rauer <crauer@google.com>
 > ---
->   hw/arm/aspeed_ast2600.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+>  hw/timer/npcm7xx_timer.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c
+> index 32f5e021f8..a8bd93aeb2 100644
+> --- a/hw/timer/npcm7xx_timer.c
+> +++ b/hw/timer/npcm7xx_timer.c
+> @@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTimer
+> *t, uint32_t count)
+>  /* Convert a time interval in nanoseconds to a timer cycle count. */
+>  static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns)
+>  {
+> +    if (ns < 0) {
+> +        return 0;
+> +    }
+>      return clock_ns_to_ticks(t->ctrl->clock, ns) /
+>          npcm7xx_tcsr_prescaler(t->tcsr);
+>  }
+> --
+> 2.42.0.515.g380fc7ccd1-goog
+>
+>
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+--000000000000b8dff90605f6b785
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr">Is this related to this error?<br><br><a href=3D"https://l=
+ists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html">https://lists.g=
+nu.org/archive/html/qemu-devel/2023-09/msg04903.html</a><br></div><br><div =
+class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 22,=
+ 2023 at 11:14=E2=80=AFAM Chris Rauer &lt;<a href=3D"mailto:crauer@google.c=
+om">crauer@google.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
+ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
+4);padding-left:1ex">The counter register is only 24-bits and counts down.=
+=C2=A0 If the timer is<br>
+running but the qtimer to reset it hasn&#39;t fired off yet, there is a cha=
+nce<br>
+the regster read can return an invalid result.<br>
+<br>
+Signed-off-by: Chris Rauer &lt;<a href=3D"mailto:crauer@google.com" target=
+=3D"_blank">crauer@google.com</a>&gt;<br>
+---<br>
+=C2=A0hw/timer/npcm7xx_timer.c | 3 +++<br>
+=C2=A01 file changed, 3 insertions(+)<br>
+<br>
+diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c<br>
+index 32f5e021f8..a8bd93aeb2 100644<br>
+--- a/hw/timer/npcm7xx_timer.c<br>
++++ b/hw/timer/npcm7xx_timer.c<br>
+@@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTimer *=
+t, uint32_t count)<br>
+=C2=A0/* Convert a time interval in nanoseconds to a timer cycle count. */<=
+br>
+=C2=A0static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns=
+)<br>
+=C2=A0{<br>
++=C2=A0 =C2=A0 if (ns &lt; 0) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
++=C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0return clock_ns_to_ticks(t-&gt;ctrl-&gt;clock, ns) /<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0npcm7xx_tcsr_prescaler(t-&gt;tcsr);<br>
+=C2=A0}<br>
+-- <br>
+2.42.0.515.g380fc7ccd1-goog<br>
+<br>
+</blockquote></div>
+
+--000000000000b8dff90605f6b785--
 
