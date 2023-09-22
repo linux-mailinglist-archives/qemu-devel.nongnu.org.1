@@ -2,87 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD047AB12F
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 13:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD6C7AB199
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 14:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjef6-00088E-Gm; Fri, 22 Sep 2023 07:49:32 -0400
+	id 1qjeq3-0006bk-7H; Fri, 22 Sep 2023 08:00:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qjef2-00087n-Gy
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:49:28 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qjeev-0000fb-PP
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:49:28 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-2745cd2ba68so1403725a91.0
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 04:47:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1695383240; x=1695988040;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=tZ2JAP3KP0J6f/lwwcf0OERy1rLupfPFuw/u9x6M7u8=;
- b=Pz12Lpda4RizgTPS2TMLLyxZ5xOraA8+vjRtatFLI/f25hIJopfV9Dlj9sInDU8quu
- DO7ZrDWUofXM2lKqrwgzkB3g2fdEBMElztjE+0yMEEZcyijLCSHgrwajtTh8hNsHAC+e
- J3/UmDpplC8kyWZcjnfrk5EWl0tvqXuBc8R8j63YAEZSqPGarh1s2S+Zt1wVsTqcW/+1
- 6JwhGGSsUpYAgooo9No0p7gozjP5t0MPpKQiBDKEaQm+PukFXjnYMMPDpxcuFlKRqE0j
- miYjzp0W0enoeAX/y1EAOQSCyb+mij98c8aT0H4Ila6ppN8lTz4oCOpxPnXnvzU7pREQ
- mMTw==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjeq1-0006Zj-1T
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:00:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjepy-0003Km-WE
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:00:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695384046;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=F8TaEiqQpLPCJRxQTGdoDtkGxRtZlp4gpOwJvjbQkXw=;
+ b=VearFW1Fe34xs7zbP2pfCEuSuUqPVbwyBo+QvpUH06v15nJ6v4jyj+FH7fBFwt1dH6siY4
+ e8NlQbEn0z3ZApFyLAruOk6b9eft8O5A3zMP+HyngpDV1GoFKv5GOY4C3cTeZukAYsEzlg
+ 3YwBEV+tdhiyhWMzwURfL2H7KeMMaYs=
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
+ [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-266-FgQAYGBAPDWc8tgRj8StPA-1; Fri, 22 Sep 2023 08:00:44 -0400
+X-MC-Unique: FgQAYGBAPDWc8tgRj8StPA-1
+Received: by mail-pl1-f200.google.com with SMTP id
+ d9443c01a7336-1c41392a0a2so16474815ad.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 05:00:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695383240; x=1695988040;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1695384043; x=1695988843;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tZ2JAP3KP0J6f/lwwcf0OERy1rLupfPFuw/u9x6M7u8=;
- b=dMWabdvkOjZnOqMlkeVd6H8Zy6INFLUOKZ/UUK7WWzX1ny48I8ehfibqKyvXFkRBJb
- E1CjDv4185dAkxKbocuvZm+yWRbtcSCgYbv13YEzGqNcmb5H3e2g+52AIsc+cepmMIsh
- BwVUuEKYFz581b2SU5QCbinsi1GZZhav+UfpUGapmPNAuMT8TRJtbYwg+V8UyjFBbcSN
- 62Bq0R287fMxRYkhE4wqiLbiXTowzw6m4n7/jBKFlpxe4huC8w0XCCb/r8t/X3/zm+Sg
- UZulcSvw8yImv7LBNGQhf0gdlvdfMzSdHKXqQQs76im1dtDHouYd5jwI+Tv6xmtUm/LL
- pWDA==
-X-Gm-Message-State: AOJu0YxB5PfOU+2X61YwX+2lFqxXqGJXpLuHUGNhPjj/ClfS9NYijs6i
- xyPFmUItCRo1eLO1mCOPzI1ZjQ==
-X-Google-Smtp-Source: AGHT+IFFymD04GnjOx+/oAQChw64X7ONlsJFNcBlWajJKcqKmwTh6ub3Gx6EQoMZc3wKEIArftY4Wg==
-X-Received: by 2002:a17:90a:9bca:b0:26b:534e:234 with SMTP id
- b10-20020a17090a9bca00b0026b534e0234mr7338937pjw.35.1695383239787; 
- Fri, 22 Sep 2023 04:47:19 -0700 (PDT)
-Received: from 64217.gitgo.cc ([8.210.91.195])
+ bh=F8TaEiqQpLPCJRxQTGdoDtkGxRtZlp4gpOwJvjbQkXw=;
+ b=V9SyKOyJnWRIbRmkVDjGOKr+8A/INFYjQLj/bofWeIWn3h/964KYKk5mt0RvnZBLfw
+ KGUwY5luRF1K4s1BEp3i3yT/+O4O77oejVpoYJN4Kryy0kEiUIDDK4D18iKygew5dRs2
+ CTBjFkMv6yoS0EgmhNMvSNSeY6McGKsLBDCwtRkpde3CFxHDZ12sHtlB8nfj7388ahLf
+ gPQ8Zq3ojfugi43KiVkJXC1DCB+htgQNoBKIJyk0XSffAaJy7ZyO/bfjGX3AnkmnHEpM
+ vaAp25pxVHH2DRs1hEUGNRG/NUNcPCpiGSHU8k+xkfaylBna9VaPDQd1E4SdRtDboImV
+ OCig==
+X-Gm-Message-State: AOJu0YwbHM+7wO8JxEcEwqstChpyHo7xAnFvzun/NaEBs2hfKbYXG15B
+ +cC/uXSQNQy3MibtpfN3Xii55ddx4VCp6nGUl7PdtuTuI/kCkSI53PvDbv5gQ2iXbueTwjpZ00w
+ BM88dqJexxRykwJU=
+X-Received: by 2002:a17:903:1252:b0:1bc:6861:d746 with SMTP id
+ u18-20020a170903125200b001bc6861d746mr8612784plh.58.1695384043429; 
+ Fri, 22 Sep 2023 05:00:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHv5UzQHWd9LfEr1HLio+15IGjmtPOPdrB9PBiw/GKXHR+HiZfLGaoP+CVBniLZ+Ui30y8oNg==
+X-Received: by 2002:a17:903:1252:b0:1bc:6861:d746 with SMTP id
+ u18-20020a170903125200b001bc6861d746mr8612741plh.58.1695384042897; 
+ Fri, 22 Sep 2023 05:00:42 -0700 (PDT)
+Received: from smtpclient.apple ([116.73.132.49])
  by smtp.gmail.com with ESMTPSA id
- r6-20020a17090a438600b00263f41a655esm3303961pjg.43.2023.09.22.04.47.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 04:47:19 -0700 (PDT)
-From: Li Feng <fengli@smartx.com>
-To: Markus Armbruster <armbru@redhat.com>,
+ w12-20020a170902e88c00b001c55e13bf39sm3266175plg.275.2023.09.22.05.00.38
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 22 Sep 2023 05:00:42 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: [PATCH v4] hw/i386/pc: improve physical address space bound check
+ for 32-bit x86 systems
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <60f44bdf-36cc-8402-bfbb-c6a964fe74db@linaro.org>
+Date: Fri, 22 Sep 2023 17:30:37 +0530
+Cc: David Hildenbrand <david@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- qemu-block@nongnu.org (open list:Block layer core),
- qemu-devel@nongnu.org (open list:All patches CC here)
-Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v6 5/5] vhost-user: fix lost reconnect
-Date: Fri, 22 Sep 2023 19:46:15 +0800
-Message-ID: <20230922114625.5786-6-fengli@smartx.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230922114625.5786-1-fengli@smartx.com>
-References: <20230721105205.1714449-1-fengli@smartx.com>
- <20230922114625.5786-1-fengli@smartx.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::1033;
- envelope-from=fengli@smartx.com; helo=mail-pj1-x1033.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ qemu-devel@nongnu.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7A557569-58A2-4288-A7DE-803E9EA88797@redhat.com>
+References: <20230922041619.3909-1-anisinha@redhat.com>
+ <60f44bdf-36cc-8402-bfbb-c6a964fe74db@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,137 +109,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the vhost-user is reconnecting to the backend, and if the vhost-user fails
-at the get_features in vhost_dev_init(), then the reconnect will fail
-and it will not be retriggered forever.
 
-The reason is:
-When the vhost-user fails at get_features, the vhost_dev_cleanup will be called
-immediately.
 
-vhost_dev_cleanup calls 'memset(hdev, 0, sizeof(struct vhost_dev))'.
+> On 22-Sep-2023, at 4:12 PM, Philippe Mathieu-Daud=C3=A9 =
+<philmd@linaro.org> wrote:
+>=20
+> On 22/9/23 06:16, Ani Sinha wrote:
+>> 32-bit x86 systems do not have a reserved memory for hole64. On those =
+32-bit
+>> systems without PSE36 or PAE CPU features, hotplugging memory devices =
+are not
+>> supported by QEMU as QEMU always places hotplugged memory above 4 GiB =
+boundary
+>> which is beyond the physical address space of the processor. Linux =
+guests also
+>> does not support memory hotplug on those systems. Please see Linux
+>> kernel commit b59d02ed08690 ("mm/memory_hotplug: disable the =
+functionality
+>> for 32b") for more details.
+>> Therefore, the maximum limit of the guest physical address in the =
+absence of
+>> additional memory devices effectively coincides with the end of
+>> "above 4G memory space" region for 32-bit x86 without PAE/PSE36. When =
+users
+>> configure additional memory devices, after properly accounting for =
+the
+>> additional device memory region to find the maximum value of the =
+guest
+>> physical address, the address will be outside the range of the =
+processor's
+>> physical address space.
+>> This change adds improvements to take above into consideration.
+>> For example, previously this was allowed:
+>> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
+>> With this change now it is no longer allowed:
+>> $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
+>> qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff =
+phys-bits too low (32)
+>> However, the following are allowed since on both cases physical =
+address
+>> space of the processor is 36 bits:
+>> $ ./qemu-system-x86_64 -cpu pentium2 -m size=3D10G
+>> $ ./qemu-system-x86_64 -cpu pentium,pse36=3Don -m size=3D10G
+>> For 32-bit, without PAE/PSE36, hotplugging additional memory is no =
+longer allowed.
+>> $ ./qemu-system-i386 -m size=3D1G,maxmem=3D3G,slots=3D2
+>> qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff =
+phys-bits too low (32)
+>> $ ./qemu-system-i386 -machine q35 -m size=3D1G,maxmem=3D3G,slots=3D2
+>> qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff =
+phys-bits too low (32)
+>> A new compatibility flag is introduced to make sure pc_max_used_gpa() =
+keeps
+>> returning the old value for machines 8.1 and older.
+>> Therefore, the above is still allowed for older machine types in =
+order to support
+>> compatibility. Hence, the following still works:
+>> $ ./qemu-system-i386 -machine pc-i440fx-8.1 -m =
+size=3D1G,maxmem=3D3G,slots=3D2
+>> $ ./qemu-system-i386 -machine pc-q35-8.1 -m size=3D1G,maxmem=3D3G,slots=
+=3D2
+>> Further, following is also allowed as with PSE36, the processor has =
+36-bit
+>> address space:
+>> $ ./qemu-system-i386 -cpu 486,pse36=3Don -m size=3D1G,maxmem=3D3G,slots=
+=3D2
+>> After calling CPUID with EAX=3D0x80000001, all AMD64 compliant =
+processors
+>> have the longmode-capable-bit turned on in the extended feature flags =
+(bit 29)
+>> in EDX. The absence of CPUID longmode can be used to differentiate =
+between
+>> 32-bit and 64-bit processors and is the recommended approach. QEMU =
+takes this
+>> approach elsewhere (for example, please see x86_cpu_realizefn()), =
+With
+>> this change, pc_max_used_gpa() also uses the same method to detect =
+32-bit
+>> processors.
+>> Unit tests are modified to not run 32-bit x86 tests that use memory =
+hotplug.
+>> Suggested-by: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+>> ---
+>>  hw/i386/pc.c                   | 31 ++++++++++++++++++++++++++++---
+>>  hw/i386/pc_piix.c              |  4 ++++
+>>  hw/i386/pc_q35.c               |  2 ++
+>>  include/hw/i386/pc.h           |  6 ++++++
+>>  tests/qtest/bios-tables-test.c | 26 ++++++++++++++++++--------
+>>  tests/qtest/numa-test.c        |  7 ++++++-
+>>  6 files changed, 64 insertions(+), 12 deletions(-)
+>=20
+>=20
+>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>> index 54838c0c41..2a689cf0bd 100644
+>> --- a/hw/i386/pc.c
+>> +++ b/hw/i386/pc.c
+>> @@ -907,12 +907,37 @@ static uint64_t =
+pc_get_cxl_range_end(PCMachineState *pcms)
+>>  static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t =
+pci_hole64_size)
+>>  {
+>>      X86CPU *cpu =3D X86_CPU(first_cpu);
+>> +    PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
+>> +    MachineState *ms =3D MACHINE(pcms);
+>> +    uint64_t devmem_start =3D 0;
+>> +    ram_addr_t devmem_size =3D 0;
+>>  -    /* 32-bit systems don't have hole64 thus return max CPU address =
+*/
+>> -    if (cpu->phys_bits <=3D 32) {
+>> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
+>> +    /*
+>> +     * 32-bit systems don't have hole64 but they might have a region =
+for
+>> +     * memory devices. Even if additional hotplugged memory devices =
+might
+>> +     * not be usable by most guest OSes, we need to still consider =
+them for
+>> +     * calculating the highest possible GPA so that we can properly =
+report
+>> +     * if someone configures them on a CPU that cannot possibly =
+address them.
+>> +     */
+>> +    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
+>> +        /* 32-bit systems */
+>> +        if (!pcmc->broken_32bit_mem_addr_check) {
+>=20
+> Nitpicking, code is simplified if you invert this condition check.
 
-The reconnect path is:
-vhost_user_blk_event
-   vhost_user_async_close(.. vhost_user_blk_disconnect ..)
-     qemu_chr_fe_set_handlers <----- clear the notifier callback
-       schedule vhost_user_async_close_bh
+Maybe it reads better, but simplified? .. I am not so sure.
 
-The vhost->vdev is null, so the vhost_user_blk_disconnect will not be
-called, then the event fd callback will not be reinstalled.
+>=20
+>> +            if (pcmc->has_reserved_memory &&
+>> +                (ms->ram_size < ms->maxram_size)) {
+>> +                pc_get_device_memory_range(pcms, &devmem_start,
+>> +                                           &devmem_size);
+>> +                devmem_start +=3D devmem_size;
+>> +                return devmem_start - 1;
+>> +            } else {
+>> +                return pc_above_4g_end(pcms) - 1;
+>> +            }
+>> +        } else {
+>> +            /* old value for compatibility reasons */
+>> +            return ((hwaddr)1 << cpu->phys_bits) - 1;
+>=20
+> Since you change this line, can we convert to
+> MAKE_64BIT_MASK(0, cpu->phys_bits) ?
 
-All vhost-user devices have this issue, including vhost-user-blk/scsi.
+Doesn=E2=80=99t the existing code reads better? Assuming that the macro =
+does exactly the same thing, one has to still look up the definition. =
+And=20
 
-With this patch, if the vdev->vdev is null, the fd callback will still
-be reinstalled.
+ (((~0ULL) >> (64 - (length))) << (shift))
 
-Fixes: 71e076a07d ("hw/virtio: generalise CHR_EVENT_CLOSED handling")
+Is such a brain twister :-)=20
 
-Signed-off-by: Li Feng <fengli@smartx.com>
----
- hw/block/vhost-user-blk.c      |  2 +-
- hw/scsi/vhost-user-scsi.c      |  3 ++-
- hw/virtio/vhost-user-gpio.c    |  2 +-
- hw/virtio/vhost-user.c         | 10 ++++++++--
- include/hw/virtio/vhost-user.h |  3 ++-
- 5 files changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 3c69fa47d5..95c758200d 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -391,7 +391,7 @@ static void vhost_user_blk_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &s->chardev, &s->dev,
--                               vhost_user_blk_disconnect);
-+                               vhost_user_blk_disconnect, vhost_user_blk_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 53a62c3170..0effbb4787 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -238,7 +238,8 @@ static void vhost_user_scsi_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &vs->conf.chardev, &vsc->dev,
--                               vhost_user_scsi_disconnect);
-+                               vhost_user_scsi_disconnect,
-+                               vhost_user_scsi_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
-index d9979aa5db..04c2cc79f4 100644
---- a/hw/virtio/vhost-user-gpio.c
-+++ b/hw/virtio/vhost-user-gpio.c
-@@ -283,7 +283,7 @@ static void vu_gpio_event(void *opaque, QEMUChrEvent event)
-     case CHR_EVENT_CLOSED:
-         /* defer close until later to avoid circular close */
-         vhost_user_async_close(dev, &gpio->chardev, &gpio->vhost_dev,
--                               vu_gpio_disconnect);
-+                               vu_gpio_disconnect, vu_gpio_event);
-         break;
-     case CHR_EVENT_BREAK:
-     case CHR_EVENT_MUX_IN:
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..7344f57ba7 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -2643,6 +2643,7 @@ typedef struct {
-     DeviceState *dev;
-     CharBackend *cd;
-     struct vhost_dev *vhost;
-+    IOEventHandler *event_cb;
- } VhostAsyncCallback;
- 
- static void vhost_user_async_close_bh(void *opaque)
-@@ -2657,7 +2658,10 @@ static void vhost_user_async_close_bh(void *opaque)
-      */
-     if (vhost->vdev) {
-         data->cb(data->dev);
--    }
-+    } else if (data->event_cb) {
-+        qemu_chr_fe_set_handlers(data->cd, NULL, NULL, data->event_cb,
-+                                 NULL, data->dev, NULL, true);
-+   }
- 
-     g_free(data);
- }
-@@ -2669,7 +2673,8 @@ static void vhost_user_async_close_bh(void *opaque)
-  */
- void vhost_user_async_close(DeviceState *d,
-                             CharBackend *chardev, struct vhost_dev *vhost,
--                            vu_async_close_fn cb)
-+                            vu_async_close_fn cb,
-+                            IOEventHandler *event_cb)
- {
-     if (!runstate_check(RUN_STATE_SHUTDOWN)) {
-         /*
-@@ -2685,6 +2690,7 @@ void vhost_user_async_close(DeviceState *d,
-         data->dev = d;
-         data->cd = chardev;
-         data->vhost = vhost;
-+        data->event_cb = event_cb;
- 
-         /* Disable any further notifications on the chardev */
-         qemu_chr_fe_set_handlers(chardev,
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 191216a74f..649e9dd54f 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -84,6 +84,7 @@ typedef void (*vu_async_close_fn)(DeviceState *cb);
- 
- void vhost_user_async_close(DeviceState *d,
-                             CharBackend *chardev, struct vhost_dev *vhost,
--                            vu_async_close_fn cb);
-+                            vu_async_close_fn cb,
-+                            IOEventHandler *event_cb);
- 
- #endif
--- 
-2.41.0
+>=20
+>> +        }
+>>      }
+>>  +    /* 64-bit systems */
+>>      return pc_pci_hole64_start() + pci_hole64_size - 1;
+>>  }
 
 
