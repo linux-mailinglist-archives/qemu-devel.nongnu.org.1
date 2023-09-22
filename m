@@ -2,76 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AEA37AB923
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 20:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0827AB931
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 20:33:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjkpQ-0005yz-23; Fri, 22 Sep 2023 14:24:36 -0400
+	id 1qjkxE-00089b-12; Fri, 22 Sep 2023 14:32:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
- id 1qjkpN-0005yj-FP
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:24:33 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qjkxB-000895-QI
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:32:37 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wuhaotsh@google.com>)
- id 1qjkpL-0001A6-MH
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:24:33 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4053f24c900so12465e9.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 11:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1695407063; x=1696011863; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Q9YX3XP+SjP8dNIsi+AfDLWEbL7erHHKGk6ZhuChOIU=;
- b=PmpXsWVVgfFeqQHHmzAYr039XwMjMFPNwmbtnbq0EJa7WhGUtqSVwovsGV33y1eCB/
- I43/P3jF/Zn2LZvAa+MdmgLWxg2F0TwK5gPI6AAjU8c9Ssoe6YlTgtXj6haR/htiBRmn
- tVB5Vk774t9t2zG6tc2rh8sCU4d7PnlEyeJYtuwZcjGvgZ5vAdQVMeMAg48xXm5POL5F
- uWGxdokEpG00xR46YlND7BYKUSMuJ5AJTg1vxoHahgNdF7zNo/XRCNqdNQPblQqkIw+n
- j+3JgSY8N/T4RP+VuBeXAWadLU2kW88RVw99iE8aN1VrKqjnvgVPaJVEsxFaQlkuz1BL
- 6rUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695407063; x=1696011863;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Q9YX3XP+SjP8dNIsi+AfDLWEbL7erHHKGk6ZhuChOIU=;
- b=YKHhZMrSHxiLPeqdQNxEptw93BiXWJoEQJrNDCpNHtKngZt7K9tQiVD9aDFXvuo2P6
- vmoXgW31JXh25J3upPJdPazUubtVui5hkZmxZI4/QgYi/XCCD/fh1MZ3M4byGtiZCHXN
- SDGijskjlRq7LnbbHapb42l4HqYGw6w5HnY3OP8xCxIN47t9XAhLBLWPYaOn6e8i0yek
- HPUU2RMn079aBb2ATY6SKML0YE7aiIqvGRVqJVoDlcrfYpzj/yJ68t+O73PzNQgNKpN6
- p0TPnqXvLNxmD9qYc2g2Xl4s6/wbIPZDMv4P7LGYCh7TzSZ58rm1ajbT3s2eZKjwLnSK
- CCqg==
-X-Gm-Message-State: AOJu0Yw+eT4ZItuLIoRFf3V11nXoLzvatqiimDkyKkmCEJMbfwcBJbDO
- AdCvIVJntL9S54y9Zrfly7NR4HIhpGgpCwGnI2KQ3A==
-X-Google-Smtp-Source: AGHT+IFr3piyhDo/QvErXVqM/QMeUOis/IDjgEebalJyoBGe3M424STL+KgRfu9abYEDlUNNTOE7kBHpDDjYPfoYUF8=
-X-Received: by 2002:a05:600c:2146:b0:400:c6de:6a20 with SMTP id
- v6-20020a05600c214600b00400c6de6a20mr7919wml.3.1695407062652; Fri, 22 Sep
- 2023 11:24:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qjkxA-00032L-9E
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 14:32:37 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 47B7421A9F;
+ Fri, 22 Sep 2023 18:32:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1695407554; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=D39M92nZoWKveQvTrtQu6elidDkHUZxDUtsOf6HWd+4=;
+ b=TcaU9Fj7MNPWIOXjTKjFQx3QIXU/qZpStdZ3ylimQKApIxocIRsz8TGciCE0w6PKJeXvf7
+ quRgIFh0M2AUC/cz+hcl4ALcEKaiYxMnikjK9ewKMhjktUXnDri5LSk8AptxFGjcc0U8Yo
+ ndGwbadzBSFYnnfoOHxhbJIxmnUvQo8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1695407554;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=D39M92nZoWKveQvTrtQu6elidDkHUZxDUtsOf6HWd+4=;
+ b=9BwNbglvBAXQV1NU67b4hDWLGCu0A4PjLQhDny/mJmE5Rlq6NTybCH4Sbu5T1AlMvMaK8r
+ Ee7KJFagAiownzCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CEA2E13478;
+ Fri, 22 Sep 2023 18:32:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 3n40JsHdDWXUcgAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 22 Sep 2023 18:32:33 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Elena Ufimtseva <elena.ufimtseva@oracle.com>, quintela@redhat.com,
+ peterx@redhat.com, leobras@redhat.com
+Cc: elena.ufimtseva@oracle.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH 4/4] multifd: reset next_packet_len after sending pages
+In-Reply-To: <20230922065625.21848-5-elena.ufimtseva@oracle.com>
+References: <20230922065625.21848-1-elena.ufimtseva@oracle.com>
+ <20230922065625.21848-5-elena.ufimtseva@oracle.com>
+Date: Fri, 22 Sep 2023 15:32:31 -0300
+Message-ID: <871qeqm534.fsf@suse.de>
 MIME-Version: 1.0
-References: <20230922181411.2697135-1-crauer@google.com>
-In-Reply-To: <20230922181411.2697135-1-crauer@google.com>
-From: Hao Wu <wuhaotsh@google.com>
-Date: Fri, 22 Sep 2023 11:24:12 -0700
-Message-ID: <CAGcCb128kdfZTTBB808iGONtdM9cnJF5CGxXhd+aS+eg2U=3Gg@mail.gmail.com>
-Subject: Re: [PATCH] hw/timer/npcm7xx_timer: Prevent timer from counting down
- past zero
-To: Chris Rauer <crauer@google.com>
-Cc: peter.maydell@linaro.org, kfting@nuvoton.com, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="000000000000b8dff90605f6b785"
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=wuhaotsh@google.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,92 +83,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000b8dff90605f6b785
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Elena Ufimtseva <elena.ufimtseva@oracle.com> writes:
 
-Is this related to this error?
-
-https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html
-
-On Fri, Sep 22, 2023 at 11:14=E2=80=AFAM Chris Rauer <crauer@google.com> wr=
-ote:
-
-> The counter register is only 24-bits and counts down.  If the timer is
-> running but the qtimer to reset it hasn't fired off yet, there is a chanc=
-e
-> the regster read can return an invalid result.
+> Sometimes multifd sends just sync packet with no pages
+> (normal_num is 0). In this case the old value is being
+> preserved and being accounted for while only packet_len
+> is being transferred.
+> Reset it to 0 after sending and accounting for.
 >
-> Signed-off-by: Chris Rauer <crauer@google.com>
+> TODO: Fix the same packet ids in the stream.
+> with this patch, there is still an issue with the duplicated
+> packets ids being sent (with different number of pages/flags).
+> See in below multifd_send trace (before this change):
+> multifd_send 394.774 pid=55477 id=0x1 packet_num=0x6f0 normal=0x57 flags=0x1 next_packet_size=0x57000
+> multifd_send 181.244 pid=55477 id=0x1 packet_num=0x6f0 normal=0x0 flags=0x0 next_packet_size=0x57000
+>
+> With this commit there are still duplicated packets, but since no pages
+> are being sent with sync flag set, next_packet_size is 0:
+> multifd_send 27.814 pid=18602 id=0x1 packet_num=0x574 normal=0x7b flags=0x1 next_packet_size=0x7b000
+> multifd_send 136054.792 pid=18602 id=0x1 packet_num=0x574 normal=0x0 flags=0x0 next_packet_size=0x0
+> If there is a suggestion how to fix this properly, I will be
+> glad to use it.
+>
+> Signed-off-by: Elena Ufimtseva <elena.ufimtseva@oracle.com>
 > ---
->  hw/timer/npcm7xx_timer.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  migration/multifd.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c
-> index 32f5e021f8..a8bd93aeb2 100644
-> --- a/hw/timer/npcm7xx_timer.c
-> +++ b/hw/timer/npcm7xx_timer.c
-> @@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTimer
-> *t, uint32_t count)
->  /* Convert a time interval in nanoseconds to a timer cycle count. */
->  static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns)
->  {
-> +    if (ns < 0) {
-> +        return 0;
-> +    }
->      return clock_ns_to_ticks(t->ctrl->clock, ns) /
->          npcm7xx_tcsr_prescaler(t->tcsr);
->  }
-> --
-> 2.42.0.515.g380fc7ccd1-goog
->
->
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 3281397b18..8b4e26051b 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -730,6 +730,7 @@ static void *multifd_send_thread(void *opaque)
+>                         p->next_packet_size + p->packet_len);
+>              stat64_add(&mig_stats.transferred,
+>                         p->next_packet_size + p->packet_len);
+> +            p->next_packet_size = 0;
+>              qemu_mutex_lock(&p->mutex);
+>              p->pending_job--;
+>              qemu_mutex_unlock(&p->mutex);
 
---000000000000b8dff90605f6b785
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Is this related to this error?<br><br><a href=3D"https://l=
-ists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html">https://lists.g=
-nu.org/archive/html/qemu-devel/2023-09/msg04903.html</a><br></div><br><div =
-class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 22,=
- 2023 at 11:14=E2=80=AFAM Chris Rauer &lt;<a href=3D"mailto:crauer@google.c=
-om">crauer@google.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_qu=
-ote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,20=
-4);padding-left:1ex">The counter register is only 24-bits and counts down.=
-=C2=A0 If the timer is<br>
-running but the qtimer to reset it hasn&#39;t fired off yet, there is a cha=
-nce<br>
-the regster read can return an invalid result.<br>
-<br>
-Signed-off-by: Chris Rauer &lt;<a href=3D"mailto:crauer@google.com" target=
-=3D"_blank">crauer@google.com</a>&gt;<br>
----<br>
-=C2=A0hw/timer/npcm7xx_timer.c | 3 +++<br>
-=C2=A01 file changed, 3 insertions(+)<br>
-<br>
-diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c<br>
-index 32f5e021f8..a8bd93aeb2 100644<br>
---- a/hw/timer/npcm7xx_timer.c<br>
-+++ b/hw/timer/npcm7xx_timer.c<br>
-@@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTimer *=
-t, uint32_t count)<br>
-=C2=A0/* Convert a time interval in nanoseconds to a timer cycle count. */<=
-br>
-=C2=A0static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns=
-)<br>
-=C2=A0{<br>
-+=C2=A0 =C2=A0 if (ns &lt; 0) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
-+=C2=A0 =C2=A0 }<br>
-=C2=A0 =C2=A0 =C2=A0return clock_ns_to_ticks(t-&gt;ctrl-&gt;clock, ns) /<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0npcm7xx_tcsr_prescaler(t-&gt;tcsr);<br>
-=C2=A0}<br>
--- <br>
-2.42.0.515.g380fc7ccd1-goog<br>
-<br>
-</blockquote></div>
-
---000000000000b8dff90605f6b785--
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
