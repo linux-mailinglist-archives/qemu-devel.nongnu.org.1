@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA517AA607
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5047AA605
 	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 02:23:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjTwI-0000pz-Ts; Thu, 21 Sep 2023 20:22:34 -0400
+	id 1qjTwb-0000rE-Gf; Thu, 21 Sep 2023 20:22:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qjTwH-0000pr-1U
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 20:22:33 -0400
+ id 1qjTwZ-0000r6-Tp
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 20:22:51 -0400
 Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qjTwD-0004qx-To
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 20:22:32 -0400
+ id 1qjTwY-0004sL-Ai
+ for qemu-devel@nongnu.org; Thu, 21 Sep 2023 20:22:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695342149; x=1726878149;
+ t=1695342170; x=1726878170;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=FogeaomQX2VVcu9AEHsQgloDflBQsHSa+RD1u+C6qTc=;
- b=T2A0q2RQMG+jkjFAVqQKuO/V2sQXIA8wApOg/oQpXPPy/owmlpPZ8S7Q
- Qi+/8spqyTasA/vbQ3ixr4wjgFgRp3wDT/2aICu62UMyjoW0wnBFFiddt
- B+hewXIT5lgA+p6vW5cPqhL2el/xKGKo6ShgGjRkaqv2C5A+YMIQJkVuP
- gW/XFjUWpyLpA98Omv006bFAZ5hzpViRq48a1O4dSrYOm/VIcOiSrDOQ6
- s+IxAomztu5oej+2iz7rWgeo5dnIIyxArZ5Lw+VxdxVr5jpYBfjC9ecXi
- 6AAMWjZl2MkG3Ocu4wiBouSH6fZ0I7jzf/qq3iBsTdkr2gGVuH/hqcw+7 A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="360088259"
-X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; d="scan'208";a="360088259"
+ bh=ewiBLJ54nNGKRJj+GjF255twIywKxcnwQngXvj35lcQ=;
+ b=N2JJPZiML78VOn3gl6xi9whwuMkvc9c9hySSBc9xHXqKQd4YxpucFKLL
+ oDVb1VoTIc8lmcmQneRuC+rcsTWoelLdlRxhfj6fIAyhlCpXVx1a83Ffc
+ VnwWmYWbhEsk5QnqmEQq3vgnuEdwsmzM10+GCJSIDeNsVNPIa7Rp0KXkl
+ qTjCYIygf/NsgefFqneIsY+w7+8ASck8zHhs+PPN3rUGIN7AXIaswPHYV
+ 0c9UCbPIfvcJiZboo6DQiB2Wq5xUP0xVzjdrJf0ovG6Av7Ru8vgNe64WE
+ IZx0WVGt8bfa1rkG/tXLnMYTOMAuXZvifvfJWtWyDDe7u8K4TD2cC72ll Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="360088297"
+X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; d="scan'208";a="360088297"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2023 17:22:25 -0700
+ 21 Sep 2023 17:22:48 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="747341164"
-X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; d="scan'208";a="747341164"
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="747341198"
+X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; d="scan'208";a="747341198"
 Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.11.250])
  ([10.93.11.250])
  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2023 17:22:20 -0700
-Message-ID: <6eeb5568-2faa-85c3-8f42-ed6317ea376c@intel.com>
-Date: Fri, 22 Sep 2023 08:22:17 +0800
+ 21 Sep 2023 17:22:42 -0700
+Message-ID: <183684ec-8ee5-df22-ca5b-5ca3a0886ca1@intel.com>
+Date: Fri, 22 Sep 2023 08:22:41 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [RFC PATCH v2 02/21] RAMBlock: Add support of KVM private gmem
+Subject: Re: [RFC PATCH v2 04/21] memory: Introduce memory_region_has_gmem_fd()
 Content-Language: en-US
 To: David Hildenbrand <david@redhat.com>, Paolo Bonzini
  <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
@@ -63,10 +63,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
  Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
 References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <20230914035117.3285885-3-xiaoyao.li@intel.com>
- <678bf0bf-57e7-a596-1ddf-6d0b47cd8677@redhat.com>
+ <20230914035117.3285885-5-xiaoyao.li@intel.com>
+ <f525d4da-0878-b4bc-f9cf-7b824abfef0a@redhat.com>
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <678bf0bf-57e7-a596-1ddf-6d0b47cd8677@redhat.com>
+In-Reply-To: <f525d4da-0878-b4bc-f9cf-7b824abfef0a@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=192.55.52.136; envelope-from=xiaoyao.li@intel.com;
@@ -94,32 +94,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/21/2023 4:55 PM, David Hildenbrand wrote:
-> On 14.09.23 05:50, Xiaoyao Li wrote:
->> From: Chao Peng <chao.p.peng@linux.intel.com>
->>
->> Add KVM gmem support to RAMBlock so both normal hva based memory
->> and kvm gmem fd based private memory can be associated in one RAMBlock.
->>
->> Introduce new flag RAM_KVM_GMEM. It calls KVM ioctl to create private
->> gmem for the RAMBlock when it's set.
+On 9/21/2023 4:46 PM, David Hildenbrand wrote:
+> On 14.09.23 05:51, Xiaoyao Li wrote:
+>> Introduce memory_region_has_gmem_fd() to query if the MemoryRegion has
+>> KVM gmem fd allocated.
 > 
-> 
-> But who sets RAM_KVM_GMEM and when? 
+> *probably* best to just squash that into patch #2.
 
-The answer is in the next patch. When `private` property of memory 
-backend is set to true, it will pass RAM_KVM_GMEM flag to 
-memory_region_init_ram_*()
-
-> Don't we simply allocate it for all 
-> RAMBlocks under such special VMs? 
-
-yes, this is the direction after your comments.
-
-I'll try to figure out how to achieve it.
-
-> What's the downside of doing that?
-
-As far as I see, for TDX, no downside.
-
+Sure, I will do it.
 
